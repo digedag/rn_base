@@ -1,0 +1,30 @@
+(add new changes on top of this file)
+
+Änderungen
+----------
+v0.0.9 (12.11.2007)
+- die wrap-Funktionen im FormatUtil haben einen neuen Parameter für das Data-Array. Dieses
+  wird, wenn vorhanden im verwendeten cObject gesetzt.
+- in configurations gibt es die neue Methode getKeynames()
+
+v0.0.7 (30.09.2007)
+- Handling der freien Label im BaseMarker geändert. Die Punktnotation wird für 
+  Labels automatisch in Underscores umgewandelt. Dadurch können die Strings dann im Sprachfile
+  gefunden werden
+
+v0.0.6 (27.09.2007)
+- in Configuration bei der Methode removeKeepVar den Qualifier entfernt
+- Neue Klasse für PageBrowser
+- FormatUtil Case-Func bei getItemMarkerArrayWrapped()
+- FormatUtil neue Methode dataStdWrap()
+- FormatUtil neue Methode numberFormat()
+
+
+v0.0.5 (28.08.2007)
+- Im FormatUtil wird in der Methode getItemMarkerArrayWrapped() der Datensatz in die Instanz von 
+  cObject kopiert. Damit sind erweiterte TS-Anweisungen möglich.
+- Verwendung des korrekten Klassennamens für das tx_lib_spl_arrayObject
+v0.0.4
+- Änderung der KeepVars in der Configuration-Klasse
+v0.0.3
+- Neue Methode getColumnWrapped() in tx_rnbase_model_base
