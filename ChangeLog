@@ -2,6 +2,12 @@
 
 Änderungen
 ----------
+v0.0.10 (??.11.2007)
+- Neue Methode zur Abfrage von Informationen aus der TCA in tx_rnbase_util_DB
+- Bugfix: getTemplatePath() in configuration hatte einen Schreibfehler
+- bei DB-Abfragen kann enableFields deaktiviert werden. Somit kann auch auf Tabellen ohne
+  TCA-Beschreibung zugegriffen werden.
+
 v0.0.9 (12.11.2007)
 - die wrap-Funktionen im FormatUtil haben einen neuen Parameter für das Data-Array. Dieses
   wird, wenn vorhanden im verwendeten cObject gesetzt.
