@@ -188,7 +188,7 @@ class tx_rnbase_configurations {
    * 'EXT:your_extension/templates/'. You can change this by TS setting templatePath
    */
   function getTemplatePath() {
-    $path = $this->get('tempatePath');
+    $path = $this->get('templatePath');
     return $path ? $path : 'EXT:' . $this->getExtensionKey() . '/views/templates/';
   }
 
