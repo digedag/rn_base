@@ -94,6 +94,7 @@ class tx_rnbase_util_DB {
    * - 'wrapperclass' - A wrapper for each result rows
    * - 'pidlist' - A list of page-IDs to search for records
    * - 'recursive' - the recursive level to search for records in pages
+   * - 'enablefieldsoff' - deactivate enableFields check
    * </pre>
    * @param $what requested columns
    * @param $from either the name of on table or an array with index 0 the from clause 
@@ -118,8 +119,10 @@ class tx_rnbase_util_DB {
 
     $wrapper = is_string($arr['wrapperclass']) ? tx_div::makeInstanceClassName($arr['wrapperclass']) : 0;
 
+    if(!$arr['enablefieldsoff']) {
     // Zur Where-Clause noch die gültigen Felder hinzufügen
-    $where .= tslib_cObj::enableFields($tableName);
+      $where .= tslib_cObj::enableFields($tableName);
+    }
 
     if(strlen($pidList) > 0)
       $where .= ' AND pid IN (' . tx_rnbase_util_DB::_getPidList($pidList,$recursive) . ')';
@@ -151,6 +154,36 @@ class tx_rnbase_util_DB {
   }
 
   /**
+   * Returns an array with column names of a TCA defined table.
+   *
+   * @param string $tcaTableName
+   * @param string $prefix if set, each columnname is preceded by this alias
+   * @return array
+   */
+  function getColumnNames($tcaTableName, $prefix = '') {
+    $cols = self::getTCAColumns($tcaTableName);
+    if(is_array($cols)) {
+      $cols = array_keys($cols);
+      if(strlen(trim($prefix)))
+        array_walk($cols, 'tx_rnbase_util_DB_prependAlias', $prefix);
+    }
+    else $cols = array();
+    return $cols;
+  }
+
+  /**
+   * Liefert die TCA-Definition der in der Tabelle definierten Spalten
+   *
+   * @param string $tcaTableName
+   * @return array or 0
+   */
+  function getTCAColumns($tcaTableName) {
+    global $TCA;
+    t3lib_div::loadTCA($tcaTableName);
+    return isset($TCA[$tcaTableName]) ? $TCA[$tcaTableName]['columns'] : 0;
+  }
+  
+  /**
    * Same method as tslib_pibase::pi_getPidList()
    */
   function _getPidList($pid_list,$recursive=0)  {
@@ -173,8 +206,11 @@ class tx_rnbase_util_DB {
 
 }
 
+function tx_rnbase_util_DB_prependAlias(&$item, $key, $alias) {
+  $item = $alias . '.' . $item;
+}
+
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_DB.php']) {
   include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_DB.php']);
 }
 
-?>
