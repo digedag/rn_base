@@ -282,6 +282,19 @@ class tx_rnbase_configurations {
   }
 
   /**
+   * Returns a value from extension configuration.
+   * Can be called static
+   *
+   * @param string $extKey
+   * @param string $cfgKey
+   * @return mixed
+   */
+  function getExtensionCfgValue($extKey, $cfgKey) {
+    $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extKey]);
+    return $extConfig[$cfgKey];
+  }
+
+  /**
    * Get a value or an array by providing a relative pathKey
    *
    * The provided pathKey is relative to the part of the TS-Setup you have loaded. Examples:
