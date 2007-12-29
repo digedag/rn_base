@@ -203,7 +203,30 @@ class tx_rnbase_util_DB {
 
     return implode(',', $pid_list);
   }
+  /**
+   * Check whether the given resource is a valid sql result. Breaks with mayday if not!
+   * This method is taken from the great ameos_formidable extension.
+   *
+   * @param resource $rRes
+   * @return resource
+   */
+	function watchOutDB(&$rRes) {
 
+		if(!is_resource($rRes) && $GLOBALS['TYPO3_DB']->sql_error()) {
+
+			$sMsg = 'SQL QUERY IS NOT VALID';
+			$sMsg .= '<br/>';
+			$sMsg .= '<b>' . $GLOBALS['TYPO3_DB']->sql_error() . '</b>';
+			$sMsg .= '<br />';
+			$sMsg .= $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery;
+
+			tx_div::load('tx_rnbase_util_Misc');
+			tx_rnbase_util_Misc::mayday($sMsg);
+		}
+
+		return $rRes;
+	}
+  
 }
 
 function tx_rnbase_util_DB_prependAlias(&$item, $key, $alias) {
