@@ -3,6 +3,9 @@
 Änderungen
 ----------
 v0.0.10 (??.11.2007)
+- Neue Methode watchOutDB() zum Debug von fehlerhaften SQL-Statements
+- Neue Klasse tx_rnbase_uril_Misc mit MayDay-Methode analog zu ameos_formidable
+- Neue Methode zur Abfrage der Extensionkonfiguration in tx_rnbase_configuration::getExtensionCfgValue()
 - Neue Methode zur Abfrage von Informationen aus der TCA in tx_rnbase_util_DB
 - Bugfix: getTemplatePath() in configuration hatte einen Schreibfehler
 - bei DB-Abfragen kann enableFields deaktiviert werden. Somit kann auch auf Tabellen ohne
