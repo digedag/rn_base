@@ -105,6 +105,13 @@ class tx_rnbase_model_base{
     return $formatter->wrap($this->record[$columnName], $baseConfId . $colConfId);
   }
 
+  function __toString() {
+  	$out = get_class($this). "\n\nRecord:\n";
+  	while (list($key,$val)=each($this->record))	{
+  		$out .= $key. ' = ' . $val . "\n";
+  	}
+  	return $out; //t3lib_div::view_array($this->record);
+  }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/model/class.tx_rnbase_model_base.php']) {
