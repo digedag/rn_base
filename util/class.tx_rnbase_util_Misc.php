@@ -35,7 +35,7 @@ class tx_rnbase_util_Misc {
 	 * @param	string		$msg: the error message
 	 * @return	void
 	 */
-	function mayday($msg) {
+	function mayday($msg, $extKey = '') {
 		$aTrace		= debug_backtrace();
 		$aLocation	= array_shift($aTrace);
 		$aTrace1	= array_shift($aTrace);
@@ -76,7 +76,7 @@ class tx_rnbase_util_Misc {
 	'http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en'>
 	<head>
-		<title>Formidable::Mayday</title>
+		<title>${extKey}::Mayday</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta name="robots" content="noindex, nofollow" />
 		<style type="text/css">
@@ -155,9 +155,9 @@ MAYDAYPAGE;
 					$result.= "<tr><td valign='top'><span style='" . $sStyleBlack . "'>".htmlspecialchars((string)$key)."</span></td><td>";
 
 					if(is_array($val))	{
-						$result.=tx_ameosformidable::_viewMixed($val, $bRecursive, $iLevel + 1);
+						$result.=self::viewMixed($val, $bRecursive, $iLevel + 1);
 					} else {
-						$result.= "<span style='" . $sStyleRed . "'>".tx_ameosformidable::_viewMixed($val, $bRecursive, $iLevel + 1)."<br /></span>";
+						$result.= "<span style='" . $sStyleRed . "'>".self::viewMixed($val, $bRecursive, $iLevel + 1)."<br /></span>";
 					}
 
 					$result.= "</td></tr>";
@@ -170,7 +170,7 @@ MAYDAYPAGE;
 			$result = "<span style='" . $sStyleGreen . "'>RESOURCE: </span>" . $mMixed;
 		} elseif(is_object($mMixed)) {
 			if($bRecursive) {
-				$result = "<span style='" . $sStyleGreen . "'>OBJECT (" . get_class($mMixed) .") : </span>" . tx_ameosformidable::_viewMixed(get_object_vars($mMixed), FALSE, $iLevel + 1);
+				$result = "<span style='" . $sStyleGreen . "'>OBJECT (" . get_class($mMixed) .") : </span>" . self::viewMixed(get_object_vars($mMixed), FALSE, $iLevel + 1);
 			} else {
 				$result = "<span style='" . $sStyleGreen . "'>OBJECT (" . get_class($mMixed) .") : !RECURSION STOPPED!</span>";// . t3lib_div::view_array(get_object_vars($mMixed), FALSE);
 			}
