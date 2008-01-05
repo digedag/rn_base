@@ -27,6 +27,8 @@
  */
 class tx_rnbase_util_BaseMarker {
   private $defaultMarkerArr = array();
+  /** Array for dummy objects */
+  private static $emptyObjects = array();
   
   function tx_rnbase_util_BaseMarker() {
   }
@@ -106,6 +108,30 @@ class tx_rnbase_util_BaseMarker {
   protected function getDefaultMarkerArray(){
     return $this->defaultMarkerArr;
   }
+
+  /**
+   * Returns an empty instance of given modelclass. This object must not be 
+   * change, since it is cached. You will always get the same instance if you
+   * call this method for the same class more than once.
+   * The object will be initialized with a uid=0. The record-array will 
+   * contain all tca-defined fields with an empty string as value.
+   *
+   * @param string $classname
+   * @return object
+   */
+	protected static function getEmptyInstance($classname) {
+		if(!is_object(self::$emptyObjects[$classname])) {
+    	$clazz = tx_div::makeInstanceClassName($classname);
+    	$dummy = new $clazz(array('uid' => 0));
+    	$cols = $dummy->getColumnNames();
+    	for($i=0, $cnt = count($cols); $i < $cnt; $i++) {
+    		$dummy->record[$cols[$i]] = '';
+    	}
+    	self::$emptyObjects[$classname] = $dummy;
+		}
+		return self::$emptyObjects[$classname];
+	}
+  
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_BaseMarker.php']) {
