@@ -90,7 +90,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
     }
 
     // Jetzt über alle Seiten iterieren
-    for($i=$firstLastArr['first']; $i < $firstLastArr['last']; $i++) {
+    for($i=$firstLastArr['first']; $i <= $firstLastArr['last']; $i++) {
       $pageId = ($i == $pointer && $templates['current']) ? 'current' : 'normal';
 
       $parts[] = $this->getPageString($i, $pointer, $pageId, $templates, $formatter, $pbConfId, $pbMarker);
@@ -149,12 +149,12 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
   private function getFirstLastPage($pointer, $pageFloat, $totalPages, $maxPages) {
     $ret = array();
     if($pageFloat > -1) {
-      $ret['last'] = min($totalPages, max($pointer + 1 + $pageFloat, $maxPages));
+      $ret['last'] = min($totalPages-1, max($pointer + 1 + $pageFloat, $maxPages));
       $ret['first'] = max(0, $ret['last'] - $maxPages);
     }
     else {
       $ret['first'] = 0;
-      $ret['last'] = t3lib_div::intInRange($totalPages, 1, $maxPages);
+      $ret['last'] = t3lib_div::intInRange($totalPages-1, 1, $maxPages);
     }
     return $ret;
   }
