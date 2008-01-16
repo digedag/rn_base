@@ -113,10 +113,20 @@ class tx_rnbase_util_DB {
     $where = is_string($arr['where']) ? $arr['where'] : '1';
     $groupBy = is_string($arr['groupby']) ? $arr['groupby'] : '';
     $orderBy = is_string($arr['orderby']) ? $arr['orderby'] : '';
+    $offset = intval($arr['offset']) > 0 ? intval($arr['offset']) : 0;
     $limit = intval($arr['limit']) > 0 ? intval($arr['limit']) : '';
     $pidList = is_string($arr['pidlist']) ? $arr['pidlist'] : '';
     $recursive = intval($arr['recursive']) ? intval($arr['recursive']) : 0;
 
+    // offset und limit kombinieren
+    if($limit) { // bei gesetztem limit ist offset optional
+      $limit = ($offset > 0) ? $offset . ',' . $limit : $limit;
+    }
+    elseif($offset) { // Bei gesetztem Offset ist limit Pflicht (default 1000)
+      $limit = ($limit > 0) ? $offset . ',' . $limit : $offset . ',1000';
+    }
+    else $limit = '';
+    
     $wrapper = is_string($arr['wrapperclass']) ? tx_div::makeInstanceClassName($arr['wrapperclass']) : 0;
 
     if(!$arr['enablefieldsoff']) {
