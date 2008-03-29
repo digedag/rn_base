@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006 Rene Nitzsche
+ *  (c) 2006-2008 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -98,6 +98,71 @@ class tx_rnbase_util_BaseMarker {
 //    t3lib_div::debug($labelId, 'tx_rnbase_util_BaseMarker');
     $this->defaultMarkerArr = array_merge($arr1, $this->defaultMarkerArr);
     return $this->defaultMarkerArr;
+  }
+
+  /**
+   * Link setzen
+   *
+   * @param array $markerArray
+   * @param array $subpartArray
+   * @param array $wrappedSubpartArray
+   * @param tx_rnbase_util_FormatUtil $formatter
+   * @param string $confId
+   * @param string $linkId
+   * @param string $marker
+   * @param array $parameterArr
+   */
+  protected function initLink(&$markerArray, &$subpartArray, &$wrappedSubpartArray, $formatter, $confId, $linkId, $marker, $parameterArr) {
+  	$noLink = array('', '');
+//  	$linkObj = $this->getLinkInstance($formatter->configurations);
+  	$linkObj =& $formatter->configurations->createLink();
+    $token = md5(microtime());
+    $linkObj->label($token);
+  	$links = $formatter->configurations->get($confId.'links.');
+  	$linkMarker = $marker . '_' . strtoupper($linkId).'LINK';
+  	if($links[$linkId] || $links[$linkId.'.']) {
+  		$pid = $links[$linkId.'.']['pid'];
+  		$qualifier = $links[$linkId.'.']['qualifier'];
+  		if($qualifier) $linkObj->designator($qualifier);
+  		$target = $links[$linkId.'.']['target'];
+  		if($target) $linkObj->target($target);
+  		$linkObj->destination(intval($pid) ? $pid : $GLOBALS['TSFE']->id); // Das Ziel der Seite vorbereiten
+      $linkObj->parameters($parameterArr);
+      // Zusätzliche Parameter für den Link
+      $atagParams = $links[$linkId.'.']['atagparams.'];
+      if(is_array($atagParams)) {
+	      $linkObj->attributes($atagParams);
+      }
+      // KeepVars prüfen
+      if(!$links[$linkId.'.']['useKeepVars'])
+      	$linkObj->overruled();
+      
+    	$wrappedSubpartArray['###'.$linkMarker . '###'] = explode($token, $linkObj->makeTag());
+    	$markerArray['###'.$linkMarker . 'URL###'] = $linkObj->makeUrl();
+  	}
+  	else {
+    	$wrappedSubpartArray['###'.$linkMarker . '###'] = $noLink;
+  		$markerArray['###'.$linkMarker . '_URL###'] = '';
+  	}
+  }
+
+  /**
+   * Den PageBrowser in ein Template integrieren
+   *
+   * @param string $template
+   * @param tx_rnbase_util_PageBrowser $pagebrowser
+   * @param tx_rnbase_util_FormatUtil $formatter
+   * @param string $confId
+   * @return string
+   */
+  static function fillPageBrowser($template, &$pagebrowser, &$formatter, $confId) {
+  	if(strlen(trim($template)) == 0) return '';
+    if(!is_object($pagebrowser) || !is_object($pagebrowser->getMarker())) {
+      return '';
+    }
+    $marker = $pagebrowser->getMarker();
+    $out = $marker->parseTemplate($template, $formatter, $confId);
+    return $out;
   }
   
   /**
