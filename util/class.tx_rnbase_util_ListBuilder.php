@@ -80,9 +80,10 @@ class tx_rnbase_util_ListBuilder {
 	    // Das Menu für den PageBrowser einsetzen
 	    $pageBrowser =& $viewData->offsetGet('pagebrowser');
 	    if($pageBrowser) {
-	    	$subpartArray['###PAGEBROWSER###'] = $this->fillPageBrowser(
+	    	tx_div::load('tx_rnbase_util_BaseMarker');
+	    	$subpartArray['###PAGEBROWSER###'] = tx_rnbase_util_BaseMarker::fillPageBrowser(
 		                  $cObj->getSubpart($template,'###PAGEBROWSER###'), 
-		                  $pageBrowser, $confId.'pagebrowser.', $formatter);
+		                  $pageBrowser, $formatter, $confId.'pagebrowser.');
 		  	$markerArray['###'.$marker.'COUNT###'] = $pageBrowser->getListSize();
 	    }
 	    else {
@@ -107,18 +108,6 @@ class tx_rnbase_util_ListBuilder {
     
     return $out;
   }
-
-  private function fillPageBrowser($template, &$pagebrowser, $confId, &$formatter) {
-    $out = '';
-    if(!is_object($pagebrowser) || !is_object($pagebrowser->getMarker())) {
-      return $out;
-    }
-    
-    $marker = $pagebrowser->getMarker();
-    $out = $marker->parseTemplate($template, $formatter, $confId);
-    return $out;
-  }
-  
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_ListBuilder.php']) {
