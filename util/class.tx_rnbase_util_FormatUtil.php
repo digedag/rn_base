@@ -210,9 +210,6 @@ class tx_rnbase_util_FormatUtil {
         $value = $this->numberFormat($value, $conf[$colname.'.']);
         $data[$colname] = $this->stdWrap($value, $conf[$colname.'.']);
       }
-      // TODO: das ist wohl überflüssig!
-      if($conf[$colname] == 'TEXT') // RTE Texte mit dem general_stdWrap formatieren
-        $data[$colname] = $this->stdWrap($data[$colname], $this->configurations->get('general_stdWrap.'));
     }
     reset($record);
     $markerArray = tx_rnbase_util_FormatUtil::getItemMarkerArray($data, $noMap, $markerPrefix, $initMarkers);
