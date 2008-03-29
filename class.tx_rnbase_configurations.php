@@ -193,6 +193,21 @@ class tx_rnbase_configurations {
   }
 
   /**
+   * Factory-Method for links. The new link is initialized with qualifier and optional
+   * with keepVars set.
+   * @param boolean $addKeepVars whether or not keepVars should be set
+   * @return tx_lib_link
+   */
+  function &createLink($addKeepVars = true) {
+    $linkClass = tx_div::makeInstanceClassName('tx_lib_link');
+    $link = new $linkClass;
+    $link->designatorString = $this->getQualifier();
+    // Die KeepVars setzen
+    if($addKeepVars)
+	    $link->overruled($this->getKeepVars());
+    return $link;
+  }
+  /**
    * Returns the KeepVars-Array
    */
   function getKeepVars() {
@@ -205,7 +220,8 @@ class tx_rnbase_configurations {
     $arr = $keepVars->getArrayCopy();
 
     foreach( $arr As $key => $value) {
-      $this->_keepVars->offsetSet($key, $value);
+    	if(strpos($key, 'NK_') === FALSE)
+    		$this->_keepVars->offsetSet($key, $value);
     }
   }
 
