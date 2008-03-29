@@ -177,7 +177,6 @@ class tx_rnbase_util_FormatUtil {
     if(!is_array($record))
       return array();
     $tmpArr = $this->cObj->data;
-//t3lib_div::debug($tmpArr, 'util_frmt');
 
     $this->cObj->data = $record;
 
@@ -196,8 +195,13 @@ class tx_rnbase_util_FormatUtil {
       if($conf[$colname] == 'DATETIME' && $conf[$colname.'.']['ifEmpty'] && !$value) {
         $data[$colname] = $conf[$colname.'.']['ifEmpty'];
       }
+      elseif($conf[$colname]) {
+      	// Get value using cObjGetSingle
+        $this->cObj->setCurrentVal($value);
+        $data[$colname] = $this->cObj->cObjGetSingle($conf[$colname],$conf[$colname.'.']);
+        $this->cObj->setCurrentVal(false);
+      }
       elseif($conf[$colname] == 'CASE') {
-//t3lib_div::debug( $data, 'fmt');
         $data[$colname] = $this->cObj->CASEFUNC($conf[$colname.'.']);
       }
       else {
