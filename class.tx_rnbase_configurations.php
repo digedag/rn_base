@@ -563,11 +563,50 @@ class tx_rnbase_configurations {
     }
   }
 
+  private function mergeTSReference($key, $conf) {
+    $tsParser = t3lib_div::makeInstance('t3lib_TSparser');
+			// $name and $conf is loaded with the referenced values.
+		$old_conf=$conf;
+		list($name, $conf) = $tsParser->getVal($key,$GLOBALS['TSFE']->tmpl->setup);
+		if (is_array($old_conf) && count($old_conf))	{
+			$conf = self::joinTSarrays($conf,$old_conf);
+		}
+		return $conf;
+  }
+
+	/**
+	 * Merges two TypoScript propery array, overlaing the $old_conf onto the $conf array
+	 *
+	 * @param	array		TypoScript property array, the "base"
+	 * @param	array		TypoScript property array, the "overlay"
+	 * @return	array		The resulting array
+	 * @see mergeTSRef(), tx_tstemplatestyler_modfunc1::joinTSarrays()
+	 */
+	static function joinTSarrays($conf,$old_conf)	{
+		if (is_array($old_conf))	{
+			reset($old_conf);
+			while(list($key,$val)=each($old_conf))	{
+				if (is_array($val))	{
+					$conf[$key] = self::joinTSarrays($conf[$key],$val);
+				} else {
+					$conf[$key] = $val;
+				}
+			}
+		}
+		return $conf;
+	}
+ 
   function _queryArrayByPath($array, $path) {
   	$pathArray = explode('.', trim($path));
-  	for($i = 0; $i < count($pathArray); $i++) {
-  		if ($i < (count($pathArray) -1 )) {
+  	for($i = 0, $cnt = count($pathArray); $i < $cnt; $i++) {
+  		if ($i < ($cnt -1 )) {
+  			// Noch nicht beendet. Auf Reference prüfen
+  			$value = $array[$pathArray[$i]];
   			$array = $array[$pathArray[$i] . '.'];
+  			if (substr($value,0,1)=='<')	{
+					$key = trim(substr($value,1));
+  				$array = $this->mergeTSReference($key,$array);
+  			}
   		} elseif(empty($pathArray[$i])) {
   			// It ends with a dot. We return the rest of the array
   			return $array;
