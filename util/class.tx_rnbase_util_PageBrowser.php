@@ -26,7 +26,7 @@
  * Contains utility functions for HTML-Forms
  */
 class tx_rnbase_util_PageBrowser implements PageBrowser {
-  private $pdid;
+  private $pbid;
 
   /**
    * Erstellung des PageBrowser mit einer eindeutigen ID
@@ -36,12 +36,18 @@ class tx_rnbase_util_PageBrowser implements PageBrowser {
   }
 
   /**
-   * Initialisierung des PageBrowser mit den aktuellen Zustand
+   * Initialisierung des PageBrowser mit den aktuellen Zustand.
+   * Wenn keine Parameter übergeben werden, dann wird der Pager neu initialisiert
+   * und startet wieder bei Seite 1.
+   * 
+   * @param array_object $parameters die vorhandenen Parameter aus dem Request oder null
+   * @param int $listSize Gesamtgröße der darzustellenden Liste
+   * @param int $pageSize Größe einer Seite
    */
   function setState($parameters, $listSize, $pageSize) {
-    $this->pointer = intval($parameters->offsetGet($this->getParamName('pointer')));
+    $this->pointer = is_object($parameters) ? intval($parameters->offsetGet($this->getParamName('pointer'))) : 0;
     $this->listSize = $listSize;
-    $this->pageSize = t3lib_div::intInRange(intval($pageSize), 1, 1000);
+    $this->pageSize = t3lib_div::intInRange(intval($pageSize) ? $pageSize : 10, 1, 1000);
   }
 
   /**
@@ -91,7 +97,7 @@ class tx_rnbase_util_PageBrowser implements PageBrowser {
    * @return the right parametername for this browser
    */
   function getParamName($param) {
-    return strtolower('pb-'. $this->pdid . '-' . $param);
+    return strtolower('pb-'. $this->pbid . '-' . $param);
   }
 }
 
@@ -119,7 +125,7 @@ interface PageBrowser {
 
 interface PageBrowserMarker {
   function setPageBrowser($pb);
-  function parseTemplate($template, &$formatter, &$link, $pbConfId, $pbMarker = 'PAGEBROWSER');
+  function parseTemplate($template, &$formatter, $pbConfId, $pbMarker = 'PAGEBROWSER');
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_PageBrowser.php']) {
