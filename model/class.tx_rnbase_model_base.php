@@ -110,6 +110,7 @@ class tx_rnbase_model_base{
   	while (list($key,$val)=each($this->record))	{
   		$out .= $key. ' = ' . $val . "\n";
   	}
+    reset($this->record);
   	return $out; //t3lib_div::view_array($this->record);
   }
 }
