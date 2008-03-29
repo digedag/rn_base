@@ -42,10 +42,10 @@ abstract class tx_rnbase_action_BaseIOC {
   	if($errOut) return $errOut;
 
   	// View
-    $view = tx_div::makeInstance($this->getViewClassName());
+    $view = tx_div::makeInstance($this->getViewClassName($configurations));
     $view->setTemplatePath($configurations->getTemplatePath());
     // Das Template wird komplett angegeben
-    $tmplName = $this->getTemplateName();
+    $tmplName = $this->getTemplateName($configurations);
     if(!$tmplName || !strlen($tmplName))
     	tx_rnbase_util_Misc::mayday('No template name defined!');
     	
@@ -60,15 +60,17 @@ abstract class tx_rnbase_action_BaseIOC {
    * wird per Konvention auch auf ein per TS konfiguriertes HTML-Template
    * geprüft. Dessen Key wird aus dem Name und dem String "Template" 
    * gebildet: [tmpname]Template
+   * @param tx_rnbase_configurations $configurations
    * @return string
    */
-  protected abstract function getTemplateName();
+  protected abstract function getTemplateName(&$configurations);
 
   /**
    * Liefert den Namen der View-Klasse
+   * @param tx_rnbase_configurations $configurations
    * @return string
    */
-  protected abstract function getViewClassName();
+  protected abstract function getViewClassName(&$configurations);
   /**
    * Kindklassen führen ihr die eigentliche Arbeit durch. Zugriff auf das 
    * Backend und befüllen der viewdata 
