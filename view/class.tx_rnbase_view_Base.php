@@ -41,6 +41,66 @@ class tx_rnbase_view_Base{
   var $_pathToFile;
 
   /**
+   * Enter description here...
+   *
+   * @param string $view default name of view
+   * @param tx_rnbase_configurations $configurations
+   * @return unknown
+   */
+  function render($view, &$configurations){
+    $this->_init($configurations);
+    $cObj =& $configurations->getCObj(0);
+    $templateCode = $cObj->fileResource($this->getTemplate($view,'.html'));
+    if(!strlen($templateCode)) {
+    	tx_div::load('tx_rnbase_util_Misc');
+    	tx_rnbase_util_Misc::mayday('TEMPLATE NOT FOUND: ' . $this->getTemplate($view,'.html'));
+    }
+
+    // Die ViewData bereitstellen
+    $viewData =& $configurations->getViewData();
+    // Optional kann schon ein Subpart angegeben werden
+    if($this->getMainSubpart()) {
+    	$subpart = $this->getMainSubpart();
+    	$templateCode = $cObj->getSubpart($templateCode,$subpart);
+	    if(!strlen($templateCode)) {
+	    	tx_div::load('tx_rnbase_util_Misc');
+	    	tx_rnbase_util_Misc::mayday('SUBPART NOT FOUND: ' . $subpart);
+	    }
+    }
+    
+    $out = $this->createOutput($templateCode,$viewData, $configurations, $configurations->getFormatter());
+
+    return $out;
+  }
+
+  /**
+   * Entry point for child classes
+   *
+   * @param string $template
+   * @param array_object $viewData
+   * @param tx_rnbase_configurations $configurations
+   * @param tx_rnbase_util_FormatUtil $formatter
+   */
+  function createOutput($template, &$viewData, &$configurations, &$formatter) {
+  	
+  }
+  /**
+   * Kindklassen können hier einen Subpart-Marker angeben, der initial als Template
+   * verwendet wird. Es wird dann in createOutput nicht mehr das gesamte
+   * Template übergeben, sondern nur noch dieser Abschnitt. Außerdem wird sichergestellt,
+   * daß dieser Subpart im Template vorhanden ist.
+   *
+   * @return string like ###MY_MAIN_SUBPART### or false
+   */
+  function getMainSubpart() {return false;}
+  /**
+   * This method is called first.
+   *
+   * @param tx_rnbase_configurations $configurations
+   */
+  function _init(&$configurations) {}
+  
+  /**
    * Set the path of the template directory
    *
    *  You can make use the syntax  EXT:myextension/somepath.
@@ -89,17 +149,6 @@ class tx_rnbase_view_Base{
     return $path;
   }
 
-  /**
-   * Render the template
-   *
-   * Abstract function, to be adapted in child classes
-   *
-   * @param	string		name of template file
-   * @return	string		typically an (x)html string
-   */
-  function render($templateName){
-    return '<p>Abstract function: render()</p>';
-  }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/view/class.tx_rnbase_view_Base.php']) {
