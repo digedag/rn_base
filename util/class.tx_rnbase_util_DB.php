@@ -42,6 +42,7 @@ class tx_rnbase_util_DB {
    * @param $wrapperClass Name einer WrapperKlasse für jeden Datensatz
    * @param $limit = '' Limits number of results
    * @param $debug = 0 Set to 1 to debug sql-String
+   * @deprecated use tx_rnbase_util_DB::doSelect()
    */
   function queryDB($what, $from, $where, $groupBy = '', $orderBy = '', $wrapperClass = 0, $limit = '', $debug=0){
     $tableName = $from;
@@ -103,7 +104,9 @@ class tx_rnbase_util_DB {
    * @param $debug = 0 Set to 1 to debug sql-String
    */
   function doSelect($what, $from, $arr, $debug=0){
-    $tableName = $from;
+  	if($debug)
+  		$time = microtime(true);
+  	$tableName = $from;
     $fromClause = $from;
     if(is_array($from)){
       $tableName = $from[1];
@@ -158,7 +161,7 @@ class tx_rnbase_util_DB {
     }
     $GLOBALS['TYPO3_DB']->sql_free_result($res);
     if($debug)
-      t3lib_div::debug(count($rows),'Rows retrieved');
+      t3lib_div::debug(count($rows),'Rows retrieved. Time: ' . (microtime(true) - $time) . 's');
     return $rows;
 
   }
@@ -236,7 +239,74 @@ class tx_rnbase_util_DB {
 
 		return $rRes;
 	}
-  
+
+	/**
+	 * Generates a search where clause based on the input search words (AND operation - all search words must be found in record.)
+	 * Example: The $sw is "content management, system" (from an input form) and the $searchFieldList is "bodytext,header" then the output will be ' (bodytext LIKE "%content%" OR header LIKE "%content%") AND (bodytext LIKE "%management%" OR header LIKE "%management%") AND (bodytext LIKE "%system%" OR header LIKE "%system%")'
+	 *
+	 * METHOD FROM tslib_content
+	 * 
+	 * @param	string $sw		The search words. These will be separated by space and comma.
+	 * @param	string $searchFieldList		The fields to search in
+	 * @package string $operator  'LIKE' oder 'FIND_IN_SET'
+	 * @param	string $searchTable	The table name you search in (recommended for DBAL compliance. Will be prepended field names as well)
+	 * @return	string		The WHERE clause.
+	 */
+	static function searchWhere($sw,$searchFieldList,$operator='LIKE',$searchTable='')	{
+		$prefixTableName = $searchTable ? $searchTable.'.' : '';
+		$where = '';
+		if ($sw)	{
+			$searchFields = explode(',',$searchFieldList);
+			$kw = split('[ ,]',$sw);
+			if($operator == 'LIKE')
+				$where = self::_getSearchLike($kw, $searchFields, $searchTable);
+			elseif($operator == 'FIND_IN_SET_OR')
+				$where = self::_getSearchSetOr($kw, $searchFields, $searchTable);
+			
+		}
+		return $where;
+	}
+  static function _getSearchSetOr($kw, $searchFields, $searchTable) {
+  	// Hier werden alle Felder und Werte mit OR verbunden
+  	// (FIND_IN_SET(1, dwakag.themen)) AND (FIND_IN_SET(4, dwakag.themen))
+  	// (FIND_IN_SET(1, dwakag.themen) OR FIND_IN_SET(4, dwakag.themen))
+		$where = '';
+		$where_p = array();
+		while(list(,$val)=each($kw))	{
+			$val = trim($val);
+
+			$val = intval($val);
+			reset($searchFields);
+			while(list(,$field)=each($searchFields))	{
+				$where_p[] = 'FIND_IN_SET('.$val.', '.$prefixTableName.$field.')';
+			}
+
+		}
+		if (count($where_p))	{
+			$where.=' AND ('.implode(' OR ',$where_p).')';
+		}
+		return $where;
+  }
+	static function _getSearchLike($kw, $searchFields, $searchTable) {
+		global $TYPO3_DB;
+		$where = '';
+		while(list(,$val)=each($kw))	{
+			$val = trim($val);
+			$where_p = array();
+			if (strlen($val)>=2)	{
+				$val = $TYPO3_DB->escapeStrForLike($TYPO3_DB->quoteStr($val,$searchTable),$searchTable);
+				reset($searchFields);
+				while(list(,$field)=each($searchFields))	{
+					$where_p[] = $prefixTableName.$field.' LIKE \'%'.$val.'%\'';
+				}
+			}
+			if (count($where_p))	{
+				$where.=' AND ('.implode(' OR ',$where_p).')';
+			}
+		}
+		return $where;
+  }
+
 }
 
 function tx_rnbase_util_DB_prependAlias(&$item, $key, $alias) {
