@@ -65,6 +65,15 @@ class tx_rnbase_model_base{
     return 0;
   }
   /**
+   * Check if this record is valid. If false, the record is maybe deleted in database.
+   *
+   * @return boolean
+   */
+  function isValid() {
+  	return count($this->record) > 0;
+  }
+  
+  /**
    * Liefert bei Tabellen, die im $TCA definiert sind, die Namen der Tabellenspalten als Array.
    * @return Array mit Spaltennamen oder 0
    */
