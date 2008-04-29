@@ -44,6 +44,40 @@ class tx_rnbase_tests_configurations_testcase extends tx_phpunit_testcase {
     $this->assertEquals(100, $configurations->get('matchtable.match.limit'), 'Limit should be 100');
     $this->assertEquals(99, $configurations->get('matchtable.match.count'), 'count should be 99');
   }
+  /**
+   * Test flexform value with pointed keys.
+   *
+   */
+  function test_flexformSetup() {
+  	$GLOBALS['TSFE'] = new tx_rnbase_tsfeDummy();
+		$GLOBALS['TSFE']->tmpl->setup['lib.']['feuser.']['link'] = array('pid' => '10');
+  	
+		$flexXml = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?> <T3FlexForms>  <data>  <sheet index="sDEF">  <language index="lDEF">  <field index="action">  <value index="vDEF">tx_rnuserregister_actions_Login</value>  </field>  <field index="feuserPages">  <value index="vDEF"></value>  </field>  <field index="feuserPagesRecursive">  <value index="vDEF"></value>  </field>  </language>  </sheet>  <sheet index="s_loginbox">  <language index="lDEF">  <field index="view.loginbox.header">  <value index="vDEF">Welcome</value>  </field>  <field index="view.loginbox.message">  <value index="vDEF"></value>   </field>  <field index="listview.fegroup.link.pid">  <value index="vDEF">25</value>   </field> <field index="detailview.feuser.link.pid">  <value index="vDEF">35</value>   </field>  </language>  </sheet>  </data> </T3FlexForms>';
+		$configurationArray['template'] = 'test.html';
+		$configurationArray['view.']['dummy'] = '1';
+		$configurationArray['view.']['dummy.']['test'] = '1';
+		$configurationArray['view.']['loginbox.']['header.']['enable'] = '1';
+		$configurationArray['view.']['loginbox.']['header'] = 'Wrong Header';
+		$configurationArray['view.']['loginbox.']['message'] = 'Hello';
+		$configurationArray['listview.']['feuser'] = '< lib.feuser';
+		
+    $cObj = t3lib_div::makeInstance('tslib_cObj');
+    $cObj->data['pi_flexform'] = $flexXml;
+		$configurations = tx_div::makeInstance('tx_rnbase_configurations');
+    $configurations->init($configurationArray, $cObj, 'extkey_text', 'rntest');
+
+    $this->assertEquals('Welcome', $configurations->get('view.loginbox.header'), 'Header should be Welcome');
+    $this->assertEquals('Hello', $configurations->get('view.loginbox.message'), 'Message should be Hello');
+    $this->assertEquals('test.html', $configurations->get('template'), 'Template should be test.html');
+    $this->assertEquals('1', $configurations->get('view.dummy'), 'Dummy should be 1');
+
+    $pid = $configurations->get('listview.fegroup.link.pid');
+    $this->assertEquals('25', $pid, 'PID from flexform should be 25 but was: ' . $pid);
+    
+    $pid = $configurations->get('detailview.feuser.link.pid');
+    $this->assertEquals('35', $pid, 'PID from flexform should be 35 but was: ' . $pid);
+    
+  }
 }
 
 class tx_rnbase_tsfeDummy {

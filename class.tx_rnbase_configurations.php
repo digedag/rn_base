@@ -170,6 +170,7 @@ class tx_rnbase_configurations {
 
   /**
    * Returns the formatter connected to this configuration object
+   * @return tx_rnbase_util_FormatUtil
    */
   function &getFormatter() {
     return $this->_formatter;
@@ -330,6 +331,23 @@ class tx_rnbase_configurations {
      return $this->_queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey);
    }
 
+	/**
+	 * Finds a value either from config or in language markers. Please note, that all points are
+	 * replaced by underscores for language strings. This is, because TYPO3 doesn't like point 
+	 * notations for language keys.
+	 *
+	 * @param string $pathKey
+	 * @return mixed but should be a string
+	 */
+	function getCfgOrLL($pathKey) {
+		$ret = $this->_queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey);
+		if(!$ret) {
+			$pathKey = strtr($pathKey, '.', '_');
+			$ret = $this->getLL($pathKey);
+		}
+		return $ret;
+	}
+   
 	/**
 	 * Returns the requested value splitted as an array 
 	 *
@@ -521,6 +539,28 @@ class tx_rnbase_configurations {
 		}
 	}
 
+	function insertIntoDataArray($dataArr, $pathArray, $newValue) {
+		// Cancel Recursion on value level
+		if(count($pathArray) == 1) {
+			$dataArr[$pathArray[0]] = $newValue;
+			return $dataArr;
+		}
+		$ret = array();
+		if(!$dataArr)
+			$dataArr = array($pathArray[0] . '.' => '');
+		if(!array_key_exists($pathArray[0] . '.', $dataArr))
+			$dataArr[$pathArray[0] . '.'] = '';
+		foreach($dataArr As $key => $value) {
+			if($key == $pathArray[0] . '.') {
+				// Go deeper
+				$ret[$key] = $this->insertIntoDataArray($value, array_slice($pathArray, 1), $newValue);
+			}
+			else {
+				$ret[$key] = $value;
+			}
+		}
+		return $ret;
+	}
   /**
    * Load flexformdata into the object
    *
@@ -538,8 +578,6 @@ class tx_rnbase_configurations {
   function _setFlexForm($xmlOrArray) {
     $languagePointer = 'lDEF'; // we don't support languages here for now
     $valuePointer = 'vDEF';
-
-
     // also hardcoded here
     if (!$xmlOrArray) {
       return false;
@@ -548,20 +586,32 @@ class tx_rnbase_configurations {
     if (is_array($xmlOrArray)) {
       $array = $xmlOrArray;
     } else {
-      $array = t3lib_div::xml2array($xmlOrArray);
+    	$array = t3lib_div::xml2array($xmlOrArray);
     }
-    $data = $array['data'];
-    //
-    foreach((array) $data as $sheet => $languages) {
-      foreach((array) $languages[$languagePointer] as $key => $def) {
-//t3lib_div::debug($def[$valuePointer], 'bas_conf');
-        // Wir nehmen Flexformwerte nur, wenn sie sinnvolle Daten enthalten
-        // Sonst werden evt. vorhandenen Daten überschrieben
-        if(!(strlen($def[$valuePointer]) == 0 || $def[$valuePointer] == '0'))
-          $this->_dataStore->offsetSet($key, $def[$valuePointer]);
-      }
-    }
-  }
+		$data = $array['data'];
+		foreach((array) $data as $sheet => $languages) {
+			foreach((array) $languages[$languagePointer] as $key => $def) {
+				// Wir nehmen Flexformwerte nur, wenn sie sinnvolle Daten enthalten
+				// Sonst werden evt. vorhandenen Daten überschrieben
+				if(!(strlen($def[$valuePointer]) == 0 || $def[$valuePointer] == '0')) {
+					$pathArray = explode('.', trim($key));
+					if(count($pathArray) > 1) {
+						// Die Angabe im Flexform ist in Punktnotation
+						// Wir holen das Array im höchsten Knoten
+						$dataArr = $this->_dataStore->offsetGet($pathArray[0] . '.');
+						$newValue = $def[$valuePointer];
+						$newArr = $this->insertIntoDataArray($dataArr, array_slice($pathArray,1), $newValue);
+						$this->_dataStore->offsetSet($pathArray[0] . '.', $newArr);
+					}
+					else {
+						$this->_dataStore->offsetSet($key, $def[$valuePointer]);
+					}
+				}
+			}
+		}
+//if($pathArray[0] == 'listview')
+//t3lib_div::debug($this->_dataStore->array, 'tx_rnbase_configurations'); // TODO: Remove me!
+	}
 
   private function mergeTSReference($key, $conf) {
     $tsParser = t3lib_div::makeInstance('t3lib_TSparser');
