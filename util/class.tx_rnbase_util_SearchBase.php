@@ -36,6 +36,7 @@ define('OP_IN_SQL', 'IN SQL');
 define('OP_INSET_INT', 'FIND_IN_SET');
 define('OP_LIKE', 'LIKE');
 define('OP_EQ_INT', '=');
+define('OP_EQ_NOCASE', 'OP_EQ_NOCASE');
 define('OP_LT_INT', '<');
 define('OP_LTEQ_INT', '<=');
 define('OP_GT_INT', '>');
@@ -105,6 +106,16 @@ abstract class tx_rnbase_util_SearchBase {
   		list($tableAlias, $col) = explode('.', $field);
   		$tableAliases[$tableAlias][$col] = $data;
   	}
+  	// Prüfen, ob in orderby noch andere Tabellen liegen
+  	$orderbyArr = $options['orderby'];
+  	if(is_array($orderbyArr)) {
+  		$aliases = array_keys($orderbyArr);
+  		foreach($aliases As $alias) {
+  			list($tableAlias, $col) = explode('.', $alias);
+  			if(!array_key_exists($tableAlias, $tableAliases))
+  				$tableAliases[$tableAlias] = array();
+  		}
+  	}
   	if(is_array($joinedFields)) {
 			foreach ($joinedFields As $key => $joinedField) {
 	  		// Für die JOINED-Fields müssen die Tabellen gesetzt werden, damit der SQL-JOIN passt
@@ -148,7 +159,10 @@ abstract class tx_rnbase_util_SearchBase {
 	      		case OP_LTEQ_INT:
 	      			$where .= $this->tableMapping[$tableAlias].'.' . strtolower($col) . ' '.$operator.' ' . intval($value) . ' ';
 			  			break;
-	      		case OP_LIKE:
+	      		case OP_EQ_NOCASE:
+	      			$where .= 'lower('.$this->tableMapping[$tableAlias].'.' . strtolower($col) . ') = lower(\'' . $value . '\') ';
+			  			break;
+			  		case OP_LIKE:
 							// Stringvergleich mit LIKE
 		      		$where .= tx_rnbase_util_DB::searchWhere($value, strtolower($col), $this->tableMapping[$tableAlias]);
 		      		break;
@@ -185,7 +199,7 @@ abstract class tx_rnbase_util_SearchBase {
       $sqlOptions['enablefieldsoff'] = $options['enablefieldsoff'];
     if($options['groupby'])
       $sqlOptions['groupby'] = $options['groupby'];
-    if(is_array($options['orderby'])) {
+    if(!isset($options['count']) && is_array($options['orderby'])) {
     	// Aus dem Array einen String bauen
     	$orderby = array();
     	foreach ($options['orderby'] As $field => $order) {
@@ -268,7 +282,7 @@ abstract class tx_rnbase_util_SearchBase {
    * 
    * @param array $options
    * @param tx_rnbase_configurations $configurations
-   * @param string $confId Id der TS-Config z.B. myview.fields.
+   * @param string $confId Id der TS-Config z.B. myview.options.
    */
   static function setConfigOptions(&$options, &$configurations, $confId) {
   	$cfgOptions = $configurations->get($confId);
@@ -341,7 +355,31 @@ abstract class tx_rnbase_util_SearchBase {
   	self::setConfigFieldsByArray($fields, $cfgFields);
   }
 
-
+  /**
+   * Checks existence of search field in parameters and configuration and adds it to fieldarray.
+   *
+   * @param string $idstr
+   * @param array $fields
+   * @param arrayObject $parameters
+   * @param tx_rnbase_configurations $configurations
+   * @param string $operator
+   */
+  function setField($idstr, &$fields, &$parameters, &$configurations, $operator = OP_LIKE) {
+  	if(!isset($fields[$idstr][$operator]) && $parameters->offsetGet($idstr)) {
+  		$fields[$idstr][$operator] = $parameters->offsetGet($idstr);
+  		// Parameter als KeepVar merken
+  		$configurations->addKeepVar($configurations->createParamName($idstr),$fields[$idstr]);
+  	}
+  }
+  function getSpecialChars() {
+  	$specials['0-9'] = array('1','2','3','4','5','6','7','8','9','0','.','@','');
+  	$specials['A'] = array('A','Ä');
+  	$specials['O'] = array('O','Ö');
+  	$specials['U'] = array('U','Ü');
+  	return $specials;
+  }
+  
+  
 }
 
 
