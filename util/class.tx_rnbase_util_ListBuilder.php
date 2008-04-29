@@ -75,7 +75,7 @@ class tx_rnbase_util_ListBuilder {
     	
     	$templateEntry = $cObj->getSubpart($templateList,'###'.$marker.'###');
 	    $out = $listMarker->render($dataArr, $templateEntry, $markerClassname, 
-	    	$confId, $marker, $formatter);
+	    	$confId, $marker, $formatter, $markerParams);
     	$subpartArray['###'.$marker.'###'] = $out;
 	    // Das Menu für den PageBrowser einsetzen
 	    $pageBrowser =& $viewData->offsetGet('pagebrowser');
