@@ -27,7 +27,57 @@
  */
 class tx_rnbase_util_Misc {
 
+	/**
+	 * Returns a service
+	 * Mayday is raised if service not found.
+	 *
+	 * @param string $type
+	 * @param string $subType
+	 * @return t3lib_svbase
+	 */
+	static function getService($type, $subType) {
+    $srv = t3lib_div::makeInstanceService($type, $subType);
+    if(!is_object($srv)) {
+    	tx_div::load('tx_rnbase_util_Misc');
+      return self::mayday('Service ' . $type . ' - ' . $subType . ' not found!');;
+    }
+    return $srv;
+	}
+	/**
+	 * Returns an array with all subtypes for given service key.
+	 *
+	 * @param string $type
+	 */
+	static function lookupServices($serviceType) {
+		global $T3_SERVICES;
+		$priority = array(); // Remember highest priority
+		$services = array();
+		if(is_array($T3_SERVICES[$serviceType])) {
+			foreach($T3_SERVICES[$serviceType] As $key => $info) {
+				if($info['available'] AND (!isset($priority[$info['subtype']]) || $info['priority'] >= $priority[$info['subtype']]) ) {
+					$priority[$info['subtype']] = $info['priority'];
+					$services[$info['subtype']] = $info;
+				}
+			}
+		}
+		return $services;
+	}
 
+	/**
+	 * Calls a hook
+	 *
+	 * @param string $extKey
+	 * @param string $hookKey
+	 * @param array $params
+	 */
+	function callHook($extKey, $hookKey, $params) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extKey][$hookKey])) {
+			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extKey][$hookKey] as $funcRef) {
+				t3lib_div::callUserFunction($funcRef, $params, $this);
+			}
+		}
+	}
+		
 	/**
 	 * Stops PHP execution : die() if some critical error appeared
    * This method is taken from the great ameos_formidable extension.
