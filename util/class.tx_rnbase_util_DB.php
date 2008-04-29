@@ -164,7 +164,48 @@ class tx_rnbase_util_DB {
       t3lib_div::debug(count($rows),'Rows retrieved. Time: ' . (microtime(true) - $time) . 's');
     return $rows;
 
-  }
+	}
+	function doInsert($tablename, $values, $debug=0) {
+		if($debug) {
+			$sql = $GLOBALS['TYPO3_DB']->INSERTquery($tablename,$values);
+			t3lib_div::debug($sql, 'SQL');
+			t3lib_div::debug(array($tablename,$values));
+		}
+		self::watchOutDB(
+			$GLOBALS['TYPO3_DB']->exec_INSERTquery(
+				$tablename,
+				$values
+			)
+		);
+		return $GLOBALS['TYPO3_DB']->sql_insert_id();
+	}
+	function doUpdate($tablename, $where, $values, $debug=0) {
+		if($debug) {
+			$sql = $GLOBALS['TYPO3_DB']->UPDATEquery($tablename,$where,$values);
+			t3lib_div::debug($sql, 'SQL');
+			t3lib_div::debug(array($tablename,$where,$values));
+		}
+		self::watchOutDB(
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+				$tablename,
+				$where,
+				$values
+			)
+		);
+	}
+	function doDelete($tablename, $where, $debug=0) {
+		if($debug) {
+			$sql = $GLOBALS['TYPO3_DB']->DELETEquery($tablename,$where);
+			t3lib_div::debug($sql, 'SQL');
+			t3lib_div::debug(array($tablename,$where));
+    }
+		self::watchOutDB(
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery(
+				$tablename,
+				$where
+			)
+		);
+	}
 
   /**
    * Returns an array with column names of a TCA defined table.
@@ -307,6 +348,30 @@ class tx_rnbase_util_DB {
 		return $where;
   }
 
+	/**
+	 * Format a MySQL-DATE (ISO-Date) into mm-dd-YYYY.
+	 *
+	 * @param string $date Format: yyyy-mm-dd
+	 * @return string Format mm-dd-YYYY or empty string, if $date is not valid
+	 */
+  static function date_mysql2mdY($date) {
+		if(strlen($date) < 2)
+			return '';
+		list($year, $month, $day) = explode('-', $date);
+		return sprintf("%02d%02d%04d", $day, $month, $year);
+  }
+
+	/**
+	 * Format a MySQL-DATE (ISO-Date) into dd-mm-YYYY.
+	 * @param string $date Format: yyyy-mm-dd
+	 * @return string Format dd-mm-yyyy or empty string, if $date is not valid
+	 */
+	static function date_mysql2dmY($date) {
+		if(strlen($date) < 2)
+			return '';
+		list($year, $month, $day) = explode('-', $date);
+		return sprintf("%02d-%02d-%04d", $day, $month, $year);
+	}
 }
 
 function tx_rnbase_util_DB_prependAlias(&$item, $key, $alias) {
