@@ -112,8 +112,7 @@ class tx_rnbase_util_BaseMarker {
    * @param string $marker
    * @param array $parameterArr
    */
-  protected function initLink(&$markerArray, &$subpartArray, &$wrappedSubpartArray, $formatter, $confId, $linkId, $marker, $parameterArr) {
-  	$noLink = array('', '');
+  public function initLink(&$markerArray, &$subpartArray, &$wrappedSubpartArray, $formatter, $confId, $linkId, $marker, $parameterArr) {
 //  	$linkObj = $this->getLinkInstance($formatter->configurations);
   	$linkObj =& $formatter->configurations->createLink();
     $token = md5(microtime());
@@ -141,10 +140,24 @@ class tx_rnbase_util_BaseMarker {
     	$markerArray['###'.$linkMarker . 'URL###'] = $linkObj->makeUrl();
   	}
   	else {
-    	$wrappedSubpartArray['###'.$linkMarker . '###'] = $noLink;
-  		$markerArray['###'.$linkMarker . '_URL###'] = '';
+  		self::disableLink($markerArray, $subpartArray, $wrappedSubpartArray, $linkMarker, false);
+//    	$wrappedSubpartArray['###'.$linkMarker . '###'] = $noLink;
+//  		$markerArray['###'.$linkMarker . '_URL###'] = '';
   	}
-  }
+	}
+	/**
+	 * Remove Link-Markers
+	 *
+	 * @param string $linkMarker
+	 * @param boolean $remove true removes the link with label
+	 */
+	protected function disableLink(&$markerArray, &$subpartArray, &$wrappedSubpartArray, $linkMarker, $remove) {
+  	if($remove)
+			$subpartArray['###'.$linkMarker . '###'] = '';
+  	else
+			$wrappedSubpartArray['###'.$linkMarker . '###'] = array('', '');
+		$markerArray['###'.$linkMarker . '_URL###'] = '';
+	}
 
   /**
    * Den PageBrowser in ein Template integrieren
@@ -196,7 +209,29 @@ class tx_rnbase_util_BaseMarker {
 		}
 		return self::$emptyObjects[$classname];
 	}
-  
+
+	public static function findMarkers($template) {
+		preg_match_all('!\<\!--[a-zA-Z0-9 ]*###([A-Z0-9_-|]*)\###[a-zA-Z0-9 ]*-->!is', $template, $match);
+		return array_unique($match[1]);
+	}
+	
+	public static function callModuleMarker($template, &$subpartArray, &$params, &$formatter) {
+		$allMarkers = self::findMarkers($template);
+t3lib_div::debug($template, 'tx_rnbase_util_BaseMarker'); // TODO: Remove me!
+t3lib_div::debug($allMarkers, 'tx_rnbase_util_BaseMarker'); // TODO: Remove me!
+		foreach ($allMarkers as $marker) {
+			switch ($marker) {
+				default :
+					if (preg_match('/MARKERMODULE__([A-Z0-9_-])*/', $marker)) {
+						$module = t3lib_div :: makeInstanceService('markermodule',substr($marker, 14));
+						if (is_object($module)) {
+							$subpartArray['###' . $marker . '###'] = $module->parseTemplate($template, $params, $formatter);
+						}
+					}
+					break;
+			}
+		}
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_BaseMarker.php']) {
