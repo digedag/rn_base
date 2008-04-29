@@ -59,8 +59,8 @@ class tx_rnbase_view_Base{
     // Die ViewData bereitstellen
     $viewData =& $configurations->getViewData();
     // Optional kann schon ein Subpart angegeben werden
-    if($this->getMainSubpart()) {
-    	$subpart = $this->getMainSubpart();
+    if($this->getMainSubpart($viewData)) {
+    	$subpart = $this->getMainSubpart($viewData);
     	$templateCode = $cObj->getSubpart($templateCode,$subpart);
 	    if(!strlen($templateCode)) {
 	    	tx_div::load('tx_rnbase_util_Misc');
@@ -92,7 +92,7 @@ class tx_rnbase_view_Base{
    *
    * @return string like ###MY_MAIN_SUBPART### or false
    */
-  function getMainSubpart() {return false;}
+  function getMainSubpart(&$viewData) {return false;}
   /**
    * This method is called first.
    *
