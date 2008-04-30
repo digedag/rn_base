@@ -190,32 +190,34 @@ abstract class tx_rnbase_util_SearchBase {
   		$where .= ' AND ' . $customFields;
   	}
   	
-    $sqlOptions['where'] = $where;
-    if($options['limit'])
-      $sqlOptions['limit'] = $options['limit'];
-    if($options['offset'])
-      $sqlOptions['offset'] = $options['offset'];
-    if($options['enablefieldsoff'])
-      $sqlOptions['enablefieldsoff'] = $options['enablefieldsoff'];
-    if($options['groupby'])
-      $sqlOptions['groupby'] = $options['groupby'];
-    if(!isset($options['count']) && is_array($options['orderby'])) {
-    	// Aus dem Array einen String bauen
-    	$orderby = array();
-    	foreach ($options['orderby'] As $field => $order) {
-  			list($tableAlias, $col) = explode('.', $field);
+		$sqlOptions['where'] = $where;
+		if($options['pidlist'])
+			$sqlOptions['pidlist'] = $options['pidlist'];
+		if($options['recursive'])
+			$sqlOptions['recursive'] = $options['recursive'];
+		if($options['limit'])
+			$sqlOptions['limit'] = $options['limit'];
+		if($options['offset'])
+			$sqlOptions['offset'] = $options['offset'];
+		if($options['enablefieldsoff'])
+			$sqlOptions['enablefieldsoff'] = $options['enablefieldsoff'];
+		if($options['groupby'])
+			$sqlOptions['groupby'] = $options['groupby'];
+		if(!isset($options['count']) && is_array($options['orderby'])) {
+			// Aus dem Array einen String bauen
+			$orderby = array();
+			foreach ($options['orderby'] As $field => $order) {
+				list($tableAlias, $col) = explode('.', $field);
 				$orderby[] = $this->tableMapping[$tableAlias].'.' . strtolower($col) . ' ' . ( strtoupper($order) == 'DESC' ? 'DESC' : 'ASC');
-    	}
-      $sqlOptions['orderby'] = implode(',', $orderby);
-    }
-    if(!(isset($options['count']) || isset($options['what']) || isset($options['groupby']) ))
-  		$sqlOptions['wrapperclass'] = $this->getWrapperClass();;
+			}
+			$sqlOptions['orderby'] = implode(',', $orderby);
+		}
+		if(!(isset($options['count']) || isset($options['what']) || isset($options['groupby']) ))
+			$sqlOptions['wrapperclass'] = $this->getWrapperClass();
 
-  	$result = tx_rnbase_util_DB::doSelect($what, $from, $sqlOptions, $options['debug'] ? 1 : 0);
-    
-    return isset($options['count']) ? $result[0]['cnt'] : $result;
-    
-  }
+		$result = tx_rnbase_util_DB::doSelect($what, $from, $sqlOptions, $options['debug'] ? 1 : 0);
+		return isset($options['count']) ? $result[0]['cnt'] : $result;
+	}
 
   private function _initSearch() {
   	if(!is_array($this->tableMapping)) {
