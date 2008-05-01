@@ -36,6 +36,7 @@ define('OP_IN_SQL', 'IN SQL');
 define('OP_INSET_INT', 'FIND_IN_SET');
 define('OP_LIKE', 'LIKE');
 define('OP_EQ_INT', '=');
+define('OP_NOTEQ_INT', '!=');
 define('OP_EQ_NOCASE', 'OP_EQ_NOCASE');
 define('OP_LT_INT', '<');
 define('OP_LTEQ_INT', '<=');
@@ -153,6 +154,7 @@ abstract class tx_rnbase_util_SearchBase {
 			  			$where .= ' FIND_IN_SET(' . $value . ', '.$this->tableMapping[$tableAlias].'.' . strtolower($col).')';
 			  			break;
 			  		case OP_EQ_INT:
+			  		case OP_NOTEQ_INT:
 			  		case OP_GT_INT:
 			  		case OP_LT_INT:
 			  		case OP_GTEQ_INT:
