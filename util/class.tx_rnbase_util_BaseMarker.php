@@ -214,7 +214,19 @@ class tx_rnbase_util_BaseMarker {
 	 *
 	 * @param tx_rnbase_util_FormatUtil $formatter 
 	 */
-	public static function callModuleMarkers($template, &$markerArray, &$params, &$formatter) {
+	public static function callModules($template, &$markerArray, &$subpartArray, &$wrappedSubpartArray, &$params, &$formatter) {
+		self::callModuleSubparts($template, $subpartArray, $wrappedSubpartArray, $params, $formatter);
+		self::callModuleMarkers($template, $markerArray, $params, $formatter);
+	}
+	/**
+	 * Call services for single markers
+	 * 
+	 * @param string $template
+	 * @param array $markerArray
+	 * @param array $params
+	 * @param tx_rnbase_util_FormatUtil $formatter 
+	 */
+	protected static function callModuleMarkers($template, &$markerArray, &$params, &$formatter) {
 		preg_match_all('!\<\!--[a-zA-Z0-9 ]*###([A-Z0-9_-|]*)\###[a-zA-Z0-9 ]*-->!is', $template, $match);
 		$allMarkers = array_unique($match[1]);
 		preg_match_all('!\###([A-Z0-9_-|]*)\###!is', $template, $match);
@@ -222,14 +234,10 @@ class tx_rnbase_util_BaseMarker {
 		$allSingleMarkers = array_diff($allSingleMarkers, $allMarkers);
 		foreach ($allSingleMarkers as $marker) {
 			if (preg_match('/MARKERMODULE__([A-Z0-9_-])*/', $marker)) {
-				$module = t3lib_div :: makeInstanceService('markermodule',substr($marker, 14));
+				$module = t3lib_div::makeInstanceService('markermodule',substr($marker, 14));
 				if (is_object($module)) {
 					$subTemplate = $formatter->cObj->getSubpart($template,'###'.$marker.'###');
-					$subpart = $module->parseTemplate($subTemplate, $params, $formatter);
-					if(is_array($subpart))
-						$wrappedSubpartArray['###' . $marker . '###'] = $subpart;
-					else
-						$subpartArray['###' . $marker . '###'] = $subpart;
+					$markerArray['###' . $marker . '###'] = $module->getMarkerValue($params, $formatter);
 				}
 			}
 			elseif(preg_match('/LABEL_.*/',$marker)) {
@@ -238,7 +246,7 @@ class tx_rnbase_util_BaseMarker {
 		}
 	}
 
-	public static function callModuleSubparts($template, &$subpartArray, &$wrappedSubpartArray, &$params, &$formatter) {
+	protected static function callModuleSubparts($template, &$subpartArray, &$wrappedSubpartArray, &$params, &$formatter) {
 		preg_match_all('!\<\!--[a-zA-Z0-9 ]*###([A-Z0-9_-|]*)\###[a-zA-Z0-9 ]*-->!is', $template, $match);
 		$allMarkers = array_unique($match[1]);
 		foreach ($allMarkers as $marker) {
