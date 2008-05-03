@@ -82,30 +82,30 @@ class tx_rnbase_util_Calendar {
 //t3lib_div::debug($this->_time, 'add() utl_cal');
   }
 
-  /**
-   * Clears the value in the given time field.
-   */
-  function clear($field = 0) {
-    if($field == 0) {
-      $this->_time = 0;
-      return;
-    }
+	/**
+	 * Clears the value in the given time field.
+	 */
+	function clear($field = 0) {
+		if($field == 0) {
+			$this->_time = 0;
+			return;
+		}
 
-    $date = getdate($this->_time);
-    $date[$this->_clearHash[$field]] = 0;
-    $this->_time = $this->_mktime($date);
-  }
+		$date = getdate($this->_time);
+		$date[$this->_clearHash[$field]] = 0;
+		$this->_time = $this->_mktime($date);
+	}
 
-  /**
-   * Erstellt den Timestamp aus dem Datumsarray
-   */
-  function _mktime($dateArr) {
-    return mktime($dateArr['hours'], $dateArr['minutes'], $dateArr['seconds'], 
-                          $dateArr['mon'], $dateArr['mday'], $dateArr['year']);
-  }
+	/**
+	 * Erstellt den Timestamp aus dem Datumsarray
+	 */
+	function _mktime($dateArr) {
+		return mktime($dateArr['hours'], $dateArr['minutes'], $dateArr['seconds'],
+									$dateArr['mon'], $dateArr['mday'], $dateArr['year']);
+	}
 
-  function _init() {
-    $this->_seconds = array( CALENDAR_SECOND => 1, 
+	function _init() {
+		$this->_seconds = array( CALENDAR_SECOND => 1, 
                              CALENDAR_MINUTE => 60,
                              CALENDAR_HOUR => 60 * 60,
                              CALENDAR_DAY_OF_MONTH => 86400,
@@ -113,7 +113,7 @@ class tx_rnbase_util_Calendar {
                              CALENDAR_WEEK_OF_MONTH => 86400 * 7,
                              CALENDAR_WEEK_OF_YEAR => 86400 * 7 );
 
-    $this->_clearHash = array( CALENDAR_SECOND => 'seconds', 
+		$this->_clearHash = array( CALENDAR_SECOND => 'seconds', 
                              CALENDAR_MINUTE => 'minutes',
                              CALENDAR_HOUR => 'hours',
                              CALENDAR_DAY_OF_MONTH => 'mday',
@@ -121,36 +121,10 @@ class tx_rnbase_util_Calendar {
                              CALENDAR_MONTH => 'mon',
                              CALENDAR_YEAR => 'year' );
 
-  }
-  function _getSeconds($field) {
-    return $this->_seconds[$field];
-  }
-
-  function tests() {
-    $cal = new tx_rnbase_util_Calendar();
-    $cal->setTime(mkTime(20,0,0,1,1,2005));
-
-    tx_rnbase_util_Calendar::assertEquals($cal->getTime(), 1104606000, 'Zeit falsch');
-    tx_rnbase_util_Calendar::assertEquals(strftime('%d.%m.%Y %H:%M:%S', $cal->getTime()), '01.01.2005 20:00:00', 'Zeit falsch');
-
-    $cal->clear(CALENDAR_HOUR);
-    tx_rnbase_util_Calendar::assertEquals(strftime('%d.%m.%Y %H:%M:%S', $cal->getTime()), '01.01.2005 00:00:00', 'Zeit falsch');
-    $cal->add(CALENDAR_MONTH, -1);
-    tx_rnbase_util_Calendar::assertEquals(strftime('%d.%m.%Y %H:%M:%S', $cal->getTime()), '01.12.2004 00:00:00', 'Zeit falsch');
-
-    $cal->add(CALENDAR_YEAR, 3);
-    tx_rnbase_util_Calendar::assertEquals(strftime('%d.%m.%Y %H:%M:%S', $cal->getTime()), '01.12.2007 00:00:00', 'Zeit falsch');
-
-    $cal->add(CALENDAR_DAY_OF_MONTH, -1);
-    tx_rnbase_util_Calendar::assertEquals(strftime('%d.%m.%Y %H:%M:%S', $cal->getTime()), '30.11.2007 00:00:00', 'Zeit falsch, ADD DAY_OF_MONTH');
-
-  }
-
-  function assertEquals($value, $expected, $msg='') {
-    if($value != $expected) {
-      t3lib_div::debug('Expected: -' . $expected . '- but was: -' . $value . '-', 'ERROR ' .$msg . ' utl_cal');
-    }
-  }
+	}
+	function _getSeconds($field) {
+		return $this->_seconds[$field];
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Calendar.php']) {
