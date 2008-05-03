@@ -240,7 +240,9 @@ class tx_rnbase_util_BaseMarker {
 				$module = t3lib_div::makeInstanceService('markermodule',substr($marker, 14));
 				if (is_object($module)) {
 					$subTemplate = $formatter->cObj->getSubpart($template,'###'.$marker.'###');
-					$markerArray['###' . $marker . '###'] = $module->getMarkerValue($params, $formatter);
+					$value = $module->getMarkerValue($params, $formatter);
+					if($value !== false)
+						$markerArray['###' . $marker . '###'] =  $value;
 				}
 			}
 			elseif(preg_match('/LABEL_.*/',$marker)) {
