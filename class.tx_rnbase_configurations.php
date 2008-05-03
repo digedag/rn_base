@@ -86,6 +86,7 @@ class tx_rnbase_configurations {
   var $_viewData;
   var $_keepVars;
   var $_qualifier;
+  var $pluginUid; // Die UID des Plugins (also des Content-Objekts)
   var $cObj; // Das originale cObj des Plugins
   var $_cObjs; // Container für alternative cObjs innerhalb des Plugins
   var $_LLkey='default'; // language to use
@@ -118,6 +119,7 @@ class tx_rnbase_configurations {
     // keep the cObj
     $this->cObj = $cObj;
     $this->cObjs[0] = $this->cObj;
+    $this->pluginUid = $this->cObj->data['uid'];
 
     // make the data of the cObj available
     $this->_setCObjectData($cObj->data);
@@ -148,6 +150,14 @@ class tx_rnbase_configurations {
   // Getters
   // -------------------------------------------------------------------------------------
 
+  /**
+   * Returns the uid of current content object in tt_content
+   *
+   * @return int
+   */
+  function getPluginId() {
+  	return $this->pluginUid;
+  }
   /**
    * Create your individuell instance of cObj. For each id only one instance is created.
    * If id == 0 the will get the plugins original cOBj.
@@ -593,7 +603,7 @@ class tx_rnbase_configurations {
 			foreach((array) $languages[$languagePointer] as $key => $def) {
 				// Wir nehmen Flexformwerte nur, wenn sie sinnvolle Daten enthalten
 				// Sonst werden evt. vorhandenen Daten überschrieben
-				if(!(strlen($def[$valuePointer]) == 0 || $def[$valuePointer] == '0')) {
+				if(!(strlen($def[$valuePointer]) == 0 )) { // || $def[$valuePointer] == '0')
 					$pathArray = explode('.', trim($key));
 					if(count($pathArray) > 1) {
 						// Die Angabe im Flexform ist in Punktnotation
