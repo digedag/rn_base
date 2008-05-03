@@ -293,43 +293,59 @@ class tx_rnbase_util_DB {
 	 * @param	string $searchTable	The table name you search in (recommended for DBAL compliance. Will be prepended field names as well)
 	 * @return	string		The WHERE clause.
 	 */
-	static function searchWhere($sw,$searchFieldList,$operator='LIKE',$searchTable='')	{
-		$prefixTableName = $searchTable ? $searchTable.'.' : '';
+	static function searchWhere($sw,$searchFieldList,$operator='LIKE')	{
 		$where = '';
 		if ($sw)	{
 			$searchFields = explode(',',$searchFieldList);
 			$kw = split('[ ,]',$sw);
 			if($operator == 'LIKE')
-				$where = self::_getSearchLike($kw, $searchFields, $searchTable);
+				$where = self::_getSearchLike($kw, $searchFields);
 			elseif($operator == 'FIND_IN_SET_OR')
-				$where = self::_getSearchSetOr($kw, $searchFields, $searchTable);
+				$where = self::_getSearchSetOr($kw, $searchFields);
+			else
+				$where = self::_getSearchOr($kw, $searchFields, $operator);
 			
 		}
 		return $where;
 	}
-  static function _getSearchSetOr($kw, $searchFields, $searchTable) {
-  	// Hier werden alle Felder und Werte mit OR verbunden
-  	// (FIND_IN_SET(1, dwakag.themen)) AND (FIND_IN_SET(4, dwakag.themen))
-  	// (FIND_IN_SET(1, dwakag.themen) OR FIND_IN_SET(4, dwakag.themen))
+	static function _getSearchOr($kw, $searchFields, $operator) {
 		$where = '';
 		$where_p = array();
 		while(list(,$val)=each($kw))	{
-			$val = trim($val);
-
-			$val = intval($val);
 			reset($searchFields);
 			while(list(,$field)=each($searchFields))	{
-				$where_p[] = 'FIND_IN_SET('.$val.', '.$prefixTableName.$field.')';
+	  		list($tableAlias, $col) = explode('.', $field); // Split alias and column
+				$where_p[] = self::setSingleWhereField($tableAlias, $operator, $col, $val);
+//				$where_p[] = $field.' ' . $operator . ' \'%'.$val.'%\'';
+//				$where_p[] = 'FIND_IN_SET('.$val.', '.$prefixTableName.$field.')';
 			}
-
 		}
 		if (count($where_p))	{
 			$where.=' AND ('.implode(' OR ',$where_p).')';
 		}
 		return $where;
-  }
-	static function _getSearchLike($kw, $searchFields, $searchTable) {
+	}
+	static function _getSearchSetOr($kw, $searchFields) {
+		// Hier werden alle Felder und Werte mit OR verbunden
+		// (FIND_IN_SET(1, match.player)) AND (FIND_IN_SET(4, match.player))
+		// (FIND_IN_SET(1, match.player) OR FIND_IN_SET(4, match.player))
+		$where = '';
+		$where_p = array();
+		while(list(,$val)=each($kw))	{
+			$val = intval(trim($val));
+			reset($searchFields);
+			while(list(,$field)=each($searchFields))	{
+				$where_p[] = 'FIND_IN_SET('.$val.', '.$field.')';
+			}
+		}
+		if (count($where_p))	{
+			$where.=' AND ('.implode(' OR ',$where_p).')';
+		}
+		return $where;
+	}
+	static function _getSearchLike($kw, $searchFields) {
 		global $TYPO3_DB;
+		$searchTable = ''; // TODO Check if possible to delete
 		$where = '';
 		while(list(,$val)=each($kw))	{
 			$val = trim($val);
@@ -338,7 +354,7 @@ class tx_rnbase_util_DB {
 				$val = $TYPO3_DB->escapeStrForLike($TYPO3_DB->quoteStr($val,$searchTable),$searchTable);
 				reset($searchFields);
 				while(list(,$field)=each($searchFields))	{
-					$where_p[] = $prefixTableName.$field.' LIKE \'%'.$val.'%\'';
+					$where_p[] = $field.' LIKE \'%'.$val.'%\'';
 				}
 			}
 			if (count($where_p))	{
@@ -347,7 +363,56 @@ class tx_rnbase_util_DB {
 		}
 		return $where;
   }
-
+	/**
+	 * Build a single where clause. This is a compare of a column to a value with a given operator.
+	 * Based on the operator the string is hopefully correctly build. It is up to the client to 
+	 * connect these single clauses with boolean operator for a complete where clause.
+	 *
+	 * @param string $tableAlias database tablename or alias 
+	 * @param string $operator operator constant
+	 * @param string $col name of column
+	 * @param string $value value to compare to
+	 */
+	static function setSingleWhereField($tableAlias, $operator, $col, $value) {
+		$where = '';
+		switch ($operator) {
+			case OP_NOTIN_INT:
+			case OP_IN_INT:
+				$value = implode(',', t3lib_div::intExplode(',', $value));
+				$where .= $tableAlias.'.' . strtolower($col) . ' '.$operator.' (' . $value . ')';
+				break;
+			case OP_IN:
+				$value = implode('\',\'', t3lib_div::trimExplode(',', $value));
+				$where .= $tableAlias.'.' . strtolower($col) . ' IN (\'' . $value . '\')';
+				break;
+			case OP_IN_SQL:
+				$where .= $tableAlias.'.' . strtolower($col) . ' IN (' . $value . ')';
+				break;
+			case OP_INSET_INT:
+				$where .= ' FIND_IN_SET(' . $value . ', '.$tableAlias.'.' . strtolower($col).')';
+				break;
+			case OP_EQ_INT:
+			case OP_NOTEQ_INT:
+			case OP_GT_INT:
+			case OP_LT_INT:
+			case OP_GTEQ_INT:
+			case OP_LTEQ_INT:
+				$where .= $tableAlias.'.' . strtolower($col) . ' '.$operator.' ' . intval($value) . ' ';
+				break;
+			case OP_EQ_NOCASE:
+				$where .= 'lower('.$tableAlias.'.' . strtolower($col) . ') = lower(\'' . $value . '\') ';
+				break;
+			case OP_LIKE:
+				// Stringvergleich mit LIKE
+				$where .= self::searchWhere($value, strtolower($tableAlias.'.'.$col));
+				break;
+			default:
+				tx_div::load('tx_rnbase_util_misc');
+				tx_rnbase_util_misc::mayday('Unknown Operator for comparation defined: ' . $operator);
+		}
+		return $where;
+	}
+  
 	/**
 	 * Format a MySQL-DATE (ISO-Date) into mm-dd-YYYY.
 	 *

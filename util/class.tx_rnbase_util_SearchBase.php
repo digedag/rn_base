@@ -118,8 +118,9 @@ abstract class tx_rnbase_util_SearchBase {
   		}
   	}
   	if(is_array($joinedFields)) {
+  		reset($joinedFields);
 			foreach ($joinedFields As $key => $joinedField) {
-	  		// Für die JOINED-Fields müssen die Tabellen gesetzt werden, damit der SQL-JOIN passt
+				// Für die JOINED-Fields müssen die Tabellen gesetzt werden, damit der SQL-JOIN passt
 	  		foreach($joinedField['cols'] AS $field) {
 	  			list($tableAlias, $col) = explode('.', $field);
 	  			if(!isset($tableAliases[$tableAlias]))
@@ -136,42 +137,8 @@ abstract class tx_rnbase_util_SearchBase {
     foreach($tableAliases AS $tableAlias => $colData) {
   		foreach($colData As $col => $data) {
   			foreach ($data As $operator => $value) {
-	      	if(strlen($where) >0) $where .= ' AND ';
-	      	switch ($operator) {
-	      		case OP_NOTIN_INT:
-	      		case OP_IN_INT:
-	      			$value = implode(',', t3lib_div::intExplode(',', $value));
-			  			$where .= $this->tableMapping[$tableAlias].'.' . strtolower($col) . ' '.$operator.' (' . $value . ')';
-			  			break;
-	      		case OP_IN:
-		      		$value = implode('\',\'', t3lib_div::trimExplode(',', $value));
-			  			$where .= $this->tableMapping[$tableAlias].'.' . strtolower($col) . ' IN (\'' . $value . '\')';
-			  			break;
-	      		case OP_IN_SQL:
-			  			$where .= $this->tableMapping[$tableAlias].'.' . strtolower($col) . ' IN (' . $value . ')';
-			  			break;
-			  		case OP_INSET_INT:
-			  			$where .= ' FIND_IN_SET(' . $value . ', '.$this->tableMapping[$tableAlias].'.' . strtolower($col).')';
-			  			break;
-			  		case OP_EQ_INT:
-			  		case OP_NOTEQ_INT:
-			  		case OP_GT_INT:
-			  		case OP_LT_INT:
-			  		case OP_GTEQ_INT:
-	      		case OP_LTEQ_INT:
-	      			$where .= $this->tableMapping[$tableAlias].'.' . strtolower($col) . ' '.$operator.' ' . intval($value) . ' ';
-			  			break;
-	      		case OP_EQ_NOCASE:
-	      			$where .= 'lower('.$this->tableMapping[$tableAlias].'.' . strtolower($col) . ') = lower(\'' . $value . '\') ';
-			  			break;
-			  		case OP_LIKE:
-							// Stringvergleich mit LIKE
-		      		$where .= tx_rnbase_util_DB::searchWhere($value, strtolower($col), $this->tableMapping[$tableAlias]);
-		      		break;
-			  		default:
-			  			tx_div::load('tx_rnbase_util_misc');
-			  			tx_rnbase_util_misc::mayday('Unknown Operator for comparation defined: ' . $operator);
-	      	}
+					if(strlen($where) >0) $where .= ' AND ';
+					$where .= tx_rnbase_util_DB::setSingleWhereField($this->tableMapping[$tableAlias], $operator, $col, $value);
   			}
   		}
     }
@@ -183,7 +150,7 @@ abstract class tx_rnbase_util_SearchBase {
 	   			$addWhere = tx_rnbase_util_DB::searchWhere($joinedField['value'], implode(',',$joinedField['fields']), 'FIND_IN_SET_OR');
   			}
   			else {
-	   			$addWhere = tx_rnbase_util_DB::searchWhere($joinedField['value'], implode(',',$joinedField['fields']), 'LIKE');
+  				$addWhere = tx_rnbase_util_DB::searchWhere($joinedField['value'], implode(',',$joinedField['fields']), $joinedField['operator']);
   			}
   			$where .= $addWhere;
   		}
@@ -360,7 +327,7 @@ abstract class tx_rnbase_util_SearchBase {
   }
 
   /**
-   * Checks existence of search field in parameters and configuration and adds it to fieldarray.
+   * Checks existence of search field in parameters and adds it to fieldarray.
    *
    * @param string $idstr
    * @param array $fields
@@ -372,6 +339,7 @@ abstract class tx_rnbase_util_SearchBase {
   	if(!isset($fields[$idstr][$operator]) && $parameters->offsetGet($idstr)) {
   		$fields[$idstr][$operator] = $parameters->offsetGet($idstr);
   		// Parameter als KeepVar merken
+  		// TODO: Ist das noch notwendig??
   		$configurations->addKeepVar($configurations->createParamName($idstr),$fields[$idstr]);
   	}
   }
