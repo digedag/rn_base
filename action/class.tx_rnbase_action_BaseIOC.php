@@ -35,56 +35,62 @@ tx_div::load('tx_rnbase_util_Misc');
  * This class works with PHP5 only!
  */
 abstract class tx_rnbase_action_BaseIOC {
+	private static $callCount = 0;
+	private static function countCall() { return self::$callCount++; }
+	function execute(&$parameters,&$configurations){
+ 
+		$viewData =& $configurations->getViewData();
+		$GLOBALS['TT']->push(get_class($this), 'handleRequest');
+		$errOut = $this->handleRequest($parameters,$configurations, $viewData);
+		$GLOBALS['TT']->pull();
+		if($errOut) return $errOut;
 
-  function execute(&$parameters,&$configurations){
-    $viewData =& $configurations->getViewData();
-  	$errOut = $this->handleRequest($parameters,$configurations, $viewData);
-  	if($errOut) return $errOut;
+		// View
+		$view = tx_div::makeInstance($this->getViewClassName());
+		$view->setTemplatePath($configurations->getTemplatePath());
+		// Das Template wird komplett angegeben
+		$tmplName = $this->getTemplateName();
+		if(!$tmplName || !strlen($tmplName))
+			tx_rnbase_util_Misc::mayday('No template name defined!');
 
-  	// View
-    $view = tx_div::makeInstance($this->getViewClassName());
-    $view->setTemplatePath($configurations->getTemplatePath());
-    // Das Template wird komplett angegeben
-    $tmplName = $this->getTemplateName();
-    if(!$tmplName || !strlen($tmplName))
-    	tx_rnbase_util_Misc::mayday('No template name defined!');
-    	
-    $view->setTemplateFile($configurations->get($tmplName.'Template'));
-    $out = $view->render($tmplName, $configurations);
+		$view->setTemplateFile($configurations->get($tmplName.'Template'));
+		$GLOBALS['TT']->push(get_class($this), 'render');
+		$out = $view->render($tmplName, $configurations);
+		$GLOBALS['TT']->pull();
+		
+		return $out;
+	}
 
-    return $out;
-  }
+	/**
+	 * Liefert den Default-Namen des Templates. Über diesen Namen
+	 * wird per Konvention auch auf ein per TS konfiguriertes HTML-Template
+	 * geprüft. Dessen Key wird aus dem Name und dem String "Template" 
+	 * gebildet: [tmpname]Template
+	 * @return string
+	 */
+	protected abstract function getTemplateName();
 
-  /**
-   * Liefert den Default-Namen des Templates. Über diesen Namen
-   * wird per Konvention auch auf ein per TS konfiguriertes HTML-Template
-   * geprüft. Dessen Key wird aus dem Name und dem String "Template" 
-   * gebildet: [tmpname]Template
-   * @return string
-   */
-  protected abstract function getTemplateName();
-
-  /**
-   * Liefert den Namen der View-Klasse
-   * @param tx_rnbase_configurations $configurations
-   * @return string
-   */
-  protected abstract function getViewClassName();
-  /**
-   * Kindklassen führen ihr die eigentliche Arbeit durch. Zugriff auf das 
-   * Backend und befüllen der viewdata 
-   *
-   * @param tx_lib_parameters $parameters
-   * @param tx_rnbase_configurations $configurations
-   * @param array $viewdata
-   * @return string Errorstring or null
-   */
-  protected abstract function handleRequest(&$parameters,&$configurations, &$viewdata);
+	/**
+	 * Liefert den Namen der View-Klasse
+	 * @param tx_rnbase_configurations $configurations
+	 * @return string
+	 */
+	protected abstract function getViewClassName();
+	/**
+	 * Kindklassen führen ihr die eigentliche Arbeit durch. Zugriff auf das 
+	 * Backend und befüllen der viewdata 
+	 *
+	 * @param tx_lib_parameters $parameters
+	 * @param tx_rnbase_configurations $configurations
+	 * @param array $viewdata
+	 * @return string Errorstring or null
+	 */
+	protected abstract function handleRequest(&$parameters,&$configurations, &$viewdata);
   
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/action/class.tx_rnbase_action_BaseIOC.php'])	{
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/action/class.tx_rnbase_action_BaseIOC.php']);
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/action/class.tx_rnbase_action_BaseIOC.php']);
 }
 
 ?>

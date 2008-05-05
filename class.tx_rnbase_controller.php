@@ -184,34 +184,41 @@ class tx_rnbase_controller {
    * @return string   the complete result of the plugin, typically it's (x)html
    */
   
-  function main($out, $configurationArray){
+	function main($out, $configurationArray){
+		$GLOBALS['TT']->push('tx_rnbase_controller' , 'start');
 
-    // Making the configurations object
-    $configurations = $this->_makeConfigurationsObject($configurationArray);
-    
+		// Making the configurations object
+		$GLOBALS['TT']->push('init configuration' , '');
+		$configurations = $this->_makeConfigurationsObject($configurationArray);
+		$GLOBALS['TT']->pull();
+
     // Making the parameters object
-    $parameters = $this->_makeParameterObject($configurations);
+		$GLOBALS['TT']->push('init parameters' , '');
+		$parameters = $this->_makeParameterObject($configurations);
+		// Make sure to keep all parameters
+		$configurations->setKeepVars($parameters);
+		$GLOBALS['TT']->pull();
 
+		// Finding the action:
+		$actions = $this->_findAction($parameters, $configurations);
+		if(!isset($actions))
+			return $this->getUnknownAction();
 
-    // Make sure to keep all parameters
-    $configurations->setKeepVars($parameters);
-    
-    // Finding the action: 
-    $actions = $this->_findAction($parameters, $configurations);
-    if(!isset($actions))
-      return $this->getUnknownAction();
-
-//t3lib_div::debug($actions,'rnbase_contr');
-
-    $out = '';
-    if(is_array($actions))
-      foreach($actions As $actionName){
-        $out .= $this->doAction($actionName,$parameters,$configurations);
-      }
-    else // Call a single action
-      $out .= $this->doAction($actions,$parameters,$configurations);
-    return $out;
-  }
+		$out = '';
+		if(is_array($actions))
+			foreach($actions As $actionName){
+				$GLOBALS['TT']->push('call action' , $actionName);
+				$out .= $this->doAction($actionName,$parameters,$configurations);
+				$GLOBALS['TT']->pull();
+			}
+		else { // Call a single action
+			$GLOBALS['TT']->push('call action' , $actionName);
+			$out .= $this->doAction($actions,$parameters,$configurations);
+			$GLOBALS['TT']->pull();
+		}
+		$GLOBALS['TT']->pull();
+		return $out;
+	}
 
   function doAction($actionName, &$parameters, &$configurations) {
     // Creating the responsible Action
