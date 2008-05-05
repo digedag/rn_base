@@ -3,6 +3,10 @@
 Änderungen
 ----------
 
+v0.1.2 (05.05.2008)
+* Automatische Perfmancemessungen mit t3lib_timeTrack.
+* BaseMarker hat Prüfmethode für das Vorhandensein von bestimmten Markern.
+
 v0.1.0 (02.05.2008)
 ## UMSTELLUNG AUF PHP5 ###
 Es sind erstmals Methoden integriert, die nur mit PHP5 funktionieren! Abhängige Extensions, die 
