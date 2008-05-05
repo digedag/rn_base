@@ -268,6 +268,30 @@ class tx_rnbase_util_BaseMarker {
 			}
 		}
 	}
+	/**
+	 * @param string $template
+	 * @param string $markerPrefix a string like MATCH_HOME
+	 * @return boolean
+	 */
+	public static function containsMarker($template, $markerPrefix) {
+		return (preg_match('/###'.$markerPrefix.'([A-Z0-9_-])*/', $template)) > 0;
+	}
+	/**
+	 * Start TimeTrack section
+	 *
+	 * @param string $message
+	 */
+	protected function pushTT($message) {
+		if(is_object($GLOBALS['TT']))
+			$GLOBALS['TT']->push(get_class($this), $message);
+	}
+	/**
+	 * End TimeTrack section
+	 */
+	protected function pullTT() {
+		if(is_object($GLOBALS['TT']))
+			$GLOBALS['TT']->pull();
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_BaseMarker.php']) {
