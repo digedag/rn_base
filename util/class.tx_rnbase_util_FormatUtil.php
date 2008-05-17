@@ -173,10 +173,18 @@ class tx_rnbase_util_FormatUtil {
    * <pre>profile.date.strftime = %Y</pre>
    * @return Array
    */
-  function getItemMarkerArrayWrapped(&$record, $confId, $noMap = 0, $markerPrefix='', $initMarkers = 0){
+  function getItemMarkerArrayWrapped($record, $confId, $noMap = 0, $markerPrefix='', $initMarkers = 0){
     if(!is_array($record))
       return array();
     $tmpArr = $this->cObj->data;
+    // Ensure the initMarkers are part of the record
+    if(is_array($initMarkers)) {
+    	for($i=0, $cnt = count($initMarkers); $i < $cnt; $i++)  {
+    		if(!array_key_exists($initMarkers[$i], $record))
+    			$record[$initMarkers[$i]] = '';
+    	}
+    }
+    
 
     $this->cObj->data = $record;
 
