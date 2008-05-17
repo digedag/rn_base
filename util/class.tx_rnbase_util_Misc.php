@@ -69,11 +69,12 @@ class tx_rnbase_util_Misc {
 	 * @param string $extKey
 	 * @param string $hookKey
 	 * @param array $params
+	 * @param mixed $parent instance of calling class or 0
 	 */
-	function callHook($extKey, $hookKey, $params) {
+	function callHook($extKey, $hookKey, $params, $parent=0) {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extKey][$hookKey])) {
 			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extKey][$hookKey] as $funcRef) {
-				t3lib_div::callUserFunction($funcRef, $params, $this);
+				t3lib_div::callUserFunction($funcRef, $params, $parent);
 			}
 		}
 	}
@@ -242,7 +243,27 @@ MAYDAYPAGE;
 
 		return $result;
 	}
-
+  /**
+   * Prepare classes for FE-rendering if it is needed in TYPO3 backend.
+   */
+	static function prepareTSFE() {
+		if(!is_object($GLOBALS['TSFE'])) {
+			require_once(PATH_tslib.'class.tslib_content.php');
+			require_once(PATH_tslib.'class.tslib_fe.php');
+			require_once(PATH_t3lib.'class.t3lib_page.php');
+			$clazz = t3lib_div::makeInstanceClassname('tslib_fe');
+			$GLOBALS['TSFE'] = new $clazz($GLOBALS['TYPO3_CONF_VARS'], 1, 99);
+			// Jetzt noch pageSelect
+			$temp_sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
+			$temp_sys_page->init(0);
+			$GLOBALS['TSFE']->sys_page = $temp_sys_page;
+		}
+		if(!is_object($GLOBALS['TT'])) {
+			require_once(PATH_t3lib.'class.t3lib_timetrack.php');
+			$GLOBALS['TT'] = new t3lib_timeTrack;
+			$GLOBALS['TT']->start();
+		}
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Misc.php']) {
