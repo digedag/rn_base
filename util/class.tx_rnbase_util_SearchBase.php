@@ -177,7 +177,12 @@ abstract class tx_rnbase_util_SearchBase {
 			$orderby = array();
 			foreach ($options['orderby'] As $field => $order) {
 				list($tableAlias, $col) = explode('.', $field);
-				$orderby[] = $this->tableMapping[$tableAlias].'.' . strtolower($col) . ' ' . ( strtoupper($order) == 'DESC' ? 'DESC' : 'ASC');
+				$tableAlias = $this->tableMapping[$tableAlias];
+				if($tableAlias)
+					$orderby[] = $tableAlias.'.' . strtolower($col) . ' ' . ( strtoupper($order) == 'DESC' ? 'DESC' : 'ASC');
+				else {
+					$orderby[] = $field . ' ' . ( strtoupper($order) == 'DESC' ? 'DESC' : 'ASC');
+				}
 			}
 			$sqlOptions['orderby'] = implode(',', $orderby);
 		}
@@ -235,13 +240,23 @@ abstract class tx_rnbase_util_SearchBase {
   	}
   	$table = $this->getBaseTable();
   	$distinct = isset($options['distinct']) ? 'DISTINCT ' : '';
-  	return isset($options['count']) ? 'count('. $distinct .$table.'.uid) as cnt' : $distinct.$table.'.*';
+  	$rownum = isset($options['rownum']) ? ', @rownum:=@rownum+1 AS rownum ' : '';
+  	return isset($options['count']) ? 'count('. $distinct .$table.'.uid) as cnt' : $distinct.$table.'.*'.$rownum;
   }
 
+  /**
+   * Build the from part of sql statement
+   *
+   * @param array $options
+   * @param array $tableAliases
+   * @return array
+   */
   protected function getFrom($options, $tableAliases) {
   	$table = $this->getBaseTable();
   	$from = array($table,$table);
   	$joins = $this->getJoins($tableAliases);
+  	if(isset($options['rownum'])) $from[0] = '(SELECT @rownum:=0) _r, ' . $from[0];
+ 
   	if(strlen($joins))
   		$from[0] .= $joins;
   	return $from;
