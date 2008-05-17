@@ -29,29 +29,42 @@ require_once (PATH_t3lib.'class.t3lib_tceforms.php');
  * im Backend zur Verfügung
  */
 class tx_rnbase_util_FormTool {
-  var $form; // TCEform-Instanz
+	var $form; // TCEform-Instanz
 
-  function init($doc) {
-    global $BACK_PATH;
-    $this->doc = $doc;
+	function init($doc) {
+		global $BACK_PATH;
+		$this->doc = $doc;
 
-    // TCEform für das Formular erstellen
-    $this->form = t3lib_div::makeInstance('t3lib_TCEforms');
-    $this->form->initDefaultBEmode();
-    $this->form->backPath = $BACK_PATH;
-  }
+		// TCEform für das Formular erstellen
+		$this->form = t3lib_div::makeInstance('t3lib_TCEforms');
+		$this->form->initDefaultBEmode();
+		$this->form->backPath = $BACK_PATH;
+	}
 
-  /**
-   * Erstellt einen Link zur Bearbeitung eines Datensatzes
-   * @param $editTable DB-Tabelle des Datensatzes
-   * @param $editUid UID des Datensatzes
-   * @param $label Bezeichnung des Links
-   */
+	/**
+	 * Erstellt einen Link zur Bearbeitung eines Datensatzes
+	 * @param $editTable DB-Tabelle des Datensatzes
+	 * @param $editUid UID des Datensatzes
+	 * @param $label Bezeichnung des Links
+	 */
   function createEditLink($editTable, $editUid, $label = 'Edit') {
-    $params = '&edit['.$editTable.']['.$editUid.']=edit';
-    return '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'])).'">'.
-     '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/edit2.gif','width="11" height="12"').' title="Edit UID: '.$editUid.'" border="0" alt="" />'.
-     $label .'</a>';
+  	$params = '&edit['.$editTable.']['.$editUid.']=edit';
+  	return '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'])).'">'.
+  		'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/edit2.gif','width="11" height="12"').' title="Edit UID: '.$editUid.'" border="0" alt="" />'.
+  		$label .'</a>';
+	}
+
+	/**
+	 * Erstellt einen Link zur Erstellung eines neuen Datensatzes
+	 * @param $$table DB-Tabelle des Datensatzes
+	 * @param $$pid UID der Zielseite
+	 * @param $label Bezeichnung des Links
+	 */
+	function createNewLink($table, $pid, $label = 'New') {
+		$params = '&edit['.$table.']['.$pid.']=new';
+		return '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH']),-1).'">'.
+			'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/new_'.($table=='pages'?'page':'el').'.gif','width="'.($table=='pages'?13:11).'" height="12"').' title="'.$GLOBALS['LANG']->getLL('new',1).'" alt="" />'.
+			$label .'</a>';
   }
 
   /**
@@ -212,6 +225,16 @@ class tx_rnbase_util_FormTool {
     return $out;
   }
 
+  function addTCEfield2Stack($table,$row,$fieldname,$pre='',$post='') {
+		$this->tceStack[] = $pre . $this->form->getSoloField($table,$row,$fieldname) . $post;
+  }
+  function getTCEfields($formname) {
+  	$ret[] = $this->form->printNeededJSFunctions_top();
+  	$ret[] = implode('', $this->tceStack);
+  	$ret[] = $this->form->printNeededJSFunctions();
+  	$ret[] = $this->form->JSbottom($formname);
+  	return $ret;
+  }
   /**
    * @param $pid ID der aktuellen Seite
    */
