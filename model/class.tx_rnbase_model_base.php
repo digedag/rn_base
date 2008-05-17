@@ -34,98 +34,110 @@ require_once(PATH_t3lib.'class.t3lib_befunc.php');
  */
 class tx_rnbase_model_base{
 
-  var $uid;
-  var $record;
+	var $uid;
+	var $record;
 
-  /**
-   * Most model-classes will be initialized by a uid or a database record. So
-   * this is a common contructor.
-   * Ensure to overwrite getTableName()!
-   */
-  function tx_rnbase_model_base($rowOrUid) {
-    if(is_array($rowOrUid)) {
-      $this->uid = $rowOrUid['uid'];
-      $this->record = $rowOrUid;
-    }
-    else{
-      $this->uid = $rowOrUid;
-      if($this->getTableName())
-        $this->record = t3lib_BEfunc::getRecord($this->getTableName(),$this->uid);
-      // Der Record sollte immer ein Array sein
-      $this->record = is_array($this->record) ? $this->record : array();
-    }
+	/**
+	 * Most model-classes will be initialized by a uid or a database record. So
+	 * this is a common contructor.
+	 * Ensure to overwrite getTableName()!
+	 */
+	function tx_rnbase_model_base($rowOrUid) {
+		if(is_array($rowOrUid)) {
+			$this->uid = $rowOrUid['uid'];
+			$this->record = $rowOrUid;
+		}
+		else {
+			$this->uid = $rowOrUid;
+			if($this->getTableName())
+				$this->record = t3lib_BEfunc::getRecord($this->getTableName(),$this->uid);
+			// Der Record sollte immer ein Array sein
+			$this->record = is_array($this->record) ? $this->record : array();
+		}
 //    t3lib_div::debug($this->record, 'record');
-  }
+	}
 
-  /**
-   * Kindklassen müssen diese Methode überschreiben und den Namen der gemappten Tabelle liefern!
-   * @return Tabellenname als String
-   */
-  function getTableName() {
-    return 0;
-  }
-  /**
-   * Check if this record is valid. If false, the record is maybe deleted in database.
-   *
-   * @return boolean
-   */
-  function isValid() {
-  	return count($this->record) > 0;
-  }
-  
-  /**
-   * Liefert bei Tabellen, die im $TCA definiert sind, die Namen der Tabellenspalten als Array.
-   * @return Array mit Spaltennamen oder 0
-   */
-  function getColumnNames() {
-    global $TCA;
-    t3lib_div::loadTCA($this->getTableName());
-    $cols = $this->getTCAColumns();
-    return is_array($cols) ? array_keys($cols) : 0;
-  }
+	function reset() {
+		$this->record = t3lib_BEfunc::getRecord($this->getTableName(),$this->uid);
+	}
+	/**
+	 * Kindklassen müssen diese Methode überschreiben und den Namen der gemappten Tabelle liefern!
+	 * @return Tabellenname als String
+	 */
+	function getTableName() {
+		return 0;
+	}
+	/**
+	 * Check if this record is valid. If false, the record is maybe deleted in database.
+	 *
+	 * @return boolean
+	 */
+	function isValid() {
+		return count($this->record) > 0;
+	}
+	/**
+	 * Check if record is persisted in database. This is if uid is not 0.
+	 *
+	 * @return boolean
+	 */
+	function isPersisted() {
+		return intval($this->uid) > 0;
+	}
+	
+	/**
+	 * Liefert bei Tabellen, die im $TCA definiert sind, die Namen der Tabellenspalten als Array.
+	 * @return Array mit Spaltennamen oder 0
+	 */
+	function getColumnNames() {
+		global $TCA;
+		t3lib_div::loadTCA($this->getTableName());
+		$cols = $this->getTCAColumns();
+		return is_array($cols) ? array_keys($cols) : 0;
+	}
 
-  /**
-   * Liefert die TCA-Definition der in der Tabelle definierten Spalten
-   *
-   * @return unknown
-   */
-  function getTCAColumns() {
-    global $TCA;
-    t3lib_div::loadTCA($this->getTableName());
-    return isset($TCA[$this->getTableName()]) ? $TCA[$this->getTableName()]['columns'] : 0;
-  }
-  
-  /**
-   * Liefert den Inhalt eine Spalte formatiert durch eine stdWrap. Per Konvention wird
-   * erwartet, das der Name der Spalte auch in der TS-Config verwendet wird.
-   * Wenn in einem Objekt der Klasse event eine Spalte/Attribut "date" existiert, dann sollte
-   * das passende TypoScript folgendes Aussehen haben:
-   * <pre>
-   * event.date.strftime = %d-%b-%y
-   * </pre>
-   * Hier wäre <b>event.</b> die $confId und <b>date</b> der Spaltename
-   * @param $formatter ein voll initialisierter Formatter für den Wrap
-   * @param $columnName der Name der Spalte
-   * @param $baseConfId Id der übergeordneten Config
-   * @param $colConfId Id der Spalte in der Config zum Aussetzen der Konvention (muss mit Punkt enden)
-   */
-  function getColumnWrapped($formatter, $columnName, $baseConfId, $colConfId = '') {
-    $colConfId = ( strlen($colConfId) ) ? $colConfId : $columnName . '.';
-    return $formatter->wrap($this->record[$columnName], $baseConfId . $colConfId);
-  }
+	/**
+	 * Liefert die TCA-Definition der in der Tabelle definierten Spalten
+	 *
+	 * @return array
+	 */
+	function getTCAColumns() {
+		global $TCA;
+		t3lib_div::loadTCA($this->getTableName());
+		return isset($TCA[$this->getTableName()]) ? $TCA[$this->getTableName()]['columns'] : 0;
+	}
 
-  function __toString() {
-  	$out = get_class($this). "\n\nRecord:\n";
-  	while (list($key,$val)=each($this->record))	{
-  		$out .= $key. ' = ' . $val . "\n";
-  	}
-    reset($this->record);
-  	return $out; //t3lib_div::view_array($this->record);
-  }
+	/**
+	 * Liefert den Inhalt eine Spalte formatiert durch eine stdWrap. Per Konvention wird
+	 * erwartet, das der Name der Spalte auch in der TS-Config verwendet wird.
+	 * Wenn in einem Objekt der Klasse event eine Spalte/Attribut "date" existiert, dann sollte
+	 * das passende TypoScript folgendes Aussehen haben:
+	 * <pre>
+	 * event.date.strftime = %d-%b-%y
+	 * </pre>
+	 * Hier wäre <b>event.</b> die $confId und <b>date</b> der Spaltename
+	 * @param $formatter ein voll initialisierter Formatter für den Wrap
+	 * @param $columnName der Name der Spalte
+	 * @param $baseConfId Id der übergeordneten Config
+	 * @param $colConfId Id der Spalte in der Config zum Aussetzen der Konvention (muss mit Punkt enden)
+	 * @deprecated
+	 */
+	function getColumnWrapped($formatter, $columnName, $baseConfId, $colConfId = '') {
+		$colConfId = ( strlen($colConfId) ) ? $colConfId : $columnName . '.';
+		return $formatter->wrap($this->record[$columnName], $baseConfId . $colConfId);
+	}
+
+	function __toString() {
+		$out = get_class($this). "\n\nRecord:\n";
+		while (list($key,$val)=each($this->record))	{
+			$out .= $key. ' = ' . $val . "\n";
+		}
+		reset($this->record);
+		return $out; //t3lib_div::view_array($this->record);
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/model/class.tx_rnbase_model_base.php']) {
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/model/class.tx_rnbase_model_base.php']);
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/model/class.tx_rnbase_model_base.php']);
 }
 
 ?>
