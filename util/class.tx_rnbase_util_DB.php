@@ -28,34 +28,34 @@ require_once(t3lib_extMgm::extPath('div') . 'class.tx_div.php');
  * Contains utility functions for formatting
  */
 class tx_rnbase_util_DB {
-  /**
-   * Make a query to database. You will receive an array with result rows. All
-   * database resources are closed after each call.
-   * A Hidden and Delete-Clause for FE-Requests is added for requested table.
-   *
-   * @param $what requested columns
-   * @param $from either the name of on table or an array with index 0 the from clause 
-   *              and index 1 the requested tablename
-   * @param $where
-   * @param $groupby
-   * @param $orderby
-   * @param $wrapperClass Name einer WrapperKlasse für jeden Datensatz
+	/**
+	 * Make a query to database. You will receive an array with result rows. All
+	 * database resources are closed after each call.
+	 * A Hidden and Delete-Clause for FE-Requests is added for requested table.
+	 *
+	 * @param $what requested columns
+	 * @param $from either the name of on table or an array with index 0 the from clause 
+	 *              and index 1 the requested tablename
+	 * @param $where
+	 * @param $groupby
+	 * @param $orderby
+	 * @param $wrapperClass Name einer WrapperKlasse für jeden Datensatz
    * @param $limit = '' Limits number of results
-   * @param $debug = 0 Set to 1 to debug sql-String
-   * @deprecated use tx_rnbase_util_DB::doSelect()
-   */
-  function queryDB($what, $from, $where, $groupBy = '', $orderBy = '', $wrapperClass = 0, $limit = '', $debug=0){
-    $tableName = $from;
-    $fromClause = $from;
-    if(is_array($from)){
-      $tableName = $from[1];
-      $fromClause = $from[0];
-    }
+	 * @param $debug = 0 Set to 1 to debug sql-String
+	 * @deprecated use tx_rnbase_util_DB::doSelect()
+	 */
+	function queryDB($what, $from, $where, $groupBy = '', $orderBy = '', $wrapperClass = 0, $limit = '', $debug=0){
+		$tableName = $from;
+		$fromClause = $from;
+		if(is_array($from)){
+			$tableName = $from[1];
+			$fromClause = $from[0];
+		}
 
-    $limit = intval($limit) > 0 ? intval($limit) : '';
+		$limit = intval($limit) > 0 ? intval($limit) : '';
 
-    // Zur Where-Clause noch die gültigen Felder hinzufügen
-    $where .= tslib_cObj::enableFields($tableName);
+		// Zur Where-Clause noch die gültigen Felder hinzufügen
+		$where .= tslib_cObj::enableFields($tableName);
 
     if($debug) {
       $sql = $GLOBALS['TYPO3_DB']->SELECTquery($what,$fromClause,$where,$groupBy,$orderBy);
@@ -132,8 +132,8 @@ class tx_rnbase_util_DB {
     
     $wrapper = is_string($arr['wrapperclass']) ? tx_div::makeInstanceClassName($arr['wrapperclass']) : 0;
 
-    if(!$arr['enablefieldsoff']) {
-    // Zur Where-Clause noch die gültigen Felder hinzufügen
+		if(!$arr['enablefieldsoff']) {
+			// Zur Where-Clause noch die gültigen Felder hinzufügen
       $where .= tslib_cObj::enableFields($tableName);
     }
 
@@ -236,7 +236,29 @@ class tx_rnbase_util_DB {
     t3lib_div::loadTCA($tcaTableName);
     return isset($TCA[$tcaTableName]) ? $TCA[$tcaTableName]['columns'] : 0;
   }
-  
+	/**
+	 * Liefert eine initialisierte TCEmain
+	 */
+	static function &getTCEmain($data = 0, $cmd = 0) {
+		static $tce;
+
+		if(!$tce || $data || $cmd) {
+			// Die TCEmain laden
+			require_once(PATH_t3lib.'class.t3lib_tcemain.php');
+			$tce = t3lib_div::makeInstance('t3lib_tcemain');
+			$tce->stripslashes_values = 0;
+			// Wenn wir ein data-Array bekommen verwenden wir das
+			$tce->start($data ? $data : Array(),$cmd ? $cmd : Array());
+
+			// set default TCA values specific for the user
+			$TCAdefaultOverride = $GLOBALS['BE_USER']->getTSConfigProp('TCAdefaults');
+			if (is_array($TCAdefaultOverride)) {
+				$tce->setDefaultsFromUserTS($TCAdefaultOverride);
+			}
+		}
+		return $tce;
+	}
+
   /**
    * Same method as tslib_pibase::pi_getPidList()
    */
