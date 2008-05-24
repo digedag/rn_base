@@ -28,181 +28,183 @@ tx_div::load('tx_rnbase_util_PageBrowser');
  * Contains utility functions for HTML-Forms
  */
 class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
-  private $pdid;
-  private $pagePartsDef = array('normal','current','first','last','prev','next');
+	private $pdid;
+	private $pagePartsDef = array('normal','current','first','last','prev','next');
 
-  /**
-   * Erstellung des PageBrowserMarkers
-   */
-  function tx_rnbase_util_PageBrowserMarker() {
-  }
+	/**
+	 * Erstellung des PageBrowserMarkers
+	 */
+	function tx_rnbase_util_PageBrowserMarker() {
+	}
 
-  /**
-   * Initialisierung des PageBrowserMarkers mit den PageBrowser
-   */
-  function setPageBrowser($pageBrowser) {
-    $this->pageBrowser = $pageBrowser;
-  }
+	/**
+	 * Initialisierung des PageBrowserMarkers mit den PageBrowser
+	 */
+	function setPageBrowser($pageBrowser) {
+		$this->pageBrowser = $pageBrowser;
+	}
 
-  /**
-   * Liefert die Limit-Angaben für die DB-Anfrage
-   */
-  function parseTemplate($template, &$formatter, $pbConfId, $pbMarker = 'PAGEBROWSER') {
+	/**
+	 * Liefert die Limit-Angaben für die DB-Anfrage
+	 */
+	function parseTemplate($template, &$formatter, $pbConfId, $pbMarker = 'PAGEBROWSER') {
 // Configs: maxPages, pagefloat
 // Obsolete da Template: showResultCount, showPBrowserText, dontLinkActivePage, showFirstLast
 //    showRange
-    $out = '';
-    $configurations = $formatter->configurations;
+		$out = '';
+		$configurations = $formatter->configurations;
 
-    $this->initLink($configurations);
+		$this->initLink($configurations);
     
-    $pointer = $this->pageBrowser->getPointer();
-    $count = $this->pageBrowser->getListSize();
-    $results_at_a_time = $this->pageBrowser->getPageSize();
-    $totalPages = ceil($count / $results_at_a_time);
-    $maxPages = intval($configurations->get($pbConfId.'maxPages'));
-    $maxPages = t3lib_div::intInRange($maxPages ? $maxPages : 10, 1, 100);
-    $templates = $this->getTemplates($template, $formatter, $pbMarker);
+		$pointer = $this->pageBrowser->getPointer();
+		$count = $this->pageBrowser->getListSize();
+		$results_at_a_time = $this->pageBrowser->getPageSize();
+		$totalPages = ceil($count / $results_at_a_time);
+		$maxPages = intval($configurations->get($pbConfId.'maxPages'));
+		$maxPages = t3lib_div::intInRange($maxPages ? $maxPages : 10, 1, 100);
+		$templates = $this->getTemplates($template, $formatter, $pbMarker);
 
-    $pageFloat = $this->getPageFloat($configurations->get($pbConfId.'pagefloat'), $maxPages);
-    $firstLastArr = $this->getFirstLastPage($pointer, $pageFloat, $totalPages, $maxPages);
+		$pageFloat = $this->getPageFloat($configurations->get($pbConfId.'pagefloat'), $maxPages);
+		$firstLastArr = $this->getFirstLastPage($pointer, $pageFloat, $totalPages, $maxPages);
 
-    $arr = array('count' => $count, 'totalpages' => $totalPages);
-    $markerArray = $formatter->getItemMarkerArrayWrapped($arr, $pbConfId, 0, $pbMarker.'_');
+		$arr = array('count' => $count, 'totalpages' => $totalPages);
+		$markerArray = $formatter->getItemMarkerArrayWrapped($arr, $pbConfId, 0, $pbMarker.'_');
 
-    $subpartArray = $this->createSubpartArray($pbMarker);
+		$subpartArray = $this->createSubpartArray($pbMarker);
 
-    //---- Ab jetzt werden die Templates gefüllt
-    $parts = array(); // Hier werden alle Teile des Browser gesammelt
-    // Der Marker für die erste Seite
-    if($templates['first'] && $pointer != 0) {
-      $parts[] = $this->getPageString(0, $pointer, 'first', $templates, $formatter, $pbConfId, $pbMarker);
-    }
+		//---- Ab jetzt werden die Templates gefüllt
+		$parts = array(); // Hier werden alle Teile des Browser gesammelt
+		// Der Marker für die erste Seite
+		if($templates['first'] && $pointer != 0) {
+			$parts[] = $this->getPageString(0, $pointer, 'first', $templates, $formatter, $pbConfId, $pbMarker);
+		}
 
-    // Der Marker für die vorherige Seite
-    if($templates['prev'] && $pointer > 0) {
-      $parts[] = $this->getPageString($pointer-1, $pointer, 'prev', $templates, $formatter, $pbConfId, $pbMarker);
-    }
+		// Der Marker für die vorherige Seite
+		if($templates['prev'] && $pointer > 0) {
+			$parts[] = $this->getPageString($pointer-1, $pointer, 'prev', $templates, $formatter, $pbConfId, $pbMarker);
+		}
 
-    // Jetzt über alle Seiten iterieren
-    for($i=$firstLastArr['first']; $i < $firstLastArr['last']; $i++) {
-      $pageId = ($i == $pointer && $templates['current']) ? 'current' : 'normal';
+		// Jetzt über alle Seiten iterieren
+		for($i=$firstLastArr['first']; $i < $firstLastArr['last']; $i++) {
+			$pageId = ($i == $pointer && $templates['current']) ? 'current' : 'normal';
+			$parts[] = $this->getPageString($i, $pointer, $pageId, $templates, $formatter, $pbConfId, $pbMarker);
+		}
 
-      $parts[] = $this->getPageString($i, $pointer, $pageId, $templates, $formatter, $pbConfId, $pbMarker);
+		// Der Marker für die nächste Seite
+		if($templates['next'] && $pointer < $totalPages-1) {
+			$parts[] = $this->getPageString($pointer+1, $pointer, 'next', $templates, $formatter, $pbConfId, $pbMarker);
+		}
 
-    }
+		// Der Marker für die letzte Seite
+		if($templates['last'] && $pointer != $totalPages-1) {
+			$parts[] = $this->getPageString($totalPages-1, $pointer, 'last', $templates, $formatter, $pbConfId, $pbMarker);
+		}
 
-    // Der Marker für die nächste Seite
-    if($templates['next'] && $pointer < $totalPages-1) {
-      $parts[] = $this->getPageString($pointer+1, $pointer, 'next', $templates, $formatter, $pbConfId, $pbMarker);
-    }
+		$implode = $configurations->get($pbConfId.'.implode');
+		$subpartArray['###'.$pbMarker.'_NORMAL_PAGE###'] = implode($parts, $implode ? $implode : ' ');
+		return $formatter->cObj->substituteMarkerArrayCached($template, $markerArray, $subpartArray);
+	}
 
-    // Der Marker für die letzte Seite
-    if($templates['last'] && $pointer != $totalPages-1) {
-      $parts[] = $this->getPageString($totalPages-1, $pointer, 'last', $templates, $formatter, $pbConfId, $pbMarker);
-    }
+	/**
+	 * Liefert das passende Template für die aktuelle Seite
+	 */
+	private function getPageString($currentPage, $pointer, $pageId,  &$templates, &$formatter, $pbConfId, $pbMarker) {
+		$rec = array();
+		$rec['number'] = $currentPage + 1;
 
-    $implode = $configurations->get($pbConfId.'.implode');
-    $subpartArray['###'.$pbMarker.'_NORMAL_PAGE###'] = implode($parts, $implode ? $implode : ' ');
+		$pageTemplate = $templates[$pageId];
+		$pageConfId = $pbConfId.'page.'.$pageId.'.';
+		$pageMarker = $pbMarker.'_'.strtoupper($pageId).'_PAGE_';
 
-    return $formatter->cObj->substituteMarkerArrayCached($template, $markerArray, $subpartArray);
+		$pageMarkerArray = $formatter->getItemMarkerArrayWrapped($rec, $pageConfId, 0, $pageMarker);
+		$pageSubpartArray = array();
 
-  }
+		if($this->link) {
+			$this->link->parameters(array($this->pageBrowser->getParamName('pointer') => $currentPage));
+			$pageWrappedSubpartArray['###'.$pageMarker.'LINK###'] = explode($this->token, $this->link->makeTag());
+			$pageMarkerArray['###'.$pageMarker.'LINKURL###'] = $this->link->makeUrl();
+		}
+		else {
+			$pageWrappedSubpartArray['###'.$pageMarker.'LINK###'] = $noLink;
+			$pageMarkerArray['###'.$pageMarker.'LINKURL###'] = '';
+		}
+ 
+		$out = $formatter->cObj->substituteMarkerArrayCached($pageTemplate, $pageMarkerArray, $pageSubpartArray, $pageWrappedSubpartArray);
+		return $out;
+	}
 
-  /**
-   * Liefert das passende Template für die aktuelle Seite
-   */
-  private function getPageString($currentPage, $pointer, $pageId,  &$templates, &$formatter, $pbConfId, $pbMarker) {
-    $rec = array();
-    $rec['number'] = $currentPage + 1;
+	/**
+	 * Ermittelt die erste und die letzte Seite, die im Browser gezeigt wird.
+	 * @return array with keys 'first' and 'last'
+	 */
+	private function getFirstLastPage($pointer, $pageFloat, $totalPages, $maxPages) {
+		$ret = array();
+		if($pageFloat > -1) {
+			$ret['last'] = min($totalPages, max($pointer + 1 + $pageFloat, $maxPages));
+			$ret['first'] = max(0, $ret['last'] - $maxPages);
+		}
+		else {
+			$ret['first'] = 0;
+			$ret['last'] = t3lib_div::intInRange($totalPages, 1, $maxPages);
+		}
+		return $ret;
+	}
 
-    $pageTemplate = $templates[$pageId];
-    $pageConfId = $pbConfId.'page.'.$pageId.'.';
-    $pageMarker = $pbMarker.'_'.strtoupper($pageId).'_PAGE_';
+	/**
+	 * Liefert den korrekten Wert für den PageFloat. Das richtet den Ausschnitt der gezeigten
+	 * Seiten im PageBrowser ein.
+	 */
+	private function getPageFloat($pageFloat, $maxPages) {
+		if($pageFloat) {
+			if(strtoupper($pageFloat) == 'CENTER') {
+				$pageFloat = ceil(($maxPages - 1) / 2);
+			}
+			else
+				$pageFloat = t3lib_div::intInRange($pageFloat, -1, $maxPages - 1);
+		}
+		else
+			$pageFloat = -1;
+		return $pageFloat;
+	}
 
-    $pageMarkerArray = $formatter->getItemMarkerArrayWrapped($rec, $pageConfId, 0, $pageMarker);
-    $pageSubpartArray = array();
+	/**
+	 * Liefert ein Array mit allen verfügbaren Subtemplates der Seiten
+	 * @param string $template
+	 * @param tx_rnbase_util_FormatUtil $formatter
+	 * @param string $pbMarker
+	 * @return array
+	 */
+	function getTemplates($template, &$formatter, $pbMarker) {
+		$ret = array();
+		foreach($this->pagePartsDef As $part) {
+			$ret[$part] = $formatter->cObj->getSubpart($template,'###'.$pbMarker.'_' . strtoUpper($part) . '_PAGE###');
+		}
+		return $ret;
+	}
 
-    if($this->link) {
-      $this->link->parameters(array($this->pageBrowser->getParamName('pointer') => $currentPage));
-      $pageWrappedSubpartArray['###'.$pageMarker.'LINK###'] = explode($this->token, $this->link->makeTag());
-    }
-    else
-      $pageWrappedSubpartArray['###'.$pageMarker.'LINK###'] = $noLink;
-      
-    $out = $formatter->cObj->substituteMarkerArrayCached($pageTemplate, $pageMarkerArray, $pageSubpartArray, $pageWrappedSubpartArray);
-    return $out;
-  }
+	/**
+	 * Initialisiert das globale SubpartArray und entfernt alle Subpartmarker.
+	 */
+	private function createSubpartArray($pbMarker) {
+		$ret = array();
 
-  /**
-   * Ermittelt die erste und die letzte Seite, die im Browser gezeigt wird.
-   * @return array with keys 'first' and 'last'
-   */
-  private function getFirstLastPage($pointer, $pageFloat, $totalPages, $maxPages) {
-    $ret = array();
-    if($pageFloat > -1) {
-      $ret['last'] = min($totalPages, max($pointer + 1 + $pageFloat, $maxPages));
-      $ret['first'] = max(0, $ret['last'] - $maxPages);
-    }
-    else {
-      $ret['first'] = 0;
-      $ret['last'] = t3lib_div::intInRange($totalPages, 1, $maxPages);
-    }
-    return $ret;
-  }
+		foreach($this->pagePartsDef As $part) {
+			$ret['###'.$pbMarker.'_' . strtoUpper($part) . '_PAGE###'] = '';
+		}
+		return $ret;
+	}
 
-  /**
-   * Liefert den korrekten Wert für den PageFloat. Das richtet den Ausschnitt der gezeigten
-   * Seiten im PageBrowser ein.
-   */
-  private function getPageFloat($pageFloat, $maxPages) {
-  	if($pageFloat) {
-      if(strtoupper($pageFloat) == 'CENTER') {
-        $pageFloat = ceil(($maxPages - 1) / 2);
-      }
-      else
-        $pageFloat = t3lib_div::intInRange($pageFloat, -1, $maxPages - 1);
-    }
-    else
-      $pageFloat = -1;
-    return $pageFloat;
-  }
-
-  /**
-   * Liefert ein Array mit allen verfügbaren Subtemplates der Seiten
-   */
-  function getTemplates($template, &$formatter, $pbMarker) {
-    $ret = array();
-    foreach($this->pagePartsDef As $part) {
-      $ret[$part] = $formatter->cObj->getSubpart($template,'###'.$pbMarker.'_' . strtoUpper($part) . '_PAGE###');
-    }
-    return $ret;
-  }
-
-
-  /**
-   * Initialisiert das globale SubpartArray und entfernt alle Subpartmarker.
-   */
-  private function createSubpartArray($pbMarker) {
-    $ret = array();
-
-    foreach($this->pagePartsDef As $part) {
-      $ret['###'.$pbMarker.'_' . strtoUpper($part) . '_PAGE###'] = '';
-    }
-    return $ret;
-  }
-
-  /**
-   * Initialisiert die interne Link-Instanz
-   * @param tx_rnbase_configurations $configuration
-   */
-  protected function initLink(&$configuration) {
-  	$this->link = $configuration->createLink(true);
-    $this->token = md5(microtime());
-    $this->link->label($this->token);
-    $this->link->destination($GLOBALS['TSFE']->id); // Link auf aktuelle Seite
-    $this->noLink = array('','');
-  }
+	/**
+	 * Initialisiert die interne Link-Instanz
+	 * @param tx_rnbase_configurations $configuration
+	 */
+	protected function initLink(&$configuration) {
+		$this->link = $configuration->createLink(true);
+		$this->token = md5(microtime());
+		$this->link->label($this->token);
+		$this->link->destination($GLOBALS['TSFE']->id); // Link auf aktuelle Seite
+		$this->noLink = array('','');
+	}
 }
 
 /*
