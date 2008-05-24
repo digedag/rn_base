@@ -314,7 +314,7 @@ class tx_rnbase_util_FormatUtil {
     // Jetzt die eigentliche Datei einbinden
     $filePath = $media->getMeta('file_path').$media->getMeta('file_name');
     if($media->meta['media_type'] == TXDAM_mtype_image) {
-      $markerArray['###'.$mediaMarker.'###'] = $this->getDAMImage($filePath, $confId);
+      $markerArray['###'.$mediaMarker.'_IMGTAG###'] = $this->getDAMImage($filePath, $confId);
     }
 
     return $markerArray;
