@@ -2,6 +2,9 @@
 
 Änderungen
 ----------
+v0.1.4 (25.05.2008)
+* eigenes Image-Tag für DAM-Bilder: ###_IMGTAG### 
+
 v0.1.2 (17.05.2008)
 * Kleinere Erweiterungen
 
