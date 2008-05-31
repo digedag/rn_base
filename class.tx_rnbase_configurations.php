@@ -479,12 +479,13 @@ class tx_rnbase_configurations {
     if(!$dynaMarkers) return $markers;
     $dynaMarkers = array_keys($dynaMarkers);
     if(!$dynaMarkers || !count($dynaMarkers)) return $markers;
-
     // Jetzt evt. vorhandene Punkt am Ende entfernen
     for($i=0, $size = count($dynaMarkers); $i < $size; $i++) {
       $markers[] = preg_replace('/\./', '', $dynaMarkers[$i]);
     }
-    return array_unique($markers);
+    $markers = array_unique($markers);
+    $markers = array_values($markers);
+    return $markers;
 	}
 
 	/**
