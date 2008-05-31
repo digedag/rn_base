@@ -2,6 +2,9 @@
 
 Änderungen
 ----------
+v0.1.5 (31.05.2008)
+* Kleine Bugfix in getKeyNames() der Config
+
 v0.1.4 (25.05.2008)
 * eigenes Image-Tag für DAM-Bilder: ###_IMGTAG### 
 
