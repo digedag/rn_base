@@ -97,11 +97,11 @@ class tx_rnbase_util_DB {
    * - 'recursive' - the recursive level to search for records in pages
    * - 'enablefieldsoff' - deactivate enableFields check
    * </pre>
-   * @param $what requested columns
-   * @param $from either the name of on table or an array with index 0 the from clause 
+   * @param string $what requested columns
+   * @param string $from either the name of on table or an array with index 0 the from clause 
    *              and index 1 the requested tablename
-   * @param $arr the options array
-   * @param $debug = 0 Set to 1 to debug sql-String
+   * @param array $arr the options array
+   * @param boolean $debug = 0 Set to 1 to debug sql-String
    */
   function doSelect($what, $from, $arr, $debug=0){
   	if($debug)
