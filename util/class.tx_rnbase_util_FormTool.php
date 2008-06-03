@@ -124,12 +124,14 @@ class tx_rnbase_util_FormTool {
     return $btn;
   }
   
-  /**
-   * Erstellt ein Textarea
-   */
-  function createTextArea($name, $value, $cols='30', $rows='5'){
-    return '
-      <textarea name="' . $name . '" style="width:288px;" class="formField1"'.
+	/**
+	 * Erstellt ein Textarea
+	 */
+	function createTextArea($name, $value, $cols='30', $rows='5', $options=0){
+		$options = is_array($options) ? $options : array();
+		$onChangeStr = $options['onchange'] ? ' onchange=" ' . $options['onchange'] . '" ' : '';
+		return '
+			<textarea name="' . $name . '" style="width:288px;" class="formField1"'. $onChangeStr .
       ' cols="'.$cols.'" rows="'.$rows.'" wrap="virtual">' . $value . '</textarea>';
   }
 
@@ -182,12 +184,15 @@ class tx_rnbase_util_FormTool {
    * Erstellt eine Selectbox mit festen Werten in der TCA. 
    * Die Labels werden in der richtigen Sprache angezeigt.
    */
-  function createSelectSingle($name, $value, $table, $column){
+  function createSelectSingle($name, $value, $table, $column, $options = 0){
     global $TCA, $LANG;
+    $options = is_array($options) ? $options : array();
 
-    $out = '
-      <select name="' . $name . '" class="select"> 
-    ';
+    $out = '<select name="' . $name . '" class="select" ';
+    if($options['onchange'])
+    	$out .= 'onChange="' . $options['onchange'] .'" ';
+    $out .= '>';
+
     // Die TCA laden
     t3lib_div::loadTCA($table);
 
@@ -206,11 +211,18 @@ class tx_rnbase_util_FormTool {
   /**
    * Erstellt eine Select-Box aus dem übergebenen Array
    */
-  function createSelectSingleByArray($name, $value, $arr, $reload=0){
-    $reloadStr = $reload ? ' onChange="this.form.submit()" ' : '';
+  function createSelectSingleByArray($name, $value, $arr, $options=0){
+  	$options = is_array($options) ? $options : array();
+  	
+    $onChangeStr = $options['reload'] ? ' this.form.submit(); ' : '';
+    if($options['onchange']) {
+    	$onChangeStr .= $options['onchange'];
+    }
+    if($onChangeStr)
+    	$onChangeStr = ' onchange="'.$onChangeStr.'" ';
 
     $out = '
-      <select name="' . $name . '" class="select"' . $reloadStr . '> 
+      <select name="' . $name . '" class="select"' . $onChangeStr . '> 
     ';
     
     // Die Options ermitteln
