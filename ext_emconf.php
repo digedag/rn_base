@@ -36,7 +36,7 @@ $EM_CONF[$_EXTKEY] = array(
 		'depends' => array(
 			'cms' => '',
 			'div' => '',
-			'lib' => '0.0.23-0.0.0',
+			'lib' => '0.1.0-0.0.0',
 		),
 		'conflicts' => array(
 		),
