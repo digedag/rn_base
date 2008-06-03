@@ -413,6 +413,9 @@ class tx_rnbase_util_DB {
 			case OP_INSET_INT:
 				$where .= ' FIND_IN_SET(' . $value . ', '.$tableAlias.'.' . strtolower($col).')';
 				break;
+			case OP_NOTEQ:
+				$where .= $tableAlias.'.' . strtolower($col) . ' != ' . $value . ' ';
+			  break;
 			case OP_EQ_INT:
 			case OP_NOTEQ_INT:
 			case OP_GT_INT:
