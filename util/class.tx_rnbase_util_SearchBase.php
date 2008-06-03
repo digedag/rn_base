@@ -36,6 +36,7 @@ define('OP_IN_SQL', 'IN SQL');
 define('OP_INSET_INT', 'FIND_IN_SET');
 define('OP_LIKE', 'LIKE');
 define('OP_EQ_INT', '=');
+define('OP_NOTEQ', 'OP_NOTEQ');
 define('OP_NOTEQ_INT', '!=');
 define('OP_EQ_NOCASE', 'OP_EQ_NOCASE');
 define('OP_LT_INT', '<');
@@ -263,72 +264,75 @@ abstract class tx_rnbase_util_SearchBase {
   }
 
 
-  /**
-   * Optionen aus der TS-Config setzen
-   * 
-   * @param array $options
-   * @param tx_rnbase_configurations $configurations
-   * @param string $confId Id der TS-Config z.B. myview.options.
-   */
-  static function setConfigOptions(&$options, &$configurations, $confId) {
-  	$cfgOptions = $configurations->get($confId);
-  	if(is_array($cfgOptions))
-  		foreach($cfgOptions As $option => $cfg) {
-  			// Auf einfache Option ohne Klammerung prüfen
-  			if(substr($option, -1) != '.') {
-	  			$options[$option] = $cfg;
-	  			continue;
-  			}
-  			// Zuerst den Namen der Option holen. Dieser ist immer klein
-  			// Beispiel orderby, count...
-  			$optionName = strtolower(substr($option, 0, strlen($option) -1));
-  			if(!is_array($cfg)) continue; // Ohne Angaben nix zu tun
+	/**
+	 * Optionen aus der TS-Config setzen
+	 * 
+	 * @param array $options
+	 * @param tx_rnbase_configurations $configurations
+	 * @param string $confId Id der TS-Config z.B. myview.options.
+	 */
+	static function setConfigOptions(&$options, &$configurations, $confId) {
+		$cfgOptions = $configurations->get($confId);
+		if(is_array($cfgOptions))
+			foreach($cfgOptions As $option => $cfg) {
+				// Auf einfache Option ohne Klammerung prüfen
+				if(substr($option, -1) != '.') {
+					$options[$option] = $cfg;
+					continue;
+				}
+				// Zuerst den Namen der Option holen. Dieser ist immer klein
+				// Beispiel orderby, count...
+				$optionName = strtolower(substr($option, 0, strlen($option) -1));
+				if(!is_array($cfg)) continue; // Ohne Angaben nix zu tun
 
-  			// TODO: Hier jetzt die Implementierung für orderby. da gibt es mehr
-  			// Angaben als z.B. bei count. Das muss noch erweitert werden!
-  			list($table, $data) = each($cfg);
-  			$tableAlias = strtoupper(substr($table, 0, strlen($table) -1));
-  			
-  			if(is_array($data))
-	  			foreach($data AS $col => $value) {
-	  				$options[$optionName][$tableAlias.'.'.$col] = $value;
-	  			}
-  		}
-  }
+				// Hier jetzt die Implementierung für orderby. da gibt es mehr
+				// Angaben als z.B. bei count.
+				while(list($table, $data) = each($cfg)) {
+					$tableAlias = strtoupper(substr($table, 0, strlen($table) -1));
+					if(is_array($data))
+						foreach($data AS $col => $value) {
+							$options[$optionName][$tableAlias.'.'.$col] = $value;
+						}
+					else // Ohne Array erfolgt direkt eine Ausgabe (Beispiel RAND = 1)
+						$options[$optionName][$table] = $data;
+				}
+			}
+	}
 
-  /**
-   * Felder über ein Configarray setzen
-   *
-   * @param array $fields
-   * @param array $cfgFields
-   */
-  static function setConfigFieldsByArray(&$fields, &$cfgFields) {
-  	if(is_array($cfgFields))
-  		foreach($cfgFields As $field => $cfg) {
-  			// Tabellen-Alias
-  			$tableAlias = strtoupper(substr($field, 0, strlen($field) -1));
+	/**
+	 * Felder über ein Configarray setzen
+	 *
+	 * @param array $fields
+	 * @param array $cfgFields
+	 */
+	static function setConfigFieldsByArray(&$fields, &$cfgFields) {
+		if(is_array($cfgFields))
+			foreach($cfgFields As $field => $cfg) {
+				// Tabellen-Alias
+				$tableAlias = strtoupper(substr($field, 0, strlen($field) -1));
 
-  			if($tableAlias == SEARCH_FIELD_JOINED) {
-  				// Hier sieht die Konfig etwas anders aus
-  				foreach($cfg As $jField) {
-  					$jField['operator'] = constant($jField['operator']);
-  					$jField['cols'] = t3lib_div::trimExplode(',',$jField['cols']);
-  					$fields[SEARCH_FIELD_JOINED][] = $jField;
-  				}
-  				continue;
-  			}
+				if($tableAlias == SEARCH_FIELD_JOINED) {
+					// Hier sieht die Konfig etwas anders aus
+					foreach($cfg As $jField) {
+						$jField['operator'] = constant($jField['operator']);
+						$jField['cols'] = t3lib_div::trimExplode(',',$jField['cols']);
+						$fields[SEARCH_FIELD_JOINED][] = $jField;
+					}
+					continue;
+				}
 
-  			// Spaltenname
-  			if(!is_array($cfg)) continue;
-  			list($col, $data) = each($cfg);
-  			$colName = strtoupper(substr($col, 0, strlen($col) -1));
-  			// Operator und Wert
-  			if(!is_array($data)) continue;
-  			list($op, $value) = each($data);
-  			$fields[$tableAlias.'.'.$colName][constant($op)] = $value;
-  		}
-  }
-  
+				// Spaltenname
+				if(!is_array($cfg)) continue;
+				while(list($col, $data) = each($cfg)) {
+					$colName = strtoupper(substr($col, 0, strlen($col) -1));
+					// Operator und Wert
+					if(!is_array($data)) continue;
+					list($op, $value) = each($data);
+					$fields[$tableAlias.'.'.$colName][constant($op)] = $value;
+				}
+			}
+	}
+
 	/**
    * Vergleichsfelder aus der TS-Config setzen
    * 
