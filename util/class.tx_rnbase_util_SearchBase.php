@@ -176,15 +176,21 @@ abstract class tx_rnbase_util_SearchBase {
 		if(!isset($options['count']) && is_array($options['orderby'])) {
 			// Aus dem Array einen String bauen
 			$orderby = array();
-			foreach ($options['orderby'] As $field => $order) {
-				list($tableAlias, $col) = explode('.', $field);
-				$tableAlias = $this->tableMapping[$tableAlias];
-				if($tableAlias)
-					$orderby[] = $tableAlias.'.' . strtolower($col) . ' ' . ( strtoupper($order) == 'DESC' ? 'DESC' : 'ASC');
-				else {
-					$orderby[] = $field . ' ' . ( strtoupper($order) == 'DESC' ? 'DESC' : 'ASC');
+			if(array_key_exists('RAND', $options['orderby']) && $options['orderby']['RAND']) {
+		    $orderby[] = 'RAND()';
+		  }
+		  else {
+		  	if(array_key_exists('RAND', $options['orderby']))	unset($options['orderby']['RAND']);
+				foreach ($options['orderby'] As $field => $order) {
+					list($tableAlias, $col) = explode('.', $field);
+					$tableAlias = $this->tableMapping[$tableAlias];
+					if($tableAlias)
+						$orderby[] = $tableAlias.'.' . strtolower($col) . ' ' . ( strtoupper($order) == 'DESC' ? 'DESC' : 'ASC');
+					else {
+						$orderby[] = $field . ' ' . ( strtoupper($order) == 'DESC' ? 'DESC' : 'ASC');
+					}
 				}
-			}
+		  }
 			$sqlOptions['orderby'] = implode(',', $orderby);
 		}
 		if(!(isset($options['count']) || isset($options['what']) || isset($options['groupby']) ))
