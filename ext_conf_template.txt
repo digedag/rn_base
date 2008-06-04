@@ -1,0 +1,5 @@
+  # cat=basic//10; type=boolean; label= Allow verbose mayday messages: Don't use this option in production enviroments. You will get a lot of internal server information. For test purposes only!
+verboseMayday = 0
+
+  # cat=basic//10; type=boolean; label= Stop processing if mayday error occures.
+dieOnMayday = 1
