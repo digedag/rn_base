@@ -2,6 +2,10 @@
 
 Änderungen
 ----------
+v0.1.7 (??.06.2008)
+* Das Verhalten der Mayday Ausgaben kann konfiguriert werden.
+* In der Suche kann die Sortierung per RAND() erfolgen
+
 v0.1.5 (31.05.2008)
 * Kleine Bugfix in getKeyNames() der Config
 

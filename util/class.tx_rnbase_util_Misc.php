@@ -22,6 +22,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
+require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase_configurations.php');
+
 /**
  * Contains some helpful methods
  */
@@ -119,7 +121,9 @@ class tx_rnbase_util_Misc {
 		$sContent =	'<h1 id="title">Mayday</h1>';
 		$sContent .= '<div id="errormessage">' . $msg . '</div>';
 		$sContent .= '<hr />';
-		$sContent .= implode('', $aDebug);
+		$verbose = intval(tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'verboseMayday'));
+		if($verbose)
+			$sContent .= implode('', $aDebug);
 
 		$sPage =<<<MAYDAYPAGE
 <!DOCTYPE html
@@ -171,7 +175,11 @@ class tx_rnbase_util_Misc {
 
 MAYDAYPAGE;
 
-		die($sPage);
+		$dieOnMayday = intval(tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'dieOnMayday'));
+		if($dieOnMayday)
+			die($sPage);
+		else
+			echo($sPage);
 	}
 
 	/**
