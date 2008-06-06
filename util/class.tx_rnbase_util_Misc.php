@@ -272,6 +272,17 @@ MAYDAYPAGE;
 			$GLOBALS['TT']->start();
 		}
 	}
+	/**
+	 * Umlaute durch normale Buchstaben erstetzen. Aus Ü wird Ue.
+	 *
+	 * @param string $str
+	 * @return string
+	 */
+	static function removeUmlauts($str) {
+		$array = array ( 'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'ß' => 'ss', 'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue');
+		return strtr ( $str, $array );
+	}
+		
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Misc.php']) {
