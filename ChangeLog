@@ -2,6 +2,9 @@
 
 Änderungen
 ----------
+v0.2.2 (11.06.2008)
+* in prepareTSFE wird die Konstante PATH_tslib geprüft und ggf. gesetzt.
+
 v0.2.1 (06.06.2008)
 * Das Verhalten der Mayday Ausgaben kann konfiguriert werden.
 * In der Suche kann die Sortierung per RAND() erfolgen
