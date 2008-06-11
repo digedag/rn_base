@@ -256,6 +256,20 @@ MAYDAYPAGE;
    */
 	static function prepareTSFE() {
 		if(!is_object($GLOBALS['TSFE'])) {
+			if(!defined('PATH_tslib')) {
+				// PATH_tslib setzen
+				if (@is_dir(PATH_site.'typo3/sysext/cms/tslib/')) {
+					define('PATH_tslib', PATH_site.'typo3/sysext/cms/tslib/');
+				} elseif (@is_dir(PATH_site.'tslib/')) {
+					define('PATH_tslib', PATH_site.'tslib/');
+				} else {
+					$configured_tslib_path = '';
+					// example:
+					// $configured_tslib_path = '/var/www/mysite/typo3/sysext/cms/tslib/';
+					define('PATH_tslib', $configured_tslib_path);
+				}
+			}
+
 			require_once(PATH_tslib.'class.tslib_content.php');
 			require_once(PATH_tslib.'class.tslib_fe.php');
 			require_once(PATH_t3lib.'class.t3lib_page.php');
