@@ -120,7 +120,7 @@ class tx_rnbase_util_BaseMarker {
   	$links = $formatter->configurations->get($confId.'links.');
   	$linkMarker = $marker . '_' . strtoupper($linkId).'LINK';
   	if($links[$linkId] || $links[$linkId.'.']) {
-  		$pid = $links[$linkId.'.']['pid'];
+  		$pid = $formatter->cObj->stdWrap($links[$linkId.'.']['pid'], $links[$linkId.'.']['pid.']);
   		$qualifier = $links[$linkId.'.']['qualifier'];
   		if($qualifier) $linkObj->designator($qualifier);
   		$target = $links[$linkId.'.']['target'];
