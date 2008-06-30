@@ -196,7 +196,7 @@ class tx_rnbase_controller {
 		$GLOBALS['TT']->push('init parameters' , '');
 		$parameters = $this->_makeParameterObject($configurations);
 		// Make sure to keep all parameters
-		$configurations->setKeepVars($parameters);
+		$configurations->setParameters($parameters);
 		$GLOBALS['TT']->pull();
 
 		// Finding the action:
@@ -320,8 +320,8 @@ class tx_rnbase_controller {
    *
    * Used by main()
    *
-   * @param      array    the local configuration array
-   * @return     object   the configurations
+   * @param array $configurationArray   the local configuration array
+   * @return tx_rnbase_configurations  the configurations
    */
 
   function _makeConfigurationsObject($configurationArray){

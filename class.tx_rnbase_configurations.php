@@ -84,6 +84,7 @@ class tx_rnbase_configurations {
   // We store all Data to an internal ArrayObject
   var $_dataStore;
   var $_viewData;
+  var $_parameters;
   var $_keepVars;
   var $_qualifier;
   var $pluginUid; // Die UID des Plugins (also des Content-Objekts)
@@ -203,38 +204,47 @@ class tx_rnbase_configurations {
     return $path ? $path : 'EXT:' . $this->getExtensionKey() . '/views/templates/';
   }
 
-  /**
-   * Factory-Method for links. The new link is initialized with qualifier and optional
-   * with keepVars set.
-   * @param boolean $addKeepVars whether or not keepVars should be set
-   * @return tx_lib_link
-   */
-  function &createLink($addKeepVars = true) {
-    $linkClass = tx_div::makeInstanceClassName('tx_lib_link');
-    $link = new $linkClass;
-    $link->designatorString = $this->getQualifier();
-    // Die KeepVars setzen
-    if($addKeepVars)
-	    $link->overruled($this->getKeepVars());
-    return $link;
-  }
-  /**
-   * Returns the KeepVars-Array
-   */
-  function getKeepVars() {
-    return $this->_keepVars;
-  }
-  /**
-   * Set an ArrayObject with variables to keep between requests
-   */
-  function setKeepVars($keepVars) {
-    $arr = $keepVars->getArrayCopy();
+	/**
+	 * Factory-Method for links. The new link is initialized with qualifier and optional
+	 * with keepVars set.
+	 * @param boolean $addKeepVars whether or not keepVars should be set
+	 * @return tx_lib_link
+	 */
+	function &createLink($addKeepVars = true) {
+		$linkClass = tx_div::makeInstanceClassName('tx_lib_link');
+		$link = new $linkClass;
+		$link->designatorString = $this->getQualifier();
+		// Die KeepVars setzen
+		if($addKeepVars)
+			$link->overruled($this->getKeepVars());
+		return $link;
+	}
+	function setParameters($parameters) {
+		$this->_parameters = $parameters;
+		// Make sure to keep all parameters
+		$this->setKeepVars($parameters);
+	}
+	function getParameters() {
+		return $this->_parameters;
+	}
 
-    foreach( $arr As $key => $value) {
-    	if(strpos($key, 'NK_') === FALSE)
-    		$this->_keepVars->offsetSet($key, $value);
-    }
-  }
+	/**
+	 * Returns the KeepVars-Array
+	 */
+	function getKeepVars() {
+		return $this->_keepVars;
+	}
+	/**
+	 * Set an ArrayObject with variables to keep between requests
+	 */
+	function setKeepVars($keepVars) {
+		$arr = $keepVars->getArrayCopy();
+
+		foreach( $arr As $key => $value) {
+			if(strpos($key, 'NK_') === FALSE)
+				$this->_keepVars->offsetSet($key, $value);
+		}
+	}
 
   /**
    * Add a value that must be kept by parameters
