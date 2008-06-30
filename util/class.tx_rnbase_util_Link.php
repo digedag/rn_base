@@ -43,7 +43,7 @@
  * @package    TYPO3
  * @subpackage lib
  */
-class tx_lib_link{
+class tx_rnbase_util_Link{
 
 	var $tagAttributes = array();       // setting attributes for the tag in general
 	var $classString = '';              // tags class attribute
@@ -440,8 +440,8 @@ class tx_lib_link{
 
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/lib/class.tx_lib_link.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/lib/class.tx_lib_link.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Link.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Link.php']);
 }
 
 ?>
