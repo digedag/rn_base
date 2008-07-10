@@ -286,6 +286,17 @@ class tx_rnbase_util_FormTool {
 //    $this->doc->postCode.= $CMparts[2];
     return $JScode;
   }
+	function getTCEFormArray($table,$theUid, $isNew = false) {
+		$trData = t3lib_div::makeInstance('t3lib_transferData');
+		$trData->addRawData = TRUE;
+//		$trData->defVals = $this->defVals;
+//		$trData->lockRecords=1;
+//		$trData->disableRTE = $this->MOD_SETTINGS['disableRTE'];
+//		$trData->prevPageID = $prevPageID;
+		$trData->fetchRecord($table,$theUid,$isNew?'new':'');	// 'new'
+		reset($trData->regTableItems_data);
+		return $trData->regTableItems_data;
+	}
 
 }
 
