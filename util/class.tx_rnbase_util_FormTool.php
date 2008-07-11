@@ -286,7 +286,61 @@ class tx_rnbase_util_FormTool {
 //    $this->doc->postCode.= $CMparts[2];
     return $JScode;
   }
-	function getTCEFormArray($table,$theUid, $isNew = false) {
+	/**
+	 * Zeigt ein TabMenu
+	 *
+	 * @param int $pid
+	 * @param string $name
+	 * @param array $entries
+	 * @return array with keys 'menu' and 'value'
+	 */
+	public function showTabMenu($pid, $name, $modName, $entries) {
+		$MENU = Array (
+			$name => $entries
+		);
+		$SETTINGS = t3lib_BEfunc::getModuleData(
+			$MENU,t3lib_div::_GP('SET'),$modName
+		);
+
+		$out = '
+		<div class="typo3-dyntabmenu-tabs">
+			<table class="typo3-dyntabmenu" border="0" cellpadding="0" cellspacing="0">
+			<tbody><tr>';
+
+		foreach($entries As $key => $value) {
+			//$out .= '<td class="tab" onmouseover="DTM_mouseOver(this);" onmouseout="DTM_mouseOut(this);" nowrap="nowrap">';
+			$out .= '
+				<td class="tab'.($SETTINGS[$name] == $key ? 'Act' : '').'" nowrap="nowrap">';
+			//$out .= '<a href="#" onclick="jumpToUrl(\'index.php?&amp;id='.$pid.'&amp;SET['.$name.']='. $key .',this);\'>'.$value.'<img name="DTM-307fab8d03-1-REQ" src="clear.gif" alt="" height="10" hspace="4" width="10"></a></td>';
+			$out .= '<a href="#" onclick="jumpToUrl(\'index.php?&amp;id='.$pid.'&amp;SET['.$name.']='. $key .'\',this);">'.$value.'</a></td>';
+		}
+		$out .= '
+				</tr>
+			</tbody></table></div>
+		';
+		$ret['menu'] = $out;
+		$ret['value'] = $SETTINGS[$name];
+		return $ret;
+	}
+	/**
+	 * Zeigt eine Art Tab-Menu
+	 *
+	 */
+	public function showMenu($pid, $name, $modName, $entries) {
+		$MENU = Array (
+			$name => $entries
+		);
+		$SETTINGS = t3lib_BEfunc::getModuleData(
+			$MENU,t3lib_div::_GP('SET'),$modName
+		);
+		$ret['menu'] = t3lib_BEfunc::getFuncMenu(
+			$pid,'SET['.$name.']',$SETTINGS[$name],$MENU[$name]
+		);
+		$ret['value'] = $SETTINGS[$name];
+		return $ret;
+  }
+
+  function getTCEFormArray($table,$theUid, $isNew = false) {
 		$trData = t3lib_div::makeInstance('t3lib_transferData');
 		$trData->addRawData = TRUE;
 //		$trData->defVals = $this->defVals;
