@@ -2,6 +2,9 @@
 
 Änderungen
 ----------
+v0.2.4 (??.06.2008)
+* Neue Methode FormUtil::getTCAFormArray()
+
 v0.2.3 (30.06.2008)
 * xclass definitions korrigiert
 * Parameter können über die Configurations abgefragt werden
