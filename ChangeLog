@@ -2,7 +2,12 @@
 
 Änderungen
 ----------
-v0.2.4 (11.06.2008)
+v0.2.5 (20.06.2008)
+* Fix in disableLink (Marker für LinkUrl)
+* Neue Methoden showMenu() und showTabMenu() in util_FormTool
+* Neue Methode objImplode in util_Misc
+
+v0.2.4 (11.07.2008)
 * Neue Methoden FormUtil::getTCAFormArray(), FormUtil::getMenu() und FormUtil::getTabMenu()
 
 v0.2.3 (30.06.2008)
