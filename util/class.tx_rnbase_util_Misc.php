@@ -296,7 +296,13 @@ MAYDAYPAGE;
 		$array = array ( 'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'ß' => 'ss', 'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue');
 		return strtr ( $str, $array );
 	}
-		
+	static function objImplode($sep, $arr) {
+		$uids = array();
+		foreach($arr As $obj) {
+			$uids[] = $obj->uid;
+		}
+		return implode($sep, $uids);
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Misc.php']) {
