@@ -159,7 +159,7 @@ class tx_rnbase_util_BaseMarker {
 			$subpartArray['###'.$linkMarker . '###'] = '';
   	else
 			$wrappedSubpartArray['###'.$linkMarker . '###'] = array('', '');
-		$markerArray['###'.$linkMarker . '_URL###'] = '';
+		$markerArray['###'.$linkMarker . 'URL###'] = '';
 	}
 
   /**
