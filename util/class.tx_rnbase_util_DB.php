@@ -120,7 +120,8 @@ class tx_rnbase_util_DB {
     $limit = intval($arr['limit']) > 0 ? intval($arr['limit']) : '';
     $pidList = is_string($arr['pidlist']) ? $arr['pidlist'] : '';
     $recursive = intval($arr['recursive']) ? intval($arr['recursive']) : 0;
-
+    $i18n = is_string($arr['i18n']) > 0 ? $arr['i18n'] : '';
+    
     // offset und limit kombinieren
     if($limit) { // bei gesetztem limit ist offset optional
       $limit = ($offset > 0) ? $offset . ',' . $limit : $limit;
@@ -137,8 +138,13 @@ class tx_rnbase_util_DB {
       $where .= tslib_cObj::enableFields($tableName);
     }
 
+    if(strlen($i18n) > 0) {
+    	$i18n = implode(',', t3lib_div::intExplode(',', $i18n));
+      $where .= ' AND '.$tableName.'.sys_language_uid IN (' . $i18n . ')';
+    }
+    
     if(strlen($pidList) > 0)
-      $where .= ' AND pid IN (' . tx_rnbase_util_DB::_getPidList($pidList,$recursive) . ')';
+      $where .= ' AND '.$tableName.'.pid IN (' . tx_rnbase_util_DB::_getPidList($pidList,$recursive) . ')';
 
     if($debug) {
       $sql = $GLOBALS['TYPO3_DB']->SELECTquery($what,$fromClause,$where,$groupBy,$orderBy,$limit);
