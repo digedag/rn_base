@@ -303,6 +303,22 @@ MAYDAYPAGE;
 		}
 		return implode($sep, $uids);
 	}
+	/**
+	 * Validate a search string for minimum length. All smaller parts are removed. 
+	 *
+	 * @param string $searchterm
+	 * @param int $minLength
+	 * @return string
+	 */
+	static function validateSearchString($searchterm, $minLength=3) {
+		// Suchteile splitten
+		$ret = array();
+		$arr = t3lib_div::trimExplode(' ', $searchterm);
+		foreach($arr As $term) {
+			if(strlen($term) >= $minLength) $ret[] = $term;
+		}
+		return trim(implode(' ' , $ret));
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Misc.php']) {
