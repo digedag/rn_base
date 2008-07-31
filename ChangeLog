@@ -2,7 +2,10 @@
 
 Änderungen
 ----------
-v0.2.5 (20.06.2008)
+v0.2.6 (31.07.2008)
+* Neue Methode tx_rnbase_util_Misc::validateSearchString()
+
+v0.2.5 (20.07.2008)
 * Fix in disableLink (Marker für LinkUrl)
 * Neue Methoden showMenu() und showTabMenu() in util_FormTool
 * Neue Methode objImplode in util_Misc
