@@ -582,34 +582,40 @@ class tx_rnbase_configurations {
 		}
 		return $ret;
 	}
-  /**
-   * Load flexformdata into the object
-   *
-   * Takes a xml string or an already rendered array.
-   * Typically it would come from the field tt_content.pi_flexform
-   *
-   * This configuration assumes unique key names for the fields.
-   * The names of the sheets are of no relevance.
-   * If you need a more sophisticated solution simply write a your
-   * own loader function in an inherited class.
-   *
-   * @param mixed  xml or rendered flexform array
-   * @return void
-   */
-  function _setFlexForm($xmlOrArray) {
-    $languagePointer = 'lDEF'; // we don't support languages here for now
-    $valuePointer = 'vDEF';
-    // also hardcoded here
-    if (!$xmlOrArray) {
-      return false;
-    }
-    // Converting flexform data into array if neccessary
-    if (is_array($xmlOrArray)) {
-      $array = $xmlOrArray;
-    } else {
-    	$array = t3lib_div::xml2array($xmlOrArray);
-    }
+	/**
+	 * Load flexformdata into the object
+	 *
+	 * Takes a xml string or an already rendered array.
+	 * Typically it would come from the field tt_content.pi_flexform
+	 *
+	 * This configuration assumes unique key names for the fields.
+	 * The names of the sheets are of no relevance.
+	 * If you need a more sophisticated solution simply write a your
+	 * own loader function in an inherited class.
+	 *
+	 * @param mixed  xml or rendered flexform array
+	 * @return void
+	 */
+	function _setFlexForm($xmlOrArray) {
+		$languagePointer = 'lDEF'; // we don't support languages here for now
+		$valuePointer = 'vDEF';
+		// also hardcoded here
+		if (!$xmlOrArray) {
+			return false;
+		}
+		// Converting flexform data into array if neccessary
+		if (is_array($xmlOrArray)) {
+			$array = $xmlOrArray;
+		} else {
+			$array = t3lib_div::xml2array($xmlOrArray);
+		}
 		$data = $array['data'];
+		// Looking for the special sheet s_tssetup
+		$flexTs = false;
+		if(isset($data['s_tssetup'])) {
+			$flexTs = $data['s_tssetup']['lDEF']['flexformTS']['vDEF'];
+			unset($data['s_tssetup']);
+		}
 		foreach((array) $data as $sheet => $languages) {
 			foreach((array) $languages[$languagePointer] as $key => $def) {
 				// Wir nehmen Flexformwerte nur, wenn sie sinnvolle Daten enthalten
@@ -630,8 +636,14 @@ class tx_rnbase_configurations {
 				}
 			}
 		}
-//if($pathArray[0] == 'listview')
-//t3lib_div::debug($this->_dataStore->array, 'tx_rnbase_configurations'); // TODO: Remove me!
+		if($flexTs) {
+			// This handles ts setup from flexform
+			$tsParser = t3lib_div::makeInstance('t3lib_TSparser');
+			$tsParser->setup = $this->_dataStore->array;
+			$tsParser->parse($flexTs); 
+			$flexTsData = $tsParser->setup;
+			$this->_dataStore->exchangeArray($flexTsData);
+		}
 	}
 
   private function mergeTSReference($key, $conf) {
