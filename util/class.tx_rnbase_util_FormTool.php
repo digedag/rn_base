@@ -162,23 +162,23 @@ class tx_rnbase_util_FormTool {
     return $out;
   }
 
-  /**
-   * Erstellt ein Eingabefeld für DateTime
-   */
-  function createDateInput($name, $value){
+	/**
+	 * Erstellt ein Eingabefeld für DateTime
+	 */
+	function createDateInput($name, $value){
+		// Take care of current time zone. Thanks to Thomas Maroschik!
+		$value += date('Z', $value);
+		$out = '
+			<input type="text" name="' . $name . '_hr"
+				onchange="typo3FormFieldGet(\'' . $name . '\', \'datetime\', \'\', 0,0);"'.
+			$GLOBALS['TBE_TEMPLATE']->formWidth(11).
+		' />'.'
+			<input type="hidden" value="'.htmlspecialchars($value).'" name="' . $name . '" />';
 
-    $out = '
-      <input type="text" name="' . $name . '_hr" 
-        onchange="typo3FormFieldGet(\'' . $name . '\', \'datetime\', \'\', 0,0);"'.
-      $GLOBALS['TBE_TEMPLATE']->formWidth(11).
-    ' />'.'
-      <input type="hidden" value="'.htmlspecialchars($value).'" name="' . $name . '" />';
-
-    // JS-Code für die Initialisierung im TCEform eintragen
-    $this->form->extJSCODE .= 'typo3FormFieldSet("' . $name . '", "datetime", "", 0,0);';
-
-    return $out;
-  }
+		// JS-Code für die Initialisierung im TCEform eintragen
+		$this->form->extJSCODE .= 'typo3FormFieldSet("' . $name . '", "datetime", "", 0,0);';
+		return $out;
+	}
 
   /**
    * Erstellt eine Selectbox mit festen Werten in der TCA. 
