@@ -171,6 +171,10 @@ abstract class tx_rnbase_util_SearchBase {
 			$sqlOptions['offset'] = $options['offset'];
 		if($options['enablefieldsoff'])
 			$sqlOptions['enablefieldsoff'] = $options['enablefieldsoff'];
+		if($options['enablefieldsbe'])
+			$sqlOptions['enablefieldsbe'] = $options['enablefieldsbe'];
+		if($options['enablefieldsfe'])
+			$sqlOptions['enablefieldsfe'] = $options['enablefieldsfe'];
 		if($options['groupby'])
 			$sqlOptions['groupby'] = $options['groupby'];
 		if(!isset($options['count']) && is_array($options['orderby'])) {

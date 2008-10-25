@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006 Rene Nitzsche
+ *  (c) 2006-2008 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -25,9 +25,10 @@
 require_once(t3lib_extMgm::extPath('div') . 'class.tx_div.php');
 
 /**
- * Contains utility functions for formatting
+ * Contains utility functions for database access
  */
 class tx_rnbase_util_DB {
+	private static $sysPage = null;
 	/**
 	 * Make a query to database. You will receive an array with result rows. All
 	 * database resources are closed after each call.
@@ -83,94 +84,115 @@ class tx_rnbase_util_DB {
     return $rows;
   }
 
-  /**
-   * Generische Schnittstelle für Datenbankabfragen. Anstatt vieler Parameter wird hier ein
-   * Hash als Parameter verwendet, der mögliche Informationen aufnimmt.
-   * Es sind die folgenden Parameter zulässig:
-   * <pre>
-   * - 'where' - the Where-Clause
-   * - 'groupby' - the GroupBy-Clause
-   * - 'orderby' - the OrderBy-Clause
-   * - 'limit' - limits the number of result rows
-   * - 'wrapperclass' - A wrapper for each result rows
-   * - 'pidlist' - A list of page-IDs to search for records
-   * - 'recursive' - the recursive level to search for records in pages
-   * - 'enablefieldsoff' - deactivate enableFields check
-   * </pre>
-   * @param string $what requested columns
-   * @param string $from either the name of on table or an array with index 0 the from clause 
-   *              and index 1 the requested tablename
-   * @param array $arr the options array
-   * @param boolean $debug = 0 Set to 1 to debug sql-String
-   */
-  function doSelect($what, $from, $arr, $debug=0){
-  	if($debug)
-  		$time = microtime(true);
-  	$tableName = $from;
-    $fromClause = $from;
-    if(is_array($from)){
-      $tableName = $from[1];
-      $fromClause = $from[0];
-    }
+	/**
+	 * Generische Schnittstelle für Datenbankabfragen. Anstatt vieler Parameter wird hier ein
+	 * Hash als Parameter verwendet, der mögliche Informationen aufnimmt.
+	 * Es sind die folgenden Parameter zulässig:
+	 * <pre>
+	 * - 'where' - the Where-Clause
+	 * - 'groupby' - the GroupBy-Clause
+	 * - 'orderby' - the OrderBy-Clause
+	 * - 'limit' - limits the number of result rows
+	 * - 'wrapperclass' - A wrapper for each result rows
+	 * - 'pidlist' - A list of page-IDs to search for records
+	 * - 'recursive' - the recursive level to search for records in pages
+	 * - 'enablefieldsoff' - deactivate enableFields check
+	 * - 'enablefieldsbe' - force enableFields check for BE (this usually ignores hidden records)
+	 * - 'enablefieldsfe' - force enableFields check for FE
+	 * </pre>
+	 * @param string $what requested columns
+	 * @param string $from either the name of on table or an array with index 0 the from clause 
+	 *              and index 1 the requested tablename
+	 * @param array $arr the options array
+	 * @param boolean $debug = 0 Set to 1 to debug sql-String
+	 */
+	function doSelect($what, $from, $arr, $debug=0){
+		if($debug)
+			$time = microtime(true);
+		$tableName = $from;
+		$fromClause = $from;
+		if(is_array($from)){
+			$tableName = $from[1];
+			$fromClause = $from[0];
+		}
 
-    $where = is_string($arr['where']) ? $arr['where'] : '1';
-    $groupBy = is_string($arr['groupby']) ? $arr['groupby'] : '';
-    $orderBy = is_string($arr['orderby']) ? $arr['orderby'] : '';
-    $offset = intval($arr['offset']) > 0 ? intval($arr['offset']) : 0;
-    $limit = intval($arr['limit']) > 0 ? intval($arr['limit']) : '';
-    $pidList = is_string($arr['pidlist']) ? $arr['pidlist'] : '';
-    $recursive = intval($arr['recursive']) ? intval($arr['recursive']) : 0;
-    $i18n = is_string($arr['i18n']) > 0 ? $arr['i18n'] : '';
-    
-    // offset und limit kombinieren
-    if($limit) { // bei gesetztem limit ist offset optional
-      $limit = ($offset > 0) ? $offset . ',' . $limit : $limit;
-    }
-    elseif($offset) { // Bei gesetztem Offset ist limit Pflicht (default 1000)
-      $limit = ($limit > 0) ? $offset . ',' . $limit : $offset . ',1000';
-    }
-    else $limit = '';
-    
-    $wrapper = is_string($arr['wrapperclass']) ? tx_div::makeInstanceClassName($arr['wrapperclass']) : 0;
+		$where = is_string($arr['where']) ? $arr['where'] : '1';
+		$groupBy = is_string($arr['groupby']) ? $arr['groupby'] : '';
+		$orderBy = is_string($arr['orderby']) ? $arr['orderby'] : '';
+		$offset = intval($arr['offset']) > 0 ? intval($arr['offset']) : 0;
+		$limit = intval($arr['limit']) > 0 ? intval($arr['limit']) : '';
+		$pidList = is_string($arr['pidlist']) ? $arr['pidlist'] : '';
+		$recursive = intval($arr['recursive']) ? intval($arr['recursive']) : 0;
+		$i18n = is_string($arr['i18n']) > 0 ? $arr['i18n'] : '';
+
+		// offset und limit kombinieren
+		if($limit) { // bei gesetztem limit ist offset optional
+			$limit = ($offset > 0) ? $offset . ',' . $limit : $limit;
+		}
+		elseif($offset) { // Bei gesetztem Offset ist limit Pflicht (default 1000)
+			$limit = ($limit > 0) ? $offset . ',' . $limit : $offset . ',1000';
+		}
+		else $limit = '';
+
+		$wrapper = is_string($arr['wrapperclass']) ? tx_div::makeInstanceClassName($arr['wrapperclass']) : 0;
 
 		if(!$arr['enablefieldsoff']) {
 			// Zur Where-Clause noch die gültigen Felder hinzufügen
-      $where .= tslib_cObj::enableFields($tableName);
-    }
+			if (!is_object(self::$sysPage)) {
+				require_once(PATH_t3lib."class.t3lib_page.php");
+				self::$sysPage = t3lib_div::makeInstance('t3lib_pageSelect');
+				self::$sysPage->init($this->showHiddenPage);
+			}
+			$mode = (TYPO3_MODE == 'BE') ? 1 : 0;
+			if(intval($arr['enablefieldsbe']))
+				$mode = 1;
+			elseif(intval($arr['enablefieldsfe']))
+				$mode = 0;
+			$where .= self::$sysPage->enableFields($tableName, $mode);
+//			$where .= tslib_cObj::enableFields($tableName);
+		}
 
-    if(strlen($i18n) > 0) {
-    	$i18n = implode(',', t3lib_div::intExplode(',', $i18n));
-      $where .= ' AND '.$tableName.'.sys_language_uid IN (' . $i18n . ')';
-    }
-    
-    if(strlen($pidList) > 0)
-      $where .= ' AND '.$tableName.'.pid IN (' . tx_rnbase_util_DB::_getPidList($pidList,$recursive) . ')';
+		if(strlen($i18n) > 0) {
+			$i18n = implode(',', t3lib_div::intExplode(',', $i18n));
+			$where .= ' AND '.$tableName.'.sys_language_uid IN (' . $i18n . ')';
+		}
 
-    if($debug) {
-      $sql = $GLOBALS['TYPO3_DB']->SELECTquery($what,$fromClause,$where,$groupBy,$orderBy,$limit);
-      t3lib_div::debug($sql, 'SQL');
-      t3lib_div::debug(array($what,$from,$where));
-    }
+		if(strlen($pidList) > 0)
+			$where .= ' AND '.$tableName.'.pid IN (' . tx_rnbase_util_DB::_getPidList($pidList,$recursive) . ')';
 
-    $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-      $what,
-      $fromClause,
-      $where,
-      $groupBy,
-      $orderBy,
-      $limit
-    );
+		if($debug) {
+			$sql = $GLOBALS['TYPO3_DB']->SELECTquery($what,$fromClause,$where,$groupBy,$orderBy,$limit);
+			t3lib_div::debug($sql, 'SQL');
+			t3lib_div::debug(array($what,$from,$where));
+		}
 
-    $rows = array();
-    while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
-      $rows[] = ($wrapper) ? new $wrapper($row) : $row;
-    }
-    $GLOBALS['TYPO3_DB']->sql_free_result($res);
-    if($debug)
-      t3lib_div::debug(count($rows),'Rows retrieved. Time: ' . (microtime(true) - $time) . 's');
-    return $rows;
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			$what,
+			$fromClause,
+			$where,
+			$groupBy,
+			$orderBy,
+			$limit
+		);
 
+		$rows = array();
+		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
+			$rows[] = ($wrapper) ? new $wrapper($row) : $row;
+		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		if($debug)
+			t3lib_div::debug(count($rows),'Rows retrieved. Time: ' . (microtime(true) - $time) . 's');
+		return $rows;
 	}
+
+	/**
+	 * Make a SQL INSERT Statement
+	 *
+	 * @param string $tablename
+	 * @param array $values
+	 * @param int $debug
+	 * @return int UID of created record
+	 */
 	function doInsert($tablename, $values, $debug=0) {
 		if($debug) {
 			$sql = $GLOBALS['TYPO3_DB']->INSERTquery($tablename,$values);
