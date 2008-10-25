@@ -2,7 +2,12 @@
 
 Änderungen
 ----------
-v0.2.7 (??.08.2008)
+v0.2.8 (25.10.2008)
+* tx_rnbase_util_DB::doSelect() unterscheidet bei den enableFields automatisch zwischen BE und FE.
+* Für den Check von enableFields wird jetzt eine eigene Instanz von t3lib_pageSelect verwendet um Fehler im BE zu vermeiden
+* Die Extension verlangt nun PHP 5
+
+v0.2.7 (08.08.2008)
 * Die Configuration wertet automatisch das Typoscript-Setup aus einem Flexform aus. Das Sheet muss "s_tssetup" und das Feld "flexformTS" heissen.
 * FormTool::createDateInput() fixed. There was an issue with time zone. Thanks to Thomas Maroschik!
 
