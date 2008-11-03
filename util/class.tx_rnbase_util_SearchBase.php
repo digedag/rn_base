@@ -319,7 +319,8 @@ abstract class tx_rnbase_util_SearchBase {
 		if(is_array($cfgFields))
 			foreach($cfgFields As $field => $cfg) {
 				// Tabellen-Alias
-				$tableAlias = strtoupper(substr($field, 0, strlen($field) -1));
+				$tableAlias = (substr($field, strlen($field) -1, 1) == '.') ? 
+											strtoupper(substr($field, 0, strlen($field) -1)) : strtoupper($field);
 
 				if($tableAlias == SEARCH_FIELD_JOINED) {
 					// Hier sieht die Konfig etwas anders aus
@@ -329,6 +330,9 @@ abstract class tx_rnbase_util_SearchBase {
 						$fields[SEARCH_FIELD_JOINED][] = $jField;
 					}
 					continue;
+				}
+				if($tableAlias == SEARCH_FIELD_CUSTOM) {
+					$fields[SEARCH_FIELD_CUSTOM] = $cfg;
 				}
 
 				// Spaltenname
