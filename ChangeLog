@@ -2,7 +2,7 @@
 
 Änderungen
 ----------
-v0.2.10 (06.11.2008)
+v0.2.11 (06.11.2008)
 * Verbesserte Ausgabe von DAM-Bildern per Typoscript. Die Ausgabe erfolgt über ein USER-Objekt.
 
 v0.2.9 (03.11.2008)
