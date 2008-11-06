@@ -35,6 +35,27 @@ class tx_rnbase_util_TSDAM {
 
 	/**
 	 * Typoscript USER function for rendering DAM images. 
+	 * This is a minimal Setup:
+	 * <pre>
+	 * yourObject.imagecol = USER
+	 * yourObject.imagecol {
+	 *   userFunc=tx_rnbase_util_TSDAM->printImages
+	 *   refField=imagecol
+	 *   refTable=tx_yourextkey_tablename
+	 *   template = EXT:rn_base/res/simplegallery.html
+	 *   # media is the dam record
+	 *   media {
+	 *     # field file contains the complete image path
+	 *     file = IMAGE
+	 *     file.file.import.field = file
+	 *   }
+	 *   # Optional setting for limit
+	 *   # limit = 1
+	 * }
+	 * </pre>
+	 * There are three additional fields in media record: file, file1 and thumbnail containing the complete
+	 * image path. 
+	 * The output is rendered via HTML template with ListBuilder. Have a look at EXT:rn_base/res/simplegallery.html
 	 *
 	 * @param string $content
 	 * @param array $tsConf
@@ -59,11 +80,11 @@ class tx_rnbase_util_TSDAM {
 		$baseMediaClass = tx_div::makeInstanceClassName('tx_rnbase_model_media');
 		$medias = array();
 		while(list($uid, $filePath) = each($damPics)) {
-      $media = new $mediaClass($filePath);
+			$media = new $mediaClass($filePath);
 			// Fetch MetaData in older DAM-Versions
 			if(method_exists($media, 'fetchFullIndex'))
 				$media->fetchFullIndex();
-      $medias[] = new $baseMediaClass($media);
+			$medias[] = new $baseMediaClass($media);
 		}
 		$builderClass = tx_div::makeInstanceClassName('tx_rnbase_util_ListBuilder');
 		$listBuilder = new $builderClass();
