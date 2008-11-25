@@ -260,10 +260,11 @@ class tx_rnbase_util_BaseMarker {
 				if (is_object($module)) {
 					$subTemplate = $formatter->cObj->getSubpart($template,'###'.$marker.'###');
 					$subpart = $module->parseTemplate($subTemplate, $params, $formatter);
-					if(is_array($subpart))
-						$wrappedSubpartArray['###' . $marker . '###'] = $subpart;
-					else
-						$subpartArray['###' . $marker . '###'] = $subpart;
+					if($subpart !== false)
+						if(is_array($subpart))
+							$wrappedSubpartArray['###' . $marker . '###'] = $subpart;
+						else
+							$subpartArray['###' . $marker . '###'] = $subpart;
 				}
 			}
 		}
