@@ -2,6 +2,12 @@
 
 Änderungen
 ----------
+
+v0.2.12 (28.11.2008)
+* Neue Klasse tx_rnbase_util_TYPO3
+* Bugfix im Basemarker bei Einbindung von Subpart-ModulMarkern.
+* tx_rnbase_util_DB::doUpdate mit neuem Parameter noQuoteFields.
+
 v0.2.11 (06.11.2008)
 * Verbesserte Ausgabe von DAM-Bildern per Typoscript. Die Ausgabe erfolgt über ein USER-Objekt.
 
