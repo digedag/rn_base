@@ -207,9 +207,18 @@ class tx_rnbase_util_DB {
 		);
 		return $GLOBALS['TYPO3_DB']->sql_insert_id();
 	}
-	function doUpdate($tablename, $where, $values, $debug=0) {
+	/**
+	 * Make a database UPDATE.
+	 *
+	 * @param string $tablename
+	 * @param string $where
+	 * @param array $values
+	 * @param int $debug 0/1
+	 * @param mixed $noQuoteFields Array or commaseparated string with fieldnames
+	 */
+	function doUpdate($tablename, $where, $values, $debug=0, $noQuoteFields = false) {
 		if($debug) {
-			$sql = $GLOBALS['TYPO3_DB']->UPDATEquery($tablename,$where,$values);
+			$sql = $GLOBALS['TYPO3_DB']->UPDATEquery($tablename,$where,$values, $noQuoteFields);
 			t3lib_div::debug($sql, 'SQL');
 			t3lib_div::debug(array($tablename,$where,$values));
 		}
@@ -217,7 +226,8 @@ class tx_rnbase_util_DB {
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
 				$tablename,
 				$where,
-				$values
+				$values, 
+				$noQuoteFields
 			)
 		);
 	}
