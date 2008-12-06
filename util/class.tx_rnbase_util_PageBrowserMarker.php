@@ -60,6 +60,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 		$count = $this->pageBrowser->getListSize();
 		$results_at_a_time = $this->pageBrowser->getPageSize();
 		$totalPages = ceil($count / $results_at_a_time);
+		if($totalPages == 1 && $configurations->get($pbConfId.'hideIfSinglePage')) return '';
 		$maxPages = intval($configurations->get($pbConfId.'maxPages'));
 		$maxPages = t3lib_div::intInRange($maxPages ? $maxPages : 10, 1, 100);
 		$templates = $this->getTemplates($template, $formatter, $pbMarker);
