@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v0.2.13 (06.12.2008)
+* Neue Option im PageBrowser hideIfSinglePage. Damit kann der Browser bei einer Einzelseite komplett ausgeblendet werden.
+
 v0.2.12 (28.11.2008)
 * Neue Klasse tx_rnbase_util_TYPO3
 * Bugfix im Basemarker bei Einbindung von Subpart-ModulMarkern.
