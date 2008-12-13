@@ -40,30 +40,73 @@ class tx_rnbase_util_FormTool {
 		$this->form->initDefaultBEmode();
 		$this->form->backPath = $BACK_PATH;
 	}
-
+	/**
+	 * Erstellt einen Button zur Bearbeitung eines Datensatzes
+	 * @param string $editTable DB-Tabelle des Datensatzes
+	 * @param int $editUid UID des Datensatzes
+	 * @param array $options additional options (title, params)
+	 * @return string
+	 */
+	function createEditButton($editTable, $editUid, $options = array()) {
+		$title = isset($options['title']) ? $options['title'] : 'Edit';
+		$params = '&edit['.$editTable.']['.$editUid.']=edit';
+		if(isset($options['params']))
+			$params .= $options['params'];
+		
+		$btn = '<input type="button" name="'. $name.'" value="' . $title . '" ';
+		$btn .= 'onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'])).'"';
+		$btn .= '/>';
+		return $btn;
+	}
+	
 	/**
 	 * Erstellt einen Link zur Bearbeitung eines Datensatzes
 	 * @param $editTable DB-Tabelle des Datensatzes
 	 * @param $editUid UID des Datensatzes
 	 * @param $label Bezeichnung des Links
+	 * @return string
 	 */
-  function createEditLink($editTable, $editUid, $label = 'Edit') {
-  	$params = '&edit['.$editTable.']['.$editUid.']=edit';
-  	return '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'])).'">'.
-  		'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/edit2.gif','width="11" height="12"').' title="Edit UID: '.$editUid.'" border="0" alt="" />'.
-  		$label .'</a>';
+	function createEditLink($editTable, $editUid, $label = 'Edit') {
+		$params = '&edit['.$editTable.']['.$editUid.']=edit';
+		return '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'])).'">'.
+			'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/edit2.gif','width="11" height="12"').' title="Edit UID: '.$editUid.'" border="0" alt="" />'.
+		$label .'</a>';
 	}
 
 	/**
-	 * Erstellt einen Link zur Erstellung eines neuen Datensatzes
-	 * @param $$table DB-Tabelle des Datensatzes
-	 * @param $$pid UID der Zielseite
-	 * @param $label Bezeichnung des Links
+	 * Creates a new-record-button
+	 *
+	 * @param string $table
+	 * @param int $pid
+	 * @param array $options
+	 * @return string
 	 */
-	function createNewLink($table, $pid, $label = 'New') {
+	function createNewButton($table, $pid, $options=array()) {
 		$params = '&edit['.$table.']['.$pid.']=new';
+		if(isset($options['params']))
+			$params .= $options['params'];
+		$title = isset($options['title']) ? $options['title'] : $GLOBALS['LANG']->getLL('new',1);
+
+		$btn = '<input type="button" name="'. $name.'" value="' . $title . '" ';
+		$btn .= 'onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH']),-1).'"';
+		$btn .= '/>';
+		return $btn;
+	}
+	/**
+	 * Erstellt einen Link zur Erstellung eines neuen Datensatzes
+	 * @param string $table DB-Tabelle des Datensatzes
+	 * @param int $pid UID der Zielseite
+	 * @param string $label Bezeichnung des Links
+	 * @param array $options
+	 * @return string
+	 */
+	function createNewLink($table, $pid, $label = 'New', $options=array()) {
+		$params = '&edit['.$table.']['.$pid.']=new';
+		if(isset($options['params']))
+			$params .= $options['params'];
+		$title = isset($options['title']) ? $options['title'] : $GLOBALS['LANG']->getLL('new',1);
 		return '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH']),-1).'">'.
-			'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/new_'.($table=='pages'?'page':'el').'.gif','width="'.($table=='pages'?13:11).'" height="12"').' title="'.$GLOBALS['LANG']->getLL('new',1).'" alt="" />'.
+			'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/new_'.($table=='pages'?'page':'el').'.gif','width="'.($table=='pages'?13:11).'" height="12"').' title="'.$title.'" alt="" />'.
 			$label .'</a>';
   }
 
