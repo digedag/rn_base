@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v0.2.14 (13.12.2008)
+* tx_rnbase_util_formTool extended
+
 v0.2.13 (06.12.2008)
 * Neue Option im PageBrowser hideIfSinglePage. Damit kann der Browser bei einer Einzelseite komplett ausgeblendet werden.
 
