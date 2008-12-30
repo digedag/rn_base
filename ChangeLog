@@ -3,6 +3,10 @@
 Änderungen
 ----------
 
+v0.2.15 (30.12.2008)
+* Neue Vergleichsoperatoren in SearchBase
+* doUpdate und doDelete liefern als Ergebnis die Anzahl der betroffenen Datensätze
+
 v0.2.14 (13.12.2008)
 * tx_rnbase_util_formTool extended
 
