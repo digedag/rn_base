@@ -43,6 +43,11 @@ define('OP_LT_INT', '<');
 define('OP_LTEQ_INT', '<=');
 define('OP_GT_INT', '>');
 define('OP_GTEQ_INT', '>=');
+define('OP_GT', '>STR');
+define('OP_GTEQ', '>=STR');
+define('OP_LT', '<STR');
+define('OP_LTEQ', '<=STR');
+define('OP_EQ', '=STR');
 
 
 /**
