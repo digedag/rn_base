@@ -107,6 +107,7 @@ class tx_rnbase_util_DB {
 	 * @param boolean $debug = 0 Set to 1 to debug sql-String
 	 */
 	function doSelect($what, $from, $arr, $debug=0){
+		$debug = $debug ? $debug : intval($arr['debug']) > 0;
 		if($debug)
 			$time = microtime(true);
 		$tableName = $from;
@@ -139,7 +140,7 @@ class tx_rnbase_util_DB {
 		if(!$arr['enablefieldsoff']) {
 			// Zur Where-Clause noch die gültigen Felder hinzufügen
 			if (!is_object(self::$sysPage)) {
-				require_once(PATH_t3lib."class.t3lib_page.php");
+				require_once(PATH_t3lib.'class.t3lib_page.php');
 				self::$sysPage = t3lib_div::makeInstance('t3lib_pageSelect');
 				self::$sysPage->init($this->showHiddenPage);
 			}
@@ -215,6 +216,7 @@ class tx_rnbase_util_DB {
 	 * @param array $values
 	 * @param int $debug 0/1
 	 * @param mixed $noQuoteFields Array or commaseparated string with fieldnames
+	 * @return int number of rows affected
 	 */
 	function doUpdate($tablename, $where, $values, $debug=0, $noQuoteFields = false) {
 		if($debug) {
@@ -230,50 +232,60 @@ class tx_rnbase_util_DB {
 				$noQuoteFields
 			)
 		);
+		return $GLOBALS['TYPO3_DB']->sql_affected_rows();
 	}
+	/**
+	 * Make a database DELETE
+	 *
+	 * @param string $tablename
+	 * @param string $where
+	 * @param boolean $debug
+	 * @return int number of rows affected
+	 */
 	function doDelete($tablename, $where, $debug=0) {
 		if($debug) {
 			$sql = $GLOBALS['TYPO3_DB']->DELETEquery($tablename,$where);
 			t3lib_div::debug($sql, 'SQL');
 			t3lib_div::debug(array($tablename,$where));
-    }
+		}
 		self::watchOutDB(
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 				$tablename,
 				$where
 			)
 		);
+		return $GLOBALS['TYPO3_DB']->sql_affected_rows();
 	}
 
-  /**
-   * Returns an array with column names of a TCA defined table.
-   *
-   * @param string $tcaTableName
-   * @param string $prefix if set, each columnname is preceded by this alias
-   * @return array
-   */
-  function getColumnNames($tcaTableName, $prefix = '') {
-    $cols = self::getTCAColumns($tcaTableName);
-    if(is_array($cols)) {
-      $cols = array_keys($cols);
-      if(strlen(trim($prefix)))
-        array_walk($cols, 'tx_rnbase_util_DB_prependAlias', $prefix);
-    }
-    else $cols = array();
-    return $cols;
-  }
+	/**
+	 * Returns an array with column names of a TCA defined table.
+	 *
+	 * @param string $tcaTableName
+	 * @param string $prefix if set, each columnname is preceded by this alias
+	 * @return array
+	 */
+	function getColumnNames($tcaTableName, $prefix = '') {
+		$cols = self::getTCAColumns($tcaTableName);
+		if(is_array($cols)) {
+			$cols = array_keys($cols);
+			if(strlen(trim($prefix)))
+				array_walk($cols, 'tx_rnbase_util_DB_prependAlias', $prefix);
+		}
+		else $cols = array();
+		return $cols;
+	}
 
-  /**
-   * Liefert die TCA-Definition der in der Tabelle definierten Spalten
-   *
-   * @param string $tcaTableName
-   * @return array or 0
-   */
-  function getTCAColumns($tcaTableName) {
-    global $TCA;
-    t3lib_div::loadTCA($tcaTableName);
-    return isset($TCA[$tcaTableName]) ? $TCA[$tcaTableName]['columns'] : 0;
-  }
+	/**
+	 * Liefert die TCA-Definition der in der Tabelle definierten Spalten
+	 *
+	 * @param string $tcaTableName
+	 * @return array or 0
+	 */
+	function getTCAColumns($tcaTableName) {
+		global $TCA;
+		t3lib_div::loadTCA($tcaTableName);
+		return isset($TCA[$tcaTableName]) ? $TCA[$tcaTableName]['columns'] : 0;
+	}
 	/**
 	 * Liefert eine initialisierte TCEmain
 	 */
@@ -451,9 +463,24 @@ class tx_rnbase_util_DB {
 			case OP_INSET_INT:
 				$where .= ' FIND_IN_SET(' . $value . ', '.$tableAlias.'.' . strtolower($col).')';
 				break;
-			case OP_NOTEQ:
-				$where .= $tableAlias.'.' . strtolower($col) . ' != ' . $value . ' ';
+			case OP_EQ:
+				$where .= $tableAlias.'.' . strtolower($col) . ' = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias) . ' ';
 			  break;
+			case OP_NOTEQ:
+				$where .= $tableAlias.'.' . strtolower($col) . ' != ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias) . ' ';
+			  break;
+			case OP_LT:
+				$where .= $tableAlias.'.' . strtolower($col) . ' < ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias) . ' ';
+				break;
+			case OP_LTEQ:
+				$where .= $tableAlias.'.' . strtolower($col) . ' <= ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias) . ' ';
+				break;
+			case OP_GT:
+				$where .= $tableAlias.'.' . strtolower($col) . ' > ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias) . ' ';
+				break;
+			case OP_GTEQ:
+				$where .= $tableAlias.'.' . strtolower($col) . ' >= ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias) . ' ';
+				break;
 			case OP_EQ_INT:
 			case OP_NOTEQ_INT:
 			case OP_GT_INT:
