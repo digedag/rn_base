@@ -72,6 +72,19 @@ class tx_rnbase_util_FormTool {
 			'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/edit2.gif','width="11" height="12"').' title="Edit UID: '.$editUid.'" border="0" alt="" />'.
 		$label .'</a>';
 	}
+	/**
+	 * Erstellt einen History-Link
+	 *
+	 * @param string $table
+	 * @param int $recordUid
+	 * @return string
+	 */
+	function createHistoryLink($table, $recordUid, $label = '') {
+		return "<a href=\"#\" onclick=\"return jumpExt('".$GLOBALS['BACK_PATH'].
+				"show_rechis.php?element=".rawurlencode($table.':'.$recordUid).
+				"','#latest');\"><img ".t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/history2.gif','width="13" height="12"').
+				' title="'.$GLOBALS['LANG']->getLL('history',1).'\" alt="" >'.$label.'</a>';
+	}
 
 	/**
 	 * Creates a new-record-button
@@ -283,44 +296,44 @@ class tx_rnbase_util_FormTool {
   function addTCEfield2Stack($table,$row,$fieldname,$pre='',$post='') {
 		$this->tceStack[] = $pre . $this->form->getSoloField($table,$row,$fieldname) . $post;
   }
-  function getTCEfields($formname) {
-  	$ret[] = $this->form->printNeededJSFunctions_top();
-  	$ret[] = implode('', $this->tceStack);
-  	$ret[] = $this->form->printNeededJSFunctions();
-  	$ret[] = $this->form->JSbottom($formname);
-  	return $ret;
-  }
-  /**
-   * @param $pid ID der aktuellen Seite
-   */
-  function getJSCode($pid) {
-    // Add JavaScript functions to the page:
-    $JScode=$this->doc->wrapScriptTags('
-      function jumpToUrl(URL) {       //
-        window.location.href = URL;
-        return false;
-      }
-      function jumpExt(URL,anchor)    {       //
-        var anc = anchor?anchor:"";
-        window.location.href = URL+(T3_THIS_LOCATION?"&returnUrl="+T3_THIS_LOCATION:"")+anc;
-        return false;
-      }
-      function jumpSelf(URL)  {       //
-        window.location.href = URL+(T3_RETURN_URL?"&returnUrl="+T3_RETURN_URL:"");
-        return false;
-      }
+	function getTCEfields($formname) {
+		$ret[] = $this->form->printNeededJSFunctions_top();
+		$ret[] = implode('', $this->tceStack);
+		$ret[] = $this->form->printNeededJSFunctions();
+		$ret[] = $this->form->JSbottom($formname);
+		return $ret;
+	}
+	/**
+	 * @param int $pid ID der aktuellen Seite
+	 * @param string $location module url or empty
+	 */
+	function getJSCode($pid, $location='') {
+		$location = $location ? $location : t3lib_div::linkThisScript(array('CB'=>'','SET'=>'','cmd' => '','popViewId'=>''));
+		// Add JavaScript functions to the page:
+		$JScode=$this->doc->wrapScriptTags('
+			function jumpToUrl(URL) {
+				window.location.href = URL;
+				return false;
+			}
+			function jumpExt(URL,anchor) {
+				var anc = anchor?anchor:"";
+				window.location.href = URL+(T3_THIS_LOCATION?"&returnUrl="+T3_THIS_LOCATION:"")+anc;
+				return false;
+			}
+			function jumpSelf(URL) {
+				window.location.href = URL+(T3_RETURN_URL?"&returnUrl="+T3_RETURN_URL:"");
+				return false;
+			}
+			function setHighlight(id) {
+				top.fsMod.recentIds["web"]=id;
+				top.fsMod.navFrameHighlightedID["web"]="pages"+id+"_"+top.fsMod.currentBank;    // For highlighting
 
-      function setHighlight(id)       {       //
-        top.fsMod.recentIds["web"]=id;
-        top.fsMod.navFrameHighlightedID["web"]="pages"+id+"_"+top.fsMod.currentBank;    // For highlighting
-
-        if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav)  {
-                top.content.nav_frame.refresh_nav();
-        }
-      }
-      var T3_RETURN_URL = "";
-      var T3_THIS_LOCATION = "db_list.php%3Fid%3D' . $pid . '%26table%3D";');
-
+				if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav)  {
+					top.content.nav_frame.refresh_nav();
+				}
+			}
+			var T3_RETURN_URL = "'.str_replace('%20','',rawurlencode(t3lib_div::_GP('returnUrl'))).'";
+			var T3_THIS_LOCATION="'.str_replace('%20','',rawurlencode($location)).'"');
 
     // Setting up the context sensitive menu:
 //    $CMparts=$this->doc->getContextMenuCode();
