@@ -319,6 +319,18 @@ MAYDAYPAGE;
 		}
 		return trim(implode(' ' , $ret));
 	}
+	/**
+	 * Translates a string starting with LLL:
+	 *
+	 * @param string $title
+	 * @return string
+	 */
+	static function translateLLL($title) {
+		if(substr($title, 0, 4) === 'LLL:') {
+			$title = $GLOBALS['LANG']->sL($title);
+		}
+		return $title;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Misc.php']) {
