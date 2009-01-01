@@ -142,7 +142,7 @@ class tx_rnbase_util_DB {
 			if (!is_object(self::$sysPage)) {
 				require_once(PATH_t3lib.'class.t3lib_page.php');
 				self::$sysPage = t3lib_div::makeInstance('t3lib_pageSelect');
-				self::$sysPage->init($this->showHiddenPage);
+				self::$sysPage->init(0); // $this->showHiddenPage
 			}
 			$mode = (TYPO3_MODE == 'BE') ? 1 : 0;
 			if(intval($arr['enablefieldsbe']))
