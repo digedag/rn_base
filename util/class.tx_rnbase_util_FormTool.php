@@ -133,7 +133,7 @@ class tx_rnbase_util_FormTool {
 //    $params = '&edit['.$editTable.']['.$editUid.']=edit';
     return '<a href="#" onclick="top.launchView(' . "'" . $editTable . "', ' " . $editUid . "'); return false;" . '">'.
      '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/zoom2.gif','width="11" height="12"').' title="UID: '.$editUid.'" border="0" alt="" />'.
-     $label .'</a><br/>';
+     $label .'</a>';
   }
 
   /**
