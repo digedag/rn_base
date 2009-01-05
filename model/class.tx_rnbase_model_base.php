@@ -57,8 +57,16 @@ class tx_rnbase_model_base{
 //    t3lib_div::debug($this->record, 'record');
 	}
 
+	/**
+	 * Returns the records uid
+	 * @return int
+	 */
+	function getUid() { return $this->uid; }
+	/**
+	 * Reload this records from database
+	 */
 	function reset() {
-		$this->record = t3lib_BEfunc::getRecord($this->getTableName(),$this->uid);
+		$this->record = t3lib_BEfunc::getRecord($this->getTableName(),$this->getUid());
 	}
 	/**
 	 * Kindklassen müssen diese Methode überschreiben und den Namen der gemappten Tabelle liefern!
@@ -81,7 +89,7 @@ class tx_rnbase_model_base{
 	 * @return boolean
 	 */
 	function isPersisted() {
-		return intval($this->uid) > 0;
+		return intval($this->getUid()) > 0;
 	}
 	
 	/**
@@ -139,5 +147,4 @@ class tx_rnbase_model_base{
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/model/class.tx_rnbase_model_base.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/model/class.tx_rnbase_model_base.php']);
 }
-
 ?>
