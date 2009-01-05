@@ -48,7 +48,30 @@ class tx_rnbase_util_TYPO3 {
 	public static function isTYPO3VersionOrHigher($version) {
 		return t3lib_div::int_from_ver(TYPO3_version) >= $version;
 	}
-	
+	/**
+	 * Liefert das EM_CONF-Array einer Extension
+	 *
+	 * @param string $extKey
+	 * @return array
+	 */
+	public static function loadExtInfo($_EXTKEY) {
+		$path = t3lib_extMgm::extPath($_EXTKEY).'ext_emconf.php';
+		@include($path);
+		if(is_array($EM_CONF[$_EXTKEY])) {
+			return $EM_CONF[$_EXTKEY];
+		}
+		return array();
+	}
+	/**
+	 * Liefert die Versionsnummer einer Extension
+	 *
+	 * @param string $extKey
+	 * @return string
+	 */
+	public static function getExtVersion($extKey) {
+		$info = self::loadExtInfo($extKey);
+		return $info['version'];
+	}
 }
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rnbase/util/class.tx_rnbase_util_TYPO3.php'])	{
   include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rnbase/util/class.tx_rnbase_util_TYPO3.php']);
