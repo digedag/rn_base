@@ -100,53 +100,74 @@ class tx_rnbase_util_BaseMarker {
     return $this->defaultMarkerArr;
   }
 
-  /**
-   * Link setzen
-   *
-   * @param array $markerArray
-   * @param array $subpartArray
-   * @param array $wrappedSubpartArray
-   * @param tx_rnbase_util_FormatUtil $formatter
-   * @param string $confId
-   * @param string $linkId
-   * @param string $marker
-   * @param array $parameterArr
-   */
-  public function initLink(&$markerArray, &$subpartArray, &$wrappedSubpartArray, $formatter, $confId, $linkId, $marker, $parameterArr) {
-//  	$linkObj = $this->getLinkInstance($formatter->configurations);
-  	$linkObj =& $formatter->configurations->createLink();
-    $token = md5(microtime());
-    $linkObj->label($token);
-  	$links = $formatter->configurations->get($confId.'links.');
-  	$linkMarker = $marker . '_' . strtoupper($linkId).'LINK';
-  	if($links[$linkId] || $links[$linkId.'.']) {
-  		$pid = $formatter->cObj->stdWrap($links[$linkId.'.']['pid'], $links[$linkId.'.']['pid.']);
-  		$qualifier = $links[$linkId.'.']['qualifier'];
-  		if($qualifier) $linkObj->designator($qualifier);
-  		$target = $links[$linkId.'.']['target'];
-  		if($target) $linkObj->target($target);
-  		$linkObj->destination(intval($pid) ? $pid : $GLOBALS['TSFE']->id); // Das Ziel der Seite vorbereiten
-  		if($links[$linkId.'.']['fixedUrl'])
-  			$linkObj->destination($links[$linkId.'.']['fixedUrl']); // feste URL für externen Link
-  		
-      $linkObj->parameters($parameterArr);
-      // Zusätzliche Parameter für den Link
-      $atagParams = $links[$linkId.'.']['atagparams.'];
-      if(is_array($atagParams)) {
-	      $linkObj->attributes($atagParams);
-      }
-      // KeepVars prüfen
-      if(!$links[$linkId.'.']['useKeepVars'])
-      	$linkObj->overruled();
-      
-    	$wrappedSubpartArray['###'.$linkMarker . '###'] = explode($token, $linkObj->makeTag());
-    	$markerArray['###'.$linkMarker . 'URL###'] = $linkObj->makeUrl();
-  	}
-  	else {
-  		self::disableLink($markerArray, $subpartArray, $wrappedSubpartArray, $linkMarker, false);
-//    	$wrappedSubpartArray['###'.$linkMarker . '###'] = $noLink;
-//  		$markerArray['###'.$linkMarker . '_URL###'] = '';
-  	}
+	/**
+	 * Link setzen
+	 *
+	 * @param array $markerArray
+	 * @param array $subpartArray
+	 * @param array $wrappedSubpartArray
+	 * @param tx_rnbase_util_FormatUtil $formatter
+	 * @param string $confId
+	 * @param string $linkId
+	 * @param string $marker
+	 * @param array $parameterArr
+	 */
+	public function initLink(&$markerArray, &$subpartArray, &$wrappedSubpartArray, $formatter, $confId, $linkId, $marker, $parameterArr) {
+		$linkObj =& $formatter->configurations->createLink();
+		$token = md5(microtime());
+		$linkObj->label($token);
+		$links = $formatter->configurations->get($confId.'links.');
+		$linkMarker = $marker . '_' . strtoupper($linkId).'LINK';
+		if($links[$linkId] || $links[$linkId.'.']) {
+			$pid = $formatter->cObj->stdWrap($links[$linkId.'.']['pid'], $links[$linkId.'.']['pid.']);
+			$qualifier = $links[$linkId.'.']['qualifier'];
+			if($qualifier) $linkObj->designator($qualifier);
+			$target = $links[$linkId.'.']['target'];
+			if($target) $linkObj->target($target);
+			$linkObj->destination(intval($pid) ? $pid : $GLOBALS['TSFE']->id); // Das Ziel der Seite vorbereiten
+			if($links[$linkId.'.']['fixedUrl'])
+				$linkObj->destination($links[$linkId.'.']['fixedUrl']); // feste URL für externen Link
+
+			$linkObj->parameters($parameterArr);
+			// Zusätzliche Parameter für den Link
+			$atagParams = $links[$linkId.'.']['atagparams.'];
+			if(is_array($atagParams)) {
+				$linkObj->attributes($atagParams);
+			}
+			// KeepVars prüfen
+			// Per Default sind die KeepVars aktiviert. Mit useKeepVars == 0 können sie wieder entfernt werden
+			if(!$links[$linkId.'.']['useKeepVars']) {
+				$linkObj->overruled();
+			}
+			elseif($links[$linkId.'.']['useKeepVars.']) {
+				// Sonderoptionen für KeepVars gesetzt
+				$newKeepVars = array();
+				$keepVars = $formatter->configurations->getKeepVars();
+				$allow = $links[$linkId.'.']['useKeepVars.']['allow'];
+				$deny = $links[$linkId.'.']['useKeepVars.']['deny'];
+				if($allow) {
+					$allow = t3lib_div::trimExplode(',', $allow);
+					foreach($allow As $allowed) {
+						$newKeepVars[$allowed] = $keepVars->offsetGet($allowed);
+					}
+				}
+				elseif($deny) {
+					$deny = array_flip(t3lib_div::trimExplode(',', $deny));
+					$keepVarsArr = $keepVars->getArrayCopy();
+					foreach($keepVarsArr As $key => $value) {
+						if(!array_key_exists($key, $deny))
+							$newKeepVars[$key] = $value;
+					}
+				}
+				$linkObj->overruled($newKeepVars);
+			}
+
+			$wrappedSubpartArray['###'.$linkMarker . '###'] = explode($token, $linkObj->makeTag());
+			$markerArray['###'.$linkMarker . 'URL###'] = $linkObj->makeUrl();
+		}
+		else {
+			self::disableLink($markerArray, $subpartArray, $wrappedSubpartArray, $linkMarker, false);
+		}
 	}
 	/**
 	 * Remove Link-Markers
