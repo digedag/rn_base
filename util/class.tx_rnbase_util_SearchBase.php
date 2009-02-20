@@ -143,8 +143,21 @@ abstract class tx_rnbase_util_SearchBase {
     foreach($tableAliases AS $tableAlias => $colData) {
   		foreach($colData As $col => $data) {
   			foreach ($data As $operator => $value) {
-					if(strlen($where) >0) $where .= ' AND ';
-					$where .= tx_rnbase_util_DB::setSingleWhereField($this->tableMapping[$tableAlias], $operator, $col, $value);
+					if(is_array($value)) {
+						// The is more then one value to test against column
+						$joinedValues = $value[SEARCH_FIELD_JOINED];
+						if(!is_array($joinedValues))
+							tx_rnbase_util_Misc::mayday('JOINED field required data array. Check up your search config.','rn_base');
+						$joinedValues = array_values($joinedValues);
+						for($i=0, $cnt=count($joinedValues); $i < $cnt; $i++) {
+							if(strlen($where) >0) $where .= ' AND ';
+							$where .= tx_rnbase_util_DB::setSingleWhereField($this->tableMapping[$tableAlias], $operator, $col, $joinedValues[$i]);
+						}
+					}
+					else {
+						if(strlen($where) >0) $where .= ' AND ';
+						$where .= tx_rnbase_util_DB::setSingleWhereField($this->tableMapping[$tableAlias], $operator, $col, $value);
+					}
   			}
   		}
     }
