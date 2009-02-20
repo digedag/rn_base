@@ -27,12 +27,38 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'util/class.tx_rnbase_util_DB.ph
 require_once(PATH_t3lib.'class.t3lib_befunc.php');
 
 /**
+ * This interface defines a base model
+ */
+interface tx_rnbase_IModel {
+	/**
+	 * Returns the uid
+	 * @return int
+	 */
+	public function getUid();
+
+	/**
+	 * Returns the data record as array
+	 * @return array
+	 */
+	public function getRecord();
+
+	/**
+	 * Inits the model instance either with uid or a complete data record.
+	 * As the result the instance should be completly loaded.
+	 *
+	 * @param mixed $rowOrUid
+	 */
+	public function init($rowOrUid);
+}
+
+
+/**
  * Basisklasse für die meisten Model-Klassen. Sie stellt einen Konstruktor bereit, der sowohl
  * mit einer UID als auch mit einem Datensatz aufgerufen werden kann. Die Daten werden
  * in den Instanzvariablen $uid und $record abgelegt. Diese beiden Variablen sind also immer
  * verfügbar. Der Umfang von $record kann aber je nach Aufruf unterschiedlich sein!
  */
-class tx_rnbase_model_base{
+class tx_rnbase_model_base {
 
 	var $uid;
 	var $record;
@@ -43,6 +69,10 @@ class tx_rnbase_model_base{
 	 * Ensure to overwrite getTableName()!
 	 */
 	function tx_rnbase_model_base($rowOrUid) {
+		$this->init($rowOrUid);
+	}
+
+	function init($rowOrUid) {
 		if(is_array($rowOrUid)) {
 			$this->uid = $rowOrUid['uid'];
 			$this->record = $rowOrUid;
@@ -54,9 +84,7 @@ class tx_rnbase_model_base{
 			// Der Record sollte immer ein Array sein
 			$this->record = is_array($this->record) ? $this->record : array();
 		}
-//    t3lib_div::debug($this->record, 'record');
 	}
-
 	/**
 	 * Returns the records uid
 	 * @return int
