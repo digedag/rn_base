@@ -3,6 +3,13 @@
 Änderungen
 ----------
 
+v0.3.0 (??.02.2009)
+* New class for parameters
+* New util class for date conversions
+* New filter package
+* SearchBase extended 
+* allow and deny list for useKeepVars option in tx_rnbase_util_BaseMarker::initLink
+
 v0.2.16 (06.01.2009)
 * Bugfix: sysPage init used $this in tx_rnbase_util_DB::doSelect
 * New method tx_rnbase_util_Misc::translateLLL
