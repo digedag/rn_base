@@ -339,7 +339,7 @@ class tx_rnbase_controller {
    * Returns an ArrayObject containing all parameters
    */
   function _makeParameterObject($configurations) {
-    $parameters = tx_div::makeInstance('tx_lib_spl_arrayObject');
+    $parameters = tx_div::makeInstance('tx_rnbase_parameters');
 
     // get parametersArray for defined qualifier
     $parametersArray = t3lib_div::GParrayMerged($configurations->getQualifier());
