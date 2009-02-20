@@ -163,7 +163,7 @@ class tx_rnbase_util_BaseMarker {
 			}
 
 			$wrappedSubpartArray['###'.$linkMarker . '###'] = explode($token, $linkObj->makeTag());
-			$markerArray['###'.$linkMarker . 'URL###'] = $linkObj->makeUrl();
+			$markerArray['###'.$linkMarker . 'URL###'] = $linkObj->makeUrl(false);
 		}
 		else {
 			self::disableLink($markerArray, $subpartArray, $wrappedSubpartArray, $linkMarker, false);
