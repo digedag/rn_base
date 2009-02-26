@@ -90,7 +90,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 	public function init(&$fields, &$options) {
 		tx_rnbase_util_SearchBase::setConfigFields($fields, $this->getConfigurations(), $this->getConfId().'fields.');
 		// Optionen
-		tx_rnbase_util_SearchBase::setConfigOptions($options, $this->getConfigurations(), 'listakag.options.');
+		tx_rnbase_util_SearchBase::setConfigOptions($options, $this->getConfigurations(), $this->getConfId().'options.');
 
 		$this->initFilter($fields, $options, $this->getParameters(), $this->getConfigurations(), $this->getConfId());
 	}
