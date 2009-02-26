@@ -72,9 +72,12 @@ class tx_rnbase_util_TSDAM {
 
 		$damPics = $this->fetchFileList($tsConf, $conf->getCObj());
 
+		$offset = intval($conf->get('offset'));
 		$limit = intval($conf->get('limit'));
-		if($limit && count($damPics))
-			$damPics = array_slice($damPics,0,$limit);
+		if((!$limit && $offset) && count($damPics))
+			$damPics = array_slice($damPics,$offset);
+		elseif($limit && count($damPics))
+			$damPics = array_slice($damPics,$offset,$limit);
 
 		$mediaClass = tx_div::makeInstanceClassName('tx_dam_media');
 		$baseMediaClass = tx_div::makeInstanceClassName('tx_rnbase_model_media');
@@ -182,6 +185,22 @@ class tx_rnbase_util_TSDAM {
 		}
 		return $ret;
 	}
+
+	/**
+	 * Returns the TCA description for a DAM media field
+	 *
+	 * @param string $ref should be the name of column
+	 * @param string $type either image_field or media_field
+	 * @return array
+	 */
+	static function getMediaTCA($ref, $type='image_field') {
+		if(t3lib_extMgm::isLoaded('dam')) {
+			require_once(t3lib_extMgm::extPath('dam').'tca_media_field.php');	
+			return txdam_getMediaTCA($type, $ref);
+		}
+		return array();
+	}
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_TSDAM.php']) {
