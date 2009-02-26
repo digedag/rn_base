@@ -3,6 +3,10 @@
 Änderungen
 ----------
 
+v0.3.2 (26.02.2009)
+* Bugfix in DefaultFilter
+* Offset parameter in tx_rnbase_util_TSDAM
+
 v0.3.1 (26.02.2009)
 * ListBuilder support for filters
 * LinkUrls created without htmlspecialschars()
