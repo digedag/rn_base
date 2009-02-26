@@ -60,6 +60,16 @@ class tx_rnbase_util_Dates {
 	static function date_tstamp2mysql($tstamp) {
 		return date('Y-m-d', $tstamp);
 	}
+	/**
+	 * Umwandlung eines Datums yyyy-mm-dd in einen Timestamp
+	 *
+	 * @param string $date Format: yyyy-mm-dd
+	 * @return int
+	 */
+	static function date_mysql2tstamp($date) {
+		list($jahr, $monat, $tag) = t3lib_div::intExplode('-', $date);
+		return mktime(0,0,0,$monat,$tag,$jahr);
+	}
 
 	/**
 	 * Umwandlung Timestamp in einen Zeitstrings yyyy-mm-dd H:i:s
