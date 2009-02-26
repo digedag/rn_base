@@ -3,6 +3,10 @@
 Änderungen
 ----------
 
+v0.3.1 (26.02.2009)
+* ListBuilder support for filters
+* LinkUrls created without htmlspecialschars()
+
 v0.3.0 (20.02.2009)
 * New class for parameters
 * New util class for date conversions
