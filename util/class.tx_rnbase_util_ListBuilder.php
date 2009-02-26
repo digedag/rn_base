@@ -36,81 +36,87 @@ class tx_rnbase_util_ListBuilder {
 	 * @param ListBuilderInfo $info
 	 * @return tx_rnbase_util_ListBuilder
 	 */
-  public function tx_rnbase_util_ListBuilder(ListBuilderInfo $info = null) {
-  	if($info)
-	  	$this->info =& $info;
-	  else
-	  	$this->info =& new tx_rnbase_util_ListBuilderInfo;
-  }
+	public function tx_rnbase_util_ListBuilder(ListBuilderInfo $info = null) {
+		if($info)
+			$this->info =& $info;
+		else
+			$this->info =& new tx_rnbase_util_ListBuilderInfo;
+	}
 
-  /**
-   * Render an array of data entries with an html template. The html template should look like this:
-   * ###DATAS###
-   * ###DATA###
-   * ###DATA_UID###
-   * ###DATA###
-   * ###DATAS###
-   * We have some conventions here:
-   * The given parameter $marker should be named 'DATA' for this example. The the list subpart 
-   * is experted to be named '###'.$marker.'S###'. Please notice the trailing S!
-   * If you want to render a pagebrowser add it to the $viewData with key 'pagebrowser'.
-   *
-   * @param array $dataArr entries
-   * @param string $template
-   * @param string $markerClassname item-marker class
-   * @param string $confId ts-Config for data entries like team.
-   * @param string $marker name of marker like TEAM
-   * @param tx_rnbase_util_FormatUtil $formatter
-   * @param array $markerParams array of settings for itemmarker
-   * @return string
-   */
-  function render(&$dataArr, &$viewData, $template, $markerClassname, $confId, $marker, &$formatter, $markerParams = null) {
-  	
-    if(is_array($dataArr) && count($dataArr)) {
-	    $markerClass = tx_div::makeInstanceClassName('tx_rnbase_util_ListMarker');
-	    $listMarker = new $markerClass($this->info->getListMarkerInfo());
-	    $cObj =& $formatter->configurations->getCObj(0);
-	
-	    $templateList = $cObj->getSubpart($template,'###'.$marker.'S###');
-    	
-    	$templateEntry = $cObj->getSubpart($templateList,'###'.$marker.'###');
-	    $out = $listMarker->render($dataArr, $templateEntry, $markerClassname, 
-	    	$confId, $marker, $formatter, $markerParams);
-    	$subpartArray['###'.$marker.'###'] = $out;
-	    // Das Menu für den PageBrowser einsetzen
-	    $pageBrowser =& $viewData->offsetGet('pagebrowser');
-	    if($pageBrowser) {
-	    	tx_div::load('tx_rnbase_util_BaseMarker');
-	    	$subpartArray['###PAGEBROWSER###'] = tx_rnbase_util_BaseMarker::fillPageBrowser(
-		                  $cObj->getSubpart($template,'###PAGEBROWSER###'), 
-		                  $pageBrowser, $formatter, $confId.'pagebrowser.');
-		  	$markerArray['###'.$marker.'COUNT###'] = $pageBrowser->getListSize();
-	    }
-	    else {
-		  	$markerArray['###'.$marker.'COUNT###'] = count($dataArr);
-	    }
-	    $out = $formatter->cObj->substituteMarkerArrayCached($templateList, $markerArray, $subpartArray);
-    }
-    else {
-    	$out = $this->info->getEmptyListMessage($confId, $viewData, $formatter->configurations);
-    }
+	/**
+	 * Render an array of data entries with an html template. The html template should look like this:
+	 * ###DATAS###
+	 * ###DATA###
+	 * ###DATA_UID###
+	 * ###DATA###
+	 * ###DATAS###
+	 * We have some conventions here:
+	 * The given parameter $marker should be named 'DATA' for this example. The the list subpart 
+	 * is experted to be named '###'.$marker.'S###'. Please notice the trailing S!
+	 * If you want to render a pagebrowser add it to the $viewData with key 'pagebrowser'.
+	 * A filter will be detected and rendered too. It should be available in $viewData with key 'filter'.
+	 *
+	 * @param array $dataArr entries
+	 * @param string $template
+	 * @param string $markerClassname item-marker class
+	 * @param string $confId ts-Config for data entries like team.
+	 * @param string $marker name of marker like TEAM
+	 * @param tx_rnbase_util_FormatUtil $formatter
+	 * @param array $markerParams array of settings for itemmarker
+	 * @return string
+	 */
+	function render(&$dataArr, &$viewData, $template, $markerClassname, $confId, $marker, &$formatter, $markerParams = null) {
 
-    $markerArray = array();
-    $subpartArray['###'.$marker.'S###'] = $out;
+		if(is_array($dataArr) && count($dataArr)) {
+			$markerClass = tx_div::makeInstanceClassName('tx_rnbase_util_ListMarker');
+			$listMarker = new $markerClass($this->info->getListMarkerInfo());
+			$cObj =& $formatter->configurations->getCObj(0);
 
-  	// Muss ein Formular mit angezeigt werden
-	  $markerArray['###SEARCHFORM###'] = '';
-  	$seachform  =& $viewData->offsetGet('searchform');
-  	if($seachform)
-	    $markerArray['###SEARCHFORM###'] = $seachform;
-    
-    $out = $formatter->cObj->substituteMarkerArrayCached($template, $markerArray, $subpartArray);
-    
-    return $out;
-  }
+			$templateList = $cObj->getSubpart($template,'###'.$marker.'S###');
+
+			$templateEntry = $cObj->getSubpart($templateList,'###'.$marker.'###');
+			$out = $listMarker->render($dataArr, $templateEntry, $markerClassname,
+					$confId, $marker, $formatter, $markerParams);
+			$subpartArray['###'.$marker.'###'] = $out;
+			// Das Menu für den PageBrowser einsetzen
+			$pageBrowser =& $viewData->offsetGet('pagebrowser');
+			if($pageBrowser) {
+				tx_div::load('tx_rnbase_util_BaseMarker');
+				$subpartArray['###PAGEBROWSER###'] = tx_rnbase_util_BaseMarker::fillPageBrowser(
+								$cObj->getSubpart($template,'###PAGEBROWSER###'),
+								$pageBrowser, $formatter, $confId.'pagebrowser.');
+				$markerArray['###'.$marker.'COUNT###'] = $pageBrowser->getListSize();
+			}
+			else {
+				$markerArray['###'.$marker.'COUNT###'] = count($dataArr);
+			}
+			$out = $formatter->cObj->substituteMarkerArrayCached($templateList, $markerArray, $subpartArray);
+		}
+		else {
+			$out = $this->info->getEmptyListMessage($confId, $viewData, $formatter->configurations);
+		}
+
+		$markerArray = array();
+		$subpartArray['###'.$marker.'S###'] = $out;
+
+		// Muss ein Formular mit angezeigt werden
+		// Zuerst auf einen Filter prüfen
+		$filter  =& $viewData->offsetGet('filter');
+		if($filter) {
+			$template = $filter->getMarker()->parseTemplate($template, $formatter, $confId.'filter.',$marker);
+		}
+		// Jetzt noch die alte Variante
+		$markerArray['###SEARCHFORM###'] = '';
+		$seachform  =& $viewData->offsetGet('searchform');
+		if($seachform)
+			$markerArray['###SEARCHFORM###'] = $seachform;
+
+		$out = $formatter->cObj->substituteMarkerArrayCached($template, $markerArray, $subpartArray);
+		return $out;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_ListBuilder.php']) {
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_ListBuilder.php']);
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_ListBuilder.php']);
 }
 ?>
