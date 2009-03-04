@@ -63,7 +63,9 @@ class tx_rnbase_util_TSDAM {
 	 */
 	function printImages ($content, $tsConf) {
 		$conf = $this->createConf($tsConf);
-		$templateCode = $conf->getCObj()->fileResource($conf->get('template'));
+		$file = $conf->get('template');
+		$file = $file ? $file : 'EXT:rn_base/res/simplegallery.html';
+		$templateCode = $conf->getCObj()->fileResource($file);
 		if(!$templateCode) return '<!-- NO TEMPLATE FOUND -->';
 		$subpartName = $conf->get('subpartName');
 		$subpartName = $subpartName ? $subpartName : '###DAM_IMAGES###';
