@@ -41,6 +41,15 @@ interface tx_rnbase_IFilter {
 	 * @return tx_rnbase_FilterMarker
 	 */
 	public function getMarker();
+
+	/**
+	 * Whether or not the result list should be displayed.
+	 * It is up to the list view to handle this result.
+	 * This can be used to hide a result output if a search view is 
+	 * initially displayed.
+	 * @return boolean
+	 */
+	public function hideResult();
 }
 interface tx_rnbase_IFilterMarker {
   function parseTemplate($template, &$formatter, $confId, $marker = 'FILTER');
@@ -93,6 +102,9 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 		tx_rnbase_util_SearchBase::setConfigOptions($options, $this->getConfigurations(), $this->getConfId().'options.');
 
 		$this->initFilter($fields, $options, $this->getParameters(), $this->getConfigurations(), $this->getConfId());
+	}
+	public function hideResult() {
+		return false;
 	}
 	/**
 	 * Abgeleitete Filter können diese Methode überschreiben und zusätzlich Filter setzen
@@ -150,7 +162,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 		$filterClass = ($filterClass) ? $filterClass : $configurations->get($confId.'filter');
 		$filterClass = ($filterClass) ? $filterClass : 'tx_rnbase_filter_BaseFilter';
 		$filterClass = tx_div::makeInstanceClassname($filterClass);
-		$filter = new $filterClass($parameters, $configurations, $confId.'filter.');
+		$filter = new $filterClass($parameters, $configurations, $confId);
 		$viewData->offsetSet('filter', $filter);
 		return $filter;
 	}
