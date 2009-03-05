@@ -3,6 +3,12 @@
 Änderungen
 ----------
 
+v0.3.4 (05.03.2009)
+* Check for invalid records in tx_rnbase_util_TSDAM
+* New method tx_rnbase_util_Misc::createHash
+* Method tx_rnbase_util_BaseMarker::disableLink is now public
+* Check for invalid records in tx_rnbase_util_TSDAM::printImages()
+
 v0.3.3 (04.03.2009)
 * simplegallery.html used as default template for DAM pictures
 * New filter method hideResult()
