@@ -175,7 +175,7 @@ class tx_rnbase_util_BaseMarker {
 	 * @param string $linkMarker
 	 * @param boolean $remove true removes the link with label
 	 */
-	protected function disableLink(&$markerArray, &$subpartArray, &$wrappedSubpartArray, $linkMarker, $remove) {
+	public function disableLink(&$markerArray, &$subpartArray, &$wrappedSubpartArray, $linkMarker, $remove) {
   	if($remove)
 			$subpartArray['###'.$linkMarker . '###'] = '';
   	else
