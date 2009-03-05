@@ -331,6 +331,32 @@ MAYDAYPAGE;
 		}
 		return $title;
 	}
+
+	/**
+	 * Create a short hash from all values in $params. This can be used as additional link parameter to 
+	 * ensure submitted parameters are not modified. 
+	 * The order of values doesn't matter.
+	 *
+	 * @param array $params
+	 * @param string $salt a secret salt string
+	 * @param boolean $daily Hash values changed with every new day
+	 * @return string with 8 characters
+	 */
+	static function createHash($params, $salt='secret', $daily = true) {
+		$str = '';
+		if($daily) {
+			tx_div::load('tx_rnbase_util_Dates');
+			tx_rnbase_util_Dates::getTodayDateString();
+		}
+		sort($params);
+		foreach($params As $key => $value) {
+			if(is_array($value)) $value = 1; // Arrays werden erstmal nicht unterstützt
+			$str .= strval($value);
+		}
+		$str .= $salt;
+		$hash = md5($str);
+		return substr($hash,5,8);
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Misc.php']) {

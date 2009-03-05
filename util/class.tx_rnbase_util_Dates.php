@@ -26,6 +26,14 @@
  * Simple Utility methods for date conversion.
  */
 class tx_rnbase_util_Dates {
+	static private $todayDateStrings = array();
+
+	public static function getTodayDateString($format='Ymd') {
+		if(!isset(self::$todayDateStrings[$format]))
+			self::$todayDateStrings[$format] = date($format, time());
+		return self::$todayDateStrings[$format];
+	}
+
 	/**
 	 * date_mysql2german
 	 * wandelt ein MySQL-DATE (ISO-Date)
