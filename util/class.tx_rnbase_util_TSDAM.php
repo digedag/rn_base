@@ -72,8 +72,11 @@ class tx_rnbase_util_TSDAM {
 		$templateCode = $conf->getCObj()->getSubpart($templateCode,$subpartName);
 		if(!$templateCode) return '<!-- NO SUBPART '.$subpartName.' FOUND -->';
 
-		$damPics = $this->fetchFileList($tsConf, $conf->getCObj());
+		// Check if there is a valid uid given.
+		$uid = intval($conf->getCObj()->data['_LOCALIZED_UID'] ? $conf->getCObj()->data['_LOCALIZED_UID'] : $conf->getCObj()->data['uid']);
+		if(!$uid) return '<!-- Invalid data record given -->';
 
+		$damPics = $this->fetchFileList($tsConf, $conf->getCObj());
 		$offset = intval($conf->get('offset'));
 		$limit = intval($conf->get('limit'));
 		if((!$limit && $offset) && count($damPics))
