@@ -3,6 +3,11 @@
 Änderungen
 ----------
 
+v0.3.5 (12.03.2009)
+* tx_rnbase_controller catches exceptions from actions
+* New methods get() and getInt() in tx_rnbase_IParameters
+
+
 v0.3.4 (05.03.2009)
 * Check for invalid records in tx_rnbase_util_TSDAM
 * New method tx_rnbase_util_Misc::createHash
