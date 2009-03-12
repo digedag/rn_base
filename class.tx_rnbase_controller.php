@@ -220,14 +220,24 @@ class tx_rnbase_controller {
 		return $out;
 	}
 
-  function doAction($actionName, &$parameters, &$configurations) {
-    // Creating the responsible Action
-    $action = tx_div::makeInstance($actionName);
-//    $action->parameters = $parameters;
-//    $action->configurations = $configurations;
-
-    return $action->execute($parameters,$configurations);
-  }
+	function doAction($actionName, &$parameters, &$configurations) {
+		$ret = '';
+		try {
+			// Creating the responsible Action
+			$action = tx_div::makeInstance($actionName);
+	//		$action->parameters = $parameters;
+	//		$action->configurations = $configurations;
+			$ret = $action->execute($parameters,$configurations);
+		}
+		catch(Exception $e) {
+			$verbose = intval(tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'verboseMayday'));
+			$ret .= '<div><strong>UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName .'</strong>';
+			if($verbose)
+				$ret .= '<br /><pre>'.$e->__toString().'</pre>';
+			$ret .= '</div>';
+		}
+		return $ret;
+	}
 
 
   /**
