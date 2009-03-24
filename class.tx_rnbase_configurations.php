@@ -129,14 +129,14 @@ class tx_rnbase_configurations {
     // if configurationArray['setupPath'] is empty the subclass will use it's internally defined setupPath.
     $this->_setTypoScript($configurationArray['setupPath']);
 
-    $this->_extensionKey = $extensionKey;
     // Add the local configuration, overwriting TS setup
     $this->_setConfiguration($configurationArray);
 
     // Flexformvalues have the maximal precedence
     $this->_setFlexForm($cObj->data['pi_flexform']);
 
-    // A qualifier from TS is preferred
+    // A qualifier and extkey from TS are preferred
+    $this->_extensionKey = $this->get('extensionKey') ? $this->get('extensionKey') : $extensionKey;
     $this->_qualifier = $this->get('qualifier') ? $this->get('qualifier') : $qualifier;
 
     // The formatter
