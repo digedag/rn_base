@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v0.4.0 (18.04.2009)
+* First version of a common maps API. Current implementation uses extension wec_map to show a Google Map. To be extended...
+
 v0.3.5 (12.03.2009)
 * tx_rnbase_controller catches exceptions from actions
 * New methods get() and getInt() in tx_rnbase_IParameters
