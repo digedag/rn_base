@@ -3,6 +3,10 @@
 Änderungen
 ----------
 
+v0.4.1 (20.04.2009)
+* Maps-API extended: MapTypes, Controls, Icons
+* GoogleMap can be configured by Typoscript
+
 v0.4.0 (18.04.2009)
 * First version of a common maps API. Current implementation uses extension wec_map to show a Google Map. To be extended...
 
