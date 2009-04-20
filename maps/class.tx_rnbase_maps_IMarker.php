@@ -58,6 +58,10 @@ interface tx_rnbase_maps_IMarker {
 	 */
 	function getCoords();
 
+	/**
+	 * Returns the Icon for this marker
+	 * @return tx_rnbase_maps_IIcon
+	 */
 	function getIcon();
 	/**
 	 * Returns the label

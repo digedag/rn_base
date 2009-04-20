@@ -22,7 +22,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_div::load('tx_rnbase_maps_IMap');
+tx_div::load('tx_rnbase_maps_BaseMap');
 if(!t3lib_extMgm::isLoaded('wec_map'))
 	throw new Exception('Extension wec_map must be installed to use GoogleMaps!');
 require_once(t3lib_extMgm::extPath('wec_map').'map_service/google/class.tx_wecmap_map_google.php');
@@ -30,31 +30,81 @@ require_once(t3lib_extMgm::extPath('wec_map').'map_service/google/class.tx_wecma
 /**
  * Implementation for GoogleMaps based on extension wec_map.
  */
-class tx_rnbase_maps_google_Map implements tx_rnbase_maps_IMap {
+class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap {
+	static $PROVID = 'GOOGLEMAPS';
+	static $mapTypes = array();
 	private $map, $conf, $confId;
 	function init($conf, $confId) {
 		$this->conf = $conf;
 		$this->confId = $confId;
 		$apiKey = $conf->get($confId.'google.apikey');
+		$apiKey = $apiKey ? $apiKey : null;
 		$width = $conf->get($confId.'width');
 		$height = $conf->get($confId.'height');
+		
 		$className = t3lib_div::makeInstanceClassName('tx_wecmap_map_google');
 		$this->map = new $className($apiKey, $width, $height);
+		// Der MapType
+		$mapType = constant($conf->get($confId.'maptype'));
+		$types = array_flip(tx_rnbase_maps_TypeRegistry::getMapTypes());
+		if($mapType && array_key_exists($mapType, $types)) {
+			$this->setMapType(tx_rnbase_maps_TypeRegistry::getInstance()->getType($this, $mapType));
+		}
+		// Controls
+		$controls = $conf->get($confId.'google.controls');
+		if($controls) {
+			$controls = t3lib_div::trimExplode(',', $controls);
+			foreach($controls As $control) {
+				$classname = tx_div::makeInstanceClassname('tx_rnbase_maps_google_Control');
+				$this->addControl(new $classname($control));
+			}
+		}
 	}
+	function initTypes(tx_rnbase_maps_TypeRegistry $registry) {
+		$registry->addType($this,RNMAP_MAPTYPE_STREET, 'G_NORMAL_MAP');
+		$registry->addType($this,RNMAP_MAPTYPE_SATELLITE, 'G_SATELLITE_MAP');
+		$registry->addType($this,RNMAP_MAPTYPE_HYBRID, 'G_HYBRID_MAP');
+		$registry->addType($this,RNMAP_MAPTYPE_PHYSICAL, 'G_PHYSICAL_MAP');
+		
+	}
+	/**
+	 * Set a map type
+	 * @param string $mapType map specific type string
+	 */
+	function setMapType($mapType) {
+		$this->getWecMap()->setType($mapType);
+	}
+	/**
+	 * Adds a control
+	 *
+	 * @param tx_rnbase_maps_IControl $control
+	 */
+	function addControl(tx_rnbase_maps_IControl $control) {
+		$this->getWecMap()->addControl($control->render());
+	}
+	
 	/**
 	 * Adds a marker to this map
 	 * @param tx_rnbase_maps_IMarker $marker
 	 */
 	function addMarker(tx_rnbase_maps_IMarker $marker) {
+		$icon = $marker->getIcon();
+		$iconName = '';
+		if($icon) {
+			$this->map->icons[] = $icon->render();
+			$iconName = $icon->getName();
+		}
+
 		$coord = $marker->getCoords();
 		if($coord) {
 			$this->getWecMap()->addMarkerByLatLong($coord->getLatitude(), $coord->getLongitude(), 
-				$marker->getTitle(), $marker->getDescription(), $marker->getZoomMin(), $marker->getZoomMin(),'');
+				$marker->getTitle(), $marker->getDescription(), $marker->getZoomMin(), $marker->getZoomMin(),$iconName);
 			return;
 		}
+		
 		$this->getWecMap()->addMarkerByAddress($marker->getStreet(), $marker->getCity(), $marker->getState(), 
 			$marker->getZip(), $marker->getCountry(), 
-			$marker->getTitle(), $marker->getDescription(), $marker->getZoomMin(), $marker->getZoomMin(),'');
+			$marker->getTitle(), $marker->getDescription(), $marker->getZoomMin(), $marker->getZoomMin(),$iconName);
 	}
 	function draw() {
 		$code = $this->map->drawMap();
@@ -70,6 +120,17 @@ class tx_rnbase_maps_google_Map implements tx_rnbase_maps_IMap {
 	 */
 	function getWecMap() {
 		return $this->map;
+	}
+
+	/**
+	 * Returns an ID-String for the map provider.
+	 * @return 
+	 */
+	function getPROVID() {
+		return self::$PROVID;
+	}
+	function getMapName() {
+		return $this->getWecMap()->mapName;
 	}
 }
 

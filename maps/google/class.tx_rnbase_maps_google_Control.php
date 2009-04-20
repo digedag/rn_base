@@ -22,26 +22,28 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+tx_div::load('tx_rnbase_maps_IControl');
 
 /**
- * Common Interface for Maps
+ * Implementation for GoogleControls.
  */
-interface tx_rnbase_maps_ICoord {
+class tx_rnbase_maps_google_Control implements tx_rnbase_maps_IControl {
 
+	function tx_rnbase_maps_google_Control($type) {
+		$this->type = $type;
+	}
 	/**
-	 * Returns the latitude
-	 * @return float
+	 * Returns an ID-String for the map provider.
+	 * @return string
 	 */
-	function getLatitude();
-	/**
-	 * Returns the longitude
-	 * @return float
-	 */
-	function getLongitude();
+	function render() {
+		// Für die wec_map ist nur die ID notwendig
+		return $this->type;
+	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_ICoord.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_ICoord.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/google/class.tx_rnbase_maps_google_Control.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/google/class.tx_rnbase_maps_google_Control.php']);
 }
 
 ?>

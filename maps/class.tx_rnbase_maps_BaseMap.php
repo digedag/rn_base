@@ -22,56 +22,47 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+tx_div::load('tx_rnbase_maps_IMap');
+tx_div::load('tx_rnbase_maps_TypeRegistry');
+
+
 
 /**
  * Common Interface for Maps
  */
-interface tx_rnbase_maps_IMap {
-	function init($conf, $confId);
-	function initTypes(tx_rnbase_maps_TypeRegistry $registry);
-	/**
-	 * Adds a marker to this map
-	 * @param tx_rnbase_maps_IMarker $marker
-	 */
-	function addMarker(tx_rnbase_maps_IMarker $marker);
+abstract class tx_rnbase_maps_BaseMap implements tx_rnbase_maps_IMap {
 	/**
 	 * Set a map type
 	 */
-	function setMapTypeStreet();
+	function setMapTypeStreet() {
+		$type = tx_rnbase_maps_TypeRegistry::getInstance()->getType($this, RNMAP_MAPTYPE_STREET);
+		$this->setMapType($type);
+	}
 	/**
 	 * Set a map type
 	 */
-	function setMapTypeHybrid();
+	function setMapTypeHybrid(){
+		$type = tx_rnbase_maps_TypeRegistry::getInstance()->getType($this, RNMAP_MAPTYPE_HYBRID);
+		$this->setMapType($type);
+	}
 	/**
 	 * Set a map type
 	 */
-	function setMapTypeSatellite();
+	function setMapTypePhysical(){
+		$type = tx_rnbase_maps_TypeRegistry::getInstance()->getType($this, RNMAP_MAPTYPE_PHYSICAL);
+		$this->setMapType($type);
+	}
 	/**
 	 * Set a map type
-	 * @param string $mapType map specific type string
 	 */
-	function setMapType($mapType);
+	function setMapTypeSatellite(){
+		$type = tx_rnbase_maps_TypeRegistry::getInstance()->getType($this, RNMAP_MAPTYPE_SATELLITE);
+		$this->setMapType($type);
+	}
 
-	/**
-	 * Add control
-	 * @param tx_rnbase_maps_IControl $control map specific control
-	 */
-	function addControl(tx_rnbase_maps_IControl $control);
-	
-	/**
-	 * Render the map. Returns all the HTML- and JS-Code to display the map.
-	 * @return string
-	 */
-	function draw();
-	/**
-	 * Returns an ID-String for the map provider.
-	 * @return 
-	 */
-	function getPROVID();
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_IMap.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_IMap.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_BaseMap.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_BaseMap.php']);
 }
-
 ?>

@@ -120,8 +120,11 @@ class tx_rnbase_maps_DefaultMarker implements tx_rnbase_maps_IMarker {
 		$this->coords = $coord;
 	}
 	
+	function setIcon(tx_rnbase_maps_IIcon $icon) {
+		$this->icon = $icon;
+	}
 	function getIcon() {
-		
+		return $this->icon;
 	}
 	function getTitle() {
 		return $this->title;

@@ -24,24 +24,25 @@
 
 
 /**
- * Common Interface for Maps
+ * Common Interface for Icons
  */
-interface tx_rnbase_maps_ICoord {
+interface tx_rnbase_maps_IIcon {
 
 	/**
-	 * Returns the latitude
-	 * @return float
+	 * Returns the icon name
+	 *
 	 */
-	function getLatitude();
+	function getName();
+	
 	/**
-	 * Returns the longitude
-	 * @return float
+	 * Renders this Icon
+	 * @return string
 	 */
-	function getLongitude();
+	function render();
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_ICoord.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_ICoord.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_IIcon.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_IIcon.php']);
 }
 
 ?>

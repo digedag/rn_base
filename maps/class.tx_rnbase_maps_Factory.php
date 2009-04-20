@@ -25,17 +25,85 @@
 /**
  */
 class tx_rnbase_maps_Factory {
+	static $typeInits = array();
 
 	/**
 	 * Erstellt eine GoogleMap
 	 *
 	 * @return tx_rnbase_maps_google_Map
 	 */
-	static function createGoogleMap() {
-		return self::createMap('tx_rnbase_maps_google_Map');
+	static function createGoogleMap(&$configurations, $confId) {
+		$map = self::createMap('tx_rnbase_maps_google_Map', $configurations, $confId);
+		return $map;
 	}
-	static function createMap($clazzName) {
-		return tx_div::makeInstance($clazzName);
+	/**
+	 * creates a control
+	 * @return tx_rnbase_maps_IControl
+	 */
+	static function createGoogleControlLargeMap(){
+//		$registry->addType($this,RNMAP_CONTROL_SCALE, 'scale');
+//		$registry->addType($this,RNMAP_CONTROL_ZOOM, 'smallZoom');
+//		$registry->addType($this,RNMAP_CONTROL_OVERVIEW, 'overviewMap');
+//		$registry->addType($this,RNMAP_CONTROL_MAPTYPE, 'mapType');
+		$classname = tx_div::makeInstanceClassname('tx_rnbase_maps_google_Control');
+		return new $classname('largeMap');
+	}
+	/**
+	 * creates a control
+	 * @return tx_rnbase_maps_IControl
+	 */
+	static function createGoogleControlSmallMap(){
+		$classname = tx_div::makeInstanceClassname('tx_rnbase_maps_google_Control');
+		return new $classname('smallMap');
+	}
+	/**
+	 * creates a control
+	 * @return tx_rnbase_maps_IControl
+	 */
+	static function createGoogleControlScale(){
+		$classname = tx_div::makeInstanceClassname('tx_rnbase_maps_google_Control');
+		return new $classname('scale');
+	}
+	/**
+	 * creates a control
+	 * @return tx_rnbase_maps_IControl
+	 */
+	static function createGoogleControlSmallZoom(){
+		$classname = tx_div::makeInstanceClassname('tx_rnbase_maps_google_Control');
+		return new $classname('smallZoom');
+	}
+	/**
+	 * creates a control
+	 * @return tx_rnbase_maps_IControl
+	 */
+	static function createGoogleControlOverview(){
+		$classname = tx_div::makeInstanceClassname('tx_rnbase_maps_google_Control');
+		return new $classname('overviewMap');
+	}
+	/**
+	 * creates a control
+	 * @return tx_rnbase_maps_IControl
+	 */
+	static function createGoogleControlMapType(){
+		$classname = tx_div::makeInstanceClassname('tx_rnbase_maps_google_Control');
+		return new $classname('mapType');
+	}
+	
+	/**
+	 * Erstellt eine Map
+	 *
+	 * @param string $clazzName
+	 * @return tx_rnbase_maps_IMap
+	 */
+	static function createMap($clazzName, &$configurations, $confId) {
+		$map = tx_div::makeInstance($clazzName);
+		$provId = $map->getPROVID();
+		if(!array_key_exists($provId, self::$typeInits)) {
+			$map->initTypes(tx_rnbase_maps_TypeRegistry::getInstance());
+			self::$typeInits[$provId] = 1;
+		}
+		$map->init($configurations, $confId);
+		return $map;
 	}
 }
 
