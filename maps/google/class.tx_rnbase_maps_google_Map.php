@@ -45,7 +45,7 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap {
 		$className = t3lib_div::makeInstanceClassName('tx_wecmap_map_google');
 		$this->map = new $className($apiKey, $width, $height);
 		// Der MapType
-		$mapType = constant($conf->get($confId.'maptype'));
+		$mapType = $conf->get($confId.'maptype') ? constant($conf->get($confId.'maptype')) : null;
 		$types = array_flip(tx_rnbase_maps_TypeRegistry::getMapTypes());
 		if($mapType && array_key_exists($mapType, $types)) {
 			$this->setMapType(tx_rnbase_maps_TypeRegistry::getInstance()->getType($this, $mapType));
