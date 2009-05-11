@@ -73,8 +73,8 @@ class tx_rnbase_util_TSDAM {
 		if(!$templateCode) return '<!-- NO SUBPART '.$subpartName.' FOUND -->';
 
 		// Check if there is a valid uid given.
-		$uid = intval($conf->getCObj()->data['_LOCALIZED_UID'] ? $conf->getCObj()->data['_LOCALIZED_UID'] : $conf->getCObj()->data['uid']);
-		if(!$uid) return '<!-- Invalid data record given -->';
+		$parentUid = intval($conf->getCObj()->data['_LOCALIZED_UID'] ? $conf->getCObj()->data['_LOCALIZED_UID'] : $conf->getCObj()->data['uid']);
+		if(!$parentUid) return '<!-- Invalid data record given -->';
 
 		$damPics = $this->fetchFileList($tsConf, $conf->getCObj());
 		$offset = intval($conf->get('offset'));
@@ -92,13 +92,18 @@ class tx_rnbase_util_TSDAM {
 			// Fetch MetaData in older DAM-Versions
 			if(method_exists($media, 'fetchFullIndex'))
 				$media->fetchFullIndex();
-			$medias[] = new $baseMediaClass($media);
+			$mediaObj = new $baseMediaClass($media);
+			$mediaObj->record['parentuid'] = $parentUid;
+			$medias[] = $mediaObj;
 		}
 		$builderClass = tx_div::makeInstanceClassName('tx_rnbase_util_ListBuilder');
 		$listBuilder = new $builderClass();
 		$out = $listBuilder->render($medias,
 						tx_div::makeInstance('tx_lib_spl_arrayObject'), $templateCode, 'tx_rnbase_util_MediaMarker',
 						'media.', 'MEDIA', $conf->getFormatter());
+		// Now set the identifier
+		$markerArray['###MEDIA_PARENTUID###'] = $parentUid;
+		$out = $conf->getFormatter()->cObj->substituteMarkerArrayCached($out, $markerArray);
 		return $out;
 	}
 
