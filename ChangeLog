@@ -2,6 +2,9 @@
 
 Änderungen
 ----------
+v0.4.2 (22.05.2009)
+* Rendering of DAM images with new marker ###MEDIA_PARENTUID###. This contains the uid of the parent record.
+* tx_rnbase_util_Dates: New methods to handle dateformat yyyymmdd
 
 v0.4.1 (20.04.2009)
 * Maps-API extended: MapTypes, Controls, Icons
