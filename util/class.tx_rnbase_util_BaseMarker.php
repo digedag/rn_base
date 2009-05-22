@@ -127,7 +127,10 @@ class tx_rnbase_util_BaseMarker {
 			$linkObj->destination(intval($pid) ? $pid : $GLOBALS['TSFE']->id); // Das Ziel der Seite vorbereiten
 			if($links[$linkId.'.']['fixedUrl'])
 				$linkObj->destination($links[$linkId.'.']['fixedUrl']); // feste URL für externen Link
-
+			if(array_key_exists('SECTION', $parameterArr)) {
+				$linkObj->anchor(htmlspecialchars($parameterArr['SECTION']));
+				unset($parameterArr['SECTION']);
+			}
 			$linkObj->parameters($parameterArr);
 			// Zusätzliche Parameter für den Link
 			$atagParams = $links[$linkId.'.']['atagparams.'];
