@@ -48,6 +48,38 @@ class tx_rnbase_util_Dates {
 		return sprintf("%02d-%02d-%04d", $tag, $monat, $jahr);
 	}
 	/**
+	 * Datumsumwandlung
+	 *
+	 * @param string $datum Format: yyyy-mm-dd
+	 * @return int yyyymmdd
+	 */
+	public static function date_mysql2int($datum) {
+		return intval(implode('',explode('-', $datum)));
+	}
+	/**
+	 * Wandelt einen Integer der Form yyymmdd in ein MySQL-DATE (ISO-Date)
+	 *
+	 * @param int $datum
+	 * @return string yyyy-mm-dd
+	 */
+	public static function date_int2mysql($datum) {
+		return substr($datum,0,4) . '-'. substr($datum,4,2) .'-'.substr($datum,6,2);
+	}
+	/**
+	 * Rechnen mit int-Dates yyyymmdd
+	 *
+	 * @param int $intdate Form: yyyymmdd
+	 * @param int $days
+	 * @return int yyyymmdd
+	 */
+	static function date_addIntDays($intdate, $days) {
+		$dateArr = array(substr($intdate,0,4), substr($intdate,4,2), substr($intdate,6,2));
+		$tstamp = gmmktime(0,0,0,$dateArr[1],$dateArr[2],$dateArr[0]);
+		$tstamp += ((3600 * 24) * $days);
+		$ret = gmdate('Ymd', $tstamp);
+		return $ret;
+	}
+	/**
 	 * date_german2mysql
 	 * wandelt ein traditionelles deutsches Datum nach MySQL (ISO-Date).
 	 * Wir ein leerer String übergeben, dann wird 0000-00-00 geliefert.
