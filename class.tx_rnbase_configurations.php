@@ -268,12 +268,14 @@ class tx_rnbase_configurations {
 
   /**
    * Returns the ExtensionKey
+   * @return string
    */
   function getExtensionKey() {
     return $this->_extensionKey;
   }
   /**
-   * Returns the ExtensionKey
+   * Returns the qualifier for plugin links: qualifier[param]=value
+   * @return string
    */
   function getQualifier() {
     return $this->_qualifier;
