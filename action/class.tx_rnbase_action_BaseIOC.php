@@ -62,6 +62,13 @@ abstract class tx_rnbase_action_BaseIOC {
 	}
 
 	/**
+	 * Liefert die ConfId für den View
+	 * @return string
+	 */
+	protected function getConfId() {
+		return $this->getTemplateName().'.';
+	}
+	/**
 	 * Liefert den Default-Namen des Templates. Über diesen Namen
 	 * wird per Konvention auch auf ein per TS konfiguriertes HTML-Template
 	 * geprüft. Dessen Key wird aus dem Name und dem String "Template" 
