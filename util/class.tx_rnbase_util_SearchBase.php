@@ -215,7 +215,7 @@ abstract class tx_rnbase_util_SearchBase {
 		  }
 			$sqlOptions['orderby'] = implode(',', $orderby);
 		}
-		if(!(isset($options['count']) || isset($options['what']) || isset($options['groupby']) ))
+		if(!(isset($options['count']) || (isset($options['what']) || isset($options['groupby'])) && !isset($options['forcewrapper']) ))
 			$sqlOptions['wrapperclass'] = $this->getWrapperClass();
 
 		$result = tx_rnbase_util_DB::doSelect($what, $from, $sqlOptions, $options['debug'] ? 1 : 0);
