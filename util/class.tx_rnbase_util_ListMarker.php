@@ -52,7 +52,7 @@ class tx_rnbase_util_ListMarker {
     for($i=0, $cnt=count($dataArr); $i < $cnt; $i++) {
     	$data = $dataArr[$i];
       $data->record['roll'] = $rowRollCnt;
-      $data->record['rollrow'] = $i; // Marker für aktuelle Zeilenummer
+      $data->record['line'] = $i; // Marker für aktuelle Zeilenummer
       $part = $entryMarker->parseTemplate($this->info->getTemplate($data), $data, $formatter, $confId, $marker);
     	$parts[] = $part;
       $rowRollCnt = ($rowRollCnt >= $rowRoll) ? 0 : $rowRollCnt + 1;
