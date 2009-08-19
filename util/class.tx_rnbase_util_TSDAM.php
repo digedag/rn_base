@@ -77,8 +77,8 @@ class tx_rnbase_util_TSDAM {
 		// Is there a customized language field configured
 		$langField = DEFAULT_LOCAL_FIELD;
 		$locUid = $conf->getCObj()->data[$langField]; // Save original uid
-		if($conf->get('languageField')) {
-			$langField = $conf->get('languageField');
+		if($conf->get('forcedIdField')) {
+			$langField = $conf->get('forcedIdField');
 			// Copy localized UID
 			$conf->getCObj()->data[DEFAULT_LOCAL_FIELD] = $conf->getCObj()->data[$langField];
 		}
