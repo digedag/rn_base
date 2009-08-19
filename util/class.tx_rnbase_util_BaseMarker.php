@@ -124,7 +124,7 @@ class tx_rnbase_util_BaseMarker {
 			if($qualifier) $linkObj->designator($qualifier);
 			$target = $links[$linkId.'.']['target'];
 			if($target) $linkObj->target($target);
-			$linkObj->destination(intval($pid) ? $pid : $GLOBALS['TSFE']->id); // Das Ziel der Seite vorbereiten
+			$linkObj->destination($pid ? $pid : $GLOBALS['TSFE']->id); // Das Ziel der Seite vorbereiten
 			if($links[$linkId.'.']['fixedUrl'])
 				$linkObj->destination($links[$linkId.'.']['fixedUrl']); // feste URL für externen Link
 			if(array_key_exists('SECTION', $parameterArr)) {
