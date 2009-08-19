@@ -28,6 +28,8 @@ if(t3lib_extMgm::isLoaded('dam')) {
 	require_once(t3lib_extMgm::extPath('dam') . 'lib/class.tx_dam_tsfe.php');
 }
 
+define('DEFAULT_LOCAL_FIELD', '_LOCALIZED_UID');
+
 /**
  * Contains utility functions for DAM
  */
@@ -72,11 +74,20 @@ class tx_rnbase_util_TSDAM {
 		$templateCode = $conf->getCObj()->getSubpart($templateCode,$subpartName);
 		if(!$templateCode) return '<!-- NO SUBPART '.$subpartName.' FOUND -->';
 
+		// Is there a customized language field configured
+		$langField = DEFAULT_LOCAL_FIELD;
+		$locUid = $conf->getCObj()->data[$langField]; // Save original uid
+		if($conf->get('languageField')) {
+			$langField = $conf->get('languageField');
+			// Copy localized UID
+			$conf->getCObj()->data[DEFAULT_LOCAL_FIELD] = $conf->getCObj()->data[$langField];
+		}
 		// Check if there is a valid uid given.
-		$parentUid = intval($conf->getCObj()->data['_LOCALIZED_UID'] ? $conf->getCObj()->data['_LOCALIZED_UID'] : $conf->getCObj()->data['uid']);
+		$parentUid = intval($conf->getCObj()->data[DEFAULT_LOCAL_FIELD] ? $conf->getCObj()->data[DEFAULT_LOCAL_FIELD] : $conf->getCObj()->data['uid']);
 		if(!$parentUid) return '<!-- Invalid data record given -->';
 
 		$damPics = $this->fetchFileList($tsConf, $conf->getCObj());
+		$conf->getCObj()->data[DEFAULT_LOCAL_FIELD] = $locUid; // Reset UID
 		$offset = intval($conf->get('offset'));
 		$limit = intval($conf->get('limit'));
 		if((!$limit && $offset) && count($damPics))
