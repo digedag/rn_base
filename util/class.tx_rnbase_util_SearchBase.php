@@ -195,6 +195,8 @@ abstract class tx_rnbase_util_SearchBase {
 			$sqlOptions['enablefieldsfe'] = $options['enablefieldsfe'];
 		if($options['groupby'])
 			$sqlOptions['groupby'] = $options['groupby'];
+		if($options['i18n'])
+			$sqlOptions['i18n'] = $options['i18n'];
 		if(!isset($options['count']) && is_array($options['orderby'])) {
 			// Aus dem Array einen String bauen
 			$orderby = array();
