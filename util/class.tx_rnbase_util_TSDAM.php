@@ -222,6 +222,28 @@ class tx_rnbase_util_TSDAM {
 		return array();
 	}
 
+	/**
+	 * Removes dam references. If no parameter is given, all references will be removed.
+	 *
+	 * @param string $uids commaseperated uids
+	 */
+	static function deleteReferences($tableName, $fieldName, $itemId, $uids = '') {
+
+		$where = 'tablenames=\'' . $tableName . '\' AND ident=\'' . $fieldName .'\' AND uid_foreign=' . $itemId;
+		if(strlen(trim($uids))) {
+			$uids = implode(',',t3lib_div::intExplode(',',$uids));
+			$where .= ' AND uid_local IN (' . $uids .') ';
+		}
+		tx_rnbase_util_DB::doDelete('tx_dam_mm_ref',$where);
+		// Jetzt die Bildanzahl aktualisieren
+		$options['where'] = 'tablenames=\'' . $tableName . '\' AND ident=\'' . $fieldName .'\' AND uid_foreign=' . $itemId;
+		$options['count'] = 1;
+		$options['enablefieldsoff'] = 1;
+		$ret = tx_rnbase_util_DB::doSelect('count(*) AS \'cnt\'', 'tx_dam_mm_ref', $options, 0);
+		$cnt = count($ret) ? intval($ret[0]['cnt']) : 0;
+		$values[$fieldName] = $cnt;
+		tx_rnbase_util_DB::doUpdate($tableName,'uid='.$itemId,$values,0);
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_TSDAM.php']) {
