@@ -192,8 +192,7 @@ class tx_rnbase_util_FormatUtil {
 
     // Alle Metadaten auslesen und wrappen
     $data = array();
-    while(list($colname,$value)=each($record)){
-
+    foreach($record As $colname =>$value){
 
       if(is_array($noMap) && in_array($colname, $noMap)){
         continue;
