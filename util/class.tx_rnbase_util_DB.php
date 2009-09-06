@@ -41,7 +41,7 @@ class tx_rnbase_util_DB {
 	 * @param $groupby
 	 * @param $orderby
 	 * @param $wrapperClass Name einer WrapperKlasse für jeden Datensatz
-   * @param $limit = '' Limits number of results
+	 * @param $limit = '' Limits number of results
 	 * @param $debug = 0 Set to 1 to debug sql-String
 	 * @deprecated use tx_rnbase_util_DB::doSelect()
 	 */
@@ -102,7 +102,7 @@ class tx_rnbase_util_DB {
 	 * </pre>
 	 * @param string $what requested columns
 	 * @param string $from either the name of on table or an array with index 0 the from clause 
-	 *              and index 1 the requested tablename
+	 *              and index 1 the requested tablename and optional index 2 a table alias to use. 
 	 * @param array $arr the options array
 	 * @param boolean $debug = 0 Set to 1 to debug sql-String
 	 */
@@ -115,6 +115,7 @@ class tx_rnbase_util_DB {
 		if(is_array($from)){
 			$tableName = $from[1];
 			$fromClause = $from[0];
+			$tableAlias = isset($from[2]) && strlen(trim($from[2])) > 0  ? trim($from[2]) : false;
 		}
 
 		$where = is_string($arr['where']) ? $arr['where'] : '1';
@@ -149,8 +150,13 @@ class tx_rnbase_util_DB {
 				$mode = 1;
 			elseif(intval($arr['enablefieldsfe']))
 				$mode = 0;
-			$where .= self::$sysPage->enableFields($tableName, $mode);
-//			$where .= tslib_cObj::enableFields($tableName);
+			$enableFields = self::$sysPage->enableFields($tableName, $mode);
+			if($tableAlias) {
+				// Replace tablename with alias
+				$enableFields = str_replace($tableName, $tableAlias, $enableFields);
+			}
+			
+			$where .= $enableFields;
 		}
 
 		if(strlen($i18n) > 0) {
@@ -329,13 +335,13 @@ class tx_rnbase_util_DB {
 
     return implode(',', $pid_list);
   }
-  /**
-   * Check whether the given resource is a valid sql result. Breaks with mayday if not!
-   * This method is taken from the great ameos_formidable extension.
-   *
-   * @param resource $rRes
-   * @return resource
-   */
+	/**
+	 * Check whether the given resource is a valid sql result. Breaks with mayday if not!
+	 * This method is taken from the great ameos_formidable extension.
+	 *
+	 * @param resource $rRes
+	 * @return resource
+	 */
 	function watchOutDB(&$rRes) {
 
 		if(!is_resource($rRes) && $GLOBALS['TYPO3_DB']->sql_error()) {
@@ -434,7 +440,7 @@ class tx_rnbase_util_DB {
 			}
 		}
 		return $where;
-  }
+ 	}
 	/**
 	 * Build a single where clause. This is a compare of a column to a value with a given operator.
 	 * Based on the operator the string is hopefully correctly build. It is up to the client to 
@@ -509,12 +515,12 @@ class tx_rnbase_util_DB {
 	 * @param string $date Format: yyyy-mm-dd
 	 * @return string Format mm-dd-YYYY or empty string, if $date is not valid
 	 */
-  static function date_mysql2mdY($date) {
+	static function date_mysql2mdY($date) {
 		if(strlen($date) < 2)
 			return '';
 		list($year, $month, $day) = explode('-', $date);
 		return sprintf("%02d%02d%04d", $day, $month, $year);
-  }
+	}
 
 	/**
 	 * Format a MySQL-DATE (ISO-Date) into dd-mm-YYYY.

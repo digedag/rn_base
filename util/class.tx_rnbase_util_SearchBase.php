@@ -57,6 +57,7 @@ define('OP_EQ', '=STR');
  */
 abstract class tx_rnbase_util_SearchBase {
 	private static $instances = array();
+	private $tableMapping;
 
 	/**
 	 * Liefert eine Instanz einer konkreten Suchklasse. Der
@@ -131,32 +132,32 @@ abstract class tx_rnbase_util_SearchBase {
 	  			list($tableAlias, $col) = explode('.', $field);
 	  			if(!isset($tableAliases[$tableAlias]))
 	  				$tableAliases[$tableAlias] = array();
-	  			$joinedFields[$key]['fields'][] = $this->tableMapping[$tableAlias].'.' . strtolower($col);
+	  			$joinedFields[$key]['fields'][] = ($this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias]).'.' . strtolower($col);
 	  		}
 			}
   	}
   	
 
-    $what = $this->getWhat($options);
+    $what = $this->getWhat($options, $tableAliases);
     $from = $this->getFrom($options, $tableAliases);
     $where = '1=1';
     foreach($tableAliases AS $tableAlias => $colData) {
   		foreach($colData As $col => $data) {
   			foreach ($data As $operator => $value) {
 					if(is_array($value)) {
-						// The is more then one value to test against column
+						// There is more then one value to test against column
 						$joinedValues = $value[SEARCH_FIELD_JOINED];
 						if(!is_array($joinedValues))
 							tx_rnbase_util_Misc::mayday('JOINED field required data array. Check up your search config.','rn_base');
 						$joinedValues = array_values($joinedValues);
 						for($i=0, $cnt=count($joinedValues); $i < $cnt; $i++) {
 							if(strlen($where) >0) $where .= ' AND ';
-							$where .= tx_rnbase_util_DB::setSingleWhereField($this->tableMapping[$tableAlias], $operator, $col, $joinedValues[$i]);
+							$where .= tx_rnbase_util_DB::setSingleWhereField($this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias], $operator, $col, $joinedValues[$i]);
 						}
 					}
 					else {
 						if(strlen($where) >0) $where .= ' AND ';
-						$where .= tx_rnbase_util_DB::setSingleWhereField($this->tableMapping[$tableAlias], $operator, $col, $value);
+						$where .= tx_rnbase_util_DB::setSingleWhereField($this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias], $operator, $col, $value);
 					}
   			}
   		}
@@ -165,7 +166,7 @@ abstract class tx_rnbase_util_SearchBase {
   	if(is_array($joinedFields)) {
   		foreach ($joinedFields As $joinedField) {
   			if($joinedField['operator'] == OP_INSET_INT) {
-  				// Values splitten und einzelen Abfragen mit OR verbinden
+  				// Values splitten und einzelne Abfragen mit OR verbinden
 	   			$addWhere = tx_rnbase_util_DB::searchWhere($joinedField['value'], implode(',',$joinedField['fields']), 'FIND_IN_SET_OR');
   			}
   			else {
@@ -207,7 +208,7 @@ abstract class tx_rnbase_util_SearchBase {
 		  	if(array_key_exists('RAND', $options['orderby']))	unset($options['orderby']['RAND']);
 				foreach ($options['orderby'] As $field => $order) {
 					list($tableAlias, $col) = explode('.', $field);
-					$tableAlias = $this->tableMapping[$tableAlias];
+					$tableAlias = $this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias];
 					if($tableAlias)
 						$orderby[] = $tableAlias.'.' . strtolower($col) . ' ' . ( strtoupper($order) == 'DESC' ? 'DESC' : 'ASC');
 					else {
@@ -224,75 +225,79 @@ abstract class tx_rnbase_util_SearchBase {
 		return isset($options['count']) ? $result[0]['cnt'] : $result;
 	}
 
-  private function _initSearch() {
-  	if(!is_array($this->tableMapping)) {
-  		$this->tableMapping = $this->getTableMappings();
-  	}
-  }
+	private function _initSearch() {
+		if(!is_array($this->tableMapping)) {
+			$tableMapping = $this->getTableMappings();
+			$this->tableMapping = array_merge($tableMapping, array_flip($tableMapping));
+		}
+	}
 
-  /**
-   * Kindklassen müssen ein Array bereitstellen, in denen die Aliases der
-   * Tabellen zu den eigentlichen Tabellennamen gemappt werden.
-   * @return array(alias => tablename, ...)
-   */
-  abstract protected function getTableMappings();
-  /**
-   * Kindklassen müssen ein Array bereitstellen, in denen die Operatoren der
-   * für den Vergleich mit den DB-Felder definiert sind.
-   * Die Operatoren sind als Konstanten definiert.
-   * Da OP_LIKE als Default angenommen wird, müssen diese Felder nicht extra gesetzt 
-   * werden.
-   * @return array(colname => operator, ...)
-   */
-//  abstract protected function getFieldOperators();
+	/**
+	 * Kindklassen müssen ein Array bereitstellen, in denen die Aliases der
+	 * Tabellen zu den eigentlichen Tabellennamen gemappt werden.
+	 * @return array(alias => tablename, ...)
+	 */
+	abstract protected function getTableMappings();
 
-  /**
-   * Name der Basistabelle, in der gesucht wird
-   */
-  abstract protected function getBaseTable();
-  /**
-   * Name der Klasse, in die die Ergebnisse gemappt werden
-   */
-  abstract protected function getWrapperClass();
+	/**
+	 * Name der Basistabelle, in der gesucht wird
+	 */
+	abstract protected function getBaseTable();
+	/**
+	 * Name der Klasse, in die die Ergebnisse gemappt werden
+	 */
+	abstract protected function getWrapperClass();
 
-  /**
-   * Kindklassen liefern hier die notwendigen DB-Joins. Ist kein JOIN erforderlich
-   * sollte ein leerer String geliefert werden.
-   *
-   * @param array $tableAliases
-   * @return string 
-   */
-  abstract protected function getJoins($tableAliases);
+	/**
+	 * Kindklassen liefern hier die notwendigen DB-Joins. Ist kein JOIN erforderlich
+	 * sollte ein leerer String geliefert werden.
+	 *
+	 * @param array $tableAliases
+	 * @return string 
+	 */
+	abstract protected function getJoins($tableAliases);
 
-  protected function getWhat($options) {
-  	if(isset($options['what'])) {
-  		// Wenn "what" gesetzt ist, dann sollte es passen...
-  		return $options['what'];
-  	}
-  	$table = $this->getBaseTable();
-  	$distinct = isset($options['distinct']) ? 'DISTINCT ' : '';
-  	$rownum = isset($options['rownum']) ? ', @rownum:=@rownum+1 AS rownum ' : '';
-  	return isset($options['count']) ? 'count('. $distinct .$table.'.uid) as cnt' : $distinct.$table.'.*'.$rownum;
-  }
+	/**
+	 * As default the sql statement is build with tablenames. If this method returns true, the aliases will
+	 * be used instead. But keep in mind, to use aliases for Joins too!
+	 *
+	 * @return boolean
+	 */
+	protected function useAlias() {
+		return false;
+	}
 
-  /**
-   * Build the from part of sql statement
-   *
-   * @param array $options
-   * @param array $tableAliases
-   * @return array
-   */
-  protected function getFrom($options, $tableAliases) {
-  	$table = $this->getBaseTable();
-  	$from = array($table,$table);
-  	$joins = $this->getJoins($tableAliases);
-  	if(isset($options['rownum'])) $from[0] = '(SELECT @rownum:=0) _r, ' . $from[0];
- 
-  	if(strlen($joins))
-  		$from[0] .= $joins;
-  	return $from;
-  }
+	protected function getWhat($options, $tableAliases) {
+		if(isset($options['what'])) {
+			// Wenn "what" gesetzt ist, dann sollte es passen...
+			return $options['what'];
+		}
+		$distinct = isset($options['distinct']) ? 'DISTINCT ' : '';
+		$rownum = isset($options['rownum']) ? ', @rownum:=@rownum+1 AS rownum ' : '';
+		$table = $this->getBaseTable();
+		$table = $this->useAlias() ? $this->tableMapping[$table] : $table;
+		return isset($options['count']) ? 'count('. $distinct .$table.'.uid) as cnt' : $distinct.$table.'.*'.$rownum;
+	}
 
+	/**
+	 * Build the from part of sql statement
+	 *
+	 * @param array $options
+	 * @param array $tableAliases
+	 * @return array
+	 */
+	protected function getFrom($options, $tableAliases) {
+		$table = $this->getBaseTable();
+		$tableFrom = $this->useAlias() ? $table . ' AS ' .$this->tableMapping[$table] : $table;
+		$from = array($tableFrom,$table);
+		if($this->useAlias()) $from[2] = $this->tableMapping[$table];
+		$joins = $this->getJoins($tableAliases);
+		if(isset($options['rownum'])) $from[0] = '(SELECT @rownum:=0) _r, ' . $from[0];
+
+		if(strlen($joins))
+			$from[0] .= $joins;
+		return $from;
+	}
 
 	/**
 	 * Optionen aus der TS-Config setzen
@@ -368,48 +373,44 @@ abstract class tx_rnbase_util_SearchBase {
 	}
 
 	/**
-   * Vergleichsfelder aus der TS-Config setzen
-   * 
-   * @param array $fields
-   * @param tx_rnbase_configurations $configurations
-   * @param string $confId Id der TS-Config z.B. myview.fields.
-   */
-  static function setConfigFields(&$fields, &$configurations, $confId) {
-  	$cfgFields = $configurations->get($confId);
-  	self::setConfigFieldsByArray($fields, $cfgFields);
-  }
+	 * Vergleichsfelder aus der TS-Config setzen
+	 * 
+	 * @param array $fields
+	 * @param tx_rnbase_configurations $configurations
+	 * @param string $confId Id der TS-Config z.B. myview.fields.
+	 */
+	static function setConfigFields(&$fields, &$configurations, $confId) {
+		$cfgFields = $configurations->get($confId);
+		self::setConfigFieldsByArray($fields, $cfgFields);
+	}
 
-  /**
-   * Checks existence of search field in parameters and adds it to fieldarray.
-   *
-   * @param string $idstr
-   * @param array $fields
-   * @param arrayObject $parameters
-   * @param tx_rnbase_configurations $configurations
-   * @param string $operator
-   */
-  function setField($idstr, &$fields, &$parameters, &$configurations, $operator = OP_LIKE) {
-  	if(!isset($fields[$idstr][$operator]) && $parameters->offsetGet($idstr)) {
-  		$fields[$idstr][$operator] = $parameters->offsetGet($idstr);
-  		// Parameter als KeepVar merken
-  		// TODO: Ist das noch notwendig??
-  		$configurations->addKeepVar($configurations->createParamName($idstr),$fields[$idstr]);
-  	}
-  }
-  function getSpecialChars() {
-  	$specials['0-9'] = array('1','2','3','4','5','6','7','8','9','0','.','@','');
-  	$specials['A'] = array('A','Ä');
-  	$specials['O'] = array('O','Ö');
-  	$specials['U'] = array('U','Ü');
-  	return $specials;
-  }
-  
-  
+	/**
+	 * Checks existence of search field in parameters and adds it to fieldarray.
+	 *
+	 * @param string $idstr
+	 * @param array $fields
+	 * @param arrayObject $parameters
+	 * @param tx_rnbase_configurations $configurations
+	 * @param string $operator
+	 */
+	function setField($idstr, &$fields, &$parameters, &$configurations, $operator = OP_LIKE) {
+		if(!isset($fields[$idstr][$operator]) && $parameters->offsetGet($idstr)) {
+			$fields[$idstr][$operator] = $parameters->offsetGet($idstr);
+			// Parameter als KeepVar merken
+			// TODO: Ist das noch notwendig??
+			$configurations->addKeepVar($configurations->createParamName($idstr),$fields[$idstr]);
+		}
+	}
+	function getSpecialChars() {
+		$specials['0-9'] = array('1','2','3','4','5','6','7','8','9','0','.','@','');
+		$specials['A'] = array('A','Ä');
+		$specials['O'] = array('O','Ö');
+		$specials['U'] = array('U','Ü');
+		return $specials;
+	}
 }
-
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/search/class.tx_rnbase_util_SearchBase.php']) {
   include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/search/class.tx_rnbase_util_SearchBase.php']);
 }
-
 ?>
