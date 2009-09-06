@@ -33,14 +33,18 @@ class tx_rnbase_util_BEPager {
 	var $listSize;
 	var $settings;
 	var $init = false;
-	function tx_rnbase_util_BEPager($id, $modName, $pid, $listSize=0) {
+	function tx_rnbase_util_BEPager($id, $modName, $pid, $listSize=0, $conf = array()) {
 		$this->id = strlen(trim($id)) ? trim($id) : 'pager';
 		$this->pid = $pid;
 		$this->modName = $modName;
+		$this->conf = $conf;
 		$this->setListSize($listSize);
 	}
 	function setListSize($listSize) {
 		$this->listSize = $listSize;
+	}
+	function getListSize() {
+		return $this->listSize;
 	}
 	/**
 	 * Setzt die Daten für den SQL-Select
@@ -65,7 +69,8 @@ class tx_rnbase_util_BEPager {
 	 * @return array
 	 */
 	function getLimits() {
-		return array('10' => '10 Einträge', '25' => '25 Einträge', '50' => '50 Einträge', '100' => '100 Einträge');
+		return is_array($this->conf['limits']) ? $this->conf['limits'] : 
+				array('10' => '10 Einträge', '25' => '25 Einträge', '50' => '50 Einträge', '100' => '100 Einträge');
 	}
 	function setState() {
 		if($this->init) return;
