@@ -50,6 +50,14 @@ class tx_rnbase_util_FormatUtil {
 //    $this->cObj->data = $this->configurations->get('tt_content.');
   }
 
+  /**
+   * Returns configuration instance
+   *
+   * @return tx_rnbase_configurations
+   */
+  function getConfigurations() {
+  	return $this->configurations;
+  }
 
   /**
    * Get human readability and localized date for a timestamp out of the internal data array
@@ -167,28 +175,32 @@ class tx_rnbase_util_FormatUtil {
   }
 
 
-  /**
-   * Puts all columns in $record to a Marker-Array. Each column is wrapped according to it's name.
-   * So if your confId is 'profile.' and your column is 'date' you can define a TS setup like
-   * <pre>profile.date.strftime = %Y</pre>
-   * @return Array
-   */
-  function getItemMarkerArrayWrapped($record, $confId, $noMap = 0, $markerPrefix='', $initMarkers = 0){
-    if(!is_array($record))
-      return array();
-    $tmpArr = $this->cObj->data;
-    // Ensure the initMarkers are part of the record
-    if(is_array($initMarkers)) {
-    	for($i=0, $cnt = count($initMarkers); $i < $cnt; $i++)  {
-    		if(!array_key_exists($initMarkers[$i], $record))
-    			$record[$initMarkers[$i]] = '';
-    	}
+	/**
+	 * Puts all columns in $record to a Marker-Array. Each column is wrapped according to it's name.
+	 * So if your confId is 'profile.' and your column is 'date' you can define a TS setup like
+	 * <pre>profile.date.strftime = %Y</pre>
+	 * @return Array
+	 */
+	function getItemMarkerArrayWrapped($record, $confId, $noMap = 0, $markerPrefix='', $initMarkers = 0){
+		if(!is_array($record))
+			return array();
+		$tmpArr = $this->cObj->data;
+		// Ensure the initMarkers are part of the record
+		if(is_array($initMarkers)) {
+			for($i=0, $cnt = count($initMarkers); $i < $cnt; $i++)  {
+				if(!array_key_exists($initMarkers[$i], $record))
+					$record[$initMarkers[$i]] = '';
+			}
+		}
+    $conf = $this->getConfigurations()->get($confId);
+    // Add dynamic columns
+    $keys = $this->getConfigurations()->getUniqueKeysNames($conf);
+    foreach($keys As $key) {
+    	if(t3lib_div::isFirstPartOfStr($key, 'dc') && !isset($record[$key]))
+    		$record[$key] = $conf[$key];
     }
-    
 
-    $this->cObj->data = $record;
-
-    $conf = $this->configurations->get($confId);
+		$this->cObj->data = $record;
 
     // Alle Metadaten auslesen und wrappen
     $data = array();
