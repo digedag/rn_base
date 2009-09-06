@@ -59,6 +59,15 @@ class tx_rnbase_util_TSDAM {
 	 * There are three additional fields in media record: file, file1 and thumbnail containing the complete
 	 * image path. 
 	 * The output is rendered via HTML template with ListBuilder. Have a look at EXT:rn_base/res/simplegallery.html
+	 * Possible Typoscript options:
+	 * refField: DAM reference field of the media records (defined in TCA and used to locate the record in MM-Table)
+	 * refTable: should be the tablename where the DAM record is referenced to
+	 * template: Full path to HTML template file.
+	 * media: Formatting options of the DAM record. Have a look at tx_dam to find all column names
+	 * limit: Limits the number of medias
+	 * offset: Start media output with an offset
+	 * forcedIdField: force another refernce column (other than UID or _LOCALIZED_UID)
+	 * 
 	 *
 	 * @param string $content
 	 * @param array $tsConf
