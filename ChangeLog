@@ -2,6 +2,16 @@
 
 Änderungen
 ----------
+
+v0.4.3 (05.09.2009)
+* New option forcewrapper in SearchBase. This allows userdefined "what" and "groupby" in combination with "wrapperclass".
+* New method getConfId() in tx_rnbase_action_BaseIOC
+* tx_rnbase_util_BaseMarker::initLink() has support for page aliases. Thanks to Holger Gebhardt!
+* tx_rnbase_util_TSDAM: New option forcedIdField.
+* New method tx_rnbase_util_TSDAM::deleteReferences()
+* TSDAM: Output of translated DAM records. Thanks to Lars Heber.
+* SearchBase: Support for aliases in SQL statements.
+
 v0.4.2 (22.05.2009)
 * Rendering of DAM images with new marker ###MEDIA_PARENTUID###. This contains the uid of the parent record.
 * tx_rnbase_util_Dates: New methods to handle dateformat yyyymmdd
