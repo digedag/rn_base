@@ -163,7 +163,8 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 		$filterClass = ($filterClass) ? $filterClass : 'tx_rnbase_filter_BaseFilter';
 		$filterClass = tx_div::makeInstanceClassname($filterClass);
 		$filter = new $filterClass($parameters, $configurations, $confId);
-		$viewData->offsetSet('filter', $filter);
+		if(is_object($viewData))
+			$viewData->offsetSet('filter', $filter);
 		return $filter;
 	}
 
