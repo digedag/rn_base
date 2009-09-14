@@ -192,13 +192,15 @@ class tx_rnbase_util_FormatUtil {
 					$record[$initMarkers[$i]] = '';
 			}
 		}
-    $conf = $this->getConfigurations()->get($confId);
-    // Add dynamic columns
-    $keys = $this->getConfigurations()->getUniqueKeysNames($conf);
-    foreach($keys As $key) {
-    	if(t3lib_div::isFirstPartOfStr($key, 'dc') && !isset($record[$key]))
-    		$record[$key] = $conf[$key];
-    }
+		$conf = $this->getConfigurations()->get($confId);
+		if($conf) {
+			// Add dynamic columns
+			$keys = $this->getConfigurations()->getUniqueKeysNames($conf);
+			foreach($keys As $key) {
+				if(t3lib_div::isFirstPartOfStr($key, 'dc') && !isset($record[$key]))
+					$record[$key] = $conf[$key];
+			}
+		}
 
 		$this->cObj->data = $record;
 
