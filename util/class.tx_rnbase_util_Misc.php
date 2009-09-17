@@ -37,7 +37,7 @@ class tx_rnbase_util_Misc {
 	 * @param string $subType
 	 * @return t3lib_svbase
 	 */
-	static function getService($type, $subType) {
+	static function getService($type, $subType='') {
     $srv = t3lib_div::makeInstanceService($type, $subType);
     if(!is_object($srv)) {
     	tx_div::load('tx_rnbase_util_Misc');
