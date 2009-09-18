@@ -59,8 +59,10 @@ abstract class tx_rnbase_action_BaseIOC {
 		$GLOBALS['TT']->push(get_class($this), 'render');
 		$out = $view->render($tmplName, $configurations);
 		$GLOBALS['TT']->pull();
-		if($debug)
-			t3lib_div::debug((microtime()-$time), $this->getConfId(). ' execution time.'); // TODO: remove me
+		if($debug) {
+			tx_div::load('class.tx_rnbase_util_Misc.php');
+			t3lib_div::debug(tx_rnbase_util_Misc::microtimeDiff($time, microtime()), $this->getConfId(). ' execution time.'); // TODO: remove me
+		}
 		return $out;
 	}
 
