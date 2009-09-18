@@ -174,6 +174,7 @@ class tx_rnbase_util_FormatUtil {
 
   }
 
+	static $time = 0;
 
 	/**
 	 * Puts all columns in $record to a Marker-Array. Each column is wrapped according to it's name.
@@ -184,6 +185,8 @@ class tx_rnbase_util_FormatUtil {
 	function getItemMarkerArrayWrapped($record, $confId, $noMap = 0, $markerPrefix='', $initMarkers = 0){
 		if(!is_array($record))
 			return array();
+$start = microtime();
+
 		$tmpArr = $this->cObj->data;
 		// Ensure the initMarkers are part of the record
 		if(is_array($initMarkers)) {
@@ -236,6 +239,7 @@ class tx_rnbase_util_FormatUtil {
     $markerArray = tx_rnbase_util_FormatUtil::getItemMarkerArray($data, $noMap, $markerPrefix, $initMarkers);
 
     $this->cObj->data = $tmpArr;
+self::$time += (microtime() - $start);
     return $markerArray;
   }
 

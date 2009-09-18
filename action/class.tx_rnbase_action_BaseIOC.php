@@ -38,6 +38,8 @@ abstract class tx_rnbase_action_BaseIOC {
 	private static $callCount = 0;
 	private static function countCall() { return self::$callCount++; }
 	function execute(&$parameters,&$configurations){
+		$debug = $configurations->get($this->getConfId().'_debugview');
+		if($debug) $time = microtime();
  
 		$viewData =& $configurations->getViewData();
 		$GLOBALS['TT']->push(get_class($this), 'handleRequest');
@@ -57,7 +59,8 @@ abstract class tx_rnbase_action_BaseIOC {
 		$GLOBALS['TT']->push(get_class($this), 'render');
 		$out = $view->render($tmplName, $configurations);
 		$GLOBALS['TT']->pull();
-		
+		if($debug)
+			t3lib_div::debug((microtime()-$time), $this->getConfId(). ' execution time.'); // TODO: remove me
 		return $out;
 	}
 

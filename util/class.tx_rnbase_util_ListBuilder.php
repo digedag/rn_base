@@ -71,7 +71,11 @@ class tx_rnbase_util_ListBuilder {
 			$markerClass = tx_div::makeInstanceClassName('tx_rnbase_util_ListMarker');
 			$listMarker = new $markerClass($this->info->getListMarkerInfo());
 			$cObj =& $formatter->configurations->getCObj(0);
-
+			$debug = $formatter->getConfigurations()->get($confId.'_debuglb');
+			if($debug) {
+			  $time = microtime(true);
+			  $wrapTime = tx_rnbase_util_FormatUtil::$time;
+			}
 			$templateList = $cObj->getSubpart($template,'###'.$marker.'S###');
 
 			$templateEntry = $cObj->getSubpart($templateList,'###'.$marker.'###');
@@ -112,6 +116,10 @@ class tx_rnbase_util_ListBuilder {
 			$markerArray['###SEARCHFORM###'] = $seachform;
 
 		$out = $formatter->cObj->substituteMarkerArrayCached($template, $markerArray, $subpartArray);
+		if($debug) {
+			$wrapTime = tx_rnbase_util_FormatUtil::$time - $wrapTime;
+			t3lib_div::debug(count($dataArr),'Rows rendered. Time: ' . (microtime(true) - $time) . 's WrapTime: ' . $wrapTime . 's');
+		}
 		return $out;
 	}
 }
