@@ -3,6 +3,10 @@
 Änderungen
 ----------
 
+v0.4.4 (20.10.2009)
+* FormatUtil: Support for dynamic markers. Fields starting with "dc" will be added as columns to marker arrays.
+* More debug information for ListBuilder and Plugin-Views.
+
 v0.4.3 (05.09.2009)
 * New option forcewrapper in SearchBase. This allows userdefined "what" and "groupby" in combination with "wrapperclass".
 * New method getConfId() in tx_rnbase_action_BaseIOC
