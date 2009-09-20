@@ -67,15 +67,17 @@ class tx_rnbase_util_ListBuilder {
 	 */
 	function render(&$dataArr, &$viewData, $template, $markerClassname, $confId, $marker, &$formatter, $markerParams = null) {
 
+		$debug = $formatter->getConfigurations()->get($confId.'_debuglb');
+		if($debug) {
+		  $time = microtime(true);
+		  $mem = memory_get_usage();
+		  $wrapTime = tx_rnbase_util_FormatUtil::$time;
+		  $wrapMem = tx_rnbase_util_FormatUtil::$mem;
+		}
 		if(is_array($dataArr) && count($dataArr)) {
 			$markerClass = tx_div::makeInstanceClassName('tx_rnbase_util_ListMarker');
 			$listMarker = new $markerClass($this->info->getListMarkerInfo());
 			$cObj =& $formatter->configurations->getCObj(0);
-			$debug = $formatter->getConfigurations()->get($confId.'_debuglb');
-			if($debug) {
-			  $time = microtime(true);
-			  $wrapTime = tx_rnbase_util_FormatUtil::$time;
-			}
 			$templateList = $cObj->getSubpart($template,'###'.$marker.'S###');
 
 			$templateEntry = $cObj->getSubpart($templateList,'###'.$marker.'###');
@@ -117,8 +119,18 @@ class tx_rnbase_util_ListBuilder {
 
 		$out = $formatter->cObj->substituteMarkerArrayCached($template, $markerArray, $subpartArray);
 		if($debug) {
+			tx_div::load('class.tx_rnbase_util_Misc.php');
+
 			$wrapTime = tx_rnbase_util_FormatUtil::$time - $wrapTime;
-			t3lib_div::debug(count($dataArr),'Rows rendered. Time: ' . (microtime(true) - $time) . 's WrapTime: ' . $wrapTime . 's');
+			$wrapMem = tx_rnbase_util_FormatUtil::$mem - $wrapMem;
+			t3lib_div::debug(array(
+					'Rows'=>count($dataArr),
+					'Execustion time'=>(microtime(true) -$time),
+					'WrapTime'=>$wrapTime,
+					'WrapMem'=>$wrapMem,
+					'Memory start'=> $mem,
+					'Memory consumed'=> (memory_get_usage()-$mem)
+				), 'ListBuilder Statistics for: ' . $confId);
 		}
 		return $out;
 	}

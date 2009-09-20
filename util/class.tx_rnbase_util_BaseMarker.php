@@ -99,7 +99,33 @@ class tx_rnbase_util_BaseMarker {
     $this->defaultMarkerArr = array_merge($arr1, $this->defaultMarkerArr);
     return $this->defaultMarkerArr;
   }
+  /**
+   * Returns an array with all column names not used in template
+   *
+   * @param array $record
+   * @param string $template
+   * @param string $marker
+   * @return array
+   */
+  public static function findUnusedCols(&$record, $template, $marker) {
+		$ignore = array();
+		foreach($record As $key=>$value) {
+			if(!self::containsMarker($template, $marker.'_'.strtoupper($key)))
+				$ignore[] = $key;
+		}
+		return $ignore;
+  }
 
+  protected static $token = '';
+  /**
+   * Returns a token string.
+   * @return string
+   */
+  protected static function getToken() {
+  	if(!self::$token)
+  		self::$token = md5(microtime());
+  	return self::$token;
+  }
 	/**
 	 * Link setzen
 	 *
@@ -114,7 +140,7 @@ class tx_rnbase_util_BaseMarker {
 	 */
 	public function initLink(&$markerArray, &$subpartArray, &$wrappedSubpartArray, $formatter, $confId, $linkId, $marker, $parameterArr) {
 		$linkObj =& $formatter->configurations->createLink();
-		$token = md5(microtime());
+		$token = self::getToken();
 		$linkObj->label($token);
 		$links = $formatter->configurations->get($confId.'links.');
 		$linkMarker = $marker . '_' . strtoupper($linkId).'LINK';

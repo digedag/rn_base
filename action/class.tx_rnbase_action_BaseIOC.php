@@ -39,7 +39,10 @@ abstract class tx_rnbase_action_BaseIOC {
 	private static function countCall() { return self::$callCount++; }
 	function execute(&$parameters,&$configurations){
 		$debug = $configurations->get($this->getConfId().'_debugview');
-		if($debug) $time = microtime();
+		if($debug) {
+			$time = microtime(true);
+			$memStart = memory_get_usage();
+		}
  
 		$viewData =& $configurations->getViewData();
 		$GLOBALS['TT']->push(get_class($this), 'handleRequest');
@@ -60,8 +63,13 @@ abstract class tx_rnbase_action_BaseIOC {
 		$out = $view->render($tmplName, $configurations);
 		$GLOBALS['TT']->pull();
 		if($debug) {
-			tx_div::load('class.tx_rnbase_util_Misc.php');
-			t3lib_div::debug(tx_rnbase_util_Misc::microtimeDiff($time, microtime()), $this->getConfId(). ' execution time.'); // TODO: remove me
+			$memEnd = memory_get_usage();
+			t3lib_div::debug(array(
+				'Execution Time'=>(microtime(true)-$time),
+				'Memory Start'=>$memStart,
+				'Memory End'=>$memEnd,
+				'Memory Consumed'=>($memEnd-$memStart),
+			), 'View statistics for: '.$this->getConfId());
 		}
 		return $out;
 	}
@@ -98,11 +106,10 @@ abstract class tx_rnbase_action_BaseIOC {
 	 * @return string Errorstring or null
 	 */
 	protected abstract function handleRequest(&$parameters,&$configurations, &$viewdata);
-  
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/action/class.tx_rnbase_action_BaseIOC.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/action/class.tx_rnbase_action_BaseIOC.php']);
 }
-
 ?>

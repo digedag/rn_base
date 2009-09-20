@@ -357,23 +357,10 @@ MAYDAYPAGE;
 		$hash = md5($str);
 		return substr($hash,5,8);
 	}
-	/**
-	 * Liefert die Differenz zwischen zwei Microtime-Werten
-	 * @param $start
-	 * @param $end
-	 * @return float
-	 */
-	static function microtimeDiff($start, $end) {
-		list($usec1, $sec1) = explode(" ",$start); 
-		list($usec2, $sec2) = explode(" ",$end); 
-		$start = ((float)$usec1 + (float)$sec1);
-		$end = ((float)$usec2 + (float)$sec2);
-		return $end - $start;
-	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Misc.php']) {
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Misc.php']);
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Misc.php']);
 }
 
 ?>

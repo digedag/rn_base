@@ -175,7 +175,7 @@ class tx_rnbase_util_FormatUtil {
   }
 
 	static $time = 0;
-
+	static $mem = 0;
 	/**
 	 * Puts all columns in $record to a Marker-Array. Each column is wrapped according to it's name.
 	 * So if your confId is 'profile.' and your column is 'date' you can define a TS setup like
@@ -185,8 +185,8 @@ class tx_rnbase_util_FormatUtil {
 	function getItemMarkerArrayWrapped($record, $confId, $noMap = 0, $markerPrefix='', $initMarkers = 0){
 		if(!is_array($record))
 			return array();
-$start = microtime();
-
+$start = microtime(true);
+$mem = memory_get_usage();
 		$tmpArr = $this->cObj->data;
 		// Ensure the initMarkers are part of the record
 		if(is_array($initMarkers)) {
@@ -237,10 +237,11 @@ $start = microtime();
     }
     reset($record);
     $markerArray = tx_rnbase_util_FormatUtil::getItemMarkerArray($data, $noMap, $markerPrefix, $initMarkers);
-
+unset($data); // 400 kB
     $this->cObj->data = $tmpArr;
-self::$time += (microtime() - $start);
-    return $markerArray;
+self::$time += (microtime(true) - $start);
+self::$mem += (memory_get_usage() - $mem);
+		return $markerArray;
   }
 
   /**
@@ -279,30 +280,30 @@ self::$time += (microtime() - $start);
     }
   }
 
-  /**
-   * Puts all columns in $record to a Marker-Array. This method can be used static
-   * @param array $record : Record to display
-   * @param array $noMap : Array of column names to ignore
-   * @param string $markerPrefix : An optional prefix for each marker, maybe 'PICTURE_'
-   * @param array $initMarkers : Markers that should be initialized as empty strings
-   */
-  function getItemMarkerArray(&$record, $noMap = 0, $markerPrefix='', $initMarkers = 0){
-    $markerArray = array();
+	/**
+	 * Puts all columns in $record to a Marker-Array. This method can be used static
+	 * @param array $record : Record to display
+	 * @param array $noMap : Array of column names to ignore
+	 * @param string $markerPrefix : An optional prefix for each marker, maybe 'PICTURE_'
+	 * @param array $initMarkers : Markers that should be initialized as empty strings
+	 */
+	function getItemMarkerArray(&$record, $noMap = 0, $markerPrefix='', $initMarkers = 0){
+		$markerArray = array();
 
-    // Marker vordefinieren
-    if(is_array($initMarkers))
-      tx_rnbase_util_FormatUtil::fillEmptyMarkers($markerArray, $initMarkers, $markerPrefix);
-    if(is_array($record)){
-      while(list($colname,$value)=each($record)){
-        // Skip some values
-        if(is_array($noMap) && in_array($colname, $noMap)) continue;
-        $colname = (string)strtoupper($colname);
-        $markerArray["###${markerPrefix}${colname}###"] = $value;
-      }
-    }
-
-    return $markerArray;
-  }
+		$noMap = is_array($noMap) ? array_flip($noMap) : $noMap;
+		// Marker vordefinieren
+		if(is_array($initMarkers))
+			tx_rnbase_util_FormatUtil::fillEmptyMarkers($markerArray, $initMarkers, $markerPrefix);
+		if(is_array($record)){
+			foreach($record As $colname => $value){
+				// Skip some values
+				if(is_array($noMap) && array_key_exists($colname, $noMap)) continue;
+				$colname = (string)strtoupper($colname);
+				$markerArray["###${markerPrefix}${colname}###"] = $value;
+			}
+		}
+		return $markerArray;
+	}
 
   function getDAMColumns() {
     global $TCA;
@@ -340,6 +341,6 @@ self::$time += (microtime() - $start);
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_FormatUtil.php']) {
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_FormatUtil.php']);
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_FormatUtil.php']);
 }
 ?>
