@@ -108,8 +108,10 @@ class tx_rnbase_util_DB {
 	 */
 	function doSelect($what, $from, $arr, $debug=0){
 		$debug = $debug ? $debug : intval($arr['debug']) > 0;
-		if($debug)
+		if($debug) {
 			$time = microtime(true);
+			$mem = memory_get_usage();
+		}
 		$tableName = $from;
 		$fromClause = $from;
 		if(is_array($from)){
@@ -181,14 +183,19 @@ class tx_rnbase_util_DB {
 			$orderBy,
 			$limit
 		);
-
+		
 		$rows = array();
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
 			$rows[] = ($wrapper) ? new $wrapper($row) : $row;
+//			unset($row);
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		if($debug)
-			t3lib_div::debug(count($rows),'Rows retrieved. Time: ' . (microtime(true) - $time) . 's');
+			t3lib_div::debug(array(
+				'Rows retrieved '=>count($rows),
+				'Time '=>(microtime(true) - $time),
+				'Memory consumed '=>(memory_get_usage()-$mem),
+			),'SQL statistics');
 		return $rows;
 	}
 
@@ -542,4 +549,4 @@ function tx_rnbase_util_DB_prependAlias(&$item, $key, $alias) {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_DB.php']) {
   include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_DB.php']);
 }
-
+?>
