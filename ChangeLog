@@ -3,7 +3,12 @@
 Änderungen
 ----------
 
-v0.4.4 (20.10.2009)
+v0.4.5 (21.10.2009) (not released)
+* Memory output in sql debug
+* New parameter $template for BaseMarker::initLink()
+* BaseFilter::init() with return value
+
+v0.4.4 (20.10.2009) (not released)
 * FormatUtil: Support for dynamic markers. Fields starting with "dc" will be added as columns to marker arrays.
 * More debug information for ListBuilder and Plugin-Views.
 
