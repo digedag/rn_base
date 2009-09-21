@@ -137,13 +137,22 @@ class tx_rnbase_util_BaseMarker {
 	 * @param string $linkId
 	 * @param string $marker
 	 * @param array $parameterArr
+	 * @param string $template the HTML template used. This enabled check if link is necessary.
 	 */
-	public function initLink(&$markerArray, &$subpartArray, &$wrappedSubpartArray, $formatter, $confId, $linkId, $marker, $parameterArr) {
+	public function initLink(&$markerArray, &$subpartArray, &$wrappedSubpartArray, $formatter, $confId, $linkId, $marker, $parameterArr, $template='') {
+		$linkMarker = $marker . '_' . strtoupper($linkId).'LINK';
+		// Do we need links
+		$makeUrl = $makeLink = true;
+		if($template) {
+			$makeLink = self::containsMarker($template, $linkMarker);
+			$makeUrl = self::containsMarker($template, $linkMarker.'URL');
+		}
+		if(!$makeLink && !$makeUrl) return; // Nothing to do
+
 		$linkObj =& $formatter->configurations->createLink();
 		$token = self::getToken();
 		$linkObj->label($token);
 		$links = $formatter->configurations->get($confId.'links.');
-		$linkMarker = $marker . '_' . strtoupper($linkId).'LINK';
 		if($links[$linkId] || $links[$linkId.'.']) {
 			$pid = $formatter->cObj->stdWrap($links[$linkId.'.']['pid'], $links[$linkId.'.']['pid.']);
 			$qualifier = $links[$linkId.'.']['qualifier'];
@@ -191,13 +200,18 @@ class tx_rnbase_util_BaseMarker {
 				$linkObj->overruled($newKeepVars);
 			}
 
-			$wrappedSubpartArray['###'.$linkMarker . '###'] = explode($token, $linkObj->makeTag());
-			$markerArray['###'.$linkMarker . 'URL###'] = $linkObj->makeUrl(false);
+$time = microtime(true);
+			if($makeLink)
+				$wrappedSubpartArray['###'.$linkMarker . '###'] = explode($token, $linkObj->makeTag());
+			if($makeUrl)
+				$markerArray['###'.$linkMarker . 'URL###'] = $linkObj->makeUrl(false);
+self::$linkTime += (microtime(true)-$time);
 		}
 		else {
 			self::disableLink($markerArray, $subpartArray, $wrappedSubpartArray, $linkMarker, false);
 		}
 	}
+static $linkTime = 0;
 	/**
 	 * Remove Link-Markers
 	 *
