@@ -95,13 +95,14 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 	 *
 	 * @param array $fields
 	 * @param array $options
+	 * @return boolean if FALSE no search should be done
 	 */
 	public function init(&$fields, &$options) {
 		tx_rnbase_util_SearchBase::setConfigFields($fields, $this->getConfigurations(), $this->getConfId().'fields.');
 		// Optionen
 		tx_rnbase_util_SearchBase::setConfigOptions($options, $this->getConfigurations(), $this->getConfId().'options.');
 
-		$this->initFilter($fields, $options, $this->getParameters(), $this->getConfigurations(), $this->getConfId());
+		return $this->initFilter($fields, $options, $this->getParameters(), $this->getConfigurations(), $this->getConfId());
 	}
 	public function hideResult() {
 		return false;
@@ -114,8 +115,10 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 	 * @param tx_rnbase_parameters $parameters
 	 * @param tx_rnbase_configurations $configurations
 	 * @param string $confId
+	 * @return boolean
 	 */
 	protected function initFilter(&$fields, &$options, &$parameters, &$configurations, $confId) {
+		return TRUE;
 	}
 	/**
 	 * Hilfsmethode zum Setzen von Filtern aus den Parametern. Ein schon gesetzter Wert im Field-Array
