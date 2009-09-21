@@ -200,18 +200,15 @@ class tx_rnbase_util_BaseMarker {
 				$linkObj->overruled($newKeepVars);
 			}
 
-$time = microtime(true);
 			if($makeLink)
 				$wrappedSubpartArray['###'.$linkMarker . '###'] = explode($token, $linkObj->makeTag());
 			if($makeUrl)
 				$markerArray['###'.$linkMarker . 'URL###'] = $linkObj->makeUrl(false);
-self::$linkTime += (microtime(true)-$time);
 		}
 		else {
 			self::disableLink($markerArray, $subpartArray, $wrappedSubpartArray, $linkMarker, false);
 		}
 	}
-static $linkTime = 0;
 	/**
 	 * Remove Link-Markers
 	 *
