@@ -112,9 +112,11 @@ class tx_rnbase_util_TSDAM {
 		$medias = array();
 		while(list($uid, $filePath) = each($damPics)) {
 			$media = new $mediaClass($filePath);
-			// Localize data
-			$loc = $damDb->getRecordOverlay('tx_dam', $media->meta, array('sys_language_uid'=>$GLOBALS['TSFE']->sys_language_uid), 'FE');
-			if ($loc) $media->meta = $loc;
+			// Localize data (DAM 1.1.0)
+			if(method_exists($damDb, 'getRecordOverlay')) {
+				$loc = $damDb->getRecordOverlay('tx_dam', $media->meta, array('sys_language_uid'=>$GLOBALS['TSFE']->sys_language_uid), 'FE');
+				if ($loc) $media->meta = $loc;
+			}
 
 			// Fetch MetaData in older DAM-Versions
 			if(method_exists($media, 'fetchFullIndex'))
