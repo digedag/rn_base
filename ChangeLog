@@ -3,12 +3,17 @@
 Änderungen
 ----------
 
-v0.4.5 (21.10.2009) (not released)
+v0.5.0 (25.09.2009)
+* Performancetests for views (subclasses of BaseIOC) and ListBuilder.
+* TSDAM: i18n-Support for DAM 1.1.0 and higher only
+* BaseMarker: new method findUnusedCols()
+
+v0.4.5 (21.09.2009) (not released)
 * Memory output in sql debug
 * New parameter $template for BaseMarker::initLink()
 * BaseFilter::init() with return value
 
-v0.4.4 (20.10.2009) (not released)
+v0.4.4 (20.09.2009) (not released)
 * FormatUtil: Support for dynamic markers. Fields starting with "dc" will be added as columns to marker arrays.
 * More debug information for ListBuilder and Plugin-Views.
 
