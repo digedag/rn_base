@@ -67,7 +67,12 @@ class tx_rnbase_util_ListBuilder {
 	 */
 	function render(&$dataArr, &$viewData, $template, $markerClassname, $confId, $marker, &$formatter, $markerParams = null) {
 
-		$debug = $formatter->getConfigurations()->get($confId.'_debuglb');
+		$debugKey = $formatter->getConfigurations()->get($confId.'_debuglb');
+		$debug = ($debugKey && ($debugKey==='1' || 
+				($_GET['debug'] && array_key_exists($debugKey,array_flip(t3lib_div::trimExplode(',', $_GET['debug'])))) ||
+				($_POST['debug'] && array_key_exists($debugKey,array_flip(t3lib_div::trimExplode(',', $_POST['debug']))))
+				)
+		);
 		if($debug) {
 		  $time = microtime(true);
 		  $mem = memory_get_usage();
@@ -130,7 +135,7 @@ class tx_rnbase_util_ListBuilder {
 					'WrapMem'=>$wrapMem,
 					'Memory start'=> $mem,
 					'Memory consumed'=> (memory_get_usage()-$mem)
-				), 'ListBuilder Statistics for: ' . $confId);
+				), 'ListBuilder Statistics for: ' . $confId . ' Key: ' . $debugKey);
 		}
 		return $out;
 	}

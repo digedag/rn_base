@@ -38,7 +38,12 @@ abstract class tx_rnbase_action_BaseIOC {
 	private static $callCount = 0;
 	private static function countCall() { return self::$callCount++; }
 	function execute(&$parameters,&$configurations){
-		$debug = $configurations->get($this->getConfId().'_debugview');
+		$debugKey = $configurations->get($this->getConfId().'_debugview');
+		$debug = ($debugKey && ($debugKey==='1' || 
+				($_GET['debug'] && array_key_exists($debugKey,array_flip(t3lib_div::trimExplode(',', $_GET['debug'])))) ||
+				($_POST['debug'] && array_key_exists($debugKey,array_flip(t3lib_div::trimExplode(',', $_POST['debug']))))
+				)
+		);
 		if($debug) {
 			$time = microtime(true);
 			$memStart = memory_get_usage();
@@ -69,7 +74,7 @@ abstract class tx_rnbase_action_BaseIOC {
 				'Memory Start'=>$memStart,
 				'Memory End'=>$memEnd,
 				'Memory Consumed'=>($memEnd-$memStart),
-			), 'View statistics for: '.$this->getConfId());
+			), 'View statistics for: '.$this->getConfId(). ' Key: ' . $debugKey);
 		}
 		return $out;
 	}
