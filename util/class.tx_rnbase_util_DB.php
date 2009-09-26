@@ -510,8 +510,8 @@ class tx_rnbase_util_DB {
 				$where .= self::searchWhere($value, strtolower($tableAlias.'.'.$col));
 				break;
 			default:
-				tx_div::load('tx_rnbase_util_misc');
-				tx_rnbase_util_misc::mayday('Unknown Operator for comparation defined: ' . $operator);
+				tx_div::load('tx_rnbase_util_Misc');
+				tx_rnbase_util_Misc::mayday('Unknown Operator for comparation defined: ' . $operator);
 		}
 		return $where;
 	}
