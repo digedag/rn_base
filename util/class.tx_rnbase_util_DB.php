@@ -92,6 +92,7 @@ class tx_rnbase_util_DB {
 	 * - 'where' - the Where-Clause
 	 * - 'groupby' - the GroupBy-Clause
 	 * - 'orderby' - the OrderBy-Clause
+	 * - 'sqlonly' - returns the generated SQL statement. No database access.
 	 * - 'limit' - limits the number of result rows
 	 * - 'wrapperclass' - A wrapper for each result rows
 	 * - 'pidlist' - A list of page-IDs to search for records
@@ -128,6 +129,8 @@ class tx_rnbase_util_DB {
 		$pidList = is_string($arr['pidlist']) ? $arr['pidlist'] : '';
 		$recursive = intval($arr['recursive']) ? intval($arr['recursive']) : 0;
 		$i18n = is_string($arr['i18n']) > 0 ? $arr['i18n'] : '';
+		$sqlOnly = intval($arr['sqlonly']) > 0 ? intval($arr['sqlonly']) : '';
+		$union = is_string($arr['union']) > 0 ? $arr['union'] : '';
 
 		// offset und limit kombinieren
 		if($limit) { // bei gesetztem limit ist offset optional
@@ -168,11 +171,16 @@ class tx_rnbase_util_DB {
 
 		if(strlen($pidList) > 0)
 			$where .= ' AND '.$tableName.'.pid IN (' . tx_rnbase_util_DB::_getPidList($pidList,$recursive) . ')';
+		if(strlen($union) > 0)
+			$where .= ' UNION '.$union;
 
-		if($debug) {
+		if($debug || $sqlOnly) {
 			$sql = $GLOBALS['TYPO3_DB']->SELECTquery($what,$fromClause,$where,$groupBy,$orderBy,$limit);
-			t3lib_div::debug($sql, 'SQL');
-			t3lib_div::debug(array($what,$from,$where));
+			if($sqlOnly) return $sql;
+			if($debug) {
+				t3lib_div::debug($sql, 'SQL');
+				t3lib_div::debug(array($what,$from,$where));
+			}
 		}
 
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
