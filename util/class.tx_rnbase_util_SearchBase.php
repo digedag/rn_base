@@ -137,7 +137,6 @@ abstract class tx_rnbase_util_SearchBase {
 			}
   	}
   	
-
     $what = $this->getWhat($options, $tableAliases);
     $from = $this->getFrom($options, $tableAliases);
     $where = '1=1';
@@ -222,10 +221,21 @@ abstract class tx_rnbase_util_SearchBase {
 		  }
 			$sqlOptions['orderby'] = implode(',', $orderby);
 		}
-		if(!(isset($options['count']) || (isset($options['what']) || isset($options['groupby'])) && !isset($options['forcewrapper']) ))
+		if(
+			!(
+				isset($options['count']) ||
+				isset($options['what']) || 
+				isset($options['groupby']) ||
+				isset($options['sqlonly']) 
+			) 
+			||
+				isset($options['forcewrapper'])
+			)
 			$sqlOptions['wrapperclass'] = $this->getWrapperClass();
 
 		$result = tx_rnbase_util_DB::doSelect($what, $from, $sqlOptions, $options['debug'] ? 1 : 0);
+		if (isset($options['sqlonly'])) return $result;
+		// else:
 		return isset($options['count']) ? $result[0]['cnt'] : $result;
 	}
 
@@ -247,6 +257,12 @@ abstract class tx_rnbase_util_SearchBase {
 	 * Name der Basistabelle, in der gesucht wird
 	 */
 	abstract protected function getBaseTable();
+	/**
+	 * Name des Alias' der Basistabelle, in der gesucht wird
+	 * Nicht abstract wg. Abwärts-Kompatibilität
+	 */
+	protected function getBaseTableAlias() {return '';}
+	
 	/**
 	 * Name der Klasse, in die die Ergebnisse gemappt werden
 	 */
@@ -279,7 +295,7 @@ abstract class tx_rnbase_util_SearchBase {
 		$distinct = isset($options['distinct']) ? 'DISTINCT ' : '';
 		$rownum = isset($options['rownum']) ? ', @rownum:=@rownum+1 AS rownum ' : '';
 		$table = $this->getBaseTable();
-		$table = $this->useAlias() ? $this->tableMapping[$table] : $table;
+		$table = $this->useAlias() ? $this->getBaseTableAlias() : $table;
 		return isset($options['count']) ? 'count('. $distinct .$table.'.uid) as cnt' : $distinct.$table.'.*'.$rownum;
 	}
 
@@ -292,9 +308,17 @@ abstract class tx_rnbase_util_SearchBase {
 	 */
 	protected function getFrom($options, $tableAliases) {
 		$table = $this->getBaseTable();
-		$tableFrom = $this->useAlias() ? $table . ' AS ' .$this->tableMapping[$table] : $table;
-		$from = array($tableFrom,$table);
-		if($this->useAlias()) $from[2] = $this->tableMapping[$table];
+		if ($this->useAlias()) {
+			$alias = $this->getBaseTableAlias();
+			$from = array(
+							$this->tableMapping[$alias] . ' AS ' . $alias, 
+							$this->tableMapping[$alias], 
+							$alias
+						);
+		} else {
+			$from = array($table, $table);
+		}
+
 		$joins = $this->getJoins($tableAliases);
 		if(isset($options['rownum'])) $from[0] = '(SELECT @rownum:=0) _r, ' . $from[0];
 
