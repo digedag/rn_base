@@ -58,6 +58,8 @@ define('OP_EQ', '=STR');
 abstract class tx_rnbase_util_SearchBase {
 	private static $instances = array();
 	private $tableMapping;
+	private $generic = false;
+	private $genericData;
 
 	/**
 	 * Liefert eine Instanz einer konkreten Suchklasse. Der
@@ -98,7 +100,7 @@ abstract class tx_rnbase_util_SearchBase {
    * @return array oder int
    */
   function search($fields, $options) {
-  	$this->_initSearch();
+  	$this->_initSearch($options);
   	$tableAliases = array();
   	if(isset($fields[SEARCH_FIELD_JOINED])) {
   		$joinedFields = $fields[SEARCH_FIELD_JOINED];
@@ -239,13 +241,91 @@ abstract class tx_rnbase_util_SearchBase {
 		return isset($options['count']) ? $result[0]['cnt'] : $result;
 	}
 
-	private function _initSearch() {
+	/**
+	 * Wurden DB-Beziehungen per Options-Array übergeben
+	 * @return boolean
+	 */
+	protected function isGeneric() {
+		return $this->generic;
+	}
+	private function setGeneric($options) {
+		$this->generic = array_key_exists('searchdef', $options) && is_array($options['searchdef']);
+		$this->genericData = $options['searchdef'];
+	}
+	/**
+	 * Returns the configured basetable. If this call is not generic it returns the value 
+	 * from getBaseTable()
+	 * @return string
+	 */
+	private function getGenericBaseTable() {
+		if($this->isGeneric()) return $this->genericData['basetable'];
+		return $this->getBaseTable();
+	}
+	/**
+	 * Returns the configured wrapper class. If this call is not generic it returns the value 
+	 * from getWrapperClass()
+	 * @return string
+	 */
+	private function getGenericWrapperClass() {
+		if($this->isGeneric()) return $this->genericData['wrapperclass'];
+		return $this->getWrapperClass();
+	}
+	/**
+	 * Returns the configured basetable. If this call is not generic it returns the value 
+	 * @return string
+	 */
+	private function getGenericJoins($tableAliases) {
+		$join = '';
+		if($this->isGeneric()) {
+			$aliasArr = $this->genericData['alias'];
+			if(!is_array($aliasArr)) throw new Exception('No search tables configured!');
+			foreach ($aliasArr As $alias => $data) {
+
+				$makeJoin = isset($tableAliases[$alias]);
+				if(!$makeJoin && array_key_exists('joincondition', $data)) {
+					$jconds = t3lib_div::trimExplode(',', $data['joincondition']);
+					foreach ($jconds AS $jcond) {
+						$makeJoin = $makeJoin || isset($tableAliases[$jcond]);
+						if($makeJoin) break;
+					}
+				}
+
+				//if(isset($tableAliases['NEWSCATMM']) || isset($tableAliases['NEWSCAT'])) {
+				if($makeJoin) {
+					$join .= ' ' . $data['join'];
+				}
+				
+				$tableMapping[$alias] = $data['table'];
+			}
+
+		}
+		$join .= $this->getJoins($tableAliases);
+		return $join;
+	}
+
+	private function _initSearch($options) {
+		$this->setGeneric($options);
 		if(!is_array($this->tableMapping)) {
 			$tableMapping = $this->getTableMappings();
+			if($this->isGeneric())
+				$this->addGenericTableMappings($tableMapping, $options['searchdef']);
 			$this->tableMapping = array_merge($tableMapping, array_flip($tableMapping));
 		}
 	}
-
+	/**
+	 * Erstellt weitere Tablemappings, die per Konfiguration definiert wurden
+	 *
+	 * @param array $tableMapping
+	 * @param array $options
+	 */
+	protected function addGenericTableMappings(&$tableMapping, $options) {
+		$aliasArr = $options['alias'];
+		if(!is_array($aliasArr)) throw new Exception('No search tables configured!');
+		foreach ($aliasArr As $alias => $data) {
+			$tableMapping[$alias] = $data['table'];
+		}
+	}
+	
 	/**
 	 * Kindklassen müssen ein Array bereitstellen, in denen die Aliases der
 	 * Tabellen zu den eigentlichen Tabellennamen gemappt werden.
@@ -262,6 +342,15 @@ abstract class tx_rnbase_util_SearchBase {
 	 * Nicht abstract wg. Abwärts-Kompatibilität
 	 */
 	protected function getBaseTableAlias() {return '';}
+	/**
+	 * Liefert den Alias der Basetable
+	 *
+	 * @return string
+	 */
+	private function getGenericBaseTableAlias() {
+		if($this->isGeneric()) return $this->genericData['basetablealias'];
+		return $this->getBaseTableAlias();
+	}
 	
 	/**
 	 * Name der Klasse, in die die Ergebnisse gemappt werden
@@ -284,6 +373,7 @@ abstract class tx_rnbase_util_SearchBase {
 	 * @return boolean
 	 */
 	protected function useAlias() {
+		if($this->isGeneric()) return intval($this->genericData['usealias']) > 0;
 		return false;
 	}
 
@@ -294,8 +384,8 @@ abstract class tx_rnbase_util_SearchBase {
 		}
 		$distinct = isset($options['distinct']) ? 'DISTINCT ' : '';
 		$rownum = isset($options['rownum']) ? ', @rownum:=@rownum+1 AS rownum ' : '';
-		$table = $this->getBaseTable();
-		$table = $this->useAlias() ? $this->getBaseTableAlias() : $table;
+		$table = $this->getGenericBaseTable();
+		$table = $this->useAlias() ? $this->getGenericBaseTableAlias() : $table;
 		return isset($options['count']) ? 'count('. $distinct .$table.'.uid) as cnt' : $distinct.$table.'.*'.$rownum;
 	}
 
@@ -307,19 +397,17 @@ abstract class tx_rnbase_util_SearchBase {
 	 * @return array
 	 */
 	protected function getFrom($options, $tableAliases) {
-		$table = $this->getBaseTable();
+		$table = $this->getGenericBaseTable();
+		$from = array($table, $table);
 		if ($this->useAlias()) {
-			$alias = $this->getBaseTableAlias();
-			$from = array(
-							$this->tableMapping[$alias] . ' AS ' . $alias, 
-							$this->tableMapping[$alias], 
-							$alias
-						);
-		} else {
-			$from = array($table, $table);
+			$alias = $this->getGenericBaseTableAlias();
+			// Wenn vorhanden einen Alias für die Basetable setzen
+			if($alias) {
+				$from[0] .= ' AS ' . $alias;
+				$from[2] = $alias;
+			}
 		}
-
-		$joins = $this->getJoins($tableAliases);
+		$joins = $this->getGenericJoins($tableAliases);
 		if(isset($options['rownum'])) $from[0] = '(SELECT @rownum:=0) _r, ' . $from[0];
 
 		if(strlen($joins))
@@ -352,7 +440,13 @@ abstract class tx_rnbase_util_SearchBase {
 				// Angaben als z.B. bei count.
 				while(list($table, $data) = each($cfg)) {
 					$tableAlias = strtoupper(substr($table, 0, strlen($table) -1));
-					if(is_array($data))
+					if(is_array($data) && $option == 'searchdef.') {
+						foreach($data AS $col => $value) {
+							$options[$optionName][strtolower($tableAlias)][substr($col, 0, strlen($col) -1)] = $value;
+						}
+
+					}
+					elseif(is_array($data))
 						foreach($data AS $col => $value) {
 							$options[$optionName][$tableAlias.'.'.$col] = $value;
 						}
