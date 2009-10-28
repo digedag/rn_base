@@ -2,6 +2,11 @@
 
 Änderungen
 ----------
+v0.5.1 (28.10.2009) (not released)
+* tx_rnbase_util_DB::doSelect(): new options sqlonly and union
+* tx_rnbase_util_SearchBase: Support for sqlonly and union
+* tx_rnbase_util_SearchBase: Some modifications for alias support. Thanks to Lars Heber!
+* New class tx_rnbase_util_SearchGeneric: a configurable implementation for tx_rnbase_util_SearchBase.
 
 v0.5.0 (25.09.2009)
 * Performancetests for views (subclasses of BaseIOC) and ListBuilder.
