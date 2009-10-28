@@ -233,7 +233,7 @@ abstract class tx_rnbase_util_SearchBase {
 			||
 				isset($options['forcewrapper'])
 			)
-			$sqlOptions['wrapperclass'] = $this->getWrapperClass();
+			$sqlOptions['wrapperclass'] = $this->getGenericWrapperClass();
 
 		$result = tx_rnbase_util_DB::doSelect($what, $from, $sqlOptions, $options['debug'] ? 1 : 0);
 		if (isset($options['sqlonly'])) return $result;
