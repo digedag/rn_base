@@ -249,8 +249,10 @@ abstract class tx_rnbase_util_SearchBase {
 		return $this->generic;
 	}
 	private function setGeneric($options) {
-		$this->generic = array_key_exists('searchdef', $options) && is_array($options['searchdef']);
-		$this->genericData = $options['searchdef'];
+		if(is_array($options)) {
+			$this->generic = array_key_exists('searchdef', $options) && is_array($options['searchdef']);
+			$this->genericData = $options['searchdef'];
+		}
 	}
 	/**
 	 * Returns the configured basetable. If this call is not generic it returns the value 
