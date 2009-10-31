@@ -482,7 +482,10 @@ class tx_rnbase_util_DB {
 				$where .= $tableAlias.'.' . strtolower($col) . ' IN (' . $value . ')';
 				break;
 			case OP_INSET_INT:
-				$where .= ' FIND_IN_SET(' . $value . ', '.$tableAlias.'.' . strtolower($col).')';
+				// Values splitten und einzelne Abfragen mit OR verbinden
+				$addWhere = self::searchWhere($value, $tableAlias.'.' . strtolower($col), 'FIND_IN_SET_OR');
+				$where .= substr($addWhere, 4);
+				//$where .= ' FIND_IN_SET(' . $value . ', '.$tableAlias.'.' . strtolower($col).')';
 				break;
 			case OP_EQ:
 				$where .= $tableAlias.'.' . strtolower($col) . ' = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias) . ' ';
