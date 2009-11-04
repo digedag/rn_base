@@ -42,11 +42,14 @@ class tx_rnbase_model_media extends tx_rnbase_model_base {
 		else {
 			parent::tx_rnbase_model_base($rowOrUid);
 		}
+		$this->initAdditionalData();
 	}
 
-	function initMedia($media) {
+	private function initMedia($media) {
 		$this->uid = $media->meta['uid'];
 		$this->record = $media->meta;
+	}
+	private function initAdditionalData() {
 		$this->record['file'] = $this->record['file_path'].$this->record['file_name'];
 		// Some more file fields are useful
 		$this->record['file1'] = $this->record['file'];
