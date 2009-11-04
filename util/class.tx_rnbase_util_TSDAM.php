@@ -149,17 +149,48 @@ class tx_rnbase_util_TSDAM {
 	}
 
 	/**
-	 * This method calls tx_dam_tsfe->fetchFileList. 
+	 * This method is a reimplementation of tx_dam_tsfe->fetchFileList. 
 	 *
 	 * @param array $conf
 	 * @return array
 	 */
 	function fetchFileList ($conf, &$cObj) {
 		
-		$damMedia = tx_div::makeInstance('tx_dam_tsfe');
-		$damMedia->cObj = $cObj;
-		$damFiles = $damMedia->fetchFileList('', $conf);
-		return $damFiles ? t3lib_div::trimExplode(',', $damFiles) : array();
+//		$damMedia = tx_div::makeInstance('tx_dam_tsfe');
+//		$damMedia->cObj = $cObj;
+//		$damFiles = $damMedia->fetchFileList('', $conf);
+//		return $damFiles ? t3lib_div::trimExplode(',', $damFiles) : array();
+		
+//		$files = array();
+//		$filePath = $cObj->stdWrap($conf['additional.']['filePath'],$conf['additional.']['filePath.']);
+//		$fileList = trim($cObj->stdWrap($conf['additional.']['fileList'],$conf['additional.']['fileList.']));
+//		$refField = trim($cObj->stdWrap($conf['refField'],$conf['refField.']));
+//		$fileList = t3lib_div::trimExplode(',',$fileList);
+//		foreach ($fileList as $file) {
+//			if($file) {
+//				$files[] = $filePath.$file;
+//			}
+//		}
+		
+		
+		$uid      = $cObj->data['_LOCALIZED_UID'] ? $cObj->data['_LOCALIZED_UID'] : $cObj->data['uid'];
+		$refTable = ($conf['refTable'] && is_array($GLOBALS['TCA'][$conf['refTable']])) ? $conf['refTable'] : 'tt_content';
+		
+		if (isset($GLOBALS['BE_USER']->workspace) && $GLOBALS['BE_USER']->workspace !== 0) {
+			$workspaceRecord = t3lib_BEfunc::getWorkspaceVersionOfRecord(
+				$GLOBALS['BE_USER']->workspace,
+				'tt_content',
+				$uid,
+				'uid'
+			);
+
+			if ($workspaceRecord) {
+				$uid = $workspaceRecord['uid'];
+			}
+		}
+
+		$damFiles = tx_dam_db::getReferencedFiles($refTable, $uid, $refField);
+		return $damFiles['rows'];
 	}
 
 	/**
