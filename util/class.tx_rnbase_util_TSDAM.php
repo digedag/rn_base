@@ -164,7 +164,6 @@ class tx_rnbase_util_TSDAM {
 //		$files = array();
 //		$filePath = $cObj->stdWrap($conf['additional.']['filePath'],$conf['additional.']['filePath.']);
 //		$fileList = trim($cObj->stdWrap($conf['additional.']['fileList'],$conf['additional.']['fileList.']));
-//		$refField = trim($cObj->stdWrap($conf['refField'],$conf['refField.']));
 //		$fileList = t3lib_div::trimExplode(',',$fileList);
 //		foreach ($fileList as $file) {
 //			if($file) {
@@ -175,6 +174,7 @@ class tx_rnbase_util_TSDAM {
 		
 		$uid      = $cObj->data['_LOCALIZED_UID'] ? $cObj->data['_LOCALIZED_UID'] : $cObj->data['uid'];
 		$refTable = ($conf['refTable'] && is_array($GLOBALS['TCA'][$conf['refTable']])) ? $conf['refTable'] : 'tt_content';
+		$refField = trim($cObj->stdWrap($conf['refField'],$conf['refField.']));
 		
 		if (isset($GLOBALS['BE_USER']->workspace) && $GLOBALS['BE_USER']->workspace !== 0) {
 			$workspaceRecord = t3lib_BEfunc::getWorkspaceVersionOfRecord(
