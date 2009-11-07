@@ -58,6 +58,8 @@ abstract class tx_rnbase_action_BaseIOC {
 		// View
 		$view = tx_div::makeInstance($this->getViewClassName());
 		$view->setTemplatePath($configurations->getTemplatePath());
+		if(method_exists($view, 'setController'))
+			$view->setController($this);
 		// Das Template wird komplett angegeben
 		$tmplName = $this->getTemplateName();
 		if(!$tmplName || !strlen($tmplName))
@@ -83,7 +85,7 @@ abstract class tx_rnbase_action_BaseIOC {
 	 * Liefert die ConfId für den View
 	 * @return string
 	 */
-	protected function getConfId() {
+	public function getConfId() {
 		return $this->getTemplateName().'.';
 	}
 	/**

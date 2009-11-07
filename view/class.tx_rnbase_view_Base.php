@@ -31,14 +31,19 @@
  */
 
 require_once(t3lib_extMgm::extPath('div') . 'class.tx_div.php');
+require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+
+tx_rnbase::load('tx_rnbase_action_BaseIOC');
+
 /**
  * Base class for all views.
  * TODO: This class should have a default template path and an optional user defined path. So 
  * templates can be searched in both.
  */
 class tx_rnbase_view_Base{
-  var $pathToTemplates;
-  var $_pathToFile;
+  private $pathToTemplates;
+  private $_pathToFile;
+  private $controller;
 
   /**
    * Enter description here...
@@ -56,22 +61,31 @@ class tx_rnbase_view_Base{
     	tx_rnbase_util_Misc::mayday('TEMPLATE NOT FOUND: ' . $this->getTemplate($view,'.html'));
     }
 
-    // Die ViewData bereitstellen
-    $viewData =& $configurations->getViewData();
-    // Optional kann schon ein Subpart angegeben werden
-    if($this->getMainSubpart($viewData)) {
-    	$subpart = $this->getMainSubpart($viewData);
-    	$templateCode = $cObj->getSubpart($templateCode,$subpart);
-	    if(!strlen($templateCode)) {
-	    	tx_div::load('tx_rnbase_util_Misc');
-	    	tx_rnbase_util_Misc::mayday('SUBPART NOT FOUND: ' . $subpart);
-	    }
-    }
-    
-    $out = $this->createOutput($templateCode,$viewData, $configurations, $configurations->getFormatter());
+		// Die ViewData bereitstellen
+		$viewData =& $configurations->getViewData();
+		// Optional kann schon ein Subpart angegeben werden
+		if($this->getMainSubpart($viewData)) {
+			$subpart = $this->getMainSubpart($viewData);
+			$templateCode = $cObj->getSubpart($templateCode,$subpart);
+			if(!strlen($templateCode)) {
+				tx_rnbase::load('tx_rnbase_util_Misc');
+				tx_rnbase_util_Misc::mayday('SUBPART NOT FOUND: ' . $subpart);
+			}
+		}
 
-    return $out;
-  }
+		$out = $this->createOutput($templateCode,$viewData, $configurations, $configurations->getFormatter());
+
+		$controller = $this->getController();
+		if($controller) {
+			$params['confid'] = $controller->getConfid();
+			$params['item'] = $viewData->offsetGet('item');
+			$params['items'] = $viewData->offsetGet('items');
+			tx_rnbase::load('tx_rnbase_util_BaseMarker');
+			tx_rnbase_util_BaseMarker::callModules($out, $markerArray, $subpartArray, $wrappedSubpartArray, $params, $configurations->getFormatter());
+			$out = $configurations->getFormatter()->cObj->substituteMarkerArrayCached($out, $markerArray, $subpartArray, $wrappedSubpartArray);
+		}
+		return $out;
+	}
 
   /**
    * Entry point for child classes
@@ -117,6 +131,20 @@ class tx_rnbase_view_Base{
     $this->pathToTemplates = $pathToTemplates;
   }
 
+  /**
+   * Set the used controller
+   * @param tx_rnbase_action_BaseIOC $controller
+   */
+  public function setController(tx_rnbase_action_BaseIOC $controller) {
+  	$this->controller = $controller;
+  }
+  /**
+   * Returns the used controller
+   * @return tx_rnbase_action_BaseIOC
+   */
+  public function getController() {
+  	return $this->controller;
+  }
   /**
    * Set the path of the template file.
    *
