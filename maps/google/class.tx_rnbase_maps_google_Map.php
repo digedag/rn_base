@@ -54,8 +54,8 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap {
 		$controls = $conf->get($confId.'google.controls');
 		if($controls) {
 			$controls = t3lib_div::trimExplode(',', $controls);
+			$classname = tx_div::makeInstanceClassname('tx_rnbase_maps_google_Control');
 			foreach($controls As $control) {
-				$classname = tx_div::makeInstanceClassname('tx_rnbase_maps_google_Control');
 				$this->addControl(new $classname($control));
 			}
 		}
@@ -98,13 +98,13 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap {
 		$coord = $marker->getCoords();
 		if($coord) {
 			$this->getWecMap()->addMarkerByLatLong($coord->getLatitude(), $coord->getLongitude(), 
-				$marker->getTitle(), $marker->getDescription(), $marker->getZoomMin(), $marker->getZoomMin(),$iconName);
+				$marker->getTitle(), $marker->getDescription(), $marker->getZoomMin(), $marker->getZoomMax(),$iconName);
 			return;
 		}
 		
 		$this->getWecMap()->addMarkerByAddress($marker->getStreet(), $marker->getCity(), $marker->getState(), 
 			$marker->getZip(), $marker->getCountry(), 
-			$marker->getTitle(), $marker->getDescription(), $marker->getZoomMin(), $marker->getZoomMin(),$iconName);
+			$marker->getTitle(), $marker->getDescription(), $marker->getZoomMin(), $marker->getZoomMax(),$iconName);
 	}
 	function draw() {
 		$code = $this->map->drawMap();
