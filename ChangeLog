@@ -2,6 +2,9 @@
 
 Änderungen
 ----------
+v0.5.3 (??.11.2009)
+* TSDAM: Usage of tx_dam_media removed. This class can't handle two dam records for one single media path.
+
 v0.5.2 (07.11.2009)
 * SearchBase: OP_INSET_INT works for multiple values
 * TSDAM: new implementation of fetchFileList()

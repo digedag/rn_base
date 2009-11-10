@@ -105,23 +105,18 @@ class tx_rnbase_util_TSDAM {
 		elseif($limit && count($damPics))
 			$damPics = array_slice($damPics,$offset,$limit);
 
-		$mediaClass = tx_div::makeInstanceClassName('tx_dam_media');
 		$baseMediaClass = tx_div::makeInstanceClassName('tx_rnbase_model_media');
 		$damDb = tx_div::makeInstance('tx_dam_db');
 
 		$medias = array();
 		while(list($uid, $filePath) = each($damPics)) {
-			$media = new $mediaClass($filePath);
+			$mediaObj = new $baseMediaClass($uid);
 			// Localize data (DAM 1.1.0)
 			if(method_exists($damDb, 'getRecordOverlay')) {
-				$loc = $damDb->getRecordOverlay('tx_dam', $media->meta, array('sys_language_uid'=>$GLOBALS['TSFE']->sys_language_uid), 'FE');
-				if ($loc) $media->meta = $loc;
+				$loc = $damDb->getRecordOverlay('tx_dam', $mediaObj->record, array('sys_language_uid'=>$GLOBALS['TSFE']->sys_language_uid), 'FE');
+				if ($loc) $mediaObj->record = $loc;
 			}
 
-			// Fetch MetaData in older DAM-Versions
-			if(method_exists($media, 'fetchFullIndex'))
-				$media->fetchFullIndex();
-			$mediaObj = new $baseMediaClass($media);
 			$mediaObj->record['parentuid'] = $parentUid;
 			$medias[] = $mediaObj;
 		}
