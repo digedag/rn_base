@@ -33,6 +33,7 @@ tx_rnbase::load('tx_rnbase_util_TYPO3');
  */
 abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase {
 	public $doc;
+	private $configurations;
 
 	/**
 	 * Main function of the module. Write the content to $this->content
@@ -146,6 +147,28 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase {
 		}
 	}
 
+	/**
+	 * Liefert eine Instanz von tx_rnbase_configurations. Da wir uns im BE bewegen, wird diese mit einem 
+	 * Config-Array aus der TSConfig gefüttert. Dabei wird die Konfiguration unterhalb von mod.extkey. genommen.
+	 * Für "extkey" wird der Wert der Methode getExtensionKey() verwendet.
+	 * @return tx_rnbase_configurations
+	 */
+	public function getConfigurations() {
+		if(!$this->configurations) {
+			tx_rnbase::load('tx_rnbase_configurations');
+			tx_rnbase::load('tx_rnbase_util_Misc');
+	
+			tx_rnbase_util_Misc::prepareTSFE(); // Ist bei Aufruf aus BE notwendig!
+			$cObj = t3lib_div::makeInstance('tslib_cObj');
+	
+			$pageTSconfig = t3lib_BEfunc::getPagesTSconfig(0);
+			$pageTSconfig = $pageTSconfig['mod.'][$this->getExtensionKey().'.'];
+			$qualifier = $pageTSconfig['qualifier'] ? $pageTSconfig['qualifier'] : $this->getExtensionKey();
+			$this->configurations = new tx_rnbase_configurations();
+			$this->configurations->init($pageTSconfig, $cObj, $this->getExtensionKey(), $qualifier);	
+		}
+		return $this->configurations;
+	}
 	/**
 	 * Liefert bei Web-Modulen die aktuelle Pid
 	 * @return unknown_type
