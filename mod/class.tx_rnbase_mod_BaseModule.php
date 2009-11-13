@@ -29,11 +29,25 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 require_once(PATH_t3lib . 'class.t3lib_scbase.php');
 
 tx_rnbase::load('tx_rnbase_util_TYPO3');
+tx_rnbase::load('tx_rnbase_mod_IModule');
+tx_rnbase::load('tx_rnbase_mod_IModFunc');
+
+$GLOBALS['LANG']->includeLLFile('EXT:rn_base/mod/locallang.xml');
+
 /**
+ * Fertige Implementierung eines BE-Moduls. Das Modul ist dabei nur eine Hülle für die einzelnen Modulfunktionen.
+ * Die Klasse stellt also lediglich eine Auswahlbox mit den verfügbaren Funktionen bereit. Neue Funktionen können 
+ * dynamisch über die ext_tables.php angemeldet werden:
+ * 	t3lib_extMgm::insertModuleFunction('user_txmkmailerM1','tx_mkmailer_mod1_FuncOverview',
+ *    t3lib_extMgm::extPath($_EXTKEY).'mod1/class.tx_mkmailer_mod1_FuncOverview.php',
+ *    'LLL:EXT:mkmailer/mod1/locallang_mod.xml:func_overview'
+ *  );
+ * Die Funktionsklassen sollten das Interface tx_rnbase_mod_IModFunc implementieren. Eine Basisklasse mit nützlichen 
+ * Methoden steht natürlich auch bereit: tx_rnbase_mod_BaseModFunc
  */
-abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase {
+abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbase_mod_IModule {
 	public $doc;
-	private $configurations;
+	private $configurations, $formTool;
 
 	/**
 	 * Main function of the module. Write the content to $this->content
@@ -134,7 +148,12 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase {
 		$content = '';
 		$this->extObj->pObj = &$this;
 		if (is_callable(array($this->extObj, 'main')))	$content.=$this->extObj->main();
-		
+	
+		$params = Array();
+		tx_rnbase::load('tx_rnbase_util_BaseMarker');
+		tx_rnbase_util_BaseMarker::callModules($content, $markerArray, $subpartArray, $wrappedSubpartArray, $params, $this->getConfigurations()->getFormatter());
+		$content = $this->getConfigurations()->getCObj()->substituteMarkerArrayCached($content, $markerArray, $subpartArray, $wrappedSubpartArray);
+
 		return $content;
 	}
 
@@ -147,6 +166,13 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase {
 		}
 	}
 
+	public function getFormTool() {
+		if(!$this->formTool) {
+			$this->formTool = tx_div::makeInstance('tx_rnbase_util_FormTool');
+			$this->formTool->init($this->getDoc());
+		}
+		return $this->formTool;
+	}
 	/**
 	 * Liefert eine Instanz von tx_rnbase_configurations. Da wir uns im BE bewegen, wird diese mit einem 
 	 * Config-Array aus der TSConfig gefüttert. Dabei wird die Konfiguration unterhalb von mod.extkey. genommen.
@@ -176,6 +202,16 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase {
 	public function getPid() {
 		return $this->id;
 	}
+	/**
+	 * Prints out the module HTML
+	 *
+	 * @return	void
+	 */
+	function printContent()	{
+		$this->content.=$this->getDoc()->endPage();
+		echo $this->content;
+	}
+
 	/**
 	 * Returns a template instance
 	 * Liefert die Instanzvariable doc. Die muss immer Public bleiben, weil auch einige TYPO3-Funktionen
