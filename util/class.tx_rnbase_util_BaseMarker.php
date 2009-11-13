@@ -307,7 +307,7 @@ class tx_rnbase_util_BaseMarker {
 				}
 			}
 			elseif(preg_match('/LABEL_.*/',$marker)) {
-				$markerArray['###'.$marker.'###'] = $formatter->configurations->getLL(strtolower($marker));
+				$markerArray['###'.$marker.'###'] = $formatter->getConfigurations()->getLL(strtolower($marker));
 			}
 		}
 	}
