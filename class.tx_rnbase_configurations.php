@@ -310,13 +310,16 @@ class tx_rnbase_configurations {
     } elseif (isset($this->LOCAL_LANG['default'][$key]))    {
       $word = $this->LOCAL_LANG['default'][$key];     // No charset conversion because default is english and thereby ASCII
     } else {
-      $word = $this->LLtestPrefixAlt.$alt;
+		// Im BE die LANG fragen...
+		$word = $GLOBALS['LANG']->getLL($key);
+		if(!$word)
+			$word = $this->LLtestPrefixAlt.$alt;
     }
-    
+
     $output = $this->LLtestPrefix.$word;
     if ($hsc)
       $output = htmlspecialchars($output);
-    
+
     return $output;
   }
 
