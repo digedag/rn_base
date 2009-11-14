@@ -54,7 +54,8 @@ class tx_rnbase_util_PageBrowser implements PageBrowser {
    * Liefert die Limit-Angaben für die DB-Anfrage
    */
   function getState() {
-    $ret = array( 'offset' => ($this->pointer * $this->pageSize), 'limit' => $this->pageSize , );
+  	$limit = $this->listSize < $this->pageSize ? $this->listSize : $this->pageSize;
+    $ret = array( 'offset' => ($this->pointer * $this->pageSize), 'limit' => $limit , );
     return $ret;
   }
 
