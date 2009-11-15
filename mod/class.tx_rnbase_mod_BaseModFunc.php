@@ -51,14 +51,18 @@ abstract class tx_rnbase_mod_BaseModFunc implements tx_rnbase_mod_IModFunc {
 		$template = $conf->getCObj()->getSubpart($templateCode, $subpart);
 		if(!$template) return $conf->getLL('msg_subpart_not_found'). ': ' . $subpart;
 
-		$out .= $this->getContent($template, $conf, $conf->getFormatter());
+		$out .= $this->getContent($template, $conf, $conf->getFormatter(), $this->getModule()->getFormTool());
 		return $out;
 	}
 	/**
 	 * Kindklassen implementieren diese Methode um den Modulinhalt zu erzeugen
+	 * @param string $template
+	 * @param tx_rnbase_configurations $configurations
+	 * @param tx_rnbase_util_FormatUtil $formatter
+	 * @param tx_rnbase_util_FormTool $formTool
 	 * @return string
 	 */
-	abstract protected function getContent($template, &$configurations, &$formatter);
+	abstract protected function getContent($template, &$configurations, &$formatter, $formTool);
 	/**
 	 * Liefert die ConfId für diese ModFunc
 	 *
