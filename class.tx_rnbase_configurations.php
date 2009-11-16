@@ -295,33 +295,33 @@ class tx_rnbase_configurations {
     return $flex;
   }
   
-  /**
-   * Returns the localized label of the LOCAL_LANG key.
-   * This is a reimplementation from tslib_pibase::pi_getLL().
-   */
-  function getLL($key,$alt='',$hsc=FALSE)      {
-    if(!strcmp(substr($key,0,4),'LLL:')) {
-      return $GLOBALS['TSFE']->sL($key);
-    }
-    if (isset($this->LOCAL_LANG[$this->_LLkey][$key]))       {
-      $word = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->_LLkey][$key], $this->LOCAL_LANG_charset[$this->_LLkey][$key]); // The "from" charset is normally empty and thus it will convert from the charset of the system language, but if it is set (see ->pi_loadLL()) it will be used.
-    } elseif ($this->altLLkey && isset($this->LOCAL_LANG[$this->_altLLkey][$key]))   {
-      $word = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->_altLLkey][$key], $this->LOCAL_LANG_charset[$this->_altLLkey][$key]);   // The "from" charset is normally empty and thus it will convert from the charset of the system language, but if it is set (see ->pi_loadLL()) it will be used.
-    } elseif (isset($this->LOCAL_LANG['default'][$key]))    {
-      $word = $this->LOCAL_LANG['default'][$key];     // No charset conversion because default is english and thereby ASCII
-    } else {
-		// Im BE die LANG fragen...
-		$word = $GLOBALS['LANG']->getLL($key);
-		if(!$word)
-			$word = $this->LLtestPrefixAlt.$alt;
-    }
+	/**
+	 * Returns the localized label of the LOCAL_LANG key.
+	 * This is a reimplementation from tslib_pibase::pi_getLL().
+	 */
+	function getLL($key,$alt='',$hsc=FALSE) {
+		if(!strcmp(substr($key,0,4),'LLL:')) {
+			return $GLOBALS['TSFE']->sL($key);
+		}
+		if (isset($this->LOCAL_LANG[$this->_LLkey][$key]))       {
+			$word = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->_LLkey][$key], $this->LOCAL_LANG_charset[$this->_LLkey][$key]); // The "from" charset is normally empty and thus it will convert from the charset of the system language, but if it is set (see ->pi_loadLL()) it will be used.
+		} elseif ($this->altLLkey && isset($this->LOCAL_LANG[$this->_altLLkey][$key]))   {
+			$word = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->_altLLkey][$key], $this->LOCAL_LANG_charset[$this->_altLLkey][$key]);   // The "from" charset is normally empty and thus it will convert from the charset of the system language, but if it is set (see ->pi_loadLL()) it will be used.
+		} elseif (isset($this->LOCAL_LANG['default'][$key]))    {
+			$word = $this->LOCAL_LANG['default'][$key];     // No charset conversion because default is english and thereby ASCII
+		} else {
+			// Im BE die LANG fragen...
+			$word = is_object($GLOBALS['LANG']) ? $GLOBALS['LANG']->getLL($key) : '';
+			if(!$word)
+				$word = $this->LLtestPrefixAlt.$alt;
+		}
 
-    $output = $this->LLtestPrefix.$word;
-    if ($hsc)
-      $output = htmlspecialchars($output);
+		$output = $this->LLtestPrefix.$word;
+		if ($hsc)
+			$output = htmlspecialchars($output);
 
-    return $output;
-  }
+		return $output;
+	}
 
   /**
    * Returns a value from extension configuration.
