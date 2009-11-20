@@ -138,6 +138,13 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 		}
 	}
 	/**
+	 * Returns the module ident name
+	 * @return string
+	 */
+	public function getName() {
+		return $this->MCONF['name'];
+	}
+	/**
 	 * Generates the module content.
 	 * Normaly we would call $this->extObjContent(); But this method writes the output to $this->content. We need
 	 * the output directly so this is reimplementation of extObjContent()
