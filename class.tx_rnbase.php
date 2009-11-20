@@ -130,7 +130,7 @@ class tx_rnbase {
 			}
 		}
 		// With this a possible alternative Key is also validated
-		if(!$error && !$key = tx_div::guessKey($alternativeKey ? $alternativeKey : $class)) {
+		if(!$error && !$key = self::guessKey($alternativeKey ? $alternativeKey : $class)) {
 			$error = 'classError';
 		}
 		if(!$error) {
@@ -177,6 +177,81 @@ class tx_rnbase {
 			}
 		}
 		return $path;
+	}
+
+	/**
+	 * Check if the given extension key is within the loaded extensions
+	 *
+	 * The key can be given in the regular format or with underscores stripped.
+	 *
+	 * @author Elmar Hinz
+	 * @param	string		extension key to check
+	 * @return	boolean		is the key valid?
+	 */
+	function getValidKey($rawKey) {
+		$uKeys = array_keys($GLOBALS['TYPO3_LOADED_EXT']);
+		foreach((array)$uKeys as $uKey) {
+			if( str_replace('_', '', $uKey) == str_replace('_', '', $rawKey) ){
+				$result =  $uKey;
+			}
+		}
+		return $result ? $result : FALSE;
+	}
+
+
+	/**
+	 * Guess the key from the given information
+	 *
+	 * Guessing has the following order:
+	 *
+	 * 1. A KEY itself is tried.
+	 *    <pre>
+	 *     Example: my_extension
+	 *    </pre>
+	 * 2. A classnmae of the pattern tx_KEY_something_else is tried.
+	 *    <pre>
+	 *     Example: tx_myextension_view
+	 *    </pre>
+	 * 3. A full classname of the pattern ' * tx_KEY_something_else.php' is tried.
+	 *    <pre>
+	 *     Example: class.tx_myextension_view.php
+	 *     Example: brokenPath/class.tx_myextension_view.php
+	 *    </pre>
+	 * 4. A path that starts with the KEY is tried.
+	 *    <pre>
+	 *     Example: my_extension/class.view.php
+	 *    </pre>
+	 *
+	 * @author Elmar Hinz
+	 * @param	string		the minimal necessary information (see 1-4)
+	 * @return	string		the guessed key, FALSE if no result
+	 */
+	function guessKey($minimalInformation) {
+		$info=trim($minimalInformation);
+		$key = FALSE;
+		if($info){
+			// Can it be the key itself?
+			if(!$key && preg_match('/^([A-Za-z_]*)$/', $info, $matches ) ) {
+				$key = $matches[1];
+				$key = self::getValidKey($key);
+			}
+			// Is it a classname that contains the key?
+			if(!$key && (preg_match('/^tx_([^_]*)(.*)$/', $info, $matches ) || preg_match('/^user_([^_]*)(.*)$/', $info, $matches )) ) {
+				$key = $matches[1];
+				$key = self::getValidKey($key);
+			}
+			// Is there a full filename that contains the key in it?
+			if(!$key && (preg_match('/^.*?tx_([^_]*)(.*)\.php$/', $info, $matches ) || preg_match('/^.*?user_([^_]*)(.*)\.php$/', $info, $matches )) ) {
+				$key = $matches[1];
+				$key = self::getValidKey($key);
+			}
+			// Is it a path that starts with the key?
+			if(!$key && $last = strstr('/',$info)) {
+				$key = substr($info, 0, $last);
+				$key = self::getValidKey($key);
+			}
+		}
+		return $key ? $key : FALSE;
 	}
 }
 
