@@ -37,6 +37,11 @@ interface tx_rnbase_mod_IModule {
 	 * @return tx_rnbase_configurations
 	 */
 	public function getConfigurations();
+	/**
+	 * Returns the module ident name
+	 * @return string
+	 */
+	public function getName();
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_IModule.php'])	{
