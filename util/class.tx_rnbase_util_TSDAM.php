@@ -107,24 +107,26 @@ class tx_rnbase_util_TSDAM {
 
 		$baseMediaClass = tx_div::makeInstanceClassName('tx_rnbase_model_media');
 		$damDb = tx_div::makeInstance('tx_dam_db');
-
+		
 		$medias = array();
-		while(list($uid, $filePath) = each($damPics)) {
-			$mediaObj = new $baseMediaClass($uid);
+		while(list($uid, $baseRecord) = each($damPics)) {
+			$mediaObj = new $baseMediaClass($baseRecord['uid']);
 			// Localize data (DAM 1.1.0)
 			if(method_exists($damDb, 'getRecordOverlay')) {
-				$loc = $damDb->getRecordOverlay('tx_dam', $mediaObj->record, array('sys_language_uid'=>$GLOBALS['TSFE']->sys_language_uid), 'FE');
+				$loc = $damDb->getRecordOverlay('tx_dam', $mediaObj->record, array('sys_language_uid'=>$GLOBALS['TSFE']->sys_language_uid));
 				if ($loc) $mediaObj->record = $loc;
 			}
 
 			$mediaObj->record['parentuid'] = $parentUid;
 			$medias[] = $mediaObj;
 		}
+		
 		$builderClass = tx_div::makeInstanceClassName('tx_rnbase_util_ListBuilder');
 		$listBuilder = new $builderClass();
 		$out = $listBuilder->render($medias,
 						tx_div::makeInstance('tx_lib_spl_arrayObject'), $templateCode, 'tx_rnbase_util_MediaMarker',
 						'media.', 'MEDIA', $conf->getFormatter());
+
 		// Now set the identifier
 		$markerArray['###MEDIA_PARENTUID###'] = $parentUid;
 		$out = $conf->getFormatter()->cObj->substituteMarkerArrayCached($out, $markerArray);
