@@ -2,10 +2,13 @@
 
 Änderungen
 ----------
+v0.5.4 (??.11.2009)
+ * additional BE user access removed from BaseModule
+
 v0.5.3 (22.11.2009)
-* TSDAM: Usage of tx_dam_media removed. This class can't handle two dam records for one single media path.
-* New framework for backend modules
-* PageBrowser: limit is never larger then list size
+ * TSDAM: Usage of tx_dam_media removed. This class can't handle two dam records for one single media path.
+ * New framework for backend modules
+ * PageBrowser: limit is never larger then list size
 
 v0.5.2 (07.11.2009)
 * SearchBase: OP_INSET_INT works for multiple values

@@ -66,71 +66,49 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 		$access = is_array($this->pageinfo) ? 1 : 0;
 		$this->initDoc($this->getDoc());
 
-		if (($this->id && $access) || ($BE_USER->user['admin'] && !$this->id))	{
+		if(tx_rnbase_util_TYPO3::isTYPO42OrHigher()) {
+			$this->content .= $this->moduleContent(); // Muss vor der Erstellung des Headers geladen werden
+			$this->content .= $this->getDoc()->sectionEnd();  // Zur Sicherheit eine offene Section schließen
 
-			if(tx_rnbase_util_TYPO3::isTYPO42OrHigher()) {
-				$this->content .= $this->moduleContent(); // Muss vor der Erstellung des Headers geladen werden
-				$this->content .= $this->getDoc()->sectionEnd();  // Zur Sicherheit eine offene Section schließen
-	
-				$header = $this->getDoc()->header($LANG->getLL('title'));
-				$this->content = $this->content; // ??
-				// ShortCut
-				if ($BE_USER->mayMakeShortcut())	{
-					$this->content.=$this->getDoc()->spacer(20).$this->getDoc()->section('',$this->getDoc()->makeShortcutIcon('id',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']));
-				}
-				$this->content.=$this->getDoc()->spacer(10);
-				// Setting up the buttons and markers for docheader
-				$docHeaderButtons = $this->getButtons();
-				$markers['CSH'] = $docHeaderButtons['csh'];
-				$markers['HEADER'] = $header;
-				$markers['SELECTOR'] = $this->subselector;
-				$markers['TABS'] = $this->tabs;
-				$markers['FUNC_MENU'] = t3lib_BEfunc::getFuncMenu($this->id,'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function']);
-				$markers['CONTENT'] = $this->content;
+			$header = $this->getDoc()->header($LANG->getLL('title'));
+			$this->content = $this->content; // ??
+			// ShortCut
+			if ($BE_USER->mayMakeShortcut())	{
+				$this->content.=$this->getDoc()->spacer(20).$this->getDoc()->section('',$this->getDoc()->makeShortcutIcon('id',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']));
 			}
-			else {
-				// HeaderSection zeigt Icons und Seitenpfad
-				$headerSection = $this->getDoc()->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br />'.$LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.path').': '.t3lib_div::fixed_lgd_pre($this->pageinfo['_thePath'],50);
-				$this->content .= $this->moduleContent(); // Muss vor der Erstellung des Headers geladen werden
-				$this->content .= $this->getDoc()->sectionEnd();  // Zur Sicherheit einen offene Section schließen
-	
-				// startPage erzeugt alles bis Beginn Formular
-				$header.=$this->getDoc()->startPage($LANG->getLL('title'));
-				$header.=$this->getDoc()->header($LANG->getLL('title'));
-				$header.=$this->getDoc()->spacer(5);
-				$header.=$this->getDoc()->section('',$this->getDoc()->funcMenu($headerSection,t3lib_BEfunc::getFuncMenu($this->getPid(),'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function'])));
-				$header.=$this->getDoc()->divider(5);
-	
-				$this->content = $header . $this->content;
-				
-				// ShortCut
-				if ($BE_USER->mayMakeShortcut())	{
-					$this->content.=$this->getDoc()->spacer(20).$this->getDoc()->section('',$this->getDoc()->makeShortcutIcon('id',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']));
-				}
-				$this->content.=$this->getDoc()->spacer(10);
-			}
-
-		} else {
-			// User hat keine Zugriff
-			if(tx_rnbase_util_TYPO3::isTYPO42OrHigher()) {
-				$this->content = $this->getDoc()->section($LANG->getLL('title'), $LANG->getLL('clickAPage_content'), 0, 1);
-		
-					// Setting up the buttons and markers for docheader
-				$docHeaderButtons = $this->getButtons();
-				$markers['CSH'] = $docHeaderButtons['csh'];
-				$markers['HEADER'] = $header;
-				$markers['SELECTOR'] = $this->subselector;
-				$markers['TABS'] = '';
-				$markers['FUNC_MENU'] = '';
-				$markers['CONTENT'] = $this->content;
-			}
-			else {
-				// If no access or if ID == zero
-				$this->content.=$this->getDoc()->startPage($LANG->getLL('title'));
-				$this->content.=$this->getDoc()->header($LANG->getLL('title'));
-				$this->content.=$this->getDoc()->spacer(15);
-			}
+			$this->content.=$this->getDoc()->spacer(10);
+			// Setting up the buttons and markers for docheader
+			$docHeaderButtons = $this->getButtons();
+			$markers['CSH'] = $docHeaderButtons['csh'];
+			$markers['HEADER'] = $header;
+			$markers['SELECTOR'] = $this->subselector;
+			$markers['TABS'] = $this->tabs;
+			$markers['FUNC_MENU'] = t3lib_BEfunc::getFuncMenu($this->id,'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function']);
+			$markers['CONTENT'] = $this->content;
 		}
+		else {
+			// HeaderSection zeigt Icons und Seitenpfad
+			$headerSection = $this->getDoc()->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br />'.$LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.path').': '.t3lib_div::fixed_lgd_pre($this->pageinfo['_thePath'],50);
+			$this->content .= $this->moduleContent(); // Muss vor der Erstellung des Headers geladen werden
+			$this->content .= $this->getDoc()->sectionEnd();  // Zur Sicherheit einen offene Section schließen
+
+			// startPage erzeugt alles bis Beginn Formular
+			$header.=$this->getDoc()->startPage($LANG->getLL('title'));
+			$header.=$this->getDoc()->header($LANG->getLL('title'));
+			$header.=$this->getDoc()->spacer(5);
+			$header.=$this->getDoc()->section('',$this->getDoc()->funcMenu($headerSection,t3lib_BEfunc::getFuncMenu($this->getPid(),'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function'])));
+			$header.=$this->getDoc()->divider(5);
+
+			$this->content = $header . $this->content;
+			
+			// ShortCut
+			if ($BE_USER->mayMakeShortcut())	{
+				$this->content.=$this->getDoc()->spacer(20).$this->getDoc()->section('',$this->getDoc()->makeShortcutIcon('id',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']));
+			}
+			$this->content.=$this->getDoc()->spacer(10);
+		}
+
+
 		if(tx_rnbase_util_TYPO3::isTYPO42OrHigher()) {
 			$content = $this->getDoc()->startPage($LANG->getLL('title'));
 			$content.= $this->getDoc()->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
