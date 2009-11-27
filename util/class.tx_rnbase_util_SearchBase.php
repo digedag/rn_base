@@ -385,10 +385,11 @@ abstract class tx_rnbase_util_SearchBase {
 			return $options['what'];
 		}
 		$distinct = isset($options['distinct']) ? 'DISTINCT ' : '';
+		$cntWhat = (isset($options['count']) && isset($options['distinct'])) ? 'uid' : '*';
 		$rownum = isset($options['rownum']) ? ', @rownum:=@rownum+1 AS rownum ' : '';
 		$table = $this->getGenericBaseTable();
 		$table = $this->useAlias() ? $this->getGenericBaseTableAlias() : $table;
-		return isset($options['count']) ? 'count('. $distinct .$table.'.*) as cnt' : $distinct.$table.'.*'.$rownum;
+		return isset($options['count']) ? 'count('. $distinct .$table.'.'.$cntWhat.') as cnt' : $distinct.$table.'.*'.$rownum;
 	}
 
 	/**
