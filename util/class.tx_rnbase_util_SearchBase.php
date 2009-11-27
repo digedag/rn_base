@@ -388,7 +388,7 @@ abstract class tx_rnbase_util_SearchBase {
 		$rownum = isset($options['rownum']) ? ', @rownum:=@rownum+1 AS rownum ' : '';
 		$table = $this->getGenericBaseTable();
 		$table = $this->useAlias() ? $this->getGenericBaseTableAlias() : $table;
-		return isset($options['count']) ? 'count('. $distinct .$table.'.uid) as cnt' : $distinct.$table.'.*'.$rownum;
+		return isset($options['count']) ? 'count('. $distinct .$table.'.*) as cnt' : $distinct.$table.'.*'.$rownum;
 	}
 
 	/**
