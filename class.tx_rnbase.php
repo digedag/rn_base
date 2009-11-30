@@ -23,6 +23,7 @@
 
 /**
  * Replacement for tx_div
+ * Some method come from TYPO3 Extension lib/div from author Elmar Hinz <elmar.hinz@team-red.net>
  */
 class tx_rnbase {
 	private static $loadedClasses = array();
@@ -59,6 +60,49 @@ class tx_rnbase {
 	}
 
 	/**
+	 * Load a t3 class and make an instance
+	 *
+	 * Returns ux_ extension class if any by make use of t3lib_div::makeInstance
+	 *
+	 * @param	string		classname
+	 * @param	string		extension key that varies from classnames
+	 * @param	string		prefix of classname
+	 * @param	string		ending of classname
+	 * @return	object		instance of the class or false if it fails
+	 * @see		t3lib_div::makeInstance
+	 * @see		load()
+	 */
+	public static function makeInstance($class, $alternativeKey='', $prefix = 'class.', $suffix = '.php') {
+		return (tx_lib_t3Loader::load($class, $alternativeKey, $prefix, $suffix)) ?
+			t3lib_div::makeInstance($class) : false;
+	}
+
+	/**
+	 * Load the class file, return the classname or the ux_classname
+	 *
+	 * This is an extension to t3lib_div::makeInstanceClassName. The advantage
+	 * is that it tries to autoload the file. In combination with the shorter
+	 * notation it simplyfies the finding of the classname.
+	 *
+	 * @param	string		classname
+	 * @return	string		classname or ux_classsname (maybe  service classname)
+	 * @see     tx_div::makeInstance
+	 * @see     tx_lib_t3Loader
+	 * @see     tx_lib_pearLoader
+	 */
+	public static function makeInstanceClassName($inputName) {
+		$outputName = false;
+		if(!$outputName) {
+			$outputName = self::makeInstanceClassNameT3($inputName);
+		}
+		if(!$outputName && t3lib_extMgm::isLoaded('lib')) {
+			require_once(t3lib_extMgm::extPath('lib') . 'class.tx_lib_pearLoader.php');
+			$outputName = tx_lib_pearLoader::makeInstanceClassName($inputName);
+		}
+		return $outputName;
+	}
+
+	/**
 	 * Load a t3 class
 	 *
 	 * Loads from extension directories ext, sysext, etc.
@@ -81,13 +125,49 @@ class tx_rnbase {
 	 * @param	string		ending of classname
 	 * @return	boolean		TRUE if class was loaded
 	 */
-	function loadT3($minimalInformation, $alternativeKey='', $prefix = 'class.', $suffix = '.php') {
+	private static function loadT3($minimalInformation, $alternativeKey='', $prefix = 'class.', $suffix = '.php') {
 		$path = self::_findT3($minimalInformation, $alternativeKey, $prefix, $suffix);
 		if($path) {
 			require_once($path);
 			return TRUE;
 		}
 		return FALSE;
+	}
+
+	/**
+	 * Load a t3 class and make an instance
+	 *
+	 * Returns ux_ extension class if any by make use of t3lib_div::makeInstance
+	 *
+	 * @param	string		classname
+	 * @param	string		extension key that varies from classnames
+	 * @param	string		prefix of classname
+	 * @param	string		ending of classname
+	 * @return	object		instance of the class or false if it fails
+	 * @see		t3lib_div::makeInstance
+	 * @see		load()
+	 */
+	private static function makeInstanceT3($class, $alternativeKey='', $prefix = 'class.', $suffix = '.php') {
+		return (self::loadT3($class, $alternativeKey, $prefix, $suffix)) ?
+			t3lib_div::makeInstance($class) : false;
+	}
+
+	/**
+	 * Load a t3 class and make an instance
+	 *
+	 * Returns ux_ extension classname if any by, making use of t3lib_div::makeInstanceClassName
+	 *
+	 * @param	string		classname
+	 * @param	string		extension key that varies from classnames
+	 * @param	string		prefix of classname
+	 * @param	string		ending of classname
+	 * @return	string		classname or ux_ classname
+	 * @see		t3lib_div::makeInstanceClassName
+	 * @see		load()
+	 */
+	private static function makeInstanceClassNameT3($class, $alternativeKey='', $prefix = 'class.', $suffix = '.php') {
+		return (self::loadT3($class, $alternativeKey, $prefix, $suffix)) ?
+			t3lib_div::makeInstanceClassName($class) : false;
 	}
 
 	/**
@@ -103,7 +183,7 @@ class tx_rnbase {
 	 * @return	string		the path, FALSE if invalid
 	 * @see		load()
 	 */
-	function _findT3($minimalInformation, $alternativeKey='', $prefix = 'class.', $suffix = '.php') {
+	private static function _findT3($minimalInformation, $alternativeKey='', $prefix = 'class.', $suffix = '.php') {
 		$info=trim($minimalInformation);
 		$path = '';
 		if(!$info) {
@@ -188,7 +268,7 @@ class tx_rnbase {
 	 * @param	string		extension key to check
 	 * @return	boolean		is the key valid?
 	 */
-	function getValidKey($rawKey) {
+	private static function getValidKey($rawKey) {
 		$uKeys = array_keys($GLOBALS['TYPO3_LOADED_EXT']);
 		foreach((array)$uKeys as $uKey) {
 			if( str_replace('_', '', $uKey) == str_replace('_', '', $rawKey) ){
@@ -226,7 +306,7 @@ class tx_rnbase {
 	 * @param	string		the minimal necessary information (see 1-4)
 	 * @return	string		the guessed key, FALSE if no result
 	 */
-	function guessKey($minimalInformation) {
+	private static function guessKey($minimalInformation) {
 		$info=trim($minimalInformation);
 		$key = FALSE;
 		if($info){
