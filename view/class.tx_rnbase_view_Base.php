@@ -83,6 +83,13 @@ class tx_rnbase_view_Base{
 			tx_rnbase::load('tx_rnbase_util_BaseMarker');
 			tx_rnbase_util_BaseMarker::callModules($out, $markerArray, $subpartArray, $wrappedSubpartArray, $params, $configurations->getFormatter());
 			$out = $configurations->getFormatter()->cObj->substituteMarkerArrayCached($out, $markerArray, $subpartArray, $wrappedSubpartArray);
+
+			// Soll abschließend nochmal das Plugin gerendert werden?
+			if(tx_rnbase_util_BaseMarker::containsMarker($out, 'PLUGIN_')) {
+				$pluginData = $formatter->cObj->data; // Eine Kopie des Datenarray ist notwendig!
+				$markerArray = $formatter->getItemMarkerArrayWrapped($pluginData, $controller->getConfid().'plugin.',0,'PLUGIN_');
+				$out = $formatter->cObj->substituteMarkerArrayCached($out, $markerArray, $subpartArray);
+			}
 		}
 		return $out;
 	}
