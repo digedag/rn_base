@@ -43,7 +43,7 @@
  * @package    TYPO3
  * @subpackage lib
  */
-class tx_rnbase_util_Link{
+class tx_rnbase_util_Link {
 
 	var $tagAttributes = array();       // setting attributes for the tag in general
 	var $classString = '';              // tags class attribute
@@ -77,7 +77,7 @@ class tx_rnbase_util_Link{
 	 * @param	object		mock object for testing purpuses
 	 * @return	void
 	 */
-	function tx_lib_link($cObjectClass = 'tslib_cObj') {
+	function tx_rnbase_util_Link($cObjectClass = 'tslib_cObj') {
 		$this->cObject = t3lib_div::makeInstance($cObjectClass);
 	}
 
@@ -373,12 +373,23 @@ class tx_rnbase_util_Link{
 			= t3lib_div::array_merge_recursive_overrule($this->overruledParameters,
 					$this->parameters);
 		foreach((array) $parameters as $key => $value) {
-			if(!is_array($value)) {   // TODO handle arrays
+			if(!is_array($value)) {
 				if($this->designatorString) {
 					$conf['additionalParams']
 						.= '&' . rawurlencode( $this->designatorString . '[' . $key . ']') . '=' . rawurlencode($value);
 				} else {
 					$conf['additionalParams'] .= '&' . rawurlencode($key) . '=' . rawurlencode($value);
+				}
+			}
+			else {
+				if($this->designatorString) {
+					foreach($value As $arKey => $aValue) {
+						$conf['additionalParams'] .= '&' . rawurlencode( $this->designatorString . '[' . $key . ']['.$arKey.']') . '=' . rawurlencode($aValue);
+					}
+				} else {
+					foreach($value As $arKey => $aValue) {
+						$conf['additionalParams'] .= '&' . rawurlencode($key) . '[]=' . rawurlencode($aValue);
+					}
 				}
 			}
 		}
