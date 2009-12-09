@@ -211,7 +211,7 @@ class tx_rnbase_configurations {
 	 * @return tx_lib_link
 	 */
 	function &createLink($addKeepVars = true) {
-		$linkClass = tx_div::makeInstanceClassName('tx_lib_link');
+		$linkClass = tx_div::makeInstanceClassName('tx_rnbase_util_Link');
 		$link = new $linkClass;
 		$link->designatorString = $this->getQualifier();
 		// Die KeepVars setzen
