@@ -370,7 +370,7 @@ abstract class tx_rnbase_util_SearchBase {
 
 	/**
 	 * As default the sql statement is build with tablenames. If this method returns true, the aliases will
-	 * be used instead. But keep in mind, to use aliases for Joins too!
+	 * be used instead. But keep in mind, to use aliases for Joins too and to overwrite getBaseTableAlias()!
 	 *
 	 * @return boolean
 	 */
