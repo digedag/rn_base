@@ -2,7 +2,9 @@
 
 Änderungen
 ----------
-v0.5.4 (??.11.2009)
+v0.5.4 (15.12.2009) (not released)
+ * New class tx_rnbase_mod_Tables
+ * New method tx_rnbase::getClassInfo()
  * additional BE user access removed from BaseModule
  * tx_rnbase_configurations::createLink will now return instances of tx_rnbase_util_Link
 
