@@ -42,6 +42,11 @@ interface tx_rnbase_mod_IModule {
 	 * @return string
 	 */
 	public function getName();
+	/**
+	 * Return current PID for Web-Modules
+	 * @return uid
+	 */
+	public function getPid();
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_IModule.php'])	{

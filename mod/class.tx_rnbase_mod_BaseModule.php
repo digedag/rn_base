@@ -59,7 +59,6 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 		// Einbindung externer Funktionen
 		$this->checkExtObj();
-		
 		// Access check!
 		// The page will show only if there is a valid page and if this page may be viewed by the user
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->getPid(),$this->perms_clause);
@@ -182,7 +181,7 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 	}
 	/**
 	 * Liefert bei Web-Modulen die aktuelle Pid
-	 * @return unknown_type
+	 * @return int
 	 */
 	public function getPid() {
 		return $this->id;
