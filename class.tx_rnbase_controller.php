@@ -185,19 +185,21 @@ class tx_rnbase_controller {
    */
   
 	function main($out, $configurationArray){
-		$GLOBALS['TT']->push('tx_rnbase_controller' , 'start');
+
+		tx_rnbase_util_Misc::pushTT('tx_rnbase_controller' , 'start');
 
 		// Making the configurations object
-		$GLOBALS['TT']->push('init configuration' , '');
+		tx_rnbase_util_Misc::pushTT('init configuration' , '');
 		$configurations = $this->_makeConfigurationsObject($configurationArray);
-		$GLOBALS['TT']->pull();
+		tx_rnbase_util_Misc::pullTT();
 
-    // Making the parameters object
-		$GLOBALS['TT']->push('init parameters' , '');
+		tx_rnbase_util_Misc::enableTimeTrack($configurations->get('_enableTT') ? true : false);
+		// Making the parameters object
+		tx_rnbase_util_Misc::pushTT('init parameters' , '');
 		$parameters = $this->_makeParameterObject($configurations);
 		// Make sure to keep all parameters
 		$configurations->setParameters($parameters);
-		$GLOBALS['TT']->pull();
+		tx_rnbase_util_Misc::pullTT();
 
 		// Finding the action:
 		$actions = $this->_findAction($parameters, $configurations);
@@ -207,16 +209,16 @@ class tx_rnbase_controller {
 		$out = '';
 		if(is_array($actions))
 			foreach($actions As $actionName){
-				$GLOBALS['TT']->push('call action' , $actionName);
+				tx_rnbase_util_Misc::pushTT('call action' , $actionName);
 				$out .= $this->doAction($actionName,$parameters,$configurations);
-				$GLOBALS['TT']->pull();
+				tx_rnbase_util_Misc::pullTT();
 			}
 		else { // Call a single action
-			$GLOBALS['TT']->push('call action' , $actionName);
+			tx_rnbase_util_Misc::pushTT('call action' , $actionName);
 			$out .= $this->doAction($actions,$parameters,$configurations);
-			$GLOBALS['TT']->pull();
+			tx_rnbase_util_Misc::pullTT();
 		}
-		$GLOBALS['TT']->pull();
+		tx_rnbase_util_Misc::pullTT();
 		return $out;
 	}
 

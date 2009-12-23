@@ -101,7 +101,7 @@ class tx_rnbase_util_ListBuilder {
 			else {
 				$markerArray['###'.$marker.'COUNT###'] = count($dataArr);
 			}
-			$out = $formatter->cObj->substituteMarkerArrayCached($templateList, $markerArray, $subpartArray);
+			$out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($templateList, $markerArray, $subpartArray);
 		}
 		else {
 			$out = $this->info->getEmptyListMessage($confId, $viewData, $formatter->configurations);
@@ -122,7 +122,7 @@ class tx_rnbase_util_ListBuilder {
 		if($seachform)
 			$markerArray['###SEARCHFORM###'] = $seachform;
 
-		$out = $formatter->cObj->substituteMarkerArrayCached($template, $markerArray, $subpartArray);
+		$out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($template, $markerArray, $subpartArray);
 		if($debug) {
 			tx_div::load('class.tx_rnbase_util_Misc.php');
 

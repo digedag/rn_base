@@ -51,7 +51,7 @@ class tx_rnbase_util_MediaMarker extends tx_rnbase_util_BaseMarker {
 		$markerArray = $formatter->getItemMarkerArrayWrapped($item->record, $confId , 0, $marker.'_');
 		$wrappedSubpartArray = array();
 		$subpartArray = array();
-		$out = $formatter->cObj->substituteMarkerArrayCached($template, $markerArray, $subpartArray, $wrappedSubpartArray);
+		$out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($template, $markerArray, $subpartArray, $wrappedSubpartArray);
 		return $out;
 	}
 

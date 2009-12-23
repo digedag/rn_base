@@ -22,7 +22,9 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_div::load('tx_rnbase_util_PageBrowser');
+require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+tx_rnbase::load('tx_rnbase_util_BaseMarker');
+tx_rnbase::load('tx_rnbase_util_PageBrowser');
 
 /**
  * Contains utility functions for HTML-Forms
@@ -103,7 +105,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 
 		$implode = $configurations->get($pbConfId.'.implode');
 		$subpartArray['###'.$pbMarker.'_NORMAL_PAGE###'] = implode($parts, $implode ? $implode : ' ');
-		return $formatter->cObj->substituteMarkerArrayCached($template, $markerArray, $subpartArray);
+		return tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($template, $markerArray, $subpartArray);
 	}
 
 	/**
@@ -130,7 +132,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 			$pageMarkerArray['###'.$pageMarker.'LINKURL###'] = '';
 		}
  
-		$out = $formatter->cObj->substituteMarkerArrayCached($pageTemplate, $pageMarkerArray, $pageSubpartArray, $pageWrappedSubpartArray);
+		$out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($pageTemplate, $pageMarkerArray, $pageSubpartArray, $pageWrappedSubpartArray);
 		return $out;
 	}
 

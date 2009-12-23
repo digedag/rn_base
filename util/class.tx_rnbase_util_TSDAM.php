@@ -31,6 +31,9 @@ if(t3lib_extMgm::isLoaded('dam')) {
 
 define('DEFAULT_LOCAL_FIELD', '_LOCALIZED_UID');
 
+require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+tx_rnbase::load('tx_rnbase_util_BaseMarker');
+
 /**
  * Contains utility functions for DAM
  */
@@ -129,7 +132,7 @@ class tx_rnbase_util_TSDAM {
 
 		// Now set the identifier
 		$markerArray['###MEDIA_PARENTUID###'] = $parentUid;
-		$out = $conf->getFormatter()->cObj->substituteMarkerArrayCached($out, $markerArray);
+		$out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($out, $markerArray);
 		return $out;
 	}
 
