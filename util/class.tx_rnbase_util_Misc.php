@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006 Rene Nitzsche
+ *  (c) 2006-2009 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -28,6 +28,7 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase_configurations.
  * Contains some helpful methods
  */
 class tx_rnbase_util_Misc {
+	private static $enableTT = false;
 
 	/**
 	 * Returns a service
@@ -356,6 +357,32 @@ MAYDAYPAGE;
 		$str .= $salt;
 		$hash = md5($str);
 		return substr($hash,5,8);
+	}
+
+	/**
+	 * Start TimeTrack section
+	 *
+	 * @param string $message
+	 */
+	public static function pushTT($label, $message='') {
+		if(self::$enableTT && is_object($GLOBALS['TT']))
+			$GLOBALS['TT']->push($label, $message);
+	}
+	/**
+	 * End TimeTrack section
+	 */
+	public static function pullTT() {
+		if(self::$enableTT && is_object($GLOBALS['TT']))
+			$GLOBALS['TT']->pull();
+	}
+	/**
+	 * The TimeTracking uses a lot of memory. So it should be used for testcases only.
+	 * By default the timetracking is not enabled
+	 *
+	 * @param boolean $flag
+	 */
+	public static function enableTimeTrack($flag) {
+		self::$enableTT = $flag;
 	}
 }
 
