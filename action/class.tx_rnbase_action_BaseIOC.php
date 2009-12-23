@@ -48,27 +48,27 @@ abstract class tx_rnbase_action_BaseIOC {
 			$time = microtime(true);
 			$memStart = memory_get_usage();
 		}
- 
+
 		$viewData =& $configurations->getViewData();
-		$GLOBALS['TT']->push(get_class($this), 'handleRequest');
-		$errOut = $this->handleRequest($parameters,$configurations, $viewData);
-		$GLOBALS['TT']->pull();
-		if($errOut) return $errOut;
-
-		// View
-		$view = tx_div::makeInstance($this->getViewClassName());
-		$view->setTemplatePath($configurations->getTemplatePath());
-		if(method_exists($view, 'setController'))
-			$view->setController($this);
-		// Das Template wird komplett angegeben
-		$tmplName = $this->getTemplateName();
-		if(!$tmplName || !strlen($tmplName))
-			tx_rnbase_util_Misc::mayday('No template name defined!');
-
-		$view->setTemplateFile($configurations->get($tmplName.'Template'));
-		$GLOBALS['TT']->push(get_class($this), 'render');
-		$out = $view->render($tmplName, $configurations);
-		$GLOBALS['TT']->pull();
+		tx_rnbase_util_Misc::pushTT(get_class($this), 'handleRequest');
+		$out = $this->handleRequest($parameters,$configurations, $viewData);
+		tx_rnbase_util_Misc::pullTT();
+		if(!$out) {
+			// View
+			$view = tx_div::makeInstance($this->getViewClassName());
+			$view->setTemplatePath($configurations->getTemplatePath());
+			if(method_exists($view, 'setController'))
+				$view->setController($this);
+			// Das Template wird komplett angegeben
+			$tmplName = $this->getTemplateName();
+			if(!$tmplName || !strlen($tmplName))
+				tx_rnbase_util_Misc::mayday('No template name defined!');
+	
+			$view->setTemplateFile($configurations->get($tmplName.'Template'));
+			tx_rnbase_util_Misc::pushTT(get_class($this), 'render');
+			$out = $view->render($tmplName, $configurations);
+			tx_rnbase_util_Misc::pullTT();
+		}
 		if($debug) {
 			$memEnd = memory_get_usage();
 			t3lib_div::debug(array(
