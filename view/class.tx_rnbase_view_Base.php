@@ -34,6 +34,8 @@ require_once(t3lib_extMgm::extPath('div') . 'class.tx_div.php');
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
 tx_rnbase::load('tx_rnbase_action_BaseIOC');
+tx_rnbase::load('tx_rnbase_util_BaseMarker');
+
 
 /**
  * Base class for all views.
@@ -82,7 +84,7 @@ class tx_rnbase_view_Base{
 			$params['items'] = $viewData->offsetGet('items');
 			tx_rnbase::load('tx_rnbase_util_BaseMarker');
 			tx_rnbase_util_BaseMarker::callModules($out, $markerArray, $subpartArray, $wrappedSubpartArray, $params, $configurations->getFormatter());
-			$out = $configurations->getFormatter()->cObj->substituteMarkerArrayCached($out, $markerArray, $subpartArray, $wrappedSubpartArray);
+			$out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($out, $markerArray, $subpartArray, $wrappedSubpartArray);
 
 			// Soll abschließend nochmal das Plugin gerendert werden?
 			if(tx_rnbase_util_BaseMarker::containsMarker($out, 'PLUGIN_')) {
