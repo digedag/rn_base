@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006-2008 Rene Nitzsche
+ *  (c) 2006-2009 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -22,16 +22,21 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
+tx_rnbase::load('tx_rnbase_util_Misc');
+tx_rnbase::load('tx_rnbase_util_Templates');
+
+
+
 /**
  * Base class for Markers.
  */
 class tx_rnbase_util_BaseMarker {
-  private $defaultMarkerArr = array();
-  /** Array for dummy objects */
-  private static $emptyObjects = array();
-  
-  function tx_rnbase_util_BaseMarker() {
-  }
+	private $defaultMarkerArr = array();
+	/** Array for dummy objects */
+	private static $emptyObjects = array();
+
+	public function __construct() {
+	}
 
   /**
    * Initialisiert die Labels für die eine Model-Klasse
@@ -344,15 +349,17 @@ class tx_rnbase_util_BaseMarker {
 	 * @param string $message
 	 */
 	protected function pushTT($message) {
-		if(is_object($GLOBALS['TT']))
-			$GLOBALS['TT']->push(get_class($this), $message);
+		tx_rnbase_util_Misc::pushTT(get_class($this), $message);
 	}
 	/**
 	 * End TimeTrack section
 	 */
 	protected function pullTT() {
-		if(is_object($GLOBALS['TT']))
-			$GLOBALS['TT']->pull();
+		tx_rnbase_util_Misc::pullTT();
+	}
+
+	public static function substituteMarkerArrayCached($content,$markContentArray=array(),$subpartContentArray=array(),$wrappedSubpartContentArray=array())	{
+		return tx_rnbase_util_Templates::substituteMarkerArrayCached($content,$markContentArray,$subpartContentArray,$wrappedSubpartContentArray);
 	}
 }
 
