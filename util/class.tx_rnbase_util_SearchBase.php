@@ -116,35 +116,36 @@ abstract class tx_rnbase_util_SearchBase {
   		list($tableAlias, $col) = explode('.', $field);
   		$tableAliases[$tableAlias][$col] = $data;
   	}
-  	// Prüfen, ob in orderby noch andere Tabellen liegen
-  	$orderbyArr = $options['orderby'];
-  	if(is_array($orderbyArr)) {
-  		$aliases = array_keys($orderbyArr);
-  		foreach($aliases As $alias) {
-  			list($tableAlias, $col) = explode('.', $alias);
-  			if(!array_key_exists($tableAlias, $tableAliases))
-  				$tableAliases[$tableAlias] = array();
-  		}
-  	}
-  	if(is_array($joinedFields)) {
-  		reset($joinedFields);
+		// Prüfen, ob in orderby noch andere Tabellen liegen
+		$orderbyArr = $options['orderby'];
+		if(is_array($orderbyArr)) {
+			$aliases = array_keys($orderbyArr);
+			foreach($aliases As $alias) {
+				if(strstr(SEARCH_FIELD_CUSTOM, $alias)) continue; // CUSTOM ignorieren
+				list($tableAlias, $col) = explode('.', $alias);
+				if(!array_key_exists($tableAlias, $tableAliases))
+					$tableAliases[$tableAlias] = array();
+			}
+		}
+		if(is_array($joinedFields)) {
+			reset($joinedFields);
 			foreach ($joinedFields As $key => $joinedField) {
 				// Für die JOINED-Fields müssen die Tabellen gesetzt werden, damit der SQL-JOIN passt
-	  		foreach($joinedField['cols'] AS $field) {
-	  			list($tableAlias, $col) = explode('.', $field);
-	  			if(!isset($tableAliases[$tableAlias]))
-	  				$tableAliases[$tableAlias] = array();
-	  			$joinedFields[$key]['fields'][] = ($this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias]).'.' . strtolower($col);
-	  		}
+				foreach($joinedField['cols'] AS $field) {
+					list($tableAlias, $col) = explode('.', $field);
+					if(!isset($tableAliases[$tableAlias]))
+						$tableAliases[$tableAlias] = array();
+					$joinedFields[$key]['fields'][] = ($this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias]).'.' . strtolower($col);
+				}
 			}
-  	}
-  	
-    $what = $this->getWhat($options, $tableAliases);
-    $from = $this->getFrom($options, $tableAliases);
-    $where = '1=1';
-    foreach($tableAliases AS $tableAlias => $colData) {
-  		foreach($colData As $col => $data) {
-  			foreach ($data As $operator => $value) {
+		}
+
+		$what = $this->getWhat($options, $tableAliases);
+		$from = $this->getFrom($options, $tableAliases);
+		$where = '1=1';
+		foreach($tableAliases AS $tableAlias => $colData) {
+			foreach($colData As $col => $data) {
+				foreach ($data As $operator => $value) {
 					if(is_array($value)) {
 						// There is more then one value to test against column
 						$joinedValues = $value[SEARCH_FIELD_JOINED];
@@ -160,26 +161,26 @@ abstract class tx_rnbase_util_SearchBase {
 						if(strlen($where) >0) $where .= ' AND ';
 						$where .= tx_rnbase_util_DB::setSingleWhereField($this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias], $operator, $col, $value);
 					}
-  			}
-  		}
-    }
-    // Jetzt die Freitextsuche über mehrere Felder
-  	if(is_array($joinedFields)) {
-  		foreach ($joinedFields As $joinedField) {
-  			if($joinedField['operator'] == OP_INSET_INT) {
-  				// Values splitten und einzelne Abfragen mit OR verbinden
-	   			$addWhere = tx_rnbase_util_DB::searchWhere($joinedField['value'], implode(',',$joinedField['fields']), 'FIND_IN_SET_OR');
-  			}
-  			else {
-  				$addWhere = tx_rnbase_util_DB::searchWhere($joinedField['value'], implode(',',$joinedField['fields']), $joinedField['operator']);
-  			}
-  			$where .= $addWhere;
-  		}
-  	}
-  	if(isset($customFields)) {
-  		$where .= ' AND ' . $customFields;
-  	}
-  	
+				}
+			}
+		}
+		// Jetzt die Freitextsuche über mehrere Felder
+		if(is_array($joinedFields)) {
+			foreach ($joinedFields As $joinedField) {
+				if($joinedField['operator'] == OP_INSET_INT) {
+					// Values splitten und einzelne Abfragen mit OR verbinden
+					$addWhere = tx_rnbase_util_DB::searchWhere($joinedField['value'], implode(',',$joinedField['fields']), 'FIND_IN_SET_OR');
+				}
+				else {
+					$addWhere = tx_rnbase_util_DB::searchWhere($joinedField['value'], implode(',',$joinedField['fields']), $joinedField['operator']);
+				}
+				$where .= $addWhere;
+			}
+		}
+		if(isset($customFields)) {
+			$where .= ' AND ' . $customFields;
+		}
+
 		$sqlOptions['where'] = $where;
 		if($options['pidlist'])
 			$sqlOptions['pidlist'] = $options['pidlist'];
@@ -207,11 +208,15 @@ abstract class tx_rnbase_util_SearchBase {
 			// Aus dem Array einen String bauen
 			$orderby = array();
 			if(array_key_exists('RAND', $options['orderby']) && $options['orderby']['RAND']) {
-		    $orderby[] = 'RAND()';
-		  }
-		  else {
-		  	if(array_key_exists('RAND', $options['orderby']))	unset($options['orderby']['RAND']);
+				$orderby[] = 'RAND()';
+			}
+			else {
+				if(array_key_exists('RAND', $options['orderby']))	unset($options['orderby']['RAND']);
 				foreach ($options['orderby'] As $field => $order) {
+					if(strstr(SEARCH_FIELD_CUSTOM, $field)) { // free Order-Clause
+						$orderby[] = $order;
+						continue;
+					}
 					list($tableAlias, $col) = explode('.', $field);
 					$tableAlias = $this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias];
 					if($tableAlias)
@@ -220,7 +225,7 @@ abstract class tx_rnbase_util_SearchBase {
 						$orderby[] = $field . ' ' . ( strtoupper($order) == 'DESC' ? 'DESC' : 'ASC');
 					}
 				}
-		  }
+			}
 			$sqlOptions['orderby'] = implode(',', $orderby);
 		}
 		if(

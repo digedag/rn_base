@@ -2,6 +2,9 @@
 
 Änderungen
 ----------
+v0.5.6 (??.12.2009)
+ * SearchBase: CUSTOM orderby clause is possible
+
 v0.5.5 (23.12.2009) (not released)
  * There is a new class tx_rnbase_util_Templates for marker substitutions HTML templates. It does the same as substituteMarkerArrayCached but has no call to $GLOBALS['TT']. This heavily reduces memory consumption. 
 
