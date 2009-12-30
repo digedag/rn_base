@@ -326,11 +326,19 @@ abstract class tx_rnbase_util_SearchBase {
 	 * @param array $options
 	 */
 	protected function addGenericTableMappings(&$tableMapping, $options) {
+		// Zuerst die Basistabelle
+//		$baseAlias = $options['basetablealias'];
+//		$baseTable = $options['basetable'];
+//		if($baseAlias && $baseTable)
+//			$tableMapping[$baseAlias] = $baseTable;
+
 		$aliasArr = $options['alias'];
-		if(!is_array($aliasArr)) throw new Exception('No search tables configured!');
-		foreach ($aliasArr As $alias => $data) {
-			$tableMapping[$alias] = $data['table'];
-		}
+		if(is_array($aliasArr))
+			foreach ($aliasArr As $alias => $data) {
+				$tableMapping[$alias] = $data['table'];
+			}
+
+//		if(!count($tableMapping)) throw new Exception('No search tables configured!');
 	}
 	
 	/**

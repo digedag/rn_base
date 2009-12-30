@@ -2,8 +2,9 @@
 
 Änderungen
 ----------
-v0.5.6 (??.12.2009)
+v0.6.0 (30.12.2009)
  * SearchBase: CUSTOM orderby clause is possible
+ * SearchGeneric: double alias declaration for base table removed
 
 v0.5.5 (23.12.2009) (not released)
  * There is a new class tx_rnbase_util_Templates for marker substitutions HTML templates. It does the same as substituteMarkerArrayCached but has no call to $GLOBALS['TT']. This heavily reduces memory consumption. 
