@@ -285,26 +285,24 @@ abstract class tx_rnbase_util_SearchBase {
 		$join = '';
 		if($this->isGeneric()) {
 			$aliasArr = $this->genericData['alias'];
-			if(!is_array($aliasArr)) throw new Exception('No search tables configured!');
-			foreach ($aliasArr As $alias => $data) {
-
-				$makeJoin = isset($tableAliases[$alias]);
-				if(!$makeJoin && array_key_exists('joincondition', $data)) {
-					$jconds = t3lib_div::trimExplode(',', $data['joincondition']);
-					foreach ($jconds AS $jcond) {
-						$makeJoin = $makeJoin || isset($tableAliases[$jcond]);
-						if($makeJoin) break;
+			if(is_array($aliasArr)) {
+				foreach ($aliasArr As $alias => $data) {
+					$makeJoin = isset($tableAliases[$alias]);
+					if(!$makeJoin && array_key_exists('joincondition', $data)) {
+						$jconds = t3lib_div::trimExplode(',', $data['joincondition']);
+						foreach ($jconds AS $jcond) {
+							$makeJoin = $makeJoin || isset($tableAliases[$jcond]);
+							if($makeJoin) break;
+						}
 					}
+	
+					if($makeJoin) {
+						$join .= ' ' . $data['join'];
+					}
+					
+					$tableMapping[$alias] = $data['table'];
 				}
-
-				//if(isset($tableAliases['NEWSCATMM']) || isset($tableAliases['NEWSCAT'])) {
-				if($makeJoin) {
-					$join .= ' ' . $data['join'];
-				}
-				
-				$tableMapping[$alias] = $data['table'];
 			}
-
 		}
 		$join .= $this->getJoins($tableAliases);
 		return $join;
