@@ -274,6 +274,7 @@ MAYDAYPAGE;
 			require_once(PATH_tslib.'class.tslib_content.php');
 			require_once(PATH_tslib.'class.tslib_fe.php');
 			require_once(PATH_t3lib.'class.t3lib_page.php');
+			require_once(PATH_t3lib.'class.t3lib_tstemplate.php');
 			$clazz = t3lib_div::makeInstanceClassname('tslib_fe');
 			$GLOBALS['TSFE'] = new $clazz($GLOBALS['TYPO3_CONF_VARS'], 1, 99);
 			// Jetzt noch pageSelect
