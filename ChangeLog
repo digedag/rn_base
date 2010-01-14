@@ -2,6 +2,10 @@
 
 Änderungen
 ----------
+v0.6.1 (??.12.2010)
+ * tx_rnbase_Misc: Inlcude tstemplate.php in prepareTSFE()
+ * BaseMarker: Missing include of tx_rnbase fixed
+
 v0.6.0 (30.12.2009)
  * SearchBase: CUSTOM orderby clause is possible
  * SearchGeneric: double alias declaration for base table removed
