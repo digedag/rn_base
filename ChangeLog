@@ -5,6 +5,7 @@
 v0.6.1 (??.12.2010)
  * tx_rnbase_Misc: Inlcude tstemplate.php in prepareTSFE()
  * BaseMarker: Missing include of tx_rnbase fixed
+ * tx_rnbase_configurations: New option deep in method get(). Thanks to Lars Heber.
 
 v0.6.0 (30.12.2009)
  * SearchBase: CUSTOM orderby clause is possible

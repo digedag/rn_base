@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2007 Rene Nitzsche
+ *  (c) 2007-2010 Rene Nitzsche
  *  Contact: rene@system25.de
  *
  *  Original version:
@@ -336,25 +336,31 @@ class tx_rnbase_configurations {
     return $extConfig[$cfgKey];
   }
 
-  /**
-   * Get a value or an array by providing a relative pathKey
-   *
-   * The provided pathKey is relative to the part of the TS-Setup you have loaded. Examples:
-   *
-   * Absolute Setup:          'plugin.tx_myextension.configuration.parts.10.id = 33'
-   * Loaded Path:             'plugin.tx_myextension.configuration.'
-   * Resulting relative pathKey of a value:                       'parts.10.id'
-   * Resulting relative pathKey of an array:                      'parts.'
-   * Resulting relative pathKey of an array:                      'parts.10.'
-   *
-   * Mind: To query an array end with a DOT. To to query a single value end without DOT.
-   *
-   * @param string  relative setupPath
-   * @return array  or string
-   */
-   function get($pathKey) {
-     return $this->_queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey);
-   }
+	/**
+	 * Get a value or an array by providing a relative pathKey
+	 *
+	 * The provided pathKey is relative to the part of the TS-Setup you have loaded. Examples:
+	 *
+	 * Absolute Setup:          'plugin.tx_myextension.configuration.parts.10.id = 33'
+	 * Loaded Path:             'plugin.tx_myextension.configuration.'
+	 * Resulting relative pathKey of a value:                       'parts.10.id'
+	 * Resulting relative pathKey of an array:                      'parts.'
+	 * Resulting relative pathKey of an array:                      'parts.10.'
+	 *
+	 * Mind: To query an array end with a DOT. To to query a single value end without DOT.
+	 *
+	 * @param string  relative setupPath
+	 * @return array  or string
+	 */
+	function get($pathKey, $deep=false) {
+		$ret = $this->_queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey);
+		if($deep) {
+			if (is_array($ret) && substr($pathKey, strlen($key)-1, 1) == '.') {
+				$ret = $this->renderTS($ret, $this->getCObj());
+			}
+		}
+		return $ret;
+	}
 
 	/**
 	 * Finds a value either from config or in language markers. Please note, that all points are
@@ -754,6 +760,40 @@ class tx_rnbase_configurations {
     $this->_LOCAL_LANG_loaded = 1;
   }
 
+	/**
+	 * (Try to) Render Typoscript recursively
+	 *
+	 * tslib_cObj::cObjGetSingle() renders a TS array
+	 * only if the passed array structure is directly
+	 * defined renderable Typoscript - it does however
+	 * not care for deep array structures.
+	 * This method heals this lack by traversing the
+	 * given TS array recursively and calling
+	 * tslib_cObj::cObjGetSingle() on each sub-array
+	 * which looks like being renderable.
+	 *
+	 * @param array            $data    Deep data array parsed from Typoscript text
+	 * @param tslib_cObj    $cObj
+	 * @return array                Data array with Typoscript rendered
+	 * @author Lars Heber
+	 */
+	private function renderTS($data, tslib_cObj &$cObj) {
+		foreach ($data as $key=>$value) {
+			// Array key with trailing '.'?
+			if (substr($key, strlen($key)-1, 1) == '.') {
+				// Remove last character
+				$key_1 = substr($key, 0, strlen($key)-1);
+				// Same key WITHOUT '.' exists as well? Treat as renderable Typoscript!
+				if (isset($data[$key_1])) {
+					$data[$key_1] = $cObj->cObjGetSingle($data[$key_1], $data[$key]);
+					unset($data[$key]);
+				}
+				// Traverse recursively
+				else $data[$key] = $this->renderTS($data[$key], $cObj);
+			}
+		}
+		return $data;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/class.tx_rnbase_configurations.php']) {
