@@ -32,6 +32,14 @@ require_once(t3lib_extMgm::extPath('div') . 'class.tx_div.php');
 class tx_rnbase_util_TYPO3 {
 
 	/**
+	 * Prüft, ob mindestens TYPO3 Version 4.3 vorhanden ist.
+	 *
+	 * @return boolean
+	 */
+	public static function isTYPO43OrHigher() {
+		return self::isTYPO3VersionOrHigher(4003000);
+	}
+	/**
 	 * Prüft, ob mindestens TYPO3 Version 4.2 vorhanden ist.
 	 *
 	 * @return boolean
