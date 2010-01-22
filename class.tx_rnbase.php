@@ -82,8 +82,6 @@ class tx_rnbase {
 			if(func_num_args() > 1) {
 				// Das ist ein Konstruktor Aufruf mit Parametern
 				$args = func_get_args();
-				$args = $args[1];
-				array_unshift($args, $class);
 				self::load('tx_rnbase_util_TYPO3');
 				if(tx_rnbase_util_TYPO3::isTYPO43OrHigher()) {
 					// Die Parameter weiterreichen
