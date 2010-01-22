@@ -417,6 +417,7 @@ abstract class tx_rnbase_util_SearchBase {
 	 */
 	protected function getFrom($options, $tableAliases) {
 		$table = $this->getGenericBaseTable();
+		if(!$table) throw new Exception('SearchBase: No base table found!');
 		$from = array($table, $table);
 		if ($this->useAlias()) {
 			$alias = $this->getGenericBaseTableAlias();
