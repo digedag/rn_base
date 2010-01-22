@@ -60,21 +60,47 @@ class tx_rnbase {
 	}
 
 	/**
-	 * Load a t3 class and make an instance
-	 *
+	 * Load a t3 class and make an instance.
+	 * Usage:
+	 * $obj = tx_rnbase::makeInstance('tx_ext_myclass');
+	 * or with parameters:
+	 * $obj = tx_rnbase::makeInstance('tx_ext_myclass', 'arg1', 'arg2',...);
+	 * 
+	 * This works also for TYPO3 4.2 and lower.
+	 * 
 	 * Returns ux_ extension class if any by make use of t3lib_div::makeInstance
 	 *
 	 * @param	string		classname
-	 * @param	string		extension key that varies from classnames
-	 * @param	string		prefix of classname
-	 * @param	string		ending of classname
+	 * @param	mixed optional more parameters for constructor
 	 * @return	object		instance of the class or false if it fails
 	 * @see		t3lib_div::makeInstance
 	 * @see		load()
 	 */
-	public static function makeInstance($class, $alternativeKey='', $prefix = 'class.', $suffix = '.php') {
-		return (tx_lib_t3Loader::load($class, $alternativeKey, $prefix, $suffix)) ?
-			t3lib_div::makeInstance($class) : false;
+	public static function makeInstance($class) {
+		$ret = false;
+		if(self::load($class)) {
+			if(func_num_args() > 1) {
+				// Das ist ein Konstruktor Aufruf mit Parametern
+				$args = func_get_args();
+				$args = $args[1];
+				array_unshift($args, $class);
+				self::load('tx_rnbase_util_TYPO3');
+				if(tx_rnbase_util_TYPO3::isTYPO43OrHigher()) {
+					// Die Parameter weiterreichen
+					$ret = call_user_func_array(array('t3lib_div','makeInstance'),$args);
+				}
+				else {
+					array_shift($args);
+					// Bei 4.2 den alten Weg verwenden
+					$className = t3lib_div::makeInstanceClassName($class);
+					$reflectionObj = new ReflectionClass($className);
+					$ret = $reflectionObj->newInstanceArgs($args);
+				}
+			}
+			else
+				$ret = t3lib_div::makeInstance($class);
+		}
+		return $ret;
 	}
 
 	/**
@@ -89,6 +115,7 @@ class tx_rnbase {
 	 * @see     tx_div::makeInstance
 	 * @see     tx_lib_t3Loader
 	 * @see     tx_lib_pearLoader
+	 * @deprecated use makeInstance() with optional parameters for constructor
 	 */
 	public static function makeInstanceClassName($inputName) {
 		$outputName = false;
