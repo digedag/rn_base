@@ -47,7 +47,6 @@ class tx_rnbase_filter_FilterItem implements tx_rnbase_IFilterItem {
 		$this->record = array();
 		$this->setName($name);
 		$this->setValue($value);
-		$this->record[$name] = $value;
 	}
 	/**
 	 * Returns the name of item
