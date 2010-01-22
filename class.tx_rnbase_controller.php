@@ -354,7 +354,8 @@ class tx_rnbase_controller {
     $parameters = tx_div::makeInstance('tx_rnbase_parameters');
 
     // get parametersArray for defined qualifier
-    $parametersArray = t3lib_div::GParrayMerged($configurations->getQualifier());
+    $parametersArray = tx_rnbase_util_TYPO3::isTYPO43OrHigher() ? t3lib_div::_GPmerged($configurations->getQualifier())
+    : t3lib_div::GParrayMerged($configurations->getQualifier());
 
     tx_rnbase_util_Arrays::overwriteArray($parameters,$parametersArray);
 

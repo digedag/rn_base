@@ -22,7 +22,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('div') . 'class.tx_div.php');
+require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_div::load('tx_rnbase_util_ListBuilderInfo');
 
 /**
@@ -80,8 +80,9 @@ class tx_rnbase_util_ListBuilder {
 		  $wrapMem = tx_rnbase_util_FormatUtil::$mem;
 		}
 		if(is_array($dataArr) && count($dataArr)) {
-			$markerClass = tx_div::makeInstanceClassName('tx_rnbase_util_ListMarker');
-			$listMarker = new $markerClass($this->info->getListMarkerInfo());
+//			$markerClass = tx_rnbase::makeInstanceClassName('tx_rnbase_util_ListMarker');
+//			$listMarker = new $markerClass($this->info->getListMarkerInfo());
+			$listMarker = tx_rnbase::makeInstance('tx_rnbase_util_ListMarker', $this->info->getListMarkerInfo());
 			$cObj =& $formatter->configurations->getCObj(0);
 			$templateList = $cObj->getSubpart($template,'###'.$marker.'S###');
 

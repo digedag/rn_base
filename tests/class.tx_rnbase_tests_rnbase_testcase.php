@@ -30,13 +30,11 @@ class tx_rnbase_tests_rnbase_testcase extends tx_phpunit_testcase {
 	function test_makeInstance() {
 		$obj = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
 		$this->assertTrue(is_object($obj), 'Object not instantiated');
-t3lib_div::debug($obj, 'tx_rnbase_tests_dates_testcase :: test_makeInstance'); // TODO: remove me
 		
-		$obj = tx_rnbase::makeInstance('tx_rnbase_filter_FilterItem', array('name', 'value'));
+		$obj = tx_rnbase::makeInstance('tx_rnbase_filter_FilterItem', 'name', 'value');
 		$this->assertTrue(is_object($obj), 'Object not instantiated');
 		$this->assertEquals($obj->record['name'], 'name', 'Attribute not set');
 		$this->assertEquals($obj->record['value'], 'value', 'Attribute not set');
-		t3lib_div::debug($obj, 'tx_rnbase_tests_dates_testcase :: test_makeInstance'); // TODO: remove me
 	}
 }
 

@@ -22,9 +22,9 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('div') . 'class.tx_div.php');
+require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
-tx_div::load('tx_rnbase_util_SearchBase');
+tx_rnbase::load('tx_rnbase_util_SearchBase');
 
 
 interface tx_rnbase_IFilter {
@@ -164,8 +164,9 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 	static function createFilter($parameters, $configurations, $viewData, $confId, $filterClass = '') {
 		$filterClass = ($filterClass) ? $filterClass : $configurations->get($confId.'filter');
 		$filterClass = ($filterClass) ? $filterClass : 'tx_rnbase_filter_BaseFilter';
-		$filterClass = tx_div::makeInstanceClassname($filterClass);
-		$filter = new $filterClass($parameters, $configurations, $confId);
+//		$filterClass = tx_div::makeInstanceClassname($filterClass);
+//		$filter = new $filterClass($parameters, $configurations, $confId);
+		$filter = tx_rnbase::makeInstance($filterClass, $parameters, $configurations, $confId);
 		if(is_object($viewData))
 			$viewData->offsetSet('filter', $filter);
 		return $filter;

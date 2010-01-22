@@ -22,7 +22,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('div') . 'class.tx_div.php');
+require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
 /**
  * Contains utility functions for database access
@@ -73,7 +73,7 @@ class tx_rnbase_util_DB {
       $limit
     );
 
-    $wrapper = is_string($wrapperClass) ? tx_div::makeInstanceClassName($wrapperClass) : 0;
+    $wrapper = is_string($wrapperClass) ? tx_rnbase::makeInstanceClassName($wrapperClass) : 0;
     $rows = array();
     while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
       $rows[] = ($wrapper) ? new $wrapper($row) : $row;
@@ -141,7 +141,6 @@ class tx_rnbase_util_DB {
 		}
 		else $limit = '';
 
-		$wrapper = is_string($arr['wrapperclass']) ? tx_div::makeInstanceClassName($arr['wrapperclass']) : 0;
 
 		if(!$arr['enablefieldsoff']) {
 			// Zur Where-Clause noch die gültigen Felder hinzufügen
@@ -191,10 +190,14 @@ class tx_rnbase_util_DB {
 			$orderBy,
 			$limit
 		);
+
+		//$wrapper = is_string($arr['wrapperclass']) ? tx_rnbase::makeInstanceClassName($arr['wrapperclass']) : 0;
+		$wrapper = is_string($arr['wrapperclass']) ? trim($arr['wrapperclass']) : 0;
 		
 		$rows = array();
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
-			$rows[] = ($wrapper) ? new $wrapper($row) : $row;
+//			$rows[] = ($wrapper) ? new $wrapper($row) : $row;
+			$rows[] = ($wrapper) ? tx_rnbase::makeInstance($wrapper,$row) : $row;
 //			unset($row);
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
@@ -367,7 +370,7 @@ class tx_rnbase_util_DB {
 			$sMsg .= '<br />';
 			$sMsg .= $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery;
 
-			tx_div::load('tx_rnbase_util_Misc');
+			tx_rnbase::load('tx_rnbase_util_Misc');
 			tx_rnbase_util_Misc::mayday($sMsg);
 		}
 
@@ -521,7 +524,7 @@ class tx_rnbase_util_DB {
 				$where .= self::searchWhere($value, strtolower($tableAlias.'.'.$col));
 				break;
 			default:
-				tx_div::load('tx_rnbase_util_Misc');
+				tx_rnbase::load('tx_rnbase_util_Misc');
 				tx_rnbase_util_Misc::mayday('Unknown Operator for comparation defined: ' . $operator);
 		}
 		return $where;

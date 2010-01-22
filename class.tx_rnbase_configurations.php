@@ -78,7 +78,7 @@
  */
 
 
-require_once(t3lib_extMgm::extPath('div') . 'class.tx_div.php');
+require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
 class tx_rnbase_configurations {
   // We store all Data to an internal ArrayObject
@@ -106,11 +106,11 @@ class tx_rnbase_configurations {
   // -------------------------------------------------------------------------------------
   function tx_rnbase_configurations () {
     // This is there all configuration data is stored
-    $this->_dataStore = tx_div::makeInstance('tx_lib_spl_arrayObject');
+    $this->_dataStore = tx_rnbase::makeInstance('tx_lib_spl_arrayObject');
     // This is a container to transfer data to view
-    $this->_viewData = tx_div::makeInstance('tx_lib_spl_arrayObject');
+    $this->_viewData = tx_rnbase::makeInstance('tx_lib_spl_arrayObject');
     // This is a container for variables necessary in links
-    $this->_keepVars = tx_div::makeInstance('tx_lib_spl_arrayObject');
+    $this->_keepVars = tx_rnbase::makeInstance('tx_lib_spl_arrayObject');
     $this->_cObjs = array(); // Wir verzichten mal auf das ArrayObject
   }
   /**
@@ -140,8 +140,7 @@ class tx_rnbase_configurations {
     $this->_qualifier = $this->get('qualifier') ? $this->get('qualifier') : $qualifier;
 
     // The formatter
-    $formatterClass = tx_div::makeInstanceClassName('tx_rnbase_util_FormatUtil');
-    $this->_formatter = new $formatterClass($this);
+    $this->_formatter = tx_rnbase::makeInstance('tx_rnbase_util_FormatUtil', $this);
 
     // load local language strings
     $this->_loadLL($this->get('locallangFilename')? $this->get('locallangFilename') : 0);
@@ -211,8 +210,7 @@ class tx_rnbase_configurations {
 	 * @return tx_lib_link
 	 */
 	function &createLink($addKeepVars = true) {
-		$linkClass = tx_div::makeInstanceClassName('tx_rnbase_util_Link');
-		$link = new $linkClass;
+		$link = tx_rnbase::makeInstance('tx_rnbase_util_Link');
 		$link->designatorString = $this->getQualifier();
 		// Die KeepVars setzen
 		if($addKeepVars)
