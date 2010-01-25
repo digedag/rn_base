@@ -190,9 +190,126 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 		return $template;
 	}
 
+	/**
+	 * Pagebrowser vorbereiten
+	 *
+	 * @param string $confid Die Confid des PageBrowsers. z.B. myview.org.pagebrowser ohne Punkt!
+	 * @param tx_rnbase_configurations $configurations
+	 * @param array_object $viewdata
+	 * @param array $fields
+	 * @param array $options
+   */
+	public static function handlePageBrowser(&$configurations, $confid, &$viewdata, &$fields, &$options, $cfg = array()) {
+		$confid .= '.';
+		if(is_array($configurations->get($confid))) {
+			// Mit Pagebrowser benötigen wir zwei Zugriffe, um die Gesamtanzahl der Orgs zu ermitteln
+			$options['count']= 1;
+
+			$searchCallback=$cfg['searchcallback'];
+			if(!$searchCallback) throw new Exception('No search callback defined!');
+
+			$listSize = call_user_func($searchCallback, $fields, $options);
+			//$listSize = $service->search($fields, $options);
+			unset($options['count']);
+			// PageBrowser initialisieren
+			$className = tx_div::makeInstanceClassName('tx_rnbase_util_PageBrowser');
+			$pbId = $cfg['pbid'] ? $cfg['pbid'] : 'pb';
+			$pageBrowser = new $className($pbId);
+	  	$pageSize = intval($configurations->get($confid.'limit'));
+			$pageBrowser->setState($configurations->getParameters(), $listSize, $pageSize);
+			$limit = $pageBrowser->getState();
+			$options = array_merge($options, $limit);
+			if($viewdata)
+				$viewdata->offsetSet('pagebrowser', $pageBrowser);
+		}
+	}
+
+	/**
+	 * Bindet einen Buchstaben-Browser ein
+	 *
+	 * @param tx_rnbase_configurations $configurations
+	 * @param string $confid
+	 * @param object $viewData
+	 * @param array $fields
+	 * @param array $options
+	 * @param array $cfg
+	 */
+	public static function handleCharBrowser(&$configurations, $confid, &$viewData, &$fields, &$options, $cfg = array()) {
+		
+		if($configurations->get($confid)) {
+			$colName = $cfg['colname'];
+			if(!$colName) throw new Exception('No column name for charbrowser defined');
+			
+			$pagerData = self::findPagerData($fields, $options, $cfg);
+			$firstChar = $configurations->getParameters()->offsetGet('charpointer');
+			$firstChar = (strlen(trim($firstChar)) > 0) ? substr($firstChar,0,1) : $pagerData['default'];
+			$viewData->offsetSet('pagerData', $pagerData);
+			$viewData->offsetSet('charpointer', $firstChar);
+		}
+		$filter = $viewData->offsetGet('filter');
+		// Der CharBrowser beachten wir nur, wenn keine Suche aktiv ist
+		// TODO: Der Filter sollte eine Methode haben, die sagt, ob ein Formular aktiv ist
+		if($firstChar && !$filter->inputData) {
+			$specials = tx_rnbase_util_SearchBase::getSpecialChars();
+			$firsts = $specials[$firstChar];
+			if($firsts) {
+				$firsts = implode('\',\'',$firsts);
+			}
+			else $firsts = $firstChar;
+
+			if($fields[SEARCH_FIELD_CUSTOM]) $fields[SEARCH_FIELD_CUSTOM] .= ' AND ';
+			$fields[SEARCH_FIELD_CUSTOM] .= 'LEFT(UCASE('.$colName."),1) IN ('$firsts') ";
+		}
+	}
+	
+	/**
+	 * Wir verwenden einen alphabetischen Pager. Also muß zunächst ermittelt werden, welche
+	 * Buchstaben überhaupt vorkommen.
+	 * @param tx_cfcleaguefe_ProfileService $service
+	 * @param tx_rnbase_configurations $configurations
+	 */
+	private static function findPagerData($fields, $options, $cfg) {
+		$colName = $cfg['colname'];
+
+		$searchCallback=$cfg['searchcallback'];
+		if(!$searchCallback) throw new Exception('No search callback defined!');
+
+
+		$options['what'] = 'LEFT(UCASE('.$colName.'),1) As first_char, count(LEFT(UCASE('.$colName.'),1)) As size';
+		$options['groupby'] = 'LEFT(UCASE('.$colName.'),1)';
+		unset($options['limit']);
+
+		$rows = call_user_func($searchCallback, $fields, $options);
+		
+		$specials = tx_rnbase_util_SearchBase::getSpecialChars();
+		$wSpecials = array();
+		foreach($specials As $key => $special) {
+			foreach ($special As $char) {
+				$wSpecials[$char] = $key;
+			}
+		}
+
+		$ret = array();
+		foreach($rows As $row) {
+			if(array_key_exists(($row['first_char']), $wSpecials)) {
+				$ret[$wSpecials[$row['first_char']]] = intval($ret[$wSpecials[$row['first_char']]]) + $row['size'];
+			}
+			else
+				$ret[$row['first_char']] = $row['size'];
+		}
+
+		$current = 0;
+		if(count($ret)) {
+			$keys = array_keys($ret);
+			$current = $keys[0];
+		}
+		$data['list'] = $ret;
+		$data['default'] = $current;
+		return $data;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/filter/class.tx_rnbase_filter_BaseFilter.php']) {
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/filter/class.tx_rnbase_filter_BaseFilter.php']);
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/filter/class.tx_rnbase_filter_BaseFilter.php']);
 }
 ?>

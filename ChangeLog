@@ -2,12 +2,13 @@
 
 Änderungen
 ----------
-v0.6.1 (??.12.2010)
+v0.6.1 (??.01.2010)
  * tx_rnbase_Misc: Inlcude tstemplate.php in prepareTSFE()
  * BaseMarker: Missing include of tx_rnbase fixed
  * tx_rnbase_configurations: New option deep in method get(). Thanks to Lars Heber.
  * Update for TYPO3 4.3. New usage for tx_rnbase::makeInstance(). This methode can be used to instanciate object with parameters for constructor. Also backward compatible with lower versions of TYPO3.
  * Deprecated function calls removed
+ * BaseFilter: new static methods for handlePageBrowser() and handleCharBrowser()
 
 v0.6.0 (30.12.2009)
  * SearchBase: CUSTOM orderby clause is possible
