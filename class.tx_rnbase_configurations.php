@@ -351,12 +351,17 @@ class tx_rnbase_configurations {
 	 * @return array  or string
 	 */
 	function get($pathKey, $deep=false) {
+		if(!$deep)
+			return $this->_queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey);
+
+		// Wenn am Ende kein Punkt steht, ist das Ergebnis ein String
 		$ret = $this->_queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey);
-		if($deep) {
-			if (is_array($ret) && substr($pathKey, strlen($key)-1, 1) == '.') {
-				$ret = $this->renderTS($ret, $this->getCObj());
-			}
+		if (!is_array($ret) && substr($pathKey, strlen($pathKey)-1, 1) != '.') {
+			// TODO: Das geht noch nicht...
+			$arr = $this->_queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey.'.');
+			$ret = array_merge(array($ret), $arr);
 		}
+		$ret = $this->renderTS($ret, $this->getCObj());
 		return $ret;
 	}
 
