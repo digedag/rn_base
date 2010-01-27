@@ -373,25 +373,7 @@ class tx_rnbase_util_Link {
 			= t3lib_div::array_merge_recursive_overrule($this->overruledParameters,
 					$this->parameters);
 		foreach((array) $parameters as $key => $value) {
-			if(!is_array($value)) {
-				if($this->designatorString) {
-					$conf['additionalParams']
-						.= '&' . rawurlencode( $this->designatorString . '[' . $key . ']') . '=' . rawurlencode($value);
-				} else {
-					$conf['additionalParams'] .= '&' . rawurlencode($key) . '=' . rawurlencode($value);
-				}
-			}
-			else {
-				if($this->designatorString) {
-					foreach($value As $arKey => $aValue) {
-						$conf['additionalParams'] .= '&' . rawurlencode( $this->designatorString . '[' . $key . ']['.$arKey.']') . '=' . rawurlencode($aValue);
-					}
-				} else {
-					foreach($value As $arKey => $aValue) {
-						$conf['additionalParams'] .= '&' . rawurlencode($key) . '[]=' . rawurlencode($aValue);
-					}
-				}
-			}
+			$conf['additionalParams'] .= $this->makeUrlParam($key, $value);
 		}
 		if($this->noHashBoolean ) {
 			$conf['useCacheHash'] = 0;
@@ -436,6 +418,48 @@ class tx_rnbase_util_Link {
 			}
 		}
 		return $conf;
+	}
+
+	/**
+	 * Generates an additional parameter.
+	 * Examples:
+	 * $key='param'; $value='123' => &qualifier[param]=123
+	 * $key='ttnews::param'; $value='123' => &ttnews[param]=123
+	 * $key='::param'; $value='123' => &param=123
+	 *  
+	 * @param string $key
+	 * @param string $value
+	 * @return string
+	 */
+	private function makeUrlParam($key, $value) {
+		$ret = '';
+		$qualifier = $this->designatorString;
+		if(!is_array($value)) {
+			$paramName = $key;
+			if(strstr($key, '::')) {
+				$arr = t3lib_div::trimExplode('::', $key);
+				$qualifier = $arr[0];
+				$paramName = $arr[1];
+			}
+
+			if($qualifier) {
+				$ret .= '&' . rawurlencode( $qualifier . '[' . $paramName . ']') . '=' . rawurlencode($value);
+			} else {
+				$ret .= '&' . rawurlencode($paramName) . '=' . rawurlencode($value);
+			}
+		}
+		else {
+			if($qualifier) {
+				foreach($value As $arKey => $aValue) {
+					$ret .= '&' . rawurlencode( $qualifier . '[' . $key . ']['.$arKey.']') . '=' . rawurlencode($aValue);
+				}
+			} else {
+				foreach($value As $arKey => $aValue) {
+					$ret .= '&' . rawurlencode($key) . '[]=' . rawurlencode($aValue);
+				}
+			}
+		}
+		return $ret;
 	}
 
 	/**
