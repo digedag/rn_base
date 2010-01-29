@@ -23,7 +23,7 @@
  ***************************************************************/
 
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
-tx_div::load('tx_rnbase_util_ListBuilderInfo');
+tx_rnbase::load('tx_rnbase_util_ListBuilderInfo');
 
 /**
  * Generic List-Builder. Creates a list of data with Pagebrowser.
@@ -93,7 +93,7 @@ class tx_rnbase_util_ListBuilder {
 			// Das Menu für den PageBrowser einsetzen
 			$pageBrowser =& $viewData->offsetGet('pagebrowser');
 			if($pageBrowser) {
-				tx_div::load('tx_rnbase_util_BaseMarker');
+				tx_rnbase::load('tx_rnbase_util_BaseMarker');
 				$subpartArray['###PAGEBROWSER###'] = tx_rnbase_util_BaseMarker::fillPageBrowser(
 								$cObj->getSubpart($template,'###PAGEBROWSER###'),
 								$pageBrowser, $formatter, $confId.'pagebrowser.');
@@ -125,7 +125,7 @@ class tx_rnbase_util_ListBuilder {
 
 		$out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($template, $markerArray, $subpartArray);
 		if($debug) {
-			tx_div::load('class.tx_rnbase_util_Misc.php');
+			tx_rnbase::load('class.tx_rnbase_util_Misc.php');
 
 			$wrapTime = tx_rnbase_util_FormatUtil::$time - $wrapTime;
 			$wrapMem = tx_rnbase_util_FormatUtil::$mem - $wrapMem;

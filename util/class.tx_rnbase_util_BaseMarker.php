@@ -65,8 +65,7 @@ class tx_rnbase_util_BaseMarker {
   protected static function _getClassLabelMarkers($classname, &$formatter, $confId, $defaultMarkerArr = 0, $marker = 'PROFILE') {
     $ret = array();
     if($classname) {
-      $clazz = tx_div::makeInstanceClassName($classname);
-      $obj = new $clazz(array());
+      $obj = tx_rnbase::makeInstance($classname, array());
       $cols = $obj->getTCAColumns();
       $labelArr = array();
       foreach ($cols as $col => $colArr) {
@@ -269,8 +268,7 @@ class tx_rnbase_util_BaseMarker {
    */
 	protected static function getEmptyInstance($classname) {
 		if(!is_object(self::$emptyObjects[$classname])) {
-    	$clazz = tx_div::makeInstanceClassName($classname);
-    	$dummy = new $clazz(array('uid' => 0));
+    	$dummy = tx_rnbase::makeInstance($classname, array('uid' => 0));
     	$cols = $dummy->getColumnNames();
     	for($i=0, $cnt = count($cols); $i < $cnt; $i++) {
     		$dummy->record[$cols[$i]] = '';

@@ -22,7 +22,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_div::load('tx_rnbase_maps_IControl');
+tx_rnbase::load('tx_rnbase_maps_IControl');
 
 /**
  * Implementation for GoogleControls.

@@ -22,10 +22,10 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('div') . 'class.tx_div.php');
+require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
 
-tx_div::load('tx_rnbase_util_Calendar');
+tx_rnbase::load('tx_rnbase_util_Calendar');
 
 
 class tx_rnbase_tests_calendar_testcase extends tx_phpunit_testcase {

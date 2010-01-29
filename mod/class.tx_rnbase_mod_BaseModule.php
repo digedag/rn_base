@@ -23,7 +23,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('div') . 'class.tx_div.php');
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
 require_once(PATH_t3lib . 'class.t3lib_scbase.php');
@@ -152,7 +151,7 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 
 	public function getFormTool() {
 		if(!$this->formTool) {
-			$this->formTool = tx_div::makeInstance('tx_rnbase_util_FormTool');
+			$this->formTool = tx_rnbase::makeInstance('tx_rnbase_util_FormTool');
 			$this->formTool->init($this->getDoc());
 		}
 		return $this->formTool;

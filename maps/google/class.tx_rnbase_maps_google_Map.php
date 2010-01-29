@@ -22,7 +22,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_div::load('tx_rnbase_maps_BaseMap');
+tx_rnbase::load('tx_rnbase_maps_BaseMap');
 if(!t3lib_extMgm::isLoaded('wec_map'))
 	throw new Exception('Extension wec_map must be installed to use GoogleMaps!');
 require_once(t3lib_extMgm::extPath('wec_map').'map_service/google/class.tx_wecmap_map_google.php');
@@ -54,9 +54,8 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap {
 		$controls = $conf->get($confId.'google.controls');
 		if($controls) {
 			$controls = t3lib_div::trimExplode(',', $controls);
-			$classname = tx_div::makeInstanceClassname('tx_rnbase_maps_google_Control');
 			foreach($controls As $control) {
-				$this->addControl(new $classname($control));
+				$this->addControl(tx_rnbase::makeInstance('tx_rnbase_maps_google_Control',$control));
 			}
 		}
 	}

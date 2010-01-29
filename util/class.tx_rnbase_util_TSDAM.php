@@ -108,12 +108,11 @@ class tx_rnbase_util_TSDAM {
 		elseif($limit && count($damPics))
 			$damPics = array_slice($damPics,$offset,$limit);
 
-		$baseMediaClass = tx_div::makeInstanceClassName('tx_rnbase_model_media');
-		$damDb = tx_div::makeInstance('tx_dam_db');
+		$damDb = tx_rnbase::makeInstance('tx_dam_db');
 		
 		$medias = array();
 		while(list($uid, $baseRecord) = each($damPics)) {
-			$mediaObj = new $baseMediaClass($baseRecord['uid']);
+			$mediaObj = tx_rnbase::makeInstance('tx_rnbase_model_media', $baseRecord['uid']);
 			// Localize data (DAM 1.1.0)
 			if(method_exists($damDb, 'getRecordOverlay')) {
 				$loc = $damDb->getRecordOverlay('tx_dam', $mediaObj->record, array('sys_language_uid'=>$GLOBALS['TSFE']->sys_language_uid));
@@ -124,10 +123,9 @@ class tx_rnbase_util_TSDAM {
 			$medias[] = $mediaObj;
 		}
 		
-		$builderClass = tx_div::makeInstanceClassName('tx_rnbase_util_ListBuilder');
-		$listBuilder = new $builderClass();
+		$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
 		$out = $listBuilder->render($medias,
-						tx_div::makeInstance('tx_lib_spl_arrayObject'), $templateCode, 'tx_rnbase_util_MediaMarker',
+						tx_rnbase::makeInstance('tx_lib_spl_arrayObject'), $templateCode, 'tx_rnbase_util_MediaMarker',
 						'media.', 'MEDIA', $conf->getFormatter());
 
 		// Now set the identifier
@@ -143,7 +141,7 @@ class tx_rnbase_util_TSDAM {
 	 * @return tx_rnbase_configurations
 	 */
 	function createConf($conf) {
-		$configurations = tx_div::makeInstance('tx_rnbase_configurations');
+		$configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
 		$configurations->init($conf, $this->cObj, $conf['qualifier'], $conf['qualifier']);
 		return $configurations;
 	}
@@ -156,7 +154,7 @@ class tx_rnbase_util_TSDAM {
 	 */
 	function fetchFileList ($conf, &$cObj) {
 		
-//		$damMedia = tx_div::makeInstance('tx_dam_tsfe');
+//		$damMedia = tx_rnbase::makeInstance('tx_dam_tsfe');
 //		$damMedia->cObj = $cObj;
 //		$damFiles = $damMedia->fetchFileList('', $conf);
 //		return $damFiles ? t3lib_div::trimExplode(',', $damFiles) : array();
@@ -212,7 +210,7 @@ class tx_rnbase_util_TSDAM {
 	 * @return boolean
 	 */
 	static function isVersion10() {
-		tx_div::load('tx_rnbase_util_TYPO3');
+		tx_rnbase::load('tx_rnbase_util_TYPO3');
 		$version = tx_rnbase_util_TYPO3::getExtVersion('dam');
 		if(preg_match('(\d*\.\d*\.\d)',$version, $versionArr)) {
 			$version = $versionArr[0];

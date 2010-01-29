@@ -32,9 +32,8 @@
  * @author René Nitzsche <rene@system25.de>
  */
 
-require_once(t3lib_extMgm::extPath('div') . 'class.tx_div.php');
-tx_div::load('tx_rnbase_view_Base');
-tx_div::loadClass('tx_lib_link');
+require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+tx_rnbase::load('tx_rnbase_view_Base');
 
 /**
  * Base class for all views
@@ -58,15 +57,13 @@ class tx_rnbase_view_phpTemplateEngine extends tx_rnbase_view_Base {
    */
   function render($view, $configurations){
     
-    $linkClass = tx_div::makeInstanceClassName('tx_lib_link');
-    $link = new $linkClass;
+    $link = tx_rnbase::makeInstance('tx_lib_link');
     $link->designatorString = $configurations->getQualifier();
 
     // Die ViewData bereitstellen
     $viewData =& $configurations->getViewData();
 
-    $formatterClass = tx_div::makeInstanceClassName('tx_rnbase_util_FormatUtil');
-    $formatter = new $formatterClass($configurations);
+    $formatter = tx_rnbase::makeInstance('tx_rnbase_util_FormatUtil', $configurations);
 //t3lib_div::debug($formatter);
 
     $path = $this->getTemplate($view);

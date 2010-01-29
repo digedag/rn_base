@@ -10,6 +10,7 @@ v0.6.1 (??.01.2010)
  * Deprecated function calls removed
  * BaseFilter: new static methods for handlePageBrowser() and handleCharBrowser()
  * Link: Support Parameters for other extensions. Use "qualifier::param" as key.
+ * All dependencies to tx_div removed
 
 v0.6.0 (30.12.2009)
  * SearchBase: CUSTOM orderby clause is possible

@@ -68,7 +68,6 @@
  *
  * 3.) The last load typically comes from the flexform to give the enduser the possibilty for finegrained selections.
  *
- * Depends on: tx_div
  * Used by: tx_lib_controller, ...
  *
  * @author Elmar Hinz <elmar.hinz@team-red.net>

@@ -30,7 +30,6 @@
  * @subpackage rn_base
  */
 
-require_once(t3lib_extMgm::extPath('div') . 'class.tx_div.php');
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
 tx_rnbase::load('tx_rnbase_action_BaseIOC');
@@ -59,7 +58,7 @@ class tx_rnbase_view_Base{
     $cObj =& $configurations->getCObj(0);
     $templateCode = $cObj->fileResource($this->getTemplate($view,'.html'));
     if(!strlen($templateCode)) {
-    	tx_div::load('tx_rnbase_util_Misc');
+    	tx_rnbase::load('tx_rnbase_util_Misc');
     	tx_rnbase_util_Misc::mayday('TEMPLATE NOT FOUND: ' . $this->getTemplate($view,'.html'));
     }
 

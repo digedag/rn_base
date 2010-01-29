@@ -38,11 +38,6 @@ class tx_rnbase_util_ListMarker {
   }
 
   function render(&$dataArr, $template, $markerClassname, $confId, $marker, &$formatter, $markerParams = false) {
-//    $markerClass = tx_div::makeInstanceClassName($markerClassname);
-//    if($markerParams)
-//	    $entryMarker = new $markerClass($markerParams);
-//	  else
-//	    $entryMarker = new $markerClass();
 		$entryMarker = ($markerParams) ? tx_rnbase::makeInstance($markerClassname, $markerParams) : tx_rnbase::makeInstance($markerClassname);
 
 		$this->info->init($template, $formatter, $marker);

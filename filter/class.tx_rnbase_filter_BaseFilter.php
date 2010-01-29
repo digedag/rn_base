@@ -164,8 +164,6 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 	static function createFilter($parameters, $configurations, $viewData, $confId, $filterClass = '') {
 		$filterClass = ($filterClass) ? $filterClass : $configurations->get($confId.'filter');
 		$filterClass = ($filterClass) ? $filterClass : 'tx_rnbase_filter_BaseFilter';
-//		$filterClass = tx_div::makeInstanceClassname($filterClass);
-//		$filter = new $filterClass($parameters, $configurations, $confId);
 		$filter = tx_rnbase::makeInstance($filterClass, $parameters, $configurations, $confId);
 		if(is_object($viewData))
 			$viewData->offsetSet('filter', $filter);
@@ -212,9 +210,8 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 			//$listSize = $service->search($fields, $options);
 			unset($options['count']);
 			// PageBrowser initialisieren
-			$className = tx_div::makeInstanceClassName('tx_rnbase_util_PageBrowser');
 			$pbId = $cfg['pbid'] ? $cfg['pbid'] : 'pb';
-			$pageBrowser = new $className($pbId);
+			$pageBrowser = tx_rnbase::makeInstance('tx_rnbase_util_PageBrowser', $pbId);
 	  	$pageSize = intval($configurations->get($confid.'limit'));
 			$pageBrowser->setState($configurations->getParameters(), $listSize, $pageSize);
 			$limit = $pageBrowser->getState();

@@ -23,7 +23,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('div') . 'class.tx_div.php');
+require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
 interface tx_rnbase_IParameters {
 	/**
@@ -45,7 +45,7 @@ interface tx_rnbase_IParameters {
 }
 
 // TODO: Das arrayObject rauswerfen
-tx_div::load('tx_lib_spl_arrayObject');
+tx_rnbase::load('tx_lib_spl_arrayObject');
 
 class tx_rnbase_parameters extends tx_lib_spl_arrayObject implements tx_rnbase_IParameters {
 

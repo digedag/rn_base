@@ -23,9 +23,6 @@
 ***************************************************************/
 
 
-require_once(t3lib_extMgm::extPath('div') . 'class.tx_div.php');
-
-
 /**
  * Statische Informationen über TYPO3
  */

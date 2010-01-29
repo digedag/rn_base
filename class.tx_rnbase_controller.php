@@ -92,7 +92,6 @@
  * $TYPO3_CONF_VARS['CONTROLLERS']. For more see main();
  * TODO: provide a function to register plugins.
  *
- * Depends on: tx_div
  * Used by: none
  *
  * @author René Nitzsche (rene@system25.de)
@@ -100,7 +99,7 @@
  * @subpackage rn_base
  */
 
-require_once(t3lib_extMgm::extPath('div') . 'class.tx_div.php');
+require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 require_once('util/class.tx_rnbase_util_Arrays.php');
 
 
@@ -226,7 +225,7 @@ class tx_rnbase_controller {
 		$ret = '';
 		try {
 			// Creating the responsible Action
-			$action = tx_div::makeInstance($actionName);
+			$action = tx_rnbase::makeInstance($actionName);
 	//		$action->parameters = $parameters;
 	//		$action->configurations = $configurations;
 			$ret = $action->execute($parameters,$configurations);
@@ -339,7 +338,7 @@ class tx_rnbase_controller {
   function _makeConfigurationsObject($configurationArray){
     // TODO, die Configklasse sollte über TS variabel gehalten werden
     // Make configurations object
-    $configurations = tx_div::makeInstance($this->configurationsClassName);
+    $configurations = tx_rnbase::makeInstance($this->configurationsClassName);
 
     // Dieses cObj wird dem Controller von T3 übergeben
     $configurations->init($configurationArray, $this->cObj, $this->extensionKey, $this->qualifier);
@@ -351,7 +350,7 @@ class tx_rnbase_controller {
    * Returns an ArrayObject containing all parameters
    */
   function _makeParameterObject($configurations) {
-    $parameters = tx_div::makeInstance('tx_rnbase_parameters');
+    $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
 
     // get parametersArray for defined qualifier
     $parametersArray = tx_rnbase_util_TYPO3::isTYPO43OrHigher() ? t3lib_div::_GPmerged($configurations->getQualifier())

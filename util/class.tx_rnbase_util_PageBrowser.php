@@ -88,7 +88,7 @@ class tx_rnbase_util_PageBrowser implements PageBrowser {
    */
   function getMarker($markerClassName = 'tx_rnbase_util_PageBrowserMarker') {
 
-    $pageBrowserMarker = tx_div::makeInstance($markerClassName);
+    $pageBrowserMarker = tx_rnbase::makeInstance($markerClassName);
     $pageBrowserMarker->setPageBrowser($this);
     return $pageBrowserMarker;
 

@@ -41,7 +41,7 @@ class tx_rnbase_util_Misc {
 	static function getService($type, $subType='') {
     $srv = t3lib_div::makeInstanceService($type, $subType);
     if(!is_object($srv)) {
-    	tx_div::load('tx_rnbase_util_Misc');
+    	tx_rnbase::load('tx_rnbase_util_Misc');
       return self::mayday('Service ' . $type . ' - ' . $subType . ' not found!');;
     }
     return $srv;
@@ -347,7 +347,7 @@ MAYDAYPAGE;
 	static function createHash($params, $salt='secret', $daily = true) {
 		$str = '';
 		if($daily) {
-			tx_div::load('tx_rnbase_util_Dates');
+			tx_rnbase::load('tx_rnbase_util_Dates');
 			tx_rnbase_util_Dates::getTodayDateString();
 		}
 		sort($params);

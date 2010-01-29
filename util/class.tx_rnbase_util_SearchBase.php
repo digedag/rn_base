@@ -22,8 +22,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('div') . 'class.tx_div.php');
-tx_div::load('tx_rnbase_util_DB');
+require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+tx_rnbase::load('tx_rnbase_util_DB');
 
 define('SEARCH_FIELD_JOINED', 'JOINED'); // Sonderfall Freitextsuche in mehreren Feldern
 define('SEARCH_FIELD_CUSTOM', 'CUSTOM'); // Sonderfall freie Where-Bedingung
@@ -70,7 +70,7 @@ abstract class tx_rnbase_util_SearchBase {
 	 */
 	static function getInstance($classname) {
 		if(!isset(self::$instances[$classname])) {
-    	self::$instances[$classname] = tx_div::makeInstance($classname);
+    	self::$instances[$classname] = tx_rnbase::makeInstance($classname);
 		}
 		return self::$instances[$classname];
 	}

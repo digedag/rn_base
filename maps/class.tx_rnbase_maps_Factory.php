@@ -45,48 +45,42 @@ class tx_rnbase_maps_Factory {
 //		$registry->addType($this,RNMAP_CONTROL_ZOOM, 'smallZoom');
 //		$registry->addType($this,RNMAP_CONTROL_OVERVIEW, 'overviewMap');
 //		$registry->addType($this,RNMAP_CONTROL_MAPTYPE, 'mapType');
-		$classname = tx_div::makeInstanceClassname('tx_rnbase_maps_google_Control');
-		return new $classname('largeMap');
+		return tx_rnbase::makeInstance('tx_rnbase_maps_google_Control', 'largeMap');
 	}
 	/**
 	 * creates a control
 	 * @return tx_rnbase_maps_IControl
 	 */
 	static function createGoogleControlSmallMap(){
-		$classname = tx_div::makeInstanceClassname('tx_rnbase_maps_google_Control');
-		return new $classname('smallMap');
+		return tx_rnbase::makeInstance('tx_rnbase_maps_google_Control', 'smallMap');
 	}
 	/**
 	 * creates a control
 	 * @return tx_rnbase_maps_IControl
 	 */
 	static function createGoogleControlScale(){
-		$classname = tx_div::makeInstanceClassname('tx_rnbase_maps_google_Control');
-		return new $classname('scale');
+		return tx_rnbase::makeInstance('tx_rnbase_maps_google_Control', 'scale');
 	}
 	/**
 	 * creates a control
 	 * @return tx_rnbase_maps_IControl
 	 */
 	static function createGoogleControlSmallZoom(){
-		$classname = tx_div::makeInstanceClassname('tx_rnbase_maps_google_Control');
-		return new $classname('smallZoom');
+		return tx_rnbase::makeInstance('tx_rnbase_maps_google_Control', 'smallZoom');
 	}
 	/**
 	 * creates a control
 	 * @return tx_rnbase_maps_IControl
 	 */
 	static function createGoogleControlOverview(){
-		$classname = tx_div::makeInstanceClassname('tx_rnbase_maps_google_Control');
-		return new $classname('overviewMap');
+		return tx_rnbase::makeInstance('tx_rnbase_maps_google_Control', 'overviewMap');
 	}
 	/**
 	 * creates a control
 	 * @return tx_rnbase_maps_IControl
 	 */
 	static function createGoogleControlMapType(){
-		$classname = tx_div::makeInstanceClassname('tx_rnbase_maps_google_Control');
-		return new $classname('mapType');
+		return tx_rnbase::makeInstance('tx_rnbase_maps_google_Control', 'mapType');
 	}
 	
 	/**
@@ -96,7 +90,7 @@ class tx_rnbase_maps_Factory {
 	 * @return tx_rnbase_maps_IMap
 	 */
 	static function createMap($clazzName, &$configurations, $confId) {
-		$map = tx_div::makeInstance($clazzName);
+		$map = tx_rnbase::makeInstance($clazzName);
 		$provId = $map->getPROVID();
 		if(!array_key_exists($provId, self::$typeInits)) {
 			$map->initTypes(tx_rnbase_maps_TypeRegistry::getInstance());

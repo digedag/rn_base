@@ -38,13 +38,36 @@ class tx_rnbase_util_Arrays {
    * @return   void
    */
   function overwriteArray(&$arrayObj, $hashData, $splitCharacters = ',;:') {
-    $array = tx_div::toHashArray($hashData, $splitCharacters);
+    $array = self::toHashArray($hashData, $splitCharacters);
     foreach((array) $array as $key => $value) {
       $arrayObj->offsetSet($key, $value);
     }
   }
 
-
+	/**
+	 * Converts the given mixed data into an hashArray
+	 * Method taken from tx_div
+	 * 
+	 * @param   mixed       data to be converted
+	 * @param   string      string of characters used to split first argument
+	 * @return  array       an hashArray
+	 */
+	private static function toHashArray($mixed, $splitCharacters = ',;:\s' ) {
+		if(is_string($mixed)) {
+			$array = tx_div::explode($mixed, $splitCharacters); // TODO: Enable empty values by defining a better explode functions.
+			for($i = 0; $i < count($array); $i = $i + 2) {
+				$hashArray[$array[$i]] = $array[$i+1];
+			}
+		} elseif(is_array($mixed)) {
+			$hashArray = $mixed;
+		} elseif(is_object($mixed) && method_exists($mixed, 'getArrayCopy')) {
+			$hashArray = $mixed->getArrayCopy();
+		} else {
+			$hashArray = array();
+		}
+		return $hashArray;
+	}
+ 
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Arrays.php']) {
