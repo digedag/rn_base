@@ -77,7 +77,7 @@ class tx_rnbase_util_Link {
 	 * @param	object		mock object for testing purpuses
 	 * @return	void
 	 */
-	function tx_rnbase_util_Link($cObjectClass = 'tslib_cObj') {
+	function __construct($cObjectClass = 'tslib_cObj') {
 		$this->cObject = t3lib_div::makeInstance($cObjectClass);
 	}
 
@@ -93,7 +93,7 @@ class tx_rnbase_util_Link {
 	 * @param	string		the anchor
 	 * @return	object		self
 	 */
-	function anchor($anchorString) {
+	public function anchor($anchorString) {
 		$this->anchorString = $anchorString;
 		return $this;
 	}
@@ -109,7 +109,7 @@ class tx_rnbase_util_Link {
 	 * @param	string		parameter array name
 	 * @return	object		self
 	 */
-	function designator($designatorString) {
+	public function designator($designatorString) {
 		$this->designatorString = $designatorString;
 		return $this;
 	}
@@ -120,7 +120,7 @@ class tx_rnbase_util_Link {
 	 * @param	string		id attribute
 	 * @return	object		self
 	 */
-	function idAttribute($idString) {
+	public function idAttribute($idString) {
 		$this->idString = $idString;
 		return $this;
 	}
@@ -131,7 +131,7 @@ class tx_rnbase_util_Link {
 	 * @param	string		class name
 	 * @return	object		self
 	 */
-	function classAttribute($classString) {
+	public function classAttribute($classString) {
 		$this->classString = $classString;
 		return $this;
 	}
@@ -145,7 +145,7 @@ class tx_rnbase_util_Link {
 	 * @see		TSref => typolink => parameter
 	 * @see		tslib_cObj::typoLink()
 	 */
-	function destination($destination) {
+	public function destination($destination) {
 		$this->destination = $destination;
 		return $this;
 	}
@@ -156,7 +156,7 @@ class tx_rnbase_util_Link {
 	 * @param	boolean		if true don't make a cHash, set no_cache=1
 	 * @return	object		self
 	 */
-	function noCache() {
+	public function noCache() {
 		$this->noCacheBoolean = true;
 		return $this;
 	}
@@ -167,7 +167,7 @@ class tx_rnbase_util_Link {
 	 * @param	boolean		if true don't make a cHash
 	 * @return	object		self
 	 */
-	function noHash() {
+	public function noHash() {
 		$this->noHashBoolean = true;
 		return $this;
 	}
@@ -181,12 +181,20 @@ class tx_rnbase_util_Link {
 	 * @param	boolean		if true don't parse through htmlspecialchars()
 	 * @return	object		self
 	 */
-	function label($labelString, $hasAlreadyHtmlSpecialChars = false) {
+	public function label($labelString, $hasAlreadyHtmlSpecialChars = false) {
 		$this->labelString = $labelString;
 		$this->labelHasAlreadyHtmlSpecialChars = $hasAlreadyHtmlSpecialChars;
 		return $this;
 	}
 
+	/**
+	 * Returns the label
+	 *
+	 * @return string
+	 */
+	public function getLabel() {
+		return $this->labelString;
+	}
 	/**
 	 * Set array of parameters to be overruled by parameters
 	 *
@@ -322,10 +330,10 @@ class tx_rnbase_util_Link {
 	 * @return	string		the link tag
 	 */
 	function makeTag() {
-		return $this->cObject->typolink(
-			$this->_makeLabel(),
-			$this->_makeConfig('tag')
-		);
+		$link = $this->cObject->typolink($this->_makeLabel(),$this->_makeConfig('tag'));
+		if($this->isAbsUrl())
+			$link = preg_replace('/(href="|src=")/','${1}'.t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR'), $link);
+		return $link;
 	}
 
 	/**
@@ -336,6 +344,7 @@ class tx_rnbase_util_Link {
 	 */
 	function makeUrl($applyHtmlspecialchars = TRUE) {
 		$url = $this->cObject->typolink(null, $this->_makeConfig('url'));
+		$url = ($this->isAbsUrl() ? t3lib_div::getIndpEnv('TYPO3_SITE_URL') : '') . $url;
 		return $applyHtmlspecialchars ? htmlspecialchars($url) : $url;
 	}
 
@@ -473,6 +482,77 @@ class tx_rnbase_util_Link {
 			: htmlspecialchars($this->labelString);
 	}
 
+	/**
+	 * Generate absolute urls
+	 *
+	 * @param boolean $flag
+	 */
+	public function setAbsUrl($flag) {
+		$this->absUrl = $flag ? true : false;
+	}
+	public function isAbsUrl() {
+		return $this->absUrl;
+	}
+
+	/**
+	 * Init this link by typoscript setup
+	 *
+	 * @param tx_rnbase_configurations $configurations
+	 * @param string $confId
+	 */
+	public function initByTS($configurations, $confId, $parameterArr) {
+		$links = $configurations->get($confId.'links.');
+		
+		$pid = $configurations->getCObj()->stdWrap($configurations->get($confId.'pid'), $configurations->get($confId.'pid.'));
+		$qualifier = $configurations->get($confId.'qualifier');
+		if($qualifier) $this->designator($qualifier);
+		$target = $configurations->get($confId.'target');
+		if($target) $this->target($target);
+		$this->destination($pid ? $pid : $GLOBALS['TSFE']->id); // Das Ziel der Seite vorbereiten
+		if($configurations->get($confId.'absurl'))
+			$this->setAbsUrl(true);
+		
+		if($fixed = $configurations->get($confId.'fixedUrl'))
+			$this->destination($fixed); // feste URL für externen Link
+		if(array_key_exists('SECTION', $parameterArr)) {
+			$this->anchor(htmlspecialchars($parameterArr['SECTION']));
+			unset($parameterArr['SECTION']);
+		}
+		$this->parameters($parameterArr);
+
+		// Zusätzliche Parameter für den Link
+		$atagParams = $configurations->get($confId.'atagparams.');
+		if(is_array($atagParams)) {
+			$this->attributes($atagParams);
+		}
+		// KeepVars prüfen
+		// Per Default sind die KeepVars aktiviert. Mit useKeepVars == 0 können sie wieder entfernt werden
+		if(!$configurations->get($confId.'useKeepVars')) {
+			$this->overruled();
+		}
+		elseif($keepVarConf = $configurations->get($confId.'useKeepVars.')) {
+			// Sonderoptionen für KeepVars gesetzt
+			$newKeepVars = array();
+			$keepVars = $configurations->getKeepVars();
+			$allow = $keepVarConf['allow'];
+			$deny = $keepVarConf['deny'];
+			if($allow) {
+				$allow = t3lib_div::trimExplode(',', $allow);
+				foreach($allow As $allowed) {
+					$newKeepVars[$allowed] = $keepVars->offsetGet($allowed);
+				}
+			}
+			elseif($deny) {
+				$deny = array_flip(t3lib_div::trimExplode(',', $deny));
+				$keepVarsArr = $keepVars->getArrayCopy();
+				foreach($keepVarsArr As $key => $value) {
+					if(!array_key_exists($key, $deny))
+						$newKeepVars[$key] = $value;
+				}
+			}
+			$this->overruled($newKeepVars);
+		}
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Link.php']) {
