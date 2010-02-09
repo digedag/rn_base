@@ -26,7 +26,7 @@
  * This class provides access to caches.
  */
 class tx_rnbase_cache_Manager {
-	private $caches = array();
+	private static $caches = array();
 
 	/**
 	 * Liefert einen Cache
@@ -34,11 +34,11 @@ class tx_rnbase_cache_Manager {
 	 * @param String $name
 	 * @return tx_rnbase_cache_ICache
 	 */
-	public static function getCache(String $name) {
+	public static function getCache($name) {
 		if(array_key_exists($name, self::$caches)) 
 			return self::$caches[$name];
 		// Es muss ein passender Cache erstellt werden
-		
+		return self::getCacheImpl($name);
 	}
 	/**
 	 * Returns the cache instance
