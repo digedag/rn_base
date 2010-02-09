@@ -2,6 +2,9 @@
 
 Änderungen
 ----------
+v0.6.4 (09.02.2010) (not released)
+ * New API for Caches
+
 v0.6.3 (05.02.2010) (not released)
  * tx_rnbase_util_Link: New method initByTS() and it is possible to generate absolute URLs
 
