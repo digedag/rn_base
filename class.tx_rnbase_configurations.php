@@ -206,7 +206,7 @@ class tx_rnbase_configurations {
 	 * Factory-Method for links. The new link is initialized with qualifier and optional
 	 * with keepVars set.
 	 * @param boolean $addKeepVars whether or not keepVars should be set
-	 * @return tx_lib_link
+	 * @return tx_rnbase_util_Link
 	 */
 	function &createLink($addKeepVars = true) {
 		$link = tx_rnbase::makeInstance('tx_rnbase_util_Link');
