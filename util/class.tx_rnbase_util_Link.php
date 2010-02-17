@@ -501,8 +501,6 @@ class tx_rnbase_util_Link {
 	 * @param string $confId
 	 */
 	public function initByTS($configurations, $confId, $parameterArr) {
-		$links = $configurations->get($confId.'links.');
-		
 		$pid = $configurations->getCObj()->stdWrap($configurations->get($confId.'pid'), $configurations->get($confId.'pid.'));
 		$qualifier = $configurations->get($confId.'qualifier');
 		if($qualifier) $this->designator($qualifier);
@@ -511,7 +509,7 @@ class tx_rnbase_util_Link {
 		$this->destination($pid ? $pid : $GLOBALS['TSFE']->id); // Das Ziel der Seite vorbereiten
 		if($configurations->get($confId.'absurl'))
 			$this->setAbsUrl(true);
-		
+
 		if($fixed = $configurations->get($confId.'fixedUrl'))
 			$this->destination($fixed); // feste URL für externen Link
 		if(array_key_exists('SECTION', $parameterArr)) {
@@ -548,6 +546,14 @@ class tx_rnbase_util_Link {
 				foreach($keepVarsArr As $key => $value) {
 					if(!array_key_exists($key, $deny))
 						$newKeepVars[$key] = $value;
+				}
+			}
+			$add = $keepVarConf['add'];
+			if($add) {
+				$add = t3lib_div::trimExplode(',', $add);
+				foreach($add As $linkvar) {
+					$linkvar = t3lib_div::trimExplode('=', $linkvar);
+					$newKeepVars[$linkvar[0]] = $linkvar[1];
 				}
 			}
 			$this->overruled($newKeepVars);
