@@ -2,7 +2,7 @@
 
 Änderungen
 ----------
-v0.6.4 (09.02.2010) (not released)
+v0.6.4 (17.02.2010) (not released)
  * New API for Caches
  * util_Link: it is possible to add more static parameter by Typoscript: 
 linkcfg.useKeepVars.add = ::type=300, mykey=myvalue
