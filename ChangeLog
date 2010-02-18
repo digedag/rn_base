@@ -2,6 +2,9 @@
 
 Änderungen
 ----------
+v0.6.5 (??.02.2010) (not released)
+ * ListBuilder supports subpart for empty lists.
+
 v0.6.4 (17.02.2010) (not released)
  * New API for Caches
  * util_Link: it is possible to add more static parameter by Typoscript: 
