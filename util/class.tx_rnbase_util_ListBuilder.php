@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006 Rene Nitzsche
+ *  (c) 2006-2010 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -22,6 +22,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
+require_once(PATH_t3lib."class.t3lib_parsehtml.php");
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_util_ListBuilderInfo');
 tx_rnbase::load('tx_rnbase_util_BaseMarker');
@@ -38,7 +39,7 @@ class tx_rnbase_util_ListBuilder {
 	 * @param ListBuilderInfo $info
 	 * @return tx_rnbase_util_ListBuilder
 	 */
-	public function tx_rnbase_util_ListBuilder(ListBuilderInfo $info = null) {
+	public function __construct(ListBuilderInfo $info = null) {
 		if($info)
 			$this->info =& $info;
 		else
@@ -51,6 +52,9 @@ class tx_rnbase_util_ListBuilder {
 	 * ###DATA###
 	 * ###DATA_UID###
 	 * ###DATA###
+	 * ###DATAEMPTYLIST###
+	 * Shown if list is empty
+	 * ###DATAEMPTYLIST###
 	 * ###DATAS###
 	 * We have some conventions here:
 	 * The given parameter $marker should be named 'DATA' for this example. The the list subpart 
@@ -69,6 +73,7 @@ class tx_rnbase_util_ListBuilder {
 	 */
 	function render(&$dataArr, &$viewData, $template, $markerClassname, $confId, $marker, &$formatter, $markerParams = null) {
 
+		$viewData = is_object($viewData) ? $viewData : new ArrayObject();
 		$debugKey = $formatter->getConfigurations()->get($confId.'_debuglb');
 		$debug = ($debugKey && ($debugKey==='1' || 
 				($_GET['debug'] && array_key_exists($debugKey,array_flip(t3lib_div::trimExplode(',', $_GET['debug'])))) ||
@@ -85,17 +90,16 @@ class tx_rnbase_util_ListBuilder {
 //			$markerClass = tx_rnbase::makeInstanceClassName('tx_rnbase_util_ListMarker');
 //			$listMarker = new $markerClass($this->info->getListMarkerInfo());
 			$listMarker = tx_rnbase::makeInstance('tx_rnbase_util_ListMarker', $this->info->getListMarkerInfo());
-			$cObj =& $formatter->configurations->getCObj(0);
-			$templateList = $cObj->getSubpart($template,'###'.$marker.'S###');
+			$templateList = t3lib_parsehtml::getSubpart($template,'###'.$marker.'S###');
 
-			$templateEntry = $cObj->getSubpart($templateList,'###'.$marker.'###');
+			$templateEntry = t3lib_parsehtml::getSubpart($templateList,'###'.$marker.'###');
 			$out = $listMarker->render($dataArr, $templateEntry, $markerClassname,
 					$confId, $marker, $formatter, $markerParams);
 			$subpartArray['###'.$marker.'###'] = $out;
+			$subpartArray['###'.$marker.'EMPTYLIST###'] = '';
 			// Das Menu für den PageBrowser einsetzen
 			$pageBrowser =& $viewData->offsetGet('pagebrowser');
 			if($pageBrowser) {
-				tx_rnbase::load('tx_rnbase_util_BaseMarker');
 				$subpartArray['###PAGEBROWSER###'] = tx_rnbase_util_BaseMarker::fillPageBrowser(
 								$cObj->getSubpart($template,'###PAGEBROWSER###'),
 								$pageBrowser, $formatter, $confId.'pagebrowser.');
@@ -107,10 +111,15 @@ class tx_rnbase_util_ListBuilder {
 			$out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($templateList, $markerArray, $subpartArray);
 		}
 		else {
-			$out = $this->info->getEmptyListMessage($confId, $viewData, $formatter->configurations);
+			// Support für EMPTYLIST-Block
+			if(tx_rnbase_util_BaseMarker::containsMarker($template, $marker.'EMPTYLIST')) {
+				$out = t3lib_parsehtml::getSubpart($template,'###'.$marker.'EMPTYLIST###');
+			}
+			else
+				$out = $this->info->getEmptyListMessage($confId, $viewData, $formatter->getConfigurations());
 		}
-
 		$markerArray = array();
+		$subpartArray = array();
 		$subpartArray['###'.$marker.'S###'] = $out;
 
 		// Muss ein Formular mit angezeigt werden
@@ -124,6 +133,8 @@ class tx_rnbase_util_ListBuilder {
 		$seachform  =& $viewData->offsetGet('searchform');
 		if($seachform)
 			$markerArray['###SEARCHFORM###'] = $seachform;
+
+//t3lib_div::debug($template, 'class.tx_rnbase_util_ListBuilder.php'); // TODO: remove me
 
 		$out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($template, $markerArray, $subpartArray);
 		if($debug) {
