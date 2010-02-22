@@ -151,6 +151,7 @@ class tx_rnbase {
 	 * @return	boolean		TRUE if class was loaded
 	 */
 	private static function loadT3($minimalInformation, $alternativeKey='', $prefix = 'class.', $suffix = '.php') {
+		if(class_exists($minimalInformation)) return TRUE; // Class still exists
 		$path = self::_findT3($minimalInformation, $alternativeKey, $prefix, $suffix);
 		
 		if($path) {
