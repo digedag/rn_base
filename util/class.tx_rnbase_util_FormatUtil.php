@@ -254,24 +254,25 @@ self::$mem += (memory_get_usage() - $mem);
    * @param array $conf
    * @return string
    */
-  function numberFormat($content, &$conf){
-    if ( $conf['number_format.']['dontCheckFloat'] || number_format($content, 0, '.', '' ) != $content ){
-      if ( $conf['number_format'] || $conf['number_format.']) {
-        // default 
-        $decimal = 2;
-        $dec_point = '.';
-        $thousands_sep = '';
-        if ( isset($conf['number_format.']['decimal']) ) $decimal = $conf['number_format.']['decimal'];
-        if ( isset($conf['number_format.']['dec_point']) ) $dec_point = $conf['number_format.']['dec_point'];
-        if (  isset($conf['number_format.']['thousands_sep']) ) {
-          if ( $conf['number_format.']['thousands_sep'] == '[space]' )  $thousands_sep = ' ';
-          else $thousands_sep = $conf['number_format.']['thousands_sep'];
-        }
-        $content = number_format( $content, $decimal, $dec_point, $thousands_sep );
-      }
-    }
-    return $content;
-  }
+	function numberFormat($content, &$conf) {
+		if(!is_array($conf) || !array_key_exists('number_format.', $conf)) return $content;
+		if ( $conf['number_format.']['dontCheckFloat'] || number_format(doubleval($content), 0, '.', '' ) != $content ){
+			if ( $conf['number_format'] || $conf['number_format.']) {
+				// default
+				$decimal = 2;
+				$dec_point = '.';
+				$thousands_sep = '';
+				if ( isset($conf['number_format.']['decimal']) ) $decimal = $conf['number_format.']['decimal'];
+				if ( isset($conf['number_format.']['dec_point']) ) $dec_point = $conf['number_format.']['dec_point'];
+				if (  isset($conf['number_format.']['thousands_sep']) ) {
+					if ( $conf['number_format.']['thousands_sep'] == '[space]' )  $thousands_sep = ' ';
+					else $thousands_sep = $conf['number_format.']['thousands_sep'];
+				}
+				$content = number_format( $content, $decimal, $dec_point, $thousands_sep );
+			}
+		}
+		return $content;
+	}
 
   function fillEmptyMarkers(&$markerArray, $markers, $markerPrefix = '') {
     foreach($markers As $marker) {
