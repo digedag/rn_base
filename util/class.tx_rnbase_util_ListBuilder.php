@@ -43,7 +43,7 @@ class tx_rnbase_util_ListBuilder {
 		if($info)
 			$this->info =& $info;
 		else
-			$this->info =& new tx_rnbase_util_ListBuilderInfo;
+			$this->info = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilderInfo');
 	}
 
 	/**

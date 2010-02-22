@@ -34,7 +34,7 @@ class tx_rnbase_util_ListMarker {
   	if($listMarkerInfo)
 	  	$this->info =& $listMarkerInfo;
 	  else
-	  	$this->info =& new tx_rnbase_util_ListMarkerInfo();
+	  	$this->info = tx_rnbase::makeInstance('tx_rnbase_util_ListMarkerInfo');
   }
 
   function render(&$dataArr, $template, $markerClassname, $confId, $marker, &$formatter, $markerParams = false) {
