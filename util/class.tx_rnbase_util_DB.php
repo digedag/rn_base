@@ -393,7 +393,7 @@ class tx_rnbase_util_DB {
 		$where = '';
 		if ($sw)	{
 			$searchFields = explode(',',$searchFieldList);
-			$kw = split('[ ,]',$sw);
+			$kw = explode('[ ,]',$sw);
 			if($operator == 'LIKE')
 				$where = self::_getSearchLike($kw, $searchFields);
 			elseif($operator == 'FIND_IN_SET_OR')

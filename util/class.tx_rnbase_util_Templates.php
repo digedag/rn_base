@@ -93,7 +93,7 @@ class tx_rnbase_util_Templates {
 				}
 				$regex = implode('|',$aKeys);
 					// Doing regex's
-				$storeArr['c'] = split($regex,$content);
+				$storeArr['c'] = explode($regex,$content);
 				preg_match_all('/'.$regex.'/',$content,$keyList);
 				$storeArr['k']=$keyList[0];
 					// Setting cache:

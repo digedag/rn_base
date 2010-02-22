@@ -4,6 +4,7 @@
 ----------
 v0.6.5 (??.02.2010) (not released)
  * ListBuilder supports subpart for empty lists.
+ * All occurrences of split() replaced with explode() to avoid warnings in PHP 5.3
 
 v0.6.4 (17.02.2010) (not released)
  * New API for Caches

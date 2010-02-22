@@ -152,6 +152,7 @@ class tx_rnbase {
 	 */
 	private static function loadT3($minimalInformation, $alternativeKey='', $prefix = 'class.', $suffix = '.php') {
 		$path = self::_findT3($minimalInformation, $alternativeKey, $prefix, $suffix);
+		
 		if($path) {
 			require_once($path);
 			return TRUE;
@@ -232,10 +233,10 @@ class tx_rnbase {
 		}
 
 		if(preg_match('/^tx_[0-9A-Za-z_]*$/', $class)) {  // with tx_ prefix
-			$parts=split('_', trim($class));
+			$parts=explode('_', trim($class));
 			array_shift($parts); // strip tx
 		}elseif(preg_match('/^[0-9A-Za-z_]*$/', $class)) { // without tx_ prefix
-			$parts=split('_', trim($class));
+			$parts=explode('_', trim($class));
 		}else{
 			throw new Exception('getClassInfo() called with invalid classname: ' . $info);
 		}
