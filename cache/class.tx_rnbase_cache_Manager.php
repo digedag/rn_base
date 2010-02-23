@@ -35,10 +35,10 @@ class tx_rnbase_cache_Manager {
 	 * @return tx_rnbase_cache_ICache
 	 */
 	public static function getCache($name) {
-		if(array_key_exists($name, self::$caches)) 
-			return self::$caches[$name];
 		// Es muss ein passender Cache erstellt werden
-		return self::getCacheImpl($name);
+		if(!array_key_exists($name, self::$caches)) 
+			self::$caches[$name] = self::getCacheImpl($name);
+		return self::$caches[$name];
 	}
 	/**
 	 * Returns the cache instance
