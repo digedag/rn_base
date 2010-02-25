@@ -2,9 +2,10 @@
 
 Änderungen
 ----------
-v0.6.5 (??.02.2010) (not released)
+v0.6.5 (25.02.2010) (not released)
  * ListBuilder supports subpart for empty lists.
  * All occurrences of split() replaced with explode() to avoid warnings in PHP 5.3
+ * Some Bugfixes in tx_rnbase_util_Templates
 
 v0.6.4 (17.02.2010) (not released)
  * New API for Caches
