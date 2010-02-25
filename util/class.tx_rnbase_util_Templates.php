@@ -168,8 +168,8 @@ class tx_rnbase_util_Templates {
 		}
 		asort($aKeys);
 		$storeKey = md5('substituteMarkerArrayCached_storeKey:'.serialize(array($content,$aKeys)));
-		if ($this->substMarkerCache[$storeKey])	{
-			$storeArr = $this->substMarkerCache[$storeKey];
+		if (self::$substMarkerCache[$storeKey])	{
+			$storeArr = self::$substMarkerCache[$storeKey];
 			$GLOBALS['TT']->setTSlogMessage('Cached',0);
 		} else {
 			$storeArrDat = $GLOBALS['TSFE']->sys_page->getHash($storeKey);
