@@ -2,6 +2,9 @@
 
 Änderungen
 ----------
+v0.6.6 (??.02.2010) (not released)
+ * New unit test for ListBuilder
+
 v0.6.5 (25.02.2010) (not released)
  * ListBuilder supports subpart for empty lists.
  * All occurrences of split() replaced with explode() to avoid warnings in PHP 5.3
