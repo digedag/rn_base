@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007-2008 Rene Nitzsche (rene@system25.de)
+*  (c) 2007-2010 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,11 +26,17 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
 tx_rnbase::load('tx_rnbase_util_BaseMarker');
 
+if(t3lib_extMgm::isLoaded('dam')) {
+	require_once(t3lib_extMgm::extPath('dam') . 'lib/class.tx_dam_db.php');
+}
+
+
 /**
  * Diese Klasse ist für das Rendern von DAM-Media Dateien verantwortlich
  */
 class tx_rnbase_util_MediaMarker extends tx_rnbase_util_BaseMarker {
 	var $options;
+	private static $damDb = null;
 	public function tx_rnbase_util_MediaMarker($options=array()) {
 		$this->options = $options;
 		if(!is_array($this->options)) $this->options = array();
@@ -48,14 +54,29 @@ class tx_rnbase_util_MediaMarker extends tx_rnbase_util_BaseMarker {
 		if(!is_object($item)) {
 			return '<!-- Media empty -->';
 		}
-		$markerArray = $formatter->getItemMarkerArrayWrapped($item->record, $confId , 0, $marker.'_');
+		// Localize data (DAM 1.1.0)
+		if(method_exists(self::getDamDB(), 'getRecordOverlay')) {
+			$loc = self::getDamDB()->getRecordOverlay('tx_dam', $item->record, array('sys_language_uid'=>$GLOBALS['TSFE']->sys_language_uid));
+			if ($loc) $item->record = $loc;
+		}
+		tx_rnbase_util_Misc::callHook('rn_base','mediaMarker_initRecord', array('item' => &$item, 'template'=>&$template), $this);
+
+		$ignore = self::findUnusedCols($item->record, $template, $marker);
+		$markerArray = $formatter->getItemMarkerArrayWrapped($item->record, $confId , $ignore, $marker.'_');
 		$wrappedSubpartArray = array();
 		$subpartArray = array();
 		$out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($template, $markerArray, $subpartArray, $wrappedSubpartArray);
+		tx_rnbase_util_Misc::callHook('rn_base','mediaMarker_afterSubst', array('item' => &$item, 'template'=>&$template), $this);
 		return $out;
 	}
 
 
+	private static function getDamDB() {
+		if(!self::$damDb) {
+			self::$damDb = tx_rnbase::makeInstance('tx_dam_db');
+		}
+		return self::$damDb;
+	}
 }
 
 

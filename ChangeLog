@@ -4,6 +4,7 @@
 ----------
 v0.6.6 (??.02.2010) (not released)
  * New unit test for ListBuilder
+ * MediaMarker: multilanguage support and hooks
 
 v0.6.5 (25.02.2010) (not released)
  * ListBuilder supports subpart for empty lists.
