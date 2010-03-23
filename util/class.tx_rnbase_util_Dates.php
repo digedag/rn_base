@@ -108,7 +108,11 @@ class tx_rnbase_util_Dates {
 	 */
 	static function date_mysql2tstamp($date) {
 		list($jahr, $monat, $tag) = t3lib_div::intExplode('-', $date);
-		return mktime(0,0,0,$monat,$tag,$jahr);
+		// If mktime() is fed with 6x 0, it returns tstamp for 1999/11//30 00:00:00 which indeed is correct!
+		if (!$jahr && !$monat && !$jahr) return null;
+		$tstamp = mktime(0,0,0,$monat,$tag,$jahr);
+		// If mktime arguments are invalid, the function returns FALSE  (before PHP 5.1 it returned -1).
+		return (!in_array($tstamp, array(false, -1))) ? $tstamp : null;
 	}
 
 	/**
