@@ -384,17 +384,17 @@ class tx_rnbase_util_DB {
 	 *
 	 * METHOD FROM tslib_content
 	 * 
-	 * @param	string $sw		The search words. These will be separated by space and comma.
-	 * @param	string $searchFieldList		The fields to search in
-	 * @package string $operator  'LIKE' oder 'FIND_IN_SET'
-	 * @param	string $searchTable	The table name you search in (recommended for DBAL compliance. Will be prepended field names as well)
+	 * @param string $sw		The search words. These will be separated by space and comma.
+	 * @param string $searchFieldList		The fields to search in
+	 * @param string $operator  'LIKE' oder 'FIND_IN_SET'
+	 * @param string $searchTable	The table name you search in (recommended for DBAL compliance. Will be prepended field names as well)
 	 * @return	string		The WHERE clause.
 	 */
 	static function searchWhere($sw,$searchFieldList,$operator='LIKE')	{
 		$where = '';
 		if ($sw)	{
 			$searchFields = explode(',',$searchFieldList);
-			$kw = explode('[ ,]',$sw);
+			$kw = preg_split('/[ ,]/', $sw);
 			if($operator == 'LIKE')
 				$where = self::_getSearchLike($kw, $searchFields);
 			elseif($operator == 'FIND_IN_SET_OR')
@@ -409,6 +409,8 @@ class tx_rnbase_util_DB {
 		$where = '';
 		$where_p = array();
 		while(list(,$val)=each($kw))	{
+			$val = trim($val);
+			if(!strlen($val)) continue;
 			reset($searchFields);
 			while(list(,$field)=each($searchFields))	{
 	  		list($tableAlias, $col) = explode('.', $field); // Split alias and column
@@ -418,21 +420,25 @@ class tx_rnbase_util_DB {
 			}
 		}
 		if (count($where_p))	{
-			$where.=' ('.implode(' OR ',$where_p).')';
+			$where.=' ('.implode('OR ',$where_p).')';
 		}
 		return $where;
 	}
 	private static function _getSearchSetOr($kw, $searchFields) {
+		global $TYPO3_DB;
 		// Hier werden alle Felder und Werte mit OR verbunden
 		// (FIND_IN_SET(1, match.player)) AND (FIND_IN_SET(4, match.player))
 		// (FIND_IN_SET(1, match.player) OR FIND_IN_SET(4, match.player))
 		$where = '';
 		$where_p = array();
+		reset($kw);
 		while(list(,$val)=each($kw))	{
-			$val = intval(trim($val));
+			$val = trim($val);
+			if(!strlen($val)) continue;
+			$val = $TYPO3_DB->escapeStrForLike($TYPO3_DB->quoteStr($val,$searchTable),$searchTable);
 			reset($searchFields);
 			while(list(,$field)=each($searchFields))	{
-				$where_p[] = 'FIND_IN_SET('.$val.', '.$field.')';
+				$where_p[] = 'FIND_IN_SET(\''.$val.'\', '.$field.')';
 			}
 		}
 		if (count($where_p))	{

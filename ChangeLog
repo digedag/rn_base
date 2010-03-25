@@ -2,6 +2,9 @@
 
 Änderungen
 ----------
+v0.6.7 (??.03.2010) (not released)
+ * util_DB: Some fixes in searchWhere(). Unit test added.
+
 v0.6.6 (25.03.2010) (not released)
  * New unit test for ListBuilder
  * MediaMarker: multilanguage support and hooks
