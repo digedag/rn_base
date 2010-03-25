@@ -2,10 +2,11 @@
 
 Änderungen
 ----------
-v0.6.6 (??.02.2010) (not released)
+v0.6.6 (25.03.2010) (not released)
  * New unit test for ListBuilder
  * MediaMarker: multilanguage support and hooks
  * util_Dates::date_mysql2tstamp returns null for a MySQL-Date 0000-00-00. Thanks to Lars Heber!
+ * util_DB: The leading AND is removed in methods _getSearchOr, _getSearchSetOr and _getSearchLike. This can cause errors in some usecases!
 
 v0.6.5 (25.02.2010) (not released)
  * ListBuilder supports subpart for empty lists.

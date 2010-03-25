@@ -379,7 +379,8 @@ class tx_rnbase_util_DB {
 
 	/**
 	 * Generates a search where clause based on the input search words (AND operation - all search words must be found in record.)
-	 * Example: The $sw is "content management, system" (from an input form) and the $searchFieldList is "bodytext,header" then the output will be ' (bodytext LIKE "%content%" OR header LIKE "%content%") AND (bodytext LIKE "%management%" OR header LIKE "%management%") AND (bodytext LIKE "%system%" OR header LIKE "%system%")'
+	 * Example: The $sw is "content management, system" (from an input form) and the $searchFieldList is "bodytext,header" then the 
+	 * output will be ' (bodytext LIKE "%content%" OR header LIKE "%content%") AND (bodytext LIKE "%management%" OR header LIKE "%management%") AND (bodytext LIKE "%system%" OR header LIKE "%system%")'
 	 *
 	 * METHOD FROM tslib_content
 	 * 
@@ -404,7 +405,7 @@ class tx_rnbase_util_DB {
 		}
 		return $where;
 	}
-	static function _getSearchOr($kw, $searchFields, $operator) {
+	private static function _getSearchOr($kw, $searchFields, $operator) {
 		$where = '';
 		$where_p = array();
 		while(list(,$val)=each($kw))	{
@@ -417,11 +418,11 @@ class tx_rnbase_util_DB {
 			}
 		}
 		if (count($where_p))	{
-			$where.=' AND ('.implode(' OR ',$where_p).')';
+			$where.=' ('.implode(' OR ',$where_p).')';
 		}
 		return $where;
 	}
-	static function _getSearchSetOr($kw, $searchFields) {
+	private static function _getSearchSetOr($kw, $searchFields) {
 		// Hier werden alle Felder und Werte mit OR verbunden
 		// (FIND_IN_SET(1, match.player)) AND (FIND_IN_SET(4, match.player))
 		// (FIND_IN_SET(1, match.player) OR FIND_IN_SET(4, match.player))
@@ -435,11 +436,11 @@ class tx_rnbase_util_DB {
 			}
 		}
 		if (count($where_p))	{
-			$where.=' AND ('.implode(' OR ',$where_p).')';
+			$where.=' ('.implode(' OR ',$where_p).')';
 		}
 		return $where;
 	}
-	static function _getSearchLike($kw, $searchFields) {
+	private static function _getSearchLike($kw, $searchFields) {
 		global $TYPO3_DB;
 		$searchTable = ''; // TODO Check if possible to delete
 		$where = '';
@@ -454,7 +455,7 @@ class tx_rnbase_util_DB {
 				}
 			}
 			if (count($where_p))	{
-				$where.=' AND ('.implode(' OR ',$where_p).')';
+				$where.=' ('.implode(' OR ',$where_p).')';
 			}
 		}
 		return $where;
