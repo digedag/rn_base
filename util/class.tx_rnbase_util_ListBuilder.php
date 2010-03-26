@@ -101,7 +101,7 @@ class tx_rnbase_util_ListBuilder {
 			$pageBrowser =& $viewData->offsetGet('pagebrowser');
 			if($pageBrowser) {
 				$subpartArray['###PAGEBROWSER###'] = tx_rnbase_util_BaseMarker::fillPageBrowser(
-								$cObj->getSubpart($template,'###PAGEBROWSER###'),
+								t3lib_parsehtml::getSubpart($template,'###PAGEBROWSER###'),
 								$pageBrowser, $formatter, $confId.'pagebrowser.');
 				$markerArray['###'.$marker.'COUNT###'] = $pageBrowser->getListSize();
 			}

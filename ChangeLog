@@ -2,6 +2,9 @@
 
 Änderungen
 ----------
+v0.6.8 (??.03.2010) (not released)
+ * PageBrowser in ListBuilder fixed
+
 v0.6.7 (26.03.2010) (not released)
  * util_DB: Some fixes in searchWhere(). Unit test added.
  * New class rx_rnbase_util_Json
