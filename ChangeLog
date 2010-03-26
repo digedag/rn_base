@@ -4,6 +4,7 @@
 ----------
 v0.6.7 (??.03.2010) (not released)
  * util_DB: Some fixes in searchWhere(). Unit test added.
+ * New class rx_rnbase_util_Json
 
 v0.6.6 (25.03.2010) (not released)
  * New unit test for ListBuilder
