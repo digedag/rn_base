@@ -2,8 +2,9 @@
 
 Änderungen
 ----------
-v0.6.8 (??.03.2010) (not released)
+v0.6.8 (01.04.2010) (not released)
  * PageBrowser in ListBuilder fixed
+ * util_DB: Some fixes in searchWhere(). Unit test added.
 
 v0.6.7 (26.03.2010) (not released)
  * util_DB: Some fixes in searchWhere(). Unit test added.
