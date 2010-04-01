@@ -529,7 +529,6 @@ class tx_rnbase_util_DB {
 			case OP_LIKE:
 				// Stringvergleich mit LIKE
 				$where .= self::searchWhere($value, $tableAlias . '.' . strtolower($col));
-//				$where .= self::searchWhere($value, strtolower($tableAlias.'.'.$col));
 				break;
 			default:
 				tx_rnbase::load('tx_rnbase_util_Misc');

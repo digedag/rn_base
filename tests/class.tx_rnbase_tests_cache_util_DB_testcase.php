@@ -27,7 +27,12 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_util_DB');
 
 class tx_rnbase_tests_util_DB_testcase extends tx_phpunit_testcase {
-
+	function test_setSingleWhereField() {
+		$ret = tx_rnbase_util_DB::setSingleWhereField('Table1', OP_LIKE, 'Col1', 'myValue');
+//		self::debugString($ret);
+		$this->assertEquals(" (Table1.col1 LIKE '%myValue%')", $ret, 'LIKE failed.');
+	}
+	
 	function test_searchWhere() {
 		$sw = 'content management, system';
 		$fields = 'tab1.bodytext,tab1.header';
@@ -45,6 +50,13 @@ class tx_rnbase_tests_util_DB_testcase extends tx_phpunit_testcase {
 		$fields = 'tab1.bodytext,tab1.header';
 		$ret = tx_rnbase_util_DB::searchWhere($sw, $fields, OP_EQ);
 		$this->assertEquals($ret, " (tab1.bodytext = 'content\';' OR tab1.header = 'content\';' OR tab1.bodytext = 'INSERT' OR tab1.header = 'INSERT' )", 'OR failed.');
+	}
+
+	private static function debugString($str) {
+		for($i=0, $cnt=strlen($str); $i < $cnt; $i++) {
+			$ret[$i] = $str{$i};
+		}
+		t3lib_div::debug($ret,'class.tx_rnbase_tests_cache_util_DB_testcase.php : '); // TODO: remove me
 	}
 }
 
