@@ -30,8 +30,11 @@ tx_rnbase::load('tx_rnbase_util_Misc');
 
 class tx_rnbase_tests_listbuilder_testcase extends tx_phpunit_testcase {
 
-	function test_advList() {
+	function setup() {
+		unset($GLOBALS['TSFE']);
 		tx_rnbase_util_Misc::prepareTSFE();
+	}
+	function test_advList() {
 		$items = array();
 		$confArr = array();
 		$configurations = $this->getConfig($confArr);
@@ -44,9 +47,6 @@ class tx_rnbase_tests_listbuilder_testcase extends tx_phpunit_testcase {
 	}
 	
 	function test_simpleList() {
-
-
-		tx_rnbase_util_Misc::prepareTSFE();
 		$items = array();
 		$confArr = array();
 		$configurations = $this->getConfig($confArr);
