@@ -493,27 +493,27 @@ class tx_rnbase_util_DB {
 				break;
 			case OP_INSET_INT:
 				// Values splitten und einzelne Abfragen mit OR verbinden
-				$addWhere = self::searchWhere($value, $tableAlias.'.' . strtolower($col), 'FIND_IN_SET_OR');
-				$where .= substr($addWhere, 4);
+				$where = self::searchWhere($value, $tableAlias.'.' . strtolower($col), 'FIND_IN_SET_OR');
+//				$where .= substr($addWhere, 4); // Remove the leading AND
 				//$where .= ' FIND_IN_SET(' . $value . ', '.$tableAlias.'.' . strtolower($col).')';
 				break;
 			case OP_EQ:
-				$where .= $tableAlias.'.' . strtolower($col) . ' = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias) . ' ';
+				$where .= $tableAlias.'.' . strtolower($col) . ' = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias);
 			  break;
 			case OP_NOTEQ:
-				$where .= $tableAlias.'.' . strtolower($col) . ' != ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias) . ' ';
+				$where .= $tableAlias.'.' . strtolower($col) . ' != ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias);
 			  break;
 			case OP_LT:
-				$where .= $tableAlias.'.' . strtolower($col) . ' < ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias) . ' ';
+				$where .= $tableAlias.'.' . strtolower($col) . ' < ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias);
 				break;
 			case OP_LTEQ:
-				$where .= $tableAlias.'.' . strtolower($col) . ' <= ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias) . ' ';
+				$where .= $tableAlias.'.' . strtolower($col) . ' <= ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias);
 				break;
 			case OP_GT:
-				$where .= $tableAlias.'.' . strtolower($col) . ' > ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias) . ' ';
+				$where .= $tableAlias.'.' . strtolower($col) . ' > ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias);
 				break;
 			case OP_GTEQ:
-				$where .= $tableAlias.'.' . strtolower($col) . ' >= ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias) . ' ';
+				$where .= $tableAlias.'.' . strtolower($col) . ' >= ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias);
 				break;
 			case OP_EQ_INT:
 			case OP_NOTEQ_INT:
@@ -521,10 +521,10 @@ class tx_rnbase_util_DB {
 			case OP_LT_INT:
 			case OP_GTEQ_INT:
 			case OP_LTEQ_INT:
-				$where .= $tableAlias.'.' . strtolower($col) . ' '.$operator.' ' . intval($value) . ' ';
+				$where .= $tableAlias.'.' . strtolower($col) . ' '.$operator.' ' . intval($value);
 				break;
 			case OP_EQ_NOCASE:
-				$where .= 'lower('.$tableAlias.'.' . strtolower($col) . ') = lower(\'' . $value . '\') ';
+				$where .= 'lower('.$tableAlias.'.' . strtolower($col) . ') = lower(\'' . $value . '\')';
 				break;
 			case OP_LIKE:
 				// Stringvergleich mit LIKE
@@ -534,7 +534,7 @@ class tx_rnbase_util_DB {
 				tx_rnbase::load('tx_rnbase_util_Misc');
 				tx_rnbase_util_Misc::mayday('Unknown Operator for comparation defined: ' . $operator);
 		}
-		return $where;
+		return $where . ' ';
 	}
   
 	/**

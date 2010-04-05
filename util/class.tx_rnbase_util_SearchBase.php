@@ -174,7 +174,7 @@ abstract class tx_rnbase_util_SearchBase {
 				else {
 					$addWhere = tx_rnbase_util_DB::searchWhere($joinedField['value'], implode(',',$joinedField['fields']), $joinedField['operator']);
 				}
-				$where .= $addWhere;
+				$where .= ' AND ' . $addWhere;
 			}
 		}
 		if(isset($customFields)) {
