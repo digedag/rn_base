@@ -356,14 +356,13 @@ class tx_rnbase_configurations {
 		// Wenn am Ende kein Punkt steht, ist das Ergebnis ein String
 		$ret = $this->_queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey);
 		if (!is_array($ret) && substr($pathKey, strlen($pathKey)-1, 1) != '.') {
-			// TODO: Das geht noch nicht...
 			$arr = $this->_queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey.'.');
-			$ret = array_merge(array($ret), $arr);
+			if (is_array($arr)) $ret = array_merge(array($ret), $arr);
 		}
-		$ret = $this->renderTS($ret, $this->getCObj());
+		if (is_array($ret))
+			$ret = $this->renderTS($ret, $this->getCObj());
 		return $ret;
 	}
-
 	/**
 	 * Finds a value either from config or in language markers. Please note, that all points are
 	 * replaced by underscores for language strings. This is, because TYPO3 doesn't like point 
