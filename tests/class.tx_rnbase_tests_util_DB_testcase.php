@@ -66,7 +66,7 @@ class tx_rnbase_tests_util_DB_testcase extends tx_phpunit_testcase {
 		$this->assertEquals($ret, " (tab1.bodytext = 'content\';' OR tab1.header = 'content\';' OR tab1.bodytext = 'INSERT' OR tab1.header = 'INSERT' )", 'OR failed.');
 	}
 
-	private static function debugString($str) {
+	public static function debugString($str) {
 		for($i=0, $cnt=strlen($str); $i < $cnt; $i++) {
 			$ret[$i] = $str{$i};
 		}
