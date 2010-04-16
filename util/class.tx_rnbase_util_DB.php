@@ -107,7 +107,7 @@ class tx_rnbase_util_DB {
 	 * @param array $arr the options array
 	 * @param boolean $debug = 0 Set to 1 to debug sql-String
 	 */
-	function doSelect($what, $from, $arr, $debug=0){
+	public static function doSelect($what, $from, $arr, $debug=0){
 		$debug = $debug ? $debug : intval($arr['debug']) > 0;
 		if($debug) {
 			$time = microtime(true);
@@ -218,7 +218,7 @@ class tx_rnbase_util_DB {
 	 * @param int $debug
 	 * @return int UID of created record
 	 */
-	function doInsert($tablename, $values, $debug=0) {
+	public static function doInsert($tablename, $values, $debug=0) {
 		if($debug) {
 			$sql = $GLOBALS['TYPO3_DB']->INSERTquery($tablename,$values);
 			t3lib_div::debug($sql, 'SQL');
@@ -242,7 +242,7 @@ class tx_rnbase_util_DB {
 	 * @param mixed $noQuoteFields Array or commaseparated string with fieldnames
 	 * @return int number of rows affected
 	 */
-	function doUpdate($tablename, $where, $values, $debug=0, $noQuoteFields = false) {
+	public static function doUpdate($tablename, $where, $values, $debug=0, $noQuoteFields = false) {
 		if($debug) {
 			$sql = $GLOBALS['TYPO3_DB']->UPDATEquery($tablename,$where,$values, $noQuoteFields);
 			t3lib_div::debug($sql, 'SQL');
@@ -266,7 +266,7 @@ class tx_rnbase_util_DB {
 	 * @param boolean $debug
 	 * @return int number of rows affected
 	 */
-	function doDelete($tablename, $where, $debug=0) {
+	public static function doDelete($tablename, $where, $debug=0) {
 		if($debug) {
 			$sql = $GLOBALS['TYPO3_DB']->DELETEquery($tablename,$where);
 			t3lib_div::debug($sql, 'SQL');
