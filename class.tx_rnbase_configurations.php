@@ -328,9 +328,9 @@ class tx_rnbase_configurations {
    * @param string $cfgKey
    * @return mixed
    */
-  function getExtensionCfgValue($extKey, $cfgKey) {
+  public static function getExtensionCfgValue($extKey, $cfgKey) {
     $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extKey]);
-    return $extConfig[$cfgKey];
+    return (is_array($extConfig) && array_key_exists($cfgKey, $extConfig)) ? $extConfig[$cfgKey] : false;
   }
 
 	/**
