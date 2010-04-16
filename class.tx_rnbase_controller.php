@@ -231,15 +231,52 @@ class tx_rnbase_controller {
 			$ret = $action->execute($parameters,$configurations);
 		}
 		catch(Exception $e) {
-			$verbose = intval(tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'verboseMayday'));
-			$ret .= '<div><strong>UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName .'</strong>';
-			if($verbose)
-				$ret .= '<br /><pre>'.$e->__toString().'</pre>';
-			$ret .= '</div>';
+			$ret = $this->handleException($actionName, $e);
 		}
 		return $ret;
 	}
 
+	/**
+	 * Interne Verarbeitung der Exception
+	 * @param Exception $e
+	 */
+	private function handleException($actionName, Exception $e) {
+		$addr = tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'sendEmailOnException');
+		if(!$addr) return;
+		
+		$textPart = 'This is an automatic email from TYPO3. Don\'t answer!'."\n\n"; 
+		$htmlPart = '<strong>This is an automatic email from TYPO3. Don\'t answer!</strong>';
+		$textPart .= 'UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName ."\n\n";
+		$htmlPart .= '<div><strong>UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName .'</strong></div>';
+		$textPart .= 'Message: ' . $e->getMessage()."\n\n"; 
+		$htmlPart .= '<p><strong>Message:</strong><br />' . $e->getMessage() . '</p>';
+		$textPart .= "Stacktrace:\n". $e->__toString()."\n";
+		$htmlPart .= '<p><strong>Stacktrace:</strong><pre>'.$e->__toString().'</pre></p>';
+		if($e instanceof tx_rnbase_util_Exception) {
+			$additional = $e->getAdditional();
+			if($additional)
+				$htmlPart .= '<p><strong>Additional Data:</strong><br />' . strval($additional) . '</p>';
+		}
+
+		$mail = t3lib_div::makeInstance('t3lib_htmlmail');
+		$mail->start();
+		$mail->subject         = 'Exception on site '.$TYPO3_CONF_VARS['SYS']['sitename'];
+		$mail->from_email      = tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'fromEmail');
+		$mail->from_name       = '';
+		$mail->organisation    = '';
+		$mail->priority        = 1;
+		$mail->addPlain($textPart);
+		$mail->setHTML($htmlPart);
+//		$mail->theParts['html']['content'] = $this->parse($mail->theParts['html']['content']);
+		$mail->send($addr);
+
+		// Now message for FE
+		$verbose = intval(tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'verboseMayday'));
+		$ret .= '<div><strong>UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName .'</strong>';
+		if($verbose)
+			$ret .= '<br /><pre>'.$e->__toString().'</pre>';
+		$ret .= '</div>';
+	}
 
   /**
    * This is returned, if an invalid action has been send. 
