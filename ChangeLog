@@ -2,6 +2,10 @@
 
 Änderungen
 ----------
+v0.7.1 (16.04.2010)
+ * Mail info for uncaught exceptions
+ * New class tx_rnbase_util_Logger
+ 
 v0.7.0 (05.04.2010)
  * Some fixes in DB layer
 
