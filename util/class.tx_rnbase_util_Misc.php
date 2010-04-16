@@ -348,7 +348,7 @@ MAYDAYPAGE;
 		$str = '';
 		if($daily) {
 			tx_rnbase::load('tx_rnbase_util_Dates');
-			tx_rnbase_util_Dates::getTodayDateString();
+			$str .= tx_rnbase_util_Dates::getTodayDateString();
 		}
 		sort($params);
 		foreach($params As $key => $value) {
