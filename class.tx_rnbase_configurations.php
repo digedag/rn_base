@@ -349,7 +349,7 @@ class tx_rnbase_configurations {
 	 * @param string  relative setupPath
 	 * @return array  or string
 	 */
-	function get($pathKey, $deep=false) {
+	public function get($pathKey, $deep=false) {
 		if(!$deep)
 			return $this->_queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey);
 
@@ -362,6 +362,13 @@ class tx_rnbase_configurations {
 		if (is_array($ret))
 			$ret = $this->renderTS($ret, $this->getCObj());
 		return $ret;
+	}
+	/**
+	 * Returns the complete TS config array
+	 * @return array
+	 */
+	public function getConfigArray() {
+		return $this->_dataStore->getArrayCopy();
 	}
 	/**
 	 * Finds a value either from config or in language markers. Please note, that all points are
