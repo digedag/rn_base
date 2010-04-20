@@ -242,8 +242,19 @@ class tx_rnbase_controller {
 	 */
 	private function handleException($actionName, Exception $e) {
 		$addr = tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'sendEmailOnException');
-		if(!$addr) return;
-		
+		if(!$addr) {
+			$this->sendErrorMail($addr, $actionName, $e);
+		}
+
+		// Now message for FE
+		$verbose = intval(tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'verboseMayday'));
+		$ret = '<div><strong>UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName .'</strong>';
+		if($verbose)
+			$ret .= '<br /><pre>'.$e->__toString().'</pre>';
+		$ret .= '</div>';
+		return $ret;
+	}
+	private function sendErrorMail($addr, $actionName, Exception $e) {
 		$textPart = 'This is an automatic email from TYPO3. Don\'t answer!'."\n\n"; 
 		$htmlPart = '<strong>This is an automatic email from TYPO3. Don\'t answer!</strong>';
 		$textPart .= 'UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName ."\n\n";
@@ -268,14 +279,7 @@ class tx_rnbase_controller {
 		$mail->addPlain($textPart);
 		$mail->setHTML($htmlPart);
 //		$mail->theParts['html']['content'] = $this->parse($mail->theParts['html']['content']);
-		$mail->send($addr);
-
-		// Now message for FE
-		$verbose = intval(tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'verboseMayday'));
-		$ret .= '<div><strong>UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName .'</strong>';
-		if($verbose)
-			$ret .= '<br /><pre>'.$e->__toString().'</pre>';
-		$ret .= '</div>';
+		return $mail->send($addr);
 	}
 
   /**
