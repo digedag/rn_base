@@ -111,6 +111,7 @@ class tx_rnbase_controller {
 	var $configurations;
 	var $defaultAction = 'defaultAction';
 	var $cobj; // Plugins cObj instance from T3
+	private $errors = array();
 
   /*
    * main(): A factory method for the responsible action
@@ -232,8 +233,16 @@ class tx_rnbase_controller {
 		}
 		catch(Exception $e) {
 			$ret = $this->handleException($actionName, $e);
+			$this->errors[] = $e;
 		}
 		return $ret;
+	}
+	/**
+	 * Returns all unhandeled exceptions
+	 * @return array[Exception] or empty array
+	 */
+	public function getErrors() {
+		return $this->errors;
 	}
 
 	/**
@@ -242,7 +251,7 @@ class tx_rnbase_controller {
 	 */
 	private function handleException($actionName, Exception $e) {
 		$addr = tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'sendEmailOnException');
-		if(!$addr) {
+		if($addr) {
 			$this->sendErrorMail($addr, $actionName, $e);
 		}
 
