@@ -193,15 +193,22 @@ class tx_rnbase_util_BaseMarker {
    * @param string $confId
    * @return string
    */
-  static function fillPageBrowser($template, &$pagebrowser, &$formatter, $confId) {
-  	if(strlen(trim($template)) == 0) return '';
-    if(!is_object($pagebrowser) || !is_object($pagebrowser->getMarker())) {
-      return '';
-    }
-    $marker = $pagebrowser->getMarker();
-    $out = $marker->parseTemplate($template, $formatter, $confId);
-    return $out;
-  }
+	static function fillPageBrowser($template, &$pagebrowser, &$formatter, $confId) {
+		if(strlen(trim($template)) == 0) return '';
+		if(!is_object($pagebrowser) || !is_object($pagebrowser->getMarker())) {
+			return '';
+		}
+		// Markerklasse kann per TS gesetzt werden
+		$markerClass = $formatter->getConfigurations()->get($confId.'markerclass');
+ 
+		$marker = $markerClass ? $pagebrowser->getMarker($markerClass) : $pagebrowser->getMarker();
+		if(!is_object($marker)) {
+			return '';
+		}
+
+		$out = $marker->parseTemplate($template, $formatter, $confId);
+		return $out;
+	}
   
   /**
    * Liefert das DefaultMarkerArray
