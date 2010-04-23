@@ -31,7 +31,7 @@ class tx_rnbase_util_PageBrowser implements PageBrowser {
   /**
    * Erstellung des PageBrowser mit einer eindeutigen ID
    */
-  function tx_rnbase_util_PageBrowser($pbid) {
+  function __construct($pbid) {
     $this->pbid = $pbid;
   }
 
@@ -125,8 +125,8 @@ interface PageBrowser {
 }
 
 interface PageBrowserMarker {
-  function setPageBrowser($pb);
-  function parseTemplate($template, &$formatter, $pbConfId, $pbMarker = 'PAGEBROWSER');
+  public function setPageBrowser($pb);
+  public function parseTemplate($template, &$formatter, $pbConfId, $pbMarker = 'PAGEBROWSER');
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_PageBrowser.php']) {

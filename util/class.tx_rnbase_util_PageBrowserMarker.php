@@ -36,20 +36,20 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 	/**
 	 * Erstellung des PageBrowserMarkers
 	 */
-	function tx_rnbase_util_PageBrowserMarker() {
+	function __construct() {
 	}
 
 	/**
 	 * Initialisierung des PageBrowserMarkers mit den PageBrowser
 	 */
-	function setPageBrowser($pageBrowser) {
+	public function setPageBrowser($pageBrowser) {
 		$this->pageBrowser = $pageBrowser;
 	}
 
 	/**
 	 * Liefert die Limit-Angaben für die DB-Anfrage
 	 */
-	function parseTemplate($template, &$formatter, $pbConfId, $pbMarker = 'PAGEBROWSER') {
+	public function parseTemplate($template, &$formatter, $pbConfId, $pbMarker = 'PAGEBROWSER') {
 // Configs: maxPages, pagefloat
 // Obsolete da Template: showResultCount, showPBrowserText, dontLinkActivePage, showFirstLast
 //    showRange
@@ -86,7 +86,6 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 		if($templates['prev'] && $pointer > 0) {
 			$parts[] = $this->getPageString($pointer-1, $pointer, 'prev', $templates, $formatter, $pbConfId, $pbMarker);
 		}
-
 		// Jetzt über alle Seiten iterieren
 		for($i=$firstLastArr['first']; $i < $firstLastArr['last']; $i++) {
 			$pageId = ($i == $pointer && $templates['current']) ? 'current' : 'normal';
@@ -105,13 +104,14 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 
 		$implode = $configurations->get($pbConfId.'.implode');
 		$subpartArray['###'.$pbMarker.'_NORMAL_PAGE###'] = implode($parts, $implode ? $implode : ' ');
-		return tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($template, $markerArray, $subpartArray);
+		$ret = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($template, $markerArray, $subpartArray);
+		return $ret;
 	}
 
 	/**
 	 * Liefert das passende Template für die aktuelle Seite
 	 */
-	private function getPageString($currentPage, $pointer, $pageId,  &$templates, &$formatter, $pbConfId, $pbMarker) {
+	protected function getPageString($currentPage, $pointer, $pageId,  &$templates, &$formatter, $pbConfId, $pbMarker) {
 		$rec = array();
 		$rec['number'] = $currentPage + 1;
 
@@ -202,7 +202,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 	 * @param tx_rnbase_configurations $configuration
 	 */
 	protected function initLink(&$configuration) {
-		$this->link = $configuration->createLink(true);
+		$this->link = $configuration->createLink(false);
 		$this->token = md5(microtime());
 		$this->link->label($this->token);
 		$this->link->destination($GLOBALS['TSFE']->id); // Link auf aktuelle Seite
