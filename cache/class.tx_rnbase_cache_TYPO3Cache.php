@@ -38,7 +38,7 @@ class tx_rnbase_cache_TYPO3Cache implements tx_rnbase_cache_ICache {
 	private static $emptyArray = array();
 	public function __construct($cacheName) {
 		try {
-			$this->fillBackendParameters($backendName, $backendOptions);
+			$this->fillBackendParameters($cacheName, $backendName, $backendOptions);
 
 			$factory = self::initTYPO3Cache(true);
 			$cache = $factory->create(
@@ -54,7 +54,8 @@ class tx_rnbase_cache_TYPO3Cache implements tx_rnbase_cache_ICache {
 		if(!is_object($cache)) throw new Exception('Error creating cache with name: ' . $cacheName);
 		$this->setCache($cache);
 	}
-	private function fillBackendParameters(&$backendName, &$backendOptions) {
+	private function fillBackendParameters($cacheName, &$backendName, &$backendOptions) {
+
 		if(!array_key_exists($cacheName, $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'])) {
 			// Der Cache ist nicht konfiguriert. Wir verwenden Defaults
 			$backendName =  't3lib_cache_backend_TransientMemoryBackend';
@@ -96,6 +97,9 @@ class tx_rnbase_cache_TYPO3Cache implements tx_rnbase_cache_ICache {
 	 */
 	public function get($key) {
 		return $this->getCache()->get($key);
+	}
+	public function has($key) {
+		return $this->getCache()->has($key);
 	}
 	public function set($key, $value, $lifetime = NULL) {
 		$this->getCache()->set($key, $value, self::$emptyArray, $lifetime);
