@@ -30,8 +30,15 @@ interface tx_rnbase_cache_ICache {
 	 * Retrieve a value from cache
 	 *
 	 * @param string $key
+	 * @return mixed
 	 */
 	public function get($key);
+	/**
+	 * Check whether or not a cache entry with the specified identifier exists.
+	 *
+	 * @return boolean
+	 */
+	public function has($key);
 	/**
 	 * Put a value to the cache
 	 *
