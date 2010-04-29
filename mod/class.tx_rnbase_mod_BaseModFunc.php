@@ -25,6 +25,9 @@
 
 tx_rnbase::load('tx_rnbase_mod_IModule');
 tx_rnbase::load('tx_rnbase_mod_IModFunc');
+tx_rnbase::load('tx_rnbase_util_BaseMarker');
+tx_rnbase::load('tx_rnbase_util_Templates');
+
 
 /**
  */
@@ -51,7 +54,18 @@ abstract class tx_rnbase_mod_BaseModFunc implements tx_rnbase_mod_IModFunc {
 		$template = $conf->getCObj()->getSubpart($templateCode, $subpart);
 		if(!$template) return $conf->getLL('msg_subpart_not_found'). ': ' . $subpart;
 
+		$start = microtime(true);
+		$memStart = memory_get_usage();
 		$out .= $this->getContent($template, $conf, $conf->getFormatter(), $this->getModule()->getFormTool());
+		if(tx_rnbase_util_BaseMarker::containsMarker($out, 'MOD_')) {
+			$markerArr = array();
+			$memEnd = memory_get_usage();
+			$markerArr['###MOD_PARSETIME###'] = (microtime(true) - $start);
+			$markerArr['###MOD_MEMUSED###'] = ($memEnd - $memStart);
+			$markerArr['###MOD_MEMSTART###'] = $memStart;
+			$markerArr['###MOD_MEMEND###'] = $memEnd;
+			$out = tx_rnbase_util_Templates::substituteMarkerArrayCached($out, $markerArr);
+		}
 		return $out;
 	}
 	/**
