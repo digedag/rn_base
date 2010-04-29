@@ -89,7 +89,7 @@ class tx_rnbase_util_Misc {
 	 * @param	string		$msg: the error message
 	 * @return	void
 	 */
-	function mayday($msg, $extKey = '') {
+	public static function mayday($msg, $extKey = '') {
 		$aTrace		= debug_backtrace();
 		$aLocation	= array_shift($aTrace);
 		$aTrace1	= array_shift($aTrace);

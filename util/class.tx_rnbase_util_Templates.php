@@ -151,7 +151,7 @@ class tx_rnbase_util_Templates {
 	 * @return	string		The output content stream
 	 * @see substituteSubpart(), substituteMarker(), substituteMarkerInObject(), TEMPLATE()
 	 */
-	public function substituteMarkerArrayCached($content, array $markContentArray = NULL, array $subpartContentArray = NULL, array $wrappedSubpartContentArray = NULL) {
+	public static function substituteMarkerArrayCached($content, array $markContentArray = NULL, array $subpartContentArray = NULL, array $wrappedSubpartContentArray = NULL) {
 		tx_rnbase_util_Misc::pushTT('substituteMarkerArray');
 
 			// If not arrays then set them
