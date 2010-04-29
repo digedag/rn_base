@@ -2,6 +2,10 @@
 
 Änderungen
 ----------
+v0.7.6 (29.04.2010)
+ * ErrorMail: Send only one mail within one minute.
+ * It is possible to configure error messages for uncaught exceptions. Create a default language label ERROR_default in your extension language file. You can define labels for each exception error code like ERROR_123.
+
 v0.7.5 (29.04.2010)
  * mod_BaseModFunc: new default marker with performance data: ###MOD_PARSETIME###, ###MOD_MEMUSED###, ###MOD_MEMSTART###, ###MOD_MEMEMD###
 

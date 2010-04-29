@@ -232,7 +232,7 @@ class tx_rnbase_controller {
 			$ret = $action->execute($parameters,$configurations);
 		}
 		catch(Exception $e) {
-			$ret = $this->handleException($actionName, $e);
+			$ret = $this->handleException($actionName, $e, $configurations);
 			$this->errors[] = $e;
 		}
 		return $ret;
@@ -248,22 +248,62 @@ class tx_rnbase_controller {
 	/**
 	 * Interne Verarbeitung der Exception
 	 * @param Exception $e
+	 * @param tx_rnbase_Configurations $configurations
 	 */
-	private function handleException($actionName, Exception $e) {
+	private function handleException($actionName, Exception $e, $configurations) {
+		tx_rnbase::load('tx_rnbase_util_Logger');
+		if(tx_rnbase_util_Logger::isFatalEnabled()) {
+			$extKey = $configurations->getExtensionKey();
+			$extKey = $extKey ? $extKey : 'rn_base';
+			tx_rnbase_util_Logger::fatal('Fatal error for action ' . $actionName, $extKey, array('Exception'=> $e));
+		}
 		$addr = tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'sendEmailOnException');
 		if($addr) {
-			$this->sendErrorMail($addr, $actionName, $e);
 		}
-
+			$this->sendErrorMail($addr, $actionName, $e);
+		
 		// Now message for FE
-		$verbose = intval(tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'verboseMayday'));
-		$ret = '<div><strong>UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName .'</strong>';
-		if($verbose)
-			$ret .= '<br /><pre>'.$e->__toString().'</pre>';
-		$ret .= '</div>';
+		$ret = $this->getErrorMessage($actionName, $e, $configurations);
+		return $ret;
+	}
+	/**
+	 * Build an error message string for frontend
+	 * @param string $actionName
+	 * @param Exception $e
+	 * @param tx_rnbase_Configurations $configurations
+	 */
+	private function getErrorMessage($actionName, Exception $e, $configurations) {
+		// Zuerst nach einem ErrorCode suchen
+		$errCode = $e->getCode();
+		$errCode = $errCode ? $errCode : 'default';
+		$ret = $configurations->getLL('ERROR_'.$errCode, '');
+		if(!$ret) {
+			// Fallback to default error message
+			$verbose = intval(tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'verboseMayday'));
+			$ret = '<div><strong>UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName .'</strong>';
+			if($verbose)
+				$ret .= '<br /><pre>'.$e->__toString().'</pre>';
+			$ret .= '</div>';
+		}
 		return $ret;
 	}
 	private function sendErrorMail($addr, $actionName, Exception $e) {
+		$lockFile = PATH_site.'typo3temp/rn_base/maillock.txt';
+		$lockFileFound = is_file($lockFile);
+		if($lockFileFound) {
+			$lastCall = intval(trim(file_get_contents($lockFile)));
+			if($lastCall > (time() - 60)) {
+				return; // Only one mail within one minute sent
+			}
+		}
+		else {
+			if(!is_file(PATH_site.'typo3temp/rn_base/')) {
+				tx_rnbase::load('tx_rnbase_util_Logger');
+				tx_rnbase_util_Logger::info('TempDir for rn_base not found. Check EM settings!', 'rn_base', array('lockfile'=> $lockFile));
+			}
+			$lockFileFound = true;
+		}
+		
 		$textPart = 'This is an automatic email from TYPO3. Don\'t answer!'."\n\n"; 
 		$htmlPart = '<strong>This is an automatic email from TYPO3. Don\'t answer!</strong>';
 		$textPart .= 'UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName ."\n\n";
@@ -288,6 +328,8 @@ class tx_rnbase_controller {
 		$mail->addPlain($textPart);
 		$mail->setHTML($htmlPart);
 //		$mail->theParts['html']['content'] = $this->parse($mail->theParts['html']['content']);
+		if($lockFileFound)
+			file_put_contents($lockFile, time()); // refresh lock
 		return $mail->send($addr);
 	}
 
