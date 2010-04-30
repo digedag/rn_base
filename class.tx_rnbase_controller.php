@@ -255,7 +255,8 @@ class tx_rnbase_controller {
 		if(tx_rnbase_util_Logger::isFatalEnabled()) {
 			$extKey = $configurations->getExtensionKey();
 			$extKey = $extKey ? $extKey : 'rn_base';
-			tx_rnbase_util_Logger::fatal('Fatal error for action ' . $actionName, $extKey, array('Exception'=> $e));
+			tx_rnbase_util_Logger::fatal('Fatal error for action ' . $actionName, $extKey, 
+				array('Exception'=> $e, '_GET' => $_GET, '_POST' => $_POST));
 		}
 		$addr = tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'sendEmailOnException');
 		if($addr) {
@@ -312,6 +313,8 @@ class tx_rnbase_controller {
 		$htmlPart .= '<p><strong>Message:</strong><br />' . $e->getMessage() . '</p>';
 		$textPart .= "Stacktrace:\n". $e->__toString()."\n";
 		$htmlPart .= '<p><strong>Stacktrace:</strong><pre>'.$e->__toString().'</pre></p>';
+		$htmlPart .= '<p><strong>_GET</strong><br />'. var_export($_GET, true). '</p>';
+		$htmlPart .= '<p><strong>_POST</strong><br />'. var_export($_POST, true). '</p>';
 		if($e instanceof tx_rnbase_util_Exception) {
 			$additional = $e->getAdditional();
 			if($additional)
@@ -320,7 +323,7 @@ class tx_rnbase_controller {
 
 		$mail = t3lib_div::makeInstance('t3lib_htmlmail');
 		$mail->start();
-		$mail->subject         = 'Exception on site '.$TYPO3_CONF_VARS['SYS']['sitename'];
+		$mail->subject         = 'Exception on site '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
 		$mail->from_email      = tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'fromEmail');
 		$mail->from_name       = '';
 		$mail->organisation    = '';
