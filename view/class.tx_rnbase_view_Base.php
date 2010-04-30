@@ -78,7 +78,7 @@ class tx_rnbase_view_Base{
 
 		$controller = $this->getController();
 		if($controller) {
-			$params['confid'] = $controller->getConfid();
+			$params['confid'] = $controller->getConfId();
 			$params['item'] = $viewData->offsetGet('item');
 			$params['items'] = $viewData->offsetGet('items');
 			tx_rnbase::load('tx_rnbase_util_BaseMarker');
