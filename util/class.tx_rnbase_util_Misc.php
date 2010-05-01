@@ -90,6 +90,9 @@ class tx_rnbase_util_Misc {
 	 * @return	void
 	 */
 	public static function mayday($msg, $extKey = '') {
+		tx_rnbase::load('tx_rnbase_util_Logger');
+
+		tx_rnbase_util_Logger::fatal($msg, $extKey);
 		$aTrace		= debug_backtrace();
 		$aLocation	= array_shift($aTrace);
 		$aTrace1	= array_shift($aTrace);
@@ -116,6 +119,10 @@ class tx_rnbase_util_Misc {
 		}
 
 		$aDebug[] = '</div>';
+
+		if(intval(tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'forceException4Mayday'))) {
+			throw tx_rnbase::makeInstance('tx_rnbase_util_Exception', $msg, 0, array('Info' => $aDebug));
+		}
 
 		$aDebug[] = '<br/>';
 
