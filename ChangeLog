@@ -2,11 +2,16 @@
 
 Änderungen
 ----------
-v0.7.6 (29.04.2010)
+v0.7.7 (01.05.2010)
+ * New class tx_rnbase_util_SimpleMarker
+ * GET and POST vars for error mail added
+ * tx_rnbase_Controller: missing include fixed
+ 
+v0.7.6 (29.04.2010) (not released)
  * ErrorMail: Send only one mail within one minute.
  * It is possible to configure error messages for uncaught exceptions. Create a default language label ERROR_default in your extension language file. You can define labels for each exception error code like ERROR_123.
 
-v0.7.5 (29.04.2010)
+v0.7.5 (29.04.2010) (not released)
  * mod_BaseModFunc: new default marker with performance data: ###MOD_PARSETIME###, ###MOD_MEMUSED###, ###MOD_MEMSTART###, ###MOD_MEMEMD###
 
 v0.7.4 (24.04.2010) (not released)
