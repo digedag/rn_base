@@ -41,7 +41,7 @@ class tx_rnbase_cache_NoCache implements tx_rnbase_cache_ICache {
 	public function get($key) {
 		return null;
 	}
-	public function has($key, $value, $lifetime = NULL) {
+	public function has($key) {
 		return false;
 	}
 	public function set($key, $value, $lifetime = NULL) {
