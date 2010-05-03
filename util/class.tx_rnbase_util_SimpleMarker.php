@@ -22,9 +22,9 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.rn_base.php');
+require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
-rn_base::load('tx_rnbase_util_BaseMarker');
+tx_rnbase::load('tx_rnbase_util_BaseMarker');
 
 /**
  * A generic marker class. 
