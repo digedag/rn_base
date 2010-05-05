@@ -521,8 +521,19 @@ class tx_rnbase_util_Link {
 		// Zusätzliche Parameter für den Link
 		$atagParams = $configurations->get($confId.'atagparams.');
 		if(is_array($atagParams)) {
-			$this->attributes($atagParams);
+			// Die Parameter werden jetzt nochmal per TS validiert und können somit dynamisch gesetzt werden
+			$attributes = array();
+			foreach($atagParams As $aParam => $lvalue) {
+				if(substr($aParam,strlen($aParam)-1,1) == '.') {
+					$aParam = substr($aParam,0, strlen($aParam)-1);
+					if(array_key_exists($aParam, $atagParams))
+						continue;
+				}
+				$attributes[$aParam] = $configurations->getCObj()->stdWrap($atagParams[$aParam], $atagParams[$aParam.'.']);
+			}
+			$this->attributes($attributes);
 		}
+
 		// KeepVars prüfen
 		// Per Default sind die KeepVars aktiviert. Mit useKeepVars == 0 können sie wieder entfernt werden
 		if(!$configurations->get($confId.'useKeepVars')) {
