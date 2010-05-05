@@ -4,6 +4,7 @@
 ----------
 v0.7.8 (02.05.2010)
  * New option forceException4Mayday in EM
+ * New method tx_rnbase_util_Templates::getSubpart
 
 v0.7.7 (01.05.2010) (not released)
  * New class tx_rnbase_util_SimpleMarker
