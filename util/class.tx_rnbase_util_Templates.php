@@ -33,6 +33,16 @@ tx_rnbase::load('tx_rnbase_util_Misc');
 class tx_rnbase_util_Templates {
 	static $substMarkerCache = array();
 	/**
+	 * Shortcut to t3lib_parsehtml::getSubpart
+	 * @param string $template
+	 * @param string $subpart
+	 */
+	public static function getSubpart($template, $subpart) {
+		require_once(PATH_t3lib."class.t3lib_parsehtml.php");
+		return t3lib_parsehtml::getSubpart($template, $subpart);
+	}
+	
+	/**
 	 * Multi substitution function with caching.
 	 *
 	 * This function should be a one-stop substitution function for working with HTML-template. It does not substitute by str_replace but by splitting. This secures that the value inserted does not themselves contain markers or subparts.
