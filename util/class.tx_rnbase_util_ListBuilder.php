@@ -71,7 +71,7 @@ class tx_rnbase_util_ListBuilder {
 	 * @param array $markerParams array of settings for itemmarker
 	 * @return string
 	 */
-	function render(&$dataArr, &$viewData, $template, $markerClassname, $confId, $marker, &$formatter, $markerParams = null) {
+	function render(&$dataArr, $viewData, $template, $markerClassname, $confId, $marker, $formatter, $markerParams = null) {
 
 		$viewData = is_object($viewData) ? $viewData : new ArrayObject();
 		$debugKey = $formatter->getConfigurations()->get($confId.'_debuglb');
