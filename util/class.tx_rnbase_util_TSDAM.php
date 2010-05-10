@@ -77,6 +77,8 @@ class tx_rnbase_util_TSDAM {
 	 * @return string
 	 */
 	function printImages ($content, $tsConf) {
+		if(!t3lib_extMgm::isLoaded('dam')) return '';
+
 		$conf = $this->createConf($tsConf);
 		$file = $conf->get('template');
 		$file = $file ? $file : 'EXT:rn_base/res/simplegallery.html';
