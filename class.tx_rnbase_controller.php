@@ -311,12 +311,16 @@ class tx_rnbase_controller {
 		$htmlPart = '<strong>This is an automatic email from TYPO3. Don\'t answer!</strong>';
 		$textPart .= 'UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName ."\n\n";
 		$htmlPart .= '<div><strong>UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName .'</strong></div>';
-		$textPart .= 'Message: ' . $e->getMessage()."\n\n"; 
+		$textPart .= 'Message: ' . $e->getMessage()."\n\n";
 		$htmlPart .= '<p><strong>Message:</strong><br />' . $e->getMessage() . '</p>';
 		$textPart .= "Stacktrace:\n". $e->__toString()."\n";
 		$htmlPart .= '<p><strong>Stacktrace:</strong><pre>'.$e->__toString().'</pre></p>';
-		$htmlPart .= '<p><strong>_GET</strong><br />'. var_export($_GET, true). '</p>';
-		$htmlPart .= '<p><strong>_POST</strong><br />'. var_export($_POST, true). '</p>';
+		$textPart .= 'SITE_URL: ' . t3lib_div::getIndpEnv('TYPO3_SITE_URL')."\n";
+		$htmlPart .= '<p><strong>SITE_URL</strong><br />'. t3lib_div::getIndpEnv('TYPO3_SITE_URL'). '</p>';
+		if(count($_GET))
+			$htmlPart .= '<p><strong>_GET</strong><br />'. var_export($_GET, true). '</p>';
+		if(count($_POST))
+			$htmlPart .= '<p><strong>_POST</strong><br />'. var_export($_POST, true). '</p>';
 		if($e instanceof tx_rnbase_util_Exception) {
 			$additional = $e->getAdditional();
 			if($additional)
