@@ -224,7 +224,14 @@ class tx_rnbase_controller {
 		return $out;
 	}
 
-	function doAction($actionName, &$parameters, &$configurations) {
+	/**
+	 * Call a single action
+	 * @param string $actionName class name
+	 * @param tx_rnbase_IParams $parameters
+	 * @param tx_rnbase_configurations $configurations
+	 * @return string
+	 */
+	public function doAction($actionName, &$parameters, &$configurations) {
 		$ret = '';
 		try {
 			// Creating the responsible Action
