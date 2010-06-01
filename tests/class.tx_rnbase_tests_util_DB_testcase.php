@@ -27,18 +27,27 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_util_DB');
 
 class tx_rnbase_tests_util_DB_testcase extends tx_phpunit_testcase {
-	function test_setSingleWhereField() {
-		$ret = tx_rnbase_util_DB::setSingleWhereField('Table1', OP_LIKE, 'Col1', 'myValue');
-		$this->assertEquals(" (Table1.col1 LIKE '%myValue%') ", $ret, 'LIKE failed.');
-
-//		self::debugString($ret);
-		$ret = tx_rnbase_util_DB::setSingleWhereField('Table1', OP_INSET_INT, 'Col1', '23');
-		$this->assertEquals(" (FIND_IN_SET('23', Table1.col1)) ", $ret, 'FIND_IN_SET failed.');
-
-		$ret = tx_rnbase_util_DB::setSingleWhereField('Table1', OP_INSET_INT, 'Col1', '23,38');
-		$this->assertEquals(" (FIND_IN_SET('23', Table1.col1) OR FIND_IN_SET('38', Table1.col1)) ", $ret, 'FIND_IN_SET failed.');
+	/**
+	 * @dataProvider singleFieldWhereProvider
+	 */
+	public function test_setSingleWhereFieldWithOneTable($operator, $value, $expected) {
+		$ret = tx_rnbase_util_DB::setSingleWhereField('Table1', $operator, 'Col1', $value);
+		$this->assertEquals($expected, $ret);
 	}
-	
+
+	public function singleFieldWhereProvider() {
+		return array(
+			array(OP_LIKE, 'm', ' '),
+			array(OP_LIKE, 'my m', " (Table1.col1 LIKE '%my%') "),
+			array(OP_LIKE, 'my', " (Table1.col1 LIKE '%my%') "),
+			array(OP_LIKE, 'myValue', " (Table1.col1 LIKE '%myValue%') "),
+			array(OP_LIKE, 'myValue test', " (Table1.col1 LIKE '%myValue%') AND  (Table1.col1 LIKE '%test%') "),
+			array(OP_LIKE_CONST, 'myValue test', " (Table1.col1 LIKE '%myValue test%') "),
+			array(OP_INSET_INT, '23', " (FIND_IN_SET('23', Table1.col1)) "),
+			array(OP_INSET_INT, '23,38', " (FIND_IN_SET('23', Table1.col1) OR FIND_IN_SET('38', Table1.col1)) "),
+		);
+	}
+
 	function test_searchWhere() {
 		$sw = 'content management, system';
 		$fields = 'tab1.bodytext,tab1.header';
@@ -58,7 +67,7 @@ class tx_rnbase_tests_util_DB_testcase extends tx_phpunit_testcase {
 		$this->assertEquals($ret, " (FIND_IN_SET('content', tab1.bodytext) OR FIND_IN_SET('content', tab1.header) OR FIND_IN_SET('management', tab1.bodytext) OR FIND_IN_SET('management', tab1.header) OR FIND_IN_SET('system', tab1.bodytext) OR FIND_IN_SET('system', tab1.header) OR FIND_IN_SET('32', tab1.bodytext) OR FIND_IN_SET('32', tab1.header))", 'FIND_IN_SET failed');
 		
 		$ret = tx_rnbase_util_DB::searchWhere($sw, $fields, 'LIKE');
-		$this->assertEquals($ret, " (tab1.bodytext LIKE '%content%' OR tab1.header LIKE '%content%') (tab1.bodytext LIKE '%management%' OR tab1.header LIKE '%management%') (tab1.bodytext LIKE '%system%' OR tab1.header LIKE '%system%')", 'LIKE failed.');
+		$this->assertEquals($ret, " (tab1.bodytext LIKE '%content%' OR tab1.header LIKE '%content%') AND  (tab1.bodytext LIKE '%management%' OR tab1.header LIKE '%management%') AND  (tab1.bodytext LIKE '%system%' OR tab1.header LIKE '%system%')", 'LIKE failed.');
 
 		$sw = 'content\'; INSERT';
 		$fields = 'tab1.bodytext,tab1.header';

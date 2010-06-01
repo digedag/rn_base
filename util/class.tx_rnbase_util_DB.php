@@ -397,6 +397,10 @@ class tx_rnbase_util_DB {
 			$kw = preg_split('/[ ,]/', $sw);
 			if($operator == 'LIKE')
 				$where = self::_getSearchLike($kw, $searchFields);
+			elseif($operator == 'OP_LIKE_CONST') {
+				$kw = array($sw);
+				$where = self::_getSearchLike($kw, $searchFields);
+			}
 			elseif($operator == 'FIND_IN_SET_OR')
 				$where = self::_getSearchSetOr($kw, $searchFields);
 			else
@@ -446,10 +450,15 @@ class tx_rnbase_util_DB {
 		}
 		return $where;
 	}
+	/**
+	 * Create a where condition for string search in different database tables and columns.
+	 * @param array $kw
+	 * @param array $searchFields
+	 */
 	private static function _getSearchLike($kw, $searchFields) {
 		global $TYPO3_DB;
 		$searchTable = ''; // TODO Check if possible to delete
-		$where = '';
+		$wheres = array();
 		while(list(,$val)=each($kw))	{
 			$val = trim($val);
 			$where_p = array();
@@ -461,9 +470,10 @@ class tx_rnbase_util_DB {
 				}
 			}
 			if (count($where_p))	{
-				$where.=' ('.implode(' OR ',$where_p).')';
+				$wheres[] =' ('.implode(' OR ',$where_p).')';
 			}
 		}
+		$where = count($wheres) ? implode(' AND ',$wheres) : '';
 		return $where;
  	}
 	/**
@@ -529,6 +539,9 @@ class tx_rnbase_util_DB {
 			case OP_LIKE:
 				// Stringvergleich mit LIKE
 				$where .= self::searchWhere($value, $tableAlias . '.' . strtolower($col));
+				break;
+			case OP_LIKE_CONST:
+				$where .= self::searchWhere($value, $tableAlias . '.' . strtolower($col), OP_LIKE_CONST);
 				break;
 			default:
 				tx_rnbase::load('tx_rnbase_util_Misc');

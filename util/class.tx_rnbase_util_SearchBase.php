@@ -35,6 +35,7 @@ define('OP_IN_INT', 'IN');
 define('OP_IN_SQL', 'IN SQL');
 define('OP_INSET_INT', 'FIND_IN_SET');
 define('OP_LIKE', 'LIKE');
+define('OP_LIKE_CONST', 'OP_LIKE_CONST');
 define('OP_EQ_INT', '=');
 define('OP_NOTEQ', 'OP_NOTEQ');
 define('OP_NOTEQ_INT', '!=');
