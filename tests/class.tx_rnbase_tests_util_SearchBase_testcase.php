@@ -28,7 +28,7 @@ tx_rnbase::load('tx_rnbase_util_DB');
 tx_rnbase::load('tx_rnbase_tests_util_DB_testcase');
 
 class tx_rnbase_tests_utilSearchBase_testcase extends tx_phpunit_testcase {
-	function test_search() {
+	function test_searchFieldJoinedWithoutValue() {
 		$searcher = tx_rnbase::makeInstance('tx_rnbase_util_SearchGeneric');
 		$options = $this->createOptions();
 
@@ -37,8 +37,6 @@ class tx_rnbase_tests_utilSearchBase_testcase extends tx_phpunit_testcase {
 		$fields[SEARCH_FIELD_JOINED][0]['cols'][] = 'FEUSER.UID';
 		$ret = $searcher->search($fields, $options);
 
-//		tx_rnbase_tests_util_DB_testcase::debugString($ret);
-		t3lib_div::debug($ret,strpos($ret, 'AND  AND').' - class.tx_rnbase_tests_util_SearchBase_testcase.php : '); // TODO: remove me
 		$this->assertTrue(strpos($ret, 'AND  AND') === false, 'SQL is wrong');
 	}
 	private function createOptions() {
