@@ -52,9 +52,14 @@ class tx_rnbase_util_FormTool {
 		$params = '&edit['.$editTable.']['.$editUid.']=edit';
 		if(isset($options['params']))
 			$params .= $options['params'];
-		
+
+		$jsCode = t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH']);
+		if(isset($options['confirm']) && strlen($options['confirm']) > 0) {
+    	$jsCode = 'if(confirm('.$GLOBALS['LANG']->JScharCode($options['confirm']).')) {' . $jsCode .'} else {return false;}';
+		}
+
 		$btn = '<input type="button" name="'. $name.'" value="' . $title . '" ';
-		$btn .= 'onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'])).'"';
+		$btn .= 'onclick="'.htmlspecialchars($jsCode).'"';
 		$btn .= '/>';
 		return $btn;
 	}
