@@ -2,6 +2,11 @@
 
 Änderungen
 ----------
+
+v0.8.1 (??.05.2010)
+ * tx_rnbase_util_FormTool::createEditButton with confirm option
+ * tx_rnbase_util_Link: new TS options noCache and noHash
+
 v0.8.0 (11.05.2010)
  * Additional check for installed DAM in tx_rnbase_util_TSDAM
  * Current SITE_URL is included in error mail

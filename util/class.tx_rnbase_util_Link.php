@@ -569,6 +569,11 @@ class tx_rnbase_util_Link {
 			}
 			$this->overruled($newKeepVars);
 		}
+		if($configurations->get($confId.'noCache'))
+			$this->noCache();
+		if($configurations->get($confId.'noHash'))
+			$this->noHash();
+
 	}
 }
 
