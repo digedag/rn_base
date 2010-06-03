@@ -401,6 +401,22 @@ class tx_rnbase_util_FormTool {
 		return $ret;
   }
 
+  /**
+   * Submit-Button like this:  name="mykey[123]" value="label"
+   * You will get 123 as long as no other submit changes this value.
+   * @param string $key
+   * @param string $modName
+   * @return mixed
+   */
+	public function getStoredRequestData($key, $changed=array(), $modName='DEFRNBASEMOD') {
+		$data = t3lib_div::_GP($key);
+		if(is_array($data)) {
+			list($itemid, ) = each($data);
+			$changed[$key] = $itemid;
+		}
+		$ret = t3lib_BEfunc::getModuleData(array ($key => ''), $changed, $modName );
+		return $ret[$key];
+	}
   function getTCEFormArray($table,$theUid, $isNew = false) {
 		$trData = t3lib_div::makeInstance('t3lib_transferData');
 		$trData->addRawData = TRUE;
