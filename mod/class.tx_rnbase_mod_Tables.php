@@ -85,7 +85,7 @@ class tx_rnbase_mod_Tables {
 				continue;
 			}
 			$label = $LANG->getLL((isset($data['title']) ? $data['title'] : $column));
-			$arr[] = $label ? $label : $column;
+			$arr[] = $label ? $label : $data['title'];
 		}
 		if(isset($options['linker']))
 			$arr[] = $LANG->getLL('label_action');
