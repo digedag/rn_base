@@ -193,12 +193,17 @@ class tx_rnbase_util_DB {
 
 		//$wrapper = is_string($arr['wrapperclass']) ? tx_rnbase::makeInstanceClassName($arr['wrapperclass']) : 0;
 		$wrapper = is_string($arr['wrapperclass']) ? trim($arr['wrapperclass']) : 0;
-		
+		$callback = isset($arr['callback']) ? $arr['callback'] : false;
+
 		$rows = array();
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
-//			$rows[] = ($wrapper) ? new $wrapper($row) : $row;
-			$rows[] = ($wrapper) ? tx_rnbase::makeInstance($wrapper,$row) : $row;
-//			unset($row);
+			$item = ($wrapper) ? tx_rnbase::makeInstance($wrapper, $row) : $row;
+			if($callback) {
+				call_user_func($callback, $fields, $options);
+				unset($item);
+			}
+			else
+				$rows[] = $item;
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		if($debug)
