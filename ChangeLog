@@ -3,7 +3,11 @@
 Änderungen
 ----------
 
-v0.8.2 (07.06.2010)
+v0.8.3 (07.06.2010)
+ * New marker ###.._TOTALLINE### in ListBuilder. It shows current line number of a large list with pagebrowser.
+ * tx_rnbase_util_SearchBase: New option "callback" for doSelect
+
+v0.8.2 (07.06.2010) (not released)
  * mod_Tables: getHeadline() uses title string as fallback
  * util_FormTool: new method getStoredRequestData()
  * tx_rnbase_util_DB: New option "callback" for doSelect
