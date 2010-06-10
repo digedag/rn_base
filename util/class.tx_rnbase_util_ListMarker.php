@@ -30,14 +30,37 @@ tx_rnbase::load('tx_rnbase_util_ListMarkerInfo');
  */
 class tx_rnbase_util_ListMarker {
   
-  function tx_rnbase_util_ListMarker(ListMarkerInfo $listMarkerInfo = null) {
+  public function __construct(ListMarkerInfo $listMarkerInfo = null) {
   	if($listMarkerInfo)
 	  	$this->info =& $listMarkerInfo;
 	  else
 	  	$this->info = tx_rnbase::makeInstance('tx_rnbase_util_ListMarkerInfo');
   }
 
-  function render(&$dataArr, $template, $markerClassname, $confId, $marker, &$formatter, $markerParams = false, $offset=0) {
+	function renderEach(tx_rnbase_util_IListProvider $provider, $template, $markerClassname, $confId, $marker, &$formatter, $markerParams = false, $offset=0) {
+		$entryMarker = ($markerParams) ? tx_rnbase::makeInstance($markerClassname, $markerParams) : tx_rnbase::makeInstance($markerClassname);
+
+		$this->info->init($template, $formatter, $marker);
+  
+		$parts = array();
+		$rowRoll = intval($formatter->configurations->get($confId.'roll.value'));
+		$rowRollCnt = 0;
+		$i=0;
+		//for($i=0, $cnt=count($dataArr); $i < $cnt; $i++) {
+		while($data = $provider->getNext()) {
+			$data->record['roll'] = $rowRollCnt;
+			$data->record['line'] = $i; // Marker für aktuelle Zeilenummer
+			$data->record['totalline'] = $i+$offset; // Marker für aktuelle Zeilenummer der Gesamtliste
+			$part = $entryMarker->parseTemplate($this->info->getTemplate($data), $data, $formatter, $confId, $marker);
+			$parts[] = $part;
+			$rowRollCnt = ($rowRollCnt >= $rowRoll) ? 0 : $rowRollCnt + 1;
+			$i++;
+		}
+		$parts = implode($formatter->configurations->get($confId.'implode'), $parts);
+		return $parts;
+	}
+
+	function render(&$dataArr, $template, $markerClassname, $confId, $marker, &$formatter, $markerParams = false, $offset=0) {
 		$entryMarker = ($markerParams) ? tx_rnbase::makeInstance($markerClassname, $markerParams) : tx_rnbase::makeInstance($markerClassname);
 
 		$this->info->init($template, $formatter, $marker);

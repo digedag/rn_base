@@ -46,6 +46,85 @@ class tx_rnbase_util_ListBuilder {
 			$this->info = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilderInfo');
 	}
 
+	public function renderEach(tx_rnbase_util_IListProvider $provider, $viewData, $template, $markerClassname, $confId, $marker, $formatter, $markerParams = null) {
+		$viewData = is_object($viewData) ? $viewData : new ArrayObject();
+		$debugKey = $formatter->getConfigurations()->get($confId.'_debuglb');
+		$debug = ($debugKey && ($debugKey==='1' || 
+				($_GET['debug'] && array_key_exists($debugKey,array_flip(t3lib_div::trimExplode(',', $_GET['debug'])))) ||
+				($_POST['debug'] && array_key_exists($debugKey,array_flip(t3lib_div::trimExplode(',', $_POST['debug']))))
+				)
+		);
+		if($debug) {
+		  $time = microtime(true);
+		  $mem = memory_get_usage();
+		  $wrapTime = tx_rnbase_util_FormatUtil::$time;
+		  $wrapMem = tx_rnbase_util_FormatUtil::$mem;
+		}
+		if($provider->getSize()) {
+			$listMarker = tx_rnbase::makeInstance('tx_rnbase_util_ListMarker', $this->info->getListMarkerInfo());
+			$templateList = t3lib_parsehtml::getSubpart($template,'###'.$marker.'S###');
+
+			$templateEntry = t3lib_parsehtml::getSubpart($templateList,'###'.$marker.'###');
+			$offset = 0;
+			$pageBrowser =& $viewData->offsetGet('pagebrowser');
+			if($pageBrowser) {
+				$state = $pageBrowser->getState();
+				$offset = $state['offset'];
+			}
+
+			$out = $listMarker->renderEach($provider, $templateEntry, $markerClassname,
+					$confId, $marker, $formatter, $markerParams, $offset);
+			$subpartArray['###'.$marker.'###'] = $out;
+			$subpartArray['###'.$marker.'EMPTYLIST###'] = '';
+			// Das Menu für den PageBrowser einsetzen
+			if($pageBrowser) {
+				$subpartArray['###PAGEBROWSER###'] = tx_rnbase_util_BaseMarker::fillPageBrowser(
+								t3lib_parsehtml::getSubpart($template,'###PAGEBROWSER###'),
+								$pageBrowser, $formatter, $confId.'pagebrowser.');
+				$markerArray['###'.$marker.'COUNT###'] = $pageBrowser->getListSize();
+			}
+			else {
+				$markerArray['###'.$marker.'COUNT###'] = count($dataArr);
+			}
+			$out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($templateList, $markerArray, $subpartArray);
+		}
+		else {
+			// Support für EMPTYLIST-Block
+			if(tx_rnbase_util_BaseMarker::containsMarker($template, $marker.'EMPTYLIST')) {
+				$out = t3lib_parsehtml::getSubpart($template,'###'.$marker.'EMPTYLIST###');
+			}
+			else
+				$out = $this->info->getEmptyListMessage($confId, $viewData, $formatter->getConfigurations());
+		}
+		$markerArray = array();
+		$subpartArray = array();
+		$subpartArray['###'.$marker.'S###'] = $out;
+
+		// Muss ein Formular mit angezeigt werden
+		// Zuerst auf einen Filter prüfen
+		$filter  =& $viewData->offsetGet('filter');
+		if($filter) {
+			$template = $filter->getMarker()->parseTemplate($template, $formatter, $confId.'filter.',$marker);
+		}
+
+		$out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($template, $markerArray, $subpartArray);
+		if($debug) {
+			tx_rnbase::load('class.tx_rnbase_util_Misc.php');
+
+			$wrapTime = tx_rnbase_util_FormatUtil::$time - $wrapTime;
+			$wrapMem = tx_rnbase_util_FormatUtil::$mem - $wrapMem;
+			t3lib_div::debug(array(
+					'Rows'=>count($dataArr),
+					'Execustion time'=>(microtime(true) -$time),
+					'WrapTime'=>$wrapTime,
+					'WrapMem'=>$wrapMem,
+					'Memory start'=> $mem,
+					'Memory consumed'=> (memory_get_usage()-$mem)
+				), 'ListBuilder Statistics for: ' . $confId . ' Key: ' . $debugKey);
+		}
+		return $out;
+	}
+	
 	/**
 	 * Render an array of data entries with an html template. The html template should look like this:
 	 * ###DATAS###
