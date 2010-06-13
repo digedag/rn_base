@@ -199,7 +199,7 @@ class tx_rnbase_util_DB {
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
 			$item = ($wrapper) ? tx_rnbase::makeInstance($wrapper, $row) : $row;
 			if($callback) {
-				call_user_func($callback, $fields, $options);
+				call_user_func($callback, $item);
 				unset($item);
 			}
 			else

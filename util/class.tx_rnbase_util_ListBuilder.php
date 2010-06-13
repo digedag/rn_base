@@ -26,6 +26,7 @@ require_once(PATH_t3lib."class.t3lib_parsehtml.php");
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_util_ListBuilderInfo');
 tx_rnbase::load('tx_rnbase_util_BaseMarker');
+tx_rnbase::load('tx_rnbase_util_IListProvider');
 
 
 /**
@@ -60,21 +61,22 @@ class tx_rnbase_util_ListBuilder {
 		  $wrapTime = tx_rnbase_util_FormatUtil::$time;
 		  $wrapMem = tx_rnbase_util_FormatUtil::$mem;
 		}
-		if($provider->getSize()) {
-			$listMarker = tx_rnbase::makeInstance('tx_rnbase_util_ListMarker', $this->info->getListMarkerInfo());
-			$templateList = t3lib_parsehtml::getSubpart($template,'###'.$marker.'S###');
 
-			$templateEntry = t3lib_parsehtml::getSubpart($templateList,'###'.$marker.'###');
-			$offset = 0;
-			$pageBrowser =& $viewData->offsetGet('pagebrowser');
-			if($pageBrowser) {
-				$state = $pageBrowser->getState();
-				$offset = $state['offset'];
-			}
+		$listMarker = tx_rnbase::makeInstance('tx_rnbase_util_ListMarker', $this->info->getListMarkerInfo());
+		$templateList = t3lib_parsehtml::getSubpart($template,'###'.$marker.'S###');
 
-			$out = $listMarker->renderEach($provider, $templateEntry, $markerClassname,
-					$confId, $marker, $formatter, $markerParams, $offset);
-			$subpartArray['###'.$marker.'###'] = $out;
+		$templateEntry = t3lib_parsehtml::getSubpart($templateList,'###'.$marker.'###');
+		$offset = 0;
+		$pageBrowser =& $viewData->offsetGet('pagebrowser');
+		if($pageBrowser) {
+			$state = $pageBrowser->getState();
+			$offset = $state['offset'];
+		}
+
+		$ret = $listMarker->renderEach($provider, $templateEntry, $markerClassname,
+				$confId, $marker, $formatter, $markerParams, $offset);
+		if($ret['size'] > 0) {
+			$subpartArray['###'.$marker.'###'] = $ret['result'];
 			$subpartArray['###'.$marker.'EMPTYLIST###'] = '';
 			// Das Menu für den PageBrowser einsetzen
 			if($pageBrowser) {
@@ -84,7 +86,7 @@ class tx_rnbase_util_ListBuilder {
 				$markerArray['###'.$marker.'COUNT###'] = $pageBrowser->getListSize();
 			}
 			else {
-				$markerArray['###'.$marker.'COUNT###'] = count($dataArr);
+				$markerArray['###'.$marker.'COUNT###'] = $ret['size'];
 			}
 			$out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($templateList, $markerArray, $subpartArray);
 		}
