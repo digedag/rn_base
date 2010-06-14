@@ -36,28 +36,28 @@ class tx_rnbase_maps_Coord implements tx_rnbase_maps_ICoord {
 	 * @return float
 	 */
 	function getLatitude() {
-		return $this->$latitude;
+		return $this->latitude;
 	}
 	/**
 	 * Returns the longitude
 	 * @return float
 	 */
 	function getLongitude(){
-		return $this->$longitude;
+		return $this->longitude;
 	}
 	/**
 	 * Returns the latitude
 	 * @param float $lat
 	 */
-	function setLatitude(float $lat) {
-		$this->$latitude = $lat;
+	function setLatitude($lat) {
+		$this->latitude = $lat;
 	}
 	/**
 	 * Returns the longitude
 	 * @param float $long
 	 */
-	function setLongitude(float $long){
-		$this->$longitude = $long;
+	function setLongitude($long){
+		$this->longitude = $long;
 	}
 }
 
