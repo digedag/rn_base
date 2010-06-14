@@ -108,7 +108,7 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap {
 		$code = $this->map->drawMap();
 		if(intval($this->conf->get($this->confId.'google.forcejs'))) {
 			// This is necessary if
-			$code .= '<script type="text/javascript">setTimeout("drawMap_'. $this->map->mapName .'()",500);</script>';
+			$code .= "\n". '<script type="text/javascript">GEvent.addDomListener(window, "load",function(){drawMap_'. $this->map->mapName .'();})</script>';
 		}
 		return $code;
 	}
