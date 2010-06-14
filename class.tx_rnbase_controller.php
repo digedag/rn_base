@@ -328,6 +328,7 @@ class tx_rnbase_controller {
 			$htmlPart .= '<p><strong>_GET</strong><br />'. var_export($_GET, true). '</p>';
 		if(count($_POST))
 			$htmlPart .= '<p><strong>_POST</strong><br />'. var_export($_POST, true). '</p>';
+		$htmlPart .= '<p><strong>_SERVER</strong><br />'. var_export($_SERVER, true). '</p>';
 		if($e instanceof tx_rnbase_util_Exception) {
 			$additional = $e->getAdditional();
 			if($additional)
