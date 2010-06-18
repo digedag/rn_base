@@ -160,6 +160,9 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 	 * Liefert eine Instanz von tx_rnbase_configurations. Da wir uns im BE bewegen, wird diese mit einem 
 	 * Config-Array aus der TSConfig gefüttert. Dabei wird die Konfiguration unterhalb von mod.extkey. genommen.
 	 * Für "extkey" wird der Wert der Methode getExtensionKey() verwendet.
+	 * 
+	 * Ein eigenes TS-Template für das BE wird in der ext_localconf.php mit dieser Anweisung eingebunden:
+	 * t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:myext/mod1/pageTSconfig.txt">');
 	 * @return tx_rnbase_configurations
 	 */
 	public function getConfigurations() {
