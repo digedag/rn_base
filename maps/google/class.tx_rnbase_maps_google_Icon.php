@@ -85,20 +85,17 @@ class tx_rnbase_maps_google_Icon implements tx_rnbase_maps_IIcon {
 //	 * $shadowWidth, $shadowHeight, $anchorX, $anchorY, 
 //	 * $infoAnchorX, $infoAnchorY
 		$mapName = $this->map->getMapName();
-		$mapIcon = $mapName.$this->getName();
 
-		$ret= 'var icon_'. $mapIcon .' = new GIcon(G_DEFAULT_ICON);
-			icon_'. $mapIcon .'.image = "'.$this->getImage().'";';
-		if($this->getShadow())
-			$ret .= 'icon_'. $mapIcon .'.shadow = "'.$this->getShadow().'";';
-		if($this->getSize())
-			$ret .= 'icon_'. $mapIcon .'.iconSize = new GSize('.$this->getSize().');';
-		if($this->getShadowSize())
-			$ret .= 'icon_'. $mapIcon .'.shadowSize = new GSize('.$this->getShadowSize().');';
-		
-	 	$ret .= 'icon_'. $mapIcon .'.iconAnchor = new GPoint('.$this->getAnchorPoint().');';
-	 	$ret .= 'icon_'. $mapIcon .'.infoWindowAnchor = new GPoint('.$this->getInfoWindowAnchorPoint().');';
-	 	
+		$image = $this->getImage();
+		$size = $this->getSize() ? $this->getSize() : '20,20';
+		$shadow = $this->getShadow();
+		$shadowSize = $this->getShadowSize() ? $this->getShadowSize() : '20,20';
+		// typo3conf/ext/wec_map/images/mm_20_shadow.png - 22, 20
+
+		$ret = 'WecMap.addIcon("'.$mapName.'", "'.$this->getName().
+				'", "'.$image.'", "'.$shadow.
+				'", new GSize('.$size.'), new GSize('.$shadowSize.
+				'), new GPoint('.$this->getAnchorPoint().'), new GPoint('.$this->getInfoWindowAnchorPoint().'));';
 
 		// Für die wec_map ist nur die ID notwendig
 		return $ret;
