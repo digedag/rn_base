@@ -33,7 +33,7 @@ tx_rnbase::load('tx_rnbase_util_IListProvider');
  * Generic List-Builder. Creates a list of data with Pagebrowser.
  */
 class tx_rnbase_util_ListBuilder {
-	
+	private $visitors = array();
 	/**
 	 * Constructor
 	 *
@@ -45,6 +45,13 @@ class tx_rnbase_util_ListBuilder {
 			$this->info =& $info;
 		else
 			$this->info = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilderInfo');
+	}
+	/**
+	 * Add a visitor callback. It is called for each item before rendering
+	 * @param array $callback
+	 */
+	public function addVisitor(array $callback) {
+		$this->visitors[] = $callback;
 	}
 
 	public function renderEach(tx_rnbase_util_IListProvider $provider, $viewData, $template, $markerClassname, $confId, $marker, $formatter, $markerParams = null) {
@@ -73,6 +80,7 @@ class tx_rnbase_util_ListBuilder {
 			$offset = $state['offset'];
 		}
 
+		$listMarker->addVisitors($this->visitors);
 		$ret = $listMarker->renderEach($provider, $templateEntry, $markerClassname,
 				$confId, $marker, $formatter, $markerParams, $offset);
 		if($ret['size'] > 0) {

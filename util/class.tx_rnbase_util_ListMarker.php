@@ -29,13 +29,21 @@ tx_rnbase::load('tx_rnbase_util_ListMarkerInfo');
  * Base class for Markers.
  */
 class tx_rnbase_util_ListMarker {
-  
-  public function __construct(ListMarkerInfo $listMarkerInfo = null) {
-  	if($listMarkerInfo)
-	  	$this->info =& $listMarkerInfo;
-	  else
-	  	$this->info = tx_rnbase::makeInstance('tx_rnbase_util_ListMarkerInfo');
-  }
+
+	public function __construct(ListMarkerInfo $listMarkerInfo = null) {
+		if($listMarkerInfo)
+			$this->info =& $listMarkerInfo;
+		else
+			$this->info = tx_rnbase::makeInstance('tx_rnbase_util_ListMarkerInfo');
+	}
+
+	/**
+	 * Add a visitor callback. It is called for each item before rendering
+	 * @param array $visitors array of callback arrays
+	 */
+	public function addVisitors(array $visitors) {
+		$this->visitors = $visitors;
+	}
 
   /**
    * 
@@ -76,24 +84,34 @@ class tx_rnbase_util_ListMarker {
 		$data->record['roll'] = $this->rowRollCnt;
 		$data->record['line'] = $this->i; // Marker für aktuelle Zeilenummer
 		$data->record['totalline'] = $this->i+$this->offset; // Marker für aktuelle Zeilenummer der Gesamtliste
+		$this->handleVisitors($data);
 		$part = $this->entryMarker->parseTemplate($this->info->getTemplate($data), $data, $this->formatter, $this->confId, $this->marker);
 		$this->parts[] = $part;
 		$this->rowRollCnt = ($this->rowRollCnt >= $this->rowRoll) ? 0 : $this->rowRollCnt + 1;
 		$this->i++;
 	}
+	/**
+	 * Call all visitors for an item
+	 * @param object $data
+	 */
+	private function handleVisitors($data) {
+		if(!is_array($this->visitors)) return;
+		foreach($this->visitors As $visitor)
+			call_user_func($visitor, $data);
+	}
 
-  /**
-   * Render an array of objects
-   * @param array $dataArr
-   * @param string $template
-   * @param string $markerClassname
-   * @param string $confId
-   * @param string $marker
-   * @param tx_rnbase_util_FormatUtil $formatter
-   * @param mixed $markerParams
-   * @param int $offset
-   * @return array
-   */
+	/**
+	 * Render an array of objects
+	 * @param array $dataArr
+	 * @param string $template
+	 * @param string $markerClassname
+	 * @param string $confId
+	 * @param string $marker
+	 * @param tx_rnbase_util_FormatUtil $formatter
+	 * @param mixed $markerParams
+	 * @param int $offset
+	 * @return array
+	 */
 	public function render($dataArr, $template, $markerClassname, $confId, $marker, &$formatter, $markerParams = false, $offset=0) {
 		$entryMarker = ($markerParams) ? tx_rnbase::makeInstance($markerClassname, $markerParams) : tx_rnbase::makeInstance($markerClassname);
 
@@ -107,6 +125,7 @@ class tx_rnbase_util_ListMarker {
 			$data->record['roll'] = $rowRollCnt;
 			$data->record['line'] = $i; // Marker für aktuelle Zeilenummer
 			$data->record['totalline'] = $i+$offset; // Marker für aktuelle Zeilenummer der Gesamtliste
+			$this->handleVisitors($data);
 			$part = $entryMarker->parseTemplate($this->info->getTemplate($data), $data, $formatter, $confId, $marker);
 			$parts[] = $part;
 			$rowRollCnt = ($rowRollCnt >= $rowRoll) ? 0 : $rowRollCnt + 1;
