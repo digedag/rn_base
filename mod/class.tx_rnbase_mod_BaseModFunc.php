@@ -51,7 +51,7 @@ abstract class tx_rnbase_mod_BaseModFunc implements tx_rnbase_mod_IModFunc {
 		$templateCode = t3lib_div::getURL($file);
 		if(!$templateCode) return $conf->getLL('msg_template_not_found').'<br />File: \'' . $file . '\'<br />ConfId: \'' . $this->getConfId().'template\'';
 		$subpart = '###'.strtoupper($this->getFuncId()).'###';
-		$template = $conf->getCObj()->getSubpart($templateCode, $subpart);
+		$template = tx_rnbase_util_Templates::getSubpart($templateCode, $subpart);
 		if(!$template) return $conf->getLL('msg_subpart_not_found'). ': ' . $subpart;
 
 		$start = microtime(true);
