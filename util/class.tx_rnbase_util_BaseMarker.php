@@ -152,7 +152,9 @@ class tx_rnbase_util_BaseMarker {
 			$makeLink = self::containsMarker($template, $linkMarker);
 			$makeUrl = self::containsMarker($template, $linkMarker.'URL');
 		}
-		if(!$makeLink && !$makeUrl) return; // Nothing to do
+		if(!$makeLink && !$makeUrl) {
+			return; // Nothing to do
+		}
 
 		$linkObj =& $formatter->getConfigurations()->createLink();
 		$token = self::getToken();
@@ -303,7 +305,8 @@ class tx_rnbase_util_BaseMarker {
 	 * @return boolean
 	 */
 	public static function containsMarker($template, $markerPrefix) {
-		return (preg_match('/###'.$markerPrefix.'([A-Z0-9_-])*/', $template)) > 0;
+		return (strpos($template, '###'.$markerPrefix) !== FALSE);
+//		return (preg_match('/###'.$markerPrefix.'([A-Z0-9_-])*/', $template)) > 0;
 	}
 	/**
 	 * Start TimeTrack section
