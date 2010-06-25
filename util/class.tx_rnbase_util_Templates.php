@@ -32,6 +32,8 @@ tx_rnbase::load('tx_rnbase_util_Misc');
  */
 class tx_rnbase_util_Templates {
 	static $substMarkerCache = array();
+	private static $tmpl;
+
 	/**
 	 * Shortcut to t3lib_parsehtml::getSubpart
 	 * @param string $template
@@ -41,7 +43,39 @@ class tx_rnbase_util_Templates {
 		require_once(PATH_t3lib."class.t3lib_parsehtml.php");
 		return t3lib_parsehtml::getSubpart($template, $subpart);
 	}
-	
+	/**
+	 * @return t3lib_TStemplate
+	 */
+	private static function getTSTemplate() {
+		if(!is_object(self::$tmpl)) {
+			if($GLOBALS['TSFE']->tmpl) {
+				self::$tmpl = $GLOBALS['TSFE']->tmpl;
+			}
+			else {
+				self::$tmpl = t3lib_div::makeInstance('t3lib_TStemplate');
+				self::$tmpl->init();
+				self::$tmpl->tt_track= 0;
+			}
+		}
+		return self::$tmpl;
+	}
+	/**
+	 * Returns a subpart from file
+	 * @param string $fileName filepath or url
+	 * @param string $subpart
+	 * @return string
+	 * @throws Exception if file or subpart not found
+	 */
+	public static function getSubpartFromFile($fileName, $subpart) {
+		$tmpl = self::getTSTemplate();
+		$file = $tmpl->getFileName($fileName);
+
+		$templateCode = t3lib_div::getURL($file);
+		if(!$templateCode) throw new Exception('File not found: '. htmlspecialchars($file));
+		$template = self::getSubpart($templateCode, $subpart);
+		if(!$template) throw new Exception('Subpart not found! File: '. htmlspecialchars($file) . ' Subpart: ' . htmlspecialchars($subpart));
+		return $template;
+	}
 	/**
 	 * Multi substitution function with caching.
 	 *
