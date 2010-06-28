@@ -40,26 +40,51 @@ class tx_rnbase_tests_listbuilder_testcase extends tx_phpunit_testcase {
 		$configurations = $this->getConfig($confArr);
 		$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
 		$html = $listBuilder->render($items,
-						new ArrayObject(), self::$advTemplate, 'tx_rnbase_util_MediaMarker',
+						false, self::$advTemplate, 'tx_rnbase_util_MediaMarker',
+						'media.pic.', 'PIC', $configurations->getFormatter());
+		$this->assertEquals($html, self::$listAdvEmpty, 'Leere Liste ist falsch');
+
+		$items = $this->getModels();
+		$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
+		$html = $listBuilder->render($items,
+						false, self::$advTemplate, 'tx_rnbase_util_MediaMarker',
+						'media.pic.', 'PIC', $configurations->getFormatter());
+		$this->assertEquals($html, self::$listAdvFilled, 'Liste ist falsch');
+	}
+
+	function test_multiSubpartList() {
+		$items = array();
+		$confArr = array();
+		$configurations = $this->getConfig($confArr);
+		$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
+		$html = $listBuilder->render($items,
+						false, self::$multiSubpartTemplate, 'tx_rnbase_util_MediaMarker',
 						'media.pic.', 'PIC', $configurations->getFormatter());
 
-		$this->assertEquals($html, self::$listAdvEmpty, 'Leere Liste ist falsch');
+		$this->assertEquals($html, self::$listMultiSubpartEmpty, 'Leere Liste ist falsch');
+
+		$items = $this->getModels();
+		$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
+		$html = $listBuilder->render($items,
+						false, self::$multiSubpartTemplate, 'tx_rnbase_util_MediaMarker',
+						'media.pic.', 'PIC', $configurations->getFormatter());
+		$this->assertEquals($html, self::$listMultiSubpartFilled, 'Liste ist falsch');
 	}
-	
+
 	function test_simpleList() {
 		$items = array();
 		$confArr = array();
 		$configurations = $this->getConfig($confArr);
 		$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
 		$html = $listBuilder->render($items,
-						new ArrayObject(), self::$template, 'tx_rnbase_util_MediaMarker',
+						false, self::$template, 'tx_rnbase_util_MediaMarker',
 						'media.pic.', 'PIC', $configurations->getFormatter());
 
 		$this->assertEquals($html, self::$listEmpty, 'Leere Liste ist falsch');
 
 		$items = $this->getModels();
 		$html = $listBuilder->render($items,
-						new ArrayObject(), self::$template, 'tx_rnbase_util_MediaMarker',
+						false, self::$template, 'tx_rnbase_util_MediaMarker',
 						'media.pic.', 'PIC', $configurations->getFormatter());
 		$this->assertEquals($html, self::$listSimple, 'Einfache Liste ist falsch');
 
@@ -104,9 +129,65 @@ class tx_rnbase_tests_listbuilder_testcase extends tx_phpunit_testcase {
 </html>
 ';
 
+	static $multiSubpartTemplate = '
+<html>
+<h1>Bilder</h1>
+###PICS###
+<ul>
+###PIC###
+<li>###PIC_UID###: ###PIC_FILE###</li>###PIC###
+</ul>
+###PICEMPTYLIST###No list pics found!###PICEMPTYLIST###
+###PICS###
+
+<h1>Bilder 2</h1>
+###PICS###
+<table><tr>
+###PIC###
+<td>###PIC_UID###</td><td>###PIC_FILE###</td>###PIC###
+</tr></table>
+###PICEMPTYLIST###No table pics found!###PICEMPTYLIST###
+###PICS###
+</html>
+';
+
 	static $listEmpty = '
 <html>
 <h1>Bilder</h1>
+
+</html>
+';
+
+	static $listMultiSubpartEmpty = '
+<html>
+<h1>Bilder</h1>
+No list pics found!
+
+<h1>Bilder 2</h1>
+No table pics found!
+</html>
+';
+
+static $listMultiSubpartFilled = '
+<html>
+<h1>Bilder</h1>
+
+<ul>
+
+<li>22: file22.jpg</li>
+<li>33: file33.jpg</li>
+</ul>
+
+
+
+<h1>Bilder 2</h1>
+
+<table><tr>
+
+<td>22</td><td>file22.jpg</td>
+<td>33</td><td>file33.jpg</td>
+</tr></table>
+
 
 </html>
 ';
@@ -115,6 +196,20 @@ class tx_rnbase_tests_listbuilder_testcase extends tx_phpunit_testcase {
 <html>
 <h1>Bilder</h1>
 No pics found!
+</html>
+';
+
+	static $listAdvFilled = '
+<html>
+<h1>Bilder</h1>
+
+<ul>
+
+<li>22: file22.jpg</li>
+<li>33: file33.jpg</li>
+</ul>
+
+
 </html>
 ';
 
