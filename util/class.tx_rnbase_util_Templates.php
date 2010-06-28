@@ -289,7 +289,7 @@ class tx_rnbase_util_Templates {
 	 * @return	string		The processed HTML content string.
 	 * @see getSubpart(), t3lib_parsehtml::substituteSubpart()
 	 */
-	private static function substituteSubpart($content,$marker,$subpartContent,$recursive=1)	{
+	public static function substituteSubpart($content,$marker,$subpartContent,$recursive=1)	{
 		return t3lib_parsehtml::substituteSubpart($content, $marker, $subpartContent, $recursive);
 	}
 }
