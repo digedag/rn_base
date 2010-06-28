@@ -3,7 +3,7 @@
 Änderungen
 ----------
 
-v0.8.4 (??.06.2010)
+v0.8.4 (28.06.2010)
  * tx_rnbase_maps_google_Map: JS initialize fixed
  * tx_rnbase_maps_Coord: variables fixed
  * $_SERVER is included in error mail
