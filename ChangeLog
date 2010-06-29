@@ -3,10 +3,10 @@
 Änderungen
 ----------
 
-v0.8.5 (28.06.2010)
+v0.8.5 (29.06.2010)
  * ListBuilder: support for multiple list subparts in a single template
 
-v0.8.4 (28.06.2010)
+v0.8.4 (28.06.2010) (not released)
  * tx_rnbase_maps_google_Map: JS initialize fixed
  * tx_rnbase_maps_Coord: variables fixed
  * $_SERVER is included in error mail
