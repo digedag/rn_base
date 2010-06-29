@@ -295,6 +295,12 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 				$ret[$row['first_char']] = $row['size'];
 		}
 
+		if($cfg['specials'] == 'last') {
+			$specials = $ret['0-9'];
+			unset($ret['0-9']);
+			$ret['0-9'] = $specials;
+		}
+
 		$current = 0;
 		if(count($ret)) {
 			$keys = array_keys($ret);
