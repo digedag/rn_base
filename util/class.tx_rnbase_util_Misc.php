@@ -263,6 +263,11 @@ MAYDAYPAGE;
    * Prepare classes for FE-rendering if it is needed in TYPO3 backend.
    */
 	static function prepareTSFE() {
+		if(!is_object($GLOBALS['TT'])) {
+			require_once(PATH_t3lib.'class.t3lib_timetrack.php');
+			$GLOBALS['TT'] = new t3lib_timeTrack;
+			$GLOBALS['TT']->start();
+		}
 		if(!is_object($GLOBALS['TSFE'])) {
 			if(!defined('PATH_tslib')) {
 				// PATH_tslib setzen
@@ -287,11 +292,6 @@ MAYDAYPAGE;
 			$temp_sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
 			$temp_sys_page->init(0);
 			$GLOBALS['TSFE']->sys_page = $temp_sys_page;
-		}
-		if(!is_object($GLOBALS['TT'])) {
-			require_once(PATH_t3lib.'class.t3lib_timetrack.php');
-			$GLOBALS['TT'] = new t3lib_timeTrack;
-			$GLOBALS['TT']->start();
 		}
 	}
 	/**
