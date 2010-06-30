@@ -3,7 +3,10 @@
 Änderungen
 ----------
 
-v0.8.5 (29.06.2010)
+v0.8.6 (??.06.2010)
+ * prepareTSFE: timetrack init before tsfe
+
+v0.8.5 (29.06.2010) (not released)
  * ListBuilder: support for multiple list subparts in a single template
 
 v0.8.4 (28.06.2010) (not released)
