@@ -56,7 +56,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 		$out = '';
 		$configurations = $formatter->configurations;
 
-		$this->initLink($configurations);
+		$this->initLink($configurations, $pbConfId);
     
 		$pointer = $this->pageBrowser->getPointer();
 		$count = $this->pageBrowser->getListSize();
@@ -202,11 +202,12 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 	 * TODO: Konfigurierbar machen!!
 	 * @param tx_rnbase_configurations $configuration
 	 */
-	protected function initLink(&$configuration) {
-		$this->link = $configuration->createLink(false);
+	protected function initLink(&$configuration, $pbConfId) {
+		$this->link = $configuration->createLink();
+		$this->link->initByTS($configuration, $pbConfId.'link.', array());
 		$this->token = md5(microtime());
 		$this->link->label($this->token);
-		$this->link->destination($GLOBALS['TSFE']->id); // Link auf aktuelle Seite
+//		$this->link->destination($GLOBALS['TSFE']->id); // Link auf aktuelle Seite
 		$this->noLink = array('','');
 	}
 }
