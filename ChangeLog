@@ -3,8 +3,10 @@
 Änderungen
 ----------
 
-v0.8.6 (??.06.2010)
+v0.8.6 (03.07.2010)
  * prepareTSFE: timetrack init before tsfe
+ * CharBrowser: new option to place special fields at last
+ * PageBrowser: init link by Typoscript
 
 v0.8.5 (29.06.2010) (not released)
  * ListBuilder: support for multiple list subparts in a single template
