@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v0.8.7 (??.07.2010)
+ * tx_rnbase_util_Files::getFileResource() works in BE
+
 v0.8.6 (03.07.2010)
  * prepareTSFE: timetrack init before tsfe
  * CharBrowser: new option to place special fields at last

@@ -32,7 +32,6 @@ class tx_rnbase_util_Files {
 	/**
 	 * Returns content of a file. If it's an image the content of the file is not returned but rather an image tag is.
 	 * This method is taken from tslib_content
-	 * TODO: enable BE usage
 	 * TODO: cache result
 	 *
 	 * @param string The filename, being a TypoScript resource data type
@@ -41,16 +40,22 @@ class tx_rnbase_util_Files {
 	 * @see FILE()
 	 */
 	public static function getFileResource($fName, $options=array())	{
+		if(!is_object($GLOBALS['TSFE'])) {
+			tx_rnbase::load('tx_rnbase_util_Misc');
+			tx_rnbase_util_Misc::prepareTSFE();
+		}
 		$incFile = $GLOBALS['TSFE']->tmpl->getFileName($fName);
 		if ($incFile)	{
+			// Im BE muss ein absoluter Pfad verwendet werden
+			$fullPath = (TYPO3_MODE == 'BE') ? PATH_site.$incFile : $incFile;
 			$fileinfo = t3lib_div::split_fileref($incFile);
 			if (t3lib_div::inList('jpg,gif,jpeg,png',$fileinfo['fileext']))	{
 				$imgFile = $incFile;
 				$imgInfo = @getImageSize($imgFile);
 				$addParams= isset($options['addparams']) ? $options['addparams'] : 'alt="" title=""';
 				$ret = '<img src="'.$GLOBALS['TSFE']->absRefPrefix.$imgFile.'" width="'.$imgInfo[0].'" height="'.$imgInfo[1].'"'.$this->getBorderAttr(' border="0"').' '.$addParams.' />';
-			} elseif (filesize($incFile)<1024*1024) {
-				$ret = $GLOBALS['TSFE']->tmpl->fileContent($incFile);
+			} elseif (filesize($fullPath)<1024*1024) {
+				$ret = @file_get_contents($fullPath);
 				$subpart = isset($options['subpart']) ? $options['subpart'] : '';
 				if($subpart) {
 					$ret = t3lib_parsehtml::getSubpart($ret,$subpart);

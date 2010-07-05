@@ -292,6 +292,8 @@ MAYDAYPAGE;
 			$temp_sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
 			$temp_sys_page->init(0);
 			$GLOBALS['TSFE']->sys_page = $temp_sys_page;
+			$GLOBALS['TSFE']->initTemplate();
+			$GLOBALS['TSFE']->tmpl->getFileName_backPath = $GLOBALS['TSFE']->tmpl->getFileName_backPath ? $GLOBALS['TSFE']->tmpl->getFileName_backPath : PATH_site;
 		}
 	}
 	/**
