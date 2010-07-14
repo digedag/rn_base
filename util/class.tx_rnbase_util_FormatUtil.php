@@ -255,7 +255,7 @@ self::$mem += (memory_get_usage() - $mem);
    * @return string
    */
 	function numberFormat($content, &$conf) {
-		if(!is_array($conf) || !array_key_exists('number_format.', $conf)) return $content;
+		if(!is_array($conf) || !array_key_exists('number_format.', $conf) || !is_double($content)) return $content;
 		if ( $conf['number_format.']['dontCheckFloat'] || number_format(doubleval($content), 0, '.', '' ) != $content ){
 			if ( $conf['number_format'] || $conf['number_format.']) {
 				// default
