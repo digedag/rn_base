@@ -3,7 +3,10 @@
 Änderungen
 ----------
 
-v0.8.7 (05.07.2010)
+v0.8.7 (??.07.2010)
+ * Avoid warnings for NumberFormat called with string values  
+
+v0.8.7 (05.07.2010) (not released)
  * tx_rnbase_util_Files::getFileResource() works in BE
 
 v0.8.6 (03.07.2010)
