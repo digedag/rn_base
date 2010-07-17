@@ -3,8 +3,9 @@
 Änderungen
 ----------
 
-v0.8.7 (??.07.2010)
- * Avoid warnings for NumberFormat called with string values  
+v0.8.8 (17.07.2010)
+ * Avoid warnings for NumberFormat called with string values
+ * new class tx_rnbase_maps_Util
 
 v0.8.7 (05.07.2010) (not released)
  * tx_rnbase_util_Files::getFileResource() works in BE
