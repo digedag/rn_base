@@ -31,6 +31,10 @@ class tx_rnbase_maps_Coord implements tx_rnbase_maps_ICoord {
 	private $latitude;
 	private $longitude;
 
+	public function __construct($latitude=0.0, $longitude=0.0) {
+		$this->setLatitude($latitude);
+		$this->setLongitude($longitude);
+	}
 	/**
 	 * Returns the latitude
 	 * @return float
