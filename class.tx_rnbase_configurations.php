@@ -68,11 +68,9 @@
  *
  * 3.) The last load typically comes from the flexform to give the enduser the possibilty for finegrained selections.
  *
- * Used by: tx_lib_controller, ...
- *
  * @author Elmar Hinz <elmar.hinz@team-red.net>
  * @package TYPO3
- * @subpackage tx_lib
+ * @subpackage tx_rnbase
  *
  */
 
@@ -103,13 +101,14 @@ class tx_rnbase_configurations {
   // -------------------------------------------------------------------------------------
   // Constructor
   // -------------------------------------------------------------------------------------
-  function tx_rnbase_configurations () {
+  function __construct() {
     // This is there all configuration data is stored
-    $this->_dataStore = tx_rnbase::makeInstance('tx_lib_spl_arrayObject');
+    //$this->_dataStore = tx_rnbase::makeInstance('tx_lib_spl_arrayObject');
+  	$this->_dataStore = new ArrayObject();
     // This is a container to transfer data to view
-    $this->_viewData = tx_rnbase::makeInstance('tx_lib_spl_arrayObject');
+    $this->_viewData = new ArrayObject();
     // This is a container for variables necessary in links
-    $this->_keepVars = tx_rnbase::makeInstance('tx_lib_spl_arrayObject');
+    $this->_keepVars = new ArrayObject();
     $this->_cObjs = array(); // Wir verzichten mal auf das ArrayObject
   }
   /**
@@ -124,16 +123,16 @@ class tx_rnbase_configurations {
     // make the data of the cObj available
     $this->_setCObjectData($cObj->data);
 
-    // If configurationArray['setupPath'] is provided it will be used by tx_lib_configurations or subclass.
+    // If configurationArray['setupPath'] is provided it will be used by tx_rnbase_configurations or subclass.
     // if configurationArray['setupPath'] is empty the subclass will use it's internally defined setupPath.
     $this->_setTypoScript($configurationArray['setupPath']);
 
     // Add the local configuration, overwriting TS setup
     $this->_setConfiguration($configurationArray);
-
+    
     // Flexformvalues have the maximal precedence
     $this->_setFlexForm($cObj->data['pi_flexform']);
-
+    
     // A qualifier and extkey from TS are preferred
     $this->_extensionKey = $this->get('extensionKey') ? $this->get('extensionKey') : $extensionKey;
     $this->_qualifier = $this->get('qualifier') ? $this->get('qualifier') : $qualifier;
@@ -658,7 +657,7 @@ class tx_rnbase_configurations {
 		if($flexTs) {
 			// This handles ts setup from flexform
 			$tsParser = t3lib_div::makeInstance('t3lib_TSparser');
-			$tsParser->setup = $this->_dataStore->array;
+			$tsParser->setup = $this->_dataStore->getArrayCopy();
 			$tsParser->parse($flexTs); 
 			$flexTsData = $tsParser->setup;
 			$this->_dataStore->exchangeArray($flexTsData);

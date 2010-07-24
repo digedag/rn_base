@@ -126,8 +126,7 @@ class tx_rnbase_util_TSDAM {
 		}
 		
 		$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
-		$out = $listBuilder->render($medias,
-						tx_rnbase::makeInstance('tx_lib_spl_arrayObject'), $templateCode, 'tx_rnbase_util_MediaMarker',
+		$out = $listBuilder->render($medias, false, $templateCode, 'tx_rnbase_util_MediaMarker',
 						'media.', 'MEDIA', $conf->getFormatter());
 
 		// Now set the identifier

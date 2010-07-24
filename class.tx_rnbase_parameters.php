@@ -44,10 +44,8 @@ interface tx_rnbase_IParameters {
 	function getInt($paramName, $qualifier='');
 }
 
-// TODO: Das arrayObject rauswerfen
-tx_rnbase::load('tx_lib_spl_arrayObject');
 
-class tx_rnbase_parameters extends tx_lib_spl_arrayObject implements tx_rnbase_IParameters {
+class tx_rnbase_parameters extends ArrayObject implements tx_rnbase_IParameters {
 
 	function get($paramName, $qualifier='') {
 		$value = $this->offsetGet($paramName);
