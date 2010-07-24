@@ -107,7 +107,7 @@ abstract class tx_rnbase_action_BaseIOC {
 	 * Kindklassen führen ihr die eigentliche Arbeit durch. Zugriff auf das 
 	 * Backend und befüllen der viewdata 
 	 *
-	 * @param tx_lib_parameters $parameters
+	 * @param tx_rnbase_IParameters $parameters
 	 * @param tx_rnbase_configurations $configurations
 	 * @param array $viewdata
 	 * @return string Errorstring or null
