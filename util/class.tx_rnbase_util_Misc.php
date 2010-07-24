@@ -393,6 +393,26 @@ MAYDAYPAGE;
 	public static function enableTimeTrack($flag) {
 		self::$enableTT = $flag;
 	}
+	/**
+	 * Explode a list into an array
+	 *
+	 * Explodes a string by any number of the given charactrs.
+	 * By default it uses comma, semicolon, colon and whitespace.
+	 *
+	 * The returned values are trimmed.
+	 * Method taken from tx_div
+	 * @param	string		string to split
+	 * @param	string		regular expression that defines the splitter
+	 * @return	array		with the results
+	 */
+	public static function explode($value, $splitCharacters = ',;:\s') {
+		$pattern = '/[' . $splitCharacters . ']+/';
+		$results = preg_split($pattern, $value, -1, PREG_SPLIT_NO_EMPTY);
+		$return = array();
+		foreach($results as $result)
+			$return[] = trim($result);
+		return (array) $return;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Misc.php']) {

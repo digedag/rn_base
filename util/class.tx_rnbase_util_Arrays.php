@@ -54,7 +54,8 @@ class tx_rnbase_util_Arrays {
 	 */
 	private static function toHashArray($mixed, $splitCharacters = ',;:\s' ) {
 		if(is_string($mixed)) {
-			$array = tx_div::explode($mixed, $splitCharacters); // TODO: Enable empty values by defining a better explode functions.
+			tx_rnbase::load('tx_rnbase_util_Misc');
+			$array = tx_rnbase_util_Misc::explode($mixed, $splitCharacters); // TODO: Enable empty values by defining a better explode functions.
 			for($i = 0; $i < count($array); $i = $i + 2) {
 				$hashArray[$array[$i]] = $array[$i+1];
 			}
@@ -71,7 +72,7 @@ class tx_rnbase_util_Arrays {
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Arrays.php']) {
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Arrays.php']);
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Arrays.php']);
 }
 
 ?>
