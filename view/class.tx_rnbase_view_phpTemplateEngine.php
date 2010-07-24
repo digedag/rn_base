@@ -52,13 +52,12 @@ class tx_rnbase_view_phpTemplateEngine extends tx_rnbase_view_Base {
    * It is typically a (x)html string, but can be used for any other text based format.
    *
    * @param	string		name of template file without the ".php" suffix
-   * @param	tx_libalt_conf	configuration instance
+   * @param	tx_rnbase_configurations	configuration instance
    * @return	string		typically an (x)html string
    */
   function render($view, $configurations){
     
-    $link = tx_rnbase::makeInstance('tx_lib_link');
-    $link->designatorString = $configurations->getQualifier();
+    $link = $configurations->createLink();
 
     // Die ViewData bereitstellen
     $viewData =& $configurations->getViewData();
