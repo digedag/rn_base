@@ -49,12 +49,15 @@ class tx_rnbase {
 			self::$loadedClasses[$classNameOrPathInformation] = true;
 			return true;
 		}
-		print '<p>Trying Pear Loader: ' . $classNameOrPathInformation;
-		require_once(t3lib_extMgm::extPath('lib') . 'class.tx_lib_pearLoader.php');
-		if(tx_lib_pearLoader::load($classNameOrPathInformation)) {
-			self::$loadedClasses[$classNameOrPathInformation] = true;
-			return true;
+		if(t3lib_extMgm::isLoaded('lib')) {
+//			print '<p>Trying Pear Loader: ' . $classNameOrPathInformation;
+			require_once(t3lib_extMgm::extPath('lib') . 'class.tx_lib_pearLoader.php');
+			if(tx_lib_pearLoader::load($classNameOrPathInformation)) {
+				self::$loadedClasses[$classNameOrPathInformation] = true;
+				return true;
+			}
 		}
+		
 		self::$loadedClasses[$classNameOrPathInformation] = false;
 		return false;
 	}
