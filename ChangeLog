@@ -3,6 +3,10 @@
 Änderungen
 ----------
 
+v0.8.9 (??.07.2010)
+ * All references to extensions lib/div removed.
+ * PageBrowser: Respect maximum list limit.
+
 v0.8.8 (17.07.2010)
  * Avoid warnings for NumberFormat called with string values
  * new class tx_rnbase_maps_Util
