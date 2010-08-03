@@ -48,26 +48,31 @@ abstract class tx_rnbase_action_BaseIOC {
 			$time = microtime(true);
 			$memStart = memory_get_usage();
 		}
-
-		$viewData =& $configurations->getViewData();
-		tx_rnbase_util_Misc::pushTT(get_class($this), 'handleRequest');
-		$out = $this->handleRequest($parameters,$configurations, $viewData);
-		tx_rnbase_util_Misc::pullTT();
+		$cacheHandler = $this->getCacheHandler($configurations, $this->getConfId().'_caching.');
+		$out = $cacheHandler ? $cacheHandler->getOutput($configurations, $this->getConfId()) : '';
 		if(!$out) {
-			// View
-			$view = tx_rnbase::makeInstance($this->getViewClassName());
-			$view->setTemplatePath($configurations->getTemplatePath());
-			if(method_exists($view, 'setController'))
-				$view->setController($this);
-			// Das Template wird komplett angegeben
-			$tmplName = $this->getTemplateName();
-			if(!$tmplName || !strlen($tmplName))
-				tx_rnbase_util_Misc::mayday('No template name defined!');
-	
-			$view->setTemplateFile($configurations->get($tmplName.'Template'));
-			tx_rnbase_util_Misc::pushTT(get_class($this), 'render');
-			$out = $view->render($tmplName, $configurations);
+			$viewData =& $configurations->getViewData();
+			tx_rnbase_util_Misc::pushTT(get_class($this), 'handleRequest');
+			$out = $this->handleRequest($parameters,$configurations, $viewData);
 			tx_rnbase_util_Misc::pullTT();
+			if(!$out) {
+				// View
+				$view = tx_rnbase::makeInstance($this->getViewClassName());
+				$view->setTemplatePath($configurations->getTemplatePath());
+				if(method_exists($view, 'setController'))
+					$view->setController($this);
+				// Das Template wird komplett angegeben
+				$tmplName = $this->getTemplateName();
+				if(!$tmplName || !strlen($tmplName))
+					tx_rnbase_util_Misc::mayday('No template name defined!');
+		
+				$view->setTemplateFile($configurations->get($tmplName.'Template'));
+				tx_rnbase_util_Misc::pushTT(get_class($this), 'render');
+				$out = $view->render($tmplName, $configurations);
+				tx_rnbase_util_Misc::pullTT();
+			}
+			if($cacheHandler)
+				$cacheHandler->setOutput($out, $configurations, $this->getConfId());
 		}
 		if($debug) {
 			$memEnd = memory_get_usage();
@@ -81,6 +86,20 @@ abstract class tx_rnbase_action_BaseIOC {
 		return $out;
 	}
 
+	/**
+	 * Find a configured cache handler.
+	 * 
+	 * @param tx_rnbase_configurations $configurations
+	 * @param string $confId
+	 * @return tx_rnbase_action_ICacheHandler
+	 */
+	protected function getCacheHandler($configurations, $confId) {
+		$clazz = $configurations->get($confId.'class');
+		if(!$clazz) return false;
+		$handler = tx_rnbase::makeInstance($clazz, $configurations, $confId);
+		return $handler;
+	}
+	
 	/**
 	 * Liefert die ConfId für den View
 	 * @return string

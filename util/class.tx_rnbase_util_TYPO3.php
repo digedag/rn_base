@@ -77,8 +77,17 @@ class tx_rnbase_util_TYPO3 {
 		$info = self::loadExtInfo($extKey);
 		return $info['version'];
 	}
+
+	/** 
+	 * Get the current frontend user
+	 *
+	 * @return tslib_feUserAuth current frontend user.
+	 */ 
+	public static function getFEUser() {
+		return $GLOBALS['TSFE']->fe_user;
+	}
 }
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_TYPO3.php'])	{
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_TYPO3.php']);
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_TYPO3.php']);
 }
 ?>
