@@ -12,3 +12,6 @@ sendEmailOnException =
 
   # cat=basic//10; type=string; label= From address for alert mails 
 fromEmail = 
+
+  # cat=basic//10; type=boolean; label= Activate file based caching. You can also configure an alternative caching backend in localconf.php for cache 'rnbase'.
+activateCache = 0

@@ -1,10 +1,22 @@
 <?php
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
-$tempPath = t3lib_extMgm::extPath('rn_base');
+$rnbaseExtPath = t3lib_extMgm::extPath('rn_base');
+
+require_once($rnbaseExtPath . 'class.tx_rnbase.php');
+tx_rnbase::load('tx_rnbase_configurations');
+if(!is_array($TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['rnbase']) &&
+	tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'activateCache') ) {
+	$TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['rnbase'] = array(
+		'backend' => 't3lib_cache_backend_FileBackend',
+		'options' => array(
+		)
+	);
+}
+
 
 // Include the mediaplayer service
-require_once($tempPath.'sv1/ext_localconf.php');
+require_once($rnbaseExtPath.'sv1/ext_localconf.php');
 
 
 
