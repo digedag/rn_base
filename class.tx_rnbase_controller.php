@@ -269,9 +269,9 @@ class tx_rnbase_controller {
 		}
 		$addr = tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'sendEmailOnException');
 		if($addr) {
-		}
 			$this->sendErrorMail($addr, $actionName, $e);
-		
+		}
+
 		// Now message for FE
 		$ret = $this->getErrorMessage($actionName, $e, $configurations);
 		return $ret;
@@ -283,17 +283,17 @@ class tx_rnbase_controller {
 	 * @param tx_rnbase_Configurations $configurations
 	 */
 	private function getErrorMessage($actionName, Exception $e, $configurations) {
+		$verbose = intval(tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'verboseMayday')) ?
+			'<br /><pre>'.$e->__toString().'</pre>' : '';
 		// Zuerst nach einem ErrorCode suchen
 		$errCode = $e->getCode();
 		$errCode = $errCode ? $errCode : 'default';
 		$ret = $configurations->getLL('ERROR_'.$errCode, '');
-		if(!$ret) {
-			// Fallback to default error message
-			$verbose = intval(tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'verboseMayday'));
-			$ret = '<div><strong>UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName .'</strong>';
-			if($verbose)
-				$ret .= '<br /><pre>'.$e->__toString().'</pre>';
-			$ret .= '</div>';
+		if($ret) {
+			$ret .= $verbose;
+		}
+		else {
+			$ret = '<div><strong>UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName .'</strong>'.$verbose.'</div>';
 		}
 		return $ret;
 	}
