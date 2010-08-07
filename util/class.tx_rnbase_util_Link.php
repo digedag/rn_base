@@ -564,7 +564,22 @@ class tx_rnbase_util_Link {
 				$add = t3lib_div::trimExplode(',', $add);
 				foreach($add As $linkvar) {
 					$linkvar = t3lib_div::trimExplode('=', $linkvar);
-					$newKeepVars[$linkvar[0]] = $linkvar[1];
+					if (count($linkvar)< 2)  {
+						// tt_news::* or ttnews::id
+						list($qualifier,$name) = t3lib_div::trimExplode('::', $linkvar[0]);
+						if ($value = t3lib_div::_GP($qualifier)) {
+							if($name == '*' && is_array($value)) {
+								foreach($value As $paramName => $paramValue) {
+									if(strpos($paramName, 'NK_') === FALSE)
+										$newKeepVars[$qualifier.'::'.$paramName] =  $paramValue;
+								}
+							}
+							else
+								$newKeepVars[$linkvar[0]] =  $value[$name];
+						}
+					} else  {
+						$newKeepVars[$linkvar[0]] = $linkvar[1];
+					}
 				}
 			}
 			$this->overruled($newKeepVars);

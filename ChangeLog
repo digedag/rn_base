@@ -3,13 +3,15 @@
 Änderungen
 ----------
 
-v0.8.9 (??.07.2010)
+v0.8.9 (??.08.2010)
  * All references to extensions lib/div removed.
  * PageBrowser: Respect maximum list limit.
  * tx_rnbase_controller: Verbose error messages possible if label found. Thanks to Lars Heber!
  * tx_rnbase_controller: Sending error mailings fixed. Thanks to Lars Heber!
  * Default file based cache can be activated in extension configuration.
  * Action based caching interface for frontend plugins. Not finished yet!
+ * tx_rnbase_util_Link: KeepVars of other extension can be configured. Thanks to Pavel Klinkov! 
+  linkcfg.useKeepVars.add = tx_ttnews::ttnews, tx_ttnews::*
 
 v0.8.8 (17.07.2010)
  * Avoid warnings for NumberFormat called with string values
