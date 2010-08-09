@@ -3,7 +3,7 @@
 Änderungen
 ----------
 
-v0.8.9 (??.08.2010)
+v0.8.9 (09.08.2010)
  * All references to extensions lib/div removed.
  * PageBrowser: Respect maximum list limit.
  * tx_rnbase_controller: Verbose error messages possible if label found. Thanks to Lars Heber!

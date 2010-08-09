@@ -15,8 +15,8 @@ $EM_CONF[$_EXTKEY] = array(
 	'description' => 'Uses MVC design principles and is based on extension lib.',
 	'category' => 'misc',
 	'shy' => 0,
-	'version' => '0.8.8',
-	'dependencies' => 'cms,div,lib',
+	'version' => '0.8.9',
+	'dependencies' => 'cms',
 	'conflicts' => '',
 	'priority' => '',
 	'loadOrder' => '',
@@ -36,8 +36,6 @@ $EM_CONF[$_EXTKEY] = array(
 		'depends' => array(
 			'cms' => '',
 			'php' => '5.0.0-0.0.0',
-			'div' => '',
-			'lib' => '0.1.0-0.0.0',
 		),
 		'conflicts' => array(
 		),
