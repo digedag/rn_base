@@ -29,7 +29,7 @@ tx_rnbase::load('tx_rnbase_plot_IDataProvider');
  */
 class tx_rnbase_plot_DataProviderTS implements tx_rnbase_plot_IDataProvider {
 	public function getChartTitle($confArr) {
-		return 'Chart';
+		return $confArr['text'];
 	}
 
 	/**

@@ -531,10 +531,10 @@ class tx_rnbase_plot_Builder {
 		$intSize = $arrConf['size'];
 		$intAngle = $arrConf['angle'];
 		$strColor = $arrConf['color'];
-		$Title = tx_pbimagegraph::factory('title', array('Title', array('size' => $intSize, 'angle' => $intAngle, 'color' => $strColor)));
-		$this->setElementProperties($Title,$arrConf);
-		$this->setTitleProperties($Title,$arrConf);
-		return $Title;
+		$objTitle = tx_pbimagegraph::factory('title', array('Title', array('size' => $intSize, 'angle' => $intAngle, 'color' => $strColor)));
+		$this->setElementProperties($objTitle,$arrConf);
+		$objTitle->setText($this->getDataProvider()->getChartTitle($arrConf));
+		return $objTitle;
 	}
 
 	/**
@@ -1050,6 +1050,9 @@ class tx_rnbase_plot_Builder {
 				case 'padding':
 					$objRef->setPadding($strValue);
 				break;
+				case 'alignment':
+					$this->setAlignment($objRef,$strValue);
+				break;
 			}
 		}
 	}
@@ -1231,27 +1234,6 @@ class tx_rnbase_plot_Builder {
 				break;
 				case 'showMarker':
 					$objRef->setShowMarker($strValue);
-				break;
-			}
-		}
-	}
-
-	/**
-	 * Sets the properties for the title
-	 *
-	 * @param	object 		Reference object
-	 * @param	array		Configuration of the title
-	 */
-	function setTitleProperties(&$objRef,$arrConf) {
-
-		foreach($arrConf as $strKey => $strValue) {
-			$strKey = rtrim($strKey, '.');
-			switch($strKey) {
-				case 'alignment':
-					$this->setAlignment($objRef,$strValue);
-				break;
-				case 'text':
-					$objRef->setText($strValue);
 				break;
 			}
 		}
