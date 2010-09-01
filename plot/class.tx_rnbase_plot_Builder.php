@@ -80,7 +80,7 @@ class tx_rnbase_plot_Builder {
 		$this->setDataProvider($dp);
 
 		if ($arrConf) {
-			$strFileName = $this->fileName('ImageGraph/',$arrConf,$arrConf['factory']);
+			$strFileName = $this->getFileName('ImageGraph/',$arrConf,$arrConf['factory']);
 			$arrConf['factory'] = $arrConf['factory'] ? $arrConf['factory']:'png';
 			$arrConf['width'] = $arrConf['width'] ? $arrConf['width']:'400';
 			$arrConf['height'] = $arrConf['height'] ? $arrConf['height']:'300';
@@ -147,9 +147,10 @@ class tx_rnbase_plot_Builder {
 	 * @return	string		The relative filepath (relative to PATH_site)
 	 * @access private
 	 */
-	function fileName($strPre,$arrConf,$strExtension) {
+	private function getFileName($strPre,$arrConf,$strExtension) {
 		$tempPath = 'typo3temp/'; // Path to the temporary directory
-		return $tempPath.$strPre.t3lib_div::shortMD5(serialize($arrConf)).'.'.$strExtension;
+		$data = serialize($this->getDataProvider()). serialize($arrConf);
+		return $tempPath.$strPre.t3lib_div::shortMD5($data).'.'.$strExtension;
 	}
 
 	/**
@@ -389,7 +390,7 @@ class tx_rnbase_plot_Builder {
 
 		// Für jedes DataSet muss ein Plot angelegt werden
 		$plotDataSets = $this->getDataProvider()->getDataSets($arrConf, $strCobjName);
-		foreach($plotDataSets As $dataSets) {
+		foreach($plotDataSets As $plotId => $dataSets) {
 			if(!($dataSets[0] instanceof tx_pbimagegraph_Dataset)) {
 				$dataSets = $this->convertDataSet($dataSets);
 			}
@@ -399,7 +400,12 @@ class tx_rnbase_plot_Builder {
 			$strClass = self::getClass4Plot($strCobjName);
 			$objPlot =& $objRef->addNew($strClass,$arrParams,$intAxis);
 			$this->setPlotProperties($objPlot,$arrConf);
+
+			// Set datastyle. formerly fillStyle
+			$dataStyles = $this->getDataStyles($plotId, $arrConf);
+			$objPlot->setFillStyle($dataStyles);
 			$this->setElementProperties($objPlot,$arrConf);
+
 			$this->setMarker($objPlot,$arrConf);
 			switch($strCobjName) {
 				case 'BAR':
@@ -558,10 +564,9 @@ class tx_rnbase_plot_Builder {
 	 *
 	 * @param	object		The parent object
 	 * @param	array		The array with TypoScript properties for the content object
-	 * @param tx_rnbase_plot_IDataProvider $dp
 	 * @return	object		The Legend object
 	 */
-	private function LEGEND(&$objRef,$arrConf, $dp) {
+	private function LEGEND(&$objRef,$arrConf) {
 		if ($objRef) {
 			$Legend =& $objRef->addNew('legend');
 		} else {
@@ -659,24 +664,55 @@ class tx_rnbase_plot_Builder {
 	}
 
 	/**
+	 * Return data styles for each dataset
+	 * @param tx_pbimagegraph_Plot $objRef
+	 * @param array $arrConf
+	 * @return tx_pbimagegraph_Fill_Array
+	 */
+	private function getDataStyles($plotId, $arrConf) {
+		// Die Styles müssen vom Provider kommen. Der liefert entweder direkt
+		// ein Fill_Array, oder aber ein normales PHP-Array, das konvertiert wird
+		$fillStyle = $this->getDataProvider()->getDataStyles($plotId, $arrConf);
+		if(!$fillStyle instanceof tx_pbimagegraph_Fill_Array) {
+			$fillStyle = $this->convertDataStyle($fillStyle);
+		}
+
+		return $fillStyle;
+	}
+
+	private function convertDataStyle($fillStyleArr) {
+		$objFillStyle = tx_pbimagegraph::factory('tx_pbimagegraph_Fill_Array');
+		foreach($fillStyleArr As $fillStyle) {
+			$strId = $fillStyle['id'] ? $fillStyle['id'] : false;
+			switch($fillStyle['type']) {
+				case 'color':
+					$objFillStyle->addColor($fillStyle['color'],$strId);
+				break;
+				case 'gradient':
+					$objFillStyle->addNew('gradient', $fillStyle['color'], $strId);
+				break;
+			}
+		}
+		return $objFillStyle;
+	}
+	/**
 	 * Sets the fill style of an element
 	 *
 	 * @param	object 		Reference object
 	 * @param	string		Type of fill style
 	 * @param	array		Configuration of the fill style
 	 */
-	function setFillStyle(&$objRef,$strValue,$arrConf,$strAction) {
-		$intDirection = IMAGE_GRAPH_GRAD_HORIZONTAL;
-		eval("\$intDirection = IMAGE_GRAPH_GRAD_".strtoupper($arrConf['direction']).";");
-		$strStartColor = $arrConf['startColor'];
-		$strEndColor = $arrConf['endColor'];
-		$intSolidColor = $arrConf['color'];
-		$strImage = $arrConf['image'];
+	private function setFillStyle(&$objRef,$strValue,$arrConf,$strAction) {
 		switch ($strValue) {
 			case 'gradient':
+				$intDirection = $this->readConstant('IMAGE_GRAPH_GRAD_'.strtoupper($arrConf['direction']));
+				$strStartColor = $arrConf['startColor'];
+				$strEndColor = $arrConf['endColor'];
+				$intSolidColor = $arrConf['color'];
 				$objFillStyle =& tx_pbimagegraph::factory('gradient', array($intDirection, $strStartColor, $strEndColor));
 				break;
 			case 'fill_array':
+				// deprecated: use getDataStyle()
 				$objFillStyle =& tx_pbimagegraph::factory('tx_pbimagegraph_Fill_Array');
 				if (is_array($arrConf)) {
 					$arrKeys=t3lib_TStemplate::sortedKeyList($arrConf);
@@ -690,7 +726,8 @@ class tx_rnbase_plot_Builder {
 									$objFillStyle->addColor($strColor,$strId);
 								break;
 								case 'gradient':
-									eval("\$intDirection = IMAGE_GRAPH_GRAD_".strtoupper($arrConf[$strKey.'.']['direction']).";");
+									$intDirection = $this->readConstant('IMAGE_GRAPH_GRAD_'.strtoupper($arrConf[$strKey.'.']['direction']));
+									
 									$strStartColor = $arrConf[$strKey.'.']['startColor'];
 									$strEndColor = $arrConf[$strKey.'.']['endColor'];
 									$intSolidColor = $arrConf[$strKey.'.']['color'];
@@ -703,25 +740,33 @@ class tx_rnbase_plot_Builder {
 				}
 				break;
 			case 'image':
+				$strImage = $arrConf['image'];
 				$objFillStyle =& tx_pbimagegraph::factory('tx_pbimagegraph_Fill_Image',PATH_site.$strImage);
 				break;
 		}
-		switch ($strAction) {
-			case 'setBackground':
-				$objRef->setBackground($objFillStyle);
-				break;
-			case 'setFillStyle':
-				$objRef->setFillStyle($objFillStyle);
-				break;
-			case 'setArrowFillStyle':
-				$objRef->setArrowFillStyle($objFillStyle);
-				break;
-			case 'setRangeMarkerFillStyle':
-				$objRef->setRangeMarkerFillStyle($objFillStyle);
-				break;
-		}
+
+		// Setze FillStyle in Element
+		$objRef->$strAction($objFillStyle);
+
+//		switch ($strAction) {
+//			case 'setBackground':
+//				$objRef->setBackground($objFillStyle);
+//				break;
+//			case 'setFillStyle':
+//				$objRef->setFillStyle($objFillStyle);
+//				break;
+//			case 'setArrowFillStyle':
+//				$objRef->setArrowFillStyle($objFillStyle);
+//				break;
+//			case 'setRangeMarkerFillStyle':
+//				$objRef->setRangeMarkerFillStyle($objFillStyle);
+//				break;
+//		}
 	}
 
+	public static function readConstant($constName, $defaultValue='') {
+		return defined($constName) ? constant($constName) : '';
+	}
 	/**
 	 * Sets the line style of an element
 	 *

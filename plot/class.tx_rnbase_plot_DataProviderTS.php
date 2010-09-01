@@ -41,6 +41,38 @@ class tx_rnbase_plot_DataProviderTS implements tx_rnbase_plot_IDataProvider {
 	}
 
 	/**
+	 * Returns the style for each data set. This is either an instance of tx_pbimagegraph_Fill_Array or
+	 * a simple php array with style data
+	 * @param $confArr
+	 * @return tx_pbimagegraph_Fill_Array
+	 */
+	public function getDataStyles($plotId, $confArr) {
+		$arrConf = $confArr['dataStyle.'];
+		$objFillStyle = tx_pbimagegraph::factory('tx_pbimagegraph_Fill_Array');
+		$arrKeys=t3lib_TStemplate::sortedKeyList($arrConf);
+		foreach($arrKeys as $strKey) {
+			$strType=$arrConf[$strKey];
+			if (intval($strKey) && !strstr($strKey,'.')) {
+				$strId = $arrConf[$strKey.'.']['id'] ? $arrConf[$strKey.'.']['id'] : false;
+				switch($strType) {
+					case 'color':
+					case 'addColor':
+						$strColor = $arrConf[$strKey.'.']['color'];
+						$objFillStyle->addColor($strColor,$strId);
+					break;
+					case 'gradient':
+						$intDirection = tx_rnbase_plot_Builder::readConstant('IMAGE_GRAPH_GRAD_'.strtoupper($arrConf[$strKey.'.']['direction']));
+						$strStartColor = $arrConf[$strKey.'.']['startColor'];
+						$strEndColor = $arrConf[$strKey.'.']['endColor'];
+						$objFillStyle->addNew('gradient', array($intDirection, $strStartColor, $strEndColor), $strId);
+					break;
+				}
+			}
+		}
+		return $objFillStyle;
+	}
+
+	/**
 	 * Read the datasets
 	 *
 	 * @param	array		The array with TypoScript properties for the object

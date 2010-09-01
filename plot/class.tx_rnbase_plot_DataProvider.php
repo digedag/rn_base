@@ -43,6 +43,41 @@ class tx_rnbase_plot_DataProvider implements tx_rnbase_plot_IDataProvider {
 	public function getDataSets($confArr, $plotType) {
 		return $this->dataSets;
 	}
+	/**
+	 * Returns the style for each data set. This is either an instance of tx_pbimagegraph_Fill_Array or
+	 * a simple php array with style data
+	 * @param $confArr
+	 * @return array
+	 */
+	public function getDataStyles($plotId, $confArr) {
+		// Es wird der Style mit der ID 0 ausgelesen. Hier können mehrere Angaben gemacht werden
+		$ret = array();
+		$type = $confArr['dataStyle.']['0'];
+		$data = $confArr['dataStyle.']['0.'];
+		switch($type) {
+			case 'color':
+			case 'addColor':
+				$strColors = t3lib_div::trimExplode(',',$data['color']);
+				foreach($strColors As $color)
+					$ret[] = array('type' => 'color', 'color' => $color);
+			break;
+			case 'gradient':
+				$intDirection = tx_rnbase_plot_Builder::readConstant('IMAGE_GRAPH_GRAD_'.strtoupper($data['direction']));
+				$strColorsStart = t3lib_div::trimExplode(',',$data['startColor']);
+				$strColorsEnd = t3lib_div::trimExplode(',',$data['endColor']);
+				$maxStart = count($strColorsStart);
+				$maxEnd = count($strColorsEnd);
+				$max = $maxStart > $maxEnd ? $maxStart : $maxEnd;
+				for($i=0; $i<$max; $i++) {
+					$strStartColor = $i < $maxStart ? $strColorsStart[$i] : $strColorsStart[$maxStart-1];
+					$strEndColor = $i < $maxEnd ? $strColorsEnd[$i] : $strColorsEnd[$maxEnd-1];
+					$ret[] = array('type' => 'gradient', 'color' => array($intDirection, $strStartColor, $strEndColor));
+				}
+			break;
+		}
+		return $ret;
+	}
+
 	public function addPlot() {
 		$id = count($this->dataSets);
 		$this->dataSets[] = array();
