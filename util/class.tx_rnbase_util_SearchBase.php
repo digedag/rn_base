@@ -101,6 +101,7 @@ abstract class tx_rnbase_util_SearchBase {
    * @return array oder int
    */
   function search($fields, $options) {
+  	if(!is_array($fields)) $fields = array();
   	$this->_initSearch($options);
   	$tableAliases = array();
   	if(isset($fields[SEARCH_FIELD_JOINED])) {
