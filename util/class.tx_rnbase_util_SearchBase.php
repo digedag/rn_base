@@ -201,7 +201,7 @@ abstract class tx_rnbase_util_SearchBase {
 			$sqlOptions['enablefieldsbe'] = $options['enablefieldsbe'];
 		if($options['enablefieldsfe'])
 			$sqlOptions['enablefieldsfe'] = $options['enablefieldsfe'];
-		if($options['groupby'])
+		if($options['groupby'] && !$options['count'])
 			$sqlOptions['groupby'] = $options['groupby'];
 		if($options['callback'])
 			$sqlOptions['callback'] = $options['callback'];
@@ -236,14 +236,14 @@ abstract class tx_rnbase_util_SearchBase {
 			$sqlOptions['orderby'] = implode(',', $orderby);
 		}
 		if(
-			!(
-				isset($options['count']) ||
+			!(isset($options['count'])) &&
+			(!(
 				isset($options['what']) || 
 				isset($options['groupby']) ||
 				isset($options['sqlonly']) 
 			) 
 			||
-				isset($options['forcewrapper'])
+				isset($options['forcewrapper']))
 			)
 			$sqlOptions['wrapperclass'] = $this->getGenericWrapperClass();
 
