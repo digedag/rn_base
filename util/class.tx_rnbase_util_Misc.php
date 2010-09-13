@@ -74,7 +74,7 @@ class tx_rnbase_util_Misc {
 	 * @param array $params
 	 * @param mixed $parent instance of calling class or 0
 	 */
-	function callHook($extKey, $hookKey, $params, $parent=0) {
+	public static function callHook($extKey, $hookKey, $params, $parent=0) {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extKey][$hookKey])) {
 			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extKey][$hookKey] as $funcRef) {
 				t3lib_div::callUserFunction($funcRef, $params, $parent);
