@@ -3,8 +3,8 @@
 Änderungen
 ----------
 
-v0.9.1 (03.09.2010)
- * SearchBase: never use forcewrapper for count. Thanks to Pavel Klinkov!
+v0.9.1 (13.09.2010)
+ * SearchBase: ignore forcewrapper for count
 
 v0.9.0 (03.09.2010)
  * Chart builder for extension pbimagegraph
