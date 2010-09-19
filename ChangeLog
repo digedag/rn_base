@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v0.9.2 (??.09.2010)
+ * ListBuilder renders character browser
+
 v0.9.1 (13.09.2010)
  * SearchBase: ignore forcewrapper for count
 

@@ -195,7 +195,7 @@ class tx_rnbase_util_BaseMarker {
    * @param string $confId
    * @return string
    */
-	static function fillPageBrowser($template, &$pagebrowser, &$formatter, $confId) {
+	public static function fillPageBrowser($template, &$pagebrowser, &$formatter, $confId) {
 		if(strlen(trim($template)) == 0) return '';
 		if(!is_object($pagebrowser) || !is_object($pagebrowser->getMarker())) {
 			return '';
@@ -211,7 +211,42 @@ class tx_rnbase_util_BaseMarker {
 		$out = $marker->parseTemplate($template, $formatter, $confId);
 		return $out;
 	}
-  
+
+	/**
+	 * Returns the filled template for a character browser
+	 * @param string $template
+	 * @param tx_rnbase_configurations $configurations
+	 */
+	public static function fillCharBrowser($template, $markerArray, $pagerData, $curr_pointer, $configurations, $confId) {
+		if(!$template) return '';
+		$pagerItems = $pagerData['list'];
+		if(!is_array($pagerItems) || !count($pagerItems)) return '';
+
+		$out = array();
+		$link = $configurations->createLink(); // Link auf die eigene Seite
+		$link->initByTS($configurations, $confId.'link.', array());
+//		$link->destination($GLOBALS['TSFE']->id); // Das Ziel der Seite vorbereiten
+		$token = md5(microtime());
+		$link->label($token);
+		$emptyArr = array();
+
+		while(list($pointer, $size) = each($pagerItems)) {
+			$myMarkerArray = $markerArray;
+			$myMarkerArray['###PB_ITEM###'] = $pointer;
+			$myMarkerArray['###PB_ITEM_SIZE###'] = $size;
+
+			if(strcmp($pointer, $curr_pointer)) {
+				$link->parameters(array('charpointer' => $pointer));
+				$wrappedSubpartArray['###PB_ITEM_LINK###'] = explode($token, $link->makeTag());
+			}
+			else
+				$wrappedSubpartArray['###PB_ITEM_LINK###'] = $emptyArr;
+			$out[] = tx_rnbase_util_Templates::substituteMarkerArrayCached($template, $myMarkerArray, $emptyArray, $wrappedSubpartArray);
+		}
+
+		return implode($configurations->get($confId.'implode'),$out);
+	}
+
   /**
    * Liefert das DefaultMarkerArray
    *

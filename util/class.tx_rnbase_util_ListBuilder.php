@@ -78,7 +78,14 @@ class tx_rnbase_util_ListBuilder {
 				$state = $pageBrowser->getState();
 				$offset = $state['offset'];
 			}
-	
+			// charbrowser
+			$pagerData = $viewData->offsetGet('pagerData');
+			$charPointer = $viewData->offsetGet('charpointer');
+			$subpartArray['###CHARBROWSER###'] = tx_rnbase_util_BaseMarker::fillCharBrowser(
+														tx_rnbase_util_Templates::getSubpart($template,'###CHARBROWSER###'),
+														$markerArray, $pagerData, $charPointer, 
+														$formatter->getConfigurations(), $confId.'charbrowser.');
+
 			$listMarker->addVisitors($this->visitors);
 			$ret = $listMarker->renderEach($provider, $templateEntry, $markerClassname,
 					$confId, $marker, $formatter, $markerParams, $offset);
@@ -204,6 +211,14 @@ class tx_rnbase_util_ListBuilder {
 				else {
 					$markerArray['###'.$marker.'COUNT###'] = count($dataArr);
 				}
+				// charbrowser
+				$pagerData = $viewData->offsetGet('pagerData');
+				$charPointer = $viewData->offsetGet('charpointer');
+				$subpartArray['###CHARBROWSER###'] = tx_rnbase_util_BaseMarker::fillCharBrowser(
+															tx_rnbase_util_Templates::getSubpart($template,'###CHARBROWSER###'),
+															$markerArray, $pagerData, $charPointer, 
+															$formatter->getConfigurations(), $confId.'charbrowser.');
+
 				$out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($templateList, $markerArray, $subpartArray);
 			}
 			else {
