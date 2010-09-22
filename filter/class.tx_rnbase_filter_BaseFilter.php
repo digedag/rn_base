@@ -50,6 +50,12 @@ interface tx_rnbase_IFilter {
 	 * @return boolean
 	 */
 	public function hideResult();
+	/**
+	 * Whether or not a user defined search is activated. This means some functions 
+	 * like showing a charbrowser should be ignored.
+	 * @return boolean
+	 */
+	public function isSpecialSearch();
 }
 interface tx_rnbase_IFilterMarker {
   function parseTemplate($template, &$formatter, $confId, $marker = 'FILTER');
@@ -170,7 +176,15 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 		return $filter;
 	}
 
-
+	/**
+	 * Whether or not a charbrowser should be ignored
+	 * @return boolean
+	 */
+	public function isSpecialSearch() {
+		// In den meisten Projekten liegen die Nutzerdaten im Array inputData
+		return is_array($this->inputData) && count($this->inputData);
+	}
+	
 	public function getMarker() {
 		return $this;
 	}
@@ -250,7 +264,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 		$filter = $viewData->offsetGet('filter');
 		// Der CharBrowser beachten wir nur, wenn keine Suche aktiv ist
 		// TODO: Der Filter sollte eine Methode haben, die sagt, ob ein Formular aktiv ist
-		if($firstChar && !$filter->inputData) {
+		if($firstChar != '' && !$filter->isSpecialSearch()) {
 			$specials = tx_rnbase_util_SearchBase::getSpecialChars();
 			$firsts = $specials[$firstChar];
 			if($firsts) {
