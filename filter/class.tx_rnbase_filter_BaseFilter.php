@@ -257,7 +257,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 			
 			$pagerData = self::findPagerData($fields, $options, $cfg);
 			$firstChar = $configurations->getParameters()->offsetGet('charpointer');
-			$firstChar = (strlen(trim($firstChar)) > 0) ? substr($firstChar,0,1) : $pagerData['default'];
+			$firstChar = (strlen(trim($firstChar)) > 0) ? substr($firstChar,0,($firstChar{0} == '0' ? 3:1)) : $pagerData['default'];
 			$viewData->offsetSet('pagerData', $pagerData);
 			$viewData->offsetSet('charpointer', $firstChar);
 		}
