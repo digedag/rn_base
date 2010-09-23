@@ -364,117 +364,99 @@ class tx_rnbase_controller {
   // Private functions
   //------------------------------------------------------------------------------------
 
-  /**
-   * Find the actions to handle the request
-   * You can define more than one actions per request. So think of an action as a content element
-   * to render. 
-   * So if your plugin supports a list and a detail view, you can render both of them
-   * on the same page, including only one plugin. Make a view selection and add both views.
-   * The controller will serve the request to both actions.
-   *
-   * Order: defaultAction < configurationDefaultAction < parametersAction < configurationsAction
-   *
-   * 1.) The defaultAction is the ultimative Fallback if nothing else is given.
-   * 2.) The configurationDefaultAction can be set in TS and/or flexform to customize the initial view.
-   * 3.) The parametersAction is given by form or link to controll the behaviour.
-   * 4.) The configurationAction can force a fixed view of a context element.  
-   *
-   * @param     object     the parameters object
-   * @param     object     the configurations objet
-   * @return    array     an array with the actions or null
-   */
-  function _findAction($parameters, $configurations) {
-    // Wieviele Default-Actions gibt es denne?
-    // In der Config ist auch noch eine???
-    // TODO Weg damit!
-//    $action = $configurations->get('defaultAction')   ? $configurations->get('defaultAction')   : $this->defaultAction; 
+	/**
+	 * Find the actions to handle the request
+	 * You can define more than one actions per request. So think of an action as a content element
+	 * to render. 
+	 * So if your plugin supports a list and a detail view, you can render both of them
+	 * on the same page, including only one plugin. Make a view selection and add both views.
+	 * The controller will serve the request to both actions.
+	 *
+	 * Order: defaultAction < configurationDefaultAction < parametersAction < configurationsAction
+	 *
+	 * 1.) The defaultAction is the ultimative Fallback if nothing else is given.
+	 * 2.) The configurationDefaultAction can be set in TS and/or flexform to customize the initial view.
+	 * 3.) The parametersAction is given by form or link to controll the behaviour.
+	 * 4.) The configurationAction can force a fixed view of a context element.  
+	 *
+	 * @param     object     the parameters object
+	 * @param     object     the configurations objet
+	 * @return    array     an array with the actions or null
+	 */
+	function _findAction($parameters, $configurations) {
+		// What should be preferred? Config or Request?
+		// An action from parameter is preferred
+		$action = !intval($configurations->get('ignoreActionParam')) ? $this->_getParameterAction($parameters) : false;
+		if(!$action) {
+			$action = $configurations->get('action');
+		}
+		// Falls es mehrere Actions sind den String splitten
+		if($action)
+			$action = t3lib_div::trimExplode(',',$action);
+		// If there is still no action we use defined defaultAction
+		$action = !$action ? $configurations->get('defaultAction') : $action;
+		return $action;
+	}
 
-// TODO Ist es sinnvoll die Action per Parameter zu setzen?
+	/**
+	 * Find the action from parameter string or array
+	 *
+	 * The action value can be sent in two forms:
+	 * a) designator[action] = actionValue
+	 * b) designator[action][actionValue] = something
+	 *
+	 * Form b) is usfull Form HTML forms with multiple submit buttons. 
+	 * You shouldn't use the button label as action value, 
+	 * because it is language dependant.
+	 *
+	 * @param   object   the parameter object
+	 *	@return  string   the action value
+	 */
+	function _getParameterAction($parameters) {
+		$action = $parameters->offsetGet('action');
+		if(!is_array($action)) {
+			return $action;
+		} else {
+			return key($action);
+		}
+	}
 
-//t3lib_div::debug($configurations->get('action'), 'Actions..');
+	/**
+	 * Make the configurations object
+	 *
+	 * Used by main()
+	 *
+	 * @param array $configurationArray   the local configuration array
+	 * @return tx_rnbase_configurations  the configurations
+	 */
+	function _makeConfigurationsObject($configurationArray) {
+		// TODO, die Configklasse sollte über TS variabel gehalten werden
+		// Make configurations object
+		$configurations = tx_rnbase::makeInstance($this->configurationsClassName);
 
-// What should be preferred? Config or Request?
-    // An action from parameter is preferred
-    $action = $this->_getParameterAction($parameters);
-    if(!$action) {
-      $action = $configurations->get('action');
-    }
-    // Falls es mehrere Actions sind den String splitten
-    if($action)
-      $action = t3lib_div::trimExplode(',',$action);
-//t3lib_div::debug(count($action), 'Action');
-    // If there is still no action we use defined defaultAction
-    $action = !$action ? $configurations->get('defaultAction') : $action;
-//    $action = $configurations->get('defaultAction') ? $configurations->get('defaultAction') : $action; 
+		// Dieses cObj wird dem Controller von T3 übergeben
+		$configurations->init($configurationArray, $this->cObj, $this->extensionKey, $this->qualifier);
+		return $configurations;
+	}
 
+	/**
+	 * Returns an ArrayObject containing all parameters
+	 */
+	function _makeParameterObject($configurations) {
+		$parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+		// get parametersArray for defined qualifier
+		$parametersArray = tx_rnbase_util_TYPO3::isTYPO43OrHigher() ? 
+				t3lib_div::_GPmerged($configurations->getQualifier()) : 
+				t3lib_div::GParrayMerged($configurations->getQualifier());
 
-    return $action;
-  }
+		tx_rnbase_util_Arrays::overwriteArray($parameters,$parametersArray);
 
-
-  /**
-   * Find the action from parameter string or array
-   *
-   * The action value can be sent in two forms:
-   * a) designator[action] = actionValue
-   * b) designator[action][actionValue] = something
-   *
-   * Form b) is usfull Form HTML forms with multiple submit buttons. 
-   * You shouldn't use the button label as action value, 
-   * because it is language dependant.
-   *
-   * @param   object   the parameter object
-   *	@return  string   the action value
-   */
-   function _getParameterAction($parameters) {
-     $action = $parameters->offsetGet('action');
-     if(!is_array($action)) {
-       return $action;
-     } else {
-       return key($action);
-     }
-   }
-
-  /**
-   * Make the configurations object
-   *
-   * Used by main()
-   *
-   * @param array $configurationArray   the local configuration array
-   * @return tx_rnbase_configurations  the configurations
-   */
-
-  function _makeConfigurationsObject($configurationArray){
-    // TODO, die Configklasse sollte über TS variabel gehalten werden
-    // Make configurations object
-    $configurations = tx_rnbase::makeInstance($this->configurationsClassName);
-
-    // Dieses cObj wird dem Controller von T3 übergeben
-    $configurations->init($configurationArray, $this->cObj, $this->extensionKey, $this->qualifier);
-
-    return $configurations;
-  }
-
-  /**
-   * Returns an ArrayObject containing all parameters
-   */
-  function _makeParameterObject($configurations) {
-    $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
-
-    // get parametersArray for defined qualifier
-    $parametersArray = tx_rnbase_util_TYPO3::isTYPO43OrHigher() ? t3lib_div::_GPmerged($configurations->getQualifier())
-    : t3lib_div::GParrayMerged($configurations->getQualifier());
-
-    tx_rnbase_util_Arrays::overwriteArray($parameters,$parametersArray);
-
-
-    // Initialize the cHash system if there are parameters available
-    if ($GLOBALS['TSFE'] && $parameters->count()) {
-      $GLOBALS['TSFE']->reqCHash();
-    }
-    return $parameters;
-  }
-
+		// Initialize the cHash system if there are parameters available
+		if ($GLOBALS['TSFE'] && $parameters->count()) {
+			$GLOBALS['TSFE']->reqCHash();
+		}
+		return $parameters;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/class.tx_rnbase_controller.php']) {
