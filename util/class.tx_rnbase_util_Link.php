@@ -406,9 +406,7 @@ class tx_rnbase_util_Link {
 		if($this->targetString) {
 			$conf['target'] = $this->targetString;
 		}
-		if($this->externalTargetString != '-1') {
-			$conf['extTarget'] = $this->externalTargetString;
-		}
+		$conf['extTarget'] = ($this->externalTargetString != '-1') ? $this->externalTargetString : '_blank';
 		if($this->classString) {
 			$conf['ATagParams'] .= 'class="' . $this->classString . '" ';
 		}
