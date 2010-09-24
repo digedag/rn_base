@@ -59,7 +59,7 @@ class tx_rnbase_util_Link {
 	var $designatorString = '';         // parameter array name (prefixId) as controller namespace
 	var $anchorString = '';             // section anchor as url target
 	var $targetString = '';             // tags target attribute
-	var $externalTargetString = '_blank'; // external target defaults to new window
+	var $externalTargetString = '-1'; // external target defaults to new window
 	var $titleString = '';              // tags title attribute
 	var $titleHasAlreadyHtmlSpecialChars = false; //is title attribute already HSC?
 
@@ -406,7 +406,7 @@ class tx_rnbase_util_Link {
 		if($this->targetString) {
 			$conf['target'] = $this->targetString;
 		}
-		if($this->externalTargetString) {
+		if($this->externalTargetString != '-1') {
 			$conf['extTarget'] = $this->externalTargetString;
 		}
 		if($this->classString) {
