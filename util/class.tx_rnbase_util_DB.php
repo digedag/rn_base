@@ -123,6 +123,10 @@ class tx_rnbase_util_DB {
 
 		$where = is_string($arr['where']) ? $arr['where'] : '1';
 		$groupBy = is_string($arr['groupby']) ? $arr['groupby'] : '';
+		if($groupBy) {
+			$groupBy .= is_string($arr['having']) > 0 ? ' HAVING '.$arr['having'] : '';
+			
+		}
 		$orderBy = is_string($arr['orderby']) ? $arr['orderby'] : '';
 		$offset = intval($arr['offset']) > 0 ? intval($arr['offset']) : 0;
 		$limit = intval($arr['limit']) > 0 ? intval($arr['limit']) : '';
@@ -131,7 +135,7 @@ class tx_rnbase_util_DB {
 		$i18n = is_string($arr['i18n']) > 0 ? $arr['i18n'] : '';
 		$sqlOnly = intval($arr['sqlonly']) > 0 ? intval($arr['sqlonly']) : '';
 		$union = is_string($arr['union']) > 0 ? $arr['union'] : '';
-
+		
 		// offset und limit kombinieren
 		if($limit) { // bei gesetztem limit ist offset optional
 			$limit = ($offset > 0) ? $offset . ',' . $limit : $limit;
@@ -178,7 +182,7 @@ class tx_rnbase_util_DB {
 			if($sqlOnly) return $sql;
 			if($debug) {
 				t3lib_div::debug($sql, 'SQL');
-				t3lib_div::debug(array($what,$from,$where));
+				t3lib_div::debug(array($what,$from,$arr));
 			}
 		}
 

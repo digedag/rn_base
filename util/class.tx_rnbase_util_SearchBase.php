@@ -203,6 +203,8 @@ abstract class tx_rnbase_util_SearchBase {
 			$sqlOptions['enablefieldsfe'] = $options['enablefieldsfe'];
 		if($options['groupby'] && !$options['count'])
 			$sqlOptions['groupby'] = $options['groupby'];
+		if($options['having'] && !$options['count'])
+			$sqlOptions['having'] = $options['having'];
 		if($options['callback'])
 			$sqlOptions['callback'] = $options['callback'];
 		if($options['i18n'])

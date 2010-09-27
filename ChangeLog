@@ -3,7 +3,10 @@
 Änderungen
 ----------
 
-v0.9.2 (26.09.2010)
+v0.9.3 (26.09.2010)
+ * SearchBase and util_DB: Support for HAVING clause.
+
+v0.9.2 (26.09.2010) (not released)
  * ListBuilder renders character browser
  * Bugfix BaseFilter: CharBrowser works now with special characters (Thanks to Michael Wagner)
  * BaseController: new option ignoreActionParam to disable action setting by url parameters
