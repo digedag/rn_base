@@ -363,6 +363,26 @@ class tx_rnbase_configurations {
 		return $ret;
 	}
 	/**
+	 * Returns a boolean config value. The return value is false if the value is empty or 0 or 'false'
+	 * @param string $pathKey
+	 * @param boolean $deep
+	 * @return boolean
+	 */
+	public function getBool($pathKey, $deep=false) {
+		$value = $this->get($pathKey, $deep);
+		if(is_array($value)) return true;
+		return (!$value || strtolower($value) == 'false') ? false : true; 
+	}
+	/**
+	 * Returns a int config value.
+	 * @param string $pathKey
+	 * @param boolean $deep
+	 * @return int
+	 */
+	public function getInt($pathKey, $deep=false) {
+		return intval( $this->get($pathKey, $deep));
+	}
+	/**
 	 * Returns the complete TS config array
 	 * @return array
 	 */
