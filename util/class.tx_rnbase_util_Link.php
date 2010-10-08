@@ -534,7 +534,7 @@ class tx_rnbase_util_Link {
 
 		// KeepVars prüfen
 		// Per Default sind die KeepVars aktiviert. Mit useKeepVars == 0 können sie wieder entfernt werden
-		if(!$configurations->get($confId.'useKeepVars')) {
+		if($configurations->get($confId.'useKeepVars') == '0') {
 			$this->overruled();
 		}
 		elseif($keepVarConf = $configurations->get($confId.'useKeepVars.')) {

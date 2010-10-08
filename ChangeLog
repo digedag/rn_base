@@ -3,6 +3,10 @@
 Änderungen
 ----------
 
+v0.9.4 (??.09.2010)
+ * tx_rnbase_util_Link::initByTS() useKeepVars is now default if nothing is configured
+ * tx_rnbase_configurations: new methods getInt() and getBool()
+
 v0.9.3 (26.09.2010)
  * SearchBase and util_DB: Support for HAVING clause.
 
