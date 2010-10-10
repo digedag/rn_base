@@ -548,9 +548,8 @@ class tx_rnbase_plot_Builder {
 	 *
 	 * @param	object		The parent object
 	 * @param	array		The array with TypoScript properties for the content object
-	 * @param tx_rnbase_plot_IDataProvider $dp
 	 */
-	private function GRID(&$objRef,$arrConf, $dp) {
+	private function GRID(&$objRef,$arrConf) {
 		$strType = $arrConf['type'].'_grid';
 		$strAxis = $arrConf['axis'];
 		$intAxis = 1;
