@@ -81,7 +81,7 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 			$markers['HEADER'] = $header;
 			$markers['SELECTOR'] = $this->subselector;
 			$markers['TABS'] = $this->tabs;
-			$markers['FUNC_MENU'] = t3lib_BEfunc::getFuncMenu($this->id,'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function']);
+			$markers['FUNC_MENU'] = $this->getFuncMenu();
 			$markers['CONTENT'] = $this->content;
 		}
 		else {
@@ -131,11 +131,7 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 		$content = '';
 		$this->extObj->pObj = &$this;
 		if (is_callable(array($this->extObj, 'main')))	$content.=$this->extObj->main();
-	
-		$params = Array();
-		tx_rnbase::load('tx_rnbase_util_BaseMarker');
-		tx_rnbase_util_BaseMarker::callModules($content, $markerArray, $subpartArray, $wrappedSubpartArray, $params, $this->getConfigurations()->getFormatter());
-		$content = $this->getConfigurations()->getCObj()->substituteMarkerArrayCached($content, $markerArray, $subpartArray, $wrappedSubpartArray);
+		else $content .= 'Module has no method main.';
 
 		return $content;
 	}
@@ -195,7 +191,14 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 	 */
 	function printContent()	{
 		$this->content.=$this->getDoc()->endPage();
-		echo $this->content;
+
+		$params = Array();
+		tx_rnbase::load('tx_rnbase_util_BaseMarker');
+		tx_rnbase::load('tx_rnbase_util_Templates');
+		tx_rnbase_util_BaseMarker::callModules($this->content, $markerArray, $subpartArray, $wrappedSubpartArray, $params, $this->getConfigurations()->getFormatter());
+		$content = tx_rnbase_util_Templates::substituteMarkerArrayCached($this->content, $markerArray, $subpartArray, $wrappedSubpartArray);
+
+		echo $content;
 	}
 
 	/**
@@ -210,9 +213,17 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 		}
 		return $this->doc;
 	}
+	protected function getFuncMenu() {
+		$menu = $this->getFormTool()->showMenu($this->getPid(), 'function', $this->getName(), $this->MOD_MENU['function']);
+		return $menu['menu'];
+//		return t3lib_BEfunc::getFuncMenu($this->getPid(),'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function']);
+	}
+	protected function getFormTag() {
+		return '<form action="" method="post" enctype="multipart/form-data">';
+	}
 	protected function initDoc($doc) {
 		$doc->backPath = $GLOBALS['BACK_PATH'];
-		$doc->form='<form action="" method="post" enctype="multipart/form-data">';
+		$doc->form= $this->getFormTag();
 		$doc->docType = 'xhtml_trans';
 		$doc->inDocStyles = $this->getDocStyles();
 		$doc->tableLayout = $this->getTableLayout();
