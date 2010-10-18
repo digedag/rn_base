@@ -534,7 +534,7 @@ class tx_rnbase_util_Link {
 
 		// KeepVars prüfen
 		// Per Default sind die KeepVars nicht aktiviert. Mit useKeepVars == 1 können sie hinzugefügt werden
-		if($configurations->get($confId.'useKeepVars')) {
+		if(!$configurations->get($confId.'useKeepVars')) {
 			$this->overruled();
 		}
 		elseif($keepVarConf = $configurations->get($confId.'useKeepVars.')) {
