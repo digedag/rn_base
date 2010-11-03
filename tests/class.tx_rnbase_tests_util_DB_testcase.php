@@ -25,6 +25,7 @@
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
 tx_rnbase::load('tx_rnbase_util_DB');
+tx_rnbase::load('tx_rnbase_util_SearchBase');
 
 class tx_rnbase_tests_util_DB_testcase extends tx_phpunit_testcase {
 	/**
