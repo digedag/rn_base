@@ -49,6 +49,7 @@ class tx_rnbase_plot_DataProviderTS implements tx_rnbase_plot_IDataProvider {
 	public function getDataStyles($plotId, $confArr) {
 		$arrConf = $confArr['dataStyle.'];
 		$objFillStyle = tx_pbimagegraph::factory('tx_pbimagegraph_Fill_Array');
+		if(!is_object($arrConf)) return $objFillStyle;
 		$arrKeys=t3lib_TStemplate::sortedKeyList($arrConf);
 		foreach($arrKeys as $strKey) {
 			$strType=$arrConf[$strKey];
