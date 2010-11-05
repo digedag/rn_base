@@ -41,6 +41,12 @@ class tx_rnbase_util_FormTool {
 		$this->form->backPath = $BACK_PATH;
 	}
 	/**
+	 * @return template the BE template class
+	 */
+	public function getDoc() {
+		return $this->doc;
+	}
+	/**
 	 * Erstellt einen Button zur Bearbeitung eines Datensatzes
 	 * @param string $editTable DB-Tabelle des Datensatzes
 	 * @param int $editUid UID des Datensatzes
@@ -155,15 +161,6 @@ class tx_rnbase_util_FormTool {
 
   }
 
-  /**
-   * Erstellt einen Link auf die aktuelle Location mit zusätzlichen Parametern
-   */
-  function createLink($params, $pid, $label) {
-
-    return '<a href="#" onclick="'.htmlspecialchars("window.location.href='index.php?id=".$pid . $params)."'; return false;\">".
-       $label .'</a>';
-  }
-
 
   function createHidden($name, $value){
     return '<input type="hidden" name="'. $name.'" value="' . $value . '" />';
@@ -176,57 +173,82 @@ class tx_rnbase_util_FormTool {
 	function createCheckbox($name, $value, $checked = false, $onclick = ''){
 		return '<input type="checkbox" name="'. $name.'" value="' . $value . '" '. ($checked ? 'checked="checked"' : '') . (strlen($onclick) ? ' onclick="' . $onclick . '"' : '') .' />';
 	}
-  
-  function createSubmit($name, $value, $confirmMsg = ''){
-    $btn = '<input type="submit" name="'. $name.'" value="' . $value . '" ';
-    if(strlen($confirmMsg)) 
-    	$btn .= 'onclick="return confirm('.$GLOBALS['LANG']->JScharCode($confirmMsg).')"';
-    $btn .= '/>';
-    return $btn;
-  }
-  
+
+	/**
+	 * Erstellt einen Link auf die aktuelle Location mit zusätzlichen Parametern
+	 */
+	public function createLink($urlParams, $pid, $label, $options=array()) {
+		if($options['icon']) {
+			$label = "<img ".t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.$options['icon']).
+				' title="'.$label.'\" alt="" >';
+		}
+
+		return '<a href="#" onclick="'.htmlspecialchars("window.location.href='index.php?id=".$pid . $urlParams)."'; return false;\">".
+			$label .'</a>';
+	}
+
+	/**
+	 * Submit button for BE form.
+	 * @param string $name
+	 * @param string $value
+	 * @param string $confirmMsg
+	 * @param array $options
+	 */
+	public function createSubmit($name, $value, $confirmMsg = '', $options=array()){
+		$icon = '';
+		if($options['icon']) {
+			$icon = t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.$options['icon']);
+		}
+
+		$btn = '<input type="'.($icon ? 'image' : 'submit').'" name="'. $name.'" value="' . $value . '" ';
+		if(strlen($confirmMsg))
+			$btn .= 'onclick="return confirm('.$GLOBALS['LANG']->JScharCode($confirmMsg).')"';
+		if(strlen($icon))
+			$btn .= $icon;
+		$btn .= '/>';
+		return $btn;
+	}
+
 	/**
 	 * Erstellt ein Textarea
 	 */
-	function createTextArea($name, $value, $cols='30', $rows='5', $options=0){
+	public function createTextArea($name, $value, $cols='30', $rows='5', $options=0){
 		$options = is_array($options) ? $options : array();
 		$onChangeStr = $options['onchange'] ? ' onchange=" ' . $options['onchange'] . '" ' : '';
 		return '
 			<textarea name="' . $name . '" style="width:288px;" class="formField1"'. $onChangeStr .
-      ' cols="'.$cols.'" rows="'.$rows.'" wrap="virtual">' . $value . '</textarea>';
-  }
+			' cols="'.$cols.'" rows="'.$rows.'" wrap="virtual">' . $value . '</textarea>';
+	}
 
-  /**
-   * Erstellt ein einfaches Textfield
-   */
-  function createTxtInput($name, $value, $width){
-    return '<input type="text" name="'. $name.'"'.$this->doc->formWidth($width).' value="' . $value . '" />';
-  }
+	/**
+	 * Erstellt ein einfaches Textfield
+	 */
+	public function createTxtInput($name, $value, $width){
+		return '<input type="text" name="'. $name.'"'.$this->doc->formWidth($width).' value="' . $value . '" />';
+	}
 
-  /**
-   * Erstellt ein Eingabefeld für Integers
-   */
-  function createIntInput($name, $value, $width, $maxlength=10){
+	/**
+	 * Erstellt ein Eingabefeld für Integers
+	 */
+	public function createIntInput($name, $value, $width, $maxlength=10){
 //t3lib_div::debug($GLOBALS['TBE_TEMPLATE']->formWidth(10), 'form');
 //      <input type="text" name="' . $name . '_hr"'.$this->doc->formWidth($width).
 
-    $out = '
-      <input type="text" name="' . $name . '_hr"'.$GLOBALS['TBE_TEMPLATE']->formWidth($width).
-      ' onchange="typo3FormFieldGet(\'' . $name . '\', \'int\', \'\', 0,0);"'.
-      $GLOBALS['TBE_TEMPLATE']->formWidth(12). ' maxlength="' . $maxlength . '"/>'.' 
-      <input type="hidden" value="'.htmlspecialchars($value).'" name="' . $name . '" />';
+		$out = '
+			<input type="text" name="' . $name . '_hr"'.$GLOBALS['TBE_TEMPLATE']->formWidth($width).
+			' onchange="typo3FormFieldGet(\'' . $name . '\', \'int\', \'\', 0,0);"'.
+			$GLOBALS['TBE_TEMPLATE']->formWidth(12). ' maxlength="' . $maxlength . '"/>'.'
+			<input type="hidden" value="'.htmlspecialchars($value).'" name="' . $name . '" />';
 
-    // JS-Code für die Initialisierung im TCEform eintragen
-    $this->form->extJSCODE .= 'typo3FormFieldSet("' . $name . '", "int", "", 0,0);';
-
-
-    return $out;
-  }
+		// JS-Code für die Initialisierung im TCEform eintragen
+		$this->form->extJSCODE .= 'typo3FormFieldSet("' . $name . '", "int", "", 0,0);';
+		return $out;
+	}
 
 	/**
 	 * Erstellt ein Eingabefeld für DateTime
 	 */
-	function createDateInput($name, $value){
+	public function createDateInput($name, $value){
 		// Take care of current time zone. Thanks to Thomas Maroschik!
 		$value += date('Z', $value);
 		$out = '
@@ -241,62 +263,61 @@ class tx_rnbase_util_FormTool {
 		return $out;
 	}
 
-  /**
-   * Erstellt eine Selectbox mit festen Werten in der TCA. 
-   * Die Labels werden in der richtigen Sprache angezeigt.
-   */
-  function createSelectSingle($name, $value, $table, $column, $options = 0){
-    global $TCA, $LANG;
-    $options = is_array($options) ? $options : array();
+	/**
+	 * Erstellt eine Selectbox mit festen Werten in der TCA. 
+	 * Die Labels werden in der richtigen Sprache angezeigt.
+	 */
+	function createSelectSingle($name, $value, $table, $column, $options = 0){
+		global $TCA, $LANG;
+		$options = is_array($options) ? $options : array();
 
-    $out = '<select name="' . $name . '" class="select" ';
-    if($options['onchange'])
-    	$out .= 'onChange="' . $options['onchange'] .'" ';
-    $out .= '>';
+		$out = '<select name="' . $name . '" class="select" ';
+		if($options['onchange'])
+			$out .= 'onChange="' . $options['onchange'] .'" ';
+		$out .= '>';
 
-    // Die TCA laden
-    t3lib_div::loadTCA($table);
+		// Die TCA laden
+		t3lib_div::loadTCA($table);
 
-    // Die Options ermitteln
-    foreach($TCA[$table]['columns'][$column]['config']['items'] As $item){
-      $sel = '';
-      if (intval($value) == intval($item[1])) $sel = 'selected="selected"';
-      $out .= '<option value="' . $item[1] . '" ' . $sel . '>' . $LANG->sL($item[0]) . '</option>';
-    }
-    $out .= '
-      </select>
-    ';
-    return $out;
-  }
+		// Die Options ermitteln
+		foreach($TCA[$table]['columns'][$column]['config']['items'] As $item){
+			$sel = '';
+			if (intval($value) == intval($item[1])) $sel = 'selected="selected"';
+			$out .= '<option value="' . $item[1] . '" ' . $sel . '>' . $LANG->sL($item[0]) . '</option>';
+		}
+		$out .= '
+			</select>
+		';
+		return $out;
+	}
 
-  /**
-   * Erstellt eine Select-Box aus dem übergebenen Array
-   */
-  function createSelectSingleByArray($name, $value, $arr, $options=0){
-  	$options = is_array($options) ? $options : array();
-  	
-    $onChangeStr = $options['reload'] ? ' this.form.submit(); ' : '';
-    if($options['onchange']) {
-    	$onChangeStr .= $options['onchange'];
-    }
-    if($onChangeStr)
-    	$onChangeStr = ' onchange="'.$onChangeStr.'" ';
+	/**
+	 * Erstellt eine Select-Box aus dem übergebenen Array
+	 */
+	public function createSelectSingleByArray($name, $value, $arr, $options=0){
+		$options = is_array($options) ? $options : array();
 
-    $out = '
-      <select name="' . $name . '" class="select"' . $onChangeStr . '> 
-    ';
-    
-    // Die Options ermitteln
-    foreach($arr As $key => $val){
-      $sel = '';
-      if (intval($value) == intval($key)) $sel = 'selected="selected"';
-      $out .= '<option value="' . $key . '" ' . $sel . '>' . $val . '</option>';
-    }
-    $out .= '
-      </select>
-    ';
-    return $out;
-  }
+		$onChangeStr = $options['reload'] ? ' this.form.submit(); ' : '';
+		if($options['onchange']) {
+			$onChangeStr .= $options['onchange'];
+		}
+		if($onChangeStr)
+			$onChangeStr = ' onchange="'.$onChangeStr.'" ';
+
+		$out = '
+			<select name="' . $name . '" class="select"' . $onChangeStr . '>
+		';
+		// Die Options ermitteln
+		foreach($arr As $key => $val) {
+			$sel = '';
+			if (intval($value) == intval($key)) $sel = 'selected="selected"';
+			$out .= '<option value="' . $key . '" ' . $sel . '>' . $val . '</option>';
+		}
+		$out .= '
+			</select>
+		';
+		return $out;
+	}
 
   function addTCEfield2Stack($table,$row,$fieldname,$pre='',$post='') {
 		$this->tceStack[] = $pre . $this->form->getSoloField($table,$row,$fieldname) . $post;
@@ -417,7 +438,7 @@ class tx_rnbase_util_FormTool {
 		$ret = t3lib_BEfunc::getModuleData(array ($key => ''), $changed, $modName );
 		return $ret[$key];
 	}
-  function getTCEFormArray($table,$theUid, $isNew = false) {
+	function getTCEFormArray($table,$theUid, $isNew = false) {
 		$trData = t3lib_div::makeInstance('t3lib_transferData');
 		$trData->addRawData = TRUE;
 //		$trData->defVals = $this->defVals;
@@ -428,11 +449,10 @@ class tx_rnbase_util_FormTool {
 		reset($trData->regTableItems_data);
 		return $trData->regTableItems_data;
 	}
-
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_FormTool.php'])	{
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_FormTool.php']);
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_FormTool.php']);
 }
 
 ?>

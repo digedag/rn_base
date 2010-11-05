@@ -3,6 +3,11 @@
 Änderungen
 ----------
 
+v0.9.5 (05.11.2010)
+ * Bugfix: Avoid warning while parsing TS configuration for plots
+ * Bugfix: Missing include in datebase unit test added. Thanks to Hannes Bochmann
+ * FormTool: Submit-Buttons and Links with icons possible
+
 v0.9.4 (21.10.2010)
  * tx_rnbase_configurations: new methods getInt() and getBool()
  * BaseModule: more modificatios possible for concrete modules
