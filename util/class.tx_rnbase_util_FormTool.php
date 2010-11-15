@@ -322,6 +322,12 @@ class tx_rnbase_util_FormTool {
   function addTCEfield2Stack($table,$row,$fieldname,$pre='',$post='') {
 		$this->tceStack[] = $pre . $this->form->getSoloField($table,$row,$fieldname) . $post;
   }
+  /**
+   * @return t3lib_TCEforms
+   */
+  public function getTCEForm() {
+  	return $this->form;
+  }
 	function getTCEfields($formname) {
 		$ret[] = $this->form->printNeededJSFunctions_top();
 		$ret[] = implode('', $this->tceStack);
@@ -405,8 +411,8 @@ class tx_rnbase_util_FormTool {
 		return $ret;
 	}
 	/**
-	 * Zeigt eine Art Tab-Menu
-	 *
+	 * Show function menu.
+	 * @return array with keys 'menu' and 'value'
 	 */
 	public function showMenu($pid, $name, $modName, $entries) {
 		$MENU = Array (
@@ -438,7 +444,13 @@ class tx_rnbase_util_FormTool {
 		$ret = t3lib_BEfunc::getModuleData(array ($key => ''), $changed, $modName );
 		return $ret[$key];
 	}
-	function getTCEFormArray($table,$theUid, $isNew = false) {
+	/**
+	 * Load a fullfilled TCE data array for a database record.
+	 * @param string $table
+	 * @param int $theUid
+	 * @param boolean $isNew
+	 */
+	public function getTCEFormArray($table,$theUid, $isNew = false) {
 		$trData = t3lib_div::makeInstance('t3lib_transferData');
 		$trData->addRawData = TRUE;
 //		$trData->defVals = $this->defVals;
