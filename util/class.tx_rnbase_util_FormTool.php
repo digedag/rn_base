@@ -105,14 +105,19 @@ class tx_rnbase_util_FormTool {
 	 * @param array $options
 	 * @return string
 	 */
-	function createNewButton($table, $pid, $options=array()) {
+	public function createNewButton($table, $pid, $options=array()) {
 		$params = '&edit['.$table.']['.$pid.']=new';
 		if(isset($options['params']))
 			$params .= $options['params'];
 		$title = isset($options['title']) ? $options['title'] : $GLOBALS['LANG']->getLL('new',1);
 
+		$jsCode = t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH']);
+		if(isset($options['confirm']) && strlen($options['confirm']) > 0) {
+    	$jsCode = 'if(confirm('.$GLOBALS['LANG']->JScharCode($options['confirm']).')) {' . $jsCode .'} else {return false;}';
+		}
+
 		$btn = '<input type="button" name="'. $name.'" value="' . $title . '" ';
-		$btn .= 'onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH']),-1).'"';
+		$btn .= 'onclick="'.htmlspecialchars($jsCode,-1).'"';
 		$btn .= '/>';
 		return $btn;
 	}
@@ -124,28 +129,34 @@ class tx_rnbase_util_FormTool {
 	 * @param array $options
 	 * @return string
 	 */
-	function createNewLink($table, $pid, $label = 'New', $options=array()) {
+	public function createNewLink($table, $pid, $label = 'New', $options=array()) {
 		$params = '&edit['.$table.']['.$pid.']=new';
 		if(isset($options['params']))
 			$params .= $options['params'];
 		$title = isset($options['title']) ? $options['title'] : $GLOBALS['LANG']->getLL('new',1);
-		return '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH']),-1).'">'.
+
+		$jsCode = t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH']);
+		if(isset($options['confirm']) && strlen($options['confirm']) > 0) {
+    	$jsCode = 'if(confirm('.$GLOBALS['LANG']->JScharCode($options['confirm']).')) {' . $jsCode .'} else {return false;}';
+		}
+
+		return '<a href="#" onclick="'.htmlspecialchars($jsCode,-1).'">'.
 			'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/new_'.($table=='pages'?'page':'el').'.gif','width="'.($table=='pages'?13:11).'" height="12"').' title="'.$title.'" alt="" />'.
 			$label .'</a>';
   }
 
-  /**
-   * Erstellt einen Link zur Anzeige von Informationen über einen Datensatz
-   * @param $editTable DB-Tabelle des Datensatzes
-   * @param $editUid UID des Datensatzes
-   * @param $label Bezeichnung des Links
-   */
-  function createInfoLink($editTable, $editUid, $label = 'Info') {
+	/**
+	 * Erstellt einen Link zur Anzeige von Informationen über einen Datensatz
+	 * @param $editTable DB-Tabelle des Datensatzes
+	 * @param $editUid UID des Datensatzes
+	 * @param $label Bezeichnung des Links
+	 */
+	public function createInfoLink($editTable, $editUid, $label = 'Info') {
 //    $params = '&edit['.$editTable.']['.$editUid.']=edit';
-    return '<a href="#" onclick="top.launchView(' . "'" . $editTable . "', ' " . $editUid . "'); return false;" . '">'.
-     '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/zoom2.gif','width="11" height="12"').' title="UID: '.$editUid.'" border="0" alt="" />'.
-     $label .'</a>';
-  }
+		return '<a href="#" onclick="top.launchView(' . "'" . $editTable . "', ' " . $editUid . "'); return false;" . '">'.
+		 '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/zoom2.gif','width="11" height="12"').' title="UID: '.$editUid.'" border="0" alt="" />'.
+		 $label .'</a>';
+	}
 
   /**
    * Erstellt einen Link zum Verschieben eines Datensatzes auf eine andere Seite
