@@ -194,8 +194,16 @@ class tx_rnbase_util_FormTool {
 				' title="'.$label.'\" alt="" >';
 		}
 
-		return '<a href="#" onclick="'.htmlspecialchars("window.location.href='index.php?id=".$pid . $urlParams)."'; return false;\">".
-			$label .'</a>';
+		$jsCode = "window.location.href='index.php?id=".$pid . $urlParams. "'; return false;";
+		if(isset($options['confirm']) && strlen($options['confirm']) > 0) {
+    	$jsCode = 'if(confirm('.$GLOBALS['LANG']->JScharCode($options['confirm']).')) {' . $jsCode .'} else {return false;}';
+		}
+		$title = '';
+		if($options['hover']) {
+			$title = ' title="'.$options['hover'].'" ';
+		}
+		
+		return '<a href="#" onclick="'.htmlspecialchars($jsCode).'" '. $title.">". $label .'</a>';
 	}
 
 	/**
