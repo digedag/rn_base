@@ -57,7 +57,7 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc {
 
 		$start = microtime(true);
 		$memStart = memory_get_usage();
-		$out .= $this->createModuleContent();
+		$out .= $this->createModuleContent($conf);
 		if(tx_rnbase_util_BaseMarker::containsMarker($out, 'MOD_')) {
 			$markerArr = array();
 			$memEnd = memory_get_usage();
@@ -69,11 +69,12 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc {
 		}
 		return $out;
 	}
-	private function createModuleContent() {
+	private function createModuleContent($conf) {
+		$formTool = $this->getModule()->getFormTool();
 		$out = '';
 		// TabMenu initialisieren
 		$menuItems = array();
-		$menu = $this->initSubMenu($menuItems);
+		$menu = $this->initSubMenu($menuItems, $this->getModule()->getFormTool());
 		// SubSelectors
 		$selectorStr = '';
 		$args = $this->makeSubSelectors($selectorStr);
@@ -84,7 +85,7 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc {
 
 		$args = is_array($args) ? $args : array();
 
-		$out .= $this->getContent($template, $conf, $conf->getFormatter(), $this->getModule()->getFormTool());
+		$out .= $this->getContent($template, $conf, $conf->getFormatter(), $formTool);
 
 		$handler = $menuItems[$menu['value']];
 		if(is_object($handler)) {
@@ -124,7 +125,7 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc {
 	 *
 	 */
 	abstract protected function getFuncId();
-	protected function initSubMenu($formTool, &$menuItems) {
+	protected function initSubMenu(&$menuItems, $formTool) {
 		$items = $this->getSubMenuItems();
 		if(!is_array($items)) return;
 
