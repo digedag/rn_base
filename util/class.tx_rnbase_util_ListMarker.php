@@ -122,6 +122,8 @@ class tx_rnbase_util_ListMarker {
 		$rowRollCnt = 0;
 		for($i=0, $cnt=count($dataArr); $i < $cnt; $i++) {
 			$data = $dataArr[$i];
+			// Check for object to avoid warning.
+			if(!is_object($data)) continue;
 			$data->record['roll'] = $rowRollCnt;
 			$data->record['line'] = $i; // Marker für aktuelle Zeilenummer
 			$data->record['totalline'] = $i+$offset; // Marker für aktuelle Zeilenummer der Gesamtliste
