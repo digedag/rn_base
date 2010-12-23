@@ -219,6 +219,19 @@ class tx_rnbase_util_DB {
 		return $rows;
 	}
 
+	public static function enableFields($tableName, $mode, $tableAlias='') {
+		if (!is_object(self::$sysPage)) {
+			require_once(PATH_t3lib.'class.t3lib_page.php');
+			self::$sysPage = t3lib_div::makeInstance('t3lib_pageSelect');
+			self::$sysPage->init(0); // $this->showHiddenPage
+		}
+		$enableFields = self::$sysPage->enableFields($tableName, $mode);
+		if($tableAlias) {
+			// Replace tablename with alias
+			$enableFields = str_replace($tableName, $tableAlias, $enableFields);
+		}
+		return $enableFields;
+	}
 	/**
 	 * Make a SQL INSERT Statement
 	 *
@@ -230,8 +243,7 @@ class tx_rnbase_util_DB {
 	public static function doInsert($tablename, $values, $debug=0) {
 		if($debug) {
 			$sql = $GLOBALS['TYPO3_DB']->INSERTquery($tablename,$values);
-			t3lib_div::debug($sql, 'SQL');
-			t3lib_div::debug(array($tablename,$values));
+			t3lib_div::debug(array('SQL'=>$sql, 'table'=>$tablename,'values'=>$values));
 		}
 		self::watchOutDB(
 			$GLOBALS['TYPO3_DB']->exec_INSERTquery(
@@ -240,6 +252,32 @@ class tx_rnbase_util_DB {
 			)
 		);
 		return $GLOBALS['TYPO3_DB']->sql_insert_id();
+	}
+	/**
+	 * Make a plain SQL Query. 
+	 * Notice: The db resource is not closed by this method. The caller is in charge to do this!
+	 *
+	 * @param string $sqlQuery
+	 * @param int $debug
+	 * @return result pointer for SELECT, EXPLAIN, SHOW, DESCRIBE or boolean
+	 */
+	public static function doQuery($sqlQuery, $debug=0) {
+		$debug = $debug ? $debug : intval($arr['debug']) > 0;
+		if($debug) {
+			$time = microtime(true);
+			$mem = memory_get_usage();
+		}
+
+		$res = self::watchOutDB(
+			$GLOBALS['TYPO3_DB']->sql_query($sqlQuery)
+		);
+		if($debug)
+			t3lib_div::debug(array(
+				'SQL '=>$sqlQuery,
+				'Time '=>(microtime(true) - $time),
+				'Memory consumed '=>(memory_get_usage()-$mem),
+			),'SQL statistics');
+		return $res;
 	}
 	/**
 	 * Make a database UPDATE.
