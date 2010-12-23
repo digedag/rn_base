@@ -401,7 +401,7 @@ class tx_rnbase_util_DB {
 	 */
 	static function searchWhere($sw,$searchFieldList,$operator='LIKE')	{
 		$where = '';
-		if ($sw)	{
+		if ($sw !== '')	{
 			$searchFields = explode(',',$searchFieldList);
 			$kw = preg_split('/[ ,]/', $sw);
 			if($operator == 'LIKE')

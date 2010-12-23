@@ -74,6 +74,11 @@ class tx_rnbase_tests_util_DB_testcase extends tx_phpunit_testcase {
 		$fields = 'tab1.bodytext,tab1.header';
 		$ret = tx_rnbase_util_DB::searchWhere($sw, $fields, OP_EQ);
 		$this->assertEquals($ret, " (tab1.bodytext = 'content\';' OR tab1.header = 'content\';' OR tab1.bodytext = 'INSERT' OR tab1.header = 'INSERT' )", 'OR failed.');
+
+		$sw = 0;
+		$ret = tx_rnbase_util_DB::searchWhere($sw, $fields, OP_EQ_INT);
+		$this->assertEquals($ret, " (tab1.bodytext = 0 OR tab1.header = 0 )", 'OR failed.');
+
 	}
 
 	public static function debugString($str) {
