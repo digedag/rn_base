@@ -261,8 +261,8 @@ class tx_rnbase_util_DB {
 	 * @param int $debug
 	 * @return result pointer for SELECT, EXPLAIN, SHOW, DESCRIBE or boolean
 	 */
-	public static function doQuery($sqlQuery, $debug=0) {
-		$debug = $debug ? $debug : intval($arr['debug']) > 0;
+	public static function doQuery($sqlQuery, array $options=array()) {
+		$debug = array_key_exists('debug', $options) ? intval($options['debug']) > 0 : false;
 		if($debug) {
 			$time = microtime(true);
 			$mem = memory_get_usage();
