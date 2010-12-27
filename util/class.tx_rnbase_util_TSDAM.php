@@ -271,11 +271,32 @@ class tx_rnbase_util_TSDAM {
 	}
 
 	/**
+	 * Add a reference to a DAM media file
+	 *
+	 * @param string $tableName
+	 * @return int 
+	 */
+	public static function addReference($tableName, $fieldName, $itemId, $uid) {
+		$data = array();
+		$data['uid_foreign'] = $itemId;
+		$data['uid_local'] = $uid;
+		$data['tablenames'] = $tableName;
+		$data['ident'] = $fieldName;
+
+		$id = tx_rnbase_util_DB::doInsert('tx_dam_mm_ref',$data);
+		
+		// Now count all items
+		self::updateImageCount($tableName, $fieldName, $itemId);
+		
+		return $id;
+	}
+
+	/**
 	 * Removes dam references. If no parameter is given, all references will be removed.
 	 *
 	 * @param string $uids commaseperated uids
 	 */
-	static function deleteReferences($tableName, $fieldName, $itemId, $uids = '') {
+	public static function deleteReferences($tableName, $fieldName, $itemId, $uids = '') {
 
 		$where = 'tablenames=\'' . $tableName . '\' AND ident=\'' . $fieldName .'\' AND uid_foreign=' . $itemId;
 		if(strlen(trim($uids))) {
@@ -284,18 +305,91 @@ class tx_rnbase_util_TSDAM {
 		}
 		tx_rnbase_util_DB::doDelete('tx_dam_mm_ref',$where);
 		// Jetzt die Bildanzahl aktualisieren
+		self::updateImageCount($tableName, $fieldName, $itemId);
+	}
+
+	/**
+	 * die Bildanzahl aktualisieren
+	 *
+	 */
+	public static function updateImageCount($tableName, $fieldName, $itemId) {
+		$values = array();
+		$values[$fieldName] = self::getImageCount($tableName, $fieldName, $itemId);		
+		tx_rnbase_util_DB::doUpdate($tableName,'uid='.$itemId,$values,0);
+	}
+	/**
+	 * Get picture count
+	 * @return int
+	 */
+	public static function getImageCount($tableName, $fieldName, $itemId) {
 		$options['where'] = 'tablenames=\'' . $tableName . '\' AND ident=\'' . $fieldName .'\' AND uid_foreign=' . $itemId;
 		$options['count'] = 1;
 		$options['enablefieldsoff'] = 1;
 		$ret = tx_rnbase_util_DB::doSelect('count(*) AS \'cnt\'', 'tx_dam_mm_ref', $options, 0);
 		$cnt = count($ret) ? intval($ret[0]['cnt']) : 0;
-		$values[$fieldName] = $cnt;
-		tx_rnbase_util_DB::doUpdate($tableName,'uid='.$itemId,$values,0);
+		return $cnt;
+	}
+
+	/**
+	 * Return all references for the given reference data
+	 * 
+	 * @param string $refTable
+	 * @param string $refField
+	 * @return array
+	 */
+	public static function getReferences($refTable, $refUid, $refField) {
+		require_once(t3lib_extMgm::extPath('dam') . 'lib/class.tx_dam_db.php');
+		return tx_dam_db::getReferencedFiles($refTable, $refUid, $refField);
+	}
+	
+	/**
+	 * Return file info for all references for the given reference data
+	 * 
+	 * @param string $refTable
+	 * @param string $refField
+	 * @return array
+	 */
+	public static function getReferencesFileInfo($refTable, $refUid, $refField) {
+		$refs = self::getReferences($refTable, $refUid, $refField);
+		$res = array();
+		if (isset($refs['rows']) && count($refs['rows'])) {
+			foreach ($refs['rows'] as $uid=>$record) {
+				$fileInfo = self::getFileInfo($record);
+				if (isset($refs['files'][$uid]))
+					$fileInfo['file_path_name'] = $refs['files'][$uid];
+				$fileInfo['file_abs_url'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $fileInfo['file_path_name'];
+				$res[$uid] = $fileInfo;
+			}
+		}
+		return $res;
+	}
+	
+	/**
+	 * Return first reference for the given reference data
+	 * 
+	 * @param string $refTable
+	 * @param int $refUid
+	 * @param string $refField
+	 * @return array
+	 */
+	static public function getFirstReference($refTable, $refUid, $refField) {
+		$refs = self::getReferences($refTable, $refUid, $refField);
+		
+		if (!empty($refs)) {
+			$res = array();
+			// Loop through all data ...
+			foreach ($refs as $key=>$data) {
+				// ... and use only the first record WITH its uid!
+				$uid = key($refs[$key]);
+				$res[$key] = array($uid => $data[$uid]);
+			}
+			return $res;
+		}
 	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_TSDAM.php']) {
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_TSDAM.php']);
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_TSDAM.php']);
 }
 
 ?>
