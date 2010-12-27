@@ -3,9 +3,10 @@
 Änderungen
 ----------
 
-v0.9.6 (??.12.2010)
+v0.9.6 (27.12.2010)
  * Bugfix in tx_rnbase_util_DB::searchWhere: it is possible to test joined values against 0
  * tx_rnbase_util_DB: new methods enableFields() and doQuery()
+ * tx_rnbase_util_TSDAM: some new methods to access DAM information
 
 v0.9.5 (16.11.2010)
  * Bugfix: Avoid warning while parsing TS configuration for plots
