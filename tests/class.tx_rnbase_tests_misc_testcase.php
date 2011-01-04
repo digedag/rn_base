@@ -23,11 +23,11 @@
 ***************************************************************/
 
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
-
+tx_rnbase::load('tx_rnbase_util_Misc');
 
 class tx_rnbase_tests_misc_testcase extends tx_phpunit_testcase {
-
-	function test_encodeParams() {
+	
+	public function test_encodeParams() {
 		$params['dat1'] = '1';
 		$params['dat2'] = array('1','2');
 		$params['dat3'] = 123;
@@ -49,7 +49,7 @@ class tx_rnbase_tests_misc_testcase extends tx_phpunit_testcase {
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/class.tx_rnbase_tests_misc_testcase.php']) {
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/class.tx_rnbase_tests_misc_testcase.php']);
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/class.tx_rnbase_tests_misc_testcase.php']);
 }
 
 ?>

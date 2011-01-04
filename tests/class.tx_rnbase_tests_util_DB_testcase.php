@@ -81,11 +81,13 @@ class tx_rnbase_tests_util_DB_testcase extends tx_phpunit_testcase {
 
 	}
 
+	/**
+	 * 
+	 * @deprecated use tx_rnbase_util_Strings::debugString
+	 */
 	public static function debugString($str) {
-		for($i=0, $cnt=strlen($str); $i < $cnt; $i++) {
-			$ret[$i] = $str{$i};
-		}
-		t3lib_div::debug($ret,'class.tx_rnbase_tests_cache_util_DB_testcase.php : '); // TODO: remove me
+		tx_rnbase::load('tx_rnbase_util_Strings');
+		return tx_rnbase_util_Strings::debugString($str);
 	}
 }
 
