@@ -29,6 +29,22 @@
 class tx_rnbase_util_TYPO3 {
 
 	/**
+	 * Prüft, ob mindestens TYPO3 Version 4.5 vorhanden ist.
+	 *
+	 * @return boolean
+	 */
+	public static function isTYPO45OrHigher() {
+		return self::isTYPO3VersionOrHigher(4005000);
+	}
+	/**
+	 * Prüft, ob mindestens TYPO3 Version 4.4 vorhanden ist.
+	 *
+	 * @return boolean
+	 */
+	public static function isTYPO44OrHigher() {
+		return self::isTYPO3VersionOrHigher(4004000);
+	}
+	/**
 	 * Prüft, ob mindestens TYPO3 Version 4.3 vorhanden ist.
 	 *
 	 * @return boolean

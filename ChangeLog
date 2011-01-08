@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v0.9.7 (?.01.2011)
+ * util_TYPO3: new checks for TYPO3 version 4.4 and 4.5
+
 v0.9.7 (04.01.2011)
  * New class tx_rnbase_util_Strings
 
