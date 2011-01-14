@@ -380,6 +380,19 @@ class tx_rnbase_util_DB {
 		return $tce;
 	}
 
+	/**
+	 * Get record with uid from table. 
+	 * 
+	 * @param string $tableName
+	 * @param int $uid
+	 */
+	public static function getRecord($tableName, $uid) {
+		$options = array();
+		$options['where'] = 'uid='.intval($uid);
+		$result = self::doSelect('*', $tableName, $options);
+		return count($result) > 0 ? $result[0] : array();
+	}
+
   /**
    * Same method as tslib_pibase::pi_getPidList()
    */
