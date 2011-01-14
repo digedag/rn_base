@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007 Rene Nitzsche (rene@system25.de)
+*  (c) 2007-2011 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,9 +22,9 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 // Die Datenbank-Klasse
-require_once(t3lib_extMgm::extPath('rn_base') . 'util/class.tx_rnbase_util_DB.php');
-require_once(PATH_t3lib.'class.t3lib_befunc.php');
+tx_rnbase::load('tx_rnbase_util_DB');
 
 /**
  * This interface defines a base model
@@ -80,7 +80,7 @@ class tx_rnbase_model_base {
 		else {
 			$this->uid = $rowOrUid;
 			if($this->getTableName())
-				$this->record = t3lib_BEfunc::getRecord($this->getTableName(),$this->uid);
+				$this->record = tx_rnbase_util_DB::getRecord($this->getTableName(),$this->uid);
 			// Der Record sollte immer ein Array sein
 			$this->record = is_array($this->record) ? $this->record : array();
 		}
@@ -94,7 +94,7 @@ class tx_rnbase_model_base {
 	 * Reload this records from database
 	 */
 	function reset() {
-		$this->record = t3lib_BEfunc::getRecord($this->getTableName(),$this->getUid());
+		$this->record = tx_rnbase_util_DB::getRecord($this->getTableName(),$this->getUid());
 	}
 	/**
 	 * Kindklassen müssen diese Methode überschreiben und den Namen der gemappten Tabelle liefern!
