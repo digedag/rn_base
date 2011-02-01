@@ -533,8 +533,8 @@ class tx_rnbase_util_Link {
 		// eigene Parameter für typolink, die einfach weitergegeben werden
 		$typolinkCfg = $configurations->get($confId.'typolink.');
 		if(is_array($typolinkCfg)) {
-			foreach($typolinkCfg As $cfgName => $value) {
-				$this->addTypolinkParam($name, $value);
+			foreach($typolinkCfg As $cfgName => $cfgValue) {
+				$this->addTypolinkParam($cfgName, $cfgValue);
 			}
 		}
 		
