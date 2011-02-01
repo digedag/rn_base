@@ -62,6 +62,7 @@ class tx_rnbase_util_Link {
 	var $externalTargetString = '-1'; // external target defaults to new window
 	var $titleString = '';              // tags title attribute
 	var $titleHasAlreadyHtmlSpecialChars = false; //is title attribute already HSC?
+	private $typolinkParams = array();	// container for generic typolink parameters
 
 	// -------------------------------------------------------------------------------------
 	// Constructor
@@ -123,6 +124,14 @@ class tx_rnbase_util_Link {
 	public function idAttribute($idString) {
 		$this->idString = $idString;
 		return $this;
+	}
+	/**
+	 * Add a param for typolink config
+	 * @param string $name
+	 * @param mixed $value
+	 */
+	public function addTypolinkParam($name, $value) {
+		$this->typolinkParams[$name] = $value;
 	}
 
 	/**
@@ -424,6 +433,11 @@ class tx_rnbase_util_Link {
 				$conf['ATagParams'] .= ' ' .  $key . '="' . htmlspecialchars($value) . '" ';
 			}
 		}
+		// Weiter generische Attribute setzen
+		if(count($this->typolinkParams)) {
+			$conf = array_merge($conf, $this->typolinkParams);
+		}
+
 		return $conf;
 	}
 
@@ -516,6 +530,14 @@ class tx_rnbase_util_Link {
 		}
 		$this->parameters($parameterArr);
 
+		// eigene Parameter für typolink, die einfach weitergegeben werden
+		$typolinkCfg = $configurations->get($confId.'typolink.');
+		if(is_array($typolinkCfg)) {
+			foreach($typolinkCfg As $cfgName => $value) {
+				$this->addTypolinkParam($name, $value);
+			}
+		}
+		
 		// Zusätzliche Parameter für den Link
 		$atagParams = $configurations->get($confId.'atagparams.');
 		if(is_array($atagParams)) {
