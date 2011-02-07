@@ -87,9 +87,9 @@ class tx_rnbase_view_Base{
 
 			// Soll abschließend nochmal das Plugin gerendert werden?
 			if(tx_rnbase_util_BaseMarker::containsMarker($out, 'PLUGIN_')) {
-				$pluginData = $formatter->cObj->data; // Eine Kopie des Datenarray ist notwendig!
-				$markerArray = $formatter->getItemMarkerArrayWrapped($pluginData, $controller->getConfId().'plugin.',0,'PLUGIN_');
-				$out = $formatter->cObj->substituteMarkerArrayCached($out, $markerArray, $subpartArray);
+				$pluginData = $configurations->getCObj()->data; // Eine Kopie des Datenarray ist notwendig!
+				$markerArray = $configurations->getFormatter()->getItemMarkerArrayWrapped($pluginData, $controller->getConfId().'plugin.',0,'PLUGIN_');
+				$out = tx_rnbase_util_Templates::substituteMarkerArrayCached($out, $markerArray, $subpartArray);
 			}
 		}
 		return $out;
