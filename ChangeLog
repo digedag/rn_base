@@ -6,6 +6,7 @@
 v0.9.8 (??.01.2011)
  * tx_rnbase_util_TYPO3: new check methods for TYPO3 versions 4.4 and 4.5
  * tx_rnbase_model_base: fetch single record in default constructor with respect of hidden and deleted flags
+ * tx_rnbase_Parameters: Accessing parameters from other extensions is possible. New method getAll().
 
 v0.9.7 (04.01.2011)
  * New class tx_rnbase_util_Strings

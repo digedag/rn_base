@@ -444,6 +444,8 @@ class tx_rnbase_controller {
 	 */
 	function _makeParameterObject($configurations) {
 		$parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+		$parameters->setQualifier($configurations->getQualifier());
+
 		// get parametersArray for defined qualifier
 		$parametersArray = tx_rnbase_util_TYPO3::isTYPO43OrHigher() ? 
 				t3lib_div::_GPmerged($configurations->getQualifier()) : 

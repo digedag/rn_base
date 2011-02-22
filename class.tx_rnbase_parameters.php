@@ -42,12 +42,31 @@ interface tx_rnbase_IParameters {
 	 * @return int
 	 */
 	function getInt($paramName, $qualifier='');
+	/**
+	 * Liefert alle Parameter-Werte
+	 *
+	 * @param string $qualifier
+	 * @return array
+	 */
+	function getAll($qualifier='');
 }
 
 
 class tx_rnbase_parameters extends ArrayObject implements tx_rnbase_IParameters {
+	private $qualifer='';
 
+	public function setQualifier($qualifier) {
+		$this->qualifier = $qualifier;
+	}
+	public function getQualifier() {
+		return $this->qualifier;
+	}
 	function get($paramName, $qualifier='') {
+		if($qualifier) {
+			$params = $this->getParametersPlain($qualifier);
+			$value = array_key_exists($paramName, $params) ? $params[$paramName] : $params['NK_'.$paramName];
+			return $value;
+		}
 		$value = $this->offsetGet($paramName);
 		return $value ? $value : $this->offsetGet('NK_'.$paramName);
 	}
@@ -60,6 +79,23 @@ class tx_rnbase_parameters extends ArrayObject implements tx_rnbase_IParameters 
 	 */
 	function getInt($paramName, $qualifier='') {
 		return intval($this->get($paramName, $qualifier));
+	}
+	private function getParametersPlain($qualifier) {
+		$parametersArray = tx_rnbase_util_TYPO3::isTYPO43OrHigher() ? 
+				t3lib_div::_GPmerged($qualifier) : 
+				t3lib_div::GParrayMerged($qualifier);
+		return $parametersArray;
+	}
+	function getAll($qualifier='') {
+		$ret = array();
+		$qualifier = $qualifier ? $qualifier : $this->getQualifier();
+		$params = $this->getParametersPlain($qualifier);
+		foreach($params As $key => $value) {
+			$key = ($key{0} === 'N' && substr($key, 0, 3) === 'NK_') ? substr($key, 3) : $key;
+			if(is_string($value))
+				$ret[$key] = $value;
+		}
+		return $ret;
 	}
 }
 
