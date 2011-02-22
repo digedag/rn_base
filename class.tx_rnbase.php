@@ -35,6 +35,7 @@ class tx_rnbase {
 	 * 
 	 * This method is taken from tx_div. There is an additional cache to avoid double calls. 
 	 * This can saves a lot of time.
+	 * TODO: lookup for classes folder
 	 *
 	 * @param	string		classname or path matching for the type of loader
 	 * @return	boolean		true if successfull, false otherwise
