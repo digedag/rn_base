@@ -413,6 +413,26 @@ MAYDAYPAGE;
 			$return[] = trim($result);
 		return (array) $return;
 	}
+
+	/**
+ 	 * Same method as tslib_pibase::pi_getPidList()
+	 */
+	public function getPidList($pid_list,$recursive=0)  {
+		if (!strcmp($pid_list,''))      $pid_list = $GLOBALS['TSFE']->id;
+		$recursive = t3lib_div::intInRange($recursive,0);
+
+		$pid_list_arr = array_unique(t3lib_div::trimExplode(',',$pid_list,1));
+		$pid_list = array();
+
+		foreach($pid_list_arr as $val)  {
+			$val = t3lib_div::intInRange($val,0);
+			if ($val)       {
+				$_list = tslib_cObj::getTreeList(-1*$val, $recursive);
+				if ($_list)  $pid_list[] = $_list;
+			}
+		}
+		return implode(',', $pid_list);
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Misc.php']) {
