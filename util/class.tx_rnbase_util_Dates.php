@@ -124,17 +124,44 @@ class tx_rnbase_util_Dates {
 	static function datetime_tstamp2mysql($tstamp) {
 		return date('Y-m-d H:i:s', $tstamp);
 	}
+	private static $dateTime = null;
 	/**
 	 * Umwandlung eines Zeitstrings yyyy-mm-dd H:i:s in einen Timestamp
 	 *
 	 * @param string $datetime Format: yyyy-mm-dd H:i:s
 	 * @return int
 	 */
-	static function datetime_mysql2tstamp($datetime) {
+	static function datetime_mysql2tstamp($datetime, $timezone = 'CET') {
 		list($datum, $zeit) = explode(' ', $datetime);
 		list($jahr, $monat, $tag) = t3lib_div::intExplode('-', $datum);
 		list($std, $min, $sec) = t3lib_div::intExplode(':', $zeit);
-		return mktime($std,$min,$sec,$monat,$tag,$jahr);
+		return self::getTimeStamp($jahr, $monat, $tag, $std, $min, $sec, $timezone);
+	}
+	/**
+	 * Create timestamp
+	 * @param int $jahr
+	 * @param int $monat
+	 * @param int $tag
+	 * @param int $std
+	 * @param int $min
+	 * @param int $sec
+	 * @param String $timezone
+	 */
+	public static function getTimeStamp($jahr=0, $monat=0, $tag=0, $std=0, $min=0, $sec=0, $timezone = 'UTC') {
+		if(!class_exists('DateTime')) {
+			// TODO: implement timezone support for at least PHP 5.1
+			return $timezone == 'UTC' ? 
+				gmmktime($std,$min,$sec,$monat,$tag,$jahr) :
+				mktime($std,$min,$sec,$monat,$tag,$jahr);
+		}
+		$tz = timezone_open($timezone);
+		if(!is_object($tz)) $tz = timezone_open('UTC'); // Fallback to UTC
+		if(!is_object(self::$dateTime))
+			self::$dateTime = new DateTime();
+		self::$dateTime->setTimezone($tz);
+		self::$dateTime->setDate($jahr, $monat, $tag);
+		self::$dateTime->setTime($std, $min, $sec);
+		return self::$dateTime->format('U');
 	}
 	/**
 	 * date_mysql2german

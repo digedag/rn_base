@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009 Rene Nitzsche (rene@system25.de)
+*  (c) 2009-2011 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,9 +25,23 @@
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_util_Dates');
 
-class tx_rnbase_tests_dates_testcase extends tx_phpunit_testcase {
+class tx_rnbase_tests_util_Dates_testcase extends tx_phpunit_testcase {
 
-	function test_dateConv() {
+	public function test_datetime_getTimeStamp() {
+		$tstamp = tx_rnbase_util_Dates::getTimeStamp(1970,1,1,1,0,0, 'CET');
+		$this->assertEquals(0, $tstamp);
+		$tstamp = tx_rnbase_util_Dates::getTimeStamp(1970,1,1,1,0,0, 'UTC');
+		$this->assertEquals(3600, $tstamp);
+	}
+	
+	public function test_datetime_mysql2tstamp() {
+		$tstamp = tx_rnbase_util_Dates::datetime_mysql2tstamp('1970-01-1 01:00:00', 'CET');
+		$this->assertEquals(0, $tstamp);
+		$tstamp = tx_rnbase_util_Dates::datetime_mysql2tstamp('1970-01-1 00:00:00', 'UTC');
+		$this->assertEquals(0, $tstamp);
+	}
+	
+	public function test_dateConv() {
 		$zeit1 = '2009-02-11';
 		$tstamp1 = tx_rnbase_util_Dates::date_mysql2tstamp($zeit1);
 		$zeit2 = tx_rnbase_util_Dates::date_tstamp2mysql($tstamp1);
@@ -38,8 +52,8 @@ class tx_rnbase_tests_dates_testcase extends tx_phpunit_testcase {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/class.tx_rnbase_tests_dates_testcase.php']) {
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/class.tx_rnbase_tests_dates_testcase.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/util/class.tx_rnbase_tests_util_Dates_testcase.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/util/class.tx_rnbase_tests_util_Dates_testcase.php']);
 }
 
 ?>
