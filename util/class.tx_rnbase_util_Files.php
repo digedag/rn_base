@@ -78,6 +78,23 @@ class tx_rnbase_util_Files {
 		}
 	}
 
+	/**
+	 * Check if a file exists and is readable within TYPO3.
+	 * @param	string File name
+	 * @return string File name with absolute path or FALSE.
+	 * @throws Exception
+	 */
+	public static function checkFile ($fName)	{
+		$absFile = t3lib_div::getFileAbsFileName($fName);
+		if(!(t3lib_div::isAllowedAbsPath($absFile) && @is_file($absFile))) {
+			throw new Exception('File not found: '.$absFile);
+		}
+		if(!@is_readable($absFile)) {
+			throw new Exception('File is not readable: '.$absFile);
+		}
+		return $absFile;
+	}
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Files.php']) {
