@@ -321,6 +321,7 @@ abstract class tx_rnbase_util_SearchBase {
 		$this->setGeneric($options);
 		if(!is_array($this->tableMapping)) {
 			$tableMapping = $this->getTableMappings();
+			$tableMapping = is_array($tableMapping) ? $tableMapping : array();
 			if($this->isGeneric())
 				$this->addGenericTableMappings($tableMapping, $options['searchdef']);
 			$this->tableMapping = array_merge($tableMapping, array_flip($tableMapping));
