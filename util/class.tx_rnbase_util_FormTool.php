@@ -145,6 +145,22 @@ class tx_rnbase_util_FormTool {
 			$label .'</a>';
   }
 
+  /**
+   * Create a hide/unhide Link
+   * @param string $table
+   * @param int $uid
+   * @param boolean $unhide
+   * @param array $options
+   */
+	public function createHideLink($table, $uid, $unhide=false, $options=array()) {
+		$location = t3lib_div::linkThisScript(array('CB'=>'','SET'=>'','cmd' => '','popViewId'=>''));
+		$location = str_replace('%20','',rawurlencode($location));
+		$jumpToUr = "'".$GLOBALS['BACK_PATH'].'tce_db.php?redirect='.$location.'&amp;data['.$table.'][' . $uid .'][hidden]='.($unhide ? 0 : 1)."'";
+		return '<a onclick="return jumpToUrl('.$jumpToUr.');" href="#">'.
+				'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.($unhide ? 'button_hide.gif' : 'button_unhide.gif'),'width="11" height="12"').' title="'.($unhide ? 'Show' : 'Hide').' UID: '.$uid.'" border="0" alt="" />'.
+				$label.'</a>';	
+	}
+
 	/**
 	 * Erstellt einen Link zur Anzeige von Informationen über einen Datensatz
 	 * @param $editTable DB-Tabelle des Datensatzes
