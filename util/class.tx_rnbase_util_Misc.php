@@ -262,13 +262,18 @@ MAYDAYPAGE;
   /**
    * Prepare classes for FE-rendering if it is needed in TYPO3 backend.
    */
-	static function prepareTSFE() {
+	public static function prepareTSFE($options = array()) {
+		$pid = array_key_exists('pid', $options) ? $options['pid'] : 1;
+		$type = array_key_exists('type', $options) ? $options['type'] : 99;
+
+		$force = array_key_exists('force', $options) ? true : false;
+
 		if(!is_object($GLOBALS['TT'])) {
 			require_once(PATH_t3lib.'class.t3lib_timetrack.php');
 			$GLOBALS['TT'] = new t3lib_timeTrack;
 			$GLOBALS['TT']->start();
 		}
-		if(!is_object($GLOBALS['TSFE'])) {
+		if(!is_object($GLOBALS['TSFE']) || $force) {
 			if(!defined('PATH_tslib')) {
 				// PATH_tslib setzen
 				if (@is_dir(PATH_site.'typo3/sysext/cms/tslib/')) {
@@ -287,7 +292,7 @@ MAYDAYPAGE;
 			require_once(PATH_tslib.'class.tslib_fe.php');
 			require_once(PATH_t3lib.'class.t3lib_page.php');
 			require_once(PATH_t3lib.'class.t3lib_tstemplate.php');
-			$GLOBALS['TSFE'] = tx_rnbase::makeInstance('tslib_fe', $GLOBALS['TYPO3_CONF_VARS'], 1, 99);
+			$GLOBALS['TSFE'] = tx_rnbase::makeInstance('tslib_fe', $GLOBALS['TYPO3_CONF_VARS'], $pid, $type);
 			// Jetzt noch pageSelect
 			$temp_sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
 			$temp_sys_page->init(0);
@@ -295,6 +300,7 @@ MAYDAYPAGE;
 			$GLOBALS['TSFE']->initTemplate();
 			$GLOBALS['TSFE']->tmpl->getFileName_backPath = $GLOBALS['TSFE']->tmpl->getFileName_backPath ? $GLOBALS['TSFE']->tmpl->getFileName_backPath : PATH_site;
 		}
+		return $GLOBALS['TSFE'];
 	}
 	/**
 	 * Umlaute durch normale Buchstaben erstetzen. Aus Ü wird Ue.
