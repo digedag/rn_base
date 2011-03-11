@@ -197,7 +197,7 @@ class tx_rnbase_util_FormTool {
 	 * @param string $sLabel
 	 * @param array $options
 	 */
-	public function createDeleteLink($table, $uid, $sLabel = 'Remove', $options = array()) {
+	public function createDeleteLink($table, $uid, $label = 'Remove', $options = array()) {
 		// @TODO: das verwenden wir bereit beim createHideLink, sollte besser ausgelagert werden!
 		$location = t3lib_div::linkThisScript(array('CB'=>'','SET'=>'','cmd' => '','popViewId'=>''));
 		$location = str_replace('%20','',rawurlencode($location));
