@@ -3,7 +3,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009 Rene Nitzsche (rene@system25.de)
+*  (c) 2009-2011 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -57,7 +57,7 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc {
 
 		$start = microtime(true);
 		$memStart = memory_get_usage();
-		$out .= $this->createModuleContent($conf);
+		$out .= $this->createContent($template, $conf);
 		if(tx_rnbase_util_BaseMarker::containsMarker($out, 'MOD_')) {
 			$markerArr = array();
 			$memEnd = memory_get_usage();
@@ -69,48 +69,44 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc {
 		}
 		return $out;
 	}
-	private function createModuleContent($conf) {
+	private function createContent($template, $conf) {
 		$formTool = $this->getModule()->getFormTool();
 		$out = '';
 		// TabMenu initialisieren
 		$menuItems = array();
 		$menu = $this->initSubMenu($menuItems, $this->getModule()->getFormTool());
+		
+		$this->getModule()->setSubMenu($menu['menu']);
+
 		// SubSelectors
 		$selectorStr = '';
-		$args = $this->makeSubSelectors($selectorStr);
-		if(is_array($args) && count($args) == 0) {
+		$subSels = $this->makeSubSelectors($selectorStr);
+		if(is_array($subSels) && count($subSels) == 0) {
 			// Abbruch, da kein Wert gewählt
 			return $this->handleNoSubSelectorValues();
 		}
 
-		$args = is_array($args) ? $args : array();
+		$args = array();
 
-		$out .= $this->getContent($template, $conf, $conf->getFormatter(), $formTool);
+		//$out .= $this->getContent($template, $conf, $conf->getFormatter(), $formTool);
 
 		$handler = $menuItems[$menu['value']];
 		if(is_object($handler)) {
 			//
+			$args[] = $template;
 			$args[] = $this->getModule();
+			$args[] = array('subSels' => $subSels);
 			$out .= call_user_func_array(array($handler,'showScreen'),$args);
 		}
 
 		$content .= $formTool->getTCEForm()->printNeededJSFunctions_top();
-		$content .= $modContent;
+		$content .= $out;
 		// Den JS-Code für Validierung einbinden
 		$content .= $formTool->getTCEForm()->printNeededJSFunctions();
 		return $content;
 
 		return $out;
 	}
-	/**
-	 * Kindklassen implementieren diese Methode um den Modulinhalt zu erzeugen
-	 * @param string $template
-	 * @param tx_rnbase_configurations $configurations
-	 * @param tx_rnbase_util_FormatUtil $formatter
-	 * @param tx_rnbase_util_FormTool $formTool
-	 * @return string
-	 */
-	abstract protected function getContent($template, &$configurations, &$formatter, $formTool);
 	/**
 	 * Liefert die ConfId für diese ModFunc
 	 *
@@ -125,16 +121,19 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc {
 	 *
 	 */
 	abstract protected function getFuncId();
-	protected function initSubMenu(&$menuItems, $formTool) {
+	protected function initSubMenu(&$menuObjs, $formTool) {
 		$items = $this->getSubMenuItems();
 		if(!is_array($items)) return;
 
+		$menuItems = array();
 		foreach($items As $idx => $tabItem) {
 			$menuItems[$idx] = $tabItem->getTabLabel();
+			$menuObjs[$idx] = $tabItem;
 			$tabItem->handleRequest($this->getModule());
 		}
-		return $formTool->showTabMenu($this->getModule()->getPid(), 'mn_'.$this->getFuncId(), $this->getModule()->getName(),
-						$menuItems);
+		$menu = $formTool->showTabMenu($this->getModule()->getPid(), 'mn_'.$this->getFuncId(), $this->getModule()->getName(),$menuItems);
+		
+		return $menu;
 	}
 	/**
 	 * It is possible to overwrite this method and return an array of tab functions

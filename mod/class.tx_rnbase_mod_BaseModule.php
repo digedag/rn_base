@@ -80,8 +80,11 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 			$markers['CSH'] = $docHeaderButtons['csh'];
 			$markers['HEADER'] = $header;
 			$markers['SELECTOR'] = $this->subselector;
-			$markers['TABS'] = $this->tabs;
+			// Das FUNC_MENU enthält die Modul-Funktionen, die per ext_tables.php registriert werden
 			$markers['FUNC_MENU'] = $this->getFuncMenu();
+			// Tabs sind zusätliche Tabs die eine Modul-Funktion bei Bedarf einblenden kann.
+			$markers['TABS'] = $this->tabs; // Deprecated use ###SUBMENU###
+			$markers['SUBMENU'] = $this->tabs;
 			$markers['CONTENT'] = $this->content;
 		}
 		else {
@@ -105,7 +108,6 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 			}
 			$this->content.=$this->getDoc()->spacer(10);
 		}
-
 
 		if(tx_rnbase_util_TYPO3::isTYPO42OrHigher()) {
 			$content = $this->getDoc()->startPage($LANG->getLL('title'));
@@ -184,6 +186,10 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 	public function getPid() {
 		return $this->id;
 	}
+	public function setSubMenu($menuString) {
+		$this->tabs = $menuString;
+	}
+	
 	/**
 	 * Prints out the module HTML
 	 *
