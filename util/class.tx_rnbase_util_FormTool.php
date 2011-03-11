@@ -202,7 +202,8 @@ class tx_rnbase_util_FormTool {
 		$location = t3lib_div::linkThisScript(array('CB'=>'','SET'=>'','cmd' => '','popViewId'=>''));
 		$location = str_replace('%20','',rawurlencode($location));
 
-		$jumpToUrl = '\''.$GLOBALS['BACK_PATH'].'tce_db.php?redirect='.$location.'&amp;data['.$table.'][' . $uid .'][delete]=1\'';
+		$jumpToUrl = '\''.$GLOBALS['BACK_PATH'].'tce_db.php?redirect='.$location.'&amp;cmd['.$table.']['.$uid.'][delete]=1&amp;vC='.$GLOBALS['BE_USER']->veriCode().'\'';
+//		$jumpToUrl = '\''.$GLOBALS['BACK_PATH'].'tce_db.php?redirect='.$location.'&amp;data['.$table.'][' . $uid .'][delete]=1\'';
 		$jsCode = $this->getConfirmCode('return jumpToUrl('.$jumpToUrl.');', $options);
 		return '<a onclick="'.$jsCode.'" href="#">'.
 				'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/deletedok.gif','width="16" height="16"').' title="Delete UID: '.$uid.'" border="0" alt="" />'.
