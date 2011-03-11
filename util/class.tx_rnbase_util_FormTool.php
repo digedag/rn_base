@@ -53,7 +53,7 @@ class tx_rnbase_util_FormTool {
 	 * @param array $options additional options (title, params)
 	 * @return string
 	 */
-	function createEditButton($editTable, $editUid, $options = array()) {
+	public function createEditButton($editTable, $editUid, $options = array()) {
 		$title = isset($options['title']) ? $options['title'] : 'Edit';
 		$params = '&edit['.$editTable.']['.$editUid.']=edit';
 		if(isset($options['params']))
@@ -77,7 +77,7 @@ class tx_rnbase_util_FormTool {
 	 * @param $label Bezeichnung des Links
 	 * @return string
 	 */
-	function createEditLink($editTable, $editUid, $label = 'Edit') {
+	public function createEditLink($editTable, $editUid, $label = 'Edit') {
 		$params = '&edit['.$editTable.']['.$editUid.']=edit';
 		return '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'])).'">'.
 			'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/edit2.gif','width="11" height="12"').' title="Edit UID: '.$editUid.'" border="0" alt="" />'.
@@ -90,7 +90,7 @@ class tx_rnbase_util_FormTool {
 	 * @param int $recordUid
 	 * @return string
 	 */
-	function createHistoryLink($table, $recordUid, $label = '') {
+	public function createHistoryLink($table, $recordUid, $label = '') {
 		return "<a href=\"#\" onclick=\"return jumpExt('".$GLOBALS['BACK_PATH'].
 				"show_rechis.php?element=".rawurlencode($table.':'.$recordUid).
 				"','#latest');\"><img ".t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/history2.gif','width="13" height="12"').
@@ -155,8 +155,9 @@ class tx_rnbase_util_FormTool {
 	public function createHideLink($table, $uid, $unhide=false, $options=array()) {
 		$location = t3lib_div::linkThisScript(array('CB'=>'','SET'=>'','cmd' => '','popViewId'=>''));
 		$location = str_replace('%20','',rawurlencode($location));
-		$jumpToUr = "'".$GLOBALS['BACK_PATH'].'tce_db.php?redirect='.$location.'&amp;data['.$table.'][' . $uid .'][hidden]='.($unhide ? 0 : 1)."'";
-		return '<a onclick="return jumpToUrl('.$jumpToUr.');" href="#">'.
+		$jumpToUrl = "'".$GLOBALS['BACK_PATH'].'tce_db.php?redirect='.$location.'&amp;data['.$table.'][' . $uid .'][hidden]='.($unhide ? 0 : 1)."'";
+
+		return '<a onclick="return jumpToUrl('.$jumpToUrl.');" href="#">'.
 				'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.($unhide ? 'button_hide.gif' : 'button_unhide.gif'),'width="11" height="12"').' title="'.($unhide ? 'Show' : 'Hide').' UID: '.$uid.'" border="0" alt="" />'.
 				$label.'</a>';	
 	}
@@ -181,23 +182,53 @@ class tx_rnbase_util_FormTool {
    * @param $currentPid PID der aktuellen Seite des Datensatzes
    * @param $label Bezeichnung des Links
    */
-  function createMoveLink($editTable, $recordUid, $currentPid, $label = 'Move') {
+  public function createMoveLink($editTable, $recordUid, $currentPid, $label = 'Move') {
 
     return "<a href=\"#\" onclick=\"return jumpSelf('/typo3/db_list.php?id=". $currentPid ."&amp;CB[el][" . $editTable
            . "%7C" . $recordUid . "]=1');\"><img " .t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/clip_cut.gif','width="16" height="16"'). ' title="UID: '. $recordUid . '" alt="" />' . $label .'</a>';
 
   }
 
+	/**
+	 * Erstellt einen Link zum Löschen eines Datensatzes
+	 *
+	 * @param string $table
+	 * @param int $iUid
+	 * @param string $sLabel
+	 * @param array $options
+	 */
+	public function createDeleteLink($table, $uid, $sLabel = 'Remove', $options = array()) {
+		// @TODO: das verwenden wir bereit beim createHideLink, sollte besser ausgelagert werden!
+		$location = t3lib_div::linkThisScript(array('CB'=>'','SET'=>'','cmd' => '','popViewId'=>''));
+		$location = str_replace('%20','',rawurlencode($location));
 
-  function createHidden($name, $value){
+		$jumpToUrl = '\''.$GLOBALS['BACK_PATH'].'tce_db.php?redirect='.$location.'&amp;data['.$table.'][' . $uid .'][delete]=1\'';
+		$jsCode = $this->getConfirmCode('return jumpToUrl('.$jumpToUrl.');', $options);
+		return '<a onclick="'.$jsCode.'" href="#">'.
+				'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/deletedok.gif','width="16" height="16"').' title="Delete UID: '.$uid.'" border="0" alt="" />'.
+			$label.'</a>';
+	}
+	/**
+	 * Fügt den JS Code für eine Confirm-Meldung hinzu, wenn in den Options gesetzt.
+	 * @param string $jsCode
+	 * @param array $options
+	 */
+	private function getConfirmCode($jsCode, $options) {
+		if(isset($options['confirm']) && strlen($options['confirm']) > 0) {
+			return 'if(confirm('.$GLOBALS['LANG']->JScharCode($options['confirm']).')) {' . $jsCode .'} else {return false;}';
+		}
+		return $jsCode;
+	}
+
+  public function createHidden($name, $value){
     return '<input type="hidden" name="'. $name.'" value="' . $value . '" />';
   }
 
-	function createRadio($name, $value, $checked = false, $onclick = ''){
+	public function createRadio($name, $value, $checked = false, $onclick = ''){
 		return '<input type="radio" name="'. $name.'" value="' . $value . '" '. ($checked ? 'checked="checked"' : '') . (strlen($onclick) ? ' onclick="' . $onclick . '"' : '') . ' />';
 	}
 
-	function createCheckbox($name, $value, $checked = false, $onclick = ''){
+	public function createCheckbox($name, $value, $checked = false, $onclick = ''){
 		return '<input type="checkbox" name="'. $name.'" value="' . $value . '" '. ($checked ? 'checked="checked"' : '') . (strlen($onclick) ? ' onclick="' . $onclick . '"' : '') .' />';
 	}
 
