@@ -70,6 +70,7 @@ class tx_rnbase_util_ListMarker {
 		$this->parts = array();
 		$this->rowRoll = intval($formatter->configurations->get($confId.'roll.value'));
 		$this->rowRollCnt = 0;
+		$this->totalLineStart = intval($formatter->configurations->get($confId.'totalline.startValue'));
 		$this->i=0;
 		$provider->iterateAll(array($this, 'renderNext'));
 
@@ -83,7 +84,7 @@ class tx_rnbase_util_ListMarker {
 	public function renderNext($data) {
 		$data->record['roll'] = $this->rowRollCnt;
 		$data->record['line'] = $this->i; // Marker für aktuelle Zeilenummer
-		$data->record['totalline'] = $this->i+$this->offset; // Marker für aktuelle Zeilenummer der Gesamtliste
+		$data->record['totalline'] = $this->i+$this->totalLineStart+$this->offset; // Marker für aktuelle Zeilenummer der Gesamtliste
 		$this->handleVisitors($data);
 		$part = $this->entryMarker->parseTemplate($this->info->getTemplate($data), $data, $this->formatter, $this->confId, $this->marker);
 		$this->parts[] = $part;
@@ -120,13 +121,14 @@ class tx_rnbase_util_ListMarker {
 		$parts = array();
 		$rowRoll = intval($formatter->configurations->get($confId.'roll.value'));
 		$rowRollCnt = 0;
+		$totalLineStart = intval($formatter->configurations->get($confId.'totalline.startValue'));
 		for($i=0, $cnt=count($dataArr); $i < $cnt; $i++) {
 			$data = $dataArr[$i];
 			// Check for object to avoid warning.
 			if(!is_object($data)) continue;
 			$data->record['roll'] = $rowRollCnt;
 			$data->record['line'] = $i; // Marker für aktuelle Zeilenummer
-			$data->record['totalline'] = $i+$offset; // Marker für aktuelle Zeilenummer der Gesamtliste
+			$data->record['totalline'] = $i+$totalLineStart+$offset; // Marker für aktuelle Zeilenummer der Gesamtliste
 			$this->handleVisitors($data);
 			$part = $entryMarker->parseTemplate($this->info->getTemplate($data), $data, $formatter, $confId, $marker);
 			$parts[] = $part;
