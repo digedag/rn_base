@@ -3,8 +3,10 @@
 Änderungen
 ----------
 
-v0.9.9 (??.03.2011)
+v0.9.9 (17.03.2011)
  * FormTool: Some new Buttons. Thanks to Michael Wagner
+ * StartValue for totalline-Marker is configureable
+
 
 v0.9.8 (24.02.2011)
  * tx_rnbase_util_TYPO3: new check methods for TYPO3 versions 4.4 and 4.5
