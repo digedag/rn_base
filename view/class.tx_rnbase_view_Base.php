@@ -78,19 +78,19 @@ class tx_rnbase_view_Base{
 
 		$controller = $this->getController();
 		if($controller) {
-			$params['confid'] = $controller->getConfId();
-			$params['item'] = $viewData->offsetGet('item');
-			$params['items'] = $viewData->offsetGet('items');
-			tx_rnbase::load('tx_rnbase_util_BaseMarker');
-			tx_rnbase_util_BaseMarker::callModules($out, $markerArray, $subpartArray, $wrappedSubpartArray, $params, $configurations->getFormatter());
-			$out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($out, $markerArray, $subpartArray, $wrappedSubpartArray);
-
 			// Soll abschließend nochmal das Plugin gerendert werden?
 			if(tx_rnbase_util_BaseMarker::containsMarker($out, 'PLUGIN_')) {
 				$pluginData = $configurations->getCObj()->data; // Eine Kopie des Datenarray ist notwendig!
 				$markerArray = $configurations->getFormatter()->getItemMarkerArrayWrapped($pluginData, $controller->getConfId().'plugin.',0,'PLUGIN_');
 				$out = tx_rnbase_util_Templates::substituteMarkerArrayCached($out, $markerArray, $subpartArray);
 			}
+
+			$params['confid'] = $controller->getConfId();
+			$params['item'] = $viewData->offsetGet('item');
+			$params['items'] = $viewData->offsetGet('items');
+			tx_rnbase::load('tx_rnbase_util_BaseMarker');
+			tx_rnbase_util_BaseMarker::callModules($out, $markerArray, $subpartArray, $wrappedSubpartArray, $params, $configurations->getFormatter());
+			$out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($out, $markerArray, $subpartArray, $wrappedSubpartArray);
 		}
 		return $out;
 	}
