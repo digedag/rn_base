@@ -46,6 +46,7 @@ class tx_rnbase_util_PageBrowser implements PageBrowser {
    */
   function setState($parameters, $listSize, $pageSize) {
     $this->pointer = is_object($parameters) ? intval($parameters->offsetGet($this->getParamName('pointer'))) : 0;
+    $this->pointer = $this->pointer < 0 ? 0 : $this->pointer;
     $this->listSize = $listSize;
     $this->pageSize = t3lib_div::intInRange(intval($pageSize) ? $pageSize : 10, 1, 1000);
   }
@@ -54,8 +55,14 @@ class tx_rnbase_util_PageBrowser implements PageBrowser {
    * Liefert die Limit-Angaben für die DB-Anfrage
    */
   function getState() {
+		$offset = $this->pointer * $this->pageSize;
+		// Wenn der Offset größer ist als die verfügbaren Einträge, dann den Offset neu berechnen.
+		$offset = $offset >= $this->listSize ? intval(((ceil($this->listSize/$this->pageSize))-1) * $this->pageSize) : $offset;
+
+// LS: 100 -> 90+10
+// 100/10 = 10 -1 
   	$limit = $this->listSize < $this->pageSize ? $this->listSize : $this->pageSize;
-    $ret = array( 'offset' => ($this->pointer * $this->pageSize), 'limit' => $limit , );
+    $ret = array( 'offset' => $offset, 'limit' => $limit , );
     return $ret;
   }
 
