@@ -95,6 +95,49 @@ class tx_rnbase_util_Files {
 		return $absFile;
 	}
 
+	/**
+	 * Create a zip-archive from a list of files
+	 *
+	 * @param array $files
+	 * @param string $destination full path of zip file
+	 * @param boolean $overwrite
+	 * @return boolean true, if zip file was created
+	 */
+	public static function makeZipFile($files = array(),$destination = '',$overwrite = false) {
+		//if the zip file already exists and overwrite is false, return false
+		if(file_exists($destination) && !$overwrite) { return false; }
+
+		//vars
+		$valid_files = array();
+		//if files were passed in...
+		if(!is_array($files)) return false;
+		foreach($files as $file) {
+			if(file_exists($file)) {
+				$valid_files[] = $file;
+			}
+		}
+		
+		//if we have good files...
+		if(!count($valid_files)) return false;
+		
+		//create the archive
+		$zip = new ZipArchive();
+		if($zip->open($destination,$overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) !== true) {
+			return false;
+		}
+		//add the files
+		foreach($valid_files as $file) {
+			$filename = basename($file);
+			//$zip->addFile($file, $filename);
+			$zip->addFile($file, iconv('UTF-8', 'IBM850', $filename));
+		}
+		
+		//close the zip -- done!
+		$zip->close();
+		
+		//check to make sure the file exists
+		return file_exists($destination);
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Files.php']) {
