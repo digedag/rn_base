@@ -439,6 +439,18 @@ MAYDAYPAGE;
 		}
 		return implode(',', $pid_list);
 	}
+
+	/**
+	 * Returns a given CamelCasedString as an lowercase string with underscores.
+	 * Example: Converts BlogExample to blog_example, and minimalValue to minimal_value
+	 * Taken from t3lib_div for backward compatibility
+	 *
+	 * @param	string		$string: String to be converted to lowercase underscore
+	 * @return	string		lowercase_and_underscored_string
+	 */
+	public static function camelCaseToLowerCaseUnderscored($string) {
+		return strtolower(preg_replace('/(?<=\w)([A-Z])/', '_\\1', $string));
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Misc.php']) {

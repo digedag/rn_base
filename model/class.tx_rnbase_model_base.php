@@ -25,6 +25,8 @@
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 // Die Datenbank-Klasse
 tx_rnbase::load('tx_rnbase_util_DB');
+tx_rnbase::load('tx_rnbase_util_Misc');
+
 
 /**
  * This interface defines a base model
@@ -119,7 +121,23 @@ class tx_rnbase_model_base {
 	function isPersisted() {
 		return intval($this->getUid()) > 0;
 	}
-	
+
+	/**
+	 * Returns the record
+	 * @return array
+	 */
+	function getRecord() { return $this->record; }
+
+	public function __call($methodName, $parameters){
+		if (strlen($methodName) > 3 && substr($methodName, 0, 3) === 'get'){
+			// simple getter
+			$propertyName = substr($methodName, 3);
+			$value = tx_rnbase_util_Misc::camelCaseToLowerCaseUnderscored($propertyName);
+			return $this->record[$value];
+		}
+		throw new Exception('Sorry, this model does not support the method "' . $methodName . '"');
+	}
+
 	/**
 	 * Liefert bei Tabellen, die im $TCA definiert sind, die Namen der Tabellenspalten als Array.
 	 * @return Array mit Spaltennamen oder 0

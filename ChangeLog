@@ -3,9 +3,13 @@
 Änderungen
 ----------
 
-v0.9.10 (01.04.2011)
+v0.9.12 (??.04.2011)
+ * model_base: Magic method __call implemented to support FLUID. Thanks to Stephan Reuther!
+
+v0.9.11 (01.04.2011)
  * PageBrowser: Handle pointers out of listsize
  * BaseView: Render PLUGIN_ before CallModules
+ * tx_rnbase_util_Files: new method makeZipFile
 
 v0.9.9 (17.03.2011) (not released)
  * FormTool: Some new Buttons. Thanks to Michael Wagner
