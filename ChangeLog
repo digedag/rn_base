@@ -5,6 +5,7 @@
 
 v0.9.12 (??.04.2011)
  * model_base: Magic method __call implemented to support FLUID. Thanks to Stephan Reuther!
+ * action_BaseIOC: It is possible to set view class by Typoscript. Thanks to Stephan Reuther!
 
 v0.9.11 (01.04.2011)
  * PageBrowser: Handle pointers out of listsize

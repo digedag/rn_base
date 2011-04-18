@@ -57,7 +57,11 @@ abstract class tx_rnbase_action_BaseIOC {
 			tx_rnbase_util_Misc::pullTT();
 			if(!$out) {
 				// View
-				$view = tx_rnbase::makeInstance($this->getViewClassName());
+				// It is possible to set another view via typoscript
+				$viewClassName = $configurations->get($this->getConfId() . 'viewClassName');
+				$viewClassName = strlen($viewClassName) > 0 ? $viewClassName : $this->getViewClassName();
+				// TODO: error handling...
+				$view = tx_rnbase::makeInstance($viewClassName);
 				$view->setTemplatePath($configurations->getTemplatePath());
 				if(method_exists($view, 'setController'))
 					$view->setController($this);
