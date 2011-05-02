@@ -3,7 +3,7 @@
 Änderungen
 ----------
 
-v0.9.12 (??.04.2011)
+v0.9.12 (02.05.2011)
  * model_base: Magic method __call implemented to support FLUID. Thanks to Stephan Reuther!
  * action_BaseIOC: It is possible to set view class by Typoscript. Thanks to Stephan Reuther!
 
