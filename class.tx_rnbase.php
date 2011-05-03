@@ -208,7 +208,6 @@ class tx_rnbase {
 	 */
 	public static function getClassInfo($minimalInformation, $alternativeKey='', $prefix = 'class.', $suffix = '.php') {
 		$info=trim($minimalInformation);
-		$path = '';
 		if(!$info) {
 			throw new Exception('getClassInfo called with empty parameter');
 		}
@@ -220,7 +219,6 @@ class tx_rnbase {
 			$class = $matches[1];
 		}elseif(preg_match('/^.*\.([0-9A-Za-z_]+)' . $qSuffix . '$/', $info, $matches)) {
 			// Or it starts with a Dot: class.[tx_]....php
-
 			$class = $matches[1];
 		}elseif(preg_match('/^([0-9A-Za-z_]+)' . $qSuffix . '$/', $info, $matches)) {
 			// Or it starts directly with the relevant part
@@ -229,17 +227,22 @@ class tx_rnbase {
 			// It may be the key itself
 			$class = $info;
 		}else{
-			throw new Exception('getClassInfo() called with invalid classname: ' . $info);
+			throw new Exception('Classname contains invalid characters or has invalid format: ' . $info);
 		}
 
 			// With this a possible alternative Key is also validated
 		if(!$key = self::guessKey($alternativeKey ? $alternativeKey : $class)) {
-			throw new Exception('getClassInfo() called with invalid classname: ' . $info);
+			throw new Exception('No extension key found for classname: ' . $info);
 		}
 
+		$isExtBase = false;
 		if(preg_match('/^tx_[0-9A-Za-z_]*$/', $class)) {  // with tx_ prefix
 			$parts=explode('_', trim($class));
 			array_shift($parts); // strip tx
+		}elseif(preg_match('/^Tx_[0-9A-Za-z_]*$/', $class)) {  // with Tx_ prefix (ExtBase)
+			$parts=explode('_', trim($class));
+			array_shift($parts); // strip tx
+			$isExtBase = true;
 		}elseif(preg_match('/^[0-9A-Za-z_]*$/', $class)) { // without tx_ prefix
 			$parts=explode('_', trim($class));
 		}else{
@@ -251,10 +254,10 @@ class tx_rnbase {
 
 		// Save last element of path
 		if(count($parts) > 0) {
-			$last = array_pop($parts) . '/';
+			$last = array_pop($parts);
 		}
 
-		$dir = '';
+		$dir = $isExtBase ? 'Classes/' :'';
 		// Build the relative path if any
 		foreach((array)$parts as $part) {
 			$dir .= $part . '/';
@@ -264,16 +267,22 @@ class tx_rnbase {
 		$ret['dir'] = $dir;
 		$ret['extkey'] = $key;
 		$ret['extpath'] = t3lib_extMgm::extPath($key);
-		$ret['path'] = $ret['extpath'] . $dir . $prefix . $class . $suffix;
-		if(!is_file($ret['path'])) {
+		if($isExtBase) {
+			$path = $ret['extpath'] . $dir . $last . $suffix;
+		}
+		else {
+			$path = $ret['extpath'] . $dir . $prefix . $class . $suffix;
+		}
+		if(!is_file($path)) {
 			// Now we try INSIDE the last directory (dir and last may be empty)
 			// ext(/dir)/last
 			// ext(/dir)/last/prefix.tx_key_parts_last.php.
-			$ret['path'] = $ret['extpath'] . $dir . $last . $prefix . $class . $suffix;
-			if(!is_file($info['path'])) {
-				throw new Exception('Class path not found: ' . $ret['path']);
+			$path = $ret['extpath'] . $dir . $last. '/' . $prefix . $class . $suffix;
+			if(!is_file($path)) {
+				throw new Exception('Class path not found: ' . $path);
 			}
 		}
+		$ret['path'] = $path;
 		return $ret;
 	}
 	
@@ -291,7 +300,7 @@ class tx_rnbase {
 	 * @see		load()
 	 */
 	private static function _findT3($minimalInformation, $alternativeKey='', $prefix = 'class.', $suffix = '.php') {
-		try {
+//		try {
 			$info = self::getClassInfo($minimalInformation, $alternativeKey);
 			if(!is_file($path =  $info['path'])) {
 				$path = FALSE;
@@ -303,10 +312,10 @@ class tx_rnbase {
 			if(!$path && !is_file($path =  $ext . $dir . $last . $prefix . $class . $suffix)) {
 				$path = FALSE;
 			}
-		}
-		catch(Exception $e) {
-			t3lib_div::debug($e->getMessage(), 'tx_rnbase :: _findT3'); // TODO: remove me
-		}
+//		}
+//		catch(Exception $e) {
+//			t3lib_div::debug($e->getMessage(), 'tx_rnbase :: _findT3'); // TODO: remove me
+//		}
 		return $info['path'];
 
 //		$info=trim($minimalInformation);
@@ -444,6 +453,11 @@ t3lib_div::debug($path, $minimalInformation.' - tx_rnbase :: _findT3'); // TODO:
 			// Is it a classname that contains the key?
 			if(!$key && (preg_match('/^tx_([^_]*)(.*)$/', $info, $matches ) || preg_match('/^user_([^_]*)(.*)$/', $info, $matches )) ) {
 				$key = $matches[1];
+				$key = self::getValidKey($key);
+			}
+			// Test again for extbase class 
+			if(!$key && (preg_match('/^Tx_([^_]*)(.*)$/', $info, $matches )) ) {
+				$key = strtolower($matches[1]);
 				$key = self::getValidKey($key);
 			}
 			// Is there a full filename that contains the key in it?

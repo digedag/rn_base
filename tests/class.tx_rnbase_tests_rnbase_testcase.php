@@ -26,14 +26,25 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
 class tx_rnbase_tests_rnbase_testcase extends tx_phpunit_testcase {
 
-	function test_makeInstance() {
+	function test_makeInstanceSimpleObject() {
 		$obj = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
 		$this->assertTrue(is_object($obj), 'Object not instantiated');
-		
+	}
+	function test_makeInstanceObjectWithParameters() {
 		$obj = tx_rnbase::makeInstance('tx_rnbase_filter_FilterItem', 'name', 'value');
 		$this->assertTrue(is_object($obj), 'Object not instantiated');
 		$this->assertEquals($obj->record['name'], 'name', 'Attribute not set');
 		$this->assertEquals($obj->record['value'], 'value', 'Attribute not set');
+	}
+	/**
+	 */
+	function testMakeInstanceOfExtBaseClass() {
+		if(!$this->isExtBasePossible()) { $this->markTestSkipped(); }
+		$obj = tx_rnbase::makeInstance('Tx_T3sponsors_Domain_Model_Category');
+		$this->assertTrue(is_object($obj), 'Object not instantiated');
+	}
+	private function isExtBasePossible() {
+		return t3lib_extMgm::isLoaded('extbase') && t3lib_extMgm::isLoaded('t3sponsors');
 	}
 }
 
