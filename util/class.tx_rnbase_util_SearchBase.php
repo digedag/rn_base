@@ -29,11 +29,14 @@ define('SEARCH_FIELD_JOINED', 'JOINED'); // Sonderfall Freitextsuche in mehreren
 define('SEARCH_FIELD_CUSTOM', 'CUSTOM'); // Sonderfall freie Where-Bedingung
 
 define('OP_IN', 'IN STR');
+define('OP_NOTIN', 'NOTIN STR');
 /** IN für numerische Werte */
 define('OP_NOTIN_INT', 'NOT IN');
 define('OP_IN_INT', 'IN');
 define('OP_IN_SQL', 'IN SQL');
+define('OP_NOTIN_SQL', 'NOTIN SQL');
 define('OP_INSET_INT', 'FIND_IN_SET');
+//define('OP_NOTINSET_INT', 'NOTFIND_IN_SET');
 define('OP_LIKE', 'LIKE');
 define('OP_LIKE_CONST', 'OP_LIKE_CONST');
 define('OP_EQ_INT', '=');

@@ -554,12 +554,14 @@ class tx_rnbase_util_DB {
 				$value = implode(',', t3lib_div::intExplode(',', $value));
 				$where .= $tableAlias.'.' . strtolower($col) . ' '.$operator.' (' . $value . ')';
 				break;
+			case OP_NOTIN:
 			case OP_IN:
 				$value = implode('\',\'', t3lib_div::trimExplode(',', $value));
-				$where .= $tableAlias.'.' . strtolower($col) . ' IN (\'' . $value . '\')';
+				$where .= $tableAlias.'.' . strtolower($col) . ' '. ($operator == OP_IN ? 'IN' : 'NOT IN') .' (\'' . $value . '\')';
 				break;
+			case OP_NOTIN_SQL:
 			case OP_IN_SQL:
-				$where .= $tableAlias.'.' . strtolower($col) . ' IN (' . $value . ')';
+				$where .= $tableAlias.'.' . strtolower($col) . ' '. ($operator == OP_IN_SQL ? 'IN' : 'NOT IN') .' (' . $value . ')';
 				break;
 			case OP_INSET_INT:
 				// Values splitten und einzelne Abfragen mit OR verbinden

@@ -5,6 +5,7 @@
 
 v0.9.13 (??.05.2011)
  * tx_rnbase: Class loader supports extbase classes.
+ * New DB operator constants OP_NOTIN and OP_NOTIN_SQL
 
 v0.9.12 (02.05.2011)
  * model_base: Magic method __call implemented to support FLUID. Thanks to Stephan Reuther!
