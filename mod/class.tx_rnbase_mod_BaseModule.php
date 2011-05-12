@@ -82,9 +82,9 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 			$markers['SELECTOR'] = $this->subselector;
 			// Das FUNC_MENU enthält die Modul-Funktionen, die per ext_tables.php registriert werden
 			$markers['FUNC_MENU'] = $this->getFuncMenu();
-			// Tabs sind zusätliche Tabs die eine Modul-Funktion bei Bedarf einblenden kann.
-			$markers['TABS'] = $this->tabs; // Deprecated use ###SUBMENU###
+			// SUBMENU sind zusätzliche Tabs die eine Modul-Funktion bei Bedarf einblenden kann.
 			$markers['SUBMENU'] = $this->tabs;
+			$markers['TABS'] = $this->tabs; // Deprecated use ###SUBMENU###
 			$markers['CONTENT'] = $this->content;
 		}
 		else {
