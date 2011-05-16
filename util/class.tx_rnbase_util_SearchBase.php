@@ -380,8 +380,9 @@ abstract class tx_rnbase_util_SearchBase {
 	
 	/**
 	 * Name der Klasse, in die die Ergebnisse gemappt werden
+	 * @return string
 	 */
-	abstract protected function getWrapperClass();
+	abstract public function getWrapperClass();
 
 	/**
 	 * Kindklassen liefern hier die notwendigen DB-Joins. Ist kein JOIN erforderlich
