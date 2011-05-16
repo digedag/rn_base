@@ -37,7 +37,10 @@ tx_rnbase::load('tx_rnbase_util_Misc');
 abstract class tx_rnbase_action_BaseIOC {
 	private static $callCount = 0;
 	private static function countCall() { return self::$callCount++; }
+	private $configurations = null;
+
 	function execute(&$parameters,&$configurations){
+		$this->setConfigurations($configurations);
 		$debugKey = $configurations->get($this->getConfId().'_debugview');
 		$debug = ($debugKey && ($debugKey==='1' || 
 				($_GET['debug'] && array_key_exists($debugKey,array_flip(t3lib_div::trimExplode(',', $_GET['debug'])))) ||
@@ -90,6 +93,20 @@ abstract class tx_rnbase_action_BaseIOC {
 		return $out;
 	}
 
+	/**
+	 * Returns configurations object
+	 * @return tx_rnbase_configurations
+	 */
+	public function getConfigurations() {
+		return $this->configurations;
+	}
+	/**
+	 * Returns configurations object
+	 * @return tx_rnbase_configurations
+	 */
+	public function setConfigurations(tx_rnbase_configurations $configurations) {
+		$this->configurations = $configurations;
+	}
 	/**
 	 * Find a configured cache handler.
 	 * 

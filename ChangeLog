@@ -6,6 +6,9 @@
 v0.9.13 (??.05.2011)
  * tx_rnbase: Class loader supports extbase classes.
  * New DB operator constants OP_NOTIN and OP_NOTIN_SQL
+ * New base class for services tx_rnbase_sv1_Base
+ * New view class for list views: tx_rnbase_views_List
+ * util_SearchBase: method getWrapperClass is now public
 
 v0.9.12 (02.05.2011)
  * model_base: Magic method __call implemented to support FLUID. Thanks to Stephan Reuther!
