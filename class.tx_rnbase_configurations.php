@@ -353,13 +353,19 @@ class tx_rnbase_configurations {
 			return $this->_queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey);
 
 		// Wenn am Ende kein Punkt steht, ist das Ergebnis ein String
+		// deep ist nur dann sinnvoll, wenn ohne Punkt am Ende gefragt wird.
 		$ret = $this->_queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey);
 		if (!is_array($ret) && substr($pathKey, strlen($pathKey)-1, 1) != '.') {
 			$arr = $this->_queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey.'.');
-			if (is_array($arr)) $ret = array_merge(array($ret), $arr);
+			if (is_array($arr)){
+				$ret = array('key' => $ret, 'key.' => $arr);
+//				$ret = array_merge(array($ret), $arr);
+			}
 		}
-		if (is_array($ret))
+		if (is_array($ret)) {
 			$ret = $this->renderTS($ret, $this->getCObj());
+			$ret = $ret['key'];
+		}
 		return $ret;
 	}
 	/**
