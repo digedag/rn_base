@@ -50,10 +50,55 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 		$markerArray = $formatter->getItemMarkerArrayWrapped($item->record, $confId , 0, $marker.'_',$item->getColumnNames());
 		$wrappedSubpartArray = array();
 		$subpartArray = array();
+		$this->prepareLinks($item, $marker, $markerArray, $subpartArray, $wrappedSubpartArray, $confId, $formatter, $template);
 
 		$out = self::substituteMarkerArrayCached($template, $markerArray, $subpartArray, $wrappedSubpartArray);
 		return $out;
 	}
+	/**
+	 * Links vorbereiten
+	 *
+	 * @param tx_cfcleague_models_Stadium $item
+	 * @param string $marker
+	 * @param array $markerArray
+	 * @param array $wrappedSubpartArray
+	 * @param string $confId
+	 * @param tx_rnbase_util_FormatUtil $formatter
+	 */
+	protected function prepareLinks($item, $marker, &$markerArray, &$subpartArray, &$wrappedSubpartArray, $confId, $formatter, $template) {
+		$pluginData = $formatter->getConfigurations()->getCObj()->data;
+		$formatter->getConfigurations()->getCObj()->data = $item->record;
+
+		$linkIds = $formatter->getConfigurations()->getKeyNames($confId.'links.');
+		for($i=0, $cnt=count($linkIds); $i < $cnt; $i++) {
+			$linkId = $linkIds[$i];
+
+			// Die Parameter erzeugen
+			$params = array();
+			$paramMap = $formatter->getConfigurations()->get($confId.'links.'.$linkId.'._cfg.params.');
+			foreach($paramMap As $paramName => $colName)
+				if(is_scalar($colName) && array_key_exists($colName, $item->record))
+					$params[$paramName] = $item->record[$colName];
+/*			$paramNames = $formatter->getConfigurations()->getKeyNames($confId.'links.'.$linkId.'._cfg.params.');
+			foreach($paramNames As $paramName) {
+				$colName = $formatter->getConfigurations()->get($confId.'links.'.$linkId.'._cfg.params.'.$paramName, false);
+				if($colName)
+					$params[$paramName] = $item->record[$colName];
+			}
+*/
+
+			if($item->isPersisted()) {
+				$this->initLink($markerArray, $subpartArray, $wrappedSubpartArray, $formatter, $confId, $linkId, $marker, $params, $template);
+			}
+			else {
+				$linkMarker = $marker . '_' . strtoupper($linkId).'LINK';
+				$remove = intval($formatter->getConfigurations()->get($confId.'links.'.$linkId.'.removeIfDisabled')); 
+				$this->disableLink($markerArray, $subpartArray, $wrappedSubpartArray, $linkMarker, $remove > 0);
+			}
+		}
+		$formatter->getConfigurations()->getCObj()->data = $pluginData;
+	}
+
 	/**
 	 * Set classname for items
 	 * @param $name
