@@ -389,6 +389,8 @@ class tx_rnbase_util_DB {
 	public static function getRecord($tableName, $uid) {
 		$options = array();
 		$options['where'] = 'uid='.intval($uid);
+		if(!is_array($GLOBALS['TCA']) || !array_key_exists($tableName, $GLOBALS['TCA']))
+			$options['enablefieldsoff'] = 1;
 		$result = self::doSelect('*', $tableName, $options);
 		return count($result) > 0 ? $result[0] : array();
 	}
