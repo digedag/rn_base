@@ -12,7 +12,7 @@
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'A base library for extensions.',
-	'description' => 'Uses MVC design principles and is based on extension lib.',
+	'description' => 'Uses MVC design principles and domain driven development.',
 	'category' => 'misc',
 	'shy' => 0,
 	'version' => '0.9.13',
