@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v0.9.14 (??.05.2011)
+ * tx_rnbase_configurations::get(): option $deep fixed to keep former behavier.
+
 v0.9.13 (21.05.2011)
  * tx_rnbase: Class loader supports extbase classes.
  * New DB operator constants OP_NOTIN and OP_NOTIN_SQL
@@ -13,11 +16,11 @@ v0.9.13 (21.05.2011)
  * tx_rnbase_configurations::get(): option $deep reimplemented. Should work now.
  * SimpleMarker can render simple links configured by Typoscript
 
-v0.9.12 (02.05.2011)
+v0.9.12 (02.05.2011) (not released)
  * model_base: Magic method __call implemented to support FLUID. Thanks to Stephan Reuther!
  * action_BaseIOC: It is possible to set view class by Typoscript. Thanks to Stephan Reuther!
 
-v0.9.11 (01.04.2011)
+v0.9.11 (01.04.2011) (not released)
  * PageBrowser: Handle pointers out of listsize
  * BaseView: Render PLUGIN_ before CallModules
  * tx_rnbase_util_Files: new method makeZipFile

@@ -355,7 +355,8 @@ class tx_rnbase_configurations {
 		// Wenn am Ende kein Punkt steht, ist das Ergebnis ein String
 		// deep ist nur dann sinnvoll, wenn ohne Punkt am Ende gefragt wird.
 		$ret = $this->_queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey);
-		if (!is_array($ret) && substr($pathKey, strlen($pathKey)-1, 1) != '.') {
+		$endingDot = substr($pathKey, strlen($pathKey)-1, 1) != '.';
+		if (!is_array($ret) && $endingDot) {
 			$arr = $this->_queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey.'.');
 			if (is_array($arr)){
 				$ret = array('key' => $ret, 'key.' => $arr);
@@ -364,7 +365,7 @@ class tx_rnbase_configurations {
 		}
 		if (is_array($ret)) {
 			$ret = $this->renderTS($ret, $this->getCObj());
-			$ret = $ret['key'];
+			$ret = $endingDot ? $ret : $ret['key'];
 		}
 		return $ret;
 	}
