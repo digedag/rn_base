@@ -3,7 +3,9 @@
 Änderungen
 ----------
 
-v0.9.14 (??.05.2011)
+v0.9.15 (?.05.2011)
+
+v0.9.14 (26.05.2011)
  * tx_rnbase_configurations::get(): option $deep fixed to keep former behavier.
 
 v0.9.13 (21.05.2011)
