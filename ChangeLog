@@ -4,6 +4,8 @@
 ----------
 
 v0.9.15 (?.05.2011)
+ * External DB integration started
+ * PageBrowser: Offset will be never lower than 0
 
 v0.9.14 (26.05.2011)
  * tx_rnbase_configurations::get(): option $deep fixed to keep former behavier.

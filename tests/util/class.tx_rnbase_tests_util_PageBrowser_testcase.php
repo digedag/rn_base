@@ -64,6 +64,17 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_phpunit_testcase {
 		$this->assertEquals(5, $state['limit'], 'Limit ist falsch');
 	}
 
+	public function test_getStateWithEmptyListAndNoPointer() {
+		$pb = new tx_rnbase_util_PageBrowser('test');
+		$parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+		$listSize = 0; //Gesamtgröße der darzustellenden Liste
+		$pageSize = 10; //Größe einer Seite
+		$pb->setState($parameters, $listSize, $pageSize);
+		$state = $pb->getState();
+		$this->assertEquals(0, $state['offset'], 'Offset ist falsch');
+		$this->assertEquals(0, $state['limit'], 'Limit ist falsch');
+	}
+	
 	public function test_getStateWithPointerOutOfRange() {
 		$pb = new tx_rnbase_util_PageBrowser('test');
 		$parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
