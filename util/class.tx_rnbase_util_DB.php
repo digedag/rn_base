@@ -638,6 +638,33 @@ class tx_rnbase_util_DB {
 		list($year, $month, $day) = explode('-', $date);
 		return sprintf("%02d-%02d-%04d", $day, $month, $year);
 	}
+
+	/**
+	 * Returns the database instance
+	 * @param string $key database identifier defined in localconf.php. Always in lowercase!
+	 * @return tx_rnbase_util_db_IDatabase
+	 */
+	public static function getDatabase($key = 'typo3') {
+		$key = strtolower($key);
+		tx_rnbase::load('tx_rnbase_cache_Manager');
+		$cache= tx_rnbase_cache_Manager::getCache('rnbase_databases');
+		$db = $cache->get('db_'.$key);
+		if(!$db) {
+			if($key == 'typo3') {
+				$db = tx_rnbase::makeInstance('tx_rnbase_util_db_TYPO3');
+			}
+			else {
+				$dbCfg = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rn_base']['db'][$key];
+				if(!is_array($dbCfg)) {
+					tx_rnbase::load('tx_rnbase_util_db_Exception');
+					throw new tx_rnbase_util_db_Exception('No config for database ' . $key . ' found!');
+				}
+				$db = tx_rnbase::makeInstance('tx_rnbase_util_db_MySQL', $dbCfg);
+			}
+			$cache->set($key, $db);
+		}
+		return $db;
+	}
 }
 
 function tx_rnbase_util_DB_prependAlias(&$item, $key, $alias) {
