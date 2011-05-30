@@ -3,7 +3,8 @@
 Änderungen
 ----------
 
-v0.9.15 (?.05.2011)
+v0.9.15 (30.05.2011)
+ * Workspace-Support: util_DB builds correct SQL-queries for preview mode
  * util_Misc: new method sendErrorMail()
  * External DB integration started
  * PageBrowser: Offset will be never lower than 0

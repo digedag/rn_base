@@ -149,16 +149,25 @@ class tx_rnbase_util_DB {
 		if(!$arr['enablefieldsoff']) {
 			// Zur Where-Clause noch die gültigen Felder hinzufügen
 			if (!is_object(self::$sysPage)) {
-				require_once(PATH_t3lib.'class.t3lib_page.php');
-				self::$sysPage = t3lib_div::makeInstance('t3lib_pageSelect');
-				self::$sysPage->init(0); // $this->showHiddenPage
+				if(is_object($GLOBALS['TSFE']->sys_page)) 
+					self::$sysPage = $GLOBALS['TSFE']->sys_page; // Use existing SysPage from TSFE
+				else {
+					require_once(PATH_t3lib.'class.t3lib_page.php');
+					self::$sysPage = t3lib_div::makeInstance('t3lib_pageSelect');
+					self::$sysPage->init(0); // $this->showHiddenPage
+				}
 			}
 			$mode = (TYPO3_MODE == 'BE') ? 1 : 0;
 			if(intval($arr['enablefieldsbe']))
 				$mode = 1;
 			elseif(intval($arr['enablefieldsfe']))
 				$mode = 0;
+			// Workspaces: Bei Tabellen mit Workspace-Support werden die EnableFields automatisch reduziert. Die Extension
+			// Muss aus dem ResultSet ggf. Datensätze entfernen.
 			$enableFields = self::$sysPage->enableFields($tableName, $mode);
+			// Wir setzen zusätzlich pid >=0, damit Version-Records nicht erscheinen
+			$enableFields .= ' AND '.$tableName.'.pid >=0';
+
 			if($tableAlias) {
 				// Replace tablename with alias
 				$enableFields = str_replace($tableName, $tableAlias, $enableFields);
