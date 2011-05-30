@@ -4,6 +4,7 @@
 ----------
 
 v0.9.15 (?.05.2011)
+ * util_Misc: new method sendErrorMail()
  * External DB integration started
  * PageBrowser: Offset will be never lower than 0
 

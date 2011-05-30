@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006-2009 Rene Nitzsche
+ *  (c) 2006-2011 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -450,6 +450,70 @@ MAYDAYPAGE;
 	 */
 	public static function camelCaseToLowerCaseUnderscored($string) {
 		return strtolower(preg_replace('/(?<=\w)([A-Z])/', '_\\1', $string));
+	}
+
+	/**
+	 * Sendout an error mail
+	 * @param string $mailAddr commaseperated recipients
+	 * @param string $actionName
+	 * @param Exception $e
+	 * @param array $options
+	 */
+	public static function sendErrorMail($mailAddr, $actionName, Exception $e, array $options=array()) {
+		$ignoreMailLock = (array_key_exists('ignoremaillock', $options) && $options['ignoremaillock']);
+
+		if(!$ignoreMailLock) {
+			$lockFile = PATH_site.'typo3temp/rn_base/maillock.txt';
+			$lockFileFound = is_file($lockFile);
+			if($lockFileFound) {
+				$lastCall = intval(trim(file_get_contents($lockFile)));
+				if($lastCall > (time() - 60)) {
+					return; // Only one mail within one minute sent
+				}
+			}
+			else {
+				if(!is_file(PATH_site.'typo3temp/rn_base/')) {
+					tx_rnbase::load('tx_rnbase_util_Logger');
+					tx_rnbase_util_Logger::info('TempDir for rn_base not found. Check EM settings!', 'rn_base', array('lockfile'=> $lockFile));
+				}
+				$lockFileFound = true;
+			}
+		}
+		
+		$textPart = 'This is an automatic email from TYPO3. Don\'t answer!'."\n\n"; 
+		$htmlPart = '<strong>This is an automatic email from TYPO3. Don\'t answer!</strong>';
+		$textPart .= 'UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName ."\n\n";
+		$htmlPart .= '<div><strong>UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName .'</strong></div>';
+		$textPart .= 'Message: ' . $e->getMessage()."\n\n";
+		$htmlPart .= '<p><strong>Message:</strong><br />' . $e->getMessage() . '</p>';
+		$textPart .= "Stacktrace:\n". $e->__toString()."\n";
+		$htmlPart .= '<p><strong>Stacktrace:</strong><pre>'.$e->__toString().'</pre></p>';
+		$textPart .= 'SITE_URL: ' . t3lib_div::getIndpEnv('TYPO3_SITE_URL')."\n";
+		$htmlPart .= '<p><strong>SITE_URL</strong><br />'. t3lib_div::getIndpEnv('TYPO3_SITE_URL'). '</p>';
+		if(count($_GET))
+			$htmlPart .= '<p><strong>_GET</strong><br />'. var_export($_GET, true). '</p>';
+		if(count($_POST))
+			$htmlPart .= '<p><strong>_POST</strong><br />'. var_export($_POST, true). '</p>';
+		$htmlPart .= '<p><strong>_SERVER</strong><br />'. var_export($_SERVER, true). '</p>';
+		if($e instanceof tx_rnbase_util_Exception) {
+			$additional = $e->getAdditional();
+			if($additional)
+				$htmlPart .= '<p><strong>Additional Data:</strong><br />' . strval($additional) . '</p>';
+		}
+
+		$mail = t3lib_div::makeInstance('t3lib_htmlmail');
+		$mail->start();
+		$mail->subject         = 'Exception on site '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
+		$mail->from_email      = tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'fromEmail');
+		$mail->from_name       = '';
+		$mail->organisation    = '';
+		$mail->priority        = 1;
+		$mail->addPlain($textPart);
+		$mail->setHTML($htmlPart);
+//		$mail->theParts['html']['content'] = $this->parse($mail->theParts['html']['content']);
+		if($lockFileFound && !$ignoreMailLock)
+			file_put_contents($lockFile, time()); // refresh lock
+		return $mail->send($addr);
 	}
 }
 
