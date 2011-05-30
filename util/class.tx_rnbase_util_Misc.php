@@ -513,7 +513,7 @@ MAYDAYPAGE;
 //		$mail->theParts['html']['content'] = $this->parse($mail->theParts['html']['content']);
 		if($lockFileFound && !$ignoreMailLock)
 			file_put_contents($lockFile, time()); // refresh lock
-		return $mail->send($addr);
+		return $mail->send($mailAddr);
 	}
 }
 
