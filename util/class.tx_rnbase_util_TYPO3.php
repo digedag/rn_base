@@ -120,7 +120,6 @@ class tx_rnbase_util_TYPO3 {
 	 * @return t3lib_pageSelect
 	 */
 	public static function getSysPage() {
-		t3lib_div::debug(array(get_class($GLOBALS['TSFE']), $GLOBALS['BE_USER']), 'tx_rnbase_util_TYPO3 Line: '.__LINE__); // TODO: remove me
 		if (!is_object(self::$sysPage)) {
 			if(is_object($GLOBALS['TSFE']->sys_page)) 
 				self::$sysPage = $GLOBALS['TSFE']->sys_page; // Use existing SysPage from TSFE
