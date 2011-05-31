@@ -161,11 +161,6 @@ class tx_rnbase_util_DB {
 			// Wir setzen zusätzlich pid >=0, damit Version-Records nicht erscheinen
 			$enableFields .= ' AND '.$tableName.'.pid >=0';
 
-			if($tableAlias) {
-				// Replace tablename with alias
-				$enableFields = str_replace($tableName, $tableAlias, $enableFields);
-			}
-			
 			$where .= $enableFields;
 		}
 
@@ -176,6 +171,12 @@ class tx_rnbase_util_DB {
 
 		if(strlen($pidList) > 0)
 			$where .= ' AND '.$tableName.'.pid IN (' . tx_rnbase_util_DB::_getPidList($pidList,$recursive) . ')';
+
+		if($tableAlias) {
+			// Replace tablename with alias
+			$where = str_replace($tableName, $tableAlias, $where);
+		}
+
 		if(strlen($union) > 0)
 			$where .= ' UNION '.$union;
 
@@ -205,7 +206,7 @@ class tx_rnbase_util_DB {
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
 			// Workspacesupport
 			self::lookupWorkspace($row, $tableName, $sysPage, $arr);
-			if(!is_array($rows)) continue;
+			if(!is_array($row)) continue;
 			$item = ($wrapper) ? tx_rnbase::makeInstance($wrapper, $row) : $row;
 			if($callback) {
 				call_user_func($callback, $item);
@@ -230,7 +231,7 @@ class tx_rnbase_util_DB {
 	 * @param t3lib_pageSelect $sysPage
 	 */
 	private static function lookupWorkspace(&$row, $tableName, $sysPage, $options) {
-		if (!$sysPage->versioningPreview || $options['ignoreworkspace']) {
+		if (!$sysPage->versioningPreview || $options['enablefieldsoff'] || $options['ignoreworkspace']) {
 			return;
 		}
 		$sysPage->versionOL($tableName, $row);
