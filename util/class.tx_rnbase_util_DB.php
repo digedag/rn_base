@@ -23,6 +23,7 @@
  ***************************************************************/
 
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+tx_rnbase::load('tx_rnbase_util_TYPO3');
 
 /**
  * Contains utility functions for database access
@@ -148,15 +149,7 @@ class tx_rnbase_util_DB {
 
 		if(!$arr['enablefieldsoff']) {
 			// Zur Where-Clause noch die gültigen Felder hinzufügen
-			if (!is_object(self::$sysPage)) {
-				if(is_object($GLOBALS['TSFE']->sys_page)) 
-					self::$sysPage = $GLOBALS['TSFE']->sys_page; // Use existing SysPage from TSFE
-				else {
-					require_once(PATH_t3lib.'class.t3lib_page.php');
-					self::$sysPage = t3lib_div::makeInstance('t3lib_pageSelect');
-					self::$sysPage->init(0); // $this->showHiddenPage
-				}
-			}
+			$sysPage = tx_rnbase_util_TYPO3::getSysPage();
 			$mode = (TYPO3_MODE == 'BE') ? 1 : 0;
 			if(intval($arr['enablefieldsbe']))
 				$mode = 1;
@@ -164,7 +157,7 @@ class tx_rnbase_util_DB {
 				$mode = 0;
 			// Workspaces: Bei Tabellen mit Workspace-Support werden die EnableFields automatisch reduziert. Die Extension
 			// Muss aus dem ResultSet ggf. Datensätze entfernen.
-			$enableFields = self::$sysPage->enableFields($tableName, $mode);
+			$enableFields = $sysPage->enableFields($tableName, $mode);
 			// Wir setzen zusätzlich pid >=0, damit Version-Records nicht erscheinen
 			$enableFields .= ' AND '.$tableName.'.pid >=0';
 
@@ -210,6 +203,9 @@ class tx_rnbase_util_DB {
 
 		$rows = array();
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
+			// Workspacesupport
+			self::lookupWorkspace($row, $tableName, $sysPage, $arr);
+			if(!is_array($rows)) continue;
 			$item = ($wrapper) ? tx_rnbase::makeInstance($wrapper, $row) : $row;
 			if($callback) {
 				call_user_func($callback, $item);
@@ -228,13 +224,21 @@ class tx_rnbase_util_DB {
 		return $rows;
 	}
 
-	public static function enableFields($tableName, $mode, $tableAlias='') {
-		if (!is_object(self::$sysPage)) {
-			require_once(PATH_t3lib.'class.t3lib_page.php');
-			self::$sysPage = t3lib_div::makeInstance('t3lib_pageSelect');
-			self::$sysPage->init(0); // $this->showHiddenPage
+	/**
+	 * 
+	 * @param array $row
+	 * @param t3lib_pageSelect $sysPage
+	 */
+	private static function lookupWorkspace(&$row, $tableName, $sysPage, $options) {
+		if (!$sysPage->versioningPreview || $options['ignoreworkspace']) {
+			return;
 		}
-		$enableFields = self::$sysPage->enableFields($tableName, $mode);
+		$sysPage->versionOL($tableName, $row);
+	}
+
+	public static function enableFields($tableName, $mode, $tableAlias='') {
+		$sysPage = tx_rnbase_util_TYPO3::getSysPage();
+		$enableFields = $sysPage->enableFields($tableName, $mode);
 		if($tableAlias) {
 			// Replace tablename with alias
 			$enableFields = str_replace($tableName, $tableAlias, $enableFields);

@@ -3,13 +3,16 @@
 Änderungen
 ----------
 
-v0.9.15 (30.05.2011)
+v0.10.1 (??.06.2011) (not released)
+ * Full Workspace-Support added! Automatic version overlay for database queries!
+
+v0.9.15 (30.05.2011) (not released)
  * Workspace-Support: util_DB builds correct SQL-queries for preview mode
  * util_Misc: new method sendErrorMail()
  * External DB integration started
  * PageBrowser: Offset will be never lower than 0
 
-v0.9.14 (26.05.2011)
+v0.9.14 (26.05.2011) (not released)
  * tx_rnbase_configurations::get(): option $deep fixed to keep former behavier.
 
 v0.9.13 (21.05.2011)

@@ -212,6 +212,8 @@ abstract class tx_rnbase_util_SearchBase {
 			$sqlOptions['callback'] = $options['callback'];
 		if($options['i18n'])
 			$sqlOptions['i18n'] = $options['i18n'];
+		if($options['ignoreworkspace'])
+			$sqlOptions['ignoreworkspace'] = $options['ignoreworkspace'];
 		if($options['sqlonly'])
 			$sqlOptions['sqlonly'] = $options['sqlonly'];
 		if($options['union'])

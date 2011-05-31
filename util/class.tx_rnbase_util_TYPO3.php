@@ -102,6 +102,36 @@ class tx_rnbase_util_TYPO3 {
 	public static function getFEUser() {
 		return $GLOBALS['TSFE']->fe_user;
 	}
+	/**
+	 * Get the current backend user if available
+	 * @return t3lib_tsfeBeUserAuth
+	 */
+	public static function getBEUser() {
+		return $GLOBALS['BE_USER'];
+	}
+	/**
+	 * @return tslib_fe
+	 */
+	public static function getTSFE() {
+		return $GLOBALS['TSFE'];
+	}
+	private static $sysPage = null;
+	/**
+	 * @return t3lib_pageSelect
+	 */
+	public static function getSysPage() {
+		t3lib_div::debug(array(get_class($GLOBALS['TSFE']), $GLOBALS['BE_USER']), 'tx_rnbase_util_TYPO3 Line: '.__LINE__); // TODO: remove me
+		if (!is_object(self::$sysPage)) {
+			if(is_object($GLOBALS['TSFE']->sys_page)) 
+				self::$sysPage = $GLOBALS['TSFE']->sys_page; // Use existing SysPage from TSFE
+			else {
+				require_once(PATH_t3lib.'class.t3lib_page.php');
+				self::$sysPage = t3lib_div::makeInstance('t3lib_pageSelect');
+				self::$sysPage->init(0); // $this->showHiddenPage
+			}
+		}
+		return self::$sysPage;
+	}
 }
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_TYPO3.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_TYPO3.php']);
