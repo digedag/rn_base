@@ -23,6 +23,8 @@
  ***************************************************************/
 
 tx_rnbase::load('tx_rnbase_util_Misc');
+tx_rnbase::load('tx_rnbase_util_TYPO3');
+
 
 /**
  * Contains utility functions for HTML-Templates
@@ -214,9 +216,9 @@ class tx_rnbase_util_Templates {
 		$storeKey = md5('substituteMarkerArrayCached_storeKey:'.serialize(array($content,$aKeys)));
 		if (self::$substMarkerCache[$storeKey])	{
 			$storeArr = self::$substMarkerCache[$storeKey];
-			$GLOBALS['TT']->setTSlogMessage('Cached',0);
+//			$GLOBALS['TT']->setTSlogMessage('Cached',0);
 		} else {
-			$storeArrDat = $GLOBALS['TSFE']->sys_page->getHash($storeKey);
+			$storeArrDat = tx_rnbase_util_TYPO3::getSysPage()->getHash($storeKey);
 			if (!isset($storeArrDat))	{
 					// Initialize storeArr
 				$storeArr=array();
@@ -244,15 +246,15 @@ class tx_rnbase_util_Templates {
 				self::$substMarkerCache[$storeKey] = $storeArr;
 
 					// Storing the cached data:
-				$GLOBALS['TSFE']->sys_page->storeHash($storeKey, serialize($storeArr), 'substMarkArrayCached');
+				tx_rnbase_util_TYPO3::getSysPage()->storeHash($storeKey, serialize($storeArr), 'substMarkArrayCached');
 
-				$GLOBALS['TT']->setTSlogMessage('Parsing',0);
+//				$GLOBALS['TT']->setTSlogMessage('Parsing',0);
 			} else {
 					// Unserializing
 				$storeArr = unserialize($storeArrDat);
 					// Setting cache:
 				self::$substMarkerCache[$storeKey] = $storeArr;
-				$GLOBALS['TT']->setTSlogMessage('Cached from DB',0);
+//				$GLOBALS['TT']->setTSlogMessage('Cached from DB',0);
 			}
 		}
 
