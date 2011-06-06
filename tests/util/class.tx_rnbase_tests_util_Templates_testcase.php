@@ -38,6 +38,7 @@ class tx_rnbase_tests_util_Templates_testcase extends tx_phpunit_testcase {
 		$timeStart = microtime(true);
 		$memStart = memory_get_usage();
 		for($i =1; $i<$runs; $i++) {
+			$markerArr['###UID###'] = $i;
 			tx_rnbase_util_Templates::substituteMarkerArrayCached(self::$template, $markerArr);
 		}
 		$time1 = microtime(true) - $timeStart;
@@ -47,6 +48,7 @@ class tx_rnbase_tests_util_Templates_testcase extends tx_phpunit_testcase {
 		$timeStart = microtime(true);
 		$memStart = memory_get_usage();
 		for($i =1; $i<$runs; $i++) {
+			$markerArr['###UID###'] = $i;
 			tx_rnbase_util_Templates::substituteMarkerArrayCached(self::$template, $markerArr);
 		}
 		$time2 = microtime(true) - $timeStart;
@@ -63,6 +65,7 @@ class tx_rnbase_tests_util_Templates_testcase extends tx_phpunit_testcase {
 		$timeStart = microtime(true);
 		$memStart = memory_get_usage();
 		for($i =1; $i<$runs; $i++) {
+			$markerArr['###UID###'] = $i;
 			tx_rnbase_util_Templates::substituteMarkerArrayCached(self::$template, $markerArr);
 		}
 		$time1 = microtime(true) - $timeStart;
@@ -72,6 +75,7 @@ class tx_rnbase_tests_util_Templates_testcase extends tx_phpunit_testcase {
 		$timeStart = microtime(true);
 		$memStart = memory_get_usage();
 		for($i =1; $i<$runs; $i++) {
+			$markerArr['###UID###'] = $i;
 			tx_rnbase_util_Templates::substituteMarkerArrayCached(self::$template, $markerArr);
 		}
 		$time2 = microtime(true) - $timeStart;
