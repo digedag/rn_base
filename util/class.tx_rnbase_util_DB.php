@@ -161,7 +161,8 @@ class tx_rnbase_util_DB {
 			// Wir setzen zusätzlich pid >=0, damit Version-Records nicht erscheinen
 			$enableFields .= ' AND '.$tableName.'.pid >=0';
 			// Replace tablename with alias
-			$enableFields = str_replace($tableName, $tableAlias, $enableFields);
+			if($tableAlias)
+				$enableFields = str_replace($tableName, $tableAlias, $enableFields);
 
 			$where .= $enableFields;
 		}
