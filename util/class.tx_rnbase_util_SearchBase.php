@@ -147,8 +147,8 @@ abstract class tx_rnbase_util_SearchBase {
 
 		tx_rnbase_util_Misc::callHook('rn_base', 'searchbase_handleTableMapping', array(
 			'tableAliases' => &$tableAliases, 'joinedFields' => &$joinedFields, 
-			'customFields' => &$customFields, 'options' => &$options, 'parent' => $this,
-		));
+			'customFields' => &$customFields, 'options' => &$options,
+		), $this);
 		$what = $this->getWhat($options, $tableAliases);
 		$from = $this->getFrom($options, $tableAliases);
 		$where = '1=1';
