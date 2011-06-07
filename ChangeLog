@@ -5,6 +5,7 @@
 
 v0.10.1 (??.06.2011) (not released)
  * Full Workspace-Support added! Automatic version overlay for database queries!
+ * SearchBase: new hook searchbase_handleTableMapping
 
 v0.9.15 (30.05.2011) (not released)
  * Workspace-Support: util_DB builds correct SQL-queries for preview mode
