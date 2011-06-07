@@ -160,22 +160,19 @@ class tx_rnbase_util_DB {
 			$enableFields = $sysPage->enableFields($tableName, $mode);
 			// Wir setzen zusätzlich pid >=0, damit Version-Records nicht erscheinen
 			$enableFields .= ' AND '.$tableName.'.pid >=0';
+			// Replace tablename with alias
+			$enableFields = str_replace($tableName, $tableAlias, $enableFields);
 
 			$where .= $enableFields;
 		}
 
 		if(strlen($i18n) > 0) {
 			$i18n = implode(',', t3lib_div::intExplode(',', $i18n));
-			$where .= ' AND '.$tableName.'.sys_language_uid IN (' . $i18n . ')';
+			$where .= ' AND '.($tableAlias ? $tableAlias : $tableName).'.sys_language_uid IN (' . $i18n . ')';
 		}
 
 		if(strlen($pidList) > 0)
-			$where .= ' AND '.$tableName.'.pid IN (' . tx_rnbase_util_DB::_getPidList($pidList,$recursive) . ')';
-
-		if($tableAlias) {
-			// Replace tablename with alias
-			$where = str_replace($tableName, $tableAlias, $where);
-		}
+			$where .= ' AND '.($tableAlias ? $tableAlias : $tableName).'.pid IN (' . tx_rnbase_util_DB::_getPidList($pidList,$recursive) . ')';
 
 		if(strlen($union) > 0)
 			$where .= ' UNION '.$union;
