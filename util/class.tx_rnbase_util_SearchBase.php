@@ -79,48 +79,48 @@ abstract class tx_rnbase_util_SearchBase {
 		return self::$instances[$classname];
 	}
 
-  /**
-   * Suchanfrage an die Datenbank
-   * Bei den Felder findet ein Mapping auf die eigentlichen DB-Felder statt. Dadurch werden
-   * SQL-Injections erschwert und es sind JOINs möglich.
-   * Field-Schema: TABLEALIAS.COLNAME
-   * Beispiel: TEAM.NAME, TEAM.UID
-   * 
-   * Options: Zusätzliche Bedingungen für Abfrage.
-   * LIMIT, ORDERBY
-   * 
-   * Sonderfall Freitextsuche über mehrere Felder:
-   * Hierfür gibt es das Sonderfeld SEARCH_FIELD_JOINED. Dieses erwartet ein Array der Form
-   * 'value' => 'Suchbegriff'
-   * 'cols' => array(FIELD1, FIELD2,...)
-   * Hierfür gibt es das Sonderfeld SEARCH_FIELD_JOINED. Dieses erwartet ein Array der Form
-   * 
-   * Sonderfall SQL Sub-Select:
-   * Hierfür gibt es das Sonderfeld SEARCH_FIELD_CUSTOM. Dieses erwartet ein String mit dem
-   * Sub-Select. Dieser wird direkt in die Query eingebunden.
-   * 
-   * @param array $fields Felder nach denen gesucht wird 
-   * @param array $options
-   * @return array oder int
-   */
-  function search($fields, $options) {
-  	if(!is_array($fields)) $fields = array();
-  	$this->_initSearch($options);
-  	$tableAliases = array();
-  	if(isset($fields[SEARCH_FIELD_JOINED])) {
-  		$joinedFields = $fields[SEARCH_FIELD_JOINED];
-  		unset($fields[SEARCH_FIELD_JOINED]);
-  	}
-  	if(isset($fields[SEARCH_FIELD_CUSTOM])) {
-  		$customFields = $fields[SEARCH_FIELD_CUSTOM];
-  		unset($fields[SEARCH_FIELD_CUSTOM]);
-  	}
-  	// Die normalen Suchfelder abarbeiten
-  	foreach ($fields As $field => $data) {
-  		// Tabelle und Spalte ermitteln
-  		list($tableAlias, $col) = explode('.', $field);
-  		$tableAliases[$tableAlias][$col] = $data;
-  	}
+	/**
+	 * Suchanfrage an die Datenbank
+	 * Bei den Felder findet ein Mapping auf die eigentlichen DB-Felder statt. Dadurch werden
+	 * SQL-Injections erschwert und es sind JOINs möglich.
+	 * Field-Schema: TABLEALIAS.COLNAME
+	 * Beispiel: TEAM.NAME, TEAM.UID
+	 * 
+	 * Options: Zusätzliche Bedingungen für Abfrage.
+	 * LIMIT, ORDERBY
+	 * 
+	 * Sonderfall Freitextsuche über mehrere Felder:
+	 * Hierfür gibt es das Sonderfeld SEARCH_FIELD_JOINED. Dieses erwartet ein Array der Form
+	 * 'value' => 'Suchbegriff'
+	 * 'cols' => array(FIELD1, FIELD2,...)
+	 * Hierfür gibt es das Sonderfeld SEARCH_FIELD_JOINED. Dieses erwartet ein Array der Form
+	 * 
+	 * Sonderfall SQL Sub-Select:
+	 * Hierfür gibt es das Sonderfeld SEARCH_FIELD_CUSTOM. Dieses erwartet ein String mit dem
+	 * Sub-Select. Dieser wird direkt in die Query eingebunden.
+	 * 
+	 * @param array $fields Felder nach denen gesucht wird 
+	 * @param array $options
+	 * @return array oder int
+	 */
+	function search($fields, $options) {
+		if(!is_array($fields)) $fields = array();
+		$this->_initSearch($options);
+		$tableAliases = array();
+		if(isset($fields[SEARCH_FIELD_JOINED])) {
+			$joinedFields = $fields[SEARCH_FIELD_JOINED];
+			unset($fields[SEARCH_FIELD_JOINED]);
+		}
+		if(isset($fields[SEARCH_FIELD_CUSTOM])) {
+			$customFields = $fields[SEARCH_FIELD_CUSTOM];
+			unset($fields[SEARCH_FIELD_CUSTOM]);
+		}
+		// Die normalen Suchfelder abarbeiten
+		foreach ($fields As $field => $data) {
+			// Tabelle und Spalte ermitteln
+			list($tableAlias, $col) = explode('.', $field);
+			$tableAliases[$tableAlias][$col] = $data;
+		}
 		// Prüfen, ob in orderby noch andere Tabellen liegen
 		$orderbyArr = $options['orderby'];
 		if(is_array($orderbyArr)) {
@@ -145,6 +145,10 @@ abstract class tx_rnbase_util_SearchBase {
 			}
 		}
 
+		tx_rnbase_util_Misc::callHook('rn_base', 'searchbase_handleTableMapping', array(
+			'tableAliases' => &$tableAliases, 'joinedFields' => &$joinedFields, 
+			'customFields' => &$customFields, 'options' => &$options, 'parent' => $this,
+		));
 		$what = $this->getWhat($options, $tableAliases);
 		$from = $this->getFrom($options, $tableAliases);
 		$where = '1=1';
