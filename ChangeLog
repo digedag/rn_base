@@ -4,6 +4,7 @@
 ----------
 
 v0.10.1 (??.06.2011) (not released)
+ * Internal Changes in SearchBase and new hook in MediaMarker
  * Full Workspace-Support added! Automatic version overlay for database queries!
  * SearchBase: new hook searchbase_handleTableMapping
 

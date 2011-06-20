@@ -144,6 +144,13 @@ abstract class tx_rnbase_util_SearchBase {
 				}
 			}
 		}
+		// Deprecated: Diese Option nicht verwenden. Dafür gibt es den Hook!
+		if (is_array($additionalTableAliases = $options['additionalTableAliases'])){
+			foreach($additionalTableAliases as $additionalTableAlias){
+				if(!isset($tableAliases[$additionalTableAlias]))
+					$tableAliases[$additionalTableAlias] = array();
+			}
+		}
 
 		tx_rnbase_util_Misc::callHook('rn_base', 'searchbase_handleTableMapping', array(
 			'tableAliases' => &$tableAliases, 'joinedFields' => &$joinedFields, 

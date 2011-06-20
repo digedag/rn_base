@@ -65,6 +65,11 @@ class tx_rnbase_util_MediaMarker extends tx_rnbase_util_BaseMarker {
 		$markerArray = $formatter->getItemMarkerArrayWrapped($item->record, $confId , $ignore, $marker.'_');
 		$wrappedSubpartArray = array();
 		$subpartArray = array();
+		// Hook für direkte Template-Manipulation 
+		tx_rnbase_util_Misc::callHook('rn_base', 'mediaMarker_beforeRendering', 
+			array('template' => &$template, 'item' => &$item, 'formatter' => &$formatter, 
+					'confId' => $confId, 'marker' => $marker), $this);
+
 		$out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($template, $markerArray, $subpartArray, $wrappedSubpartArray);
 		tx_rnbase_util_Misc::callHook('rn_base','mediaMarker_afterSubst', array('item' => &$item, 'template'=>&$template), $this);
 		return $out;
