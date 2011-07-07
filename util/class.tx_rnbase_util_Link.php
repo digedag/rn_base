@@ -353,7 +353,10 @@ class tx_rnbase_util_Link {
 	 */
 	function makeUrl($applyHtmlspecialchars = TRUE) {
 		$url = $this->cObject->typolink(null, $this->_makeConfig('url'));
-		$url = ($this->isAbsUrl() ? t3lib_div::getIndpEnv('TYPO3_SITE_URL') : '') . $url;
+		if($this->isAbsUrl()) {
+			$schema = $this->getAbsUrlSchema() ? $this->getAbsUrlSchema() : t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+			$url = $schema . $url;
+		}
 		return $applyHtmlspecialchars ? htmlspecialchars($url) : $url;
 	}
 
@@ -498,14 +501,19 @@ class tx_rnbase_util_Link {
 	 * Generate absolute urls
 	 *
 	 * @param boolean $flag
+	 * @param server schema
 	 */
-	public function setAbsUrl($flag) {
+	public function setAbsUrl($flag, $schema='') {
 		$this->absUrl = $flag ? true : false;
+		$this->absUrlSchema = $schema;
 	}
 	public function isAbsUrl() {
 		return $this->absUrl;
 	}
-
+	public function getAbsUrlSchema() {
+		return $this->absUrlSchema;
+	}
+	
 	/**
 	 * Init this link by typoscript setup
 	 *
@@ -519,8 +527,8 @@ class tx_rnbase_util_Link {
 		$target = $configurations->get($confId.'target');
 		if($target) $this->target($target);
 		$this->destination($pid ? $pid : $GLOBALS['TSFE']->id); // Das Ziel der Seite vorbereiten
-		if($configurations->get($confId.'absurl'))
-			$this->setAbsUrl(true);
+		if($absUrl = $configurations->get($confId.'absurl'))
+			$this->setAbsUrl(true, ($absUrl == 1 || strtolower($absUrl) == 'true' ) ? '' : $absUrl);
 
 		if($fixed = $configurations->get($confId.'fixedUrl'))
 			$this->destination($fixed); // feste URL für externen Link
