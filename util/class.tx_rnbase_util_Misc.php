@@ -299,6 +299,8 @@ MAYDAYPAGE;
 			$GLOBALS['TSFE']->sys_page = $temp_sys_page;
 			$GLOBALS['TSFE']->initTemplate();
 			$GLOBALS['TSFE']->tmpl->getFileName_backPath = $GLOBALS['TSFE']->tmpl->getFileName_backPath ? $GLOBALS['TSFE']->tmpl->getFileName_backPath : PATH_site;
+			//Basis Nutzergruppen
+			$GLOBALS['TSFE']->gr_list = '0,-1';
 		}
 		return $GLOBALS['TSFE'];
 	}
