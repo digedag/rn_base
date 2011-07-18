@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v0.10.1 (??.07.2011) (not released)
+ * BaseFilter: Additional TS path to define filter class: filter.class
+
 v0.10.0 (07.07.2011) (not released)
  * Internal Changes in SearchBase and new hook in MediaMarker
  * Full Workspace-Support added! Automatic version overlay for database queries!

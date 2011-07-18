@@ -168,6 +168,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 	 * @return tx_rnbase_IFilter
 	 */
 	static function createFilter($parameters, $configurations, $viewData, $confId, $filterClass = '') {
+		$filterClass = ($filterClass) ? $filterClass : $configurations->get($confId.'class');
 		$filterClass = ($filterClass) ? $filterClass : $configurations->get($confId.'filter');
 		$filterClass = ($filterClass) ? $filterClass : 'tx_rnbase_filter_BaseFilter';
 		$filter = tx_rnbase::makeInstance($filterClass, $parameters, $configurations, $confId);
