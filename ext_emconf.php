@@ -12,10 +12,10 @@
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'A base library for extensions.',
-	'description' => 'Uses MVC design principles and domain driven development.',
+	'description' => 'Uses MVC design principles and domain driven development for TYPO3 extension development.',
 	'category' => 'misc',
 	'shy' => 0,
-	'version' => '0.10.0',
+	'version' => '0.10.1',
 	'dependencies' => 'cms',
 	'conflicts' => '',
 	'priority' => '',
