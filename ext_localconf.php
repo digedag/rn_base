@@ -14,6 +14,8 @@ if(!is_array($TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['rnbase']
 	);
 }
 
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = intval(tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'loadHiddenObjects'));
+
 
 // Include the mediaplayer service
 require_once($rnbaseExtPath.'sv1/ext_localconf.php');

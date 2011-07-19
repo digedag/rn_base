@@ -398,8 +398,8 @@ class tx_rnbase_util_DB {
 	 * @param string $tableName
 	 * @param int $uid
 	 */
-	public static function getRecord($tableName, $uid) {
-		$options = array();
+	public static function getRecord($tableName, $uid, $options = array()) {
+		if(!is_array($options)) $options = array();
 		$options['where'] = 'uid='.intval($uid);
 		if(!is_array($GLOBALS['TCA']) || !array_key_exists($tableName, $GLOBALS['TCA']))
 			$options['enablefieldsoff'] = 1;
