@@ -4,6 +4,8 @@
 ----------
 
 v0.10.2 (??.07.2011) (not released)
+ * SimpleMarker: Default constructor with options array 
+ * ListBuilder: SubpartMarker respects english orthography. ###COMPANIES### -> ###COMPANY###
  * It is optional possible to load hidden objects if BE user is logged in. This works mainly for detail pages of plugins.
 
 v0.10.1 (18.07.2011) (not released)

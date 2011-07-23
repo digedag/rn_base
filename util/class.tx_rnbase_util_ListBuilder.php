@@ -69,8 +69,9 @@ class tx_rnbase_util_ListBuilder {
 		  $wrapMem = tx_rnbase_util_FormatUtil::$mem;
 		}
 
+		$outerMarker = $this->getOuterMarker($marker, $template);
 		$listMarker = tx_rnbase::makeInstance('tx_rnbase_util_ListMarker', $this->info->getListMarkerInfo());
-		while($templateList = t3lib_parsehtml::getSubpart($template,'###'.$marker.'S###')) {
+		while($templateList = t3lib_parsehtml::getSubpart($template,'###'.$outerMarker.'S###')) {
 			$templateEntry = t3lib_parsehtml::getSubpart($templateList,'###'.$marker.'###');
 			$offset = 0;
 			$pageBrowser =& $viewData->offsetGet('pagebrowser');
@@ -112,12 +113,12 @@ class tx_rnbase_util_ListBuilder {
 				else
 					$out = $this->info->getEmptyListMessage($confId, $viewData, $formatter->getConfigurations());
 			}
-			$template = tx_rnbase_util_Templates::substituteSubpart($template, '###'.$marker.'S###', $out, 0);
+			$template = tx_rnbase_util_Templates::substituteSubpart($template, '###'.$outerMarker.'S###', $out, 0);
 		}
 
 		$markerArray = array();
 		$subpartArray = array();
-		$subpartArray['###'.$marker.'S###'] = $out;
+		$subpartArray['###'.$outerMarker.'S###'] = $out;
 
 		// Muss ein Formular mit angezeigt werden
 		// Zuerst auf einen Filter prüfen
@@ -184,7 +185,9 @@ class tx_rnbase_util_ListBuilder {
 		  $wrapTime = tx_rnbase_util_FormatUtil::$time;
 		  $wrapMem = tx_rnbase_util_FormatUtil::$mem;
 		}
-		while($templateList = t3lib_parsehtml::getSubpart($template,'###'.$marker.'S###')) {
+
+		$outerMarker = $this->getOuterMarker($marker, $template);
+		while($templateList = t3lib_parsehtml::getSubpart($template,'###'.$outerMarker.'S###')) {
 			if(is_array($dataArr) && count($dataArr)) {
 				$listMarker = tx_rnbase::makeInstance('tx_rnbase_util_ListMarker', $this->info->getListMarkerInfo());
 	
@@ -229,12 +232,12 @@ class tx_rnbase_util_ListBuilder {
 				else
 					$out = $this->info->getEmptyListMessage($confId, $viewData, $formatter->getConfigurations());
 			}
-			$template = tx_rnbase_util_Templates::substituteSubpart($template, '###'.$marker.'S###', $out, 0);
+			$template = tx_rnbase_util_Templates::substituteSubpart($template, '###'.$outerMarker.'S###', $out, 0);
 		}
 
 		$markerArray = array();
 		$subpartArray = array();
-//		$subpartArray['###'.$marker.'S###'] = $out;
+//		$subpartArray['###'.$outerMarker.'S###'] = $out;
 
 		// Muss ein Formular mit angezeigt werden
 		// Zuerst auf einen Filter prüfen
@@ -264,6 +267,16 @@ class tx_rnbase_util_ListBuilder {
 				), 'ListBuilder Statistics for: ' . $confId . ' Key: ' . $debugKey);
 		}
 		return $out;
+	}
+
+	protected function getOuterMarker($marker, $template) {
+		$outerMarker = $marker;
+		$len = strlen($marker)-1;
+		if($marker{$len} == 'Y' && 
+			!tx_rnbase_util_BaseMarker::containsMarker($template, $marker.'S###')) {
+			$outerMarker = substr($marker, 0, $len).'IE';
+		}
+		return $outerMarker;
 	}
 }
 
