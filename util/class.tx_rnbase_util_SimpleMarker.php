@@ -30,6 +30,10 @@ tx_rnbase::load('tx_rnbase_util_BaseMarker');
  * A generic marker class. 
  */
 class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
+	public function __construct($options = array()) {
+		if(array_key_exists('classname', $options))	
+			$this->setClassname($options['classname']);
+	}
 
 	/**
 	 * @param string $template das HTML-Template
