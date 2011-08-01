@@ -51,7 +51,8 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 		}
 
 		// Es wird das MarkerArray mit den Daten des Teams gefüllt.
-		$markerArray = $formatter->getItemMarkerArrayWrapped($item->record, $confId , 0, $marker.'_',$item->getColumnNames());
+		$ignore = self::findUnusedCols($item->record, $template, $marker);
+		$markerArray = $formatter->getItemMarkerArrayWrapped($item->record, $confId , $ignore, $marker.'_',$item->getColumnNames());
 		$wrappedSubpartArray = array();
 		$subpartArray = array();
 		$this->prepareLinks($item, $marker, $markerArray, $subpartArray, $wrappedSubpartArray, $confId, $formatter, $template);
