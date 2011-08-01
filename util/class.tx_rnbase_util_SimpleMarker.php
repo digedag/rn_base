@@ -81,9 +81,14 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 			// Die Parameter erzeugen
 			$params = array();
 			$paramMap = $formatter->getConfigurations()->get($confId.'links.'.$linkId.'._cfg.params.');
-			foreach($paramMap As $paramName => $colName)
+			foreach($paramMap As $paramName => $colName) {
 				if(is_scalar($colName) && array_key_exists($colName, $item->record))
 					$params[$paramName] = $item->record[$colName];
+				elseif(is_array($colName)) {
+					$paramName = substr($paramName, 0, strlen($paramName)-1);
+					$params[$paramName] = $this->createParam($paramName, $colName, $item);
+				}
+			}
 /*			$paramNames = $formatter->getConfigurations()->getKeyNames($confId.'links.'.$linkId.'._cfg.params.');
 			foreach($paramNames As $paramName) {
 				$colName = $formatter->getConfigurations()->get($confId.'links.'.$linkId.'._cfg.params.'.$paramName, false);
@@ -104,6 +109,33 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 		$formatter->getConfigurations()->getCObj()->data = $pluginData;
 	}
 
+	/**
+	 * Create a user defined link parameter. This is an example Typoscript config:
+	 *  links.show {
+	 *  	_cfg.params.param1.class = tx_mkeasy_marker_EasyDoc
+	 *  	_cfg.params.param1.method = createSecureLinkParam
+	 *  }
+	 *  In this case the call is static. It is also possible to subclass SimpleMarker 
+	 *  an use the keyword "this" as class. In that case the current marker instance is
+	 *  called.
+	 *
+	 * @param string $paramName
+	 * @param array $cfgArr
+	 * @param object $item
+	 */
+	protected function createParam($paramName, $cfgArr, $item) {
+		$ret = '';
+		$clazz = $cfgArr['class'];
+		$method = $cfgArr['method'];
+		if($clazz == 'this') {
+			$ret = $this->$method($paramName, $cfgArr, $item);
+		}
+		else {
+			tx_rnbase::load($clazz);
+			$ret = call_user_func_array(array($clazz,$method),array($paramName, $cfgArr, $item));
+		}
+		return $ret;
+	}
 	/**
 	 * Set classname for items
 	 * @param $name
