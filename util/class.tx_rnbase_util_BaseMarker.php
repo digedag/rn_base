@@ -114,9 +114,18 @@ class tx_rnbase_util_BaseMarker {
    */
   public static function findUnusedCols(&$record, $template, $marker) {
 		$ignore = array();
+		$minfo = self::containsMarker($template, $marker.'___MINFO');
+		$minfoArr = array();
 		foreach($record As $key=>$value) {
+			if($minfo) {
+				$minfoArr[$key] = $marker.'_'.strtoupper($key);
+			}
 			if(!self::containsMarker($template, $marker.'_'.strtoupper($key)))
 				$ignore[] = $key;
+		}
+		if($minfo) {
+			tx_rnbase::load('tx_rnbase_util_Debug');
+			$record['__MINFO'] = tx_rnbase_util_Debug::viewArray($minfoArr);
 		}
 		return $ignore;
   }

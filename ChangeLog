@@ -8,6 +8,8 @@ v0.10.2 (??.07.2011) (not released)
  * ListBuilder: SubpartMarker respects english orthography. ###COMPANIES### -> ###COMPANY###
  * It is optional possible to load hidden objects if BE user is logged in. This works mainly for detail pages of plugins.
  * New class for default single view
+ * New class tx_rnbase_util_Debug to encapsulate TYPO3 debug functionality for backward compatibility
+ * New generic marker MINFO to output all available markers: ###MYOBECT___MINFO###
 
 v0.10.1 (18.07.2011) (not released)
  * BaseFilter: Additional TS path to define filter class: filter.class
