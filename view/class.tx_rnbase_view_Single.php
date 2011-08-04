@@ -46,7 +46,7 @@ class tx_rnbase_view_Single extends tx_rnbase_view_List {
 
 		$marker = tx_rnbase::makeInstance($markerClass);
 
-		$out = $marker->parseTemplate($template, $item, $formatter, $itemPath);
+		$out = $marker->parseTemplate($template, $item, $formatter, $confId.$itemPath.'.', strtoupper($itemPath));
 		return $out;
 	}
 }
