@@ -3,7 +3,7 @@
 Änderungen
 ----------
 
-v0.10.2 (??.07.2011) (not released)
+v0.10.2 (05.08.2011) (not released)
  * SimpleMarker: Default constructor with options array 
  * SimpleMarker: it is possible to add dynamic parameters by PHP code.
  * SimpleMarker: check existence of configured links
