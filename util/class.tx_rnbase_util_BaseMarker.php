@@ -140,6 +140,19 @@ class tx_rnbase_util_BaseMarker {
   		self::$token = md5(microtime());
   	return self::$token;
   }
+  public static function checkLinkExistence($linkId, $marker, $template, &$makeUrl, &$makeLink) {
+		$linkMarker = $marker . '_' . strtoupper($linkId).'LINK';
+		// Do we need links
+		$makeUrl = $makeLink = true;
+		if($template) {
+			$makeLink = self::containsMarker($template, $linkMarker);
+			$makeUrl = self::containsMarker($template, $linkMarker.'URL');
+		}
+		if(!$makeLink && !$makeUrl) {
+			return false; // Nothing to do
+		}
+		return $linkMarker;
+  }
 	/**
 	 * Link setzen
 	 *
@@ -154,6 +167,8 @@ class tx_rnbase_util_BaseMarker {
 	 * @param string $template the HTML template used. This enabled check if link is necessary.
 	 */
 	public function initLink(&$markerArray, &$subpartArray, &$wrappedSubpartArray, $formatter, $confId, $linkId, $marker, $parameterArr, $template='') {
+		$linkMarker = self::checkLinkExistence($linkId, $marker, $template, $makeUrl, $makeLink);
+/*
 		$linkMarker = $marker . '_' . strtoupper($linkId).'LINK';
 		// Do we need links
 		$makeUrl = $makeLink = true;
@@ -164,7 +179,11 @@ class tx_rnbase_util_BaseMarker {
 		if(!$makeLink && !$makeUrl) {
 			return; // Nothing to do
 		}
-
+*/
+		if(!$linkMarker) {
+			return; // Nothing to do
+		}
+		
 		$linkObj =& $formatter->getConfigurations()->createLink();
 		$token = self::getToken();
 		$linkObj->label($token);

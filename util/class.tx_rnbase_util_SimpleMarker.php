@@ -77,6 +77,9 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 		$linkIds = $formatter->getConfigurations()->getKeyNames($confId.'links.');
 		for($i=0, $cnt=count($linkIds); $i < $cnt; $i++) {
 			$linkId = $linkIds[$i];
+			// Check if link is defined in template
+			if(!self::checkLinkExistence($linkId, $marker, $template))
+				continue;
 
 			// Die Parameter erzeugen
 			$params = array();
