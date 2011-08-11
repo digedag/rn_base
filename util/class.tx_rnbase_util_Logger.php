@@ -27,7 +27,12 @@
  */
 class tx_rnbase_util_Logger {
 	private static $minLog = false;
-
+	const LOGLEVEL_DEBUG = -1;
+	const LOGLEVEL_INFO = 0;
+	const LOGLEVEL_NOTICE = 1;
+	const LOGLEVEL_WARN = 2;
+	const LOGLEVEL_FATAL = 3;
+	
 	/**
 	 * Log a debug message
 	 * @param string $msg
