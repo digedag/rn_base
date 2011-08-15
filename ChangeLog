@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v0.10.4 (??.08.2011) (not released)
+ * SearchBase: it is possible to change wrapperclass by options
+
 v0.10.3 (12.08.2011) (not released)
  * Constants for log levels
 

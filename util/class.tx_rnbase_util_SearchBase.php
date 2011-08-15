@@ -263,7 +263,8 @@ abstract class tx_rnbase_util_SearchBase {
 			||
 				isset($options['forcewrapper']))
 			)
-			$sqlOptions['wrapperclass'] = $this->getGenericWrapperClass();
+			// der Filter kann ebenfalls eine Klasse setzen. Diese hat Vorrang.
+			$sqlOptions['wrapperclass'] = $options['wrapperclass'] ? $options['wrapperclass'] : $this->getGenericWrapperClass();
 
 		$result = tx_rnbase_util_DB::doSelect($what, $from, $sqlOptions, $options['debug'] ? 1 : 0);
 		if (isset($options['sqlonly'])) return $result;
