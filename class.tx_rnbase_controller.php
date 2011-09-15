@@ -335,6 +335,11 @@ class tx_rnbase_controller {
 				$htmlPart .= '<p><strong>Additional Data:</strong><br />' . strval($additional) . '</p>';
 		}
 
+		$textPart .= 'BE_USER: '.(is_object($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER']->user['uid'] : '0')."\n";
+		$htmlPart .= '<p><strong>BE_USER:</strong> '.(is_object($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER']->user['uid'] : '0').'</p>';
+		$textPart .= 'FE_USER: '.(intval($GLOBALS['TSFE']->fe_user->user['uid']) ? $GLOBALS['TSFE']->fe_user->user['uid'] : '0')."\n";
+		$htmlPart .= '<p><strong>FE_USER:</strong> '.intval($GLOBALS['TSFE']->fe_user->user['uid']).'</p>';
+
 		$mail = t3lib_div::makeInstance('t3lib_htmlmail');
 		$mail->start();
 		$mail->subject         = 'Exception on site '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
