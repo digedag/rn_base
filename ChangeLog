@@ -3,6 +3,11 @@
 Änderungen
 ----------
 
+v0.10.5 (15.09.2011) (not released)
+ * FormTool: New method createShowLink.
+ * FormTool: use TCA to find hidden and deleted column in createHideLink and createDeleteLink. Thanks to Hannes Bochmann!
+ * ErrorMail: Lookup and show current FE and BE user. Thanks to Michael Wagner!
+
 v0.10.4 (16.08.2011) (not released)
  * SearchBase: it is possible to change wrapperclass by options
 

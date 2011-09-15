@@ -122,6 +122,22 @@ class tx_rnbase_util_FormTool {
 		return $btn;
 	}
 	/**
+	 * Creates a Link to show an item in frontend.
+	 */
+	public function createShowLink($pid, $label, $urlParams = '', $options=array()) {
+		if($options['icon']) {
+			$label = "<img ".t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.$options['icon']).
+				' title="'.$label.'\" alt="" >';
+		}
+		$jsCode = t3lib_BEfunc::viewOnClick($pid,'','','','',$urlParams);
+		$title = '';
+		if($options['hover']) {
+			$title = ' title="'.$options['hover'].'" ';
+		}
+		return '<a href="#" onclick="'.htmlspecialchars($jsCode).'" '. $title.">". $label .'</a>';
+	}
+
+	/**
 	 * Erstellt einen Link zur Erstellung eines neuen Datensatzes
 	 * @param string $table DB-Tabelle des Datensatzes
 	 * @param int $pid UID der Zielseite
@@ -155,7 +171,11 @@ class tx_rnbase_util_FormTool {
 	public function createHideLink($table, $uid, $unhide=false, $options=array()) {
 		$location = t3lib_div::linkThisScript(array('CB'=>'','SET'=>'','cmd' => '','popViewId'=>''));
 		$location = str_replace('%20','',rawurlencode($location));
-		$jumpToUrl = "'".$GLOBALS['BACK_PATH'].'tce_db.php?redirect='.$location.'&amp;data['.$table.'][' . $uid .'][hidden]='.($unhide ? 0 : 1)."'";
+
+		$sEnableColumn = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
+		//fallback
+		$sEnableColumn = ($sEnableColumn) ? $sEnableColumn : 'hidden';
+		$jumpToUrl = "'".$GLOBALS['BACK_PATH'].'tce_db.php?redirect='.$location.'&amp;data['.$table.'][' . $uid .']['. $sEnableColumn .']='.($unhide ? 0 : 1)."'";
 
 		return '<a onclick="return jumpToUrl('.$jumpToUrl.');" href="#">'.
 				'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.($unhide ? 'button_hide.gif' : 'button_unhide.gif'),'width="11" height="12"').' title="'.($unhide ? 'Show' : 'Hide').' UID: '.$uid.'" border="0" alt="" />'.
@@ -202,8 +222,11 @@ class tx_rnbase_util_FormTool {
 		$location = t3lib_div::linkThisScript(array('CB'=>'','SET'=>'','cmd' => '','popViewId'=>''));
 		$location = str_replace('%20','',rawurlencode($location));
 
-		$jumpToUrl = '\''.$GLOBALS['BACK_PATH'].'tce_db.php?redirect='.$location.'&amp;cmd['.$table.']['.$uid.'][delete]=1&amp;vC='.$GLOBALS['BE_USER']->veriCode().'\'';
-//		$jumpToUrl = '\''.$GLOBALS['BACK_PATH'].'tce_db.php?redirect='.$location.'&amp;data['.$table.'][' . $uid .'][delete]=1\'';
+		$sDeleteColumn = $GLOBALS['TCA'][$table]['ctrl']['delete'];
+		///fallback
+		$sDeleteColumn = ($sDeleteColumn) ? $sDeleteColumn : 'delete';
+		$jumpToUrl = '\''.$GLOBALS['BACK_PATH'].'tce_db.php?redirect='.$location.'&amp;cmd['.$table.']['.$uid.']['. $sDeleteColumn .']=1&amp;vC='.$GLOBALS['BE_USER']->veriCode().'\'';
+
 		$jsCode = $this->getConfirmCode('return jumpToUrl('.$jumpToUrl.');', $options);
 		return '<a onclick="'.$jsCode.'" href="#">'.
 				'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/deletedok.gif','width="16" height="16"').' title="Delete UID: '.$uid.'" border="0" alt="" />'.
