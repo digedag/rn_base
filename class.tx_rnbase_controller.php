@@ -254,12 +254,34 @@ class tx_rnbase_controller {
 		return $this->errors;
 	}
 
+	private function send503HeaderOnException($configurations) {
+		//sending a 503 header?
+		return ((
+				//shall we basically send a 503 header?
+				intval(tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'send503HeaderOnException')) && (
+					//the plugin has the oppurtunity to prevent sending a 503 header
+					//by setting plugin.plugin_name.send503HeaderOnException = 0 in the TS config.
+					//if this option is not set we use the ext config
+					!array_key_exists('send503HeaderOnException', $configurations->getConfigArray()) ||
+					$configurations->get('send503HeaderOnException') != 0
+				)
+			) ||
+			(
+				//did the plugin define to send the 503 header
+				$configurations->get('send503HeaderOnException') == 1
+			)
+		);
+		
+	}
 	/**
 	 * Interne Verarbeitung der Exception
 	 * @param Exception $e
 	 * @param tx_rnbase_Configurations $configurations
 	 */
 	private function handleException($actionName, Exception $e, $configurations) {
+		if($this->send503HeaderOnException($configurations)) {
+			header('HTTP/1.1 503 Service Unavailable');
+		} 
 		tx_rnbase::load('tx_rnbase_util_Logger');
 		if(tx_rnbase_util_Logger::isFatalEnabled()) {
 			$extKey = $configurations->getExtensionKey();

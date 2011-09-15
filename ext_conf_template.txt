@@ -13,6 +13,9 @@ sendEmailOnException =
   # cat=basic//10; type=string; label= From address for alert mails 
 fromEmail = 
 
+# cat=basic//10; type=boolean; label= Send a 503 service unavailable header if an exception occures.
+send503HeaderOnException = 0
+
   # cat=basic//10; type=string; label= Load hidden objects if BE user is logged in. This works mainly for detail pages.
 loadHiddenObjects = 0
 
