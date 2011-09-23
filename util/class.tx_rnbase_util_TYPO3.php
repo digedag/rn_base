@@ -102,6 +102,15 @@ class tx_rnbase_util_TYPO3 {
 	public static function getFEUser() {
 		return $GLOBALS['TSFE']->fe_user;
 	}
+	/** 
+	 * Get the current frontend user uid
+	 *
+	 * @return int current frontend user uid or false
+	 */ 
+	public static function getFEUserUID() {
+		$feuser = self::getFEUser();
+		return is_object($feuser) && isset($feuser->user['uid']) ? $feuser->user['uid'] : false;
+	}
 	/**
 	 * Get the current backend user if available
 	 * @return t3lib_tsfeBeUserAuth
@@ -109,6 +118,16 @@ class tx_rnbase_util_TYPO3 {
 	public static function getBEUser() {
 		return $GLOBALS['BE_USER'];
 	}
+	/**
+	 * Get the current backend user uid if available
+	 * @return int
+	 */
+	public static function getBEUserUID() {
+		$beuser = self::getBEUser();
+		return is_object($beuser) && isset($beuser->user['uid']) ? $beuser->user['uid'] : false;
+	}
+	
+
 	/**
 	 * @return tslib_fe
 	 */
