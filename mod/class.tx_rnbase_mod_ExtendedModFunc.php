@@ -75,7 +75,8 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc {
 		// TabMenu initialisieren
 		$menuItems = array();
 		$menu = $this->initSubMenu($menuItems, $this->getModule()->getFormTool());
-		
+
+
 		$this->getModule()->setSubMenu($menu['menu']);
 
 		// SubSelectors
@@ -92,15 +93,22 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc {
 
 		$handler = $menuItems[$menu['value']];
 		if(is_object($handler)) {
-			//
-			$args[] = $template;
+			$subpart = '###'.strtoupper($handler->getSubID()).'###';
+			$templateSub = tx_rnbase_util_Templates::getSubpart($template, $subpart);
+			
+			$args[] = $templateSub;
 			$args[] = $this->getModule();
 			$args[] = array('subSels' => $subSels);
-			$out .= call_user_func_array(array($handler,'showScreen'),$args);
+			// Der Handler sollte nicht das gesamte Template bekommen, sondern nur seinen Subpart...
+			$subOut = call_user_func_array(array($handler,'showScreen'),$args);
 		}
 
+		// Jetzt noch die COMMON-PARTS
+
 		$content .= $formTool->getTCEForm()->printNeededJSFunctions_top();
-		$content .= $out;
+		$content .= tx_rnbase_util_Templates::getSubpart($template, '###COMMON_START###');
+		$content .= $subOut;
+		$content .= tx_rnbase_util_Templates::getSubpart($template, '###COMMON_END###');
 		// Den JS-Code für Validierung einbinden
 		$content .= $formTool->getTCEForm()->printNeededJSFunctions();
 		return $content;
@@ -127,12 +135,13 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc {
 
 		$menuItems = array();
 		foreach($items As $idx => $tabItem) {
-			$menuItems[$idx] = $tabItem->getTabLabel();
+			$menuItems[$idx] = $tabItem->getSubLabel();
 			$menuObjs[$idx] = $tabItem;
 			$tabItem->handleRequest($this->getModule());
 		}
-		$menu = $formTool->showTabMenu($this->getModule()->getPid(), 'mn_'.$this->getFuncId(), $this->getModule()->getName(),$menuItems);
 		
+		$menu = $formTool->showTabMenu($this->getModule()->getPid(), 'mn_'.$this->getFuncId(), $this->getModule()->getName(),$menuItems);
+
 		return $menu;
 	}
 	/**
@@ -156,5 +165,3 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_ExtendedModFunc.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_ExtendedModFunc.php']);
 }
-
-?>
