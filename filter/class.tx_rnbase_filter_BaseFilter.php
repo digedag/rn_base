@@ -206,11 +206,12 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 	/**
 	 * Pagebrowser vorbereiten
 	 *
-	 * @param string $confid Die Confid des PageBrowsers. z.B. myview.org.pagebrowser ohne Punkt!
 	 * @param tx_rnbase_configurations $configurations
-	 * @param array_object $viewdata
+	 * @param string $confid Die Confid des PageBrowsers. z.B. myview.org.pagebrowser ohne Punkt!
+	 * @param ArrayObject $viewdata
 	 * @param array $fields
 	 * @param array $options
+	 * @param array $cfg You have to set 'searchcallback' and optional 'pbid'
    */
 	public static function handlePageBrowser(&$configurations, $confid, &$viewdata, &$fields, &$options, $cfg = array()) {
 		$confid .= '.';
@@ -245,10 +246,10 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 	 *
 	 * @param tx_rnbase_configurations $configurations
 	 * @param string $confid
-	 * @param object $viewData
+	 * @param ArrayObject $viewData
 	 * @param array $fields
 	 * @param array $options
-	 * @param array $cfg
+	 * @param array $cfg You have to set 'colname'. The database column used for character browsing.
 	 */
 	public static function handleCharBrowser(&$configurations, $confid, &$viewData, &$fields, &$options, $cfg = array()) {
 		
