@@ -3,7 +3,7 @@
 Änderungen
 ----------
 
-v0.10.6 (??.09.2011) (not released)
+v0.10.6 (30.09.2011) (not released)
  * It is possible to send a 503 service unavailable header if an exception occures. Thanks to Hannes Bochmann!
  * tx_rnbase_util_TYPO3: convenience methods to access uids of BE and FE users
  * new interface tx_rnbase_mod_IModHandler
