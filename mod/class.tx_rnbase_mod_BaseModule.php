@@ -339,6 +339,21 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 
 		return $buttons;
 	}
+	/*
+	 * (Non PHP-doc)
+	 */
+	public function addMessage($message, $title = '', $severity = t3lib_message_AbstractMessage::OK, $storeInSession = FALSE) {
+		$message = t3lib_div::makeInstance(
+			't3lib_FlashMessage',
+			$message,
+			$title,
+			$severity,
+			$storeInSession
+		);
+
+		t3lib_FlashMessageQueue::addMessage($message);
+	}
+	
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_BaseModule.php'])	{

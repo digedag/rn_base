@@ -52,6 +52,19 @@ interface tx_rnbase_mod_IModule {
 	 * @param $menuString
 	 */
 	public function setSubMenu($menuString);
+	/**
+	 * @param string $message
+	 * @param string $title;
+	 * @param int $severity Optional severity, must be either of t3lib_message_AbstractMessage::INFO, t3lib_message_AbstractMessage::OK,
+	 *				  t3lib_message_AbstractMessage::WARNING or t3lib_message_AbstractMessage::ERROR. Default is t3lib_message_AbstractMessage::OK.
+	 * 	const NOTICE  = -2;
+	 * 	const INFO    = -1;
+	 * 	const OK      = 0;
+	 * 	const WARNING = 1;
+	 * 	const ERROR   = 2;
+	 * @param boolean $storeInSession Optional, defines whether the message should be stored in the session or only for one request (default)
+	 */
+	public function addMessage($message, $title = '', $severity = t3lib_message_AbstractMessage::OK, $storeInSession = FALSE);
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_IModule.php'])	{

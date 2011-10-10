@@ -137,13 +137,34 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc {
 		foreach($items As $idx => $tabItem) {
 			$menuItems[$idx] = $tabItem->getSubLabel();
 			$menuObjs[$idx] = $tabItem;
-			$tabItem->handleRequest($this->getModule());
+			$out = $tabItem->handleRequest($this->getModule());
+			if($out) {
+				$this->showMessage($out, $tabItem);
+			}
 		}
 		
 		$menu = $formTool->showTabMenu($this->getModule()->getPid(), 'mn_'.$this->getFuncId(), $this->getModule()->getName(),$menuItems);
 
 		return $menu;
 	}
+	protected function showMessage($message, tx_rnbase_mod_IModHandler $handler) {
+		$msg = '';
+		$title = '';
+		$severity = t3lib_FlashMessage::OK;
+		$store = false;
+		if(is_array($message)) {
+			$msg = $message['message'];
+			$title = $message['title'];
+			$severity = $message['severity'];
+			$store = boolean($message['storeinsession']);
+		}
+		else {
+			$msg = $message;
+			$title = $handler->getSubLabel();
+		}
+		$this->getModule()->addMessage($msg, $title, $severity, $store);
+	}
+
 	/**
 	 * It is possible to overwrite this method and return an array of tab functions
 	 * @return array
