@@ -253,18 +253,14 @@ abstract class tx_rnbase_util_SearchBase {
 			}
 			$sqlOptions['orderby'] = implode(',', $orderby);
 		}
-		if(
-			!(isset($options['count'])) &&
-			(!(
-				isset($options['what']) || 
-				isset($options['groupby']) ||
-				isset($options['sqlonly']) 
-			) 
-			||
-				isset($options['forcewrapper']))
-			)
+		if(!(isset($options['count'])) && (!(
+					isset($options['what']) || 
+					isset($options['groupby']) ||
+					isset($options['sqlonly']) 
+				) || isset($options['forcewrapper']))) {
 			// der Filter kann ebenfalls eine Klasse setzen. Diese hat Vorrang.
 			$sqlOptions['wrapperclass'] = $options['wrapperclass'] ? $options['wrapperclass'] : $this->getGenericWrapperClass();
+		}
 
 		$result = tx_rnbase_util_DB::doSelect($what, $from, $sqlOptions, $options['debug'] ? 1 : 0);
 		if (isset($options['sqlonly'])) return $result;
