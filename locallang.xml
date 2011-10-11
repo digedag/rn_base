@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>database</type>
+		<description>Useful language labels for rn_base extensions</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="common_undef">Undefined</label>
+			<label index="common_template">HTML Template</label>
+			<label index="common_plugin">Plugin</label>
+			<label index="common_choose">please choose</label>
+
+			<label index="plugin_tab_common">Common</label>
+			<label index="plugin_tab_action">View</label>
+			<label index="plugin_tab_tssetup">TS-Setup</label>
+
+		</languageKey>
+		<languageKey index="de" type="array">
+
+		</languageKey>
+	</data>
+</T3locallang>
