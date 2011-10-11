@@ -3,7 +3,7 @@
 Änderungen
 ----------
 
-v0.10.7 (??.10.2011) (not released)
+v0.10.7 (11.10.2011)
  * BE-Module: New method addMessage to integrate TYPO3 flash messages
  * BE-Handler fully integrated in ExtendedModFunc
  * New common language file locallang.xml
