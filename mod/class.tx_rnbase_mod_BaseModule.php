@@ -236,8 +236,8 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 	 */
 	protected function getModuleTemplate() {
 		// '../'.t3lib_extMgm::siteRelPath($this->getExtensionKey()) .  'mod1/template.html'
-		$filename = t3lib_div::getFileAbsFileName('EXT:'.$this->getExtensionKey() .  '/mod1/template.html', TRUE, TRUE);
-		if(file_exists($filename)) {
+		$filename = 'EXT:'.$this->getExtensionKey() .  '/mod1/template.html';
+		if(file_exists(t3lib_div::getFileAbsFileName($filename, TRUE, TRUE))) {
 			return $filename;
 		}
 		return 'EXT:rn_base/mod/template.html';
