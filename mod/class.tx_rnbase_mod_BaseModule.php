@@ -55,6 +55,7 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 	 * @return	[type]		...
 	 */
 	function main()	{
+		
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 		// Einbindung externer Funktionen
 		$this->checkExtObj();
@@ -227,6 +228,20 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 	protected function getFormTag() {
 		return '<form action="" method="post" enctype="multipart/form-data">';
 	}
+	/**
+	 * Returns the file for module HTML template. This can be overwritten.
+	 * The first place to search for template is EXT:[your_ext_key]/mod1/template.html. If this file
+	 * not exists the default from rn_base is used. Overwrite this method to set your own location.
+	 * @return string
+	 */
+	protected function getModuleTemplate() {
+		// '../'.t3lib_extMgm::siteRelPath($this->getExtensionKey()) .  'mod1/template.html'
+		$filename = t3lib_div::getFileAbsFileName('EXT:'.$this->getExtensionKey() .  '/mod1/template.html', TRUE, TRUE);
+		if(file_exists($filename)) {
+			return $filename;
+		}
+		return 'EXT:rn_base/mod/template.html';
+	}
 	protected function initDoc($doc) {
 		$doc->backPath = $GLOBALS['BACK_PATH'];
 		$doc->form= $this->getFormTag();
@@ -234,7 +249,7 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 		$doc->inDocStyles = $this->getDocStyles();
 		$doc->tableLayout = $this->getTableLayout();
 		if(tx_rnbase_util_TYPO3::isTYPO42OrHigher()) {
-			$doc->setModuleTemplate('../'.t3lib_extMgm::siteRelPath($this->getExtensionKey()) .  'mod1/template.html');
+			$doc->setModuleTemplate($this->getModuleTemplate());
 			$doc->loadJavascriptLib('contrib/prototype/prototype.js');
 		}
 		// JavaScript
