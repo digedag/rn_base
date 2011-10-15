@@ -10,9 +10,18 @@
 			<label index="msg_template_not_found">Template not found.</label>
 			<label index="msg_subpart_not_found">Subpart not found</label>
 			<label index="label_no_subselectoritems_found">No items found to handle this module function.</label>
+			<label index="label_action">Action</label>
+			<label index="label_actions">Actions</label>
+			<label index="label_btn_search">Search</label>
+			
+			<label index="msg_confirmation_deletion">Do you really wan't do delete this item?</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="msg_error">Fehler</label>
+			<label index="label_action">Aktion</label>
+			<label index="label_actions">Aktionen</label>
+			<label index="msg_confirmation_deletion">Soll dieser Datensatz wirklich gelöscht werden?</label>
+			<label index="label_btn_search">Suchen</label>
 		</languageKey>
 	</data>
 </T3locallang>
