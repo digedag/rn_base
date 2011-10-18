@@ -27,8 +27,15 @@
 /**
  */
 class tx_rnbase_mod_Tables {
+	/**
+	 * 
+	 * @param array $entries
+	 * @param array $columns
+	 * @param tx_rnbase_util_FormTool $formTool
+	 * @param array $options
+	 */
 	public static function prepareTable($entries, $columns, $formTool, $options) {
-		$arr = Array( 0 => Array( self::getHeadline($columns, $options) ));
+		$arr = Array( 0 => Array( self::getHeadline($columns, $options, $formTool) ));
 		foreach($entries As $entry){
 			$record = is_object($entry) ? $entry->record : $entry;
 			$row = array();
@@ -70,9 +77,10 @@ class tx_rnbase_mod_Tables {
 	 *
 	 * @param array $columns
 	 * @param array $options
+	 * @param tx_rnbase_util_FormTool $formTool
 	 * @return array
 	 */
-	private static function getHeadline($columns= array(), $options) {
+	private static function getHeadline($columns= array(), $options, $formTool) {
 		global $LANG;
 		$arr = array();
 		if(isset($options['checkbox'])) {
@@ -89,7 +97,15 @@ class tx_rnbase_mod_Tables {
 		}
 		if(isset($options['linker']))
 			$arr[] = $LANG->getLL('label_action');
-    return $arr;
+		//es gibt die Möglichkeit sortable zu setzen. damit wird
+		//nach dem title eine sortierung eingeblendet.
+		//in $data['sortable'] sollte ein prefix für das feld stehen, sprich
+		//der alias der tabelle um damit direkt weiterabeiten zu können.
+		//einfach leer lassen wenn auf einen prefix verzichtet werden soll
+		if(isset($data['sortable'])){
+			$label = $formTool->createSortLink($data['sortable'].$column,$label);
+		}
+		return $arr;
   }
 	private static function addLinker($options, $obj, $formTool) {
 		$out = '';

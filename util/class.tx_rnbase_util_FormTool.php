@@ -409,6 +409,33 @@ class tx_rnbase_util_FormTool {
 		return $out;
 	}
 
+	/**
+	 * Liefert einen Sortierungslink für das gegebene Feld
+	 * @param string $sSortField
+	 * @return string
+	 */
+	public function createSortLink($sSortField, $sLabel) {
+		//das ist aktuell gesetzt
+		$sCurrentSortField = t3lib_div::_GET('sortField');
+		$sCurrentSortRev = t3lib_div::_GET('sortRev');
+		//wir verweisen immer auf die aktuelle Seite
+		//es kann aber schon ein sort parameter gesetzt sein
+		//weshalb wir alte entfernen
+		$sUrl = preg_replace('/&sortField=.*&sortRev=[^&]*/', '', t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'));
+
+		//sort richtung rausfinden
+		//beim initialen Aufruf (spalte noch nicht geklickt) wird immer aufsteigend sortiert
+		if($sCurrentSortField != $sSortField)
+			$sSortRev = 'asc';
+		else//sonst das gegenteil vom aktuellen
+			$sSortRev = ($sCurrentSortRev == 'desc') ? 'asc' : 'desc';
+		//jetzt setzen wir den aktuellen Sort parameter zusammen
+		$sSortUrl = $sUrl.'&sortField=' . $sSortField . '&sortRev=' . $sSortRev;
+		//noch den Pfeil für die aktuelle Sortierungsrichtung ggf. einblenden
+		$sSortArrow = ($sCurrentSortField==$sSortField?'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/red'.($sSortRev == 'asc'?'up':'down').'.gif','width="7" height="4"').' alt="" />':'');
+		return '<a href="'.htmlspecialchars($sSortUrl).'">'.$sLabel.$sSortArrow.'</a>';
+	}
+
   function addTCEfield2Stack($table,$row,$fieldname,$pre='',$post='') {
 		$this->tceStack[] = $pre . $this->form->getSoloField($table,$row,$fieldname) . $post;
   }
