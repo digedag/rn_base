@@ -10,6 +10,9 @@
 			<label index="common_template">HTML Template</label>
 			<label index="common_plugin">Plugin</label>
 			<label index="common_choose">please choose</label>
+			<label index="common_debug_sql">SQL-Debug</label>
+			<label index="common_debug">Debug</label>
+			<label index="common_limit">Limit</label>
 
 			<label index="plugin_tab_common">Common</label>
 			<label index="plugin_tab_action">View</label>
