@@ -86,6 +86,7 @@ class tx_rnbase_mod_Tables {
 		if(isset($options['checkbox'])) {
 			$arr[] = '&nbsp;'; // Spalte für Checkbox
 		}
+
 		foreach($columns As $column => $data) {
 			if(intval($data['nocolumn'])) continue;
 			if(intval($data['notitle'])) {
@@ -93,18 +94,18 @@ class tx_rnbase_mod_Tables {
 				continue;
 			}
 			$label = $LANG->getLL((isset($data['title']) ? $data['title'] : $column));
+			//es gibt die Möglichkeit sortable zu setzen. damit wird
+			//nach dem title eine sortierung eingeblendet.
+			//in $data['sortable'] sollte ein prefix für das feld stehen, sprich
+			//der alias der tabelle um damit direkt weiterabeiten zu können.
+			//einfach leer lassen wenn auf einen prefix verzichtet werden soll
+			if(isset($data['sortable'])){
+				$label = $formTool->createSortLink($data['sortable'].$column,$label);
+			}
 			$arr[] = $label ? $label : $data['title'];
 		}
 		if(isset($options['linker']))
 			$arr[] = $LANG->getLL('label_action');
-		//es gibt die Möglichkeit sortable zu setzen. damit wird
-		//nach dem title eine sortierung eingeblendet.
-		//in $data['sortable'] sollte ein prefix für das feld stehen, sprich
-		//der alias der tabelle um damit direkt weiterabeiten zu können.
-		//einfach leer lassen wenn auf einen prefix verzichtet werden soll
-		if(isset($data['sortable'])){
-			$label = $formTool->createSortLink($data['sortable'].$column,$label);
-		}
 		return $arr;
   }
 	private static function addLinker($options, $obj, $formTool) {
