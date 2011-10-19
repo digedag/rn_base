@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007 Rene Nitzsche (rene@system25.de)
+*  (c) 2007-2011 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,6 +22,7 @@
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
 tx_rnbase::load('tx_rnbase_util_Misc');
+tx_rnbase::load('tx_rnbase_util_Debug');
 
 /**
  * Abstract base class for an action. This action is build to implement the
@@ -83,7 +84,7 @@ abstract class tx_rnbase_action_BaseIOC {
 		}
 		if($debug) {
 			$memEnd = memory_get_usage();
-			t3lib_div::debug(array(
+			tx_rnbase_util_Debug::debug(array(
 				'Execution Time'=>(microtime(true)-$time),
 				'Memory Start'=>$memStart,
 				'Memory End'=>$memEnd,

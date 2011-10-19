@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006-2010 Rene Nitzsche
+ *  (c) 2006-2011 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -27,6 +27,7 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_util_ListBuilderInfo');
 tx_rnbase::load('tx_rnbase_util_BaseMarker');
 tx_rnbase::load('tx_rnbase_util_IListProvider');
+tx_rnbase::load('tx_rnbase_util_Debug');
 
 
 /**
@@ -133,7 +134,7 @@ class tx_rnbase_util_ListBuilder {
 
 			$wrapTime = tx_rnbase_util_FormatUtil::$time - $wrapTime;
 			$wrapMem = tx_rnbase_util_FormatUtil::$mem - $wrapMem;
-			t3lib_div::debug(array(
+			tx_rnbase_util_Debug::debug(array(
 					'Rows'=>count($dataArr),
 					'Execustion time'=>(microtime(true) -$time),
 					'WrapTime'=>$wrapTime,
@@ -257,7 +258,7 @@ class tx_rnbase_util_ListBuilder {
 
 			$wrapTime = tx_rnbase_util_FormatUtil::$time - $wrapTime;
 			$wrapMem = tx_rnbase_util_FormatUtil::$mem - $wrapMem;
-			t3lib_div::debug(array(
+			tx_rnbase_util_Debug::debug(array(
 					'Rows'=>count($dataArr),
 					'Execustion time'=>(microtime(true) -$time),
 					'WrapTime'=>$wrapTime,

@@ -301,98 +301,18 @@ class tx_rnbase {
 	 * @see		load()
 	 */
 	private static function _findT3($minimalInformation, $alternativeKey='', $prefix = 'class.', $suffix = '.php') {
-//		try {
-			$info = self::getClassInfo($minimalInformation, $alternativeKey);
-			if(!is_file($path =  $info['path'])) {
-				$path = FALSE;
-			}
+		$info = self::getClassInfo($minimalInformation, $alternativeKey);
+		if(!is_file($path =  $info['path'])) {
+			$path = FALSE;
+		}
 
-			// Now we try INSIDE the last directory (dir and last may be empty)
-			// ext(/dir)/last
-			// ext(/dir)/last/prefix.tx_key_parts_last.php.
-			if(!$path && !is_file($path =  $ext . $dir . $last . $prefix . $class . $suffix)) {
-				$path = FALSE;
-			}
-//		}
-//		catch(Exception $e) {
-//			t3lib_div::debug($e->getMessage(), 'tx_rnbase :: _findT3'); // TODO: remove me
-//		}
+		// Now we try INSIDE the last directory (dir and last may be empty)
+		// ext(/dir)/last
+		// ext(/dir)/last/prefix.tx_key_parts_last.php.
+		if(!$path && !is_file($path =  $ext . $dir . $last . $prefix . $class . $suffix)) {
+			$path = FALSE;
+		}
 		return $info['path'];
-
-//		$info=trim($minimalInformation);
-//		$path = '';
-//		if(!$info) {
-//			$error = 'emptyParameter';
-//		}
-//		if(!$error) {
-//			$qSuffix = preg_quote ($suffix, '/');
-//			// If it is a path extract the key first.
-//			// Either the relevant part starts with a slash: xyz/[tx_].....php
-//			if(preg_match('/^.*\/([0-9A-Za-z_]+)' . $qSuffix . '$/', $info, $matches)) {
-//				$class = $matches[1];
-//			}elseif(preg_match('/^.*\.([0-9A-Za-z_]+)' . $qSuffix . '$/', $info, $matches)) {
-//				// Or it starts with a Dot: class.[tx_]....php
-//
-//				$class = $matches[1];
-//			}elseif(preg_match('/^([0-9A-Za-z_]+)' . $qSuffix . '$/', $info, $matches)) {
-//				// Or it starts directly with the relevant part
-//				$class = $matches[1];
-//			}elseif(preg_match('/^[0-9a-zA-Z_]+$/', trim($info), $matches)) {
-//				// It may be the key itself
-//				$class = $info;
-//			}else{
-//				$error = 'classError';
-//			}
-//		}
-//		// With this a possible alternative Key is also validated
-//		if(!$error && !$key = self::guessKey($alternativeKey ? $alternativeKey : $class)) {
-//			$error = 'classError';
-//		}
-//		if(!$error) {
-//			if(preg_match('/^tx_[0-9A-Za-z_]*$/', $class)) {  // with tx_ prefix
-//				$parts=split('_', trim($class));
-//				array_shift($parts); // strip tx
-//			}elseif(preg_match('/^[0-9A-Za-z_]*$/', $class)) { // without tx_ prefix
-//				$parts=split('_', trim($class));
-//			}else{
-//				$error = 'classError';
-//			}
-//		}
-//		if(!$error) {
-//
-//			// Set extPath for key (first element)
-//			$first = array_shift($parts);
-//
-//			// Save last element of path
-//			if(count($parts) > 0) {
-//				$last = array_pop($parts) . '/';
-//			}
-//
-//			$dir = '';
-//			// Build the relative path if any
-//			foreach((array)$parts as $part) {
-//				$dir .= $part . '/';
-//			}
-//
-//			// if an alternative Key is given use that
-//			$ext = t3lib_extMgm::extPath($key);
-
-			// First we try ABOVE last directory (dir and last may be empty)
-			// ext(/dir)/last
-			// ext(/dir)/prefix.tx_key_parts_last.php.
-			if(!$path && !is_file($path =  $ext . $dir . $prefix . $class . $suffix)) {
-				$path = FALSE;
-			}
-
-			// Now we try INSIDE the last directory (dir and last may be empty)
-			// ext(/dir)/last
-			// ext(/dir)/last/prefix.tx_key_parts_last.php.
-			if(!$path && !is_file($path =  $ext . $dir . $last . $prefix . $class . $suffix)) {
-				$path = FALSE;
-			}
-//		}
-t3lib_div::debug($path, $minimalInformation.' - tx_rnbase :: _findT3'); // TODO: remove me
-		return $path;
 	}
 
 	/**

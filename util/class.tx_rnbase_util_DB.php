@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006-2008 Rene Nitzsche
+ *  (c) 2006-2011 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -24,6 +24,7 @@
 
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_util_TYPO3');
+tx_rnbase::load('tx_rnbase_util_Debug');
 
 /**
  * Contains utility functions for database access
@@ -61,8 +62,8 @@ class tx_rnbase_util_DB {
 
     if($debug) {
       $sql = $GLOBALS['TYPO3_DB']->SELECTquery($what,$fromClause,$where,$groupBy,$orderBy);
-      t3lib_div::debug($sql, 'SQL');
-      t3lib_div::debug(array($what,$from,$where));
+      tx_rnbase_util_Debug::debug($sql, 'SQL');
+      tx_rnbase_util_Debug::debug(array($what,$from,$where));
     }
 
     $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -81,7 +82,7 @@ class tx_rnbase_util_DB {
     }
     $GLOBALS['TYPO3_DB']->sql_free_result($res);
     if($debug)
-      t3lib_div::debug(count($rows),'Rows retrieved');
+      tx_rnbase_util_Debug::debug(count($rows),'Rows retrieved');
     return $rows;
   }
 
@@ -182,8 +183,8 @@ class tx_rnbase_util_DB {
 			$sql = $GLOBALS['TYPO3_DB']->SELECTquery($what,$fromClause,$where,$groupBy,$orderBy,$limit);
 			if($sqlOnly) return $sql;
 			if($debug) {
-				t3lib_div::debug($sql, 'SQL');
-				t3lib_div::debug(array($what,$from,$arr));
+				tx_rnbase_util_Debug::debug($sql, 'SQL');
+				tx_rnbase_util_Debug::debug(array($what,$from,$arr));
 			}
 		}
 
@@ -215,7 +216,7 @@ class tx_rnbase_util_DB {
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		if($debug)
-			t3lib_div::debug(array(
+			tx_rnbase_util_Debug::debug(array(
 				'Rows retrieved '=>count($rows),
 				'Time '=>(microtime(true) - $time),
 				'Memory consumed '=>(memory_get_usage()-$mem),
@@ -255,7 +256,7 @@ class tx_rnbase_util_DB {
 	public static function doInsert($tablename, $values, $debug=0) {
 		if($debug) {
 			$sql = $GLOBALS['TYPO3_DB']->INSERTquery($tablename,$values);
-			t3lib_div::debug(array('SQL'=>$sql, 'table'=>$tablename,'values'=>$values));
+			tx_rnbase_util_Debug::debug(array('SQL'=>$sql, 'table'=>$tablename,'values'=>$values));
 		}
 		self::watchOutDB(
 			$GLOBALS['TYPO3_DB']->exec_INSERTquery(
@@ -284,7 +285,7 @@ class tx_rnbase_util_DB {
 			$GLOBALS['TYPO3_DB']->sql_query($sqlQuery)
 		);
 		if($debug)
-			t3lib_div::debug(array(
+			tx_rnbase_util_Debug::debug(array(
 				'SQL '=>$sqlQuery,
 				'Time '=>(microtime(true) - $time),
 				'Memory consumed '=>(memory_get_usage()-$mem),
@@ -304,8 +305,8 @@ class tx_rnbase_util_DB {
 	public static function doUpdate($tablename, $where, $values, $debug=0, $noQuoteFields = false) {
 		if($debug) {
 			$sql = $GLOBALS['TYPO3_DB']->UPDATEquery($tablename,$where,$values, $noQuoteFields);
-			t3lib_div::debug($sql, 'SQL');
-			t3lib_div::debug(array($tablename,$where,$values));
+			tx_rnbase_util_Debug::debug($sql, 'SQL');
+			tx_rnbase_util_Debug::debug(array($tablename,$where,$values));
 		}
 		self::watchOutDB(
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
@@ -328,8 +329,8 @@ class tx_rnbase_util_DB {
 	public static function doDelete($tablename, $where, $debug=0) {
 		if($debug) {
 			$sql = $GLOBALS['TYPO3_DB']->DELETEquery($tablename,$where);
-			t3lib_div::debug($sql, 'SQL');
-			t3lib_div::debug(array($tablename,$where));
+			tx_rnbase_util_Debug::debug($sql, 'SQL');
+			tx_rnbase_util_Debug::debug(array($tablename,$where));
 		}
 		self::watchOutDB(
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery(
@@ -684,6 +685,5 @@ function tx_rnbase_util_DB_prependAlias(&$item, $key, $alias) {
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_DB.php']) {
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_DB.php']);
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_DB.php']);
 }
-?>
