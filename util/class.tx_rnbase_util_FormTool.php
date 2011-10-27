@@ -177,6 +177,13 @@ class tx_rnbase_util_FormTool {
 		$sEnableColumn = ($sEnableColumn) ? $sEnableColumn : 'hidden';
 		$jumpToUrl = "'".$GLOBALS['BACK_PATH'].'tce_db.php?redirect='.$location.'&amp;data['.$table.'][' . $uid .']['. $sEnableColumn .']='.($unhide ? 0 : 1)."'";
 
+		//jetzt noch alles zur Formvalidierung einfügen damit
+		//TYPO3 den Link akzeptiert und als valide einstuft
+		//der Formularname ist immer tceAction
+		$jumpToUrl .= "&amp;vC=".$GLOBALS['BE_USER']->veriCode();
+		if(tx_rnbase_util_TYPO3::isTYPO45OrHigher())
+			$jumpToUrl .= t3lib_BEfunc::getUrlToken('tceAction')."'";
+
 		return '<a onclick="return jumpToUrl('.$jumpToUrl.');" href="#">'.
 				'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.($unhide ? 'button_hide.gif' : 'button_unhide.gif'),'width="11" height="12"').' title="'.($unhide ? 'Show' : 'Hide').' UID: '.$uid.'" border="0" alt="" />'.
 				$label.'</a>';	
@@ -222,16 +229,21 @@ class tx_rnbase_util_FormTool {
 		$location = t3lib_div::linkThisScript(array('CB'=>'','SET'=>'','cmd' => '','popViewId'=>''));
 		$location = str_replace('%20','',rawurlencode($location));
 
-		$sDeleteColumn = $GLOBALS['TCA'][$table]['ctrl']['delete'];
-		///fallback
-		$sDeleteColumn = ($sDeleteColumn) ? $sDeleteColumn : 'delete';
-		$jumpToUrl = '\''.$GLOBALS['BACK_PATH'].'tce_db.php?redirect='.$location.'&amp;cmd['.$table.']['.$uid.']['. $sDeleteColumn .']=1&amp;vC='.$GLOBALS['BE_USER']->veriCode().'\'';
+		$jumpToUrl = '\''.$GLOBALS['BACK_PATH'].'tce_db.php?redirect='.$location.'&amp;cmd['.$table.']['.$uid.'][delete]=1';
+		//jetzt noch alles zur Formvalidierung einfügen damit
+		//TYPO3 den Link akzeptiert und als valide einstuft
+		// der Formularname ist immer tceAction
+
+		$jumpToUrl .= "&amp;vC=".$GLOBALS['BE_USER']->veriCode();
+		if(tx_rnbase_util_TYPO3::isTYPO45OrHigher())
+			$jumpToUrl .= t3lib_BEfunc::getUrlToken('tceAction')."'";
 
 		$jsCode = $this->getConfirmCode('return jumpToUrl('.$jumpToUrl.');', $options);
 		return '<a onclick="'.$jsCode.'" href="#">'.
-				'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/deletedok.gif','width="16" height="16"').' title="Delete UID: '.$uid.'" border="0" alt="" />'.
-			$label.'</a>';
+			'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/deletedok.gif','width="16" height="16"').' title="Delete UID: '.$uid.'" border="0" alt="" />'.
+				$label.'</a>';
 	}
+
 	/**
 	 * Fügt den JS Code für eine Confirm-Meldung hinzu, wenn in den Options gesetzt.
 	 * @param string $jsCode
