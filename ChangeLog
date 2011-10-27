@@ -3,10 +3,10 @@
 Änderungen
 ----------
 
-v0.10.9 (27.10.2011)
+v0.10.9 (27.10.2011) (not released)
  * tx_rnbase_util_FormTool: Hide and Delete Link fixed. FormValidationToken added. Thanks to Hannes Bochmann!
 
-v0.10.8 (27.10.2011)
+v0.10.8 (27.10.2011) (not released)
  * Default html template for BE modules
  * BE-modules it is possible to add sort links for columns. Thanks to Hannes Bochmann!
  * All debug calls switched to tx_rnbase_util_Debug to avoid deprecation logs
