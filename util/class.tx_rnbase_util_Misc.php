@@ -67,6 +67,28 @@ class tx_rnbase_util_Misc {
 	}
 
 	/**
+	 * Zufällige Sortierung der Items in der Liste. Die Liste wird per PHP gemischt. Zusätzlich kann ein weiteres
+	 * Limit gesetzt werden, um die Anzahl der auszugebenden Items weiter einzuschränken.
+	 * Damit kann man aus einem Pool von Items (bspw. die neuesten 10 Items) per Zufall eine gewünschte
+	 * Anzahl von Items anzeigen.
+	 * @param array $items
+	 * @param int $limit
+	 * @return array
+	 */
+	public static function randomizeItems(array $items, $limit=0) {
+		$anzahl = count($items);
+		$idxArr = range(1, $anzahl);
+		shuffle($idxArr);
+		$limit = ($limit > 0 && $limit < $anzahl) ? $limit : $anzahl;
+		$ret = array();
+		for($i=0; $i<$limit; $i++) {
+			$ret[] = $items[($idxArr[$i]-1)];
+		}
+		reset($ret);
+		return $ret;
+	}
+
+	/**
 	 * Calls a hook
 	 *
 	 * @param string $extKey

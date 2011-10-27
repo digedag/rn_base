@@ -7,6 +7,7 @@ v0.10.8 (??.10.2011)
  * Default html template for BE modules
  * BE-modules it is possible to add sort links for columns. Thanks to Hannes Bochmann!
  * All debug calls switched to tx_rnbase_util_Debug to avoid deprecation logs
+ * tx_rnbase_util_Misc: new method randomizeItems()
 
 v0.10.7 (11.10.2011)
  * BE-Module: New method addMessage to integrate TYPO3 flash messages
