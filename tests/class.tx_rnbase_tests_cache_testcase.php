@@ -38,6 +38,7 @@ class tx_rnbase_tests_cache_testcase extends tx_phpunit_testcase {
 	function test_TYPO3Cache() {
 		if(!tx_rnbase_util_TYPO3::isTYPO43OrHigher()) return; // Geht erst ab 4.3
 		$cache = self::createTYPO3Cache('__rnbaseTestTYPO3Cache__');
+		
 		$this->assertTrue(is_object($cache), 'Cache not instanciated');
 		$cache->set('key1', array('id' => '100'));
 		$arr = $cache->get('key1');
@@ -60,7 +61,8 @@ class tx_rnbase_tests_cache_testcase extends tx_phpunit_testcase {
 	 * @return tx_rnbase_cache_ICache
 	 */
 	private static function createTYPO3Cache($name) {
-		return tx_rnbase::makeInstance('tx_rnbase_cache_TYPO3Cache', $name);
+		$className = tx_rnbase_util_TYPO3::isTYPO46OrHigher() ? 'tx_rnbase_cache_TYPO3Cache46' : 'tx_rnbase_cache_TYPO3Cache';
+		return tx_rnbase::makeInstance($className, $name);
 	}
 }
 

@@ -37,8 +37,9 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 	 */
 	public function setUp() {
 		$this->oFormTool = tx_rnbase::makeInstance('tx_rnbase_util_FormTool');
-		$GLOBALS['LOCAL_LANG']['default']['Header Uid'] = 'Header Uid';
-		$GLOBALS['LOCAL_LANG']['default']['Header Col1'] = 'Header Col1';
+		// Wurde das in 4.6 verändert??
+		$GLOBALS['LOCAL_LANG']['default']['Header Uid'][0] = array('source'=>'Header Uid', 'target'=>'Header Uid');
+		$GLOBALS['LOCAL_LANG']['default']['Header Col1'][0] = array('source'=>'Header Col1', 'target'=>'Header Col1');
 	}
 	 
 	/**

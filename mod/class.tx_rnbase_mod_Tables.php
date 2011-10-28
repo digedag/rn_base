@@ -37,6 +37,7 @@ class tx_rnbase_mod_Tables {
 	public static function prepareTable($entries, $columns, $formTool, $options) {
 		$arr = Array( 0 => Array( self::getHeadline($columns, $options, $formTool) ));
 		foreach($entries As $entry){
+
 			$record = is_object($entry) ? $entry->record : $entry;
 			$row = array();
 			if(isset($options['checkbox'])) {
@@ -93,6 +94,7 @@ class tx_rnbase_mod_Tables {
 				$arr[] = '';
 				continue;
 			}
+
 			$label = $LANG->getLL((isset($data['title']) ? $data['title'] : $column));
 			//es gibt die Möglichkeit sortable zu setzen. damit wird
 			//nach dem title eine sortierung eingeblendet.
