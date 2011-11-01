@@ -175,7 +175,7 @@ class tx_rnbase_util_FormTool {
 		$sEnableColumn = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
 		//fallback
 		$sEnableColumn = ($sEnableColumn) ? $sEnableColumn : 'hidden';
-		$jumpToUrl = "'".$GLOBALS['BACK_PATH'].'tce_db.php?redirect='.$location.'&amp;data['.$table.'][' . $uid .']['. $sEnableColumn .']='.($unhide ? 0 : 1)."'";
+		$jumpToUrl = "'".$GLOBALS['BACK_PATH'].'tce_db.php?redirect='.$location.'&amp;data['.$table.'][' . $uid .']['. $sEnableColumn .']='.($unhide ? 0 : 1);
 
 		//jetzt noch alles zur Formvalidierung einfügen damit
 		//TYPO3 den Link akzeptiert und als valide einstuft
