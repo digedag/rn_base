@@ -182,8 +182,9 @@ class tx_rnbase_util_FormTool {
 		//der Formularname ist immer tceAction
 		$jumpToUrl .= "&amp;vC=".$GLOBALS['BE_USER']->veriCode();
 		if(tx_rnbase_util_TYPO3::isTYPO45OrHigher())
-			$jumpToUrl .= t3lib_BEfunc::getUrlToken('tceAction')."'";
-
+			$jumpToUrl .= t3lib_BEfunc::getUrlToken('tceAction');
+		$jumpToUrl .="'";
+		
 		return '<a onclick="return jumpToUrl('.$jumpToUrl.');" href="#">'.
 				'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.($unhide ? 'button_hide.gif' : 'button_unhide.gif'),'width="11" height="12"').' title="'.($unhide ? 'Show' : 'Hide').' UID: '.$uid.'" border="0" alt="" />'.
 				$label.'</a>';	
@@ -236,7 +237,8 @@ class tx_rnbase_util_FormTool {
 
 		$jumpToUrl .= "&amp;vC=".$GLOBALS['BE_USER']->veriCode();
 		if(tx_rnbase_util_TYPO3::isTYPO45OrHigher())
-			$jumpToUrl .= t3lib_BEfunc::getUrlToken('tceAction')."'";
+			$jumpToUrl .= t3lib_BEfunc::getUrlToken('tceAction');
+		$jumpToUrl .="'";
 
 		$jsCode = $this->getConfirmCode('return jumpToUrl('.$jumpToUrl.');', $options);
 		return '<a onclick="'.$jsCode.'" href="#">'.
