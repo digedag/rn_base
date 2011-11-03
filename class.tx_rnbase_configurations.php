@@ -35,11 +35,11 @@
  * - all data is stored at instance variable _dataStore
  * - this class is the dataholder of any cObj in the plugin
  * - provides an instance of formatter class
- * - provides a dataholder named $_viewdata used to transfer any  
+ * - provides a dataholder named $_viewdata used to transfer any
  *   data from controller to view
  * Configuration is the meant to be a central point for all parts
  * of MVC Pattern.
- * The API of this class has not been changed. So it can be used, 
+ * The API of this class has not been changed. So it can be used,
  * as always.
  ***************************************************************/
 
@@ -87,12 +87,12 @@ class tx_rnbase_configurations {
   var $pluginUid; // Die UID des Plugins (also des Content-Objekts)
   var $cObj; // Das originale cObj des Plugins
   var $_cObjs; // Container für alternative cObjs innerhalb des Plugins
-  var $_LLkey='default'; // language to use
-  var $_altLLkey=''; // alternative language to use
+  var $LLkey='default'; // language to use
+  var $altLLkey=''; // alternative language to use
 
   var $LOCAL_LANG = Array(); // Local language content
   var $LOCAL_LANG_charset = Array(); // Local language content charset for overwritten labels
-  var $_LOCAL_LANG_loaded = 0; // Local language flag
+  var $LOCAL_LANG_loaded = 0; // Local language flag
 
   var $_extensionKey;
 
@@ -141,7 +141,10 @@ class tx_rnbase_configurations {
     $this->_formatter = tx_rnbase::makeInstance('tx_rnbase_util_FormatUtil', $this);
 
     // load local language strings
-    $this->_loadLL($this->get('locallangFilename')? $this->get('locallangFilename') : 0);
+    if(tx_rnbase_util_TYPO3::isTYPO46OrHigher())
+	    $this->_loadLL46($this->get('locallangFilename')? $this->get('locallangFilename') : 0);
+    else
+	    $this->_loadLL($this->get('locallangFilename')? $this->get('locallangFilename') : 0);
   }
 
   // -------------------------------------------------------------------------------------
@@ -193,7 +196,7 @@ class tx_rnbase_configurations {
   }
 
   /**
-   * Returns the defined path to template directory. This is by default 
+   * Returns the defined path to template directory. This is by default
    * 'EXT:your_extension/templates/'. You can change this by TS setting templatePath
    */
   function getTemplatePath() {
@@ -295,27 +298,70 @@ class tx_rnbase_configurations {
 	 * Returns the localized label of the LOCAL_LANG key.
 	 * This is a reimplementation from tslib_pibase::pi_getLL().
 	 */
-	function getLL($key,$alt='',$hsc=FALSE) {
+	public function getLL($key,$alt='',$hsc=FALSE) {
+		return tx_rnbase_util_TYPO3::isTYPO46OrHigher() ? $this->getLL46($key,$alt,$hsc) : $this->getLL40($key,$alt,$hsc);
+	}
+
+	public function getLL46($key, $alternativeLabel = '', $hsc = FALSE) {
+		if (isset($this->LOCAL_LANG[$this->LLkey][$key][0]['target'])) {
+	
+			// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
+			if (isset($this->LOCAL_LANG_charset[$this->LLkey][$key])) {
+				$word = $GLOBALS['TSFE']->csConv(
+				$this->LOCAL_LANG[$this->LLkey][$key][0]['target'],
+				$this->LOCAL_LANG_charset[$this->LLkey][$key]
+				);
+			} else {
+				$word = $this->LOCAL_LANG[$this->LLkey][$key][0]['target'];
+			}
+		} elseif ($this->altLLkey && isset($this->LOCAL_LANG[$this->altLLkey][$key][0]['target'])) {
+			// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
+			if (isset($this->LOCAL_LANG_charset[$this->altLLkey][$key])) {
+				$word = $GLOBALS['TSFE']->csConv(
+				$this->LOCAL_LANG[$this->altLLkey][$key][0]['target'],
+				$this->LOCAL_LANG_charset[$this->altLLkey][$key]
+				);
+			} else {
+				$word = $this->LOCAL_LANG[$this->altLLkey][$key][0]['target'];
+			}
+		} elseif (isset($this->LOCAL_LANG['default'][$key][0]['target'])) {
+			// Get default translation (without charset conversion, english)
+			$word = $this->LOCAL_LANG['default'][$key][0]['target'];
+		} else {
+			// Return alternative string or empty
+			$word = (isset($this->LLtestPrefixAlt)) ? $this->LLtestPrefixAlt . $alternativeLabel : $alternativeLabel;
+		}
+	
+		$output = (isset($this->LLtestPrefix)) ? $this->LLtestPrefix . $word : $word;
+	
+		if ($hsc) {
+			$output = htmlspecialchars($output);
+		}
+	
+		return $output;
+	}
+	
+	private function getLL40($key,$alt='',$hsc=FALSE) {
 		if(!strcmp(substr($key,0,4),'LLL:')) {
 			return $GLOBALS['TSFE']->sL($key);
 		}
-		if (isset($this->LOCAL_LANG[$this->_LLkey][$key]))       {
-			$word = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->_LLkey][$key], $this->LOCAL_LANG_charset[$this->_LLkey][$key]); // The "from" charset is normally empty and thus it will convert from the charset of the system language, but if it is set (see ->pi_loadLL()) it will be used.
-		} elseif ($this->altLLkey && isset($this->LOCAL_LANG[$this->_altLLkey][$key]))   {
-			$word = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->_altLLkey][$key], $this->LOCAL_LANG_charset[$this->_altLLkey][$key]);   // The "from" charset is normally empty and thus it will convert from the charset of the system language, but if it is set (see ->pi_loadLL()) it will be used.
+		if (isset($this->LOCAL_LANG[$this->LLkey][$key]))       {
+			$word = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->LLkey][$key], $this->LOCAL_LANG_charset[$this->LLkey][$key]); // The "from" charset is normally empty and thus it will convert from the charset of the system language, but if it is set (see ->pi_loadLL()) it will be used.
+		} elseif ($this->altLLkey && isset($this->LOCAL_LANG[$this->altLLkey][$key]))   {
+			$word = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->altLLkey][$key], $this->LOCAL_LANG_charset[$this->altLLkey][$key]);   // The "from" charset is normally empty and thus it will convert from the charset of the system language, but if it is set (see ->pi_loadLL()) it will be used.
 		} elseif (isset($this->LOCAL_LANG['default'][$key]))    {
 			$word = $this->LOCAL_LANG['default'][$key];     // No charset conversion because default is english and thereby ASCII
 		} else {
 			// Im BE die LANG fragen...
 			$word = is_object($GLOBALS['LANG']) ? $GLOBALS['LANG']->getLL($key) : '';
 			if(!$word)
-				$word = $this->LLtestPrefixAlt.$alt;
+			$word = $this->LLtestPrefixAlt.$alt;
 		}
-
+	
 		$output = $this->LLtestPrefix.$word;
 		if ($hsc)
 			$output = htmlspecialchars($output);
-
+	
 		return $output;
 	}
 
@@ -378,7 +424,7 @@ class tx_rnbase_configurations {
 	public function getBool($pathKey, $deep=false) {
 		$value = $this->get($pathKey, $deep);
 		if(is_array($value)) return true;
-		return (!$value || strtolower($value) == 'false') ? false : true; 
+		return (!$value || strtolower($value) == 'false') ? false : true;
 	}
 	/**
 	 * Returns a int config value.
@@ -398,7 +444,7 @@ class tx_rnbase_configurations {
 	}
 	/**
 	 * Finds a value either from config or in language markers. Please note, that all points are
-	 * replaced by underscores for language strings. This is, because TYPO3 doesn't like point 
+	 * replaced by underscores for language strings. This is, because TYPO3 doesn't like point
 	 * notations for language keys.
 	 *
 	 * @param string $pathKey
@@ -414,7 +460,7 @@ class tx_rnbase_configurations {
 	}
    
 	/**
-	 * Returns the requested value splitted as an array 
+	 * Returns the requested value splitted as an array
 	 *
 	 * @return	[type]		...
 	 */
@@ -545,7 +591,7 @@ class tx_rnbase_configurations {
 
 	/**
 	 * Returns all keynames below a config branch. Any trailing points will be removed.
-	 * 
+	 *
 	 * @param array $conf configuration array
 	 * @return array
 	 */
@@ -685,7 +731,7 @@ class tx_rnbase_configurations {
 			// This handles ts setup from flexform
 			$tsParser = t3lib_div::makeInstance('t3lib_TSparser');
 			$tsParser->setup = $this->_dataStore->getArrayCopy();
-			$tsParser->parse($flexTs); 
+			$tsParser->parse($flexTs);
 			$flexTsData = $tsParser->setup;
 			$this->_dataStore->exchangeArray($flexTsData);
 		}
@@ -751,27 +797,23 @@ class tx_rnbase_configurations {
    * values. This is a reimplementation from tslib_pibase::pi_loadLL()
    */
   function _loadLL($filename) {
-    if (!$this->_LOCAL_LANG_loaded && $filename)  {
+    if (!$this->LOCAL_LANG_loaded && $filename)  {
       // Load language to use
       if($GLOBALS['TSFE']->config['config']['language']) {
-        $this->_LLkey = $GLOBALS['TSFE']->config['config']['language'];
+        $this->LLkey = $GLOBALS['TSFE']->config['config']['language'];
         if($GLOBALS['TSFE']->config['config']['language_alt'])
-          $this->_altLLkey = $GLOBALS['TSFE']->config['config']['language_alt'];
+          $this->altLLkey = $GLOBALS['TSFE']->config['config']['language_alt'];
       }
 
       // Find language file
       $basePath = t3lib_div::getFileAbsFileName($filename);
-
-
       // php or xml as source: In any case the charset will be that of the system language.
       // However, this function guarantees only return output for default language plus the specified language (which is different from how 3.7.0 dealt with it)
-      $this->LOCAL_LANG = t3lib_div::readLLfile($basePath,$this->_LLkey);
-      if ($this->_altLLkey)    {
-        $tempLOCAL_LANG = t3lib_div::readLLfile($basePath,$this->_altLLkey);
+      $this->LOCAL_LANG = t3lib_div::readLLfile($basePath,$this->LLkey);
+      if ($this->altLLkey)    {
+        $tempLOCAL_LANG = t3lib_div::readLLfile($basePath,$this->altLLkey);
         $this->LOCAL_LANG = array_merge(is_array($this->LOCAL_LANG) ? $this->LOCAL_LANG : array(),$tempLOCAL_LANG);
       }
-
-//    t3lib_div::debug($this->get('_LOCAL_LANG.'), 'file base_conf');
       
       // Overlaying labels from TypoScript (including fictitious language keys for non-system languages!):
       $langArr = $this->get('_LOCAL_LANG.');
@@ -791,9 +833,63 @@ class tx_rnbase_configurations {
         }
       }
     }
-    $this->_LOCAL_LANG_loaded = 1;
+    $this->LOCAL_LANG_loaded = 1;
   }
 
+  
+  /**
+  * Loads local-language values by looking for a "locallang.php" file in the plugin class directory ($this->scriptRelPath) and if found includes it.
+  * Also locallang values set in the TypoScript property "_LOCAL_LANG" are merged onto the values found in the "locallang.php" file.
+  *
+  * @return	void
+  */
+  private function _loadLL46($filename) {
+  	if (!$this->LOCAL_LANG_loaded && $filename) {
+      // Load language to use
+      if($GLOBALS['TSFE']->config['config']['language']) {
+        $this->LLkey = $GLOBALS['TSFE']->config['config']['language'];
+        if($GLOBALS['TSFE']->config['config']['language_alt'])
+          $this->altLLkey = $GLOBALS['TSFE']->config['config']['language_alt'];
+      }
+
+      // Find language file
+      $basePath = t3lib_div::getFileAbsFileName($filename);
+  		// Read the strings in the required charset (since TYPO3 4.2)
+  		$this->LOCAL_LANG = t3lib_div::readLLfile($basePath,$this->LLkey, $GLOBALS['TSFE']->renderCharset);
+  		if ($this->altLLkey) {
+  			$this->LOCAL_LANG = t3lib_div::readLLfile($basePath,$this->altLLkey);
+  		}
+  
+  		// Overlaying labels from TypoScript (including fictitious language keys for non-system languages!):
+  		//$confLL = $this->conf['_LOCAL_LANG.'];
+  		$confLL = $this->get('_LOCAL_LANG.');
+  		if (is_array($confLL)) {
+  			foreach ($confLL as $languageKey => $languageArray) {
+  				// Don't process label if the langue is not loaded
+  				$languageKey = substr($languageKey,0,-1);
+  				if (is_array($languageArray) && is_array($this->LOCAL_LANG[$languageKey])) {
+  					// Remove the dot after the language key
+  					foreach ($languageArray as $labelKey => $labelValue) {
+  						if (!is_array($labelValue))	{
+  							$this->LOCAL_LANG[$languageKey][$labelKey][0]['target'] = $labelValue;
+  
+  							// For labels coming from the TypoScript (database) the charset is assumed to be "forceCharset"
+  							// and if that is not set, assumed to be that of the individual system languages
+  							if ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) {
+  								$this->LOCAL_LANG_charset[$languageKey][$labelKey] = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
+  							} else {
+  								$this->LOCAL_LANG_charset[$languageKey][$labelKey] = $GLOBALS['TSFE']->csConvObj->charSetArray[$languageKey];
+  							}
+  						}
+  					}
+  				}
+  			}
+  		}
+  	}
+  	$this->LOCAL_LANG_loaded = 1;
+  }
+  
+  
 	/**
 	 * (Try to) Render Typoscript recursively
 	 *

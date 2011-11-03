@@ -5,6 +5,7 @@
 
 v0.11.0 (01.11.2011)
  * CacheManager changed for TYPO3 4.6. It is still possible to use unconfigured caches.
+ * tx_rnbase_configurations::getLL fixed for T3 4.6. Thanks to Christian Riesche!
 
 v0.10.9 (27.10.2011) (not released)
  * tx_rnbase_util_FormTool: Hide and Delete Link fixed. FormValidationToken added. Thanks to Hannes Bochmann!
