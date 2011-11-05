@@ -1,0 +1,55 @@
+<?php
+
+/***************************************************************
+ *  Copyright notice
+ *
+ *  (c) 2011 Rene Nitzsche (rene@system25.de)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
+
+
+/**
+ */
+class tx_rnbase_mod_Util {
+	/**
+	 * Retrieve (and update) a value from module data.
+	 * @param string $key
+	 * @param tx_rnbase_mod_IModule $mod
+	 * @param array $options
+	 */
+	public static function getModuleValue($key, tx_rnbase_mod_IModule $mod, $options=array()) {
+		$changedSettings = is_array($options['changed']) ? $options['changed'] : array();
+		$type = isset($options['type']) ? $options['type'] : '';
+		$modData = t3lib_BEfunc::getModuleData(array ($key => ''), $changedSettings, $mod->getName(), $type);
+		return isset($modData[$key]) ? $modData[$key] : null;
+	}
+	/**
+	 * Returns all data for a module for current BE user.
+	 * @param tx_rnbase_mod_IModule $mod
+	 * @param	string $type If type is 'ses' then the data is stored as session-lasting data. This means that it'll be wiped out the next time the user logs in.
+	 */
+	public static function getUserData(tx_rnbase_mod_IModule $mod, $type='') {
+		$settings = $GLOBALS['BE_USER']->getModuleData($mod->getName(), $type);
+		return $settings;
+	}
+}
+
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_Util.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_Util.php']);
+}
