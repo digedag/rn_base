@@ -330,8 +330,6 @@ class tx_rnbase_configurations {
 		} else {
 			// Im BE die LANG fragen...
 			$word = is_object($GLOBALS['LANG']) ? $GLOBALS['LANG']->getLL($key) : '';
-			if(!$word)
-				$word = $this->LLtestPrefixAlt.$alt;
 		}
 	
 		$output = (isset($this->LLtestPrefix)) ? $this->LLtestPrefix . $word : $word;
