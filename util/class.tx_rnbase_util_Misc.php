@@ -545,6 +545,13 @@ MAYDAYPAGE;
 			file_put_contents($lockFile, time()); // refresh lock
 		return $mail->send($mailAddr);
 	}
+	/**
+	 * Returns currently loaded LL files
+	 * @return array
+	 */
+	public static function getLoadedLLFiles() {
+		return array_keys($GLOBALS['LANG']->LL_files_cache);
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Misc.php']) {
