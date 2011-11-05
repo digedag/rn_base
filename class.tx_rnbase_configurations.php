@@ -328,8 +328,10 @@ class tx_rnbase_configurations {
 			// Get default translation (without charset conversion, english)
 			$word = $this->LOCAL_LANG['default'][$key][0]['target'];
 		} else {
-			// Return alternative string or empty
-			$word = (isset($this->LLtestPrefixAlt)) ? $this->LLtestPrefixAlt . $alternativeLabel : $alternativeLabel;
+			// Im BE die LANG fragen...
+			$word = is_object($GLOBALS['LANG']) ? $GLOBALS['LANG']->getLL($key) : '';
+			if(!$word)
+				$word = $this->LLtestPrefixAlt.$alt;
 		}
 	
 		$output = (isset($this->LLtestPrefix)) ? $this->LLtestPrefix . $word : $word;
@@ -355,7 +357,7 @@ class tx_rnbase_configurations {
 			// Im BE die LANG fragen...
 			$word = is_object($GLOBALS['LANG']) ? $GLOBALS['LANG']->getLL($key) : '';
 			if(!$word)
-			$word = $this->LLtestPrefixAlt.$alt;
+				$word = $this->LLtestPrefixAlt.$alt;
 		}
 	
 		$output = $this->LLtestPrefix.$word;
