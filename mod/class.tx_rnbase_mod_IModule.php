@@ -53,6 +53,11 @@ interface tx_rnbase_mod_IModule {
 	 */
 	public function setSubMenu($menuString);
 	/**
+	 * Selector String for the marker ###SELECTOR###
+	 * @param $selectorString
+	 */
+	public function setSelector($selectorString);
+	/**
 	 * @param string $message
 	 * @param string $title;
 	 * @param int $severity Optional severity, must be either of t3lib_message_AbstractMessage::INFO, t3lib_message_AbstractMessage::OK,

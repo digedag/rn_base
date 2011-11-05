@@ -35,6 +35,10 @@ tx_rnbase::load('tx_rnbase_util_Templates');
 abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc {
 	public function init(tx_rnbase_mod_IModule $module, $conf) {
 		$this->mod = $module;
+		$configurations = $this->getModule()->getConfigurations();
+		if($file = $configurations->get($this->getConfId().'locallang')) {
+			$GLOBALS['LANG']->includeLLFile($file);
+		}
 	}
 	/**
 	 * Returns the base module
@@ -82,9 +86,14 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc {
 		// SubSelectors
 		$selectorStr = '';
 		$subSels = $this->makeSubSelectors($selectorStr);
+		$this->getModule()->setSelector($selectorStr);
 		if(is_array($subSels) && count($subSels) == 0) {
 			// Abbruch, da kein Wert gewählt
 			return $this->handleNoSubSelectorValues();
+		}
+		elseif(is_string($subSels)) {
+			// Ein String als Ergebnis bedeutet ebenfalls Abbruch.
+			return $subSels;
 		}
 
 		$args = array();
@@ -112,8 +121,6 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc {
 		// Den JS-Code für Validierung einbinden
 		$content .= $formTool->getTCEForm()->printNeededJSFunctions();
 		return $content;
-
-		return $out;
 	}
 	/**
 	 * Liefert die ConfId für diese ModFunc
@@ -125,7 +132,7 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc {
 	}
 	/**
 	 * Jede Modulfunktion sollte über einen eigenen Schlüssel innerhalb des Moduls verfügen. Dieser
-	 * wird später für die Konfigruration verwendet
+	 * wird später für die Konfiguration verwendet
 	 *
 	 */
 	abstract protected function getFuncId();
