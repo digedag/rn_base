@@ -102,6 +102,7 @@ class tx_rnbase_util_DB {
 	 * - 'enablefieldsoff' - deactivate enableFields check
 	 * - 'enablefieldsbe' - force enableFields check for BE (this usually ignores hidden records)
 	 * - 'enablefieldsfe' - force enableFields check for FE
+	 * - 'db' - external database: tx_rnbase_util_db_IDatabase
 	 * </pre>
 	 * @param string $what requested columns
 	 * @param string $from either the name of on table or an array with index 0 the from clause 
@@ -179,8 +180,9 @@ class tx_rnbase_util_DB {
 		if(strlen($union) > 0)
 			$where .= ' UNION '.$union;
 
+		$database = isset($arr['db']) && is_object($arr['db']) ? $arr['db'] : $GLOBALS['TYPO3_DB'];
 		if($debug || $sqlOnly) {
-			$sql = $GLOBALS['TYPO3_DB']->SELECTquery($what,$fromClause,$where,$groupBy,$orderBy,$limit);
+			$sql = $database->SELECTquery($what,$fromClause,$where,$groupBy,$orderBy,$limit);
 			if($sqlOnly) return $sql;
 			if($debug) {
 				tx_rnbase_util_Debug::debug($sql, 'SQL');
@@ -188,7 +190,7 @@ class tx_rnbase_util_DB {
 			}
 		}
 
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+		$res = $database->exec_SELECTquery(
 			$what,
 			$fromClause,
 			$where,
@@ -202,7 +204,7 @@ class tx_rnbase_util_DB {
 		$callback = isset($arr['callback']) ? $arr['callback'] : false;
 
 		$rows = array();
-		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
+		while($row = $database->sql_fetch_assoc($res)){
 			// Workspacesupport
 			self::lookupWorkspace($row, $tableName, $sysPage, $arr);
 			if(!is_array($row)) continue;
@@ -214,7 +216,7 @@ class tx_rnbase_util_DB {
 			else
 				$rows[] = $item;
 		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		$database->sql_free_result($res);
 		if($debug)
 			tx_rnbase_util_Debug::debug(array(
 				'Rows retrieved '=>count($rows),

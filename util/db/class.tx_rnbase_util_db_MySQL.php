@@ -23,14 +23,16 @@
  ***************************************************************/
 
 tx_rnbase::load('tx_rnbase_util_db_Exception');
+tx_rnbase::load('tx_rnbase_util_db_IDatabase');
+
 /**
  * DB wrapper for other (external) databases
  */
-class tx_rnbase_util_db_MySQL {
+class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase {
 	private $db = null;
 	public function __construct($credentials) {
 		if(!is_array($credentials)) throw new tx_rnbase_util_db_Exception('No credentials given for database!');
-		$this->connect($credentials);
+		$this->db = $this->connectDB($credentials);
 	}
 	public function __call($methodName, $args) {
 		return call_user_func_array(array($this->db,$methodName),$args);
@@ -48,7 +50,7 @@ class tx_rnbase_util_db_MySQL {
 	 * @return string SQL Query
 	 */
 	public function SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '') {
-		return $GLOBALS['TYPO3_DB']->SELECTquery($what,$fromClause,$where,$groupBy,$orderBy,$limit);
+		return $GLOBALS['TYPO3_DB']->SELECTquery($select_fields, $from_table, $where_clause, $groupBy,$orderBy,$limit);
 	}
 
 	/**
@@ -63,7 +65,9 @@ class tx_rnbase_util_db_MySQL {
 	 * @return	pointer		MySQL result pointer / DBAL object
 	 */
 	public function exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = ''){
-		return $GLOBALS['TYPO3_DB']->exec_SELECTquery($what,$fromClause,$where,$groupBy,$orderBy,$limit);
+		$query = $this->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
+		$res = mysql_query($query, $this->db);
+		return $res;
 	}
 	/**
 	 * Creates and executes an INSERT SQL-statement for $table from the array with field/value pairs $fields_values.
@@ -145,25 +149,20 @@ class tx_rnbase_util_db_MySQL {
 	 * @return	void
 	 */
 	private function connectDB($credArr) {
-		$db = $credArr['schema'];
-		if ($this->sql_connect($host, $user, $password)) {
-			if (!$db) {
-				throw new RuntimeException(
-					'TYPO3 Fatal Error: No database selected!',
-					1270853882
-				);
-			} elseif (!$this->sql_select_db($db)) {
-				throw new RuntimeException(
-					'TYPO3 Fatal Error: Cannot connect to the current database, "' . $db . '"!',
-					1270853883
-				);
-			}
-		} else {
-			throw new RuntimeException(
-				'TYPO3 Fatal Error: The current username, password or host was not accepted when the connection to the database was attempted to be established!',
-				1270853884
-			);
+		$schema = $credArr['schema'];
+		if (!$schema) {
+			throw new RuntimeException('TYPO3 Fatal Error: No database schema selected!',1271953882);
 		}
+		$link = $this->connect($credArr);
+		// Select DB
+		$ret = @mysql_select_db($schema, $link);
+		if (!$ret) {
+			throw new RuntimeException('Could not select MySQL database ' . $TYPO3_db . ': ' .
+					mysql_error(),1271953992);
+		}
+		$this->setSqlMode($link);
+
+		return $link;
 	}
 
 	/**
@@ -217,17 +216,19 @@ class tx_rnbase_util_db_MySQL {
 		@ini_restore('html_errors');
 
 		if (!$link) {
-			t3lib_div::sysLog('RNBASE: Could not connect to MySQL server ' . $dbHost .
-					' with user ' . $dbUsername . ': ' . $error_msg, 'Core', 4);
-		} else {
-			$setDBinit = t3lib_div::trimExplode(LF, str_replace("' . LF . '", LF, $credArr['setDBinit']), TRUE);
-			foreach ($setDBinit as $v) {
-				if (mysql_query($v, $link) === FALSE) {
-					t3lib_div::sysLog('RNBASE: Could not initialize DB connection with query "' . $v .
-							'": ' . mysql_error($link),'Core', 3);
-				}
+			$message = 'Database Error: Could not connect to MySQL server ' . $dbHost .
+					' with user ' . $dbUsername . ': ' . $error_msg;
+			throw new RuntimeException($message, 1271492616);
+
+		}
+		
+		$setDBinit = t3lib_div::trimExplode(LF, str_replace("' . LF . '", LF, $credArr['setDBinit']), TRUE);
+		foreach ($setDBinit as $v) {
+			if (mysql_query($v, $link) === FALSE) {
+				// TODO: handler errors
+//					t3lib_div::sysLog('RNBASE: Could not initialize DB connection with query "' . $v .
+//							'": ' . mysql_error($link),'Core', 3);
 			}
-			$this->setSqlMode();
 		}
 
 		return $link;
@@ -238,8 +239,8 @@ class tx_rnbase_util_db_MySQL {
 	 *
 	 * @return void
 	 */
-	private function setSqlMode() {
-		$resource = $this->sql_query('SELECT @@SESSION.sql_mode;');
+	private function setSqlMode($dblink) {
+		$resource = mysql_query('SELECT @@SESSION.sql_mode;', $dblink);
 		if (is_resource($resource)) {
 			$result = mysql_fetch_row($resource);
 			if (isset($result[0]) && $result[0] && strpos($result[0], 'NO_BACKSLASH_ESCAPES') !== FALSE) {
@@ -248,10 +249,7 @@ class tx_rnbase_util_db_MySQL {
 					array('NO_BACKSLASH_ESCAPES')
 				);
 				$query = 'SET sql_mode=\'' . mysql_real_escape_string(implode(',', $modes)) . '\';';
-				$success = $this->sql_query($query);
-
-				t3lib_div::sysLog('RNBASE: NO_BACKSLASH_ESCAPES could not be removed from SQL mode: ' . $this->sql_error(),
-					'Core',3);
+				mysql_query($query, $dblink);
 			}
 		}
 	}
