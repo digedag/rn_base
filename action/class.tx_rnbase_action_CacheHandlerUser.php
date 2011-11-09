@@ -46,7 +46,7 @@ class tx_rnbase_action_CacheHandlerUser extends tx_rnbase_action_CacheHandlerDef
 	 * Generate a key used to store data to cache.
 	 * @return string
 	 */
-	protected function generateKey() {
+	protected function generateKey($plugin) {
 		return parent::generateKey().'_usr'. $this->sessionId;
 	}
 

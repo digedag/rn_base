@@ -53,7 +53,7 @@ abstract class tx_rnbase_action_BaseIOC {
 			$memStart = memory_get_usage();
 		}
 		$cacheHandler = $this->getCacheHandler($configurations, $this->getConfId().'_caching.');
-		$out = $cacheHandler ? $cacheHandler->getOutput($configurations, $this->getConfId()) : '';
+		$out = $cacheHandler ? $cacheHandler->getOutput($this, $configurations, $this->getConfId()) : '';
 		if(!$out) {
 			$viewData =& $configurations->getViewData();
 			tx_rnbase_util_Misc::pushTT(get_class($this), 'handleRequest');

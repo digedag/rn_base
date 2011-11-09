@@ -3,7 +3,11 @@
 Änderungen
 ----------
 
-v0.11.0 (05.11.2011)
+v0.11.1 (??.11.2011)
+ * tx_rnbase_util_DB can be used to access external databases.
+ * First caching stategy implemented
+
+v0.11.0 (05.11.2011) (not released)
  * CacheManager changed for TYPO3 4.6. It is still possible to use unconfigured caches.
  * tx_rnbase_configurations::getLL fixed for T3 4.6. Thanks to Christian Riesche!
 

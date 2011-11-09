@@ -37,11 +37,12 @@ interface tx_rnbase_action_ICacheHandler {
 
 	/**
 	 * Get output data from cache
+	 * @param tx_rnbase_action_BaseIOC $plugin
 	 * @param tx_rnbase_configurations $configurations
 	 * @param string $confId
 	 * @return string the output string
 	 */
-	public function getOutput($configurations, $confId);
+	public function getOutput($plugin, $configurations, $confId);
 
 }
 
