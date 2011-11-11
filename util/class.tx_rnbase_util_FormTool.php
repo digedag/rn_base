@@ -327,8 +327,13 @@ class tx_rnbase_util_FormTool {
 	/**
 	 * Erstellt ein einfaches Textfield
 	 */
-	public function createTxtInput($name, $value, $width){
-		return '<input type="text" name="'. $name.'"'.$this->doc->formWidth($width).' value="' . $value . '" />';
+	public function createTxtInput($name, $value, $width, $options = array()){
+
+		$onChange = array_key_exists('onchange', $options) ? 'onchange="' . $options['onchange'].'"' : '';
+		$ret = '<input type="text" name="'. $name.'"'.$this->doc->formWidth($width).
+			' ' . $onChange .
+			' value="' . $value . '" />';
+		return $ret;
 	}
 
 	/**
