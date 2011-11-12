@@ -95,6 +95,7 @@ class tx_rnbase_configurations {
   var $LOCAL_LANG_loaded = 0; // Local language flag
 
   var $_extensionKey;
+  private static $libIds = Array();
 
   var $setupPath; // set this in the derived class or give the setupPath to loadTypoScript function
 
@@ -118,7 +119,7 @@ class tx_rnbase_configurations {
     // keep the cObj
     $this->cObj = $cObj;
     $this->cObjs[0] = $this->cObj;
-    $this->pluginUid = $this->cObj->data['uid'];
+    $this->pluginUid = $this->createPluginId();
 
     // make the data of the cObj available
     $this->_setCObjectData($cObj->data);
@@ -151,14 +152,29 @@ class tx_rnbase_configurations {
   // Getters
   // -------------------------------------------------------------------------------------
 
-  /**
-   * Returns the uid of current content object in tt_content
-   *
-   * @return int
-   */
-  function getPluginId() {
-  	return $this->pluginUid;
-  }
+	/**
+	 * Returns the uid of current content object in tt_content
+	 *
+	 * @return int
+	 */
+	public function getPluginId() {
+		return $this->pluginUid;
+	}
+	/**
+	 * return string a unique id for this plugin
+	 */
+	private function createPluginId() {
+		$id = $this->cObj->data['uid'];
+		if(array_key_exists('doktype', $this->cObj->data)) {
+			// Es handelt sich um ein Plugin, daß per TS eingebunden wurde. In data steht der
+			// Record der Seite.
+			$base = array_key_exists($id, self::$libIds) ? (intval(self::$libIds[$id])+1) : 1;
+			self::$libIds[$id] = $base;
+			$id = (100000 + $id) * $base;
+		}
+		return $id;
+	}
+
   /**
    * Create your individuell instance of cObj. For each id only one instance is created.
    * If id == 0 the will get the plugins original cOBj.
