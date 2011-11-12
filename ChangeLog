@@ -3,6 +3,10 @@
 Änderungen
 ----------
 
+v0.11.2 (??.11.2011)
+ * tx_rnbase_configurations::getPluginUid() will always return a unique id even if plugin is defined by Typoscript.
+ * CacheHandlerDefault is ready to use
+
 v0.11.1 (11.11.2011)
  * tx_rnbase_util_DB can be used to access external databases.
  * First caching stategy implemented

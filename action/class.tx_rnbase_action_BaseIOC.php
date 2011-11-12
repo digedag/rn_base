@@ -54,7 +54,9 @@ abstract class tx_rnbase_action_BaseIOC {
 		}
 		$cacheHandler = $this->getCacheHandler($configurations, $this->getConfId().'_caching.');
 		$out = $cacheHandler ? $cacheHandler->getOutput($this, $configurations, $this->getConfId()) : '';
+		$cached = true;
 		if(!$out) {
+			$cached = false;
 			$viewData =& $configurations->getViewData();
 			tx_rnbase_util_Misc::pushTT(get_class($this), 'handleRequest');
 			$out = $this->handleRequest($parameters,$configurations, $viewData);
@@ -89,6 +91,8 @@ abstract class tx_rnbase_action_BaseIOC {
 				'Memory Start'=>$memStart,
 				'Memory End'=>$memEnd,
 				'Memory Consumed'=>($memEnd-$memStart),
+				'Cached?' => $cached ? 'yes' : 'no',
+				'CacheHandler' => is_object($cacheHandler) ? get_class($cacheHandler) : '',
 			), 'View statistics for: '.$this->getConfId(). ' Key: ' . $debugKey);
 		}
 		return $out;

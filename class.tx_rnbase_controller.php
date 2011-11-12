@@ -187,7 +187,7 @@ class tx_rnbase_controller {
    */
   
 	function main($out, $configurationArray){
-
+		
 		tx_rnbase_util_Misc::pushTT('tx_rnbase_controller' , 'start');
 
 		// Making the configurations object
@@ -202,12 +202,12 @@ class tx_rnbase_controller {
 		// Make sure to keep all parameters
 		$configurations->setParameters($parameters);
 		tx_rnbase_util_Misc::pullTT();
-
+		
 		// Finding the action:
 		$actions = $this->_findAction($parameters, $configurations);
 		if(!isset($actions))
 			return $this->getUnknownAction();
-
+			
 		$out = '';
 		if(is_array($actions))
 			foreach($actions As $actionName){
@@ -221,6 +221,7 @@ class tx_rnbase_controller {
 			tx_rnbase_util_Misc::pullTT();
 		}
 		tx_rnbase_util_Misc::pullTT();
+
 		return $out;
 	}
 
