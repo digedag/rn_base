@@ -475,7 +475,16 @@ class tx_rnbase_util_Link {
 		else {
 			if($qualifier) {
 				foreach($value As $arKey => $aValue) {
-					$ret .= '&' . rawurlencode( $qualifier . '[' . $key . ']['.$arKey.']') . '=' . rawurlencode($aValue);
+					if(is_array($aValue)) {
+						// Sonderfall weiteres Array im Parameter. TODO: per Schleife lösen
+						$paramString = $qualifier . '[' . $key . ']['.$arKey.']';
+						list($valKey, $valValue) = each($aValue);
+						$paramString .='['.$valKey.']';
+						$valueString = $valValue;
+						$ret .= '&' . rawurlencode( $paramString) . '=' . rawurlencode($valueString);
+					}
+					else
+						$ret .= '&' . rawurlencode( $qualifier . '[' . $key . ']['.$arKey.']') . '=' . rawurlencode($aValue);
 				}
 			} else {
 				foreach($value As $arKey => $aValue) {

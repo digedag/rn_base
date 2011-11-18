@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v0.11.3 (??.11.2011)
+ * util_Link::makeUrlParam(): Sonderfall weiteres Array im Parameter
+
 v0.11.2 (14.11.2011)
  * tx_rnbase_configurations::getPluginUid() will always return a unique id even if plugin is defined by Typoscript.
  * CacheHandlerDefault is ready to use
