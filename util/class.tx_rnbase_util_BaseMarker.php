@@ -140,7 +140,16 @@ class tx_rnbase_util_BaseMarker {
   		self::$token = md5(microtime());
   	return self::$token;
   }
-  public static function checkLinkExistence($linkId, $marker, $template, &$makeUrl, &$makeLink) {
+  /**
+   * Check existing of a link or url in template string.
+   * @param string $linkId
+   * @param string $marker
+   * @param string $template
+   * @param boolean $makeUrl is set to true if url was found
+   * @param boolean $makeLink is set to true if link was found
+   * @return boolean is true if link or url was found
+   */
+  public static function checkLinkExistence($linkId, $marker, $template, &$makeUrl=true, &$makeLink=true) {
 		$linkMarker = $marker . '_' . strtoupper($linkId).'LINK';
 		// Do we need links
 		$makeUrl = $makeLink = true;
