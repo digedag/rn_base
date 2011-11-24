@@ -3,7 +3,7 @@
 Änderungen
 ----------
 
-v0.11.3 (??.11.2011)
+v0.11.3 (24.11.2011)
  * util_Link::makeUrlParam(): Sonderfall weiteres Array im Parameter
  * util_BaseMarker::checkLinkExistence(): default values for last parameters
 
