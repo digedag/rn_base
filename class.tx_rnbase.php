@@ -159,8 +159,7 @@ class tx_rnbase {
 		$path = self::_findT3($minimalInformation, $alternativeKey, $prefix, $suffix);
 		
 		if($path) {
-			global $TYPO3_CONF_VARS;
-			require_once($path);
+			t3lib_div::requireOnce($path);
 			return TRUE;
 		}
 		return FALSE;

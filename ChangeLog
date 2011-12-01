@@ -4,14 +4,17 @@
 ----------
 
 v0.11.3 (24.11.2011)
+ * tx_rnbase::load() requireOnce from t3lib_div used for file loading. Thanks to Michael Wagner!
+
+v0.11.3 (24.11.2011) (not released)
  * util_Link::makeUrlParam(): Sonderfall weiteres Array im Parameter
  * util_BaseMarker::checkLinkExistence(): default values for last parameters
 
-v0.11.2 (14.11.2011)
+v0.11.2 (14.11.2011) (not released)
  * tx_rnbase_configurations::getPluginUid() will always return a unique id even if plugin is defined by Typoscript.
  * CacheHandlerDefault is ready to use
 
-v0.11.1 (11.11.2011)
+v0.11.1 (11.11.2011) (not released)
  * tx_rnbase_util_DB can be used to access external databases.
  * First caching stategy implemented
  * tx_rnbase_util_FormTool: createTxtInput with $options array.
