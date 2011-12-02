@@ -55,7 +55,7 @@ class tx_rnbase_util_Exception extends Exception {
 	 * @return mixed string or plain data
 	 */
 	public function getAdditional($asString=true) {
-		$additional = parent::getAdditional();
+		$additional = $this->additional;
 		return is_array($additional) ? print_r($additional, true) : $additional;
 	}
 }
