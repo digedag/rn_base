@@ -3,8 +3,9 @@
 Änderungen
 ----------
 
-v0.11.3 (24.11.2011)
+v0.11.4 (??.11.2011)
  * tx_rnbase::load() requireOnce from t3lib_div used for file loading. Thanks to Michael Wagner!
+ * tx_rnbase_util_Exception: return readable values as default. Thanks to Michael Wagner!
 
 v0.11.3 (24.11.2011) (not released)
  * util_Link::makeUrlParam(): Sonderfall weiteres Array im Parameter

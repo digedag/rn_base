@@ -37,9 +37,26 @@ class tx_rnbase_util_Exception extends Exception {
 		parent::__construct($message, $code);
 		$this->additional = $additional;
 	}
+	/**
+	 * Liefert den Stacktrace und konvertiert ihn (htmlspecialchars).
+	 * Verhindert das die Exception-E-Mail zerstört werden,
+	 * da hier immer unvollständiger HTML-Code enthalten ist!
+	 *
+	 * @return 	string
+	 */
+	public function __toString () {
+		$stack = parent::__toString();
+		// html  konvertieren, damit die exception mail nicht zerstört wird!
+		return htmlspecialchars($stack);
+	}
 
-	public function getAdditional() {
-		return $this->additional;
+	/**
+	 * Liefert zusätzliche Daten.
+	 * @return mixed string or plain data
+	 */
+	public function getAdditional($asString=true) {
+		$additional = parent::getAdditional();
+		return is_array($additional) ? print_r($additional, true) : $additional;
 	}
 }
 
