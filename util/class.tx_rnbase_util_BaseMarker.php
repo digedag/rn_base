@@ -154,7 +154,7 @@ class tx_rnbase_util_BaseMarker {
 		// Do we need links
 		$makeUrl = $makeLink = true;
 		if($template) {
-			$makeLink = self::containsMarker($template, $linkMarker);
+			$makeLink = self::containsMarker($template, $linkMarker.'#');
 			$makeUrl = self::containsMarker($template, $linkMarker.'URL');
 		}
 		if(!$makeLink && !$makeUrl) {
