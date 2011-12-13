@@ -323,6 +323,7 @@ MAYDAYPAGE;
 			$GLOBALS['TSFE']->tmpl->getFileName_backPath = $GLOBALS['TSFE']->tmpl->getFileName_backPath ? $GLOBALS['TSFE']->tmpl->getFileName_backPath : PATH_site;
 			//Basis Nutzergruppen
 			$GLOBALS['TSFE']->gr_list = '0,-1';
+			$GLOBALS['TSFE']->config['config'] = array();
 		}
 		return $GLOBALS['TSFE'];
 	}
