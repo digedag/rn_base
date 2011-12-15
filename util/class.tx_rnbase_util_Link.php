@@ -530,6 +530,7 @@ class tx_rnbase_util_Link {
 	 * @param string $confId
 	 */
 	public function initByTS($configurations, $confId, $parameterArr) {
+		$parameterArr = is_array($parameterArr) ? $parameterArr : array();
 		$pid = $configurations->getCObj()->stdWrap($configurations->get($confId.'pid'), $configurations->get($confId.'pid.'));
 		$qualifier = $configurations->get($confId.'qualifier');
 		if($qualifier) $this->designator($qualifier);
