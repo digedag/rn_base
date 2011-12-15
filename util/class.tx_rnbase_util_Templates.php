@@ -35,6 +35,7 @@ tx_rnbase::load('tx_rnbase_util_TYPO3');
 class tx_rnbase_util_Templates {
 	static $substMarkerCache = array();
 	private static $tmpl;
+	private static $substCacheEnabled = true;
 
 	/**
 	 * Shortcut to t3lib_parsehtml::getSubpart
@@ -182,6 +183,25 @@ class tx_rnbase_util_Templates {
 	}
 
 	/**
+	 * Whether or not the caching in substituteMarkerArrayCached is enabled
+	 * @return boolean
+	 */
+	public static function isSubstCacheEnabled() {
+		return self::$substCacheEnabled;
+	}
+	/**
+	 * Enable caching in substituteMarkerArrayCached
+	 */
+	public static function enableSubstCache() {
+		self::$substCacheEnabled = true;
+	}
+	/**
+	 * Disable caching in substituteMarkerArrayCached
+	 */
+	public static function disableSubstCache() {
+		self::$substCacheEnabled = false;
+	}
+	/**
 	 * Multi substitution function with caching.
 	 *
 	 * This function should be a one-stop substitution function for working with HTML-template. It does not substitute by str_replace but by splitting. This secures that the value inserted does not themselves contain markers or subparts.
@@ -213,13 +233,15 @@ class tx_rnbase_util_Templates {
 			return $content;
 		}
 		asort($aKeys);
-		$storeKey = md5('substituteMarkerArrayCached_storeKey:'.serialize(array($content,$aKeys)));
-		if (self::$substMarkerCache[$storeKey])	{
+		if(self::isSubstCacheEnabled())
+			$storeKey = md5('substituteMarkerArrayCached_storeKey:'.serialize(array($content,$aKeys)));
+		if(self::isSubstCacheEnabled() && self::$substMarkerCache[$storeKey])	{
 			$storeArr = self::$substMarkerCache[$storeKey];
 //			$GLOBALS['TT']->setTSlogMessage('Cached',0);
 		} else {
-			$storeArrDat = tx_rnbase_util_TYPO3::getSysPage()->getHash($storeKey);
-			if (!isset($storeArrDat))	{
+			if(self::isSubstCacheEnabled())
+				$storeArrDat = tx_rnbase_util_TYPO3::getSysPage()->getHash($storeKey);
+			if (!self::isSubstCacheEnabled() || !isset($storeArrDat))	{
 					// Initialize storeArr
 				$storeArr=array();
 
@@ -242,11 +264,14 @@ class tx_rnbase_util_Templates {
 				$storeArr['c'] = preg_split($regex, $content);
 				preg_match_all($regex, $content, $keyList);
 				$storeArr['k']=$keyList[0];
+				
+				if(self::isSubstCacheEnabled()) {
 					// Setting cache:
-				self::$substMarkerCache[$storeKey] = $storeArr;
-
+					self::$substMarkerCache[$storeKey] = $storeArr;
+	
 					// Storing the cached data:
-				tx_rnbase_util_TYPO3::getSysPage()->storeHash($storeKey, serialize($storeArr), 'substMarkArrayCached');
+					tx_rnbase_util_TYPO3::getSysPage()->storeHash($storeKey, serialize($storeArr), 'substMarkArrayCached');
+				}
 
 //				$GLOBALS['TT']->setTSlogMessage('Parsing',0);
 			} else {
