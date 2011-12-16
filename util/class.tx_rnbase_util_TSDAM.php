@@ -273,7 +273,7 @@ class tx_rnbase_util_TSDAM {
 	public static function getMediaTCA($ref, $options=array()) {
 		// $options war früher ein String. Daher muss auf String getestet werden.
 		$type = 'image_field';
-		if(is_string($options));
+		if(is_string($options))
 			$type = $options;
 		if(is_array($options)) {
 			$type = isset($options['type']) ? $options['type'] : $type;
@@ -283,7 +283,7 @@ class tx_rnbase_util_TSDAM {
 		$tca = array();
 		if(t3lib_extMgm::isLoaded('dam')) {
 			require_once(t3lib_extMgm::extPath('dam').'tca_media_field.php');	
-			$tca = txdam_getMediaTCA($ref, $type);
+			$tca = txdam_getMediaTCA($type, $ref);
 		}
 		if (!empty($tca) && is_array($options)) {
 			foreach ($options as $key=>$option) {
