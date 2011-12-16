@@ -283,7 +283,7 @@ class tx_rnbase_util_TSDAM {
 		$tca = array();
 		if(t3lib_extMgm::isLoaded('dam')) {
 			require_once(t3lib_extMgm::extPath('dam').'tca_media_field.php');	
-			$tca = txdam_getMediaTCA($type, $ref);
+			$tca = txdam_getMediaTCA($ref, $type);
 		}
 		if (!empty($tca) && is_array($options)) {
 			foreach ($options as $key=>$option) {
