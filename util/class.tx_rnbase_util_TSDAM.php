@@ -258,18 +258,44 @@ class tx_rnbase_util_TSDAM {
 	/**
 	 * Returns the TCA description for a DAM media field
 	 *
-	 * @param string $ref should be the name of column
-	 * @param string $type either image_field or media_field
+	 *	$options = array(
+	 *			'label' => 'Ein Bild',
+	 *			'config' => array(
+	 *					'maxitems' => 2,
+	 *					'size' => 2,
+	 *				),
+	 *		)
+	 *
+	 * @param array $ref
+	 * @param array $options	These options are merged into the resulting TCA
 	 * @return array
 	 */
-	static function getMediaTCA($ref, $type='image_field') {
+	public static function getMediaTCA($ref, $options=array()) {
+		// $options war früher ein String. Daher muss auf String getestet werden.
+		$type = 'image_field';
+		if(is_string($options));
+			$type = $options;
+		if(is_array($options)) {
+			$type = isset($options['type']) ? $options['type'] : $type;
+			unset($options['type']);
+		}
+
+		$tca = array();
 		if(t3lib_extMgm::isLoaded('dam')) {
 			require_once(t3lib_extMgm::extPath('dam').'tca_media_field.php');	
-			return txdam_getMediaTCA($type, $ref);
+			$tca = txdam_getMediaTCA($type, $ref);
 		}
-		return array();
+		if (!empty($tca) && is_array($options)) {
+			foreach ($options as $key=>$option) {
+				if (is_array($option)) {
+					if (!isset($tca[$key])) $tca[$key] = array();
+					foreach ($option as $subkey=>$suboption) $tca[$key][$subkey] = $suboption;
+				}
+				else $tca[$key] = $option;
+			}
+		}
+		return $tca;
 	}
-
 	/**
 	 * Add a reference to a DAM media file
 	 *
