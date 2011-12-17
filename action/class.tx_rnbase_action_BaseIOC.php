@@ -23,6 +23,7 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
 tx_rnbase::load('tx_rnbase_util_Misc');
 tx_rnbase::load('tx_rnbase_util_Debug');
+tx_rnbase::load('tx_rnbase_util_Templates');
 
 /**
  * Abstract base class for an action. This action is build to implement the
@@ -93,8 +94,11 @@ abstract class tx_rnbase_action_BaseIOC {
 				'Memory Consumed'=>($memEnd-$memStart),
 				'Cached?' => $cached ? 'yes' : 'no',
 				'CacheHandler' => is_object($cacheHandler) ? get_class($cacheHandler) : '',
+				'SubstCacheEnabled?' => tx_rnbase_util_Templates::isSubstCacheEnabled() ? 'yes' : 'no',
 			), 'View statistics for: '.$this->getConfId(). ' Key: ' . $debugKey);
 		}
+		// Enable substCache after each view
+		tx_rnbase_util_Templates::enableSubstCache();
 		return $out;
 	}
 

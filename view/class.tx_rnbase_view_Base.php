@@ -34,6 +34,7 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
 tx_rnbase::load('tx_rnbase_action_BaseIOC');
 tx_rnbase::load('tx_rnbase_util_BaseMarker');
+tx_rnbase::load('tx_rnbase_util_Templates');
 
 
 /**
@@ -74,9 +75,16 @@ class tx_rnbase_view_Base{
 			}
 		}
 
+		$controller = $this->getController();
+		if($controller) {
+			// disable substitution marker cache
+			if($configurations->getBool($controller->getConfId().'_caching.disableSubstCache')) {
+				tx_rnbase_util_Templates::disableSubstCache();
+			}
+		}
+
 		$out = $this->createOutput($templateCode,$viewData, $configurations, $configurations->getFormatter());
 
-		$controller = $this->getController();
 		if($controller) {
 			// Soll abschließend nochmal das Plugin gerendert werden?
 			if(tx_rnbase_util_BaseMarker::containsMarker($out, 'PLUGIN_')) {
