@@ -435,11 +435,13 @@ class tx_rnbase_configurations {
 	 * Returns a boolean config value. The return value is false if the value is empty or 0 or 'false'
 	 * @param string $pathKey
 	 * @param boolean $deep
+	 * @param boolean $notDefined value to return if no value configured or empty
 	 * @return boolean
 	 */
-	public function getBool($pathKey, $deep=false) {
+	public function getBool($pathKey, $deep=false, $notDefined=false) {
 		$value = $this->get($pathKey, $deep);
 		if(is_array($value)) return true;
+		if($value == '') return $notDefined;
 		return (!$value || strtolower($value) == 'false') ? false : true;
 	}
 	/**
