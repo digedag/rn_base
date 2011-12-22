@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v0.11.5 (??.12.2011)
+ * tx_rnbase_util_Date: new methods to convert dates in TCA
+
 v0.11.4 (17.12.2011)
  * tx_rnbase::load() requireOnce from t3lib_div used for file loading. Thanks to Michael Wagner!
  * tx_rnbase_util_Exception: return readable values as default. Thanks to Michael Wagner!

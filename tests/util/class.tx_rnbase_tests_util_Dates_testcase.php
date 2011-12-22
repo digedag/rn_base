@@ -50,6 +50,26 @@ class tx_rnbase_tests_util_Dates_testcase extends tx_phpunit_testcase {
 //		t3lib_div::debug($sDate, 'tx_rnbase_tests_dates_testcase :: test_dateConv'); // TODO: remove me
 		$this->assertEquals($zeit1, $zeit2);
 	}
+	public function test_convert4TCA2Timestamp() {
+		$record = array('datetime' => '2011-10-20 12:00:00', 'date' =>'2011-10-20', 'emptydate' =>'0000-00-00');
+		tx_rnbase_util_Dates::convert4TCA2Timestamp($record, array('datetime', 'date', 'emptydate'));
+		$this->assertEquals('1319112000', $record['datetime']);
+		$this->assertEquals('1319068800', $record['date']);
+		$this->assertEquals('0', $record['emptydate']);
+	}
+	public function test_convert4TCA2DateTime() {
+		$record = array('datetime' => '1319112000');
+		tx_rnbase_util_Dates::convert4TCA2DateTime($record, array('datetime'), true);
+		$this->assertEquals('2011-10-20 12:00:00', $record['datetime']);
+		
+	}
+	public function test_convert4TCA2Date() {
+		$record = array('date' => '1319068800');
+		tx_rnbase_util_Dates::convert4TCA2Date($record, array('date'), true);
+		$this->assertEquals('2011-10-20', $record['date']);
+		
+	}
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/util/class.tx_rnbase_tests_util_Dates_testcase.php']) {

@@ -97,8 +97,8 @@ class tx_rnbase_util_Dates {
 	 * @param string $tstamp
 	 * @return string Format: yyyy-mm-dd H:i:s
 	 */
-	static function date_tstamp2mysql($tstamp) {
-		return date('Y-m-d', $tstamp);
+	static function date_tstamp2mysql($tstamp, $useGMT = false) {
+		return $useGMT ? gmdate('Y-m-d', $tstamp) : date('Y-m-d', $tstamp);
 	}
 	/**
 	 * Umwandlung eines Datums yyyy-mm-dd in einen Timestamp
@@ -121,8 +121,8 @@ class tx_rnbase_util_Dates {
 	 * @param string $tstamp
 	 * @return string Format: yyyy-mm-dd H:i:s
 	 */
-	static function datetime_tstamp2mysql($tstamp) {
-		return date('Y-m-d H:i:s', $tstamp);
+	static function datetime_tstamp2mysql($tstamp, $useGMT = false) {
+		return $useGMT ? gmdate('Y-m-d H:i:s', $tstamp) : date('Y-m-d H:i:s', $tstamp);
 	}
 	private static $dateTime = null;
 	/**
@@ -134,7 +134,7 @@ class tx_rnbase_util_Dates {
 	static function datetime_mysql2tstamp($datetime, $timezone = 'CET') {
 		list($datum, $zeit) = explode(' ', $datetime);
 		list($jahr, $monat, $tag) = t3lib_div::intExplode('-', $datum);
-		list($std, $min, $sec) = t3lib_div::intExplode(':', $zeit);
+		list($std, $min, $sec) = $zeit ? t3lib_div::intExplode(':', $zeit) : array(0,0,0);
 		return self::getTimeStamp($jahr, $monat, $tag, $std, $min, $sec, $timezone);
 	}
 	/**
@@ -148,6 +148,8 @@ class tx_rnbase_util_Dates {
 	 * @param String $timezone
 	 */
 	public static function getTimeStamp($jahr=0, $monat=0, $tag=0, $std=0, $min=0, $sec=0, $timezone = 'UTC') {
+		if(($jahr+$monat+$tag+$std+$min+$sec) === 0) 
+			return 0;
 		if(!class_exists('DateTime')) {
 			// TODO: implement timezone support for at least PHP 5.1
 			return $timezone == 'UTC' ? 
@@ -192,6 +194,43 @@ class tx_rnbase_util_Dates {
 		list($std, $min, $sec) = explode(':', $zeit);
 		return sprintf("%04d-%02d-%02d %02d:%02d:%02d", $jahr, $monat, $tag, $std, $min, $sec);
 	}	
+
+	/**
+	 * Wandelt Timestamps in einem TCA-Record in MySQL DateTime-Strings um
+	 * @param array $row
+	 * @param array $fields
+	 */
+	public static function convert4TCA2DateTime(array &$row, array $fields, $useGMT = false) {
+		foreach ($fields As $field) {
+			if(!empty($row[$field])){
+				$row[$field] = self::datetime_tstamp2mysql($row[$field], $useGMT);
+			}
+		}
+	}
+	/**
+	 * Wandelt Timestamps in einem TCA-Record in MySQL Date-Strings um
+	 * @param array $row
+	 * @param array $fields
+	 */
+	public static function convert4TCA2Date(array &$row, array $fields, $useGMT = false) {
+		foreach ($fields As $field) {
+			if(!empty($row[$field])){
+				$row[$field] = self::date_tstamp2mysql($row[$field], $useGMT);
+			}
+		}
+	}
+	/**
+	 * Wandelt MySQL DateTime-Strings in einem TCA-Record in Timestamps um
+	 * @param array $row
+	 * @param array $fields
+	 */
+	public static function convert4TCA2Timestamp(array &$row, array $fields, $timezone = 'GMT') {
+		foreach ($fields As $field) {
+			if(!empty($row[$field])){
+				$row[$field] = self::datetime_mysql2tstamp($row[$field], $timezone);
+			}
+		}
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Dates.php']) {
