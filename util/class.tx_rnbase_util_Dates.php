@@ -214,7 +214,7 @@ class tx_rnbase_util_Dates {
 	 */
 	public static function convert4TCA2Date(array &$row, array $fields, $useGMT = false) {
 		foreach ($fields As $field) {
-			if(!empty($row[$field])){
+			if(array_key_exists($field, $row)){
 				$row[$field] = self::date_tstamp2mysql($row[$field], $useGMT);
 			}
 		}
