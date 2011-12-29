@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v0.11.6 (29.12.2011)
+ * tx_rnbase_mod_Table: links for sorting in BE tables changed.
+
 v0.11.5 (29.12.2011)
  * tx_rnbase_util_Date: new methods to convert dates in TCA
 

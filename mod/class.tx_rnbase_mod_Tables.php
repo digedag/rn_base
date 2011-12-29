@@ -102,14 +102,15 @@ class tx_rnbase_mod_Tables {
 			//der alias der tabelle um damit direkt weiterabeiten zu können.
 			//einfach leer lassen wenn auf einen prefix verzichtet werden soll
 			if(isset($data['sortable'])){
-				$label = $formTool->createSortLink($data['sortable'].$column,$label);
+				$label = $formTool->createSortLink($column,$label);
 			}
 			$arr[] = $label ? $label : $data['title'];
 		}
 		if(isset($options['linker']))
 			$arr[] = $LANG->getLL('label_action');
 		return $arr;
-  }
+	}
+
 	private static function addLinker($options, $obj, $formTool) {
 		$out = '';
 		if(isset($options['linker'])) {

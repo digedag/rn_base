@@ -207,7 +207,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 		$this->assertEquals(3,count($aRet[0]),'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
 		//Header - es sollte nur das sorting angegeben sein ohne pfeil
 		$this->assertEquals(2,count($aRet[0][0]),'Das Array des Headers hat die falsche Anzahl an Elementen.');
-		$this->assertContains('&amp;sortField=TestPrefix.uid&amp;sortRev=asc">Header Uid</a>',$aRet[0][0][0],'Die erste Zelle des Headers ist falsch.');
+		$this->assertContains('&amp;sortField=uid&amp;sortRev=asc">Header Uid</a>',$aRet[0][0][0],'Die erste Zelle des Headers ist falsch.');
 		$this->assertEquals('Header Col1',$aRet[0][0][1],'Die zweite Zelle des Headers ist falsch.');
 		//erste Zeile
 		$this->assertEquals(2,count($aRet[0][1]),'Das Array der ersten Zeile hat die falsche Anzahl an Elementen.');
@@ -223,7 +223,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 	 * Wird eine korrekte Tabelle zurückgeliefert wenn noch keine Sortierung gewählt wurde?
 	 */
 	public function testPrepareTableWithSortableChangesSortingCorrect() {
-		$_GET['sortField'] = 'TestPrefix.uid';
+		$_GET['sortField'] = 'uid';
 		$aEntries = array(
 			0 => array(
 				'uid' => 1,
@@ -249,7 +249,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 		$this->assertEquals(3,count($aRet[0]),'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
 		//Header
 		$this->assertEquals(2,count($aRet[0][0]),'Das Array des Headers hat die falsche Anzahl an Elementen.');
-		$this->assertContains('&amp;sortField=TestPrefix.uid&amp;sortRev=desc">Header Uid',$aRet[0][0][0],'Die erste Zelle des Headers ist falsch. 1. teil');
+		$this->assertContains('&amp;sortField=uid&amp;sortRev=desc">Header Uid',$aRet[0][0][0],'Die erste Zelle des Headers ist falsch. 1. teil');
 		//der korrekte pfeil?
 		$this->assertContains('/icons/gfx/reddown.gif',$aRet[0][0][0],'Die erste Zelle des Headers ist falsch. 2. teil');
 		$this->assertEquals('Header Col1',$aRet[0][0][1],'Die zweite Zelle des Headers ist falsch.');
@@ -267,7 +267,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 	 * Wird eine korrekte Tabelle zurückgeliefert wenn noch keine Sortierung gewählt wurde?
 	 */
 	public function testPrepareTableWithSortableChangesSortingCorrectIfSortRevSetToDesc() {
-		$_GET['sortField'] = 'TestPrefix.uid';
+		$_GET['sortField'] = 'uid';
 		$_GET['sortRev'] = 'desc';
 		$aEntries = array(
 			0 => array(
@@ -294,7 +294,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 		$this->assertEquals(3,count($aRet[0]),'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
 		//Header
 		$this->assertEquals(2,count($aRet[0][0]),'Das Array des Headers hat die falsche Anzahl an Elementen.');
-		$this->assertContains('&amp;sortField=TestPrefix.uid&amp;sortRev=asc">Header Uid',$aRet[0][0][0],'Die erste Zelle des Headers ist falsch. 1. teil');
+		$this->assertContains('&amp;sortField=uid&amp;sortRev=asc">Header Uid',$aRet[0][0][0],'Die erste Zelle des Headers ist falsch. 1. teil');
 		//der korrekte pfeil?
 		$this->assertContains('/icons/gfx/redup.gif',$aRet[0][0][0],'Die erste Zelle des Headers ist falsch. 2. teil');
 		$this->assertEquals('Header Col1',$aRet[0][0][1],'Die zweite Zelle des Headers ist falsch.');
@@ -312,9 +312,9 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 	 * Wird eine korrekte Tabelle zurückgeliefert wenn noch keine Sortierung gewählt wurde?
 	 */
 	public function testPrepareTableWithSortableAndExistingUrlParams() {
-		$_GET['sortField'] = 'TestPrefix.uid';
+		$_GET['sortField'] = 'uid';
 		//weiterer Param, der erhalten bleiben sollte
-		$_SERVER['REQUEST_URI'] = $_SERVER['REQUEST_URI'].'&sortField=TestPrefix.title&sortRev=desc&additionalParam=test';
+		$_SERVER['REQUEST_URI'] = $_SERVER['REQUEST_URI'].'&sortField=title&sortRev=desc&additionalParam=test';
 		
 		$aEntries = array(
 			0 => array(
@@ -341,7 +341,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 		$this->assertEquals(3,count($aRet[0]),'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
 		//Header
 		$this->assertEquals(2,count($aRet[0][0]),'Das Array des Headers hat die falsche Anzahl an Elementen.');
-		$this->assertContains('&amp;additionalParam=test&amp;sortField=TestPrefix.uid&amp;sortRev=asc">Header Uid',$aRet[0][0][0],'Die erste Zelle des Headers ist falsch. 1. teil');
+		$this->assertContains('&amp;additionalParam=test&amp;sortField=uid&amp;sortRev=asc">Header Uid',$aRet[0][0][0],'Die erste Zelle des Headers ist falsch. 1. teil');
 		//der korrekte pfeil?
 		$this->assertContains('/icons/gfx/redup.gif',$aRet[0][0][0],'Die erste Zelle des Headers ist falsch. 2. teil');
 		$this->assertEquals('Header Col1',$aRet[0][0][1],'Die zweite Zelle des Headers ist falsch.');
