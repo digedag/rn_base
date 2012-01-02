@@ -267,13 +267,15 @@ class tx_rnbase_util_BaseMarker {
 		$link->label($token);
 		$emptyArr = array();
 
+		$pagerName = $pagerData['pointername'];
+
 		while(list($pointer, $size) = each($pagerItems)) {
 			$myMarkerArray = $markerArray;
 			$myMarkerArray['###PB_ITEM###'] = $pointer;
 			$myMarkerArray['###PB_ITEM_SIZE###'] = $size;
 
 			if(strcmp($pointer, $curr_pointer)) {
-				$link->parameters(array('charpointer' => $pointer));
+				$link->parameters(array($pagerName => $pointer));
 				$wrappedSubpartArray['###PB_ITEM_LINK###'] = explode($token, $link->makeTag());
 			}
 			else

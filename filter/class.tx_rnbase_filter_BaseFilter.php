@@ -258,7 +258,8 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 			if(!$colName) throw new Exception('No column name for charbrowser defined');
 			
 			$pagerData = self::findPagerData($fields, $options, $cfg);
-			$firstChar = $configurations->getParameters()->offsetGet('charpointer');
+
+			$firstChar = $configurations->getParameters()->offsetGet($pagerData['pointername']);
 			$firstChar = (strlen(trim($firstChar)) > 0) ? substr($firstChar,0,($firstChar{0} == '0' ? 3:1)) : $pagerData['default'];
 			// Existiert der Point in den aktuellen Daten
 			$firstChar = array_key_exists($firstChar, $pagerData['list']) ? $firstChar : $pagerData['default'];
@@ -330,6 +331,8 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 		}
 		$data['list'] = $ret;
 		$data['default'] = $current;
+		$data['pointername'] = array_key_exists('cbid', $cfg) && $cfg['cbid'] ? $cfg['cbid'] : 'charpointer';
+
 		return $data;
 	}
 }
