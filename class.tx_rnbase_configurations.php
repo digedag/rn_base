@@ -181,33 +181,33 @@ class tx_rnbase_configurations {
    * @param $id any
    * @param $cObjClass String Optional cObj-classname
    */
-  function &getCObj($id = 0, $cObjClass = 'tslib_cObj') {
-    if(strcmp($id,'0') == 0) {
-      return $this->cObj;
-    }
+	public function &getCObj($id = 0, $cObjClass = 'tslib_cObj') {
+		if(strcmp($id,'0') == 0) {
+			return $this->cObj;
+		}
 
-    $cObj = $this->_cObjs[$id];
+		$cObj = $this->_cObjs[$id];
 
-    if(!is_object($cObj)) {
-      $this->cObjs[$id] = t3lib_div::makeInstance($cObjClass);
+		if(!is_object($cObj)) {
+			$this->cObjs[$id] = t3lib_div::makeInstance($cObjClass);
 //    $this->cObj->data = $this->configurations->get('tt_content.');
-    }
-    return $this->cObjs[$id];
-  }
+		}
+		return $this->cObjs[$id];
+	}
 
-  /**
-   * Returns the formatter connected to this configuration object
-   * @return tx_rnbase_util_FormatUtil
-   */
-  function &getFormatter() {
-    return $this->_formatter;
-  }
+	/**
+	 * Returns the formatter connected to this configuration object
+	 * @return tx_rnbase_util_FormatUtil
+	 */
+	public function &getFormatter() {
+		return $this->_formatter;
+	}
 
   /**
    * Return the data container for view by reference. This container should be filled
    * by Controller-Action
    */
-  function &getViewData() {
+  public function &getViewData() {
     return $this->_viewData;
   }
 
@@ -215,7 +215,7 @@ class tx_rnbase_configurations {
    * Returns the defined path to template directory. This is by default
    * 'EXT:your_extension/templates/'. You can change this by TS setting templatePath
    */
-  function getTemplatePath() {
+  public function getTemplatePath() {
     $path = $this->get('templatePath');
     return $path ? $path : 'EXT:' . $this->getExtensionKey() . '/views/templates/';
   }
@@ -226,7 +226,7 @@ class tx_rnbase_configurations {
 	 * @param boolean $addKeepVars whether or not keepVars should be set
 	 * @return tx_rnbase_util_Link
 	 */
-	function &createLink($addKeepVars = true) {
+	public function &createLink($addKeepVars = true) {
 		$link = tx_rnbase::makeInstance('tx_rnbase_util_Link');
 		$link->designatorString = $this->getQualifier();
 		// Die KeepVars setzen
@@ -234,12 +234,16 @@ class tx_rnbase_configurations {
 			$link->overruled($this->getKeepVars());
 		return $link;
 	}
-	function setParameters($parameters) {
+	public function setParameters($parameters) {
 		$this->_parameters = $parameters;
 		// Make sure to keep all parameters
 		$this->setKeepVars($parameters);
 	}
-	function getParameters() {
+	/**
+	 * Returns request parameters
+	 * @return tx_rnbase_IParameters
+	 */
+	public function getParameters() {
 		return $this->_parameters;
 	}
 
