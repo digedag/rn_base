@@ -226,7 +226,7 @@ class tx_rnbase_util_Dates {
 	 */
 	public static function convert4TCA2Timestamp(array &$row, array $fields, $timezone = 'GMT') {
 		foreach ($fields As $field) {
-			if(!empty($row[$field])){
+			if(array_key_exists($field, $row)){
 				$row[$field] = self::datetime_mysql2tstamp($row[$field], $timezone);
 			}
 		}
