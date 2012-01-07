@@ -366,11 +366,14 @@ MAYDAYPAGE;
 	 * @param string $title
 	 * @return string
 	 */
-	static function translateLLL($title) {
+	public static function translateLLL($title) {
 		if(substr($title, 0, 4) === 'LLL:') {
-			$title = $GLOBALS['LANG']->sL($title);
+			if(array_key_exists('LANG', $GLOBALS))
+				return $GLOBALS['LANG']->sL($title);
+			if(array_key_exists('TSFE', $GLOBALS))
+				return $GLOBALS['TSFE']->sL($title);
 		}
-		return $title;
+		return '';
 	}
 
 	/**

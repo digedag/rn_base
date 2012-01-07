@@ -3,13 +3,17 @@
 Änderungen
 ----------
 
-v0.11.7 (03.01.2012)
+v0.11.8 (07.01.2012)
+ * tx_rnbase_util_Date: TCA methods fixed for value 0
+ * tx_rnbase_util_Misc: translateLLL works in BE and FE
+
+v0.11.7 (03.01.2012) (not released)
  * CharBrowser: parameter name for link can be changed.
 
-v0.11.6 (29.12.2011)
+v0.11.6 (29.12.2011) (not released)
  * tx_rnbase_mod_Table: links for sorting in BE tables changed.
 
-v0.11.5 (29.12.2011)
+v0.11.5 (29.12.2011) (not released)
  * tx_rnbase_util_Date: new methods to convert dates in TCA
 
 v0.11.4 (17.12.2011)
