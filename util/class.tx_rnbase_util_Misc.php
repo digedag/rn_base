@@ -372,8 +372,9 @@ MAYDAYPAGE;
 				return $GLOBALS['LANG']->sL($title);
 			if(array_key_exists('TSFE', $GLOBALS))
 				return $GLOBALS['TSFE']->sL($title);
+			return '';
 		}
-		return '';
+		return $title;
 	}
 
 	/**
