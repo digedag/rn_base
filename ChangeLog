@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v0.11.9 (??.01.2012)
+ * tx_rnbase_mod_Util: New methods for sprites.
+
 v0.11.8 (07.01.2012)
  * tx_rnbase_util_Date: TCA methods fixed for value 0
  * tx_rnbase_util_Misc: translateLLL works in BE and FE

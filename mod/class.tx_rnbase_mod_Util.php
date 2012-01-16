@@ -48,6 +48,27 @@ class tx_rnbase_mod_Util {
 		$settings = $GLOBALS['BE_USER']->getModuleData($mod->getName(), $type);
 		return $settings;
 	}
+
+	/**
+	 * Returns a TYPO3 sprite icon
+	 * @param string $icon
+	 * @return string image tag
+	 */
+	public static function getSpriteIcon($icon) {
+		// TODO: add support for older TYPO3 versions
+		return t3lib_iconWorks::getSpriteIcon($icon);
+	}
+	/**
+	 * Returns a string with all available Icons in TYPO3 system. Each icon has a tooltip with its identifier.
+	 * @return string
+	 */
+	public static function debugSprites() {
+		$icons .= '<h2>iconsAvailable</h2>';
+		foreach($GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'] AS $icon) {
+			$icons .= "<span title=\"$icon\">".self::getSpriteIcon($icon) .'</span>';
+		}
+		return $icons;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_Util.php'])	{
