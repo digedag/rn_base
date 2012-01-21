@@ -322,7 +322,7 @@ class tx_rnbase_configurations {
 		return tx_rnbase_util_TYPO3::isTYPO46OrHigher() ? $this->getLL46($key,$alt,$hsc) : $this->getLL40($key,$alt,$hsc);
 	}
 
-	public function getLL46($key, $alternativeLabel = '', $hsc = FALSE) {
+	private function getLL46($key, $alternativeLabel = '', $hsc = FALSE) {
 		if (isset($this->LOCAL_LANG[$this->LLkey][$key][0]['target'])) {
 	
 			// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
