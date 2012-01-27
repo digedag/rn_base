@@ -71,7 +71,7 @@ class tx_rnbase_util_Lang {
 	 * @param boolean $alt
 	 * @return string
 	 */
-	protected static function getLLKey($alt = false) {
+	protected function getLLKey($alt = false) {
 		$ret = $GLOBALS['TSFE']->config['config'][$alt ? 'language_alt' : 'language'];
 		return $ret ? $ret : ($alt ? '' : 'default');
 	}
@@ -151,26 +151,26 @@ class tx_rnbase_util_Lang {
 	}
 
 	private function getLL46($key, $alternativeLabel = '', $hsc = FALSE) {
-		if (isset($this->LOCAL_LANG[$this->LLkey][$key][0]['target'])) {
+		if (isset($this->LOCAL_LANG[$this->getLLKey()][$key][0]['target'])) {
 
 			// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
-			if (isset($this->LOCAL_LANG_charset[$this->LLkey][$key])) {
+			if (isset($this->LOCAL_LANG_charset[$this->getLLKey()][$key])) {
 				$word = $GLOBALS['TSFE']->csConv(
-				$this->LOCAL_LANG[$this->LLkey][$key][0]['target'],
-				$this->LOCAL_LANG_charset[$this->LLkey][$key]
+				$this->LOCAL_LANG[$this->getLLKey()][$key][0]['target'],
+				$this->LOCAL_LANG_charset[$this->getLLKey()][$key]
 				);
 			} else {
-				$word = $this->LOCAL_LANG[$this->LLkey][$key][0]['target'];
+				$word = $this->LOCAL_LANG[$this->getLLKey()][$key][0]['target'];
 			}
-		} elseif ($this->altLLkey && isset($this->LOCAL_LANG[$this->altLLkey][$key][0]['target'])) {
+		} elseif ($this->getLLKey(true) && isset($this->LOCAL_LANG[$this->getLLKey(true)][$key][0]['target'])) {
 			// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
-			if (isset($this->LOCAL_LANG_charset[$this->altLLkey][$key])) {
+			if (isset($this->LOCAL_LANG_charset[$this->getLLKey(true)][$key])) {
 				$word = $GLOBALS['TSFE']->csConv(
-				$this->LOCAL_LANG[$this->altLLkey][$key][0]['target'],
-				$this->LOCAL_LANG_charset[$this->altLLkey][$key]
+				$this->LOCAL_LANG[$this->getLLKey(true)][$key][0]['target'],
+				$this->LOCAL_LANG_charset[$this->getLLKey(true)][$key]
 				);
 			} else {
-				$word = $this->LOCAL_LANG[$this->altLLkey][$key][0]['target'];
+				$word = $this->LOCAL_LANG[$this->getLLKey(true)][$key][0]['target'];
 			}
 		} elseif (isset($this->LOCAL_LANG['default'][$key][0]['target'])) {
 			// Get default translation (without charset conversion, english)
@@ -193,10 +193,10 @@ class tx_rnbase_util_Lang {
 		if(!strcmp(substr($key,0,4),'LLL:')) {
 			return $GLOBALS['TSFE']->sL($key);
 		}
-		if (isset($this->LOCAL_LANG[$this->LLkey][$key]))       {
-			$word = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->LLkey][$key], $this->LOCAL_LANG_charset[$this->LLkey][$key]); // The "from" charset is normally empty and thus it will convert from the charset of the system language, but if it is set (see ->pi_loadLL()) it will be used.
-		} elseif ($this->altLLkey && isset($this->LOCAL_LANG[$this->altLLkey][$key]))   {
-			$word = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->altLLkey][$key], $this->LOCAL_LANG_charset[$this->altLLkey][$key]);   // The "from" charset is normally empty and thus it will convert from the charset of the system language, but if it is set (see ->pi_loadLL()) it will be used.
+		if (isset($this->LOCAL_LANG[$this->getLLKey()][$key]))       {
+			$word = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->getLLKey()][$key], $this->LOCAL_LANG_charset[$this->getLLKey()][$key]); // The "from" charset is normally empty and thus it will convert from the charset of the system language, but if it is set (see ->pi_loadLL()) it will be used.
+		} elseif ($this->getLLKey(true) && isset($this->LOCAL_LANG[$this->getLLKey(true)][$key]))   {
+			$word = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->getLLKey(true)][$key], $this->LOCAL_LANG_charset[$this->getLLKey(true)][$key]);   // The "from" charset is normally empty and thus it will convert from the charset of the system language, but if it is set (see ->pi_loadLL()) it will be used.
 		} elseif (isset($this->LOCAL_LANG['default'][$key]))    {
 			$word = $this->LOCAL_LANG['default'][$key];     // No charset conversion because default is english and thereby ASCII
 		} else {
