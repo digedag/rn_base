@@ -6,6 +6,7 @@
 v0.11.9 (??.01.2012)
  * tx_rnbase_mod_Util: New methods for sprites.
  * Support for multiple language files in plugins. Thanks to Hannes Bochmann!
+ * Fix for charbrowser
 
 v0.11.8 (07.01.2012)
  * tx_rnbase_util_Date: TCA methods fixed for value 0

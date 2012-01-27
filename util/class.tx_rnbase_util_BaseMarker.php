@@ -267,7 +267,7 @@ class tx_rnbase_util_BaseMarker {
 		$link->label($token);
 		$emptyArr = array();
 
-		$pagerName = $pagerData['pointername'];
+		$pagerName = $pagerData['pointername'] ? $pagerData['pointername'] : 'charpointer';
 
 		while(list($pointer, $size) = each($pagerItems)) {
 			$myMarkerArray = $markerArray;
