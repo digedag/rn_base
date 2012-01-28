@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2007-2010 Rene Nitzsche
+ *  (c) 2007-2012 Rene Nitzsche
  *  Contact: rene@system25.de
  *
  *  Original version:
@@ -114,43 +114,47 @@ class tx_rnbase_configurations {
     $this->_keepVars = new ArrayObject();
     $this->_cObjs = array(); // Wir verzichten mal auf das ArrayObject
   }
-  /**
-   * Initialize this instance with Configuration Array and cObj-Data
-   */
-  function init(&$configurationArray, &$cObj, $extensionKey, $qualifier) {
-    // keep the cObj
-    $this->cObj = $cObj;
-    $this->cObjs[0] = $this->cObj;
-    $this->pluginUid = $this->createPluginId();
+	/**
+	 * Initialize this instance with Configuration Array and cObj-Data
+	 */
+	function init(&$configurationArray, &$cObj, $extensionKey, $qualifier) {
+		// keep the cObj
+		if(is_object($cObj)) {
+			$this->cObj = $cObj;
+			$this->cObjs[0] = $this->cObj;
+			$this->pluginUid = is_object($cObj) ? $this->createPluginId() : 0;
 
-    // make the data of the cObj available
-    $this->_setCObjectData($cObj->data);
+			// make the data of the cObj available
+			$this->_setCObjectData($cObj->data);
+		}
 
-    // If configurationArray['setupPath'] is provided it will be used by tx_rnbase_configurations or subclass.
-    // if configurationArray['setupPath'] is empty the subclass will use it's internally defined setupPath.
-    $this->_setTypoScript($configurationArray['setupPath']);
+		// If configurationArray['setupPath'] is provided it will be used by tx_rnbase_configurations or subclass.
+		// if configurationArray['setupPath'] is empty the subclass will use it's internally defined setupPath.
+		$this->_setTypoScript($configurationArray['setupPath']);
 
-    // Add the local configuration, overwriting TS setup
-    $this->_setConfiguration($configurationArray);
+		// Add the local configuration, overwriting TS setup
+		$this->_setConfiguration($configurationArray);
 
-    // Flexformvalues have the maximal precedence
-    $this->_setFlexForm($cObj->data['pi_flexform']);
+		if(is_object($cObj)) {
+			// Flexformvalues have the maximal precedence
+			$this->_setFlexForm($cObj->data['pi_flexform']);
+		}
 
-    // A qualifier and extkey from TS are preferred
-    $this->_extensionKey = $this->get('extensionKey') ? $this->get('extensionKey') : $extensionKey;
-    $this->_qualifier = $this->get('qualifier') ? $this->get('qualifier') : $qualifier;
+		// A qualifier and extkey from TS are preferred
+		$this->_extensionKey = $this->get('extensionKey') ? $this->get('extensionKey') : $extensionKey;
+		$this->_qualifier = $this->get('qualifier') ? $this->get('qualifier') : $qualifier;
 
-    // The formatter
-    $this->_formatter = tx_rnbase::makeInstance('tx_rnbase_util_FormatUtil', $this);
+		// The formatter
+		$this->_formatter = tx_rnbase::makeInstance('tx_rnbase_util_FormatUtil', $this);
 
-    // load local language strings
-    $this->localLangUtil = tx_rnbase::makeInstance('tx_rnbase_util_Lang');
-	$this->loadLL();
-  }
+		// load local language strings
+		$this->localLangUtil = tx_rnbase::makeInstance('tx_rnbase_util_Lang');
+		$this->loadLL();
+	}
 
-  // -------------------------------------------------------------------------------------
-  // Getters
-  // -------------------------------------------------------------------------------------
+	// -------------------------------------------------------------------------------------
+	// Getters
+	// -------------------------------------------------------------------------------------
 
 	/**
 	 * Returns the uid of current content object in tt_content
