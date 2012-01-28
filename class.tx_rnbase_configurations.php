@@ -117,7 +117,7 @@ class tx_rnbase_configurations {
 	/**
 	 * Initialize this instance with Configuration Array and cObj-Data
 	 */
-	function init(&$configurationArray, &$cObj, $extensionKey, $qualifier) {
+	function init(&$configurationArray, $cObj, $extensionKey, $qualifier) {
 		// keep the cObj
 		if(is_object($cObj)) {
 			$this->cObj = $cObj;
