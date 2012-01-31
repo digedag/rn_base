@@ -101,23 +101,24 @@ class tx_rnbase_configurations {
    */
   private $localLangUtil;
 
-  // -------------------------------------------------------------------------------------
-  // Constructor
-  // -------------------------------------------------------------------------------------
-  function __construct() {
-    // This is there all configuration data is stored
-    //$this->_dataStore = tx_rnbase::makeInstance('tx_lib_spl_arrayObject');
-  	$this->_dataStore = new ArrayObject();
-    // This is a container to transfer data to view
-    $this->_viewData = new ArrayObject();
-    // This is a container for variables necessary in links
-    $this->_keepVars = new ArrayObject();
-    $this->_cObjs = array(); // Wir verzichten mal auf das ArrayObject
-  }
+	// -------------------------------------------------------------------------------------
+	// Constructor
+	// -------------------------------------------------------------------------------------
+	public function __construct() {
+		// This is there all configuration data is stored
+		//$this->_dataStore = tx_rnbase::makeInstance('tx_lib_spl_arrayObject');
+		$this->_dataStore = new ArrayObject();
+		// This is a container to transfer data to view
+		$this->_viewData = new ArrayObject();
+		// This is a container for variables necessary in links
+		$this->_keepVars = new ArrayObject();
+		$this->_cObjs = array(); // Wir verzichten mal auf das ArrayObject
+		$this->localLangUtil = tx_rnbase::makeInstance('tx_rnbase_util_Lang');
+	}
 	/**
 	 * Initialize this instance with Configuration Array and cObj-Data
 	 */
-	function init(&$configurationArray, $cObj, $extensionKey, $qualifier) {
+	public function init(&$configurationArray, $cObj, $extensionKey, $qualifier) {
 		// keep the cObj
 		if(is_object($cObj)) {
 			$this->cObj = $cObj;
@@ -148,7 +149,6 @@ class tx_rnbase_configurations {
 		$this->_formatter = tx_rnbase::makeInstance('tx_rnbase_util_FormatUtil', $this);
 
 		// load local language strings
-		$this->localLangUtil = tx_rnbase::makeInstance('tx_rnbase_util_Lang');
 		$this->loadLL();
 	}
 
