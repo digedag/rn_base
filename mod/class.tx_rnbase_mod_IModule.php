@@ -69,7 +69,7 @@ interface tx_rnbase_mod_IModule {
 	 * 	const ERROR   = 2;
 	 * @param boolean $storeInSession Optional, defines whether the message should be stored in the session or only for one request (default)
 	 */
-	public function addMessage($message, $title = '', $severity = t3lib_message_AbstractMessage::OK, $storeInSession = FALSE);
+	public function addMessage($message, $title = '', $severity = 0, $storeInSession = FALSE);
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_IModule.php'])	{

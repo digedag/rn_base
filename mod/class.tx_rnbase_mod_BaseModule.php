@@ -364,7 +364,7 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 	/*
 	 * (Non PHP-doc)
 	 */
-	public function addMessage($message, $title = '', $severity = t3lib_message_AbstractMessage::OK, $storeInSession = FALSE) {
+	public function addMessage($message, $title = '', $severity = 0, $storeInSession = FALSE) {
 		$message = t3lib_div::makeInstance(
 			't3lib_FlashMessage',
 			$message,
