@@ -148,6 +148,10 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 		}
 	}
 
+	/**
+	 * @see tx_rnbase_mod_IModule::getFormTool()
+	 * @return tx_rnbase_util_FormTool
+	 */
 	public function getFormTool() {
 		if(!$this->formTool) {
 			$this->formTool = tx_rnbase::makeInstance('tx_rnbase_util_FormTool');
@@ -159,6 +163,9 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 	 * Liefert eine Instanz von tx_rnbase_configurations. Da wir uns im BE bewegen, wird diese mit einem 
 	 * Config-Array aus der TSConfig gefüttert. Dabei wird die Konfiguration unterhalb von mod.extkey. genommen.
 	 * Für "extkey" wird der Wert der Methode getExtensionKey() verwendet.
+	 * Zusätzlich wird auch die Konfiguration von "lib." bereitgestellt.
+	 * Wenn Daten für BE-Nutzer oder Gruppen überschrieben werden sollen, dann darauf achten, daß die 
+	 * Konfiguration mit "page." beginnen muss. Also bspw. "page.lib.test = 42".
 	 * 
 	 * Ein eigenes TS-Template für das BE wird in der ext_localconf.php mit dieser Anweisung eingebunden:
 	 * t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:myext/mod1/pageTSconfig.txt">');
@@ -168,12 +175,14 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 		if(!$this->configurations) {
 			tx_rnbase::load('tx_rnbase_configurations');
 			tx_rnbase::load('tx_rnbase_util_Misc');
-	
+
 			tx_rnbase_util_Misc::prepareTSFE(); // Ist bei Aufruf aus BE notwendig!
 			$cObj = t3lib_div::makeInstance('tslib_cObj');
-	
-			$pageTSconfig = t3lib_BEfunc::getPagesTSconfig(0);
-			$pageTSconfig = $pageTSconfig['mod.'][$this->getExtensionKey().'.'];
+
+			$pageTSconfigFull = t3lib_BEfunc::getPagesTSconfig(0);
+			$pageTSconfig = $pageTSconfigFull['mod.'][$this->getExtensionKey().'.'];
+			$pageTSconfig['lib.'] = $pageTSconfigFull['lib.'];
+
 			$qualifier = $pageTSconfig['qualifier'] ? $pageTSconfig['qualifier'] : $this->getExtensionKey();
 			$this->configurations = new tx_rnbase_configurations();
 			$this->configurations->init($pageTSconfig, $cObj, $this->getExtensionKey(), $qualifier);	
@@ -227,12 +236,21 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 		}
 		return $this->doc;
 	}
+	/**
+	 * Erstellt das Menu mit den Submodulen. Die ist als Auswahlbox oder per Tabs möglich und kann per TS eingestellt werden:
+	 * mod.mymod._cfg.funcmenu.useTabs
+	 */
 	protected function getFuncMenu() {
-		$menu = $this->getFormTool()->showMenu($this->getPid(), 'function', $this->getName(), $this->MOD_MENU['function']);
+		$useTabs = intval($this->getConfigurations()->get('_cfg.funcmenu.useTabs')) > 0;
+		if($useTabs)
+			$menu = $this->getFormTool()->showTabMenu($this->getPid(), 'function', $this->getName(), $this->MOD_MENU['function']);
+		else
+			$menu = $this->getFormTool()->showMenu($this->getPid(), 'function', $this->getName(), $this->MOD_MENU['function']);
 		return $menu['menu'];
 //		return t3lib_BEfunc::getFuncMenu($this->getPid(),'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function']);
 	}
 	protected function getFormTag() {
+		// TODO: per TS einstellbar machen
 		return '<form action="" method="post" enctype="multipart/form-data">';
 	}
 	/**
