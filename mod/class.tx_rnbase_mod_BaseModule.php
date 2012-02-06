@@ -241,13 +241,36 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 	 * mod.mymod._cfg.funcmenu.useTabs
 	 */
 	protected function getFuncMenu() {
+		$items = $this->getFuncMenuItems($this->MOD_MENU['function']);
 		$useTabs = intval($this->getConfigurations()->get('_cfg.funcmenu.useTabs')) > 0;
 		if($useTabs)
-			$menu = $this->getFormTool()->showTabMenu($this->getPid(), 'function', $this->getName(), $this->MOD_MENU['function']);
+			$menu = $this->getFormTool()->showTabMenu($this->getPid(), 'function', $this->getName(), $items);
 		else
-			$menu = $this->getFormTool()->showMenu($this->getPid(), 'function', $this->getName(), $this->MOD_MENU['function']);
+			$menu = $this->getFormTool()->showMenu($this->getPid(), 'function', $this->getName(), $items);
 		return $menu['menu'];
 //		return t3lib_BEfunc::getFuncMenu($this->getPid(),'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function']);
+	}
+	/**
+	 * Find out all visible sub modules for the current user.
+	 * mod.mymod._cfg.funcmenu.deny = className of submodules
+	 * mod.mymod._cfg.funcmenu.allow = className of submodules
+	 * @param array $items
+	 * @return array
+	 */
+	protected function getFuncMenuItems($items) {
+		$visibleItems = $items;
+		if($denyItems = $this->getConfigurations()->get('_cfg.funcmenu.deny')) {
+			$denyItems = t3lib_div::trimExplode(',', $denyItems);
+			foreach ($denyItems As $item)
+				unset($visibleItems[$item]);
+		}
+		if($allowItems = $this->getConfigurations()->get('_cfg.funcmenu.allow')) {
+			$visibleItems = array();
+			$allowItems = t3lib_div::trimExplode(',', $allowItems);
+			foreach ($allowItems As $item)
+				$visibleItems[$item] = $items[$item];
+		}
+		return $visibleItems;
 	}
 	protected function getFormTag() {
 		// TODO: per TS einstellbar machen
