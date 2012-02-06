@@ -85,6 +85,7 @@ class tx_rnbase_util_FormTool {
 	}
 	/**
 	 * Erstellt einen History-Link
+	 * Achtung: Benötigt die JS-Funktion jumpExt() in der Seite.
 	 *
 	 * @param string $table
 	 * @param int $recordUid
@@ -128,6 +129,10 @@ class tx_rnbase_util_FormTool {
 		if($options['icon']) {
 			$label = "<img ".t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.$options['icon']).
 				' title="'.$label.'\" alt="" >';
+		}
+		if($options['sprite']) {
+			tx_rnbase::load('tx_rnbase_mod_Util');
+			$label = tx_rnbase_mod_Util::getSpriteIcon($options['sprite']);
 		}
 		$jsCode = t3lib_BEfunc::viewOnClick($pid,'','','','',$urlParams);
 		$title = '';
@@ -278,6 +283,10 @@ class tx_rnbase_util_FormTool {
 			$label = "<img ".t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.$options['icon']).
 				' title="'.$label.'\" alt="" >';
 		}
+		if($options['sprite']) {
+			tx_rnbase::load('tx_rnbase_mod_Util');
+			$label = tx_rnbase_mod_Util::getSpriteIcon($options['sprite']);
+		}
 
 		$jsCode = "window.location.href='index.php?id=".$pid . $urlParams. "'; return false;";
 		if(isset($options['confirm']) && strlen($options['confirm']) > 0) {
@@ -303,6 +312,10 @@ class tx_rnbase_util_FormTool {
 		if($options['icon']) {
 			$icon = t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.$options['icon']);
 		}
+//		if($options['sprite']) {
+//			tx_rnbase::load('tx_rnbase_mod_Util');
+//			$icon = tx_rnbase_mod_Util::getSpriteIcon($options['sprite']);
+//		}
 
 		$btn = '<input type="'.($icon ? 'image' : 'submit').'" name="'. $name.'" value="' . $value . '" ';
 		if(strlen($confirmMsg))
@@ -548,6 +561,11 @@ class tx_rnbase_util_FormTool {
 	}
 	/**
 	 * Show function menu.
+	 * 
+	 * @param int $pid
+	 * @param string $name name of menu
+	 * @param string $modName name of be module
+	 * @param array $entries menu entries
 	 * @return array with keys 'menu' and 'value'
 	 */
 	public function showMenu($pid, $name, $modName, $entries) {
