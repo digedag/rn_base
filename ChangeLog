@@ -3,6 +3,12 @@
 Änderungen
 ----------
 
+v0.11.10 (09.02.2012)
+ * tx_rnbase_mod_FormTool: new option "sprite" for BE-links
+ * BaseModule: lib. included in TS configuration
+ * BaseModule: ModFunc-Menu can be switched by TS from select-box to tabs
+ * BaseModule: It is possible to enable or disable SubModules by TS.
+
 v0.11.9 (28.01.2012)
  * tx_rnbase_mod_Util: New methods for sprites.
  * Support for multiple language files in plugins. Thanks to Hannes Bochmann!
