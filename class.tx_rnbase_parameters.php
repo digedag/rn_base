@@ -24,6 +24,7 @@
  ***************************************************************/
 
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+tx_rnbase::load('tx_rnbase_util_Arrays');
 
 interface tx_rnbase_IParameters {
 	/**
@@ -53,8 +54,18 @@ interface tx_rnbase_IParameters {
 
 
 class tx_rnbase_parameters extends ArrayObject implements tx_rnbase_IParameters {
-	private $qualifer='';
+	private $qualifier='';
 
+	/**
+	 * Initialize this instance for a plugin
+	 * @param string $qualifier
+	 */
+	public function init($qualifier) {
+		$this->setQualifier($qualifier);
+		// get parametersArray for defined qualifier
+		$parametersArray = $this->getParametersPlain($qualifier);
+		tx_rnbase_util_Arrays::overwriteArray($this,$parametersArray);
+	}
 	public function setQualifier($qualifier) {
 		$this->qualifier = $qualifier;
 	}
