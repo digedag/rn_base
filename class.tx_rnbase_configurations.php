@@ -187,6 +187,10 @@ class tx_rnbase_configurations {
    */
 	public function &getCObj($id = 0, $cObjClass = 'tslib_cObj') {
 		if(strcmp($id,'0') == 0) {
+			if(!is_object($this->cObj)) {
+				$this->cObj = t3lib_div::makeInstance($cObjClass);
+				$this->cObjs[0] = $this->cObj;
+			}
 			return $this->cObj;
 		}
 
