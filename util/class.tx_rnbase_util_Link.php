@@ -340,8 +340,10 @@ class tx_rnbase_util_Link {
 	 */
 	function makeTag() {
 		$link = $this->cObject->typolink($this->_makeLabel(),$this->_makeConfig('tag'));
-		if($this->isAbsUrl())
-			$link = preg_replace('/(href="|src=")/','${1}'.t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR'), $link);
+		if($this->isAbsUrl()){
+			$url = $this->getAbsUrlSchema() ? $this->getAbsUrlSchema() : t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR');
+			$link = preg_replace('/(href="|src=")/','${1}'.$url, $link);
+		}
 		return $link;
 	}
 
