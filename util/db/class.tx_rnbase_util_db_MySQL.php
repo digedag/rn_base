@@ -67,6 +67,9 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase {
 	public function exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = ''){
 		$query = $this->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
 		$res = mysql_query($query, $this->db);
+		if(!$res && mysql_error($this->db)) {
+			throw new Exception(mysql_error($this->db));
+		}
 		return $res;
 	}
 	/**
