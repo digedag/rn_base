@@ -70,7 +70,7 @@ class tx_rnbase_model_base {
 	 * this is a common contructor.
 	 * Ensure to overwrite getTableName()!
 	 */
-	function tx_rnbase_model_base($rowOrUid) {
+	function __construct($rowOrUid) {
 		$this->init($rowOrUid);
 	}
 
