@@ -65,13 +65,16 @@ class tx_rnbase_model_base {
 	var $uid;
 	var $record;
 
+	function tx_rnbase_model_base($rowOrUid) {
+		$this->init($rowOrUid);
+	}
 	/**
 	 * Most model-classes will be initialized by a uid or a database record. So
 	 * this is a common contructor.
 	 * Ensure to overwrite getTableName()!
 	 */
 	function __construct($rowOrUid) {
-		$this->init($rowOrUid);
+		$this->tx_rnbase_model_base($rowOrUid);
 	}
 
 	function init($rowOrUid) {
