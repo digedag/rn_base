@@ -451,9 +451,12 @@ MAYDAYPAGE;
 
 	/**
  	 * Same method as tslib_pibase::pi_getPidList()
+ 	 * @return string commaseparated list of pids 
 	 */
-	public function getPidList($pid_list,$recursive=0)  {
-		if (!strcmp($pid_list,''))      $pid_list = $GLOBALS['TSFE']->id;
+	public static function getPidList($pid_list,$recursive=0)  {
+
+		if (!strcmp($pid_list,''))
+			$pid_list = tx_rnbase_util_TYPO3::getTSFE(true)->id;
 		$recursive = t3lib_div::intInRange($recursive,0);
 
 		$pid_list_arr = array_unique(t3lib_div::trimExplode(',',$pid_list,1));

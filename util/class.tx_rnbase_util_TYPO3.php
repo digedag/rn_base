@@ -137,9 +137,15 @@ class tx_rnbase_util_TYPO3 {
 	
 
 	/**
+	 * Returns TSFE. 
+	 * @param boolean $force create new tsfe if not available
 	 * @return tslib_fe
 	 */
-	public static function getTSFE() {
+	public static function getTSFE($force=false) {
+		if(!is_object($GLOBALS['TSFE'])) {
+			tx_rnbase::load('tx_rnbase_util_Misc');
+			tx_rnbase_util_Misc::prepareTSFE();
+		}
 		return $GLOBALS['TSFE'];
 	}
 	private static $sysPage = null;

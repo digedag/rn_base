@@ -350,7 +350,7 @@ class tx_rnbase_util_DB {
 	 * @param string $prefix if set, each columnname is preceded by this alias
 	 * @return array
 	 */
-	function getColumnNames($tcaTableName, $prefix = '') {
+	public static function getColumnNames($tcaTableName, $prefix = '') {
 		$cols = self::getTCAColumns($tcaTableName);
 		if(is_array($cols)) {
 			$cols = array_keys($cols);
@@ -367,7 +367,7 @@ class tx_rnbase_util_DB {
 	 * @param string $tcaTableName
 	 * @return array or 0
 	 */
-	function getTCAColumns($tcaTableName) {
+	public static function getTCAColumns($tcaTableName) {
 		global $TCA;
 		t3lib_div::loadTCA($tcaTableName);
 		return isset($TCA[$tcaTableName]) ? $TCA[$tcaTableName]['columns'] : 0;
@@ -375,7 +375,7 @@ class tx_rnbase_util_DB {
 	/**
 	 * Liefert eine initialisierte TCEmain
 	 */
-	static function &getTCEmain($data = 0, $cmd = 0) {
+	public static function &getTCEmain($data = 0, $cmd = 0) {
 		static $tce;
 
 		if(!$tce || $data || $cmd) {
@@ -412,8 +412,9 @@ class tx_rnbase_util_DB {
 
   /**
    * Same method as tslib_pibase::pi_getPidList()
+   * If you  need this functionality use tx_rnbase_util_Misc::getPidList()
    */
-  function _getPidList($pid_list,$recursive=0)  {
+  static function _getPidList($pid_list,$recursive=0)  {
     if (!strcmp($pid_list,''))      $pid_list = $GLOBALS['TSFE']->id;
     $recursive = t3lib_div::intInRange($recursive,0);
 
@@ -437,7 +438,7 @@ class tx_rnbase_util_DB {
 	 * @param resource $rRes
 	 * @return resource
 	 */
-	function watchOutDB(&$rRes) {
+	public static function watchOutDB(&$rRes) {
 
 		if(!is_resource($rRes) && $GLOBALS['TYPO3_DB']->sql_error()) {
 
@@ -467,7 +468,7 @@ class tx_rnbase_util_DB {
 	 * @param string $searchTable	The table name you search in (recommended for DBAL compliance. Will be prepended field names as well)
 	 * @return	string		The WHERE clause.
 	 */
-	static function searchWhere($sw,$searchFieldList,$operator='LIKE')	{
+	public static function searchWhere($sw,$searchFieldList,$operator='LIKE')	{
 		$where = '';
 		if ($sw !== '')	{
 			$searchFields = explode(',',$searchFieldList);
