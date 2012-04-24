@@ -3,7 +3,7 @@
 Änderungen
 ----------
 
-v0.11.12 (21.02.2012)
+v0.11.12 (??.02.2012)
  * constructor name of model_base changed to __construct
  * util_Misc::getPidList forces TSFE creation
 
