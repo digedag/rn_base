@@ -119,7 +119,39 @@ interface tx_rnbase_util_db_IDatabase {
 	 */
 	public function sql_fetch_assoc($res);
 
+	/**
+	 * Free result memory
+	 * mysql_free_result() wrapper function
+	 *
+	 * @param	pointer		MySQL result pointer to free / DBAL object
+	 * @return	boolean		Returns TRUE on success or FALSE on failure.
+	 */
 	public function sql_free_result($res);
+
+	/**
+	 * Returns the number of rows affected by the last INSERT, UPDATE or DELETE query
+	 * mysql_affected_rows() wrapper function
+	 *
+	 * @return	integer		Number of rows affected by last query
+	 */
+	public function sql_affected_rows();
+
+	/**
+	 * Get the ID generated from the previous INSERT operation
+	 * mysql_insert_id() wrapper function
+	 *
+	 * @return	integer		The uid of the last inserted record.
+	 */
+	public function sql_insert_id();
+
+	/**
+	 * Returns the error status on the last sql() execution
+	 * mysql_error() wrapper function
+	 *
+	 * @return	string		MySQL error string.
+	 */
+	public function sql_error();
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_db_IDatabase.php']) {

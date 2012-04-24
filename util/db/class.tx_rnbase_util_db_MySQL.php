@@ -37,7 +37,7 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase {
 	public function __call($methodName, $args) {
 		return call_user_func_array(array($this->db,$methodName),$args);
 	}
-	
+
 	/**
 	 * Creates a SELECT SQL-statement
 	 *
@@ -67,9 +67,9 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase {
 	public function exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = ''){
 		$query = $this->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
 		$res = mysql_query($query, $this->db);
-		if(!$res && mysql_error($this->db)) {
-			throw new Exception(mysql_error($this->db));
-		}
+// 		if(!$res && mysql_error($this->db)) {
+// 			throw new Exception(mysql_error($this->db));
+// 		}
 		return $res;
 	}
 	/**
@@ -92,7 +92,11 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase {
 	 * @return	pointer		MySQL result pointer / DBAL object
 	 */
 	public function exec_INSERTquery($table, $fields_values, $no_quote_fields = FALSE) {
-		return $GLOBALS['TYPO3_DB']->execINSERTquery($table, $fields_values, $no_quote_fields);
+		$res = mysql_query($this->INSERTquery($table, $fields_values, $no_quote_fields), $this->db);
+// 		if(!$res && mysql_error($this->db)) {
+// 			throw new Exception(mysql_error($this->db));
+// 		}
+		return $res;
 	}
 
 	/**
@@ -117,7 +121,11 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase {
 	 * @return	pointer		MySQL result pointer / DBAL object
 	 */
 	public function exec_UPDATEquery($table, $where, $fields_values, $no_quote_fields = FALSE) {
-		return $GLOBALS['TYPO3_DB']->execUPDATEquery($table, $where, $fields_values, $no_quote_fields);
+		$res = mysql_query($this->UPDATEquery($table, $where, $fields_values, $no_quote_fields), $this->db);
+// 		if(!$res && mysql_error($this->db)) {
+// 			throw new Exception(mysql_error($this->db));
+// 		}
+		return $res;
 	}
 
 	/**
@@ -139,7 +147,11 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase {
 	 * @return	pointer		MySQL result pointer / DBAL object
 	 */
 	public function exec_DELETEquery($table, $where) {
-		return $GLOBALS['TYPO3_DB']->exec_DELETEquery($table, $where);
+		$res = mysql_query($this->DELETEquery($table, $where), $this->db);
+// 		if(!$res && mysql_error($this->db)) {
+// 			throw new Exception(mysql_error($this->db));
+// 		}
+		return $res;
 	}
 
 	/**
@@ -224,7 +236,7 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase {
 			throw new RuntimeException($message, 1271492616);
 
 		}
-		
+
 		$setDBinit = t3lib_div::trimExplode(LF, str_replace("' . LF . '", LF, $credArr['setDBinit']), TRUE);
 		foreach ($setDBinit as $v) {
 			if (mysql_query($v, $link) === FALSE) {
@@ -287,9 +299,38 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase {
 	public function sql_free_result($res) {
 		return mysql_free_result($res);
 	}
+
+	/**
+	 * Returns the number of rows affected by the last INSERT, UPDATE or DELETE query
+	 * mysql_affected_rows() wrapper function
+	 *
+	 * @return	integer		Number of rows affected by last query
+	 */
+	function sql_affected_rows() {
+		return mysql_affected_rows($this->db);
+	}
+
+	/**
+	 * Get the ID generated from the previous INSERT operation
+	 * mysql_insert_id() wrapper function
+	 *
+	 * @return	integer		The uid of the last inserted record.
+	 */
+	public function sql_insert_id() {
+		return mysql_insert_id($this->db);
+	}
+
+	/**
+	 * Returns the error status on the last sql() execution
+	 * mysql_error() wrapper function
+	 *
+	 * @return	string		MySQL error string.
+	 */
+	public function sql_error() {
+		return mysql_error($this->db);
+	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_db_IDatabase.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_db_IDatabase.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/db/class.tx_rnbase_util_db_MySQL.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/db/class.tx_rnbase_util_db_MySQL.php']);
 }
-?>

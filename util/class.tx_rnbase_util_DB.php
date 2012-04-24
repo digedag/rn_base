@@ -37,7 +37,7 @@ class tx_rnbase_util_DB {
 	 * A Hidden and Delete-Clause for FE-Requests is added for requested table.
 	 *
 	 * @param $what requested columns
-	 * @param $from either the name of on table or an array with index 0 the from clause 
+	 * @param $from either the name of on table or an array with index 0 the from clause
 	 *              and index 1 the requested tablename
 	 * @param $where
 	 * @param $groupby
@@ -105,8 +105,8 @@ class tx_rnbase_util_DB {
 	 * - 'db' - external database: tx_rnbase_util_db_IDatabase
 	 * </pre>
 	 * @param string $what requested columns
-	 * @param string $from either the name of on table or an array with index 0 the from clause 
-	 *              and index 1 the requested tablename and optional index 2 a table alias to use. 
+	 * @param string $from either the name of on table or an array with index 0 the from clause
+	 *              and index 1 the requested tablename and optional index 2 a table alias to use.
 	 * @param array $arr the options array
 	 * @param boolean $debug = 0 Set to 1 to debug sql-String
 	 */
@@ -128,7 +128,7 @@ class tx_rnbase_util_DB {
 		$groupBy = is_string($arr['groupby']) ? $arr['groupby'] : '';
 		if($groupBy) {
 			$groupBy .= is_string($arr['having']) > 0 ? ' HAVING '.$arr['having'] : '';
-			
+
 		}
 		$orderBy = is_string($arr['orderby']) ? $arr['orderby'] : '';
 		$offset = intval($arr['offset']) > 0 ? intval($arr['offset']) : 0;
@@ -138,7 +138,7 @@ class tx_rnbase_util_DB {
 		$i18n = is_string($arr['i18n']) > 0 ? $arr['i18n'] : '';
 		$sqlOnly = intval($arr['sqlonly']) > 0 ? intval($arr['sqlonly']) : '';
 		$union = is_string($arr['union']) > 0 ? $arr['union'] : '';
-		
+
 		// offset und limit kombinieren
 		if($limit) { // bei gesetztem limit ist offset optional
 			$limit = ($offset > 0) ? $offset . ',' . $limit : $limit;
@@ -227,7 +227,7 @@ class tx_rnbase_util_DB {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param array $row
 	 * @param t3lib_pageSelect $sysPage
 	 */
@@ -252,24 +252,30 @@ class tx_rnbase_util_DB {
 	 *
 	 * @param string $tablename
 	 * @param array $values
-	 * @param int $debug
+	 * @param int|array $debug
 	 * @return int UID of created record
 	 */
-	public static function doInsert($tablename, $values, $debug=0) {
+	public static function doInsert($tablename, $values, $arr=array()) {
+		// fallback, $arr war früher $debug
+		if (!is_array($arr)) { $arr = array('debug' => $arr); }
+		$debug = intval($arr['debug']) > 0;
+		$database = isset($arr['db']) && is_object($arr['db']) ? $arr['db'] : $GLOBALS['TYPO3_DB'];
+
 		if($debug) {
-			$sql = $GLOBALS['TYPO3_DB']->INSERTquery($tablename,$values);
+			$sql = $database->INSERTquery($tablename,$values);
 			tx_rnbase_util_Debug::debug(array('SQL'=>$sql, 'table'=>$tablename,'values'=>$values));
 		}
+
 		self::watchOutDB(
-			$GLOBALS['TYPO3_DB']->exec_INSERTquery(
+			$database->exec_INSERTquery(
 				$tablename,
 				$values
-			)
+			), $database
 		);
-		return $GLOBALS['TYPO3_DB']->sql_insert_id();
+		return $database->sql_insert_id();
 	}
 	/**
-	 * Make a plain SQL Query. 
+	 * Make a plain SQL Query.
 	 * Notice: The db resource is not closed by this method. The caller is in charge to do this!
 	 *
 	 * @param string $sqlQuery
@@ -300,47 +306,59 @@ class tx_rnbase_util_DB {
 	 * @param string $tablename
 	 * @param string $where
 	 * @param array $values
-	 * @param int $debug 0/1
+	 * @param array $arr
 	 * @param mixed $noQuoteFields Array or commaseparated string with fieldnames
 	 * @return int number of rows affected
 	 */
-	public static function doUpdate($tablename, $where, $values, $debug=0, $noQuoteFields = false) {
+	public static function doUpdate($tablename, $where, $values, $arr=array(), $noQuoteFields = false) {
+		// fallback, $arr war früher $debug
+		if (!is_array($arr)) { $arr = array('debug' => $arr); }
+		$debug = intval($arr['debug']) > 0;
+		$database = isset($arr['db']) && is_object($arr['db']) ? $arr['db'] : $GLOBALS['TYPO3_DB'];
+
 		if($debug) {
-			$sql = $GLOBALS['TYPO3_DB']->UPDATEquery($tablename,$where,$values, $noQuoteFields);
+			$sql = $database->UPDATEquery($tablename,$where,$values, $noQuoteFields);
 			tx_rnbase_util_Debug::debug($sql, 'SQL');
 			tx_rnbase_util_Debug::debug(array($tablename,$where,$values));
 		}
+
 		self::watchOutDB(
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+			$database->exec_UPDATEquery(
 				$tablename,
 				$where,
-				$values, 
+				$values,
 				$noQuoteFields
-			)
+			), $database
 		);
-		return $GLOBALS['TYPO3_DB']->sql_affected_rows();
+		return $database->sql_affected_rows();
 	}
 	/**
 	 * Make a database DELETE
 	 *
 	 * @param string $tablename
 	 * @param string $where
-	 * @param boolean $debug
+	 * @param array $arr
 	 * @return int number of rows affected
 	 */
-	public static function doDelete($tablename, $where, $debug=0) {
+	public static function doDelete($tablename, $where, $arr=array()) {
+		// fallback, $arr war früher $debug
+		if (!is_array($arr)) { $arr = array('debug' => $arr); }
+		$debug = intval($arr['debug']) > 0;
+		$database = isset($arr['db']) && is_object($arr['db']) ? $arr['db'] : $GLOBALS['TYPO3_DB'];
+
 		if($debug) {
-			$sql = $GLOBALS['TYPO3_DB']->DELETEquery($tablename,$where);
+			$sql = $database->DELETEquery($tablename,$where);
 			tx_rnbase_util_Debug::debug($sql, 'SQL');
 			tx_rnbase_util_Debug::debug(array($tablename,$where));
 		}
+
 		self::watchOutDB(
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery(
+			$database->exec_DELETEquery(
 				$tablename,
 				$where
-			)
+			), $database
 		);
-		return $GLOBALS['TYPO3_DB']->sql_affected_rows();
+		return $database->sql_affected_rows();
 	}
 
 	/**
@@ -396,8 +414,8 @@ class tx_rnbase_util_DB {
 	}
 
 	/**
-	 * Get record with uid from table. 
-	 * 
+	 * Get record with uid from table.
+	 *
 	 * @param string $tableName
 	 * @param int $uid
 	 */
@@ -438,15 +456,16 @@ class tx_rnbase_util_DB {
 	 * @param resource $rRes
 	 * @return resource
 	 */
-	public static function watchOutDB(&$rRes) {
+	public static function watchOutDB(&$rRes, $database) {
+		if (!is_object($database)) $database = $GLOBALS['TYPO3_DB'];
 
-		if(!is_resource($rRes) && $GLOBALS['TYPO3_DB']->sql_error()) {
+		if(!is_resource($rRes) && $database->sql_error()) {
 
 			$sMsg = 'SQL QUERY IS NOT VALID';
 			$sMsg .= '<br/>';
-			$sMsg .= '<b>' . $GLOBALS['TYPO3_DB']->sql_error() . '</b>';
+			$sMsg .= '<b>' . $database->sql_error() . '</b>';
 			$sMsg .= '<br />';
-			$sMsg .= $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery;
+			$sMsg .= $database->debug_lastBuiltQuery;
 
 			tx_rnbase::load('tx_rnbase_util_Misc');
 			tx_rnbase_util_Misc::mayday($sMsg);
@@ -457,11 +476,11 @@ class tx_rnbase_util_DB {
 
 	/**
 	 * Generates a search where clause based on the input search words (AND operation - all search words must be found in record.)
-	 * Example: The $sw is "content management, system" (from an input form) and the $searchFieldList is "bodytext,header" then the 
+	 * Example: The $sw is "content management, system" (from an input form) and the $searchFieldList is "bodytext,header" then the
 	 * output will be ' (bodytext LIKE "%content%" OR header LIKE "%content%") AND (bodytext LIKE "%management%" OR header LIKE "%management%") AND (bodytext LIKE "%system%" OR header LIKE "%system%")'
 	 *
 	 * METHOD FROM tslib_content
-	 * 
+	 *
 	 * @param string $sw		The search words. These will be separated by space and comma.
 	 * @param string $searchFieldList		The fields to search in
 	 * @param string $operator  'LIKE' oder 'FIND_IN_SET'
@@ -483,7 +502,7 @@ class tx_rnbase_util_DB {
 				$where = self::_getSearchSetOr($kw, $searchFields);
 			else
 				$where = self::_getSearchOr($kw, $searchFields, $operator);
-			
+
 		}
 		return $where;
 	}
@@ -556,10 +575,10 @@ class tx_rnbase_util_DB {
  	}
 	/**
 	 * Build a single where clause. This is a compare of a column to a value with a given operator.
-	 * Based on the operator the string is hopefully correctly build. It is up to the client to 
+	 * Based on the operator the string is hopefully correctly build. It is up to the client to
 	 * connect these single clauses with boolean operator for a complete where clause.
 	 *
-	 * @param string $tableAlias database tablename or alias 
+	 * @param string $tableAlias database tablename or alias
 	 * @param string $operator operator constant
 	 * @param string $col name of column
 	 * @param string $value value to compare to
@@ -629,7 +648,7 @@ class tx_rnbase_util_DB {
 		}
 		return $where . ' ';
 	}
-  
+
 	/**
 	 * Format a MySQL-DATE (ISO-Date) into mm-dd-YYYY.
 	 *
