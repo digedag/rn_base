@@ -456,7 +456,7 @@ class tx_rnbase_util_DB {
 	 * @param resource $rRes
 	 * @return resource
 	 */
-	public static function watchOutDB(&$rRes, $database) {
+	public static function watchOutDB(&$rRes, $database=null) {
 		if (!is_object($database)) $database = $GLOBALS['TYPO3_DB'];
 
 		if(!is_resource($rRes) && $database->sql_error()) {
