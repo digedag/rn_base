@@ -58,19 +58,19 @@
  *
  * The controller dispatches the requests to action classes controlled by the action parameter.
  * The action parameter can come from 3 sources:
- * 1.) a POST-requests of a form 
+ * 1.) a POST-requests of a form
  * 2.) a GET-request of a link.
  * 3.) statically be set in TS
  *
  * ------------------------------------
  * The parameter array name: action (designator)
  * ------------------------------------
- * 
+ *
  * According to the coding guidelines parameters of plugins have to be send as array with a unique
  * identifier to keep them in their own namespace. In tslib_pibase this identifier is called:
- * $prefixId. In tx_lib it is called $action. 
- * 
- * The easy way is to share a common designator throughout a whole extension. Unless the designator is 
+ * $prefixId. In tx_lib it is called $action.
+ *
+ * The easy way is to share a common designator throughout a whole extension. Unless the designator is
  * explicitly set as class variable the function getDesignator() defaults to the extension key. Always
  * access it by this function. (This function is inherited from tx_lib_pluginCommon via tx_lib_object.)
  *
@@ -107,8 +107,8 @@ tx_rnbase::load('tx_rnbase_util_Arrays');
 
 class tx_rnbase_controller {
 
-	var $configurationsClassName = 'tx_rnbase_configurations'; // You may overwrite this in your subclass with an own configurations class. 
-//	var $parametersClassName = 'tx_lib_parameters'; // Typically you don't need to make a subclass of this. 
+	var $configurationsClassName = 'tx_rnbase_configurations'; // You may overwrite this in your subclass with an own configurations class.
+//	var $parametersClassName = 'tx_lib_parameters'; // Typically you don't need to make a subclass of this.
 	var $parameters;
 	var $configurations;
 	var $defaultAction = 'defaultAction';
@@ -117,9 +117,9 @@ class tx_rnbase_controller {
 
   /*
    * main(): A factory method for the responsible action
-   * 
+   *
    * --------------------------------------------------------------------
-   * Summary: Finds and executes the action 
+   * Summary: Finds and executes the action
    * --------------------------------------------------------------------
    *
    *      a) Parameters and configurations are loaded into objects.
@@ -149,15 +149,15 @@ class tx_rnbase_controller {
    * --------------------------------------------------------------------
    *
    *  Ultimative fallback:                   '$this->unknownAction()'
-   *  Typical action:                        $parameters->action 
-   *  Fixed action (related context boxes):  $configurations->action  
+   *  Typical action:                        $parameters->action
+   *  Fixed action (related context boxes):  $configurations->action
    *
    * All "default-actions" are removed, since this is confusing and useless.
    *
    * The action parameter "xy" matches the function "xyAction()".
    * By appending the postfix "Action" to the function name we assure,
    * that no other functions than actions can be addressed be sending an action parameter.
-   * For security reasons, please don't append the Postfix "Action"for non action functions 
+   * For security reasons, please don't append the Postfix "Action"for non action functions
    * in controller classes.
    *
    * If no action is provided the fallback action is the defaultAction.
@@ -169,7 +169,7 @@ class tx_rnbase_controller {
    *
    * Additional controller classes can be registered that contain new actions or overwrite
    * existing actions. This way you can develop extensions for extensions, without need of XCLASS.
-   * Registerd controller classes have precedence. 
+   * Registerd controller classes have precedence.
    *
    * Register a controller class B for this controller class A:
    * $TYPO3_CONF_VARS['CONTROLLERS']['A']['B'] = 1;
@@ -185,9 +185,9 @@ class tx_rnbase_controller {
    * @param  array    TS configuration subtree down from the treenode of the plugin
    * @return string   the complete result of the plugin, typically it's (x)html
    */
-  
+
 	function main($out, $configurationArray){
-		
+
 		tx_rnbase_util_Misc::pushTT('tx_rnbase_controller' , 'start');
 
 		// Making the configurations object
@@ -202,12 +202,12 @@ class tx_rnbase_controller {
 		// Make sure to keep all parameters
 		$configurations->setParameters($parameters);
 		tx_rnbase_util_Misc::pullTT();
-		
+
 		// Finding the action:
 		$actions = $this->_findAction($parameters, $configurations);
 		if(!isset($actions))
 			return $this->getUnknownAction();
-			
+
 		$out = '';
 		if(is_array($actions))
 			foreach($actions As $actionName){
@@ -272,7 +272,7 @@ class tx_rnbase_controller {
 				$configurations->get('send503HeaderOnException') == 1
 			)
 		);
-		
+
 	}
 	/**
 	 * Interne Verarbeitung der Exception
@@ -282,12 +282,12 @@ class tx_rnbase_controller {
 	private function handleException($actionName, Exception $e, $configurations) {
 		if($this->send503HeaderOnException($configurations)) {
 			header('HTTP/1.1 503 Service Unavailable');
-		} 
+		}
 		tx_rnbase::load('tx_rnbase_util_Logger');
 		if(tx_rnbase_util_Logger::isFatalEnabled()) {
 			$extKey = $configurations->getExtensionKey();
 			$extKey = $extKey ? $extKey : 'rn_base';
-			tx_rnbase_util_Logger::fatal('Fatal error for action ' . $actionName, $extKey, 
+			tx_rnbase_util_Logger::fatal('Fatal error for action ' . $actionName, $extKey,
 				array('Exception'=> $e, '_GET' => $_GET, '_POST' => $_POST));
 		}
 		$addr = tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'sendEmailOnException');
@@ -336,33 +336,9 @@ class tx_rnbase_controller {
 			}
 			$lockFileFound = true;
 		}
-		
-		$textPart = 'This is an automatic email from TYPO3. Don\'t answer!'."\n\n"; 
-		$htmlPart = '<strong>This is an automatic email from TYPO3. Don\'t answer!</strong>';
-		$textPart .= 'UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName ."\n\n";
-		$htmlPart .= '<div><strong>UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName .'</strong></div>';
-		$textPart .= 'Message: ' . $e->getMessage()."\n\n";
-		$htmlPart .= '<p><strong>Message:</strong><br />' . $e->getMessage() . '</p>';
-		$textPart .= "Stacktrace:\n". $e->__toString()."\n";
-		$htmlPart .= '<p><strong>Stacktrace:</strong><pre>'.$e->__toString().'</pre></p>';
-		$textPart .= 'SITE_URL: ' . t3lib_div::getIndpEnv('TYPO3_SITE_URL')."\n";
-		$htmlPart .= '<p><strong>SITE_URL</strong><br />'. t3lib_div::getIndpEnv('TYPO3_SITE_URL'). '</p>';
-		if(count($_GET))
-			$htmlPart .= '<p><strong>_GET</strong><br />'. var_export($_GET, true). '</p>';
-		if(count($_POST))
-			$htmlPart .= '<p><strong>_POST</strong><br />'. var_export($_POST, true). '</p>';
-		$htmlPart .= '<p><strong>_SERVER</strong><br />'. var_export($_SERVER, true). '</p>';
-		if($e instanceof tx_rnbase_util_Exception) {
-			$additional = $e->getAdditional();
-			if($additional)
-				$htmlPart .= '<p><strong>Additional Data:</strong><br />' . strval($additional) . '</p>';
-		}
 
-		tx_rnbase::load('tx_rnbase_util_TYPO3');
-		$textPart .= 'BE_USER: '.tx_rnbase_util_TYPO3::getBEUserUID()."\n";
-		$htmlPart .= '<p><strong>BE_USER:</strong> '.tx_rnbase_util_TYPO3::getBEUserUID().'</p>';
-		$textPart .= 'FE_USER: '.tx_rnbase_util_TYPO3::getFEUserUID()."\n";
-		$htmlPart .= '<p><strong>FE_USER:</strong> '.tx_rnbase_util_TYPO3::getFEUserUID().'</p>';
+		$textPart = $this->getErrorMailText($e,$actionName);
+		$htmlPart = $this->getErrorMailHtml($e,$actionName);
 
 		$mail = t3lib_div::makeInstance('t3lib_htmlmail');
 		$mail->start();
@@ -379,8 +355,63 @@ class tx_rnbase_controller {
 		return $mail->send($addr);
 	}
 
+	protected function getErrorMailText($e,$actionName) {
+		$textPart = 'This is an automatic email from TYPO3. Don\'t answer!'."\n\n";
+		$textPart .= 'UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName ."\n\n";
+		$textPart .= 'Message: ' . $e->getMessage()."\n\n";
+		$textPart .= "Stacktrace:\n". $e->__toString()."\n";
+		$textPart .= 'SITE_URL: ' . t3lib_div::getIndpEnv('TYPO3_SITE_URL')."\n";
+
+		tx_rnbase::load('tx_rnbase_util_TYPO3');
+		$textPart .= 'BE_USER: '.tx_rnbase_util_TYPO3::getBEUserUID()."\n";
+		$textPart .= 'FE_USER: '.tx_rnbase_util_TYPO3::getFEUserUID()."\n";
+
+		return $textPart;
+	}
+
+	protected function getErrorMailHtml($e,$actionName) {
+		$htmlPart = '<strong>This is an automatic email from TYPO3. Don\'t answer!</strong>';
+		$htmlPart .= '<div><strong>UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName .'</strong></div>';
+		$htmlPart .= '<p><strong>Message:</strong><br />' . $e->getMessage() . '</p>';
+		$htmlPart .= '<p><strong>Stacktrace:</strong><pre>'.$e->__toString().'</pre></p>';
+		$htmlPart .= '<p><strong>SITE_URL</strong><br />'. t3lib_div::getIndpEnv('TYPO3_SITE_URL'). '</p>';
+
+		$get = $this->removePasswordParams($_GET);
+		if(count($get))
+			$htmlPart .= '<p><strong>_GET</strong><br />'. var_export($get, true). '</p>';
+
+		$post = $this->removePasswordParams($_POST);
+		if(count($post))
+			$htmlPart .= '<p><strong>_POST</strong><br />'. var_export($post, true). '</p>';
+
+		$htmlPart .= '<p><strong>_SERVER</strong><br />'. var_export($this->removePasswordParams($_SERVER), true). '</p>';
+		if($e instanceof tx_rnbase_util_Exception) {
+			$additional = $e->getAdditional();
+			if($additional)
+				$htmlPart .= '<p><strong>Additional Data:</strong><br />' . strval($additional) . '</p>';
+		}
+
+		tx_rnbase::load('tx_rnbase_util_TYPO3');
+		$htmlPart .= '<p><strong>BE_USER:</strong> '.tx_rnbase_util_TYPO3::getBEUserUID().'</p>';
+		$htmlPart .= '<p><strong>FE_USER:</strong> '.tx_rnbase_util_TYPO3::getFEUserUID().'</p>';
+
+		return $htmlPart;
+	}
+
+	protected function removePasswordParams(array $parameters) {
+		foreach ($parameters as $parameterName => $parameterValue) {
+			if(is_array($parameterValue))
+				return $this->removePasswordParams($parameterValue);
+			elseif(preg_match('/passwor(t|d)/', $parameterName)){
+				unset($parameters[$parameterName]);
+			}
+		}
+
+		return $parameters;
+	}
+
   /**
-   * This is returned, if an invalid action has been send. 
+   * This is returned, if an invalid action has been send.
    *
    * @return     string     error text
    */
@@ -396,7 +427,7 @@ class tx_rnbase_controller {
 	/**
 	 * Find the actions to handle the request
 	 * You can define more than one actions per request. So think of an action as a content element
-	 * to render. 
+	 * to render.
 	 * So if your plugin supports a list and a detail view, you can render both of them
 	 * on the same page, including only one plugin. Make a view selection and add both views.
 	 * The controller will serve the request to both actions.
@@ -406,7 +437,7 @@ class tx_rnbase_controller {
 	 * 1.) The defaultAction is the ultimative Fallback if nothing else is given.
 	 * 2.) The configurationDefaultAction can be set in TS and/or flexform to customize the initial view.
 	 * 3.) The parametersAction is given by form or link to controll the behaviour.
-	 * 4.) The configurationAction can force a fixed view of a context element.  
+	 * 4.) The configurationAction can force a fixed view of a context element.
 	 *
 	 * @param     object     the parameters object
 	 * @param     object     the configurations objet
@@ -434,8 +465,8 @@ class tx_rnbase_controller {
 	 * a) designator[action] = actionValue
 	 * b) designator[action][actionValue] = something
 	 *
-	 * Form b) is usfull Form HTML forms with multiple submit buttons. 
-	 * You shouldn't use the button label as action value, 
+	 * Form b) is usfull Form HTML forms with multiple submit buttons.
+	 * You shouldn't use the button label as action value,
 	 * because it is language dependant.
 	 *
 	 * @param   object   the parameter object
@@ -476,8 +507,8 @@ class tx_rnbase_controller {
 		$parameters->setQualifier($configurations->getQualifier());
 
 		// get parametersArray for defined qualifier
-		$parametersArray = tx_rnbase_util_TYPO3::isTYPO43OrHigher() ? 
-				t3lib_div::_GPmerged($configurations->getQualifier()) : 
+		$parametersArray = tx_rnbase_util_TYPO3::isTYPO43OrHigher() ?
+				t3lib_div::_GPmerged($configurations->getQualifier()) :
 				t3lib_div::GParrayMerged($configurations->getQualifier());
 
 		tx_rnbase_util_Arrays::overwriteArray($parameters,$parametersArray);
