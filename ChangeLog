@@ -8,6 +8,7 @@ v0.11.12 (??.04.2012)
  * constructor name of model_base changed to __construct
  * util_Misc::getPidList forces TSFE creation
  * Filtering passwords in exception mailings. Thanks to Hannes Bochmann!
+ * Cookie information in error mails added.
 
 v0.11.11 (21.02.2012)
  * tx_rnbase_parameters: new method init()

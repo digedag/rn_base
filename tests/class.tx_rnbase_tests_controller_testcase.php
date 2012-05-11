@@ -39,14 +39,21 @@ class tx_rnbase_dummyController extends tx_rnbase_controller{
 class tx_rnbase_tests_controller_testcase extends tx_phpunit_testcase {
 
 	function testGetErrorMailHtmlRemovesPasswordParams() {
-		$_GET['subArray']['password'] = 'somePass';
+		$_GET['getSubArray']['password'] = 'somePass';
+		$_GET['getSubArray']['getSubDontRemove'] = 'inSubArray';
+		$_GET['getDontRemove'] = 'inRootArray';
 		$_POST['passwort'] = 'somePass';
-		$_POST['dontRemove'] = 'somePass';
+		$_POST['postDontRemove'] = 'somePass';
 		$controller = tx_rnbase::makeInstance('tx_rnbase_dummyController');
-
+		
 		$html = $controller->callGetErrorMailHtml();
-    	$this->assertNotContains('password', $html, '"Password" Params not removed!');
-    	$this->assertNotContains('passwort', $html, '"Passwort" Params not removed!');
-    	$this->assertContains('dontRemove', $html, '"dontRemove" Params not removed!');
+		// hier wird nur die removePasswordParams Methode getestet,
+		// lässt sich im HTML schwierig prüfen.
+		// Besser direkt den removePasswordParams Aufruf testen?
+		$this->assertNotContains('password', $html, '"Password" Params not removed!');
+		$this->assertNotContains('passwort', $html, '"Passwort" Params not removed!');
+		$this->assertContains('postDontRemove', $html, '"postDontRemove" Params removed!');
+		$this->assertContains('getDontRemove', $html, '"getDontRemove" Params removed!');
+		$this->assertContains('getSubDontRemove', $html, '"getSubDontRemove" Params removed!');
   }
 }

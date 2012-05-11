@@ -384,6 +384,10 @@ class tx_rnbase_controller {
 		if(count($post))
 			$htmlPart .= '<p><strong>_POST</strong><br />'. var_export($post, true). '</p>';
 
+		$cookie = $this->removePasswordParams($_COOKIE);
+		if(count($cookie))
+			$htmlPart .= '<p><strong>_COOKIE</strong><br />'. var_export($cookie, true). '</p>';
+
 		$htmlPart .= '<p><strong>_SERVER</strong><br />'. var_export($this->removePasswordParams($_SERVER), true). '</p>';
 		if($e instanceof tx_rnbase_util_Exception) {
 			$additional = $e->getAdditional();
