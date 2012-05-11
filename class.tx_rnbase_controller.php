@@ -401,7 +401,7 @@ class tx_rnbase_controller {
 	protected function removePasswordParams(array $parameters) {
 		foreach ($parameters as $parameterName => $parameterValue) {
 			if(is_array($parameterValue))
-				return $this->removePasswordParams($parameterValue);
+				$parameters[$parameterName] =  $this->removePasswordParams($parameterValue);
 			elseif(preg_match('/passwor(t|d)/', $parameterName)){
 				unset($parameters[$parameterName]);
 			}
