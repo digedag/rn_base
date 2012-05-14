@@ -231,9 +231,41 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 			}
 			// PageBrowser initialisieren
 			$pbId = $cfg['pbid'] ? $cfg['pbid'] : 'pb';
+			/**
+			 * @var tx_rnbase_util_PageBrowser $pageBrowser
+			 */
 			$pageBrowser = tx_rnbase::makeInstance('tx_rnbase_util_PageBrowser', $pbId);
-	  	$pageSize = intval($configurations->get($confid.'limit'));
+			$pageSize = intval($configurations->get($confid.'limit'));
 			$pageBrowser->setState($configurations->getParameters(), $listSize, $pageSize);
+
+			// Nach dem Item nur suchen wenn über die Parameter kein Pointer gesetzt wurde.
+			if ($pageBrowser->getPointer() <= 0 && is_array($cfg['pointerFromItem'])
+				&& ($itemId = $configurations->getParameters()->get($cfg['pointerFromItem']['param']))) {
+				// Wir erzeugen uns das SQl der eigentlichen Abfrage.
+				// Dabei wollen wir auch die rownum haben!
+				$sql = call_user_func($searchCallback,
+							$fields,array_merge($options, array('sqlonly'=>1, 'rownum'=>1))
+				);
+				// Jetzt besorgen wir uns die Position des aktuellen Eintrages
+				$res = tx_rnbase_util_DB::doSelect(
+					'ROW.rownum', 
+					'('.$sql.') as ROW',
+					array(
+						'where' => 'ROW.'.$cfg['pointerFromItem']['field'].'='.$itemId,
+						'enablefieldsoff' => true,
+					)
+				);
+				// Jetzt haben wir ein Ergebnis, mit der Zeilennummer des Datensatzes.
+				if (!empty($res)) {
+					$rownum = intval($res[0]['rownum']);
+					// Wir berechnen die Seite, auf der sich der aktuelle Eintrag befindet.
+					// intval schneidet die Dezimalzahlen ab, erspart uns das runden.
+					// -1, weil Bei 10 Einträgen pro Seite rownum 20 auf seite 2 ist,
+					// 20/10 allerdings 2 (für seite 3) ergibt.
+					$pageBrowser->setPointer(intval(($rownum - 1) / $pageSize));
+				}
+			}
+
 			$limit = $pageBrowser->getState();
 			$options = array_merge($options, $limit);
 			if($viewdata)

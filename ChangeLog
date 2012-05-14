@@ -3,12 +3,21 @@
 Änderungen
 ----------
 
-v0.11.12 (??.04.2012)
+v0.11.12 (??.05.2012)
  * INSERT and UPDATE support for external databases. Thanks to Michael Wagner!
  * constructor name of model_base changed to __construct
  * util_Misc::getPidList forces TSFE creation
  * Filtering passwords in exception mailings. Thanks to Hannes Bochmann!
  * Cookie information in error mails added.
+ * It is possible to point pagebrowser to a specific item by parameter:
+    $filter->handlePageBrowser($configurations,
+      $confId.'news.pagebrowser', $viewData, $fields, $options, array(
+        'searchcallback'=> array($srv, 'search'),
+        'pbid' => 'mknews',
+        'pointerFromItem' => array('field' => 'uid', 'param' => 'tt_news')
+      )
+    );
+    Thanks to Michael Wagner!
 
 v0.11.11 (21.02.2012)
  * tx_rnbase_parameters: new method init()
