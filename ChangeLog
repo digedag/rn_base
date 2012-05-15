@@ -3,7 +3,7 @@
 Änderungen
 ----------
 
-v0.11.12 (??.05.2012)
+v0.11.12 (15.05.2012)
  * INSERT and UPDATE support for external databases. Thanks to Michael Wagner!
  * constructor name of model_base changed to __construct
  * util_Misc::getPidList forces TSFE creation
