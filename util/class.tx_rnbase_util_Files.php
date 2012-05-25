@@ -40,9 +40,9 @@ class tx_rnbase_util_Files {
 	 * @see FILE()
 	 */
 	public static function getFileResource($fName, $options=array())	{
-		if(!is_object($GLOBALS['TSFE'])) {
+		if(!(is_object($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE']->tmpl))) {
 			tx_rnbase::load('tx_rnbase_util_Misc');
-			tx_rnbase_util_Misc::prepareTSFE();
+			tx_rnbase_util_Misc::prepareTSFE(array('force'=>true));
 		}
 		$incFile = $GLOBALS['TSFE']->tmpl->getFileName($fName);
 		if ($incFile)	{
