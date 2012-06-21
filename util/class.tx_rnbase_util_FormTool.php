@@ -461,8 +461,11 @@ class tx_rnbase_util_FormTool {
 			$sSortRev = 'asc';
 		else//sonst das gegenteil vom aktuellen
 			$sSortRev = ($sCurrentSortRev == 'desc') ? 'asc' : 'desc';
+
+		//prüfen ob Parameter mit ? oder & angehängt werden müssen
+		$sAddParamsWith = (strstr($sUrl,'?')) ? '&' : '?';
 		//jetzt setzen wir den aktuellen Sort parameter zusammen
-		$sSortUrl = $sUrl.'&sortField=' . $sSortField . '&sortRev=' . $sSortRev;
+		$sSortUrl = $sUrl.$sAddParamsWith.'sortField=' . $sSortField . '&sortRev=' . $sSortRev;
 		//noch den Pfeil für die aktuelle Sortierungsrichtung ggf. einblenden
 		$sSortArrow = ($sCurrentSortField==$sSortField?'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/red'.($sSortRev == 'asc'?'up':'down').'.gif','width="7" height="4"').' alt="" />':'');
 		return '<a href="'.htmlspecialchars($sSortUrl).'">'.$sLabel.$sSortArrow.'</a>';
