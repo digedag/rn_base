@@ -45,7 +45,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 	 */
 	public function parseTemplate($template, &$item, &$formatter, $confId, $marker) {
 		if(!is_object($item)) {
-			if($this->classname) return '';
+			if(!$this->classname) return $template;
 			// Ist kein Item vorhanden wird ein leeres Objekt verwendet.
 			$item = self::getEmptyInstance($this->classname);
 		}
