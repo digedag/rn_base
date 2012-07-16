@@ -216,14 +216,13 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 	public static function handlePageBrowser(&$configurations, $confid, &$viewdata, &$fields, &$options, $cfg = array()) {
 		$confid .= '.';
 		if(is_array($configurations->get($confid))) {
+			$searchCallback=$cfg['searchcallback'];
+			if(!$searchCallback) throw new Exception('No search callback defined!');
 			// Die Gesamtzahl der Items ist entweder im Limit gesetzt oder muss ermittelt werden
 			$listSize = intval($options['limit']);
 			if(!$listSize) {
 				// Mit Pagebrowser benötigen wir zwei Zugriffe, um die Gesamtanzahl der Items zu ermitteln
 				$options['count']= 1;
-
-				$searchCallback=$cfg['searchcallback'];
-				if(!$searchCallback) throw new Exception('No search callback defined!');
 
 				$listSize = call_user_func($searchCallback, $fields, $options);
 				//$listSize = $service->search($fields, $options);
