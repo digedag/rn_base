@@ -4,8 +4,10 @@
 ----------
 
 v0.11.14 (??.06.2012)
+ * filter_Base. Always set SearchCallback. Thanks to Michael Wagner!
  * Small fix in SimpleMarker. Thanks to Thomas Reuleke!
  * FormTool::createSortLink() fixed if no params in url present. Thanks to Thomas Reuleke!
+ * New compatibility-wrapper to send simple emails out of TYPO3.
 
 v0.11.13 (11.06.2012)
  * Better check for valid TSFE

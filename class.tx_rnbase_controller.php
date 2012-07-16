@@ -321,98 +321,9 @@ class tx_rnbase_controller {
 		return $ret;
 	}
 	private function sendErrorMail($addr, $actionName, Exception $e) {
-		$lockFile = PATH_site.'typo3temp/rn_base/maillock.txt';
-		$lockFileFound = is_file($lockFile);
-		if($lockFileFound) {
-			$lastCall = intval(trim(file_get_contents($lockFile)));
-			if($lastCall > (time() - 60)) {
-				return; // Only one mail within one minute sent
-			}
-		}
-		else {
-			if(!is_file(PATH_site.'typo3temp/rn_base/')) {
-				tx_rnbase::load('tx_rnbase_util_Logger');
-				tx_rnbase_util_Logger::info('TempDir for rn_base not found. Check EM settings!', 'rn_base', array('lockfile'=> $lockFile));
-			}
-			$lockFileFound = true;
-		}
-
-		$textPart = $this->getErrorMailText($e,$actionName);
-		$htmlPart = $this->getErrorMailHtml($e,$actionName);
-
-		$mail = t3lib_div::makeInstance('t3lib_htmlmail');
-		$mail->start();
-		$mail->subject         = 'Exception on site '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
-		$mail->from_email      = tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'fromEmail');
-		$mail->from_name       = '';
-		$mail->organisation    = '';
-		$mail->priority        = 1;
-		$mail->addPlain($textPart);
-		$mail->setHTML($htmlPart);
-//		$mail->theParts['html']['content'] = $this->parse($mail->theParts['html']['content']);
-		if($lockFileFound)
-			file_put_contents($lockFile, time()); // refresh lock
-		return $mail->send($addr);
+		return tx_rnbase_util_Misc::sendErrorMail($addr, $actionName, $e);
 	}
 
-	protected function getErrorMailText($e,$actionName) {
-		$textPart = 'This is an automatic email from TYPO3. Don\'t answer!'."\n\n";
-		$textPart .= 'UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName ."\n\n";
-		$textPart .= 'Message: ' . $e->getMessage()."\n\n";
-		$textPart .= "Stacktrace:\n". $e->__toString()."\n";
-		$textPart .= 'SITE_URL: ' . t3lib_div::getIndpEnv('TYPO3_SITE_URL')."\n";
-
-		tx_rnbase::load('tx_rnbase_util_TYPO3');
-		$textPart .= 'BE_USER: '.tx_rnbase_util_TYPO3::getBEUserUID()."\n";
-		$textPart .= 'FE_USER: '.tx_rnbase_util_TYPO3::getFEUserUID()."\n";
-
-		return $textPart;
-	}
-
-	protected function getErrorMailHtml($e,$actionName) {
-		$htmlPart = '<strong>This is an automatic email from TYPO3. Don\'t answer!</strong>';
-		$htmlPart .= '<div><strong>UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName .'</strong></div>';
-		$htmlPart .= '<p><strong>Message:</strong><br />' . $e->getMessage() . '</p>';
-		$htmlPart .= '<p><strong>Stacktrace:</strong><pre>'.$e->__toString().'</pre></p>';
-		$htmlPart .= '<p><strong>SITE_URL</strong><br />'. t3lib_div::getIndpEnv('TYPO3_SITE_URL'). '</p>';
-
-		$get = $this->removePasswordParams($_GET);
-		if(count($get))
-			$htmlPart .= '<p><strong>_GET</strong><br />'. var_export($get, true). '</p>';
-
-		$post = $this->removePasswordParams($_POST);
-		if(count($post))
-			$htmlPart .= '<p><strong>_POST</strong><br />'. var_export($post, true). '</p>';
-
-		$cookie = $this->removePasswordParams($_COOKIE);
-		if(count($cookie))
-			$htmlPart .= '<p><strong>_COOKIE</strong><br />'. var_export($cookie, true). '</p>';
-
-		$htmlPart .= '<p><strong>_SERVER</strong><br />'. var_export($this->removePasswordParams($_SERVER), true). '</p>';
-		if($e instanceof tx_rnbase_util_Exception) {
-			$additional = $e->getAdditional();
-			if($additional)
-				$htmlPart .= '<p><strong>Additional Data:</strong><br />' . strval($additional) . '</p>';
-		}
-
-		tx_rnbase::load('tx_rnbase_util_TYPO3');
-		$htmlPart .= '<p><strong>BE_USER:</strong> '.tx_rnbase_util_TYPO3::getBEUserUID().'</p>';
-		$htmlPart .= '<p><strong>FE_USER:</strong> '.tx_rnbase_util_TYPO3::getFEUserUID().'</p>';
-
-		return $htmlPart;
-	}
-
-	protected function removePasswordParams(array $parameters) {
-		foreach ($parameters as $parameterName => $parameterValue) {
-			if(is_array($parameterValue))
-				$parameters[$parameterName] =  $this->removePasswordParams($parameterValue);
-			elseif(preg_match('/passwor(t|d)/', $parameterName)){
-				unset($parameters[$parameterName]);
-			}
-		}
-
-		return $parameters;
-	}
 
   /**
    * This is returned, if an invalid action has been send.
