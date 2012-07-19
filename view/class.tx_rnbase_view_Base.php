@@ -112,7 +112,7 @@ class tx_rnbase_view_Base{
    * @param tx_rnbase_util_FormatUtil $formatter
    */
   function createOutput($template, &$viewData, &$configurations, &$formatter) {
-  	
+  	return $template;
   }
   /**
    * Kindklassen können hier einen Subpart-Marker angeben, der initial als Template
