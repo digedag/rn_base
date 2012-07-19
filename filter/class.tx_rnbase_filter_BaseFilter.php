@@ -238,8 +238,9 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 			$pageBrowser->setState($configurations->getParameters(), $listSize, $pageSize);
 
 			// Nach dem Item nur suchen wenn über die Parameter kein Pointer gesetzt wurde.
-			if ($pageBrowser->getPointer() <= 0 && is_array($cfg['pointerFromItem'])
-				&& ($itemId = $configurations->getParameters()->get($cfg['pointerFromItem']['param']))) {
+			if (is_array($cfg['pointerFromItem'])
+				&& !$configurations->getParameters()->offsetExists($pageBrowser->getParamName('pointer'))
+				&& ($itemId = $configurations->getParameters()->get($cfg['pointerFromItem']['param']))) {	
 				// Wir erzeugen uns das SQl der eigentlichen Abfrage.
 				// Dabei wollen wir auch die rownum haben!
 				$sql = call_user_func($searchCallback,
