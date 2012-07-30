@@ -519,12 +519,13 @@ MAYDAYPAGE;
 		$mail = tx_rnbase::makeInstance('tx_rnbase_util_Mail');
 		$mail->setSubject('Exception on site '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
 		$mail->setFrom(tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'fromEmail'));
+		$mail->setTo($mailAddr);
 		$mail->setTextPart($textPart);
 		$mail->setHtmlPart($htmlPart);
 
 		if($lockFileFound && !$ignoreMailLock)
 			file_put_contents($lockFile, time()); // refresh lock
-		return $mail->send($mailAddr);
+		return $mail->send();
 	}
 	protected static function getErrorMailText($e,$actionName) {
 		$textPart = 'This is an automatic email from TYPO3. Don\'t answer!'."\n\n";
