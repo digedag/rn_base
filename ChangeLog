@@ -3,7 +3,7 @@
 Änderungen
 ----------
 
-v0.11.14 (??.06.2012)
+v0.11.14 (02.08.2012)
  * filter_Base. Always set SearchCallback. Thanks to Michael Wagner!
  * Small fix in SimpleMarker. Thanks to Thomas Reuleke!
  * FormTool::createSortLink() fixed if no params in url present. Thanks to Thomas Reuleke!
