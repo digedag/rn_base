@@ -92,6 +92,13 @@ class tx_rnbase_util_TYPO3 {
 		return array();
 	}
 	/**
+	 * Wrapper function for t3lib_extMgm::isLoaded()
+	 * @param string $_EXTKEY
+	 */
+	public static function isExtLoaded($_EXTKEY) {
+		return t3lib_extMgm::isLoaded($_EXTKEY);
+	}
+	/**
 	 * Liefert die Versionsnummer einer Extension
 	 *
 	 * @param string $extKey

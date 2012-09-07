@@ -153,13 +153,17 @@ class tx_rnbase_util_DB {
 			// Zur Where-Clause noch die gültigen Felder hinzufügen
 			$sysPage = tx_rnbase_util_TYPO3::getSysPage();
 			$mode = (TYPO3_MODE == 'BE') ? 1 : 0;
-			if(intval($arr['enablefieldsbe']))
+			$ignoreArr = array();
+			if(intval($arr['enablefieldsbe'])) {
 				$mode = 1;
+				// Im BE alle sonstigen Enable-Fields ignorieren
+				$ignoreArr = array('starttime'=>1, 'endtime'=>1, 'fe_group'=>1);
+			}
 			elseif(intval($arr['enablefieldsfe']))
 				$mode = 0;
 			// Workspaces: Bei Tabellen mit Workspace-Support werden die EnableFields automatisch reduziert. Die Extension
 			// Muss aus dem ResultSet ggf. Datensätze entfernen.
-			$enableFields = $sysPage->enableFields($tableName, $mode);
+			$enableFields = $sysPage->enableFields($tableName, $mode, $ignoreArr);
 			// Wir setzen zusätzlich pid >=0, damit Version-Records nicht erscheinen
 			$enableFields .= ' AND '.$tableName.'.pid >=0';
 			// Replace tablename with alias
