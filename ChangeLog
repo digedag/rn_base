@@ -3,7 +3,7 @@
 Änderungen
 ----------
 
-v0.11.15 (??.09.2012)
+v0.11.15 (10.09.2012)
  * tx_rnbase_util_DB: enablefieldsbe removes more fields like starttime, fe_group etc.
 
 v0.11.14 (02.08.2012)
