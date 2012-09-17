@@ -38,6 +38,12 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase {
 	private $db = null;
 
 	/**
+	 *
+	 * @var int
+	 */
+	private $lastInsertId = 0;
+
+	/**
 	 * @param array $credentials
 	 * @throws tx_rnbase_util_db_Exception
 	 */
@@ -60,6 +66,75 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase {
 	public function __call($methodName, $args) {
 		throw new Exception('Sorry, the class "'.get_class($this->db).'" does not support the method "'.$methodName.'".');
 		return call_user_func_array(array($this->db, $methodName), $args);
+	}
+
+	/**
+	 *
+	 * @param unknown_type $data
+	 * @return string|unknown
+	 */
+	protected function mssql_real_escape_string($data) {
+		if (!isset($data) || $data === '') {
+			return '';
+		}
+		if (is_numeric($data)) {
+			return $data;
+		}
+
+// 		$unpacked = unpack('H*hex', $data);
+// 		return '0x' . $unpacked['hex'];
+
+		$nonDdisplayables = array(
+				'/%0[0-8bcef]/',            // url encoded 00-08, 11, 12, 14, 15
+				'/%1[0-9a-f]/',             // url encoded 16-31
+				'/[\x00-\x08]/',            // 00-08
+				'/\x0b/',                   // 11
+				'/\x0c/',                   // 12
+				'/[\x0e-\x1f]/'             // 14-31
+		);
+		foreach ($nonDdisplayables as $regex){
+			$data = preg_replace( $regex, '', $data);
+		}
+		$data = str_replace("'", "''", $data);
+		return $data;
+	}
+
+
+	/**
+	 * Escaping and quoting values for MS SQL statements.
+	 * Usage count/core: 100
+	 *
+	 * @param	string		Input string
+	 * @param	string		Table name for which to quote string. Just enter the table that the field-value is selected from (and any DBAL will look up which handler to use and then how to quote the string!).
+	 * @return	string		Output string; Wrapped in single quotes and quotes in the string (" / ') and \ will be backslashed (or otherwise based on DBAL handler)
+	 * @see quoteStr()
+	 */
+	public function fullQuoteStr($str, $table) {
+		return '\'' . $this->mssql_real_escape_string($str) . '\'';
+	}
+
+	/**
+	 * Will fullquote all values in the one-dimensional array so they are ready to "implode" for an sql query.
+	 *
+	 * @param	array		Array with values (either associative or non-associative array)
+	 * @param	string		Table name for which to quote
+	 * @param	string/array		List/array of keys NOT to quote (eg. SQL functions) - ONLY for associative arrays
+	 * @return	array		The input array with the values quoted
+	 */
+	public function fullQuoteArray($arr, $table, $noQuote = FALSE) {
+		if (is_string($noQuote)) {
+			$noQuote = explode(',', $noQuote);
+			// sanity check
+		} elseif (!is_array($noQuote)) {
+			$noQuote = FALSE;
+		}
+
+		foreach ($arr as $k => $v) {
+			if ($noQuote === FALSE || !in_array($k, $noQuote)) {
+				$arr[$k] = $this->fullQuoteStr($v, $table);
+			}
+		}
+		return $arr;
 	}
 
 	/**
@@ -90,12 +165,7 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase {
 	 */
 	public function exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = ''){
 		$query = $this->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
-tx_rnbase_util_Debug::debug(array(
-		$query,
-		'@TODO: ADD " exec("$query SELECT @@IDENTITY as insertId") and store the insertId for the sql_insert_id method!!!',
-		'@see http://www.php.net/manual/en/function.mssql-query.php#25274'
-	), 'DEBUG: '.__FILE__.'&'.__METHOD__.' Line: '.__LINE__); // @TODO: remove me
-		$res = mssql_query($query, $this->db);
+		$res = $this->sql_query($query, $this->db);
 		return $res;
 	}
 	/**
@@ -107,10 +177,26 @@ tx_rnbase_util_Debug::debug(array(
 	 * @return string SQL query
 	 */
 	public function INSERTquery($table, $fields_values, $no_quote_fields = FALSE) {
-		return $GLOBALS['TYPO3_DB']->INSERTquery($table, $fields_values, $no_quote_fields);
+		// Table and fieldnames should be "SQL-injection-safe" when supplied to this
+		// function (contrary to values in the arrays which may be insecure).
+		if (is_array($fields_values) && !empty($fields_values)) {
+
+			// quote and escape values
+			$fields_values = $this->fullQuoteArray($fields_values, $table, $no_quote_fields);
+
+			// Build query:
+			$query = 'INSERT INTO ' . $table .
+				' (' . implode(',', array_keys($fields_values)) . ') VALUES ' .
+				'(' . implode(',', $fields_values) . ')';
+
+			return $query;
+		}
+// 		return $GLOBALS['TYPO3_DB']->INSERTquery($table, $fields_values, $no_quote_fields);
 	}
 	/**
 	 * Creates and executes an INSERT SQL-statement for $table from the array with field/value pairs $fields_values.
+	 *
+	 * @see http://www.php.net/manual/en/function.mssql-query.php#25274 For lastInsertId.
 	 *
 	 * @param	string		Table name
 	 * @param	array		Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$insertFields" with 'fieldname'=>'value' and pass it to this function as argument.
@@ -118,7 +204,11 @@ tx_rnbase_util_Debug::debug(array(
 	 * @return	pointer		MsSQL result pointer / DBAL object
 	 */
 	public function exec_INSERTquery($table, $fields_values, $no_quote_fields = FALSE) {
-		$res = mssql_query($this->INSERTquery($table, $fields_values, $no_quote_fields), $this->db);
+		$query = $this->INSERTquery($table, $fields_values, $no_quote_fields);
+
+		$query = 'exec("'.$query.';'.PHP_EOL.'SELECT @@IDENTITY as uid");';
+		$res = $this->sql_query($query);
+		list($this->lastInsertId) = mssql_fetch_row($res);
 		return $res;
 	}
 
@@ -132,7 +222,32 @@ tx_rnbase_util_Debug::debug(array(
 	 * @return string sql query
 	 */
 	public function UPDATEquery($table, $where, $fields_values, $no_quote_fields = FALSE) {
-		return $GLOBALS['TYPO3_DB']->UPDATEquery($table, $where, $fields_values, $no_quote_fields);
+			// Table and fieldnames should be "SQL-injection-safe" when supplied to this
+			// function (contrary to values in the arrays which may be insecure).
+		if (is_string($where)) {
+			$fields = array();
+			if (is_array($fields_values) && count($fields_values)) {
+
+					// quote and escape values
+				$nArr = $this->fullQuoteArray($fields_values, $table, $no_quote_fields);
+
+				foreach ($nArr as $k => $v) {
+					$fields[] = $k . '=' . $v;
+				}
+			}
+
+				// Build query:
+			$query = 'UPDATE ' . $table . ' SET ' . implode(',', $fields) .
+					(strlen($where) > 0 ? ' WHERE ' . $where : '');
+
+			return $query;
+		} else {
+			throw new InvalidArgumentException(
+				'Fatal Error: "Where" clause argument for UPDATE query was not a string in $this->UPDATEquery() !',
+				1270853880
+			);
+		}
+// 		return $GLOBALS['TYPO3_DB']->UPDATEquery($table, $where, $fields_values, $no_quote_fields);
 	}
 	/**
 	 * Creates and executes an UPDATE SQL-statement for $table where $where-clause (typ. 'uid=...') from the array with field/value pairs $fields_values.
@@ -144,7 +259,8 @@ tx_rnbase_util_Debug::debug(array(
 	 * @return	pointer		MsSQL result pointer / DBAL object
 	 */
 	public function exec_UPDATEquery($table, $where, $fields_values, $no_quote_fields = FALSE) {
-		$res = mssql_query($this->UPDATEquery($table, $where, $fields_values, $no_quote_fields), $this->db);
+		$query = $this->UPDATEquery($table, $where, $fields_values, $no_quote_fields);
+		$res = $this->sql_query($query);
 		return $res;
 	}
 
@@ -167,7 +283,8 @@ tx_rnbase_util_Debug::debug(array(
 	 * @return	pointer		MsSQL result pointer / DBAL object
 	 */
 	public function exec_DELETEquery($table, $where) {
-		$res = mssql_query($this->DELETEquery($table, $where), $this->db);
+		$query = $this->DELETEquery($table, $where);
+		$res = $this->sql_query($query);
 		return $res;
 	}
 
@@ -200,7 +317,6 @@ tx_rnbase_util_Debug::debug(array(
 			);
 
 		}
-		$this->setSqlMode($link);
 
 		return $link;
 	}
@@ -220,37 +336,21 @@ tx_rnbase_util_Debug::debug(array(
 		$dbUsername = $credArr['username'];
 		$dbPassword = $credArr['password'];
 
-			// if the connection fails we need a different method to get the error message
+		// if the connection fails we need a different method to get the error message
 		@ini_set('track_errors', 1);
 		@ini_set('html_errors', 0);
 
-			// check if MySQL extension is loaded
-		if (!extension_loaded('mysql')) {
-			$message = 'Database Error: It seems that MySQL support for PHP is not installed!';
+		// check if MySQL extension is loaded
+		if (!extension_loaded('mssql')) {
+			$message = 'Database Error: It seems that MsSQL support for PHP is not installed!';
 			throw new RuntimeException($message, 1271492606);
 		}
 
 		// Check for client compression
-		$isLocalhost = (
-			t3lib_div::isFirstPartOfStr($dbHost, 'localhost')
-			|| t3lib_div::isFirstPartOfStr($dbHost, '127.0.0.1')
-		);
 		if ($credArr['no_pconnect']) {
-			if ($credArr['dbClientCompress'] && !$isLocalhost) {
-				// We use PHP's default value for 4th parameter (new_link), which is false.
-				// See PHP sources, for example: file php-5.2.5/ext/mysql/php_mysql.c,
-				// function php_mssql_do_connect(), near line 525
-				$link = @mssql_connect($dbHost, $dbUsername, $dbPassword, FALSE, mssql_CLIENT_COMPRESS);
-			} else {
-				$link = @mssql_connect($dbHost, $dbUsername, $dbPassword);
-			}
+			$link = @mssql_connect($dbHost, $dbUsername, $dbPassword);
 		} else {
-			if ($credArr['dbClientCompress'] && !$isLocalhost) {
-				// See comment about 4th parameter in block above
-				$link = @mssql_pconnect($dbHost, $dbUsername, $dbPassword, mssql_CLIENT_COMPRESS);
-			} else {
-				$link = @mssql_pconnect($dbHost, $dbUsername, $dbPassword);
-			}
+			$link = @mssql_pconnect($dbHost, $dbUsername, $dbPassword);
 		}
 
 		$error_msg = $php_errormsg;
@@ -275,25 +375,6 @@ tx_rnbase_util_Debug::debug(array(
 		return $link;
 	}
 
-	/**
-	 * Fixes the SQL mode by unsetting NO_BACKSLASH_ESCAPES if found.
-	 *
-	 * @return void
-	 */
-	private function setSqlMode($dblink) {
-		$resource = mssql_query('SELECT @@SESSION.sql_mode;', $dblink);
-		if (is_resource($resource)) {
-			$result = mssql_fetch_row($resource);
-			if (isset($result[0]) && $result[0] && strpos($result[0], 'NO_BACKSLASH_ESCAPES') !== FALSE) {
-				$modes = array_diff(
-					t3lib_div::trimExplode(',', $result[0]),
-					array('NO_BACKSLASH_ESCAPES')
-				);
-				$query = 'SET sql_mode=\'' . mssql_real_escape_string(implode(',', $modes)) . '\';';
-				mssql_query($query, $dblink);
-			}
-		}
-	}
 	/**
 	 * Executes query
 	 * mssql_query() wrapper function
@@ -338,13 +419,13 @@ tx_rnbase_util_Debug::debug(array(
 
 	/**
 	 * Get the ID generated from the previous INSERT operation
-	 * mssql_insert_id() wrapper function
+	 *
+	 * @see http://www.php.net/manual/en/function.mssql-query.php#25274 For lastInsertId.
 	 *
 	 * @return	integer		The uid of the last inserted record.
 	 */
 	public function sql_insert_id() {
-		throw new Exception('MS SQL doesnt support insert_id. @see '.__CLASS__.'::exec_SELECTquery');
-		return mssql_insert_id($this->db);
+		return $this->lastInsertId;
 	}
 
 	/**
@@ -354,7 +435,7 @@ tx_rnbase_util_Debug::debug(array(
 	 * @return	string		MySQL error string.
 	 */
 	public function sql_error() {
-		return mssql_get_last_message($this->db);
+		return mssql_get_last_message();
 	}
 }
 
