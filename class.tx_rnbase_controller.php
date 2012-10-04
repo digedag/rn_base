@@ -314,9 +314,7 @@ class tx_rnbase_controller {
 		if($verbose) {
 			$ret = '<div><strong>UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName .'</strong>'.$verbose.'</div>';
 		}
-		elseif($ret) {
-			$ret .= $verbose;
-		}else {
+		elseif(!$ret) {
 			$ret = '<div><strong>Leider ist ein unerwarteter Fehler aufgetreten.</strong></div>';
 		}
 		return $ret;
