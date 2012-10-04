@@ -311,10 +311,12 @@ class tx_rnbase_controller {
 
 		$ret = $configurations->getLL('ERROR_'.$e->getCode(), '');
 		$ret = $ret ? $ret : $configurations->getLL('ERROR_default', '');
-		if($ret) {
-			$ret .= $verbose;
+		if($verbose) {
+			$ret = '<div><strong>UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName .'</strong>'.$verbose.'</div>';
 		}
-		else {
+		elseif($ret) {
+			$ret .= $verbose;
+		}else {
 			$ret = '<div><strong>Leider ist ein unerwarteter Fehler aufgetreten.</strong></div>';
 		}
 		return $ret;
