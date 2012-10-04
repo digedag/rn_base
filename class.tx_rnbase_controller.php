@@ -308,10 +308,9 @@ class tx_rnbase_controller {
 	private function getErrorMessage($actionName, Exception $e, $configurations) {
 		$verbose = intval(tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'verboseMayday')) ?
 			'<br /><pre>'.$e->__toString().'</pre>' : '';
-		// Zuerst nach einem ErrorCode suchen
-		$errCode = $e->getCode();
-		$errCode = $errCode ? $errCode : 'default';
-		$ret = $configurations->getLL('ERROR_'.$errCode, '');
+
+		$ret = $configurations->getLL('ERROR_'.$e->getCode(), '');
+		$ret = $ret ? $ret : $configurations->getLL('ERROR_default', '');
 		if($ret) {
 			$ret .= $verbose;
 		}
