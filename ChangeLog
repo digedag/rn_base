@@ -3,6 +3,10 @@
 Änderungen
 ----------
 
+v0.12.0 (05.10.2012)
+ * Full support for MSSQL database access. Thanks to Michael Wagner!
+ * New non verbose unhandled exception output. Thanks to Hannes Bochmann!
+
 v0.11.16 (13.09.2012)
  * tx_rnbase_util_DB: enablefieldsbe removes more fields like starttime, fe_group etc.
 
