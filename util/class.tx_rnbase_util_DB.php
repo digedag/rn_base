@@ -124,7 +124,7 @@ class tx_rnbase_util_DB {
 			$tableAlias = isset($from[2]) && strlen(trim($from[2])) > 0  ? trim($from[2]) : false;
 		}
 
-		$where = is_string($arr['where']) ? $arr['where'] : '1';
+		$where = is_string($arr['where']) ? $arr['where'] : '1=1';
 		$groupBy = is_string($arr['groupby']) ? $arr['groupby'] : '';
 		if($groupBy) {
 			$groupBy .= is_string($arr['having']) > 0 ? ' HAVING '.$arr['having'] : '';
