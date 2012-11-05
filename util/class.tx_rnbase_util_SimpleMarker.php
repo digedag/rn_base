@@ -27,11 +27,11 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_util_BaseMarker');
 
 /**
- * A generic marker class. 
+ * A generic marker class.
  */
 class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 	public function __construct($options = array()) {
-		if(array_key_exists('classname', $options))	
+		if(array_key_exists('classname', $options))
 			$this->setClassname($options['classname']);
 	}
 
@@ -83,7 +83,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 
 			// Die Parameter erzeugen
 			$params = array();
-			$paramMap = $formatter->getConfigurations()->get($confId.'links.'.$linkId.'._cfg.params.');
+			$paramMap = (array) $formatter->getConfigurations()->get($confId.'links.'.$linkId.'._cfg.params.');
 			foreach($paramMap As $paramName => $colName) {
 				if(is_scalar($colName) && array_key_exists($colName, $item->record))
 					$params[$paramName] = $item->record[$colName];
@@ -105,7 +105,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 			}
 			else {
 				$linkMarker = $marker . '_' . strtoupper($linkId).'LINK';
-				$remove = intval($formatter->getConfigurations()->get($confId.'links.'.$linkId.'.removeIfDisabled')); 
+				$remove = intval($formatter->getConfigurations()->get($confId.'links.'.$linkId.'.removeIfDisabled'));
 				$this->disableLink($markerArray, $subpartArray, $wrappedSubpartArray, $linkMarker, $remove > 0);
 			}
 		}
@@ -118,7 +118,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 	 *  	_cfg.params.param1.class = tx_mkeasy_marker_EasyDoc
 	 *  	_cfg.params.param1.method = createSecureLinkParam
 	 *  }
-	 *  In this case the call is static. It is also possible to subclass SimpleMarker 
+	 *  In this case the call is static. It is also possible to subclass SimpleMarker
 	 *  an use the keyword "this" as class. In that case the current marker instance is
 	 *  called.
 	 *
