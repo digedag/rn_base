@@ -204,7 +204,7 @@ class tx_rnbase_util_DB {
 		);
 		$rows = array();
 		$sqlError = false;
-		if(is_resource($rRes)) {
+		if(is_resource($res)) {
 			//$wrapper = is_string($arr['wrapperclass']) ? tx_rnbase::makeInstanceClassName($arr['wrapperclass']) : 0;
 			$wrapper = is_string($arr['wrapperclass']) ? trim($arr['wrapperclass']) : 0;
 			$callback = isset($arr['callback']) ? $arr['callback'] : false;
