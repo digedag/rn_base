@@ -202,30 +202,40 @@ class tx_rnbase_util_DB {
 			$orderBy,
 			$limit
 		);
-
-		//$wrapper = is_string($arr['wrapperclass']) ? tx_rnbase::makeInstanceClassName($arr['wrapperclass']) : 0;
-		$wrapper = is_string($arr['wrapperclass']) ? trim($arr['wrapperclass']) : 0;
-		$callback = isset($arr['callback']) ? $arr['callback'] : false;
-
 		$rows = array();
-		while($row = $database->sql_fetch_assoc($res)){
-			// Workspacesupport
-			self::lookupWorkspace($row, $tableName, $sysPage, $arr);
-			if(!is_array($row)) continue;
-			$item = ($wrapper) ? tx_rnbase::makeInstance($wrapper, $row) : $row;
-			if($callback) {
-				call_user_func($callback, $item);
-				unset($item);
+		$sqlError = false;
+		if(is_resource($rRes)) {
+			//$wrapper = is_string($arr['wrapperclass']) ? tx_rnbase::makeInstanceClassName($arr['wrapperclass']) : 0;
+			$wrapper = is_string($arr['wrapperclass']) ? trim($arr['wrapperclass']) : 0;
+			$callback = isset($arr['callback']) ? $arr['callback'] : false;
+			
+			while($row = $database->sql_fetch_assoc($res)){
+				// Workspacesupport
+				self::lookupWorkspace($row, $tableName, $sysPage, $arr);
+				if(!is_array($row)) continue;
+				$item = ($wrapper) ? tx_rnbase::makeInstance($wrapper, $row) : $row;
+				if($callback) {
+					call_user_func($callback, $item);
+					unset($item);
+				}
+				else
+					$rows[] = $item;
 			}
-			else
-				$rows[] = $item;
+			$database->sql_free_result($res);
 		}
-		$database->sql_free_result($res);
+		else {
+			$sqlError = $database->sql_error();
+			$sql = $database->SELECTquery($what,$fromClause,$where,$groupBy,$orderBy,$limit);
+			tx_rnbase::load('tx_rnbase_util_Logger');
+			tx_rnbase_util_Logger::fatal('SQL-Error occured!', 'rn_base', array('Error'=>$sqlError, 'Query'=>$sql));
+		}
+
 		if($debug)
 			tx_rnbase_util_Debug::debug(array(
 				'Rows retrieved '=>count($rows),
 				'Time '=>(microtime(true) - $time),
 				'Memory consumed '=>(memory_get_usage()-$mem),
+				'Error'=>$sqlError,
 			),'SQL statistics');
 		return $rows;
 	}
