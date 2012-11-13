@@ -67,6 +67,18 @@ class tx_rnbase_util_Debug {
 			return t3lib_div::view_array($array_in);
 		}
 	}
+	
+	/**
+	 * @return string
+	 */
+	public static function getDebugTrail() {
+		tx_rnbase::load('tx_rnbase_util_TYPO3');
+		if(tx_rnbase_util_TYPO3::isTYPO45OrHigher()) {
+			return t3lib_utility_Debug::debugTrail(); 
+		} elseif (is_callable(array('t3lib_div', 'debug_trail'))) {
+			return t3lib_div::debug_trail();
+		}
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Debug.php']) {
