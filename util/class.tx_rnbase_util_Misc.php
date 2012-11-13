@@ -113,6 +113,7 @@ class tx_rnbase_util_Misc {
 	 */
 	public static function mayday($msg, $extKey = '') {
 		tx_rnbase::load('tx_rnbase_util_Logger');
+		tx_rnbase::load('tx_rnbase_util_Debug');
 
 		tx_rnbase_util_Logger::fatal($msg, $extKey);
 		$aTrace		= debug_backtrace();
@@ -135,7 +136,7 @@ class tx_rnbase_util_Misc {
 		$aDebug[] = '<span class="notice"><b>Call -3: </b>' . str_replace(PATH_site, '/', $aTrace3['file']) . ':' . $aTrace3['line']  . ' | <b>' . $aTrace4['class'] . $aTrace4['type'] . $aTrace4['function'] . '</b></span><br />With parameters: ' . (!empty($aTrace4['args']) ? self::viewMixed($aTrace4['args']) : ' no parameters');
 		$aDebug[] = '<hr/>';
 
-		if($debugTrail = self::getDebugTrailDependendOnTypo3Version()) {
+		if($debugTrail = tx_rnbase_util_Debug::getDebugTrail()) {
 			$aDebug[] = '<span class="notice">' . $debugTrail . '</span>';
 			$aDebug[] = '<hr/>';
 		}
@@ -212,18 +213,6 @@ MAYDAYPAGE;
 			echo($sPage);
 	}
 	
-	/**
-	 * @return string
-	 */
-	public static function getDebugTrailDependendOnTypo3Version() {
-		tx_rnbase::load('tx_rnbase_util_TYPO3');
-		if(tx_rnbase_util_TYPO3::isTYPO45OrHigher()) {
-			return t3lib_utility_Debug::debugTrail(); 
-		} elseif (is_callable(array('t3lib_div', 'debug_trail'))) {
-			return t3lib_div::debug_trail();
-		}
-	}
-
 	/**
 	 * Creates a html view for a php object
    * This method is taken from the great ameos_formidable extension.
