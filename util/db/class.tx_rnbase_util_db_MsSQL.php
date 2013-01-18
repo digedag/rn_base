@@ -206,6 +206,11 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase {
 	public function exec_INSERTquery($table, $fields_values, $no_quote_fields = FALSE) {
 		$query = $this->INSERTquery($table, $fields_values, $no_quote_fields);
 
+		// Wir müssen alle doublequotes (") durch "" escapen.
+		// Da wir die komplette Query über einen exec in "QUERY" schreiben,
+		// treten hier SQL-Fehler auf, wenn " im Datensatz vorkommt.
+		$query = str_replace('"', '""', $query);
+
 		$query = 'exec("'.$query.';'.PHP_EOL.'SELECT @@IDENTITY as uid");';
 		$res = $this->sql_query($query);
 		list($this->lastInsertId) = mssql_fetch_row($res);
