@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v0.12.2 (??.01.2013)
+ * Bugfix for MSSQL-Database-Access.  Thanks to Michael Wagner!
+
 v0.12.1 (29.11.2012)
  * Log sql errors for Select-Statements.
  * New method util_Debug::getDebugTrail(). Used for TYPO3 4.7 compatibility. Thanks to Hannes Bochmann!
