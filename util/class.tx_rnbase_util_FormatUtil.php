@@ -40,11 +40,12 @@ class tx_rnbase_util_FormatUtil {
 
   /**
    * Konstruktor
+   * @param tx_rnbase_configurations $configurations
    */
   function tx_rnbase_util_FormatUtil($configurations, $cObjClass = 'tslib_cObj') {
     $this->configurations = $configurations;
 // t3lib_div::debug($this->configurations->get('tt_content.') , 'util_formatUtil');
-    $this->cObj = $configurations->cObj;
+    $this->cObj = $configurations->getCObj();
 
 //    $this->cObj = t3lib_div::makeInstance($cObjClass);
 //    $this->cObj->data = $this->configurations->get('tt_content.');

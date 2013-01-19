@@ -25,6 +25,13 @@
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_util_Misc');
 
+class tx_rnbase_dummyMisc extends tx_rnbase_util_Misc {
+
+	public static function callGetErrorMailHtml($e,$actionName) {
+		return self::getErrorMailHtml($e,$actionName);
+	}
+}
+
 class tx_rnbase_tests_misc_testcase extends tx_phpunit_testcase {
 	
 	public function test_encodeParams() {
@@ -46,6 +53,24 @@ class tx_rnbase_tests_misc_testcase extends tx_phpunit_testcase {
 		$this->assertEquals($hash2, $hash1);
 		
 	}
+
+	function testGetErrorMailHtmlRemovesPasswordParams() {
+		$_GET['getSubArray']['password'] = 'somePass';
+		$_GET['getSubArray']['getSubDontRemove'] = 'inSubArray';
+		$_GET['getDontRemove'] = 'inRootArray';
+		$_POST['passwort'] = 'somePass';
+		$_POST['postDontRemove'] = 'somePass';
+
+		$html = tx_rnbase_dummyMisc::callGetErrorMailHtml(new Exception('test'), 'myaction');
+		// hier wird nur die removePasswordParams Methode getestet,
+		// lässt sich im HTML schwierig prüfen.
+		// Besser direkt den removePasswordParams Aufruf testen?
+		$this->assertNotContains('password', $html, '"Password" Params not removed!');
+		$this->assertNotContains('passwort', $html, '"Passwort" Params not removed!');
+		$this->assertContains('postDontRemove', $html, '"postDontRemove" Params removed!');
+		$this->assertContains('getDontRemove', $html, '"getDontRemove" Params removed!');
+		$this->assertContains('getSubDontRemove', $html, '"getSubDontRemove" Params removed!');
+  }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/class.tx_rnbase_tests_misc_testcase.php']) {

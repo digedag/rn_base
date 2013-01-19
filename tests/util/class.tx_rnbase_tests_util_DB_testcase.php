@@ -28,6 +28,19 @@ tx_rnbase::load('tx_rnbase_util_DB');
 tx_rnbase::load('tx_rnbase_util_SearchBase');
 
 class tx_rnbase_tests_util_DB_testcase extends tx_phpunit_testcase {
+	public function test_doSelectWithEnableFieldsBE() {
+		if(!tx_rnbase_util_TYPO3::isExtLoaded('tt_news'))
+			$this->markTestSkipped();
+
+		$options['sqlonly'] = 1;
+		$options['enablefieldsbe'] = 1;
+		$sql = tx_rnbase_util_DB::doSelect('*', 'tt_news', $options);
+		$this->assertRegExp('/deleted=/', $sql, 'deleted is missing');
+
+		$fields = array('hidden', 'starttime', 'endtime', 'fe_group');
+		foreach ($fields As $field)
+			$this->assertNotRegExp('/'.$field.'/', $sql, $field.' found');
+	}
 	/**
 	 * @dataProvider singleFieldWhereProvider
 	 */
