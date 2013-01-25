@@ -33,8 +33,8 @@ class tx_rnbase_util_Exception extends Exception {
 	 * @param int $code
 	 * @param mixed $additional
 	 */
-	public function __construct($message, $code=0, $additional=false) {
-		parent::__construct($message, $code);
+	public function __construct($message, $code=0, $additional=false, $previous=null) {
+		parent::__construct($message, $code, $previous);
 		$this->additional = $additional;
 	}
 	/**
