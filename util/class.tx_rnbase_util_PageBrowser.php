@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2007 Rene Nitzsche
+ *  (c) 2007-2013 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -21,6 +21,8 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
+
+tx_rnbase::load('tx_rnbase_util_Math');
 
 /**
  * Contains utility functions for HTML-Forms
@@ -47,7 +49,7 @@ class tx_rnbase_util_PageBrowser implements PageBrowser {
 	function setState($parameters, $listSize, $pageSize) {
 		$this->setPointer(is_object($parameters) ? intval($parameters->offsetGet($this->getParamName('pointer'))) : 0);
 		$this->listSize = $listSize;
-		$this->pageSize = t3lib_div::intInRange(intval($pageSize) ? $pageSize : 10, 1, 1000);
+		$this->pageSize = tx_rnbase_util_Math::intInRange(intval($pageSize) ? $pageSize : 10, 1, 1000);
 	}
 	/**
 	 * Set a new page pointer
