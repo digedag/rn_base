@@ -3,8 +3,10 @@
 Änderungen
 ----------
 
-v0.12.2 (??.01.2013)
+v0.12.2 (??.02.2013)
  * Bugfix for MSSQL-Database-Access.  Thanks to Michael Wagner!
+ * Cache-API extended for TYPO3 6.0! Once again...
+ * PageBrowser fixed for TYPO3 6.0
 
 v0.12.1 (29.11.2012)
  * Log sql errors for Select-Statements.
