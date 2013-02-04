@@ -73,6 +73,9 @@ class tx_rnbase_util_Templates {
 		$tmpl = self::getTSTemplate();
 		$file = $tmpl->getFileName($fileName);
 
+		if(TYPO3_MODE == 'BE' && strpos($file, PATH_site) === FALSE)
+			$file = PATH_site.$file; // Im BE auf absoluten Pfad setzen
+
 		$templateCode = t3lib_div::getURL($file);
 		if(!$templateCode) throw new Exception('File not found: '. htmlspecialchars($file));
 		$template = self::getSubpart($templateCode, $subpart);
