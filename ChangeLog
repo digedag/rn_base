@@ -9,6 +9,7 @@ v0.12.2 (??.02.2013)
  * PageBrowser fixed for TYPO3 6.0
  * TSDAM: HTML-Template looked up by tx_rnbase_util_Templates now
  * util_Templates::getSubpartFromFile(): Template loading in BE improved.
+ * util_Misc::initTSFE(): init languages for better TS processing
 
 v0.12.1 (29.11.2012)
  * Log sql errors for Select-Statements.
