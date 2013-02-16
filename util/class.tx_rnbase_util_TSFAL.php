@@ -79,12 +79,11 @@ class tx_rnbase_util_TSFAL {
 		$conf = $this->createConf($tsConf);
 		$file = $conf->get('template');
 		$file = $file ? $file : 'EXT:rn_base/res/simplegallery.html';
-		$templateCode = $conf->getCObj()->fileResource($file);
-		if(!$templateCode) return '<!-- NO TEMPLATE FOUND -->';
 		$subpartName = $conf->get('subpartName');
 		$subpartName = $subpartName ? $subpartName : '###DAM_IMAGES###';
-		$templateCode = $conf->getCObj()->getSubpart($templateCode,$subpartName);
-		if(!$templateCode) return '<!-- NO SUBPART '.$subpartName.' FOUND -->';
+		$templateCode = tx_rnbase_util_Templates::getSubpartFromFile($file, $subpartName);
+
+		if(!$templateCode) return '<!-- NO TEMPLATE OR SUBPART '.$subpartName.' FOUND -->';
 
 		// Is there a customized language field configured
 		$langField = DEFAULT_LOCAL_FIELD;
