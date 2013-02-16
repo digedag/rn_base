@@ -1,26 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2008 Rene Nitzsche (rene@system25.de)
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2008-2013 Rene Nitzsche (rene@system25.de)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 
 /**
@@ -76,15 +76,31 @@ class tx_rnbase_util_TYPO3 {
 	public static function isTYPO42OrHigher() {
 		return self::isTYPO3VersionOrHigher(4002000);
 	}
+	private static $TYPO3_VERSION = false;
 	/**
 	 * Prüft, ob eine bestimmte TYPO3 Version vorhanden ist.
 	 *
-	 * @param int $version
+	 * @param int $versionNumber
 	 * @return boolean
 	 */
 	public static function isTYPO3VersionOrHigher($version) {
-		return t3lib_div::int_from_ver(TYPO3_version) >= $version;
+		if(self::$TYPO3_VERSION === false) {
+			self::$TYPO3_VERSION = self::convertVersionNumberToInteger(TYPO3_version);
+		}
+		return self::$TYPO3_VERSION >= $version;
 	}
+	/**
+	 * Returns an integer from a three part version number, eg '4.12.3' -> 4012003
+	 * This method is taken from t3lib_utility_VersionNumber.
+	 * 
+	 * @param $versionNumber string Version number on format x.x.x
+	 * @return integer Integer version of version number (where each part can count to 999)
+	 */
+	public static function convertVersionNumberToInteger($versionNumber) {
+		$versionParts = explode('.', $versionNumber);
+		return intval((int) $versionParts[0] . str_pad((int) $versionParts[1], 3, '0', STR_PAD_LEFT) . str_pad((int) $versionParts[2], 3, '0', STR_PAD_LEFT));
+	}
+
 	/**
 	 * Liefert das EM_CONF-Array einer Extension
 	 *

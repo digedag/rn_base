@@ -10,6 +10,7 @@ v0.12.2 (??.02.2013)
  * TSDAM: HTML-Template looked up by tx_rnbase_util_Templates now
  * util_Templates::getSubpartFromFile(): Template loading in BE improved.
  * util_Misc::initTSFE(): init languages for better TS processing
+ * util_TYPO3: deprecation log for version number fixed
 
 v0.12.1 (29.11.2012)
  * Log sql errors for Select-Statements.
