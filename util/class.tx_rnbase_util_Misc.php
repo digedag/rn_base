@@ -527,7 +527,12 @@ MAYDAYPAGE;
 		/* @var $mail tx_rnbase_util_Mail */
 		$mail = tx_rnbase::makeInstance('tx_rnbase_util_Mail');
 		$mail->setSubject('Exception on site '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
-		$mail->setFrom(tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'fromEmail'));
+		
+		$from = tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'fromEmail');
+		$from = $from ? $from : $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
+		$from = $from ? $from : 'error@' . t3lib_div::getIndpEnv('TYPO3_HOST_ONLY'); 
+		$mail->setFrom($from);
+		
 		$mail->setTo($mailAddr);
 		$mail->setTextPart($textPart);
 		$mail->setHtmlPart($htmlPart);
