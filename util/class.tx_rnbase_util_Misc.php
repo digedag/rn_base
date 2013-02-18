@@ -321,6 +321,13 @@ MAYDAYPAGE;
 			$temp_sys_page->init(0);
 			$GLOBALS['TSFE']->sys_page = $temp_sys_page;
 			$GLOBALS['TSFE']->initTemplate();
+			
+			// Bugfix: initLLvars does not check if config['config'] is an array
+			// which throws an warning when trying to access config['config']['language']
+			if(!is_array($GLOBALS['TSFE']->config['config'])){
+				$GLOBALS['TSFE']->config['config'] = array();
+			}
+			
 			$GLOBALS['TSFE']->initLLvars();
 			$GLOBALS['TSFE']->tmpl->getFileName_backPath = $GLOBALS['TSFE']->tmpl->getFileName_backPath ? $GLOBALS['TSFE']->tmpl->getFileName_backPath : PATH_site;
 			//Basis Nutzergruppen
