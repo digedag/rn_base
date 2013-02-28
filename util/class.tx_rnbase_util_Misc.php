@@ -115,7 +115,7 @@ class tx_rnbase_util_Misc {
 		tx_rnbase::load('tx_rnbase_util_Logger');
 		tx_rnbase::load('tx_rnbase_util_Debug');
 
-		tx_rnbase_util_Logger::fatal($msg, $extKey);
+		tx_rnbase_util_Logger::fatal($msg, $extKey ? $extKey : 'rn_base');
 		$aTrace		= debug_backtrace();
 		$aLocation	= array_shift($aTrace);
 		$aTrace1	= array_shift($aTrace);

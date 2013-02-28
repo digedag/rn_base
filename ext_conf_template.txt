@@ -5,7 +5,7 @@ verboseMayday = 0
 dieOnMayday = 1
 
   # cat=basic//10; type=boolean; label= Throw exception if mayday is called.
-forceException4Mayday = 0
+forceException4Mayday = 1
 
   # cat=basic//10; type=string; label= Send emails for uncaught Exceptions. Commaseparated list of email addresses.
 sendEmailOnException = 

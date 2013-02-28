@@ -279,7 +279,6 @@ class tx_rnbase_util_DB {
 			$time = microtime(true);
 			$mem = memory_get_usage();
 			$sqlQuery = $database->INSERTquery($tablename,$values);
-// 			tx_rnbase_util_Debug::debug(array('SQL'=>$sql, 'table'=>$tablename,'values'=>$values));
 		}
 
 		self::watchOutDB(
@@ -482,32 +481,6 @@ class tx_rnbase_util_DB {
 		if (!is_object($database)) $database = $GLOBALS['TYPO3_DB'];
 
 		if(!is_resource($rRes) && $database->sql_error()) {
-			/*
-
-			@TODO: Here should be no mayday call! > throw an exception!
-
-			$msg  = 'SQL QUERY IS NOT VALID!' . PHP_EOL;
-			$msg .= 'ERROR: "' . $database->sql_error() . '"' . PHP_EOL;
-			$msg .= 'QUERY: "' . $database->debug_lastBuiltQuery . '"';
-
-			$debugArr = array(
-				'db_class' => get_class($database),
-				'error' => $database->sql_error(),
-				'sql' => $database->debug_lastBuiltQuery,
-			);
-
-			tx_rnbase::load('tx_rnbase_util_Logger');
-			tx_rnbase_util_Logger::fatal($msg, 'rn_base', $debugArr);
-
-			throw tx_rnbase::makeInstance(
-				'tx_rnbase_util_Exception',
-				$msg, 1362034928, $debugArr
-			);
-
-			And now the current away:
-
-			*/
-
 			$msg = 'SQL QUERY IS NOT VALID';
 			$msg .= '<br/>';
 			$msg .= '<b>' . $database->sql_error() . '</b>';
