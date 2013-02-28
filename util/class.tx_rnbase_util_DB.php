@@ -208,7 +208,7 @@ class tx_rnbase_util_DB {
 			//$wrapper = is_string($arr['wrapperclass']) ? tx_rnbase::makeInstanceClassName($arr['wrapperclass']) : 0;
 			$wrapper = is_string($arr['wrapperclass']) ? trim($arr['wrapperclass']) : 0;
 			$callback = isset($arr['callback']) ? $arr['callback'] : false;
-			
+
 			while($row = $database->sql_fetch_assoc($res)){
 				// Workspacesupport
 				self::lookupWorkspace($row, $tableName, $sysPage, $arr);
@@ -276,8 +276,10 @@ class tx_rnbase_util_DB {
 		$database = isset($arr['db']) && is_object($arr['db']) ? $arr['db'] : $GLOBALS['TYPO3_DB'];
 
 		if($debug) {
-			$sql = $database->INSERTquery($tablename,$values);
-			tx_rnbase_util_Debug::debug(array('SQL'=>$sql, 'table'=>$tablename,'values'=>$values));
+			$time = microtime(true);
+			$mem = memory_get_usage();
+			$sqlQuery = $database->INSERTquery($tablename,$values);
+// 			tx_rnbase_util_Debug::debug(array('SQL'=>$sql, 'table'=>$tablename,'values'=>$values));
 		}
 
 		self::watchOutDB(
@@ -286,6 +288,12 @@ class tx_rnbase_util_DB {
 				$values
 			), $database
 		);
+		if($debug)
+			tx_rnbase_util_Debug::debug(array(
+				'SQL '=>$sqlQuery,
+				'Time '=>(microtime(true) - $time),
+				'Memory consumed '=>(memory_get_usage()-$mem),
+			),'SQL statistics');
 		return $database->sql_insert_id();
 	}
 	/**
@@ -474,15 +482,40 @@ class tx_rnbase_util_DB {
 		if (!is_object($database)) $database = $GLOBALS['TYPO3_DB'];
 
 		if(!is_resource($rRes) && $database->sql_error()) {
+			/*
 
-			$sMsg = 'SQL QUERY IS NOT VALID';
-			$sMsg .= '<br/>';
-			$sMsg .= '<b>' . $database->sql_error() . '</b>';
-			$sMsg .= '<br />';
-			$sMsg .= $database->debug_lastBuiltQuery;
+			@TODO: Here should be no mayday call! > throw an exception!
 
+			$msg  = 'SQL QUERY IS NOT VALID!' . PHP_EOL;
+			$msg .= 'ERROR: "' . $database->sql_error() . '"' . PHP_EOL;
+			$msg .= 'QUERY: "' . $database->debug_lastBuiltQuery . '"';
+
+			$debugArr = array(
+				'db_class' => get_class($database),
+				'error' => $database->sql_error(),
+				'sql' => $database->debug_lastBuiltQuery,
+			);
+
+			tx_rnbase::load('tx_rnbase_util_Logger');
+			tx_rnbase_util_Logger::fatal($msg, 'rn_base', $debugArr);
+
+			throw tx_rnbase::makeInstance(
+				'tx_rnbase_util_Exception',
+				$msg, 1362034928, $debugArr
+			);
+
+			And now the current away:
+
+			*/
+
+			$msg = 'SQL QUERY IS NOT VALID';
+			$msg .= '<br/>';
+			$msg .= '<b>' . $database->sql_error() . '</b>';
+			$msg .= '<br />';
+			$msg .= $database->debug_lastBuiltQuery;
 			tx_rnbase::load('tx_rnbase_util_Misc');
-			tx_rnbase_util_Misc::mayday($sMsg);
+			// We need to pass the extKey, otherwise no devlog was written.
+			tx_rnbase_util_Misc::mayday(nl2br($msg), 'rn_base');
 		}
 
 		return $rRes;
