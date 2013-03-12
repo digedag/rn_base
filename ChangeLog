@@ -6,6 +6,7 @@
 v0.12.3 (??.03.2013)
  * Bugfix for SQL-error-logging. Thanks to Michael Wagner!
  * forceException4Mayday is now on as default
+ * Bugfix in util_DB. Thanks to Michael Wagner!
 
 v0.12.2 (21.02.2013)
  * Bugfix for MSSQL-Database-Access.  Thanks to Michael Wagner!

@@ -613,7 +613,10 @@ class tx_rnbase_util_DB {
 				break;
 			case OP_NOTIN:
 			case OP_IN:
-				$value = implode('\',\'', t3lib_div::trimExplode(',', $value));
+				$values = t3lib_div::trimExplode(',', $value);
+				for($i=0, $cnt=count($values); $i < $cnt; $i++)
+					$values[$i] = $GLOBALS['TYPO3_DB']->fullQuoteStr($values[$i], $tableAlias);
+				$value = implode('\',\'', $values);
 				$where .= $tableAlias.'.' . strtolower($col) . ' '. ($operator == OP_IN ? 'IN' : 'NOT IN') .' (\'' . $value . '\')';
 				break;
 			case OP_NOTIN_SQL:
@@ -653,7 +656,7 @@ class tx_rnbase_util_DB {
 				$where .= $tableAlias.'.' . strtolower($col) . ' '.$operator.' ' . intval($value);
 				break;
 			case OP_EQ_NOCASE:
-				$where .= 'lower('.$tableAlias.'.' . strtolower($col) . ') = lower(\'' . $value . '\')';
+				$where .= 'lower('.$tableAlias.'.' . strtolower($col) . ') = lower(\'' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias) . '\')';
 				break;
 			case OP_LIKE:
 				// Stringvergleich mit LIKE
