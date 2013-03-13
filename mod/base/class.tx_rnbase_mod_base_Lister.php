@@ -237,7 +237,6 @@ abstract class tx_rnbase_mod_base_Lister {
 			// Wenn am Ende ein Punkt steht, muss die Spalte zusammengefügt werden.
 			$sortCol = substr($sortCol, -1) === '.' ? $sortCol.$sortField : $sortCol;
 			$options['orderby'][$sortCol] = (strtolower($sortRev)== 'asc' ? 'asc':'desc');
-			$options['debug'] = 1;
 		}
 	}
 
