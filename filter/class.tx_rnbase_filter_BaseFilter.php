@@ -45,13 +45,13 @@ interface tx_rnbase_IFilter {
 	/**
 	 * Whether or not the result list should be displayed.
 	 * It is up to the list view to handle this result.
-	 * This can be used to hide a result output if a search view is 
+	 * This can be used to hide a result output if a search view is
 	 * initially displayed.
 	 * @return boolean
 	 */
 	public function hideResult();
 	/**
-	 * Whether or not a user defined search is activated. This means some functions 
+	 * Whether or not a user defined search is activated. This means some functions
 	 * like showing a charbrowser should be ignored.
 	 * @return boolean
 	 */
@@ -66,7 +66,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 	private $parameters;
 	private $confId;
 	protected $filterItems;
-	
+
 	public function tx_rnbase_filter_BaseFilter(&$parameters, &$configurations, $confId) {
 		$this->configurations = $configurations;
 		$this->parameters = $parameters;
@@ -128,7 +128,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 	}
 	/**
 	 * Hilfsmethode zum Setzen von Filtern aus den Parametern. Ein schon gesetzter Wert im Field-Array
-	 * wird nicht überschrieben. Die 
+	 * wird nicht überschrieben. Die
 	 *
 	 * @param string $idstr
 	 * @param array $fields
@@ -185,12 +185,12 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 		// In den meisten Projekten liegen die Nutzerdaten im Array inputData
 		return is_array($this->inputData) && count($this->inputData);
 	}
-	
+
 	public function getMarker() {
 		return $this;
 	}
 	/**
-	 * Liefert einfach das Template zurück. Ein echter FilterMarker hat hier die Möglichkeit sein 
+	 * Liefert einfach das Template zurück. Ein echter FilterMarker hat hier die Möglichkeit sein
 	 * Such-Formular in das HTML-Template zu schreiben.
 	 *
 	 * @param string $template HTML-Template
@@ -240,7 +240,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 			// Nach dem Item nur suchen wenn über die Parameter kein Pointer gesetzt wurde.
 			if (is_array($cfg['pointerFromItem'])
 				&& !$configurations->getParameters()->offsetExists($pageBrowser->getParamName('pointer'))
-				&& ($itemId = $configurations->getParameters()->get($cfg['pointerFromItem']['param']))) {	
+				&& ($itemId = $configurations->getParameters()->get($cfg['pointerFromItem']['param']))) {
 				// Wir erzeugen uns das SQl der eigentlichen Abfrage.
 				// Dabei wollen wir auch die rownum haben!
 				$sql = call_user_func($searchCallback,
@@ -248,10 +248,11 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 				);
 				// Jetzt besorgen wir uns die Position des aktuellen Eintrages
 				$res = tx_rnbase_util_DB::doSelect(
-					'ROW.rownum', 
+					'ROW.rownum',
 					'('.$sql.') as ROW',
 					array(
-						'where' => 'ROW.'.$cfg['pointerFromItem']['field'].'='.$itemId,
+						'where' => 	'ROW.'.$cfg['pointerFromItem']['field'].'='.
+									$GLOBALS['TYPO3_DB']->fullQuoteStr($itemId, ''),
 						'enablefieldsoff' => true,
 					)
 				);
@@ -284,11 +285,11 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 	 * @param array $cfg You have to set 'colname'. The database column used for character browsing.
 	 */
 	public static function handleCharBrowser(&$configurations, $confid, &$viewData, &$fields, &$options, $cfg = array()) {
-		
+
 		if($configurations->get($confid)) {
 			$colName = $cfg['colname'];
 			if(!$colName) throw new Exception('No column name for charbrowser defined');
-			
+
 			$pagerData = self::findPagerData($fields, $options, $cfg);
 
 			$firstChar = $configurations->getParameters()->offsetGet($pagerData['pointername']);
@@ -313,7 +314,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 			$fields[SEARCH_FIELD_CUSTOM] .= 'LEFT(UCASE('.$colName."),1) IN ('$firsts') ";
 		}
 	}
-	
+
 	/**
 	 * Wir verwenden einen alphabetischen Pager. Also muß zunächst ermittelt werden, welche
 	 * Buchstaben überhaupt vorkommen.
@@ -332,7 +333,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 		unset($options['limit']);
 
 		$rows = call_user_func($searchCallback, $fields, $options);
-		
+
 		$specials = tx_rnbase_util_SearchBase::getSpecialChars();
 		$wSpecials = array();
 		foreach($specials As $key => $special) {
