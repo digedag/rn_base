@@ -3,6 +3,10 @@
 Änderungen
 ----------
 
+v0.12.5 (??.03.2013)
+ * Bugfix for pagebrowser. Thanks to Hannes Bochmann!
+ * BE-Modules: Generic sorting in tables. Thanks to Hannes Bochmann and Thomas Reuleke!
+
 v0.12.4 (14.03.2013)
  * Bugfix for SQL-error-logging. Thanks to Michael Wagner!
  * forceException4Mayday is now on as default
