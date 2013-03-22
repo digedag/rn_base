@@ -35,13 +35,13 @@ $GLOBALS['LANG']->includeLLFile('EXT:rn_base/mod/locallang.xml');
 
 /**
  * Fertige Implementierung eines BE-Moduls. Das Modul ist dabei nur eine Hülle für die einzelnen Modulfunktionen.
- * Die Klasse stellt also lediglich eine Auswahlbox mit den verfügbaren Funktionen bereit. Neue Funktionen können 
+ * Die Klasse stellt also lediglich eine Auswahlbox mit den verfügbaren Funktionen bereit. Neue Funktionen können
  * dynamisch über die ext_tables.php angemeldet werden:
  * 	t3lib_extMgm::insertModuleFunction('user_txmkmailerM1','tx_mkmailer_mod1_FuncOverview',
  *    t3lib_extMgm::extPath($_EXTKEY).'mod1/class.tx_mkmailer_mod1_FuncOverview.php',
  *    'LLL:EXT:mkmailer/mod1/locallang_mod.xml:func_overview'
  *  );
- * Die Funktionsklassen sollten das Interface tx_rnbase_mod_IModFunc implementieren. Eine Basisklasse mit nützlichen 
+ * Die Funktionsklassen sollten das Interface tx_rnbase_mod_IModFunc implementieren. Eine Basisklasse mit nützlichen
  * Methoden steht natürlich auch bereit: tx_rnbase_mod_BaseModFunc
  */
 abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbase_mod_IModule {
@@ -55,7 +55,7 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 	 * @return	[type]		...
 	 */
 	function main()	{
-		
+
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 		// Einbindung externer Funktionen
 		$this->checkExtObj();
@@ -102,7 +102,7 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 			$header.=$this->getDoc()->divider(5);
 
 			$this->content = $header . $this->content;
-			
+
 			// ShortCut
 			if ($BE_USER->mayMakeShortcut())	{
 				$this->content.=$this->getDoc()->spacer(20).$this->getDoc()->section('',$this->getDoc()->makeShortcutIcon('id',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']));
@@ -160,13 +160,13 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 		return $this->formTool;
 	}
 	/**
-	 * Liefert eine Instanz von tx_rnbase_configurations. Da wir uns im BE bewegen, wird diese mit einem 
+	 * Liefert eine Instanz von tx_rnbase_configurations. Da wir uns im BE bewegen, wird diese mit einem
 	 * Config-Array aus der TSConfig gefüttert. Dabei wird die Konfiguration unterhalb von mod.extkey. genommen.
 	 * Für "extkey" wird der Wert der Methode getExtensionKey() verwendet.
 	 * Zusätzlich wird auch die Konfiguration von "lib." bereitgestellt.
-	 * Wenn Daten für BE-Nutzer oder Gruppen überschrieben werden sollen, dann darauf achten, daß die 
+	 * Wenn Daten für BE-Nutzer oder Gruppen überschrieben werden sollen, dann darauf achten, daß die
 	 * Konfiguration mit "page." beginnen muss. Also bspw. "page.lib.test = 42".
-	 * 
+	 *
 	 * Ein eigenes TS-Template für das BE wird in der ext_localconf.php mit dieser Anweisung eingebunden:
 	 * t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:myext/mod1/pageTSconfig.txt">');
 	 * @return tx_rnbase_configurations
@@ -185,7 +185,7 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 
 			$qualifier = $pageTSconfig['qualifier'] ? $pageTSconfig['qualifier'] : $this->getExtensionKey();
 			$this->configurations = new tx_rnbase_configurations();
-			$this->configurations->init($pageTSconfig, $cObj, $this->getExtensionKey(), $qualifier);	
+			$this->configurations->init($pageTSconfig, $cObj, $this->getExtensionKey(), $qualifier);
 		}
 		return $this->configurations;
 	}
@@ -283,6 +283,10 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 	 * @return string
 	 */
 	protected function getModuleTemplate() {
+		$filename = $this->getConfigurations()->get('template');
+		if(file_exists(t3lib_div::getFileAbsFileName($filename, TRUE, TRUE))) {
+			return $filename;
+		}
 		// '../'.t3lib_extMgm::siteRelPath($this->getExtensionKey()) .  'mod1/template.html'
 		$filename = 'EXT:'.$this->getExtensionKey() .  '/mod1/template.html';
 		if(file_exists(t3lib_div::getFileAbsFileName($filename, TRUE, TRUE))) {
@@ -416,7 +420,7 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 
 		t3lib_FlashMessageQueue::addMessage($message);
 	}
-	
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_BaseModule.php'])	{

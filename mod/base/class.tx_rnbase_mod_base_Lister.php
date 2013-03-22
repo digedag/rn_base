@@ -26,12 +26,12 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
 /**
  * Basisklasse für Suchfunktionen in BE-Modulen
- * 
+ *
  * @author René Nitzsche <rene@system25.de>
  * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
  */
 abstract class tx_rnbase_mod_base_Lister {
-	
+
 	/**
 	 * Selector Klasse
 	 * @var tx_rnbase_mod_IModule
@@ -49,17 +49,17 @@ abstract class tx_rnbase_mod_base_Lister {
 	protected $options = array();
 
 	private $filterValues = array();
-	
+
 	/**
-	 * Current hidden option 
+	 * Current hidden option
 	 * @var 	string
 	 */
 	protected $currentShowHidden = 1;
-	
-	
+
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param 	tx_rnbase_mod_IModule 	$mod
 	 * @param 	array 					$options
 	 */
@@ -97,8 +97,8 @@ abstract class tx_rnbase_mod_base_Lister {
 		$this->options = $options;
 		$this->mod = $mod;
 	}
-	
-	
+
+
 	/**
 	 * @return string
 	 */
@@ -109,14 +109,14 @@ abstract class tx_rnbase_mod_base_Lister {
 //		return $pageId;
 		return 'searcher';
 	}
-	
+
 	/**
 	 * Liefert den Service.
-	 * 
+	 *
 	 * @return tx_mklib_srv_Base
 	 */
 	abstract protected function getService();
-	
+
 	/**
 	 * Returns the complete search form
 	 * @return 	string
@@ -133,11 +133,11 @@ abstract class tx_rnbase_mod_base_Lister {
 					'label' => '',
 					'button'=> $updateButton
 				);
-			
+
 		$out = $this->buildFilterTable($data);
 		return $out;
 	}
-	
+
 	/**
 	 * Returns the search button
 	 * @return 	string|false
@@ -153,7 +153,7 @@ abstract class tx_rnbase_mod_base_Lister {
 
 	/**
 	 * Bildet die Resultliste mit Pager
-	 * 
+	 *
 	 * @param tx_mklib_mod1_searcher_Base $callingClass
 	 * @param object $srv
 	 * @param array $fields
@@ -172,10 +172,10 @@ abstract class tx_rnbase_mod_base_Lister {
 
 		$fields = $options = array();
 		$this->prepareFieldsAndOptions($fields, $options);
-			
+
 		// Get counted data
 		$cnt = $this->getCount($fields, $options);
-		
+
 		$pager->setListSize($cnt);
 		$pager->setOptions($options);
 
@@ -183,25 +183,25 @@ abstract class tx_rnbase_mod_base_Lister {
 		$items = $srv->search($fields, $options);
 		$content = '';
 		$this->showItems($content, $items);
-		
+
 		$pagerData = $pager->render();
-		
+
 		//der zusammengeführte Pager für die Ausgabe
 		//nur wenn es auch Ergebnisse gibt. sonst reicht die noItemsFoundMsg
 		$sPagerData = '';
 		if($cnt)
 			$sPagerData = $pagerData['limits'] . ' - ' .$pagerData['pages'];
-			
+
 		return array(
 				'table' 	=> $content,
 				'totalsize' => $cnt,
 				'pager' 	=> '<div class="pager">' . $sPagerData .'</div>',
 			);
 	}
-	
+
 	/**
 	 * Kann von der Kindklasse überschrieben werden, um weitere Filter zu setzen.
-	 * 
+	 *
 	 * @param 	array 	$fields
 	 * @param 	array 	$options
 	 */
@@ -212,9 +212,34 @@ abstract class tx_rnbase_mod_base_Lister {
 
 		if(!$this->currentShowHidden) { $options['enablefieldsfe'] = 1;}
 		else { $options['enablefieldsbe'] = 1; }
-		
+
+		$this->prepareSorting($options);
+
 	}
-	
+
+	/**
+	 * Sortierung vorbereiten
+	 * @param array $options
+	 */
+	protected function prepareSorting(&$options) {
+		$sortField = t3lib_div::_GET('sortField');
+		$sortRev = t3lib_div::_GET('sortRev');
+
+		if(!empty($sortField)) {
+			$cols = $this->getColumns();
+
+			if(!isset($cols[$sortField]) || !is_array($cols[$sortField]) || !isset($cols[$sortField]['sortable'])) {
+				return;
+			}
+
+			// das Label in die notwendige SQL-Anweisung umwandeln. Normalerweise ein Spaltenname.
+			$sortCol = $cols[$sortField]['sortable'];
+			// Wenn am Ende ein Punkt steht, muss die Spalte zusammengefügt werden.
+			$sortCol = substr($sortCol, -1) === '.' ? $sortCol.$sortField : $sortCol;
+			$options['orderby'][$sortCol] = (strtolower($sortRev)== 'asc' ? 'asc':'desc');
+		}
+	}
+
 	/**
 	 * Liefert die Spalten, in denen gesucht werden soll
 	 * @return array
@@ -230,7 +255,7 @@ abstract class tx_rnbase_mod_base_Lister {
 	protected function showItems(&$content, array $items) {
 		if(count($items) === 0) {
 			$content = $this->getNoItemsFoundMsg();
-			return;//stop	
+			return;//stop
 		}
 
 		$options = $this->getOptions();
@@ -247,11 +272,11 @@ abstract class tx_rnbase_mod_base_Lister {
 		return $out;
 	}
 	/**
-	 * 
+	 *
 	 * @return tx_rnbase_mod_IDecorator
 	 */
 	protected abstract function createDefaultDecorator();
-	
+
 	/**
 	 * Liefert die Spalten für den Decorator.
 	 * @param 	tx_mklib_mod1_decorator_Base 	$oDecorator
@@ -267,7 +292,7 @@ abstract class tx_rnbase_mod_base_Lister {
 				)
 			);
 	}
-	
+
 	/**
 	 * Returns an instance of tx_mkhoga_beutil_Selector.
 	 * Der Selector wird erst erzeugt, wenn er benötigt wird
@@ -281,9 +306,9 @@ abstract class tx_rnbase_mod_base_Lister {
 		}
 		return $this->selector;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param array $fields
 	 * @param array $options
 	 */
@@ -292,37 +317,37 @@ abstract class tx_rnbase_mod_base_Lister {
 		$options['count'] = 1;
 		return $this->getService()->search($fields, $options);
 	}
-	
+
 	/**
 	 * Returns an instance of tx_rnbase_mod_IModule
-	 * 
+	 *
 	 * @return 	tx_rnbase_mod_IModule
 	 */
 	protected function getModule() {
 		return $this->mod;
 	}
-	
+
 	/**
 	 * Returns an instance of tx_rnbase_mod_IModule
-	 * 
+	 *
 	 * @return 	tx_rnbase_mod_IModule
 	 */
 	protected function getOptions() {
 		return $this->options;
 	}
-	
+
 	/**
 	 * Returns an instance of tx_rnbase_mod_IModule
-	 * 
+	 *
 	 * @return 	tx_rnbase_util_FormTool
 	 */
 	protected function getFormTool() {
 		return $this->mod->getFormTool();
 	}
-	
+
 	/**
 	 * Returns the message in case no items could be found in showItems()
-	 * 
+	 *
 	 * @return 	string
 	 */
 	protected function getNoItemsFoundMsg() {
@@ -337,7 +362,7 @@ abstract class tx_rnbase_mod_base_Lister {
 
 	/**
 	 * Suche nach einem Freitext. Wird ein leerer String
-	 * übergeben, dann wird nicht gesucht. 
+	 * übergeben, dann wird nicht gesucht.
 	 *
 	 * @param array $fields
 	 * @param string $searchword
@@ -351,12 +376,12 @@ abstract class tx_rnbase_mod_base_Lister {
 	   		$joined['operator'] = OP_LIKE;
 	   		$fields[SEARCH_FIELD_JOINED][] = $joined;
 	   		$result = true;
-	  	}  
+	  	}
 	  	return $result;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param 	array 	$data
 	 * @return 	string
 	 */
@@ -369,7 +394,7 @@ abstract class tx_rnbase_mod_base_Lister {
 				$out .= '<td>'. (isset($filter['label']) ? $filter['label'] : $label).'</td>';
 				unset($filter['label']);
 				$out .= '<td>'. implode(' ', $filter) .'</td>';
-				
+
 				$out .= '</tr>';
 			}
 			$out .= '</table>';
@@ -379,7 +404,7 @@ abstract class tx_rnbase_mod_base_Lister {
 	/**
 	 * Method to display a form with an input array, a description and a submit button.
 	 * Keys are 'field' and 'button'.
-	 * 
+	 *
 	 * @param string $out marker array with input fields
 	 * @param string $key mod key
 	 * @param array $options
