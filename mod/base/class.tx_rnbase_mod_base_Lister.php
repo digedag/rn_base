@@ -31,6 +31,8 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
  * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
  */
 abstract class tx_rnbase_mod_base_Lister {
+	const KEY_SHOWHIDDEN = 'showhidden';
+
 
 	/**
 	 * Selector Klasse
@@ -128,6 +130,12 @@ abstract class tx_rnbase_mod_base_Lister {
 		$this->setFilterValue('searchword', $this->showFreeTextSearchForm(
 				$data['search'], $this->getSearcherId().'Search',$options));
 
+		$this->setFilterValue(self::KEY_SHOWHIDDEN, $this->showHiddenSelector(
+				$data['hidden'],
+				$options
+		));
+
+		$this->addMoreFields($data, $options);
 		if($updateButton = $this->getSearchButton())
 			$data['updatebutton'] = array(
 					'label' => '',
@@ -136,6 +144,15 @@ abstract class tx_rnbase_mod_base_Lister {
 
 		$out = $this->buildFilterTable($data);
 		return $out;
+	}
+
+	/**
+	 * Kindklassen haben die Möglichkeit weitere Formularfelder
+	 * zu registrieren.
+	 * @param array $data
+	 * @param array $options
+	 */
+	protected function addMoreFields(&$data, &$options) {
 	}
 
 	/**
@@ -183,7 +200,6 @@ abstract class tx_rnbase_mod_base_Lister {
 		$items = $srv->search($fields, $options);
 		$content = '';
 		$this->showItems($content, $items);
-
 		$pagerData = $pager->render();
 
 		//der zusammengeführte Pager für die Ausgabe
@@ -207,12 +223,13 @@ abstract class tx_rnbase_mod_base_Lister {
 	 */
 	protected function prepareFieldsAndOptions(array &$fields, array &$options) {
 		$options['distinct'] = 1;
-
 		self::buildFreeText($fields, $this->getFilterValue('searchword'), $this->getSearchColumns());
 
-		if(!$this->currentShowHidden) { $options['enablefieldsfe'] = 1;}
-		else { $options['enablefieldsbe'] = 1; }
-
+		if(($value = $this->getFilterValue(self::KEY_SHOWHIDDEN)) !== null) {
+			// Wenn gesetzt, dann anzeigen
+			if($value) {$options['enablefieldsbe'] = 1;}
+			else { $options['enablefieldsfe'] = 1; }
+		}
 		$this->prepareSorting($options);
 
 	}
@@ -368,7 +385,7 @@ abstract class tx_rnbase_mod_base_Lister {
 	 * @param string $searchword
 	 * @param array $cols
 	 */
-	private static function buildFreeText(&$fields, $searchword, array $cols = array()) {
+	protected static function buildFreeText(&$fields, $searchword, array $cols = array()) {
 		$result = false;
 	  	if(strlen(trim($searchword))) {
 	   		$joined['value'] = trim($searchword);
@@ -385,7 +402,7 @@ abstract class tx_rnbase_mod_base_Lister {
 	 * @param 	array 	$data
 	 * @return 	string
 	 */
-	private function buildFilterTable(array $data){
+	protected function buildFilterTable(array $data){
 		$out = '';
 		if(count($data)){
 			$out .= '<table class="filters">';
@@ -413,16 +430,30 @@ abstract class tx_rnbase_mod_base_Lister {
 	 * 				string 	label 			label of the sumbit button. default is LLL:label_search.
 	 * @return string search term
 	 */
-	private function showFreeTextSearchForm (&$marker, $key, array $options = array()) {
+	protected function showFreeTextSearchForm (&$marker, $key, array $options = array()) {
 		tx_rnbase::load('tx_rnbase_mod_Util');
 		$searchstring = tx_rnbase_mod_Util::getModuleValue($key, $this->getModule(), array('changed' => t3lib_div::_GP('SET')));
 
 		// Erst das Suchfeld, danach der Button.
 		$marker['field'] 	= $this->getFormTool()->createTxtInput('SET['.$key.']',$searchstring,10);
-		$marker['label'] = $options['label'] ? $options['label'] : $GLOBALS['LANG']->getLL('label_search');
+		$marker['label'] = $options['label'] ? $options['label'] : '###LABEL_SEARCH###' ;
 
 		return $searchstring;
 	}
+
+	protected function showHiddenSelector(&$marker, $options=array()) {
+		$items = array(
+				0 => $GLOBALS['LANG']->getLL('label_select_hide_hidden'),
+				1 => $GLOBALS['LANG']->getLL('label_select_show_hidden'),
+		);
+		tx_rnbase::load('tx_rnbase_mod_Util');
+		$selectedItem = tx_rnbase_mod_Util::getModuleValue('showhidden', $this->getModule(), array('changed' => t3lib_div::_GP('SET')));
+
+//		$selectedItem = array_key_exists('forcevalue', $aOptions) ? $aOptions['forcevalue'] : $this->getValueFromModuleData($id);
+		$options['label'] = $options['label'] ? $options['label'] : $GLOBALS['LANG']->getLL('label_hidden');
+		return tx_rnbase_mod_Util::showSelectorByArray($items, $selectedItem,'showhidden',$marker, $options);
+	}
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/base/class.tx_rnbase_mod_base_Lister.php'])	{

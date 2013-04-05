@@ -69,6 +69,33 @@ class tx_rnbase_mod_Util {
 		}
 		return $icons;
 	}
+
+
+
+	/**
+	 * Gibt einen selector mit den elementen im gegebenen array zurück
+	 * @param array $aItems Array mit den werten der Auswahlbox
+	 * @param mixed $selectedItem
+	 * @param string $sDefId ID-String des Elements
+	 * @param array $aData enthält die Formularelement für die Ausgabe im Screen. Keys: selector, label
+	 * @param array $aOptions zusätzliche Optionen: label, id
+	 * @return string selected item
+	 */
+	public static function showSelectorByArray($aItems, $selectedItem, $sDefId, &$aData, $aOptions=array()) {
+		$id = isset($aOptions['id']) && $aOptions['id'] ? $aOptions['id'] : $sDefId;
+
+		// Build select box items
+		$aData['selector'] = t3lib_BEfunc::getFuncMenu(
+			$pid, 'SET['.$id.']', $selectedItem, $aItems
+		);
+
+		//label
+		$aData['label'] = $aOptions['label'];
+
+		// as the deleted fe users have always to be hidden the function returns always false
+		//@todo wozu die alte abfrage? return $defId==$id ? false : $selectedItem;
+		return $selectedItem;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_Util.php'])	{
