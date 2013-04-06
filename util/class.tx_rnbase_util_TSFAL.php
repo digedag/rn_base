@@ -66,16 +66,15 @@ class tx_rnbase_util_TSFAL {
 	 * media: Formatting options of the DAM record. Have a look at tx_dam to find all column names
 	 * limit: Limits the number of medias
 	 * offset: Start media output with an offset
-	 * forcedIdField: force another refernce column (other than UID or _LOCALIZED_UID)
+	 * forcedIdField: force another reference column (other than UID or _LOCALIZED_UID)
 	 * 
 	 *
 	 * @param string $content
 	 * @param array $tsConf
 	 * @return string
 	 */
-	function printImages ($content, $tsConf) {
-		if(!t3lib_extMgm::isLoaded('dam')) return '';
-
+	public function printImages ($content, $tsConf) {
+//		if(!t3lib_extMgm::isLoaded('dam')) return '';
 		$conf = $this->createConf($tsConf);
 		$file = $conf->get('template');
 		$file = $file ? $file : 'EXT:rn_base/res/simplegallery.html';
@@ -97,30 +96,8 @@ class tx_rnbase_util_TSFAL {
 		$parentUid = intval($conf->getCObj()->data[DEFAULT_LOCAL_FIELD] ? $conf->getCObj()->data[DEFAULT_LOCAL_FIELD] : $conf->getCObj()->data['uid']);
 		if(!$parentUid) return '<!-- Invalid data record given -->';
 
-		$damPics = $this->fetchFileList($tsConf, $conf->getCObj());
-		$conf->getCObj()->data[DEFAULT_LOCAL_FIELD] = $locUid; // Reset UID
-		$offset = intval($conf->get('offset'));
-		$limit = intval($conf->get('limit'));
-		if((!$limit && $offset) && count($damPics))
-			$damPics = array_slice($damPics,$offset);
-		elseif($limit && count($damPics))
-			$damPics = array_slice($damPics,$offset,$limit);
+		$medias = self::fetchFilesByTS($conf, $conf->getCObj());
 
-		$damDb = tx_rnbase::makeInstance('tx_dam_db');
-		
-		$medias = array();
-		while(list($uid, $baseRecord) = each($damPics)) {
-			$mediaObj = tx_rnbase::makeInstance('tx_rnbase_model_media', $baseRecord['uid']);
-			// Localize data (DAM 1.1.0)
-			if(method_exists($damDb, 'getRecordOverlay')) {
-				$loc = $damDb->getRecordOverlay('tx_dam', $mediaObj->record, array('sys_language_uid'=>$GLOBALS['TSFE']->sys_language_uid));
-				if ($loc) $mediaObj->record = $loc;
-			}
-
-			$mediaObj->record['parentuid'] = $parentUid;
-			$medias[] = $mediaObj;
-		}
-		
 		$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
 		$out = $listBuilder->render($medias, false, $templateCode, 'tx_rnbase_util_MediaMarker',
 						'media.', 'MEDIA', $conf->getFormatter());
@@ -131,6 +108,87 @@ class tx_rnbase_util_TSFAL {
 		return $out;
 	}
 
+	/**
+	 * This method is taken from TYPO3\CMS\Frontend\ContentObject\FileContentObject.
+	 * It is a good tradition in TYPO3 that code can not be re-used. TYPO3 6.x makes 
+	 * no difference...
+	 *
+	 * @param tx_rnbase_configurations $conf
+	 * @return array
+	 */
+	public static function fetchFilesByTS($conf, $cObj) {
+		/** @var \TYPO3\CMS\Core\Resource\FileRepository $fileRepository */
+		$fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
+		$fileObjects = array();
+		$pics = array();
+		tx_rnbase::load('tx_rnbase_util_Strings');
+		// Getting the files
+		// Try DAM style
+		if($conf->get('refTable')) {
+			$referencesForeignTable = $conf->getCObj()->stdWrap($conf->get($confId.'refTable'), $conf->get($confId.'refTable.'));
+			$referencesFieldName = $conf->getCObj()->stdWrap($conf->get($confId.'refField'), $conf->get($confId.'refField.'));
+			$referencesForeignUid = $conf->getCObj()->stdWrap($conf->get($confId.'refUid'), $conf->get($confId.'refUid.'));
+			$referencesForeignUid = $referencesForeignUid ? 
+					$referencesForeignUid : 
+					isset($cObj->data['_LOCALIZED_UID']) ? $cObj->data['_LOCALIZED_UID'] : $cObj->data['uid'];
+			$pics = $fileRepository->findByRelation($referencesForeignTable, $referencesFieldName, $referencesForeignUid);
+		}
+		elseif (is_array($conf->get('references.'))) {
+			$confId = 'references.';
+			/*
+			The TypoScript could look like this:# all items related to the page.media field:
+			references {
+			table = pages
+			uid.data = page:uid
+			fieldName = media
+			}# or: sys_file_references with uid 27:
+			references = 27
+			 */
+			
+//			$key = 'references';
+//			$referencesUid = $cObj->stdWrap($conf[$key], $conf[$key . '.']);
+//			$referencesUidArray = tx_rnbase_util_Strings::intExplode(',', $referencesUid, TRUE);
+//			foreach ($referencesUidArray as $referenceUid) {
+//				try {
+//					$this->addToArray($fileRepository->findFileReferenceByUid($referenceUid), $fileObjects);
+//				} catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+//					/** @var \TYPO3\CMS\Core\Log\Logger $logger */
+//					$logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Log\LogManager')->getLogger();
+//					$logger->warning('The file-reference with uid  "' . $referenceUid . '" could not be found and won\'t be included in frontend output');
+//				}
+//			}
+
+			// It's important that this always stays "fieldName" and not be renamed to "field" as it would otherwise collide with the stdWrap key of that name
+			$referencesFieldName = $conf->getCObj()->stdWrap($conf->get($confId.'fieldName'), $conf->get($confId.'fieldName.'));
+			if ($referencesFieldName) {
+				$table = $cObj->getCurrentTable();
+				if ($table === 'pages' && isset($cObj->data['_LOCALIZED_UID']) && intval($cObj->data['sys_language_uid']) > 0) {
+					$table = 'pages_language_overlay';
+				}
+				$referencesForeignTable = $conf->getCObj()->stdWrap($conf->get($confId.'table'), $conf->get($confId.'table.'));
+				$referencesForeignTable = $referencesForeignTable ? $referencesForeignTable : $table;
+
+				$referencesForeignUid = $conf->getCObj()->stdWrap($conf->get($confId.'uid'), $conf->get($confId.'uid.'));
+				$referencesForeignUid = $referencesForeignUid ? 
+						$referencesForeignUid : 
+						isset($cObj->data['_LOCALIZED_UID']) ? $cObj->data['_LOCALIZED_UID'] : $cObj->data['uid'];
+				// Vermutlich kann hier auch nur ein Objekt geliefert werden...
+				$pics = $fileRepository->findByRelation($referencesForeignTable, $referencesFieldName, $referencesForeignUid);
+			}
+		}
+		// Die Bilder sollten jetzt noch in ein 
+		if(is_array($pics))
+			foreach($pics As $pic) {
+//				if($pic instanceof \TYPO3\CMS\Core\Resource\FileReference)
+//				\tx_rnbase_util_Debug::debug($pic->getPublicUrl(), 'class.tx_rnbase_util_TSFAL.php Line: ' . __LINE__); // TODO: remove me
+				// getProperties() liefert derzeit nicht zurück
+				$fileObjects[] = tx_rnbase::makeInstance('tx_rnbase_model_media', $pic);
+			}
+		elseif(is_object($pics)) {
+			$fileObjects[] = tx_rnbase::makeInstance('tx_rnbase_model_media', $pics);
+		}
+		return $fileObjects;
+	}
 	/**
 	 * Erstellt eine Instanz von tx_rnbase_configurations
 	 *

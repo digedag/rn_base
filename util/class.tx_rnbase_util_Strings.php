@@ -85,6 +85,20 @@ class tx_rnbase_util_Strings {
 	}
 
 	/**
+	 * Wrapper method for t3lib_div::intExplode()
+	 * @param string $delimiter
+	 * @param string $string
+	 * @param boolean $onlyNonEmptyValues
+	 * @param int $limit
+	 */
+	public static function intExplode($delimiter, $string, $onlyNonEmptyValues = FALSE, $limit = 0) {
+		tx_rnbase::load('tx_rnbase_util_TYPO3');
+		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher())
+			return \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode($delimiter, $string, $onlyNonEmptyValues, $limit);
+		else
+			return t3lib_div::intExplode($delimiter, $string, $onlyNonEmptyValues, $limit);
+	}
+	/**
 	 * Convert an array with hexadecimal byte values to binary string.
 	 * @param array $arr
 	 * @return string

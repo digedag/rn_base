@@ -7,6 +7,8 @@ v0.12.5 (??.03.2013)
  * Bugfix for pagebrowser. Thanks to Hannes Bochmann!
  * BE-Modules: Generic sorting in tables. Thanks to Hannes Bochmann and Thomas Reuleke!
  * BE-Modules: Some changes in base_Lister. Thanks to Thomas Reuleke!
+ * TYPO3 dependency for TER added
+ * Initial implementation for FAL support in TYPO3 6.0
 
 v0.12.4 (14.03.2013)
  * Bugfix for SQL-error-logging. Thanks to Michael Wagner!
