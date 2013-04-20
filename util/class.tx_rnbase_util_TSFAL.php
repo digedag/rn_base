@@ -275,12 +275,30 @@ class tx_rnbase_util_TSFAL {
 		return $fileObjects;
 	}
 
-	static function createThumbnails11($damFiles, $size, $addAttr) {
-		require_once(t3lib_extMgm::extPath('dam').'lib/class.tx_dam_image.php');
-		$files = $damFiles['rows'];
+	/**
+	 * Render thumbnails for references in backend
+	 * @param $references
+	 * @param $size
+	 * @param $addAttr
+	 */
+	public static function createThumbnails($references, $size, $addAttr) {
+tx_rnbase::load('tx_rnbase_util_Debug');
+		
 		$ret = array();
-		foreach($files As $key => $info ) {
-			$ret[] = tx_dam_image::previewImgTag($info['file_path'].$info['file_name'], $size, $addAtrr);
+		foreach($references As $fileRef ) {
+			$thumbnail = FALSE;
+			$fileObject = $fileRef->getOriginalFile();
+			if ($fileObject) {
+//				$imageSetup = $config['appearance']['headerThumbnail'];
+				$imageSetup = array();
+				unset($imageSetup['field']);
+				$imageSetup = array_merge(array('width' => 64, 'height' => 64), $imageSetup);
+				$imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, $imageSetup)->getPublicUrl(TRUE);
+				$thumbnail = '<img src="' . $imageUrl . '" alt="' . htmlspecialchars($fileRef->getTitle()) . '">';
+				// TODO: Das geht bestimmt besser...
+			}
+			if($thumbnail)
+				$ret[] = $thumbnail;
 		}
 		return $ret;
 	}
