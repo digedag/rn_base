@@ -177,10 +177,18 @@ class tx_rnbase_util_TSFAL {
 			}
 		}
 		// Die Bilder sollten jetzt noch in ein 
+		$fileObjects = self::convertRef2Media($pics);
+		return $fileObjects;
+	}
+	/**
+	 * 
+	 * @param $pics
+	 * @return array[tx_rnbase_model_media]
+	 */
+	protected static function convertRef2Media($pics) {
+		$fileObjects = array();
 		if(is_array($pics))
 			foreach($pics As $pic) {
-//				if($pic instanceof \TYPO3\CMS\Core\Resource\FileReference)
-//				\tx_rnbase_util_Debug::debug($pic->getPublicUrl(), 'class.tx_rnbase_util_TSFAL.php Line: ' . __LINE__); // TODO: remove me
 				// getProperties() liefert derzeit nicht zurück
 				$fileObjects[] = tx_rnbase::makeInstance('tx_rnbase_model_media', $pic);
 			}
@@ -259,57 +267,20 @@ class tx_rnbase_util_TSFAL {
 	 * @param string $refField
 	 * @return array
 	 */
-	static function fetchFiles($tablename, $uid, $refField) {
-		require_once(t3lib_extMgm::extPath('dam').'lib/class.tx_dam_db.php');
-		return tx_dam_db::getReferencedFiles($tablename, $uid, $refField);
+	public static function fetchFiles($tablename, $uid, $refField) {
+		/** @var \TYPO3\CMS\Core\Resource\FileRepository $fileRepository */
+		$fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
+		$pics = $fileRepository->findByRelation($tablename, $refField, $uid);
+		$fileObjects = self::convertRef2Media($pics);
+		return $fileObjects;
 	}
 
-	/**
-	 * Test is DAM version 1.0 is installed.
-	 *
-	 * @return boolean
-	 */
-	static function isVersion10() {
-		tx_rnbase::load('tx_rnbase_util_TYPO3');
-		$version = tx_rnbase_util_TYPO3::getExtVersion('dam');
-		if(preg_match('(\d*\.\d*\.\d)',$version, $versionArr)) {
-			$version = $versionArr[0];
-		}
-		return version_compare($version, '1.1.0','<');
-	}
-	/**
-	 * Create Thumbnails of DAM images in BE. Take care of installed DAM-Version and supports 1.0 and 1.1
-	 *
-	 * @param array $damFiles
-	 * @param string $size i.e. '50x50'
-	 * @param string $addAttr
-	 * @return string image tag
-	 */
-	static function createThumbnails($damFiles, $size, $addAttr) {
-		if(self::isVersion10()) {
-			return self::createThumbnails10($damFiles, $size, $addAttr);
-		}
-		else {
-			return self::createThumbnails11($damFiles, $size, $addAttr);
-		}
-	}
 	static function createThumbnails11($damFiles, $size, $addAttr) {
 		require_once(t3lib_extMgm::extPath('dam').'lib/class.tx_dam_image.php');
 		$files = $damFiles['rows'];
 		$ret = array();
 		foreach($files As $key => $info ) {
 			$ret[] = tx_dam_image::previewImgTag($info['file_path'].$info['file_name'], $size, $addAtrr);
-		}
-		return $ret;
-	}
-	static function createThumbnails10($damFiles, $size, $addAttr) {
-		require_once(t3lib_extMgm::extPath('dam').'lib/class.tx_dam.php');
-		$files = $damFiles['rows'];
-		$ret = array();
-		foreach($files As $key => $info ) {
-			$thumbScript = $GLOBALS['BACK_PATH'].'thumbs.php';
-			$filepath = tx_dam::path_makeAbsolute($info['file_path']);
-			$ret[] = t3lib_BEfunc::getThumbNail($thumbScript, $filepath.$info['file_name'], $addAttr, $size);
 		}
 		return $ret;
 	}
