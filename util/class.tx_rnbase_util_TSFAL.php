@@ -46,7 +46,7 @@ class tx_rnbase_util_TSFAL {
 	 *   refField=imagecol
 	 *   refTable=tx_yourextkey_tablename
 	 *   template = EXT:rn_base/res/simplegallery.html
-	 *   # media is the dam record
+	 *   # media is the fal reference record
 	 *   media {
 	 *     # field file contains the complete image path
 	 *     file = IMAGE
@@ -74,7 +74,6 @@ class tx_rnbase_util_TSFAL {
 	 * @return string
 	 */
 	public function printImages ($content, $tsConf) {
-//		if(!t3lib_extMgm::isLoaded('dam')) return '';
 		$conf = $this->createConf($tsConf);
 		$file = $conf->get('template');
 		$file = $file ? $file : 'EXT:rn_base/res/simplegallery.html';
@@ -97,6 +96,8 @@ class tx_rnbase_util_TSFAL {
 		if(!$parentUid) return '<!-- Invalid data record given -->';
 
 		$medias = self::fetchFilesByTS($conf, $conf->getCObj());
+//tx_rnbase::load('tx_rnbase_util_Debug');
+//tx_rnbase_util_Debug::debug($medias, 'class.tx_rnbase_util_TSFAL.php Line: ' . __LINE__); // TODO: remove me
 
 		$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
 		$out = $listBuilder->render($medias, false, $templateCode, 'tx_rnbase_util_MediaMarker',
@@ -282,8 +283,6 @@ class tx_rnbase_util_TSFAL {
 	 * @param $addAttr
 	 */
 	public static function createThumbnails($references, $size, $addAttr) {
-tx_rnbase::load('tx_rnbase_util_Debug');
-		
 		$ret = array();
 		foreach($references As $fileRef ) {
 			$thumbnail = FALSE;
