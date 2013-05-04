@@ -193,9 +193,12 @@ class tx_rnbase_util_Lang {
 		if(!strcmp(substr($key,0,4),'LLL:')) {
 			return $GLOBALS['TSFE']->sL($key);
 		}
-		if (isset($this->LOCAL_LANG[$this->getLLKey()][$key]))       {
-			$word = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->getLLKey()][$key], $this->LOCAL_LANG_charset[$this->getLLKey()][$key]); // The "from" charset is normally empty and thus it will convert from the charset of the system language, but if it is set (see ->pi_loadLL()) it will be used.
+		
+		if (isset($this->LOCAL_LANG[$this->getLLKey()][$key])) {
+			$tsfe = tx_rnbase_util_TYPO3::getTSFE(true);
+			$word = $tsfe->csConv($this->LOCAL_LANG[$this->getLLKey()][$key], $this->LOCAL_LANG_charset[$this->getLLKey()][$key]); // The "from" charset is normally empty and thus it will convert from the charset of the system language, but if it is set (see ->pi_loadLL()) it will be used.
 		} elseif ($this->getLLKey(true) && isset($this->LOCAL_LANG[$this->getLLKey(true)][$key]))   {
+			$tsfe = tx_rnbase_util_TYPO3::getTSFE(true);
 			$word = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->getLLKey(true)][$key], $this->LOCAL_LANG_charset[$this->getLLKey(true)][$key]);   // The "from" charset is normally empty and thus it will convert from the charset of the system language, but if it is set (see ->pi_loadLL()) it will be used.
 		} elseif (isset($this->LOCAL_LANG['default'][$key]))    {
 			$word = $this->LOCAL_LANG['default'][$key];     // No charset conversion because default is english and thereby ASCII
