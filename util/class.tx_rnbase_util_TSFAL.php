@@ -96,9 +96,10 @@ class tx_rnbase_util_TSFAL {
 		if(!$parentUid) return '<!-- Invalid data record given -->';
 
 		$medias = self::fetchFilesByTS($conf, $conf->getCObj());
+//if(!empty($medias)) {
 //tx_rnbase::load('tx_rnbase_util_Debug');
-//tx_rnbase_util_Debug::debug($medias, 'class.tx_rnbase_util_TSFAL.php Line: ' . __LINE__); // TODO: remove me
-
+//tx_rnbase_util_Debug::debug($conf->get('limit'), 'class.tx_rnbase_util_TSFAL.php Line: ' . __LINE__); // TODO: remove me
+//}
 		$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
 		$out = $listBuilder->render($medias, false, $templateCode, 'tx_rnbase_util_MediaMarker',
 						'media.', 'MEDIA', $conf->getFormatter());
@@ -177,6 +178,15 @@ class tx_rnbase_util_TSFAL {
 				$pics = $fileRepository->findByRelation($referencesForeignTable, $referencesFieldName, $referencesForeignUid);
 			}
 		}
+		// gibt es ein Limit/offset
+		$offset = intval($conf->get('offset'));
+		$limit = intval($conf->get('limit'));
+		if(!empty($pics) && $limit) {
+			$pics = array_slice($pics, $offset, $limit);
+		}
+		elseif(!empty($pics) && $limit) {
+			$pics = array_slice($pics, $offset);
+		}
 		// Die Bilder sollten jetzt noch in ein 
 		$fileObjects = self::convertRef2Media($pics);
 		return $fileObjects;
@@ -253,6 +263,7 @@ class tx_rnbase_util_TSFAL {
 //			$table = 'pages_language_overlay';
 //		}
 		$files = $fileRepository->findByRelation($refTable, $refField, $uid);
+
 		if(!empty($files)) {
 			// Die erste Referenz zurück
 			return $files[0]->getUid();
