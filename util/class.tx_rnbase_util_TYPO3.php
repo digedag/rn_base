@@ -37,6 +37,14 @@ class tx_rnbase_util_TYPO3 {
 		return self::isTYPO3VersionOrHigher(6000000);
 	}
 	/**
+	 * Prüft, ob mindestens TYPO3 Version 6.1 vorhanden ist.
+	 *
+	 * @return boolean
+	 */
+	public static function isTYPO61OrHigher() {
+		return self::isTYPO3VersionOrHigher(6001000);
+	}
+	/**
 	 * Prüft, ob mindestens TYPO3 Version 4.6 vorhanden ist.
 	 *
 	 * @return boolean
