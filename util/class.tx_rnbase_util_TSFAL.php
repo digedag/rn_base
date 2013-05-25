@@ -245,7 +245,7 @@ class tx_rnbase_util_TSFAL {
 		$uid      = $cObj->data['_LOCALIZED_UID'] ? $cObj->data['_LOCALIZED_UID'] : $cObj->data['uid'];
 		$refTable = ($conf['refTable'] && is_array($GLOBALS['TCA'][$conf['refTable']])) ? $conf['refTable'] : 'tt_content';
 		$refField = trim($cObj->stdWrap($conf['refField'],$conf['refField.']));
-		
+
 		if (isset($GLOBALS['BE_USER']->workspace) && $GLOBALS['BE_USER']->workspace !== 0) {
 			$workspaceRecord = t3lib_BEfunc::getWorkspaceVersionOfRecord(
 				$GLOBALS['BE_USER']->workspace,
@@ -283,8 +283,15 @@ class tx_rnbase_util_TSFAL {
 		/** @var \TYPO3\CMS\Core\Resource\FileRepository $fileRepository */
 		$fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
 		$pics = $fileRepository->findByRelation($tablename, $refField, $uid);
+		$pics = self::fetchReferences($tablename, $uid, $refField);
 		$fileObjects = self::convertRef2Media($pics);
 		return $fileObjects;
+	}
+	public static function fetchReferences($tablename, $uid, $refField) {
+		/** @var \TYPO3\CMS\Core\Resource\FileRepository $fileRepository */
+		$fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
+		$refs = $fileRepository->findByRelation($tablename, $refField, $uid);
+		return $refs;
 	}
 
 	/**
@@ -293,7 +300,7 @@ class tx_rnbase_util_TSFAL {
 	 * @param $size
 	 * @param $addAttr
 	 */
-	public static function createThumbnails($references, $size, $addAttr) {
+	public static function createThumbnails($references, $sizeArr=false) {
 		$ret = array();
 		foreach($references As $fileRef ) {
 			$thumbnail = FALSE;
@@ -302,7 +309,8 @@ class tx_rnbase_util_TSFAL {
 //				$imageSetup = $config['appearance']['headerThumbnail'];
 				$imageSetup = array();
 				unset($imageSetup['field']);
-				$imageSetup = array_merge(array('width' => 64, 'height' => 64), $imageSetup);
+				$sizeArr = $sizeArr ? $sizeArr : array('width' => 64, 'height' => 64);
+				$imageSetup = array_merge($sizeArr, $imageSetup);
 				$imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, $imageSetup)->getPublicUrl(TRUE);
 				$thumbnail = '<img src="' . $imageUrl . '" alt="' . htmlspecialchars($fileRef->getTitle()) . '">';
 				// TODO: Das geht bestimmt besser...
@@ -337,10 +345,10 @@ class tx_rnbase_util_TSFAL {
 			$type = isset($options['type']) ? $options['type'] : $type;
 			unset($options['type']);
 		}
-
-		$tca = array(
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.images',
-			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig($ref, array(
+		$customSettingOverride = array();
+		$allowedFileExtensions = '';
+		if($type == 'image') {
+			$customSettingOverride = array(
 				'appearance' => array(
 					'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:images.addFileReference'
 				),
@@ -378,7 +386,13 @@ class tx_rnbase_util_TSFAL {
 							--palette--;;filePalette'
 					)
 				)
-			), $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'])
+			);
+			$allowedFileExtensions = $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'];
+		}
+
+		$tca = array(
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.images',
+			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig($ref, $customSettingOverride, $allowedFileExtensions)
 		);
 		
 		if (!empty($tca) && is_array($options)) {
@@ -495,19 +509,12 @@ class tx_rnbase_util_TSFAL {
 	 * @param string $refField
 	 * @return array
 	 */
-	static public function getFirstReference($refTable, $refUid, $refField) {
-		$refs = self::getReferences($refTable, $refUid, $refField);
-		
-		if (!empty($refs)) {
-			$res = array();
-			// Loop through all data ...
-			foreach ($refs as $key=>$data) {
-				// ... and use only the first record WITH its uid!
-				$uid = key($refs[$key]);
-				$res[$key] = array($uid => $data[$uid]);
-			}
-			return $res;
-		}
+	public static function getFirstReference($refTable, $refUid, $refField) {
+		$refs = self::fetchReferences($refTable, $refUid, $refField);
+		return reset($refs);
+	}
+	public static function getFileReferenceById($uid) {
+		return \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileReferenceObject($uid);
 	}
 }
 
