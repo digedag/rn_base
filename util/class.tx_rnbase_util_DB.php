@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006-2011 Rene Nitzsche
+ *  (c) 2006-2013 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -31,60 +31,6 @@ tx_rnbase::load('tx_rnbase_util_Debug');
  */
 class tx_rnbase_util_DB {
 	private static $sysPage = null;
-	/**
-	 * Make a query to database. You will receive an array with result rows. All
-	 * database resources are closed after each call.
-	 * A Hidden and Delete-Clause for FE-Requests is added for requested table.
-	 *
-	 * @param $what requested columns
-	 * @param $from either the name of on table or an array with index 0 the from clause
-	 *              and index 1 the requested tablename
-	 * @param $where
-	 * @param $groupby
-	 * @param $orderby
-	 * @param $wrapperClass Name einer WrapperKlasse für jeden Datensatz
-	 * @param $limit = '' Limits number of results
-	 * @param $debug = 0 Set to 1 to debug sql-String
-	 * @deprecated use tx_rnbase_util_DB::doSelect()
-	 */
-	function queryDB($what, $from, $where, $groupBy = '', $orderBy = '', $wrapperClass = 0, $limit = '', $debug=0){
-		$tableName = $from;
-		$fromClause = $from;
-		if(is_array($from)){
-			$tableName = $from[1];
-			$fromClause = $from[0];
-		}
-
-		$limit = intval($limit) > 0 ? intval($limit) : '';
-
-		// Zur Where-Clause noch die gültigen Felder hinzufügen
-		$where .= tslib_cObj::enableFields($tableName);
-
-    if($debug) {
-      $sql = $GLOBALS['TYPO3_DB']->SELECTquery($what,$fromClause,$where,$groupBy,$orderBy);
-      tx_rnbase_util_Debug::debug($sql, 'SQL');
-      tx_rnbase_util_Debug::debug(array($what,$from,$where));
-    }
-
-    $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-      $what,
-      $fromClause,
-      $where,
-      $groupBy,
-      $orderBy,
-      $limit
-    );
-
-    $wrapper = is_string($wrapperClass) ? tx_rnbase::makeInstanceClassName($wrapperClass) : 0;
-    $rows = array();
-    while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
-      $rows[] = ($wrapper) ? new $wrapper($row) : $row;
-    }
-    $GLOBALS['TYPO3_DB']->sql_free_result($res);
-    if($debug)
-      tx_rnbase_util_Debug::debug(count($rows),'Rows retrieved');
-    return $rows;
-  }
 
 	/**
 	 * Generische Schnittstelle für Datenbankabfragen. Anstatt vieler Parameter wird hier ein
@@ -204,7 +150,8 @@ class tx_rnbase_util_DB {
 		);
 		$rows = array();
 		$sqlError = false;
-		if(is_resource($res)) {
+
+		if(self::testResource($res)) {
 			//$wrapper = is_string($arr['wrapperclass']) ? tx_rnbase::makeInstanceClassName($arr['wrapperclass']) : 0;
 			$wrapper = is_string($arr['wrapperclass']) ? trim($arr['wrapperclass']) : 0;
 			$callback = isset($arr['callback']) ? $arr['callback'] : false;
@@ -238,6 +185,9 @@ class tx_rnbase_util_DB {
 				'Error'=>$sqlError,
 			),'SQL statistics');
 		return $rows;
+	}
+	private static function testResource($res) {
+		return tx_rnbase_util_TYPO3::isTYPO61OrHigher() ? ($res instanceof mysqli_result) : is_resource($res);
 	}
 
 	/**
@@ -723,6 +673,61 @@ class tx_rnbase_util_DB {
 		}
 		return $db;
 	}
+
+	/**
+	 * Make a query to database. You will receive an array with result rows. All
+	 * database resources are closed after each call.
+	 * A Hidden and Delete-Clause for FE-Requests is added for requested table.
+	 *
+	 * @param $what requested columns
+	 * @param $from either the name of on table or an array with index 0 the from clause
+	 *              and index 1 the requested tablename
+	 * @param $where
+	 * @param $groupby
+	 * @param $orderby
+	 * @param $wrapperClass Name einer WrapperKlasse für jeden Datensatz
+	 * @param $limit = '' Limits number of results
+	 * @param $debug = 0 Set to 1 to debug sql-String
+	 * @deprecated use tx_rnbase_util_DB::doSelect()
+	 */
+	function queryDB($what, $from, $where, $groupBy = '', $orderBy = '', $wrapperClass = 0, $limit = '', $debug=0){
+		$tableName = $from;
+		$fromClause = $from;
+		if(is_array($from)){
+			$tableName = $from[1];
+			$fromClause = $from[0];
+		}
+
+		$limit = intval($limit) > 0 ? intval($limit) : '';
+
+		// Zur Where-Clause noch die gültigen Felder hinzufügen
+		$where .= tslib_cObj::enableFields($tableName);
+
+    if($debug) {
+      $sql = $GLOBALS['TYPO3_DB']->SELECTquery($what,$fromClause,$where,$groupBy,$orderBy);
+      tx_rnbase_util_Debug::debug($sql, 'SQL');
+      tx_rnbase_util_Debug::debug(array($what,$from,$where));
+    }
+
+    $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+      $what,
+      $fromClause,
+      $where,
+      $groupBy,
+      $orderBy,
+      $limit
+    );
+
+    $wrapper = is_string($wrapperClass) ? tx_rnbase::makeInstanceClassName($wrapperClass) : 0;
+    $rows = array();
+    while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
+      $rows[] = ($wrapper) ? new $wrapper($row) : $row;
+    }
+    $GLOBALS['TYPO3_DB']->sql_free_result($res);
+    if($debug)
+      tx_rnbase_util_Debug::debug(count($rows),'Rows retrieved');
+    return $rows;
+  }
 }
 
 function tx_rnbase_util_DB_prependAlias(&$item, $key, $alias) {

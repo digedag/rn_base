@@ -9,6 +9,7 @@ v0.12.5 (??.03.2013)
  * BE-Modules: Some changes in base_Lister. Thanks to Thomas Reuleke!
  * TYPO3 dependency for TER added
  * Initial implementation for FAL support in TYPO3 6.0
+ * tx_rnbase_util_DB: update for TYPO3 6.1
 
 v0.12.4 (14.03.2013)
  * Bugfix for SQL-error-logging. Thanks to Michael Wagner!
