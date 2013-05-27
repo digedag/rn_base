@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2007 Rene Nitzsche
+ *  (c) 2007-2013 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -25,6 +25,9 @@
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_util_BaseMarker');
 tx_rnbase::load('tx_rnbase_util_PageBrowser');
+tx_rnbase::load('tx_rnbase_util_Math');
+
+
 
 /**
  * Contains utility functions for HTML-Forms
@@ -64,7 +67,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 		$totalPages = ceil($count / $results_at_a_time);
 		if($totalPages == 1 && $configurations->get($pbConfId.'hideIfSinglePage')) return '';
 		$maxPages = intval($configurations->get($pbConfId.'maxPages'));
-		$maxPages = t3lib_div::intInRange($maxPages ? $maxPages : 10, 1, 100);
+		$maxPages = tx_rnbase_util_Math::intInRange($maxPages ? $maxPages : 10, 1, 100);
 		$templates = $this->getTemplates($template, $formatter, $pbMarker);
 
 		$pageFloat = $this->getPageFloat($configurations->get($pbConfId.'pagefloat'), $maxPages);
@@ -148,7 +151,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 		}
 		else {
 			$ret['first'] = 0;
-			$ret['last'] = t3lib_div::intInRange($totalPages, 1, $maxPages);
+			$ret['last'] = tx_rnbase_util_Math::intInRange($totalPages, 1, $maxPages);
 		}
 		return $ret;
 	}
@@ -163,7 +166,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 				$pageFloat = ceil(($maxPages - 1) / 2);
 			}
 			else
-				$pageFloat = t3lib_div::intInRange($pageFloat, -1, $maxPages - 1);
+				$pageFloat = tx_rnbase_util_Math::intInRange($pageFloat, -1, $maxPages - 1);
 		}
 		else
 			$pageFloat = -1;

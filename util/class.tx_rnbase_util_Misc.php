@@ -463,16 +463,17 @@ MAYDAYPAGE;
  	 * @return string commaseparated list of pids 
 	 */
 	public static function getPidList($pid_list,$recursive=0)  {
+		tx_rnbase::load('tx_rnbase_util_Math');
 
 		if (!strcmp($pid_list,''))
 			$pid_list = tx_rnbase_util_TYPO3::getTSFE(true)->id;
-		$recursive = t3lib_div::intInRange($recursive,0);
+		$recursive = tx_rnbase_util_Math::intInRange($recursive,0);
 
 		$pid_list_arr = array_unique(t3lib_div::trimExplode(',',$pid_list,1));
 		$pid_list = array();
 
 		foreach($pid_list_arr as $val)  {
-			$val = t3lib_div::intInRange($val,0);
+			$val = tx_rnbase_util_Math::intInRange($val,0);
 			if ($val)       {
 				$_list = tslib_cObj::getTreeList(-1*$val, $recursive);
 				if ($_list)  $pid_list[] = $_list;
