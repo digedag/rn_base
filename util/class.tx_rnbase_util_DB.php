@@ -525,7 +525,14 @@ class tx_rnbase_util_DB {
 	 */
 	private static function _getSearchLike($kw, $searchFields) {
 		global $TYPO3_DB;
-		$searchTable = ''; // TODO Check if possible to delete
+		$searchTable = ''; // Für TYPO3 nicht relevant
+		if(tx_rnbase_util_TYPO3::isExtLoaded('dbal')) {
+			// Bei dbal darf die Tabelle nicht leer sein. Wir setzen die erste Tabelle in den searchfields
+			tx_rnbase::load('tx_rnbase_util_Strings');
+			$col = $searchFields[0];
+			$colData = tx_rnbase_util_Strings::trimExplode('.', $col);
+			$searchTable = reset($colData);
+		}
 		$wheres = array();
 		while(list(,$val)=each($kw))	{
 			$val = trim($val);
