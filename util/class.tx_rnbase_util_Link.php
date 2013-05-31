@@ -626,7 +626,12 @@ class tx_rnbase_util_Link {
 		}
 		if($configurations->get($confId.'noCache'))
 			$this->noCache();
-		if($configurations->get($confId.'noHash'))
+		// Bei der Linkerzeugung wir normalerweise immer ein cHash angelegt. Bei Plugins, die als USER_INT 
+		// ausgeführt werden, ist dies nicht notwendig und geht auf die Performance. Daher wird hier 
+		// automatisch der cHash für USER_INT deaktiviert. Per Typocript kann man es aber bei Bedarf manuell 
+		// wieder aktivieren
+		if($configurations->get($confId.'noHash') ||
+				($configurations->get($confId.'noHash') !== '0' && $configurations->isPluginUserInt()))
 			$this->noHash();
 
 	}

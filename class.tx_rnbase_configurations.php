@@ -165,6 +165,13 @@ class tx_rnbase_configurations {
 		return $this->pluginUid;
 	}
 	/**
+	 * Whether or not the current plugin is executed as USER_INT
+	 * @return boolean
+	 */
+	public function isPluginUserInt() {
+		return $this->getCObj()->getUserObjectType() == tslib_cObj::OBJECTTYPE_USER_INT;
+	}
+	/**
 	 * return string a unique id for this plugin
 	 */
 	private function createPluginId() {
@@ -184,6 +191,7 @@ class tx_rnbase_configurations {
    * If id == 0 the will get the plugins original cOBj.
    * @param $id any
    * @param $cObjClass String Optional cObj-classname
+   * @return tslib_cObj
    */
 	public function &getCObj($id = 0, $cObjClass = 'tslib_cObj') {
 		if(strcmp($id,'0') == 0) {
