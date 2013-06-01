@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2007 René Nitzsche
+ *  (c) 2007-2013 René Nitzsche
  *  All rights reserved
  *
  *  Based on code by Elmar Hinz Contact: elmar.hinz@team-red.net
@@ -366,8 +366,8 @@ class tx_rnbase_controller {
 		}
 		// Falls es mehrere Actions sind den String splitten
 		if($action)
-			$action = t3lib_div::trimExplode(',|',$action);
-		if(!is_array($action) || count($action) == 1) {
+			$action = t3lib_div::trimExplode(',',$action);
+		if(is_array($action) && count($action) == 1) {
 			$action = t3lib_div::trimExplode('|',$action[0]); // Nochmal mit Pipe versuchen
 		}
 		// If there is still no action we use defined defaultAction
