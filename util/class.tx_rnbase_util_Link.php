@@ -63,7 +63,8 @@ class tx_rnbase_util_Link {
 	var $titleString = '';              // tags title attribute
 	var $titleHasAlreadyHtmlSpecialChars = false; //is title attribute already HSC?
 	private $typolinkParams = array();	// container for generic typolink parameters
-
+	private $uniqueParameterId = NULL;     // used to build unique parameters for plugin
+	
 	// -------------------------------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------------------------------
@@ -203,6 +204,12 @@ class tx_rnbase_util_Link {
 	 */
 	public function getLabel() {
 		return $this->labelString;
+	}
+	public function getUniqueParameterId() {
+		return $this->uniqueParameterId;
+	}
+	public function setUniqueParameterId($id) {
+		$this->uniqueParameterId = $id;
 	}
 	/**
 	 * Set array of parameters to be overruled by parameters
@@ -396,6 +403,11 @@ class tx_rnbase_util_Link {
 			= t3lib_div::array_merge_recursive_overrule($this->overruledParameters,
 					$this->parameters);
 		foreach((array) $parameters as $key => $value) {
+			// Ggf. hier auf die Parameter der eigenen Extension prüfen
+			if($this->getUniqueParameterId() !== NULL) {
+				$value = array($key => $value);
+				$key = $this->getUniqueParameterId();
+			}
 			$conf['additionalParams'] .= $this->makeUrlParam($key, $value);
 		}
 		if($this->noHashBoolean ) {

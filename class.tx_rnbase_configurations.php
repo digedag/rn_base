@@ -172,6 +172,13 @@ class tx_rnbase_configurations {
 		return $this->getCObj()->getUserObjectType() == tslib_cObj::OBJECTTYPE_USER_INT;
 	}
 	/**
+	 * Whether or not the plugins uses its own parameters. This will add the plugin id to all 
+	 * parameters of the given plugin.
+	 */
+	public function isUniqueParameters() {
+		return $this->getBool('uniqueParameters') == true;
+	}
+	/**
 	 * return string a unique id for this plugin
 	 */
 	private function createPluginId() {
@@ -243,11 +250,14 @@ class tx_rnbase_configurations {
 	 * @return tx_rnbase_util_Link
 	 */
 	public function &createLink($addKeepVars = true) {
+		/* @var $link tx_rnbase_util_Link */
 		$link = tx_rnbase::makeInstance('tx_rnbase_util_Link');
 		$link->designatorString = $this->getQualifier();
 		// Die KeepVars setzen
 		if($addKeepVars)
 			$link->overruled($this->getKeepVars());
+		if($this->isUniqueParameters())
+			$link->setUniqueParameterId($this->getPluginId());
 		return $link;
 	}
 	public function setParameters($parameters) {

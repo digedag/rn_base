@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2007 René Nitzsche
+ *  (c) 2007-2013 René Nitzsche
  *  All rights reserved
  *
  *  Based on code by Elmar Hinz Contact: elmar.hinz@team-red.net
@@ -418,8 +418,9 @@ class tx_rnbase_controller {
 
 	/**
 	 * Returns an ArrayObject containing all parameters
+	 * @param tx_rnbase_configurations $configurations
 	 */
-	function _makeParameterObject($configurations) {
+	protected function _makeParameterObject($configurations) {
 		$parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
 		$parameters->setQualifier($configurations->getQualifier());
 
@@ -427,7 +428,9 @@ class tx_rnbase_controller {
 		$parametersArray = tx_rnbase_util_TYPO3::isTYPO43OrHigher() ?
 				t3lib_div::_GPmerged($configurations->getQualifier()) :
 				t3lib_div::GParrayMerged($configurations->getQualifier());
-
+		if($configurations->isUniqueParameters() && array_key_exists($configurations->getPluginId(), $parametersArray)) {
+			$parametersArray = $parametersArray[$configurations->getPluginId()];
+		}
 		tx_rnbase_util_Arrays::overwriteArray($parameters,$parametersArray);
 
 		// Initialize the cHash system if there are parameters available
