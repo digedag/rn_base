@@ -143,7 +143,7 @@ class tx_rnbase_model_base implements tx_rnbase_IModel {
 			$value = tx_rnbase_util_Misc::camelCaseToLowerCaseUnderscored($propertyName);
 			return $this->record[$value];
 		}
-		throw new Exception('Sorry, this model does not support the method "' . $methodName . '"');
+		throw new Exception('Sorry, the model "'.get_class($this).'" does not support the method "' . $methodName . '".', 1370258960);
 	}
 
 	/**
