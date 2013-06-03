@@ -239,21 +239,38 @@ abstract class tx_rnbase_mod_base_Lister {
 	 * @param array $options
 	 */
 	protected function prepareSorting(&$options) {
-		$sortField = t3lib_div::_GET('sortField');
-		$sortRev = t3lib_div::_GET('sortRev');
+		$sortedCols = array();
+		if(t3lib_div::_GET('sortField') && t3lib_div::_GET('sortRev')) {
+			$sortedCols = array(t3lib_div::_GET('sortField') => t3lib_div::_GET('sortRev'));
+			//wir setzen die daten noch für das Modul um bei einem seiten wechsel
+			//weiterhin die richtige sortierung zu haben
+			$this->getSelector()->setValueToModuleData(
+				$this->getModule()->getName(),
+				array($this->getSearcherId().'orderby' => $sortedCols));
+		}elseif($aOrderByByModuleData = $this->getSelector()->getValueFromModuleData($this->getSearcherId().'orderby')){
+			$sortedCols = $aOrderByByModuleData;
+			//wenn die sortierung aus dem Modul kommt, müssen wir die Sortierung in
+			//den $_GET Daten setzen damit die richtigen Pfeile angezeigt werden
+			//siehe tx_rnbase_util_FormTool::createSortLink
+			$aKeys = array_keys($aOrderByByModuleData);
+			$_GET['sortField'] = $aKeys[0];
+			$aValues = array_values($aOrderByByModuleData);
+			$_GET['sortRev'] = $aValues[0];
+		}
 
-		if(!empty($sortField)) {
+		if(!empty($sortedCols)) {
 			$cols = $this->getColumns();
 
-			if(!isset($cols[$sortField]) || !is_array($cols[$sortField]) || !isset($cols[$sortField]['sortable'])) {
-				return;
-			}
+			foreach($sortedCols As $colLabel => $sortOrder) {
+				$configuredCol = $cols[$colLabel];
+				if(!$configuredCol || !array_key_exists('sortable', $configuredCol)) continue;
 
-			// das Label in die notwendige SQL-Anweisung umwandeln. Normalerweise ein Spaltenname.
-			$sortCol = $cols[$sortField]['sortable'];
-			// Wenn am Ende ein Punkt steht, muss die Spalte zusammengefügt werden.
-			$sortCol = substr($sortCol, -1) === '.' ? $sortCol.$sortField : $sortCol;
-			$options['orderby'][$sortCol] = (strtolower($sortRev)== 'asc' ? 'asc':'desc');
+				// das Label in die notwendige SQL-Anweisung umwandeln. Normalerweise ein Spaltenname.
+				$sortCol = $configuredCol['sortable'];
+				// Wenn am Ende ein Punkt steht, muss die Spalte zusammengefügt werden.
+				$sortCol = substr($sortCol, -1) === '.' ? $sortCol.$colLabel : $sortCol;
+				$options['orderby'][$sortCol] = (strtolower($sortOrder)== 'asc' ? 'asc':'desc');
+			}
 		}
 	}
 
