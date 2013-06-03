@@ -44,13 +44,6 @@ interface tx_rnbase_IModel {
 	 */
 	public function getRecord();
 
-	/**
-	 * Inits the model instance either with uid or a complete data record.
-	 * As the result the instance should be completly loaded.
-	 *
-	 * @param mixed $rowOrUid
-	 */
-	public function init($rowOrUid);
 }
 
 
@@ -77,6 +70,12 @@ class tx_rnbase_model_base implements tx_rnbase_IModel {
 		$this->tx_rnbase_model_base($rowOrUid);
 	}
 
+	/**
+	 * Inits the model instance either with uid or a complete data record.
+	 * As the result the instance should be completly loaded.
+	 *
+	 * @param mixed $rowOrUid
+	 */
 	function init($rowOrUid) {
 		if(is_array($rowOrUid)) {
 			$this->uid = $rowOrUid['uid'];
