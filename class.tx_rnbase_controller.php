@@ -366,8 +366,8 @@ class tx_rnbase_controller {
 		}
 		// Falls es mehrere Actions sind den String splitten
 		if($action)
-			$action = t3lib_div::trimExplode(',|',$action);
-		if(!is_array($action) || count($action) == 1) {
+			$action = t3lib_div::trimExplode(',',$action);
+		if(is_array($action) && count($action) == 1) {
 			$action = t3lib_div::trimExplode('|',$action[0]); // Nochmal mit Pipe versuchen
 		}
 		// If there is still no action we use defined defaultAction
