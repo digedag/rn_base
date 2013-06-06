@@ -134,7 +134,7 @@ class tx_rnbase_util_ListMarker {
 			$parts[] = $part;
 			$rowRollCnt = ($rowRollCnt >= $rowRoll) ? 0 : $rowRollCnt + 1;
 		}
-		$parts = implode($formatter->configurations->get($confId.'implode'), $parts);
+		$parts = implode($formatter->configurations->get($confId.'implode', true), $parts);
 		return $parts;
 	}
 }
