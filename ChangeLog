@@ -3,6 +3,10 @@
 Änderungen
 ----------
 
+v0.13.2 (03.06.2013) (not released)
+ * SimpleMarker supports dynamic subpart-markers configured by typoscript. Thanks to Michael Wagner!
+ * util_DB::doSelect: Automatic translation of selected records.
+
 v0.13.1 (03.06.2013) (not released)
  * Support for unique plugin parameters. Simple enabled by TS: plugin.tx_myplugin.uniqueParameters = 1
  * tx_rnbase_model_base implements interface tx_rnbase_IModel

@@ -56,7 +56,7 @@ define('OP_EQ', '=STR');
 
 /**
  * Service for accessing team information
- * 
+ *
  * @author Rene Nitzsche
  */
 abstract class tx_rnbase_util_SearchBase {
@@ -85,21 +85,21 @@ abstract class tx_rnbase_util_SearchBase {
 	 * SQL-Injections erschwert und es sind JOINs möglich.
 	 * Field-Schema: TABLEALIAS.COLNAME
 	 * Beispiel: TEAM.NAME, TEAM.UID
-	 * 
+	 *
 	 * Options: Zusätzliche Bedingungen für Abfrage.
 	 * LIMIT, ORDERBY
-	 * 
+	 *
 	 * Sonderfall Freitextsuche über mehrere Felder:
 	 * Hierfür gibt es das Sonderfeld SEARCH_FIELD_JOINED. Dieses erwartet ein Array der Form
 	 * 'value' => 'Suchbegriff'
 	 * 'cols' => array(FIELD1, FIELD2,...)
 	 * Hierfür gibt es das Sonderfeld SEARCH_FIELD_JOINED. Dieses erwartet ein Array der Form
-	 * 
+	 *
 	 * Sonderfall SQL Sub-Select:
 	 * Hierfür gibt es das Sonderfeld SEARCH_FIELD_CUSTOM. Dieses erwartet ein String mit dem
 	 * Sub-Select. Dieser wird direkt in die Query eingebunden.
-	 * 
-	 * @param array $fields Felder nach denen gesucht wird 
+	 *
+	 * @param array $fields Felder nach denen gesucht wird
 	 * @param array $options
 	 * @return array oder int
 	 */
@@ -153,7 +153,7 @@ abstract class tx_rnbase_util_SearchBase {
 		}
 
 		tx_rnbase_util_Misc::callHook('rn_base', 'searchbase_handleTableMapping', array(
-			'tableAliases' => &$tableAliases, 'joinedFields' => &$joinedFields, 
+			'tableAliases' => &$tableAliases, 'joinedFields' => &$joinedFields,
 			'customFields' => &$customFields, 'options' => &$options,
 		), $this);
 		$what = $this->getWhat($options, $tableAliases);
@@ -221,8 +221,10 @@ abstract class tx_rnbase_util_SearchBase {
 			$sqlOptions['having'] = $options['having'];
 		if($options['callback'])
 			$sqlOptions['callback'] = $options['callback'];
-		if($options['i18n'])
-			$sqlOptions['i18n'] = $options['i18n'];
+		if($options['ignorei18n'])
+			$sqlOptions['ignorei18n'] = $options['ignorei18n'];
+		if($options['i18nolmode'])
+			$sqlOptions['i18nolmode'] = $options['i18nolmode'];
 		if($options['ignoreworkspace'])
 			$sqlOptions['ignoreworkspace'] = $options['ignoreworkspace'];
 		if($options['sqlonly'])
@@ -254,9 +256,9 @@ abstract class tx_rnbase_util_SearchBase {
 			$sqlOptions['orderby'] = implode(',', $orderby);
 		}
 		if(!(isset($options['count'])) && (!(
-					isset($options['what']) || 
+					isset($options['what']) ||
 					isset($options['groupby']) ||
-					isset($options['sqlonly']) 
+					isset($options['sqlonly'])
 				) || isset($options['forcewrapper']))) {
 			// der Filter kann ebenfalls eine Klasse setzen. Diese hat Vorrang.
 			$sqlOptions['wrapperclass'] = $options['wrapperclass'] ? $options['wrapperclass'] : $this->getGenericWrapperClass();
@@ -282,7 +284,7 @@ abstract class tx_rnbase_util_SearchBase {
 		}
 	}
 	/**
-	 * Returns the configured basetable. If this call is not generic it returns the value 
+	 * Returns the configured basetable. If this call is not generic it returns the value
 	 * from getBaseTable()
 	 * @return string
 	 */
@@ -291,7 +293,7 @@ abstract class tx_rnbase_util_SearchBase {
 		return $this->getBaseTable();
 	}
 	/**
-	 * Returns the configured wrapper class. If this call is not generic it returns the value 
+	 * Returns the configured wrapper class. If this call is not generic it returns the value
 	 * from getWrapperClass()
 	 * @return string
 	 */
@@ -300,7 +302,7 @@ abstract class tx_rnbase_util_SearchBase {
 		return $this->getWrapperClass();
 	}
 	/**
-	 * Returns the configured basetable. If this call is not generic it returns the value 
+	 * Returns the configured basetable. If this call is not generic it returns the value
 	 * @return string
 	 */
 	private function getGenericJoins($tableAliases) {
@@ -317,11 +319,11 @@ abstract class tx_rnbase_util_SearchBase {
 							if($makeJoin) break;
 						}
 					}
-	
+
 					if($makeJoin) {
 						$join .= ' ' . $data['join'];
 					}
-					
+
 					$tableMapping[$alias] = $data['table'];
 				}
 			}
@@ -361,7 +363,7 @@ abstract class tx_rnbase_util_SearchBase {
 
 //		if(!count($tableMapping)) throw new Exception('No search tables configured!');
 	}
-	
+
 	/**
 	 * Kindklassen müssen ein Array bereitstellen, in denen die Aliases der
 	 * Tabellen zu den eigentlichen Tabellennamen gemappt werden.
@@ -387,7 +389,7 @@ abstract class tx_rnbase_util_SearchBase {
 		if($this->isGeneric()) return $this->genericData['basetablealias'];
 		return $this->getBaseTableAlias();
 	}
-	
+
 	/**
 	 * Name der Klasse, in die die Ergebnisse gemappt werden
 	 * @return string
@@ -399,7 +401,7 @@ abstract class tx_rnbase_util_SearchBase {
 	 * sollte ein leerer String geliefert werden.
 	 *
 	 * @param array $tableAliases
-	 * @return string 
+	 * @return string
 	 */
 	abstract protected function getJoins($tableAliases);
 
@@ -461,7 +463,7 @@ abstract class tx_rnbase_util_SearchBase {
 
 	/**
 	 * Optionen aus der TS-Config setzen
-	 * 
+	 *
 	 * @param array $options
 	 * @param tx_rnbase_configurations $configurations
 	 * @param string $confId Id der TS-Config z.B. myview.options.
@@ -510,7 +512,7 @@ abstract class tx_rnbase_util_SearchBase {
 		if(is_array($cfgFields))
 			foreach($cfgFields As $field => $cfg) {
 				// Tabellen-Alias
-				$tableAlias = (substr($field, strlen($field) -1, 1) == '.') ? 
+				$tableAlias = (substr($field, strlen($field) -1, 1) == '.') ?
 											strtoupper(substr($field, 0, strlen($field) -1)) : strtoupper($field);
 
 				if($tableAlias == SEARCH_FIELD_JOINED) {
@@ -540,7 +542,7 @@ abstract class tx_rnbase_util_SearchBase {
 
 	/**
 	 * Vergleichsfelder aus der TS-Config setzen
-	 * 
+	 *
 	 * @param array $fields
 	 * @param tx_rnbase_configurations $configurations
 	 * @param string $confId Id der TS-Config z.B. myview.fields.

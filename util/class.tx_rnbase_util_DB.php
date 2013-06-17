@@ -50,6 +50,8 @@ class tx_rnbase_util_DB {
 	 * - 'enablefieldsbe' - force enableFields check for BE (this usually ignores hidden records)
 	 * - 'enablefieldsfe' - force enableFields check for FE
 	 * - 'db' - external database: tx_rnbase_util_db_IDatabase
+	 * - 'ignorei18n' - do not translate record to fe language
+	 * - 'i18nolmode' - translation mode, possible value: 'hideNonTranslated'
 	 * </pre>
 	 * @param string $what requested columns
 	 * @param string $from either the name of on table or an array with index 0 the from clause
@@ -120,6 +122,7 @@ class tx_rnbase_util_DB {
 			$where .= $enableFields;
 		}
 
+		// Das sollte wegfallen. Die OL werden weiter unten geladen
 		if(strlen($i18n) > 0) {
 			$i18n = implode(',', t3lib_div::intExplode(',', $i18n));
 			$where .= ' AND '.($tableAlias ? $tableAlias : $tableName).'.sys_language_uid IN (' . $i18n . ')';
@@ -160,6 +163,7 @@ class tx_rnbase_util_DB {
 			while($row = $database->sql_fetch_assoc($res)){
 				// Workspacesupport
 				self::lookupWorkspace($row, $tableName, $sysPage, $arr);
+				self::lookupLanguage($row, $tableName, $sysPage, $arr);
 				if(!is_array($row)) continue;
 				$item = ($wrapper) ? tx_rnbase::makeInstance($wrapper, $row) : $row;
 				if($callback) {
@@ -201,6 +205,24 @@ class tx_rnbase_util_DB {
 			return;
 		}
 		$sysPage->versionOL($tableName, $row);
+		$sysPage->fixVersioningPid($tableName, $row);
+	}
+
+	/**
+	 * Autotranslate a record to fe language
+	 * @param array $row
+	 * @param string $tableName
+	 * @param t3lib_pageSelect $sysPage
+	 * @param array $options
+	 */
+	private static function lookupLanguage(&$row, $tableName, $sysPage, $options) {
+		// Then get localization of record:
+		// (if the content language is not the default language)
+		$tsfe = tx_rnbase_util_TYPO3::getTSFE();
+		if (!is_object($tsfe) || !$tsfe->sys_language_content || $options['enablefieldsoff'] || $options['ignorei18n']) {
+			$OLmode = ($this->sys_language_mode == 'strict' ? 'hideNonTranslated' : '');
+			$row = $sysPage->getRecordOverlay($tableName, $row, $tsfe->sys_language_content, $options['i18nolmode']);
+		}
 	}
 
 	public static function enableFields($tableName, $mode, $tableAlias='') {
