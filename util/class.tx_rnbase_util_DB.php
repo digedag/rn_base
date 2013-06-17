@@ -220,10 +220,11 @@ class tx_rnbase_util_DB {
 		// (if the content language is not the default language)
 		$tsfe = tx_rnbase_util_TYPO3::getTSFE();
 		if (!is_object($tsfe) || !$tsfe->sys_language_content || $options['enablefieldsoff'] || $options['ignorei18n']) {
-			// $OLmode = ($this->sys_language_mode == 'strict' ? 'hideNonTranslated' : '');
-			$OLmode = (isset($options['i18nolmode']) ? $options['i18nolmode'] : '');
-			$row = $sysPage->getRecordOverlay($tableName, $row, $tsfe->sys_language_content, $options['i18nolmode']);
+			return;
 		}
+		// $OLmode = ($this->sys_language_mode == 'strict' ? 'hideNonTranslated' : '');
+		$OLmode = (isset($options['i18nolmode']) ? $options['i18nolmode'] : '');
+		$row = $sysPage->getRecordOverlay($tableName, $row, $tsfe->sys_language_content, $OLmode);
 	}
 
 	public static function enableFields($tableName, $mode, $tableAlias='') {
