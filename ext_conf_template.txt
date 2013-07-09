@@ -14,7 +14,7 @@ sendEmailOnException =
 fromEmail = 
 
 # cat=basic//10; type=boolean; label= Send a 503 service unavailable header if an exception occures. This prevents search engines to index error pages.
-send503HeaderOnException = 0
+send503HeaderOnException = 1
 
   # cat=basic//10; type=boolean; label= Load hidden objects if BE user is logged in. This works mainly for detail pages.
 loadHiddenObjects = 0
