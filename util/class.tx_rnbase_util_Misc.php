@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006-2011 Rene Nitzsche
+ *  (c) 2006-2013 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -103,11 +103,11 @@ class tx_rnbase_util_Misc {
 			}
 		}
 	}
-		
+
 	/**
 	 * Stops PHP execution : die() if some critical error appeared
    * This method is taken from the great ameos_formidable extension.
-	 * 
+	 *
 	 * @param	string		$msg: the error message
 	 * @return	void
 	 */
@@ -212,11 +212,11 @@ MAYDAYPAGE;
 		else
 			echo($sPage);
 	}
-	
+
 	/**
 	 * Creates a html view for a php object
    * This method is taken from the great ameos_formidable extension.
-	 * 
+	 *
 	 * @param mixed $mMixed
 	 * @param boolean $bRecursive
 	 * @param int $iLevel
@@ -321,13 +321,13 @@ MAYDAYPAGE;
 			$temp_sys_page->init(0);
 			$GLOBALS['TSFE']->sys_page = $temp_sys_page;
 			$GLOBALS['TSFE']->initTemplate();
-			
+
 			// Bugfix: initLLvars does not check if config['config'] is an array
 			// which throws an warning when trying to access config['config']['language']
 			if(!is_array($GLOBALS['TSFE']->config['config'])){
 				$GLOBALS['TSFE']->config['config'] = array();
 			}
-			
+
 			$GLOBALS['TSFE']->initLLvars();
 			$GLOBALS['TSFE']->tmpl->getFileName_backPath = $GLOBALS['TSFE']->tmpl->getFileName_backPath ? $GLOBALS['TSFE']->tmpl->getFileName_backPath : PATH_site;
 			//Basis Nutzergruppen
@@ -354,7 +354,7 @@ MAYDAYPAGE;
 		return implode($sep, $uids);
 	}
 	/**
-	 * Validate a search string for minimum length. All smaller parts are removed. 
+	 * Validate a search string for minimum length. All smaller parts are removed.
 	 *
 	 * @param string $searchterm
 	 * @param int $minLength
@@ -387,8 +387,8 @@ MAYDAYPAGE;
 	}
 
 	/**
-	 * Create a short hash from all values in $params. This can be used as additional link parameter to 
-	 * ensure submitted parameters are not modified. 
+	 * Create a short hash from all values in $params. This can be used as additional link parameter to
+	 * ensure submitted parameters are not modified.
 	 * The order of values doesn't matter.
 	 *
 	 * @param array $params
@@ -460,7 +460,7 @@ MAYDAYPAGE;
 
 	/**
  	 * Same method as tslib_pibase::pi_getPidList()
- 	 * @return string commaseparated list of pids 
+ 	 * @return string commaseparated list of pids
 	 */
 	public static function getPidList($pid_list,$recursive=0)  {
 		tx_rnbase::load('tx_rnbase_util_Math');
@@ -528,12 +528,11 @@ MAYDAYPAGE;
 		/* @var $mail tx_rnbase_util_Mail */
 		$mail = tx_rnbase::makeInstance('tx_rnbase_util_Mail');
 		$mail->setSubject('Exception on site '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
-		
+
 		$from = tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'fromEmail');
-		$from = $from ? $from : $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
-		$from = $from ? $from : 'error@' . t3lib_div::getIndpEnv('TYPO3_HOST_ONLY'); 
+		$from = $from ? $from : 'error@' . t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
 		$mail->setFrom($from);
-		
+
 		$mail->setTo($mailAddr);
 		$mail->setTextPart($textPart);
 		$mail->setHtmlPart($htmlPart);
@@ -548,44 +547,44 @@ MAYDAYPAGE;
 		$textPart .= 'Message: ' . $e->getMessage()."\n\n";
 		$textPart .= "Stacktrace:\n". $e->__toString()."\n";
 		$textPart .= 'SITE_URL: ' . t3lib_div::getIndpEnv('TYPO3_SITE_URL')."\n";
-	
+
 		tx_rnbase::load('tx_rnbase_util_TYPO3');
 		$textPart .= 'BE_USER: '.tx_rnbase_util_TYPO3::getBEUserUID()."\n";
 		$textPart .= 'FE_USER: '.tx_rnbase_util_TYPO3::getFEUserUID()."\n";
-	
+
 		return $textPart;
 	}
-	
+
 	protected static function getErrorMailHtml($e,$actionName) {
 		$htmlPart = '<strong>This is an automatic email from TYPO3. Don\'t answer!</strong>';
 		$htmlPart .= '<div><strong>UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName .'</strong></div>';
 		$htmlPart .= '<p><strong>Message:</strong><br />' . $e->getMessage() . '</p>';
 		$htmlPart .= '<p><strong>Stacktrace:</strong><pre>'.$e->__toString().'</pre></p>';
 		$htmlPart .= '<p><strong>SITE_URL</strong><br />'. t3lib_div::getIndpEnv('TYPO3_SITE_URL'). '</p>';
-	
+
 		$get = self::removePasswordParams($_GET);
 		if(count($get))
 			$htmlPart .= '<p><strong>_GET</strong><br />'. var_export($get, true). '</p>';
-	
+
 		$post = self::removePasswordParams($_POST);
 		if(count($post))
 			$htmlPart .= '<p><strong>_POST</strong><br />'. var_export($post, true). '</p>';
-	
+
 		$cookie = self::removePasswordParams($_COOKIE);
 		if(count($cookie))
 			$htmlPart .= '<p><strong>_COOKIE</strong><br />'. var_export($cookie, true). '</p>';
-	
+
 		$htmlPart .= '<p><strong>_SERVER</strong><br />'. var_export(self::removePasswordParams($_SERVER), true). '</p>';
 		if($e instanceof tx_rnbase_util_Exception) {
 			$additional = $e->getAdditional();
 			if($additional)
 				$htmlPart .= '<p><strong>Additional Data:</strong><br />' . strval($additional) . '</p>';
 		}
-	
+
 		tx_rnbase::load('tx_rnbase_util_TYPO3');
 		$htmlPart .= '<p><strong>BE_USER:</strong> '.tx_rnbase_util_TYPO3::getBEUserUID().'</p>';
 		$htmlPart .= '<p><strong>FE_USER:</strong> '.tx_rnbase_util_TYPO3::getFEUserUID().'</p>';
-	
+
 		return $htmlPart;
 	}
 

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009 Rene Nitzsche (rene@system25.de)
+*  (c) 2009 - 2013 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,12 +22,13 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
-
+require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_util_BaseMarker');
 
 /**
  * A generic marker class.
+ * @author Rene Nitzsche <rene@system25.de>
+ * @author Michael Wagner <mihcael.wagner@das-medienkombinat.de>
  */
 class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 	public function __construct($options = array()) {
@@ -50,16 +51,67 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 			$item = self::getEmptyInstance($this->classname);
 		}
 
-		// Es wird das MarkerArray mit den Daten des Teams gefüllt.
+		// Es wird das MarkerArray mit den Daten des Records gefüllt.
 		$ignore = self::findUnusedCols($item->record, $template, $marker);
 		$markerArray = $formatter->getItemMarkerArrayWrapped($item->record, $confId , $ignore, $marker.'_',$item->getColumnNames());
-		$wrappedSubpartArray = array();
-		$subpartArray = array();
+
+		// subparts erzeugen
+		$wrappedSubpartArray = $subpartArray = array();
+		$this->prepareSubparts($wrappedSubpartArray, $subpartArray, $template, $item, $formatter, $confId, $marker);
+
+		// Links erzeugen
 		$this->prepareLinks($item, $marker, $markerArray, $subpartArray, $wrappedSubpartArray, $confId, $formatter, $template);
 
+		// das Template rendern
 		$out = self::substituteMarkerArrayCached($template, $markerArray, $subpartArray, $wrappedSubpartArray);
 		return $out;
 	}
+
+
+	/**
+	 * @param array $wrappedSubpartArray das HTML-Template
+	 * @param array $subpartArray das HTML-Template
+	 * @param string $template das HTML-Template
+	 * @param tx_rnbase_model_base $item
+	 * @param tx_rnbase_util_FormatUtil $formatter der zu verwendente Formatter
+	 * @param string $confId Pfad der TS-Config
+	 * @param string $marker Name des Markers
+	 */
+	protected function prepareSubparts(
+		array &$wrappedSubpartArray, array &$subpartArray,
+		$template, $item, $formatter, $confId, $marker
+	) {
+		$configurations = $formatter->getConfigurations();
+		$pluginData = $configurations->getCObj()->data;
+		$configurations->getCObj()->data = $item->record;
+		$emptyArray = array('','');
+		$emptyString = '';
+
+		foreach ($configurations->getKeyNames($confId.'subparts.') as $key) {
+			$spConfId = $confId.'subparts.'.$key.'.';
+			$spMarker = $marker.'_'.strtoupper($key);
+			$markerVisible = $configurations->get($spConfId.'marker.visible');
+			$markerVisible = empty($markerVisible) ? 'VISIBLE' : strtoupper($markerVisible);
+			$markerVisible = $spMarker.'_'.$markerVisible;
+			$markerHidden = $configurations->get($spConfId.'marker.hidden');
+			$markerHidden = empty($markerHidden) ? 'HIDDEN' : strtoupper($markerHidden);
+			$markerHidden = $spMarker.'_'.$markerHidden;
+
+			if (!(self::containsMarker($template, $markerVisible)
+				|| self::containsMarker($template, $markerHidden))) {
+				continue;
+			}
+			if ($configurations->getBool($spConfId.'visible', true, false)) {
+				$wrappedSubpartArray['###'.$markerVisible.'###'] = $emptyArray;
+				$subpartArray['###'.$markerHidden.'###'] = $emptyString;
+			} else {
+				$subpartArray['###'.$markerVisible.'###'] = $emptyString;
+				$wrappedSubpartArray['###'.$markerHidden.'###'] = $emptyArray;
+			}
+		}
+		$configurations->getCObj()->data = $pluginData;
+	}
+
 	/**
 	 * Links vorbereiten
 	 *

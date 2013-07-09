@@ -64,7 +64,7 @@ class tx_rnbase_util_Link {
 	var $titleHasAlreadyHtmlSpecialChars = false; //is title attribute already HSC?
 	private $typolinkParams = array();	// container for generic typolink parameters
 	private $uniqueParameterId = NULL;     // used to build unique parameters for plugin
-	
+
 	// -------------------------------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------------------------------
@@ -376,8 +376,12 @@ class tx_rnbase_util_Link {
 	 */
 	function redirect() {
 		session_write_close();
-		header('Location: ' . t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR') 
-			. $this->cObject->typolink(null, $this->_makeConfig('url')));
+
+		$target = $this->cObject->typolink(null, $this->_makeConfig('url'));
+		$target = tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
+			\TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($target) :
+			t3lib_div::locationHeaderUrl($target);
+		header('Location: ' . $target);
 		exit();
 	}
 
@@ -464,7 +468,7 @@ class tx_rnbase_util_Link {
 	 * $key='param'; $value='123' => &qualifier[param]=123
 	 * $key='ttnews::param'; $value='123' => &ttnews[param]=123
 	 * $key='::param'; $value='123' => &param=123
-	 *  
+	 *
 	 * @param string $key
 	 * @param string $value
 	 * @return string
@@ -536,7 +540,7 @@ class tx_rnbase_util_Link {
 	public function getAbsUrlSchema() {
 		return $this->absUrlSchema;
 	}
-	
+
 	/**
 	 * Init this link by typoscript setup
 	 *
@@ -569,7 +573,7 @@ class tx_rnbase_util_Link {
 				$this->addTypolinkParam($cfgName, $cfgValue);
 			}
 		}
-		
+
 		// Zusätzliche Parameter für den Link
 		$atagParams = $configurations->get($confId.'atagparams.');
 		if(is_array($atagParams)) {
@@ -638,9 +642,9 @@ class tx_rnbase_util_Link {
 		}
 		if($configurations->get($confId.'noCache'))
 			$this->noCache();
-		// Bei der Linkerzeugung wir normalerweise immer ein cHash angelegt. Bei Plugins, die als USER_INT 
-		// ausgeführt werden, ist dies nicht notwendig und geht auf die Performance. Daher wird hier 
-		// automatisch der cHash für USER_INT deaktiviert. Per Typocript kann man es aber bei Bedarf manuell 
+		// Bei der Linkerzeugung wir normalerweise immer ein cHash angelegt. Bei Plugins, die als USER_INT
+		// ausgeführt werden, ist dies nicht notwendig und geht auf die Performance. Daher wird hier
+		// automatisch der cHash für USER_INT deaktiviert. Per Typocript kann man es aber bei Bedarf manuell
 		// wieder aktivieren
 		if($configurations->get($confId.'noHash') ||
 				($configurations->get($confId.'noHash') !== '0' && $configurations->isPluginUserInt()))

@@ -3,6 +3,15 @@
 Änderungen
 ----------
 
+v0.13.3 (27.06.2013) (not released)
+ * Warning mail address from TYPO3 is not used for error mails anymore.
+
+v0.13.2 (27.06.2013) (not released)
+ * SimpleMarker supports dynamic subpart-markers configured by typoscript. Thanks to Michael Wagner!
+ * util_DB::doSelect: Automatic translation of selected records.
+ * util_Link: Bugfix for external URIs
+ * New method util_FormUtil::getHiddenFieldsForUrlParams(). Thanks to Michael Wagner!
+
 v0.13.1 (03.06.2013) (not released)
  * Support for unique plugin parameters. Simple enabled by TS: plugin.tx_myplugin.uniqueParameters = 1
  * tx_rnbase_model_base implements interface tx_rnbase_IModel
