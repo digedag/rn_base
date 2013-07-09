@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v0.13.3 (27.06.2013) (not released)
+ * Warning mail address from TYPO3 is not used for error mails anymore.
+
 v0.13.2 (27.06.2013) (not released)
  * SimpleMarker supports dynamic subpart-markers configured by typoscript. Thanks to Michael Wagner!
  * util_DB::doSelect: Automatic translation of selected records.

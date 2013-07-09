@@ -530,7 +530,6 @@ MAYDAYPAGE;
 		$mail->setSubject('Exception on site '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
 
 		$from = tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'fromEmail');
-		$from = $from ? $from : $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
 		$from = $from ? $from : 'error@' . t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
 		$mail->setFrom($from);
 
