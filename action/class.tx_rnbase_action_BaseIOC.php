@@ -27,13 +27,13 @@ tx_rnbase::load('tx_rnbase_util_Templates');
 
 /**
  * Abstract base class for an action. This action is build to implement the
- * pattern Inversion of Control (IOC). If you implement a child class you have 
+ * pattern Inversion of Control (IOC). If you implement a child class you have
  * to implement
  * handleRequest() - do whatever your action has to do
  * getTemplateName() - What is the default name of your html-Template
  * getViewClassName() - which class should render the result
  * All other tasks are done here.
- * 
+ *
  * This class works with PHP5 only!
  */
 abstract class tx_rnbase_action_BaseIOC {
@@ -44,7 +44,7 @@ abstract class tx_rnbase_action_BaseIOC {
 	function execute(&$parameters,&$configurations){
 		$this->setConfigurations($configurations);
 		$debugKey = $configurations->get($this->getConfId().'_debugview');
-		$debug = ($debugKey && ($debugKey==='1' || 
+		$debug = ($debugKey && ($debugKey==='1' ||
 				($_GET['debug'] && array_key_exists($debugKey,array_flip(t3lib_div::trimExplode(',', $_GET['debug'])))) ||
 				($_POST['debug'] && array_key_exists($debugKey,array_flip(t3lib_div::trimExplode(',', $_POST['debug']))))
 				)
@@ -76,8 +76,8 @@ abstract class tx_rnbase_action_BaseIOC {
 				$tmplName = $this->getTemplateName();
 				if(!$tmplName || !strlen($tmplName))
 					tx_rnbase_util_Misc::mayday('No template name defined!');
-		
-				$view->setTemplateFile($configurations->get($tmplName.'Template'));
+
+				$view->setTemplateFile($configurations->get($tmplName.'Template', true));
 				tx_rnbase_util_Misc::pushTT(get_class($this), 'render');
 				$out = $view->render($tmplName, $configurations);
 				tx_rnbase_util_Misc::pullTT();
@@ -118,7 +118,7 @@ abstract class tx_rnbase_action_BaseIOC {
 	}
 	/**
 	 * Find a configured cache handler.
-	 * 
+	 *
 	 * @param tx_rnbase_configurations $configurations
 	 * @param string $confId
 	 * @return tx_rnbase_action_ICacheHandler
@@ -129,7 +129,7 @@ abstract class tx_rnbase_action_BaseIOC {
 		$handler = tx_rnbase::makeInstance($clazz, $configurations, $confId);
 		return $handler;
 	}
-	
+
 	/**
 	 * Liefert die ConfId für den View
 	 * @return string
@@ -140,7 +140,7 @@ abstract class tx_rnbase_action_BaseIOC {
 	/**
 	 * Liefert den Default-Namen des Templates. Über diesen Namen
 	 * wird per Konvention auch auf ein per TS konfiguriertes HTML-Template
-	 * geprüft. Dessen Key wird aus dem Name und dem String "Template" 
+	 * geprüft. Dessen Key wird aus dem Name und dem String "Template"
 	 * gebildet: [tmpname]Template
 	 * @return string
 	 */
@@ -153,8 +153,8 @@ abstract class tx_rnbase_action_BaseIOC {
 	 */
 	protected abstract function getViewClassName();
 	/**
-	 * Kindklassen führen ihr die eigentliche Arbeit durch. Zugriff auf das 
-	 * Backend und befüllen der viewdata 
+	 * Kindklassen führen ihr die eigentliche Arbeit durch. Zugriff auf das
+	 * Backend und befüllen der viewdata
 	 *
 	 * @param tx_rnbase_IParameters $parameters
 	 * @param tx_rnbase_configurations $configurations
