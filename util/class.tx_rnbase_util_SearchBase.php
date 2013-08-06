@@ -225,6 +225,8 @@ abstract class tx_rnbase_util_SearchBase {
 			$sqlOptions['ignorei18n'] = $options['ignorei18n'];
 		if($options['i18nolmode'])
 			$sqlOptions['i18nolmode'] = $options['i18nolmode'];
+		if($options['i18n'])
+			$sqlOptions['i18n'] = $options['i18n'];
 		if($options['ignoreworkspace'])
 			$sqlOptions['ignoreworkspace'] = $options['ignoreworkspace'];
 		if($options['sqlonly'])
