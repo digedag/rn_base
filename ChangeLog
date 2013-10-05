@@ -3,8 +3,10 @@
 Änderungen
 ----------
 
-v0.13.3 (27.06.2013) (not released)
+v0.13.3 (??.10.2013) (not released)
  * Warning mail address from TYPO3 is not used for error mails anymore.
+ * util_Files::getFileResource() supports FAL references
+ * view_Base works with file references from flexform in TYPO3 6.1
 
 v0.13.2 (27.06.2013) (not released)
  * SimpleMarker supports dynamic subpart-markers configured by typoscript. Thanks to Michael Wagner!
