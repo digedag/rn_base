@@ -122,6 +122,8 @@ class tx_rnbase_util_ListMarker {
 		$rowRoll = intval($formatter->configurations->get($confId.'roll.value'));
 		$rowRollCnt = 0;
 		$totalLineStart = intval($formatter->configurations->get($confId.'totalline.startValue'));
+		// Gesamtzahl der Liste als Register speichern
+		$GLOBALS['TSFE']->register['RNBASE_LB_SIZE'] = count($dataArr);
 		for($i=0, $cnt=count($dataArr); $i < $cnt; $i++) {
 			$data = $dataArr[$i];
 			// Check for object to avoid warning.
