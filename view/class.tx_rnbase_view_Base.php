@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006 Rene Nitzsche
+ *  (c) 2006-2013 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -35,6 +35,7 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_action_BaseIOC');
 tx_rnbase::load('tx_rnbase_util_BaseMarker');
 tx_rnbase::load('tx_rnbase_util_Templates');
+tx_rnbase::load('tx_rnbase_util_Files');
 
 
 /**
@@ -56,8 +57,7 @@ class tx_rnbase_view_Base{
    */
   function render($view, &$configurations){
     $this->_init($configurations);
-    $cObj =& $configurations->getCObj(0);
-    $templateCode = $cObj->fileResource($this->getTemplate($view,'.html'));
+    $templateCode = tx_rnbase_util_Files::getFileResource($this->getTemplate($view,'.html'));
     if(!strlen($templateCode)) {
     	tx_rnbase::load('tx_rnbase_util_Misc');
     	tx_rnbase_util_Misc::mayday('TEMPLATE NOT FOUND: ' . $this->getTemplate($view,'.html'));
@@ -68,7 +68,7 @@ class tx_rnbase_view_Base{
 		// Optional kann schon ein Subpart angegeben werden
 		if($this->getMainSubpart($viewData)) {
 			$subpart = $this->getMainSubpart($viewData);
-			$templateCode = $cObj->getSubpart($templateCode,$subpart);
+			$templateCode = tx_rnbase_util_Templates::getSubpart($templateCode,$subpart);
 			if(!strlen($templateCode)) {
 				tx_rnbase::load('tx_rnbase_util_Misc');
 				tx_rnbase_util_Misc::mayday('SUBPART NOT FOUND: ' . $subpart);

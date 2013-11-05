@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2009 Rene Nitzsche
+ *  (c) 2009-2013 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -34,7 +34,7 @@ class tx_rnbase_util_Files {
 	 * This method is taken from tslib_content
 	 * TODO: cache result
 	 *
-	 * @param string The filename, being a TypoScript resource data type
+	 * @param string The filename, being a TypoScript resource data type or a FAL-Reference (file:123)
 	 * @param string Additional parameters (attributes). Default is empty alt and title tags.
 	 * @return string If jpg,gif,jpeg,png: returns image_tag with picture in. If html,txt: returns content string
 	 * @see FILE()
@@ -44,7 +44,14 @@ class tx_rnbase_util_Files {
 			tx_rnbase::load('tx_rnbase_util_Misc');
 			tx_rnbase_util_Misc::prepareTSFE(array('force'=>true));
 		}
-		$incFile = $GLOBALS['TSFE']->tmpl->getFileName($fName);
+		if(self::isFALReference($fName)) {
+				/** @var FileRepository $fileRepository */
+				$fileRepository = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Resource\FileRepository');
+				$fileObject = $fileRepository->findByUid(intval(substr($fName, 5)));
+				$incFile = is_object($fileObject) ? $fileObject->getForLocalProcessing(FALSE) : false;
+		}
+		else
+			$incFile = $GLOBALS['TSFE']->tmpl->getFileName($fName);
 		if ($incFile)	{
 			// Im BE muss ein absoluter Pfad verwendet werden
 			$fullPath = (TYPO3_MODE == 'BE') ? PATH_site.$incFile : $incFile;
@@ -65,6 +72,14 @@ class tx_rnbase_util_Files {
 		return $ret;
 	}
 
+	/**
+	 * @return boolean true if fName starts with file:
+	 */
+	public static function isFALReference($fName) {
+		return tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
+				\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($fName, 'file:')
+			: false;
+	}
 	/**
 	 * Returns the 'border' attribute for an <img> tag only if the doctype is not xhtml_strict,xhtml_11 or xhtml_2 or if the config parameter 'disableImgBorderAttr' is not set.
 	 * This method is taken from tslib_content

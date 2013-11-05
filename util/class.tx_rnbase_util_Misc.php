@@ -324,7 +324,7 @@ MAYDAYPAGE;
 
 			// Bugfix: initLLvars does not check if config['config'] is an array
 			// which throws an warning when trying to access config['config']['language']
-			if(!is_array($GLOBALS['TSFE']->config['config'])){
+			if(!(isset($GLOBALS['TSFE']->config['config']) && is_array($GLOBALS['TSFE']->config['config']))){
 				$GLOBALS['TSFE']->config['config'] = array();
 			}
 

@@ -172,7 +172,7 @@ class tx_rnbase_configurations {
 		return $this->getCObj()->getUserObjectType() == tslib_cObj::OBJECTTYPE_USER_INT;
 	}
 	/**
-	 * Whether or not the plugins uses its own parameters. This will add the plugin id to all 
+	 * Whether or not the plugins uses its own parameters. This will add the plugin id to all
 	 * parameters of the given plugin.
 	 */
 	public function isUniqueParameters() {
@@ -723,16 +723,29 @@ class tx_rnbase_configurations {
 		}
 	}
 
-  private function mergeTSReference($key, $conf) {
-    $tsParser = t3lib_div::makeInstance('t3lib_TSparser');
-			// $name and $conf is loaded with the referenced values.
-		$old_conf=$conf;
-		list($name, $conf) = $tsParser->getVal($key,$GLOBALS['TSFE']->tmpl->setup);
-		if (is_array($old_conf) && count($old_conf))	{
-			$conf = self::joinTSarrays($conf,$old_conf);
+	private function mergeTSReference($value, $conf) {
+		if (substr($value, 0, 1) != '<')	{
+			return $conf;
 		}
-		return $conf;
-  }
+
+		// das < abschneiden, um den pfad zum link zu erhalten
+		$key = trim(substr($value,1));
+
+		$tsParser = t3lib_div::makeInstance('t3lib_TSparser');
+
+		// $name and $conf is loaded with the referenced values.
+		list($linkValue, $linkConf) = $tsParser->getVal($key, $GLOBALS['TSFE']->tmpl->setup);
+
+		// Konfigurationen mergen
+		if (is_array($conf) && count($conf))	{
+			$linkConf = self::joinTSarrays($linkConf, $conf);
+		}
+
+		// auf rekursion hin prüfen
+		$linkConf = $this->mergeTSReference($linkValue, $linkConf);
+
+		return $linkConf;
+	}
 
 	/**
 	 * Merges two TypoScript propery array, overlaing the $old_conf onto the $conf array
@@ -756,26 +769,24 @@ class tx_rnbase_configurations {
 		return $conf;
 	}
 
-  function _queryArrayByPath($array, $path) {
-  	$pathArray = explode('.', trim($path));
-  	for($i = 0, $cnt = count($pathArray); $i < $cnt; $i++) {
-  		if ($i < ($cnt -1 )) {
-  			// Noch nicht beendet. Auf Reference prüfen
-  			$value = $array[$pathArray[$i]];
-  			$array = $array[$pathArray[$i] . '.'];
-  			if (substr($value,0,1)=='<')	{
-					$key = trim(substr($value,1));
-  				$array = $this->mergeTSReference($key,$array);
-  			}
-  		} elseif(empty($pathArray[$i])) {
-  			// It ends with a dot. We return the rest of the array
-  			return $array;
-  		} else {
-  			// It endes without a dot. We return the value.
-  			return $array[$pathArray[$i]];
-  		}
-  	}
-  }
+	function _queryArrayByPath($array, $path) {
+		$pathArray = explode('.', trim($path));
+		for($i = 0, $cnt = count($pathArray); $i < $cnt; $i++) {
+			if ($i < ($cnt -1 )) {
+				// Noch nicht beendet. Auf Reference prüfen
+				$array = $this->mergeTSReference(
+					$array[$pathArray[$i]],
+					$array[$pathArray[$i] . '.']
+				);
+			} elseif(empty($pathArray[$i])) {
+				// It ends with a dot. We return the rest of the array
+				return $array;
+			} else {
+				// It endes without a dot. We return the value.
+				return $array[$pathArray[$i]];
+			}
+		}
+	}
 
 	/**
 	 * Loads local language file for frontend rendering if defined in configuration.

@@ -51,7 +51,7 @@ class tx_rnbase_tests_configurations_testcase extends tx_phpunit_testcase {
   function test_flexformSetup() {
   	$GLOBALS['TSFE'] = new tx_rnbase_tsfeDummy();
 		$GLOBALS['TSFE']->tmpl->setup['lib.']['feuser.']['link'] = array('pid' => '10');
-  	
+
 		$flexXml = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?> <T3FlexForms>  <data>  <sheet index="sDEF">  <language index="lDEF">  <field index="action">  <value index="vDEF">tx_rnuserregister_actions_Login</value>  </field>  <field index="feuserPages">  <value index="vDEF"></value>  </field>  <field index="feuserPagesRecursive">  <value index="vDEF"></value>  </field>  </language>  </sheet>  <sheet index="s_loginbox">  <language index="lDEF">  <field index="view.loginbox.header">  <value index="vDEF">Welcome</value>  </field>  <field index="view.loginbox.message">  <value index="vDEF"></value>   </field>  <field index="listview.fegroup.link.pid">  <value index="vDEF">25</value>   </field> <field index="detailview.feuser.link.pid">  <value index="vDEF">35</value>   </field>  </language>  </sheet>  </data> </T3FlexForms>';
 		$configurationArray['template'] = 'test.html';
 		$configurationArray['view.']['dummy'] = '1';
@@ -60,7 +60,7 @@ class tx_rnbase_tests_configurations_testcase extends tx_phpunit_testcase {
 		$configurationArray['view.']['loginbox.']['header'] = 'Wrong Header';
 		$configurationArray['view.']['loginbox.']['message'] = 'Hello';
 		$configurationArray['listview.']['feuser'] = '< lib.feuser';
-		
+
     $cObj = t3lib_div::makeInstance('tslib_cObj');
     $cObj->data['pi_flexform'] = $flexXml;
 		$configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
@@ -73,11 +73,55 @@ class tx_rnbase_tests_configurations_testcase extends tx_phpunit_testcase {
 
     $pid = $configurations->get('listview.fegroup.link.pid');
     $this->assertEquals('25', $pid, 'PID from flexform should be 25 but was: ' . $pid);
-    
+
     $pid = $configurations->get('detailview.feuser.link.pid');
     $this->assertEquals('35', $pid, 'PID from flexform should be 35 but was: ' . $pid);
-    
   }
+
+	/**
+	 * Wir testen, ob die Links richtig aufgelöst werden
+	 * Beispiel TS:
+	 * 	lib.rnbase.root {
+	 * 		name = Root
+	 * 		version = 0.1.0
+	 * 	}
+	 * 	lib.rnbase.child = < lib.rnbase.root
+	 * 	lib.rnbase.child {
+	 * 		name = Child
+	 * 	}
+	 */
+	public function test_TsReference() {
+		$GLOBALS['TSFE'] = new tx_rnbase_tsfeDummy();
+		$GLOBALS['TSFE']->tmpl->setup['lib.']['rnbase.'] = array();
+		$lib = &$GLOBALS['TSFE']->tmpl->setup['lib.']['rnbase.'];
+		$lib['root.'] = array(
+			'root' => 'Root',
+			'version' => '0.1.0',
+		);
+		$lib['child'] = '< lib.rnbase.root';
+		$lib['child.'] = array(
+			'child' => 'Child',
+		);
+		/* @var $configurations tx_rnbase_configurations */
+		$configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
+		$configurationArray = array(
+			'recursive' => '< lib.rnbase.child',
+			'recursive.' => array(
+				'current' => 'This'
+			),
+		);
+		$configurations->init($configurationArray, $configurations->getCObj(), 'rnbase', 'rnbase');
+
+		$noDot = $configurations->get('recursive');
+		$this->assertEquals('< lib.rnbase.child', $noDot);
+
+		$withDot = $configurations->get('recursive.');
+		$this->assertTrue(is_array($withDot));
+		$this->assertEquals('Root', $withDot['root']);
+		$this->assertEquals('0.1.0', $withDot['version']);
+		$this->assertEquals('Child', $withDot['child']);
+		$this->assertEquals('This', $withDot['current']);
+	}
 }
 
 class tx_rnbase_tsfeDummy {
