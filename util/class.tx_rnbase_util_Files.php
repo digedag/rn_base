@@ -96,6 +96,31 @@ class tx_rnbase_util_Files {
 	}
 
 	/**
+	 * Wir lassen als Dateinamen nur Buchstaben, Zahlen,
+	 * Bindestrich, Unterstrich und Punkt zu.
+	 * Umlaute und Sonderzeichen werden versucht in lesbare Buchstaben zu parsen.
+	 * Nicht zulässige Zeichen werden in einen Unterstrich umgewandelt.
+	 * Der Dateiuname wird optional in Kleinbuchstaben umgewandelt.
+	 *
+	 * @param string $name
+	 * @param boolean $forceLowerCase
+	 * @return string
+	 */
+	public static function cleanupFileName($name, $forceLowerCase=true) {
+		$cleaned = $name;
+		if (function_exists('iconv')) {
+			tx_rnbase::load('tx_rnbase_util_Strings');
+			$charset = tx_rnbase_util_Strings::isUtf8String($cleaned)
+			? 'UTF-8' : 'ISO-8859-1';
+			$oldLocal = setlocale(LC_ALL, 0);
+			setlocale(LC_ALL, 'de_DE@euro', 'de_DE', 'deu_deu', 'de', 'ge');
+			$cleaned = iconv($charset, 'ASCII//TRANSLIT', $cleaned);
+			setlocale(LC_ALL, $oldLocal);
+		}
+		$cleaned = preg_replace('/[^A-Za-z0-9-_.]/', '_', $cleaned);
+		return $forceLowerCase ? strtolower($cleaned) : $cleaned;
+	}
+	/**
 	 * Create a zip-archive from a list of files
 	 *
 	 * @param array $files
@@ -116,10 +141,10 @@ class tx_rnbase_util_Files {
 				$valid_files[] = $file;
 			}
 		}
-		
+
 		//if we have good files...
 		if(!count($valid_files)) return false;
-		
+
 		//create the archive
 		$zip = new ZipArchive();
 		if($zip->open($destination,$overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) !== true) {
@@ -131,10 +156,10 @@ class tx_rnbase_util_Files {
 			//$zip->addFile($file, $filename);
 			$zip->addFile($file, iconv('UTF-8', 'IBM850', $filename));
 		}
-		
+
 		//close the zip -- done!
 		$zip->close();
-		
+
 		//check to make sure the file exists
 		return file_exists($destination);
 	}
