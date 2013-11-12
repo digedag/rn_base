@@ -69,7 +69,7 @@ class tx_rnbase_util_Strings {
 		$hexArr = array();
 		for($i=0, $cnt=mb_strlen($str, '8bit'); $i < $cnt; $i++) {
 			$bytes[$i] = array(
-				'ascii'=>$str{$i}, 
+				'ascii'=>$str{$i},
 				'dec'=>ord($str{$i}),
 				'hex'=>dechex(ord($str{$i}))
 			);
@@ -126,9 +126,9 @@ class tx_rnbase_util_Strings {
 	}
 
 	/**
-	 *  Ist String korrektes UTF-8? 
+	 *  Ist String korrektes UTF-8?
 	 */
-	private function valid_utf8($string) {
+	private static function valid_utf8($string) {
 		$result=1;
 		$len=strlen($string);
 		$i=0;
@@ -155,24 +155,24 @@ class tx_rnbase_util_Strings {
 		return $result; // done
 	}
 
-	private function valid_1byte($char) {
+	private static function valid_1byte($char) {
 		if(!is_int($char)) return FALSE;
 		return ($char & 0x80)==0x00;
 	}
 
-	private function valid_2byte($char) {
+	private static function valid_2byte($char) {
 		if(!is_int($char)) return FALSE;
 		return ($char & 0xE0)==0xC0;
 	}
-	private function valid_3byte($char) {
+	private static function valid_3byte($char) {
 		if(!is_int($char)) return FALSE;
 		return ($char & 0xF0)==0xE0;
 	}
-	private function valid_4byte($char) {
+	private static function valid_4byte($char) {
 		if(!is_int($char)) return FALSE;
 		return ($char & 0xF8)==0xF0;
 	}
-	private function valid_nextbyte($char) {
+	private static function valid_nextbyte($char) {
 		if(!is_int($char)) return FALSE;
 		return ($char & 0xC0)==0x80;
 	}
