@@ -520,8 +520,20 @@ class tx_rnbase_util_DB {
 		}
 		return $where;
 	}
+	/**
+	 *
+	 * @param array $kw
+	 * @param array $searchFields
+	 */
 	private static function _getSearchSetOr($kw, $searchFields) {
 		global $TYPO3_DB;
+		$searchTable = '';
+		// Aus den searchFields muss eine Tabelle geholt werden (Erstmal nur DBAL)
+		if(tx_rnbase_util_TYPO3::isExtLoaded('dbal') && is_array($searchFields) && !empty($searchFields)) {
+			$col = $searchFields[0];
+			list($searchTable, $col) = explode('.', $col);
+		}
+
 		// Hier werden alle Felder und Werte mit OR verbunden
 		// (FIND_IN_SET(1, match.player)) AND (FIND_IN_SET(4, match.player))
 		// (FIND_IN_SET(1, match.player) OR FIND_IN_SET(4, match.player))
@@ -552,10 +564,8 @@ class tx_rnbase_util_DB {
 		$searchTable = ''; // Für TYPO3 nicht relevant
 		if(tx_rnbase_util_TYPO3::isExtLoaded('dbal')) {
 			// Bei dbal darf die Tabelle nicht leer sein. Wir setzen die erste Tabelle in den searchfields
-			tx_rnbase::load('tx_rnbase_util_Strings');
 			$col = $searchFields[0];
-			$colData = tx_rnbase_util_Strings::trimExplode('.', $col);
-			$searchTable = reset($colData);
+			list($searchTable, $col) = explode('.', $col);
 		}
 		$wheres = array();
 		while(list(,$val)=each($kw))	{
