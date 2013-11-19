@@ -236,7 +236,7 @@ class tx_rnbase_util_Templates {
 		$mPKeys = array_keys($markContentArray);
 		$aKeys = array_merge($mPKeys,$sPkeys,$wPkeys);
 		if (!count($aKeys))	{
-			tx_rnbase_util_Misc:pullTT();
+			tx_rnbase_util_Misc::pullTT();
 			return $content;
 		}
 		asort($aKeys);
