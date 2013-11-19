@@ -236,7 +236,7 @@ class tx_rnbase_util_Templates {
 		$mPKeys = array_keys($markContentArray);
 		$aKeys = array_merge($mPKeys,$sPkeys,$wPkeys);
 		if (!count($aKeys))	{
-			tx_rnbase_util_Misc:ullTT();
+			tx_rnbase_util_Misc:pullTT();
 			return $content;
 		}
 		asort($aKeys);
@@ -247,7 +247,7 @@ class tx_rnbase_util_Templates {
 
 		$storeKey = '';
 		if(self::isSubstCacheEnabled())
-			$storeKey = md5('substituteMarkerArrayCached_storeKey:'.serialize(array($content,$aKeys)));
+			$storeKey = md5('substituteMarkerArrayCached_storeKey:'.serialize(array($content,$mPKeys,$sPkeys,$wPkeys)));
 
 		if(self::isSubstCacheEnabled() && self::$substMarkerCache[$storeKey])	{
 			$storeArr = self::$substMarkerCache[$storeKey];
