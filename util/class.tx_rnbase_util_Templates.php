@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2009 Rene Nitzsche
+ *  (c) 2009-2013 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -28,8 +28,8 @@ tx_rnbase::load('tx_rnbase_util_TYPO3');
 
 /**
  * Contains utility functions for HTML-Templates
- * This is mainly a replacement for tslib_content::substituteMarkerArrayCached(). There is a memory 
- * problem with this method. If it is heavely used the call to $GLOBALS['TT']->push() takes a lot 
+ * This is mainly a replacement for tslib_content::substituteMarkerArrayCached(). There is a memory
+ * problem with this method. If it is heavely used the call to $GLOBALS['TT']->push() takes a lot
  * of memory.
  */
 class tx_rnbase_util_Templates {
@@ -105,7 +105,8 @@ class tx_rnbase_util_Templates {
 		if (!is_array($markContentArray))	$markContentArray=array();	// Plain markers
 		if (!is_array($subpartContentArray))	$subpartContentArray=array();	// Subparts being directly substituted
 		if (!is_array($wrappedSubpartContentArray))	$wrappedSubpartContentArray=array();	// Subparts being wrapped
-			// Finding keys and check hash:
+
+		// Finding keys and check hash:
 		$sPkeys = array_keys($subpartContentArray);
 		$wPkeys = array_keys($wrappedSubpartContentArray);
 		$aKeys = array_merge(array_keys($markContentArray),$sPkeys,$wPkeys);
@@ -115,6 +116,8 @@ class tx_rnbase_util_Templates {
 		}
 		asort($aKeys);
 		$storeKey = md5('substituteMarkerArrayCached_storeKey:'.serialize(array($content,$aKeys)));
+
+
 		if (self::$substMarkerCache[$storeKey])	{
 			$storeArr = self::$substMarkerCache[$storeKey];
 			$GLOBALS['TT']->setTSlogMessage('Cached',0);
@@ -230,14 +233,22 @@ class tx_rnbase_util_Templates {
 			// Finding keys and check hash:
 		$sPkeys = array_keys($subpartContentArray);
 		$wPkeys = array_keys($wrappedSubpartContentArray);
-		$aKeys = array_merge(array_keys($markContentArray),$sPkeys,$wPkeys);
+		$mPKeys = array_keys($markContentArray);
+		$aKeys = array_merge($mPKeys,$sPkeys,$wPkeys);
 		if (!count($aKeys))	{
-			tx_rnbase_util_Misc::pullTT();
+			tx_rnbase_util_Misc:ullTT();
 			return $content;
 		}
 		asort($aKeys);
+
+		asort($mPKeys);
+		asort($sPkeys);
+		asort($wPkeys);
+
+		$storeKey = '';
 		if(self::isSubstCacheEnabled())
 			$storeKey = md5('substituteMarkerArrayCached_storeKey:'.serialize(array($content,$aKeys)));
+
 		if(self::isSubstCacheEnabled() && self::$substMarkerCache[$storeKey])	{
 			$storeArr = self::$substMarkerCache[$storeKey];
 //			$GLOBALS['TT']->setTSlogMessage('Cached',0);
@@ -267,11 +278,11 @@ class tx_rnbase_util_Templates {
 				$storeArr['c'] = preg_split($regex, $content);
 				preg_match_all($regex, $content, $keyList);
 				$storeArr['k']=$keyList[0];
-				
+
 				if(self::isSubstCacheEnabled()) {
 					// Setting cache:
 					self::$substMarkerCache[$storeKey] = $storeArr;
-	
+
 					// Storing the cached data:
 					tx_rnbase_util_TYPO3::getSysPage()->storeHash($storeKey, serialize($storeArr), 'substMarkArrayCached');
 				}

@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v0.13.4 (19.11.2013) (not released)
+ * util_Template::substMarkerArrayCached() with better caching. Thanks to Hannes Bochmann!
+
 v0.13.3 (05.11.2013)
  * Warning mail address from TYPO3 is not used for error mails anymore.
  * util_Files::getFileResource() supports FAL references
