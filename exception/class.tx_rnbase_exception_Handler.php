@@ -33,8 +33,12 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler {
 
   	/**
 	 * Interne Verarbeitung der Exception
+	 * 
+	 * @param string $actionName
 	 * @param Exception $e
 	 * @param tx_rnbase_configurations $configurations
+	 * 
+	 * @return string error message
 	 */
 	public function handleException($actionName, Exception $e, tx_rnbase_configurations $configurations) {
 		if($this->send503HeaderOnException($configurations)) {
