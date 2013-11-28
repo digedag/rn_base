@@ -7,6 +7,9 @@ dieOnMayday = 1
   # cat=basic//10; type=boolean; label= Throw exception if mayday is called.
 forceException4Mayday = 1
 
+  # cat=basic//10; type=string; label= Exception Handler class. default is tx_rnbase_exception_Handler
+exceptionHandler = 
+
   # cat=basic//10; type=string; label= Send emails for uncaught Exceptions. Commaseparated list of email addresses.
 sendEmailOnException = 
 

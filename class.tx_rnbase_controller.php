@@ -255,74 +255,33 @@ class tx_rnbase_controller {
 		return $this->errors;
 	}
 
-	private function send503HeaderOnException($configurations) {
-		//sending a 503 header?
-		return ((
-				//shall we basically send a 503 header?
-				intval(tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'send503HeaderOnException')) && (
-					//the plugin has the oppurtunity to prevent sending a 503 header
-					//by setting plugin.plugin_name.send503HeaderOnException = 0 in the TS config.
-					//if this option is not set we use the ext config
-					!array_key_exists('send503HeaderOnException', $configurations->getConfigArray()) ||
-					$configurations->get('send503HeaderOnException') != 0
-				)
-			) ||
-			(
-				//did the plugin define to send the 503 header
-				$configurations->get('send503HeaderOnException') == 1
-			)
-		);
-
-	}
 	/**
 	 * Interne Verarbeitung der Exception
 	 * @param Exception $e
 	 * @param tx_rnbase_Configurations $configurations
 	 */
 	private function handleException($actionName, Exception $e, $configurations) {
-		if($this->send503HeaderOnException($configurations)) {
-			header('HTTP/1.1 503 Service Unavailable');
+		$exceptionHandlerClass = tx_rnbase_configurations::getExtensionCfgValue(
+			'rn_base', 'exceptionHandler'
+		);
+		
+		$defaultExceptionHandlerClass = 'tx_rnbase_exception_Handler';
+		if(!$exceptionHandlerClass) {
+			$exceptionHandlerClass = $defaultExceptionHandlerClass;
 		}
-		tx_rnbase::load('tx_rnbase_util_Logger');
-		if(tx_rnbase_util_Logger::isFatalEnabled()) {
-			$extKey = $configurations->getExtensionKey();
-			$extKey = $extKey ? $extKey : 'rn_base';
-			tx_rnbase_util_Logger::fatal('Fatal error for action ' . $actionName, $extKey,
-				array('Exception'=> $e, '_GET' => $_GET, '_POST' => $_POST));
+		
+		$exceptionHandler = tx_rnbase::makeInstance($exceptionHandlerClass);
+		
+		if(!$exceptionHandler instanceof tx_rnbase_exception_IHandler) {
+			$exceptionHandler = tx_rnbase::makeInstance($defaultExceptionHandlerClass);
+			tx_rnbase_util_Logger::fatal(
+				"the configured error handler ($exceptionHandlerClass) does not implement the tx_rnbase_exception_IHandler interface",
+				'rn_base'
+			);
 		}
-		$addr = tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'sendEmailOnException');
-		if($addr) {
-			$this->sendErrorMail($addr, $actionName, $e);
-		}
-
-		// Now message for FE
-		$ret = $this->getErrorMessage($actionName, $e, $configurations);
-		return $ret;
+		
+		return $exceptionHandler->handleException($actionName, $e, $configurations);
 	}
-	/**
-	 * Build an error message string for frontend
-	 * @param string $actionName
-	 * @param Exception $e
-	 * @param tx_rnbase_Configurations $configurations
-	 */
-	private function getErrorMessage($actionName, Exception $e, $configurations) {
-		$verbose = intval(tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'verboseMayday')) ?
-			'<br /><pre>'.$e->__toString().'</pre>' : '';
-
-		$ret = $configurations->getLL('ERROR_'.$e->getCode(), '');
-		$ret = $ret ? $ret : $configurations->getLL('ERROR_default', '');
-		if($verbose) {
-			$ret = '<div><strong>UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName .'</strong>'.$verbose.'</div>';
-		}
-		elseif(!$ret) {
-			$ret = '<div><strong>Leider ist ein unerwarteter Fehler aufgetreten.</strong></div>';
-		}
-		return $ret;
-	}
-	private function sendErrorMail($addr, $actionName, Exception $e) {
-		return tx_rnbase_util_Misc::sendErrorMail($addr, $actionName, $e);
-	}
-
 
   /**
    * This is returned, if an invalid action has been send.
