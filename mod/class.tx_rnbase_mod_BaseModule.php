@@ -131,7 +131,10 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 	 * @return	void
 	 */
 	function moduleContent()	{
-		$content = '';
+		// Dummy-Button für automatisch Submit
+		$content = '<p style="position:absolute; top:-5000px; left:-5000px;">'
+            . '<input type="submit" />'
+            . '</p>';
 		$this->extObj->pObj = &$this;
 		if (is_callable(array($this->extObj, 'main')))	$content.=$this->extObj->main();
 		else $content .= 'Module has no method main.';

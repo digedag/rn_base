@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v0.13.5 (??.01.2014) (not released)
+ * Default dummy button in BE module
+
 v0.13.5 (28.11.2013) (not released)
  * Exception handling is now configurable by custom handler classes. Thanks to Hannes Bochmann!
 
