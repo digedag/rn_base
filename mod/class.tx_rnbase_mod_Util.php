@@ -83,6 +83,7 @@ class tx_rnbase_mod_Util {
 	 */
 	public static function showSelectorByArray($aItems, $selectedItem, $sDefId, &$aData, $aOptions=array()) {
 		$id = isset($aOptions['id']) && $aOptions['id'] ? $aOptions['id'] : $sDefId;
+		$pid = isset($aOptions['pid']) && $aOptions['pid'] ? $aOptions['pid'] : 0;
 
 		// Build select box items
 		$aData['selector'] = t3lib_BEfunc::getFuncMenu(
