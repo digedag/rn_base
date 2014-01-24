@@ -536,8 +536,11 @@ abstract class tx_rnbase_util_SearchBase {
 					$colName = strtoupper(substr($col, 0, strlen($col) -1));
 					// Operator und Wert
 					if(!is_array($data)) continue;
-					list($op, $value) = each($data);
-					$fields[$tableAlias.'.'.$colName][constant($op)] = $value;
+					foreach ($data as $op => $value) {
+						$fields[$tableAlias.'.'.$colName][constant($op)] = $value;
+					}
+// 					list($op, $value) = each($data);
+// 					$fields[$tableAlias.'.'.$colName][constant($op)] = $value;
 				}
 			}
 	}
