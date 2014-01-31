@@ -97,8 +97,8 @@ abstract class tx_rnbase_action_BaseIOC {
 				'SubstCacheEnabled?' => tx_rnbase_util_Templates::isSubstCacheEnabled() ? 'yes' : 'no',
 			), 'View statistics for: '.$this->getConfId(). ' Key: ' . $debugKey);
 		}
-		// Enable substCache after each view
-		tx_rnbase_util_Templates::enableSubstCache();
+		// reset the substCache after each view!
+		tx_rnbase_util_Templates::resetSubstCache();
 		return $out;
 	}
 

@@ -35,7 +35,7 @@ tx_rnbase::load('tx_rnbase_util_TYPO3');
 class tx_rnbase_util_Templates {
 	static $substMarkerCache = array();
 	private static $tmpl;
-	private static $substCacheEnabled = true;
+	private static $substCacheEnabled = NULL;
 
 	/**
 	 * Shortcut to t3lib_parsehtml::getSubpart
@@ -193,6 +193,9 @@ class tx_rnbase_util_Templates {
 	 * @return boolean
 	 */
 	public static function isSubstCacheEnabled() {
+		if (self::$substCacheEnabled === NULL) {
+			self::$substCacheEnabled = (bool) tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'activateSubstCache');
+		}
 		return self::$substCacheEnabled;
 	}
 	/**
@@ -207,6 +210,13 @@ class tx_rnbase_util_Templates {
 	public static function disableSubstCache() {
 		self::$substCacheEnabled = false;
 	}
+	/**
+	 * resets the cache configuration for substituteMarkerArrayCached
+	 */
+	public static function resetSubstCache() {
+		self::$substCacheEnabled = NULL;
+	}
+
 	/**
 	 * Multi substitution function with caching.
 	 *
