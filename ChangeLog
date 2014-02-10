@@ -3,7 +3,7 @@
 Änderungen
 ----------
 
-v0.13.5 (??.02.2014) (not released)
+v0.13.6 (10.02.2014) (not released)
  * Default dummy button in BE module
  * Substitution cache in marker classes disabled by default. Thanks to Michael Wagner!
 
