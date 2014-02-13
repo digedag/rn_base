@@ -69,7 +69,7 @@ class tx_rnbase_util_FormTool {
 		$btn .= '/>';
 		return $btn;
 	}
-	
+
 	/**
 	 * Erstellt einen Link zur Bearbeitung eines Datensatzes
 	 * @param $editTable DB-Tabelle des Datensatzes
@@ -181,6 +181,7 @@ class tx_rnbase_util_FormTool {
 		//fallback
 		$sEnableColumn = ($sEnableColumn) ? $sEnableColumn : 'hidden';
 		$jumpToUrl = "'".$GLOBALS['BACK_PATH'].'tce_db.php?redirect='.$location.'&amp;data['.$table.'][' . $uid .']['. $sEnableColumn .']='.($unhide ? 0 : 1);
+		$label = isset($options['label']) ? $options['label'] : '';
 
 		//jetzt noch alles zur Formvalidierung einfügen damit
 		//TYPO3 den Link akzeptiert und als valide einstuft
@@ -189,10 +190,10 @@ class tx_rnbase_util_FormTool {
 		if(tx_rnbase_util_TYPO3::isTYPO45OrHigher())
 			$jumpToUrl .= t3lib_BEfunc::getUrlToken('tceAction');
 		$jumpToUrl .="'";
-		
+
 		return '<a onclick="return jumpToUrl('.$jumpToUrl.');" href="#">'.
 				'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.($unhide ? 'button_hide.gif' : 'button_unhide.gif'),'width="11" height="12"').' title="'.($unhide ? 'Show' : 'Hide').' UID: '.$uid.'" border="0" alt="" />'.
-				$label.'</a>';	
+				$label.'</a>';
 	}
 
 	/**
@@ -296,7 +297,7 @@ class tx_rnbase_util_FormTool {
 		if($options['hover']) {
 			$title = ' title="'.$options['hover'].'" ';
 		}
-		
+
 		return '<a href="#" onclick="'.htmlspecialchars($jsCode).'" '. $title.">". $label .'</a>';
 	}
 
@@ -386,7 +387,7 @@ class tx_rnbase_util_FormTool {
 	}
 
 	/**
-	 * Erstellt eine Selectbox mit festen Werten in der TCA. 
+	 * Erstellt eine Selectbox mit festen Werten in der TCA.
 	 * Die Labels werden in der richtigen Sprache angezeigt.
 	 */
 	function createSelectSingle($name, $value, $table, $column, $options = 0){
@@ -564,7 +565,7 @@ class tx_rnbase_util_FormTool {
 	}
 	/**
 	 * Show function menu.
-	 * 
+	 *
 	 * @param int $pid
 	 * @param string $name name of menu
 	 * @param string $modName name of be module
