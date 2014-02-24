@@ -28,7 +28,7 @@
  */
 class tx_rnbase_mod_Tables {
 	/**
-	 * 
+	 *
 	 * @param array $entries
 	 * @param array $columns
 	 * @param tx_rnbase_util_FormTool $formTool
@@ -95,7 +95,9 @@ class tx_rnbase_mod_Tables {
 				continue;
 			}
 
-			$label = $LANG->getLL((isset($data['title']) ? $data['title'] : $column));
+			$label = $LANG->getLL(isset($data['title']) ? $data['title'] : $column);
+			if(!$label && isset($data['title']))
+				$label = $LANG->sL($data['title']);
 			//es gibt die Möglichkeit sortable zu setzen. damit wird
 			//nach dem title eine sortierung eingeblendet.
 			//in $data['sortable'] sollte ein prefix für das feld stehen, sprich
