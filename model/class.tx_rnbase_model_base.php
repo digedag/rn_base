@@ -104,11 +104,12 @@ class tx_rnbase_model_base implements tx_rnbase_IModel {
 		// is stored in $this->record['l18n_parent'] instead of $this->record['uid']!
 		$tableName = $this->getTableName();
 		$sysLanguageUidField = tx_rnbase_util_TCA::getLanguageFieldForTable($tableName);
-		$lnParentField = tx_rnbase_util_TCA::getTransOrigPointerFieldForTable($tableName);
-		return isset($this->record[$sysLanguageUidField]) && $this->record[$sysLanguageUidField] && isset($this->record[$lnParentField])
-			? $this->record[$lnParentField]
-			: $this->uid
-		;
+		$languageParentField = tx_rnbase_util_TCA::getTransOrigPointerFieldForTable($tableName);
+		$isTranslatedRecord = 	isset($this->record[$sysLanguageUidField]) &&
+								$this->record[$sysLanguageUidField] &&
+								isset($this->record[$languageParentField]);
+
+		return $isTranslatedRecord ? $this->record[$languageParentField] : $this->uid;
 	}
 
 	/**

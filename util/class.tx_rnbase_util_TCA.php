@@ -36,11 +36,10 @@ class tx_rnbase_util_TCA {
 	 * @return string
 	 */
 	public static function getTransOrigPointerFieldForTable($tableName) {
-		global $TCA;
-		if (empty($TCA[$tableName]) || empty($TCA[$tableName]['ctrl']['transOrigPointerField'])) {
+		if (empty($GLOBALS['TCA'][$tableName]) || empty($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])) {
 			return '';
 		}
-		return $TCA[$tableName]['ctrl']['transOrigPointerField'];
+		return $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'];
 	}
 	/**
 	 * Liefert den Spaltennamen für das Parent der aktuellen lokalisierung
@@ -49,11 +48,10 @@ class tx_rnbase_util_TCA {
 	 * @return string
 	 */
 	public static function getLanguageFieldForTable($tableName) {
-		global $TCA;
-		if (empty($TCA[$tableName]) || empty($TCA[$tableName]['ctrl']['languageField'])) {
+		if (empty($GLOBALS['TCA'][$tableName]) || empty($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])) {
 			return '';
 		}
-		return $TCA[$tableName]['ctrl']['languageField'];
+		return $GLOBALS['TCA'][$tableName]['ctrl']['languageField'];
 	}
 
 }
