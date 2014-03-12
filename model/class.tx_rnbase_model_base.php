@@ -98,7 +98,19 @@ class tx_rnbase_model_base implements tx_rnbase_IModel {
 	 * Returns the records uid
 	 * @return int
 	 */
-	function getUid() { return $this->uid; }
+	function getUid() {
+		tx_rnbase::load('tx_rnbase_util_TCA');
+		// Take care for localized records where uid of original record
+		// is stored in $this->record['l18n_parent'] instead of $this->record['uid']!
+		$tableName = $this->getTableName();
+		$sysLanguageUidField = tx_rnbase_util_TCA::getLanguageFieldForTable($tableName);
+		$lnParentField = tx_rnbase_util_TCA::getTransOrigPointerFieldForTable($tableName);
+		return isset($this->record[$sysLanguageUidField]) && $this->record[$sysLanguageUidField] && isset($this->record[$lnParentField])
+			? $this->record[$lnParentField]
+			: $this->uid
+		;
+	}
+
 	/**
 	 * Reload this records from database
 	 */
