@@ -57,6 +57,17 @@ class tx_rnbase_tests_model_Base_testcase extends tx_phpunit_testcase {
 
 		$this->assertEquals(456, $model->getUid(), 'uid field not used');
 	}
+
+	public function testGetUidForNonTca() {
+		$model = tx_rnbase::makeInstance(
+			'tx_rnbase_model_base',
+			array(
+				'uid' => '57',
+				'field' => 'test',
+			)
+		);
+		$this->assertEquals(57, $model->getUid(), 'uid field not used');
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/model/class.tx_rnbase_tests_model_Base_testcase.php']) {
