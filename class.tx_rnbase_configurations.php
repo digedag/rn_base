@@ -462,7 +462,7 @@ class tx_rnbase_configurations {
 		if (empty($value)) {
 			return array();
 		}
-		return t3lib_div::trimExplode($delim, $value);
+		return t3lib_div::trimExplode($delim, $value, TRUE);
 	}
 
 	/**
