@@ -99,19 +99,21 @@ class tx_rnbase_model_base implements tx_rnbase_IModel {
 	 * @return int
 	 */
 	function getUid() {
+		$isTranslatedRecord = FALSE;
 		$tableName = $this->getTableName();
 		if (!empty($tableName)) {
 			tx_rnbase::load('tx_rnbase_util_TCA');
 			// Take care for localized records where uid of original record
 			// is stored in $this->record['l18n_parent'] instead of $this->record['uid']!
-			$sysLanguageUidField = tx_rnbase_util_TCA::getLanguageFieldForTable($tableName);
 			$languageParentField = tx_rnbase_util_TCA::getTransOrigPointerFieldForTable($tableName);
-			$isTranslatedRecord = !(
-				empty($this->record[$sysLanguageUidField])
-				&& empty($this->record[$languageParentField])
-			);
+			$sysLanguageUidField = tx_rnbase_util_TCA::getLanguageFieldForTable($tableName);
+			if (!(empty($languageParentField) && empty($sysLanguageUidField))) {
+				$isTranslatedRecord = !(
+					empty($this->record[$sysLanguageUidField])
+					&& empty($this->record[$languageParentField])
+				);
+			}
 		}
-
 		return $isTranslatedRecord ? $this->record[$languageParentField] : $this->uid;
 	}
 

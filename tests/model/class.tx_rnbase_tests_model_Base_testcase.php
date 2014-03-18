@@ -59,6 +59,23 @@ class tx_rnbase_tests_model_Base_testcase extends tx_phpunit_testcase {
 	}
 
 	public function testGetUidForNonTca() {
+		$model = $this->getMock(
+			'tx_rnbase_model_base',
+			array('getTableName'),
+			array(
+				array(
+					'uid' => '57',
+					'field' => 'test',
+				)
+			)
+		);
+		$model->expects($this->once())
+			->method('getTableName')
+			->will($this->returnValue('tx_table_not_exists'));
+		$this->assertEquals(57, $model->getUid(), 'uid field not used');
+	}
+
+	public function testGetUidForNonTable() {
 		$model = tx_rnbase::makeInstance(
 			'tx_rnbase_model_base',
 			array(
