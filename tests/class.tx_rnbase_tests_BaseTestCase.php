@@ -34,6 +34,52 @@ abstract class tx_rnbase_tests_BaseTestCase
 	extends tx_phpunit_testcase {
 
 	/**
+	 * Sample:
+	 * $this->createConfigurations(
+	 *     array(), 'rn_base', 'rn_base',
+	 *     tx_rnbase::makeInstance('tx_rnbase_parameters'),
+	 *     tx_rnbase::makeInstance('tslib_cObj')
+	 * );
+	 *
+	 * @param array $configurationArray
+	 * @param string $extensionKey
+	 * @param string $qualifier
+	 * @return tx_rnbase_configurations
+	 */
+	protected function createConfigurations(
+		array $configurationArray, $extensionKey, $qualifier = ''
+	) {
+		$qualifier = empty($qualifier) ? $extensionKey : $qualifier;
+
+		$parameters = NULL;
+		$cObj = NULL;
+
+		$args = func_get_args();
+		$args = count($args) > 3 ? array_slice($args, 3) : array();
+
+		foreach ($args as $arg) {
+			if ($arg instanceof tx_rnbase_parameters) {
+				$parameters = $arg;
+			}
+			if ($arg instanceof tslib_cObj) {
+				$cObj = $arg;
+			}
+		}
+
+		/* @var $configurations tx_rnbase_configurations */
+		$configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
+		$configurations->init(
+			$configurationArray,
+			$cObj,
+			$extensionKey, $qualifier
+		);
+		if ($arg instanceof tx_rnbase_parameters) {
+			$configurations->setParameters($parameters);
+		}
+		return $configurations;
+	}
+
+	/**
 	 * Helper function to call protected or private methods.
 	 * This method is taken from TYPO3 BaseTestCase
 	 *

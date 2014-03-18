@@ -90,7 +90,6 @@ HTML;
 	public function testPrepareItem() {
 		$marker = tx_rnbase::makeInstance('tx_rnbase_util_SimpleMarker');
 
-		$long61 = str_repeat('12.45', 12) . '!';
 		$model = tx_rnbase::makeInstance(
 			'tx_rnbase_model_base',
 			array(
@@ -98,34 +97,52 @@ HTML;
 				'field' => 'name',
 				'field.name' => 'fieldname',
 				'fieldname' => 'field.name',
-				// größer als 60 zeichen, wird ignoriert
-				'longdot' => $long61,
+				'dot.name' => 'dotname',
+				'dotname' => 'dot.name',
 			)
 		);
 
-		$this->callInaccessibleMethod($marker, 'prepareItem', $model);
+		$confId = 'hit.';
+		$configurations = $this->createConfigurations(
+			array(
+				$confId => array(
+					'dataMap.' => array(
+						'dotFieldFields' => 'dot.name',
+						'dotValueFields' => 'dotname,unknown',
+					)
+				)
+			),
+			'rn_base'
+		);
 
-		$data = $model->getRecord();
+		$this->callInaccessibleMethod(
+			$marker, 'prepareItem',
+			$model, $configurations, $confId
+		);
 
-		$this->assertArrayHasKey('field', $data);
-		$this->assertEquals($data['field'], 'name');
+		$array = $model->getRecord();
 
-		$this->assertArrayHasKey('field.name', $data);
-		$this->assertEquals($data['field.name'], 'fieldname');
+		$this->assertArrayHasKey('field', $array);
+		$this->assertEquals($array['field'], 'name');
 
-		$this->assertArrayHasKey('longdot', $data);
-		$this->assertEquals($data['longdot'], $long61);
+		$this->assertArrayHasKey('field.name', $array);
+		$this->assertEquals($array['field.name'], 'fieldname');
 
-		$this->assertArrayHasKey('fieldname', $data);
-		$this->assertEquals($data['fieldname'], 'field.name');
+		$this->assertArrayHasKey('fieldname', $array);
+		$this->assertEquals($array['fieldname'], 'field.name');
 
-		$this->assertArrayHasKey('_field_name', $data);
-		$this->assertEquals($data['_field_name'], 'fieldname');
+		$this->assertArrayNotHasKey('_field_name', $array);
+		$this->assertArrayNotHasKey('_fieldname', $array);
 
-		$this->assertArrayHasKey('fieldname', $data);
-		$this->assertEquals($data['_fieldname'], 'field_name');
+		$this->assertArrayHasKey('_dot_name', $array);
+		$this->assertEquals($array['_dot_name'], 'dotname');
 
-		$this->assertArrayNotHasKey('_longdot', $data);
+		$this->assertArrayHasKey('dotname', $array);
+		$this->assertEquals($array['_dotname'], 'dot_name');
+
+		// auch wennd das feld im record nicht existiert, er muss angelegt werden!
+		$this->assertArrayHasKey('_unknown', $array);
+
 	}
 
 	/**

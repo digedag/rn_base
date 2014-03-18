@@ -445,13 +445,24 @@ class tx_rnbase_configurations {
 		return $ret;
 	}
 
+
 	/**
-	 * Returns the requested value splitted as an array
+	 * Get a exploded value
 	 *
-	 * @return	[type]		...
+	 * @param string $pathKey
+	 * @param string $delim
+	 * @param boolean $deep
+	 * @return array
 	 */
-	function getExploded($pathKey, $pattern = '/[\s,]+/') {
-		return (array) preg_split($pattern, $this->_dataStore->offsetGet($pathKey));
+	public function getExploded($pathKey, $delim = ',', $deep = false) {
+		$value = $this->get($pathKey, $deep);
+		if (is_array($value)) {
+			return $value;
+		}
+		if (empty($value)) {
+			return array();
+		}
+		return t3lib_div::trimExplode($delim, $value);
 	}
 
 	/**

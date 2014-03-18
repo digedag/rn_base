@@ -52,7 +52,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 			$item = self::getEmptyInstance($this->classname);
 		}
 
-		$this->prepareItem($template, &$item, &$formatter, $confId, $marker);
+		$this->prepareItem($item, $formatter->getConfigurations(), $confId);
 
 		// Es wird das MarkerArray mit den Daten des Records gefüllt.
 		$ignore = self::findUnusedCols($item->record, $template, $marker);
@@ -74,10 +74,24 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 	 * Führt vor dem parsen Änderungen am Model durch.
 	 *
 	 * @param tx_rnbase_model_base &$item
+	 * @param tx_rnbase_configurations &$configurations
+	 * @param string &$confId
 	 * @return void
 	 */
-	protected function prepareItem(tx_rnbase_model_base &$item) {
+	protected function prepareItem(
+		tx_rnbase_model_base &$item,
+		tx_rnbase_configurations &$configurations,
+		$confId
+	) {
 		if (empty($item->record)) {
+			return;
+		}
+
+		$dotFieldFields = $configurations->getExploded($confId . 'dataMap.dotFieldFields');
+		$dotValueFields = $configurations->getExploded($confId . 'dataMap.dotValueFields');
+		$mapFields = array_merge($dotFieldFields, $dotValueFields);
+
+		if (empty($mapFields)) {
 			return;
 		}
 
@@ -85,13 +99,14 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 		// durch einen unterstrich. Dies ist für den Zugriff über Typoscript notwendig!
 		// das gleiche machen wir für kleine werte, diese werden beispielsweise für
 		// ein CASE im TS benötigt
-		foreach($item->record as $field => $value) {
-			if (strpos($field, '.') !== FALSE) {
-				$newField = '_' . str_replace('.', '_', $field);
+
+		foreach ($mapFields as $field) {
+			$newField = '_' . str_replace('.', '_', $field);
+			$value = $item->record[$field];
+			if (in_array($field, $dotFieldFields)) {
 				$item->record[$newField] = $value;
 			}
-			if (strlen($value) < 60 && strpos($value, '.') !== FALSE) {
-				$newField = '_' . $field;
+			if (in_array($field, $dotValueFields)) {
 				$item->record[$newField] = str_replace('.', '_', $value);
 			}
 		}
