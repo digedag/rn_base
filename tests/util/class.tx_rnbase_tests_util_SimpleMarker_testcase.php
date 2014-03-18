@@ -23,6 +23,7 @@
 ***************************************************************/
 
 require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
+tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_rnbase_util_SimpleMarker');
 tx_rnbase::load('tx_rnbase_util_TS');
 
@@ -36,7 +37,7 @@ class tx_rnbase_util_SimpleMarkerTests extends tx_rnbase_util_SimpleMarker {
 /**
  * @author Michael Wagner <mihcael.wagner@das-medienkombinat.de>
  */
-class tx_rnbase_tests_util_SimpleMarker_testcase extends tx_phpunit_testcase {
+class tx_rnbase_tests_util_SimpleMarker_testcase extends tx_rnbase_tests_BaseTestCase {
 
 	public function testPrepareSubparts() {
 		$formatter = $this->buildFormatter();
@@ -86,6 +87,63 @@ HTML;
 
 	}
 
+	public function testPrepareItem() {
+		$marker = tx_rnbase::makeInstance('tx_rnbase_util_SimpleMarker');
+
+		$model = tx_rnbase::makeInstance(
+			'tx_rnbase_model_base',
+			array(
+				'uid' => 1,
+				'field' => 'name',
+				'field.name' => 'fieldname',
+				'fieldname' => 'field.name',
+				'dot.name' => 'dotname',
+				'dotname' => 'dot.name',
+			)
+		);
+
+		$confId = 'hit.';
+		$configurations = $this->createConfigurations(
+			array(
+				$confId => array(
+					'dataMap.' => array(
+						'dotFieldFields' => 'dot.name',
+						'dotValueFields' => 'dotname,unknown',
+					)
+				)
+			),
+			'rn_base'
+		);
+
+		$this->callInaccessibleMethod(
+			$marker, 'prepareItem',
+			$model, $configurations, $confId
+		);
+
+		$array = $model->getRecord();
+
+		$this->assertArrayHasKey('field', $array);
+		$this->assertEquals($array['field'], 'name');
+
+		$this->assertArrayHasKey('field.name', $array);
+		$this->assertEquals($array['field.name'], 'fieldname');
+
+		$this->assertArrayHasKey('fieldname', $array);
+		$this->assertEquals($array['fieldname'], 'field.name');
+
+		$this->assertArrayNotHasKey('_field_name', $array);
+		$this->assertArrayNotHasKey('_fieldname', $array);
+
+		$this->assertArrayHasKey('_dot_name', $array);
+		$this->assertEquals($array['_dot_name'], 'dotname');
+
+		$this->assertArrayHasKey('dotname', $array);
+		$this->assertEquals($array['_dotname'], 'dot_name');
+
+		// auch wennd das feld im record nicht existiert, er muss angelegt werden!
+		$this->assertArrayHasKey('_unknown', $array);
+
+	}
 
 	/**
 	 * liefert einen formatter inklusive typoscript

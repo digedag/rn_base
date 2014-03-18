@@ -27,8 +27,9 @@ tx_rnbase::load('tx_rnbase_util_BaseMarker');
 
 /**
  * A generic marker class.
+ *
  * @author Rene Nitzsche <rene@system25.de>
- * @author Michael Wagner <mihcael.wagner@das-medienkombinat.de>
+ * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
  */
 class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 	public function __construct($options = array()) {
@@ -51,6 +52,8 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 			$item = self::getEmptyInstance($this->classname);
 		}
 
+		$this->prepareItem($item, $formatter->getConfigurations(), $confId);
+
 		// Es wird das MarkerArray mit den Daten des Records gefüllt.
 		$ignore = self::findUnusedCols($item->record, $template, $marker);
 		$markerArray = $formatter->getItemMarkerArrayWrapped($item->record, $confId , $ignore, $marker.'_',$item->getColumnNames());
@@ -65,6 +68,48 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 		// das Template rendern
 		$out = self::substituteMarkerArrayCached($template, $markerArray, $subpartArray, $wrappedSubpartArray);
 		return $out;
+	}
+
+	/**
+	 * Führt vor dem parsen Änderungen am Model durch.
+	 *
+	 * @param tx_rnbase_model_base &$item
+	 * @param tx_rnbase_configurations &$configurations
+	 * @param string &$confId
+	 * @return void
+	 */
+	protected function prepareItem(
+		tx_rnbase_model_base &$item,
+		tx_rnbase_configurations &$configurations,
+		$confId
+	) {
+		if (empty($item->record)) {
+			return;
+		}
+
+		$dotFieldFields = $configurations->getExploded($confId . 'dataMap.dotFieldFields');
+		$dotValueFields = $configurations->getExploded($confId . 'dataMap.dotValueFields');
+		$mapFields = array_merge($dotFieldFields, $dotValueFields);
+
+		if (empty($mapFields)) {
+			return;
+		}
+
+		// wir gehen über alle felder, und ersetzen ggf. enthaltene punkte
+		// durch einen unterstrich. Dies ist für den Zugriff über Typoscript notwendig!
+		// das gleiche machen wir für kleine werte, diese werden beispielsweise für
+		// ein CASE im TS benötigt
+
+		foreach ($mapFields as $field) {
+			$newField = '_' . str_replace('.', '_', $field);
+			$value = $item->record[$field];
+			if (in_array($field, $dotFieldFields)) {
+				$item->record[$newField] = $value;
+			}
+			if (in_array($field, $dotValueFields)) {
+				$item->record[$newField] = str_replace('.', '_', $value);
+			}
+		}
 	}
 
 
