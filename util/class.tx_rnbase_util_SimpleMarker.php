@@ -27,8 +27,9 @@ tx_rnbase::load('tx_rnbase_util_BaseMarker');
 
 /**
  * A generic marker class.
+ *
  * @author Rene Nitzsche <rene@system25.de>
- * @author Michael Wagner <mihcael.wagner@das-medienkombinat.de>
+ * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
  */
 class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 	public function __construct($options = array()) {
@@ -51,6 +52,8 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 			$item = self::getEmptyInstance($this->classname);
 		}
 
+		$this->prepareItem($template, &$item, &$formatter, $confId, $marker);
+
 		// Es wird das MarkerArray mit den Daten des Records gefüllt.
 		$ignore = self::findUnusedCols($item->record, $template, $marker);
 		$markerArray = $formatter->getItemMarkerArrayWrapped($item->record, $confId , $ignore, $marker.'_',$item->getColumnNames());
@@ -65,6 +68,27 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 		// das Template rendern
 		$out = self::substituteMarkerArrayCached($template, $markerArray, $subpartArray, $wrappedSubpartArray);
 		return $out;
+	}
+
+	/**
+	 * Führt vor dem parsen Änderungen am Model durch.
+	 *
+	 * @param tx_rnbase_model_base &$item
+	 * @return void
+	 */
+	protected function prepareItem(tx_rnbase_model_base &$item) {
+		if (empty($item->record)) {
+			return;
+		}
+
+		// wir gehen über alle felder, und ersetzen ggf. enthaltene punkte
+		// durch einen unterstrich. Dies ist für den Zugriff über Typoscript notwendig!
+		foreach($item->record as $field => $value) {
+			if (strpos($field, '.') !== FALSE) {
+				$newField = str_replace('.', '_', $field);
+				$item->record[$newField] = $value;
+			}
+		}
 	}
 
 

@@ -23,6 +23,7 @@
 ***************************************************************/
 
 require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
+tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_rnbase_util_SimpleMarker');
 tx_rnbase::load('tx_rnbase_util_TS');
 
@@ -36,7 +37,7 @@ class tx_rnbase_util_SimpleMarkerTests extends tx_rnbase_util_SimpleMarker {
 /**
  * @author Michael Wagner <mihcael.wagner@das-medienkombinat.de>
  */
-class tx_rnbase_tests_util_SimpleMarker_testcase extends tx_phpunit_testcase {
+class tx_rnbase_tests_util_SimpleMarker_testcase extends tx_rnbase_tests_BaseTestCase {
 
 	public function testPrepareSubparts() {
 		$formatter = $this->buildFormatter();
@@ -86,6 +87,29 @@ HTML;
 
 	}
 
+	public function testPrepareItem() {
+		$marker = tx_rnbase::makeInstance('tx_rnbase_util_SimpleMarker');
+
+		$model = tx_rnbase::makeInstance(
+			'tx_rnbase_model_base',
+			array(
+				'uid' => 1,
+				'field' => 'name',
+				'field.name' => 'fieldname',
+			)
+		);
+
+		$this->callInaccessibleMethod($marker, 'prepareItem', $model);
+
+		$data = $model->getRecord();
+
+		$this->assertArrayHasKey('field', $data);
+		$this->assertEquals($data['field'], 'name');
+		$this->assertArrayHasKey('field.name', $data);
+		$this->assertEquals($data['field.name'], 'fieldname');
+		$this->assertArrayHasKey('field_name', $data);
+		$this->assertEquals($data['field_name'], 'fieldname');
+	}
 
 	/**
 	 * liefert einen formatter inklusive typoscript
