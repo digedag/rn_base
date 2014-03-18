@@ -180,15 +180,20 @@ class tx_rnbase_configurations {
 	}
 	/**
 	 * return string a unique id for this plugin
+	 *
+	 * @return int
 	 */
 	private function createPluginId() {
-		$id = $this->cObj->data['uid'];
-		if(array_key_exists('doktype', $this->cObj->data)) {
-			// Es handelt sich um ein Plugin, daß per TS eingebunden wurde. In data steht der
-			// Record der Seite.
-			$base = array_key_exists($id, self::$libIds) ? (intval(self::$libIds[$id])+1) : 1;
-			self::$libIds[$id] = $base;
-			$id = (100000 + $id) * $base;
+		$id = 0;
+		if (is_array($this->cObj->data)) {
+			$id = $this->cObj->data['uid'];
+			if(array_key_exists('doktype', $this->cObj->data)) {
+				// Es handelt sich um ein Plugin, daß per TS eingebunden wurde. In data steht der
+				// Record der Seite.
+				$base = array_key_exists($id, self::$libIds) ? (intval(self::$libIds[$id])+1) : 1;
+				self::$libIds[$id] = $base;
+				$id = (100000 + $id) * $base;
+			}
 		}
 		return $id;
 	}
