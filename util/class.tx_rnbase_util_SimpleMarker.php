@@ -83,10 +83,16 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 
 		// wir gehen über alle felder, und ersetzen ggf. enthaltene punkte
 		// durch einen unterstrich. Dies ist für den Zugriff über Typoscript notwendig!
+		// das gleiche machen wir für kleine werte, diese werden beispielsweise für
+		// ein CASE im TS benötigt
 		foreach($item->record as $field => $value) {
 			if (strpos($field, '.') !== FALSE) {
-				$newField = str_replace('.', '_', $field);
+				$newField = '_' . str_replace('.', '_', $field);
 				$item->record[$newField] = $value;
+			}
+			if (strlen($value) < 60 && strpos($value, '.') !== FALSE) {
+				$newField = '_' . $field;
+				$item->record[$newField] = str_replace('.', '_', $value);
 			}
 		}
 	}

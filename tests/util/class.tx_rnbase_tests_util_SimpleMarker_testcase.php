@@ -90,12 +90,16 @@ HTML;
 	public function testPrepareItem() {
 		$marker = tx_rnbase::makeInstance('tx_rnbase_util_SimpleMarker');
 
+		$long61 = str_repeat('12.45', 12) . '!';
 		$model = tx_rnbase::makeInstance(
 			'tx_rnbase_model_base',
 			array(
 				'uid' => 1,
 				'field' => 'name',
 				'field.name' => 'fieldname',
+				'fieldname' => 'field.name',
+				// größer als 60 zeichen, wird ignoriert
+				'longdot' => $long61,
 			)
 		);
 
@@ -105,10 +109,23 @@ HTML;
 
 		$this->assertArrayHasKey('field', $data);
 		$this->assertEquals($data['field'], 'name');
+
 		$this->assertArrayHasKey('field.name', $data);
 		$this->assertEquals($data['field.name'], 'fieldname');
-		$this->assertArrayHasKey('field_name', $data);
-		$this->assertEquals($data['field_name'], 'fieldname');
+
+		$this->assertArrayHasKey('longdot', $data);
+		$this->assertEquals($data['longdot'], $long61);
+
+		$this->assertArrayHasKey('fieldname', $data);
+		$this->assertEquals($data['fieldname'], 'field.name');
+
+		$this->assertArrayHasKey('_field_name', $data);
+		$this->assertEquals($data['_field_name'], 'fieldname');
+
+		$this->assertArrayHasKey('fieldname', $data);
+		$this->assertEquals($data['_fieldname'], 'field_name');
+
+		$this->assertArrayNotHasKey('_longdot', $data);
 	}
 
 	/**
