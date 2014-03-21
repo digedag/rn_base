@@ -5,6 +5,7 @@
 
 v0.13.7 (??.03.2014) (not released)
  * Better localization support. Thanks to Hannes Bochmann!
+ * PageBrowser with more setters
 
 v0.13.6 (10.02.2014) (not released)
  * Default dummy button in BE module
