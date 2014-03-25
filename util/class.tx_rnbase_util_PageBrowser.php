@@ -29,11 +29,14 @@ tx_rnbase::load('tx_rnbase_util_Math');
  */
 class tx_rnbase_util_PageBrowser implements PageBrowser {
 	private $pbid;
+	private $pointer;
+	private $listSize;
+	private $pageSize;
 
 	/**
 	 * Erstellung des PageBrowser mit einer eindeutigen ID
 	 */
-	function __construct($pbid) {
+	public function __construct($pbid) {
 		$this->pbid = $pbid;
 	}
 
@@ -41,15 +44,22 @@ class tx_rnbase_util_PageBrowser implements PageBrowser {
 	 * Initialisierung des PageBrowser mit den aktuellen Zustand.
 	 * Wenn keine Parameter übergeben werden, dann wird der Pager neu initialisiert
 	 * und startet wieder bei Seite 1.
-	 * 
-	 * @param array_object $parameters die vorhandenen Parameter aus dem Request oder null
+	 *
+	 * @param ArrayObject $parameters die vorhandenen Parameter aus dem Request oder null
 	 * @param int $listSize Gesamtgröße der darzustellenden Liste
 	 * @param int $pageSize Größe einer Seite
 	 */
-	function setState($parameters, $listSize, $pageSize) {
+	public function setState($parameters, $listSize, $pageSize) {
+		$this->setPointerByParameters($parameters);
+		$this->setListSize($listSize);
+		$this->setPageSize($pageSize);
+	}
+	/**
+	 * Set current page pointer from request parameters
+	 * @param ArrayObject $parameters
+	 */
+	public function setPointerByParameters($parameters) {
 		$this->setPointer(is_object($parameters) ? intval($parameters->offsetGet($this->getParamName('pointer'))) : 0);
-		$this->listSize = $listSize;
-		$this->pageSize = tx_rnbase_util_Math::intInRange(intval($pageSize) ? $pageSize : 10, 1, 1000);
 	}
 	/**
 	 * Set a new page pointer
@@ -61,8 +71,9 @@ class tx_rnbase_util_PageBrowser implements PageBrowser {
 
 	/**
 	 * Liefert die Limit-Angaben für die DB-Anfrage
+	 * @return array with keys offset and limit
 	 */
-	function getState() {
+	public function getState() {
 		$offset = $this->pointer * $this->pageSize;
 		// Wenn der Offset größer ist als die verfügbaren Einträge, dann den Offset neu berechnen.
 		$offset = $offset >= $this->listSize ? intval(((ceil($this->listSize/$this->pageSize))-1) * $this->pageSize) : $offset;
@@ -70,7 +81,7 @@ class tx_rnbase_util_PageBrowser implements PageBrowser {
 		$offset = $offset >= 0 ? $offset : 0;
 
 		// LS: 100 -> 90+10
-		// 100/10 = 10 -1 
+		// 100/10 = 10 -1
 		$limit = $this->listSize < $this->pageSize ? $this->listSize : $this->pageSize;
 		$ret = array( 'offset' => $offset, 'limit' => $limit , );
 		return $ret;
@@ -80,7 +91,7 @@ class tx_rnbase_util_PageBrowser implements PageBrowser {
 	 * Returns the current pointer. This is the current page to show.
 	 * @return int page to show
 	 */
-	function getPointer() {
+	public function getPointer() {
 		return $this->pointer;
 	}
 
@@ -88,22 +99,36 @@ class tx_rnbase_util_PageBrowser implements PageBrowser {
 	 * Returns the complete number of items in list.
 	 * @return int complete number of items
 	 */
-	function getListSize() {
+	public function getListSize() {
 		return $this->listSize;
+	}
+	/**
+	 * Set the total number of items in list.
+	 * @param int $totalSize
+	 */
+	public function setListSize($totalSize) {
+		$this->listSize = intval($totalSize);
 	}
 
 	/**
 	 * Returns the complete number of items per page.
 	 * @return int complete number of items per page
 	 */
-	function getPageSize() {
+	public function getPageSize() {
 		return $this->pageSize;
+	}
+	/**
+	 * Set number of items per page
+	 * @param int $pageSize
+	 */
+	public function setPageSize($pageSize) {
+		$this->pageSize = tx_rnbase_util_Math::intInRange(intval($pageSize) ? $pageSize : 10, 1, 1000);
 	}
 
 	/**
 	 * Liefert einen Marker zur Erstellung des PageBrowsers im Template
 	 */
-	function getMarker($markerClassName = 'tx_rnbase_util_PageBrowserMarker') {
+	public function getMarker($markerClassName = 'tx_rnbase_util_PageBrowserMarker') {
 		$pageBrowserMarker = tx_rnbase::makeInstance($markerClassName);
 		$pageBrowserMarker->setPageBrowser($this);
 		return $pageBrowserMarker;
@@ -112,31 +137,31 @@ class tx_rnbase_util_PageBrowser implements PageBrowser {
 	/**
 	 * @return the right parametername for this browser
 	 */
-	function getParamName($param) {
+	public function getParamName($param) {
 		return strtolower('pb-'. $this->pbid . '-' . $param);
 	}
 }
 
 interface PageBrowser {
-  function setState($parameters, $listSize, $pageSize);
-  function getState();
-  function getMarker($markerClassName = 'tx_rnbase_util_PageBrowserMarker');
+  public function setState($parameters, $listSize, $pageSize);
+  public function getState();
+  public function getMarker($markerClassName = 'tx_rnbase_util_PageBrowserMarker');
 
   /**
    * Returns the current pointer. This is the current page to show.
    * @return int page to show
    */
-  function getPointer();
+  public function getPointer();
   /**
    * Returns the complete number of items in list.
    * @return int complete number of items
    */
-  function getListSize();
+  public function getListSize();
   /**
    * Returns the complete number of items per page.
    * @return int complete number of items per page
    */
-  function getPageSize();
+  public function getPageSize();
 }
 
 interface PageBrowserMarker {
