@@ -42,7 +42,7 @@ class tx_rnbase_util_BaseMarker {
   /**
    * Initialisiert die Labels für die eine Model-Klasse
    *
-   * @param string $classname child class of tx_rnbase_model_base or null 
+   * @param string $classname child class of tx_rnbase_model_base or null
    * @param tx_rnbase_util_FormatUtil $formatter
    * @param array $defaultMarkerArr
    */
@@ -54,8 +54,8 @@ class tx_rnbase_util_BaseMarker {
 
   /**
    * Initialisiert die Labels für die eine Model-Klasse
-   * 
-   * @param string $classname child class of tx_rnbase_model_base or null 
+   *
+   * @param string $classname child class of tx_rnbase_model_base or null
    * @param tx_rnbase_util_FormatUtil $formatter
    * @param string $confId
    * @param array $defaultMarkerArr
@@ -192,7 +192,7 @@ class tx_rnbase_util_BaseMarker {
 		if(!$linkMarker) {
 			return; // Nothing to do
 		}
-		
+
 		$linkObj =& $formatter->getConfigurations()->createLink();
 		$token = self::getToken();
 		$linkObj->label($token);
@@ -203,7 +203,9 @@ class tx_rnbase_util_BaseMarker {
 			if($makeLink)
 				$wrappedSubpartArray['###'.$linkMarker . '###'] = explode($token, $linkObj->makeTag());
 			if($makeUrl)
-				$markerArray['###'.$linkMarker . 'URL###'] = $linkObj->makeUrl(false);
+				$markerArray['###'.$linkMarker . 'URL###'] = $linkObj->makeUrl(
+						$formatter->getConfigurations()->getBool($confId.'links.'.$linkId.'.applyHtmlSpecialChars', false, false)
+					);
 		}
 		else {
 			self::disableLink($markerArray, $subpartArray, $wrappedSubpartArray, $linkMarker, false);
@@ -239,7 +241,7 @@ class tx_rnbase_util_BaseMarker {
 		}
 		// Markerklasse kann per TS gesetzt werden
 		$markerClass = $formatter->getConfigurations()->get($confId.'markerclass');
- 
+
 		$marker = $markerClass ? $pagebrowser->getMarker($markerClass) : $pagebrowser->getMarker();
 		if(!is_object($marker)) {
 			return '';
@@ -296,10 +298,10 @@ class tx_rnbase_util_BaseMarker {
   }
 
   /**
-   * Returns an empty instance of given modelclass. This object must not be 
+   * Returns an empty instance of given modelclass. This object must not be
    * change, since it is cached. You will always get the same instance if you
    * call this method for the same class more than once.
-   * The object will be initialized with a uid=0. The record-array will 
+   * The object will be initialized with a uid=0. The record-array will
    * contain all tca-defined fields with an empty string as value.
    *
    * @param string $classname
@@ -319,7 +321,7 @@ class tx_rnbase_util_BaseMarker {
 
 	/**
 	 *
-	 * @param tx_rnbase_util_FormatUtil $formatter 
+	 * @param tx_rnbase_util_FormatUtil $formatter
 	 */
 	public static function callModules($template, &$markerArray, &$subpartArray, &$wrappedSubpartArray, &$params, &$formatter) {
 		self::callModuleSubparts($template, $subpartArray, $wrappedSubpartArray, $params, $formatter);
@@ -327,11 +329,11 @@ class tx_rnbase_util_BaseMarker {
 	}
 	/**
 	 * Call services for single markers
-	 * 
+	 *
 	 * @param string $template
 	 * @param array $markerArray
 	 * @param array $params
-	 * @param tx_rnbase_util_FormatUtil $formatter 
+	 * @param tx_rnbase_util_FormatUtil $formatter
 	 */
 	protected static function callModuleMarkers($template, &$markerArray, &$params, &$formatter) {
 		preg_match_all('!\<\!--[a-zA-Z0-9 ]*###([A-Z0-9_-|]*)\###[a-zA-Z0-9 ]*-->!is', $template, $match);
