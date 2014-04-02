@@ -99,7 +99,7 @@ class tx_rnbase_model_base implements tx_rnbase_IModel {
 	 * @return int
 	 */
 	function getUid() {
-		$isTranslatedRecord = FALSE;
+		$uid = 0;
 		$tableName = $this->getTableName();
 		if (!empty($tableName)) {
 			tx_rnbase::load('tx_rnbase_util_TCA');
@@ -107,14 +107,18 @@ class tx_rnbase_model_base implements tx_rnbase_IModel {
 			// is stored in $this->record['l18n_parent'] instead of $this->record['uid']!
 			$languageParentField = tx_rnbase_util_TCA::getTransOrigPointerFieldForTable($tableName);
 			$sysLanguageUidField = tx_rnbase_util_TCA::getLanguageFieldForTable($tableName);
-			if (!(empty($languageParentField) && empty($sysLanguageUidField))) {
-				$isTranslatedRecord = !(
-					empty($this->record[$sysLanguageUidField])
+			if (
+				!(
+					empty($languageParentField)
+					&& empty($sysLanguageUidField)
+					&& empty($this->record[$sysLanguageUidField])
 					&& empty($this->record[$languageParentField])
-				);
+				)
+			) {
+				$uid = (int) $this->record[$languageParentField];
 			}
 		}
-		return $isTranslatedRecord ? $this->record[$languageParentField] : $this->uid;
+		return $uid > 0 ? $uid : (int) $this->uid;
 	}
 
 	/**
@@ -144,7 +148,7 @@ class tx_rnbase_model_base implements tx_rnbase_IModel {
 	 * @return boolean
 	 */
 	function isPersisted() {
-		return intval($this->getUid()) > 0;
+		return $this->getUid() > 0;
 	}
 
 	/**

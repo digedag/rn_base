@@ -85,6 +85,20 @@ class tx_rnbase_tests_model_Base_testcase extends tx_phpunit_testcase {
 		);
 		$this->assertEquals(57, $model->getUid(), 'uid field not used');
 	}
+
+
+	public function testGetUidForTranslatedSingleRecord() {
+		$model = $this->getMock(
+			'tx_rnbase_model_base',
+			array('getTableName'),
+			array(array('uid' => 123, 'l18n_parent' => 0, 'sys_language_uid' => 789))
+		);
+		$model->expects($this->once())
+			->method('getTableName')
+			->will($this->returnValue('tt_content'));
+
+		$this->assertEquals(123, $model->getUid(), 'uid field not used');
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/model/class.tx_rnbase_tests_model_Base_testcase.php']) {
