@@ -115,10 +115,10 @@ class tx_rnbase_model_base implements tx_rnbase_IModel {
 					&& empty($this->record[$languageParentField])
 				)
 			) {
-				$uid = (int) $this->record[$languageParentField];
+				$uid = $this->record[$languageParentField];
 			}
 		}
-		return $uid > 0 ? $uid : (int) $this->uid;
+		return $uid > 0 ? $uid : $this->uid;
 	}
 
 	/**
