@@ -23,7 +23,6 @@
  ***************************************************************/
 
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase_configurations.php');
-require_once(PATH_t3lib."class.t3lib_parsehtml.php");
 
 /**
  * Contains some helpful methods for file handling

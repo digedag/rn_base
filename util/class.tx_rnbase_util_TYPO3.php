@@ -196,7 +196,6 @@ class tx_rnbase_util_TYPO3 {
 			if(is_object($GLOBALS['TSFE']->sys_page)) 
 				self::$sysPage = $GLOBALS['TSFE']->sys_page; // Use existing SysPage from TSFE
 			else {
-				require_once(PATH_t3lib.'class.t3lib_page.php');
 				self::$sysPage = t3lib_div::makeInstance('t3lib_pageSelect');
 				self::$sysPage->init(0); // $this->showHiddenPage
 			}

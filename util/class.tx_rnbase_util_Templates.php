@@ -43,7 +43,6 @@ class tx_rnbase_util_Templates {
 	 * @param string $subpart
 	 */
 	public static function getSubpart($template, $subpart) {
-		require_once(PATH_t3lib."class.t3lib_parsehtml.php");
 		return t3lib_parsehtml::getSubpart($template, $subpart);
 	}
 	/**

@@ -292,7 +292,6 @@ MAYDAYPAGE;
 		$force = array_key_exists('force', $options) ? true : false;
 
 		if(!is_object($GLOBALS['TT'])) {
-			require_once(PATH_t3lib.'class.t3lib_timetrack.php');
 			$GLOBALS['TT'] = new t3lib_timeTrack;
 			$GLOBALS['TT']->start();
 		}
@@ -311,10 +310,6 @@ MAYDAYPAGE;
 				}
 			}
 
-			require_once(PATH_tslib.'class.tslib_content.php');
-			require_once(PATH_tslib.'class.tslib_fe.php');
-			require_once(PATH_t3lib.'class.t3lib_page.php');
-			require_once(PATH_t3lib.'class.t3lib_tstemplate.php');
 			$GLOBALS['TSFE'] = tx_rnbase::makeInstance('tslib_fe', $GLOBALS['TYPO3_CONF_VARS'], $pid, $type);
 			// Jetzt noch pageSelect
 			$temp_sys_page = t3lib_div::makeInstance('t3lib_pageSelect');

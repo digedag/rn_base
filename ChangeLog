@@ -3,7 +3,8 @@
 Änderungen
 ----------
 
-v0.13.7 (??.03.2014) (not released)
+v1.0.0 (??.04.2014) (not released)
+ * Support for TYPO3 6.2
  * Better localization support. Thanks to Hannes Bochmann!
  * New TS-Option links.linkid.applyHtmlSpecialChars to mask special characters. Default is false. Thanks to Michael Wagner!
  * PageBrowser with more setters

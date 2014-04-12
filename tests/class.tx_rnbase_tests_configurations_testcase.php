@@ -26,7 +26,6 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
 
 //tx_rnbase::load('tx_rnbase_configurations');
-//require_once(PATH_t3lib."class.t3lib_content.php");
 require_once(t3lib_extMgm::extPath('cms') . 'tslib/class.tslib_content.php');
 
 
