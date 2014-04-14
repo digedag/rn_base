@@ -153,6 +153,12 @@ abstract class tx_rnbase_mod_base_Lister {
 	 * @param array $options
 	 */
 	protected function addMoreFields(&$data, &$options) {
+		if (empty($options['pid'])) {
+			$this->options['pid'] = $this->getModule()->getPid();
+			if(isset($this->options['pid'])) {
+				$options['pid'] = $this->options['pid'];
+			}
+		}
 	}
 
 	/**
@@ -184,7 +190,7 @@ abstract class tx_rnbase_mod_base_Lister {
 				'tx_rnbase_util_BEPager',
 				$this->getSearcherId().'Pager',
 				$this->getModule()->getName(),
-				$pid = 0 //@TODO: die PageId solle noch konfigurierbar gemacht werden.
+				$pid = $this->options['pid']
 			);
 
 		$fields = $options = array();
