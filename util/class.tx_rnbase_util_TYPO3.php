@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2008-2013 Rene Nitzsche (rene@system25.de)
+ *  (c) 2008-2014 Rene Nitzsche (rene@system25.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -43,6 +43,14 @@ class tx_rnbase_util_TYPO3 {
 	 */
 	public static function isTYPO61OrHigher() {
 		return self::isTYPO3VersionOrHigher(6001000);
+	}
+	/**
+	 * Prüft, ob mindestens TYPO3 Version 6.1 vorhanden ist.
+	 *
+	 * @return boolean
+	 */
+	public static function isTYPO62OrHigher() {
+		return self::isTYPO3VersionOrHigher(6002000);
 	}
 	/**
 	 * Prüft, ob mindestens TYPO3 Version 4.6 vorhanden ist.

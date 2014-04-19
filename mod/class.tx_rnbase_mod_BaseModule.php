@@ -79,6 +79,7 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 			$markers['CSH'] = $docHeaderButtons['csh'];
 			$markers['HEADER'] = $header;
 			$markers['SELECTOR'] = $this->selector ? $this->selector : $this->subselector; // SubSelector is deprecated!!
+
 			// Das FUNC_MENU enthält die Modul-Funktionen, die per ext_tables.php registriert werden
 			$markers['FUNC_MENU'] = $this->getFuncMenu();
 			// SUBMENU sind zusätzliche Tabs die eine Modul-Funktion bei Bedarf einblenden kann.
@@ -247,9 +248,16 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 		if($useTabs)
 			$menu = $this->getFormTool()->showTabMenu($this->getPid(), 'function', $this->getName(), $items);
 		else
-			$menu = $this->getFormTool()->showMenu($this->getPid(), 'function', $this->getName(), $items);
+			$menu = $this->getFormTool()->showMenu($this->getPid(), 'function', $this->getName(), $items, $this->getModuleScript());
 		return $menu['menu'];
 //		return t3lib_BEfunc::getFuncMenu($this->getPid(),'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function']);
+	}
+	/**
+	 * index.php or empty
+	 * @return string
+	 */
+	protected function getModuleScript() {
+		return '';
 	}
 	/**
 	 * Find out all visible sub modules for the current user.

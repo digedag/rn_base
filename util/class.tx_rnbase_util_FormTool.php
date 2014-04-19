@@ -22,7 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once (PATH_t3lib.'class.t3lib_tceforms.php');
 
 /**
  * Diese Klasse stellt hilfreiche Funktionen zur Erstellung von Formularen
@@ -570,21 +569,45 @@ class tx_rnbase_util_FormTool {
 	 * @param string $name name of menu
 	 * @param string $modName name of be module
 	 * @param array $entries menu entries
+	 * @param string $script The script to send the &id to, if empty it's automatically found
+	 * @param string $addParams Additional parameters to pass to the script.
 	 * @return array with keys 'menu' and 'value'
 	 */
-	public function showMenu($pid, $name, $modName, $entries) {
+	public function showMenu($pid, $name, $modName, $entries, $script = '', $addparams = '') {
 		$MENU = Array (
 			$name => $entries
 		);
 		$SETTINGS = t3lib_BEfunc::getModuleData(
 			$MENU,t3lib_div::_GP('SET'),$modName
 		);
-		$ret['menu'] = t3lib_BEfunc::getFuncMenu(
-			$pid,'SET['.$name.']',$SETTINGS[$name],$MENU[$name]
+
+		$ret['menu'] = (tx_rnbase_util_TYPO3::isTYPO62OrHigher() && is_array($MENU[$name]) && count($MENU[$name]) == 1) ?
+				$this->buildDummyMenu('SET['.$name.']', $MENU[$name]) :
+				t3lib_BEfunc::getFuncMenu(
+			$pid,'SET['.$name.']',$SETTINGS[$name],
+			$MENU[$name], $script, $addparams
 		);
 		$ret['value'] = $SETTINGS[$name];
 		return $ret;
   }
+
+	private function buildDummyMenu($elementName, $menuItems) {
+		// Ab T3 6.2 wird bei einem Menu-Eintrag keine Selectbox mehr erzeugt.
+		// Also sieht man nicht, wo man sich befindet. Somit wird eine Dummy-Box
+		// benötigt.
+		$options = array();
+
+		foreach ($menuItems as $value => $label) {
+			$options[] = '<option value="' . htmlspecialchars($value) . '" selected="selected">' . htmlspecialchars($label, ENT_COMPAT, 'UTF-8', FALSE) . '</option>';
+		}
+		return '
+				<!-- Function Menu of module -->
+				<select name="' . $elementName . '" >
+					' . implode('
+					', $options) . '
+				</select>
+						';
+	}
 
   /**
    * Submit-Button like this:  name="mykey[123]" value="label"
