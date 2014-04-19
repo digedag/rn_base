@@ -3,11 +3,12 @@
 Änderungen
 ----------
 
-v1.0.0 (??.04.2014) (not released)
+v0.14.0 (19.04.2014) (not released)
  * Support for TYPO3 6.2
  * Better localization support. Thanks to Hannes Bochmann!
  * New TS-Option links.linkid.applyHtmlSpecialChars to mask special characters. Default is false. Thanks to Michael Wagner!
  * PageBrowser with more setters
+ * Bugfix in BE-Lister. Thanks to Thomas Reuleke!
 
 v0.13.6 (10.02.2014) (not released)
  * Default dummy button in BE module
