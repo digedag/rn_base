@@ -429,7 +429,7 @@ class tx_rnbase_util_DB {
 	 * @deprecated use tx_rnbase_util_Misc::getPidList!
 	 */
 	static function _getPidList($pid_list, $recursive=0)  {
-		tx_rnbase::load('tx_rnbase_util_Misc')
+		tx_rnbase::load('tx_rnbase_util_Misc');
 		return tx_rnbase_util_Misc::getPidList($pid_list, $recursive);
 	}
 
