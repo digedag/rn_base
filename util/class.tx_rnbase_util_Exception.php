@@ -26,14 +26,14 @@
  * Default exception class
  */
 class tx_rnbase_util_Exception extends Exception {
-	private $additional = false;
+	private $additional = FALSE;
 	/**
 	 * Erstellt eine neue Exeption
 	 * @param string $message
 	 * @param int $code
 	 * @param mixed $additional
 	 */
-	public function __construct($message, $code=0, $additional=false, $previous=null) {
+	public function __construct($message, $code=0, $additional=FALSE, $previous=NULL) {
 		parent::__construct($message, $code, $previous);
 		$this->additional = $additional;
 	}
@@ -54,9 +54,9 @@ class tx_rnbase_util_Exception extends Exception {
 	 * Liefert zusätzliche Daten.
 	 * @return mixed string or plain data
 	 */
-	public function getAdditional($asString=true) {
+	public function getAdditional($asString=TRUE) {
 		$additional = $this->additional;
-		return is_array($additional) && $asString ? print_r($additional, true) : $additional;
+		return is_array($additional) && $asString ? print_r($additional, TRUE) : $additional;
 	}
 }
 

@@ -33,7 +33,7 @@ class tx_rnbase_action_Base {
    * @param $parameters
    * @param $configurations
    */
-  function execute($parameters,$configurations){
+  function execute($parameters, $configurations){
     return 'You should overwrite execute in your child action!';
   }
 

@@ -39,28 +39,28 @@ tx_rnbase::load('tx_rnbase_util_Templates');
 abstract class tx_rnbase_action_BaseIOC {
 	private static $callCount = 0;
 	private static function countCall() { return self::$callCount++; }
-	private $configurations = null;
+	private $configurations = NULL;
 
-	function execute(&$parameters,&$configurations){
+	function execute(&$parameters, &$configurations){
 		$this->setConfigurations($configurations);
 		$debugKey = $configurations->get($this->getConfId().'_debugview');
 		$debug = ($debugKey && ($debugKey==='1' ||
-				($_GET['debug'] && array_key_exists($debugKey,array_flip(t3lib_div::trimExplode(',', $_GET['debug'])))) ||
-				($_POST['debug'] && array_key_exists($debugKey,array_flip(t3lib_div::trimExplode(',', $_POST['debug']))))
+				($_GET['debug'] && array_key_exists($debugKey, array_flip(t3lib_div::trimExplode(',', $_GET['debug'])))) ||
+				($_POST['debug'] && array_key_exists($debugKey, array_flip(t3lib_div::trimExplode(',', $_POST['debug']))))
 				)
 		);
 		if($debug) {
-			$time = microtime(true);
+			$time = microtime(TRUE);
 			$memStart = memory_get_usage();
 		}
 		$cacheHandler = $this->getCacheHandler($configurations, $this->getConfId().'_caching.');
 		$out = $cacheHandler ? $cacheHandler->getOutput($this, $configurations, $this->getConfId()) : '';
-		$cached = true;
+		$cached = TRUE;
 		if(!$out) {
-			$cached = false;
+			$cached = FALSE;
 			$viewData =& $configurations->getViewData();
 			tx_rnbase_util_Misc::pushTT(get_class($this), 'handleRequest');
-			$out = $this->handleRequest($parameters,$configurations, $viewData);
+			$out = $this->handleRequest($parameters, $configurations, $viewData);
 			tx_rnbase_util_Misc::pullTT();
 			if(!$out) {
 				// View
@@ -77,7 +77,7 @@ abstract class tx_rnbase_action_BaseIOC {
 				if(!$tmplName || !strlen($tmplName))
 					tx_rnbase_util_Misc::mayday('No template name defined!');
 
-				$view->setTemplateFile($configurations->get($tmplName.'Template', true));
+				$view->setTemplateFile($configurations->get($tmplName.'Template', TRUE));
 				tx_rnbase_util_Misc::pushTT(get_class($this), 'render');
 				$out = $view->render($tmplName, $configurations);
 				tx_rnbase_util_Misc::pullTT();
@@ -88,7 +88,7 @@ abstract class tx_rnbase_action_BaseIOC {
 		if($debug) {
 			$memEnd = memory_get_usage();
 			tx_rnbase_util_Debug::debug(array(
-				'Execution Time'=>(microtime(true)-$time),
+				'Execution Time'=>(microtime(TRUE)-$time),
 				'Memory Start'=>$memStart,
 				'Memory End'=>$memEnd,
 				'Memory Consumed'=>($memEnd-$memStart),
@@ -125,7 +125,7 @@ abstract class tx_rnbase_action_BaseIOC {
 	 */
 	protected function getCacheHandler($configurations, $confId) {
 		$clazz = $configurations->get($confId.'class');
-		if(!$clazz) return false;
+		if(!$clazz) return FALSE;
 		$handler = tx_rnbase::makeInstance($clazz, $configurations, $confId);
 		return $handler;
 	}
@@ -159,9 +159,9 @@ abstract class tx_rnbase_action_BaseIOC {
 	 * @param tx_rnbase_IParameters $parameters
 	 * @param tx_rnbase_configurations $configurations
 	 * @param array $viewdata
-	 * @return string Errorstring or null
+	 * @return string Errorstring or NULL
 	 */
-	protected abstract function handleRequest(&$parameters,&$configurations, &$viewdata);
+	protected abstract function handleRequest(&$parameters, &$configurations, &$viewdata);
 
 }
 

@@ -45,7 +45,7 @@ class tx_rnbase_util_PageBrowser implements PageBrowser {
 	 * Wenn keine Parameter übergeben werden, dann wird der Pager neu initialisiert
 	 * und startet wieder bei Seite 1.
 	 *
-	 * @param ArrayObject $parameters die vorhandenen Parameter aus dem Request oder null
+	 * @param ArrayObject $parameters die vorhandenen Parameter aus dem Request oder NULL
 	 * @param int $listSize Gesamtgröße der darzustellenden Liste
 	 * @param int $pageSize Größe einer Seite
 	 */

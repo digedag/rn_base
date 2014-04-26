@@ -29,13 +29,13 @@ tx_rnbase::load('tx_rnbase_util_db_IDatabase');
  * DB wrapper for other (external) databases
  */
 class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase {
-	private $db = null;
+	private $db = NULL;
 	public function __construct($credentials) {
 		if(!is_array($credentials)) throw new tx_rnbase_util_db_Exception('No credentials given for database!');
 		$this->db = $this->connectDB($credentials);
 	}
 	public function __call($methodName, $args) {
-		return call_user_func_array(array($this->db,$methodName),$args);
+		return call_user_func_array(array($this->db, $methodName), $args);
 	}
 
 	/**
@@ -50,7 +50,7 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase {
 	 * @return string SQL Query
 	 */
 	public function SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '') {
-		return $GLOBALS['TYPO3_DB']->SELECTquery($select_fields, $from_table, $where_clause, $groupBy,$orderBy,$limit);
+		return $GLOBALS['TYPO3_DB']->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
 	}
 
 	/**
@@ -166,14 +166,14 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase {
 	private function connectDB($credArr) {
 		$schema = $credArr['schema'];
 		if (!$schema) {
-			throw new RuntimeException('TYPO3 Fatal Error: No database schema selected!',1271953882);
+			throw new RuntimeException('TYPO3 Fatal Error: No database schema selected!', 1271953882);
 		}
 		$link = $this->connect($credArr);
 		// Select DB
 		$ret = @mysql_select_db($schema, $link);
 		if (!$ret) {
 			throw new RuntimeException('Could not select MySQL database ' . $TYPO3_db . ': ' .
-					mysql_error(),1271953992);
+					mysql_error(), 1271953992);
 		}
 		$this->setSqlMode($link);
 
@@ -242,7 +242,7 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase {
 			if (mysql_query($v, $link) === FALSE) {
 				// TODO: handler errors
 //					t3lib_div::sysLog('RNBASE: Could not initialize DB connection with query "' . $v .
-//							'": ' . mysql_error($link),'Core', 3);
+//							'": ' . mysql_error($link), 'Core', 3);
 			}
 		}
 

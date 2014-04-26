@@ -39,7 +39,7 @@ if(!tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
  */
 class tx_rnbase_util_MediaMarker extends tx_rnbase_util_BaseMarker {
 	var $options;
-	private static $damDb = null;
+	private static $damDb = NULL;
 	public function tx_rnbase_util_MediaMarker($options=array()) {
 		$this->options = $options;
 		if(!is_array($this->options)) $this->options = array();
@@ -65,7 +65,7 @@ class tx_rnbase_util_MediaMarker extends tx_rnbase_util_BaseMarker {
 			}
 		}
 		// TODO: record overlay for FAL??
-		tx_rnbase_util_Misc::callHook('rn_base','mediaMarker_initRecord', array('item' => &$item, 'template'=>&$template), $this);
+		tx_rnbase_util_Misc::callHook('rn_base', 'mediaMarker_initRecord', array('item' => &$item, 'template'=>&$template), $this);
 
 		$ignore = self::findUnusedCols($item->record, $template, $marker);
 		$markerArray = $formatter->getItemMarkerArrayWrapped($item->record, $confId , $ignore, $marker.'_');
@@ -77,7 +77,7 @@ class tx_rnbase_util_MediaMarker extends tx_rnbase_util_BaseMarker {
 					'confId' => $confId, 'marker' => $marker), $this);
 
 		$out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($template, $markerArray, $subpartArray, $wrappedSubpartArray);
-		tx_rnbase_util_Misc::callHook('rn_base','mediaMarker_afterSubst', array('item' => &$item, 'template'=>&$template), $this);
+		tx_rnbase_util_Misc::callHook('rn_base', 'mediaMarker_afterSubst', array('item' => &$item, 'template'=>&$template), $this);
 		return $out;
 	}
 

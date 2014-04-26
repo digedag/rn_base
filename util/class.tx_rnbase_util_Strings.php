@@ -105,7 +105,7 @@ class tx_rnbase_util_Strings {
 	 * @param boolean $removeEmptyValues
 	 * @param int $limit
 	 */
-	public static function trimExplode($delimiter, $string, $removeEmptyValues = false, $limit = 0) {
+	public static function trimExplode($delimiter, $string, $removeEmptyValues = FALSE, $limit = 0) {
 		tx_rnbase::load('tx_rnbase_util_TYPO3');
 		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher())
 			return \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode($delimiter, $string, $removeEmptyValues, $limit);
@@ -138,13 +138,13 @@ class tx_rnbase_util_Strings {
 				continue;
 			} elseif(self::valid_2byte($char)) { // check 1 byte
 				if(!self::valid_nextbyte(ord($string{$i++}))) return FALSE;
-				$result=max($result,2);
+				$result=max($result, 2);
 			} elseif(self::valid_3byte($char)) { // check 2 bytes
-				$result=max($result,3);
+				$result=max($result, 3);
 				if(!self::valid_nextbyte(ord($string{$i++}))) return FALSE;
 				if(!self::valid_nextbyte(ord($string{$i++}))) return FALSE;
 			} elseif(self::valid_4byte($char)) { // check 3 bytes
-				$result=max($result,4);
+				$result=max($result, 4);
 				if(!self::valid_nextbyte(ord($string{$i++}))) return FALSE;
 				if(!self::valid_nextbyte(ord($string{$i++}))) return FALSE;
 				if(!self::valid_nextbyte(ord($string{$i++}))) return FALSE;

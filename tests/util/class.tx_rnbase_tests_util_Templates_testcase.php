@@ -35,23 +35,23 @@ class tx_rnbase_tests_util_Templates_testcase extends tx_phpunit_testcase {
 		$this->setTTOn();
 		$runs = 10000;
 		$markerArr = array('###UID###'=>2, '###PID###'=>1, '###TITLE###' => 'My Titel 1');
-		$timeStart = microtime(true);
+		$timeStart = microtime(TRUE);
 		$memStart = memory_get_usage();
 		for($i =1; $i<$runs; $i++) {
 			$markerArr['###UID###'] = $i;
 			tx_rnbase_util_Templates::substituteMarkerArrayCached(self::$template, $markerArr);
 		}
-		$time1 = microtime(true) - $timeStart;
+		$time1 = microtime(TRUE) - $timeStart;
 		$memEnd1 = memory_get_usage() - $memStart;
 
 		$runs = 20000;
-		$timeStart = microtime(true);
+		$timeStart = microtime(TRUE);
 		$memStart = memory_get_usage();
 		for($i =1; $i<$runs; $i++) {
 			$markerArr['###UID###'] = $i;
 			tx_rnbase_util_Templates::substituteMarkerArrayCached(self::$template, $markerArr);
 		}
-		$time2 = microtime(true) - $timeStart;
+		$time2 = microtime(TRUE) - $timeStart;
 		$memEnd2 = memory_get_usage() - $memStart;
 
 		$results = array();
@@ -62,23 +62,23 @@ class tx_rnbase_tests_util_Templates_testcase extends tx_phpunit_testcase {
 		$this->setTTOff();
 		$runs = 10000;
 		$markerArr = array('###UID###'=>2, '###PID###'=>1, '###TITLE###' => 'My Titel 1');
-		$timeStart = microtime(true);
+		$timeStart = microtime(TRUE);
 		$memStart = memory_get_usage();
 		for($i =1; $i<$runs; $i++) {
 			$markerArr['###UID###'] = $i;
 			tx_rnbase_util_Templates::substituteMarkerArrayCached(self::$template, $markerArr);
 		}
-		$time1 = microtime(true) - $timeStart;
+		$time1 = microtime(TRUE) - $timeStart;
 		$memEnd1 = memory_get_usage() - $memStart;
 
 		$runs = 20000;
-		$timeStart = microtime(true);
+		$timeStart = microtime(TRUE);
 		$memStart = memory_get_usage();
 		for($i =1; $i<$runs; $i++) {
 			$markerArr['###UID###'] = $i;
 			tx_rnbase_util_Templates::substituteMarkerArrayCached(self::$template, $markerArr);
 		}
-		$time2 = microtime(true) - $timeStart;
+		$time2 = microtime(TRUE) - $timeStart;
 		$memEnd2 = memory_get_usage() - $memStart;
 		$results['Serie 2'] = array('Info'=> 'Timetrack off, Static MarkerArray', 'Time1'=>$time1, 'Time2'=> $time2,
 			'Mem1'=>$memEnd1, 'Mem2'=>$memEnd2);

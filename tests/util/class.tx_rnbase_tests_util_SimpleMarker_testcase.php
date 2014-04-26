@@ -30,7 +30,7 @@ tx_rnbase::load('tx_rnbase_util_TS');
 class tx_rnbase_util_SimpleMarkerTests extends tx_rnbase_util_SimpleMarker {
 	// die methode public machen.
 	// mit einer reflaction funktioniert es nicht, da die parameter als referenzen angelnommen werden müssen!
-	public function prepareSubparts(array &$wrappedSubpartArray, array &$subpartArray,$template, $item, $formatter, $confId, $marker) {
+	public function prepareSubparts(array &$wrappedSubpartArray, array &$subpartArray, $template, $item, $formatter, $confId, $marker) {
 		parent::prepareSubparts($wrappedSubpartArray, $subpartArray, $template, $item, $formatter, $confId, $marker);
 	}
 }

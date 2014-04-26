@@ -51,7 +51,7 @@ class tx_rnbase_tests_cache_testcase extends tx_phpunit_testcase {
 		$this->assertTrue(is_object($cache), 'Cache not instanciated');
 		$cache->set('key1', array('id' => '100'));
 		$arr = $cache->get('key1');
-		$this->assertTrue($arr == null, 'Array is set');
+		$this->assertTrue($arr == NULL, 'Array is set');
 	}
 
 	/**

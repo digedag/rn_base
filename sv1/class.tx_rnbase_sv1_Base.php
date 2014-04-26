@@ -156,7 +156,7 @@ abstract class tx_rnbase_sv1_Base extends t3lib_svbase {
 		$where = '1=1 AND `'.$table . '`.`uid`='.$uid;
 
 		// remove uid if exists
-		if(array_key_exists('uid',$data))
+		if(array_key_exists('uid', $data))
 			unset($data['uid']);
 
 		// Eleminate columns not in TCA
@@ -230,7 +230,7 @@ abstract class tx_rnbase_sv1_Base extends t3lib_svbase {
 	 * @param int					$table		Wenn eine Tabelle angegeben wird, wird die des Models missachtet (wichtig für temp anzeigen)
 	 * @return tx_rnbase_model_base				Updated (on success actually empty) model.
 	 */
-	public function handleDelete(tx_rnbase_model_base $model, $where='', $mode=0, $table=null) {
+	public function handleDelete(tx_rnbase_model_base $model, $where='', $mode=0, $table=NULL) {
 		if(empty($table)) {
 			$table = $model->getTableName();
 		}

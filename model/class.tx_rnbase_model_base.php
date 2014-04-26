@@ -88,7 +88,7 @@ class tx_rnbase_model_base implements tx_rnbase_IModel {
 				if(is_object($GLOBALS['BE_USER']) && $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects']) {
 					$options['enablefieldsbe'] = 1;
 				}
-				$this->record = tx_rnbase_util_DB::getRecord($this->getTableName(),$this->uid, $options);
+				$this->record = tx_rnbase_util_DB::getRecord($this->getTableName(), $this->uid, $options);
 			}
 			// Der Record sollte immer ein Array sein
 			$this->record = is_array($this->record) ? $this->record : array();
@@ -125,7 +125,7 @@ class tx_rnbase_model_base implements tx_rnbase_IModel {
 	 * Reload this records from database
 	 */
 	function reset() {
-		$this->record = tx_rnbase_util_DB::getRecord($this->getTableName(),$this->getUid());
+		$this->record = tx_rnbase_util_DB::getRecord($this->getTableName(), $this->getUid());
 	}
 	/**
 	 * Kindklassen müssen diese Methode überschreiben und den Namen der gemappten Tabelle liefern!
@@ -135,7 +135,7 @@ class tx_rnbase_model_base implements tx_rnbase_IModel {
 		return 0;
 	}
 	/**
-	 * Check if this record is valid. If false, the record is maybe deleted in database.
+	 * Check if this record is valid. If FALSE, the record is maybe deleted in database.
 	 *
 	 * @return boolean
 	 */
@@ -211,7 +211,7 @@ class tx_rnbase_model_base implements tx_rnbase_IModel {
 
 	function __toString() {
 		$out = get_class($this). "\n\nRecord:\n";
-		while (list($key,$val)=each($this->record))	{
+		while (list($key, $val)=each($this->record))	{
 			$out .= $key. ' = ' . $val . "\n";
 		}
 		reset($this->record);

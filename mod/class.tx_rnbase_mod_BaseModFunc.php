@@ -54,13 +54,13 @@ abstract class tx_rnbase_mod_BaseModFunc implements tx_rnbase_mod_IModFunc {
 		$template = tx_rnbase_util_Templates::getSubpart($templateCode, $subpart);
 		if(!$template) return $conf->getLL('msg_subpart_not_found'). ': ' . $subpart;
 
-		$start = microtime(true);
+		$start = microtime(TRUE);
 		$memStart = memory_get_usage();
 		$out .= $this->getContent($template, $conf, $conf->getFormatter(), $this->getModule()->getFormTool());
 		if(tx_rnbase_util_BaseMarker::containsMarker($out, 'MOD_')) {
 			$markerArr = array();
 			$memEnd = memory_get_usage();
-			$markerArr['###MOD_PARSETIME###'] = (microtime(true) - $start);
+			$markerArr['###MOD_PARSETIME###'] = (microtime(TRUE) - $start);
 			$markerArr['###MOD_MEMUSED###'] = ($memEnd - $memStart);
 			$markerArr['###MOD_MEMSTART###'] = $memStart;
 			$markerArr['###MOD_MEMEND###'] = $memEnd;

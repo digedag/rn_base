@@ -32,7 +32,7 @@ class tx_rnbase_util_BEPager {
 	var $pid;
 	var $listSize;
 	var $settings;
-	var $init = false;
+	var $init = FALSE;
 	function tx_rnbase_util_BEPager($id, $modName, $pid, $listSize=0, $conf = array()) {
 		$this->id = strlen(trim($id)) ? trim($id) : 'pager';
 		$this->pid = $pid;
@@ -75,7 +75,7 @@ class tx_rnbase_util_BEPager {
 	function setState() {
 		if($this->init) return;
 		$sizes = $this->getLimits();
-		$menu = tx_rnbase_util_FormTool::showMenu($this->pid,$this->getDataName().'_limit',$this->modName,$sizes);
+		$menu = tx_rnbase_util_FormTool::showMenu($this->pid, $this->getDataName().'_limit', $this->modName, $sizes);
 		$this->setSetting('limit', $menu['value']);
 		$this->setSetting('limitMenu', $menu['menu']);
 
@@ -86,10 +86,10 @@ class tx_rnbase_util_BEPager {
 		for($i=0; $i<$totalPages; $i++) {
 			$pages[$i * $results_at_a_time] = 'Seite '. $i;
 		}
-		$menu = tx_rnbase_util_FormTool::showMenu($this->pid,$this->getDataName().'_offset',$this->modName,$pages);
+		$menu = tx_rnbase_util_FormTool::showMenu($this->pid, $this->getDataName().'_offset', $this->modName, $pages);
 		$this->setSetting('offset', $menu['value']);
 		$this->setSetting('offsetMenu', $menu['menu']);
-		$this->init = true;
+		$this->init = TRUE;
 	}
 	/**
 	 * Liefert die Eingabeelemente des Pagers. Das sind die Auswahlbox der Seitengrösse

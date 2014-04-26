@@ -38,12 +38,12 @@ abstract class tx_rnbase_mod_base_Lister {
 	 * Selector Klasse
 	 * @var tx_rnbase_mod_IModule
 	 */
-	private $mod = null;
+	private $mod = NULL;
 	/**
 	 * Selector Klasse
 	 * @var tx_mklib_mod1_util_Selector
 	 */
-	private $selector = null;
+	private $selector = NULL;
 	/**
 	 * Otions
 	 * @var array
@@ -128,7 +128,7 @@ abstract class tx_rnbase_mod_base_Lister {
 		$options = array('pid' => $this->options['pid']);
 
 		$this->setFilterValue('searchword', $this->showFreeTextSearchForm(
-				$data['search'], $this->getSearcherId().'Search',$options));
+				$data['search'], $this->getSearcherId().'Search', $options));
 
 		$this->setFilterValue(self::KEY_SHOWHIDDEN, $this->showHiddenSelector(
 				$data['hidden'],
@@ -231,7 +231,7 @@ abstract class tx_rnbase_mod_base_Lister {
 		$options['distinct'] = 1;
 		self::buildFreeText($fields, $this->getFilterValue('searchword'), $this->getSearchColumns());
 
-		if(($value = $this->getFilterValue(self::KEY_SHOWHIDDEN)) !== null) {
+		if(($value = $this->getFilterValue(self::KEY_SHOWHIDDEN)) !== NULL) {
 			// Wenn gesetzt, dann anzeigen
 			if($value) {$options['enablefieldsbe'] = 1;}
 			else { $options['enablefieldsfe'] = 1; }
@@ -392,13 +392,13 @@ abstract class tx_rnbase_mod_base_Lister {
 	 * @param array $cols
 	 */
 	protected static function buildFreeText(&$fields, $searchword, array $cols = array()) {
-		$result = false;
+		$result = FALSE;
 	  	if(strlen(trim($searchword))) {
 	   		$joined['value'] = trim($searchword);
 	   		$joined['cols'] = $cols;
 	   		$joined['operator'] = OP_LIKE;
 	   		$fields[SEARCH_FIELD_JOINED][] = $joined;
-	   		$result = true;
+	   		$result = TRUE;
 	  	}
 	  	return $result;
 	}
@@ -441,8 +441,8 @@ abstract class tx_rnbase_mod_base_Lister {
 		$searchstring = tx_rnbase_mod_Util::getModuleValue($key, $this->getModule(), array('changed' => t3lib_div::_GP('SET')));
 
 		// Erst das Suchfeld, danach der Button.
-		$marker['field'] 	= $this->getFormTool()->createTxtInput('SET['.$key.']',$searchstring,10);
-		$marker['label'] = $options['label'] ? $options['label'] : '###LABEL_SEARCH###' ;
+		$marker['field'] 	= $this->getFormTool()->createTxtInput('SET['.$key.']', $searchstring, 10);
+		$marker['label'] = $options['label'] ? $options['label'] : '###LABEL_SEARCH###';
 
 		return $searchstring;
 	}
@@ -457,7 +457,7 @@ abstract class tx_rnbase_mod_base_Lister {
 
 //		$selectedItem = array_key_exists('forcevalue', $aOptions) ? $aOptions['forcevalue'] : $this->getValueFromModuleData($id);
 		$options['label'] = $options['label'] ? $options['label'] : $GLOBALS['LANG']->getLL('label_hidden');
-		return tx_rnbase_mod_Util::showSelectorByArray($items, $selectedItem,'showhidden',$marker, $options);
+		return tx_rnbase_mod_Util::showSelectorByArray($items, $selectedItem, 'showhidden', $marker, $options);
 	}
 
 }

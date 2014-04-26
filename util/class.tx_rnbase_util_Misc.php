@@ -28,7 +28,7 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase_configurations.
  * Contains some helpful methods
  */
 class tx_rnbase_util_Misc {
-	private static $enableTT = false;
+	private static $enableTT = FALSE;
 
 	/**
 	 * Returns a service
@@ -127,13 +127,17 @@ class tx_rnbase_util_Misc {
 
 		$aDebug[] = '<h2 id="backtracetitle">Call stack</h2>';
 		$aDebug[] = '<div class="backtrace">';
-		$aDebug[] = '<span class="notice"><b>Call 0: </b>' . str_replace(PATH_site, '/', $aLocation['file']) . ':' . $aLocation['line']  . ' | <b>' . $aTrace1['class'] . $aTrace1['type'] . $aTrace1['function'] . '</b></span><br/>With parameters: ' . (!empty($aTrace1['args']) ? self::viewMixed($aTrace1['args']) : ' no parameters');
+		$aDebug[] = '<span class="notice"><b>Call 0: </b>' . str_replace(PATH_site, '/', $aLocation['file']) . ':' . $aLocation['line']  . ' | <b>' . $aTrace1['class'] . $aTrace1['type'] . 
+									$aTrace1['function'] . '</b></span><br/>With parameters: ' . (!empty($aTrace1['args']) ? self::viewMixed($aTrace1['args']) : ' no parameters');
 		$aDebug[] = '<hr/>';
-		$aDebug[] = '<span class="notice"><b>Call -1: </b>' . str_replace(PATH_site, '/', $aTrace1['file']) . ':' . $aTrace1['line']  . ' | <b>' . $aTrace2['class'] . $aTrace2['type'] . $aTrace2['function'] . '</b></span><br />With parameters: ' . (!empty($aTrace2['args']) ? self::viewMixed($aTrace2['args']) : ' no parameters');
+		$aDebug[] = '<span class="notice"><b>Call -1: </b>' . str_replace(PATH_site, '/', $aTrace1['file']) . ':' . $aTrace1['line']  . ' | <b>' . $aTrace2['class'] . $aTrace2['type'] . 
+									$aTrace2['function'] . '</b></span><br />With parameters: ' . (!empty($aTrace2['args']) ? self::viewMixed($aTrace2['args']) : ' no parameters');
 		$aDebug[] = '<hr/>';
-		$aDebug[] = '<span class="notice"><b>Call -2: </b>' . str_replace(PATH_site, '/', $aTrace2['file']) . ':' . $aTrace2['line']  . ' | <b>' . $aTrace3['class'] . $aTrace3['type'] . $aTrace3['function'] . '</b></span><br />With parameters: ' . (!empty($aTrace3['args']) ? self::viewMixed($aTrace3['args']) : ' no parameters');
+		$aDebug[] = '<span class="notice"><b>Call -2: </b>' . str_replace(PATH_site, '/', $aTrace2['file']) . ':' . $aTrace2['line']  . ' | <b>' . $aTrace3['class'] . $aTrace3['type'] . 
+									$aTrace3['function'] . '</b></span><br />With parameters: ' . (!empty($aTrace3['args']) ? self::viewMixed($aTrace3['args']) : ' no parameters');
 		$aDebug[] = '<hr/>';
-		$aDebug[] = '<span class="notice"><b>Call -3: </b>' . str_replace(PATH_site, '/', $aTrace3['file']) . ':' . $aTrace3['line']  . ' | <b>' . $aTrace4['class'] . $aTrace4['type'] . $aTrace4['function'] . '</b></span><br />With parameters: ' . (!empty($aTrace4['args']) ? self::viewMixed($aTrace4['args']) : ' no parameters');
+		$aDebug[] = '<span class="notice"><b>Call -3: </b>' . str_replace(PATH_site, '/', $aTrace3['file']) . ':' . $aTrace3['line']  . ' | <b>' . $aTrace4['class'] .
+									$aTrace4['type'] . $aTrace4['function'] . '</b></span><br />With parameters: ' . (!empty($aTrace4['args']) ? self::viewMixed($aTrace4['args']) : ' no parameters');
 		$aDebug[] = '<hr/>';
 
 		if($debugTrail = tx_rnbase_util_Debug::getDebugTrail()) {
@@ -224,13 +228,15 @@ MAYDAYPAGE;
 	 */
 	function viewMixed($mMixed, $bRecursive = TRUE, $iLevel=0) {
 
-		$sStyle = "font-family: Verdana; font-size: 9px;";
-		$sStyleBlack = $sStyle . "color: black;";
-		$sStyleRed = $sStyle . "color: red;";
-		$sStyleGreen = $sStyle . "color: green;";
+		$sStyle = 'font-family: Verdana; font-size: 9px;';
+		$sStyleBlack = $sStyle . 'color: black;';
+		$sStyleRed = $sStyle . 'color: red;';
+		$sStyleGreen = $sStyle . 'color: green;';
 
 		$aBgColors = array(
-			"FFFFFF", "F8F8F8", "EEEEEE", "E7E7E7", "DDDDDD", "D7D7D7", "CCCCCC", "C6C6C6", "BBBBBB", "B6B6B6", "AAAAAA", "A5A5A5", "999999", "949494", "888888", "848484", "777777", "737373"
+			'FFFFFF', 'F8F8F8', 'EEEEEE', 'E7E7E7', 'DDDDDD', 'D7D7D7',
+			'CCCCCC', 'C6C6C6', 'BBBBBB', 'B6B6B6', 'AAAAAA', 'A5A5A5',
+			'999999', '949494', '888888', '848484', '777777', '737373'
 		);
 
 		if(is_array($mMixed)) {
@@ -238,7 +244,7 @@ MAYDAYPAGE;
 			$result="<table border=1 style='border: 1px solid silver' cellpadding=1 cellspacing=0 bgcolor='#" . $aBgColors[$iLevel] . "'>";
 
 			if(!count($mMixed)) {
-				$result.= "<tr><td><span style='" . $sStyleBlack . "'><b>".htmlspecialchars("EMPTY!")."</b></span></td></tr>";
+				$result.= "<tr><td><span style='" . $sStyleBlack . "'><b>".htmlspecialchars('EMPTY!').'</b></span></td></tr>';
 			} else {
 				while(list($key, $val)=each($mMixed)) {
 
@@ -250,11 +256,11 @@ MAYDAYPAGE;
 						$result.= "<span style='" . $sStyleRed . "'>".self::viewMixed($val, $bRecursive, $iLevel + 1)."<br /></span>";
 					}
 
-					$result.= "</td></tr>";
+					$result.= '</td></tr>';
 				}
 			}
 
-			$result.= "</table>";
+			$result.= '</table>';
 
 		} elseif(is_resource($mMixed)) {
 			$result = "<span style='" . $sStyleGreen . "'>RESOURCE: </span>" . $mMixed;
@@ -265,12 +271,12 @@ MAYDAYPAGE;
 				$result = "<span style='" . $sStyleGreen . "'>OBJECT (" . get_class($mMixed) .") : !RECURSION STOPPED!</span>";// . t3lib_div::view_array(get_object_vars($mMixed), FALSE);
 			}
 		} elseif(is_bool($mMixed)) {
-			$result = "<span style='" . $sStyleGreen . "'>BOOLEAN: </span>" . ($mMixed ? "TRUE" : "FALSE");
+			$result = "<span style='" . $sStyleGreen . "'>BOOLEAN: </span>" . ($mMixed ? 'TRUE' : 'FALSE');
 		} elseif(is_string($mMixed)) {
 			if(empty($mMixed)) {
 				$result = "<span style='" . $sStyleGreen . "'>STRING(0)</span>";
 			} else {
-				$result = "<span style='" . $sStyleGreen . "'>STRING(" . strlen($mMixed) . "): </span>" . nl2br(htmlspecialchars((string)$mMixed));
+				$result = "<span style='" . $sStyleGreen . "'>STRING(" . strlen($mMixed) . '): </span>' . nl2br(htmlspecialchars((string)$mMixed));
 			}
 		} elseif(is_null($mMixed)) {
 			$result = "<span style='" . $sStyleGreen . "'>!NULL!</span>";
@@ -289,7 +295,7 @@ MAYDAYPAGE;
 		$pid = array_key_exists('pid', $options) ? $options['pid'] : 1;
 		$type = array_key_exists('type', $options) ? $options['type'] : 99;
 
-		$force = array_key_exists('force', $options) ? true : false;
+		$force = array_key_exists('force', $options) ? TRUE : FALSE;
 
 		if(!is_object($GLOBALS['TT'])) {
 			$GLOBALS['TT'] = new t3lib_timeTrack;
@@ -362,7 +368,7 @@ MAYDAYPAGE;
 		foreach($arr As $term) {
 			if(strlen($term) >= $minLength) $ret[] = $term;
 		}
-		return trim(implode(' ' , $ret));
+		return trim(implode(' ', $ret));
 	}
 	/**
 	 * Translates a string starting with LLL:
@@ -391,7 +397,7 @@ MAYDAYPAGE;
 	 * @param boolean $daily Hash values changed with every new day
 	 * @return string with 8 characters
 	 */
-	static function createHash($params, $salt='secret', $daily = true) {
+	static function createHash($params, $salt='secret', $daily = TRUE) {
 		$str = '';
 		if($daily) {
 			tx_rnbase::load('tx_rnbase_util_Dates');
@@ -404,7 +410,7 @@ MAYDAYPAGE;
 		}
 		$str .= $salt;
 		$hash = md5($str);
-		return substr($hash,5,8);
+		return substr($hash, 5, 8);
 	}
 
 	/**
@@ -457,18 +463,18 @@ MAYDAYPAGE;
  	 * Same method as tslib_pibase::pi_getPidList()
  	 * @return string commaseparated list of pids
 	 */
-	public static function getPidList($pid_list,$recursive=0)  {
+	public static function getPidList($pid_list, $recursive=0)  {
 		tx_rnbase::load('tx_rnbase_util_Math');
 
-		if (!strcmp($pid_list,''))
-			$pid_list = tx_rnbase_util_TYPO3::getTSFE(true)->id;
-		$recursive = tx_rnbase_util_Math::intInRange($recursive,0);
+		if (!strcmp($pid_list, ''))
+			$pid_list = tx_rnbase_util_TYPO3::getTSFE(TRUE)->id;
+		$recursive = tx_rnbase_util_Math::intInRange($recursive, 0);
 
-		$pid_list_arr = array_unique(t3lib_div::trimExplode(',',$pid_list,1));
+		$pid_list_arr = array_unique(t3lib_div::trimExplode(',', $pid_list, 1));
 		$pid_list = array();
 
 		foreach($pid_list_arr as $val)  {
-			$val = tx_rnbase_util_Math::intInRange($val,0);
+			$val = tx_rnbase_util_Math::intInRange($val, 0);
 			if ($val)       {
 				$_list = tslib_cObj::getTreeList(-1*$val, $recursive);
 				if ($_list)  $pid_list[] = $_list;
@@ -513,12 +519,12 @@ MAYDAYPAGE;
 					tx_rnbase::load('tx_rnbase_util_Logger');
 					tx_rnbase_util_Logger::info('TempDir for rn_base not found. Check EM settings!', 'rn_base', array('lockfile'=> $lockFile));
 				}
-				$lockFileFound = true;
+				$lockFileFound = TRUE;
 			}
 		}
 
-		$textPart = self::getErrorMailText($e,$actionName);
-		$htmlPart = self::getErrorMailHtml($e,$actionName);
+		$textPart = self::getErrorMailText($e, $actionName);
+		$htmlPart = self::getErrorMailHtml($e, $actionName);
 
 		/* @var $mail tx_rnbase_util_Mail */
 		$mail = tx_rnbase::makeInstance('tx_rnbase_util_Mail');
@@ -536,7 +542,7 @@ MAYDAYPAGE;
 			file_put_contents($lockFile, time()); // refresh lock
 		return $mail->send();
 	}
-	protected static function getErrorMailText($e,$actionName) {
+	protected static function getErrorMailText($e, $actionName) {
 		$textPart = 'This is an automatic email from TYPO3. Don\'t answer!'."\n\n";
 		$textPart .= 'UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName ."\n\n";
 		$textPart .= 'Message: ' . $e->getMessage()."\n\n";
@@ -550,7 +556,7 @@ MAYDAYPAGE;
 		return $textPart;
 	}
 
-	protected static function getErrorMailHtml($e,$actionName) {
+	protected static function getErrorMailHtml($e, $actionName) {
 		$htmlPart = '<strong>This is an automatic email from TYPO3. Don\'t answer!</strong>';
 		$htmlPart .= '<div><strong>UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName .'</strong></div>';
 		$htmlPart .= '<p><strong>Message:</strong><br />' . $e->getMessage() . '</p>';
@@ -559,17 +565,17 @@ MAYDAYPAGE;
 
 		$get = self::removePasswordParams($_GET);
 		if(count($get))
-			$htmlPart .= '<p><strong>_GET</strong><br />'. var_export($get, true). '</p>';
+			$htmlPart .= '<p><strong>_GET</strong><br />'. var_export($get, TRUE). '</p>';
 
 		$post = self::removePasswordParams($_POST);
 		if(count($post))
-			$htmlPart .= '<p><strong>_POST</strong><br />'. var_export($post, true). '</p>';
+			$htmlPart .= '<p><strong>_POST</strong><br />'. var_export($post, TRUE). '</p>';
 
 		$cookie = self::removePasswordParams($_COOKIE);
 		if(count($cookie))
-			$htmlPart .= '<p><strong>_COOKIE</strong><br />'. var_export($cookie, true). '</p>';
+			$htmlPart .= '<p><strong>_COOKIE</strong><br />'. var_export($cookie, TRUE). '</p>';
 
-		$htmlPart .= '<p><strong>_SERVER</strong><br />'. var_export(self::removePasswordParams($_SERVER), true). '</p>';
+		$htmlPart .= '<p><strong>_SERVER</strong><br />'. var_export(self::removePasswordParams($_SERVER), TRUE). '</p>';
 		if($e instanceof tx_rnbase_util_Exception) {
 			$additional = $e->getAdditional();
 			if($additional)

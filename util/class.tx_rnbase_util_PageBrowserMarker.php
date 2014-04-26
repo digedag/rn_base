@@ -34,7 +34,7 @@ tx_rnbase::load('tx_rnbase_util_Math');
  */
 class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 	private $pdid;
-	private $pagePartsDef = array('normal','current','first','last','prev','next');
+	private $pagePartsDef = array('normal', 'current', 'first', 'last', 'prev', 'next');
 
 	/**
 	 * Erstellung des PageBrowserMarkers
@@ -183,7 +183,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 	function getTemplates($template, &$formatter, $pbMarker) {
 		$ret = array();
 		foreach($this->pagePartsDef As $part) {
-			$ret[$part] = $formatter->cObj->getSubpart($template,'###'.$pbMarker.'_' . strtoUpper($part) . '_PAGE###');
+			$ret[$part] = $formatter->cObj->getSubpart($template, '###'.$pbMarker.'_' . strtoUpper($part) . '_PAGE###');
 		}
 		return $ret;
 	}
@@ -211,7 +211,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 		$this->token = md5(microtime());
 		$this->link->label($this->token);
 //		$this->link->destination($GLOBALS['TSFE']->id); // Link auf aktuelle Seite
-		$this->noLink = array('','');
+		$this->noLink = array('', '');
 	}
 }
 

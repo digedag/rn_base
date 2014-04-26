@@ -121,8 +121,8 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler {
 			// aktuelle meldung setzen, damit diese ggf. über ts ausgelesen werden kann (.current = 1)
 			$configurations->getCObj()->setCurrentVal('ERROR '.$e->getCode().': '.$e->getMessage());
 			// meldung auslesen
-			$ret = $configurations->get('error.'.$e->getCode(), true);
-			$ret = $ret ? $ret : $configurations->get('error.default', true);
+			$ret = $configurations->get('error.'.$e->getCode(), TRUE);
+			$ret = $ret ? $ret : $configurations->get('error.default', TRUE);
 		}
 		// nun die sprachlabels nach einem fehler überprüfen.
 		$ret = isset($ret) && $ret ? $ret : $configurations->getLL('ERROR_'.$e->getCode(), '');
@@ -136,13 +136,13 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler {
 	 * prüft ob die exception gefangen werden kann,
 	 * und erzeugt ggf eine alternative ausgabe.
 	 *
-	 * liefert entweder eine ausgabe (string) oder null,
+	 * liefert entweder eine ausgabe (string) oder NULL,
 	 * um die fehlerbehandlung weiter leufen zu lassen.
 	 *
 	 * @param string $actionName
 	 * @param Exception $e
 	 * @param tx_rnbase_configurations $configurations
-	 * @return string|null
+	 * @return string|NULL
 	 */
 	protected function catchException(
 		$actionName,
@@ -157,7 +157,7 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler {
 			// aktuelle meldung setzen, damit diese ggf. über ts ausgelesen werden kann (.current = 1)
 			$configurations->getCObj()->setCurrentVal('ERROR '.$e->getCode().': '.$e->getMessage());
 			// meldung auslesen
-			$ret = $configurations->get('catchException.' . $e->getCode(), true);
+			$ret = $configurations->get('catchException.' . $e->getCode(), TRUE);
 			if (!empty($ret)) {
 				return $ret;
 			}
@@ -167,7 +167,7 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler {
 
 	/**
 	 * chechs, if the exception was allready thrown in the stack.
-	 * returns true, if the exception was allready thrown.
+	 * returns TRUE, if the exception was allready thrown.
 	 *
 	 * die recursion können wir an dieser stelle nicht über den backtrace prüfen.
 	 * bei ungecachten ausgaben wird bei typo3 mit int_script gearbeidet,
@@ -202,7 +202,7 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler {
 					. ' It looks as if there is a problem with a faulty configuration.',
 				'rn_base'
 			);
-			return true;
+			return TRUE;
 		}
 		// else
 		// ansonsten setzen wir eine art stack aus action, errorcode und config zusammen.
@@ -232,10 +232,10 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler {
 			isset($trace[$type][$action][$code][$configKey])
 			&& $trace[$type][$action][$code][$configKey] > $maxThrows
 		) {
-			return true;
+			return TRUE;
 		}
 
-		return false;
+		return FALSE;
 	}
 }
 

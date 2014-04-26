@@ -64,7 +64,7 @@ class tx_rnbase_parameters extends ArrayObject implements tx_rnbase_IParameters 
 		$this->setQualifier($qualifier);
 		// get parametersArray for defined qualifier
 		$parametersArray = $this->getParametersPlain($qualifier);
-		tx_rnbase_util_Arrays::overwriteArray($this,$parametersArray);
+		tx_rnbase_util_Arrays::overwriteArray($this, $parametersArray);
 	}
 	public function setQualifier($qualifier) {
 		$this->qualifier = $qualifier;

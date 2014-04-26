@@ -92,7 +92,7 @@ class tx_rnbase_util_TYPO3 {
 	public static function isTYPO42OrHigher() {
 		return self::isTYPO3VersionOrHigher(4002000);
 	}
-	private static $TYPO3_VERSION = false;
+	private static $TYPO3_VERSION = FALSE;
 	/**
 	 * Prüft, ob eine bestimmte TYPO3 Version vorhanden ist.
 	 *
@@ -100,7 +100,7 @@ class tx_rnbase_util_TYPO3 {
 	 * @return boolean
 	 */
 	public static function isTYPO3VersionOrHigher($version) {
-		if(self::$TYPO3_VERSION === false) {
+		if(self::$TYPO3_VERSION === FALSE) {
 			self::$TYPO3_VERSION = self::convertVersionNumberToInteger(TYPO3_version);
 		}
 		return self::$TYPO3_VERSION >= $version;
@@ -160,11 +160,11 @@ class tx_rnbase_util_TYPO3 {
 	/** 
 	 * Get the current frontend user uid
 	 *
-	 * @return int current frontend user uid or false
+	 * @return int current frontend user uid or FALSE
 	 */ 
 	public static function getFEUserUID() {
 		$feuser = self::getFEUser();
-		return is_object($feuser) && isset($feuser->user['uid']) ? $feuser->user['uid'] : false;
+		return is_object($feuser) && isset($feuser->user['uid']) ? $feuser->user['uid'] : FALSE;
 	}
 	/**
 	 * Get the current backend user if available
@@ -179,7 +179,7 @@ class tx_rnbase_util_TYPO3 {
 	 */
 	public static function getBEUserUID() {
 		$beuser = self::getBEUser();
-		return is_object($beuser) && isset($beuser->user['uid']) ? $beuser->user['uid'] : false;
+		return is_object($beuser) && isset($beuser->user['uid']) ? $beuser->user['uid'] : FALSE;
 	}
 	
 
@@ -188,14 +188,14 @@ class tx_rnbase_util_TYPO3 {
 	 * @param boolean $force create new tsfe if not available
 	 * @return tslib_fe
 	 */
-	public static function getTSFE($force=false) {
+	public static function getTSFE($force=FALSE) {
 		if(!is_object($GLOBALS['TSFE'])) {
 			tx_rnbase::load('tx_rnbase_util_Misc');
 			tx_rnbase_util_Misc::prepareTSFE();
 		}
 		return $GLOBALS['TSFE'];
 	}
-	private static $sysPage = null;
+	private static $sysPage = NULL;
 	/**
 	 * @return t3lib_pageSelect
 	 */

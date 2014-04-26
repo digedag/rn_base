@@ -42,7 +42,7 @@ class tx_rnbase_util_BaseMarker {
   /**
    * Initialisiert die Labels für die eine Model-Klasse
    *
-   * @param string $classname child class of tx_rnbase_model_base or null
+   * @param string $classname child class of tx_rnbase_model_base or NULL
    * @param tx_rnbase_util_FormatUtil $formatter
    * @param array $defaultMarkerArr
    */
@@ -55,7 +55,7 @@ class tx_rnbase_util_BaseMarker {
   /**
    * Initialisiert die Labels für die eine Model-Klasse
    *
-   * @param string $classname child class of tx_rnbase_model_base or null
+   * @param string $classname child class of tx_rnbase_model_base or NULL
    * @param tx_rnbase_util_FormatUtil $formatter
    * @param string $confId
    * @param array $defaultMarkerArr
@@ -69,7 +69,7 @@ class tx_rnbase_util_BaseMarker {
       $cols = $obj->getTCAColumns();
       $labelArr = array();
       foreach ($cols as $col => $colArr) {
-        $labelId = str_replace('.','_', $confId.$col);
+        $labelId = str_replace('.', '_', $confId.$col);
         $label = $formatter->configurations->getLL($labelId);
         $labelArr['label_'.$col] = strlen($label) ? $label : $formatter->configurations->getLL($colArr['label']);
       }
@@ -90,12 +90,12 @@ class tx_rnbase_util_BaseMarker {
   public function initTSLabelMarkers(&$formatter, $confId, $marker, $defaultMarkerArr = 0) {
     $arr1 = array();
     if($labels = $formatter->configurations->get($confId.'labels')) {
-      $labels = t3lib_div::trimExplode(',',$labels);
+      $labels = t3lib_div::trimExplode(',', $labels);
       $labelArr = array();
       foreach ($labels as $label) {
         // Für die Abfrage nach den Labels dürfen keine Punkte als Trenner verwendet werden
         // Daher Umwandlung in Underscores
-        $labelId = str_replace('.','_', $confId.'label.'.$label);
+        $labelId = str_replace('.', '_', $confId.'label.'.$label);
         $labelArr['label_'.$label] = $formatter->configurations->getLL($labelId);
       }
       $arr1 = $formatter->getItemMarkerArrayWrapped($labelArr, $confId , 0, $marker.'_');
@@ -145,20 +145,20 @@ class tx_rnbase_util_BaseMarker {
    * @param string $linkId
    * @param string $marker
    * @param string $template
-   * @param boolean $makeUrl is set to true if url was found
-   * @param boolean $makeLink is set to true if link was found
-   * @return boolean is true if link or url was found
+   * @param boolean $makeUrl is set to TRUE if url was found
+   * @param boolean $makeLink is set to TRUE if link was found
+   * @return boolean is TRUE if link or url was found
    */
-  public static function checkLinkExistence($linkId, $marker, $template, &$makeUrl=true, &$makeLink=true) {
+  public static function checkLinkExistence($linkId, $marker, $template, &$makeUrl=TRUE, &$makeLink=TRUE) {
 		$linkMarker = $marker . '_' . strtoupper($linkId).'LINK';
 		// Do we need links
-		$makeUrl = $makeLink = true;
+		$makeUrl = $makeLink = TRUE;
 		if($template) {
 			$makeLink = self::containsMarker($template, $linkMarker.'#');
 			$makeUrl = self::containsMarker($template, $linkMarker.'URL');
 		}
 		if(!$makeLink && !$makeUrl) {
-			return false; // Nothing to do
+			return FALSE; // Nothing to do
 		}
 		return $linkMarker;
   }
@@ -180,7 +180,7 @@ class tx_rnbase_util_BaseMarker {
 /*
 		$linkMarker = $marker . '_' . strtoupper($linkId).'LINK';
 		// Do we need links
-		$makeUrl = $makeLink = true;
+		$makeUrl = $makeLink = TRUE;
 		if($template) {
 			$makeLink = self::containsMarker($template, $linkMarker);
 			$makeUrl = self::containsMarker($template, $linkMarker.'URL');
@@ -204,18 +204,18 @@ class tx_rnbase_util_BaseMarker {
 				$wrappedSubpartArray['###'.$linkMarker . '###'] = explode($token, $linkObj->makeTag());
 			if($makeUrl)
 				$markerArray['###'.$linkMarker . 'URL###'] = $linkObj->makeUrl(
-						$formatter->getConfigurations()->getBool($confId.'links.'.$linkId.'.applyHtmlSpecialChars', false, false)
+						$formatter->getConfigurations()->getBool($confId.'links.'.$linkId.'.applyHtmlSpecialChars', FALSE, FALSE)
 					);
 		}
 		else {
-			self::disableLink($markerArray, $subpartArray, $wrappedSubpartArray, $linkMarker, false);
+			self::disableLink($markerArray, $subpartArray, $wrappedSubpartArray, $linkMarker, FALSE);
 		}
 	}
 	/**
 	 * Remove Link-Markers
 	 *
 	 * @param string $linkMarker
-	 * @param boolean $remove true removes the link with label
+	 * @param boolean $remove TRUE removes the link with label
 	 */
 	public function disableLink(&$markerArray, &$subpartArray, &$wrappedSubpartArray, $linkMarker, $remove) {
   	if($remove)
@@ -285,7 +285,7 @@ class tx_rnbase_util_BaseMarker {
 			$out[] = tx_rnbase_util_Templates::substituteMarkerArrayCached($template, $myMarkerArray, $emptyArray, $wrappedSubpartArray);
 		}
 
-		return implode($configurations->get($confId.'implode'),$out);
+		return implode($configurations->get($confId.'implode'), $out);
 	}
 
   /**
@@ -343,15 +343,15 @@ class tx_rnbase_util_BaseMarker {
 		$allSingleMarkers = array_diff($allSingleMarkers, $allMarkers);
 		foreach ($allSingleMarkers as $marker) {
 			if (preg_match('/MARKERMODULE__([A-Z0-9_-])*/', $marker)) {
-				$module = t3lib_div::makeInstanceService('markermodule',substr($marker, 14));
+				$module = t3lib_div::makeInstanceService('markermodule', substr($marker, 14));
 				if (is_object($module)) {
-					$subTemplate = $formatter->cObj->getSubpart($template,'###'.$marker.'###');
+					$subTemplate = $formatter->cObj->getSubpart($template, '###'.$marker.'###');
 					$value = $module->getMarkerValue($params, $formatter);
-					if($value !== false)
+					if($value !== FALSE)
 						$markerArray['###' . $marker . '###'] =  $value;
 				}
 			}
-			elseif(preg_match('/LABEL_.*/',$marker)) {
+			elseif(preg_match('/LABEL_.*/', $marker)) {
 				$markerArray['###'.$marker.'###'] = $formatter->getConfigurations()->getLL(strtolower($marker));
 			}
 		}
@@ -362,11 +362,11 @@ class tx_rnbase_util_BaseMarker {
 		$allMarkers = array_unique($match[1]);
 		foreach ($allMarkers as $marker) {
 			if (preg_match('/MARKERMODULE__([A-Z0-9_-])*/', $marker)) {
-				$module = t3lib_div :: makeInstanceService('markermodule',substr($marker, 14));
+				$module = t3lib_div :: makeInstanceService('markermodule', substr($marker, 14));
 				if (is_object($module)) {
-					$subTemplate = $formatter->cObj->getSubpart($template,'###'.$marker.'###');
+					$subTemplate = $formatter->cObj->getSubpart($template, '###'.$marker.'###');
 					$subpart = $module->parseTemplate($subTemplate, $params, $formatter);
-					if($subpart !== false)
+					if($subpart !== FALSE)
 						if(is_array($subpart))
 							$wrappedSubpartArray['###' . $marker . '###'] = $subpart;
 						else
@@ -399,8 +399,8 @@ class tx_rnbase_util_BaseMarker {
 		tx_rnbase_util_Misc::pullTT();
 	}
 
-	public static function substituteMarkerArrayCached($content,$markContentArray=array(),$subpartContentArray=array(),$wrappedSubpartContentArray=array())	{
-		return tx_rnbase_util_Templates::substituteMarkerArrayCached($content,$markContentArray,$subpartContentArray,$wrappedSubpartContentArray);
+	public static function substituteMarkerArrayCached($content, $markContentArray=array(), $subpartContentArray=array(), $wrappedSubpartContentArray=array())	{
+		return tx_rnbase_util_Templates::substituteMarkerArrayCached($content, $markContentArray, $subpartContentArray, $wrappedSubpartContentArray);
 	}
 }
 

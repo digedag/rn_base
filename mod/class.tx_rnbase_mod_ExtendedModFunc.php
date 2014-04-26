@@ -59,13 +59,13 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc {
 		$template = tx_rnbase_util_Templates::getSubpart($templateCode, $subpart);
 		if(!$template) return $conf->getLL('msg_subpart_not_found'). ': ' . $subpart;
 
-		$start = microtime(true);
+		$start = microtime(TRUE);
 		$memStart = memory_get_usage();
 		$out .= $this->createContent($template, $conf);
 		if(tx_rnbase_util_BaseMarker::containsMarker($out, 'MOD_')) {
 			$markerArr = array();
 			$memEnd = memory_get_usage();
-			$markerArr['###MOD_PARSETIME###'] = (microtime(true) - $start);
+			$markerArr['###MOD_PARSETIME###'] = (microtime(TRUE) - $start);
 			$markerArr['###MOD_MEMUSED###'] = ($memEnd - $memStart);
 			$markerArr['###MOD_MEMSTART###'] = $memStart;
 			$markerArr['###MOD_MEMEND###'] = $memEnd;
@@ -109,7 +109,7 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc {
 			$args[] = $this->getModule();
 			$args[] = array('subSels' => $subSels);
 			// Der Handler sollte nicht das gesamte Template bekommen, sondern nur seinen Subpart...
-			$subOut = call_user_func_array(array($handler,'showScreen'),$args);
+			$subOut = call_user_func_array(array($handler, 'showScreen'),$args);
 		}
 
 		// Jetzt noch die COMMON-PARTS
@@ -150,7 +150,7 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc {
 			}
 		}
 		
-		$menu = $formTool->showTabMenu($this->getModule()->getPid(), 'mn_'.$this->getFuncId(), $this->getModule()->getName(),$menuItems);
+		$menu = $formTool->showTabMenu($this->getModule()->getPid(), 'mn_'.$this->getFuncId(), $this->getModule()->getName(), $menuItems);
 
 		return $menu;
 	}
@@ -158,7 +158,7 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc {
 		$msg = '';
 		$title = '';
 		$severity = t3lib_FlashMessage::OK;
-		$store = false;
+		$store = FALSE;
 		if(is_array($message)) {
 			$msg = $message['message'];
 			$title = $message['title'];

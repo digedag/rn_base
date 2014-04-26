@@ -35,7 +35,7 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase {
 	 *
 	 * @var resource
 	 */
-	private $db = null;
+	private $db = NULL;
 
 	/**
 	 *
@@ -149,7 +149,7 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase {
 	 * @return string SQL Query
 	 */
 	public function SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '') {
-		return $GLOBALS['TYPO3_DB']->SELECTquery($select_fields, $from_table, $where_clause, $groupBy,$orderBy,$limit);
+		return $GLOBALS['TYPO3_DB']->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
 	}
 
 	/**

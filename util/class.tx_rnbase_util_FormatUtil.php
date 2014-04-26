@@ -71,7 +71,7 @@ class tx_rnbase_util_FormatUtil {
    * @return	string		human readable date string
    * @see       http://php.net/strftime
    */
-  function asDate($value, $format = null){
+  function asDate($value, $format = NULL){
     $format = $format ? $format : $this->configurations->get($this->dateFormatKey);
     return $format ? strftime($format, $value) : $value;
   }
@@ -156,7 +156,7 @@ class tx_rnbase_util_FormatUtil {
    function getImage($image, $confId, $extensionKey = 0) {
      if(strlen($image) == 0) return '';
      $confArr = $this->configurations->get($confId);
-     $confArr['file'] = 'uploads/tx_' . str_replace('_','',
+     $confArr['file'] = 'uploads/tx_' . str_replace('_', '',
        ($extensionKey) ? $extensionKey : $this->configurations->getExtensionKey()) . '/' .($image);
 
      // Bei einfachen Bildern sollen die Einstellungen aus cObj->data nicht verwendet 
@@ -186,7 +186,7 @@ class tx_rnbase_util_FormatUtil {
 	function getItemMarkerArrayWrapped($record, $confId, $noMap = 0, $markerPrefix='', $initMarkers = 0){
 		if(!is_array($record))
 			return array();
-$start = microtime(true);
+$start = microtime(TRUE);
 $mem = memory_get_usage();
 		$tmpArr = $this->cObj->data;
 		// Ensure the initMarkers are part of the record
@@ -226,8 +226,8 @@ $mem = memory_get_usage();
       elseif($conf[$colname]) {
       	// Get value using cObjGetSingle
         $this->cObj->setCurrentVal($value);
-        $data[$colname] = $this->cObj->cObjGetSingle($conf[$colname],$conf[$colname.'.']);
-        $this->cObj->setCurrentVal(false);
+        $data[$colname] = $this->cObj->cObjGetSingle($conf[$colname], $conf[$colname.'.']);
+        $this->cObj->setCurrentVal(FALSE);
       }
       elseif($conf[$colname] == 'CASE') {
         $data[$colname] = $this->cObj->CASEFUNC($conf[$colname.'.']);
@@ -243,7 +243,7 @@ $mem = memory_get_usage();
     $markerArray = tx_rnbase_util_FormatUtil::getItemMarkerArray($data, $noMap, $markerPrefix, $initMarkers);
 unset($data); // 400 kB
     $this->cObj->data = $tmpArr;
-self::$time += (microtime(true) - $start);
+self::$time += (microtime(TRUE) - $start);
 self::$mem += (memory_get_usage() - $mem);
 		return $markerArray;
   }
@@ -327,7 +327,7 @@ self::$mem += (memory_get_usage() - $mem);
     $conf = $this->configurations->get($confId);
     // Alle Metadaten auslesen und wrappen
     $meta = array();
-    while(list($colname,$value)=each($media->meta)){
+    while(list($colname, $value)=each($media->meta)){
       $meta[$colname] = $this->stdWrap($value, $conf[$colname.'.']);
     }
 

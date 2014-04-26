@@ -38,13 +38,13 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap {
 		$this->conf = $conf;
 		$this->confId = $confId;
 		$apiKey = $conf->get($confId.'google.apikey');
-		$apiKey = $apiKey ? $apiKey : null;
+		$apiKey = $apiKey ? $apiKey : NULL;
 		$width = $conf->get($confId.'width');
 		$height = $conf->get($confId.'height');
 		
 		$this->map = tx_rnbase::makeInstance('tx_wecmap_map_google', $apiKey, $width, $height);
 		// Der MapType
-		$mapType = $conf->get($confId.'maptype') ? constant($conf->get($confId.'maptype')) : null;
+		$mapType = $conf->get($confId.'maptype') ? constant($conf->get($confId.'maptype')) : NULL;
 		$types = array_flip(tx_rnbase_maps_TypeRegistry::getMapTypes());
 		if($mapType && array_key_exists($mapType, $types)) {
 			$this->setMapType(tx_rnbase_maps_TypeRegistry::getInstance()->getType($this, $mapType));
@@ -54,15 +54,15 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap {
 		if($controls) {
 			$controls = t3lib_div::trimExplode(',', $controls);
 			foreach($controls As $control) {
-				$this->addControl(tx_rnbase::makeInstance('tx_rnbase_maps_google_Control',$control));
+				$this->addControl(tx_rnbase::makeInstance('tx_rnbase_maps_google_Control', $control));
 			}
 		}
 	}
 	function initTypes(tx_rnbase_maps_TypeRegistry $registry) {
-		$registry->addType($this,RNMAP_MAPTYPE_STREET, 'G_NORMAL_MAP');
-		$registry->addType($this,RNMAP_MAPTYPE_SATELLITE, 'G_SATELLITE_MAP');
-		$registry->addType($this,RNMAP_MAPTYPE_HYBRID, 'G_HYBRID_MAP');
-		$registry->addType($this,RNMAP_MAPTYPE_PHYSICAL, 'G_PHYSICAL_MAP');
+		$registry->addType($this, RNMAP_MAPTYPE_STREET, 'G_NORMAL_MAP');
+		$registry->addType($this, RNMAP_MAPTYPE_SATELLITE, 'G_SATELLITE_MAP');
+		$registry->addType($this, RNMAP_MAPTYPE_HYBRID, 'G_HYBRID_MAP');
+		$registry->addType($this, RNMAP_MAPTYPE_PHYSICAL, 'G_PHYSICAL_MAP');
 		
 	}
 	/**
@@ -96,19 +96,19 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap {
 		$coord = $marker->getCoords();
 		if($coord) {
 			$this->getWecMap()->addMarkerByLatLong($coord->getLatitude(), $coord->getLongitude(), 
-				$marker->getTitle(), $marker->getDescription(), $marker->getZoomMin(), $marker->getZoomMax(),$iconName);
+				$marker->getTitle(), $marker->getDescription(), $marker->getZoomMin(), $marker->getZoomMax(), $iconName);
 			return;
 		}
 		
 		$this->getWecMap()->addMarkerByAddress($marker->getStreet(), $marker->getCity(), $marker->getState(), 
 			$marker->getZip(), $marker->getCountry(), 
-			$marker->getTitle(), $marker->getDescription(), $marker->getZoomMin(), $marker->getZoomMax(),$iconName);
+			$marker->getTitle(), $marker->getDescription(), $marker->getZoomMin(), $marker->getZoomMax(), $iconName);
 	}
 	function draw() {
 		$code = $this->map->drawMap();
 		if(intval($this->conf->get($this->confId.'google.forcejs'))) {
 			// This is necessary if
-			$code .= "\n". '<script type="text/javascript">GEvent.addDomListener(window, "load",function(){drawMap_'. $this->map->mapName .'();})</script>';
+			$code .= "\n". '<script type="text/javascript">GEvent.addDomListener(window, "load", function(){drawMap_'. $this->map->mapName .'();})</script>';
 		}
 		return $code;
 	}

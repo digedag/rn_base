@@ -36,13 +36,13 @@ class tx_rnbase_cache_NoCache implements tx_rnbase_cache_ICache {
 	 * Retrieve a value from cache
 	 *
 	 * @param string $key
-	 * @return null
+	 * @return NULL
 	 */
 	public function get($key) {
-		return null;
+		return NULL;
 	}
 	public function has($key) {
-		return false;
+		return FALSE;
 	}
 	public function set($key, $value, $lifetime = NULL) {
 		

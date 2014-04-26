@@ -40,14 +40,14 @@ class tx_rnbase_tests_listbuilder_testcase extends tx_phpunit_testcase {
 		$configurations = $this->getConfig($confArr);
 		$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
 		$html = $listBuilder->render($items,
-						false, self::$advTemplate, 'tx_rnbase_util_MediaMarker',
+						FALSE, self::$advTemplate, 'tx_rnbase_util_MediaMarker',
 						'media.pic.', 'PIC', $configurations->getFormatter());
 		$this->assertEquals($html, self::$listAdvEmpty, 'Leere Liste ist falsch');
 
 		$items = $this->getModels();
 		$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
 		$html = $listBuilder->render($items,
-						false, self::$advTemplate, 'tx_rnbase_util_MediaMarker',
+						FALSE, self::$advTemplate, 'tx_rnbase_util_MediaMarker',
 						'media.pic.', 'PIC', $configurations->getFormatter());
 		$this->assertEquals($html, self::$listAdvFilled, 'Liste ist falsch');
 	}
@@ -58,7 +58,7 @@ class tx_rnbase_tests_listbuilder_testcase extends tx_phpunit_testcase {
 		$configurations = $this->getConfig($confArr);
 		$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
 		$html = $listBuilder->render($items,
-						false, self::$multiSubpartTemplate, 'tx_rnbase_util_MediaMarker',
+						FALSE, self::$multiSubpartTemplate, 'tx_rnbase_util_MediaMarker',
 						'media.pic.', 'PIC', $configurations->getFormatter());
 
 		$this->assertEquals($html, self::$listMultiSubpartEmpty, 'Leere Liste ist falsch');
@@ -66,7 +66,7 @@ class tx_rnbase_tests_listbuilder_testcase extends tx_phpunit_testcase {
 		$items = $this->getModels();
 		$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
 		$html = $listBuilder->render($items,
-						false, self::$multiSubpartTemplate, 'tx_rnbase_util_MediaMarker',
+						FALSE, self::$multiSubpartTemplate, 'tx_rnbase_util_MediaMarker',
 						'media.pic.', 'PIC', $configurations->getFormatter());
 		$this->assertEquals($html, self::$listMultiSubpartFilled, 'Liste ist falsch');
 	}
@@ -77,14 +77,14 @@ class tx_rnbase_tests_listbuilder_testcase extends tx_phpunit_testcase {
 		$configurations = $this->getConfig($confArr);
 		$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
 		$html = $listBuilder->render($items,
-						false, self::$template, 'tx_rnbase_util_MediaMarker',
+						FALSE, self::$template, 'tx_rnbase_util_MediaMarker',
 						'media.pic.', 'PIC', $configurations->getFormatter());
 
 		$this->assertEquals($html, self::$listEmpty, 'Leere Liste ist falsch');
 
 		$items = $this->getModels();
 		$html = $listBuilder->render($items,
-						false, self::$template, 'tx_rnbase_util_MediaMarker',
+						FALSE, self::$template, 'tx_rnbase_util_MediaMarker',
 						'media.pic.', 'PIC', $configurations->getFormatter());
 		$this->assertEquals($html, self::$listSimple, 'Einfache Liste ist falsch');
 

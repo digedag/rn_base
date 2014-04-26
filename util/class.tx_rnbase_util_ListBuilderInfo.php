@@ -59,7 +59,7 @@ class tx_rnbase_util_ListBuilderInfo implements ListBuilderInfo {
 		
 	}
 	function getListMarkerInfo() {
-		return null;
+		return NULL;
 	}
 	
 }

@@ -62,7 +62,7 @@ define('OP_EQ', '=STR');
 abstract class tx_rnbase_util_SearchBase {
 	private static $instances = array();
 	private $tableMapping;
-	private $generic = false;
+	private $generic = FALSE;
 	private $genericData;
 
 	/**
@@ -166,7 +166,7 @@ abstract class tx_rnbase_util_SearchBase {
 						// There is more then one value to test against column
 						$joinedValues = $value[SEARCH_FIELD_JOINED];
 						if(!is_array($joinedValues))
-							tx_rnbase_util_Misc::mayday('JOINED field required data array. Check up your search config.','rn_base');
+							tx_rnbase_util_Misc::mayday('JOINED field required data array. Check up your search config.', 'rn_base');
 						$joinedValues = array_values($joinedValues);
 						for($i=0, $cnt=count($joinedValues); $i < $cnt; $i++) {
 							if(strlen($where) >0) $where .= ' AND ';
@@ -188,10 +188,10 @@ abstract class tx_rnbase_util_SearchBase {
 
 				if($joinedField['operator'] == OP_INSET_INT) {
 					// Values splitten und einzelne Abfragen mit OR verbinden
-					$addWhere = tx_rnbase_util_DB::searchWhere($joinedField['value'], implode(',',$joinedField['fields']), 'FIND_IN_SET_OR');
+					$addWhere = tx_rnbase_util_DB::searchWhere($joinedField['value'], implode(',', $joinedField['fields']), 'FIND_IN_SET_OR');
 				}
 				else {
-					$addWhere = tx_rnbase_util_DB::searchWhere($joinedField['value'], implode(',',$joinedField['fields']), $joinedField['operator']);
+					$addWhere = tx_rnbase_util_DB::searchWhere($joinedField['value'], implode(',', $joinedField['fields']), $joinedField['operator']);
 				}
 				$where .= ' AND ' . $addWhere;
 			}
@@ -408,14 +408,14 @@ abstract class tx_rnbase_util_SearchBase {
 	abstract protected function getJoins($tableAliases);
 
 	/**
-	 * As default the sql statement is build with tablenames. If this method returns true, the aliases will
+	 * As default the sql statement is build with tablenames. If this method returns TRUE, the aliases will
 	 * be used instead. But keep in mind, to use aliases for Joins too and to overwrite getBaseTableAlias()!
 	 *
 	 * @return boolean
 	 */
 	protected function useAlias() {
 		if($this->isGeneric()) return intval($this->genericData['usealias']) > 0;
-		return false;
+		return FALSE;
 	}
 
 	protected function getWhat($options, $tableAliases) {
@@ -521,7 +521,7 @@ abstract class tx_rnbase_util_SearchBase {
 					// Hier sieht die Konfig etwas anders aus
 					foreach($cfg As $jField) {
 						$jField['operator'] = constant($jField['operator']);
-						$jField['cols'] = t3lib_div::trimExplode(',',$jField['cols']);
+						$jField['cols'] = t3lib_div::trimExplode(',', $jField['cols']);
 						$fields[SEARCH_FIELD_JOINED][] = $jField;
 					}
 					continue;
@@ -571,14 +571,14 @@ abstract class tx_rnbase_util_SearchBase {
 			$fields[$idstr][$operator] = $parameters->offsetGet($idstr);
 			// Parameter als KeepVar merken
 			// TODO: Ist das noch notwendig??
-			$configurations->addKeepVar($configurations->createParamName($idstr),$fields[$idstr]);
+			$configurations->addKeepVar($configurations->createParamName($idstr), $fields[$idstr]);
 		}
 	}
 	function getSpecialChars() {
-		$specials['0-9'] = array('1','2','3','4','5','6','7','8','9','0','.','@','');
-		$specials['A'] = array('A','Ä');
-		$specials['O'] = array('O','Ö');
-		$specials['U'] = array('U','Ü');
+		$specials['0-9'] = array('1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.', '@', '');
+		$specials['A'] = array('A', 'Ä');
+		$specials['O'] = array('O', 'Ö');
+		$specials['U'] = array('U', 'Ü');
 		return $specials;
 	}
 }

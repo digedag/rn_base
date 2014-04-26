@@ -111,7 +111,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 		return $this->initFilter($fields, $options, $this->getParameters(), $this->getConfigurations(), $this->getConfId());
 	}
 	public function hideResult() {
-		return false;
+		return FALSE;
 	}
 	/**
 	 * Abgeleitete Filter können diese Methode überschreiben und zusätzlich Filter setzen
@@ -141,7 +141,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 		if(!isset($fields[$idstr][$operator]) && $parameters->offsetGet($idstr)) {
 			$fields[$idstr][$operator] = $parameters->offsetGet($idstr);
 			// Parameter als KeepVar merken TODO: Ist das noch notwendig
-			$configurations->addKeepVar($configurations->createParamName($idstr),$fields[$idstr]);
+			$configurations->addKeepVar($configurations->createParamName($idstr), $fields[$idstr]);
 		}
 	}
 
@@ -244,7 +244,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 				// Wir erzeugen uns das SQl der eigentlichen Abfrage.
 				// Dabei wollen wir auch die rownum haben!
 				$sql = call_user_func($searchCallback,
-							$fields,array_merge($options, array('sqlonly'=>1, 'rownum'=>1))
+							$fields, array_merge($options, array('sqlonly'=>1, 'rownum'=>1))
 				);
 				// Jetzt besorgen wir uns die Position des aktuellen Eintrages
 				$res = tx_rnbase_util_DB::doSelect(
@@ -253,7 +253,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 					array(
 						'where' => 	'ROW.'.$cfg['pointerFromItem']['field'].'='.
 									$GLOBALS['TYPO3_DB']->fullQuoteStr($itemId, ''),
-						'enablefieldsoff' => true,
+						'enablefieldsoff' => TRUE,
 					)
 				);
 				// Jetzt haben wir ein Ergebnis, mit der Zeilennummer des Datensatzes.
@@ -293,7 +293,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 			$pagerData = self::findPagerData($fields, $options, $cfg);
 
 			$firstChar = $configurations->getParameters()->offsetGet($pagerData['pointername']);
-			$firstChar = (strlen(trim($firstChar)) > 0) ? substr($firstChar,0,($firstChar{0} == '0' ? 3:1)) : $pagerData['default'];
+			$firstChar = (strlen(trim($firstChar)) > 0) ? substr($firstChar, 0, ($firstChar{0} == '0' ? 3:1)) : $pagerData['default'];
 			// Existiert der Point in den aktuellen Daten
 			$firstChar = array_key_exists($firstChar, $pagerData['list']) ? $firstChar : $pagerData['default'];
 			$viewData->offsetSet('pagerData', $pagerData);
@@ -306,7 +306,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 			$specials = tx_rnbase_util_SearchBase::getSpecialChars();
 			$firsts = $specials[$firstChar];
 			if($firsts) {
-				$firsts = implode('\',\'',$firsts);
+				$firsts = implode('\',\'', $firsts);
 			}
 			else $firsts = $firstChar;
 

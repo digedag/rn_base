@@ -88,11 +88,11 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 	 */
 	public function testPrepareTableWithoutLinkerDecoratorOrCallbackMethodWithEntriesGivenAsModelsReturnsCorrectTable() {
 		$aEntries = array(
-				0 => tx_rnbase::makeInstance('tx_rnbase_model_base',array(
+				0 => tx_rnbase::makeInstance('tx_rnbase_model_base', array(
 						'uid' => 1,
 						'col1' => 'col1 Value 1'
 				)),
-				1 => tx_rnbase::makeInstance('tx_rnbase_model_base',array(
+				1 => tx_rnbase::makeInstance('tx_rnbase_model_base', array(
 						'uid' => 2,
 						'col1' => 'col1 Value 2'
 				)),
@@ -108,19 +108,19 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 		$aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, array());
 		 
 		//allgmein
-		$this->assertEquals(3,count($aRet[0]),'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
+		$this->assertEquals(3, count($aRet[0]), 'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
 		//Header
-		$this->assertEquals(2,count($aRet[0][0]),'Das Array des Headers hat die falsche Anzahl an Elementen.');
-		$this->assertEquals('Header Uid',$aRet[0][0][0],'Die erste Zelle des Headers ist falsch.');
-		$this->assertEquals('Header Col1',$aRet[0][0][1],'Die zweite Zelle des Headers ist falsch.');
+		$this->assertEquals(2, count($aRet[0][0]), 'Das Array des Headers hat die falsche Anzahl an Elementen.');
+		$this->assertEquals('Header Uid', $aRet[0][0][0], 'Die erste Zelle des Headers ist falsch.');
+		$this->assertEquals('Header Col1', $aRet[0][0][1], 'Die zweite Zelle des Headers ist falsch.');
 		//erste Zeile
-		$this->assertEquals(2,count($aRet[0][1]),'Das Array der ersten Zeile hat die falsche Anzahl an Elementen.');
-		$this->assertEquals(1,$aRet[0][1][0],'Die erste Zelle der ersten Zeile ist falsch.');
-		$this->assertEquals('col1 Value 1',$aRet[0][1][1],'Die zweite Zelle der ersten Zeile ist falsch.');
+		$this->assertEquals(2, count($aRet[0][1]), 'Das Array der ersten Zeile hat die falsche Anzahl an Elementen.');
+		$this->assertEquals(1, $aRet[0][1][0], 'Die erste Zelle der ersten Zeile ist falsch.');
+		$this->assertEquals('col1 Value 1', $aRet[0][1][1], 'Die zweite Zelle der ersten Zeile ist falsch.');
 		//zweite Zeile
-		$this->assertEquals(2,count($aRet[0][2]),'Das Array der zweiten Zeile hat die falsche Anzahl an Elementen.');
-		$this->assertEquals(2,$aRet[0][2][0],'Die erste Zelle der zweiten Zeile ist falsch.');
-		$this->assertEquals('col1 Value 2',$aRet[0][2][1],'Die zweite Zelle der zweiten Zeile ist falsch.');
+		$this->assertEquals(2, count($aRet[0][2]), 'Das Array der zweiten Zeile hat die falsche Anzahl an Elementen.');
+		$this->assertEquals(2, $aRet[0][2][0], 'Die erste Zelle der zweiten Zeile ist falsch.');
+		$this->assertEquals('col1 Value 2', $aRet[0][2][1], 'Die zweite Zelle der zweiten Zeile ist falsch.');
 	}
 	 
 	/**
@@ -150,19 +150,19 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 		$aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, array());
 		 
 		//allgmein
-		$this->assertEquals(3,count($aRet[0]),'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
+		$this->assertEquals(3, count($aRet[0]), 'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
 		//Header
-		$this->assertEquals(2,count($aRet[0][0]),'Das Array des Headers hat die falsche Anzahl an Elementen.');
-		$this->assertEquals('Header Uid',$aRet[0][0][0],'Die erste Zelle des Headers ist falsch.');
-		$this->assertEquals('Header Col1',$aRet[0][0][1],'Die zweite Zelle des Headers ist falsch.');
+		$this->assertEquals(2, count($aRet[0][0]), 'Das Array des Headers hat die falsche Anzahl an Elementen.');
+		$this->assertEquals('Header Uid', $aRet[0][0][0], 'Die erste Zelle des Headers ist falsch.');
+		$this->assertEquals('Header Col1', $aRet[0][0][1], 'Die zweite Zelle des Headers ist falsch.');
 		//erste Zeile
-		$this->assertEquals(2,count($aRet[0][1]),'Das Array der ersten Zeile hat die falsche Anzahl an Elementen.');
-		$this->assertEquals(1,$aRet[0][1][0],'Die erste Zelle der ersten Zeile ist falsch.');
-		$this->assertEquals('col1 Value 1',$aRet[0][1][1],'Die zweite Zelle der ersten Zeile ist falsch.');
+		$this->assertEquals(2, count($aRet[0][1]), 'Das Array der ersten Zeile hat die falsche Anzahl an Elementen.');
+		$this->assertEquals(1, $aRet[0][1][0], 'Die erste Zelle der ersten Zeile ist falsch.');
+		$this->assertEquals('col1 Value 1', $aRet[0][1][1], 'Die zweite Zelle der ersten Zeile ist falsch.');
 		//zweite Zeile
-		$this->assertEquals(2,count($aRet[0][2]),'Das Array der zweiten Zeile hat die falsche Anzahl an Elementen.');
-		$this->assertEquals(2,$aRet[0][2][0],'Die erste Zelle der zweiten Zeile ist falsch.');
-		$this->assertEquals('col1 Value 2',$aRet[0][2][1],'Die zweite Zelle der zweiten Zeile ist falsch.');
+		$this->assertEquals(2, count($aRet[0][2]), 'Das Array der zweiten Zeile hat die falsche Anzahl an Elementen.');
+		$this->assertEquals(2, $aRet[0][2][0], 'Die erste Zelle der zweiten Zeile ist falsch.');
+		$this->assertEquals('col1 Value 2', $aRet[0][2][1], 'Die zweite Zelle der zweiten Zeile ist falsch.');
 	}
 	 
 	/**
@@ -175,11 +175,11 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 				tx_rnbase::makeInstance('tx_rnbase_tests_fixtures_classes_Mod')
 		);
 		$aEntries = array(
-				0 => tx_rnbase::makeInstance('tx_rnbase_model_base',array(
+				0 => tx_rnbase::makeInstance('tx_rnbase_model_base', array(
 						'uid' => 1,
 						'col1' => 'col1 Value 1'
 				)),
-				1 => tx_rnbase::makeInstance('tx_rnbase_model_base',array(
+				1 => tx_rnbase::makeInstance('tx_rnbase_model_base', array(
 						'uid' => 2,
 						'col1' => 'col1 Value 2'
 				)),
@@ -197,19 +197,19 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 		$aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, array());
 		 
 		//allgmein
-		$this->assertEquals(3,count($aRet[0]),'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
+		$this->assertEquals(3, count($aRet[0]), 'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
 		//Header
-		$this->assertEquals(2,count($aRet[0][0]),'Das Array des Headers hat die falsche Anzahl an Elementen.');
-		$this->assertEquals('Header Uid',$aRet[0][0][0],'Die erste Zelle des Headers ist falsch.');
-		$this->assertEquals('Header Col1',$aRet[0][0][1],'Die zweite Zelle des Headers ist falsch.');
+		$this->assertEquals(2, count($aRet[0][0]), 'Das Array des Headers hat die falsche Anzahl an Elementen.');
+		$this->assertEquals('Header Uid', $aRet[0][0][0], 'Die erste Zelle des Headers ist falsch.');
+		$this->assertEquals('Header Col1', $aRet[0][0][1], 'Die zweite Zelle des Headers ist falsch.');
 		//erste Zeile
-		$this->assertEquals(2,count($aRet[0][1]),'Das Array der ersten Zeile hat die falsche Anzahl an Elementen.');
-		$this->assertEquals(1,$aRet[0][1][0],'Die erste Zelle der ersten Zeile ist falsch.');
-		$this->assertEquals('spalte1 Value 1',$aRet[0][1][1],'Die zweite Zelle der ersten Zeile ist falsch.');
+		$this->assertEquals(2, count($aRet[0][1]), 'Das Array der ersten Zeile hat die falsche Anzahl an Elementen.');
+		$this->assertEquals(1, $aRet[0][1][0], 'Die erste Zelle der ersten Zeile ist falsch.');
+		$this->assertEquals('spalte1 Value 1', $aRet[0][1][1], 'Die zweite Zelle der ersten Zeile ist falsch.');
 		//zweite Zeile
-		$this->assertEquals(2,count($aRet[0][2]),'Das Array der zweiten Zeile hat die falsche Anzahl an Elementen.');
-		$this->assertEquals(2,$aRet[0][2][0],'Die erste Zelle der zweiten Zeile ist falsch.');
-		$this->assertEquals('spalte1 Value 2',$aRet[0][2][1],'Die zweite Zelle der zweiten Zeile ist falsch.');
+		$this->assertEquals(2, count($aRet[0][2]), 'Das Array der zweiten Zeile hat die falsche Anzahl an Elementen.');
+		$this->assertEquals(2, $aRet[0][2][0], 'Die erste Zelle der zweiten Zeile ist falsch.');
+		$this->assertEquals('spalte1 Value 2', $aRet[0][2][1], 'Die zweite Zelle der zweiten Zeile ist falsch.');
 	}
 	 
 	/**
@@ -237,19 +237,19 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 		);
 		$aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, array());
 		//allgmein
-		$this->assertEquals(3,count($aRet[0]),'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
+		$this->assertEquals(3, count($aRet[0]), 'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
 		//Header - es sollte nur das sorting angegeben sein ohne pfeil
-		$this->assertEquals(2,count($aRet[0][0]),'Das Array des Headers hat die falsche Anzahl an Elementen.');
-		$this->assertContains('&amp;sortField=uid&amp;sortRev=asc">Header Uid</a>',$aRet[0][0][0],'Die erste Zelle des Headers ist falsch.');
-		$this->assertEquals('Header Col1',$aRet[0][0][1],'Die zweite Zelle des Headers ist falsch.');
+		$this->assertEquals(2, count($aRet[0][0]), 'Das Array des Headers hat die falsche Anzahl an Elementen.');
+		$this->assertContains('&amp;sortField=uid&amp;sortRev=asc">Header Uid</a>', $aRet[0][0][0], 'Die erste Zelle des Headers ist falsch.');
+		$this->assertEquals('Header Col1', $aRet[0][0][1], 'Die zweite Zelle des Headers ist falsch.');
 		//erste Zeile
-		$this->assertEquals(2,count($aRet[0][1]),'Das Array der ersten Zeile hat die falsche Anzahl an Elementen.');
-		$this->assertEquals(1,$aRet[0][1][0],'Die erste Zelle der ersten Zeile ist falsch.');
-		$this->assertEquals('col1 Value 1',$aRet[0][1][1],'Die zweite Zelle der ersten Zeile ist falsch.');
+		$this->assertEquals(2, count($aRet[0][1]), 'Das Array der ersten Zeile hat die falsche Anzahl an Elementen.');
+		$this->assertEquals(1, $aRet[0][1][0], 'Die erste Zelle der ersten Zeile ist falsch.');
+		$this->assertEquals('col1 Value 1', $aRet[0][1][1], 'Die zweite Zelle der ersten Zeile ist falsch.');
 		//zweite Zeile
-		$this->assertEquals(2,count($aRet[0][2]),'Das Array der zweiten Zeile hat die falsche Anzahl an Elementen.');
-		$this->assertEquals(2,$aRet[0][2][0],'Die erste Zelle der zweiten Zeile ist falsch.');
-		$this->assertEquals('col1 Value 2',$aRet[0][2][1],'Die zweite Zelle der zweiten Zeile ist falsch.');
+		$this->assertEquals(2, count($aRet[0][2]), 'Das Array der zweiten Zeile hat die falsche Anzahl an Elementen.');
+		$this->assertEquals(2, $aRet[0][2][0], 'Die erste Zelle der zweiten Zeile ist falsch.');
+		$this->assertEquals('col1 Value 2', $aRet[0][2][1], 'Die zweite Zelle der zweiten Zeile ist falsch.');
 		 
 		$_SERVER['REQUEST_URI'] = $currentUriBackup;
 	}
@@ -281,22 +281,22 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 		$aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, array());
 		 
 		//allgmein
-		$this->assertEquals(3,count($aRet[0]),'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
+		$this->assertEquals(3, count($aRet[0]), 'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
 		//Header
-		$this->assertEquals(2,count($aRet[0][0]),'Das Array des Headers hat die falsche Anzahl an Elementen.');
-		$this->assertContains('&amp;sortField=uid&amp;sortRev=desc">Header Uid',$aRet[0][0][0],'Die erste Zelle des Headers ist falsch. 1. teil');
+		$this->assertEquals(2, count($aRet[0][0]), 'Das Array des Headers hat die falsche Anzahl an Elementen.');
+		$this->assertContains('&amp;sortField=uid&amp;sortRev=desc">Header Uid', $aRet[0][0][0], 'Die erste Zelle des Headers ist falsch. 1. teil');
 
 		//der korrekte pfeil?
-		$this->assertContains('/icons/gfx/reddown.gif',$aRet[0][0][0],'Die erste Zelle des Headers ist falsch. 2. teil');
-		$this->assertEquals('Header Col1',$aRet[0][0][1],'Die zweite Zelle des Headers ist falsch.');
+		$this->assertContains('/icons/gfx/reddown.gif', $aRet[0][0][0], 'Die erste Zelle des Headers ist falsch. 2. teil');
+		$this->assertEquals('Header Col1', $aRet[0][0][1], 'Die zweite Zelle des Headers ist falsch.');
 		//erste Zeile
-		$this->assertEquals(2,count($aRet[0][1]),'Das Array der ersten Zeile hat die falsche Anzahl an Elementen.');
-		$this->assertEquals(1,$aRet[0][1][0],'Die erste Zelle der ersten Zeile ist falsch.');
-		$this->assertEquals('col1 Value 1',$aRet[0][1][1],'Die zweite Zelle der ersten Zeile ist falsch.');
+		$this->assertEquals(2, count($aRet[0][1]), 'Das Array der ersten Zeile hat die falsche Anzahl an Elementen.');
+		$this->assertEquals(1, $aRet[0][1][0], 'Die erste Zelle der ersten Zeile ist falsch.');
+		$this->assertEquals('col1 Value 1', $aRet[0][1][1], 'Die zweite Zelle der ersten Zeile ist falsch.');
 		//zweite Zeile
-		$this->assertEquals(2,count($aRet[0][2]),'Das Array der zweiten Zeile hat die falsche Anzahl an Elementen.');
-		$this->assertEquals(2,$aRet[0][2][0],'Die erste Zelle der zweiten Zeile ist falsch.');
-		$this->assertEquals('col1 Value 2',$aRet[0][2][1],'Die zweite Zelle der zweiten Zeile ist falsch.');
+		$this->assertEquals(2, count($aRet[0][2]), 'Das Array der zweiten Zeile hat die falsche Anzahl an Elementen.');
+		$this->assertEquals(2, $aRet[0][2][0], 'Die erste Zelle der zweiten Zeile ist falsch.');
+		$this->assertEquals('col1 Value 2', $aRet[0][2][1], 'Die zweite Zelle der zweiten Zeile ist falsch.');
 	}
 	 
 	/**
@@ -327,21 +327,21 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 		$aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, array());
 		 
 		//allgmein
-		$this->assertEquals(3,count($aRet[0]),'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
+		$this->assertEquals(3, count($aRet[0]), 'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
 		//Header
-		$this->assertEquals(2,count($aRet[0][0]),'Das Array des Headers hat die falsche Anzahl an Elementen.');
-		$this->assertContains('&amp;sortField=uid&amp;sortRev=asc">Header Uid',$aRet[0][0][0],'Die erste Zelle des Headers ist falsch. 1. teil');
+		$this->assertEquals(2, count($aRet[0][0]), 'Das Array des Headers hat die falsche Anzahl an Elementen.');
+		$this->assertContains('&amp;sortField=uid&amp;sortRev=asc">Header Uid', $aRet[0][0][0], 'Die erste Zelle des Headers ist falsch. 1. teil');
 		//der korrekte pfeil?
-		$this->assertContains('/icons/gfx/redup.gif',$aRet[0][0][0],'Die erste Zelle des Headers ist falsch. 2. teil');
-		$this->assertEquals('Header Col1',$aRet[0][0][1],'Die zweite Zelle des Headers ist falsch.');
+		$this->assertContains('/icons/gfx/redup.gif', $aRet[0][0][0], 'Die erste Zelle des Headers ist falsch. 2. teil');
+		$this->assertEquals('Header Col1', $aRet[0][0][1], 'Die zweite Zelle des Headers ist falsch.');
 		//erste Zeile
-		$this->assertEquals(2,count($aRet[0][1]),'Das Array der ersten Zeile hat die falsche Anzahl an Elementen.');
-		$this->assertEquals(1,$aRet[0][1][0],'Die erste Zelle der ersten Zeile ist falsch.');
-		$this->assertEquals('col1 Value 1',$aRet[0][1][1],'Die zweite Zelle der ersten Zeile ist falsch.');
+		$this->assertEquals(2, count($aRet[0][1]), 'Das Array der ersten Zeile hat die falsche Anzahl an Elementen.');
+		$this->assertEquals(1, $aRet[0][1][0], 'Die erste Zelle der ersten Zeile ist falsch.');
+		$this->assertEquals('col1 Value 1', $aRet[0][1][1], 'Die zweite Zelle der ersten Zeile ist falsch.');
 		//zweite Zeile
-		$this->assertEquals(2,count($aRet[0][2]),'Das Array der zweiten Zeile hat die falsche Anzahl an Elementen.');
-		$this->assertEquals(2,$aRet[0][2][0],'Die erste Zelle der zweiten Zeile ist falsch.');
-		$this->assertEquals('col1 Value 2',$aRet[0][2][1],'Die zweite Zelle der zweiten Zeile ist falsch.');
+		$this->assertEquals(2, count($aRet[0][2]), 'Das Array der zweiten Zeile hat die falsche Anzahl an Elementen.');
+		$this->assertEquals(2, $aRet[0][2][0], 'Die erste Zelle der zweiten Zeile ist falsch.');
+		$this->assertEquals('col1 Value 2', $aRet[0][2][1], 'Die zweite Zelle der zweiten Zeile ist falsch.');
 	}
 	 
 	/**
@@ -374,21 +374,21 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 		$aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, array());
 		 
 		//allgmein
-		$this->assertEquals(3,count($aRet[0]),'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
+		$this->assertEquals(3, count($aRet[0]), 'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
 		//Header
-		$this->assertEquals(2,count($aRet[0][0]),'Das Array des Headers hat die falsche Anzahl an Elementen.');
-		$this->assertContains('&amp;additionalParam=test&amp;sortField=uid&amp;sortRev=asc">Header Uid',$aRet[0][0][0],'Die erste Zelle des Headers ist falsch. 1. teil');
+		$this->assertEquals(2, count($aRet[0][0]), 'Das Array des Headers hat die falsche Anzahl an Elementen.');
+		$this->assertContains('&amp;additionalParam=test&amp;sortField=uid&amp;sortRev=asc">Header Uid', $aRet[0][0][0], 'Die erste Zelle des Headers ist falsch. 1. teil');
 		//der korrekte pfeil?
-		$this->assertContains('/icons/gfx/redup.gif',$aRet[0][0][0],'Die erste Zelle des Headers ist falsch. 2. teil');
-		$this->assertEquals('Header Col1',$aRet[0][0][1],'Die zweite Zelle des Headers ist falsch.');
+		$this->assertContains('/icons/gfx/redup.gif', $aRet[0][0][0], 'Die erste Zelle des Headers ist falsch. 2. teil');
+		$this->assertEquals('Header Col1', $aRet[0][0][1], 'Die zweite Zelle des Headers ist falsch.');
 		//erste Zeile
-		$this->assertEquals(2,count($aRet[0][1]),'Das Array der ersten Zeile hat die falsche Anzahl an Elementen.');
-		$this->assertEquals(1,$aRet[0][1][0],'Die erste Zelle der ersten Zeile ist falsch.');
-		$this->assertEquals('col1 Value 1',$aRet[0][1][1],'Die zweite Zelle der ersten Zeile ist falsch.');
+		$this->assertEquals(2, count($aRet[0][1]), 'Das Array der ersten Zeile hat die falsche Anzahl an Elementen.');
+		$this->assertEquals(1, $aRet[0][1][0], 'Die erste Zelle der ersten Zeile ist falsch.');
+		$this->assertEquals('col1 Value 1', $aRet[0][1][1], 'Die zweite Zelle der ersten Zeile ist falsch.');
 		//zweite Zeile
-		$this->assertEquals(2,count($aRet[0][2]),'Das Array der zweiten Zeile hat die falsche Anzahl an Elementen.');
-		$this->assertEquals(2,$aRet[0][2][0],'Die erste Zelle der zweiten Zeile ist falsch.');
-		$this->assertEquals('col1 Value 2',$aRet[0][2][1],'Die zweite Zelle der zweiten Zeile ist falsch.');
+		$this->assertEquals(2, count($aRet[0][2]), 'Das Array der zweiten Zeile hat die falsche Anzahl an Elementen.');
+		$this->assertEquals(2, $aRet[0][2][0], 'Die erste Zelle der zweiten Zeile ist falsch.');
+		$this->assertEquals('col1 Value 2', $aRet[0][2][1], 'Die zweite Zelle der zweiten Zeile ist falsch.');
 	}
 }
 

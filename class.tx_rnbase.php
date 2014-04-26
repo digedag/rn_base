@@ -38,29 +38,29 @@ class tx_rnbase {
 	 * TODO: lookup for classes folder
 	 *
 	 * @param	string		classname or path matching for the type of loader
-	 * @return	boolean		true if successfull, false otherwise
+	 * @return	boolean		TRUE if successfull, FALSE otherwise
 	 * @see     tx_lib_t3Loader
 	 * @see     tx_lib_pearLoader
 	 */
 	public static function load($classNameOrPathInformation) {
-		if(array_key_exists($classNameOrPathInformation,self::$loadedClasses)) 
+		if(array_key_exists($classNameOrPathInformation, self::$loadedClasses)) 
 			return self::$loadedClasses[$classNameOrPathInformation];
 
 		if(self::loadT3($classNameOrPathInformation)) {
-			self::$loadedClasses[$classNameOrPathInformation] = true;
-			return true;
+			self::$loadedClasses[$classNameOrPathInformation] = TRUE;
+			return TRUE;
 		}
 		if(t3lib_extMgm::isLoaded('lib')) {
 //			print '<p>Trying Pear Loader: ' . $classNameOrPathInformation;
 			require_once(t3lib_extMgm::extPath('lib') . 'class.tx_lib_pearLoader.php');
 			if(tx_lib_pearLoader::load($classNameOrPathInformation)) {
-				self::$loadedClasses[$classNameOrPathInformation] = true;
-				return true;
+				self::$loadedClasses[$classNameOrPathInformation] = TRUE;
+				return TRUE;
 			}
 		}
 		
-		self::$loadedClasses[$classNameOrPathInformation] = false;
-		return false;
+		self::$loadedClasses[$classNameOrPathInformation] = FALSE;
+		return FALSE;
 	}
 
 	/**
@@ -68,7 +68,7 @@ class tx_rnbase {
 	 * Usage:
 	 * $obj = tx_rnbase::makeInstance('tx_ext_myclass');
 	 * or with parameters:
-	 * $obj = tx_rnbase::makeInstance('tx_ext_myclass', 'arg1', 'arg2',...);
+	 * $obj = tx_rnbase::makeInstance('tx_ext_myclass', 'arg1', 'arg2', ...);
 	 * 
 	 * This works also for TYPO3 4.2 and lower.
 	 * 
@@ -76,12 +76,12 @@ class tx_rnbase {
 	 *
 	 * @param	string		classname
 	 * @param	mixed optional more parameters for constructor
-	 * @return	object		instance of the class or false if it fails
+	 * @return	object		instance of the class or FALSE if it fails
 	 * @see		t3lib_div::makeInstance
 	 * @see		load()
 	 */
 	public static function makeInstance($class) {
-		$ret = false;
+		$ret = FALSE;
 		if(self::load($class)) {
 			if(func_num_args() > 1) {
 				// Das ist ein Konstruktor Aufruf mit Parametern
@@ -89,7 +89,7 @@ class tx_rnbase {
 				self::load('tx_rnbase_util_TYPO3');
 				if(tx_rnbase_util_TYPO3::isTYPO43OrHigher()) {
 					// Die Parameter weiterreichen
-					$ret = call_user_func_array(array('t3lib_div','makeInstance'),$args);
+					$ret = call_user_func_array(array('t3lib_div', 'makeInstance'), $args);
 				}
 				else {
 					array_shift($args);
@@ -120,7 +120,7 @@ class tx_rnbase {
 	 * @deprecated use makeInstance() with optional parameters for constructor
 	 */
 	public static function makeInstanceClassName($inputName) {
-		$outputName = false;
+		$outputName = FALSE;
 		if(!$outputName) {
 			$outputName = self::makeInstanceClassNameT3($inputName);
 		}
@@ -174,13 +174,13 @@ class tx_rnbase {
 	 * @param	string		extension key that varies from classnames
 	 * @param	string		prefix of classname
 	 * @param	string		ending of classname
-	 * @return	object		instance of the class or false if it fails
+	 * @return	object		instance of the class or FALSE if it fails
 	 * @see		t3lib_div::makeInstance
 	 * @see		load()
 	 */
 	private static function makeInstanceT3($class, $alternativeKey='', $prefix = 'class.', $suffix = '.php') {
 		return (self::loadT3($class, $alternativeKey, $prefix, $suffix)) ?
-			t3lib_div::makeInstance($class) : false;
+			t3lib_div::makeInstance($class) : FALSE;
 	}
 
 	/**
@@ -198,7 +198,7 @@ class tx_rnbase {
 	 */
 	private static function makeInstanceClassNameT3($class, $alternativeKey='', $prefix = 'class.', $suffix = '.php') {
 		return (self::loadT3($class, $alternativeKey, $prefix, $suffix)) ?
-			t3lib_div::makeInstanceClassName($class) : false;
+			t3lib_div::makeInstanceClassName($class) : FALSE;
 	}
 	/**
 	 * Returns an array with information about a class
@@ -235,14 +235,14 @@ class tx_rnbase {
 			throw new Exception('No extension key found for classname: ' . $info);
 		}
 
-		$isExtBase = false;
+		$isExtBase = FALSE;
 		if(preg_match('/^tx_[0-9A-Za-z_]*$/', $class)) {  // with tx_ prefix
 			$parts=explode('_', trim($class));
 			array_shift($parts); // strip tx
 		}elseif(preg_match('/^Tx_[0-9A-Za-z_]*$/', $class)) {  // with Tx_ prefix (ExtBase)
 			$parts=explode('_', trim($class));
 			array_shift($parts); // strip tx
-			$isExtBase = true;
+			$isExtBase = TRUE;
 		}elseif(preg_match('/^[0-9A-Za-z_]*$/', $class)) { // without tx_ prefix
 			$parts=explode('_', trim($class));
 		}else{
@@ -386,7 +386,7 @@ class tx_rnbase {
 				$key = self::getValidKey($key);
 			}
 			// Is it a path that starts with the key?
-			if(!$key && $last = strstr('/',$info)) {
+			if(!$key && $last = strstr('/', $info)) {
 				$key = substr($info, 0, $last);
 				$key = self::getValidKey($key);
 			}

@@ -40,7 +40,7 @@ class tx_rnbase_cache_TYPO3Cache implements tx_rnbase_cache_ICache {
 		try {
 			$this->fillBackendParameters($cacheName, $backendName, $backendOptions);
 
-			$factory = self::initTYPO3Cache(true);
+			$factory = self::initTYPO3Cache(TRUE);
 			$cache = $factory->create(
 				$cacheName,
 				't3lib_cache_frontend_VariableFrontend',
@@ -77,7 +77,7 @@ class tx_rnbase_cache_TYPO3Cache implements tx_rnbase_cache_ICache {
 	 * @param boolean $local
 	 * @return t3lib_cache_Factory
 	 */
-	public static function initTYPO3Cache($local = true) {
+	public static function initTYPO3Cache($local = TRUE) {
 		if(!$local && is_object($GLOBALS['typo3CacheFactory'])) 
 			return $GLOBALS['typo3CacheFactory']; // Globale Factory ist schon gesetzt
 

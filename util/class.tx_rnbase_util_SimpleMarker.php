@@ -56,7 +56,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 
 		// Es wird das MarkerArray mit den Daten des Records gefüllt.
 		$ignore = self::findUnusedCols($item->record, $template, $marker);
-		$markerArray = $formatter->getItemMarkerArrayWrapped($item->record, $confId , $ignore, $marker.'_',$item->getColumnNames());
+		$markerArray = $formatter->getItemMarkerArrayWrapped($item->record, $confId , $ignore, $marker.'_', $item->getColumnNames());
 
 		// subparts erzeugen
 		$wrappedSubpartArray = $subpartArray = array();
@@ -129,7 +129,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 		$configurations = $formatter->getConfigurations();
 		$pluginData = $configurations->getCObj()->data;
 		$configurations->getCObj()->data = $item->record;
-		$emptyArray = array('','');
+		$emptyArray = array('', '');
 		$emptyString = '';
 
 		foreach ($configurations->getKeyNames($confId.'subparts.') as $key) {
@@ -146,7 +146,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 				|| self::containsMarker($template, $markerHidden))) {
 				continue;
 			}
-			if ($configurations->getBool($spConfId.'visible', true, false)) {
+			if ($configurations->getBool($spConfId.'visible', TRUE, FALSE)) {
 				$wrappedSubpartArray['###'.$markerVisible.'###'] = $emptyArray;
 				$subpartArray['###'.$markerHidden.'###'] = $emptyString;
 			} else {
@@ -191,7 +191,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 			}
 /*			$paramNames = $formatter->getConfigurations()->getKeyNames($confId.'links.'.$linkId.'._cfg.params.');
 			foreach($paramNames As $paramName) {
-				$colName = $formatter->getConfigurations()->get($confId.'links.'.$linkId.'._cfg.params.'.$paramName, false);
+				$colName = $formatter->getConfigurations()->get($confId.'links.'.$linkId.'._cfg.params.'.$paramName, FALSE);
 				if($colName)
 					$params[$paramName] = $item->record[$colName];
 			}
@@ -232,7 +232,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 		}
 		else {
 			tx_rnbase::load($clazz);
-			$ret = call_user_func_array(array($clazz,$method),array($paramName, $cfgArr, $item));
+			$ret = call_user_func_array(array($clazz, $method), array($paramName, $cfgArr, $item));
 		}
 		return $ret;
 	}

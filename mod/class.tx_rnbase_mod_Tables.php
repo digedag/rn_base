@@ -46,7 +46,7 @@ class tx_rnbase_mod_Tables {
 				if(!is_array($options['dontcheck']) || !array_key_exists($record['uid'], $options['dontcheck']))
 					$row[] = $formTool->createCheckbox($checkName.'[]', $record['uid']);
 				else
-					$row[] = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/zoom2.gif','width="11" height="12"').' title="Info: '. $options['dontcheck'][$record['uid']] .'" border="0" alt="" />';
+					$row[] = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/zoom2.gif', 'width="11" height="12"').' title="Info: '. $options['dontcheck'][$record['uid']] .'" border="0" alt="" />';
 			}
 			reset($columns);
 			foreach($columns As $column => $data) {
@@ -60,7 +60,7 @@ class tx_rnbase_mod_Tables {
 				}
 				elseif(isset($data['decorator'])) {
 					$decor = $data['decorator'];
-					$row[] = $decor->format($record[$column],$column, $record, $entry);
+					$row[] = $decor->format($record[$column], $column, $record, $entry);
 				}
 				else {
 					$row[] = $record[$column];
@@ -104,7 +104,7 @@ class tx_rnbase_mod_Tables {
 			//der alias der tabelle um damit direkt weiterabeiten zu können.
 			//einfach leer lassen wenn auf einen prefix verzichtet werden soll
 			if(isset($data['sortable'])){
-				$label = $formTool->createSortLink($column,$label);
+				$label = $formTool->createSortLink($column, $label);
 			}
 			$arr[] = $label ? $label : $data['title'];
 		}

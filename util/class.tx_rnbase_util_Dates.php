@@ -45,7 +45,7 @@ class tx_rnbase_util_Dates {
 		if(strlen($datum) < 2)
 			return '';
 		list($jahr, $monat, $tag) = explode('-', $datum);
-		return sprintf("%02d-%02d-%04d", $tag, $monat, $jahr);
+		return sprintf('%02d-%02d-%04d', $tag, $monat, $jahr);
 	}
 	/**
 	 * Datumsumwandlung
@@ -54,7 +54,7 @@ class tx_rnbase_util_Dates {
 	 * @return int yyyymmdd
 	 */
 	public static function date_mysql2int($datum) {
-		return intval(implode('',explode('-', $datum)));
+		return intval(implode('', explode('-', $datum)));
 	}
 	/**
 	 * Wandelt einen Integer der Form yyymmdd in ein MySQL-DATE (ISO-Date)
@@ -63,7 +63,7 @@ class tx_rnbase_util_Dates {
 	 * @return string yyyy-mm-dd
 	 */
 	public static function date_int2mysql($datum) {
-		return substr($datum,0,4) . '-'. substr($datum,4,2) .'-'.substr($datum,6,2);
+		return substr($datum, 0, 4) . '-'. substr($datum, 4, 2) .'-'.substr($datum, 6, 2);
 	}
 	/**
 	 * Rechnen mit int-Dates yyyymmdd
@@ -73,8 +73,8 @@ class tx_rnbase_util_Dates {
 	 * @return int yyyymmdd
 	 */
 	static function date_addIntDays($intdate, $days) {
-		$dateArr = array(substr($intdate,0,4), substr($intdate,4,2), substr($intdate,6,2));
-		$tstamp = gmmktime(0,0,0,$dateArr[1],$dateArr[2],$dateArr[0]);
+		$dateArr = array(substr($intdate, 0, 4), substr($intdate, 4, 2), substr($intdate, 6, 2));
+		$tstamp = gmmktime(0, 0, 0, $dateArr[1], $dateArr[2], $dateArr[0]);
 		$tstamp += ((3600 * 24) * $days);
 		$ret = gmdate('Ymd', $tstamp);
 		return $ret;
@@ -89,7 +89,7 @@ class tx_rnbase_util_Dates {
 	static function date_german2mysql($datum) {
 		if(!strlen(trim($datum))) return '0000-00-00';
 		list($tag, $monat, $jahr) = explode('-', $datum);
-		return sprintf("%04d-%02d-%02d", $jahr, $monat, $tag);
+		return sprintf('%04d-%02d-%02d', $jahr, $monat, $tag);
 	}
 	/**
 	 * Umwandlung Timestamp in einen Zeitstrings yyyy-mm-dd H:i:s
@@ -97,7 +97,7 @@ class tx_rnbase_util_Dates {
 	 * @param string $tstamp
 	 * @return string Format: yyyy-mm-dd H:i:s
 	 */
-	static function date_tstamp2mysql($tstamp, $useGMT = false) {
+	static function date_tstamp2mysql($tstamp, $useGMT = FALSE) {
 		return $useGMT ? gmdate('Y-m-d', $tstamp) : date('Y-m-d', $tstamp);
 	}
 	/**
@@ -109,10 +109,10 @@ class tx_rnbase_util_Dates {
 	static function date_mysql2tstamp($date) {
 		list($jahr, $monat, $tag) = t3lib_div::intExplode('-', $date);
 		// If mktime() is fed with 6x 0, it returns tstamp for 1999/11//30 00:00:00 which indeed is correct!
-		if (!$jahr && !$monat && !$jahr) return null;
-		$tstamp = mktime(0,0,0,$monat,$tag,$jahr);
+		if (!$jahr && !$monat && !$jahr) return NULL;
+		$tstamp = mktime(0, 0, 0, $monat, $tag, $jahr);
 		// If mktime arguments are invalid, the function returns FALSE  (before PHP 5.1 it returned -1).
-		return (!in_array($tstamp, array(false, -1))) ? $tstamp : null;
+		return (!in_array($tstamp, array(FALSE, -1))) ? $tstamp : NULL;
 	}
 
 	/**
@@ -121,10 +121,10 @@ class tx_rnbase_util_Dates {
 	 * @param string $tstamp
 	 * @return string Format: yyyy-mm-dd H:i:s
 	 */
-	static function datetime_tstamp2mysql($tstamp, $useGMT = false) {
+	static function datetime_tstamp2mysql($tstamp, $useGMT = FALSE) {
 		return $useGMT ? gmdate('Y-m-d H:i:s', $tstamp) : date('Y-m-d H:i:s', $tstamp);
 	}
-	private static $dateTime = null;
+	private static $dateTime = NULL;
 	/**
 	 * Umwandlung eines Zeitstrings yyyy-mm-dd H:i:s in einen Timestamp
 	 *
@@ -134,7 +134,7 @@ class tx_rnbase_util_Dates {
 	static function datetime_mysql2tstamp($datetime, $timezone = 'CET') {
 		list($datum, $zeit) = explode(' ', $datetime);
 		list($jahr, $monat, $tag) = t3lib_div::intExplode('-', $datum);
-		list($std, $min, $sec) = $zeit ? t3lib_div::intExplode(':', $zeit) : array(0,0,0);
+		list($std, $min, $sec) = $zeit ? t3lib_div::intExplode(':', $zeit) : array(0, 0, 0);
 		return self::getTimeStamp($jahr, $monat, $tag, $std, $min, $sec, $timezone);
 	}
 	/**
@@ -153,8 +153,8 @@ class tx_rnbase_util_Dates {
 		if(!class_exists('DateTime')) {
 			// TODO: implement timezone support for at least PHP 5.1
 			return $timezone == 'UTC' ? 
-				gmmktime($std,$min,$sec,$monat,$tag,$jahr) :
-				mktime($std,$min,$sec,$monat,$tag,$jahr);
+				gmmktime($std, $min, $sec, $monat, $tag, $jahr) :
+				mktime($std, $min, $sec, $monat, $tag, $jahr);
 		}
 		$tz = timezone_open($timezone);
 		if(!is_object($tz)) $tz = timezone_open('UTC'); // Fallback to UTC
@@ -178,7 +178,7 @@ class tx_rnbase_util_Dates {
 		list($datum, $zeit) = explode(' ', $datetime);
 		list($jahr, $monat, $tag) = explode('-', $datum);
 		list($std, $min, $sec) = explode(':', $zeit);
-		return sprintf("%02d:%02d %02d-%02d-%04d", $std, $min, $tag, $monat, $jahr);
+		return sprintf('%02d:%02d %02d-%02d-%04d', $std, $min, $tag, $monat, $jahr);
 	}
 	/**
 	 * datetime_german2mysql
@@ -192,7 +192,7 @@ class tx_rnbase_util_Dates {
 		list($zeit, $datum) = explode(' ', $datetime);
 		list($tag, $monat, $jahr) = explode('-', $datum);
 		list($std, $min, $sec) = explode(':', $zeit);
-		return sprintf("%04d-%02d-%02d %02d:%02d:%02d", $jahr, $monat, $tag, $std, $min, $sec);
+		return sprintf('%04d-%02d-%02d %02d:%02d:%02d', $jahr, $monat, $tag, $std, $min, $sec);
 	}	
 
 	/**
@@ -200,7 +200,7 @@ class tx_rnbase_util_Dates {
 	 * @param array $row
 	 * @param array $fields
 	 */
-	public static function convert4TCA2DateTime(array &$row, array $fields, $useGMT = false) {
+	public static function convert4TCA2DateTime(array &$row, array $fields, $useGMT = FALSE) {
 		foreach ($fields As $field) {
 			if(array_key_exists($field, $row)){
 				$row[$field] = self::datetime_tstamp2mysql($row[$field], $useGMT);
@@ -212,7 +212,7 @@ class tx_rnbase_util_Dates {
 	 * @param array $row
 	 * @param array $fields
 	 */
-	public static function convert4TCA2Date(array &$row, array $fields, $useGMT = false) {
+	public static function convert4TCA2Date(array &$row, array $fields, $useGMT = FALSE) {
 		foreach ($fields As $field) {
 			if(array_key_exists($field, $row)){
 				$row[$field] = self::date_tstamp2mysql($row[$field], $useGMT);

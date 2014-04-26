@@ -51,7 +51,7 @@ class tx_rnbase_util_FormUtil {
 		$out = '';
 		foreach($arr As $key => $value) {
 			$key = strlen($qualifier) > 0 ? $qualifier.'['.$key.']' : $key;
-			$out .= '<input type="hidden" name="' . $key . '" value="' . $value . '">' ;
+			$out .= '<input type="hidden" name="' . $key . '" value="' . $value . '">';
 		}
 		return $out;
 	}

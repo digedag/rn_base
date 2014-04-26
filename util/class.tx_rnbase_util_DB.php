@@ -31,7 +31,7 @@ tx_rnbase::load('tx_rnbase_util_Math');
  * Contains utility functions for database access
  */
 class tx_rnbase_util_DB {
-	private static $sysPage = null;
+	private static $sysPage = NULL;
 
 	/**
 	 * Generische Schnittstelle für Datenbankabfragen. Anstatt vieler Parameter wird hier ein
@@ -62,7 +62,7 @@ class tx_rnbase_util_DB {
 	public static function doSelect($what, $from, $arr, $debug=0){
 		$debug = $debug ? $debug : intval($arr['debug']) > 0;
 		if($debug) {
-			$time = microtime(true);
+			$time = microtime(TRUE);
 			$mem = memory_get_usage();
 		}
 		$tableName = $from;
@@ -70,7 +70,7 @@ class tx_rnbase_util_DB {
 		if(is_array($from)){
 			$tableName = $from[1];
 			$fromClause = $from[0];
-			$tableAlias = isset($from[2]) && strlen(trim($from[2])) > 0  ? trim($from[2]) : false;
+			$tableAlias = isset($from[2]) && strlen(trim($from[2])) > 0  ? trim($from[2]) : FALSE;
 		}
 
 		$where = is_string($arr['where']) ? $arr['where'] : '1=1';
@@ -129,18 +129,18 @@ class tx_rnbase_util_DB {
 		}
 
 		if(strlen($pidList) > 0)
-			$where .= ' AND '.($tableAlias ? $tableAlias : $tableName).'.pid IN (' . tx_rnbase_util_DB::_getPidList($pidList,$recursive) . ')';
+			$where .= ' AND '.($tableAlias ? $tableAlias : $tableName).'.pid IN (' . tx_rnbase_util_DB::_getPidList($pidList, $recursive) . ')';
 
 		if(strlen($union) > 0)
 			$where .= ' UNION '.$union;
 
 		$database = isset($arr['db']) && is_object($arr['db']) ? $arr['db'] : $GLOBALS['TYPO3_DB'];
 		if($debug || $sqlOnly) {
-			$sql = $database->SELECTquery($what,$fromClause,$where,$groupBy,$orderBy,$limit);
+			$sql = $database->SELECTquery($what, $fromClause, $where, $groupBy, $orderBy, $limit);
 			if($sqlOnly) return $sql;
 			if($debug) {
 				tx_rnbase_util_Debug::debug($sql, 'SQL');
-				tx_rnbase_util_Debug::debug(array($what,$from,$arr));
+				tx_rnbase_util_Debug::debug(array($what, $from, $arr));
 			}
 		}
 
@@ -153,12 +153,12 @@ class tx_rnbase_util_DB {
 			$limit
 		);
 		$rows = array();
-		$sqlError = false;
+		$sqlError = FALSE;
 
 		if(self::testResource($res)) {
 			//$wrapper = is_string($arr['wrapperclass']) ? tx_rnbase::makeInstanceClassName($arr['wrapperclass']) : 0;
 			$wrapper = is_string($arr['wrapperclass']) ? trim($arr['wrapperclass']) : 0;
-			$callback = isset($arr['callback']) ? $arr['callback'] : false;
+			$callback = isset($arr['callback']) ? $arr['callback'] : FALSE;
 
 			while($row = $database->sql_fetch_assoc($res)){
 				// Workspacesupport
@@ -177,7 +177,7 @@ class tx_rnbase_util_DB {
 		}
 		else {
 			$sqlError = $database->sql_error();
-			$sql = $database->SELECTquery($what,$fromClause,$where,$groupBy,$orderBy,$limit);
+			$sql = $database->SELECTquery($what, $fromClause, $where, $groupBy, $orderBy, $limit);
 			tx_rnbase::load('tx_rnbase_util_Logger');
 			tx_rnbase_util_Logger::fatal('SQL-Error occured!', 'rn_base', array('Error'=>$sqlError, 'Query'=>$sql));
 		}
@@ -185,10 +185,10 @@ class tx_rnbase_util_DB {
 		if($debug)
 			tx_rnbase_util_Debug::debug(array(
 				'Rows retrieved '=>count($rows),
-				'Time '=>(microtime(true) - $time),
+				'Time '=>(microtime(TRUE) - $time),
 				'Memory consumed '=>(memory_get_usage()-$mem),
 				'Error'=>$sqlError,
-			),'SQL statistics');
+			), 'SQL statistics');
 		return $rows;
 	}
 	private static function testResource($res) {
@@ -251,9 +251,9 @@ class tx_rnbase_util_DB {
 		$database = isset($arr['db']) && is_object($arr['db']) ? $arr['db'] : $GLOBALS['TYPO3_DB'];
 
 		if($debug) {
-			$time = microtime(true);
+			$time = microtime(TRUE);
 			$mem = memory_get_usage();
-			$sqlQuery = $database->INSERTquery($tablename,$values);
+			$sqlQuery = $database->INSERTquery($tablename, $values);
 		}
 
 		self::watchOutDB(
@@ -265,9 +265,9 @@ class tx_rnbase_util_DB {
 		if($debug)
 			tx_rnbase_util_Debug::debug(array(
 				'SQL '=>$sqlQuery,
-				'Time '=>(microtime(true) - $time),
+				'Time '=>(microtime(TRUE) - $time),
 				'Memory consumed '=>(memory_get_usage()-$mem),
-			),'SQL statistics');
+			), 'SQL statistics');
 		return $database->sql_insert_id();
 	}
 	/**
@@ -279,9 +279,9 @@ class tx_rnbase_util_DB {
 	 * @return result pointer for SELECT, EXPLAIN, SHOW, DESCRIBE or boolean
 	 */
 	public static function doQuery($sqlQuery, array $options=array()) {
-		$debug = array_key_exists('debug', $options) ? intval($options['debug']) > 0 : false;
+		$debug = array_key_exists('debug', $options) ? intval($options['debug']) > 0 : FALSE;
 		if($debug) {
-			$time = microtime(true);
+			$time = microtime(TRUE);
 			$mem = memory_get_usage();
 		}
 
@@ -291,9 +291,9 @@ class tx_rnbase_util_DB {
 		if($debug)
 			tx_rnbase_util_Debug::debug(array(
 				'SQL '=>$sqlQuery,
-				'Time '=>(microtime(true) - $time),
+				'Time '=>(microtime(TRUE) - $time),
 				'Memory consumed '=>(memory_get_usage()-$mem),
-			),'SQL statistics');
+			), 'SQL statistics');
 		return $res;
 	}
 	/**
@@ -306,16 +306,16 @@ class tx_rnbase_util_DB {
 	 * @param mixed $noQuoteFields Array or commaseparated string with fieldnames
 	 * @return int number of rows affected
 	 */
-	public static function doUpdate($tablename, $where, $values, $arr=array(), $noQuoteFields = false) {
+	public static function doUpdate($tablename, $where, $values, $arr=array(), $noQuoteFields = FALSE) {
 		// fallback, $arr war früher $debug
 		if (!is_array($arr)) { $arr = array('debug' => $arr); }
 		$debug = intval($arr['debug']) > 0;
 		$database = isset($arr['db']) && is_object($arr['db']) ? $arr['db'] : $GLOBALS['TYPO3_DB'];
 
 		if($debug) {
-			$sql = $database->UPDATEquery($tablename,$where,$values, $noQuoteFields);
+			$sql = $database->UPDATEquery($tablename, $where, $values, $noQuoteFields);
 			tx_rnbase_util_Debug::debug($sql, 'SQL');
-			tx_rnbase_util_Debug::debug(array($tablename,$where,$values));
+			tx_rnbase_util_Debug::debug(array($tablename, $where, $values));
 		}
 
 		self::watchOutDB(
@@ -343,9 +343,9 @@ class tx_rnbase_util_DB {
 		$database = isset($arr['db']) && is_object($arr['db']) ? $arr['db'] : $GLOBALS['TYPO3_DB'];
 
 		if($debug) {
-			$sql = $database->DELETEquery($tablename,$where);
+			$sql = $database->DELETEquery($tablename, $where);
 			tx_rnbase_util_Debug::debug($sql, 'SQL');
-			tx_rnbase_util_Debug::debug(array($tablename,$where));
+			tx_rnbase_util_Debug::debug(array($tablename, $where));
 		}
 
 		self::watchOutDB(
@@ -397,7 +397,7 @@ class tx_rnbase_util_DB {
 			$tce = t3lib_div::makeInstance('t3lib_tcemain');
 			$tce->stripslashes_values = 0;
 			// Wenn wir ein data-Array bekommen verwenden wir das
-			$tce->start($data ? $data : Array(),$cmd ? $cmd : Array());
+			$tce->start($data ? $data : Array(), $cmd ? $cmd : Array());
 
 			// set default TCA values specific for the user
 			$TCAdefaultOverride = $GLOBALS['BE_USER']->getTSConfigProp('TCAdefaults');
@@ -427,15 +427,15 @@ class tx_rnbase_util_DB {
    * Same method as tslib_pibase::pi_getPidList()
    * If you  need this functionality use tx_rnbase_util_Misc::getPidList()
    */
-  static function _getPidList($pid_list,$recursive=0)  {
-    if (!strcmp($pid_list,''))      $pid_list = $GLOBALS['TSFE']->id;
-    $recursive = tx_rnbase_util_Math::intInRange($recursive,0);
+  static function _getPidList($pid_list, $recursive=0)  {
+    if (!strcmp($pid_list, ''))      $pid_list = $GLOBALS['TSFE']->id;
+    $recursive = tx_rnbase_util_Math::intInRange($recursive, 0);
 
-    $pid_list_arr = array_unique(t3lib_div::trimExplode(',',$pid_list,1));
+    $pid_list_arr = array_unique(t3lib_div::trimExplode(',', $pid_list, 1));
     $pid_list = array();
 
     foreach($pid_list_arr as $val)  {
-      $val = tx_rnbase_util_Math::intInRange($val,0);
+      $val = tx_rnbase_util_Math::intInRange($val, 0);
       if ($val)       {
         $_list = tslib_cObj::getTreeList(-1*$val, $recursive);
         if ($_list)  $pid_list[] = $_list;
@@ -451,7 +451,7 @@ class tx_rnbase_util_DB {
 	 * @param resource $rRes
 	 * @return resource
 	 */
-	public static function watchOutDB(&$rRes, $database=null) {
+	public static function watchOutDB(&$rRes, $database=NULL) {
 		if (!is_object($database)) $database = $GLOBALS['TYPO3_DB'];
 
 		if(!is_resource($rRes) && $database->sql_error()) {
@@ -481,10 +481,10 @@ class tx_rnbase_util_DB {
 	 * @param string $searchTable	The table name you search in (recommended for DBAL compliance. Will be prepended field names as well)
 	 * @return	string		The WHERE clause.
 	 */
-	public static function searchWhere($sw,$searchFieldList,$operator='LIKE')	{
+	public static function searchWhere($sw, $searchFieldList, $operator='LIKE')	{
 		$where = '';
 		if ($sw !== '')	{
-			$searchFields = explode(',',$searchFieldList);
+			$searchFields = explode(',', $searchFieldList);
 			$kw = preg_split('/[ ,]/', $sw);
 			if($operator == 'LIKE')
 				$where = self::_getSearchLike($kw, $searchFields);
@@ -503,11 +503,11 @@ class tx_rnbase_util_DB {
 	private static function _getSearchOr($kw, $searchFields, $operator) {
 		$where = '';
 		$where_p = array();
-		while(list(,$val)=each($kw))	{
+		while(list(, $val)=each($kw))	{
 			$val = trim($val);
 			if(!strlen($val)) continue;
 			reset($searchFields);
-			while(list(,$field)=each($searchFields))	{
+			while(list(, $field)=each($searchFields))	{
 	  		list($tableAlias, $col) = explode('.', $field); // Split alias and column
 				$where_p[] = self::setSingleWhereField($tableAlias, $operator, $col, $val);
 //				$where_p[] = $field.' ' . $operator . ' \'%'.$val.'%\'';
@@ -515,7 +515,7 @@ class tx_rnbase_util_DB {
 			}
 		}
 		if (count($where_p))	{
-			$where.=' ('.implode('OR ',$where_p).')';
+			$where.=' ('.implode('OR ', $where_p).')';
 		}
 		return $where;
 	}
@@ -539,17 +539,17 @@ class tx_rnbase_util_DB {
 		$where = '';
 		$where_p = array();
 		reset($kw);
-		while(list(,$val)=each($kw))	{
+		while(list(, $val)=each($kw))	{
 			$val = trim($val);
 			if(!strlen($val)) continue;
-			$val = $TYPO3_DB->escapeStrForLike($TYPO3_DB->quoteStr($val,$searchTable),$searchTable);
+			$val = $TYPO3_DB->escapeStrForLike($TYPO3_DB->quoteStr($val, $searchTable), $searchTable);
 			reset($searchFields);
-			while(list(,$field)=each($searchFields))	{
+			while(list(, $field)=each($searchFields))	{
 				$where_p[] = 'FIND_IN_SET(\''.$val.'\', '.$field.')';
 			}
 		}
 		if (count($where_p))	{
-			$where.=' ('.implode(' OR ',$where_p).')';
+			$where.=' ('.implode(' OR ', $where_p).')';
 		}
 		return $where;
 	}
@@ -567,21 +567,21 @@ class tx_rnbase_util_DB {
 			list($searchTable, $col) = explode('.', $col);
 		}
 		$wheres = array();
-		while(list(,$val)=each($kw))	{
+		while(list(, $val)=each($kw))	{
 			$val = trim($val);
 			$where_p = array();
 			if (strlen($val)>=2)	{
-				$val = $TYPO3_DB->escapeStrForLike($TYPO3_DB->quoteStr($val,$searchTable),$searchTable);
+				$val = $TYPO3_DB->escapeStrForLike($TYPO3_DB->quoteStr($val, $searchTable), $searchTable);
 				reset($searchFields);
-				while(list(,$field)=each($searchFields))	{
+				while(list(, $field)=each($searchFields))	{
 					$where_p[] = $field.' LIKE \'%'.$val.'%\'';
 				}
 			}
 			if (count($where_p))	{
-				$wheres[] =' ('.implode(' OR ',$where_p).')';
+				$wheres[] =' ('.implode(' OR ', $where_p).')';
 			}
 		}
-		$where = count($wheres) ? implode(' AND ',$wheres) : '';
+		$where = count($wheres) ? implode(' AND ', $wheres) : '';
 		return $where;
  	}
 	/**
@@ -673,7 +673,7 @@ class tx_rnbase_util_DB {
 		if(strlen($date) < 2)
 			return '';
 		list($year, $month, $day) = explode('-', $date);
-		return sprintf("%02d%02d%04d", $day, $month, $year);
+		return sprintf('%02d%02d%04d', $day, $month, $year);
 	}
 
 	/**
@@ -685,7 +685,7 @@ class tx_rnbase_util_DB {
 		if(strlen($date) < 2)
 			return '';
 		list($year, $month, $day) = explode('-', $date);
-		return sprintf("%02d-%02d-%04d", $day, $month, $year);
+		return sprintf('%02d-%02d-%04d', $day, $month, $year);
 	}
 
 	/**
@@ -745,9 +745,9 @@ class tx_rnbase_util_DB {
 		$where .= tslib_cObj::enableFields($tableName);
 
     if($debug) {
-      $sql = $GLOBALS['TYPO3_DB']->SELECTquery($what,$fromClause,$where,$groupBy,$orderBy);
+      $sql = $GLOBALS['TYPO3_DB']->SELECTquery($what, $fromClause, $where, $groupBy, $orderBy);
       tx_rnbase_util_Debug::debug($sql, 'SQL');
-      tx_rnbase_util_Debug::debug(array($what,$from,$where));
+      tx_rnbase_util_Debug::debug(array($what, $from, $where));
     }
 
     $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -766,7 +766,7 @@ class tx_rnbase_util_DB {
     }
     $GLOBALS['TYPO3_DB']->sql_free_result($res);
     if($debug)
-      tx_rnbase_util_Debug::debug(count($rows),'Rows retrieved');
+      tx_rnbase_util_Debug::debug(count($rows), 'Rows retrieved');
     return $rows;
   }
 }

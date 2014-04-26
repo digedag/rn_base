@@ -37,7 +37,7 @@ class tx_rnbase_mod_Util {
 		$changedSettings = is_array($options['changed']) ? $options['changed'] : array();
 		$type = isset($options['type']) ? $options['type'] : '';
 		$modData = t3lib_BEfunc::getModuleData(array ($key => ''), $changedSettings, $mod->getName(), $type);
-		return isset($modData[$key]) ? $modData[$key] : null;
+		return isset($modData[$key]) ? $modData[$key] : NULL;
 	}
 	/**
 	 * Returns all data for a module for current BE user.
@@ -93,8 +93,8 @@ class tx_rnbase_mod_Util {
 		//label
 		$aData['label'] = $aOptions['label'];
 
-		// as the deleted fe users have always to be hidden the function returns always false
-		//@todo wozu die alte abfrage? return $defId==$id ? false : $selectedItem;
+		// as the deleted fe users have always to be hidden the function returns always FALSE
+		//@todo wozu die alte abfrage? return $defId==$id ? FALSE : $selectedItem;
 		return $selectedItem;
 	}
 }

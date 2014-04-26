@@ -55,13 +55,13 @@ class tx_rnbase_util_Queue {
   /**
   * Add item to queue
   * @param obj &$objQueueItem - queue item object
-  * @return true if added to queue or false if queue is full and item could not be added
+  * @return TRUE if added to queue or false if queue is full and item could not be added
   */
   function put( &$objQueueItem  )
   {
     if ( $this->intCurrentSize >= $this->intArraySize )
     {
-      return false;
+      return FALSE;
     }
 
     if ( $this->intEnd == $this->intArraySize - 1 )
@@ -73,10 +73,10 @@ class tx_rnbase_util_Queue {
       $this->intEnd++;
     }
     
-    $this->arrQueue[ $this->intEnd ] = $objQueueItem;
+    $this->arrQueue[$this->intEnd] = $objQueueItem;
     $this->intCurrentSize++;
     
-    return true;
+    return TRUE;
   }
   
 
@@ -87,7 +87,7 @@ class tx_rnbase_util_Queue {
   function get()
   {
     if ( $this->isEmpty() ){
-      return false;
+      return FALSE;
     }
     
     $objItem = $this->arrQueue[$this->intBegin];
@@ -109,11 +109,11 @@ class tx_rnbase_util_Queue {
 
   /**
   * Check if queue is empty
-  * @return true if it is empty or false if not
+  * @return TRUE if it is empty or false if not
   */
   function isEmpty()
   {
-    return ( $this->intCurrentSize == 0 ? true : false );
+    return ( $this->intCurrentSize == 0 ? TRUE : FALSE );
   }
 
 

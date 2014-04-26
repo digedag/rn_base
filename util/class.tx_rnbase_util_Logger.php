@@ -26,7 +26,7 @@
  * Default logger class.
  */
 class tx_rnbase_util_Logger {
-	private static $minLog = false;
+	private static $minLog = FALSE;
 	const LOGLEVEL_DEBUG = -1;
 	const LOGLEVEL_INFO = 0;
 	const LOGLEVEL_NOTICE = 1;
@@ -120,10 +120,10 @@ class tx_rnbase_util_Logger {
 		return self::isLogLevel(3);
 	}
 	private static function isLogLevel($level) {
-		if(self::$minLog === false) {
+		if(self::$minLog === FALSE) {
 			if(t3lib_extMgm::isLoaded('devlog')) {
 				$minLog = tx_rnbase_configurations::getExtensionCfgValue('devlog', 'minLogLevel');
-				self::$minLog = $minLog !== false ? $minLog : -1;
+				self::$minLog = $minLog !== FALSE ? $minLog : -1;
 			}
 		}
 		$isEnabled = $level >= self::$minLog;

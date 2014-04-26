@@ -51,9 +51,9 @@ class tx_rnbase_util_Link {
 	var $cObject;                       // instance of tslib_cObj
 	var $destination = '';              // page id, alias, external link, etc.
 	var $labelString = '';              // tags label
-	var $labelHasAlreadyHtmlSpecialChars = false; // is the label already HSC?
-	var $noCacheBoolean = false;        // don't make a cHash
-	var $noHashBoolean = false;         // add a no_cache=1 parameter
+	var $labelHasAlreadyHtmlSpecialChars = FALSE; // is the label already HSC?
+	var $noCacheBoolean = FALSE;        // don't make a cHash
+	var $noHashBoolean = FALSE;         // add a no_cache=1 parameter
 	var $overruledParameters = array(); // parameters overruled by $parameters
 	var $parameters = array();		      // parameters of the link
 	var $designatorString = '';         // parameter array name (prefixId) as controller namespace
@@ -61,7 +61,7 @@ class tx_rnbase_util_Link {
 	var $targetString = '';             // tags target attribute
 	var $externalTargetString = '-1'; // external target defaults to new window
 	var $titleString = '';              // tags title attribute
-	var $titleHasAlreadyHtmlSpecialChars = false; //is title attribute already HSC?
+	var $titleHasAlreadyHtmlSpecialChars = FALSE; //is title attribute already HSC?
 	private $typolinkParams = array();	// container for generic typolink parameters
 	private $uniqueParameterId = NULL;     // used to build unique parameters for plugin
 
@@ -150,7 +150,7 @@ class tx_rnbase_util_Link {
 	 * Set the links destination
 	 *
 	 * @param	mixed		pageId, page alias, external url, etc.
-	 * @param	boolean		if true don't parse through htmlspecialchars()
+	 * @param	boolean		if TRUE don't parse through htmlspecialchars()
 	 * @return	object		self
 	 * @see		TSref => typolink => parameter
 	 * @see		tslib_cObj::typoLink()
@@ -163,22 +163,22 @@ class tx_rnbase_util_Link {
 	/**
 	 * Add no_cache=1 and disable the cHash parameter
 	 *
-	 * @param	boolean		if true don't make a cHash, set no_cache=1
+	 * @param	boolean		if TRUE don't make a cHash, set no_cache=1
 	 * @return	object		self
 	 */
 	public function noCache() {
-		$this->noCacheBoolean = true;
+		$this->noCacheBoolean = TRUE;
 		return $this;
 	}
 
 	/**
 	 * Disable the cHash parameter
 	 *
-	 * @param	boolean		if true don't make a cHash
+	 * @param	boolean		if TRUE don't make a cHash
 	 * @return	object		self
 	 */
 	public function noHash() {
-		$this->noHashBoolean = true;
+		$this->noHashBoolean = TRUE;
 		return $this;
 	}
 
@@ -188,10 +188,10 @@ class tx_rnbase_util_Link {
 	 * By default the label will be parsed through htmlspecialchars().
 	 *
 	 * @param	string		the label
-	 * @param	boolean		if true don't parse through htmlspecialchars()
+	 * @param	boolean		if TRUE don't parse through htmlspecialchars()
 	 * @return	object		self
 	 */
-	public function label($labelString, $hasAlreadyHtmlSpecialChars = false) {
+	public function label($labelString, $hasAlreadyHtmlSpecialChars = FALSE) {
 		$this->labelString = $labelString;
 		$this->labelHasAlreadyHtmlSpecialChars = $hasAlreadyHtmlSpecialChars;
 		return $this;
@@ -315,10 +315,10 @@ class tx_rnbase_util_Link {
 	 * @see	titleAttribute()
 	 *
 	 * @param	string		title attribute
-	 * @param	boolean		if true don't apply htmlspecialchars() again
+	 * @param	boolean		if TRUE don't apply htmlspecialchars() again
 	 * @return	object		self
 	 */
-	function title($titleString, $hasAlreadyHtmlSpecialChars = false) {
+	function title($titleString, $hasAlreadyHtmlSpecialChars = FALSE) {
 		$this->titleAttribute($titleString, $hasAlreadyHtmlSpecialChars);
 		return $this;
 	}
@@ -327,10 +327,10 @@ class tx_rnbase_util_Link {
 	 * Set title attribute of the tag
 	 *
 	 * @param	string		title attribute
-	 * @param	boolean		if true don't apply htmlspecialchars() again
+	 * @param	boolean		if TRUE don't apply htmlspecialchars() again
 	 * @return	object		self
 	 */
-	function titleAttribute($titleString, $hasAlreadyHtmlSpecialChars = false) {
+	function titleAttribute($titleString, $hasAlreadyHtmlSpecialChars = FALSE) {
 		$this->titleString = $titleString;
 		$this->titleHasAlreadyHtmlSpecialChars = $hasAlreadyHtmlSpecialChars;
 		return $this;
@@ -346,10 +346,10 @@ class tx_rnbase_util_Link {
 	 * @return	string		the link tag
 	 */
 	function makeTag() {
-		$link = $this->cObject->typolink($this->_makeLabel(),$this->_makeConfig('tag'));
+		$link = $this->cObject->typolink($this->_makeLabel(), $this->_makeConfig('tag'));
 		if($this->isAbsUrl()){
 			$url = $this->getAbsUrlSchema() ? $this->getAbsUrlSchema() : t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR');
-			$link = preg_replace('/(href="|src=")/','${1}'.$url, $link);
+			$link = preg_replace('/(href="|src=")/', '${1}'.$url, $link);
 		}
 		return $link;
 	}
@@ -357,11 +357,11 @@ class tx_rnbase_util_Link {
 	/**
 	 * Return the link as url
 	 *
-	 * @param	boolean		set to true to run htmlspecialchars() on generated url
+	 * @param	boolean		set to TRUE to run htmlspecialchars() on generated url
 	 * @return	string		the link url
 	 */
 	function makeUrl($applyHtmlspecialchars = TRUE) {
-		$url = $this->cObject->typolink(null, $this->_makeConfig('url'));
+		$url = $this->cObject->typolink(NULL, $this->_makeConfig('url'));
 		if($this->isAbsUrl()) {
 			$schema = $this->getAbsUrlSchema() ? $this->getAbsUrlSchema() : t3lib_div::getIndpEnv('TYPO3_SITE_URL');
 			$url = $schema . $url;
@@ -377,7 +377,7 @@ class tx_rnbase_util_Link {
 	function redirect() {
 		session_write_close();
 
-		$target = $this->cObject->typolink(null, $this->_makeConfig('url'));
+		$target = $this->cObject->typolink(NULL, $this->_makeConfig('url'));
 		$target = tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
 			\TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($target) :
 			t3lib_div::locationHeaderUrl($target);
@@ -531,7 +531,7 @@ class tx_rnbase_util_Link {
 	 * @param server schema
 	 */
 	public function setAbsUrl($flag, $schema='') {
-		$this->absUrl = $flag ? true : false;
+		$this->absUrl = $flag ? TRUE : FALSE;
 		$this->absUrlSchema = $schema;
 	}
 	public function isAbsUrl() {
@@ -556,7 +556,7 @@ class tx_rnbase_util_Link {
 		if($target) $this->target($target);
 		$this->destination($pid ? $pid : $GLOBALS['TSFE']->id); // Das Ziel der Seite vorbereiten
 		if($absUrl = $configurations->get($confId.'absurl'))
-			$this->setAbsUrl(true, ($absUrl == 1 || strtolower($absUrl) == 'true' ) ? '' : $absUrl);
+			$this->setAbsUrl(TRUE, ($absUrl == 1 || strtolower($absUrl) == 'true' ) ? '' : $absUrl);
 
 		if($fixed = $configurations->get($confId.'fixedUrl'))
 			$this->destination($fixed); // feste URL für externen Link
@@ -580,8 +580,8 @@ class tx_rnbase_util_Link {
 			// Die Parameter werden jetzt nochmal per TS validiert und können somit dynamisch gesetzt werden
 			$attributes = array();
 			foreach($atagParams As $aParam => $lvalue) {
-				if(substr($aParam,strlen($aParam)-1,1) == '.') {
-					$aParam = substr($aParam,0, strlen($aParam)-1);
+				if(substr($aParam, strlen($aParam)-1, 1) == '.') {
+					$aParam = substr($aParam, 0, strlen($aParam)-1);
 					if(array_key_exists($aParam, $atagParams))
 						continue;
 				}
@@ -622,7 +622,7 @@ class tx_rnbase_util_Link {
 					$linkvar = t3lib_div::trimExplode('=', $linkvar);
 					if (count($linkvar)< 2)  {
 						// tt_news::* or ttnews::id
-						list($qualifier,$name) = t3lib_div::trimExplode('::', $linkvar[0]);
+						list($qualifier, $name) = t3lib_div::trimExplode('::', $linkvar[0]);
 						if ($value = t3lib_div::_GP($qualifier)) {
 							if($name == '*' && is_array($value)) {
 								foreach($value As $paramName => $paramValue) {

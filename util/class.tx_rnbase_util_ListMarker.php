@@ -30,7 +30,7 @@ tx_rnbase::load('tx_rnbase_util_ListMarkerInfo');
  */
 class tx_rnbase_util_ListMarker {
 
-	public function __construct(ListMarkerInfo $listMarkerInfo = null) {
+	public function __construct(ListMarkerInfo $listMarkerInfo = NULL) {
 		if($listMarkerInfo)
 			$this->info =& $listMarkerInfo;
 		else
@@ -57,7 +57,7 @@ class tx_rnbase_util_ListMarker {
    * @param int $offset
    * @return array
    */
-	public function renderEach(tx_rnbase_util_IListProvider $provider, $template, $markerClassname, $confId, $marker, $formatter, $markerParams = false, $offset=0) {
+	public function renderEach(tx_rnbase_util_IListProvider $provider, $template, $markerClassname, $confId, $marker, $formatter, $markerParams = FALSE, $offset=0) {
 		$this->entryMarker = ($markerParams) ? tx_rnbase::makeInstance($markerClassname, $markerParams) : tx_rnbase::makeInstance($markerClassname);
 
 		$this->info->init($template, $formatter, $marker);
@@ -113,7 +113,7 @@ class tx_rnbase_util_ListMarker {
 	 * @param int $offset
 	 * @return array
 	 */
-	public function render($dataArr, $template, $markerClassname, $confId, $marker, &$formatter, $markerParams = false, $offset=0) {
+	public function render($dataArr, $template, $markerClassname, $confId, $marker, &$formatter, $markerParams = FALSE, $offset=0) {
 		$entryMarker = ($markerParams) ? tx_rnbase::makeInstance($markerClassname, $markerParams) : tx_rnbase::makeInstance($markerClassname);
 
 		$this->info->init($template, $formatter, $marker);
@@ -136,7 +136,7 @@ class tx_rnbase_util_ListMarker {
 			$parts[] = $part;
 			$rowRollCnt = ($rowRollCnt >= $rowRoll) ? 0 : $rowRollCnt + 1;
 		}
-		$parts = implode($formatter->configurations->get($confId.'implode', true), $parts);
+		$parts = implode($formatter->configurations->get($confId.'implode', TRUE), $parts);
 		return $parts;
 	}
 }

@@ -32,7 +32,7 @@ class tx_rnbase_dummyController extends tx_rnbase_controller{
 		try {
 			throw new Exception('My Exception');
 		} catch (Exception $e) {
-			return $this->getErrorMailHtml($e,'someAction');
+			return $this->getErrorMailHtml($e, 'someAction');
 		}
 	}
 }
@@ -45,7 +45,7 @@ class tx_rnbase_tests_controller_testcase extends tx_phpunit_testcase {
 		$extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rn_base']);
 		$this->exceptionHandlerConfig = $extConfig['exceptionHandler'];
 		
-		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['devlog']['nolog'] = true;
+		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['devlog']['nolog'] = TRUE;
 	}
 	
 	protected function tearDown() {
@@ -64,7 +64,7 @@ class tx_rnbase_tests_controller_testcase extends tx_phpunit_testcase {
 			'tx_rnbase_controller', 
 			'handleException'
 		);
-		$method->setAccessible(true);
+		$method->setAccessible(TRUE);
 		
 		$controller = tx_rnbase::makeInstance('tx_rnbase_controller');
 		$exception = new Exception('Exception for tx_rnbase_exception_HandlerForTests');
@@ -91,7 +91,7 @@ class tx_rnbase_tests_controller_testcase extends tx_phpunit_testcase {
 			'tx_rnbase_controller',
 			'handleException'
 		);
-		$method->setAccessible(true);
+		$method->setAccessible(TRUE);
 	
 		$controller = tx_rnbase::makeInstance('tx_rnbase_controller');
 		$exception = new Exception('Exception for tx_rnbase_exception_HandlerForTests');
@@ -118,7 +118,7 @@ class tx_rnbase_tests_controller_testcase extends tx_phpunit_testcase {
 				'tx_rnbase_controller',
 				'handleException'
 		);
-		$method->setAccessible(true);
+		$method->setAccessible(TRUE);
 	
 		$controller = tx_rnbase::makeInstance('tx_rnbase_controller');
 		$exception = new Exception('Exception for tx_rnbase_exception_HandlerForTests');

@@ -106,9 +106,9 @@ class tx_rnbase_util_TSDAM {
 		$offset = intval($conf->get('offset'));
 		$limit = intval($conf->get('limit'));
 		if((!$limit && $offset) && count($damPics))
-			$damPics = array_slice($damPics,$offset);
+			$damPics = array_slice($damPics, $offset);
 		elseif($limit && count($damPics))
-			$damPics = array_slice($damPics,$offset,$limit);
+			$damPics = array_slice($damPics, $offset, $limit);
 
 		$damDb = tx_rnbase::makeInstance('tx_dam_db');
 		
@@ -126,7 +126,7 @@ class tx_rnbase_util_TSDAM {
 		}
 		
 		$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
-		$out = $listBuilder->render($medias, false, $templateCode, 'tx_rnbase_util_MediaMarker',
+		$out = $listBuilder->render($medias, FALSE, $templateCode, 'tx_rnbase_util_MediaMarker',
 						'media.', 'MEDIA', $conf->getFormatter());
 
 		// Now set the identifier
@@ -161,9 +161,9 @@ class tx_rnbase_util_TSDAM {
 //		return $damFiles ? t3lib_div::trimExplode(',', $damFiles) : array();
 		
 //		$files = array();
-//		$filePath = $cObj->stdWrap($conf['additional.']['filePath'],$conf['additional.']['filePath.']);
-//		$fileList = trim($cObj->stdWrap($conf['additional.']['fileList'],$conf['additional.']['fileList.']));
-//		$fileList = t3lib_div::trimExplode(',',$fileList);
+//		$filePath = $cObj->stdWrap($conf['additional.']['filePath'], $conf['additional.']['filePath.']);
+//		$fileList = trim($cObj->stdWrap($conf['additional.']['fileList'], $conf['additional.']['fileList.']));
+//		$fileList = t3lib_div::trimExplode(',', $fileList);
 //		foreach ($fileList as $file) {
 //			if($file) {
 //				$files[] = $filePath.$file;
@@ -173,7 +173,7 @@ class tx_rnbase_util_TSDAM {
 		
 		$uid      = $cObj->data['_LOCALIZED_UID'] ? $cObj->data['_LOCALIZED_UID'] : $cObj->data['uid'];
 		$refTable = ($conf['refTable'] && is_array($GLOBALS['TCA'][$conf['refTable']])) ? $conf['refTable'] : 'tt_content';
-		$refField = trim($cObj->stdWrap($conf['refField'],$conf['refField.']));
+		$refField = trim($cObj->stdWrap($conf['refField'], $conf['refField.']));
 		
 		if (isset($GLOBALS['BE_USER']->workspace) && $GLOBALS['BE_USER']->workspace !== 0) {
 			$workspaceRecord = t3lib_BEfunc::getWorkspaceVersionOfRecord(
@@ -213,10 +213,10 @@ class tx_rnbase_util_TSDAM {
 	static function isVersion10() {
 		tx_rnbase::load('tx_rnbase_util_TYPO3');
 		$version = tx_rnbase_util_TYPO3::getExtVersion('dam');
-		if(preg_match('(\d*\.\d*\.\d)',$version, $versionArr)) {
+		if(preg_match('(\d*\.\d*\.\d)', $version, $versionArr)) {
 			$version = $versionArr[0];
 		}
-		return version_compare($version, '1.1.0','<');
+		return version_compare($version, '1.1.0', '<');
 	}
 	/**
 	 * Create Thumbnails of DAM images in BE. Take care of installed DAM-Version and supports 1.0 and 1.1
@@ -309,7 +309,7 @@ class tx_rnbase_util_TSDAM {
 		$data['tablenames'] = $tableName;
 		$data['ident'] = $fieldName;
 
-		$id = tx_rnbase_util_DB::doInsert('tx_dam_mm_ref',$data);
+		$id = tx_rnbase_util_DB::doInsert('tx_dam_mm_ref', $data);
 		
 		// Now count all items
 		self::updateImageCount($tableName, $fieldName, $itemId);
@@ -326,10 +326,10 @@ class tx_rnbase_util_TSDAM {
 
 		$where = 'tablenames=\'' . $tableName . '\' AND ident=\'' . $fieldName .'\' AND uid_foreign=' . $itemId;
 		if(strlen(trim($uids))) {
-			$uids = implode(',',t3lib_div::intExplode(',',$uids));
+			$uids = implode(',', t3lib_div::intExplode(',', $uids));
 			$where .= ' AND uid_local IN (' . $uids .') ';
 		}
-		tx_rnbase_util_DB::doDelete('tx_dam_mm_ref',$where);
+		tx_rnbase_util_DB::doDelete('tx_dam_mm_ref', $where);
 		// Jetzt die Bildanzahl aktualisieren
 		self::updateImageCount($tableName, $fieldName, $itemId);
 	}
@@ -341,7 +341,7 @@ class tx_rnbase_util_TSDAM {
 	public static function updateImageCount($tableName, $fieldName, $itemId) {
 		$values = array();
 		$values[$fieldName] = self::getImageCount($tableName, $fieldName, $itemId);		
-		tx_rnbase_util_DB::doUpdate($tableName,'uid='.$itemId,$values,0);
+		tx_rnbase_util_DB::doUpdate($tableName, 'uid='.$itemId, $values, 0);
 	}
 	/**
 	 * Get picture count

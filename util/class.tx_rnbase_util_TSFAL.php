@@ -101,7 +101,7 @@ class tx_rnbase_util_TSFAL {
 //tx_rnbase_util_Debug::debug($conf->get('limit'), 'class.tx_rnbase_util_TSFAL.php Line: ' . __LINE__); // TODO: remove me
 //}
 		$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
-		$out = $listBuilder->render($medias, false, $templateCode, 'tx_rnbase_util_MediaMarker',
+		$out = $listBuilder->render($medias, FALSE, $templateCode, 'tx_rnbase_util_MediaMarker',
 						'media.', 'MEDIA', $conf->getFormatter());
 
 		// Now set the identifier
@@ -244,7 +244,7 @@ class tx_rnbase_util_TSFAL {
 
 		$uid      = $cObj->data['_LOCALIZED_UID'] ? $cObj->data['_LOCALIZED_UID'] : $cObj->data['uid'];
 		$refTable = ($conf['refTable'] && is_array($GLOBALS['TCA'][$conf['refTable']])) ? $conf['refTable'] : 'tt_content';
-		$refField = trim($cObj->stdWrap($conf['refField'],$conf['refField.']));
+		$refField = trim($cObj->stdWrap($conf['refField'], $conf['refField.']));
 
 		if (isset($GLOBALS['BE_USER']->workspace) && $GLOBALS['BE_USER']->workspace !== 0) {
 			$workspaceRecord = t3lib_BEfunc::getWorkspaceVersionOfRecord(
@@ -300,7 +300,7 @@ class tx_rnbase_util_TSFAL {
 	 * @param $size
 	 * @param $addAttr
 	 */
-	public static function createThumbnails($references, $sizeArr=false) {
+	public static function createThumbnails($references, $sizeArr=FALSE) {
 		$ret = array();
 		foreach($references As $fileRef ) {
 			$thumbnail = FALSE;
@@ -420,7 +420,7 @@ class tx_rnbase_util_TSFAL {
 		$data['tablenames'] = $tableName;
 		$data['ident'] = $fieldName;
 
-		$id = tx_rnbase_util_DB::doInsert('tx_dam_mm_ref',$data);
+		$id = tx_rnbase_util_DB::doInsert('tx_dam_mm_ref', $data);
 		
 		// Now count all items
 		self::updateImageCount($tableName, $fieldName, $itemId);
@@ -437,10 +437,10 @@ class tx_rnbase_util_TSFAL {
 
 		$where = 'tablenames=\'' . $tableName . '\' AND ident=\'' . $fieldName .'\' AND uid_foreign=' . $itemId;
 		if(strlen(trim($uids))) {
-			$uids = implode(',',t3lib_div::intExplode(',',$uids));
+			$uids = implode(',', t3lib_div::intExplode(',', $uids));
 			$where .= ' AND uid_local IN (' . $uids .') ';
 		}
-		tx_rnbase_util_DB::doDelete('tx_dam_mm_ref',$where);
+		tx_rnbase_util_DB::doDelete('tx_dam_mm_ref', $where);
 		// Jetzt die Bildanzahl aktualisieren
 		self::updateImageCount($tableName, $fieldName, $itemId);
 	}
@@ -452,7 +452,7 @@ class tx_rnbase_util_TSFAL {
 	public static function updateImageCount($tableName, $fieldName, $itemId) {
 		$values = array();
 		$values[$fieldName] = self::getImageCount($tableName, $fieldName, $itemId);		
-		tx_rnbase_util_DB::doUpdate($tableName,'uid='.$itemId,$values,0);
+		tx_rnbase_util_DB::doUpdate($tableName, 'uid='.$itemId, $values, 0);
 	}
 	/**
 	 * Get picture count

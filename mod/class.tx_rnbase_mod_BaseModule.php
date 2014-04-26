@@ -35,7 +35,7 @@ $GLOBALS['LANG']->includeLLFile('EXT:rn_base/mod/locallang.xml');
  * Fertige Implementierung eines BE-Moduls. Das Modul ist dabei nur eine Hülle für die einzelnen Modulfunktionen.
  * Die Klasse stellt also lediglich eine Auswahlbox mit den verfügbaren Funktionen bereit. Neue Funktionen können
  * dynamisch über die ext_tables.php angemeldet werden:
- * 	t3lib_extMgm::insertModuleFunction('user_txmkmailerM1','tx_mkmailer_mod1_FuncOverview',
+ * 	t3lib_extMgm::insertModuleFunction('user_txmkmailerM1', 'tx_mkmailer_mod1_FuncOverview',
  *    t3lib_extMgm::extPath($_EXTKEY).'mod1/class.tx_mkmailer_mod1_FuncOverview.php',
  *    'LLL:EXT:mkmailer/mod1/locallang_mod.xml:func_overview'
  *  );
@@ -54,12 +54,12 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 	 */
 	function main()	{
 
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
+		global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
 		// Einbindung externer Funktionen
 		$this->checkExtObj();
 		// Access check!
 		// The page will show only if there is a valid page and if this page may be viewed by the user
-		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->getPid(),$this->perms_clause);
+		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->getPid(), $this->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
 		$this->initDoc($this->getDoc());
 
@@ -71,7 +71,7 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 			$this->content = $this->content; // ??
 			// ShortCut
 			if ($BE_USER->mayMakeShortcut())	{
-				$this->content.=$this->getDoc()->spacer(20).$this->getDoc()->section('',$this->getDoc()->makeShortcutIcon('id',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']));
+				$this->content.=$this->getDoc()->spacer(20).$this->getDoc()->section('', $this->getDoc()->makeShortcutIcon('id', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']));
 			}
 			$this->content.=$this->getDoc()->spacer(10);
 			// Setting up the buttons and markers for docheader
@@ -89,7 +89,7 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 		}
 		else {
 			// HeaderSection zeigt Icons und Seitenpfad
-			$headerSection = $this->getDoc()->getHeader('pages',$this->pageinfo,$this->pageinfo['_thePath']).'<br />'.$LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.path').': '.t3lib_div::fixed_lgd_pre($this->pageinfo['_thePath'],50);
+			$headerSection = $this->getDoc()->getHeader('pages', $this->pageinfo, $this->pageinfo['_thePath']).'<br />'.$LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.path').': '.t3lib_div::fixed_lgd_pre($this->pageinfo['_thePath'], 50);
 			$this->content .= $this->moduleContent(); // Muss vor der Erstellung des Headers geladen werden
 			$this->content .= $this->getDoc()->sectionEnd();  // Zur Sicherheit einen offene Section schließen
 
@@ -97,14 +97,14 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 			$header.=$this->getDoc()->startPage($LANG->getLL('title'));
 			$header.=$this->getDoc()->header($LANG->getLL('title'));
 			$header.=$this->getDoc()->spacer(5);
-			$header.=$this->getDoc()->section('',$this->getDoc()->funcMenu($headerSection,t3lib_BEfunc::getFuncMenu($this->getPid(),'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function'])));
+			$header.=$this->getDoc()->section('', $this->getDoc()->funcMenu($headerSection, t3lib_BEfunc::getFuncMenu($this->getPid(), 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function'])));
 			$header.=$this->getDoc()->divider(5);
 
 			$this->content = $header . $this->content;
 
 			// ShortCut
 			if ($BE_USER->mayMakeShortcut())	{
-				$this->content.=$this->getDoc()->spacer(20).$this->getDoc()->section('',$this->getDoc()->makeShortcutIcon('id',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']));
+				$this->content.=$this->getDoc()->spacer(20).$this->getDoc()->section('', $this->getDoc()->makeShortcutIcon('id', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']));
 			}
 			$this->content.=$this->getDoc()->spacer(10);
 		}
@@ -144,7 +144,7 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 	function checkExtObj()	{
 		if (is_array($this->extClassConf) && $this->extClassConf['name'])	{
 			$this->extObj = t3lib_div::makeInstance($this->extClassConf['name']);
-			$this->extObj->init($this,$this->extClassConf);
+			$this->extObj->init($this, $this->extClassConf);
 				// Re-write:
 			$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
 		}
@@ -250,7 +250,6 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 		else
 			$menu = $this->getFormTool()->showMenu($this->getPid(), 'function', $this->getName(), $items, $this->getModuleScript());
 		return $menu['menu'];
-//		return t3lib_BEfunc::getFuncMenu($this->getPid(),'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function']);
 	}
 	/**
 	 * index.php or empty
@@ -358,18 +357,22 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 		return Array (
 				'table' => Array('<table class="typo3-dblist" width="100%" cellspacing="0" cellpadding="0" border="0">', '</table><br/>'),
 				'0' => Array( // Format für 1. Zeile
-					'tr'		=> Array('<tr class="t3-row-header c-headLineTable">','</tr>'),
-					'defCol' => (tx_rnbase_util_TYPO3::isTYPO42OrHigher() ? Array('<td>','</td>') : Array('<td class="c-headLineTable" style="font-weight:bold; color:white;">','</td>'))  // Format für jede Spalte in der 1. Zeile
+					'tr'		=> Array('<tr class="t3-row-header c-headLineTable">', '</tr>'),
+					// Format für jede Spalte in der 1. Zeile
+					'defCol' => (tx_rnbase_util_TYPO3::isTYPO42OrHigher() ? 
+												Array('<td>', '</td>') : 
+												Array('<td class="c-headLineTable" style="font-weight:bold; color:white;">', '</td>'))
 				),
 				'defRow' => Array ( // Formate für alle Zeilen
-		//          '0' => Array('<td valign="top">','</td>'), // Format für 1. Spalte in jeder Zeile
+		//          '0' => Array('<td valign="top">', '</td>'), // Format für 1. Spalte in jeder Zeile
 					'tr'	   => Array('<tr class="db_list_normal">', '</tr>'),
-					'defCol' => Array('<td>','</td>') // Format für jede Spalte in jeder Zeile
+					'defCol' => Array('<td>', '</td>') // Format für jede Spalte in jeder Zeile
 				),
-				'defRowEven' => Array ( // Formate für alle Zeilen
+				'defRowEven' => Array ( // Formate für alle geraden Zeilen
 					'tr'	   => Array('<tr class="db_list_alt">', '</tr>'),
-					'defCol' => Array((tx_rnbase_util_TYPO3::isTYPO42OrHigher() ?'<td>' : '<td class="db_list_alt">'),'</td>')
-//				'defCol' => Array('<td>','</td>') // Format für jede Spalte in jeder Zeile
+					// Format für jede Spalte in jeder Zeile
+					'defCol' => Array((tx_rnbase_util_TYPO3::isTYPO42OrHigher() ? '<td>' : 
+														'<td class="db_list_alt">'), '</td>')
 				)
 			);
 	}
@@ -405,7 +408,7 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 			}
 
 				// If access to Web>List for user, then link to that module.
-			if ($BE_USER->check('modules','web_list'))	{
+			if ($BE_USER->check('modules', 'web_list'))	{
 				$href = $BACK_PATH . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
 				$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '">' .
 						'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/list.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1) . '" alt="" />' .

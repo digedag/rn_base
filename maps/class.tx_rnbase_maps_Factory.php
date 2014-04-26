@@ -41,10 +41,6 @@ class tx_rnbase_maps_Factory {
 	 * @return tx_rnbase_maps_IControl
 	 */
 	static function createGoogleControlLargeMap(){
-//		$registry->addType($this,RNMAP_CONTROL_SCALE, 'scale');
-//		$registry->addType($this,RNMAP_CONTROL_ZOOM, 'smallZoom');
-//		$registry->addType($this,RNMAP_CONTROL_OVERVIEW, 'overviewMap');
-//		$registry->addType($this,RNMAP_CONTROL_MAPTYPE, 'mapType');
 		return tx_rnbase::makeInstance('tx_rnbase_maps_google_Control', 'largeMap');
 	}
 	/**

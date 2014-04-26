@@ -176,7 +176,7 @@ class tx_rnbase_configurations {
 	 * parameters of the given plugin.
 	 */
 	public function isUniqueParameters() {
-		return $this->getBool('uniqueParameters') == true;
+		return $this->getBool('uniqueParameters') == TRUE;
 	}
 	/**
 	 * return string a unique id for this plugin
@@ -206,7 +206,7 @@ class tx_rnbase_configurations {
    * @return tslib_cObj
    */
 	public function &getCObj($id = 0, $cObjClass = 'tslib_cObj') {
-		if(strcmp($id,'0') == 0) {
+		if(strcmp($id, '0') == 0) {
 			if(!is_object($this->cObj)) {
 				$this->cObj = t3lib_div::makeInstance($cObjClass);
 				$this->cObjs[0] = $this->cObj;
@@ -254,7 +254,7 @@ class tx_rnbase_configurations {
 	 * @param boolean $addKeepVars whether or not keepVars should be set
 	 * @return tx_rnbase_util_Link
 	 */
-	public function &createLink($addKeepVars = true) {
+	public function &createLink($addKeepVars = TRUE) {
 		/* @var $link tx_rnbase_util_Link */
 		$link = tx_rnbase::makeInstance('tx_rnbase_util_Link');
 		$link->designatorString = $this->getQualifier();
@@ -349,8 +349,8 @@ class tx_rnbase_configurations {
 	 * Returns the localized label of the LOCAL_LANG key.
 	 * This is a reimplementation from tslib_pibase::pi_getLL().
 	 */
-	public function getLL($key,$alt='',$hsc=FALSE) {
-		return $this->localLangUtil->getLL($key,$alt,$hsc);
+	public function getLL($key, $alt='', $hsc=FALSE) {
+		return $this->localLangUtil->getLL($key, $alt, $hsc);
 	}
 
 
@@ -364,7 +364,7 @@ class tx_rnbase_configurations {
    */
   public static function getExtensionCfgValue($extKey, $cfgKey) {
     $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extKey]);
-    return (is_array($extConfig) && array_key_exists($cfgKey, $extConfig)) ? $extConfig[$cfgKey] : false;
+    return (is_array($extConfig) && array_key_exists($cfgKey, $extConfig)) ? $extConfig[$cfgKey] : FALSE;
   }
 
 	/**
@@ -383,7 +383,7 @@ class tx_rnbase_configurations {
 	 * @param string  relative setupPath
 	 * @return array  or string
 	 */
-	public function get($pathKey, $deep=false) {
+	public function get($pathKey, $deep=FALSE) {
 		if(!$deep)
 			return $this->_queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey);
 
@@ -405,17 +405,17 @@ class tx_rnbase_configurations {
 		return $ret;
 	}
 	/**
-	 * Returns a boolean config value. The return value is false if the value is empty or 0 or 'false'
+	 * Returns a boolean config value. The return value is FALSE if the value is empty or 0 or 'FALSE'
 	 * @param string $pathKey
 	 * @param boolean $deep
 	 * @param boolean $notDefined value to return if no value configured or empty
 	 * @return boolean
 	 */
-	public function getBool($pathKey, $deep=false, $notDefined=false) {
+	public function getBool($pathKey, $deep=FALSE, $notDefined=FALSE) {
 		$value = $this->get($pathKey, $deep);
-		if(is_array($value)) return true;
+		if(is_array($value)) return TRUE;
 		if($value == '') return $notDefined;
-		return (!$value || strtolower($value) == 'false') ? false : true;
+		return (!$value || strtolower($value) == 'false') ? FALSE : TRUE;
 	}
 	/**
 	 * Returns a int config value.
@@ -423,7 +423,7 @@ class tx_rnbase_configurations {
 	 * @param boolean $deep
 	 * @return int
 	 */
-	public function getInt($pathKey, $deep=false) {
+	public function getInt($pathKey, $deep=FALSE) {
 		return intval( $this->get($pathKey, $deep));
 	}
 	/**
@@ -459,7 +459,7 @@ class tx_rnbase_configurations {
 	 * @param boolean $deep
 	 * @return array
 	 */
-	public function getExploded($pathKey, $delim = ',', $deep = false) {
+	public function getExploded($pathKey, $delim = ',', $deep = FALSE) {
 		$value = $this->get($pathKey, $deep);
 		if (is_array($value)) {
 			return $value;
@@ -694,7 +694,7 @@ class tx_rnbase_configurations {
 		$valuePointer = 'vDEF';
 		// also hardcoded here
 		if (!$xmlOrArray) {
-			return false;
+			return FALSE;
 		}
 		// Converting flexform data into array if neccessary
 		if (is_array($xmlOrArray)) {
@@ -704,7 +704,7 @@ class tx_rnbase_configurations {
 		}
 		$data = $array['data'];
 		// Looking for the special sheet s_tssetup
-		$flexTs = false;
+		$flexTs = FALSE;
 		if(isset($data['s_tssetup'])) {
 			$flexTs = $data['s_tssetup']['lDEF']['flexformTS']['vDEF'];
 			unset($data['s_tssetup']);
@@ -720,7 +720,7 @@ class tx_rnbase_configurations {
 						// Wir holen das Array im höchsten Knoten
 						$dataArr = $this->_dataStore->offsetGet($pathArray[0] . '.');
 						$newValue = $def[$valuePointer];
-						$newArr = $this->insertIntoDataArray($dataArr, array_slice($pathArray,1), $newValue);
+						$newArr = $this->insertIntoDataArray($dataArr, array_slice($pathArray, 1), $newValue);
 						$this->_dataStore->offsetSet($pathArray[0] . '.', $newArr);
 					}
 					else {
@@ -745,7 +745,7 @@ class tx_rnbase_configurations {
 		}
 
 		// das < abschneiden, um den pfad zum link zu erhalten
-		$key = trim(substr($value,1));
+		$key = trim(substr($value, 1));
 
 		$tsParser = t3lib_div::makeInstance('t3lib_TSparser');
 
@@ -771,12 +771,12 @@ class tx_rnbase_configurations {
 	 * @return	array		The resulting array
 	 * @see mergeTSRef(), tx_tstemplatestyler_modfunc1::joinTSarrays()
 	 */
-	static function joinTSarrays($conf,$old_conf)	{
+	static function joinTSarrays($conf, $old_conf)	{
 		if (is_array($old_conf))	{
 			reset($old_conf);
-			while(list($key,$val)=each($old_conf))	{
+			while(list($key, $val)=each($old_conf))	{
 				if (is_array($val))	{
-					$conf[$key] = self::joinTSarrays($conf[$key],$val);
+					$conf[$key] = self::joinTSarrays($conf[$key], $val);
 				} else {
 					$conf[$key] = $val;
 				}

@@ -53,13 +53,13 @@ class tx_rnbase_plot_DataProviderTS implements tx_rnbase_plot_IDataProvider {
 		$arrKeys=t3lib_TStemplate::sortedKeyList($arrConf);
 		foreach($arrKeys as $strKey) {
 			$strType=$arrConf[$strKey];
-			if (intval($strKey) && !strstr($strKey,'.')) {
-				$strId = $arrConf[$strKey.'.']['id'] ? $arrConf[$strKey.'.']['id'] : false;
+			if (intval($strKey) && !strstr($strKey, '.')) {
+				$strId = $arrConf[$strKey.'.']['id'] ? $arrConf[$strKey.'.']['id'] : FALSE;
 				switch($strType) {
 					case 'color':
 					case 'addColor':
 						$strColor = $arrConf[$strKey.'.']['color'];
-						$objFillStyle->addColor($strColor,$strId);
+						$objFillStyle->addColor($strColor, $strId);
 					break;
 					case 'gradient':
 						$intDirection = tx_rnbase_plot_Builder::readConstant('IMAGE_GRAPH_GRAD_'.strtoupper($arrConf[$strKey.'.']['direction']));
@@ -86,7 +86,7 @@ class tx_rnbase_plot_DataProviderTS implements tx_rnbase_plot_IDataProvider {
 			$arrKeys=t3lib_TStemplate::sortedKeyList($arrConf);
 			foreach($arrKeys as $strKey) {
 				$strValue=$arrConf[$strKey];
-				if (intval($strKey) && !strstr($strKey,'.')) {
+				if (intval($strKey) && !strstr($strKey, '.')) {
 					switch($strValue) {
 						case 'trivial':
 							$objDatasets[$intCount] = $this->datasetTrivial($arrConf[$strKey.'.']);
@@ -116,17 +116,17 @@ class tx_rnbase_plot_DataProviderTS implements tx_rnbase_plot_IDataProvider {
 			$arrKeys=t3lib_TStemplate::sortedKeyList($arrConf);
 			foreach($arrKeys as $strKey) {
 				$strValue=$arrConf[$strKey];
-				if (intval($strKey) && !strstr($strKey,'.')) {
+				if (intval($strKey) && !strstr($strKey, '.')) {
 					if($strValue=='point') {
 						$mixX = $arrConf[$strKey.'.']['x'];
 						if ($arrConf[$strKey.'.']['y']=='null') {
-							$mixY = null;
+							$mixY = NULL;
 						} elseif (is_array($arrConf[$strKey.'.']['y.'])) {
 							$mixY = $arrConf[$strKey.'.']['y.'];
 						} else {
 							$mixY = $arrConf[$strKey.'.']['y'];
 						}
-						//$mixY = ($arrConf[$strKey.'.']['y']=='null')?null:$arrConf[$strKey.'.']['y'];
+						//$mixY = ($arrConf[$strKey.'.']['y']=='null')?NULL:$arrConf[$strKey.'.']['y'];
 						$strId = $arrConf[$strKey.'.']['id'];
 						$dataSet->addPoint($mixX, $mixY, $strId);
 					}
@@ -146,7 +146,7 @@ class tx_rnbase_plot_DataProviderTS implements tx_rnbase_plot_IDataProvider {
 		$intCount = $arrConf['count'];
 		$intMinimum = $arrConf['minimum'];
 		$intMaximum = $arrConf['maximum'];
-		$boolIncludeZero = $arrConf['includeZero']=='true'?true:false;
+		$boolIncludeZero = $arrConf['includeZero']=='true' ? TRUE : FALSE;
 		$strName = $arrConf['name'];
 		$objRandom = tx_pbimagegraph::factory('random', array($intCount, $intMinimum, $intMaximum, $boolIncludeZero));
 		$objRandom->setName($strName);

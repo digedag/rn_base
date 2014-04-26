@@ -45,7 +45,7 @@ class tx_rnbase_util_Lang {
 		// php or xml as source: In any case the charset will be that of the system language.
 		// However, this function guarantees only return output for default language plus the specified language (which is different from how 3.7.0 dealt with it)
 		self::addLang(t3lib_div::readLLfile($basePath, self::getLLKey(), $GLOBALS['TSFE']->renderCharset));
-		if ($llKey = self::getLLKey(true)) {
+		if ($llKey = self::getLLKey(TRUE)) {
 			self::addLang(t3lib_div::readLLfile($basePath, $llKey, $GLOBALS['TSFE']->renderCharset));
 		}
 	}
@@ -71,7 +71,7 @@ class tx_rnbase_util_Lang {
 	 * @param boolean $alt
 	 * @return string
 	 */
-	protected function getLLKey($alt = false) {
+	protected function getLLKey($alt = FALSE) {
 		$ret = $GLOBALS['TSFE']->config['config'][$alt ? 'language_alt' : 'language'];
 		return $ret ? $ret : ($alt ? '' : 'default');
 	}
@@ -96,14 +96,17 @@ class tx_rnbase_util_Lang {
 	protected function loadLLOverlay($langArr) {
 		if (!is_array($langArr))
 			return;
-		while(list($k,$lA)=each($langArr)) {
+		while(list($k, $lA)=each($langArr)) {
 			if (is_array($lA)) {
-				$k = substr($k,0,-1);
+				$k = substr($k, 0, -1);
 				foreach($lA as $llK => $llV) {
 					if (!is_array($llV)) {
 						$this->LOCAL_LANG[$k][$llK] = $llV;
 						if ($k != 'default') {
-							$this->LOCAL_LANG_charset[$k][$llK] = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];        // For labels coming from the TypoScript (database) the charset is assumed to be "forceCharset" and if that is not set, assumed to be that of the individual system languages (thus no conversion)
+							// For labels coming from the TypoScript (database) the charset is assumed to 
+							// be "forceCharset" and if that is not set, assumed to be that of the individual 
+							// system languages (thus no conversion)
+							$this->LOCAL_LANG_charset[$k][$llK] = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
 						}
 					}
 				}
@@ -123,7 +126,7 @@ class tx_rnbase_util_Lang {
 		}
 		foreach ($confLL as $languageKey => $languageArray) {
 			// Don't process label if the langue is not loaded
-			$languageKey = substr($languageKey,0,-1);
+			$languageKey = substr($languageKey, 0, -1);
 			if (is_array($languageArray) && is_array($this->LOCAL_LANG[$languageKey])) {
 				// Remove the dot after the language key
 				foreach ($languageArray as $labelKey => $labelValue) {
@@ -146,8 +149,8 @@ class tx_rnbase_util_Lang {
 	 * Returns the localized label of the LOCAL_LANG key.
 	 * This is a reimplementation from tslib_pibase::pi_getLL().
 	 */
-	public function getLL($key,$alt='',$hsc=FALSE) {
-		return tx_rnbase_util_TYPO3::isTYPO46OrHigher() ? $this->getLL46($key,$alt,$hsc) : $this->getLL40($key,$alt,$hsc);
+	public function getLL($key, $alt='', $hsc=FALSE) {
+		return tx_rnbase_util_TYPO3::isTYPO46OrHigher() ? $this->getLL46($key, $alt, $hsc) : $this->getLL40($key, $alt, $hsc);
 	}
 
 	private function getLL46($key, $alternativeLabel = '', $hsc = FALSE) {
@@ -162,15 +165,15 @@ class tx_rnbase_util_Lang {
 			} else {
 				$word = $this->LOCAL_LANG[$this->getLLKey()][$key][0]['target'];
 			}
-		} elseif ($this->getLLKey(true) && isset($this->LOCAL_LANG[$this->getLLKey(true)][$key][0]['target'])) {
+		} elseif ($this->getLLKey(TRUE) && isset($this->LOCAL_LANG[$this->getLLKey(TRUE)][$key][0]['target'])) {
 			// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
-			if (isset($this->LOCAL_LANG_charset[$this->getLLKey(true)][$key])) {
+			if (isset($this->LOCAL_LANG_charset[$this->getLLKey(TRUE)][$key])) {
 				$word = $GLOBALS['TSFE']->csConv(
-				$this->LOCAL_LANG[$this->getLLKey(true)][$key][0]['target'],
-				$this->LOCAL_LANG_charset[$this->getLLKey(true)][$key]
+				$this->LOCAL_LANG[$this->getLLKey(TRUE)][$key][0]['target'],
+				$this->LOCAL_LANG_charset[$this->getLLKey(TRUE)][$key]
 				);
 			} else {
-				$word = $this->LOCAL_LANG[$this->getLLKey(true)][$key][0]['target'];
+				$word = $this->LOCAL_LANG[$this->getLLKey(TRUE)][$key][0]['target'];
 			}
 		} elseif (isset($this->LOCAL_LANG['default'][$key][0]['target'])) {
 			// Get default translation (without charset conversion, english)
@@ -189,19 +192,22 @@ class tx_rnbase_util_Lang {
 		return $output;
 	}
 
-	private function getLL40($key,$alt='',$hsc=FALSE) {
-		if(!strcmp(substr($key,0,4),'LLL:')) {
+	private function getLL40($key, $alt='', $hsc=FALSE) {
+		if(!strcmp(substr($key, 0, 4), 'LLL:')) {
 			return $GLOBALS['TSFE']->sL($key);
 		}
 		
 		if (isset($this->LOCAL_LANG[$this->getLLKey()][$key])) {
-			$tsfe = tx_rnbase_util_TYPO3::getTSFE(true);
-			$word = $tsfe->csConv($this->LOCAL_LANG[$this->getLLKey()][$key], $this->LOCAL_LANG_charset[$this->getLLKey()][$key]); // The "from" charset is normally empty and thus it will convert from the charset of the system language, but if it is set (see ->pi_loadLL()) it will be used.
-		} elseif ($this->getLLKey(true) && isset($this->LOCAL_LANG[$this->getLLKey(true)][$key]))   {
-			$tsfe = tx_rnbase_util_TYPO3::getTSFE(true);
-			$word = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->getLLKey(true)][$key], $this->LOCAL_LANG_charset[$this->getLLKey(true)][$key]);   // The "from" charset is normally empty and thus it will convert from the charset of the system language, but if it is set (see ->pi_loadLL()) it will be used.
+			$tsfe = tx_rnbase_util_TYPO3::getTSFE(TRUE);
+			// The "from" charset is normally empty and thus it will convert from the charset of the system language, but if it is set (see ->pi_loadLL()) it will be used.
+			$word = $tsfe->csConv($this->LOCAL_LANG[$this->getLLKey()][$key], $this->LOCAL_LANG_charset[$this->getLLKey()][$key]); 
+		} elseif ($this->getLLKey(TRUE) && isset($this->LOCAL_LANG[$this->getLLKey(TRUE)][$key]))   {
+			$tsfe = tx_rnbase_util_TYPO3::getTSFE(TRUE);
+			// The "from" charset is normally empty and thus it will convert from the charset of the system language, but if it is set (see ->pi_loadLL()) it will be used.
+			$word = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->getLLKey(TRUE)][$key], $this->LOCAL_LANG_charset[$this->getLLKey(TRUE)][$key]);
 		} elseif (isset($this->LOCAL_LANG['default'][$key]))    {
-			$word = $this->LOCAL_LANG['default'][$key];     // No charset conversion because default is english and thereby ASCII
+			// No charset conversion because default is english and thereby ASCII
+			$word = $this->LOCAL_LANG['default'][$key];
 		} else {
 			// Im BE die LANG fragen...
 			$word = is_object($GLOBALS['LANG']) ? $GLOBALS['LANG']->getLL($key) : '';

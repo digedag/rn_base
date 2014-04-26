@@ -50,7 +50,7 @@
  * within the file ext_tables.php as second element of the array
  * that is handled as first parameter to the function.
  *
- * t3lib_extMgm::addPlugin(array(pluginLabel,pluginKey), list_type)
+ * t3lib_extMgm::addPlugin(array(pluginLabel, pluginKey), list_type)
  *
  * -----------------------------------------
  * Easily controlled by the action classes
@@ -195,7 +195,7 @@ class tx_rnbase_controller {
 		$configurations = $this->_makeConfigurationsObject($configurationArray);
 		tx_rnbase_util_Misc::pullTT();
 
-		tx_rnbase_util_Misc::enableTimeTrack($configurations->get('_enableTT') ? true : false);
+		tx_rnbase_util_Misc::enableTimeTrack($configurations->get('_enableTT') ? TRUE : FALSE);
 		// Making the parameters object
 		tx_rnbase_util_Misc::pushTT('init parameters' , '');
 		$parameters = $this->_makeParameterObject($configurations);
@@ -212,12 +212,12 @@ class tx_rnbase_controller {
 		if(is_array($actions))
 			foreach($actions As $actionName){
 				tx_rnbase_util_Misc::pushTT('call action' , $actionName);
-				$out .= $this->doAction($actionName,$parameters,$configurations);
+				$out .= $this->doAction($actionName, $parameters, $configurations);
 				tx_rnbase_util_Misc::pullTT();
 			}
 		else { // Call a single action
 			tx_rnbase_util_Misc::pushTT('call action' , $actionName);
-			$out .= $this->doAction($actions,$parameters,$configurations);
+			$out .= $this->doAction($actions, $parameters, $configurations);
 			tx_rnbase_util_Misc::pullTT();
 		}
 		tx_rnbase_util_Misc::pullTT();
@@ -239,7 +239,7 @@ class tx_rnbase_controller {
 			$action = tx_rnbase::makeInstance($actionName);
 	//		$action->parameters = $parameters;
 	//		$action->configurations = $configurations;
-			$ret = $action->execute($parameters,$configurations);
+			$ret = $action->execute($parameters, $configurations);
 		}
 		catch(Exception $e) {
 			$ret = $this->handleException($actionName, $e, $configurations);
@@ -314,20 +314,20 @@ class tx_rnbase_controller {
 	 *
 	 * @param     object     the parameters object
 	 * @param     object     the configurations objet
-	 * @return    array     an array with the actions or null
+	 * @return    array     an array with the actions or NULL
 	 */
 	function _findAction($parameters, $configurations) {
 		// What should be preferred? Config or Request?
 		// An action from parameter is preferred
-		$action = !intval($configurations->get('ignoreActionParam')) ? $this->_getParameterAction($parameters) : false;
+		$action = !intval($configurations->get('ignoreActionParam')) ? $this->_getParameterAction($parameters) : FALSE;
 		if(!$action) {
 			$action = $configurations->get('action');
 		}
 		// Falls es mehrere Actions sind den String splitten
 		if($action)
-			$action = t3lib_div::trimExplode(',',$action);
+			$action = t3lib_div::trimExplode(',', $action);
 		if(is_array($action) && count($action) == 1) {
-			$action = t3lib_div::trimExplode('|',$action[0]); // Nochmal mit Pipe versuchen
+			$action = t3lib_div::trimExplode('|', $action[0]); // Nochmal mit Pipe versuchen
 		}
 		// If there is still no action we use defined defaultAction
 		$action = !$action ? $configurations->get('defaultAction') : $action;
@@ -390,7 +390,7 @@ class tx_rnbase_controller {
 		if($configurations->isUniqueParameters() && array_key_exists($configurations->getPluginId(), $parametersArray)) {
 			$parametersArray = $parametersArray[$configurations->getPluginId()];
 		}
-		tx_rnbase_util_Arrays::overwriteArray($parameters,$parametersArray);
+		tx_rnbase_util_Arrays::overwriteArray($parameters, $parametersArray);
 
 		// Initialize the cHash system if there are parameters available
 		if ($GLOBALS['TSFE'] && $parameters->count()) {

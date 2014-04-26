@@ -41,13 +41,13 @@ class tx_rnbase_util_Files {
 	public static function getFileResource($fName, $options=array())	{
 		if(!(is_object($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE']->tmpl))) {
 			tx_rnbase::load('tx_rnbase_util_Misc');
-			tx_rnbase_util_Misc::prepareTSFE(array('force'=>true));
+			tx_rnbase_util_Misc::prepareTSFE(array('force'=>TRUE));
 		}
 		if(self::isFALReference($fName)) {
 				/** @var FileRepository $fileRepository */
 				$fileRepository = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Resource\FileRepository');
 				$fileObject = $fileRepository->findByUid(intval(substr($fName, 5)));
-				$incFile = is_object($fileObject) ? $fileObject->getForLocalProcessing(FALSE) : false;
+				$incFile = is_object($fileObject) ? $fileObject->getForLocalProcessing(FALSE) : FALSE;
 		}
 		else
 			$incFile = $GLOBALS['TSFE']->tmpl->getFileName($fName);
@@ -55,7 +55,7 @@ class tx_rnbase_util_Files {
 			// Im BE muss ein absoluter Pfad verwendet werden
 			$fullPath = (TYPO3_MODE == 'BE') ? PATH_site.$incFile : $incFile;
 			$fileinfo = t3lib_div::split_fileref($incFile);
-			if (t3lib_div::inList('jpg,gif,jpeg,png',$fileinfo['fileext']))	{
+			if (t3lib_div::inList('jpg,gif,jpeg,png', $fileinfo['fileext']))	{
 				$imgFile = $incFile;
 				$imgInfo = @getImageSize($imgFile);
 				$addParams= isset($options['addparams']) ? $options['addparams'] : 'alt="" title=""';
@@ -64,7 +64,7 @@ class tx_rnbase_util_Files {
 				$ret = @file_get_contents($fullPath);
 				$subpart = isset($options['subpart']) ? $options['subpart'] : '';
 				if($subpart) {
-					$ret = t3lib_parsehtml::getSubpart($ret,$subpart);
+					$ret = t3lib_parsehtml::getSubpart($ret, $subpart);
 				}
 			}
 		}
@@ -72,12 +72,12 @@ class tx_rnbase_util_Files {
 	}
 
 	/**
-	 * @return boolean true if fName starts with file:
+	 * @return boolean TRUE if fName starts with file:
 	 */
 	public static function isFALReference($fName) {
 		return tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
 				\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($fName, 'file:')
-			: false;
+			: FALSE;
 	}
 	/**
 	 * Returns the 'border' attribute for an <img> tag only if the doctype is not xhtml_strict,xhtml_11 or xhtml_2 or if the config parameter 'disableImgBorderAttr' is not set.
@@ -87,7 +87,7 @@ class tx_rnbase_util_Files {
 	 * @return string the border attribute
 	 */
 	private static function getBorderAttr($borderAttr) {
-		if (!t3lib_div::inList('xhtml_strict,xhtml_11,xhtml_2',$GLOBALS['TSFE']->xhtmlDoctype) && !$GLOBALS['TSFE']->config['config']['disableImgBorderAttr']) {
+		if (!t3lib_div::inList('xhtml_strict,xhtml_11,xhtml_2', $GLOBALS['TSFE']->xhtmlDoctype) && !$GLOBALS['TSFE']->config['config']['disableImgBorderAttr']) {
 			return $borderAttr;
 		}
 	}
@@ -120,7 +120,7 @@ class tx_rnbase_util_Files {
 	 * @param boolean $forceLowerCase
 	 * @return string
 	 */
-	public static function cleanupFileName($name, $forceLowerCase=true) {
+	public static function cleanupFileName($name, $forceLowerCase=TRUE) {
 		$cleaned = $name;
 		if (function_exists('iconv')) {
 			tx_rnbase::load('tx_rnbase_util_Strings');
@@ -140,16 +140,16 @@ class tx_rnbase_util_Files {
 	 * @param array $files
 	 * @param string $destination full path of zip file
 	 * @param boolean $overwrite
-	 * @return boolean true, if zip file was created
+	 * @return boolean TRUE, if zip file was created
 	 */
-	public static function makeZipFile($files = array(),$destination = '',$overwrite = false) {
-		//if the zip file already exists and overwrite is false, return false
-		if(file_exists($destination) && !$overwrite) { return false; }
+	public static function makeZipFile($files = array(), $destination = '', $overwrite = FALSE) {
+		//if the zip file already exists and overwrite is FALSE, return FALSE
+		if(file_exists($destination) && !$overwrite) { return FALSE; }
 
 		//vars
 		$valid_files = array();
 		//if files were passed in...
-		if(!is_array($files)) return false;
+		if(!is_array($files)) return FALSE;
 		foreach($files as $file) {
 			if(file_exists($file)) {
 				$valid_files[] = $file;
@@ -157,12 +157,12 @@ class tx_rnbase_util_Files {
 		}
 
 		//if we have good files...
-		if(!count($valid_files)) return false;
+		if(!count($valid_files)) return FALSE;
 
 		//create the archive
 		$zip = new ZipArchive();
-		if($zip->open($destination,$overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) !== true) {
-			return false;
+		if($zip->open($destination, $overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) !== TRUE) {
+			return FALSE;
 		}
 		//add the files
 		foreach($valid_files as $file) {

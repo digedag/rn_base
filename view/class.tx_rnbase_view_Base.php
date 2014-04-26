@@ -57,10 +57,10 @@ class tx_rnbase_view_Base{
    */
   function render($view, &$configurations){
     $this->_init($configurations);
-    $templateCode = tx_rnbase_util_Files::getFileResource($this->getTemplate($view,'.html'));
+    $templateCode = tx_rnbase_util_Files::getFileResource($this->getTemplate($view, '.html'));
     if(!strlen($templateCode)) {
     	tx_rnbase::load('tx_rnbase_util_Misc');
-    	tx_rnbase_util_Misc::mayday('TEMPLATE NOT FOUND: ' . $this->getTemplate($view,'.html'));
+    	tx_rnbase_util_Misc::mayday('TEMPLATE NOT FOUND: ' . $this->getTemplate($view, '.html'));
     }
 
 		// Die ViewData bereitstellen
@@ -68,7 +68,7 @@ class tx_rnbase_view_Base{
 		// Optional kann schon ein Subpart angegeben werden
 		if($this->getMainSubpart($viewData)) {
 			$subpart = $this->getMainSubpart($viewData);
-			$templateCode = tx_rnbase_util_Templates::getSubpart($templateCode,$subpart);
+			$templateCode = tx_rnbase_util_Templates::getSubpart($templateCode, $subpart);
 			if(!strlen($templateCode)) {
 				tx_rnbase::load('tx_rnbase_util_Misc');
 				tx_rnbase_util_Misc::mayday('SUBPART NOT FOUND: ' . $subpart);
@@ -83,13 +83,13 @@ class tx_rnbase_view_Base{
 			}
 		}
 
-		$out = $this->createOutput($templateCode,$viewData, $configurations, $configurations->getFormatter());
+		$out = $this->createOutput($templateCode, $viewData, $configurations, $configurations->getFormatter());
 
 		if($controller) {
 			// Soll abschließend nochmal das Plugin gerendert werden?
 			if(tx_rnbase_util_BaseMarker::containsMarker($out, 'PLUGIN_')) {
 				$pluginData = $configurations->getCObj()->data; // Eine Kopie des Datenarray ist notwendig!
-				$markerArray = $configurations->getFormatter()->getItemMarkerArrayWrapped($pluginData, $controller->getConfId().'plugin.',0,'PLUGIN_');
+				$markerArray = $configurations->getFormatter()->getItemMarkerArrayWrapped($pluginData, $controller->getConfId().'plugin.', 0, 'PLUGIN_');
 				$out = tx_rnbase_util_Templates::substituteMarkerArrayCached($out, $markerArray, $subpartArray);
 			}
 
@@ -120,9 +120,9 @@ class tx_rnbase_view_Base{
    * Template übergeben, sondern nur noch dieser Abschnitt. Außerdem wird sichergestellt,
    * daß dieser Subpart im Template vorhanden ist.
    *
-   * @return string like ###MY_MAIN_SUBPART### or false
+   * @return string like ###MY_MAIN_SUBPART### or FALSE
    */
-  function getMainSubpart(&$viewData) {return false;}
+  function getMainSubpart(&$viewData) {return FALSE;}
   /**
    * This method is called first.
    *

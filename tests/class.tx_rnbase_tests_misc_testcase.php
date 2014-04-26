@@ -27,8 +27,8 @@ tx_rnbase::load('tx_rnbase_util_Misc');
 
 class tx_rnbase_dummyMisc extends tx_rnbase_util_Misc {
 
-	public static function callGetErrorMailHtml($e,$actionName) {
-		return self::getErrorMailHtml($e,$actionName);
+	public static function callGetErrorMailHtml($e, $actionName) {
+		return self::getErrorMailHtml($e, $actionName);
 	}
 }
 
@@ -36,19 +36,19 @@ class tx_rnbase_tests_misc_testcase extends tx_phpunit_testcase {
 	
 	public function test_encodeParams() {
 		$params['dat1'] = '1';
-		$params['dat2'] = array('1','2');
+		$params['dat2'] = array('1', '2');
 		$params['dat3'] = 123;
 		$hash1 = tx_rnbase_util_Misc::createHash($params);
 		$this->assertEquals(8, strlen($hash1));
-		$params['dat2'] = array('2','2');
+		$params['dat2'] = array('2', '2');
 		$hash2 = tx_rnbase_util_Misc::createHash($params);
 		$this->assertEquals($hash2, $hash1);
-		$hash2 = tx_rnbase_util_Misc::createHash($params, false);
+		$hash2 = tx_rnbase_util_Misc::createHash($params, FALSE);
 		$this->assertTrue($hash2 != $hash1);
-		$params = array('1', array(1,2), 123);
+		$params = array('1', array(1, 2), 123);
 		$hash2 = tx_rnbase_util_Misc::createHash($params);
 		$this->assertEquals($hash2, $hash1);
-		$params = array(array(1,2),'1', 123);
+		$params = array(array(1, 2), '1', 123);
 		$hash2 = tx_rnbase_util_Misc::createHash($params);
 		$this->assertEquals($hash2, $hash1);
 		

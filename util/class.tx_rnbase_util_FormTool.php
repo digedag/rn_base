@@ -58,7 +58,7 @@ class tx_rnbase_util_FormTool {
 		if(isset($options['params']))
 			$params .= $options['params'];
 
-		$jsCode = t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH']);
+		$jsCode = t3lib_BEfunc::editOnClick($params, $GLOBALS['BACK_PATH']);
 		if(isset($options['confirm']) && strlen($options['confirm']) > 0) {
     	$jsCode = 'if(confirm('.$GLOBALS['LANG']->JScharCode($options['confirm']).')) {' . $jsCode .'} else {return false;}';
 		}
@@ -78,8 +78,8 @@ class tx_rnbase_util_FormTool {
 	 */
 	public function createEditLink($editTable, $editUid, $label = 'Edit') {
 		$params = '&edit['.$editTable.']['.$editUid.']=edit';
-		return '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'])).'">'.
-			'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/edit2.gif','width="11" height="12"').' title="Edit UID: '.$editUid.'" border="0" alt="" />'.
+		return '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params, $GLOBALS['BACK_PATH'])).'">'.
+			'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif', 'width="11" height="12"').' title="Edit UID: '.$editUid.'" border="0" alt="" />'.
 		$label .'</a>';
 	}
 	/**
@@ -93,8 +93,8 @@ class tx_rnbase_util_FormTool {
 	public function createHistoryLink($table, $recordUid, $label = '') {
 		return "<a href=\"#\" onclick=\"return jumpExt('".$GLOBALS['BACK_PATH'].
 				"show_rechis.php?element=".rawurlencode($table.':'.$recordUid).
-				"','#latest');\"><img ".t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/history2.gif','width="13" height="12"').
-				' title="'.$GLOBALS['LANG']->getLL('history',1).'\" alt="" >'.$label.'</a>';
+				"','#latest');\"><img ".t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/history2.gif', 'width="13" height="12"').
+				' title="'.$GLOBALS['LANG']->getLL('history', 1).'\" alt="" >'.$label.'</a>';
 	}
 
 	/**
@@ -109,15 +109,15 @@ class tx_rnbase_util_FormTool {
 		$params = '&edit['.$table.']['.$pid.']=new';
 		if(isset($options['params']))
 			$params .= $options['params'];
-		$title = isset($options['title']) ? $options['title'] : $GLOBALS['LANG']->getLL('new',1);
+		$title = isset($options['title']) ? $options['title'] : $GLOBALS['LANG']->getLL('new', 1);
 
-		$jsCode = t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH']);
+		$jsCode = t3lib_BEfunc::editOnClick($params, $GLOBALS['BACK_PATH']);
 		if(isset($options['confirm']) && strlen($options['confirm']) > 0) {
     	$jsCode = 'if(confirm('.$GLOBALS['LANG']->JScharCode($options['confirm']).')) {' . $jsCode .'} else {return false;}';
 		}
 
 		$btn = '<input type="button" name="'. $name.'" value="' . $title . '" ';
-		$btn .= 'onclick="'.htmlspecialchars($jsCode,-1).'"';
+		$btn .= 'onclick="'.htmlspecialchars($jsCode, -1).'"';
 		$btn .= '/>';
 		return $btn;
 	}
@@ -126,14 +126,14 @@ class tx_rnbase_util_FormTool {
 	 */
 	public function createShowLink($pid, $label, $urlParams = '', $options=array()) {
 		if($options['icon']) {
-			$label = "<img ".t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.$options['icon']).
+			$label = "<img ".t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$options['icon']).
 				' title="'.$label.'\" alt="" >';
 		}
 		if($options['sprite']) {
 			tx_rnbase::load('tx_rnbase_mod_Util');
 			$label = tx_rnbase_mod_Util::getSpriteIcon($options['sprite']);
 		}
-		$jsCode = t3lib_BEfunc::viewOnClick($pid,'','','','',$urlParams);
+		$jsCode = t3lib_BEfunc::viewOnClick($pid, '', '', '', '', $urlParams);
 		$title = '';
 		if($options['hover']) {
 			$title = ' title="'.$options['hover'].'" ';
@@ -153,15 +153,15 @@ class tx_rnbase_util_FormTool {
 		$params = '&edit['.$table.']['.$pid.']=new';
 		if(isset($options['params']))
 			$params .= $options['params'];
-		$title = isset($options['title']) ? $options['title'] : $GLOBALS['LANG']->getLL('new',1);
+		$title = isset($options['title']) ? $options['title'] : $GLOBALS['LANG']->getLL('new', 1);
 
-		$jsCode = t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH']);
+		$jsCode = t3lib_BEfunc::editOnClick($params, $GLOBALS['BACK_PATH']);
 		if(isset($options['confirm']) && strlen($options['confirm']) > 0) {
     	$jsCode = 'if(confirm('.$GLOBALS['LANG']->JScharCode($options['confirm']).')) {' . $jsCode .'} else {return false;}';
 		}
 
-		return '<a href="#" onclick="'.htmlspecialchars($jsCode,-1).'">'.
-			'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/new_'.($table=='pages'?'page':'el').'.gif','width="'.($table=='pages'?13:11).'" height="12"').' title="'.$title.'" alt="" />'.
+		return '<a href="#" onclick="'.htmlspecialchars($jsCode, -1).'">'.
+			'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/new_'.($table=='pages'?'page':'el').'.gif', 'width="'.($table=='pages'?13:11).'" height="12"').' title="'.$title.'" alt="" />'.
 			$label .'</a>';
   }
 
@@ -172,9 +172,9 @@ class tx_rnbase_util_FormTool {
    * @param boolean $unhide
    * @param array $options
    */
-	public function createHideLink($table, $uid, $unhide=false, $options=array()) {
-		$location = t3lib_div::linkThisScript(array('CB'=>'','SET'=>'','cmd' => '','popViewId'=>''));
-		$location = str_replace('%20','',rawurlencode($location));
+	public function createHideLink($table, $uid, $unhide=FALSE, $options=array()) {
+		$location = t3lib_div::linkThisScript(array('CB'=>'', 'SET'=>'', 'cmd' => '', 'popViewId'=>''));
+		$location = str_replace('%20','', rawurlencode($location));
 
 		$sEnableColumn = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
 		//fallback
@@ -191,7 +191,7 @@ class tx_rnbase_util_FormTool {
 		$jumpToUrl .="'";
 
 		return '<a onclick="return jumpToUrl('.$jumpToUrl.');" href="#">'.
-				'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.($unhide ? 'button_hide.gif' : 'button_unhide.gif'),'width="11" height="12"').' title="'.($unhide ? 'Show' : 'Hide').' UID: '.$uid.'" border="0" alt="" />'.
+				'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.($unhide ? 'button_hide.gif' : 'button_unhide.gif'), 'width="11" height="12"').' title="'.($unhide ? 'Show' : 'Hide').' UID: '.$uid.'" border="0" alt="" />'.
 				$label.'</a>';
 	}
 
@@ -204,7 +204,7 @@ class tx_rnbase_util_FormTool {
 	public function createInfoLink($editTable, $editUid, $label = 'Info') {
 //    $params = '&edit['.$editTable.']['.$editUid.']=edit';
 		return '<a href="#" onclick="top.launchView(' . "'" . $editTable . "', ' " . $editUid . "'); return false;" . '">'.
-		 '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/zoom2.gif','width="11" height="12"').' title="UID: '.$editUid.'" border="0" alt="" />'.
+		 '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/zoom2.gif', 'width="11" height="12"').' title="UID: '.$editUid.'" border="0" alt="" />'.
 		 $label .'</a>';
 	}
 
@@ -218,7 +218,7 @@ class tx_rnbase_util_FormTool {
   public function createMoveLink($editTable, $recordUid, $currentPid, $label = 'Move') {
 
     return "<a href=\"#\" onclick=\"return jumpSelf('/typo3/db_list.php?id=". $currentPid ."&amp;CB[el][" . $editTable
-           . "%7C" . $recordUid . "]=1');\"><img " .t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/clip_cut.gif','width="16" height="16"'). ' title="UID: '. $recordUid . '" alt="" />' . $label .'</a>';
+           . "%7C" . $recordUid . "]=1');\"><img " .t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/clip_cut.gif', 'width="16" height="16"'). ' title="UID: '. $recordUid . '" alt="" />' . $label .'</a>';
 
   }
 
@@ -232,8 +232,8 @@ class tx_rnbase_util_FormTool {
 	 */
 	public function createDeleteLink($table, $uid, $label = 'Remove', $options = array()) {
 		// @TODO: das verwenden wir bereit beim createHideLink, sollte besser ausgelagert werden!
-		$location = t3lib_div::linkThisScript(array('CB'=>'','SET'=>'','cmd' => '','popViewId'=>''));
-		$location = str_replace('%20','',rawurlencode($location));
+		$location = t3lib_div::linkThisScript(array('CB'=>'', 'SET'=>'', 'cmd' => '', 'popViewId'=>''));
+		$location = str_replace('%20','', rawurlencode($location));
 
 		$jumpToUrl = '\''.$GLOBALS['BACK_PATH'].'tce_db.php?redirect='.$location.'&amp;cmd['.$table.']['.$uid.'][delete]=1';
 		//jetzt noch alles zur Formvalidierung einfügen damit
@@ -247,7 +247,7 @@ class tx_rnbase_util_FormTool {
 
 		$jsCode = $this->getConfirmCode('return jumpToUrl('.$jumpToUrl.');', $options);
 		return '<a onclick="'.$jsCode.'" href="#">'.
-			'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/deletedok.gif','width="16" height="16"').' title="Delete UID: '.$uid.'" border="0" alt="" />'.
+			'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/deletedok.gif', 'width="16" height="16"').' title="Delete UID: '.$uid.'" border="0" alt="" />'.
 				$label.'</a>';
 	}
 
@@ -267,11 +267,11 @@ class tx_rnbase_util_FormTool {
     return '<input type="hidden" name="'. $name.'" value="' . $value . '" />';
   }
 
-	public function createRadio($name, $value, $checked = false, $onclick = ''){
+	public function createRadio($name, $value, $checked = FALSE, $onclick = ''){
 		return '<input type="radio" name="'. $name.'" value="' . $value . '" '. ($checked ? 'checked="checked"' : '') . (strlen($onclick) ? ' onclick="' . $onclick . '"' : '') . ' />';
 	}
 
-	public function createCheckbox($name, $value, $checked = false, $onclick = ''){
+	public function createCheckbox($name, $value, $checked = FALSE, $onclick = ''){
 		return '<input type="checkbox" name="'. $name.'" value="' . $value . '" '. ($checked ? 'checked="checked"' : '') . (strlen($onclick) ? ' onclick="' . $onclick . '"' : '') .' />';
 	}
 
@@ -280,7 +280,7 @@ class tx_rnbase_util_FormTool {
 	 */
 	public function createLink($urlParams, $pid, $label, $options=array()) {
 		if($options['icon']) {
-			$label = "<img ".t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.$options['icon']).
+			$label = "<img ".t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$options['icon']).
 				' title="'.$label.'\" alt="" >';
 		}
 		if($options['sprite']) {
@@ -310,7 +310,7 @@ class tx_rnbase_util_FormTool {
 	public function createSubmit($name, $value, $confirmMsg = '', $options=array()){
 		$icon = '';
 		if($options['icon']) {
-			$icon = t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.$options['icon']);
+			$icon = t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$options['icon']);
 		}
 //		if($options['sprite']) {
 //			tx_rnbase::load('tx_rnbase_mod_Util');
@@ -463,16 +463,16 @@ class tx_rnbase_util_FormTool {
 			$sSortRev = ($sCurrentSortRev == 'desc') ? 'asc' : 'desc';
 
 		//prüfen ob Parameter mit ? oder & angehängt werden müssen
-		$sAddParamsWith = (strstr($sUrl,'?')) ? '&' : '?';
+		$sAddParamsWith = (strstr($sUrl, '?')) ? '&' : '?';
 		//jetzt setzen wir den aktuellen Sort parameter zusammen
 		$sSortUrl = $sUrl.$sAddParamsWith.'sortField=' . $sSortField . '&sortRev=' . $sSortRev;
 		//noch den Pfeil für die aktuelle Sortierungsrichtung ggf. einblenden
-		$sSortArrow = ($sCurrentSortField==$sSortField?'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/red'.($sSortRev == 'asc'?'up':'down').'.gif','width="7" height="4"').' alt="" />':'');
+		$sSortArrow = ($sCurrentSortField==$sSortField?'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/red'.($sSortRev == 'asc'?'up':'down').'.gif', 'width="7" height="4"').' alt="" />':'');
 		return '<a href="'.htmlspecialchars($sSortUrl).'">'.$sLabel.$sSortArrow.'</a>';
 	}
 
-  function addTCEfield2Stack($table,$row,$fieldname,$pre='',$post='') {
-		$this->tceStack[] = $pre . $this->form->getSoloField($table,$row,$fieldname) . $post;
+  function addTCEfield2Stack($table, $row, $fieldname, $pre='', $post='') {
+		$this->tceStack[] = $pre . $this->form->getSoloField($table, $row, $fieldname) . $post;
   }
   /**
    * @return t3lib_TCEforms
@@ -492,7 +492,7 @@ class tx_rnbase_util_FormTool {
 	 * @param string $location module url or empty
 	 */
 	function getJSCode($pid, $location='') {
-		$location = $location ? $location : t3lib_div::linkThisScript(array('CB'=>'','SET'=>'','cmd' => '','popViewId'=>''));
+		$location = $location ? $location : t3lib_div::linkThisScript(array('CB'=>'', 'SET'=>'', 'cmd' => '', 'popViewId'=>''));
 		// Add JavaScript functions to the page:
 		$JScode=$this->doc->wrapScriptTags('
 			function jumpToUrl(URL) {
@@ -516,8 +516,8 @@ class tx_rnbase_util_FormTool {
 					top.content.nav_frame.refresh_nav();
 				}
 			}
-			var T3_RETURN_URL = "'.str_replace('%20','',rawurlencode(t3lib_div::_GP('returnUrl'))).'";
-			var T3_THIS_LOCATION="'.str_replace('%20','',rawurlencode($location)).'"');
+			var T3_RETURN_URL = "'.str_replace('%20', '', rawurlencode(t3lib_div::_GP('returnUrl'))).'";
+			var T3_THIS_LOCATION="'.str_replace('%20', '', rawurlencode($location)).'"');
 
     // Setting up the context sensitive menu:
 //    $CMparts=$this->doc->getContextMenuCode();
@@ -539,7 +539,7 @@ class tx_rnbase_util_FormTool {
 			$name => $entries
 		);
 		$SETTINGS = t3lib_BEfunc::getModuleData(
-			$MENU,t3lib_div::_GP('SET'),$modName
+			$MENU, t3lib_div::_GP('SET'), $modName
 		);
 
 		$out = '
@@ -578,13 +578,13 @@ class tx_rnbase_util_FormTool {
 			$name => $entries
 		);
 		$SETTINGS = t3lib_BEfunc::getModuleData(
-			$MENU,t3lib_div::_GP('SET'),$modName
+			$MENU, t3lib_div::_GP('SET'), $modName
 		);
 
 		$ret['menu'] = (tx_rnbase_util_TYPO3::isTYPO62OrHigher() && is_array($MENU[$name]) && count($MENU[$name]) == 1) ?
 				$this->buildDummyMenu('SET['.$name.']', $MENU[$name]) :
 				t3lib_BEfunc::getFuncMenu(
-			$pid,'SET['.$name.']',$SETTINGS[$name],
+			$pid, 'SET['.$name.']', $SETTINGS[$name],
 			$MENU[$name], $script, $addparams
 		);
 		$ret['value'] = $SETTINGS[$name];
@@ -631,14 +631,14 @@ class tx_rnbase_util_FormTool {
 	 * @param int $theUid
 	 * @param boolean $isNew
 	 */
-	public function getTCEFormArray($table,$theUid, $isNew = false) {
+	public function getTCEFormArray($table, $theUid, $isNew = FALSE) {
 		$trData = t3lib_div::makeInstance('t3lib_transferData');
 		$trData->addRawData = TRUE;
 //		$trData->defVals = $this->defVals;
 //		$trData->lockRecords=1;
 //		$trData->disableRTE = $this->MOD_SETTINGS['disableRTE'];
 //		$trData->prevPageID = $prevPageID;
-		$trData->fetchRecord($table,$theUid,$isNew?'new':'');	// 'new'
+		$trData->fetchRecord($table, $theUid, $isNew?'new':'');	// 'new'
 		reset($trData->regTableItems_data);
 		return $trData->regTableItems_data;
 	}

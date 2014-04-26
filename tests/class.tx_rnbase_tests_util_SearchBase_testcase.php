@@ -36,13 +36,13 @@ class tx_rnbase_tests_utilSearchBase_testcase extends tx_phpunit_testcase {
 		$fields[SEARCH_FIELD_JOINED][0]['cols'][] = 'FEUSER.UID';
 		$ret = $searcher->search($fields, $options);
 
-		$this->assertTrue(strpos($ret, 'AND  AND') === false, 'SQL is wrong');
+		$this->assertTrue(strpos($ret, 'AND  AND') === FALSE, 'SQL is wrong');
 	}
 	private function createOptions() {
 		$options = array();
-		$options['sqlonly'] = true;
+		$options['sqlonly'] = TRUE;
 		$options['searchdef']['basetable'] = 'fe_users';
-//		$options['searchdef']['usealias'] = true;
+//		$options['searchdef']['usealias'] = TRUE;
 //		$options['searchdef']['basetablealias'] = 'FEUSER';
 		$options['orderby']['username'] = 'asc';
 		

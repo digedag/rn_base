@@ -28,7 +28,7 @@ tx_rnbase::load('tx_rnbase_maps_IIcon');
  * Implementation for GoogleControls.
  */
 class tx_rnbase_maps_google_Icon implements tx_rnbase_maps_IIcon {
-	private $id = null;
+	private $id = NULL;
 
 	function tx_rnbase_maps_google_Icon(tx_rnbase_maps_google_Map $map) {
 		$this->map = $map;
