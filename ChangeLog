@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v0.14.1 (26.04.2014)
+ * Changes to apply code conventions
+
 v0.14.0 (19.04.2014) (not released)
  * Support for TYPO3 6.2
  * Better localization support. Thanks to Hannes Bochmann!
