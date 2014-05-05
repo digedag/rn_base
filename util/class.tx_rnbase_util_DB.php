@@ -423,27 +423,16 @@ class tx_rnbase_util_DB {
 		return count($result) > 0 ? $result[0] : array();
 	}
 
-  /**
-   * Same method as tslib_pibase::pi_getPidList()
-   * If you  need this functionality use tx_rnbase_util_Misc::getPidList()
-   */
-  static function _getPidList($pid_list, $recursive=0)  {
-    if (!strcmp($pid_list, ''))      $pid_list = $GLOBALS['TSFE']->id;
-    $recursive = tx_rnbase_util_Math::intInRange($recursive, 0);
+	/**
+	 * Same method as tslib_pibase::pi_getPidList()
+	 * If you  need this functionality use tx_rnbase_util_Misc::getPidList()
+	 * @deprecated use tx_rnbase_util_Misc::getPidList!
+	 */
+	static function _getPidList($pid_list, $recursive=0)  {
+		tx_rnbase::load('tx_rnbase_util_Misc');
+		return tx_rnbase_util_Misc::getPidList($pid_list, $recursive);
+	}
 
-    $pid_list_arr = array_unique(t3lib_div::trimExplode(',', $pid_list, 1));
-    $pid_list = array();
-
-    foreach($pid_list_arr as $val)  {
-      $val = tx_rnbase_util_Math::intInRange($val, 0);
-      if ($val)       {
-        $_list = tslib_cObj::getTreeList(-1*$val, $recursive);
-        if ($_list)  $pid_list[] = $_list;
-      }
-    }
-
-    return implode(',', $pid_list);
-  }
 	/**
 	 * Check whether the given resource is a valid sql result. Breaks with mayday if not!
 	 * This method is taken from the great ameos_formidable extension.

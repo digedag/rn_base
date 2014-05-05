@@ -127,13 +127,13 @@ class tx_rnbase_util_Misc {
 
 		$aDebug[] = '<h2 id="backtracetitle">Call stack</h2>';
 		$aDebug[] = '<div class="backtrace">';
-		$aDebug[] = '<span class="notice"><b>Call 0: </b>' . str_replace(PATH_site, '/', $aLocation['file']) . ':' . $aLocation['line']  . ' | <b>' . $aTrace1['class'] . $aTrace1['type'] . 
+		$aDebug[] = '<span class="notice"><b>Call 0: </b>' . str_replace(PATH_site, '/', $aLocation['file']) . ':' . $aLocation['line']  . ' | <b>' . $aTrace1['class'] . $aTrace1['type'] .
 									$aTrace1['function'] . '</b></span><br/>With parameters: ' . (!empty($aTrace1['args']) ? self::viewMixed($aTrace1['args']) : ' no parameters');
 		$aDebug[] = '<hr/>';
-		$aDebug[] = '<span class="notice"><b>Call -1: </b>' . str_replace(PATH_site, '/', $aTrace1['file']) . ':' . $aTrace1['line']  . ' | <b>' . $aTrace2['class'] . $aTrace2['type'] . 
+		$aDebug[] = '<span class="notice"><b>Call -1: </b>' . str_replace(PATH_site, '/', $aTrace1['file']) . ':' . $aTrace1['line']  . ' | <b>' . $aTrace2['class'] . $aTrace2['type'] .
 									$aTrace2['function'] . '</b></span><br />With parameters: ' . (!empty($aTrace2['args']) ? self::viewMixed($aTrace2['args']) : ' no parameters');
 		$aDebug[] = '<hr/>';
-		$aDebug[] = '<span class="notice"><b>Call -2: </b>' . str_replace(PATH_site, '/', $aTrace2['file']) . ':' . $aTrace2['line']  . ' | <b>' . $aTrace3['class'] . $aTrace3['type'] . 
+		$aDebug[] = '<span class="notice"><b>Call -2: </b>' . str_replace(PATH_site, '/', $aTrace2['file']) . ':' . $aTrace2['line']  . ' | <b>' . $aTrace3['class'] . $aTrace3['type'] .
 									$aTrace3['function'] . '</b></span><br />With parameters: ' . (!empty($aTrace3['args']) ? self::viewMixed($aTrace3['args']) : ' no parameters');
 		$aDebug[] = '<hr/>';
 		$aDebug[] = '<span class="notice"><b>Call -3: </b>' . str_replace(PATH_site, '/', $aTrace3['file']) . ':' . $aTrace3['line']  . ' | <b>' . $aTrace4['class'] .
@@ -465,19 +465,22 @@ MAYDAYPAGE;
 	 */
 	public static function getPidList($pid_list, $recursive=0)  {
 		tx_rnbase::load('tx_rnbase_util_Math');
-
-		if (!strcmp($pid_list, ''))
-			$pid_list = tx_rnbase_util_TYPO3::getTSFE(TRUE)->id;
+		if (!strcmp($pid_list, '')) {
+			$pid_list = tx_rnbase_util_TYPO3::getTSFE(true)->id;
+		}
 		$recursive = tx_rnbase_util_Math::intInRange($recursive, 0);
-
 		$pid_list_arr = array_unique(t3lib_div::trimExplode(',', $pid_list, 1));
-		$pid_list = array();
 
+		$pid_list = array();
 		foreach($pid_list_arr as $val)  {
 			$val = tx_rnbase_util_Math::intInRange($val, 0);
-			if ($val)       {
-				$_list = tslib_cObj::getTreeList(-1*$val, $recursive);
-				if ($_list)  $pid_list[] = $_list;
+			if ($val) {
+				/* @var $cObj tslib_cObj */
+				$cObj = tx_rnbase::makeInstance('tslib_cObj');
+				$_list = $cObj->getTreeList(-1 * $val, $recursive);
+				if ($_list) {
+					$pid_list[] = $_list;
+				}
 			}
 		}
 		return implode(',', $pid_list);
