@@ -573,7 +573,7 @@ class tx_rnbase_util_FormTool {
 	 * @param string $addParams Additional parameters to pass to the script.
 	 * @return array with keys 'menu' and 'value'
 	 */
-	public function showMenu($pid, $name, $modName, $entries, $script = '', $addparams = '') {
+	public static function showMenu($pid, $name, $modName, $entries, $script = '', $addparams = '') {
 		$MENU = Array (
 			$name => $entries
 		);
@@ -582,7 +582,7 @@ class tx_rnbase_util_FormTool {
 		);
 
 		$ret['menu'] = (tx_rnbase_util_TYPO3::isTYPO62OrHigher() && is_array($MENU[$name]) && count($MENU[$name]) == 1) ?
-				$this->buildDummyMenu('SET['.$name.']', $MENU[$name]) :
+				self::buildDummyMenu('SET['.$name.']', $MENU[$name]) :
 				t3lib_BEfunc::getFuncMenu(
 			$pid, 'SET['.$name.']', $SETTINGS[$name],
 			$MENU[$name], $script, $addparams
@@ -591,7 +591,7 @@ class tx_rnbase_util_FormTool {
 		return $ret;
   }
 
-	private function buildDummyMenu($elementName, $menuItems) {
+	private static function buildDummyMenu($elementName, $menuItems) {
 		// Ab T3 6.2 wird bei einem Menu-Eintrag keine Selectbox mehr erzeugt.
 		// Also sieht man nicht, wo man sich befindet. Somit wird eine Dummy-Box
 		// benötigt.
