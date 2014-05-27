@@ -25,9 +25,6 @@
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
 
-//tx_rnbase::load('tx_rnbase_configurations');
-require_once(t3lib_extMgm::extPath('cms') . 'tslib/class.tslib_content.php');
-
 
 class tx_rnbase_tests_configurations_testcase extends tx_phpunit_testcase {
   function test_tsSetup() {
