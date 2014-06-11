@@ -498,9 +498,10 @@ class tx_rnbase_util_DB {
 			reset($searchFields);
 			while(list(, $field)=each($searchFields))	{
 	  		list($tableAlias, $col) = explode('.', $field); // Split alias and column
-				$where_p[] = self::setSingleWhereField($tableAlias, $operator, $col, $val);
-//				$where_p[] = $field.' ' . $operator . ' \'%'.$val.'%\'';
-//				$where_p[] = 'FIND_IN_SET('.$val.', '.$prefixTableName.$field.')';
+				$wherePart = self::setSingleWhereField($tableAlias, $operator, $col, $val);
+				if (trim($wherePart) !== '') {
+					$where_p[] = $wherePart;
+				}
 			}
 		}
 		if (count($where_p))	{

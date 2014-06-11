@@ -51,7 +51,8 @@ class tx_rnbase_tests_util_DB_testcase extends tx_phpunit_testcase {
 
 	public function singleFieldWhereProvider() {
 		return array(
-			array(OP_LIKE, 'm', ' '),
+			array(OP_LIKE, 'm', ' '), // warum müssen mindestens 3 buchstaben vorliegen?
+			array(OP_LIKE, 'm & m', ' '), // warum wird alles verschluckt? ist das richtig?
 			array(OP_LIKE, 'my m', " (Table1.col1 LIKE '%my%') "),
 			array(OP_LIKE, 'my', " (Table1.col1 LIKE '%my%') "),
 			array(OP_LIKE, 'myValue', " (Table1.col1 LIKE '%myValue%') "),
@@ -68,10 +69,10 @@ class tx_rnbase_tests_util_DB_testcase extends tx_phpunit_testcase {
 
 		$ret = tx_rnbase_util_DB::searchWhere('23', 'tab1.single', 'FIND_IN_SET_OR');
 		$this->assertEquals(" (FIND_IN_SET('23', tab1.single))", $ret, 'FIND_IN_SET failed.');
-		
+
 		$ret = tx_rnbase_util_DB::searchWhere('23', 't1.club,t2.club', OP_IN_INT);
 		$this->assertEquals(" (t1.club IN (23) OR t2.club IN (23) )", $ret, 'FIND_IN_SET failed.');
-		
+
 
 		$ret = tx_rnbase_util_DB::searchWhere($sw, $fields, OP_EQ);
 //		$this->debugString($ret);
@@ -79,7 +80,7 @@ class tx_rnbase_tests_util_DB_testcase extends tx_phpunit_testcase {
 
 		$ret = tx_rnbase_util_DB::searchWhere($sw.', 32', $fields, 'FIND_IN_SET_OR');
 		$this->assertEquals($ret, " (FIND_IN_SET('content', tab1.bodytext) OR FIND_IN_SET('content', tab1.header) OR FIND_IN_SET('management', tab1.bodytext) OR FIND_IN_SET('management', tab1.header) OR FIND_IN_SET('system', tab1.bodytext) OR FIND_IN_SET('system', tab1.header) OR FIND_IN_SET('32', tab1.bodytext) OR FIND_IN_SET('32', tab1.header))", 'FIND_IN_SET failed');
-		
+
 		$ret = tx_rnbase_util_DB::searchWhere($sw, $fields, 'LIKE');
 		$this->assertEquals($ret, " (tab1.bodytext LIKE '%content%' OR tab1.header LIKE '%content%') AND  (tab1.bodytext LIKE '%management%' OR tab1.header LIKE '%management%') AND  (tab1.bodytext LIKE '%system%' OR tab1.header LIKE '%system%')", 'LIKE failed.');
 
@@ -95,7 +96,7 @@ class tx_rnbase_tests_util_DB_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	 * 
+	 *
 	 * @deprecated use tx_rnbase_util_Strings::debugString
 	 */
 	public static function debugString($str) {
