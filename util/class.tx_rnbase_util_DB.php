@@ -166,6 +166,9 @@ class tx_rnbase_util_DB {
 				self::lookupLanguage($row, $tableName, $sysPage, $arr);
 				if(!is_array($row)) continue;
 				$item = ($wrapper) ? tx_rnbase::makeInstance($wrapper, $row) : $row;
+				if ($item instanceof tx_rnbase_model_base) {
+					$item->setTablename($tableName);
+				}
 				if($callback) {
 					call_user_func($callback, $item);
 					unset($item);

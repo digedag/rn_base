@@ -58,6 +58,12 @@ class tx_rnbase_model_base implements tx_rnbase_IModel {
 	var $uid;
 	var $record;
 
+	/**
+	 *
+	 * @var string|0
+	 */
+	private $tableName = 0;
+
 	function tx_rnbase_model_base($rowOrUid) {
 		$this->init($rowOrUid);
 	}
@@ -128,12 +134,21 @@ class tx_rnbase_model_base implements tx_rnbase_IModel {
 		$this->record = tx_rnbase_util_DB::getRecord($this->getTableName(), $this->getUid());
 	}
 	/**
-	 * Kindklassen müssen diese Methode überschreiben und den Namen der gemappten Tabelle liefern!
+	 * Liefert den aktuellen Tabellenname
 	 * @return Tabellenname als String
 	 */
 	function getTableName() {
-		return 0;
+		return $this->tableName;
 	}
+	/**
+	 * Setzt den aktuellen Tabellenname
+	 *
+	 * @return string
+	 */
+	function setTableName($tableName = 0) {
+		$this->tableName = $tableName;
+	}
+
 	/**
 	 * Check if this record is valid. If FALSE, the record is maybe deleted in database.
 	 *
