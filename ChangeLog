@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v0.14.2 (??.07.2014)
+ * New method model_Base::setTableName(). Thanks to Christian Riesche!
+
 v0.14.1 (26.04.2014)
  * Changes to apply code conventions
 
