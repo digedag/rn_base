@@ -57,7 +57,7 @@ class tx_rnbase_util_ListBuilder {
 	public function renderEach(tx_rnbase_util_IListProvider $provider, $viewData, $template, $markerClassname, $confId, $marker, $formatter, $markerParams = NULL) {
 		$viewData = is_object($viewData) ? $viewData : new ArrayObject();
 		$debugKey = $formatter->getConfigurations()->get($confId.'_debuglb');
-		$debug = ($debugKey && ($debugKey==='1' || 
+		$debug = ($debugKey && ($debugKey==='1' ||
 				($_GET['debug'] && array_key_exists($debugKey, array_flip(t3lib_div::trimExplode(',', $_GET['debug'])))) ||
 				($_POST['debug'] && array_key_exists($debugKey, array_flip(t3lib_div::trimExplode(',', $_POST['debug']))))
 				)
@@ -84,7 +84,7 @@ class tx_rnbase_util_ListBuilder {
 			$charPointer = $viewData->offsetGet('charpointer');
 			$subpartArray['###CHARBROWSER###'] = tx_rnbase_util_BaseMarker::fillCharBrowser(
 														tx_rnbase_util_Templates::getSubpart($template, '###CHARBROWSER###'),
-														$markerArray, $pagerData, $charPointer, 
+														$markerArray, $pagerData, $charPointer,
 														$formatter->getConfigurations(), $confId.'charbrowser.');
 
 			$listMarker->addVisitors($this->visitors);
@@ -98,11 +98,13 @@ class tx_rnbase_util_ListBuilder {
 					$subpartArray['###PAGEBROWSER###'] = tx_rnbase_util_BaseMarker::fillPageBrowser(
 									t3lib_parsehtml::getSubpart($template, '###PAGEBROWSER###'),
 									$pageBrowser, $formatter, $confId.'pagebrowser.');
-					$markerArray['###'.$marker.'COUNT###'] = $pageBrowser->getListSize();
+					$listSize = $pageBrowser->getListSize();
 				}
 				else {
-					$markerArray['###'.$marker.'COUNT###'] = $ret['size'];
+					$listSize = $ret['size'];
 				}
+				$markerArray['###'.$marker.'COUNT###'] = $formatter->wrap($listSize, $confId.'count.');
+
 				$out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($templateList, $markerArray, $subpartArray);
 			}
 			else {
@@ -144,7 +146,7 @@ class tx_rnbase_util_ListBuilder {
 		}
 		return $out;
 	}
-	
+
 	/**
 	 * Render an array of data entries with an html template. The html template should look like this:
 	 * ###DATAS###
@@ -156,7 +158,7 @@ class tx_rnbase_util_ListBuilder {
 	 * ###DATAEMPTYLIST###
 	 * ###DATAS###
 	 * We have some conventions here:
-	 * The given parameter $marker should be named 'DATA' for this example. The the list subpart 
+	 * The given parameter $marker should be named 'DATA' for this example. The the list subpart
 	 * is experted to be named '###'.$marker.'S###'. Please notice the trailing S!
 	 * If you want to render a pagebrowser add it to the $viewData with key 'pagebrowser'.
 	 * A filter will be detected and rendered too. It should be available in $viewData with key 'filter'.
@@ -174,7 +176,7 @@ class tx_rnbase_util_ListBuilder {
 
 		$viewData = is_object($viewData) ? $viewData : new ArrayObject();
 		$debugKey = $formatter->getConfigurations()->get($confId.'_debuglb');
-		$debug = ($debugKey && ($debugKey==='1' || 
+		$debug = ($debugKey && ($debugKey==='1' ||
 				($_GET['debug'] && array_key_exists($debugKey, array_flip(t3lib_div::trimExplode(',', $_GET['debug'])))) ||
 				($_POST['debug'] && array_key_exists($debugKey, array_flip(t3lib_div::trimExplode(',', $_POST['debug']))))
 				)
@@ -190,7 +192,7 @@ class tx_rnbase_util_ListBuilder {
 		while($templateList = t3lib_parsehtml::getSubpart($template, '###'.$outerMarker.'S###')) {
 			if(is_array($dataArr) && count($dataArr)) {
 				$listMarker = tx_rnbase::makeInstance('tx_rnbase_util_ListMarker', $this->info->getListMarkerInfo());
-	
+
 				$templateEntry = t3lib_parsehtml::getSubpart($templateList, '###'.$marker.'###');
 				$offset = 0;
 				$pageBrowser =& $viewData->offsetGet('pagebrowser');
@@ -198,7 +200,7 @@ class tx_rnbase_util_ListBuilder {
 					$state = $pageBrowser->getState();
 					$offset = $state['offset'];
 				}
-	
+
 				$listMarker->addVisitors($this->visitors);
 				$out = $listMarker->render($dataArr, $templateEntry, $markerClassname,
 						$confId, $marker, $formatter, $markerParams, $offset);
@@ -209,17 +211,19 @@ class tx_rnbase_util_ListBuilder {
 					$subpartArray['###PAGEBROWSER###'] = tx_rnbase_util_BaseMarker::fillPageBrowser(
 									t3lib_parsehtml::getSubpart($template, '###PAGEBROWSER###'),
 									$pageBrowser, $formatter, $confId.'pagebrowser.');
-					$markerArray['###'.$marker.'COUNT###'] = $pageBrowser->getListSize();
+					$listSize = $pageBrowser->getListSize();
 				}
 				else {
-					$markerArray['###'.$marker.'COUNT###'] = count($dataArr);
+					$listSize = count($dataArr);
 				}
+				$markerArray['###'.$marker.'COUNT###'] = $formatter->wrap($listSize, $confId.'count.');
+
 				// charbrowser
 				$pagerData = $viewData->offsetGet('pagerData');
 				$charPointer = $viewData->offsetGet('charpointer');
 				$subpartArray['###CHARBROWSER###'] = tx_rnbase_util_BaseMarker::fillCharBrowser(
 															tx_rnbase_util_Templates::getSubpart($template, '###CHARBROWSER###'),
-															$markerArray, $pagerData, $charPointer, 
+															$markerArray, $pagerData, $charPointer,
 															$formatter->getConfigurations(), $confId.'charbrowser.');
 
 				$out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($templateList, $markerArray, $subpartArray);
@@ -272,7 +276,7 @@ class tx_rnbase_util_ListBuilder {
 	protected function getOuterMarker($marker, $template) {
 		$outerMarker = $marker;
 		$len = strlen($marker)-1;
-		if($marker{$len} == 'Y' && 
+		if($marker{$len} == 'Y' &&
 			!tx_rnbase_util_BaseMarker::containsMarker($template, $marker.'S###')) {
 			$outerMarker = substr($marker, 0, $len).'IE';
 		}
