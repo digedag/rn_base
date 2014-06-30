@@ -404,7 +404,7 @@ class tx_rnbase_util_FormTool {
 		// Die Options ermitteln
 		foreach($TCA[$table]['columns'][$column]['config']['items'] As $item){
 			$sel = '';
-			if (intval($value) == intval($item[1])) $sel = 'selected="selected"';
+			if ($value === $item[1]) $sel = 'selected="selected"';
 			$out .= '<option value="' . $item[1] . '" ' . $sel . '>' . $LANG->sL($item[0]) . '</option>';
 		}
 		$out .= '
