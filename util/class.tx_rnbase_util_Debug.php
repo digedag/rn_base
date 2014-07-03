@@ -36,8 +36,8 @@ class tx_rnbase_util_Debug {
 	 * Prints $var in bold between two vertical lines
 	 * If not $var the word 'debug' is printed
 	 * If $var is an array, the array is printed by t3lib_div::print_array()
-	 * Wrapper method for TYPO3 debug methods 
-	 * 
+	 * Wrapper method for TYPO3 debug methods
+	 *
 	 * @param	mixed		Variable to print
 	 * @param	string		The header.
 	 * @param	string		Group for the debug console
@@ -67,18 +67,75 @@ class tx_rnbase_util_Debug {
 			return t3lib_div::view_array($array_in);
 		}
 	}
-	
+
 	/**
 	 * @return string
 	 */
 	public static function getDebugTrail() {
 		tx_rnbase::load('tx_rnbase_util_TYPO3');
 		if(tx_rnbase_util_TYPO3::isTYPO45OrHigher()) {
-			return t3lib_utility_Debug::debugTrail(); 
+			return t3lib_utility_Debug::debugTrail();
 		} elseif (is_callable(array('t3lib_div', 'debug_trail'))) {
 			return t3lib_div::debug_trail();
 		}
 	}
+
+	/**
+	 *
+	 * @param string $text
+	 * @param string $debug
+	 */
+	public static function wrapDebugInfo($text, $debug, array $options = array()) {
+		if (!empty($options['plain'])) {
+			return $text . '[' . $debug . ']';
+		}
+		self::addDebugInfoHeaderData();
+		$out  = '<span class="rnbase-debug-text">';
+		$out .= 	'<span class="rnbase-debug-info">';
+		$out .= 		is_scalar($debug) ? $debug : var_export($debug, true);
+		$out .= 	'</span> ';
+		$out .= 	$text;
+		$out .= '</span> ';
+		return $out;
+	}
+	/**
+	 * Adds the CSS for the hidden debug info wrap for self::wrapDebugInfo
+	 */
+	private static function addDebugInfoHeaderData() {
+		static $added = false;
+		if ($added) {
+			return;
+		}
+		$added = true;
+		// javascript für das autocpmplete
+		$code  = '';
+		$code .= '<style type="text/css">';
+		$code .= '
+			.rnbase-debug-text {
+				border: 1px solid red;
+				padding: 3px 4px;
+				position: relative;
+			}
+			.rnbase-debug-info {
+				display: none;
+				background: #fff;
+				border: 1px solid red;
+				font-size: 10px;
+				line-height: 12px;
+				color: red;
+				padding: 2px 4px;
+				position: absolute;
+				left: -1px;
+				top: -18px;
+			}
+			.rnbase-debug-text:hover > .rnbase-debug-info {
+				display: block;
+			}
+		';
+		$code .= '</style>';
+		$GLOBALS['TSFE']->additionalHeaderData['rnbase-debug-info'] = $code;
+	}
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Debug.php']) {
