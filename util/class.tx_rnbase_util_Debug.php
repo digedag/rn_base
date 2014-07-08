@@ -81,6 +81,35 @@ class tx_rnbase_util_Debug {
 	}
 
 	/**
+	 * Prüft, ob per Parameter oder Konfiguration der Debug für die Labels aktiv ist.
+	 *
+	 * @param tx_rnbase_configurations $configurations
+	 * @return boolean
+	 */
+	public static function isLabelDebugEnabled(
+		tx_rnbase_configurations $configurations = NULL
+	) {
+		static $status = array();
+		// check global debug params
+		if (!isset($status['global'])) {
+			$status['global'] = empty($_GET['labeldebug']) ? FALSE : $_GET['labeldebug'];
+		}
+		if ($status['global']) {
+			return $status['global'];
+		}
+		// check plugin debug config
+		if ($configurations instanceof tx_rnbase_configurations) {
+			$pluginId = $configurations->getPluginId();
+			if (!isset($status[$pluginId])) {
+				$status[$pluginId] = $configurations->get('labeldebug');
+			}
+			return empty($status[$pluginId]) ? FALSE : $status[$pluginId];
+		}
+		// no debug!
+		return FALSE;
+	}
+
+	/**
 	 *
 	 * @param string $text
 	 * @param string $debug
