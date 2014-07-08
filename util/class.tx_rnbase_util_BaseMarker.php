@@ -353,11 +353,6 @@ class tx_rnbase_util_BaseMarker {
 			}
 			elseif(preg_match('/LABEL_.*/', $marker)) {
 				$markerArray['###'.$marker.'###'] = $formatter->getConfigurations()->getLL(strtolower($marker));
-				if (tx_rnbase_util_Debug::isLabelDebugEnabled()) {
-					$markerArray['###'.$marker.'###'] = tx_rnbase_util_Debug::wrapDebugInfo(
-						$markerArray['###'.$marker.'###'], strtolower($marker)
-					);
-				}
 			}
 		}
 	}
