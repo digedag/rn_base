@@ -116,7 +116,7 @@ class tx_rnbase_util_Debug {
 	 */
 	public static function wrapDebugInfo($text, $debug, array $options = array()) {
 		if (!empty($options['plain'])) {
-			return $text . '[' . $debug . ']';
+			return $text . ' [' . $debug . ']';
 		}
 		self::addDebugInfoHeaderData();
 		$out  = '<span class="rnbase-debug-text">';
