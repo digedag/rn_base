@@ -432,7 +432,7 @@ class tx_rnbase_util_FormTool {
 		// Die Options ermitteln
 		foreach($arr As $key => $val) {
 			$sel = '';
-			if (intval($value) == intval($key)) $sel = 'selected="selected"';
+			if ($value == $key) $sel = 'selected="selected"';
 			$out .= '<option value="' . $key . '" ' . $sel . '>' . $val . '</option>';
 		}
 		$out .= '
