@@ -81,10 +81,31 @@ class tx_rnbase_util_Debug {
 	}
 
 	/**
+	 * Checks, if the debug output is anabled.
+	 * the given key has to match with the key from the extconf.
+	 *
+	 * @return boolean
+	 */
+	public static function isDebugEnabled($key = NULL) {
+		static $debugKey = NULL;
+		if ($debugKey === NULL) {
+			tx_rnbase::load('tx_rnbase_configurations');
+			$debugKey = tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'debugKey');
+		}
+		if (empty($debugKey)) {
+			return FALSE;
+		}
+		if ($key === NULL) {
+			$key = $_GET['debug'];
+		}
+		return $debugKey === $key;
+	}
+
+	/**
 	 * Prüft, ob per Parameter oder Konfiguration der Debug für die Labels aktiv ist.
 	 *
 	 * @param tx_rnbase_configurations $configurations
-	 * @return boolean
+	 * @return boolean or string with debug type (plain, html)
 	 */
 	public static function isLabelDebugEnabled(
 		tx_rnbase_configurations $configurations = NULL
@@ -92,7 +113,8 @@ class tx_rnbase_util_Debug {
 		static $status = array();
 		// check global debug params
 		if (!isset($status['global'])) {
-			$status['global'] = empty($_GET['labeldebug']) ? FALSE : $_GET['labeldebug'];
+			$status['global'] = !empty($_GET['labeldebug']) && self::isDebugEnabled()
+				? $_GET['labeldebug'] : self::isDebugEnabled();
 		}
 		if ($status['global']) {
 			return $status['global'];
@@ -138,7 +160,6 @@ class tx_rnbase_util_Debug {
 		$added = true;
 		// javascript für das autocpmplete
 		$code  = '';
-		$code .= '<style type="text/css">';
 		$code .= '
 			.rnbase-debug-text {
 				border: 1px solid red;
@@ -161,8 +182,13 @@ class tx_rnbase_util_Debug {
 				display: block;
 			}
 		';
-		$code .= '</style>';
-		$GLOBALS['TSFE']->additionalHeaderData['rnbase-debug-info'] = $code;
+		if (TYPO3_MODE === 'BE') {
+			// @TODO: this is too late, for the most cases!
+			$GLOBALS['TBE_STYLES']['inDocStyles_TBEstyle'] .= $code;
+		} else {
+			$code = '<style type="text/css">' . $code . '</style>';
+			$GLOBALS['TSFE']->additionalHeaderData['rnbase-debug-info'] = $code;
+		}
 	}
 
 }
