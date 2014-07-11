@@ -27,3 +27,6 @@ activateCache = 0
 
   # cat=basic//10; type=boolean; label= Activate substituteMarkerArrayCache: The use of subtituteMarkerArrayCached is bad, so the substituteMarkerArrayCache should be disabled. If active and there was complex data, it will quickly fill the cache and lead to performance and memory problems (keyword - nested calls).
 activateSubstCache = 0
+
+  # cat=basic//10; type=string; label= Debug-Key: This key has to match with the debug-parameter, to enable some debugs.
+debugKey = 
