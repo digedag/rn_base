@@ -350,7 +350,10 @@ class tx_rnbase_configurations {
 	 * This is a reimplementation from tslib_pibase::pi_getLL().
 	 */
 	public function getLL($key, $alt='', $hsc=FALSE) {
-		return $this->localLangUtil->getLL($key, $alt, $hsc);
+		return $this->localLangUtil->getLL(
+			$key, $alt, $hsc,
+			tx_rnbase_util_Debug::isLabelDebugEnabled($this)
+		);
 	}
 
 

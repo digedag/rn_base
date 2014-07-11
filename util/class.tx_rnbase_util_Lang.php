@@ -103,8 +103,8 @@ class tx_rnbase_util_Lang {
 					if (!is_array($llV)) {
 						$this->LOCAL_LANG[$k][$llK] = $llV;
 						if ($k != 'default') {
-							// For labels coming from the TypoScript (database) the charset is assumed to 
-							// be "forceCharset" and if that is not set, assumed to be that of the individual 
+							// For labels coming from the TypoScript (database) the charset is assumed to
+							// be "forceCharset" and if that is not set, assumed to be that of the individual
 							// system languages (thus no conversion)
 							$this->LOCAL_LANG_charset[$k][$llK] = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
 						}
@@ -149,8 +149,18 @@ class tx_rnbase_util_Lang {
 	 * Returns the localized label of the LOCAL_LANG key.
 	 * This is a reimplementation from tslib_pibase::pi_getLL().
 	 */
-	public function getLL($key, $alt='', $hsc=FALSE) {
-		return tx_rnbase_util_TYPO3::isTYPO46OrHigher() ? $this->getLL46($key, $alt, $hsc) : $this->getLL40($key, $alt, $hsc);
+	public function getLL($key, $alt='', $hsc=FALSE, $labelDebug=FALSE) {
+		$label = tx_rnbase_util_TYPO3::isTYPO46OrHigher() ? $this->getLL46($key, $alt, $hsc) : $this->getLL40($key, $alt, $hsc);
+		if ($labelDebug) {
+			$options = array();
+			if ($labelDebug !== 'html') {
+				$options['plain'] = TRUE;
+			}
+			$label = tx_rnbase_util_Debug::wrapDebugInfo(
+				$label, strtolower($key), $options
+			);
+		}
+		return $label;
 	}
 
 	private function getLL46($key, $alternativeLabel = '', $hsc = FALSE) {
@@ -196,11 +206,11 @@ class tx_rnbase_util_Lang {
 		if(!strcmp(substr($key, 0, 4), 'LLL:')) {
 			return $GLOBALS['TSFE']->sL($key);
 		}
-		
+
 		if (isset($this->LOCAL_LANG[$this->getLLKey()][$key])) {
 			$tsfe = tx_rnbase_util_TYPO3::getTSFE(TRUE);
 			// The "from" charset is normally empty and thus it will convert from the charset of the system language, but if it is set (see ->pi_loadLL()) it will be used.
-			$word = $tsfe->csConv($this->LOCAL_LANG[$this->getLLKey()][$key], $this->LOCAL_LANG_charset[$this->getLLKey()][$key]); 
+			$word = $tsfe->csConv($this->LOCAL_LANG[$this->getLLKey()][$key], $this->LOCAL_LANG_charset[$this->getLLKey()][$key]);
 		} elseif ($this->getLLKey(TRUE) && isset($this->LOCAL_LANG[$this->getLLKey(TRUE)][$key]))   {
 			$tsfe = tx_rnbase_util_TYPO3::getTSFE(TRUE);
 			// The "from" charset is normally empty and thus it will convert from the charset of the system language, but if it is set (see ->pi_loadLL()) it will be used.
