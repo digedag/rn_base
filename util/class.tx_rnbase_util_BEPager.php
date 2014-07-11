@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008 Rene Nitzsche (rene@system25.de)
+*  (c) 2008-2014 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -33,7 +33,7 @@ class tx_rnbase_util_BEPager {
 	var $listSize;
 	var $settings;
 	var $init = FALSE;
-	function tx_rnbase_util_BEPager($id, $modName, $pid, $listSize=0, $conf = array()) {
+	function __construct($id, $modName, $pid, $listSize=0, $conf = array()) {
 		$this->id = strlen(trim($id)) ? trim($id) : 'pager';
 		$this->pid = $pid;
 		$this->modName = $modName;
@@ -69,7 +69,7 @@ class tx_rnbase_util_BEPager {
 	 * @return array
 	 */
 	function getLimits() {
-		return is_array($this->conf['limits']) ? $this->conf['limits'] : 
+		return is_array($this->conf['limits']) ? $this->conf['limits'] :
 				array('10' => '10 Einträge', '25' => '25 Einträge', '50' => '50 Einträge', '100' => '100 Einträge');
 	}
 	function setState() {
@@ -82,8 +82,11 @@ class tx_rnbase_util_BEPager {
 		$count = $this->listSize;
 		$results_at_a_time = $this->getSetting('limit');
 		$totalPages = ceil($count / $results_at_a_time);
+		// Wir zeigen erstmal maximal 200 Einträge in diesem Menu. Bei sehr großen Listen
+		// kommt es sonst zu Speicher-Problemen
 		$pages = array();
 		for($i=0; $i<$totalPages; $i++) {
+			if($i > 200) break;
 			$pages[$i * $results_at_a_time] = 'Seite '. $i;
 		}
 		$menu = tx_rnbase_util_FormTool::showMenu($this->pid, $this->getDataName().'_offset', $this->modName, $pages);
@@ -96,7 +99,7 @@ class tx_rnbase_util_BEPager {
 	 * und die Seitenauswahl. Das Rückgabearray hat zwei Keys: pager und options
 	 * @return array
 	 */
-	function render() {
+	public function render() {
 		$this->setState();
 		$ret['limits'] = $this->getSetting('limitMenu');
 		$ret['pages'] = $this->getSetting('offsetMenu');
@@ -111,4 +114,3 @@ class tx_rnbase_util_BEPager {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_BEPager.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_BEPager.php']);
 }
-?>
