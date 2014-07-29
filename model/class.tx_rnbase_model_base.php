@@ -22,10 +22,10 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
+tx_rnbase::load('tx_rnbase_model_data');
 // Die Datenbank-Klasse
 tx_rnbase::load('tx_rnbase_util_DB');
-tx_rnbase::load('tx_rnbase_util_Misc');
 
 
 /**
@@ -53,10 +53,9 @@ interface tx_rnbase_IModel {
  * in den Instanzvariablen $uid und $record abgelegt. Diese beiden Variablen sind also immer
  * verfügbar. Der Umfang von $record kann aber je nach Aufruf unterschiedlich sein!
  */
-class tx_rnbase_model_base implements tx_rnbase_IModel {
+class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IModel {
 
 	var $uid;
-	var $record;
 
 	/**
 	 *
@@ -167,19 +166,43 @@ class tx_rnbase_model_base implements tx_rnbase_IModel {
 	}
 
 	/**
+	 * Ist der Datensatz als gelöscht markiert?
+	 * Wenn es keine Spalte oder TCA gibt, is es nie gelöscht!
+	 *
+	 * @return boolean
+	 */
+	public function isDeleted() {
+		$tableName = $this->getTableName();
+		$field = empty($GLOBALS['TCA'][$tableName]['ctrl']['delete'])
+			? 'deleted'
+			: $GLOBALS['TCA'][$tableName]['ctrl']['delete']
+		;
+		$value = $this->hasProperty($field) ? (int) $this->getProperty($field) : 0;
+		return $value > 0;
+	}
+
+	/**
+	 * Ist der Datensatz als gelöscht markiert?
+	 * Wenn es keine Spalte oder TCA gibt, is es nie gelöscht!
+	 *
+	 * @return boolean
+	 */
+	public function isHidden() {
+		$tableName = $this->getTableName();
+		$field = empty($GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns']['disabled'])
+			? 'hidden'
+			: $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns']['disabled']
+		;
+		$value = $this->hasProperty($field) ? (int) $this->getProperty($field) : 0;
+		return $value > 0;
+	}
+
+	/**
 	 * Returns the record
 	 * @return array
 	 */
-	function getRecord() { return $this->record; }
-
-	public function __call($methodName, $parameters){
-		if (strlen($methodName) > 3 && substr($methodName, 0, 3) === 'get'){
-			// simple getter
-			$propertyName = substr($methodName, 3);
-			$value = tx_rnbase_util_Misc::camelCaseToLowerCaseUnderscored($propertyName);
-			return $this->record[$value];
-		}
-		throw new Exception('Sorry, the model "'.get_class($this).'" does not support the method "' . $methodName . '".', 1370258960);
+	function getRecord() {
+		return $this->record;
 	}
 
 	/**
@@ -224,14 +247,6 @@ class tx_rnbase_model_base implements tx_rnbase_IModel {
 		return $formatter->wrap($this->record[$columnName], $baseConfId . $colConfId);
 	}
 
-	function __toString() {
-		$out = get_class($this). "\n\nRecord:\n";
-		while (list($key, $val)=each($this->record))	{
-			$out .= $key. ' = ' . $val . "\n";
-		}
-		reset($this->record);
-		return $out; //t3lib_div::view_array($this->record);
-	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/model/class.tx_rnbase_model_base.php']) {
