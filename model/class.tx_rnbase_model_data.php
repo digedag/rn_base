@@ -68,6 +68,15 @@ class tx_rnbase_model_data {
 	}
 
 	/**
+	 *
+	 * @param array $data
+	 * @return tx_rnbase_model_data
+	 */
+	public static function getInstance(array $data) {
+		return tx_rnbase::makeInstance('tx_rnbase_model_data', $data);
+	}
+
+	/**
 	 * Setzt einen Wert oder ersetzt alle Werte
 	 *
 	 * @param string|array $property
@@ -165,7 +174,7 @@ class tx_rnbase_model_data {
 		throw new Exception(
 			'Sorry, Invalid method ' . get_class($this) . '::' . $method .
 			'(' . print_r($args, 1) . ').',
-			1370258960
+			1406625817
 		);
 	}
 
