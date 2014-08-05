@@ -222,9 +222,14 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 			$listSize = intval($options['limit']);
 			if(!$listSize) {
 				// Mit Pagebrowser benötigen wir zwei Zugriffe, um die Gesamtanzahl der Items zu ermitteln
-				$options['count']= 1;
+				$pageBrowserOptions = $options;
+				$pageBrowserOptions['count'] = 1;
+				// eigenes what?
+				if ($configurations->get($confid . 'what')) {
+					$pageBrowserOptions['what'] = $configurations->get($confid . 'what');
+				}
 
-				$listSize = call_user_func($searchCallback, $fields, $options);
+				$listSize = call_user_func($searchCallback, $fields, $pageBrowserOptions);
 				//$listSize = $service->search($fields, $options);
 				unset($options['count']);
 			}
@@ -356,7 +361,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 			unset($ret['0-9']);
 			$ret['0-9'] = $specials;
 		}
-		
+
 		$current = 0;
 		if(count($ret)) {
 			$keys = array_keys($ret);
