@@ -29,7 +29,7 @@ tx_rnbase::load('tx_rnbase_util_BaseMarker');
  * A generic marker class.
  *
  * @author Rene Nitzsche <rene@system25.de>
- * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
+ * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 	public function __construct($options = array()) {
@@ -160,7 +160,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 	/**
 	 * Links vorbereiten
 	 *
-	 * @param tx_cfcleague_models_Stadium $item
+	 * @param tx_rnbase_model_base $item
 	 * @param string $marker
 	 * @param array $markerArray
 	 * @param array $wrappedSubpartArray

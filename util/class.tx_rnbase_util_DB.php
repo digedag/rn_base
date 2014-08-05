@@ -114,7 +114,10 @@ class tx_rnbase_util_DB {
 			// Muss aus dem ResultSet ggf. Datensätze entfernen.
 			$enableFields = $sysPage->enableFields($tableName, $mode, $ignoreArr);
 			// Wir setzen zusätzlich pid >=0, damit Version-Records nicht erscheinen
-			$enableFields .= ' AND '.$tableName.'.pid >=0';
+			// allerdings nur, wenn die Tabelle versionierbar ist!
+			if (!empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS'])) {
+				$enableFields .= ' AND '.$tableName.'.pid >=0';
+			}
 			// Replace tablename with alias
 			if($tableAlias)
 				$enableFields = str_replace($tableName, $tableAlias, $enableFields);
