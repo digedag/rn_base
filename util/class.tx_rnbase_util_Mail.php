@@ -25,11 +25,14 @@
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
 tx_rnbase::load('tx_rnbase_util_TYPO3');
+tx_rnbase::load('tx_rnbase_util_Logger');
+
 
 /**
  * Encapsulate simple mailing functionality of TYPO3 for backward compatibility.
  */
 class tx_rnbase_util_Mail {
+	private $attachments = array();
 
 	/**
 	 * Makes debug output
@@ -69,9 +72,13 @@ class tx_rnbase_util_Mail {
 	public function setHtmlPart($part) {
 		$this->htmlPart = $part;
 	}
+	public function addAttachment($src, $filename='', $contentType='') {
+		$this->attachments[] = array('src'=>$src, 'filename'=>$filename, 'contentType'=>$contentType);
+	}
 	/**
 	 */
 	protected function send40() {
+		/* @var $mail t3lib_htmlmail */
 		$mail = t3lib_div::makeInstance('t3lib_htmlmail');
 		$mail->start();
 		$mail->subject         = $this->subject;
@@ -83,6 +90,18 @@ class tx_rnbase_util_Mail {
 			$mail->addPlain($this->textPart);
 		if($this->htmlPart)
 			$mail->setHTML($this->htmlPart);
+		if(!empty($this->attachments)) {
+			// Hier können nur vorhandene Dateien verschickt werden.
+			foreach ($this->attachments AS $attachment) {
+				if(!$mail->addAttachment($attachment['src'])) {
+					tx_rnbase_util_Logger::warn('Adding attachment failed!', 'rn_base', 
+						array('subject'=>$mail->subject, 'to'=>$this->toAsString, 'attachment'=>$attachment));
+				}
+				
+			}
+		}
+		tx_rnbase_util_Debug::debug($mail, __FILE__.':'.__LINE__); // TODO: remove me
+		return ;
 		$mail->send($this->toAsString);
 	}
 	protected function send45() {
@@ -97,6 +116,11 @@ class tx_rnbase_util_Mail {
 		// Add alternative parts with addPart()
 		if($this->textPart)
 			$mail->addPart($this->textPart, 'text/plain');
+		if(!empty($this->attachments)) {
+			foreach ($this->attachments AS $attachment) {
+				// TODO!
+			}
+		}
 
 		$mail->send();
 	}
