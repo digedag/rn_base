@@ -100,8 +100,6 @@ class tx_rnbase_util_Mail {
 				
 			}
 		}
-		tx_rnbase_util_Debug::debug($mail, __FILE__.':'.__LINE__); // TODO: remove me
-		return ;
 		$mail->send($this->toAsString);
 	}
 	protected function send45() {
