@@ -143,6 +143,11 @@ class tx_rnbase_util_Files {
 	 * @return boolean TRUE, if zip file was created
 	 */
 	public static function makeZipFile($files = array(), $destination = '', $overwrite = FALSE) {
+		if(!extension_loaded('zip')) {
+			tx_rnbase::load('tx_rnbase_util_Logger');
+			tx_rnbase_util_Logger::warn('PHP zip extension not loaded!', 'rn_base');
+			return false;
+		}
 		//if the zip file already exists and overwrite is FALSE, return FALSE
 		if(file_exists($destination) && !$overwrite) { return FALSE; }
 
