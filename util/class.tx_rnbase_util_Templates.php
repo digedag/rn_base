@@ -48,7 +48,7 @@ class tx_rnbase_util_Templates {
 	/**
 	 * @return t3lib_TStemplate
 	 */
-	private static function getTSTemplate() {
+	public static function getTSTemplate() {
 		if(!is_object(self::$tmpl)) {
 			if($GLOBALS['TSFE']->tmpl) {
 				self::$tmpl = $GLOBALS['TSFE']->tmpl;
@@ -76,15 +76,73 @@ class tx_rnbase_util_Templates {
 			$file = PATH_site.$file; // Im BE auf absoluten Pfad setzen
 
 		$templateCode = t3lib_div::getURL($file);
-		if(!$templateCode) throw new Exception('File not found: '. htmlspecialchars($file));
+		if(!$templateCode) throw new Exception('File not found: '. htmlspecialchars($fileName));
 		$template = self::getSubpart($templateCode, $subpart);
 		if(!$template) throw new Exception('Subpart not found! File: '. htmlspecialchars($file) . ' Subpart: ' . htmlspecialchars($subpart));
 		return $template;
 	}
+
+	/**
+	 * check the template for includes
+	 *
+	 * Examples: (the @ seperates the file from the subpart)
+	 *     <!--
+	 *         Subtemplate fuer dam einbinden
+	 *         ###INCLUDE_TEMPLATE typo3conf/ext/rn_base/res/simplegallery.html@DAM_IMAGES###
+	 *         und eingebunden
+	 *     -->
+	 *     or
+	 *     <!-- ### INCLUDE_TEMPLATE EXT:rn_base/res/simplegallery.html@DAM_IMAGES ### -->
+	 *
+	 * @param string $template
+	 * @return string
+	 */
+	public static function includeSubTemplates($template)
+	{
+		// check cache for the template
+		tx_rnbase::load('tx_rnbase_cache_Manager');
+		$cache = tx_rnbase_cache_Manager::getCache('rnbase');
+		$cacheKey = 'includeSubTemplateFor_' . md5($template);
+		$included = $cache->get($cacheKey);
+
+		// search and replace the subparts
+		if (empty($included)) {
+			$included = preg_replace_callback(
+				'!\<\!--[a-zA-Z0-9_ \s]*###[ ]*INCLUDE_TEMPLATE([^###]*)\###[a-zA-Z0-9_ \s]*-->!is',
+				array(self, 'cbIncludeSubTemplates'),
+				$template
+			);
+			// store the template in the cache
+			$cache->set($cacheKey, $included);
+		}
+		return $included;
+	}
+
+	/**
+	 * This callback is called by the includeSubTemplates preg_replace
+	 *
+	 * @access private
+	 *
+	 * @param unknown $match
+	 * @return string
+	 */
+	public static function cbIncludeSubTemplates($match)
+	{
+		list($filePath, $subPart) = t3lib_div::trimExplode('@', $match[1]);
+		try {
+			$fileContent = self::getSubpartFromFile(
+				$filePath,
+				'###' . strtoupper($subPart) . '###'
+			);
+		} catch (Exception $e) {
+			$fileContent = '<!-- ' . $e->getMessage() .' -->';
+		}
+		return $fileContent;
+	}
 	/**
 	 * Multi substitution function with caching.
 	 *
-	 * This function should be a one-stop substitution function for working with HTML-template. It does not substitute by str_replace but by splitting. 
+	 * This function should be a one-stop substitution function for working with HTML-template. It does not substitute by str_replace but by splitting.
 	 * This secures that the value inserted does not themselves contain markers or subparts.
 	 * This function takes three kinds of substitutions in one:
 	 * $markContentArray is a regular marker-array where the 'keys' are substituted in $content with their values
@@ -220,7 +278,7 @@ class tx_rnbase_util_Templates {
 	/**
 	 * Multi substitution function with caching.
 	 *
-	 * This function should be a one-stop substitution function for working with HTML-template. It does not substitute by str_replace but by splitting. This secures that the 
+	 * This function should be a one-stop substitution function for working with HTML-template. It does not substitute by str_replace but by splitting. This secures that the
 	 * value inserted does not themselves contain markers or subparts.
 	 * This function takes three kinds of substitutions in one:
 	 * $markContentArray is a regular marker-array where the 'keys' are substituted in $content with their values
@@ -336,10 +394,10 @@ class tx_rnbase_util_Templates {
 	 *
 	 * @param	string		The content stream, typically HTML template content.
 	 * @param	string		The marker string, typically on the form "###[the marker string]###"
-	 * @param	mixed		The content to insert instead of the subpart found. If a string, then just plain substitution happens (includes removing the 
-	 * 								HTML comments of the subpart if found). If $subpartContent happens to be an array, it's [0] and [1] elements are wrapped around 
+	 * @param	mixed		The content to insert instead of the subpart found. If a string, then just plain substitution happens (includes removing the
+	 * 								HTML comments of the subpart if found). If $subpartContent happens to be an array, it's [0] and [1] elements are wrapped around
 	 * 								the EXISTING content of the subpart (fetched by getSubpart()) thereby not removing the original content.
-	 * @param	boolean		If $recursive is set, the function calls itself with the content set to the remaining part of the content after the second 
+	 * @param	boolean		If $recursive is set, the function calls itself with the content set to the remaining part of the content after the second
 	 * 								marker. This means that proceding subparts are ALSO substituted!
 	 * @return	string		The processed HTML content string.
 	 * @see getSubpart(), t3lib_parsehtml::substituteSubpart()

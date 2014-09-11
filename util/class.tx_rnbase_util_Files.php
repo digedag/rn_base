@@ -101,7 +101,7 @@ class tx_rnbase_util_Files {
 	public static function checkFile ($fName)	{
 		$absFile = t3lib_div::getFileAbsFileName($fName);
 		if(!(t3lib_div::isAllowedAbsPath($absFile) && @is_file($absFile))) {
-			throw new Exception('File not found: '.$absFile);
+			throw new Exception('File not found: ' . $fName);
 		}
 		if(!@is_readable($absFile)) {
 			throw new Exception('File is not readable: '.$absFile);

@@ -28,6 +28,17 @@ tx_rnbase::load('tx_rnbase_util_Templates');
 
 class tx_rnbase_tests_util_Templates_testcase extends tx_phpunit_testcase {
 
+	private $backup = array();
+
+	public function setUp() {
+		$backup['getFileName_backPath'] = tx_rnbase_util_Templates::getTSTemplate()->getFileName_backPath;
+		tx_rnbase_util_Templates::getTSTemplate()->getFileName_backPath = PATH_site;
+	}
+	public function tearDown(){
+		tx_rnbase_util_Templates::getTSTemplate()->getFileName_backPath = $backup['getFileName_backPath'];
+
+	}
+
 	/**
 	 */
 	public function notest_performanceSimpleMarker() {
@@ -88,7 +99,22 @@ class tx_rnbase_tests_util_Templates_testcase extends tx_phpunit_testcase {
 
 	}
 
+	public function test_includeSubTemplates() {
 
+		$fixture = t3lib_div::getURL(
+			t3lib_extMgm::extPath(
+				'rn_base',
+				'tests/fixtures/html/includeSubTemplates.html'
+			)
+		);
+
+		$raw = tx_rnbase_util_Templates::getSubpart($fixture, '###TEMPLATE###');
+		$expected = tx_rnbase_util_Templates::getSubpart($fixture, '###EXPECTED###');
+
+		$included = tx_rnbase_util_Templates::includeSubTemplates($raw);
+
+		$this->assertEquals($expected, $included);
+	}
 	public function test_substMarkerArrayCached() {
 		$this->setTTOff();
 		$markerArr = array('###UID###'=>2, '###PID###'=>1, '###TITLE###' => 'My Titel 1');
