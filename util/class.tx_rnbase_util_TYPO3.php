@@ -148,7 +148,18 @@ class tx_rnbase_util_TYPO3 {
 		$info = self::loadExtInfo($extKey);
 		return $info['version'];
 	}
-
+	/**
+	 * Prüft, ob die Extension mindestens auf einer bestimmten Version steht
+	 * @param string $_EXTKEY
+	 * @param int $version
+	 * @return boolean
+	 */
+	public static function isExtMinVersion($_EXTKEY, $version) {
+		if(!self::isExtLoaded($_EXTKEY))
+			return false;
+		return intval($version) <= self::convertVersionNumberToInteger(self::getExtVersion($_EXTKEY));
+	}
+	
 	/** 
 	 * Get the current frontend user
 	 *
