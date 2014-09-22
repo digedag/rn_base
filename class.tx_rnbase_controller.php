@@ -206,7 +206,7 @@ class tx_rnbase_controller {
 
 		try {
 			// check for doConvertToUserIntObject
-			$configurations->get('toUserInt')
+			$configurations->getBool('toUserInt')
 			// convert the USER to USER_INT
 			&& $configurations->convertToUserInt();
 		} catch (tx_rnbase_exception_SkipAction $e) {
