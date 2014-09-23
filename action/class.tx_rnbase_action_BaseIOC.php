@@ -132,6 +132,25 @@ abstract class tx_rnbase_action_BaseIOC {
 	public function setConfigurations(tx_rnbase_configurations $configurations) {
 		$this->configurations = $configurations;
 	}
+
+	/**
+	 * Returns request parameters
+	 *
+	 * @return tx_rnbase_IParameters
+	 */
+	public function getParameters() {
+		return $this->getConfigurations()->getParameters();
+	}
+
+	/**
+	 * Returns view data
+	 *
+	 * @return ArrayObject
+	 */
+	public function getViewData() {
+		return $this->getConfigurations()->getViewData();
+	}
+
 	/**
 	 * Find a configured cache handler.
 	 *
