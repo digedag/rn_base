@@ -78,8 +78,9 @@ class tx_rnbase_parameters extends ArrayObject implements tx_rnbase_IParameters 
 			$value = array_key_exists($paramName, $params) ? $params[$paramName] : $params['NK_'.$paramName];
 			return $value;
 		}
-		$value = $this->offsetGet($paramName);
-		return $value ? $value : $this->offsetGet('NK_'.$paramName);
+		return $this->offsetExists($paramName)
+			? $this->offsetGet($paramName)
+			: $this->offsetGet('NK_'.$paramName);
 	}
 	/**
 	 * Liefert den Parameter-Wert als int
@@ -92,8 +93,8 @@ class tx_rnbase_parameters extends ArrayObject implements tx_rnbase_IParameters 
 		return intval($this->get($paramName, $qualifier));
 	}
 	private function getParametersPlain($qualifier) {
-		$parametersArray = tx_rnbase_util_TYPO3::isTYPO43OrHigher() ? 
-				t3lib_div::_GPmerged($qualifier) : 
+		$parametersArray = tx_rnbase_util_TYPO3::isTYPO43OrHigher() ?
+				t3lib_div::_GPmerged($qualifier) :
 				t3lib_div::GParrayMerged($qualifier);
 		return $parametersArray;
 	}
