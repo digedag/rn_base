@@ -74,13 +74,13 @@ class tx_rnbase_tests_utilSearchBase_testcase extends tx_phpunit_testcase {
 
 
 		// SELECT COUNT(FEUSER.uid) FROM fe_users AS FEUSER WHERE 1=1 AND FEUSER.uid = 54 GROUP BY FEUSER.usergroup
-		$options['what'] = 'COUNT(FEUSER.uid) as usercount';
+		$options['what'] = 'FEUSER.*, COUNT(FEUSER.uid) as usercount';
 		$query = $searcher->search($fields, $options);#
 
 		// the count with the subselect should be at the first
 		$this->assertEquals(0, strpos($query, 'SELECT COUNT(COUNTWRAP.uid) as cnt FROM'));
 		// check the uid where
-		$this->assertContains(' COUNT(FEUSER.uid) as usercount ', $query);
+		$this->assertContains(' FEUSER.*, COUNT(FEUSER.uid) as usercount ', $query);
 		$this->assertContains(' FEUSER.uid = 54 ', $query);
 		$this->assertContains(' GROUP BY FEUSER.usergroup', $query);
 		// the closing subselect should be at the last
@@ -90,14 +90,14 @@ class tx_rnbase_tests_utilSearchBase_testcase extends tx_phpunit_testcase {
 		);
 
 
-		// SELECT COUNT(FEUSER.uid) as usercount FROM fe_users AS FEUSER WHERE 1=1 AND FEUSER.uid = 54 GROUP BY FEUSER.usergroup HAVING usercount > 20
+		// SELECT FEUSER.*, COUNT(FEUSER.uid) as usercount FROM fe_users AS FEUSER WHERE 1=1 AND FEUSER.uid = 54 GROUP BY FEUSER.usergroup HAVING usercount > 20
 		$options['having'] = 'usercount > 20';
 		$query = $searcher->search($fields, $options);#
 
 		// the count with the subselect should be at the first
 		$this->assertEquals(0, strpos($query, 'SELECT COUNT(COUNTWRAP.uid) as cnt FROM'));
 		// check the uid where
-		$this->assertContains(' COUNT(FEUSER.uid) as usercount ', $query);
+		$this->assertContains(' FEUSER.*,  COUNT(FEUSER.uid) as usercount ', $query);
 		$this->assertContains(' FEUSER.uid = 54 ', $query);
 		$this->assertContains(' GROUP BY FEUSER.usergroup ', $query);
 		$this->assertContains(' HAVING usercount > 20', $query);
