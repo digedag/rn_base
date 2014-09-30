@@ -575,7 +575,7 @@ class tx_rnbase_util_Link {
 		}
 
 		// Zusätzliche Parameter für den Link
-		$atagParams = $configurations->get($confId.'atagparams.');
+		$atagParams = $configurations->get($confId.'atagparams.', TRUE);
 		if(is_array($atagParams)) {
 			// Die Parameter werden jetzt nochmal per TS validiert und können somit dynamisch gesetzt werden
 			$attributes = array();
