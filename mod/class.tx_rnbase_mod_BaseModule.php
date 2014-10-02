@@ -181,9 +181,14 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 			tx_rnbase_util_Misc::prepareTSFE(); // Ist bei Aufruf aus BE notwendig!
 			$cObj = t3lib_div::makeInstance('tslib_cObj');
 
-			$pageTSconfigFull = t3lib_BEfunc::getPagesTSconfig(0);
+			$pageTSconfigFull = t3lib_BEfunc::getPagesTSconfig($this->getPid());
 			$pageTSconfig = $pageTSconfigFull['mod.'][$this->getExtensionKey().'.'];
 			$pageTSconfig['lib.'] = $pageTSconfigFull['lib.'];
+
+			$userTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.' . $this->getExtensionKey().'.');
+			if (!empty($userTSconfig['properties'])) {
+				$pageTSconfig = t3lib_div::array_merge_recursive_overrule($pageTSconfig, $userTSconfig['properties']);
+			}
 
 			$qualifier = $pageTSconfig['qualifier'] ? $pageTSconfig['qualifier'] : $this->getExtensionKey();
 			$this->configurations = new tx_rnbase_configurations();
@@ -359,8 +364,8 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 				'0' => Array( // Format für 1. Zeile
 					'tr'		=> Array('<tr class="t3-row-header c-headLineTable">', '</tr>'),
 					// Format für jede Spalte in der 1. Zeile
-					'defCol' => (tx_rnbase_util_TYPO3::isTYPO42OrHigher() ? 
-												Array('<td>', '</td>') : 
+					'defCol' => (tx_rnbase_util_TYPO3::isTYPO42OrHigher() ?
+												Array('<td>', '</td>') :
 												Array('<td class="c-headLineTable" style="font-weight:bold; color:white;">', '</td>'))
 				),
 				'defRow' => Array ( // Formate für alle Zeilen
@@ -371,7 +376,7 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 				'defRowEven' => Array ( // Formate für alle geraden Zeilen
 					'tr'	   => Array('<tr class="db_list_alt">', '</tr>'),
 					// Format für jede Spalte in jeder Zeile
-					'defCol' => Array((tx_rnbase_util_TYPO3::isTYPO42OrHigher() ? '<td>' : 
+					'defCol' => Array((tx_rnbase_util_TYPO3::isTYPO42OrHigher() ? '<td>' :
 														'<td class="db_list_alt">'), '</td>')
 				)
 			);
