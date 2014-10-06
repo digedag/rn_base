@@ -288,9 +288,11 @@ MAYDAYPAGE;
 
 		return $result;
 	}
-  /**
-   * Prepare classes for FE-rendering if it is needed in TYPO3 backend.
-   */
+	/**
+	* Prepare classes for FE-rendering if it is needed in TYPO3 backend.
+	*
+	* @return tslib_fe
+	*/
 	public static function prepareTSFE($options = array()) {
 		$pid = array_key_exists('pid', $options) ? $options['pid'] : 1;
 		$type = array_key_exists('type', $options) ? $options['type'] : 99;
