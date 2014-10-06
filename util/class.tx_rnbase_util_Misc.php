@@ -219,14 +219,14 @@ MAYDAYPAGE;
 
 	/**
 	 * Creates a html view for a php object
-   * This method is taken from the great ameos_formidable extension.
+	 * This method is taken from the great ameos_formidable extension.
 	 *
 	 * @param mixed $mMixed
 	 * @param boolean $bRecursive
 	 * @param int $iLevel
 	 * @return string
 	 */
-	function viewMixed($mMixed, $bRecursive = TRUE, $iLevel=0) {
+	private static function viewMixed($mMixed, $bRecursive = TRUE, $iLevel=0) {
 
 		$sStyle = 'font-family: Verdana; font-size: 9px;';
 		$sStyleBlack = $sStyle . 'color: black;';
