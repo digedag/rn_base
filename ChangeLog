@@ -3,12 +3,13 @@
 Änderungen
 ----------
 
-v0.14.3 (??.??.2014)
+v0.14.3 (07.10.2014)
  * To avoid caching an USER-Plugin, it can now easily converted to USER_INT by calling $this->getConfigurations()->convertToUserInt(). Thanks to Michael Wagner! 
  * Action can now be skipped with the Skip Exception. Thanks to Michael Wagner!
  * New subtemplate parsing. Thanks to Michael Wagner!
  * Bugfix for Modulemarkers. Modulemarkers and Labels can now contain a Minus (-). Thanks to Michael Wagner!
  * Metadata for FAL to mediamodel added. Thanks to Hannes Bochmann!
+ * UserTS For BE-Modules added.
  
  
 v0.14.2 (06.09.2014)
