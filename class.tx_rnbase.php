@@ -1,5 +1,6 @@
 <?php
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /***************************************************************
  *  Copyright notice
  *
@@ -105,6 +106,26 @@ class tx_rnbase {
 		return $ret;
 	}
 
+	/**
+	 * Find the best service and check if it works.
+	 * Returns object of the service class.
+	 *
+	 * @param string $serviceType Type of service (service key).
+	 * @param string $serviceSubType Sub type like file extensions or similar. Defined by the service.
+	 * @param mixed $excludeServiceKeys List of service keys which should be excluded in the search for a service. Array or comma list.
+	 * @return object The service object or an array with error info's.
+	 */
+	public static function makeInstanceService($serviceType, $serviceSubType = '', $excludeServiceKeys = array()) {
+		self::load('tx_rnbase_util_TYPO3');
+		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			$module = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstanceService($serviceType, $serviceSubType, $excludeServiceKeys);
+		}
+		else {
+			$module = t3lib_div::makeInstanceService($serviceType, $serviceSubType, $excludeServiceKeys);
+		}
+		return $module;
+	}
+	
 	/**
 	 * Load the class file, return the classname or the ux_classname
 	 *
