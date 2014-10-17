@@ -203,6 +203,18 @@ class tx_rnbase_controller {
 		$configurations->setParameters($parameters);
 		tx_rnbase_util_Misc::pullTT();
 
+
+		try {
+			// check for doConvertToUserIntObject
+			$configurations->getBool('toUserInt')
+			// convert the USER to USER_INT
+			&& $configurations->convertToUserInt();
+		} catch (tx_rnbase_exception_SkipAction $e) {
+			// dont do anything! the controller will be called twice,
+			// if we convert the USER to USER_INTERNAL
+			return '';
+		}
+
 		// Finding the action:
 		$actions = $this->_findAction($parameters, $configurations);
 		if(!isset($actions))
@@ -241,6 +253,9 @@ class tx_rnbase_controller {
 	//		$action->configurations = $configurations;
 			$ret = $action->execute($parameters, $configurations);
 		}
+		catch(tx_rnbase_exception_SkipAction $e) {
+			$ret = '';
+		}
 		catch(Exception $e) {
 			$ret = $this->handleException($actionName, $e, $configurations);
 			$this->errors[] = $e;
@@ -264,14 +279,14 @@ class tx_rnbase_controller {
 		$exceptionHandlerClass = tx_rnbase_configurations::getExtensionCfgValue(
 			'rn_base', 'exceptionHandler'
 		);
-		
+
 		$defaultExceptionHandlerClass = 'tx_rnbase_exception_Handler';
 		if(!$exceptionHandlerClass) {
 			$exceptionHandlerClass = $defaultExceptionHandlerClass;
 		}
-		
+
 		$exceptionHandler = tx_rnbase::makeInstance($exceptionHandlerClass);
-		
+
 		if(!$exceptionHandler instanceof tx_rnbase_exception_IHandler) {
 			$exceptionHandler = tx_rnbase::makeInstance($defaultExceptionHandlerClass);
 			tx_rnbase_util_Logger::fatal(
@@ -279,7 +294,7 @@ class tx_rnbase_controller {
 				'rn_base'
 			);
 		}
-		
+
 		return $exceptionHandler->handleException($actionName, $e, $configurations);
 	}
 

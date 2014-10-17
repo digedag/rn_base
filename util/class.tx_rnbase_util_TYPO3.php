@@ -53,6 +53,14 @@ class tx_rnbase_util_TYPO3 {
 		return self::isTYPO3VersionOrHigher(6002000);
 	}
 	/**
+	 * Prüft, ob mindestens TYPO3 Version 4.7 vorhanden ist.
+	 *
+	 * @return boolean
+	 */
+	public static function isTYPO47OrHigher() {
+		return self::isTYPO3VersionOrHigher(4007000);
+	}
+	/**
 	 * Prüft, ob mindestens TYPO3 Version 4.6 vorhanden ist.
 	 *
 	 * @return boolean
@@ -108,7 +116,7 @@ class tx_rnbase_util_TYPO3 {
 	/**
 	 * Returns an integer from a three part version number, eg '4.12.3' -> 4012003
 	 * This method is taken from t3lib_utility_VersionNumber.
-	 * 
+	 *
 	 * @param $versionNumber string Version number on format x.x.x
 	 * @return integer Integer version of version number (where each part can count to 999)
 	 */
@@ -148,20 +156,31 @@ class tx_rnbase_util_TYPO3 {
 		$info = self::loadExtInfo($extKey);
 		return $info['version'];
 	}
+	/**
+	 * Prüft, ob die Extension mindestens auf einer bestimmten Version steht
+	 * @param string $_EXTKEY
+	 * @param int $version
+	 * @return boolean
+	 */
+	public static function isExtMinVersion($_EXTKEY, $version) {
+		if(!self::isExtLoaded($_EXTKEY))
+			return false;
+		return intval($version) <= self::convertVersionNumberToInteger(self::getExtVersion($_EXTKEY));
+	}
 
-	/** 
+	/**
 	 * Get the current frontend user
 	 *
 	 * @return tslib_feUserAuth current frontend user.
-	 */ 
+	 */
 	public static function getFEUser() {
 		return $GLOBALS['TSFE']->fe_user;
 	}
-	/** 
+	/**
 	 * Get the current frontend user uid
 	 *
 	 * @return int current frontend user uid or FALSE
-	 */ 
+	 */
 	public static function getFEUserUID() {
 		$feuser = self::getFEUser();
 		return is_object($feuser) && isset($feuser->user['uid']) ? $feuser->user['uid'] : FALSE;
@@ -181,10 +200,10 @@ class tx_rnbase_util_TYPO3 {
 		$beuser = self::getBEUser();
 		return is_object($beuser) && isset($beuser->user['uid']) ? $beuser->user['uid'] : FALSE;
 	}
-	
+
 
 	/**
-	 * Returns TSFE. 
+	 * Returns TSFE.
 	 * @param boolean $force create new tsfe if not available
 	 * @return tslib_fe
 	 */
@@ -201,7 +220,7 @@ class tx_rnbase_util_TYPO3 {
 	 */
 	public static function getSysPage() {
 		if (!is_object(self::$sysPage)) {
-			if(is_object($GLOBALS['TSFE']->sys_page)) 
+			if(is_object($GLOBALS['TSFE']->sys_page))
 				self::$sysPage = $GLOBALS['TSFE']->sys_page; // Use existing SysPage from TSFE
 			else {
 				self::$sysPage = t3lib_div::makeInstance('t3lib_pageSelect');

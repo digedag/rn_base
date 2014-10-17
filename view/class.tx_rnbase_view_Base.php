@@ -40,40 +40,43 @@ tx_rnbase::load('tx_rnbase_util_Files');
 
 /**
  * Base class for all views.
- * TODO: This class should have a default template path and an optional user defined path. So 
+ * TODO: This class should have a default template path and an optional user defined path. So
  * templates can be searched in both.
  */
 class tx_rnbase_view_Base{
-  private $pathToTemplates;
-  private $_pathToFile;
-  private $controller;
+	private $pathToTemplates;
+	private $_pathToFile;
+	private $controller;
 
-  /**
-   * Enter description here...
-   *
-   * @param string $view default name of view
-   * @param tx_rnbase_configurations $configurations
-   * @return unknown
-   */
-  function render($view, &$configurations){
-    $this->_init($configurations);
-    $templateCode = tx_rnbase_util_Files::getFileResource($this->getTemplate($view, '.html'));
-    if(!strlen($templateCode)) {
-    	tx_rnbase::load('tx_rnbase_util_Misc');
-    	tx_rnbase_util_Misc::mayday('TEMPLATE NOT FOUND: ' . $this->getTemplate($view, '.html'));
-    }
+	/**
+	 * Enter description here...
+	 *
+	 * @param string $view default name of view
+	 * @param tx_rnbase_configurations $configurations
+	 * @return unknown
+	 */
+	function render($view, &$configurations){
+		$this->_init($configurations);
+		$templateCode = tx_rnbase_util_Files::getFileResource($this->getTemplate($view, '.html'));
+		if(!strlen($templateCode)) {
+			tx_rnbase::load('tx_rnbase_util_Misc');
+			tx_rnbase_util_Misc::mayday('TEMPLATE NOT FOUND: ' . $this->getTemplate($view, '.html'));
+		}
 
 		// Die ViewData bereitstellen
 		$viewData =& $configurations->getViewData();
 		// Optional kann schon ein Subpart angegeben werden
-		if($this->getMainSubpart($viewData)) {
-			$subpart = $this->getMainSubpart($viewData);
+		$subpart = $this->getMainSubpart($viewData);
+		if(!empty($subpart)) {
 			$templateCode = tx_rnbase_util_Templates::getSubpart($templateCode, $subpart);
 			if(!strlen($templateCode)) {
 				tx_rnbase::load('tx_rnbase_util_Misc');
 				tx_rnbase_util_Misc::mayday('SUBPART NOT FOUND: ' . $subpart);
 			}
 		}
+
+		// check for Subtemplates
+		$templateCode = tx_rnbase_util_Templates::includeSubTemplates($templateCode);
 
 		$controller = $this->getController();
 		if($controller) {
@@ -129,7 +132,7 @@ class tx_rnbase_view_Base{
    * @param tx_rnbase_configurations $configurations
    */
   function _init(&$configurations) {}
-  
+
   /**
    * Set the path of the template directory
    *
@@ -177,7 +180,7 @@ class tx_rnbase_view_Base{
   /**
    * Returns the template to use. If TemplateFile is set, it is preferred. Otherwise
    * the filename is build from pathToTemplates, the templateName and $extension.
-   * 
+   *
    * @param string name of template
    * @param string file extension to use
    * @return complete filename of template

@@ -41,6 +41,12 @@ abstract class tx_rnbase_action_BaseIOC {
 	private static function countCall() { return self::$callCount++; }
 	private $configurations = NULL;
 
+	/**
+	 * @param tx_rnbase_parameters $parameters
+	 * @param tx_rnbase_configurations $configurations
+	 *
+	 * @return string
+	 */
 	function execute(&$parameters, &$configurations){
 		$this->setConfigurations($configurations);
 		$debugKey = $configurations->get($this->getConfId().'_debugview');
@@ -53,6 +59,16 @@ abstract class tx_rnbase_action_BaseIOC {
 			$time = microtime(TRUE);
 			$memStart = memory_get_usage();
 		}
+		if ($configurations->getBool($this->getConfId() . 'toUserInt')) {
+			if ($debug) {
+				tx_rnbase_util_Debug::debug(
+					'Converting to USER_INT!',
+					'View statistics for: ' . $this->getConfId(). ' Key: ' . $debugKey
+				);
+			}
+			$configurations->convertToUserInt();
+		}
+
 		$cacheHandler = $this->getCacheHandler($configurations, $this->getConfId().'_caching.');
 		$out = $cacheHandler ? $cacheHandler->getOutput($this, $configurations, $this->getConfId()) : '';
 		$cached = TRUE;
@@ -116,6 +132,25 @@ abstract class tx_rnbase_action_BaseIOC {
 	public function setConfigurations(tx_rnbase_configurations $configurations) {
 		$this->configurations = $configurations;
 	}
+
+	/**
+	 * Returns request parameters
+	 *
+	 * @return tx_rnbase_IParameters
+	 */
+	public function getParameters() {
+		return $this->getConfigurations()->getParameters();
+	}
+
+	/**
+	 * Returns view data
+	 *
+	 * @return ArrayObject
+	 */
+	public function getViewData() {
+		return $this->getConfigurations()->getViewData();
+	}
+
 	/**
 	 * Find a configured cache handler.
 	 *

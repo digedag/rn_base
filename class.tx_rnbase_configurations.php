@@ -164,6 +164,31 @@ class tx_rnbase_configurations {
 	public function getPluginId() {
 		return $this->pluginUid;
 	}
+
+
+	/**
+	 * Converts an USER to USER_INT, so the cache can be disabled in the action!
+	 *
+	 * If this method is called, the Skip Exception can be thrown.
+	 * The controller is called twice,
+	 * whenn a USER Object is convertet to USER_INTERNAL.
+	 * The SkipAction avoids this!
+	 *
+	 * @throws tx_rnbase_exception_Skip
+	 */
+	public function convertToUserInt($convert = TRUE)
+	{
+		// set this only, if we are not an USER_INTERNAL
+		if ($convert && $this->isPluginUserInt()) {
+			return;
+		}
+		$this->getCObj()->doConvertToUserIntObject = $convert;
+		if ($convert) {
+			throw tx_rnbase::makeInstance('tx_rnbase_exception_Skip');
+		}
+		return TRUE;
+	}
+
 	/**
 	 * Whether or not the current plugin is executed as USER_INT
 	 * @return boolean

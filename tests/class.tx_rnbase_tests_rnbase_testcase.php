@@ -44,7 +44,9 @@ class tx_rnbase_tests_rnbase_testcase extends tx_phpunit_testcase {
 		$this->assertTrue(is_object($obj), 'Object not instantiated');
 	}
 	private function isExtBasePossible() {
-		return t3lib_extMgm::isLoaded('extbase') && t3lib_extMgm::isLoaded('t3sponsors');
+		tx_rnbase::load('tx_rnbase_util_TYPO3');
+		return tx_rnbase_util_TYPO3::isExtLoaded('extbase') && 
+			tx_rnbase_util_TYPO3::isExtMinVersion('t3sponsors', 2001);
 	}
 }
 

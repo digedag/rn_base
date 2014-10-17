@@ -37,7 +37,7 @@ class tx_rnbase_util_Arrays {
    * @param    string   possible split charaters in case the first parameter is a hash string 
    * @return   void
    */
-  function overwriteArray(&$arrayObj, $hashData, $splitCharacters = ',;:') {
+  public static function overwriteArray(&$arrayObj, $hashData, $splitCharacters = ',;:') {
     $array = self::toHashArray($hashData, $splitCharacters);
     foreach((array) $array as $key => $value) {
       $arrayObj->offsetSet($key, $value);
