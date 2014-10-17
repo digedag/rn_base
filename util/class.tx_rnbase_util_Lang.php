@@ -190,7 +190,8 @@ class tx_rnbase_util_Lang {
 			$word = $this->LOCAL_LANG['default'][$key][0]['target'];
 		} else {
 			// Im BE die LANG fragen...
-			$word = is_object($GLOBALS['LANG']) ? $GLOBALS['LANG']->getLL($key) : '';
+			// Das $alternativeLabel wirkt nicht, weil $GLOBALS['LANG'] immer gesetzt ist...
+			$word = is_object($GLOBALS['LANG']) ? $GLOBALS['LANG']->getLL($key) : $alternativeLabel;
 		}
 
 		$output = (isset($this->LLtestPrefix)) ? $this->LLtestPrefix . $word : $word;

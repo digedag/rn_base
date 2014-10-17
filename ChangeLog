@@ -3,6 +3,16 @@
 Änderungen
 ----------
 
+v0.14.3 (??.10.2014)
+ * Support for label markers with salutation suffix. Example:
+In HTML template: ###LABEL_GREETING###
+in language file: 
+ label_greeting_informal = Hello guys!
+ label_greeting_formal = Good day, Sir!
+Configure salutation in plugin config:
+plugin.tx_myplugin.salutation = formal
+ * New wrapper method tx_Base::makeInstanceService()
+
 v0.14.2 (06.09.2014)
  * New method model_Base::setTableName(). Thanks to Christian Riesche!
  * Support for attachments in tx_rnbase_util_Mail. Works for T3 versions < 4.5 

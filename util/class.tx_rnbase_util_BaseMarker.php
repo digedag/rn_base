@@ -335,24 +335,34 @@ class tx_rnbase_util_BaseMarker {
 	 * @param array $params
 	 * @param tx_rnbase_util_FormatUtil $formatter
 	 */
-	protected static function callModuleMarkers($template, &$markerArray, &$params, &$formatter) {
+	protected static function callModuleMarkers($template, &$markerArray, &$params, $formatter) {
 		preg_match_all('!\<\!--[a-zA-Z0-9 ]*###([A-Z0-9_-|]*)\###[a-zA-Z0-9 ]*-->!is', $template, $match);
 		$allMarkers = array_unique($match[1]);
 		preg_match_all('!\###([A-Z0-9_-|]*)\###!is', $template, $match);
 		$allSingleMarkers = array_unique($match[1]);
 		$allSingleMarkers = array_diff($allSingleMarkers, $allMarkers);
+
+		$suffixesToTry = self::getSuffixesToTry($formatter->getConfigurations());
 		foreach ($allSingleMarkers as $marker) {
 			if (preg_match('/MARKERMODULE__([A-Z0-9_-])*/', $marker)) {
 				$module = t3lib_div::makeInstanceService('markermodule', substr($marker, 14));
 				if (is_object($module)) {
-					$subTemplate = $formatter->cObj->getSubpart($template, '###'.$marker.'###');
+					$subTemplate = tx_rnbase_util_Templates::getSubpart($template, '###'.$marker.'###');
 					$value = $module->getMarkerValue($params, $formatter);
 					if($value !== FALSE)
 						$markerArray['###' . $marker . '###'] =  $value;
 				}
 			}
 			elseif(preg_match('/LABEL_.*/', $marker)) {
-				$markerArray['###'.$marker.'###'] = $formatter->getConfigurations()->getLL(strtolower($marker));
+				foreach ($suffixesToTry as $suffix) {
+					$completeKey = $marker.$suffix;
+					// Hier kommt immer ein leerer String zurück, weil T3 keinen Alternativ-String unterstützt
+					$translation = $formatter->getConfigurations()->getLL(strtolower($completeKey));
+					if($translation !== '') {
+						$markerArray['###'.$marker.'###'] = $translation;
+						break;
+					}
+				}
 			}
 		}
 	}
@@ -375,6 +385,28 @@ class tx_rnbase_util_BaseMarker {
 			}
 		}
 	}
+	/**
+	 * Gets an ordered list of language label suffixes that should be tried to
+	 * get localizations in the preferred order of formality.
+	 * 
+	 * Method copied from Tx_Oelib_SalutationSwitcher of Oliver Klee
+	 * 
+	 * @param tx_rnbase_configurations $configurations
+	 * @return array ordered list of suffixes from "", "_formal" and "_informal", will not be empty
+	 */
+	private static function getSuffixesToTry($configurations) {
+		$suffixesToTry = array();
+		$salutation = $configurations->get('salutation');
+
+		if ($salutation	&& ($salutation == 'informal')) {
+			$suffixesToTry[] = '_informal';
+		}
+		$suffixesToTry[] = '_formal';
+		$suffixesToTry[] = '';
+
+		return $suffixesToTry;
+	}
+
 	/**
 	 * @param string $template
 	 * @param string $markerPrefix a string like MATCH_HOME
