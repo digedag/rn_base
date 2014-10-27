@@ -1,6 +1,5 @@
 <?php
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 /***************************************************************
  *  Copyright notice
  *
@@ -33,8 +32,8 @@ class tx_rnbase {
 	 *
 	 * Load the file for a given classname 'tx_key_path_file'
 	 * or a given part of the filepath that contains enough information to find the class.
-	 * 
-	 * This method is taken from tx_div. There is an additional cache to avoid double calls. 
+	 *
+	 * This method is taken from tx_div. There is an additional cache to avoid double calls.
 	 * This can saves a lot of time.
 	 * TODO: lookup for classes folder
 	 *
@@ -44,7 +43,7 @@ class tx_rnbase {
 	 * @see     tx_lib_pearLoader
 	 */
 	public static function load($classNameOrPathInformation) {
-		if(array_key_exists($classNameOrPathInformation, self::$loadedClasses)) 
+		if(array_key_exists($classNameOrPathInformation, self::$loadedClasses))
 			return self::$loadedClasses[$classNameOrPathInformation];
 
 		if(self::loadT3($classNameOrPathInformation)) {
@@ -59,7 +58,7 @@ class tx_rnbase {
 				return TRUE;
 			}
 		}
-		
+
 		self::$loadedClasses[$classNameOrPathInformation] = FALSE;
 		return FALSE;
 	}
@@ -70,9 +69,9 @@ class tx_rnbase {
 	 * $obj = tx_rnbase::makeInstance('tx_ext_myclass');
 	 * or with parameters:
 	 * $obj = tx_rnbase::makeInstance('tx_ext_myclass', 'arg1', 'arg2', ...);
-	 * 
+	 *
 	 * This works also for TYPO3 4.2 and lower.
-	 * 
+	 *
 	 * Returns ux_ extension class if any by make use of t3lib_div::makeInstance
 	 *
 	 * @param	string		classname
@@ -125,7 +124,7 @@ class tx_rnbase {
 		}
 		return $module;
 	}
-	
+
 	/**
 	 * Load the class file, return the classname or the ux_classname
 	 *
@@ -178,7 +177,7 @@ class tx_rnbase {
 	private static function loadT3($minimalInformation, $alternativeKey='', $prefix = 'class.', $suffix = '.php') {
 		if(class_exists($minimalInformation)) return TRUE; // Class still exists
 		$path = self::_findT3($minimalInformation, $alternativeKey, $prefix, $suffix);
-		
+
 		if($path) {
 			t3lib_div::requireOnce($path);
 			return TRUE;
@@ -306,7 +305,7 @@ class tx_rnbase {
 		$ret['path'] = $path;
 		return $ret;
 	}
-	
+
 	/**
 	 * Find path to load
 	 * Method from tx_lib_t3Loader
@@ -396,7 +395,7 @@ class tx_rnbase {
 				$key = $matches[1];
 				$key = self::getValidKey($key);
 			}
-			// Test again for extbase class 
+			// Test again for extbase class
 			if(!$key && (preg_match('/^Tx_([^_]*)(.*)$/', $info, $matches )) ) {
 				$key = strtolower($matches[1]);
 				$key = self::getValidKey($key);
