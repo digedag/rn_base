@@ -112,6 +112,21 @@ class tx_rnbase_util_Strings {
 		else
 			return t3lib_div::trimExplode($delimiter, $string, $removeEmptyValues, $limit);
 	}
+
+	/**
+	 * Wrapped Method t3lib_div::getRandomHexString()
+	 *
+	 * @param int $count
+	 * @return string
+	 */
+	public static function getRandomHexString($count) {
+		tx_rnbase::load('tx_rnbase_util_TYPO3');
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			return \TYPO3\CMS\Core\Utility\GeneralUtility::getRandomHexString($count);
+		} else {
+			return t3lib_div::getRandomHexString($count);
+		}
+	}
 	/**
 	 * Convert an array with hexadecimal byte values to binary string.
 	 * @param array $arr
