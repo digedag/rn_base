@@ -49,9 +49,9 @@ class tx_rnbase_model_media extends tx_rnbase_model_base {
 		// Ab TYPO3 6.x wird nur noch FAL unterstützt.
 		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
 			$this->record = array_merge(
-				$media->getReferenceProperties(), $media->getOriginalFile()->_getMetaData()
+				$media->getReferenceProperties(), $media->getOriginalFile()->getProperties()
 			);
-			$this->uid = $this->record['uid'];
+			$this->uid = $media->getOriginalFile()->getUid();
 			$this->record['file_path'] = $media->getPublicUrl();
 		}
 		else {

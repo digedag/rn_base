@@ -37,7 +37,7 @@ if(!tx_rnbase_util_TYPO3::isTYPO60OrHigher())
 class tx_rnbase_util_TSFAL {
 
 	/**
-	 * Typoscript USER function for rendering DAM images. 
+	 * Typoscript USER function for rendering DAM images.
 	 * This is a minimal Setup:
 	 * <pre>
 	 * yourObject.imagecol = USER
@@ -57,7 +57,7 @@ class tx_rnbase_util_TSFAL {
 	 * }
 	 * </pre>
 	 * There are three additional fields in media record: file, file1 and thumbnail containing the complete
-	 * image path. 
+	 * image path.
 	 * The output is rendered via HTML template with ListBuilder. Have a look at EXT:rn_base/res/simplegallery.html
 	 * Possible Typoscript options:
 	 * refField: DAM reference field of the media records (defined in TCA and used to locate the record in MM-Table)
@@ -67,7 +67,7 @@ class tx_rnbase_util_TSFAL {
 	 * limit: Limits the number of medias
 	 * offset: Start media output with an offset
 	 * forcedIdField: force another reference column (other than UID or _LOCALIZED_UID)
-	 * 
+	 *
 	 *
 	 * @param string $content
 	 * @param array $tsConf
@@ -112,7 +112,7 @@ class tx_rnbase_util_TSFAL {
 
 	/**
 	 * This method is taken from TYPO3\CMS\Frontend\ContentObject\FileContentObject.
-	 * It is a good tradition in TYPO3 that code can not be re-used. TYPO3 6.x makes 
+	 * It is a good tradition in TYPO3 that code can not be re-used. TYPO3 6.x makes
 	 * no difference...
 	 *
 	 * @param tx_rnbase_configurations $conf
@@ -130,8 +130,8 @@ class tx_rnbase_util_TSFAL {
 			$referencesForeignTable = $conf->getCObj()->stdWrap($conf->get($confId.'refTable'), $conf->get($confId.'refTable.'));
 			$referencesFieldName = $conf->getCObj()->stdWrap($conf->get($confId.'refField'), $conf->get($confId.'refField.'));
 			$referencesForeignUid = $conf->getCObj()->stdWrap($conf->get($confId.'refUid'), $conf->get($confId.'refUid.'));
-			$referencesForeignUid = $referencesForeignUid ? 
-					$referencesForeignUid : 
+			$referencesForeignUid = $referencesForeignUid ?
+					$referencesForeignUid :
 					isset($cObj->data['_LOCALIZED_UID']) ? $cObj->data['_LOCALIZED_UID'] : $cObj->data['uid'];
 			$pics = $fileRepository->findByRelation($referencesForeignTable, $referencesFieldName, $referencesForeignUid);
 		}
@@ -146,7 +146,7 @@ class tx_rnbase_util_TSFAL {
 			}# or: sys_file_references with uid 27:
 			references = 27
 			 */
-			
+
 //			$key = 'references';
 //			$referencesUid = $cObj->stdWrap($conf[$key], $conf[$key . '.']);
 //			$referencesUidArray = tx_rnbase_util_Strings::intExplode(',', $referencesUid, TRUE);
@@ -171,8 +171,8 @@ class tx_rnbase_util_TSFAL {
 				$referencesForeignTable = $referencesForeignTable ? $referencesForeignTable : $table;
 
 				$referencesForeignUid = $conf->getCObj()->stdWrap($conf->get($confId.'uid'), $conf->get($confId.'uid.'));
-				$referencesForeignUid = $referencesForeignUid ? 
-						$referencesForeignUid : 
+				$referencesForeignUid = $referencesForeignUid ?
+						$referencesForeignUid :
 						isset($cObj->data['_LOCALIZED_UID']) ? $cObj->data['_LOCALIZED_UID'] : $cObj->data['uid'];
 				// Vermutlich kann hier auch nur ein Objekt geliefert werden...
 				$pics = $fileRepository->findByRelation($referencesForeignTable, $referencesFieldName, $referencesForeignUid);
@@ -187,12 +187,12 @@ class tx_rnbase_util_TSFAL {
 		elseif(!empty($pics) && $limit) {
 			$pics = array_slice($pics, $offset);
 		}
-		// Die Bilder sollten jetzt noch in ein 
+		// Die Bilder sollten jetzt noch in ein
 		$fileObjects = self::convertRef2Media($pics);
 		return $fileObjects;
 	}
 	/**
-	 * 
+	 *
 	 * @param $pics
 	 * @return array[tx_rnbase_model_media]
 	 */
@@ -222,7 +222,7 @@ class tx_rnbase_util_TSFAL {
 
 	/**
 	 * Returns the first reference of a file. Usage by typoscript:
-	 * 
+	 *
 	 * lib.logo = IMAGE
 	 * lib.logo {
 	 *   file.maxH = 30
@@ -272,7 +272,7 @@ class tx_rnbase_util_TSFAL {
 	}
 
 	/**
-	 * Fetches DAM records
+	 * Fetches FAL records
 	 *
 	 * @param string $tablename
 	 * @param int $uid
@@ -280,13 +280,17 @@ class tx_rnbase_util_TSFAL {
 	 * @return array
 	 */
 	public static function fetchFiles($tablename, $uid, $refField) {
-		/** @var \TYPO3\CMS\Core\Resource\FileRepository $fileRepository */
-		$fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
-		$pics = $fileRepository->findByRelation($tablename, $refField, $uid);
 		$pics = self::fetchReferences($tablename, $uid, $refField);
 		$fileObjects = self::convertRef2Media($pics);
 		return $fileObjects;
 	}
+	/**
+	 * Fetch FAL references
+	 * @param string $tablename
+	 * @param int $uid
+	 * @param string $refField
+	 * @return array[\TYPO3\CMS\Core\Resource\FileReference]
+	 */
 	public static function fetchReferences($tablename, $uid, $refField) {
 		/** @var \TYPO3\CMS\Core\Resource\FileRepository $fileRepository */
 		$fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
@@ -313,6 +317,33 @@ class tx_rnbase_util_TSFAL {
 				$imageSetup = array_merge($sizeArr, $imageSetup);
 				$imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, $imageSetup)->getPublicUrl(TRUE);
 				$thumbnail = '<img src="' . $imageUrl . '" alt="' . htmlspecialchars($fileRef->getTitle()) . '">';
+				// TODO: Das geht bestimmt besser...
+			}
+			if($thumbnail)
+				$ret[] = $thumbnail;
+		}
+		return $ret;
+	}
+
+	/**
+	 * Render thumbnails for references in backend
+	 * @param $references
+	 * @param $size
+	 * @param $addAttr
+	 */
+	public static function createThumbnails4Files($falFiles, $sizeArr=FALSE) {
+		$ret = array();
+		foreach($falFiles As $fileObject) {
+			/* @var $fileObject TYPO3\CMS\Core\Utility\GeneralUtility\File */
+			if ($fileObject) {
+				//				$imageSetup = $config['appearance']['headerThumbnail'];
+				$imageSetup = array();
+				unset($imageSetup['field']);
+				$sizeArr = $sizeArr ? $sizeArr : array('width' => 64, 'height' => 64);
+				$imageSetup = array_merge($sizeArr, $imageSetup);
+				$imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, $imageSetup)->getPublicUrl(TRUE);
+				$title = $fileObject->getProperty('title');
+				$thumbnail = '<img src="' . $imageUrl . '" alt="' . htmlspecialchars($title) . '">';
 				// TODO: Das geht bestimmt besser...
 			}
 			if($thumbnail)
@@ -394,7 +425,7 @@ class tx_rnbase_util_TSFAL {
 			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.images',
 			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig($ref, $customSettingOverride, $allowedFileExtensions)
 		);
-		
+
 		if (!empty($tca) && is_array($options)) {
 			foreach ($options as $key=>$option) {
 				if (is_array($option)) {
@@ -411,7 +442,7 @@ class tx_rnbase_util_TSFAL {
 	 * Add a reference to a DAM media file
 	 *
 	 * @param string $tableName
-	 * @return int 
+	 * @return int
 	 */
 	public static function addReference($tableName, $fieldName, $itemId, $uid) {
 		$data = array();
@@ -421,10 +452,10 @@ class tx_rnbase_util_TSFAL {
 		$data['ident'] = $fieldName;
 
 		$id = tx_rnbase_util_DB::doInsert('tx_dam_mm_ref', $data);
-		
+
 		// Now count all items
 		self::updateImageCount($tableName, $fieldName, $itemId);
-		
+
 		return $id;
 	}
 
@@ -451,7 +482,7 @@ class tx_rnbase_util_TSFAL {
 	 */
 	public static function updateImageCount($tableName, $fieldName, $itemId) {
 		$values = array();
-		$values[$fieldName] = self::getImageCount($tableName, $fieldName, $itemId);		
+		$values[$fieldName] = self::getImageCount($tableName, $fieldName, $itemId);
 		tx_rnbase_util_DB::doUpdate($tableName, 'uid='.$itemId, $values, 0);
 	}
 	/**
@@ -469,7 +500,7 @@ class tx_rnbase_util_TSFAL {
 
 	/**
 	 * Return all references for the given reference data
-	 * 
+	 *
 	 * @param string $refTable
 	 * @param string $refField
 	 * @return array
@@ -478,10 +509,10 @@ class tx_rnbase_util_TSFAL {
 		require_once(t3lib_extMgm::extPath('dam') . 'lib/class.tx_dam_db.php');
 		return tx_dam_db::getReferencedFiles($refTable, $refUid, $refField);
 	}
-	
+
 	/**
 	 * Return file info for all references for the given reference data
-	 * 
+	 *
 	 * @param string $refTable
 	 * @param string $refField
 	 * @return array
@@ -500,10 +531,10 @@ class tx_rnbase_util_TSFAL {
 		}
 		return $res;
 	}
-	
+
 	/**
 	 * Return first reference for the given reference data
-	 * 
+	 *
 	 * @param string $refTable
 	 * @param int $refUid
 	 * @param string $refField
@@ -513,8 +544,13 @@ class tx_rnbase_util_TSFAL {
 		$refs = self::fetchReferences($refTable, $refUid, $refField);
 		return reset($refs);
 	}
-	public static function getFileReferenceById($uid) {
-		return \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileReferenceObject($uid);
+	/**
+	 * Returns a single FAL file instance by uid
+	 * @param int $uid
+	 * @return \TYPO3\CMS\Core\Resource\File
+	 */
+	public static function getFileObjectById($uid) {
+		return \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObject($uid);
 	}
 }
 

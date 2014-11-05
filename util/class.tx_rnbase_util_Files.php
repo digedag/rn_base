@@ -23,6 +23,7 @@
  ***************************************************************/
 
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase_configurations.php');
+tx_rnbase::load('tx_rnbase_util_TYPO3');
 
 /**
  * Contains some helpful methods for file handling
@@ -98,8 +99,8 @@ class tx_rnbase_util_Files {
 	 * @return string File name with absolute path or FALSE.
 	 * @throws Exception
 	 */
-	public static function checkFile ($fName)	{
-		$absFile = t3lib_div::getFileAbsFileName($fName);
+	public static function checkFile($fName)	{
+		$absFile = self::getFileAbsFileName($fName);
 		if(!(t3lib_div::isAllowedAbsPath($absFile) && @is_file($absFile))) {
 			throw new Exception('File not found: ' . $fName);
 		}
@@ -109,6 +110,25 @@ class tx_rnbase_util_Files {
 		return $absFile;
 	}
 
+	/**
+	 * Wrapper method from t3lib_div.
+	 * 
+	 * Returns the absolute filename of a relative reference, resolves the "EXT:" prefix
+	 * (way of referring to files inside extensions) and checks that the file is inside
+	 * the PATH_site of the TYPO3 installation and implies a check with
+	 * \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr().
+	 *
+	 * @param string $filename The input filename/filepath to evaluate
+	 * @param boolean $onlyRelative If $onlyRelative is set (which it is by default), then only return values relative to the current PATH_site is accepted.
+	 * @param boolean $relToTYPO3_mainDir If $relToTYPO3_mainDir is set, then relative paths are relative to PATH_typo3 constant - otherwise (default) they are relative to PATH_site
+	 * @return string Returns the absolute filename of $filename if valid, otherwise blank string.
+	 */
+	public static function getFileAbsFileName($fName, $onlyRelative = TRUE, $relToTYPO3_mainDir = FALSE)	{
+		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher())
+			return \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($fName, $onlyRelative, $relToTYPO3_mainDir);
+		return t3lib_div::getFileAbsFileName($fName, $onlyRelative, $relToTYPO3_mainDir);
+	}
+	
 	/**
 	 * Wir lassen als Dateinamen nur Buchstaben, Zahlen,
 	 * Bindestrich, Unterstrich und Punkt zu.
@@ -187,5 +207,3 @@ class tx_rnbase_util_Files {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Files.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Files.php']);
 }
-
-?>
