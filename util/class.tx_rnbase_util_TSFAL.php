@@ -277,7 +277,7 @@ class tx_rnbase_util_TSFAL {
 	 * @param string $tablename
 	 * @param int $uid
 	 * @param string $refField
-	 * @return array
+	 * @return array[tx_rnbase_model_media]
 	 */
 	public static function fetchFiles($tablename, $uid, $refField) {
 		$pics = self::fetchReferences($tablename, $uid, $refField);
@@ -307,7 +307,9 @@ class tx_rnbase_util_TSFAL {
 	public static function createThumbnails($references, $sizeArr=FALSE) {
 		$ret = array();
 		foreach($references As $fileRef ) {
+			/* @var $fileRef \TYPO3\CMS\Core\Utility\GeneralUtility\FileReference */
 			$thumbnail = FALSE;
+			/* @var $fileObject \TYPO3\CMS\Core\Utility\GeneralUtility\File */
 			$fileObject = $fileRef->getOriginalFile();
 			if ($fileObject) {
 //				$imageSetup = $config['appearance']['headerThumbnail'];
@@ -317,33 +319,6 @@ class tx_rnbase_util_TSFAL {
 				$imageSetup = array_merge($sizeArr, $imageSetup);
 				$imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, $imageSetup)->getPublicUrl(TRUE);
 				$thumbnail = '<img src="' . $imageUrl . '" alt="' . htmlspecialchars($fileRef->getTitle()) . '">';
-				// TODO: Das geht bestimmt besser...
-			}
-			if($thumbnail)
-				$ret[] = $thumbnail;
-		}
-		return $ret;
-	}
-
-	/**
-	 * Render thumbnails for references in backend
-	 * @param $references
-	 * @param $size
-	 * @param $addAttr
-	 */
-	public static function createThumbnails4Files($falFiles, $sizeArr=FALSE) {
-		$ret = array();
-		foreach($falFiles As $fileObject) {
-			/* @var $fileObject TYPO3\CMS\Core\Utility\GeneralUtility\File */
-			if ($fileObject) {
-				//				$imageSetup = $config['appearance']['headerThumbnail'];
-				$imageSetup = array();
-				unset($imageSetup['field']);
-				$sizeArr = $sizeArr ? $sizeArr : array('width' => 64, 'height' => 64);
-				$imageSetup = array_merge($sizeArr, $imageSetup);
-				$imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, $imageSetup)->getPublicUrl(TRUE);
-				$title = $fileObject->getProperty('title');
-				$thumbnail = '<img src="' . $imageUrl . '" alt="' . htmlspecialchars($title) . '">';
 				// TODO: Das geht bestimmt besser...
 			}
 			if($thumbnail)
@@ -545,12 +520,12 @@ class tx_rnbase_util_TSFAL {
 		return reset($refs);
 	}
 	/**
-	 * Returns a single FAL file instance by uid
-	 * @param int $uid
-	 * @return \TYPO3\CMS\Core\Resource\File
+	 * Returns a single FAL file reference by uid
+	 * @param int $uid uid of reference
+	 * @return \TYPO3\CMS\Core\Resource\FileReference
 	 */
-	public static function getFileObjectById($uid) {
-		return \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObject($uid);
+	public static function getFileReferenceById($uid) {
+		return \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileReferenceObject($uid);
 	}
 }
 
