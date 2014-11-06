@@ -3,7 +3,10 @@
 Änderungen
 ----------
 
-v0.14.4 (??.10.2014)
+v0.14.5 (??.??.2014)
+
+
+v0.14.4 (06.11.2014)
  * Support for label markers with salutation suffix.
 In HTML template: ###LABEL_GREETING###
 in language file: 
@@ -11,7 +14,10 @@ in language file:
  label_greeting_formal = Good day, Sir!
 Configure salutation in plugin config:
 plugin.tx_myplugin.salutation = formal
- * New wrapper method tx_Base::makeInstanceService()
+ * Fixed some FAL issues and enhanced support.
+ * New XmlElement class for better XML parsing.
+ * New wrapper method tx_rnbase::makeInstanceService()
+ * New wrapper method tx_rnbase_util_Strings::getRandomHexString().
 
 v0.14.3 (07.10.2014)
  * To avoid caching an USER-Plugin, it can now easily converted to USER_INT by calling $this->getConfigurations()->convertToUserInt(). Thanks to Michael Wagner! 
