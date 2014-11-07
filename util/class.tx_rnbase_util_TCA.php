@@ -54,6 +54,21 @@ class tx_rnbase_util_TCA {
 		return $GLOBALS['TCA'][$tableName]['ctrl']['languageField'];
 	}
 
+	/**
+	 * Load TCA for a specific table. Since T3 6.1 the complete TCA is loaded.
+	 * @param string $tablename
+	 */
+	public static function loadTCA($tablename) {
+		tx_rnbase::load('tx_rnbase_util_TYPO3');
+		if(tx_rnbase_util_TYPO3::isTYPO61OrHigher()) {
+			if (!is_array($GLOBALS['TCA'])) {			
+	 			\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca();
+			}
+		}
+		else {
+			t3lib_div::loadTCA($tablename);
+		}
+	}
 }
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rnbase/util/class.tx_rnbase_util_TCA.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rnbase/util/class.tx_rnbase_util_TCA.php']);
