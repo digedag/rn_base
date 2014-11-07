@@ -355,6 +355,7 @@ class tx_rnbase_util_BaseMarker {
 				}
 			}
 			elseif(preg_match('/LABEL_.*/', $marker)) {
+				$markerArray['###'.$marker.'###'] = ''; // remove marker per default
 				foreach ($suffixesToTry as $suffix) {
 					$completeKey = $marker.$suffix;
 					// Hier kommt immer ein leerer String zurück, weil T3 keinen Alternativ-String unterstützt
@@ -389,9 +390,9 @@ class tx_rnbase_util_BaseMarker {
 	/**
 	 * Gets an ordered list of language label suffixes that should be tried to
 	 * get localizations in the preferred order of formality.
-	 * 
+	 *
 	 * Method copied from Tx_Oelib_SalutationSwitcher of Oliver Klee
-	 * 
+	 *
 	 * @param tx_rnbase_configurations $configurations
 	 * @return array ordered list of suffixes from "", "_formal" and "_informal", will not be empty
 	 */

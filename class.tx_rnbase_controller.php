@@ -209,7 +209,7 @@ class tx_rnbase_controller {
 			$configurations->getBool('toUserInt')
 			// convert the USER to USER_INT
 			&& $configurations->convertToUserInt();
-		} catch (tx_rnbase_exception_SkipAction $e) {
+		} catch (tx_rnbase_exception_Skip $e) {
 			// dont do anything! the controller will be called twice,
 			// if we convert the USER to USER_INTERNAL
 			return '';
@@ -249,11 +249,9 @@ class tx_rnbase_controller {
 		try {
 			// Creating the responsible Action
 			$action = tx_rnbase::makeInstance($actionName);
-	//		$action->parameters = $parameters;
-	//		$action->configurations = $configurations;
 			$ret = $action->execute($parameters, $configurations);
 		}
-		catch(tx_rnbase_exception_SkipAction $e) {
+		catch(tx_rnbase_exception_Skip $e) {
 			$ret = '';
 		}
 		catch(Exception $e) {

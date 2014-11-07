@@ -148,11 +148,11 @@ class tx_rnbase_util_Dates {
 	 * @param String $timezone
 	 */
 	public static function getTimeStamp($jahr=0, $monat=0, $tag=0, $std=0, $min=0, $sec=0, $timezone = 'UTC') {
-		if(($jahr+$monat+$tag+$std+$min+$sec) === 0) 
+		if(($jahr+$monat+$tag+$std+$min+$sec) === 0)
 			return 0;
 		if(!class_exists('DateTime')) {
 			// TODO: implement timezone support for at least PHP 5.1
-			return $timezone == 'UTC' ? 
+			return $timezone == 'UTC' ?
 				gmmktime($std, $min, $sec, $monat, $tag, $jahr) :
 				mktime($std, $min, $sec, $monat, $tag, $jahr);
 		}
@@ -193,7 +193,7 @@ class tx_rnbase_util_Dates {
 		list($tag, $monat, $jahr) = explode('-', $datum);
 		list($std, $min, $sec) = explode(':', $zeit);
 		return sprintf('%04d-%02d-%02d %02d:%02d:%02d', $jahr, $monat, $tag, $std, $min, $sec);
-	}	
+	}
 
 	/**
 	 * Wandelt Timestamps in einem TCA-Record in MySQL DateTime-Strings um
@@ -231,6 +231,36 @@ class tx_rnbase_util_Dates {
 			}
 		}
 	}
+
+	/**
+	 * DateTimeZone ist wichtig, falls nicht dann:
+	 * 	It is not safe to rely on the system's timezone settings.
+	 * 	Please use the date.timezone setting, the TZ envir onment variable
+	 * 	or the date_default_timezone_set() function. In case you used any
+	 * 	of those methods and you are still getting this warning, you most
+	 * 	likely missp elled the timezone identifier. We selected
+	 * 	'Europe/Paris' for '2.0/DST' instead.
+	 *
+	 * @param string|DateTimeZone $timezone
+	 * @return DateTimeZone
+	 */
+	public static function getDateTimeZone($timezone=null) {
+		static $europeBerlin = null;
+		if (is_null($timezone) && is_null($europeBerlin)) {
+			$europeBerlin = new DateTimeZone('Europe/Berlin');
+		}
+		return is_null($timezone) ? $europeBerlin : new DateTimeZone($timezone);
+	}
+	/**
+	 * @param string|DateTimeZone $date
+	 * @param string $timezone
+	 * @return DateTime
+	 */
+	public static function getDateTime($date=null, $timezone=null) {
+		$timezone = is_object($timezone) ? $timezone : self::getDateTimeZone($timezone);
+		return new DateTime($date, $timezone);
+	}
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Dates.php']) {
