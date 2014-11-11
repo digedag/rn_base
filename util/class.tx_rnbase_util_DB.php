@@ -22,10 +22,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 tx_rnbase::load('tx_rnbase_util_Debug');
-tx_rnbase::load('tx_rnbase_util_Math');
+tx_rnbase::load('tx_rnbase_util_Misc');
 
 /**
  * Contains utility functions for database access
@@ -256,6 +256,16 @@ class tx_rnbase_util_DB {
 		$debug = intval($arr['debug']) > 0;
 		$database = isset($arr['db']) && is_object($arr['db']) ? $arr['db'] : $GLOBALS['TYPO3_DB'];
 
+		tx_rnbase_util_Misc::callHook(
+			'rn_base',
+			'util_db_do_insert_pre',
+			array(
+				'tablename' => $tablename,
+				'values' => &$values,
+				'options' => $arr,
+			)
+		);
+
 		if($debug) {
 			$time = microtime(TRUE);
 			$mem = memory_get_usage();
@@ -318,6 +328,18 @@ class tx_rnbase_util_DB {
 		$debug = intval($arr['debug']) > 0;
 		$database = isset($arr['db']) && is_object($arr['db']) ? $arr['db'] : $GLOBALS['TYPO3_DB'];
 
+		tx_rnbase_util_Misc::callHook(
+			'rn_base',
+			'util_db_do_update_pre',
+			array(
+				'tablename' => $tablename,
+				'where' => $where,
+				'values' => &$values,
+				'options' => $arr,
+				'noQuoteFields' => $noQuoteFields,
+			)
+		);
+
 		if($debug) {
 			$sql = $database->UPDATEquery($tablename, $where, $values, $noQuoteFields);
 			tx_rnbase_util_Debug::debug($sql, 'SQL');
@@ -347,6 +369,16 @@ class tx_rnbase_util_DB {
 		if (!is_array($arr)) { $arr = array('debug' => $arr); }
 		$debug = intval($arr['debug']) > 0;
 		$database = isset($arr['db']) && is_object($arr['db']) ? $arr['db'] : $GLOBALS['TYPO3_DB'];
+
+		tx_rnbase_util_Misc::callHook(
+			'rn_base',
+			'util_db_do_delete_pre',
+			array(
+				'tablename' => $tablename,
+				'where' => $where,
+				'options' => $arr,
+			)
+		);
 
 		if($debug) {
 			$sql = $database->DELETEquery($tablename, $where);
@@ -435,7 +467,6 @@ class tx_rnbase_util_DB {
 	 * @deprecated use tx_rnbase_util_Misc::getPidList!
 	 */
 	static function _getPidList($pid_list, $recursive=0)  {
-		tx_rnbase::load('tx_rnbase_util_Misc');
 		return tx_rnbase_util_Misc::getPidList($pid_list, $recursive);
 	}
 
@@ -455,7 +486,6 @@ class tx_rnbase_util_DB {
 			$msg .= '<b>' . $database->sql_error() . '</b>';
 			$msg .= '<br />';
 			$msg .= $database->debug_lastBuiltQuery;
-			tx_rnbase::load('tx_rnbase_util_Misc');
 			// We need to pass the extKey, otherwise no devlog was written.
 			tx_rnbase_util_Misc::mayday(nl2br($msg), 'rn_base');
 		}
@@ -653,7 +683,6 @@ class tx_rnbase_util_DB {
 				$where .= self::searchWhere($value, $tableAlias . '.' . strtolower($col), OP_LIKE_CONST);
 				break;
 			default:
-				tx_rnbase::load('tx_rnbase_util_Misc');
 				tx_rnbase_util_Misc::mayday('Unknown Operator for comparation defined: ' . $operator);
 		}
 		return $where . ' ';
