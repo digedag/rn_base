@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2009-2013 Rene Nitzsche
+ *  (c) 2009-2014 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -112,7 +112,7 @@ class tx_rnbase_util_Files {
 
 	/**
 	 * Wrapper method from t3lib_div.
-	 * 
+	 *
 	 * Returns the absolute filename of a relative reference, resolves the "EXT:" prefix
 	 * (way of referring to files inside extensions) and checks that the file is inside
 	 * the PATH_site of the TYPO3 installation and implies a check with
@@ -128,7 +128,18 @@ class tx_rnbase_util_Files {
 			return \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($fName, $onlyRelative, $relToTYPO3_mainDir);
 		return t3lib_div::getFileAbsFileName($fName, $onlyRelative, $relToTYPO3_mainDir);
 	}
-	
+	/**
+	 * Append file on directory
+	 * http://stackoverflow.com/a/15575293
+	 */
+	public static function join()	{
+		$paths = array();
+		foreach (func_get_args() as $arg) {
+			if ($arg !== '') { $paths[] = $arg; }
+		}
+		return preg_replace('#/+#','/',join('/', $paths));
+	}
+
 	/**
 	 * Wir lassen als Dateinamen nur Buchstaben, Zahlen,
 	 * Bindestrich, Unterstrich und Punkt zu.
