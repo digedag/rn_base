@@ -222,6 +222,13 @@ class tx_rnbase_util_DB {
 	 * @param array $options
 	 */
 	private static function lookupLanguage(&$row, $tableName, $sysPage, $options) {
+		// ACHTUNG: Bei Aufruf im BE führt das zu einem Fehler in TCE-Formularen. Die
+		// Initialisierung der TSFE ändert den backPath im PageRender auf einen falschen
+		// Wert. Dadurch werden JS-Dateien nicht mehr geladen.
+		// Ist dieser Aufruf im BE überhaupt sinnvoll?
+		if(TYPO3_MODE == 'BE')
+			return;
+
 		// Then get localization of record:
 		// (if the content language is not the default language)
 		$tsfe = tx_rnbase_util_TYPO3::getTSFE();
