@@ -36,6 +36,13 @@ interface tx_rnbase_IParameters {
 	 */
 	function get($paramName, $qualifier='');
 	/**
+	 * removes xss etc. from the value
+	 *
+	 * @param string $field
+	 * @return string
+	 */
+	public function getCleaned($paramName, $qualifier = '');
+	/**
 	 * Liefert den Parameter-Wert als int
 	 *
 	 * @param string $paramName
@@ -81,6 +88,22 @@ class tx_rnbase_parameters extends ArrayObject implements tx_rnbase_IParameters 
 		$value = $this->offsetGet($paramName);
 		return $value ? $value : $this->offsetGet('NK_'.$paramName);
 	}
+
+	/**
+	 * removes xss from the value
+	 *
+	 * @param string $field
+	 * @return string
+	 */
+	public function getCleaned($paramName, $qualifier = '') {
+		$value = $this->get($paramName, $qualifier);
+		// remove Cross-Site Scripting
+		if (!empty($value) && strlen($value) > 3) {
+			$value = t3lib_div::removeXSS($value);
+		}
+		return $value;
+	}
+
 	/**
 	 * Liefert den Parameter-Wert als int
 	 *
@@ -92,8 +115,8 @@ class tx_rnbase_parameters extends ArrayObject implements tx_rnbase_IParameters 
 		return intval($this->get($paramName, $qualifier));
 	}
 	private function getParametersPlain($qualifier) {
-		$parametersArray = tx_rnbase_util_TYPO3::isTYPO43OrHigher() ? 
-				t3lib_div::_GPmerged($qualifier) : 
+		$parametersArray = tx_rnbase_util_TYPO3::isTYPO43OrHigher() ?
+				t3lib_div::_GPmerged($qualifier) :
 				t3lib_div::GParrayMerged($qualifier);
 		return $parametersArray;
 	}

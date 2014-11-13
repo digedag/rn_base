@@ -4,6 +4,7 @@
 ----------
 
 v0.14.5 (??.??.2014)
+ * New method getCleaned removes xss from the parameter value.
  * Preprocess hooks for doInsert, doUpdate and doDelete in the DB util.
 
 v0.14.4 (06.11.2014)
