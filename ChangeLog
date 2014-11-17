@@ -3,9 +3,15 @@
 Änderungen
 ----------
 
-v0.14.5 (??.??.2014)
+v0.14.6 (??.??.2014)
+
+v0.14.5 (17.11.2014)
+ * Bugfix: auto translation causes error in TCE forms.
  * New method getCleaned removes xss from the parameter value.
+ * New method join for Files
  * Preprocess hooks for doInsert, doUpdate and doDelete in the DB util.
+ * New method loadTCA, to load the TCA, for excample in Ajax-calls or eID's.
+ * Bugfix: label markers without translation will be removed from template.
 
 v0.14.4 (06.11.2014)
  * Support for label markers with salutation suffix.
