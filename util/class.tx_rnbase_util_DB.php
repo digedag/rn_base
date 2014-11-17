@@ -226,8 +226,9 @@ class tx_rnbase_util_DB {
 		// Initialisierung der TSFE ändert den backPath im PageRender auf einen falschen
 		// Wert. Dadurch werden JS-Dateien nicht mehr geladen.
 		// Ist dieser Aufruf im BE überhaupt sinnvoll?
-		if(TYPO3_MODE == 'BE')
+		if(!(defined('TYPO3_MODE') && TYPO3_MODE === 'FE')) {
 			return;
+		}
 
 		// Then get localization of record:
 		// (if the content language is not the default language)
