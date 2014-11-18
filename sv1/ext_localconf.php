@@ -20,4 +20,3 @@ t3lib_extMgm::addService($_EXTKEY,  'mediaplayer' /* sv type */,  'tx_rnbase_sv1
 	'className' => 'tx_rnbase_sv1_MediaPlayer',
 		)
 	);
-?>

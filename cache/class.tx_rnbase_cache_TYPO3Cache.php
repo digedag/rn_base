@@ -128,4 +128,3 @@ class tx_rnbase_cache_TYPO3Cache implements tx_rnbase_cache_ICache {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/cache/class.tx_rnbase_cache_TYPO3Cache.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/cache/class.tx_rnbase_cache_TYPO3Cache.php']);
 }
-?>

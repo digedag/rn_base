@@ -150,4 +150,3 @@ class tx_rnbase_util_db_TYPO3 {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_db_TYPO3.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_db_TYPO3.php']);
 }
-?>
