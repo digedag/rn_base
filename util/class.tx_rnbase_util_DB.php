@@ -286,13 +286,29 @@ class tx_rnbase_util_DB {
 				$values
 			), $database
 		);
-		if($debug)
+
+		if($debug) {
 			tx_rnbase_util_Debug::debug(array(
 				'SQL '=>$sqlQuery,
 				'Time '=>(microtime(TRUE) - $time),
 				'Memory consumed '=>(memory_get_usage()-$mem),
 			), 'SQL statistics');
-		return $database->sql_insert_id();
+		}
+
+		$insertId = $database->sql_insert_id();
+
+		tx_rnbase_util_Misc::callHook(
+			'rn_base',
+			'util_db_do_insert_post',
+			array(
+				'tablename' => $tablename,
+				'uid' => $insertId,
+				'values' => $values,
+				'options' => $arr,
+			)
+		);
+
+		return $insertId;
 	}
 	/**
 	 * Make a plain SQL Query.
@@ -362,7 +378,23 @@ class tx_rnbase_util_DB {
 				$noQuoteFields
 			), $database
 		);
-		return $database->sql_affected_rows();
+
+		$affectedRows = $database->sql_affected_rows();
+
+		tx_rnbase_util_Misc::callHook(
+			'rn_base',
+			'util_db_do_update_post',
+			array(
+				'tablename' => $tablename,
+				'where' => $where,
+				'values' => $values,
+				'affectedRows' => $affectedRows,
+				'options' => $arr,
+				'noQuoteFields' => $noQuoteFields,
+			)
+		);
+
+		return $affectedRows;
 	}
 	/**
 	 * Make a database DELETE
@@ -400,7 +432,21 @@ class tx_rnbase_util_DB {
 				$where
 			), $database
 		);
-		return $database->sql_affected_rows();
+
+		$affectedRows = $database->sql_affected_rows();
+
+		tx_rnbase_util_Misc::callHook(
+			'rn_base',
+			'util_db_do_delete_post',
+			array(
+				'tablename' => $tablename,
+				'where' => $where,
+				'affectedRows' => $affectedRows,
+				'options' => $arr,
+			)
+		);
+
+		return $affectedRows;
 	}
 
 	/**

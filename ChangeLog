@@ -4,6 +4,7 @@
 ----------
 
 v0.14.6 (??.??.2014)
+ * Postprocess hooks for doInsert, doUpdate and doDelete in the DB util.
 
 v0.14.5 (17.11.2014)
  * Bugfix: auto translation causes error in TCE forms.
