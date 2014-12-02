@@ -184,7 +184,7 @@ class tx_rnbase_model_data {
 	 * @return string
 	 */
 	public function __toString() {
-		$data = $this->record;
+		$data = $this->getProperty();
 		$out  = get_class($this) . ' (' . CRLF;
 		foreach ($data as $key => $value) {
 			$type = gettype($value);

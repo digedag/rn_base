@@ -598,12 +598,17 @@ class tx_rnbase_util_Link {
 		elseif($keepVarConf = $configurations->get($confId.'useKeepVars.')) {
 			// Sonderoptionen für KeepVars gesetzt
 			$newKeepVars = array();
+			// skip empty values? default false!
+			$skipEmpty = !empty($keepVarConf['skipEmpty']);
 			$keepVars = $configurations->getKeepVars();
 			$allow = $keepVarConf['allow'];
 			$deny = $keepVarConf['deny'];
 			if($allow) {
 				$allow = t3lib_div::trimExplode(',', $allow);
 				foreach($allow As $allowed) {
+					$value = $keepVars->offsetGet($allowed);
+					if ($skipEmpty && empty($value))
+						continue;
 					$newKeepVars[$allowed] = $keepVars->offsetGet($allowed);
 				}
 			}
@@ -611,6 +616,8 @@ class tx_rnbase_util_Link {
 				$deny = array_flip(t3lib_div::trimExplode(',', $deny));
 				$keepVarsArr = $keepVars->getArrayCopy();
 				foreach($keepVarsArr As $key => $value) {
+					if ($skipEmpty && empty($value))
+						continue;
 					if(!array_key_exists($key, $deny))
 						$newKeepVars[$key] = $value;
 				}
@@ -626,6 +633,8 @@ class tx_rnbase_util_Link {
 						if ($value = t3lib_div::_GP($qualifier)) {
 							if($name == '*' && is_array($value)) {
 								foreach($value As $paramName => $paramValue) {
+									if ($skipEmpty && empty($paramValue))
+										continue;
 									if(strpos($paramName, 'NK_') === FALSE)
 										$newKeepVars[$qualifier.'::'.$paramName] =  $paramValue;
 								}
