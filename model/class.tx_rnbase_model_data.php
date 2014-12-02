@@ -48,15 +48,20 @@ class tx_rnbase_model_data {
 	var $record = NULL;
 
 	/**
+	 * constructor of the data object
+	 *
 	 * @param array $record
+	 * @return NULL
 	 */
 	function __construct($record) {
-		$this->init($record);
+		return $this->init($record);
 	}
 
 	/**
+	 * initialize the data
 	 *
 	 * @param array $record
+	 * @return NULL
 	 */
 	function init($record) {
 		if (is_array($record)) {
@@ -65,9 +70,12 @@ class tx_rnbase_model_data {
 		else {
 			$this->record = array('uid' => $record);
 		}
+
+		return NULL;
 	}
 
 	/**
+	 * create a new data model
 	 *
 	 * @param array $data
 	 * @return tx_rnbase_model_data
@@ -101,7 +109,7 @@ class tx_rnbase_model_data {
 	 * @param string $property
 	 * @return string
 	 */
-	protected function getProperty($property = NULL) {
+	public function getProperty($property = NULL) {
 		if (is_null($property)) {
 			return $this->record;
 		}
@@ -117,7 +125,7 @@ class tx_rnbase_model_data {
 	 * @param string $property
 	 * @return tx_t3socials_models_Base
 	 */
-	protected function unsProperty($property) {
+	public function unsProperty($property) {
 		unset($this->record[$property]);
 		return $this;
 	}
@@ -128,7 +136,7 @@ class tx_rnbase_model_data {
 	 * @param string $property
 	 * @return string
 	 */
-	protected function hasProperty($property) {
+	public function hasProperty($property) {
 		return isset($this->record[$property]);
 	}
 
@@ -176,6 +184,8 @@ class tx_rnbase_model_data {
 			'(' . print_r($args, 1) . ').',
 			1406625817
 		);
+
+		return NULL;
 	}
 
 	/**
