@@ -3,7 +3,9 @@
 Änderungen
 ----------
 
-v0.14.6 (??.??.2014)
+v0.14.7 (??.??.2014)
+
+v0.14.6 (04.12.2014)
  * New feature, to skip empty values for keepvars
  * Postprocess hooks for doInsert, doUpdate and doDelete in the DB util.
 
