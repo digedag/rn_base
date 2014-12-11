@@ -1,0 +1,22 @@
+{
+	"name" : "typo3/rn-base",
+	"description" : "A base library for extensions. Uses MVC design principles and domain driven development for TYPO3 extension development.",
+	"type" : "typo3-cms-extension",
+	"homepage" : "http://www.dmk-ebusiness.de/",
+	"license" : "GPL-3.0+",
+	"authors" : [
+		{
+			"name" : "René Nitzsche",
+			"email" : "nitzsche@dmk-ebusiness.de",
+			"role" : "Developer"
+		}
+	],
+	"support": {
+		"email": "rene@system25.de",
+		"source": "https://github.com/digedag/rn_base",
+		"issues": "https://github.com/digedag/rn_base/issues"
+	},
+	"require" : {
+		"typo3/cms" : "*"
+	}
+}
