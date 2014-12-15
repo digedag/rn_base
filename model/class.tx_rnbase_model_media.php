@@ -57,6 +57,7 @@ class tx_rnbase_model_media extends tx_rnbase_model_base {
 			$this->uid = $media->getUid();
 			$this->record['uid'] = $media->getUid();
 			$this->record['file_path'] = $media->getPublicUrl();
+			$this->record['file_abs_url'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL') .$this->record['file_path'];
 		}
 		else {
 			// DAM

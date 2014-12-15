@@ -4,6 +4,7 @@
 ----------
 
 v0.14.7 (??.??.2014)
+* New Method tx_rnbase_util_TSFAL::fetchFileList as tx_dam_tsfe->fetchFileList equivalent for easier dam2file migration.
 
 v0.14.6 (04.12.2014)
  * New feature, to skip empty values for keepvars

@@ -111,6 +111,24 @@ class tx_rnbase_util_TSFAL {
 	}
 
 	/**
+	 * returns the filelist comma seperated.
+	 * this is equivalent to tx_dam_tsfe->fetchFileList
+	 *
+	 * @param string $content
+	 * @param array $tsConf
+	 * @return string
+	 */
+	public function fetchFileList($content, $tsConf) {
+		$conf = $this->createConf($tsConf);
+		$filelist = self::fetchFilesByTS($conf, $conf->getCObj());
+		$files = array();
+		foreach ($filelist as $fileModel) {
+			$files[] = $fileModel->getFilePath();
+		}
+		return implode(',', $files);
+	}
+
+	/**
 	 * This method is taken from TYPO3\CMS\Frontend\ContentObject\FileContentObject.
 	 * It is a good tradition in TYPO3 that code can not be re-used. TYPO3 6.x makes
 	 * no difference...
