@@ -437,14 +437,16 @@ class tx_rnbase_util_TSFAL {
 	 * @param string $tableName
 	 * @return int
 	 */
-	public static function addReference($tableName, $fieldName, $itemId, $uid) {
+	public static function addReference($tableName, $fieldName, $itemId, $mediaUid) {
 		$data = array();
 		$data['uid_foreign'] = $itemId;
-		$data['uid_local'] = $uid;
+		$data['uid_local'] = $mediaUid;
 		$data['tablenames'] = $tableName;
-		$data['ident'] = $fieldName;
+		$data['fieldname'] = $fieldName;
+		$data['sorting_foreign'] = 1;
+		$data['table_local'] = 'sys_file';
 
-		$id = tx_rnbase_util_DB::doInsert('tx_dam_mm_ref', $data);
+		$id = tx_rnbase_util_DB::doInsert('sys_file_reference', $data);
 
 		// Now count all items
 		self::updateImageCount($tableName, $fieldName, $itemId);
@@ -458,13 +460,14 @@ class tx_rnbase_util_TSFAL {
 	 * @param string $uids commaseperated uids
 	 */
 	public static function deleteReferences($tableName, $fieldName, $itemId, $uids = '') {
-
-		$where = 'tablenames=\'' . $tableName . '\' AND ident=\'' . $fieldName .'\' AND uid_foreign=' . $itemId;
+		$where  = 'tablenames = ' . tx_rnbase_util_DB::fullQuoteStr($tableName, 'sys_file_reference');
+		$where .= ' AND fieldname = ' . tx_rnbase_util_DB::fullQuoteStr($fieldName, 'sys_file_reference');
+		$where .= ' AND uid_foreign = ' . (int) $itemId;
 		if(strlen(trim($uids))) {
-			$uids = implode(',', t3lib_div::intExplode(',', $uids));
+			$uids = implode(',',t3lib_div::intExplode(',',$uids));
 			$where .= ' AND uid_local IN (' . $uids .') ';
 		}
-		tx_rnbase_util_DB::doDelete('tx_dam_mm_ref', $where);
+		tx_rnbase_util_DB::doDelete('sys_file_reference', $where);
 		// Jetzt die Bildanzahl aktualisieren
 		self::updateImageCount($tableName, $fieldName, $itemId);
 	}
@@ -476,17 +479,33 @@ class tx_rnbase_util_TSFAL {
 	public static function updateImageCount($tableName, $fieldName, $itemId) {
 		$values = array();
 		$values[$fieldName] = self::getImageCount($tableName, $fieldName, $itemId);
-		tx_rnbase_util_DB::doUpdate($tableName, 'uid='.$itemId, $values, 0);
+		tx_rnbase_util_DB::doUpdate($tableName, 'uid=' . $itemId, $values);
 	}
 	/**
 	 * Get picture count
 	 * @return int
 	 */
 	public static function getImageCount($tableName, $fieldName, $itemId) {
-		$options['where'] = 'tablenames=\'' . $tableName . '\' AND ident=\'' . $fieldName .'\' AND uid_foreign=' . $itemId;
+		$options['where']  = 'tablenames = ' . tx_rnbase_util_DB::fullQuoteStr($tableName, 'sys_file_reference');
+		$options['where'] .= ' AND fieldname = ' . tx_rnbase_util_DB::fullQuoteStr($fieldName, 'sys_file_reference');
+		$options['where'] .= ' AND uid_foreign = ' . (int) $itemId;
 		$options['count'] = 1;
 		$options['enablefieldsoff'] = 1;
-		$ret = tx_rnbase_util_DB::doSelect('count(*) AS \'cnt\'', 'tx_dam_mm_ref', $options, 0);
+		$ret = tx_rnbase_util_DB::doSelect('count(*) AS \'cnt\'', 'sys_file_reference', $options);
+		return empty($ret) ? 0 : (int) $ret[0]['cnt'];
+	}
+
+	/**
+	 * Get picture usage count
+	 *
+	 * @param int $mediaUid
+	 * @return int
+	 */
+	public static function getReferencesCount($mediaUid) {
+		$options['where'] = 'uid_local = ' . (int) $mediaUid;
+		$options['count'] = 1;
+		$options['enablefieldsoff'] = 1;
+		$ret = tx_rnbase_util_DB::doSelect('count(*) AS \'cnt\'', 'sys_file_reference', $options, 0);
 		$cnt = count($ret) ? intval($ret[0]['cnt']) : 0;
 		return $cnt;
 	}
@@ -499,8 +518,19 @@ class tx_rnbase_util_TSFAL {
 	 * @return array
 	 */
 	public static function getReferences($refTable, $refUid, $refField) {
-		require_once(t3lib_extMgm::extPath('dam') . 'lib/class.tx_dam_db.php');
-		return tx_dam_db::getReferencedFiles($refTable, $refUid, $refField);
+		return static::fetchReferences($refTable, $refUid, $refField);
+	}
+
+	protected static function getReferenceFileInfo(
+		\TYPO3\CMS\Core\Resource\FileReference $reference
+	) {
+		// getProperties gets merged values from reference and the orig file
+		$info = $reference->getProperties();
+		// add some fileinfo
+		$info['file_path_name'] = $reference->getOriginalFile()->getPublicUrl();
+		$info['file_abs_url'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $info['file_path_name'];
+		$info['file_name'] = $info['name'];
+		return $info;
 	}
 
 	/**
@@ -511,18 +541,11 @@ class tx_rnbase_util_TSFAL {
 	 * @return array
 	 */
 	public static function getReferencesFileInfo($refTable, $refUid, $refField) {
-		$refs = self::getReferences($refTable, $refUid, $refField);
-		$res = array();
-		if (isset($refs['rows']) && count($refs['rows'])) {
-			foreach ($refs['rows'] as $uid=>$record) {
-				$fileInfo = self::getFileInfo($record);
-				if (isset($refs['files'][$uid]))
-					$fileInfo['file_path_name'] = $refs['files'][$uid];
-				$fileInfo['file_abs_url'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $fileInfo['file_path_name'];
-				$res[$uid] = $fileInfo;
-			}
+		$infos = array();
+		foreach(self::getReferences($refTable, $refUid, $refField) as $reference) {
+			$infos[$reference->getUid()] = static::getReferenceFileInfo($reference);
 		}
-		return $res;
+		return $infos;
 	}
 
 	/**
@@ -531,11 +554,23 @@ class tx_rnbase_util_TSFAL {
 	 * @param string $refTable
 	 * @param int $refUid
 	 * @param string $refField
-	 * @return array
+	 * @return \TYPO3\CMS\Core\Resource\FileReference
 	 */
 	public static function getFirstReference($refTable, $refUid, $refField) {
 		$refs = self::fetchReferences($refTable, $refUid, $refField);
 		return reset($refs);
+	}
+	/**
+	 * Return file info of first reference for the given reference data
+	 *
+	 * @param string $refTable
+	 * @param int $refUid
+	 * @param string $refField
+	 * @return array
+	 */
+	public static function getFirstReferenceFileInfo($refTable, $refUid, $refField) {
+		$reference = self::getFirstReference($refTable, $refUid, $refField);
+		return !$reference ? array() : static::getReferenceFileInfo($reference);
 	}
 	/**
 	 * Returns a single FAL file reference by uid
@@ -544,6 +579,51 @@ class tx_rnbase_util_TSFAL {
 	 */
 	public static function getFileReferenceById($uid) {
 		return \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileReferenceObject($uid);
+	}
+
+	/**
+	 *
+	 * @param string $target
+	 * @param int|\TYPO3\CMS\Core\Resource\ResourceStorageInterface $storage
+	 * @return \TYPO3\CMS\Core\Resource\File
+	 */
+	public static function indexProcess($target, $storage) {
+
+		// get the storage
+		if (is_scalar($storage)) {
+			$storage = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getStorageObject(
+				$storage, array(), $target
+			);
+		}
+		if (!$storage instanceof \TYPO3\CMS\Core\Resource\ResourceStorageInterface) {
+			throw new \InvalidArgumentException('Storage missed for indexing process.');
+		}
+
+		// build the relativeStorage Path
+		$storageConfig = $storage->getConfiguration();
+		if ($storageConfig['pathType'] === 'relative') {
+			$relativeBasePath = $storageConfig['basePath'];
+		} else {
+			if (strpos($storageConfig['basePath'], PATH_site) !== 0) {
+				throw new \LogicException('Could not determine relative storage path.');
+			}
+			$relativeBasePath = substr($storageConfig['basePath'], strlen(PATH_site));
+		}
+
+		// build the identifier, trim the storage path from the target
+		if (strpos($target, $relativeBasePath) !== 0) {
+			throw new \LogicException('Could not determine identifier path.');
+		}
+		$identifier = ltrim(substr($target, strlen($relativeBasePath)), '/');
+
+		/* @var $indexer \TYPO3\CMS\Core\Resource\Index\Indexer */
+		$indexer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+			'TYPO3\\CMS\\Core\\Resource\\Index\\Indexer',
+			$storage
+		);
+		$fileObject = $indexer->createIndexEntry($identifier);
+
+		return $fileObject;
 	}
 }
 
