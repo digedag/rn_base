@@ -40,7 +40,7 @@ tx_rnbase::load('tx_rnbase_util_BaseMarker');
 class tx_rnbase_util_TSDAM {
 
 	/**
-	 * Typoscript USER function for rendering DAM images. 
+	 * Typoscript USER function for rendering DAM images.
 	 * This is a minimal Setup:
 	 * <pre>
 	 * yourObject.imagecol = USER
@@ -60,7 +60,7 @@ class tx_rnbase_util_TSDAM {
 	 * }
 	 * </pre>
 	 * There are three additional fields in media record: file, file1 and thumbnail containing the complete
-	 * image path. 
+	 * image path.
 	 * The output is rendered via HTML template with ListBuilder. Have a look at EXT:rn_base/res/simplegallery.html
 	 * Possible Typoscript options:
 	 * refField: DAM reference field of the media records (defined in TCA and used to locate the record in MM-Table)
@@ -70,7 +70,7 @@ class tx_rnbase_util_TSDAM {
 	 * limit: Limits the number of medias
 	 * offset: Start media output with an offset
 	 * forcedIdField: force another refernce column (other than UID or _LOCALIZED_UID)
-	 * 
+	 *
 	 *
 	 * @param string $content
 	 * @param array $tsConf
@@ -111,7 +111,7 @@ class tx_rnbase_util_TSDAM {
 			$damPics = array_slice($damPics, $offset, $limit);
 
 		$damDb = tx_rnbase::makeInstance('tx_dam_db');
-		
+
 		$medias = array();
 		while(list($uid, $baseRecord) = each($damPics)) {
 			$mediaObj = tx_rnbase::makeInstance('tx_rnbase_model_media', $baseRecord['uid']);
@@ -124,7 +124,7 @@ class tx_rnbase_util_TSDAM {
 			$mediaObj->record['parentuid'] = $parentUid;
 			$medias[] = $mediaObj;
 		}
-		
+
 		$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
 		$out = $listBuilder->render($medias, FALSE, $templateCode, 'tx_rnbase_util_MediaMarker',
 						'media.', 'MEDIA', $conf->getFormatter());
@@ -148,18 +148,18 @@ class tx_rnbase_util_TSDAM {
 	}
 
 	/**
-	 * This method is a reimplementation of tx_dam_tsfe->fetchFileList. 
+	 * This method is a reimplementation of tx_dam_tsfe->fetchFileList.
 	 *
 	 * @param array $conf
 	 * @return array
 	 */
 	function fetchFileList ($conf, &$cObj) {
-		
+
 //		$damMedia = tx_rnbase::makeInstance('tx_dam_tsfe');
 //		$damMedia->cObj = $cObj;
 //		$damFiles = $damMedia->fetchFileList('', $conf);
 //		return $damFiles ? t3lib_div::trimExplode(',', $damFiles) : array();
-		
+
 //		$files = array();
 //		$filePath = $cObj->stdWrap($conf['additional.']['filePath'], $conf['additional.']['filePath.']);
 //		$fileList = trim($cObj->stdWrap($conf['additional.']['fileList'], $conf['additional.']['fileList.']));
@@ -169,12 +169,12 @@ class tx_rnbase_util_TSDAM {
 //				$files[] = $filePath.$file;
 //			}
 //		}
-		
-		
+
+
 		$uid      = $cObj->data['_LOCALIZED_UID'] ? $cObj->data['_LOCALIZED_UID'] : $cObj->data['uid'];
 		$refTable = ($conf['refTable'] && is_array($GLOBALS['TCA'][$conf['refTable']])) ? $conf['refTable'] : 'tt_content';
 		$refField = trim($cObj->stdWrap($conf['refField'], $conf['refField.']));
-		
+
 		if (isset($GLOBALS['BE_USER']->workspace) && $GLOBALS['BE_USER']->workspace !== 0) {
 			$workspaceRecord = t3lib_BEfunc::getWorkspaceVersionOfRecord(
 				$GLOBALS['BE_USER']->workspace,
@@ -282,7 +282,7 @@ class tx_rnbase_util_TSDAM {
 
 		$tca = array();
 		if(t3lib_extMgm::isLoaded('dam')) {
-			require_once(t3lib_extMgm::extPath('dam').'tca_media_field.php');	
+			require_once(t3lib_extMgm::extPath('dam').'tca_media_field.php');
 			$tca = txdam_getMediaTCA($type, $ref);
 		}
 		if (!empty($tca) && is_array($options)) {
@@ -300,7 +300,7 @@ class tx_rnbase_util_TSDAM {
 	 * Add a reference to a DAM media file
 	 *
 	 * @param string $tableName
-	 * @return int 
+	 * @return int
 	 */
 	public static function addReference($tableName, $fieldName, $itemId, $uid) {
 		$data = array();
@@ -310,10 +310,10 @@ class tx_rnbase_util_TSDAM {
 		$data['ident'] = $fieldName;
 
 		$id = tx_rnbase_util_DB::doInsert('tx_dam_mm_ref', $data);
-		
+
 		// Now count all items
 		self::updateImageCount($tableName, $fieldName, $itemId);
-		
+
 		return $id;
 	}
 
@@ -323,8 +323,9 @@ class tx_rnbase_util_TSDAM {
 	 * @param string $uids commaseperated uids
 	 */
 	public static function deleteReferences($tableName, $fieldName, $itemId, $uids = '') {
-
-		$where = 'tablenames=\'' . $tableName . '\' AND ident=\'' . $fieldName .'\' AND uid_foreign=' . $itemId;
+		$where  = 'tablenames=' . tx_rnbase_util_DB::fullQuoteStr($tableName, 'tx_dam_mm_ref');
+		$where .= ' AND ident=' . tx_rnbase_util_DB::fullQuoteStr($fieldName, 'tx_dam_mm_ref');
+		$where .= ' AND uid_foreign=' . (int) $itemId;
 		if(strlen(trim($uids))) {
 			$uids = implode(',', t3lib_div::intExplode(',', $uids));
 			$where .= ' AND uid_local IN (' . $uids .') ';
@@ -340,7 +341,7 @@ class tx_rnbase_util_TSDAM {
 	 */
 	public static function updateImageCount($tableName, $fieldName, $itemId) {
 		$values = array();
-		$values[$fieldName] = self::getImageCount($tableName, $fieldName, $itemId);		
+		$values[$fieldName] = self::getImageCount($tableName, $fieldName, $itemId);
 		tx_rnbase_util_DB::doUpdate($tableName, 'uid='.$itemId, $values, 0);
 	}
 	/**
@@ -348,7 +349,24 @@ class tx_rnbase_util_TSDAM {
 	 * @return int
 	 */
 	public static function getImageCount($tableName, $fieldName, $itemId) {
-		$options['where'] = 'tablenames=\'' . $tableName . '\' AND ident=\'' . $fieldName .'\' AND uid_foreign=' . $itemId;
+		$options['where']  = 'tablenames=' . tx_rnbase_util_DB::fullQuoteStr($tableName, 'tx_dam_mm_ref');
+		$options['where'] .= ' AND ident=' . tx_rnbase_util_DB::fullQuoteStr($fieldName, 'tx_dam_mm_ref');
+		$options['where'] .= ' AND uid_foreign=' . (int) $itemId;
+		$options['count'] = 1;
+		$options['enablefieldsoff'] = 1;
+		$ret = tx_rnbase_util_DB::doSelect('count(*) AS \'cnt\'', 'tx_dam_mm_ref', $options, 0);
+		$cnt = count($ret) ? intval($ret[0]['cnt']) : 0;
+		return $cnt;
+	}
+
+	/**
+	 * Get picture usage count
+	 *
+	 * @param int $mediaUid
+	 * @return int
+	 */
+	public static function getReferencesCount($mediaUid) {
+		$options['where'] = 'uid_local = ' . (int) $mediaUid;
 		$options['count'] = 1;
 		$options['enablefieldsoff'] = 1;
 		$ret = tx_rnbase_util_DB::doSelect('count(*) AS \'cnt\'', 'tx_dam_mm_ref', $options, 0);
@@ -358,7 +376,7 @@ class tx_rnbase_util_TSDAM {
 
 	/**
 	 * Return all references for the given reference data
-	 * 
+	 *
 	 * @param string $refTable
 	 * @param string $refField
 	 * @return array
@@ -367,10 +385,10 @@ class tx_rnbase_util_TSDAM {
 		require_once(t3lib_extMgm::extPath('dam') . 'lib/class.tx_dam_db.php');
 		return tx_dam_db::getReferencedFiles($refTable, $refUid, $refField);
 	}
-	
+
 	/**
 	 * Return file info for all references for the given reference data
-	 * 
+	 *
 	 * @param string $refTable
 	 * @param string $refField
 	 * @return array
@@ -389,10 +407,10 @@ class tx_rnbase_util_TSDAM {
 		}
 		return $res;
 	}
-	
+
 	/**
 	 * Return first reference for the given reference data
-	 * 
+	 *
 	 * @param string $refTable
 	 * @param int $refUid
 	 * @param string $refField
@@ -400,7 +418,7 @@ class tx_rnbase_util_TSDAM {
 	 */
 	static public function getFirstReference($refTable, $refUid, $refField) {
 		$refs = self::getReferences($refTable, $refUid, $refField);
-		
+
 		if (!empty($refs)) {
 			$res = array();
 			// Loop through all data ...
@@ -411,6 +429,74 @@ class tx_rnbase_util_TSDAM {
 			}
 			return $res;
 		}
+	}
+
+	/**
+	 * Indiziert eine Datei mit DAM.
+	 *
+	 * ACHTUNG: wenn die Feld Collation der DB-Felder file_name und file_path
+	 *     in der tx_dam Tabelle auf *_ci (utf8_general_ci) stehen,
+	 *     wird bei der Prüfung Gruß-/Kleinschreibung ignoriert,
+	 *     was bei unix-Systemen zu Fehlern führt!
+	 *     Die einfache Lösung ist, die Collation der beiden Felder
+	 *     auf *_bin (utf8_bin) zu setzen!
+	 *
+	 * @param string $file
+	 * @param int $beUserId
+	 * @return uid
+	 */
+	public static function indexProcess($file, $beUserId) {
+		if (!t3lib_extMgm::isLoaded('dam')) {
+			return 0;
+		}
+		require_once t3lib_extMgm::extPath('dam', 'lib/class.tx_dam.php');
+		$mediaUid = tx_dam::file_isIndexed($file);
+		if(!$mediaUid) {
+			// process file indexing
+			self::initBE4DAM($beUserId);
+			$damData = tx_dam::index_process($file);
+			$mediaUid = $damData[0]['uid'];
+		}
+		return $mediaUid;
+	}
+	/**
+	 * Bereitet das Backend für die Indizierung einer Datei vor
+	 *
+	 * @param int $iBeUserId
+	 */
+	private static function initBE4DAM($beUserId) {
+		global $PAGES_TYPES, $BE_USER, $TCA;
+		if(!is_array($PAGES_TYPES) || !array_key_exists(254, $PAGES_TYPES)) {
+			// SysFolder als definieren
+			$PAGES_TYPES[254] = array(
+				'type' => 'sys',
+				'icon' => 'sysf.gif',
+				'allowedTables' => '*',
+			);
+		}
+		// Check BE User
+		if(!is_object($BE_USER) || !is_array($BE_USER->user)) {
+			if(!$beUserId) {
+				throw new Exception('NO BE User id given!');
+			}
+			unset($BE_USER);
+			$BE_USER = t3lib_div::makeInstance('t3lib_tsfeBeUserAuth');
+			$BE_USER->OS = TYPO3_OS;
+			$BE_USER->setBeUserByUid($beUserId);
+			$BE_USER->fetchGroupData();
+			$BE_USER->backendSetUC();
+			// Ohne Admin-Rechte gibt es leider Probleme bei der Verarbeitung mit der TCE.
+			$BE_USER->user['admin'] = 1;
+			$GLOBALS['BE_USER'] = $BE_USER;
+		}
+
+		if(!$GLOBALS['LANG']) {
+			// Bei Ajax-Calls fehlt das Objekt
+			require_once t3lib_extMgm::extPath('lang', 'lang.php');
+			$GLOBALS['LANG'] = t3lib_div::makeInstance('language');
+			$GLOBALS['LANG']->init($BE_USER->uc['lang']);
+		}
+
 	}
 }
 
