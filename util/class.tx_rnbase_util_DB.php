@@ -450,6 +450,44 @@ class tx_rnbase_util_DB {
 	}
 
 	/**
+	 * Escaping and quoting values for SQL statements.
+	 *
+	 * @param string $str Input string
+	 * @param string $table Table name for which to quote string. Just enter the table that the field-value is selected from (and any DBAL will look up which handler to use and then how to quote the string!).
+	 * @param boolean $allowNull Whether to allow NULL values
+	 * @return string Output string; Wrapped in single quotes and quotes in the string (" / ') and \ will be backslashed (or otherwise based on DBAL handler)
+	 */
+	public static function fullQuoteStr($str, $table, $allowNull = FALSE) {
+		return $GLOBALS['TYPO3_DB']->fullQuoteStr($str, $table, $allowNull);
+	}
+
+	/**
+	 * Will fullquote all values in the one-dimensional array so they are ready to "implode" for an sql query.
+	 *
+	 * @param array $arr Array with values (either associative or non-associative array)
+	 * @param string $table Table name for which to quote
+	 * @param boolean|array $noQuote List/array of keys NOT to quote (eg. SQL functions) - ONLY for associative arrays
+	 * @param boolean $allowNull Whether to allow NULL values
+	 * @return array The input array with the values quoted
+	 */
+	public static function fullQuoteArray($arr, $table, $noQuote = FALSE, $allowNull = FALSE) {
+		return $GLOBALS['TYPO3_DB']->fullQuoteArray($str, $table, $noQuote, $allowNull);;
+	}
+
+	/**
+	 * Substitution for PHP function "addslashes()"
+	 * Use this function instead of the PHP addslashes() function when you build queries - this will prepare your code for DBAL.
+	 * NOTICE: You must wrap the output of this function in SINGLE QUOTES to be DBAL compatible. Unless you have to apply the single quotes yourself you should rather use ->fullQuoteStr()!
+	 *
+	 * @param string $str Input string
+	 * @param string $table Table name for which to quote string. Just enter the table that the field-value is selected from (and any DBAL will look up which handler to use and then how to quote the string!).
+	 * @return string Output string; Quotes (" / ') and \ will be backslashed (or otherwise based on DBAL handler)
+	 */
+	public static function quoteStr($str, $table) {
+		return $GLOBALS['TYPO3_DB']->quoteStr($str, $table);
+	}
+
+	/**
 	 * Returns an array with column names of a TCA defined table.
 	 *
 	 * @param string $tcaTableName
