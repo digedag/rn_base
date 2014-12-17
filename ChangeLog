@@ -4,6 +4,10 @@
 ----------
 
 v0.14.7 (??.??.2014)
+* fal handling and indixing added
+* indexing proces for dam files
+* security fixes for dam handling
+* some quote string wrapper methods
 * New Method tx_rnbase_util_TSFAL::fetchFileList as tx_dam_tsfe->fetchFileList equivalent for easier dam2file migration.
 
 v0.14.6 (04.12.2014)
