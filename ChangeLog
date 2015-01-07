@@ -3,12 +3,15 @@
 Änderungen
 ----------
 
-v0.14.7 (??.??.2014)
+v0.14.8 (??.??.2015)
+
+v0.14.7 (07.0.2015)
 * fal handling and indixing added
 * indexing proces for dam files
 * security fixes for dam handling
 * some quote string wrapper methods
 * New Method tx_rnbase_util_TSFAL::fetchFileList as tx_dam_tsfe->fetchFileList equivalent for easier dam2file migration.
+* composer.json added. install rn_base with { "require" : { "digedag/rn-base" : "dev-master" } }
 
 v0.14.6 (04.12.2014)
  * New feature, to skip empty values for keepvars
