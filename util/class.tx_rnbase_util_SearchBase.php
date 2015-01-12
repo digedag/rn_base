@@ -502,17 +502,22 @@ abstract class tx_rnbase_util_SearchBase {
 					 * da limit bereits 5 ist und deshalb kein array werden kann.
 					 * der code sieht aktuell nur eines der beiden methoden vor.
 					 * entweder eine zuweisung als array oder skalaren Wert.
+					 * Wir ignorieren daher bereits existierende skalare Werte
+					 * und schreiben eine Log, es sei denn es sind bekannte Werte
+					 * wie override oder force, dann wird direkt ignoriert
 					 */
 					if (isset($options[$optionName]) && !is_array($options[$optionName])) {
-						tx_rnbase::load('tx_rnbase_util_Logger');
-						tx_rnbase_util_Logger::warn(
-							'Invalid configuration for config option "' . $optionName . '".',
-							'rn_base',
-							array(
-								'option_name' => $optionName,
-								'cfg' => $cfg,
-							)
-						);
+						if (!in_array($optionName, array('override', 'force'))) {
+							tx_rnbase::load('tx_rnbase_util_Logger');
+							tx_rnbase_util_Logger::warn(
+								'Invalid configuration for config option "' . $optionName . '".',
+								'rn_base',
+								array(
+									'option_name' => $optionName,
+									'cfg' => $cfg,
+								)
+							);
+						}
 						continue;
 					}
 					$tableAlias = strtoupper(substr($table, 0, strlen($table) -1));
