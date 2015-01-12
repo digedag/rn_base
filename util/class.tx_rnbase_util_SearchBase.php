@@ -483,14 +483,38 @@ abstract class tx_rnbase_util_SearchBase {
 					$options[$option] = $cfg;
 					continue;
 				}
+				// Ohne Angaben nix zu tun
+				if(!is_array($cfg)) continue;
+
 				// Zuerst den Namen der Option holen. Dieser ist immer klein
 				// Beispiel orderby, count...
 				$optionName = strtolower(substr($option, 0, strlen($option) -1));
-				if(!is_array($cfg)) continue; // Ohne Angaben nix zu tun
+
 
 				// Hier jetzt die Implementierung für orderby. da gibt es mehr
 				// Angaben als z.B. bei count.
 				while(list($table, $data) = each($cfg)) {
+					/*
+					 * was, wenn im ts etwas wie folgt angegeben ist?
+					 * options.limit = 5
+					 * options.limit.override = 10
+					 * das führt zu php offset fehlern,
+					 * da limit bereits 5 ist und deshalb kein array werden kann.
+					 * der code sieht aktuell nur eines der beiden methoden vor.
+					 * entweder eine zuweisung als array oder skalaren Wert.
+					 */
+					if (isset($options[$optionName]) && !is_array($options[$optionName])) {
+						tx_rnbase::load('tx_rnbase_util_Logger');
+						tx_rnbase_util_Logger::warn(
+							'Invalid configuration for config option "' . $optionName . '".',
+							'rn_base',
+							array(
+								'option_name' => $optionName,
+								'cfg' => $cfg,
+							)
+						);
+						continue;
+					}
 					$tableAlias = strtoupper(substr($table, 0, strlen($table) -1));
 					if(is_array($data) && $option == 'searchdef.') {
 						foreach($data AS $col => $value) {
