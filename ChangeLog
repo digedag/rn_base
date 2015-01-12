@@ -4,8 +4,9 @@
 ----------
 
 v0.14.8 (??.??.2015)
+ * Do not enable cHash system in controller for USER_INT plugins
 
-v0.14.7 (07.0.2015)
+v0.14.7 (07.01.2015)
 * fal handling and indixing added
 * indexing proces for dam files
 * security fixes for dam handling
