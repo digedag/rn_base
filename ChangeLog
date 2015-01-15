@@ -3,8 +3,11 @@
 Änderungen
 ----------
 
-v0.14.8 (??.??.2015)
+v0.14.9 (??.??.2015)
+
+v0.14.8 (15.01.2015)
  * Do not enable cHash system in controller for USER_INT plugins
+ * fixed composer version for composer projects
 
 v0.14.7 (07.01.2015)
 * fal handling and indixing added
