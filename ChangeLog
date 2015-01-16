@@ -4,7 +4,8 @@
 ----------
 
 v0.14.9 (??.??.2015)
-
+ * New setInaccessibleProperty for base testcase
+ 
 v0.14.8 (15.01.2015)
  * Do not enable cHash system in controller for USER_INT plugins
  * fixed composer version for composer projects
