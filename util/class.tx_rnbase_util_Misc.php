@@ -612,6 +612,23 @@ MAYDAYPAGE;
 	public static function getLoadedLLFiles() {
 		return array_keys($GLOBALS['LANG']->LL_files_cache);
 	}
+
+	/**
+	 * Abstraction method which returns System Environment Variables regardless of server OS, CGI/MODULE version etc. Basically this is SERVER variables for most of them.
+	 * This should be used instead of getEnv() and $_SERVER/ENV_VARS to get reliable values for all situations.
+	 *
+	 * @param	string		Name of the "environment variable"/"server variable" you wish to use. Valid values are SCRIPT_NAME, SCRIPT_FILENAME, REQUEST_URI, PATH_INFO, REMOTE_ADDR, REMOTE_HOST, HTTP_REFERER, HTTP_HOST, HTTP_USER_AGENT, HTTP_ACCEPT_LANGUAGE, QUERY_STRING, TYPO3_DOCUMENT_ROOT, TYPO3_HOST_ONLY, TYPO3_HOST_ONLY, TYPO3_REQUEST_HOST, TYPO3_REQUEST_URL, TYPO3_REQUEST_SCRIPT, TYPO3_REQUEST_DIR, TYPO3_SITE_URL, _ARRAY
+	 * @return	string		Value based on the input key, independent of server/os environment.
+	 */
+	public static function getIndpEnv($getEnvName) {
+		if(tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+			return \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv($getEnvName);
+		}
+		else {
+			return t3lib_div::getIndpEnv($getEnvName);
+		}
+	}
+	
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Misc.php']) {

@@ -6,6 +6,7 @@
 v0.14.9 (??.??.2015)
  * New setInaccessibleProperty for base testcase
  * tx_rnbase_util_db_MySQL uses now mysqli
+ * New method tx_rnbase_util_Misc::getIndpEnv()
  
 v0.14.8 (15.01.2015)
  * Do not enable cHash system in controller for USER_INT plugins
