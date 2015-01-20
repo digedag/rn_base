@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011 Rene Nitzsche
+ *  (c) 2011-2015 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -27,15 +27,54 @@ tx_rnbase::load('tx_rnbase_util_db_IDatabase');
 
 /**
  * DB wrapper for other (external) databases
+ *
+ * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase {
+	/**
+	 * @var boolean
+	 */
+	protected $isConnected = FALSE;
+	/**
+	 * @var mysqli
+	 */
 	private $db = NULL;
+
+	/**
+	 * constructor
+	 *
+	 * @param array $credentials
+	 * @throws tx_rnbase_util_db_Exception
+	 */
 	public function __construct($credentials) {
-		if(!is_array($credentials)) throw new tx_rnbase_util_db_Exception('No credentials given for database!');
-		$this->db = $this->connectDB($credentials);
+		if(empty($credentials) || !is_array($credentials)) {
+			throw new tx_rnbase_util_db_Exception(
+				'No credentials given for database!'
+			);
+		}
+		$this->connectDB($credentials);
 	}
+
+	/**
+	 * mapps all function calls to the mysql object
+	 *
+	 * @param string $methodName
+	 * @param array $args
+	 * @return mixed
+	 */
 	public function __call($methodName, $args) {
 		return call_user_func_array(array($this->db, $methodName), $args);
+	}
+
+	/**
+	 * Central query method. Also checks if there is a database connection.
+	 * Use this to execute database queries instead of directly calling $this->link->query()
+	 *
+	 * @param string $query The query to send to the database
+	 * @return bool|mysqli_result
+	 */
+	protected function query($query) {
+		return $this->db->query($query);
 	}
 
 	/**
@@ -62,14 +101,11 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase {
 	 * @param	string		Optional GROUP BY field(s), if none, supply blank string.
 	 * @param	string		Optional ORDER BY field(s), if none, supply blank string.
 	 * @param	string		Optional LIMIT value ([begin,]max), if none, supply blank string.
-	 * @return	pointer		MySQL result pointer / DBAL object
+	 * @return boolean|mysqli_result
 	 */
 	public function exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = ''){
 		$query = $this->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
-		$res = mysql_query($query, $this->db);
-// 		if(!$res && mysql_error($this->db)) {
-// 			throw new Exception(mysql_error($this->db));
-// 		}
+		$res = $this->query($query);
 		return $res;
 	}
 	/**
@@ -89,13 +125,12 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase {
 	 * @param	string		Table name
 	 * @param	array		Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$insertFields" with 'fieldname'=>'value' and pass it to this function as argument.
 	 * @param	string/array		See fullQuoteArray()
-	 * @return	pointer		MySQL result pointer / DBAL object
+	 * @return boolean|mysqli_result
 	 */
 	public function exec_INSERTquery($table, $fields_values, $no_quote_fields = FALSE) {
-		$res = mysql_query($this->INSERTquery($table, $fields_values, $no_quote_fields), $this->db);
-// 		if(!$res && mysql_error($this->db)) {
-// 			throw new Exception(mysql_error($this->db));
-// 		}
+		$res = $this->query(
+			$this->INSERTquery($table, $fields_values, $no_quote_fields)
+		);
 		return $res;
 	}
 
@@ -118,13 +153,12 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase {
 	 * @param	string		WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
 	 * @param	array		Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$updateFields" with 'fieldname'=>'value' and pass it to this function as argument.
 	 * @param	string/array		See t3lib_db::fullQuoteArray()
-	 * @return	pointer		MySQL result pointer / DBAL object
+	 * @return	boolean|mysqli_result
 	 */
 	public function exec_UPDATEquery($table, $where, $fields_values, $no_quote_fields = FALSE) {
-		$res = mysql_query($this->UPDATEquery($table, $where, $fields_values, $no_quote_fields), $this->db);
-// 		if(!$res && mysql_error($this->db)) {
-// 			throw new Exception(mysql_error($this->db));
-// 		}
+		$res = $this->query(
+			$this->UPDATEquery($table, $where, $fields_values, $no_quote_fields)
+		);
 		return $res;
 	}
 
@@ -147,10 +181,7 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase {
 	 * @return	pointer		MySQL result pointer / DBAL object
 	 */
 	public function exec_DELETEquery($table, $where) {
-		$res = mysql_query($this->DELETEquery($table, $where), $this->db);
-// 		if(!$res && mysql_error($this->db)) {
-// 			throw new Exception(mysql_error($this->db));
-// 		}
+		$res = $this->query($this->DELETEquery($table, $where));
 		return $res;
 	}
 
@@ -164,20 +195,23 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase {
 	 * @return	void
 	 */
 	private function connectDB($credArr) {
-		$schema = $credArr['schema'];
+		$schema = isset($credArr['database']) ? $credArr['database'] : $credArr['schema'];
 		if (!$schema) {
-			throw new RuntimeException('TYPO3 Fatal Error: No database schema selected!', 1271953882);
+			throw new RuntimeException(
+				'TYPO3 Fatal Error: No database selected!',
+				1271953882
+			);
 		}
-		$link = $this->connect($credArr);
+		$this->connect($credArr);
 		// Select DB
-		$ret = @mysql_select_db($schema, $link);
+		$ret = $this->db->select_db($schema);
 		if (!$ret) {
-			throw new RuntimeException('Could not select MySQL database ' . $TYPO3_db . ': ' .
-					mysql_error(), 1271953992);
+			throw new RuntimeException(
+				'Could not select MySQL database ' . $schema . ': ' . mysql_error(),
+				1271953992
+			);
 		}
-		$this->setSqlMode($link);
-
-		return $link;
+		$this->setSqlMode();
 	}
 
 	/**
@@ -188,65 +222,55 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase {
 	 * @param string Database host IP/domain
 	 * @param string Username to connect with.
 	 * @param string Password to connect with.
-	 * @return pointer Returns a positive MySQL persistent link identifier on success, or FALSE on error.
 	 */
 	private function connect($credArr) {
+
+		if (!extension_loaded('mysqli')) {
+			throw new \RuntimeException(
+				'Database Error: PHP mysqli extension not loaded. This is a must have for TYPO3 CMS!',
+				1271492607
+			);
+		}
+
 		$dbHost = $credArr['host'] ? $credArr['host'] : 'localhost';
 		$dbUsername = $credArr['username'];
 		$dbPassword = $credArr['password'];
-
-		// mysql_error() is tied to an established connection
-			// if the connection fails we need a different method to get the error message
-		@ini_set('track_errors', 1);
-		@ini_set('html_errors', 0);
-
-			// check if MySQL extension is loaded
-		if (!extension_loaded('mysql')) {
-			$message = 'Database Error: It seems that MySQL support for PHP is not installed!';
-			throw new RuntimeException($message, 1271492606);
+		$dbPort = isset($credArr['port']) ? (int) $credArr['port'] : 3306;
+		$dbSocket = empty($credArr['socket']) ? NULL : $credArr['socket'];
+		$dbCompress = !empty($credArr['dbClientCompress']) && $dbHost != 'localhost' && $dbHost != '127.0.0.1';
+		if (isset($credArr['no_pconnect']) && !$credArr['no_pconnect']) {
+			$dbHost = 'p:' . $dbHost;
 		}
 
-			// Check for client compression
-		$isLocalhost = ($dbHost == 'localhost' || $dbHost == '127.0.0.1');
-		if ($credArr['no_pconnect']) {
-			if ($credArr['dbClientCompress'] && !$isLocalhost) {
-					// We use PHP's default value for 4th parameter (new_link), which is false.
-					// See PHP sources, for example: file php-5.2.5/ext/mysql/php_mysql.c,
-					// function php_mysql_do_connect(), near line 525
-				$link = @mysql_connect($dbHost, $dbUsername, $dbPassword, FALSE, MYSQL_CLIENT_COMPRESS);
-			} else {
-				$link = @mysql_connect($dbHost, $dbUsername, $dbPassword);
-			}
-		} else {
-			if ($credArr['dbClientCompress'] && !$isLocalhost) {
-					// See comment about 4th parameter in block above
-				$link = @mysql_pconnect($dbHost, $dbUsername, $dbPassword, MYSQL_CLIENT_COMPRESS);
-			} else {
-				$link = @mysql_pconnect($dbHost, $dbUsername, $dbPassword);
-			}
-		}
+		$this->db = mysqli_init();
 
-		$error_msg = $php_errormsg;
-		@ini_restore('track_errors');
-		@ini_restore('html_errors');
+		$connected = $this->db->real_connect(
+			$dbHost,
+			$dbUsername,
+			$dbPassword,
+			NULL,
+			$dbPort,
+			$dbSocket,
+			$dbCompress ? MYSQLI_CLIENT_COMPRESS : 0
+		);
 
-		if (!$link) {
+		if (!$connected) {
 			$message = 'Database Error: Could not connect to MySQL server ' . $dbHost .
-					' with user ' . $dbUsername . ': ' . $error_msg;
+				' with user ' . $dbUsername . ': ' . $this->sql_error();
 			throw new RuntimeException($message, 1271492616);
-
 		}
+
+		$this->isConnected = TRUE;
+
+		$connectionCharset = empty($credArr['connectionCharset']) ? 'utf8' : $credArr['connectionCharset'];
+		$this->db->set_charset($connectionCharset);
 
 		$setDBinit = t3lib_div::trimExplode(LF, str_replace("' . LF . '", LF, $credArr['setDBinit']), TRUE);
 		foreach ($setDBinit as $v) {
-			if (mysql_query($v, $link) === FALSE) {
+			if ($this->query($v) === FALSE) {
 				// TODO: handler errors
-//					t3lib_div::sysLog('RNBASE: Could not initialize DB connection with query "' . $v .
-//							'": ' . mysql_error($link), 'Core', 3);
 			}
 		}
-
-		return $link;
 	}
 
 	/**
@@ -254,17 +278,19 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase {
 	 *
 	 * @return void
 	 */
-	private function setSqlMode($dblink) {
-		$resource = mysql_query('SELECT @@SESSION.sql_mode;', $dblink);
-		if (is_resource($resource)) {
-			$result = mysql_fetch_row($resource);
+	private function setSqlMode() {
+		$resource = $this->sql_query('SELECT @@SESSION.sql_mode;');
+		if ($resource) {
+			$result = $resource->fetch_row();
 			if (isset($result[0]) && $result[0] && strpos($result[0], 'NO_BACKSLASH_ESCAPES') !== FALSE) {
-				$modes = array_diff(
-					t3lib_div::trimExplode(',', $result[0]),
-					array('NO_BACKSLASH_ESCAPES')
+				$modes = array_diff(GeneralUtility::trimExplode(',', $result[0]), array('NO_BACKSLASH_ESCAPES'));
+				$query = 'SET sql_mode=\'' . $this->db->real_escape_string(implode(',', $modes)) . '\';';
+				$this->sql_query($query);
+				GeneralUtility::sysLog(
+					'NO_BACKSLASH_ESCAPES could not be removed from SQL mode: ' . $this->sql_error(),
+					'rn_base',
+					GeneralUtility::SYSLOG_SEVERITY_ERROR
 				);
-				$query = 'SET sql_mode=\'' . mysql_real_escape_string(implode(',', $modes)) . '\';';
-				mysql_query($query, $dblink);
 			}
 		}
 	}
@@ -276,8 +302,7 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase {
 	 * @return	pointer		Result pointer / DBAL object
 	 */
 	public function sql_query($query) {
-		$res = mysql_query($query, $this->db);
-		return $res;
+		return $this->query($query);
 	}
 	/**
 	 * Returns an associative array that corresponds to the fetched row, or FALSE if there are no more rows.
@@ -287,7 +312,7 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase {
 	 * @return	array		Associative array of result row.
 	 */
 	public function sql_fetch_assoc($res) {
-		return mysql_fetch_assoc($res);
+		return $res->fetch_assoc();
 	}
 	/**
 	 * Free result memory
@@ -297,7 +322,7 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase {
 	 * @return	boolean		Returns TRUE on success or FALSE on failure.
 	 */
 	public function sql_free_result($res) {
-		return mysql_free_result($res);
+		return $res->free();
 	}
 
 	/**
@@ -307,7 +332,7 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase {
 	 * @return	integer		Number of rows affected by last query
 	 */
 	function sql_affected_rows() {
-		return mysql_affected_rows($this->db);
+		return $this->db->affected_rows;
 	}
 
 	/**
@@ -317,7 +342,7 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase {
 	 * @return	integer		The uid of the last inserted record.
 	 */
 	public function sql_insert_id() {
-		return mysql_insert_id($this->db);
+		return $this->db->insert_id;
 	}
 
 	/**
@@ -327,7 +352,7 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase {
 	 * @return	string		MySQL error string.
 	 */
 	public function sql_error() {
-		return mysql_error($this->db);
+		return $this->db->error;
 	}
 }
 

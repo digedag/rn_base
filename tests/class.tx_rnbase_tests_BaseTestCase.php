@@ -99,6 +99,20 @@ abstract class tx_rnbase_tests_BaseTestCase
 	}
 
 	/**
+	 * Helper function to set an inaccessible property
+	 *
+	 * @param object $object
+	 * @param string $property
+	 * @param mixed $value
+	 */
+	protected function setInaccessibleProperty($object, $property, $value = NULL) {
+		$refObject = new ReflectionObject($object);
+		$refProperty = $refObject->getProperty($property);
+		$refProperty->setAccessible(TRUE);
+		$refProperty->setValue($object, $value);
+	}
+
+	/**
 	 * Creates a mock object which allows for calling protected methods
 	 * and access of protected properties.
 	 * This method is taken from TYPO3 BaseTestCase
