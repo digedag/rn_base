@@ -43,6 +43,7 @@ class tx_rnbase_util_TSFAL {
 	 * yourObject.imagecol = USER
 	 * yourObject.imagecol {
 	 *   userFunc=tx_rnbase_util_TSFAL->printImages
+	 *   includeLibs = EXT:rn_base/util/class.tx_rnbase_util_TSFAL.php
 	 *   refField=imagecol
 	 *   refTable=tx_yourextkey_tablename
 	 *   template = EXT:rn_base/res/simplegallery.html
