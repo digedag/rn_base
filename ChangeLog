@@ -3,7 +3,9 @@
 Änderungen
 ----------
 
-v0.14.9 (??.??.2015)
+v0.14.10 (??.??.2015)
+  
+v0.14.9 (21.01.2015)
  * New setInaccessibleProperty for base testcase
  * tx_rnbase_util_db_MySQL uses now mysqli
  * New method tx_rnbase_util_Misc::getIndpEnv()
