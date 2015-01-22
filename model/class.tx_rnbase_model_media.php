@@ -49,14 +49,7 @@ class tx_rnbase_model_media extends tx_rnbase_model_base {
 		// Ab TYPO3 6.x wird nur noch FAL unterstützt.
 		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
 			// Bei FAL steckt in Media eine Referenz
-			// die Referenzeigenschaften überschreiben die Eigenschaften
-			// der Originaldatei. Aber nur wenn diese nicht leer sind.
-			$notAddKeys = 0;
-			$includeEmptyValues = FALSE;
-			$this->record = t3lib_div::array_merge_recursive_overrule(
-				$media->getOriginalFile()->getProperties(),
-				$media->getReferenceProperties(), $notAddKeys, $includeEmptyValues
-			);
+			$this->record = $media->getProperties();
 			// Wir verwenden hier die UID der Referenz
 			$this->uid = $media->getUid();
 			$this->record['uid'] = $media->getUid();
