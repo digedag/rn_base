@@ -3,8 +3,11 @@
 Änderungen
 ----------
 
-v0.14.10 (??.??.2015)
-  
+v0.14.11 (??.01.2015)
+
+v0.14.10 (22.01.2015)
+ * Bugfix in model_Media
+
 v0.14.9 (21.01.2015)
  * New setInaccessibleProperty for base testcase
  * tx_rnbase_util_db_MySQL uses now mysqli
