@@ -75,6 +75,7 @@ class tx_rnbase_util_TSFAL {
 	 * @return string
 	 */
 	public function printImages ($content, $tsConf) {
+		tx_rnbase::load('tx_rnbase_util_Templates');
 		$conf = $this->createConf($tsConf);
 		$file = $conf->get('template');
 		$file = $file ? $file : 'EXT:rn_base/res/simplegallery.html';
