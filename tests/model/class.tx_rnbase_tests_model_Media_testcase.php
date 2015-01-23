@@ -35,35 +35,23 @@ class tx_rnbase_tests_model_Media_testcase extends tx_phpunit_testcase {
 	/**
 	 * @group unit
 	 */
-	public function testInitMediaForFalMediaMergesOriginalFileAndReferencePropertiesWithoutOverwritingWithEmptyValuesAndPreferingReferenceProperties() {
+	public function testInitMediaForFalMediaSetsFalPropertiesToRecord() {
 		if (!tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
 			$this->markTestSkipped('Runs only in TYPO3 6.0 and higher');
 		}
 
-		$originalFile = $this->getMock(
-			'stdClass', array('getProperties')
-		);
-		$originalFile->expects($this->once())
-			->method('getProperties')
-			->will($this->returnValue(array(
-				'title' => 'sample picture',
-				'description' => 'this is a sample picture',
-				'otherField' => '/some/path'
-			)));
 		$falModel = $this->getMock(
 			'stdClass',
-			array('getOriginalFile', 'getReferenceProperties', 'getUid', 'getPublicUrl')
+			array('getProperties', 'getUid', 'getPublicUrl')
 		);
 		$falModel->expects($this->once())
-			->method('getReferenceProperties')
+			->method('getProperties')
 			->will($this->returnValue(array(
 				'title' => 'sample picture reference',
-				'description' => '',
+				'description' => 'this is a sample picture',
+				'otherField' => '/some/path',
 				'otherField2' => '/some/other/path'
 			)));
-		$falModel->expects($this->once())
-			->method('getOriginalFile')
-			->will($this->returnValue($originalFile));
 
 		$mediaModel = tx_rnbase::makeInstance('tx_rnbase_model_media', $falModel);
 
