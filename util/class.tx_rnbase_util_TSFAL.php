@@ -457,16 +457,53 @@ class tx_rnbase_util_TSFAL {
 	}
 
 	/**
-	 * Removes dam references. If no parameter is given, all references will be removed.
+	 * Removes sys_file_reference entries.
 	 *
-	 * @param string $uids commaseperated uids
+	 * @param string $tableName
+	 * @param string $fieldName
+	 * @param int $itemId
+	 * @param string $uids (list of sys_file_reference uids)
+	 */
+	public static function deleteReferencesByReference($tableName, $fieldName, $itemId, $uids) {
+		$where  = 'tablenames = ' . tx_rnbase_util_DB::fullQuoteStr($tableName, 'sys_file_reference');
+		$where .= ' AND fieldname = ' . tx_rnbase_util_DB::fullQuoteStr($fieldName, 'sys_file_reference');
+		$where .= ' AND uid_foreign = ' . (int) $itemId;
+		$uids = is_array($uids) ? $uids : t3lib_div::intExplode(',', $uids);
+		if(!empty($uids)) {
+			$uids = implode(',', $uids);
+			$where .= ' AND uid IN (' . $uids .') ';
+		}
+		tx_rnbase_util_DB::doDelete('sys_file_reference', $where);
+		// Jetzt die Bildanzahl aktualisieren
+		self::updateImageCount($tableName, $fieldName, $itemId);
+	}
+
+	/**
+	 * Removes FAL references. If no parameter is given, all references will be removed.
+	 *
+	 * @param string $tableName
+	 * @param string $fieldName
+	 * @param int $itemId
+	 * @param string $uids (list of sys_file uids)
+	 */
+	public static function deleteReferencesByFile($tableName, $fieldName, $itemId, $uids = '') {
+		self::deleteReferences($tableName, $fieldName, $itemId, $uids);
+	}
+
+	/**
+	 * Removes FAL references. If no parameter is given, all references will be removed.
+	 *
+	 * @param string $tableName
+	 * @param string $fieldName
+	 * @param int $itemId
+	 * @param string $uids (list of sys_file uids)
 	 */
 	public static function deleteReferences($tableName, $fieldName, $itemId, $uids = '') {
 		$where  = 'tablenames = ' . tx_rnbase_util_DB::fullQuoteStr($tableName, 'sys_file_reference');
 		$where .= ' AND fieldname = ' . tx_rnbase_util_DB::fullQuoteStr($fieldName, 'sys_file_reference');
 		$where .= ' AND uid_foreign = ' . (int) $itemId;
 		if(strlen(trim($uids))) {
-			$uids = implode(',',t3lib_div::intExplode(',',$uids));
+			$uids = implode(',', t3lib_div::intExplode(',', $uids));
 			$where .= ' AND uid_local IN (' . $uids .') ';
 		}
 		tx_rnbase_util_DB::doDelete('sys_file_reference', $where);

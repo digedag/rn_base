@@ -4,6 +4,7 @@
 ----------
 
 v0.14.11 (??.01.2015)
+ * New method deleteReferencesByReference to remove FAL references by reference id(s)
 
 v0.14.10 (22.01.2015)
  * Bugfix in model_Media
