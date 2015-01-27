@@ -1,8 +1,17 @@
+rn_base
+=======
+
+[![Latest Stable Version](https://poser.pugx.org/digedag/rn-base/v/stable.svg)](https://packagist.org/packages/digedag/rn-base)
+[![License](https://poser.pugx.org/digedag/rn-base/license.svg)](https://packagist.org/packages/digedag/rn-base)  
+[CHANGELOG](CHANGELOG.md)
+
 What is this extension for?
+---------------------------
 
 This library is based and includes many code of extension "lib". I wrote this extension because I don't like the code design of "lib". For my taste there is too much inheritance, too much dependency and unclear responsibilities between the used classes.
 
-So what is changed?
+
+[So what is changed?](CHANGELOG.md)
 
 Since I really like the base ideas of extension lib I took it and stripped it down. So the first player is class "controller". This is mainly the new plugin class that is the entrypoint of TYPO3. This class has no parent.
 
