@@ -197,8 +197,15 @@ class tx_rnbase_util_DB {
 			), 'SQL statistics');
 		return $rows;
 	}
+
+	/**
+	 * The ressourc has to be a valid ressource or an mysqli instance
+	 *
+	 * @param mixed $res
+	 * @return boolean
+	 */
 	private static function testResource($res) {
-		return tx_rnbase_util_TYPO3::isTYPO61OrHigher() ? ($res instanceof mysqli_result) : is_resource($res);
+		return is_resource($res) || $res instanceof mysqli_result;
 	}
 
 	/**
