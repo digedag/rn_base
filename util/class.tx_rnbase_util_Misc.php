@@ -103,7 +103,29 @@ class tx_rnbase_util_Misc {
 			}
 		}
 	}
-
+	
+	/**
+	 * Calls a userdefined function/method in class
+	 * Such a function/method should look like this: "function proc(&$params, &$ref)	{...}"
+	 * Usage: 17
+	 *
+	 * @param	string		Function/Method reference, '[file-reference":"]["&"]class/function["->"method-name]'. You can prefix this reference with "[file-reference]:" and t3lib_div::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl->encodeSpURL". Finally; you can prefix the class name with "&" if you want to reuse a former instance of the same object call ("singleton").
+	 * @param	mixed		Parameters to be pass along (typically an array) (REFERENCE!)
+	 * @param	mixed		Reference to be passed along (typically "$this" - being a reference to the calling object) (REFERENCE!)
+	 * @param	string		Required prefix of class or function name
+	 * @param	integer		Error mode (when class/function could not be found): 0 - call debug(), 1 - do nothing, 2 - raise an exception (allows to call a user function that may return FALSE)
+	 * @return	mixed		Content from method/function call or false if the class/method/function was not found
+	 * @see getUserObj()
+	 */
+	public static function callUserFunction($funcName, &$params, &$ref, $checkPrefix = 'user_', $errorMode = 0) {
+		if(tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+			return \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($funcName, $params, $ref);
+		}
+		else {
+			return t3lib_div::callUserFunction($funcName, $params, $ref);
+		}
+	}
+	
 	/**
 	 * Stops PHP execution : die() if some critical error appeared
    * This method is taken from the great ameos_formidable extension.
