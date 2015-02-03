@@ -3,7 +3,7 @@
 Änderungen
 ----------
 
-v0.14.11 (??.01.2015)
+v0.14.11 (03.02.2015) (TER release)
  * New method deleteReferencesByReference to remove FAL references by reference id(s)
 
 v0.14.10 (22.01.2015)
