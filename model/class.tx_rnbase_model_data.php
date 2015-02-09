@@ -90,7 +90,7 @@ class tx_rnbase_model_data {
 	 *
 	 * @param string|array $property
 	 * @param mixed $value
-	 * @return tx_t3socials_models_Base
+	 * @return tx_rnbase_model_data
 	 */
 	public function setProperty($property, $value = NULL) {
 		// wir Überschreiben den kompletten record
@@ -124,7 +124,7 @@ class tx_rnbase_model_data {
 	 * Entfernt einen Wert.
 	 *
 	 * @param string $property
-	 * @return tx_t3socials_models_Base
+	 * @return tx_rnbase_model_data
 	 */
 	public function unsProperty($property) {
 		unset($this->record[$property]);
