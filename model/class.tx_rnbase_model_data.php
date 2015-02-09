@@ -53,7 +53,7 @@ class tx_rnbase_model_data {
 	 * @param array $record
 	 * @return NULL
 	 */
-	function __construct($record) {
+	function __construct($record = NULL) {
 		return $this->init($record);
 	}
 
@@ -63,12 +63,13 @@ class tx_rnbase_model_data {
 	 * @param array $record
 	 * @return NULL
 	 */
-	function init($record) {
+	function init($record = NULL) {
 		if (is_array($record)) {
 			$this->record = $record;
 		}
 		else {
-			$this->record = array('uid' => $record);
+			$record = (int) $record;
+			$this->record = $record > 0 ? array('uid' => $record) : array();
 		}
 
 		return NULL;

@@ -63,7 +63,7 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 	 */
 	private $tableName = 0;
 
-	function tx_rnbase_model_base($rowOrUid) {
+	function tx_rnbase_model_base($rowOrUid = NULL) {
 		$this->init($rowOrUid);
 	}
 	/**
@@ -71,7 +71,7 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 	 * this is a common contructor.
 	 * Ensure to overwrite getTableName()!
 	 */
-	function __construct($rowOrUid) {
+	function __construct($rowOrUid = NULL) {
 		$this->tx_rnbase_model_base($rowOrUid);
 	}
 
@@ -81,14 +81,17 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 	 *
 	 * @param mixed $rowOrUid
 	 */
-	function init($rowOrUid) {
-		if(is_array($rowOrUid)) {
+	function init($rowOrUid = NULL) {
+		if (is_array($rowOrUid)) {
 			$this->uid = $rowOrUid['uid'];
 			$this->record = $rowOrUid;
 		}
 		else {
+			$rowOrUid = (int) $rowOrUid;
 			$this->uid = $rowOrUid;
-			if($this->getTableName()) {
+			if ($rowOrUid === 0) {
+				$this->record = array();
+			} elseif($this->getTableName()) {
 				$options = array();
 				if(is_object($GLOBALS['BE_USER']) && $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects']) {
 					$options['enablefieldsbe'] = 1;
