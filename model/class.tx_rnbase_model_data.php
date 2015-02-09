@@ -45,7 +45,7 @@ class tx_rnbase_model_data {
 	 *
 	 * @var array
 	 */
-	var $record = NULL;
+	var $record = array();
 
 	/**
 	 * constructor of the data object
