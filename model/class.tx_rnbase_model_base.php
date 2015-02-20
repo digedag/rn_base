@@ -131,9 +131,15 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 
 	/**
 	 * Reload this records from database
+	 *
+	 * @return tx_rnbase_model_base
 	 */
 	function reset() {
-		$this->record = tx_rnbase_util_DB::getRecord($this->getTableName(), $this->getUid());
+		$this->record = tx_rnbase_util_DB::getRecord(
+			$this->getTableName(),
+			$this->getUid()
+		);
+		return $this;
 	}
 	/**
 	 * Liefert den aktuellen Tabellenname
