@@ -83,6 +83,13 @@ class tx_rnbase_util_Link {
 		$this->cObject = t3lib_div::makeInstance($cObjectClass);
 	}
 
+	/**
+	 * @return tslib_cObj
+	 */
+	protected function getCObj() {
+		return $this->cObject;
+	}
+
 	// -------------------------------------------------------------------------------------
 	// Setters
 	// -------------------------------------------------------------------------------------
@@ -346,10 +353,18 @@ class tx_rnbase_util_Link {
 	 * @return	string		the link tag
 	 */
 	function makeTag() {
-		$link = $this->cObject->typolink($this->_makeLabel(), $this->_makeConfig('tag'));
-		if($this->isAbsUrl()){
-			$url = $this->getAbsUrlSchema() ? $this->getAbsUrlSchema() : t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR');
-			$link = preg_replace('/(href="|src=")/', '${1}'.$url, $link);
+		$link = $this->getCObj()->typolink($this->_makeLabel(), $this->_makeConfig('tag'));
+		if($this->isAbsUrl() && ($htmlXml = @simplexml_load_string($link))) {
+			// extract the url from the tag
+			$url = strlen((string) $htmlXml['href']) ? (string) $htmlXml['href'] : (string) $htmlXml['src'];
+			// check for existing absolute href and set absolute url, if there is none
+			if (
+				!($url{0} . $url{1} === '//')
+				&& !array_key_exists('scheme', parse_url($url))
+			) {
+				$url = $this->getAbsUrlSchema() ? $this->getAbsUrlSchema() : t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR');
+				$link = preg_replace('/(href="|src=")/', '${1}'.$url, $link);
+			}
 		}
 		return $link;
 	}
@@ -361,8 +376,13 @@ class tx_rnbase_util_Link {
 	 * @return	string		the link url
 	 */
 	function makeUrl($applyHtmlspecialchars = TRUE) {
-		$url = $this->cObject->typolink(NULL, $this->_makeConfig('url'));
-		if($this->isAbsUrl()) {
+		$url = $this->getCObj()->typolink(NULL, $this->_makeConfig('url'));
+		if(
+			$this->isAbsUrl()
+			// make only abs, if there is an relative url!
+			&& !($url{0} . $url{1} === '//')
+			&& !array_key_exists('scheme', parse_url($url))
+		) {
 			$schema = $this->getAbsUrlSchema() ? $this->getAbsUrlSchema() : t3lib_div::getIndpEnv('TYPO3_SITE_URL');
 			$url = $schema . $url;
 		}
@@ -377,7 +397,7 @@ class tx_rnbase_util_Link {
 	function redirect() {
 		session_write_close();
 
-		$target = $this->cObject->typolink(NULL, $this->_makeConfig('url'));
+		$target = $this->getCObj()->typolink(NULL, $this->_makeConfig('url'));
 		$target = tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
 			\TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($target) :
 			t3lib_div::locationHeaderUrl($target);

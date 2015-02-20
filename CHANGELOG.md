@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v0.14.12 (??.02.2015)
+ * Fixed absolute url in link util, if the url are already absolute
+ 
 v0.14.11 (03.02.2015) (TER release)
  * New method deleteReferencesByReference to remove FAL references by reference id(s)
 
