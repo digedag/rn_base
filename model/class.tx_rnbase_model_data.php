@@ -147,7 +147,7 @@ class tx_rnbase_model_data {
 	 * @param string $property
 	 * @return boolean
 	 */
-	public function isEmpty($property) {
+	public function isPropertyEmpty($property) {
 		return empty($this->record[$property]);
 	}
 
