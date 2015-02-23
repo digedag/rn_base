@@ -142,6 +142,16 @@ class tx_rnbase_model_data {
 	}
 
 	/**
+	 * Prüft ob eine Spalte leer ist.
+	 *
+	 * @param string $property
+	 * @return boolean
+	 */
+	public function isEmpty($property) {
+		return empty($this->record[$property]);
+	}
+
+	/**
 	 * Converts field names for setters and geters
 	 *
 	 * @param string $string
