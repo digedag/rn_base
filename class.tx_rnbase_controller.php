@@ -254,12 +254,30 @@ class tx_rnbase_controller {
 		catch(tx_rnbase_exception_Skip $e) {
 			$ret = '';
 		}
+		catch(tx_rnbase_exception_ItemNotFound404 $e) {
+			$this->set404HeaderAndRobotsNoIndex();
+			$ret = $e->getMessage();
+		}
 		catch(Exception $e) {
 			$ret = $this->handleException($actionName, $e, $configurations);
 			$this->errors[] = $e;
 		}
 		return $ret;
 	}
+
+	/**
+	 * @return void
+	 */
+	protected function set404HeaderAndRobotsNoIndex() {
+		// we need to set the robots meta tag in additionalHeaderData
+		// as the meta tags have already been rendered
+		$GLOBALS['TSFE']->additionalHeaderData['rnBaseRobots'] =
+			'<meta name="robots" content="NOINDEX,FOLLOW">';
+
+		$httpUtilityClass = tx_rnbase_util_TYPO3::getHttpUtilityClass();
+		$httpUtilityClass::setResponseCode($httpUtilityClass::HTTP_STATUS_404);
+	}
+
 	/**
 	 * Returns all unhandeled exceptions
 	 * @return array[Exception] or empty array
