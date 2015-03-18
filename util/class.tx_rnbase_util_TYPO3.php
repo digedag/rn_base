@@ -239,7 +239,7 @@ class tx_rnbase_util_TYPO3 {
 		if (self::isTYPO62OrHigher()) {
 			$httpUtilityClass = 'TYPO3\\CMS\\Core\\Utility\\HttpUtility';
 		} else {
-			$httpUtilityClass = \t3lib_utility_Http;
+			$httpUtilityClass = 't3lib_utility_Http';
 		}
 		return $httpUtilityClass;
 	}
