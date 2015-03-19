@@ -81,8 +81,14 @@ class tx_rnbase_model_data {
 	 * @param array $data
 	 * @return tx_rnbase_model_data
 	 */
-	public static function getInstance(array $data) {
-		return tx_rnbase::makeInstance('tx_rnbase_model_data', $data);
+	public static function getInstance($data = NULL) {
+		if ($data instanceof tx_rnbase_model_data) {
+			return $data;
+		}
+		return tx_rnbase::makeInstance(
+			'tx_rnbase_model_data',
+			is_array($data) ? $data : array()
+		);
 	}
 
 	/**

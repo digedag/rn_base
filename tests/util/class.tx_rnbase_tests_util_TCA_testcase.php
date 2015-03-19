@@ -257,6 +257,24 @@ class tx_rnbase_tests_util_TCA_testcase extends tx_rnbase_tests_BaseTestCase {
 				'options' => array('only_record_fields' => TRUE),
 				FALSE,
 			),
+			__LINE__ => array(
+				// of is'nt a field in tca, so we add tca_overrides to define as required!
+				'record' => tx_rnbase::makeInstance(
+					'tx_rnbase_model_base',
+					array('title' => 'oftest', 'storage_pid' => '1', 'of' => '')
+				)->setTableName('pages'),
+				'options' => array('only_record_fields' => TRUE, 'tca_overrides' => array('columns' => array('of'=> array('config' => array('eval'=>'required'))))),
+				FALSE,
+			),
+			__LINE__ => array(
+				// of is'nt a field in tca, so we add tca_overrides to define as required!
+				'record' => tx_rnbase::makeInstance(
+					'tx_rnbase_model_base',
+					array('title' => 'oftest', 'storage_pid' => '1', 'of' => 'done')
+				)->setTableName('pages'),
+				'options' => array('only_record_fields' => TRUE, 'tca_overrides' => array('columns' => array('of'=> array('config' => array('eval'=>'required'))))),
+				TRUE,
+			),
 		);
 	}
 }

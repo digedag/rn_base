@@ -23,6 +23,7 @@
 ***************************************************************/
 
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+tx_rnbase::load('tx_rnbase_model_data');
 
 /**
  * @package TYPO3
@@ -106,27 +107,21 @@ class tx_rnbase_util_TCA {
 		$tableName,
 		$options = NULL
 	) {
-		self::loadTCA($tableName);
+		$options = tx_rnbase_model_data::getInstance($options);
+		$columns = self::getTcaColumns($tableName, $options);
 
-		if (empty($GLOBALS['TCA'][$tableName]['columns'])) {
+		if (empty($columns)) {
 			throw new LogicException('No TCA found for "' . $tableName . '".');
 		}
 
-		if (!$options instanceof tx_rnbase_model_data) {
-			$options = tx_rnbase::makeInstance(
-				'tx_rnbase_model_data',
-				is_array($options) ? $options : array()
-			);
-		}
-
-		foreach (array_keys($GLOBALS['TCA'][$tableName]['columns']) as $column) {
+		foreach (array_keys($columns) as $column) {
 			$recordHasField = array_key_exists($column, $record);
 			$value = $recordHasField ? $record[$column] : NULL;
 			// skip, if we have to ignore nonexisten records
 			if (!$recordHasField && $options->getOnlyRecordFields()) {
 				continue;
 			}
-			if (!self::validateField($value, $column, $tableName)) {
+			if (!self::validateField($value, $column, $tableName,$options)) {
 				// set the error field.
 				// only relevant, if $options are given as data object
 				$options->setLastInvalidField($column);
@@ -145,21 +140,26 @@ class tx_rnbase_util_TCA {
 	 * @param string $value
 	 * @param string $field
 	 * @param string $tableName
+	 * @param array $options
+	 *     only_record_fields: validates only fields included in the record
 	 * @return boolean
 	 */
-	public static function validateField($value, $field, $tableName) {
-		self::loadTCA($tableName);
+	public static function validateField(
+		$value,
+		$field,
+		$tableName,
+		$options = NULL
+	) {
+		$options = tx_rnbase_model_data::getInstance($options);
 
-		if (empty($GLOBALS['TCA'][$tableName]['columns'])) {
-			throw new LogicException('No TCA found for "' . $tableName . '".');
-		}
+		$columns = self::getTcaColumns($tableName, $options);
 
 		// skip, if there is no config
-		if (empty($GLOBALS['TCA'][$tableName]['columns'][$field]['config'])) {
+		if (empty($columns[$field]['config'])) {
 			return TRUE;
 		}
 
-		$config = &$GLOBALS['TCA'][$tableName]['columns'][$field]['config'];
+		$config = &$columns[$field]['config'];
 
 		// check minitems
 		if (!empty($config['minitems']) && $config['minitems'] > 0 && empty($value)) {
@@ -192,7 +192,32 @@ class tx_rnbase_util_TCA {
 
 		return TRUE;
 	}
+	/**
+	 *
+	 * @param string $tableName
+	 * @param array $options
+	 *     only_record_fields: validates only fields included in the record
+	 * @return array
+	 */
+	public static function getTcaColumns($tableName, $options = NULL) {
+		self::loadTCA($tableName);
+		$options = tx_rnbase_model_data::getInstance($options);
+		$columns = empty($GLOBALS['TCA'][$tableName]['columns'])
+			? array()
+			: $GLOBALS['TCA'][$tableName]['columns']
+		;
+		$tcaOverrides = $options->getTcaOverrides();
+		if (!empty($tcaOverrides['columns'])) {
+			$columns = t3lib_div::array_merge_recursive_overrule(
+				$columns,
+				$tcaOverrides['columns']
+			);
+		}
+
+		return $columns;
+	}
 }
+
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rnbase/util/class.tx_rnbase_util_TCA.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rnbase/util/class.tx_rnbase_util_TCA.php']);
 }

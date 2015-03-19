@@ -252,10 +252,8 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 	 * @return array mit Spaltennamen oder 0
 	 */
 	public function getColumnNames() {
-		tx_rnbase::load('tx_rnbase_util_TCA');
-		tx_rnbase_util_TCA::loadTCA($this->getTableName());
-		$cols = $this->getTCAColumns();
-		return is_array($cols) ? array_keys($cols) : 0;
+		$columns = $this->getTCAColumns();
+		return is_array($columns) ? array_keys($columns) : 0;
 	}
 
 	/**
@@ -265,11 +263,8 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 	 */
 	public function getTCAColumns() {
 		tx_rnbase::load('tx_rnbase_util_TCA');
-		tx_rnbase_util_TCA::loadTCA($this->getTableName());
-		return isset($GLOBALS['TCA'][$this->getTableName()])
-			? $GLOBALS['TCA'][$this->getTableName()]['columns']
-			: 0
-		;
+		$columns = tx_rnbase_util_TCA::getTcaColumns($this->getTableName());
+		return empty($columns) ? 0 : $columns;
 	}
 
 	/**
