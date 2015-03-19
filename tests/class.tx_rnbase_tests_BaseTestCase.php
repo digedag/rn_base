@@ -161,9 +161,16 @@ abstract class tx_rnbase_tests_BaseTestCase
 		$class = new \ReflectionClass($className);
 		$abstractModifier = $class->isAbstract() ? 'abstract ' : '';
 
+		$interfaces = '';
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			// @TODO: should we use Tx_Phpunit_Interface_AccessibleObject?
+			$interfaces = '\TYPO3\CMS\Core\Tests\AccessibleObjectInterface';
+		}
+		$interfaces = empty($interfaces) ? '' : ' implements ' . $interfaces;
+
 		eval(
 			$abstractModifier . 'class ' . $accessibleClassName .
-				' extends ' . $className . ' implements \TYPO3\CMS\Core\Tests\AccessibleObjectInterface {' .
+				' extends ' . $className . $interfaces . ' {' .
 					'public function _call($methodName) {' .
 						'if ($methodName === \'\') {' .
 							'throw new \InvalidArgumentException(\'$methodName must not be empty.\', 1334663993);' .
