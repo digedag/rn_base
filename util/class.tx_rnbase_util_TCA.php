@@ -25,7 +25,10 @@
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
 /**
+ * @package TYPO3
+ * @subpackage tx_rnbase
  * @author Hannes Bochmann <hannes.bochmann@dmk-business.de>
+ * @author Michael Wagner <michael.wagner@dmk-business.de>
  */
 class tx_rnbase_util_TCA {
 
@@ -61,13 +64,133 @@ class tx_rnbase_util_TCA {
 	public static function loadTCA($tablename) {
 		tx_rnbase::load('tx_rnbase_util_TYPO3');
 		if(tx_rnbase_util_TYPO3::isTYPO61OrHigher()) {
-			if (!is_array($GLOBALS['TCA'])) {			
+			if (!is_array($GLOBALS['TCA'])) {
 	 			\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca();
 			}
 		}
 		else {
 			t3lib_div::loadTCA($tablename);
 		}
+	}
+
+	/**
+	 * validates the data of a model with the tca definition of a its table.
+	 *
+	 * @param tx_rnbase_model_base $model
+	 * @param array $options
+	 *     only_record_fields: validates only fields included in the record
+	 * @return bolean
+	 */
+	public static function validateModel(
+		tx_rnbase_model_base $model,
+		$options = NULL
+	) {
+		return self::validateRecord(
+			$model->getProperty(),
+			$model->getTableName(),
+			$options
+		);
+	}
+
+	/**
+	 * validates an array with data with the tca definition of a specific table.
+	 *
+	 * @param array $record
+	 * @param string $tableName
+	 * @param array $options
+	 *     only_record_fields: validates only fields included in the record
+	 * @return bolean
+	 */
+	public static function validateRecord(
+		array $record,
+		$tableName,
+		$options = NULL
+	) {
+		self::loadTCA($tableName);
+
+		if (empty($GLOBALS['TCA'][$tableName]['columns'])) {
+			throw new LogicException('No TCA found for "' . $tableName . '".');
+		}
+
+		if (!$options instanceof tx_rnbase_model_data) {
+			$options = tx_rnbase::makeInstance(
+				'tx_rnbase_model_data',
+				is_array($options) ? $options : array()
+			);
+		}
+
+		foreach (array_keys($GLOBALS['TCA'][$tableName]['columns']) as $column) {
+			$recordHasField = array_key_exists($column, $record);
+			$value = $recordHasField ? $record[$column] : NULL;
+			// skip, if we have to ignore nonexisten records
+			if (!$recordHasField && $options->getOnlyRecordFields()) {
+				continue;
+			}
+			if (!self::validateField($value, $column, $tableName)) {
+				// set the error field.
+				// only relevant, if $options are given as data object
+				$options->setLastInvalidField($column);
+				$options->setLastInvalidValue($value);
+
+				return FALSE;
+			}
+		}
+
+		return TRUE;
+	}
+
+	/**
+	 * validates a value with the tca definition of a specific table.
+	 *
+	 * @param string $value
+	 * @param string $field
+	 * @param string $tableName
+	 * @return boolean
+	 */
+	public static function validateField($value, $field, $tableName) {
+		self::loadTCA($tableName);
+
+		if (empty($GLOBALS['TCA'][$tableName]['columns'])) {
+			throw new LogicException('No TCA found for "' . $tableName . '".');
+		}
+
+		// skip, if there is no config
+		if (empty($GLOBALS['TCA'][$tableName]['columns'][$field]['config'])) {
+			return TRUE;
+		}
+
+		$config = &$GLOBALS['TCA'][$tableName]['columns'][$field]['config'];
+
+		// check minitems
+		if (!empty($config['minitems']) && $config['minitems'] > 0 && empty($value)) {
+			return FALSE;
+		}
+
+		// check eval list
+		if (!empty($config['eval'])) {
+			// check eval list
+			$evalList = TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(
+				',',
+				$config['eval'],
+				TRUE
+			);
+			foreach ($evalList as $func) {
+				switch ($func) {
+					// @TODO: implement the other evals
+					case 'required':
+						if (empty($value)) {
+							return FALSE;
+						}
+						break;
+
+					default:
+						// fiel is not invalid!
+						break;
+				}
+			}
+		}
+
+		return TRUE;
 	}
 }
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rnbase/util/class.tx_rnbase_util_TCA.php'])	{

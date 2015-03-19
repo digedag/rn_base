@@ -34,12 +34,14 @@ tx_rnbase::load('tx_rnbase_util_DB');
 interface tx_rnbase_IModel {
 	/**
 	 * Returns the uid
+	 *
 	 * @return int
 	 */
 	public function getUid();
 
 	/**
 	 * Returns the data record as array
+	 *
 	 * @return array
 	 */
 	public function getRecord();
@@ -64,15 +66,19 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 	private $tableName = 0;
 
 	function tx_rnbase_model_base($rowOrUid = NULL) {
-		$this->init($rowOrUid);
+		return $this->init($rowOrUid);
 	}
+
 	/**
 	 * Most model-classes will be initialized by a uid or a database record. So
 	 * this is a common contructor.
 	 * Ensure to overwrite getTableName()!
+	 *
+	 * @param mixed $rowOrUid
+	 * @return NULL
 	 */
 	function __construct($rowOrUid = NULL) {
-		$this->tx_rnbase_model_base($rowOrUid);
+		return $this->tx_rnbase_model_base($rowOrUid);
 	}
 
 	/**
@@ -80,6 +86,7 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 	 * As the result the instance should be completly loaded.
 	 *
 	 * @param mixed $rowOrUid
+	 * @return NULL
 	 */
 	function init($rowOrUid = NULL) {
 		if (is_array($rowOrUid)) {
@@ -101,9 +108,12 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 			// Der Record sollte immer ein Array sein
 			$this->record = is_array($this->record) ? $this->record : array();
 		}
+
+		return NULL;
 	}
 	/**
 	 * Returns the records uid
+	 *
 	 * @return int
 	 */
 	function getUid() {
@@ -143,18 +153,22 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 	}
 	/**
 	 * Liefert den aktuellen Tabellenname
+	 *
 	 * @return Tabellenname als String
 	 */
-	function getTableName() {
+	public function getTableName() {
 		return $this->tableName;
 	}
+
 	/**
 	 * Setzt den aktuellen Tabellenname
 	 *
-	 * @return string
+	 * @param string $tableName
+	 * @return tx_rnbase_model_base
 	 */
-	function setTableName($tableName = 0) {
+	public function setTableName($tableName = 0) {
 		$this->tableName = $tableName;
+		return $this;
 	}
 
 	/**
@@ -162,16 +176,32 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 	 *
 	 * @return boolean
 	 */
-	function isValid() {
+	public function isValid() {
 		return count($this->record) > 0;
 	}
+
 	/**
 	 * Check if record is persisted in database. This is if uid is not 0.
 	 *
 	 * @return boolean
 	 */
-	function isPersisted() {
+	public function isPersisted() {
 		return $this->getUid() > 0;
+	}
+
+	/**
+	 * validates the data of a model with the tca definition of a its table.
+	 *
+	 * @param array $options
+	 *     only_record_fields: validates only fields included in the record (default)
+	 * @return bolean
+	 */
+	public function validateProperties($options = NULL) {
+		tx_rnbase::load('tx_rnbase_util_TCA');
+		return tx_rnbase_util_TCA::validateModel(
+			$this,
+			$options === NULL ? array('only_record_fields' => TRUE) : $options
+		);
 	}
 
 	/**
@@ -208,19 +238,22 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 
 	/**
 	 * Returns the record
+	 *
 	 * @return array
 	 */
 	function getRecord() {
-		return $this->record;
+		return $this->getProperty();
 	}
 
 	/**
-	 * Liefert bei Tabellen, die im $TCA definiert sind, die Namen der Tabellenspalten als Array.
-	 * @return Array mit Spaltennamen oder 0
+	 * Liefert bei Tabellen, die im $TCA definiert sind,
+	 * die Namen der Tabellenspalten als Array.
+	 *
+	 * @return array mit Spaltennamen oder 0
 	 */
-	function getColumnNames() {
-		global $TCA;
-		t3lib_div::loadTCA($this->getTableName());
+	public function getColumnNames() {
+		tx_rnbase::load('tx_rnbase_util_TCA');
+		tx_rnbase_util_TCA::loadTCA($this->getTableName());
 		$cols = $this->getTCAColumns();
 		return is_array($cols) ? array_keys($cols) : 0;
 	}
@@ -230,10 +263,13 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 	 *
 	 * @return array
 	 */
-	function getTCAColumns() {
-		global $TCA;
-		t3lib_div::loadTCA($this->getTableName());
-		return isset($TCA[$this->getTableName()]) ? $TCA[$this->getTableName()]['columns'] : 0;
+	public function getTCAColumns() {
+		tx_rnbase::load('tx_rnbase_util_TCA');
+		tx_rnbase_util_TCA::loadTCA($this->getTableName());
+		return isset($GLOBALS['TCA'][$this->getTableName()])
+			? $GLOBALS['TCA'][$this->getTableName()]['columns']
+			: 0
+		;
 	}
 
 	/**
