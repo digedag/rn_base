@@ -5,7 +5,8 @@
 v0.14.13 (??.??.2015)
 
 v0.14.12 (19.03.2015)
- * New validation methods, to check a mode, record or a field with the tca definition of a specific table 
+ * New validation methods, to check a mode, record or a field with the tca definition of a specific table
+ * 404 header and robts meta tag for new ItemNotFound404 exception
  * Fixed absolute url in link util, if the url are already absolute
  * New isPropertyEmpty method in data model
  
