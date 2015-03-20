@@ -2,7 +2,11 @@
 
 Änderungen
 ----------
-v0.14.13 (??.??.2015)
+v0.14.14 (??.??.2015)
+
+v0.14.13 (20.03.2015)
+ * Backward compatibility for TCA validate Methods to TYPO3 < 6
+ * New tca_overrides option for tca data validation.
 
 v0.14.12 (19.03.2015)
  * New validation methods, to check a mode, record or a field with the tca definition of a specific table
