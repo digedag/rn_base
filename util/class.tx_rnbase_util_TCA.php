@@ -169,7 +169,8 @@ class tx_rnbase_util_TCA {
 		// check eval list
 		if (!empty($config['eval'])) {
 			// check eval list
-			$evalList = TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(
+			tx_rnbase::load('tx_rnbase_util_Strings');
+			$evalList = tx_rnbase_util_Strings::trimExplode(
 				',',
 				$config['eval'],
 				TRUE
