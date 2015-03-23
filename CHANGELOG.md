@@ -2,7 +2,9 @@
 
 Änderungen
 ----------
-v0.14.14 (??.??.2015)
+v0.14.15 (??.??.2015)
+ 
+v0.14.14 (23.03.2015)
  * new wrapper class for network related TYPO3 functions like cmpIP
 
 v0.14.13 (20.03.2015)
