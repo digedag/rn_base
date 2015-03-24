@@ -372,7 +372,8 @@ class tx_rnbase_util_TSFAL {
 			unset($options['type']);
 		}
 		$customSettingOverride = array();
-		$allowedFileExtensions = '';
+		$allowedFileExtensions = $options['config']['allowedFileExtensions'];
+		$disallowedFileExtensions = $options['config']['disallowedFileExtensions'];
 		if($type == 'image') {
 			$customSettingOverride = array(
 				'appearance' => array(
@@ -418,7 +419,9 @@ class tx_rnbase_util_TSFAL {
 
 		$tca = array(
 			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.images',
-			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig($ref, $customSettingOverride, $allowedFileExtensions)
+			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+				$ref, $customSettingOverride, $allowedFileExtensions, $disallowedFileExtensions
+			)
 		);
 
 		if (!empty($tca) && is_array($options)) {
