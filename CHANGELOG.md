@@ -2,8 +2,9 @@
 
 Änderungen
 ----------
-v0.14.15 (??.??.2015)
+v0.14.15 (31.03.2015)
  * possiblity to configure allowed and disallowed file extensions for FAL TCA fields in $field['config']['allowedFileExtensions'] and $field['config']['disallowedFileExtensions']
+ * jQuery Plugin Flot 0.8.3 as resource added
  
 v0.14.14 (23.03.2015)
  * new wrapper class for network related TYPO3 functions like cmpIP
