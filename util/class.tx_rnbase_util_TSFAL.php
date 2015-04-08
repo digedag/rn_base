@@ -440,10 +440,15 @@ class tx_rnbase_util_TSFAL {
 	 * Add a reference to a DAM media file
 	 *
 	 * @param string $tableName
+	 * @param string $fieldName
+	 * @param int $itemId
+	 * @param int $mediaUid
+	 * @param int $pId
 	 * @return int
 	 */
-	public static function addReference($tableName, $fieldName, $itemId, $mediaUid) {
+	public static function addReference($tableName, $fieldName, $itemId, $mediaUid, $pId = 0) {
 		$data = array();
+		$data['pid'] = $pId;
 		$data['uid_foreign'] = $itemId;
 		$data['uid_local'] = $mediaUid;
 		$data['tablenames'] = $tableName;
