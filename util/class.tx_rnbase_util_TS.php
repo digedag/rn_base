@@ -48,9 +48,11 @@ class tx_rnbase_util_TS {
 	 * @param string $typoScript
 	 */
 	public static function parseTsConfig($typoScript) {
-	    $parser = self::getTsParser();
-	    $parser->parse($typoScript);
-	    return $parser->setup;
+		$parser = self::getTsParser();
+		$parser->parse(
+			$parser->checkIncludeLines($typoScript)
+		);
+		return $parser->setup;
 	}
 
 }

@@ -2,10 +2,14 @@
 
 Änderungen
 ----------
+
+v0.14.16 (??.??.2015)
+ * tx_rnbase_util_TS::parseTsConfig checks now include lines
+
 v0.14.15 (31.03.2015)
  * possiblity to configure allowed and disallowed file extensions for FAL TCA fields in $field['config']['allowedFileExtensions'] and $field['config']['disallowedFileExtensions']
  * jQuery Plugin Flot 0.8.3 as resource added
- 
+
 v0.14.14 (23.03.2015)
  * new wrapper class for network related TYPO3 functions like cmpIP
 
@@ -18,7 +22,7 @@ v0.14.12 (19.03.2015)
  * 404 header and robts meta tag for new ItemNotFound404 exception
  * Fixed absolute url in link util, if the url are already absolute
  * New isPropertyEmpty method in data model
- 
+
 v0.14.11 (03.02.2015) (TER release)
  * New method deleteReferencesByReference to remove FAL references by reference id(s)
 
