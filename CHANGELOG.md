@@ -3,8 +3,9 @@
 Änderungen
 ----------
 
-v0.14.16 (??.??.2015)
+v0.14.16 (10.04.2015)
  * tx_rnbase_util_TS::parseTsConfig checks now include lines
+ * optional pid for new sys_file_references
 
 v0.14.15 (31.03.2015)
  * possiblity to configure allowed and disallowed file extensions for FAL TCA fields in $field['config']['allowedFileExtensions'] and $field['config']['disallowedFileExtensions']
