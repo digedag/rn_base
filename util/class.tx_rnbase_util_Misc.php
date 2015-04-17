@@ -103,7 +103,7 @@ class tx_rnbase_util_Misc {
 			}
 		}
 	}
-	
+
 	/**
 	 * Calls a userdefined function/method in class
 	 * Such a function/method should look like this: "function proc(&$params, &$ref)	{...}"
@@ -125,7 +125,7 @@ class tx_rnbase_util_Misc {
 			return t3lib_div::callUserFunction($funcName, $params, $ref);
 		}
 	}
-	
+
 	/**
 	 * Stops PHP execution : die() if some critical error appeared
    * This method is taken from the great ameos_formidable extension.
@@ -532,21 +532,14 @@ MAYDAYPAGE;
 	public static function sendErrorMail($mailAddr, $actionName, Exception $e, array $options=array()) {
 		$ignoreMailLock = (array_key_exists('ignoremaillock', $options) && $options['ignoremaillock']);
 
-		if(!$ignoreMailLock) {
-			$lockFile = PATH_site.'typo3temp/rn_base/maillock.txt';
-			$lockFileFound = is_file($lockFile);
-			if($lockFileFound) {
-				$lastCall = intval(trim(file_get_contents($lockFile)));
-				if($lastCall > (time() - 60)) {
-					return; // Only one mail within one minute sent
-				}
-			}
-			else {
-				if(!is_file(PATH_site.'typo3temp/rn_base/')) {
-					tx_rnbase::load('tx_rnbase_util_Logger');
-					tx_rnbase_util_Logger::info('TempDir for rn_base not found. Check EM settings!', 'rn_base', array('lockfile'=> $lockFile));
-				}
-				$lockFileFound = TRUE;
+		if (!$ignoreMailLock) {
+			tx_rnbase::load('tx_rnbase_util_Lock');
+			// Only one mail within one minute!
+			$lock = tx_rnbase_util_Lock::getInstance('errormail', 60);
+			if ($lock->isLocked()) {
+				return;
+			} else {
+				$lock->lockProcess();
 			}
 		}
 
@@ -565,10 +558,14 @@ MAYDAYPAGE;
 		$mail->setTextPart($textPart);
 		$mail->setHtmlPart($htmlPart);
 
-		if($lockFileFound && !$ignoreMailLock)
-			file_put_contents($lockFile, time()); // refresh lock
+		if ($lock && !$ignoreMailLock) {
+			// refresh the lock
+			$lock->lockProcess();
+		}
+
 		return $mail->send();
 	}
+
 	protected static function getErrorMailText($e, $actionName) {
 		$textPart = 'This is an automatic email from TYPO3. Don\'t answer!'."\n\n";
 		$textPart .= 'UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName ."\n\n";
@@ -650,7 +647,7 @@ MAYDAYPAGE;
 			return t3lib_div::getIndpEnv($getEnvName);
 		}
 	}
-	
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Misc.php']) {

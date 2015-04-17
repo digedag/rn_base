@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v0.14.17 (??.??.2015)
+ * new Lock util to simply lock a process (tx_rnbase_util_Lock::getInstance('process-name')->isLocked())
+
 v0.14.16 (10.04.2015)
  * tx_rnbase_util_TS::parseTsConfig checks now include lines
  * optional pid for new sys_file_references
