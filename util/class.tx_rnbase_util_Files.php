@@ -213,6 +213,23 @@ class tx_rnbase_util_Files {
 		//check to make sure the file exists
 		return file_exists($destination);
 	}
+
+	/**
+	 * Wrapper of mkdir_deep for the various TYPO3 Versions
+	 *
+	 * (non-PHPdoc)
+	 * @see t3lib_div::mkdir_deep()
+	 * @see TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP()
+	 */
+	static public function mkdir_deep($directory, $deepDirectory = '') {
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			return TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(
+				$directory, $deepDirectory
+			);
+		} else {
+			return t3lib_div::mkdir_deep($directory, $deepDirectory);
+		}
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Files.php']) {

@@ -22,6 +22,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase_configurations.php');
+tx_rnbase::load('tx_rnbase_util_Files');
 
 /**
  * util to handle locking of processes
@@ -172,7 +173,7 @@ class tx_rnbase_util_Lock {
 		$fileName = $this->getFile();
 
 		if (!is_dir(dirname($fileName))) {
-			t3lib_div::mkdir_deep(dirname($fileName));
+			tx_rnbase_util_Files::mkdir_deep(dirname($fileName));
 		}
 
 		file_put_contents($fileName, time());
