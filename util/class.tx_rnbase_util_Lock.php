@@ -169,9 +169,15 @@ class tx_rnbase_util_Lock {
 	 */
 	private function createLockFile()
 	{
-		file_put_contents($this->getFile(), time());
+		$fileName = $this->getFile();
 
-		if (!is_readable($this->getFile())) {
+		if (!is_dir(dirname($fileName))) {
+			t3lib_div::mkdir_deep(dirname($fileName));
+		}
+
+		file_put_contents($fileName, time());
+
+		if (!is_readable($fileName)) {
 			tx_rnbase::load('tx_rnbase_util_Logger');
 			tx_rnbase_util_Logger::info(
 				'Lock file could not be created for "' . $this->getName() . '" process!',
@@ -179,7 +185,7 @@ class tx_rnbase_util_Lock {
 				array(
 					'process_name' => $this->getName(),
 					'life_time' => $this->getLifeTime(),
-					'lock_file' => $this->getFile(),
+					'lock_file' => $fileName,
 
 				)
 			);
