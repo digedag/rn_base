@@ -179,7 +179,7 @@ class tx_rnbase_util_Lock {
 
 		if (!is_readable($fileName)) {
 			tx_rnbase::load('tx_rnbase_util_Logger');
-			tx_rnbase_util_Logger::info(
+			tx_rnbase_util_Logger::warn(
 				'Lock file could not be created for "' . $this->getName() . '" process!',
 				'rn_base',
 				array(
