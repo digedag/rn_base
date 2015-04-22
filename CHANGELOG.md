@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v0.14.18 (??.??.2015)
+ * refactoring of watchOutDB and SQL Exceptions fixed (adds last query now)
+ 
 v0.14.17 (20.04.2015)
  * new Lock util to simply lock a process (tx_rnbase_util_Lock::getInstance('process-name')->isLocked())
 

@@ -59,7 +59,7 @@ class tx_rnbase_util_DB {
 	 * @param array $arr the options array
 	 * @param boolean $debug = 0 Set to 1 to debug sql-String
 	 */
-	public static function doSelect($what, $from, $arr, $debug=0){
+	public static function doSelect($what, $from, $arr, $debug=0) {
 		$debug = $debug ? $debug : intval($arr['debug']) > 0;
 		if($debug) {
 			$time = microtime(TRUE);
@@ -76,7 +76,7 @@ class tx_rnbase_util_DB {
 		$where = is_string($arr['where']) ? $arr['where'] : '1=1';
 		$groupBy = is_string($arr['groupby']) ? $arr['groupby'] : '';
 		if($groupBy) {
-			$groupBy .= is_string($arr['having']) > 0 ? ' HAVING '.$arr['having'] : '';
+			$groupBy .= is_string($arr['having']) > 0 ? ' HAVING ' . $arr['having'] : '';
 
 		}
 		$orderBy = is_string($arr['orderby']) ? $arr['orderby'] : '';
@@ -89,10 +89,12 @@ class tx_rnbase_util_DB {
 		$union = is_string($arr['union']) > 0 ? $arr['union'] : '';
 
 		// offset und limit kombinieren
-		if($limit) { // bei gesetztem limit ist offset optional
+		// bei gesetztem limit ist offset optional
+		if($limit) {
 			$limit = ($offset > 0) ? $offset . ',' . $limit : $limit;
 		}
-		elseif($offset) { // Bei gesetztem Offset ist limit Pflicht (default 1000)
+		// Bei gesetztem Offset ist limit Pflicht (default 1000)
+		elseif($offset) {
 			$limit = ($limit > 0) ? $offset . ',' . $limit : $offset . ',1000';
 		}
 		else $limit = '';
@@ -106,7 +108,7 @@ class tx_rnbase_util_DB {
 			if(intval($arr['enablefieldsbe'])) {
 				$mode = 1;
 				// Im BE alle sonstigen Enable-Fields ignorieren
-				$ignoreArr = array('starttime'=>1, 'endtime'=>1, 'fe_group'=>1);
+				$ignoreArr = array('starttime' => 1, 'endtime' => 1, 'fe_group' => 1);
 			}
 			elseif(intval($arr['enablefieldsfe']))
 				$mode = 0;
@@ -128,16 +130,18 @@ class tx_rnbase_util_DB {
 		// Das sollte wegfallen. Die OL werden weiter unten geladen
 		if(strlen($i18n) > 0) {
 			$i18n = implode(',', t3lib_div::intExplode(',', $i18n));
-			$where .= ' AND '.($tableAlias ? $tableAlias : $tableName).'.sys_language_uid IN (' . $i18n . ')';
+			$where .= ' AND ' . ($tableAlias ? $tableAlias : $tableName) . '.sys_language_uid IN (' . $i18n . ')';
 		}
 
-		if(strlen($pidList) > 0)
-			$where .= ' AND '.($tableAlias ? $tableAlias : $tableName).'.pid IN (' . tx_rnbase_util_DB::_getPidList($pidList, $recursive) . ')';
+		if (strlen($pidList) > 0) {
+			$where .= ' AND ' . ($tableAlias ? $tableAlias : $tableName) . '.pid IN (' . tx_rnbase_util_DB::_getPidList($pidList, $recursive) . ')';
+		}
 
-		if(strlen($union) > 0)
-			$where .= ' UNION '.$union;
+		if (strlen($union) > 0) {
+			$where .= ' UNION ' . $union;
+		}
 
-		$database = isset($arr['db']) && is_object($arr['db']) ? $arr['db'] : $GLOBALS['TYPO3_DB'];
+		$database = self::getDatabaseConnection($arr);
 		if($debug || $sqlOnly) {
 			$sql = $database->SELECTquery($what, $fromClause, $where, $groupBy, $orderBy, $limit);
 			if($sqlOnly) return $sql;
@@ -147,23 +151,27 @@ class tx_rnbase_util_DB {
 			}
 		}
 
-		$res = $database->exec_SELECTquery(
-			$what,
-			$fromClause,
-			$where,
-			$groupBy,
-			$orderBy,
-			$limit
+		$storeLastBuiltQuery = $database->store_lastBuiltQuery;
+		$database->store_lastBuiltQuery = TRUE;
+		$res = self::watchOutDB(
+			$database->exec_SELECTquery(
+				$what,
+				$fromClause,
+				$where,
+				$groupBy,
+				$orderBy,
+				$limit
+			), $database
 		);
+		$database->store_lastBuiltQuery = $storeLastBuiltQuery;
+
 		$rows = array();
-		$sqlError = FALSE;
 
 		if(self::testResource($res)) {
-			//$wrapper = is_string($arr['wrapperclass']) ? tx_rnbase::makeInstanceClassName($arr['wrapperclass']) : 0;
 			$wrapper = is_string($arr['wrapperclass']) ? trim($arr['wrapperclass']) : 0;
 			$callback = isset($arr['callback']) ? $arr['callback'] : FALSE;
 
-			while($row = $database->sql_fetch_assoc($res)){
+			while (($row = $database->sql_fetch_assoc($res))) {
 				// Workspacesupport
 				self::lookupWorkspace($row, $tableName, $sysPage, $arr);
 				self::lookupLanguage($row, $tableName, $sysPage, $arr);
@@ -181,20 +189,14 @@ class tx_rnbase_util_DB {
 			}
 			$database->sql_free_result($res);
 		}
-		else {
-			$sqlError = $database->sql_error();
-			$sql = $database->SELECTquery($what, $fromClause, $where, $groupBy, $orderBy, $limit);
-			tx_rnbase::load('tx_rnbase_util_Logger');
-			tx_rnbase_util_Logger::fatal('SQL-Error occured!', 'rn_base', array('Error'=>$sqlError, 'Query'=>$sql));
-		}
 
-		if($debug)
+		if ($debug) {
 			tx_rnbase_util_Debug::debug(array(
-				'Rows retrieved '=>count($rows),
-				'Time '=>(microtime(TRUE) - $time),
-				'Memory consumed '=>(memory_get_usage()-$mem),
-				'Error'=>$sqlError,
+				'Rows retrieved ' => count($rows),
+				'Time ' => (microtime(TRUE) - $time),
+				'Memory consumed ' => (memory_get_usage() - $mem),
 			), 'SQL statistics');
+		}
 		return $rows;
 	}
 
@@ -257,6 +259,34 @@ class tx_rnbase_util_DB {
 		}
 		return $enableFields;
 	}
+
+	/**
+	 *
+	 * @param array
+	 * @return \TYPO3\CMS\Core\Utility\GeneralUtility\DatabaseConnection|tx_rnbase_util_db_IDatabase
+	 */
+	public static function getDatabaseConnection($options = NULL) {
+		if (is_array($options) && !empty($options['db'])) {
+			$dbConfig = &$options['db'];
+			if (is_string($dbConfig)) {
+				$db = self::getDatabase($dbConfig);
+			}
+			elseif (is_object($dbConfig)) {
+				$db = $dbConfig;
+			}
+			if (!$db instanceof tx_rnbase_util_db_IDatabase) {
+				tx_rnbase::load('tx_rnbase_util_Logger');
+				tx_rnbase_util_Logger::warn(
+					'The db "' . get_class($db) . '" has to implement' .
+						' the tx_rnbase_util_db_IDatabase interface',
+					'rn_base'
+				);
+				$db = NULL;
+			}
+		}
+		return is_object($db) ? $db : $GLOBALS['TYPO3_DB'];
+	}
+
 	/**
 	 * Make a SQL INSERT Statement
 	 *
@@ -269,7 +299,7 @@ class tx_rnbase_util_DB {
 		// fallback, $arr war früher $debug
 		if (!is_array($arr)) { $arr = array('debug' => $arr); }
 		$debug = intval($arr['debug']) > 0;
-		$database = isset($arr['db']) && is_object($arr['db']) ? $arr['db'] : $GLOBALS['TYPO3_DB'];
+		$database = self::getDatabaseConnection($arr);
 
 		tx_rnbase_util_Misc::callHook(
 			'rn_base',
@@ -287,12 +317,15 @@ class tx_rnbase_util_DB {
 			$sqlQuery = $database->INSERTquery($tablename, $values);
 		}
 
+		$storeLastBuiltQuery = $database->store_lastBuiltQuery;
+		$database->store_lastBuiltQuery = TRUE;
 		self::watchOutDB(
 			$database->exec_INSERTquery(
 				$tablename,
 				$values
 			), $database
 		);
+		$database->store_lastBuiltQuery = $storeLastBuiltQuery;
 
 		if($debug) {
 			tx_rnbase_util_Debug::debug(array(
@@ -327,20 +360,26 @@ class tx_rnbase_util_DB {
 	 */
 	public static function doQuery($sqlQuery, array $options=array()) {
 		$debug = array_key_exists('debug', $options) ? intval($options['debug']) > 0 : FALSE;
+		$database = self::getDatabaseConnection($options);
 		if($debug) {
 			$time = microtime(TRUE);
 			$mem = memory_get_usage();
 		}
 
+		$storeLastBuiltQuery = $database->store_lastBuiltQuery;
+		$database->store_lastBuiltQuery = TRUE;
 		$res = self::watchOutDB(
-			$GLOBALS['TYPO3_DB']->sql_query($sqlQuery)
+			$database->sql_query($sqlQuery)
 		);
-		if($debug)
+		$database->store_lastBuiltQuery = $storeLastBuiltQuery;
+
+		if($debug) {
 			tx_rnbase_util_Debug::debug(array(
 				'SQL '=>$sqlQuery,
 				'Time '=>(microtime(TRUE) - $time),
 				'Memory consumed '=>(memory_get_usage()-$mem),
 			), 'SQL statistics');
+		}
 		return $res;
 	}
 	/**
@@ -357,7 +396,7 @@ class tx_rnbase_util_DB {
 		// fallback, $arr war früher $debug
 		if (!is_array($arr)) { $arr = array('debug' => $arr); }
 		$debug = intval($arr['debug']) > 0;
-		$database = isset($arr['db']) && is_object($arr['db']) ? $arr['db'] : $GLOBALS['TYPO3_DB'];
+		$database = self::getDatabaseConnection($arr);
 
 		tx_rnbase_util_Misc::callHook(
 			'rn_base',
@@ -377,6 +416,8 @@ class tx_rnbase_util_DB {
 			tx_rnbase_util_Debug::debug(array($tablename, $where, $values));
 		}
 
+		$storeLastBuiltQuery = $database->store_lastBuiltQuery;
+		$database->store_lastBuiltQuery = TRUE;
 		self::watchOutDB(
 			$database->exec_UPDATEquery(
 				$tablename,
@@ -385,6 +426,7 @@ class tx_rnbase_util_DB {
 				$noQuoteFields
 			), $database
 		);
+		$database->store_lastBuiltQuery = $storeLastBuiltQuery;
 
 		$affectedRows = $database->sql_affected_rows();
 
@@ -415,7 +457,7 @@ class tx_rnbase_util_DB {
 		// fallback, $arr war früher $debug
 		if (!is_array($arr)) { $arr = array('debug' => $arr); }
 		$debug = intval($arr['debug']) > 0;
-		$database = isset($arr['db']) && is_object($arr['db']) ? $arr['db'] : $GLOBALS['TYPO3_DB'];
+		$database = self::getDatabaseConnection($arr);
 
 		tx_rnbase_util_Misc::callHook(
 			'rn_base',
@@ -433,12 +475,15 @@ class tx_rnbase_util_DB {
 			tx_rnbase_util_Debug::debug(array($tablename, $where));
 		}
 
+		$storeLastBuiltQuery = $database->store_lastBuiltQuery;
+		$database->store_lastBuiltQuery = TRUE;
 		self::watchOutDB(
 			$database->exec_DELETEquery(
 				$tablename,
 				$where
 			), $database
 		);
+		$database->store_lastBuiltQuery = $storeLastBuiltQuery;
 
 		$affectedRows = $database->sql_affected_rows();
 
@@ -573,13 +618,15 @@ class tx_rnbase_util_DB {
 	 * Check whether the given resource is a valid sql result. Breaks with mayday if not!
 	 * This method is taken from the great ameos_formidable extension.
 	 *
-	 * @param resource $rRes
-	 * @return resource
+	 * @param mixed $res
+	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
-	public static function watchOutDB(&$rRes, $database=NULL) {
-		if (!is_object($database)) $database = $GLOBALS['TYPO3_DB'];
+	public static function watchOutDB(&$res, $database = NULL) {
+		if (!is_object($database)) {
+			$database = $GLOBALS['TYPO3_DB'];
+		}
 
-		if(!is_resource($rRes) && $database->sql_error()) {
+		if(!self::testResource($res) && $database->sql_error()) {
 			$msg = 'SQL QUERY IS NOT VALID';
 			$msg .= '<br/>';
 			$msg .= '<b>' . $database->sql_error() . '</b>';
@@ -589,7 +636,7 @@ class tx_rnbase_util_DB {
 			tx_rnbase_util_Misc::mayday(nl2br($msg), 'rn_base');
 		}
 
-		return $rRes;
+		return $res;
 	}
 
 	/**
