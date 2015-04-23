@@ -1,11 +1,10 @@
 <?php
-
 /***************************************************************
- *  Copyright notice
+ * Copyright notice
  *
- *  (c) 2006-2013 Rene Nitzsche
- *  Contact: rene@system25.de
- *  All rights reserved
+ * (c) 2006-2015 Rene Nitzsche
+ * Contact: rene@system25.de
+ * All rights reserved
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,27 +20,22 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
-
-/**
- * Depends on: none
- *
- * @author René Nitzsche <rene@system25.de>
- * @package TYPO3
- * @subpackage rn_base
- */
-
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
-
+require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_action_BaseIOC');
 tx_rnbase::load('tx_rnbase_util_BaseMarker');
 tx_rnbase::load('tx_rnbase_util_Templates');
 tx_rnbase::load('tx_rnbase_util_Files');
 
-
 /**
+ * Depends on: none
+ *
  * Base class for all views.
  * TODO: This class should have a default template path and an optional user defined path. So
  * templates can be searched in both.
+ *
+ * @author René Nitzsche <rene@system25.de>
+ * @package TYPO3
+ * @subpackage rn_base
  */
 class tx_rnbase_view_Base{
 	private $pathToTemplates;
@@ -53,7 +47,7 @@ class tx_rnbase_view_Base{
 	 *
 	 * @param string $view default name of view
 	 * @param tx_rnbase_configurations $configurations
-	 * @return unknown
+	 * @return string
 	 */
 	function render($view, &$configurations){
 		$this->_init($configurations);
@@ -165,95 +159,103 @@ class tx_rnbase_view_Base{
 		return tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($templateCode, $markerArray);
 	}
 
-  /**
-   * Entry point for child classes
-   *
-   * @param string $template
-   * @param array_object $viewData
-   * @param tx_rnbase_configurations $configurations
-   * @param tx_rnbase_util_FormatUtil $formatter
-   */
-  function createOutput($template, &$viewData, &$configurations, &$formatter) {
-  	return $template;
-  }
-  /**
-   * Kindklassen können hier einen Subpart-Marker angeben, der initial als Template
-   * verwendet wird. Es wird dann in createOutput nicht mehr das gesamte
-   * Template übergeben, sondern nur noch dieser Abschnitt. Außerdem wird sichergestellt,
-   * daß dieser Subpart im Template vorhanden ist.
-   *
-   * @return string like ###MY_MAIN_SUBPART### or FALSE
-   */
-  function getMainSubpart(&$viewData) {return FALSE;}
-  /**
-   * This method is called first.
-   *
-   * @param tx_rnbase_configurations $configurations
-   */
-  function _init(&$configurations) {}
+	/**
+	 * Entry point for child classes
+	 *
+	 * @param string $template
+	 * @param array_object $viewData
+	 * @param tx_rnbase_configurations $configurations
+	 * @param tx_rnbase_util_FormatUtil $formatter
+	 */
+	function createOutput($template, &$viewData, &$configurations, &$formatter) {
+		return $template;
+	}
 
-  /**
-   * Set the path of the template directory
-   *
-   *  You can make use the syntax  EXT:myextension/somepath.
-   *  It will be evaluated to the absolute path by t3lib_div::getFileAbsFileName()
-   *
-   * @param	string		path to the directory containing the php templates
-   * @return	void
-   * @see         intro text of this class above
-   */
-  function setTemplatePath($pathToTemplates){
-//    $path = t3lib_div::getFileAbsFileName($pathToTemplates);
-//    $this->pathToTemplates = $path;
+	/**
+	 * Kindklassen können hier einen Subpart-Marker angeben, der initial als Template
+	 * verwendet wird.
+	 * Es wird dann in createOutput nicht mehr das gesamte
+	 * Template übergeben, sondern nur noch dieser Abschnitt. Außerdem wird sichergestellt,
+	 * daß dieser Subpart im Template vorhanden ist.
+	 *
+	 * @return string like ###MY_MAIN_SUBPART### or FALSE
+	 */
+	function getMainSubpart(&$viewData) {
+		return FALSE;
+	}
 
-    $this->pathToTemplates = $pathToTemplates;
-  }
+	/**
+	 * This method is called first.
+	 *
+	 * @param tx_rnbase_configurations $configurations
+	 */
+	function _init(&$configurations){
 
-  /**
-   * Set the used controller
-   * @param tx_rnbase_action_BaseIOC $controller
-   */
-  public function setController(tx_rnbase_action_BaseIOC $controller) {
-  	$this->controller = $controller;
-  }
-  /**
-   * Returns the used controller
-   * @return tx_rnbase_action_BaseIOC
-   */
-  public function getController() {
-  	return $this->controller;
-  }
-  /**
-   * Set the path of the template file.
-   *
-   *  You can make use the syntax  EXT:myextension/template.php
-   *
-   * @param	string		path to the file used as templates
-   * @return	void
-   */
-  function setTemplateFile($pathToFile) {
-//    $path = t3lib_div::getFileAbsFileName($pathToFile);
-    $this->_pathToFile = $pathToFile;
-  }
+	}
 
-  /**
-   * Returns the template to use. If TemplateFile is set, it is preferred. Otherwise
-   * the filename is build from pathToTemplates, the templateName and $extension.
-   *
-   * @param string name of template
-   * @param string file extension to use
-   * @return complete filename of template
-   */
-  function getTemplate($templateName, $extension = '.php', $forceAbsPath = 0) {
-    if(strlen($this->_pathToFile) > 0) {
-      return ($forceAbsPath) ? t3lib_div::getFileAbsFileName($this->_pathToFile) : $this->_pathToFile;
-    }
-    $path = $this->pathToTemplates;
-    $path .= substr($path, -1, 1) == '/' ? $templateName : '/' . $templateName;
-    $extLen = strlen($extension);
-    $path .= substr($path, ($extLen * -1), $extLen) == $extension ? '' :  $extension;
-    return $path;
-  }
+	/**
+	 * Set the path of the template directory
+	 *
+	 * You can make use the syntax EXT:myextension/somepath.
+	 * It will be evaluated to the absolute path by t3lib_div::getFileAbsFileName()
+	 *
+	 * @param string path to the directory containing the php templates
+	 * @return void
+	 * @see intro text of this class above
+	 */
+	function setTemplatePath($pathToTemplates) {
+		$this->pathToTemplates = $pathToTemplates;
+	}
+
+	/**
+	 * Set the used controller
+	 *
+	 * @param tx_rnbase_action_BaseIOC $controller
+	 */
+	public function setController(tx_rnbase_action_BaseIOC $controller) {
+		$this->controller = $controller;
+	}
+
+	/**
+	 * Returns the used controller
+	 *
+	 * @return tx_rnbase_action_BaseIOC
+	 */
+	public function getController() {
+		return $this->controller;
+	}
+
+	/**
+	 * Set the path of the template file.
+	 *
+	 * You can make use the syntax EXT:myextension/template.php
+	 *
+	 * @param string path to the file used as templates
+	 * @return void
+	 */
+	function setTemplateFile($pathToFile) {
+		$this->_pathToFile = $pathToFile;
+	}
+
+	/**
+	 * Returns the template to use.
+	 * If TemplateFile is set, it is preferred. Otherwise
+	 * the filename is build from pathToTemplates, the templateName and $extension.
+	 *
+	 * @param string name of template
+	 * @param string file extension to use
+	 * @return complete filename of template
+	 */
+	function getTemplate($templateName, $extension = '.php', $forceAbsPath = 0) {
+		if (strlen($this->_pathToFile) > 0) {
+			return ($forceAbsPath) ? t3lib_div::getFileAbsFileName($this->_pathToFile) : $this->_pathToFile;
+		}
+		$path = $this->pathToTemplates;
+		$path .= substr($path, -1, 1) == '/' ? $templateName : '/' . $templateName;
+		$extLen = strlen($extension);
+		$path .= substr($path, ($extLen * -1), $extLen) == $extension ? '' : $extension;
+		return $path;
+	}
 
 }
 
