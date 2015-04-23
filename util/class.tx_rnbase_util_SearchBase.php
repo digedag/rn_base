@@ -205,6 +205,7 @@ abstract class tx_rnbase_util_SearchBase {
 			$where .= ' AND ' . $customFields;
 		}
 
+		$sqlOptions = array();
 		$sqlOptions['where'] = $where;
 		if($options['pidlist'])
 			$sqlOptions['pidlist'] = $options['pidlist'];
@@ -220,9 +221,9 @@ abstract class tx_rnbase_util_SearchBase {
 			$sqlOptions['enablefieldsbe'] = $options['enablefieldsbe'];
 		if($options['enablefieldsfe'])
 			$sqlOptions['enablefieldsfe'] = $options['enablefieldsfe'];
-		if($options['groupby'] && !$options['count'])
+		if($options['groupby'])
 			$sqlOptions['groupby'] = $options['groupby'];
-		if($options['having'] && !$options['count'])
+		if($options['having'])
 			$sqlOptions['having'] = $options['having'];
 		if($options['callback'])
 			$sqlOptions['callback'] = $options['callback'];
@@ -269,6 +270,31 @@ abstract class tx_rnbase_util_SearchBase {
 				) || isset($options['forcewrapper']))) {
 			// der Filter kann ebenfalls eine Klasse setzen. Diese hat Vorrang.
 			$sqlOptions['wrapperclass'] = $options['wrapperclass'] ? $options['wrapperclass'] : $this->getGenericWrapperClass();
+		}
+
+
+		// if we have to do a count and there still is a count in the custom what
+		// or there is a having or a groupby
+		// so we have to wrap the query into a subquery to count the results
+		if (
+			isset($options['count'])
+			&& (
+				(
+					isset($options['what'])
+					&& strpos($options['what'], 'COUNT(') !== FALSE
+				)
+				|| $options['groupby']
+				|| $options['having']
+			)
+		) {
+			$sqlOptions['sqlonly'] = 1;
+			$query = tx_rnbase_util_DB::doSelect($what, $from, $sqlOptions, $options['debug'] ? 1 : 0);
+			$what = 'COUNT(COUNTWRAP.uid) AS cnt';
+			$from = '(' . $query . ') AS COUNTWRAP';
+			$sqlOptions = array(
+				'enablefieldsoff' => TRUE,
+				'sqlonly' => empty($options['sqlonly']) ? 0 : $options['sqlonly'],
+			);
 		}
 
 		$result = tx_rnbase_util_DB::doSelect($what, $from, $sqlOptions, $options['debug'] ? 1 : 0);
