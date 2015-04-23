@@ -87,8 +87,8 @@ class tx_rnbase_view_Base{
 		if($controller) {
 			$params = array();
 			$params['confid'] = $controller->getConfId();
-			$params['item'] = $controller->offsetGet('item');
-			$params['items'] = $controller->offsetGet('items');
+			$params['item'] = $controller->getViewData()->offsetGet('item');
+			$params['items'] = $controller->getViewData()->offsetGet('items');
 			$markerArray = $subpartArray = $wrappedSubpartArray = array();
 			tx_rnbase_util_BaseMarker::callModules(
 				$out,
