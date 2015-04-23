@@ -281,7 +281,7 @@ abstract class tx_rnbase_util_SearchBase {
 			&& (
 				(
 					isset($options['what'])
-					&& strpos($options['what'], 'COUNT(') !== FALSE
+					&& strpos(strtoupper($options['what']), 'COUNT(') !== FALSE
 				)
 				|| $options['groupby']
 				|| $options['having']
