@@ -86,24 +86,83 @@ class tx_rnbase_view_Base{
 			}
 		}
 
+		$out = $templateCode;
 		$out = $this->createOutput($templateCode, $viewData, $configurations, $configurations->getFormatter());
+		$out = $this->renderPluginData($out, $configurations);
 
 		if($controller) {
-			// Soll abschließend nochmal das Plugin gerendert werden?
-			if(tx_rnbase_util_BaseMarker::containsMarker($out, 'PLUGIN_')) {
-				$pluginData = $configurations->getCObj()->data; // Eine Kopie des Datenarray ist notwendig!
-				$markerArray = $configurations->getFormatter()->getItemMarkerArrayWrapped($pluginData, $controller->getConfId().'plugin.', 0, 'PLUGIN_');
-				$out = tx_rnbase_util_Templates::substituteMarkerArrayCached($out, $markerArray, $subpartArray);
-			}
-
+			$params = array();
 			$params['confid'] = $controller->getConfId();
-			$params['item'] = $viewData->offsetGet('item');
-			$params['items'] = $viewData->offsetGet('items');
-			tx_rnbase::load('tx_rnbase_util_BaseMarker');
-			tx_rnbase_util_BaseMarker::callModules($out, $markerArray, $subpartArray, $wrappedSubpartArray, $params, $configurations->getFormatter());
-			$out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($out, $markerArray, $subpartArray, $wrappedSubpartArray);
+			$params['item'] = $controller->offsetGet('item');
+			$params['items'] = $controller->offsetGet('items');
+			$markerArray = $subpartArray = $wrappedSubpartArray = array();
+			tx_rnbase_util_BaseMarker::callModules(
+				$out,
+				$markerArray,
+				$subpartArray,
+				$wrappedSubpartArray,
+				$params,
+				$configurations->getFormatter()
+			);
+			$out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached(
+				$out,
+				$markerArray,
+				$subpartArray,
+				$wrappedSubpartArray
+			);
 		}
+
 		return $out;
+	}
+
+	/**
+	 * render plugin data and additional flexdata
+	 *
+	 * @param string $templateCode
+	 * @param tx_rnbase_configurations $configurations
+	 * @return string
+	 */
+	protected function renderPluginData(
+		$templateCode,
+		tx_rnbase_configurations $configurations
+	) {
+		// render only, if there is an controller
+		if (!$this->getController()) {
+			return $templateCode;
+		}
+
+		// check, if there are plugin markers to render
+		if(!tx_rnbase_util_BaseMarker::containsMarker($templateCode, 'PLUGIN_')) {
+			return $templateCode;
+		}
+
+		$confId = $this->getController()->getConfId();
+		$markerArray = array();
+
+		// build the data to render
+		$pluginData = array_merge(
+			// use the current data (tt_conten) to render
+			$configurations->getCObj()->data,
+			// add some aditional columns, for example from the flexform od typoscript directly
+			$configurations->getExploded(
+				$confId . 'plugin.flexdata.'
+			)
+		);
+		// check for unused columns
+		$ignoreColumns = tx_rnbase_util_BaseMarker::findUnusedCols(
+			$pluginData,
+			$templateCode,
+			'PLUGIN'
+		);
+		// create the marker array with the parsed columns
+		$markerArray = $configurations->getFormatter()->getItemMarkerArrayWrapped(
+			$pluginData,
+			$confId . 'plugin.',
+			$ignoreColumns,
+			'PLUGIN_'
+		);
+
+		return tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($templateCode, $markerArray);
 	}
 
   /**

@@ -5,6 +5,8 @@
 
 v0.14.18 (??.??.2015)
  * refactoring of watchOutDB and SQL Exceptions fixed (adds last query now)
+ * refactoring of plugin data rendering.
+ * flexdata added to plugin rendering, so the plugin data can be expanded by ts or flexform.
  
 v0.14.17 (20.04.2015)
  * new Lock util to simply lock a process (tx_rnbase_util_Lock::getInstance('process-name')->isLocked())
