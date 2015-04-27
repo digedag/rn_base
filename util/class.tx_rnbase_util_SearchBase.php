@@ -289,7 +289,7 @@ abstract class tx_rnbase_util_SearchBase {
 		) {
 			$sqlOptions['sqlonly'] = 1;
 			$query = tx_rnbase_util_DB::doSelect($what, $from, $sqlOptions, $options['debug'] ? 1 : 0);
-			$what = 'COUNT(COUNTWRAP.uid) AS cnt';
+			$what = 'COUNT(*) AS cnt';
 			$from = '(' . $query . ') AS COUNTWRAP';
 			$sqlOptions = array(
 				'enablefieldsoff' => TRUE,

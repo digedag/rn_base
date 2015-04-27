@@ -52,7 +52,7 @@ class tx_rnbase_tests_util_SearchBase_testcase extends tx_phpunit_testcase {
 
 
 		// the count should be at the first
-		$this->assertEquals(0, strpos($query, 'SELECT count(*) as cnt FROM'));
+		$this->assertSame(0, strpos($query, 'SELECT count(*) as cnt FROM'));
 		// check the uid where
 		$this->assertContains(' FEUSER.uid = 54 ', $query);
 
@@ -63,7 +63,7 @@ class tx_rnbase_tests_util_SearchBase_testcase extends tx_phpunit_testcase {
 
 
 		// the count with the subselect should be at the first
-		$this->assertEquals(0, strpos($query, 'SELECT COUNT(COUNTWRAP.uid) as cnt FROM'));
+		$this->assertSame(0, strpos($query, 'SELECT COUNT(*) AS cnt FROM'));
 		// check the uid where
 		$this->assertContains(' FEUSER.uid = 54 ', $query);
 		$this->assertContains(' GROUP BY FEUSER.usergroup', $query);
@@ -79,7 +79,7 @@ class tx_rnbase_tests_util_SearchBase_testcase extends tx_phpunit_testcase {
 		$query = $searcher->search($fields, $options);#
 
 		// the count with the subselect should be at the first
-		$this->assertEquals(0, strpos($query, 'SELECT COUNT(COUNTWRAP.uid) as cnt FROM'));
+		$this->assertSame(0, strpos($query, 'SELECT COUNT(*) AS cnt FROM'));
 		// check the uid where
 		$this->assertContains(' FEUSER.*, COUNT(FEUSER.uid) as usercount ', $query);
 		$this->assertContains(' FEUSER.uid = 54 ', $query);
@@ -96,7 +96,7 @@ class tx_rnbase_tests_util_SearchBase_testcase extends tx_phpunit_testcase {
 		$query = $searcher->search($fields, $options);
 
 		// the count with the subselect should be at the first
-		$this->assertEquals(0, strpos($query, 'SELECT COUNT(COUNTWRAP.uid) as cnt FROM'));
+		$this->assertSame(0, strpos($query, 'SELECT COUNT(*) AS cnt FROM'));
 		// check the uid where
 		$this->assertContains(' FEUSER.*, COUNT(FEUSER.uid) as usercount ', $query);
 		$this->assertContains(' FEUSER.uid = 54 ', $query);
