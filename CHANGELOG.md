@@ -4,6 +4,7 @@
 ----------
 
 v0.14.18 (??.??.2015)
+ * New setInaccessibleStaticProperty method for tests
  * refactoring of watchOutDB and SQL Exceptions fixed (adds last query now)
  * refactoring of plugin data rendering.
  * flexdata added to plugin rendering, so the plugin data can be expanded by ts or flexform.
