@@ -397,7 +397,7 @@ class tx_rnbase_util_Link {
 	function redirect() {
 		session_write_close();
 
-		$target = $this->getCObj()->typolink(NULL, $this->_makeConfig('url'));
+		$target = $this->makeUrl(FALSE);
 		$target = tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
 			\TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($target) :
 			t3lib_div::locationHeaderUrl($target);
@@ -478,6 +478,7 @@ class tx_rnbase_util_Link {
 		if(count($this->typolinkParams)) {
 			$conf = array_merge($conf, $this->typolinkParams);
 		}
+
 
 		return $conf;
 	}
