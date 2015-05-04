@@ -418,14 +418,20 @@ class tx_rnbase_util_Link {
 	 */
 	function _makeConfig($type) {
 		$conf = Array();
-		$this->parameters = is_array($this->parameters) ?
-			$this->parameters : array();
-		$this->overruledParameters = is_array($this->overruledParameters) ?
-			$this->overruledParameters : array();
+		$this->parameters = is_array($this->parameters)
+			? $this->parameters
+			: array()
+		;
+		$this->overruledParameters = is_array($this->overruledParameters)
+			? $this->overruledParameters
+			: array()
+		;
 		unset($this->overruledParameters['DATA']);
-		$parameters
-			= t3lib_div::array_merge_recursive_overrule($this->overruledParameters,
-					$this->parameters);
+		tx_rnbase::load('tx_rnbase_util_Arrays');
+		$parameters = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
+			$this->overruledParameters,
+			$this->parameters
+		);
 		foreach((array) $parameters as $key => $value) {
 			// Ggf. hier auf die Parameter der eigenen Extension prüfen
 			if($this->getUniqueParameterId() !== NULL) {

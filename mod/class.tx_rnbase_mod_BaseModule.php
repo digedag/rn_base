@@ -187,7 +187,8 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 
 			$userTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.' . $this->getExtensionKey().'.');
 			if (!empty($userTSconfig['properties'])) {
-				$pageTSconfig = t3lib_div::array_merge_recursive_overrule($pageTSconfig, $userTSconfig['properties']);
+				tx_rnbase::load('tx_rnbase_util_Arrays');
+				$pageTSconfig = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule($pageTSconfig, $userTSconfig['properties']);
 			}
 
 			$qualifier = $pageTSconfig['qualifier'] ? $pageTSconfig['qualifier'] : $this->getExtensionKey();

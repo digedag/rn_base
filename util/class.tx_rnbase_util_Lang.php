@@ -85,7 +85,11 @@ class tx_rnbase_util_Lang {
 		if(!is_array($langArr)) return;
 		//new values from the given array are added to the existing local lang.
 		//existing values in the local lang are overruled with those of the given array.
-		$this->LOCAL_LANG = t3lib_div::array_merge_recursive_overrule(is_array($this->LOCAL_LANG) ? $this->LOCAL_LANG : array(), $langArr);
+		tx_rnbase::load('tx_rnbase_util_Arrays');
+		$this->LOCAL_LANG = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
+			is_array($this->LOCAL_LANG) ? $this->LOCAL_LANG : array(),
+			$langArr
+		);
 	}
 
 	/**

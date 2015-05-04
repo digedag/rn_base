@@ -4,6 +4,7 @@
 ----------
 
 v0.14.18 (??.??.2015)
+ * new mergeRecursiveWithOverrule wrapper method for arrays with TYPO3 version check.
  * New setInaccessibleStaticProperty method for tests
  * refactoring of watchOutDB and SQL Exceptions fixed (adds last query now)
  * refactoring of plugin data rendering.

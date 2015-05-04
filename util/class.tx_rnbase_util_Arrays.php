@@ -30,11 +30,11 @@ class tx_rnbase_util_Arrays {
   /**
    * Overwrite some of the array values
    *
-   * Overwrite a selection of the values by providing new ones 
+   * Overwrite a selection of the values by providing new ones
    * in form of a data structure of the tx_div hash family.
-   *  
-   * @param    mixed    hash array, SPL object or hash string ( i.e. "key1 : value1, key2 : valu2, ... ") 
-   * @param    string   possible split charaters in case the first parameter is a hash string 
+   *
+   * @param    mixed    hash array, SPL object or hash string ( i.e. "key1 : value1, key2 : valu2, ... ")
+   * @param    string   possible split charaters in case the first parameter is a hash string
    * @return   void
    */
   public static function overwriteArray(&$arrayObj, $hashData, $splitCharacters = ',;:') {
@@ -47,7 +47,7 @@ class tx_rnbase_util_Arrays {
 	/**
 	 * Converts the given mixed data into an hashArray
 	 * Method taken from tx_div
-	 * 
+	 *
 	 * @param   mixed       data to be converted
 	 * @param   string      string of characters used to split first argument
 	 * @return  array       an hashArray
@@ -68,10 +68,48 @@ class tx_rnbase_util_Arrays {
 		}
 		return $hashArray;
 	}
- 
+
+	/**
+	 * Merges two arrays recursively and "binary safe".
+	 *
+	 * @see \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule();
+	 *
+	 * @param array $original
+	 * @param array $overrule
+	 * @param boolean $addKeys
+	 * @param boolean $includeEmptyValues
+	 * @param boolean $enableUnsetFeature
+	 * @return void
+	 */
+	public static function mergeRecursiveWithOverrule(
+		array $original,
+		array $overrule,
+		$addKeys = TRUE,
+		$includeEmptyValues = TRUE,
+		$enableUnsetFeature = TRUE
+	) {
+		if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
+				$original,
+				$overrule,
+				$addKeys,
+				$includeEmptyValues,
+				$enableUnsetFeature
+			);
+			return $original;
+		} else {
+			return t3lib_div::array_merge_recursive_overrule(
+				$original,
+				$overrule,
+				$addKeys,
+				$includeEmptyValues,
+				$enableUnsetFeature
+			);
+		}
+	}
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Arrays.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Arrays.php']);
 }
-

@@ -209,7 +209,8 @@ class tx_rnbase_util_TCA {
 		;
 		$tcaOverrides = $options->getTcaOverrides();
 		if (!empty($tcaOverrides['columns'])) {
-			$columns = t3lib_div::array_merge_recursive_overrule(
+			tx_rnbase::load('tx_rnbase_util_Arrays');
+			$columns = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
 				$columns,
 				$tcaOverrides['columns']
 			);
