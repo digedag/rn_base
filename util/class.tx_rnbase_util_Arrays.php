@@ -101,7 +101,7 @@ class tx_rnbase_util_Arrays {
 			return t3lib_div::array_merge_recursive_overrule(
 				$original,
 				$overrule,
-				$addKeys,
+				!$addKeys,
 				$includeEmptyValues,
 				$enableUnsetFeature
 			);
