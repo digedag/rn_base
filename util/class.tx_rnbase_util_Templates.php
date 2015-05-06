@@ -99,11 +99,15 @@ class tx_rnbase_util_Templates {
 	 */
 	public static function includeSubTemplates($template)
 	{
-		// check cache for the template
-		tx_rnbase::load('tx_rnbase_cache_Manager');
-		$cache = tx_rnbase_cache_Manager::getCache('rnbase');
-		$cacheKey = 'includeSubTemplateFor_' . md5($template);
-		$included = $cache->get($cacheKey);
+		$cache = $included =FALSE;
+
+		tx_rnbase::load('tx_rnbase_util_TYPO3');
+		if (!tx_rnbase_util_TYPO3::getTSFE()->no_cache) {
+			tx_rnbase::load('tx_rnbase_cache_Manager');
+			$cache = tx_rnbase_cache_Manager::getCache('rnbase');
+			$cacheKey = 'includeSubTemplateFor_' . md5($template);
+			$included = $cache->get($cacheKey);
+		}
 
 		// search and replace the subparts
 		if (empty($included)) {
@@ -113,7 +117,9 @@ class tx_rnbase_util_Templates {
 				$template
 			);
 			// store the template in the cache
-			$cache->set($cacheKey, $included);
+			if ($cache) {
+				$cache->set($cacheKey, $included);
+			}
 		}
 		return $included;
 	}
