@@ -3,11 +3,12 @@
 Änderungen
 ----------
 
-v0.14.19 (07.05.2015)
+v0.14.20 (07.05.2015)
  * util link redirect fixed for abs url config
  * New setInaccessibleStaticProperty method for tests
  * new mergeRecursiveWithOverrule method with typo3 version check
  * disable includeSubTemplates cache, if $GLOBALS['TSFE']->no_cache = TRUE;
+ * add where clause only on joined fields search when not empty to avoid MySQL errors
  
 v0.14.18 (27.04.2015)
  * disable includeSubTemplates cache, if $GLOBALS['TSFE']->no_cache = TRUE;
