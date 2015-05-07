@@ -3,7 +3,13 @@
 Änderungen
 ----------
 
-v0.14.18 (??.??.2015)
+v0.14.19 (07.05.2015)
+ * util link redirect fixed for abs url config
+ * New setInaccessibleStaticProperty method for tests
+ * new mergeRecursiveWithOverrule method with typo3 version check
+ * disable includeSubTemplates cache, if $GLOBALS['TSFE']->no_cache = TRUE;
+ 
+v0.14.18 (27.04.2015)
  * disable includeSubTemplates cache, if $GLOBALS['TSFE']->no_cache = TRUE;
  * new mergeRecursiveWithOverrule wrapper method for arrays with TYPO3 version check.
  * New setInaccessibleStaticProperty method for tests
@@ -11,6 +17,8 @@ v0.14.18 (??.??.2015)
  * refactoring of plugin data rendering.
  * flexdata added to plugin rendering, so the plugin data can be expanded by ts or flexform.
  * count for queries with groupby, having, what or count in custom what
+ * count check in custom what fixed
+ * [BUGFIX] bei COUNTRWAP nicht auf uid Spalte gehen falls diese nicht vorhanden ist. Wir gehen nun direkt auf *
  
 v0.14.17 (20.04.2015)
  * new Lock util to simply lock a process (tx_rnbase_util_Lock::getInstance('process-name')->isLocked())
