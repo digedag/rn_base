@@ -198,7 +198,9 @@ abstract class tx_rnbase_util_SearchBase {
 				else {
 					$addWhere = tx_rnbase_util_DB::searchWhere($joinedField['value'], implode(',', $joinedField['fields']), $joinedField['operator']);
 				}
-				$where .= ' AND ' . $addWhere;
+				if ($addWhere) {
+					$where .= ' AND ' . $addWhere;
+				}
 			}
 		}
 		if(isset($customFields)) {
