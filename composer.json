@@ -1,7 +1,7 @@
 {
 	"name" : "digedag/rn-base",
 	"description" : "A base library for extensions. Uses MVC design principles and domain driven development for TYPO3 extension development.",
-	"version" : "0.14.20",
+	"version" : "0.14.21",
 	"type" : "typo3-cms-extension",
 	"keywords" : ["TYPO3 CMS", "mvc"],
 	"homepage" : "http://www.system25.de/",

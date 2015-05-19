@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v0.14.21 (19.05.2015)
+ * [BUGFIX] COUNTWRAP nicht nutzen wenn im pagebrowser ein eigenes what mit count gesetzt wird
+
 v0.14.20 (07.05.2015)
  * util link redirect fixed for abs url config
  * New setInaccessibleStaticProperty method for tests
