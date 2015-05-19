@@ -227,6 +227,11 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 				// eigenes what?
 				if ($configurations->get($confid . 'what')) {
 					$pageBrowserOptions['what'] = $configurations->get($confid . 'what');
+					// wir brauchen keinen countwrap wenn sich das what selbst darum
+					// kümmert
+					if (strpos(strtoupper($pageBrowserOptions['what']), 'COUNT(') !== FALSE) {
+						$pageBrowserOptions['disableCountWrap'] = TRUE;
+					}
 				}
 
 				$listSize = call_user_func($searchCallback, $fields, $pageBrowserOptions);

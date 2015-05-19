@@ -108,6 +108,24 @@ class tx_rnbase_tests_util_SearchBase_testcase extends tx_phpunit_testcase {
 			strpos($query, ') AS COUNTWRAP WHERE 1=1')
 		);
 
+		// SELECT FEUSER.* FROM fe_users AS FEUSER WHERE 1=1 AND FEUSER.uid = 54 GROUP BY FEUSER.usergroup
+		$options = $this->createOptions();
+		$options['count'] = TRUE;
+		$options['disableCountWrap'] = TRUE;
+		$options['groupby'] = 'FEUSER.usergroup';
+		$query = $searcher->search($fields, $options);
+
+		// the count with the subselect should be at the first
+		$this->assertSame(0, strpos($query, 'SELECT count(*) as cnt FROM'));
+		// check the uid where
+		$this->assertContains(' FEUSER.uid = 54 ', $query);
+		$this->assertContains(' GROUP BY FEUSER.usergroup', $query);
+		// the closing subselect should be at the last
+		$this->assertEquals(
+			strlen($query) - strlen('BY FEUSER.usergroup'),
+			strpos($query, 'BY FEUSER.usergroup')
+		);
+		$this->assertNotContains('COUNTWRAP', $query, 'COUNTWRAP doch enthalten');
 	}
 
 	private function createOptions() {

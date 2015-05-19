@@ -279,6 +279,7 @@ abstract class tx_rnbase_util_SearchBase {
 		// or there is a having or a groupby
 		// so we have to wrap the query into a subquery to count the results
 		if (
+			!$options['disableCountWrap'] &&
 			isset($options['count'])
 			&& (
 				(
