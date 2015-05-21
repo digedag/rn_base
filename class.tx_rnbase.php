@@ -87,7 +87,11 @@ class tx_rnbase {
 				// Das ist ein Konstruktor Aufruf mit Parametern
 				$args = func_get_args();
 				self::load('tx_rnbase_util_TYPO3');
-				if(tx_rnbase_util_TYPO3::isTYPO43OrHigher()) {
+				if(tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+					// Die Parameter weiterreichen
+					$ret = call_user_func_array(array('TYPO3\CMS\Core\Utility\GeneralUtility', 'makeInstance'), $args);
+				}
+				elseif(tx_rnbase_util_TYPO3::isTYPO43OrHigher()) {
 					// Die Parameter weiterreichen
 					$ret = call_user_func_array(array('t3lib_div', 'makeInstance'), $args);
 				}
