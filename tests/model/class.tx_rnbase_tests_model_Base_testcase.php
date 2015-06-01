@@ -99,6 +99,89 @@ class tx_rnbase_tests_model_Base_testcase extends tx_phpunit_testcase {
 
 		$this->assertEquals(123, $model->getUid(), 'uid field not used');
 	}
+
+	public function testGetSysLanguageUidWithoutTca() {
+		/* @var $model tx_rnbase_model_base */
+		$model = tx_rnbase::makeInstance(
+			'tx_rnbase_model_base'
+		);
+		$this->assertSame(0, $model->getSysLanguageUid());
+	}
+	public function testGetSysLanguageUidWithLanguageFieldInTca() {
+		/* @var $model tx_rnbase_model_base */
+		$model = tx_rnbase::makeInstance(
+			'tx_rnbase_model_base',
+			array(
+				'uid' => 57,
+				'header' => 'Home',
+				'sys_language_uid' => '5',
+			)
+		)->setTableName('tt_content');
+		$this->assertSame(5, $model->getSysLanguageUid());
+	}
+
+	public function testGetLabelWithoutTca() {
+		/* @var $model tx_rnbase_model_base */
+		$model = tx_rnbase::makeInstance(
+			'tx_rnbase_model_base'
+		);
+		$this->assertSame('', $model->getLabel());
+	}
+
+	public function testGetLabelWithTca() {
+		/* @var $model tx_rnbase_model_base */
+		$model = tx_rnbase::makeInstance(
+			'tx_rnbase_model_base',
+			array(
+				'uid' => 57,
+				'header' => 'Home',
+			)
+		)->setTableName('tt_content');
+		$this->assertSame('Home', $model->getLabel());
+	}
+
+	public function testGetCreationDateTimeWithoutTca() {
+		/* @var $model tx_rnbase_model_base */
+		$model = tx_rnbase::makeInstance(
+			'tx_rnbase_model_base'
+		);
+		$this->assertSame(NULL, $model->getCreationDateTime());
+	}
+
+	public function testGetCreationDateTimeWithTca() {
+		/* @var $model tx_rnbase_model_base */
+		$model = tx_rnbase::makeInstance(
+			'tx_rnbase_model_base',
+			array(
+				'uid' => 57,
+				'crdate' => 1433161484,
+			)
+		)->setTableName('tt_content');
+		$this->assertInstanceOf('DateTime', $model->getCreationDateTime());
+		$this->assertSame('1433161484', $model->getCreationDateTime()->format('U'));
+	}
+
+	public function testGetLastModifyDateTimeWithoutTca() {
+		/* @var $model tx_rnbase_model_base */
+		$model = tx_rnbase::makeInstance(
+			'tx_rnbase_model_base'
+		);
+		$this->assertSame(NULL, $model->getLastModifyDateTime());
+	}
+
+	public function testGetLastModifyDateTimeWithTca() {
+		/* @var $model tx_rnbase_model_base */
+		$model = tx_rnbase::makeInstance(
+			'tx_rnbase_model_base',
+			array(
+				'uid' => 57,
+				'tstamp' => 1433161484,
+			)
+		)->setTableName('tt_content');
+		$this->assertInstanceOf('DateTime', $model->getLastModifyDateTime());
+		$this->assertSame('1433161484', $model->getLastModifyDateTime()->format('U'));
+	}
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/model/class.tx_rnbase_tests_model_Base_testcase.php']) {
