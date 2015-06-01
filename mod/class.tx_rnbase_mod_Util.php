@@ -51,12 +51,16 @@ class tx_rnbase_mod_Util {
 
 	/**
 	 * Returns a TYPO3 sprite icon
-	 * @param string $icon
-	 * @return string image tag
+	 *
+	 * @param string $iconName
+	 * @param array $options
+	 * @param array $overlays
+	 *
+	 * @return string The full HTML tag (usually a <span>)
 	 */
-	public static function getSpriteIcon($icon) {
+	public static function getSpriteIcon($iconName, array $options = array(), array $overlays = array()) {
 		// TODO: add support for older TYPO3 versions
-		return t3lib_iconWorks::getSpriteIcon($icon);
+		return t3lib_iconWorks::getSpriteIcon($iconName, $options, $overlays);
 	}
 	/**
 	 * Returns a string with all available Icons in TYPO3 system. Each icon has a tooltip with its identifier.
