@@ -173,6 +173,45 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 	}
 
 	/**
+	 * Returns the creation date of the record as DateTime object.
+	 *
+	 * @param DateTimeZone $timezone
+	 * @return DateTime
+	 */
+	public function getCreationDateTime($timezone=NULL) {
+		$datetime = NULL;
+		$tableName = $this->getTableName();
+		if (!empty($tableName)) {
+			$field = tx_rnbase_util_TCA::getCrdateFieldForTable($tableName);
+			if (!$this->isPropertyEmpty($field)) {
+				$tstamp = (int) $this->getProperty($field);
+				tx_rnbase::load('tx_rnbase_util_Dates');
+				$datetime = tx_rnbase_util_Dates::getDateTime('@' . $tstamp);
+			}
+		}
+		return $datetime;
+	}
+
+	/**
+	 * Returns the creation date of the record as DateTime object.
+	 *
+	 * @return DateTime
+	 */
+	public function getLastModifyDateTime($timezone=NULL) {
+		$datetime = NULL;
+		$tableName = $this->getTableName();
+		if (!empty($tableName)) {
+			$field = tx_rnbase_util_TCA::getTstampFieldForTable($tableName);
+			if (!$this->isPropertyEmpty($field)) {
+				$tstamp = (int) $this->getProperty($field);
+				tx_rnbase::load('tx_rnbase_util_Dates');
+				$datetime = tx_rnbase_util_Dates::getDateTime('@' . $tstamp);
+			}
+		}
+		return $datetime;
+	}
+
+	/**
 	 * Reload this records from database
 	 *
 	 * @return tx_rnbase_model_base

@@ -69,6 +69,30 @@ class tx_rnbase_util_TCA {
 		}
 		return $GLOBALS['TCA'][$tableName]['ctrl']['label'];
 	}
+	/**
+	 * Liefert den Spaltennamen für den tstamp der Tabelle.
+	 *
+	 * @param string $tableName
+	 * @return string
+	 */
+	public static function getTstampFieldForTable($tableName) {
+		if (empty($GLOBALS['TCA'][$tableName]) || empty($GLOBALS['TCA'][$tableName]['ctrl']['tstamp'])) {
+			return '';
+		}
+		return $GLOBALS['TCA'][$tableName]['ctrl']['tstamp'];
+	}
+	/**
+	 * Liefert den Spaltennamen für den tstamp der Tabelle.
+	 *
+	 * @param string $tableName
+	 * @return string
+	 */
+	public static function getCrdateFieldForTable($tableName) {
+		if (empty($GLOBALS['TCA'][$tableName]) || empty($GLOBALS['TCA'][$tableName]['ctrl']['crdate'])) {
+			return '';
+		}
+		return $GLOBALS['TCA'][$tableName]['ctrl']['crdate'];
+	}
 
 	/**
 	 * Load TCA for a specific table. Since T3 6.1 the complete TCA is loaded.
