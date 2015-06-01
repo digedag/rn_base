@@ -4,6 +4,7 @@
 ----------
 
 v0.14.22 (??.06.2015)
+ * new getSysLanguageUid and getLabel methods for base model
  * optional options and overlay parameters for tx_rnbase_mod_Util::getSpriteIcon
  
 v0.14.21 (19.05.2015)

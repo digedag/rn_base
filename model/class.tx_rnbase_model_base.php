@@ -140,6 +140,39 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 	}
 
 	/**
+	 * Returns the Language id of the record.
+	 *
+	 * @return int
+	 */
+	public function getLabel() {
+		$label = '';
+		$tableName = $this->getTableName();
+		if (!empty($tableName)) {
+			$labelField = tx_rnbase_util_TCA::getLabelFieldForTable($tableName);
+			if (!$this->isPropertyEmpty($labelField)) {
+				$label = (string) $this->getProperty($labelField);
+			}
+		}
+		return $label;
+	}
+	/**
+	 * Returns the Language id of the record.
+	 *
+	 * @return int
+	 */
+	public function getSysLanguageUid() {
+		$uid = 0;
+		$tableName = $this->getTableName();
+		if (!empty($tableName)) {
+			$sysLanguageUidField = tx_rnbase_util_TCA::getLanguageFieldForTable($tableName);
+			if (!$this->isPropertyEmpty($sysLanguageUidField)) {
+				$uid = (int) $this->getProperty($sysLanguageUidField);
+			}
+		}
+		return $uid;
+	}
+
+	/**
 	 * Reload this records from database
 	 *
 	 * @return tx_rnbase_model_base
