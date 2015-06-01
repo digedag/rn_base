@@ -24,6 +24,7 @@
 
 require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_model_data');
+tx_rnbase::load('tx_rnbase_util_TCA');
 // Die Datenbank-Klasse
 tx_rnbase::load('tx_rnbase_util_DB');
 
@@ -120,7 +121,6 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 		$uid = 0;
 		$tableName = $this->getTableName();
 		if (!empty($tableName)) {
-			tx_rnbase::load('tx_rnbase_util_TCA');
 			// Take care for localized records where uid of original record
 			// is stored in $this->record['l18n_parent'] instead of $this->record['uid']!
 			$languageParentField = tx_rnbase_util_TCA::getTransOrigPointerFieldForTable($tableName);
@@ -230,7 +230,6 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 	 * @return bolean
 	 */
 	public function validateProperties($options = NULL) {
-		tx_rnbase::load('tx_rnbase_util_TCA');
 		return tx_rnbase_util_TCA::validateModel(
 			$this,
 			$options === NULL ? array('only_record_fields' => TRUE) : $options
@@ -295,7 +294,6 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 	 * @return array
 	 */
 	public function getTCAColumns() {
-		tx_rnbase::load('tx_rnbase_util_TCA');
 		$columns = tx_rnbase_util_TCA::getTcaColumns($this->getTableName());
 		return empty($columns) ? 0 : $columns;
 	}
