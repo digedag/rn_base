@@ -1,6 +1,7 @@
 rn_base
 =======
 
+[![rn_base](ext_icon.gif)](https://github.com/digedag/rn_base)
 [![Latest Stable Version](https://poser.pugx.org/digedag/rn-base/v/stable.svg)](https://packagist.org/packages/digedag/rn-base)
 [![License](https://poser.pugx.org/digedag/rn-base/license.svg)](https://packagist.org/packages/digedag/rn-base)  
 [CHANGELOG](CHANGELOG.md)

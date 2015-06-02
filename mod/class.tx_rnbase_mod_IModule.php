@@ -26,6 +26,9 @@
 /**
  */
 interface tx_rnbase_mod_IModule {
+	/**
+	 * @return template
+	 */
 	public function getDoc();
 	/**
 	 * Returns the form tool

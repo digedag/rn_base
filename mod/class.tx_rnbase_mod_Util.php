@@ -78,6 +78,9 @@ class tx_rnbase_mod_Util {
 
 	/**
 	 * Gibt einen selector mit den elementen im gegebenen array zurück
+	 *
+	 * @TODO: move to an selector!
+	 *
 	 * @param array $aItems Array mit den werten der Auswahlbox
 	 * @param mixed $selectedItem
 	 * @param string $sDefId ID-String des Elements
@@ -101,6 +104,7 @@ class tx_rnbase_mod_Util {
 		//@todo wozu die alte abfrage? return $defId==$id ? FALSE : $selectedItem;
 		return $selectedItem;
 	}
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_Util.php'])	{

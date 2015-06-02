@@ -327,9 +327,9 @@ class tx_rnbase_util_TSFAL {
 	public static function createThumbnails($references, $sizeArr=FALSE) {
 		$ret = array();
 		foreach($references As $fileRef ) {
-			/* @var $fileRef \TYPO3\CMS\Core\Utility\GeneralUtility\FileReference */
+			/* @var $fileRef \TYPO3\CMS\Core\Resource\FileReference */
 			$thumbnail = FALSE;
-			/* @var $fileObject \TYPO3\CMS\Core\Utility\GeneralUtility\File */
+			/* @var $fileObject \TYPO3\CMS\Core\Resource\File */
 			$fileObject = $fileRef->getOriginalFile();
 			if ($fileObject) {
 //				$imageSetup = $config['appearance']['headerThumbnail'];

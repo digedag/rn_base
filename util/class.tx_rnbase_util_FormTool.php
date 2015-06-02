@@ -82,6 +82,7 @@ class tx_rnbase_util_FormTool {
 			'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif', 'width="11" height="12"').' title="Edit UID: '.$editUid.'" border="0" alt="" />'.
 		$label .'</a>';
 	}
+
 	/**
 	 * Erstellt einen History-Link
 	 * Achtung: Benötigt die JS-Funktion jumpExt() in der Seite.
