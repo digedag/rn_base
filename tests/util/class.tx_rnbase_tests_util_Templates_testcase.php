@@ -113,6 +113,10 @@ class tx_rnbase_tests_util_Templates_testcase extends tx_phpunit_testcase {
 
 		$included = tx_rnbase_util_Templates::includeSubTemplates($raw);
 
+		// remove empty lines
+		$included = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $included);
+		$expected = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $expected);
+
 		$this->assertEquals($expected, $included);
 	}
 	public function test_substMarkerArrayCached() {

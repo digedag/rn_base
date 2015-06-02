@@ -99,7 +99,7 @@ class tx_rnbase_util_Templates {
 	 */
 	public static function includeSubTemplates($template)
 	{
-		$cache = $included =FALSE;
+		$cache = $included = FALSE;
 
 		tx_rnbase::load('tx_rnbase_util_TYPO3');
 		if (!tx_rnbase_util_TYPO3::getTSFE()->no_cache) {
@@ -140,6 +140,8 @@ class tx_rnbase_util_Templates {
 				$filePath,
 				'###' . strtoupper($subPart) . '###'
 			);
+			// check for nested includes
+			$fileContent = self::includeSubTemplates($fileContent);
 		} catch (Exception $e) {
 			$fileContent = '<!-- ' . $e->getMessage() .' -->';
 		}
