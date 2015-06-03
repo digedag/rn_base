@@ -3,11 +3,12 @@
 Änderungen
 ----------
 
-v0.14.22 (??.06.2015)
+v0.14.22 (03.06.2015)
  * template includes can be nested now
  * new getLastModifyDateTime and getCreationDateTime methods for base model
  * new getSysLanguageUid and getLabel methods for base model
  * optional options and overlay parameters for tx_rnbase_mod_Util::getSpriteIcon
+ * [BUGFIX] custom fields typo in searchbase_handleTableMapping hook fixed
  
 v0.14.21 (19.05.2015)
  * [BUGFIX] COUNTWRAP nicht nutzen wenn im pagebrowser ein eigenes what mit count gesetzt wird
