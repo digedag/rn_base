@@ -82,6 +82,28 @@ class tx_rnbase_tests_model_Data_testcase extends tx_phpunit_testcase {
 	public function testMagicCallThrowsException() {
 		$this->getModelInstance()->methodDoesNotExist();
 	}
+
+	/**
+	 * @test
+	 */
+	public function testRecursiveInstance() {
+		$data = array(
+			'gender' => 'm',
+			'name' => array(
+				'first' => 'John',
+				'last' => 'Doe',
+				'test' => array(),
+			)
+		);
+		$model = tx_rnbase_model_data::getInstance($data);
+
+		$this->assertSame('m', $model->getGender());
+		$this->assertInstanceOf('tx_rnbase_model_data', $model->getName());
+		$this->assertSame('John', $model->getName()->getFirst());
+		$this->assertSame('Doe', $model->getName()->getLast());
+		$this->assertInstanceOf('tx_rnbase_model_data', $model->getName()->getTest());
+	}
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/model/class.tx_rnbase_tests_model_Data_testcase.php']) {

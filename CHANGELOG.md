@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v0.14.24 (??.??.2015)
+ * tx_rnbase_model_data::getInstance creates recursive instances now
+
 v0.14.23 (03.06.2015)
  * getLabel renamed to getTcaLabel
  

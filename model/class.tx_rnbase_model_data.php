@@ -85,10 +85,17 @@ class tx_rnbase_model_data {
 		if ($data instanceof tx_rnbase_model_data) {
 			return $data;
 		}
-		return tx_rnbase::makeInstance(
-			'tx_rnbase_model_data',
-			is_array($data) ? $data : array()
-		);
+		if (is_array($data)) {
+			// create data instances recursive!
+			foreach ($data as $key => $value) {
+				if (is_array($value)) {
+					$data[$key] = static::getInstance($value);
+				}
+			}
+		} else {
+			$data = array();
+		}
+		return tx_rnbase::makeInstance('tx_rnbase_model_data', $data);
 	}
 
 	/**
