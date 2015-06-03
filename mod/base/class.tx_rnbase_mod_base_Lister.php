@@ -289,8 +289,13 @@ abstract class tx_rnbase_mod_base_Lister {
 			unset($columns['linker']);
 		}
 		tx_rnbase::load('tx_rnbase_mod_Tables');
-		$arr = tx_rnbase_mod_Tables::prepareTable($items, $columns, $this->getFormTool(), $options);
-		$out = $this->getModule()->getDoc()->table($arr[0]);
+		list ($tableData, $tableLayout) = tx_rnbase_mod_Tables::prepareTable(
+			$items,
+			$columns,
+			$this->getFormTool(),
+			$options
+		);
+		$out = $this->getModule()->getDoc()->table($tableData, $tableLayout);
 		$content .= $out;
 		return $out;
 	}
