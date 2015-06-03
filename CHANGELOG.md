@@ -4,6 +4,7 @@
 ----------
 
 v0.14.24 (??.??.2015)
+ * new toArray and toString methods for models
  * tx_rnbase_model_data::getInstance creates recursive instances now
 
 v0.14.23 (03.06.2015)

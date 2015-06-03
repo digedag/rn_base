@@ -213,11 +213,27 @@ class tx_rnbase_model_data {
 	}
 
 	/**
+	 * Wandelt das Model rekursiv in ein Array um.
+	 *
+	 * @return array
+	 */
+	public function toArray() {
+		$array = $this->getProperty();
+		foreach ($array as $key => $value) {
+			if ($value instanceof tx_rnbase_model_data) {
+				$array[$key] = $value->toArray();
+			}
+		}
+
+		return $array;
+	}
+
+	/**
 	 * Wandelt das Model in einen String um
 	 *
 	 * @return string
 	 */
-	public function __toString() {
+	public function toString() {
 		$data = $this->getProperty();
 		$out  = get_class($this) . ' (' . CRLF;
 		foreach ($data as $key => $value) {
@@ -230,6 +246,15 @@ class tx_rnbase_model_data {
 			$out .= ': ' . $value . CRLF;
 		}
 		return $out . ');';
+	}
+
+	/**
+	 * Wandelt das Model in einen String um
+	 *
+	 * @return string
+	 */
+	public function __toString() {
+		return $this->toString();
 	}
 
 }
