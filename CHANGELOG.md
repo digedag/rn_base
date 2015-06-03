@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v0.14.23 (03.06.2015)
+ * getLabel renamed to getTcaLabel
+ 
 v0.14.22 (03.06.2015)
  * template includes can be nested now
  * new getLastModifyDateTime and getCreationDateTime methods for base model
