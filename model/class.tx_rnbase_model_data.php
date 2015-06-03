@@ -37,7 +37,8 @@ tx_rnbase::load('tx_rnbase_util_Misc');
  * @subpackage tx_rnbase_model
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-class tx_rnbase_model_data {
+class tx_rnbase_model_data
+	implements IteratorAggregate {
 
 	/**
 	 *
@@ -210,6 +211,13 @@ class tx_rnbase_model_data {
 		);
 
 		return NULL;
+	}
+
+	/**
+	 * Implementation of IteratorAggregate::getIterator()
+	 */
+	public function getIterator() {
+		return new ArrayIterator($this->getProperty());
 	}
 
 	/**

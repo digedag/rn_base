@@ -4,6 +4,8 @@
 ----------
 
 v0.14.24 (??.??.2015)
+ * support for styled i18 listing in be moduls added
+ * data model are traversable now
  * new toArray and toString methods for models
  * tx_rnbase_model_data::getInstance creates recursive instances now
 
