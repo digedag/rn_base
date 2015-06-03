@@ -3,7 +3,9 @@
 Änderungen
 ----------
 
-v0.14.24 (??.??.2015)
+v0.14.25 (??.??.2015)
+
+v0.14.24 (03.06.2015)
  * support for styled i18 listing in be moduls added
  * data model are traversable now
  * new toArray and toString methods for models
