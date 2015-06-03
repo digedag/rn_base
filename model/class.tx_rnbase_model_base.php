@@ -140,11 +140,11 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 	}
 
 	/**
-	 * Returns the Language id of the record.
+	 * Returns the label of the record, defined in the tca.
 	 *
 	 * @return int
 	 */
-	public function getLabel() {
+	public function getTcaLabel() {
 		$label = '';
 		$tableName = $this->getTableName();
 		if (!empty($tableName)) {

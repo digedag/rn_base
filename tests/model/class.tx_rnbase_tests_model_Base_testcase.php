@@ -120,15 +120,15 @@ class tx_rnbase_tests_model_Base_testcase extends tx_phpunit_testcase {
 		$this->assertSame(5, $model->getSysLanguageUid());
 	}
 
-	public function testGetLabelWithoutTca() {
+	public function testGetTcaLabelWithoutTca() {
 		/* @var $model tx_rnbase_model_base */
 		$model = tx_rnbase::makeInstance(
 			'tx_rnbase_model_base'
 		);
-		$this->assertSame('', $model->getLabel());
+		$this->assertSame('', $model->getTcaLabel());
 	}
 
-	public function testGetLabelWithTca() {
+	public function testGetTcaLabelWithTca() {
 		/* @var $model tx_rnbase_model_base */
 		$model = tx_rnbase::makeInstance(
 			'tx_rnbase_model_base',
@@ -137,7 +137,7 @@ class tx_rnbase_tests_model_Base_testcase extends tx_phpunit_testcase {
 				'header' => 'Home',
 			)
 		)->setTableName('tt_content');
-		$this->assertSame('Home', $model->getLabel());
+		$this->assertSame('Home', $model->getTcaLabel());
 	}
 
 	public function testGetCreationDateTimeWithoutTca() {
