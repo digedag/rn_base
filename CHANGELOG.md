@@ -4,6 +4,8 @@
 ----------
 
 v0.14.25 (??.??.2015)
+ * document creation in be modules fixed. works now in newer versions and cli.
+ * new getModel method for base testcase
 
 v0.14.24 (03.06.2015)
  * support for styled i18 listing in be moduls added
