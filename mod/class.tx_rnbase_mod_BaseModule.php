@@ -240,7 +240,18 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 	 */
 	public function getDoc() {
 		if(!$this->doc) {
-			$this->doc = tx_rnbase_util_TYPO3::isTYPO42OrHigher() ? $GLOBALS['TBE_TEMPLATE'] : t3lib_div::makeInstance('bigDoc');
+			if (tx_rnbase_util_TYPO3::isTYPO42OrHigher()) {
+				if (isset($GLOBALS['TBE_TEMPLATE'])) {
+					$this->doc = $GLOBALS['TBE_TEMPLATE'];
+				}
+				elseif (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+					$this->doc = t3lib_div::makeInstance('\\TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+				} else {
+					$this->doc = t3lib_div::makeInstance('template');
+				}
+			} else {
+				$this->doc = t3lib_div::makeInstance('bigDoc');
+			}
 		}
 		return $this->doc;
 	}
