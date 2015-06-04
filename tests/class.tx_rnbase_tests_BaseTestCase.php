@@ -79,6 +79,45 @@ abstract class tx_rnbase_tests_BaseTestCase
 		return $configurations;
 	}
 
+
+
+	/**
+	 * returns a mock of
+	 *
+	 * @param array $record
+	 * @param string $class
+	 * @return tx_rnbase_model_base|PHPUnit_Framework_MockObject_MockObject
+	 */
+	protected function getModel(
+		$record = NULL,
+		$class = 'tx_rnbase_model_base'
+	) {
+		// $record has to be an array,
+		// if there is an scalar value,
+		// a db select fill be performed to get the record
+		if (!is_array($record)) {
+			$record = array('uid' => 0);
+		}
+		// create the mock
+		$model = $this->getMock(
+			$class,
+			array('reset', 'getColumnWrapped'),
+			array($record)
+		);
+
+		$model
+			->expects($this->any())
+			->method('reset')
+			->will($this->returnSelf())
+		;
+		$model
+			->expects($this->never())
+			->method('getColumnWrapped')
+		;
+
+		return $model;
+	}
+
 	/**
 	 * Helper function to call protected or private methods.
 	 * This method is taken from TYPO3 BaseTestCase
