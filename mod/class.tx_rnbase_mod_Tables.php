@@ -72,12 +72,14 @@ class tx_rnbase_mod_Tables {
 
 				// render the overlays with the special layout
 				foreach(self::getLangOverlayEntries($entry) as $overlay) {
+					$overlay->setProperty('_MOD_OVERLAY', TRUE);
 					$tableData[$rowCount] = self::prepareRow(
 						$overlay,
 						$columns,
 						$formTool,
 						$options
 					);
+					$overlay->unsProperty('_MOD_OVERLAY');
 					$tableLayout[$rowCount] = $layout;
 					$rowCount++;
 				}
