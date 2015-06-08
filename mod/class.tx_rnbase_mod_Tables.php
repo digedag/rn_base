@@ -58,6 +58,9 @@ class tx_rnbase_mod_Tables {
 			if (
 				$entry instanceof tx_rnbase_model_base
 				&& $options->getAddI18Overlays()
+				// skip if the entry already translated!
+				&& $entry->getUid() == $entry->getProperty('uid')
+				&& !$entry->getSysLanguageUid()
 			) {
 				// set the layout for the original (last) row
 				$defName = $isRowOdd ? 'defRowOdd' : 'defRowEven';
