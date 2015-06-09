@@ -3,7 +3,11 @@
 Änderungen
 ----------
 
-v0.14.25 (??.??.2015)
+v0.14.26 (??.??.2015)
+
+v0.14.25 (09.06.2015)
+ * new overlay property for record in be table rendering.
+ * [BUGFIX] overlays in prepareTable only for untranslated records.
  * document creation in be modules fixed. works now in newer versions and cli.
  * new getModel method for base testcase
 
