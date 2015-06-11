@@ -29,9 +29,9 @@ tx_rnbase::load('tx_rnbase_cache_Manager');
 
 
 /**
- * Caching handler that saves data for feusers. For unregistered users the handler uses PHP-Session-ID 
+ * Caching handler that saves data for feusers. For unregistered users the handler uses PHP-Session-ID
  * for identification.
- * 
+ *
  */
 class tx_rnbase_action_CacheHandlerUser extends tx_rnbase_action_CacheHandlerDefault {
 	private $sessionId = FALSE;
@@ -39,7 +39,7 @@ class tx_rnbase_action_CacheHandlerUser extends tx_rnbase_action_CacheHandlerDef
 		parent::__construct($configurations, $confId);
 		session_start();
 		$this->sessionId = session_id();
-		
+
 	}
 
 	/**
@@ -55,5 +55,3 @@ class tx_rnbase_action_CacheHandlerUser extends tx_rnbase_action_CacheHandlerDef
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/action/class.tx_rnbase_action_CacheHandlerUser.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/action/class.tx_rnbase_action_CacheHandlerUser.php']);
 }
-
-

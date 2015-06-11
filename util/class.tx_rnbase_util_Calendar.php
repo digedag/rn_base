@@ -34,7 +34,7 @@ define('CALENDAR_SECOND', 13);
 /**
  * Field number for get and set indicating the day of the month. This is a synonym for DATE. The first day of the month has value 1.
  */
-define('CALENDAR_DAY_OF_MONTH', 5); 
+define('CALENDAR_DAY_OF_MONTH', 5);
 define('CALENDAR_DAY_OF_YEAR', 6);
 
 /**
@@ -60,7 +60,7 @@ class tx_rnbase_util_Calendar {
   }
 
   /**
-   * Date Arithmetic function. Adds the specified (signed) amount of time to the given time 
+   * Date Arithmetic function. Adds the specified (signed) amount of time to the given time
    * field, based on the calendar's rules.
    * @param $field - the time field.
    * @param $amount - the amount of date or time to be added to the field.
@@ -105,7 +105,7 @@ class tx_rnbase_util_Calendar {
 	}
 
 	function _init() {
-		$this->_seconds = array( CALENDAR_SECOND => 1, 
+		$this->_seconds = array( CALENDAR_SECOND => 1,
                              CALENDAR_MINUTE => 60,
                              CALENDAR_HOUR => 60 * 60,
                              CALENDAR_DAY_OF_MONTH => 86400,
@@ -113,7 +113,7 @@ class tx_rnbase_util_Calendar {
                              CALENDAR_WEEK_OF_MONTH => 86400 * 7,
                              CALENDAR_WEEK_OF_YEAR => 86400 * 7 );
 
-		$this->_clearHash = array( CALENDAR_SECOND => 'seconds', 
+		$this->_clearHash = array( CALENDAR_SECOND => 'seconds',
                              CALENDAR_MINUTE => 'minutes',
                              CALENDAR_HOUR => 'hours',
                              CALENDAR_DAY_OF_MONTH => 'mday',
@@ -130,4 +130,3 @@ class tx_rnbase_util_Calendar {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Calendar.php']) {
   include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Calendar.php']);
 }
-

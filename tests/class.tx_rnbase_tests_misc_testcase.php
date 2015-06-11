@@ -33,7 +33,7 @@ class tx_rnbase_dummyMisc extends tx_rnbase_util_Misc {
 }
 
 class tx_rnbase_tests_misc_testcase extends tx_phpunit_testcase {
-	
+
 	public function test_encodeParams() {
 		$params['dat1'] = '1';
 		$params['dat2'] = array('1', '2');
@@ -51,7 +51,7 @@ class tx_rnbase_tests_misc_testcase extends tx_phpunit_testcase {
 		$params = array(array(1, 2), '1', 123);
 		$hash2 = tx_rnbase_util_Misc::createHash($params);
 		$this->assertEquals($hash2, $hash1);
-		
+
 	}
 
 	function testGetErrorMailHtmlRemovesPasswordParams() {
@@ -76,4 +76,3 @@ class tx_rnbase_tests_misc_testcase extends tx_phpunit_testcase {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/class.tx_rnbase_tests_misc_testcase.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/class.tx_rnbase_tests_misc_testcase.php']);
 }
-

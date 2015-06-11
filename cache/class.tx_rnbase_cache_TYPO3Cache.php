@@ -28,10 +28,10 @@ tx_rnbase::load('tx_rnbase_cache_ICache');
 
 /**
  * This is a wrapper for the internal TYPO3-Cache-API since 4.3.
- * The cache is configured via TYPO3_CONF_VARS as usual: 
+ * The cache is configured via TYPO3_CONF_VARS as usual:
  * $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['your_cache_name']['backend'],
  * $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['your_cache_name']['options']
- * 
+ *
  */
 class tx_rnbase_cache_TYPO3Cache implements tx_rnbase_cache_ICache {
 	private $cache; // The cache instance
@@ -78,7 +78,7 @@ class tx_rnbase_cache_TYPO3Cache implements tx_rnbase_cache_ICache {
 	 * @return t3lib_cache_Factory
 	 */
 	public static function initTYPO3Cache($local = TRUE) {
-		if(!$local && is_object($GLOBALS['typo3CacheFactory'])) 
+		if(!$local && is_object($GLOBALS['typo3CacheFactory']))
 			return $GLOBALS['typo3CacheFactory']; // Globale Factory ist schon gesetzt
 
 		$manager = t3lib_div::makeInstance('t3lib_cache_Manager');

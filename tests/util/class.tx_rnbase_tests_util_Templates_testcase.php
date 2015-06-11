@@ -160,4 +160,3 @@ class tx_rnbase_tests_util_Templates_testcase extends tx_phpunit_testcase {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/class.tx_rnbase_tests_util_Templates_testcase.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/class.tx_rnbase_tests_util_Templates_testcase.php']);
 }
-

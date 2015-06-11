@@ -28,7 +28,7 @@ tx_rnbase::load('tx_rnbase_util_SearchBase');
 
 /**
  * Generic search class. All parameters will be configured.
- * 
+ *
  * @author Rene Nitzsche
  */
 class tx_rnbase_util_SearchGeneric extends tx_rnbase_util_SearchBase {
@@ -46,7 +46,7 @@ class tx_rnbase_util_SearchGeneric extends tx_rnbase_util_SearchBase {
   function getWrapperClass() {
   	return '';
   }
-	
+
 	protected function getJoins($tableAliases) {
 		$join = '';
 

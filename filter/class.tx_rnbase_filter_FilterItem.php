@@ -58,7 +58,7 @@ class tx_rnbase_filter_FilterItem implements tx_rnbase_IFilterItem {
 	public function setName($name) {
 		$this->record['name'] = $name;
 	}
-	
+
 	/**
 	 * Returns the current value
 	 * @return string

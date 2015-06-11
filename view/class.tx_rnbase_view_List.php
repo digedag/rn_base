@@ -60,7 +60,7 @@ class tx_rnbase_view_List extends tx_rnbase_view_Base {
 
 		$itemPath = $this->getItemPath($configurations, $confId);
 		$markerClass = $this->getMarkerClass($configurations, $confId);
-		
+
 		//Liste generieren
 		$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
 		$out = $listBuilder->render($items, $viewData, $template, $markerClass,

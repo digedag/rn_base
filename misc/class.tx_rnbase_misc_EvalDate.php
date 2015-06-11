@@ -28,8 +28,8 @@
 class tx_rnbase_misc_EvalDate {
 
 	/**
-	 * Javascript evaluation for date fields. Transforms various date 
-	 * formats into the standard date format just like the evaluation 
+	 * Javascript evaluation for date fields. Transforms various date
+	 * formats into the standard date format just like the evaluation
 	 * performed on regular TYPO3 date fields.
 	 *
 	 * @return string JavaScript code for evaluating the date field.
@@ -51,4 +51,3 @@ class tx_rnbase_misc_EvalDate {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/misc/class.tx_rnbase_misc_EvalDate.php']) {
   include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/misc/class.tx_rnbase_misc_EvalDate.php']);
 }
-

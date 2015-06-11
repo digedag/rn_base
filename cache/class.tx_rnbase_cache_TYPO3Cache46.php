@@ -28,10 +28,10 @@ tx_rnbase::load('tx_rnbase_cache_ICache');
 
 /**
  * This is a wrapper for the internal TYPO3-Cache-API since 4.3.
- * The cache is configured via TYPO3_CONF_VARS as usual: 
+ * The cache is configured via TYPO3_CONF_VARS as usual:
  * $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['your_cache_name']['backend'],
  * $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['your_cache_name']['options']
- * 
+ *
  */
 class tx_rnbase_cache_TYPO3Cache46 implements tx_rnbase_cache_ICache {
 	private $cache; // The cache instance
@@ -52,7 +52,7 @@ class tx_rnbase_cache_TYPO3Cache46 implements tx_rnbase_cache_ICache {
 	private function checkCacheConfiguration($cacheName) {
 
 		if(!array_key_exists($cacheName, $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'])) {
-			// Der Cache ist nicht konfiguriert. 
+			// Der Cache ist nicht konfiguriert.
 			// Wir konfigurieren einen mit Defaults
 			$defaultCache[$cacheName] = array(
 				'backend' => 't3lib_cache_backend_TransientMemoryBackend',

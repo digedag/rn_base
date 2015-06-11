@@ -46,7 +46,7 @@ class tx_rnbase_util_ListMarker {
 	}
 
   /**
-   * 
+   *
    * @param tx_rnbase_util_IListProvider $provider
    * @param string $template
    * @param string $markerClassname
@@ -66,7 +66,7 @@ class tx_rnbase_util_ListMarker {
 		$this->marker = $marker;
 		$this->formatter = $formatter;
 		$this->offset = $offset;
-		
+
 		$this->parts = array();
 		$this->rowRoll = intval($formatter->configurations->get($confId.'roll.value'));
 		$this->rowRollCnt = 0;
@@ -117,7 +117,7 @@ class tx_rnbase_util_ListMarker {
 		$entryMarker = ($markerParams) ? tx_rnbase::makeInstance($markerClassname, $markerParams) : tx_rnbase::makeInstance($markerClassname);
 
 		$this->info->init($template, $formatter, $marker);
-  
+
 		$parts = array();
 		$rowRoll = intval($formatter->configurations->get($confId.'roll.value'));
 		$rowRollCnt = 0;

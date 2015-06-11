@@ -41,7 +41,7 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap {
 		$apiKey = $apiKey ? $apiKey : NULL;
 		$width = $conf->get($confId.'width');
 		$height = $conf->get($confId.'height');
-		
+
 		$this->map = tx_rnbase::makeInstance('tx_wecmap_map_google', $apiKey, $width, $height);
 		// Der MapType
 		$mapType = $conf->get($confId.'maptype') ? constant($conf->get($confId.'maptype')) : NULL;
@@ -63,7 +63,7 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap {
 		$registry->addType($this, RNMAP_MAPTYPE_SATELLITE, 'G_SATELLITE_MAP');
 		$registry->addType($this, RNMAP_MAPTYPE_HYBRID, 'G_HYBRID_MAP');
 		$registry->addType($this, RNMAP_MAPTYPE_PHYSICAL, 'G_PHYSICAL_MAP');
-		
+
 	}
 	/**
 	 * Set a map type
@@ -80,7 +80,7 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap {
 	function addControl(tx_rnbase_maps_IControl $control) {
 		$this->getWecMap()->addControl($control->render());
 	}
-	
+
 	/**
 	 * Adds a marker to this map
 	 * @param tx_rnbase_maps_IMarker $marker
@@ -95,13 +95,13 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap {
 
 		$coord = $marker->getCoords();
 		if($coord) {
-			$this->getWecMap()->addMarkerByLatLong($coord->getLatitude(), $coord->getLongitude(), 
+			$this->getWecMap()->addMarkerByLatLong($coord->getLatitude(), $coord->getLongitude(),
 				$marker->getTitle(), $marker->getDescription(), $marker->getZoomMin(), $marker->getZoomMax(), $iconName);
 			return;
 		}
-		
-		$this->getWecMap()->addMarkerByAddress($marker->getStreet(), $marker->getCity(), $marker->getState(), 
-			$marker->getZip(), $marker->getCountry(), 
+
+		$this->getWecMap()->addMarkerByAddress($marker->getStreet(), $marker->getCity(), $marker->getState(),
+			$marker->getZip(), $marker->getCountry(),
 			$marker->getTitle(), $marker->getDescription(), $marker->getZoomMin(), $marker->getZoomMax(), $iconName);
 	}
 	function draw() {
@@ -122,7 +122,7 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap {
 
 	/**
 	 * Returns an ID-String for the map provider.
-	 * @return 
+	 * @return
 	 */
 	function getPROVID() {
 		return self::$PROVID;
@@ -135,4 +135,3 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/google/class.tx_rnbase_maps_google_Map.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/google/class.tx_rnbase_maps_google_Map.php']);
 }
-

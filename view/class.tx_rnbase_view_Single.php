@@ -37,7 +37,7 @@ class tx_rnbase_view_Single extends tx_rnbase_view_List {
 	function createOutput($template, &$viewData, &$configurations, &$formatter){
 
 		$confId = $this->getController()->getConfId();
-		// $itemKey = 
+		// $itemKey =
 		// Die ViewData bereitstellen
 		$item = $viewData->offsetGet('item');
 		$itemPath = $this->getItemPath($configurations, $confId);

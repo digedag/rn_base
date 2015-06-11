@@ -119,7 +119,7 @@ class tx_rnbase_maps_DefaultMarker implements tx_rnbase_maps_IMarker {
 	function setCoords(tx_rnbase_maps_ICoord $coord) {
 		$this->coords = $coord;
 	}
-	
+
 	function setIcon(tx_rnbase_maps_IIcon $icon) {
 		$this->icon = $icon;
 	}
@@ -163,4 +163,3 @@ class tx_rnbase_maps_DefaultMarker implements tx_rnbase_maps_IMarker {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_DefaultMarker.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_DefaultMarker.php']);
 }
-

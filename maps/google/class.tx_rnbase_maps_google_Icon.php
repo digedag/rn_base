@@ -34,7 +34,7 @@ class tx_rnbase_maps_google_Icon implements tx_rnbase_maps_IIcon {
 		$this->map = $map;
 	}
 	function initFromTS($conf, $confId) {
-		
+
 	}
 	function setName($id) {
 		$this->id = $id;
@@ -81,8 +81,8 @@ class tx_rnbase_maps_google_Icon implements tx_rnbase_maps_IIcon {
 	 * @return string
 	 */
 	function render() {
-//$iconID, $imagepath, $shadowpath, $width, $height, 
-//	 * $shadowWidth, $shadowHeight, $anchorX, $anchorY, 
+//$iconID, $imagepath, $shadowpath, $width, $height,
+//	 * $shadowWidth, $shadowHeight, $anchorX, $anchorY,
 //	 * $infoAnchorX, $infoAnchorY
 		$mapName = $this->map->getMapName();
 
@@ -105,4 +105,3 @@ class tx_rnbase_maps_google_Icon implements tx_rnbase_maps_IIcon {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/google/class.tx_rnbase_maps_google_Icon.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/google/class.tx_rnbase_maps_google_Icon.php']);
 }
-

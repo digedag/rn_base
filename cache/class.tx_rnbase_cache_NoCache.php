@@ -45,10 +45,10 @@ class tx_rnbase_cache_NoCache implements tx_rnbase_cache_ICache {
 		return FALSE;
 	}
 	public function set($key, $value, $lifetime = NULL) {
-		
+
 	}
 	public function remove($key) {
-		
+
 	}
 }
 

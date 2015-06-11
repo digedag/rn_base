@@ -50,7 +50,7 @@ class tx_rnbase_util_Queue {
 
     $this->clear();
   }
-  
+
 
   /**
   * Add item to queue
@@ -72,13 +72,13 @@ class tx_rnbase_util_Queue {
     {
       $this->intEnd++;
     }
-    
+
     $this->arrQueue[$this->intEnd] = $objQueueItem;
     $this->intCurrentSize++;
-    
+
     return TRUE;
   }
-  
+
 
   /**
   * Get item from queue
@@ -89,9 +89,9 @@ class tx_rnbase_util_Queue {
     if ( $this->isEmpty() ){
       return FALSE;
     }
-    
+
     $objItem = $this->arrQueue[$this->intBegin];
-    
+
     if ( $this->intBegin == $this->intArraySize - 1 )
     {
       $this->intBegin = 0;
@@ -100,9 +100,9 @@ class tx_rnbase_util_Queue {
     {
       $this->intBegin++;
     }
-    
+
     $this->intCurrentSize--;
-    
+
     return $objItem;
   }
 
@@ -131,4 +131,3 @@ class tx_rnbase_util_Queue {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Queue.php']) {
   include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Queue.php']);
 }
-

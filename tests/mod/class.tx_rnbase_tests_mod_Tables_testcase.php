@@ -31,12 +31,12 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 	 * @var tx_rnbase_util_FormTool
 	 */
 	private $oFormTool;
-	 
+
 	/**
 	 * @var string
 	 */
 	private $currentRequestUri;
-	 
+
 	/**
 	 * Initialisiert allgemeine Testdaten
 	 */
@@ -51,16 +51,16 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 			$GLOBALS['LOCAL_LANG']['default']['Header Uid'] = 'Header Uid';
 			$GLOBALS['LOCAL_LANG']['default']['Header Col1'] = 'Header Col1';
 		}
-		 
+
 		$this-> backupAndSetCurrentRequestUri();
 	}
-	 
+
 	/**
 	 */
 	protected function tearDown() {
 		$this->restoreCurrentRequestUri();
 	}
-	 
+
 	/**
 	 * Auf der CLI ist keine URL vorhanden und somit ist auch
 	 * nicht die normale BE URL vorhanden, welche für die Sortlinks benötigt wird.
@@ -73,14 +73,14 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 		$commonBeUrl = '/typo3/mod.php?M=tools_txphpunitbeM1';
 		$_SERVER['REQUEST_URI'] = $commonBeUrl;
 	}
-	 
+
 	/**
 	 * @return void
 	 */
 	private function restoreCurrentRequestUri() {
 		$_SERVER['REQUEST_URI'] = $this->currentRequestUri;
 	}
-	 
+
 	/**
 	 * Wird eine korrekte Tabelle zurückgeliefert wenn weder
 	 * ein decorator noch eine callback methode noch ein linker
@@ -106,7 +106,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 				)
 		);
 		$aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, array());
-		 
+
 		//allgmein
 		$this->assertEquals(3, count($aRet[0]), 'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
 		//Header
@@ -122,7 +122,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 		$this->assertEquals(2, $aRet[0][2][0], 'Die erste Zelle der zweiten Zeile ist falsch.');
 		$this->assertEquals('col1 Value 2', $aRet[0][2][1], 'Die zweite Zelle der zweiten Zeile ist falsch.');
 	}
-	 
+
 	/**
 	 * Wird eine korrekte Tabelle zurückgeliefert wenn weder
 	 * ein decorator noch eine callback methode noch ein linker
@@ -148,7 +148,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 				)
 		);
 		$aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, array());
-		 
+
 		//allgmein
 		$this->assertEquals(3, count($aRet[0]), 'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
 		//Header
@@ -164,7 +164,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 		$this->assertEquals(2, $aRet[0][2][0], 'Die erste Zelle der zweiten Zeile ist falsch.');
 		$this->assertEquals('col1 Value 2', $aRet[0][2][1], 'Die zweite Zelle der zweiten Zeile ist falsch.');
 	}
-	 
+
 	/**
 	 * Wird eine korrekte Tabelle zurückgeliefert wenn weder
 	 * eine callback methode noch ein linker gesetzt ist
@@ -195,7 +195,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 				)
 		);
 		$aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, array());
-		 
+
 		//allgmein
 		$this->assertEquals(3, count($aRet[0]), 'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
 		//Header
@@ -211,7 +211,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 		$this->assertEquals(2, $aRet[0][2][0], 'Die erste Zelle der zweiten Zeile ist falsch.');
 		$this->assertEquals('spalte1 Value 2', $aRet[0][2][1], 'Die zweite Zelle der zweiten Zeile ist falsch.');
 	}
-	 
+
 	/**
 	 * Wird eine korrekte Tabelle zurückgeliefert wenn noch keine Sortierung gewählt wurde?
 	 */
@@ -250,10 +250,10 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 		$this->assertEquals(2, count($aRet[0][2]), 'Das Array der zweiten Zeile hat die falsche Anzahl an Elementen.');
 		$this->assertEquals(2, $aRet[0][2][0], 'Die erste Zelle der zweiten Zeile ist falsch.');
 		$this->assertEquals('col1 Value 2', $aRet[0][2][1], 'Die zweite Zelle der zweiten Zeile ist falsch.');
-		 
+
 		$_SERVER['REQUEST_URI'] = $currentUriBackup;
 	}
-	 
+
 	/**
 	 * Wird eine korrekte Tabelle zurückgeliefert wenn noch keine Sortierung gewählt wurde?
 	 */
@@ -279,7 +279,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 				)
 		);
 		$aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, array());
-		 
+
 		//allgmein
 		$this->assertEquals(3, count($aRet[0]), 'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
 		//Header
@@ -298,7 +298,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 		$this->assertEquals(2, $aRet[0][2][0], 'Die erste Zelle der zweiten Zeile ist falsch.');
 		$this->assertEquals('col1 Value 2', $aRet[0][2][1], 'Die zweite Zelle der zweiten Zeile ist falsch.');
 	}
-	 
+
 	/**
 	 * Wird eine korrekte Tabelle zurückgeliefert wenn noch keine Sortierung gewählt wurde?
 	 */
@@ -325,7 +325,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 				)
 		);
 		$aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, array());
-		 
+
 		//allgmein
 		$this->assertEquals(3, count($aRet[0]), 'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
 		//Header
@@ -343,7 +343,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 		$this->assertEquals(2, $aRet[0][2][0], 'Die erste Zelle der zweiten Zeile ist falsch.');
 		$this->assertEquals('col1 Value 2', $aRet[0][2][1], 'Die zweite Zelle der zweiten Zeile ist falsch.');
 	}
-	 
+
 	/**
 	 * Wird eine korrekte Tabelle zurückgeliefert wenn noch keine Sortierung gewählt wurde?
 	 */
@@ -351,7 +351,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 		$_GET['sortField'] = 'uid';
 		//weiterer Param, der erhalten bleiben sollte
 		$_SERVER['REQUEST_URI'] = $_SERVER['REQUEST_URI'].'&sortField=title&sortRev=desc&additionalParam=test';
-		 
+
 		$aEntries = array(
 				0 => array(
 						'uid' => 1,
@@ -372,7 +372,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 				)
 		);
 		$aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, array());
-		 
+
 		//allgmein
 		$this->assertEquals(3, count($aRet[0]), 'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
 		//Header

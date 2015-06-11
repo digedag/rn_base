@@ -29,7 +29,7 @@ tx_rnbase::load('tx_rnbase_util_BaseMarker');
 class tx_rnbase_filter_FilterItemMarker extends tx_rnbase_util_BaseMarker {
 	public function parseTemplate($template, &$item, &$formatter, $confId, $marker = 'FILTERITEM') {
     $markerArray = $formatter->getItemMarkerArrayWrapped($item->record, $confId , 0, $marker.'_');
-		
+
 		$out = $formatter->cObj->substituteMarkerArrayCached($template, $markerArray, $subpartArray, $wrappedSubpartArray);
 		return $out;
 	}

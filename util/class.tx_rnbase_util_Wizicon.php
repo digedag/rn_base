@@ -29,7 +29,7 @@
  */
 abstract class tx_rnbase_util_Wizicon {
 	/**
-	 * 
+	 *
 	 * @param string $id
 	 * @param string $clazz
 	 */

@@ -78,7 +78,7 @@ class tx_rnbase_maps_Factory {
 	static function createGoogleControlMapType(){
 		return tx_rnbase::makeInstance('tx_rnbase_maps_google_Control', 'mapType');
 	}
-	
+
 	/**
 	 * Erstellt eine Map
 	 *
@@ -100,4 +100,3 @@ class tx_rnbase_maps_Factory {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_Factory.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_Factory.php']);
 }
-

@@ -46,7 +46,7 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_phpunit_testcase {
 		$this->assertEquals(100, $state['offset']);
 		$this->assertEquals(10, $state['limit']);
 
-		// Listenende passt genau auf letzte Seite 
+		// Listenende passt genau auf letzte Seite
 		$parameters->offsetSet($pb->getParamName('pointer'), 10);
 		$listSize = 100; //Gesamtgröße der darzustellenden Liste
 		$pb->setState($parameters, $listSize, $pageSize);
@@ -74,7 +74,7 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_phpunit_testcase {
 		$this->assertEquals(0, $state['offset'], 'Offset ist falsch');
 		$this->assertEquals(0, $state['limit'], 'Limit ist falsch');
 	}
-	
+
 	public function test_getStateWithPointerOutOfRange() {
 		$pb = new tx_rnbase_util_PageBrowser('test');
 		$parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
@@ -92,7 +92,7 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_phpunit_testcase {
 		$state = $pb->getState();
 		$this->assertEquals(100, $state['offset']);
 		$this->assertEquals(10, $state['limit']);
-		
+
 		$listSize = 98; //Gesamtgröße der darzustellenden Liste
 		$pb->setState($parameters, $listSize, $pageSize);
 
@@ -132,4 +132,3 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_phpunit_testcase {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/util/class.tx_rnbase_tests_util_PageBrowser_testcase.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/util/class.tx_rnbase_tests_util_PageBrowser_testcase.php']);
 }
-

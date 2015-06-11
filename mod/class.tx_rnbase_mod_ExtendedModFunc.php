@@ -104,7 +104,7 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc {
 		if(is_object($handler)) {
 			$subpart = '###'.strtoupper($handler->getSubID()).'###';
 			$templateSub = tx_rnbase_util_Templates::getSubpart($template, $subpart);
-			
+
 			$args[] = $templateSub;
 			$args[] = $this->getModule();
 			$args[] = array('subSels' => $subSels);
@@ -149,7 +149,7 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc {
 				$this->showMessage($out, $tabItem);
 			}
 		}
-		
+
 		$menu = $formTool->showTabMenu($this->getModule()->getPid(), 'mn_'.$this->getFuncId(), $this->getModule()->getName(), $menuItems);
 
 		return $menu;
