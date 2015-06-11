@@ -203,7 +203,6 @@ class tx_rnbase_util_Files {
 		//add the files
 		foreach($valid_files as $file) {
 			$filename = basename($file);
-			//$zip->addFile($file, $filename);
 			$zip->addFile($file, iconv('UTF-8', 'IBM850', $filename));
 		}
 

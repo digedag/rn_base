@@ -100,7 +100,6 @@ class tx_rnbase_util_BaseMarker {
       }
       $arr1 = $formatter->getItemMarkerArrayWrapped($labelArr, $confId , 0, $marker.'_');
     }
-//    t3lib_div::debug($labelId, 'tx_rnbase_util_BaseMarker');
     $this->defaultMarkerArr = array_merge($arr1, $this->defaultMarkerArr);
     return $this->defaultMarkerArr;
   }
@@ -178,18 +177,6 @@ class tx_rnbase_util_BaseMarker {
 	public static function initLink(&$markerArray, &$subpartArray, &$wrappedSubpartArray, $formatter, $confId, $linkId, $marker, $parameterArr, $template='') {
 		$makeUrl = $makeLink = TRUE;
 		$linkMarker = self::checkLinkExistence($linkId, $marker, $template, $makeUrl, $makeLink);
-/*
-		$linkMarker = $marker . '_' . strtoupper($linkId).'LINK';
-		// Do we need links
-		$makeUrl = $makeLink = TRUE;
-		if($template) {
-			$makeLink = self::containsMarker($template, $linkMarker);
-			$makeUrl = self::containsMarker($template, $linkMarker.'URL');
-		}
-		if(!$makeLink && !$makeUrl) {
-			return; // Nothing to do
-		}
-*/
 		if(!$linkMarker) {
 			return; // Nothing to do
 		}
@@ -265,7 +252,6 @@ class tx_rnbase_util_BaseMarker {
 		$out = array();
 		$link = $configurations->createLink(); // Link auf die eigene Seite
 		$link->initByTS($configurations, $confId.'link.', array());
-//		$link->destination($GLOBALS['TSFE']->id); // Das Ziel der Seite vorbereiten
 		$token = md5(microtime());
 		$link->label($token);
 		$emptyArr = array();
@@ -418,7 +404,6 @@ class tx_rnbase_util_BaseMarker {
 	 */
 	public static function containsMarker($template, $markerPrefix) {
 		return (strpos($template, '###'.$markerPrefix) !== FALSE);
-//		return (preg_match('/###'.$markerPrefix.'([A-Z0-9_-])*/', $template)) > 0;
 	}
 	/**
 	 * Start TimeTrack section

@@ -126,7 +126,6 @@ class tx_rnbase_plot_DataProviderTS implements tx_rnbase_plot_IDataProvider {
 						} else {
 							$mixY = $arrConf[$strKey.'.']['y'];
 						}
-						//$mixY = ($arrConf[$strKey.'.']['y']=='null')?NULL:$arrConf[$strKey.'.']['y'];
 						$strId = $arrConf[$strKey.'.']['id'];
 						$dataSet->addPoint($mixX, $mixY, $strId);
 					}

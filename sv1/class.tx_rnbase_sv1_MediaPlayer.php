@@ -61,10 +61,6 @@ class tx_rnbase_sv1_MediaPlayer extends t3lib_svbase {
     $autoStart = $playerConf['autoStart'];
     $autoReplay = $playerConf['autoReplay'];
 
-
-//    t3lib_div::debug($color, 'mediaplayer');
-//    t3lib_div::debug($media , 'mediaplayer');
-
     $fePath = t3lib_extMgm::siteRelPath('rn_base') . 'sv1/';
 
     $out = '<object type="application/x-shockwave-flash" data="/'.

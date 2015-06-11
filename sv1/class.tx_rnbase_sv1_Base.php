@@ -123,9 +123,6 @@ abstract class tx_rnbase_sv1_Base extends t3lib_svbase {
 		$model = $this->getDummyModel();
 		$table = $model->getTableName();
 
-//		tx_rnbase::load('tx_mklib_util_TCA');
-//		$data = tx_mklib_util_TCA::eleminateNonTcaColumns($model, $data);
-
 		tx_rnbase::load('tx_rnbase_util_DB');
 		$newUid = tx_rnbase_util_DB::doInsert(
 			$table,
@@ -159,10 +156,6 @@ abstract class tx_rnbase_sv1_Base extends t3lib_svbase {
 		if(array_key_exists('uid', $data))
 			unset($data['uid']);
 
-		// Eleminate columns not in TCA
-//		tx_rnbase::load('tx_mklib_util_TCA');
-//		$data = tx_mklib_util_TCA::eleminateNonTcaColumns($model, $data);
-
 		tx_rnbase::load('tx_rnbase_util_DB');
 		tx_rnbase_util_DB::doUpdate($table, $where, self::insertTimestamp($data, $table));
 
@@ -191,7 +184,6 @@ abstract class tx_rnbase_sv1_Base extends t3lib_svbase {
 
 				//else
 				$data = array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] => 1);
-//				self::doUpdate($table, $where, $data);
 				tx_rnbase_util_DB::doUpdate($table, $where, self::insertTimestamp($data, $table));
 				break;
 

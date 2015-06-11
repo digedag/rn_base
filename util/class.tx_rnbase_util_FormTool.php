@@ -203,7 +203,6 @@ class tx_rnbase_util_FormTool {
 	 * @param $label Bezeichnung des Links
 	 */
 	public function createInfoLink($editTable, $editUid, $label = 'Info') {
-//    $params = '&edit['.$editTable.']['.$editUid.']=edit';
 		return '<a href="#" onclick="top.launchView(' . "'" . $editTable . "', ' " . $editUid . "'); return false;" . '">'.
 		 '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/zoom2.gif', 'width="11" height="12"').' title="UID: '.$editUid.'" border="0" alt="" />'.
 		 $label .'</a>';
@@ -313,10 +312,6 @@ class tx_rnbase_util_FormTool {
 		if($options['icon']) {
 			$icon = t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$options['icon']);
 		}
-//		if($options['sprite']) {
-//			tx_rnbase::load('tx_rnbase_mod_Util');
-//			$icon = tx_rnbase_mod_Util::getSpriteIcon($options['sprite']);
-//		}
 
 		$btn = '<input type="'.($icon ? 'image' : 'submit').'" name="'. $name.'" value="' . $value . '" ';
 		if(strlen($confirmMsg))
@@ -354,9 +349,6 @@ class tx_rnbase_util_FormTool {
 	 * Erstellt ein Eingabefeld für Integers
 	 */
 	public function createIntInput($name, $value, $width, $maxlength=10){
-//t3lib_div::debug($GLOBALS['TBE_TEMPLATE']->formWidth(10), 'form');
-//      <input type="text" name="' . $name . '_hr"'.$this->doc->formWidth($width).
-
 		$out = '
 			<input type="text" name="' . $name . '_hr"'.$GLOBALS['TBE_TEMPLATE']->formWidth($width).
 			' onchange="typo3FormFieldGet(\'' . $name . '\', \'int\', \'\', 0,0);"'.
@@ -520,11 +512,6 @@ class tx_rnbase_util_FormTool {
 			var T3_RETURN_URL = "'.str_replace('%20', '', rawurlencode(t3lib_div::_GP('returnUrl'))).'";
 			var T3_THIS_LOCATION="'.str_replace('%20', '', rawurlencode($location)).'"');
 
-    // Setting up the context sensitive menu:
-//    $CMparts=$this->doc->getContextMenuCode();
-//    $this->doc->bodyTagAdditions = $CMparts[1];
-//    $JScode.=$CMparts[0];
-//    $this->doc->postCode.= $CMparts[2];
     return $JScode;
   }
 	/**
@@ -549,10 +536,8 @@ class tx_rnbase_util_FormTool {
 			<tbody><tr>';
 
 		foreach($entries As $key => $value) {
-			//$out .= '<td class="tab" onmouseover="DTM_mouseOver(this);" onmouseout="DTM_mouseOut(this);" nowrap="nowrap">';
 			$out .= '
 				<td class="tab'.($SETTINGS[$name] == $key ? 'act' : '').'" nowrap="nowrap">';
-			//$out .= '<a href="#" onclick="jumpToUrl(\'index.php?&amp;id='.$pid.'&amp;SET['.$name.']='. $key .',this);\'>'.$value.'<img name="DTM-307fab8d03-1-REQ" src="clear.gif" alt="" height="10" hspace="4" width="10"></a></td>';
 			$out .= '<a href="#" onclick="jumpToUrl(\'index.php?&amp;id='.$pid.'&amp;SET['.$name.']='. $key .'\',this);">'.$value.'</a></td>';
 		}
 		$out .= '
@@ -635,10 +620,6 @@ class tx_rnbase_util_FormTool {
 	public function getTCEFormArray($table, $theUid, $isNew = FALSE) {
 		$trData = t3lib_div::makeInstance('t3lib_transferData');
 		$trData->addRawData = TRUE;
-//		$trData->defVals = $this->defVals;
-//		$trData->lockRecords=1;
-//		$trData->disableRTE = $this->MOD_SETTINGS['disableRTE'];
-//		$trData->prevPageID = $prevPageID;
 		$trData->fetchRecord($table, $theUid, $isNew?'new':'');	// 'new'
 		reset($trData->regTableItems_data);
 		return $trData->regTableItems_data;

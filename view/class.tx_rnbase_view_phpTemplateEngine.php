@@ -63,7 +63,6 @@ class tx_rnbase_view_phpTemplateEngine extends tx_rnbase_view_Base {
     $viewData =& $configurations->getViewData();
 
     $formatter = tx_rnbase::makeInstance('tx_rnbase_util_FormatUtil', $configurations);
-//t3lib_div::debug($formatter);
 
     $path = $this->getTemplate($view);
     // Für den PHP Include benötigen wir den absoluten Pfad

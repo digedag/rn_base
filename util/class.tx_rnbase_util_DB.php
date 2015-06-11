@@ -245,7 +245,6 @@ class tx_rnbase_util_DB {
 		if (!is_object($tsfe) || !$tsfe->sys_language_content || $options['enablefieldsoff'] || $options['ignorei18n']) {
 			return;
 		}
-		// $OLmode = ($this->sys_language_mode == 'strict' ? 'hideNonTranslated' : '');
 		$OLmode = (isset($options['i18nolmode']) ? $options['i18nolmode'] : '');
 		$row = $sysPage->getRecordOverlay($tableName, $row, $tsfe->sys_language_content, $OLmode);
 	}
@@ -789,8 +788,6 @@ class tx_rnbase_util_DB {
 			case OP_INSET_INT:
 				// Values splitten und einzelne Abfragen mit OR verbinden
 				$where = self::searchWhere($value, $tableAlias.'.' . strtolower($col), 'FIND_IN_SET_OR');
-//				$where .= substr($addWhere, 4); // Remove the leading AND
-				//$where .= ' FIND_IN_SET(' . $value . ', '.$tableAlias.'.' . strtolower($col).')';
 				break;
 			case OP_EQ:
 				$where .= $tableAlias.'.' . strtolower($col) . ' = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias);
