@@ -215,6 +215,13 @@ class tx_rnbase_model_data
 
 	/**
 	 * Implementation of IteratorAggregate::getIterator()
+	 *
+	 * WARNING: dont iterate over an object
+	 * and manipulate the value by reference like this:
+	 * foreach($data as $var) {$var = 0; };
+	 * user this to manipulate the data:
+	 * foreach($data as $key => $var) { $data->setProperty($key, 0); };
+	 * @return ArrayIterator
 	 */
 	public function getIterator() {
 		return new ArrayIterator($this->getProperty());
