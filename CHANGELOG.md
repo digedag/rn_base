@@ -4,6 +4,7 @@
 ----------
 
 v0.14.26 (??.??.2015)
+ * new isLastPartOfStr method and isFirstPartOfStr wrapper
 
 v0.14.25 (09.06.2015)
  * new overlay property for record in be table rendering.
@@ -19,14 +20,14 @@ v0.14.24 (03.06.2015)
 
 v0.14.23 (03.06.2015)
  * getLabel renamed to getTcaLabel
- 
+
 v0.14.22 (03.06.2015)
  * template includes can be nested now
  * new getLastModifyDateTime and getCreationDateTime methods for base model
  * new getSysLanguageUid and getLabel methods for base model
  * optional options and overlay parameters for tx_rnbase_mod_Util::getSpriteIcon
  * [BUGFIX] custom fields typo in searchbase_handleTableMapping hook fixed
- 
+
 v0.14.21 (19.05.2015)
  * [BUGFIX] COUNTWRAP nicht nutzen wenn im pagebrowser ein eigenes what mit count gesetzt wird
 
@@ -36,7 +37,7 @@ v0.14.20 (07.05.2015)
  * new mergeRecursiveWithOverrule method with typo3 version check
  * disable includeSubTemplates cache, if $GLOBALS['TSFE']->no_cache = TRUE;
  * add where clause only on joined fields search when not empty to avoid MySQL errors
- 
+
 v0.14.18 (27.04.2015)
  * disable includeSubTemplates cache, if $GLOBALS['TSFE']->no_cache = TRUE;
  * new mergeRecursiveWithOverrule wrapper method for arrays with TYPO3 version check.
@@ -47,7 +48,7 @@ v0.14.18 (27.04.2015)
  * count for queries with groupby, having, what or count in custom what
  * count check in custom what fixed
  * [BUGFIX] bei COUNTRWAP nicht auf uid Spalte gehen falls diese nicht vorhanden ist. Wir gehen nun direkt auf *
- 
+
 v0.14.17 (20.04.2015)
  * new Lock util to simply lock a process (tx_rnbase_util_Lock::getInstance('process-name')->isLocked())
 
@@ -82,7 +83,7 @@ v0.14.9 (21.01.2015)
  * New setInaccessibleProperty for base testcase
  * tx_rnbase_util_db_MySQL uses now mysqli
  * New method tx_rnbase_util_Misc::getIndpEnv()
- 
+
 v0.14.8 (15.01.2015)
  * Do not enable cHash system in controller for USER_INT plugins
  * fixed composer version for composer projects
@@ -110,7 +111,7 @@ v0.14.5 (17.11.2014)
 v0.14.4 (06.11.2014)
  * Support for label markers with salutation suffix.
 In HTML template: ###LABEL_GREETING###
-in language file: 
+in language file:
  label_greeting_informal = Hello guys!
  label_greeting_formal = Good day, Sir!
 Configure salutation in plugin config:
@@ -121,17 +122,17 @@ plugin.tx_myplugin.salutation = formal
  * New wrapper method tx_rnbase_util_Strings::getRandomHexString().
 
 v0.14.3 (07.10.2014)
- * To avoid caching an USER-Plugin, it can now easily converted to USER_INT by calling $this->getConfigurations()->convertToUserInt(). Thanks to Michael Wagner! 
+ * To avoid caching an USER-Plugin, it can now easily converted to USER_INT by calling $this->getConfigurations()->convertToUserInt(). Thanks to Michael Wagner!
  * Action can now be skipped with the Skip Exception. Thanks to Michael Wagner!
  * New subtemplate parsing. Thanks to Michael Wagner!
  * Bugfix for Modulemarkers. Modulemarkers and Labels can now contain a Minus (-). Thanks to Michael Wagner!
  * Metadata for FAL to mediamodel added. Thanks to Hannes Bochmann!
  * UserTS For BE-Modules added.
- 
- 
+
+
 v0.14.2 (06.09.2014)
  * New method model_Base::setTableName(). Thanks to Christian Riesche!
- * Support for attachments in tx_rnbase_util_Mail. Works for T3 versions < 4.5 
+ * Support for attachments in tx_rnbase_util_Mail. Works for T3 versions < 4.5
  * basic data model with generic getters, setters. Thanks to Michael Wagner!
  * New label debug in BaseMarker.
 
@@ -318,7 +319,7 @@ v0.10.3 (12.08.2011) (not released)
  * Constants for log levels
 
 v0.10.2 (05.08.2011) (not released)
- * SimpleMarker: Default constructor with options array 
+ * SimpleMarker: Default constructor with options array
  * SimpleMarker: it is possible to add dynamic parameters by PHP code.
  * SimpleMarker: check existence of configured links
  * ListBuilder: SubpartMarker respects english orthography. ###COMPANIES### -> ###COMPANY###
@@ -417,7 +418,7 @@ v0.8.9 (09.08.2010)
  * tx_rnbase_controller: Sending error mailings fixed. Thanks to Lars Heber!
  * Default file based cache can be activated in extension configuration.
  * Action based caching interface for frontend plugins. Not finished yet!
- * tx_rnbase_util_Link: KeepVars of other extension can be configured. Thanks to Pavel Klinkov! 
+ * tx_rnbase_util_Link: KeepVars of other extension can be configured. Thanks to Pavel Klinkov!
   linkcfg.useKeepVars.add = tx_ttnews::ttnews, tx_ttnews::*
 
 v0.8.8 (17.07.2010)
@@ -455,7 +456,7 @@ v0.8.1 (01.06.2010) (not released)
  * tx_rnbase_util_FormTool::createEditButton with confirm option
  * tx_rnbase_util_Link: new TS options noCache and noHash
  * SearchBase: Ignore invalid queries for SEARCH_FIELD_JOINED
- * tx_rnbase_util_DB: Bugfix for OP_LIKE with multiple strings. 
+ * tx_rnbase_util_DB: Bugfix for OP_LIKE with multiple strings.
  * tx_rnbase_util_DB: New operator OP_LIKE_CONST.
 
 v0.8.0 (11.05.2010)
@@ -470,7 +471,7 @@ v0.7.7 (01.05.2010) (not released)
  * New class tx_rnbase_util_SimpleMarker
  * GET and POST vars for error mail added
  * tx_rnbase_Controller: missing include fixed
- 
+
 v0.7.6 (29.04.2010) (not released)
  * ErrorMail: Send only one mail within one minute.
  * It is possible to configure error messages for uncaught exceptions. Create a default language label ERROR_default in your extension language file. You can define labels for each exception error code like ERROR_123.
@@ -492,7 +493,7 @@ v0.7.2 (20.04.2010) (not released)
 v0.7.1 (16.04.2010) (not released)
  * Mail info for uncaught exceptions
  * New class tx_rnbase_util_Logger
- 
+
 v0.7.0 (05.04.2010)
  * Some fixes in DB layer
 
@@ -517,7 +518,7 @@ v0.6.5 (25.02.2010) (not released)
 
 v0.6.4 (17.02.2010) (not released)
  * New API for Caches
- * util_Link: it is possible to add more static parameter by Typoscript: 
+ * util_Link: it is possible to add more static parameter by Typoscript:
 linkcfg.useKeepVars.add = ::type=300, mykey=myvalue
 
 
@@ -539,7 +540,7 @@ v0.6.0 (30.12.2009)
  * SearchGeneric: double alias declaration for base table removed
 
 v0.5.5 (23.12.2009) (not released)
- * There is a new class tx_rnbase_util_Templates for marker substitutions HTML templates. It does the same as substituteMarkerArrayCached but has no call to $GLOBALS['TT']. This heavily reduces memory consumption. 
+ * There is a new class tx_rnbase_util_Templates for marker substitutions HTML templates. It does the same as substituteMarkerArrayCached but has no call to $GLOBALS['TT']. This heavily reduces memory consumption.
 
 v0.5.4 (15.12.2009) (not released)
  * New class tx_rnbase_mod_Tables
@@ -625,7 +626,7 @@ v0.3.0 (20.02.2009)
 * New class for parameters
 * New util class for date conversions
 * New filter package
-* SearchBase extended 
+* SearchBase extended
 * allow and deny list for useKeepVars option in tx_rnbase_util_BaseMarker::initLink
 
 v0.2.16 (06.01.2009)
@@ -634,7 +635,7 @@ v0.2.16 (06.01.2009)
 * New method tx_rnbase_util_FormTool::createHistoryLink
 * New method tx_rnbase_models_base::getUid()
 * Info methods about TYPO3 extensions in tx_rnbase_util_TYPO3
-* Some new methods in tx_rnbase_util_TSDAM 
+* Some new methods in tx_rnbase_util_TSDAM
 
 v0.2.15 (30.12.2008)
 * Neue Vergleichsoperatoren in SearchBase
@@ -693,7 +694,7 @@ v0.1.5 (31.05.2008)
 * Kleine Bugfix in getKeyNames() der Config
 
 v0.1.4 (25.05.2008)
-* eigenes Image-Tag für DAM-Bilder: ###_IMGTAG### 
+* eigenes Image-Tag für DAM-Bilder: ###_IMGTAG###
 
 v0.1.2 (17.05.2008)
 * Kleinere Erweiterungen
@@ -704,7 +705,7 @@ v0.1.2 (05.05.2008)
 
 v0.1.0 (02.05.2008)
 ## UMSTELLUNG AUF PHP5 ###
-Es sind erstmals Methoden integriert, die nur mit PHP5 funktionieren! Abhängige Extensions, die 
+Es sind erstmals Methoden integriert, die nur mit PHP5 funktionieren! Abhängige Extensions, die
 auch mit PHP4 funktionierten, sind ggf. unter PHP4 nicht kompatibel mit dieser Version. Bei Verwendung
 von PHP5 sollte es keine Probleme geben.
 
@@ -727,7 +728,7 @@ v0.0.9 (12.11.2007)
 - in configurations gibt es die neue Methode getKeynames()
 
 v0.0.7 (30.09.2007)
-- Handling der freien Label im BaseMarker geändert. Die Punktnotation wird für 
+- Handling der freien Label im BaseMarker geändert. Die Punktnotation wird für
   Labels automatisch in Underscores umgewandelt. Dadurch können die Strings dann im Sprachfile
   gefunden werden
 
@@ -740,7 +741,7 @@ v0.0.6 (27.09.2007)
 
 
 v0.0.5 (28.08.2007)
-- Im FormatUtil wird in der Methode getItemMarkerArrayWrapped() der Datensatz in die Instanz von 
+- Im FormatUtil wird in der Methode getItemMarkerArrayWrapped() der Datensatz in die Instanz von
   cObject kopiert. Damit sind erweiterte TS-Anweisungen möglich.
 - Verwendung des korrekten Klassennamens für das tx_lib_spl_arrayObject
 v0.0.4
