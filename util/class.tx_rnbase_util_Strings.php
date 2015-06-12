@@ -85,6 +85,29 @@ class tx_rnbase_util_Strings {
 	}
 
 	/**
+	 * Returns TRUE if the first part of $haystack matches the string $needle
+	 *
+	 * @param string $haystack Full string to check
+	 * @param string $needle Reference string which must be found as the "first part" of the full string
+	 * @return boolean TRUE if $partStr was found to be equal to the first part of $str
+	 */
+	public static function isFirstPartOfStr($haystack, $needle) {
+		return t3lib_div::isFirstPartOfStr($haystack, $needle);
+	}
+	/**
+	 * Returns TRUE if the last part of $haystack matches the string $needle
+	 *
+	 * @param string $haystack Full string to check
+	 * @param string $needle Reference string which must be found as the "first part" of the full string
+	 * @return boolean TRUE if $partStr was found to be equal to the first part of $str
+	 */
+	public static function isLastPartOfStr($haystack, $needle) {
+		// crop the stack
+		$crop = substr($haystack, strlen($haystack) - strlen($needle));
+		return $crop === $needle;
+	}
+
+	/**
 	 * Wrapper method for t3lib_div::intExplode()
 	 * @param string $delimiter
 	 * @param string $string
