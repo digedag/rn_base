@@ -576,41 +576,55 @@ class tx_rnbase_util_Link {
 	 */
 	public function initByTS($configurations, $confId, $parameterArr) {
 		$parameterArr = is_array($parameterArr) ? $parameterArr : array();
-		$pid = $configurations->getCObj()->stdWrap($configurations->get($confId.'pid'), $configurations->get($confId.'pid.'));
+		$pid = $configurations->getCObj()->stdWrap(
+			$configurations->get($confId.'pid'),
+			$configurations->get($confId.'pid.')
+		);
 		$qualifier = $configurations->get($confId.'qualifier');
-		if($qualifier) $this->designator($qualifier);
+		if ($qualifier) {
+			$this->designator($qualifier);
+		}
 		$target = $configurations->get($confId.'target');
-		if($target) $this->target($target);
-		$this->destination($pid ? $pid : $GLOBALS['TSFE']->id); // Das Ziel der Seite vorbereiten
-		if($absUrl = $configurations->get($confId.'absurl'))
+		if ($target) {
+			$this->target($target);
+		}
+		// Das Ziel der Seite vorbereiten
+		$this->destination($pid ? $pid : $GLOBALS['TSFE']->id);
+		if ($absUrl = $configurations->get($confId.'absurl')) {
 			$this->setAbsUrl(TRUE, ($absUrl == 1 || strtolower($absUrl) == 'true' ) ? '' : $absUrl);
+		}
 
-		if($fixed = $configurations->get($confId.'fixedUrl'))
-			$this->destination($fixed); // feste URL für externen Link
-		if(array_key_exists('SECTION', $parameterArr)) {
+		// feste URL für externen Link
+		if ($fixed = $configurations->get($confId.'fixedUrl')) {
+			$this->destination($fixed);
+		}
+		if (array_key_exists('SECTION', $parameterArr)) {
 			$this->anchor(htmlspecialchars($parameterArr['SECTION']));
 			unset($parameterArr['SECTION']);
+		} else {
+			$this->anchor((string) $configurations->get($confId.'section', TRUE));
 		}
 		$this->parameters($parameterArr);
 
 		// eigene Parameter für typolink, die einfach weitergegeben werden
 		$typolinkCfg = $configurations->get($confId.'typolink.');
-		if(is_array($typolinkCfg)) {
-			foreach($typolinkCfg As $cfgName => $cfgValue) {
+		if (is_array($typolinkCfg)) {
+			foreach ($typolinkCfg As $cfgName => $cfgValue) {
 				$this->addTypolinkParam($cfgName, $cfgValue);
 			}
 		}
 
 		// Zusätzliche Parameter für den Link
 		$atagParams = $configurations->get($confId.'atagparams.', TRUE);
-		if(is_array($atagParams)) {
+		if (is_array($atagParams)) {
 			// Die Parameter werden jetzt nochmal per TS validiert und können somit dynamisch gesetzt werden
 			$attributes = array();
-			foreach($atagParams As $aParam => $lvalue) {
-				if(substr($aParam, strlen($aParam)-1, 1) == '.') {
+			foreach ($atagParams As $aParam => $lvalue) {
+				if (substr($aParam, strlen($aParam)-1, 1) == '.') {
 					$aParam = substr($aParam, 0, strlen($aParam)-1);
-					if(array_key_exists($aParam, $atagParams))
+					if (array_key_exists($aParam, $atagParams)) {
 						continue;
+					}
 				}
 				$attributes[$aParam] = $configurations->getCObj()->stdWrap($atagParams[$aParam], $atagParams[$aParam.'.']);
 			}
@@ -619,10 +633,10 @@ class tx_rnbase_util_Link {
 
 		// KeepVars prüfen
 		// Per Default sind die KeepVars nicht aktiviert. Mit useKeepVars == 1 können sie hinzugefügt werden
-		if(!$configurations->get($confId.'useKeepVars')) {
+		if (!$configurations->get($confId.'useKeepVars')) {
 			$this->overruled();
 		}
-		elseif($keepVarConf = $configurations->get($confId.'useKeepVars.')) {
+		elseif ($keepVarConf = $configurations->get($confId.'useKeepVars.')) {
 			// Sonderoptionen für KeepVars gesetzt
 			$newKeepVars = array();
 			// skip empty values? default false!
@@ -630,61 +644,74 @@ class tx_rnbase_util_Link {
 			$keepVars = $configurations->getKeepVars();
 			$allow = $keepVarConf['allow'];
 			$deny = $keepVarConf['deny'];
-			if($allow) {
+			if ($allow) {
 				$allow = t3lib_div::trimExplode(',', $allow);
-				foreach($allow As $allowed) {
+				foreach ($allow As $allowed) {
 					$value = $keepVars->offsetGet($allowed);
-					if ($skipEmpty && empty($value))
+					if ($skipEmpty && empty($value)) {
 						continue;
+					}
 					$newKeepVars[$allowed] = $keepVars->offsetGet($allowed);
 				}
 			}
-			elseif($deny) {
+			elseif ($deny) {
 				$deny = array_flip(t3lib_div::trimExplode(',', $deny));
 				$keepVarsArr = $keepVars->getArrayCopy();
 				foreach($keepVarsArr As $key => $value) {
-					if ($skipEmpty && empty($value))
+					if ($skipEmpty && empty($value)) {
 						continue;
-					if(!array_key_exists($key, $deny))
+					}
+					if(!array_key_exists($key, $deny)) {
 						$newKeepVars[$key] = $value;
+					}
 				}
 			}
 			$add = $keepVarConf['add'];
-			if($add) {
+			if ($add) {
 				$add = t3lib_div::trimExplode(',', $add);
-				foreach($add As $linkvar) {
+				foreach ($add As $linkvar) {
 					$linkvar = t3lib_div::trimExplode('=', $linkvar);
 					if (count($linkvar)< 2)  {
 						// tt_news::* or ttnews::id
 						list($qualifier, $name) = t3lib_div::trimExplode('::', $linkvar[0]);
 						if ($value = t3lib_div::_GP($qualifier)) {
 							if($name == '*' && is_array($value)) {
-								foreach($value As $paramName => $paramValue) {
-									if ($skipEmpty && empty($paramValue))
+								foreach ($value As $paramName => $paramValue) {
+									if ($skipEmpty && empty($paramValue)) {
 										continue;
-									if(strpos($paramName, 'NK_') === FALSE)
+									}
+									if(strpos($paramName, 'NK_') === FALSE) {
 										$newKeepVars[$qualifier.'::'.$paramName] =  $paramValue;
+									}
 								}
 							}
-							else
+							else {
 								$newKeepVars[$linkvar[0]] =  $value[$name];
+							}
 						}
-					} else  {
+					} else {
 						$newKeepVars[$linkvar[0]] = $linkvar[1];
 					}
 				}
 			}
 			$this->overruled($newKeepVars);
 		}
-		if($configurations->get($confId.'noCache'))
+		if ($configurations->get($confId.'noCache')) {
 			$this->noCache();
+		}
 		// Bei der Linkerzeugung wir normalerweise immer ein cHash angelegt. Bei Plugins, die als USER_INT
 		// ausgeführt werden, ist dies nicht notwendig und geht auf die Performance. Daher wird hier
 		// automatisch der cHash für USER_INT deaktiviert. Per Typocript kann man es aber bei Bedarf manuell
 		// wieder aktivieren
-		if($configurations->get($confId.'noHash') ||
-				($configurations->get($confId.'noHash') !== '0' && $configurations->isPluginUserInt()))
+		if (
+			$configurations->get($confId.'noHash')
+			|| (
+				$configurations->get($confId.'noHash') !== '0'
+				&& $configurations->isPluginUserInt()
+			)
+		) {
 			$this->noHash();
+		}
 
 	}
 }
