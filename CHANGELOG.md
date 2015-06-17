@@ -3,7 +3,9 @@
 Änderungen
 ----------
 
-v0.14.26 (??.??.2015)
+v0.14.27 (??.??.2015)
+
+v0.14.26 (17.06.2015)
  * new charpointer feature for links in marker classes
  * new section config for links to add anchors
  * new isLastPartOfStr method and isFirstPartOfStr wrapper
