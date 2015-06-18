@@ -126,7 +126,7 @@ abstract class tx_rnbase_util_SearchBase {
 		if(is_array($orderbyArr)) {
 			$aliases = array_keys($orderbyArr);
 			foreach($aliases As $alias) {
-				if(strstr(SEARCH_FIELD_CUSTOM, $alias)) continue; // CUSTOM ignorieren
+				if (strstr($alias, SEARCH_FIELD_CUSTOM)) continue; // CUSTOM ignorieren
 				list($tableAlias, $col) = explode('.', $alias);
 				if(!array_key_exists($tableAlias, $tableAliases))
 					$tableAliases[$tableAlias] = array();
@@ -250,7 +250,8 @@ abstract class tx_rnbase_util_SearchBase {
 			else {
 				if(array_key_exists('RAND', $options['orderby']))	unset($options['orderby']['RAND']);
 				foreach ($options['orderby'] As $field => $order) {
-					if(strstr(SEARCH_FIELD_CUSTOM, $field)) { // free Order-Clause
+					// free Order-Clause
+					if (strstr($field, SEARCH_FIELD_CUSTOM)) {
 						$orderby[] = $order;
 						continue;
 					}
