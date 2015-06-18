@@ -90,7 +90,8 @@ abstract class tx_rnbase_tests_BaseTestCase
 	 */
 	protected function getModel(
 		$record = NULL,
-		$class = 'tx_rnbase_model_base'
+		$class = 'tx_rnbase_model_base',
+		array $methods = array()
 	) {
 		// $record has to be an array,
 		// if there is an scalar value,
@@ -98,10 +99,20 @@ abstract class tx_rnbase_tests_BaseTestCase
 		if (!is_array($record)) {
 			$record = array('uid' => 0);
 		}
+
+		if (!tx_rnbase::load($class)) {
+			throw new Exception(
+				'The model "' . $class . '" could not be loaded.'
+			);
+		}
+
 		// create the mock
 		$model = $this->getMock(
 			$class,
-			array('reset', 'getColumnWrapped'),
+			array_merge(
+				array('reset', 'getColumnWrapped'),
+				$methods
+			),
 			array($record)
 		);
 

@@ -4,6 +4,8 @@
 ----------
 
 v0.14.27 (??.??.2015)
+ * aditional mock method support for models in base testcase
+ * custom check in orderby fixed for base searcher
 
 v0.14.26 (17.06.2015)
  * new charpointer feature for links in marker classes
