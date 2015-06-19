@@ -31,7 +31,7 @@ interface ListMarkerInfo {
  * Default implementation of ListMarkerInfo.
  */
 class tx_rnbase_util_ListMarkerInfo implements ListMarkerInfo {
-  
+
   function tx_rnbase_util_ListMarkerInfo() {
   }
   function init($template, &$formatter, $marker) {
@@ -41,7 +41,7 @@ class tx_rnbase_util_ListMarkerInfo implements ListMarkerInfo {
 	function getTemplate(&$item) {
 		return $this->template;
 	}
-  
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_ListMarkerInfo.php']) {

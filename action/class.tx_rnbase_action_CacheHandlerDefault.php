@@ -72,7 +72,7 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
 		// TODO: parameter bzw. cHash einbeziehen
 		// Der Key muss die Seite, das Plugin und den ausgewählten view eindeutig identifizieren
 		// Der View kann über die confid ermittelt werden
-		// Das Plugin eigentlich über 
+		// Das Plugin eigentlich über
 		$key = tx_rnbase_util_TYPO3::getTSFE()->getHash().'_';
 		$key .= md5($this->getConfigurations()->getPluginId().$this->getCacheConfId());
 		return 'ac_p'. $key;
@@ -107,7 +107,7 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
 
 //t3lib_div::debug(array($configurations->getPluginId(), $configurations->cObj->data), $confId.' - class.tx_rnbase_action_CacheHandlerDefault.php Line: ' . __LINE__); // TODO: remove me
 //t3lib_div::debug($out, $key.' - From CACHE class.tx_rnbase_action_CacheHandlerDefault.php Line: ' . __LINE__); // TODO: remove me
-		
+
 		return $out;
 	}
 
@@ -116,5 +116,3 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/action/class.tx_rnbase_action_CacheHandlerDefault.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/action/class.tx_rnbase_action_CacheHandlerDefault.php']);
 }
-
-

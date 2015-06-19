@@ -65,7 +65,7 @@ abstract class tx_rnbase_sv1_Base extends t3lib_svbase {
 
 	/**
 	 * Search the item for the given uid
-	 * 
+	 *
 	 * @param int $ct
 	 * @return tx_rnbase_model_base
 	 */
@@ -122,7 +122,7 @@ abstract class tx_rnbase_sv1_Base extends t3lib_svbase {
 	public function create(array $data) {
 		$model = $this->getDummyModel();
 		$table = $model->getTableName();
-		
+
 //		tx_rnbase::load('tx_mklib_util_TCA');
 //		$data = tx_mklib_util_TCA::eleminateNonTcaColumns($model, $data);
 
@@ -234,9 +234,9 @@ abstract class tx_rnbase_sv1_Base extends t3lib_svbase {
 		if(empty($table)) {
 			$table = $model->getTableName();
 		}
-		
+
 		$uid = intval($model->getUid());
-		
+
 		if (!$where) {
 			$where = '1=1 AND `'.$table.'`.`uid`='.$uid;
 		}
@@ -287,7 +287,7 @@ abstract class tx_rnbase_sv1_Base extends t3lib_svbase {
 		) {
 			$data[$GLOBALS['TCA'][$tablename]['ctrl']['crdate']] = time();
 		}
-			
+
 		return self::insertTimestamp($data, $tablename);
 	}
 
@@ -307,7 +307,7 @@ abstract class tx_rnbase_sv1_Base extends t3lib_svbase {
 		) {
 			$data[$GLOBALS['TCA'][$tablename]['ctrl']['tstamp']] = time();
 		}
-			
+
 		return $data;
 	}
 }

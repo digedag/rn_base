@@ -39,8 +39,8 @@ class tx_rnbase_util_Mail {
 	 * Prints $var in bold between two vertical lines
 	 * If not $var the word 'debug' is printed
 	 * If $var is an array, the array is printed by t3lib_div::print_array()
-	 * Wrapper method for TYPO3 debug methods 
-	 * 
+	 * Wrapper method for TYPO3 debug methods
+	 *
 	 * @param	mixed		Variable to print
 	 * @param	string		The header.
 	 * @param	string		Group for the debug console
@@ -94,10 +94,10 @@ class tx_rnbase_util_Mail {
 			// Hier können nur vorhandene Dateien verschickt werden.
 			foreach ($this->attachments AS $attachment) {
 				if(!$mail->addAttachment($attachment['src'])) {
-					tx_rnbase_util_Logger::warn('Adding attachment failed!', 'rn_base', 
+					tx_rnbase_util_Logger::warn('Adding attachment failed!', 'rn_base',
 						array('subject'=>$mail->subject, 'to'=>$this->toAsString, 'attachment'=>$attachment));
 				}
-				
+
 			}
 		}
 		$mail->send($this->toAsString);
@@ -110,7 +110,7 @@ class tx_rnbase_util_Mail {
 		// Or set it after like this
 		if($this->htmlPart)
 			$mail->setBody($this->htmlPart, 'text/html');
-		
+
 		// Add alternative parts with addPart()
 		if($this->textPart)
 			$mail->addPart($this->textPart, 'text/plain');

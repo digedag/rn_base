@@ -8,13 +8,13 @@ dieOnMayday = 1
 forceException4Mayday = 1
 
   # cat=basic//10; type=string; label= Exception Handler class. default is tx_rnbase_exception_Handler. your own exception handler needs to implement the tx_rnbase_exception_IHandler interface.
-exceptionHandler = 
+exceptionHandler =
 
   # cat=basic//10; type=string; label= Send emails for uncaught Exceptions. Commaseparated list of email addresses.
-sendEmailOnException = 
+sendEmailOnException =
 
-  # cat=basic//10; type=string; label= From address for alert mails 
-fromEmail = 
+  # cat=basic//10; type=string; label= From address for alert mails
+fromEmail =
 
 # cat=basic//10; type=boolean; label= Send a 503 service unavailable header if an exception occures. This prevents search engines to index error pages.
 send503HeaderOnException = 1
@@ -29,4 +29,4 @@ activateCache = 0
 activateSubstCache = 0
 
   # cat=basic//10; type=string; label= Debug-Key: This key has to match with the debug-parameter, to enable some debugs.
-debugKey = 
+debugKey =

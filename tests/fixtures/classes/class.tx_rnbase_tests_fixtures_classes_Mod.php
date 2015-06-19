@@ -46,7 +46,7 @@ class tx_rnbase_tests_fixtures_classes_Mod extends tx_rnbase_mod_BaseModule {
 	function getExtensionKey() {
 		return 'rnbase';
 	}
-	
+
 	/**
 	 * Method to set the tabs for the mainmenu
 	 * Umstellung von SelectBox auf Menu
@@ -55,7 +55,7 @@ class tx_rnbase_tests_fixtures_classes_Mod extends tx_rnbase_mod_BaseModule {
 		$mainmenu = $this->getFormTool()->showTabMenu($this->getPid(), 'function', $this->getName(), $this->MOD_MENU['function']);
 		return $mainmenu['menu'];
 	}
-	
+
 	/**
 	 * Returns the module ident name
 	 * @return string

@@ -27,16 +27,16 @@
  * Base interface for a decorator
  */
 interface tx_rnbase_mod_IDecorator {
-	
+
 	/**
 	 * Constructor
 	 * @param 	tx_rnbase_mod_IModule 	$mod
 	 */
 	public function __construct(tx_rnbase_mod_IModule $mod);
-	
+
 	/**
 	 * Formatiert jede Zelle einer Tabelle im BE. Ausgenommen sind die Header
-	 * 
+	 *
 	 * @param string $value der aktuelle Wert
 	 * @param string $colName der Name der aktuellen Spalte
 	 * @param array $record der gesamte aktuelle record
@@ -49,4 +49,3 @@ interface tx_rnbase_mod_IDecorator {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_IDecorator.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_IDecorator.php']);
 }
-

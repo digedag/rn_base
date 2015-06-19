@@ -60,7 +60,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 		$configurations = $formatter->configurations;
 
 		$this->initLink($configurations, $pbConfId);
-    
+
 		$pointer = $this->pageBrowser->getPointer();
 		$count = $this->pageBrowser->getListSize();
 		$results_at_a_time = $this->pageBrowser->getPageSize();
@@ -134,7 +134,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 			$pageWrappedSubpartArray['###'.$pageMarker.'LINK###'] = $noLink;
 			$pageMarkerArray['###'.$pageMarker.'LINKURL###'] = '';
 		}
- 
+
 		$out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($pageTemplate, $pageMarkerArray, $pageSubpartArray, $pageWrappedSubpartArray);
 		return $out;
 	}

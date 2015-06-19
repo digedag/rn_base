@@ -57,7 +57,7 @@ interface tx_rnbase_maps_IMap {
 	 * @param tx_rnbase_maps_IControl $control map specific control
 	 */
 	function addControl(tx_rnbase_maps_IControl $control);
-	
+
 	/**
 	 * Render the map. Returns all the HTML- and JS-Code to display the map.
 	 * @return string
@@ -65,7 +65,7 @@ interface tx_rnbase_maps_IMap {
 	function draw();
 	/**
 	 * Returns an ID-String for the map provider.
-	 * @return 
+	 * @return
 	 */
 	function getPROVID();
 }
@@ -73,4 +73,3 @@ interface tx_rnbase_maps_IMap {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_IMap.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_IMap.php']);
 }
-

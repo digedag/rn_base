@@ -45,7 +45,7 @@ interface ListBuilderInfo {
 class tx_rnbase_util_ListBuilderInfo implements ListBuilderInfo {
 
 	/**
-	 * Get a message string for empty list. This is an language string. The key is 
+	 * Get a message string for empty list. This is an language string. The key is
 	 * taken from ts-config: [item].listinfo.llkeyEmpty
 	 *
 	 * @param array_object $viewData
@@ -56,12 +56,12 @@ class tx_rnbase_util_ListBuilderInfo implements ListBuilderInfo {
 		return $configurations->getLL($configurations->get($confId.'listinfo.llkeyEmpty'));
 	}
 	function setMarkerArrays(&$markerArray, &$subpartArray, &$wrappedSubpartArray) {
-		
+
 	}
 	function getListMarkerInfo() {
 		return NULL;
 	}
-	
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_ListBuilderInfo.php']) {

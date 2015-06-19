@@ -28,7 +28,7 @@ require_once(PATH_site.t3lib_extMgm::siteRelPath("pbimagegraph").'Image/class.tx
 
 
 /**
- * Builder class for the 'pbimagegraph' extension. The class is modifed version of 
+ * Builder class for the 'pbimagegraph' extension. The class is modifed version of
  * tx_pbimagegraph_ts. It can be used to build graphs from PHP.
  *
  * @author Rene Nitzsche <rene@system25.de>
@@ -431,7 +431,7 @@ class tx_rnbase_plot_Builder {
 			if(is_array($dataSet)) {
 				$objDataSet =& tx_pbimagegraph::factory('dataset');
 				$objDataSet->setName($dataSet['name']);
-				foreach($dataSet As $dataArr) {					
+				foreach($dataSet As $dataArr) {
 					$mixX = $dataArr['x'];
 					$mixY = $dataArr['y'];
 					$strId = $dataArr['id'];
@@ -726,7 +726,7 @@ class tx_rnbase_plot_Builder {
 								break;
 								case 'gradient':
 									$intDirection = $this->readConstant('IMAGE_GRAPH_GRAD_'.strtoupper($arrConf[$strKey.'.']['direction']));
-									
+
 									$strStartColor = $arrConf[$strKey.'.']['startColor'];
 									$strEndColor = $arrConf[$strKey.'.']['endColor'];
 									$intSolidColor = $arrConf[$strKey.'.']['color'];

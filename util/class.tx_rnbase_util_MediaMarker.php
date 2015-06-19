@@ -71,9 +71,9 @@ class tx_rnbase_util_MediaMarker extends tx_rnbase_util_BaseMarker {
 		$markerArray = $formatter->getItemMarkerArrayWrapped($item->record, $confId , $ignore, $marker.'_');
 		$wrappedSubpartArray = array();
 		$subpartArray = array();
-		// Hook für direkte Template-Manipulation 
-		tx_rnbase_util_Misc::callHook('rn_base', 'mediaMarker_beforeRendering', 
-			array('template' => &$template, 'item' => &$item, 'formatter' => &$formatter, 
+		// Hook für direkte Template-Manipulation
+		tx_rnbase_util_Misc::callHook('rn_base', 'mediaMarker_beforeRendering',
+			array('template' => &$template, 'item' => &$item, 'formatter' => &$formatter,
 					'confId' => $confId, 'marker' => $marker), $this);
 
 		$out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($template, $markerArray, $subpartArray, $wrappedSubpartArray);
@@ -91,6 +91,6 @@ class tx_rnbase_util_MediaMarker extends tx_rnbase_util_BaseMarker {
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_MediaMarker.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_MediaMarker.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_MediaMarker.php']);
 }

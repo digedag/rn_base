@@ -30,7 +30,7 @@ class tx_rnbase_util_FormatUtil {
   var $configurations;
   var $cObj;
 
-  // Wie kommen diese Werte in die Config?? 
+  // Wie kommen diese Werte in die Config??
   // Sind es nicht auch eher Konfigwerte??
   var $dateFormatKey = 'dateFormat';
   var $floatFormatKey = 'floatFormat';
@@ -159,7 +159,7 @@ class tx_rnbase_util_FormatUtil {
      $confArr['file'] = 'uploads/tx_' . str_replace('_', '',
        ($extensionKey) ? $extensionKey : $this->configurations->getExtensionKey()) . '/' .($image);
 
-     // Bei einfachen Bildern sollen die Einstellungen aus cObj->data nicht verwendet 
+     // Bei einfachen Bildern sollen die Einstellungen aus cObj->data nicht verwendet
      // werden, um zu verhindern, daß z.B. eine Gallery angezeigt wird
      $tmp = $this->cObj->data;
      $this->cObj->data = array();
@@ -252,7 +252,7 @@ self::$mem += (memory_get_usage() - $mem);
    * Adds number_format functionality to stdWrap-Conf.
    * This method is taken from extension am_stdwrap_numberformat.
    * TS-Syntax: number_format.
-   * 
+   *
    * @author Artem Matevosyan
    * @param string $content
    * @param array $conf
@@ -331,7 +331,7 @@ self::$mem += (memory_get_usage() - $mem);
       $meta[$colname] = $this->stdWrap($value, $conf[$colname.'.']);
     }
 
-    $markerArray = tx_rnbase_util_FormatUtil::getItemMarkerArray($meta, array('l18n_diffsource'), 
+    $markerArray = tx_rnbase_util_FormatUtil::getItemMarkerArray($meta, array('l18n_diffsource'),
       $mediaMarker.'_', tx_rnbase_util_FormatUtil::getDAMColumns());
 
     // Jetzt die eigentliche Datei einbinden

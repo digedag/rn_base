@@ -96,4 +96,3 @@ abstract class tx_rnbase_mod_BaseModFunc implements tx_rnbase_mod_IModFunc {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_IModFunc.php'])	{
   include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_IModFunc.php']);
 }
-

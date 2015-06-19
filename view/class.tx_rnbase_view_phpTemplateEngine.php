@@ -56,7 +56,7 @@ class tx_rnbase_view_phpTemplateEngine extends tx_rnbase_view_Base {
    * @return	string		typically an (x)html string
    */
   function render($view, $configurations){
-    
+
     $link = $configurations->createLink();
 
     // Die ViewData bereitstellen
@@ -80,4 +80,3 @@ class tx_rnbase_view_phpTemplateEngine extends tx_rnbase_view_Base {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/view/class.tx_rnbase_view_phpTemplateEngine.php']) {
   include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/view/class.tx_rnbase_view_phpTemplateEngine.php']);
 }
-
