@@ -269,6 +269,7 @@ class tx_rnbase_util_BaseMarker {
 		$token = md5(microtime());
 		$link->label($token);
 		$emptyArr = array();
+		$wrappedSubpartArray = array();
 
 		$pagerName = $pagerData['pointername'] ? $pagerData['pointername'] : 'charpointer';
 
@@ -283,7 +284,7 @@ class tx_rnbase_util_BaseMarker {
 			}
 			else
 				$wrappedSubpartArray['###PB_ITEM_LINK###'] = $emptyArr;
-			$out[] = tx_rnbase_util_Templates::substituteMarkerArrayCached($template, $myMarkerArray, $emptyArray, $wrappedSubpartArray);
+			$out[] = tx_rnbase_util_Templates::substituteMarkerArrayCached($template, $myMarkerArray, $emptyArr, $wrappedSubpartArray);
 		}
 
 		return implode($configurations->get($confId.'implode'), $out);
