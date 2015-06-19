@@ -175,7 +175,8 @@ class tx_rnbase_util_BaseMarker {
 	 * @param array $parameterArr
 	 * @param string $template the HTML template used. This enabled check if link is necessary.
 	 */
-	public function initLink(&$markerArray, &$subpartArray, &$wrappedSubpartArray, $formatter, $confId, $linkId, $marker, $parameterArr, $template='') {
+	public static function initLink(&$markerArray, &$subpartArray, &$wrappedSubpartArray, $formatter, $confId, $linkId, $marker, $parameterArr, $template='') {
+		$makeUrl = $makeLink = TRUE;
 		$linkMarker = self::checkLinkExistence($linkId, $marker, $template, $makeUrl, $makeLink);
 /*
 		$linkMarker = $marker . '_' . strtoupper($linkId).'LINK';
