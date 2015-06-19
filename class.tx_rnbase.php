@@ -192,24 +192,6 @@ class tx_rnbase {
 	/**
 	 * Load a t3 class and make an instance
 	 *
-	 * Returns ux_ extension class if any by make use of t3lib_div::makeInstance
-	 *
-	 * @param	string		classname
-	 * @param	string		extension key that varies from classnames
-	 * @param	string		prefix of classname
-	 * @param	string		ending of classname
-	 * @return	object		instance of the class or FALSE if it fails
-	 * @see		t3lib_div::makeInstance
-	 * @see		load()
-	 */
-	private static function makeInstanceT3($class, $alternativeKey='', $prefix = 'class.', $suffix = '.php') {
-		return (self::loadT3($class, $alternativeKey, $prefix, $suffix)) ?
-			t3lib_div::makeInstance($class) : FALSE;
-	}
-
-	/**
-	 * Load a t3 class and make an instance
-	 *
 	 * Returns ux_ extension classname if any by, making use of t3lib_div::makeInstanceClassName
 	 *
 	 * @param	string		classname
