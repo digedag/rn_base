@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2011 Rene Nitzsche (rene@system25.de)
+*  (c) 2009-2015 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,24 +22,36 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
-
+require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
+tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_rnbase_util_Templates');
 
-class tx_rnbase_tests_util_Templates_testcase extends tx_phpunit_testcase {
+/**
+ * tests for tx_rnbase_util_Templates
+ *
+ * @package TYPO3
+ * @subpackage tx_rnbase
+ * @author Rene Nitzsche <rene@system25.de>
+ */
+class tx_rnbase_tests_util_Templates_testcase
+	extends tx_rnbase_tests_BaseTestCase {
 
+	/**
+	 * @var array
+	 */
 	private $backup = array();
 
 	public function setUp() {
-		$backup['getFileName_backPath'] = tx_rnbase_util_Templates::getTSTemplate()->getFileName_backPath;
+		$this->backup['getFileName_backPath'] = tx_rnbase_util_Templates::getTSTemplate()->getFileName_backPath;
 		tx_rnbase_util_Templates::getTSTemplate()->getFileName_backPath = PATH_site;
 	}
 	public function tearDown(){
-		tx_rnbase_util_Templates::getTSTemplate()->getFileName_backPath = $backup['getFileName_backPath'];
+		tx_rnbase_util_Templates::getTSTemplate()->getFileName_backPath = $this->backup['getFileName_backPath'];
 
 	}
 
 	/**
+	 *
 	 */
 	public function notest_performanceSimpleMarker() {
 
