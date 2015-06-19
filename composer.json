@@ -22,6 +22,6 @@
 		"typo3-ter/rn-base": "*"
 	},
 	"require" : {
-		"typo3/cms-core" : ">=4.3.0 <=6.2.99"
+		"typo3/cms-core" : ">=6.2.0 <=6.2.99"
 	}
 }
