@@ -66,6 +66,8 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 		$results_at_a_time = $this->pageBrowser->getPageSize();
 		$totalPages = ceil($count / $results_at_a_time);
 		$state = $this->pageBrowser->getState();
+		// current entry range
+		// example: "9-16 von 19 News"
 		$rangeFrom = $state['offset'] + 1;
 		$rangeTo = ($pointer != $totalPages-1)
 			? ($pointer + 1) * $state['limit']
@@ -80,8 +82,8 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 
 		$arr = array(
 			'count' => $count,
-			'rangeFrom' => $rangeFrom,
-			'rangeTo' => $rangeTo,
+			'rangefrom' => $rangeFrom,
+			'rangeto' => $rangeTo,
 			'totalpages' => $totalPages
 		);
 		$markerArray = $formatter->getItemMarkerArrayWrapped($arr, $pbConfId, 0, $pbMarker.'_');
