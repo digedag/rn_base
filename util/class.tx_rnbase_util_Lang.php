@@ -213,11 +213,11 @@ class tx_rnbase_util_Lang {
 		}
 
 		if (isset($this->LOCAL_LANG[$this->getLLKey()][$key])) {
-			$tsfe = tx_rnbase_util_TYPO3::getTSFE(TRUE);
+			$tsfe = tx_rnbase_util_TYPO3::getTSFE();
 			// The "from" charset is normally empty and thus it will convert from the charset of the system language, but if it is set (see ->pi_loadLL()) it will be used.
 			$word = $tsfe->csConv($this->LOCAL_LANG[$this->getLLKey()][$key], $this->LOCAL_LANG_charset[$this->getLLKey()][$key]);
 		} elseif ($this->getLLKey(TRUE) && isset($this->LOCAL_LANG[$this->getLLKey(TRUE)][$key]))   {
-			$tsfe = tx_rnbase_util_TYPO3::getTSFE(TRUE);
+			$tsfe = tx_rnbase_util_TYPO3::getTSFE();
 			// The "from" charset is normally empty and thus it will convert from the charset of the system language, but if it is set (see ->pi_loadLL()) it will be used.
 			$word = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->getLLKey(TRUE)][$key], $this->LOCAL_LANG_charset[$this->getLLKey(TRUE)][$key]);
 		} elseif (isset($this->LOCAL_LANG['default'][$key]))    {
