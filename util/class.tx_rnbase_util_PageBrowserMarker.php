@@ -65,6 +65,11 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 		$count = $this->pageBrowser->getListSize();
 		$results_at_a_time = $this->pageBrowser->getPageSize();
 		$totalPages = ceil($count / $results_at_a_time);
+		$state = $this->pageBrowser->getState();
+		$rangeFrom = $state['offset'] + 1;
+		$rangeTo = ($pointer != $totalPages-1)
+			? ($pointer + 1) * $state['limit']
+			: $count;
 		if($totalPages == 1 && $configurations->get($pbConfId.'hideIfSinglePage')) return '';
 		$maxPages = intval($configurations->get($pbConfId.'maxPages'));
 		$maxPages = tx_rnbase_util_Math::intInRange($maxPages ? $maxPages : 10, 1, 100);
@@ -73,7 +78,12 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 		$pageFloat = $this->getPageFloat($configurations->get($pbConfId.'pagefloat'), $maxPages);
 		$firstLastArr = $this->getFirstLastPage($pointer, $pageFloat, $totalPages, $maxPages);
 
-		$arr = array('count' => $count, 'totalpages' => $totalPages);
+		$arr = array(
+			'count' => $count,
+			'rangeFrom' => $rangeFrom,
+			'rangeTo' => $rangeTo,
+			'totalpages' => $totalPages
+		);
 		$markerArray = $formatter->getItemMarkerArrayWrapped($arr, $pbConfId, 0, $pbMarker.'_');
 
 		$subpartArray = $this->createSubpartArray($pbMarker);

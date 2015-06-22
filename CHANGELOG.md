@@ -4,11 +4,12 @@
 ----------
 
 v0.14.27 (??.??.2015)
+ * range from/to for pagebrowser
  * aditional mock method support for models in base testcase
  * custom check in orderby fixed for base searcher
 
 v0.14.26 (17.06.2015)
- * new charpointer feature for links in marker classes 
+ * new charpointer feature for links in marker classes
  * new section config for links to add anchors
  * new isLastPartOfStr method and isFirstPartOfStr wrapper
 
@@ -754,4 +755,3 @@ v0.0.4
 - Änderung der KeepVars in der Configuration-Klasse
 v0.0.3
 - Neue Methode getColumnWrapped() in tx_rnbase_model_base
- 
