@@ -24,27 +24,37 @@
 /**
  * Interface for action based fe-caching handler.
  *
- * @TODO: why the getOutput method gets $plugin, the setOutput not? useless!
- *
+ * @package TYPO3
+ * @subpackage tx_rnbase
+ * @author Rene Nitzsche <rene@system25.de>
+ * @author Michael Wagner <michael.wagner@dmk-ebusines.de>
  */
 interface tx_rnbase_action_ICacheHandler {
 
 	/**
-	 * Save output data to cache
-	 * @param string $output
-	 * @param tx_rnbase_configurations $configurations
+	 * Initializes the cache handler
+	 *
+	 * @param tx_rnbase_action_BaseIOC $controller
 	 * @param string $confId
 	 */
-	public function setOutput($output, $configurations, $confId);
+	public function init(
+		tx_rnbase_action_BaseIOC $controller,
+		$confId
+	);
 
 	/**
-	 * Get output data from cache
-	 * @param tx_rnbase_action_BaseIOC $plugin
-	 * @param tx_rnbase_configurations $configurations
-	 * @param string $confId
-	 * @return string the output string
+	 * Save output data to cache.
+	 *
+	 * @param string $output
 	 */
-	public function getOutput($plugin, $configurations, $confId);
+	public function setOutput($output);
+
+	/**
+	 * Get output data from cache.
+	 *
+	 * @return string the output string or NULL
+	 */
+	public function getOutput();
 
 }
 

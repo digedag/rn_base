@@ -19,7 +19,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
 
 tx_rnbase::load('tx_rnbase_util_Misc');
 tx_rnbase::load('tx_rnbase_util_Debug');
@@ -35,6 +35,11 @@ tx_rnbase::load('tx_rnbase_util_Templates');
  * All other tasks are done here.
  *
  * This class works with PHP5 only!
+ *
+ * @package TYPO3
+ * @subpackage tx_rnbase
+ * @author Rene Nitzsche <rene@system25.de>
+ * @author Michael Wagner <michael.wagner@dmk-ebusines.de>
  */
 abstract class tx_rnbase_action_BaseIOC {
 	private static $callCount = 0;
@@ -70,10 +75,9 @@ abstract class tx_rnbase_action_BaseIOC {
 		}
 
 		$cacheHandler = $this->getCacheHandler($configurations, $this->getConfId().'_caching.');
-		$out = $cacheHandler ? $cacheHandler->getOutput($this, $configurations, $this->getConfId()) : '';
-		$cached = TRUE;
-		if(!$out) {
-			$cached = FALSE;
+		$out = $cacheHandler ? $cacheHandler->getOutput() : '';
+		$cached = !empty($out);
+		if (!$cached) {
 			$viewData =& $configurations->getViewData();
 			tx_rnbase_util_Misc::pushTT(get_class($this), 'handleRequest');
 			$out = $this->handleRequest($parameters, $configurations, $viewData);
@@ -98,8 +102,9 @@ abstract class tx_rnbase_action_BaseIOC {
 				$out = $view->render($tmplName, $configurations);
 				tx_rnbase_util_Misc::pullTT();
 			}
-			if($cacheHandler)
-				$cacheHandler->setOutput($out, $configurations, $this->getConfId());
+			if ($cacheHandler) {
+				$cacheHandler->setOutput($out);
+			}
 		}
 		if($debug) {
 			$memEnd = memory_get_usage();
@@ -159,9 +164,26 @@ abstract class tx_rnbase_action_BaseIOC {
 	 * @return tx_rnbase_action_ICacheHandler
 	 */
 	protected function getCacheHandler($configurations, $confId) {
-		$clazz = $configurations->get($confId.'class');
-		if(!$clazz) return FALSE;
-		$handler = tx_rnbase::makeInstance($clazz, $configurations, $confId);
+		// no caching if disabled!
+		if (tx_rnbase_util_TYPO3::getTSFE()->no_cache) {
+			return NULL;
+		}
+
+		$class = $configurations->get($confId  .'class');
+		if (!$class) {
+			return FALSE;
+		}
+
+		/* @var $handler tx_rnbase_action_ICacheHandler */
+		$handler = tx_rnbase::makeInstance($class);
+		if (!$handler instanceof tx_rnbase_action_ICacheHandler) {
+			throw new Exception(
+				'"' . $class . '" has to implement "tx_rnbase_action_ICacheHandler".'
+			);
+		}
+
+		$handler->init($this, $confId);
+
 		return $handler;
 	}
 
