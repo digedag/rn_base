@@ -31,6 +31,31 @@ tx_rnbase::load('tx_rnbase_cache_Manager');
  * plugints._caching.expires = 60 # time in seconds
  * The plugin will also expire if the page expires!
  *
+ * Sample TypoScript:
+ *
+ * plugin.tx_myext.myaction._caching {
+ *     ### the default cache handler
+ *     class = tx_rnbase_action_CacheHandlerDefault
+ *     ### the name of the configured cache.
+ *     name = rnbase
+ *     ### cache output for one hour
+ *     expire = 3600
+ *     ### a special salt for the cache key. should be canged by each action!
+ *     salt = myspecialsalt
+ *     ### the salt also can be a COA or an other stdWrap (this adds -paramname-57)
+ *     salt = COA
+ *     salt {
+ *         10 = TEXT
+ *         10.wrap = -paramname-|
+ *         10.data = GP:paramname
+ *         10.required = 1
+ *     }
+ *     ### the max length of the cache key
+ *     keylength = 250
+ *     ### include myext->uid and tt_news->tt_news from GET/POST to the cache key
+ *     include.params = myext|uid,tt_news|tt_news
+ * }
+ *
  * @package TYPO3
  * @subpackage tx_rnbase
  * @author Rene Nitzsche <rene@system25.de>

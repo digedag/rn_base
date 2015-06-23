@@ -4,6 +4,7 @@
 ----------
 
 v0.14.28 (??.??.2015)
+ * massive refactoring of the base ioc caching. see: tx_rnbase_action_CacheHandlerDefault
 
 v0.14.27 (23.06.2015)
  * exception devlog fixed, since there can be a closure inside
