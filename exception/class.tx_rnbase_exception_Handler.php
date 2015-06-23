@@ -58,8 +58,21 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler {
 		if(tx_rnbase_util_Logger::isFatalEnabled()) {
 			$extKey = $configurations->getExtensionKey();
 			$extKey = $extKey ? $extKey : 'rn_base';
-			tx_rnbase_util_Logger::fatal('Fatal error for action ' . $actionName, $extKey,
-				array('Exception'=> $e, '_GET' => $_GET, '_POST' => $_POST));
+			tx_rnbase_util_Logger::fatal(
+				'Fatal error for action ' . $actionName,
+				$extKey,
+				array(
+					'Exception'=> array(
+						'message' => $e->getMessage(),
+						'code' => $e->getCode(),
+						'file' => $e->getFile(),
+						'line' => $e->getLine(),
+						'trace' => $e->getTraceAsString(),
+					),
+					'_GET' => $_GET,
+					'_POST' => $_POST
+				)
+			);
 		}
 		// wir senden eine fehlermail
 		$addr = tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'sendEmailOnException');
