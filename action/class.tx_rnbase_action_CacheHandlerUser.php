@@ -34,20 +34,26 @@ tx_rnbase::load('tx_rnbase_cache_Manager');
  *
  */
 class tx_rnbase_action_CacheHandlerUser extends tx_rnbase_action_CacheHandlerDefault {
-	private $sessionId = FALSE;
-	public function __construct($configurations, $confId) {
-		parent::__construct($configurations, $confId);
-		session_start();
-		$this->sessionId = session_id();
 
+	/**
+	 * Returns the current session id.
+	 *
+	 * @return string
+	 */
+	protected function getSessionId() {
+		if(session_id() == '') {
+			session_start();
+		}
+		return session_id();
 	}
 
 	/**
 	 * Generate a key used to store data to cache.
+	 *
 	 * @return string
 	 */
-	protected function generateKey($plugin) {
-		return parent::generateKey().'_usr'. $this->sessionId;
+	protected function generateKey() {
+		return parent::generateKey() . '_usr_' . $this->getSessionId();
 	}
 
 }

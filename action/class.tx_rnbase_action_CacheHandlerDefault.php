@@ -64,18 +64,22 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
 	protected function getCacheConfId() {
 		return $this->cacheConfId;
 	}
+
 	/**
 	 * Generate a key used to store data to cache.
+	 *
 	 * @return string
 	 */
-	protected function generateKey($plugin) {
-		// TODO: parameter bzw. cHash einbeziehen
-		// Der Key muss die Seite, das Plugin und den ausgewählten view eindeutig identifizieren
-		// Der View kann über die confid ermittelt werden
-		// Das Plugin eigentlich über
-		$key = tx_rnbase_util_TYPO3::getTSFE()->getHash().'_';
-		$key .= md5($this->getConfigurations()->getPluginId().$this->getCacheConfId());
-		return 'ac_p'. $key;
+	protected function generateKey() {
+		// TSFE hash, contains page id, domain, etc.
+		$key = tx_rnbase_util_TYPO3::getTSFE()->getHash() . '_';
+		$key .= md5(
+			// the plugin ID (tt_content:uid or random md3, whenn rendered as USER in TS)
+			$this->getConfigurations()->getPluginId()
+			// the conf id of the current action
+			. $this->getCacheConfId()
+		);
+		return 'ac_p_' . $key;
 	}
 
 	protected function getTimeout() {
@@ -102,11 +106,8 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
 	 */
 	public function getOutput($plugin, $configurations, $confId) {
 		$cache = tx_rnbase_cache_Manager::getCache($this->getCacheName());
-		$key = $this->generateKey($plugin);
+		$key = $this->generateKey();
 		$out = $cache->get($key);
-
-//t3lib_div::debug(array($configurations->getPluginId(), $configurations->cObj->data), $confId.' - class.tx_rnbase_action_CacheHandlerDefault.php Line: ' . __LINE__); // TODO: remove me
-//t3lib_div::debug($out, $key.' - From CACHE class.tx_rnbase_action_CacheHandlerDefault.php Line: ' . __LINE__); // TODO: remove me
 
 		return $out;
 	}

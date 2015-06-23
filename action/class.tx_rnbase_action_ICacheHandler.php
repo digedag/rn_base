@@ -24,6 +24,8 @@
 /**
  * Interface for action based fe-caching handler.
  *
+ * @TODO: why the getOutput method gets $plugin, the setOutput not? useless!
+ *
  */
 interface tx_rnbase_action_ICacheHandler {
 
