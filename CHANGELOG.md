@@ -4,6 +4,7 @@
 ----------
 
 v0.14.27 (??.??.2015)
+ * exception devlog fixed, since there can be a closure inside
  * range from/to for pagebrowser
  * aditional mock method support for models in base testcase
  * custom check in orderby fixed for base searcher
