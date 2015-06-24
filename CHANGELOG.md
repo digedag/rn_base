@@ -3,7 +3,7 @@
 Änderungen
 ----------
 
-v0.14.28 (??.??.2015)
+v0.14.28 (24.06.2015)
  * massive refactoring of the base ioc caching. see: tx_rnbase_action_CacheHandlerDefault
 
 v0.14.27 (23.06.2015)
@@ -123,8 +123,8 @@ v0.14.4 (06.11.2014)
  * Support for label markers with salutation suffix.
 In HTML template: ###LABEL_GREETING###
 in language file:
- label_greeting_informal = Hello guys!
- label_greeting_formal = Good day, Sir!
+label_greeting_informal = Hello guys!
+label_greeting_formal = Good day, Sir!
 Configure salutation in plugin config:
 plugin.tx_myplugin.salutation = formal
  * Fixed some FAL issues and enhanced support.
@@ -235,14 +235,14 @@ v0.11.12 (15.05.2012) (not released)
  * Filtering passwords in exception mailings. Thanks to Hannes Bochmann!
  * Cookie information in error mails added.
  * It is possible to point pagebrowser to a specific item by parameter:
-    $filter->handlePageBrowser($configurations,
-      $confId.'news.pagebrowser', $viewData, $fields, $options, array(
-        'searchcallback'=> array($srv, 'search'),
-        'pbid' => 'mknews',
-        'pointerFromItem' => array('field' => 'uid', 'param' => 'tt_news')
-      )
-    );
-    Thanks to Michael Wagner!
+		$filter->handlePageBrowser($configurations,
+			$confId.'news.pagebrowser', $viewData, $fields, $options, array(
+				'searchcallback'=> array($srv, 'search'),
+				'pbid' => 'mknews',
+				'pointerFromItem' => array('field' => 'uid', 'param' => 'tt_news')
+			)
+		);
+		Thanks to Michael Wagner!
 
 v0.11.11 (21.02.2012) (not released)
  * tx_rnbase_parameters: new method init()
@@ -430,7 +430,7 @@ v0.8.9 (09.08.2010)
  * Default file based cache can be activated in extension configuration.
  * Action based caching interface for frontend plugins. Not finished yet!
  * tx_rnbase_util_Link: KeepVars of other extension can be configured. Thanks to Pavel Klinkov!
-  linkcfg.useKeepVars.add = tx_ttnews::ttnews, tx_ttnews::*
+	linkcfg.useKeepVars.add = tx_ttnews::ttnews, tx_ttnews::*
 
 v0.8.8 (17.07.2010)
  * Avoid warnings for NumberFormat called with string values
@@ -735,13 +735,13 @@ von PHP5 sollte es keine Probleme geben.
 
 v0.0.9 (12.11.2007)
 - die wrap-Funktionen im FormatUtil haben einen neuen Parameter für das Data-Array. Dieses
-  wird, wenn vorhanden im verwendeten cObject gesetzt.
+	wird, wenn vorhanden im verwendeten cObject gesetzt.
 - in configurations gibt es die neue Methode getKeynames()
 
 v0.0.7 (30.09.2007)
 - Handling der freien Label im BaseMarker geändert. Die Punktnotation wird für
-  Labels automatisch in Underscores umgewandelt. Dadurch können die Strings dann im Sprachfile
-  gefunden werden
+	Labels automatisch in Underscores umgewandelt. Dadurch können die Strings dann im Sprachfile
+	gefunden werden
 
 v0.0.6 (27.09.2007)
 - in Configuration bei der Methode removeKeepVar den Qualifier entfernt
@@ -753,7 +753,7 @@ v0.0.6 (27.09.2007)
 
 v0.0.5 (28.08.2007)
 - Im FormatUtil wird in der Methode getItemMarkerArrayWrapped() der Datensatz in die Instanz von
-  cObject kopiert. Damit sind erweiterte TS-Anweisungen möglich.
+	cObject kopiert. Damit sind erweiterte TS-Anweisungen möglich.
 - Verwendung des korrekten Klassennamens für das tx_lib_spl_arrayObject
 v0.0.4
 - Änderung der KeepVars in der Configuration-Klasse
