@@ -281,7 +281,7 @@ class tx_rnbase_configurations {
 	 */
 	public function &createLink($addKeepVars = TRUE) {
 		/* @var $link tx_rnbase_util_Link */
-		$link = tx_rnbase::makeInstance('tx_rnbase_util_Link');
+		$link = tx_rnbase::makeInstance('tx_rnbase_util_Link', $this->getCObj());
 		$link->designatorString = $this->getQualifier();
 		// Die KeepVars setzen
 		if($addKeepVars)

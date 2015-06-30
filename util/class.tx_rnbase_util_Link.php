@@ -79,8 +79,14 @@ class tx_rnbase_util_Link {
 	 * @param	object		mock object for testing purpuses
 	 * @return	void
 	 */
-	function __construct($cObjectClass = 'tslib_cObj') {
-		$this->cObject = t3lib_div::makeInstance($cObjectClass);
+	function __construct($cObject = 'tslib_cObj') {
+		if (is_object($cObject)) {
+			$this->cObject = $cObject;
+		}
+		else {
+			$this->cObject = t3lib_div::makeInstance($cObject);
+		}
+
 	}
 
 	/**
