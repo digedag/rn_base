@@ -109,6 +109,8 @@ abstract class tx_rnbase_action_BaseIOC {
 		if($debug) {
 			$memEnd = memory_get_usage();
 			tx_rnbase_util_Debug::debug(array(
+				'Action' => get_class($this),
+				'Conf Id' => $this->getConfId(),
 				'Execution Time'=>(microtime(TRUE)-$time),
 				'Memory Start'=>$memStart,
 				'Memory End'=>$memEnd,
