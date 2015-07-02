@@ -69,9 +69,6 @@ class tx_rnbase_view_Base{
 			}
 		}
 
-		// check for Subtemplates
-		$templateCode = tx_rnbase_util_Templates::includeSubTemplates($templateCode);
-
 		$controller = $this->getController();
 		if($controller) {
 			// disable substitution marker cache

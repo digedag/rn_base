@@ -39,12 +39,17 @@ class tx_rnbase_util_Templates {
 
 	/**
 	 * Shortcut to t3lib_parsehtml::getSubpart
+	 *
 	 * @param string $template
 	 * @param string $subpart
+	 * @return string
 	 */
 	public static function getSubpart($template, $subpart) {
-		return t3lib_parsehtml::getSubpart($template, $subpart);
+		$content = t3lib_parsehtml::getSubpart($template, $subpart);
+		// check for Subtemplates
+		return self::includeSubTemplates($content);
 	}
+
 	/**
 	 * @return t3lib_TStemplate
 	 */
@@ -99,6 +104,11 @@ class tx_rnbase_util_Templates {
 	 */
 	public static function includeSubTemplates($template)
 	{
+		// nothing to do, if we dont have a template
+		if (empty($template)) {
+			return $template;
+		}
+
 		$cache = $included = FALSE;
 
 		tx_rnbase::load('tx_rnbase_util_TYPO3');
@@ -140,8 +150,6 @@ class tx_rnbase_util_Templates {
 				$filePath,
 				'###' . strtoupper($subPart) . '###'
 			);
-			// check for nested includes
-			$fileContent = self::includeSubTemplates($fileContent);
 		} catch (Exception $e) {
 			$fileContent = '<!-- ' . $e->getMessage() .' -->';
 		}

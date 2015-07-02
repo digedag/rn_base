@@ -4,6 +4,7 @@
 ----------
 
 v0.14.28 (24.06.2015)
+ * perform sub template check in getSubpart method directly.
  * massive refactoring of the base ioc caching. see: tx_rnbase_action_CacheHandlerDefault
 
 v0.14.27 (23.06.2015)
