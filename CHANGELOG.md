@@ -3,8 +3,14 @@
 Änderungen
 ----------
 
-v0.14.28 (24.06.2015)
+v0.14.30 (??.??.2015)
+
+v0.14.29 (03.07.2015)
+ * current action and confid added to base ioc debug
+ * new optional existing cobject instance for links, instead of always create a new object.
  * perform sub template check in getSubpart method directly.
+
+v0.14.28 (24.06.2015)
  * massive refactoring of the base ioc caching. see: tx_rnbase_action_CacheHandlerDefault
 
 v0.14.27 (23.06.2015)
