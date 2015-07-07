@@ -375,8 +375,8 @@ class tx_rnbase_util_TSFAL {
 				empty($options['config']['customSettingOverride'])
 				|| !is_array($options['config']['customSettingOverride'])
 			) ? array() : $options['config']['customSettingOverride'];
-		$allowedFileExtensions = $options['config']['allowedFileExtensions'];
-		$disallowedFileExtensions = $options['config']['disallowedFileExtensions'];
+		$allowedFileExtensions = (string) $options['config']['allowedFileExtensions'];
+		$disallowedFileExtensions = (string) $options['config']['disallowedFileExtensions'];
 		if ($type == 'image') {
 			$customSettingOverride = array_merge(
 				array(
