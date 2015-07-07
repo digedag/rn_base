@@ -420,7 +420,9 @@ class tx_rnbase_util_TSFAL {
 				),
 				$customSettingOverride
 			);
-			$allowedFileExtensions = $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'];
+			if (empty($allowedFileExtensions)) {
+				$allowedFileExtensions = $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'];
+			}
 		}
 
 		$tca = array(
