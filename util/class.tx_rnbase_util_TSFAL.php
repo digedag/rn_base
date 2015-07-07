@@ -424,6 +424,12 @@ class tx_rnbase_util_TSFAL {
 				$allowedFileExtensions = $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'];
 			}
 		}
+		elseif($type == 'media' || $type == 'files') {
+			// allow all filetypes for media and file
+			if (empty($allowedFileExtensions)) {
+				$allowedFileExtensions = '*';
+			}
+		}
 
 		$tca = array(
 			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.images',

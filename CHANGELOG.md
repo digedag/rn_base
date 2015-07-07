@@ -4,6 +4,7 @@
 ----------
 
 v0.14.30 (??.??.2015)
+ * Some TSFAL issues fixed and new media/files type for all filetypes added
 
 v0.14.29 (03.07.2015)
  * current action and confid added to base ioc debug
