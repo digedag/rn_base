@@ -48,5 +48,19 @@ class tx_rnbase_util_Extensions {
 			return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($extKey, $path, $title);
 		return t3lib_extMgm::addStaticFile($extKey, $path, $title);
 	}
+	/**
+	 * Wrapper for t3lib_extMgm::extPath
+	 *
+	 * Returns the absolute path to the extension with extension key $key
+	 *
+	 * @param	string		Extension key
+	 * @param	string		$script is appended to the output if set.
+	 * @return string
+	 */
+	public static function extPath($key, $script = '') {
+		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher())
+			return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($key, $script);
+		return t3lib_extMgm::extPath($key, $script);
+	}
 
 }
