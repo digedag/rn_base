@@ -63,4 +63,18 @@ class tx_rnbase_util_Extensions {
 		return t3lib_extMgm::extPath($key, $script);
 	}
 
+	/**
+	 * Returns the relative path to the extension as measured from from the TYPO3_mainDir
+	 * If the extension is not loaded the function will die with an error message
+	 * Useful for images and links from backend
+	 *
+	 * @param	string		Extension key
+	 * @return	string
+	 */
+	public static function extRelPath($key) {
+		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher())
+			return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($key);
+		return t3lib_extMgm::extRelPath($key);
+	}
+
 }
