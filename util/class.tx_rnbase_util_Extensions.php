@@ -77,4 +77,17 @@ class tx_rnbase_util_Extensions {
 		return t3lib_extMgm::extRelPath($key);
 	}
 
+	/**
+	 * Returns TRUE if the extension with extension key $key is loaded.
+	 *
+	 * @param string $key Extension key to test
+	 * @param boolean $exitOnError If $exitOnError is TRUE and the extension is not loaded the function will die with an error message
+	 * @return boolean
+	 * @throws \BadFunctionCallException
+	 */
+	public static function isLoaded($key, $exitOnError = FALSE) {
+		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher())
+			return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($key, $exitOnError);
+		return t3lib_extMgm::isLoaded($key, $exitOnError);
+	}
 }
