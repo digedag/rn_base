@@ -1,9 +1,13 @@
 <?php
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
-$rnbaseExtPath = t3lib_extMgm::extPath('rn_base');
-
+$versionParts = explode('.', TYPO3_version);
+$rnbaseExtPath = (intval($versionParts[0]) >= 6) ?
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('rn_base') :
+	t3lib_extMgm::extPath('rn_base');
 require_once($rnbaseExtPath . 'class.tx_rnbase.php');
+
+
 tx_rnbase::load('tx_rnbase_util_Debug');
 tx_rnbase::load('tx_rnbase_configurations');
 if(!is_array($TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['rnbase']) &&
