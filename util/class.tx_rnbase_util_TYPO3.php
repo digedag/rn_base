@@ -22,6 +22,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+tx_rnbase::load('tx_rnbase_util_Extensions');
 
 /**
  * Statische Informationen über TYPO3
@@ -132,7 +133,7 @@ class tx_rnbase_util_TYPO3 {
 	 * @return array
 	 */
 	public static function loadExtInfo($_EXTKEY) {
-		$path = t3lib_extMgm::extPath($_EXTKEY).'ext_emconf.php';
+		$path = tx_rnbase_util_Extensions::extPath($_EXTKEY).'ext_emconf.php';
 		@include($path);
 		if(is_array($EM_CONF[$_EXTKEY])) {
 			return $EM_CONF[$_EXTKEY];
@@ -144,7 +145,7 @@ class tx_rnbase_util_TYPO3 {
 	 * @param string $_EXTKEY
 	 */
 	public static function isExtLoaded($_EXTKEY) {
-		return t3lib_extMgm::isLoaded($_EXTKEY);
+		return tx_rnbase_util_Extensions::isLoaded($_EXTKEY);
 	}
 	/**
 	 * Liefert die Versionsnummer einer Extension
