@@ -73,7 +73,6 @@ class tx_rnbase_model_data
 	 * @return NULL
 	 */
 	function init($record = NULL) {
-		$this->resetCleanState();
 		if (is_array($record)) {
 			$this->record = $record;
 		}
@@ -81,6 +80,9 @@ class tx_rnbase_model_data
 			$record = (int) $record;
 			$this->record = $record > 0 ? array('uid' => $record) : array();
 		}
+
+		// set the modified state to clean
+		$this->resetCleanState();
 
 		return NULL;
 	}

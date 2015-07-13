@@ -90,7 +90,6 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 	 * @return NULL
 	 */
 	function init($rowOrUid = NULL) {
-		$this->resetCleanState();
 		if (is_array($rowOrUid)) {
 			$this->uid = $rowOrUid['uid'];
 			$this->record = $rowOrUid;
@@ -110,6 +109,9 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 			// Der Record sollte immer ein Array sein
 			$this->record = is_array($this->record) ? $this->record : array();
 		}
+
+		// set the modified state to clean
+		$this->resetCleanState();
 
 		return NULL;
 	}
