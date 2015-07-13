@@ -41,6 +41,14 @@ class tx_rnbase_model_data
 	implements IteratorAggregate {
 
 	/**
+	 * A flag indication if the model was modified after initialisation
+	 * (eg. by changing a property)
+	 *
+	 * @var boolean
+	 */
+	private $isModified = FALSE;
+
+	/**
 	 *
 	 * @TODO: declare as private!
 	 *
@@ -65,6 +73,7 @@ class tx_rnbase_model_data
 	 * @return NULL
 	 */
 	function init($record = NULL) {
+		$this->resetCleanState();
 		if (is_array($record)) {
 			$this->record = $record;
 		}
@@ -74,6 +83,24 @@ class tx_rnbase_model_data
 		}
 
 		return NULL;
+	}
+
+	/**
+	 * sets the models's clean state, e.g. after it has been initialized.
+	 *
+	 * @return void
+	 */
+	protected function resetCleanState() {
+		$this->isModified = FALSE;
+	}
+
+	/**
+	 * Returns TRUE if the model was modified after initialisation.
+	 *
+	 * @return boolean
+	 */
+	public function isDirty() {
+		return $this->isModified;
 	}
 
 	/**
@@ -107,6 +134,8 @@ class tx_rnbase_model_data
 	 * @return tx_rnbase_model_data
 	 */
 	public function setProperty($property, $value = NULL) {
+		// set the modified state
+		$this->isModified = TRUE;
 		// wir Überschreiben den kompletten record
 		if (is_array($property)) {
 			$this->init($property);
@@ -141,6 +170,10 @@ class tx_rnbase_model_data
 	 * @return tx_rnbase_model_data
 	 */
 	public function unsProperty($property) {
+		// set the modified state
+		if (array_key_exists($property,$this->record)) {
+			$this->isModified = TRUE;
+		}
 		unset($this->record[$property]);
 		return $this;
 	}

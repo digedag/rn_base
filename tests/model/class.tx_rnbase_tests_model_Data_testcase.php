@@ -22,7 +22,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
+tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_rnbase_model_data');
 
 /**
@@ -31,7 +32,8 @@ tx_rnbase::load('tx_rnbase_model_data');
  * @subpackage tx_rnbase_tests
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-class tx_rnbase_tests_model_Data_testcase extends tx_phpunit_testcase {
+class tx_rnbase_tests_model_Data_testcase
+	extends tx_rnbase_tests_BaseTestCase {
 
 	/**
 	 * test object with testdata
@@ -102,6 +104,49 @@ class tx_rnbase_tests_model_Data_testcase extends tx_phpunit_testcase {
 		$this->assertSame('John', $model->getName()->getFirst());
 		$this->assertSame('Doe', $model->getName()->getLast());
 		$this->assertInstanceOf('tx_rnbase_model_data', $model->getName()->getTest());
+	}
+
+	/**
+	 * @test
+	 */
+	public function testIsDirtyOnGet() {
+		$model = $this->getModelInstance();
+		$model->getFirstName('Jonny');
+		$this->assertFalse($model->isDirty());
+	}
+
+	/**
+	 * @test
+	 */
+	public function testIsDirtyOnSet() {
+		$model = $this->getModelInstance();
+		$model->setFirstName('Jonny');
+		// after set, the model has to be dirty
+		$this->assertTrue($model->isDirty());
+		$this->callInaccessibleMethod($model, 'resetCleanState');
+		// after setting the clear state, the model should be clean
+		$this->assertFalse($model->isDirty());
+	}
+	/**
+	 * @test
+	 */
+	public function testIsDirtyOnUns() {
+		$model = $this->getModelInstance();
+		// after unset an nonexisting value, the model has to be clean
+		$model->unsSomeNotExistingColumn();
+		$this->assertFalse($model->isDirty());
+		// after set an existing value, the model has to be dirty
+		$model->unsFirstName();
+		$this->assertTrue($model->isDirty());
+	}
+	/**
+	 * @test
+	 */
+	public function testIsDirtyRecordChanges() {
+		$model = $this->getModelInstance();
+		// after set a value without calling the property methods, the model has to be clean.
+		$model->record['first_name'];
+		$this->assertFalse($model->isDirty());
 	}
 
 }

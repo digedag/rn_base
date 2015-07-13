@@ -4,6 +4,8 @@
 ----------
 
 v0.14.31 (??.??.2015)
+ * new simple boolean modified/dirty flag for models
+ * New Wrapperclass for ExtensionManager
 
 v0.14.30 (08.07.2015)
  * Some TSFAL issues fixed

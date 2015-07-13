@@ -90,6 +90,7 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 	 * @return NULL
 	 */
 	function init($rowOrUid = NULL) {
+		$this->resetCleanState();
 		if (is_array($rowOrUid)) {
 			$this->uid = $rowOrUid['uid'];
 			$this->record = $rowOrUid;
