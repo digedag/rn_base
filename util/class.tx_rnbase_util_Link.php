@@ -506,44 +506,28 @@ class tx_rnbase_util_Link {
 	 * @param string $value
 	 * @return string
 	 */
-	private function makeUrlParam($key, $value) {
-		$ret = '';
+	protected function makeUrlParam($key, $value) {
 		$qualifier = $this->designatorString;
-		if(!is_array($value)) {
-			$paramName = $key;
-			if(strstr($key, '::')) {
-				$arr = t3lib_div::trimExplode('::', $key);
-				$qualifier = $arr[0];
-				$paramName = $arr[1];
-			}
 
-			if($qualifier) {
-				$ret .= '&' . rawurlencode( $qualifier . '[' . $paramName . ']') . '=' . rawurlencode($value);
-			} else {
-				$ret .= '&' . rawurlencode($paramName) . '=' . rawurlencode($value);
-			}
+		// check for qualifier in the keyname
+		if(strstr($key, '::')) {
+			list($qualifier, $key) = t3lib_div::trimExplode('::', $key);
 		}
-		else {
-			if($qualifier) {
-				foreach($value As $arKey => $aValue) {
-					if(is_array($aValue)) {
-						// Sonderfall weiteres Array im Parameter. TODO: per Schleife lösen
-						$paramString = $qualifier . '[' . $key . ']['.$arKey.']';
-						list($valKey, $valValue) = each($aValue);
-						$paramString .='['.$valKey.']';
-						$valueString = $valValue;
-						$ret .= '&' . rawurlencode( $paramString) . '=' . rawurlencode($valueString);
-					}
-					else
-						$ret .= '&' . rawurlencode( $qualifier . '[' . $key . ']['.$arKey.']') . '=' . rawurlencode($aValue);
-				}
-			} else {
-				foreach($value As $arKey => $aValue) {
-					$ret .= '&' . rawurlencode($key) . '[]=' . rawurlencode($aValue);
-				}
-			}
+
+		if (!is_array($value)) {
+			return '&'
+				. rawurlencode($qualifier ? $qualifier . '[' . $key . ']' : $key )
+				. '=' . rawurlencode($value)
+			;
 		}
-		return $ret;
+
+		return t3lib_div::implodeArrayForUrl(
+			$qualifier ? $qualifier : $key,
+			$qualifier ? array($key => $value) : $value,
+			'',
+			TRUE,
+			TRUE
+		);
 	}
 
 	/**

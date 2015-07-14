@@ -37,8 +37,6 @@ tx_rnbase::load('tx_rnbase_util_Link');
 class tx_rnbase_tests_util_Link_testcase
 	extends tx_rnbase_tests_BaseTestCase {
 
-
-
 	/**
 	 *
 	 * @return void
@@ -158,6 +156,101 @@ class tx_rnbase_tests_util_Link_testcase
 				'expected' => 'a href="service/faq.html">FAQ</a',
 				'method' => 'makeTag',
 			),
+		);
+	}
+
+	/**
+	 *
+	 * @return void
+	 *
+	 * @group unit
+	 * @test
+	 */
+	public function testMakeUrlParam() {
+		$link = $this->getMock(
+			'tx_rnbase_util_Link',
+			array('getCObj')
+		);
+
+		// check without qualifier
+		$link->designatorString = '';
+		self::assertSame(
+			'&key=value',
+			rawurldecode($this->callInaccessibleMethod($link, 'makeUrlParam', 'key', 'value'))
+		);
+		self::assertSame(
+			'&key[sub]=value',
+			rawurldecode($this->callInaccessibleMethod($link, 'makeUrlParam', 'key', array('sub' => 'value')))
+		);
+
+		// check with qualifier
+		$link->designatorString = 'myext';
+		self::assertSame(
+			'&myext[key]=value',
+			rawurldecode($this->callInaccessibleMethod($link, 'makeUrlParam', 'key', 'value'))
+		);
+		self::assertSame(
+			'&myext[key][sub]=value',
+			rawurldecode($this->callInaccessibleMethod($link, 'makeUrlParam', 'key', array('sub' => 'value')))
+		);
+
+		// override qualifier
+		self::assertSame(
+			'&yourext[key]=value',
+			rawurldecode($this->callInaccessibleMethod($link, 'makeUrlParam', 'yourext::key', 'value'))
+		);
+		self::assertSame(
+			'&yourext[key][sub]=value',
+			rawurldecode($this->callInaccessibleMethod($link, 'makeUrlParam', 'yourext::key', array('sub' => 'value')))
+		);
+
+		// test large recursive param array!
+		$largeParamKey = 'lvl0';
+		$largeParamValues =  array(
+			'value' => 'Level 0',
+			'lvl1' => array(
+				'value' => 'Level 1',
+				'lvl2' => array(
+					'value' => 'Level 2',
+					'lvl3' => array(
+						'value' => 'Level 3',
+						'lvl4' => array(
+							'value' => 'Level 4',
+						)
+					)
+				)
+			)
+		);
+
+		// the old functionality: goes only 3 levels down!
+		# self::assertEquals('&myext[lvl0][value]=Level 0&myext[p][lvl1][value]=Level 1', rawurldecode($paramStr));
+
+		self::assertEquals(
+			'&myext[lvl0][value]=Level 0' .
+			'&myext[lvl0][lvl1][value]=Level 1' .
+			'&myext[lvl0][lvl1][lvl2][value]=Level 2' .
+			'&myext[lvl0][lvl1][lvl2][lvl3][value]=Level 3' .
+			'&myext[lvl0][lvl1][lvl2][lvl3][lvl4][value]=Level 4',
+			rawurldecode($this->callInaccessibleMethod($link, 'makeUrlParam', $largeParamKey, $largeParamValues))
+		);
+		// check qualifier override
+		self::assertEquals(
+			'&yourext[lvl0][value]=Level 0' .
+			'&yourext[lvl0][lvl1][value]=Level 1' .
+			'&yourext[lvl0][lvl1][lvl2][value]=Level 2' .
+			'&yourext[lvl0][lvl1][lvl2][lvl3][value]=Level 3' .
+			'&yourext[lvl0][lvl1][lvl2][lvl3][lvl4][value]=Level 4',
+			rawurldecode($this->callInaccessibleMethod($link, 'makeUrlParam', 'yourext::' . $largeParamKey, $largeParamValues))
+		);
+		// check without  override
+		$link->designatorString = '';
+		self::assertEquals(
+			'&lvl0[value]=Level 0' .
+			'&lvl0[lvl1][value]=Level 1' .
+			'&lvl0[lvl1][lvl2][value]=Level 2' .
+			'&lvl0[lvl1][lvl2][lvl3][value]=Level 3' .
+			'&lvl0[lvl1][lvl2][lvl3][lvl4][value]=Level 4',
+			rawurldecode($this->callInaccessibleMethod($link, 'makeUrlParam', $largeParamKey, $largeParamValues))
 		);
 	}
 
