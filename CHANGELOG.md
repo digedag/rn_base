@@ -3,7 +3,9 @@
 Änderungen
 ----------
 
-v0.14.31 (??.??.2015)
+v0.14.32 (??.??.2015)
+
+v0.14.31 (14.07.2015)
  * new simple boolean modified/dirty flag for models
  * New Wrapperclass for ExtensionManager
 
