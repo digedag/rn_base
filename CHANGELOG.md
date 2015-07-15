@@ -3,7 +3,10 @@
 Änderungen
 ----------
 
-v0.14.32 (??.??.2015)
+v0.14.33 (??.??.2015)
+
+v0.14.32 (15.07.2015)
+ * support for recursive param arrays in makeUrlParam in link util
 
 v0.14.31 (14.07.2015)
  * new simple boolean modified/dirty flag for models
