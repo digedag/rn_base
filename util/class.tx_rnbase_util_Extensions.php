@@ -127,4 +127,41 @@ class tx_rnbase_util_Extensions {
 			return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes($table, $newFieldsString, $typeList, $position);
 		return t3lib_extMgm::addToAllTCAtypes($table, $newFieldsString, $typeList, $position);
 	}
+
+	/**
+	 * Adds an entry to the "ds" array of the tt_content field "pi_flexform".
+	 * This is used by plugins to add a flexform XML reference / content for use when they are selected as plugin or content element.
+	 * Usage: 0
+	 *
+	 * @param	string		Plugin key as used in the list_type field. Use the asterisk * to match all list_type values.
+	 * @param	string		Either a reference to a flex-form XML file (eg. "FILE:EXT:newloginbox/flexform_ds.xml") or the XML directly.
+	 * @param	string		Value of tt_content.CType (Content Type) to match. The default is "list" which corresponds to the "Insert Plugin" content element.  Use the asterisk * to match all CType values.
+	 * @return	void
+	 * @see addPlugin()
+	 */
+	public static function addPiFlexFormValue($piKeyToMatch, $value, $CTypeToMatch = 'list') {
+		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher())
+			return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($piKeyToMatch, $value, $CTypeToMatch);
+		return t3lib_extMgm::addPiFlexFormValue($piKeyToMatch, $value, $CTypeToMatch);
+	}
+	/**
+	 * Adds an entry to the list of plugins in content elements of type "Insert plugin"
+	 * Takes the $itemArray (label, value[,icon]) and adds to the items-array of $GLOBALS['TCA'][tt_content] elements with CType "listtype" (or another field if $type points to another fieldname)
+	 * If the value (array pos. 1) is already found in that items-array, the entry is substituted, otherwise the input array is added to the bottom.
+	 * Use this function to add a frontend plugin to this list of plugin-types - or more generally use this function to add an entry to any selectorbox/radio-button set in the TCEFORMS
+	 * FOR USE IN ext_tables.php FILES or files in Configuration/TCA/Overrides/*.php Use the latter to benefit from TCA caching!
+	 *
+	 * @param array $itemArray Numerical array: [0] => Plugin label, [1] => Underscored extension key, [2] => Path to plugin icon relative to TYPO3_mainDir
+	 * @param string $type Type (eg. "list_type") - basically a field from "tt_content" table
+	 * @param string $extensionKey The extension key
+	 * @throws \RuntimeException
+	 * @return void
+	 */
+	public static function addPlugin($itemArray, $type = 'list_type', $extensionKey = NULL) {
+		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher())
+			return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin($itemArray, $type, $extensionKey);
+		return t3lib_extMgm::addPlugin($itemArray, $type, $extensionKey);
+	}
+
+
 }
