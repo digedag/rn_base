@@ -22,8 +22,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_util_DB');
+tx_rnbase::load('tx_rnbase_util_Strings');
 
 define('SEARCH_FIELD_JOINED', 'JOINED'); // Sonderfall Freitextsuche in mehreren Feldern
 define('SEARCH_FIELD_CUSTOM', 'CUSTOM'); // Sonderfall freie Where-Bedingung
@@ -92,8 +92,8 @@ abstract class tx_rnbase_util_SearchBase {
 	 * Sonderfall Freitextsuche über mehrere Felder:
 	 * Hierfür gibt es das Sonderfeld SEARCH_FIELD_JOINED. Dieses erwartet ein Array der Form
 	 * 'value' => 'Suchbegriff'
+	 * 'operator' => OP_LIKE
 	 * 'cols' => array(FIELD1, FIELD2,...)
-	 * Hierfür gibt es das Sonderfeld SEARCH_FIELD_JOINED. Dieses erwartet ein Array der Form
 	 *
 	 * Sonderfall SQL Sub-Select:
 	 * Hierfür gibt es das Sonderfeld SEARCH_FIELD_CUSTOM. Dieses erwartet ein String mit dem
@@ -160,6 +160,7 @@ abstract class tx_rnbase_util_SearchBase {
 		$what = $this->getWhat($options, $tableAliases);
 		$from = $this->getFrom($options, $tableAliases);
 		$where = '1=1';
+
 		foreach($tableAliases AS $tableAlias => $colData) {
 			foreach($colData As $col => $data) {
 				foreach ($data As $operator => $value) {
@@ -350,7 +351,7 @@ abstract class tx_rnbase_util_SearchBase {
 				foreach ($aliasArr As $alias => $data) {
 					$makeJoin = isset($tableAliases[$alias]);
 					if(!$makeJoin && array_key_exists('joincondition', $data)) {
-						$jconds = t3lib_div::trimExplode(',', $data['joincondition']);
+						$jconds = tx_rnbase_util_Strings::trimExplode(',', $data['joincondition']);
 						foreach ($jconds AS $jcond) {
 							$makeJoin = $makeJoin || isset($tableAliases[$jcond]);
 							if($makeJoin) break;
@@ -360,8 +361,6 @@ abstract class tx_rnbase_util_SearchBase {
 					if($makeJoin) {
 						$join .= ' ' . $data['join'];
 					}
-
-					$tableMapping[$alias] = $data['table'];
 				}
 			}
 		}
@@ -585,7 +584,7 @@ abstract class tx_rnbase_util_SearchBase {
 					// Hier sieht die Konfig etwas anders aus
 					foreach($cfg As $jField) {
 						$jField['operator'] = constant($jField['operator']);
-						$jField['cols'] = t3lib_div::trimExplode(',', $jField['cols']);
+						$jField['cols'] = tx_rnbase_util_Strings::trimExplode(',', $jField['cols']);
 						$fields[SEARCH_FIELD_JOINED][] = $jField;
 					}
 					continue;
@@ -638,7 +637,12 @@ abstract class tx_rnbase_util_SearchBase {
 			$configurations->addKeepVar($configurations->createParamName($idstr), $fields[$idstr]);
 		}
 	}
+	/**
+	 * @deprecated wird vermutlich nicht verwendet.
+	 * @return multitype:multitype:string
+	 */
 	function getSpecialChars() {
+		$specials = array();
 		$specials['0-9'] = array('1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.', '@', '');
 		$specials['A'] = array('A', 'Ä');
 		$specials['O'] = array('O', 'Ö');
