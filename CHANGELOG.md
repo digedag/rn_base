@@ -3,7 +3,9 @@
 Änderungen
 ----------
 
-v0.14.33 (??.??.2015)
+v0.15.0 (18.07.2015)
+ * Documentation added
+ * Some internal refactorings
 
 v0.14.32 (15.07.2015)
  * support for recursive param arrays in makeUrlParam in link util
