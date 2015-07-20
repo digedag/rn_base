@@ -23,11 +23,36 @@
 ***************************************************************/
 
 tx_rnbase::load('tx_rnbase_maps_ICoord');
+tx_rnbase::load('tx_rnbase_maps_ILocation');
+
 
 /**
  * Util methods
  */
 class tx_rnbase_maps_Util {
+	/**
+	 * Returns the maps template from $confId.'template'
+	 *
+	 * @param tx_rnbase_configurations $configurations
+	 * @param string $confId
+	 * @return string empty string if template was not found
+	 */
+	public static function getMapTemplate($configurations, $confId) {
+		$file = $configurations->get($confId.'template');
+		if(!$file) return '';
+		$subpartName = $configurations->get($confId.'subpart');
+		if(!$subpartName) return '';
+		$ret = '';
+		try {
+			$subpart = tx_rnbase_util_Templates::getSubpartFromFile($file, $subpartName);
+			$ret = str_replace(array("\r\n", "\n", "\r"), '', $subpart);
+		}
+		catch(Exception $e) {
+			$ret = '';
+		}
+		return $ret;
+	}
+
 	/**
 	 * Calculate distance for two long/lat-points.
 	 * Method used from wec_map
@@ -46,6 +71,32 @@ class tx_rnbase_maps_Util {
 		$radius = $distanceType == 'K' ? 6372.795 : 3959.8712;
 		$distance = 2 * $radius * asin(min(1, sqrt( pow(sin(($l2-$l1)/2), 2) + cos($l1)*cos($l2)* pow(sin(($o2-$o1)/2), 2) )));
 		return $distance;
+	}
+
+	private static function hasGeoData($item) {
+		return !(!$item->getCity() && !$item->getZip() && !$item->getLongitute() && !$item->getLatitute());
+	}
+	/**
+	 * Create a bubble for GoogleMaps. This can be done if the item has address data.
+	 * @param string $template
+	 * @param tx_cfcleague_models_Club $item
+	 */
+	public static function createMapBubble(tx_rnbase_maps_ILocation $item) {
+		if(!self::hasGeoData($item)) return false;
+		tx_rnbase::load('tx_rnbase_maps_DefaultMarker');
+
+		$marker = new tx_rnbase_maps_DefaultMarker();
+		if($item->getLongitute() || $item->getLatitute()) {
+			$marker->setCoords($item->getCoords());
+		}
+		else {
+			$marker->setCity($item->getCity());
+			$marker->setZip($item->getZip());
+			$marker->setStreet($item->getStreet());
+			$marker->setCountry($item->getCountryCode());
+		}
+		$marker->setDescription('Fill me!');
+		return $marker;
 	}
 }
 

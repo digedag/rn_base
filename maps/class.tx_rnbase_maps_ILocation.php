@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009 Rene Nitzsche (rene@system25.de)
+*  (c) 2015 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,24 +22,27 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+tx_rnbase::load('tx_rnbase_maps_ICoord');
 
 /**
- * Common Interface for Maps
+ * Common Interface for a point on a map. This is either a geocode or a valid address
  */
-interface tx_rnbase_maps_ICoord {
+interface tx_rnbase_maps_ILocation extends tx_rnbase_maps_ICoord {
 
 	/**
-	 * Returns the latitude
-	 * @return float
+	 * Returns the city name
+	 * @return string
 	 */
-	public function getLatitude();
+	public function getCity();
 	/**
-	 * Returns the longitude
+	 * Returns the street
 	 * @return float
 	 */
-	public function getLongitude();
+	public function getStreet();
+	public function getZip();
+	public function getCountryCode();
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_ICoord.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_ICoord.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_ILocation.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_ILocation.php']);
 }
