@@ -31,8 +31,6 @@ tx_rnbase::load('tx_rnbase_util_Misc');
  * Contains utility functions for database access
  */
 class tx_rnbase_util_DB {
-	private static $sysPage = NULL;
-
 	/**
 	 * Generische Schnittstelle für Datenbankabfragen. Anstatt vieler Parameter wird hier ein
 	 * Hash als Parameter verwendet, der mögliche Informationen aufnimmt.

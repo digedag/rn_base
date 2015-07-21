@@ -42,8 +42,6 @@ tx_rnbase::load('tx_rnbase_util_Templates');
  * @author Michael Wagner <michael.wagner@dmk-ebusines.de>
  */
 abstract class tx_rnbase_action_BaseIOC {
-	private static $callCount = 0;
-	private static function countCall() { return self::$callCount++; }
 	private $configurations = NULL;
 
 	/**

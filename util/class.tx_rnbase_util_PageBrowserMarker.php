@@ -33,7 +33,6 @@ tx_rnbase::load('tx_rnbase_util_Math');
  * Contains utility functions for HTML-Forms
  */
 class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
-	private $pdid;
 	private $pagePartsDef = array('normal', 'current', 'first', 'last', 'prev', 'next');
 
 	/**
