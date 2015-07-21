@@ -36,7 +36,6 @@ define('OP_IN_INT', 'IN');
 define('OP_IN_SQL', 'IN SQL');
 define('OP_NOTIN_SQL', 'NOTIN SQL');
 define('OP_INSET_INT', 'FIND_IN_SET');
-//define('OP_NOTINSET_INT', 'NOTFIND_IN_SET');
 define('OP_LIKE', 'LIKE');
 define('OP_LIKE_CONST', 'OP_LIKE_CONST');
 define('OP_EQ_INT', '=');
@@ -385,19 +384,11 @@ abstract class tx_rnbase_util_SearchBase {
 	 * @param array $options
 	 */
 	protected function addGenericTableMappings(&$tableMapping, $options) {
-		// Zuerst die Basistabelle
-//		$baseAlias = $options['basetablealias'];
-//		$baseTable = $options['basetable'];
-//		if($baseAlias && $baseTable)
-//			$tableMapping[$baseAlias] = $baseTable;
-
 		$aliasArr = $options['alias'];
 		if(is_array($aliasArr))
 			foreach ($aliasArr As $alias => $data) {
 				$tableMapping[$alias] = $data['table'];
 			}
-
-//		if(!count($tableMapping)) throw new Exception('No search tables configured!');
 	}
 
 	/**
@@ -467,7 +458,6 @@ abstract class tx_rnbase_util_SearchBase {
 			$ret = 'count('. $distinct . $cntWhat.') as cnt';
 		}
 		return $ret;
-//		return isset($options['count']) ? 'count('. $distinct .$table.'.'.$cntWhat.') as cnt' : $distinct.$table.'.*'.$rownum;
 	}
 
 	/**
@@ -602,8 +592,6 @@ abstract class tx_rnbase_util_SearchBase {
 					foreach ($data as $op => $value) {
 						$fields[$tableAlias.'.'.$colName][constant($op)] = $value;
 					}
-// 					list($op, $value) = each($data);
-// 					$fields[$tableAlias.'.'.$colName][constant($op)] = $value;
 				}
 			}
 	}

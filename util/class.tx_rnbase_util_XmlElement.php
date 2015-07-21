@@ -230,17 +230,3 @@ class tx_rnbase_util_XmlElement extends SimpleXMLElement {
 			}
 		}
 	}
-
-// 	/**
-// 	 * Liefert das XML als Array aus.
-// 	 *
-// 	 * @return array
-// 	 */
-// 	public function asArray() {
-// 		tx_rnbase::load('tx_util_XmlToArray');
-// 		$array = tx_util_XmlToArray::createArray($this->asXML());
-// 		return $array[$this->getName()];
-// 	}
-
-
-}

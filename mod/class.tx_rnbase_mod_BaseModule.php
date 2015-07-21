@@ -381,7 +381,6 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 												Array('<td class="c-headLineTable" style="font-weight:bold; color:white;">', '</td>'))
 				),
 				'defRow' => Array ( // Formate für alle Zeilen
-		//          '0' => Array('<td valign="top">', '</td>'), // Format für 1. Spalte in jeder Zeile
 					'tr'	   => Array('<tr class="db_list_normal">', '</tr>'),
 					'defCol' => Array('<td>', '</td>') // Format für jede Spalte in jeder Zeile
 				),

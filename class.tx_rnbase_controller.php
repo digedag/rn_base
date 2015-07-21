@@ -108,7 +108,6 @@ tx_rnbase::load('tx_rnbase_util_Arrays');
 class tx_rnbase_controller {
 
 	var $configurationsClassName = 'tx_rnbase_configurations'; // You may overwrite this in your subclass with an own configurations class.
-//	var $parametersClassName = 'tx_lib_parameters'; // Typically you don't need to make a subclass of this.
 	var $parameters;
 	var $configurations;
 	var $defaultAction = 'defaultAction';

@@ -98,10 +98,6 @@ class tx_rnbase_util_TSFAL {
 		if(!$parentUid) return '<!-- Invalid data record given -->';
 
 		$medias = self::fetchFilesByTS($conf, $conf->getCObj());
-//if(!empty($medias)) {
-//tx_rnbase::load('tx_rnbase_util_Debug');
-//tx_rnbase_util_Debug::debug($conf->get('limit'), 'class.tx_rnbase_util_TSFAL.php Line: ' . __LINE__); // TODO: remove me
-//}
 		$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
 		$out = $listBuilder->render($medias, FALSE, $templateCode, 'tx_rnbase_util_MediaMarker',
 						'media.', 'MEDIA', $conf->getFormatter());
@@ -166,19 +162,6 @@ class tx_rnbase_util_TSFAL {
 			}# or: sys_file_references with uid 27:
 			references = 27
 			 */
-
-//			$key = 'references';
-//			$referencesUid = $cObj->stdWrap($conf[$key], $conf[$key . '.']);
-//			$referencesUidArray = tx_rnbase_util_Strings::intExplode(',', $referencesUid, TRUE);
-//			foreach ($referencesUidArray as $referenceUid) {
-//				try {
-//					$this->addToArray($fileRepository->findFileReferenceByUid($referenceUid), $fileObjects);
-//				} catch (\TYPO3\CMS\Core\Resource\Exception $e) {
-//					/** @var \TYPO3\CMS\Core\Log\Logger $logger */
-//					$logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Log\LogManager')->getLogger();
-//					$logger->warning('The file-reference with uid  "' . $referenceUid . '" could not be found and won\'t be included in frontend output');
-//				}
-//			}
 
 			// It's important that this always stays "fieldName" and not be renamed to "field" as it would otherwise collide with the stdWrap key of that name
 			$referencesFieldName = $conf->getCObj()->stdWrap($conf->get($confId.'fieldName'), $conf->get($confId.'fieldName.'));
@@ -279,9 +262,6 @@ class tx_rnbase_util_TSFAL {
 			}
 		}
 		$fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
-//		if ($table === 'pages' && isset($row['_LOCALIZED_UID']) && intval($row['sys_language_uid']) > 0) {
-//			$table = 'pages_language_overlay';
-//		}
 		$files = $fileRepository->findByRelation($refTable, $refField, $uid);
 
 		if(!empty($files)) {
@@ -332,7 +312,6 @@ class tx_rnbase_util_TSFAL {
 			/* @var $fileObject \TYPO3\CMS\Core\Resource\File */
 			$fileObject = $fileRef->getOriginalFile();
 			if ($fileObject) {
-//				$imageSetup = $config['appearance']['headerThumbnail'];
 				$imageSetup = array();
 				unset($imageSetup['field']);
 				$sizeArr = $sizeArr ? $sizeArr : array('width' => 64, 'height' => 64);

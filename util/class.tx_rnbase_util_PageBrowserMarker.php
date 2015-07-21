@@ -221,41 +221,9 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 		$this->link->initByTS($configuration, $pbConfId.'link.', array());
 		$this->token = md5(microtime());
 		$this->link->label($this->token);
-//		$this->link->destination($GLOBALS['TSFE']->id); // Link auf aktuelle Seite
 		$this->noLink = array('', '');
 	}
 }
-
-/*
-###PAGEBROWSER###
-<div>
-###PAGEBROWSER_NORMAL_PAGE###
-###PAGEBROWSER_NORMAL_PAGE_LINK### ###PAGEBROWSER_NORMAL_PAGE_NUMBER### ###PAGEBROWSER_NORMAL_PAGE_LINK###
-###PAGEBROWSER_NORMAL_PAGE###
-
-###PAGEBROWSER_CURRENT_PAGE###
-###PAGEBROWSER_CURRENT_PAGE_NUMBER###
-###PAGEBROWSER_CURRENT_PAGE###
-
-###PAGEBROWSER_FIRST_PAGE###
-###PAGEBROWSER_FIRST_PAGE_LINK### |< ###PAGEBROWSER_FIRST_PAGE_LINK###
-###PAGEBROWSER_FIRST_PAGE###
-
-###PAGEBROWSER_LAST_PAGE###
-###PAGEBROWSER_LAST_PAGE_LINK### >| ###PAGEBROWSER_LAST_PAGE_LINK###
-###PAGEBROWSER_LAST_PAGE###
-
-###PAGEBROWSER_PREV_PAGE###
-&nbsp;###PAGEBROWSER_PREV_PAGE_LINK###>###PAGEBROWSER_PREV_PAGE_LINK###&nbsp;
-###PAGEBROWSER_PREV_PAGE###
-
-###PAGEBROWSER_NEXT_PAGE###
-&nbsp;###PAGEBROWSER_NEXT_PAGE_LINK###>###PAGEBROWSER_NEXT_PAGE_LINK###&nbsp;
-###PAGEBROWSER_NEXT_PAGE###
-</div>
-###PAGEBROWSER###
-*/
-
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_PageBrowserMarker.php']) {
   include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_PageBrowserMarker.php']);

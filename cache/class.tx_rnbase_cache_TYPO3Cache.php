@@ -63,7 +63,6 @@ class tx_rnbase_cache_TYPO3Cache implements tx_rnbase_cache_ICache {
 			if(!array_key_exists('t3lib_cache_backend_TransientMemoryBackend', $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheBackends'])) {
 				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheBackends']['t3lib_cache_backend_TransientMemoryBackend'] = 't3lib/cache/backend/class.t3lib_cache_backend_transientmemorybackend.php:t3lib_cache_backend_TransientMemoryBackend';
 			}
-//			$backendName =  't3lib_cache_backend_NullBackend';
 		}
 		else {
 			$backendName = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'][$cacheName]['backend'];

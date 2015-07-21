@@ -75,7 +75,6 @@ class tx_rnbase_tests_util_DB_testcase extends tx_phpunit_testcase {
 
 
 		$ret = tx_rnbase_util_DB::searchWhere($sw, $fields, OP_EQ);
-//		$this->debugString($ret);
 		$this->assertEquals($ret, " (tab1.bodytext = 'content' OR tab1.header = 'content' OR tab1.bodytext = 'management' OR tab1.header = 'management' OR tab1.bodytext = 'system' OR tab1.header = 'system' )", 'OR failed.');
 
 		$ret = tx_rnbase_util_DB::searchWhere($sw.', 32', $fields, 'FIND_IN_SET_OR');

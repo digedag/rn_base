@@ -51,7 +51,6 @@ class tx_rnbase {
 			return TRUE;
 		}
 		if(t3lib_extMgm::isLoaded('lib')) {
-//			print '<p>Trying Pear Loader: ' . $classNameOrPathInformation;
 			require_once(t3lib_extMgm::extPath('lib') . 'class.tx_lib_pearLoader.php');
 			if(tx_lib_pearLoader::load($classNameOrPathInformation)) {
 				self::$loadedClasses[$classNameOrPathInformation] = TRUE;

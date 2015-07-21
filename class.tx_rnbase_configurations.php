@@ -243,7 +243,6 @@ class tx_rnbase_configurations {
 
 		if(!is_object($cObj)) {
 			$this->cObjs[$id] = t3lib_div::makeInstance($cObjClass);
-//    $this->cObj->data = $this->configurations->get('tt_content.');
 		}
 		return $this->cObjs[$id];
 	}
@@ -423,7 +422,6 @@ class tx_rnbase_configurations {
 			$arr = $this->_queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey.'.');
 			if (is_array($arr)){
 				$ret = array('key' => $ret, 'key.' => $arr);
-//				$ret = array_merge(array($ret), $arr);
 			}
 		}
 		if (is_array($ret)) {

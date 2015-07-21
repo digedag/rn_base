@@ -106,9 +106,6 @@ abstract class tx_rnbase_mod_base_Lister {
 	 */
 	protected function getSearcherId(){
 		// TODO: abstract??
-//		tx_rnbase::load('tx_mklib_util_String');
-//		$pageId = tx_mklib_util_String::toCamelCase(get_class($this));
-//		return $pageId;
 		return 'searcher';
 	}
 
@@ -460,7 +457,6 @@ abstract class tx_rnbase_mod_base_Lister {
 		tx_rnbase::load('tx_rnbase_mod_Util');
 		$selectedItem = tx_rnbase_mod_Util::getModuleValue('showhidden', $this->getModule(), array('changed' => t3lib_div::_GP('SET')));
 
-//		$selectedItem = array_key_exists('forcevalue', $aOptions) ? $aOptions['forcevalue'] : $this->getValueFromModuleData($id);
 		$options['label'] = $options['label'] ? $options['label'] : $GLOBALS['LANG']->getLL('label_hidden');
 		return tx_rnbase_mod_Util::showSelectorByArray($items, $selectedItem, 'showhidden', $marker, $options);
 	}

@@ -44,11 +44,7 @@ class tx_rnbase_util_FormatUtil {
    */
   function tx_rnbase_util_FormatUtil($configurations, $cObjClass = 'tslib_cObj') {
     $this->configurations = $configurations;
-// t3lib_div::debug($this->configurations->get('tt_content.') , 'util_formatUtil');
     $this->cObj = $configurations->getCObj();
-
-//    $this->cObj = t3lib_div::makeInstance($cObjClass);
-//    $this->cObj->data = $this->configurations->get('tt_content.');
   }
 
   /**
@@ -98,7 +94,6 @@ class tx_rnbase_util_FormatUtil {
    */
   function wrap($content, $confId, $dataArr = 0){
     return $this->stdWrap($content, $this->configurations->get($confId), $dataArr);
-//    return $this->cObj->stdWrap($content, $this->configurations->get($confId));
   }
 
   /**
@@ -112,7 +107,6 @@ class tx_rnbase_util_FormatUtil {
     // Data zurücksetzen
     $this->cObj->data = $tmpArr;
     return $ret;
-//    return $this->cObj->stdWrap($content, $conf);
   }
 
   /**
@@ -130,7 +124,6 @@ class tx_rnbase_util_FormatUtil {
     $conf = $this->configurations->get($confId);
     $ret = $this->cObj->stdWrap($content, $conf);
 
-//t3lib_div::debug($ret, 'tx_rnbase_util_FormatUtil');
     // Data zurücksetzen
     $this->cObj->data = $tmpArr;
     return $ret;
@@ -145,7 +138,6 @@ class tx_rnbase_util_FormatUtil {
 
     $cObj =& $this->configurations->getCObj($cObjId);
     $theImgCode=$cObj->IMAGE($confArr);
-//t3lib_div::debug($confArr, $image.' - DAM util_formatUtil');
 
     return $theImgCode;
   }
@@ -168,11 +160,6 @@ class tx_rnbase_util_FormatUtil {
      $this->cObj->data = $tmp;
 
      return $theImgCode;
-
-
-//    $confArr["image."]["file"] = "uploads/tx_rnprofiles/".($row["image"]); //The image field name
-//    $theImgCode=$this->cObj->IMAGE($this->conf["image."]);
-
   }
 
 	static $time = 0;

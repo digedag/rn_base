@@ -503,9 +503,6 @@ class tx_rnbase_util_Spyc {
     if ($array[$key] === array()) { $array[$key] = ''; };
     $value = $array[$key];
 
-    // Unfolding inner array tree as defined in $this->_arrpath.
-    //$_arr = $this->result; $_tree[0] = $_arr; $i = 1;
-
     $tempPath = tx_rnbase_util_Spyc::flatten ($this->path);
     eval ('$_arr = $this->result' . $tempPath . ';');
 
@@ -550,7 +547,6 @@ class tx_rnbase_util_Spyc {
         $tempPath[] = "[$_]";
       }
     }
-    //end ($tempPath); $latestKey = key($tempPath);
     $tempPath = implode ('', $tempPath);
     return $tempPath;
   }
@@ -573,7 +569,6 @@ class tx_rnbase_util_Spyc {
     }
     if (strlen($line) == 0) return $literalBlock . "\n";
 
-   // echo "|$line|";
     if ($line != "\n")
       $line = trim ($line, "\r\n ") . ' ';
 
@@ -638,7 +633,6 @@ class tx_rnbase_util_Spyc {
     if (!preg_match('/^(.+?):/', $line, $matches)) return FALSE;
     $allegedKey = $matches[1];
     if ($allegedKey) return TRUE;
-    //if (substr_count($allegedKey, )
     return FALSE;
   }
 
@@ -725,7 +719,6 @@ class tx_rnbase_util_Spyc {
   function addGroup ($line, $group) {
     if (substr ($group, 0, 1) == '&') $this->_containsGroupAnchor = substr ($group, 1);
     if (substr ($group, 0, 1) == '*') $this->_containsGroupAlias = substr ($group, 1);
-    //print_r ($this->path);
   }
 
   function stripGroup ($line, $group) {

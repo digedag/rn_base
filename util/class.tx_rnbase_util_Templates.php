@@ -371,14 +371,11 @@ class tx_rnbase_util_Templates {
 					// Storing the cached data:
 					tx_rnbase_util_TYPO3::getSysPage()->storeHash($storeKey, serialize($storeArr), 'substMarkArrayCached');
 				}
-
-//				$GLOBALS['TT']->setTSlogMessage('Parsing', 0);
 			} else {
 					// Unserializing
 				$storeArr = unserialize($storeArrDat);
 					// Setting cache:
 				self::$substMarkerCache[$storeKey] = $storeArr;
-//				$GLOBALS['TT']->setTSlogMessage('Cached from DB', 0);
 			}
 		}
 

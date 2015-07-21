@@ -154,23 +154,6 @@ class tx_rnbase_util_TSDAM {
 	 * @return array
 	 */
 	function fetchFileList ($conf, &$cObj) {
-
-//		$damMedia = tx_rnbase::makeInstance('tx_dam_tsfe');
-//		$damMedia->cObj = $cObj;
-//		$damFiles = $damMedia->fetchFileList('', $conf);
-//		return $damFiles ? t3lib_div::trimExplode(',', $damFiles) : array();
-
-//		$files = array();
-//		$filePath = $cObj->stdWrap($conf['additional.']['filePath'], $conf['additional.']['filePath.']);
-//		$fileList = trim($cObj->stdWrap($conf['additional.']['fileList'], $conf['additional.']['fileList.']));
-//		$fileList = t3lib_div::trimExplode(',', $fileList);
-//		foreach ($fileList as $file) {
-//			if($file) {
-//				$files[] = $filePath.$file;
-//			}
-//		}
-
-
 		$uid      = $cObj->data['_LOCALIZED_UID'] ? $cObj->data['_LOCALIZED_UID'] : $cObj->data['uid'];
 		$refTable = ($conf['refTable'] && is_array($GLOBALS['TCA'][$conf['refTable']])) ? $conf['refTable'] : 'tt_content';
 		$refField = trim($cObj->stdWrap($conf['refField'], $conf['refField.']));

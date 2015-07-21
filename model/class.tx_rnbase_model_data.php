@@ -208,7 +208,6 @@ class tx_rnbase_model_data
 	 */
 	protected function underscore($string) {
 		return tx_rnbase_util_Misc::camelCaseToLowerCaseUnderscored($string);
-		// return strtolower(preg_replace('/(.)([A-Z])/', "$1_$2", $string));
 	}
 
 	/**

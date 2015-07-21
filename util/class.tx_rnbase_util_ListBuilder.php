@@ -241,7 +241,6 @@ class tx_rnbase_util_ListBuilder {
 
 		$markerArray = array();
 		$subpartArray = array();
-//		$subpartArray['###'.$outerMarker.'S###'] = $out;
 
 		// Muss ein Formular mit angezeigt werden
 		// Zuerst auf einen Filter prüfen
