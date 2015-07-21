@@ -194,7 +194,9 @@ $mem = memory_get_usage();
 		}
 
 		if(array_key_exists('__MINFO', $record)) {
-			$record['__MINFO'] .= tx_rnbase_util_Debug::viewArray($conf);
+			// Die TS-Config in die Ausgabe integrieren
+			$record['__MINFO'] .= tx_rnbase_util_Debug::viewArray(array('TS-Path'=>$confId));
+			$record['__MINFO'] .= tx_rnbase_util_Debug::viewArray(array($conf));
 		}
 		$this->cObj->data = $record;
 
