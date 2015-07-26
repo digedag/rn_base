@@ -75,12 +75,12 @@ interface tx_rnbase_maps_IMarker {
 	function getDescription();
 	/**
 	 * Minimum zoom level to show the marker
-	 * @return int 0 up to 17
+	 * @return int 0 up to 18
 	 */
 	function getZoomMin();
 	/**
 	 * Maximum zoom level to show the marker
-	 * @return int 0 up to 17
+	 * @return int 0 up to 18
 	 */
 	function getZoomMax();
 }

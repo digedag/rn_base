@@ -24,6 +24,7 @@
 
 tx_rnbase::load('tx_rnbase_maps_BaseMap');
 tx_rnbase::load('tx_rnbase_util_Extensions');
+tx_rnbase::load('tx_rnbase_util_Strings');
 
 if(!tx_rnbase_util_Extensions::isLoaded('wec_map'))
 	throw new Exception('Extension wec_map must be installed to use GoogleMaps!');
@@ -35,8 +36,10 @@ require_once(tx_rnbase_util_Extensions::extPath('wec_map').'map_service/google/c
 class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap {
 	static $PROVID = 'GOOGLEMAPS';
 	static $mapTypes = array();
+	/* @var $map tx_wecmap_map_google */
 	private $map, $conf, $confId;
-	function init($conf, $confId) {
+
+	public function init(tx_rnbase_configurations $conf, $confId) {
 		$this->conf = $conf;
 		$this->confId = $confId;
 		$apiKey = $conf->get($confId.'google.apikey');
@@ -54,7 +57,7 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap {
 		// Controls
 		$controls = $conf->get($confId.'google.controls');
 		if($controls) {
-			$controls = t3lib_div::trimExplode(',', $controls);
+			$controls = tx_rnbase_util_Strings::trimExplode(',', $controls);
 			foreach($controls As $control) {
 				$this->addControl(tx_rnbase::makeInstance('tx_rnbase_maps_google_Control', $control));
 			}
@@ -79,7 +82,7 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap {
 	 *
 	 * @param tx_rnbase_maps_IControl $control
 	 */
-	function addControl(tx_rnbase_maps_IControl $control) {
+	public function addControl(tx_rnbase_maps_IControl $control) {
 		$this->getWecMap()->addControl($control->render());
 	}
 
@@ -87,7 +90,7 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap {
 	 * Adds a marker to this map
 	 * @param tx_rnbase_maps_IMarker $marker
 	 */
-	function addMarker(tx_rnbase_maps_IMarker $marker) {
+	public function addMarker(tx_rnbase_maps_IMarker $marker) {
 		$icon = $marker->getIcon();
 		$iconName = '';
 		if($icon) {
@@ -110,13 +113,13 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap {
 		$code = $this->map->drawMap();
 		if(intval($this->conf->get($this->confId.'google.forcejs'))) {
 			// This is necessary if
-			$code .= "\n". '<script type="text/javascript">GEvent.addDomListener(window, "load", function(){drawMap_'. $this->map->mapName .'();})</script>';
+//			$code .= "\n". '<script type="text/javascript">GEvent.addDomListener(window, "load", function(){drawMap_'. $this->map->mapName .'();})</script>';
 		}
 		return $code;
 	}
 	/**
 	 * Returns an instance of wec map
-	 * @return tx_wecmap_map
+	 * @return tx_wecmap_map_google
 	 */
 	function getWecMap() {
 		return $this->map;

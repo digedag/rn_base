@@ -90,8 +90,9 @@ class tx_rnbase_maps_google_Icon implements tx_rnbase_maps_IIcon {
 
 		$ret = 'WecMap.addIcon("'.$mapName.'", "'.$this->getName().
 				'", "'.$image.'", "'.$shadow.
-				'", new GSize('.$size.'), new GSize('.$shadowSize.
-				'), new GPoint('.$this->getAnchorPoint().'), new GPoint('.$this->getInfoWindowAnchorPoint().'));';
+				'", new google.maps.Size('.$size.'), new google.maps.Size('.$shadowSize.
+	//			'), new google.maps.Point(6, 20), new google.maps.Point(5,1));';
+				'), new google.maps.Point('.$this->getAnchorPoint().'), new google.maps.Point('.$this->getInfoWindowAnchorPoint().'));';
 
 		// Für die wec_map ist nur die ID notwendig
 		return $ret;

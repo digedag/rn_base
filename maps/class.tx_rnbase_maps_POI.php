@@ -34,6 +34,8 @@ class tx_rnbase_maps_POI extends tx_rnbase_maps_Coord implements tx_rnbase_maps_
 	private $zip;
 	private $countryCode;
 	private $description;
+	private $zoomMin;
+	private $zoomMax;
 
 	public function __construct($data = array()) {
 		if(!$data)
@@ -41,7 +43,7 @@ class tx_rnbase_maps_POI extends tx_rnbase_maps_Coord implements tx_rnbase_maps_
 
 		$this->initField($data, 'lat', 'setLatitude');
 		$this->initField($data, 'lng', 'setLongitude');
-		$fields = array('description', 'city', 'zip', 'countryCode');
+		$fields = array('description', 'city', 'zip', 'countryCode', 'zoomMin', 'zoomMax');
 		foreach ($fields As $field)
 			$this->initField($data, $field);
 	}
@@ -51,6 +53,37 @@ class tx_rnbase_maps_POI extends tx_rnbase_maps_Coord implements tx_rnbase_maps_
 			$this->$methodName($data[$fieldname]);
 		}
 	}
+	/**
+	 * @return int
+	 */
+	public function getZoomMin() {
+		return $this->zoomMin;
+	}
+	/**
+	 *
+	 * @param int $zoom
+	 * @return tx_rnbase_maps_POI
+	 */
+	public function setZoomMin($zoom) {
+		$this->zoomMin = $zoom;
+		return $this;
+	}
+	/**
+	 * @return int
+	 */
+	public function getZoomMax() {
+		return $this->zoomMax;
+	}
+	/**
+	 *
+	 * @param int $zoom
+	 * @return tx_rnbase_maps_POI
+	 */
+	public function setZoomMax($zoom) {
+		$this->zoomMax = $zoom;
+		return $this;
+	}
+
 	/* (non-PHPdoc)
 	 * @see tx_rnbase_maps_ILocation::getCity()
 	 */

@@ -27,7 +27,7 @@
  * Common Interface for Maps
  */
 interface tx_rnbase_maps_IMap {
-	function init($conf, $confId);
+	public function init(tx_rnbase_configurations $conf, $confId);
 	function initTypes(tx_rnbase_maps_TypeRegistry $registry);
 	/**
 	 * Adds a marker to this map
