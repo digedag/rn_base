@@ -494,7 +494,7 @@ abstract class tx_rnbase_util_SearchBase {
 	 * @param tx_rnbase_configurations $configurations
 	 * @param string $confId Id der TS-Config z.B. myview.options.
 	 */
-	static function setConfigOptions(&$options, &$configurations, $confId) {
+	static function setConfigOptions(&$options, $configurations, $confId) {
 		$cfgOptions = $configurations->get($confId);
 		if(is_array($cfgOptions))
 			foreach($cfgOptions As $option => $cfg) {
@@ -603,7 +603,7 @@ abstract class tx_rnbase_util_SearchBase {
 	 * @param tx_rnbase_configurations $configurations
 	 * @param string $confId Id der TS-Config z.B. myview.fields.
 	 */
-	static function setConfigFields(&$fields, &$configurations, $confId) {
+	static function setConfigFields(&$fields, $configurations, $confId) {
 		$cfgFields = $configurations->get($confId);
 		self::setConfigFieldsByArray($fields, $cfgFields);
 	}

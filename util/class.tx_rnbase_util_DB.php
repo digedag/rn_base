@@ -618,7 +618,7 @@ class tx_rnbase_util_DB {
 	 * @param mixed $res
 	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
-	public static function watchOutDB(&$res, $database = NULL) {
+	public static function watchOutDB($res, $database = NULL) {
 		if (!is_object($database)) {
 			$database = $GLOBALS['TYPO3_DB'];
 		}

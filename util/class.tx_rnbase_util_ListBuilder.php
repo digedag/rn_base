@@ -195,12 +195,13 @@ class tx_rnbase_util_ListBuilder {
 
 				$templateEntry = t3lib_parsehtml::getSubpart($templateList, '###'.$marker.'###');
 				$offset = 0;
-				$pageBrowser =& $viewData->offsetGet('pagebrowser');
+				$pageBrowser = $viewData->offsetGet('pagebrowser');
 				if($pageBrowser) {
 					$state = $pageBrowser->getState();
 					$offset = $state['offset'];
 				}
 
+				$markerArray = $subpartArray = array();
 				$listMarker->addVisitors($this->visitors);
 				$out = $listMarker->render($dataArr, $templateEntry, $markerClassname,
 						$confId, $marker, $formatter, $markerParams, $offset);
@@ -244,13 +245,13 @@ class tx_rnbase_util_ListBuilder {
 
 		// Muss ein Formular mit angezeigt werden
 		// Zuerst auf einen Filter prüfen
-		$filter  =& $viewData->offsetGet('filter');
+		$filter  = $viewData->offsetGet('filter');
 		if($filter) {
 			$template = $filter->getMarker()->parseTemplate($template, $formatter, $confId.'filter.', $marker);
 		}
 		// Jetzt noch die alte Variante
 		$markerArray['###SEARCHFORM###'] = '';
-		$seachform  =& $viewData->offsetGet('searchform');
+		$seachform  = $viewData->offsetGet('searchform');
 		if($seachform)
 			$markerArray['###SEARCHFORM###'] = $seachform;
 

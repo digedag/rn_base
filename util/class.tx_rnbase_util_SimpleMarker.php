@@ -73,14 +73,14 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 	/**
 	 * Führt vor dem parsen Änderungen am Model durch.
 	 *
-	 * @param tx_rnbase_model_base &$item
+	 * @param tx_rnbase_model_base $item
 	 * @param tx_rnbase_configurations &$configurations
 	 * @param string &$confId
 	 * @return void
 	 */
 	protected function prepareItem(
-		tx_rnbase_model_base &$item,
-		tx_rnbase_configurations &$configurations,
+		tx_rnbase_model_base $item,
+		tx_rnbase_configurations $configurations,
 		$confId
 	) {
 		if (empty($item->record)) {
