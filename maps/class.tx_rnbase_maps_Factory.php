@@ -30,10 +30,23 @@ class tx_rnbase_maps_Factory {
 	/**
 	 * Erstellt eine GoogleMap
 	 *
+	 * @param tx_rnbase_configurations $configurations
+	 * @param string $confId
 	 * @return tx_rnbase_maps_google_Map
 	 */
 	static function createGoogleMap(&$configurations, $confId) {
 		$map = self::createMap('tx_rnbase_maps_google_Map', $configurations, $confId);
+		$keys = $configurations->getKeyNames($confId.'poi.');
+		if(isset($keys)) {
+			tx_rnbase::load('tx_rnbase_maps_Util');
+			foreach ($keys As $key) {
+				$poi = $configurations->get($confId.'poi.'.$key.'.');
+				$poi = tx_rnbase::makeInstance('tx_rnbase_maps_POI', $poi);
+				$bubble = tx_rnbase_maps_Util::createMapBubble($poi);
+				$bubble->setDescription($poi->getDescription());
+				$map->addMarker($bubble);
+			}
+		}
 		return $map;
 	}
 	/**

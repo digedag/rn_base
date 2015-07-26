@@ -74,20 +74,23 @@ class tx_rnbase_maps_Util {
 	}
 
 	private static function hasGeoData($item) {
-		return !(!$item->getCity() && !$item->getZip() && !$item->getLongitute() && !$item->getLatitute());
+		return !(!$item->getCity() && !$item->getZip() && !$item->getLongitude() && !$item->getLatitude());
 	}
 	/**
 	 * Create a bubble for GoogleMaps. This can be done if the item has address data.
 	 * @param string $template
-	 * @param tx_cfcleague_models_Club $item
+	 * @param tx_rnbase_maps_ILocation $item
 	 */
 	public static function createMapBubble(tx_rnbase_maps_ILocation $item) {
 		if(!self::hasGeoData($item)) return false;
 		tx_rnbase::load('tx_rnbase_maps_DefaultMarker');
 
 		$marker = new tx_rnbase_maps_DefaultMarker();
-		if($item->getLongitute() || $item->getLatitute()) {
-			$marker->setCoords($item->getCoords());
+		if($item->getLongitude() || $item->getLatitude()) {
+			$coords = tx_rnbase::makeInstance('tx_rnbase_maps_Coord');
+			$coords->setLatitude($item->getLatitude());
+			$coords->setLongitude($item->getLongitude());
+			$marker->setCoords($coords);
 		}
 		else {
 			$marker->setCity($item->getCity());

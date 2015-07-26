@@ -23,9 +23,11 @@
 ***************************************************************/
 
 tx_rnbase::load('tx_rnbase_maps_BaseMap');
-if(!t3lib_extMgm::isLoaded('wec_map'))
+tx_rnbase::load('tx_rnbase_util_Extensions');
+
+if(!tx_rnbase_util_Extensions::isLoaded('wec_map'))
 	throw new Exception('Extension wec_map must be installed to use GoogleMaps!');
-require_once(t3lib_extMgm::extPath('wec_map').'map_service/google/class.tx_wecmap_map_google.php');
+require_once(tx_rnbase_util_Extensions::extPath('wec_map').'map_service/google/class.tx_wecmap_map_google.php');
 
 /**
  * Implementation for GoogleMaps based on extension wec_map.
@@ -96,13 +98,13 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap {
 		$coord = $marker->getCoords();
 		if($coord) {
 			$this->getWecMap()->addMarkerByLatLong($coord->getLatitude(), $coord->getLongitude(),
-				$marker->getTitle(), $marker->getDescription(), $marker->getZoomMin(), $marker->getZoomMax(), $iconName);
+				($marker->getTitle() ? $marker->getTitle() : ''), $marker->getDescription(), $marker->getZoomMin(), $marker->getZoomMax(), $iconName);
 			return;
 		}
 
 		$this->getWecMap()->addMarkerByAddress($marker->getStreet(), $marker->getCity(), $marker->getState(),
 			$marker->getZip(), $marker->getCountry(),
-			$marker->getTitle(), $marker->getDescription(), $marker->getZoomMin(), $marker->getZoomMax(), $iconName);
+			($marker->getTitle() ? $marker->getTitle() : ''), $marker->getDescription(), $marker->getZoomMin(), $marker->getZoomMax(), $iconName);
 	}
 	function draw() {
 		$code = $this->map->drawMap();
