@@ -3,6 +3,11 @@
 Änderungen
 ----------
 
+v0.15.1 (29.07.2015)
+ * more map functions
+ * code cleanups
+ * Maps: define POIs by Typoscript
+
 v0.15.0 (18.07.2015)
  * Documentation added
  * Some internal refactorings
