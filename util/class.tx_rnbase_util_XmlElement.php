@@ -230,3 +230,4 @@ class tx_rnbase_util_XmlElement extends SimpleXMLElement {
 			}
 		}
 	}
+}
