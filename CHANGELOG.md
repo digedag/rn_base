@@ -3,6 +3,11 @@
 Änderungen
 ----------
 
+v0.15.2 (05.08.2015)
+ * Array syntax fixed in maps factory
+ * added missing brace in util_XmlElement
+ * decode image path to avoid problems with special chars when scaling images
+
 v0.15.1 (29.07.2015)
  * more map functions
  * code cleanups
