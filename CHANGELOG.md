@@ -3,7 +3,10 @@
 Änderungen
 ----------
 
-v0.15.5 (??.??.2015)
+v0.15.6 (??.??.2015)
+
+v0.15.5 (10.08.2015)
+ * bugfix for new pagebrowser visualizations
 
 v0.15.4 (10.08.2015)
  * reset clean state for models on reset
