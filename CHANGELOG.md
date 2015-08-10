@@ -3,6 +3,11 @@
 Änderungen
 ----------
 
+v0.15.5 (??.??.2015)
+
+v0.15.4 (10.08.2015)
+ * reset clean state for models on reset
+
 v0.15.3 (10.08.2015)
  * New subpart marker ###PAGEBROWSER_PREV_BULLETS_PAGE### and ###PAGEBROWSER_NEXT_BULLETS_PAGE### to visualize skipped pages in pagebrowser.
  * simple Testcase for tx_rnbase_util_XmlElement
