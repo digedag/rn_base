@@ -224,6 +224,10 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 			$this->getTableName(),
 			$this->getUid()
 		);
+
+		// set the modified state to clean
+		$this->resetCleanState();
+
 		return $this;
 	}
 	/**
