@@ -3,6 +3,10 @@
 Änderungen
 ----------
 
+v0.15.3 (10.08.2015)
+ * New subpart marker ###PAGEBROWSER_PREV_BULLETS_PAGE### and ###PAGEBROWSER_NEXT_BULLETS_PAGE### to visualize skipped pages in pagebrowser.
+ * simple Testcase for tx_rnbase_util_XmlElement
+
 v0.15.2 (05.08.2015)
  * Array syntax fixed in maps factory
  * added missing brace in util_XmlElement
@@ -13,7 +17,7 @@ v0.15.1 (29.07.2015)
  * code cleanups
  * Maps: define POIs by Typoscript
 
-v0.15.0 (18.07.2015)
+v0.15.0 (18.07.2015) (Public Release)
  * Documentation added
  * Some internal refactorings
 
