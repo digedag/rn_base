@@ -33,7 +33,7 @@ tx_rnbase::load('tx_rnbase_util_Math');
  * Contains utility functions for HTML-Forms
  */
 class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
-	private $pagePartsDef = array('normal', 'current', 'first', 'last', 'prev', 'next');
+	private $pagePartsDef = array('normal', 'current', 'first', 'last', 'prev', 'next', 'prevspecial', 'nextspecial');
 
 	/**
 	 * Erstellung des PageBrowserMarkers
@@ -100,10 +100,21 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 		if($templates['prev'] && $pointer > 0) {
 			$parts[] = $this->getPageString($pointer-1, $pointer, 'prev', $templates, $formatter, $pbConfId, $pbMarker);
 		}
+
+		// Der Marker "..." bei vielen Seiten
+		if($templates['prevspecial'] && $pointer > $pageFloat-1) {
+			$parts[] = $this->getPageString($pointer-1, $pointer, 'prevspecial', $templates, $formatter, $pbConfId, $pbMarker);
+		}
+
 		// Jetzt über alle Seiten iterieren
 		for($i=$firstLastArr['first']; $i < $firstLastArr['last']; $i++) {
 			$pageId = ($i == $pointer && $templates['current']) ? 'current' : 'normal';
 			$parts[] = $this->getPageString($i, $pointer, $pageId, $templates, $formatter, $pbConfId, $pbMarker);
+		}
+
+		// Der Marker "..." bei vielen Seiten
+		if($templates['nextspecial'] && $pointer+$pageFloat < $totalPages-1) {
+			$parts[] = $this->getPageString($pointer-1, $pointer, 'nextspecial', $templates, $formatter, $pbConfId, $pbMarker);
 		}
 
 		// Der Marker für die nächste Seite
