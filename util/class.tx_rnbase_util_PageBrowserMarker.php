@@ -102,7 +102,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 		}
 
 		// Der Marker "..." bei vielen Seiten
-		if($templates['prevspecial'] && $pointer > $pageFloat-1) {
+		if($templates['prevspecial'] && $pointer > $pageFloat-1 && $totalPages > $maxPages) {
 			$parts[] = $this->getPageString($pointer-1, $pointer, 'prevspecial', $templates, $formatter, $pbConfId, $pbMarker);
 		}
 
