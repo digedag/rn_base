@@ -4,6 +4,7 @@
 ----------
 
 v0.15.6 (??.??.2015)
+ * linker for mod tables gets a interface and a new show details class
 
 v0.15.5 (10.08.2015)
  * bugfix for new pagebrowser visualizations
