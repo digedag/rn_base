@@ -5,6 +5,8 @@
 
 v0.15.6 (??.??.2015)
  * linker for mod tables gets a interface and a new show details class
+ * new possiblity to set enableFields for joined tables when using the searchframework
+ * when using the search framework the extension configuration for loadHiddenObjects is respected
 
 v0.15.5 (10.08.2015)
  * bugfix for new pagebrowser visualizations

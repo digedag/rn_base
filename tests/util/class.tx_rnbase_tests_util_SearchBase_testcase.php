@@ -146,6 +146,92 @@ class tx_rnbase_tests_util_SearchBase_testcase extends tx_phpunit_testcase {
 		return tx_rnbase::makeInstance('tx_rnbase_util_SearchGeneric');
 	}
 
+	/**
+	 * @group unit
+	 */
+	public function testSearchSetsEnableFieldsForJoinedTablesIfConfigured() {
+		$searcher = tx_rnbase::makeInstance('tx_rnbase_tests_fixtures_classes_Searcher');
+		$fields = array(
+			'PAGE.uid' => array(OP_GT_INT => 0),
+			'CONTENT.uid' => array(OP_GT_INT => 0),
+			'FEUSER.uid' => array(OP_GT_INT => 0)
+		);
+		$options['sqlonly'] = TRUE;
+		$options['enableFieldsForAdditionalTableAliases'] = 'CONTENT';
+
+		$query = $searcher->search($fields, $options);
+
+		self::assertContains('pages.deleted=0', $query, 'deleted for pages is missing');
+		self::assertContains('tt_content.pid >=0', $query, 'pid for tt_content is missing');
+		self::assertContains('tt_content.deleted=0', $query, 'deleted for tt_content is missing');
+		self::assertNotContains('fe_users.deleted=0', $query, 'deleted for fe_users is present');
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testSearchSetsEnableFieldsForJoinedTablesIfConfiguredAndUseAliasIsTrue() {
+		$searcher = tx_rnbase::makeInstance('tx_rnbase_tests_fixtures_classes_Searcher');
+		$searcher->setUseAlias(TRUE);
+		$fields = array(
+			'PAGE.uid' => array(OP_GT_INT => 0),
+			'CONTENT.uid' => array(OP_GT_INT => 0),
+			'FEUSER.uid' => array(OP_GT_INT => 0)
+		);
+		$options['sqlonly'] = TRUE;
+		$options['enableFieldsForAdditionalTableAliases'] = 'CONTENT';
+
+		$query = $searcher->search($fields, $options);
+
+		self::assertContains('PAGE.deleted=0', $query, 'deleted for PAGE is missing');
+		self::assertContains('CONTENT.pid >=0', $query, 'pid for CONTENT is missing');
+		self::assertContains('CONTENT.deleted=0', $query, 'deleted for CONTENT is missing');
+		self::assertNotContains('FEUSER.deleted=0', $query, 'deleted for FEUSER is present');
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testSearchSetsEnableFieldsForJoinedTablesIfConfiguredWithMoreThanOne() {
+		$searcher = tx_rnbase::makeInstance('tx_rnbase_tests_fixtures_classes_Searcher');
+		$searcher->setUseAlias(TRUE);
+		$fields = array(
+			'PAGE.uid' => array(OP_GT_INT => 0),
+			'CONTENT.uid' => array(OP_GT_INT => 0),
+			'FEUSER.uid' => array(OP_GT_INT => 0)
+		);
+		$options['sqlonly'] = TRUE;
+		$options['enableFieldsForAdditionalTableAliases'] = 'CONTENT,FEUSER';
+
+		$query = $searcher->search($fields, $options);
+
+		self::assertContains('PAGE.deleted=0', $query, 'deleted for PAGE is missing');
+		self::assertContains('CONTENT.pid >=0', $query, 'pid for CONTENT is missing');
+		self::assertContains('CONTENT.deleted=0', $query, 'deleted for CONTENT is missing');
+		self::assertContains('FEUSER.deleted=0', $query, 'deleted for FEUSER is present');
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testSearchSetsEnableFieldsForJoinedTablesNotIfNotConfigured() {
+		$searcher = tx_rnbase::makeInstance('tx_rnbase_tests_fixtures_classes_Searcher');
+		$searcher->setUseAlias(TRUE);
+		$fields = array(
+			'PAGE.uid' => array(OP_GT_INT => 0),
+			'CONTENT.uid' => array(OP_GT_INT => 0),
+			'FEUSER.uid' => array(OP_GT_INT => 0)
+		);
+		$options['sqlonly'] = TRUE;
+
+		$query = $searcher->search($fields, $options);
+
+		self::assertContains('PAGE.deleted=0', $query, 'deleted for PAGE is missing');
+		self::assertNotContains('CONTENT.pid >=0', $query, 'pid for CONTENT is present');
+		self::assertNotContains('CONTENT.deleted=0', $query, 'deleted for CONTENT is present');
+		self::assertNotContains('FEUSER.deleted=0', $query, 'deleted for FEUSER is present');
+
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/class.tx_rnbase_tests_utilSearchBase_testcase.php']) {

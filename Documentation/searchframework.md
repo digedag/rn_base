@@ -1,4 +1,4 @@
-# Datenbankzugriff mit dem Suchframework 
+# Datenbankzugriff mit dem Suchframework
 
 Anfragen an die Datenbank sind sich in vielen Fällen sehr ähnlich. Meist ändert sich nur eine WHERE-Klausel, eine per JOIN eingebundene Tabelle oder die Reihenfolge der Sortierung. Der Zusammenbau dieser SQL-Queries im PHP-Code ist nicht nur unschön, sondern dadurch auch häufig redundant. Was liegt also näher als diese Arbeit zentral in einer Klasse zu erledigen, die dann im Bedarfsfall die passende Query zusammenstellt.
 
@@ -11,9 +11,9 @@ $srv = tx_t3sponsors_util_ServiceRegistry::getSponsorService();
 $sponsors = $srv->search($fields, $options);
 ```
 
-Mit diesem Code werden Sponsoren gesucht, die in den Branchen mit der UID 22 oder 3, sowie in der Sponsorenkategorie mit der UID 1234 sind. Sortiert wird das Ergebnis nach dem Namen des Sponsors. 
+Mit diesem Code werden Sponsoren gesucht, die in den Branchen mit der UID 22 oder 3, sowie in der Sponsorenkategorie mit der UID 1234 sind. Sortiert wird das Ergebnis nach dem Namen des Sponsors.
 
-Wie man sieht, wurden die Namen der DB-Tabellen durch Aliase ersetzt. Diese muss man natürlich kennen. Man muss aber nicht wissen, wie der JOIN auf die beteiligten Tabellen durchgeführt wird. Die Operatoren definieren schon die Typen der Argumente. Der Operator OP_IN_INT erwartet also ein kommaseparierte Liste von Integer-Werten. Ein möglicher Einbruch per SQL-Injection ist somit also ausgeschlossen. Ausserdem läßt sich diese Notation sehr gut in Typoscript abbilden: 
+Wie man sieht, wurden die Namen der DB-Tabellen durch Aliase ersetzt. Diese muss man natürlich kennen. Man muss aber nicht wissen, wie der JOIN auf die beteiligten Tabellen durchgeführt wird. Die Operatoren definieren schon die Typen der Argumente. Der Operator OP_IN_INT erwartet also ein kommaseparierte Liste von Integer-Werten. Ein möglicher Einbruch per SQL-Injection ist somit also ausgeschlossen. Ausserdem läßt sich diese Notation sehr gut in Typoscript abbilden:
 
 ```
 filter {
@@ -59,7 +59,7 @@ $fields[SEARCH_FIELD_CUSTOM] = "
 (
   tx_fewo_saisonzeiten.von < '$von' AND tx_fewo_saisonzeiten.bis > '$von' OR
   tx_fewo_saisonzeiten.von < '$bis' AND tx_fewo_saisonzeiten.bis > '$bis' OR
-  tx_fewo_saisonzeiten.von > '$von' AND tx_fewo_saisonzeiten.bis < '$bis' 
+  tx_fewo_saisonzeiten.von > '$von' AND tx_fewo_saisonzeiten.bis < '$bis'
 )";
 $fields['PREIS.FEWO'][OP_EQ_INT] = $fewo->getUid();
 // Diese Bedingung wird für den JOIN auf die Zeiten benötigt
@@ -71,7 +71,7 @@ $options['distinct'] = 1;
 
 Die Abfragen erfolgen immer genau auf eine Zieltabelle. Zwar können JOINs zu anderen Tabellen verwendet werden, aber im Ergebnis-Set sind immer nur die Objekte der Zieltabelle. Für jede Zieltabelle muss ein Such-Klasse implementiert werden, die von der Basisklasse **tx_rnbase_util_SearchBase** erbt. Auch hier wird wieder das Pattern *Inversion of control* eingesetzt. Die Basisklasse übernimmt also die Steuerung und die Kindklassen liefern nur die notwendigen Informationen.
 
-Im Fall der Suche sind das die Definition der beteiligten Tabellen sowie die notwendigen JOINs. Hier als Beispiel der Zugriff auf die Tabelle tx_t3sponsors_companies: 
+Im Fall der Suche sind das die Definition der beteiligten Tabellen sowie die notwendigen JOINs. Hier als Beispiel der Zugriff auf die Tabelle tx_t3sponsors_companies:
 
 ```php
 class tx_t3sponsors_search_Sponsor extends tx_rnbase_util_SearchBase {
@@ -136,5 +136,16 @@ Abschließend noch ein Blick auf vorhandene Optionen bei der Abfrage:
 * groupby - GROUP BY auf bestimmte Spalten
 * orderby - Sortierung
 * count - Es werden keine Datensätze, deren Anzahl geliefert
-* debug - Der erzeugte SQL-String wird im FE als Debugausgabe angezeigt. Sehr nützlich bei der Fehlersuche. :-) 
+* debug - Der erzeugte SQL-String wird im FE als Debugausgabe angezeigt. Sehr nützlich bei der Fehlersuche. :-)
 
+
+## enableFields nutzen
+Per default werden die enableFields automatisch und korrekt (abhängig vom BE etc.) für die Tabelle des Searchers gesetzt. Allerdings gilt das nicht für evtl. gejointe Tabellen. Dafür gibt es die Möglichkeit die Aliase kommasepariert per TypoScript zu konfigurieren, für welche die enableFields ebenfalls gesetzt werden.
+
+```
+filter {
+ options.enableFieldsForAdditionalTableAliases = CAT
+}
+```
+Wenn loadHiddenObjects in der Extension Konfiguration gesetzt wurde und jemand im Backend eingeloggt ist, dann werden
+im Frontend auch versteckte Datensätze angezeigt.

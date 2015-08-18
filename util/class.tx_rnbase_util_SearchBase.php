@@ -207,6 +207,10 @@ abstract class tx_rnbase_util_SearchBase {
 			$where .= ' AND ' . $customFields;
 		}
 
+		if ($options['enableFieldsForAdditionalTableAliases']) {
+			$where .= $this->setEnableFieldsForAdditionalTableAliases($tableAliases, $options);
+		}
+
 		$sqlOptions = array();
 		$sqlOptions['where'] = $where;
 		if($options['pidlist'])
@@ -485,6 +489,28 @@ abstract class tx_rnbase_util_SearchBase {
 		if(strlen($joins))
 			$from[0] .= $joins;
 		return $from;
+	}
+
+	/**
+	 * @param array $tableAliases
+	 * @param array $options
+	 * @return string
+	 */
+	protected function setEnableFieldsForAdditionalTableAliases(array $tableAliases, array $options) {
+		$tableAliasesToSetEnableFields = tx_rnbase_util_Strings::trimExplode(
+			',', $options['enableFieldsForAdditionalTableAliases']
+		);
+		$where = '';
+		foreach ($tableAliasesToSetEnableFields as $tableAliaseToSetEnableFields) {
+			if (isset($tableAliases[$tableAliaseToSetEnableFields])) {
+				$tableAlias = $this->useAlias() ? $tableAliaseToSetEnableFields : '';
+				$where .= tx_rnbase_util_DB::handleEnableFieldsOptions(
+					$options, $this->tableMapping[$tableAliaseToSetEnableFields], $tableAlias
+				);
+			}
+		}
+
+		return $where;
 	}
 
 	/**
