@@ -30,6 +30,33 @@ tx_rnbase::load('tx_rnbase_util_SearchBase');
 class tx_rnbase_tests_util_DB_testcase extends tx_phpunit_testcase {
 
 	/**
+	 * @var int
+	 */
+	private $loadHiddenObjectsBackUp;
+
+	private $beUserBackUp;
+
+	/**
+	 * (non-PHPdoc)
+	 * @see PHPUnit_Framework_TestCase::setUp()
+	 */
+	protected function setUp() {
+		$this->loadHiddenObjectsBackUp = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'];
+		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = 0;
+
+		$this->beUserBackUp = $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * (non-PHPdoc)
+	 * @see PHPUnit_Framework_TestCase::tearDown()
+	 */
+	protected function tearDown() {
+		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = $this->loadHiddenObjectsBackUp;
+		$GLOBALS['BE_USER'] = $this->beUserBackUp;
+	}
+
+	/**
 	 * @group unit
 	 */
 	public function testDoSelectWithEnableFieldsBe() {
@@ -54,6 +81,54 @@ class tx_rnbase_tests_util_DB_testcase extends tx_phpunit_testcase {
 		$fields = array('hidden', 'starttime', 'endtime', 'fe_group', 'deleted');
 		foreach ($fields As $field) {
 			$this->assertRegExp('/'.$field.'/', $sql, $field.' not found');
+		}
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testDoSelectWithEnableFieldsFeSetsEnableFieldsForBeIfLoadHiddenObjectAndBeUser() {
+		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = 1;
+		$options['sqlonly'] = 1;
+		$options['enablefieldsfe'] = 1;
+		$sql = tx_rnbase_util_DB::doSelect('*', 'tt_content', $options);
+
+		$this->assertRegExp('/deleted=/', $sql, 'deleted is missing');
+
+		$fields = array('hidden', 'starttime', 'endtime', 'fe_group');
+		foreach ($fields As $field) {
+			$this->assertNotRegExp('/'.$field.'/', $sql, $field.' found');
+		}
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testDoSelectWithEnableFieldsFeSetsEnableFieldsForfeIfLoadHiddenObjectButNoBeUser() {
+		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = 1;
+		$GLOBALS['BE_USER'] = NULL;
+		$options['sqlonly'] = 1;
+		$options['enablefieldsfe'] = 1;
+		$sql = tx_rnbase_util_DB::doSelect('*', 'tt_content', $options);
+
+		$fields = array('hidden', 'starttime', 'endtime', 'fe_group', 'deleted');
+		foreach ($fields As $field) {
+			$this->assertRegExp('/'.$field.'/', $sql, $field.' not found');
+		}
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testDoSelectWithEnableFieldsOffSetsEnableFieldsForBeNotIfLoadHiddenObjectAndBeUser() {
+		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = 1;
+		$options['sqlonly'] = 1;
+		$options['enablefieldsoff'] = 1;
+		$sql = tx_rnbase_util_DB::doSelect('*', 'tt_content', $options);
+
+		$fields = array('hidden', 'starttime', 'endtime', 'fe_group', 'deleted');
+		foreach ($fields As $field) {
+			$this->assertNotRegExp('/'.$field.'/', $sql, $field.' found');
 		}
 	}
 

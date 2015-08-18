@@ -920,6 +920,13 @@ class tx_rnbase_util_DB {
 		$enableFields = '';
 
 		if (!$options['enablefieldsoff']) {
+			if(
+				is_object($GLOBALS['BE_USER']) &&
+				$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects']
+			) {
+				$options['enablefieldsbe'] = 1;
+			}
+
 			// Zur Where-Clause noch die gültigen Felder hinzufügen
 			$sysPage = tx_rnbase_util_TYPO3::getSysPage();
 			$mode = (TYPO3_MODE == 'BE') ? 1 : 0;
