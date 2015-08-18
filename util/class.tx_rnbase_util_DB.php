@@ -97,33 +97,7 @@ class tx_rnbase_util_DB {
 		}
 		else $limit = '';
 
-
-		if(!$arr['enablefieldsoff']) {
-			// Zur Where-Clause noch die gültigen Felder hinzufügen
-			$sysPage = tx_rnbase_util_TYPO3::getSysPage();
-			$mode = (TYPO3_MODE == 'BE') ? 1 : 0;
-			$ignoreArr = array();
-			if(intval($arr['enablefieldsbe'])) {
-				$mode = 1;
-				// Im BE alle sonstigen Enable-Fields ignorieren
-				$ignoreArr = array('starttime' => 1, 'endtime' => 1, 'fe_group' => 1);
-			}
-			elseif(intval($arr['enablefieldsfe']))
-				$mode = 0;
-			// Workspaces: Bei Tabellen mit Workspace-Support werden die EnableFields automatisch reduziert. Die Extension
-			// Muss aus dem ResultSet ggf. Datensätze entfernen.
-			$enableFields = $sysPage->enableFields($tableName, $mode, $ignoreArr);
-			// Wir setzen zusätzlich pid >=0, damit Version-Records nicht erscheinen
-			// allerdings nur, wenn die Tabelle versionierbar ist!
-			if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['versioningWS'])) {
-				$enableFields .= ' AND ' . $tableName . '.pid >=0';
-			}
-			// Replace tablename with alias
-			if($tableAlias)
-				$enableFields = str_replace($tableName, $tableAlias, $enableFields);
-
-			$where .= $enableFields;
-		}
+		$where .= self::handleEnableFieldsOptions($arr, $tableName, $tableAlias);
 
 		// Das sollte wegfallen. Die OL werden weiter unten geladen
 		if(strlen($i18n) > 0) {
@@ -935,6 +909,44 @@ class tx_rnbase_util_DB {
       tx_rnbase_util_Debug::debug(count($rows), 'Rows retrieved');
     return $rows;
   }
+
+	/**
+	 * @param array $options
+	 * @param string $tableName
+	 * @param string $tableAlias
+	 * @return string
+	 */
+	public static function handleEnableFieldsOptions(array $options, $tableName, $tableAlias) {
+		$enableFields = '';
+
+		if (!$options['enablefieldsoff']) {
+			// Zur Where-Clause noch die gültigen Felder hinzufügen
+			$sysPage = tx_rnbase_util_TYPO3::getSysPage();
+			$mode = (TYPO3_MODE == 'BE') ? 1 : 0;
+			$ignoreArr = array();
+			if (intval($options['enablefieldsbe'])) {
+				$mode = 1;
+				// Im BE alle sonstigen Enable-Fields ignorieren
+				$ignoreArr = array('starttime' => 1, 'endtime' => 1, 'fe_group' => 1);
+			} elseif(intval($options['enablefieldsfe'])) {
+				$mode = 0;
+			}
+			// Workspaces: Bei Tabellen mit Workspace-Support werden die EnableFields automatisch reduziert. Die Extension
+			// Muss aus dem ResultSet ggf. Datensätze entfernen.
+			$enableFields = $sysPage->enableFields($tableName, $mode, $ignoreArr);
+			// Wir setzen zusätzlich pid >=0, damit Version-Records nicht erscheinen
+			// allerdings nur, wenn die Tabelle versionierbar ist!
+			if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['versioningWS'])) {
+				$enableFields .= ' AND ' . $tableName . '.pid >=0';
+			}
+			// Replace tablename with alias
+			if($tableAlias) {
+				$enableFields = str_replace($tableName, $tableAlias, $enableFields);
+			}
+		}
+
+		return $enableFields;
+	}
 }
 
 function tx_rnbase_util_DB_prependAlias(&$item, $key, $alias) {

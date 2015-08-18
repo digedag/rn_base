@@ -28,19 +28,49 @@ tx_rnbase::load('tx_rnbase_util_DB');
 tx_rnbase::load('tx_rnbase_util_SearchBase');
 
 class tx_rnbase_tests_util_DB_testcase extends tx_phpunit_testcase {
-	public function test_doSelectWithEnableFieldsBE() {
-		if(!tx_rnbase_util_TYPO3::isExtLoaded('tt_news'))
-			$this->markTestSkipped();
 
+	/**
+	 * @group unit
+	 */
+	public function testDoSelectWithEnableFieldsBe() {
 		$options['sqlonly'] = 1;
 		$options['enablefieldsbe'] = 1;
-		$sql = tx_rnbase_util_DB::doSelect('*', 'tt_news', $options);
+		$sql = tx_rnbase_util_DB::doSelect('*', 'tt_content', $options);
 		$this->assertRegExp('/deleted=/', $sql, 'deleted is missing');
 
 		$fields = array('hidden', 'starttime', 'endtime', 'fe_group');
 		foreach ($fields As $field)
 			$this->assertNotRegExp('/'.$field.'/', $sql, $field.' found');
 	}
+
+	/**
+	 * @group unit
+	 */
+	public function testDoSelectWithEnableFieldsFe() {
+		$options['sqlonly'] = 1;
+		$options['enablefieldsfe'] = 1;
+		$sql = tx_rnbase_util_DB::doSelect('*', 'tt_content', $options);
+
+		$fields = array('hidden', 'starttime', 'endtime', 'fe_group', 'deleted');
+		foreach ($fields As $field) {
+			$this->assertRegExp('/'.$field.'/', $sql, $field.' not found');
+		}
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testDoSelectWithEnableFieldsOff() {
+		$options['sqlonly'] = 1;
+		$options['enablefieldsoff'] = 1;
+		$sql = tx_rnbase_util_DB::doSelect('*', 'tt_content', $options);
+
+		$fields = array('hidden', 'starttime', 'endtime', 'fe_group', 'deleted');
+		foreach ($fields As $field) {
+			$this->assertNotRegExp('/'.$field.'/', $sql, $field.' found');
+		}
+	}
+
 	/**
 	 * @dataProvider singleFieldWhereProvider
 	 */
@@ -63,6 +93,9 @@ class tx_rnbase_tests_util_DB_testcase extends tx_phpunit_testcase {
 		);
 	}
 
+	/**
+	 * @group unit
+	 */
 	function test_searchWhere() {
 		$sw = 'content management, system';
 		$fields = 'tab1.bodytext,tab1.header';
