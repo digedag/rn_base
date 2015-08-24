@@ -142,12 +142,11 @@ class tx_rnbase_util_DB {
 		if(self::testResource($res)) {
 			$wrapper = is_string($arr['wrapperclass']) ? trim($arr['wrapperclass']) : 0;
 			$callback = isset($arr['callback']) ? $arr['callback'] : FALSE;
-			$sysPage = tx_rnbase_util_TYPO3::getSysPage();
 
 			while (($row = $database->sql_fetch_assoc($res))) {
 				// Workspacesupport
-				self::lookupWorkspace($row, $tableName, $sysPage, $arr);
-				self::lookupLanguage($row, $tableName, $sysPage, $arr);
+				self::lookupWorkspace($row, $tableName, $arr);
+				self::lookupLanguage($row, $tableName, $arr);
 				if(!is_array($row)) continue;
 				$item = ($wrapper) ? tx_rnbase::makeInstance($wrapper, $row) : $row;
 				if ($item instanceof tx_rnbase_model_base) {
@@ -186,9 +185,9 @@ class tx_rnbase_util_DB {
 	/**
 	 *
 	 * @param array $row
-	 * @param t3lib_pageSelect $sysPage
 	 */
-	private static function lookupWorkspace(&$row, $tableName, $sysPage, $options) {
+	private static function lookupWorkspace(&$row, $tableName, $options) {
+		$sysPage = tx_rnbase_util_TYPO3::getSysPage();
 		if (!$sysPage->versioningPreview || $options['enablefieldsoff'] || $options['ignoreworkspace']) {
 			return;
 		}
@@ -200,10 +199,9 @@ class tx_rnbase_util_DB {
 	 * Autotranslate a record to fe language
 	 * @param array $row
 	 * @param string $tableName
-	 * @param t3lib_pageSelect $sysPage
 	 * @param array $options
 	 */
-	private static function lookupLanguage(&$row, $tableName, $sysPage, $options) {
+	private static function lookupLanguage(&$row, $tableName, $options) {
 		// ACHTUNG: Bei Aufruf im BE führt das zu einem Fehler in TCE-Formularen. Die
 		// Initialisierung der TSFE ändert den backPath im PageRender auf einen falschen
 		// Wert. Dadurch werden JS-Dateien nicht mehr geladen.
@@ -215,6 +213,7 @@ class tx_rnbase_util_DB {
 		// Then get localization of record:
 		// (if the content language is not the default language)
 		$tsfe = tx_rnbase_util_TYPO3::getTSFE();
+		$sysPage = tx_rnbase_util_TYPO3::getSysPage();
 		if (!is_object($tsfe) || !$tsfe->sys_language_content || $options['enablefieldsoff'] || $options['ignorei18n']) {
 			return;
 		}
