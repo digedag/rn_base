@@ -3,7 +3,12 @@
 Änderungen
 ----------
 
-v0.15.6 (??.??.2015)
+v0.15.8 (??.??.2015)
+
+v0.15.7 (24.08.2015)
+ * Hotfix:  Fatal errors in util db for workspaces and language overlays fixed
+
+v0.15.6 (19.08.2015)
  * linker for mod tables gets a interface and a new show details class
  * new possiblity to set enableFields for joined tables when using the searchframework
  * when using the search framework the extension configuration for loadHiddenObjects is respected
