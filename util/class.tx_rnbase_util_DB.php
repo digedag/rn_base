@@ -142,6 +142,7 @@ class tx_rnbase_util_DB {
 		if(self::testResource($res)) {
 			$wrapper = is_string($arr['wrapperclass']) ? trim($arr['wrapperclass']) : 0;
 			$callback = isset($arr['callback']) ? $arr['callback'] : FALSE;
+			$sysPage = tx_rnbase_util_TYPO3::getSysPage();
 
 			while (($row = $database->sql_fetch_assoc($res))) {
 				// Workspacesupport
