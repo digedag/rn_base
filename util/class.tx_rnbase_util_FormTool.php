@@ -337,10 +337,11 @@ class tx_rnbase_util_FormTool {
 	 * Erstellt ein einfaches Textfield
 	 */
 	public function createTxtInput($name, $value, $width, $options = array()){
-
+		$class = array_key_exists('class', $options) ? ' class="' . $options['class'].'"' : '';
 		$onChange = array_key_exists('onchange', $options) ? ' onchange="' . $options['onchange'].'"' : '';
 		$ret = '<input type="text" name="'. $name.'"'.$this->doc->formWidth($width).
 			$onChange .
+			$class .
 			' value="' . $value . '" />';
 		return $ret;
 	}
