@@ -97,7 +97,7 @@ class tx_t3sponsors_actions_SponsorList extends tx_rnbase_action_BaseIOC {
 		$cfg['searchcallback'] = array($service, 'search');
 		tx_rnbase_filter_BaseFilter::handleCharBrowser($configurations, $this->getConfId().'sponsor.charbrowser', $viewdata, $fields, $options, $cfg);
 		tx_rnbase_filter_BaseFilter::handlePageBrowser($configurations, $this->getConfId().'sponsor.pagebrowser', $viewdata, $fields, $options, $cfg);
-  	$sponsors = $srv->search($fields, $options);
+		$sponsors = $srv->search($fields, $options);
 		$viewdata->offsetSet('sponsors', $sponsors);
 		return null;
 	}
@@ -106,34 +106,37 @@ class tx_t3sponsors_actions_SponsorList extends tx_rnbase_action_BaseIOC {
 	function getViewClassName() { return 'tx_t3sponsors_views_SponsorList';}
 }
 ```
-Theoretisch kann die Methode handleRequest direkt eine String zurückliefern. Dieser würde dann ohne weitere Verarbeitung im Frontend angezeigt. Im Beispiel oben wird statt dessen NULL zurückgegeben. Dadurch wird die Ausgabe über eine View-Klasse geleitet und man kann HTML-Template verwenden. Alle Daten, die für die Ausgabe benötigt werden, sollten in das Objekt $viewdata geschrieben werden.
+Theoretisch kann die Methode **handleRequest()** direkt einen String zurückliefern. Dieser würde dann ohne weitere Verarbeitung im Frontend angezeigt. Im Beispiel oben wird statt dessen **NULL** zurückgegeben. Dadurch wird die Ausgabe über eine View-Klasse geleitet und man kann HTML-Template verwenden. Alle Daten, die für die Ausgabe benötigt werden, sollten in das Objekt $viewdata geschrieben werden.
 
 ## Die Views
 
-Wenn der Controller nun mit seiner Arbeit fertig ist und alle notwendigen Daten gesammelt bzw. verarbeitet wurden, dann ist die View-Klasse am Zug. Vom Controller wird der View über dessen Methode render($view, &$configurations) aufgerufen. Wie der Controller hat auch der View einige Dinge zu tun, die sich immer wieder gleichen: Das Laden des HTML-Templates und die Suche des gewünschten Subparts. Diese Arbeiten erledigt die Klasse tx_rnbase_view_Base. Wenn wir also unseren View davon erben lassen, dann hat die Klasse ungefähr dieses Aussehen: 
+Wenn der Controller nun mit seiner Arbeit fertig ist und alle notwendigen Daten gesammelt bzw. verarbeitet wurden, dann ist die View-Klasse am Zug. Vom Controller wird der View über dessen Methode *render($view, &$configurations)* aufgerufen. Wie der Controller hat auch der View einige Dinge zu tun, die sich immer wieder gleichen: Das Laden des HTML-Templates und die Suche des gewünschten Subparts. Diese Arbeiten erledigt die Klasse tx_rnbase_view_Base. Wenn wir also unseren View davon erben lassen, dann hat die Klasse ungefähr dieses Aussehen: 
 ```php
 class tx_t3sponsors_views_SponsorList extends tx_rnbase_view_Base {
-  function createOutput($template, &$viewData, &$configurations, &$formatter) {
-  	// Wir holen die Daten von der Action ab
-    $sponsors =& $viewData->offsetGet('sponsors');
-	  $listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
-    $template = $listBuilder->render($sponsors, 
-    								$viewData, $template, 'tx_t3sponsors_marker_Sponsor', 
-    								'sponsorlist.sponsor.', 'SPONSOR', $formatter);
+	function createOutput($template, &$viewData, &$configurations, &$formatter) {
+		// Wir holen die Daten von der Action ab
+		$sponsors =& $viewData->offsetGet('sponsors');
+		$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
+		$template = $listBuilder->render($sponsors, 
+				$viewData, $template, 'tx_t3sponsors_marker_Sponsor', 
+				'sponsorlist.sponsor.', 'SPONSOR', $formatter);
 		return $template;
-  }
-  /**
-   * Subpart der im HTML-Template geladen werden soll. Dieser wird der Methode
-   * createOutput automatisch als $template übergeben. 
-   *
-   * @return string
-   */
-  function getMainSubpart() {
-  	return '###SPONSORLIST###';
-  }
+	}
+	/**
+	 * Subpart der im HTML-Template geladen werden soll. Dieser wird der Methode
+	 * createOutput automatisch als $template übergeben. 
+	 *
+	 * @return string
+	 */
+	function getMainSubpart() {
+		return '###SPONSORLIST###';
+	}
 }
 ```
-Durch die Implementierung der Methode getMainSubpart() bekommt der View direkt den passenden Abschnitt aus dem HTML-Template übergeben. Doch wie findet der View eigentlich die Datei? Diese wird per Konvention ermittelt. Die Actionklasse definiert in der Methode **getTemplateName()** den Typoscript-Key für das HTML-Template. Wenn die Action-Klasse also **sponsorlist** liefert, dann wird das Template über den TS-Key plugin.t3sponsors.sponsorlistTemplate gesucht.
+Durch die Implementierung der Methode getMainSubpart() bekommt der View direkt den passenden Abschnitt aus dem HTML-Template übergeben. Doch wie findet der View eigentlich die Datei? Diese wird per Konvention ermittelt. Die Actionklasse definiert in der Methode **getTemplateName()** den Typoscript-Key für das HTML-Template. Wenn die Action-Klasse also **sponsorlist** liefert, dann wird das Template über den TS-Key **plugin.t3sponsors.sponsorlistTemplate** gesucht.
+
+Im Beispiel für das Template über den ListBuilder von rn_base gerendert. Nähere Informationen findet man beim [Rendern der Daten](rendering_data.md).
+
 
 ## Das Model
 
