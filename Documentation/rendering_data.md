@@ -36,9 +36,22 @@ Das ist die kürzeste Variante für eine Markerklasse. Es werden nur die Marker 
 
 Im Beispielcode ist die wichtigste Zeile der Aufruf von **$formatter->getItemMarkerArrayWrapped()**. Das $item ist ein rn_base-Model. Und für jede Spalte aus der Datenbank wird automatisch ein passender TYPO3-Marker erstellt. Zusätzlich besteht aber automatisch die Möglichkeit die Werte per Typoscript zu manipulieren. Dafür wird die Variable $confId übergeben, die den aktuellen Typoscript-Pfad enthält. Dadurch, daß diese $confId, aber auch der Marker-Prefix $marker als Parameter übergeben werden, kann der Marker wiederverwendet werden.
 
-In T3sports werden Teams gerendet. Das kann entweder in der Team-Liste oder Detailansicht geschehen. Oder aber das Team wird als Teil eines Spiels gerendert. Im ersten Fall wird der Marker mit **###TEAM_ ** beginnen. Im zweiten Fall startet der Marker mit **###MATCH_HOME_**. In beiden Fällen landet der Aufruf bei der selben Markerklasse für die Team. Nur die Parameter $confId und $marker unterscheiden sich. Jede Funktion die eine Markerklasse bereitstellt, ist somit in allen Views verfügbar, in denen die Entity gerendert wird. Und das ohne zusätzlichen Aufwand!
+In T3sports werden Teams gerendet. Das kann entweder in der Team-Liste oder Detailansicht geschehen. Oder aber das Team wird als Teil eines Spiels gerendert. Im ersten Fall wird der Marker mit **###TEAM_ ** beginnen. Im zweiten Fall startet der Marker mit **###MATCH_HOME_**. In beiden Fällen landet der Aufruf bei der selben Markerklasse für das Team. Nur die Parameter $confId und $marker unterscheiden sich. Jede Funktion die eine Markerklasse bereitstellt, ist somit in allen Views verfügbar, in denen die Entity gerendert wird. Und das ohne zusätzlichen Aufwand!
 
 ### Referenzen auf andere Entities
+#### n-1 Relationen
+Schauen wir uns das Beispiel aus dem letzten Abschnitt etwas genauer an. Die Entität *Match* enthält zwei Relationen auf die Entität *Team*, eine für die Heimmannschaft und eine für die Gastmannschaft. Wenn das Spiel gerendert wird, dann sollte sich der Marker für das Spiel sich wirklich nur um die Daten des Spiels kümmern. Natürlich will man aber trotzdem im HTML-Template auf die Attribute der Mannschaften zugreifen. Also sollte der Match-Marker diese Relationen bereitstellen. In der Methode **parseTemplate()** findet man dazu im MatchMarker den folgenden Aufruf:
+```php
+	if($this->containsMarker($template, $marker.'_HOME'))
+		$template = $this->teamMarker->parseTemplate($template, $match->getHome(), $formatter, $confId.'home.', $marker.'_HOME');
+	if($this->containsMarker($template, $marker.'_GUEST'))
+		$template = $this->teamMarker->parseTemplate($template, $match->getGuest(), $formatter, $confId.'guest.', $marker.'_GUEST');
+```
+Die Variable **$marker** enthält bei direktem Aufruf den Normalfall den Wert **'MATCH'**. Die Markerklasse prüft also zunächst, ob es im HTML-Template einen Marker gibt, der mit **###MATCH_HOME** beginnt. In diesem Fall wird das Rendering für die Heimmannschaft gestartet. Analog die selbe Abfrage für das Team des Gasts. Wir der Marker gefunden, dann wird der Aufruf direkt an die Markerklasse für die Teams übergeben. Dieser bekommt den passenden Marker-Prefix und den Typoscript-Pfad übergeben. Als Ergebnis liefert er den HTML-String mit den ersetzten Markern.
+
+#### 1-n Relationen
+
+
 
 ### Link-Erzeugung
 
