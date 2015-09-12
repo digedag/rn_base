@@ -42,15 +42,51 @@ In T3sports werden Teams gerendet. Das kann entweder in der Team-Liste oder Deta
 #### n-1 Relationen
 Schauen wir uns das Beispiel aus dem letzten Abschnitt etwas genauer an. Die Entität *Match* enthält zwei Relationen auf die Entität *Team*, eine für die Heimmannschaft und eine für die Gastmannschaft. Wenn das Spiel gerendert wird, dann sollte sich der Marker für das Spiel sich wirklich nur um die Daten des Spiels kümmern. Natürlich will man aber trotzdem im HTML-Template auf die Attribute der Mannschaften zugreifen. Also sollte der Match-Marker diese Relationen bereitstellen. In der Methode **parseTemplate()** findet man dazu im MatchMarker den folgenden Aufruf:
 ```php
+	$teamMarker = tx_rnbase::makeInstance('tx_cfcleaguefe_util_TeamMarker');
 	if($this->containsMarker($template, $marker.'_HOME'))
-		$template = $this->teamMarker->parseTemplate($template, $match->getHome(), $formatter, $confId.'home.', $marker.'_HOME');
+		$template = $teamMarker->parseTemplate($template, $match->getHome(), $formatter, $confId.'home.', $marker.'_HOME');
 	if($this->containsMarker($template, $marker.'_GUEST'))
-		$template = $this->teamMarker->parseTemplate($template, $match->getGuest(), $formatter, $confId.'guest.', $marker.'_GUEST');
+		$template = $teamMarker->parseTemplate($template, $match->getGuest(), $formatter, $confId.'guest.', $marker.'_GUEST');
 ```
 Die Variable **$marker** enthält bei direktem Aufruf den Normalfall den Wert **'MATCH'**. Die Markerklasse prüft also zunächst, ob es im HTML-Template einen Marker gibt, der mit **###MATCH_HOME** beginnt. In diesem Fall wird das Rendering für die Heimmannschaft gestartet. Analog die selbe Abfrage für das Team des Gasts. Wir der Marker gefunden, dann wird der Aufruf direkt an die Markerklasse für die Teams übergeben. Dieser bekommt den passenden Marker-Prefix und den Typoscript-Pfad übergeben. Als Ergebnis liefert er den HTML-String mit den ersetzten Markern.
 
 #### 1-n Relationen
+Ein gutes Beispiel für die Ausgabe von 1-n-Relationen findet man im TeamMarker von T3sports. Dort werden die Spieler und Trainer des Teams angezeigt:
+```php
+	if($this->containsMarker($template, $marker.'_PLAYERS'))
+		$template = $this->addProfiles($template, $team, $formatter, $confId.'player.', $marker.'_PLAYER','players');
+```
+Der Aufruf sieht zunächst ganz ähnlich aus, wie bei der n-1-Relation. Nur wird hier nicht der Aufruf an die Markerklasse der Profiles übergeben, sondern zunächst eine weitere private Methode **_addProfiles()** aufgerufen. 
 
+```php
+	private function addProfiles($template, $team, $formatter, $confId, $markerPrefix, $joinCol) {
+		$srv = tx_cfcleaguefe_util_ServiceRegistry::getProfileService();
+		$fields['PROFILE.UID'][OP_IN_INT] = $team->record[$joinCol];
+		$options = array();
+		tx_rnbase_util_SearchBase::setConfigFields($fields, $formatter->configurations, $confId.'fields.');
+		tx_rnbase_util_SearchBase::setConfigOptions($options, $formatter->configurations, $confId.'options.');
+		$children = $srv->search($fields, $options);
+		if(!empty($children) && !array_key_exists('orderby', $options)) // Default sorting
+			$children = $this->sortProfiles($children, $team->record[$joinCol]);
+	
+		$options['team'] = $team;
+		$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
+		return $listBuilder->render($children,
+						new ArrayObject(), $template, 'tx_cfcleaguefe_util_ProfileMarker',
+						$confId, $markerPrefix, $formatter, $options);
+	}
+```
+In den ersten Zeilen wird zunächst die Datenbankabfrage vorbereitet, um die Personen zu laden. Die Entities stehen am Ende in der Variable *$children**. Da es sich um ein Array handelt, kann der Aufruf nicht direkt an den ProfileMarker übergeben werden. Statt dessen wird der ListBuilder genutzt. Diese implementiert die Ausgabe der Liste über Subparts:
+```
+ ###TEAM_PLAYERS###
+ <ul>
+ ###TEAM_PLAYER###
+ <li>###TEAM_PLAYER_UID###
+ ###TEAM_PLAYER###
+ </ul>
+ ###TEAM_PLAYERS###
+```
+Und auch hier noch einmal der Hinweis: Da sich die Markerklassen gegenseitig aufrufen, funktioniert diese Ausgabe immer. Also auch wenn man eigentlich ein Spiel anzeigt, so kann man auf die Spieler der Teams zugreifen. Man muss lediglich die Marker richtig benennen. Der Subpart für die Spieler des Heimteams lautet dann **###MATCH_HOME_PLAYERS###**.
 
 
 ### Link-Erzeugung
