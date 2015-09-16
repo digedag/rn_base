@@ -3,7 +3,11 @@
 Änderungen
 ----------
 
-v0.15.8 (??.??.2015)
+v0.15.9 (??.??.????)
+
+v0.15.8 (16.09.2015)
+ * css class option for text inputs in be fields
+ * much documentation added
 
 v0.15.7 (24.08.2015)
  * Hotfix:  Fatal errors in util db for workspaces and language overlays fixed
