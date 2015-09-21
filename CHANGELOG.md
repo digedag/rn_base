@@ -3,7 +3,10 @@
 Änderungen
 ----------
 
-v0.15.9 (??.??.????)
+v0.15.10 (??.??.????)
+
+v0.15.9 (21.09.2015)
+ * new abstract repository class
 
 v0.15.8 (16.09.2015)
  * css class option for text inputs in be fields
