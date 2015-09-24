@@ -408,30 +408,53 @@ class tx_rnbase_util_FormTool {
 	}
 
 	/**
-	 * Erstellt eine Select-Box aus dem übergebenen Array
+	 * @deprecated use createSelectByArray instead
 	 */
 	public function createSelectSingleByArray($name, $value, $arr, $options=0){
+		return $this->createSelectByArray($name, $value, $arr, $options);
+	}
+
+	/**
+	 * Erstellt eine Select-Box aus dem übergebenen Array.
+	 * in den Options kann mit dem key reload angegeben werden,
+	 * ob das Formular bei Änderungen direkt abgeschickt werden soll.
+	 * mit dem key onchange kann ein eigene onchange Funktion
+	 * hinterlegt werden.
+	 * außerdem kann in den options mit multiple angegeben werden
+	 * ob es eine mehrfach Auswahl geben soll
+	 *
+	 * @param string $name
+	 * @param string $currentValues comma separated
+	 * @param array $selectOptions
+	 * @param array $options
+	 * @return string
+	 */
+	public function createSelectByArray($name, $currentValues, array $selectOptions, $options = array()){
 		$options = is_array($options) ? $options : array();
 
 		$onChangeStr = $options['reload'] ? ' this.form.submit(); ' : '';
 		if($options['onchange']) {
 			$onChangeStr .= $options['onchange'];
 		}
-		if($onChangeStr)
+		if($onChangeStr) {
 			$onChangeStr = ' onchange="'.$onChangeStr.'" ';
-
-		$out = '
-			<select name="' . $name . '" class="select"' . $onChangeStr . '>
-		';
-		// Die Options ermitteln
-		foreach($arr As $key => $val) {
-			$sel = '';
-			if ($value == $key) $sel = 'selected="selected"';
-			$out .= '<option value="' . $key . '" ' . $sel . '>' . $val . '</option>';
 		}
-		$out .= '
-			</select>
-		';
+
+		$multiple = $options['multiple'] ? ' multiple' : '';
+
+		$out = '<select name="' . $name . '" class="select"' . $onChangeStr . $multiple . '>';
+
+		$currentValues = tx_rnbase_util_Strings::trimExplode(',', $currentValues);
+
+		// Die Options ermitteln
+		foreach($selectOptions As $value => $label) {
+			$selected = '';
+			if (in_array($value, $currentValues)) {
+				$selected = 'selected="selected"';
+			}
+			$out .= '<option value="' . $value . '" ' . $selected . '>' . $label . '</option>';
+		}
+		$out .= '</select>';
 		return $out;
 	}
 

@@ -4,6 +4,7 @@
 ----------
 
 v0.15.10 (??.??.????)
+ * new option in form tool for multiple selects
 
 v0.15.9 (21.09.2015)
  * new abstract repository class
