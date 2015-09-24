@@ -441,6 +441,7 @@ class tx_rnbase_util_FormTool {
 		}
 
 		$multiple = $options['multiple'] ? ' multiple="multiple"' : '';
+		$name .= $options['multiple'] ? '[]' : '';
 
 		$size = $options['size'] ? ' size="' . $options['size'] . '"' : '';
 
