@@ -440,9 +440,11 @@ class tx_rnbase_util_FormTool {
 			$onChangeStr = ' onchange="'.$onChangeStr.'" ';
 		}
 
-		$multiple = $options['multiple'] ? ' multiple' : '';
+		$multiple = $options['multiple'] ? ' multiple="multiple"' : '';
 
-		$out = '<select name="' . $name . '" class="select"' . $onChangeStr . $multiple . '>';
+		$size = $options['size'] ? ' size="' . $options['size'] . '"' : '';
+
+		$out = '<select name="' . $name . '" class="select"' . $onChangeStr . $multiple . $size . '>';
 
 		$currentValues = tx_rnbase_util_Strings::trimExplode(',', $currentValues);
 

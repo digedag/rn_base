@@ -105,7 +105,20 @@ class tx_rnbase_tests_util_FormTool_testcase extends tx_rnbase_tests_BaseTestCas
 		$select = $formTool->createSelectByArray(
 			'testSelect', '1,2', array(1 => 'John', 2 => 'Doe'), array('multiple' => TRUE)
 		);
-		$expectedSelect = '<select name="testSelect" class="select" multiple><option value="1" selected="selected">John</option><option value="2" selected="selected">Doe</option></select>';
+		$expectedSelect = '<select name="testSelect" class="select" multiple="multiple"><option value="1" selected="selected">John</option><option value="2" selected="selected">Doe</option></select>';
+
+		self::assertEquals($expectedSelect, $select);
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testCreateSelectByArrayIfSizeOption() {
+		$formTool = tx_rnbase::makeInstance('tx_rnbase_util_FormTool');
+		$select = $formTool->createSelectByArray(
+			'testSelect', '1,2', array(1 => 'John', 2 => 'Doe'), array('size' => 20)
+		);
+		$expectedSelect = '<select name="testSelect" class="select" size="20"><option value="1" selected="selected">John</option><option value="2" selected="selected">Doe</option></select>';
 
 		self::assertEquals($expectedSelect, $select);
 	}
