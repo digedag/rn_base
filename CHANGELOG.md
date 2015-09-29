@@ -3,7 +3,9 @@
 Änderungen
 ----------
 
-v0.15.10 (??.??.????)
+v0.15.11 (?.??.????)
+
+v0.15.10 (29.09.2015)
  * new option in form tool for multiple selects
  * new option to set size for select
 
