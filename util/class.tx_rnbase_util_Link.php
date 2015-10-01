@@ -368,8 +368,15 @@ class tx_rnbase_util_Link {
 				!($url{0} . $url{1} === '//')
 				&& !array_key_exists('scheme', parse_url($url))
 			) {
-				$url = $this->getAbsUrlSchema() ? $this->getAbsUrlSchema() : t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR');
-				$link = preg_replace('/(href="|src=")/', '${1}'.$url, $link);
+				$schema = $this->getAbsUrlSchema() ? $this->getAbsUrlSchema() : t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR');
+				$link = preg_replace_callback(
+					'/(href="|src=")(.+)"/',
+					function($match) use ($schema) {
+						// 1 = the attribute (href="), 2 = the url (/service/contact.html)
+						return $match[1] . rtrim($schema, '/') . '/' . ltrim($match[2], '/') . '"';
+					},
+					ltrim($link, '/')
+				);
 			}
 		}
 		return $link;
@@ -390,7 +397,7 @@ class tx_rnbase_util_Link {
 			&& !array_key_exists('scheme', parse_url($url))
 		) {
 			$schema = $this->getAbsUrlSchema() ? $this->getAbsUrlSchema() : t3lib_div::getIndpEnv('TYPO3_SITE_URL');
-			$url = $schema . $url;
+			$url = rtrim($schema, '/') . '/'. ltrim($url, '/');
 		}
 		return $applyHtmlspecialchars ? htmlspecialchars($url) : $url;
 	}
