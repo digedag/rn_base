@@ -4,6 +4,7 @@
 ----------
 
 v0.15.12 (?.??.????)
+* split label function to lang util added
 
 v0.15.11 (07.10.2015)
  * abs url ad abs url scheme config for lnik util also works if there allready an absolute url

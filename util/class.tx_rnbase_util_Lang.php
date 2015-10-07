@@ -170,7 +170,7 @@ class tx_rnbase_util_Lang {
 	private function getLL46($key, $alternativeLabel = '', $hsc = FALSE) {
 		//support for LLL: syntax
 		if(!strcmp(substr($key, 0, 4), 'LLL:')) {
-			return $GLOBALS[TYPO3_MODE == 'BE' ? 'LANG' : 'TSFE']->sL($key);
+			return $this->sL($key);
 		}
 		if (isset($this->LOCAL_LANG[$this->getLLKey()][$key][0]['target'])) {
 
@@ -213,7 +213,7 @@ class tx_rnbase_util_Lang {
 
 	private function getLL40($key, $alt='', $hsc=FALSE) {
 		if(!strcmp(substr($key, 0, 4), 'LLL:')) {
-			return $GLOBALS['TSFE']->sL($key);
+			return $this->sL($key);
 		}
 
 		if (isset($this->LOCAL_LANG[$this->getLLKey()][$key])) {
@@ -239,6 +239,16 @@ class tx_rnbase_util_Lang {
 			$output = htmlspecialchars($output);
 
 		return $output;
+	}
+
+	/**
+	 * Split Label function
+	 *
+	 * @param string $input Key string. Accepts the "LLL:" prefix.
+	 * @return string Label value, if any.
+	 */
+	public function sL($key) {
+		$GLOBALS[TYPO3_MODE == 'BE' ? 'LANG' : 'TSFE']->sL($key);
 	}
 }
 
