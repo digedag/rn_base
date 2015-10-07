@@ -248,7 +248,7 @@ class tx_rnbase_util_Lang {
 	 * @return string Label value, if any.
 	 */
 	public function sL($key) {
-		$GLOBALS[TYPO3_MODE == 'BE' ? 'LANG' : 'TSFE']->sL($key);
+		return $GLOBALS[TYPO3_MODE == 'BE' ? 'LANG' : 'TSFE']->sL($key);
 	}
 }
 
