@@ -3,7 +3,10 @@
 Änderungen
 ----------
 
-v0.15.11 (?.??.????)
+v0.15.12 (?.??.????)
+
+v0.15.11 (07.10.2015)
+ * abs url ad abs url scheme config for lnik util also works if there allready an absolute url
 
 v0.15.10 (29.09.2015)
  * new option in form tool for multiple selects
