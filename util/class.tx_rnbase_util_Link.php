@@ -360,24 +360,8 @@ class tx_rnbase_util_Link {
 	 */
 	function makeTag() {
 		$link = $this->getCObj()->typolink($this->_makeLabel(), $this->_makeConfig('tag'));
-		if($this->isAbsUrl() && ($htmlXml = @simplexml_load_string($link))) {
-			// extract the url from the tag
-			$url = strlen((string) $htmlXml['href']) ? (string) $htmlXml['href'] : (string) $htmlXml['src'];
-			// check for existing absolute href and set absolute url, if there is none
-			if (
-				!($url{0} . $url{1} === '//')
-				&& !array_key_exists('scheme', parse_url($url))
-			) {
-				$schema = $this->getAbsUrlSchema() ? $this->getAbsUrlSchema() : t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR');
-				$link = preg_replace_callback(
-					'/(href="|src=")(.+)"/',
-					function($match) use ($schema) {
-						// 1 = the attribute (href="), 2 = the url (/service/contact.html)
-						return $match[1] . rtrim($schema, '/') . '/' . ltrim($match[2], '/') . '"';
-					},
-					ltrim($link, '/')
-				);
-			}
+		if ($this->isAbsUrl() && (@simplexml_load_string($link))) {
+			$link = self::parseAbsUrl($link, $this->getAbsUrlSchema());
 		}
 		return $link;
 	}
@@ -390,16 +374,47 @@ class tx_rnbase_util_Link {
 	 */
 	function makeUrl($applyHtmlspecialchars = TRUE) {
 		$url = $this->getCObj()->typolink(NULL, $this->_makeConfig('url'));
-		if(
-			$this->isAbsUrl()
-			// make only abs, if there is an relative url!
-			&& !($url{0} . $url{1} === '//')
-			&& !array_key_exists('scheme', parse_url($url))
-		) {
-			$schema = $this->getAbsUrlSchema() ? $this->getAbsUrlSchema() : t3lib_div::getIndpEnv('TYPO3_SITE_URL');
-			$url = rtrim($schema, '/') . '/'. ltrim($url, '/');
+		if($this->isAbsUrl()) {
+			$url = self::parseAbsUrl($url, $this->getAbsUrlSchema());
 		}
 		return $applyHtmlspecialchars ? htmlspecialchars($url) : $url;
+	}
+
+	/**
+	 * forces a schema for a url.
+	 * if there is already a schema in the url, the schema will be replaced.
+	 *
+	 * @param string $url
+	 * @param string $schema
+	 * @return string
+	 */
+	public static function parseAbsUrl($url, $schema = FALSE)
+	{
+		if ($schema === FALSE) {
+			$schema = t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR');
+		}
+
+		// check if we have a A-Tag with href attribute or a IMG-Tag with src attribute
+		if ((@simplexml_load_string($url))) {
+			return preg_replace_callback(
+				'/(href="|src=")(.+)"/',
+				function($match) use ($schema) {
+					// $match[1] contains 'href="' or 'src="'
+					// $match[2] contains the url '/service/contact.html'
+					return $match[1] . self::parseAbsUrl($match[2], $schema) . '"';
+				},
+				ltrim($url, '/')
+			);
+		}
+		// else, we have only a url to rebuild
+
+		// rebuild the url without schema
+		$urlParts = parse_url($url);
+		$urlPath  = isset($urlParts['path']) ? $urlParts['path'] : '';
+		$urlPath .= isset($urlParts['query']) ? '?' . $urlParts['query'] : '';
+		$urlPath .= isset($urlParts['fragment']) ? '#' . $urlParts['fragment'] : '';
+
+		return rtrim($schema, '/') . '/'. ltrim($urlPath, '/');
 	}
 
 	/**
