@@ -401,7 +401,10 @@ class tx_rnbase_util_Link {
 				function($match) use ($schema) {
 					// $match[1] contains 'href="' or 'src="'
 					// $match[2] contains the url '/service/contact.html'
-					return $match[1] . self::parseAbsUrl($match[2], $schema) . '"';
+					return $match[1] .
+						tx_rnbase_util_Link::parseAbsUrl($match[2], $schema) .
+						'"'
+					;
 				},
 				ltrim($url, '/')
 			);
