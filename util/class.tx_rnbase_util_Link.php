@@ -600,16 +600,20 @@ class tx_rnbase_util_Link {
 		if ($target) {
 			$this->target($target);
 		}
-		// Das Ziel der Seite vorbereiten
-		$this->destination($pid ? $pid : $GLOBALS['TSFE']->id);
-		if ($absUrl = $configurations->get($confId.'absurl')) {
-			$this->setAbsUrl(TRUE, ($absUrl == 1 || strtolower($absUrl) == 'true' ) ? '' : $absUrl);
-		}
 
 		// feste URL für externen Link
-		if ($fixed = $configurations->get($confId.'fixedUrl')) {
+		if ($fixed = $configurations->get($confId.'fixedUrl', TRUE)) {
 			$this->destination($fixed);
 		}
+		// Das Ziel der Seite vorbereiten
+		else {
+			$this->destination($pid ? $pid : $GLOBALS['TSFE']->id);
+			// absolute und ggf. schema url erzeugen
+			if ($absUrl = $configurations->get($confId . 'absurl')) {
+				$this->setAbsUrl(TRUE, ($absUrl == 1 || strtolower($absUrl) == 'true' ) ? '' : $absUrl);
+			}
+		}
+
 		if (array_key_exists('SECTION', $parameterArr)) {
 			$this->anchor(htmlspecialchars($parameterArr['SECTION']));
 			unset($parameterArr['SECTION']);
