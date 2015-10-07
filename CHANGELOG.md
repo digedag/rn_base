@@ -3,7 +3,9 @@
 Änderungen
 ----------
 
-v0.15.12 (?.??.????)
+v0.15.13 (?.??.????)
+
+v0.15.12 (07.10.2015) (hotfix)
 * split label function to lang util added
 
 v0.15.11 (07.10.2015)
