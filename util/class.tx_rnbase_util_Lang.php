@@ -168,6 +168,10 @@ class tx_rnbase_util_Lang {
 	}
 
 	private function getLL46($key, $alternativeLabel = '', $hsc = FALSE) {
+		//support for LLL: syntax
+		if(!strcmp(substr($key, 0, 4), 'LLL:')) {
+			return $GLOBALS[TYPO3_MODE == 'BE' ? 'LANG' : 'TSFE']->sL($key);
+		}
 		if (isset($this->LOCAL_LANG[$this->getLLKey()][$key][0]['target'])) {
 
 			// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
