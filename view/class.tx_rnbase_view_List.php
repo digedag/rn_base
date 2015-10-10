@@ -54,21 +54,32 @@ class tx_rnbase_view_List extends tx_rnbase_view_Base {
    * @return mixed Ready rendered output or HTTP redirect
    */
 	public function createOutput($template, &$viewData, &$configurations, &$formatter) {
+		$markerArray = array();
+		$subpartArray = array();
 		//View-Daten abholen
-		$items =& $viewData->offsetGet('items');
+		$items = $viewData->offsetGet('items');
+		$filter = $viewData->offsetGet('filter');
 		$confId = $this->getController()->getConfId();
 
 		$itemPath = $this->getItemPath($configurations, $confId);
-		$markerClass = $this->getMarkerClass($configurations, $confId);
+		if($filter && $filter->hideResult()) {
+			$subpartArray['###'.strtoupper($itemPath).'S###'] = '';
+			$items = array();
+			$template = $filter->getMarker()->parseTemplate($template, $formatter, 
+					$confId.$itemPath.'.filter.', strtoupper($itemPath));
+		}
+		else {
+			$markerClass = $this->getMarkerClass($configurations, $confId);
+			
+			//Liste generieren
+			$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
+			$template = $listBuilder->render($items, $viewData, $template, $markerClass,
+					$confId.$itemPath.'.', strtoupper($itemPath), $formatter
+			);
+		}
+		$template = tx_rnbase_util_Templates::substituteMarkerArrayCached($template, $markerArray, $subpartArray); //, $wrappedSubpartArray);
 
-		//Liste generieren
-		$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
-		$out = $listBuilder->render($items, $viewData, $template, $markerClass,
-			$confId.$itemPath.'.', strtoupper($itemPath), $formatter
-		);
-
-
-		return $out;
+		return $template;
 	}
 	protected function getItemPath($configurations, $confId) {
 		$itemPath = $configurations->get($confId.'template.itempath');
