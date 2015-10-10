@@ -25,6 +25,8 @@
 tx_rnbase::load('tx_rnbase_maps_BaseMap');
 tx_rnbase::load('tx_rnbase_util_Extensions');
 tx_rnbase::load('tx_rnbase_util_Strings');
+tx_rnbase::load('tx_rnbase_util_Logger');
+
 
 
 /**
@@ -41,7 +43,19 @@ class tx_rnbase_maps_google_Util {
 	public function lookupGeoCode($addressString, $fullInfo = FALSE) {
 		$request = "https://maps.googleapis.com/maps/api/geocode/json?address=".rawurlencode($addressString)."&key=";
 		$result = array();
-		$response = file_get_contents($request);
+
+		$time = microtime(TRUE);
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, $request);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_HEADER, false);
+		$response = curl_exec($curl);
+		curl_close($curl);
+		$requestTime = microtime(TRUE) - $time;
+
+		if($requestTime > 2)
+			tx_rnbase_util_Logger::notice('Long request time for Google address lookup ', 'rn_base', array('uri'=>$request, 'time'=> $requestTime));
+
 		if($response) {
 			$response = json_decode($response, true);
 			if($response['status'] == 'OK'){
