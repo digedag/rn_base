@@ -390,7 +390,7 @@ class tx_rnbase_util_Link {
 	 */
 	public static function parseAbsUrl($url, $schema = FALSE)
 	{
-		if ($schema === FALSE) {
+		if (!$schema) {
 			$schema = t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR');
 		}
 
