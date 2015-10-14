@@ -133,7 +133,7 @@ class tx_rnbase_view_Base{
 		// build the data to render
 		$pluginData = array_merge(
 			// use the current data (tt_conten) to render
-			$configurations->getCObj()->data,
+			(array) $configurations->getCObj()->data,
 			// add some aditional columns, for example from the flexform od typoscript directly
 			$configurations->getExploded(
 				$confId . 'plugin.flexdata.'
