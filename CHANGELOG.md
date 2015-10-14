@@ -3,7 +3,13 @@
 Änderungen
 ----------
 
-v0.15.13 (?.??.????)
+v0.15.13 (??.??.????)
+
+v0.15.13 (14.10.2015)
+* add missing return statement in language utility
+* Geo-Coding class for google
+* Support for hideResult() in list filter
+* bugfix in link utility if schema is set as empty string not FALSE
 
 v0.15.12 (07.10.2015) (hotfix)
 * split label function to lang util added
