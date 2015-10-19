@@ -22,7 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_util_BaseMarker');
 
 /**
@@ -54,6 +53,9 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 
 		$this->prepareItem($item, $formatter->getConfigurations(), $confId);
 
+		// Einstiegspunkt für Kindklassen
+		$template = $this->prepareTemplate($template, $item, $formatter, $confId, $marker);
+
 		// Es wird das MarkerArray mit den Daten des Records gefüllt.
 		$ignore = self::findUnusedCols($item->record, $template, $marker);
 		$markerArray = $formatter->getItemMarkerArrayWrapped($item->record, $confId , $ignore, $marker.'_', $item->getColumnNames());
@@ -70,6 +72,18 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 		return $out;
 	}
 
+	/**
+	 * Die Methode kann von Kindklassen verwendet werden.
+	 * @param string $template das HTML-Template
+	 * @param tx_rnbase_model_base $item
+	 * @param tx_rnbase_util_FormatUtil $formatter der zu verwendente Formatter
+	 * @param string $confId Pfad der TS-Config
+	 * @param string $marker Name des Markers
+	 * @return String das geparste Template
+	 */
+	protected function prepareTemplate($template, $item, $formatter, $confId, $marker) {
+		return $template;
+	}
 	/**
 	 * Führt vor dem parsen Änderungen am Model durch.
 	 *
@@ -249,6 +263,6 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_SimpleMarker.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_SimpleMarker.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_SimpleMarker.php'])	{
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_SimpleMarker.php']);
 }

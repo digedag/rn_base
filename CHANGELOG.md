@@ -3,7 +3,8 @@
 Änderungen
 ----------
 
-v0.15.13 (??.??.????)
+v0.15.14 (??.??.2015)
+* SimpleMarker has a new method **prepareTemplate()** as an entry point for child classes
 
 v0.15.13 (14.10.2015)
 * add missing return statement in language utility
