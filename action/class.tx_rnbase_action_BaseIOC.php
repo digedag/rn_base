@@ -19,11 +19,12 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
 
 tx_rnbase::load('tx_rnbase_util_Misc');
 tx_rnbase::load('tx_rnbase_util_Debug');
 tx_rnbase::load('tx_rnbase_util_Templates');
+tx_rnbase::load('tx_rnbase_util_Strings');
+
 
 /**
  * Abstract base class for an action. This action is build to implement the
@@ -53,9 +54,10 @@ abstract class tx_rnbase_action_BaseIOC {
 	function execute(&$parameters, &$configurations){
 		$this->setConfigurations($configurations);
 		$debugKey = $configurations->get($this->getConfId().'_debugview');
+		
 		$debug = ($debugKey && ($debugKey==='1' ||
-				($_GET['debug'] && array_key_exists($debugKey, array_flip(t3lib_div::trimExplode(',', $_GET['debug'])))) ||
-				($_POST['debug'] && array_key_exists($debugKey, array_flip(t3lib_div::trimExplode(',', $_POST['debug']))))
+				($_GET['debug'] && array_key_exists($debugKey, array_flip(tx_rnbase_util_Strings::trimExplode(',', $_GET['debug'])))) ||
+				($_POST['debug'] && array_key_exists($debugKey, array_flip(tx_rnbase_util_Strings::trimExplode(',', $_POST['debug']))))
 				)
 		);
 		if($debug) {
@@ -220,6 +222,22 @@ abstract class tx_rnbase_action_BaseIOC {
 	 */
 	protected abstract function handleRequest(&$parameters, &$configurations, &$viewdata);
 
+
+	/**
+	 * Create a page URI. Useful for controllers with formular handling.
+	 * 
+	 * @param tx_rnbase_configurations $configurations
+	 * @param string $confId
+	 * @param array $params
+	 * @return string URI
+	 */
+	protected function createURI($configurations, $confId, $params = array()) {
+		$link = $configurations->createLink();
+		$link->initByTS($configurations, $confId, $params);
+		if($configurations->get($confId.'noCache'))
+			$link->noCache();
+		return $link->makeUrl(false);
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/action/class.tx_rnbase_action_BaseIOC.php'])	{
