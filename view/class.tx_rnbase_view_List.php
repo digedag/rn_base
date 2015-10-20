@@ -38,6 +38,9 @@ tx_rnbase::load('tx_rnbase_view_Base');
  * @author René Nitzsche
  */
 class tx_rnbase_view_List extends tx_rnbase_view_Base {
+	const VIEWDATA_ITEMS = 'items';
+	const VIEWDATA_FILTER = 'filter';
+	const VIEWDATA_MARKER = 'marker';
 
   /**
    * Do the output rendering.
@@ -54,23 +57,25 @@ class tx_rnbase_view_List extends tx_rnbase_view_Base {
    * @return mixed Ready rendered output or HTTP redirect
    */
 	public function createOutput($template, &$viewData, &$configurations, &$formatter) {
-		$markerArray = array();
-		$subpartArray = array();
 		//View-Daten abholen
-		$items = $viewData->offsetGet('items');
-		$filter = $viewData->offsetGet('filter');
+		$items = $viewData->offsetGet(self::VIEWDATA_ITEMS);
+		$filter = $viewData->offsetGet(self::VIEWDATA_FILTER);
+		$markerData = $viewData->offsetGet(self::VIEWDATA_MARKER);
 		$confId = $this->getController()->getConfId();
+
+		$markerArray = $formatter->getItemMarkerArrayWrapped($markerData, $confId.'markers.');
+		$subpartArray = array();
 
 		$itemPath = $this->getItemPath($configurations, $confId);
 		if($filter && $filter->hideResult()) {
 			$subpartArray['###'.strtoupper($itemPath).'S###'] = '';
 			$items = array();
-			$template = $filter->getMarker()->parseTemplate($template, $formatter, 
+			$template = $filter->getMarker()->parseTemplate($template, $formatter,
 					$confId.$itemPath.'.filter.', strtoupper($itemPath));
 		}
 		else {
 			$markerClass = $this->getMarkerClass($configurations, $confId);
-			
+
 			//Liste generieren
 			$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
 			$template = $listBuilder->render($items, $viewData, $template, $markerClass,
