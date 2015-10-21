@@ -3,7 +3,9 @@
 Änderungen
 ----------
 
-v0.15.14 (??.??.2015)
+v0.15.15 (??.??.????)
+
+v0.15.14 (21.10.2015)
  * SimpleMarker has a new method **prepareTemplate()** as an entry point for child classes
  * tx_rnbase_view_List integrates markers provided by controller class
  * tx_rnbase_action_BaseIOC has new utility method createURI()
