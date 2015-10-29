@@ -321,44 +321,65 @@ MAYDAYPAGE;
 
 		$force = array_key_exists('force', $options) ? TRUE : FALSE;
 
-		if(!is_object($GLOBALS['TT'])) {
+		if (!is_object($GLOBALS['TT'])) {
 			$GLOBALS['TT'] = new t3lib_timeTrack;
 			$GLOBALS['TT']->start();
 		}
-		if(!is_object($GLOBALS['TSFE']) || $force) {
-			if(!defined('PATH_tslib')) {
+
+		if (!is_object($GLOBALS['TSFE']) || $force) {
+
+			if (!defined('PATH_tslib')) {
 				// PATH_tslib setzen
 				if (@is_dir(PATH_site.'typo3/sysext/cms/tslib/')) {
 					define('PATH_tslib', PATH_site.'typo3/sysext/cms/tslib/');
 				} elseif (@is_dir(PATH_site.'tslib/')) {
 					define('PATH_tslib', PATH_site.'tslib/');
 				} else {
-					$configured_tslib_path = '';
-					// example:
-					// $configured_tslib_path = '/var/www/mysite/typo3/sysext/cms/tslib/';
-					define('PATH_tslib', $configured_tslib_path);
+					define('PATH_tslib', '');
 				}
 			}
 
-			$GLOBALS['TSFE'] = tx_rnbase::makeInstance('tslib_fe', $GLOBALS['TYPO3_CONF_VARS'], $pid, $type);
-			// Jetzt noch pageSelect
+			$GLOBALS['TSFE'] = tx_rnbase::makeInstance(
+				'tslib_fe',
+				$GLOBALS['TYPO3_CONF_VARS'],
+				$pid,
+				$type
+			);
+		}
+
+		// base user groups
+		if (empty($GLOBALS['TSFE']->gr_list) || $force) {
+			$GLOBALS['TSFE']->gr_list = '0,-1';
+		}
+
+		// init the syspage for pageSelect
+		if (!is_object($GLOBALS['TSFE']->sys_page) || $force) {
 			$temp_sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
 			$temp_sys_page->init(0);
 			$GLOBALS['TSFE']->sys_page = $temp_sys_page;
+		}
+
+		// init the template
+		if (!is_object($GLOBALS['TSFE']->tmpl) || $force) {
 			$GLOBALS['TSFE']->initTemplate();
-
-			// Bugfix: initLLvars does not check if config['config'] is an array
-			// which throws an warning when trying to access config['config']['language']
-			if(!(isset($GLOBALS['TSFE']->config['config']) && is_array($GLOBALS['TSFE']->config['config']))){
-				$GLOBALS['TSFE']->config['config'] = array();
+			if (empty($GLOBALS['TSFE']->tmpl->getFileName_backPath)) {
+				$GLOBALS['TSFE']->tmpl->getFileName_backPath = PATH_site;
 			}
+		}
 
-			$GLOBALS['TSFE']->initLLvars();
-			$GLOBALS['TSFE']->tmpl->getFileName_backPath = $GLOBALS['TSFE']->tmpl->getFileName_backPath ? $GLOBALS['TSFE']->tmpl->getFileName_backPath : PATH_site;
-			//Basis Nutzergruppen
-			$GLOBALS['TSFE']->gr_list = '0,-1';
+		// initial empty config
+		if (!is_array($GLOBALS['TSFE']->config)) {
+			$GLOBALS['TSFE']->config = array();
+		}
+		if (!is_array($GLOBALS['TSFE']->config['config'])) {
 			$GLOBALS['TSFE']->config['config'] = array();
 		}
+
+		// init the language
+		if (empty($GLOBALS['TSFE']->lang) || $force) {
+			$GLOBALS['TSFE']->initLLvars();
+		}
+
 		return $GLOBALS['TSFE'];
 	}
 	/**
