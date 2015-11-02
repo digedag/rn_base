@@ -3,7 +3,10 @@
 Änderungen
 ----------
 
-v0.15.15 (??.??.????)
+v0.15.16 (??.??.????)
+
+v0.15.15 (02.11.2015)
+ * prepareTSFE refactoring
 
 v0.15.14 (21.10.2015)
  * SimpleMarker has a new method **prepareTemplate()** as an entry point for child classes
