@@ -22,6 +22,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
  * Diese Klasse stellt hilfreiche Funktionen zur Erstellung von Formularen
@@ -35,7 +36,7 @@ class tx_rnbase_util_FormTool {
 		$this->doc = $doc;
 
 		// TCEform für das Formular erstellen
-		$this->form = t3lib_div::makeInstance('t3lib_TCEforms');
+		$this->form = tx_rnbase::makeInstance('t3lib_TCEforms');
 		$this->form->initDefaultBEmode();
 		$this->form->backPath = $BACK_PATH;
 	}
