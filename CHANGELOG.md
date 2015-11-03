@@ -4,6 +4,7 @@
 ----------
 
 v0.15.16 (??.??.????)
+ * new method tx_rnbase_util_String::isInteger() as wrapper for t3lib_div::testInt()
 
 v0.15.15 (02.11.2015)
  * prepareTSFE refactoring
