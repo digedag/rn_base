@@ -54,7 +54,7 @@ abstract class tx_rnbase_action_BaseIOC {
 	function execute(&$parameters, &$configurations){
 		$this->setConfigurations($configurations);
 		$debugKey = $configurations->get($this->getConfId().'_debugview');
-		
+
 		$debug = ($debugKey && ($debugKey==='1' ||
 				($_GET['debug'] && array_key_exists($debugKey, array_flip(tx_rnbase_util_Strings::trimExplode(',', $_GET['debug'])))) ||
 				($_POST['debug'] && array_key_exists($debugKey, array_flip(tx_rnbase_util_Strings::trimExplode(',', $_POST['debug']))))
@@ -224,19 +224,19 @@ abstract class tx_rnbase_action_BaseIOC {
 
 
 	/**
-	 * Create a page URI. Useful for controllers with formular handling.
-	 * 
+	 * Create a fully initialized link instance. Useful for controllers with formular handling.
+	 *
 	 * @param tx_rnbase_configurations $configurations
 	 * @param string $confId
 	 * @param array $params
-	 * @return string URI
+	 * @return \tx_rnbase_util_Link link instance
 	 */
-	protected function createURI($configurations, $confId, $params = array()) {
+	protected function createLink($configurations, $confId, $params = array()) {
 		$link = $configurations->createLink();
 		$link->initByTS($configurations, $confId, $params);
 		if($configurations->get($confId.'noCache'))
 			$link->noCache();
-		return $link->makeUrl(false);
+		return $link;
 	}
 }
 
