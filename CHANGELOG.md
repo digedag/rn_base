@@ -3,8 +3,9 @@
 Änderungen
 ----------
 
-v0.15.16 (??.??.????)
+v0.15.16 (??.11.2015)
  * new method tx_rnbase_util_String::isInteger() as wrapper for t3lib_div::testInt()
+ * tx_rnbase_action_BaseIOC has new utility method createLink()
 
 v0.15.15 (02.11.2015)
  * prepareTSFE refactoring
@@ -12,7 +13,6 @@ v0.15.15 (02.11.2015)
 v0.15.14 (21.10.2015)
  * SimpleMarker has a new method **prepareTemplate()** as an entry point for child classes
  * tx_rnbase_view_List integrates markers provided by controller class
- * tx_rnbase_action_BaseIOC has new utility method createLink()
 
 v0.15.13 (14.10.2015)
  * add missing return statement in language utility
