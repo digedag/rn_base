@@ -99,10 +99,11 @@
  * @subpackage rn_base
  */
 
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
 tx_rnbase::load('tx_rnbase_util_Misc');
 tx_rnbase::load('tx_rnbase_util_Arrays');
+tx_rnbase::load('tx_rnbase_util_Strings');
+
 
 
 class tx_rnbase_controller {
@@ -218,7 +219,6 @@ class tx_rnbase_controller {
 		$actions = $this->_findAction($parameters, $configurations);
 		if(!isset($actions))
 			return $this->getUnknownAction();
-
 		$out = '';
 		if(is_array($actions))
 			foreach($actions As $actionName){
@@ -347,18 +347,23 @@ class tx_rnbase_controller {
 	 * @param     object     the configurations objet
 	 * @return    array     an array with the actions or NULL
 	 */
-	function _findAction($parameters, $configurations) {
+	protected function _findAction($parameters, $configurations) {
 		// What should be preferred? Config or Request?
 		// An action from parameter is preferred
 		$action = !intval($configurations->get('ignoreActionParam')) ? $this->_getParameterAction($parameters) : FALSE;
 		if(!$action) {
 			$action = $configurations->get('action');
 		}
+		else {
+			// Bei Actions aus dem Request kodierte Klassen korrigieren
+			$action = str_replace('\\\\', '\\', $action);
+		}
+
 		// Falls es mehrere Actions sind den String splitten
 		if($action)
-			$action = t3lib_div::trimExplode(',', $action);
+			$action = tx_rnbase_util_Strings::trimExplode(',', $action);
 		if(is_array($action) && count($action) == 1) {
-			$action = t3lib_div::trimExplode('|', $action[0]); // Nochmal mit Pipe versuchen
+			$action = tx_rnbase_util_Strings::trimExplode('|', $action[0]); // Nochmal mit Pipe versuchen
 		}
 		// If there is still no action we use defined defaultAction
 		$action = !$action ? $configurations->get('defaultAction') : $action;

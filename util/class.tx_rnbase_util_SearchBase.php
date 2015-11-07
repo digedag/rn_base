@@ -497,6 +497,7 @@ abstract class tx_rnbase_util_SearchBase {
 	 * @return string
 	 */
 	protected function setEnableFieldsForAdditionalTableAliases(array $tableAliases, array $options) {
+		// FIXME: keys für Optionen sind grundsätzlich klein geschrieben
 		$tableAliasesToSetEnableFields = tx_rnbase_util_Strings::trimExplode(
 			',', $options['enableFieldsForAdditionalTableAliases']
 		);
