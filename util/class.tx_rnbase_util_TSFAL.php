@@ -146,9 +146,10 @@ class tx_rnbase_util_TSFAL {
 			$referencesForeignTable = $conf->getCObj()->stdWrap($conf->get($confId.'refTable'), $conf->get($confId.'refTable.'));
 			$referencesFieldName = $conf->getCObj()->stdWrap($conf->get($confId.'refField'), $conf->get($confId.'refField.'));
 			$referencesForeignUid = $conf->getCObj()->stdWrap($conf->get($confId.'refUid'), $conf->get($confId.'refUid.'));
-			$referencesForeignUid = $referencesForeignUid ?
-					$referencesForeignUid :
-					isset($cObj->data['_LOCALIZED_UID']) ? $cObj->data['_LOCALIZED_UID'] : $cObj->data['uid'];
+			if (!$referencesForeignUid) {
+				$referencesForeignUid = isset($cObj->data['_LOCALIZED_UID']) ?
+										$cObj->data['_LOCALIZED_UID'] : $cObj->data['uid'];
+			}
 			$pics = $fileRepository->findByRelation($referencesForeignTable, $referencesFieldName, $referencesForeignUid);
 		}
 		elseif (is_array($conf->get('references.'))) {
