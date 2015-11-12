@@ -252,7 +252,7 @@ class tx_rnbase_controller {
 		catch(tx_rnbase_exception_Skip $e) {
 			$ret = '';
 		}
-		// @deprecated support for tx_rnbase_exception_ItemNotFound404 will be dropped soon
+		// @deprecated support for tx_rnbase_exception_ItemNotFound404 will be dropped in TYPO3 7.6
 		catch(tx_rnbase_exception_ItemNotFound404 $e) {
 			$this->getTsfe()->pageNotFoundAndExit('tx_rnbase_exception_ItemNotFound404 was thrown');
 		}
