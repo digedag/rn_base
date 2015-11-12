@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************
  *  Copyright notice
  *
@@ -253,9 +252,14 @@ class tx_rnbase_controller {
 		catch(tx_rnbase_exception_Skip $e) {
 			$ret = '';
 		}
+		// @deprecated support for tx_rnbase_exception_ItemNotFound404 will be dropped soon
 		catch(tx_rnbase_exception_ItemNotFound404 $e) {
-			$this->set404HeaderAndRobotsNoIndex();
-			$ret = $e->getMessage();
+			$this->getTsfe()->pageNotFoundAndExit('tx_rnbase_exception_ItemNotFound404 was thrown');
+		}
+		catch (TYPO3\CMS\Core\Error\Http\PageNotFoundException $e) {
+			$this->getTsfe()->pageNotFoundAndExit(
+				'TYPO3\\CMS\\Core\\Error\\Http\\PageNotFoundException was thrown'
+			);
 		}
 		catch(Exception $e) {
 			$ret = $this->handleException($actionName, $e, $configurations);
@@ -265,16 +269,10 @@ class tx_rnbase_controller {
 	}
 
 	/**
-	 * @return void
+	 * @return TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
 	 */
-	protected function set404HeaderAndRobotsNoIndex() {
-		// we need to set the robots meta tag in additionalHeaderData
-		// as the meta tags have already been rendered
-		$GLOBALS['TSFE']->additionalHeaderData['rnBaseRobots'] =
-			'<meta name="robots" content="NOINDEX,FOLLOW">';
-
-		$httpUtilityClass = tx_rnbase_util_TYPO3::getHttpUtilityClass();
-		$httpUtilityClass::setResponseCode($httpUtilityClass::HTTP_STATUS_404);
+	protected function getTsfe() {
+		return tx_rnbase_util_TYPO3::getTSFE();
 	}
 
 	/**

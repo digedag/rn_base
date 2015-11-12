@@ -33,6 +33,7 @@
  * ausgegeben wird.
  *
  * @author Hannes Bochmann <dev@dmk-ebusiness.de>
+ * @deprecated will be removed soon.
  */
 class tx_rnbase_exception_ItemNotFound404 extends Exception {
 

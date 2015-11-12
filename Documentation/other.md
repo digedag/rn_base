@@ -6,7 +6,7 @@ Wenn man in ein fremdes Projekt kommt und mal eben eine Änderung am Layout mach
 
 1. Man öffnet das Plugin auf der betroffenen Seite und schaut nach, welcher View angezeigt wurde und ob im Tab des Views ein HTML-Template gesetzt ist
 2. Ebenfalls im Plugin schaut man im Tab TS-Setup nach, ob da ein Plugin gesetzt ist
-3. Hat man noch kein Ergebnis muss man im BE-Modul *Template* den *Typoscript-Object Browser* verwenden. Man klickt auf die betroffene Seite und sucht im Pfad plugin.tx_dasplugin. nach dem gesetzten Template. Dieses setzt sich immer aus der ID des View gefolgt von Template zusammen: 
+3. Hat man noch kein Ergebnis muss man im BE-Modul *Template* den *Typoscript-Object Browser* verwenden. Man klickt auf die betroffene Seite und sucht im Pfad plugin.tx_dasplugin. nach dem gesetzten Template. Dieses setzt sich immer aus der ID des View gefolgt von Template zusammen:
 ```
 plugin.tx_dasplugin.viewidTemplate = fileadmin/vorlage.html
 ```
@@ -36,25 +36,23 @@ damimages  {
 ### Bedeutung der Typoscript-Attribute
 ```
 refField
-    Referenzfeld für DAM - Name des Datensatz-Feldes, in dem die Bilder abgelegt werden 
+    Referenzfeld für DAM - Name des Datensatz-Feldes, in dem die Bilder abgelegt werden
 refTable
-    Referenzfeld für DAM - Name der Tabelle, in dem die Datensätze abgelegt sind 
+    Referenzfeld für DAM - Name der Tabelle, in dem die Datensätze abgelegt sind
 forceIdField (optional)
-    Referenzfeld für DAM - wenn dieses Attribut gesetzt ist, wird das darin abgelegte Feld als Referenz für die UID des zugehörigen Datensatzes verwendet. Nützlich ist dies bei der Lokalisierung von Datensätzen, wenn Bilder aus dem zugrunde liegenden Default-Datensatz verwendet werden sollen. Werden die Felder refField und refTable angepasst, können sogar Bilder aus anderen Tabellen verwendet werden. 
+    Referenzfeld für DAM - wenn dieses Attribut gesetzt ist, wird das darin abgelegte Feld als Referenz für die UID des zugehörigen Datensatzes verwendet. Nützlich ist dies bei der Lokalisierung von Datensätzen, wenn Bilder aus dem zugrunde liegenden Default-Datensatz verwendet werden sollen. Werden die Felder refField und refTable angepasst, können sogar Bilder aus anderen Tabellen verwendet werden.
 template
-    Pfad des Templates, das die Formatierung der DAM-Medien übernimmt 
+    Pfad des Templates, das die Formatierung der DAM-Medien übernimmt
 media.file.fil.max[H|W]
-    Maximale Höhe / Breite des angezeigten Mediums 
+    Maximale Höhe / Breite des angezeigten Mediums
 ```
 
 Einzelansichten von Datensätzen
 -------------------------------
-Wenn man eine Action zur Einzelansicht eines Datensatzes hat und das anzuzeigende Element nicht gefunden wird (Parameter falsch, fehlt ganz oder Element gelöscht), dann sollte ein 404 Header gesetzt werden und das robots Metatag NOINDEX,FOLLOW. Dafür muss in der Action einfach nur die Exception tx_rnbase_exception_ItemNotFound404 geworfen werden. Dieser sollte noch eine Meldung übergeben werden, welche angezeigt wird. Wer aufwendigere Meldungen braucht, der kann von dieser Exception erben und in getMessage alles erforderliche machen.
+Wenn man eine Action zur Einzelansicht eines Datensatzes hat und das anzuzeigende Element nicht gefunden wird (Parameter falsch, fehlt ganz oder Element gelöscht), dann sollte das 404 Handling von TYPO3 gestartet werden. Dafür muss in der Action einfach nur die Exception TYPO3\CMS\Core\Error\Http\PageNotFoundException geworfen werden.
 ```php
 if (!intval($itemId)) {
-	throw tx_rnbase::makeInstance(
-		'tx_rnbase_exception_ItemNotFound404', 'Rezept nicht gefunden!'
-	);
+	throw new TYPO3\CMS\Core\Error\Http\PageNotFoundException();
 }
 ```
 Kommaseparierte Liste mit dem ListBuilder
