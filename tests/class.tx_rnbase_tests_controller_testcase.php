@@ -47,6 +47,10 @@ class tx_rnbase_tests_controller_testcase extends tx_rnbase_tests_BaseTestCase {
 		$this->exceptionHandlerConfig = $extConfig['exceptionHandler'];
 
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['devlog']['nolog'] = TRUE;
+
+		if(is_object($GLOBALS['TSFE'])) {
+			unset($GLOBALS['TSFE']);
+		}
 	}
 
 	protected function tearDown() {
