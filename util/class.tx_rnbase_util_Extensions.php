@@ -205,5 +205,18 @@ class tx_rnbase_util_Extensions {
 			return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig($content);
 		return t3lib_extMgm::addUserTSConfig($content);
 	}
+	/**
+	 * Adds $content to the default Page TSconfig as set in $GLOBALS['TYPO3_CONF_VARS'][BE]['defaultPageTSconfig']
+	 * Prefixed with a [GLOBAL] line
+	 * FOR USE IN ext_tables.php/ext_localconf.php FILES
+	 *
+	 * @param string $content Page TSconfig content
+	 * @return void
+	 */
+	public static function addPageTSConfig($content) {
+		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher())
+			return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig($content);
+		return t3lib_extMgm::addPageTSConfig($content);
+	}
 
 }
