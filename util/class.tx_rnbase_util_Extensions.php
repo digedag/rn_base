@@ -192,4 +192,18 @@ class tx_rnbase_util_Extensions {
 		return t3lib_extMgm::addService($extKey, $serviceType, $serviceKey, $info);
 	}
 
+	/**
+	 * Adds $content to the default User TSconfig as set in $GLOBALS['TYPO3_CONF_VARS'][BE]['defaultUserTSconfig']
+	 * Prefixed with a [GLOBAL] line
+	 * FOR USE IN ext_tables.php/ext_localconf.php FILES
+	 *
+	 * @param string $content User TSconfig content
+	 * @return void
+	 */
+	public static function addUserTSConfig($content) {
+		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher())
+			return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig($content);
+		return t3lib_extMgm::addUserTSConfig($content);
+	}
+
 }
