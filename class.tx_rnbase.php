@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2009 Rene Nitzsche
+ *  (c) 2009-2015 Rene Nitzsche
  *  Contact: rene@system25.de
  *
  * This library is free software; you can redistribute it and/or
@@ -182,7 +182,10 @@ class tx_rnbase {
 		$path = self::_findT3($minimalInformation, $alternativeKey, $prefix, $suffix);
 
 		if($path) {
-			t3lib_div::requireOnce($path);
+			if(class_exists('\TYPO3\CMS\Core\Utility\GeneralUtility'))
+				\TYPO3\CMS\Core\Utility\GeneralUtility::requireOnce($path);
+			else
+				t3lib_div::requireOnce($path);
 			return TRUE;
 		}
 		return FALSE;
@@ -271,7 +274,10 @@ class tx_rnbase {
 		$ret['class'] = $class;
 		$ret['dir'] = $dir;
 		$ret['extkey'] = $key;
-		$ret['extpath'] = t3lib_extMgm::extPath($key);
+		if(class_exists('\TYPO3\CMS\Core\Utility\ExtensionManagementUtility'))
+			$ret['extpath'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($key);
+		else
+			$ret['extpath'] = t3lib_extMgm::extPath($key);
 		if($isExtBase) {
 			$path = $ret['extpath'] . $dir . $last . $suffix;
 		}

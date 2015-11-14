@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011 Rene Nitzsche
+ *  (c) 2011-2015 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -22,7 +22,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 
@@ -44,7 +43,10 @@ class tx_rnbase_util_Debug {
 	 * @return	void
 	 */
 	public static function debug($var = '', $header = '', $group = 'Debug') {
-		if(tx_rnbase_util_TYPO3::isTYPO45OrHigher()) {
+		if(tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+			return \TYPO3\CMS\Core\Utility\DebugUtility::debug($var, $header, $group);
+		}
+		elseif(tx_rnbase_util_TYPO3::isTYPO45OrHigher()) {
 			return t3lib_utility_Debug::debug($var, $header, $group);
 		}
 		else {
@@ -60,7 +62,10 @@ class tx_rnbase_util_Debug {
 	 * @return	string		HTML output
 	 */
 	public static function viewArray($array_in) {
-		if(tx_rnbase_util_TYPO3::isTYPO45OrHigher()) {
+		if(tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+			return \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($array_in);
+		}
+		elseif(tx_rnbase_util_TYPO3::isTYPO45OrHigher()) {
 			return t3lib_utility_Debug::viewArray($array_in);
 		}
 		else {
@@ -73,7 +78,10 @@ class tx_rnbase_util_Debug {
 	 */
 	public static function getDebugTrail() {
 		tx_rnbase::load('tx_rnbase_util_TYPO3');
-		if(tx_rnbase_util_TYPO3::isTYPO45OrHigher()) {
+		if(tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+			return \TYPO3\CMS\Core\Utility\DebugUtility::debugTrail();
+		}
+		elseif(tx_rnbase_util_TYPO3::isTYPO45OrHigher()) {
 			return t3lib_utility_Debug::debugTrail();
 		} elseif (is_callable(array('t3lib_div', 'debug_trail'))) {
 			return t3lib_div::debug_trail();
@@ -193,6 +201,6 @@ class tx_rnbase_util_Debug {
 
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Debug.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Debug.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Debug.php']) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Debug.php']);
 }

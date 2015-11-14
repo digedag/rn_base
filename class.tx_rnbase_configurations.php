@@ -74,8 +74,7 @@
  *
  */
 
-
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.php');
 
 class tx_rnbase_configurations {
   // We store all Data to an internal ArrayObject
