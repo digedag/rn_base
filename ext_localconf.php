@@ -11,13 +11,12 @@ require_once($rnbaseExtPath . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_util_Debug');
 tx_rnbase::load('tx_rnbase_util_Extensions');
 tx_rnbase::load('tx_rnbase_configurations');
-if(!is_array($TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['rnbase']) &&
+if(!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['rnbase']) &&
 	tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'activateCache') ) {
-	$TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['rnbase'] = array(
-		'backend' => 't3lib_cache_backend_FileBackend',
-		'options' => array(
-		)
-	);
+	tx_rnbase::load('tx_rnbase_cache_Manager');
+	tx_rnbase_cache_Manager::registerCache('rnbase',
+			tx_rnbase_cache_Manager::CACHE_FRONTEND_VARIABLE,
+			tx_rnbase_cache_Manager::CACHE_BACKEND_FILE);
 }
 
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = intval(tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'loadHiddenObjects'));

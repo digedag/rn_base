@@ -35,19 +35,31 @@ Beispielconfig für MemCached:
 ```
 Weitere Infos gibt es im Web. Aber aufpassen, da sind einige Beispiele veraltet und funktioniert so nicht!
 
+Bei der Verwendung von rn_base kann man seinen Cache systemunabhängig registrieren. Die Cache-Manager-Klasse stellt dafür eine passende Methode bereit:
+
+```php
+	tx_rnbase::load('tx_rnbase_cache_Manager');
+	tx_rnbase_cache_Manager::registerCache('your_cache_name',
+			tx_rnbase_cache_Manager::CACHE_FRONTEND_VARIABLE,
+			tx_rnbase_cache_Manager::CACHE_BACKEND_MEMCACHED,
+			array(
+				'servers' => array('localhost:11211'),
+			));
+```
+
+
 Konkretes Beispiel für DB-basierten Cache
 -----------------------------------------
 Für mkforms wird ein Cache verwendet, um Session-Daten zu persistieren. Der Cache hat die ID mkforms. Mit folgender Config in der Datei typo3conf/localconf.php wird der Cache auf Datenbank-Basis eingerichtet:
 ```php
- $TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations'] = array(
-    'mkforms' => array(
-        'backend' => 't3lib_cache_backend_DbBackend',
-        'options' => array(
-            'cacheTable' => 'tx_mkforms_cache',
-            'tagsTable' => 'tx_mkforms_tags',
-        )
-    )
- );
+	tx_rnbase::load('tx_rnbase_cache_Manager');
+	tx_rnbase_cache_Manager::registerCache('mkforms',
+			tx_rnbase_cache_Manager::CACHE_FRONTEND_VARIABLE,
+			tx_rnbase_cache_Manager::CACHE_BACKEND_T3DATABASE,
+			array(
+        'cacheTable' => 'tx_mkforms_cache',
+        'tagsTable' => 'tx_mkforms_tags',
+			));
 ```
 Natürlich müssen die beiden DB-Tabellen tx_mkforms_cache und tx_mkforms_tags vorher angelegt werden:
 ```sql
@@ -82,14 +94,13 @@ Konkretes Beispiel für MemCached
 So sollte es für memcached aussehen. Das ist aber noch ungetestet:
 
 ```php
- $TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations'] = array(
-    'mkforms' => array(
-        'backend' => 't3lib_cache_backend_MemcachedBackend',
-        'options' => array(
-            'servers' => array('localhost:11211'),
-        )
-    )
- );
+	tx_rnbase::load('tx_rnbase_cache_Manager');
+	tx_rnbase_cache_Manager::registerCache('mkforms',
+			tx_rnbase_cache_Manager::CACHE_FRONTEND_VARIABLE,
+			tx_rnbase_cache_Manager::CACHE_BACKEND_MEMCACHED,
+			array(
+        'servers' => array('localhost:11211'),
+			));
 ```
 
 Manuelles Cache leeren

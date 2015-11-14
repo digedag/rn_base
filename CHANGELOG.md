@@ -6,6 +6,7 @@
 v0.15.16 (??.11.2015)
  * new method tx_rnbase_util_String::isInteger() as wrapper for t3lib_div::testInt()
  * tx_rnbase_action_BaseIOC has new utility method createLink()
+ * new method tx_rnbase_cache_Manager::registerCache()
 
 v0.15.15 (02.11.2015)
  * prepareTSFE refactoring
