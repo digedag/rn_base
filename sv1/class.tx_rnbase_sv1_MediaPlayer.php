@@ -61,7 +61,8 @@ class tx_rnbase_sv1_MediaPlayer extends t3lib_svbase {
     $autoStart = $playerConf['autoStart'];
     $autoReplay = $playerConf['autoReplay'];
 
-    $fePath = t3lib_extMgm::siteRelPath('rn_base') . 'sv1/';
+    tx_rnbase::load('tx_rnbase_util_Extensions');
+    $fePath = tx_rnbase_util_Extensions::siteRelPath('rn_base') . 'sv1/';
 
     $out = '<object type="application/x-shockwave-flash" data="/'.
             $fePath. 'dewplayer.swf?son='.

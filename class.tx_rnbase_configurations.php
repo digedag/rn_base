@@ -362,7 +362,7 @@ class tx_rnbase_configurations {
   function &getFlexFormArray() {
     static $flex;
     if (!is_array($flex)) {
-      $flex = t3lib_div::getURL(t3lib_extMgm::extPath($this->getExtensionKey()) . $this->get('flexform'));
+      $flex = t3lib_div::getURL(tx_rnbase_util_Extensions::extPath($this->getExtensionKey()) . $this->get('flexform'));
       $flex = t3lib_div::xml2array($flex);
     }
     return $flex;

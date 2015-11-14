@@ -121,7 +121,7 @@ class tx_rnbase_util_Logger {
 	}
 	private static function isLogLevel($level) {
 		if(self::$minLog === FALSE) {
-			if(t3lib_extMgm::isLoaded('devlog')) {
+			if(tx_rnbase_util_Extensions::isLoaded('devlog')) {
 				$minLog = tx_rnbase_configurations::getExtensionCfgValue('devlog', 'minLogLevel');
 				self::$minLog = $minLog !== FALSE ? $minLog : -1;
 			}

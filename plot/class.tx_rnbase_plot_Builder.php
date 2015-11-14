@@ -23,8 +23,9 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 define('IMAGE_CANVAS_SYSTEM_FONT_PATH', PATH_site);
-require_once(PATH_site.t3lib_extMgm::siteRelPath("pbimagegraph").'Image/class.tx_pbimagegraph.php');
-require_once(PATH_site.t3lib_extMgm::siteRelPath("pbimagegraph").'Image/class.tx_pbimagegraph_canvas.php');
+tx_rnbase::load('tx_rnbase_util_Extensions');
+require_once(PATH_site.tx_rnbase_util_Extensions::siteRelPath("pbimagegraph").'Image/class.tx_pbimagegraph.php');
+require_once(PATH_site.tx_rnbase_util_Extensions::siteRelPath("pbimagegraph").'Image/class.tx_pbimagegraph_canvas.php');
 
 
 /**

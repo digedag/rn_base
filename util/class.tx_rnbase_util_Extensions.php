@@ -78,6 +78,20 @@ class tx_rnbase_util_Extensions {
 	}
 
 	/**
+	 * Returns the relative path to the extension as measured from the PATH_site (frontend)
+	 * If the extension is not loaded the function will die with an error message
+	 * Useful for images and links from the frontend
+	 *
+	 * @param string $key Extension key
+	 * @return string
+	 */
+	public static function siteRelPath($key) {
+		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher())
+			return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($key);
+		return t3lib_extMgm::siteRelPath($key);
+	}
+
+	/**
 	 * Returns TRUE if the extension with extension key $key is loaded.
 	 *
 	 * @param string $key Extension key to test
@@ -163,5 +177,19 @@ class tx_rnbase_util_Extensions {
 		return t3lib_extMgm::addPlugin($itemArray, $type, $extensionKey);
 	}
 
+	/**
+	 * Adds a service to the global services array
+	 *
+	 * @param string $extKey Extension key
+	 * @param string $serviceType Service type, must not be prefixed "tx_" or "Tx_
+	 * @param string $serviceKey Service key, must be prefixed "tx_", "Tx_" or "user_
+	 * @param array $info Service description array
+	 * @return void
+	 */
+	public static function addService($extKey, $serviceType, $serviceKey, $info) {
+		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher())
+			return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService($extKey, $serviceType, $serviceKey, $info);
+		return t3lib_extMgm::addService($extKey, $serviceType, $serviceKey, $info);
+	}
 
 }

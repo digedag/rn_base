@@ -23,7 +23,7 @@
  ***************************************************************/
 
 // Die Datenbank-Klasse
-require_once(t3lib_extMgm::extPath('rn_base') . 'model/class.tx_rnbase_model_base.php');
+tx_rnbase::load('tx_rnbase_model_base');
 
 /**
  */

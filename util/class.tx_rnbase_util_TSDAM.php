@@ -23,15 +23,14 @@
  ***************************************************************/
 
 
-if(t3lib_extMgm::isLoaded('dam')) {
-	require_once(t3lib_extMgm::extPath('dam') . 'lib/class.tx_dam_media.php');
-	require_once(t3lib_extMgm::extPath('dam') . 'lib/class.tx_dam_tsfe.php');
-	require_once(t3lib_extMgm::extPath('dam') . 'lib/class.tx_dam_db.php');
+if(tx_rnbase_util_Extensions::isLoaded('dam')) {
+	require_once(tx_rnbase_util_Extensions::extPath('dam') . 'lib/class.tx_dam_media.php');
+	require_once(tx_rnbase_util_Extensions::extPath('dam') . 'lib/class.tx_dam_tsfe.php');
+	require_once(tx_rnbase_util_Extensions::extPath('dam') . 'lib/class.tx_dam_db.php');
 }
 
 define('DEFAULT_LOCAL_FIELD', '_LOCALIZED_UID');
 
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_util_BaseMarker');
 
 /**
@@ -77,7 +76,7 @@ class tx_rnbase_util_TSDAM {
 	 * @return string
 	 */
 	function printImages ($content, $tsConf) {
-		if(!t3lib_extMgm::isLoaded('dam')) return '';
+		if(!tx_rnbase_util_Extensions::isLoaded('dam')) return '';
 
 		$conf = $this->createConf($tsConf);
 		$file = $conf->get('template');
@@ -184,7 +183,7 @@ class tx_rnbase_util_TSDAM {
 	 * @return array
 	 */
 	static function fetchFiles($tablename, $uid, $refField) {
-		require_once(t3lib_extMgm::extPath('dam').'lib/class.tx_dam_db.php');
+		require_once(tx_rnbase_util_Extensions::extPath('dam').'lib/class.tx_dam_db.php');
 		return tx_dam_db::getReferencedFiles($tablename, $uid, $refField);
 	}
 
@@ -218,7 +217,7 @@ class tx_rnbase_util_TSDAM {
 		}
 	}
 	static function createThumbnails11($damFiles, $size, $addAttr) {
-		require_once(t3lib_extMgm::extPath('dam').'lib/class.tx_dam_image.php');
+		require_once(tx_rnbase_util_Extensions::extPath('dam').'lib/class.tx_dam_image.php');
 		$files = $damFiles['rows'];
 		$ret = array();
 		foreach($files As $key => $info ) {
@@ -227,7 +226,7 @@ class tx_rnbase_util_TSDAM {
 		return $ret;
 	}
 	static function createThumbnails10($damFiles, $size, $addAttr) {
-		require_once(t3lib_extMgm::extPath('dam').'lib/class.tx_dam.php');
+		require_once(tx_rnbase_util_Extensions::extPath('dam').'lib/class.tx_dam.php');
 		$files = $damFiles['rows'];
 		$ret = array();
 		foreach($files As $key => $info ) {
@@ -264,8 +263,8 @@ class tx_rnbase_util_TSDAM {
 		}
 
 		$tca = array();
-		if(t3lib_extMgm::isLoaded('dam')) {
-			require_once(t3lib_extMgm::extPath('dam').'tca_media_field.php');
+		if(tx_rnbase_util_Extensions::isLoaded('dam')) {
+			require_once(tx_rnbase_util_Extensions::extPath('dam').'tca_media_field.php');
 			$tca = txdam_getMediaTCA($type, $ref);
 		}
 		if (!empty($tca) && is_array($options)) {
@@ -365,7 +364,7 @@ class tx_rnbase_util_TSDAM {
 	 * @return array
 	 */
 	public static function getReferences($refTable, $refUid, $refField) {
-		require_once(t3lib_extMgm::extPath('dam') . 'lib/class.tx_dam_db.php');
+		require_once(tx_rnbase_util_Extensions::extPath('dam') . 'lib/class.tx_dam_db.php');
 		return tx_dam_db::getReferencedFiles($refTable, $refUid, $refField);
 	}
 
@@ -429,10 +428,10 @@ class tx_rnbase_util_TSDAM {
 	 * @return uid
 	 */
 	public static function indexProcess($file, $beUserId) {
-		if (!t3lib_extMgm::isLoaded('dam')) {
+		if (!tx_rnbase_util_Extensions::isLoaded('dam')) {
 			return 0;
 		}
-		require_once t3lib_extMgm::extPath('dam', 'lib/class.tx_dam.php');
+		require_once tx_rnbase_util_Extensions::extPath('dam', 'lib/class.tx_dam.php');
 		$mediaUid = tx_dam::file_isIndexed($file);
 		if(!$mediaUid) {
 			// process file indexing
@@ -475,7 +474,7 @@ class tx_rnbase_util_TSDAM {
 
 		if(!$GLOBALS['LANG']) {
 			// Bei Ajax-Calls fehlt das Objekt
-			require_once t3lib_extMgm::extPath('lang', 'lang.php');
+			require_once tx_rnbase_util_Extensions::extPath('lang', 'lang.php');
 			$GLOBALS['LANG'] = t3lib_div::makeInstance('language');
 			$GLOBALS['LANG']->init($BE_USER->uc['lang']);
 		}

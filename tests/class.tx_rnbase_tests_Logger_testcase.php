@@ -22,14 +22,13 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_util_Logger');
 
 
 class tx_rnbase_tests_Logger_testcase extends tx_phpunit_testcase {
 
 	function test_logger() {
-		if(t3lib_extMgm::isLoaded('devlog')) {
+		if(tx_rnbase_util_Extensions::isLoaded('devlog')) {
 			$minLog = tx_rnbase_configurations::getExtensionCfgValue('devlog', 'minLogLevel');
 			if($minLog === FALSE) {
 				$ret = tx_rnbase_util_Logger::isNoticeEnabled();

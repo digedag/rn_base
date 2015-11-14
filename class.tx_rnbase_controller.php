@@ -45,11 +45,11 @@
  * Controllers of this kind are called from TS Setup in the typical position
  * "tt_content.list.20.pluginKey" exactly like the traditional tslib::pi_base() plugins.
  *
- * The pluginKey is defined by the function t3lib_extMgm::addPlugin()
+ * The pluginKey is defined by the function tx_rnbase_util_Extensions::addPlugin()
  * within the file ext_tables.php as second element of the array
  * that is handled as first parameter to the function.
  *
- * t3lib_extMgm::addPlugin(array(pluginLabel, pluginKey), list_type)
+ * tx_rnbase_util_Extensions::addPlugin(array(pluginLabel, pluginKey), list_type)
  *
  * -----------------------------------------
  * Easily controlled by the action classes

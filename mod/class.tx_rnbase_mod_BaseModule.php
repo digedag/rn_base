@@ -23,8 +23,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
-
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 tx_rnbase::load('tx_rnbase_mod_IModule');
 tx_rnbase::load('tx_rnbase_mod_IModFunc');
@@ -312,7 +310,6 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 		if(file_exists(t3lib_div::getFileAbsFileName($filename, TRUE, TRUE))) {
 			return $filename;
 		}
-		// '../'.t3lib_extMgm::siteRelPath($this->getExtensionKey()) .  'mod1/template.html'
 		$filename = 'EXT:'.$this->getExtensionKey() .  '/mod1/template.html';
 		if(file_exists(t3lib_div::getFileAbsFileName($filename, TRUE, TRUE))) {
 			return $filename;

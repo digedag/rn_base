@@ -50,8 +50,8 @@ class tx_rnbase {
 			self::$loadedClasses[$classNameOrPathInformation] = TRUE;
 			return TRUE;
 		}
-		if(t3lib_extMgm::isLoaded('lib')) {
-			require_once(t3lib_extMgm::extPath('lib') . 'class.tx_lib_pearLoader.php');
+		if(tx_rnbase_util_Extensions::isLoaded('lib')) {
+			require_once(tx_rnbase_util_Extensions::extPath('lib') . 'class.tx_lib_pearLoader.php');
 			if(tx_lib_pearLoader::load($classNameOrPathInformation)) {
 				self::$loadedClasses[$classNameOrPathInformation] = TRUE;
 				return TRUE;
@@ -147,8 +147,8 @@ class tx_rnbase {
 		if(!$outputName) {
 			$outputName = self::makeInstanceClassNameT3($inputName);
 		}
-		if(!$outputName && t3lib_extMgm::isLoaded('lib')) {
-			require_once(t3lib_extMgm::extPath('lib') . 'class.tx_lib_pearLoader.php');
+		if(!$outputName && tx_rnbase_util_Extensions::isLoaded('lib')) {
+			require_once(tx_rnbase_util_Extensions::extPath('lib') . 'class.tx_lib_pearLoader.php');
 			$outputName = tx_lib_pearLoader::makeInstanceClassName($inputName);
 		}
 		return $outputName;
@@ -277,7 +277,7 @@ class tx_rnbase {
 		if(class_exists('\TYPO3\CMS\Core\Utility\ExtensionManagementUtility'))
 			$ret['extpath'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($key);
 		else
-			$ret['extpath'] = t3lib_extMgm::extPath($key);
+			$ret['extpath'] = tx_rnbase_util_Extensions::extPath($key);
 		if($isExtBase) {
 			$path = $ret['extpath'] . $dir . $last . $suffix;
 		}

@@ -232,7 +232,7 @@ class tx_rnbase_util_TYPO3 {
 			if(is_object($GLOBALS['TSFE']->sys_page))
 				self::$sysPage = $GLOBALS['TSFE']->sys_page; // Use existing SysPage from TSFE
 			else {
-				self::$sysPage = t3lib_div::makeInstance('t3lib_pageSelect');
+				self::$sysPage = tx_rnbase::makeInstance('t3lib_pageSelect');
 				self::$sysPage->init(0); // $this->showHiddenPage
 			}
 		}
