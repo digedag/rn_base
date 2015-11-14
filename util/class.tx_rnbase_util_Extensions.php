@@ -178,6 +178,60 @@ class tx_rnbase_util_Extensions {
 	}
 
 	/**
+	 * Adds a module (main or sub) to the backend interface
+	 * FOR USE IN ext_tables.php FILES
+	 *
+	 * @param string $main The main module key, $sub is the submodule key. So $main would be an index in the $TBE_MODULES array and $sub could be an element in the lists there.
+	 * @param string $sub The submodule key. If $sub is not set a blank $main module is created.
+	 * @param string $position Can be used to set the position of the $sub module within the list of existing submodules for the main module. $position has this syntax: [cmd]:[submodule-key]. cmd can be "after", "before" or "top" (or blank which is default). If "after"/"before" then submodule will be inserted after/before the existing submodule with [submodule-key] if found. If not found, the bottom of list. If "top" the module is inserted in the top of the submodule list.
+	 * @param string $path The absolute path to the module. If this value is defined the path is added as an entry in $TBE_MODULES['_PATHS'][  main_sub  ] = $path; and thereby tells the backend where the newly added modules is found in the system. This option is deprecated as of TYPO3 CMS 7, and will have no effect in TYPO3 CMS 8 anymore.
+	 * @param array $moduleConfiguration additional configuration, previously put in "conf.php" of the module directory
+	 * @return void
+	 */
+	public static function addModule($main, $sub = '', $position = '', $path = '', $moduleConfiguration = array()) {
+		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher())
+			return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule($main, $sub, $position, $path, $moduleConfiguration);
+		return t3lib_extMgm::addModule($main, $sub, $position, $path, $moduleConfiguration);
+	}
+
+	/**
+	 * Adds a "Function menu module" ('third level module') to an existing function menu for some other backend module
+	 * The arguments values are generally determined by which function menu this is supposed to interact with
+	 * See Inside TYPO3 for information on how to use this function.
+	 * FOR USE IN ext_tables.php FILES
+	 *
+	 * @param string $modname Module name
+	 * @param string $className Class name
+	 * @param string $classPath Class path, deprecated since 6.2, use auto-loading instead
+	 * @param string $title Title of module
+	 * @param string $MM_key Menu array key - default is "function
+	 * @param string $WS Workspace conditions. Blank means all workspaces, any other string can be a comma list of "online", "offline" and "custom
+	 * @return void
+	 * @see \TYPO3\CMS\Backend\Module\BaseScriptClass::mergeExternalItems()
+	 */
+	public static function insertModuleFunction($modname, $className, $classPath = null, $title, $MM_key = 'function', $WS = '') {
+		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher())
+			return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction($modname, $className, $title);
+		return t3lib_extMgm::insertModuleFunction($modname, $className, $title);
+	}
+
+	/**
+	 * Adds a reference to a locallang file with $GLOBALS['TCA_DESCR'] labels
+	 * FOR USE IN ext_tables.php FILES
+	 * eg. \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('pages', 'EXT:lang/locallang_csh_pages.xlf'); for the pages table or \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_layout', 'EXT:frontend/Resources/Private/Language/locallang_csh_weblayout.xlf'); for the Web > Page module.
+	 *
+	 * @param string $tca_descr_key Description key. Typically a database table (like "pages") but for applications can be other strings, but prefixed with "_MOD_")
+	 * @param string $file_ref File reference to locallang file, eg. "EXT:lang/locallang_csh_pages.xlf" (or ".xml")
+	 * @return void
+	 */
+	public static function addLLrefForTCAdescr($tca_descr_key, $file_ref) {
+		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher())
+			return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr($tca_descr_key, $file_ref);
+		return t3lib_extMgm::addLLrefForTCAdescr($tca_descr_key, $file_ref);
+	}
+
+
+	/**
 	 * Adds a service to the global services array
 	 *
 	 * @param string $extKey Extension key
