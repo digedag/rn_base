@@ -74,8 +74,6 @@
  *
  */
 
-require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.php');
-
 class tx_rnbase_configurations {
   // We store all Data to an internal ArrayObject
   var $_dataStore;
