@@ -99,11 +99,14 @@ class tx_rnbase_util_Mail {
 		$mail->send($this->toAsString);
 	}
 	protected function send45() {
+		/* @var $mail t3lib_mail_Message */
 		$mail = tx_rnbase::makeInstance('t3lib_mail_Message');
 		$mail->setFrom(array($this->from => $this->fromName));
 		$mail->setTo(tx_rnbase_util_Strings::trimExplode(',', $this->toAsString));
 		$mail->setSubject($this->subject);
-		$mail->addReplyTo($this->replyTo, $this->replyToName);
+		if ($this->replyTo) {
+			$mail->addReplyTo($this->replyTo, $this->replyToName);
+		}
 		// Or set it after like this
 		if($this->htmlPart)
 			$mail->setBody($this->htmlPart, 'text/html');
