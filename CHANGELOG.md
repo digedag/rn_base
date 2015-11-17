@@ -3,10 +3,18 @@
 Änderungen
 ----------
 
-v0.15.16 (??.11.2015)
+v0.15.17 (??.??.2015)
+
+v0.15.16 (17.11.2015)
  * new method tx_rnbase_util_String::isInteger() as wrapper for t3lib_div::testInt()
  * tx_rnbase_action_BaseIOC has new utility method createLink()
  * new method tx_rnbase_cache_Manager::registerCache()
+ * Method createURI renamed
+ * decode class names from requests in SearchBase
+ * ReplyTo Address added in MailUtility
+ * use TYPO3 404 Handling when tx_rnbase_exception_ItemNotFound404 or TYPO3\CMS\Core\Error\Http\PageNotFoundException is thrown in actions
+ * bugfix if refUid got its value thorugh stdWrap (TSFAL Utility)
+ * TYPO3 7.6 compaitbility
 
 v0.15.15 (02.11.2015)
  * prepareTSFE refactoring
