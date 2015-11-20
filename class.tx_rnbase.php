@@ -277,7 +277,7 @@ class tx_rnbase {
 		if(class_exists('\TYPO3\CMS\Core\Utility\ExtensionManagementUtility'))
 			$ret['extpath'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($key);
 		else
-			$ret['extpath'] = tx_rnbase_util_Extensions::extPath($key);
+			$ret['extpath'] = t3lib_extMgm::extPath($key);
 		if($isExtBase) {
 			$path = $ret['extpath'] . $dir . $last . $suffix;
 		}
