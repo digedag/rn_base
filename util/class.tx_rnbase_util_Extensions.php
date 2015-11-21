@@ -211,8 +211,8 @@ class tx_rnbase_util_Extensions {
 	 */
 	public static function insertModuleFunction($modname, $className, $classPath = null, $title, $MM_key = 'function', $WS = '') {
 		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher())
-			return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction($modname, $className, $title);
-		return t3lib_extMgm::insertModuleFunction($modname, $className, $title);
+			return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction($modname, $className, $title, $MM_key, $WS);
+		return t3lib_extMgm::insertModuleFunction($modname, $className, $classPath, $title, $MM_key, $WS);
 	}
 
 	/**
