@@ -116,7 +116,10 @@ class tx_rnbase_util_Mail {
 			$mail->addPart($this->textPart, 'text/plain');
 		if(!empty($this->attachments)) {
 			foreach ($this->attachments AS $attachment) {
-				// TODO!
+				if(!$mail->attach(Swift_Attachment::fromPath($attachment['src']))){
+					tx_rnbase_util_Logger::warn('Adding attachment failed!', 'rn_base',
+						array('subject'=>$mail->subject, 'to'=>$this->toAsString, 'attachment'=>$attachment));
+				}
 			}
 		}
 
@@ -127,3 +130,4 @@ class tx_rnbase_util_Mail {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Mail.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Mail.php']);
 }
+
