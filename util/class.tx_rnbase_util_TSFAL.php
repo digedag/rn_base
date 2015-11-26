@@ -186,7 +186,7 @@ class tx_rnbase_util_TSFAL {
 		if(!empty($pics) && $limit) {
 			$pics = array_slice($pics, $offset, $limit);
 		}
-		elseif(!empty($pics) && $limit) {
+		elseif(!empty($pics) && $offset) {
 			$pics = array_slice($pics, $offset);
 		}
 		// Die Bilder sollten jetzt noch in ein
