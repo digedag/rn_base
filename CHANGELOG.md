@@ -3,7 +3,11 @@
 Änderungen
 ----------
 
-v0.15.17 (??.??.2015)
+v0.15.18 (??.??.2015)
+
+v0.15.17 (26.11.2015)
+ * Mail attachment support for TYPO3 >= 4.5
+ * tx_rnbase_util_Extensions::insertModule() fixed for 6.x
 
 v0.15.16 (17.11.2015)
  * new method tx_rnbase_util_String::isInteger() as wrapper for t3lib_div::testInt()
