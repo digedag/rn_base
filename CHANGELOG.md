@@ -4,6 +4,7 @@
 ----------
 
 v0.15.18 (??.??.2015)
+ * Bugfix: tx_rnbase_util_Dates::date_mysql2tstamp liefert nun immer einen Integer und nicht NULL im Fehlerfall
 
 v0.15.17 (26.11.2015)
  * Mail attachment support for TYPO3 >= 4.5
