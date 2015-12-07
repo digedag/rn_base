@@ -671,6 +671,21 @@ MAYDAYPAGE;
 		}
 	}
 
+	/**
+	 * Wrapper method for t3lib_div::milliseconds() or \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds()
+	 *
+	 * @return integer The unixtime as milliseconds
+	 */
+	static public function milliseconds() {
+		if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+			$milliseconds = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
+		} else{
+			$milliseconds = t3lib_div::milliseconds();
+		}
+
+		return $milliseconds ;
+	}
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Misc.php']) {
