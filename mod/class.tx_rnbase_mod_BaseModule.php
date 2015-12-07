@@ -144,7 +144,7 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 			$this->extObj = tx_rnbase::makeInstance($this->extClassConf['name']);
 			$this->extObj->init($this, $this->extClassConf);
 				// Re-write:
-			$this->MOD_SETTINGS = Tx_Rnbase_Backend_Utility::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
+			$this->MOD_SETTINGS = Tx_Rnbase_Backend_Utility::getModuleData($this->MOD_MENU, tx_rnbase_parameters::getPostOrGetParameter('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
 		}
 	}
 

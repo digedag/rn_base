@@ -693,7 +693,7 @@ class tx_rnbase_util_Link {
 					if (count($linkvar)< 2)  {
 						// tt_news::* or ttnews::id
 						list($qualifier, $name) = t3lib_div::trimExplode('::', $linkvar[0]);
-						if ($value = t3lib_div::_GP($qualifier)) {
+						if ($value = tx_rnbase_parameters::getPostOrGetParameter($qualifier)) {
 							if($name == '*' && is_array($value)) {
 								foreach ($value As $paramName => $paramValue) {
 									if ($skipEmpty && empty($paramValue)) {

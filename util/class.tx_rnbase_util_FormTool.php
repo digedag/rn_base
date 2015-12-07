@@ -537,7 +537,7 @@ class tx_rnbase_util_FormTool {
 					top.content.nav_frame.refresh_nav();
 				}
 			}
-			var T3_RETURN_URL = "'.str_replace('%20', '', rawurlencode(t3lib_div::_GP('returnUrl'))).'";
+			var T3_RETURN_URL = "'.str_replace('%20', '', rawurlencode(tx_rnbase_parameters::getPostOrGetParameter('returnUrl'))).'";
 			var T3_THIS_LOCATION="'.str_replace('%20', '', rawurlencode($location)).'"');
 
     return $JScode;
@@ -555,7 +555,7 @@ class tx_rnbase_util_FormTool {
 			$name => $entries
 		);
 		$SETTINGS = Tx_Rnbase_Backend_Utility::getModuleData(
-			$MENU, t3lib_div::_GP('SET'), $modName
+			$MENU, tx_rnbase_parameters::getPostOrGetParameter('SET'), $modName
 		);
 
 		$out = '
@@ -592,7 +592,7 @@ class tx_rnbase_util_FormTool {
 			$name => $entries
 		);
 		$SETTINGS = Tx_Rnbase_Backend_Utility::getModuleData(
-			$MENU, t3lib_div::_GP('SET'), $modName
+			$MENU, tx_rnbase_parameters::getPostOrGetParameter('SET'), $modName
 		);
 
 		$ret['menu'] = (tx_rnbase_util_TYPO3::isTYPO62OrHigher() && is_array($MENU[$name]) && count($MENU[$name]) == 1) ?
@@ -631,7 +631,7 @@ class tx_rnbase_util_FormTool {
    * @return mixed
    */
 	public function getStoredRequestData($key, $changed=array(), $modName='DEFRNBASEMOD') {
-		$data = t3lib_div::_GP($key);
+		$data = tx_rnbase_parameters::getPostOrGetParameter($key);
 		if(is_array($data)) {
 			list($itemid, ) = each($data);
 			$changed[$key] = $itemid;

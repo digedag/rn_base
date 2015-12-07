@@ -439,7 +439,7 @@ abstract class tx_rnbase_mod_base_Lister {
 	 */
 	protected function showFreeTextSearchForm (&$marker, $key, array $options = array()) {
 		tx_rnbase::load('tx_rnbase_mod_Util');
-		$searchstring = tx_rnbase_mod_Util::getModuleValue($key, $this->getModule(), array('changed' => t3lib_div::_GP('SET')));
+		$searchstring = tx_rnbase_mod_Util::getModuleValue($key, $this->getModule(), array('changed' => tx_rnbase_parameters::getPostOrGetParameter('SET')));
 
 		// Erst das Suchfeld, danach der Button.
 		$marker['field'] 	= $this->getFormTool()->createTxtInput('SET['.$key.']', $searchstring, 10);
@@ -454,7 +454,7 @@ abstract class tx_rnbase_mod_base_Lister {
 				1 => $GLOBALS['LANG']->getLL('label_select_show_hidden'),
 		);
 		tx_rnbase::load('tx_rnbase_mod_Util');
-		$selectedItem = tx_rnbase_mod_Util::getModuleValue('showhidden', $this->getModule(), array('changed' => t3lib_div::_GP('SET')));
+		$selectedItem = tx_rnbase_mod_Util::getModuleValue('showhidden', $this->getModule(), array('changed' => tx_rnbase_parameters::getPostOrGetParameter('SET')));
 
 		$options['label'] = $options['label'] ? $options['label'] : $GLOBALS['LANG']->getLL('label_hidden');
 		return tx_rnbase_mod_Util::showSelectorByArray($items, $selectedItem, 'showhidden', $marker, $options);

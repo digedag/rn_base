@@ -10,6 +10,7 @@ require_once($rnbaseExtPath . 'class.tx_rnbase.php');
 
 tx_rnbase::load('tx_rnbase_util_Debug');
 tx_rnbase::load('tx_rnbase_util_Extensions');
+tx_rnbase::load('tx_rnbase_parameters');
 tx_rnbase::load('tx_rnbase_configurations');
 if(!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['rnbase']) &&
 	tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'activateCache') ) {

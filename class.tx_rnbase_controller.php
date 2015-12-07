@@ -419,7 +419,7 @@ class tx_rnbase_controller {
 
 		// get parametersArray for defined qualifier
 		$parametersArray = tx_rnbase_util_TYPO3::isTYPO43OrHigher() ?
-				tx_rnbase_parameters::_GPmerged($configurations->getQualifier()) :
+				tx_rnbase_parameters::getPostAndGetParametersMerged($configurations->getQualifier()) :
 				t3lib_div::GParrayMerged($configurations->getQualifier());
 		if($configurations->isUniqueParameters() && array_key_exists($configurations->getPluginId(), $parametersArray)) {
 			$parametersArray = $parametersArray[$configurations->getPluginId()];

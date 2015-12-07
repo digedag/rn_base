@@ -147,6 +147,23 @@ class tx_rnbase_parameters extends ArrayObject implements tx_rnbase_IParameters 
 
 		return $return;
 	}
+
+	/**
+	 * @see t3lib_div::_GP
+	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::_GP
+	 *
+	 * @param string $parameter Key (variable name) from GET or POST vars
+	 * @return array Returns the GET vars merged recursively onto the POST vars.
+	 */
+	static public function getPostOrGetParameter($parameterName) {
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			$return = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP($parameterName);
+		} else {
+			$return = t3lib_div::_GP($parameterName);
+		}
+
+		return $return;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/class.tx_rnbase_parameters.php']) {
