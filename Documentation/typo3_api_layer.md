@@ -15,5 +15,9 @@ tx_rnbase_util_Math::testInt() | t3lib_div::testInt() | t3lib_utility_Math::canB
 tx_rnbase_util_Math::intInRange() 	t3lib_div::intInRange() | t3lib_utility_Math::forceIntegerInRange()
 tx_rnbase_util_TCA::loadTCA() | t3lib_div::loadTCA() | \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca()
 tx_rnbase_util_TYPO3::getHttpUtilityClass() | t3lib_utility_Http | \TYPO3\\CMS\\Core\\Utility\\HttpUtility
+Tx_Rnbase_Service_Base | t3lib_svbase | \TYPO3\CMS\Core\Service\AbstractService
+Tx_Rnbase_Backend_Utility | t3lib_BEfunc | \TYPO3\CMS\Backend\Utility\BackendUtility
+Tx_Rnbase_Interface_Singleton | t3lib_Singleton | \TYPO3\CMS\Core\SingletonInterface
 
-**Hinweis:** Diese Liste ist nicht vollständig!
+**Hinweis:** Diese Liste ist nicht vollständig! Am besten einfach im QUellcode von rn_base nach einer
+TYPO3 Core Methode suchen und schauen ob es eine Wrapper Methode gibt
