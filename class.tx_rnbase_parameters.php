@@ -115,7 +115,7 @@ class tx_rnbase_parameters extends ArrayObject implements tx_rnbase_IParameters 
 	}
 	private function getParametersPlain($qualifier) {
 		$parametersArray = tx_rnbase_util_TYPO3::isTYPO43OrHigher() ?
-				t3lib_div::_GPmerged($qualifier) :
+				self::_GPmerged($qualifier) :
 				t3lib_div::GParrayMerged($qualifier);
 		return $parametersArray;
 	}
@@ -129,6 +129,23 @@ class tx_rnbase_parameters extends ArrayObject implements tx_rnbase_IParameters 
 				$ret[$key] = $value;
 		}
 		return $ret;
+	}
+
+	/**
+	 * @see t3lib_div::_GPmerged
+	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged
+	 *
+	 * @param string $parameter Key (variable name) from GET or POST vars
+	 * @return array Returns the GET vars merged recursively onto the POST vars.
+	 */
+	static public function getPostAndGetParametersMerged($parameterName) {
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			$return = \TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged($parameterName);
+		} else {
+			$return = t3lib_div::_GPmerged($parameterName);
+		}
+
+		return $return;
 	}
 }
 
