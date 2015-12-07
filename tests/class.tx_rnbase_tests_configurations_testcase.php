@@ -30,7 +30,7 @@ class tx_rnbase_tests_configurations_testcase extends tx_phpunit_testcase {
 
 		$configurationArray['matchtable.']['match'] = '< lib.match';
   	$configurationArray['matchtable.']['match.']['limit'] = '100';
-    $cObj = t3lib_div::makeInstance('tslib_cObj');
+    $cObj = tx_rnbase::makeInstance('tslib_cObj');
     $configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
     $configurations->init($configurationArray, $cObj, 'extkey_text', 'rntest');
 
@@ -54,7 +54,7 @@ class tx_rnbase_tests_configurations_testcase extends tx_phpunit_testcase {
 		$configurationArray['view.']['loginbox.']['message'] = 'Hello';
 		$configurationArray['listview.']['feuser'] = '< lib.feuser';
 
-    $cObj = t3lib_div::makeInstance('tslib_cObj');
+    $cObj = tx_rnbase::makeInstance('tslib_cObj');
     $cObj->data['pi_flexform'] = $flexXml;
 		$configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
     $configurations->init($configurationArray, $cObj, 'extkey_text', 'rntest');

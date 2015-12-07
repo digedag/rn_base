@@ -95,7 +95,7 @@ class tx_rnbase_tests_listbuilder_testcase extends tx_phpunit_testcase {
 		return $models;
 	}
 	private function getConfig($confArr) {
-    $cObj = t3lib_div::makeInstance('tslib_cObj');
+    $cObj = tx_rnbase::makeInstance('tslib_cObj');
 		$configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
     $configurations->init($confArr, $cObj, 'tx_rnbase', 'rnbase');
 		return $configurations;

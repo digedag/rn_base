@@ -46,7 +46,7 @@ class tx_rnbase_action_Base {
    */
   function getCObj() {
     if(!$this->cObject){
-      $this->cObject = t3lib_div::makeInstance('tslib_cObj');
+      $this->cObject = tx_rnbase::makeInstance('tslib_cObj');
     }
     return $this->cObject;
   }

@@ -231,7 +231,7 @@ class tx_rnbase_configurations {
 	public function &getCObj($id = 0, $cObjClass = 'tslib_cObj') {
 		if(strcmp($id, '0') == 0) {
 			if(!is_object($this->cObj)) {
-				$this->cObj = t3lib_div::makeInstance($cObjClass);
+				$this->cObj = tx_rnbase::makeInstance($cObjClass);
 				$this->cObjs[0] = $this->cObj;
 			}
 			return $this->cObj;
@@ -240,7 +240,7 @@ class tx_rnbase_configurations {
 		$cObj = $this->_cObjs[$id];
 
 		if(!is_object($cObj)) {
-			$this->cObjs[$id] = t3lib_div::makeInstance($cObjClass);
+			$this->cObjs[$id] = tx_rnbase::makeInstance($cObjClass);
 		}
 		return $this->cObjs[$id];
 	}
@@ -755,7 +755,7 @@ class tx_rnbase_configurations {
 		}
 		if($flexTs) {
 			// This handles ts setup from flexform
-			$tsParser = t3lib_div::makeInstance('t3lib_TSparser');
+			$tsParser = tx_rnbase::makeInstance('t3lib_TSparser');
 			$tsParser->setup = $this->_dataStore->getArrayCopy();
 			$tsParser->parse($flexTs);
 			$flexTsData = $tsParser->setup;
@@ -771,7 +771,7 @@ class tx_rnbase_configurations {
 		// das < abschneiden, um den pfad zum link zu erhalten
 		$key = trim(substr($value, 1));
 
-		$tsParser = t3lib_div::makeInstance('t3lib_TSparser');
+		$tsParser = tx_rnbase::makeInstance('t3lib_TSparser');
 
 		// $name and $conf is loaded with the referenced values.
 		list($linkValue, $linkConf) = $tsParser->getVal($key, $GLOBALS['TSFE']->tmpl->setup);

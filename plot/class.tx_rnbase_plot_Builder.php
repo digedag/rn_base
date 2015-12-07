@@ -222,7 +222,7 @@ class tx_rnbase_plot_Builder {
 		$strCobjName = trim($strCobjName);
 		if (substr($strCobjName, 0, 1)=='<')	{
 			$strKey = trim(substr($strCobjName, 1));
-			$objTSparser = t3lib_div::makeInstance('t3lib_TSparser');
+			$objTSparser = tx_rnbase::makeInstance('t3lib_TSparser');
 			$arrOldConf=$arrConf;
 			list($strCobjName, $arrConf) = $objTSparser->getVal($strKey, $GLOBALS['TSFE']->tmpl->setup);
 			if (is_array($arrOldConf) && count($arrOldConf))	{

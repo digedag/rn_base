@@ -177,7 +177,7 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 			tx_rnbase::load('tx_rnbase_util_Misc');
 
 			tx_rnbase_util_Misc::prepareTSFE(); // Ist bei Aufruf aus BE notwendig!
-			$cObj = t3lib_div::makeInstance('tslib_cObj');
+			$cObj = tx_rnbase::makeInstance('tslib_cObj');
 
 			$pageTSconfigFull = Tx_Rnbase_Backend_Utility::getPagesTSconfig($this->getPid());
 			$pageTSconfig = $pageTSconfigFull['mod.'][$this->getExtensionKey().'.'];
@@ -243,12 +243,12 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 					$this->doc = $GLOBALS['TBE_TEMPLATE'];
 				}
 				elseif (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-					$this->doc = t3lib_div::makeInstance('\\TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+					$this->doc = tx_rnbase::makeInstance('\\TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 				} else {
-					$this->doc = t3lib_div::makeInstance('template');
+					$this->doc = tx_rnbase::makeInstance('template');
 				}
 			} else {
-				$this->doc = t3lib_div::makeInstance('bigDoc');
+				$this->doc = tx_rnbase::makeInstance('bigDoc');
 			}
 		}
 		return $this->doc;
@@ -435,7 +435,7 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 	 * (Non PHP-doc)
 	 */
 	public function addMessage($message, $title = '', $severity = 0, $storeInSession = FALSE) {
-		$message = t3lib_div::makeInstance(
+		$message = tx_rnbase::makeInstance(
 			't3lib_FlashMessage',
 			$message,
 			$title,

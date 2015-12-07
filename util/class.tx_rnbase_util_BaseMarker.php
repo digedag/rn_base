@@ -333,7 +333,7 @@ class tx_rnbase_util_BaseMarker {
 		$suffixesToTry = self::getSuffixesToTry($formatter->getConfigurations());
 		foreach ($allSingleMarkers as $marker) {
 			if (preg_match('/MARKERMODULE__([A-Z0-9_\-])*/', $marker)) {
-				$module = t3lib_div::makeInstanceService('markermodule', substr($marker, 14));
+				$module = tx_rnbase::makeInstanceService('markermodule', substr($marker, 14));
 				if (is_object($module)) {
 					$subTemplate = tx_rnbase_util_Templates::getSubpart($template, '###'.$marker.'###');
 					$value = $module->getMarkerValue($params, $formatter);

@@ -84,7 +84,7 @@ class tx_rnbase_util_Link {
 			$this->cObject = $cObject;
 		}
 		else {
-			$this->cObject = t3lib_div::makeInstance($cObject);
+			$this->cObject = tx_rnbase::makeInstance($cObject);
 		}
 
 	}

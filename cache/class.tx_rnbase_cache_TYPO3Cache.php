@@ -79,8 +79,8 @@ class tx_rnbase_cache_TYPO3Cache implements tx_rnbase_cache_ICache {
 		if(!$local && is_object($GLOBALS['typo3CacheFactory']))
 			return $GLOBALS['typo3CacheFactory']; // Globale Factory ist schon gesetzt
 
-		$manager = t3lib_div::makeInstance('t3lib_cache_Manager');
-		$factory = t3lib_div::makeInstance('t3lib_cache_Factory');
+		$manager = tx_rnbase::makeInstance('t3lib_cache_Manager');
+		$factory = tx_rnbase::makeInstance('t3lib_cache_Factory');
 		$factory->setCacheManager($manager);
 		if(!$local) {
 			$GLOBALS['typo3CacheFactory'] = $factory;

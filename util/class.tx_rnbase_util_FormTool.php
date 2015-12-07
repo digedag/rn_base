@@ -647,7 +647,7 @@ class tx_rnbase_util_FormTool {
 	 * @param boolean $isNew
 	 */
 	public function getTCEFormArray($table, $theUid, $isNew = FALSE) {
-		$trData = t3lib_div::makeInstance('t3lib_transferData');
+		$trData = tx_rnbase::makeInstance('t3lib_transferData');
 		$trData->addRawData = TRUE;
 		$trData->fetchRecord($table, $theUid, $isNew?'new':'');	// 'new'
 		reset($trData->regTableItems_data);

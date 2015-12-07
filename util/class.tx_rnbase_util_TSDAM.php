@@ -464,7 +464,7 @@ class tx_rnbase_util_TSDAM {
 				throw new Exception('NO BE User id given!');
 			}
 			unset($BE_USER);
-			$BE_USER = t3lib_div::makeInstance('t3lib_tsfeBeUserAuth');
+			$BE_USER = tx_rnbase::makeInstance('t3lib_tsfeBeUserAuth');
 			$BE_USER->OS = TYPO3_OS;
 			$BE_USER->setBeUserByUid($beUserId);
 			$BE_USER->fetchGroupData();
@@ -477,7 +477,7 @@ class tx_rnbase_util_TSDAM {
 		if(!$GLOBALS['LANG']) {
 			// Bei Ajax-Calls fehlt das Objekt
 			require_once tx_rnbase_util_Extensions::extPath('lang', 'lang.php');
-			$GLOBALS['LANG'] = t3lib_div::makeInstance('language');
+			$GLOBALS['LANG'] = tx_rnbase::makeInstance('language');
 			$GLOBALS['LANG']->init($BE_USER->uc['lang']);
 		}
 

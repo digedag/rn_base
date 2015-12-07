@@ -59,7 +59,7 @@ class tx_rnbase_util_Templates {
 				self::$tmpl = $GLOBALS['TSFE']->tmpl;
 			}
 			else {
-				self::$tmpl = t3lib_div::makeInstance('t3lib_TStemplate');
+				self::$tmpl = tx_rnbase::makeInstance('t3lib_TStemplate');
 				self::$tmpl->init();
 				self::$tmpl->tt_track= 0;
 			}
