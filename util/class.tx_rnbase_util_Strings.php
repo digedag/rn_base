@@ -264,6 +264,22 @@ class tx_rnbase_util_Strings {
 
 		return $string;
 	}
+
+	/**
+	 * Wrapper method for t3lib_div::validEmail() or \TYPO3\CMS\Core\Utility\GeneralUtility::validEmail()
+	 *
+	 * @param string $email Input string to evaluate
+	 * @return boolean Returns TRUE if the $email address (input string) is valid
+	 */
+	static public function validEmail($email) {
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			$return = \TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($email);
+		} else {
+			$return = t3lib_div::validEmail($email);
+		}
+
+		return $return;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Strings.php']) {
