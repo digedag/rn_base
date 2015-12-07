@@ -356,7 +356,7 @@ MAYDAYPAGE;
 
 		// init the syspage for pageSelect
 		if (!is_object($GLOBALS['TSFE']->sys_page) || $force) {
-			$temp_sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
+			$temp_sys_page = tx_rnbase_util_TYPO3::getSysPage();
 			$temp_sys_page->init(0);
 			$GLOBALS['TSFE']->sys_page = $temp_sys_page;
 		}

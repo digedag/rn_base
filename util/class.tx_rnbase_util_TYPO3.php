@@ -233,14 +233,17 @@ class tx_rnbase_util_TYPO3 {
 	}
 	private static $sysPage = NULL;
 	/**
-	 * @return t3lib_pageSelect
+	 * @return \TYPO3\CMS\Frontend\Page\PageRepository or t3lib_pageSelect
 	 */
 	public static function getSysPage() {
 		if (!is_object(self::$sysPage)) {
 			if(is_object($GLOBALS['TSFE']->sys_page))
 				self::$sysPage = $GLOBALS['TSFE']->sys_page; // Use existing SysPage from TSFE
 			else {
-				self::$sysPage = tx_rnbase::makeInstance('t3lib_pageSelect');
+				self::$sysPage = tx_rnbase::makeInstance(
+					tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
+					't3lib_pageSelect' : '\TYPO3\CMS\Frontend\Page\PageRepository'
+				);
 				self::$sysPage->init(0); // $this->showHiddenPage
 			}
 		}
