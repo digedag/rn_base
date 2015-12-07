@@ -91,6 +91,8 @@ define('SERVICES_JSON_LOOSE_TYPE', 16);
  */
 define('SERVICES_JSON_SUPPRESS_ERRORS', 32);
 
+tx_rnbase::load('tx_rnbase_util_Strings');
+
 /**
  * Converts to and from JSON format.
  *
@@ -263,7 +265,7 @@ class tx_rnbase_util_Json {
 
             case 'string':
                 // STRINGS ARE EXPECTED TO BE IN ASCII OR UTF-8 FORMAT
-				if(t3lib_div::isFirstPartOfStr($var, 'function(')) {
+				if(tx_rnbase_util_Strings::isFirstPartOfStr($var, 'function(')) {
 					return $var;
 				}
 

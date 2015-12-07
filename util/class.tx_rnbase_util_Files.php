@@ -23,6 +23,7 @@
  ***************************************************************/
 
 tx_rnbase::load('tx_rnbase_util_TYPO3');
+tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
  * Contains some helpful methods for file handling
@@ -76,7 +77,7 @@ class tx_rnbase_util_Files {
 	 */
 	public static function isFALReference($fName) {
 		return tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
-				\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($fName, 'file:')
+				tx_rnbase_util_Strings::isFirstPartOfStr($fName, 'file:')
 			: FALSE;
 	}
 	/**

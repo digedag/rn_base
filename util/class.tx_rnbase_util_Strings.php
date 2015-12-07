@@ -92,7 +92,12 @@ class tx_rnbase_util_Strings {
 	 * @return boolean TRUE if $partStr was found to be equal to the first part of $str
 	 */
 	public static function isFirstPartOfStr($haystack, $needle) {
-		return t3lib_div::isFirstPartOfStr($haystack, $needle);
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			$return = \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($haystack, $needle)
+		} else {
+			$return = t3lib_div::isFirstPartOfStr($haystack, $needle);
+		}
+		return $return;
 	}
 	/**
 	 * Wrapper for t3lib_div::testInt and \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($var)

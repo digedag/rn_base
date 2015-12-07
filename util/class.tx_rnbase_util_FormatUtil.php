@@ -21,7 +21,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
-
+tx_rnbase::load('tx_rnbase_util_Strings');
 /**
  * Contains utility functions for formatting
  * TODO: Die Verwendung der Klasse tslib_cObj sollte überarbeitet werden.
@@ -188,7 +188,7 @@ $mem = memory_get_usage();
 			// Add dynamic columns
 			$keys = $this->getConfigurations()->getUniqueKeysNames($conf);
 			foreach($keys As $key) {
-				if(t3lib_div::isFirstPartOfStr($key, 'dc') && !isset($record[$key]))
+				if(tx_rnbase_util_Strings::isFirstPartOfStr($key, 'dc') && !isset($record[$key]))
 					$record[$key] = $conf[$key];
 			}
 		}
