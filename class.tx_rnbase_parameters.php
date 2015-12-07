@@ -164,6 +164,22 @@ class tx_rnbase_parameters extends ArrayObject implements tx_rnbase_IParameters 
 
 		return $return;
 	}
+
+	/**
+	 * @see t3lib_div::_GETset
+	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::_GETset
+	 *
+	 * @param mixed $inputGet
+	 * @param string $key
+	 * @return void
+	 */
+	static public function setGetParameter($inputGet, $key = '') {
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset($inputGet, $key);
+		} else {
+			t3lib_div::_GETset($inputGet, $key);
+		}
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/class.tx_rnbase_parameters.php']) {
