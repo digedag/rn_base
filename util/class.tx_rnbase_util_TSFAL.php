@@ -30,6 +30,7 @@ if(!tx_rnbase_util_TYPO3::isTYPO60OrHigher())
 	return;
 
 tx_rnbase::load('Tx_Rnbase_Backend_Utility');
+tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
  * Contains utility functions for FAL
@@ -464,7 +465,7 @@ class tx_rnbase_util_TSFAL {
 		$where  = 'tablenames = ' . tx_rnbase_util_DB::fullQuoteStr($tableName, 'sys_file_reference');
 		$where .= ' AND fieldname = ' . tx_rnbase_util_DB::fullQuoteStr($fieldName, 'sys_file_reference');
 		$where .= ' AND uid_foreign = ' . (int) $itemId;
-		$uids = is_array($uids) ? $uids : t3lib_div::intExplode(',', $uids);
+		$uids = is_array($uids) ? $uids : tx_rnbase_util_Strings::intExplode(',', $uids);
 		if(!empty($uids)) {
 			$uids = implode(',', $uids);
 			$where .= ' AND uid IN (' . $uids .') ';
@@ -499,7 +500,7 @@ class tx_rnbase_util_TSFAL {
 		$where .= ' AND fieldname = ' . tx_rnbase_util_DB::fullQuoteStr($fieldName, 'sys_file_reference');
 		$where .= ' AND uid_foreign = ' . (int) $itemId;
 		if(strlen(trim($uids))) {
-			$uids = implode(',', t3lib_div::intExplode(',', $uids));
+			$uids = implode(',', tx_rnbase_util_Strings::intExplode(',', $uids));
 			$where .= ' AND uid_local IN (' . $uids .') ';
 		}
 		tx_rnbase_util_DB::doDelete('sys_file_reference', $where);

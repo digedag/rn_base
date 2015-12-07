@@ -33,6 +33,7 @@ define('DEFAULT_LOCAL_FIELD', '_LOCALIZED_UID');
 
 tx_rnbase::load('tx_rnbase_util_BaseMarker');
 tx_rnbase::load('Tx_Rnbase_Backend_Utility');
+tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
  * Contains utility functions for DAM
@@ -310,7 +311,7 @@ class tx_rnbase_util_TSDAM {
 		$where .= ' AND ident=' . tx_rnbase_util_DB::fullQuoteStr($fieldName, 'tx_dam_mm_ref');
 		$where .= ' AND uid_foreign=' . (int) $itemId;
 		if(strlen(trim($uids))) {
-			$uids = implode(',', t3lib_div::intExplode(',', $uids));
+			$uids = implode(',', tx_rnbase_util_Strings::intExplode(',', $uids));
 			$where .= ' AND uid_local IN (' . $uids .') ';
 		}
 		tx_rnbase_util_DB::doDelete('tx_dam_mm_ref', $where);

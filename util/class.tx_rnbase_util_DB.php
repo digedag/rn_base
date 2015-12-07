@@ -25,6 +25,7 @@
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 tx_rnbase::load('tx_rnbase_util_Debug');
 tx_rnbase::load('tx_rnbase_util_Misc');
+tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
  * Contains utility functions for database access
@@ -100,7 +101,7 @@ class tx_rnbase_util_DB {
 
 		// Das sollte wegfallen. Die OL werden weiter unten geladen
 		if(strlen($i18n) > 0) {
-			$i18n = implode(',', t3lib_div::intExplode(',', $i18n));
+			$i18n = implode(',', tx_rnbase_util_Strings::intExplode(',', $i18n));
 			$where .= ' AND ' . ($tableAlias ? $tableAlias : $tableName) . '.sys_language_uid IN (' . $i18n . ')';
 		}
 
@@ -741,7 +742,7 @@ class tx_rnbase_util_DB {
 		switch ($operator) {
 			case OP_NOTIN_INT:
 			case OP_IN_INT:
-				$value = implode(',', t3lib_div::intExplode(',', $value));
+				$value = implode(',', tx_rnbase_util_Strings::intExplode(',', $value));
 				$where .= $tableAlias.'.' . strtolower($col) . ' '.$operator.' (' . $value . ')';
 				break;
 			case OP_NOTIN:
