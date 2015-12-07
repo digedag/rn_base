@@ -364,7 +364,7 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase {
 
 		}
 
-		$setDBinit = t3lib_div::trimExplode(LF,
+		$setDBinit = tx_rnbase_util_Strings::trimExplode(LF,
 				str_replace("' . LF . '", LF, $credArr['setDBinit']), TRUE);
 		foreach ($setDBinit as $v) {
 			if (mssql_query($v, $link) === FALSE) {

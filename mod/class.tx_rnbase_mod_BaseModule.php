@@ -283,13 +283,13 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 	protected function getFuncMenuItems($items) {
 		$visibleItems = $items;
 		if($denyItems = $this->getConfigurations()->get('_cfg.funcmenu.deny')) {
-			$denyItems = t3lib_div::trimExplode(',', $denyItems);
+			$denyItems = tx_rnbase_util_Strings::trimExplode(',', $denyItems);
 			foreach ($denyItems As $item)
 				unset($visibleItems[$item]);
 		}
 		if($allowItems = $this->getConfigurations()->get('_cfg.funcmenu.allow')) {
 			$visibleItems = array();
-			$allowItems = t3lib_div::trimExplode(',', $allowItems);
+			$allowItems = tx_rnbase_util_Strings::trimExplode(',', $allowItems);
 			foreach ($allowItems As $item)
 				$visibleItems[$item] = $items[$item];
 		}

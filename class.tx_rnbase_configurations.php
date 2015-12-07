@@ -491,7 +491,7 @@ class tx_rnbase_configurations {
 		if (empty($value)) {
 			return array();
 		}
-		return t3lib_div::trimExplode($delim, $value, TRUE);
+		return tx_rnbase_util_Strings::trimExplode($delim, $value, TRUE);
 	}
 
 	/**

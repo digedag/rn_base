@@ -57,14 +57,14 @@ class tx_rnbase_plot_DataProvider implements tx_rnbase_plot_IDataProvider {
 		switch($type) {
 			case 'color':
 			case 'addColor':
-				$strColors = t3lib_div::trimExplode(',', $data['color']);
+				$strColors = tx_rnbase_util_Strings::trimExplode(',', $data['color']);
 				foreach($strColors As $color)
 					$ret[] = array('type' => 'color', 'color' => $color);
 			break;
 			case 'gradient':
 				$intDirection = tx_rnbase_plot_Builder::readConstant('IMAGE_GRAPH_GRAD_'.strtoupper($data['direction']));
-				$strColorsStart = t3lib_div::trimExplode(',', $data['startColor']);
-				$strColorsEnd = t3lib_div::trimExplode(',', $data['endColor']);
+				$strColorsStart = tx_rnbase_util_Strings::trimExplode(',', $data['startColor']);
+				$strColorsEnd = tx_rnbase_util_Strings::trimExplode(',', $data['endColor']);
 				$maxStart = count($strColorsStart);
 				$maxEnd = count($strColorsEnd);
 				$max = $maxStart > $maxEnd ? $maxStart : $maxEnd;

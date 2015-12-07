@@ -89,7 +89,7 @@ class tx_rnbase_util_BaseMarker {
   public function initTSLabelMarkers(&$formatter, $confId, $marker, $defaultMarkerArr = 0) {
     $arr1 = array();
     if($labels = $formatter->configurations->get($confId.'labels')) {
-      $labels = t3lib_div::trimExplode(',', $labels);
+      $labels = tx_rnbase_util_Strings::trimExplode(',', $labels);
       $labelArr = array();
       foreach ($labels as $label) {
         // Für die Abfrage nach den Labels dürfen keine Punkte als Trenner verwendet werden

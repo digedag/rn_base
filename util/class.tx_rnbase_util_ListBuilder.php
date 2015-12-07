@@ -57,8 +57,8 @@ class tx_rnbase_util_ListBuilder {
 		$viewData = is_object($viewData) ? $viewData : new ArrayObject();
 		$debugKey = $formatter->getConfigurations()->get($confId.'_debuglb');
 		$debug = ($debugKey && ($debugKey==='1' ||
-				($_GET['debug'] && array_key_exists($debugKey, array_flip(t3lib_div::trimExplode(',', $_GET['debug'])))) ||
-				($_POST['debug'] && array_key_exists($debugKey, array_flip(t3lib_div::trimExplode(',', $_POST['debug']))))
+				($_GET['debug'] && array_key_exists($debugKey, array_flip(tx_rnbase_util_Strings::trimExplode(',', $_GET['debug'])))) ||
+				($_POST['debug'] && array_key_exists($debugKey, array_flip(tx_rnbase_util_Strings::trimExplode(',', $_POST['debug']))))
 				)
 		);
 		if($debug) {
@@ -176,8 +176,8 @@ class tx_rnbase_util_ListBuilder {
 		$viewData = is_object($viewData) ? $viewData : new ArrayObject();
 		$debugKey = $formatter->getConfigurations()->get($confId.'_debuglb');
 		$debug = ($debugKey && ($debugKey==='1' ||
-				($_GET['debug'] && array_key_exists($debugKey, array_flip(t3lib_div::trimExplode(',', $_GET['debug'])))) ||
-				($_POST['debug'] && array_key_exists($debugKey, array_flip(t3lib_div::trimExplode(',', $_POST['debug']))))
+				($_GET['debug'] && array_key_exists($debugKey, array_flip(tx_rnbase_util_Strings::trimExplode(',', $_GET['debug'])))) ||
+				($_POST['debug'] && array_key_exists($debugKey, array_flip(tx_rnbase_util_Strings::trimExplode(',', $_POST['debug']))))
 				)
 		);
 		if($debug) {

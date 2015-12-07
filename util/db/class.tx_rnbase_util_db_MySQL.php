@@ -265,7 +265,7 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase {
 		$connectionCharset = empty($credArr['connectionCharset']) ? 'utf8' : $credArr['connectionCharset'];
 		$this->db->set_charset($connectionCharset);
 
-		$setDBinit = t3lib_div::trimExplode(LF, str_replace("' . LF . '", LF, $credArr['setDBinit']), TRUE);
+		$setDBinit = tx_rnbase_util_Strings::trimExplode(LF, str_replace("' . LF . '", LF, $credArr['setDBinit']), TRUE);
 		foreach ($setDBinit as $v) {
 			if ($this->query($v) === FALSE) {
 				// TODO: handler errors

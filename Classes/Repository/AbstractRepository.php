@@ -180,7 +180,7 @@ abstract class Tx_Rnbase_Repository_AbstractRepository
 				$tsfe = tx_rnbase_util_TYPO3::getTSFE();
 				$languages = array();
 				if (isset($options['additionali18n'])) {
-					$languages = t3lib_div::trimExplode(',', $options['additionali18n'], TRUE);
+					$languages = tx_rnbase_util_Strings::trimExplode(',', $options['additionali18n'], TRUE);
 				}
 				$languages[] = '-1'; // for all languages
 				// Wenn eine bestimmte Sprache gesetzt ist,

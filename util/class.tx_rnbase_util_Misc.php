@@ -411,7 +411,7 @@ MAYDAYPAGE;
 	static function validateSearchString($searchterm, $minLength=3) {
 		// Suchteile splitten
 		$ret = array();
-		$arr = t3lib_div::trimExplode(' ', $searchterm);
+		$arr = tx_rnbase_util_Strings::trimExplode(' ', $searchterm);
 		foreach($arr As $term) {
 			if(strlen($term) >= $minLength) $ret[] = $term;
 		}
@@ -516,7 +516,7 @@ MAYDAYPAGE;
 			$pid_list = tx_rnbase_util_TYPO3::getTSFE()->id;
 		}
 		$recursive = tx_rnbase_util_Math::intInRange($recursive, 0);
-		$pid_list_arr = array_unique(t3lib_div::trimExplode(',', $pid_list, 1));
+		$pid_list_arr = array_unique(tx_rnbase_util_Strings::trimExplode(',', $pid_list, 1));
 
 		$pid_list = array();
 		foreach($pid_list_arr as $val)  {

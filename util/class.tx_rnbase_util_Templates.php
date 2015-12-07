@@ -144,7 +144,7 @@ class tx_rnbase_util_Templates {
 	 */
 	public static function cbIncludeSubTemplates($match)
 	{
-		list($filePath, $subPart) = t3lib_div::trimExplode('@', $match[1]);
+		list($filePath, $subPart) = tx_rnbase_util_Strings::trimExplode('@', $match[1]);
 		try {
 			$fileContent = self::getSubpartFromFile(
 				$filePath,

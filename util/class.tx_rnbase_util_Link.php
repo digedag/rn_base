@@ -536,7 +536,7 @@ class tx_rnbase_util_Link {
 
 		// check for qualifier in the keyname
 		if(strstr($key, '::')) {
-			list($qualifier, $key) = t3lib_div::trimExplode('::', $key);
+			list($qualifier, $key) = tx_rnbase_util_Strings::trimExplode('::', $key);
 		}
 
 		if (!is_array($value)) {
@@ -664,7 +664,7 @@ class tx_rnbase_util_Link {
 			$allow = $keepVarConf['allow'];
 			$deny = $keepVarConf['deny'];
 			if ($allow) {
-				$allow = t3lib_div::trimExplode(',', $allow);
+				$allow = tx_rnbase_util_Strings::trimExplode(',', $allow);
 				foreach ($allow As $allowed) {
 					$value = $keepVars->offsetGet($allowed);
 					if ($skipEmpty && empty($value)) {
@@ -674,7 +674,7 @@ class tx_rnbase_util_Link {
 				}
 			}
 			elseif ($deny) {
-				$deny = array_flip(t3lib_div::trimExplode(',', $deny));
+				$deny = array_flip(tx_rnbase_util_Strings::trimExplode(',', $deny));
 				$keepVarsArr = $keepVars->getArrayCopy();
 				foreach($keepVarsArr As $key => $value) {
 					if ($skipEmpty && empty($value)) {
@@ -687,12 +687,12 @@ class tx_rnbase_util_Link {
 			}
 			$add = $keepVarConf['add'];
 			if ($add) {
-				$add = t3lib_div::trimExplode(',', $add);
+				$add = tx_rnbase_util_Strings::trimExplode(',', $add);
 				foreach ($add As $linkvar) {
-					$linkvar = t3lib_div::trimExplode('=', $linkvar);
+					$linkvar = tx_rnbase_util_Strings::trimExplode('=', $linkvar);
 					if (count($linkvar)< 2)  {
 						// tt_news::* or ttnews::id
-						list($qualifier, $name) = t3lib_div::trimExplode('::', $linkvar[0]);
+						list($qualifier, $name) = tx_rnbase_util_Strings::trimExplode('::', $linkvar[0]);
 						if ($value = tx_rnbase_parameters::getPostOrGetParameter($qualifier)) {
 							if($name == '*' && is_array($value)) {
 								foreach ($value As $paramName => $paramValue) {
