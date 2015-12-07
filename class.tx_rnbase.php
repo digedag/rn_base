@@ -82,10 +82,10 @@ class tx_rnbase {
 	public static function makeInstance($class) {
 		$ret = FALSE;
 		if(self::load($class)) {
+			self::load('tx_rnbase_util_TYPO3');
 			if(func_num_args() > 1) {
 				// Das ist ein Konstruktor Aufruf mit Parametern
 				$args = func_get_args();
-				self::load('tx_rnbase_util_TYPO3');
 				if(tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
 					// Die Parameter weiterreichen
 					$ret = call_user_func_array(array('TYPO3\CMS\Core\Utility\GeneralUtility', 'makeInstance'), $args);
@@ -101,9 +101,13 @@ class tx_rnbase {
 					$reflectionObj = new ReflectionClass($className);
 					$ret = $reflectionObj->newInstanceArgs($args);
 				}
+			} else {
+				if(tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+					$ret = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($class);
+				} else {
+					$ret = t3lib_div::makeInstance($class);
+				}
 			}
-			else
-				$ret = t3lib_div::makeInstance($class);
 		}
 		return $ret;
 	}
