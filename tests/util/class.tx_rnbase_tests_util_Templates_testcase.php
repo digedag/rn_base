@@ -104,10 +104,6 @@ class tx_rnbase_tests_util_Templates_testcase
 		$memEnd2 = memory_get_usage() - $memStart;
 		$results['Serie 2'] = array('Info'=> 'Timetrack off, Static MarkerArray', 'Time1'=>$time1, 'Time2'=> $time2,
 			'Mem1'=>$memEnd1, 'Mem2'=>$memEnd2);
-
-
-		t3lib_div::debug($results, 'class.tx_rnbase_tests_util_Templates_testcase.php'); // TODO: remove me
-
 	}
 
 	public function test_includeSubTemplates() {

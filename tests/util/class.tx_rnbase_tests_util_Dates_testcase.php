@@ -46,7 +46,6 @@ class tx_rnbase_tests_util_Dates_testcase extends tx_phpunit_testcase {
 		$zeit2 = tx_rnbase_util_Dates::date_tstamp2mysql($tstamp1);
 
 //		$sDate = gmstrftime("%d.%m.%Y", $tstamp1);
-//		t3lib_div::debug($sDate, 'tx_rnbase_tests_dates_testcase :: test_dateConv'); // TODO: remove me
 		$this->assertEquals($zeit1, $zeit2);
 	}
 	public function test_convert4TCA2Timestamp() {

@@ -361,7 +361,7 @@ class tx_rnbase_util_BaseMarker {
 		$allMarkers = array_unique($match[1]);
 		foreach ($allMarkers as $marker) {
 			if (preg_match('/MARKERMODULE__([A-Z0-9_\-])*/', $marker)) {
-				$module = t3lib_div :: makeInstanceService('markermodule', substr($marker, 14));
+				$module = tx_rnbase::makeInstanceService('markermodule', substr($marker, 14));
 				if (is_object($module)) {
 					$subTemplate = $formatter->cObj->getSubpart($template, '###'.$marker.'###');
 					$subpart = $module->parseTemplate($subTemplate, $params, $formatter);
