@@ -87,6 +87,14 @@ class tx_rnbase_tests_util_Strings_testcase
 			),
 		);
 	}
+
+	/**
+	 * @group unit
+	 */
+	public function testInList() {
+		self::assertTrue(tx_rnbase_util_Strings::inList('1,2,3', '2'));
+		self::assertFalse(tx_rnbase_util_Strings::inList('1,2,3', '4'));
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/class.tx_rnbase_tests_util_Strings_testcase.php']) {

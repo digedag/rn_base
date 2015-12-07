@@ -227,6 +227,22 @@ class tx_rnbase_util_Strings {
 		return ($char & 0xC0)==0x80;
 	}
 
+	/**
+	 * Wrapper method for t3lib_div::inList() or \TYPO3\CMS\Core\Utility\GeneralUtility::inList()
+	 *
+	 * @param string $list Comma-separated list of items (string)
+	 * @param string $item Item to check for
+	 * @return boolean TRUE if $item is in $list
+	 */
+	static public function inList($list, $item) {
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			$return = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($list, $item);
+		} else {
+			$return = t3lib_div::inList($list, $item);
+		}
+
+		return $return;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Strings.php']) {
