@@ -248,6 +248,22 @@ class tx_rnbase_util_Strings {
 
 		return $return;
 	}
+
+	/**
+	 * Wrapper method for t3lib_div::removeXSS() or \TYPO3\CMS\Core\Utility\GeneralUtility::removeXSS()
+	 *
+	 * @param string $string Input string
+	 * @return string Input string with potential XSS code removed
+	 */
+	static public function removeXSS($string) {
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			$string = \TYPO3\CMS\Core\Utility\GeneralUtility::removeXSS($string);
+		} else {
+			$string = t3lib_div::removeXSS($string);
+		}
+
+		return $string;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Strings.php']) {
