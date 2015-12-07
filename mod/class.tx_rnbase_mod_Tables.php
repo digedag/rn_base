@@ -23,6 +23,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 tx_rnbase::load('tx_rnbase_model_data');
+tx_rnbase::load('tx_rnbase_mod_Util');
 
 /**
  */
@@ -112,7 +113,7 @@ class tx_rnbase_mod_Tables {
 		if ($options->getAddRecordSprite()) {
 			$spriteIconName = 'mimetypes-other-other';
 			if ($entry instanceof tx_rnbase_model_base && $entry->getTableName()) {
-				$spriteIconName = t3lib_iconWorks::mapRecordTypeToSpriteIconName(
+				$spriteIconName = tx_rnbase_mod_Util::mapRecordTypeToSpriteIconName(
 					$entry->getTableName(),
 					$record
 				);

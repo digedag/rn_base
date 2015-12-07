@@ -105,6 +105,23 @@ class tx_rnbase_mod_Util {
 		return $selectedItem;
 	}
 
+	/**
+	 * /**
+	 * Wrapper method for t3lib_iconWorks::mapRecordTypeToSpriteIconName() or \TYPO3\CMS\Backend\Utility\IconUtility::mapRecordTypeToSpriteIconName()
+	 *
+	 * @param string $tableThe TCA table
+	 * @param array $row The selected record
+	 * @return string The CSS class for the sprite icon of that DB record
+	 */
+	static public function mapRecordTypeToSpriteIconName($table, array $row) {
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			$iconName = \TYPO3\CMS\Backend\Utility\IconUtility::mapRecordTypeToSpriteIconName($table, $row);
+		} else{
+			$iconName = t3lib_div::mapRecordTypeToSpriteIconName($table, $row);
+		}
+
+		return $iconName ;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_Util.php'])	{
