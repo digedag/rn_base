@@ -733,6 +733,23 @@ class tx_rnbase_util_Link {
 		}
 
 	}
+
+	/**
+	 * @see t3lib_div::linkThisScript
+	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript
+	 *
+	 * @param array $getParams Array of GET parameters to include
+	 * @return string
+	 */
+	static public function linkThisScript(array $getParams = array()) {
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			$return = \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript($getParams);
+		} else {
+			$return = t3lib_div::linkThisScript($getParams);
+		}
+
+		return $return;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Link.php']) {

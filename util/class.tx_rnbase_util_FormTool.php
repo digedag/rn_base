@@ -23,6 +23,7 @@
 ***************************************************************/
 tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 tx_rnbase::load('tx_rnbase_util_Strings');
+tx_rnbase::load('tx_rnbase_util_Link');
 
 /**
  * Diese Klasse stellt hilfreiche Funktionen zur Erstellung von Formularen
@@ -175,7 +176,7 @@ class tx_rnbase_util_FormTool {
    * @param array $options
    */
 	public function createHideLink($table, $uid, $unhide=FALSE, $options=array()) {
-		$location = t3lib_div::linkThisScript(array('CB'=>'', 'SET'=>'', 'cmd' => '', 'popViewId'=>''));
+		$location = tx_rnbase_util_Link::linkThisScript(array('CB'=>'', 'SET'=>'', 'cmd' => '', 'popViewId'=>''));
 		$location = str_replace('%20','', rawurlencode($location));
 
 		$sEnableColumn = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
@@ -233,7 +234,7 @@ class tx_rnbase_util_FormTool {
 	 */
 	public function createDeleteLink($table, $uid, $label = 'Remove', $options = array()) {
 		// @TODO: das verwenden wir bereit beim createHideLink, sollte besser ausgelagert werden!
-		$location = t3lib_div::linkThisScript(array('CB'=>'', 'SET'=>'', 'cmd' => '', 'popViewId'=>''));
+		$location = tx_rnbase_util_Link::linkThisScript(array('CB'=>'', 'SET'=>'', 'cmd' => '', 'popViewId'=>''));
 		$location = str_replace('%20','', rawurlencode($location));
 
 		$jumpToUrl = '\''.$GLOBALS['BACK_PATH'].'tce_db.php?redirect='.$location.'&amp;cmd['.$table.']['.$uid.'][delete]=1';
@@ -513,7 +514,7 @@ class tx_rnbase_util_FormTool {
 	 * @param string $location module url or empty
 	 */
 	function getJSCode($pid, $location='') {
-		$location = $location ? $location : t3lib_div::linkThisScript(array('CB'=>'', 'SET'=>'', 'cmd' => '', 'popViewId'=>''));
+		$location = $location ? $location : tx_rnbase_util_Link::linkThisScript(array('CB'=>'', 'SET'=>'', 'cmd' => '', 'popViewId'=>''));
 		// Add JavaScript functions to the page:
 		$JScode=$this->doc->wrapScriptTags('
 			function jumpToUrl(URL) {
