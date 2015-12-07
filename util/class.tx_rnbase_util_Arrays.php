@@ -108,6 +108,25 @@ class tx_rnbase_util_Arrays {
 		}
 	}
 
+
+	/**
+	 * @see \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule();
+	 *
+	 * @param array $arr Data array which should be outputted
+	 * @param mixed $valueList List of keys which should be listed in the output string. Pass a comma list or an array. An empty list outputs the whole array.
+	 * @param integer $valueLength Long string values are shortened to this length. Default: 20
+	 * @return string Output string with key names and their value as string
+	 */
+	static public function arrayToLogString(array $arr, $valueList = array(), $valueLength = 20) {
+		if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+			$array = \TYPO3\CMS\Core\Utility\GeneralUtility::arrayToLogString($arr, $valueList, $valueLength);
+		} else {
+			$array = t3lib_div::arrayToLogString($arr, $valueList, $valueLength);
+		}
+
+		return $array;
+	}
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Arrays.php']) {
