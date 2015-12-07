@@ -30,7 +30,7 @@
  * @package	TYPO3
  * @subpackage	tx_cfcleaguefe
  */
-class tx_rnbase_sv1_MediaPlayer extends t3lib_svbase {
+class tx_rnbase_sv1_MediaPlayer extends Tx_Rnbase_Service_Base {
   var $prefixId = 'tx_rnbase_sv1_MediaPlayer';  // Same as class name
   var $scriptRelPath = 'sv1/class.tx_rnbase_sv1_MediaPlayer.php'; // Path to this script relative to the extension dir.
   var $extKey = 'rn_base'; // The extension key.

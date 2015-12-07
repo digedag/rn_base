@@ -36,7 +36,7 @@ class tx_rnbase_util_Misc {
 	 *
 	 * @param string $type
 	 * @param string $subType
-	 * @return t3lib_svbase
+	 * @return t3lib_svbase or \TYPO3\CMS\Core\Service\AbstractService
 	 */
 	static function getService($type, $subType='') {
     $srv = t3lib_div::makeInstanceService($type, $subType);

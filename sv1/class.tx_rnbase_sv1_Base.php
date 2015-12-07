@@ -36,7 +36,7 @@ tx_rnbase::load('tx_rnbase_util_SearchBase');
  * @subpackage tx_rnbase_sv1
  * @author René Nitzsche, Lars Heber, Michael Wagner
  */
-abstract class tx_rnbase_sv1_Base extends t3lib_svbase {
+abstract class tx_rnbase_sv1_Base extends Tx_Rnbase_Service_Base {
 
 	// 0: Hide record; 1: Soft-delete (via "deleted" field) record; 2: Really DELETE
 	const DELETION_MODE_HIDE = 0;
