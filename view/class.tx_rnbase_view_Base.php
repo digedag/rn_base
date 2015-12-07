@@ -193,7 +193,7 @@ class tx_rnbase_view_Base{
 	 * Set the path of the template directory
 	 *
 	 * You can make use the syntax EXT:myextension/somepath.
-	 * It will be evaluated to the absolute path by t3lib_div::getFileAbsFileName()
+	 * It will be evaluated to the absolute path by tx_rnbase_util_Files::getFileAbsFileName()
 	 *
 	 * @param string path to the directory containing the php templates
 	 * @return void
@@ -244,7 +244,7 @@ class tx_rnbase_view_Base{
 	 */
 	function getTemplate($templateName, $extension = '.php', $forceAbsPath = 0) {
 		if (strlen($this->_pathToFile) > 0) {
-			return ($forceAbsPath) ? t3lib_div::getFileAbsFileName($this->_pathToFile) : $this->_pathToFile;
+			return ($forceAbsPath) ? tx_rnbase_util_Files::getFileAbsFileName($this->_pathToFile) : $this->_pathToFile;
 		}
 		$path = $this->pathToTemplates;
 		$path .= substr($path, -1, 1) == '/' ? $templateName : '/' . $templateName;

@@ -65,7 +65,7 @@ class tx_rnbase_view_phpTemplateEngine extends tx_rnbase_view_Base {
 
     $path = $this->getTemplate($view);
     // Für den PHP Include benötigen wir den absoluten Pfad
-    $path = t3lib_div::getFileAbsFileName($path);
+    $path = tx_rnbase_util_Files::getFileAbsFileName($path);
 
     ob_start();
     include($path);
