@@ -8,6 +8,7 @@
 <testsuites>
   <testsuite name="RNBaseTestSuite">
     <directory suffix="testcase.php">./</directory>
+    <directory suffix="Test.php">./</directory>
   </testsuite>
 </testsuites>
 </phpunit>
