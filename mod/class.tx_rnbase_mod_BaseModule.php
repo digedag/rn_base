@@ -34,8 +34,8 @@ $GLOBALS['LANG']->includeLLFile('EXT:rn_base/mod/locallang.xml');
  * Fertige Implementierung eines BE-Moduls. Das Modul ist dabei nur eine Hülle für die einzelnen Modulfunktionen.
  * Die Klasse stellt also lediglich eine Auswahlbox mit den verfügbaren Funktionen bereit. Neue Funktionen können
  * dynamisch über die ext_tables.php angemeldet werden:
- * 	t3lib_extMgm::insertModuleFunction('user_txmkmailerM1', 'tx_mkmailer_mod1_FuncOverview',
- *    t3lib_extMgm::extPath($_EXTKEY).'mod1/class.tx_mkmailer_mod1_FuncOverview.php',
+ * 	tx_rnbase_util_Extensions::insertModuleFunction('user_txmkmailerM1', 'tx_mkmailer_mod1_FuncOverview',
+ *    tx_rnbase_util_Extensions::extPath($_EXTKEY).'mod1/class.tx_mkmailer_mod1_FuncOverview.php',
  *    'LLL:EXT:mkmailer/mod1/locallang_mod.xml:func_overview'
  *  );
  * Die Funktionsklassen sollten das Interface tx_rnbase_mod_IModFunc implementieren. Eine Basisklasse mit nützlichen
@@ -168,7 +168,7 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 	 * Konfiguration mit "page." beginnen muss. Also bspw. "page.lib.test = 42".
 	 *
 	 * Ein eigenes TS-Template für das BE wird in der ext_localconf.php mit dieser Anweisung eingebunden:
-	 * t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:myext/mod1/pageTSconfig.txt">');
+	 * tx_rnbase_util_Extensions::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:myext/mod1/pageTSconfig.txt">');
 	 * @return tx_rnbase_configurations
 	 */
 	public function getConfigurations() {

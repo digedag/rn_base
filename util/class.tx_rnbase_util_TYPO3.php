@@ -157,7 +157,7 @@ class tx_rnbase_util_TYPO3 {
 		return array();
 	}
 	/**
-	 * Wrapper function for t3lib_extMgm::isLoaded()
+	 * Wrapper function for tx_rnbase_util_Extensions::isLoaded()
 	 * @param string $_EXTKEY
 	 */
 	public static function isExtLoaded($_EXTKEY) {
