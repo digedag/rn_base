@@ -133,13 +133,13 @@ class tx_rnbase_tests_util_Link_testcase
 				'typolink' => '//www.digedag.de/service/faq.html',
 				'absUrl' => TRUE,
 				'schema' => '',
-				'expected' => t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR') . 'service/faq.html',
+				'expected' => tx_rnbase_util_Misc::getIndpEnv('TYPO3_REQUEST_DIR') . 'service/faq.html',
 			),
 			__LINE__ => array(
 					'typolink' => '//www.digedag.de/service/faq.html',
 					'absUrl' => TRUE,
 					'schema' => FALSE,
-					'expected' => t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR') . 'service/faq.html',
+					'expected' => tx_rnbase_util_Misc::getIndpEnv('TYPO3_REQUEST_DIR') . 'service/faq.html',
 			),
 			// makeTag
 			__LINE__ => array(
@@ -195,14 +195,14 @@ class tx_rnbase_tests_util_Link_testcase
 				'typolink' => '<a href="http://www.digedag.de/service/faq.html">FAQ</a>',
 				'absUrl' => TRUE,
 				'schema' => '',
-				'expected' => '<a href="' . t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR') . 'service/faq.html">FAQ</a>',
+				'expected' => '<a href="' . tx_rnbase_util_Misc::getIndpEnv('TYPO3_REQUEST_DIR') . 'service/faq.html">FAQ</a>',
 				'method' => 'makeTag',
 			),
 			__LINE__ => array(
 				'typolink' => '<a href="http://www.digedag.de/service/faq.html">FAQ</a>',
 				'absUrl' => TRUE,
 				'schema' => FALSE,
-				'expected' => '<a href="' . t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR') . 'service/faq.html">FAQ</a>',
+				'expected' => '<a href="' . tx_rnbase_util_Misc::getIndpEnv('TYPO3_REQUEST_DIR') . 'service/faq.html">FAQ</a>',
 				'method' => 'makeTag',
 			),
 			// invalide tags bleiben unangetatset!

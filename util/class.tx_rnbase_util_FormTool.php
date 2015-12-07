@@ -475,7 +475,7 @@ class tx_rnbase_util_FormTool {
 		//wir verweisen immer auf die aktuelle Seite
 		//es kann aber schon ein sort parameter gesetzt sein
 		//weshalb wir alte entfernen
-		$sUrl = preg_replace('/&sortField=.*&sortRev=[^&]*/', '', t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'));
+		$sUrl = preg_replace('/&sortField=.*&sortRev=[^&]*/', '', tx_rnbase_util_Misc::getIndpEnv('TYPO3_REQUEST_URL'));
 
 		//sort richtung rausfinden
 		//beim initialen Aufruf (spalte noch nicht geklickt) wird immer aufsteigend sortiert

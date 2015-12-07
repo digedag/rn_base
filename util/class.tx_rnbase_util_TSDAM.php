@@ -385,7 +385,7 @@ class tx_rnbase_util_TSDAM {
 				$fileInfo = self::getFileInfo($record);
 				if (isset($refs['files'][$uid]))
 					$fileInfo['file_path_name'] = $refs['files'][$uid];
-				$fileInfo['file_abs_url'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $fileInfo['file_path_name'];
+				$fileInfo['file_abs_url'] = tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL') . $fileInfo['file_path_name'];
 				$res[$uid] = $fileInfo;
 			}
 		}

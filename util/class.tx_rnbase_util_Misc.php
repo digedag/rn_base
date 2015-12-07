@@ -574,7 +574,7 @@ MAYDAYPAGE;
 		$mail->setSubject('Exception on site '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
 
 		$from = tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'fromEmail');
-		$from = $from ? $from : 'error@' . t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
+		$from = $from ? $from : 'error@' . tx_rnbase_util_Misc::getIndpEnv('TYPO3_HOST_ONLY');
 		$mail->setFrom($from);
 
 		$mail->setTo($mailAddr);
@@ -594,7 +594,7 @@ MAYDAYPAGE;
 		$textPart .= 'UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName ."\n\n";
 		$textPart .= 'Message: ' . $e->getMessage()."\n\n";
 		$textPart .= "Stacktrace:\n". $e->__toString()."\n";
-		$textPart .= 'SITE_URL: ' . t3lib_div::getIndpEnv('TYPO3_SITE_URL')."\n";
+		$textPart .= 'SITE_URL: ' . tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL')."\n";
 
 		tx_rnbase::load('tx_rnbase_util_TYPO3');
 		$textPart .= 'BE_USER: '.tx_rnbase_util_TYPO3::getBEUserUID()."\n";
@@ -608,7 +608,7 @@ MAYDAYPAGE;
 		$htmlPart .= '<div><strong>UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName .'</strong></div>';
 		$htmlPart .= '<p><strong>Message:</strong><br />' . $e->getMessage() . '</p>';
 		$htmlPart .= '<p><strong>Stacktrace:</strong><pre>'.$e->__toString().'</pre></p>';
-		$htmlPart .= '<p><strong>SITE_URL</strong><br />'. t3lib_div::getIndpEnv('TYPO3_SITE_URL'). '</p>';
+		$htmlPart .= '<p><strong>SITE_URL</strong><br />'. tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL'). '</p>';
 
 		$get = self::removePasswordParams($_GET);
 		if(count($get))

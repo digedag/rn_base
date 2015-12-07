@@ -564,7 +564,7 @@ class tx_rnbase_util_TSFAL {
 		$info = $reference->getProperties();
 		// add some fileinfo
 		$info['file_path_name'] = $reference->getOriginalFile()->getPublicUrl();
-		$info['file_abs_url'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $info['file_path_name'];
+		$info['file_abs_url'] = tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL') . $info['file_path_name'];
 		$info['file_name'] = $info['name'];
 		return $info;
 	}
