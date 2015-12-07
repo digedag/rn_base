@@ -44,11 +44,34 @@ class tx_rnbase_util_Network {
 	 */
 	public static function cmpIP($baseIP, $list) {
 		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			return TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP($baseIP, $list);
+			$return = TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP($baseIP, $list);
+		} else {
+			$return = t3lib_div::cmpIP($baseIP, $list);
 		}
-		else {
-			return t3lib_div::cmpIP($baseIP, $list);
+
+		return $return;
+	}
+
+	/**
+	 * @see t3lib_div::getUrl()
+	 * @see TYPO3\CMS\Core\Utility\GeneralUtility::getUrl()
+	 *
+	 * @param string $url File/URL to read
+	 * @param integer $includeHeader Whether the HTTP header should be fetched or not. 0=disable, 1=fetch header+content, 2=fetch header only
+	 * @param array $requestHeaders HTTP headers to be used in the request
+	 * @param array $report Error code/message and, if $includeHeader is 1, response meta data (HTTP status and content type)
+	 * @return mixed The content from the resource given as input. FALSE if an error has occurred.
+	 */
+	static public function getUrl($url, $includeHeader = 0, $requestHeaders = FALSE, &$report = NULL) {
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			$return = TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(
+				$url, $includeHeader, $requestHeaders, $report
+			);
+		} else {
+			$return = t3lib_div::getUrl($url, $includeHeader, $requestHeaders, $report);
 		}
+
+		return $return;
 	}
 }
 

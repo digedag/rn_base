@@ -21,7 +21,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-
+tx_rnbase::load('tx_rnbase_util_Network');
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_rnbase_util_Templates');
 
@@ -112,7 +112,7 @@ class tx_rnbase_tests_util_Templates_testcase
 
 	public function test_includeSubTemplates() {
 
-		$fixture = t3lib_div::getURL(
+		$fixture = tx_rnbase_util_Network::getURL(
 			tx_rnbase_util_Extensions::extPath(
 				'rn_base',
 				'tests/fixtures/html/includeSubTemplates.html'

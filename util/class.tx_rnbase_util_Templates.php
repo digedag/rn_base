@@ -24,7 +24,7 @@
 
 tx_rnbase::load('tx_rnbase_util_Misc');
 tx_rnbase::load('tx_rnbase_util_TYPO3');
-
+tx_rnbase::load('tx_rnbase_util_Network');
 
 /**
  * Contains utility functions for HTML-Templates
@@ -80,7 +80,7 @@ class tx_rnbase_util_Templates {
 		if(TYPO3_MODE == 'BE' && strpos($file, PATH_site) === FALSE)
 			$file = PATH_site.$file; // Im BE auf absoluten Pfad setzen
 
-		$templateCode = t3lib_div::getURL($file);
+		$templateCode = tx_rnbase_util_Network::getURL($file);
 		if(!$templateCode) throw new Exception('File not found: '. htmlspecialchars($fileName));
 		$template = self::getSubpart($templateCode, $subpart);
 		if(!$template) throw new Exception('Subpart not found! File: '. htmlspecialchars($file) . ' Subpart: ' . htmlspecialchars($subpart));
