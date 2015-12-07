@@ -93,7 +93,7 @@ class tx_rnbase_util_Strings {
 	 */
 	public static function isFirstPartOfStr($haystack, $needle) {
 		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			$return = \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($haystack, $needle)
+			$return = \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($haystack, $needle);
 		} else {
 			$return = t3lib_div::isFirstPartOfStr($haystack, $needle);
 		}
