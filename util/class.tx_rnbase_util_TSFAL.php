@@ -29,6 +29,8 @@ tx_rnbase::load('tx_rnbase_util_TYPO3');
 if(!tx_rnbase_util_TYPO3::isTYPO60OrHigher())
 	return;
 
+tx_rnbase::load('Tx_Rnbase_Backend_Utility');
+
 /**
  * Contains utility functions for FAL
  */
@@ -249,7 +251,7 @@ class tx_rnbase_util_TSFAL {
 		$refField = trim($cObj->stdWrap($conf['refField'], $conf['refField.']));
 
 		if (isset($GLOBALS['BE_USER']->workspace) && $GLOBALS['BE_USER']->workspace !== 0) {
-			$workspaceRecord = t3lib_BEfunc::getWorkspaceVersionOfRecord(
+			$workspaceRecord = Tx_Rnbase_Backend_Utility::getWorkspaceVersionOfRecord(
 				$GLOBALS['BE_USER']->workspace,
 				'tt_content',
 				$uid,

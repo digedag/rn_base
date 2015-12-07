@@ -32,6 +32,7 @@ if(tx_rnbase_util_Extensions::isLoaded('dam')) {
 define('DEFAULT_LOCAL_FIELD', '_LOCALIZED_UID');
 
 tx_rnbase::load('tx_rnbase_util_BaseMarker');
+tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 
 /**
  * Contains utility functions for DAM
@@ -158,7 +159,7 @@ class tx_rnbase_util_TSDAM {
 		$refField = trim($cObj->stdWrap($conf['refField'], $conf['refField.']));
 
 		if (isset($GLOBALS['BE_USER']->workspace) && $GLOBALS['BE_USER']->workspace !== 0) {
-			$workspaceRecord = t3lib_BEfunc::getWorkspaceVersionOfRecord(
+			$workspaceRecord = Tx_Rnbase_Backend_Utility::getWorkspaceVersionOfRecord(
 				$GLOBALS['BE_USER']->workspace,
 				'tt_content',
 				$uid,
@@ -232,7 +233,7 @@ class tx_rnbase_util_TSDAM {
 		foreach($files As $key => $info ) {
 			$thumbScript = $GLOBALS['BACK_PATH'].'thumbs.php';
 			$filepath = tx_dam::path_makeAbsolute($info['file_path']);
-			$ret[] = t3lib_BEfunc::getThumbNail($thumbScript, $filepath.$info['file_name'], $addAttr, $size);
+			$ret[] = Tx_Rnbase_Backend_Utility::getThumbNail($thumbScript, $filepath.$info['file_name'], $addAttr, $size);
 		}
 		return $ret;
 	}

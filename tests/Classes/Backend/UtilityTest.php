@@ -46,42 +46,6 @@ class Tx_Rnbase_Backend_UtilityTest extends tx_rnbase_tests_BaseTestCase {
 			Typo3BackendUtilityClass::$lastCalledMethod
 		);
 	}
-
-	/**
-	 * @group unit
-	 */
-	public function testGetModuleData() {
-		Tx_Rnbase_Backend_UtilityForTests::getModuleData(1, 2, 3, 4, 5, 6);
-
-		self::assertEquals(
-			array('getModuleData' => array(1, 2, 3, 4, 5, 6)),
-			Typo3BackendUtilityClass::$lastCalledMethod
-		);
-	}
-
-	/**
-	 * @group unit
-	 */
-	public function testGetPagesTSconfig() {
-		Tx_Rnbase_Backend_UtilityForTests::getPagesTSconfig(1, 2, 3);
-
-		self::assertEquals(
-			array('getPagesTSconfig' => array(1, 2, 3)),
-			Typo3BackendUtilityClass::$lastCalledMethod
-		);
-	}
-
-	/**
-	 * @group unit
-	 */
-	public function testGetFuncMenu() {
-		Tx_Rnbase_Backend_UtilityForTests::getFuncMenu(1, 2, 3, 4, 5, 6);
-
-		self::assertEquals(
-			array('getFuncMenu' => array(1, 2, 3, 4, 5, 6)),
-			Typo3BackendUtilityClass::$lastCalledMethod
-		);
-	}
 }
 
 class Tx_Rnbase_Backend_UtilityForTests extends Tx_Rnbase_Backend_Utility {

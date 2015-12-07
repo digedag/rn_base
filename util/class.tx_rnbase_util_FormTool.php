@@ -21,7 +21,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-
+tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
@@ -59,7 +59,7 @@ class tx_rnbase_util_FormTool {
 		if(isset($options['params']))
 			$params .= $options['params'];
 
-		$jsCode = t3lib_BEfunc::editOnClick($params, $GLOBALS['BACK_PATH']);
+		$jsCode = Tx_Rnbase_Backend_Utility::editOnClick($params, $GLOBALS['BACK_PATH']);
 		if(isset($options['confirm']) && strlen($options['confirm']) > 0) {
     	$jsCode = 'if(confirm('.$GLOBALS['LANG']->JScharCode($options['confirm']).')) {' . $jsCode .'} else {return false;}';
 		}
@@ -79,7 +79,7 @@ class tx_rnbase_util_FormTool {
 	 */
 	public function createEditLink($editTable, $editUid, $label = 'Edit') {
 		$params = '&edit['.$editTable.']['.$editUid.']=edit';
-		return '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params, $GLOBALS['BACK_PATH'])).'">'.
+		return '<a href="#" onclick="'.htmlspecialchars(Tx_Rnbase_Backend_Utility::editOnClick($params, $GLOBALS['BACK_PATH'])).'">'.
 			'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif', 'width="11" height="12"').' title="Edit UID: '.$editUid.'" border="0" alt="" />'.
 		$label .'</a>';
 	}
@@ -113,7 +113,7 @@ class tx_rnbase_util_FormTool {
 			$params .= $options['params'];
 		$title = isset($options['title']) ? $options['title'] : $GLOBALS['LANG']->getLL('new', 1);
 
-		$jsCode = t3lib_BEfunc::editOnClick($params, $GLOBALS['BACK_PATH']);
+		$jsCode = Tx_Rnbase_Backend_Utility::editOnClick($params, $GLOBALS['BACK_PATH']);
 		if(isset($options['confirm']) && strlen($options['confirm']) > 0) {
     	$jsCode = 'if(confirm('.$GLOBALS['LANG']->JScharCode($options['confirm']).')) {' . $jsCode .'} else {return false;}';
 		}
@@ -135,7 +135,7 @@ class tx_rnbase_util_FormTool {
 			tx_rnbase::load('tx_rnbase_mod_Util');
 			$label = tx_rnbase_mod_Util::getSpriteIcon($options['sprite']);
 		}
-		$jsCode = t3lib_BEfunc::viewOnClick($pid, '', '', '', '', $urlParams);
+		$jsCode = Tx_Rnbase_Backend_Utility::viewOnClick($pid, '', '', '', '', $urlParams);
 		$title = '';
 		if($options['hover']) {
 			$title = ' title="'.$options['hover'].'" ';
@@ -157,7 +157,7 @@ class tx_rnbase_util_FormTool {
 			$params .= $options['params'];
 		$title = isset($options['title']) ? $options['title'] : $GLOBALS['LANG']->getLL('new', 1);
 
-		$jsCode = t3lib_BEfunc::editOnClick($params, $GLOBALS['BACK_PATH']);
+		$jsCode = Tx_Rnbase_Backend_Utility::editOnClick($params, $GLOBALS['BACK_PATH']);
 		if(isset($options['confirm']) && strlen($options['confirm']) > 0) {
     	$jsCode = 'if(confirm('.$GLOBALS['LANG']->JScharCode($options['confirm']).')) {' . $jsCode .'} else {return false;}';
 		}
@@ -189,7 +189,7 @@ class tx_rnbase_util_FormTool {
 		//der Formularname ist immer tceAction
 		$jumpToUrl .= "&amp;vC=".$GLOBALS['BE_USER']->veriCode();
 		if(tx_rnbase_util_TYPO3::isTYPO45OrHigher())
-			$jumpToUrl .= t3lib_BEfunc::getUrlToken('tceAction');
+			$jumpToUrl .= Tx_Rnbase_Backend_Utility::getUrlToken('tceAction');
 		$jumpToUrl .="'";
 
 		return '<a onclick="return jumpToUrl('.$jumpToUrl.');" href="#">'.
@@ -243,7 +243,7 @@ class tx_rnbase_util_FormTool {
 
 		$jumpToUrl .= "&amp;vC=".$GLOBALS['BE_USER']->veriCode();
 		if(tx_rnbase_util_TYPO3::isTYPO45OrHigher())
-			$jumpToUrl .= t3lib_BEfunc::getUrlToken('tceAction');
+			$jumpToUrl .= Tx_Rnbase_Backend_Utility::getUrlToken('tceAction');
 		$jumpToUrl .="'";
 
 		$jsCode = $this->getConfirmCode('return jumpToUrl('.$jumpToUrl.');', $options);
@@ -554,7 +554,7 @@ class tx_rnbase_util_FormTool {
 		$MENU = Array (
 			$name => $entries
 		);
-		$SETTINGS = t3lib_BEfunc::getModuleData(
+		$SETTINGS = Tx_Rnbase_Backend_Utility::getModuleData(
 			$MENU, t3lib_div::_GP('SET'), $modName
 		);
 
@@ -591,13 +591,13 @@ class tx_rnbase_util_FormTool {
 		$MENU = Array (
 			$name => $entries
 		);
-		$SETTINGS = t3lib_BEfunc::getModuleData(
+		$SETTINGS = Tx_Rnbase_Backend_Utility::getModuleData(
 			$MENU, t3lib_div::_GP('SET'), $modName
 		);
 
 		$ret['menu'] = (tx_rnbase_util_TYPO3::isTYPO62OrHigher() && is_array($MENU[$name]) && count($MENU[$name]) == 1) ?
 				self::buildDummyMenu('SET['.$name.']', $MENU[$name]) :
-				t3lib_BEfunc::getFuncMenu(
+				Tx_Rnbase_Backend_Utility::getFuncMenu(
 			$pid, 'SET['.$name.']', $SETTINGS[$name],
 			$MENU[$name], $script, $addparams
 		);
@@ -636,7 +636,7 @@ class tx_rnbase_util_FormTool {
 			list($itemid, ) = each($data);
 			$changed[$key] = $itemid;
 		}
-		$ret = t3lib_BEfunc::getModuleData(array ($key => ''), $changed, $modName );
+		$ret = Tx_Rnbase_Backend_Utility::getModuleData(array ($key => ''), $changed, $modName );
 		return $ret[$key];
 	}
 	/**

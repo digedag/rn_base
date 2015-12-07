@@ -26,6 +26,7 @@
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 tx_rnbase::load('tx_rnbase_mod_IModule');
 tx_rnbase::load('tx_rnbase_mod_IModFunc');
+tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 
 $GLOBALS['LANG']->includeLLFile('EXT:rn_base/mod/locallang.xml');
 
@@ -57,7 +58,7 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 		$this->checkExtObj();
 		// Access check!
 		// The page will show only if there is a valid page and if this page may be viewed by the user
-		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->getPid(), $this->perms_clause);
+		$this->pageinfo = Tx_Rnbase_Backend_Utility::readPageAccess($this->getPid(), $this->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
 		$this->initDoc($this->getDoc());
 
@@ -95,7 +96,7 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 			$header.=$this->getDoc()->startPage($LANG->getLL('title'));
 			$header.=$this->getDoc()->header($LANG->getLL('title'));
 			$header.=$this->getDoc()->spacer(5);
-			$header.=$this->getDoc()->section('', $this->getDoc()->funcMenu($headerSection, t3lib_BEfunc::getFuncMenu($this->getPid(), 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function'])));
+			$header.=$this->getDoc()->section('', $this->getDoc()->funcMenu($headerSection, Tx_Rnbase_Backend_Utility::getFuncMenu($this->getPid(), 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function'])));
 			$header.=$this->getDoc()->divider(5);
 
 			$this->content = $header . $this->content;
@@ -143,7 +144,7 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 			$this->extObj = tx_rnbase::makeInstance($this->extClassConf['name']);
 			$this->extObj->init($this, $this->extClassConf);
 				// Re-write:
-			$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
+			$this->MOD_SETTINGS = Tx_Rnbase_Backend_Utility::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
 		}
 	}
 
@@ -178,7 +179,7 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 			tx_rnbase_util_Misc::prepareTSFE(); // Ist bei Aufruf aus BE notwendig!
 			$cObj = t3lib_div::makeInstance('tslib_cObj');
 
-			$pageTSconfigFull = t3lib_BEfunc::getPagesTSconfig($this->getPid());
+			$pageTSconfigFull = Tx_Rnbase_Backend_Utility::getPagesTSconfig($this->getPid());
 			$pageTSconfig = $pageTSconfigFull['mod.'][$this->getExtensionKey().'.'];
 			$pageTSconfig['lib.'] = $pageTSconfigFull['lib.'];
 
@@ -405,12 +406,12 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 			'shortcut' => '',
 		);
 			// TODO: CSH
-		$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_'.$this->MCONF['name'], '', $GLOBALS['BACK_PATH'], '', TRUE);
+		$buttons['csh'] = Tx_Rnbase_Backend_Utility::cshItem('_MOD_'.$this->MCONF['name'], '', $GLOBALS['BACK_PATH'], '', TRUE);
 
 		if($this->id && is_array($this->pageinfo)) {
 
 				// View page
-			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->pageinfo['uid'], $BACK_PATH, t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '">' .
+			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(Tx_Rnbase_Backend_Utility::viewOnClick($this->pageinfo['uid'], $BACK_PATH, Tx_Rnbase_Backend_Utility::BEgetRootLine($this->pageinfo['uid']))) . '">' .
 					'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/zoom.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '" hspace="3" alt="" />' .
 					'</a>';
 

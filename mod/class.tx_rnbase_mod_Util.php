@@ -22,7 +22,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 
 /**
  */
@@ -36,7 +36,7 @@ class tx_rnbase_mod_Util {
 	public static function getModuleValue($key, tx_rnbase_mod_IModule $mod, $options=array()) {
 		$changedSettings = is_array($options['changed']) ? $options['changed'] : array();
 		$type = isset($options['type']) ? $options['type'] : '';
-		$modData = t3lib_BEfunc::getModuleData(array ($key => ''), $changedSettings, $mod->getName(), $type);
+		$modData = Tx_Rnbase_Backend_Utility::getModuleData(array ($key => ''), $changedSettings, $mod->getName(), $type);
 		return isset($modData[$key]) ? $modData[$key] : NULL;
 	}
 	/**
@@ -93,7 +93,7 @@ class tx_rnbase_mod_Util {
 		$pid = isset($aOptions['pid']) && $aOptions['pid'] ? $aOptions['pid'] : 0;
 
 		// Build select box items
-		$aData['selector'] = t3lib_BEfunc::getFuncMenu(
+		$aData['selector'] = Tx_Rnbase_Backend_Utility::getFuncMenu(
 			$pid, 'SET['.$id.']', $selectedItem, $aItems
 		);
 
