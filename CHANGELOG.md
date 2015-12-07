@@ -15,6 +15,7 @@ v0.15.19 (??.??.????)
  * new Wrapper function tx_rnbase_util_Strings::removeXSS
  * new Wrapper function tx_rnbase_util_Files::rmdir
  * new Wrapper function tx_rnbase_util_Strings::validEmail
+ * new Wrapper function tx_rnbase_util_Network::isValidUrl
 
 v0.15.18 (02.12.2015)
  * Bugfix: tx_rnbase_util_Dates::date_mysql2tstamp liefert nun immer einen Integer und nicht NULL im Fehlerfall

@@ -73,6 +73,23 @@ class tx_rnbase_util_Network {
 
 		return $return;
 	}
+
+	/**
+	 * @see t3lib_div::isValidUrl()
+	 * @see TYPO3\CMS\Core\Utility\GeneralUtility::isValidUrl()
+	 *
+	 * @param string $url The URL to be validated
+	 * @return boolean Whether the given URL is valid
+	 */
+	static public function isValidUrl($url) {
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			$return = TYPO3\CMS\Core\Utility\GeneralUtility::isValidUrl($url);
+		} else {
+			$return = t3lib_div::isValidUrl($url);
+		}
+
+		return $return;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Network.php']) {
