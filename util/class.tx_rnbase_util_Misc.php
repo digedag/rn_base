@@ -686,6 +686,18 @@ MAYDAYPAGE;
 		return $milliseconds ;
 	}
 
+	/**
+	 * Wrapper method for t3lib_div::logDeprecatedFunction() or \TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction()
+	 *
+	 * @return void
+	 */
+	static public function logDeprecatedFunction() {
+		if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+			\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+		} else{
+			t3lib_div::logDeprecatedFunction();
+		}
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Misc.php']) {

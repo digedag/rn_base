@@ -19,6 +19,7 @@ v0.15.19 (??.??.????)
  * new Wrapper function tx_rnbase_util_Misc::milliseconds
  * new Wrapper function tx_rnbase_util_Arrays::arrayToLogString
  * new Wrapper Class Tx_Rnbase_Interface_Singleton for \TYPO3\CMS\Core\SingletonInterface or t3lib_Singleton which is compatible for all TYPO3 versions
+ * new Wrapper function tx_rnbase_util_Misc::logDeprecatedFunction
 
 v0.15.18 (02.12.2015)
  * Bugfix: tx_rnbase_util_Dates::date_mysql2tstamp liefert nun immer einen Integer und nicht NULL im Fehlerfall
