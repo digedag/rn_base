@@ -229,6 +229,26 @@ class tx_rnbase_util_Files {
 			return t3lib_div::mkdir_deep($directory, $deepDirectory);
 		}
 	}
+
+	/**
+	 * (non-PHPdoc)
+	 * @see t3lib_div::writeFile()
+	 * @see TYPO3\CMS\Core\Utility\GeneralUtility::writeFile()
+	 *
+	 * @param string $file Filepath to write to
+	 * @param string $content Content to write
+	 * @param boolean $changePermissions If TRUE, permissions are forced to be set
+	 * @return boolean TRUE if the file was successfully opened and written to.
+	 */
+	static public function writeFile($file, $content, $changePermissions = FALSE) {
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			$return = TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($file, $content, $changePermission);
+		} else {
+			$return = t3lib_div::writeFile($file, $content, $changePermission);
+		}
+
+		return $return;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Files.php']) {
