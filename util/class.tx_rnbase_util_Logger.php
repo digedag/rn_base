@@ -40,7 +40,7 @@ class tx_rnbase_util_Logger {
 	 * @param mixed $dataVar
 	 */
 	public static function debug($msg, $extKey, $dataVar=FALSE) {
-		t3lib_div::devLog($msg, $extKey, -1, $dataVar);
+		self::devLog($msg, $extKey, -1, $dataVar);
 	}
 	/**
 	 * Log a notice
@@ -49,7 +49,7 @@ class tx_rnbase_util_Logger {
 	 * @param mixed $dataVar
 	 */
 	public static function info($msg, $extKey, $dataVar=FALSE) {
-		t3lib_div::devLog($msg, $extKey, 0, $dataVar);
+		self::devLog($msg, $extKey, 0, $dataVar);
 	}
 	/**
 	 * Log a notice
@@ -58,7 +58,7 @@ class tx_rnbase_util_Logger {
 	 * @param mixed $dataVar
 	 */
 	public static function notice($msg, $extKey, $dataVar=FALSE) {
-		t3lib_div::devLog($msg, $extKey, 1, $dataVar);
+		self::devLog($msg, $extKey, 1, $dataVar);
 	}
 	/**
 	 * Log a warning
@@ -67,7 +67,7 @@ class tx_rnbase_util_Logger {
 	 * @param mixed $dataVar
 	 */
 	public static function warn($msg, $extKey, $dataVar=FALSE) {
-		t3lib_div::devLog($msg, $extKey, 2, $dataVar);
+		self::devLog($msg, $extKey, 2, $dataVar);
 	}
 	/**
 	 * Log a fatal error
@@ -76,7 +76,7 @@ class tx_rnbase_util_Logger {
 	 * @param mixed $dataVar
 	 */
 	public static function fatal($msg, $extKey, $dataVar=FALSE) {
-		t3lib_div::devLog($msg, $extKey, 3, $dataVar);
+		self::devLog($msg, $extKey, 3, $dataVar);
 	}
 
 	/**
@@ -119,6 +119,11 @@ class tx_rnbase_util_Logger {
 	public static function isFatalEnabled() {
 		return self::isLogLevel(3);
 	}
+
+	/**
+	 * @param int $level
+	 * @return boolean
+	 */
 	private static function isLogLevel($level) {
 		if(self::$minLog === FALSE) {
 			if(tx_rnbase_util_Extensions::isLoaded('devlog')) {
@@ -128,6 +133,23 @@ class tx_rnbase_util_Logger {
 		}
 		$isEnabled = $level >= self::$minLog;
 		return $isEnabled;
+	}
+
+	/**
+	 * Wrapper method for t3lib_div::devLog() or \TYPO3\CMS\Core\Utility\GeneralUtility::devLog()
+	 *
+	 * @param string $msg Message (in english).
+	 * @param string $extKey Extension key (from which extension you are calling the log)
+	 * @param integer $severity Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
+	 * @param mixed $dataVar Additional data you want to pass to the logger.
+	 * @return void
+	 */
+	static public function devLog($msg, $extKey, $severity = 0, $dataVar = FALSE) {
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog($msg, $extKey, $severity, $dataVar);
+		} else{
+			t3lib_div::devLog($msg, $extKey, $severity, $dataVar);
+		}
 	}
 }
 
