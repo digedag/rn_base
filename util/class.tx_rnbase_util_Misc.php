@@ -38,13 +38,15 @@ class tx_rnbase_util_Misc {
 	 * @param string $subType
 	 * @return t3lib_svbase or \TYPO3\CMS\Core\Service\AbstractService
 	 */
-	static function getService($type, $subType='') {
-    $srv = t3lib_div::makeInstanceService($type, $subType);
-    if(!is_object($srv)) {
-    	tx_rnbase::load('tx_rnbase_util_Misc');
-      return self::mayday('Service ' . $type . ' - ' . $subType . ' not found!');;
-    }
-    return $srv;
+	static function getService($type, $subType = '') {
+		$service = tx_rnbase::makeInstanceService($type, $subType);
+
+		if(!is_object($service)) {
+			tx_rnbase::load('tx_rnbase_util_Misc');
+			return self::mayday('Service ' . $type . ' - ' . $subType . ' not found!');;
+		}
+
+		return $service;
 	}
 	/**
 	 * Returns an array with all subtypes for given service key.
