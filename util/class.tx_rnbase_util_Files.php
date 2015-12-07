@@ -249,6 +249,25 @@ class tx_rnbase_util_Files {
 
 		return $return;
 	}
+
+	/**
+	 * (non-PHPdoc)
+	 * @see t3lib_div::writeFile()
+	 * @see TYPO3\CMS\Core\Utility\GeneralUtility::writeFile()
+	 *
+	 * @param string $path Absolute path to folder, see PHP rmdir() function. Removes trailing slash internally.
+	 * @param boolean $removeNonEmpty Allow deletion of non-empty directories
+	 * @return boolean TRUE if @rmdir went well!
+	 */
+	static public function rmdir($path, $removeNonEmpty = FALSE) {
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			$return = TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($path, $removeNonEmpty);
+		} else {
+			$return = t3lib_div::rmdir($path, $removeNonEmpty);
+		}
+
+		return $return;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Files.php']) {
