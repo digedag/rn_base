@@ -446,6 +446,25 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 		t3lib_FlashMessageQueue::addMessage($message);
 	}
 
+	/**
+	 * @see TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction
+	 * @see TYPO3\CMS\Backend\Template\DocumentTemplate::issueCommand
+	 * @see template::issueCommand
+	 *
+	 * @param string $getParameters
+	 * @param string $redirectUrl
+	 * @return string
+	 */
+	public function issueCommand($getParameters, $redirectUrl = '') {
+		if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
+			$link = TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction($getParameters, $redirectUrl);
+		} else {
+			$link = $this->getDoc()->issueCommand($getParameters, $redirectUrl);
+		}
+
+		return $link;
+	}
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_BaseModule.php'])	{
