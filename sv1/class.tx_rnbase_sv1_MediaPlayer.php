@@ -21,7 +21,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-
+tx_rnbase::load('Tx_Rnbase_Service_Base');
 
 /**
  * Service "MediaPlayer" for playing mp3 media files.

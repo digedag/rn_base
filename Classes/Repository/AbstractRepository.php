@@ -23,6 +23,7 @@
  ***************************************************************/
 
 tx_rnbase::load('Tx_Rnbase_Repository_InterfaceSearch');
+tx_rnbase::load('Tx_Rnbase_Interface_Singleton');
 
 /**
  * Abstracte Repository Klasse
@@ -32,7 +33,7 @@ tx_rnbase::load('Tx_Rnbase_Repository_InterfaceSearch');
  * @author Michael Wagner
  */
 abstract class Tx_Rnbase_Repository_AbstractRepository
-	implements Tx_Rnbase_Repository_InterfaceSearch, t3lib_Singleton
+	implements Tx_Rnbase_Repository_InterfaceSearch, Tx_Rnbase_Interface_Singleton
 {
 
 	/**

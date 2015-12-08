@@ -18,6 +18,7 @@ tx_rnbase_util_TYPO3::getHttpUtilityClass() | t3lib_utility_Http | \TYPO3\\CMS\\
 Tx_Rnbase_Service_Base | t3lib_svbase | \TYPO3\CMS\Core\Service\AbstractService
 Tx_Rnbase_Backend_Utility | t3lib_BEfunc | \TYPO3\CMS\Backend\Utility\BackendUtility
 Tx_Rnbase_Interface_Singleton | t3lib_Singleton | \TYPO3\CMS\Core\SingletonInterface
+Tx_Rnbase_CommandLine_Controller | t3lib_cli | \TYPO3\CMS\Core\Controller\CommandLineController
 
 **Hinweis:** Diese Liste ist nicht vollständig! Am besten einfach im QUellcode von rn_base nach einer
 TYPO3 Core Methode suchen und schauen ob es eine Wrapper Methode gibt
