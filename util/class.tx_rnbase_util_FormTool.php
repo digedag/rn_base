@@ -24,6 +24,7 @@
 tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 tx_rnbase::load('tx_rnbase_util_Strings');
 tx_rnbase::load('tx_rnbase_util_Link');
+tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
 /**
  * Diese Klasse stellt hilfreiche Funktionen zur Erstellung von Formularen
@@ -37,7 +38,7 @@ class tx_rnbase_util_FormTool {
 		$this->doc = $doc;
 
 		// TCEform für das Formular erstellen
-		$this->form = tx_rnbase::makeInstance('t3lib_TCEforms');
+		$this->form = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getBackendFormEngineClass());
 		$this->form->initDefaultBEmode();
 		$this->form->backPath = $BACK_PATH;
 	}

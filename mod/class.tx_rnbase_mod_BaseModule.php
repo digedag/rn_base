@@ -27,6 +27,7 @@ tx_rnbase::load('tx_rnbase_util_TYPO3');
 tx_rnbase::load('tx_rnbase_mod_IModule');
 tx_rnbase::load('tx_rnbase_mod_IModFunc');
 tx_rnbase::load('Tx_Rnbase_Backend_Utility');
+tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
 $GLOBALS['LANG']->includeLLFile('EXT:rn_base/mod/locallang.xml');
 
@@ -436,14 +437,15 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 	 */
 	public function addMessage($message, $title = '', $severity = 0, $storeInSession = FALSE) {
 		$message = tx_rnbase::makeInstance(
-			't3lib_FlashMessage',
+			tx_rnbase_util_Typo3Classes::getFlashMessageClass(),
 			$message,
 			$title,
 			$severity,
 			$storeInSession
 		);
 
-		t3lib_FlashMessageQueue::addMessage($message);
+		$flashMessageQueueClass = tx_rnbase_util_Typo3Classes::getFlashMessageQueueClass();
+		$flashMessageQueueClass::addMessage($message);
 	}
 
 	/**

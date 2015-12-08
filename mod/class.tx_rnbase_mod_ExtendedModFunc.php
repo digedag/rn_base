@@ -157,7 +157,8 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc {
 	protected function showMessage($message, tx_rnbase_mod_IModHandler $handler) {
 		$msg = '';
 		$title = '';
-		$severity = t3lib_FlashMessage::OK;
+		$flashMessageClass = tx_rnbase_util_Typo3Classes::getFlashMessageClass();
+		$severity = $flashMessageClass::OK;
 		$store = FALSE;
 		if(is_array($message)) {
 			$msg = $message['message'];
