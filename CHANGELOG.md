@@ -4,8 +4,8 @@
 ----------
 
 v0.15.19 (??.??.????)
- * new Wrapper Class Tx_Rnbase_Service_Base for \TYPO3\CMS\Core\Service\AbstractService or t3lib_svbase which is compatible for all TYPO3 versions
- * new Wrapper Class Tx_Rnbase_Backend_Utility for \TYPO3\CMS\Backend\Utility\BackendUtility or t3lib_BEfunc which is compatible for all TYPO3 versions
+ * new Wrapper Class Tx_Rnbase_Service_Base (don't forget to load)  for \TYPO3\CMS\Core\Service\AbstractService or t3lib_svbase which is compatible for all TYPO3 versions
+ * new Wrapper Class Tx_Rnbase_Backend_Utility (don't forget to load) for \TYPO3\CMS\Backend\Utility\BackendUtility or t3lib_BEfunc which is compatible for all TYPO3 versions
  * new Wrapper function tx_rnbase_util_Strings::inList
  * new Wrapper function tx_rnbase_util_Network::getUrl
  * new Wrapper function tx_rnbase_parameters::getPostAndGetParametersMerged for _GPmerged
@@ -18,14 +18,14 @@ v0.15.19 (??.??.????)
  * new Wrapper function tx_rnbase_util_Network::isValidUrl
  * new Wrapper function tx_rnbase_util_Misc::milliseconds
  * new Wrapper function tx_rnbase_util_Arrays::arrayToLogString
- * new Wrapper Class Tx_Rnbase_Interface_Singleton for \TYPO3\CMS\Core\SingletonInterface or t3lib_Singleton which is compatible for all TYPO3 versions
+ * new Wrapper Class Tx_Rnbase_Interface_Singleton (don't forget to load)  for \TYPO3\CMS\Core\SingletonInterface or t3lib_Singleton which is compatible for all TYPO3 versions
  * new Wrapper function tx_rnbase_util_Misc::logDeprecatedFunction
  * new Wrapper function tx_rnbase_util_Logger::devLog
  * new Wrapper function tx_rnbase_mod_Util::mapRecordTypeToSpriteIconName
  * new Wrapper function tx_rnbase_parameters::setGetParameter
  * new Wrapper function tx_rnbase_mod_BaseModule::issueCommand
  * new class tx_rnbase_util_Typo3Classes to get TYPO3 classes independent of TYPO3 version
- * new Wrapper Class Tx_Rnbase_CommandLine for \TYPO3\CMS\Core\Controller\CommandLineController or t3lib_cli which is compatible for all TYPO3 versions
+ * new Wrapper Class Tx_Rnbase_CommandLine (don't forget to load)  for \TYPO3\CMS\Core\Controller\CommandLineController or t3lib_cli which is compatible for all TYPO3 versions
 
 v0.15.18 (02.12.2015)
  * Bugfix: tx_rnbase_util_Dates::date_mysql2tstamp liefert nun immer einen Integer und nicht NULL im Fehlerfall

@@ -21,25 +21,3 @@ if(!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'
 }
 
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = intval(tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'loadHiddenObjects'));
-
-
-// Include the mediaplayer service
-// should not be used anymore...
-//require_once($rnbaseExtPath.'sv1/ext_localconf.php');
-
-tx_rnbase::load('tx_rnbase_util_TYPO3');
-if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-	require_once($rnbaseExtPath . 'Classes/Service/BaseSince6.php');
-	require_once($rnbaseExtPath . 'Classes/Interface/SingletonSince6.php');
-	if (defined('TYPO3_cliMode')) {
-		require_once($rnbaseExtPath . 'Classes/CommandLine/ControllerSince6.php');
-	}
-} else {
-	require_once($rnbaseExtPath . 'Classes/Service/BaseTill6.php');
-	require_once($rnbaseExtPath . 'Classes/Interface/SingletonTill6.php');
-	if (defined('TYPO3_cliMode')) {
-		require_once($rnbaseExtPath . 'Classes/CommandLine/ControllerTill6.php');
-	}
-}
-
-
