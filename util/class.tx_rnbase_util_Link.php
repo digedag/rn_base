@@ -412,12 +412,27 @@ class tx_rnbase_util_Link {
 		// else, we have only a url to rebuild
 
 		// rebuild the url without schema
-		$urlParts = parse_url($url);
+		$urlParts = parse_url(self::addDefaultSchemaIfRequired($url));
 		$urlPath  = isset($urlParts['path']) ? $urlParts['path'] : '';
 		$urlPath .= isset($urlParts['query']) ? '?' . $urlParts['query'] : '';
 		$urlPath .= isset($urlParts['fragment']) ? '#' . $urlParts['fragment'] : '';
 
 		return rtrim($schema, '/') . '/'. ltrim($urlPath, '/');
+	}
+
+	/**
+	 * Vor PHP 5.4.7 wird die URL nicht korrekt geparsed wenn das Schema fehlt.
+	 * Also fügen wir dann ein default Schema hinzu damit parse_url korrekt funktioniert.
+	 *
+	 * @param string $url
+	 * @return string
+	 */
+	static public function addDefaultSchemaIfRequired($url) {
+		if (version_compare(phpversion(), '5.4.7', '<') && substr($url, 0, 2) == '//') {
+			$url = 'http:' . $url;
+		}
+
+		return $url;
 	}
 
 	/**
