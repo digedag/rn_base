@@ -61,7 +61,8 @@ abstract class tx_rnbase_tests_BaseTestCase
 			if ($arg instanceof tx_rnbase_parameters) {
 				$parameters = $arg;
 			}
-			if ($arg instanceof tx_rnbase_util_Typo3Classes::getContentObjectRendererClass()) {
+			$contentObjectRendererClass = tx_rnbase_util_Typo3Classes::getContentObjectRendererClass();
+			if ($arg instanceof $contentObjectRendererClass) {
 				$cObj = $arg;
 			}
 		}
