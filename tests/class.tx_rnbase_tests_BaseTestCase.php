@@ -21,6 +21,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
 /**
  * Basis Testcase
@@ -37,7 +38,7 @@ abstract class tx_rnbase_tests_BaseTestCase
 	 * $this->createConfigurations(
 	 *     array(), 'rn_base', 'rn_base',
 	 *     tx_rnbase::makeInstance('tx_rnbase_parameters'),
-	 *     tx_rnbase::makeInstance('tslib_cObj')
+	 *     tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass())
 	 * );
 	 *
 	 * @param array $configurationArray
@@ -60,7 +61,7 @@ abstract class tx_rnbase_tests_BaseTestCase
 			if ($arg instanceof tx_rnbase_parameters) {
 				$parameters = $arg;
 			}
-			if ($arg instanceof tslib_cObj) {
+			if ($arg instanceof tx_rnbase_util_Typo3Classes::getContentObjectRendererClass()) {
 				$cObj = $arg;
 			}
 		}

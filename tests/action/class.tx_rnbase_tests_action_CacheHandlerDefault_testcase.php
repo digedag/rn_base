@@ -391,7 +391,7 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase
 		);
 
 		// create cobject with the plugin id.
-		$cObj = tx_rnbase::makeInstance('tslib_cObj');
+		$cObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
 		$cObj->data['uid'] = '75';
 
 		$confId = 'myaction.';

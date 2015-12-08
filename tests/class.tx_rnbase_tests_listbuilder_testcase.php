@@ -23,6 +23,7 @@
 ***************************************************************/
 
 tx_rnbase::load('tx_rnbase_util_Misc');
+tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
 
 class tx_rnbase_tests_listbuilder_testcase extends tx_phpunit_testcase {
@@ -95,7 +96,7 @@ class tx_rnbase_tests_listbuilder_testcase extends tx_phpunit_testcase {
 		return $models;
 	}
 	private function getConfig($confArr) {
-    $cObj = tx_rnbase::makeInstance('tslib_cObj');
+    $cObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
 		$configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
     $configurations->init($confArr, $cObj, 'tx_rnbase', 'rnbase');
 		return $configurations;

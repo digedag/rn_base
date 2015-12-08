@@ -20,6 +20,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
+tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
 /**
  * Baseclass for all actions. An Actions is intended to be the controller
@@ -38,15 +39,15 @@ class tx_rnbase_action_Base {
   }
 
   /**
-   * Returns an instanceof tslib_cObj.
+   * Returns an instanceof tslib_cObj or \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer.
    * Since this object has functions for database access and frontend your ControllerAction
    * should always provide cObj for model and view. This ensures only one instance per request.
    *
-   * @return an instance of tslib_cObj
+   * @return an instance of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer or tslib_cObj
    */
   function getCObj() {
     if(!$this->cObject){
-      $this->cObject = tx_rnbase::makeInstance('tslib_cObj');
+      $this->cObject = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
     }
     return $this->cObject;
   }

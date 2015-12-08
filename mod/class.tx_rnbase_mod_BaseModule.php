@@ -176,9 +176,10 @@ abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbas
 		if(!$this->configurations) {
 			tx_rnbase::load('tx_rnbase_configurations');
 			tx_rnbase::load('tx_rnbase_util_Misc');
+			tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
 			tx_rnbase_util_Misc::prepareTSFE(); // Ist bei Aufruf aus BE notwendig!
-			$cObj = tx_rnbase::makeInstance('tslib_cObj');
+			$cObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
 
 			$pageTSconfigFull = Tx_Rnbase_Backend_Utility::getPagesTSconfig($this->getPid());
 			$pageTSconfig = $pageTSconfigFull['mod.'][$this->getExtensionKey().'.'];

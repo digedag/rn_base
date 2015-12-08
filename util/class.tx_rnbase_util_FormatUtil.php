@@ -24,7 +24,7 @@
 tx_rnbase::load('tx_rnbase_util_Strings');
 /**
  * Contains utility functions for formatting
- * TODO: Die Verwendung der Klasse tslib_cObj sollte überarbeitet werden.
+ * TODO: Die Verwendung der Klasse \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer sollte überarbeitet werden.
  */
 class tx_rnbase_util_FormatUtil {
   var $configurations;
@@ -42,7 +42,7 @@ class tx_rnbase_util_FormatUtil {
    * Konstruktor
    * @param tx_rnbase_configurations $configurations
    */
-  function tx_rnbase_util_FormatUtil($configurations, $cObjClass = 'tslib_cObj') {
+  function tx_rnbase_util_FormatUtil($configurations) {
     $this->configurations = $configurations;
     $this->cObj = $configurations->getCObj();
   }
@@ -97,7 +97,7 @@ class tx_rnbase_util_FormatUtil {
   }
 
   /**
-   * Call of tslib_cObj::stdWrap().
+   * Call of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::stdWrap().
    */
   function stdWrap($content, $conf, $dataArr = 0){
     $tmpArr = $this->cObj->data;
@@ -143,7 +143,7 @@ class tx_rnbase_util_FormatUtil {
   }
 
    /**
-    * Liefert den Wert als Image. Intern wird tslib_cObj::IMAGE verwendet
+    * Liefert den Wert als Image. Intern wird \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::IMAGE verwendet
     */
    function getImage($image, $confId, $extensionKey = 0) {
      if(strlen($image) == 0) return '';

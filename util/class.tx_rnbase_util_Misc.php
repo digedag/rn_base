@@ -23,6 +23,7 @@
  ***************************************************************/
 
 tx_rnbase::load('tx_rnbase_configurations');
+tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
 /**
  * Contains some helpful methods
@@ -315,7 +316,7 @@ MAYDAYPAGE;
 	/**
 	* Prepare classes for FE-rendering if it is needed in TYPO3 backend.
 	*
-	* @return tslib_fe
+	* @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController or tslib_fe
 	*/
 	public static function prepareTSFE($options = array()) {
 		$pid = array_key_exists('pid', $options) ? $options['pid'] : 1;
@@ -342,7 +343,7 @@ MAYDAYPAGE;
 			}
 
 			$GLOBALS['TSFE'] = tx_rnbase::makeInstance(
-				'tslib_fe',
+				tx_rnbase_util_Typo3Classes::getTypoScriptFrontendControllerClass(),
 				$GLOBALS['TYPO3_CONF_VARS'],
 				$pid,
 				$type
@@ -512,6 +513,7 @@ MAYDAYPAGE;
 	 */
 	public static function getPidList($pid_list, $recursive=0)  {
 		tx_rnbase::load('tx_rnbase_util_Math');
+		tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 		if (!strcmp($pid_list, '')) {
 			$pid_list = tx_rnbase_util_TYPO3::getTSFE()->id;
 		}
@@ -522,8 +524,8 @@ MAYDAYPAGE;
 		foreach($pid_list_arr as $val)  {
 			$val = tx_rnbase_util_Math::intInRange($val, 0);
 			if ($val) {
-				/* @var $cObj tslib_cObj */
-				$cObj = tx_rnbase::makeInstance('tslib_cObj');
+				/* @var $cObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
+				$cObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
 				$_list = $cObj->getTreeList(-1 * $val, $recursive);
 				if ($_list) {
 					$pid_list[] = $_list;

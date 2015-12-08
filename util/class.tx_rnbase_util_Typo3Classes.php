@@ -86,6 +86,36 @@ class tx_rnbase_util_Typo3Classes {
 	}
 
 	/**
+	 * @return string
+	 */
+	static public function getContentObjectRendererClass() {
+		return self::getClassByCurrentTypo3Version(array(
+			'lower6'	=> 'tslib_cObj',
+			'higher4' 	=> '\\TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'
+		));
+	}
+
+	/**
+	 * @return string
+	 */
+	static public function getTypoScriptFrontendControllerClass() {
+		return self::getClassByCurrentTypo3Version(array(
+			'lower6'	=> 'tslib_fe',
+			'higher4' 	=> '\\TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController'
+		));
+	}
+
+	/**
+	 * @return string
+	 */
+	static public function getFrontendUserAuthenticationClass() {
+		return self::getClassByCurrentTypo3Version(array(
+			'lower6'	=> 'tslib_feUserAuth',
+			'higher4' 	=> '\\TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication'
+		));
+	}
+
+	/**
 	 * @param array $possibleClasses
 	 * @return string
 	 */

@@ -74,6 +74,7 @@
  *
  */
 tx_rnbase::load('tx_rnbase_util_Network');
+tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
 class tx_rnbase_configurations {
   // We store all Data to an internal ArrayObject
@@ -192,7 +193,8 @@ class tx_rnbase_configurations {
 	 * @return boolean
 	 */
 	public function isPluginUserInt() {
-		return $this->getCObj()->getUserObjectType() == tslib_cObj::OBJECTTYPE_USER_INT;
+		$contentObjectRendererClass = tx_rnbase_util_Typo3Classes::getContentObjectRendererClass();
+		return $this->getCObj()->getUserObjectType() == $contentObjectRendererClass::OBJECTTYPE_USER_INT;
 	}
 	/**
 	 * Whether or not the plugins uses its own parameters. This will add the plugin id to all
@@ -226,9 +228,10 @@ class tx_rnbase_configurations {
    * If id == 0 the will get the plugins original cOBj.
    * @param $id any
    * @param $cObjClass String Optional cObj-classname
-   * @return tslib_cObj
+   * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer or tslib_cObj
    */
-	public function &getCObj($id = 0, $cObjClass = 'tslib_cObj') {
+	public function &getCObj($id = 0, $cObjClass = NULL) {
+		$cObjClass = $cObjClass === NULL ? tx_rnbase_util_Typo3Classes::getContentObjectRendererClass() : $cObjClass;
 		if(strcmp($id, '0') == 0) {
 			if(!is_object($this->cObj)) {
 				$this->cObj = tx_rnbase::makeInstance($cObjClass);
@@ -853,21 +856,21 @@ class tx_rnbase_configurations {
 	/**
 	 * (Try to) Render Typoscript recursively
 	 *
-	 * tslib_cObj::cObjGetSingle() renders a TS array
+	 * \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle() renders a TS array
 	 * only if the passed array structure is directly
 	 * defined renderable Typoscript - it does however
 	 * not care for deep array structures.
 	 * This method heals this lack by traversing the
 	 * given TS array recursively and calling
-	 * tslib_cObj::cObjGetSingle() on each sub-array
+	 * \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle() on each sub-array
 	 * which looks like being renderable.
 	 *
 	 * @param array            $data    Deep data array parsed from Typoscript text
-	 * @param tslib_cObj    $cObj
+	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer or tslib_cObj $cObj
 	 * @return array                Data array with Typoscript rendered
 	 * @author Lars Heber
 	 */
-	private function renderTS($data, tslib_cObj &$cObj) {
+	private function renderTS($data, $cObj) {
 		foreach ($data as $key=>$value) {
 			// Array key with trailing '.'?
 			if (substr($key, strlen($key)-1, 1) == '.') {

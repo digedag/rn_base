@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This class is a wrapper around tslib_cObj::typoLink
+ * This class is a wrapper around \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink
  *
  * PHP versions 4 and 5
  *
@@ -30,7 +30,7 @@
  */
 
 /**
- * This class is a wrapper around tslib_cObj::typoLink
+ * This class is a wrapper around \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink
  *
  * It is not a full implementation of typolink functionality
  * but targeted to the day-to-day requirements. The idea is to provide
@@ -48,7 +48,7 @@ class tx_rnbase_util_Link {
 	var $tagAttributes = array();       // setting attributes for the tag in general
 	var $classString = '';              // tags class attribute
 	var $idString = '';                 // tags id attribute
-	var $cObject;                       // instance of tslib_cObj
+	var $cObject;                       // instance of tx_rnbase_util_Typo3Classes::getContentObjectRendererClass()
 	var $destination = '';              // page id, alias, external link, etc.
 	var $labelString = '';              // tags label
 	var $labelHasAlreadyHtmlSpecialChars = FALSE; // is the label already HSC?
@@ -72,25 +72,26 @@ class tx_rnbase_util_Link {
 	/**
 	 * Construct a link object
 	 *
-	 * By default this object wraps tslib_cObj::typolink();
+	 * By default this object wraps \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typolink();
 	 * The $cObjectClass parameter can be used to provide a mock object
 	 * for unit tests.
 	 *
 	 * @param	object		mock object for testing purpuses
 	 * @return	void
 	 */
-	function __construct($cObject = 'tslib_cObj') {
+	function __construct($cObject = NULL) {
 		if (is_object($cObject)) {
 			$this->cObject = $cObject;
-		}
-		else {
-			$this->cObject = tx_rnbase::makeInstance($cObject);
+		} else {
+			$this->cObject = tx_rnbase::makeInstance(
+				$cObject === NULL ? tx_rnbase_util_Typo3Classes::getContentObjectRendererClass() : $cObject
+			);
 		}
 
 	}
 
 	/**
-	 * @return tslib_cObj
+	 * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer or tslib_cObj
 	 */
 	protected function getCObj() {
 		return $this->cObject;
@@ -166,7 +167,7 @@ class tx_rnbase_util_Link {
 	 * @param	boolean		if TRUE don't parse through htmlspecialchars()
 	 * @return	object		self
 	 * @see		TSref => typolink => parameter
-	 * @see		tslib_cObj::typoLink()
+	 * @see		\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink()
 	 */
 	public function destination($destination) {
 		$this->destination = $destination;

@@ -188,7 +188,7 @@ class tx_rnbase_util_TYPO3 {
 	/**
 	 * Get the current frontend user
 	 *
-	 * @return tslib_feUserAuth current frontend user.
+	 * @return \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication or tslib_feUserAuth current frontend user.
 	 */
 	public static function getFEUser() {
 		return $GLOBALS['TSFE']->fe_user;
@@ -222,7 +222,7 @@ class tx_rnbase_util_TYPO3 {
 	/**
 	 * Returns TSFE.
 	 *
-	 * @return tslib_fe
+	 * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController or tslib_fe
 	 */
 	public static function getTSFE() {
 		if(!is_object($GLOBALS['TSFE'])) {

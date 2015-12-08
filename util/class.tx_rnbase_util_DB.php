@@ -26,6 +26,7 @@ tx_rnbase::load('tx_rnbase_util_TYPO3');
 tx_rnbase::load('tx_rnbase_util_Debug');
 tx_rnbase::load('tx_rnbase_util_Misc');
 tx_rnbase::load('tx_rnbase_util_Strings');
+tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
 /**
  * Contains utility functions for database access
@@ -577,7 +578,7 @@ class tx_rnbase_util_DB {
 	}
 
 	/**
-	 * Same method as tslib_pibase::pi_getPidList()
+	 * Same method as tx_rnbase_util_Typo3Classes::getTypoScriptFrontendControllerClass()::pi_getPidList()
 	 * If you  need this functionality use tx_rnbase_util_Misc::getPidList()
 	 * @deprecated use tx_rnbase_util_Misc::getPidList!
 	 */
@@ -882,7 +883,8 @@ class tx_rnbase_util_DB {
 		$limit = intval($limit) > 0 ? intval($limit) : '';
 
 		// Zur Where-Clause noch die gültigen Felder hinzufügen
-		$where .= tslib_cObj::enableFields($tableName);
+		$contentObjectRendererClass = tx_rnbase_util_Typo3Classes::getContentObjectRendererClass();
+		$where .= $contentObjectRendererClass::enableFields($tableName);
 
     if($debug) {
       $sql = $GLOBALS['TYPO3_DB']->SELECTquery($what, $fromClause, $where, $groupBy, $orderBy);
