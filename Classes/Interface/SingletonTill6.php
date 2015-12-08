@@ -23,9 +23,9 @@
  */
 
 /**
- * tx_rnbase_sv1_Base
+ * Tx_Rnbase_Interface_Singleton
  *
- * Wrapper für t3lib_svbase bis TYPO3 6.x
+ * Wrapper für t3lib_Singleton bis TYPO3 6.x
  *
  * @package 		TYPO3
  * @subpackage	 	rn_base
@@ -33,5 +33,5 @@
  * @license 		http://www.gnu.org/licenses/lgpl.html
  * 					GNU Lesser General Public License, version 3 or later
  */
-interface Tx_Rnbase_Interface_Singleton extends t3lib_svbase {
+interface Tx_Rnbase_Interface_Singleton extends t3lib_Singleton {
 }

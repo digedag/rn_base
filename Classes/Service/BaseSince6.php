@@ -23,7 +23,7 @@
  */
 
 /**
- * tx_rnbase_sv1_Base
+ * Tx_Rnbase_Service_Base
  *
  * Wrapper für \TYPO3\CMS\Core\Service\AbstractService seit TYPO3 6.x
  *
