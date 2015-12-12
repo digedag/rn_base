@@ -25,6 +25,7 @@
 tx_rnbase::load('tx_rnbase_model_data');
 
 /**
+ * TODO: extend from Tx_Rnbase_Util_TCA
  * @package TYPO3
  * @subpackage tx_rnbase
  * @author Hannes Bochmann <hannes.bochmann@dmk-business.de>
