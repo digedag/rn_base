@@ -32,7 +32,7 @@
  * @license 		http://www.gnu.org/licenses/lgpl.html
  * 					GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Util_TCA {
+class Tx_Rnbase_Util_TCATool {
 
 	/**
 	 * Add a wizard to column.
