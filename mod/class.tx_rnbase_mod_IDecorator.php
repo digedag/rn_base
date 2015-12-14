@@ -25,14 +25,10 @@
 
 /**
  * Base interface for a decorator
+ *
+ * @method void __construct() __construct(tx_rnbase_mod_IModule $mod)
  */
 interface tx_rnbase_mod_IDecorator {
-
-	/**
-	 * Constructor
-	 * @param 	tx_rnbase_mod_IModule 	$mod
-	 */
-	public function __construct(tx_rnbase_mod_IModule $mod);
 
 	/**
 	 * Formatiert jede Zelle einer Tabelle im BE. Ausgenommen sind die Header
