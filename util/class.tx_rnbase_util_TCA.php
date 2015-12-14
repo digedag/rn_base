@@ -93,6 +93,18 @@ class tx_rnbase_util_TCA {
 		}
 		return $GLOBALS['TCA'][$tableName]['ctrl']['crdate'];
 	}
+	/**
+	 * Liefert den Spaltennamen für die sortierung der Tabelle.
+	 *
+	 * @param string $tableName
+	 * @return string
+	 */
+	public static function getSortbyFieldForTable($tableName) {
+		if (empty($GLOBALS['TCA'][$tableName]) || empty($GLOBALS['TCA'][$tableName]['ctrl']['sortby'])) {
+			return '';
+		}
+		return $GLOBALS['TCA'][$tableName]['ctrl']['sortby'];
+	}
 
 	/**
 	 * Load TCA for a specific table. Since T3 6.1 the complete TCA is loaded.
