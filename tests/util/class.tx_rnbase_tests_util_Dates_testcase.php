@@ -78,11 +78,14 @@ class tx_rnbase_tests_util_Dates_testcase extends tx_phpunit_testcase {
 		self::assertSame($expectedTimestamp, tx_rnbase_util_Dates::date_mysql2tstamp($mysqlDate));
 	}
 
+	/**
+	 * @return array
+	 */
 	public function dataProviderDateMysql2Tstamp() {
 		return array(
 			array('14-08-1985', 1578265200),
-			array('aa-bb-cccc', 0),
-			array('', 0),
+			array('aa-bb-cccc', NULL),
+			array('', NULL),
 		);
 	}
 }

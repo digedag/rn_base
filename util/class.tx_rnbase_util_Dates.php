@@ -102,18 +102,23 @@ class tx_rnbase_util_Dates {
 		return $useGMT ? gmdate('Y-m-d', $tstamp) : date('Y-m-d', $tstamp);
 	}
 	/**
-	 * Umwandlung eines Datums yyyy-mm-dd in einen Timestamp
+	 * Umwandlung eines Datums yyyy-mm-dd in einen Timestamp.
+	 * Es wird NULL geliefert wenn kein Timstamp berechnet werden
+	 * kann.
 	 *
 	 * @param string $date Format: yyyy-mm-dd
-	 * @return int
+	 * @return int or NULL if no timestamp could be calculated
 	 */
 	static function date_mysql2tstamp($date) {
 		list($jahr, $monat, $tag) = tx_rnbase_util_Strings::intExplode('-', $date);
 		// If mktime() is fed with 6x 0, it returns tstamp for 1999/11//30 00:00:00 which indeed is correct!
-		if (!$jahr && !$monat && !$jahr) return 0;
-		$tstamp = mktime(0, 0, 0, $monat, $tag, $jahr);
+		if (!$jahr && !$monat && !$jahr) {
+			$tstamp = FALSE;
+		} else {
+			$tstamp = mktime(0, 0, 0, $monat, $tag, $jahr);
+		}
 		// If mktime arguments are invalid, the function returns FALSE  (before PHP 5.1 it returned -1).
-		return (!in_array($tstamp, array(FALSE, -1))) ? $tstamp : 0;
+		return (!in_array($tstamp, array(FALSE, -1))) ? $tstamp : NULL;
 	}
 
 	/**
