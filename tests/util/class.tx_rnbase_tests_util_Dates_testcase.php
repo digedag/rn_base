@@ -83,7 +83,7 @@ class tx_rnbase_tests_util_Dates_testcase extends tx_phpunit_testcase {
 	 */
 	public function dataProviderDateMysql2Tstamp() {
 		return array(
-			array('14-08-1985', 1578265200),
+			array('1985-08-14', 492818400),
 			array('aa-bb-cccc', NULL),
 			array('', NULL),
 		);
