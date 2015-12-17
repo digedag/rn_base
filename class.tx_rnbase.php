@@ -182,17 +182,22 @@ class tx_rnbase {
 	 * @return	boolean		TRUE if class was loaded
 	 */
 	private static function loadT3($minimalInformation, $alternativeKey='', $prefix = 'class.', $suffix = '.php') {
-		if(class_exists($minimalInformation)) return TRUE; // Class still exists
-		$path = self::_findT3($minimalInformation, $alternativeKey, $prefix, $suffix);
-
-		if($path) {
-			if(class_exists('\TYPO3\CMS\Core\Utility\GeneralUtility'))
-				\TYPO3\CMS\Core\Utility\GeneralUtility::requireOnce($path);
-			else
-				t3lib_div::requireOnce($path);
+		// Class still exists
+		if (class_exists($minimalInformation)) {
 			return TRUE;
 		}
-		return FALSE;
+
+		$path = self::_findT3($minimalInformation, $alternativeKey, $prefix, $suffix);
+
+		if ($path) {
+			if (class_exists('\TYPO3\CMS\Core\Utility\GeneralUtility')) {
+				\TYPO3\CMS\Core\Utility\GeneralUtility::requireOnce($path);
+			} else {
+				t3lib_div::requireOnce($path);
+			}
+		}
+
+		return class_exists($minimalInformation);
 	}
 
 	/**
