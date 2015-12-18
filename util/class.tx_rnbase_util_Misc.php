@@ -540,11 +540,15 @@ MAYDAYPAGE;
 	 * Example: Converts BlogExample to blog_example, and minimalValue to minimal_value
 	 * Taken from t3lib_div for backward compatibility
 	 *
-	 * @param	string		$string: String to be converted to lowercase underscore
-	 * @return	string		lowercase_and_underscored_string
+	 * @deprecated use tx_rnbase_util_Strings::camelCaseToLowerCaseUnderscored instead
+	 *
+	 * @param string $string: String to be converted to lowercase underscore
+	 * @return string lowercase_and_underscored_string
 	 */
 	public static function camelCaseToLowerCaseUnderscored($string) {
-		return strtolower(preg_replace('/(?<=\w)([A-Z])/', '_\\1', $string));
+		self::logDeprecatedFunction();
+		tx_rnbase::load('tx_rnbase_util_Strings');
+		return tx_rnbase_util_Strings::camelCaseToLowerCaseUnderscored($string);
 	}
 
 	/**

@@ -22,8 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_Misc');
-
 /**
  * Basic model with geter's and seter's
  *
@@ -206,7 +204,8 @@ class tx_rnbase_model_data
 	 * @return string
 	 */
 	protected function underscore($string) {
-		return tx_rnbase_util_Misc::camelCaseToLowerCaseUnderscored($string);
+		tx_rnbase::load('tx_rnbase_util_Strings');
+		return tx_rnbase_util_Strings::camelCaseToLowerCaseUnderscored($string);
 	}
 
 	/**

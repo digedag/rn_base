@@ -167,6 +167,36 @@ class tx_rnbase_util_Strings {
 			return t3lib_div::getRandomHexString($count);
 		}
 	}
+
+	/**
+	 * Returns a given CamelCasedString as an lowercase string with underscores.
+	 * Example: Converts BlogExample to blog_example, and minimalValue to minimal_value
+	 * Taken from t3lib_div for backward compatibility
+	 *
+	 * @param string $string: String to be converted to lowercase underscore
+	 * @return string lowercase_and_underscored_string
+	 */
+	public static function camelCaseToLowerCaseUnderscored($string) {
+		return tx_rnbase_util_TYPO3::isTYPO60OrHigher()
+			? TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($string)
+			: t3lib_div::camelCaseToLowerCaseUnderscored($string)
+		;
+	}
+
+	/**
+	 * Returns a given string with underscores as lowerCamelCase.
+	 * Example: Converts minimal_value to minimalValue
+	 *
+	 * @param string $string: String to be converted to lowercase underscore
+	 * @return string lowercase_and_underscored_string
+	 */
+	public static function underscoredToLowerCamelCase($string) {
+		return tx_rnbase_util_TYPO3::isTYPO60OrHigher()
+			? TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToLowerCamelCase($string)
+			: t3lib_div::underscoredToLowerCamelCase($string)
+		;
+	}
+
 	/**
 	 * Convert an array with hexadecimal byte values to binary string.
 	 * @param array $arr
