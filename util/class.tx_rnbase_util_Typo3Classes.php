@@ -130,8 +130,18 @@ class tx_rnbase_util_Typo3Classes {
 	 */
 	static public function getDataHandlerClass() {
 		return self::getClassByCurrentTypo3Version(array(
-				'lower6'	=> 't3lib_tcemain',
-				'higher4' 	=> '\\TYPO3\\CMS\\Core\\DataHandling\\DataHandler'
+			'lower6'	=> 't3lib_tcemain',
+			'higher4' 	=> '\\TYPO3\\CMS\\Core\\DataHandling\\DataHandler'
+		));
+	}
+
+	/**
+	 * @return string
+	 */
+	static public function getSpriteManagerClass() {
+		return self::getClassByCurrentTypo3Version(array(
+			'lower6'	=> 't3lib_SpriteManager',
+			'higher4' 	=> '\TYPO3\CMS\Backend\Sprite\SpriteManager'
 		));
 	}
 
