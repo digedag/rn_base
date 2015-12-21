@@ -141,7 +141,17 @@ class tx_rnbase_util_Typo3Classes {
 	static public function getSpriteManagerClass() {
 		return self::getClassByCurrentTypo3Version(array(
 			'lower6'	=> 't3lib_SpriteManager',
-			'higher4' 	=> '\TYPO3\CMS\Backend\Sprite\SpriteManager'
+			'higher4' 	=> '\\TYPO3\\CMS\Backend\\Sprite\\SpriteManager'
+		));
+	}
+
+	/**
+	 * @return string
+	 */
+	static public function getCommandUtilityClass() {
+		return self::getClassByCurrentTypo3Version(array(
+			'lower6'	=> 't3lib_exec',
+			'higher4' 	=> '\\TYPO3\\CMS\\Core\\Utility\\CommandUtility'
 		));
 	}
 
