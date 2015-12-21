@@ -38,7 +38,7 @@ class Tx_Rnbase_Backend_Utility_IconsTest extends tx_rnbase_tests_BaseTestCase {
 	/**
 	 * @group unit
 	 */
-	public function testGetRecordTitle() {
+	public function testSkinImg() {
 		Tx_Rnbase_Backend_Utility_IconsForTest::skinImg(1, 2, 3, 4);
 
 		self::assertEquals(
@@ -53,7 +53,7 @@ class Tx_Rnbase_Backend_Utility_IconsForTest extends Tx_Rnbase_Backend_Utility_I
 	/**
 	 * @return Typo3BackendUtilityClass
 	 */
-	static protected function getBackendUtilityClass() {
+	static protected function getIconUtilityClass() {
 		return 'Typo3BackendUtilityIconsClass';
 	}
 }
