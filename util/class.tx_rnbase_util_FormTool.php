@@ -25,6 +25,7 @@ tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 tx_rnbase::load('tx_rnbase_util_Strings');
 tx_rnbase::load('tx_rnbase_util_Link');
 tx_rnbase::load('tx_rnbase_util_Typo3Classes');
+tx_rnbase::load('Tx_Rnbase_Backend_Utility_Icons');
 
 /**
  * Diese Klasse stellt hilfreiche Funktionen zur Erstellung von Formularen
@@ -82,7 +83,7 @@ class tx_rnbase_util_FormTool {
 	public function createEditLink($editTable, $editUid, $label = 'Edit') {
 		$params = '&edit['.$editTable.']['.$editUid.']=edit';
 		return '<a href="#" onclick="'.htmlspecialchars(Tx_Rnbase_Backend_Utility::editOnClick($params, $GLOBALS['BACK_PATH'])).'">'.
-			'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif', 'width="11" height="12"').' title="Edit UID: '.$editUid.'" border="0" alt="" />'.
+			'<img'.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif', 'width="11" height="12"').' title="Edit UID: '.$editUid.'" border="0" alt="" />'.
 		$label .'</a>';
 	}
 
@@ -97,7 +98,7 @@ class tx_rnbase_util_FormTool {
 	public function createHistoryLink($table, $recordUid, $label = '') {
 		return "<a href=\"#\" onclick=\"return jumpExt('".$GLOBALS['BACK_PATH'].
 				"show_rechis.php?element=".rawurlencode($table.':'.$recordUid).
-				"','#latest');\"><img ".t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/history2.gif', 'width="13" height="12"').
+				"','#latest');\"><img ".Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/history2.gif', 'width="13" height="12"').
 				' title="'.$GLOBALS['LANG']->getLL('history', 1).'\" alt="" >'.$label.'</a>';
 	}
 
@@ -130,7 +131,7 @@ class tx_rnbase_util_FormTool {
 	 */
 	public function createShowLink($pid, $label, $urlParams = '', $options=array()) {
 		if($options['icon']) {
-			$label = "<img ".t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$options['icon']).
+			$label = "<img ".Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$options['icon']).
 				' title="'.$label.'\" alt="" >';
 		}
 		if($options['sprite']) {
@@ -165,7 +166,7 @@ class tx_rnbase_util_FormTool {
 		}
 
 		return '<a href="#" onclick="'.htmlspecialchars($jsCode, -1).'">'.
-			'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/new_'.($table=='pages'?'page':'el').'.gif', 'width="'.($table=='pages'?13:11).'" height="12"').' title="'.$title.'" alt="" />'.
+			'<img'.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/new_'.($table=='pages'?'page':'el').'.gif', 'width="'.($table=='pages'?13:11).'" height="12"').' title="'.$title.'" alt="" />'.
 			$label .'</a>';
 }
 
@@ -194,7 +195,7 @@ class tx_rnbase_util_FormTool {
 		$jumpToUrl .="'";
 
 		return '<a onclick="return jumpToUrl('.$jumpToUrl.');" href="#">'.
-				'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.($unhide ? 'button_hide.gif' : 'button_unhide.gif'), 'width="11" height="12"').' title="'.($unhide ? 'Show' : 'Hide').' UID: '.$uid.'" border="0" alt="" />'.
+				'<img'.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.($unhide ? 'button_hide.gif' : 'button_unhide.gif'), 'width="11" height="12"').' title="'.($unhide ? 'Show' : 'Hide').' UID: '.$uid.'" border="0" alt="" />'.
 				$label.'</a>';
 	}
 
@@ -206,7 +207,7 @@ class tx_rnbase_util_FormTool {
 	 */
 	public function createInfoLink($editTable, $editUid, $label = 'Info') {
 		return '<a href="#" onclick="top.launchView(' . "'" . $editTable . "', ' " . $editUid . "'); return false;" . '">'.
-		 '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/zoom2.gif', 'width="11" height="12"').' title="UID: '.$editUid.'" border="0" alt="" />'.
+		 '<img'.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/zoom2.gif', 'width="11" height="12"').' title="UID: '.$editUid.'" border="0" alt="" />'.
 		 $label .'</a>';
 	}
 
@@ -219,7 +220,7 @@ class tx_rnbase_util_FormTool {
 	 */
 	public function createMoveLink($editTable, $recordUid, $currentPid, $label = 'Move') {
 		return "<a href=\"#\" onclick=\"return jumpSelf('/typo3/db_list.php?id=". $currentPid ."&amp;CB[el][" . $editTable
-					 . "%7C" . $recordUid . "]=1');\"><img " .t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/clip_cut.gif', 'width="16" height="16"'). ' title="UID: '. $recordUid . '" alt="" />' . $label .'</a>';
+					 . "%7C" . $recordUid . "]=1');\"><img " .Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/clip_cut.gif', 'width="16" height="16"'). ' title="UID: '. $recordUid . '" alt="" />' . $label .'</a>';
 
 	}
 
@@ -235,7 +236,7 @@ class tx_rnbase_util_FormTool {
 		$jsCode = $this->buildJumpUrl('cmd['.$table.']['.$uid.'][move]=-' . $moveId . '&prErr=1&uPT=1', $options);
 		$label = isset($options['label']) ? $options['label'] : 'Move up';
 		return '<a onclick="' . $jsCode . '" href="#">' .
-			'<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/up.gif', 'width="16" height="16"') . ' title="Move UID: ' . $uid . '" border="0" alt="" />' .
+			'<img' . Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/up.gif', 'width="16" height="16"') . ' title="Move UID: ' . $uid . '" border="0" alt="" />' .
 				$label . '</a>';
 	}
 
@@ -251,7 +252,7 @@ class tx_rnbase_util_FormTool {
 		$jsCode = $this->buildJumpUrl('cmd['.$table.']['.$uid.'][move]=-' . $moveId, $options);
 		$label = isset($options['label']) ? $options['label'] : 'Move up';
 		return '<a onclick="' . $jsCode . '" href="#">' .
-			'<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/down.gif', 'width="16" height="16"') . ' title="Move UID: ' . $uid . '" border="0" alt="" />' .
+			'<img' . Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/down.gif', 'width="16" height="16"') . ' title="Move UID: ' . $uid . '" border="0" alt="" />' .
 				$label . '</a>';
 	}
 
@@ -300,7 +301,7 @@ class tx_rnbase_util_FormTool {
 
 		$jsCode = $this->buildJumpUrl('cmd['.$table.']['.$uid.'][delete]=1', $options);
 		return '<a onclick="'.$jsCode.'" href="#">'.
-			'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/deletedok.gif', 'width="16" height="16"').' title="Delete UID: '.$uid.'" border="0" alt="" />'.
+			'<img'.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/deletedok.gif', 'width="16" height="16"').' title="Delete UID: '.$uid.'" border="0" alt="" />'.
 				$label.'</a>';
 	}
 
@@ -333,7 +334,7 @@ class tx_rnbase_util_FormTool {
 	 */
 	public function createLink($urlParams, $pid, $label, $options=array()) {
 		if($options['icon']) {
-			$label = "<img ".t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$options['icon']).
+			$label = "<img ".Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$options['icon']).
 				' title="'.$label.'\" alt="" >';
 		}
 		if($options['sprite']) {
@@ -363,7 +364,7 @@ class tx_rnbase_util_FormTool {
 	public function createSubmit($name, $value, $confirmMsg = '', $options=array()){
 		$icon = '';
 		if($options['icon']) {
-			$icon = t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$options['icon']);
+			$icon = Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$options['icon']);
 		}
 
 		$btn = '<input type="'.($icon ? 'image' : 'submit').'" name="'. $name.'" value="' . $value . '" ';
@@ -540,7 +541,7 @@ class tx_rnbase_util_FormTool {
 		//jetzt setzen wir den aktuellen Sort parameter zusammen
 		$sSortUrl = $sUrl.$sAddParamsWith.'sortField=' . $sSortField . '&sortRev=' . $sSortRev;
 		//noch den Pfeil für die aktuelle Sortierungsrichtung ggf. einblenden
-		$sSortArrow = ($sCurrentSortField==$sSortField?'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/red'.($sSortRev == 'asc'?'up':'down').'.gif', 'width="7" height="4"').' alt="" />':'');
+		$sSortArrow = ($sCurrentSortField==$sSortField?'<img'.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/red'.($sSortRev == 'asc'?'up':'down').'.gif', 'width="7" height="4"').' alt="" />':'');
 		return '<a href="'.htmlspecialchars($sSortUrl).'">'.$sLabel.$sSortArrow.'</a>';
 	}
 

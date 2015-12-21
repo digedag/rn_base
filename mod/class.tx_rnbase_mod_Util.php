@@ -23,6 +23,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 tx_rnbase::load('Tx_Rnbase_Backend_Utility');
+tx_rnbase::load('Tx_Rnbase_Backend_Utility_Icons');
 
 /**
  */
@@ -59,8 +60,7 @@ class tx_rnbase_mod_Util {
 	 * @return string The full HTML tag (usually a <span>)
 	 */
 	public static function getSpriteIcon($iconName, array $options = array(), array $overlays = array()) {
-		// TODO: add support for older TYPO3 versions
-		return t3lib_iconWorks::getSpriteIcon($iconName, $options, $overlays);
+		return Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon($iconName, $options, $overlays);
 	}
 	/**
 	 * Returns a string with all available Icons in TYPO3 system. Each icon has a tooltip with its identifier.
@@ -103,24 +103,6 @@ class tx_rnbase_mod_Util {
 		// as the deleted fe users have always to be hidden the function returns always FALSE
 		//@todo wozu die alte abfrage? return $defId==$id ? FALSE : $selectedItem;
 		return $selectedItem;
-	}
-
-	/**
-	 * /**
-	 * Wrapper method for t3lib_iconWorks::mapRecordTypeToSpriteIconName() or \TYPO3\CMS\Backend\Utility\IconUtility::mapRecordTypeToSpriteIconName()
-	 *
-	 * @param string $tableThe TCA table
-	 * @param array $row The selected record
-	 * @return string The CSS class for the sprite icon of that DB record
-	 */
-	static public function mapRecordTypeToSpriteIconName($table, array $row) {
-		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			$iconName = \TYPO3\CMS\Backend\Utility\IconUtility::mapRecordTypeToSpriteIconName($table, $row);
-		} else{
-			$iconName = t3lib_div::mapRecordTypeToSpriteIconName($table, $row);
-		}
-
-		return $iconName ;
 	}
 }
 

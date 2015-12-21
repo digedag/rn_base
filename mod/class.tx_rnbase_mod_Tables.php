@@ -107,13 +107,13 @@ class tx_rnbase_mod_Tables {
 			if(!array_key_exists($record['uid'], $dontcheck))
 				$row[] = $formTool->createCheckbox($checkName.'[]', $record['uid']);
 			else
-				$row[] = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/zoom2.gif', 'width="11" height="12"').' title="Info: '. $dontcheck[$record['uid']] .'" border="0" alt="" />';
+				$row[] = '<img'.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/zoom2.gif', 'width="11" height="12"').' title="Info: '. $dontcheck[$record['uid']] .'" border="0" alt="" />';
 		}
 
 		if ($options->getAddRecordSprite()) {
 			$spriteIconName = 'mimetypes-other-other';
 			if ($entry instanceof tx_rnbase_model_base && $entry->getTableName()) {
-				$spriteIconName = tx_rnbase_mod_Util::mapRecordTypeToSpriteIconName(
+				$spriteIconName = Tx_Rnbase_Backend_Utility_Icons::mapRecordTypeToSpriteIconName(
 					$entry->getTableName(),
 					$record
 				);
