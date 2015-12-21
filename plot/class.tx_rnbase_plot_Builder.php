@@ -24,6 +24,7 @@
 ***************************************************************/
 define('IMAGE_CANVAS_SYSTEM_FONT_PATH', PATH_site);
 tx_rnbase::load('tx_rnbase_util_Extensions');
+tx_rnbase::load('tx_rnbase_util_Network');
 require_once(PATH_site.tx_rnbase_util_Extensions::siteRelPath("pbimagegraph").'Image/class.tx_pbimagegraph.php');
 require_once(PATH_site.tx_rnbase_util_Extensions::siteRelPath("pbimagegraph").'Image/class.tx_pbimagegraph_canvas.php');
 
@@ -95,7 +96,7 @@ class tx_rnbase_plot_Builder {
 					$strOutput = '<object width="' . $arrConf['width'] . '" height="' . $arrConf['height'] . '" type="image/svg+xml" data="' . $strFileName . '">Browser does not support SVG files!</object>';
 					break;
 				case 'pdf':
-					header('Location: '.t3lib_div::locationHeaderUrl($strFileName));
+					header('Location: '.tx_rnbase_util_Network::locationHeaderUrl($strFileName));
         			exit;
 				default:
 					$strOutput = '<img width="' . $arrConf['width'] . '" height="' . $arrConf['height'] . '" src="/'.$strFileName.'" '.$strAltParam.' />';

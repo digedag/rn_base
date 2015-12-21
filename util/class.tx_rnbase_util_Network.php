@@ -90,6 +90,19 @@ class tx_rnbase_util_Network {
 
 		return $return;
 	}
+
+	/**
+	 * @see t3lib_div::locationHeaderUrl()
+	 * @see TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl()
+	 *
+	 * @param string $path URL / path to prepend full URL addressing to.
+	 * @return string
+	 */
+	public static function locationHeaderUrl($path) {
+		return tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
+			\TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($target) :
+			t3lib_div::locationHeaderUrl($target);
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Network.php']) {

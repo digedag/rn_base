@@ -28,6 +28,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+tx_rnbase::load('tx_rnbase_util_Network');
 
 /**
  * This class is a wrapper around \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink
@@ -445,9 +446,7 @@ class tx_rnbase_util_Link {
 		session_write_close();
 
 		$target = $this->makeUrl(FALSE);
-		$target = tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
-			\TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($target) :
-			t3lib_div::locationHeaderUrl($target);
+		$target = tx_rnbase_util_Network::locationHeaderUrl($target);
 		header('Location: ' . $target);
 		exit();
 	}
