@@ -101,7 +101,7 @@ class tx_rnbase_util_Files {
 	 */
 	public static function checkFile($fName)	{
 		$absFile = self::getFileAbsFileName($fName);
-		if(!(t3lib_div::isAllowedAbsPath($absFile) && @is_file($absFile))) {
+		if(!(self::isAllowedAbsPath($absFile) && @is_file($absFile))) {
 			throw new Exception('File not found: ' . $fName);
 		}
 		if(!@is_readable($absFile)) {
@@ -285,6 +285,24 @@ class tx_rnbase_util_Files {
 		}
 
 		return $isAbsPath;
+	}
+
+ 	/**
+	 * (non-PHPdoc)
+	 * @see t3lib_div::isAllowedAbsPath()
+	 * @see TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath()
+	 *
+	 * @param string $path File path to evaluate
+	 * @return bool
+	 */
+	public static function isAllowedAbsPath($path) {
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			$isAllowedAbsPath = TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($path);
+		} else {
+			$isAllowedAbsPath = t3lib_div::isAllowedAbsPath($path);
+		}
+
+		return $isAllowedAbsPath;
 	}
 }
 

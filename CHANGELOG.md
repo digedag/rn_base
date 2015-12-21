@@ -32,6 +32,7 @@ v1.0.0 (??.??.????)
  * new Wrapper Class Tx_Rnbase_Backend_Utility_Icons (don't forget to load) for \TYPO3\CMS\Backend\Utility\IconUtility or t3lib_iconWorks which is compatible for all TYPO3 versions
  * new Wrapper function tx_rnbase_util_Network::locationHeaderUrl
  * new Wrapper function tx_rnbase_util_Files::isAbsPath
+ * new Wrapper function tx_rnbase_util_Files::isAllowedAbsPath
 
 v0.15.18 (02.12.2015)
  * Bugfix: tx_rnbase_util_Dates::date_mysql2tstamp liefert nun immer einen Integer und nicht NULL im Fehlerfall
