@@ -3,7 +3,7 @@
 Änderungen
 ----------
 
-v0.15.19 (??.??.????)
+v1.0.0 (??.??.????)
  * getSortbyFieldForTable method added to get sortable column of a table
  * move up and down links in form util added to move records in a be module
  * new Wrapper Class Tx_Rnbase_Service_Base (don't forget to load)  for \TYPO3\CMS\Core\Service\AbstractService or t3lib_svbase which is compatible for all TYPO3 versions
