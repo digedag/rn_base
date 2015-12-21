@@ -29,6 +29,7 @@ tx_rnbase::load('tx_rnbase_mod_IModFunc');
 tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 tx_rnbase::load('Tx_Rnbase_Backend_Utility_Icons');
+tx_rnbase::load('Tx_Rnbase_Backend_Module_Base');
 
 $GLOBALS['LANG']->includeLLFile('EXT:rn_base/mod/locallang.xml');
 
@@ -43,7 +44,7 @@ $GLOBALS['LANG']->includeLLFile('EXT:rn_base/mod/locallang.xml');
  * Die Funktionsklassen sollten das Interface tx_rnbase_mod_IModFunc implementieren. Eine Basisklasse mit nützlichen
  * Methoden steht natürlich auch bereit: tx_rnbase_mod_BaseModFunc
  */
-abstract class tx_rnbase_mod_BaseModule extends t3lib_SCbase implements tx_rnbase_mod_IModule {
+abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base implements tx_rnbase_mod_IModule {
 	public $doc;
 	private $configurations, $formTool;
 
