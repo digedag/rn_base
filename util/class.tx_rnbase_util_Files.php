@@ -268,6 +268,24 @@ class tx_rnbase_util_Files {
 
 		return $return;
 	}
+
+	 /**
+	 * (non-PHPdoc)
+	 * @see t3lib_div::isAbsPath()
+	 * @see TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath()
+	 *
+	 * @param string $path File path to evaluate
+	 * @return bool
+	 */
+	public static function isAbsPath($path) {
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			$isAbsPath = TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath($path);
+		} else {
+			$isAbsPath = t3lib_div::isAbsPath($path);
+		}
+
+		return $isAbsPath;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Files.php']) {
