@@ -21,14 +21,14 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-tx_rnbase::load('Tx_Rnbase_Backend_Util_FormTool');
+tx_rnbase::load('Tx_Rnbase_Backend_Utility_FormTool');
 
 
 /**
  * Diese Klasse stellt hilfreiche Funktionen zur Erstellung von Formularen
  * im Backend zur Verfügung
  */
-class tx_rnbase_util_FormTool extends Tx_Rnbase_Backend_Util_FormTool {
+class tx_rnbase_util_FormTool extends Tx_Rnbase_Backend_Utility_FormTool {
 
 	public function init($doc, $module=NULL) {
 		parent::init($doc, $module);

@@ -35,7 +35,7 @@ tx_rnbase::load('Tx_Rnbase_Backend_Utility_Icons');
  *
  * Ersetzt tx_rnbase_util_FormTool
  */
-class Tx_Rnbase_Backend_Util_FormTool {
+class Tx_Rnbase_Backend_Utility_FormTool {
 	public $form; // TCEform-Instanz
 	protected $module;
 	protected $doc;
