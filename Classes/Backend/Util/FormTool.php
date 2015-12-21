@@ -25,22 +25,30 @@ tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 tx_rnbase::load('tx_rnbase_util_Strings');
 tx_rnbase::load('tx_rnbase_util_Link');
 tx_rnbase::load('tx_rnbase_util_Typo3Classes');
-<<<<<<< HEAD
 tx_rnbase::load('Tx_Rnbase_Backend_Utility_Icons');
-=======
-tx_rnbase::load('Tx_Rnbase_Backend_Util_FormTool');
->>>>>>> #34 class formtool moved to Classes with support for dispatch mode
+
+
 
 /**
  * Diese Klasse stellt hilfreiche Funktionen zur Erstellung von Formularen
- * im Backend zur Verfügung
+ * im Backend zur Verfügung.
+ *
+ * Ersetzt tx_rnbase_util_FormTool
  */
-class tx_rnbase_util_FormTool extends Tx_Rnbase_Backend_Util_FormTool {
+class Tx_Rnbase_Backend_Util_FormTool {
+	public $form; // TCEform-Instanz
+	protected $module;
+	protected $doc;
 
-<<<<<<< HEAD
-	function init($doc) {
+	/**
+	 *
+	 * @param template $doc
+	 * @param tx_rnbase_mod_IModule $module
+	 */
+	public function init($doc, $module) {
 		global $BACK_PATH;
 		$this->doc = $doc;
+		$this->module = $module;
 
 		// TCEform für das Formular erstellen
 		$this->form = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getBackendFormEngineClass());
@@ -622,17 +630,30 @@ class tx_rnbase_util_FormTool extends Tx_Rnbase_Backend_Util_FormTool {
 			<tbody><tr>';
 
 		foreach($entries As $key => $value) {
+			$uri = $this->buildScriptURI(array('id'=>$pid, 'SET['.$name.']'=>$key));
 			$out .= '
 				<td class="tab'.($SETTINGS[$name] == $key ? 'act' : '').'" nowrap="nowrap">';
-			$out .= '<a href="#" onclick="jumpToUrl(\'index.php?&amp;id='.$pid.'&amp;SET['.$name.']='. $key .'\',this);">'.$value.'</a></td>';
+			$out .= '<a href="#" onclick="jumpToUrl(\''. $uri .'\',this);">'.$value.'</a></td>';
 		}
 		$out .= '
 				</tr>
 			</tbody></table></div>
 		';
-		$ret['menu'] = $out;
-		$ret['value'] = $SETTINGS[$name];
+		$ret = array(
+				'menu' => $out,
+				'value' => $SETTINGS[$name],
+		);
 		return $ret;
+	}
+	protected function buildScriptURI($urlParams) {
+		if($this->module == NULL) {
+			return 'index.php?'. http_build_query($urlParams);
+//			'index.php?&amp;id='.$pid.'&amp;SET['.$name.']='. $key;
+		}
+		else {
+			// In dem Fall die URI über den DISPATCH-Modus bauen
+			return Tx_Rnbase_Backend_Utility::getModuleUrl($this->module->getName(), $urlParams, '');
+		}
 	}
 	/**
 	 * Show function menu.
@@ -710,12 +731,6 @@ class tx_rnbase_util_FormTool extends Tx_Rnbase_Backend_Util_FormTool {
 		reset($trData->regTableItems_data);
 		return $trData->regTableItems_data;
 	}
-=======
-	public function init($doc, $module=NULL) {
-		parent::init($doc, $module);
-	}
-
->>>>>>> #34 class formtool moved to Classes with support for dispatch mode
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_FormTool.php'])	{
