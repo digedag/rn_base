@@ -242,7 +242,7 @@ class tx_rnbase_util_TYPO3 {
 			else {
 				self::$sysPage = tx_rnbase::makeInstance(
 					tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
-					'\TYPO3\CMS\Frontend\Page\PageRepository' : 't3lib_pageSelect'
+					'TYPO3\CMS\Frontend\Page\PageRepository' : 't3lib_pageSelect'
 				);
 				self::$sysPage->init(0); // $this->showHiddenPage
 			}

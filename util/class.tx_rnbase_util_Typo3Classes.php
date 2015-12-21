@@ -91,7 +91,7 @@ class tx_rnbase_util_Typo3Classes {
 	static public function getContentObjectRendererClass() {
 		return self::getClassByCurrentTypo3Version(array(
 			'lower6'	=> 'tslib_cObj',
-			'higher4' 	=> '\\TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'
+			'higher4' 	=> 'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'
 		));
 	}
 
@@ -101,7 +101,7 @@ class tx_rnbase_util_Typo3Classes {
 	static public function getTypoScriptFrontendControllerClass() {
 		return self::getClassByCurrentTypo3Version(array(
 			'lower6'	=> 'tslib_fe',
-			'higher4' 	=> '\\TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController'
+			'higher4' 	=> 'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController'
 		));
 	}
 
@@ -142,6 +142,16 @@ class tx_rnbase_util_Typo3Classes {
 		return self::getClassByCurrentTypo3Version(array(
 			'lower6'	=> 't3lib_SpriteManager',
 			'higher4' 	=> '\\TYPO3\\CMS\Backend\\Sprite\\SpriteManager'
+		));
+	}
+	/**
+	 * @return string
+	 */
+	public static function getTimeTrackClass() {
+		// TYPO3\\CMS\\Core\\TimeTracker\\TimeTracker
+		return self::getClassByCurrentTypo3Version(array(
+				'lower6'	=> 't3lib_timeTrack',
+				'higher4' 	=> 'TYPO3\\CMS\\Core\\TimeTracker\\NullTimeTracker'
 		));
 	}
 
