@@ -127,6 +127,25 @@ class tx_rnbase_util_Arrays {
 		return $array;
 	}
 
+	/**
+	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array
+	 * @see t3lib_div::xml2array
+	 *
+	 * @param string $string XML content to convert into an array
+	 * @param string $NSprefix The tag-prefix resolve, eg. a namespace like "T3:"
+	 * @param boolean $reportDocTag If set, the document tag will be set in the key "_DOCUMENT_TAG" of the output array
+	 * @return mixed If the parsing had errors, a string with the error message is returned. Otherwise an array with the content.
+	 * @see array2xml(),xml2arrayProcess()
+	 */
+	static public function xml2array($string, $NSprefix = '', $reportDocTag = FALSE) {
+		if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+			$array = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($string, $NSprefix, $reportDocTag);
+		} else {
+			$array = t3lib_div::xml2array($string, $NSprefix, $reportDocTag);
+		}
+
+		return $array;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Arrays.php']) {

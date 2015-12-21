@@ -75,6 +75,7 @@
  */
 tx_rnbase::load('tx_rnbase_util_Network');
 tx_rnbase::load('tx_rnbase_util_Typo3Classes');
+tx_rnbase::load('tx_rnbase_util_Arrays');
 
 class tx_rnbase_configurations {
   // We store all Data to an internal ArrayObject
@@ -365,7 +366,7 @@ class tx_rnbase_configurations {
     static $flex;
     if (!is_array($flex)) {
       $flex = tx_rnbase_util_Network::getURL(tx_rnbase_util_Extensions::extPath($this->getExtensionKey()) . $this->get('flexform'));
-      $flex = t3lib_div::xml2array($flex);
+      $flex = tx_rnbase_util_Arrays::xml2array($flex);
     }
     return $flex;
   }
@@ -727,7 +728,7 @@ class tx_rnbase_configurations {
 		if (is_array($xmlOrArray)) {
 			$array = $xmlOrArray;
 		} else {
-			$array = t3lib_div::xml2array($xmlOrArray);
+			$array = tx_rnbase_util_Arrays::xml2array($xmlOrArray);
 		}
 		$data = $array['data'];
 		// Looking for the special sheet s_tssetup
