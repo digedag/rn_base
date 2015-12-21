@@ -115,13 +115,23 @@ class tx_rnbase_util_Typo3Classes {
 		));
 	}
 
-/	**
+	/**
 	 * @return string
 	 */
 	static public function getCharsetConverterClass() {
 		return self::getClassByCurrentTypo3Version(array(
 			'lower6'	=> 't3lib_cs',
 			'higher4' 	=> '\\TYPO3\\CMS\\Core\\Charset\\CharsetConverter'
+		));
+	}
+
+	/**
+	 * @return string
+	 */
+	static public function getDataHandlerClass() {
+		return self::getClassByCurrentTypo3Version(array(
+				'lower6'	=> 't3lib_tcemain',
+				'higher4' 	=> '\\TYPO3\\CMS\\Core\\DataHandling\\DataHandler'
 		));
 	}
 

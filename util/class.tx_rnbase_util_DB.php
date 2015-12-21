@@ -548,7 +548,8 @@ class tx_rnbase_util_DB {
 
 		if(!$tce || $data || $cmd) {
 			// Die TCEmain laden
-			$tce = tx_rnbase::makeInstance('t3lib_tcemain');
+			tx_rnbase::load('tx_rnbase_util_Typo3Classes');
+			$tce = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getDataHandlerClass());
 			$tce->stripslashes_values = 0;
 			// Wenn wir ein data-Array bekommen verwenden wir das
 			$tce->start($data ? $data : Array(), $cmd ? $cmd : Array());
