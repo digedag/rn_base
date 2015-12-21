@@ -218,7 +218,7 @@ class tx_rnbase_util_Files {
 	 *
 	 * (non-PHPdoc)
 	 * @see t3lib_div::mkdir_deep()
-	 * @see TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP()
+	 * @see TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep()
 	 */
 	static public function mkdir_deep($directory, $deepDirectory = '') {
 		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
