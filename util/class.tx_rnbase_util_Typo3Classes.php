@@ -25,7 +25,8 @@
 /**
  * tx_rnbase_util_Typo3Classes
  *
- * Get a class name independent of the TYPO3 Version
+ * Get a class name independent of the TYPO3 Version. The API
+ * of the desired class should be the same
  *
  * @package 		TYPO3
  * @subpackage	 	rn_base
@@ -162,6 +163,16 @@ class tx_rnbase_util_Typo3Classes {
 		return self::getClassByCurrentTypo3Version(array(
 			'lower6'	=> 't3lib_exec',
 			'higher4' 	=> 'TYPO3\\CMS\\Core\\Utility\\CommandUtility'
+		));
+	}
+
+	/**
+	 * @return string
+	 */
+	static public function getMailMessageClass() {
+		return self::getClassByCurrentTypo3Version(array(
+			'lower6'	=> 't3lib_mail_Message',
+			'higher4' 	=> 'TYPO3\\CMS\\Core\\Mail\\MailMessage'
 		));
 	}
 
