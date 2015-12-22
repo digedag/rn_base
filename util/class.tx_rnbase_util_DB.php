@@ -537,7 +537,7 @@ class tx_rnbase_util_DB {
 	 */
 	public static function getTCAColumns($tcaTableName) {
 		global $TCA;
-		t3lib_div::loadTCA($tcaTableName);
+		tx_rnbase_util_TCA::loadTCA($tcaTableName);
 		return isset($TCA[$tcaTableName]) ? $TCA[$tcaTableName]['columns'] : 0;
 	}
 	/**

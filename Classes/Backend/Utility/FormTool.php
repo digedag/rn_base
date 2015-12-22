@@ -459,7 +459,7 @@ class Tx_Rnbase_Backend_Utility_FormTool {
 		$out .= '>';
 
 		// Die TCA laden
-		t3lib_div::loadTCA($table);
+		tx_rnbase_util_TCA::loadTCA($table);
 
 		// Die Options ermitteln
 		foreach($TCA[$table]['columns'][$column]['config']['items'] As $item){

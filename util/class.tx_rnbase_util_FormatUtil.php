@@ -301,7 +301,7 @@ self::$mem += (memory_get_usage() - $mem);
 
   function getDAMColumns() {
     global $TCA;
-    t3lib_div::loadTCA('tx_dam'); // Wird zur Initialisierung der Marker benötigt
+    tx_rnbase_util_TCA::loadTCA('tx_dam'); // Wird zur Initialisierung der Marker benötigt
     return isset($TCA['tx_dam'])? array_keys($TCA['tx_dam']['columns']) :0;
   }
 
