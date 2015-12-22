@@ -21,6 +21,7 @@ Tx_Rnbase_Interface_Singleton | t3lib_Singleton | \TYPO3\CMS\Core\SingletonInter
 Tx_Rnbase_CommandLine_Controller | t3lib_cli | \TYPO3\CMS\Core\Controller\CommandLineController
 Tx_Rnbase_Backend_Utility_Icons | t3lib_iconWorks | \TYPO3\CMS\Backend\Utility\IconUtility
 Tx_Rnbase_Scheduler_Task | tx_scheduler_Task | \TYPO3\CMS\Scheduler\Task\AbstractTask
+Tx_Rnbase_Scheduler_FieldProvider | tx_scheduler_AdditionalFieldProvider | \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface
 
 **Hinweis:** Diese Liste ist nicht vollständig! Am besten einfach im QUellcode von rn_base nach einer
 TYPO3 Core Methode suchen und schauen ob es eine Wrapper Methode gibt
