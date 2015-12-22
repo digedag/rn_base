@@ -33,5 +33,5 @@
  * @license 		http://www.gnu.org/licenses/lgpl.html
  * 					GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Scheduler_Task extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
+abstract class Tx_Rnbase_Scheduler_Task extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 }
