@@ -22,11 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-if (!interface_exists('tx_scheduler_AdditionalFieldProvider')) {
-	require_once tx_rnbase_util_Extensions::extPath(
-		'scheduler', '/interfaces/interface.tx_scheduler_additionalfieldprovider.php'
-	);
-}
 tx_rnbase::load('Tx_Rnbase_Scheduler_FieldProviderBase');
 
 /**
@@ -50,8 +45,8 @@ abstract class Tx_Rnbase_Scheduler_FieldProviderBase {
 	 * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule $schedulerModule Reference to the scheduler backend module
 	 * @return array A two dimensional array, array('Identifier' => array('fieldId' => array('code' => '', 'label' => '', 'cshKey' => '', 'cshLabel' => ''))
 	 */
-	abstract public function _getAdditionalFields(
-		array &$taskInfo, Tx_Rnbase_Scheduler_Task $task, $schedulerModule
+	abstract protected function _getAdditionalFields(
+		array &$taskInfo, $task, $schedulerModule
 	);
 
 	/**
@@ -61,7 +56,7 @@ abstract class Tx_Rnbase_Scheduler_FieldProviderBase {
 	 * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule Reference to the scheduler backend module
 	 * @return boolean TRUE if validation was ok (or selected class is not relevant), FALSE otherwise
 	 */
-	abstract public function _validateAdditionalFields(
+	abstract protected function _validateAdditionalFields(
 		array &$submittedData, $parentObject
 	);
 
@@ -72,5 +67,5 @@ abstract class Tx_Rnbase_Scheduler_FieldProviderBase {
 	 * @param Tx_Rnbase_Scheduler_Task $task Reference to the scheduler backend module
 	 * @return void
 	 */
-	abstract public function _saveAdditionalFields(array $submittedData, Tx_Rnbase_Scheduler_Task $task);
+	abstract protected function _saveAdditionalFields(array $submittedData, Tx_Rnbase_Scheduler_Task $task);
 }
