@@ -99,7 +99,7 @@ class tx_rnbase_parameters extends ArrayObject implements tx_rnbase_IParameters 
 		$value = $this->get($paramName, $qualifier);
 		// remove Cross-Site Scripting
 		if (!empty($value) && strlen($value) > 3) {
-			$value = t3lib_div::removeXSS($value);
+			$value = tx_rnbase_util_Strings::removeXSS($value);
 		}
 		return $value;
 	}

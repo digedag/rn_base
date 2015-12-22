@@ -77,8 +77,8 @@ class tx_rnbase_util_FormUtil {
 			$url = substr($url, 0, strpos($url, '?'));
 		}
 		foreach ($params as $name => $value) {
-			$name = t3lib_div::removeXSS($name);
-			$value = t3lib_div::removeXSS($value);
+			$name = tx_rnbase_util_Strings::removeXSS($name);
+			$value = tx_rnbase_util_Strings::removeXSS($value);
 			$sysHidden .= '<input type="hidden" name="'.$name.'" value="'.$value.'" />';
 		}
 		return $sysHidden;
