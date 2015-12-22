@@ -41,7 +41,7 @@ class tx_rnbase_util_Typo3Classes {
 	static public function getFlashMessageClass() {
 		return self::getClassByCurrentTypo3Version(array(
 			'lower6'	=> 't3lib_FlashMessage',
-			'higher4' 	=> '\\TYPO3\\CMS\\Core\\Messaging\\FlashMessage'
+			'higher4' 	=> 'TYPO3\\CMS\\Core\\Messaging\\FlashMessage'
 		));
 	}
 
@@ -51,7 +51,7 @@ class tx_rnbase_util_Typo3Classes {
 	static public function getFlashMessageQueueClass() {
 		return self::getClassByCurrentTypo3Version(array(
 			'lower6'	=> 't3lib_FlashMessageQueue',
-			'higher4' 	=> '\\TYPO3\\CMS\\Core\\Messaging\\FlashMessageQueue'
+			'higher4' 	=> 'TYPO3\\CMS\\Core\\Messaging\\FlashMessageQueue'
 		));
 	}
 
@@ -61,7 +61,7 @@ class tx_rnbase_util_Typo3Classes {
 	static public function getBackendFormEngineClass() {
 		return self::getClassByCurrentTypo3Version(array(
 			'lower6'	=> 't3lib_tceforms',
-			'higher4' 	=> '\\TYPO3\\CMS\\Backend\\Form\\FormEngine'
+			'higher4' 	=> 'TYPO3\\CMS\\Backend\\Form\\FormEngine'
 		));
 	}
 
@@ -71,7 +71,7 @@ class tx_rnbase_util_Typo3Classes {
 	static public function getBasicFileUtilityClass() {
 		return self::getClassByCurrentTypo3Version(array(
 			'lower6'	=> 't3lib_basicFileFunctions',
-			'higher4' 	=> '\\TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility'
+			'higher4' 	=> 'TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility'
 		));
 	}
 
@@ -81,7 +81,7 @@ class tx_rnbase_util_Typo3Classes {
 	static public function getExtendedTypoScriptTemplateServiceClass() {
 		return self::getClassByCurrentTypo3Version(array(
 			'lower6'	=> 't3lib_tsparser_ext',
-			'higher4' 	=> '\\TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService'
+			'higher4' 	=> 'TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService'
 		));
 	}
 
@@ -111,7 +111,7 @@ class tx_rnbase_util_Typo3Classes {
 	static public function getFrontendUserAuthenticationClass() {
 		return self::getClassByCurrentTypo3Version(array(
 			'lower6'	=> 'tslib_feUserAuth',
-			'higher4' 	=> '\\TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication'
+			'higher4' 	=> 'TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication'
 		));
 	}
 
@@ -121,7 +121,7 @@ class tx_rnbase_util_Typo3Classes {
 	static public function getCharsetConverterClass() {
 		return self::getClassByCurrentTypo3Version(array(
 			'lower6'	=> 't3lib_cs',
-			'higher4' 	=> '\\TYPO3\\CMS\\Core\\Charset\\CharsetConverter'
+			'higher4' 	=> 'TYPO3\\CMS\\Core\\Charset\\CharsetConverter'
 		));
 	}
 
@@ -141,7 +141,7 @@ class tx_rnbase_util_Typo3Classes {
 	static public function getSpriteManagerClass() {
 		return self::getClassByCurrentTypo3Version(array(
 			'lower6'	=> 't3lib_SpriteManager',
-			'higher4' 	=> '\\TYPO3\\CMS\Backend\\Sprite\\SpriteManager'
+			'higher4' 	=> 'TYPO3\\CMS\Backend\\Sprite\\SpriteManager'
 		));
 	}
 	/**
@@ -150,8 +150,8 @@ class tx_rnbase_util_Typo3Classes {
 	public static function getTimeTrackClass() {
 		// TYPO3\\CMS\\Core\\TimeTracker\\TimeTracker
 		return self::getClassByCurrentTypo3Version(array(
-				'lower6'	=> 't3lib_timeTrack',
-				'higher4' 	=> 'TYPO3\\CMS\\Core\\TimeTracker\\NullTimeTracker'
+			'lower6'	=> 't3lib_timeTrack',
+			'higher4' 	=> 'TYPO3\\CMS\\Core\\TimeTracker\\NullTimeTracker'
 		));
 	}
 
@@ -161,7 +161,7 @@ class tx_rnbase_util_Typo3Classes {
 	static public function getCommandUtilityClass() {
 		return self::getClassByCurrentTypo3Version(array(
 			'lower6'	=> 't3lib_exec',
-			'higher4' 	=> '\\TYPO3\\CMS\\Core\\Utility\\CommandUtility'
+			'higher4' 	=> 'TYPO3\\CMS\\Core\\Utility\\CommandUtility'
 		));
 	}
 
