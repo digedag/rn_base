@@ -102,7 +102,13 @@ class tx_rnbase_util_Misc {
 	public static function callHook($extKey, $hookKey, $params, $parent=0) {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extKey][$hookKey])) {
 			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extKey][$hookKey] as $funcRef) {
-				t3lib_div::callUserFunction($funcRef, $params, $parent);
+				if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+					$return = TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction(
+						$funcRef, $params, $parent
+					);
+				} else {
+					t3lib_div::callUserFunction($funcRef, $params, $parent);
+				}
 			}
 		}
 	}
