@@ -45,7 +45,8 @@ class tx_rnbase_util_Templates {
 	 * @return string
 	 */
 	public static function getSubpart($template, $subpart) {
-		$content = t3lib_parsehtml::getSubpart($template, $subpart);
+		$parser = tx_rnbase_util_Typo3Classes::getHtmlParserClass();
+		$content = $parser::getSubpart($template, $subpart);
 		// check for Subtemplates
 		return self::includeSubTemplates($content);
 	}
