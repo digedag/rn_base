@@ -40,4 +40,10 @@ class Tx_Rnbase_Backend_Form_FormBuilder {
 	public function getSoloField($table, $row, $theFieldToReturn) {
 		return $theFieldToReturn;
 	}
+
+	public function printNeededJSFunctions_top() {
+	}
+	public function printNeededJSFunctions() {
+
+	}
 }
