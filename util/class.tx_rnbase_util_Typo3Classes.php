@@ -41,7 +41,7 @@ class tx_rnbase_util_Typo3Classes {
 	/**
 	 * @return string
 	 */
-	static public function getFlashMessageClass() {
+	public static function getFlashMessageClass() {
 		return self::getClassByCurrentTypo3Version(array(
 			self::LOWER6	=> 't3lib_FlashMessage',
 			self::HIGHER6 	=> 'TYPO3\\CMS\\Core\\Messaging\\FlashMessage'
@@ -51,7 +51,7 @@ class tx_rnbase_util_Typo3Classes {
 	/**
 	 * @return string
 	 */
-	static public function getFlashMessageQueueClass() {
+	public static function getFlashMessageQueueClass() {
 		return self::getClassByCurrentTypo3Version(array(
 			self::LOWER6	=> 't3lib_FlashMessageQueue',
 			self::HIGHER6 	=> 'TYPO3\\CMS\\Core\\Messaging\\FlashMessageQueue'
@@ -61,7 +61,7 @@ class tx_rnbase_util_Typo3Classes {
 	/**
 	 * @return string
 	 */
-	static public function getBackendFormEngineClass() {
+	public static function getBackendFormEngineClass() {
 		return self::getClassByCurrentTypo3Version(array(
 			self::LOWER6	=> 't3lib_tceforms',
 			self::HIGHER6 	=> 'TYPO3\\CMS\\Backend\\Form\\FormEngine'
@@ -71,7 +71,7 @@ class tx_rnbase_util_Typo3Classes {
 	/**
 	 * @return string
 	 */
-	static public function getBasicFileUtilityClass() {
+	public static function getBasicFileUtilityClass() {
 		return self::getClassByCurrentTypo3Version(array(
 			self::LOWER6	=> 't3lib_basicFileFunctions',
 			self::HIGHER6 	=> 'TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility'
@@ -81,7 +81,7 @@ class tx_rnbase_util_Typo3Classes {
 	/**
 	 * @return string
 	 */
-	static public function getExtendedTypoScriptTemplateServiceClass() {
+	public static function getExtendedTypoScriptTemplateServiceClass() {
 		return self::getClassByCurrentTypo3Version(array(
 			self::LOWER6	=> 't3lib_tsparser_ext',
 			self::HIGHER6 	=> 'TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService'
@@ -91,7 +91,7 @@ class tx_rnbase_util_Typo3Classes {
 	/**
 	 * @return string
 	 */
-	static public function getContentObjectRendererClass() {
+	public static function getContentObjectRendererClass() {
 		return self::getClassByCurrentTypo3Version(array(
 			self::LOWER6	=> 'tslib_cObj',
 			self::HIGHER6 	=> 'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'
@@ -101,7 +101,7 @@ class tx_rnbase_util_Typo3Classes {
 	/**
 	 * @return string
 	 */
-	static public function getTypoScriptFrontendControllerClass() {
+	public static function getTypoScriptFrontendControllerClass() {
 		return self::getClassByCurrentTypo3Version(array(
 			self::LOWER6	=> 'tslib_fe',
 			self::HIGHER6 	=> 'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController'
@@ -111,7 +111,7 @@ class tx_rnbase_util_Typo3Classes {
 	/**
 	 * @return string
 	 */
-	static public function getFrontendUserAuthenticationClass() {
+	public static function getFrontendUserAuthenticationClass() {
 		return self::getClassByCurrentTypo3Version(array(
 			self::LOWER6	=> 'tslib_feUserAuth',
 			self::HIGHER6 	=> 'TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication'
@@ -121,7 +121,7 @@ class tx_rnbase_util_Typo3Classes {
 	/**
 	 * @return string
 	 */
-	static public function getCharsetConverterClass() {
+	public static function getCharsetConverterClass() {
 		return self::getClassByCurrentTypo3Version(array(
 			self::LOWER6	=> 't3lib_cs',
 			self::HIGHER6 	=> 'TYPO3\\CMS\\Core\\Charset\\CharsetConverter'
@@ -131,7 +131,7 @@ class tx_rnbase_util_Typo3Classes {
 	/**
 	 * @return string
 	 */
-	static public function getDataHandlerClass() {
+	public static function getDataHandlerClass() {
 		return self::getClassByCurrentTypo3Version(array(
 			self::LOWER6	=> 't3lib_tcemain',
 			self::HIGHER6 	=> '\\TYPO3\\CMS\\Core\\DataHandling\\DataHandler'
@@ -141,7 +141,7 @@ class tx_rnbase_util_Typo3Classes {
 	/**
 	 * @return string
 	 */
-	static public function getSpriteManagerClass() {
+	public static function getSpriteManagerClass() {
 		return self::getClassByCurrentTypo3Version(array(
 			self::LOWER6	=> 't3lib_SpriteManager',
 			self::HIGHER6 	=> 'TYPO3\\CMS\Backend\\Sprite\\SpriteManager'
@@ -161,7 +161,7 @@ class tx_rnbase_util_Typo3Classes {
 	/**
 	 * @return string
 	 */
-	static public function getCommandUtilityClass() {
+	public static function getCommandUtilityClass() {
 		return self::getClassByCurrentTypo3Version(array(
 			self::LOWER6	=> 't3lib_exec',
 			self::HIGHER6 	=> 'TYPO3\\CMS\\Core\\Utility\\CommandUtility'
@@ -171,7 +171,7 @@ class tx_rnbase_util_Typo3Classes {
 	/**
 	 * @return string
 	 */
-	static public function getMailMessageClass() {
+	public static function getMailMessageClass() {
 		return self::getClassByCurrentTypo3Version(array(
 			self::LOWER6	=> 't3lib_mail_Message',
 			self::HIGHER6 	=> 'TYPO3\\CMS\\Core\\Mail\\MailMessage'
@@ -188,7 +188,7 @@ class tx_rnbase_util_Typo3Classes {
 	 * @param array $possibleClasses
 	 * @return string
 	 */
-	static protected function getClassByCurrentTypo3Version(array $possibleClasses) {
+	protected static function getClassByCurrentTypo3Version(array $possibleClasses) {
 		return tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
 			$possibleClasses[self::HIGHER6] : $possibleClasses[self::LOWER6];
 	}

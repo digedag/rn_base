@@ -54,7 +54,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 	 *
 	 * @return	[type]		...
 	 */
-	function main()	{
+	public function main()	{
 
 		global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
 		// Einbindung externer Funktionen
@@ -64,7 +64,6 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 		$this->pageinfo = Tx_Rnbase_Backend_Utility::readPageAccess($this->getPid(), $this->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
 		$this->initDoc($this->getDoc());
-
 		if(tx_rnbase_util_TYPO3::isTYPO42OrHigher()) {
 			$this->content .= $this->moduleContent(); // Muss vor der Erstellung des Headers geladen werden
 			$this->content .= $this->getDoc()->sectionEnd();  // Zur Sicherheit eine offene Section schließen

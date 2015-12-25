@@ -51,7 +51,9 @@ class Tx_Rnbase_Backend_Utility_FormTool {
 		$this->module = $module;
 
 		// TCEform für das Formular erstellen
-		$this->form = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getBackendFormEngineClass());
+		$this->form = tx_rnbase_util_TYPO3::isTYPO76OrHigher() ?
+			tx_rnbase::makeInstance('Tx_Rnbase_Backend_Form_FormBuilder') :
+			tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getBackendFormEngineClass());
 		$this->form->initDefaultBEmode();
 		$this->form->backPath = $BACK_PATH;
 	}
