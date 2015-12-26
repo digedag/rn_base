@@ -1,5 +1,7 @@
 <?php
 use TYPO3\CMS\Backend\Form\NodeFactory;
+use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
+use TYPO3\CMS\Backend\Form\FormDataCompiler;
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
 /***************************************************************
@@ -35,10 +37,15 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
 class Tx_Rnbase_Backend_Form_FormBuilder {
 	private $nodeFactory = NULL;
+	private $formDataCompiler = NULL;
 
 	/**
 	 */
 	public function __construct() {
+		/** @var TcaDatabaseRecord $formDataGroup */
+		$formDataGroup = tx_rnbase::makeInstance(TcaDatabaseRecord::class);
+		/** @var FormDataCompiler $formDataCompiler */
+		$this->formDataCompiler = tx_rnbase::makeInstance(FormDataCompiler::class, $formDataGroup);
 		$this->nodeFactory = tx_rnbase::makeInstance(NodeFactory::class);
 	}
 	public function initDefaultBEmode() {
@@ -46,15 +53,24 @@ class Tx_Rnbase_Backend_Form_FormBuilder {
 	}
 
 	public function getSoloField($table, $row, $fieldName) {
+		// Wir benötigen pro DB-Tabelle ein data-Array mit den vorbereiteten Formular-Daten
+
+		$formDataCompilerInput = [
+				'tableName' => $table,
+				'vanillaUid' => (int)$row['uid'],
+				'command' => 'edit',
+				'returnUrl' => '',
+		];
+		$formData = $this->formDataCompiler->compile($formDataCompilerInput);
 //		$options = $this->data;
-		$options = array();
+		$options = $formData;
+		// in den folgenden Key müssen die Daten aus der TCA rein. Wie geht das?
 		$options['tableName'] = $table;
 		$options['fieldName'] = $fieldName;
 		$options['databaseRow'] = $row;
 		$options['renderType'] = 'singleFieldContainer';
 		$childResultArray = $this->nodeFactory->create($options)->render();
-//if($_SERVER["REMOTE_ADDR"] == '89.246.162.16')
-tx_rnbase_util_Debug::debug($childResultArray,__FILE__.':'.__LINE__); // TODO: remove me
+
 
 		return $childResultArray['html'];
 	}
