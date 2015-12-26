@@ -269,7 +269,7 @@ class tx_rnbase_util_Strings {
 	 * @param string $item Item to check for
 	 * @return boolean TRUE if $item is in $list
 	 */
-	static public function inList($list, $item) {
+	public static function inList($list, $item) {
 		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
 			$return = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($list, $item);
 		} else {
@@ -285,11 +285,30 @@ class tx_rnbase_util_Strings {
 	 * @param string $string Input string
 	 * @return string Input string with potential XSS code removed
 	 */
-	static public function removeXSS($string) {
+	public static function removeXSS($string) {
 		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
 			$string = \TYPO3\CMS\Core\Utility\GeneralUtility::removeXSS($string);
 		} else {
 			$string = t3lib_div::removeXSS($string);
+		}
+
+		return $string;
+	}
+
+	/**
+	 * Wrapper method for GLOBALS[LANG]::JScharCode() or \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue()
+	 * Converts the input string to a JavaScript function returning the same string, but charset-safe.
+	 * Used for confirm and alert boxes where we must make sure that any string content
+	 * does not break the script AND want to make sure the charset is preserved.
+	 *
+	 * @param string $string Input string
+	 * @return string Input string with potential XSS code removed
+	 */
+	public static function quoteJSvalue($string) {
+		if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+			$string = \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($string);
+		} else {
+			$string = $GLOBALS['LANG']->JScharCode($string);
 		}
 
 		return $string;
@@ -301,7 +320,7 @@ class tx_rnbase_util_Strings {
 	 * @param string $email Input string to evaluate
 	 * @return boolean Returns TRUE if the $email address (input string) is valid
 	 */
-	static public function validEmail($email) {
+	public static function validEmail($email) {
 		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
 			$return = \TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($email);
 		} else {

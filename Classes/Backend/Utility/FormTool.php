@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007 Rene Nitzsche (rene@system25.de)
+*  (c) 2007-2015 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -78,7 +78,7 @@ class Tx_Rnbase_Backend_Utility_FormTool {
 
 		$jsCode = Tx_Rnbase_Backend_Utility::editOnClick($params, $GLOBALS['BACK_PATH']);
 		if(isset($options['confirm']) && strlen($options['confirm']) > 0) {
-			$jsCode = 'if(confirm('.$GLOBALS['LANG']->JScharCode($options['confirm']).')) {' . $jsCode .'} else {return false;}';
+			$jsCode = 'if(confirm('.tx_rnbase_util_Strings::quoteJSvalue($options['confirm']).')) {' . $jsCode .'} else {return false;}';
 		}
 
 		$btn = '<input type="button" name="'. $name.'" value="' . $title . '" ';
@@ -132,7 +132,7 @@ class Tx_Rnbase_Backend_Utility_FormTool {
 
 		$jsCode = Tx_Rnbase_Backend_Utility::editOnClick($params, $GLOBALS['BACK_PATH']);
 		if(isset($options['confirm']) && strlen($options['confirm']) > 0) {
-			$jsCode = 'if(confirm('.$GLOBALS['LANG']->JScharCode($options['confirm']).')) {' . $jsCode .'} else {return false;}';
+			$jsCode = 'if(confirm('.tx_rnbase_util_Strings::quoteJSvalue($options['confirm']).')) {' . $jsCode .'} else {return false;}';
 		}
 
 		$btn = '<input type="button" name="'. $name.'" value="' . $title . '" ';
@@ -176,7 +176,7 @@ class Tx_Rnbase_Backend_Utility_FormTool {
 
 		$jsCode = Tx_Rnbase_Backend_Utility::editOnClick($params, $GLOBALS['BACK_PATH']);
 		if(isset($options['confirm']) && strlen($options['confirm']) > 0) {
-			$jsCode = 'if(confirm('.$GLOBALS['LANG']->JScharCode($options['confirm']).')) {' . $jsCode .'} else {return false;}';
+			$jsCode = 'if(confirm('.tx_rnbase_util_Strings::quoteJSvalue($options['confirm']).')) {' . $jsCode .'} else {return false;}';
 		}
 
 		return '<a href="#" onclick="'.htmlspecialchars($jsCode, -1).'">'.
@@ -326,7 +326,7 @@ class Tx_Rnbase_Backend_Utility_FormTool {
 	 */
 	private function getConfirmCode($jsCode, $options) {
 		if (isset($options['confirm']) && strlen($options['confirm']) > 0) {
-			return 'if(confirm('.$GLOBALS['LANG']->JScharCode($options['confirm']).')) {' . $jsCode .'} else {return false;}';
+			return 'if(confirm('.tx_rnbase_util_Strings::quoteJSvalue($options['confirm']).')) {' . $jsCode .'} else {return false;}';
 		}
 		return $jsCode;
 	}
@@ -358,7 +358,7 @@ class Tx_Rnbase_Backend_Utility_FormTool {
 
 		$jsCode = "window.location.href='index.php?id=".$pid . $urlParams. "'; return false;";
 		if(isset($options['confirm']) && strlen($options['confirm']) > 0) {
-			$jsCode = 'if(confirm('.$GLOBALS['LANG']->JScharCode($options['confirm']).')) {' . $jsCode .'} else {return false;}';
+			$jsCode = 'if(confirm('.tx_rnbase_util_Strings::quoteJSvalue($options['confirm']).')) {' . $jsCode .'} else {return false;}';
 		}
 		$title = '';
 		if($options['hover']) {
@@ -383,7 +383,7 @@ class Tx_Rnbase_Backend_Utility_FormTool {
 
 		$btn = '<input type="'.($icon ? 'image' : 'submit').'" name="'. $name.'" value="' . $value . '" ';
 		if(strlen($confirmMsg))
-			$btn .= 'onclick="return confirm('.$GLOBALS['LANG']->JScharCode($confirmMsg).')"';
+			$btn .= 'onclick="return confirm('.tx_rnbase_util_Strings::quoteJSvalue($confirmMsg).')"';
 		if(strlen($icon))
 			$btn .= $icon;
 		$btn .= '/>';

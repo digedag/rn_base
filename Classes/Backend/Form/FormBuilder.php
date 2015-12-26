@@ -1,4 +1,5 @@
 <?php
+use TYPO3\CMS\Backend\Form\NodeFactory;
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
 /***************************************************************
@@ -25,6 +26,7 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
 /**
  * Replacement class for former FormEngine-class.
+ * Use one instance per formular.
  *
  * @package 		TYPO3
  * @subpackage	 	rn_base
@@ -32,13 +34,29 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
  */
 
 class Tx_Rnbase_Backend_Form_FormBuilder {
+	private $nodeFactory = NULL;
 
+	/**
+	 */
+	public function __construct() {
+		$this->nodeFactory = tx_rnbase::makeInstance(NodeFactory::class);
+	}
 	public function initDefaultBEmode() {
 
 	}
 
-	public function getSoloField($table, $row, $theFieldToReturn) {
-		return $theFieldToReturn;
+	public function getSoloField($table, $row, $fieldName) {
+//		$options = $this->data;
+		$options = array();
+		$options['tableName'] = $table;
+		$options['fieldName'] = $fieldName;
+		$options['databaseRow'] = $row;
+		$options['renderType'] = 'singleFieldContainer';
+		$childResultArray = $this->nodeFactory->create($options)->render();
+//if($_SERVER["REMOTE_ADDR"] == '89.246.162.16')
+tx_rnbase_util_Debug::debug($childResultArray,__FILE__.':'.__LINE__); // TODO: remove me
+
+		return $childResultArray['html'];
 	}
 
 	public function printNeededJSFunctions_top() {
