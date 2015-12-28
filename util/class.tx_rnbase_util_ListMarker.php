@@ -44,18 +44,18 @@ class tx_rnbase_util_ListMarker {
 		$this->visitors = $visitors;
 	}
 
-  /**
-   *
-   * @param tx_rnbase_util_IListProvider $provider
-   * @param string $template
-   * @param string $markerClassname
-   * @param string $confId
-   * @param string $marker
-   * @param tx_rnbase_util_FormatUtil $formatter
-   * @param mixed $markerParams
-   * @param int $offset
-   * @return array
-   */
+	/**
+	 *
+	 * @param tx_rnbase_util_IListProvider $provider
+	 * @param string $template
+	 * @param string $markerClassname
+	 * @param string $confId
+	 * @param string $marker
+	 * @param tx_rnbase_util_FormatUtil $formatter
+	 * @param mixed $markerParams
+	 * @param int $offset
+	 * @return array
+	 */
 	public function renderEach(tx_rnbase_util_IListProvider $provider, $template, $markerClassname, $confId, $marker, $formatter, $markerParams = FALSE, $offset=0) {
 		$this->entryMarker = ($markerParams) ? tx_rnbase::makeInstance($markerClassname, $markerParams) : tx_rnbase::makeInstance($markerClassname);
 
@@ -123,10 +123,12 @@ class tx_rnbase_util_ListMarker {
 		$totalLineStart = intval($formatter->configurations->get($confId.'totalline.startValue'));
 		// Gesamtzahl der Liste als Register speichern
 		$GLOBALS['TSFE']->register['RNBASE_LB_SIZE'] = count($dataArr);
-		for($i=0, $cnt=count($dataArr); $i < $cnt; $i++) {
-			$data = $dataArr[$i];
+
+		$i = 0;
+		foreach ($dataArr as $key => $data) {
 			// Check for object to avoid warning.
 			if(!is_object($data)) continue;
+			$i++;
 			$data->record['roll'] = $rowRollCnt;
 			$data->record['line'] = $i; // Marker für aktuelle Zeilenummer
 			$data->record['totalline'] = $i+$totalLineStart+$offset; // Marker für aktuelle Zeilenummer der Gesamtliste
