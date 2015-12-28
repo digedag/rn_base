@@ -97,7 +97,7 @@ class Tx_Rnbase_Backend_Utility_FormTool {
 	public function createEditLink($editTable, $editUid, $label = 'Edit') {
 		$params = '&edit['.$editTable.']['.$editUid.']=edit';
 		return '<a href="#" onclick="'.htmlspecialchars(Tx_Rnbase_Backend_Utility::editOnClick($params, $GLOBALS['BACK_PATH'])).'">'.
-			'<img'.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif', 'width="11" height="12"').' title="Edit UID: '.$editUid.'" border="0" alt="" />'.
+			'<img'.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif', 'width="11" height="12"').' title="Edit UID: '.$editUid.'" border="0" alt="Edit" />'.
 		$label .'</a>';
 	}
 

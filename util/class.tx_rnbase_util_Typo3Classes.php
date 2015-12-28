@@ -134,7 +134,7 @@ class tx_rnbase_util_Typo3Classes {
 	public static function getDataHandlerClass() {
 		return self::getClassByCurrentTypo3Version(array(
 			self::LOWER6	=> 't3lib_tcemain',
-			self::HIGHER6 	=> '\\TYPO3\\CMS\\Core\\DataHandling\\DataHandler'
+			self::HIGHER6 	=> 'TYPO3\\CMS\\Core\\DataHandling\\DataHandler'
 		));
 	}
 
