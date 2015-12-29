@@ -1,4 +1,5 @@
 <?php
+use TYPO3\CMS\Core\Imaging\IconFactory;
 /***************************************************************
 *  Copyright notice
 *
@@ -39,6 +40,8 @@ class Tx_Rnbase_Backend_Utility_FormTool {
 	public $form; // TCEform-Instanz
 	protected $module;
 	protected $doc;
+	/** @var IconFactory */
+	protected $iconFactory;
 
 	/**
 	 *
@@ -56,6 +59,8 @@ class Tx_Rnbase_Backend_Utility_FormTool {
 			tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getBackendFormEngineClass());
 		$this->form->initDefaultBEmode();
 		$this->form->backPath = $BACK_PATH;
+		$this->iconFactory = tx_rnbase::makeInstance(IconFactory::class);
+
 	}
 	/**
 	 * @return template the BE template class
@@ -96,9 +101,18 @@ class Tx_Rnbase_Backend_Utility_FormTool {
 	 */
 	public function createEditLink($editTable, $editUid, $label = 'Edit') {
 		$params = '&edit['.$editTable.']['.$editUid.']=edit';
-		return '<a href="#" onclick="'.htmlspecialchars(Tx_Rnbase_Backend_Utility::editOnClick($params, $GLOBALS['BACK_PATH'])).'">'.
-			'<img'.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif', 'width="11" height="12"').' title="Edit UID: '.$editUid.'" border="0" alt="Edit" />'.
-		$label .'</a>';
+		if(tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
+			$onClick = htmlspecialchars(Tx_Rnbase_Backend_Utility::editOnClick($params));
+			return '<a href="#" onclick="' . $onClick . '" title="Edit UID: '.$editUid.'">'
+					. $this->iconFactory->getIcon('actions-page-open', \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL)->render()
+					. $label
+					. '</a>';
+		}
+		else {
+			return '<a href="#" onclick="'.htmlspecialchars(Tx_Rnbase_Backend_Utility::editOnClick($params, $GLOBALS['BACK_PATH'])).'">'.
+					'<img'.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif', 'width="11" height="12"').' title="Edit UID: '.$editUid.'" border="0" alt="Edit" />'.
+					$label .'</a>';
+		}
 	}
 
 	/**
