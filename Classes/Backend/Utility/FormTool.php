@@ -1,5 +1,5 @@
 <?php
-use TYPO3\CMS\Core\Imaging\IconFactory;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -59,7 +59,8 @@ class Tx_Rnbase_Backend_Utility_FormTool {
 			tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getBackendFormEngineClass());
 		$this->form->initDefaultBEmode();
 		$this->form->backPath = $BACK_PATH;
-		$this->iconFactory = tx_rnbase::makeInstance(IconFactory::class);
+		if(tx_rnbase_util_TYPO3::isTYPO76OrHigher())
+			$this->iconFactory = tx_rnbase::makeInstance(TYPO3\CMS\Core\Imaging\IconFactory::class);
 
 	}
 	/**
