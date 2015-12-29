@@ -64,6 +64,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 		$this->pageinfo = Tx_Rnbase_Backend_Utility::readPageAccess($this->getPid(), $this->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
 		$this->initDoc($this->getDoc());
+		$markers = array();
 		if(tx_rnbase_util_TYPO3::isTYPO42OrHigher()) {
 			$this->content .= $this->moduleContent(); // Muss vor der Erstellung des Headers geladen werden
 			$this->content .= $this->getDoc()->sectionEnd();  // Zur Sicherheit eine offene Section schließen
@@ -88,33 +89,10 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 			$markers['TABS'] = $this->tabs; // Deprecated use ###SUBMENU###
 			$markers['CONTENT'] = $this->content;
 		}
-		else {
-			// HeaderSection zeigt Icons und Seitenpfad
-			$headerSection = $this->getDoc()->getHeader('pages', $this->pageinfo, $this->pageinfo['_thePath']).'<br />'.$LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.path').': '.t3lib_div::fixed_lgd_pre($this->pageinfo['_thePath'], 50);
-			$this->content .= $this->moduleContent(); // Muss vor der Erstellung des Headers geladen werden
-			$this->content .= $this->getDoc()->sectionEnd();  // Zur Sicherheit einen offene Section schließen
 
-			// startPage erzeugt alles bis Beginn Formular
-			$header.=$this->getDoc()->startPage($LANG->getLL('title'));
-			$header.=$this->getDoc()->header($LANG->getLL('title'));
-			$header.=$this->getDoc()->spacer(5);
-			$header.=$this->getDoc()->section('', $this->getDoc()->funcMenu($headerSection, Tx_Rnbase_Backend_Utility::getFuncMenu($this->getPid(), 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function'])));
-			$header.=$this->getDoc()->divider(5);
-
-			$this->content = $header . $this->content;
-
-			// ShortCut
-			if ($BE_USER->mayMakeShortcut())	{
-				$this->content.=$this->getDoc()->spacer(20).$this->getDoc()->section('', $this->getDoc()->makeShortcutIcon('id', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']));
-			}
-			$this->content.=$this->getDoc()->spacer(10);
-		}
-
-		if(tx_rnbase_util_TYPO3::isTYPO42OrHigher()) {
-			$content = $this->getDoc()->startPage($LANG->getLL('title'));
-			$content.= $this->getDoc()->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
-			$this->content = $this->getDoc()->insertStylesAndJS($content);
-		}
+		$content = $this->getDoc()->startPage($LANG->getLL('title'));
+		$content.= $this->getDoc()->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+		$this->content = $this->getDoc()->insertStylesAndJS($content);
 	}
 	/**
 	 * Returns the module ident name
@@ -130,7 +108,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 	 *
 	 * @return	void
 	 */
-	function moduleContent()	{
+	protected function moduleContent()	{
 		// Dummy-Button für automatisch Submit
 		$content = '<p style="position:absolute; top:-5000px; left:-5000px;">'
             . '<input type="submit" />'
