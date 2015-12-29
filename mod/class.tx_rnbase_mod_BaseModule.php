@@ -56,8 +56,8 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 	 */
 	public function main()	{
 
-		global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
-		// Einbindung externer Funktionen
+		global $BE_USER, $LANG;
+		// Einbindung der Modul-Funktionen
 		$this->checkExtObj();
 		// Access check!
 		// The page will show only if there is a valid page and if this page may be viewed by the user
@@ -106,20 +106,25 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 	 * Normaly we would call $this->extObjContent(); But this method writes the output to $this->content. We need
 	 * the output directly so this is reimplementation of extObjContent()
 	 *
-	 * @return	void
+	 * @return string
 	 */
 	protected function moduleContent()	{
 		// Dummy-Button für automatisch Submit
 		$content = '<p style="position:absolute; top:-5000px; left:-5000px;">'
             . '<input type="submit" />'
             . '</p>';
-		$this->extObj->pObj = &$this;
+		$this->extObj->pObj = &$this; // Wozu diese Zuweisung? Die Submodule können getModule() verwenden...
+
 		if (is_callable(array($this->extObj, 'main')))	$content.=$this->extObj->main();
 		else $content .= 'Module '.get_class($this->extObj).' has no method main.';
 		return $content;
 	}
 
-	function checkExtObj()	{
+	/**
+	 * (non-PHPdoc)
+	 * @see t3lib_SCbase::checkExtObj()
+	 */
+	public function checkExtObj()	{
 		if (is_array($this->extClassConf) && $this->extClassConf['name'])	{
 			$this->extObj = tx_rnbase::makeInstance($this->extClassConf['name']);
 			$this->extObj->init($this, $this->extClassConf);
@@ -203,7 +208,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 	function printContent()	{
 		$this->content.=$this->getDoc()->endPage();
 
-		$params = Array();
+		$params = $markerArray = $subpartArray = $wrappedSubpartArray = Array();
 		tx_rnbase::load('tx_rnbase_util_BaseMarker');
 		tx_rnbase::load('tx_rnbase_util_Templates');
 		tx_rnbase_util_BaseMarker::callModules($this->content, $markerArray, $subpartArray, $wrappedSubpartArray, $params, $this->getConfigurations()->getFormatter());
@@ -379,7 +384,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 	 * @return	array	all available buttons as an assoc. array
 	 */
 	function getButtons()	{
-		global $TCA, $LANG, $BACK_PATH, $BE_USER;
+		global $BACK_PATH, $BE_USER;
 
 		$buttons = array(
 			'csh' => '',

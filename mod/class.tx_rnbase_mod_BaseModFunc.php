@@ -32,6 +32,8 @@ tx_rnbase::load('tx_rnbase_util_Templates');
 /**
  */
 abstract class tx_rnbase_mod_BaseModFunc implements tx_rnbase_mod_IModFunc {
+	/* @var $mod tx_rnbase_mod_IModule */
+	protected $mod;
 	public function init(tx_rnbase_mod_IModule $module, $conf) {
 		$this->mod = $module;
 	}
