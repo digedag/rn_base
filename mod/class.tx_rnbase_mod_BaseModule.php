@@ -65,30 +65,28 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 		$access = is_array($this->pageinfo) ? 1 : 0;
 		$this->initDoc($this->getDoc());
 		$markers = array();
-		if(tx_rnbase_util_TYPO3::isTYPO42OrHigher()) {
-			$this->content .= $this->moduleContent(); // Muss vor der Erstellung des Headers geladen werden
-			$this->content .= $this->getDoc()->sectionEnd();  // Zur Sicherheit eine offene Section schließen
+		$this->content .= $this->moduleContent(); // Muss vor der Erstellung des Headers geladen werden
+		$this->content .= $this->getDoc()->sectionEnd();  // Zur Sicherheit eine offene Section schließen
 
-			$header = $this->getDoc()->header($LANG->getLL('title'));
-			$this->content = $this->content; // ??
-			// ShortCut
-			if ($BE_USER->mayMakeShortcut())	{
-				$this->content.=$this->getDoc()->spacer(20).$this->getDoc()->section('', $this->getDoc()->makeShortcutIcon('id', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']));
-			}
-			$this->content.=$this->getDoc()->spacer(10);
-			// Setting up the buttons and markers for docheader
-			$docHeaderButtons = $this->getButtons();
-			$markers['CSH'] = $docHeaderButtons['csh'];
-			$markers['HEADER'] = $header;
-			$markers['SELECTOR'] = $this->selector ? $this->selector : $this->subselector; // SubSelector is deprecated!!
-
-			// Das FUNC_MENU enthält die Modul-Funktionen, die per ext_tables.php registriert werden
-			$markers['FUNC_MENU'] = $this->getFuncMenu();
-			// SUBMENU sind zusätzliche Tabs die eine Modul-Funktion bei Bedarf einblenden kann.
-			$markers['SUBMENU'] = $this->tabs;
-			$markers['TABS'] = $this->tabs; // Deprecated use ###SUBMENU###
-			$markers['CONTENT'] = $this->content;
+		$header = $this->getDoc()->header($LANG->getLL('title'));
+		$this->content = $this->content; // ??
+		// ShortCut
+		if ($BE_USER->mayMakeShortcut())	{
+			$this->content.=$this->getDoc()->spacer(20).$this->getDoc()->section('', $this->getDoc()->makeShortcutIcon('id', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']));
 		}
+		$this->content.=$this->getDoc()->spacer(10);
+		// Setting up the buttons and markers for docheader
+		$docHeaderButtons = $this->getButtons();
+		$markers['CSH'] = $docHeaderButtons['csh'];
+		$markers['HEADER'] = $header;
+		$markers['SELECTOR'] = $this->selector ? $this->selector : $this->subselector; // SubSelector is deprecated!!
+
+		// Das FUNC_MENU enthält die Modul-Funktionen, die per ext_tables.php registriert werden
+		$markers['FUNC_MENU'] = $this->getFuncMenu();
+		// SUBMENU sind zusätzliche Tabs die eine Modul-Funktion bei Bedarf einblenden kann.
+		$markers['SUBMENU'] = $this->tabs;
+		$markers['TABS'] = $this->tabs; // Deprecated use ###SUBMENU###
+		$markers['CONTENT'] = $this->content;
 
 		$content = $this->getDoc()->startPage($LANG->getLL('title'));
 		$content.= $this->getDoc()->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
@@ -225,17 +223,13 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 	 */
 	public function getDoc() {
 		if(!$this->doc) {
-			if (tx_rnbase_util_TYPO3::isTYPO42OrHigher()) {
-				if (isset($GLOBALS['TBE_TEMPLATE'])) {
-					$this->doc = $GLOBALS['TBE_TEMPLATE'];
-				}
-				elseif (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-					$this->doc = tx_rnbase::makeInstance('\\TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
-				} else {
-					$this->doc = tx_rnbase::makeInstance('template');
-				}
+			if (isset($GLOBALS['TBE_TEMPLATE'])) {
+				$this->doc = $GLOBALS['TBE_TEMPLATE'];
+			}
+			elseif (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+				$this->doc = tx_rnbase::makeInstance('\\TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 			} else {
-				$this->doc = tx_rnbase::makeInstance('bigDoc');
+				$this->doc = tx_rnbase::makeInstance('template');
 			}
 		}
 		return $this->doc;
@@ -309,10 +303,8 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 		$doc->docType = 'xhtml_trans';
 		$doc->inDocStyles = $this->getDocStyles();
 		$doc->tableLayout = $this->getTableLayout();
-		if(tx_rnbase_util_TYPO3::isTYPO42OrHigher()) {
-			$doc->setModuleTemplate($this->getModuleTemplate());
-			$doc->loadJavascriptLib('contrib/prototype/prototype.js');
-		}
+		$doc->setModuleTemplate($this->getModuleTemplate());
+		$doc->loadJavascriptLib('contrib/prototype/prototype.js');
 		// JavaScript
 		$doc->JScode .= '
 			<script language="javascript" type="text/javascript">
@@ -337,7 +329,6 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 	abstract function getExtensionKey();
 
 	function getDocStyles() {
-		if(tx_rnbase_util_TYPO3::isTYPO42OrHigher())
 		$css .= '
 	.rnbase_selector div {
 		float:left;
@@ -360,9 +351,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 				'0' => Array( // Format für 1. Zeile
 					'tr'		=> Array('<tr class="t3-row-header c-headLineTable">', '</tr>'),
 					// Format für jede Spalte in der 1. Zeile
-					'defCol' => (tx_rnbase_util_TYPO3::isTYPO42OrHigher() ?
-												Array('<td>', '</td>') :
-												Array('<td class="c-headLineTable" style="font-weight:bold; color:white;">', '</td>'))
+					'defCol' => array('<td>', '</td>')
 				),
 				'defRow' => Array ( // Formate für alle Zeilen
 					'tr'	   => Array('<tr class="db_list_normal">', '</tr>'),
@@ -371,8 +360,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 				'defRowEven' => Array ( // Formate für alle geraden Zeilen
 					'tr'	   => Array('<tr class="db_list_alt">', '</tr>'),
 					// Format für jede Spalte in jeder Zeile
-					'defCol' => Array((tx_rnbase_util_TYPO3::isTYPO42OrHigher() ? '<td>' :
-														'<td class="db_list_alt">'), '</td>')
+					'defCol' => array('<td>', '</td>')
 				)
 			);
 	}

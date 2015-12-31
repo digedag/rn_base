@@ -34,7 +34,6 @@ class tx_rnbase_tests_cache_testcase extends tx_phpunit_testcase {
 	}
 
 	function test_TYPO3Cache() {
-		if(!tx_rnbase_util_TYPO3::isTYPO43OrHigher()) return; // Geht erst ab 4.3
 		$cache = self::createTYPO3Cache('__rnbaseTestTYPO3Cache__');
 
 		$this->assertTrue(is_object($cache), 'Cache not instanciated');
@@ -42,14 +41,6 @@ class tx_rnbase_tests_cache_testcase extends tx_phpunit_testcase {
 		$arr = $cache->get('key1');
 		$this->assertTrue(count($arr) == 1, 'Array has wrong size');
 		$this->assertEquals($arr['id'], '100', 'Array content is wrong');
-	}
-
-	function test_NoCache() {
-		$cache = tx_rnbase::makeInstance('tx_rnbase_cache_NoCache', '__rnbaseTestNoCache__');
-		$this->assertTrue(is_object($cache), 'Cache not instanciated');
-		$cache->set('key1', array('id' => '100'));
-		$arr = $cache->get('key1');
-		$this->assertTrue($arr == NULL, 'Array is set');
 	}
 
 	/**
