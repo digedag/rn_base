@@ -41,12 +41,7 @@ class tx_rnbase_util_Mail {
 	public function __construct() {
 	}
 	public function send() {
-		if(tx_rnbase_util_TYPO3::isTYPO45OrHigher()) {
-			return $this->send45();
-		}
-		else {
-			return $this->send40();
-		}
+		return $this->send45();
 	}
 	public function setSubject($subject) {
 		$this->subject = $subject;
@@ -71,33 +66,7 @@ class tx_rnbase_util_Mail {
 	public function addAttachment($src, $filename='', $contentType='') {
 		$this->attachments[] = array('src'=>$src, 'filename'=>$filename, 'contentType'=>$contentType);
 	}
-	/**
-	 */
-	protected function send40() {
-		/* @var $mail t3lib_htmlmail */
-		$mail = tx_rnbase::makeInstance('t3lib_htmlmail');
-		$mail->start();
-		$mail->subject         = $this->subject;
-		$mail->from_email      = $this->from;
-		$mail->from_name       = $this->fromName;
-		$mail->organisation    = '';
-		$mail->priority        = 1;
-		if($this->textPart)
-			$mail->addPlain($this->textPart);
-		if($this->htmlPart)
-			$mail->setHTML($this->htmlPart);
-		if(!empty($this->attachments)) {
-			// Hier können nur vorhandene Dateien verschickt werden.
-			foreach ($this->attachments AS $attachment) {
-				if(!$mail->addAttachment($attachment['src'])) {
-					tx_rnbase_util_Logger::warn('Adding attachment failed!', 'rn_base',
-						array('subject'=>$mail->subject, 'to'=>$this->toAsString, 'attachment'=>$attachment));
-				}
 
-			}
-		}
-		$mail->send($this->toAsString);
-	}
 	protected function send45() {
 		/* @var $mail TYPO3\\CMS\\Core\\Mail\\MailMessage */
 		$mail = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getMailMessageClass());

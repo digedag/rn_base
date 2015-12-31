@@ -89,7 +89,7 @@ class tx_rnbase_cache_Manager {
 	 * Returns the cache instance
 	 *
 	 * @param string $name
-	 * @return tx_rnbase_cache_NoCache
+	 * @return tx_rnbase_cache_ICache
 	 */
 	private static function getCacheImpl($name) {
 		if(tx_rnbase_util_TYPO3::isTYPO62OrHigher())
@@ -98,9 +98,7 @@ class tx_rnbase_cache_Manager {
 			return tx_rnbase::makeInstance('tx_rnbase_cache_TYPO3Cache60', $name);
 		elseif(tx_rnbase_util_TYPO3::isTYPO46OrHigher())
 			return tx_rnbase::makeInstance('tx_rnbase_cache_TYPO3Cache46', $name);
-		elseif(tx_rnbase_util_TYPO3::isTYPO43OrHigher())
-			return tx_rnbase::makeInstance('tx_rnbase_cache_TYPO3Cache', $name);
-		return tx_rnbase::makeInstance('tx_rnbase_cache_NoCache', $name);
+		return tx_rnbase::makeInstance('tx_rnbase_cache_TYPO3Cache', $name);
 	}
 }
 

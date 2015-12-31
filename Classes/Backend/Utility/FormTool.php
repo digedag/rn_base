@@ -219,8 +219,7 @@ class Tx_Rnbase_Backend_Utility_FormTool {
 		//TYPO3 den Link akzeptiert und als valide einstuft
 		//der Formularname ist immer tceAction
 		$jumpToUrl .= "&amp;vC=".$GLOBALS['BE_USER']->veriCode();
-		if(tx_rnbase_util_TYPO3::isTYPO45OrHigher())
-			$jumpToUrl .= Tx_Rnbase_Backend_Utility::getUrlToken('tceAction');
+		$jumpToUrl .= Tx_Rnbase_Backend_Utility::getUrlToken('tceAction');
 		$jumpToUrl .="'";
 
 		return '<a onclick="return jumpToUrl('.$jumpToUrl.');" href="#">'.
@@ -294,9 +293,7 @@ class Tx_Rnbase_Backend_Utility_FormTool {
 		//TYPO3 den Link akzeptiert und als valide einstuft
 		// der Formularname ist immer tceAction
 		$jumpToUrl .= '&amp;vC=' . $GLOBALS['BE_USER']->veriCode();
-		if (tx_rnbase_util_TYPO3::isTYPO45OrHigher()) {
-			$jumpToUrl .= Tx_Rnbase_Backend_Utility::getUrlToken('tceAction');
-		}
+		$jumpToUrl .= Tx_Rnbase_Backend_Utility::getUrlToken('tceAction');
 
 		$jumpToUrl = '\'' . $jumpToUrl . '\'';
 

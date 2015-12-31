@@ -90,16 +90,9 @@ class tx_rnbase {
 					// Die Parameter weiterreichen
 					$ret = call_user_func_array(array('TYPO3\CMS\Core\Utility\GeneralUtility', 'makeInstance'), $args);
 				}
-				elseif(tx_rnbase_util_TYPO3::isTYPO43OrHigher()) {
+				else {
 					// Die Parameter weiterreichen
 					$ret = call_user_func_array(array('t3lib_div', 'makeInstance'), $args);
-				}
-				else {
-					array_shift($args);
-					// Bei 4.2 den alten Weg verwenden
-					$className = t3lib_div::makeInstanceClassName($class);
-					$reflectionObj = new ReflectionClass($className);
-					$ret = $reflectionObj->newInstanceArgs($args);
 				}
 			} else {
 				if(tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {

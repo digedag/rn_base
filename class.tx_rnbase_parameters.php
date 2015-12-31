@@ -114,9 +114,7 @@ class tx_rnbase_parameters extends ArrayObject implements tx_rnbase_IParameters 
 		return intval($this->get($paramName, $qualifier));
 	}
 	private function getParametersPlain($qualifier) {
-		$parametersArray = tx_rnbase_util_TYPO3::isTYPO43OrHigher() ?
-				self::getPostAndGetParametersMerged($qualifier) :
-				t3lib_div::GParrayMerged($qualifier);
+		$parametersArray = self::getPostAndGetParametersMerged($qualifier);
 		return $parametersArray;
 	}
 	function getAll($qualifier='') {

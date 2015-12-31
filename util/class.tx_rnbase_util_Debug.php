@@ -46,11 +46,8 @@ class tx_rnbase_util_Debug {
 		if(tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
 			return \TYPO3\CMS\Core\Utility\DebugUtility::debug($var, $header, $group);
 		}
-		elseif(tx_rnbase_util_TYPO3::isTYPO45OrHigher()) {
-			return t3lib_utility_Debug::debug($var, $header, $group);
-		}
 		else {
-			return t3lib_div::debug($var, $header, $group);
+			return t3lib_utility_Debug::debug($var, $header, $group);
 		}
 	}
 	/**
@@ -65,11 +62,8 @@ class tx_rnbase_util_Debug {
 		if(tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
 			return \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($array_in);
 		}
-		elseif(tx_rnbase_util_TYPO3::isTYPO45OrHigher()) {
-			return t3lib_utility_Debug::viewArray($array_in);
-		}
 		else {
-			return t3lib_div::view_array($array_in);
+			return t3lib_utility_Debug::viewArray($array_in);
 		}
 	}
 
@@ -81,10 +75,8 @@ class tx_rnbase_util_Debug {
 		if(tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
 			return \TYPO3\CMS\Core\Utility\DebugUtility::debugTrail();
 		}
-		elseif(tx_rnbase_util_TYPO3::isTYPO45OrHigher()) {
+		else {
 			return t3lib_utility_Debug::debugTrail();
-		} elseif (is_callable(array('t3lib_div', 'debug_trail'))) {
-			return t3lib_div::debug_trail();
 		}
 	}
 
