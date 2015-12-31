@@ -35,7 +35,7 @@
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_rnbase_model_data
-	implements IteratorAggregate {
+	implements IteratorAggregate, ArrayAccess {
 
 	/**
 	 * A flag indication if the model was modified after initialisation
@@ -244,6 +244,79 @@ class tx_rnbase_model_data
 
 		return NULL;
 	}
+
+
+	/**
+	 * Attribute getter (deprecated)
+	 *
+	 * @param string $var
+	 * @return mixed
+	 */
+
+	public function __get($var)
+	{
+		$var = $this->underscore($var);
+		return $this->getProperty($var);
+	}
+
+	/**
+	 * Attribute setter (deprecated)
+	 *
+	 * @param string $var
+	 * @param mixed $value
+	 */
+	public function __set($var, $value)
+	{
+		$var = $this->underscore($var);
+		$this->setProperty($var, $value);
+	}
+
+    /**
+     * Implementation of ArrayAccess::offsetSet()
+     *
+     * @link http://www.php.net/manual/en/arrayaccess.offsetset.php
+     * @param string $offset
+     * @param mixed $value
+     */
+    public function offsetSet($offset, $value)
+    {
+        $this->record[$offset] = $value;
+    }
+
+    /**
+     * Implementation of ArrayAccess::offsetExists()
+     *
+     * @link http://www.php.net/manual/en/arrayaccess.offsetexists.php
+     * @param string $offset
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->record[$offset]);
+    }
+
+    /**
+     * Implementation of ArrayAccess::offsetUnset()
+     *
+     * @link http://www.php.net/manual/en/arrayaccess.offsetunset.php
+     * @param string $offset
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->record[$offset]);
+    }
+
+    /**
+     * Implementation of ArrayAccess::offsetGet()
+     *
+     * @link http://www.php.net/manual/en/arrayaccess.offsetget.php
+     * @param string $offset
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->record[$offset]) ? $this->record[$offset] : NULL;
+    }
 
 	/**
 	 * Implementation of IteratorAggregate::getIterator()

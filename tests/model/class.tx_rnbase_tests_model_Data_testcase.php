@@ -77,6 +77,17 @@ class tx_rnbase_tests_model_Data_testcase
 
 	/**
 	 * @test
+	 */
+	public function testArrayAccess() {
+		$model = $this->getModelInstance();
+
+		$this->assertSame(50, $model['uid']);
+		$this->assertSame('John', $model['first_name']);
+		$this->assertNull($model['column_does_not_exist']);
+	}
+
+	/**
+	 * @test
 	 * @expectedException Exception
 	 * @expectedExceptionCode 1406625817
 	 */
