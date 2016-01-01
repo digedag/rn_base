@@ -2,6 +2,7 @@
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
+use TYPO3\CMS\Backend\Form\FormResultCompiler;
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
 /***************************************************************
@@ -38,6 +39,7 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 class Tx_Rnbase_Backend_Form_FormBuilder {
 	private $nodeFactory = NULL;
 	private $formDataCompiler = NULL;
+	private $formResultCompiler; // TODO
 
 	/**
 	 */
@@ -47,6 +49,9 @@ class Tx_Rnbase_Backend_Form_FormBuilder {
 		/** @var FormDataCompiler $formDataCompiler */
 		$this->formDataCompiler = tx_rnbase::makeInstance(FormDataCompiler::class, $formDataGroup);
 		$this->nodeFactory = tx_rnbase::makeInstance(NodeFactory::class);
+		/** @var FormResultCompiler formResultCompiler */
+		$this->formResultCompiler = tx_rnbase::makeInstance(FormResultCompiler::class);
+
 	}
 	public function initDefaultBEmode() {
 
@@ -71,13 +76,17 @@ class Tx_Rnbase_Backend_Form_FormBuilder {
 		$options['renderType'] = 'singleFieldContainer';
 		$childResultArray = $this->nodeFactory->create($options)->render();
 
+		// TODO: dieser Aufruf sollte einmalig für das gesamte Formular erfolgen!
+		$this->formResultCompiler->mergeResult($childResultArray);
+
 
 		return $childResultArray['html'];
 	}
 
 	public function printNeededJSFunctions_top() {
+		return $this->formResultCompiler->JStop();
 	}
 	public function printNeededJSFunctions() {
-
+		return $this->formResultCompiler->printNeededJSFunctions(); // TODO
 	}
 }
