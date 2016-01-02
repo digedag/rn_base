@@ -40,6 +40,7 @@ class Tx_Rnbase_Backend_Form_FormBuilder {
 	private $nodeFactory = NULL;
 	private $formDataCompiler = NULL;
 	private $formResultCompiler; // TODO
+	protected $formDataCache = array();
 
 	/**
 	 */
@@ -57,16 +58,37 @@ class Tx_Rnbase_Backend_Form_FormBuilder {
 
 	}
 
-	public function getSoloField($table, $row, $fieldName) {
-		// Wir benötigen pro DB-Tabelle ein data-Array mit den vorbereiteten Formular-Daten
 
-		$formDataCompilerInput = [
-				'tableName' => $table,
-				'vanillaUid' => (int)$row['uid'],
-				'command' => 'edit',
-				'returnUrl' => '',
-		];
-		$formData = $this->formDataCompiler->compile($formDataCompilerInput);
+	/**
+	 * Compile formdata for database record. Result is cached.
+	 * @param unknown $table
+	 * @param unknown $uid
+	 * @return multitype:
+	 */
+	protected function compileFormData($table, $uid) {
+		$key = $table.'_'.intval($uid);
+		if(!array_key_exists($key, $this->formDataCache)) {
+			$formDataCompilerInput = [
+					'tableName' => $table,
+					'vanillaUid' => (int)$uid,
+					'command' => 'edit',
+					'returnUrl' => '',
+			];
+			$this->formDataCache[$key] = $this->formDataCompiler->compile($formDataCompilerInput);
+		}
+		return $this->formDataCache[$key];
+	}
+	/**
+	 *
+	 * @param string $table
+	 * @param array $row
+	 * @param string $fieldName
+	 * @return string
+	 */
+	public function getSoloField($table, $row, $fieldName) {
+
+		// Wir benötigen pro DB-Tabelle ein data-Array mit den vorbereiteten Formular-Daten
+		$formData = $this->compileFormData($table, $row['uid']);
 //		$options = $this->data;
 		$options = $formData;
 		// in den folgenden Key müssen die Daten aus der TCA rein. Wie geht das?
