@@ -60,7 +60,7 @@ class Tx_Rnbase_Backend_Utility_FormTool {
 		$this->form->initDefaultBEmode();
 		$this->form->backPath = $BACK_PATH;
 		if(tx_rnbase_util_TYPO3::isTYPO76OrHigher())
-			$this->iconFactory = tx_rnbase::makeInstance(TYPO3\CMS\Core\Imaging\IconFactory::class);
+			$this->iconFactory = tx_rnbase::makeInstance('TYPO3\\CMS\\Core\\Imaging\\IconFactory');
 
 	}
 	/**
