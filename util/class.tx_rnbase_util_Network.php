@@ -100,8 +100,8 @@ class tx_rnbase_util_Network {
 	 */
 	public static function locationHeaderUrl($path) {
 		return tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
-			\TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($target) :
-			t3lib_div::locationHeaderUrl($target);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($path) :
+			t3lib_div::locationHeaderUrl($path);
 	}
 }
 
