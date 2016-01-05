@@ -34,6 +34,8 @@ Für die Erstellung der Template-Marker sind sogenannte Markerklassen verantwort
 ```
 Das ist die kürzeste Variante für eine Markerklasse. Es werden nur die Marker erzeugt und im HTML-Template ersetzt. Darüber hinaus kümmern sich diese Klassen noch um die Erzeugung von Links und die Bereitstellung von Referenzen auf andere Klassen.
 
+> Eine alternative Basisklasse ist **tx_rnbase_util_SimpleMarker**. Im Gegensatz zum BaseMarker ist diese Klasse nicht abstrakt. Sie kann sowohl direkt als fertiger Marker für Entities genutzt werden, als auch als Basisklasse für eigene Marker. Mehr dazu im im [entsprechenden Abschnitt](#SimpleMarker).
+
 Im Beispielcode ist die wichtigste Zeile der Aufruf von **$formatter->getItemMarkerArrayWrapped()**. Das $item ist ein rn_base-Model. Und für jede Spalte aus der Datenbank wird automatisch ein passender TYPO3-Marker erstellt. Zusätzlich besteht aber automatisch die Möglichkeit die Werte per Typoscript zu manipulieren. Dafür wird die Variable $confId übergeben, die den aktuellen Typoscript-Pfad enthält. Dadurch, daß diese $confId, aber auch der Marker-Prefix $marker als Parameter übergeben werden, kann der Marker wiederverwendet werden.
 
 In T3sports werden Teams gerendet. Das kann entweder in der Team-Liste oder Detailansicht geschehen. Oder aber das Team wird als Teil eines Spiels gerendert. Im ersten Fall wird der Marker mit **###TEAM_ ** beginnen. Im zweiten Fall startet der Marker mit **###MATCH_HOME_**. In beiden Fällen landet der Aufruf bei der selben Markerklasse für das Team. Nur die Parameter $confId und $marker unterscheiden sich. Jede Funktion die eine Markerklasse bereitstellt, ist somit in allen Views verfügbar, in denen die Entity gerendert wird. Und das ohne zusätzlichen Aufwand!
@@ -90,5 +92,88 @@ Und auch hier noch einmal der Hinweis: Da sich die Markerklassen gegenseitig auf
 
 
 ### Link-Erzeugung
+In TYPO3 werden Links normalerweise für Subpart-Marker gesetzt:
+```
+###ARENA_SHOWLINK###Zur Detailansicht###ARENA_SHOWLINK###
+```
+Um die Marker für diesen Link zu erstellen, kann die Markerklasse die vom BaseMarker bereitgestellte Methode **initLink()** aufrufen:
+```php
+	$linkId = 'show';
+	if($item->isPersisted()) {
+		$this->initLink($markerArray, $subpartArray, $wrappedSubpartArray, $formatter, $confId, $linkId, $marker, array('stadium' => $item->uid), $template);
+	}
+```
+Da die Linkerzeugung recht performancelastig ist, wird die Erzeugung nur durchgeführt, wenn die Marker überhaupt im Template vorkommen. Außerdem wird bei Bedarf auch automatisch nur die URL des Links bereitgestellt. Dafür kann muss man den Namen des Markers nur um *URL* erweitern. Im Beispiel oben wäre das **###ARENA_SHOWLINKURL###**.
 
+Die auf diesem Weg erzeugten Links lassen sich extrem umfangreich per Typoscript konfigurieren. Dazu muss man natürlich den richtigen Einstiegspfad kennen. Im Aufruf oben ist die Variable **$confId** entscheidend. Gehen wir davon aus, daß sie mit dem Wert 'arena.' befüllt ist. Dann wird die Link-Konfiguration per Konvention unter **arena.links.show.** erwartet. Hier ein 
+```
+arena.links.show {
+	pid = 123 # PID der Zielseite
+	qualifier = t3sports # Qualifier/Prefix für den Link
+	target = _top # Target-Attribut des Links
+	fixedUrl = http://www.google.com/ # Eine feste URL
+	absurl = 1 # Erzeugung einer absoluten URL 
+	section =  # Setzt eine anchor-Wert
+	typolink {
+		# die normale typolink-Konfiguration von TYPO3 
+	}
+	atagparams {
+		# Es können weitere Attribute für das A-Tag konfiguriert werden.
+		style = linkclass
+	}
+	useKeepVars = 1 # vorhandene Parameter des aktuellen Seite in den neuen Link integrieren, Default ist 0
+	useKeepVars {
+		# Diese Parameter können nun noch genauer spezifiziert werden. Alle Angaben wirken nur, wenn useKeepVars aktiviert ist
+		# Außerdem funktioniert das nur für Parameter des verwendeten Plugins mit dem selben Qualifier
+		deny = param1,param2 # bestimmte Parameter deaktivieren, den Rest erlauben
+		allow = param1,param2 # nur bestimmte Parameter erlauben, den Rest ignorieren
+		add = tx_ttnews::ttnews, tx_ttnews::* # Bestimmte oder alle Parameter einer anderen Extension integrieren
+		add = param1=123 # Einen zusätzlichen Parameter mit dem Qualifier des Plugins integrieren 
+	}
+	noCache = 1 # URL wird mit Parameter no_cache=1 erzeugt
+	noHash = 1 # URL wird ohne cHash erzeugt
+}
+```
+So ziemlich alle Angaben sind hier optional. Wir bspw. keine PID konfiguriert, so wird automatisch auf die aktuelle Seite verlinkt.
 
+### SimpleMarker
+Es handelt sich um eine generische Implementierung des BaseMarker, der für einfache Entities genutzt werden kann. Der Funktionsumfang ist inzwischen so umfangreich, daß es sich auch für eigene Markerklassen anbietet, diese Implementierung als Basis zu nutzen.
+
+#### Links per Typoscript erzeugen
+Der SimpleMarker stellt neben den normalen Fähigkeiten zu Linkerzeugung noch weitere Features bereit. So werden die Links komplett per Typoscript angelegt. Eine Integration im Code ist nicht mehr notwendig. Auch hat man Zugriff auf Daten der aktuellen Entity und kann deren Werte als Parameter in der URL nutzen.
+
+Der SimpleMarker liest automatisch die konfigurierten Links unter **yourentity.links.** aus und stößt die Linkgenerierung an. Im Ergebnis können die zugehörigen Marker direkt im HTML-Template verwendet werden. 
+
+Spezielle Konfigurationen werden unter **yourentity.links.***linkname.***_cfg.** angegeben:
+```
+arena.links.show._cfg {
+	params {
+		# ein Attribut aus der Entity als Parameter setzen
+		paramname = column_name
+		param2 {
+			# Call static method to build parameter value
+			class = tx_mkeasy_marker_EasyDoc
+			# Method Signature createSecureLinkParam($paramName, $cfgArr, $item)
+			method = createSecureLinkParam
+		}
+	}
+	removeIfDisabled = 1 # Der Link wird komplett entfernt, wenn er nicht erzeugbar ist. Andernfalls bleibt der Inhalt unverlinkt stehen
+	charbrowser {	# Konfiguriert einen Buchstaben-Pagebrowser
+		# ID des Browsers, falls mehrere auf einer Seite benötigt werden
+		cbid = mybrowser
+		colname = uid # Attribut aus der Entity, die für den Parameter verwendet werden soll
+	}
+}
+```
+
+#### Eigene Subparts integrieren
+
+Subparts können unter **yourentity.subparts.** konfiguriert werden:
+```
+arena.subparts {
+	# Subpart ###ARENA_BLOCK1###
+	block1 {
+	}
+}
+```
+TODO: erweitern
