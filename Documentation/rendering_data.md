@@ -34,7 +34,7 @@ Für die Erstellung der Template-Marker sind sogenannte Markerklassen verantwort
 ```
 Das ist die kürzeste Variante für eine Markerklasse. Es werden nur die Marker erzeugt und im HTML-Template ersetzt. Darüber hinaus kümmern sich diese Klassen noch um die Erzeugung von Links und die Bereitstellung von Referenzen auf andere Klassen.
 
-> Eine alternative Basisklasse ist **tx_rnbase_util_SimpleMarker**. Im Gegensatz zum BaseMarker ist diese Klasse nicht abstrakt. Sie kann sowohl direkt als fertiger Marker für Entities genutzt werden, als auch als Basisklasse für eigene Marker. Mehr dazu im im [entsprechenden Abschnitt](#SimpleMarker).
+> Eine alternative Basisklasse ist **tx_rnbase_util_SimpleMarker**. Im Gegensatz zum BaseMarker ist diese Klasse nicht abstrakt. Sie kann sowohl direkt als fertiger Marker für Entities genutzt werden, als auch als Basisklasse für eigene Marker. Mehr dazu im im [entsprechenden Abschnitt](#simplemarker).
 
 Im Beispielcode ist die wichtigste Zeile der Aufruf von **$formatter->getItemMarkerArrayWrapped()**. Das $item ist ein rn_base-Model. Und für jede Spalte aus der Datenbank wird automatisch ein passender TYPO3-Marker erstellt. Zusätzlich besteht aber automatisch die Möglichkeit die Werte per Typoscript zu manipulieren. Dafür wird die Variable $confId übergeben, die den aktuellen Typoscript-Pfad enthält. Dadurch, daß diese $confId, aber auch der Marker-Prefix $marker als Parameter übergeben werden, kann der Marker wiederverwendet werden.
 
