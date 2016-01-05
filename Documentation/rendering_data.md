@@ -170,10 +170,32 @@ arena.links.show._cfg {
 
 Subparts können unter **yourentity.subparts.** konfiguriert werden:
 ```
-arena.subparts {
-	# Subpart ###ARENA_BLOCK1###
-	block1 {
+mksearch.hit.subparts {
+	# Subpart ###SEARCHRESULT_SIMPLE_VISIBLE###
+	is_ttcontent {
+		### definiert die marker (optional).
+		marker {
+			### Definiert den Marker für den Subpart, der angezeigt werden soll (optional). Default ist VISIBLE
+			visible = VISIBLE
+			### Definiert den Marker für den Subpart, der ausgeblendet werden soll (optional). Default ist HIDDEN
+			hidden = HIDDEN
+		}
+		### Definiert, welcher marker gerendert werden soll, der visible (venn true) oder der hidden (wenn false)
+		visible = TEXT
+		visible.value = 1
+		visible.if {
+			value = tt_content
+			equals.data = field:contentType
+		}
 	}
 }
 ```
-TODO: erweitern
+Im HTML-Template kann dieser Subpart verwendet werden.
+```
+			<!-- ###SEARCHRESULT_SIMPLE_VISIBLE### START -->
+			<h2 class="searchResultTitle">###SEARCHRESULT_TITLE###</h2>
+			###SEARCHRESULT_ABSTRACT###
+			<!-- ###SEARCHRESULT_SIMPLE_VISIBLE### END -->
+```
+
+TODO: besseres Beispiel integrieren
