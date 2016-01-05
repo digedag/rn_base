@@ -119,7 +119,7 @@ arena.links.show {
 	}
 	atagparams {
 		# Es können weitere Attribute für das A-Tag konfiguriert werden.
-		style = linkclass
+		style = border: 1px solid blue
 	}
 	useKeepVars = 1 # vorhandene Parameter des aktuellen Seite in den neuen Link integrieren, Default ist 0
 	useKeepVars {
