@@ -168,17 +168,23 @@ arena.links.show._cfg {
 
 #### Eigene Subparts integrieren
 
-Subparts können unter **yourentity.subparts.** konfiguriert werden:
+Seit Version 0.13.2 können über TypoScript Subparts bereitgestellt werden.
+
+Für diese Funktionalität ist es notwendig, das die genutzte Marker-Klasse von der Klasse **tx_rnbase_util_SimpleMarker** erbt. Falls die Methode **parseTemplate()** nicht aufgerufen wird, ist es zusätzlich notwendig, die Methode **prepareSubparts()** aufzurufen, welche die Subparts bearbeitet.
+
+Das TypoScript dazu wird unter **subparts** des zu rendernden Records definiert.
+
+Folgendes Beispiel stellt 2 weitere Marker für die Verarbeitung bereit, bzw. prüft das Template auf Vorkommen und ersetzt diese entsprechend:
+
 ```
-mksearch.hit.subparts {
-	# Subpart ###SEARCHRESULT_SIMPLE_VISIBLE###
+lib.mksearch.hit.subparts {
 	is_ttcontent {
 		### definiert die marker (optional).
 		marker {
 			### Definiert den Marker für den Subpart, der angezeigt werden soll (optional). Default ist VISIBLE
-			visible = VISIBLE
+			visible = YES
 			### Definiert den Marker für den Subpart, der ausgeblendet werden soll (optional). Default ist HIDDEN
-			hidden = HIDDEN
+			hidden = NO
 		}
 		### Definiert, welcher marker gerendert werden soll, der visible (venn true) oder der hidden (wenn false)
 		visible = TEXT
@@ -190,12 +196,23 @@ mksearch.hit.subparts {
 	}
 }
 ```
-Im HTML-Template kann dieser Subpart verwendet werden.
+
+In diesem TypoScript ist der Wert in visible entscheidend dafür, ob der visible (SEARCHRESULT_IS_TTCONTENT_YES) oder der hidden (SEARCHRESULT_IS_TTCONTENT_NO) Subpart ausgegeben wird.
+
+Der Marker selbst setzt sich aus dem Marker des Records, dem Konfigurationsschlüssel unter subparts und dem Konfiguriertem Markern für visible und hidden zusammen.
+
+Das Template dazu könnte so aussehen:
+
 ```
-			<!-- ###SEARCHRESULT_SIMPLE_VISIBLE### START -->
-			<h2 class="searchResultTitle">###SEARCHRESULT_TITLE###</h2>
-			###SEARCHRESULT_ABSTRACT###
-			<!-- ###SEARCHRESULT_SIMPLE_VISIBLE### END -->
+<h2>###SEARCHRESULT_TITLE###</h2>
+<!-- ###SEARCHRESULT_IS_TTCONTENT_YES### START -->
+	<p>Ich bin ein tt_content Datensatz, weil im feld contentType tt_content steht.</p>
+<!-- ###SEARCHRESULT_IS_TTCONTENT_YES### END -->
+<!-- ###SEARCHRESULT_IS_TTCONTENT_NO### START -->
+	<p>Ich bin kein tt_content, ich bin ###SEARCHRESULT_CONTENTTYPE###</p>
+<!-- ###SEARCHRESULT_IS_TTCONTENT_NO### END -->
+<p>###SEARCHRESULT_CONTENT###</p>
 ```
 
-TODO: besseres Beispiel integrieren
+Wenn im Feld **contentType** des Datensatzes der Wert **tt_content** enthalten ist, wird der YES Subpart ausgegeben und der NO Subpart aus dem Template entfernt. Ist etwas ungleich tt_content enthalten, wird der NO Subpart ausgegeben und der YES Subpart aus dem Template entfernt.
+ 
