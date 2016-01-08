@@ -35,6 +35,8 @@ v1.0.0 (??.??.????)
  * new Wrapper function tx_rnbase_util_Files::isAllowedAbsPath
  * new Wrapper Class Tx_Rnbase_Scheduler_Task (don't forget to load)  for \TYPO3\CMS\Scheduler\Task\AbstractTask or tx_scheduler_Task which is compatible for all TYPO3 versions
  * new Wrapper Class Tx_Rnbase_Scheduler_FieldProvider (don't forget to load)  for \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface or tx_scheduler_AdditionalFieldProvider which is compatible for all TYPO3 versions
+ * tx_rnbase_util_DB is now deprecated. Use Tx_Rnbase_Database_Connection instead and call all methods
+ on an instance no statically
 
 v0.15.18 (02.12.2015)
  * Bugfix: tx_rnbase_util_Dates::date_mysql2tstamp liefert nun immer einen Integer und nicht NULL im Fehlerfall
