@@ -50,7 +50,7 @@ class tx_rnbase_util_DB {
 	 *
 	 * @return mixed
 	 */
-	public function __callstatic($name, $arguments) {
+	public static function __callstatic($name, $arguments) {
 		$databaseUtility = tx_rnbase::makeInstance(static::$databaseConnectionClass);
 		return call_user_func_array(array($databaseUtility, $name), $arguments);
 	}
