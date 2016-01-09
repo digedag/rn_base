@@ -58,6 +58,13 @@ class Tx_Rnbase_Backend_Form_FormBuilder {
 
 	}
 
+	/**
+	 *
+	 * @return \TYPO3\CMS\Backend\Form\NodeFactory
+	 */
+	public function getNodeFactory() {
+		return $this->nodeFactory;
+	}
 
 	/**
 	 * Compile formdata for database record. Result is cached.

@@ -1,6 +1,5 @@
 <?php
 
-use TYPO3\CMS\Core\Utility\StringUtility;
 /***************************************************************
 *  Copyright notice
 *
@@ -432,43 +431,9 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 	 */
 	public function createIntInput($name, $value, $width, $maxlength=10){
 		if(tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-			$attributes = array();
-
-			// for data-formengine-input-params
-			$paramsList = array(
-					'field' => $name,
-					'evalList' => 'int',
-					'is_in' => '',
-			);
-
-			$attributes['id'] = StringUtility::getUniqueId('formengine-input-');
-			$attributes['value'] = '';
-			$attributes['data-formengine-validation-rules'] = json_encode(array(
-					'type'=>'int',
-			));
-			$attributes['data-formengine-input-params'] = json_encode($paramsList);
-			$attributes['data-formengine-input-name'] = htmlspecialchars($name);
-
-			$attributeString = '';
-			foreach ($attributes as $attributeName => $attributeValue) {
-				$attributeString .= ' ' . $attributeName . '="' . htmlspecialchars($attributeValue) . '"';
-			}
-
-			//$width = (int)$this->formMaxWidth($size);
-			$width = $GLOBALS['TBE_TEMPLATE']->formWidth($width);
-			$html = '
-			<input type="text"'
-					. $attributeString
-					. $width
-//					. $parameterArray['onFocus']
-					. ' />';
-
-			// This is the ACTUAL form field - values from the EDITABLE field must be transferred to this field which is the one that is written to the database.
-			$html .= '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" />';
-
-//			$html = '<div class="form-control-wrap"' . $width . '>' . $html . '</div>';
-			$out = $html;
-
+			/* @var $inputField Tx_Rnbase_Backend_Form_Element_InputText */
+			$inputField = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Form_Element_InputText', $this->getTCEForm()->getNodeFactory(), array());
+			$out = $inputField->renderHtml($name, $value, array('width' => $width, 'maxlength'=>$maxlength));
 		}
 		else {
 			$out = '
