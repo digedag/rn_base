@@ -1,5 +1,6 @@
 <?php
 
+use TYPO3\CMS\Core\Utility\StringUtility;
 /***************************************************************
 *  Copyright notice
 *
@@ -430,14 +431,55 @@ class Tx_Rnbase_Backend_Utility_FormTool {
 	 * Erstellt ein Eingabefeld für Integers
 	 */
 	public function createIntInput($name, $value, $width, $maxlength=10){
-		$out = '
+		if(tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
+			$attributes = array();
+
+			// for data-formengine-input-params
+			$paramsList = array(
+					'field' => $name,
+					'evalList' => 'int',
+					'is_in' => '',
+			);
+
+			$attributes['id'] = StringUtility::getUniqueId('formengine-input-');
+			$attributes['value'] = '';
+			$attributes['data-formengine-validation-rules'] = json_encode(array(
+					'type'=>'int',
+			));
+			$attributes['data-formengine-input-params'] = json_encode($paramsList);
+			$attributes['data-formengine-input-name'] = htmlspecialchars($name);
+
+			$attributeString = '';
+			foreach ($attributes as $attributeName => $attributeValue) {
+				$attributeString .= ' ' . $attributeName . '="' . htmlspecialchars($attributeValue) . '"';
+			}
+
+			//$width = (int)$this->formMaxWidth($size);
+			$width = $GLOBALS['TBE_TEMPLATE']->formWidth($width);
+			$html = '
+			<input type="text"'
+					. $attributeString
+					. $width
+//					. $parameterArray['onFocus']
+					. ' />';
+
+			// This is the ACTUAL form field - values from the EDITABLE field must be transferred to this field which is the one that is written to the database.
+			$html .= '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" />';
+
+//			$html = '<div class="form-control-wrap"' . $width . '>' . $html . '</div>';
+			$out = $html;
+
+		}
+		else {
+			$out = '
 			<input type="text" name="' . $name . '_hr"'.$GLOBALS['TBE_TEMPLATE']->formWidth($width).
-			' onchange="typo3FormFieldGet(\'' . $name . '\', \'int\', \'\', 0,0);"'.
-			$GLOBALS['TBE_TEMPLATE']->formWidth(12). ' maxlength="' . $maxlength . '"/>'.'
+						' onchange="typo3FormFieldGet(\'' . $name . '\', \'int\', \'\', 0,0);"'.
+						$GLOBALS['TBE_TEMPLATE']->formWidth(12). ' maxlength="' . $maxlength . '"/>'.'
 			<input type="hidden" value="'.htmlspecialchars($value).'" name="' . $name . '" />';
 
-		// JS-Code für die Initialisierung im TCEform eintragen
-		$this->form->extJSCODE .= 'typo3FormFieldSet("' . $name . '", "int", "", 0,0);';
+			// JS-Code für die Initialisierung im TCEform eintragen
+			$this->form->extJSCODE .= 'typo3FormFieldSet("' . $name . '", "int", "", 0,0);';
+		}
 		return $out;
 	}
 
