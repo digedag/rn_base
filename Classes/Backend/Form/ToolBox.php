@@ -4,7 +4,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007-2015 Rene Nitzsche (rene@system25.de)
+*  (c) 2007-2016 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -37,7 +37,7 @@ tx_rnbase::load('Tx_Rnbase_Backend_Utility_Icons');
  *
  * Ersetzt tx_rnbase_util_FormTool
  */
-class Tx_Rnbase_Backend_Utility_FormTool {
+class Tx_Rnbase_Backend_Form_ToolBox {
 	public $form; // TCEform-Instanz
 	protected $module;
 	protected $doc;

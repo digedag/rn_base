@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007 Rene Nitzsche (rene@system25.de)
+*  (c) 2007-2016 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -21,14 +21,14 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-tx_rnbase::load('Tx_Rnbase_Backend_Utility_FormTool');
+tx_rnbase::load('Tx_Rnbase_Backend_Form_ToolBox');
 
 
 /**
  * Diese Klasse stellt hilfreiche Funktionen zur Erstellung von Formularen
  * im Backend zur Verfügung
  */
-class tx_rnbase_util_FormTool extends Tx_Rnbase_Backend_Utility_FormTool {
+class tx_rnbase_util_FormTool extends Tx_Rnbase_Backend_Form_ToolBox {
 
 	public function init($doc, $module=NULL) {
 		parent::init($doc, $module);
