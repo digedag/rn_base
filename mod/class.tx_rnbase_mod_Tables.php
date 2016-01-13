@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2009 Rene Nitzsche (rene@system25.de)
+ *  (c) 2009-2016 Rene Nitzsche (rene@system25.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -249,6 +249,73 @@ class tx_rnbase_mod_Tables {
 
 		return $out;
 	}
+
+
+	/**
+	 * Returns a table based on the input $data
+	 * This method is taken from TYPO3 core. It will be removed there for version 8.
+	 *
+	 * Typical call until now:
+	 * $content .= tx_rnbase_mod_Tables::buildTable($data, $module->getTableLayout());
+	 * Should we include a better default layout here??
+	 *
+	 * @param array $data Multidim array with first levels = rows, second levels = cells
+	 * @param array $layout If set, then this provides an alternative layout array instead of $this->tableLayout
+	 * @return string The HTML table.
+	 */
+	public static function buildTable($data, $layout = null)
+	{
+		$resultHead = $result = '';
+		if (is_array($data)) {
+			$tableLayout = is_array($layout) ? $layout : array(
+					'defRow' => array(
+							'defCol' => array('<td valign="top">', '</td>')
+					)
+				);
+			$rowCount = 0;
+			foreach ($data as $tableRow) {
+				if ($rowCount % 2) {
+					$layout = is_array($tableLayout['defRowOdd']) ? $tableLayout['defRowOdd'] : $tableLayout['defRow'];
+				} else {
+					$layout = is_array($tableLayout['defRowEven']) ? $tableLayout['defRowEven'] : $tableLayout['defRow'];
+				}
+				$rowLayout = is_array($tableLayout[$rowCount]) ? $tableLayout[$rowCount] : $layout;
+				$rowResult = '';
+				if (is_array($tableRow)) {
+					$cellCount = 0;
+					foreach ($tableRow as $tableCell) {
+						$cellWrap = is_array($layout[$cellCount]) ? $layout[$cellCount] : $layout['defCol'];
+						$cellWrap = is_array($rowLayout['defCol']) ? $rowLayout['defCol'] : $cellWrap;
+						$cellWrap = is_array($rowLayout[$cellCount]) ? $rowLayout[$cellCount] : $cellWrap;
+						$rowResult .= $cellWrap[0] . $tableCell . $cellWrap[1];
+						$cellCount++;
+					}
+				}
+				$rowWrap = is_array($layout['tr']) ? $layout['tr'] : array('<tr>', '</tr>');
+				$rowWrap = is_array($rowLayout['tr']) ? $rowLayout['tr'] : $rowWrap;
+
+				if(is_array($tableLayout['headRows']) && in_array($rowCount, $tableLayout['headRows'])) {
+					$resultHead .= $rowWrap[0] . $rowResult . $rowWrap[1];
+				}
+				else {
+					$result .= $rowWrap[0] . $rowResult . $rowWrap[1];
+				}
+				$rowCount++;
+			}
+			if(is_array($tableLayout['headRows'])) {
+				$result = '<thead>'.$resultHead.'</thead><tbody>'.$result.'</tbody>';
+			}
+			else
+				$result = $resultHead . $result;
+			$tableTag = tx_rnbase_util_TYPO3::isTYPO76OrHigher() ?
+				'<table class="table table-striped table-hover table-condensed">' :
+				'<table border="0" cellspacing="0" cellpadding="0" class="typo3-dblist" id="typo3-tmpltable">';
+			$tableWrap = is_array($tableLayout['table']) ? $tableLayout['table'] : array($tableTag, '</table>');
+			$result = $tableWrap[0] . $result . $tableWrap[1];
+		}
+		return $result;
+	}
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_Tables.php'])	{
