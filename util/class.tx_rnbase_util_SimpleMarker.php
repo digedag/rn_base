@@ -182,10 +182,11 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 	 * @param tx_rnbase_util_FormatUtil $formatter
 	 */
 	protected function prepareLinks($item, $marker, &$markerArray, &$subpartArray, &$wrappedSubpartArray, $confId, $formatter, $template) {
-		$pluginData = $formatter->getConfigurations()->getCObj()->data;
-		$formatter->getConfigurations()->getCObj()->data = $item->record;
+		$configurations = $formatter->getConfigurations();
+		$pluginData = $configurations->getCObj()->data;
+		$configurations->getCObj()->data = $item->record;
 
-		$linkIds = $formatter->getConfigurations()->getKeyNames($confId.'links.');
+		$linkIds = $configurations->getKeyNames($confId.'links.');
 		for ($i=0, $cnt=count($linkIds); $i < $cnt; $i++) {
 			$linkId = $linkIds[$i];
 			// Check if link is defined in template
@@ -196,7 +197,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 
 			// Die Parameter erzeugen
 			$params = array();
-			$paramMap = (array) $formatter->getConfigurations()->get($linkConfId . '._cfg.params.');
+			$paramMap = (array) $configurations->get($linkConfId . '._cfg.params.');
 			foreach ($paramMap As $paramName => $colName) {
 				if (is_scalar($colName) && array_key_exists($colName, $item->record)) {
 					$params[$paramName] = $item->record[$colName];
@@ -206,24 +207,24 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 				}
 			}
 			// check for charbrowser config and add the parameter
-			if ($formatter->getConfigurations()->getBool($linkConfId . '._cfg.charbrowser')) {
-				$cbId = $formatter->getConfigurations()->get($linkConfId . '._cfg.charbrowser.cbid');
+			if ($configurations->getBool($linkConfId . '._cfg.charbrowser')) {
+				$cbId = $configurations->get($linkConfId . '._cfg.charbrowser.cbid');
 				$cbId = empty($cbId) ? 'charpointer' : $cbId;
-				$cbColname = $formatter->getConfigurations()->get($linkConfId . '._cfg.charbrowser.colname');
+				$cbColname = $configurations->get($linkConfId . '._cfg.charbrowser.colname');
 				$cbColname = empty($cbColname) ? 'uid' : $cbColname;
 				$params[$cbId] = strtoupper(substr((string) $item->getProperty($cbColname), 0, 1));
 			}
 
-			if ($item->isPersisted()) {
+			if ($configurations->getBool($linkConfId . '.skipPersistedCheck') ||  $item->isPersisted()) {
 				$this->initLink($markerArray, $subpartArray, $wrappedSubpartArray, $formatter, $confId, $linkId, $marker, $params, $template);
 			}
 			else {
 				$linkMarker = $marker . '_' . strtoupper($linkId) . 'LINK';
-				$remove = intval($formatter->getConfigurations()->get($linkConfId . '.removeIfDisabled'));
+				$remove = intval($configurations->get($linkConfId . '.removeIfDisabled'));
 				$this->disableLink($markerArray, $subpartArray, $wrappedSubpartArray, $linkMarker, $remove > 0);
 			}
 		}
-		$formatter->getConfigurations()->getCObj()->data = $pluginData;
+		$configurations->getCObj()->data = $pluginData;
 	}
 
 	/**
