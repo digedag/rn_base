@@ -336,7 +336,12 @@ MAYDAYPAGE;
 			$GLOBALS['TT']->start();
 		}
 
-		if (!is_object($GLOBALS['TSFE']) || $force) {
+		$typoScriptFrontendControllerClass = tx_rnbase_util_Typo3Classes::getTypoScriptFrontendControllerClass();
+		if (
+			!is_object($GLOBALS['TSFE']) ||
+			!($GLOBALS['TSFE'] instanceof $typoScriptFrontendControllerClass) ||
+			$force
+		) {
 
 			if (!defined('PATH_tslib')) {
 				// PATH_tslib setzen
@@ -350,7 +355,7 @@ MAYDAYPAGE;
 			}
 
 			$GLOBALS['TSFE'] = tx_rnbase::makeInstance(
-				tx_rnbase_util_Typo3Classes::getTypoScriptFrontendControllerClass(),
+				$typoScriptFrontendControllerClass,
 				$GLOBALS['TYPO3_CONF_VARS'],
 				$pid,
 				$type
