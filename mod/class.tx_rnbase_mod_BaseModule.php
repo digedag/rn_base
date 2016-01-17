@@ -345,29 +345,12 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 	}';
 	  return $css;
 	}
+	/**
+	 * @deprecated use mod_Tables
+	 * @return multitype:multitype:string  multitype:multitype:string
+	 */
 	public function getTableLayout() {
-		return
-		tx_rnbase_util_TYPO3::isTYPO76OrHigher() ?
-			Array (
-					'headRows' => Array(0),
-					'table' => Array('<table class="table table-striped table-hover table-condensed">', '</table><br/>'),
-					'0' => Array( // Format für 1. Zeile
-							'tr'		=> Array('<tr class="">', '</tr>'),
-							// Format für jede Spalte in der 1. Zeile
-							'defCol' => array('<td>', '</td>')
-					),
-					'defRow' => Array ( // Formate für alle Zeilen
-							'tr'	   => Array('<tr class="">', '</tr>'),
-							'defCol' => Array('<td>', '</td>') // Format für jede Spalte in jeder Zeile
-					),
-					'defRowEven' => Array ( // Formate für alle geraden Zeilen
-							'tr'	   => Array('<tr class="">', '</tr>'),
-							// Format für jede Spalte in jeder Zeile
-							'defCol' => array('<td>', '</td>')
-					)
-			)
-			:
-			Array (
+		return Array (
 					'table' => Array('<table class="typo3-dblist" width="100%" cellspacing="0" cellpadding="0" border="0">', '</table><br/>'),
 					'0' => Array( // Format für 1. Zeile
 						'tr'		=> Array('<tr class="t3-row-header c-headLineTable">', '</tr>'),
