@@ -8,18 +8,15 @@ Crypt
 Mit der Crypt Utility können beliebige Daten anhand eines Schlüssels 
 ver- und entschlüsselt werden.
 
-Beispiel mit allen möglichen Optionen:
+Beispiel mit möglichen Optionen (alle optional):
 ```php
 	$crypt = Tx_Rnbase_Utility_Crypt::getInstance(
-		array_merge(
-			array(
-				'cipher' => MCRYPT_BLOWFISH,
-				'mode' => MCRYPT_MODE_ECB,
-				'key' => 'th3S3cr3t',
-				'urlencode' => TRUE,
-				'base64' => TRUE,
-			),
-			$config
+		array(
+			'cipher' => MCRYPT_BLOWFISH,
+			'mode' => MCRYPT_MODE_ECB,
+			'key' => 'th3S3cr3t',
+			'urlencode' => TRUE,
+			'base64' => TRUE,
 		)
 	);
 	
