@@ -29,7 +29,7 @@
  * @subpackage rn_base
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
- *		  GNU Lesser General Public License, version 3 or later
+ *          GNU Lesser General Public License, version 3 or later
  */
 class Tx_Rnbase_Utility_Crypt
 {
@@ -48,6 +48,7 @@ class Tx_Rnbase_Utility_Crypt
 	private $config = NULL;
 
 	/**
+	 * Creates an crypt instance.
 	 *
 	 * @param array $config
 	 * @return Tx_Rnbase_Utility_Crypt
@@ -58,9 +59,10 @@ class Tx_Rnbase_Utility_Crypt
 	}
 
 	/**
-	 * the constructor
+	 * The constructor
 	 *
-	 * @param array $options
+	 * @param array $config
+	 * @return void
 	 */
 	public function __construct($config)
 	{
