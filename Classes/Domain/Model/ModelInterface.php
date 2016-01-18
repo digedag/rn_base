@@ -27,6 +27,8 @@
  * for backwards compatibility we use tx_rnbase_IModel as base interface
  * but please use Tx_Rnbase_Domain_Model_ModelInterface!
  *
+ * @deprecated please use Tx_Rnbase_Domain_Model_ModelInterface!
+ *
  * @package TYPO3
  * @subpackage rn_base
  * @author René Nitzsche
