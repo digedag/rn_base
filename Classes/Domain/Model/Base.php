@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2007-2013 Rene Nitzsche (rene@system25.de)
+ *  (c) 2007-2015 Rene Nitzsche <rene@system25.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,52 +22,38 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_model_data');
+tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
+tx_rnbase::load('Tx_Rnbase_Domain_Model_ModelInterface');
 tx_rnbase::load('tx_rnbase_util_TCA');
-// Die Datenbank-Klasse
-tx_rnbase::load('tx_rnbase_util_DB');
-
 
 /**
- * This interface defines a base model
+ * Basisklasse für die meisten Model-Klassen.
+ * Sie stellt einen Konstruktor bereit,
+ * der sowohl mit einer UID als auch mit einem Datensatz aufgerufen werden kann.
+ * Die Daten werden in den Instanzvariablen $uid und $record abgelegt.
+ * Der Umfang von $record kann aber je nach Aufruf unterschiedlich sein!
+ *
+ * @package TYPO3
+ * @subpackage rn_base
+ * @author René Nitzsche
+ * @author Michael Wagner
  */
-interface tx_rnbase_IModel {
-	/**
-	 * Returns the uid
-	 *
-	 * @return int
-	 */
-	public function getUid();
+class Tx_Rnbase_Domain_Model_Base
+	extends Tx_Rnbase_Domain_Model_Data
+	implements Tx_Rnbase_Domain_Model_ModelInterface
+{
 
 	/**
-	 * Returns the data record as array
-	 *
-	 * @return array
+	 * @access private, only protected for backwards compatibility
+	 * @var int $uid
 	 */
-	public function getRecord();
-
-}
-
-
-/**
- * Basisklasse für die meisten Model-Klassen. Sie stellt einen Konstruktor bereit, der sowohl
- * mit einer UID als auch mit einem Datensatz aufgerufen werden kann. Die Daten werden
- * in den Instanzvariablen $uid und $record abgelegt. Diese beiden Variablen sind also immer
- * verfügbar. Der Umfang von $record kann aber je nach Aufruf unterschiedlich sein!
- */
-class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IModel {
-
-	var $uid;
+	protected $uid;
 
 	/**
 	 *
 	 * @var string|0
 	 */
 	private $tableName = 0;
-
-	function tx_rnbase_model_base($rowOrUid = NULL) {
-		return $this->init($rowOrUid);
-	}
 
 	/**
 	 * Most model-classes will be initialized by a uid or a database record. So
@@ -78,7 +64,7 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 	 * @return NULL
 	 */
 	function __construct($rowOrUid = NULL) {
-		return $this->tx_rnbase_model_base($rowOrUid);
+		return $this->init($rowOrUid);
 	}
 
 	/**
@@ -99,11 +85,7 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 			if ($rowOrUid === 0) {
 				$this->record = array();
 			} elseif($this->getTableName()) {
-				$options = array();
-				if(is_object($GLOBALS['BE_USER']) && $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects']) {
-					$options['enablefieldsbe'] = 1;
-				}
-				$this->record = tx_rnbase_util_DB::getRecord($this->getTableName(), $this->uid, $options);
+				$this->loadRecord();
 			}
 			// Der Record sollte immer ein Array sein
 			$this->record = is_array($this->record) ? $this->record : array();
@@ -114,6 +96,33 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 
 		return NULL;
 	}
+
+	/**
+	 * loads the record to the model by its uid.
+	 *
+	 * @return void
+	 */
+	protected function loadRecord() {
+
+		$options = array();
+		if (
+			is_object($GLOBALS['BE_USER'])
+			&& $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects']
+		) {
+			$options['enablefieldsbe'] = 1;
+		}
+
+		tx_rnbase::load('Tx_Rnbase_Database_Connection');
+		$db = Tx_Rnbase_Database_Connection::getInstance();
+		$record = $db->getRecord(
+			$this->getTableName(),
+			$this->uid,
+			$options
+		);
+
+		$this->setProperty($record);
+	}
+
 	/**
 	 * Returns the records uid
 	 *
@@ -180,7 +189,7 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 	 * @param DateTimeZone $timezone
 	 * @return DateTime
 	 */
-	public function getCreationDateTime($timezone=NULL) {
+	public function getCreationDateTime($timezone = NULL) {
 		$datetime = NULL;
 		$tableName = $this->getTableName();
 		if (!empty($tableName)) {
@@ -191,15 +200,17 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 				$datetime = tx_rnbase_util_Dates::getDateTime('@' . $tstamp);
 			}
 		}
+
 		return $datetime;
 	}
 
 	/**
 	 * Returns the creation date of the record as DateTime object.
 	 *
+	 * @param DateTimeZone $timezone
 	 * @return DateTime
 	 */
-	public function getLastModifyDateTime($timezone=NULL) {
+	public function getLastModifyDateTime($timezone = NULL) {
 		$datetime = NULL;
 		$tableName = $this->getTableName();
 		if (!empty($tableName)) {
@@ -210,6 +221,7 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 				$datetime = tx_rnbase_util_Dates::getDateTime('@' . $tstamp);
 			}
 		}
+
 		return $datetime;
 	}
 
@@ -218,11 +230,9 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 	 *
 	 * @return tx_rnbase_model_base
 	 */
-	function reset() {
-		$this->record = tx_rnbase_util_DB::getRecord(
-			$this->getTableName(),
-			$this->getUid()
-		);
+	public function reset() {
+
+		$this->loadRecord();
 
 		// set the modified state to clean
 		$this->resetCleanState();
@@ -250,12 +260,13 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 	}
 
 	/**
-	 * Check if this record is valid. If FALSE, the record is maybe deleted in database.
+	 * Check if this record is valid.
+	 * If FALSE, the record is maybe deleted in database.
 	 *
 	 * @return boolean
 	 */
 	public function isValid() {
-		return count($this->record) > 0;
+		return !empty($this->record);
 	}
 
 	/**
@@ -294,6 +305,7 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 			: $GLOBALS['TCA'][$tableName]['ctrl']['delete']
 		;
 		$value = $this->hasProperty($field) ? (int) $this->getProperty($field) : 0;
+
 		return $value > 0;
 	}
 
@@ -310,6 +322,7 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 			: $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns']['disabled']
 		;
 		$value = $this->hasProperty($field) ? (int) $this->getProperty($field) : 0;
+
 		return $value > 0;
 	}
 
@@ -338,33 +351,9 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements tx_rnbase_IMo
 	 *
 	 * @return array
 	 */
-	public function getTCAColumns() {
+	public function getTcaColumns() {
 		$columns = tx_rnbase_util_TCA::getTcaColumns($this->getTableName());
 		return empty($columns) ? 0 : $columns;
 	}
 
-	/**
-	 * Liefert den Inhalt eine Spalte formatiert durch eine stdWrap. Per Konvention wird
-	 * erwartet, das der Name der Spalte auch in der TS-Config verwendet wird.
-	 * Wenn in einem Objekt der Klasse event eine Spalte/Attribut "date" existiert, dann sollte
-	 * das passende TypoScript folgendes Aussehen haben:
-	 * <pre>
-	 * event.date.strftime = %d-%b-%y
-	 * </pre>
-	 * Hier wäre <b>event.</b> die $confId und <b>date</b> der Spaltename
-	 * @param $formatter ein voll initialisierter Formatter für den Wrap
-	 * @param $columnName der Name der Spalte
-	 * @param $baseConfId Id der übergeordneten Config
-	 * @param $colConfId Id der Spalte in der Config zum Aussetzen der Konvention (muss mit Punkt enden)
-	 * @deprecated
-	 */
-	function getColumnWrapped($formatter, $columnName, $baseConfId, $colConfId = '') {
-		$colConfId = ( strlen($colConfId) ) ? $colConfId : $columnName . '.';
-		return $formatter->wrap($this->record[$columnName], $baseConfId . $colConfId);
-	}
-
-}
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/model/class.tx_rnbase_model_base.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/model/class.tx_rnbase_model_base.php']);
 }

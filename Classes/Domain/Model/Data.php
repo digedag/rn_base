@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2007-2014 Rene Nitzsche (rene@system25.de)
+ *  (c) 2007-2015 Rene Nitzsche <rene@system25.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,15 +26,15 @@
  * Basic model with geter's and seter's
  *
  * @method integer getUid()
- * @method tx_rnbase_model_data setUid() setUid(integer $uid)
+ * @method Tx_Rnbase_Domain_Model_Data setUid() setUid(integer $uid)
  * @method boolean hasUid()
- * @method tx_rnbase_model_data unsUid()
+ * @method Tx_Rnbase_Domain_Model_Data unsUid()
  *
- * @package tx_rnbase
- * @subpackage tx_rnbase_model
- * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
+ * @package TYPO3
+ * @subpackage rn_base
+ * @author Michael Wagner
  */
-class tx_rnbase_model_data
+class Tx_Rnbase_Domain_Model_Data
 	implements IteratorAggregate {
 
 	/**
@@ -46,12 +46,12 @@ class tx_rnbase_model_data
 	private $isModified = FALSE;
 
 	/**
+	 * holds the data!
 	 *
-	 * @TODO: declare as private!
-	 *
+	 * @access private, only protected for backwards compatibility
 	 * @var array
 	 */
-	var $record = array();
+	protected $record = array();
 
 	/**
 	 * constructor of the data object
@@ -106,10 +106,10 @@ class tx_rnbase_model_data
 	 * create a new data model
 	 *
 	 * @param array $data
-	 * @return tx_rnbase_model_data
+	 * @return Tx_Rnbase_Domain_Model_Data
 	 */
 	public static function getInstance($data = NULL) {
-		if ($data instanceof tx_rnbase_model_data) {
+		if ($data instanceof self) {
 			return $data;
 		}
 		if (is_array($data)) {
@@ -122,7 +122,9 @@ class tx_rnbase_model_data
 		} else {
 			$data = array();
 		}
-		return tx_rnbase::makeInstance('tx_rnbase_model_data', $data);
+
+		// use get_called_class for backwards compatibility!
+		return tx_rnbase::makeInstance(get_called_class(), $data);
 	}
 
 	/**
@@ -130,7 +132,7 @@ class tx_rnbase_model_data
 	 *
 	 * @param string|array $property
 	 * @param mixed $value
-	 * @return tx_rnbase_model_data
+	 * @return Tx_Rnbase_Domain_Model_Data
 	 */
 	public function setProperty($property, $value = NULL) {
 		// set the modified state
@@ -166,7 +168,7 @@ class tx_rnbase_model_data
 	 * Entfernt einen Wert.
 	 *
 	 * @param string $property
-	 * @return tx_rnbase_model_data
+	 * @return Tx_Rnbase_Domain_Model_Data
 	 */
 	public function unsProperty($property) {
 		// set the modified state
@@ -253,6 +255,7 @@ class tx_rnbase_model_data
 	 * foreach($data as $var) {$var = 0; };
 	 * user this to manipulate the data:
 	 * foreach($data as $key => $var) { $data->setProperty($key, 0); };
+	 *
 	 * @return ArrayIterator
 	 */
 	public function getIterator() {
@@ -267,7 +270,7 @@ class tx_rnbase_model_data
 	public function toArray() {
 		$array = $this->getProperty();
 		foreach ($array as $key => $value) {
-			if ($value instanceof tx_rnbase_model_data) {
+			if ($value instanceof Tx_Rnbase_Domain_Model_Data) {
 				$array[$key] = $value->toArray();
 			}
 		}
@@ -304,8 +307,4 @@ class tx_rnbase_model_data
 		return $this->toString();
 	}
 
-}
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/model/class.tx_rnbase_model_data.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/model/class.tx_rnbase_model_data.php']);
 }

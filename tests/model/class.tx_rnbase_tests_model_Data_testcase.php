@@ -147,6 +147,20 @@ class tx_rnbase_tests_model_Data_testcase
 		$model->record['first_name'];
 		$this->assertFalse($model->isDirty());
 	}
+	/**
+	 * @test
+	 */
+	public function testRecordDirectAccessForBackwardsCompatibility() {
+		$model = $this->getModelInstance();
+		// check data without manipulation
+		$this->assertSame('John', $model->record['first_name']);
+		// check data after property change
+		$model->setFirstName('Jonny');
+		$this->assertSame('Jonny', $model->record['first_name']);
+		// check backwards compatibility for direct record access
+		$model->record['first_name'] = 'Jonas';
+		$this->assertSame('Jonas', $model->record['first_name']);
+	}
 
 }
 
