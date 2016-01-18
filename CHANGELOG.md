@@ -4,6 +4,8 @@
 ----------
 
 v1.0.0 (??.??.????)
+ * new Crypt Utility
+ * model and repository refactoring
  * skipPersistedCheck check in simple marker added
  * getSortbyFieldForTable method added to get sortable column of a table
  * move up and down links in form util added to move records in a be module
