@@ -41,7 +41,18 @@ tx_rnbase::load('Tx_Rnbase_Interface_Singleton');
  * @license 		http://www.gnu.org/licenses/lgpl.html
  * 					GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton{
+class Tx_Rnbase_Database_Connection
+	implements Tx_Rnbase_Interface_Singleton
+{
+
+	/**
+	 * returns an instance of this class.
+	 *
+	 * @return Tx_Rnbase_Database_Connection
+	 */
+	public static function getInstance() {
+		return tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection');
+	}
 
 	/**
 	 * Generische Schnittstelle für Datenbankabfragen. Anstatt vieler Parameter wird hier ein
