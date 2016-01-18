@@ -97,7 +97,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 		tx_rnbase_configurations $configurations,
 		$confId
 	) {
-		if (empty($item->record)) {
+		if (!$item->isValid()) {
 			return;
 		}
 
