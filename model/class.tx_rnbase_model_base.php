@@ -62,6 +62,18 @@ class tx_rnbase_model_base
 	}
 
 	/**
+	 * Returns the records uid
+	 *
+	 * @return int
+	 */
+	function getUid() {
+		// backwards compatibility for models without a integer!
+		if (!is_numeric($this->uid)) {
+			return $this->uid;
+		}
+		return parent::getUid();
+	}
+	/**
 	 * Liefert den Inhalt eine Spalte formatiert durch eine stdWrap. Per Konvention wird
 	 * erwartet, das der Name der Spalte auch in der TS-Config verwendet wird.
 	 * Wenn in einem Objekt der Klasse event eine Spalte/Attribut "date" existiert, dann sollte

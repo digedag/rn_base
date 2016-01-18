@@ -144,10 +144,10 @@ class Tx_Rnbase_Domain_Model_Base
 					&& empty($this->record[$languageParentField])
 				)
 			) {
-				$uid = $this->record[$languageParentField];
+				$uid = (int) $this->record[$languageParentField];
 			}
 		}
-		return $uid > 0 ? $uid : $this->uid;
+		return $uid > 0 ? $uid : (int) $this->uid;
 	}
 
 	/**

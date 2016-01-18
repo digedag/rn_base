@@ -22,15 +22,24 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_rnbase_model_base');
 
-class tx_rnbase_tests_model_Base_testcase extends tx_phpunit_testcase {
+class tx_rnbase_tests_model_Base_testcase extends tx_rnbase_tests_BaseTestCase {
 
 	public function test_magiccall() {
 		$model = new tx_rnbase_model_base(array('uid'=>1, 'test_value'=>45));
 		$this->assertEquals(45, $model->getTestValue());
 	}
 
+	public function testGetWithoutNumeric() {
+		// return a string
+		$model = $this->getModel(array('uid' => 'foo'));
+		$this->assertSame('foo', $model->getUid());
+		// check for numeric. it should be realy a numeric!
+		$model = $this->getModel(array('uid' => '10'));
+		$this->assertSame(10, $model->getUid());
+	}
 	public function testGetUidWhenNoLocalisation() {
 		$model = $this->getMock(
 			'tx_rnbase_model_base',
