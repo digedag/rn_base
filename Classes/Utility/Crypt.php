@@ -53,7 +53,7 @@ class Tx_Rnbase_Utility_Crypt
 	 * @param array $config
 	 * @return Tx_Rnbase_Utility_Crypt
 	 */
-	public static function getInstance($config)
+	public static function getInstance($config = NULL)
 	{
 		return tx_rnbase::makeInstance('Tx_Rnbase_Utility_Crypt', $config);
 	}
@@ -64,8 +64,9 @@ class Tx_Rnbase_Utility_Crypt
 	 * @param array $config
 	 * @return void
 	 */
-	public function __construct($config)
+	public function __construct($config = NULL)
 	{
+		tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
 		$this->config = Tx_Rnbase_Domain_Model_Data::getInstance($config);
 		$this->init();
 	}
