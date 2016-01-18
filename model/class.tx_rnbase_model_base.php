@@ -62,6 +62,21 @@ class tx_rnbase_model_base
 	}
 
 	/**
+	 * make uid and record public, for backwards compatibility.
+	 * for changes at the record, it has to be an reference!
+	 *
+	 * @param string $name
+	 * @return mixed
+	 */
+	public function __set ($name, $value) {
+		if ($name === 'uid') {
+			$this->uid = $value;
+		}
+
+		return NULL;
+	}
+
+	/**
 	 * Returns the records uid
 	 *
 	 * @return int
