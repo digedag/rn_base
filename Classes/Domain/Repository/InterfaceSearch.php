@@ -29,10 +29,8 @@
  * @subpackage Tx_Rnbase
  * @author Michael Wagner
  */
-interface Tx_Rnbase_Repository_InterfaceSearch
+interface Tx_Rnbase_Domain_Repository_InterfaceSearch
 {
-
-
 	/**
 	 * Search repository
 	 *

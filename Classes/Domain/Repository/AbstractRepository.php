@@ -22,7 +22,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('Tx_Rnbase_Repository_InterfaceSearch');
+tx_rnbase::load('Tx_Rnbase_Domain_Repository_InterfaceSearch');
 tx_rnbase::load('Tx_Rnbase_Interface_Singleton');
 
 /**
@@ -32,8 +32,8 @@ tx_rnbase::load('Tx_Rnbase_Interface_Singleton');
  * @subpackage Tx_Rnbase
  * @author Michael Wagner
  */
-abstract class Tx_Rnbase_Repository_AbstractRepository
-	implements Tx_Rnbase_Repository_InterfaceSearch, Tx_Rnbase_Interface_Singleton
+abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
+	implements Tx_Rnbase_Domain_Repository_InterfaceSearch, Tx_Rnbase_Interface_Singleton
 {
 
 	/**
@@ -97,6 +97,8 @@ abstract class Tx_Rnbase_Repository_AbstractRepository
 	}
 
 	/**
+	 * returns all items
+	 *
 	 * @return array[tx_rnbase_model_base]
 	 */
 	public function findAll() {
@@ -183,7 +185,8 @@ abstract class Tx_Rnbase_Repository_AbstractRepository
 				if (isset($options['additionali18n'])) {
 					$languages = tx_rnbase_util_Strings::trimExplode(',', $options['additionali18n'], TRUE);
 				}
-				$languages[] = '-1'; // for all languages
+				// for all languages
+				$languages[] = '-1';
 				// Wenn eine bestimmte Sprache gesetzt ist,
 				// laden wir diese ebenfalls.
 				if (is_object($tsfe) && $tsfe->sys_language_content) {
@@ -191,7 +194,8 @@ abstract class Tx_Rnbase_Repository_AbstractRepository
 				}
 				// andernfalls nutzen wir die default sprache
 				else {
-					$languages[] = '0'; // default language
+					// default language
+					$languages[] = '0';
 				}
 				$options['i18n'] = implode(',', array_unique($languages, SORT_NUMERIC));
 			}
@@ -253,9 +257,31 @@ abstract class Tx_Rnbase_Repository_AbstractRepository
 		return $items;
 	}
 
-	/************************
-	 * Manipulation methods *
-	 ************************/
+	/* *** ******************** *** *
+	 * *** Manipulation methods *** *
+	 * *** ******************** *** */
+
 	// @TODO Manipulation methods with own interface
 
+}
+
+/**
+ * the old class for backwards compatibility
+ *
+ * @deprecated: will be dripped in the feature!
+ */
+abstract class Tx_Rnbase_Repository_AbstractRepository
+	extends Tx_Rnbase_Domain_Repository_AbstractRepository
+{
+	/**
+	 * constructor to log deprecation!
+	 *
+	 * @return void
+	 */
+	function __construct() {
+		t3lib_div::deprecationLog(
+			'Usage of "Tx_Rnbase_Repository_AbstractRepository" is deprecated' .
+			'Please use "Tx_Rnbase_Domain_Repository_AbstractRepository" instead!'
+		);
+	}
 }
