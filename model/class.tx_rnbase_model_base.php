@@ -69,7 +69,9 @@ class tx_rnbase_model_base
 	 * @return mixed
 	 */
 	public function __set ($name, $value) {
-		if ($name === 'uid') {
+		if ($name === 'record') {
+			$this->record = $value;
+		} elseif ($name === 'uid') {
 			$this->uid = $value;
 		}
 

@@ -48,6 +48,21 @@ class tx_rnbase_model_data
 
 		return NULL;
 	}
+
+	/**
+	 * make uid and record public, for backwards compatibility.
+	 * for changes at the record, it has to be an reference!
+	 *
+	 * @param string $name
+	 * @return mixed
+	 */
+	public function __set ($name, $value) {
+		if ($name === 'record') {
+			$this->record = $value;
+		}
+
+		return NULL;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/model/class.tx_rnbase_model_data.php']) {
