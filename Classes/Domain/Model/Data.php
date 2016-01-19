@@ -37,8 +37,8 @@ tx_rnbase::load('Tx_Rnbase_Domain_Model_DataInterface');
  * @author Michael Wagner
  */
 class Tx_Rnbase_Domain_Model_Data
-	implements Tx_Rnbase_Domain_Model_DataInterface, IteratorAggregate {
-
+	implements Tx_Rnbase_Domain_Model_DataInterface, IteratorAggregate
+{
 	/**
 	 * A flag indication if the model was modified after initialisation
 	 * (eg. by changing a property)
@@ -50,10 +50,9 @@ class Tx_Rnbase_Domain_Model_Data
 	/**
 	 * holds the data!
 	 *
-	 * @access private, only protected for backwards compatibility
 	 * @var array
 	 */
-	protected $record = array();
+	private $record = array();
 
 	/**
 	 * constructor of the data object

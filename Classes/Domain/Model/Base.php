@@ -44,12 +44,10 @@ class Tx_Rnbase_Domain_Model_Base
 	extends Tx_Rnbase_Domain_Model_Data
 	implements Tx_Rnbase_Domain_Model_DomainInterface, Tx_Rnbase_Domain_Model_DynamicTableInterface, Tx_Rnbase_Domain_Model_RecordInterface
 {
-
 	/**
-	 * @access private, only protected for backwards compatibility
 	 * @var int $uid
 	 */
-	protected $uid;
+	private $uid;
 
 	/**
 	 *
@@ -78,19 +76,17 @@ class Tx_Rnbase_Domain_Model_Base
 	 */
 	function init($rowOrUid = NULL) {
 		if (is_array($rowOrUid)) {
-			$this->uid = $rowOrUid['uid'];
-			$this->record = $rowOrUid;
+			parent::init($rowOrUid);
+			$this->uid = $this->getProperty('uid');
 		}
 		else {
 			$rowOrUid = (int) $rowOrUid;
 			$this->uid = $rowOrUid;
 			if ($rowOrUid === 0) {
-				$this->record = array();
+				parent::init(array());
 			} elseif($this->getTableName()) {
 				$this->loadRecord();
 			}
-			// Der Record sollte immer ein Array sein
-			$this->record = is_array($this->record) ? $this->record : array();
 		}
 
 		// set the modified state to clean
@@ -135,18 +131,18 @@ class Tx_Rnbase_Domain_Model_Base
 		$tableName = $this->getTableName();
 		if (!empty($tableName)) {
 			// Take care for localized records where uid of original record
-			// is stored in $this->record['l18n_parent'] instead of $this->record['uid']!
+			// is stored in $record['l18n_parent'] instead of $record['uid']!
 			$languageParentField = tx_rnbase_util_TCA::getTransOrigPointerFieldForTable($tableName);
 			$sysLanguageUidField = tx_rnbase_util_TCA::getLanguageFieldForTable($tableName);
 			if (
 				!(
 					empty($languageParentField)
 					&& empty($sysLanguageUidField)
-					&& empty($this->record[$sysLanguageUidField])
-					&& empty($this->record[$languageParentField])
+					&& ($this->isPropertyEmpty($sysLanguageUidField))
+					&& ($this->isPropertyEmpty($languageParentField))
 				)
 			) {
-				$uid = (int) $this->record[$languageParentField];
+				$uid = (int) $this->getProperty($languageParentField);
 			}
 		}
 		return $uid > 0 ? $uid : (int) $this->uid;
@@ -268,7 +264,8 @@ class Tx_Rnbase_Domain_Model_Base
 	 * @return boolean
 	 */
 	public function isValid() {
-		return !empty($this->record);
+		$record = $this->getProperty();
+		return !empty($record);
 	}
 
 	/**
