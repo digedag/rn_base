@@ -25,9 +25,9 @@
 /**
  * This interface defines a base model.
  * for backwards compatibility we use tx_rnbase_IModel as base interface
- * but please use Tx_Rnbase_Domain_Model_ModelInterface!
+ * but please use Tx_Rnbase_Domain_Model_RecordInterface!
  *
- * @deprecated please use Tx_Rnbase_Domain_Model_ModelInterface!
+ * @deprecated please use Tx_Rnbase_Domain_Model_RecordInterface!
  *
  * @package TYPO3
  * @subpackage rn_base
@@ -61,7 +61,7 @@ interface tx_rnbase_IModel
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-interface Tx_Rnbase_Domain_Model_ModelInterface
+interface Tx_Rnbase_Domain_Model_RecordInterface
 	extends tx_rnbase_IModel
 {
 }

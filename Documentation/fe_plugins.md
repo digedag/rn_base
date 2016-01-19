@@ -158,9 +158,9 @@ Wenn man nun diese Klasse bei der Datenbankabfrage als Option mit angibt, dann w
  $options['wrapperclass'] = 'tx_extkey_data';
  $persons = tx_rnbase_util_DB::doSelect('*', 'tx_extkey_person', $options)
 ```
-In $persons erhalten wir dann ein Array von Objekten. Mit der Klasse tx_rnbase_model_base stellt rn_base ein Basisklasse mit einigen zusätzlichen Features bereit. Die Kindklassen müssen hier nur noch ein abstrakte Methode implementieren:
+In $persons erhalten wir dann ein Array von Objekten. Mit der Klasse Tx_Rnbase_Domain_Model_Base stellt rn_base ein Basisklasse mit einigen zusätzlichen Features bereit. Die Kindklassen müssen hier nur noch ein abstrakte Methode implementieren:
 ```php
-class tx_extkey_models_export extends tx_rnbase_model_base {
+class tx_extkey_models_export extends Tx_Rnbase_Domain_Model_Base {
  function getTableName(){return 'tx_extkey_person';}
 }
 ```

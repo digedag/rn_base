@@ -144,7 +144,7 @@ abstract class tx_rnbase_sv1_Base extends Tx_Rnbase_Service_Base {
 	 * @param string				$where			Override default restriction by defining an explicite where clause
 	 * @return tx_rnbase_model_base Updated model
 	 */
-	public function handleUpdate(tx_rnbase_model_base $model, array $data, $where='') {
+	public function handleUpdate(Tx_Rnbase_Domain_Model_RecordInterface $model, array $data, $where='') {
 
 		$table = $model->getTableName();
 		$uid = intval($model->getUid());
@@ -222,7 +222,7 @@ abstract class tx_rnbase_sv1_Base extends Tx_Rnbase_Service_Base {
 	 * @param int					$table		Wenn eine Tabelle angegeben wird, wird die des Models missachtet (wichtig für temp anzeigen)
 	 * @return tx_rnbase_model_base				Updated (on success actually empty) model.
 	 */
-	public function handleDelete(tx_rnbase_model_base $model, $where='', $mode=0, $table=NULL) {
+	public function handleDelete(Tx_Rnbase_Domain_Model_RecordInterface $model, $where='', $mode=0, $table=NULL) {
 		if(empty($table)) {
 			$table = $model->getTableName();
 		}

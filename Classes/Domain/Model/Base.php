@@ -23,7 +23,9 @@
  ***************************************************************/
 
 tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
-tx_rnbase::load('Tx_Rnbase_Domain_Model_ModelInterface');
+tx_rnbase::load('Tx_Rnbase_Domain_Model_DomainInterface');
+tx_rnbase::load('Tx_Rnbase_Domain_Model_DynamicTableInterface');
+tx_rnbase::load('Tx_Rnbase_Domain_Model_RecordInterface');
 tx_rnbase::load('tx_rnbase_util_TCA');
 
 /**
@@ -40,7 +42,7 @@ tx_rnbase::load('tx_rnbase_util_TCA');
  */
 class Tx_Rnbase_Domain_Model_Base
 	extends Tx_Rnbase_Domain_Model_Data
-	implements Tx_Rnbase_Domain_Model_ModelInterface
+	implements Tx_Rnbase_Domain_Model_DomainInterface, Tx_Rnbase_Domain_Model_DynamicTableInterface, Tx_Rnbase_Domain_Model_RecordInterface
 {
 
 	/**
@@ -228,7 +230,7 @@ class Tx_Rnbase_Domain_Model_Base
 	/**
 	 * Reload this records from database
 	 *
-	 * @return tx_rnbase_model_base
+	 * @return Tx_Rnbase_Domain_Model_Base
 	 */
 	public function reset() {
 
@@ -252,7 +254,7 @@ class Tx_Rnbase_Domain_Model_Base
 	 * Setzt den aktuellen Tabellenname
 	 *
 	 * @param string $tableName
-	 * @return tx_rnbase_model_base
+	 * @return Tx_Rnbase_Domain_Model_Base
 	 */
 	public function setTableName($tableName = 0) {
 		$this->tableName = $tableName;

@@ -75,7 +75,7 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
 	 * This is used only to access several model info methods like
 	 * getTableName(), getColumnNames() etc.
 	 *
-	 * @return tx_rnbase_model_base
+	 * @return Tx_Rnbase_Domain_Model_DomainInterface
 	 */
 	public function getEmptyModel() {
 		return tx_rnbase::makeInstance($this->getWrapperClass());
@@ -85,10 +85,10 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
 	 * Holt einen bestimmten Datensatz aus dem Repo.
 	 *
 	 * @param integer|array $rowOrUid
-	 * @return tx_rnbase_model_base|null
+	 * @return Tx_Rnbase_Domain_Model_DomainInterface|null
 	 */
 	public function findByUid($rowOrUid) {
-		/* @var $model tx_rnbase_model_base */
+		/* @var $model Tx_Rnbase_Domain_Model_DomainInterface */
 		$model = tx_rnbase::makeInstance(
 			$this->getWrapperClass(),
 			$rowOrUid
@@ -99,7 +99,7 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
 	/**
 	 * returns all items
 	 *
-	 * @return array[tx_rnbase_model_base]
+	 * @return array[Tx_Rnbase_Domain_Model_DomainInterface]
 	 */
 	public function findAll() {
 		return $this->search(array(), array());
@@ -110,7 +110,7 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
 	 *
 	 * @param array $fields
 	 * @param array $options
-	 * @return array[tx_rnbase_model_base]
+	 * @return array[Tx_Rnbase_Domain_Model_DomainInterface]
 	 */
 	public function search(array $fields, array $options) {
 		$this->prepareFieldsAndOptions($fields, $options);
@@ -123,7 +123,7 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
 	 *
 	 * @param array $fields
 	 * @param array $options
-	 * @return tx_rnbase_model_base
+	 * @return Tx_Rnbase_Domain_Model_DomainInterface
 	 */
 	public function searchSingle(array $fields = array(), array $options = array()) {
 		$options['limit'] = 1;
@@ -207,7 +207,7 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
 	 *
 	 * @param array $items
 	 * @param array $options
-	 * @return array[tx_rnbase_model_base]
+	 * @return array[Tx_Rnbase_Domain_Model_DomainInterface]
 	 */
 	protected function prepareItems($items, $options) {
 		if (!is_array($items)) {
@@ -223,18 +223,18 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
 	 *
 	 * @param array $items
 	 * @param unknown_type $options
-	 * @return array[tx_rnbase_model_base]
+	 * @return array[Tx_Rnbase_Domain_Model_DomainInterface]
 	 */
 	protected function uniqueItems(array $items, $options) {
 		// uniqueue, if there are models and the distinct option
 		if (
-			reset($items) instanceof tx_rnbase_model_base
+			reset($items) instanceof Tx_Rnbase_Domain_Model_DomainInterface
 			&& isset($options['distinct'])
 			&& $options['distinct']
 		) {
 			// seperate master and overlays
 			$master = $overlay = array();
-			/* @var $item tx_rnbase_model_base */
+			/* @var $item Tx_Rnbase_Domain_Model_DomainInterface */
 			foreach ($items as $item) {
 				$uid = (int) $item->getUid();
 				$realUid = (int) $item->getProperty('uid');

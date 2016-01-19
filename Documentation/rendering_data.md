@@ -16,7 +16,7 @@ Für die Erstellung der Template-Marker sind sogenannte Markerklassen verantwort
 ```php
 	/**
 	 * @param string $template das HTML-Template
-	 * @param tx_rnbase_model_base $item
+	 * @param Tx_Rnbase_Domain_Model_Base $item
 	 * @param tx_rnbase_util_FormatUtil $formatter der zu verwendente Formatter
 	 * @param string $confId Pfad der TS-Config
 	 * @param string $marker Name des Markers

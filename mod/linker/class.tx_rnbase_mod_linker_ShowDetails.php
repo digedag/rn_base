@@ -38,7 +38,7 @@ class tx_rnbase_mod_linker_ShowDetails
 	/**
 	 * Link zur Detailseite erzeugen
 	 *
-	 * @param tx_rnbase_model_base $item
+	 * @param Tx_Rnbase_Domain_Model_Base $item
 	 * @param tx_rnbase_util_FormTool $formTool
 	 * @param int $currentPid
 	 * @param tx_rnbase_model_data $options

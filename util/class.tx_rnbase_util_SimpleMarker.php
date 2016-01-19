@@ -93,7 +93,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 	 * @return void
 	 */
 	protected function prepareItem(
-		tx_rnbase_model_base $item,
+		Tx_Rnbase_Domain_Model_RecordInterface $item,
 		tx_rnbase_configurations $configurations,
 		$confId
 	) {

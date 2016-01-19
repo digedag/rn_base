@@ -57,7 +57,7 @@ class tx_rnbase_mod_Tables {
 			// table.typo3-dblist tr.localization { opacity: 0.5; font-size: 0.92em; }
 			// table.typo3-dblist tr.localization td:nth-child(1), table.typo3-dblist tr.localization td:nth-child(2) { padding-left: 24px; }
 			if (
-				$entry instanceof tx_rnbase_model_base
+				$entry instanceof Tx_Rnbase_Domain_Model_RecordInterface
 				&& $options->getAddI18Overlays()
 				// skip if the entry already translated!
 				&& $entry->getUid() == $entry->getProperty('uid')
@@ -112,7 +112,7 @@ class tx_rnbase_mod_Tables {
 
 		if ($options->getAddRecordSprite()) {
 			$spriteIconName = 'mimetypes-other-other';
-			if ($entry instanceof tx_rnbase_model_base && $entry->getTableName()) {
+			if ($entry instanceof Tx_Rnbase_Domain_Model_RecordInterface && $entry->getTableName()) {
 				$spriteIconName = Tx_Rnbase_Backend_Utility_Icons::mapRecordTypeToSpriteIconName(
 					$entry->getTableName(),
 					$record
@@ -198,11 +198,11 @@ class tx_rnbase_mod_Tables {
 	/**
 	 * returns all language overlays.
 	 *
-	 * @param tx_rnbase_model_base $entry
-	 * @return array[tx_rnbase_model_base]
+	 * @param Tx_Rnbase_Domain_Model_Base $entry
+	 * @return array[Tx_Rnbase_Domain_Model_Base]
 	 */
 	private static function getLangOverlayEntries(
-		tx_rnbase_model_base $entry
+		Tx_Rnbase_Domain_Model_RecordInterface $entry
 	) {
 		tx_rnbase::load('tx_rnbase_util_TCA');
 		$parentField = tx_rnbase_util_TCA::getTransOrigPointerFieldForTable($entry->getTableName());
@@ -220,7 +220,7 @@ class tx_rnbase_mod_Tables {
 	/**
 	 *
 	 * @param tx_rnbase_model_data $options
-	 * @param tx_rnbase_model_base $obj
+	 * @param Tx_Rnbase_Domain_Model_Base $obj
 	 * @param tx_rnbase_util_FormTool $formTool
 	 * @return string
 	 */

@@ -125,13 +125,13 @@ class tx_rnbase_util_TCA {
 	/**
 	 * validates the data of a model with the tca definition of a its table.
 	 *
-	 * @param tx_rnbase_model_base $model
+	 * @param Tx_Rnbase_Domain_Model_RecordInterface $model
 	 * @param array $options
 	 *     only_record_fields: validates only fields included in the record
 	 * @return bolean
 	 */
 	public static function validateModel(
-		tx_rnbase_model_base $model,
+		Tx_Rnbase_Domain_Model_RecordInterface $model,
 		$options = NULL
 	) {
 		return self::validateRecord(

@@ -1,8 +1,8 @@
 <?php
-/**
+/***************************************************************
  * Copyright notice
  *
- *  (c) 2007-2015 Rene Nitzsche (rene@system25.de)
+ *  (c) 2007-2015 Rene Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -20,31 +20,31 @@
  * GNU General Public License for more details.
  *
  * This copyright notice MUST APPEAR in all copies of the script!
- */
+ ***************************************************************/
 
 /**
- * linker interface for mod tables.
+ * This interface defines a base domain model.
  *
  * @package TYPO3
- * @subpackage tx_rnbase
- * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
+ * @subpackage rn_base
+ * @author Michael Wagner
+ * @license http://www.gnu.org/licenses/lgpl.html
+ *          GNU Lesser General Public License, version 3 or later
  */
-interface tx_rnbase_mod_linker_LinkerInterface {
-
-
+interface Tx_Rnbase_Domain_Model_DynamicTableInterface
+{
 	/**
-	 * Link zur Detailseite erzeugen
+	 * Liefert den aktuellen Tabellenname
 	 *
-	 * @param Tx_Rnbase_Domain_Model_Base $item
-	 * @param tx_rnbase_util_FormTool $formTool
-	 * @param int $currentPid
-	 * @param tx_rnbase_model_data $options
 	 * @return string
 	 */
-	public function makeLink($item, $formTool, $currentPid, $options);
+	public function getTableName();
 
-}
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/linker/class.tx_rnbase_mod_LinkerInterface.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/linker/class.tx_rnbase_mod_LinkerInterface.php']);
+	/**
+	 * Setzt den aktuellen Tabellenname
+	 *
+	 * @param string $tableName
+	 * @return Tx_Rnbase_Domain_Model_Base
+	 */
+	public function setTableName($tableName = 0);
 }
