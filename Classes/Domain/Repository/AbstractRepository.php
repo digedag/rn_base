@@ -223,18 +223,18 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
 	 *
 	 * @param array $items
 	 * @param unknown_type $options
-	 * @return array[Tx_Rnbase_Domain_Model_DomainInterface]
+	 * @return array[Tx_Rnbase_Domain_Model_RecordInterface]
 	 */
 	protected function uniqueItems(array $items, $options) {
 		// uniqueue, if there are models and the distinct option
 		if (
-			reset($items) instanceof Tx_Rnbase_Domain_Model_DomainInterface
+			reset($items) instanceof Tx_Rnbase_Domain_Model_RecordInterface
 			&& isset($options['distinct'])
 			&& $options['distinct']
 		) {
 			// seperate master and overlays
 			$master = $overlay = array();
-			/* @var $item Tx_Rnbase_Domain_Model_DomainInterface */
+			/* @var $item Tx_Rnbase_Domain_Model_RecordInterface */
 			foreach ($items as $item) {
 				$uid = (int) $item->getUid();
 				$realUid = (int) $item->getProperty('uid');

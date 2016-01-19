@@ -24,7 +24,6 @@
 
 tx_rnbase::load('tx_rnbase_model_data');
 tx_rnbase::load('Tx_Rnbase_Domain_Model_RecordInterface');
-tx_rnbase::load('Tx_Rnbase_Domain_Model_DomainInterface');
 tx_rnbase::load('tx_rnbase_util_TCA');
 // Die Datenbank-Klasse
 tx_rnbase::load('tx_rnbase_util_DB');
@@ -42,7 +41,7 @@ tx_rnbase::load('tx_rnbase_util_DB');
  */
 class tx_rnbase_model_base
 	extends tx_rnbase_model_data
-		implements Tx_Rnbase_Domain_Model_RecordInterface, Tx_Rnbase_Domain_Model_DomainInterface
+		implements Tx_Rnbase_Domain_Model_RecordInterface
 {
 
 	var $uid;
