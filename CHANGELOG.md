@@ -4,7 +4,7 @@
 ----------
 
 v1.0.0 (??.??.????)
- * new interfaces for domain models
+  * new interfaces for domain and data models
  * new Crypt Utility
  * model and repository refactoring
  * skipPersistedCheck check in simple marker added

@@ -22,6 +22,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+tx_rnbase::load('Tx_Rnbase_Domain_Model_DataInterface');
+
 /**
  * Basic model with geter's and seter's
  *
@@ -39,7 +41,7 @@
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_rnbase_model_data
-	implements IteratorAggregate {
+	implements Tx_Rnbase_Domain_Model_DataInterface, IteratorAggregate {
 
 	/**
 	 * A flag indication if the model was modified after initialisation
