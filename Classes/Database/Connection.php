@@ -172,7 +172,11 @@ class Tx_Rnbase_Database_Connection
 				$this->lookupLanguage($row, $tableName, $arr);
 				if(!is_array($row)) continue;
 				$item = ($wrapper) ? tx_rnbase::makeInstance($wrapper, $row) : $row;
-				if ($item instanceof Tx_Rnbase_Domain_Model_DynamicTableInterface) {
+				if (
+					$item instanceof Tx_Rnbase_Domain_Model_DynamicTableInterface
+					// @TODO: backward compatibility for old models will be removed soon
+					|| $item instanceof tx_rnbase_model_base
+				) {
 					$item->setTablename($tableName);
 				}
 				if($callback) {
