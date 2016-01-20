@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Rene Nitzsche
+ *  (c) 2013-2016 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -310,6 +310,7 @@ class tx_rnbase_util_TSFAL {
 		$ret = array();
 		foreach($references As $fileRef ) {
 			/* @var $fileRef \TYPO3\CMS\Core\Resource\FileReference */
+			if(!is_object($fileRef)) continue;
 			$thumbnail = FALSE;
 			/* @var $fileObject \TYPO3\CMS\Core\Resource\File */
 			$fileObject = $fileRef->getOriginalFile();
