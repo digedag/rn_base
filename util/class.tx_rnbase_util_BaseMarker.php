@@ -41,7 +41,7 @@ class tx_rnbase_util_BaseMarker {
   /**
    * Initialisiert die Labels für die eine Model-Klasse
    *
-   * @param string $classname child class of tx_rnbase_model_base or NULL
+   * @param string $classname child class of Tx_Rnbase_Domain_Model_RecordInterface or NULL
    * @param tx_rnbase_util_FormatUtil $formatter
    * @param array $defaultMarkerArr
    */
@@ -54,7 +54,7 @@ class tx_rnbase_util_BaseMarker {
   /**
    * Initialisiert die Labels für die eine Model-Klasse
    *
-   * @param string $classname child class of tx_rnbase_model_base or NULL
+   * @param string $classname child class of Tx_Rnbase_Domain_Model_RecordInterface or NULL
    * @param tx_rnbase_util_FormatUtil $formatter
    * @param string $confId
    * @param array $defaultMarkerArr
@@ -295,14 +295,15 @@ class tx_rnbase_util_BaseMarker {
    * @return object
    */
 	protected static function getEmptyInstance($classname) {
-		if(!is_object(self::$emptyObjects[$classname])) {
-    	$dummy = tx_rnbase::makeInstance($classname, array('uid' => 0));
-    	$cols = $dummy->getColumnNames();
-    	for($i=0, $cnt = count($cols); $i < $cnt; $i++) {
-    		$dummy->record[$cols[$i]] = '';
-    	}
-    	self::$emptyObjects[$classname] = $dummy;
+		if (!is_object(self::$emptyObjects[$classname])) {
+			/* @var $dummy Tx_Rnbase_Domain_Model_DomainInterface */
+			$dummyInstance = tx_rnbase::makeInstance($classname, array('uid' => 0));
+			foreach ($dummyInstance->getColumnNames() as $column) {
+				$dummyInstance->setProperty($column, '');
+			}
+			self::$emptyObjects[$classname] = $dummyInstance;
 		}
+
 		return self::$emptyObjects[$classname];
 	}
 

@@ -38,7 +38,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 
 	/**
 	 * @param string $template das HTML-Template
-	 * @param tx_rnbase_model_base $item
+	 * @param Tx_Rnbase_Domain_Model_DomainInterface $item
 	 * @param tx_rnbase_util_FormatUtil $formatter der zu verwendente Formatter
 	 * @param string $confId Pfad der TS-Config
 	 * @param string $marker Name des Markers
@@ -57,8 +57,8 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 		$template = $this->prepareTemplate($template, $item, $formatter, $confId, $marker);
 
 		// Es wird das MarkerArray mit den Daten des Records gefüllt.
-		$ignore = self::findUnusedCols($item->record, $template, $marker);
-		$markerArray = $formatter->getItemMarkerArrayWrapped($item->record, $confId , $ignore, $marker.'_', $item->getColumnNames());
+		$ignore = self::findUnusedCols($item->getRecord(), $template, $marker);
+		$markerArray = $formatter->getItemMarkerArrayWrapped($item->getRecord(), $confId , $ignore, $marker.'_', $item->getColumnNames());
 
 		// subparts erzeugen
 		$wrappedSubpartArray = $subpartArray = array();
@@ -75,7 +75,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 	/**
 	 * Die Methode kann von Kindklassen verwendet werden.
 	 * @param string $template das HTML-Template
-	 * @param tx_rnbase_model_base $item
+	 * @param Tx_Rnbase_Domain_Model_RecordInterface $item
 	 * @param tx_rnbase_util_FormatUtil $formatter der zu verwendente Formatter
 	 * @param string $confId Pfad der TS-Config
 	 * @param string $marker Name des Markers
@@ -87,7 +87,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 	/**
 	 * Führt vor dem parsen Änderungen am Model durch.
 	 *
-	 * @param tx_rnbase_model_base $item
+	 * @param Tx_Rnbase_Domain_Model_DomainInterface $item
 	 * @param tx_rnbase_configurations &$configurations
 	 * @param string &$confId
 	 * @return void
@@ -116,12 +116,12 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 
 		foreach ($mapFields as $field) {
 			$newField = '_' . str_replace('.', '_', $field);
-			$value = $item->record[$field];
+			$value = $item->getProperty($field);
 			if (in_array($field, $dotFieldFields)) {
-				$item->record[$newField] = $value;
+				$item->setProperty($newField, $value);
 			}
 			if (in_array($field, $dotValueFields)) {
-				$item->record[$newField] = str_replace('.', '_', $value);
+				$item->setProperty($newField, str_replace('.', '_', $value));
 			}
 		}
 	}
@@ -131,7 +131,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 	 * @param array $wrappedSubpartArray das HTML-Template
 	 * @param array $subpartArray das HTML-Template
 	 * @param string $template das HTML-Template
-	 * @param tx_rnbase_model_base $item
+	 * @param Tx_Rnbase_Domain_Model_RecordInterface $item
 	 * @param tx_rnbase_util_FormatUtil $formatter der zu verwendente Formatter
 	 * @param string $confId Pfad der TS-Config
 	 * @param string $marker Name des Markers
@@ -142,7 +142,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 	) {
 		$configurations = $formatter->getConfigurations();
 		$pluginData = $configurations->getCObj()->data;
-		$configurations->getCObj()->data = $item->record;
+		$configurations->getCObj()->data = $item->getRecord();
 		$emptyArray = array('', '');
 		$emptyString = '';
 
@@ -174,7 +174,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 	/**
 	 * Links vorbereiten
 	 *
-	 * @param tx_rnbase_model_base $item
+	 * @param Tx_Rnbase_Domain_Model_RecordInterface $item
 	 * @param string $marker
 	 * @param array $markerArray
 	 * @param array $wrappedSubpartArray
@@ -184,7 +184,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 	protected function prepareLinks($item, $marker, &$markerArray, &$subpartArray, &$wrappedSubpartArray, $confId, $formatter, $template) {
 		$configurations = $formatter->getConfigurations();
 		$pluginData = $configurations->getCObj()->data;
-		$configurations->getCObj()->data = $item->record;
+		$configurations->getCObj()->data = $item->getRecord();
 
 		$linkIds = $configurations->getKeyNames($confId.'links.');
 		for ($i=0, $cnt=count($linkIds); $i < $cnt; $i++) {
@@ -199,8 +199,8 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 			$params = array();
 			$paramMap = (array) $configurations->get($linkConfId . '._cfg.params.');
 			foreach ($paramMap As $paramName => $colName) {
-				if (is_scalar($colName) && array_key_exists($colName, $item->record)) {
-					$params[$paramName] = $item->record[$colName];
+				if (is_scalar($colName) && array_key_exists($colName, $item->getRecord())) {
+					$params[$paramName] = $item->getProperty($colName);
 				} elseif (is_array($colName)) {
 					$paramName = substr($paramName, 0, strlen($paramName)-1);
 					$params[$paramName] = $this->createParam($paramName, $colName, $item);

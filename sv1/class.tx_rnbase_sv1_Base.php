@@ -56,7 +56,7 @@ abstract class tx_rnbase_sv1_Base extends Tx_Rnbase_Service_Base {
 	 *
 	 * @param array $fields
 	 * @param array $options
-	 * @return array[tx_rnbase_model_base]
+	 * @return array[Tx_Rnbase_Domain_Model_RecordInterface]
 	 */
 	public function search($fields, $options) {
 		$searcher = tx_rnbase_util_SearchBase::getInstance($this->getSearchClass());
@@ -67,7 +67,7 @@ abstract class tx_rnbase_sv1_Base extends Tx_Rnbase_Service_Base {
 	 * Search the item for the given uid
 	 *
 	 * @param int $ct
-	 * @return tx_rnbase_model_base
+	 * @return Tx_Rnbase_Domain_Model_RecordInterface
 	 */
 	public function get($uid) {
 		$searcher = tx_rnbase_util_SearchBase::getInstance($this->getSearchClass());
@@ -77,7 +77,7 @@ abstract class tx_rnbase_sv1_Base extends Tx_Rnbase_Service_Base {
 	/**
 	 * Find all records
 	 *
-	 * @return array[tx_rnbase_model_base]
+	 * @return array[Tx_Rnbase_Domain_Model_RecordInterface]
 	 */
 	public function findAll(){
 		return $this->search(array(), array());
@@ -92,7 +92,7 @@ abstract class tx_rnbase_sv1_Base extends Tx_Rnbase_Service_Base {
 	/**
 	 * Dummy model instance
 	 *
-	 * @var tx_rnbase_model_base
+	 * @var Tx_Rnbase_Domain_Model_RecordInterface
 	 */
 	private $dummyModel;
 
@@ -102,7 +102,7 @@ abstract class tx_rnbase_sv1_Base extends Tx_Rnbase_Service_Base {
 	 * This is used only to access several model info methods like
 	 * getTableName(), getColumnNames() etc.
 	 *
-	 * @return tx_rnbase_model_base
+	 * @return Tx_Rnbase_Domain_Model_RecordInterface
 	 */
 	private function getDummyModel() {
 		if (!$this->dummyModel) {
@@ -139,10 +139,10 @@ abstract class tx_rnbase_sv1_Base extends Tx_Rnbase_Service_Base {
 	 * and just call THIS method via parent::handleUpdate().
 	 * Additionally, the deriving implementation may perform further checks etc.
 	 *
-	 * @param tx_rnbase_model_base	$model			This model is being updated.
-	 * @param array					$data			New data
-	 * @param string				$where			Override default restriction by defining an explicite where clause
-	 * @return tx_rnbase_model_base Updated model
+	 * @param Tx_Rnbase_Domain_Model_RecordInterface $model This model is being updated.
+	 * @param array $data New data
+	 * @param string $where Override default restriction by defining an explicite where clause
+	 * @return Tx_Rnbase_Domain_Model_RecordInterface Updated model
 	 */
 	public function handleUpdate(Tx_Rnbase_Domain_Model_RecordInterface $model, array $data, $where='') {
 
@@ -216,11 +216,11 @@ abstract class tx_rnbase_sv1_Base extends Tx_Rnbase_Service_Base {
 	 * and just call THIS method via parent::handleDelete().
 	 * Additionally, the deriving implementation may perform further checks etc.
 	 *
-	 * @param tx_rnbase_model_base	$model		This model is being updated.
-	 * @param string				$where		Override default restriction by defining an explicite where clause
-	 * @param int					$mode		Deletion mode with the following options: 0: Hide record; 1: Soft-delete (via "deleted" field) record; 2: Really DELETE record.
-	 * @param int					$table		Wenn eine Tabelle angegeben wird, wird die des Models missachtet (wichtig für temp anzeigen)
-	 * @return tx_rnbase_model_base				Updated (on success actually empty) model.
+	 * @param Tx_Rnbase_Domain_Model_RecordInterface $model This model is being updated.
+	 * @param string $where Override default restriction by defining an explicite where clause
+	 * @param int $mode Deletion mode with the following options: 0: Hide record; 1: Soft-delete (via "deleted" field) record; 2: Really DELETE record.
+	 * @param int $table Wenn eine Tabelle angegeben wird, wird die des Models missachtet (wichtig für temp anzeigen)
+	 * @return Tx_Rnbase_Domain_Model_RecordInterface Updated (on success actually empty) model.
 	 */
 	public function handleDelete(Tx_Rnbase_Domain_Model_RecordInterface $model, $where='', $mode=0, $table=NULL) {
 		if(empty($table)) {

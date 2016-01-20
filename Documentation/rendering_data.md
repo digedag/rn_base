@@ -24,8 +24,8 @@ Für die Erstellung der Template-Marker sind sogenannte Markerklassen verantwort
 	 */
 	public function parseTemplate($template, &$item, &$formatter, $confId, $marker) {
 		// Es wird das MarkerArray mit den Daten des Records gefüllt.
-		$ignore = self::findUnusedCols($item->record, $template, $marker);
-		$markerArray = $formatter->getItemMarkerArrayWrapped($item->record, $confId , $ignore, $marker.'_', $item->getColumnNames());
+		$ignore = self::findUnusedCols($item->getRecord(), $template, $marker);
+		$markerArray = $formatter->getItemMarkerArrayWrapped($item->getRecord(), $confId , $ignore, $marker.'_', $item->getColumnNames());
 		$wrappedSubpartArray = $subpartArray = array();
 		// das Template rendern
 		$out = tx_rnbase_util_Templates::substituteMarkerArrayCached($template, $markerArray, $subpartArray, $wrappedSubpartArray);
@@ -63,13 +63,13 @@ Der Aufruf sieht zunächst ganz ähnlich aus, wie bei der n-1-Relation. Nur wird
 ```php
 	private function addProfiles($template, $team, $formatter, $confId, $markerPrefix, $joinCol) {
 		$srv = tx_cfcleaguefe_util_ServiceRegistry::getProfileService();
-		$fields['PROFILE.UID'][OP_IN_INT] = $team->record[$joinCol];
+		$fields['PROFILE.UID'][OP_IN_INT] = $team->getProperty($joinCol);
 		$options = array();
 		tx_rnbase_util_SearchBase::setConfigFields($fields, $formatter->configurations, $confId.'fields.');
 		tx_rnbase_util_SearchBase::setConfigOptions($options, $formatter->configurations, $confId.'options.');
 		$children = $srv->search($fields, $options);
 		if(!empty($children) && !array_key_exists('orderby', $options)) // Default sorting
-			$children = $this->sortProfiles($children, $team->record[$joinCol]);
+			$children = $this->sortProfiles($children, $team->getProperty($joinCol));
 	
 		$options['team'] = $team;
 		$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');

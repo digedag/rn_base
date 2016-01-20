@@ -118,4 +118,12 @@ interface Tx_Rnbase_Domain_Model_DomainInterface
 	 * @return boolean
 	 */
 	public function isPersisted();
+
+	/**
+	 * Liefert bei Tabellen, die im $TCA definiert sind,
+	 * die Namen der Tabellenspalten als Array.
+	 *
+	 * @return array mit Spaltennamen oder 0
+	 */
+	public function getColumnNames();
 }

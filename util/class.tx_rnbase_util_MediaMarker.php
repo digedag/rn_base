@@ -45,7 +45,7 @@ class tx_rnbase_util_MediaMarker extends tx_rnbase_util_BaseMarker {
 	}
 	/**
 	 * @param string $template das HTML-Template
-	 * @param tx_rnbase_models_media $item the media instance
+	 * @param tx_rnbase_model_media $item the media instance
 	 * @param tx_rnbase_util_FormatUtil $formatter der zu verwendente Formatter
 	 * @param string $confId Pfad der TS-Config des Vereins, z.B. 'yourview.obj.picture.media.'
 	 * @param string $marker Name des Markers für das Objekt, z.B. MEDIA
@@ -59,15 +59,17 @@ class tx_rnbase_util_MediaMarker extends tx_rnbase_util_BaseMarker {
 		if(!tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
 			// Localize data (DAM 1.1.0)
 			if(method_exists(self::getDamDB(), 'getRecordOverlay')) {
-				$loc = self::getDamDB()->getRecordOverlay('tx_dam', $item->record, array('sys_language_uid'=>$GLOBALS['TSFE']->sys_language_uid));
-				if ($loc) $item->record = $loc;
+				$loc = self::getDamDB()->getRecordOverlay('tx_dam', $item->getRecord(), array('sys_language_uid'=>$GLOBALS['TSFE']->sys_language_uid));
+				if ($loc) {
+					$item->setProperty($loc);
+				}
 			}
 		}
 		// TODO: record overlay for FAL??
 		tx_rnbase_util_Misc::callHook('rn_base', 'mediaMarker_initRecord', array('item' => &$item, 'template'=>&$template), $this);
 
-		$ignore = self::findUnusedCols($item->record, $template, $marker);
-		$markerArray = $formatter->getItemMarkerArrayWrapped($item->record, $confId , $ignore, $marker.'_');
+		$ignore = self::findUnusedCols($item->getRecord(), $template, $marker);
+		$markerArray = $formatter->getItemMarkerArrayWrapped($item->getRecord(), $confId , $ignore, $marker.'_');
 		$wrappedSubpartArray = array();
 		$subpartArray = array();
 		// Hook für direkte Template-Manipulation

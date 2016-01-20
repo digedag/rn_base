@@ -118,11 +118,13 @@ class tx_rnbase_util_TSDAM {
 			$mediaObj = tx_rnbase::makeInstance('tx_rnbase_model_media', $baseRecord['uid']);
 			// Localize data (DAM 1.1.0)
 			if(method_exists($damDb, 'getRecordOverlay')) {
-				$loc = $damDb->getRecordOverlay('tx_dam', $mediaObj->record, array('sys_language_uid'=>$GLOBALS['TSFE']->sys_language_uid));
-				if ($loc) $mediaObj->record = $loc;
+				$loc = $damDb->getRecordOverlay('tx_dam', $mediaObj->getRecord(), array('sys_language_uid'=>$GLOBALS['TSFE']->sys_language_uid));
+				if ($loc) {
+					$mediaObj->setProperty($loc);
+				}
 			}
 
-			$mediaObj->record['parentuid'] = $parentUid;
+			$mediaObj->setParentuid($parentUid);
 			$medias[] = $mediaObj;
 		}
 

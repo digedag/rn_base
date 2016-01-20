@@ -34,7 +34,7 @@ class tx_rnbase_mod_Tables {
 	 * @param array $entries
 	 * @param array $columns
 	 * @param tx_rnbase_util_FormTool $formTool
-	 * @param tx_rnbase_model_data $options
+	 * @param Tx_Rnbase_Domain_Model_DataInterface $options
 	 * @return array 0 are data and 1 layout
 	 */
 	public static function prepareTable($entries, $columns, $formTool, $options) {
@@ -94,11 +94,17 @@ class tx_rnbase_mod_Tables {
 	 * @param array $entry
 	 * @param array $columns
 	 * @param tx_rnbase_util_FormTool $formTool
-	 * @param tx_rnbase_model_data $options
+	 * @param Tx_Rnbase_Domain_Model_DataInterface $options
 	 * @return array
 	 */
 	protected static function prepareRow($entry, $columns, $formTool, $options) {
-		$record = is_object($entry) ? $entry->record : $entry;
+		$record = $entry;
+		if ($entry instanceof Tx_Rnbase_Domain_Model_DataInterface) {
+			$record = $entry->getProperty();
+		}
+		if ($entry instanceof Tx_Rnbase_Domain_Model_RecordInterface) {
+			$record = $entry->getRecord();
+		}
 		$row = array();
 		if ($options->getCheckbox() !== NULL) {
 			$checkName = $options->getCheckboxname() ? $options->getCheckboxname() : 'checkEntry';
@@ -219,7 +225,7 @@ class tx_rnbase_mod_Tables {
 
 	/**
 	 *
-	 * @param tx_rnbase_model_data $options
+	 * @param Tx_Rnbase_Domain_Model_DataInterface $options
 	 * @param Tx_Rnbase_Domain_Model_Base $obj
 	 * @param tx_rnbase_util_FormTool $formTool
 	 * @return string
