@@ -70,8 +70,9 @@ class tx_rnbase_util_ListBuilder {
 
 		$outerMarker = $this->getOuterMarker($marker, $template);
 		$listMarker = tx_rnbase::makeInstance('tx_rnbase_util_ListMarker', $this->info->getListMarkerInfo());
-		while($templateList = t3lib_parsehtml::getSubpart($template, '###'.$outerMarker.'S###')) {
-			$templateEntry = t3lib_parsehtml::getSubpart($templateList, '###'.$marker.'###');
+		$htmlParser = tx_rnbase_util_Typo3Classes::getHtmlParserClass();
+		while($templateList = $htmlParser::getSubpart($template, '###'.$outerMarker.'S###')) {
+			$templateEntry = $htmlParser::getSubpart($templateList, '###'.$marker.'###');
 			$offset = 0;
 			$pageBrowser =& $viewData->offsetGet('pagebrowser');
 			if($pageBrowser) {
@@ -95,7 +96,7 @@ class tx_rnbase_util_ListBuilder {
 				// Das Menu für den PageBrowser einsetzen
 				if($pageBrowser) {
 					$subpartArray['###PAGEBROWSER###'] = tx_rnbase_util_BaseMarker::fillPageBrowser(
-									t3lib_parsehtml::getSubpart($template, '###PAGEBROWSER###'),
+									$htmlParser::getSubpart($template, '###PAGEBROWSER###'),
 									$pageBrowser, $formatter, $confId.'pagebrowser.');
 					$listSize = $pageBrowser->getListSize();
 				}
@@ -109,7 +110,7 @@ class tx_rnbase_util_ListBuilder {
 			else {
 				// Support für EMPTYLIST-Block
 				if(tx_rnbase_util_BaseMarker::containsMarker($template, $marker.'EMPTYLIST')) {
-					$out = t3lib_parsehtml::getSubpart($template, '###'.$marker.'EMPTYLIST###');
+					$out = $htmlParser::getSubpart($template, '###'.$marker.'EMPTYLIST###');
 				}
 				else
 					$out = $this->info->getEmptyListMessage($confId, $viewData, $formatter->getConfigurations());
@@ -188,11 +189,12 @@ class tx_rnbase_util_ListBuilder {
 		}
 
 		$outerMarker = $this->getOuterMarker($marker, $template);
-		while($templateList = t3lib_parsehtml::getSubpart($template, '###'.$outerMarker.'S###')) {
+		$htmlParser = tx_rnbase_util_Typo3Classes::getHtmlParserClass();
+		while($templateList = $htmlParser::getSubpart($template, '###'.$outerMarker.'S###')) {
 			if(is_array($dataArr) && count($dataArr)) {
 				$listMarker = tx_rnbase::makeInstance('tx_rnbase_util_ListMarker', $this->info->getListMarkerInfo());
 
-				$templateEntry = t3lib_parsehtml::getSubpart($templateList, '###'.$marker.'###');
+				$templateEntry = $htmlParser::getSubpart($templateList, '###'.$marker.'###');
 				$offset = 0;
 				$pageBrowser = $viewData->offsetGet('pagebrowser');
 				if($pageBrowser) {
@@ -209,7 +211,7 @@ class tx_rnbase_util_ListBuilder {
 				// Das Menu für den PageBrowser einsetzen
 				if($pageBrowser) {
 					$subpartArray['###PAGEBROWSER###'] = tx_rnbase_util_BaseMarker::fillPageBrowser(
-									t3lib_parsehtml::getSubpart($template, '###PAGEBROWSER###'),
+									$htmlParser::getSubpart($template, '###PAGEBROWSER###'),
 									$pageBrowser, $formatter, $confId.'pagebrowser.');
 					$listSize = $pageBrowser->getListSize();
 				}
@@ -231,7 +233,7 @@ class tx_rnbase_util_ListBuilder {
 			else {
 				// Support für EMPTYLIST-Block
 				if(tx_rnbase_util_BaseMarker::containsMarker($template, $marker.'EMPTYLIST')) {
-					$out = t3lib_parsehtml::getSubpart($template, '###'.$marker.'EMPTYLIST###');
+					$out = $htmlParser::getSubpart($template, '###'.$marker.'EMPTYLIST###');
 				}
 				else
 					$out = $this->info->getEmptyListMessage($confId, $viewData, $formatter->getConfigurations());

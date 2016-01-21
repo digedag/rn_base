@@ -184,6 +184,7 @@ class tx_rnbase_util_Typo3Classes {
 			self::HIGHER6 	=> 'TYPO3\\CMS\\Core\\Html\\HtmlParser'
 		));
 	}
+
 	/**
 	 * @param array $possibleClasses
 	 * @return string

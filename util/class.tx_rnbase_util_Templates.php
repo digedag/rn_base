@@ -417,7 +417,8 @@ class tx_rnbase_util_Templates {
 	 * @see getSubpart(), t3lib_parsehtml::substituteSubpart()
 	 */
 	public static function substituteSubpart($content, $marker, $subpartContent, $recursive=1)	{
-		return t3lib_parsehtml::substituteSubpart($content, $marker, $subpartContent, $recursive);
+		$htmlParser = tx_rnbase_util_Typo3Classes::getHtmlParserClass();
+		return $htmlParser::substituteSubpart($content, $marker, $subpartContent, $recursive);
 	}
 }
 
