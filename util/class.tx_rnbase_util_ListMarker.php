@@ -81,17 +81,23 @@ class tx_rnbase_util_ListMarker {
 	 * @param Tx_Rnbase_Domain_Model_DomainInterface $data
 	 */
 	public function renderNext($data) {
-		$data->setRoll($this->rowRollCnt);
-		// Marker für aktuelle Zeilenummer
-		$data->setLine($this->i);
-		// Marker für aktuelle Zeilenummer der Gesamtliste
-		$data->setTotalline($this->i + $this->totalLineStart + $this->offset);
+		$this->setToData(
+			$data,
+			array(
+				'roll' => $this->rowRollCnt,
+				// Marker für aktuelle Zeilenummer
+				'line' => $this->i,
+				// Marker für aktuelle Zeilenummer der Gesamtliste
+				'totalline' => $this->i + $this->totalLineStart + $this->offset,
+			)
+		);
 		$this->handleVisitors($data);
 		$part = $this->entryMarker->parseTemplate($this->info->getTemplate($data), $data, $this->formatter, $this->confId, $this->marker);
 		$this->parts[] = $part;
 		$this->rowRollCnt = ($this->rowRollCnt >= $this->rowRoll) ? 0 : $this->rowRollCnt + 1;
 		$this->i++;
 	}
+
 	/**
 	 * Call all visitors for an item
 	 * @param object $data
@@ -130,18 +136,46 @@ class tx_rnbase_util_ListMarker {
 			$data = $dataArr[$i];
 			// Check for object to avoid warning.
 			if (!is_object($data)) continue;
-			$data->setRoll($rowRollCnt);
-			// Marker für aktuelle Zeilenummer
-			$data->setLine($i);
-			// Marker für aktuelle Zeilenummer der Gesamtliste
-			$data->setTotalline($i + $totalLineStart + $offset);
+			$this->setToData(
+				$data,
+				array(
+					'roll' => $rowRollCnt,
+					// Marker für aktuelle Zeilenummer
+					'line' => $i,
+					// Marker für aktuelle Zeilenummer der Gesamtliste
+					'totalline' => $i + $totalLineStart + $offset,
+				)
+			);
 			$this->handleVisitors($data);
 			$part = $entryMarker->parseTemplate($this->info->getTemplate($data), $data, $formatter, $confId, $marker);
 			$parts[] = $part;
 			$rowRollCnt = ($rowRollCnt >= $rowRoll) ? 0 : $rowRollCnt + 1;
 		}
-		$parts = implode($formatter->configurations->get($confId . 'implode', TRUE), $parts);
+		$parts = implode(
+			$formatter->getConfigurations()->get($confId . 'implode', TRUE),
+			$parts
+		);
+
 		return $parts;
+	}
+
+	/**
+	 * Extends the object, depending on its instance class
+	 *
+	 * @param objetc $object
+	 * @param array $values
+	 * @return void
+	 */
+	protected function setToData($object, array $values) {
+		$isDataInterface = $object instanceof Tx_Rnbase_Domain_Model_DataInterface;
+		foreach ($values as $field => $value) {
+			if ($isDataInterface) {
+				$object->setProperty($field, $value);
+			}
+			else {
+				$object->record[$field] = $value;
+			}
+		}
 	}
 }
 
