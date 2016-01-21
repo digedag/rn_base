@@ -31,7 +31,7 @@ tx_rnbase::load('tx_rnbase_util_Typo3Classes');
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 abstract class tx_rnbase_tests_BaseTestCase
-	extends tx_phpunit_testcase {
+	extends Tx_Phpunit_TestCase {
 
 	/**
 	 * Sample:
