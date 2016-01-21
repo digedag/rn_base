@@ -561,7 +561,8 @@ class tx_rnbase_util_Link {
 			;
 		}
 
-		return t3lib_div::implodeArrayForUrl(
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		return $utility::implodeArrayForUrl(
 			$qualifier ? $qualifier : $key,
 			$qualifier ? array($key => $value) : $value,
 			'',
@@ -757,13 +758,8 @@ class tx_rnbase_util_Link {
 	 * @return string
 	 */
 	static public function linkThisScript(array $getParams = array()) {
-		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			$return = \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript($getParams);
-		} else {
-			$return = t3lib_div::linkThisScript($getParams);
-		}
-
-		return $return;
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		return $utility::linkThisScript($getParams);
 	}
 }
 

@@ -241,8 +241,8 @@ abstract class tx_rnbase_mod_base_Lister {
 	 * @param array $options
 	 */
 	protected function prepareSorting(&$options) {
-		$sortField = t3lib_div::_GET('sortField');
-		$sortRev = t3lib_div::_GET('sortRev');
+		$sortField = tx_rnbase_parameters::getPostOrGetParameter('sortField');
+		$sortRev = tx_rnbase_parameters::getPostOrGetParameter('sortRev');
 
 		if(!empty($sortField)) {
 			$cols = $this->getColumns();

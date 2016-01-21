@@ -50,7 +50,9 @@ class tx_rnbase_tests_cache_testcase extends tx_phpunit_testcase {
 	 * @return tx_rnbase_cache_ICache
 	 */
 	private static function createTYPO3Cache($name) {
-		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+		if(tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+			$className = 'tx_rnbase_cache_TYPO3Cache62';
+		} elseif(tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
 			$className = 'tx_rnbase_cache_TYPO3Cache60';
 		} elseif (tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
 			$className = 'tx_rnbase_cache_TYPO3Cache46';

@@ -102,13 +102,10 @@ class tx_rnbase_util_Misc {
 	public static function callHook($extKey, $hookKey, $params, $parent=0) {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extKey][$hookKey])) {
 			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extKey][$hookKey] as $funcRef) {
-				if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-					$return = TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction(
-						$funcRef, $params, $parent
-					);
-				} else {
-					t3lib_div::callUserFunction($funcRef, $params, $parent);
-				}
+				$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+				return $utility::callUserFunction(
+					$funcRef, $params, $parent
+				);
 			}
 		}
 	}
@@ -681,12 +678,8 @@ MAYDAYPAGE;
 	 * @return	string		Value based on the input key, independent of server/os environment.
 	 */
 	public static function getIndpEnv($getEnvName) {
-		if(tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-			return \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv($getEnvName);
-		}
-		else {
-			return t3lib_div::getIndpEnv($getEnvName);
-		}
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		return $utility::getIndpEnv($getEnvName);
 	}
 
 	/**
@@ -695,13 +688,8 @@ MAYDAYPAGE;
 	 * @return integer The unixtime as milliseconds
 	 */
 	static public function milliseconds() {
-		if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-			$milliseconds = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
-		} else{
-			$milliseconds = t3lib_div::milliseconds();
-		}
-
-		return $milliseconds ;
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		return $utility::milliseconds() ;
 	}
 
 	/**
@@ -710,11 +698,8 @@ MAYDAYPAGE;
 	 * @return void
 	 */
 	static public function logDeprecatedFunction() {
-		if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		} else{
-			t3lib_div::logDeprecatedFunction();
-		}
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		$utility::logDeprecatedFunction();
 	}
 }
 

@@ -279,7 +279,8 @@ abstract class Tx_Rnbase_Repository_AbstractRepository
 	 * @return void
 	 */
 	function __construct() {
-		t3lib_div::deprecationLog(
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		$utility::deprecationLog(
 			'Usage of "Tx_Rnbase_Repository_AbstractRepository" is deprecated' .
 			'Please use "Tx_Rnbase_Domain_Repository_AbstractRepository" instead!'
 		);

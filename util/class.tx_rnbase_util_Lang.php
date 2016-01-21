@@ -44,9 +44,10 @@ class tx_rnbase_util_Lang {
 		$basePath = tx_rnbase_util_Files::getFileAbsFileName($filename);
 		// php or xml as source: In any case the charset will be that of the system language.
 		// However, this function guarantees only return output for default language plus the specified language (which is different from how 3.7.0 dealt with it)
-		self::addLang(t3lib_div::readLLfile($basePath, self::getLLKey(), $GLOBALS['TSFE']->renderCharset));
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		self::addLang($utility::readLLfile($basePath, self::getLLKey(), $GLOBALS['TSFE']->renderCharset));
 		if ($llKey = self::getLLKey(TRUE)) {
-			self::addLang(t3lib_div::readLLfile($basePath, $llKey, $GLOBALS['TSFE']->renderCharset));
+			self::addLang($utility::readLLfile($basePath, $llKey, $GLOBALS['TSFE']->renderCharset));
 		}
 	}
 

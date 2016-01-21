@@ -138,13 +138,8 @@ class tx_rnbase_util_Arrays {
 	 * @see array2xml(),xml2arrayProcess()
 	 */
 	static public function xml2array($string, $NSprefix = '', $reportDocTag = FALSE) {
-		if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-			$array = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($string, $NSprefix, $reportDocTag);
-		} else {
-			$array = t3lib_div::xml2array($string, $NSprefix, $reportDocTag);
-		}
-
-		return $array;
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		return $utility::xml2array($string, $NSprefix, $reportDocTag);
 	}
 }
 

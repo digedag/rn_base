@@ -75,7 +75,8 @@ class Tx_Rnbase_Util_TCATool
 	 * @return void
 	 */
 	function __construct() {
-		t3lib_div::deprecationLog(
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		$utility::deprecationLog(
 			'Usage of "Tx_Rnbase_Util_TCATool" is deprecated' .
 			'Please use "Tx_Rnbase_Utility_TcaTool" instead!'
 		);

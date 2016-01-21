@@ -137,13 +137,8 @@ class tx_rnbase_parameters extends ArrayObject implements tx_rnbase_IParameters 
 	 * @return array Returns the GET vars merged recursively onto the POST vars.
 	 */
 	static public function getPostAndGetParametersMerged($parameterName) {
-		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			$return = \TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged($parameterName);
-		} else {
-			$return = t3lib_div::_GPmerged($parameterName);
-		}
-
-		return $return;
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		return $utility::_GPmerged($parameterName);
 	}
 
 	/**
@@ -154,13 +149,8 @@ class tx_rnbase_parameters extends ArrayObject implements tx_rnbase_IParameters 
 	 * @return array Returns the GET vars merged recursively onto the POST vars.
 	 */
 	static public function getPostOrGetParameter($parameterName) {
-		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			$return = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP($parameterName);
-		} else {
-			$return = t3lib_div::_GP($parameterName);
-		}
-
-		return $return;
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		return $utility::_GP($parameterName);
 	}
 
 	/**
@@ -172,11 +162,30 @@ class tx_rnbase_parameters extends ArrayObject implements tx_rnbase_IParameters 
 	 * @return void
 	 */
 	static public function setGetParameter($inputGet, $key = '') {
-		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset($inputGet, $key);
-		} else {
-			t3lib_div::_GETset($inputGet, $key);
-		}
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		$utility::_GETset($inputGet, $key);
+	}
+
+	/**
+	 * @see t3lib_div::_GET
+	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::_GET
+	 *
+	 * @return array
+	 */
+	static public function getGetParameters() {
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		return $utility::_GET();
+	}
+
+	/**
+	 * @see t3lib_div::_POST
+	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::_POST
+	 *
+	 * @return array
+	 */
+	static public function getPostParameters() {
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		return $utility::_POST();
 	}
 }
 

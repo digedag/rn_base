@@ -32,7 +32,9 @@ class tx_rnbase_util_Math {
 	 * @return boolean
 	 */
 	public static function testInt($var) {
-		if(tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
+		if(tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+			return \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($var);
+		}elseif(tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
 			return t3lib_utility_Math::canBeInterpretedAsInteger($var);
 		}
 		else {
@@ -50,7 +52,9 @@ class tx_rnbase_util_Math {
 	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Math::forceIntegerInRange() instead
 	 */
 	public static function intInRange($theInt, $min, $max = 2000000000, $zeroValue = 0) {
-		if(tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
+		if(tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+			return \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($theInt, $min, $max, $zeroValue);
+		}elseif(tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
 			return t3lib_utility_Math::forceIntegerInRange($theInt, $min, $max, $zeroValue);
 		}
 		else {

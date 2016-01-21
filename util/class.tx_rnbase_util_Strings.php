@@ -92,12 +92,8 @@ class tx_rnbase_util_Strings {
 	 * @return boolean TRUE if $partStr was found to be equal to the first part of $str
 	 */
 	public static function isFirstPartOfStr($haystack, $needle) {
-		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			$return = \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($haystack, $needle);
-		} else {
-			$return = t3lib_div::isFirstPartOfStr($haystack, $needle);
-		}
-		return $return;
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		return $utility::isFirstPartOfStr($haystack, $needle);
 	}
 	/**
 	 * Wrapper for t3lib_div::testInt and \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($var)
@@ -132,11 +128,8 @@ class tx_rnbase_util_Strings {
 	 * @param int $limit
 	 */
 	public static function intExplode($delimiter, $string, $onlyNonEmptyValues = FALSE, $limit = 0) {
-		tx_rnbase::load('tx_rnbase_util_TYPO3');
-		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher())
-			return \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode($delimiter, $string, $onlyNonEmptyValues, $limit);
-		else
-			return t3lib_div::intExplode($delimiter, $string, $onlyNonEmptyValues, $limit);
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		return $utility::intExplode($delimiter, $string, $onlyNonEmptyValues, $limit);
 	}
 	/**
 	 * Wrapper method for t3lib_div::trimExplode()
@@ -146,11 +139,8 @@ class tx_rnbase_util_Strings {
 	 * @param int $limit
 	 */
 	public static function trimExplode($delimiter, $string, $removeEmptyValues = FALSE, $limit = 0) {
-		tx_rnbase::load('tx_rnbase_util_TYPO3');
-		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher())
-			return \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode($delimiter, $string, $removeEmptyValues, $limit);
-		else
-			return t3lib_div::trimExplode($delimiter, $string, $removeEmptyValues, $limit);
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		return $utility::trimExplode($delimiter, $string, $removeEmptyValues, $limit);
 	}
 
 	/**
@@ -160,12 +150,8 @@ class tx_rnbase_util_Strings {
 	 * @return string
 	 */
 	public static function getRandomHexString($count) {
-		tx_rnbase::load('tx_rnbase_util_TYPO3');
-		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			return \TYPO3\CMS\Core\Utility\GeneralUtility::getRandomHexString($count);
-		} else {
-			return t3lib_div::getRandomHexString($count);
-		}
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		return $utility::getRandomHexString($count);
 	}
 
 	/**
@@ -177,10 +163,8 @@ class tx_rnbase_util_Strings {
 	 * @return string lowercase_and_underscored_string
 	 */
 	public static function camelCaseToLowerCaseUnderscored($string) {
-		return tx_rnbase_util_TYPO3::isTYPO60OrHigher()
-			? TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($string)
-			: t3lib_div::camelCaseToLowerCaseUnderscored($string)
-		;
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		return $utility::camelCaseToLowerCaseUnderscored($string);
 	}
 
 	/**
@@ -191,10 +175,8 @@ class tx_rnbase_util_Strings {
 	 * @return string lowercase_and_underscored_string
 	 */
 	public static function underscoredToLowerCamelCase($string) {
-		return tx_rnbase_util_TYPO3::isTYPO60OrHigher()
-			? TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToLowerCamelCase($string)
-			: t3lib_div::underscoredToLowerCamelCase($string)
-		;
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		return $utility::underscoredToLowerCamelCase($string);
 	}
 
 	/**
@@ -270,13 +252,8 @@ class tx_rnbase_util_Strings {
 	 * @return boolean TRUE if $item is in $list
 	 */
 	public static function inList($list, $item) {
-		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			$return = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($list, $item);
-		} else {
-			$return = t3lib_div::inList($list, $item);
-		}
-
-		return $return;
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		return $utility::inList($list, $item);
 	}
 
 	/**
@@ -286,13 +263,8 @@ class tx_rnbase_util_Strings {
 	 * @return string Input string with potential XSS code removed
 	 */
 	public static function removeXSS($string) {
-		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			$string = \TYPO3\CMS\Core\Utility\GeneralUtility::removeXSS($string);
-		} else {
-			$string = t3lib_div::removeXSS($string);
-		}
-
-		return $string;
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		return $utility::removeXSS($string);
 	}
 
 	/**
@@ -321,13 +293,8 @@ class tx_rnbase_util_Strings {
 	 * @return boolean Returns TRUE if the $email address (input string) is valid
 	 */
 	public static function validEmail($email) {
-		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			$return = \TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($email);
-		} else {
-			$return = t3lib_div::validEmail($email);
-		}
-
-		return $return;
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		return $utility::validEmail($email);
 	}
 }
 

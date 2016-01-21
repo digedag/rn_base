@@ -244,7 +244,8 @@ class tx_rnbase_mod_Tables {
 							'Linker "' . get_class($linker) . '" has to implement interface "tx_rnbase_mod_LinkerInterface".'
 						);
 					}
-					t3lib_div::deprecationLog(
+					$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+					$utility::deprecationLog(
 						'Linker "' . get_class($linker) . '" has to implement interface "tx_rnbase_mod_LinkerInterface".'
 					);
 				}

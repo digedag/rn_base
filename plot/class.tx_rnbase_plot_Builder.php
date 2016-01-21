@@ -152,7 +152,8 @@ class tx_rnbase_plot_Builder {
 	private function getFileName($strPre, $arrConf, $strExtension) {
 		$tempPath = 'typo3temp/'; // Path to the temporary directory
 		$data = serialize($this->getDataProvider()). serialize($arrConf);
-		return $tempPath.$strPre.t3lib_div::shortMD5($data).'.'.$strExtension;
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		return $tempPath.$strPre.$utility::shortMD5($data).'.'.$strExtension;
 	}
 
 	/**
@@ -195,7 +196,8 @@ class tx_rnbase_plot_Builder {
 	private function cObjGet($arrSetup, &$objRef) {
 		if (is_array($arrSetup)) {
 			$currVersionStr = $TYPO3_CONF_VARS['SYS']['compat_version']?$TYPO3_CONF_VARS['SYS']['compat_version']:TYPO3_version;
-			if (t3lib_div::int_from_ver($currVersionStr) < t3lib_div::int_from_ver('4.0.0')) {
+			$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+			if ($utility::int_from_ver($currVersionStr) < $utility::int_from_ver('4.0.0')) {
 				require_once(PATH_site.'t3lib/class.t3lib_tstemplate.php');
 			}
 			$arrSortedKeys=t3lib_TStemplate::sortedKeyList($arrSetup);

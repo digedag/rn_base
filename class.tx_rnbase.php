@@ -83,23 +83,13 @@ class tx_rnbase {
 		$ret = FALSE;
 		if(self::load($class)) {
 			self::load('tx_rnbase_util_TYPO3');
+			$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
 			if(func_num_args() > 1) {
 				// Das ist ein Konstruktor Aufruf mit Parametern
 				$args = func_get_args();
-				if(tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-					// Die Parameter weiterreichen
-					$ret = call_user_func_array(array('TYPO3\CMS\Core\Utility\GeneralUtility', 'makeInstance'), $args);
-				}
-				else {
-					// Die Parameter weiterreichen
-					$ret = call_user_func_array(array('t3lib_div', 'makeInstance'), $args);
-				}
+				$ret = call_user_func_array(array($utility, 'makeInstance'), $args);
 			} else {
-				if(tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-					$ret = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($class);
-				} else {
-					$ret = t3lib_div::makeInstance($class);
-				}
+				$ret = $utility::makeInstance($class);
 			}
 		}
 		return $ret;
@@ -115,14 +105,8 @@ class tx_rnbase {
 	 * @return object The service object or an array with error info's.
 	 */
 	public static function makeInstanceService($serviceType, $serviceSubType = '', $excludeServiceKeys = array()) {
-		self::load('tx_rnbase_util_TYPO3');
-		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			$module = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstanceService($serviceType, $serviceSubType, $excludeServiceKeys);
-		}
-		else {
-			$module = t3lib_div::makeInstanceService($serviceType, $serviceSubType, $excludeServiceKeys);
-		}
-		return $module;
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		return $utility::makeInstanceService($serviceType, $serviceSubType, $excludeServiceKeys);
 	}
 
 	/**

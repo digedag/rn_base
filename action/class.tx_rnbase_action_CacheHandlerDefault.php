@@ -237,8 +237,8 @@ class tx_rnbase_action_CacheHandlerDefault
 			// all get and post vars
 			tx_rnbase::load('tx_rnbase_util_Arrays');
 			$gp = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
-				t3lib_div::_GET(),
-				t3lib_div::_POST()
+				tx_rnbase_parameters::getGetParameters(),
+				tx_rnbase_parameters::getPostParameters()
 			);
 			// the cobj to get the parameter value
 			$cObj = $this->getConfigurations()->getCObj();

@@ -178,10 +178,23 @@ class tx_rnbase_util_Typo3Classes {
 		));
 	}
 
+	/**
+	 * @return string
+	 */
 	public static function getHtmlParserClass() {
 		return self::getClassByCurrentTypo3Version(array(
 			self::LOWER6	=> 't3lib_parsehtml',
 			self::HIGHER6 	=> 'TYPO3\\CMS\\Core\\Html\\HtmlParser'
+		));
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getGeneralUtilityClass() {
+		return self::getClassByCurrentTypo3Version(array(
+			self::LOWER6	=> 't3lib_div',
+			self::HIGHER6 	=> 'TYPO3\\CMS\\Core\\Utility\\GeneralUtility'
 		));
 	}
 

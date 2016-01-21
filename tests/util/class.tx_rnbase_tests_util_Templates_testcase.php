@@ -144,11 +144,20 @@ class tx_rnbase_tests_util_Templates_testcase
 		$this->assertEquals($exp, $cnt);
 	}
 	private function setTTOn() {
-		$GLOBALS['TT'] = new t3lib_timeTrack;
+		if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+			$GLOBALS['TT'] = new \TYPO3\CMS\Core\TimeTracker\TimeTracker;
+		} else {
+			$GLOBALS['TT'] = new t3lib_timeTrack;
+		}
+
 		$GLOBALS['TT']->start();
 	}
 	private function setTTOff() {
-		$GLOBALS['TT'] = new t3lib_timeTrackNull;
+		if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+			$GLOBALS['TT'] = new \TYPO3\CMS\Core\TimeTracker\NullTimeTracker;
+		} else {
+			$GLOBALS['TT'] = new t3lib_timeTrackNull;
+		}
 		$GLOBALS['TT']->start();
 	}
 

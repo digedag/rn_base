@@ -145,11 +145,8 @@ class tx_rnbase_util_Logger {
 	 * @return void
 	 */
 	static public function devLog($msg, $extKey, $severity = 0, $dataVar = FALSE) {
-		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog($msg, $extKey, $severity, $dataVar);
-		} else{
-			t3lib_div::devLog($msg, $extKey, $severity, $dataVar);
-		}
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		$utility::devLog($msg, $extKey, $severity, $dataVar);
 	}
 }
 

@@ -43,13 +43,8 @@ class tx_rnbase_util_Network {
 	 * @see TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP()
 	 */
 	public static function cmpIP($baseIP, $list) {
-		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			$return = TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP($baseIP, $list);
-		} else {
-			$return = t3lib_div::cmpIP($baseIP, $list);
-		}
-
-		return $return;
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		return $utility::cmpIP($baseIP, $list);
 	}
 
 	/**
@@ -63,15 +58,8 @@ class tx_rnbase_util_Network {
 	 * @return mixed The content from the resource given as input. FALSE if an error has occurred.
 	 */
 	static public function getUrl($url, $includeHeader = 0, $requestHeaders = FALSE, &$report = NULL) {
-		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			$return = TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(
-				$url, $includeHeader, $requestHeaders, $report
-			);
-		} else {
-			$return = t3lib_div::getUrl($url, $includeHeader, $requestHeaders, $report);
-		}
-
-		return $return;
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		return $utility::getUrl($url, $includeHeader, $requestHeaders, $report);
 	}
 
 	/**
@@ -82,13 +70,8 @@ class tx_rnbase_util_Network {
 	 * @return boolean Whether the given URL is valid
 	 */
 	static public function isValidUrl($url) {
-		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			$return = TYPO3\CMS\Core\Utility\GeneralUtility::isValidUrl($url);
-		} else {
-			$return = t3lib_div::isValidUrl($url);
-		}
-
-		return $return;
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		return $utility::isValidUrl($url);
 	}
 
 	/**
@@ -99,9 +82,8 @@ class tx_rnbase_util_Network {
 	 * @return string
 	 */
 	public static function locationHeaderUrl($path) {
-		return tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
-			\TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($path) :
-			t3lib_div::locationHeaderUrl($path);
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		return $utility::locationHeaderUrl($path);
 	}
 }
 

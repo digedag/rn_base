@@ -555,8 +555,8 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 	 */
 	public function createSortLink($sSortField, $sLabel) {
 		//das ist aktuell gesetzt
-		$sCurrentSortField = t3lib_div::_GET('sortField');
-		$sCurrentSortRev = t3lib_div::_GET('sortRev');
+		$sCurrentSortField = tx_rnbase_parameters::getPostOrGetParameter('sortField');
+		$sCurrentSortRev = tx_rnbase_parameters::getPostOrGetParameter('sortRev');
 		//wir verweisen immer auf die aktuelle Seite
 		//es kann aber schon ein sort parameter gesetzt sein
 		//weshalb wir alte entfernen
