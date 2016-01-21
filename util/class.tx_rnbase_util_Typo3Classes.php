@@ -199,6 +199,16 @@ class tx_rnbase_util_Typo3Classes {
 	}
 
 	/**
+	 * @return string
+	 */
+	public static function getTypoScriptParserClass() {
+		return self::getClassByCurrentTypo3Version(array(
+			self::LOWER6	=> 't3lib_TSparser',
+			self::HIGHER6 	=> 'TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser'
+		));
+	}
+
+	/**
 	 * @param array $possibleClasses
 	 * @return string
 	 */

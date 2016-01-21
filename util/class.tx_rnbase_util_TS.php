@@ -33,11 +33,7 @@ class tx_rnbase_util_TS {
 	 * @return \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
 	 */
 	private static function getTsParser() {
-		tx_rnbase::load('tx_rnbase_util_TYPO3');
-		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher())
-			return tx_rnbase::makeInstance('TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser');
-		else
-			return tx_rnbase::makeInstance('t3lib_tsparser');
+		return tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getTypoScriptParserClass());
 	}
 
 	/**

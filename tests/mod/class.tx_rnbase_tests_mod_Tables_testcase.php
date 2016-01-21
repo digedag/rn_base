@@ -52,6 +52,12 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 		}
 
 		$this-> backupAndSetCurrentRequestUri();
+
+		if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
+			$property = new ReflectionProperty(tx_rnbase_util_Typo3Classes::getGeneralUtilityClass(), 'indpEnvCache');
+			$property->setAccessible(TRUE);
+			$property->setValue(NULL, array());
+		}
 	}
 
 	/**
@@ -348,6 +354,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 	 */
 	public function testPrepareTableWithSortableAndExistingUrlParams() {
 		$_GET['sortField'] = 'uid';
+		$_GET['sortRev'] = 'desc';
 		//weiterer Param, der erhalten bleiben sollte
 		$_SERVER['REQUEST_URI'] = $_SERVER['REQUEST_URI'].'&sortField=title&sortRev=desc&additionalParam=test';
 

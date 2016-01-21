@@ -759,7 +759,7 @@ class tx_rnbase_configurations {
 		}
 		if($flexTs) {
 			// This handles ts setup from flexform
-			$tsParser = tx_rnbase::makeInstance('t3lib_TSparser');
+			$tsParser = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getTypoScriptParserClass());
 			$tsParser->setup = $this->_dataStore->getArrayCopy();
 			$tsParser->parse($flexTs);
 			$flexTsData = $tsParser->setup;
@@ -775,7 +775,7 @@ class tx_rnbase_configurations {
 		// das < abschneiden, um den pfad zum link zu erhalten
 		$key = trim(substr($value, 1));
 
-		$tsParser = tx_rnbase::makeInstance('t3lib_TSparser');
+		$tsParser = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getTypoScriptParserClass());
 
 		// $name and $conf is loaded with the referenced values.
 		list($linkValue, $linkConf) = $tsParser->getVal($key, $GLOBALS['TSFE']->tmpl->setup);
