@@ -125,12 +125,8 @@ class tx_rnbase_util_Misc {
 	 * @see getUserObj()
 	 */
 	public static function callUserFunction($funcName, &$params, &$ref, $checkPrefix = 'user_', $errorMode = 0) {
-		if(tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-			return \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($funcName, $params, $ref);
-		}
-		else {
-			return t3lib_div::callUserFunction($funcName, $params, $ref);
-		}
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		return $utility::callUserFunction($funcName, $params, $ref);
 	}
 
 	/**
@@ -297,7 +293,7 @@ MAYDAYPAGE;
 			if($bRecursive) {
 				$result = "<span style='" . $sStyleGreen . "'>OBJECT (" . get_class($mMixed) .") : </span>" . self::viewMixed(get_object_vars($mMixed), FALSE, $iLevel + 1);
 			} else {
-				$result = "<span style='" . $sStyleGreen . "'>OBJECT (" . get_class($mMixed) .") : !RECURSION STOPPED!</span>";// . t3lib_div::view_array(get_object_vars($mMixed), FALSE);
+				$result = "<span style='" . $sStyleGreen . "'>OBJECT (" . get_class($mMixed) .") : !RECURSION STOPPED!</span>";
 			}
 		} elseif(is_bool($mMixed)) {
 			$result = "<span style='" . $sStyleGreen . "'>BOOLEAN: </span>" . ($mMixed ? 'TRUE' : 'FALSE');

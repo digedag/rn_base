@@ -118,13 +118,8 @@ class tx_rnbase_util_Arrays {
 	 * @return string Output string with key names and their value as string
 	 */
 	static public function arrayToLogString(array $arr, $valueList = array(), $valueLength = 20) {
-		if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-			$array = \TYPO3\CMS\Core\Utility\GeneralUtility::arrayToLogString($arr, $valueList, $valueLength);
-		} else {
-			$array = t3lib_div::arrayToLogString($arr, $valueList, $valueLength);
-		}
-
-		return $array;
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		return $utility::arrayToLogString($arr, $valueList, $valueLength);
 	}
 
 	/**

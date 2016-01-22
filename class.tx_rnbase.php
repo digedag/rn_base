@@ -191,8 +191,9 @@ class tx_rnbase {
 	 * @see		load()
 	 */
 	private static function makeInstanceClassNameT3($class, $alternativeKey='', $prefix = 'class.', $suffix = '.php') {
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
 		return (self::loadT3($class, $alternativeKey, $prefix, $suffix)) ?
-			t3lib_div::makeInstanceClassName($class) : FALSE;
+			$utility::makeInstanceClassName($class) : FALSE;
 	}
 	/**
 	 * Returns an array with information about a class
