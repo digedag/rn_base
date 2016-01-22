@@ -225,11 +225,10 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 		if(!$this->doc) {
 			if (isset($GLOBALS['TBE_TEMPLATE'])) {
 				$this->doc = $GLOBALS['TBE_TEMPLATE'];
-			}
-			elseif (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-				$this->doc = tx_rnbase::makeInstance('\\TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 			} else {
-				$this->doc = tx_rnbase::makeInstance('template');
+				$this->doc = tx_rnbase::makeInstance(
+					tx_rnbase_util_Typo3Classes::getDocumentTemplateClass()
+				);
 			}
 		}
 		return $this->doc;
