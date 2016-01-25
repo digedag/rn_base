@@ -66,7 +66,8 @@ class tx_rnbase_util_Files {
 				$ret = @file_get_contents($fullPath);
 				$subpart = isset($options['subpart']) ? $options['subpart'] : '';
 				if($subpart) {
-					$ret = t3lib_parsehtml::getSubpart($ret, $subpart);
+					$htmlParserClass = tx_rnbase_util_Typo3Classes::getHtmlParserClass();
+					$ret = $htmlParserClass::getSubpart($ret, $subpart);
 				}
 			}
 		}

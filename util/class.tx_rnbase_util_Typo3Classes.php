@@ -213,8 +213,18 @@ class tx_rnbase_util_Typo3Classes {
 	 */
 	public static function getDocumentTemplateClass() {
 		return self::getClassByCurrentTypo3Version(array(
-				self::LOWER6	=> 'template',
-				self::HIGHER6 	=> 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate'
+			self::LOWER6	=> 'template',
+			self::HIGHER6 	=> 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate'
+		));
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getTemplateServiceClass() {
+		return self::getClassByCurrentTypo3Version(array(
+			self::LOWER6	=> 't3lib_TStemplate',
+			self::HIGHER6 	=> 'TYPO3\\CMS\\Core\\TypoScript\\TemplateService'
 		));
 	}
 

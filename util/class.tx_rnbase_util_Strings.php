@@ -95,18 +95,17 @@ class tx_rnbase_util_Strings {
 		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
 		return $utility::isFirstPartOfStr($haystack, $needle);
 	}
+
 	/**
 	 * Wrapper for t3lib_div::testInt and \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($var)
 	 * @param mixed $var
 	 * @return boolean
+	 * @deprecated use tx_rnbase_util_Math::isInteger
 	 */
 	public static function isInteger($var) {
-		tx_rnbase::load('tx_rnbase_util_TYPO3');
-		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher())
-			return \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($var);
-		else
-			return t3lib_div::testInt($var);
+		return tx_rnbase_util_Math::isInteger($var);
 	}
+
 	/**
 	 * Returns TRUE if the last part of $haystack matches the string $needle
 	 *

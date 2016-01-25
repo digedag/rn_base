@@ -195,12 +195,11 @@ class tx_rnbase_plot_Builder {
 	 */
 	private function cObjGet($arrSetup, &$objRef) {
 		if (is_array($arrSetup)) {
-			$currVersionStr = $TYPO3_CONF_VARS['SYS']['compat_version']?$TYPO3_CONF_VARS['SYS']['compat_version']:TYPO3_version;
-			$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
-			if ($utility::int_from_ver($currVersionStr) < $utility::int_from_ver('4.0.0')) {
+			if (!tx_rnbase_util_TYPO3::isTYPO42OrHigher()) {
 				require_once(PATH_site.'t3lib/class.t3lib_tstemplate.php');
 			}
-			$arrSortedKeys=t3lib_TStemplate::sortedKeyList($arrSetup);
+			$templateServiceClass = tx_rnbase_util_Typo3Classes::getTemplateServiceClass();
+			$arrSortedKeys=$templateServiceClass::sortedKeyList($arrSetup);
 			foreach($arrSortedKeys as $strKey) {
 				$strCobjName=$arrSetup[$strKey];
 				if (intval($strKey) && !strstr($strKey, '.')) {
@@ -459,7 +458,8 @@ class tx_rnbase_plot_Builder {
 		$Vert_Hor = '';
 		$cObjCount = 1;
 		if (is_array($arrConf)) {
-			$sKeyArray=t3lib_TStemplate::sortedKeyList($arrConf);
+			$templateServiceClass = tx_rnbase_util_Typo3Classes::getTemplateServiceClass();
+			$sKeyArray=$templateServiceClass::sortedKeyList($arrConf);
 			foreach($sKeyArray as $theKey) {
 				$theValue=$arrConf[$theKey];
 				if (intval($theKey) && !strstr($theKey, '.')) {
@@ -493,11 +493,12 @@ class tx_rnbase_plot_Builder {
 		$intRows = 0;
 		$objEmpty = NULL;
 		$boolAutoCreate = $arrConf['autoCreate']?$arrConf['autoCreate']:TRUE;
+		$templateServiceClass = tx_rnbase_util_Typo3Classes::getTemplateServiceClass();
 		if (is_array($arrConf)) {
 			foreach ($arrConf as $strRow => $mixRow) {
 				if (intval(rtrim($strRow, '.'))) {
 					$intRows++;
-					$intThisCols = count(t3lib_TStemplate::sortedKeyList($mixRow));
+					$intThisCols = count($templateServiceClass::sortedKeyList($mixRow));
 					if ($intCols==0) {
 						$intCols = $intThisCols;
 					} elseif ($intThisCols<$intCols) {
@@ -511,7 +512,7 @@ class tx_rnbase_plot_Builder {
 		if (is_array($arrConf)) {
 			foreach ($arrConf as $strRow => $mixRow) {
 				if (intval(rtrim($strRow, '.'))) {
-					$arrSortedCols = t3lib_TStemplate::sortedKeyList($mixRow);
+					$arrSortedCols = $templateServiceClass::sortedKeyList($mixRow);
 					foreach($arrSortedCols as $intCol=>$intColKey) {
 						$strcObj=$mixRow[$intColKey];
 						$arrcObjProperties = $mixRow[$intColKey.'.'];
@@ -599,7 +600,8 @@ class tx_rnbase_plot_Builder {
 				case 'array':
 					$objMarker =& $objRef->addNew('tx_pbimagegraph_Marker_Array');
 					if (is_array($arrConf['marker.'])) {
-						$arrKeys=t3lib_TStemplate::sortedKeyList($arrConf['marker.']);
+						$templateServiceClass = tx_rnbase_util_Typo3Classes::getTemplateServiceClass();
+						$arrKeys=$templateServiceClass::sortedKeyList($arrConf['marker.']);
 						foreach($arrKeys as $strKey) {
 							$strType=$arrConf['marker.'][$strKey];
 							if (intval($strKey) && !strstr($strKey, '.')) {
@@ -718,7 +720,8 @@ class tx_rnbase_plot_Builder {
 				// deprecated: use getDataStyle()
 				$objFillStyle =& tx_pbimagegraph::factory('tx_pbimagegraph_Fill_Array');
 				if (is_array($arrConf)) {
-					$arrKeys=t3lib_TStemplate::sortedKeyList($arrConf);
+					$templateServiceClass = tx_rnbase_util_Typo3Classes::getTemplateServiceClass();
+					$arrKeys=$templateServiceClass::sortedKeyList($arrConf);
 					foreach($arrKeys as $strKey) {
 						$strType=$arrConf[$strKey];
 						if (intval($strKey) && !strstr($strKey, '.')) {
@@ -797,7 +800,8 @@ class tx_rnbase_plot_Builder {
 			case 'array':
 				$objLineStyle = & tx_pbimagegraph::factory('tx_pbimagegraph_Line_Array');
 				if (is_array($arrConf)) {
-					$arrKeys=t3lib_TStemplate::sortedKeyList($arrConf);
+					$templateServiceClass = tx_rnbase_util_Typo3Classes::getTemplateServiceClass();
+					$arrKeys=$templateServiceClass::sortedKeyList($arrConf);
 					foreach($arrKeys as $strKey) {
 						$strType=$arrConf[$strKey];
 						if (intval($strKey) && !strstr($strKey, '.')) {
@@ -932,7 +936,8 @@ class tx_rnbase_plot_Builder {
 			$this->setAxisProperties($objAxis, $strValue);
 			$this->setElementProperties($objAxis, $strValue);
 			if (is_array($strValue)) {
-				$arrKeys=t3lib_TStemplate::sortedKeyList($strValue);
+				$templateServiceClass = tx_rnbase_util_Typo3Classes::getTemplateServiceClass();
+				$arrKeys=$templateServiceClass::sortedKeyList($strValue);
 				foreach($arrKeys as $strKey) {
 					$strCobjName=$strValue[$strKey];
 					if (intval($strKey) && !strstr($strKey, '.')) {

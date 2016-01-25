@@ -582,7 +582,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		$this->tceStack[] = $pre . $this->form->getSoloField($table, $row, $fieldname) . $post;
 	}
 	/**
-	* @return t3lib_TCEforms
+	* @return TYPO3\CMS\Backend\Form\FormEngine
 	*/
 	public function getTCEForm() {
 		return $this->form;
@@ -746,7 +746,9 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 	 * @param boolean $isNew
 	 */
 	public function getTCEFormArray($table, $theUid, $isNew = FALSE) {
-		$trData = tx_rnbase::makeInstance('t3lib_transferData');
+		$transferDataClass = tx_rnbase_util_TYPO3::isTYPO62OrHigher() ?
+			'TYPO3\\CMS\\Backend\\Form\\DataPreprocessor' : 't3lib_transferData';
+		$trData = tx_rnbase::makeInstance($transferDataClass);
 		$trData->addRawData = TRUE;
 		$trData->fetchRecord($table, $theUid, $isNew?'new':'');	// 'new'
 		reset($trData->regTableItems_data);
