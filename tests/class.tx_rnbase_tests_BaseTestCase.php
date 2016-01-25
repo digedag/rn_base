@@ -35,7 +35,7 @@ abstract class tx_rnbase_tests_BaseTestCase
 
 	/**
 	 * Sample:
-	 * $this->createConfigurations(
+	 * self::createConfigurations(
 	 *     array(), 'rn_base', 'rn_base',
 	 *     tx_rnbase::makeInstance('tx_rnbase_parameters'),
 	 *     tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass())
@@ -46,7 +46,7 @@ abstract class tx_rnbase_tests_BaseTestCase
 	 * @param string $qualifier
 	 * @return tx_rnbase_configurations
 	 */
-	protected function createConfigurations(
+	protected static function createConfigurations(
 		array $configurationArray, $extensionKey, $qualifier = ''
 	) {
 		$qualifier = empty($qualifier) ? $extensionKey : $qualifier;
@@ -98,7 +98,7 @@ abstract class tx_rnbase_tests_BaseTestCase
 		// if there is an scalar value,
 		// a db select fill be performed to get the record
 		if (!is_array($record)) {
-			$record = array('uid' => 0);
+			$record = array('uid' => (int) $record);
 		}
 
 		if (!tx_rnbase::load($class)) {
@@ -118,12 +118,12 @@ abstract class tx_rnbase_tests_BaseTestCase
 		);
 
 		$model
-			->expects($this->any())
+			->expects(self::any())
 			->method('reset')
-			->will($this->returnSelf())
+			->will(self::returnSelf())
 		;
 		$model
-			->expects($this->never())
+			->expects(self::never())
 			->method('getColumnWrapped')
 		;
 
