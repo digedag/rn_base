@@ -43,7 +43,7 @@ class tx_rnbase_cache_TYPO3Cache60 implements tx_rnbase_cache_ICache {
 	}
 
 	/**
-	 * @return t3lib_cache_Manager
+	 * @return \TYPO3\CMS\Core\Cache\CacheManager
 	 */
 	private function getT3CacheManager() {
 		return $GLOBALS['typo3CacheManager'];
@@ -82,7 +82,7 @@ class tx_rnbase_cache_TYPO3Cache60 implements tx_rnbase_cache_ICache {
 	/**
 	 * Set the TYPO3 cache instance.
 	 *
-	 * @param t3lib_cache_frontend_Frontend $cache
+	 * @param \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache
 	 */
 	private function setCache(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache) {
 		$this->cache = $cache;
@@ -90,7 +90,7 @@ class tx_rnbase_cache_TYPO3Cache60 implements tx_rnbase_cache_ICache {
 	/**
 	 * Set the TYPO3 cache instance.
 	 *
-	 * @return t3lib_cache_frontend_Frontend
+	 * @return \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
 	 */
 	private function getCache() {
 		return $this->cache;

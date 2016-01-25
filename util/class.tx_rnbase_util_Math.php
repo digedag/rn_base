@@ -30,17 +30,30 @@ class tx_rnbase_util_Math {
 	/**
 	 * Tests if the input can be interpreted as integer.
 	 * @return boolean
+	 * @deprecated use tx_rnbase_util_Math::isInteger
 	 */
 	public static function testInt($var) {
+		return self::isInteger($var);
+	}
+
+	/**
+	 * Wrapper for t3lib_div::testInt and \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($var)
+	 * @param mixed $var
+	 * @return boolean
+	 */
+	public static function isInteger($var) {
 		if(tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-			return \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($var);
+			$isInteger = \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($var);
 		}elseif(tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
-			return t3lib_utility_Math::canBeInterpretedAsInteger($var);
+			$isInteger = t3lib_utility_Math::canBeInterpretedAsInteger($var);
 		}
 		else {
-			return t3lib_div::testInt($var);
+			$isInteger = t3lib_div::testInt($var);
 		}
+
+		return $isInteger;
 	}
+
 	/**
 	 * Forces the integer $theInt into the boundaries of $min and $max. If the $theInt is 'FALSE' then the $zeroValue is applied.
 	 *

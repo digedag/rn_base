@@ -52,7 +52,7 @@ class tx_rnbase_util_Templates {
 	}
 
 	/**
-	 * @return t3lib_TStemplate
+	 * @return TYPO3\CMS\Core\TypoScript\TemplateService
 	 */
 	public static function getTSTemplate() {
 		if(!is_object(self::$tmpl)) {
@@ -60,7 +60,9 @@ class tx_rnbase_util_Templates {
 				self::$tmpl = $GLOBALS['TSFE']->tmpl;
 			}
 			else {
-				self::$tmpl = tx_rnbase::makeInstance('t3lib_TStemplate');
+				self::$tmpl = tx_rnbase::makeInstance(
+					tx_rnbase_util_Typo3Classes::getTemplateServiceClass()
+				);
 				self::$tmpl->init();
 				self::$tmpl->tt_track= 0;
 			}
