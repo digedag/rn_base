@@ -138,11 +138,25 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 	 */
 	public function getFormTool() {
 		if(!$this->formTool) {
-			$this->formTool = tx_rnbase::makeInstance('tx_rnbase_util_FormTool');
-			$this->formTool->init($this->getDoc());
+			if ($this->isDispatchMode()) {
+				$this->formTool = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Form_ToolBox');
+				$this->formTool->init($this->getDoc(), $this);
+			} else {
+				$this->formTool = tx_rnbase::makeInstance('tx_rnbase_util_FormTool');
+				$this->formTool->init($this->getDoc());
+			}
+
 		}
 		return $this->formTool;
 	}
+
+	/**
+	 * @return boolean
+	 */
+	protected function isDispatchMode() {
+		return $GLOBALS['MCONF']['script'] == '_DISPATCH';
+	}
+
 	/**
 	 * Liefert eine Instanz von tx_rnbase_configurations. Da wir uns im BE bewegen, wird diese mit einem
 	 * Config-Array aus der TSConfig gefüttert. Dabei wird die Konfiguration unterhalb von mod.extkey. genommen.
