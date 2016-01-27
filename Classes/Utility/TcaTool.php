@@ -47,6 +47,7 @@ class Tx_Rnbase_Utility_TcaTool {
 	 * @param string $moduleName
 	 * @param array $urlParams
 	 * @return void
+	 * @deprecated use getWizards()
 	 */
 	public function addWizard(&$tcaTable, $colName, $wizardName, $moduleName, $urlParams = array()) {
 		if(\tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
@@ -59,6 +60,170 @@ class Tx_Rnbase_Utility_TcaTool {
 			$tcaTable['columns'][$colName]['config']['wizards'][$wizardName]['script'] =
 					$moduleName . '.php?' . http_build_query($urlParams);
 		}
+	}
+
+	/**
+	 * usage:
+	 * ...'wizards' => tx_mklib_util_TCA::getWizards(
+	 * 		'mytable', array(
+	 * 			### overwriting the default label
+	 * 			### or anything else
+	 * 			'add' => array(
+	 * 				'title'  => 'my new title',
+	 * 			),
+	 * 			'edit' => TRUE,
+	 * 			'suggest' => TRUE
+	 * 		)
+	 * ),
+	 *
+	 * @param 	string 	$table
+	 * @param 	array 	$options
+	 * @return 	array
+	 */
+	public static function getWizards($table, array $options = array()) {
+		$globalPid = isset($options['globalPid']) ? $options['globalPid'] : false;
+		$wizards = array (
+			'_PADDING' => 2,
+			'_VERTICAL' => 1,
+		);
+
+		if(isset($options['edit'])) {
+			$wizards['edit'] = array (
+				'type' => 'popup',
+				'title' => 'Edit entry', // LLL:EXT:mketernit/locallang.
+				'icon' => tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
+				'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif' :
+				'edit2.gif',
+				'popup_onlyOpenIfSelected' => 1,
+				'JSopenParams' => 'height=576,width=720,status=0,menubar=0,scrollbars=1',
+			);
+			$wizards['edit'] = self::addWizardScriptForTypo3Version('edit', $wizards['edit']);
+			if (is_array($options['edit'])) {
+				$wizards['edit'] =
+					tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
+						$wizards['edit'], $options['edit']
+					);
+			}
+		}
+
+		if(isset($options['add'])) {
+			$wizards['add'] = array (
+				'type' => 'script',
+				'title' => 'Create new entry',
+				'icon' => tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
+				'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif' :
+				'add.gif',
+				'params' => array (
+					'table' => $table,
+					'pid' => ($globalPid ? '###STORAGE_PID###' : '###CURRENT_PID###'),
+					'setValue' => 'prepend',
+				),
+			);
+			$wizards['add'] = self::addWizardScriptForTypo3Version('add', $wizards['add']);
+			if (is_array($options['add'])) {
+				$wizards['add'] =
+					tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
+						$wizards['add'], $options['add']
+					);
+			}
+		}
+
+		if(isset($options['list'])) {
+			$wizards['list'] = array (
+				'type' => 'popup',
+				'title' => 'List entries',
+				'icon' => tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
+				'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_list.gif' :
+				'list.gif',
+				'params' => array (
+					'table' => $table,
+					'pid' => ($globalPid ? '###STORAGE_PID###' : '###CURRENT_PID###'),
+				),
+				'JSopenParams' => 'height=576,width=720,status=0,menubar=0,scrollbars=1',
+			);
+			$wizards['list'] = self::addWizardScriptForTypo3Version('list', $wizards['list']);
+			if (is_array($options['list'])) {
+				$wizards['list'] =
+					tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
+						$wizards['list'], $options['list']
+					);
+			}
+		}
+
+		if(isset($options['suggest'])) {
+			$wizards['suggest'] = array (
+				'type' => 'suggest',
+				'default' => array(
+					'maxItemsInResultList' => 8,
+					'searchWholePhrase' => true, // true: LIKE %term% false: LIKE term%
+				),
+			);
+			if (is_array($options['suggest'])) {
+				$wizards['suggest'] =
+					tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
+						$wizards['suggest'], $options['suggest']
+					);
+			}
+		}
+
+		if(isset($options['RTE'])) {
+			$wizards['RTE'] = Array(
+				'notNewRecords' => 1,
+				'RTEonly' => 1,
+				'type' => 'script',
+				'title' => 'Full screen Rich Text Editing',
+				'icon' => tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
+				'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_rte.gif' :
+				'wizard_rte2.gif',
+			);
+			$wizards['RTE'] = self::addWizardScriptForTypo3Version('rte', $wizards['RTE']);
+		}
+
+		if(isset($options['link'])) {
+			$wizards['link'] = Array(
+				'type' => 'popup',
+				'title' => 'LLL:EXT:cms/locallang_ttc.xml:header_link_formlabel',
+				'icon' => tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
+				'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif' :
+				'link_popup.gif',
+				'script' => 'browse_links.php?mode=wizard',
+				'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
+				'params' => Array(
+					'blindLinkOptions' => '',
+				)
+			);
+			if (is_array($options['link'])) {
+				$wizards['link'] =
+					tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
+						$wizards['link'], $options['link']
+					);
+			}
+
+			$wizards['link'] = self::addWizardScriptForTypo3Version('link', $wizards['link']);
+		}
+
+		return $wizards;
+	}
+
+	/**
+	 * @param string $wizardType
+	 * @param array $wizardConfig
+	 * @return array
+	 */
+	private static function addWizardScriptForTypo3Version($wizardType, array $wizardConfig) {
+		$completeWizardName = 'wizard_' . $wizardType;
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			$wizardConfig['module']['name'] = $completeWizardName;
+			if (isset($wizardConfig['script'])) {
+				unset($wizardConfig['script']);
+			}
+		} else {
+			if (!isset($wizardConfig['script'])) {
+				$wizardConfig['script'] = $completeWizardName . '.php';
+			}
+		}
+
+		return $wizardConfig;
 	}
 }
 
