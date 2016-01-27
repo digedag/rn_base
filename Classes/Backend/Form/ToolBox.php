@@ -212,18 +212,21 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		$sEnableColumn = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
 		//fallback
 		$sEnableColumn = ($sEnableColumn) ? $sEnableColumn : 'hidden';
-		$jumpToUrl = "'".$GLOBALS['BACK_PATH'].'tce_db.php?redirect='.$location.'&amp;data['.$table.'][' . $uid .']['. $sEnableColumn .']='.($unhide ? 0 : 1);
 		$label = isset($options['label']) ? $options['label'] : '';
+		$jumpToUrl = $this->buildJumpUrl('data['.$table.']['.$uid.']['. $sEnableColumn .']='.($unhide ? 0 : 1), $options);
 
-		//jetzt noch alles zur Formvalidierung einfügen damit
-		//TYPO3 den Link akzeptiert und als valide einstuft
-		//der Formularname ist immer tceAction
-		$jumpToUrl .= "&amp;vC=".$GLOBALS['BE_USER']->veriCode();
-		$jumpToUrl .= Tx_Rnbase_Backend_Utility::getUrlToken('tceAction');
-		$jumpToUrl .="'";
+		if(tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
+			$image = $this->iconFactory->getIcon(
+				($unhide ? 'actions-edit-hide' : 'actions-edit-unhide'),
+				\TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL
+			)->render();
+		}
+		else {
+			$image = '<img'.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.($unhide ? 'button_hide.gif' : 'button_unhide.gif'), 'width="11" height="12"').' border="0" alt="" />';
+		}
 
-		return '<a onclick="return jumpToUrl('.$jumpToUrl.');" href="#">'.
-				'<img'.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.($unhide ? 'button_hide.gif' : 'button_unhide.gif'), 'width="11" height="12"').' title="'.($unhide ? 'Show' : 'Hide').' UID: '.$uid.'" border="0" alt="" />'.
+		return '<a onclick="'.$jumpToUrl.'" href="#" title="' . ($unhide ? 'Show' : 'Hide').' UID: '.$uid . '">'.
+				$image .
 				$label.'</a>';
 	}
 
@@ -326,9 +329,15 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 	public function createDeleteLink($table, $uid, $label = 'Remove', $options = array()) {
 
 		$jsCode = $this->buildJumpUrl('cmd['.$table.']['.$uid.'][delete]=1', $options);
-		return '<a onclick="'.$jsCode.'" href="#">'.
-			'<img'.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/deletedok.gif', 'width="16" height="16"').' title="Delete UID: '.$uid.'" border="0" alt="" />'.
-				$label.'</a>';
+		if(tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
+			$image = $this->iconFactory->getIcon(
+				'actions-delete', \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL
+			)->render();
+		}
+		else {
+			$image = '<img'.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/deletedok.gif', 'width="16" height="16"').'  border="0" alt="" />';
+		}
+		return '<a onclick="'.$jsCode.'" href="#" title="Delete UID: '.$uid.'">'. $image . $label.'</a>';
 	}
 
 	/**
