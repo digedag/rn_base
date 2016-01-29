@@ -55,20 +55,39 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 	 * @return	[type]		...
 	 */
 	public function main()	{
-
-		global $BE_USER, $LANG;
 		// Einbindung der Modul-Funktionen
 		$this->checkExtObj();
 		// Access check!
 		// The page will show only if there is a valid page and if this page may be viewed by the user
 		$this->pageinfo = Tx_Rnbase_Backend_Utility::readPageAccess($this->getPid(), $this->perms_clause);
-		$access = is_array($this->pageinfo) ? 1 : 0;
 		$this->initDoc($this->getDoc());
+
+		if ($this->useModuleTemplate()) {
+			$this->setContentThroughModuleTemplate();
+		} else {
+			$this->setContentThroughDocumentTemplate();
+		}
+	}
+
+	/**
+	 * @return boolean
+	 */
+	protected function useModuleTemplate() {
+		return FALSE;
+	}
+
+	/**
+	 * Der Weg bis TYPO3 6.2
+	 * @return void
+	 */
+	protected function setContentThroughDocumentTemplate() {
+		global $BE_USER;
+
 		$markers = array();
 		$this->content .= $this->moduleContent(); // Muss vor der Erstellung des Headers geladen werden
 		$this->content .= $this->getDoc()->sectionEnd();  // Zur Sicherheit eine offene Section schließen
 
-		$header = $this->getDoc()->header($LANG->getLL('title'));
+		$header = $this->getDoc()->header($GLOBALS['LANG']->getLL('title'));
 		$this->content = $this->content; // ??
 		// ShortCut
 		if ($BE_USER->mayMakeShortcut())	{
@@ -88,10 +107,40 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 		$markers['TABS'] = $this->tabs; // Deprecated use ###SUBMENU###
 		$markers['CONTENT'] = $this->content;
 
-		$content = $this->getDoc()->startPage($LANG->getLL('title'));
+		$content = $this->getDoc()->startPage($GLOBALS['LANG']->getLL('title'));
 		$content.= $this->getDoc()->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 		$this->content = $this->getDoc()->insertStylesAndJS($content);
 	}
+
+	/**
+	 * der Weg ab TYPO3 7.6
+	 * @return void
+	 */
+	protected function setContentThroughModuleTemplate() {
+		/* @var $moduleTemplate TYPO3\CMS\Backend\Template\ModuleTemplate */
+		$moduleTemplate = tx_rnbase::makeInstance(TYPO3\CMS\Backend\Template\ModuleTemplate::class);
+		$moduleTemplate->getPageRenderer()->loadJquery();
+		$moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
+		// @TODO das Menü ist nicht funktionell. Weder werden die Locallang Labels
+		// ersetzt, noch funktioniert der onChange Event
+		$moduleTemplate->registerModuleMenu($this->getName());
+		// @TODO Shorticon wie in alter Version einfügen
+		$content = $moduleTemplate->header($GLOBALS['LANG']->getLL('title'));
+		// muss vor dem einfügen der Tabs aufgerufen werden, da die Tabs sonst leer bleiben
+		$this->moduleContent();
+		$content .= $moduleTemplate->section('', $this->tabs, FALSE, FALSE, 0, TRUE);
+		$content .= $moduleTemplate->section('', $this->moduleContent(), FALSE, FALSE, 0, TRUE);
+		// Workaround: jumpUrl wieder einfügen
+		// @TODO Weg finden dass ohne das DocumentTemplate zu machen
+		$content .= '<!--###POSTJSMARKER###-->';
+		$content = $this->getDoc()->insertStylesAndJS($content);
+		// @TODO haupttemplate eines BE moduls enthält evtl. JS/CSS etc.
+		// das wurde bisher über das DocumentTemplate eingefügt, was jetzt
+		// nicht mehr geht. Dafür muss ein Weg gefunden werden.
+		$moduleTemplate->setContent($content);
+		$this->content = $moduleTemplate->renderContent();
+	}
+
 	/**
 	 * Returns the module ident name
 	 * @return string
@@ -145,7 +194,6 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 				$this->formTool = tx_rnbase::makeInstance('tx_rnbase_util_FormTool');
 				$this->formTool->init($this->getDoc());
 			}
-
 		}
 		return $this->formTool;
 	}
@@ -315,6 +363,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 		$doc->form= $this->getFormTag();
 		$doc->docType = 'xhtml_trans';
 		$doc->inDocStyles = $this->getDocStyles();
+		$doc->inDocStylesArray[] = $doc->inDocStyles;
 		$doc->tableLayout = $this->getTableLayout();
 		$doc->setModuleTemplate($this->getModuleTemplate());
 		$doc->loadJavascriptLib('contrib/prototype/prototype.js');
