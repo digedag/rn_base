@@ -1,4 +1,5 @@
 <?php
+use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
 /***************************************************************
  *  Copyright notice
  *
@@ -228,8 +229,7 @@ abstract class tx_rnbase_tests_BaseTestCase
 
 		$interfaces = '';
 		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			// @TODO: should we use Tx_Phpunit_Interface_AccessibleObject?
-			$interfaces = '\TYPO3\CMS\Core\Tests\AccessibleObjectInterface';
+			$interfaces = 'Tx_Phpunit_Interface_AccessibleObject';
 		}
 		$interfaces = empty($interfaces) ? '' : ' implements ' . $interfaces;
 
