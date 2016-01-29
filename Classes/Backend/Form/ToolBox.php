@@ -671,9 +671,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 								'\',this);"'
 			);
 		}
-		/* @var $documentTemplate TYPO3\CMS\Backend\Template\DocumentTemplate */
-		$documentTemplate = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getDocumentTemplateClass());
-		$out = $documentTemplate->getTabMenuRaw($menuItems);
+		$out = $this->module->getDoc()->getTabMenuRaw($menuItems);
 
 		$ret = array(
 			'menu' => $out,
