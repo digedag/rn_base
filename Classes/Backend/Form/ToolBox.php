@@ -671,12 +671,15 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		$SETTINGS = Tx_Rnbase_Backend_Utility::getModuleData(
 			$MENU, tx_rnbase_parameters::getPostOrGetParameter('SET'), $modName
 		);
-
 		foreach($entries As $key => $value) {
+			if ($key === 0 || strcmp($value, '')) {
+				// skip empty entries!
+				continue;
+			}
 			$menuItems[] = array(
 				'isActive' => $SETTINGS[$name] == $key,
 				'label' => $value,
-				// jumpUrl ist aber TYPO3 6.2 nicht mehr nötig
+				// jumpUrl ist ab TYPO3 6.2 nicht mehr nötig
 				// @TODO jumpUrl entfernen wenn kein Support mehr für 4.5
 				'url' => '#',
 				'addParams' => 	'onclick="jumpToUrl(\'' .
