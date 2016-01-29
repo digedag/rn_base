@@ -678,7 +678,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 			$MENU, tx_rnbase_parameters::getPostOrGetParameter('SET'), $modName
 		);
 		foreach($entries As $key => $value) {
-			if ($key === 0 || strcmp($value, '') === 0) {
+			if (strcmp($value, '') === 0) {
 				// skip empty entries!
 				continue;
 			}
