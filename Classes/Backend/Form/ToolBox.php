@@ -70,6 +70,12 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		return $this->doc;
 	}
 	/**
+	 * @return tx_rnbase_mod_IModule
+	 */
+	public function getModule() {
+		return $this->module;
+	}
+	/**
 	 * Erstellt einen Button zur Bearbeitung eines Datensatzes
 	 * @param string $editTable DB-Tabelle des Datensatzes
 	 * @param int $editUid UID des Datensatzes
@@ -699,13 +705,13 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		return $ret;
 	}
 	protected function buildScriptURI($urlParams) {
-		if($this->module == NULL) {
+		if (!Tx_Rnbase_Backend_Utility::isDispatchMode()) {
 			return 'index.php?'. http_build_query($urlParams);
 //			'index.php?&amp;id='.$pid.'&amp;SET['.$name.']='. $key;
 		}
 		else {
 			// In dem Fall die URI über den DISPATCH-Modus bauen
-			return Tx_Rnbase_Backend_Utility::getModuleUrl($this->module->getName(), $urlParams, '');
+			return Tx_Rnbase_Backend_Utility::getModuleUrl($this->getModule()->getName(), $urlParams, '');
 		}
 	}
 	/**
