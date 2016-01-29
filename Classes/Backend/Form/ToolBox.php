@@ -194,9 +194,21 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 			$jsCode = 'if(confirm('.tx_rnbase_util_Strings::quoteJSvalue($options['confirm']).')) {' . $jsCode .'} else {return false;}';
 		}
 
-		return '<a href="#" onclick="'.htmlspecialchars($jsCode, -1).'">'.
-			'<img'.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/new_'.($table=='pages'?'page':'el').'.gif', 'width="'.($table=='pages'?13:11).'" height="12"').' title="'.$title.'" alt="" />'.
-			$label .'</a>';
+		if(tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
+			$image = $this->iconFactory->getIcon(
+				'actions-document-new', \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL
+			)->render();
+		}
+		else {
+			$image = '<img' .
+				Tx_Rnbase_Backend_Utility_Icons::skinImg(
+					$GLOBALS['BACK_PATH'],
+					'gfx/new_'.($table=='pages'?'page':'el') . '.gif',
+					'width="'.($table=='pages'?13:11).'" height="12"'
+				).' alt="" />';
+		}
+		return 	'<a href="#" title="'.$title.'" onclick="'.htmlspecialchars($jsCode, -1).'">' .
+				$image . $label . '</a>';
 }
 
 /**
