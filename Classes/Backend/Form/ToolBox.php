@@ -684,12 +684,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 								'\',this);"'
 			);
 		}
-		if (is_object($this->module)) {
-			$doc = $this->module->getDoc();
-		} else {
-			$doc = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getDocumentTemplateClass());
-		}
-		$out = $doc->getTabMenuRaw($menuItems);
+		$out = $this->getDoc()->getTabMenuRaw($menuItems);
 
 		$ret = array(
 			'menu' => $out,
