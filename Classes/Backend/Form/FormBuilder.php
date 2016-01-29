@@ -1,8 +1,4 @@
 <?php
-use TYPO3\CMS\Backend\Form\NodeFactory;
-use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
-use TYPO3\CMS\Backend\Form\FormDataCompiler;
-use TYPO3\CMS\Backend\Form\FormResultCompiler;
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
 /***************************************************************
@@ -46,12 +42,10 @@ class Tx_Rnbase_Backend_Form_FormBuilder {
 	 */
 	public function __construct() {
 		/** @var TcaDatabaseRecord $formDataGroup */
-		$formDataGroup = tx_rnbase::makeInstance(TcaDatabaseRecord::class);
-		/** @var FormDataCompiler $formDataCompiler */
-		$this->formDataCompiler = tx_rnbase::makeInstance(FormDataCompiler::class, $formDataGroup);
-		$this->nodeFactory = tx_rnbase::makeInstance(NodeFactory::class);
-		/** @var FormResultCompiler formResultCompiler */
-		$this->formResultCompiler = tx_rnbase::makeInstance(FormResultCompiler::class);
+		$formDataGroup = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormDataGroup\\TcaDatabaseRecord');
+		$this->formDataCompiler = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormDataCompiler', $formDataGroup);
+		$this->nodeFactory = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\NodeFactory');
+		$this->formResultCompiler = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormResultCompiler');
 
 	}
 	public function initDefaultBEmode() {

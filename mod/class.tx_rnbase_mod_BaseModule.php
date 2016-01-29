@@ -118,7 +118,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 	 */
 	protected function setContentThroughModuleTemplate() {
 		/* @var $moduleTemplate TYPO3\CMS\Backend\Template\ModuleTemplate */
-		$moduleTemplate = tx_rnbase::makeInstance(TYPO3\CMS\Backend\Template\ModuleTemplate::class);
+		$moduleTemplate = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Template\\ModuleTemplate');
 		$moduleTemplate->getPageRenderer()->loadJquery();
 		$moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
 		// @TODO das Menü ist nicht funktionell. Weder werden die Locallang Labels
