@@ -56,4 +56,13 @@ class Tx_Rnbase_Backend_Utility {
 
 		return $backendUtilityClass;
 	}
+
+
+
+	/**
+	 * @return boolean
+	 */
+	public static function isDispatchMode() {
+		return $GLOBALS['MCONF']['script'] === '_DISPATCH';
+	}
 }

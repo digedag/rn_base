@@ -187,22 +187,14 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 	 */
 	public function getFormTool() {
 		if(!$this->formTool) {
-			if ($this->isDispatchMode()) {
-				$this->formTool = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Form_ToolBox');
-				$this->formTool->init($this->getDoc(), $this);
-			} else {
-				$this->formTool = tx_rnbase::makeInstance('tx_rnbase_util_FormTool');
-				$this->formTool->init($this->getDoc());
-			}
+			$this->formTool = tx_rnbase::makeInstance(
+				Tx_Rnbase_Backend_Utility::isDispatchMode()
+					? 'Tx_Rnbase_Backend_Form_ToolBox'
+					: 'tx_rnbase_util_FormTool'
+			);
+			$this->formTool->init($this->getDoc(), $this);
 		}
 		return $this->formTool;
-	}
-
-	/**
-	 * @return boolean
-	 */
-	protected function isDispatchMode() {
-		return $GLOBALS['MCONF']['script'] == '_DISPATCH';
 	}
 
 	/**
