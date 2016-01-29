@@ -290,7 +290,13 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 	private function buildJumpUrl($params, $options = array()){
 		$currentLocation = $this->getLinkThisScript();
 
-		$jumpToUrl = $GLOBALS['BACK_PATH'] . 'tce_db.php?redirect=' . $currentLocation . '&amp;' . $params;
+		if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
+			$dataHandlerEntryPoint = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('tce_db') .
+				'&';
+		} else {
+			$dataHandlerEntryPoint = $GLOBALS['BACK_PATH'] . 'tce_db.php?';
+		}
+		$jumpToUrl = $dataHandlerEntryPoint. 'redirect=' . $currentLocation . '&amp;' . $params;
 
 		//jetzt noch alles zur Formvalidierung einfügen damit
 		//TYPO3 den Link akzeptiert und als valide einstuft
