@@ -217,7 +217,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 
 		if(tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
 			$image = $this->iconFactory->getIcon(
-				($unhide ? 'actions-edit-hide' : 'actions-edit-unhide'),
+				($unhide ? 'actions-edit-unhide' : 'actions-edit-hide'),
 				\TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL
 			)->render();
 		}
