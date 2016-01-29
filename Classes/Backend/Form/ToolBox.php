@@ -660,24 +660,19 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 			$MENU, tx_rnbase_parameters::getPostOrGetParameter('SET'), $modName
 		);
 
-		$out = '
-		<div class="typo3-dyntabmenu-tabs">
-			<table class="typo3-dyntabmenu" border="0" cellpadding="0" cellspacing="0">
-			<tbody><tr>';
-
 		foreach($entries As $key => $value) {
-			$uri = $this->buildScriptURI(array('id'=>$pid, 'SET['.$name.']'=>$key));
-			$out .= '
-				<td class="tab'.($SETTINGS[$name] == $key ? 'act' : '').'" nowrap="nowrap">';
-			$out .= '<a href="#" onclick="jumpToUrl(\''. $uri .'\',this);">'.$value.'</a></td>';
+			$menuItems[] = array(
+				'isActive' => $SETTINGS[$name] == $key,
+				'label' => $value,
+				'url' => $this->buildScriptURI(array('id'=>$pid, 'SET['.$name.']'=>$key))
+			);
 		}
-		$out .= '
-				</tr>
-			</tbody></table></div>
-		';
+		$documentTemplate = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getDocumentTemplateClass());
+		$out = $documentTemplate->getTabMenuRaw($menuItems);
+
 		$ret = array(
-				'menu' => $out,
-				'value' => $SETTINGS[$name],
+			'menu' => $out,
+			'value' => $SETTINGS[$name],
 		);
 		return $ret;
 	}
