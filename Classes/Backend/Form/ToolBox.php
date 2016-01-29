@@ -664,9 +664,14 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 			$menuItems[] = array(
 				'isActive' => $SETTINGS[$name] == $key,
 				'label' => $value,
-				'url' => $this->buildScriptURI(array('id'=>$pid, 'SET['.$name.']'=>$key))
+				// jumpUrl ist aber TYPO3 6.2 nicht mehr nötig
+				'url' => '#',
+				'addParams' => 	'onclick="jumpToUrl(\'' .
+								$this->buildScriptURI(array('id'=>$pid, 'SET['.$name.']'=>$key)) .
+								'\',this);"'
 			);
 		}
+		/* @var $documentTemplate TYPO3\CMS\Backend\Template\DocumentTemplate */
 		$documentTemplate = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getDocumentTemplateClass());
 		$out = $documentTemplate->getTabMenuRaw($menuItems);
 
