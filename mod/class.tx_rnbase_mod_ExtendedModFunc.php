@@ -136,6 +136,13 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc {
 	 *
 	 */
 	abstract protected function getFuncId();
+
+	/**
+	 *
+	 * @param array $menuObjs
+	 * @param tx_rnbase_util_FormTool $formTool
+	 * @return array
+	 */
 	protected function initSubMenu(&$menuObjs, $formTool) {
 		$items = $this->getSubMenuItems();
 		if(!is_array($items)) return;
