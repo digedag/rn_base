@@ -63,17 +63,18 @@ class Tx_Rnbase_Utility_TcaTool {
 	}
 
 	/**
+	 * Creates the wizard config for the tca
+	 *
 	 * usage:
-	 * ...'wizards' => tx_mklib_util_TCA::getWizards(
-	 * 		'mytable', array(
-	 * 			### overwriting the default label
-	 * 			### or anything else
-	 * 			'add' => array(
-	 * 				'title'  => 'my new title',
-	 * 			),
-	 * 			'edit' => TRUE,
-	 * 			'suggest' => TRUE
-	 * 		)
+	 * ... 'wizards' => Tx_Rnbase_Utility_TcaTool::getWizards(
+	 *     'mytable',
+	 *     array(
+	 *         ### overwriting the default label
+	 *         ### or anything else
+	 *         'add' => array('title'  => 'my new title'),
+	 *         'edit' => TRUE,
+	 *         'suggest' => TRUE
+	 *     )
 	 * ),
 	 *
 	 * @param 	string 	$table
