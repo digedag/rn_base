@@ -25,5 +25,8 @@
 	},
 	"require" : {
 		"typo3/cms-core" : ">=4.5.0 <=7.6.99"
+	},
+	"autoload": {
+		"classmap": ["action/", "cache/", "Classes/", "exception/", "filter/", "maps/", "misc/", "mod/", "model/", "plot/", "sv1/", "util/", "view/"]
 	}
 }
