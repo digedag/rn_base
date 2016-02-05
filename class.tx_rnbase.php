@@ -82,7 +82,7 @@ class tx_rnbase {
 	public static function makeInstance($class) {
 		$ret = FALSE;
 		if(self::load($class)) {
-			self::load('tx_rnbase_util_TYPO3');
+			self::load('tx_rnbase_util_Typo3Classes');
 			$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
 			if(func_num_args() > 1) {
 				// Das ist ein Konstruktor Aufruf mit Parametern
