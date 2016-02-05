@@ -241,16 +241,6 @@ class tx_rnbase_util_Typo3Classes {
 	}
 
 	/**
-	 * @return string
-	 */
-	public static function getTypoScriptFrontendControllerClass() {
-		return self::getClassByCurrentTypo3Version(array(
-			self::LOWER6	=> 'tslib_fe',
-			self::HIGHER6 	=> 'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController'
-		));
-	}
-
-	/**
 	 * @param array $possibleClasses
 	 * @return string
 	 */
