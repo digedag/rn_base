@@ -26,7 +26,7 @@ if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
 	/**
 	 * Tx_Rnbase_Error_ProductionExceptionHandler
 	 *
-	 * Wrapper für \TYPO3\CMS\Core\Error\ProductionExceptionHandler seit TYPO3 6.x
+	 * Wrapper für TYPO3\CMS\Core\Error\ProductionExceptionHandler seit TYPO3 6.x
 	 *
 	 * @package 		TYPO3
 	 * @subpackage	 	rn_base
@@ -34,7 +34,8 @@ if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
 	 * @license 		http://www.gnu.org/licenses/lgpl.html
 	 * 					GNU Lesser General Public License, version 3 or later
 	 */
-	class Tx_Rnbase_Error_ProductionExceptionHandler extends \TYPO3\CMS\Core\Error\ProductionExceptionHandler {}
+	class Tx_Rnbase_Error_ProductionExceptionHandler
+		extends TYPO3\CMS\Core\Error\ProductionExceptionHandler {}
 } else {
 	/**
 	 * Tx_Rnbase_Error_ProductionExceptionHandler

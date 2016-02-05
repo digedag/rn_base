@@ -26,7 +26,7 @@ if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
 	/**
 	 * Tx_Rnbase_Frontend_Controller_TypoScriptFrontendController
 	 *
-	 * Wrapper für \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController seit TYPO3 6.x
+	 * Wrapper für TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController seit TYPO3 6.x
 	 *
 	 * @package 		TYPO3
 	 * @subpackage	 	rn_base
@@ -35,7 +35,7 @@ if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
 	 * 					GNU Lesser General Public License, version 3 or later
 	 */
 	class Tx_Rnbase_Frontend_Controller_TypoScriptFrontendController
-		extends \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController {}
+		extends TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController {}
 } else {
 	/**
 	 * Tx_Rnbase_Frontend_Controller_TypoScriptFrontendController
