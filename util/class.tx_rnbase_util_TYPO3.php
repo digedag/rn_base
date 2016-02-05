@@ -254,14 +254,10 @@ class tx_rnbase_util_TYPO3 {
 	 * wrapper Methode mit Abhängigkeit von TYPO3 Version
 	 *
 	 * @return string
+	 * @deprecated use tx_rnbase_util_Typo3Classes::getHttpUtilityClass
 	 */
 	public static function getHttpUtilityClass() {
-		if (self::isTYPO62OrHigher()) {
-			$httpUtilityClass = 'TYPO3\\CMS\\Core\\Utility\\HttpUtility';
-		} else {
-			$httpUtilityClass = 't3lib_utility_Http';
-		}
-		return $httpUtilityClass;
+		return tx_rnbase_util_Typo3Classes::getHttpUtilityClass();
 	}
 }
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_TYPO3.php'])	{
