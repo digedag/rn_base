@@ -35,6 +35,7 @@
  * 					GNU Lesser General Public License, version 3 or later
  */
 class tx_rnbase_util_Typo3Classes {
+
 	const LOWER6 = 'lower6';
 	const HIGHER6 = 'higher6';
 
@@ -225,6 +226,16 @@ class tx_rnbase_util_Typo3Classes {
 		return self::getClassByCurrentTypo3Version(array(
 			self::LOWER6	=> 't3lib_TStemplate',
 			self::HIGHER6 	=> 'TYPO3\\CMS\\Core\\TypoScript\\TemplateService'
+		));
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getHttpUtilityClass() {
+		return self::getClassByCurrentTypo3Version(array(
+			self::LOWER6	=> 't3lib_utility_Http',
+			self::HIGHER6 	=> 'TYPO3\\CMS\\Core\\Utility\\HttpUtility'
 		));
 	}
 
