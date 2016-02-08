@@ -36,6 +36,27 @@ tx_rnbase::load('tx_rnbase_util_Network');
 class tx_rnbase_tests_util_Network_testcase extends tx_rnbase_tests_BaseTestCase {
 
 	/**
+	 * @var string $devIpMaskBackup
+	 */
+	protected $devIpMaskBackup;
+
+	/**
+	 * (non-PHPdoc)
+	 * @see PHPUnit_Framework_TestCase::setUp()
+	 */
+	protected function setUp() {
+		$this->devIpMaskBackup = $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'];
+	}
+
+	/**
+	 * (non-PHPdoc)
+	 * @see PHPUnit_Framework_TestCase::tearDown()
+	 */
+	protected function tearDown() {
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = $this->devIpMaskBackup;
+	}
+
+	/**
 	 * @group unit
 	 */
 	public function testLocationHeaderUrl() {
@@ -43,5 +64,21 @@ class tx_rnbase_tests_util_Network_testcase extends tx_rnbase_tests_BaseTestCase
 			'http://www.google.de/url.html',
 			tx_rnbase_util_Network::locationHeaderUrl('http://www.google.de/url.html')
 		);
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testShouldExceptionBeDebuggedIfDevIpMaskMatches() {
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = tx_rnbase_util_Misc::getIndpEnv('REMOTE_ADDR');
+		self::assertTrue(tx_rnbase_util_Network::isDevelopmentIp());
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testShouldExceptionBeDebuggedIfDevIpMaskMatchesNot() {
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = 'invalid';
+		self::assertFalse(tx_rnbase_util_Network::isDevelopmentIp());
 	}
 }
