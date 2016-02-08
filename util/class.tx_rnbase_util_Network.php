@@ -87,13 +87,16 @@ class tx_rnbase_util_Network {
 	}
 
 	/**
+	 * @param string $remoteAddress
+	 * @param string $devIPmask
 	 * @return boolean
 	 */
-	public static function isDevelopmentIp() {
-		return self::cmpIP(
-			tx_rnbase_util_Misc::getIndpEnv('REMOTE_ADDR'),
-			$GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']
-		);
+	public static function isDevelopmentIp($remoteAddress = '', $devIPmask = ''){
+		$devIPmask = trim(strcmp($devIPmask, '') ?
+			$devIPmask : $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']);
+		$remoteAddress = trim(strcmp($remoteAddress, '') ?
+			$remoteAddress : tx_rnbase_util_Misc::getIndpEnv('REMOTE_ADDR'));
+		return self::cmpIP($remoteAddress, $devIPmask);
 	}
 }
 
