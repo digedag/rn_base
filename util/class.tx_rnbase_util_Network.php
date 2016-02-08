@@ -85,6 +85,16 @@ class tx_rnbase_util_Network {
 		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
 		return $utility::locationHeaderUrl($path);
 	}
+
+	/**
+	 * @return boolean
+	 */
+	public static function isDevelopmentIp() {
+		return self::cmpIP(
+			tx_rnbase_util_Misc::getIndpEnv('REMOTE_ADDR'),
+			$GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']
+		);
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Network.php']) {
