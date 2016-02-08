@@ -22,7 +22,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_DB');
+tx_rnbase::load('Tx_Rnbase_Database_Connection');
 tx_rnbase::load('tx_rnbase_util_Strings');
 
 define('SEARCH_FIELD_JOINED', 'JOINED'); // Sonderfall Freitextsuche in mehreren Feldern
@@ -170,14 +170,24 @@ abstract class tx_rnbase_util_SearchBase {
 							tx_rnbase_util_Misc::mayday('JOINED field required data array. Check up your search config.', 'rn_base');
 						$joinedValues = array_values($joinedValues);
 						for($i=0, $cnt=count($joinedValues); $i < $cnt; $i++) {
-							$wherePart = tx_rnbase_util_DB::setSingleWhereField($this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias], $operator, $col, $joinedValues[$i]);
+							$wherePart = Tx_Rnbase_Database_Connection::getInstance()->setSingleWhereField(
+								$this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias],
+								$operator,
+								$col,
+								$joinedValues[$i]
+							);
 							if (trim($wherePart) !== '') {
 								$where .= ' AND ' . $wherePart;
 							}
 						}
 					}
 					else {
-						$wherePart = tx_rnbase_util_DB::setSingleWhereField($this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias], $operator, $col, $value);
+						$wherePart = Tx_Rnbase_Database_Connection::getInstance()->setSingleWhereField(
+							$this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias],
+							$operator,
+							$col,
+							$value
+						);
 						if (trim($wherePart) !== '') {
 							$where .= ' AND ' . $wherePart;
 						}
@@ -193,10 +203,18 @@ abstract class tx_rnbase_util_SearchBase {
 
 				if($joinedField['operator'] == OP_INSET_INT) {
 					// Values splitten und einzelne Abfragen mit OR verbinden
-					$addWhere = tx_rnbase_util_DB::searchWhere($joinedField['value'], implode(',', $joinedField['fields']), 'FIND_IN_SET_OR');
+					$addWhere = Tx_Rnbase_Database_Connection::getInstance()->searchWhere(
+						$joinedField['value'],
+						implode(',', $joinedField['fields']),
+						'FIND_IN_SET_OR'
+					);
 				}
 				else {
-					$addWhere = tx_rnbase_util_DB::searchWhere($joinedField['value'], implode(',', $joinedField['fields']), $joinedField['operator']);
+					$addWhere = Tx_Rnbase_Database_Connection::getInstance()->searchWhere(
+						$joinedField['value'],
+						implode(',', $joinedField['fields']),
+						$joinedField['operator']
+					);
 				}
 				if ($addWhere) {
 					$where .= ' AND ' . $addWhere;
@@ -296,7 +314,12 @@ abstract class tx_rnbase_util_SearchBase {
 			)
 		) {
 			$sqlOptions['sqlonly'] = 1;
-			$query = tx_rnbase_util_DB::doSelect($what, $from, $sqlOptions, $options['debug'] ? 1 : 0);
+			$query = Tx_Rnbase_Database_Connection::getInstance()->doSelect(
+				$what,
+				$from,
+				$sqlOptions,
+				$options['debug'] ? 1 : 0
+			);
 			$what = 'COUNT(*) AS cnt';
 			$from = '(' . $query . ') AS COUNTWRAP';
 			$sqlOptions = array(
@@ -305,7 +328,12 @@ abstract class tx_rnbase_util_SearchBase {
 			);
 		}
 
-		$result = tx_rnbase_util_DB::doSelect($what, $from, $sqlOptions, $options['debug'] ? 1 : 0);
+		$result = Tx_Rnbase_Database_Connection::getInstance()->doSelect(
+			$what,
+			$from,
+			$sqlOptions,
+			$options['debug'] ? 1 : 0
+		);
 		if (isset($options['sqlonly'])) return $result;
 		// else:
 		return isset($options['count']) ? $result[0]['cnt'] : $result;
@@ -505,8 +533,10 @@ abstract class tx_rnbase_util_SearchBase {
 		foreach ($tableAliasesToSetEnableFields as $tableAliaseToSetEnableFields) {
 			if (isset($tableAliases[$tableAliaseToSetEnableFields])) {
 				$tableAlias = $this->useAlias() ? $tableAliaseToSetEnableFields : '';
-				$where .= tx_rnbase_util_DB::handleEnableFieldsOptions(
-					$options, $this->tableMapping[$tableAliaseToSetEnableFields], $tableAlias
+				$where .= Tx_Rnbase_Database_Connection::getInstance()->handleEnableFieldsOptions(
+					$options,
+					$this->tableMapping[$tableAliaseToSetEnableFields],
+					$tableAlias
 				);
 			}
 		}
