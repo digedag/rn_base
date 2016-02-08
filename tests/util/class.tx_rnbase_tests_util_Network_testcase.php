@@ -67,18 +67,33 @@ class tx_rnbase_tests_util_Network_testcase extends tx_rnbase_tests_BaseTestCase
 	}
 
 	/**
+	 * @param string $globalDevIpMask
+	 * @param string $devIpMask
+	 * @param string $remoteIp
+	 * @param boolean $expectedReturn
 	 * @group unit
+	 * @dataProvider dataProviderIsDevelopmentIp
 	 */
-	public function testShouldExceptionBeDebuggedIfDevIpMaskMatches() {
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = tx_rnbase_util_Misc::getIndpEnv('REMOTE_ADDR');
-		self::assertTrue(tx_rnbase_util_Network::isDevelopmentIp());
+	public function testIsDevelopmentIp($globalDevIpMask, $devIpMask, $remoteIp, $expectedReturn) {
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = $globalDevIpMask;
+		self::assertSame($expectedReturn, tx_rnbase_util_Network::isDevelopmentIp($remoteIp, $devIpMask));
 	}
 
 	/**
-	 * @group unit
+	 * @return array
 	 */
-	public function testShouldExceptionBeDebuggedIfDevIpMaskMatchesNot() {
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = 'invalid';
-		self::assertFalse(tx_rnbase_util_Network::isDevelopmentIp());
+	public function dataProviderIsDevelopmentIp() {
+		return array(
+			array(tx_rnbase_util_Misc::getIndpEnv('REMOTE_ADDR'), '', '', TRUE),
+			array('1.2.3.4', '1.2.3.4', '1.2.3.4', TRUE),
+			array('4.3.2.1', '1.2.3.4', '1.2.3.4', TRUE),
+			array('4.3.2.1', '4.3.2.1', '1.2.3.4', FALSE),
+			array('4.3.2.1', '4.3.2.1', '', FALSE),
+			array('4.3.2.1', '', '1.2.3.4', FALSE),
+			array('', '1.2.3.4', '1.2.3.4', TRUE),
+			array('', '4.3.2.1', '1.2.3.4', FALSE),
+			array('4.3.2.1', '', '', FALSE),
+			array('', '', '4.3.2.1', FALSE),
+		);
 	}
 }
