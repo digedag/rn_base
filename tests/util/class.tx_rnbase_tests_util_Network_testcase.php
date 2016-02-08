@@ -41,11 +41,17 @@ class tx_rnbase_tests_util_Network_testcase extends tx_rnbase_tests_BaseTestCase
 	protected $devIpMaskBackup;
 
 	/**
+	 * @var string $devIpMaskBackup
+	 */
+	protected $remoteAddressBackup;
+
+	/**
 	 * (non-PHPdoc)
 	 * @see PHPUnit_Framework_TestCase::setUp()
 	 */
 	protected function setUp() {
 		$this->devIpMaskBackup = $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'];
+		$this->remoteAddressBackup = $_SERVER['REMOTE_ADDR'];
 	}
 
 	/**
@@ -54,6 +60,7 @@ class tx_rnbase_tests_util_Network_testcase extends tx_rnbase_tests_BaseTestCase
 	 */
 	protected function tearDown() {
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = $this->devIpMaskBackup;
+		$_SERVER['REMOTE_ADDR'] = $this->remoteAddressBackup;
 	}
 
 	/**
@@ -84,7 +91,7 @@ class tx_rnbase_tests_util_Network_testcase extends tx_rnbase_tests_BaseTestCase
 	 */
 	public function dataProviderIsDevelopmentIp() {
 		return array(
-			array(tx_rnbase_util_Misc::getIndpEnv('REMOTE_ADDR'), '', '', TRUE),
+			array('127.0.0.1', '', '', TRUE, $_SERVER['REMOTE_ADDR'] = '127.0.0.1'),
 			array('1.2.3.4', '1.2.3.4', '1.2.3.4', TRUE),
 			array('4.3.2.1', '1.2.3.4', '1.2.3.4', TRUE),
 			array('4.3.2.1', '4.3.2.1', '1.2.3.4', FALSE),
