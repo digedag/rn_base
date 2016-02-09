@@ -25,7 +25,7 @@
 tx_rnbase::load('tx_rnbase_mod_Tables');
 tx_rnbase::load('tx_rnbase_util_FormTool');
 
-class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
+class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase {
 	/**
 	 * @var tx_rnbase_util_FormTool
 	 */
@@ -53,11 +53,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_phpunit_testcase {
 
 		$this-> backupAndSetCurrentRequestUri();
 
-		if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
-			$property = new ReflectionProperty(tx_rnbase_util_Typo3Classes::getGeneralUtilityClass(), 'indpEnvCache');
-			$property->setAccessible(TRUE);
-			$property->setValue(NULL, array());
-		}
+		$this->resetIndependentEnvironmentCache();
 	}
 
 	/**

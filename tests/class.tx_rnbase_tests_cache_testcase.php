@@ -24,7 +24,7 @@
 
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 
-class tx_rnbase_tests_cache_testcase extends tx_phpunit_testcase {
+class tx_rnbase_tests_cache_testcase extends Tx_Phpunit_TestCase {
 
 	function test_CacheManager() {
 		tx_rnbase::load('tx_rnbase_cache_Manager');

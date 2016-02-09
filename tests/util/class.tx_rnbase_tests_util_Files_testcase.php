@@ -33,7 +33,7 @@ tx_rnbase::load('tx_rnbase_util_Files');
  * @license 		http://www.gnu.org/licenses/lgpl.html
  * 					GNU Lesser General Public License, version 3 or later
  */
-class tx_rnbase_tests_util_Files_testcase extends tx_phpunit_testcase {
+class tx_rnbase_tests_util_Files_testcase extends Tx_Phpunit_TestCase {
 
 	/**
 	 * @var array

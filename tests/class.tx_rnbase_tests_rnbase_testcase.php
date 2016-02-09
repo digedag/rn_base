@@ -23,7 +23,7 @@
 ***************************************************************/
 
 
-class tx_rnbase_tests_rnbase_testcase extends tx_phpunit_testcase {
+class tx_rnbase_tests_rnbase_testcase extends Tx_Phpunit_TestCase {
 
 	function test_makeInstanceSimpleObject() {
 		$obj = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');

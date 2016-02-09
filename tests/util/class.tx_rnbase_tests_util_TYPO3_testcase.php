@@ -27,7 +27,7 @@ tx_rnbase::load('tx_rnbase_util_TCA');
 /**
  * @author Hannes Bochmann <hannes.bochmann@dmk-business.de>
  */
-class tx_rnbase_tests_util_TYPO3_testcase extends tx_phpunit_testcase {
+class tx_rnbase_tests_util_TYPO3_testcase extends Tx_Phpunit_TestCase {
 
 	/**
 	 * @group unit

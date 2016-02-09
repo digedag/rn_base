@@ -34,7 +34,7 @@ tx_rnbase::load('tx_rnbase_util_SearchBase');
  * @license 		http://www.gnu.org/licenses/lgpl.html
  * 					GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Database_ConnectionTest extends tx_phpunit_testcase {
+class Tx_Rnbase_Database_ConnectionTest extends Tx_Phpunit_TestCase {
 
 	/**
 	 * @var int

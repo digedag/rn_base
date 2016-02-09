@@ -24,7 +24,7 @@
 
 tx_rnbase::load('tx_rnbase_util_Dates');
 
-class tx_rnbase_tests_util_Dates_testcase extends tx_phpunit_testcase {
+class tx_rnbase_tests_util_Dates_testcase extends Tx_Phpunit_TestCase {
 
 	public function test_datetime_getTimeStamp() {
 		$tstamp = tx_rnbase_util_Dates::getTimeStamp(1970, 1, 1, 1, 0, 0, 'CET');

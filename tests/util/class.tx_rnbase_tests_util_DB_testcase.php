@@ -26,7 +26,7 @@ tx_rnbase::load('tx_rnbase_util_DB');
 tx_rnbase::load('tx_rnbase_util_SearchBase');
 tx_rnbase::load('Tx_Rnbase_Database_Connection');
 
-class tx_rnbase_tests_util_DB_testcase extends tx_phpunit_testcase {
+class tx_rnbase_tests_util_DB_testcase extends Tx_Phpunit_TestCase {
 
 	/**
 	 * @var string

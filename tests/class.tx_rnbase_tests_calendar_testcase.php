@@ -25,7 +25,7 @@
 tx_rnbase::load('tx_rnbase_util_Calendar');
 
 
-class tx_rnbase_tests_calendar_testcase extends tx_phpunit_testcase {
+class tx_rnbase_tests_calendar_testcase extends Tx_Phpunit_TestCase {
   function test_calendar() {
 
     $cal = new tx_rnbase_util_Calendar();
