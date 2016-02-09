@@ -26,7 +26,7 @@ tx_rnbase::load('tx_rnbase_util_Misc');
 tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
 
-class tx_rnbase_tests_listbuilder_testcase extends tx_phpunit_testcase {
+class tx_rnbase_tests_listbuilder_testcase extends Tx_Phpunit_TestCase {
 
 	function setup() {
 		unset($GLOBALS['TSFE']);

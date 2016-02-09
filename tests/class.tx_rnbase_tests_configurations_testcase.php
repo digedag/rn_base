@@ -23,7 +23,7 @@
 ***************************************************************/
 tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
-class tx_rnbase_tests_configurations_testcase extends tx_phpunit_testcase {
+class tx_rnbase_tests_configurations_testcase extends Tx_Phpunit_TestCase {
   function test_tsSetup() {
   	$GLOBALS['TSFE'] = new tx_rnbase_tsfeDummy();
 		$GLOBALS['TSFE']->tmpl->setup['lib.']['match.'] = array('limit' => '10' , 'count' => '99');

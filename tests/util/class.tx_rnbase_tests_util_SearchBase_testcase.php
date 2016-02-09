@@ -24,7 +24,7 @@
 
 tx_rnbase::load('tx_rnbase_util_DB');
 
-class tx_rnbase_tests_util_SearchBase_testcase extends tx_phpunit_testcase {
+class tx_rnbase_tests_util_SearchBase_testcase extends Tx_Phpunit_TestCase {
 	function test_searchFieldJoinedWithoutValue() {
 		$searcher = $this->getGenericSearcher();
 		$options = $this->createOptions();

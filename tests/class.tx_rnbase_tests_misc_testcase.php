@@ -31,7 +31,7 @@ class tx_rnbase_dummyMisc extends tx_rnbase_util_Misc {
 	}
 }
 
-class tx_rnbase_tests_misc_testcase extends tx_phpunit_testcase {
+class tx_rnbase_tests_misc_testcase extends Tx_Phpunit_TestCase {
 
 	public function test_encodeParams() {
 		$params['dat1'] = '1';

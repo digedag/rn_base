@@ -24,7 +24,7 @@
 
 tx_rnbase::load('tx_rnbase_util_PageBrowser');
 
-class tx_rnbase_tests_util_PageBrowser_testcase extends tx_phpunit_testcase {
+class tx_rnbase_tests_util_PageBrowser_testcase extends Tx_Phpunit_TestCase {
 
 	public function test_getStateSimple() {
 		$pb = new tx_rnbase_util_PageBrowser('test');

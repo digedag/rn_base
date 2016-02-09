@@ -329,6 +329,18 @@ abstract class tx_rnbase_tests_BaseTestCase
 		return $accessibleClassName;
 	}
 
+	/**
+	 * @return void
+	 */
+	protected function resetIndependentEnvironmentCache() {
+		if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
+			$property = new ReflectionProperty(
+				tx_rnbase_util_Typo3Classes::getGeneralUtilityClass(), 'indpEnvCache'
+			);
+			$property->setAccessible(TRUE);
+			$property->setValue(NULL, array());
+		}
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['Tx_Mkkeywords_Tests_Unit_Php_BaseTestCase']) {
