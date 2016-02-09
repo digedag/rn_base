@@ -241,6 +241,16 @@ class tx_rnbase_util_Typo3Classes {
 	}
 
 	/**
+	 * @return string
+	 */
+	public static function getMediumDocumentTemplateClass() {
+		return self::getClassByCurrentTypo3Version(array(
+			self::LOWER6	=> 'mediumDoc',
+			self::HIGHER6 	=> 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate'
+		));
+	}
+
+	/**
 	 * @param array $possibleClasses
 	 * @return string
 	 */
