@@ -6,4 +6,4 @@
  * [Cache-API](cache_api.md)
  * [Tips und Tricks](other.md)
  * [TYPO3 API-Layer](typo3_api_layer.md)
-
+ * [Bilder rendern](picture_rendering.md)

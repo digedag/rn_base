@@ -104,7 +104,7 @@ class tx_rnbase_util_TSFAL {
 						'media.', 'MEDIA', $conf->getFormatter());
 
 		// Now set the identifier
-		$markerArray['###MEDIA_PARENTUID###'] = $parentUid;
+		$markerArray = array('###MEDIA_PARENTUID###' => $parentUid);
 		$out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($out, $markerArray);
 		return $out;
 	}
@@ -164,7 +164,6 @@ class tx_rnbase_util_TSFAL {
 			}# or: sys_file_references with uid 27:
 			references = 27
 			 */
-
 			// It's important that this always stays "fieldName" and not be renamed to "field" as it would otherwise collide with the stdWrap key of that name
 			$referencesFieldName = $conf->getCObj()->stdWrap($conf->get($confId.'fieldName'), $conf->get($confId.'fieldName.'));
 			if ($referencesFieldName) {
@@ -178,9 +177,22 @@ class tx_rnbase_util_TSFAL {
 				$referencesForeignUid = $conf->getCObj()->stdWrap($conf->get($confId.'uid'), $conf->get($confId.'uid.'));
 				$referencesForeignUid = $referencesForeignUid ?
 						$referencesForeignUid :
-						isset($cObj->data['_LOCALIZED_UID']) ? $cObj->data['_LOCALIZED_UID'] : $cObj->data['uid'];
+						(isset($cObj->data['_LOCALIZED_UID']) ? $cObj->data['_LOCALIZED_UID'] : $cObj->data['uid']);
 				// Vermutlich kann hier auch nur ein Objekt geliefert werden...
-				$pics = $fileRepository->findByRelation($referencesForeignTable, $referencesFieldName, $referencesForeignUid);
+				$pics = array();
+				$referencesForeignUid = tx_rnbase_util_Strings::intExplode(',', $referencesForeignUid);
+				foreach ($referencesForeignUid As $refForUid) {
+					if (!empty($conf->get($confId.'treatIdAsReference')))
+						$pics[] = $fileRepository->findFileReferenceByUid($refForUid);
+					else
+						$pics[] = $fileRepository->findByRelation($referencesForeignTable, $referencesFieldName, $refForUid);
+				}
+			}
+			elseif(!empty($refUids = $conf->getCObj()->stdWrap($conf->get($confId.'uid'), $conf->get($confId.'uid.')))) {
+				$refUids = tx_rnbase_util_Strings::intExplode(',', $refUids);
+				foreach ($refUids As $refUid) {
+					$pics[] = $fileRepository->findFileReferenceByUid($refUid);
+				}
 			}
 		}
 		// gibt es ein Limit/offset
