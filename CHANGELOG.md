@@ -3,7 +3,7 @@
 Änderungen
 ----------
 
-v1.0.0 (??.??.????)
+v1.0.0 (??.??.2016)
   * new interfaces for domain and data models
  * new Crypt Utility
  * model and repository refactoring
@@ -12,18 +12,22 @@ v1.0.0 (??.??.????)
  * move up and down links in form util added to move records in a be module
  * new Wrapper Class Tx_Rnbase_Service_Base (don't forget to load)  for \TYPO3\CMS\Core\Service\AbstractService or t3lib_svbase which is compatible for all TYPO3 versions
  * new Wrapper Class Tx_Rnbase_Backend_Utility (don't forget to load) for \TYPO3\CMS\Backend\Utility\BackendUtility or t3lib_BEfunc which is compatible for all TYPO3 versions
+ * new Wrapper function tx_rnbase_util_Arrays::arrayToLogString
+ * new Wrapper function tx_rnbase_util_Arrays::xml2array
  * new Wrapper function tx_rnbase_util_Strings::inList
+ * new Wrapper function tx_rnbase_util_Strings::removeXSS
+ * new Wrapper function tx_rnbase_util_Strings::validEmail
  * new Wrapper function tx_rnbase_util_Network::getUrl
+ * new Wrapper function tx_rnbase_util_Network::isValidUrl
+ * new Wrapper function tx_rnbase_util_Network::locationHeaderUrl
  * new Wrapper function tx_rnbase_parameters::getPostAndGetParametersMerged for _GPmerged
  * new Wrapper function tx_rnbase_parameters::getPostOrGetParameter for _GP
  * new Wrapper function tx_rnbase_util_Link::linkThisScript
  * new Wrapper function tx_rnbase_util_Files::writeFile
- * new Wrapper function tx_rnbase_util_Strings::removeXSS
  * new Wrapper function tx_rnbase_util_Files::rmdir
- * new Wrapper function tx_rnbase_util_Strings::validEmail
- * new Wrapper function tx_rnbase_util_Network::isValidUrl
+ * new Wrapper function tx_rnbase_util_Files::isAbsPath
+ * new Wrapper function tx_rnbase_util_Files::isAllowedAbsPath
  * new Wrapper function tx_rnbase_util_Misc::milliseconds
- * new Wrapper function tx_rnbase_util_Arrays::arrayToLogString
  * new Wrapper Class Tx_Rnbase_Interface_Singleton (don't forget to load)  for \TYPO3\CMS\Core\SingletonInterface or t3lib_Singleton which is compatible for all TYPO3 versions
  * new Wrapper function tx_rnbase_util_Misc::logDeprecatedFunction
  * new Wrapper function tx_rnbase_util_Logger::devLog
@@ -32,15 +36,12 @@ v1.0.0 (??.??.????)
  * new class tx_rnbase_util_Typo3Classes to get TYPO3 classes independent of TYPO3 version
  * new Wrapper Class Tx_Rnbase_CommandLine (don't forget to load)  for \TYPO3\CMS\Core\Controller\CommandLineController or t3lib_cli which is compatible for all TYPO3 versions
  * Bugfix: tx_rnbase_util_Dates::date_mysql2tstamp liefert nun wieder NULL im Fehlerfall
- * new Wrapper function tx_rnbase_util_Arrays::xml2array
  * new Wrapper Class Tx_Rnbase_Backend_Utility_Icons (don't forget to load) for \TYPO3\CMS\Backend\Utility\IconUtility or t3lib_iconWorks which is compatible for all TYPO3 versions
- * new Wrapper function tx_rnbase_util_Network::locationHeaderUrl
- * new Wrapper function tx_rnbase_util_Files::isAbsPath
- * new Wrapper function tx_rnbase_util_Files::isAllowedAbsPath
  * new Wrapper Class Tx_Rnbase_Scheduler_Task (don't forget to load)  for \TYPO3\CMS\Scheduler\Task\AbstractTask or tx_scheduler_Task which is compatible for all TYPO3 versions
  * new Wrapper Class Tx_Rnbase_Scheduler_FieldProvider (don't forget to load)  for \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface or tx_scheduler_AdditionalFieldProvider which is compatible for all TYPO3 versions
  * tx_rnbase_util_DB is now deprecated. Use Tx_Rnbase_Database_Connection instead and call all methods
  on an instance no statically
+ * TSFAL: better support for file reference. See [documentation for more info](picture_rendering.md).
 
 v0.15.18 (02.12.2015)
  * Bugfix: tx_rnbase_util_Dates::date_mysql2tstamp liefert nun immer einen Integer und nicht NULL im Fehlerfall
