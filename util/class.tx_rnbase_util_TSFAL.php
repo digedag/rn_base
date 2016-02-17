@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************
  *  Copyright notice
  *
@@ -182,7 +181,7 @@ class tx_rnbase_util_TSFAL {
 				$pics = array();
 				$referencesForeignUid = tx_rnbase_util_Strings::intExplode(',', $referencesForeignUid);
 				foreach ($referencesForeignUid As $refForUid) {
-					if (!empty($conf->get($confId.'treatIdAsReference')))
+					if (!$conf->get($confId.'treatIdAsReference'))
 						$pics[] = $fileRepository->findFileReferenceByUid($refForUid);
 					else
 						$pics[] = $fileRepository->findByRelation($referencesForeignTable, $referencesFieldName, $refForUid);
