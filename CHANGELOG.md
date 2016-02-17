@@ -4,7 +4,8 @@
 ----------
 
 v1.0.0 (??.??.2016)
-  * new interfaces for domain and data models
+ * New loadYaml method for UnitTests to simply build a mock stack
+ * new interfaces for domain and data models
  * new Crypt Utility
  * model and repository refactoring
  * skipPersistedCheck check in simple marker added

@@ -132,6 +132,110 @@ abstract class tx_rnbase_tests_BaseTestCase
 	}
 
 	/**
+	 * Converts a YAML to a model mock
+	 *
+	 * YAML example:
+	 * _model: Tx_Rnbase_Domain_Model_Base
+	 * _record:
+	 *   uid: 3
+	 * getCategory:
+	 *   _model: Tx_Rnbase_Domain_Model_Data
+	 *   _record:
+	 *     uid: 5
+	 * getCategories:
+	 *   -
+	 *     _model: Tx_Rnbase_Domain_Model_Data
+	 *     _record:
+	 *       uid: 12
+	 *   -
+	 *     _model: Tx_Rnbase_Domain_Model_Data
+	 *     _record:
+	 *       uid: 13
+	 *
+	 * @param mixed $data Usually the yaml file
+	 *
+	 * @return tx_rnbase_model_base|PHPUnit_Framework_MockObject_MockObject
+	 */
+	protected function loadYaml($data)
+	{
+		// there is no array, so convert the yaml content or file
+		if (!is_array($data)) {
+			tx_rnbase::load('tx_rnbase_util_Spyc');
+			$data = tx_rnbase_util_Spyc::YAMLLoad($data);
+		}
+
+		// we have an model
+		if (isset($data['_model'])) {
+			// find all getter methods to mock.
+			$getters = $this->yamlFindGetters($data);
+
+			$clazz = (empty($data['_model'])
+				? 'tx_rnbase_model_base'
+				: $data['_model']
+			);
+
+			tx_rnbase::load($clazz);
+			$model = $this->getModel(
+				(array) ($data['_record']),
+				$clazz,
+				$getters
+			);
+
+			// mock the getters and return the value from the nested yaml
+			foreach ($getters as $getter) {
+				($model
+					->expects(self::any())
+					->method($getter)
+					->will($this->returnValue($this->loadYaml($data[$getter])))
+				);
+			}
+
+			return $model;
+		}
+		elseif (is_array($data)) {
+			$array = array();
+			foreach ($data as $field => $value) {
+				if (is_array($value)) {
+					$value = $this->loadYaml($value);
+				}
+				$array[$field] = $value;
+			}
+
+			return $array;
+		}
+		// else: return the data only
+
+		return $data;
+	}
+
+	/**
+	 * Returns all getters.
+	 * Getters are fields beginning with "get" and a following uppercase char.
+	 *
+	 * @param array $array
+	 *
+	 * @return tx_rnbase_model_base|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private function yamlFindGetters(
+		array $array
+	) {
+		$getters = array();
+
+		foreach (array_keys($array) as $field) {
+			if (
+				$field{0} === 'g' &&
+				$field{1} === 'e' &&
+				$field{2} === 't' &&
+				strtoupper($field{3}) === $field{3}
+			) {
+				$getters[] = $field;
+			}
+		}
+
+		return $getters;
+	}
+
+	/**
 	 * Helper function to call protected or private methods.
 	 * This method is taken from TYPO3 BaseTestCase
 	 *
