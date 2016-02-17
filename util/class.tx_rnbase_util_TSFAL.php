@@ -187,7 +187,10 @@ class tx_rnbase_util_TSFAL {
 						$pics[] = $fileRepository->findByRelation($referencesForeignTable, $referencesFieldName, $refForUid);
 				}
 			}
-			elseif(!empty($refUids = $conf->getCObj()->stdWrap($conf->get($confId.'uid'), $conf->get($confId.'uid.')))) {
+			elseif (
+				$refUids = $conf->getCObj()->stdWrap($conf->get($confId.'uid'), $conf->get($confId.'uid.'))
+				&& !empty($refUids)
+			) {
 				$refUids = tx_rnbase_util_Strings::intExplode(',', $refUids);
 				foreach ($refUids As $refUid) {
 					$pics[] = $fileRepository->findFileReferenceByUid($refUid);
