@@ -51,7 +51,7 @@ class Tx_Rnbase_Database_Connection
 	 * @return Tx_Rnbase_Database_Connection
 	 */
 	public static function getInstance() {
-		return tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection');
+		return tx_rnbase::makeInstance(get_called_class());
 	}
 
 	/**
