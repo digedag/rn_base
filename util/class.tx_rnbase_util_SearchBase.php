@@ -263,6 +263,8 @@ abstract class tx_rnbase_util_SearchBase {
 			$sqlOptions['sqlonly'] = $options['sqlonly'];
 		if($options['union'])
 			$sqlOptions['union'] = $options['union'];
+		if ($options['array_object'])
+			$sqlOptions['array_object'] = $options['array_object'];
 		if(!isset($options['count']) && is_array($options['orderby'])) {
 			// Aus dem Array einen String bauen
 			$orderby = array();

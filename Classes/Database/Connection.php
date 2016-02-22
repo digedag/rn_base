@@ -160,7 +160,9 @@ class Tx_Rnbase_Database_Connection
 		);
 		$database->store_lastBuiltQuery = $storeLastBuiltQuery;
 
-		$rows = array();
+		// use classic arrays or the array object
+		// should be ever an object, but for backward compatibility is ts an array by default
+		$rows = empty($arr['array_object']) ? array() : new ArrayObject();
 
 		if($this->testResource($res)) {
 			$wrapper = is_string($arr['wrapperclass']) ? trim($arr['wrapperclass']) : 0;
@@ -183,8 +185,13 @@ class Tx_Rnbase_Database_Connection
 					call_user_func($callback, $item);
 					unset($item);
 				}
-				else
-					$rows[] = $item;
+				else {
+					if (is_array($rows)) {
+						$rows[] = $item;
+					} else {
+						$rows->append($item);
+					}
+				}
 			}
 			$database->sql_free_result($res);
 		}
@@ -196,6 +203,7 @@ class Tx_Rnbase_Database_Connection
 				'Memory consumed ' => (memory_get_usage() - $mem),
 			), 'SQL statistics');
 		}
+
 		return $rows;
 	}
 
@@ -578,7 +586,7 @@ class Tx_Rnbase_Database_Connection
 			$tce = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getDataHandlerClass());
 			$tce->stripslashes_values = 0;
 			// Wenn wir ein data-Array bekommen verwenden wir das
-			$tce->start($data ? $data : Array(), $cmd ? $cmd : Array());
+			$tce->start($data ? $data : array(), $cmd ? $cmd : array());
 
 			// set default TCA values specific for the user
 			$TCAdefaultOverride = $GLOBALS['BE_USER']->getTSConfigProp('TCAdefaults');
@@ -596,7 +604,7 @@ class Tx_Rnbase_Database_Connection
 	 * @param int $uid
 	 */
 	public function getRecord($tableName, $uid, $options = array()) {
-		if(!is_array($options)) $options = array();
+		if (!is_array($options)) $options = array();
 		$options['where'] = 'uid='.intval($uid);
 		if(!is_array($GLOBALS['TCA']) || !array_key_exists($tableName, $GLOBALS['TCA']))
 			$options['enablefieldsoff'] = 1;
