@@ -4,6 +4,7 @@
 ----------
 
 v1.0.0 (??.??.2016)
+ * array object support for select at connection added (usage: $options['array_object'] = TRUE;)
  * New loadYaml method for UnitTests to simply build a mock stack
  * new interfaces for domain and data models
  * new Crypt Utility
