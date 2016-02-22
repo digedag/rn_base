@@ -184,7 +184,7 @@ class tx_rnbase_util_BaseMarker {
 		$token = self::getToken();
 		$linkObj->label($token);
 		$links = $formatter->configurations->get($confId.'links.');
-		if($links[$linkId] || $links[$linkId.'.']) {
+		if(($links[$linkId] || $links[$linkId.'.']) && !$formatter->getConfigurations()->getBool($confId.'links.'.$linkId.'.disable', TRUE, FALSE) ) {
 			$linkObj->initByTS($formatter->getConfigurations(), $confId.'links.'.$linkId.'.', $parameterArr);
 
 			if($makeLink)
