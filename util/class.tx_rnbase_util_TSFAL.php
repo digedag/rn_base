@@ -163,6 +163,8 @@ class tx_rnbase_util_TSFAL {
 			}# or: sys_file_references with uid 27:
 			references = 27
 			 */
+
+
 			// It's important that this always stays "fieldName" and not be renamed to "field" as it would otherwise collide with the stdWrap key of that name
 			$referencesFieldName = $conf->getCObj()->stdWrap($conf->get($confId.'fieldName'), $conf->get($confId.'fieldName.'));
 			if ($referencesFieldName) {
@@ -187,13 +189,12 @@ class tx_rnbase_util_TSFAL {
 						$pics[] = $fileRepository->findByRelation($referencesForeignTable, $referencesFieldName, $refForUid);
 				}
 			}
-			elseif (
-				$refUids = $conf->getCObj()->stdWrap($conf->get($confId.'uid'), $conf->get($confId.'uid.'))
-				&& !empty($refUids)
-			) {
-				$refUids = tx_rnbase_util_Strings::intExplode(',', $refUids);
-				foreach ($refUids As $refUid) {
-					$pics[] = $fileRepository->findFileReferenceByUid($refUid);
+			elseif ($refUids = $conf->getCObj()->stdWrap($conf->get($confId.'uid'), $conf->get($confId.'uid.')) ) {
+				if(!empty($refUids)) {
+					$refUids = tx_rnbase_util_Strings::intExplode(',', $refUids);
+					foreach ($refUids As $refUid) {
+						$pics[] = $fileRepository->findFileReferenceByUid($refUid);
+					}
 				}
 			}
 		}
