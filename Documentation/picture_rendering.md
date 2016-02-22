@@ -22,11 +22,13 @@ Es werden also mit **refField** und **refTable** die notwendigen Angaben für di
 
 ``` 
 ###PICTURES###
-###MEDIAS######MEDIA###<a href="###MEDIA_FILE###" rel="lightbox[pictures]">###MEDIA_THUMBNAIL###</a>###MEDIA######MEDIAS###
+###MEDIAS######MEDIA###
+<a href="###MEDIA_FILE###" rel="lightbox[pictures]">###MEDIA_THUMBNAIL###</a>###MEDIA_TARGETLINK###Link###MEDIA_TARGETLINK###
+###MEDIA######MEDIAS###
 ###PICTURES###
 ``` 
 Wie man erkennen kann, erfolgt die Ausgabe der Bilder über den ListBuilder von rn_base. Der Subpart **MEDIA** enthält die Bilder und das MEDIA-Objekt rendert in diesem Beispiel die zwei Attribute FILE und THUMBNAIL. Damit wird zum einen ein Image-Pfad gerendert und zum anderen mit Thumbnail ein kleines Vorschaubild. Das erfolgt mit diese Typoscript-Konfiguration:
-``` 
+```
 lib.mediaBase {
   file = IMG_RESOURCE
   file.file.import.field = file
@@ -39,10 +41,10 @@ lib.mediaBase {
   thumbnail.params = border="0"
   thumbnail.titleText.field = title
 }
-``` 
+```
 ### weitere Optionen
 Man kann die Ausgabe der Bilder noch mit limit und offset beschränken:
-``` 
+```
 plugin.tx_myplugin.myview.myitem.dcpictures = USER
 plugin.tx_myplugin.myview.myitem.dcpictures {
 	# Optional setting for limit
@@ -51,13 +53,13 @@ plugin.tx_myplugin.myview.myitem.dcpictures {
 	# force another reference column (other than UID or _LOCALIZED_UID)
 	forcedIdField = otheruidfield
 }
-``` 
+```
 Außerdem steht ein zusätzlicher Marker bereit, der die UID des referenzierten Objektes liefert: **###MEDIA_PARENTUID###**. Dieser kann genutzt werden, um einen eindeutigen Identifier für Bildgruppen zu setzen.
 
 ## Bilder aus Seiteneigenschaften auslesen (FAL only)
-Wenn man eine Seite bearbeitet, hat man die Möglichkeit im Tab Resourcen der Seite Bilder zu zuordnen. Diese Bilder können dann als Kopfgrafiken verwendet werden. Folgendes Beispiel zeigt den Zugriff auf die Bilder. Dabei wird automatisch im übergeordneten Seiten nach Bildern gesucht, wenn auf der aktuellen Seite kein Bild gefunden wurde:
+Wenn man eine Seite bearbeitet, hat man die Möglichkeit im Tab Resourcen der Seite Bilder zu zuordnen. Diese Bilder können dann als Kopfgrafiken verwendet werden. Folgendes Beispiel zeigt den Zugriff auf die Bilder. Dabei wird automatisch im übergeordneten Seiten nach Bildern gesucht, wenn auf der aktuellen Seite kein Bild gefunden wurde. Zusätzlich wird ein gesetzter Link gleich mit verarbeitet.
 
-``` 
+```
 lib.page.headerimage = USER
 lib.page.headerimage {
 	userFunc = tx_rnbase_util_TSFAL->printImages
@@ -68,5 +70,15 @@ lib.page.headerimage {
 	template = EXT:rn_base/res/simplegallery.html
 	# die vorbereiteten IMAGE-Objekte zuweisen
 	media =< lib.mediaBase
+	media {
+		# Link konfigurieren
+		links.target {
+			pid.field = link
+			# Nur bei gesetztem Wert verlinken
+			disable = TEXT
+			disable.value = TRUE
+			disable.if.isFalse.field = link
+		}
+  }
 }
 ```
