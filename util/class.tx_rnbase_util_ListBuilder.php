@@ -184,7 +184,7 @@ class tx_rnbase_util_ListBuilder {
 	 * If you want to render a pagebrowser add it to the $viewData with key 'pagebrowser'.
 	 * A filter will be detected and rendered too. It should be available in $viewData with key 'filter'.
 	 *
-	 * @param array $dataArr entries
+	 * @param array|Traversable $dataArr entries
 	 * @param string $template
 	 * @param string $markerClassname item-marker class
 	 * @param string $confId ts-Config for data entries like team.
@@ -213,8 +213,8 @@ class tx_rnbase_util_ListBuilder {
 
 		$outerMarker = $this->getOuterMarker($marker, $template);
 		$htmlParser = tx_rnbase_util_Typo3Classes::getHtmlParserClass();
-		while($templateList = $htmlParser::getSubpart($template, '###' . $outerMarker . 'S###')) {
-			if(is_array($dataArr) && count($dataArr)) {
+		while (($templateList = $htmlParser::getSubpart($template, '###' . $outerMarker . 'S###'))) {
+			if ((is_array($dataArr) || $dataArr instanceof Traversable) && count($dataArr)) {
 				/* @var $listMarker tx_rnbase_util_ListMarker */
 				$listMarker = tx_rnbase::makeInstance('tx_rnbase_util_ListMarker', $this->info->getListMarkerInfo());
 
