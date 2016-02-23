@@ -110,7 +110,7 @@ class tx_rnbase_util_ListMarker {
 
 	/**
 	 * Render an array of objects
-	 * @param array $dataArr
+	 * @param array|Traversable $dataArr
 	 * @param string $template
 	 * @param string $markerClassname
 	 * @param string $confId
@@ -126,12 +126,13 @@ class tx_rnbase_util_ListMarker {
 		$this->info->init($template, $formatter, $marker);
 
 		$parts = array();
-		$rowRoll = $formatter->configurations->getInt($confId . 'roll.value');
+		$rowRoll = $formatter->getConfigurations()->getInt($confId . 'roll.value');
 		$rowRollCnt = 0;
-		$totalLineStart = intval($formatter->configurations->get($confId.'totalline.startValue'));
+		$totalLineStart = $formatter->getConfigurations()->getInt($confId.'totalline.startValue');
 		// Gesamtzahl der Liste als Register speichern
 		$GLOBALS['TSFE']->register['RNBASE_LB_SIZE'] = count($dataArr);
-		for ($i = 0, $cnt = count($dataArr); $i < $cnt; $i++) {
+		$i = 0;
+		foreach ($dataArr as $data) {
 			/* @var $data Tx_Rnbase_Domain_Model_DomainInterface */
 			$data = $dataArr[$i];
 			// Check for object to avoid warning.
@@ -150,6 +151,7 @@ class tx_rnbase_util_ListMarker {
 			$part = $entryMarker->parseTemplate($this->info->getTemplate($data), $data, $formatter, $confId, $marker);
 			$parts[] = $part;
 			$rowRollCnt = ($rowRollCnt >= $rowRoll) ? 0 : $rowRollCnt + 1;
+			$i++;
 		}
 		$parts = implode(
 			$formatter->getConfigurations()->get($confId . 'implode', TRUE),
