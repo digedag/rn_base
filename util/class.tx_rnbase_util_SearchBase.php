@@ -199,7 +199,8 @@ abstract class tx_rnbase_util_SearchBase {
 		if(is_array($joinedFields)) {
 			foreach ($joinedFields As $joinedField) {
 				// Ignore invalid queries
-				if(!isset($joinedField['value']) || !isset($joinedField['operator'])) continue;
+				if(!isset($joinedField['value']) || !isset($joinedField['operator']) || 
+						!isset($joinedField['fields']) || !$joinedField['fields']) continue;
 
 				if($joinedField['operator'] == OP_INSET_INT) {
 					// Values splitten und einzelne Abfragen mit OR verbinden
