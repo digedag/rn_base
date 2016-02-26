@@ -604,19 +604,14 @@ class tx_rnbase_configurations {
 	 * @param string $confId
 	 * @return array of strings or empty array
 	 */
-	function getKeyNames($confId){
-    $markers = array();
-    $dynaMarkers = $this->get($confId);
-    if(!$dynaMarkers) return $markers;
-    $dynaMarkers = array_keys($dynaMarkers);
-    if(!$dynaMarkers || !count($dynaMarkers)) return $markers;
-    // Jetzt evt. vorhandene Punkt am Ende entfernen
-    for($i=0, $size = count($dynaMarkers); $i < $size; $i++) {
-      $markers[] = preg_replace('/\./', '', $dynaMarkers[$i]);
-    }
-    $markers = array_unique($markers);
-    $markers = array_values($markers);
-    return $markers;
+	public function getKeyNames($confId)
+	{
+		$dynaMarkers = $this->get($confId);
+		if (!is_array($dynaMarkers)) {
+			return array();
+		}
+
+		return $this->getUniqueKeysNames($dynaMarkers);
 	}
 
 	/**
@@ -625,17 +620,23 @@ class tx_rnbase_configurations {
 	 * @param array $conf configuration array
 	 * @return array
 	 */
-	function getUniqueKeysNames($conf) {
-	  $keys = array();
-    $dynaMarkers = array_keys($conf);
-    if(!$dynaMarkers || !count($dynaMarkers)) return $keys;
+	public function getUniqueKeysNames(array $conf)
+	{
+		$keys = array();
 
-    // Jetzt evt. vorhandene Punkt am Ende entfernen
-    for($i=0, $size = count($dynaMarkers); $i < $size; $i++) {
-      $keys[] = preg_replace('/\./', '', $dynaMarkers[$i]);
-    }
-    return array_unique($keys);
+		$dynaMarkers = array_keys($conf);
+		if (empty($dynaMarkers)) {
+			return $keys;
+		}
+
+		// Jetzt evt. vorhandene Punkt am Ende entfernen
+		foreach ($dynaMarkers as $dynaMarker) {
+			$keys[] = preg_replace('/\./', '', $dynaMarker);
+		}
+
+		return array_values(array_unique($keys));
 	}
+
 	// -------------------------------------------------------------------------------------
 	// Private functions
 	// -------------------------------------------------------------------------------------

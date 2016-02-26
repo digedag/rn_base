@@ -170,12 +170,17 @@ class tx_rnbase_util_FormatUtil {
 	 * <pre>profile.date.strftime = %Y</pre>
 	 * @return Array
 	 */
-	function getItemMarkerArrayWrapped($record, $confId, $noMap = 0, $markerPrefix='', $initMarkers = 0){
-		if(!is_array($record))
+	function getItemMarkerArrayWrapped($record, $confId, $noMap = 0, $markerPrefix='', $initMarkers = 0)
+	{
+		if(!is_array($record)) {
 			return array();
-$start = microtime(TRUE);
-$mem = memory_get_usage();
+		}
+
+		$start = microtime(TRUE);
+		$mem = memory_get_usage();
+
 		$tmpArr = $this->cObj->data;
+
 		// Ensure the initMarkers are part of the record
 		if(is_array($initMarkers)) {
 			for($i=0, $cnt = count($initMarkers); $i < $cnt; $i++)  {
@@ -183,13 +188,16 @@ $mem = memory_get_usage();
 					$record[$initMarkers[$i]] = '';
 			}
 		}
+
+		// extend the record by dc columns
 		$conf = $this->getConfigurations()->get($confId);
-		if($conf) {
+		if (is_array($conf)) {
 			// Add dynamic columns
 			$keys = $this->getConfigurations()->getUniqueKeysNames($conf);
-			foreach($keys As $key) {
-				if(tx_rnbase_util_Strings::isFirstPartOfStr($key, 'dc') && !isset($record[$key]))
+			foreach ($keys As $key) {
+				if ($key{0} === 'd' && $key{1} === 'c' && !isset($record[$key])) {
 					$record[$key] = $conf[$key];
+				}
 			}
 		}
 
@@ -198,6 +206,7 @@ $mem = memory_get_usage();
 			$record['__MINFO'] .= tx_rnbase_util_Debug::viewArray(array('TS-Path'=>$confId));
 			$record['__MINFO'] .= tx_rnbase_util_Debug::viewArray(array($conf));
 		}
+
 		$this->cObj->data = $record;
 
     // Alle Metadaten auslesen und wrappen
