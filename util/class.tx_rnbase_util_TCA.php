@@ -105,6 +105,53 @@ class tx_rnbase_util_TCA {
 		}
 		return $GLOBALS['TCA'][$tableName]['ctrl']['sortby'];
 	}
+	/**
+	 * Liefert alle EnableColumns einer Tabelle
+	 *
+	 * @param string $tableName
+	 *
+	 * @return array Array with values:
+	 *     'fe_group' => 'fe_group',
+	 *     'delete' =>'deleted',
+	 *     'disabled' =>'hidden',
+	 *     'starttime' => 'starttime',
+	 *     'endtime' => 'endtime'
+	 */
+	protected static function getEnableColumnsForTable($tableName) {
+		if (
+			empty($GLOBALS['TCA'][$tableName]) ||
+			empty($GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'])
+		) {
+			return array();
+		}
+		return $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'];
+	}
+	/**
+	 * Liefert den Spaltennamen für die gelöschte elemente der Tabelle.
+	 *
+	 * @param string $tableName
+	 *
+	 * @return string
+	 */
+	public static function getDeletedFieldForTable($tableName)
+	{
+		$cols = self::getEnableColumnsForTable($tableName);
+
+		return empty($cols['delete']) ? '' : $cols['delete'];
+	}
+	/**
+	 * Liefert den Spaltennamen für die deaktivierte elemente der Tabelle.
+	 *
+	 * @param string $tableName
+	 *
+	 * @return string
+	 */
+	public static function getDisabledFieldForTable($tableName)
+	{
+		$cols = self::getEnableColumnsForTable($tableName);
+
+		return empty($cols['disabled']) ? '' : $cols['disabled'];
+	}
 
 	/**
 	 * Load TCA for a specific table. Since T3 6.1 the complete TCA is loaded.
