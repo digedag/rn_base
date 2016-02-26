@@ -604,6 +604,8 @@ class tx_rnbase_util_Link {
 	 *
 	 * @param tx_rnbase_configurations $configurations
 	 * @param string $confId
+	 *
+	 * @return tx_rnbase_util_Link
 	 */
 	public function initByTS($configurations, $confId, $parameterArr) {
 		$parameterArr = is_array($parameterArr) ? $parameterArr : array();
@@ -748,6 +750,7 @@ class tx_rnbase_util_Link {
 			$this->noHash();
 		}
 
+		return $this;
 	}
 
 	/**
