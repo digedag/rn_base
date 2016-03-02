@@ -132,17 +132,19 @@ class tx_rnbase_util_TSFAL {
 	 * no difference...
 	 *
 	 * @param tx_rnbase_configurations $conf
+	 * @param $cObj
+	 * @param string $confId
 	 * @return array
 	 */
-	public static function fetchFilesByTS($conf, $cObj) {
-		/** @var \TYPO3\CMS\Core\Resource\FileRepository $fileRepository */
+	public static function fetchFilesByTS($conf, $cObj, $confId='') {
+		/* @var $fileRepository \TYPO3\CMS\Core\Resource\FileRepository */
 		$fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
 		$fileObjects = array();
 		$pics = array();
 		tx_rnbase::load('tx_rnbase_util_Strings');
 		// Getting the files
 		// Try DAM style
-		if($conf->get('refTable')) {
+		if($conf->get($confId.'refTable')) {
 			$referencesForeignTable = $conf->getCObj()->stdWrap($conf->get($confId.'refTable'), $conf->get($confId.'refTable.'));
 			$referencesFieldName = $conf->getCObj()->stdWrap($conf->get($confId.'refField'), $conf->get($confId.'refField.'));
 			$referencesForeignUid = $conf->getCObj()->stdWrap($conf->get($confId.'refUid'), $conf->get($confId.'refUid.'));
@@ -152,8 +154,8 @@ class tx_rnbase_util_TSFAL {
 			}
 			$pics = $fileRepository->findByRelation($referencesForeignTable, $referencesFieldName, $referencesForeignUid);
 		}
-		elseif (is_array($conf->get('references.'))) {
-			$confId = 'references.';
+		elseif (is_array($conf->get($confId.'references.'))) {
+			$refConfId = $confId.'references.';
 			/*
 			The TypoScript could look like this:# all items related to the page.media field:
 			references {
@@ -166,16 +168,16 @@ class tx_rnbase_util_TSFAL {
 
 
 			// It's important that this always stays "fieldName" and not be renamed to "field" as it would otherwise collide with the stdWrap key of that name
-			$referencesFieldName = $conf->getCObj()->stdWrap($conf->get($confId.'fieldName'), $conf->get($confId.'fieldName.'));
+			$referencesFieldName = $conf->getCObj()->stdWrap($conf->get($refConfId.'fieldName'), $conf->get($refConfId.'fieldName.'));
 			if ($referencesFieldName) {
 				$table = $cObj->getCurrentTable();
 				if ($table === 'pages' && isset($cObj->data['_LOCALIZED_UID']) && intval($cObj->data['sys_language_uid']) > 0) {
 					$table = 'pages_language_overlay';
 				}
-				$referencesForeignTable = $conf->getCObj()->stdWrap($conf->get($confId.'table'), $conf->get($confId.'table.'));
+				$referencesForeignTable = $conf->getCObj()->stdWrap($conf->get($refConfId.'table'), $conf->get($refConfId.'table.'));
 				$referencesForeignTable = $referencesForeignTable ? $referencesForeignTable : $table;
 
-				$referencesForeignUid = $conf->getCObj()->stdWrap($conf->get($confId.'uid'), $conf->get($confId.'uid.'));
+				$referencesForeignUid = $conf->getCObj()->stdWrap($conf->get($refConfId.'uid'), $conf->get($refConfId.'uid.'));
 				$referencesForeignUid = $referencesForeignUid ?
 						$referencesForeignUid :
 						(isset($cObj->data['_LOCALIZED_UID']) ? $cObj->data['_LOCALIZED_UID'] : $cObj->data['uid']);
@@ -183,13 +185,13 @@ class tx_rnbase_util_TSFAL {
 				$pics = array();
 				$referencesForeignUid = tx_rnbase_util_Strings::intExplode(',', $referencesForeignUid);
 				foreach ($referencesForeignUid As $refForUid) {
-					if (!$conf->get($confId.'treatIdAsReference'))
+					if (!$conf->get($refConfId.'treatIdAsReference'))
 						$pics[] = $fileRepository->findFileReferenceByUid($refForUid);
 					else
 						$pics[] = $fileRepository->findByRelation($referencesForeignTable, $referencesFieldName, $refForUid);
 				}
 			}
-			elseif ($refUids = $conf->getCObj()->stdWrap($conf->get($confId.'uid'), $conf->get($confId.'uid.')) ) {
+			elseif ($refUids = $conf->getCObj()->stdWrap($conf->get($refConfId.'uid'), $conf->get($refConfId.'uid.')) ) {
 				if(!empty($refUids)) {
 					$refUids = tx_rnbase_util_Strings::intExplode(',', $refUids);
 					foreach ($refUids As $refUid) {
@@ -198,9 +200,13 @@ class tx_rnbase_util_TSFAL {
 				}
 			}
 		}
+		// TODO: Hook
+		tx_rnbase_util_Misc::callHook('rn_base', 'util_TSFal_fetchFilesByTS_appendMedia_hook',
+			array('conf' => $conf, '$confId' => $confId, 'media'=> &$pics), null);
+
 		// gibt es ein Limit/offset
-		$offset = intval($conf->get('offset'));
-		$limit = intval($conf->get('limit'));
+		$offset = intval($conf->get($confId.'offset'));
+		$limit = intval($conf->get($confId.'limit'));
 		if(!empty($pics) && $limit) {
 			$pics = array_slice($pics, $offset, $limit);
 		}
