@@ -3,7 +3,12 @@
 Änderungen
 ----------
 
-v1.0.1 (??.??.2016)
+v1.0.2 (??.??.2016)
+
+v1.0.1 (02.03.2016)
+ * public static wrapper function tx_rnbase_util_Lang::sL() to get LLL
+ * getDeletedFieldForTable and getDisabledFieldForTable added to tca util
+ * Ignore joined search without fields given to avoid sql/php errors
 
 v1.0.0 (23.02.2016)
  * first TYPO3 7.6 support #34
