@@ -130,7 +130,8 @@ class tx_rnbase_util_ListMarker {
 		$rowRollCnt = 0;
 		$totalLineStart = $formatter->getConfigurations()->getInt($confId.'totalline.startValue');
 		// Gesamtzahl der Liste als Register speichern
-		$GLOBALS['TSFE']->register['RNBASE_LB_SIZE'] = count($dataArr);
+		$registerName = $formatter->getConfigurations()->get($confId.'registerNameLbSize');
+		$GLOBALS['TSFE']->register[$registerName ? $registerName : 'RNBASE_LB_SIZE'] = count($dataArr);
 		$i = 0;
 		foreach ($dataArr as $data) {
 			/* @var $data Tx_Rnbase_Domain_Model_DomainInterface */
