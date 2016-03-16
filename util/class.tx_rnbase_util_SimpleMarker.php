@@ -128,6 +128,29 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 
 
 	/**
+	 * Ermöglicht es eigene Subparts zu definieren und deren Sichtbarkeit per Typoscript
+	 * zu steuern.
+	 * Mögliche Konfiguration:
+	 * lib.yourplugin.youritem {
+	 *   subparts.isstarted.marker.visible = TRUE
+	 *   subparts.isstarted.marker.hidden = FALSE
+	 *   subparts.isstarted.visible = TEXT
+	 *   subparts.isstarted.visible.value = 1
+	 *   subparts.isstarted.visible.if {
+	 *     value.cObject = TEXT
+	 *     value.cObject.dataWrap = {date:U}
+	 *     isLessThan.cObject = TEXT
+	 *     isLessThan.cObject.field = startdate
+	 *   }
+	 * }
+	 * Daraus ergeben sich folgende Subparts:
+	 * ###ITEM_ISSTARTED_TRUE###
+	 * ###ITEM_ISSTARTED_TRUE###
+	 * und
+	 * ###ITEM_ISSTARTED_FALSE###
+	 * ###ITEM_ISSTARTED_FALSE###
+	 * Der Prefix ITEM ist natürlich vom Plugin abhängig.
+	 *
 	 * @param array $wrappedSubpartArray das HTML-Template
 	 * @param array $subpartArray das HTML-Template
 	 * @param string $template das HTML-Template
