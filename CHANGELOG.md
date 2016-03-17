@@ -3,7 +3,9 @@
 Änderungen
 ----------
 
-v1.0.2 (??.??.2016)
+v1.0.2 (17.03.2016)
+ * Register name for RNBASE_LB_SIZE is configurable
+ * Some improvements for tx_rnbase_util_TSFAL
 
 v1.0.1 (02.03.2016)
  * public static wrapper function tx_rnbase_util_Lang::sL() to get LLL
