@@ -190,6 +190,7 @@ class tx_rnbase_util_Typo3Classes {
 
 	/**
 	 * @return string
+	 * @see Tx_Rnbase_Utility_T3General for better usage
 	 */
 	public static function getGeneralUtilityClass() {
 		return self::getClassByCurrentTypo3Version(array(
