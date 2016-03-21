@@ -75,7 +75,7 @@ class tx_rnbase {
 	 *
 	 * @param	string		classname
 	 * @param	mixed optional more parameters for constructor
-	 * @return	object		instance of the class or FALSE if it fails
+	 * @return	object|Exception	instance of the class or FALSE if it fails
 	 * @see		t3lib_div::makeInstance
 	 * @see		load()
 	 */
