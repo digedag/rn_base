@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006-2015 Rene Nitzsche
+ *  (c) 2006-2016 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -23,18 +23,17 @@
  ***************************************************************/
 
 /**
- * tx_rnbase_util_Typo3Classes
- *
  * Get a class name independent of the TYPO3 Version. The API
  * of the desired class should be the same
  *
- * @package 		TYPO3
- * @subpackage	 	rn_base
- * @author 			Hannes Bochmann <rene@system25.de>
- * @license 		http://www.gnu.org/licenses/lgpl.html
- * 					GNU Lesser General Public License, version 3 or later
+ * @package TYPO3
+ * @subpackage rn_base
+ * @author Hannes Bochmann
+ * @license http://www.gnu.org/licenses/lgpl.html
+ *          GNU Lesser General Public License, version 3 or later
  */
-class tx_rnbase_util_Typo3Classes {
+class tx_rnbase_util_Typo3Classes
+{
 
 	const LOWER6 = 'lower6';
 	const HIGHER6 = 'higher6';
@@ -149,14 +148,20 @@ class tx_rnbase_util_Typo3Classes {
 		));
 	}
 	/**
-	 * @TODO: why this returns the NullTimeTracker? Should return the TimeTracker!
 	 * @return string|TYPO3\CMS\Core\TimeTracker\NullTimeTracker
 	 */
 	public static function getTimeTrackClass() {
-		// TYPO3\\CMS\\Core\\TimeTracker\\TimeTracker
+		$higher6Class = 'TYPO3\\CMS\\Core\\TimeTracker\\NullTimeTracker';
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			$beCookie = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']) ?: 'be_typo_user';
+			if ($_COOKIE[$beCookie]) {
+				$higher6Class = 'TYPO3\\CMS\\Core\\TimeTracker\\TimeTracker';
+			}
+		}
+
 		return self::getClassByCurrentTypo3Version(array(
 			self::LOWER6 => 't3lib_timeTrack',
-			self::HIGHER6 => 'TYPO3\\CMS\\Core\\TimeTracker\\NullTimeTracker'
+			self::HIGHER6 => $higher6Class
 		));
 	}
 
