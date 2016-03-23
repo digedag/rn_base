@@ -267,3 +267,19 @@ plugin.tx_extension {
 	}
 }
 ```
+
+###Einbinden von JS und CSS-Dateien
+Man kann auf Ebene einer Action Resourcedateien einbinden. Das kann man direkt per Typoscript konfigurieren:
+
+```
+plugin.tx_myext {
+	myview {
+		includeJSFooter {
+			1 = EXT:myext/Resources/Public/Scripts/validator.js
+		}
+		includeCSS {
+			1 = EXT:myext/Resources/Public/Styles/validator.css
+		}
+	}
+}
+```

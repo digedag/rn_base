@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v1.0.3 (??.03.2016)
+ * It is possible to include JS and CSS files for actions via typoscript.
+
 v1.0.2 (17.03.2016)
  * Register name for RNBASE_LB_SIZE is configurable
  * Some improvements for tx_rnbase_util_TSFAL

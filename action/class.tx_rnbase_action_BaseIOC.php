@@ -73,6 +73,8 @@ abstract class tx_rnbase_action_BaseIOC {
 			}
 			$configurations->convertToUserInt();
 		}
+		// Add JS or CSS files
+		$this->addResources($configurations, $this->getConfId());
 
 		$cacheHandler = $this->getCacheHandler($configurations, $this->getConfId().'_caching.');
 		$out = $cacheHandler ? $cacheHandler->getOutput() : '';
@@ -123,6 +125,25 @@ abstract class tx_rnbase_action_BaseIOC {
 		// reset the substCache after each view!
 		tx_rnbase_util_Templates::resetSubstCache();
 		return $out;
+	}
+	/**
+	 *
+	 * @param tx_rnbase_configurations $configurations
+	 * @param unknown $confId
+	 */
+	protected function addResources($configurations, $confId) {
+		$pr = \tx_rnbase_util_TYPO3::getTSFE()->getPageRenderer();
+
+		$files = $configurations->get($confId.'includeJSFooter.');
+		foreach ($files As $file) {
+			if($file = \tx_rnbase_util_TYPO3::getTSFE()->tmpl->getFileName($file))
+				$pr->addJsFooterFile($file);
+		}
+		$files = $configurations->get($confId.'includeCSS.');
+		foreach ($files As $file) {
+			if($file = \tx_rnbase_util_TYPO3::getTSFE()->tmpl->getFileName($file))
+				$pr->addCssFile($file);
+		}
 	}
 
 	/**
