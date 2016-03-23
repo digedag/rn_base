@@ -77,8 +77,7 @@ class tx_rnbase_util_Templates {
 	 * @throws Exception if file or subpart not found
 	 */
 	public static function getSubpartFromFile($fileName, $subpart) {
-		$tmpl = self::getTSTemplate();
-		$file = $tmpl->getFileName($fileName);
+		$file = self::getTSTemplate()->getFileName($fileName);
 
 		if(TYPO3_MODE == 'BE' && strpos($file, PATH_site) === FALSE)
 			$file = PATH_site.$file; // Im BE auf absoluten Pfad setzen

@@ -132,17 +132,25 @@ abstract class tx_rnbase_action_BaseIOC {
 	 * @param unknown $confId
 	 */
 	protected function addResources($configurations, $confId) {
-		$pr = \tx_rnbase_util_TYPO3::getTSFE()->getPageRenderer();
+		tx_rnbase::load('tx_rnbase_util_Files');
+		$pageRenderer = tx_rnbase_util_TYPO3::getTSFE()->getPageRenderer();
 
 		$files = $configurations->get($confId.'includeJSFooter.');
-		foreach ($files As $file) {
-			if($file = \tx_rnbase_util_TYPO3::getTSFE()->tmpl->getFileName($file))
-				$pr->addJsFooterFile($file);
+		if (is_array($files)) {
+			foreach ($files As $file) {
+				if($file = tx_rnbase_util_Files::getFileName($file)) {
+					$pageRenderer->addJsFooterFile($file);
+				}
+			}
 		}
+
 		$files = $configurations->get($confId.'includeCSS.');
-		foreach ($files As $file) {
-			if($file = \tx_rnbase_util_TYPO3::getTSFE()->tmpl->getFileName($file))
-				$pr->addCssFile($file);
+		if (is_array($files)) {
+			foreach ($files As $file) {
+				if($file = tx_rnbase_util_Files::getFileName($file)) {
+					$pageRenderer->addCssFile($file);
+				}
+			}
 		}
 	}
 

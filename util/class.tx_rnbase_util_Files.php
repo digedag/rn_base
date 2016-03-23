@@ -51,7 +51,7 @@ class tx_rnbase_util_Files {
 				$incFile = is_object($fileObject) ? $fileObject->getForLocalProcessing(FALSE) : FALSE;
 		}
 		else
-			$incFile = $GLOBALS['TSFE']->tmpl->getFileName($fName);
+			$incFile = self::getFileName($fName);
 		if ($incFile)	{
 			// Im BE muss ein absoluter Pfad verwendet werden
 			$fullPath = (TYPO3_MODE == 'BE') ? PATH_site.$incFile : $incFile;
@@ -72,6 +72,19 @@ class tx_rnbase_util_Files {
 			}
 		}
 		return $ret;
+	}
+
+	/**
+	 * Returns the reference to a 'resource' in TypoScript.
+	 * This could be from the filesystem if '/' is found in the value $fileFromSetup, else from the resource-list
+	 *
+	 * @param string $file TypoScript "resource" data type value.
+	 *
+	 * @return string Resulting filename, if any.
+	 */
+	public static function getFileName($file) {
+		tx_rnbase::load('tx_rnbase_util_Templates');
+		return tx_rnbase_util_Templates::getTSTemplate()->getFileName($file);
 	}
 
 	/**
