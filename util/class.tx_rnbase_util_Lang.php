@@ -286,7 +286,17 @@ class tx_rnbase_util_Lang {
 	 * @return string Label value, if any.
 	 */
 	public static function sL($key) {
-		return $GLOBALS[TYPO3_MODE == 'BE' ? 'LANG' : 'TSFE']->sL($key);
+		/* @var $lang TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
+		/* @var $lang TYPO3\CMS\Lang\LanguageService */
+		$lang = $GLOBALS[TYPO3_MODE == 'BE' ? 'LANG' : 'TSFE'];
+
+		if (!$lang) {
+			throw new Exception(
+				'Languageservice for "' . TYPO3_MODE . '" not initialized yet.'
+			);
+		}
+
+		return $lang->sL($key);
 	}
 }
 
