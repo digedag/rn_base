@@ -131,3 +131,21 @@ Aktiviert wird dieser Debug über Parameter labeldebug aktiviert, welcher zusät
 http://www.mydomain.de/index.php?id=home&debug=cRuyUDe4Ra4r&labeldebug=html
 
 Siehe auch (https://github.com/digedag/rn_base/pull/1)
+
+Der PLUGIN_Marker
+-----------------
+
+Bei rn_base-Plugins wird zusätzlich zu den normalen Markern des Views immer noch der tt_content Datensatz des Plugins als Marker bereitgestellt. Der Marker ###PLUGIN_UID## liefert also die UID aus tt_content für das Plugin. Per Typoscript kann man die Daten über folgenden Pfad bearbeiten:
+
+```
+plugin.tx_myext {
+  myview {
+    plugin.uid.wrap = <b>|</b>
+    plugin.dcdemo = TEXT
+    plugin.dcdemo.value = Demo
+  }
+}
+```
+Natürlich funktionieren hier auch die DC-Marker. Die Spalte dcdemo wird per ###PLUGIN_DCDEMO### herausgerendert. 
+Mit diesem Feature hat man die Möglichkeit innerhalb eines Plugins bspw. auch die Daten eines komplett anderen Plugins zu rendern.
+
