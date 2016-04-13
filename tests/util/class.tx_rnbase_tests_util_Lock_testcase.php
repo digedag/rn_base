@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009-2015 Rene Nitzsche (rene@system25.de)
+*  (c) 2009-2016 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -47,18 +47,17 @@ class tx_rnbase_tests_util_Lock_testcase
 		$this->removeLock();
 	}
 
-    /**
-     * Tears down the fixture, for example, close a network connection.
-     * This method is called after a test is executed.
-     */
-    protected function tearDown()
-    {
+	/**
+	 * Tears down the fixture, for example, close a network connection.
+	 * This method is called after a test is executed.
+	 */
+	protected function tearDown(){
 		$this->removeLock();
-    }
+	}
 
-    /**
-     * removes the test lock file
-     */
+	/**
+	 * removes the test lock file
+	 */
 	private function removeLock() {
 		$lock = tx_rnbase_util_Lock::getInstance('unttests', 1);
 		$filename = $this->callInaccessibleMethod($lock, 'getFile');

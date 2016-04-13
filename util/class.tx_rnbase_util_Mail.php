@@ -46,6 +46,10 @@ class tx_rnbase_util_Mail {
 	public function setSubject($subject) {
 		$this->subject = $subject;
 	}
+	/**
+	 *
+	 * @param string $emails kommaseparierter String mit Mailadressen
+	 */
 	public function setTo($emails) {
 		$this->toAsString = $emails;
 	}
@@ -68,9 +72,10 @@ class tx_rnbase_util_Mail {
 	}
 
 	protected function send45() {
-		/* @var $mail TYPO3\\CMS\\Core\\Mail\\MailMessage */
+		/* @var $mail TYPO3\CMS\Core\Mail\MailMessage */
 		$mail = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getMailMessageClass());
 		$mail->setFrom(array($this->from => $this->fromName));
+
 		$mail->setTo(tx_rnbase_util_Strings::trimExplode(',', $this->toAsString));
 		$mail->setSubject($this->subject);
 		if ($this->replyTo) {
