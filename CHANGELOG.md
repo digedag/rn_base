@@ -3,8 +3,15 @@
 Änderungen
 ----------
 
-v1.0.3 (??.03.2016)
+v1.0.4 (??.??.2016)
+
+v1.0.3 (13.04.2016)
  * It is possible to include JS and CSS files for actions via typoscript.
+ * add note to phpdoc to avoid warnings in IDE when instantiating Exceptions
+ * util_Strings replaced with Tx_Rnbase_Utility_Strings
+ * T3General fixed for methods with parameters as reference
+ * TimeTrackClass fixed
+ * util_Lang::sL throws exception now, if no language service initialized
 
 v1.0.2 (17.03.2016)
  * Register name for RNBASE_LB_SIZE is configurable
