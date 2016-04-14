@@ -24,13 +24,13 @@
 
 tx_rnbase::load('tx_rnbase_util_Misc');
 tx_rnbase::load('tx_rnbase_util_Templates');
-
+tx_rnbase::load('Tx_Rnbase_Frontend_Marker_BaseMarker');
 
 
 /**
  * Base class for Markers.
  */
-class tx_rnbase_util_BaseMarker {
+class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker {
 	private $defaultMarkerArr = array();
 	/** Array for dummy objects */
 	private static $emptyObjects = array();
@@ -109,6 +109,7 @@ class tx_rnbase_util_BaseMarker {
    * @param string $template
    * @param string $marker
    * @return array
+   * @deprecated use Tx_Rnbase_Frontend_Marker_Utility::findUnusedAttributes
    */
   public static function findUnusedCols(&$record, $template, $marker) {
 		$ignore = array();
@@ -127,6 +128,7 @@ class tx_rnbase_util_BaseMarker {
 		}
 		return $ignore;
   }
+
 
   protected static $token = '';
   /**

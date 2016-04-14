@@ -23,6 +23,7 @@
 ***************************************************************/
 
 tx_rnbase::load('tx_rnbase_util_BaseMarker');
+tx_rnbase::load('Tx_Rnbase_Frontend_Marker_Utility');
 
 /**
  * A generic marker class.
@@ -57,7 +58,10 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 		$template = $this->prepareTemplate($template, $item, $formatter, $confId, $marker);
 
 		// Es wird das MarkerArray mit den Daten des Records gefüllt.
-		$ignore = self::findUnusedCols($item->getRecord(), $template, $marker);
+		// TODO: Der instancof-Check ist nicht schon. Der Typ des Models sollte besser konfiguriert werden, oder?
+		$ignore = $item instanceof Tx_Rnbase_Domain_Model_Data ?
+					Tx_Rnbase_Frontend_Marker_Utility::findUnusedAttributes($item, $template, $marker) :
+					self::findUnusedCols($item->getRecord(), $template, $marker);
 		$markerArray = $formatter->getItemMarkerArrayWrapped($item->getRecord(), $confId , $ignore, $marker.'_', $item->getColumnNames());
 
 		// subparts erzeugen
