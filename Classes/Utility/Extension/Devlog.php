@@ -59,9 +59,13 @@ class Tx_Rnbase_Utility_Extension_Devlog {
 	 * @return array
 	 */
 	static function getExtraDataAsArray($extraData) {
-		return self::getValueByDevlogExtensionVersion(
-			unserialize($extraData), unserialize(gzuncompress($extraData))
-		);
+		if (tx_rnbase_util_TYPO3::isExtMinVersion('devlog', '3000000')) {
+			$extraData = unserialize(gzuncompress($extraData));
+		} else {
+			$extraData = unserialize($extraData);
+		}
+
+		return $extraData;
 	}
 
 	/**
