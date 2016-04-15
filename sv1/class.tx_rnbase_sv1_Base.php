@@ -270,7 +270,7 @@ abstract class tx_rnbase_sv1_Base extends Tx_Rnbase_Service_Base {
 	 * @param 	string 	$tablename
 	 * @return 	array
 	 */
-	private static function insertCrdateAndTimestamp($data, $tablename) {
+	protected static function insertCrdateAndTimestamp($data, $tablename) {
 		global $GLOBALS;
 		// Force creation of timestamp
 		if (
