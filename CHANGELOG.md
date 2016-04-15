@@ -4,6 +4,7 @@
 ----------
 
 v1.0.4 (??.??.2016)
+ * Tx_Rnbase_Utility_Extension_Devlog to get table name, field names and extra data dependent on the devlog version
 
 v1.0.3 (13.04.2016)
  * It is possible to include JS and CSS files for actions via typoscript.
@@ -12,6 +13,7 @@ v1.0.3 (13.04.2016)
  * T3General fixed for methods with parameters as reference
  * TimeTrackClass fixed
  * util_Lang::sL throws exception now, if no language service initialized
+
 
 v1.0.2 (17.03.2016)
  * Register name for RNBASE_LB_SIZE is configurable
