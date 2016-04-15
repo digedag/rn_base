@@ -90,6 +90,63 @@ In den ersten Zeilen wird zunächst die Datenbankabfrage vorbereitet, um die Per
 ```
 Und auch hier noch einmal der Hinweis: Da sich die Markerklassen gegenseitig aufrufen, funktioniert diese Ausgabe immer. Also auch wenn man eigentlich ein Spiel anzeigt, so kann man auf die Spieler der Teams zugreifen. Man muss lediglich die Marker richtig benennen. Der Subpart für die Spieler des Heimteams lautet dann **###MATCH_HOME_PLAYERS###**.
 
+### Der ListBuilder
+Für die Ausgabe von Listen sollte der ListBuilder (**tx_rnbase_util_ListBuilder**) verwendet werden. Dieser bietet sehr umfangreiche Features beim Rendern von Listen.
+
+* Zeilennummer aktuelle Seite
+* Zeilenummer gesamte Liste
+* Pagebrowser
+* Character-Browser
+* Anzeige Treffer gesamt
+* Performace-Debug
+* Aufruf per Callback für extrem große Listen
+* Datenbankfilterung über Filterklassen
+* Konfiguration per Typoscript
+
+Ein komplettes HTML-Template hat folgendes Aussehen. (TODO: erweitern!)
+```
+ ###PLAYERS###
+ Treffer gesamt:  ###PLAYERCOUNT###
+ <ul>
+ ###PLAYER###
+ <li> ###PLAYER### ###PLAYER_UID###
+ ###PLAYER###
+ </ul>
+ ###PLAYEREMPTYLIST###
+ Es wurden leider keine Daten gefunden.
+ ###PLAYEREMPTYLIST###
+
+ <!-- ###PAGEBROWSER### -->
+ <div class="pagebrowser">
+ ###PAGEBROWSER_CURRENT_PAGE###
+ Page ###PAGEBROWSER_CURRENT_PAGE_NUMBER###
+ ###PAGEBROWSER_CURRENT_PAGE###
+
+ ###PAGEBROWSER_NORMAL_PAGE###
+ ###PAGEBROWSER_NORMAL_PAGE_LINK###Page ###PAGEBROWSER_NORMAL_PAGE_NUMBER###  ###PAGEBROWSER_NORMAL_PAGE_LINK###
+ ###PAGEBROWSER_NORMAL_PAGE###
+
+ ###PAGEBROWSER_PREV_PAGE###
+ &nbsp;###PAGEBROWSER_PREV_PAGE_LINK###<###PAGEBROWSER_PREV_PAGE_LINK###&nbsp;
+ ###PAGEBROWSER_PREV_PAGE###
+
+ ###PAGEBROWSER_NEXT_PAGE###
+ &nbsp;###PAGEBROWSER_NEXT_PAGE_LINK###>###PAGEBROWSER_NEXT_PAGE_LINK###&nbsp;
+ ###PAGEBROWSER_NEXT_PAGE###
+
+ ###PAGEBROWSER_FIRST_PAGE###
+ ###PAGEBROWSER_FIRST_PAGE_LINK### |< ###PAGEBROWSER_FIRST_PAGE_LINK###
+ ###PAGEBROWSER_FIRST_PAGE###
+
+ ###PAGEBROWSER_LAST_PAGE###
+ ###PAGEBROWSER_LAST_PAGE_LINK### >| ###PAGEBROWSER_LAST_PAGE_LINK###
+ ###PAGEBROWSER_LAST_PAGE###
+</div>
+<!-- ###PAGEBROWSER### -->
+
+ ###PLAYERS###
+```
+
 
 ### Link-Erzeugung
 In TYPO3 werden Links normalerweise für Subpart-Marker gesetzt:
