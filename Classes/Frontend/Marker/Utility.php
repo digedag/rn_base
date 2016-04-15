@@ -31,13 +31,16 @@
 class Tx_Rnbase_Frontend_Marker_Utility {
 	/**
    * Returns an array with all attribute names not used in template
+   *
+   * We accept Tx_Rnbase_Domain_Model_DataInterface, but the model must also
+   * implement IteratorAggregate!
 	 *
 	 * @param Tx_Rnbase_Domain_Model_Data $item
 	 * @param string $template
 	 * @param string $marker
 	 * @return array
 	 */
-	public static function findUnusedAttributes(Tx_Rnbase_Domain_Model_Data $item, $template, $marker) {
+	public static function findUnusedAttributes(Tx_Rnbase_Domain_Model_DataInterface $item, $template, $marker) {
 		$ignore = array();
 		$minfo = self::containsMarker($template, $marker.'___MINFO');
 		$minfoArr = array();

@@ -24,6 +24,7 @@
 
 /**
  * This interface defines a base domain model.
+ * TODO: this interface should extend IteratorAggregate
  *
  * @package TYPO3
  * @subpackage rn_base
