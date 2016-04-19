@@ -136,6 +136,24 @@ class tx_rnbase_util_Arrays {
 		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
 		return $utility::xml2array($string, $NSprefix, $reportDocTag);
 	}
+
+	/**
+	 * Entfernt alle Keys welche nicht in needle vorhanden sind
+	 *
+	 * @param 	array	$aData		Zu filternde Daten
+	 * @param 	array	$aNeedle	Enthält die erlaubten Keys
+	 * @return 	array
+	 */
+	static public function removeNotIn(array $data, array $needle) {
+		if (!empty($needle)) {
+			foreach (array_keys($data) as $column) {
+				if (!in_array($column, $needle)) {
+					unset($data[$column]);
+				}
+			}
+		}
+		return $data;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Arrays.php']) {

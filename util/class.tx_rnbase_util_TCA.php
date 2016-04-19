@@ -313,6 +313,22 @@ class tx_rnbase_util_TCA {
 
 		return $columns;
 	}
+
+	/**
+	 * Eleminate non-TCA-defined columns from given data
+	 *
+	 * Doesn't do anything if no TCA columns are found.
+	 *
+	 * @param array $data Data to be filtered
+	 * @return array Data now containing only TCA-defined columns
+	 */
+	public static function eleminateNonTcaColumns(
+		Tx_Rnbase_Domain_Model_RecordInterface $model,
+		array $data
+	) {
+		tx_rnbase::load('tx_rnbase_util_Arrays');
+		return tx_rnbase_util_Arrays::removeNotIn($data, $model->getColumnNames());
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rnbase/util/class.tx_rnbase_util_TCA.php'])	{
