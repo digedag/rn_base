@@ -257,6 +257,16 @@ class tx_rnbase_util_Typo3Classes
 	}
 
 	/**
+	 * @return string|TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser
+	 */
+	public static function getLocalizationParserClass() {
+		return self::getClassByCurrentTypo3Version(array(
+			self::LOWER6 => 't3lib_l10n_parser_Llxml',
+			self::HIGHER6 => 'TYPO3\\CMS\\Core\\Localization\\Parser\\LocallangXmlParser'
+		));
+	}
+
+	/**
 	 * @param array $possibleClasses
 	 * @return string
 	 */
