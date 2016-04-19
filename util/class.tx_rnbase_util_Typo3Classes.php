@@ -267,6 +267,16 @@ class tx_rnbase_util_Typo3Classes
 	}
 
 	/**
+	 * @return string|TYPO3\CMS\Core\Authentication\AbstractUserAuthentication
+	 */
+	public static function getAbstractUserAuthenticationClass() {
+		return self::getClassByCurrentTypo3Version(array(
+			self::LOWER6 => 't3lib_userAuth',
+			self::HIGHER6 => 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication'
+		));
+	}
+
+	/**
 	 * @param array $possibleClasses
 	 * @return string
 	 */
