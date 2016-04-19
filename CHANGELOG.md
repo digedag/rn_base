@@ -3,9 +3,13 @@
 Änderungen
 ----------
 
-v1.0.4 (??.??.2016)
+v1.0.5 (??.??.2016)
+
+v1.0.4 (19.04.2016)
  * Tx_Rnbase_Utility_Extension_Devlog to get table name, field names and extra data dependent on the devlog version
  * added Tx_Rnbase_Service_Authentication as wrapper for \TYPO3\CMS\Sv\AuthenticationService and tx_sv_auth
+ * New mailing class
+ * some new wrapper classes and functions
 
 v1.0.3 (13.04.2016)
  * It is possible to include JS and CSS files for actions via typoscript.
