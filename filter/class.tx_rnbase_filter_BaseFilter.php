@@ -203,7 +203,15 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 	}
 
 	/**
-	 * Pagebrowser vorbereiten
+	 * Pagebrowser vorbereiten. Wir im Plugin nach dem init() des Filters aufgerufen:
+	 *
+	 * 		// Soll ein PageBrowser verwendet werden
+	 *		tx_rnbase_filter_BaseFilter::handlePageBrowser($configurations,
+	 *			$this->getConfId().'myitem.pagebrowser', $viewdata, $fields, $options, array(
+	 *			'searchcallback'=> array($service, 'search'),
+	 *			'pbid' => 'mt'.$configurations->getPluginId(),
+	 *			)
+	 *		);
 	 *
 	 * @param tx_rnbase_configurations $configurations
 	 * @param string $confid Die Confid des PageBrowsers. z.B. myview.org.pagebrowser ohne Punkt!
