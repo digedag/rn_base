@@ -3,7 +3,9 @@
 Änderungen
 ----------
 
-v1.0.5 (??.??.2016)
+v1.0.6 (??.??.2016)
+
+v1.0.5 (22.04.2016)
  * added Tx_Rnbase_Backend_AbstractFunctionModule as wrapper for TYPO3\CMS\Backend\Module\AbstractFunctionModule and t3lib_extobjbase
  * tx_rnbase_mod_Tables::getTableLayout() is now public
 
