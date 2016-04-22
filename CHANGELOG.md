@@ -5,6 +5,7 @@
 
 v1.0.5 (??.??.2016)
  * added Tx_Rnbase_Backend_AbstractFunctionModule as wrapper for TYPO3\CMS\Backend\Module\AbstractFunctionModule and t3lib_extobjbase
+ * tx_rnbase_mod_Tables::getTableLayout() is now public
 
 v1.0.4 (19.04.2016)
  * Tx_Rnbase_Utility_Extension_Devlog to get table name, field names and extra data dependent on the devlog version

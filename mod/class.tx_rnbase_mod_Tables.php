@@ -323,7 +323,7 @@ class tx_rnbase_mod_Tables {
 	 * Returns a default table layout
 	 * @return array
 	 */
-	private static function getTableLayout() {
+	public static function getTableLayout() {
 		return
 		tx_rnbase_util_TYPO3::isTYPO76OrHigher() ?
 		Array (
