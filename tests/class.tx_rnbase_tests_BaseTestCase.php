@@ -156,10 +156,10 @@ abstract class tx_rnbase_tests_BaseTestCase
 	 *
 	 * @return tx_rnbase_model_base|PHPUnit_Framework_MockObject_MockObject
 	 */
-	protected function loadYaml($data)
+	protected function loadYaml($data, $tryToLoadYamlFile = TRUE)
 	{
 		// there is no array, so convert the yaml content or file
-		if (!is_array($data)) {
+		if ($tryToLoadYamlFile && !is_array($data)) {
 			tx_rnbase::load('tx_rnbase_util_Spyc');
 			$data = tx_rnbase_util_Spyc::YAMLLoad($data);
 		}
@@ -186,7 +186,7 @@ abstract class tx_rnbase_tests_BaseTestCase
 				($model
 					->expects(self::any())
 					->method($getter)
-					->will($this->returnValue($this->loadYaml($data[$getter])))
+					->will($this->returnValue($this->loadYaml($data[$getter], FALSE)))
 				);
 			}
 
