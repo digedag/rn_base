@@ -34,7 +34,21 @@ tx_rnbase::load('tx_rnbase_model_data');
 class tx_rnbase_util_TCA {
 
 	/**
-	 * Liefert den Spaltennamen für das Parent der aktuellen lokalisierung
+	 * Liefert den Wert für ein Attribut aus dem ctrl-Bereich der TCA
+	 *
+	 * @param string $tableName
+	 * @param string $fieldName
+	 * @return mixed
+	 */
+	public static function getControlFieldForTable($tableName, $fieldName) {
+		if (empty($GLOBALS['TCA'][$tableName]) || empty($GLOBALS['TCA'][$tableName]['ctrl'][$fieldName])) {
+			return '';
+		}
+		return $GLOBALS['TCA'][$tableName]['ctrl'][$fieldName];
+	}
+
+	/**
+	 * Liefert den Spaltennamen für das Parent der aktuellen Lokalisierung
 	 *
 	 * @param string $tableName
 	 * @return string
@@ -46,7 +60,7 @@ class tx_rnbase_util_TCA {
 		return $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'];
 	}
 	/**
-	 * Liefert den Spaltennamen für das Parent der aktuellen lokalisierung
+	 * Liefert den Spaltennamen für das Parent der aktuellen Lokalisierung
 	 *
 	 * @param string $tableName
 	 * @return string
