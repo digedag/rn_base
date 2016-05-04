@@ -35,7 +35,7 @@ tx_rnbase::load('tx_rnbase_util_Logger');
 class tx_rnbase_maps_google_Util {
 
 	/**
-	 * 
+	 *
 	 * @param string $addressString
 	 * @param string $fullInfo if FALSE there is latitude and longitude returned only
 	 * @return array
@@ -70,6 +70,20 @@ class tx_rnbase_maps_google_Util {
 			}
 		}
 		return $result;
+	}
+	/**
+	 *
+	 * @param string $street
+	 * @param string $zip
+	 * @param string $city
+	 * @param string $country
+	 * @param string $state
+	 * @throws Exception
+	 */
+	public function lookupGeoCodeCached($street, $zip, $city, $country, $state='') {
+		if(!tx_rnbase_util_Extensions::isLoaded('wec_map'))
+			throw new Exception('wec_map not loaded');
+		return tx_wecmap_cache::lookup($street, $city, $state, $zip, $country);
 	}
 }
 
