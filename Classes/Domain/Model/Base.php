@@ -74,7 +74,7 @@ class Tx_Rnbase_Domain_Model_Base
 	 * @param mixed $rowOrUid
 	 * @return NULL
 	 */
-	function init($rowOrUid = NULL) {
+	protected function init($rowOrUid = NULL) {
 		if (is_array($rowOrUid)) {
 			parent::init($rowOrUid);
 			$this->uid = $this->getProperty('uid');

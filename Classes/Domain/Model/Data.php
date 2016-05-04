@@ -70,7 +70,7 @@ class Tx_Rnbase_Domain_Model_Data
 	 * @param array $record
 	 * @return NULL
 	 */
-	function init($record = NULL) {
+	protected function init($record = NULL) {
 		if (is_array($record)) {
 			$this->record = $record;
 		}
