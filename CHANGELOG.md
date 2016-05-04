@@ -3,8 +3,13 @@
 Änderungen
 ----------
 
-v1.0.6 (??.??.2016)
+v1.0.7 (??.??.2016)
+
+v1.0.6 (04.05.2016)
  * removed Tx_Rnbase_Utility_Extension_Devlog (can now be found in mklog -> Tx_Mklog_Utility_Devlog)
+ * New method to access TCA attributes from ctrl section
+ * bugfix for TYPO3 7.6 as the file path will be returned even if the file exists not
+ * set init method of domain models to protected
 
 v1.0.5 (22.04.2016)
  * added Tx_Rnbase_Backend_AbstractFunctionModule as wrapper for TYPO3\CMS\Backend\Module\AbstractFunctionModule and t3lib_extobjbase
