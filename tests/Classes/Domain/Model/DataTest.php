@@ -77,6 +77,16 @@ class Tx_Rnbase_Domain_Model_DataTest
 
 	/**
 	 * @test
+	 */
+	public function testRecordOverloadingGet() {
+		$model = $this->getModelInstance();
+		$this->assertSame(50, $model->uid);
+		$this->assertSame('John', $model->first_name);
+		$this->assertNull($model->column_does_not_exist);
+	}
+
+	/**
+	 * @test
 	 * @expectedException Exception
 	 * @expectedExceptionCode 1406625817
 	 */

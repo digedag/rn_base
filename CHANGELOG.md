@@ -4,6 +4,7 @@
 ----------
 
 v1.0.7 (??.??.2016)
+ * new overloading method for data model (getter) #42 
 
 v1.0.6 (04.05.2016)
  * removed Tx_Rnbase_Utility_Extension_Devlog (can now be found in mklog -> Tx_Mklog_Utility_Devlog)

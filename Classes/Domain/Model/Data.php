@@ -249,6 +249,20 @@ class Tx_Rnbase_Domain_Model_Data
 	}
 
 	/**
+	 * Attribute getter
+	 *
+	 * @param string $var
+	 *
+	 * @return mixed
+	 */
+	public function __get($var)
+	{
+		$var = $this->underscore($var);
+
+		return $this->getProperty($var);
+	}
+
+	/**
 	 * Implementation of IteratorAggregate::getIterator()
 	 *
 	 * WARNING: dont iterate over an object
