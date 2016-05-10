@@ -167,25 +167,37 @@ class tx_rnbase_parameters extends ArrayObject implements tx_rnbase_IParameters 
 	}
 
 	/**
+	 * Returns the global $_GET array (or value from) normalized.
+	 *
+	 * @param string $var
+	 *
 	 * @see t3lib_div::_GET
 	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::_GET
 	 *
-	 * @return array
+	 * @return mixed
 	 */
-	static public function getGetParameters() {
+	public static function getGetParameters($var = NULL)
+	{
 		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
-		return $utility::_GET();
+
+		return $utility::_GET($var);
 	}
 
 	/**
+	 * Returns the global $_POST array (or value from) normalized.
+	 *
+	 * @param string $var
+	 *
 	 * @see t3lib_div::_POST
 	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::_POST
 	 *
-	 * @return array
+	 * @return mixed
 	 */
-	static public function getPostParameters() {
+	public static function getPostParameters($var = NULL)
+	{
 		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
-		return $utility::_POST();
+
+		return $utility::_POST($var);
 	}
 }
 
