@@ -3,7 +3,10 @@
 Änderungen
 ----------
 
-v1.0.8 (??.??.2016)
+v1.0.9 (??.??.2016)
+
+v1.0.8 (10.05.2016)
+ * added missing loads
 
 v1.0.7 (10.05.2016)
  * new overloading method for data model (getter) #42
