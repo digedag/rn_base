@@ -23,6 +23,7 @@
  ***************************************************************/
 
 tx_rnbase::load('tx_rnbase_util_TYPO3');
+tx_rnbase::load('tx_rnbase_util_Misc');
 
 /**
  * tx_rnbase_util_Network
