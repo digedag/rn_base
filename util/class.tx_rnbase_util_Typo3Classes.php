@@ -277,6 +277,56 @@ class tx_rnbase_util_Typo3Classes
 	}
 
 	/**
+	 * @return string|TYPO3\CMS\Backend\Rte\AbstractRte
+	 */
+	public static function getAbstractRteClass() {
+		return self::getClassByCurrentTypo3Version(array(
+			self::LOWER6 => 't3lib_rteapi',
+			self::HIGHER6 => 'TYPO3\\CMS\\Backend\\Rte\\AbstractRte'
+		));
+	}
+
+	/**
+	 * @return string|TYPO3\CMS\Core\Database\SqlParser
+	 */
+	public static function getSqlParserClass() {
+		return self::getClassByCurrentTypo3Version(array(
+			self::LOWER6 => 't3lib_sqlparser',
+			self::HIGHER6 => 'TYPO3\\CMS\\Core\\Database\\SqlParser'
+		));
+	}
+
+	/**
+	 * @return string|TYPO3\CMS\Backend\FrontendBackendUserAuthentication
+	 */
+	public static function getFrontendBackendUserAuthenticationClass() {
+		return self::getClassByCurrentTypo3Version(array(
+			self::LOWER6 => 't3lib_tsfeBeUserAuth',
+			self::HIGHER6 => 'TYPO3\\CMS\\Backend\\FrontendBackendUserAuthentication'
+		));
+	}
+
+	/**
+	 * @return string|TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	public static function getBackendUserAuthenticationClass() {
+		return self::getClassByCurrentTypo3Version(array(
+			self::LOWER6 => 't3lib_beUserAuth',
+			self::HIGHER6 => 'TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication'
+		));
+	}
+
+	/**
+	 * @return string|TYPO3\CMS\Frontend\Utility\EidUtility
+	 */
+	public static function getEidUtilityClass() {
+		return self::getClassByCurrentTypo3Version(array(
+			self::LOWER6 => 'tslib_eidtools',
+			self::HIGHER6 => 'TYPO3\\CMS\\Frontend\\Utility\\EidUtility'
+		));
+	}
+
+	/**
 	 * @param array $possibleClasses
 	 * @return string
 	 */
