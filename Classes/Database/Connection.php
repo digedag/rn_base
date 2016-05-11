@@ -269,7 +269,7 @@ class Tx_Rnbase_Database_Connection
 	/**
 	 *
 	 * @param array
-	 * @return \TYPO3\CMS\Core\Utility\GeneralUtility\DatabaseConnection|tx_rnbase_util_db_IDatabase
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection|tx_rnbase_util_db_IDatabase
 	 */
 	public function getDatabaseConnection($options = NULL) {
 		if (is_array($options) && !empty($options['db'])) {
