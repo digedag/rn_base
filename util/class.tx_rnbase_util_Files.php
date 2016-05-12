@@ -61,7 +61,7 @@ class tx_rnbase_util_Files {
 				$imgFile = $incFile;
 				$imgInfo = @getImageSize($imgFile);
 				$addParams= isset($options['addparams']) ? $options['addparams'] : 'alt="" title=""';
-				$ret = '<img src="'.$GLOBALS['TSFE']->absRefPrefix.$imgFile.'" width="'.$imgInfo[0].'" height="'.$imgInfo[1].'"'.$this->getBorderAttr(' border="0"').' '.$addParams.' />';
+				$ret = '<img src="'.$GLOBALS['TSFE']->absRefPrefix.$imgFile.'" width="'.$imgInfo[0].'" height="'.$imgInfo[1].'"'.self::getBorderAttr(' border="0"').' '.$addParams.' />';
 			} elseif (file_exists($fullPath) && filesize($fullPath)<1024*1024) {
 				$ret = @file_get_contents($fullPath);
 				$subpart = isset($options['subpart']) ? $options['subpart'] : '';
@@ -252,7 +252,7 @@ class tx_rnbase_util_Files {
 	 */
 	static public function writeFile($file, $content, $changePermissions = FALSE) {
 		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
-		return $utility::writeFile($file, $content, $changePermission);
+		return $utility::writeFile($file, $content, $changePermissions);
 	}
 
 	/**
