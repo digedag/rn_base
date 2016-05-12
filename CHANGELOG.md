@@ -3,7 +3,11 @@
 Änderungen
 ----------
 
-v1.0.9 (??.??.2016)
+v1.0.10 (??.??.2016)
+
+v1.0.9 (12.05.2016)
+ * new base exception class
+ * new wrapper methods in tx_rnbase_util_Typo3Classes
 
 v1.0.8 (10.05.2016)
  * added missing loads
