@@ -284,9 +284,16 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 	public function createMoveUpLink($table, $uid, $moveId, $options = array()) {
 		$jsCode = $this->buildJumpUrl('cmd['.$table.']['.$uid.'][move]=-' . $moveId . '&prErr=1&uPT=1', $options);
 		$label = isset($options['label']) ? $options['label'] : 'Move up';
-		return '<a onclick="' . $jsCode . '" href="#">' .
-			'<img' . Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/up.gif', 'width="16" height="16"') . ' title="Move UID: ' . $uid . '" border="0" alt="" />' .
-				$label . '</a>';
+		$title = isset($options['title']) ? $options['title'] : $label;
+
+		return sprintf(
+			'<a onclick="%1$s" href="#">' .
+				'<img %2$s title="%4$s" border="0" alt="" />%3$s</a>',
+			$jsCode,
+			Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/up.gif', 'width="16" height="16"'),
+			$label,
+			$title
+		);
 	}
 
 	/**
@@ -300,9 +307,16 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 	public function createMoveDownLink($table, $uid, $moveId, $options = array()) {
 		$jsCode = $this->buildJumpUrl('cmd['.$table.']['.$uid.'][move]=-' . $moveId, $options);
 		$label = isset($options['label']) ? $options['label'] : 'Move up';
-		return '<a onclick="' . $jsCode . '" href="#">' .
-			'<img' . Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/down.gif', 'width="16" height="16"') . ' title="Move UID: ' . $uid . '" border="0" alt="" />' .
-				$label . '</a>';
+		$title = isset($options['title']) ? $options['title'] : $label;
+
+		return sprintf(
+			'<a onclick="%1$s" href="#">' .
+				'<img %2$s title="%4$s" border="0" alt="" />%3$s</a>',
+			$jsCode,
+			Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/down.gif', 'width="16" height="16"'),
+			$label,
+			$title
+		);
 	}
 
 	private function buildJumpUrl($params, $options = array()){
