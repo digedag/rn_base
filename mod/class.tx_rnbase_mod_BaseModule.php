@@ -476,7 +476,9 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 			$storeInSession
 		);
 
-		tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getFlashMessageQueueClass())->addMessage($message);
+		tx_rnbase::makeInstance(
+			tx_rnbase_util_Typo3Classes::getFlashMessageQueueClass(), md5($message . $title . $severity)
+		)->addMessage($message);
 	}
 
 	/**
