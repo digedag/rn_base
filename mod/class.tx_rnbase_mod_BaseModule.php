@@ -1,6 +1,4 @@
 <?php
-
-use TYPO3\CMS\Core\Messaging\FlashMessageService;
 /***************************************************************
 *  Copyright notice
 *
@@ -479,7 +477,9 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 
 		if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
 			/** @var $flashMessageService FlashMessageService */
-			$flashMessageService = tx_rnbase::makeInstance(FlashMessageService::class);
+			$flashMessageService = tx_rnbase::makeInstance(
+				'TYPO3\\CMS\\Core\\Messaging\\FlashMessageService\\FlashMessageService'
+			);
 			$flashMessageService->getMessageQueueByIdentifier()->addMessage($message);
 		} else {
 			$flashMessageClass = tx_rnbase_util_Typo3Classes::getFlashMessageQueueClass();
