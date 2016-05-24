@@ -3,7 +3,11 @@
 Änderungen
 ----------
 
-v1.0.10 (??.??.2016)
+v1.0.11 (??.??.2016)
+
+v1.0.10 (24.05.2016)
+ * add label support for move up and move down links in backend modules
+ * minor bugixes
 
 v1.0.9 (12.05.2016)
  * new base exception class
