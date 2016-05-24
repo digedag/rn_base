@@ -46,7 +46,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 	 * @return String das geparste Template
 	 */
 	public function parseTemplate($template, &$item, &$formatter, $confId, $marker) {
-		if(!is_object($item)) {
+		if (!is_object($item)) {
 			if(!$this->classname) return $template;
 			// Ist kein Item vorhanden wird ein leeres Objekt verwendet.
 			$item = self::getEmptyInstance($this->classname);
@@ -59,7 +59,8 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 
 		// Es wird das MarkerArray mit den Daten des Records gefüllt.
 		// TODO: Der instancof-Check ist nicht schon. Der Typ des Models sollte besser konfiguriert werden, oder?
-		$ignore = $item instanceof Tx_Rnbase_Domain_Model_Data ?
+		// Einfach immer getProperty nutzen? das ist in allen models vorhanden.!
+		$ignore = $item instanceof Tx_Rnbase_Domain_Model_DataInterface ?
 					Tx_Rnbase_Frontend_Marker_Utility::findUnusedAttributes($item, $template, $marker) :
 					self::findUnusedCols($item->getRecord(), $template, $marker);
 		$markerArray = $formatter->getItemMarkerArrayWrapped($item->getRecord(), $confId , $ignore, $marker.'_', $item->getColumnNames());
@@ -91,14 +92,17 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 	/**
 	 * Führt vor dem parsen Änderungen am Model durch.
 	 *
-	 * @param Tx_Rnbase_Domain_Model_DomainInterface $item
+	 * @param Tx_Rnbase_Domain_Model_DataInterface $item
 	 * @param tx_rnbase_configurations &$configurations
 	 * @param string &$confId
 	 * @return void
 	 */
 	protected function prepareItem(
-		Tx_Rnbase_Domain_Model_RecordInterface $item, tx_rnbase_configurations $configurations, $confId) {
-		if (!$item->isValid()) {
+		Tx_Rnbase_Domain_Model_DataInterface $item,
+		tx_rnbase_configurations $configurations,
+		$confId
+	) {
+		if ($item->isEmpty()) {
 			return;
 		}
 
@@ -155,7 +159,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 	 * @param array $wrappedSubpartArray das HTML-Template
 	 * @param array $subpartArray das HTML-Template
 	 * @param string $template das HTML-Template
-	 * @param Tx_Rnbase_Domain_Model_RecordInterface $item
+	 * @param Tx_Rnbase_Domain_Model_DataInterface $item
 	 * @param tx_rnbase_util_FormatUtil $formatter der zu verwendente Formatter
 	 * @param string $confId Pfad der TS-Config
 	 * @param string $marker Name des Markers
@@ -166,7 +170,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 	) {
 		$configurations = $formatter->getConfigurations();
 		$pluginData = $configurations->getCObj()->data;
-		$configurations->getCObj()->data = $item->getRecord();
+		$configurations->getCObj()->data = $item->getProperty();
 		$emptyArray = array('', '');
 		$emptyString = '';
 
@@ -198,7 +202,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 	/**
 	 * Links vorbereiten
 	 *
-	 * @param Tx_Rnbase_Domain_Model_RecordInterface $item
+	 * @param Tx_Rnbase_Domain_Model_DataInterface $item
 	 * @param string $marker
 	 * @param array $markerArray
 	 * @param array $wrappedSubpartArray
@@ -208,7 +212,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 	protected function prepareLinks($item, $marker, &$markerArray, &$subpartArray, &$wrappedSubpartArray, $confId, $formatter, $template) {
 		$configurations = $formatter->getConfigurations();
 		$pluginData = $configurations->getCObj()->data;
-		$configurations->getCObj()->data = $item->getRecord();
+		$configurations->getCObj()->data = $item->getProperty();
 
 		$linkIds = $configurations->getKeyNames($confId.'links.');
 		for ($i=0, $cnt=count($linkIds); $i < $cnt; $i++) {
@@ -223,7 +227,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 			$params = array();
 			$paramMap = (array) $configurations->get($linkConfId . '._cfg.params.');
 			foreach ($paramMap As $paramName => $colName) {
-				if (is_scalar($colName) && array_key_exists($colName, $item->getRecord())) {
+				if (is_scalar($colName) && array_key_exists($colName, $item->getProperty())) {
 					$params[$paramName] = $item->getProperty($colName);
 				} elseif (is_array($colName)) {
 					$paramName = substr($paramName, 0, strlen($paramName)-1);
@@ -239,6 +243,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 				$params[$cbId] = strtoupper(substr((string) $item->getProperty($cbColname), 0, 1));
 			}
 
+			// @TODO: that only works on Tx_Rnbase_Domain_Model_DomainInterface!
 			if ($configurations->getBool($linkConfId . '.skipPersistedCheck') ||  $item->isPersisted()) {
 				$this->initLink($markerArray, $subpartArray, $wrappedSubpartArray, $formatter, $confId, $linkId, $marker, $params, $template);
 			}

@@ -37,15 +37,23 @@ interface Tx_Rnbase_Domain_Model_DataInterface
 	/**
 	 * Returns TRUE if the model was modified after initialisation.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDirty();
+
+	/**
+	 * Returns TRUE if the model has no data.
+	 *
+	 * @return bool
+	 */
+	public function isEmpty();
 
 	/**
 	 * Setzt einen Wert oder ersetzt alle Werte
 	 *
 	 * @param string|array $property
 	 * @param mixed $value
+	 *
 	 * @return Tx_Rnbase_Domain_Model_Data
 	 */
 	public function setProperty($property, $value = NULL);
@@ -54,6 +62,7 @@ interface Tx_Rnbase_Domain_Model_DataInterface
 	 * Liefert einen bestimmten Wert oder alle.
 	 *
 	 * @param string $property
+	 *
 	 * @return string
 	 */
 	public function getProperty($property = NULL);
@@ -62,6 +71,7 @@ interface Tx_Rnbase_Domain_Model_DataInterface
 	 * Entfernt einen Wert.
 	 *
 	 * @param string $property
+	 *
 	 * @return Tx_Rnbase_Domain_Model_Data
 	 */
 	public function unsProperty($property);
@@ -70,6 +80,7 @@ interface Tx_Rnbase_Domain_Model_DataInterface
 	 * Prüft ob eine Spalte gesetzt ist.
 	 *
 	 * @param string $property
+	 *
 	 * @return string
 	 */
 	public function hasProperty($property);

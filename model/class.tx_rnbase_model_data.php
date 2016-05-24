@@ -109,6 +109,15 @@ class tx_rnbase_model_data
 	}
 
 	/**
+	 * Returns TRUE if the model has no data
+	 *
+	 * @return boolean
+	 */
+	public function isEmpty() {
+		return empty($this->record);
+	}
+
+	/**
 	 * create a new data model
 	 *
 	 * @param array $data

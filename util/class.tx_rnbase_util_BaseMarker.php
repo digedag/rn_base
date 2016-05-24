@@ -300,8 +300,14 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker {
 		if (!is_object(self::$emptyObjects[$classname])) {
 			/* @var $dummy Tx_Rnbase_Domain_Model_DomainInterface */
 			$dummyInstance = tx_rnbase::makeInstance($classname, array('uid' => 0));
-			foreach ($dummyInstance->getColumnNames() as $column) {
-				$dummyInstance->setProperty($column, '');
+			if (
+				$dummyInstance instanceof Tx_Rnbase_Domain_Model_DomainInterface
+				// for deprecated backward compatibility
+				|| $dummyInstance instanceof tx_rnbase_model_base
+			) {
+				foreach ($dummyInstance->getColumnNames() as $column) {
+					$dummyInstance->setProperty($column, '');
+				}
 			}
 			self::$emptyObjects[$classname] = $dummyInstance;
 		}
