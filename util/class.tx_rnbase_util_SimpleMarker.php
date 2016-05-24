@@ -63,7 +63,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 		$ignore = $item instanceof Tx_Rnbase_Domain_Model_DataInterface ?
 					Tx_Rnbase_Frontend_Marker_Utility::findUnusedAttributes($item, $template, $marker) :
 					self::findUnusedCols($item->getRecord(), $template, $marker);
-		$markerArray = $formatter->getItemMarkerArrayWrapped($item->getRecord(), $confId , $ignore, $marker.'_', $item->getColumnNames());
+		$markerArray = $formatter->getItemMarkerArrayWrapped($item->getProperty(), $confId , $ignore, $marker.'_', $item->getColumnNames());
 
 		// subparts erzeugen
 		$wrappedSubpartArray = $subpartArray = array();
