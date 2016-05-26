@@ -49,7 +49,7 @@ class tx_rnbase_util_Typo3Classes
 	}
 
 	/**
-	 * @return string|TYPO3\CMS\Core\Messaging\FlashMessageQueue
+	 * @return string
 	 */
 	public static function getFlashMessageQueueClass() {
 		return self::getClassByCurrentTypo3Version(array(

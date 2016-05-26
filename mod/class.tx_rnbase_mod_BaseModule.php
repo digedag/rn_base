@@ -482,8 +482,11 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 			);
 			$flashMessageService->getMessageQueueByIdentifier()->addMessage($message);
 		} else {
-			$flashMessageClass = tx_rnbase_util_Typo3Classes::getFlashMessageQueueClass();
-			$flashMessageClass->addMessage($message);
+			$flashMessageQueue = tx_rnbase::makeInstance(
+				tx_rnbase_util_Typo3Classes::getFlashMessageQueueClass(),
+				md5($message . $title . $severity)
+			);
+			$flashMessageQueue->addMessage($message);
 		}
 	}
 
