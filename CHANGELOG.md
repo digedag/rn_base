@@ -3,7 +3,11 @@
 Änderungen
 ----------
 
-v1.0.11 (??.??.2016)
+v1.0.12 (??.??.2016)
+
+v1.0.11 (26.05.2016)
+ * simple marker class can be used with data models now
+ * Fix: creating an instance of FlashMessageQueue in backend modules
 
 v1.0.10 (24.05.2016)
  * add label support for move up and move down links in backend modules
