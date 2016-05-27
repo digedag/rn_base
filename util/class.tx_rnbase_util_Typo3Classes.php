@@ -49,16 +49,6 @@ class tx_rnbase_util_Typo3Classes
 	}
 
 	/**
-	 * @return string
-	 */
-	public static function getFlashMessageQueueClass() {
-		return self::getClassByCurrentTypo3Version(array(
-			self::LOWER6 => 't3lib_FlashMessageQueue',
-			self::HIGHER6 => 'TYPO3\\CMS\\Core\\Messaging\\FlashMessageQueue'
-		));
-	}
-
-	/**
 	 * @return string|TYPO3\CMS\Backend\Form\FormEngine
 	 */
 	public static function getBackendFormEngineClass() {

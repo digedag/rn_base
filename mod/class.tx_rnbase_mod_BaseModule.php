@@ -1,4 +1,5 @@
 <?php
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /***************************************************************
 *  Copyright notice
 *
@@ -467,7 +468,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 	 * (Non PHP-doc)
 	 */
 	public function addMessage($message, $title = '', $severity = 0, $storeInSession = FALSE) {
-		$message = tx_rnbase::makeInstance(
+		$flashMessage = tx_rnbase::makeInstance(
 			tx_rnbase_util_Typo3Classes::getFlashMessageClass(),
 			$message,
 			$title,
@@ -475,18 +476,14 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 			$storeInSession
 		);
 
-		if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
+		if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
 			/** @var $flashMessageService FlashMessageService */
 			$flashMessageService = tx_rnbase::makeInstance(
-				'TYPO3\\CMS\\Core\\Messaging\\FlashMessageService\\FlashMessageService'
+				'TYPO3\CMS\Core\Messaging\FlashMessageService'
 			);
-			$flashMessageService->getMessageQueueByIdentifier()->addMessage($message);
+			$flashMessageService->getMessageQueueByIdentifier()->enqueue($flashMessage);
 		} else {
-			$flashMessageQueue = tx_rnbase::makeInstance(
-				tx_rnbase_util_Typo3Classes::getFlashMessageQueueClass(),
-				md5($message . $title . $severity)
-			);
-			$flashMessageQueue->addMessage($message);
+			t3lib_FlashMessageQueue::addMessage($flashMessage);
 		}
 	}
 
