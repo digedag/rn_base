@@ -462,6 +462,7 @@ class tx_rnbase_util_TSFAL {
 		$data['pid'] = $pId;
 		$data['uid_foreign'] = $itemId;
 		$data['uid_local'] = $mediaUid;
+		$data['tstamp'] = $data['crdate'] = time();
 		$data['tablenames'] = $tableName;
 		$data['fieldname'] = $fieldName;
 		$data['sorting_foreign'] = 1;
