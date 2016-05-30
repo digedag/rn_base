@@ -409,8 +409,10 @@ class tx_rnbase_configurations {
 	 *
 	 * Mind: To query an array end with a DOT. To to query a single value end without DOT.
 	 *
-	 * @param string  relative setupPath
-	 * @return array  or string
+	 * @param string             $pathKey relative setupPath
+	 * @param bool               $deep
+	 *
+	 * @return array|string|null
 	 */
 	public function get($pathKey, $deep=FALSE) {
 		if(!$deep)
