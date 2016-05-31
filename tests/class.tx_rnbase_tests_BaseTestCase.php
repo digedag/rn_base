@@ -342,12 +342,13 @@ abstract class tx_rnbase_tests_BaseTestCase
 	 * @see Tx_Extbase_Tests_Unit_BaseTestCase::buildAccessibleProxy
 	 */
 	protected function buildAccessibleProxy($className) {
-		$accessibleClassName = uniqid('Tx_Phpunit_AccessibleProxy');
+		$accessibleClassName = uniqid('Tx_Rnbase_Phpunit_AccessibleProxy');
 		$class = new \ReflectionClass($className);
 		$abstractModifier = $class->isAbstract() ? 'abstract ' : '';
 
 		$interfaces = '';
 		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			// @TODO: #43 refactor to a stand alone interface
 			$interfaces = 'Tx_Phpunit_Interface_AccessibleObject';
 		}
 		$interfaces = empty($interfaces) ? '' : ' implements ' . $interfaces;
