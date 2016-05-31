@@ -32,7 +32,22 @@ tx_rnbase::load('tx_rnbase_util_Typo3Classes');
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 abstract class tx_rnbase_tests_BaseTestCase
-	extends Tx_Phpunit_TestCase {
+	extends PHPUnit_Framework_TestCase
+{
+
+	/**
+	 * whether global variables should be backuped
+	 *
+	 * @var boolean
+	 */
+	protected $backupGlobals = FALSE;
+
+	/**
+	 * whether static attributes should be backuped
+	 *
+	 * @var boolean
+	 */
+	protected $backupStaticAttributes = FALSE;
 
 	/**
 	 * Sample:
