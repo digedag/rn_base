@@ -256,19 +256,12 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
 		}
 		return $items;
 	}
-
-	/* *** ******************** *** *
-	 * *** Manipulation methods *** *
-	 * *** ******************** *** */
-
-	// @TODO Manipulation methods with own interface
-
 }
 
 /**
  * the old class for backwards compatibility
  *
- * @deprecated: will be dripped in the feature!
+ * @deprecated: will be dropped in the feature!
  */
 abstract class Tx_Rnbase_Repository_AbstractRepository
 	extends Tx_Rnbase_Domain_Repository_AbstractRepository
