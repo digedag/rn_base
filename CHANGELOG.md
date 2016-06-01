@@ -4,6 +4,7 @@
 ----------
 
 v1.0.12 (??.??.2016)
+ * new persistence repository added
 
 v1.0.11 (26.05.2016)
  * simple marker class can be used with data models now

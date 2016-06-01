@@ -165,6 +165,9 @@ class tx_extkey_models_export extends Tx_Rnbase_Domain_Model_Base {
 }
 ```
 
+Um die Models abzufragen oder Änderungen in die Datenbank zu übernehmen, wird in der Regel ein Repository verwendet.  
+Mehr dazu unter [Repositories](repositories.md)
+
 ##Typo3-Cache
 
 Die Plugions sollten im TypoScript immer über ein gecachtes USER-Object, kein ungecachtes USER_INT-Object eingebunden werden!
