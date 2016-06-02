@@ -448,6 +448,44 @@ abstract class tx_rnbase_tests_BaseTestCase
 
 		return $accessibleClassName;
 	}
+	
+	/**
+	 * Same as getMockForAbstractClass, with mockedMethods as secnd param only.
+	 *
+	 * @param  string  $originalClassName
+	 * @param  array   $mockedMethods
+	 * @param  array   $arguments
+	 * @param  string  $mockClassName
+	 * @param  boolean $callOriginalConstructor
+	 * @param  boolean $callOriginalClone
+	 * @param  boolean $callAutoload
+	 * @param  boolean $cloneArguments
+	 *
+	 * @throws PHPUnit_Framework_Exception
+	 *
+	 * @return PHPUnit_Framework_MockObject_MockObject
+	 */
+	public function getMockForAbstract(
+		$originalClassName,
+		$mockedMethods = array(),
+		array $arguments = array(),
+		$mockClassName = '',
+		$callOriginalConstructor = TRUE,
+		$callOriginalClone = TRUE,
+		$callAutoload = TRUE,
+		$cloneArguments = FALSE
+	) {
+		return $this->getMockForAbstractClass(
+			$originalClassName,
+			$arguments,
+			$mockClassName,
+			$callOriginalConstructor,
+			$callOriginalClone,
+			$callAutoload,
+			$mockedMethods,
+			$cloneArguments
+		);
+	}
 
 	/**
 	 * @return void
