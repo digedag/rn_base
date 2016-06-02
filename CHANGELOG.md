@@ -4,6 +4,8 @@
 ----------
 
 v1.0.12 (??.??.2016)
+ * optionial support for arguments as references for the callInaccessibleMethod test method
+ * new repositories uses ArrayObjects instead of array per default
  * new persistence repository added
 
 v1.0.11 (26.05.2016)

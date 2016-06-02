@@ -251,21 +251,31 @@ abstract class tx_rnbase_tests_BaseTestCase
 	}
 
 	/**
-	 * Helper function to call protected or private methods.
+	 * Helper function to call protected methods.
 	 * This method is taken from TYPO3 BaseTestCase
 	 *
 	 * @param object $object The object to be invoked
 	 * @param string $name the name of the method to call
 	 * @return mixed
 	 */
-	protected function callInaccessibleMethod($object, $name) {
-		// Remove first two arguments ($object and $name)
-		$arguments = func_get_args();
-		array_splice($arguments, 0, 2);
+	protected function callInaccessibleMethod($object, $name)
+	{
+		// the alternative way (supports arguments as references
+		// $object is a array (with object and name) and $name a arguments array!
+		if (is_array($object)) {
+			$arguments = $name;
+			list ($object, $name) = $object;
+		} else {
+			// the classic way to read the arguments
+			// Remove first two arguments ($object and $name)
+			$arguments = func_get_args();
+			array_splice($arguments, 0, 2);
+		}
 
 		$reflectionObject = new \ReflectionObject($object);
 		$reflectionMethod = $reflectionObject->getMethod($name);
-		$reflectionMethod->setAccessible(TRUE);
+		$reflectionMethod->setAccessible(true);
+
 		return $reflectionMethod->invokeArgs($object, $arguments);
 	}
 
@@ -448,7 +458,7 @@ abstract class tx_rnbase_tests_BaseTestCase
 
 		return $accessibleClassName;
 	}
-	
+
 	/**
 	 * Same as getMockForAbstractClass, with mockedMethods as secnd param only.
 	 *
