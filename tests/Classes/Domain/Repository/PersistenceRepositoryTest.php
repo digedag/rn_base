@@ -31,7 +31,7 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
  * @subpackage Tx_Rnbase
  * @author Michael Wagner
  */
-class Tx_Rnbase_Domain_Model_PersistenceRepositoryTest
+class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest
 	extends tx_rnbase_tests_BaseTestCase
 {
 	/**

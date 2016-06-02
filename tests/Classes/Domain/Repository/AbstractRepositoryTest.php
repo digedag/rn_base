@@ -31,7 +31,7 @@ tx_rnbase::load('Tx_Rnbase_Domain_Repository_AbstractRepository');
  * @subpackage Tx_Rnbase
  * @author Michael Wagner
  */
-class Tx_Rnbase_Domain_Model_AbstractRepositoryTest
+class Tx_Rnbase_Domain_Repository_AbstractRepositoryTest
 	extends tx_rnbase_tests_BaseTestCase {
 
 	protected function setUp() {
