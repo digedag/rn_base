@@ -134,11 +134,20 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
 	/**
 	 * On default, return hidden and deleted fields in backend
 	 *
-	 * @param array &$fields
-	 * @param array &$options
+	 * @param array $fields
+	 * @param array $options
+	 *
 	 * @return void
 	 */
-	protected function prepareFieldsAndOptions(&$fields, &$options) {
+	protected function prepareFieldsAndOptions(
+		array &$fields,
+		array &$options
+	) {
+		// force array object usage by default!
+		if (!isset($options['array_object'])) {
+			$options['array_object'] = true;
+		}
+
 		$this->handleEnableFieldsOptions($fields, $options);
 		$this->handleLanguageOptions($fields, $options);
 	}
