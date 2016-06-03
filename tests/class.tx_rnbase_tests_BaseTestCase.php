@@ -93,6 +93,7 @@ abstract class tx_rnbase_tests_BaseTestCase
 		if ($arg instanceof tx_rnbase_parameters) {
 			$configurations->setParameters($parameters);
 		}
+
 		return $configurations;
 	}
 
@@ -252,17 +253,23 @@ abstract class tx_rnbase_tests_BaseTestCase
 
 	/**
 	 * Helper function to call protected methods.
-	 * This method is taken from TYPO3 BaseTestCase
+	 * This method is taken from TYPO3 BaseTestCase initialy.
 	 *
-	 * @param object $object The object to be invoked
-	 * @param string $name the name of the method to call
+	 * The classic way:
+	 *     ->callInaccessibleMethod($object, $methodname, $arg1, $arg2)
+	 *
+	 * The new way, with support for arguments as reference:
+	 *     ->callInaccessibleMethod(array($object, $methodname), array($arg1, $arg2))
+	 *
+	 * @param object|array $object The object to be invoked or an a array with object and $name
+	 * @param string|array $name the name of the method to call or the arguments array
 	 * @return mixed
 	 */
 	protected function callInaccessibleMethod($object, $name)
 	{
-		// the alternative way (supports arguments as references
-		// $object is a array (with object and name) and $name a arguments array!
 		if (is_array($object)) {
+			// the new way (supports arguments as references)
+			// $object is a array (with object and name) and $name a arguments array!
 			$arguments = $name;
 			list ($object, $name) = $object;
 		} else {
