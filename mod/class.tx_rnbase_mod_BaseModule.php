@@ -31,8 +31,6 @@ tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 tx_rnbase::load('Tx_Rnbase_Backend_Utility_Icons');
 tx_rnbase::load('Tx_Rnbase_Backend_Module_Base');
 
-$GLOBALS['LANG']->includeLLFile('EXT:rn_base/mod/locallang.xml');
-
 /**
  * Fertige Implementierung eines BE-Moduls. Das Modul ist dabei nur eine Hülle für die einzelnen Modulfunktionen.
  * Die Klasse stellt also lediglich eine Auswahlbox mit den verfügbaren Funktionen bereit. Neue Funktionen können
@@ -47,6 +45,39 @@ $GLOBALS['LANG']->includeLLFile('EXT:rn_base/mod/locallang.xml');
 abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base implements tx_rnbase_mod_IModule {
 	public $doc;
 	private $configurations, $formTool;
+
+	/**
+	 * Initializes the backend module by setting internal variables, initializing the menu.
+	 *
+	 * @return void
+	 */
+	public function init()
+	{
+		$GLOBALS['LANG']->includeLLFile('EXT:rn_base/mod/locallang.xml');
+		parent::init();
+	}
+
+	/**
+	 * For the new TYPO3 request handlers
+	 *
+	 * @param \Psr\Http\Message\ServerRequestInterface $request
+	 * @param \Psr\Http\Message\ResponseInterface $response = null
+	 *
+	 * @return boolean TRUE, if the request request could be dispatched
+	 */
+	public function __invoke(
+		/* Psr\Http\Message\ServerRequestInterface */ $request = null,
+		/* Psr\Http\Message\ResponseInterface */ $response = null
+	)
+	{
+		$GLOBALS['MCONF']['script'] = '_DISPATCH';
+
+		$this->init();
+		$this->main();
+		$this->printContent();
+
+		return true;
+	}
 
 	/**
 	 * Main function of the module. Write the content to $this->content

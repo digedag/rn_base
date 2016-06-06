@@ -4,6 +4,7 @@
 ----------
 
 v1.0.12 (??.??.2016)
+ * module runner for be module dispatcher added
  * optionial support for arguments as references for the callInaccessibleMethod test method
  * new repositories uses ArrayObjects instead of array per default
  * new persistence repository added
