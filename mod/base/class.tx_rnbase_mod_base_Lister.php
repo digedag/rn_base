@@ -111,7 +111,7 @@ abstract class tx_rnbase_mod_base_Lister {
 	/**
 	 * Liefert den Service.
 	 *
-	 * @return tx_mklib_srv_Base
+	 * @return Tx_Rnbase_Domain_Repository_InterfaceSearch
 	 */
 	abstract protected function getService();
 
@@ -184,9 +184,9 @@ abstract class tx_rnbase_mod_base_Lister {
 		/* @var $pager tx_rnbase_util_BEPager */
 		$pager = tx_rnbase::makeInstance(
 				'tx_rnbase_util_BEPager',
-				$this->getSearcherId().'Pager',
+				$this->getSearcherId() . 'Pager',
 				$this->getModule()->getName(),
-				$pid = $this->options['pid']
+				$this->options['pid']
 			);
 
 		$fields = $options = array();
@@ -267,11 +267,19 @@ abstract class tx_rnbase_mod_base_Lister {
 
 	/**
 	 * Start creation of result list.
-	 * @param 	string 	$content
-	 * @param 	array 	$items
-	 * @return 	string
+	 *
+	 * @param string $content
+	 * @param array|Traversable $items
+	 * @return string
 	 */
-	protected function showItems(&$content, array $items) {
+	protected function showItems(&$content, $items)
+	{
+		if (!(is_array($items) || $items instanceof Traversable)) {
+			throw new Exception(
+				'Argument 2 passed to' . __METHOD__ . '() must be of the type array or Traversable.'
+			);
+		}
+
 		if(count($items) === 0) {
 			$content = $this->getNoItemsFoundMsg();
 			return;//stop
