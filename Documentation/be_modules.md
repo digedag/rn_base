@@ -29,7 +29,8 @@ Der neue Weg, BE-Module über dispatcher zu registrieren.
 
 Damit man in der Modul-Leiste einen neuen Eintrag bekommt,
 muss das Modul zunächst bei TYPO3 über die ext_tables.php angemeldet werden.  
-Im sechsten Paremeter `$moduleConfiguration` die configuration übergeben, die bisher in der conf.php stand.
+Im sechsten Paremeter `$moduleConfiguration` die Konfiguration übergeben,
+die bisher in der conf.php stand.
 
 ```php
 if (TYPO3_MODE == 'BE') {
@@ -51,7 +52,8 @@ if (TYPO3_MODE == 'BE') {
 }
 ```
 
-Die Klasse für das Module muss lediglich von erben und den Extension-Key liefern, aus demm unter anderem der Modulname gebaut wird:
+Die Klasse für das Module muss lediglich von `tx_rnbase_mod_BaseModule` erben
+und den Extension-Key liefern:
 
 ```php
 /**
