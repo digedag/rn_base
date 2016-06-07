@@ -43,6 +43,12 @@ class Tx_Rnbase_Backend_ModuleRunner
 
 		try {
 			$moduleConfiguration = $this->getModuleConfiguration($moduleSignature);
+			if (empty($moduleConfiguration['routeTarget'])) {
+				throw new \RuntimeException(
+					'Module target' . $moduleSignature . ' is not configured.',
+					1289918327
+				);
+			}
 		} catch (RuntimeException $e) {
 			return false;
 		}
@@ -74,7 +80,10 @@ class Tx_Rnbase_Backend_ModuleRunner
 	protected function getModuleConfiguration($moduleName)
 	{
 		if (!isset($GLOBALS['TBE_MODULES']['_configuration'][$moduleName])) {
-			throw new \RuntimeException('Module ' . $moduleName . ' is not configured.', 1289918326);
+			throw new \RuntimeException(
+				'Module ' . $moduleName . ' is not configured.',
+				1289918326
+			);
 		}
 		return $GLOBALS['TBE_MODULES']['_configuration'][$moduleName];
 	}
