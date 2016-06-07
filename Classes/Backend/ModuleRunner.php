@@ -56,6 +56,9 @@ class Tx_Rnbase_Backend_ModuleRunner
 		$targetIdentifier = $moduleConfiguration['routeTarget'];
 		$target = $this->getCallableFromTarget($targetIdentifier);
 
+		// set the mconf
+		$target->MCONF = $moduleConfiguration;
+
 		// set dispatch mode for module
 		$GLOBALS['MCONF']['script'] = '_DISPATCH';
 
