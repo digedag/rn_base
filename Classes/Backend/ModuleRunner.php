@@ -56,8 +56,11 @@ class Tx_Rnbase_Backend_ModuleRunner
 		$targetIdentifier = $moduleConfiguration['routeTarget'];
 		$target = $this->getCallableFromTarget($targetIdentifier);
 
-		// set the mconf
+		// set the MCONF
 		$target->MCONF = $moduleConfiguration;
+
+		// set the global SOBE for backward compatibility
+		$GLOBALS['SOBE'] = $target;
 
 		// set dispatch mode for module
 		$GLOBALS['MCONF']['script'] = '_DISPATCH';
