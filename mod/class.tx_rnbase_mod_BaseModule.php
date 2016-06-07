@@ -122,7 +122,14 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 		$this->content = $this->content; // ??
 		// ShortCut
 		if ($BE_USER->mayMakeShortcut())	{
-			$this->content.=$this->getDoc()->spacer(20).$this->getDoc()->section('', $this->getDoc()->makeShortcutIcon('id', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']));
+			$this->content .= $this->getDoc()->spacer(20) . $this->getDoc()->section(
+				'',
+				$this->getDoc()->makeShortcutIcon(
+					'id',
+					implode(',', array_keys($this->MOD_MENU)),
+					$this->getName()
+				)
+			);
 		}
 		$this->content.=$this->getDoc()->spacer(10);
 		// Setting up the buttons and markers for docheader
@@ -208,7 +215,14 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 			$this->extObj->init($this, $this->extClassConf);
 				// Re-write:
 			tx_rnbase::load('tx_rnbase_parameters');
-			$this->MOD_SETTINGS = Tx_Rnbase_Backend_Utility::getModuleData($this->MOD_MENU, tx_rnbase_parameters::getPostOrGetParameter('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
+			$this->MOD_SETTINGS = Tx_Rnbase_Backend_Utility::getModuleData(
+				$this->MOD_MENU,
+				tx_rnbase_parameters::getPostOrGetParameter('SET'),
+				$this->getName(),
+				$this->modMenu_type,
+				$this->modMenu_dontValidateList,
+				$this->modMenu_setDefaultList
+			);
 		}
 	}
 
@@ -360,9 +374,25 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 		}
 		return $visibleItems;
 	}
-	protected function getFormTag() {
-		// TODO: per TS einstellbar machen
-		return '<form action="" method="post" enctype="multipart/form-data">';
+
+	/**
+	 * Builds the form open tag
+	 *
+	 * @TODO: per TS einstellbar machen
+	 *
+	 * @return string
+	 */
+	protected function getFormTag()
+	{
+		$modUrl = Tx_Rnbase_Backend_Utility::getModuleUrl(
+			'web_txmksearchM1',
+			array(
+				'id' => $this->getPid()
+			),
+			''
+		);
+
+		return '<form action="' . $modUrl . '" method="post" enctype="multipart/form-data">';
 	}
 	/**
 	 * Returns the file for module HTML template. This can be overwritten.
@@ -470,7 +500,13 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 			'shortcut' => '',
 		);
 			// TODO: CSH
-		$buttons['csh'] = Tx_Rnbase_Backend_Utility::cshItem('_MOD_'.$this->MCONF['name'], '', $GLOBALS['BACK_PATH'], '', TRUE);
+		$buttons['csh'] = Tx_Rnbase_Backend_Utility::cshItem(
+			'_MOD_' . $this->getName(),
+			'',
+			$GLOBALS['BACK_PATH'],
+			'',
+			TRUE
+		);
 
 		if($this->id && is_array($this->pageinfo)) {
 
@@ -481,7 +517,11 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 
 				// Shortcut
 			if ($BE_USER->mayMakeShortcut())	{
-				$buttons['shortcut'] = $this->getDoc()->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
+				$buttons['shortcut'] = $this->getDoc()->makeShortcutIcon(
+					'id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit',
+					implode(',', array_keys($this->MOD_MENU)),
+					$this->getName()
+				);
 			}
 
 				// If access to Web>List for user, then link to that module.
