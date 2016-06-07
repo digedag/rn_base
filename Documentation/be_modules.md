@@ -22,4 +22,58 @@ DocumentTemplate Klasse von TYPO3, welche auf einem Haupttemplate basiert. (Das 
 konfiguriert) Oder man verwendet den Weg über die ModuleTemplate Klasse. Dabei muss man dann in seiner
 Backend Modul Klasse die Methode useModuleTemplate überschreiben und dort TRUE liefern.
 
+
+### Dispatcher
+
+Der neue Weg, BE-Module über dispatcher zu registrieren.
+
+Damit man in der Modul-Leiste einen neuen Eintrag bekommt,
+muss das Modul zunächst bei TYPO3 über die ext_tables.php angemeldet werden.  
+Im sechsten Paremeter `$moduleConfiguration` die configuration übergeben, die bisher in der conf.php stand.
+
+```php
+if (TYPO3_MODE == 'BE') {
+	// register web_MkpostmanBackend
+	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+		'mkpostman',
+		'web',
+		'backend',
+		'bottom',
+		array(
+		),
+		array(
+			'access' => 'user,group',
+			'routeTarget' => 'DMK\\Mkpostman\\Backend\\ModuleBackend',
+			'icon' => 'EXT:mkpostman/ext_icon.gif',
+			'labels' => 'LLL:EXT:mkpostman/Resources/Private/Language/Backend.xlf',
+		)
+	);
+}
+```
+
+Die Klasse für das Module muss lediglich von erben und den Extension-Key liefern, aus demm unter anderem der Modulname gebaut wird:
+
+```php
+/**
+ * MK Postman backend module
+ *
+ * @package TYPO3
+ * @subpackage DMK\Mkpostman
+ * @author Michael Wagner
+ */
+class ModuleBackend
+	extends \tx_rnbase_mod_BaseModule
+{
+	/**
+	 * Method to get the extension key
+	 *
+	 * @return string Extension key
+	 */
+	public function getExtensionKey()
+	{
+		return 'mkpostman';
+	}
+}
+```
+
 TODO!

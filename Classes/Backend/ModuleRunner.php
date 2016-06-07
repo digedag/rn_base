@@ -40,7 +40,6 @@ class Tx_Rnbase_Backend_ModuleRunner
 	 */
 	public function callModule($moduleSignature)
 	{
-
 		try {
 			$moduleConfiguration = $this->getModuleConfiguration($moduleSignature);
 			if (empty($moduleConfiguration['routeTarget'])) {
