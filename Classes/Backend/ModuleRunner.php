@@ -23,6 +23,7 @@
  ***************************************************************/
 
 /**
+ * Module Runner
  *
  * @package TYPO3
  * @subpackage Tx_Rnbase
@@ -36,7 +37,8 @@ class Tx_Rnbase_Backend_ModuleRunner
 	 * This method forwards the call like the TYPO3 CMS 7.x request handler
 	 *
 	 * @param string $moduleSignature
-	 * @return boolean TRUE, if the request request could be dispatched
+	 *
+	 * @return bool TRUE, if the request request could be dispatched
 	 */
 	public function callModule($moduleSignature)
 	{
@@ -79,8 +81,10 @@ class Tx_Rnbase_Backend_ModuleRunner
 	 * Returns the module configuration which is provided during module registration
 	 *
 	 * @param string $moduleName
-	 * @return array
+	 *
 	 * @throws \RuntimeException
+	 *
+	 * @return array
 	 */
 	protected function getModuleConfiguration($moduleName)
 	{
@@ -90,6 +94,7 @@ class Tx_Rnbase_Backend_ModuleRunner
 				1289918326
 			);
 		}
+
 		return $GLOBALS['TBE_MODULES']['_configuration'][$moduleName];
 	}
 
@@ -100,8 +105,10 @@ class Tx_Rnbase_Backend_ModuleRunner
 	 * This method is taken from TYPO3\CMS\Core\Http\Dispatcher (TYPO3-7.x)
 	 *
 	 * @param array|string|callable $target the target which is being resolved.
-	 * @return callable
+	 *
 	 * @throws \InvalidArgumentException
+	 *
+	 * @return callable
 	 */
 	protected function getCallableFromTarget($target)
 	{
@@ -119,6 +126,7 @@ class Tx_Rnbase_Backend_ModuleRunner
 			if (!method_exists($targetObject, '__invoke')) {
 				throw new InvalidArgumentException('Object "' . $target . '" doesn\'t implement an __invoke() method and cannot be used as target.', 1442431631);
 			}
+
 			return $targetObject;
 		}
 
@@ -126,7 +134,8 @@ class Tx_Rnbase_Backend_ModuleRunner
 		if (is_string($target) && strpos($target, '::') !== false) {
 			list($className, $methodName) = explode('::', $target, 2);
 			$targetObject = Tx_Rnbase_Utility_T3General::makeInstance($className);
-			return [$targetObject, $methodName];
+
+			return array($targetObject, $methodName);
 		}
 
 		// This needs to be checked at last as a string with object::method is recognize as callable
