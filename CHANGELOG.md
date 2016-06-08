@@ -3,7 +3,9 @@
 Änderungen
 ----------
 
-v1.0.12 (??.??.2016)
+v1.0.13 (??.??.2016)
+
+v1.0.12 (08.06.2016)
  * module runner for be module dispatcher added
  * optionial support for arguments as references for the callInaccessibleMethod test method
  * new repositories uses ArrayObjects instead of array per default
