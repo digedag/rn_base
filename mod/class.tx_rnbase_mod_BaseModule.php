@@ -55,6 +55,10 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 	{
 		$GLOBALS['LANG']->includeLLFile('EXT:rn_base/mod/locallang.xml');
 		parent::init();
+
+		if ($this->id === 0) {
+			$this->id = $this->getConfigurations()->getInt('_cfg.fallbackPid');
+		}
 	}
 
 	/**
