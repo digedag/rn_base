@@ -385,7 +385,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 	protected function getFormTag()
 	{
 		$modUrl = Tx_Rnbase_Backend_Utility::getModuleUrl(
-			'web_txmksearchM1',
+			$this->getName(),
 			array(
 				'id' => $this->getPid()
 			),
