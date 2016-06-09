@@ -2,9 +2,13 @@
 
 Änderungen
 ----------
+v1.0.14 (??.??.2016)
 
-v1.0.13 (??.??.2016)
-
+v1.0.13 (09.06.2016)
+ + php support lower then 5.4 restored in be module dispatcher
+ * fallbackPid check for be modules added
+ * action url for be modules fixed
+ 
 v1.0.12 (08.06.2016)
  * module runner for be module dispatcher added
  * optionial support for arguments as references for the callInaccessibleMethod test method
