@@ -330,11 +330,11 @@ abstract class tx_rnbase_mod_base_Lister {
 	) {
 		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
 		$utility::deprecationLog(
-			'"' . get_ckass($decorator) . '"::getColumns' .
+			'"' . get_class($decorator) . '"::getColumns' .
 			' is deprecated. Use "getDecoratorColumns" instead.'
 		);
 
-		return $this->getDecoratorColumns();
+		return $this->getDecoratorColumns($decorator);
 	}
 
 	/**
@@ -350,7 +350,7 @@ abstract class tx_rnbase_mod_base_Lister {
 		if (!$decorator instanceof Tx_Rnbase_Backend_Decorator_InterfaceDecorator) {
 			$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
 			$utility::deprecationLog(
-				'Decorator "' . get_ckass($decorator) . '"' .
+				'Decorator "' . get_class($decorator) . '"' .
 				' should implement "Tx_Rnbase_Backend_Decorator_InterfaceDecorator".'
 			);
 		}
