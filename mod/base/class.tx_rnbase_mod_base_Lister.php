@@ -372,20 +372,6 @@ abstract class tx_rnbase_mod_base_Lister {
 	}
 
 	/**
-	 * Returns an instance of tx_mkhoga_beutil_Selector.
-	 * Der Selector wird erst erzeugt, wenn er benötigt wird
-	 * TODO: entfernen!!
-	 * @return 	tx_mklib_mod1_util_Selector
-	 */
-	protected function getSelector() {
-		if(!$this->selector) {
-			$this->selector = tx_rnbase::makeInstance('tx_mklib_mod1_util_Selector');
-			$this->selector->init($this->getModule());
-		}
-		return $this->selector;
-	}
-
-	/**
 	 *
 	 * @param array $fields
 	 * @param array $options
