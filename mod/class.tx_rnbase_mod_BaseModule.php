@@ -280,6 +280,13 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 			$qualifier = $pageTSconfig['qualifier'] ? $pageTSconfig['qualifier'] : $this->getExtensionKey();
 			$this->configurations = new tx_rnbase_configurations();
 			$this->configurations->init($pageTSconfig, $cObj, $this->getExtensionKey(), $qualifier);
+
+			// init the parameters object
+			$this->configurations->setParameters(
+				tx_rnbase::makeInstance('tx_rnbase_parameters')
+			);
+			$this->configurations->getParameters()->init('SET');
+
 		}
 		return $this->configurations;
 	}

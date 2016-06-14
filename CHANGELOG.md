@@ -3,6 +3,7 @@
 Änderungen
 ----------
 v1.0.14 (??.??.2016)
+ * initialized parameter object in be modules added (`$mod->getConfigurations()->getParameters()->getInt('uid')` returns `5` from url `?SET['uid']`)
 
 v1.0.13 (09.06.2016)
  + php support lower then 5.4 restored in be module dispatcher
