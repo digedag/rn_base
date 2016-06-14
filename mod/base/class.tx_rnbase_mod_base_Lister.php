@@ -303,26 +303,72 @@ abstract class tx_rnbase_mod_base_Lister {
 		$content .= $out;
 		return $out;
 	}
+
 	/**
+	 * The decorator class for the be listing.
 	 *
-	 * @return tx_rnbase_mod_IDecorator
+	 * @return Tx_Rnbase_Backend_Decorator_InterfaceDecorator
 	 */
-	protected abstract function createDefaultDecorator();
+	protected function createDefaultDecorator() {
+		return tx_rnbase::makeInstance(
+			'Tx_Rnbase_Backend_Decorator_BaseDecorator',
+			$this->getModule()
+		);
+	}
 
 	/**
 	 * Liefert die Spalten für den Decorator.
-	 * @param 	tx_mklib_mod1_decorator_Base 	$oDecorator
-	 * @return 	array
+	 *
+	 * @param Tx_Rnbase_Backend_Decorator_InterfaceDecorator $decorator
+	 *
+	 * @deprecated use getDecoratorColumns instead!!!
+	 *
+	 * @return array
 	 */
-	protected function getColumns(){
-		return array(
-				'uid' => array(
-					'title' => 'label_tableheader_uid',
-				),
-				'actions' => array(
-					'title' => 'label_tableheader_actions',
-				)
+	protected function getColumns(
+		$decorator
+	) {
+		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		$utility::deprecationLog(
+			'"' . get_ckass($decorator) . '"::getColumns' .
+			' is deprecated. Use "getDecoratorColumns" instead.'
+		);
+
+		return $this->getDecoratorColumns();
+	}
+
+	/**
+	 * Liefert die Spalten für den Decorator.
+	 *
+	 * @param Tx_Rnbase_Backend_Decorator_InterfaceDecorator $decorator
+	 *
+	 * @return array
+	 */
+	protected function getDecoratorColumns(
+		$decorator
+	) {
+		if (!$decorator instanceof Tx_Rnbase_Backend_Decorator_InterfaceDecorator) {
+			$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+			$utility::deprecationLog(
+				'Decorator "' . get_ckass($decorator) . '"' .
+				' should implement "Tx_Rnbase_Backend_Decorator_InterfaceDecorator".'
 			);
+		}
+
+		return array(
+			'uid' => array(
+				'title' => 'label_tableheader_uid',
+				'decorator' => $decorator,
+			),
+			'label' => array(
+				'title' => 'label_tableheader_label',
+				'decorator' => $decorator,
+			),
+			'actions' => array(
+				'title' => 'label_tableheader_actions',
+				'decorator' => $decorator,
+			)
+		);
 	}
 
 	/**

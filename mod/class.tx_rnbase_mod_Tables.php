@@ -141,6 +141,9 @@ class tx_rnbase_mod_Tables {
 			}
 			elseif(isset($data['decorator'])) {
 				$decor = $data['decorator'];
+				if (!$decor instanceof Tx_Rnbase_Backend_Decorator_InterfaceDecorator) {
+					// @TODO: log deprecation and force the interface usage!
+				}
 				$row[] = $decor->format($record[$column], $column, $record, $entry);
 			}
 			else {

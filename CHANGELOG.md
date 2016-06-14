@@ -3,6 +3,7 @@
 Änderungen
 ----------
 v1.0.14 (??.??.2016)
+ * new decorator interface and base class added
  * initialized parameter object in be modules added (`$mod->getConfigurations()->getParameters()->getInt('uid')` returns `5` from url `?SET['uid']`)
 
 v1.0.13 (09.06.2016)
