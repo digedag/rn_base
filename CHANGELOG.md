@@ -2,16 +2,19 @@
 
 Änderungen
 ----------
-v1.0.14 (??.??.2016)
+v1.0.15 (??.??.2016)
+
+v1.0.14 (15.06.2016)
  * unused getSelector method in be lister removed
  * new decorator interface and base class added
  * initialized parameter object in be modules added (`$mod->getConfigurations()->getParameters()->getInt('uid')` returns `5` from url `?SET['uid']`)
+ * be lister deprecation log fixed
 
 v1.0.13 (09.06.2016)
  * php support lower then 5.4 restored in be module dispatcher
  * fallbackPid check for be modules added
  * action url for be modules fixed
- 
+
 v1.0.12 (08.06.2016)
  * module runner for be module dispatcher added
  * optionial support for arguments as references for the callInaccessibleMethod test method
