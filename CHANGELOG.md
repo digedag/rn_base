@@ -3,6 +3,7 @@
 Änderungen
 ----------
 v1.0.15 (??.??.2016)
+ * #53 it is possible to order plugins language file includes with `plugin.myplugin.locallangFilename._cfg.naturalOrder = 1`
 
 v1.0.14 (15.06.2016)
  * unused getSelector method in be lister removed

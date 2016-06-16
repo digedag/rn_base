@@ -846,13 +846,18 @@ class tx_rnbase_configurations {
 		// Overlaying labels from additional locallangs are minor prior
 		// we support comma separated lists and arrays
 		$locallangOverlays = $this->get('locallangFilename.');
+		if(array_key_exists('_cfg.', $locallangOverlays)) {
+			unset($locallangOverlays['_cfg.']);
+			if($this->getBool('locallangFilename._cfg.naturalOrder')) {
+				ksort($locallangOverlays);
+			}
+		}
 
 		if(!empty($locallangOverlays)){
 			foreach ($locallangOverlays as $locallangOverlayFilename) {
 				$this->localLangUtil->loadLLFile($locallangOverlayFilename);
 			}
 		}
-
 		// Overlaying labels from TypoScript are higher prior (including fictitious language keys for non-system languages!):
 		$this->localLangUtil->loadLLTs($this->get('_LOCAL_LANG.'));
 	}
