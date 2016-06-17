@@ -546,27 +546,12 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 
 		return $buttons;
 	}
-	/*
+	/**
 	 * (Non PHP-doc)
+	 * @deprecated use tx_rnbase_util_Misc::addFlashMessage instead
 	 */
 	public function addMessage($message, $title = '', $severity = 0, $storeInSession = FALSE) {
-		$flashMessage = tx_rnbase::makeInstance(
-			tx_rnbase_util_Typo3Classes::getFlashMessageClass(),
-			$message,
-			$title,
-			$severity,
-			$storeInSession
-		);
-
-		if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-			/** @var $flashMessageService FlashMessageService */
-			$flashMessageService = tx_rnbase::makeInstance(
-				'TYPO3\CMS\Core\Messaging\FlashMessageService'
-			);
-			$flashMessageService->getMessageQueueByIdentifier()->enqueue($flashMessage);
-		} else {
-			t3lib_FlashMessageQueue::addMessage($flashMessage);
-		}
+		tx_rnbase_util_Misc::addFlashMessage($message, $title, $severity, $storeInSession);
 	}
 
 	/**

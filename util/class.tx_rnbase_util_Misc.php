@@ -698,6 +698,34 @@ MAYDAYPAGE;
 		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
 		$utility::logDeprecatedFunction();
 	}
+
+	/**
+	 * @param string $message
+	 * @param string $title
+	 * @param number $severity
+	 * @param string $storeInSession
+	 *
+	 * @return void
+	 */
+	static public function addFlashMessage($message, $title = '', $severity = 0, $storeInSession = FALSE) {
+		$flashMessage = tx_rnbase::makeInstance(
+			tx_rnbase_util_Typo3Classes::getFlashMessageClass(),
+			$message,
+			$title,
+			$severity,
+			$storeInSession
+		);
+
+		if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+			/** @var $flashMessageService FlashMessageService */
+			$flashMessageService = tx_rnbase::makeInstance(
+				'TYPO3\CMS\Core\Messaging\FlashMessageService'
+			);
+			$flashMessageService->getMessageQueueByIdentifier()->enqueue($flashMessage);
+		} else {
+			t3lib_FlashMessageQueue::addMessage($flashMessage);
+		}
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Misc.php']) {
