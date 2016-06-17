@@ -845,7 +845,7 @@ class tx_rnbase_configurations {
 
 		// Overlaying labels from additional locallangs are minor prior
 		// we support comma separated lists and arrays
-		$locallangOverlays = $this->get('locallangFilename.');
+		$locallangOverlays = (array) $this->get('locallangFilename.');
 		if(array_key_exists('_cfg.', $locallangOverlays)) {
 			unset($locallangOverlays['_cfg.']);
 			if($this->getBool('locallangFilename._cfg.naturalOrder')) {
