@@ -78,41 +78,118 @@ tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 tx_rnbase::load('tx_rnbase_util_Arrays');
 
 class tx_rnbase_configurations {
-  // We store all Data to an internal ArrayObject
-  var $_dataStore;
-  var $_viewData;
-  var $_parameters;
-  var $_keepVars;
-  var $_qualifier;
-  var $pluginUid; // Die UID des Plugins (also des Content-Objekts)
-  var $cObj; // Das originale cObj des Plugins
-  var $_cObjs; // Container für alternative cObjs innerhalb des Plugins
-  var $LLkey='default'; // language to use
-  var $altLLkey=''; // alternative language to use
+	/**
+	 * Here, all configuration data is stored.
+	 *
+	 * @var ArrayObject
+	 */
+	private $_dataStore = null;
 
-  var $_extensionKey;
-  private static $libIds = Array();
+	/**
+	 * This is a container to transfer data to the view.
+	 *
+	 * @var ArrayObject
+	 */
+	private $_viewData = null;
 
-  var $setupPath; // set this in the derived class or give the setupPath to loadTypoScript function
+	/**
+	 * @var tx_rnbase_IParameters
+	 */
+	private $_parameters = null;
 
-  /**
-   * Util used to load and retrieve local lang labels
-   * @var tx_rnbase_util_Lang
-   */
-  private $localLangUtil;
+	/**
+	 * This is a container for variables necessary in links.
+	 *
+	 * @var ArrayObject
+	 */
+	private $_keepVars = null;
 
-	// -------------------------------------------------------------------------------------
-	// Constructor
-	// -------------------------------------------------------------------------------------
+	/**
+	 * @var string
+	 */
+	private $_qualifier = '';
+
+	/**
+	 * die UID des Plugins (also des Content-Objekts)
+	 *
+	 * @var int
+	 */
+	private $pluginUid = 0;
+
+	/**
+	 * das originale cObj des Plugins
+	 *
+	 * @var tslib_cObj|\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+	 */
+	private $cObj = null;
+
+	/**
+	 * Container für alternative cObjs innerhalb des Plugins
+	 *
+	 * @var tslib_cObj[]|\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer[]
+	 */
+	private $_cObjs = array();
+
+	/**
+	 * @var tslib_cObj[]|\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer[]
+	 */
+	private $cObjs = array();
+
+	/**
+	 * @todo Unused?
+	 *
+	 * language to use
+	 *
+	 * @var string
+	 */
+	public $LLkey = 'default';
+
+	/**
+	 * @todo Unused?
+	 *
+	 * alternative language to use
+	 *
+	 * @var string
+	 */
+	public $altLLkey='';
+
+	/**
+	 * @var string
+	 */
+	private $_extensionKey = '';
+
+	/**
+	 * @var int[]
+	 */
+	private static $libIds = array();
+
+	/**
+	 * Set this in the derived class or give the setupPath to the loadTypoScript method.
+	 *
+	 * @var string
+	 */
+	protected $setupPath = '';
+
+	/**
+	 * Util used to load and retrieve local lang labels
+	 *
+	 * @var tx_rnbase_util_Lang
+	 */
+	private $localLangUtil = null;
+
+	/**
+	 * @var tx_rnbase_util_FormatUtil
+	 */
+	private $_formatter = null;
+
+	/**
+	 * Constructor.
+	 */
 	public function __construct() {
-		// This is there all configuration data is stored
-		//$this->_dataStore = tx_rnbase::makeInstance('tx_lib_spl_arrayObject');
 		$this->_dataStore = new ArrayObject();
-		// This is a container to transfer data to view
 		$this->_viewData = new ArrayObject();
-		// This is a container for variables necessary in links
 		$this->_keepVars = new ArrayObject();
-		$this->_cObjs = array(); // Wir verzichten mal auf das ArrayObject
+		$this->_cObjs = array();
 		$this->localLangUtil = tx_rnbase::makeInstance('tx_rnbase_util_Lang');
 	}
 	/**
@@ -159,10 +236,8 @@ class tx_rnbase_configurations {
 		$this->_extensionKey = $this->get('extensionKey') ? $this->get('extensionKey') : $extensionKey;
 		$this->_qualifier = $this->get('qualifier') ? $this->get('qualifier') : $qualifier;
 
-		// The formatter
 		$this->_formatter = tx_rnbase::makeInstance('tx_rnbase_util_FormatUtil', $this);
 
-		// load local language strings
 		$this->loadLL();
 	}
 
@@ -171,14 +246,13 @@ class tx_rnbase_configurations {
 	// -------------------------------------------------------------------------------------
 
 	/**
-	 * Returns the uid of current content object in tt_content
+	 * Returns the UID of the current content object in tt_content.
 	 *
 	 * @return int
 	 */
 	public function getPluginId() {
 		return $this->pluginUid;
 	}
-
 
 	/**
 	 * Converts an USER to USER_INT, so the cache can be disabled in the action!
@@ -187,6 +261,10 @@ class tx_rnbase_configurations {
 	 * The controller is called twice,
 	 * whenn a USER Object is convertet to USER_INTERNAL.
 	 * The SkipAction avoids this!
+	 *
+	 * @param bool $convert
+	 *
+	 * @return bool|void
 	 *
 	 * @throws tx_rnbase_exception_Skip
 	 */
@@ -205,21 +283,25 @@ class tx_rnbase_configurations {
 
 	/**
 	 * Whether or not the current plugin is executed as USER_INT
-	 * @return boolean
+	 *
+	 * @return bool
 	 */
 	public function isPluginUserInt() {
 		$contentObjectRendererClass = tx_rnbase_util_Typo3Classes::getContentObjectRendererClass();
 		return $this->getCObj()->getUserObjectType() == $contentObjectRendererClass::OBJECTTYPE_USER_INT;
 	}
+
 	/**
 	 * Whether or not the plugins uses its own parameters. This will add the plugin id to all
 	 * parameters of the given plugin.
+	 *
+	 * @return bool
 	 */
 	public function isUniqueParameters() {
 		return $this->getBool('uniqueParameters') == TRUE;
 	}
 	/**
-	 * return string a unique id for this plugin
+	 * Returns a unique ID for this plugin.
 	 *
 	 * @return int
 	 */
@@ -241,9 +323,11 @@ class tx_rnbase_configurations {
   /**
    * Create your individuell instance of cObj. For each id only one instance is created.
    * If id == 0 the will get the plugins original cOBj.
-   * @param $id any
-   * @param $cObjClass String Optional cObj-classname
-   * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer or tslib_cObj
+   *
+   * @param int $id any
+   * @param string|null $cObjClass String Optional cObj-classname
+   *
+   * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|tslib_cObj
    */
 	public function &getCObj($id = 0, $cObjClass = NULL) {
 		$cObjClass = $cObjClass === NULL ? tx_rnbase_util_Typo3Classes::getContentObjectRendererClass() : $cObjClass;
@@ -260,11 +344,13 @@ class tx_rnbase_configurations {
 		if(!is_object($cObj)) {
 			$this->cObjs[$id] = tx_rnbase::makeInstance($cObjClass);
 		}
+
 		return $this->cObjs[$id];
 	}
 
 	/**
-	 * Returns the formatter connected to this configuration object
+	 * Returns the formatter connected to this configuration object.
+	 *
 	 * @return tx_rnbase_util_FormatUtil
 	 */
 	public function &getFormatter() {
@@ -274,6 +360,8 @@ class tx_rnbase_configurations {
   /**
    * Return the data container for view by reference. This container should be filled
    * by Controller-Action
+   *
+   * @return ArrayObject
    */
   public function &getViewData() {
     return $this->_viewData;
@@ -282,6 +370,8 @@ class tx_rnbase_configurations {
   /**
    * Returns the defined path to template directory. This is by default
    * 'EXT:your_extension/templates/'. You can change this by TS setting templatePath
+   *
+   * @return string
    */
   public function getTemplatePath() {
     $path = $this->get('templatePath');
@@ -291,7 +381,9 @@ class tx_rnbase_configurations {
 	/**
 	 * Factory-Method for links. The new link is initialized with qualifier and optional
 	 * with keepVars set.
-	 * @param boolean $addKeepVars whether or not keepVars should be set
+	 *
+	 * @param bool $addKeepVars whether or not keepVars should be set
+	 *
 	 * @return tx_rnbase_util_Link
 	 */
 	public function &createLink($addKeepVars = TRUE) {
@@ -305,6 +397,12 @@ class tx_rnbase_configurations {
 			$link->setUniqueParameterId($this->getPluginId());
 		return $link;
 	}
+
+	/**
+	 * @param tx_rnbase_IParameters $parameters
+	 *
+	 * @return void
+	 */
 	public function setParameters($parameters) {
 		$this->_parameters = $parameters;
 		// Make sure to keep all parameters
@@ -312,6 +410,7 @@ class tx_rnbase_configurations {
 	}
 	/**
 	 * Returns request parameters
+	 *
 	 * @return tx_rnbase_IParameters
 	 */
 	public function getParameters() {
@@ -320,14 +419,21 @@ class tx_rnbase_configurations {
 
 	/**
 	 * Returns the KeepVars-Array
+	 *
+	 * @return ArrayObject
 	 */
-	function getKeepVars() {
+	public function getKeepVars() {
 		return $this->_keepVars;
 	}
+
 	/**
 	 * Set an ArrayObject with variables to keep between requests
+	 *
+	 * @param tx_rnbase_IParameters $keepVars
+	 *
+	 * @return void
 	 */
-	function setKeepVars($keepVars) {
+	public function setKeepVars($keepVars) {
 		$arr = $keepVars->getArrayCopy();
 
 		foreach( $arr As $key => $value) {
@@ -336,38 +442,52 @@ class tx_rnbase_configurations {
 		}
 	}
 
-  /**
-   * Add a value that must be kept by parameters
-   */
-  function addKeepVar($name, $value) {
+	/**
+	 * Add a value that must be kept by parameters
+	 *
+	 * @param mixed $name
+	 * @param mixed $value
+	 *
+	 * @return void
+	 */
+  public function addKeepVar($name, $value) {
     $this->_keepVars->offsetSet($name, $value);
   }
 
-  /**
-   * Remove a value that must be kept by parameters
-   */
-  function removeKeepVar($name) {
+	/**
+	 * Removes a value that must be kept by parameters.
+	 *
+	 * @param mixed $name
+	 *
+	 * @return void
+	 */
+  public function removeKeepVar($name) {
     $this->_keepVars->offsetUnset($name);
   }
-  /**
-   *
-   */
-  function createParamName($name) {
+
+	/**
+	 * @param string $name
+	 *
+	 * @return string
+	 */
+  public function createParamName($name) {
     return $this->getQualifier().'[' . $name . ']';
   }
 
   /**
-   * Returns the ExtensionKey
+   * Returns the extension key.
+   *
    * @return string
    */
-  function getExtensionKey() {
+	public function getExtensionKey() {
     return $this->_extensionKey;
   }
   /**
-   * Returns the qualifier for plugin links: qualifier[param]=value
+   * Returns the qualifier for plugin links: qualifier[param]=value.
+   *
    * @return string
    */
-  function getQualifier() {
+	public function getQualifier() {
     return $this->_qualifier;
   }
 
@@ -376,7 +496,7 @@ class tx_rnbase_configurations {
    *
    * @return array by reference
    */
-  function &getFlexFormArray() {
+	public function &getFlexFormArray() {
     static $flex;
     if (!is_array($flex)) {
       $flex = tx_rnbase_util_Network::getURL(tx_rnbase_util_Extensions::extPath($this->getExtensionKey()) . $this->get('flexform'));
@@ -388,6 +508,12 @@ class tx_rnbase_configurations {
 	/**
 	 * Returns the localized label of the LOCAL_LANG key.
 	 * This is a reimplementation from tslib_pibase::pi_getLL().
+	 *
+	 * @param string $key
+	 * @param string $alt
+	 * @param bool $hsc
+	 *
+	 * @return string
 	 */
 	public function getLL($key, $alt='', $hsc=FALSE) {
 		return $this->localLangUtil->getLL(
@@ -403,6 +529,7 @@ class tx_rnbase_configurations {
    *
    * @param string $extKey
    * @param string $cfgKey
+   *
    * @return mixed
    */
   public static function getExtensionCfgValue($extKey, $cfgKey) {
@@ -451,46 +578,59 @@ class tx_rnbase_configurations {
 	/**
 	 * Returns a boolean config value. The return value is FALSE if the value is empty or 0 or 'FALSE'
 	 * @param string $pathKey
-	 * @param boolean $deep
-	 * @param boolean $notDefined value to return if no value configured or empty
-	 * @return boolean
+	 * @param bool $deep
+	 * @param bool $notDefined value to return if no value configured or empty
+	 *
+	 * @return bool
 	 */
 	public function getBool($pathKey, $deep=FALSE, $notDefined=FALSE) {
 		$value = $this->get($pathKey, $deep);
-		if(is_array($value)) return TRUE;
-		if($value == '') return $notDefined;
+		if (is_array($value)) {
+			return TRUE;
+		}
+		if ($value == '') {
+			return $notDefined;
+		}
+
 		return (!$value || strtolower($value) == 'false') ? FALSE : TRUE;
 	}
 	/**
 	 * Returns a int config value.
+	 *
 	 * @param string $pathKey
-	 * @param boolean $deep
+	 * @param bool $deep
+	 *
 	 * @return int
 	 */
 	public function getInt($pathKey, $deep=FALSE) {
 		return intval( $this->get($pathKey, $deep));
 	}
+
 	/**
 	 * Returns the complete TS config array
+	 *
 	 * @return array
 	 */
 	public function getConfigArray() {
 		return $this->_dataStore->getArrayCopy();
 	}
+
 	/**
 	 * Finds a value either from config or in language markers. Please note, that all points are
 	 * replaced by underscores for language strings. This is, because TYPO3 doesn't like point
 	 * notations for language keys.
 	 *
 	 * @param string $pathKey
+	 *
 	 * @return mixed but should be a string
 	 */
-	function getCfgOrLL($pathKey) {
+	public function getCfgOrLL($pathKey) {
 		$ret = $this->_queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey);
 		if(!$ret) {
 			$pathKey = strtr($pathKey, '.', '_');
 			$ret = $this->getLL($pathKey);
 		}
+
 		return $ret;
 	}
 
@@ -500,7 +640,8 @@ class tx_rnbase_configurations {
 	 *
 	 * @param string $pathKey
 	 * @param string $delim
-	 * @param boolean $deep
+	 * @param bool $deep
+	 *
 	 * @return array
 	 */
 	public function getExploded($pathKey, $delim = ',', $deep = FALSE) {
@@ -511,6 +652,7 @@ class tx_rnbase_configurations {
 		if (empty($value)) {
 			return array();
 		}
+
 		return tx_rnbase_util_Strings::trimExplode($delim, $value, TRUE);
 	}
 
@@ -533,12 +675,13 @@ class tx_rnbase_configurations {
 	 * usage: $configurations->queryHash('persons.', 'firstName', 'yearOfBirth');
 	 * result: array('Peter' => '1973', 'Susan' => '1965', 'Mary' => '1989');
 	 *
-	 * @param string  relative pathKey
-	 * @param string  key of of the wanted key
-	 * @param string  key of of the wanted value
+	 * @param string $pathKey relative pathKey
+	 * @param string $keyName key of of the wanted key
+	 * @param string $valueName key of of the wanted value
+	 *
 	 * @return array  wanted Hash (key-value-pairs)
 	 */
-	function queryHash($pathKey, $keyName, $valueName) {
+	public function queryHash($pathKey, $keyName, $valueName) {
 		$selection = $this->_dataStore->get($pathKey);
 		$array = array();
 		foreach($selection as $set) {
@@ -830,6 +973,12 @@ class tx_rnbase_configurations {
 		return $conf;
 	}
 
+	/**
+	 * @param array $array
+	 * @param string $path
+	 *
+	 * @return array
+     */
 	function _queryArrayByPath($array, $path) {
 		$pathArray = explode('.', trim($path));
 		for($i = 0, $cnt = count($pathArray); $i < $cnt; $i++) {
