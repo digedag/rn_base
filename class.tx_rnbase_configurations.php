@@ -117,6 +117,20 @@ class tx_rnbase_configurations {
 	}
 	/**
 	 * Initialize this instance with Configuration Array and cObj-Data
+	 *
+	 * A note to extensionKey and qualifier: both values should be set by plugins Typoscript-setup:
+	 *
+	 * plugin.tx_cfcleaguefe_competition {
+	 *   qualifier      = t3sports
+	 *   extensionKey   = cfc_league_fe
+	 * }
+	 * extensionKey is not used right now. The qualifier is used as prefix for plugin parameters
+	 * like this: t3sports[param1]=value
+	 *
+	 * @param array $configurationArray the typoscript configuration array given from TYPO3
+	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj
+	 * @param string $extensionKey the extension key for TYPO3
+	 * @param string $qualifier the prefix string for plugin parameters.
 	 */
 	public function init(&$configurationArray, $cObj, $extensionKey, $qualifier) {
 		// keep the cObj
