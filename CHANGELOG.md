@@ -2,7 +2,10 @@
 
 Änderungen
 ----------
-v1.0.15 (??.??.2016)
+v1.0.16 (??.??.2016)
+ * [BREAKING CHANGE] class properties tx_rnbase_configurations have now a visibility. Thus access e.g. to _dataStore will now fail.
+
+v1.0.15 (20.06.2016)
  * #53 it is possible to order plugins language file includes with `plugin.myplugin.locallangFilename._cfg.naturalOrder = 1`
  * added generic static method to add flash messages
 
