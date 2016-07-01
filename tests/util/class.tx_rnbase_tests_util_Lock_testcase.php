@@ -97,7 +97,3 @@ class tx_rnbase_tests_util_Lock_testcase extends tx_rnbase_tests_BaseTestCase
         $this->assertFalse($lock->isLocked(), 'Process was not unlocked after the lifetime.');
     }
 }
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/util/class.tx_rnbase_tests_util_Lock_testcase.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/util/class.tx_rnbase_tests_util_Lock_testcase.php']);
-}

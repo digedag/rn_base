@@ -57,7 +57,3 @@ interface tx_rnbase_action_ICacheHandler
      */
     public function getOutput();
 }
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/action/class.tx_rnbase_action_ICacheHandler.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/action/class.tx_rnbase_action_ICacheHandler.php']);
-}

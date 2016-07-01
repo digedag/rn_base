@@ -1118,7 +1118,3 @@ function tx_rnbase_util_DB_prependAlias(&$item, $key, $alias)
 {
     $item = $alias . '.' . $item;
 }
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/Classes/Database/Connection.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/Classes/Database/Connection.php']);
-}

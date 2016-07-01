@@ -103,7 +103,3 @@ class tx_rnbase_tests_mod_linker_ShowDetails_testcase extends tx_rnbase_tests_Ba
     }
 }
 
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/mod/class.tx_rnbase_tests_mod_Tables_testcase.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/mod/class.tx_rnbase_tests_mod_Tables_testcase.php']);
-}

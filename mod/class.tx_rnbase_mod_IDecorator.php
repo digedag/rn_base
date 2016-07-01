@@ -44,7 +44,3 @@ interface tx_rnbase_mod_IDecorator
      */
     public function format($value, $colName, $record, tx_rnbase_model_base $item);
 }
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_IDecorator.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_IDecorator.php']);
-}

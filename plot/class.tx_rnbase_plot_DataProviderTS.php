@@ -168,7 +168,3 @@ class tx_rnbase_plot_DataProviderTS implements tx_rnbase_plot_IDataProvider
         return $objRandom;
     }
 }
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/plot/class.tx_rnbase_plot_DataProviderTS.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/plot/class.tx_rnbase_plot_DataProviderTS.php']);
-}

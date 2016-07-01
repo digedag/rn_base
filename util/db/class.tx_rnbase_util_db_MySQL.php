@@ -379,7 +379,3 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase
         return $this->db->error;
     }
 }
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/db/class.tx_rnbase_util_db_MySQL.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/db/class.tx_rnbase_util_db_MySQL.php']);
-}

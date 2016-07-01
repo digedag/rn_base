@@ -73,7 +73,3 @@ class tx_rnbase_tests_misc_testcase extends Tx_Phpunit_TestCase
         $this->assertContains('getSubDontRemove', $html, '"getSubDontRemove" Params removed!');
     }
 }
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/class.tx_rnbase_tests_misc_testcase.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/class.tx_rnbase_tests_misc_testcase.php']);
-}

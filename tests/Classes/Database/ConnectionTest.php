@@ -280,7 +280,3 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
         return tx_rnbase_util_Strings::debugString($str);
     }
 }
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/class.tx_rnbase_tests_util_DB_testcase.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/class.tx_rnbase_tests_util_DB_testcase.php']);
-}

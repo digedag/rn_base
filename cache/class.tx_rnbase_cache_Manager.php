@@ -111,7 +111,3 @@ class tx_rnbase_cache_Manager
         return tx_rnbase::makeInstance('tx_rnbase_cache_TYPO3Cache62', $name);
     }
 }
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/cache/class.tx_rnbase_cache_Manager.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/cache/class.tx_rnbase_cache_Manager.php']);
-}

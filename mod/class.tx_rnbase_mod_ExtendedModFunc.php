@@ -209,7 +209,3 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
         return '###LABEL_NO_SUBSELECTORITEMS_FOUND###';
     }
 }
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_ExtendedModFunc.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_ExtendedModFunc.php']);
-}

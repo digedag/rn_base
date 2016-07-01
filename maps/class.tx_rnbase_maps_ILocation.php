@@ -43,7 +43,3 @@ interface tx_rnbase_maps_ILocation extends tx_rnbase_maps_ICoord
     public function getZip();
     public function getCountryCode();
 }
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_ILocation.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_ILocation.php']);
-}
