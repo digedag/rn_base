@@ -75,7 +75,6 @@ class tx_rnbase_util_FormUtil {
 			$params = substr($url, strpos($url, '?') + 1);
 			$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
 			$params = $utility::explodeUrl2Array($params);
-			$url = substr($url, 0, strpos($url, '?'));
 		}
 		foreach ($params as $name => $value) {
 			$name = htmlspecialchars(tx_rnbase_util_Strings::removeXSS($name), ENT_QUOTES);

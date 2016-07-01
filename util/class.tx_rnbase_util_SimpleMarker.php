@@ -271,7 +271,6 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 	 * @param object $item
 	 */
 	protected function createParam($paramName, $cfgArr, $item) {
-		$ret = '';
 		$clazz = $cfgArr['class'];
 		$method = $cfgArr['method'];
 		if($clazz == 'this') {

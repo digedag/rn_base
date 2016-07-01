@@ -76,7 +76,6 @@ class tx_rnbase_view_Base{
 			}
 		}
 
-		$out = $templateCode;
 		$out = $this->createOutput($templateCode, $viewData, $configurations, $configurations->getFormatter());
 		$out = $this->renderPluginData($out, $configurations);
 
@@ -127,7 +126,6 @@ class tx_rnbase_view_Base{
 		}
 
 		$confId = $this->getController()->getConfId();
-		$markerArray = array();
 
 		// build the data to render
 		$pluginData = array_merge(

@@ -48,7 +48,6 @@ class Tx_Rnbase_Backend_Form_Element_InputText extends AbstractFormElement {
 	public function renderHtml($name, $value, $options) {
 		$width = $options['width'];
 		// TODO: das Feld beachten!
-	 	$maxlength = $options['maxlength'];
 	 	$attributes = array();
 
 	 	// for data-formengine-input-params

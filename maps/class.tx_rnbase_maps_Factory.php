@@ -49,7 +49,6 @@ class tx_rnbase_maps_Factory {
 				// Prüfen, ob ein Icon konfiguriert ist
 				$iconConfId = $confId.'poi.'.$key.'.icon.';
 				if($configurations->get($iconConfId)) {
-					$icon = tx_rnbase::makeInstance('tx_rnbase_maps_google_Icon', $map);
 					$icon = new tx_rnbase_maps_google_Icon($map);
 					$image = $configurations->get($iconConfId.'image', TRUE);
 					$icon->setImage($image, $configurations->getInt($iconConfId.'image.file.maxW'), $configurations->getInt($iconConfId.'image.file.maxH'));

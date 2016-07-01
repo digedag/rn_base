@@ -43,8 +43,6 @@ abstract class tx_rnbase_util_Wizicon {
 	 * @return array Modified input array, having the items for T3sports plugins added.
 	 */
 	function proc($wizardItems)	{
-		global $LANG;
-
 		$lang = $this->includeLocalLang();
 		$plugins = $this->getPluginData();
 		foreach($plugins As $id => $plugin) {

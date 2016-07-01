@@ -327,7 +327,6 @@ class tx_rnbase_util_Spyc {
     if (!$line) return array();
     $line = trim($line);
     if (!$line) return array();
-    $array = array();
 
     if ($group = $this->nodeContainsGroup($line)) {
       $this->addGroup($line, $group);
@@ -516,12 +515,13 @@ class tx_rnbase_util_Spyc {
       $this->_containsGroupAlias = FALSE;
     }
 
-
     // Adding string or numeric key to the innermost level or $this->arr.
     if ($key)
     $_arr[$key] = $value;
     else {
-      if (!is_array ($_arr)) { $_arr = array ($value); $key = 0; }
+      if (!is_array ($_arr)) {
+        $key = 0;
+      }
       else { $_arr[] = $value; end ($_arr); $key = key ($_arr); }
 
     }

@@ -135,7 +135,6 @@ class tx_rnbase_util_ListMarker {
 		$i = 0;
 		foreach ($dataArr as $data) {
 			/* @var $data Tx_Rnbase_Domain_Model_DomainInterface */
-			$data = $dataArr[$i];
 			// Check for object to avoid warning.
 			if (!is_object($data)) continue;
 			$this->setToData(

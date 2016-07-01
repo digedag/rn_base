@@ -344,7 +344,6 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker {
 			if (preg_match('/MARKERMODULE__([A-Z0-9_\-])*/', $marker)) {
 				$module = tx_rnbase::makeInstanceService('markermodule', substr($marker, 14));
 				if (is_object($module)) {
-					$subTemplate = tx_rnbase_util_Templates::getSubpart($template, '###'.$marker.'###');
 					$value = $module->getMarkerValue($params, $formatter);
 					if($value !== FALSE)
 						$markerArray['###' . $marker . '###'] =  $value;

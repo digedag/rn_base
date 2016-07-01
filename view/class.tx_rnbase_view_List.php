@@ -68,7 +68,6 @@ class tx_rnbase_view_List extends tx_rnbase_view_Base {
 		$itemPath = $this->getItemPath($configurations, $confId);
 		if($filter && $filter->hideResult()) {
 			$subpartArray['###'.strtoupper($itemPath).'S###'] = '';
-			$items = array();
 			$template = $filter->getMarker()->parseTemplate($template, $formatter,
 					$confId.$itemPath.'.filter.', strtoupper($itemPath));
 		}

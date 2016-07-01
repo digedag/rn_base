@@ -225,8 +225,6 @@ class Tx_Rnbase_Backend_Form_ToolBox {
  * @param array $options
  */
 	public function createHideLink($table, $uid, $unhide=FALSE, $options=array()) {
-		$location = $this->getLinkThisScript();
-
 		$sEnableColumn = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
 		//fallback
 		$sEnableColumn = ($sEnableColumn) ? $sEnableColumn : 'hidden';
