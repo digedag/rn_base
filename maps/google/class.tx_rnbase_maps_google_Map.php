@@ -163,7 +163,3 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap
         return $this->getWecMap()->mapName;
     }
 }
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/google/class.tx_rnbase_maps_google_Map.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/google/class.tx_rnbase_maps_google_Map.php']);
-}

@@ -132,7 +132,3 @@ class tx_rnbase_templateDummy
 {
     public $setup;
 }
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/class.tx_rnabse_tests_configurations_testcase.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/class.tx_rnabse_tests_configurations_testcase.php']);
-}

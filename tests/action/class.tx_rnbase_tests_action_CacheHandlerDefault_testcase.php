@@ -419,7 +419,3 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
         return $handler;
     }
 }
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/action/class.tx_rnbase_tests_action_CacheHandlerDefault_testcase.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/action/class.tx_rnbase_tests_action_CacheHandlerDefault_testcase.php']);
-}

@@ -534,7 +534,3 @@ abstract class tx_rnbase_mod_base_Lister
         return tx_rnbase_mod_Util::showSelectorByArray($items, $selectedItem, 'showhidden', $marker, $options);
     }
 }
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/base/class.tx_rnbase_mod_base_Lister.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/base/class.tx_rnbase_mod_base_Lister.php']);
-}

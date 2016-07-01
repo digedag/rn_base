@@ -55,7 +55,3 @@ class tx_rnbase_mod_linker_ShowDetails implements tx_rnbase_mod_linker_LinkerInt
         );
     }
 }
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/linker/class.tx_rnbase_mod_LinkerInterface.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/linker/class.tx_rnbase_mod_LinkerInterface.php']);
-}

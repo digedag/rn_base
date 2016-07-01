@@ -34,7 +34,3 @@
 class tx_rnbase_exception_Skip extends Exception
 {
 }
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/exception/class.tx_rnbase_exception_SkipAction.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/exception/class.tx_rnbase_exception_SkipAction.php']);
-}

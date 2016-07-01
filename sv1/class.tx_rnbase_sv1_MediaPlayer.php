@@ -85,7 +85,3 @@ class tx_rnbase_sv1_MediaPlayer extends Tx_Rnbase_Service_Base
     }
 }
 
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/sv1/class.tx_rnbase_sv1_MediaPlayer.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/sv1/class.tx_rnbase_sv1_MediaPlayer.php']);
-}
