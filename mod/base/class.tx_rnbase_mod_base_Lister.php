@@ -38,11 +38,7 @@ abstract class tx_rnbase_mod_base_Lister {
 	 * @var tx_rnbase_mod_IModule
 	 */
 	private $mod = NULL;
-	/**
-	 * Selector Klasse
-	 * @var tx_mklib_mod1_util_Selector
-	 */
-	private $selector = NULL;
+
 	/**
 	 * Otions
 	 * @var array

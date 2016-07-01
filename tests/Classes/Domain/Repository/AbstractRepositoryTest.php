@@ -267,20 +267,6 @@ class Tx_Rnbase_Domain_Repository_AbstractRepositoryTest
 	}
 
 	/**
-	 * @param array $mockedMethods
-	 * @return tx_rnbase_model_base
-	 */
-	private function getModelMock($rowOrUid = array(), $mockedMethods = array()) {
-		$model = $this->getMock(
-			'tx_rnbase_model_base',
-			$mockedMethods,
-			array($rowOrUid)
-		);
-
-		return $model;
-	}
-
-	/**
 	 * @group unit
 	 */
 	public function testSearchSingleIfItemsFound() {
