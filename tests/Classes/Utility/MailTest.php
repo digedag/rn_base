@@ -60,10 +60,8 @@ class Tx_Rnbase_Utility_MailTest
 		$this->assertEquals(3, count($tos));
 		for($i=1; $i<4; $i++)
 			$this->assertArrayHasKey('to'.$i.'@test.de', $tos);
-
-//		list($addr, $name) = each();
-
 	}
+
 	/**
 	 *
 	 * @return void

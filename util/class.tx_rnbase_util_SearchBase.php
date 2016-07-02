@@ -199,7 +199,7 @@ abstract class tx_rnbase_util_SearchBase {
 		if(is_array($joinedFields)) {
 			foreach ($joinedFields As $joinedField) {
 				// Ignore invalid queries
-				if(!isset($joinedField['value']) || !isset($joinedField['operator']) || 
+				if(!isset($joinedField['value']) || !isset($joinedField['operator']) ||
 						!isset($joinedField['fields']) || !$joinedField['fields']) continue;
 
 				if($joinedField['operator'] == OP_INSET_INT) {
@@ -570,10 +570,9 @@ abstract class tx_rnbase_util_SearchBase {
 				// Beispiel orderby, count...
 				$optionName = strtolower(substr($option, 0, strlen($option) -1));
 
-
 				// Hier jetzt die Implementierung für orderby. da gibt es mehr
 				// Angaben als z.B. bei count.
-				while(list($table, $data) = each($cfg)) {
+				foreach ($cfg as $table => $data) {
 					/*
 					 * was, wenn im ts etwas wie folgt angegeben ist?
 					 * options.limit = 5
@@ -645,7 +644,8 @@ abstract class tx_rnbase_util_SearchBase {
 
 				// Spaltenname
 				if(!is_array($cfg)) continue;
-				while(list($col, $data) = each($cfg)) {
+
+				foreach ($cfg as $col => $data) {
 					$colName = strtoupper(substr($col, 0, strlen($col) -1));
 					// Operator und Wert
 					if(!is_array($data)) continue;
