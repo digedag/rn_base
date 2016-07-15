@@ -184,7 +184,6 @@ class tx_rnbase_configurations {
 		$this->_dataStore = new ArrayObject();
 		$this->_viewData = new ArrayObject();
 		$this->_keepVars = new ArrayObject();
-		$this->cObjs = array();
 		$this->localLangUtil = tx_rnbase::makeInstance('tx_rnbase_util_Lang');
 	}
 	/**
