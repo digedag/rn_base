@@ -118,9 +118,9 @@ class tx_rnbase_configurations {
 
 	/**
 	 * das originale cObj des Plugins
-	 * DO NOT USE THIS DIRECTLY! Use method getCObj() instead.
 	 *
 	 * @var tslib_cObj|\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+	 * @internal DO NOT USE THIS DIRECTLY! Use method getCObj() instead.
 	 */
 	public $cObj = null;
 
