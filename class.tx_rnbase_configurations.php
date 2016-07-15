@@ -126,12 +126,6 @@ class tx_rnbase_configurations {
 
 	/**
 	 * Container für alternative cObjs innerhalb des Plugins
-	 *
-	 * @var tslib_cObj[]|\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer[]
-	 */
-	private $_cObjs = array();
-
-	/**
 	 * @var tslib_cObj[]|\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer[]
 	 */
 	private $cObjs = array();
@@ -190,7 +184,7 @@ class tx_rnbase_configurations {
 		$this->_dataStore = new ArrayObject();
 		$this->_viewData = new ArrayObject();
 		$this->_keepVars = new ArrayObject();
-		$this->_cObjs = array();
+		$this->cObjs = array();
 		$this->localLangUtil = tx_rnbase::makeInstance('tx_rnbase_util_Lang');
 	}
 	/**
@@ -340,7 +334,7 @@ class tx_rnbase_configurations {
 			return $this->cObj;
 		}
 
-		$cObj = $this->_cObjs[$id];
+		$cObj = $this->cObjs[$id];
 
 		if(!is_object($cObj)) {
 			$this->cObjs[$id] = tx_rnbase::makeInstance($cObjClass);
