@@ -2,7 +2,10 @@
 
 Änderungen
 ----------
-v1.0.16 (??.??.2016)
+
+v1.0.17 (??.??.2016)
+
+v1.0.16 (18.07.2016)
  * File permissions fixed for lock files
  * [BREAKING CHANGE] class properties tx_rnbase_configurations have now a visibility. Thus access e.g. to _dataStore will now fail.
 
