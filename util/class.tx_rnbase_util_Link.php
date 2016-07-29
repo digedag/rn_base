@@ -440,15 +440,15 @@ class tx_rnbase_util_Link {
 	/**
 	 * Redirect the page to the url
 	 *
+	 * @param string $httpStatus An optional HTTP status header. Default is 'HTTP/1.1 303 See Other'
+	 *
 	 * @return	void
 	 */
-	function redirect() {
+	public function redirect($httpStatus = null)
+	{
 		session_write_close();
-
-		$target = $this->makeUrl(FALSE);
-		$target = tx_rnbase_util_Network::locationHeaderUrl($target);
-		header('Location: ' . $target);
-		exit();
+		tx_rnbase::load('tx_rnbase_util_Network');
+		tx_rnbase_util_Network::redirect($this->makeUrl(false), $httpStatus);
 	}
 
 	// -------------------------------------------------------------------------------------

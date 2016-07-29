@@ -4,6 +4,8 @@
 ----------
 
 v1.0.17 (??.??.2016)
+ * redirect of link util supports a http status parameter now
+ * new redirect wraper method in networ util
 
 v1.0.16 (18.07.2016)
  * File permissions fixed for lock files

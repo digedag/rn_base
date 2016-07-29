@@ -88,6 +88,25 @@ class tx_rnbase_util_Network {
 	}
 
 	/**
+	 * Sends a redirect header response and exits. Additionally the URL is
+	 * checked and if needed corrected to match the format required for a
+	 * Location redirect header. By default the HTTP status code sent is
+	 * a 'HTTP/1.1 303 See Other'.
+	 *
+	 * @param string $url The target URL to redirect to
+	 * @param string $httpStatus An optional HTTP status header. Default is 'HTTP/1.1 303 See Other'
+	 *
+	 * @return	void
+	 */
+	public static function redirect($url, $httpStatus = null) {
+		$utility = tx_rnbase_util_Typo3Classes::getHttpUtilityClass();
+		if ($httpStatus === null) {
+			$httpStatus = $utility::HTTP_STATUS_303;
+		}
+		$utility::redirect($url, $httpStatus);
+	}
+
+	/**
 	 * @param string $remoteAddress
 	 * @param string $devIPmask
 	 * @return boolean
