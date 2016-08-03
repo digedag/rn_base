@@ -43,14 +43,26 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator
 	private $mod = null;
 
 	/**
+	 * The internal options object.
+	 *
+	 * @var Tx_Rnbase_Domain_Model_Data $options
+	 */
+	private $options = null;
+
+	/**
 	 * Constructor
 	 *
 	 * @param tx_rnbase_mod_BaseModule $mod
+	 * @param array|Tx_Rnbase_Domain_Model_Data $options
 	 */
 	public function __construct(
-		tx_rnbase_mod_BaseModule $mod
+		tx_rnbase_mod_BaseModule $mod,
+		$options = array()
 	) {
 		$this->mod = $mod;
+
+		tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
+		$this->options = Tx_Rnbase_Domain_Model_Data::getInstance($options);
 	}
 
 	/**
@@ -61,6 +73,16 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator
 	protected function getModule()
 	{
 		return $this->mod;
+	}
+
+	/**
+	 * The internal options object.
+	 *
+	 * @return Tx_Rnbase_Domain_Model_Data
+	 */
+	protected function getOptions()
+	{
+		return $this->options;
 	}
 
 	/**
@@ -329,8 +351,41 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator
 		Tx_Rnbase_Domain_Model_DomainInterface $item,
 		array $actionConfig = array()
 	) {
-		// @TODO: implement!
-		return '';
+		$uid = $item->getProperty('uid');
+		$fromUid = $uid;
+		$uidMap = $this->getUidMap($item);
+		// zwei schritte in der map zurück,
+		// denn wir wollen das aktuelle element vor das vorherige.
+		// typo3 verschiebt aber immer hinter elemente, also muss es hinter das vorvorletzte.
+		// wenn es kein vorvorletztes gibt,
+		// verschieben wir das vorletzte element hinter das aktuelle element
+		prev($uidMap);
+		$prevId = key($uidMap);
+		if ($prevId) {
+			prev($uidMap);
+			if (key($uidMap)) {
+				$prevId = key($uidMap);
+			} else {
+				$fromUid = $prevId;
+				$prevId = $uid;
+			}
+		}
+		if ($prevId) {
+			$action = $this->getFormTool()->createMoveUpLink(
+				$item->getTableName(),
+				$fromUid,
+				$prevId,
+				array(
+					'label' => '',
+					'title' => 'Move ' . $fromUid . ' after ' . $prevId,
+				)
+			);
+		} else {
+			tx_rnbase::load('tx_rnbase_mod_Util');
+			$action = tx_rnbase_mod_Util::getSpriteIcon('empty-icon');
+		}
+
+		return $action;
 	}
 
 	/**
@@ -345,8 +400,51 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator
 		Tx_Rnbase_Domain_Model_DomainInterface $item,
 		array $actionConfig = array()
 	) {
-		// @TODO: implement!
-		return '';
+		$uid = $item->getProperty('uid');
+		$uidMap = $this->getUidMap($item);
+		// einen schritt in der map nach vorne, denn wir wollen das aktuelle hinter dem nächsten platzieren.
+		next($uidMap);
+		$nextId = key($uidMap);
+		if ($nextId) {
+			$action = $this->getFormTool()->createMoveDownLink(
+				$item->getTableName(),
+				$uid,
+				$nextId,
+				array(
+					'label' => '',
+					'title' => 'Move ' . $uid . ' after ' . $nextId,
+				)
+			);
+		} else {
+			tx_rnbase::load('tx_rnbase_mod_Util');
+			$action = tx_rnbase_mod_Util::getSpriteIcon('empty-icon');
+		}
+
+		return $action;
+	}
+
+	/**
+	 * Returns the uid map and sets the pointer to the current element
+	 *
+	 * @param Tx_Rnbase_Domain_Model_RecordInterface $item
+	 *
+	 * @return array
+	 */
+	protected function getUidMap(
+		Tx_Rnbase_Domain_Model_RecordInterface $item
+	) {
+		if (!$this->getOptions()->hasUidMap()) {
+			return array();
+		}
+
+		$currentId = $item->getUid();
+		$map = $this->getOptions()->getUidMap();
+
+		while (key($map) !== null && key($map) != $currentId) {
+			next($map);
+		}
+
+		return $map;
 	}
 
 	/**

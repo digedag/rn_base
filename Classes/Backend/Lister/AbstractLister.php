@@ -453,7 +453,9 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
 	{
 		tx_rnbase::load('Tx_Rnbase_Backend_Utility_SearcherUtility');
 
-		return Tx_Rnbase_Backend_Utility_SearcherUtility::getInstance();
+		return Tx_Rnbase_Backend_Utility_SearcherUtility::getInstance(
+			$this->getOptions()
+		);
 	}
 
 	/**
