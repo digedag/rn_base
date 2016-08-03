@@ -23,6 +23,7 @@
  ***************************************************************/
 
 tx_rnbase::load('Tx_Rnbase_Backend_Decorator_InterfaceDecorator');
+tx_rnbase::load('tx_rnbase_util_TCA');
 
 /**
  * Base Decorator
@@ -227,60 +228,114 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator
 			return $return;
 		}
 
-		$tableName = $item->getTableName();
-		// we use the real uid, not the uid of the parent!
-		$uid = $item->getProperty('uid');
-
-		tx_rnbase::load('tx_rnbase_util_TCA');
 		$actionConf = $this->getActionsConfig($item);
 
 		foreach ($actionConf as $actionKey => $actionConfig) {
-			switch ($actionKey) {
-				case 'edit':
-					$return .= $this->getFormTool()->createEditLink(
-						$tableName,
-						$uid,
-						$actionConfig['title']
-					);
-					break;
-
-				case 'hide':
-					$return .= $this->getFormTool()->createHideLink(
-						$tableName,
-						$uid,
-						$item->getDisabled(),
-						array(
-							'label' => $actionConfig['title']
-						)
-					);
-					break;
-
-				case 'remove':
-					$return .= $this->getFormTool()->createDeleteLink(
-						$tableName,
-						$uid,
-						$actionConfig['title'],
-						array(
-							'confirm' => $actionConfig['confirm']
-						)
-					);
-					break;
-
-				case 'moveup':
-					// @TODO: implement! see tx_mklib_mod1_decorator_Base
-					break;
-
-				case 'movedown':
-					// @TODO: implement! see tx_mklib_mod1_decorator_Base
-					break;
-
-				default:
-					break;
+			$method = 'formatAction' . ucfirst($actionKey);
+			if (method_exists($this, $method)) {
+				$return .= $this->{$method}($item, $actionConfig);
 			}
-
 		}
 
 		return $return;
+	}
+
+	/**
+	 * Renders the useractions
+	 *
+	 * @param Tx_Rnbase_Domain_Model_DomainInterface $item
+	 * @param array $actionConfig
+	 *
+	 * @return string
+	 */
+	protected function formatActionEdit(
+		Tx_Rnbase_Domain_Model_DomainInterface $item,
+		array $actionConfig = array()
+	) {
+		return $this->getFormTool()->createEditLink(
+			$item->getTableName(),
+			// we use the real uid, not the uid of the parent!
+			$item->getProperty('uid'),
+			$actionConfig['title']
+		);
+	}
+
+	/**
+	 * Renders the useractions
+	 *
+	 * @param Tx_Rnbase_Domain_Model_DomainInterface $item
+	 * @param array $actionConfig
+	 *
+	 * @return string
+	 */
+	protected function formatActionHide(
+		Tx_Rnbase_Domain_Model_DomainInterface $item,
+		array $actionConfig = array()
+	) {
+		return $this->getFormTool()->createHideLink(
+			$item->getTableName(),
+			// we use the real uid, not the uid of the parent!
+			$item->getProperty('uid'),
+			$item->getDisabled(),
+			array(
+				'label' => $actionConfig['title']
+			)
+		);
+	}
+
+	/**
+	 * Renders the useractions
+	 *
+	 * @param Tx_Rnbase_Domain_Model_DomainInterface $item
+	 * @param array $actionConfig
+	 *
+	 * @return string
+	 */
+	protected function formatActionRemove(
+		Tx_Rnbase_Domain_Model_DomainInterface $item,
+		array $actionConfig = array()
+	) {
+		return $this->getFormTool()->createDeleteLink(
+			$item->getTableName(),
+			// we use the real uid, not the uid of the parent!
+			$item->getProperty('uid'),
+			$actionConfig['title'],
+			array(
+				'confirm' => $actionConfig['confirm']
+			)
+		);
+	}
+
+	/**
+	 * Renders the useractions
+	 *
+	 * @param Tx_Rnbase_Domain_Model_DomainInterface $item
+	 * @param array $actionConfig
+	 *
+	 * @return string
+	 */
+	protected function formatActionMoveup(
+		Tx_Rnbase_Domain_Model_DomainInterface $item,
+		array $actionConfig = array()
+	) {
+		// @TODO: implement!
+		return '';
+	}
+
+	/**
+	 * Renders the useractions
+	 *
+	 * @param Tx_Rnbase_Domain_Model_DomainInterface $item
+	 * @param array $actionConfig
+	 *
+	 * @return string
+	 */
+	protected function formatActionMovedown(
+		Tx_Rnbase_Domain_Model_DomainInterface $item,
+		array $actionConfig = array()
+	) {
+		// @TODO: implement!
+		return '';
 	}
 
 	/**
