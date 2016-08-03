@@ -87,6 +87,8 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
 			)
 		);
 
+		$this->init();
+
 		// set the baseTable for this lister, if not set.
 		// required for some table operations, eq language column!
 		if (!$this->getOptions()->hasBaseTableName()) {
@@ -96,6 +98,15 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
 				);
 			}
 		}
+	}
+
+	/**
+	 * Can be overridden to initialize the lister
+	 *
+	 * @return void
+	 */
+	protected function init()
+	{
 	}
 
 	/**
@@ -263,7 +274,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
 	/**
 	 * Returns the decorator utility instance of the listing.
 	 *
-	 * @return array
+	 * @return Tx_Rnbase_Backend_Utility_DecoratorUtility
 	 */
 	protected function getDecoratorUtility()
 	{
