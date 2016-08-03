@@ -2,7 +2,7 @@
 /***************************************************************
  * Copyright notice
  *
- * (c) 2016 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * (c) 2016 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -37,14 +37,14 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator
 	/**
 	 * The module
 	 *
-	 * @var \tx_rnbase_mod_BaseModule
+	 * @var tx_rnbase_mod_BaseModule
 	 */
 	private $mod = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @param \tx_rnbase_mod_BaseModule $mod
+	 * @param tx_rnbase_mod_BaseModule $mod
 	 */
 	public function __construct(
 		tx_rnbase_mod_BaseModule $mod
@@ -65,11 +65,11 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator
 	/**
 	 * Returns an instance of tx_rnbase_mod_IModule
 	 *
-	 * @return \tx_rnbase_util_FormTool
+	 * @return tx_rnbase_util_FormTool
 	 */
 	protected function getFormTool()
 	{
-		return $this->mod->getFormTool();
+		return $this->getModule()->getFormTool();
 	}
 
 	/**
@@ -151,7 +151,9 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator
 	) {
 		$label = '';
 
-		$labelField = tx_rnbase_util_TCA::getLabelFieldForTable($entry->getTableName());
+		$labelField = tx_rnbase_util_TCA::getLabelFieldForTable(
+			$entry->getTableName()
+		);
 		if ($labelField !== 'uid' && $entry->getProperty($labelField)) {
 			$label = $entry->getProperty($labelField);
 		} elseif ($entry->getLabel()) {
@@ -319,6 +321,10 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator
 	 */
 	protected function isAdmin()
 	{
-		return is_object($GLOBALS['BE_USER']) ? (bool) $GLOBALS['BE_USER']->isAdmin() : false;
+		if (is_object($GLOBALS['BE_USER'])) {
+			return (bool) $GLOBALS['BE_USER']->isAdmin();
+		}
+
+		return false;
 	}
 }
