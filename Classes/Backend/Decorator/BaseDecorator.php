@@ -135,7 +135,7 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator
 		return sprintf(
 			'<span title="%2$s">%1$d</span>',
 			$value,
-			implode(CRLF, $this->buildSimpleEntryInfo($entry))
+			htmlentities(implode(CRLF, $this->buildSimpleEntryInfo($entry)))
 		);
 	}
 
@@ -163,9 +163,9 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator
 		}
 
 		return sprintf(
-			'<span title="%2$s">%1$d</span>',
+			'<span title="%2$s">%1$s</span>',
 			(string) $label,
-			implode(CRLF, $this->buildSimpleEntryInfo($entry))
+			htmlentities(implode(CRLF, $this->buildSimpleEntryInfo($entry)))
 		);
 	}
 
