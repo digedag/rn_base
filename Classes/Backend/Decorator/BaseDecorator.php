@@ -152,15 +152,26 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator
 	) {
 		$label = '';
 
-		$labelField = tx_rnbase_util_TCA::getLabelFieldForTable(
-			$entry->getTableName()
-		);
-		if ($labelField !== 'uid' && $entry->getProperty($labelField)) {
-			$label = $entry->getProperty($labelField);
-		} elseif ($entry->getLabel()) {
-			$label = $entry->getLabel();
-		} elseif ($entry->getName()) {
-			$label = $entry->getName();
+
+		// only for domain entries with table name
+		if (!$entry instanceof Tx_Rnbase_Domain_Model_DomainInterface) {
+			return $label;
+		}
+
+		if ($entry instanceof Tx_Rnbase_Domain_Model_Base) {
+			$label = $entry->getTcaLabel();
+		} else {
+			$labelField = tx_rnbase_util_TCA::getLabelFieldForTable(
+				$entry->getTableName()
+			);
+
+			if ($labelField !== 'uid' && $entry->getProperty($labelField)) {
+				$label = $entry->getProperty($labelField);
+			} elseif ($entry->getLabel()) {
+				$label = $entry->getLabel();
+			} elseif ($entry->getName()) {
+				$label = $entry->getName();
+			}
 		}
 
 		return sprintf(
