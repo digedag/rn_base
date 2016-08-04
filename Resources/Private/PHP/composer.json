@@ -1,0 +1,8 @@
+{
+	"config": {
+		"vendor-dir": "Composer"
+	},
+	"require": {
+		"doctrine/collections": "~1"
+	}
+}
