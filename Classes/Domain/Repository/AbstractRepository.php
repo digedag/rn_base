@@ -48,7 +48,8 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
 	 *
 	 * @return 	tx_rnbase_util_SearchBase
 	 */
-	protected function getSearcher() {
+	protected function getSearcher()
+	{
 		tx_rnbase::load('tx_rnbase_util_SearchBase');
 		$searcher = tx_rnbase_util_SearchBase::getInstance($this->getSearchClass());
 		if (!$searcher instanceof tx_rnbase_util_SearchBase) {
@@ -57,6 +58,7 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
 				' of class which extends tx_rnbase_util_SearchBase!'
 			);
 		}
+
 		return $searcher;
 	}
 
@@ -65,7 +67,8 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
 	 *
 	 * @return 	string
 	 */
-	protected function getWrapperClass() {
+	protected function getWrapperClass()
+	{
 		return $this->getSearcher()->getWrapperClass();
 	}
 
@@ -77,31 +80,40 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
 	 *
 	 * @return Tx_Rnbase_Domain_Model_DomainInterface
 	 */
-	public function getEmptyModel() {
+	public function getEmptyModel()
+	{
 		return tx_rnbase::makeInstance($this->getWrapperClass());
 	}
 
 	/**
 	 * Holt einen bestimmten Datensatz aus dem Repo.
 	 *
-	 * @param integer|array $rowOrUid
+	 * @param int|array $rowOrUid
+	 *
 	 * @return Tx_Rnbase_Domain_Model_DomainInterface|null
 	 */
-	public function findByUid($rowOrUid) {
+	public function findByUid($rowOrUid)
+	{
 		/* @var $model Tx_Rnbase_Domain_Model_DomainInterface */
 		$model = tx_rnbase::makeInstance(
 			$this->getWrapperClass(),
 			$rowOrUid
 		);
-		return $model->isPersisted() && $model->isValid() ? $model : NULL;
+
+		if ($model->isPersisted() && $model->isValid()) {
+			return $model;
+		}
+
+		return null;
 	}
 
 	/**
-	 * returns all items
+	 * Returns all items
 	 *
 	 * @return array[Tx_Rnbase_Domain_Model_DomainInterface]
 	 */
-	public function findAll() {
+	public function findAll()
+	{
 		return $this->search(array(), array());
 	}
 
@@ -110,11 +122,15 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
 	 *
 	 * @param array $fields
 	 * @param array $options
+	 *
 	 * @return array[Tx_Rnbase_Domain_Model_DomainInterface]
 	 */
-	public function search(array $fields, array $options) {
+	public function search(array $fields, array $options)
+	{
 		$this->prepareFieldsAndOptions($fields, $options);
+
 		$items = $this->getSearcher()->search($fields, $options);
+
 		return $this->prepareItems($items, $options);
 	}
 
@@ -123,12 +139,22 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
 	 *
 	 * @param array $fields
 	 * @param array $options
+	 *
 	 * @return Tx_Rnbase_Domain_Model_DomainInterface
 	 */
-	public function searchSingle(array $fields = array(), array $options = array()) {
+	public function searchSingle(
+		array $fields = array(),
+		array $options = array()
+	) {
 		$options['limit'] = 1;
+
 		$items =  $this->search($fields, $options);
-		return !empty($items[0]) ? $items[0] : NULL;
+
+		if (!empty($items[0])) {
+			return $items[0];
+		}
+
+		return null;
 	}
 
 	/**
@@ -156,18 +182,22 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
 	/**
 	 * On default, return hidden and deleted fields in backend
 	 *
-	 * @param array &$fields
-	 * @param array &$options
+	 * @param array $fields
+	 * @param array $options
+	 *
 	 * @return void
 	 */
-	protected function handleEnableFieldsOptions(&$fields, &$options) {
-		if (
+	protected function handleEnableFieldsOptions(
+		array &$fields,
+		array &$options
+	) {
+		if ((
 			TYPO3_MODE == 'BE' &&
 			!isset($options['enablefieldsoff']) &&
 			!isset($options['enablefieldsbe']) &&
 			!isset($options['enablefieldsfe'])
-		) {
-			$options['enablefieldsbe'] = TRUE;
+		)) {
+			$options['enablefieldsbe'] = true;
 		}
 	}
 
@@ -175,34 +205,40 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
 	 * Setzt eventuelle Sprachparameter,
 	 * damit nur valide Daten für die aktuelle Sprache ausgelesen werden.
 	 *
-	 * @param array &$fields
-	 * @param array &$options
+	 * @param array $fields
+	 * @param array $options
+	 *
 	 * @return void
 	 */
-	protected function handleLanguageOptions(&$fields, &$options) {
-		if (
+	protected function handleLanguageOptions(
+		array &$fields,
+		array &$options
+	) {
+		if ((
 			!isset($options['i18n'])
 			&& !isset($options['ignorei18n'])
 			&& !isset($options['enablefieldsoff'])
-		) {
+		)) {
 			$tableName = $this->getEmptyModel()->getTableName();
-			$languageField = tx_rnbase_util_TCA::getLanguageFieldForTable($tableName);;
+			$languageField = tx_rnbase_util_TCA::getLanguageFieldForTable($tableName);
 			// Die Sprache prüfen wir nur, wenn ein Sprachfeld gesetzt ist.
 			if (!empty($languageField)) {
 				$tsfe = tx_rnbase_util_TYPO3::getTSFE();
 				$languages = array();
 				if (isset($options['additionali18n'])) {
-					$languages = tx_rnbase_util_Strings::trimExplode(',', $options['additionali18n'], TRUE);
+					$languages = tx_rnbase_util_Strings::trimExplode(
+						',',
+						$options['additionali18n'],
+						true
+					);
 				}
 				// for all languages
 				$languages[] = '-1';
-				// Wenn eine bestimmte Sprache gesetzt ist,
-				// laden wir diese ebenfalls.
+				// Wenn eine bestimmte Sprache gesetzt ist, laden wir diese ebenfalls.
+				// andernfalls nutzen wir die default sprache
 				if (is_object($tsfe) && $tsfe->sys_language_content) {
 					$languages[] = $tsfe->sys_language_content;
-				}
-				// andernfalls nutzen wir die default sprache
-				else {
+				} else {
 					// default language
 					$languages[] = '0';
 				}
@@ -214,33 +250,43 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
 	/**
 	 * Modifiziert die Ergebisliste
 	 *
-	 * @param array $items
+	 * @param Traversable|array $items
 	 * @param array $options
+	 *
 	 * @return array[Tx_Rnbase_Domain_Model_DomainInterface]
 	 */
-	protected function prepareItems($items, $options) {
+	protected function prepareItems(
+		$items,
+		array $options
+	) {
+		// @TODO: regard collections!
 		if (!is_array($items)) {
 			return $items;
 		}
-		$items = $this->uniqueItems($items, $options);
-		return $items;
+
+		return $this->uniqueItems($items, $options);
 	}
 
 	/**
 	 * Entfernt alle doppelten Datensatze, wenn die Option distinct gesetzt ist.
 	 * Dabei werden die Sprachoverlays bevorzugt.
 	 *
-	 * @param array $items
-	 * @param unknown_type $options
+	 * @param Traversable|array $items
+	 * @param array $options
+	 *
 	 * @return array[Tx_Rnbase_Domain_Model_RecordInterface]
 	 */
-	protected function uniqueItems(array $items, $options) {
+	protected function uniqueItems(
+		$items,
+		array $options
+	) {
+		// @TODO: regard collections!
 		// uniqueue, if there are models and the distinct option
-		if (
+		if ((
 			reset($items) instanceof Tx_Rnbase_Domain_Model_RecordInterface
 			&& isset($options['distinct'])
 			&& $options['distinct']
-		) {
+		)) {
 			// seperate master and overlays
 			$master = $overlay = array();
 			/* @var $item Tx_Rnbase_Domain_Model_RecordInterface */
@@ -263,24 +309,30 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
 			}
 			$items = array_values($new);
 		}
+
 		return $items;
 	}
 }
 
 /**
- * the old class for backwards compatibility
+ * The old class for backwards compatibility
  *
  * @deprecated: will be dropped in the feature!
+ *
+ * @package TYPO3
+ * @subpackage Tx_Rnbase
+ * @author Michael Wagner
  */
 abstract class Tx_Rnbase_Repository_AbstractRepository
 	extends Tx_Rnbase_Domain_Repository_AbstractRepository
 {
 	/**
-	 * constructor to log deprecation!
+	 * Constructor to log deprecation!
 	 *
 	 * @return void
 	 */
-	function __construct() {
+	public function __construct()
+	{
 		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
 		$utility::deprecationLog(
 			'Usage of "Tx_Rnbase_Repository_AbstractRepository" is deprecated' .
