@@ -199,7 +199,7 @@ abstract class tx_rnbase_util_SearchBase {
 		if(is_array($joinedFields)) {
 			foreach ($joinedFields As $joinedField) {
 				// Ignore invalid queries
-				if(!isset($joinedField['value']) || !isset($joinedField['operator']) || 
+				if(!isset($joinedField['value']) || !isset($joinedField['operator']) ||
 						!isset($joinedField['fields']) || !$joinedField['fields']) continue;
 
 				if($joinedField['operator'] == OP_INSET_INT) {
@@ -264,8 +264,10 @@ abstract class tx_rnbase_util_SearchBase {
 			$sqlOptions['sqlonly'] = $options['sqlonly'];
 		if($options['union'])
 			$sqlOptions['union'] = $options['union'];
+		if ($options['collection'])
+			$sqlOptions['collection'] = $options['collection'];
 		if ($options['array_object'])
-			$sqlOptions['array_object'] = $options['array_object'];
+			$sqlOptions['collection'] = 'ArrayObject';
 		if(!isset($options['count']) && is_array($options['orderby'])) {
 			// Aus dem Array einen String bauen
 			$orderby = array();

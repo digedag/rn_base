@@ -161,8 +161,17 @@ class Tx_Rnbase_Database_Connection
 		$database->store_lastBuiltQuery = $storeLastBuiltQuery;
 
 		// use classic arrays or the array object
-		// should be ever an object, but for backward compatibility is ts an array by default
-		$rows = empty($arr['array_object']) ? array() : new ArrayObject();
+		// should be ever an object, but for backward compatibility is this an array by default
+		$rows = array();
+		if ($arr['collection']) {
+			if (!is_string($arr['collection']) || !class_exists($arr['collection'])) {
+				$arr['collection'] = 'Tx_Rnbase_Domain_Collection_Base';
+			}
+			$rows = tx_rnbase::makeInstance(
+				$arr['collection'],
+				$rows
+			);
+		}
 
 		if($this->testResource($res)) {
 			$wrapper = is_string($arr['wrapperclass']) ? trim($arr['wrapperclass']) : 0;
