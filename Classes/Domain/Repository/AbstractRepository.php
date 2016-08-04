@@ -121,7 +121,7 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
 	/**
 	 * Returns all items
 	 *
-	 * @return array[Tx_Rnbase_Domain_Model_DomainInterface]
+	 * @return Tx_Rnbase_Domain_Collection_Base
 	 */
 	public function findAll()
 	{
@@ -134,7 +134,7 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
 	 * @param array $fields
 	 * @param array $options
 	 *
-	 * @return array[Tx_Rnbase_Domain_Model_DomainInterface]
+	 * @return Tx_Rnbase_Domain_Collection_Base
 	 */
 	public function search(array $fields, array $options)
 	{
@@ -270,8 +270,7 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
 		$items,
 		array $options
 	) {
-		// @TODO: regard collections!
-		if (!is_array($items)) {
+		if (empty($items[0])) {
 			return $items;
 		}
 
@@ -291,10 +290,9 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
 		$items,
 		array $options
 	) {
-		// @TODO: regard collections!
 		// uniqueue, if there are models and the distinct option
 		if ((
-			reset($items) instanceof Tx_Rnbase_Domain_Model_RecordInterface
+			$items[0] instanceof Tx_Rnbase_Domain_Model_RecordInterface
 			&& isset($options['distinct'])
 			&& $options['distinct']
 		)) {
@@ -318,7 +316,12 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
 				$uid = (int) $item->getUid();
 				$new[$uid] = !empty($overlay[$uid]) && $preferOverlay ? $overlay[$uid] : $master[$uid];
 			}
-			$items = array_values($new);
+			$new = array_values($new);
+			if (is_object($items)) {
+				$items->exchangeArray($new);
+			} else {
+				$items = $new;
+			}
 		}
 
 		return $items;
