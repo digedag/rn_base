@@ -63,6 +63,17 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
 	}
 
 	/**
+	 * Returns the Collection class.
+	 * Can be overriden by the child repository class.
+	 *
+	 * @return 	string
+	 */
+	protected function getCollectionClass()
+	{
+		return 'Tx_Rnbase_Domain_Collection_Base';
+	}
+
+	/**
 	 * Liefert die Model Klasse.
 	 *
 	 * @return 	string
@@ -169,9 +180,9 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
 		array &$fields,
 		array &$options
 	) {
-		// force array object usage by default!
-		if (!isset($options['array_object'])) {
-			$options['array_object'] = true;
+		// force collection usage by default!
+		if (!isset($options['collection']) && $this->getCollectionClass()) {
+			$options['collection'] = $this->getCollectionClass();
 		}
 
 		$this->handleEnableFieldsOptions($fields, $options);

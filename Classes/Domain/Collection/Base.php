@@ -46,4 +46,38 @@ class Tx_Rnbase_Domain_Collection_Base
 	{
 		return $this->add($value);
 	}
+
+	/**
+	 * Exchange the collection for another one and returns the old elements.
+	 *
+	 * @param array $elements
+	 *
+	 * @return array
+	 */
+	public function exchange(
+		array $elements = array()
+	) {
+		$old = $this->toArray();
+
+		$this->clear();
+
+		foreach ($elements as $offset => $value) {
+			$this->offsetSet($offset, $value);
+		}
+
+		return $old;
+	}
+
+	/**
+	 * Only an ArrayObject alias for exchange
+	 *
+	 * @param array $elements
+	 *
+	 * @return array
+	 */
+	public function exchangeArray (
+		array $elements = array()
+	) {
+		return $this->exchange($elements);
+	}
 }

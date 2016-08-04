@@ -124,10 +124,15 @@ class Tx_Rnbase_Domain_Repository_AbstractRepositoryTest
 	 * @group unit
 	 */
 	public function testSearchCallsSearcherCorrect() {
-		$repository = $this->getRepositoryMock(array('getSearchClass', 'getWrapperClass', 'getSearcher'));
+		$repository = $this->getRepositoryMock(
+			array('getSearchClass', 'getWrapperClass', 'getSearcher', 'getCollectionClass')
+		);
 
 		$fields = array('someField' => 1);
-		$options = array('array_object' => true, 'enablefieldsbe' => 1);
+		$options = array(
+			'collection' => 'TestCollection',
+			'enablefieldsbe' => 1,
+		);
 
 		$searcher = $this->getMock(
 			'tx_rnbase_util_SearchGeneric',
@@ -135,16 +140,22 @@ class Tx_Rnbase_Domain_Repository_AbstractRepositoryTest
 		);
 
 		$searcher
-			->expects($this->once())
+			->expects(self::once())
 			->method('search')
 			->with($fields, $options)
-			->will($this->returnValue(array('searched')))
+			->will(self::returnValue(array('searched')))
 		;
 
 		$repository
-			->expects($this->any())
+			->expects(self::exactly(2))
+			->method('getCollectionClass')
+			->will(self::returnValue($options['collection']))
+		;
+		unset($options['collection']);
+		$repository
+			->expects(self::any())
 			->method('getSearcher')
-			->will($this->returnValue($searcher))
+			->will(self::returnValue($searcher))
 		;
 
 		self::assertEquals(

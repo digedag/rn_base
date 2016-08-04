@@ -160,8 +160,8 @@ class Tx_Rnbase_Database_Connection
 		);
 		$database->store_lastBuiltQuery = $storeLastBuiltQuery;
 
-		// use classic arrays or the array object
-		// should be ever an object, but for backward compatibility is this an array by default
+		// use classic arrays or the collection
+		// should be ever an collection, but for backward compatibility is this an array by default
 		$rows = array();
 		if ($arr['collection']) {
 			if (!is_string($arr['collection']) || !class_exists($arr['collection'])) {

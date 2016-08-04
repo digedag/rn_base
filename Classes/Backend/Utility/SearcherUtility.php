@@ -96,11 +96,11 @@ class Tx_Rnbase_Backend_Utility_SearcherUtility
 		$firstPrev = $lastNext = false;
 		$baseTableName = $this->getOptions()->getBaseTableName();
 		tx_rnbase::load('tx_rnbase_util_TCA');
-		if (
+		if ((
 			$baseTableName
 			&& tx_rnbase_util_TCA::getSortbyFieldForTable($baseTableName)
 			&& ($options['limit'] || $options['offset'])
-		) {
+		)) {
 			// normalize limit and offset values to int
 			array_key_exists('offset', $options) ? $options['offset'] = (int) $options['offset'] : null;
 			array_key_exists('limit', $options) ? $options['limit'] = (int) $options['limit'] : null;
@@ -126,24 +126,35 @@ class Tx_Rnbase_Backend_Utility_SearcherUtility
 
 		// reduce the itemy by first and last
 		if ($firstPrev || $lastNext) {
-			// @FIXME !!! That's only an workaround. An ArrayObject shoul be retain!
-			$items = (array) $items;
+			$isCollection = is_object($items);
+			$slice = array('offset' => 0, 'length' => count($items));
 			// das letzte entfernen, aber nur wenn genügend elemente im result sind
 			if ($lastNext && count($items) >= $options['limit']) {
-				$lastNext = array_pop($items);
+				$slice['length']--;
+				$lastNext = $isCollection ? $items->last() : end($items);
 			}
 			// das erste entfernen, wenn der offset reduziert wurde.
 			if ($firstPrev) {
-				$firstPrev = array_shift($items);
+				$slice['offset']++;
+				$firstPrev = $isCollection ? $items->first() : reset($items);
 				// das zweite entfernen, wenn der offset um 2 reduziert wurde
 				if ($downStep > 1) {
-					$secondPrev = array_shift($items);
+					$slice['offset']++;
+					$secondPrev = $isCollection ? $items->next() : next($items);
 				}
 			}
+			// reduce the items collection by the elements to show ans remove them map elements
+			if ($isCollection) {
+				$items->exchangeArray(
+					$items->slice($slice['offset'], $slice['length'])
+				);
+			} else {
+				$items = array_slice($items, $slice['offset'], $slice['length'], true);
+			}
+
 		}
 
 		// now build the uid map
-
 		$map = array();
 		if ($firstPrev instanceof Tx_Rnbase_Domain_Model_RecordInterface) {
 			$map[$firstPrev->getUid()] = array();
