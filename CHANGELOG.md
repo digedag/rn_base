@@ -4,6 +4,11 @@
 ----------
 
 v1.0.17 (??.??.2016)
+ * new initial abstract detail handler for be modules added
+ * new abstract seach handler for be modules added 
+ * new abstract lister for be modules added
+ * new repositories uses instance of Tx_Rnbase_Domain_Collection_Base instead of array per default 
+ * collection support for select at connection added (usage: $options['collection'] = true;)
  * redirect of link util supports a http status parameter now
  * new redirect wraper method in networ util
 
