@@ -216,7 +216,15 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository
 		Tx_Rnbase_Domain_Model_DomainInterface $model,
 		array $data
 	) {
-		$current = $model->getProperty();
+		// merge the model data with the stored one, so nontca columns kept
+		if ($model instanceof Tx_Rnbase_Domain_Model_Data) {
+			$model->setProperty(
+				array_merge(
+					$model->getProperty(),
+					$data
+				)
+			);
+		}
 
 		// set the uid and force a record reload
 		if ($model instanceof Tx_Rnbase_Domain_Model_Base) {
@@ -224,16 +232,6 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository
 				array('uid' => (int) $data['uid'])
 			);
 			$model->reset();
-		}
-
-		// merge the model data with the stored one, so nontca columns kept
-		if ($model instanceof Tx_Rnbase_Domain_Model_Data) {
-			$model->setProperty(
-				array_merge(
-					$current,
-					$data
-				)
-			);
 		}
 	}
 
