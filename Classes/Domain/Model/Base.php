@@ -134,8 +134,12 @@ class Tx_Rnbase_Domain_Model_Base
 		if (is_array($property)) {
 			foreach ($property as $subProperty => $subValue) {
 				// ignore uid overriding!!!
-				if (in_array($subProperty, array('uid'))) {
-					continue;
+				if ($subProperty === 'uid') {
+					if ($this->hasUid()) {
+						continue;
+					} else {
+						$this->uid = (int) $subValue;
+					}
 				}
 				parent::setProperty($subProperty, $subValue);
 			}

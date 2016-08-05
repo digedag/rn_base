@@ -36,7 +36,6 @@ class Tx_Rnbase_Domain_Model_BaseTest extends tx_rnbase_tests_BaseTestCase {
 	{
 		$model = $this->getModel(
 			array(
-				'uid' => 5,
 				'first_name' => 'Max',
 			),
 			'Tx_Rnbase_Domain_Model_Base'
@@ -52,10 +51,20 @@ class Tx_Rnbase_Domain_Model_BaseTest extends tx_rnbase_tests_BaseTestCase {
 		);
 
 		self::assertTrue($model->isDirty());
-		self::assertEquals(5, $model->getUid());
-		self::assertEquals(5, $model->getProperty('uid'));
+		self::assertEquals(7, $model->getUid());
+		self::assertEquals(7, $model->getProperty('uid'));
 		self::assertEquals('John', $model->getFirstName());
 		self::assertEquals('Doe', $model->getLastName());
+
+		// // check uid overriding
+		$model->setProperty(
+			array(
+				'uid' => 5,
+			)
+		);
+
+		self::assertEquals(7, $model->getUid());
+		self::assertEquals(7, $model->getProperty('uid'));
 	}
 
 	public function testGetUidWhenNoLocalisation() {
