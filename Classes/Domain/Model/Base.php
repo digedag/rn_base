@@ -122,6 +122,31 @@ class Tx_Rnbase_Domain_Model_Base
 	}
 
 	/**
+	 * Setzt einen Wert oder ersetzt alle Werte
+	 *
+	 * @param string|array $property
+	 * @param mixed $value
+	 *
+	 * @return Tx_Rnbase_Domain_Model_Data
+	 */
+	public function setProperty($property, $value = null)
+	{
+		if (is_array($property)) {
+			foreach ($property as $subProperty => $subValue) {
+				// ignore uid overriding!!!
+				if (in_array($subProperty, array('uid'))) {
+					continue;
+				}
+				parent::setProperty($subProperty, $subValue);
+			}
+		} else {
+			parent::setProperty($property, $value);
+		}
+
+		return $this;
+	}
+
+	/**
 	 * Returns the records uid
 	 *
 	 * @return int

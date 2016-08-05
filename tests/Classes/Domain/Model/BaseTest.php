@@ -32,6 +32,32 @@ class Tx_Rnbase_Domain_Model_BaseTest extends tx_rnbase_tests_BaseTestCase {
 		self::assertEquals(45, $model->getTestValue());
 	}
 
+	public function testSetPropertyArray()
+	{
+		$model = $this->getModel(
+			array(
+				'uid' => 5,
+				'first_name' => 'Max',
+			),
+			'Tx_Rnbase_Domain_Model_Base'
+		);
+
+		// set a new record
+		$model->setProperty(
+			array(
+				'uid' => 7,
+				'first_name' => 'John',
+				'last_name' => 'Doe',
+			)
+		);
+
+		self::assertTrue($model->isDirty());
+		self::assertEquals(5, $model->getUid());
+		self::assertEquals(5, $model->getProperty('uid'));
+		self::assertEquals('John', $model->getFirstName());
+		self::assertEquals('Doe', $model->getLastName());
+	}
+
 	public function testGetUidWhenNoLocalisation() {
 		$model = $this->getMock(
 			'Tx_Rnbase_Domain_Model_Base',
