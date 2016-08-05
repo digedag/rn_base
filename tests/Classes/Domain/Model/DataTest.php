@@ -135,6 +135,14 @@ class Tx_Rnbase_Domain_Model_DataTest
 		$this->callInaccessibleMethod($model, 'resetCleanState');
 		// after setting the clear state, the model should be clean
 		$this->assertFalse($model->isDirty());
+		// check with setProperty([])
+		$model->setProperty(
+			array(
+				'first_name' => 'John',
+				'last_name' => 'Doe',
+			)
+		);
+		$this->assertTrue($model->isDirty());
 	}
 	/**
 	 * @test

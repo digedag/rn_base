@@ -145,8 +145,6 @@ class Tx_Rnbase_Domain_Model_Data
 	 * @return Tx_Rnbase_Domain_Model_Data
 	 */
 	public function setProperty($property, $value = NULL) {
-		// set the modified state
-		$this->isModified = TRUE;
 		// wir Überschreiben den kompletten record
 		if (is_array($property)) {
 			$this->init($property);
@@ -155,6 +153,9 @@ class Tx_Rnbase_Domain_Model_Data
 		else {
 			$this->record[$property] = $value;
 		}
+		// set the modified state
+		$this->isModified = TRUE;
+
 		return $this;
 	}
 
