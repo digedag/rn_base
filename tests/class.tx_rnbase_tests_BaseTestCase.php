@@ -124,11 +124,19 @@ abstract class tx_rnbase_tests_BaseTestCase
 			);
 		}
 
+		$isNewModel = (
+			is_subclass_of($class, 'Tx_Rnbase_Domain_Model_Base') ||
+			$class == 'Tx_Rnbase_Domain_Model_Base'
+		);
+
 		// create the mock
 		$model = $this->getMock(
 			$class,
 			array_merge(
-				array('reset', 'getColumnWrapped'),
+				array(
+					$isNewModel ? 'loadRecord' : 'reset',
+					'getColumnWrapped'
+				),
 				$methods
 			),
 			array($record)
