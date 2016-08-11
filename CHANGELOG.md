@@ -3,7 +3,9 @@
 Änderungen
 ----------
 
-v1.0.17 (??.??.2016)
+v1.1.1 (??.??.2016)
+
+v1.1.0 (11.08.2016)
  * dirty state after setProperty([]) should be dirty, not clean
  * new initial abstract detail handler for be modules added
  * new abstract seach handler for be modules added 
