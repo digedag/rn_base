@@ -309,7 +309,7 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator
 			$item->getTableName(),
 			// we use the real uid, not the uid of the parent!
 			$item->getProperty('uid'),
-			$item->getDisabled(),
+			$item->isHidden(),
 			array(
 				'label' => $actionConfig['title']
 			)
