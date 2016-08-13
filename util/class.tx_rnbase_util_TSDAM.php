@@ -114,7 +114,7 @@ class tx_rnbase_util_TSDAM {
 		$damDb = tx_rnbase::makeInstance('tx_dam_db');
 
 		$medias = array();
-		while(list($uid, $baseRecord) = each($damPics)) {
+		foreach ($damPics as $baseRecord) {
 			$mediaObj = tx_rnbase::makeInstance('tx_rnbase_model_media', $baseRecord['uid']);
 			// Localize data (DAM 1.1.0)
 			if(method_exists($damDb, 'getRecordOverlay')) {

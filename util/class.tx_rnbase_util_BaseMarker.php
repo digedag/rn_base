@@ -260,7 +260,7 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker {
 
 		$pagerName = $pagerData['pointername'] ? $pagerData['pointername'] : 'charpointer';
 
-		while(list($pointer, $size) = each($pagerItems)) {
+		foreach ($pagerItems as $pointer => $size) {
 			$myMarkerArray = $markerArray;
 			$myMarkerArray['###PB_ITEM###'] = $pointer;
 			$myMarkerArray['###PB_ITEM_SIZE###'] = $size;
