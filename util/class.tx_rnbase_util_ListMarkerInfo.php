@@ -32,7 +32,7 @@ interface ListMarkerInfo {
  */
 class tx_rnbase_util_ListMarkerInfo implements ListMarkerInfo {
 
-  function tx_rnbase_util_ListMarkerInfo() {
+  function __construct() {
   }
   function init($template, &$formatter, $marker) {
   	$this->template = $template;

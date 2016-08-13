@@ -42,7 +42,7 @@ class tx_rnbase_util_FormatUtil {
    * Konstruktor
    * @param tx_rnbase_configurations $configurations
    */
-  function tx_rnbase_util_FormatUtil($configurations) {
+  function __construct($configurations) {
     $this->configurations = $configurations;
     $this->cObj = $configurations->getCObj();
   }

@@ -35,7 +35,7 @@ class tx_rnbase_maps_TypeRegistry {
 	static $instance = NULL;
 	private static $mapTypes = array(RNMAP_MAPTYPE_STREET, RNMAP_MAPTYPE_SATELLITE, RNMAP_MAPTYPE_HYBRID, RNMAP_MAPTYPE_PHYSICAL);
 	private $types = array();
-	private function tx_rnbase_maps_TypeRegistry() {
+	private function __construct() {
 	}
 	/**
 	 * Returns the singleton instance

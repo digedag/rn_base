@@ -43,7 +43,7 @@ define('CALENDAR_DAY_OF_YEAR', 6);
 class tx_rnbase_util_Calendar {
   var $_time; // Die Zeit des Kalenders
 
-  function tx_rnbase_util_Calendar() {
+  function __construct() {
     $this->_time = time();
     $this->_init();
   }

@@ -34,7 +34,7 @@ class tx_rnbase_model_media extends tx_rnbase_model_base {
 
 	/**
 	 */
-	function tx_rnbase_model_media($rowOrUid) {
+	function __construct($rowOrUid) {
 		if(is_object($rowOrUid)) {
 			// Das Media-Objekt auslesen
 			$this->initMedia($rowOrUid);

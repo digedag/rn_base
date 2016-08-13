@@ -30,7 +30,7 @@ tx_rnbase::load('tx_rnbase_maps_IIcon');
 class tx_rnbase_maps_google_Icon implements tx_rnbase_maps_IIcon {
 	private $id = NULL;
 
-	function tx_rnbase_maps_google_Icon(tx_rnbase_maps_google_Map $map) {
+	function __construct(tx_rnbase_maps_google_Map $map) {
 		$this->map = $map;
 	}
 	function initFromTS($conf, $confId) {

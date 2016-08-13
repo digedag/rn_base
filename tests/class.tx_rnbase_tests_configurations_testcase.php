@@ -119,7 +119,7 @@ class tx_rnbase_tests_configurations_testcase extends Tx_Phpunit_TestCase {
 
 class tx_rnbase_tsfeDummy {
 	var $tmpl;
-	function tx_rnbase_tsfeDummy() {
+	function __construct() {
 		$this->tmpl = new tx_rnbase_templateDummy();
 	}
 }
