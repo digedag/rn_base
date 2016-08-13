@@ -23,7 +23,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 tx_rnbase::load('Tx_Rnbase_Backend_Utility');
-tx_rnbase::load('tx_rnbase_util_Strings');
+tx_rnbase::load('Tx_Rnbase_Utility_Strings');
 tx_rnbase::load('tx_rnbase_util_Link');
 tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 tx_rnbase::load('Tx_Rnbase_Backend_Utility_Icons');
@@ -90,7 +90,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 
 		$jsCode = Tx_Rnbase_Backend_Utility::editOnClick($params, $GLOBALS['BACK_PATH']);
 		if(isset($options['confirm']) && strlen($options['confirm']) > 0) {
-			$jsCode = 'if(confirm('.tx_rnbase_util_Strings::quoteJSvalue($options['confirm']).')) {' . $jsCode .'} else {return false;}';
+			$jsCode = 'if(confirm('.Tx_Rnbase_Utility_Strings::quoteJSvalue($options['confirm']).')) {' . $jsCode .'} else {return false;}';
 		}
 
 		$btn = '<input type="button" name="'. $name.'" value="' . $title . '" ';
@@ -153,7 +153,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 
 		$jsCode = Tx_Rnbase_Backend_Utility::editOnClick($params, $GLOBALS['BACK_PATH']);
 		if(isset($options['confirm']) && strlen($options['confirm']) > 0) {
-			$jsCode = 'if(confirm('.tx_rnbase_util_Strings::quoteJSvalue($options['confirm']).')) {' . $jsCode .'} else {return false;}';
+			$jsCode = 'if(confirm('.Tx_Rnbase_Utility_Strings::quoteJSvalue($options['confirm']).')) {' . $jsCode .'} else {return false;}';
 		}
 
 		$btn = '<input type="button" name="'. $name.'" value="' . $title . '" ';
@@ -197,7 +197,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 
 		$jsCode = Tx_Rnbase_Backend_Utility::editOnClick($params, $GLOBALS['BACK_PATH']);
 		if(isset($options['confirm']) && strlen($options['confirm']) > 0) {
-			$jsCode = 'if(confirm('.tx_rnbase_util_Strings::quoteJSvalue($options['confirm']).')) {' . $jsCode .'} else {return false;}';
+			$jsCode = 'if(confirm('.Tx_Rnbase_Utility_Strings::quoteJSvalue($options['confirm']).')) {' . $jsCode .'} else {return false;}';
 		}
 
 		if(tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
@@ -385,7 +385,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 	 */
 	private function getConfirmCode($jsCode, $options) {
 		if (isset($options['confirm']) && strlen($options['confirm']) > 0) {
-			return 'if(confirm('.tx_rnbase_util_Strings::quoteJSvalue($options['confirm']).')) {' . $jsCode .'} else {return false;}';
+			return 'if(confirm('.Tx_Rnbase_Utility_Strings::quoteJSvalue($options['confirm']).')) {' . $jsCode .'} else {return false;}';
 		}
 		return $jsCode;
 	}
@@ -406,6 +406,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 	 * Erstellt einen Link auf die aktuelle Location mit zusätzlichen Parametern
 	 */
 	public function createLink($urlParams, $pid, $label, $options=array()) {
+		$location = $this->getLinkThisScript(FALSE);
 		if($options['icon']) {
 			$label = "<img ".Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$options['icon']).
 				' title="'.$label.'\" alt="" >';
@@ -414,10 +415,10 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 			tx_rnbase::load('tx_rnbase_mod_Util');
 			$label = tx_rnbase_mod_Util::getSpriteIcon($options['sprite']);
 		}
-
-		$jsCode = "window.location.href='index.php?id=".$pid . $urlParams. "'; return false;";
+		$location = $location.$urlParams;
+		$jsCode = "window.location.href='".$location. "'; return false;";
 		if(isset($options['confirm']) && strlen($options['confirm']) > 0) {
-			$jsCode = 'if(confirm('.tx_rnbase_util_Strings::quoteJSvalue($options['confirm']).')) {' . $jsCode .'} else {return false;}';
+			$jsCode = 'if(confirm('.Tx_Rnbase_Utility_Strings::quoteJSvalue($options['confirm']).')) {' . $jsCode .'} else {return false;}';
 		}
 		$title = '';
 		if($options['hover']) {
@@ -429,6 +430,8 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 
 	/**
 	 * Submit button for BE form.
+	 * If you set an icon in options, the output will like this:
+	 * <button><img></button>
 	 * @param string $name
 	 * @param string $value
 	 * @param string $confirmMsg
@@ -439,13 +442,19 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		if($options['icon']) {
 			$icon = Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$options['icon']);
 		}
-
-		$btn = '<input type="'.($icon ? 'image' : 'submit').'" name="'. $name.'" value="' . $value . '" ';
+		$onClick = '';
 		if(strlen($confirmMsg))
-			$btn .= 'onclick="return confirm('.tx_rnbase_util_Strings::quoteJSvalue($confirmMsg).')"';
-		if(strlen($icon))
-			$btn .= $icon;
-		$btn .= '/>';
+			$onClick = 'onclick="return confirm('.Tx_Rnbase_Utility_Strings::quoteJSvalue($confirmMsg).')"';
+
+		if($icon) {
+			$btn = '<button type="submit" name="'. $name.'" value="' . $value . '">
+					<img '.$icon.' alt="SomeAlternateText"></button>';
+		}
+		else {
+			$btn = '<input type="submit" name="'. $name.'" value="' . $value . '" ';
+			$btn .= $onClick;
+			$btn .= '/>';
+		}
 		return $btn;
 	}
 
@@ -581,7 +590,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 
 		$out = '<select name="' . $name . '" class="select"' . $onChangeStr . $multiple . $size . '>';
 
-		$currentValues = tx_rnbase_util_Strings::trimExplode(',', $currentValues);
+		$currentValues = Tx_Rnbase_Utility_Strings::trimExplode(',', $currentValues);
 
 		// Die Options ermitteln
 		foreach($selectOptions As $value => $label) {
