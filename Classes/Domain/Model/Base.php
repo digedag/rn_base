@@ -405,7 +405,7 @@ class Tx_Rnbase_Domain_Model_Base
 	 */
 	public function getColumnNames()
 	{
-		$columns = $this->getTCAColumns();
+		$columns = $this->getTcaColumns();
 
 		return is_array($columns) ? array_keys($columns) : 0;
 	}

@@ -108,7 +108,7 @@ class tx_rnbase_tests_util_Templates_testcase
 
 	public function test_includeSubTemplates() {
 
-		$fixture = tx_rnbase_util_Network::getURL(
+		$fixture = tx_rnbase_util_Network::getUrl(
 			tx_rnbase_util_Extensions::extPath(
 				'rn_base',
 				'tests/fixtures/html/includeSubTemplates.html'

@@ -59,7 +59,7 @@ class tx_rnbase_util_Files {
 			$fileinfo = $utility::split_fileref($incFile);
 			if ($utility::inList('jpg,gif,jpeg,png', $fileinfo['fileext']))	{
 				$imgFile = $incFile;
-				$imgInfo = @getImageSize($imgFile);
+				$imgInfo = @getimagesize($imgFile);
 				$addParams= isset($options['addparams']) ? $options['addparams'] : 'alt="" title=""';
 				$ret = '<img src="'.$GLOBALS['TSFE']->absRefPrefix.$imgFile.'" width="'.$imgInfo[0].'" height="'.$imgInfo[1].'"'.self::getBorderAttr(' border="0"').' '.$addParams.' />';
 			} elseif (file_exists($fullPath) && filesize($fullPath)<1024*1024) {
