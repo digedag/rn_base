@@ -50,13 +50,6 @@ class tx_rnbase {
 			self::$loadedClasses[$classNameOrPathInformation] = TRUE;
 			return TRUE;
 		}
-		if(tx_rnbase_util_Extensions::isLoaded('lib')) {
-			require_once(tx_rnbase_util_Extensions::extPath('lib') . 'class.tx_lib_pearLoader.php');
-			if(tx_lib_pearLoader::load($classNameOrPathInformation)) {
-				self::$loadedClasses[$classNameOrPathInformation] = TRUE;
-				return TRUE;
-			}
-		}
 
 		self::$loadedClasses[$classNameOrPathInformation] = FALSE;
 		return FALSE;
