@@ -98,6 +98,8 @@ class tx_rnbase_util_TSFAL {
 		if(!$parentUid) return '<!-- Invalid data record given -->';
 
 		$medias = self::fetchFilesByTS($conf, $conf->getCObj());
+		$conf->getCObj()->data[DEFAULT_LOCAL_FIELD] = $locUid; // Reset UID
+
 		$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
 		$out = $listBuilder->render($medias, FALSE, $templateCode, 'tx_rnbase_util_MediaMarker',
 						'media.', 'MEDIA', $conf->getFormatter());
