@@ -4,6 +4,7 @@
 ----------
 
 v1.1.1 (??.??.2016)
+ * new Tx_Rnbase_Utility_Logger added
 
 v1.1.0 (11.08.2016)
  * dirty state after setProperty([]) should be dirty, not clean

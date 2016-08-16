@@ -25,6 +25,8 @@ tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
 /**
  * Default logger class.
+ *
+ * @TODO: port to new Tx_Rnbase_Utility_Logger for TYPO3 6.2 or higher
  */
 class tx_rnbase_util_Logger {
 	private static $minLog = FALSE;
