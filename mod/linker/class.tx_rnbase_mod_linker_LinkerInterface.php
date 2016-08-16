@@ -23,15 +23,13 @@
  */
 
 /**
- * linker interface for mod tables.
+ * Linker interface for mod tables.
  *
  * @package TYPO3
  * @subpackage tx_rnbase
- * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
+ * @author Michael Wagner
  */
 interface tx_rnbase_mod_linker_LinkerInterface {
-
-
 	/**
 	 * Link zur Detailseite erzeugen
 	 *

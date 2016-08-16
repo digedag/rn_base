@@ -238,17 +238,17 @@ class Tx_Rnbase_Backend_Utility_Tables {
 			$linkerimplode = $options->getLinkerimplode() ? $options->getLinkerimplode() : '<br />';
 			$currentPid = (int) $options->getPid();
 			foreach($linkerArr As $linker) {
-				if (!$linker instanceof tx_rnbase_mod_LinkerInterface) {
+				if (!$linker instanceof tx_rnbase_mod_linker_LinkerInterface) {
 					// backward compatibility, the interface with the makeLink method is new!
 					if (!is_callable(array($linker, 'makeLink'))) {
 						throw new Exception(
-								'Linker "' . get_class($linker) . '" has to implement interface "tx_rnbase_mod_LinkerInterface".'
-								);
+							'Linker "' . get_class($linker) . '" has to implement interface "tx_rnbase_mod_linker_LinkerInterface".'
+						);
 					}
 					$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
 					$utility::deprecationLog(
-							'Linker "' . get_class($linker) . '" has to implement interface "tx_rnbase_mod_LinkerInterface".'
-						);
+						'Linker "' . get_class($linker) . '" has to implement interface "tx_rnbase_mod_linker_LinkerInterface".'
+					);
 				}
 				$out .= $linker->makeLink($obj, $formTool, $currentPid, $options);
 				$out .= $linkerimplode;
