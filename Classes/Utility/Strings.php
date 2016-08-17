@@ -28,7 +28,7 @@ tx_rnbase::load('Tx_Rnbase_Utility_T3General');
  * Wrapper for t3lib_div / TYPO3\\CMS\\Core\\Utility\\GeneralUtility
  *
  * @package TYPO3
- * @subpackage rn_base
+ * @subpackage Tx_Rnbase
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */

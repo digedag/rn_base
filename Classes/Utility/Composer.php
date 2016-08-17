@@ -27,7 +27,7 @@
  * extension configs
  *
  * @package TYPO3
- * @subpackage Tx_T3rest
+ * @subpackage Tx_Rnbase
  * @author Michael Wagner
  */
 final class Tx_Rnbase_Utility_Composer

@@ -26,7 +26,7 @@
  * Encapsulate simple mailing functionality of TYPO3 for backward compatibility.
  *
  * @package TYPO3
- * @subpackage rn_base
+ * @subpackage Tx_Rnbase
  * @author René Nitzsche
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later

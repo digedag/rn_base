@@ -26,7 +26,7 @@
  * Mcrypt module
  *
  * @package TYPO3
- * @subpackage rn_base
+ * @subpackage Tx_Rnbase
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
