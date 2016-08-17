@@ -25,13 +25,15 @@
 /**
  *
  */
-class Tx_Rnbase_Backend_Utility_Tables {
+class Tx_Rnbase_Backend_Utility_Tables
+{
 	/**
 	 *
 	 * @param array $entries
 	 * @param array $columns
 	 * @param tx_rnbase_util_FormTool $formTool
 	 * @param Tx_Rnbase_Domain_Model_DataInterface $options
+	 *
 	 * @return array 0 are data and 1 layout
 	 */
 	public function prepareTable($entries, $columns, $formTool, $options) {

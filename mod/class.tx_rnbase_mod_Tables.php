@@ -22,33 +22,29 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-tx_rnbase::load('tx_rnbase_model_data');
-tx_rnbase::load('tx_rnbase_mod_Util');
 
 /**
  *
  * @author rene
  * @deprecated use Tx_Rnbase_Backend_Utility_Tables
  */
-class tx_rnbase_mod_Tables {
-
+class tx_rnbase_mod_Tables
+{
 	/**
 	 *
 	 * @param array $entries
 	 * @param array $columns
 	 * @param tx_rnbase_util_FormTool $formTool
 	 * @param Tx_Rnbase_Domain_Model_DataInterface $options
+	 *
+	 * @deprecated
+	 *
 	 * @return array 0 are data and 1 layout
-	 * @deprecated use
 	 */
-	public static function prepareTable($entries, $columns, $formTool, $options) {
-		$tableUtil = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Utility_Tables');
-		return $tableUtil->prepareTable($entries, $columns, $formTool, $options);
+	public static function prepareTable($entries, $columns, $formTool, $options)
+	{
+		return static::getUtility()->prepareTable($entries, $columns, $formTool, $options);
 	}
-
-
-
-
 
 	/**
 	 * Returns a table based on the input $data
@@ -60,20 +56,36 @@ class tx_rnbase_mod_Tables {
 	 *
 	 * @param array $data Multidim array with first levels = rows, second levels = cells
 	 * @param array $layout If set, then this provides an alternative layout array instead of $this->tableLayout
+	 *
+	 * @deprecated
+	 *
 	 * @return string The HTML table.
 	 */
-	public static function buildTable($data, $layout = null) {
-		$tableUtil = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Utility_Tables');
-		return $tableUtil->buildTable($data, $layout);
+	public static function buildTable($data, $layout = null)
+	{
+		return static::getUtility()->buildTable($data, $layout);
 	}
 
 	/**
 	 * Returns a default table layout
+	 *
+	 * @deprecated
+	 *
 	 * @return array
 	 */
-	public static function getTableLayout() {
-		$tableUtil = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Utility_Tables');
-		return $tableUtil->getTableLayout();
+	public static function getTableLayout()
+	{
+		return static::getUtility()->getTableLayout();
+	}
+
+	/**
+	 * Returns the new utility
+	 *
+	 * @return Tx_Rnbase_Backend_Utility_Tables
+	 */
+	private static function getUtility()
+	{
+		return tx_rnbase::makeInstance('Tx_Rnbase_Backend_Utility_Tables');
 	}
 }
 
