@@ -39,6 +39,7 @@
 			"model/",
 			"plot/",
 			"sv1/",
+			"tests/",
 			"util/",
 			"view/"
 		],
