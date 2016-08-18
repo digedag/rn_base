@@ -153,7 +153,7 @@ class tx_rnbase {
 	 */
 	private static function loadT3($minimalInformation, $alternativeKey='', $prefix = 'class.', $suffix = '.php') {
 		// Class still exists
-		if (class_exists($minimalInformation)) {
+		if (class_exists($minimalInformation) || interface_exists($minimalInformation)) {
 			return TRUE;
 		}
 
@@ -167,7 +167,7 @@ class tx_rnbase {
 			}
 		}
 
-		return class_exists($minimalInformation);
+		return class_exists($minimalInformation) || interface_exists($minimalInformation);
 	}
 
 	/**
