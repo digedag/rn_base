@@ -147,6 +147,20 @@ Ein komplettes HTML-Template hat folgendes Aussehen. (TODO: erweitern!)
  ###PLAYERS###
 ```
 
+#### Der PageBrowser
+In rn_base wird eine sehr leistungsfähige Implementierung eines PageBrowser mitgeliefert. Die Ausgabe des PageBrowsers basiert auf einem HTML-Template und kann dadurch leicht angepasst werden. Folgende Einstellungen stehen per Typoscript zur Verfügung:
+
+```
+plugin.tx_myplugin.myview.filter.pagebrowser {
+  # pagesize 
+  limit = 10
+  # should 404 be send if page pointer is out of range 
+  ignorePageNotFound = true
+  # custom "what" clause for sql statement 
+  what = COUNT(*)
+}
+```
+
 
 ### Link-Erzeugung
 In TYPO3 werden Links normalerweise für Subpart-Marker gesetzt:

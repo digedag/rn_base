@@ -24,7 +24,7 @@
 
 
 tx_rnbase::load('tx_rnbase_util_SearchBase');
-
+tx_rnbase::load('Tx_Rnbase_Database_Connection');
 
 interface tx_rnbase_IFilter {
 	/**
@@ -264,7 +264,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 							$fields, array_merge($options, array('sqlonly'=>1, 'rownum'=>1))
 				);
 				// Jetzt besorgen wir uns die Position des aktuellen Eintrages
-				$res = tx_rnbase_util_DB::doSelect(
+				$res = Tx_Rnbase_Database_Connection::getInstance()->doSelect(
 					'ROW.rownum',
 					'('.$sql.') as ROW',
 					array(
@@ -286,6 +286,12 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 
 			$limit = $pageBrowser->getState();
 			$options = array_merge($options, $limit);
+			if($pageBrowser->isPointerOutOfRange() && !$configurations->getBool($confid.'ignorePageNotFound') ) {
+				// Die angefragte Seite war nicht vorhanden, also 404 schicken
+				// https://webmasters.googleblog.com/2014/02/infinite-scroll-search-friendly.html
+				$utility = tx_rnbase_util_Typo3Classes::getHttpUtilityClass();
+				$utility::setResponseCode($utility::HTTP_STATUS_404);
+			}
 			if($viewdata)
 				$viewdata->offsetSet('pagebrowser', $pageBrowser);
 		}

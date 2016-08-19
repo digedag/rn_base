@@ -32,12 +32,14 @@ class tx_rnbase_util_PageBrowser implements PageBrowser {
 	private $pointer;
 	private $listSize;
 	private $pageSize;
+	private $pointerOutOfRange;
 
 	/**
 	 * Erstellung des PageBrowser mit einer eindeutigen ID
 	 */
 	public function __construct($pbid) {
 		$this->pbid = $pbid;
+		$this->pointerOutOfRange = FALSE;
 	}
 
 	/**
@@ -76,7 +78,10 @@ class tx_rnbase_util_PageBrowser implements PageBrowser {
 	public function getState() {
 		$offset = $this->pointer * $this->pageSize;
 		// Wenn der Offset größer ist als die verfügbaren Einträge, dann den Offset neu berechnen.
-		$offset = $offset >= $this->listSize ? intval(((ceil($this->listSize/$this->pageSize))-1) * $this->pageSize) : $offset;
+		if($offset >= $this->listSize) {
+			$offset = intval(((ceil($this->listSize/$this->pageSize))-1) * $this->pageSize);
+			$this->pointerOutOfRange = TRUE;
+		}
 		// ensure offset is never lower than 0
 		$offset = $offset >= 0 ? $offset : 0;
 
@@ -134,6 +139,14 @@ class tx_rnbase_util_PageBrowser implements PageBrowser {
 		return $pageBrowserMarker;
 	}
 
+	/**
+	 * If page pointer was set to a value greater then max pages, then this method
+	 * will return true.
+	 * @return boolean
+	 */
+	public function isPointerOutOfRange() {
+		return $this->pointerOutOfRange;
+	}
 	/**
 	 * @return the right parametername for this browser
 	 */
