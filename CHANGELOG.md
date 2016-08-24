@@ -3,8 +3,13 @@
 Änderungen
 ----------
 
-v1.1.2 (??.??.2016)
+v1.1.3 (??.??.2016)
 
+v1.1.2 (24.08.2016)
+ * Pagebrowser sends 404 if pointer is out of list
+ * loadT3 checks for existing interface, so the outoloading can load interfaces too
+ * test folder added to autoloading class map in composer
+ 
 v1.1.1 (17.08.2016)
  * new Tx_Rnbase_Utility_Logger added
  * hide show links in decorator fixed
