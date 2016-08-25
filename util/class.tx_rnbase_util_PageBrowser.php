@@ -78,9 +78,10 @@ class tx_rnbase_util_PageBrowser implements PageBrowser {
 	public function getState() {
 		$offset = $this->pointer * $this->pageSize;
 		// Wenn der Offset größer ist als die verfügbaren Einträge, dann den Offset neu berechnen.
-		if($this->listSize > 0 && $offset >= $this->listSize) {
+		if($offset >= $this->listSize) {
 			$offset = intval(((ceil($this->listSize/$this->pageSize))-1) * $this->pageSize);
-			$this->pointerOutOfRange = TRUE;
+			if ($this->listSize > 0)
+				$this->pointerOutOfRange = TRUE;
 		}
 		// ensure offset is never lower than 0
 		$offset = $offset >= 0 ? $offset : 0;
