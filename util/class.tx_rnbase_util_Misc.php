@@ -514,31 +514,45 @@ MAYDAYPAGE;
 	}
 
 	/**
- 	 * Same method as tslib_pibase::pi_getPidList()
- 	 * @return string commaseparated list of pids
+	 * Same method as tslib_pibase::pi_getPidList()
+	 *
+	 * @param string $pidList Commaseparated list of pids
+	 * @param int|array $options The options array with deprecated recursive support
+	 *
+	 * @return string commaseparated list of pids
 	 */
-	public static function getPidList($pid_list, $recursive=0)  {
+	public static function getPidList(
+		$pidList,
+		$options = 0
+	) {
 		tx_rnbase::load('tx_rnbase_util_Math');
 		tx_rnbase::load('tx_rnbase_util_Typo3Classes');
-		if (!strcmp($pid_list, '')) {
-			$pid_list = tx_rnbase_util_TYPO3::getTSFE()->id;
+		if (!strcmp($pidList, '')) {
+			$pidList = tx_rnbase_util_TYPO3::getTSFE()->id;
 		}
-		$recursive = tx_rnbase_util_Math::intInRange($recursive, 0);
-		$pid_list_arr = array_unique(tx_rnbase_util_Strings::trimExplode(',', $pid_list, 1));
+		$options = is_array($options) ? $options : array('recursive' => $options);
+		$options['recursive'] = tx_rnbase_util_Math::intInRange($options['recursive'], 0);
+		$pidListArr = array_unique(tx_rnbase_util_Strings::trimExplode(',', $pidList, 1));
 
-		$pid_list = array();
-		foreach($pid_list_arr as $val)  {
+		$pidList = array();
+		foreach ($pidListArr as $val) {
 			$val = tx_rnbase_util_Math::intInRange($val, 0);
 			if ($val) {
 				/* @var $cObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
 				$cObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
-				$_list = $cObj->getTreeList(-1 * $val, $recursive);
-				if ($_list) {
-					$pid_list[] = $_list;
+				$list = $cObj->getTreeList(
+					(-1 * $val),
+					$options['recursive'],
+					0,
+					!empty($options['dontCheckEnableFields'])
+				);
+				if ($list) {
+					$pidList[] = $list;
 				}
 			}
 		}
-		return implode(',', $pid_list);
+
+		return implode(',', $pidList);
 	}
 
 	/**
