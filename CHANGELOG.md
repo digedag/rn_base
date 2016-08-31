@@ -3,7 +3,11 @@
 Änderungen
 ----------
 
-v1.1.3 (??.??.2016)
+v1.1.4 (??.??.2016)
+
+v1.1.3 (31.08.2016)
+ * getPidList has options now and supports dontCheckEnableFields
+ * avoids throwing a 404 header on empty lists
 
 v1.1.2 (24.08.2016)
  * Pagebrowser sends 404 if pointer is out of list
