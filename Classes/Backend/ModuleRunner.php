@@ -57,14 +57,7 @@ class Tx_Rnbase_Backend_ModuleRunner
 		$targetIdentifier = $moduleConfiguration['routeTarget'];
 		$target = $this->getCallableFromTarget($targetIdentifier);
 
-		// set the MCONF
-		$target->MCONF = $moduleConfiguration;
-
-		// set the global SOBE for backward compatibility
-		$GLOBALS['SOBE'] = $target;
-
-		// set dispatch mode for module
-		$GLOBALS['MCONF']['script'] = '_DISPATCH';
+		self::initTargetConf($target, $moduleSignature);
 
 		// TYPO3\CMS\Core\Http\Response since 7.x
 		$response = null;
@@ -78,6 +71,30 @@ class Tx_Rnbase_Backend_ModuleRunner
 	}
 
 	/**
+	 * Initializes the modconf.
+	 *
+	 * @param string $target
+	 * @param string $moduleSignature
+	 *
+	 * @return void
+	 */
+	public function initTargetConf($target, $moduleSignature = '')
+	{
+		$moduleConfiguration = $this->getModuleConfiguration($moduleSignature);
+
+		// set the MCONF
+		if (is_object($target)) {
+			$target->MCONF = $moduleConfiguration;
+		}
+
+		// set the global SOBE for backward compatibility
+		$GLOBALS['SOBE'] = $target;
+
+		// set dispatch mode for module
+		$GLOBALS['MCONF']['script'] = '_DISPATCH';
+	}
+
+	/**
 	 * Returns the module configuration which is provided during module registration
 	 *
 	 * @param string $moduleName
@@ -86,8 +103,13 @@ class Tx_Rnbase_Backend_ModuleRunner
 	 *
 	 * @return array
 	 */
-	protected function getModuleConfiguration($moduleName)
+	protected function getModuleConfiguration($moduleName = '')
 	{
+		if ($moduleName === '') {
+			tx_rnbase::load('tx_rnbase_parameters');
+			$moduleName = tx_rnbase_parameters::getGetParameters('M');
+		}
+
 		if (!isset($GLOBALS['TBE_MODULES']['_configuration'][$moduleName])) {
 			throw new \RuntimeException(
 				'Module ' . $moduleName . ' is not configured.',

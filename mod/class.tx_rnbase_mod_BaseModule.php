@@ -54,10 +54,32 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 	public function init()
 	{
 		$GLOBALS['LANG']->includeLLFile('EXT:rn_base/mod/locallang.xml');
+
+		$this->initModConf();
+
 		parent::init();
 
 		if ($this->id === 0) {
 			$this->id = $this->getConfigurations()->getInt('_cfg.fallbackPid');
+		}
+	}
+
+	/**
+	 * Initializes the mconf of this module
+	 *
+	 * @return void
+	 */
+	protected function initModConf()
+	{
+		// Name might be set from outside
+		if (!$this->MCONF['name']) {
+			$this->MCONF = $GLOBALS['MCONF'];
+		}
+		// check dispatch mode calls without rnbase module runner and fetch the config.
+		if (!$this->MCONF['name']) {
+			/* @var $runner Tx_Rnbase_Backend_ModuleRunner */
+			$runner = tx_rnbase::makeInstance('Tx_Rnbase_Backend_ModuleRunner');
+			$runner->initTargetConf($this);
 		}
 	}
 
