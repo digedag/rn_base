@@ -68,16 +68,42 @@ class tx_rnbase_util_Debug {
 	}
 
 	/**
+	 * Displays the "path" of the function call stack in a string, using debug_backtrace
+	 *
 	 * @return string
 	 */
-	public static function getDebugTrail() {
-		tx_rnbase::load('tx_rnbase_util_TYPO3');
-		if(tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-			return \TYPO3\CMS\Core\Utility\DebugUtility::debugTrail();
+	public static function getDebugTrail()
+	{
+		return implode(' // ', self::getTracePaths());
+	}
+
+	/**
+	 * Displays the "path" of the function call stack in a string, using debug_backtrace
+	 *
+	 * @return array
+	 */
+	public static function getTracePaths()
+	{
+		$trail = debug_backtrace();
+		$trail = array_reverse($trail);
+		array_pop($trail);
+		$path = array();
+		$pathSiteLength = strlen(PATH_site);
+		foreach ($trail as $dat) {
+			$pathFragment = $dat['class'] . $dat['type'] . $dat['function'];
+			// add the path of the included file
+			if (in_array(
+				$dat['function'],
+				array('require', 'include', 'require_once', 'include_once')
+			)) {
+				$dat['args'][0] = substr($dat['args'][0], $pathSiteLength);
+				$dat['file'] = substr($dat['file'], $pathSiteLength);
+				$pathFragment .= '(' . $dat['args'][0] . '),' . $dat['file'];
+			}
+			$path[] = $pathFragment . '#' . $dat['line'];
 		}
-		else {
-			return t3lib_utility_Debug::debugTrail();
-		}
+
+		return $path;
 	}
 
 	/**

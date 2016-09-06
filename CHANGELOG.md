@@ -4,6 +4,7 @@
 ----------
 
 v1.1.4 (??.??.2016)
+ * new get trace paths debug method
 
 v1.1.3 (31.08.2016)
  * getPidList has options now and supports dontCheckEnableFields
