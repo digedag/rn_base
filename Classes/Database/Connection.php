@@ -538,7 +538,7 @@ class Tx_Rnbase_Database_Connection
 	 * @return array The input array with the values quoted
 	 */
 	public function fullQuoteArray($arr, $table, $noQuote = FALSE, $allowNull = FALSE) {
-		return $GLOBALS['TYPO3_DB']->fullQuoteArray($str, $table, $noQuote, $allowNull);;
+		return $GLOBALS['TYPO3_DB']->fullQuoteArray($arr, $table, $noQuote, $allowNull);
 	}
 
 	/**
