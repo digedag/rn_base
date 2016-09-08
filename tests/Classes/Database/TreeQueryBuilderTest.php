@@ -106,7 +106,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
         );
 
 
-        $uidList = $treeQueryBuildMock->getPagePidList(1);
+        $uidList = $treeQueryBuildMock->getPageTreeUidList(1);
 
         $this->assertEquals(array(1, 2, 3, 4, 6, 7), $uidList);
     }
@@ -140,7 +140,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
         );
 
 
-        $uidList = $treeQueryBuildMock->getPagePidList(1, $options);
+        $uidList = $treeQueryBuildMock->getPageTreeUidList(1, $options);
 
         $this->assertEquals(array(1, 2, 3, 6), $uidList);
     }
@@ -174,7 +174,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
             }
         );
 
-        $uidList = $treeQueryBuildMock->getPagePidList(1, $options);
+        $uidList = $treeQueryBuildMock->getPageTreeUidList(1, $options);
 
         $this->assertEquals(array(1, 2, 3), $uidList);
     }
@@ -217,7 +217,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
             }
         );
 
-        $uidList = $treeQueryBuildMock->getTreeListRecursive(1, 2, 0, $options);
+        $uidList = $treeQueryBuildMock->getTreeUidListRecursive(1, 2, 0, $options);
 
         $this->assertEquals(array(1, 33, 44), $uidList);
     }
@@ -265,7 +265,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
             }
         );
 
-        $uidList = $treeQueryBuildMock->getTreeListRecursive(1, 2, 0, $options);
+        $uidList = $treeQueryBuildMock->getTreeUidListRecursive(1, 2, 0, $options);
 
         $this->assertEquals(array(1, 2), $uidList);
     }
@@ -308,7 +308,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
             }
         );
 
-        $uidList = $treeQueryBuildMock->getPagePidList(1, $options);
+        $uidList = $treeQueryBuildMock->getPageTreeUidList(1, $options);
 
         $this->assertEquals(array(1, 5), $uidList);
     }
@@ -351,7 +351,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
             }
         );
 
-        $uidList = $treeQueryBuildMock->getPagePidList(1, $options);
+        $uidList = $treeQueryBuildMock->getPageTreeUidList(1, $options);
 
         $this->assertEquals(array(1, 5), $uidList);
     }
@@ -399,7 +399,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
             }
         );
 
-        $uidList = $treeQueryBuildMock->getPagePidList('1,2,3');
+        $uidList = $treeQueryBuildMock->getPageTreeUidList('1,2,3');
 
         $this->assertEquals(array(1, 2, 3, 5, 6, 7), $uidList);
     }

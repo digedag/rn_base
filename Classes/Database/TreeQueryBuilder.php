@@ -36,6 +36,33 @@ tx_rnbase::load('Tx_Rnbase_Database_Connection');
 class Tx_Rnbase_Database_TreeQueryBuilder
 {
 	/**
+	 * returns an array of pids from a page tree
+	 *
+	 * @param int|string $id      start page
+	 * @param array      $options additional options:
+	 *                              tableName: which table is to be used (default: pages)
+	 *                              depth: how many levels are descended in the page tree
+	 *                               (default: 999)
+	 *                              begin: at which level do we start (default: 0)
+	 *
+	 *
+	 * @return array
+	 *
+	 * @see Tx_Rnbase_Database_TreeQueryBuilder::getTreeUidListRecursive
+	 */
+	public function getPageTreeUidList($id, $options = array())
+	{
+		//@TODO: support page aliases in id parameter
+		$sqlOptions = array_merge(array('tableName' => 'pages'), $options);
+		$depth = !empty($options['depth']) ? $options['depth'] : 999;
+		$begin = !empty($options['begin']) ? $options['begin'] : 0;
+
+		unset($sqlOptions['depth']);
+		unset($sqlOptions['begin']);
+		return $this->getTreeUidListRecursive($id, $depth, $begin, $sqlOptions);
+	}
+
+	/**
 	 * returns an array of tree-like assigned entities like a pagetree
 	 * but could also handle any other hierarchical db structure
 	 *
@@ -54,7 +81,7 @@ class Tx_Rnbase_Database_TreeQueryBuilder
 	 * @return array
 	 * @throws Exception
 	 */
-	public function getTreeListRecursive($id, $depth, $begin = 0, $options = array())
+	public function getTreeUidListRecursive($id, $depth, $begin = 0, $options = array())
 	{
 		$depth = (int)$depth;
 		$begin = (int)$begin;
@@ -93,7 +120,7 @@ class Tx_Rnbase_Database_TreeQueryBuilder
 					if ($depth > 1) {
 						$uidList = array_merge(
 							$uidList,
-							$this->getTreeListRecursive(
+							$this->getTreeUidListRecursive(
 								$row[$idField],
 								$depth - 1,
 								$begin - 1,
@@ -104,32 +131,6 @@ class Tx_Rnbase_Database_TreeQueryBuilder
 			}
 		}
 		return $uidList;
-	}
-
-	/**
-	 * returns an array of pids from a page tree
-	 *
-	 * @param int|string $id      start page
-	 * @param array      $options additional options:
-	 *                              tableName: which table is to be used (default: pages)
-	 *                              depth: how many levels are descended in the page tree
-	 *                               (default: 999)
-	 *                              begin: at which level do we start (default: 0)
-	 *
-	 *
-	 * @return array
-	 *
-	 * @see Tx_Rnbase_Database_TreeQueryBuilder::getTreeListRecursive
-	 */
-	public function getPagePidList($id, $options = array())
-	{
-		$sqlOptions = array_merge(array('tableName' => 'pages'), $options);
-		$depth = !empty($options['depth']) ? $options['depth'] : 999;
-		$begin = !empty($options['begin']) ? $options['begin'] : 0;
-
-		unset($sqlOptions['depth']);
-		unset($sqlOptions['begin']);
-		return $this->getTreeListRecursive($id, $depth, $begin, $sqlOptions);
 	}
 
 	/**
