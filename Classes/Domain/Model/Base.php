@@ -97,6 +97,11 @@ class Tx_Rnbase_Domain_Model_Base
 	 */
 	protected function loadRecord()
 	{
+		// skip record loading, if there is no uid!
+		if (!$this->isPersisted()) {
+			return;
+		}
+
 		$options = array();
 		if ((
 			is_object($GLOBALS['BE_USER'])
