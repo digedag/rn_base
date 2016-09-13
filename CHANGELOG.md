@@ -4,6 +4,7 @@
 ----------
 
 v1.1.5 (??.??.2016)
+ * new method getProperties for models
 
 v1.1.4 (07.09.2016)
  * new get trace paths debug method

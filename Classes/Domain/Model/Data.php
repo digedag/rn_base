@@ -176,6 +176,17 @@ class Tx_Rnbase_Domain_Model_Data
 	}
 
 	/**
+	 * Liefert alle properties des Models.
+	 *
+	 * @param string $property
+	 * @return string
+	 */
+	public function getProperties()
+	{
+		return $this->getProperty();
+	}
+
+	/**
 	 * Entfernt einen Wert.
 	 *
 	 * @param string $property
@@ -284,7 +295,7 @@ class Tx_Rnbase_Domain_Model_Data
 	 * @return ArrayIterator
 	 */
 	public function getIterator() {
-		return new ArrayIterator($this->getProperty());
+		return new ArrayIterator($this->getProperties());
 	}
 
 	/**
@@ -293,7 +304,7 @@ class Tx_Rnbase_Domain_Model_Data
 	 * @return array
 	 */
 	public function toArray() {
-		$array = $this->getProperty();
+		$array = $this->getProperties();
 		foreach ($array as $key => $value) {
 			if ($value instanceof Tx_Rnbase_Domain_Model_Data) {
 				$array[$key] = $value->toArray();
@@ -309,7 +320,7 @@ class Tx_Rnbase_Domain_Model_Data
 	 * @return string
 	 */
 	public function toString() {
-		$data = $this->getProperty();
+		$data = $this->getProperties();
 		$out  = get_class($this) . ' (' . CRLF;
 		foreach ($data as $key => $value) {
 			$type = gettype($value);

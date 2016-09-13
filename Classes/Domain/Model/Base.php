@@ -293,8 +293,7 @@ class Tx_Rnbase_Domain_Model_Base
 	 * @return boolean
 	 */
 	public function isValid() {
-		$record = $this->getProperty();
-		return !empty($record);
+		return !$this->isEmpty();
 	}
 
 	/**
@@ -360,7 +359,7 @@ class Tx_Rnbase_Domain_Model_Base
 	 * @return array
 	 */
 	function getRecord() {
-		return $this->getProperty();
+		return $this->getProperties();
 	}
 
 	/**
