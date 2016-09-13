@@ -4,6 +4,7 @@
 ----------
 
 v1.1.5 (??.??.2016)
+ * Bbase model cleanup (unnecessary uid property removed)
  * new method getProperties for models
 
 v1.1.4 (07.09.2016)

@@ -55,12 +55,14 @@ class Tx_Rnbase_Domain_Model_Data
 	private $record = array();
 
 	/**
-	 * constructor of the data object
+	 * Constructor of the data object
 	 *
-	 * @param array $record
-	 * @return NULL
+	 * @param array|int|null $record
+	 *
+	 * @return void
 	 */
-	function __construct($record = NULL) {
+	public function __construct($record = null)
+	{
 		return $this->init($record);
 	}
 

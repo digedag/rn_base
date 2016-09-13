@@ -45,11 +45,7 @@ class Tx_Rnbase_Domain_Model_Base
 	implements Tx_Rnbase_Domain_Model_DomainInterface, Tx_Rnbase_Domain_Model_DynamicTableInterface, Tx_Rnbase_Domain_Model_RecordInterface
 {
 	/**
-	 * @var int $uid
-	 */
-	private $uid;
-
-	/**
+	 * The table name of this record.
 	 *
 	 * @var string|0
 	 */
@@ -61,9 +57,11 @@ class Tx_Rnbase_Domain_Model_Base
 	 * Ensure to overwrite getTableName()!
 	 *
 	 * @param mixed $rowOrUid
-	 * @return NULL
+	 *
+	 * @return void
 	 */
-	function __construct($rowOrUid = NULL) {
+	public function __construct($rowOrUid = null)
+	{
 		return $this->init($rowOrUid);
 	}
 
@@ -72,19 +70,16 @@ class Tx_Rnbase_Domain_Model_Base
 	 * As the result the instance should be completly loaded.
 	 *
 	 * @param mixed $rowOrUid
-	 * @return NULL
+	 *
+	 * @return null
 	 */
-	protected function init($rowOrUid = NULL) {
+	protected function init($rowOrUid = null)
+	{
 		if (is_array($rowOrUid)) {
 			parent::init($rowOrUid);
-			$this->uid = $this->getProperty('uid');
-		}
-		else {
-			$rowOrUid = (int) $rowOrUid;
-			$this->uid = $rowOrUid;
-			if ($rowOrUid === 0) {
-				parent::init(array());
-			} elseif($this->getTableName()) {
+		} else {
+			parent::init((int) $rowOrUid);
+			if ($this->getTableName()) {
 				$this->loadRecord();
 			}
 		}
@@ -92,21 +87,21 @@ class Tx_Rnbase_Domain_Model_Base
 		// set the modified state to clean
 		$this->resetCleanState();
 
-		return NULL;
+		return null;
 	}
 
 	/**
-	 * loads the record to the model by its uid.
+	 * Loads the record to the model by its uid.
 	 *
 	 * @return void
 	 */
-	protected function loadRecord() {
-
+	protected function loadRecord()
+	{
 		$options = array();
-		if (
+		if ((
 			is_object($GLOBALS['BE_USER'])
 			&& $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects']
-		) {
+		)) {
 			$options['enablefieldsbe'] = 1;
 		}
 
@@ -114,7 +109,7 @@ class Tx_Rnbase_Domain_Model_Base
 		$db = Tx_Rnbase_Database_Connection::getInstance();
 		$record = $db->getRecord(
 			$this->getTableName(),
-			$this->uid,
+			$this->getUidRaw(),
 			$options
 		);
 
@@ -134,12 +129,8 @@ class Tx_Rnbase_Domain_Model_Base
 		if (is_array($property)) {
 			foreach ($property as $subProperty => $subValue) {
 				// ignore uid overriding!!!
-				if ($subProperty === 'uid') {
-					if ($this->hasUid()) {
-						continue;
-					} else {
-						$this->uid = (int) $subValue;
-					}
+				if ($subProperty === 'uid' && $this->hasUid()) {
+					continue;
 				}
 				parent::setProperty($subProperty, $subValue);
 			}
@@ -151,11 +142,14 @@ class Tx_Rnbase_Domain_Model_Base
 	}
 
 	/**
-	 * Returns the records uid
+	 * Returns the records uid.
+	 *
+	 * If this record is a language overlay, so the uid of the parent are given back.
 	 *
 	 * @return int
 	 */
-	function getUid() {
+	public function getUid()
+	{
 		$uid = 0;
 		$tableName = $this->getTableName();
 		if (!empty($tableName)) {
@@ -163,18 +157,27 @@ class Tx_Rnbase_Domain_Model_Base
 			// is stored in $record['l18n_parent'] instead of $record['uid']!
 			$languageParentField = tx_rnbase_util_TCA::getTransOrigPointerFieldForTable($tableName);
 			$sysLanguageUidField = tx_rnbase_util_TCA::getLanguageFieldForTable($tableName);
-			if (
-				!(
-					empty($languageParentField)
-					&& empty($sysLanguageUidField)
-					&& ($this->isPropertyEmpty($sysLanguageUidField))
-					&& ($this->isPropertyEmpty($languageParentField))
-				)
-			) {
+			if (!(
+				empty($languageParentField)
+				&& empty($sysLanguageUidField)
+				&& ($this->isPropertyEmpty($sysLanguageUidField))
+				&& ($this->isPropertyEmpty($languageParentField))
+			)) {
 				$uid = (int) $this->getProperty($languageParentField);
 			}
 		}
-		return $uid > 0 ? $uid : (int) $this->uid;
+
+		return $uid > 0 ? $uid : (int) $this->getUidRaw();
+	}
+
+	/**
+	 * Returns the original uid from the record.
+	 *
+	 * @return int
+	 */
+	public function getUidRaw()
+	{
+		return (int) $this->getProperty('uid');
 	}
 
 	/**
@@ -182,7 +185,8 @@ class Tx_Rnbase_Domain_Model_Base
 	 *
 	 * @return int
 	 */
-	public function getTcaLabel() {
+	public function getTcaLabel()
+	{
 		$label = '';
 		$tableName = $this->getTableName();
 		if (!empty($tableName)) {
@@ -191,6 +195,7 @@ class Tx_Rnbase_Domain_Model_Base
 				$label = (string) $this->getProperty($labelField);
 			}
 		}
+
 		return $label;
 	}
 	/**
@@ -198,7 +203,8 @@ class Tx_Rnbase_Domain_Model_Base
 	 *
 	 * @return int
 	 */
-	public function getSysLanguageUid() {
+	public function getSysLanguageUid()
+	{
 		$uid = 0;
 		$tableName = $this->getTableName();
 		if (!empty($tableName)) {
@@ -207,6 +213,7 @@ class Tx_Rnbase_Domain_Model_Base
 				$uid = (int) $this->getProperty($sysLanguageUidField);
 			}
 		}
+
 		return $uid;
 	}
 
@@ -214,17 +221,23 @@ class Tx_Rnbase_Domain_Model_Base
 	 * Returns the creation date of the record as DateTime object.
 	 *
 	 * @param DateTimeZone $timezone
+	 *
 	 * @return DateTime
 	 */
-	public function getCreationDateTime($timezone = NULL) {
-		$datetime = NULL;
+	public function getCreationDateTime(
+		DateTimeZone $timezone = null
+	) {
+		$datetime = null;
 		$tableName = $this->getTableName();
 		if (!empty($tableName)) {
 			$field = tx_rnbase_util_TCA::getCrdateFieldForTable($tableName);
 			if (!$this->isPropertyEmpty($field)) {
 				$tstamp = (int) $this->getProperty($field);
 				tx_rnbase::load('tx_rnbase_util_Dates');
-				$datetime = tx_rnbase_util_Dates::getDateTime('@' . $tstamp);
+				$datetime = tx_rnbase_util_Dates::getDateTime(
+					'@' . $tstamp,
+					$timezone
+				);
 			}
 		}
 
@@ -235,17 +248,23 @@ class Tx_Rnbase_Domain_Model_Base
 	 * Returns the creation date of the record as DateTime object.
 	 *
 	 * @param DateTimeZone $timezone
+	 *
 	 * @return DateTime
 	 */
-	public function getLastModifyDateTime($timezone = NULL) {
-		$datetime = NULL;
+	public function getLastModifyDateTime(
+		DateTimeZone $timezone = null
+	) {
+		$datetime = null;
 		$tableName = $this->getTableName();
 		if (!empty($tableName)) {
 			$field = tx_rnbase_util_TCA::getTstampFieldForTable($tableName);
 			if (!$this->isPropertyEmpty($field)) {
 				$tstamp = (int) $this->getProperty($field);
 				tx_rnbase::load('tx_rnbase_util_Dates');
-				$datetime = tx_rnbase_util_Dates::getDateTime('@' . $tstamp);
+				$datetime = tx_rnbase_util_Dates::getDateTime(
+					'@' . $tstamp,
+					$timezone
+				);
 			}
 		}
 
@@ -257,8 +276,8 @@ class Tx_Rnbase_Domain_Model_Base
 	 *
 	 * @return Tx_Rnbase_Domain_Model_Base
 	 */
-	public function reset() {
-
+	public function reset()
+	{
 		$this->loadRecord();
 
 		// set the modified state to clean
@@ -271,7 +290,8 @@ class Tx_Rnbase_Domain_Model_Base
 	 *
 	 * @return Tabellenname als String
 	 */
-	public function getTableName() {
+	public function getTableName()
+	{
 		return $this->tableName;
 	}
 
@@ -279,10 +299,13 @@ class Tx_Rnbase_Domain_Model_Base
 	 * Setzt den aktuellen Tabellenname
 	 *
 	 * @param string $tableName
+	 *
 	 * @return Tx_Rnbase_Domain_Model_Base
 	 */
-	public function setTableName($tableName = 0) {
+	public function setTableName($tableName = 0)
+	{
 		$this->tableName = $tableName;
+
 		return $this;
 	}
 
@@ -290,32 +313,36 @@ class Tx_Rnbase_Domain_Model_Base
 	 * Check if this record is valid.
 	 * If FALSE, the record is maybe deleted in database.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isValid() {
+	public function isValid()
+	{
 		return !$this->isEmpty();
 	}
 
 	/**
 	 * Check if record is persisted in database. This is if uid is not 0.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isPersisted() {
-		return $this->getUid() > 0;
+	public function isPersisted()
+	{
+		return $this->getUidRaw() > 0;
 	}
 
 	/**
-	 * validates the data of a model with the tca definition of a its table.
+	 * Validates the data of a model with the tca definition of a its table.
 	 *
-	 * @param array $options
+	 * @param array|null $options
 	 *     only_record_fields: validates only fields included in the record (default)
+	 *
 	 * @return bolean
 	 */
-	public function validateProperties($options = NULL) {
+	public function validateProperties($options = null)
+	{
 		return tx_rnbase_util_TCA::validateModel(
 			$this,
-			$options === NULL ? array('only_record_fields' => TRUE) : $options
+			$options === null ? array('only_record_fields' => true) : $options
 		);
 	}
 
@@ -323,9 +350,10 @@ class Tx_Rnbase_Domain_Model_Base
 	 * Ist der Datensatz als gelöscht markiert?
 	 * Wenn es keine Spalte oder TCA gibt, is es nie gelöscht!
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isDeleted() {
+	public function isDeleted()
+	{
 		$tableName = $this->getTableName();
 		$field = empty($GLOBALS['TCA'][$tableName]['ctrl']['delete'])
 			? 'deleted'
@@ -340,9 +368,10 @@ class Tx_Rnbase_Domain_Model_Base
 	 * Ist der Datensatz als gelöscht markiert?
 	 * Wenn es keine Spalte oder TCA gibt, is es nie gelöscht!
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isHidden() {
+	public function isHidden()
+	{
 		$tableName = $this->getTableName();
 		$field = empty($GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns']['disabled'])
 			? 'hidden'
@@ -358,7 +387,8 @@ class Tx_Rnbase_Domain_Model_Base
 	 *
 	 * @return array
 	 */
-	function getRecord() {
+	public function getRecord()
+	{
 		return $this->getProperties();
 	}
 
@@ -368,19 +398,22 @@ class Tx_Rnbase_Domain_Model_Base
 	 *
 	 * @return array mit Spaltennamen oder 0
 	 */
-	public function getColumnNames() {
+	public function getColumnNames()
+	{
 		$columns = $this->getTCAColumns();
+
 		return is_array($columns) ? array_keys($columns) : 0;
 	}
 
 	/**
 	 * Liefert die TCA-Definition der in der Tabelle definierten Spalten
 	 *
-	 * @return array
+	 * @return array mit Spaltennamen oder 0
 	 */
-	public function getTcaColumns() {
+	public function getTcaColumns()
+	{
 		$columns = tx_rnbase_util_TCA::getTcaColumns($this->getTableName());
+
 		return empty($columns) ? 0 : $columns;
 	}
-
 }
