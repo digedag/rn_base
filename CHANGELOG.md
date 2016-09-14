@@ -3,9 +3,12 @@
 Änderungen
 ----------
 
-v1.1.5 (??.??.2016)
- * Bbase model cleanup (unnecessary uid property removed)
+v1.1.6 (??.??.2016)
+
+v1.1.5 (14.09.2016)
+ * Base model cleanup (unnecessary uid property removed)
  * new method getProperties for models
+ * php version raised to support php 7
 
 v1.1.4 (07.09.2016)
  * new get trace paths debug method
