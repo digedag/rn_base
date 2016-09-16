@@ -126,6 +126,41 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends Tx_Phpunit_TestCase {
 		$this->assertEquals(0, $state['offset'], 'Offset ist falsch');
 		$this->assertEquals(3, $state['limit'], 'Limit ist falsch');
 	}
+
+	/**
+	 * @dataProvider dataProviderGetPointer
+	 * @param int $pointer
+	 * @param int $expectedPointer
+	 */
+	public function test_getPointer($pointer, $expectedPointer) {
+		/* @var $pageBrowser tx_rnbase_util_PageBrowser */
+		$pageBrowser = tx_rnbase::makeInstance('tx_rnbase_util_PageBrowser', 'test');
+		$parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+		$parameters->offsetSet($pageBrowser->getParamName('pointer'), $pointer);
+		$listSize = 100;
+		$pageSize = 10;
+		$pageBrowser->setState($parameters, $listSize, $pageSize);
+
+		self::assertSame($expectedPointer, $pageBrowser->getPointer());
+	}
+
+	/**
+	 * @return array
+	 */
+	public function dataProviderGetPointer() {
+		return array(
+			// before first page
+			array(-1, 0),
+			// at first page
+			array(0, 0),
+			// inside range
+			array(5, 5),
+			// last page
+			array(10, 10),
+			// outside range
+			array(11, 10),
+		);
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/util/class.tx_rnbase_tests_util_PageBrowser_testcase.php']) {

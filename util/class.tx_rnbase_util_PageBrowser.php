@@ -94,10 +94,17 @@ class tx_rnbase_util_PageBrowser implements PageBrowser {
 	}
 
 	/**
-	 * Returns the current pointer. This is the current page to show.
+	 * Returns the current pointer. This is the current page to show. If it's higher than
+	 * the possible
 	 * @return int page to show
 	 */
 	public function getPointer() {
+		$lastPage = intval($this->getListSize() / $this->getPageSize());
+		if ($this->pointer > $lastPage) {
+			$this->pointer = $lastPage;
+			$this->pointerOutOfRange = TRUE;
+		}
+
 		return $this->pointer;
 	}
 
