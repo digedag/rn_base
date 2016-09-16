@@ -314,15 +314,15 @@ class tx_rnbase_configurations {
 		return $id;
 	}
 
-  /**
-   * Create your individuell instance of cObj. For each id only one instance is created.
-   * If id == 0 the will get the plugins original cOBj.
-   *
-   * @param int $id any
-   * @param string|null $cObjClass String Optional cObj-classname
-   *
-   * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|tslib_cObj
-   */
+	/**
+	 * Create your individuell instance of cObj. For each id only one instance is created.
+	 * If id == 0 the will get the plugins original cOBj.
+	 *
+	 * @param int $id any
+	 * @param string|null $cObjClass String Optional cObj-classname
+	 *
+	 * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|tslib_cObj
+	 */
 	public function &getCObj($id = 0, $cObjClass = NULL) {
 		$cObjClass = $cObjClass === NULL ? tx_rnbase_util_Typo3Classes::getContentObjectRendererClass() : $cObjClass;
 		if(strcmp($id, '0') == 0) {
@@ -351,26 +351,26 @@ class tx_rnbase_configurations {
 		return $this->_formatter;
 	}
 
-  /**
-   * Return the data container for view by reference. This container should be filled
-   * by Controller-Action
-   *
-   * @return ArrayObject
-   */
-  public function &getViewData() {
-    return $this->_viewData;
-  }
+	/**
+	 * Return the data container for view by reference. This container should be filled
+	 * by Controller-Action
+	 *
+	 * @return ArrayObject
+	 */
+	public function &getViewData() {
+		return $this->_viewData;
+	}
 
-  /**
-   * Returns the defined path to template directory. This is by default
-   * 'EXT:your_extension/templates/'. You can change this by TS setting templatePath
-   *
-   * @return string
-   */
-  public function getTemplatePath() {
-    $path = $this->get('templatePath');
-    return $path ? $path : 'EXT:' . $this->getExtensionKey() . '/views/templates/';
-  }
+	/**
+	 * Returns the defined path to template directory. This is by default
+	 * 'EXT:your_extension/templates/'. You can change this by TS setting templatePath
+	 *
+	 * @return string
+	 */
+	public function getTemplatePath() {
+		$path = $this->get('templatePath');
+		return $path ? $path : 'EXT:' . $this->getExtensionKey() . '/views/templates/';
+	}
 
 	/**
 	 * Factory-Method for links. The new link is initialized with qualifier and optional
@@ -444,9 +444,9 @@ class tx_rnbase_configurations {
 	 *
 	 * @return void
 	 */
-  public function addKeepVar($name, $value) {
-    $this->_keepVars->offsetSet($name, $value);
-  }
+	public function addKeepVar($name, $value) {
+		$this->_keepVars->offsetSet($name, $value);
+	}
 
 	/**
 	 * Removes a value that must be kept by parameters.
@@ -455,49 +455,50 @@ class tx_rnbase_configurations {
 	 *
 	 * @return void
 	 */
-  public function removeKeepVar($name) {
-    $this->_keepVars->offsetUnset($name);
-  }
+	public function removeKeepVar($name) {
+		$this->_keepVars->offsetUnset($name);
+	}
 
 	/**
 	 * @param string $name
 	 *
 	 * @return string
 	 */
-  public function createParamName($name) {
-    return $this->getQualifier().'[' . $name . ']';
-  }
+	public function createParamName($name) {
+		return $this->getQualifier().'[' . $name . ']';
+	}
 
-  /**
-   * Returns the extension key.
-   *
-   * @return string
-   */
+	/**
+	 * Returns the extension key.
+	 *
+	 * @return string
+	 */
 	public function getExtensionKey() {
-    return $this->_extensionKey;
-  }
-  /**
-   * Returns the qualifier for plugin links: qualifier[param]=value.
-   *
-   * @return string
-   */
-	public function getQualifier() {
-    return $this->_qualifier;
-  }
+		return $this->_extensionKey;
+	}
 
-  /**
-   * Returns the flexform data of this plugin as array
-   *
-   * @return array by reference
-   */
+	/**
+	 * Returns the qualifier for plugin links: qualifier[param]=value.
+	 *
+	 * @return string
+	 */
+	public function getQualifier() {
+		return $this->_qualifier;
+	}
+
+	/**
+	 * Returns the flexform data of this plugin as array
+	 *
+	 * @return array by reference
+	 */
 	public function &getFlexFormArray() {
-    static $flex;
-    if (!is_array($flex)) {
-      $flex = tx_rnbase_util_Network::getURL(tx_rnbase_util_Extensions::extPath($this->getExtensionKey()) . $this->get('flexform'));
-      $flex = tx_rnbase_util_Arrays::xml2array($flex);
-    }
-    return $flex;
-  }
+		static $flex;
+		if (!is_array($flex)) {
+			$flex = tx_rnbase_util_Network::getURL(tx_rnbase_util_Extensions::extPath($this->getExtensionKey()) . $this->get('flexform'));
+			$flex = tx_rnbase_util_Arrays::xml2array($flex);
+		}
+		return $flex;
+	}
 
 	/**
 	 * Returns the localized label of the LOCAL_LANG key.
@@ -517,19 +518,19 @@ class tx_rnbase_configurations {
 	}
 
 
-  /**
-   * Returns a value from extension configuration.
-   * Can be called static
-   *
-   * @param string $extKey
-   * @param string $cfgKey
-   *
-   * @return mixed
-   */
-  public static function getExtensionCfgValue($extKey, $cfgKey) {
-    $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extKey]);
-    return (is_array($extConfig) && array_key_exists($cfgKey, $extConfig)) ? $extConfig[$cfgKey] : FALSE;
-  }
+	/**
+	 * Returns a value from extension configuration.
+	 * Can be called static
+	 *
+	 * @param string $extKey
+	 * @param string $cfgKey
+	 *
+	 * @return mixed
+	 */
+	public static function getExtensionCfgValue($extKey, $cfgKey) {
+		$extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extKey]);
+		return (is_array($extConfig) && array_key_exists($cfgKey, $extConfig)) ? $extConfig[$cfgKey] : FALSE;
+	}
 
 	/**
 	 * Get a value or an array by providing a relative pathKey
@@ -569,6 +570,7 @@ class tx_rnbase_configurations {
 		}
 		return $ret;
 	}
+
 	/**
 	 * Returns a boolean config value. The return value is FALSE if the value is empty or 0 or 'FALSE'
 	 * @param string $pathKey
@@ -794,12 +796,12 @@ class tx_rnbase_configurations {
 	// Private functions
 	// -------------------------------------------------------------------------------------
 
-  /**
-   *
-   */
-  function _setCObjectData($data) {
-    $this->_dataStore->offsetSet('tt_content.', $data);
-  }
+	/**
+	 *
+	 */
+	function _setCObjectData($data) {
+		$this->_dataStore->offsetSet('tt_content.', $data);
+	}
 
 	/**
 	 * Load a (local) configuration array into the object
