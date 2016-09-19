@@ -56,7 +56,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
                         'pages',
                         array('where' => '1=1 AND pid IN (1)', 'tableName' => 'pages')
                     )
-                    ->willReturn(array(array('uid' => 2)));
+                    ->will(self::returnValue(array(array('uid' => 2))));
 
                 $connection->expects(self::at(1))
                     ->method('doSelect')
@@ -65,7 +65,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
                         'pages',
                         array('where' => '1=1 AND pid IN (2)', 'tableName' => 'pages')
                     )
-                    ->willReturn(array(array('uid' => 3), array('uid' => 6)));
+                    ->will(self::returnValue(array(array('uid' => 3), array('uid' => 6))));
 
                 $connection->expects(self::at(2))
                     ->method('doSelect')
@@ -74,7 +74,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
                         'pages',
                         array('where' => '1=1 AND pid IN (3)', 'tableName' => 'pages')
                     )
-                    ->willReturn(array(array('uid' => 4)));
+                    ->will(self::returnValue(array(array('uid' => 4))));
 
                 $connection->expects(self::at(3))
                     ->method('doSelect')
@@ -83,7 +83,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
                         'pages',
                         array('where' => '1=1 AND pid IN (4)', 'tableName' => 'pages')
                     )
-                    ->willReturn(array());
+                    ->will(self::returnValue(array()));
 
                 $connection->expects(self::at(4))
                     ->method('doSelect')
@@ -92,7 +92,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
                         'pages',
                         array('where' => '1=1 AND pid IN (6)', 'tableName' => 'pages')
                     )
-                    ->willReturn(array(array('uid' => 7)));
+                    ->will(self::returnValue(array(array('uid' => 7))));
 
                 $connection->expects(self::at(5))
                     ->method('doSelect')
@@ -101,7 +101,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
                         'pages',
                         array('where' => '1=1 AND pid IN (7)', 'tableName' => 'pages')
                     )
-                    ->willReturn(array());
+                    ->will(self::returnValue(array()));
             }
         );
 
@@ -126,7 +126,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
                         'pages',
                         array('where' => '1=1 AND pid IN (1)', 'tableName' => 'pages')
                     )
-                    ->willReturn(array(array('uid' => 2)));
+                    ->will(self::returnValue(array(array('uid' => 2))));
 
                 $connection->expects(self::at(1))
                     ->method('doSelect')
@@ -135,7 +135,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
                         'pages',
                         array('where' => '1=1 AND pid IN (2)', 'tableName' => 'pages')
                     )
-                    ->willReturn(array(array('uid' => 3), array('uid' => 6)));
+                    ->will(self::returnValue(array(array('uid' => 3), array('uid' => 6))));
             }
         );
 
@@ -161,7 +161,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
                         'pages',
                         array('where' => 'hidden=1 AND pid IN (1)', 'tableName' => 'pages')
                     )
-                    ->willReturn(array(array('uid' => 2)));
+                    ->will(self::returnValue(array(array('uid' => 2))));
 
                 $connection->expects(self::at(1))
                     ->method('doSelect')
@@ -170,7 +170,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
                         'pages',
                         array('where' => 'hidden=1 AND pid IN (2)', 'tableName' => 'pages')
                     )
-                    ->willReturn(array(array('uid' => 3)));
+                    ->will(self::returnValue(array(array('uid' => 3))));
             }
         );
 
@@ -195,7 +195,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
                         'tt_content',
                         array('where' => '1=1 AND pid IN (1)', 'tableName' => 'tt_content')
                     )
-                    ->willReturn(array(array('uid' => 33), array('uid' => 44)));
+                    ->will(self::returnValue(array(array('uid' => 33), array('uid' => 44))));
 
                 $connection->expects(self::at(1))
                     ->method('doSelect')
@@ -204,7 +204,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
                         'tt_content',
                         array('where' => '1=1 AND pid IN (33)', 'tableName' => 'tt_content')
                     )
-                    ->willReturn(array());
+                    ->will(self::returnValue(array()));
 
                 $connection->expects(self::at(2))
                     ->method('doSelect')
@@ -213,7 +213,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
                         'tt_content',
                         array('where' => '1=1 AND pid IN (44)', 'tableName' => 'tt_content')
                     )
-                    ->willReturn(array());
+                    ->will(self::returnValue(array()));
             }
         );
 
@@ -246,7 +246,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
                             'limit' => 1
                         )
                     )
-                    ->willReturn(array(array('uid' => 2)));
+                    ->will(self::returnValue(array(array('uid' => 2))));
 
                 $connection->expects(self::at(1))
                     ->method('doSelect')
@@ -260,7 +260,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
                             'limit' => 1
                         )
                     )
-                    ->willReturn(array());
+                    ->will(self::returnValue(array()));
 
             }
         );
@@ -290,7 +290,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
                             'parentField' => 'parent_id'
                         )
                     )
-                    ->willReturn(array(array('uid' => 5)));
+                    ->will(self::returnValue(array(array('uid' => 5))));
 
                 $connection->expects(self::at(1))
                     ->method('doSelect')
@@ -303,7 +303,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
                             'parentField' => 'parent_id'
                         )
                     )
-                    ->willReturn(array());
+                    ->will(self::returnValue(array()));
 
             }
         );
@@ -333,7 +333,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
                             'idField' => 'entity_id'
                         )
                     )
-                    ->willReturn(array(array('entity_id' => 5)));
+                    ->will(self::returnValue(array(array('entity_id' => 5))));
 
                 $connection->expects(self::at(1))
                     ->method('doSelect')
@@ -346,7 +346,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
                             'idField' => 'entity_id'
                         )
                     )
-                    ->willReturn(array());
+                    ->will(self::returnValue(array()));
 
             }
         );
@@ -368,7 +368,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
                         'pages',
                         array('where' => '1=1 AND pid IN (1,2,3)', 'tableName' => 'pages')
                     )
-                    ->willReturn(array(array('uid' => 5)));
+                    ->will(self::returnValue(array(array('uid' => 5))));
 
                 $connection->expects(self::at(1))
                     ->method('doSelect')
@@ -377,7 +377,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
                         'pages',
                         array('where' => '1=1 AND pid IN (5)', 'tableName' => 'pages')
                     )
-                    ->willReturn(array(array('uid' => 6), array('uid' => 7)));
+                    ->will(self::returnValue(array(array('uid' => 6), array('uid' => 7))));
 
                 $connection->expects(self::at(2))
                     ->method('doSelect')
@@ -386,7 +386,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
                         'pages',
                         array('where' => '1=1 AND pid IN (6)', 'tableName' => 'pages')
                     )
-                    ->willReturn(array());
+                    ->will(self::returnValue(array()));
 
                 $connection->expects(self::at(3))
                     ->method('doSelect')
@@ -395,7 +395,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
                         'pages',
                         array('where' => '1=1 AND pid IN (7)', 'tableName' => 'pages')
                     )
-                    ->willReturn(array());
+                    ->will(self::returnValue(array()));
             }
         );
 
