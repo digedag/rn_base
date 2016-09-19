@@ -3,7 +3,11 @@
 Änderungen
 ----------
 
-v1.1.6 (??.??.2016)
+v1.1.7 (??.??.2016)
+
+v1.1.6 (19.09.2016)
+ * tx_rnbase_util_PageBrowser::getPointer returns only valid pointers
+ * class for getting a pidlist from a pagetree or hierarchical db structure with custom query options
 
 v1.1.5 (14.09.2016)
  * Base model cleanup (unnecessary uid property removed)
@@ -21,7 +25,7 @@ v1.1.2 (24.08.2016)
  * Pagebrowser sends 404 if pointer is out of list
  * loadT3 checks for existing interface, so the outoloading can load interfaces too
  * test folder added to autoloading class map in composer
- 
+
 v1.1.1 (17.08.2016)
  * new Tx_Rnbase_Utility_Logger added
  * hide show links in decorator fixed
@@ -30,9 +34,9 @@ v1.1.1 (17.08.2016)
 v1.1.0 (11.08.2016)
  * dirty state after setProperty([]) should be dirty, not clean
  * new initial abstract detail handler for be modules added
- * new abstract seach handler for be modules added 
+ * new abstract seach handler for be modules added
  * new abstract lister for be modules added
- * new repositories uses instance of Tx_Rnbase_Domain_Collection_Base instead of array per default 
+ * new repositories uses instance of Tx_Rnbase_Domain_Collection_Base instead of array per default
  * collection support for select at connection added (usage: $options['collection'] = true;)
  * redirect of link util supports a http status parameter now
  * new redirect wraper method in networ util
