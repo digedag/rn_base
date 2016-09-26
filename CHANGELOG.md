@@ -333,7 +333,7 @@ v0.14.7 (07.01.2015)
 * security fixes for dam handling
 * some quote string wrapper methods
 * New Method tx_rnbase_util_TSFAL::fetchFileList as tx_dam_tsfe->fetchFileList equivalent for easier dam2file migration.
-* composer.json added. install rn_base with { "require" : { "digedag/rn-base" : "dev-master" } }
+* composer.json added. install rn_base with { "require" : { "typo3-ter/rn-base" : "dev-master" } }
 
 v0.14.6 (04.12.2014)
  * New feature, to skip empty values for keepvars

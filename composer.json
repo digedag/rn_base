@@ -21,7 +21,9 @@
 		"issues" : "https://github.com/digedag/rn_base/issues"
 	},
 	"replace" : {
-		"typo3-ter/rn-base" : "*"
+		"rn-base" : "self.version",
+		"typo3-ter/rn-base" : "self.version",
+		"digedag/rn-base" : "self.version",	
 	},
 	"require" : {
 		"typo3/cms-core" : ">=4.5.0 <=7.6.99"
