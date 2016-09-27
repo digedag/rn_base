@@ -21,7 +21,7 @@
 		"issues" : "https://github.com/digedag/rn_base/issues"
 	},
 	"replace" : {
-		"rn-base" : "self.version",
+		"rn_base" : "self.version",
 		"typo3-ter/rn-base" : "self.version",
 		"digedag/rn-base" : "self.version"
 	},
