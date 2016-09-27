@@ -5,6 +5,9 @@
 
 v1.1.7 (??.??.2016)
 
+v1.1.8 (26.09.2016)
+ * optimized composer.json
+
 v1.1.6 (19.09.2016)
  * tx_rnbase_util_PageBrowser::getPointer returns only valid pointers
  * class for getting a pidlist from a pagetree or hierarchical db structure with custom query options
