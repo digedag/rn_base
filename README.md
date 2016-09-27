@@ -2,8 +2,9 @@ rn_base
 =======
 
 [![rn_base](ext_icon.gif)](https://github.com/digedag/rn_base)
-[![Latest Stable Version](https://poser.pugx.org/digedag/rn-base/v/stable.svg)](https://packagist.org/packages/digedag/rn-base)
-[![License](https://poser.pugx.org/digedag/rn-base/license.svg)](https://packagist.org/packages/digedag/rn-base)  
+[![Latest Stable Version](https://img.shields.io/packagist/v/digedag/rn-base.svg?maxAge=3600)](https://packagist.org/packages/digedag/rn-base)
+[![Total Downloads](https://img.shields.io/packagist/dt/digedag/rn-base.svg?maxAge=3600)](https://packagist.org/packages/digedag/rn-base)
+[![License](https://img.shields.io/packagist/l/digedag/rn-base.svg?maxAge=3600)](https://packagist.org/packages/digedag/rn-base)
 [CHANGELOG](CHANGELOG.md)
 
 What is this extension for?
