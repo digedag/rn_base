@@ -203,6 +203,22 @@ class Tx_Rnbase_Utility_TcaTool {
 			$wizards['link'] = self::addWizardScriptForTypo3Version('link', $wizards['link']);
 		}
 
+		if(isset($options['colorpicker'])) {
+			$wizards['colorpicker'] = Array(
+				'type' => 'colorbox',
+				'title' => 'Colorpicker',
+				'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
+			);
+
+			if (is_array($options['colorpicker'])) {
+				$wizards['colorpicker'] = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
+					$wizards['colorpicker'], $options['colorpicker']
+				);
+			}
+
+			$wizards['colorpicker'] = self::addWizardScriptForTypo3Version('colorpicker', $wizards['colorpicker']);
+		}
+
 		return $wizards;
 	}
 

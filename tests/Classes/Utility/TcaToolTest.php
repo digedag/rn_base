@@ -80,7 +80,8 @@ class Tx_Rnbase_Utility_TcaToolTest extends Tx_Phpunit_TestCase {
 				'add' => 1,
 				'edit' => 1,
 				'list' => 1,
-				'RTE' => 1
+				'RTE' => 1,
+				'colorpicker' => 1
 			)
 		);
 
@@ -93,6 +94,7 @@ class Tx_Rnbase_Utility_TcaToolTest extends Tx_Phpunit_TestCase {
 			self::assertEquals('wizard_edit', $wizards['edit']['module']['name']);
 			self::assertEquals('wizard_list', $wizards['list']['module']['name']);
 			self::assertEquals('wizard_rte', $wizards['RTE']['module']['name']);
+			self::assertEquals('wizard_colorpicker', $wizards['colorpicker']['module']['name']);
 		} else {
 			self::assertArrayNotHasKey('module', $wizards['add']);
 			self::assertArrayNotHasKey('module', $wizards['edit']);
@@ -101,7 +103,7 @@ class Tx_Rnbase_Utility_TcaToolTest extends Tx_Phpunit_TestCase {
 			self::assertEquals('wizard_add.php', $wizards['add']['script']);
 			self::assertEquals('wizard_edit.php', $wizards['edit']['script']);
 			self::assertEquals('wizard_list.php', $wizards['list']['script']);
-			self::assertEquals('wizard_rte.php', $wizards['RTE']['script']);
+			self::assertEquals('wizard_colorpicker.php', $wizards['colorpicker']['script']);
 		}
 	}
 
@@ -142,8 +144,24 @@ class Tx_Rnbase_Utility_TcaToolTest extends Tx_Phpunit_TestCase {
 			self::assertEquals('wizard_rte2.gif', $wizards['RTE']['icon']);
 		}
 	}
-}
 
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_TCA_testcase.php']) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_TCA_testcase.php']);
+	/**
+	 * @group unit
+	 */
+	public function testGetWizardsForColorpicker() {
+		$wizards = Tx_Rnbase_Utility_TcaTool::getWizards('', array('colorpicker' => 1));
+
+		self::assertEquals('colorbox', $wizards['colorpicker']['type']);
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testGetWizardsForColorpickerAndOverrides() {
+		$wizards = Tx_Rnbase_Utility_TcaTool::getWizards(
+			'', array('colorpicker' => array('type' => 'myOwnType'))
+		);
+
+		self::assertEquals('myOwnType', $wizards['colorpicker']['type']);
+	}
 }
