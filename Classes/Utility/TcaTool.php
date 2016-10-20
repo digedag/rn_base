@@ -185,7 +185,7 @@ class Tx_Rnbase_Utility_TcaTool {
 				'type' => 'popup',
 				'title' => 'LLL:EXT:cms/locallang_ttc.xml:header_link_formlabel',
 				'icon' => tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
-				'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif' :
+				'EXT:t3skin/icons/gfx/link_popup.gif' :
 				'link_popup.gif',
 				'script' => 'browse_links.php?mode=wizard',
 				'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
@@ -200,7 +200,10 @@ class Tx_Rnbase_Utility_TcaTool {
 					);
 			}
 
-			$wizards['link'] = self::addWizardScriptForTypo3Version('link', $wizards['link']);
+			$wizards['link'] = self::addWizardScriptForTypo3Version(
+				tx_rnbase_util_TYPO3::isTYPO62OrHigher() ? 'element_browser' : 'link',
+				$wizards['link']
+			);
 		}
 
 		if(isset($options['colorpicker'])) {
