@@ -93,8 +93,8 @@ class Tx_Rnbase_Utility_TcaTool {
 				'type' => 'popup',
 				'title' => 'Edit entry', // LLL:EXT:mketernit/locallang.
 				'icon' => tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
-				'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif' :
-				'edit2.gif',
+					'EXT:t3skin/icons/gfx/edit2.gif' :
+					'edit2.gif',
 				'popup_onlyOpenIfSelected' => 1,
 				'JSopenParams' => 'height=576,width=720,status=0,menubar=0,scrollbars=1',
 			);
@@ -112,8 +112,8 @@ class Tx_Rnbase_Utility_TcaTool {
 				'type' => 'script',
 				'title' => 'Create new entry',
 				'icon' => tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
-				'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif' :
-				'add.gif',
+					'EXT:t3skin/icons/gfx/add.gif' :
+					'add.gif',
 				'params' => array (
 					'table' => $table,
 					'pid' => ($globalPid ? '###STORAGE_PID###' : '###CURRENT_PID###'),
@@ -134,8 +134,8 @@ class Tx_Rnbase_Utility_TcaTool {
 				'type' => 'popup',
 				'title' => 'List entries',
 				'icon' => tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
-				'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_list.gif' :
-				'list.gif',
+					'EXT:t3skin/icons/gfx/list.gif' :
+					'list.gif',
 				'params' => array (
 					'table' => $table,
 					'pid' => ($globalPid ? '###STORAGE_PID###' : '###CURRENT_PID###'),
@@ -174,8 +174,8 @@ class Tx_Rnbase_Utility_TcaTool {
 				'type' => 'script',
 				'title' => 'Full screen Rich Text Editing',
 				'icon' => tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
-				'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_rte.gif' :
-				'wizard_rte2.gif',
+					'EXT:t3skin/icons/gfx/wizard_rte.gif' :
+					'wizard_rte2.gif',
 			);
 			$wizards['RTE'] = self::addWizardScriptForTypo3Version('rte', $wizards['RTE']);
 		}
@@ -185,8 +185,8 @@ class Tx_Rnbase_Utility_TcaTool {
 				'type' => 'popup',
 				'title' => 'LLL:EXT:cms/locallang_ttc.xml:header_link_formlabel',
 				'icon' => tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
-				'EXT:t3skin/icons/gfx/link_popup.gif' :
-				'link_popup.gif',
+					'EXT:t3skin/icons/gfx/link_popup.gif' :
+					'link_popup.gif',
 				'script' => 'browse_links.php?mode=wizard',
 				'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
 				'params' => Array(

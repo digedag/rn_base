@@ -124,19 +124,19 @@ class Tx_Rnbase_Utility_TcaToolTest extends Tx_Phpunit_TestCase {
 
 		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
 			self::assertEquals(
-				'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
+				'EXT:t3skin/icons/gfx/add.gif',
 				$wizards['add']['icon']
 			);
 			self::assertEquals(
-				'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
+				'EXT:t3skin/icons/gfx/edit2.gif',
 				$wizards['edit']['icon']
 			);
 			self::assertEquals(
-				'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_list.gif',
+				'EXT:t3skin/icons/gfx/list.gif',
 				$wizards['list']['icon']
 			);
 			self::assertEquals(
-				'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_rte.gif',
+				'EXT:t3skin/icons/gfx/wizard_rte.gif',
 				$wizards['RTE']['icon']
 			);
 		} else {
