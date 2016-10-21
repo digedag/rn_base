@@ -191,7 +191,8 @@ class Tx_Rnbase_Utility_TcaTool {
 				'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
 				'params' => Array(
 					'blindLinkOptions' => '',
-				)
+				),
+				'module' => array('urlParameters' => array('mode' => 'wizard'))
 			);
 			if (is_array($options['link'])) {
 				$wizards['link'] =

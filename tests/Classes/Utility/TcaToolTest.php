@@ -43,7 +43,8 @@ class Tx_Rnbase_Utility_TcaToolTest extends Tx_Phpunit_TestCase {
 				'link' => array(
 					'params' => Array(
 						'blindLinkOptions' => 'file,page,mail,spec,folder',
-					)
+					),
+					'module' => array('urlParameters' => array('newKey' => 'wizard'))
 				)
 			)
 		);
@@ -57,7 +58,8 @@ class Tx_Rnbase_Utility_TcaToolTest extends Tx_Phpunit_TestCase {
 				'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
 				'params' => Array(
 						'blindLinkOptions' => 'file,page,mail,spec,folder',
-				)
+				),
+				'module' => array('urlParameters' => array('mode' => 'wizard', 'newKey' => 'wizard'))
 			)
 		);
 		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
