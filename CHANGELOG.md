@@ -3,9 +3,14 @@
 Änderungen
 ----------
 
-v1.1.7 (??.??.2016)
+v1.1.9 (??.??.2016)
 
-v1.1.8 (26.09.2016)
+v1.1.8 (26.10.2016)
+ * added colorpicker wizard
+ * fixed link wizard
+ * fixed wizard icons
+
+v1.1.7 (26.09.2016)
  * optimized composer.json
 
 v1.1.6 (19.09.2016)
