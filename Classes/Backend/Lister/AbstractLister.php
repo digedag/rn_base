@@ -374,15 +374,17 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
 
 		$columns = $this->getDecoratorColumns();
 
-		tx_rnbase::load('tx_rnbase_mod_Tables');
-		list ($tableData, $tableLayout) = tx_rnbase_mod_Tables::prepareTable(
+		/* @var $tables Tx_Rnbase_Backend_Utility_Tables */
+		$tables = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Utility_Tables');
+		list ($tableData, $tableLayout) = $tables->prepareTable(
 			$items,
 			$columns,
 			$this->getFormTool(),
 			$this->getOptions()
 		);
 
-		return $this->getModule()->getDoc()->table($tableData, $tableLayout);
+		return $tables->buildTable($tableData, $tableLayout);
+//		return $this->getModule()->getDoc()->table($tableData, $tableLayout);
 	}
 
 	/**

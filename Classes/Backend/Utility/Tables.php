@@ -38,7 +38,9 @@ class Tx_Rnbase_Backend_Utility_Tables
 	 */
 	public function prepareTable($entries, $columns, $formTool, $options) {
 		$options = tx_rnbase::makeInstance('Tx_Rnbase_Domain_Model_Data', $options);
-		$tableLayout = $formTool->getDoc()->tableLayout;
+		// das initiale TableLayout nicht mehr aus dem Doc holen. Damit wird in 7.6 das
+		// Bootstrap-Layout verwendet.
+		$tableLayout = $this->getTableLayout();
 		$tableData = array($this->getHeadline($columns, $options, $formTool));
 		$rowCount = 1;
 		$isRowOdd = FALSE;
