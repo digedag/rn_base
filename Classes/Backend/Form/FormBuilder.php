@@ -34,6 +34,7 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
 class Tx_Rnbase_Backend_Form_FormBuilder {
 	private $nodeFactory = NULL;
+	/** @var \TYPO3\CMS\Backend\Form\FormDataCompiler */
 	private $formDataCompiler = NULL;
 	private $formResultCompiler; // TODO
 	protected $formDataCache = array();
@@ -67,14 +68,27 @@ class Tx_Rnbase_Backend_Form_FormBuilder {
 	 * @return multitype:
 	 */
 	protected function compileFormData($table, $uid) {
+
 		$key = $table.'_'.intval($uid);
 		if(!array_key_exists($key, $this->formDataCache)) {
-			$formDataCompilerInput = [
-					'tableName' => $table,
-					'vanillaUid' => (int)$uid,
-					'command' => 'edit',
-					'returnUrl' => '',
-			];
+			$isNewItem = substr($uid, 0, 3) == 'NEW';
+			if($isNewItem) {
+				// Die UID ist hier die PID
+				$formDataCompilerInput = [
+						'tableName' => $table,
+						'vanillaUid' => (int)$uid,
+						'command' => 'new',
+						'returnUrl' => '',
+				];
+			}
+			else {
+				$formDataCompilerInput = [
+						'tableName' => $table,
+						'vanillaUid' => (int)$uid,
+						'command' => 'edit',
+						'returnUrl' => '',
+				];
+			}
 			$this->formDataCache[$key] = $this->formDataCompiler->compile($formDataCompilerInput);
 		}
 		return $this->formDataCache[$key];
