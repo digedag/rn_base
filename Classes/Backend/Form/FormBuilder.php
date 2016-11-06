@@ -61,22 +61,26 @@ class Tx_Rnbase_Backend_Form_FormBuilder {
 		return $this->nodeFactory;
 	}
 
+	protected function isNEWRecord($uid) {
+		return substr($uid, 0, 3) == 'NEW';
+	}
 	/**
 	 * Compile formdata for database record. Result is cached.
 	 * @param unknown $table
 	 * @param unknown $uid
 	 * @return multitype:
 	 */
-	protected function compileFormData($table, $uid) {
+	protected function compileFormData($table, $uid, $pid) {
 
 		$key = $table.'_'.intval($uid);
 		if(!array_key_exists($key, $this->formDataCache)) {
-			$isNewItem = substr($uid, 0, 3) == 'NEW';
-			if($isNewItem) {
+			if($this->isNEWRecord($uid)) {
 				// Die UID ist hier die PID
+				// Es wird intern beim compile eine NEWuid festgelegt
+				// Vorbelegung von Felder ist noch nicht möglich...
 				$formDataCompilerInput = [
 						'tableName' => $table,
-						'vanillaUid' => (int)$uid,
+						'vanillaUid' => (int)$pid,
 						'command' => 'new',
 						'returnUrl' => '',
 				];
@@ -103,7 +107,7 @@ class Tx_Rnbase_Backend_Form_FormBuilder {
 	public function getSoloField($table, $row, $fieldName) {
 
 		// Wir benötigen pro DB-Tabelle ein data-Array mit den vorbereiteten Formular-Daten
-		$formData = $this->compileFormData($table, $row['uid']);
+		$formData = $this->compileFormData($table, $row['uid'], $row['pid']);
 //		$options = $this->data;
 		$options = $formData;
 		// in den folgenden Key müssen die Daten aus der TCA rein. Wie geht das?
@@ -111,6 +115,7 @@ class Tx_Rnbase_Backend_Form_FormBuilder {
 		$options['fieldName'] = $fieldName;
 		$options['databaseRow'] = $row;
 		$options['renderType'] = 'singleFieldContainer';
+
 		$childResultArray = $this->nodeFactory->create($options)->render();
 
 		// TODO: dieser Aufruf sollte einmalig für das gesamte Formular erfolgen!
