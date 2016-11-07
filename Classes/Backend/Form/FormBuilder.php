@@ -66,11 +66,15 @@ class Tx_Rnbase_Backend_Form_FormBuilder {
 	}
 	/**
 	 * Compile formdata for database record. Result is cached.
-	 * @param unknown $table
-	 * @param unknown $uid
+	 * Bei der Neuanlage ($uid beginnt mit NEW) muss in $record die 'pid' gesetzt sein. Zusätzlich
+	 * können werden Attribute mit default-Werten übergeben werden. Die Attribute müssen aber in der
+	 * TCA[$table]['ctrl']['useColumnsForDefaultValues'] konfiguriert sein.
+	 * @param string $table
+	 * @param string $uid
+	 * @param array $record should contain pid and other default values for record
 	 * @return multitype:
 	 */
-	protected function compileFormData($table, $uid, $pid) {
+	protected function compileFormData($table, $uid, $record) {
 
 		$key = $table.'_'.intval($uid);
 		if(!array_key_exists($key, $this->formDataCache)) {
@@ -79,11 +83,16 @@ class Tx_Rnbase_Backend_Form_FormBuilder {
 				// Es wird intern beim compile eine NEWuid festgelegt
 				// Vorbelegung von Felder ist noch nicht möglich...
 				$formDataCompilerInput = [
-						'tableName' => $table,
-						'vanillaUid' => (int)$pid,
-						'command' => 'new',
-						'returnUrl' => '',
+					'tableName' => $table,
+					'vanillaUid' => (int)$record['pid'],
+					'command' => 'new',
+					'returnUrl' => '',
+					'neighborRow' => [],
 				];
+				foreach ($record As $key => $value) {
+					if($key == 'pid') continue;
+					$formDataCompilerInput['neighborRow'][$key] = $value;
+				}
 			}
 			else {
 				$formDataCompilerInput = [
@@ -107,7 +116,7 @@ class Tx_Rnbase_Backend_Form_FormBuilder {
 	public function getSoloField($table, $row, $fieldName) {
 
 		// Wir benötigen pro DB-Tabelle ein data-Array mit den vorbereiteten Formular-Daten
-		$formData = $this->compileFormData($table, $row['uid'], $row['pid']);
+		$formData = $this->compileFormData($table, $row['uid'], $row);
 //		$options = $this->data;
 		$options = $formData;
 		// in den folgenden Key müssen die Daten aus der TCA rein. Wie geht das?
