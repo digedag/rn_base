@@ -135,13 +135,12 @@ abstract class tx_rnbase_action_BaseIOC {
 		tx_rnbase::load('tx_rnbase_util_Files');
 		$pageRenderer = tx_rnbase_util_TYPO3::getTSFE()->getPageRenderer();
 
-		$files = $configurations->get($confId.'includeJSFooter.');
-		if (is_array($files)) {
-			foreach ($files As $file) {
-				if($file = tx_rnbase_util_Files::getFileName($file)) {
-					$pageRenderer->addJsFooterFile($file);
-				}
-			}
+		foreach ($this->getJavaScriptFilesByIncludePartConfId('includeJSFooter') as $file) {
+			$pageRenderer->addJsFooterFile($file);
+		}
+
+		foreach ($this->getJavaScriptFilesByIncludePartConfId('includeJSlibs') as $javaScriptConfId => $file) {
+			$pageRenderer->addJsLibrary($javaScriptConfId, $file);
 		}
 
 		$files = $configurations->get($confId.'includeCSS.');
@@ -152,6 +151,30 @@ abstract class tx_rnbase_action_BaseIOC {
 				}
 			}
 		}
+	}
+
+	/**
+	 * @param string $includePartConfId
+	 * @return array
+	 */
+	protected function getJavaScriptFilesByIncludePartConfId($includePartConfId) {
+		$configurations = $this->getConfigurations();
+		$confId = $this->getConfId();
+
+		$javaScriptConfIds = $configurations->getKeyNames($confId . $includePartConfId . '.');
+		$files = array();
+		if (is_array($javaScriptConfIds)) {
+			foreach ($javaScriptConfIds As $javaScriptConfId) {
+				$file = $configurations->get($confId . $includePartConfId . '.' . $javaScriptConfId);
+				if (!$configurations->get($confId . $includePartConfId . '.' . $javaScriptConfId . '.external')) {
+					$file = tx_rnbase_util_Files::getFileName($file);
+				}
+
+				$files[$javaScriptConfId] = $file;
+			}
+		}
+
+		return $files;
 	}
 
 	/**

@@ -165,7 +165,7 @@ class tx_extkey_models_export extends Tx_Rnbase_Domain_Model_Base {
 }
 ```
 
-Um die Models abzufragen oder Änderungen in die Datenbank zu übernehmen, wird in der Regel ein Repository verwendet.  
+Um die Models abzufragen oder Änderungen in die Datenbank zu übernehmen, wird in der Regel ein Repository verwendet.
 Mehr dazu unter [Repositories](repositories.md)
 
 ##Typo3-Cache
@@ -282,6 +282,10 @@ plugin.tx_myext {
 		}
 		includeCSS {
 			1 = EXT:myext/Resources/Public/Styles/validator.css
+		}
+		includeJSlibs {
+			1 = //my-external-library
+			1.external = 1
 		}
 	}
 }
