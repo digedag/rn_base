@@ -261,18 +261,26 @@ class tx_rnbase_util_TSFAL {
 	 *     userFunc=tx_rnbase_util_TSFAL->fetchFirstReference
 	 *     refField=t3logo
 	 *     refTable=tx_cfcleague_teams
+	 *     ### default is the uid of the cObject
+	 *     refUid.field = my_uid_field_like_pid
 	 *   }
 	 * }
 	 *
+	 * @param string $content
 	 * @param array $conf
-	 * @return array
+	 * @return string || int
 	 */
-	public function fetchFirstReference ($content, $conf) {
-		$cObj = $this->cObj;
+	public function fetchFirstReference ($content, $configuration) {
+		$contentObject = $this->cObj;
 
-		$uid      = $cObj->data['_LOCALIZED_UID'] ? $cObj->data['_LOCALIZED_UID'] : $cObj->data['uid'];
-		$refTable = ($conf['refTable'] && is_array($GLOBALS['TCA'][$conf['refTable']])) ? $conf['refTable'] : 'tt_content';
-		$refField = trim($cObj->stdWrap($conf['refField'], $conf['refField.']));
+		if ($configuration['refUid'] || $configuration['refUid.']) {
+			$uid = intval($contentObject->stdWrap($configuration['refUid'], $configuration['refUid.']));
+		} else {
+			$uid = $contentObject->data['_LOCALIZED_UID'] ? $contentObject->data['_LOCALIZED_UID'] : $contentObject->data['uid'];
+		}
+		$refTable = ($configuration['refTable'] && is_array($GLOBALS['TCA'][$configuration['refTable']])) ?
+					$configuration['refTable'] : 'tt_content';
+		$refField = trim($contentObject->stdWrap($configuration['refField'], $configuration['refField.']));
 
 		if (isset($GLOBALS['BE_USER']->workspace) && $GLOBALS['BE_USER']->workspace !== 0) {
 			$workspaceRecord = Tx_Rnbase_Backend_Utility::getWorkspaceVersionOfRecord(
@@ -286,14 +294,21 @@ class tx_rnbase_util_TSFAL {
 				$uid = $workspaceRecord['uid'];
 			}
 		}
-		$fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
-		$files = $fileRepository->findByRelation($refTable, $refField, $uid);
+		$files = $this->getFileRepository()->findByRelation($refTable, $refField, $uid);
 
+		$fileUid = '';
 		if(!empty($files)) {
-			// Die erste Referenz zurück
-			return $files[0]->getUid();
+			$fileUid = $files[0]->getUid();
 		}
-		return '';
+
+		return $fileUid;
+	}
+
+	/**
+	 * @return TYPO3\CMS\Core\Resource\FileRepository
+	 */
+	protected function getFileRepository() {
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
 	}
 
 	/**
