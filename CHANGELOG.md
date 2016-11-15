@@ -3,7 +3,14 @@
 Änderungen
 ----------
 
-v1.1.9 (??.??.2016)
+v1.1.10 (??.??.2016)
+
+v1.1.9 (15.11.2016)
+ * better table layout in BE modules for TYPO3 7.6
+ * added support in BE formbuilder for NEW-records
+ * Default values for getSoloField with "new" command possible
+ * enhanced and optimized adding CSS/JS ressources in actions based on BaseIOC
+ * stdWrap is executed on refUid field in tx_rnbase_util_TSFAL::fetchFirstReference
 
 v1.1.8 (26.10.2016)
  * added colorpicker wizard
