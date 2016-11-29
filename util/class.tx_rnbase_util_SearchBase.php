@@ -688,10 +688,11 @@ abstract class tx_rnbase_util_SearchBase {
 		}
 	}
 	/**
-	 * @deprecated wird vermutlich nicht verwendet.
-	 * @return multitype:multitype:string
+	 * Special Chars used by Charbrowser
+	 *
+	 * @return array
 	 */
-	function getSpecialChars() {
+	public static function getSpecialChars() {
 		$specials = array();
 		$specials['0-9'] = array('1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.', '@', '');
 		$specials['A'] = array('A', 'Ä');
