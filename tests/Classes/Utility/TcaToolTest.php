@@ -62,7 +62,7 @@ class Tx_Rnbase_Utility_TcaToolTest extends Tx_Phpunit_TestCase {
 				'module' => array('urlParameters' => array('mode' => 'wizard', 'newKey' => 'wizard'))
 			)
 		);
-		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+		if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
 			$expectedLinkWizard['link']['icon'] = 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif';
 		}
 		elseif (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
