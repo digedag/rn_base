@@ -39,7 +39,7 @@ tx_rnbase::load('tx_rnbase_view_Base');
  */
 class tx_rnbase_view_phpTemplateEngine extends tx_rnbase_view_Base {
 
-  function tx_rnbase_view_phpTemplateEngine() {
+  function __construct() {
   }
 
   /**

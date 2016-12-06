@@ -66,7 +66,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 	private $confId;
 	protected $filterItems;
 
-	public function tx_rnbase_filter_BaseFilter(&$parameters, &$configurations, $confId) {
+	public function __construct(&$parameters, &$configurations, $confId) {
 		$this->configurations = $configurations;
 		$this->parameters = $parameters;
 		$this->confId = $confId;

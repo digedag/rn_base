@@ -52,7 +52,7 @@ class tx_rnbase_model_base
 	 */
 	private $tableName = 0;
 
-	function tx_rnbase_model_base($rowOrUid = NULL) {
+	function __construct($rowOrUid = NULL) {
 		return $this->init($rowOrUid);
 	}
 
