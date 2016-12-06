@@ -3,7 +3,11 @@
 Änderungen
 ----------
 
-v1.1.10 (??.??.2016)
+v1.1.11 (??.??.20??)
+
+v1.1.10 (06.12.2016)
+ * special chars for charbrowser declared static and nondeprecated in tx_rnbase_util_SearchBase
+ * fix wrong var assignment in Tx_Rnbase_Database_Connection
 
 v1.1.9 (15.11.2016)
  * better table layout in BE modules for TYPO3 7.6
