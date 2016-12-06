@@ -52,10 +52,6 @@ class tx_rnbase_model_base
 	 */
 	private $tableName = 0;
 
-	function __construct($rowOrUid = NULL) {
-		return $this->init($rowOrUid);
-	}
-
 	/**
 	 * Most model-classes will be initialized by a uid or a database record. So
 	 * this is a common contructor.
@@ -64,8 +60,8 @@ class tx_rnbase_model_base
 	 * @param mixed $rowOrUid
 	 * @return NULL
 	 */
-	function __construct($rowOrUid = NULL) {
-		return $this->tx_rnbase_model_base($rowOrUid);
+	public function __construct($rowOrUid = NULL) {
+		return $this->init($rowOrUid);
 	}
 
 	/**
