@@ -64,7 +64,7 @@ return array(
 	'tx_rnbase_error_productionexceptionhandler' => $extensionClassesPath . 'Error/ProductionExceptionHandler.php',
 	'tx_rnbase_exception_base' => $extensionClassesPath . 'Exception/Base.php',
 	'tx_rnbase_exception_customhandler' => $extensionPath . 'tests/class.tx_rnbase_tests_controller_testcase.php',
-	'tx_rnbase_exception_handler' => $extensionPath . 'tests/class.tx_rnbase_tests_controller_testcase.php',
+	'tx_rnbase_exception_handler' => $extensionPath . 'exception/class.tx_rnbase_exception_Handler.php',
 	'tx_rnbase_exception_handlerwithoutcorrectinterface' => $extensionPath . 'tests/class.tx_rnbase_tests_controller_testcase.php',
 	'tx_rnbase_exception_ihandler' => $extensionPath . 'exception/class.tx_rnbase_exception_IHandler.php',
 	'tx_rnbase_exception_itemnotfound404' => $extensionPath . 'exception/class.tx_rnbase_exception_ItemNotFound404.php',
