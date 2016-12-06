@@ -40,7 +40,7 @@ class tx_rnbase_model_media extends tx_rnbase_model_base {
 			$this->initMedia($rowOrUid);
 		}
 		else {
-			parent::tx_rnbase_model_base($rowOrUid);
+			parent::__construct($rowOrUid);
 		}
 		$this->initAdditionalData();
 	}
