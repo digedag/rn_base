@@ -65,6 +65,18 @@ class tx_rnbase_model_base
 	}
 
 	/**
+	 * Most model-classes will be initialized by a uid or a database record. So
+	 * this is a common contructor.
+	 * Ensure to overwrite getTableName()!
+	 *
+	 * @param mixed $rowOrUid
+	 * @return NULL
+	 */
+	public function tx_rnbase_model_base($rowOrUid = NULL) {
+		return $this->init($rowOrUid);
+	}
+
+	/**
 	 * Inits the model instance either with uid or a complete data record.
 	 * As the result the instance should be completly loaded.
 	 *
