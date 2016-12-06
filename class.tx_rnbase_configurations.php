@@ -494,7 +494,7 @@ class tx_rnbase_configurations {
 	public function &getFlexFormArray() {
 		static $flex;
 		if (!is_array($flex)) {
-			$flex = tx_rnbase_util_Network::getURL(tx_rnbase_util_Extensions::extPath($this->getExtensionKey()) . $this->get('flexform'));
+			$flex = tx_rnbase_util_Network::getUrl(tx_rnbase_util_Extensions::extPath($this->getExtensionKey()) . $this->get('flexform'));
 			$flex = tx_rnbase_util_Arrays::xml2array($flex);
 		}
 		return $flex;

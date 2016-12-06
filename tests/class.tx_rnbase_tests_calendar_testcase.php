@@ -29,7 +29,7 @@ class tx_rnbase_tests_calendar_testcase extends Tx_Phpunit_TestCase {
   function test_calendar() {
 
     $cal = new tx_rnbase_util_Calendar();
-    $cal->setTime(mkTime(20, 0, 0, 1, 1, 2005));
+    $cal->setTime(mktime(20, 0, 0, 1, 1, 2005));
 
     $this->assertEquals($cal->getTime(), 1104606000, 'Zeit falsch');
     $this->assertEquals(strftime('%d.%m.%Y %H:%M:%S', $cal->getTime()), '01.01.2005 20:00:00', 'Zeit falsch');

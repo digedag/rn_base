@@ -50,7 +50,7 @@ abstract class tx_rnbase_mod_BaseModFunc implements tx_rnbase_mod_IModFunc {
 		$conf = $this->getModule()->getConfigurations();
 
 		$file = tx_rnbase_util_Files::getFileAbsFileName($conf->get($this->getConfId().'template'));
-		$templateCode = tx_rnbase_util_Network::getURL($file);
+		$templateCode = tx_rnbase_util_Network::getUrl($file);
 		if(!$templateCode) return $conf->getLL('msg_template_not_found').'<br />File: \'' . $file . '\'<br />ConfId: \'' . $this->getConfId().'template\'';
 		$subpart = '###'.strtoupper($this->getFuncId()).'###';
 		$template = tx_rnbase_util_Templates::getSubpart($templateCode, $subpart);

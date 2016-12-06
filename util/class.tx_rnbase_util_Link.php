@@ -361,7 +361,7 @@ class tx_rnbase_util_Link {
 	 * @return	string		the link tag
 	 */
 	function makeTag() {
-		$link = $this->getCObj()->typolink($this->_makeLabel(), $this->_makeConfig('tag'));
+		$link = $this->getCObj()->typoLink($this->_makeLabel(), $this->_makeConfig('tag'));
 		if ($this->isAbsUrl() && (@simplexml_load_string($link))) {
 			$link = self::parseAbsUrl($link, $this->getAbsUrlSchema());
 		}
@@ -375,7 +375,7 @@ class tx_rnbase_util_Link {
 	 * @return	string		the link url
 	 */
 	function makeUrl($applyHtmlspecialchars = TRUE) {
-		$url = $this->getCObj()->typolink(NULL, $this->_makeConfig('url'));
+		$url = $this->getCObj()->typoLink(NULL, $this->_makeConfig('url'));
 		if($this->isAbsUrl()) {
 			$url = self::parseAbsUrl($url, $this->getAbsUrlSchema());
 		}

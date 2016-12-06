@@ -82,7 +82,7 @@ class tx_rnbase_util_Templates {
 		if(TYPO3_MODE == 'BE' && strpos($file, PATH_site) === FALSE)
 			$file = PATH_site.$file; // Im BE auf absoluten Pfad setzen
 
-		$templateCode = tx_rnbase_util_Network::getURL($file);
+		$templateCode = tx_rnbase_util_Network::getUrl($file);
 		if(!$templateCode) throw new Exception('File not found: '. htmlspecialchars($fileName));
 		$template = self::getSubpart($templateCode, $subpart);
 		if(!$template) throw new Exception('Subpart not found! File: '. htmlspecialchars($file) . ' Subpart: ' . htmlspecialchars($subpart));
