@@ -62,15 +62,17 @@ class Tx_Rnbase_Utility_TcaToolTest extends Tx_Phpunit_TestCase {
 				'module' => array('urlParameters' => array('mode' => 'wizard', 'newKey' => 'wizard'))
 			)
 		);
-		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+		if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
+			$expectedLinkWizard['link']['icon'] = 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif';
+		}
+		elseif (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
 			$expectedLinkWizard['link']['icon'] = 'EXT:t3skin/icons/gfx/link_popup.gif';
 			$expectedLinkWizard['link']['module']['name'] = 'wizard_element_browser';
 		} else {
 			$expectedLinkWizard['link']['icon'] = 'link_popup.gif';
 			$expectedLinkWizard['link']['script'] = 'browse_links.php?mode=wizard';
 		}
-
-		self::assertEquals($expectedLinkWizard, $linkWizard, 'link wizard nicht korrekt');
+		self::assertEquals(ksort($expectedLinkWizard), ksort($linkWizard), 'link wizard nicht korrekt');
 	}
 
 	/**
@@ -122,7 +124,24 @@ class Tx_Rnbase_Utility_TcaToolTest extends Tx_Phpunit_TestCase {
 			)
 		);
 
-		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+		if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
+			self::assertEquals(
+				'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
+				$wizards['add']['icon']
+			);
+			self::assertEquals(
+				'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
+				$wizards['edit']['icon']
+			);
+			self::assertEquals(
+				'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_list.gif',
+				$wizards['list']['icon']
+			);
+			self::assertEquals(
+				'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_rte.gif',
+				$wizards['RTE']['icon']
+			);
+		} elseif (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
 			self::assertEquals(
 				'EXT:t3skin/icons/gfx/add.gif',
 				$wizards['add']['icon']
