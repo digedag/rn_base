@@ -319,7 +319,7 @@ abstract class tx_rnbase_tests_BaseTestCase
 		$reflectedClass = new ReflectionClass($class);
 		$reflectedProperty = $reflectedClass->getProperty($property);
 		$reflectedProperty->setAccessible(TRUE);
-		$reflectedProperty = $reflectedProperty->setValue($value);
+		$reflectedProperty->setValue($value);
 	}
 
 	/**

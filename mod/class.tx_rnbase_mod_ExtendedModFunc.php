@@ -75,7 +75,7 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc {
 	}
 	private function createContent($template, $conf) {
 		$formTool = $this->getModule()->getFormTool();
-		$out = '';
+
 		// TabMenu initialisieren
 		$menuItems = array();
 		$menu = $this->initSubMenu($menuItems, $this->getModule()->getFormTool());
@@ -162,8 +162,6 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc {
 		return $menu;
 	}
 	protected function showMessage($message, tx_rnbase_mod_IModHandler $handler) {
-		$msg = '';
-		$title = '';
 		$flashMessageClass = tx_rnbase_util_Typo3Classes::getFlashMessageClass();
 		$severity = $flashMessageClass::OK;
 		$store = FALSE;

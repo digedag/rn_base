@@ -86,7 +86,6 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 // Configs: maxPages, pagefloat
 // Obsolete da Template: showResultCount, showPBrowserText, dontLinkActivePage, showFirstLast
 //    showRange
-		$out = '';
 		$configurations = $formatter->configurations;
 
 		$this->initLink($configurations, $pbConfId);

@@ -42,7 +42,6 @@ class tx_rnbase_maps_Util {
 		if(!$file) return '';
 		$subpartName = $configurations->get($confId.'subpart');
 		if(!$subpartName) return '';
-		$ret = '';
 		try {
 			$subpart = tx_rnbase_util_Templates::getSubpartFromFile($file, $subpartName);
 			$ret = str_replace(array("\r\n", "\n", "\r"), '', $subpart);

@@ -141,7 +141,6 @@ class tx_rnbase_util_TSFAL {
 	public static function fetchFilesByTS($conf, $cObj, $confId='') {
 		/* @var $fileRepository \TYPO3\CMS\Core\Resource\FileRepository */
 		$fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
-		$fileObjects = array();
 		$pics = array();
 		tx_rnbase::load('tx_rnbase_util_Strings');
 		// Getting the files

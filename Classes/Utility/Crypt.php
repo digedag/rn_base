@@ -215,8 +215,6 @@ class Tx_Rnbase_Utility_Crypt
 			return $data;
 		}
 
-		$encrypted = $data;
-
 		$encrypted = serialize($data);
 
 		$encrypted = mcrypt_generic(

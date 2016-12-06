@@ -451,7 +451,7 @@ class tx_rnbase_util_TSDAM {
 	 * @param int $iBeUserId
 	 */
 	private static function initBE4DAM($beUserId) {
-		global $PAGES_TYPES, $BE_USER, $TCA;
+		global $PAGES_TYPES, $BE_USER;
 		if(!is_array($PAGES_TYPES) || !array_key_exists(254, $PAGES_TYPES)) {
 			// SysFolder als definieren
 			$PAGES_TYPES[254] = array(

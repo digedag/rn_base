@@ -238,7 +238,7 @@ class tx_rnbase {
 		}
 
 		// Set extPath for key (first element)
-		$first = array_shift($parts);
+		array_shift($parts);
 
 		// Save last element of path
 		if(count($parts) > 0) {
@@ -292,16 +292,7 @@ class tx_rnbase {
 	 */
 	private static function _findT3($minimalInformation, $alternativeKey='', $prefix = 'class.', $suffix = '.php') {
 		$info = self::getClassInfo($minimalInformation, $alternativeKey);
-		if(!is_file($path =  $info['path'])) {
-			$path = FALSE;
-		}
 
-		// Now we try INSIDE the last directory (dir and last may be empty)
-		// ext(/dir)/last
-		// ext(/dir)/last/prefix.tx_key_parts_last.php.
-		if(!$path && !is_file($path =  $ext . $dir . $last . $prefix . $class . $suffix)) {
-			$path = FALSE;
-		}
 		return $info['path'];
 	}
 
