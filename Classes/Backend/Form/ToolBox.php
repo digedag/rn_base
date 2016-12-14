@@ -389,15 +389,15 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 	}
 
 	public function createHidden($name, $value){
-		return '<input type="hidden" name="'. $name.'" value="' . $value . '" />';
+		return '<input type="hidden" name="'. $name.'" value="' . htmlspecialchars($value) . '" />';
 	}
 
 	public function createRadio($name, $value, $checked = FALSE, $onclick = ''){
-		return '<input type="radio" name="'. $name.'" value="' . $value . '" '. ($checked ? 'checked="checked"' : '') . (strlen($onclick) ? ' onclick="' . $onclick . '"' : '') . ' />';
+		return '<input type="radio" name="'. $name.'" value="' . htmlspecialchars($value) . '" '. ($checked ? 'checked="checked"' : '') . (strlen($onclick) ? ' onclick="' . $onclick . '"' : '') . ' />';
 	}
 
 	public function createCheckbox($name, $value, $checked = FALSE, $onclick = ''){
-		return '<input type="checkbox" name="'. $name.'" value="' . $value . '" '. ($checked ? 'checked="checked"' : '') . (strlen($onclick) ? ' onclick="' . $onclick . '"' : '') .' />';
+		return '<input type="checkbox" name="'. $name.'" value="' . htmlspecialchars($value) . '" '. ($checked ? 'checked="checked"' : '') . (strlen($onclick) ? ' onclick="' . $onclick . '"' : '') .' />';
 	}
 
 	/**
@@ -445,11 +445,11 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 			$onClick = 'onclick="return confirm('.Tx_Rnbase_Utility_Strings::quoteJSvalue($confirmMsg).')"';
 
 		if($icon) {
-			$btn = '<button type="submit" name="'. $name.'" value="' . $value . '">
+			$btn = '<button type="submit" name="'. $name.'" value="' . htmlspecialchars($value) . '">
 					<img '.$icon.' alt="SomeAlternateText"></button>';
 		}
 		else {
-			$btn = '<input type="submit" name="'. $name.'" value="' . $value . '" ';
+			$btn = '<input type="submit" name="'. $name.'" value="' . htmlspecialchars($value) . '" ';
 			$btn .= $onClick;
 			$btn .= '/>';
 		}
@@ -476,7 +476,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		$ret = '<input type="text" name="'. $name.'"'.$this->doc->formWidth($width).
 			$onChange .
 			$class .
-			' value="' . $value . '" />';
+			' value="' . htmlspecialchars($value) . '" />';
 		return $ret;
 	}
 
