@@ -5,6 +5,9 @@
 
 v1.1.12 (??.??.20??)
 
+v1.1.12 (19.12.2016)
+ * closed XSS vecor in BE modules
+
 v1.1.11 (13.12.2017)
  * [CLEANUP] Fix the casing of method calls
  * [CLEANUP] Rename all constructors to __construct
