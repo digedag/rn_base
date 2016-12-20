@@ -272,6 +272,18 @@ class Tx_Rnbase_Domain_Model_Data
 	}
 
 	/**
+	 * Check if the property exists.
+	 *
+	 * @param string $name
+	 *
+	 * @return bool
+	 */
+	public function __isset($name)
+	{
+		return array_key_exists($name, $this->record);
+	}
+
+	/**
 	 * Attribute getter
 	 *
 	 * @param string $var
