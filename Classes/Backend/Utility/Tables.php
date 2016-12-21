@@ -130,6 +130,10 @@ class Tx_Rnbase_Backend_Utility_Tables
 
 		reset($columns);
 		foreach($columns As $column => $data) {
+			// Da wir Daten für eine HTML Tabelle haben, werden
+			// diese immer escaped, um XSS zu verhindern.
+			$record[$column] = htmlspecialchars($record[$column]);
+
 			// Hier erfolgt die Ausgabe der Daten für die Tabelle. Wenn eine method angegeben
 			// wurde, dann muss das Entry als Objekt vorliegen. Es wird dann die entsprechende
 			// Methode aufgerufen. Es kann auch ein Decorator-Objekt gesetzt werden. Dann wird
