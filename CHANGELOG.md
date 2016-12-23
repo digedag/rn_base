@@ -3,21 +3,24 @@
 Änderungen
 ----------
 
-v1.1.12 (??.??.20??)
+v1.2.0 (23.12.2016)
+ * magic isset method for models added
+ * another XSS vector in BE modules closed
+ * TER release
 
 v1.1.12 (19.12.2016)
- * closed XSS vecor in BE modules
+ * closed XSS vector in BE modules
 
 v1.1.11 (13.12.2017)
- * [CLEANUP] Fix the casing of method calls
- * [CLEANUP] Rename all constructors to __construct
- * [CLEANUP] Remove unused local variables
- * [TASK] Generate ext_autoload.php
+ * [CLEANUP] #64 Fix the casing of method calls
+ * [CLEANUP] #65 Rename all constructors to __construct
+ * [CLEANUP] #59 Remove unused local variables
+ * [TASK] #57 Generate ext_autoload.php
  * fixed composer.json
  * added colorpicker wizard
  * fixed link wizard
  * bugfix for wizard icons
- * etter table layout in 7.6 (BE modules)
+ * Better table layout in 7.6 (BE modules)
  * Support for form fields with new command in BE modules
  * Default values for getSoloField with new command possible in BE modules
  * adding ressources in actions optimized
