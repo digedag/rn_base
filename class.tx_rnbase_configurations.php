@@ -487,6 +487,17 @@ class tx_rnbase_configurations {
 	}
 
 	/**
+	 * Force a new qualifier for link creation
+	 *
+	 * @param string $qualifier
+	 * @return tx_rnbase_configurations
+	 */
+	public function setQualifier($qualifier) {
+		$this->_qualifier = $qualifier;
+		return $this;
+	}
+
+	/**
 	 * Returns the flexform data of this plugin as array
 	 *
 	 * @return array by reference
