@@ -317,6 +317,16 @@ class tx_rnbase_util_Typo3Classes
 	}
 
 	/**
+	 * @return string|TYPO3\CMS\Core\Cache\CacheManager
+	 */
+	public static function getCacheManagerClass() {
+		return self::getClassByCurrentTypo3Version(array(
+			self::LOWER6 => get_class($GLOBALS['typo3CacheManager']),
+			self::HIGHER6 => 'TYPO3\\CMS\\Core\\Cache\\CacheManager'
+		));
+	}
+
+	/**
 	 * @param array $possibleClasses
 	 * @return string
 	 */

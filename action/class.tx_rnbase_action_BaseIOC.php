@@ -107,6 +107,8 @@ abstract class tx_rnbase_action_BaseIOC {
 			if ($cacheHandler) {
 				$cacheHandler->setOutput($out);
 			}
+
+			$this->addCacheTags();
 		}
 		if($debug) {
 			$memEnd = memory_get_usage();
@@ -239,6 +241,15 @@ abstract class tx_rnbase_action_BaseIOC {
 		$handler->init($this, $confId);
 
 		return $handler;
+	}
+
+	/**
+	 * @return void
+	 */
+	protected function addCacheTags() {
+		if ($cacheTags = (array) $this->getConfigurations()->get($this->getConfId() . 'cacheTags.')) {
+			tx_rnbase_util_TYPO3::getTSFE()->addCacheTags($cacheTags);
+		}
 	}
 
 	/**

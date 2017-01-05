@@ -271,7 +271,7 @@ plugin.tx_extension {
 }
 ```
 
-###Einbinden von JS und CSS-Dateien
+##Einbinden von JS und CSS-Dateien
 Man kann auf Ebene einer Action Resourcedateien einbinden. Das kann man direkt per Typoscript konfigurieren:
 
 ```
@@ -289,4 +289,23 @@ plugin.tx_myext {
 		}
 	}
 }
+```
+##Cachehandling
+Bei USER Plugins muss der Cache in den pages geleert werden, wenn sich ein Datensatz ändert. Das geht mit rn_base ganz einfach. Zunächst müssen im TypoScript die Cache Tags für die Action definiert werden.
+
+```
+plugin.tx_myext {
+	myview {
+		cacheTags {
+			0 = first-tag
+			1 = second-tag
+		}
+	}
+}
+```
+
+Dieser View wird klassicherweise einen Datensatz aus einer Tabelle anzeigen. Damit der Cache bei Änderungen in dieser Tabelle automatisch geleert wird, müssen in der TCA für die Tabelle die Cache Tags definiert werden.
+
+```php
+$TCA['tx_myext_data_for_my_view']['ctrl']['cacheTags'] = array('first-tag', 'second-tag');
 ```

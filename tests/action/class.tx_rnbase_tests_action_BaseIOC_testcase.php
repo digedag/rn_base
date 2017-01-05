@@ -42,6 +42,8 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
 	 */
 	protected function setUp() {
 		$this->cleanUpPageRenderer();
+
+		tx_rnbase_util_Misc::prepareTSFE(array('force' => TRUE));
 	}
 
 	/**
@@ -148,6 +150,47 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
 		self::assertEquals('typo3conf/ext/rn_base/ext_emconf.php', $files['first']['file']);
 		self::assertEquals('typo3conf/ext/rn_base/ext_icon.gif', $files['second']['file']);
 		self::assertEquals('//www.dmk-ebusiness.de', $files['third']['file']);
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testAddCacheTags() {
+		$action = $this->getAction();
+		$configurations = $this->createConfigurations(array(
+			'testConfId.' => array(
+				'cacheTags.' => array(
+					0 => 'first',
+					1 => 'second',
+				)
+			)
+		), 'rn_base');
+		$action->setConfigurations($configurations);
+
+		$this->callInaccessibleMethod($action, 'addCacheTags');
+
+		$property = new ReflectionProperty(get_class(tx_rnbase_util_TYPO3::getTSFE()), 'pageCacheTags');
+		$property->setAccessible(TRUE);
+		$cacheTags = $property->getValue(tx_rnbase_util_TYPO3::getTSFE());
+
+		self::assertEquals(array('first', 'second'), $cacheTags);
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testAddCacheTagsIfNotConfigured() {
+		$action = $this->getAction();
+		$configurations = $this->createConfigurations(array('testConfId.' => array()), 'rn_base');
+		$action->setConfigurations($configurations);
+
+		$this->callInaccessibleMethod($action, 'addCacheTags');
+
+		$property = new ReflectionProperty(get_class(tx_rnbase_util_TYPO3::getTSFE()), 'pageCacheTags');
+		$property->setAccessible(TRUE);
+		$cacheTags = $property->getValue(tx_rnbase_util_TYPO3::getTSFE());
+
+		self::assertEquals(array(), $cacheTags);
 	}
 
 	/**
