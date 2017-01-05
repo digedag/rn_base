@@ -3,6 +3,10 @@
 Änderungen
 ----------
 
+v1.2.1 (04.01.2017)
+* better handling of cached plugins
+* New method setQualifier in tx_rnbase_configurations
+
 v1.2.0 (23.12.2016)
  * magic isset method for models added
  * another XSS vector in BE modules closed
