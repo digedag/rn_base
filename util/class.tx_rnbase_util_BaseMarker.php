@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006-2009 Rene Nitzsche
+ *  (c) 2006-2017 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -305,8 +305,10 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker {
 				// for deprecated backward compatibility
 				|| $dummyInstance instanceof tx_rnbase_model_base
 			) {
-				foreach ($dummyInstance->getColumnNames() as $column) {
-					$dummyInstance->setProperty($column, '');
+				if(is_array($dummyInstance->getColumnNames())) {
+					foreach ($dummyInstance->getColumnNames() as $column) {
+						$dummyInstance->setProperty($column, '');
+					}
 				}
 			}
 			self::$emptyObjects[$classname] = $dummyInstance;
@@ -432,6 +434,3 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_BaseMarker.php']) {
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_BaseMarker.php']);
-}
