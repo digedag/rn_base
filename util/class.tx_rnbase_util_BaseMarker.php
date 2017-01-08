@@ -38,80 +38,80 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker {
 	public function __construct() {
 	}
 
-  /**
-   * Initialisiert die Labels für die eine Model-Klasse
-   *
-   * @param string $classname child class of Tx_Rnbase_Domain_Model_RecordInterface or NULL
-   * @param tx_rnbase_util_FormatUtil $formatter
-   * @param array $defaultMarkerArr
-   */
-  protected function prepareLabelMarkers($classname, &$formatter, $confId, $marker, $defaultMarkerArr = 0) {
-    $arr1 = self::_getClassLabelMarkers($classname, $formatter, $confId, $defaultMarkerArr, $marker);
-    $this->defaultMarkerArr = array_merge($arr1, $this->defaultMarkerArr);
-    return $this->defaultMarkerArr;
-  }
+	/**
+	 * Initialisiert die Labels für die eine Model-Klasse
+	 *
+	 * @param string $classname child class of Tx_Rnbase_Domain_Model_RecordInterface or NULL
+	 * @param tx_rnbase_util_FormatUtil $formatter
+	 * @param array $defaultMarkerArr
+	 */
+	protected function prepareLabelMarkers($classname, &$formatter, $confId, $marker, $defaultMarkerArr = 0) {
+		$arr1 = self::_getClassLabelMarkers($classname, $formatter, $confId, $defaultMarkerArr, $marker);
+		$this->defaultMarkerArr = array_merge($arr1, $this->defaultMarkerArr);
+		return $this->defaultMarkerArr;
+	}
 
-  /**
-   * Initialisiert die Labels für die eine Model-Klasse
-   *
-   * @param string $classname child class of Tx_Rnbase_Domain_Model_RecordInterface or NULL
-   * @param tx_rnbase_util_FormatUtil $formatter
-   * @param string $confId
-   * @param array $defaultMarkerArr
-   * @param string $marker
-   * @return array
-   */
-  protected static function _getClassLabelMarkers($classname, &$formatter, $confId, $defaultMarkerArr = 0, $marker = 'PROFILE') {
-    $ret = array();
-    if($classname) {
-      $obj = tx_rnbase::makeInstance($classname, array());
-      $cols = $obj->getTCAColumns();
-      $labelArr = array();
-      foreach ($cols as $col => $colArr) {
-        $labelId = str_replace('.', '_', $confId.$col);
-        $label = $formatter->configurations->getLL($labelId);
-        $labelArr['label_'.$col] = strlen($label) ? $label : $formatter->configurations->getLL($colArr['label']);
-      }
-      $ret = $formatter->getItemMarkerArrayWrapped($labelArr, $confId , 0, $marker.'_');
-    }
-    return $ret;
-  }
+	/**
+	 * Initialisiert die Labels für die eine Model-Klasse
+	 *
+	 * @param string $classname child class of Tx_Rnbase_Domain_Model_RecordInterface or NULL
+	 * @param tx_rnbase_util_FormatUtil $formatter
+	 * @param string $confId
+	 * @param array $defaultMarkerArr
+	 * @param string $marker
+	 * @return array
+	 */
+	protected static function _getClassLabelMarkers($classname, &$formatter, $confId, $defaultMarkerArr = 0, $marker = 'PROFILE') {
+		$ret = array();
+		if($classname) {
+			$obj = tx_rnbase::makeInstance($classname, array());
+			$cols = $obj->getTCAColumns();
+			$labelArr = array();
+			foreach ($cols as $col => $colArr) {
+				$labelId = str_replace('.', '_', $confId.$col);
+				$label = $formatter->configurations->getLL($labelId);
+				$labelArr['label_'.$col] = strlen($label) ? $label : $formatter->configurations->getLL($colArr['label']);
+			}
+			$ret = $formatter->getItemMarkerArrayWrapped($labelArr, $confId , 0, $marker.'_');
+		}
+		return $ret;
+	}
 
-  /**
-   * Return label markers defined by Typoscript
-   *
-   * @param tx_rnbase_util_FormatUtil $formatter
-   * @param string $confId
-   * @param string $marker
-   * @param array $defaultMarkerArr
-   * @return array
-   */
-  public function initTSLabelMarkers(&$formatter, $confId, $marker, $defaultMarkerArr = 0) {
-    $arr1 = array();
-    if($labels = $formatter->configurations->get($confId.'labels')) {
-      $labels = tx_rnbase_util_Strings::trimExplode(',', $labels);
-      $labelArr = array();
-      foreach ($labels as $label) {
-        // Für die Abfrage nach den Labels dürfen keine Punkte als Trenner verwendet werden
-        // Daher Umwandlung in Underscores
-        $labelId = str_replace('.', '_', $confId.'label.'.$label);
-        $labelArr['label_'.$label] = $formatter->configurations->getLL($labelId);
-      }
-      $arr1 = $formatter->getItemMarkerArrayWrapped($labelArr, $confId , 0, $marker.'_');
-    }
-    $this->defaultMarkerArr = array_merge($arr1, $this->defaultMarkerArr);
-    return $this->defaultMarkerArr;
-  }
-  /**
-   * Returns an array with all column names not used in template
-   *
-   * @param array $record
-   * @param string $template
-   * @param string $marker
-   * @return array
-   * @deprecated use Tx_Rnbase_Frontend_Marker_Utility::findUnusedAttributes
-   */
-  public static function findUnusedCols(&$record, $template, $marker) {
+	/**
+	 * Return label markers defined by Typoscript
+	 *
+	 * @param tx_rnbase_util_FormatUtil $formatter
+	 * @param string $confId
+	 * @param string $marker
+	 * @param array $defaultMarkerArr
+	 * @return array
+	 */
+	public function initTSLabelMarkers(&$formatter, $confId, $marker, $defaultMarkerArr = 0) {
+		$arr1 = array();
+		if($labels = $formatter->configurations->get($confId.'labels')) {
+			$labels = tx_rnbase_util_Strings::trimExplode(',', $labels);
+			$labelArr = array();
+			foreach ($labels as $label) {
+				// Für die Abfrage nach den Labels dürfen keine Punkte als Trenner verwendet werden
+				// Daher Umwandlung in Underscores
+				$labelId = str_replace('.', '_', $confId.'label.'.$label);
+				$labelArr['label_'.$label] = $formatter->configurations->getLL($labelId);
+			}
+			$arr1 = $formatter->getItemMarkerArrayWrapped($labelArr, $confId , 0, $marker.'_');
+		}
+		$this->defaultMarkerArr = array_merge($arr1, $this->defaultMarkerArr);
+		return $this->defaultMarkerArr;
+	}
+	/**
+	 * Returns an array with all column names not used in template
+	 *
+	 * @param array $record
+	 * @param string $template
+	 * @param string $marker
+	 * @return array
+	 * @deprecated use Tx_Rnbase_Frontend_Marker_Utility::findUnusedAttributes
+	 */
+	public static function findUnusedCols(&$record, $template, $marker) {
 		$ignore = array();
 		$minfo = self::containsMarker($template, $marker.'___MINFO');
 		$minfoArr = array();
@@ -119,37 +119,38 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker {
 			if($minfo) {
 				$minfoArr[$key] = $marker.'_'.strtoupper($key);
 			}
-			if(!self::containsMarker($template, $marker.'_'.strtoupper($key)))
+			if(!self::containsMarker($template, $marker.'_'.strtoupper($key))) {
 				$ignore[] = $key;
+			}
 		}
 		if($minfo) {
 			tx_rnbase::load('tx_rnbase_util_Debug');
 			$record['__MINFO'] = tx_rnbase_util_Debug::viewArray($minfoArr);
 		}
 		return $ignore;
-  }
+	}
 
 
-  protected static $token = '';
-  /**
-   * Returns a token string.
-   * @return string
-   */
-  protected static function getToken() {
-  	if(!self::$token)
-  		self::$token = md5(microtime());
-  	return self::$token;
-  }
-  /**
-   * Check existing of a link or url in template string.
-   * @param string $linkId
-   * @param string $marker
-   * @param string $template
-   * @param boolean $makeUrl is set to TRUE if url was found
-   * @param boolean $makeLink is set to TRUE if link was found
-   * @return boolean is TRUE if link or url was found
-   */
-  public static function checkLinkExistence($linkId, $marker, $template, &$makeUrl=TRUE, &$makeLink=TRUE) {
+	protected static $token = '';
+	/**
+	 * Returns a token string.
+	 * @return string
+	 */
+	protected static function getToken() {
+		if(!self::$token)
+			self::$token = md5(microtime());
+		return self::$token;
+	}
+	/**
+	 * Check existing of a link or url in template string.
+	 * @param string $linkId
+	 * @param string $marker
+	 * @param string $template
+	 * @param boolean $makeUrl is set to TRUE if url was found
+	 * @param boolean $makeLink is set to TRUE if link was found
+	 * @return boolean is TRUE if link or url was found
+	 */
+	public static function checkLinkExistence($linkId, $marker, $template, &$makeUrl=TRUE, &$makeLink=TRUE) {
 		$linkMarker = $marker . '_' . strtoupper($linkId).'LINK';
 		// Do we need links
 		$makeUrl = $makeLink = TRUE;
@@ -161,7 +162,7 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker {
 			return FALSE; // Nothing to do
 		}
 		return $linkMarker;
-  }
+	}
 	/**
 	 * Link setzen
 	 *
@@ -207,24 +208,28 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker {
 	 * @param boolean $remove TRUE removes the link with label
 	 */
 	public function disableLink(&$markerArray, &$subpartArray, &$wrappedSubpartArray, $linkMarker, $remove) {
-  	if($remove)
+		if($remove) {
 			$subpartArray['###'.$linkMarker . '###'] = '';
-  	else
+		}
+		else {
 			$wrappedSubpartArray['###'.$linkMarker . '###'] = array('', '');
+		}
 		$markerArray['###'.$linkMarker . 'URL###'] = '';
 	}
 
-  /**
-   * Den PageBrowser in ein Template integrieren
-   *
-   * @param string $template
-   * @param tx_rnbase_util_PageBrowser $pagebrowser
-   * @param tx_rnbase_util_FormatUtil $formatter
-   * @param string $confId
-   * @return string
-   */
+	/**
+	 * Den PageBrowser in ein Template integrieren
+	 *
+	 * @param string $template
+	 * @param tx_rnbase_util_PageBrowser $pagebrowser
+	 * @param tx_rnbase_util_FormatUtil $formatter
+	 * @param string $confId
+	 * @return string
+	 */
 	public static function fillPageBrowser($template, &$pagebrowser, &$formatter, $confId) {
-		if(strlen(trim($template)) == 0) return '';
+		if(strlen(trim($template)) == 0) {
+			return '';
+		}
 		if(!is_object($pagebrowser) || !is_object($pagebrowser->getMarker())) {
 			return '';
 		}
@@ -277,25 +282,25 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker {
 		return implode($configurations->get($confId.'implode'), $out);
 	}
 
-  /**
-   * Liefert das DefaultMarkerArray
-   *
-   * @return array
-   */
-  protected function getDefaultMarkerArray(){
-    return $this->defaultMarkerArr;
-  }
+	/**
+	 * Liefert das DefaultMarkerArray
+	 *
+	 * @return array
+	 */
+	protected function getDefaultMarkerArray(){
+		return $this->defaultMarkerArr;
+	}
 
-  /**
-   * Returns an empty instance of given modelclass. This object must not be
-   * change, since it is cached. You will always get the same instance if you
-   * call this method for the same class more than once.
-   * The object will be initialized with a uid=0. The record-array will
-   * contain all tca-defined fields with an empty string as value.
-   *
-   * @param string $classname
-   * @return object
-   */
+	/**
+	 * Returns an empty instance of given modelclass. This object must not be
+	 * change, since it is cached. You will always get the same instance if you
+	 * call this method for the same class more than once.
+	 * The object will be initialized with a uid=0. The record-array will
+	 * contain all tca-defined fields with an empty string as value.
+	 *
+	 * @param string $classname
+	 * @return object
+	 */
 	protected static function getEmptyInstance($classname) {
 		if (!is_object(self::$emptyObjects[$classname])) {
 			/* @var $dummy Tx_Rnbase_Domain_Model_DomainInterface */
