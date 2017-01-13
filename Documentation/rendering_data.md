@@ -205,6 +205,7 @@ arena.links.show {
 	noHash = 1 # URL wird ohne cHash erzeugt
 	applyHtmlSpecialChars = 1 # Sonderzeichen im Link escapen. Funktioniert nur bei der Ausgabe von URIs, nicht für Tags.
 	disable = 0 # Zusätzliche Möglichkeit die Linkerzeugung per Typoscript zu unterdrücken.
+	removeIfDisabled = 0 # Wenn 1 wird der Link komplett mit dem verlinkten Inhalt entfernt 
 }
 ```
 So ziemlich alle Angaben sind hier optional. Wir bspw. keine PID konfiguriert, so wird automatisch auf die aktuelle Seite verlinkt.

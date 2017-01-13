@@ -186,19 +186,22 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker {
 		$linkObj =& $formatter->getConfigurations()->createLink();
 		$token = self::getToken();
 		$linkObj->label($token);
-		$links = $formatter->configurations->get($confId.'links.');
+		$links = $formatter->getConfigurations()->get($confId.'links.');
 		if(($links[$linkId] || $links[$linkId.'.']) && !$formatter->getConfigurations()->getBool($confId.'links.'.$linkId.'.disable', TRUE, FALSE) ) {
 			$linkObj->initByTS($formatter->getConfigurations(), $confId.'links.'.$linkId.'.', $parameterArr);
 
-			if($makeLink)
+			if($makeLink) {
 				$wrappedSubpartArray['###'.$linkMarker . '###'] = explode($token, $linkObj->makeTag());
-			if($makeUrl)
+			}
+			if($makeUrl) {
 				$markerArray['###'.$linkMarker . 'URL###'] = $linkObj->makeUrl(
 						$formatter->getConfigurations()->getBool($confId.'links.'.$linkId.'.applyHtmlSpecialChars', FALSE, FALSE)
-					);
+						);
+			}
 		}
 		else {
-			self::disableLink($markerArray, $subpartArray, $wrappedSubpartArray, $linkMarker, FALSE);
+			self::disableLink($markerArray, $subpartArray, $wrappedSubpartArray, $linkMarker,
+					$formatter->getConfigurations()->getBool($confId.'links.'.$linkId.'.removeIfDisabled', TRUE, FALSE));
 		}
 	}
 	/**
