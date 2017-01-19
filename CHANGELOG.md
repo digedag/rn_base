@@ -3,9 +3,14 @@
 Änderungen
 ----------
 
-v1.2.2 (??.??.2017)
- * new configuration processor as future replacement for tx_rnbase_configurations added
+v1.2.3 (??.??.2017)
 
+v1.2.2 (19.01.2017)
+ * new configuration processor as future replacement for tx_rnbase_configurations added
+ * fixed warning in BaseMarker
+ * Code cleanup
+ * new getLastPage method for page browser
+ * New TS option removeIfDisabled in initLink() of BaseMarker
 
 v1.2.1 (04.01.2017)
 * better handling of cached plugins
