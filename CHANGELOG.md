@@ -3,6 +3,10 @@
 Änderungen
 ----------
 
+v1.2.2 (??.??.2017)
+ * new configuration processor as future replacement for tx_rnbase_configurations added
+
+
 v1.2.1 (04.01.2017)
 * better handling of cached plugins
 * New method setQualifier in tx_rnbase_configurations
