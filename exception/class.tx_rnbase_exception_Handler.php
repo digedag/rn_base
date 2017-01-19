@@ -37,11 +37,11 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler {
 	 *
 	 * @param string $actionName
 	 * @param Exception $e
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 *
 	 * @return string error message
 	 */
-	public function handleException($actionName, Exception $e, tx_rnbase_configurations $configurations) {
+	public function handleException($actionName, Exception $e, Tx_Rnbase_Configuration_ProcessorInterface $configurations) {
 
 		// wir prüfen erst mal, ob die exception gefangen werden soll
 		$catch = $this->catchException($actionName, $e, $configurations);
@@ -75,7 +75,7 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler {
 			);
 		}
 		// wir senden eine fehlermail
-		$addr = tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'sendEmailOnException');
+		$addr = Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'sendEmailOnException');
 		if($addr) {
 			tx_rnbase_util_Misc::sendErrorMail($addr, $actionName, $e);
 		}
@@ -87,15 +87,15 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler {
 
 	/**
 	 *
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 *
 	 * @return void
 	 */
-	protected function send503HeaderOnException(tx_rnbase_configurations $configurations) {
+	protected function send503HeaderOnException(Tx_Rnbase_Configuration_ProcessorInterface $configurations) {
 		//sending a 503 header?
 		return ((
 				//shall we basically send a 503 header?
-				intval(tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'send503HeaderOnException')) && (
+				intval(Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'send503HeaderOnException')) && (
 					//the plugin has the oppurtunity to prevent sending a 503 header
 					//by setting plugin.plugin_name.send503HeaderOnException = 0 in the TS config.
 					//if this option is not set we use the ext config
@@ -114,10 +114,10 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler {
 	 * Build an error message string for frontend
 	 * @param string $actionName
 	 * @param Exception $e
-	 * @param tx_rnbase_Configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 */
-	protected function getErrorMessage($actionName, Exception $e, tx_rnbase_configurations $configurations) {
-		if (tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'verboseMayday')) {
+	protected function getErrorMessage($actionName, Exception $e, Tx_Rnbase_Configuration_ProcessorInterface $configurations) {
+		if (Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'verboseMayday')) {
 			return '<div>'
 					. '<strong>UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName . '</strong>'
 					. '<br />CODE: ' . $e->getCode()
@@ -154,13 +154,13 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler {
 	 *
 	 * @param string $actionName
 	 * @param Exception $e
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @return string|NULL
 	 */
 	protected function catchException(
 		$actionName,
 		Exception $e,
-		tx_rnbase_configurations $configurations
+		Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	) {
 		// typoscript nach catchanweisungen prüfen
 		// das machen wir nur, wenn sich diese exception nicht
@@ -189,13 +189,13 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler {
 	 *
 	 * @param string $actionName
 	 * @param Exception $e
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @return boolean
 	 */
 	private function checkExceptionRecursion(
 		$action,
 		Exception $e,
-		tx_rnbase_configurations $configurations,
+		Tx_Rnbase_Configuration_ProcessorInterface $configurations,
 		$type = 'error'
 	) {
 		static $calls = 0, $trace = array();

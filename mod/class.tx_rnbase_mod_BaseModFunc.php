@@ -73,7 +73,7 @@ abstract class tx_rnbase_mod_BaseModFunc implements tx_rnbase_mod_IModFunc {
 	/**
 	 * Kindklassen implementieren diese Methode um den Modulinhalt zu erzeugen
 	 * @param string $template
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @param tx_rnbase_util_FormatUtil $formatter
 	 * @param tx_rnbase_util_FormTool $formTool
 	 * @return string

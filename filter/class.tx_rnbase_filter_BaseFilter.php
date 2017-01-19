@@ -74,7 +74,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 	/**
 	 * Liefert das Config-Objekt
 	 *
-	 * @return tx_rnbase_configurations
+	 * @return Tx_Rnbase_Configuration_ProcessorInterface
 	 */
 	protected function getConfigurations() {
 		return $this->configurations;
@@ -118,7 +118,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 	 * @param array $fields
 	 * @param array $options
 	 * @param tx_rnbase_parameters $parameters
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @param string $confId
 	 * @return boolean
 	 */
@@ -132,7 +132,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 	 * @param string $idstr
 	 * @param array $fields
 	 * @param tx_rnbase_parameters $parameters
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @param string $operator Operator-Konstante
 	 */
 	function setField($idstr, &$fields, &$parameters, &$configurations, $operator = OP_LIKE) {
@@ -160,7 +160,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 	 * wird über die Config gelesen. Klappt beides nicht, wird der Standardfilter geliefert.
 	 *
 	 * @param tx_rnbase_parameters $parameters
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @param array_object $viewData
 	 * @param string $confId ConfId des Filters
 	 * @param string $filterClass Klassenname des Filters
@@ -213,7 +213,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 	 *			)
 	 *		);
 	 *
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @param string $confid Die Confid des PageBrowsers. z.B. myview.org.pagebrowser ohne Punkt!
 	 * @param ArrayObject $viewdata
 	 * @param array $fields
@@ -300,7 +300,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 	/**
 	 * Bindet einen Buchstaben-Browser ein
 	 *
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @param string $confid
 	 * @param ArrayObject $viewData
 	 * @param array $fields
@@ -342,7 +342,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 	 * Wir verwenden einen alphabetischen Pager. Also muß zunächst ermittelt werden, welche
 	 * Buchstaben überhaupt vorkommen.
 	 * @param tx_cfcleaguefe_ProfileService $service
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 */
 	private static function findPagerData($fields, $options, $cfg) {
 		$colName = $cfg['colname'];

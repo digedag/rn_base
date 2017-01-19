@@ -40,7 +40,7 @@ class tx_rnbase_util_FormatUtil {
 
   /**
    * Konstruktor
-   * @param tx_rnbase_configurations $configurations
+   * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
    */
   function __construct($configurations) {
     $this->configurations = $configurations;
@@ -50,7 +50,7 @@ class tx_rnbase_util_FormatUtil {
   /**
    * Returns configuration instance
    *
-   * @return tx_rnbase_configurations
+   * @return Tx_Rnbase_Configuration_ProcessorInterface
    */
   function getConfigurations() {
   	return $this->configurations;

@@ -47,7 +47,7 @@ abstract class tx_rnbase_action_BaseIOC {
 
 	/**
 	 * @param tx_rnbase_parameters $parameters
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 *
 	 * @return string
 	 */
@@ -130,7 +130,7 @@ abstract class tx_rnbase_action_BaseIOC {
 	}
 	/**
 	 *
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @param unknown $confId
 	 */
 	protected function addResources($configurations, $confId) {
@@ -181,16 +181,16 @@ abstract class tx_rnbase_action_BaseIOC {
 
 	/**
 	 * Returns configurations object
-	 * @return tx_rnbase_configurations
+	 * @return Tx_Rnbase_Configuration_ProcessorInterface
 	 */
 	public function getConfigurations() {
 		return $this->configurations;
 	}
 	/**
 	 * Returns configurations object
-	 * @return tx_rnbase_configurations
+	 * @return Tx_Rnbase_Configuration_ProcessorInterface
 	 */
-	public function setConfigurations(tx_rnbase_configurations $configurations) {
+	public function setConfigurations(Tx_Rnbase_Configuration_ProcessorInterface $configurations) {
 		$this->configurations = $configurations;
 	}
 
@@ -215,7 +215,7 @@ abstract class tx_rnbase_action_BaseIOC {
 	/**
 	 * Find a configured cache handler.
 	 *
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @param string $confId
 	 * @return tx_rnbase_action_ICacheHandler
 	 */
@@ -270,7 +270,7 @@ abstract class tx_rnbase_action_BaseIOC {
 
 	/**
 	 * Liefert den Namen der View-Klasse
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @return string
 	 */
 	protected abstract function getViewClassName();
@@ -279,7 +279,7 @@ abstract class tx_rnbase_action_BaseIOC {
 	 * Backend und befüllen der viewdata
 	 *
 	 * @param tx_rnbase_IParameters $parameters
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @param array $viewdata
 	 * @return string Errorstring or NULL
 	 */
@@ -289,7 +289,7 @@ abstract class tx_rnbase_action_BaseIOC {
 	/**
 	 * Create a fully initialized link instance. Useful for controllers with formular handling.
 	 *
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @param string $confId
 	 * @param array $params
 	 * @return \tx_rnbase_util_Link link instance

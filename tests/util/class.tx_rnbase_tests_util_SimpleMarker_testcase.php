@@ -181,7 +181,7 @@ action.item.subparts {
 TS;
 		$configurationArray = tx_rnbase_util_TS::parseTsConfig($typoScript);
 
-		$configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
+		$configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
 		$configurations->init($configurationArray, $cObj, 'extkey_text', 'rntest');
 		$formatter = tx_rnbase::makeInstance('tx_rnbase_util_FormatUtil', $configurations);
 		return $formatter;

@@ -45,7 +45,7 @@ class tx_rnbase_view_Base{
 	 * Enter description here...
 	 *
 	 * @param string $view default name of view
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @return string
 	 */
 	function render($view, &$configurations){
@@ -108,12 +108,12 @@ class tx_rnbase_view_Base{
 	 * render plugin data and additional flexdata
 	 *
 	 * @param string $templateCode
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @return string
 	 */
 	protected function renderPluginData(
 		$templateCode,
-		tx_rnbase_configurations $configurations
+		Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	) {
 		// render only, if there is an controller
 		if (!$this->getController()) {
@@ -158,7 +158,7 @@ class tx_rnbase_view_Base{
 	 *
 	 * @param string $template
 	 * @param array_object $viewData
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @param tx_rnbase_util_FormatUtil $formatter
 	 */
 	function createOutput($template, &$viewData, &$configurations, &$formatter) {
@@ -181,7 +181,7 @@ class tx_rnbase_view_Base{
 	/**
 	 * This method is called first.
 	 *
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 */
 	function _init(&$configurations){
 

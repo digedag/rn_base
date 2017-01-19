@@ -553,7 +553,7 @@ abstract class tx_rnbase_util_SearchBase {
 	 * Optionen aus der TS-Config setzen
 	 *
 	 * @param array $options
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @param string $confId Id der TS-Config z.B. myview.options.
 	 */
 	static function setConfigOptions(&$options, $configurations, $confId) {
@@ -662,7 +662,7 @@ abstract class tx_rnbase_util_SearchBase {
 	 * Vergleichsfelder aus der TS-Config setzen
 	 *
 	 * @param array $fields
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @param string $confId Id der TS-Config z.B. myview.fields.
 	 */
 	static function setConfigFields(&$fields, $configurations, $confId) {
@@ -676,7 +676,7 @@ abstract class tx_rnbase_util_SearchBase {
 	 * @param string $idstr
 	 * @param array $fields
 	 * @param arrayObject $parameters
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @param string $operator
 	 */
 	function setField($idstr, &$fields, &$parameters, &$configurations, $operator = OP_LIKE) {

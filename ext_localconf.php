@@ -11,17 +11,17 @@ tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 tx_rnbase::load('tx_rnbase_util_Debug');
 tx_rnbase::load('tx_rnbase_util_Extensions');
 tx_rnbase::load('tx_rnbase_parameters');
-tx_rnbase::load('tx_rnbase_configurations');
+tx_rnbase::load('Tx_Rnbase_Configuration_Processor');
 
 if(!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['rnbase']) &&
-	tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'activateCache') ) {
+	Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'activateCache') ) {
 	tx_rnbase::load('tx_rnbase_cache_Manager');
 	tx_rnbase_cache_Manager::registerCache('rnbase',
 			tx_rnbase_cache_Manager::CACHE_FRONTEND_VARIABLE,
 			tx_rnbase_cache_Manager::CACHE_BACKEND_FILE);
 }
 
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = intval(tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'loadHiddenObjects'));
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = intval(Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'loadHiddenObjects'));
 
 //@TODO Warum funktioniert das Autolading hier nicht?
 tx_rnbase::load('Tx_Rnbase_Hook_DataHandler');

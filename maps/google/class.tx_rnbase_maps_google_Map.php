@@ -39,7 +39,7 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap {
 	/* @var $map tx_wecmap_map_google */
 	private $map, $conf, $confId;
 
-	public function init(tx_rnbase_configurations $conf, $confId) {
+	public function init(Tx_Rnbase_Configuration_ProcessorInterface $conf, $confId) {
 		$this->conf = $conf;
 		$this->confId = $confId;
 		$apiKey = $conf->get($confId.'google.apikey');

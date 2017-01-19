@@ -33,7 +33,7 @@ class tx_rnbase_maps_Util {
 	/**
 	 * Returns the maps template from $confId.'template'
 	 *
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @param string $confId
 	 * @return string empty string if template was not found
 	 */

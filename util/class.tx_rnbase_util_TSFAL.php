@@ -133,7 +133,7 @@ class tx_rnbase_util_TSFAL {
 	 * It is a good tradition in TYPO3 that code can not be re-used. TYPO3 6.x makes
 	 * no difference...
 	 *
-	 * @param tx_rnbase_configurations $conf
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $conf
 	 * @param $cObj
 	 * @param string $confId
 	 * @return array
@@ -236,13 +236,13 @@ class tx_rnbase_util_TSFAL {
 		return $fileObjects;
 	}
 	/**
-	 * Erstellt eine Instanz von tx_rnbase_configurations
+	 * Erstellt eine Instanz von Tx_Rnbase_Configuration_ProcessorInterface
 	 *
 	 * @param array $conf
-	 * @return tx_rnbase_configurations
+	 * @return Tx_Rnbase_Configuration_ProcessorInterface
 	 */
 	function createConf($conf) {
-		$configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
+		$configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
 		$configurations->init($conf, $this->cObj, $conf['qualifier'], $conf['qualifier']);
 		return $configurations;
 	}

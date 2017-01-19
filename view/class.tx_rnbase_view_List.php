@@ -51,7 +51,7 @@ class tx_rnbase_view_List extends tx_rnbase_view_Base {
    *
    * @param string $template
    * @param ArrayObject	$viewData
-   * @param tx_rnbase_configurations	$configurations
+   * @param Tx_Rnbase_Configuration_ProcessorInterface	$configurations
    * @param tx_rnbase_util_FormatUtil	$formatter
    * @return mixed Ready rendered output or HTTP redirect
    */

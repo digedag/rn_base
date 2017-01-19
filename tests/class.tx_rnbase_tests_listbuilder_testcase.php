@@ -97,7 +97,7 @@ class tx_rnbase_tests_listbuilder_testcase extends Tx_Phpunit_TestCase {
 	}
 	private function getConfig($confArr) {
     $cObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
-		$configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
+		$configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
     $configurations->init($confArr, $cObj, 'tx_rnbase', 'rnbase');
 		return $configurations;
 	}

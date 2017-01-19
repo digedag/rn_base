@@ -269,7 +269,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 	}
 
 	/**
-	 * Liefert eine Instanz von tx_rnbase_configurations. Da wir uns im BE bewegen, wird diese mit einem
+	 * Liefert eine Instanz von Tx_Rnbase_Configuration_ProcessorInterface. Da wir uns im BE bewegen, wird diese mit einem
 	 * Config-Array aus der TSConfig gefüttert. Dabei wird die Konfiguration unterhalb von mod.extkey. genommen.
 	 * Für "extkey" wird der Wert der Methode getExtensionKey() verwendet.
 	 * Zusätzlich wird auch die Konfiguration von "lib." bereitgestellt.
@@ -278,11 +278,11 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 	 *
 	 * Ein eigenes TS-Template für das BE wird in der ext_localconf.php mit dieser Anweisung eingebunden:
 	 * tx_rnbase_util_Extensions::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:myext/mod1/pageTSconfig.txt">');
-	 * @return tx_rnbase_configurations
+	 * @return Tx_Rnbase_Configuration_ProcessorInterface
 	 */
 	public function getConfigurations() {
 		if(!$this->configurations) {
-			tx_rnbase::load('tx_rnbase_configurations');
+			tx_rnbase::load('Tx_Rnbase_Configuration_Processor');
 			tx_rnbase::load('tx_rnbase_util_Misc');
 			tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
@@ -300,7 +300,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 			}
 
 			$qualifier = $pageTSconfig['qualifier'] ? $pageTSconfig['qualifier'] : $this->getExtensionKey();
-			$this->configurations = new tx_rnbase_configurations();
+			$this->configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
 			$this->configurations->init($pageTSconfig, $cObj, $this->getExtensionKey(), $qualifier);
 
 			// init the parameters object

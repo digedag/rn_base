@@ -117,7 +117,7 @@ class tx_rnbase_action_CacheHandlerDefault
 	}
 
 	/**
-	 * @return tx_rnbase_configurations
+	 * @return Tx_Rnbase_Configuration_ProcessorInterface
 	 */
 	protected function getConfigurations()
 	{
@@ -284,7 +284,7 @@ class tx_rnbase_action_CacheHandlerDefault
 	 * Save output data to cache
 	 *
 	 * @param string $output
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @param string $confId
 	 */
 	public function setOutput($output) {
@@ -299,7 +299,7 @@ class tx_rnbase_action_CacheHandlerDefault
 	 * Get output data from cache
 	 *
 	 * @param tx_rnbase_action $plugin
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @param string $confId
 	 * @return string the output string
 	 */

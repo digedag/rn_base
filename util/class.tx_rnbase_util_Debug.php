@@ -115,8 +115,8 @@ class tx_rnbase_util_Debug {
 	public static function isDebugEnabled($key = NULL) {
 		static $debugKey = NULL;
 		if ($debugKey === NULL) {
-			tx_rnbase::load('tx_rnbase_configurations');
-			$debugKey = tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'debugKey');
+			tx_rnbase::load('Tx_Rnbase_Configuration_Processor');
+			$debugKey = Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'debugKey');
 		}
 		if (empty($debugKey)) {
 			return FALSE;
@@ -130,11 +130,11 @@ class tx_rnbase_util_Debug {
 	/**
 	 * Prüft, ob per Parameter oder Konfiguration der Debug für die Labels aktiv ist.
 	 *
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @return boolean or string with debug type (plain, html)
 	 */
 	public static function isLabelDebugEnabled(
-		tx_rnbase_configurations $configurations = NULL
+		Tx_Rnbase_Configuration_ProcessorInterface $configurations = NULL
 	) {
 		static $status = array();
 		// check global debug params
@@ -146,7 +146,7 @@ class tx_rnbase_util_Debug {
 			return $status['global'];
 		}
 		// check plugin debug config
-		if ($configurations instanceof tx_rnbase_configurations) {
+		if ($configurations instanceof Tx_Rnbase_Configuration_Processor) {
 			$pluginId = $configurations->getPluginId();
 			if (!isset($status[$pluginId])) {
 				$status[$pluginId] = $configurations->get('labeldebug');

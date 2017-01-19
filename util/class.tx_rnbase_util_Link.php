@@ -602,7 +602,7 @@ class tx_rnbase_util_Link {
 	/**
 	 * Init this link by typoscript setup
 	 *
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @param string $confId
 	 *
 	 * @return tx_rnbase_util_Link
