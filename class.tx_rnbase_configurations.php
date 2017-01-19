@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2007-2012 Rene Nitzsche
+ *  (c) 2007-2017 Rene Nitzsche
  *  Contact: rene@system25.de
  *
  *  Original version:
@@ -73,11 +73,19 @@
  * @subpackage tx_rnbase
  *
  */
-tx_rnbase::load('tx_rnbase_util_Network');
+tx_rnbase::load('Tx_Rnbase_Configuration_ProcessorInterface');
 tx_rnbase::load('tx_rnbase_util_Typo3Classes');
-tx_rnbase::load('tx_rnbase_util_Arrays');
 
-class tx_rnbase_configurations {
+/**
+ * Configuration processor
+ *
+ * @deprecated
+ *     use Tx_Rnbase_Configuration_Processor for instances
+ *     and Tx_Rnbase_Configuration_ProcessorInterface for typehints
+ */
+class tx_rnbase_configurations
+	implements Tx_Rnbase_Configuration_ProcessorInterface
+{
 	/**
 	 * Here, all configuration data is stored.
 	 *
@@ -181,6 +189,15 @@ class tx_rnbase_configurations {
 	 * Constructor.
 	 */
 	public function __construct() {
+
+		if (!$this instanceof Tx_Rnbase_Configuration_Processor) {
+			$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+			$utility::deprecationLog(
+				'Usage of "tx_rnbase_configurations" are deprecated.' .
+				' Use "Tx_Rnbase_Configuration_Processor" instead.'
+			);
+		}
+
 		$this->_dataStore = new ArrayObject();
 		$this->_viewData = new ArrayObject();
 		$this->_keepVars = new ArrayObject();
@@ -490,7 +507,7 @@ class tx_rnbase_configurations {
 	 * Force a new qualifier for link creation
 	 *
 	 * @param string $qualifier
-	 * @return tx_rnbase_configurations
+	 * @return Tx_Rnbase_Configuration_ProcessorInterface
 	 */
 	public function setQualifier($qualifier) {
 		$this->_qualifier = $qualifier;
@@ -505,6 +522,8 @@ class tx_rnbase_configurations {
 	public function &getFlexFormArray() {
 		static $flex;
 		if (!is_array($flex)) {
+			tx_rnbase::load('tx_rnbase_util_Network');
+			tx_rnbase::load('tx_rnbase_util_Arrays');
 			$flex = tx_rnbase_util_Network::getUrl(tx_rnbase_util_Extensions::extPath($this->getExtensionKey()) . $this->get('flexform'));
 			$flex = tx_rnbase_util_Arrays::xml2array($flex);
 		}
@@ -895,6 +914,7 @@ class tx_rnbase_configurations {
 		if (is_array($xmlOrArray)) {
 			$array = $xmlOrArray;
 		} else {
+			tx_rnbase::load('tx_rnbase_util_Arrays');
 			$array = tx_rnbase_util_Arrays::xml2array($xmlOrArray);
 		}
 		$data = $array['data'];
