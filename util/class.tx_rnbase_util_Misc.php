@@ -22,7 +22,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_configurations');
 tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
 /**
@@ -137,6 +136,7 @@ class tx_rnbase_util_Misc {
 	 * @return	void
 	 */
 	public static function mayday($msg, $extKey = '') {
+		tx_rnbase::load('Tx_Rnbase_Configuration_Processor');
 		tx_rnbase::load('tx_rnbase_util_Logger');
 		tx_rnbase::load('tx_rnbase_util_Debug');
 
@@ -172,7 +172,7 @@ class tx_rnbase_util_Misc {
 
 		$aDebug[] = '</div>';
 
-		if(intval(tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'forceException4Mayday'))) {
+		if(intval(Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'forceException4Mayday'))) {
 			throw tx_rnbase::makeInstance('tx_rnbase_util_Exception', $msg, 0, array('Info' => $aDebug));
 		}
 
@@ -181,7 +181,7 @@ class tx_rnbase_util_Misc {
 		$sContent =	'<h1 id="title">Mayday</h1>';
 		$sContent .= '<div id="errormessage">' . $msg . '</div>';
 		$sContent .= '<hr />';
-		$verbose = intval(tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'verboseMayday'));
+		$verbose = intval(Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'verboseMayday'));
 		if($verbose)
 			$sContent .= implode('', $aDebug);
 
@@ -235,7 +235,7 @@ class tx_rnbase_util_Misc {
 
 MAYDAYPAGE;
 
-		$dieOnMayday = intval(tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'dieOnMayday'));
+		$dieOnMayday = intval(Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'dieOnMayday'));
 		if($dieOnMayday)
 			die($sPage);
 		else
@@ -599,7 +599,8 @@ MAYDAYPAGE;
 		$mail = tx_rnbase::makeInstance('tx_rnbase_util_Mail');
 		$mail->setSubject('Exception on site '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
 
-		$from = tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'fromEmail');
+		tx_rnbase::load('Tx_Rnbase_Configuration_Processor');
+		$from = Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'fromEmail');
 		$from = $from ? $from : 'error@' . tx_rnbase_util_Misc::getIndpEnv('TYPO3_HOST_ONLY');
 		$mail->setFrom($from);
 

@@ -51,7 +51,7 @@ class tx_rnbase_view_phpTemplateEngine extends tx_rnbase_view_Base {
    * It is typically a (x)html string, but can be used for any other text based format.
    *
    * @param	string		name of template file without the ".php" suffix
-   * @param	tx_rnbase_configurations	configuration instance
+   * @param	Tx_Rnbase_Configuration_ProcessorInterface	configuration instance
    * @return	string		typically an (x)html string
    */
   function render($view, $configurations){

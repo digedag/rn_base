@@ -33,9 +33,9 @@ interface tx_rnbase_exception_IHandler {
 	 *
 	 * @param string $actionName
 	 * @param Exception $e
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 *
 	 * @return string error message
 	 */
-	public function handleException($actionName, Exception $e, tx_rnbase_configurations $configurations);
+	public function handleException($actionName, Exception $e, Tx_Rnbase_Configuration_ProcessorInterface $configurations);
 }

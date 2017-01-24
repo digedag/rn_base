@@ -31,7 +31,7 @@ interface ListBuilderInfo {
 	 * Get a message string for empty list
 	 *
 	 * @param array_object $viewData
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @return string
 	 */
 	function getEmptyListMessage($confId, &$viewData, &$configurations);
@@ -49,7 +49,7 @@ class tx_rnbase_util_ListBuilderInfo implements ListBuilderInfo {
 	 * taken from ts-config: [item].listinfo.llkeyEmpty
 	 *
 	 * @param array_object $viewData
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @return string
 	 */
 	function getEmptyListMessage($confId, &$viewData, &$configurations) {

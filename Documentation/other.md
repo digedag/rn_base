@@ -124,7 +124,7 @@ if (rnbase_util_Debug::isDebugEnabled()) {
 Label-Debug
 -----------
 
-Dieser Debugmodus kann zu jedem Label, welches über tx_rnbase_configurations::getLL() aufgelöst wird, zusätzlich zu dem enthaltenem Wert das ursprüngliche Label ausgeben. Dies kann nützlich für Redakteure in Verbindung mit der Mklltranslate Extension sein, da man so einfach an das Label kommt, welches geändert werden soll.
+Dieser Debugmodus kann zu jedem Label, welches über Tx_Rnbase_Configuration_Processor::getLL() aufgelöst wird, zusätzlich zu dem enthaltenem Wert das ursprüngliche Label ausgeben. Dies kann nützlich für Redakteure in Verbindung mit der Mklltranslate Extension sein, da man so einfach an das Label kommt, welches geändert werden soll.
 
 Aktiviert wird dieser Debug über Parameter labeldebug aktiviert, welcher zusätzlich zum debugkey gesetzt werden muss. Mögliche werte sind plain (default) oder html.
 

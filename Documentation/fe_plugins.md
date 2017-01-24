@@ -81,7 +81,7 @@ class tx_t3sponsors_actions_SponsorList extends tx_rnbase_action_BaseIOC {
 	 *
 	 *
 	 * @param array_object $parameters
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @param array_object $viewData
 	 * @return string error msg or null
 	 */

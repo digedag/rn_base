@@ -30,7 +30,7 @@ class tx_rnbase_maps_Factory {
 	/**
 	 * Erstellt eine GoogleMap
 	 *
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @param string $confId
 	 * @return tx_rnbase_maps_google_Map
 	 */

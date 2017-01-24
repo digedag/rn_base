@@ -31,7 +31,7 @@ class tx_rnbase_tests_configurations_testcase extends Tx_Phpunit_TestCase {
 		$configurationArray['matchtable.']['match'] = '< lib.match';
   	$configurationArray['matchtable.']['match.']['limit'] = '100';
     $cObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
-    $configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
+    $configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
     $configurations->init($configurationArray, $cObj, 'extkey_text', 'rntest');
 
     $this->assertEquals(100, $configurations->get('matchtable.match.limit'), 'Limit should be 100');
@@ -56,7 +56,7 @@ class tx_rnbase_tests_configurations_testcase extends Tx_Phpunit_TestCase {
 
     $cObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
     $cObj->data['pi_flexform'] = $flexXml;
-		$configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
+		$configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
     $configurations->init($configurationArray, $cObj, 'extkey_text', 'rntest');
 
     $this->assertEquals('Welcome', $configurations->get('view.loginbox.header'), 'Header should be Welcome');
@@ -95,8 +95,8 @@ class tx_rnbase_tests_configurations_testcase extends Tx_Phpunit_TestCase {
 		$lib['child.'] = array(
 			'child' => 'Child',
 		);
-		/* @var $configurations tx_rnbase_configurations */
-		$configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
+		/* @var $configurations Tx_Rnbase_Configuration_ProcessorInterface */
+		$configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
 		$configurationArray = array(
 			'recursive' => '< lib.rnbase.child',
 			'recursive.' => array(

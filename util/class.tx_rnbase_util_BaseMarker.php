@@ -251,7 +251,7 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker {
 	/**
 	 * Returns the filled template for a character browser
 	 * @param string $template
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 */
 	public static function fillCharBrowser($template, $markerArray, $pagerData, $curr_pointer, $configurations, $confId) {
 		if(!$template) return '';
@@ -398,7 +398,7 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker {
 	 *
 	 * Method copied from Tx_Oelib_SalutationSwitcher of Oliver Klee
 	 *
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @return array ordered list of suffixes from "", "_formal" and "_informal", will not be empty
 	 */
 	private static function getSuffixesToTry($configurations) {

@@ -72,7 +72,7 @@ class tx_rnbase_tests_controller_testcase extends tx_rnbase_tests_BaseTestCase {
 
 		$controller = tx_rnbase::makeInstance('tx_rnbase_controller');
 		$exception = new Exception('Exception for tx_rnbase_exception_HandlerForTests');
-		$configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
+		$configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
 
 		$handleExceptionReturn = $method->invoke(
 			$controller, 'testAction', $exception, $configurations
@@ -99,7 +99,7 @@ class tx_rnbase_tests_controller_testcase extends tx_rnbase_tests_BaseTestCase {
 
 		$controller = tx_rnbase::makeInstance('tx_rnbase_controller');
 		$exception = new Exception('Exception for tx_rnbase_exception_HandlerForTests');
-		$configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
+		$configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
 
 		$handleExceptionReturn = $method->invoke(
 			$controller, 'testAction', $exception, $configurations
@@ -126,7 +126,7 @@ class tx_rnbase_tests_controller_testcase extends tx_rnbase_tests_BaseTestCase {
 
 		$controller = tx_rnbase::makeInstance('tx_rnbase_controller');
 		$exception = new Exception('Exception for tx_rnbase_exception_HandlerForTests');
-		$configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
+		$configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
 
 		$handleExceptionReturn = $method->invoke(
 			$controller, 'testAction', $exception, $configurations
@@ -236,7 +236,7 @@ class tx_rnbase_tests_controller_testcase extends tx_rnbase_tests_BaseTestCase {
  */
 class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler {
 
-	public function handleException($actionName, Exception $e, tx_rnbase_configurations $configurations) {
+	public function handleException($actionName, Exception $e, Tx_Rnbase_Configuration_ProcessorInterface $configurations) {
 		return $actionName . ' ' . $e->getMessage();
 	}
 }
@@ -249,14 +249,14 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler {
  */
 class tx_rnbase_exception_HandlerWithoutCorrectInterface {
 
-	public function handleException($actionName, Exception $e, tx_rnbase_configurations $configurations) {
+	public function handleException($actionName, Exception $e, Tx_Rnbase_Configuration_ProcessorInterface $configurations) {
 		return 'should not be used';
 	}
 }
 
 class tx_rnbase_exception_CustomHandler implements tx_rnbase_exception_IHandler {
 
-	public function handleException($actionName, Exception $e, tx_rnbase_configurations $configurations) {
+	public function handleException($actionName, Exception $e, Tx_Rnbase_Configuration_ProcessorInterface $configurations) {
 		return 'custom handler';
 	}
 }

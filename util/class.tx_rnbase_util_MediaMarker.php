@@ -76,7 +76,7 @@ class tx_rnbase_util_MediaMarker extends tx_rnbase_util_SimpleMarker {
 
 	protected function prepareItem(
 			Tx_Rnbase_Domain_Model_RecordInterface $item,
-			tx_rnbase_configurations $configurations,
+			Tx_Rnbase_Configuration_ProcessorInterface $configurations,
 			$confId
 	) {
 		if(!tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {

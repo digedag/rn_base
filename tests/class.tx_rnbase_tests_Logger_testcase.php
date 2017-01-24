@@ -29,7 +29,7 @@ class tx_rnbase_tests_Logger_testcase extends Tx_Phpunit_TestCase {
 
 	function test_logger() {
 		if(tx_rnbase_util_Extensions::isLoaded('devlog')) {
-			$minLog = tx_rnbase_configurations::getExtensionCfgValue('devlog', 'minLogLevel');
+			$minLog = Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('devlog', 'minLogLevel');
 			if($minLog === FALSE) {
 				$ret = tx_rnbase_util_Logger::isNoticeEnabled();
 				$this->assertTrue($ret, 'Notice funktioniert nicht.');

@@ -139,13 +139,13 @@ class tx_rnbase_util_TSDAM {
 	}
 
 	/**
-	 * Erstellt eine Instanz von tx_rnbase_configurations
+	 * Erstellt eine Instanz von Tx_Rnbase_Configuration_ProcessorInterface
 	 *
 	 * @param array $conf
-	 * @return tx_rnbase_configurations
+	 * @return Tx_Rnbase_Configuration_ProcessorInterface
 	 */
 	function createConf($conf) {
-		$configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
+		$configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
 		$configurations->init($conf, $this->cObj, $conf['qualifier'], $conf['qualifier']);
 		return $configurations;
 	}

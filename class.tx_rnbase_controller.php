@@ -107,7 +107,7 @@ tx_rnbase::load('tx_rnbase_util_Strings');
 
 class tx_rnbase_controller {
 
-	var $configurationsClassName = 'tx_rnbase_configurations'; // You may overwrite this in your subclass with an own configurations class.
+	var $configurationsClassName = 'Tx_Rnbase_Configuration_Processor'; // You may overwrite this in your subclass with an own configurations class.
 	var $parameters;
 	var $configurations;
 	var $defaultAction = 'defaultAction';
@@ -239,7 +239,7 @@ class tx_rnbase_controller {
 	 * Call a single action
 	 * @param string $actionName class name
 	 * @param tx_rnbase_IParams $parameters
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 * @return string
 	 */
 	public function doAction($actionName, &$parameters, &$configurations) {
@@ -286,10 +286,10 @@ class tx_rnbase_controller {
 	/**
 	 * Interne Verarbeitung der Exception
 	 * @param Exception $e
-	 * @param tx_rnbase_Configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 */
 	private function handleException($actionName, Exception $e, $configurations) {
-		$exceptionHandlerClass = tx_rnbase_configurations::getExtensionCfgValue(
+		$exceptionHandlerClass = Tx_Rnbase_Configuration_Processor::getExtensionCfgValue(
 			'rn_base', 'exceptionHandler'
 		);
 
@@ -397,7 +397,7 @@ class tx_rnbase_controller {
 	 * Used by main()
 	 *
 	 * @param array $configurationArray   the local configuration array
-	 * @return tx_rnbase_configurations  the configurations
+	 * @return Tx_Rnbase_Configuration_ProcessorInterface  the configurations
 	 */
 	function _makeConfigurationsObject($configurationArray) {
 		// TODO, die Configklasse sollte über TS variabel gehalten werden
@@ -411,7 +411,7 @@ class tx_rnbase_controller {
 
 	/**
 	 * Returns an ArrayObject containing all parameters
-	 * @param tx_rnbase_configurations $configurations
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
 	 */
 	protected function _makeParameterObject($configurations) {
 		$parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');

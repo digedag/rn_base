@@ -60,7 +60,7 @@ abstract class tx_rnbase_tests_BaseTestCase
 	 * @param array $configurationArray
 	 * @param string $extensionKey
 	 * @param string $qualifier
-	 * @return tx_rnbase_configurations
+	 * @return Tx_Rnbase_Configuration_ProcessorInterface
 	 */
 	protected static function createConfigurations(
 		array $configurationArray, $extensionKey, $qualifier = ''
@@ -83,8 +83,8 @@ abstract class tx_rnbase_tests_BaseTestCase
 			}
 		}
 
-		/* @var $configurations tx_rnbase_configurations */
-		$configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
+		/* @var $configurations Tx_Rnbase_Configuration_ProcessorInterface */
+		$configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
 		$configurations->init(
 			$configurationArray,
 			$cObj,

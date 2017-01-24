@@ -255,7 +255,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 	/**
 	 * Initialisiert die interne Link-Instanz
 	 * TODO: Konfigurierbar machen!!
-	 * @param tx_rnbase_configurations $configuration
+	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configuration
 	 */
 	protected function initLink(&$configuration, $pbConfId) {
 		$this->link = $configuration->createLink();

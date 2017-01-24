@@ -132,7 +132,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
 	/**
 	 * Returns the configurations
 	 *
-	 * @return tx_rnbase_configurations
+	 * @return Tx_Rnbase_Configuration_ProcessorInterface
 	 */
 	protected function getConfigurations()
 	{

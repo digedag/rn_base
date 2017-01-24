@@ -37,7 +37,7 @@ interface tx_rnbase_mod_IModule {
 	public function getFormTool();
 	/**
 	 * Returns the configuration
-	 * @return tx_rnbase_configurations
+	 * @return Tx_Rnbase_Configuration_ProcessorInterface
 	 */
 	public function getConfigurations();
 	/**

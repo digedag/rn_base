@@ -270,7 +270,7 @@ class tx_rnbase_util_Templates {
 	 */
 	public static function isSubstCacheEnabled() {
 		if (self::$substCacheEnabled === NULL) {
-			self::$substCacheEnabled = (bool) tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'activateSubstCache');
+			self::$substCacheEnabled = (bool) Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'activateSubstCache');
 		}
 		return self::$substCacheEnabled;
 	}
