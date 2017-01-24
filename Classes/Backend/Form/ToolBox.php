@@ -22,6 +22,8 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 tx_rnbase::load('Tx_Rnbase_Utility_Strings');
 tx_rnbase::load('tx_rnbase_util_Link');
@@ -110,7 +112,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		$params = '&edit['.$editTable.']['.$editUid.']=edit';
 		if(tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
 			$onClick = htmlspecialchars(Tx_Rnbase_Backend_Utility::editOnClick($params));
-			return '<a href="#" onclick="' . $onClick . '" title="Edit UID: '.$editUid.'">'
+			return '<a href="#" class="btn btn-default " onclick="' . $onClick . '" title="Edit UID: '.$editUid.'">'
 					. $this->iconFactory->getIcon('actions-page-open', \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL)->render()
 					. $label
 					. '</a>';
@@ -178,7 +180,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		if($options['hover']) {
 			$title = ' title="'.$options['hover'].'" ';
 		}
-		return '<a href="#" onclick="'.htmlspecialchars($jsCode).'" '. $title.">". $label .'</a>';
+		return '<a href="#" class="btn btn-default " onclick="'.htmlspecialchars($jsCode).'" '. $title.">". $label .'</a>';
 	}
 
 	/**
@@ -213,7 +215,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 					'width="'.($table=='pages'?13:11).'" height="12"'
 				).' alt="" />';
 		}
-		return 	'<a href="#" title="'.$title.'" onclick="'.htmlspecialchars($jsCode, -1).'">' .
+		return 	'<a href="#" title="'.$title.'" class="btn btn-default " onclick="'.htmlspecialchars($jsCode, -1).'">' .
 				$image . $label . '</a>';
 }
 
@@ -423,7 +425,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 			$title = ' title="'.$options['hover'].'" ';
 		}
 
-		return '<a href="#" onclick="'.htmlspecialchars($jsCode).'" '. $title.">". $label .'</a>';
+		return '<a href="#" class="btn btn-default" onclick="'.htmlspecialchars($jsCode).'" '. $title.">". $label .'</a>';
 	}
 
 	/**
@@ -445,11 +447,11 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 			$onClick = 'onclick="return confirm('.Tx_Rnbase_Utility_Strings::quoteJSvalue($confirmMsg).')"';
 
 		if($icon) {
-			$btn = '<button type="submit" name="'. $name.'" value="' . htmlspecialchars($value) . '">
+			$btn = '<button type="submit" class="btn btn-default" name="'. $name.'" value="' . htmlspecialchars($value) . '">
 					<img '.$icon.' alt="SomeAlternateText"></button>';
 		}
 		else {
-			$btn = '<input type="submit" name="'. $name.'" value="' . htmlspecialchars($value) . '" ';
+			$btn = '<input type="submit" class="btn btn-default" name="'. $name.'" value="' . htmlspecialchars($value) . '" ';
 			$btn .= $onClick;
 			$btn .= '/>';
 		}
@@ -528,7 +530,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		global $TCA, $LANG;
 		$options = is_array($options) ? $options : array();
 
-		$out = '<select name="' . $name . '" class="select" ';
+		$out = '<select  name="' . $name . '" class="select" ';
 		if($options['onchange'])
 			$out .= 'onChange="' . $options['onchange'] .'" ';
 		$out .= '>';
@@ -756,13 +758,20 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 
 		$ret['menu'] = (tx_rnbase_util_TYPO3::isTYPO62OrHigher() && is_array($MENU[$name]) && count($MENU[$name]) == 1) ?
 				self::buildDummyMenu('SET['.$name.']', $MENU[$name]) :
-				Tx_Rnbase_Backend_Utility::getFuncMenu(
+				self::getFuncMenu(
 			$pid, 'SET['.$name.']', $SETTINGS[$name],
 			$MENU[$name], $script, $addparams
 		);
 		$ret['value'] = $SETTINGS[$name];
 		return $ret;
 	}
+
+    public static function getFuncMenu($mainParams, $elementName, $currentValue, $menuItems, $script = '', $addParams = '')
+    {
+        $menu = Tx_Rnbase_Backend_Utility::getFuncMenu($mainParams, $elementName, $currentValue, $menuItems, $script = '', $addParams = '');;
+        $menu = str_replace('<select', '<select class="form-control"', $menu);
+        return $menu;
+    }
 
 	private static function buildDummyMenu($elementName, $menuItems) {
 		// Ab T3 6.2 wird bei einem Menu-Eintrag keine Selectbox mehr erzeugt.
