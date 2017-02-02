@@ -102,20 +102,11 @@ class Tx_Rnbase_Domain_Model_Base
 			return;
 		}
 
-		$options = array();
-		if ((
-			is_object($GLOBALS['BE_USER'])
-			&& $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects']
-		)) {
-			$options['enablefieldsbe'] = 1;
-		}
-
 		tx_rnbase::load('Tx_Rnbase_Database_Connection');
 		$db = Tx_Rnbase_Database_Connection::getInstance();
 		$record = $db->getRecord(
 			$this->getTableName(),
-			$this->getUidRaw(),
-			$options
+			$this->getUidRaw()
 		);
 
 		$this->setProperty($record);
