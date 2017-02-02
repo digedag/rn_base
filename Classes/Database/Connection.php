@@ -971,6 +971,7 @@ class Tx_Rnbase_Database_Connection
 				$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects']
 			) {
 				$options['enablefieldsbe'] = 1;
+				tx_rnbase_util_TYPO3::getTSFE()->set_no_cache('loadHiddenObjects of rn_base is active');
 			}
 
 			// Zur Where-Clause noch die gültigen Felder hinzufügen

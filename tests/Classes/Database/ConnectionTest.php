@@ -52,6 +52,8 @@ class Tx_Rnbase_Database_ConnectionTest extends Tx_Phpunit_TestCase {
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = 0;
 
 		$this->beUserBackUp = $GLOBALS['BE_USER'];
+
+		tx_rnbase_util_TYPO3::getTSFE()->no_cache = FALSE;
 	}
 
 	/**
@@ -106,6 +108,8 @@ class Tx_Rnbase_Database_ConnectionTest extends Tx_Phpunit_TestCase {
 		foreach ($fields As $field) {
 			$this->assertNotRegExp('/'.$field.'/', $sql, $field.' found');
 		}
+
+		self::assertTrue(tx_rnbase_util_TYPO3::getTSFE()->no_cache, 'Cache nicht deaktiviert');
 	}
 
 	/**
@@ -122,6 +126,8 @@ class Tx_Rnbase_Database_ConnectionTest extends Tx_Phpunit_TestCase {
 		foreach ($fields As $field) {
 			$this->assertRegExp('/'.$field.'/', $sql, $field.' not found');
 		}
+
+		self::assertFalse(tx_rnbase_util_TYPO3::getTSFE()->no_cache, 'Cache nicht aktiviert');
 	}
 
 	/**
