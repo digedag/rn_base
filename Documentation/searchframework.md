@@ -148,4 +148,4 @@ filter {
 }
 ```
 Wenn loadHiddenObjects in der Extension Konfiguration gesetzt wurde und jemand im Backend eingeloggt ist, dann werden
-im Frontend auch versteckte Datensätze angezeigt. Dann wird aber auch der Cache von TYPO3 deaktiviert.
+im Frontend auch versteckte Datensätze angezeigt. Dann wird aber auch der Cache von TYPO3 deaktiviert für die BE Nutzer.
