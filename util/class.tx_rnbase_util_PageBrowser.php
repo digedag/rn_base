@@ -143,7 +143,8 @@ class tx_rnbase_util_PageBrowser implements PageBrowser {
 	 * @param int $pageSize
 	 */
 	public function setPageSize($pageSize) {
-		$this->pageSize = tx_rnbase_util_Math::intInRange(intval($pageSize) ? $pageSize : 10, 1, 1000);
+		$pageSize = (int) $pageSize;
+		$this->pageSize = $pageSize > 0 ? $pageSize : 10;
 	}
 
 	/**

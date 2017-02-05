@@ -247,7 +247,9 @@ class tx_rnbase_controller {
 		try {
 			// Creating the responsible Action
 			$action = tx_rnbase::makeInstance($actionName);
-			$ret = $action->execute($parameters, $configurations);
+			if (is_object($action)) {
+				$ret = $action->execute($parameters, $configurations);
+			}
 		}
 		catch(tx_rnbase_exception_Skip $e) {
 			$ret = '';

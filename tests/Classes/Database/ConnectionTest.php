@@ -43,6 +43,8 @@ class Tx_Rnbase_Database_ConnectionTest extends Tx_Phpunit_TestCase {
 
 	private $beUserBackUp;
 
+	private $systemLogConfigurationBackup;
+
 	/**
 	 * (non-PHPdoc)
 	 * @see PHPUnit_Framework_TestCase::setUp()
@@ -52,6 +54,11 @@ class Tx_Rnbase_Database_ConnectionTest extends Tx_Phpunit_TestCase {
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = 0;
 
 		$this->beUserBackUp = $GLOBALS['BE_USER'];
+
+		tx_rnbase_util_TYPO3::getTSFE()->no_cache = FALSE;
+		// logging verhindern
+		$this->systemLogConfigurationBackup = $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLog'];
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLog'] = '';
 	}
 
 	/**
@@ -61,6 +68,7 @@ class Tx_Rnbase_Database_ConnectionTest extends Tx_Phpunit_TestCase {
 	protected function tearDown() {
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = $this->loadHiddenObjectsBackUp;
 		$GLOBALS['BE_USER'] = $this->beUserBackUp;
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLog'] = $this->systemLogConfigurationBackup;
 	}
 
 	/**
@@ -106,6 +114,8 @@ class Tx_Rnbase_Database_ConnectionTest extends Tx_Phpunit_TestCase {
 		foreach ($fields As $field) {
 			$this->assertNotRegExp('/'.$field.'/', $sql, $field.' found');
 		}
+
+		self::assertTrue(tx_rnbase_util_TYPO3::getTSFE()->no_cache, 'Cache nicht deaktiviert');
 	}
 
 	/**
@@ -122,6 +132,8 @@ class Tx_Rnbase_Database_ConnectionTest extends Tx_Phpunit_TestCase {
 		foreach ($fields As $field) {
 			$this->assertRegExp('/'.$field.'/', $sql, $field.' not found');
 		}
+
+		self::assertFalse(tx_rnbase_util_TYPO3::getTSFE()->no_cache, 'Cache nicht aktiviert');
 	}
 
 	/**

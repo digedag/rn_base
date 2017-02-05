@@ -3,7 +3,8 @@
 Änderungen
 ----------
 
-v1.2.3 (??.??.2017)
+v1.2.3 (25.01.2017)
+ * in tx_rnbase_controller $action->execute is no longer executed if $action is no object
 
 v1.2.2 (19.01.2017)
  * new configuration processor as future replacement for tx_rnbase_configurations added

@@ -94,11 +94,7 @@ class tx_rnbase_model_base
 			if ($rowOrUid === 0) {
 				$this->record = array();
 			} elseif($this->getTableName()) {
-				$options = array();
-				if(is_object($GLOBALS['BE_USER']) && $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects']) {
-					$options['enablefieldsbe'] = 1;
-				}
-				$this->record = tx_rnbase_util_DB::getRecord($this->getTableName(), $this->uid, $options);
+				$this->record = tx_rnbase_util_DB::getRecord($this->getTableName(), $this->uid);
 			}
 			// Der Record sollte immer ein Array sein
 			$this->record = is_array($this->record) ? $this->record : array();
