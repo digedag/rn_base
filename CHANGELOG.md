@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v1.2.5 (??.02.2017)
+ * SimpleMarker: new method finishTemplate() for child classes
+
 v1.2.4 (08.02.2017)
  * disable cache if loadHiddenObjects is active
  * maximum pagesize in pagebrowser removed. The limit/pagesize can be greater than 1000 now. The default of 10 has been retained.
