@@ -308,12 +308,14 @@ class Tx_Rnbase_Domain_Model_Base
 	/**
 	 * Check if this record is valid.
 	 * If FALSE, the record is maybe deleted in database.
+	 * A valid model must have an uid or at least one other column.
 	 *
 	 * @return bool
 	 */
 	public function isValid()
 	{
-		return !$this->isEmpty();
+		$mincount = (int) $this->hasProperty('uid') + 1;
+		return !$this->isEmpty() && count($this->getProperties()) >= $mincount;
 	}
 
 	/**

@@ -4,6 +4,7 @@
 ----------
 
 v1.2.5 (??.02.2017)
+ * ModelBase: isValid fixed if loadrecord fails and there are only a uid in the record
  * BaseTestCase: new getInaccessibleProperty method
  * SimpleMarker: new method finishTemplate() for child classes
 
