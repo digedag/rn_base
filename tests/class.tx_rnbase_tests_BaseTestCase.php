@@ -309,6 +309,20 @@ abstract class tx_rnbase_tests_BaseTestCase
 	}
 
 	/**
+	 * Helper function to get an inaccessible property
+	 *
+	 * @param object $object
+	 * @param string $property
+	 * @return mixed
+	 */
+	protected function getInaccessibleProperty($object, $property) {
+		$refObject = new ReflectionObject($object);
+		$refProperty = $refObject->getProperty($property);
+		$refProperty->setAccessible(TRUE);
+		return $refProperty->getValue($object);
+	}
+
+	/**
 	 * Helper function to set an inaccessible property
 	 *
 	 * @param string $class

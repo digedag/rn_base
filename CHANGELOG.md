@@ -4,6 +4,7 @@
 ----------
 
 v1.2.5 (??.02.2017)
+ * BaseTestCase: new getInaccessibleProperty method
  * SimpleMarker: new method finishTemplate() for child classes
 
 v1.2.4 (08.02.2017)
