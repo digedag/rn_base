@@ -3,10 +3,12 @@
 Änderungen
 ----------
 
-v1.2.5 (??.02.2017)
+v1.2.5 (07.02.2017)
  * ModelBase: isValid fixed if loadrecord fails and there are only a uid in the record
  * BaseTestCase: new getInaccessibleProperty method
  * SimpleMarker: new method finishTemplate() for child classes
+ * fixed method signature of tx_rnbase_util_MediaMarker::prepareItem
+ * bugfix deactivate cache only in FE
 
 v1.2.4 (08.02.2017)
  * disable cache if loadHiddenObjects is active
