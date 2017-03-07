@@ -971,12 +971,14 @@ class Tx_Rnbase_Database_Connection
 				$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects']
 			) {
 				$options['enablefieldsbe'] = 1;
-				// wir nehmen nicht tx_rnbase_util_TYPO3::getTSFE()->set_no_cache weil das durch
-				// $GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter'] deaktiviert werden
-				// kann. Das wollen wir aber nicht. Der Cache muss in jedem Fall deaktiviert werden.
-				// Ansonsten könnten darin Dinge landen, die normale Nutzer nicht
-				// sehen dürfen.
-				tx_rnbase_util_TYPO3::getTSFE()->no_cache = TRUE;
+				if (TYPO3_MODE == 'FE') {
+					// wir nehmen nicht tx_rnbase_util_TYPO3::getTSFE()->set_no_cache weil das durch
+					// $GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter'] deaktiviert werden
+					// kann. Das wollen wir aber nicht. Der Cache muss in jedem Fall deaktiviert werden.
+					// Ansonsten könnten darin Dinge landen, die normale Nutzer nicht
+					// sehen dürfen.
+					tx_rnbase_util_TYPO3::getTSFE()->no_cache = TRUE;
+				}
 			}
 
 			// Zur Where-Clause noch die gültigen Felder hinzufügen
