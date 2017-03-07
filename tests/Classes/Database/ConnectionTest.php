@@ -24,6 +24,7 @@
 
 tx_rnbase::load('Tx_Rnbase_Database_Connection');
 tx_rnbase::load('tx_rnbase_util_SearchBase');
+tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
 /**
  * Tx_Rnbase_Database_ConnectionTest
@@ -34,7 +35,7 @@ tx_rnbase::load('tx_rnbase_util_SearchBase');
  * @license 		http://www.gnu.org/licenses/lgpl.html
  * 					GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Database_ConnectionTest extends Tx_Phpunit_TestCase {
+class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase {
 
 	/**
 	 * @var int
@@ -102,7 +103,37 @@ class Tx_Rnbase_Database_ConnectionTest extends Tx_Phpunit_TestCase {
 	/**
 	 * @group unit
 	 */
+	public function testIsFrontend() {
+		self::assertFalse($this->callInaccessibleMethod(tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection'), 'isFrontend'));
+	}
+
+	/**
+	 * @group unit
+	 */
 	public function testDoSelectWithEnableFieldsFeSetsEnableFieldsForBeIfLoadHiddenObjectAndBeUser() {
+		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = 1;
+		$options['sqlonly'] = 1;
+		$options['enablefieldsfe'] = 1;
+		$databaseConnection = $this->getMock('Tx_Rnbase_Database_Connection', array('isFrontend'));
+		$databaseConnection ->expects(self::any())
+			->method('isFrontend')
+			->will(self::returnValue(TRUE));
+		$sql = $databaseConnection->doSelect('*', 'tt_content', $options);
+
+		$this->assertRegExp('/deleted=/', $sql, 'deleted is missing');
+
+		$fields = array('hidden', 'starttime', 'endtime', 'fe_group');
+		foreach ($fields As $field) {
+			$this->assertNotRegExp('/'.$field.'/', $sql, $field.' found');
+		}
+
+		self::assertTrue(tx_rnbase_util_TYPO3::getTSFE()->no_cache, 'Cache nicht deaktiviert');
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testDoSelectWithLoadHiddenObjectDeactivatesCacheNotIfNotInFrontend() {
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = 1;
 		$options['sqlonly'] = 1;
 		$options['enablefieldsfe'] = 1;
@@ -115,7 +146,7 @@ class Tx_Rnbase_Database_ConnectionTest extends Tx_Phpunit_TestCase {
 			$this->assertNotRegExp('/'.$field.'/', $sql, $field.' found');
 		}
 
-		self::assertTrue(tx_rnbase_util_TYPO3::getTSFE()->no_cache, 'Cache nicht deaktiviert');
+		self::assertFalse(tx_rnbase_util_TYPO3::getTSFE()->no_cache, 'Cache doch deaktiviert');
 	}
 
 	/**
