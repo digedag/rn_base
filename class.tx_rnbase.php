@@ -306,13 +306,16 @@ class tx_rnbase {
 	 * @return	boolean		is the key valid?
 	 */
 	private static function getValidKey($rawKey) {
+		if (!isset($GLOBALS['TYPO3_LOADED_EXT']) || !is_array($GLOBALS['TYPO3_LOADED_EXT'])) {
+			false;
+		}
 		$uKeys = array_keys($GLOBALS['TYPO3_LOADED_EXT']);
-		foreach((array)$uKeys as $uKey) {
-			if( str_replace('_', '', $uKey) == str_replace('_', '', $rawKey) ){
+		foreach ($uKeys as $uKey) {
+			if (str_replace('_', '', $uKey) == str_replace('_', '', $rawKey)) {
 				$result =  $uKey;
 			}
 		}
-		return $result ? $result : FALSE;
+		return $result ? $result : false;
 	}
 
 

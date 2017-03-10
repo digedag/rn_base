@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009 - 2013 Rene Nitzsche (rene@system25.de)
+*  (c) 2009 - 2017 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -74,6 +74,8 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 
 		// das Template rendern
 		$out = self::substituteMarkerArrayCached($template, $markerArray, $subpartArray, $wrappedSubpartArray);
+		// Abschlußbehandlung für Kindklassen
+		$out = $this->finishTemplate($out, $item, $formatter, $confId, $marker);
 		return $out;
 	}
 
@@ -87,6 +89,18 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker {
 	 * @return String das geparste Template
 	 */
 	protected function prepareTemplate($template, $item, $formatter, $confId, $marker) {
+		return $template;
+	}
+	/**
+	 * Die Methode kann von Kindklassen verwendet werden. Sie wird am Ende der Template-Erzeugung aufgerufen.
+	 * @param string $template das HTML-Template
+	 * @param Tx_Rnbase_Domain_Model_RecordInterface $item
+	 * @param tx_rnbase_util_FormatUtil $formatter der zu verwendente Formatter
+	 * @param string $confId Pfad der TS-Config
+	 * @param string $marker Name des Markers
+	 * @return String das geparste Template
+	 */
+	protected function finishTemplate($template, $item, $formatter, $confId, $marker) {
 		return $template;
 	}
 	/**

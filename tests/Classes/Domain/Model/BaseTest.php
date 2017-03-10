@@ -217,4 +217,20 @@ class Tx_Rnbase_Domain_Model_BaseTest extends tx_rnbase_tests_BaseTestCase {
 		self::assertSame('1433161484', $model->getLastModifyDateTime()->format('U'));
 	}
 
+	public function testIsValidShouldBeFalseForOnlyUid()
+	{
+		$model = $this->getModel(array('uid' => 57), 'Tx_Rnbase_Domain_Model_Base');
+		$this->assertFalse($model->isValid());
+	}
+	public function testIsValidShouldBeTrueForOnlyTitle()
+	{
+		$model = $this->getModel(array('title' => 'foo'), 'Tx_Rnbase_Domain_Model_Base');
+		$this->assertTrue($model->isValid());
+	}
+	public function testIsValidShouldBeTrueForUidAndTitle()
+	{
+		$model = $this->getModel(array('uid' => 57, 'title' => 'foo'), 'Tx_Rnbase_Domain_Model_Base');
+		$this->assertTrue($model->isValid());
+	}
+
 }

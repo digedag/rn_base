@@ -3,6 +3,17 @@
 Änderungen
 ----------
 
+v1.2.5 (07.02.2017)
+ * ModelBase: isValid fixed if loadrecord fails and there are only a uid in the record
+ * BaseTestCase: new getInaccessibleProperty method
+ * SimpleMarker: new method finishTemplate() for child classes
+ * fixed method signature of tx_rnbase_util_MediaMarker::prepareItem
+ * bugfix deactivate cache only in FE
+
+v1.2.4 (08.02.2017)
+ * disable cache if loadHiddenObjects is active
+ * maximum pagesize in pagebrowser removed. The limit/pagesize can be greater than 1000 now. The default of 10 has been retained.
+
 v1.2.3 (25.01.2017)
  * in tx_rnbase_controller $action->execute is no longer executed if $action is no object
 
