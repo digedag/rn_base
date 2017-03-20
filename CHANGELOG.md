@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v1.2.6 (??.??.2017)
+ * new methods to convert ts array to with dots and to without dots
+
 v1.2.5 (07.02.2017)
  * ModelBase: isValid fixed if loadrecord fails and there are only a uid in the record
  * BaseTestCase: new getInaccessibleProperty method
@@ -363,7 +366,7 @@ v0.14.16 (10.04.2015)
  * optional pid for new sys_file_references
 
 v0.14.15 (31.03.2015)
- * possiblity to configure allowed and disallowed file extensions for FAL TCA fields in $field['config']['allowedFileExtensions'] and $field['config']['disallowedFileExtensions']
+ * possiblity to configure allowed and disallowed file extensions for FAL TCA fields in `$field['config']['allowedFileExtensions']` and `$field['config']['disallowedFileExtensions']`
  * jQuery Plugin Flot 0.8.3 as resource added
 
 v0.14.14 (23.03.2015)
