@@ -110,7 +110,9 @@ class Tx_Rnbase_Utility_TypoScript
 					$typoScriptArray[$key] = $value['_typoScriptNodeValue'];
 					unset($value['_typoScriptNodeValue']);
 				}
-				$typoScriptArray[$key . '.'] = self::convertPlainArrayToTypoScriptArray($value);
+				// add dot only if not exists
+				$key = substr($key, -1) === '.' ? $key : $key . '.';
+				$typoScriptArray[$key] = self::convertPlainArrayToTypoScriptArray($value);
 			} else {
 				$typoScriptArray[$key] = is_null($value) ? '' : $value;
 			}

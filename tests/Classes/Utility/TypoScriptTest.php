@@ -104,6 +104,12 @@ class Tx_Rnbase_Utility_TypoScriptTest
 				self::$configArrayWithoutDot
 			)
 		);
+		// converting of conf array with dot should produce the same, without double dot keys!
+		$this->assertEquals(
+			self::$configArrayWithDot,
+			Tx_Rnbase_Utility_TypoScript::convertPlainArrayToTypoScriptArray(
+				self::$configArrayWithDot
+			)
+		);
 	}
-
 }
