@@ -38,6 +38,15 @@ class Tx_Rnbase_Utility_Cache {
 	 * @return void
 	 */
 	public static function addExcludedParametersForCacheHash($parameters) {
-		$GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'] .= join(',', $parameters);
+		$startingGlue = '';
+		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters']) {
+			$startingGlue = ',';
+		}
+		$GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'] .= $startingGlue . join(',', $parameters);
+		$cacheHashCalculator = tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
+
+		$cacheHashCalculator->setConfiguration(array(
+			'excludedParameters' => explode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters']))
+		);
 	}
 }
