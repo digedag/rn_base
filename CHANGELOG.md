@@ -3,8 +3,13 @@
 Änderungen
 ----------
 
-v1.2.6 (??.??.2017)
+v1.2.6 (22.03.2017)
  * new methods to convert ts array to with dots and to without dots
+ * warning fixed if globals TYPO3_LOADED_EXT not set
+ * CS cleanup
+ * extend processor interface by already existing configuration methods
+ * utility to add cHashExcludedParameters
+ * don't set noHash for links in USER_INT plugins by default
 
 v1.2.5 (07.02.2017)
  * ModelBase: isValid fixed if loadrecord fails and there are only a uid in the record
