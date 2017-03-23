@@ -3,6 +3,11 @@
 Änderungen
 ----------
 
+v1.2.8 (??.??.2017)
+
+v1.2.7 (23.03.2017)
+ * bugfix in typoscript utiliti to support php down to 5.3 again
+ 
 v1.2.6 (22.03.2017)
  * new methods to convert ts array to with dots and to without dots
  * warning fixed if globals TYPO3_LOADED_EXT not set
