@@ -254,10 +254,10 @@ class tx_rnbase_controller {
 		catch(tx_rnbase_exception_Skip $e) {
 			$ret = '';
 		}
-		// @deprecated support for tx_rnbase_exception_ItemNotFound404 will be dropped in TYPO3 7.6
-		catch(tx_rnbase_exception_ItemNotFound404 $e) {
-			$this->getTsfe()->pageNotFoundAndExit('tx_rnbase_exception_ItemNotFound404 was thrown');
+		catch(Tx_Rnbase_Exception_ItemNotFound404 $e) {
+			$this->getTsfe()->pageNotFoundAndExit($e->getMessage(), 'Page not found');
 		}
+		// Nice to have, aber weder aufwärts noch abwärtskompatibel...
 		catch (TYPO3\CMS\Core\Error\Http\PageNotFoundException $e) {
 			$this->getTsfe()->pageNotFoundAndExit(
 				'TYPO3\\CMS\\Core\\Error\\Http\\PageNotFoundException was thrown'
