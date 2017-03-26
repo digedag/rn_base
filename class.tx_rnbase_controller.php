@@ -254,8 +254,15 @@ class tx_rnbase_controller {
 		catch(tx_rnbase_exception_Skip $e) {
 			$ret = '';
 		}
-		catch(Tx_Rnbase_Exception_ItemNotFound404 $e) {
-			$this->getTsfe()->pageNotFoundAndExit($e->getMessage(), 'Page not found');
+		catch(Tx_Rnbase_Exception_PageNotFound404 $e) {
+			$message = Tx_Rnbase_Utility_Strings::trimExplode("\n", $e->getMessage(), true, 2);
+			if(count($message) > 1) {
+				// Default 404 anhängen
+				$message[1] .= "\n".$GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling_statheader'];
+			}
+			$this->getTsfe()->pageNotFoundAndExit(
+				count($message) > 1 ? $message[0] : $e->getMessage(),
+				count($message) > 1 ? $message[1] : '');
 		}
 		// Nice to have, aber weder aufwärts noch abwärtskompatibel...
 		catch (TYPO3\CMS\Core\Error\Http\PageNotFoundException $e) {

@@ -185,7 +185,7 @@ class tx_rnbase_tests_controller_testcase extends tx_rnbase_tests_BaseTestCase {
 
 		$tsfe->expects(self::once())
 			->method('pageNotFoundAndExit')
-			->with('Error message','Page not found');
+			->with('Error message','');
 
 		$controller->expects(self::once())
 			->method('getTsfe')

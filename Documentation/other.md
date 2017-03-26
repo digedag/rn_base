@@ -55,6 +55,13 @@ if (!intval($itemId)) {
 ```
 Alternativ wird auch `TYPO3\CMS\Core\Error\Http\PageNotFoundException` behandelt, aber dafür gibt es keine Cross-Version Support in TYPO3.
 
+Es ist auch möglich eigene, zusätzliche Header in den Response zu integrieren. Diese werden getrennt durch `\n` an die ErrorMessage gehängt: 
+
+```php
+	throw new Tx_Rnbase_Exception_PageNotFound404("My error message\nX-custom-1: value\nX-custom-2: other value");
+```
+
+
 ## Kommaseparierte Liste mit dem ListBuilder
 
 Wenn man einen Listbuilder hat, dann will man manchmal alle Elemente der Liste mit einem Komma trennen aber nach dem letzten soll kein Komma erscheinen. Dafür brauch man nur etwas TypoScript.
