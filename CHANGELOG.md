@@ -4,11 +4,12 @@
 ----------
 
 v1.2.8 (??.??.2017)
+ * It is possible to render other entities with view_List.
 
 v1.2.7 (23.03.2017)
- * bugfix in typoscript utiliti to support php down to 5.3 again
+ * bugfix in typoscript utility to support php down to 5.3 again
  
-v1.2.6 (22.03.2017)
+v1.2.6 (22.03.2017) (TER Release)
  * new methods to convert ts array to with dots and to without dots
  * warning fixed if globals TYPO3_LOADED_EXT not set
  * CS cleanup
