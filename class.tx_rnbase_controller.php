@@ -432,11 +432,6 @@ class tx_rnbase_controller {
 		}
 		tx_rnbase_util_Arrays::overwriteArray($parameters, $parametersArray);
 
-		// Initialize the cHash system if there are parameters available
-		if (!$configurations->isPluginUserInt() && $GLOBALS['TSFE'] && $parameters->count()) {
-			// Bei USER_INT wird der cHash nicht benötigt und führt zu 404
-			$GLOBALS['TSFE']->reqCHash();
-		}
 		return $parameters;
 	}
 }
