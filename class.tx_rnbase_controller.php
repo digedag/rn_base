@@ -434,19 +434,6 @@ class tx_rnbase_controller {
 
 		// Initialize the cHash system if there are parameters available
 		if (!$configurations->isPluginUserInt() && $GLOBALS['TSFE'] && $parameters->count()) {
-			if(
-				defined('TYPO3_ERRORHANDLER_MODE') &&
-				TYPO3_ERRORHANDLER_MODE == 'debug'
-			) {
-				require_once(\t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
-				\tx_rnbase::load('tx_rnbase_util_Debug');
-				\tx_rnbase_util_Debug::debug(
-					array(
-							$parameters->getArrayCopy()
-					),
-					__METHOD__ . ' Zeile:' .  __LINE__
-				);
-			}
 			// Bei USER_INT wird der cHash nicht benötigt und führt zu 404
 			$GLOBALS['TSFE']->reqCHash();
 		}
