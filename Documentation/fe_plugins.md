@@ -177,14 +177,16 @@ Um nun eine bestimmte Action doch über ein USER_INT einzubinden, muss bzw sollt
 ### global für alle actions convertieren
 plugin_tx_mkextension.toUserInt = 1
 ### nur für die eine bestimmte action convertieren
+Achtung: Das sollte nie genutzt werden. Der Zeitpunkt der Konvertierung ist zu spät. Gibt es auf einer Seite Parameter für die action, dann wird rn_base den cHash checken lassen bevor das Plugin aufgerufen wird. Das wäre bei einem USER_INT Plugin nicht nötig und führt auch zu Fehlern. Der Check findet aber vorher statt. Immer das Plugin auf USER_INT setzen oder die Anweisung für alle actions nutzen.
 plugin_tx_mkextension.showdata.toUserInt = 1
 ```
 
 Convertierung direkt in der Action:
 ```php
 $this->getConfigurations()->convertToUserInt();
-```
-Bei der Konvertierung in der Action ist darauf zu achten, das dieser Vorgang so zeitig wie möglich durchgeführt wird!
+### nur für die eine bestimmte action convertieren
+Achtung: Das sollte nie genutzt werden. Der Zeitpunkt der Konvertierung ist zu spät. Gibt es auf einer Seite Parameter für die action, dann wird rn_base den cHash checken lassen bevor das Plugin aufgerufen wird. Das wäre bei einem USER_INT Plugin nicht nötig und führt auch zu Fehlern. Der Check findet aber vorher statt. Immer das Plugin auf USER_INT setzen oder die Anweisung für alle actions nutzen.```
+
 
 Bei einer Konvertierung von USER auf USER_INT ruft TYPO3 das Plugin mehrfach auf. Der Output des Aufrufs, bei dem die Konvertierung durchgeführt wird, wird komplett ignoriert. Stattdessen wird ein neuer Aufruf über USER_INT erzeugt. Die in rn_base integrierte Konvertierung kümmert sich bereits darum, daß die Plugins nicht unnötig doppelt aufgerufen werden. Dies geschieht dadurch, daß beim Setzen der Konvertierung eine Skip Exception geworfen und somit das Rendering ignoriert wird.
 
