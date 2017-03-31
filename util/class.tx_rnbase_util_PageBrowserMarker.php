@@ -235,7 +235,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 	function getTemplates($template, &$formatter, $pbMarker) {
 		$ret = array();
 		foreach($this->pagePartsDef As $part) {
-			$ret[$part] = $formatter->cObj->getSubpart($template, '###'.$pbMarker.'_' . strtoupper($part) . '_PAGE###');
+			$ret[$part] = tx_rnbase_util_Templates::getSubpart($template, '###'.$pbMarker.'_' . strtoupper($part) . '_PAGE###');
 		}
 		return $ret;
 	}

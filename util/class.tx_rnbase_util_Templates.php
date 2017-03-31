@@ -45,8 +45,15 @@ class tx_rnbase_util_Templates {
 	 * @return string
 	 */
 	public static function getSubpart($template, $subpart) {
-		$parser = tx_rnbase_util_Typo3Classes::getHtmlParserClass();
-		$content = $parser::getSubpart($template, $subpart);
+		if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+			$parser = tx_rnbase::makeInstance(
+				'TYPO3\\CMS\\Core\\Service\\MarkerBasedTemplateService'
+			);
+			$content = $parser->getSubpart($template, $subpart);
+		} else {
+			$parser = tx_rnbase_util_Typo3Classes::getHtmlParserClass();
+			$content = $parser::getSubpart($template, $subpart);
+		}
 		// check for Subtemplates
 		return self::includeSubTemplates($content);
 	}
@@ -417,9 +424,16 @@ class tx_rnbase_util_Templates {
 	 * @return	string		The processed HTML content string.
 	 * @see getSubpart(), t3lib_parsehtml::substituteSubpart()
 	 */
-	public static function substituteSubpart($content, $marker, $subpartContent, $recursive=1)	{
-		$htmlParser = tx_rnbase_util_Typo3Classes::getHtmlParserClass();
-		return $htmlParser::substituteSubpart($content, $marker, $subpartContent, $recursive);
+	public static function substituteSubpart($content, $marker, $subpartContent, $recursive=1) {
+		if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+			$parser = tx_rnbase::makeInstance(
+				'TYPO3\\CMS\\Core\\Service\\MarkerBasedTemplateService'
+			);
+			$parser->substituteSubpart($content, $marker, $subpartContent, $recursive);
+		} else {
+			$parser = tx_rnbase_util_Typo3Classes::getHtmlParserClass();
+			return $parser::substituteSubpart($content, $marker, $subpartContent, $recursive);
+		}
 	}
 }
 
