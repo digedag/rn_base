@@ -681,10 +681,10 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		//prüfen ob Parameter mit ? oder & angehängt werden müssen
 		$sAddParamsWith = (strstr($sUrl, '?')) ? '&' : '?';
 		//jetzt setzen wir den aktuellen Sort parameter zusammen
-		$sSortUrl = $sUrl.$sAddParamsWith.'sortField=' . $sSortField . '&sortRev=' . $sSortRev;
+		$sSortUrl = $sUrl . $sAddParamsWith.'sortField=' . $sSortField . '&sortRev=' . $sSortRev;
 		//noch den Pfeil für die aktuelle Sortierungsrichtung ggf. einblenden
 		$sSortArrow = '';
-		if ($sCurrentSortField==$sSortField) {
+		if ($sCurrentSortField == $sSortField) {
 			if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
 				$sSortArrow = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon(
 					$sSortRev == 'asc' ? 'actions-move-up' : 'actions-move-down'
