@@ -101,7 +101,7 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler
 	public function getSubModuleId()
 	{
 		tx_rnbase::load('Tx_Rnbase_Utility_Strings');
-		$modId = get_class($this);
+		$modId = str_replace('\\', '_', get_class($this));
 		$modId = Tx_Rnbase_Utility_Strings::underscoredToLowerCamelCase($modId);
 
 		return $modId;
