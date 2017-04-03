@@ -40,21 +40,23 @@ class Tx_Rnbase_Backend_Utility_Icons
 	 * @param array $arguments
 	 * @return mixed
 	 */
-	static public function __callStatic($method, array $arguments) {
+	static public function __callStatic($method, array $arguments)
+	{
 		return call_user_func_array(array(static::getIconUtilityClass(), $method), $arguments);
 	}
 
 	/**
 	 * @return \TYPO3\CMS\Backend\Utility\IconUtility or t3lib_iconWorks
 	 */
-	static protected function getIconUtilityClass() {
-		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+	static protected function getIconUtilityClass()
+	{
+		if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
 			/** @var $class \TYPO3\CMS\Core\Imaging\IconFactory */
 			$class = tx_rnbase::makeInstance(
 				'TYPO3\\CMS\\Core\\Imaging\\IconFactory'
 			);
 		} elseif (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			$class = '\TYPO3\CMS\Backend\Utility\IconUtility';
+			$class = 'TYPO3\\CMS\\Backend\\Utility\\IconUtility';
 		} else {
 			$class = 't3lib_iconWorks';
 		}
@@ -155,6 +157,7 @@ class Tx_Rnbase_Backend_Utility_Icons
 			'TYPO3\\CMS\\Core\\Imaging\\IconFactory'
 		);
 	}
+
 	/**
 	 * The TYPO3 icon factory
 	 *
