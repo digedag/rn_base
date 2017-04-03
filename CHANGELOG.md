@@ -4,6 +4,10 @@
 ----------
 
 v1.2.8 (??.??.2017)
+ * icon factory for sprite icons implemented (TYPO3 8 support)
+ * backend module runner disabled for typo3 8 or newer (TYPO3 8 support)
+ * get subpart refactored to new marker template service (TYPO3 8 support)
+ * new typo3 version checks added (TYPO3 8 support)
  * It is possible to render other entities with view_List.
 
 v1.2.7 (23.03.2017)

@@ -33,8 +33,8 @@
  * @license 		http://www.gnu.org/licenses/lgpl.html
  * 					GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Backend_Utility_Icons {
-
+class Tx_Rnbase_Backend_Utility_Icons
+{
 	/**
 	 * @param string $method
 	 * @param array $arguments
@@ -49,11 +49,91 @@ class Tx_Rnbase_Backend_Utility_Icons {
 	 */
 	static protected function getIconUtilityClass() {
 		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			$class = tx_rnbase::makeInstance(
+				'TYPO3\\CMS\\Core\\Imaging\\IconFactory'
+			);
+		} elseif (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
 			$class = '\TYPO3\CMS\Backend\Utility\IconUtility';
 		} else {
 			$class = 't3lib_iconWorks';
 		}
 
 		return $class;
+	}
+
+	/**
+	 * Returns a string with all available Icons in TYPO3 system. Each icon has a tooltip with its identifier.
+	 * @return string
+	 */
+	public static function debugSprites()
+	{
+		$iconsAvailable = $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'];
+
+		if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+			$iconsAvailable = self::getIconRegistry()->getAllRegisteredIconIdentifiers();
+		}
+
+		$icons .= '<h2>iconsAvailable</h2>';
+		foreach($iconsAvailable AS $icon) {
+			$icons .= sprintf(
+				'<span title="%1$s">%2$s</span>',
+				$icon,
+				self::getSpriteIcon($icon)
+			);
+		}
+
+		return $icons;
+	}
+
+	/**
+	 *
+	 * @param unknown $iconName
+	 * @param array $options
+	 * @param array $overlays
+	 *
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use IconFactory->getIcon instead
+	 *
+	 * @return unknown
+	 */
+	public static function getSpriteIcon(
+		$iconName,
+		array $options = array(),
+		array $overlays = array()
+	) {
+		// @TODO: shoult be used for TYPO3 7 too!
+		if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+			$class = static::getIconUtilityClass();
+			return $class::getSpriteIcon($iconName, $options, $overlays);
+		}
+
+		$size = \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL;
+		if (!empty($options['size'])) {
+			$size = $options['size'];
+		}
+
+		return self::getIconFactory()->getIcon($iconName, $size)->render();
+	}
+
+	/**
+	 * The TYPO3 icon factory
+	 *
+	 * @return \TYPO3\CMS\Core\Imaging\IconFactory
+	 */
+	public static function getIconFactory()
+	{
+		return tx_rnbase::makeInstance(
+			'TYPO3\\CMS\\Core\\Imaging\\IconFactory'
+		);
+	}
+	/**
+	 * The TYPO3 icon factory
+	 *
+	 * @return \TYPO3\CMS\Core\Imaging\IconRegistry
+	 */
+	public static function getIconRegistry()
+	{
+		return tx_rnbase::makeInstance(
+			'TYPO3\\CMS\\Core\\Imaging\\IconRegistry'
+		);
 	}
 }

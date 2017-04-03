@@ -84,7 +84,6 @@ class tx_rnbase_util_ListBuilder {
 		$outerMarker = $this->getOuterMarker($marker, $template);
 		/* @var $listMarker tx_rnbase_util_ListMarker */
 		$listMarker = tx_rnbase::makeInstance('tx_rnbase_util_ListMarker', $this->info->getListMarkerInfo());
-		$htmlParser = tx_rnbase_util_Typo3Classes::getHtmlParserClass();
 		while($templateList = tx_rnbase_util_Templates::getSubpart($template, '###' . $outerMarker . 'S###')) {
 			$markerArray = $subpartArray = array();
 			$templateEntry = tx_rnbase_util_Templates::getSubpart($templateList, '###' . $marker . '###');
