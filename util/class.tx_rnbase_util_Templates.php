@@ -429,7 +429,7 @@ class tx_rnbase_util_Templates {
 			$parser = tx_rnbase::makeInstance(
 				'TYPO3\\CMS\\Core\\Service\\MarkerBasedTemplateService'
 			);
-			$parser->substituteSubpart($content, $marker, $subpartContent, $recursive);
+			return $parser->substituteSubpart($content, $marker, $subpartContent, $recursive);
 		} else {
 			$parser = tx_rnbase_util_Typo3Classes::getHtmlParserClass();
 			return $parser::substituteSubpart($content, $marker, $subpartContent, $recursive);
