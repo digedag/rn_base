@@ -291,7 +291,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase {
 		if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
 			$this->assertContains('icon-actions-move-down', $aRet[0][0][0], 'Die erste Zelle des Headers ist falsch. 2. teil');
 		} else {
-			$this->assertContains('gfx/redup.gif', $aRet[0][0][0], 'Die erste Zelle des Headers ist falsch. 2. teil');
+			$this->assertContains('gfx/reddown.gif', $aRet[0][0][0], 'Die erste Zelle des Headers ist falsch. 2. teil');
 		}
 		$this->assertEquals('Header Col1', $aRet[0][0][1], 'Die zweite Zelle des Headers ist falsch.');
 		//erste Zeile
