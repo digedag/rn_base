@@ -49,6 +49,7 @@ class Tx_Rnbase_Backend_Utility_Icons
 	 */
 	static protected function getIconUtilityClass() {
 		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			/** @var $class \TYPO3\CMS\Core\Imaging\IconFactory */
 			$class = tx_rnbase::makeInstance(
 				'TYPO3\\CMS\\Core\\Imaging\\IconFactory'
 			);
@@ -59,6 +60,35 @@ class Tx_Rnbase_Backend_Utility_Icons
 		}
 
 		return $class;
+	}
+
+	/**
+	 * This method is used throughout the TYPO3 Backend to show icons for a DB record
+	 *
+	 * @param string $table
+	 * @param array $row
+	 * @param string $size "large" "small" or "default", see the constants of the Icon class
+	 *
+	 * @return Icon
+	 */
+	public static function getSpriteIconForRecord(
+		$table,
+		array $row,
+		$size = 'default'
+	) {
+		$method = 'getSpriteIconForRecord';
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			$method = 'getIconForRecord';
+		}
+
+		return self::__callStatic(
+			$method,
+			array(
+				$table,
+				$row,
+				$size
+			)
+		);
 	}
 
 	/**
