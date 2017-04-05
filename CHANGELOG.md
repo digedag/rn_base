@@ -4,6 +4,7 @@
 ----------
 
 v1.2.8 (??.??.2017)
+ * new wrapper for readLLfile (TYPO3 8 support)
  * icon factory for sprite icons implemented (TYPO3 8 support)
  * backend module runner disabled for typo3 8 or newer (TYPO3 8 support)
  * get subpart refactored to new marker template service (TYPO3 8 support)
