@@ -135,7 +135,7 @@ abstract class tx_rnbase_action_BaseIOC {
 	 */
 	protected function addResources($configurations, $confId) {
 		tx_rnbase::load('tx_rnbase_util_Files');
-		$pageRenderer = tx_rnbase_util_TYPO3::getTSFE()->getPageRenderer();
+		$pageRenderer = tx_rnbase_util_TYPO3::getPageRenderer();
 
 		foreach ($this->getJavaScriptFilesByIncludePartConfId('includeJSFooter') as $file) {
 			$pageRenderer->addJsFooterFile($file);

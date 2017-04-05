@@ -247,6 +247,22 @@ class tx_rnbase_util_TYPO3 {
 		}
 		return $GLOBALS['TSFE'];
 	}
+	/**
+	 * Returns the Page renderer instance
+	 *
+	 * @return \TYPO3\CMS\Core\Page\PageRenderer
+	 */
+	public static function getPageRenderer()
+	{
+		if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+			return tx_rnbase::makeInstance(
+				'TYPO3\\CMS\\Core\\Page\\PageRenderer'
+			);
+		}
+
+		return self::getTSFE()->getPageRenderer();
+	}
+
 	private static $sysPage = NULL;
 	/**
 	 * @return \TYPO3\CMS\Frontend\Page\PageRepository or t3lib_pageSelect
