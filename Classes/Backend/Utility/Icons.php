@@ -79,8 +79,11 @@ class Tx_Rnbase_Backend_Utility_Icons
 		$size = 'default'
 	) {
 		$method = 'getSpriteIconForRecord';
-		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+		if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
 			$method = 'getIconForRecord';
+		} else {
+			// for older versions thhe third parameter should be an array or null
+			$size = null;
 		}
 
 		return self::__callStatic(
