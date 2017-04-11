@@ -23,6 +23,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
+tx_rnbase::load('Tx_Rnbase_Exception_PageNotFound404');
 
 /**
  * Wird diese Exception innerhalb einer Action geworfen,
@@ -33,8 +34,8 @@
  * ausgegeben wird.
  *
  * @author Hannes Bochmann <dev@dmk-ebusiness.de>
- * @deprecated will be dropped in TYPO3 7.6
+ * @deprecated use Tx_Rnbase_Exception_ItemNotFound404
  */
-class tx_rnbase_exception_ItemNotFound404 extends Exception {
+class tx_rnbase_exception_ItemNotFound404 extends Tx_Rnbase_Exception_PageNotFound404 {
 
 }

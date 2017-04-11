@@ -111,10 +111,25 @@ class Tx_Rnbase_Backend_Utility_Tables
 			$checkName = $options->getCheckboxname() ? $options->getCheckboxname() : 'checkEntry';
 			$dontcheck = is_array($options->getDontcheck()) ? $options->getDontcheck() : array();
 			// Check if entry is checkable
-			if(!array_key_exists($record['uid'], $dontcheck))
+			if (!array_key_exists($record['uid'], $dontcheck)) {
 				$row[] = $formTool->createCheckbox($checkName.'[]', $record['uid']);
-			else
-				$row[] = '<img'.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/zoom2.gif', 'width="11" height="12"').' title="Info: '. $dontcheck[$record['uid']] .'" border="0" alt="" />';
+			} else {
+				if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
+					$row[] = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon(
+						'actions-document-info'
+					);
+				} else {
+					$row[] = sprintf(
+						'<img %s title="Info: %s" alt="">',
+						Tx_Rnbase_Backend_Utility_Icons::skinImg(
+							$GLOBALS['BACK_PATH'],
+							'gfx/zoom2.gif',
+							'width="1" height="12"'
+						),
+						$dontcheck[$record['uid']]
+					);
+				}
+			}
 		}
 
 		if ($options->getAddRecordSprite()) {

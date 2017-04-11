@@ -60,15 +60,15 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
 	protected function cleanUpPageRenderer() {
 		$property = new ReflectionProperty('\\TYPO3\\CMS\\Core\\Page\\PageRenderer', 'jsFiles');
 		$property->setAccessible(TRUE);
-		$property->setValue(tx_rnbase_util_TYPO3::getTSFE()->getPageRenderer(), array());
+		$property->setValue(tx_rnbase_util_TYPO3::getPageRenderer(), array());
 
 		$property = new ReflectionProperty('\\TYPO3\\CMS\\Core\\Page\\PageRenderer', 'jsLibs');
 		$property->setAccessible(TRUE);
-		$property->setValue(tx_rnbase_util_TYPO3::getTSFE()->getPageRenderer(), array());
+		$property->setValue(tx_rnbase_util_TYPO3::getPageRenderer(), array());
 
 		$property = new ReflectionProperty('\\TYPO3\\CMS\\Core\\Page\\PageRenderer', 'cssFiles');
 		$property->setAccessible(TRUE);
-		$property->setValue(tx_rnbase_util_TYPO3::getTSFE()->getPageRenderer(), array());
+		$property->setValue(tx_rnbase_util_TYPO3::getPageRenderer(), array());
 	}
 
 	/**
@@ -90,7 +90,7 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
 
 		$property = new ReflectionProperty('\\TYPO3\\CMS\\Core\\Page\\PageRenderer', 'cssFiles');
 		$property->setAccessible(TRUE);
-		$files = $property->getValue(tx_rnbase_util_TYPO3::getTSFE()->getPageRenderer());
+		$files = $property->getValue(tx_rnbase_util_TYPO3::getPageRenderer());
 
 		self::assertEquals('typo3conf/ext/rn_base/ext_emconf.php', $files['typo3conf/ext/rn_base/ext_emconf.php']['file']);
 		self::assertEquals('typo3conf/ext/rn_base/ext_icon.gif', $files['typo3conf/ext/rn_base/ext_icon.gif']['file']);
@@ -117,7 +117,7 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
 
 		$property = new ReflectionProperty('\\TYPO3\\CMS\\Core\\Page\\PageRenderer', 'jsFiles');
 		$property->setAccessible(TRUE);
-		$files = $property->getValue(tx_rnbase_util_TYPO3::getTSFE()->getPageRenderer());
+		$files = $property->getValue(tx_rnbase_util_TYPO3::getPageRenderer());
 
 		self::assertEquals('typo3conf/ext/rn_base/ext_emconf.php', $files['typo3conf/ext/rn_base/ext_emconf.php']['file']);
 		self::assertEquals('typo3conf/ext/rn_base/ext_icon.gif', $files['typo3conf/ext/rn_base/ext_icon.gif']['file']);
@@ -145,7 +145,7 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
 
 		$property = new ReflectionProperty('\\TYPO3\\CMS\\Core\\Page\\PageRenderer', 'jsLibs');
 		$property->setAccessible(TRUE);
-		$files = $property->getValue(tx_rnbase_util_TYPO3::getTSFE()->getPageRenderer());
+		$files = $property->getValue(tx_rnbase_util_TYPO3::getPageRenderer());
 
 		self::assertEquals('typo3conf/ext/rn_base/ext_emconf.php', $files['first']['file']);
 		self::assertEquals('typo3conf/ext/rn_base/ext_icon.gif', $files['second']['file']);

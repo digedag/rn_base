@@ -50,4 +50,38 @@ class tx_rnbase_util_Extensions {
 
 		return $class;
 	}
+
+	/**
+	 * Registers an Extbase module (main or sub) to the backend interface.
+	 * FOR USE IN ext_tables.php FILES
+	 *
+	 * @param string $extensionName
+	 * @param string $mainModuleName
+	 * @param string $subModuleName
+	 * @param string $position
+	 * @param array $controllerActions
+	 * @param array $moduleConfiguration
+	 *
+	 * @throws \InvalidArgumentException
+	 *
+	 * @return void
+	 */
+	public static function registerModule(
+		$extensionName,
+		$mainModuleName = '',
+		$subModuleName = '',
+		$position = '',
+		array $controllerActions = array(),
+		array $moduleConfiguration = array()
+	)
+	{
+		\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+			$extensionName,
+			$mainModuleName,
+			$subModuleName,
+			$position,
+			$controllerActions,
+			$moduleConfiguration
+		);
+	}
 }

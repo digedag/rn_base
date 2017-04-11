@@ -72,6 +72,11 @@ class Tx_Rnbase_Utility_T3General
 	 */
 	public static function stripSlashesOnArray(array &$theArray)
 	{
+		// there is no need to do this anymore!
+		if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+			return $theArray;
+		}
+
 		$util = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
 		$util::stripSlashesOnArray($theArray);
 
@@ -91,10 +96,36 @@ class Tx_Rnbase_Utility_T3General
 	 */
 	public static function addSlashesOnArray(array &$theArray)
 	{
+		// there is no need to do this anymore!
+		if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+			return $theArray;
+		}
+
 		$util = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
 		$util::addSlashesOnArray($theArray);
 
 		return $theArray;
+	}
+	/**
+	 * AddSlash array
+	 * This function traverses a multidimensional array
+	 * and adds slashes to the values.
+	 * NOTE that the input array is and argument by reference.!!
+	 * Twin-function to stripSlashesOnArray
+	 *
+	 * @param array $theArray Multidimensional input array, (REFERENCE!)
+	 *
+	 * @return array
+	 */
+	public static function slashArray(array $arr, $cmd)
+	{
+		// there is no need to do this anymore!
+		if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+			return $arr;
+		}
+
+		$util = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+		return $util::addSlashesOnArray($arr, $cmd);
 	}
 
 	/**

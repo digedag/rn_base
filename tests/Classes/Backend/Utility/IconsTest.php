@@ -39,6 +39,9 @@ class Tx_Rnbase_Backend_Utility_IconsTest extends tx_rnbase_tests_BaseTestCase {
 	 * @group unit
 	 */
 	public function testSkinImg() {
+		if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+			$this->markTestSkipped('deprecated sinde typo3 7 and nonexistence since typo3 8');
+		}
 		Tx_Rnbase_Backend_Utility_IconsForTest::skinImg(1, 2, 3, 4);
 
 		self::assertEquals(

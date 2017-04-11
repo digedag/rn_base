@@ -79,7 +79,7 @@ class tx_rnbase_util_Arrays {
 	 * @param boolean $addKeys
 	 * @param boolean $includeEmptyValues
 	 * @param boolean $enableUnsetFeature
-	 * @return void
+	 * @return array
 	 */
 	public static function mergeRecursiveWithOverrule(
 		array $original,

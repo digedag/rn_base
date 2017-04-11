@@ -62,7 +62,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
 	protected function getListerId()
 	{
 		tx_rnbase::load('Tx_Rnbase_Utility_Strings');
-		$confId = get_class($this);
+		$confId = str_replace('\\', '_', get_class($this));
 		$confId = Tx_Rnbase_Utility_Strings::underscoredToLowerCamelCase($confId);
 
 		return $confId;

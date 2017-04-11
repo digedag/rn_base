@@ -3,6 +3,36 @@
 Änderungen
 ----------
 
+v1.3.1 (11.04.2017)
+ * fill page record of TSFE when preparing the TSFE in the backend
+
+v1.3.0 (11.04.2017)
+ * new wrapper for getPageRenderer (TYPO3 8 support)
+ * new wrapper for readLLfile (TYPO3 8 support)
+ * icon factory for sprite icons implemented (TYPO3 8 support)
+ * backend module runner disabled for typo3 8 or newer (TYPO3 8 support)
+ * get subpart refactored to new marker template service (TYPO3 8 support)
+ * new typo3 version checks added (TYPO3 8 support)
+ * It is possible to render other entities with view_List.
+ * New exception class for page not found handling
+ * Custom headers for 404 errors possible
+ * check for toUserInt before creating the parameters object
+ * removed check if cHash is set (is done by the core)
+ 	Since now the content for USER plugins with parameters and no valid
+	chash will be the one if no parameters were given. Before the cache was
+	disabled in this case and the plugin was executed without caching.
+
+v1.2.7 (23.03.2017)
+ * bugfix in typoscript utility to support php down to 5.3 again
+
+v1.2.6 (22.03.2017) (TER Release)
+ * new methods to convert ts array to with dots and to without dots
+ * warning fixed if globals TYPO3_LOADED_EXT not set
+ * CS cleanup
+ * extend processor interface by already existing configuration methods
+ * utility to add cHashExcludedParameters
+ * don't set noHash for links in USER_INT plugins by default
+
 v1.2.5 (07.02.2017)
  * ModelBase: isValid fixed if loadrecord fails and there are only a uid in the record
  * BaseTestCase: new getInaccessibleProperty method
@@ -363,7 +393,7 @@ v0.14.16 (10.04.2015)
  * optional pid for new sys_file_references
 
 v0.14.15 (31.03.2015)
- * possiblity to configure allowed and disallowed file extensions for FAL TCA fields in $field['config']['allowedFileExtensions'] and $field['config']['disallowedFileExtensions']
+ * possiblity to configure allowed and disallowed file extensions for FAL TCA fields in `$field['config']['allowedFileExtensions']` and `$field['config']['disallowedFileExtensions']`
  * jQuery Plugin Flot 0.8.3 as resource added
 
 v0.14.14 (23.03.2015)

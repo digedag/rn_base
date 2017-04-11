@@ -1,7 +1,6 @@
-Tips & Tricks
-=============
-Wie findet man das verwendete HTML-Template?
---------------------------------------------
+# Tips & Tricks
+## Wie findet man das verwendete HTML-Template?
+
 Wenn man in ein fremdes Projekt kommt und mal eben eine Änderung am Layout machen soll, steht man häufig vor der Frage, welches HTML-Template eigentlich betroffen ist. Bei Plugins, die auf Basis von rn_base entwickelt wurden, kann man dieses Template über ein festes "Such-Schema" aufspüren:
 
 1. Man öffnet das Plugin auf der betroffenen Seite und schaut nach, welcher View angezeigt wurde und ob im Tab des Views ein HTML-Template gesetzt ist
@@ -12,11 +11,10 @@ plugin.tx_dasplugin.viewidTemplate = fileadmin/vorlage.html
 ```
 Welche ID ein View verwendet, kann man notfalls im Code nachschauen. Die Action-Klasse setzt die ID in der Methode **getTemplateName()**.
 
-Einbindung von DAM-Medien
--------------------------
+## Einbindung von DAM-Medien
 ### TypoScript
 
-
+```
 damimages = USER
 damimages  {
   userFunc = tx_rnbase_util_TSDAM->printImages
@@ -31,7 +29,7 @@ damimages  {
     file.file.maxW = [Wert]
   }
 }
-
+```
 
 ### Bedeutung der Typoscript-Attribute
 ```
@@ -47,16 +45,24 @@ media.file.fil.max[H|W]
     Maximale Höhe / Breite des angezeigten Mediums
 ```
 
-Einzelansichten von Datensätzen
--------------------------------
-Wenn man eine Action zur Einzelansicht eines Datensatzes hat und das anzuzeigende Element nicht gefunden wird (Parameter falsch, fehlt ganz oder Element gelöscht), dann sollte das 404 Handling von TYPO3 gestartet werden. Dafür muss in der Action einfach nur die Exception TYPO3\CMS\Core\Error\Http\PageNotFoundException geworfen werden.
+## Einzelansichten von Datensätzen
+### ExceptionHandling
+Wenn man eine Action zur Einzelansicht eines Datensatzes hat und das anzuzeigende Element nicht gefunden wird (Parameter falsch, fehlt ganz oder Element gelöscht), dann sollte das 404 Handling von TYPO3 gestartet werden. Dafür muss in der Action einfach nur die Exception `Tx_Rnbase_Exception_PageNotFound404` geworfen werden.
 ```php
 if (!intval($itemId)) {
-	throw new TYPO3\CMS\Core\Error\Http\PageNotFoundException();
+	throw new Tx_Rnbase_Exception_PageNotFound404('My error message');
 }
 ```
-Kommaseparierte Liste mit dem ListBuilder
------------------------------------------
+Alternativ wird auch `TYPO3\CMS\Core\Error\Http\PageNotFoundException` behandelt, aber dafür gibt es keine Cross-Version Support in TYPO3.
+
+Es ist auch möglich eigene, zusätzliche Header in den Response zu integrieren. Diese werden getrennt durch `\n` an die ErrorMessage gehängt: 
+
+```php
+	throw new Tx_Rnbase_Exception_PageNotFound404("My error message\nX-custom-1: value\nX-custom-2: other value");
+```
+
+
+## Kommaseparierte Liste mit dem ListBuilder
 
 Wenn man einen Listbuilder hat, dann will man manchmal alle Elemente der Liste mit einem Komma trennen aber nach dem letzten soll kein Komma erscheinen. Dafür brauch man nur etwas TypoScript.
 
@@ -108,8 +114,7 @@ $listBuilder->render(
 );
 ```
 
-Debugging
----------
+## Debugging
 Um den Debug-Modus zu aktivieren muss zunächst in der Extensionkonfiguration ein beliebiger **debugKey** gesetzt werden. Dieser debugKey muss zum Aktivieren des Debug-Modus in den Parameter debug geschrieben werden:
 
 http://www.mydomain.de/index.php?id=home&debug=cRuyUDe4Ra4r
@@ -121,8 +126,7 @@ if (rnbase_util_Debug::isDebugEnabled()) {
 }
 ```
 
-Label-Debug
------------
+## Label-Debug
 
 Dieser Debugmodus kann zu jedem Label, welches über Tx_Rnbase_Configuration_Processor::getLL() aufgelöst wird, zusätzlich zu dem enthaltenem Wert das ursprüngliche Label ausgeben. Dies kann nützlich für Redakteure in Verbindung mit der Mklltranslate Extension sein, da man so einfach an das Label kommt, welches geändert werden soll.
 
@@ -132,8 +136,7 @@ http://www.mydomain.de/index.php?id=home&debug=cRuyUDe4Ra4r&labeldebug=html
 
 Siehe auch (https://github.com/digedag/rn_base/pull/1)
 
-Der PLUGIN_Marker
------------------
+## Der PLUGIN_Marker
 
 Bei rn_base-Plugins wird zusätzlich zu den normalen Markern des Views immer noch der tt_content Datensatz des Plugins als Marker bereitgestellt. Der Marker ###PLUGIN_UID## liefert also die UID aus tt_content für das Plugin. Per Typoscript kann man die Daten über folgenden Pfad bearbeiten:
 

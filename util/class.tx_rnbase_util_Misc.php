@@ -389,6 +389,8 @@ MAYDAYPAGE;
 			$GLOBALS['TSFE']->initLLvars();
 		}
 
+		$GLOBALS['TSFE']->page = $GLOBALS['TSFE']->sys_page->getPage($pid);
+
 		return $GLOBALS['TSFE'];
 	}
 	/**

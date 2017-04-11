@@ -183,8 +183,8 @@ plugin_tx_mkextension.showdata.toUserInt = 1
 Convertierung direkt in der Action:
 ```php
 $this->getConfigurations()->convertToUserInt();
-```
-Bei der Konvertierung in der Action ist darauf zu achten, das dieser Vorgang so zeitig wie möglich durchgeführt wird!
+### nur für die eine bestimmte action convertieren
+
 
 Bei einer Konvertierung von USER auf USER_INT ruft TYPO3 das Plugin mehrfach auf. Der Output des Aufrufs, bei dem die Konvertierung durchgeführt wird, wird komplett ignoriert. Stattdessen wird ein neuer Aufruf über USER_INT erzeugt. Die in rn_base integrierte Konvertierung kümmert sich bereits darum, daß die Plugins nicht unnötig doppelt aufgerufen werden. Dies geschieht dadurch, daß beim Setzen der Konvertierung eine Skip Exception geworfen und somit das Rendering ignoriert wird.
 
