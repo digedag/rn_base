@@ -49,10 +49,45 @@ class tx_rnbase_util_Lang {
 		$basePath = tx_rnbase_util_Files::getFileAbsFileName($filename);
 		// php or xml as source: In any case the charset will be that of the system language.
 		// However, this function guarantees only return output for default language plus the specified language (which is different from how 3.7.0 dealt with it)
-		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
-		self::addLang($utility::readLLfile($basePath, self::getLLKey(), $GLOBALS['TSFE']->renderCharset));
+		self::addLang(self::readLLfile($basePath, self::getLLKey(), $GLOBALS['TSFE']->renderCharset));
 		if ($llKey = self::getLLKey(TRUE)) {
-			self::addLang($utility::readLLfile($basePath, $llKey, $GLOBALS['TSFE']->renderCharset));
+			self::addLang(self::readLLfile($basePath, $llKey, $GLOBALS['TSFE']->renderCharset));
+		}
+	}
+
+	/**
+	 * Returns parsed data from a given file and language key.
+	 *
+	 * @param string $fileReference
+	 * @param string $languageKey
+	 * @param string $charset
+	 * @param int $errorMode
+	 * @param bool $isLocalizationOverride
+	 *
+	 * @return bool
+	 */
+	public function readLLfile(
+		$fileReference,
+		$languageKey,
+		$charset = '',
+		$errorMode = 0,
+		$isLocalizationOverride = false
+	) {
+		if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+			/** @var $languageFactory \TYPO3\CMS\Core\Localization\LocalizationFactory */
+			$languageFactory = tx_rnbase::makeInstance(
+				'TYPO3\\CMS\\Core\\Localization\\LocalizationFactory'
+			);
+			return $languageFactory->getParsedData(
+				$fileReference,
+				$languageKey,
+				$charset,
+				$errorMode,
+				$isLocalizationOverride
+			);
+		} else {
+			$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+			return $utility::readLLfile($fileReference, $languageKey, $charset);
 		}
 	}
 

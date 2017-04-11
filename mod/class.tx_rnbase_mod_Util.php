@@ -64,17 +64,12 @@ class tx_rnbase_mod_Util {
 	}
 	/**
 	 * Returns a string with all available Icons in TYPO3 system. Each icon has a tooltip with its identifier.
+	 *
 	 * @return string
 	 */
 	public static function debugSprites() {
-		$icons .= '<h2>iconsAvailable</h2>';
-		foreach($GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'] AS $icon) {
-			$icons .= "<span title=\"$icon\">".self::getSpriteIcon($icon) .'</span>';
-		}
-		return $icons;
+		return Tx_Rnbase_Backend_Utility_Icons::debugSprites();
 	}
-
-
 
 	/**
 	 * Gibt einen selector mit den elementen im gegebenen array zurück

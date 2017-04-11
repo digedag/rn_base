@@ -340,7 +340,7 @@ class tx_rnbase_configurations
 	 *
 	 * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|tslib_cObj
 	 */
-	public function &getCObj($id = 0, $cObjClass = NULL) {
+	public function getCObj($id = 0, $cObjClass = NULL) {
 		$cObjClass = $cObjClass === NULL ? tx_rnbase_util_Typo3Classes::getContentObjectRendererClass() : $cObjClass;
 		if(strcmp($id, '0') == 0) {
 			if(!is_object($this->cObj)) {
@@ -360,11 +360,20 @@ class tx_rnbase_configurations
 	}
 
 	/**
+	 * The plugins original content object.
+	 *
+	 * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|tslib_cObj
+	 */
+	public function getContentObject() {
+		return $this->getCObj();
+	}
+
+	/**
 	 * Returns the formatter connected to this configuration object.
 	 *
 	 * @return tx_rnbase_util_FormatUtil
 	 */
-	public function &getFormatter() {
+	public function getFormatter() {
 		return $this->_formatter;
 	}
 
@@ -374,7 +383,7 @@ class tx_rnbase_configurations
 	 *
 	 * @return ArrayObject
 	 */
-	public function &getViewData() {
+	public function getViewData() {
 		return $this->_viewData;
 	}
 
@@ -397,7 +406,7 @@ class tx_rnbase_configurations
 	 *
 	 * @return tx_rnbase_util_Link
 	 */
-	public function &createLink($addKeepVars = TRUE) {
+	public function createLink($addKeepVars = TRUE) {
 		/* @var $link tx_rnbase_util_Link */
 		$link = tx_rnbase::makeInstance('tx_rnbase_util_Link', $this->getCObj());
 		$link->designatorString = $this->getQualifier();
@@ -482,7 +491,7 @@ class tx_rnbase_configurations
 	 * @return string
 	 */
 	public function createParamName($name) {
-		return $this->getQualifier().'[' . $name . ']';
+		return $this->getQualifier() . '[' . $name . ']';
 	}
 
 	/**
@@ -870,23 +879,31 @@ class tx_rnbase_configurations
 	function insertIntoDataArray($dataArr, $pathArray, $newValue) {
 		// Cancel Recursion on value level
 		if(count($pathArray) == 1) {
+			if (!is_array($dataArr)) {
+				$dataArr = array();
+			}
 			$dataArr[$pathArray[0]] = $newValue;
 			return $dataArr;
 		}
+
 		$ret = array();
-		if(!$dataArr)
+
+		if (!$dataArr) {
 			$dataArr = array($pathArray[0] . '.' => '');
-		if(!array_key_exists($pathArray[0] . '.', $dataArr))
+		}
+		if (!array_key_exists($pathArray[0] . '.', $dataArr)) {
 			$dataArr[$pathArray[0] . '.'] = '';
-		foreach($dataArr As $key => $value) {
-			if($key == $pathArray[0] . '.') {
+		}
+
+		foreach ($dataArr As $key => $value) {
+			if ($key == $pathArray[0] . '.') {
 				// Go deeper
 				$ret[$key] = $this->insertIntoDataArray($value, array_slice($pathArray, 1), $newValue);
-			}
-			else {
+			} else {
 				$ret[$key] = $value;
 			}
 		}
+
 		return $ret;
 	}
 	/**

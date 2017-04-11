@@ -194,15 +194,6 @@ class tx_rnbase_controller {
 		$configurations = $this->_makeConfigurationsObject($configurationArray);
 		tx_rnbase_util_Misc::pullTT();
 
-		tx_rnbase_util_Misc::enableTimeTrack($configurations->get('_enableTT') ? TRUE : FALSE);
-		// Making the parameters object
-		tx_rnbase_util_Misc::pushTT('init parameters' , '');
-		$parameters = $this->_makeParameterObject($configurations);
-		// Make sure to keep all parameters
-		$configurations->setParameters($parameters);
-		tx_rnbase_util_Misc::pullTT();
-
-
 		try {
 			// check for doConvertToUserIntObject
 			$configurations->getBool('toUserInt')
@@ -213,6 +204,14 @@ class tx_rnbase_controller {
 			// if we convert the USER to USER_INTERNAL
 			return '';
 		}
+
+		tx_rnbase_util_Misc::enableTimeTrack($configurations->get('_enableTT') ? TRUE : FALSE);
+		// Making the parameters object
+		tx_rnbase_util_Misc::pushTT('init parameters' , '');
+		$parameters = $this->_makeParameterObject($configurations);
+		// Make sure to keep all parameters
+		$configurations->setParameters($parameters);
+		tx_rnbase_util_Misc::pullTT();
 
 		// Finding the action:
 		$actions = $this->_findAction($parameters, $configurations);
@@ -254,10 +253,17 @@ class tx_rnbase_controller {
 		catch(tx_rnbase_exception_Skip $e) {
 			$ret = '';
 		}
-		// @deprecated support for tx_rnbase_exception_ItemNotFound404 will be dropped in TYPO3 7.6
-		catch(tx_rnbase_exception_ItemNotFound404 $e) {
-			$this->getTsfe()->pageNotFoundAndExit('tx_rnbase_exception_ItemNotFound404 was thrown');
+		catch(Tx_Rnbase_Exception_PageNotFound404 $e) {
+			$message = Tx_Rnbase_Utility_Strings::trimExplode("\n", $e->getMessage(), true, 2);
+			if(count($message) > 1) {
+				// Default 404 anhängen
+				$message[1] .= "\n".$GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling_statheader'];
+			}
+			$this->getTsfe()->pageNotFoundAndExit(
+				count($message) > 1 ? $message[0] : $e->getMessage(),
+				count($message) > 1 ? $message[1] : '');
 		}
+		// Nice to have, aber weder aufwärts noch abwärtskompatibel...
 		catch (TYPO3\CMS\Core\Error\Http\PageNotFoundException $e) {
 			$this->getTsfe()->pageNotFoundAndExit(
 				'TYPO3\\CMS\\Core\\Error\\Http\\PageNotFoundException was thrown'
@@ -426,11 +432,6 @@ class tx_rnbase_controller {
 		}
 		tx_rnbase_util_Arrays::overwriteArray($parameters, $parametersArray);
 
-		// Initialize the cHash system if there are parameters available
-		if (!$configurations->isPluginUserInt() && $GLOBALS['TSFE'] && $parameters->count()) {
-			// Bei USER_INT wird der cHash nicht benötigt und führt zu 404
-			$GLOBALS['TSFE']->reqCHash();
-		}
 		return $parameters;
 	}
 }

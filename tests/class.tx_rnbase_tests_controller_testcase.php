@@ -61,7 +61,7 @@ class tx_rnbase_tests_controller_testcase extends tx_rnbase_tests_BaseTestCase {
 	/**
 	 * @group unit
 	 */
-	public function testHandleExceptionWithDefautlExceptionHandler() {
+	public function testHandleExceptionWithDefaultExceptionHandler() {
 		$this->setExceptionHandlerConfig();
 
 		$method = new ReflectionMethod(
@@ -185,7 +185,7 @@ class tx_rnbase_tests_controller_testcase extends tx_rnbase_tests_BaseTestCase {
 
 		$tsfe->expects(self::once())
 			->method('pageNotFoundAndExit')
-			->with('tx_rnbase_exception_ItemNotFound404 was thrown');
+			->with('Error message','');
 
 		$controller->expects(self::once())
 			->method('getTsfe')
@@ -267,7 +267,7 @@ class tx_rnbase_tests_action_throwItemNotFound404Exception {
 	 * @throws tx_rnbase_exception_ItemNotFound404
 	 */
 	public function execute() {
-		throw tx_rnbase::makeInstance('tx_rnbase_exception_ItemNotFound404');
+		throw tx_rnbase::makeInstance('tx_rnbase_exception_ItemNotFound404', 'Error message');
 	}
 }
 

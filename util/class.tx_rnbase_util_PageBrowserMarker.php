@@ -104,7 +104,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 		if($totalPages == 1 && $configurations->get($pbConfId.'hideIfSinglePage')) return '';
 		$maxPages = intval($configurations->get($pbConfId.'maxPages'));
 		$maxPages = tx_rnbase_util_Math::intInRange($maxPages ? $maxPages : 10, 1, 100);
-		$templates = $this->getTemplates($template, $formatter, $pbMarker);
+		$templates = $this->getTemplates($template, $pbMarker);
 
 		$pageFloat = $this->getPageFloat($configurations->get($pbConfId.'pagefloat'), $maxPages);
 		$firstLastArr = $this->getFirstLastPage($pointer, $pageFloat, $totalPages, $maxPages);
@@ -227,15 +227,16 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker {
 
 	/**
 	 * Liefert ein Array mit allen verfügbaren Subtemplates der Seiten
+	 *
 	 * @param string $template
-	 * @param tx_rnbase_util_FormatUtil $formatter
 	 * @param string $pbMarker
+	 *
 	 * @return array
 	 */
-	function getTemplates($template, &$formatter, $pbMarker) {
+	protected function getTemplates($template, $pbMarker) {
 		$ret = array();
 		foreach($this->pagePartsDef As $part) {
-			$ret[$part] = $formatter->cObj->getSubpart($template, '###'.$pbMarker.'_' . strtoupper($part) . '_PAGE###');
+			$ret[$part] = tx_rnbase_util_Templates::getSubpart($template, '###'.$pbMarker.'_' . strtoupper($part) . '_PAGE###');
 		}
 		return $ret;
 	}

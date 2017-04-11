@@ -31,7 +31,7 @@
  * @subpackage rn_base
  * @author Hannes Bochmann
  * @license http://www.gnu.org/licenses/lgpl.html
- *          GNU Lesser General Public License, version 3 or later
+ *		  GNU Lesser General Public License, version 3 or later
  */
 class Tx_Rnbase_Backend_Utility
 {
@@ -50,7 +50,6 @@ class Tx_Rnbase_Backend_Utility
 			array(
 				static::getBackendUtilityClass(),
 				$method
-
 			),
 			$arguments
 		);
@@ -70,6 +69,25 @@ class Tx_Rnbase_Backend_Utility
 		}
 
 		return $backendUtilityClass;
+	}
+
+	/**
+	 * Generates a token and returns a parameter for the URL
+	 *
+	 * @param string $formName
+	 * @param string $tokenName
+	 *
+	 * @throws \InvalidArgumentException
+	 *
+	 * @deprecated since TYPO3 7
+	 *
+	 * @return string A URL GET variable including ampersand
+	 */
+	public static function getUrlToken($formName = 'securityToken', $tokenName = 'formToken')
+	{
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+		$formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
+		return '&' . $tokenName . '=' . $formProtection->generateToken($formName);
 	}
 
 	/**

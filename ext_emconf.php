@@ -15,7 +15,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'description' => 'Uses MVC design principles and domain driven development for TYPO3 extension development.',
 	'category' => 'misc',
 	'shy' => 0,
-	'version' => '1.2.5',
+	'version' => '1.3.1',
 	'dependencies' => 'cms',
 	'conflicts' => '',
 	'priority' => '',
@@ -35,7 +35,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'constraints' => array(
 		'depends' => array(
 			'cms' => '',
-			'typo3' => '4.5.0-7.6.99',
+			'typo3' => '4.5.0-8.7.99',
 			'php' => '5.3.9-8.9.99',
 		),
 		'conflicts' => array(

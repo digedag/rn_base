@@ -21,36 +21,14 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
+tx_rnbase::load('Tx_Rnbase_Utility_TypoScript');
+
 /**
  * Contains utility functions for TypoScript
  *
- * @author Michael Wagner <mihcael.wagner@das-medienkombinat.de>
+ * @author Michael Wagner
  */
-class tx_rnbase_util_TS {
-
-	/**
-	 *
-	 * @return \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
-	 */
-	private static function getTsParser() {
-		return tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getTypoScriptParserClass());
-	}
-
-	/**
-	 * Parse the configuration of the given models
-	 *
-	 * @param string $typoScript
-	 */
-	public static function parseTsConfig($typoScript) {
-		$parser = self::getTsParser();
-		$parser->parse(
-			$parser->checkIncludeLines($typoScript)
-		);
-		return $parser->setup;
-	}
-
-}
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_TS.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_TS.php']);
+class tx_rnbase_util_TS
+	extends Tx_Rnbase_Utility_TypoScript
+{
 }

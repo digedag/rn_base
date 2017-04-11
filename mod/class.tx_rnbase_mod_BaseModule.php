@@ -148,7 +148,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 		$this->content = $this->content; // ??
 		// ShortCut
 		if ($BE_USER->mayMakeShortcut())	{
-			$this->content .= $this->getDoc()->spacer(20) . $this->getDoc()->section(
+			$this->content .= $this->getDoc()->section(
 				'',
 				$this->getDoc()->makeShortcutIcon(
 					'id',
@@ -157,7 +157,6 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 				)
 			);
 		}
-		$this->content.=$this->getDoc()->spacer(10);
 		// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
 		$markers['CSH'] = $docHeaderButtons['csh'];
@@ -542,27 +541,13 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 		);
 
 		if($this->id && is_array($this->pageinfo)) {
-
-				// View page
-			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(Tx_Rnbase_Backend_Utility::viewOnClick($this->pageinfo['uid'], $BACK_PATH, Tx_Rnbase_Backend_Utility::BEgetRootLine($this->pageinfo['uid']))) . '">' .
-					'<img' . Tx_Rnbase_Backend_Utility_Icons::skinImg($BACK_PATH, 'gfx/zoom.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '" hspace="3" alt="" />' .
-					'</a>';
-
-				// Shortcut
+			// Shortcut
 			if ($BE_USER->mayMakeShortcut())	{
 				$buttons['shortcut'] = $this->getDoc()->makeShortcutIcon(
 					'id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit',
 					implode(',', array_keys($this->MOD_MENU)),
 					$this->getName()
 				);
-			}
-
-				// If access to Web>List for user, then link to that module.
-			if ($BE_USER->check('modules', 'web_list'))	{
-				$href = $BACK_PATH . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(tx_rnbase_util_Misc::getIndpEnv('REQUEST_URI'));
-				$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '">' .
-						'<img' . Tx_Rnbase_Backend_Utility_Icons::skinImg($BACK_PATH, 'gfx/list.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1) . '" alt="" />' .
-						'</a>';
 			}
 		}
 

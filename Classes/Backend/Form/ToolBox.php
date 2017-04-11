@@ -42,8 +42,6 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 	public $form; // TCEform-Instanz
 	protected $module;
 	protected $doc;
-	/** @var IconFactory */
-	protected $iconFactory;
 
 	/**
 	 *
@@ -61,9 +59,6 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 			tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getBackendFormEngineClass());
 		$this->form->initDefaultBEmode();
 		$this->form->backPath = $BACK_PATH;
-		if(tx_rnbase_util_TYPO3::isTYPO76OrHigher())
-			$this->iconFactory = tx_rnbase::makeInstance('TYPO3\\CMS\\Core\\Imaging\\IconFactory');
-
 	}
 	/**
 	 * @return template the BE template class
@@ -113,7 +108,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		if(tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
 			$onClick = htmlspecialchars(Tx_Rnbase_Backend_Utility::editOnClick($params));
 			return '<a href="#" class="btn btn-default " onclick="' . $onClick . '" title="Edit UID: '.$editUid.'">'
-					. $this->iconFactory->getIcon('actions-page-open', \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL)->render()
+					. Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-page-open')
 					. $label
 					. '</a>';
 		}
@@ -132,11 +127,25 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 	 * @param int $recordUid
 	 * @return string
 	 */
-	public function createHistoryLink($table, $recordUid, $label = '') {
+	public function createHistoryLink($table, $recordUid, $label = '')
+	{
+		if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
+			$image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-document-history-open');
+		} else {
+			$image = sprintf(
+				'<img %s title="%s" alt="">',
+				Tx_Rnbase_Backend_Utility_Icons::skinImg(
+					$GLOBALS['BACK_PATH'],
+					'gfx/history2.gif',
+					'width="13" height="12"'
+				),
+				$GLOBALS['LANG']->getLL('history', 1)
+			);
+		}
+
 		return "<a href=\"#\" onclick=\"return jumpExt('".$GLOBALS['BACK_PATH'].
 				"show_rechis.php?element=".rawurlencode($table.':'.$recordUid).
-				"','#latest');\"><img ".Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/history2.gif', 'width="13" height="12"').
-				' title="'.$GLOBALS['LANG']->getLL('history', 1).'\" alt="" >'.$label.'</a>';
+				"','#latest');\">" . $image . $label . '</a>';
 	}
 
 	/**
@@ -167,7 +176,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 	 * Creates a Link to show an item in frontend.
 	 */
 	public function createShowLink($pid, $label, $urlParams = '', $options=array()) {
-		if($options['icon']) {
+		if($options['icon'] && !tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
 			$label = "<img ".Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$options['icon']).
 				' title="'.$label.'\" alt="" >';
 		}
@@ -203,9 +212,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		}
 
 		if(tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-			$image = $this->iconFactory->getIcon(
-				'actions-document-new', \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL
-			)->render();
+			$image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-document-new');
 		}
 		else {
 			$image = '<img' .
@@ -215,6 +222,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 					'width="'.($table=='pages'?13:11).'" height="12"'
 				).' alt="" />';
 		}
+
 		return 	'<a href="#" title="'.$title.'" class="btn btn-default " onclick="'.htmlspecialchars($jsCode, -1).'">' .
 				$image . $label . '</a>';
 }
@@ -234,10 +242,9 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		$jumpToUrl = $this->buildJumpUrl('data['.$table.']['.$uid.']['. $sEnableColumn .']='.($unhide ? 0 : 1), $options);
 
 		if(tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-			$image = $this->iconFactory->getIcon(
-				($unhide ? 'actions-edit-unhide' : 'actions-edit-hide'),
-				\TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL
-			)->render();
+			$image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon(
+				$unhide ? 'actions-edit-unhide' : 'actions-edit-hide'
+			);
 		}
 		else {
 			$image = '<img'.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.($unhide ? 'button_hide.gif' : 'button_unhide.gif'), 'width="11" height="12"').' border="0" alt="" />';
@@ -254,10 +261,23 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 	 * @param $editUid UID des Datensatzes
 	 * @param $label Bezeichnung des Links
 	 */
-	public function createInfoLink($editTable, $editUid, $label = 'Info') {
-		return '<a href="#" onclick="top.launchView(' . "'" . $editTable . "', ' " . $editUid . "'); return false;" . '">'.
-		 '<img'.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/zoom2.gif', 'width="11" height="12"').' title="UID: '.$editUid.'" border="0" alt="" />'.
-		 $label .'</a>';
+	public function createInfoLink($editTable, $editUid, $label = 'Info')
+	{
+		if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
+			$image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-document-info');
+		} else {
+			$image = sprintf(
+				'<img %s title="Edit %s" alt="">',
+				Tx_Rnbase_Backend_Utility_Icons::skinImg(
+					$GLOBALS['BACK_PATH'],
+					'gfx/zoom2.gif',
+					'width="13" height="12"'
+				),
+				$editUid
+			);
+		}
+
+		return '<a href="#" onclick="top.launchView(' . "'" . $editTable . "', ' " . $editUid . "'); return false;" . '">' . $image . $label .'</a>';
 	}
 
 	/**
@@ -268,8 +288,21 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 	 * @param $label Bezeichnung des Links
 	 */
 	public function createMoveLink($editTable, $recordUid, $currentPid, $label = 'Move') {
+		if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
+			$image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-edit-cut');
+		} else {
+			$image = sprintf(
+				'<img %s title="UID:  %s" alt="">',
+				Tx_Rnbase_Backend_Utility_Icons::skinImg(
+					$GLOBALS['BACK_PATH'],
+					'gfx/clip_cut.gif',
+					'width="13" height="12"'
+				),
+				$recordUid
+			);
+		}
 		return "<a href=\"#\" onclick=\"return jumpSelf('/typo3/db_list.php?id=". $currentPid ."&amp;CB[el][" . $editTable
-					 . "%7C" . $recordUid . "]=1');\"><img " .Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/clip_cut.gif', 'width="16" height="16"'). ' title="UID: '. $recordUid . '" alt="" />' . $label .'</a>';
+					 . "%7C" . $recordUid . "]=1');\">" . $image . $label .'</a>';
 
 	}
 
@@ -286,13 +319,25 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		$label = isset($options['label']) ? $options['label'] : 'Move up';
 		$title = isset($options['title']) ? $options['title'] : $label;
 
+		if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
+			$image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-move-up');
+		} else {
+			$image = sprintf(
+				'<img %s title="%s" alt="">',
+				Tx_Rnbase_Backend_Utility_Icons::skinImg(
+					$GLOBALS['BACK_PATH'],
+					'gfx/up.gif',
+					'width="13" height="12"'
+				),
+				$title
+			);
+		}
+
 		return sprintf(
-			'<a onclick="%1$s" href="#">' .
-				'<img %2$s title="%4$s" border="0" alt="" />%3$s</a>',
+			'<a onclick="%1$s" href="#">%2$s%3$s</a>',
 			$jsCode,
-			Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/up.gif', 'width="16" height="16"'),
-			$label,
-			$title
+			$image,
+			$label
 		);
 	}
 
@@ -309,13 +354,25 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		$label = isset($options['label']) ? $options['label'] : 'Move up';
 		$title = isset($options['title']) ? $options['title'] : $label;
 
+		if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
+			$image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-move-down');
+		} else {
+			$image = sprintf(
+				'<img %s title="%s" alt="">',
+				Tx_Rnbase_Backend_Utility_Icons::skinImg(
+					$GLOBALS['BACK_PATH'],
+					'gfx/up.gif',
+					'width="13" height="12"'
+				),
+				$title
+			);
+		}
+
 		return sprintf(
-			'<a onclick="%1$s" href="#">' .
-				'<img %2$s title="%4$s" border="0" alt="" />%3$s</a>',
+			'<a onclick="%1$s" href="#">%2$s%3$s</a>',
 			$jsCode,
-			Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/down.gif', 'width="16" height="16"'),
-			$label,
-			$title
+			$image,
+			$label
 		);
 	}
 
@@ -368,9 +425,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 
 		$jsCode = $this->buildJumpUrl('cmd['.$table.']['.$uid.'][delete]=1', $options);
 		if(tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-			$image = $this->iconFactory->getIcon(
-				'actions-delete', \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL
-			)->render();
+			$image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-delete');
 		}
 		else {
 			$image = '<img'.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/deletedok.gif', 'width="16" height="16"').'  border="0" alt="" />';
@@ -407,7 +462,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 	 */
 	public function createLink($urlParams, $pid, $label, $options=array()) {
 		$location = $this->getLinkThisScript(FALSE);
-		if($options['icon']) {
+		if($options['icon'] && !tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
 			$label = "<img ".Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$options['icon']).
 				' title="'.$label.'\" alt="" >';
 		}
@@ -439,7 +494,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 	 */
 	public function createSubmit($name, $value, $confirmMsg = '', $options=array()){
 		$icon = '';
-		if($options['icon']) {
+		if($options['icon'] && !tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
 			$icon = Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$options['icon']);
 		}
 		$onClick = '';
@@ -628,13 +683,30 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		//prüfen ob Parameter mit ? oder & angehängt werden müssen
 		$sAddParamsWith = (strstr($sUrl, '?')) ? '&' : '?';
 		//jetzt setzen wir den aktuellen Sort parameter zusammen
-		$sSortUrl = $sUrl.$sAddParamsWith.'sortField=' . $sSortField . '&sortRev=' . $sSortRev;
+		$sSortUrl = $sUrl . $sAddParamsWith.'sortField=' . $sSortField . '&sortRev=' . $sSortRev;
 		//noch den Pfeil für die aktuelle Sortierungsrichtung ggf. einblenden
-		$sSortArrow = ($sCurrentSortField==$sSortField?'<img'.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/red'.($sSortRev == 'asc'?'up':'down').'.gif', 'width="7" height="4"').' alt="" />':'');
+		$sSortArrow = '';
+		if ($sCurrentSortField == $sSortField) {
+			if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
+				$sSortArrow = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon(
+					$sSortRev == 'asc' ? 'actions-move-up' : 'actions-move-down'
+				);
+			} else {
+				$sSortArrow = sprintf(
+					'<img %s alt="">',
+					Tx_Rnbase_Backend_Utility_Icons::skinImg(
+						$GLOBALS['BACK_PATH'],
+						'gfx/red' . ($sSortRev == 'asc' ? 'up' : 'down') . '.gif',
+						'width="7" height="4"'
+					)
+				);
+			}
+		}
+
 		return '<a href="'.htmlspecialchars($sSortUrl).'">'.$sLabel.$sSortArrow.'</a>';
 	}
 
-	function addTCEfield2Stack($table, $row, $fieldname, $pre='', $post='') {
+	public function addTCEfield2Stack($table, $row, $fieldname, $pre='', $post='') {
 		$this->tceStack[] = $pre . $this->form->getSoloField($table, $row, $fieldname) . $post;
 	}
 	/**
@@ -756,12 +828,15 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 			$MENU, tx_rnbase_parameters::getPostOrGetParameter('SET'), $modName
 		);
 
-		$ret['menu'] = (tx_rnbase_util_TYPO3::isTYPO62OrHigher() && is_array($MENU[$name]) && count($MENU[$name]) == 1) ?
-				self::buildDummyMenu('SET['.$name.']', $MENU[$name]) :
-				self::getFuncMenu(
-			$pid, 'SET['.$name.']', $SETTINGS[$name],
-			$MENU[$name], $script, $addparams
-		);
+		$ret = array();
+		if ((tx_rnbase_util_TYPO3::isTYPO62OrHigher() && is_array($MENU[$name]) && count($MENU[$name]) == 1)) {
+			$ret['menu'] = self::buildDummyMenu('SET['.$name.']', $MENU[$name]);
+		} else {
+			$ret['menu'] = self::getFuncMenu(
+				$pid, 'SET['.$name.']', $SETTINGS[$name],
+				$MENU[$name], $script, $addparams
+			);
+		}
 		$ret['value'] = $SETTINGS[$name];
 		return $ret;
 	}
@@ -780,15 +855,18 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		$options = array();
 
 		foreach ($menuItems as $value => $label) {
-			$options[] = '<option value="' . htmlspecialchars($value) . '" selected="selected">' . htmlspecialchars($label, ENT_COMPAT, 'UTF-8', FALSE) . '</option>';
+			$options[] = sprintf(
+				'<option value="%1$s" selected="selected">%2$s</option>',
+				htmlspecialchars($value),
+				htmlspecialchars($label, ENT_COMPAT, 'UTF-8', false)
+			);
 		}
-		return '
-				<!-- Function Menu of module -->
-				<select name="' . $elementName . '" >
-					' . implode('
-					', $options) . '
-				</select>
-						';
+
+		return '<!-- Function Menu of module -->' . sprintf(
+			'<select class="form-control" name="%1$s" >%2$s</select>',
+			$elementName,
+			implode(LF, $options)
+		);
 	}
 
 	/**
