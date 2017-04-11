@@ -879,23 +879,31 @@ class tx_rnbase_configurations
 	function insertIntoDataArray($dataArr, $pathArray, $newValue) {
 		// Cancel Recursion on value level
 		if(count($pathArray) == 1) {
+			if (!is_array($dataArr)) {
+				$dataArr = array();
+			}
 			$dataArr[$pathArray[0]] = $newValue;
 			return $dataArr;
 		}
+
 		$ret = array();
-		if(!$dataArr)
+
+		if (!$dataArr) {
 			$dataArr = array($pathArray[0] . '.' => '');
-		if(!array_key_exists($pathArray[0] . '.', $dataArr))
+		}
+		if (!array_key_exists($pathArray[0] . '.', $dataArr)) {
 			$dataArr[$pathArray[0] . '.'] = '';
-		foreach($dataArr As $key => $value) {
-			if($key == $pathArray[0] . '.') {
+		}
+
+		foreach ($dataArr As $key => $value) {
+			if ($key == $pathArray[0] . '.') {
 				// Go deeper
 				$ret[$key] = $this->insertIntoDataArray($value, array_slice($pathArray, 1), $newValue);
-			}
-			else {
+			} else {
 				$ret[$key] = $value;
 			}
 		}
+
 		return $ret;
 	}
 	/**
