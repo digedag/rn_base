@@ -22,7 +22,6 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 tx_rnbase::load('Tx_Rnbase_Utility_Strings');
