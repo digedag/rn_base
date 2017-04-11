@@ -108,11 +108,11 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 	 * @param $label Bezeichnung des Links
 	 * @return string
 	 */
-	public function createEditLink($editTable, $editUid, $label = 'Edit') {
+	public function createEditLink($editTable, $editUid, $label = 'Edit', $class = 'btn btn-default btn-sm') {
 		$params = '&edit['.$editTable.']['.$editUid.']=edit';
 		if(tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
 			$onClick = htmlspecialchars(Tx_Rnbase_Backend_Utility::editOnClick($params));
-			return '<a href="#" class="btn btn-default " onclick="' . $onClick . '" title="Edit UID: '.$editUid.'">'
+			return '<a href="#" class="'.$class.'" onclick="' . $onClick . '" title="Edit UID: '.$editUid.'">'
 					. $this->iconFactory->getIcon('actions-page-open', \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL)->render()
 					. $label
 					. '</a>';
@@ -166,7 +166,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 	/**
 	 * Creates a Link to show an item in frontend.
 	 */
-	public function createShowLink($pid, $label, $urlParams = '', $options=array()) {
+	public function createShowLink($pid, $label, $urlParams = '', $options=array(), $class = 'btn btn-default btn-sm') {
 		if($options['icon']) {
 			$label = "<img ".Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$options['icon']).
 				' title="'.$label.'\" alt="" >';
@@ -180,7 +180,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		if($options['hover']) {
 			$title = ' title="'.$options['hover'].'" ';
 		}
-		return '<a href="#" class="btn btn-default " onclick="'.htmlspecialchars($jsCode).'" '. $title.">". $label .'</a>';
+		return '<a href="#" class="'.$class.'" onclick="'.htmlspecialchars($jsCode).'" '. $title.">". $label .'</a>';
 	}
 
 	/**
@@ -191,7 +191,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 	 * @param array $options
 	 * @return string
 	 */
-	public function createNewLink($table, $pid, $label = 'New', $options=array()) {
+	public function createNewLink($table, $pid, $label = 'New', $options=array(), $class = 'btn btn-default btn-sm') {
 		$params = '&edit['.$table.']['.$pid.']=new';
 		if(isset($options['params']))
 			$params .= $options['params'];
@@ -215,7 +215,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 					'width="'.($table=='pages'?13:11).'" height="12"'
 				).' alt="" />';
 		}
-		return 	'<a href="#" title="'.$title.'" class="btn btn-default " onclick="'.htmlspecialchars($jsCode, -1).'">' .
+		return 	'<a href="#" title="'.$title.'" class="'.$class.'" onclick="'.htmlspecialchars($jsCode, -1).'">' .
 				$image . $label . '</a>';
 }
 
@@ -405,7 +405,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 	/**
 	 * Erstellt einen Link auf die aktuelle Location mit zusätzlichen Parametern
 	 */
-	public function createLink($urlParams, $pid, $label, $options=array()) {
+	public function createLink($urlParams, $pid, $label, $options=array(), $class = 'btn btn-default btn-sm') {
 		$location = $this->getLinkThisScript(FALSE);
 		if($options['icon']) {
 			$label = "<img ".Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$options['icon']).
@@ -425,7 +425,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 			$title = ' title="'.$options['hover'].'" ';
 		}
 
-		return '<a href="#" class="btn btn-default" onclick="'.htmlspecialchars($jsCode).'" '. $title.">". $label .'</a>';
+		return '<a href="#" class="'.$class.'" onclick="'.htmlspecialchars($jsCode).'" '. $title.">". $label .'</a>';
 	}
 
 	/**
@@ -437,7 +437,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 	 * @param string $confirmMsg
 	 * @param array $options
 	 */
-	public function createSubmit($name, $value, $confirmMsg = '', $options=array()){
+	public function createSubmit($name, $value, $confirmMsg = '', $options=array(), $class = 'btn btn-default btn-sm'){
 		$icon = '';
 		if($options['icon']) {
 			$icon = Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$options['icon']);
@@ -447,11 +447,11 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 			$onClick = 'onclick="return confirm('.Tx_Rnbase_Utility_Strings::quoteJSvalue($confirmMsg).')"';
 
 		if($icon) {
-			$btn = '<button type="submit" class="btn btn-default" name="'. $name.'" value="' . htmlspecialchars($value) . '">
+			$btn = '<button type="submit" class="'.$class.'" name="'. $name.'" value="' . htmlspecialchars($value) . '">
 					<img '.$icon.' alt="SomeAlternateText"></button>';
 		}
 		else {
-			$btn = '<input type="submit" class="btn btn-default" name="'. $name.'" value="' . htmlspecialchars($value) . '" ';
+			$btn = '<input type="submit" class="'.$class.'" name="'. $name.'" value="' . htmlspecialchars($value) . '" ';
 			$btn .= $onClick;
 			$btn .= '/>';
 		}
@@ -769,7 +769,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
     public static function getFuncMenu($mainParams, $elementName, $currentValue, $menuItems, $script = '', $addParams = '')
     {
         $menu = Tx_Rnbase_Backend_Utility::getFuncMenu($mainParams, $elementName, $currentValue, $menuItems, $script = '', $addParams = '');;
-        $menu = str_replace('<select', '<select class="form-control"', $menu);
+        $menu = str_replace('<select', '<select class="form-control  input-sm " style="width: 200px"', $menu);
         return $menu;
     }
 
