@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v1.3.1 (11.04.2017)
+ * fill page record of TSFE when preparing the TSFE in the backend
+
 v1.3.0 (11.04.2017)
  * new wrapper for getPageRenderer (TYPO3 8 support)
  * new wrapper for readLLfile (TYPO3 8 support)
