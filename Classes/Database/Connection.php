@@ -524,7 +524,7 @@ class Tx_Rnbase_Database_Connection
 	 * @param boolean $allowNull Whether to allow NULL values
 	 * @return string Output string; Wrapped in single quotes and quotes in the string (" / ') and \ will be backslashed (or otherwise based on DBAL handler)
 	 */
-	public function fullQuoteStr($str, $table, $allowNull = FALSE) {
+	public function fullQuoteStr($str, $table = '', $allowNull = FALSE) {
 		return $GLOBALS['TYPO3_DB']->fullQuoteStr($str, $table, $allowNull);
 	}
 
@@ -537,7 +537,7 @@ class Tx_Rnbase_Database_Connection
 	 * @param boolean $allowNull Whether to allow NULL values
 	 * @return array The input array with the values quoted
 	 */
-	public function fullQuoteArray($arr, $table, $noQuote = FALSE, $allowNull = FALSE) {
+	public function fullQuoteArray($arr, $table = '', $noQuote = FALSE, $allowNull = FALSE) {
 		return $GLOBALS['TYPO3_DB']->fullQuoteArray($arr, $table, $noQuote, $allowNull);
 	}
 
@@ -550,7 +550,7 @@ class Tx_Rnbase_Database_Connection
 	 * @param string $table Table name for which to quote string. Just enter the table that the field-value is selected from (and any DBAL will look up which handler to use and then how to quote the string!).
 	 * @return string Output string; Quotes (" / ') and \ will be backslashed (or otherwise based on DBAL handler)
 	 */
-	public function quoteStr($str, $table) {
+	public function quoteStr($str, $table = '') {
 		return $GLOBALS['TYPO3_DB']->quoteStr($str, $table);
 	}
 
