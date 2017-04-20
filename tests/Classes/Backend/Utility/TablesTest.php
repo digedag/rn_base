@@ -60,7 +60,15 @@ class Tx_Rnbase_Backend_Utility_TablesTest extends tx_rnbase_tests_BaseTestCase 
 
 		// erste Zeile
 		$this->assertEquals(4, count($tableData[1]), 'Number of cols wrong');
-		$this->assertContains('Info: XX', $tableData[1][0], 'Unexpected title');
+		if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
+			$this->assertContains(
+				'data-identifier="actions-document-info"',
+				$tableData[1][0],
+				'Unexpected data-identifier'
+			);
+		} else {
+			$this->assertContains('Info: XX', $tableData[1][0], 'Unexpected title');
+		}
 		$this->assertStringStartsNotWith('<input type="checkbox"', $tableData[1][0], 'Checkbox found');
 		$this->assertEquals('2', $tableData[1][1], 'Unexpected uid');
 		$this->assertEquals('foo', $tableData[1][2], 'Unexpected name');
