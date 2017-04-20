@@ -99,4 +99,22 @@ class Tx_Rnbase_Backend_Utility
 	{
 		return $GLOBALS['MCONF']['script'] === '_DISPATCH';
 	}
+
+
+	/* *** ************************************ *** *
+	 * *** Methods with Parameters as Reference *** *
+	 * *** ************************************ *** */
+
+	/**
+	 * Find page-tree PID for versionized record
+	 *
+	 * @param string $table Table name
+	 * @param array $rr Record array passed by reference. As minimum, "pid" and "uid" fields must exist! "t3ver_oid" and "t3ver_wsid" is nice and will save you a DB query.
+	 * @param bool $ignoreWorkspaceMatch Ignore workspace match
+	 */
+	public static function fixVersioningPid($table, &$rr, $ignoreWorkspaceMatch = false)
+	{
+		$util = self::getBackendUtilityClass();
+		$util::fixVersioningPid($table, $rr, $ignoreWorkspaceMatch);
+	}
 }
