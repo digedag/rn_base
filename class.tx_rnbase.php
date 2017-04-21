@@ -160,7 +160,11 @@ class tx_rnbase {
 		$path = self::_findT3($minimalInformation, $alternativeKey, $prefix, $suffix);
 
 		if ($path) {
-			if (class_exists('\TYPO3\CMS\Core\Utility\GeneralUtility')) {
+			if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+				// Needed for require_once, only fallback, should do the autoloading!
+				global $TYPO3_CONF_VARS;
+				require_once $path;
+			} elseif (class_exists('\TYPO3\CMS\Core\Utility\GeneralUtility')) {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::requireOnce($path);
 			} else {
 				t3lib_div::requireOnce($path);
@@ -254,10 +258,7 @@ class tx_rnbase {
 		$ret['class'] = $class;
 		$ret['dir'] = $dir;
 		$ret['extkey'] = $key;
-		if(class_exists('\TYPO3\CMS\Core\Utility\ExtensionManagementUtility'))
-			$ret['extpath'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($key);
-		else
-			$ret['extpath'] = t3lib_extMgm::extPath($key);
+		$ret['extpath'] = tx_rnbase_util_Extensions::extPath($key);
 		if($isExtBase) {
 			$path = $ret['extpath'] . $dir . $last . $suffix;
 		}
