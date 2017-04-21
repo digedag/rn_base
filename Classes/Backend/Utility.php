@@ -117,4 +117,19 @@ class Tx_Rnbase_Backend_Utility
 		$util = self::getBackendUtilityClass();
 		$util::fixVersioningPid($table, $rr, $ignoreWorkspaceMatch);
 	}
+
+	/**
+	 * Workspace Preview Overlay
+	 *
+	 * @param string $table Table name
+	 * @param array $row Record array passed by reference. As minimum, the "uid" and  "pid" fields must exist! Fake fields cannot exist since the fields in the array is used as field names in the SQL look up. It would be nice to have fields like "t3ver_state" and "t3ver_mode_id" as well to avoid a new lookup inside movePlhOL().
+	 * @param int $wsid Workspace ID, if not specified will use static::getBackendUserAuthentication()->workspace
+	 * @param bool $unsetMovePointers If TRUE the function does not return a "pointer" row for moved records in a workspace
+	 * @see fixVersioningPid()
+	 */
+	public static function workspaceOL($table, &$row, $wsid = -99, $unsetMovePointers = false)
+	{
+		$util = self::getBackendUtilityClass();
+		$util::workspaceOL($table, $row, $wsid, $unsetMovePointers);
+	}
 }
