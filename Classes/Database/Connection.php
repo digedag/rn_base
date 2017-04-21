@@ -227,41 +227,55 @@ class Tx_Rnbase_Database_Connection
 	}
 
 	/**
+	 * Check for workspace overlays
 	 *
 	 * @param array $row
 	 */
-	private function lookupWorkspace(&$row, $tableName, $options) {
-		$sysPage = tx_rnbase_util_TYPO3::getSysPage();
-		if (!$sysPage->versioningPreview || $options['enablefieldsoff'] || $options['ignoreworkspace']) {
+	private function lookupWorkspace(&$row, $tableName, $options)
+	{
+		if ($options['enablefieldsoff'] || $options['ignoreworkspace']) {
 			return;
 		}
+
+		$sysPage = tx_rnbase_util_TYPO3::getSysPage();
+		if (!$sysPage->versioningPreview) {
+			return;
+		}
+
 		$sysPage->versionOL($tableName, $row);
 		$sysPage->fixVersioningPid($tableName, $row);
 	}
 
 	/**
 	 * Autotranslate a record to fe language
+	 *
 	 * @param array $row
 	 * @param string $tableName
 	 * @param array $options
 	 */
-	private function lookupLanguage(&$row, $tableName, $options) {
+	private function lookupLanguage(&$row, $tableName, $options)
+	{
 		// ACHTUNG: Bei Aufruf im BE führt das zu einem Fehler in TCE-Formularen. Die
 		// Initialisierung der TSFE ändert den backPath im PageRender auf einen falschen
 		// Wert. Dadurch werden JS-Dateien nicht mehr geladen.
 		// Ist dieser Aufruf im BE überhaupt sinnvoll?
-		if(!(defined('TYPO3_MODE') && TYPO3_MODE === 'FE')) {
+		if ((
+			!(defined('TYPO3_MODE') && TYPO3_MODE === 'FE') ||
+			$options['enablefieldsoff'] ||
+			$options['ignorei18n']
+		)) {
 			return;
 		}
 
 		// Then get localization of record:
 		// (if the content language is not the default language)
 		$tsfe = tx_rnbase_util_TYPO3::getTSFE();
-		$sysPage = tx_rnbase_util_TYPO3::getSysPage();
-		if (!is_object($tsfe) || !$tsfe->sys_language_content || $options['enablefieldsoff'] || $options['ignorei18n']) {
+		if (!is_object($tsfe) || !$tsfe->sys_language_content) {
 			return;
 		}
+
 		$OLmode = (isset($options['i18nolmode']) ? $options['i18nolmode'] : '');
+		$sysPage = tx_rnbase_util_TYPO3::getSysPage();
 		$row = $sysPage->getRecordOverlay($tableName, $row, $tsfe->sys_language_content, $OLmode);
 	}
 
