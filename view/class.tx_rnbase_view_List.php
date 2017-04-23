@@ -140,9 +140,10 @@ class tx_rnbase_view_List extends tx_rnbase_view_Base {
 	 * Subpart der im HTML-Template geladen werden soll. Dieser wird der Methode
 	 * createOutput automatisch als $template übergeben.
 	 *
+	 * @param \ArrayObject $viewData
 	 * @return string
 	 */
-	public function getMainSubpart() {
+	public function getMainSubpart(&$viewData) {
 		$confId = $this->getController()->getConfId();
 		$subpart = $this->getController()->getConfigurations()->get($confId.'template.subpart');
 		if(!$subpart) {
