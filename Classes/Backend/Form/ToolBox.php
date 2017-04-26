@@ -3,7 +3,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007-2016 Rene Nitzsche (rene@system25.de)
+*  (c) 2007-2017 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -42,7 +42,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 	protected $module;
 	protected $doc;
 
-	protected $formCssClass = '';
+	const CSS_CLASS_BTN = 'btn btn-default btn-sm';
 
 	/**
 	 *
@@ -60,7 +60,6 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 			tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getBackendFormEngineClass());
 		$this->form->initDefaultBEmode();
 		$this->form->backPath = $BACK_PATH;
-		$this->formCssClass = 'btn btn-default btn-sm';
 	}
 	/**
 	 * @return template the BE template class
@@ -84,8 +83,10 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 	public function createEditButton($editTable, $editUid, $options = array()) {
 		$title = isset($options['title']) ? $options['title'] : 'Edit';
 		$params = '&edit['.$editTable.']['.$editUid.']=edit';
-		if(isset($options['params']))
+		if(isset($options['params'])) {
 			$params .= $options['params'];
+		}
+		$name = isset($options['name']) ? $options['params'] : '';
 
 		$jsCode = Tx_Rnbase_Backend_Utility::editOnClick($params, $GLOBALS['BACK_PATH']);
 		if(isset($options['confirm']) && strlen($options['confirm']) > 0) {
@@ -108,10 +109,10 @@ class Tx_Rnbase_Backend_Form_ToolBox {
      */
 	public function createEditLink($editTable, $editUid, $label = 'Edit', $options = array()) {
 		$params = '&edit['.$editTable.']['.$editUid.']=edit';
-        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : $this->formCssClass;
+        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
         $class = ' class="' . $class .'"';
 
-            $label = isset($options['label']) ? $options['label'] : $label;
+		$label = isset($options['label']) ? $options['label'] : $label;
 
 		if(tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
 			$onClick = htmlspecialchars(Tx_Rnbase_Backend_Utility::editOnClick($params));
@@ -169,6 +170,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		if(isset($options['params']))
 			$params .= $options['params'];
 		$title = isset($options['title']) ? $options['title'] : $GLOBALS['LANG']->getLL('new', 1);
+		$name = isset($options['name']) ? $options['params'] : '';
 
 		$jsCode = Tx_Rnbase_Backend_Utility::editOnClick($params, $GLOBALS['BACK_PATH']);
 		if(isset($options['confirm']) && strlen($options['confirm']) > 0) {
@@ -204,7 +206,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 			$title = ' title="'.$options['hover'].'" ';
 		}
 
-        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : $this->formCssClass;
+        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
         $class = ' class="' . $class .'"';
 
 		return '<a href="#" ' . $class . ' onclick="'.htmlspecialchars($jsCode).'" '. $title.">". $label .'</a>';
@@ -241,7 +243,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 				).' alt="" />';
 		}
 
-        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : $this->formCssClass;
+		$class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
         $class = ' class="' . $class .'"';
 
 		return 	'<a href="#" title="'.$title.'" ' . $class . ' onclick="'.htmlspecialchars($jsCode, -1).'">' .
@@ -501,7 +503,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 			$title = ' title="'.$options['hover'].'" ';
 		}
 
-        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : $this->formCssClass;
+		$class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
         $class = ' class="' . $class .'"';
 
 		return '<a href="#" ' . $class . ' onclick="'.htmlspecialchars($jsCode).'" '. $title.">". $label .'</a>';
@@ -522,10 +524,11 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 			$icon = Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$options['icon']);
 		}
 		$onClick = '';
-		if(strlen($confirmMsg))
+		if(strlen($confirmMsg)) {
 			$onClick = 'onclick="return confirm('.Tx_Rnbase_Utility_Strings::quoteJSvalue($confirmMsg).')"';
+		}
 
-        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : $this->formCssClass;
+		$class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
         $class = ' class="' . $class .'"';
 
 		if($icon) {
@@ -744,6 +747,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 	}
 
 	function getTCEfields($formname) {
+		$ret = [];
 		$ret[] = $this->form->printNeededJSFunctions_top();
 		$ret[] = implode('', $this->tceStack);
 		$ret[] = $this->form->printNeededJSFunctions();
@@ -799,6 +803,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		$SETTINGS = Tx_Rnbase_Backend_Utility::getModuleData(
 			$MENU, tx_rnbase_parameters::getPostOrGetParameter('SET'), $modName
 		);
+		$menuItems = [];
 		foreach($entries As $key => $value) {
 			if (strcmp($value, '') === 0) {
 				// skip empty entries!
@@ -859,7 +864,8 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		if ((tx_rnbase_util_TYPO3::isTYPO62OrHigher() && is_array($MENU[$name]) && count($MENU[$name]) == 1)) {
 			$ret['menu'] = self::buildDummyMenu('SET['.$name.']', $MENU[$name]);
 		} else {
-			$ret['menu'] = Tx_Rnbase_Backend_Utility::getDropdownMenu(
+			$funcMenu = tx_rnbase_util_TYPO3::isTYPO76OrHigher() ? 'getDropdownMenu' : 'getFuncMenu';
+			$ret['menu'] = Tx_Rnbase_Backend_Utility::$funcMenu(
 				$pid, 'SET['.$name.']', $SETTINGS[$name],
 				$MENU[$name], $script, $addparams
 			);
@@ -921,26 +927,5 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		reset($trData->regTableItems_data);
 		return $trData->regTableItems_data;
 	}
-
-    /**
-     * @return string
-     */
-    public function getFormCssClass()
-    {
-        return $this->formCssClass;
-    }
-
-    /**
-     * @param string $formCssClass
-     */
-    public function setFormCssClass($formCssClass)
-    {
-        $this->formCssClass = $formCssClass;
-    }
-
-
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_FormTool.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_FormTool.php']);
-}
