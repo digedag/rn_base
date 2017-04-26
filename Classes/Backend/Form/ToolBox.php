@@ -22,6 +22,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 tx_rnbase::load('Tx_Rnbase_Utility_Strings');
 tx_rnbase::load('tx_rnbase_util_Link');
@@ -41,6 +42,8 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 	protected $module;
 	protected $doc;
 
+	protected $formCssClass = '';
+
 	/**
 	 *
 	 * @param template $doc
@@ -57,6 +60,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 			tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getBackendFormEngineClass());
 		$this->form->initDefaultBEmode();
 		$this->form->backPath = $BACK_PATH;
+		$this->formCssClass = 'btn btn-default btn-sm';
 	}
 	/**
 	 * @return template the BE template class
@@ -94,18 +98,24 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		return $btn;
 	}
 
-	/**
-	 * Erstellt einen Link zur Bearbeitung eines Datensatzes
-	 * @param $editTable DB-Tabelle des Datensatzes
-	 * @param $editUid UID des Datensatzes
-	 * @param $label Bezeichnung des Links
-	 * @return string
-	 */
-	public function createEditLink($editTable, $editUid, $label = 'Edit') {
+    /**
+     * Erstellt einen Link zur Bearbeitung eines Datensatzes
+     * @param $editTable DB-Tabelle des Datensatzes
+     * @param $editUid UID des Datensatzes
+     * @param Bezeichnung|string $label Bezeichnung des Links
+     * @param array $options
+     * @return string
+     */
+	public function createEditLink($editTable, $editUid, $label = 'Edit', $options = array()) {
 		$params = '&edit['.$editTable.']['.$editUid.']=edit';
+        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : $this->formCssClass;
+        $class = ' class="' . $class .'"';
+
+            $label = isset($options['label']) ? $options['label'] : $label;
+
 		if(tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
 			$onClick = htmlspecialchars(Tx_Rnbase_Backend_Utility::editOnClick($params));
-			return '<a href="#" onclick="' . $onClick . '" title="Edit UID: '.$editUid.'">'
+			return '<a href="#" ' . $class . ' onclick="' . $onClick . '" title="Edit UID: '.$editUid.'">'
 					. Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-page-open')
 					. $label
 					. '</a>';
@@ -170,9 +180,15 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		$btn .= '/>';
 		return $btn;
 	}
-	/**
-	 * Creates a Link to show an item in frontend.
-	 */
+
+    /**
+     * Creates a Link to show an item in frontend.
+     * @param $pid
+     * @param $label
+     * @param string $urlParams
+     * @param array $options
+     * @return string
+     */
 	public function createShowLink($pid, $label, $urlParams = '', $options=array()) {
 		if($options['icon'] && !tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
 			$label = "<img ".Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$options['icon']).
@@ -187,19 +203,23 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		if($options['hover']) {
 			$title = ' title="'.$options['hover'].'" ';
 		}
-		return '<a href="#" onclick="'.htmlspecialchars($jsCode).'" '. $title.">". $label .'</a>';
+
+        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : $this->formCssClass;
+        $class = ' class="' . $class .'"';
+
+		return '<a href="#" ' . $class . ' onclick="'.htmlspecialchars($jsCode).'" '. $title.">". $label .'</a>';
 	}
 
-	/**
-	 * Erstellt einen Link zur Erstellung eines neuen Datensatzes
-	 * @param string $table DB-Tabelle des Datensatzes
-	 * @param int $pid UID der Zielseite
-	 * @param string $label Bezeichnung des Links
-	 * @param array $options
-	 * @return string
-	 */
+    /**
+     * Erstellt einen Link zur Erstellung eines neuen Datensatzes
+     * @param string $table DB-Tabelle des Datensatzes
+     * @param int $pid UID der Zielseite
+     * @param string $label Bezeichnung des Links
+     * @param array $options
+     * @return string
+     */
 	public function createNewLink($table, $pid, $label = 'New', $options=array()) {
-		$params = '&edit['.$table.']['.$pid.']=new';
+	    $params = '&edit['.$table.']['.$pid.']=new';
 		if(isset($options['params']))
 			$params .= $options['params'];
 		$title = isset($options['title']) ? $options['title'] : $GLOBALS['LANG']->getLL('new', 1);
@@ -221,7 +241,10 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 				).' alt="" />';
 		}
 
-		return 	'<a href="#" title="'.$title.'" onclick="'.htmlspecialchars($jsCode, -1).'">' .
+        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : $this->formCssClass;
+        $class = ' class="' . $class .'"';
+
+		return 	'<a href="#" title="'.$title.'" ' . $class . ' onclick="'.htmlspecialchars($jsCode, -1).'">' .
 				$image . $label . '</a>';
 }
 
@@ -478,7 +501,10 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 			$title = ' title="'.$options['hover'].'" ';
 		}
 
-		return '<a href="#" onclick="'.htmlspecialchars($jsCode).'" '. $title.">". $label .'</a>';
+        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : $this->formCssClass;
+        $class = ' class="' . $class .'"';
+
+		return '<a href="#" ' . $class . ' onclick="'.htmlspecialchars($jsCode).'" '. $title.">". $label .'</a>';
 	}
 
 	/**
@@ -499,12 +525,15 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		if(strlen($confirmMsg))
 			$onClick = 'onclick="return confirm('.Tx_Rnbase_Utility_Strings::quoteJSvalue($confirmMsg).')"';
 
+        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : $this->formCssClass;
+        $class = ' class="' . $class .'"';
+
 		if($icon) {
-			$btn = '<button type="submit" name="'. $name.'" value="' . htmlspecialchars($value) . '">
+			$btn = '<button type="submit" ' . $class . ' name="'. $name.'" value="' . htmlspecialchars($value) . '">
 					<img '.$icon.' alt="SomeAlternateText"></button>';
 		}
 		else {
-			$btn = '<input type="submit" name="'. $name.'" value="' . htmlspecialchars($value) . '" ';
+			$btn = '<input type="submit" ' . $class . ' name="'. $name.'" value="' . htmlspecialchars($value) . '" ';
 			$btn .= $onClick;
 			$btn .= '/>';
 		}
@@ -583,7 +612,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		global $TCA, $LANG;
 		$options = is_array($options) ? $options : array();
 
-		$out = '<select name="' . $name . '" class="select" ';
+		$out = '<select  name="' . $name . '" class="select" ';
 		if($options['onchange'])
 			$out .= 'onChange="' . $options['onchange'] .'" ';
 		$out .= '>';
@@ -830,7 +859,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		if ((tx_rnbase_util_TYPO3::isTYPO62OrHigher() && is_array($MENU[$name]) && count($MENU[$name]) == 1)) {
 			$ret['menu'] = self::buildDummyMenu('SET['.$name.']', $MENU[$name]);
 		} else {
-			$ret['menu'] = Tx_Rnbase_Backend_Utility::getFuncMenu(
+			$ret['menu'] = Tx_Rnbase_Backend_Utility::getDropdownMenu(
 				$pid, 'SET['.$name.']', $SETTINGS[$name],
 				$MENU[$name], $script, $addparams
 			);
@@ -838,6 +867,7 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		$ret['value'] = $SETTINGS[$name];
 		return $ret;
 	}
+
 
 	private static function buildDummyMenu($elementName, $menuItems) {
 		// Ab T3 6.2 wird bei einem Menu-Eintrag keine Selectbox mehr erzeugt.
@@ -891,6 +921,24 @@ class Tx_Rnbase_Backend_Form_ToolBox {
 		reset($trData->regTableItems_data);
 		return $trData->regTableItems_data;
 	}
+
+    /**
+     * @return string
+     */
+    public function getFormCssClass()
+    {
+        return $this->formCssClass;
+    }
+
+    /**
+     * @param string $formCssClass
+     */
+    public function setFormCssClass($formCssClass)
+    {
+        $this->formCssClass = $formCssClass;
+    }
+
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_FormTool.php'])	{
