@@ -340,8 +340,14 @@ class tx_rnbase_util_TCA {
 		Tx_Rnbase_Domain_Model_RecordInterface $model,
 		array $data
 	) {
+		$needle = $model->getColumnNames();
+		// if there is no array means, there is no tca or no columns
+		if (!is_array($needle)) {
+			return array();
+		}
+
 		tx_rnbase::load('tx_rnbase_util_Arrays');
-		return tx_rnbase_util_Arrays::removeNotIn($data, $model->getColumnNames());
+		return tx_rnbase_util_Arrays::removeNotIn($data, $needle);
 	}
 }
 
