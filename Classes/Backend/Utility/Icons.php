@@ -150,6 +150,28 @@ class Tx_Rnbase_Backend_Utility_Icons
 	}
 
 	/**
+	 * This helper functions looks up the column that is used for the type of
+	 * the chosen TCA table. And then fetches the corresponding iconname
+	 * based on the chosen iconsprite class in this TCA
+	 *
+	 * see ext:core/Configuration/TCA/pages.php for an example with the TCA table "pages"
+	 *
+	 * @param string $table The TCA table
+	 * @param array $row The selected record
+	 *
+	 * @return string The CSS class for the sprite icon of that DB record
+	 */
+	public static function mapRecordTypeToSpriteIconName($table, array $row)
+	{
+		if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+			$class = static::getIconUtilityClass();
+			return $class::mapRecordTypeToSpriteIconName($table, $row);
+		}
+
+		return self::getIconFactory()->mapRecordTypeToIconIdentifier($table, $row);
+	}
+
+	/**
 	 * The TYPO3 icon factory
 	 *
 	 * @return \TYPO3\CMS\Core\Imaging\IconFactory
