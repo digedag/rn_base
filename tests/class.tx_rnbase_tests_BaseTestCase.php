@@ -52,16 +52,18 @@ abstract class tx_rnbase_tests_BaseTestCase
 	/**
 	 * Initialize database connection in $GLOBALS and connect if requested
 	 *
-	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 * @return void
 	 */
-	protected function prepareLegacyTypo3DbGlobal()
+	public static function prepareLegacyTypo3DbGlobal()
 	{
+		if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+			return;
+		}
+
 		$db = $GLOBALS['TYPO3_DB'];
 		if (!$db->isConnected()) {
 			\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeTypo3DbGlobal();
 		}
-
-		return $db;
 	}
 
 	/**
