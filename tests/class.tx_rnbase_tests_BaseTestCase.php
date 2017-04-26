@@ -50,11 +50,26 @@ abstract class tx_rnbase_tests_BaseTestCase
 	protected $backupStaticAttributes = FALSE;
 
 	/**
+	 * Initialize database connection in $GLOBALS and connect if requested
+	 *
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function prepareLegacyTypo3DbGlobal()
+	{
+		$db = $GLOBALS['TYPO3_DB'];
+		if (!$db->isConnected()) {
+			\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeTypo3DbGlobal();
+		}
+
+		return $db;
+	}
+
+	/**
 	 * Sample:
 	 * self::createConfigurations(
-	 *     array(), 'rn_base', 'rn_base',
-	 *     tx_rnbase::makeInstance('tx_rnbase_parameters'),
-	 *     tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass())
+	 *	 array(), 'rn_base', 'rn_base',
+	 *	 tx_rnbase::makeInstance('tx_rnbase_parameters'),
+	 *	 tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass())
 	 * );
 	 *
 	 * @param array $configurationArray
@@ -165,16 +180,16 @@ abstract class tx_rnbase_tests_BaseTestCase
 	 * getCategory:
 	 *   _model: Tx_Rnbase_Domain_Model_Data
 	 *   _record:
-	 *     uid: 5
+	 *	 uid: 5
 	 * getCategories:
 	 *   -
-	 *     _model: Tx_Rnbase_Domain_Model_Data
-	 *     _record:
-	 *       uid: 12
+	 *	 _model: Tx_Rnbase_Domain_Model_Data
+	 *	 _record:
+	 *	   uid: 12
 	 *   -
-	 *     _model: Tx_Rnbase_Domain_Model_Data
-	 *     _record:
-	 *       uid: 13
+	 *	 _model: Tx_Rnbase_Domain_Model_Data
+	 *	 _record:
+	 *	   uid: 13
 	 *
 	 * @param mixed $data Usually the yaml file
 	 *
@@ -264,10 +279,10 @@ abstract class tx_rnbase_tests_BaseTestCase
 	 * This method is taken from TYPO3 BaseTestCase initialy.
 	 *
 	 * The classic way:
-	 *     ->callInaccessibleMethod($object, $methodname, $arg1, $arg2)
+	 *	 ->callInaccessibleMethod($object, $methodname, $arg1, $arg2)
 	 *
 	 * The new way, with support for arguments as reference:
-	 *     ->callInaccessibleMethod(array($object, $methodname), array($arg1, $arg2))
+	 *	 ->callInaccessibleMethod(array($object, $methodname), array($arg1, $arg2))
 	 *
 	 * @param object|array $object The object to be invoked or an a array with object and $name
 	 * @param string|array $name the name of the method to call or the arguments array
@@ -349,7 +364,7 @@ abstract class tx_rnbase_tests_BaseTestCase
 	 * @param boolean $callOriginalClone whether to call the __clone method
 	 * @param boolean $callAutoload whether to call any autoload function
 	 * @return \PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface
-	 *         a mock of $originalClassName with access methods added
+	 *	     a mock of $originalClassName with access methods added
 	 * @see \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase::getAccessibleMock
 	 */
 	protected function getAccessibleMock(
