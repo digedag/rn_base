@@ -542,8 +542,7 @@ MAYDAYPAGE;
 		foreach ($pidListArr as $val) {
 			$val = tx_rnbase_util_Math::intInRange($val, 0);
 			if ($val) {
-				/* @var $cObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
-				$cObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
+				$cObj = tx_rnbase_util_TYPO3::getContentObject();
 				$list = $cObj->getTreeList(
 					(-1 * $val),
 					$options['recursive'],

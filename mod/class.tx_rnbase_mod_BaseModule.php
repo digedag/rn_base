@@ -286,7 +286,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 			tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
 			tx_rnbase_util_Misc::prepareTSFE(); // Ist bei Aufruf aus BE notwendig!
-			$cObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
+			$cObj = tx_rnbase_util_TYPO3::getContentObject();
 
 			$pageTSconfigFull = Tx_Rnbase_Backend_Utility::getPagesTSconfig($this->getPid());
 			$pageTSconfig = $pageTSconfigFull['mod.'][$this->getExtensionKey().'.'];

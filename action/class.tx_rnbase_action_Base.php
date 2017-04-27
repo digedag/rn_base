@@ -47,7 +47,7 @@ class tx_rnbase_action_Base {
    */
   function getCObj() {
     if(!$this->cObject){
-      $this->cObject = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
+      $this->cObject = tx_rnbase_util_TYPO3::getContentObject();
     }
     return $this->cObject;
   }

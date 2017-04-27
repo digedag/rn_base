@@ -234,6 +234,17 @@ class tx_rnbase_util_TYPO3 {
 		return is_object($beuser) && isset($beuser->user['uid']) ? $beuser->user['uid'] : FALSE;
 	}
 
+	/**
+	 * Creates a new instance of the cobject
+	 *
+	 * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|tslib_cObj
+	 */
+	public static function getContentObject()
+	{
+		return tx_rnbase::makeInstance(
+			tx_rnbase_util_Typo3Classes::getContentObjectRendererClass()
+		);
+	}
 
 	/**
 	 * Returns TSFE.
