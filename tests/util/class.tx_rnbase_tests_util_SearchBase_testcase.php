@@ -159,10 +159,20 @@ class tx_rnbase_tests_util_SearchBase_testcase extends Tx_Phpunit_TestCase {
 
 		$query = $searcher->search($fields, $options);
 
-		self::assertContains('pages.deleted=0', $query, 'deleted for pages is missing');
+		// typo3 generated sql
+		if (tx_rnbase_util_TYPO3::isTYPO86OrHigher()) {
+			// doctrine
+			self::assertContains('`pages`.`deleted` = 0', $query, 'deleted for pages is missing');
+			self::assertContains('`tt_content`.`deleted` = 0', $query, 'deleted for tt_content is missing');
+			self::assertNotContains('`fe_users`.`deleted` = 0', $query, 'deleted for fe_users is present');
+		} else {
+			// old direct mysqli
+			self::assertContains('pages.deleted=0', $query, 'deleted for pages is missing');
+			self::assertContains('tt_content.deleted=0', $query, 'deleted for tt_content is missing');
+			self::assertNotContains('fe_users.deleted=0', $query, 'deleted for fe_users is present');
+		}
+		// non typo3 generated sql
 		self::assertContains('tt_content.pid >=0', $query, 'pid for tt_content is missing');
-		self::assertContains('tt_content.deleted=0', $query, 'deleted for tt_content is missing');
-		self::assertNotContains('fe_users.deleted=0', $query, 'deleted for fe_users is present');
 	}
 
 	/**
@@ -181,10 +191,20 @@ class tx_rnbase_tests_util_SearchBase_testcase extends Tx_Phpunit_TestCase {
 
 		$query = $searcher->search($fields, $options);
 
-		self::assertContains('PAGE.deleted=0', $query, 'deleted for PAGE is missing');
+		// typo3 generated sql
+		if (tx_rnbase_util_TYPO3::isTYPO86OrHigher()) {
+			// doctrine
+			self::assertContains('`PAGE`.`deleted` = 0', $query, 'deleted for PAGE is missing');
+			self::assertContains('`CONTENT`.`deleted` = 0', $query, 'deleted for CONTENT is missing');
+			self::assertNotContains('`FEUSER`.`deleted` = 0', $query, 'deleted for FEUSER is present');
+		} else {
+			// old direct mysqli
+			self::assertContains('PAGE.deleted=0', $query, 'deleted for PAGE is missing');
+			self::assertContains('CONTENT.deleted=0', $query, 'deleted for CONTENT is missing');
+			self::assertNotContains('FEUSER.deleted=0', $query, 'deleted for FEUSER is present');
+		}
+		// non typo3 generated sql
 		self::assertContains('CONTENT.pid >=0', $query, 'pid for CONTENT is missing');
-		self::assertContains('CONTENT.deleted=0', $query, 'deleted for CONTENT is missing');
-		self::assertNotContains('FEUSER.deleted=0', $query, 'deleted for FEUSER is present');
 	}
 
 	/**
@@ -203,10 +223,20 @@ class tx_rnbase_tests_util_SearchBase_testcase extends Tx_Phpunit_TestCase {
 
 		$query = $searcher->search($fields, $options);
 
-		self::assertContains('PAGE.deleted=0', $query, 'deleted for PAGE is missing');
+		// typo3 generated sql
+		if (tx_rnbase_util_TYPO3::isTYPO86OrHigher()) {
+			// doctrine
+			self::assertContains('`PAGE`.`deleted` = 0', $query, 'deleted for PAGE is missing');
+			self::assertContains('`CONTENT`.`deleted` = 0', $query, 'deleted for CONTENT is missing');
+			self::assertContains('`FEUSER`.`deleted` = 0', $query, 'deleted for FEUSER is not present');
+		} else {
+			// old direct mysqli
+			self::assertContains('PAGE.deleted=0', $query, 'deleted for PAGE is missing');
+			self::assertContains('CONTENT.deleted=0', $query, 'deleted for CONTENT is missing');
+			self::assertContains('FEUSER.deleted=0', $query, 'deleted for FEUSER is not present');
+		}
+		// non typo3 generated sql
 		self::assertContains('CONTENT.pid >=0', $query, 'pid for CONTENT is missing');
-		self::assertContains('CONTENT.deleted=0', $query, 'deleted for CONTENT is missing');
-		self::assertContains('FEUSER.deleted=0', $query, 'deleted for FEUSER is present');
 	}
 
 	/**
@@ -224,10 +254,21 @@ class tx_rnbase_tests_util_SearchBase_testcase extends Tx_Phpunit_TestCase {
 
 		$query = $searcher->search($fields, $options);
 
-		self::assertContains('PAGE.deleted=0', $query, 'deleted for PAGE is missing');
+		// typo3 generated sql
+		if (tx_rnbase_util_TYPO3::isTYPO86OrHigher()) {
+			// doctrine
+			self::assertContains('`PAGE`.`deleted` = 0', $query, 'deleted for PAGE is missing');
+			self::assertNotContains('`CONTENT`.`deleted` = 0', $query, 'deleted for CONTENT is present');
+			self::assertNotContains('`FEUSER`.`deleted` = 0', $query, 'deleted for FEUSER is present');
+		} else {
+			// old direct mysqli
+			self::assertContains('PAGE.deleted=0', $query, 'deleted for PAGE is missing');
+			self::assertNotContains('CONTENT.deleted=0', $query, 'deleted for CONTENT is present');
+			self::assertNotContains('FEUSER.deleted=0', $query, 'deleted for FEUSER is present');
+		}
+		// non typo3 generated sql
+
 		self::assertNotContains('CONTENT.pid >=0', $query, 'pid for CONTENT is present');
-		self::assertNotContains('CONTENT.deleted=0', $query, 'deleted for CONTENT is present');
-		self::assertNotContains('FEUSER.deleted=0', $query, 'deleted for FEUSER is present');
 
 	}
 }
