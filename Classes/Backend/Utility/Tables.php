@@ -115,8 +115,12 @@ class Tx_Rnbase_Backend_Utility_Tables
 				$row[] = $formTool->createCheckbox($checkName.'[]', $record['uid']);
 			} else {
 				if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-					$row[] = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon(
-						'actions-document-info'
+					$row[] = sprintf(
+						'<span title="Info: %s">%s</span>',
+						$dontcheck[$record['uid']],
+						Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon(
+							'actions-document-info'
+						)
 					);
 				} else {
 					$row[] = sprintf(

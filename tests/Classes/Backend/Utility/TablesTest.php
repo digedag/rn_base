@@ -54,13 +54,13 @@ class Tx_Rnbase_Backend_Utility_TablesTest extends tx_rnbase_tests_BaseTestCase 
 
 		// Header prüfen
 		$this->assertEquals(4, count($tableData[0]), 'Number of cols wrong');
-		$this->assertEquals('&nbsp;', $tableData[0][0], 'Unexpected title');
-		$this->assertEquals('label_uid', $tableData[0][1], 'Unexpected title');
-		$this->assertEquals('Name', $tableData[0][2], 'Unexpected title');
+		$this->assertEquals('&nbsp;', $tableData[0][0], 'Unexpected title for column 1');
+		$this->assertEquals('label_uid', $tableData[0][1], 'Unexpected title for column 2');
+		$this->assertEquals('Name', $tableData[0][2], 'Unexpected title for column 3');
 
 		// erste Zeile
 		$this->assertEquals(4, count($tableData[1]), 'Number of cols wrong');
-		$this->assertContains('Info: XX', $tableData[1][0], 'Unexpected title');
+		$this->assertContains('Info: XX', $tableData[1][0], 'Unexpected title for row 1');
 		$this->assertStringStartsNotWith('<input type="checkbox"', $tableData[1][0], 'Checkbox found');
 		$this->assertEquals('2', $tableData[1][1], 'Unexpected uid');
 		$this->assertEquals('foo', $tableData[1][2], 'Unexpected name');
