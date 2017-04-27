@@ -79,11 +79,14 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase {
 		$options['sqlonly'] = 1;
 		$options['enablefieldsbe'] = 1;
 		$sql = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->doSelect('*', 'tt_content', $options);
-		$this->assertRegExp('/deleted=/', $sql, 'deleted is missing');
+
+		// TYPO3 <= 7 deleted=0
+		// TYPO3 >= 8 `deleted` = 0
+		$this->assertRegExp('/deleted(` )?=/', $sql, 'deleted is missing');
 
 		$fields = array('hidden', 'starttime', 'endtime', 'fe_group');
 		foreach ($fields As $field)
-			$this->assertNotRegExp('/'.$field.'/', $sql, $field.' found');
+			$this->assertNotRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field.' found');
 	}
 
 	/**
@@ -96,7 +99,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase {
 
 		$fields = array('hidden', 'starttime', 'endtime', 'fe_group', 'deleted');
 		foreach ($fields As $field) {
-			$this->assertRegExp('/'.$field.'/', $sql, $field.' not found');
+			$this->assertRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field . ' not found');
 		}
 	}
 
@@ -120,11 +123,11 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase {
 			->will(self::returnValue(TRUE));
 		$sql = $databaseConnection->doSelect('*', 'tt_content', $options);
 
-		$this->assertRegExp('/deleted=/', $sql, 'deleted is missing');
+		$this->assertRegExp('/deleted(` )?=/', $sql, 'deleted is missing');
 
 		$fields = array('hidden', 'starttime', 'endtime', 'fe_group');
 		foreach ($fields As $field) {
-			$this->assertNotRegExp('/'.$field.'/', $sql, $field.' found');
+			$this->assertNotRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field.' found');
 		}
 
 		self::assertTrue(tx_rnbase_util_TYPO3::getTSFE()->no_cache, 'Cache nicht deaktiviert');
@@ -139,11 +142,11 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase {
 		$options['enablefieldsfe'] = 1;
 		$sql = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->doSelect('*', 'tt_content', $options);
 
-		$this->assertRegExp('/deleted=/', $sql, 'deleted is missing');
+		$this->assertRegExp('/deleted(` )?=/', $sql, 'deleted is missing');
 
 		$fields = array('hidden', 'starttime', 'endtime', 'fe_group');
 		foreach ($fields As $field) {
-			$this->assertNotRegExp('/'.$field.'/', $sql, $field.' found');
+			$this->assertNotRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field.' found');
 		}
 
 		self::assertFalse(tx_rnbase_util_TYPO3::getTSFE()->no_cache, 'Cache doch deaktiviert');
@@ -178,7 +181,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase {
 
 		$fields = array('hidden', 'starttime', 'endtime', 'fe_group', 'deleted');
 		foreach ($fields As $field) {
-			$this->assertNotRegExp('/'.$field.'/', $sql, $field.' found');
+			$this->assertNotRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field.' found');
 		}
 	}
 
@@ -192,7 +195,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase {
 
 		$fields = array('hidden', 'starttime', 'endtime', 'fe_group', 'deleted');
 		foreach ($fields As $field) {
-			$this->assertNotRegExp('/'.$field.'/', $sql, $field.' found');
+			$this->assertNotRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field.' found');
 		}
 	}
 
