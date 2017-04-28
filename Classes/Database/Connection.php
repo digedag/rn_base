@@ -224,6 +224,14 @@ class Tx_Rnbase_Database_Connection
 			), 'SQL statistics');
 		}
 
+		tx_rnbase_util_Misc::callHook(
+			'rn_base',
+			'util_db_do_select_post',
+			array(
+				'rows' => &$rows,
+			)
+		);
+
 		return $rows;
 	}
 
