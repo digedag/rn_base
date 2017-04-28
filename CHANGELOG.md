@@ -3,6 +3,23 @@
 Änderungen
 ----------
 
+v1.3.2 (28.04.2017)
+ * table name in db quote methods are optionaly now
+ * reference error for fixVersioningPid in backend utility fixed
+ * load t3 class fixed for typo3 8 and later
+ * reference error for workspaceOL in backend utility fixed
+ * create syspage after options check
+ * fill page record in tsfe only if not set or pid is different
+ * Method signature fixed in view_List
+ * new wrapper method for mapRecordTypeToSpriteIconName in icon utility
+ * eleminateNonTcaColumns fixed if there is no tca or model returns no columns
+ * new method to prepare the old typo3 db global for unittests
+ * add new method to create a new content object
+ * title in be table rendering readded for info icon
+ * pass variable to hooks in database connection by reference
+ * new hook before doSelect is executed
+ * add util_db_do_select_post Hook
+
 v1.3.1 (11.04.2017)
  * fill page record of TSFE when preparing the TSFE in the backend
 
