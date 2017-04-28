@@ -81,6 +81,17 @@ class Tx_Rnbase_Database_Connection
 	 * @param boolean $debug = 0 Set to 1 to debug sql-String
 	 */
 	public function doSelect($what, $from, $arr, $debug=0) {
+		tx_rnbase_util_Misc::callHook(
+			'rn_base',
+			'util_db_do_select_pre',
+			array(
+				'what' => &$what,
+				'from' => &$from,
+				'options' => &$arr,
+				'debug' => &$debug,
+			)
+		);
+
 		$debug = $debug ? $debug : intval($arr['debug']) > 0;
 		if($debug) {
 			$time = microtime(TRUE);
