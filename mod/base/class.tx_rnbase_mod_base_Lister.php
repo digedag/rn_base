@@ -29,390 +29,421 @@
  * @author René Nitzsche <rene@system25.de>
  * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
  */
-abstract class tx_rnbase_mod_base_Lister {
-	const KEY_SHOWHIDDEN = 'showhidden';
+abstract class tx_rnbase_mod_base_Lister
+{
+    const KEY_SHOWHIDDEN = 'showhidden';
 
 
-	/**
-	 * Selector Klasse
-	 * @var tx_rnbase_mod_IModule
-	 */
-	private $mod = NULL;
+    /**
+     * Selector Klasse
+     * @var tx_rnbase_mod_IModule
+     */
+    private $mod = null;
 
-	/**
-	 * Otions
-	 * @var array
-	 */
-	protected $options = array();
+    /**
+     * Otions
+     * @var array
+     */
+    protected $options = array();
 
-	private $filterValues = array();
+    private $filterValues = array();
 
-	/**
-	 * Current hidden option
-	 * @var 	string
-	 */
-	protected $currentShowHidden = 1;
-
-
-	/**
-	 * Constructor
-	 *
-	 * @param 	tx_rnbase_mod_IModule 	$mod
-	 * @param 	array 					$options
-	 */
-	public function __construct(tx_rnbase_mod_IModule $mod, array $options = array()) {
-		$this->init($mod, $options);
-	}
-
-	/**
-	 * Set a value to filter data
-	 * @param string $key
-	 * @param string $value
-	 */
-	public function setFilterValue($key, $value) {
-		$this->filterValues[$key] = $value;
-	}
-	/**
-	 * Returns a filter value
-	 * @param string $key
-	 */
-	public function getFilterValue($key) {
-		return $this->filterValues[$key];
-	}
-	public function clearFilterValues() {
-		unset($this->filterValues);
-		$this->filterValues = array();
-	}
-
-	/**
-	 * Init object
-	 *
-	 * @param 	tx_rnbase_mod_IModule 	$mod
-	 * @param 	array 					$options
-	 */
-	protected function init(tx_rnbase_mod_IModule $mod, $options) {
-		$this->options = $options;
-		$this->mod = $mod;
-	}
+    /**
+     * Current hidden option
+     * @var     string
+     */
+    protected $currentShowHidden = 1;
 
 
-	/**
-	 * @return string
-	 */
-	protected function getSearcherId(){
-		// TODO: abstract??
-		return 'searcher';
-	}
+    /**
+     * Constructor
+     *
+     * @param   tx_rnbase_mod_IModule   $mod
+     * @param   array                   $options
+     */
+    public function __construct(tx_rnbase_mod_IModule $mod, array $options = array())
+    {
+        $this->init($mod, $options);
+    }
 
-	/**
-	 * Liefert den Service.
-	 *
-	 * @return Tx_Rnbase_Domain_Repository_InterfaceSearch
-	 */
-	abstract protected function getService();
+    /**
+     * Set a value to filter data
+     * @param string $key
+     * @param string $value
+     */
+    public function setFilterValue($key, $value)
+    {
+        $this->filterValues[$key] = $value;
+    }
+    /**
+     * Returns a filter value
+     * @param string $key
+     */
+    public function getFilterValue($key)
+    {
+        return $this->filterValues[$key];
+    }
+    public function clearFilterValues()
+    {
+        unset($this->filterValues);
+        $this->filterValues = array();
+    }
 
-	/**
-	 * Returns the complete search form
-	 * @return 	string
-	 */
-	public function getSearchForm() {
-		$data = array();
-		$options = array('pid' => $this->options['pid']);
+    /**
+     * Init object
+     *
+     * @param   tx_rnbase_mod_IModule   $mod
+     * @param   array                   $options
+     */
+    protected function init(tx_rnbase_mod_IModule $mod, $options)
+    {
+        $this->options = $options;
+        $this->mod = $mod;
+    }
 
-		$this->setFilterValue('searchword', $this->showFreeTextSearchForm(
-				$data['search'], $this->getSearcherId().'Search', $options));
 
-		$this->setFilterValue(self::KEY_SHOWHIDDEN, $this->showHiddenSelector(
-				$data['hidden'],
-				$options
-		));
+    /**
+     * @return string
+     */
+    protected function getSearcherId()
+    {
+        // TODO: abstract??
+        return 'searcher';
+    }
 
-		$this->addMoreFields($data, $options);
-		if($updateButton = $this->getSearchButton())
-			$data['updatebutton'] = array(
-					'label' => '',
-					'button'=> $updateButton
-				);
+    /**
+     * Liefert den Service.
+     *
+     * @return Tx_Rnbase_Domain_Repository_InterfaceSearch
+     */
+    abstract protected function getService();
 
-		$out = $this->buildFilterTable($data);
-		return $out;
-	}
+    /**
+     * Returns the complete search form
+     * @return  string
+     */
+    public function getSearchForm()
+    {
+        $data = array();
+        $options = array('pid' => $this->options['pid']);
 
-	/**
-	 * Kindklassen haben die Möglichkeit weitere Formularfelder
-	 * zu registrieren.
-	 * @param array $data
-	 * @param array $options
-	 */
-	protected function addMoreFields(&$data, &$options) {
-		if (empty($options['pid'])) {
-			$this->options['pid'] = $this->getModule()->getPid();
-			if(isset($this->options['pid'])) {
-				$options['pid'] = $this->options['pid'];
-			}
-		}
-	}
+        $this->setFilterValue('searchword', $this->showFreeTextSearchForm(
+            $data['search'],
+            $this->getSearcherId().'Search',
+            $options
+        ));
 
-	/**
-	 * Returns the search button
-	 * @return 	string|false
-	 */
-	protected function getSearchButton() {
-		$out = $this->getFormTool()->createSubmit(
-					$this->getSearcherId().'Search',
-					'###LABEL_BTN_SEARCH###'
-				);
+        $this->setFilterValue(self::KEY_SHOWHIDDEN, $this->showHiddenSelector(
+            $data['hidden'],
+            $options
+        ));
 
-		return $out;
-	}
+        $this->addMoreFields($data, $options);
+        if ($updateButton = $this->getSearchButton()) {
+            $data['updatebutton'] = array(
+                    'label' => '',
+                    'button' => $updateButton
+                );
+        }
 
-	/**
-	 * Bildet die Resultliste mit Pager
-	 *
-	 * @param tx_mklib_mod1_searcher_Base $callingClass
-	 * @param object $srv
-	 * @param array $fields
-	 * @param array $options
-	 * @return string
-	 */
-	public function getResultList() {
-		$srv = $this->getService();
-		/* @var $pager tx_rnbase_util_BEPager */
-		$pager = tx_rnbase::makeInstance(
-				'tx_rnbase_util_BEPager',
-				$this->getSearcherId() . 'Pager',
-				$this->getModule()->getName(),
-				$this->options['pid']
-			);
+        $out = $this->buildFilterTable($data);
 
-		$fields = $options = array();
-		$this->prepareFieldsAndOptions($fields, $options);
+        return $out;
+    }
 
-		// Get counted data
-		$cnt = $this->getCount($fields, $options);
+    /**
+     * Kindklassen haben die Möglichkeit weitere Formularfelder
+     * zu registrieren.
+     * @param array $data
+     * @param array $options
+     */
+    protected function addMoreFields(&$data, &$options)
+    {
+        if (empty($options['pid'])) {
+            $this->options['pid'] = $this->getModule()->getPid();
+            if (isset($this->options['pid'])) {
+                $options['pid'] = $this->options['pid'];
+            }
+        }
+    }
 
-		$pager->setListSize($cnt);
-		$pager->setOptions($options);
+    /**
+     * Returns the search button
+     * @return  string|false
+     */
+    protected function getSearchButton()
+    {
+        $out = $this->getFormTool()->createSubmit(
+            $this->getSearcherId().'Search',
+            '###LABEL_BTN_SEARCH###'
+        );
 
-		// Get data
-		$items = $srv->search($fields, $options);
-		$content = '';
-		$this->showItems($content, $items);
-		$pagerData = $pager->render();
+        return $out;
+    }
 
-		//der zusammengeführte Pager für die Ausgabe
-		//nur wenn es auch Ergebnisse gibt. sonst reicht die noItemsFoundMsg
-		$sPagerData = '';
-		if($cnt)
-			$sPagerData = $pagerData['limits'] . ' - ' .$pagerData['pages'];
+    /**
+     * Bildet die Resultliste mit Pager
+     *
+     * @param tx_mklib_mod1_searcher_Base $callingClass
+     * @param object $srv
+     * @param array $fields
+     * @param array $options
+     * @return string
+     */
+    public function getResultList()
+    {
+        $srv = $this->getService();
+        /* @var $pager tx_rnbase_util_BEPager */
+        $pager = tx_rnbase::makeInstance(
+            'tx_rnbase_util_BEPager',
+            $this->getSearcherId() . 'Pager',
+            $this->getModule()->getName(),
+            $this->options['pid']
+        );
 
-		return array(
-				'table' 	=> $content,
-				'totalsize' => $cnt,
-				'pager' 	=> '<div class="pager">' . $sPagerData .'</div>',
-			);
-	}
+        $fields = $options = array();
+        $this->prepareFieldsAndOptions($fields, $options);
 
-	/**
-	 * Kann von der Kindklasse überschrieben werden, um weitere Filter zu setzen.
-	 *
-	 * @param 	array 	$fields
-	 * @param 	array 	$options
-	 */
-	protected function prepareFieldsAndOptions(array &$fields, array &$options) {
-		$options['distinct'] = 1;
-		self::buildFreeText($fields, $this->getFilterValue('searchword'), $this->getSearchColumns());
+        // Get counted data
+        $cnt = $this->getCount($fields, $options);
 
-		if(($value = $this->getFilterValue(self::KEY_SHOWHIDDEN)) !== NULL) {
-			// Wenn gesetzt, dann anzeigen
-			if($value) {$options['enablefieldsbe'] = 1;}
-			else { $options['enablefieldsfe'] = 1; }
-		}
-		$this->prepareSorting($options);
+        $pager->setListSize($cnt);
+        $pager->setOptions($options);
 
-	}
+        // Get data
+        $items = $srv->search($fields, $options);
+        $content = '';
+        $this->showItems($content, $items);
+        $pagerData = $pager->render();
 
-	/**
-	 * Sortierung vorbereiten
-	 * @param array $options
-	 */
-	protected function prepareSorting(&$options) {
-		$sortField = tx_rnbase_parameters::getPostOrGetParameter('sortField');
-		$sortRev = tx_rnbase_parameters::getPostOrGetParameter('sortRev');
+        //der zusammengeführte Pager für die Ausgabe
+        //nur wenn es auch Ergebnisse gibt. sonst reicht die noItemsFoundMsg
+        $sPagerData = '';
+        if ($cnt) {
+            $sPagerData = $pagerData['limits'] . ' - ' .$pagerData['pages'];
+        }
 
-		if(!empty($sortField)) {
-			$cols = $this->getColumns();
+        return array(
+                'table'    => $content,
+                'totalsize' => $cnt,
+                'pager'    => '<div class="pager">' . $sPagerData .'</div>',
+            );
+    }
 
-			if(!isset($cols[$sortField]) || !is_array($cols[$sortField]) || !isset($cols[$sortField]['sortable'])) {
-				return;
-			}
+    /**
+     * Kann von der Kindklasse überschrieben werden, um weitere Filter zu setzen.
+     *
+     * @param   array   $fields
+     * @param   array   $options
+     */
+    protected function prepareFieldsAndOptions(array &$fields, array &$options)
+    {
+        $options['distinct'] = 1;
+        self::buildFreeText($fields, $this->getFilterValue('searchword'), $this->getSearchColumns());
 
-			// das Label in die notwendige SQL-Anweisung umwandeln. Normalerweise ein Spaltenname.
-			$sortCol = $cols[$sortField]['sortable'];
-			// Wenn am Ende ein Punkt steht, muss die Spalte zusammengefügt werden.
-			$sortCol = substr($sortCol, -1) === '.' ? $sortCol.$sortField : $sortCol;
-			$options['orderby'][$sortCol] = (strtolower($sortRev)== 'asc' ? 'asc':'desc');
-		}
-	}
+        if (($value = $this->getFilterValue(self::KEY_SHOWHIDDEN)) !== null) {
+            // Wenn gesetzt, dann anzeigen
+            if ($value) {
+                $options['enablefieldsbe'] = 1;
+            } else {
+                $options['enablefieldsfe'] = 1;
+            }
+        }
+        $this->prepareSorting($options);
+    }
 
-	/**
-	 * Liefert die Spalten, in denen gesucht werden soll
-	 * @return array
-	 */
-	protected abstract function getSearchColumns();
+    /**
+     * Sortierung vorbereiten
+     * @param array $options
+     */
+    protected function prepareSorting(&$options)
+    {
+        $sortField = tx_rnbase_parameters::getPostOrGetParameter('sortField');
+        $sortRev = tx_rnbase_parameters::getPostOrGetParameter('sortRev');
 
-	/**
-	 * Start creation of result list.
-	 *
-	 * @param string $content
-	 * @param array|Traversable $items
-	 * @return string
-	 */
-	protected function showItems(&$content, $items)
-	{
-		if (!(is_array($items) || $items instanceof Traversable)) {
-			throw new Exception(
-				'Argument 2 passed to' . __METHOD__ . '() must be of the type array or Traversable.'
-			);
-		}
+        if (!empty($sortField)) {
+            $cols = $this->getColumns();
 
-		if(count($items) === 0) {
-			$content = $this->getNoItemsFoundMsg();
-			return;//stop
-		}
+            if (!isset($cols[$sortField]) || !is_array($cols[$sortField]) || !isset($cols[$sortField]['sortable'])) {
+                return;
+            }
 
-		$options = $this->getOptions();
-		$decorator = $this->createDefaultDecorator();
-		$columns = $this->getColumns($decorator);
-		if(array_key_exists('linker', $columns)) {
-			$options['linker'] = $columns['linker'];
-			unset($columns['linker']);
-		}
-		tx_rnbase::load('tx_rnbase_mod_Tables');
-		list ($tableData, $tableLayout) = tx_rnbase_mod_Tables::prepareTable(
-			$items,
-			$columns,
-			$this->getFormTool(),
-			$options
-		);
-		$out = $this->getModule()->getDoc()->table($tableData, $tableLayout);
-		$content .= $out;
-		return $out;
-	}
+            // das Label in die notwendige SQL-Anweisung umwandeln. Normalerweise ein Spaltenname.
+            $sortCol = $cols[$sortField]['sortable'];
+            // Wenn am Ende ein Punkt steht, muss die Spalte zusammengefügt werden.
+            $sortCol = substr($sortCol, -1) === '.' ? $sortCol.$sortField : $sortCol;
+            $options['orderby'][$sortCol] = (strtolower($sortRev) == 'asc' ? 'asc' : 'desc');
+        }
+    }
 
-	/**
-	 * The decorator class for the be listing.
-	 *
-	 * @return Tx_Rnbase_Backend_Decorator_InterfaceDecorator
-	 */
-	protected function createDefaultDecorator() {
-		return tx_rnbase::makeInstance(
-			'Tx_Rnbase_Backend_Decorator_BaseDecorator',
-			$this->getModule()
-		);
-	}
+    /**
+     * Liefert die Spalten, in denen gesucht werden soll
+     * @return array
+     */
+    abstract protected function getSearchColumns();
 
-	/**
-	 * Liefert die Spalten für den Decorator.
-	 *
-	 * @param Tx_Rnbase_Backend_Decorator_InterfaceDecorator $decorator
-	 *
-	 * @deprecated use getDecoratorColumns instead!!!
-	 *
-	 * @return array
-	 */
-	protected function getColumns(
-		$decorator
-	) {
-		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
-		$utility::deprecationLog(
-			'"' . get_class($decorator) . '"::getColumns' .
-			' is deprecated. Use "getDecoratorColumns" instead.'
-		);
+    /**
+     * Start creation of result list.
+     *
+     * @param string $content
+     * @param array|Traversable $items
+     * @return string
+     */
+    protected function showItems(&$content, $items)
+    {
+        if (!(is_array($items) || $items instanceof Traversable)) {
+            throw new Exception(
+                'Argument 2 passed to' . __METHOD__ . '() must be of the type array or Traversable.'
+            );
+        }
 
-		return $this->getDecoratorColumns($decorator);
-	}
+        if (count($items) === 0) {
+            $content = $this->getNoItemsFoundMsg();
 
-	/**
-	 * Liefert die Spalten für den Decorator.
-	 *
-	 * @param Tx_Rnbase_Backend_Decorator_InterfaceDecorator $decorator
-	 *
-	 * @return array
-	 */
-	protected function getDecoratorColumns(
-		$decorator
-	) {
-		if (!$decorator instanceof Tx_Rnbase_Backend_Decorator_InterfaceDecorator) {
-			$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
-			$utility::deprecationLog(
-				'Decorator "' . get_class($decorator) . '"' .
-				' should implement "Tx_Rnbase_Backend_Decorator_InterfaceDecorator".'
-			);
-		}
+            return;//stop
+        }
 
-		return array(
-			'uid' => array(
-				'title' => 'label_tableheader_uid',
-				'decorator' => $decorator,
-			),
-			'label' => array(
-				'title' => 'label_tableheader_label',
-				'decorator' => $decorator,
-			),
-			'actions' => array(
-				'title' => 'label_tableheader_actions',
-				'decorator' => $decorator,
-			)
-		);
-	}
+        $options = $this->getOptions();
+        $decorator = $this->createDefaultDecorator();
+        $columns = $this->getColumns($decorator);
+        if (array_key_exists('linker', $columns)) {
+            $options['linker'] = $columns['linker'];
+            unset($columns['linker']);
+        }
+        tx_rnbase::load('tx_rnbase_mod_Tables');
+        list($tableData, $tableLayout) = tx_rnbase_mod_Tables::prepareTable(
+            $items,
+            $columns,
+            $this->getFormTool(),
+            $options
+        );
+        $out = $this->getModule()->getDoc()->table($tableData, $tableLayout);
+        $content .= $out;
 
-	/**
-	 *
-	 * @param array $fields
-	 * @param array $options
-	 */
-	protected function getCount(array &$fields, array $options){
-		// Get counted data
-		$options['count'] = 1;
-		return $this->getService()->search($fields, $options);
-	}
+        return $out;
+    }
 
-	/**
-	 * Returns an instance of tx_rnbase_mod_IModule
-	 *
-	 * @return 	tx_rnbase_mod_IModule
-	 */
-	protected function getModule() {
-		return $this->mod;
-	}
+    /**
+     * The decorator class for the be listing.
+     *
+     * @return Tx_Rnbase_Backend_Decorator_InterfaceDecorator
+     */
+    protected function createDefaultDecorator()
+    {
+        return tx_rnbase::makeInstance(
+            'Tx_Rnbase_Backend_Decorator_BaseDecorator',
+            $this->getModule()
+        );
+    }
 
-	/**
-	 * Returns an instance of tx_rnbase_mod_IModule
-	 *
-	 * @return 	tx_rnbase_mod_IModule
-	 */
-	protected function getOptions() {
-		return $this->options;
-	}
+    /**
+     * Liefert die Spalten für den Decorator.
+     *
+     * @param Tx_Rnbase_Backend_Decorator_InterfaceDecorator $decorator
+     *
+     * @deprecated use getDecoratorColumns instead!!!
+     *
+     * @return array
+     */
+    protected function getColumns(
+        $decorator
+    ) {
+        $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+        $utility::deprecationLog(
+            '"' . get_class($decorator) . '"::getColumns' .
+            ' is deprecated. Use "getDecoratorColumns" instead.'
+        );
 
-	/**
-	 * Returns an instance of tx_rnbase_mod_IModule
-	 *
-	 * @return 	tx_rnbase_util_FormTool
-	 */
-	protected function getFormTool() {
-		return $this->mod->getFormTool();
-	}
+        return $this->getDecoratorColumns($decorator);
+    }
 
-	/**
-	 * Returns the message in case no items could be found in showItems()
-	 *
-	 * @return 	string
-	 */
-	protected function getNoItemsFoundMsg() {
-		return '<p><strong>###LABEL_NO_'.strtoupper($this->getSearcherId()).'_FOUND###</strong></p><br/>';;
-	}
+    /**
+     * Liefert die Spalten für den Decorator.
+     *
+     * @param Tx_Rnbase_Backend_Decorator_InterfaceDecorator $decorator
+     *
+     * @return array
+     */
+    protected function getDecoratorColumns(
+        $decorator
+    ) {
+        if (!$decorator instanceof Tx_Rnbase_Backend_Decorator_InterfaceDecorator) {
+            $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+            $utility::deprecationLog(
+                'Decorator "' . get_class($decorator) . '"' .
+                ' should implement "Tx_Rnbase_Backend_Decorator_InterfaceDecorator".'
+            );
+        }
+
+        return array(
+            'uid' => array(
+                'title' => 'label_tableheader_uid',
+                'decorator' => $decorator,
+            ),
+            'label' => array(
+                'title' => 'label_tableheader_label',
+                'decorator' => $decorator,
+            ),
+            'actions' => array(
+                'title' => 'label_tableheader_actions',
+                'decorator' => $decorator,
+            )
+        );
+    }
+
+    /**
+     *
+     * @param array $fields
+     * @param array $options
+     */
+    protected function getCount(array &$fields, array $options)
+    {
+        // Get counted data
+        $options['count'] = 1;
+
+        return $this->getService()->search($fields, $options);
+    }
+
+    /**
+     * Returns an instance of tx_rnbase_mod_IModule
+     *
+     * @return  tx_rnbase_mod_IModule
+     */
+    protected function getModule()
+    {
+        return $this->mod;
+    }
+
+    /**
+     * Returns an instance of tx_rnbase_mod_IModule
+     *
+     * @return  tx_rnbase_mod_IModule
+     */
+    protected function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * Returns an instance of tx_rnbase_mod_IModule
+     *
+     * @return  tx_rnbase_util_FormTool
+     */
+    protected function getFormTool()
+    {
+        return $this->mod->getFormTool();
+    }
+
+    /**
+     * Returns the message in case no items could be found in showItems()
+     *
+     * @return  string
+     */
+    protected function getNoItemsFoundMsg()
+    {
+        return '<p><strong>###LABEL_NO_'.strtoupper($this->getSearcherId()).'_FOUND###</strong></p><br/>';
+        ;
+    }
 
 
 
@@ -420,84 +451,90 @@ abstract class tx_rnbase_mod_base_Lister {
 // Die folgenden Methoden sollten noch in andere Klassen verteilt werden.
 //////
 
-	/**
-	 * Suche nach einem Freitext. Wird ein leerer String
-	 * übergeben, dann wird nicht gesucht.
-	 *
-	 * @param array $fields
-	 * @param string $searchword
-	 * @param array $cols
-	 */
-	protected static function buildFreeText(&$fields, $searchword, array $cols = array()) {
-		$result = FALSE;
-	  	if(strlen(trim($searchword))) {
-	   		$joined['value'] = trim($searchword);
-	   		$joined['cols'] = $cols;
-	   		$joined['operator'] = OP_LIKE;
-	   		$fields[SEARCH_FIELD_JOINED][] = $joined;
-	   		$result = TRUE;
-	  	}
-	  	return $result;
-	}
+    /**
+     * Suche nach einem Freitext. Wird ein leerer String
+     * übergeben, dann wird nicht gesucht.
+     *
+     * @param array $fields
+     * @param string $searchword
+     * @param array $cols
+     */
+    protected static function buildFreeText(&$fields, $searchword, array $cols = array())
+    {
+        $result = false;
+        if (strlen(trim($searchword))) {
+            $joined['value'] = trim($searchword);
+            $joined['cols'] = $cols;
+            $joined['operator'] = OP_LIKE;
+            $fields[SEARCH_FIELD_JOINED][] = $joined;
+            $result = true;
+        }
 
-	/**
-	 *
-	 * @param 	array 	$data
-	 * @return 	string
-	 */
-	protected function buildFilterTable(array $data){
-		$out = '';
-		if(count($data)){
-			$out .= '<table class="filters">';
-			foreach($data as $label => $filter){
-				$out .= '<tr>';
-				$out .= '<td>'. (isset($filter['label']) ? $filter['label'] : $label).'</td>';
-				unset($filter['label']);
-				$out .= '<td>'. implode(' ', $filter) .'</td>';
+        return $result;
+    }
 
-				$out .= '</tr>';
-			}
-			$out .= '</table>';
-		}
-		return $out;
-	}
-	/**
-	 * Method to display a form with an input array, a description and a submit button.
-	 * Keys are 'field' and 'button'.
-	 *
-	 * @param string $out marker array with input fields
-	 * @param string $key mod key
-	 * @param array $options
-	 * 				string 	buttonName 		name of the submit button. default is key.
-	 * 				string 	buttonValue 	value of the sumbit button. default is LLL:label_button_search.
-	 * 				string 	label 			label of the sumbit button. default is LLL:label_search.
-	 * @return string search term
-	 */
-	protected function showFreeTextSearchForm (&$marker, $key, array $options = array()) {
-		tx_rnbase::load('tx_rnbase_mod_Util');
-		$searchstring = tx_rnbase_mod_Util::getModuleValue($key, $this->getModule(), array('changed' => tx_rnbase_parameters::getPostOrGetParameter('SET')));
+    /**
+     *
+     * @param   array   $data
+     * @return  string
+     */
+    protected function buildFilterTable(array $data)
+    {
+        $out = '';
+        if (count($data)) {
+            $out .= '<table class="filters">';
+            foreach ($data as $label => $filter) {
+                $out .= '<tr>';
+                $out .= '<td>'. (isset($filter['label']) ? $filter['label'] : $label).'</td>';
+                unset($filter['label']);
+                $out .= '<td>'. implode(' ', $filter) .'</td>';
 
-		// Erst das Suchfeld, danach der Button.
-		$marker['field'] 	= $this->getFormTool()->createTxtInput('SET['.$key.']', $searchstring, 10);
-		$marker['label'] = $options['label'] ? $options['label'] : '###LABEL_SEARCH###';
+                $out .= '</tr>';
+            }
+            $out .= '</table>';
+        }
 
-		return $searchstring;
-	}
+        return $out;
+    }
+    /**
+     * Method to display a form with an input array, a description and a submit button.
+     * Keys are 'field' and 'button'.
+     *
+     * @param string $out marker array with input fields
+     * @param string $key mod key
+     * @param array $options
+     *              string  buttonName      name of the submit button. default is key.
+     *              string  buttonValue     value of the sumbit button. default is LLL:label_button_search.
+     *              string  label           label of the sumbit button. default is LLL:label_search.
+     * @return string search term
+     */
+    protected function showFreeTextSearchForm(&$marker, $key, array $options = array())
+    {
+        tx_rnbase::load('tx_rnbase_mod_Util');
+        $searchstring = tx_rnbase_mod_Util::getModuleValue($key, $this->getModule(), array('changed' => tx_rnbase_parameters::getPostOrGetParameter('SET')));
 
-	protected function showHiddenSelector(&$marker, $options=array()) {
-		$items = array(
-				0 => $GLOBALS['LANG']->getLL('label_select_hide_hidden'),
-				1 => $GLOBALS['LANG']->getLL('label_select_show_hidden'),
-		);
-		tx_rnbase::load('tx_rnbase_mod_Util');
-		$selectedItem = tx_rnbase_mod_Util::getModuleValue('showhidden', $this->getModule(), array('changed' => tx_rnbase_parameters::getPostOrGetParameter('SET')));
+        // Erst das Suchfeld, danach der Button.
+        $marker['field']    = $this->getFormTool()->createTxtInput('SET['.$key.']', $searchstring, 10);
+        $marker['label'] = $options['label'] ? $options['label'] : '###LABEL_SEARCH###';
 
-		$options['label'] = $options['label'] ? $options['label'] : $GLOBALS['LANG']->getLL('label_hidden');
-		return tx_rnbase_mod_Util::showSelectorByArray($items, $selectedItem, 'showhidden', $marker, $options);
-	}
+        return $searchstring;
+    }
 
+    protected function showHiddenSelector(&$marker, $options = array())
+    {
+        $items = array(
+                0 => $GLOBALS['LANG']->getLL('label_select_hide_hidden'),
+                1 => $GLOBALS['LANG']->getLL('label_select_show_hidden'),
+        );
+        tx_rnbase::load('tx_rnbase_mod_Util');
+        $selectedItem = tx_rnbase_mod_Util::getModuleValue('showhidden', $this->getModule(), array('changed' => tx_rnbase_parameters::getPostOrGetParameter('SET')));
+
+        $options['label'] = $options['label'] ? $options['label'] : $GLOBALS['LANG']->getLL('label_hidden');
+
+        return tx_rnbase_mod_Util::showSelectorByArray($items, $selectedItem, 'showhidden', $marker, $options);
+    }
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/base/class.tx_rnbase_mod_base_Lister.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/base/class.tx_rnbase_mod_base_Lister.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/base/class.tx_rnbase_mod_base_Lister.php']) {
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/base/class.tx_rnbase_mod_base_Lister.php']);
 }

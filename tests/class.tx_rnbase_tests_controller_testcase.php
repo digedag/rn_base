@@ -26,257 +26,290 @@ tx_rnbase::load('tx_rnbase_controller');
 tx_rnbase::load('tx_rnbase_exception_IHandler');
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
-class tx_rnbase_dummyController extends tx_rnbase_controller{
-
-	public function callGetErrorMailHtml() {
-		try {
-			throw new Exception('My Exception');
-		} catch (Exception $e) {
-			return $this->getErrorMailHtml($e, 'someAction');
-		}
-	}
+class tx_rnbase_dummyController extends tx_rnbase_controller
+{
+    public function callGetErrorMailHtml()
+    {
+        try {
+            throw new Exception('My Exception');
+        } catch (Exception $e) {
+            return $this->getErrorMailHtml($e, 'someAction');
+        }
+    }
 }
 
-class tx_rnbase_tests_controller_testcase extends tx_rnbase_tests_BaseTestCase {
+class tx_rnbase_tests_controller_testcase extends tx_rnbase_tests_BaseTestCase
+{
+    private $exceptionHandlerConfig;
 
-	private $exceptionHandlerConfig;
+    protected function setUp()
+    {
+        $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rn_base']);
+        $this->exceptionHandlerConfig = $extConfig['exceptionHandler'];
 
-	protected function setUp() {
-		$extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rn_base']);
-		$this->exceptionHandlerConfig = $extConfig['exceptionHandler'];
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['devlog']['nolog'] = true;
 
-		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['devlog']['nolog'] = TRUE;
+        if (is_object($GLOBALS['TSFE'])) {
+            unset($GLOBALS['TSFE']);
+        }
+    }
 
-		if(is_object($GLOBALS['TSFE'])) {
-			unset($GLOBALS['TSFE']);
-		}
-	}
+    protected function tearDown()
+    {
+        $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rn_base']);
+        $extConfig['exceptionHandler'] = $this->exceptionHandlerConfig;
+        $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rn_base'] = serialize($extConfig);
+    }
 
-	protected function tearDown() {
-		$extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rn_base']);
-		$extConfig['exceptionHandler'] = $this->exceptionHandlerConfig;
-		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rn_base'] = serialize($extConfig);
-	}
+    /**
+     * @group unit
+     */
+    public function testHandleExceptionWithDefaultExceptionHandler()
+    {
+        $this->setExceptionHandlerConfig();
 
-	/**
-	 * @group unit
-	 */
-	public function testHandleExceptionWithDefaultExceptionHandler() {
-		$this->setExceptionHandlerConfig();
+        $method = new ReflectionMethod(
+            'tx_rnbase_controller',
+            'handleException'
+        );
+        $method->setAccessible(true);
 
-		$method = new ReflectionMethod(
-			'tx_rnbase_controller',
-			'handleException'
-		);
-		$method->setAccessible(TRUE);
+        $controller = tx_rnbase::makeInstance('tx_rnbase_controller');
+        $exception = new Exception('Exception for tx_rnbase_exception_HandlerForTests');
+        $configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
 
-		$controller = tx_rnbase::makeInstance('tx_rnbase_controller');
-		$exception = new Exception('Exception for tx_rnbase_exception_HandlerForTests');
-		$configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
+        $handleExceptionReturn = $method->invoke(
+            $controller,
+            'testAction',
+            $exception,
+            $configurations
+        );
 
-		$handleExceptionReturn = $method->invoke(
-			$controller, 'testAction', $exception, $configurations
-		);
+        $this->assertEquals(
+            'testAction Exception for tx_rnbase_exception_HandlerForTests',
+            $handleExceptionReturn,
+            'wrong error message'
+        );
+    }
 
-		$this->assertEquals(
-			'testAction Exception for tx_rnbase_exception_HandlerForTests',
-			$handleExceptionReturn,
-			'wrong error message'
-		);
-	}
+    /**
+     * @group unit
+     */
+    public function testHandleExceptionUsesDefaultExceptionHandlerIfConfiguredExceptionHandlerImplementsNotIhandlerInterface()
+    {
+        $this->setExceptionHandlerConfig('tx_rnbase_exception_HandlerWithoutCorrectInterface');
 
-	/**
-	 * @group unit
-	 */
-	public function testHandleExceptionUsesDefaultExceptionHandlerIfConfiguredExceptionHandlerImplementsNotIhandlerInterface() {
-		$this->setExceptionHandlerConfig('tx_rnbase_exception_HandlerWithoutCorrectInterface');
+        $method = new ReflectionMethod(
+            'tx_rnbase_controller',
+            'handleException'
+        );
+        $method->setAccessible(true);
 
-		$method = new ReflectionMethod(
-			'tx_rnbase_controller',
-			'handleException'
-		);
-		$method->setAccessible(TRUE);
+        $controller = tx_rnbase::makeInstance('tx_rnbase_controller');
+        $exception = new Exception('Exception for tx_rnbase_exception_HandlerForTests');
+        $configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
 
-		$controller = tx_rnbase::makeInstance('tx_rnbase_controller');
-		$exception = new Exception('Exception for tx_rnbase_exception_HandlerForTests');
-		$configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
+        $handleExceptionReturn = $method->invoke(
+            $controller,
+            'testAction',
+            $exception,
+            $configurations
+        );
 
-		$handleExceptionReturn = $method->invoke(
-			$controller, 'testAction', $exception, $configurations
-		);
+        $this->assertEquals(
+            'testAction Exception for tx_rnbase_exception_HandlerForTests',
+            $handleExceptionReturn,
+            'wrong error message'
+        );
+    }
 
-		$this->assertEquals(
-			'testAction Exception for tx_rnbase_exception_HandlerForTests',
-			$handleExceptionReturn,
-			'wrong error message'
-		);
-	}
+    /**
+     * @group unit
+     */
+    public function testHandleExceptionUsesConfiguredExceptionHandler()
+    {
+        $this->setExceptionHandlerConfig('tx_rnbase_exception_CustomHandler');
 
-	/**
-	 * @group unit
-	 */
-	public function testHandleExceptionUsesConfiguredExceptionHandler() {
-		$this->setExceptionHandlerConfig('tx_rnbase_exception_CustomHandler');
+        $method = new ReflectionMethod(
+            'tx_rnbase_controller',
+            'handleException'
+        );
+        $method->setAccessible(true);
 
-		$method = new ReflectionMethod(
-				'tx_rnbase_controller',
-				'handleException'
-		);
-		$method->setAccessible(TRUE);
+        $controller = tx_rnbase::makeInstance('tx_rnbase_controller');
+        $exception = new Exception('Exception for tx_rnbase_exception_HandlerForTests');
+        $configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
 
-		$controller = tx_rnbase::makeInstance('tx_rnbase_controller');
-		$exception = new Exception('Exception for tx_rnbase_exception_HandlerForTests');
-		$configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
+        $handleExceptionReturn = $method->invoke(
+            $controller,
+            'testAction',
+            $exception,
+            $configurations
+        );
 
-		$handleExceptionReturn = $method->invoke(
-			$controller, 'testAction', $exception, $configurations
-		);
+        $this->assertEquals(
+            'custom handler',
+            $handleExceptionReturn,
+            'wrong error message'
+        );
+    }
 
-		$this->assertEquals(
-			'custom handler',
-			$handleExceptionReturn,
-			'wrong error message'
-		);
-	}
+    /**
+     * @return void
+     */
+    private function setExceptionHandlerConfig($exceptionHandler = '')
+    {
+        $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rn_base']);
+        $extConfig['exceptionHandler'] = $exceptionHandler;
+        $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rn_base'] = serialize($extConfig);
+    }
 
-	/**
-	 * @return void
-	 */
-	private function setExceptionHandlerConfig($exceptionHandler = '') {
-		$extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rn_base']);
-		$extConfig['exceptionHandler'] = $exceptionHandler;
-		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rn_base'] = serialize($extConfig);
-	}
+    /**
+     * @group unit
+     */
+    public function testGetTsfe()
+    {
+        $controller = tx_rnbase::makeInstance('tx_rnbase_controller');
+        self::assertInstanceOf(
+            tx_rnbase_util_Typo3Classes::getTypoScriptFrontendControllerClass(),
+            $this->callInaccessibleMethod($controller, 'getTsfe')
+        );
+    }
 
-	/**
-	 * @group unit
-	 */
-	public function testGetTsfe() {
-		$controller = tx_rnbase::makeInstance('tx_rnbase_controller');
-		self::assertInstanceOf(
-			tx_rnbase_util_Typo3Classes::getTypoScriptFrontendControllerClass(),
-			$this->callInaccessibleMethod($controller, 'getTsfe')
-		);
-	}
+    /**
+     * @group unit
+     */
+    public function testDoActionIfNoExceptionIsFoundCallsNotGetTsfe()
+    {
+        $controller = $this->getMock('tx_rnbase_controller', array('getTsfe'));
 
-	/**
-	 * @group unit
-	 */
-	public function testDoActionIfNoExceptionIsFoundCallsNotGetTsfe() {
-		$controller = $this->getMock('tx_rnbase_controller', array('getTsfe'));
+        $controller->expects($this->never())
+            ->method('getTsfe');
 
-		$controller->expects($this->never())
-			->method('getTsfe');
+        $parameters = null;
+        $configurations = $this->createConfigurations(array(), 'rn_base');
+        $controller->doAction('unknown', $parameters, $configurations);
+    }
 
-		$parameters = NULL;
-		$configurations = $this->createConfigurations(array(), 'rn_base');
-		$controller->doAction('unknown', $parameters, $configurations);
-	}
+    /**
+     * @group unit
+     */
+    public function testDoActionCallsPageNotFoundHandlingIfItemNotFound404Exception()
+    {
+        $controller = $this->getMock('tx_rnbase_controller', array('getTsfe'));
+        $tsfe = $this->getMock(
+            tx_rnbase_util_Typo3Classes::getTypoScriptFrontendControllerClass(),
+            array('pageNotFoundAndExit'),
+            array(),
+            '',
+            false
+        );
 
-	/**
-	 * @group unit
-	 */
-	public function testDoActionCallsPageNotFoundHandlingIfItemNotFound404Exception() {
-		$controller = $this->getMock('tx_rnbase_controller', array('getTsfe'));
-		$tsfe = $this->getMock(
-			tx_rnbase_util_Typo3Classes::getTypoScriptFrontendControllerClass(),
-			array('pageNotFoundAndExit'), array(), '', FALSE
-		);
+        $tsfe->expects(self::once())
+            ->method('pageNotFoundAndExit')
+            ->with('Error message', '');
 
-		$tsfe->expects(self::once())
-			->method('pageNotFoundAndExit')
-			->with('Error message','');
+        $controller->expects(self::once())
+            ->method('getTsfe')
+            ->will(self::returnValue($tsfe));
 
-		$controller->expects(self::once())
-			->method('getTsfe')
-			->will(self::returnValue($tsfe));
+        $parameters = $configurations = null;
+        $controller->doAction(
+            'tx_rnbase_tests_action_throwItemNotFound404Exception',
+            $parameters,
+            $configurations
+        );
+    }
 
-		$parameters = $configurations = NULL;
-		$controller->doAction(
-			'tx_rnbase_tests_action_throwItemNotFound404Exception',
-			$parameters, $configurations
-		);
-	}
+    /**
+     * @group unit
+     */
+    public function testDoActionCallsPageNotFoundHandlingIfPageNotFoundException()
+    {
+        if (!tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+            self::markTestSkipped('Dieses Feature wird erst ab TYPO3 6.2 unterstützt');
+        }
 
-	/**
-	 * @group unit
-	 */
-	public function testDoActionCallsPageNotFoundHandlingIfPageNotFoundException() {
-		if (!tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-			self::markTestSkipped('Dieses Feature wird erst ab TYPO3 6.2 unterstützt');
-		}
+        $controller = $this->getMock('tx_rnbase_controller', array('getTsfe'));
+        $tsfe = $this->getMock(
+            tx_rnbase_util_Typo3Classes::getTypoScriptFrontendControllerClass(),
+            array('pageNotFoundAndExit'),
+            array(),
+            '',
+            false
+        );
 
-		$controller = $this->getMock('tx_rnbase_controller', array('getTsfe'));
-		$tsfe = $this->getMock(
-			tx_rnbase_util_Typo3Classes::getTypoScriptFrontendControllerClass(),
-			array('pageNotFoundAndExit'), array(), '', FALSE
-		);
+        $tsfe->expects(self::once())
+            ->method('pageNotFoundAndExit')
+            ->with('TYPO3\\CMS\\Core\\Error\\Http\\PageNotFoundException was thrown');
 
-		$tsfe->expects(self::once())
-			->method('pageNotFoundAndExit')
-			->with('TYPO3\\CMS\\Core\\Error\\Http\\PageNotFoundException was thrown');
+        $controller->expects(self::once())
+            ->method('getTsfe')
+            ->will(self::returnValue($tsfe));
 
-		$controller->expects(self::once())
-			->method('getTsfe')
-			->will(self::returnValue($tsfe));
-
-		$parameters = $configurations = NULL;
-		$controller->doAction(
-			'tx_rnbase_tests_action_throwPageNotFoundException',
-			$parameters, $configurations
-		);
-	}
+        $parameters = $configurations = null;
+        $controller->doAction(
+            'tx_rnbase_tests_action_throwPageNotFoundException',
+            $parameters,
+            $configurations
+        );
+    }
 }
 
 /**
  * nochmal bereitstellen damit die original klasse nicht geladen wird
  *
  * @author Hannes Bochmann
- *
  */
-class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler {
-
-	public function handleException($actionName, Exception $e, Tx_Rnbase_Configuration_ProcessorInterface $configurations) {
-		return $actionName . ' ' . $e->getMessage();
-	}
+class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
+{
+    public function handleException($actionName, Exception $e, Tx_Rnbase_Configuration_ProcessorInterface $configurations)
+    {
+        return $actionName . ' ' . $e->getMessage();
+    }
 }
 
 /**
  * nochmal bereitstellen damit die original klasse nicht geladen wird
  *
  * @author Hannes Bochmann
- *
  */
-class tx_rnbase_exception_HandlerWithoutCorrectInterface {
-
-	public function handleException($actionName, Exception $e, Tx_Rnbase_Configuration_ProcessorInterface $configurations) {
-		return 'should not be used';
-	}
+class tx_rnbase_exception_HandlerWithoutCorrectInterface
+{
+    public function handleException($actionName, Exception $e, Tx_Rnbase_Configuration_ProcessorInterface $configurations)
+    {
+        return 'should not be used';
+    }
 }
 
-class tx_rnbase_exception_CustomHandler implements tx_rnbase_exception_IHandler {
-
-	public function handleException($actionName, Exception $e, Tx_Rnbase_Configuration_ProcessorInterface $configurations) {
-		return 'custom handler';
-	}
+class tx_rnbase_exception_CustomHandler implements tx_rnbase_exception_IHandler
+{
+    public function handleException($actionName, Exception $e, Tx_Rnbase_Configuration_ProcessorInterface $configurations)
+    {
+        return 'custom handler';
+    }
 }
 
-class tx_rnbase_tests_action_throwItemNotFound404Exception {
+class tx_rnbase_tests_action_throwItemNotFound404Exception
+{
 
-	/**
-	 * @throws tx_rnbase_exception_ItemNotFound404
-	 */
-	public function execute() {
-		throw tx_rnbase::makeInstance('tx_rnbase_exception_ItemNotFound404', 'Error message');
-	}
+    /**
+     * @throws tx_rnbase_exception_ItemNotFound404
+     */
+    public function execute()
+    {
+        throw tx_rnbase::makeInstance('tx_rnbase_exception_ItemNotFound404', 'Error message');
+    }
 }
 
-class tx_rnbase_tests_action_throwPageNotFoundException {
+class tx_rnbase_tests_action_throwPageNotFoundException
+{
 
-	/**
-	 * @throws TYPO3\CMS\Core\Error\Http\PageNotFoundException
-	 */
-	public function execute() {
-		throw new TYPO3\CMS\Core\Error\Http\PageNotFoundException();
-	}
+    /**
+     * @throws TYPO3\CMS\Core\Error\Http\PageNotFoundException
+     */
+    public function execute()
+    {
+        throw new TYPO3\CMS\Core\Error\Http\PageNotFoundException();
+    }
 }

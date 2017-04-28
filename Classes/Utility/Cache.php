@@ -25,28 +25,29 @@
 /**
  * Tx_Rnbase_Utility_Cache
  *
- * @package 		TYPO3
- * @subpackage	 	Tx_Rnbase
- * @author 			Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
- * @license 		http://www.gnu.org/licenses/lgpl.html
- * 					GNU Lesser General Public License, version 3 or later
+ * @package         TYPO3
+ * @subpackage      Tx_Rnbase
+ * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
+ * @license         http://www.gnu.org/licenses/lgpl.html
+ *                  GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Utility_Cache {
+class Tx_Rnbase_Utility_Cache
+{
 
-	/**
-	 * @param array $parameters
-	 * @return void
-	 */
-	public static function addExcludedParametersForCacheHash($parameters) {
-		$startingGlue = '';
-		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters']) {
-			$startingGlue = ',';
-		}
-		$GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'] .= $startingGlue . join(',', $parameters);
-		$cacheHashCalculator = tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
+    /**
+     * @param array $parameters
+     * @return void
+     */
+    public static function addExcludedParametersForCacheHash($parameters)
+    {
+        $startingGlue = '';
+        if ($GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters']) {
+            $startingGlue = ',';
+        }
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'] .= $startingGlue . join(',', $parameters);
+        $cacheHashCalculator = tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
 
-		$cacheHashCalculator->setConfiguration(array(
-			'excludedParameters' => explode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters']))
-		);
-	}
+        $cacheHashCalculator->setConfiguration(array(
+            'excludedParameters' => explode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'])));
+    }
 }

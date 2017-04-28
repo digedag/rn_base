@@ -105,14 +105,14 @@ tx_rnbase::load('tx_rnbase_util_Strings');
 
 
 
-class tx_rnbase_controller {
-
-	var $configurationsClassName = 'Tx_Rnbase_Configuration_Processor'; // You may overwrite this in your subclass with an own configurations class.
-	var $parameters;
-	var $configurations;
-	var $defaultAction = 'defaultAction';
-	var $cobj; // Plugins cObj instance from T3
-	private $errors = array();
+class tx_rnbase_controller
+{
+    public $configurationsClassName = 'Tx_Rnbase_Configuration_Processor'; // You may overwrite this in your subclass with an own configurations class.
+    public $parameters;
+    public $configurations;
+    public $defaultAction = 'defaultAction';
+    public $cobj; // Plugins cObj instance from T3
+    private $errors = array();
 
   /*
    * main(): A factory method for the responsible action
@@ -185,258 +185,268 @@ class tx_rnbase_controller {
    * @return string   the complete result of the plugin, typically it's (x)html
    */
 
-	function main($out, $configurationArray){
+    public function main($out, $configurationArray)
+    {
+        tx_rnbase_util_Misc::pushTT('tx_rnbase_controller', 'start');
 
-		tx_rnbase_util_Misc::pushTT('tx_rnbase_controller' , 'start');
+        // Making the configurations object
+        tx_rnbase_util_Misc::pushTT('init configuration', '');
+        $configurations = $this->_makeConfigurationsObject($configurationArray);
+        tx_rnbase_util_Misc::pullTT();
 
-		// Making the configurations object
-		tx_rnbase_util_Misc::pushTT('init configuration' , '');
-		$configurations = $this->_makeConfigurationsObject($configurationArray);
-		tx_rnbase_util_Misc::pullTT();
+        try {
+            // check for doConvertToUserIntObject
+            $configurations->getBool('toUserInt')
+            // convert the USER to USER_INT
+            && $configurations->convertToUserInt();
+        } catch (tx_rnbase_exception_Skip $e) {
+            // dont do anything! the controller will be called twice,
+            // if we convert the USER to USER_INTERNAL
+            return '';
+        }
 
-		try {
-			// check for doConvertToUserIntObject
-			$configurations->getBool('toUserInt')
-			// convert the USER to USER_INT
-			&& $configurations->convertToUserInt();
-		} catch (tx_rnbase_exception_Skip $e) {
-			// dont do anything! the controller will be called twice,
-			// if we convert the USER to USER_INTERNAL
-			return '';
-		}
+        tx_rnbase_util_Misc::enableTimeTrack($configurations->get('_enableTT') ? true : false);
+        // Making the parameters object
+        tx_rnbase_util_Misc::pushTT('init parameters', '');
+        $parameters = $this->_makeParameterObject($configurations);
+        // Make sure to keep all parameters
+        $configurations->setParameters($parameters);
+        tx_rnbase_util_Misc::pullTT();
 
-		tx_rnbase_util_Misc::enableTimeTrack($configurations->get('_enableTT') ? TRUE : FALSE);
-		// Making the parameters object
-		tx_rnbase_util_Misc::pushTT('init parameters' , '');
-		$parameters = $this->_makeParameterObject($configurations);
-		// Make sure to keep all parameters
-		$configurations->setParameters($parameters);
-		tx_rnbase_util_Misc::pullTT();
+        // Finding the action:
+        $actions = $this->_findAction($parameters, $configurations);
+        if (!isset($actions)) {
+            return $this->getUnknownAction();
+        }
+        $out = '';
+        if (is_array($actions)) {
+            foreach ($actions as $actionName) {
+                tx_rnbase_util_Misc::pushTT('call action', $actionName);
+                $out .= $this->doAction($actionName, $parameters, $configurations);
+                tx_rnbase_util_Misc::pullTT();
+            }
+        } else { // Call a single action
+            tx_rnbase_util_Misc::pushTT('call action', $actionName);
+            $out .= $this->doAction($actions, $parameters, $configurations);
+            tx_rnbase_util_Misc::pullTT();
+        }
+        tx_rnbase_util_Misc::pullTT();
 
-		// Finding the action:
-		$actions = $this->_findAction($parameters, $configurations);
-		if(!isset($actions))
-			return $this->getUnknownAction();
-		$out = '';
-		if(is_array($actions))
-			foreach($actions As $actionName){
-				tx_rnbase_util_Misc::pushTT('call action' , $actionName);
-				$out .= $this->doAction($actionName, $parameters, $configurations);
-				tx_rnbase_util_Misc::pullTT();
-			}
-		else { // Call a single action
-			tx_rnbase_util_Misc::pushTT('call action' , $actionName);
-			$out .= $this->doAction($actions, $parameters, $configurations);
-			tx_rnbase_util_Misc::pullTT();
-		}
-		tx_rnbase_util_Misc::pullTT();
+        return $out;
+    }
 
-		return $out;
-	}
+    /**
+     * Call a single action
+     * @param string $actionName class name
+     * @param tx_rnbase_IParams $parameters
+     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @return string
+     */
+    public function doAction($actionName, &$parameters, &$configurations)
+    {
+        $ret = '';
+        try {
+            // Creating the responsible Action
+            $action = tx_rnbase::makeInstance($actionName);
+            if (is_object($action)) {
+                $ret = $action->execute($parameters, $configurations);
+            }
+        } catch (tx_rnbase_exception_Skip $e) {
+            $ret = '';
+        } catch (Tx_Rnbase_Exception_PageNotFound404 $e) {
+            $message = Tx_Rnbase_Utility_Strings::trimExplode("\n", $e->getMessage(), true, 2);
+            if (count($message) > 1) {
+                // Default 404 anhängen
+                $message[1] .= "\n".$GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling_statheader'];
+            }
+            $this->getTsfe()->pageNotFoundAndExit(
+                count($message) > 1 ? $message[0] : $e->getMessage(),
+                count($message) > 1 ? $message[1] : ''
+            );
+        } // Nice to have, aber weder aufwärts noch abwärtskompatibel...
+        catch (TYPO3\CMS\Core\Error\Http\PageNotFoundException $e) {
+            $this->getTsfe()->pageNotFoundAndExit(
+                'TYPO3\\CMS\\Core\\Error\\Http\\PageNotFoundException was thrown'
+            );
+        } catch (Exception $e) {
+            $ret = $this->handleException($actionName, $e, $configurations);
+            $this->errors[] = $e;
+        }
 
-	/**
-	 * Call a single action
-	 * @param string $actionName class name
-	 * @param tx_rnbase_IParams $parameters
-	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-	 * @return string
-	 */
-	public function doAction($actionName, &$parameters, &$configurations) {
-		$ret = '';
-		try {
-			// Creating the responsible Action
-			$action = tx_rnbase::makeInstance($actionName);
-			if (is_object($action)) {
-				$ret = $action->execute($parameters, $configurations);
-			}
-		}
-		catch(tx_rnbase_exception_Skip $e) {
-			$ret = '';
-		}
-		catch(Tx_Rnbase_Exception_PageNotFound404 $e) {
-			$message = Tx_Rnbase_Utility_Strings::trimExplode("\n", $e->getMessage(), true, 2);
-			if(count($message) > 1) {
-				// Default 404 anhängen
-				$message[1] .= "\n".$GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling_statheader'];
-			}
-			$this->getTsfe()->pageNotFoundAndExit(
-				count($message) > 1 ? $message[0] : $e->getMessage(),
-				count($message) > 1 ? $message[1] : '');
-		}
-		// Nice to have, aber weder aufwärts noch abwärtskompatibel...
-		catch (TYPO3\CMS\Core\Error\Http\PageNotFoundException $e) {
-			$this->getTsfe()->pageNotFoundAndExit(
-				'TYPO3\\CMS\\Core\\Error\\Http\\PageNotFoundException was thrown'
-			);
-		}
-		catch(Exception $e) {
-			$ret = $this->handleException($actionName, $e, $configurations);
-			$this->errors[] = $e;
-		}
-		return $ret;
-	}
+        return $ret;
+    }
 
-	/**
-	 * @return TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-	 */
-	protected function getTsfe() {
-		return tx_rnbase_util_TYPO3::getTSFE();
-	}
+    /**
+     * @return TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     */
+    protected function getTsfe()
+    {
+        return tx_rnbase_util_TYPO3::getTSFE();
+    }
 
-	/**
-	 * Returns all unhandeled exceptions
-	 * @return array[Exception] or empty array
-	 */
-	public function getErrors() {
-		return $this->errors;
-	}
+    /**
+     * Returns all unhandeled exceptions
+     * @return array[Exception] or empty array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
+    }
 
-	/**
-	 * Interne Verarbeitung der Exception
-	 * @param Exception $e
-	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-	 */
-	private function handleException($actionName, Exception $e, $configurations) {
-		$exceptionHandlerClass = Tx_Rnbase_Configuration_Processor::getExtensionCfgValue(
-			'rn_base', 'exceptionHandler'
-		);
+    /**
+     * Interne Verarbeitung der Exception
+     * @param Exception $e
+     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     */
+    private function handleException($actionName, Exception $e, $configurations)
+    {
+        $exceptionHandlerClass = Tx_Rnbase_Configuration_Processor::getExtensionCfgValue(
+            'rn_base',
+            'exceptionHandler'
+        );
 
-		$defaultExceptionHandlerClass = 'tx_rnbase_exception_Handler';
-		if(!$exceptionHandlerClass) {
-			$exceptionHandlerClass = $defaultExceptionHandlerClass;
-		}
+        $defaultExceptionHandlerClass = 'tx_rnbase_exception_Handler';
+        if (!$exceptionHandlerClass) {
+            $exceptionHandlerClass = $defaultExceptionHandlerClass;
+        }
 
-		$exceptionHandler = tx_rnbase::makeInstance($exceptionHandlerClass);
+        $exceptionHandler = tx_rnbase::makeInstance($exceptionHandlerClass);
 
-		if(!$exceptionHandler instanceof tx_rnbase_exception_IHandler) {
-			$exceptionHandler = tx_rnbase::makeInstance($defaultExceptionHandlerClass);
-			tx_rnbase::load('tx_rnbase_util_Logger');
-			tx_rnbase_util_Logger::fatal(
-				"the configured error handler ($exceptionHandlerClass) does not implement the tx_rnbase_exception_IHandler interface",
-				'rn_base'
-			);
-		}
+        if (!$exceptionHandler instanceof tx_rnbase_exception_IHandler) {
+            $exceptionHandler = tx_rnbase::makeInstance($defaultExceptionHandlerClass);
+            tx_rnbase::load('tx_rnbase_util_Logger');
+            tx_rnbase_util_Logger::fatal(
+                "the configured error handler ($exceptionHandlerClass) does not implement the tx_rnbase_exception_IHandler interface",
+                'rn_base'
+            );
+        }
 
-		return $exceptionHandler->handleException($actionName, $e, $configurations);
-	}
+        return $exceptionHandler->handleException($actionName, $e, $configurations);
+    }
 
   /**
    * This is returned, if an invalid action has been send.
    *
    * @return     string     error text
    */
-  function getUnknownAction(){
-    return '<p id="unknown_action">Unknown action.</p>';
-  }
+    public function getUnknownAction()
+    {
+        return '<p id="unknown_action">Unknown action.</p>';
+    }
 
 
   //------------------------------------------------------------------------------------
   // Private functions
   //------------------------------------------------------------------------------------
 
-	/**
-	 * Find the actions to handle the request
-	 * You can define more than one actions per request. So think of an action as a content element
-	 * to render.
-	 * So if your plugin supports a list and a detail view, you can render both of them
-	 * on the same page, including only one plugin. Make a view selection and add both views.
-	 * The controller will serve the request to both actions.
-	 *
-	 * Order: defaultAction < configurationDefaultAction < parametersAction < configurationsAction
-	 *
-	 * 1.) The defaultAction is the ultimative Fallback if nothing else is given.
-	 * 2.) The configurationDefaultAction can be set in TS and/or flexform to customize the initial view.
-	 * 3.) The parametersAction is given by form or link to controll the behaviour.
-	 * 4.) The configurationAction can force a fixed view of a context element.
-	 *
-	 * @param     object     the parameters object
-	 * @param     object     the configurations objet
-	 * @return    array     an array with the actions or NULL
-	 */
-	protected function _findAction($parameters, $configurations) {
-		// What should be preferred? Config or Request?
-		// An action from parameter is preferred
-		$action = !intval($configurations->get('ignoreActionParam')) ? $this->_getParameterAction($parameters) : FALSE;
-		if(!$action) {
-			$action = $configurations->get('action');
-		}
-		else {
-			// Bei Actions aus dem Request kodierte Klassen korrigieren
-			$action = str_replace('\\\\', '\\', $action);
-		}
+    /**
+     * Find the actions to handle the request
+     * You can define more than one actions per request. So think of an action as a content element
+     * to render.
+     * So if your plugin supports a list and a detail view, you can render both of them
+     * on the same page, including only one plugin. Make a view selection and add both views.
+     * The controller will serve the request to both actions.
+     *
+     * Order: defaultAction < configurationDefaultAction < parametersAction < configurationsAction
+     *
+     * 1.) The defaultAction is the ultimative Fallback if nothing else is given.
+     * 2.) The configurationDefaultAction can be set in TS and/or flexform to customize the initial view.
+     * 3.) The parametersAction is given by form or link to controll the behaviour.
+     * 4.) The configurationAction can force a fixed view of a context element.
+     *
+     * @param     object     the parameters object
+     * @param     object     the configurations objet
+     * @return    array     an array with the actions or NULL
+     */
+    protected function _findAction($parameters, $configurations)
+    {
+        // What should be preferred? Config or Request?
+        // An action from parameter is preferred
+        $action = !intval($configurations->get('ignoreActionParam')) ? $this->_getParameterAction($parameters) : false;
+        if (!$action) {
+            $action = $configurations->get('action');
+        } else {
+            // Bei Actions aus dem Request kodierte Klassen korrigieren
+            $action = str_replace('\\\\', '\\', $action);
+        }
 
-		// Falls es mehrere Actions sind den String splitten
-		if($action)
-			$action = tx_rnbase_util_Strings::trimExplode(',', $action);
-		if(is_array($action) && count($action) == 1) {
-			$action = tx_rnbase_util_Strings::trimExplode('|', $action[0]); // Nochmal mit Pipe versuchen
-		}
-		// If there is still no action we use defined defaultAction
-		$action = !$action ? $configurations->get('defaultAction') : $action;
-		return $action;
-	}
+        // Falls es mehrere Actions sind den String splitten
+        if ($action) {
+            $action = tx_rnbase_util_Strings::trimExplode(',', $action);
+        }
+        if (is_array($action) && count($action) == 1) {
+            $action = tx_rnbase_util_Strings::trimExplode('|', $action[0]); // Nochmal mit Pipe versuchen
+        }
+        // If there is still no action we use defined defaultAction
+        $action = !$action ? $configurations->get('defaultAction') : $action;
 
-	/**
-	 * Find the action from parameter string or array
-	 *
-	 * The action value can be sent in two forms:
-	 * a) designator[action] = actionValue
-	 * b) designator[action][actionValue] = something
-	 *
-	 * Form b) is usfull Form HTML forms with multiple submit buttons.
-	 * You shouldn't use the button label as action value,
-	 * because it is language dependant.
-	 *
-	 * @param   object   the parameter object
-	 *	@return  string   the action value
-	 */
-	function _getParameterAction($parameters) {
-		$action = $parameters->offsetGet('action');
-		if(!is_array($action)) {
-			return $action;
-		} else {
-			return key($action);
-		}
-	}
+        return $action;
+    }
 
-	/**
-	 * Make the configurations object
-	 *
-	 * Used by main()
-	 *
-	 * @param array $configurationArray   the local configuration array
-	 * @return Tx_Rnbase_Configuration_ProcessorInterface  the configurations
-	 */
-	function _makeConfigurationsObject($configurationArray) {
-		// TODO, die Configklasse sollte über TS variabel gehalten werden
-		// Make configurations object
-		$configurations = tx_rnbase::makeInstance($this->configurationsClassName);
+    /**
+     * Find the action from parameter string or array
+     *
+     * The action value can be sent in two forms:
+     * a) designator[action] = actionValue
+     * b) designator[action][actionValue] = something
+     *
+     * Form b) is usfull Form HTML forms with multiple submit buttons.
+     * You shouldn't use the button label as action value,
+     * because it is language dependant.
+     *
+     * @param   object   the parameter object
+     * @return  string   the action value
+     */
+    public function _getParameterAction($parameters)
+    {
+        $action = $parameters->offsetGet('action');
+        if (!is_array($action)) {
+            return $action;
+        } else {
+            return key($action);
+        }
+    }
 
-		// Dieses cObj wird dem Controller von T3 übergeben
-		$configurations->init($configurationArray, $this->cObj, $this->extensionKey, $this->qualifier);
-		return $configurations;
-	}
+    /**
+     * Make the configurations object
+     *
+     * Used by main()
+     *
+     * @param array $configurationArray   the local configuration array
+     * @return Tx_Rnbase_Configuration_ProcessorInterface  the configurations
+     */
+    public function _makeConfigurationsObject($configurationArray)
+    {
+        // TODO, die Configklasse sollte über TS variabel gehalten werden
+        // Make configurations object
+        $configurations = tx_rnbase::makeInstance($this->configurationsClassName);
 
-	/**
-	 * Returns an ArrayObject containing all parameters
-	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-	 */
-	protected function _makeParameterObject($configurations) {
-		$parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
-		$parameters->setQualifier($configurations->getQualifier());
+        // Dieses cObj wird dem Controller von T3 übergeben
+        $configurations->init($configurationArray, $this->cObj, $this->extensionKey, $this->qualifier);
 
-		// get parametersArray for defined qualifier
-		$parametersArray = tx_rnbase_parameters::getPostAndGetParametersMerged($configurations->getQualifier());
-		if($configurations->isUniqueParameters() && array_key_exists($configurations->getPluginId(), $parametersArray)) {
-			$parametersArray = $parametersArray[$configurations->getPluginId()];
-		}
-		tx_rnbase_util_Arrays::overwriteArray($parameters, $parametersArray);
+        return $configurations;
+    }
 
-		return $parameters;
-	}
+    /**
+     * Returns an ArrayObject containing all parameters
+     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     */
+    protected function _makeParameterObject($configurations)
+    {
+        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $parameters->setQualifier($configurations->getQualifier());
+
+        // get parametersArray for defined qualifier
+        $parametersArray = tx_rnbase_parameters::getPostAndGetParametersMerged($configurations->getQualifier());
+        if ($configurations->isUniqueParameters() && array_key_exists($configurations->getPluginId(), $parametersArray)) {
+            $parametersArray = $parametersArray[$configurations->getPluginId()];
+        }
+        tx_rnbase_util_Arrays::overwriteArray($parameters, $parametersArray);
+
+        return $parameters;
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/class.tx_rnbase_controller.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/class.tx_rnbase_controller.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/class.tx_rnbase_controller.php']);
 }
-

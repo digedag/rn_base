@@ -76,50 +76,50 @@ Im Fall der Suche sind das die Definition der beteiligten Tabellen sowie die not
 ```php
 class tx_t3sponsors_search_Sponsor extends tx_rnbase_util_SearchBase {
 
-	protected function getTableMappings() {
-		$tableMapping = array();
-		$tableMapping['SPONSOR'] = 'tx_t3sponsors_companies';
-		$tableMapping['CATMM'] = 'tx_t3sponsors_categories_mm';
-		$tableMapping['CAT'] = 'tx_t3sponsors_categories';
-		$tableMapping['TRADEMM'] = 'tx_t3sponsors_trades_mm';
-		$tableMapping['TRADE'] = 'tx_t3sponsors_trades';
-		// Hook to append other tables
-		tx_rnbase_util_Misc::callHook('t3sponsors','search_Sponsor_getTableMapping_hook',
-			array('tableMapping' => &$tableMapping), $this);
-		return $tableMapping;
-	}
+    protected function getTableMappings() {
+        $tableMapping = array();
+        $tableMapping['SPONSOR'] = 'tx_t3sponsors_companies';
+        $tableMapping['CATMM'] = 'tx_t3sponsors_categories_mm';
+        $tableMapping['CAT'] = 'tx_t3sponsors_categories';
+        $tableMapping['TRADEMM'] = 'tx_t3sponsors_trades_mm';
+        $tableMapping['TRADE'] = 'tx_t3sponsors_trades';
+        // Hook to append other tables
+        tx_rnbase_util_Misc::callHook('t3sponsors','search_Sponsor_getTableMapping_hook',
+            array('tableMapping' => &$tableMapping), $this);
+        return $tableMapping;
+    }
 
   protected function getBaseTable() {
-  	return 'tx_t3sponsors_companies';
+      return 'tx_t3sponsors_companies';
   }
-	protected function getBaseTableAlias() {return 'SPONSOR';}
+    protected function getBaseTableAlias() {return 'SPONSOR';}
   function getWrapperClass() {
-  	return 'tx_t3sponsors_models_Sponsor';
+      return 'tx_t3sponsors_models_Sponsor';
   }
 
   protected function getJoins($tableAliases) {
-  	$join = '';
+      $join = '';
     if(isset($tableAliases['CATMM']) || isset($tableAliases['CAT'])) {
-    	$join .= ' JOIN tx_t3sponsors_categories_mm CATMM ON SPONSOR.uid = CATMM.uid_foreign AND CATMM.tablenames = \'tx_t3sponsors_companies\'';
+        $join .= ' JOIN tx_t3sponsors_categories_mm CATMM ON SPONSOR.uid = CATMM.uid_foreign AND CATMM.tablenames = \'tx_t3sponsors_companies\'';
     }
     if(isset($tableAliases['CAT'])) {
-    	$join .= ' JOIN tx_t3sponsors_categories CAT ON CAT.uid = CATMM.uid_local';
+        $join .= ' JOIN tx_t3sponsors_categories CAT ON CAT.uid = CATMM.uid_local';
     }
     if(isset($tableAliases['TRADEMM']) || isset($tableAliases['TRADE'])) {
-    	$join .= ' JOIN tx_t3sponsors_trades_mm TRADEMM ON SPONSOR.uid = TRADEMM.uid_foreign AND TRADEMM.tablenames = \'tx_t3sponsors_companies\'';
+        $join .= ' JOIN tx_t3sponsors_trades_mm TRADEMM ON SPONSOR.uid = TRADEMM.uid_foreign AND TRADEMM.tablenames = \'tx_t3sponsors_companies\'';
     }
     if(isset($tableAliases['TRADE'])) {
-    	$join .= ' JOIN tx_t3sponsors_trades TRADE ON TRADE.uid = TRADEMM.uid_local';
+        $join .= ' JOIN tx_t3sponsors_trades TRADE ON TRADE.uid = TRADEMM.uid_local';
     }
     // Hook to append other tables
-		tx_rnbase_util_Misc::callHook('t3sponsors','search_Sponsor_getJoins_hook',
-			array('join' => &$join, 'tableAliases' => $tableAliases), $this);
+        tx_rnbase_util_Misc::callHook('t3sponsors','search_Sponsor_getJoins_hook',
+            array('join' => &$join, 'tableAliases' => $tableAliases), $this);
 
     return $join;
   }
-	protected function useAlias() {
-		return TRUE;
-	}
+    protected function useAlias() {
+        return TRUE;
+    }
 }
 ```
 

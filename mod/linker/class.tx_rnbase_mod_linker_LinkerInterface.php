@@ -29,20 +29,20 @@
  * @subpackage tx_rnbase
  * @author Michael Wagner
  */
-interface tx_rnbase_mod_linker_LinkerInterface {
-	/**
-	 * Link zur Detailseite erzeugen
-	 *
-	 * @param Tx_Rnbase_Domain_Model_Base $item
-	 * @param tx_rnbase_util_FormTool $formTool
-	 * @param int $currentPid
-	 * @param tx_rnbase_model_data $options
-	 * @return string
-	 */
-	public function makeLink($item, $formTool, $currentPid, $options);
-
+interface tx_rnbase_mod_linker_LinkerInterface
+{
+    /**
+     * Link zur Detailseite erzeugen
+     *
+     * @param Tx_Rnbase_Domain_Model_Base $item
+     * @param tx_rnbase_util_FormTool $formTool
+     * @param int $currentPid
+     * @param tx_rnbase_model_data $options
+     * @return string
+     */
+    public function makeLink($item, $formTool, $currentPid, $options);
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/linker/class.tx_rnbase_mod_LinkerInterface.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/linker/class.tx_rnbase_mod_LinkerInterface.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/linker/class.tx_rnbase_mod_LinkerInterface.php']) {
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/linker/class.tx_rnbase_mod_LinkerInterface.php']);
 }

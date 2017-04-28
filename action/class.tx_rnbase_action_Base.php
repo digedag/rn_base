@@ -26,17 +26,19 @@ tx_rnbase::load('tx_rnbase_util_Typo3Classes');
  * Baseclass for all actions. An Actions is intended to be the controller
  * for a request. The action prepares the model and view.
  */
-class tx_rnbase_action_Base {
-  var $cObject;
+class tx_rnbase_action_Base
+{
+    public $cObject;
 
   /**
    * This is the starting point of request processing.
    * @param $parameters
    * @param $configurations
    */
-  function execute($parameters, $configurations){
-    return 'You should overwrite execute in your child action!';
-  }
+    public function execute($parameters, $configurations)
+    {
+        return 'You should overwrite execute in your child action!';
+    }
 
   /**
    * Returns an instanceof tslib_cObj or \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer.
@@ -45,14 +47,16 @@ class tx_rnbase_action_Base {
    *
    * @return an instance of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer or tslib_cObj
    */
-  function getCObj() {
-    if(!$this->cObject){
-      $this->cObject = tx_rnbase_util_TYPO3::getContentObject();
+    public function getCObj()
+    {
+        if (!$this->cObject) {
+            $this->cObject = tx_rnbase_util_TYPO3::getContentObject();
+        }
+
+        return $this->cObject;
     }
-    return $this->cObject;
-  }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/action/class.tx_rnbase_action_Base.php']) {
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/action/class.tx_rnbase_action_Base.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/action/class.tx_rnbase_action_Base.php']);
 }

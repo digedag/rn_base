@@ -26,9 +26,10 @@ tx_rnbase::load('tx_rnbase_util_Exception');
 /**
  * Default exception class
  */
-class tx_rnbase_util_db_Exception extends tx_rnbase_util_Exception {
+class tx_rnbase_util_db_Exception extends tx_rnbase_util_Exception
+{
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_db_Exception.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_db_Exception.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_db_Exception.php']);
 }

@@ -7,15 +7,15 @@ Die Ausgabe der Bilder erfolgt über die Klassen **tx_rnbase_util_DAM** bzw. **t
 ``` 
 plugin.tx_myplugin.myview.myitem.dcpictures = USER
 plugin.tx_myplugin.myview.myitem.dcpictures {
-#	includeLibs = EXT:rn_base/util/class.tx_rnbase_util_TSDAM.php
-#	userFunc = tx_rnbase_util_TSDAM->printImages
-	includeLibs = EXT:rn_base/util/class.tx_rnbase_util_TSFAL.php
-	userFunc = tx_rnbase_util_TSFAL->printImages
-	refField = mypicturefield
-	refTable = tx_myext_mytable
-	template = EXT:myext/Resources/Private/lightboxpics.html
-	subpartName = ###PICTURES###
-	media =< lib.mediaBase
+#    includeLibs = EXT:rn_base/util/class.tx_rnbase_util_TSDAM.php
+#    userFunc = tx_rnbase_util_TSDAM->printImages
+    includeLibs = EXT:rn_base/util/class.tx_rnbase_util_TSFAL.php
+    userFunc = tx_rnbase_util_TSFAL->printImages
+    refField = mypicturefield
+    refTable = tx_myext_mytable
+    template = EXT:myext/Resources/Private/lightboxpics.html
+    subpartName = ###PICTURES###
+    media =< lib.mediaBase
 }
 ``` 
 Es werden also mit **refField** und **refTable** die notwendigen Angaben für die Ermittlung der Referenzen aus der Datenbank gesetzt. Danach konfigiert man schon das HTML-Template und den gewünschten Subpart. Der **media**-Teil wird etwas weiter unten erklärt. Schauen wir uns zunächst das HTML-Template an:
@@ -47,11 +47,11 @@ Man kann die Ausgabe der Bilder noch mit limit und offset beschränken:
 ```
 plugin.tx_myplugin.myview.myitem.dcpictures = USER
 plugin.tx_myplugin.myview.myitem.dcpictures {
-	# Optional setting for limit
-	limit = 1
-	offset = 2
-	# force another reference column (other than UID or _LOCALIZED_UID)
-	forcedIdField = otheruidfield
+    # Optional setting for limit
+    limit = 1
+    offset = 2
+    # force another reference column (other than UID or _LOCALIZED_UID)
+    forcedIdField = otheruidfield
 }
 ```
 Außerdem steht ein zusätzlicher Marker bereit, der die UID des referenzierten Objektes liefert: **###MEDIA_PARENTUID###**. Dieser kann genutzt werden, um einen eindeutigen Identifier für Bildgruppen zu setzen.
@@ -62,23 +62,23 @@ Wenn man eine Seite bearbeitet, hat man die Möglichkeit im Tab Resourcen der Se
 ```
 lib.page.headerimage = USER
 lib.page.headerimage {
-	userFunc = tx_rnbase_util_TSFAL->printImages
-	# Die Referenzen direkt per stdWrap ermitteln
-	references {
-		uid.data = levelmedia:-1, slide
-	}
-	template = EXT:rn_base/res/simplegallery.html
-	# die vorbereiteten IMAGE-Objekte zuweisen
-	media =< lib.mediaBase
-	media {
-		# Link konfigurieren
-		links.target {
-			pid.field = link
-			# Nur bei gesetztem Wert verlinken
-			disable = TEXT
-			disable.value = TRUE
-			disable.if.isFalse.field = link
-		}
+    userFunc = tx_rnbase_util_TSFAL->printImages
+    # Die Referenzen direkt per stdWrap ermitteln
+    references {
+        uid.data = levelmedia:-1, slide
+    }
+    template = EXT:rn_base/res/simplegallery.html
+    # die vorbereiteten IMAGE-Objekte zuweisen
+    media =< lib.mediaBase
+    media {
+        # Link konfigurieren
+        links.target {
+            pid.field = link
+            # Nur bei gesetztem Wert verlinken
+            disable = TEXT
+            disable.value = TRUE
+            disable.if.isFalse.field = link
+        }
   }
 }
 ```

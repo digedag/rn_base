@@ -26,56 +26,58 @@
 /**
  * Wrapper for math usage.
  */
-class tx_rnbase_util_Math {
-	/**
-	 * Tests if the input can be interpreted as integer.
-	 * @return boolean
-	 * @deprecated use tx_rnbase_util_Math::isInteger
-	 */
-	public static function testInt($var) {
-		return self::isInteger($var);
-	}
+class tx_rnbase_util_Math
+{
+    /**
+     * Tests if the input can be interpreted as integer.
+     * @return bool
+     * @deprecated use tx_rnbase_util_Math::isInteger
+     */
+    public static function testInt($var)
+    {
+        return self::isInteger($var);
+    }
 
-	/**
-	 * Wrapper for t3lib_div::testInt and \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($var)
-	 * @param mixed $var
-	 * @return boolean
-	 */
-	public static function isInteger($var) {
-		if(tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-			$isInteger = \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($var);
-		}elseif(tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
-			$isInteger = t3lib_utility_Math::canBeInterpretedAsInteger($var);
-		}
-		else {
-			$isInteger = t3lib_div::testInt($var);
-		}
+    /**
+     * Wrapper for t3lib_div::testInt and \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($var)
+     * @param mixed $var
+     * @return bool
+     */
+    public static function isInteger($var)
+    {
+        if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+            $isInteger = \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($var);
+        } elseif (tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
+            $isInteger = t3lib_utility_Math::canBeInterpretedAsInteger($var);
+        } else {
+            $isInteger = t3lib_div::testInt($var);
+        }
 
-		return $isInteger;
-	}
+        return $isInteger;
+    }
 
-	/**
-	 * Forces the integer $theInt into the boundaries of $min and $max. If the $theInt is 'FALSE' then the $zeroValue is applied.
-	 *
-	 * @param integer $theInt Input value
-	 * @param integer $min Lower limit
-	 * @param integer $max Higher limit
-	 * @param integer $zeroValue Default value if input is FALSE.
-	 * @return integer The input value forced into the boundaries of $min and $max
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Math::forceIntegerInRange() instead
-	 */
-	public static function intInRange($theInt, $min, $max = 2000000000, $zeroValue = 0) {
-		if(tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-			return \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($theInt, $min, $max, $zeroValue);
-		}elseif(tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
-			return t3lib_utility_Math::forceIntegerInRange($theInt, $min, $max, $zeroValue);
-		}
-		else {
-			return t3lib_div::intInRange($theInt, $min, $max, $zeroValue);
-		}
-	}
+    /**
+     * Forces the integer $theInt into the boundaries of $min and $max. If the $theInt is 'FALSE' then the $zeroValue is applied.
+     *
+     * @param int $theInt Input value
+     * @param int $min Lower limit
+     * @param int $max Higher limit
+     * @param int $zeroValue Default value if input is FALSE.
+     * @return int The input value forced into the boundaries of $min and $max
+     * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Math::forceIntegerInRange() instead
+     */
+    public static function intInRange($theInt, $min, $max = 2000000000, $zeroValue = 0)
+    {
+        if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+            return \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($theInt, $min, $max, $zeroValue);
+        } elseif (tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
+            return t3lib_utility_Math::forceIntegerInRange($theInt, $min, $max, $zeroValue);
+        } else {
+            return t3lib_div::intInRange($theInt, $min, $max, $zeroValue);
+        }
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Math.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Math.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Math.php']);
 }

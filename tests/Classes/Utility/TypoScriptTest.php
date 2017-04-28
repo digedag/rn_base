@@ -32,84 +32,83 @@ tx_rnbase::load('Tx_Rnbase_Utility_Crypt');
  * @subpackage rn_base
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
- *		  GNU Lesser General Public License, version 3 or later
+ *        GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Utility_TypoScriptTest
-	extends tx_rnbase_tests_BaseTestCase
+class Tx_Rnbase_Utility_TypoScriptTest extends tx_rnbase_tests_BaseTestCase
 {
-	/**
-	 * Testdata for ts array convertion
-	 *
-	 * @var array
-	 */
-	private static $configArrayWithDot = [
-		'lib.' => [
-			'10.' => [
-				'value' => 'Hello World!',
-				'foo.' => [
-					'bar' => 5
-				]
-			],
-			'10' => 'TEXT'
-		]
-	];
-	/**
-	 * Testdata for ts array convertion
-	 *
-	 * @var array
-	 */
-	private static $configArrayWithoutDot = [
-		'lib' => [
-			'10' => [
-				'value' => 'Hello World!',
-				'foo' => [
-					'bar' => 5
-				],
-				'_typoScriptNodeValue' => 'TEXT'
-			]
-		]
-	];
+    /**
+     * Testdata for ts array convertion
+     *
+     * @var array
+     */
+    private static $configArrayWithDot = [
+        'lib.' => [
+            '10.' => [
+                'value' => 'Hello World!',
+                'foo.' => [
+                    'bar' => 5
+                ]
+            ],
+            '10' => 'TEXT'
+        ]
+    ];
+    /**
+     * Testdata for ts array convertion
+     *
+     * @var array
+     */
+    private static $configArrayWithoutDot = [
+        'lib' => [
+            '10' => [
+                'value' => 'Hello World!',
+                'foo' => [
+                    'bar' => 5
+                ],
+                '_typoScriptNodeValue' => 'TEXT'
+            ]
+        ]
+    ];
 
-	/**
-	 * Test the convertTypoScriptArrayToPlainArray method
-	 *
-	 * @return void
-	 *
-	 * @group unit
-	 * @test
-	 */
-	public function testConvertTypoScriptArrayToPlainArray()
-	{
-		$this->assertEquals(
-			self::$configArrayWithoutDot,
-			Tx_Rnbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray(
-				self::$configArrayWithDot
-			)
-		);
-	}
+    /**
+     * Test the convertTypoScriptArrayToPlainArray method
+     *
+     * @return void
+     *
+     * @group unit
+     * @test
+     */
+    public function testConvertTypoScriptArrayToPlainArray()
+    {
+        $this->assertEquals(
+            self::$configArrayWithoutDot,
+            Tx_Rnbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray(
+                self::$configArrayWithDot
+            )
+        );
+    }
 
-	/**
-	 * Test the convertPlainArrayToTypoScriptArray method
-	 *
-	 * @return void
-	 *
-	 * @group unit
-	 * @test
-	 */
-	public function testConvertPlainArrayToTypoScriptArray()
-	{
-		$this->assertEquals(
-			self::$configArrayWithDot,
-			Tx_Rnbase_Utility_TypoScript::convertPlainArrayToTypoScriptArray(
-				self::$configArrayWithoutDot
-			)
-		);
-		// converting of conf array with dot should produce the same, without double dot keys!
-		$this->assertEquals(
-			self::$configArrayWithDot,
-			Tx_Rnbase_Utility_TypoScript::convertPlainArrayToTypoScriptArray(
-				self::$configArrayWithDot
-			)
-		);
-	}
+    /**
+     * Test the convertPlainArrayToTypoScriptArray method
+     *
+     * @return void
+     *
+     * @group unit
+     * @test
+     */
+    public function testConvertPlainArrayToTypoScriptArray()
+    {
+        $this->assertEquals(
+            self::$configArrayWithDot,
+            Tx_Rnbase_Utility_TypoScript::convertPlainArrayToTypoScriptArray(
+                self::$configArrayWithoutDot
+            )
+        );
+        // converting of conf array with dot should produce the same, without double dot keys!
+        $this->assertEquals(
+            self::$configArrayWithDot,
+            Tx_Rnbase_Utility_TypoScript::convertPlainArrayToTypoScriptArray(
+                self::$configArrayWithDot
+            )
+        );
+    }
 }

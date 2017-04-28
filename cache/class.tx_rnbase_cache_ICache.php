@@ -25,36 +25,37 @@
 /**
  * This is a generic interface for a Cache.
  */
-interface tx_rnbase_cache_ICache {
-	/**
-	 * Retrieve a value from cache
-	 *
-	 * @param string $key
-	 * @return mixed
-	 */
-	public function get($key);
-	/**
-	 * Check whether or not a cache entry with the specified identifier exists.
-	 *
-	 * @return boolean
-	 */
-	public function has($key);
-	/**
-	 * Put a value to the cache
-	 *
-	 * @param string $key
-	 * @param mixed $value
-	 * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime
-	 */
-	public function set($key, $value, $lifetime = NULL);
-	/**
-	 * Remove a value from the cache
-	 *
-	 * @param String $key
-	 */
-	public function remove($key);
+interface tx_rnbase_cache_ICache
+{
+    /**
+     * Retrieve a value from cache
+     *
+     * @param string $key
+     * @return mixed
+     */
+    public function get($key);
+    /**
+     * Check whether or not a cache entry with the specified identifier exists.
+     *
+     * @return bool
+     */
+    public function has($key);
+    /**
+     * Put a value to the cache
+     *
+     * @param string $key
+     * @param mixed $value
+     * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime
+     */
+    public function set($key, $value, $lifetime = null);
+    /**
+     * Remove a value from the cache
+     *
+     * @param string $key
+     */
+    public function remove($key);
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/cache/class.tx_rnbase_cache_ICache.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/cache/class.tx_rnbase_cache_ICache.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/cache/class.tx_rnbase_cache_ICache.php']);
 }

@@ -33,70 +33,71 @@ tx_rnbase::load('tx_rnbase_util_Lock');
  * @subpackage tx_rnbase_tests
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-class tx_rnbase_tests_util_Lock_testcase
-	extends tx_rnbase_tests_BaseTestCase {
+class tx_rnbase_tests_util_Lock_testcase extends tx_rnbase_tests_BaseTestCase
+{
 
 
-	/**
-	 * Sets up the fixture, for example, open a network connection.
-	 * This method is called before a test is executed.
-	 *
-	 */
-	protected function setUp()
-	{
-		$this->removeLock();
-	}
+    /**
+     * Sets up the fixture, for example, open a network connection.
+     * This method is called before a test is executed.
+     */
+    protected function setUp()
+    {
+        $this->removeLock();
+    }
 
-	/**
-	 * Tears down the fixture, for example, close a network connection.
-	 * This method is called after a test is executed.
-	 */
-	protected function tearDown(){
-		$this->removeLock();
-	}
+    /**
+     * Tears down the fixture, for example, close a network connection.
+     * This method is called after a test is executed.
+     */
+    protected function tearDown()
+    {
+        $this->removeLock();
+    }
 
-	/**
-	 * removes the test lock file
-	 */
-	private function removeLock() {
-		$lock = tx_rnbase_util_Lock::getInstance('unttests', 1);
-		$filename = $this->callInaccessibleMethod($lock, 'getFile');
-		@unlink($filename);
-	}
+    /**
+     * removes the test lock file
+     */
+    private function removeLock()
+    {
+        $lock = tx_rnbase_util_Lock::getInstance('unttests', 1);
+        $filename = $this->callInaccessibleMethod($lock, 'getFile');
+        @unlink($filename);
+    }
 
 
-	/**
-	 *
-	 * @return void
-	 *
-	 * @group unit
-	 * @test
-	 */
-	public function testTheLock() {
-		$lock = tx_rnbase_util_Lock::getInstance('unttests', 2);
+    /**
+     *
+     * @return void
+     *
+     * @group unit
+     * @test
+     */
+    public function testTheLock()
+    {
+        $lock = tx_rnbase_util_Lock::getInstance('unttests', 2);
 
-		// der lock darf initial nicht gesetzt sein (zumindest im testcase)
-		$this->assertFalse($lock->isLocked(), 'Lock was initial active.');
-		// den prozess sperren
-		$lock->lockProcess();
-		// der prozess sollte nun gesperrt sein
-		$this->assertTrue($lock->isLocked(), 'Process was not locked.');
-		// den prozess freigeben
-		$lock->unlockProcess();
-		// der prozess sollte nun freigegeben sein
-		$this->assertFalse($lock->isLocked(), 'Process was not unlocked.');
-		// den prozess wieder sperren
-		$lock->lockProcess();
-		// der prozess ist erneut gesperrt
-		$this->assertTrue($lock->isLocked(), 'Process was not locked again.');
-		// jetzt warten, bis die lifetime vorüber ist
-		sleep(3);
-		// der prozess sollte nun wieder freigegeben sein
-		$this->assertFalse($lock->isLocked(), 'Process was not unlocked after the lifetime.');
-	}
-
+        // der lock darf initial nicht gesetzt sein (zumindest im testcase)
+        $this->assertFalse($lock->isLocked(), 'Lock was initial active.');
+        // den prozess sperren
+        $lock->lockProcess();
+        // der prozess sollte nun gesperrt sein
+        $this->assertTrue($lock->isLocked(), 'Process was not locked.');
+        // den prozess freigeben
+        $lock->unlockProcess();
+        // der prozess sollte nun freigegeben sein
+        $this->assertFalse($lock->isLocked(), 'Process was not unlocked.');
+        // den prozess wieder sperren
+        $lock->lockProcess();
+        // der prozess ist erneut gesperrt
+        $this->assertTrue($lock->isLocked(), 'Process was not locked again.');
+        // jetzt warten, bis die lifetime vorüber ist
+        sleep(3);
+        // der prozess sollte nun wieder freigegeben sein
+        $this->assertFalse($lock->isLocked(), 'Process was not unlocked after the lifetime.');
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/util/class.tx_rnbase_tests_util_Lock_testcase.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/util/class.tx_rnbase_tests_util_Lock_testcase.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/util/class.tx_rnbase_tests_util_Lock_testcase.php']);
 }

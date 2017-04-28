@@ -32,23 +32,22 @@
  */
 final class Tx_Rnbase_Utility_Composer
 {
-	static $loaded = FALSE;
+    public static $loaded = false;
 
-	/**
-	 * preloads the
-	 *
-	 * @return void
-	 */
-	public static function autoload()
-	{
-		if (self::$loaded === TRUE) {
-			return;
-		}
-		require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(
-			'rn_base',
-			'Resources/Private/PHP/Composer/autoload.php'
-		);
-		self::$loaded = TRUE;
-	}
-
+    /**
+     * preloads the
+     *
+     * @return void
+     */
+    public static function autoload()
+    {
+        if (self::$loaded === true) {
+            return;
+        }
+        require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(
+            'rn_base',
+            'Resources/Private/PHP/Composer/autoload.php'
+        );
+        self::$loaded = true;
+    }
 }

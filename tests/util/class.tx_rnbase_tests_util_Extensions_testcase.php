@@ -27,53 +27,59 @@ tx_rnbase::load('tx_rnbase_util_Extensions');
 /**
  * tx_rnbase_tests_util_Extensions_testcase
  *
- * @package 		TYPO3
- * @subpackage	 	rn_base
- * @author 			Hannes Bochmann <rene@system25.de>
- * @license 		http://www.gnu.org/licenses/lgpl.html
- * 					GNU Lesser General Public License, version 3 or later
+ * @package         TYPO3
+ * @subpackage      rn_base
+ * @author          Hannes Bochmann <rene@system25.de>
+ * @license         http://www.gnu.org/licenses/lgpl.html
+ *                  GNU Lesser General Public License, version 3 or later
  */
-class tx_rnbase_tests_util_Extensions_testcase extends tx_rnbase_tests_BaseTestCase {
+class tx_rnbase_tests_util_Extensions_testcase extends tx_rnbase_tests_BaseTestCase
+{
 
-	/**
-	 * @group unit
-	 */
-	public function testGetRecordTitle() {
-		tx_rnbase_util_ExtensionsForTests::extPath(1, 2, 3, 4);
+    /**
+     * @group unit
+     */
+    public function testGetRecordTitle()
+    {
+        tx_rnbase_util_ExtensionsForTests::extPath(1, 2, 3, 4);
 
-		self::assertEquals(
-			array('extPath' => array(1, 2, 3, 4)),
-			Typo3ExtensionUtilityClass::$lastCalledMethod
-		);
-	}
+        self::assertEquals(
+            array('extPath' => array(1, 2, 3, 4)),
+            Typo3ExtensionUtilityClass::$lastCalledMethod
+        );
+    }
 }
 
-class tx_rnbase_util_ExtensionsForTests extends tx_rnbase_util_Extensions {
+class tx_rnbase_util_ExtensionsForTests extends tx_rnbase_util_Extensions
+{
 
-	/**
-	 * @return Typo3BackendUtilityClass
-	 */
-	static protected function getExtensionManagementUtilityClass() {
-		return 'Typo3ExtensionUtilityClass';
-	}
+    /**
+     * @return Typo3BackendUtilityClass
+     */
+    protected static function getExtensionManagementUtilityClass()
+    {
+        return 'Typo3ExtensionUtilityClass';
+    }
 }
 
 /**
  * mit diser Klasse stellen wir fest welche Methode mit welchen Parametern aufgerufen wurde.
  */
-class Typo3ExtensionUtilityClass {
+class Typo3ExtensionUtilityClass
+{
 
-	/**
-	 * @var array der key ist der methoden name, der value die übergebenen Parameter
-	 */
-	public static $lastCalledMethod = array();
+    /**
+     * @var array der key ist der methoden name, der value die übergebenen Parameter
+     */
+    public static $lastCalledMethod = array();
 
-	/**
-	 * @param string $method
-	 * @param array $arguments
-	 * @return void
-	 */
-	static public function __callStatic($method, $arguments) {
-		self::$lastCalledMethod = array($method => $arguments);
-	}
+    /**
+     * @param string $method
+     * @param array $arguments
+     * @return void
+     */
+    public static function __callStatic($method, $arguments)
+    {
+        self::$lastCalledMethod = array($method => $arguments);
+    }
 }

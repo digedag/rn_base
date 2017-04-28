@@ -38,13 +38,13 @@ Weitere Infos gibt es im Web. Aber aufpassen, da sind einige Beispiele veraltet 
 Bei der Verwendung von rn_base kann man seinen Cache systemunabhängig registrieren. Die Cache-Manager-Klasse stellt dafür eine passende Methode bereit:
 
 ```php
-	tx_rnbase::load('tx_rnbase_cache_Manager');
-	tx_rnbase_cache_Manager::registerCache('your_cache_name',
-			tx_rnbase_cache_Manager::CACHE_FRONTEND_VARIABLE,
-			tx_rnbase_cache_Manager::CACHE_BACKEND_MEMCACHED,
-			array(
-				'servers' => array('localhost:11211'),
-			));
+    tx_rnbase::load('tx_rnbase_cache_Manager');
+    tx_rnbase_cache_Manager::registerCache('your_cache_name',
+            tx_rnbase_cache_Manager::CACHE_FRONTEND_VARIABLE,
+            tx_rnbase_cache_Manager::CACHE_BACKEND_MEMCACHED,
+            array(
+                'servers' => array('localhost:11211'),
+            ));
 ```
 
 
@@ -52,39 +52,39 @@ Konkretes Beispiel für DB-basierten Cache
 -----------------------------------------
 Für mkforms wird ein Cache verwendet, um Session-Daten zu persistieren. Der Cache hat die ID mkforms. Mit folgender Config in der Datei typo3conf/localconf.php wird der Cache auf Datenbank-Basis eingerichtet:
 ```php
-	tx_rnbase::load('tx_rnbase_cache_Manager');
-	tx_rnbase_cache_Manager::registerCache('mkforms',
-			tx_rnbase_cache_Manager::CACHE_FRONTEND_VARIABLE,
-			tx_rnbase_cache_Manager::CACHE_BACKEND_T3DATABASE,
-			array(
+    tx_rnbase::load('tx_rnbase_cache_Manager');
+    tx_rnbase_cache_Manager::registerCache('mkforms',
+            tx_rnbase_cache_Manager::CACHE_FRONTEND_VARIABLE,
+            tx_rnbase_cache_Manager::CACHE_BACKEND_T3DATABASE,
+            array(
         'cacheTable' => 'tx_mkforms_cache',
         'tagsTable' => 'tx_mkforms_tags',
-			));
+            ));
 ```
 Natürlich müssen die beiden DB-Tabellen tx_mkforms_cache und tx_mkforms_tags vorher angelegt werden:
 ```sql
  CREATE TABLE tx_mkforms_cache (
-	id int(11) NOT NULL auto_increment,
-	identifier varchar(128) DEFAULT '' NOT NULL,
-	crdate int(11) DEFAULT '0' NOT NULL,
-	content longtext NOT NULL,
-	lifetime int(11) DEFAULT '0' NOT NULL,
+    id int(11) NOT NULL auto_increment,
+    identifier varchar(128) DEFAULT '' NOT NULL,
+    crdate int(11) DEFAULT '0' NOT NULL,
+    content longtext NOT NULL,
+    lifetime int(11) DEFAULT '0' NOT NULL,
 
-	PRIMARY KEY (id),
-	KEY cache_id (identifier)
+    PRIMARY KEY (id),
+    KEY cache_id (identifier)
  );
 
  #
  # Unused dummy table for TYPO3 caching framework
  #
  CREATE TABLE tx_mkforms_tags (
-	id int(11) NOT NULL auto_increment,
-	identifier varchar(128) DEFAULT '' NOT NULL,
-	tag varchar(128) DEFAULT '' NOT NULL,
+    id int(11) NOT NULL auto_increment,
+    identifier varchar(128) DEFAULT '' NOT NULL,
+    tag varchar(128) DEFAULT '' NOT NULL,
 
-	PRIMARY KEY (id),
-	KEY cache_id (identifier),
-	KEY cache_tag (tag)
+    PRIMARY KEY (id),
+    KEY cache_id (identifier),
+    KEY cache_tag (tag)
  );
 ```
 Die Tags-Tabelle wird nicht verwendet, aber von TYPO3 erwartet.
@@ -94,13 +94,13 @@ Konkretes Beispiel für MemCached
 So sollte es für memcached aussehen. Das ist aber noch ungetestet:
 
 ```php
-	tx_rnbase::load('tx_rnbase_cache_Manager');
-	tx_rnbase_cache_Manager::registerCache('mkforms',
-			tx_rnbase_cache_Manager::CACHE_FRONTEND_VARIABLE,
-			tx_rnbase_cache_Manager::CACHE_BACKEND_MEMCACHED,
-			array(
+    tx_rnbase::load('tx_rnbase_cache_Manager');
+    tx_rnbase_cache_Manager::registerCache('mkforms',
+            tx_rnbase_cache_Manager::CACHE_FRONTEND_VARIABLE,
+            tx_rnbase_cache_Manager::CACHE_BACKEND_MEMCACHED,
+            array(
         'servers' => array('localhost:11211'),
-			));
+            ));
 ```
 
 Manuelles Cache leeren
@@ -109,18 +109,18 @@ Um einen Cache über die TYPO3-Funktion "Clear all Caches" auch mit zu leeren, w
 
 ```php
 if (TYPO3_MODE == 'BE') {
-	// register the cache in BE so it will be cleared with "clear all caches"
-	try {
-		t3lib_cache::initializeCachingFramework();
-		// State cache
-		$GLOBALS['typo3CacheFactory']->create(
- 				'cf_mkmms', 
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['mkmms']['frontend'],
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['mkmms']['backend'],
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['mkmms']['options']
-		);
-	} catch(t3lib_cache_exception_NoSuchCache $exception) {
+    // register the cache in BE so it will be cleared with "clear all caches"
+    try {
+        t3lib_cache::initializeCachingFramework();
+        // State cache
+        $GLOBALS['typo3CacheFactory']->create(
+                 'cf_mkmms', 
+                $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['mkmms']['frontend'],
+                $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['mkmms']['backend'],
+                $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['mkmms']['options']
+        );
+    } catch(t3lib_cache_exception_NoSuchCache $exception) {
 
-	}
+    }
 }
 ```

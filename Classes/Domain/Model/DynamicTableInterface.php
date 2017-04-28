@@ -33,18 +33,18 @@
  */
 interface Tx_Rnbase_Domain_Model_DynamicTableInterface
 {
-	/**
-	 * Liefert den aktuellen Tabellenname
-	 *
-	 * @return string
-	 */
-	public function getTableName();
+    /**
+     * Liefert den aktuellen Tabellenname
+     *
+     * @return string
+     */
+    public function getTableName();
 
-	/**
-	 * Setzt den aktuellen Tabellenname
-	 *
-	 * @param string $tableName
-	 * @return Tx_Rnbase_Domain_Model_Base
-	 */
-	public function setTableName($tableName = 0);
+    /**
+     * Setzt den aktuellen Tabellenname
+     *
+     * @param string $tableName
+     * @return Tx_Rnbase_Domain_Model_Base
+     */
+    public function setTableName($tableName = 0);
 }

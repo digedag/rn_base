@@ -31,36 +31,31 @@ tx_rnbase::load('tx_rnbase_mod_linker_LinkerInterface');
  * @subpackage tx_rnbase
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-class tx_rnbase_mod_linker_ShowDetails
-	implements tx_rnbase_mod_linker_LinkerInterface {
+class tx_rnbase_mod_linker_ShowDetails implements tx_rnbase_mod_linker_LinkerInterface
+{
 
 
-	/**
-	 * Link zur Detailseite erzeugen
-	 *
-	 * @param Tx_Rnbase_Domain_Model_Base $item
-	 * @param tx_rnbase_util_FormTool $formTool
-	 * @param int $currentPid
-	 * @param Tx_Rnbase_Domain_Model_DataInterface $options
-	 * @return string
-	 */
-	public function makeLink($item, $formTool, $currentPid, $options) {
-		$uidkey = $options->getShowDetailsKey()
-			? $options->getShowDetailsKey()
-			: 'showDetails[' . $item->getTableName() . ']'
-		;
-		$label = $options->hasShowDetailsLabel()
-			? $options->getShowDetailsLabel()
-			: '###LABEL_SHOW_DETAILS###'
-		;
-		return $formTool->createSubmit(
-			$uidkey . '[' . $item->uid . ']',
-			$label
-		);
-	}
+    /**
+     * Link zur Detailseite erzeugen
+     *
+     * @param Tx_Rnbase_Domain_Model_Base $item
+     * @param tx_rnbase_util_FormTool $formTool
+     * @param int $currentPid
+     * @param Tx_Rnbase_Domain_Model_DataInterface $options
+     * @return string
+     */
+    public function makeLink($item, $formTool, $currentPid, $options)
+    {
+        $uidkey = $options->getShowDetailsKey() ? $options->getShowDetailsKey() : 'showDetails[' . $item->getTableName() . ']';
+        $label = $options->hasShowDetailsLabel() ? $options->getShowDetailsLabel() : '###LABEL_SHOW_DETAILS###';
 
+        return $formTool->createSubmit(
+            $uidkey . '[' . $item->uid . ']',
+            $label
+        );
+    }
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/linker/class.tx_rnbase_mod_LinkerInterface.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/linker/class.tx_rnbase_mod_LinkerInterface.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/linker/class.tx_rnbase_mod_LinkerInterface.php']) {
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/linker/class.tx_rnbase_mod_LinkerInterface.php']);
 }

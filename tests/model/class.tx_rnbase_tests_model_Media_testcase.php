@@ -27,48 +27,53 @@ tx_rnbase::load('tx_rnbase_model_media');
 /**
  *
  * @author Hannes Bochmann <hannes.bochmann@dmk-business.de>
- *
  */
-class tx_rnbase_tests_model_Media_testcase extends Tx_Phpunit_TestCase {
+class tx_rnbase_tests_model_Media_testcase extends Tx_Phpunit_TestCase
+{
 
-	/**
-	 * @group unit
-	 */
-	public function testInitMediaForFalMediaSetsFalPropertiesToRecord() {
-		if (!tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			$this->markTestSkipped('Runs only in TYPO3 6.0 and higher');
-		}
+    /**
+     * @group unit
+     */
+    public function testInitMediaForFalMediaSetsFalPropertiesToRecord()
+    {
+        if (!tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+            $this->markTestSkipped('Runs only in TYPO3 6.0 and higher');
+        }
 
-		$falModel = $this->getMock(
-			'stdClass',
-			array('getProperties', 'getUid', 'getPublicUrl')
-		);
-		$falModel->expects($this->once())
-			->method('getProperties')
-			->will($this->returnValue(array(
-				'title' => 'sample picture reference',
-				'description' => 'this is a sample picture',
-				'otherField' => '/some/path',
-				'otherField2' => '/some/other/path'
-			)));
+        $falModel = $this->getMock(
+            'stdClass',
+            array('getProperties', 'getUid', 'getPublicUrl')
+        );
+        $falModel->expects($this->once())
+            ->method('getProperties')
+            ->will($this->returnValue(array(
+                'title' => 'sample picture reference',
+                'description' => 'this is a sample picture',
+                'otherField' => '/some/path',
+                'otherField2' => '/some/other/path'
+            )));
 
-		$mediaModel = tx_rnbase::makeInstance('tx_rnbase_model_media', $falModel);
+        $mediaModel = tx_rnbase::makeInstance('tx_rnbase_model_media', $falModel);
 
-		$this->assertEquals(
-			'sample picture reference', $mediaModel->record['title'],
-			'not the title of the reference'
-		);
-		$this->assertEquals(
-			'/some/path', $mediaModel->record['otherField'],
-			'not the otherField of the original'
-		);
-		$this->assertEquals(
-			'/some/other/path', $mediaModel->record['otherField2'],
-			'not the otherField2 of the otherField2'
-		);
-		$this->assertEquals(
-			'this is a sample picture', $mediaModel->record['description'],
-			'not the description of the original'
-		);
-	}
+        $this->assertEquals(
+            'sample picture reference',
+            $mediaModel->record['title'],
+            'not the title of the reference'
+        );
+        $this->assertEquals(
+            '/some/path',
+            $mediaModel->record['otherField'],
+            'not the otherField of the original'
+        );
+        $this->assertEquals(
+            '/some/other/path',
+            $mediaModel->record['otherField2'],
+            'not the otherField2 of the otherField2'
+        );
+        $this->assertEquals(
+            'this is a sample picture',
+            $mediaModel->record['description'],
+            'not the description of the original'
+        );
+    }
 }

@@ -40,24 +40,28 @@ define('CALENDAR_DAY_OF_YEAR', 6);
 /**
  * Simple Implementation of a calendar.
  */
-class tx_rnbase_util_Calendar {
-  var $_time; // Die Zeit des Kalenders
+class tx_rnbase_util_Calendar
+{
+    public $_time; // Die Zeit des Kalenders
 
-  function __construct() {
-    $this->_time = time();
-    $this->_init();
-  }
+    public function __construct()
+    {
+        $this->_time = time();
+        $this->_init();
+    }
 
   /**
    * Gets this Calendar's current time.
    */
-  function getTime() {
-    return $this->_time;
-  }
+    public function getTime()
+    {
+        return $this->_time;
+    }
 
-  function setTime($timestamp) {
-    $this->_time = $timestamp;
-  }
+    public function setTime($timestamp)
+    {
+        $this->_time = $timestamp;
+    }
 
   /**
    * Date Arithmetic function. Adds the specified (signed) amount of time to the given time
@@ -65,45 +69,57 @@ class tx_rnbase_util_Calendar {
    * @param $field - the time field.
    * @param $amount - the amount of date or time to be added to the field.
    */
-  function add($field, $amount) {
-    // Bis zur Woche können direkt die Sekunden aufaddiert werden
-    if(array_key_exists($field, $this->_seconds)) {
-      $this->_time = $this->_time + $this->_seconds[$field] * $amount;
-      return;
+    public function add($field, $amount)
+    {
+        // Bis zur Woche können direkt die Sekunden aufaddiert werden
+        if (array_key_exists($field, $this->_seconds)) {
+            $this->_time = $this->_time + $this->_seconds[$field] * $amount;
+
+            return;
+        }
+
+        $key = $this->_clearHash[$field];
+        if ($key) {
+            $date = getdate($this->_time);
+            $date[$key] = $date[$key] + $amount;
+            $this->_time = $this->_mktime($date);
+        }
     }
 
-    $key = $this->_clearHash[$field];
-    if($key) {
-      $date = getdate($this->_time);
-      $date[$key] = $date[$key] + $amount;
-      $this->_time = $this->_mktime($date);
+    /**
+     * Clears the value in the given time field.
+     */
+    public function clear($field = 0)
+    {
+        if ($field == 0) {
+            $this->_time = 0;
+
+            return;
+        }
+
+        $date = getdate($this->_time);
+        $date[$this->_clearHash[$field]] = 0;
+        $this->_time = $this->_mktime($date);
     }
-  }
 
-	/**
-	 * Clears the value in the given time field.
-	 */
-	function clear($field = 0) {
-		if($field == 0) {
-			$this->_time = 0;
-			return;
-		}
+    /**
+     * Erstellt den Timestamp aus dem Datumsarray
+     */
+    public function _mktime($dateArr)
+    {
+        return mktime(
+            $dateArr['hours'],
+            $dateArr['minutes'],
+            $dateArr['seconds'],
+            $dateArr['mon'],
+            $dateArr['mday'],
+            $dateArr['year']
+        );
+    }
 
-		$date = getdate($this->_time);
-		$date[$this->_clearHash[$field]] = 0;
-		$this->_time = $this->_mktime($date);
-	}
-
-	/**
-	 * Erstellt den Timestamp aus dem Datumsarray
-	 */
-	function _mktime($dateArr) {
-		return mktime($dateArr['hours'], $dateArr['minutes'], $dateArr['seconds'],
-									$dateArr['mon'], $dateArr['mday'], $dateArr['year']);
-	}
-
-	function _init() {
-		$this->_seconds = array( CALENDAR_SECOND => 1,
+    public function _init()
+    {
+        $this->_seconds = array( CALENDAR_SECOND => 1,
                              CALENDAR_MINUTE => 60,
                              CALENDAR_HOUR => 60 * 60,
                              CALENDAR_DAY_OF_MONTH => 86400,
@@ -111,20 +127,20 @@ class tx_rnbase_util_Calendar {
                              CALENDAR_WEEK_OF_MONTH => 86400 * 7,
                              CALENDAR_WEEK_OF_YEAR => 86400 * 7 );
 
-		$this->_clearHash = array( CALENDAR_SECOND => 'seconds',
+        $this->_clearHash = array( CALENDAR_SECOND => 'seconds',
                              CALENDAR_MINUTE => 'minutes',
                              CALENDAR_HOUR => 'hours',
                              CALENDAR_DAY_OF_MONTH => 'mday',
                              CALENDAR_DAY_OF_YEAR => 'mday',
                              CALENDAR_MONTH => 'mon',
                              CALENDAR_YEAR => 'year' );
-
-	}
-	function _getSeconds($field) {
-		return $this->_seconds[$field];
-	}
+    }
+    public function _getSeconds($field)
+    {
+        return $this->_seconds[$field];
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Calendar.php']) {
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Calendar.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Calendar.php']);
 }

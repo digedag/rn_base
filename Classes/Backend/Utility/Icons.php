@@ -27,171 +27,175 @@
  *
  * Wrapper für \TYPO3\CMS\Backend\Utility\IconUtility bzw. t3lib_iconWorks
  *
- * @package 		TYPO3
- * @subpackage	 	rn_base
- * @author 			Hannes Bochmann <rene@system25.de>
- * @license 		http://www.gnu.org/licenses/lgpl.html
- * 					GNU Lesser General Public License, version 3 or later
+ * @package         TYPO3
+ * @subpackage      rn_base
+ * @author          Hannes Bochmann <rene@system25.de>
+ * @license         http://www.gnu.org/licenses/lgpl.html
+ *                  GNU Lesser General Public License, version 3 or later
  */
 class Tx_Rnbase_Backend_Utility_Icons
 {
-	/**
-	 * @param string $method
-	 * @param array $arguments
-	 * @return mixed
-	 */
-	static public function __callStatic($method, array $arguments)
-	{
-		return call_user_func_array(array(static::getIconUtilityClass(), $method), $arguments);
-	}
+    /**
+     * @param string $method
+     * @param array $arguments
+     * @return mixed
+     */
+    public static function __callStatic($method, array $arguments)
+    {
+        return call_user_func_array(array(static::getIconUtilityClass(), $method), $arguments);
+    }
 
-	/**
-	 * @return \TYPO3\CMS\Backend\Utility\IconUtility or t3lib_iconWorks
-	 */
-	static protected function getIconUtilityClass()
-	{
-		if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-			/** @var $class \TYPO3\CMS\Core\Imaging\IconFactory */
-			$class = tx_rnbase::makeInstance(
-				'TYPO3\\CMS\\Core\\Imaging\\IconFactory'
-			);
-		} elseif (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			$class = 'TYPO3\\CMS\\Backend\\Utility\\IconUtility';
-		} else {
-			$class = 't3lib_iconWorks';
-		}
+    /**
+     * @return \TYPO3\CMS\Backend\Utility\IconUtility or t3lib_iconWorks
+     */
+    protected static function getIconUtilityClass()
+    {
+        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+            /**
+ * @var $class \TYPO3\CMS\Core\Imaging\IconFactory
+*/
+            $class = tx_rnbase::makeInstance(
+                'TYPO3\\CMS\\Core\\Imaging\\IconFactory'
+            );
+        } elseif (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+            $class = 'TYPO3\\CMS\\Backend\\Utility\\IconUtility';
+        } else {
+            $class = 't3lib_iconWorks';
+        }
 
-		return $class;
-	}
+        return $class;
+    }
 
-	/**
-	 * This method is used throughout the TYPO3 Backend to show icons for a DB record
-	 *
-	 * @param string $table
-	 * @param array $row
-	 * @param string $size "large" "small" or "default", see the constants of the Icon class
-	 *
-	 * @return Icon
-	 */
-	public static function getSpriteIconForRecord(
-		$table,
-		array $row,
-		$size = 'default'
-	) {
-		$method = 'getSpriteIconForRecord';
-		if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-			$method = 'getIconForRecord';
-			$arguments = array(
-				$table,
-				$row,
-				$size
-			);
-		} else {
-			$arguments = array(
-				$table,
-				$row
-			);
-		}
+    /**
+     * This method is used throughout the TYPO3 Backend to show icons for a DB record
+     *
+     * @param string $table
+     * @param array $row
+     * @param string $size "large" "small" or "default", see the constants of the Icon class
+     *
+     * @return Icon
+     */
+    public static function getSpriteIconForRecord(
+        $table,
+        array $row,
+        $size = 'default'
+    ) {
+        $method = 'getSpriteIconForRecord';
+        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+            $method = 'getIconForRecord';
+            $arguments = array(
+                $table,
+                $row,
+                $size
+            );
+        } else {
+            $arguments = array(
+                $table,
+                $row
+            );
+        }
 
-		return self::__callStatic($method, $arguments);
-	}
+        return self::__callStatic($method, $arguments);
+    }
 
-	/**
-	 * Returns a string with all available Icons in TYPO3 system. Each icon has a tooltip with its identifier.
-	 * @return string
-	 */
-	public static function debugSprites()
-	{
-		$iconsAvailable = $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'];
+    /**
+     * Returns a string with all available Icons in TYPO3 system. Each icon has a tooltip with its identifier.
+     * @return string
+     */
+    public static function debugSprites()
+    {
+        $iconsAvailable = $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'];
 
-		if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-			$iconsAvailable = self::getIconRegistry()->getAllRegisteredIconIdentifiers();
-		}
+        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+            $iconsAvailable = self::getIconRegistry()->getAllRegisteredIconIdentifiers();
+        }
 
-		$icons .= '<h2>iconsAvailable</h2>';
-		foreach($iconsAvailable AS $icon) {
-			$icons .= sprintf(
-				'<span title="%1$s">%2$s</span>',
-				$icon,
-				self::getSpriteIcon($icon)
-			);
-		}
+        $icons .= '<h2>iconsAvailable</h2>';
+        foreach ($iconsAvailable as $icon) {
+            $icons .= sprintf(
+                '<span title="%1$s">%2$s</span>',
+                $icon,
+                self::getSpriteIcon($icon)
+            );
+        }
 
-		return $icons;
-	}
+        return $icons;
+    }
 
-	/**
-	 *
-	 * @param unknown $iconName
-	 * @param array $options
-	 * @param array $overlays
-	 *
-	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use IconFactory->getIcon instead
-	 *
-	 * @return unknown
-	 */
-	public static function getSpriteIcon(
-		$iconName,
-		array $options = array(),
-		array $overlays = array()
-	) {
-		// @TODO: shoult be used for TYPO3 7 too!
-		if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-			$class = static::getIconUtilityClass();
-			return $class::getSpriteIcon($iconName, $options, $overlays);
-		}
+    /**
+     *
+     * @param unknown $iconName
+     * @param array $options
+     * @param array $overlays
+     *
+     * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use IconFactory->getIcon instead
+     *
+     * @return unknown
+     */
+    public static function getSpriteIcon(
+        $iconName,
+        array $options = array(),
+        array $overlays = array()
+    ) {
+        // @TODO: shoult be used for TYPO3 7 too!
+        if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+            $class = static::getIconUtilityClass();
 
-		$size = \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL;
-		if (!empty($options['size'])) {
-			$size = $options['size'];
-		}
+            return $class::getSpriteIcon($iconName, $options, $overlays);
+        }
 
-		return self::getIconFactory()->getIcon($iconName, $size)->render();
-	}
+        $size = \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL;
+        if (!empty($options['size'])) {
+            $size = $options['size'];
+        }
 
-	/**
-	 * This helper functions looks up the column that is used for the type of
-	 * the chosen TCA table. And then fetches the corresponding iconname
-	 * based on the chosen iconsprite class in this TCA
-	 *
-	 * see ext:core/Configuration/TCA/pages.php for an example with the TCA table "pages"
-	 *
-	 * @param string $table The TCA table
-	 * @param array $row The selected record
-	 *
-	 * @return string The CSS class for the sprite icon of that DB record
-	 */
-	public static function mapRecordTypeToSpriteIconName($table, array $row)
-	{
-		if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-			$class = static::getIconUtilityClass();
-			return $class::mapRecordTypeToSpriteIconName($table, $row);
-		}
+        return self::getIconFactory()->getIcon($iconName, $size)->render();
+    }
 
-		return self::getIconFactory()->mapRecordTypeToIconIdentifier($table, $row);
-	}
+    /**
+     * This helper functions looks up the column that is used for the type of
+     * the chosen TCA table. And then fetches the corresponding iconname
+     * based on the chosen iconsprite class in this TCA
+     *
+     * see ext:core/Configuration/TCA/pages.php for an example with the TCA table "pages"
+     *
+     * @param string $table The TCA table
+     * @param array $row The selected record
+     *
+     * @return string The CSS class for the sprite icon of that DB record
+     */
+    public static function mapRecordTypeToSpriteIconName($table, array $row)
+    {
+        if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+            $class = static::getIconUtilityClass();
 
-	/**
-	 * The TYPO3 icon factory
-	 *
-	 * @return \TYPO3\CMS\Core\Imaging\IconFactory
-	 */
-	public static function getIconFactory()
-	{
-		return tx_rnbase::makeInstance(
-			'TYPO3\\CMS\\Core\\Imaging\\IconFactory'
-		);
-	}
+            return $class::mapRecordTypeToSpriteIconName($table, $row);
+        }
 
-	/**
-	 * The TYPO3 icon factory
-	 *
-	 * @return \TYPO3\CMS\Core\Imaging\IconRegistry
-	 */
-	public static function getIconRegistry()
-	{
-		return tx_rnbase::makeInstance(
-			'TYPO3\\CMS\\Core\\Imaging\\IconRegistry'
-		);
-	}
+        return self::getIconFactory()->mapRecordTypeToIconIdentifier($table, $row);
+    }
+
+    /**
+     * The TYPO3 icon factory
+     *
+     * @return \TYPO3\CMS\Core\Imaging\IconFactory
+     */
+    public static function getIconFactory()
+    {
+        return tx_rnbase::makeInstance(
+            'TYPO3\\CMS\\Core\\Imaging\\IconFactory'
+        );
+    }
+
+    /**
+     * The TYPO3 icon factory
+     *
+     * @return \TYPO3\CMS\Core\Imaging\IconRegistry
+     */
+    public static function getIconRegistry()
+    {
+        return tx_rnbase::makeInstance(
+            'TYPO3\\CMS\\Core\\Imaging\\IconRegistry'
+        );
+    }
 }

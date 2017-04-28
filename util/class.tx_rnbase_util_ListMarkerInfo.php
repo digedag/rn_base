@@ -22,28 +22,31 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-interface ListMarkerInfo {
-	function init($template, &$formatter, $marker);
-	function getTemplate(&$item);
+interface ListMarkerInfo
+{
+    public function init($template, &$formatter, $marker);
+    public function getTemplate(&$item);
 }
 
 /**
  * Default implementation of ListMarkerInfo.
  */
-class tx_rnbase_util_ListMarkerInfo implements ListMarkerInfo {
+class tx_rnbase_util_ListMarkerInfo implements ListMarkerInfo
+{
+    public function __construct()
+    {
+    }
+    public function init($template, &$formatter, $marker)
+    {
+        $this->template = $template;
+    }
 
-  function __construct() {
-  }
-  function init($template, &$formatter, $marker) {
-  	$this->template = $template;
-  }
-
-	function getTemplate(&$item) {
-		return $this->template;
-	}
-
+    public function getTemplate(&$item)
+    {
+        return $this->template;
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_ListMarkerInfo.php']) {
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_ListMarkerInfo.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_ListMarkerInfo.php']);
 }

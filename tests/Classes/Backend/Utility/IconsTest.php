@@ -27,56 +27,62 @@ tx_rnbase::load('Tx_Rnbase_Backend_Utility_Icons');
 /**
  * Tx_Rnbase_Backend_Utility_IconsTest
  *
- * @package 		TYPO3
- * @subpackage	 	rn_base
- * @author 			Hannes Bochmann <rene@system25.de>
- * @license 		http://www.gnu.org/licenses/lgpl.html
- * 					GNU Lesser General Public License, version 3 or later
+ * @package         TYPO3
+ * @subpackage      rn_base
+ * @author          Hannes Bochmann <rene@system25.de>
+ * @license         http://www.gnu.org/licenses/lgpl.html
+ *                  GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Backend_Utility_IconsTest extends tx_rnbase_tests_BaseTestCase {
+class Tx_Rnbase_Backend_Utility_IconsTest extends tx_rnbase_tests_BaseTestCase
+{
 
-	/**
-	 * @group unit
-	 */
-	public function testSkinImg() {
-		if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-			$this->markTestSkipped('deprecated sinde typo3 7 and nonexistence since typo3 8');
-		}
-		Tx_Rnbase_Backend_Utility_IconsForTest::skinImg(1, 2, 3, 4);
+    /**
+     * @group unit
+     */
+    public function testSkinImg()
+    {
+        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+            $this->markTestSkipped('deprecated sinde typo3 7 and nonexistence since typo3 8');
+        }
+        Tx_Rnbase_Backend_Utility_IconsForTest::skinImg(1, 2, 3, 4);
 
-		self::assertEquals(
-			array('skinImg' => array(1, 2, 3, 4)),
-			Typo3BackendUtilityIconsClass::$lastCalledMethod
-		);
-	}
+        self::assertEquals(
+            array('skinImg' => array(1, 2, 3, 4)),
+            Typo3BackendUtilityIconsClass::$lastCalledMethod
+        );
+    }
 }
 
-class Tx_Rnbase_Backend_Utility_IconsForTest extends Tx_Rnbase_Backend_Utility_Icons {
+class Tx_Rnbase_Backend_Utility_IconsForTest extends Tx_Rnbase_Backend_Utility_Icons
+{
 
-	/**
-	 * @return Typo3BackendUtilityClass
-	 */
-	static protected function getIconUtilityClass() {
-		return 'Typo3BackendUtilityIconsClass';
-	}
+    /**
+     * @return Typo3BackendUtilityClass
+     */
+    protected static function getIconUtilityClass()
+    {
+        return 'Typo3BackendUtilityIconsClass';
+    }
 }
 
 /**
  * mit diser Klasse stellen wir fest welche Methode mit welchen Parametern aufgerufen wurde.
  */
-class Typo3BackendUtilityIconsClass {
+class Typo3BackendUtilityIconsClass
+{
 
-	/**
-	 * @var array der key ist der methoden name, der value die übergebenen Parameter
-	 */
-	public static $lastCalledMethod = array();
+    /**
+     * @var array der key ist der methoden name, der value die übergebenen Parameter
+     */
+    public static $lastCalledMethod = array();
 
-	/**
-	 * @param string $method
-	 * @param array $arguments
-	 * @return void
-	 */
-	static public function __callStatic($method, $arguments) {
-		self::$lastCalledMethod = array($method => $arguments);
-	}
+    /**
+     * @param string $method
+     * @param array $arguments
+     * @return void
+     */
+    public static function __callStatic($method, $arguments)
+    {
+        self::$lastCalledMethod = array($method => $arguments);
+    }
 }

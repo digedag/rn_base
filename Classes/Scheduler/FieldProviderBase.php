@@ -27,43 +27,47 @@
  *
  * stellt die abstrakten Methoden für Tx_Rnbase_Scheduler_FieldProvider bereit
  *
- * @package 		TYPO3
- * @subpackage	 	rn_base
- * @author 			Hannes Bochmann <rene@system25.de>
- * @license 		http://www.gnu.org/licenses/lgpl.html
- * 					GNU Lesser General Public License, version 3 or later
+ * @package         TYPO3
+ * @subpackage      rn_base
+ * @author          Hannes Bochmann <rene@system25.de>
+ * @license         http://www.gnu.org/licenses/lgpl.html
+ *                  GNU Lesser General Public License, version 3 or later
  */
-abstract class Tx_Rnbase_Scheduler_FieldProviderBase {
+abstract class Tx_Rnbase_Scheduler_FieldProviderBase
+{
 
-	/**
-	 * Gets additional fields to render in the form to add/edit a task
-	 *
-	 * @param array &$taskInfo Values of the fields from the add/edit task form
-	 * @param Tx_Rnbase_Scheduler_Task $task The task object being edited. Null when adding a task!
-	 * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule $schedulerModule Reference to the scheduler backend module
-	 * @return array A two dimensional array, array('Identifier' => array('fieldId' => array('code' => '', 'label' => '', 'cshKey' => '', 'cshLabel' => ''))
-	 */
-	abstract protected function _getAdditionalFields(
-		array &$taskInfo, $task, $schedulerModule
-	);
+    /**
+     * Gets additional fields to render in the form to add/edit a task
+     *
+     * @param array &$taskInfo Values of the fields from the add/edit task form
+     * @param Tx_Rnbase_Scheduler_Task $task The task object being edited. Null when adding a task!
+     * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule $schedulerModule Reference to the scheduler backend module
+     * @return array
+     */
+    abstract protected function _getAdditionalFields(
+        array &$taskInfo,
+        $task,
+        $schedulerModule
+    );
 
-	/**
-	 * Validates the additional fields' values
-	 *
-	 * @param array $submittedData An array containing the data submitted by the add/edit task form
-	 * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule Reference to the scheduler backend module
-	 * @return boolean TRUE if validation was ok (or selected class is not relevant), FALSE otherwise
-	 */
-	abstract protected function _validateAdditionalFields(
-		array &$submittedData, $parentObject
-	);
+    /**
+     * Validates the additional fields' values
+     *
+     * @param array $submittedData An array containing the data submitted by the add/edit task form
+     * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule Reference to the scheduler backend module
+     * @return bool TRUE if validation was ok (or selected class is not relevant), FALSE otherwise
+     */
+    abstract protected function _validateAdditionalFields(
+        array &$submittedData,
+        $parentObject
+    );
 
-	/**
-	 * Takes care of saving the additional fields' values in the task's object
-	 *
-	 * @param array $submittedData An array containing the data submitted by the add/edit task form
-	 * @param Tx_Rnbase_Scheduler_Task $task Reference to the scheduler backend module
-	 * @return void
-	 */
-	abstract protected function _saveAdditionalFields(array $submittedData, Tx_Rnbase_Scheduler_Task $task);
+    /**
+     * Takes care of saving the additional fields' values in the task's object
+     *
+     * @param array $submittedData An array containing the data submitted by the add/edit task form
+     * @param Tx_Rnbase_Scheduler_Task $task Reference to the scheduler backend module
+     * @return void
+     */
+    abstract protected function _saveAdditionalFields(array $submittedData, Tx_Rnbase_Scheduler_Task $task);
 }

@@ -25,165 +25,178 @@
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_rnbase_model_base');
 
-class tx_rnbase_tests_model_Base_testcase extends tx_rnbase_tests_BaseTestCase {
+class tx_rnbase_tests_model_Base_testcase extends tx_rnbase_tests_BaseTestCase
+{
+    public function test_magiccall()
+    {
+        $model = new tx_rnbase_model_base(array('uid' => 1, 'test_value' => 45));
+        $this->assertEquals(45, $model->getTestValue());
+    }
 
-	public function test_magiccall() {
-		$model = new tx_rnbase_model_base(array('uid'=>1, 'test_value'=>45));
-		$this->assertEquals(45, $model->getTestValue());
-	}
+    public function testGetUidWhenNoLocalisation()
+    {
+        $model = $this->getMock(
+            'tx_rnbase_model_base',
+            array('getTableName'),
+            array(array('uid' => 123))
+        );
+        $model->expects($this->once())
+            ->method('getTableName')
+            ->will($this->returnValue('tt_content'));
 
-	public function testGetUidWhenNoLocalisation() {
-		$model = $this->getMock(
-			'tx_rnbase_model_base',
-			array('getTableName'),
-			array(array('uid' => 123))
-		);
-		$model->expects($this->once())
-			->method('getTableName')
-			->will($this->returnValue('tt_content'));
+        $this->assertEquals(123, $model->getUid(), 'uid field not used');
+    }
 
-		$this->assertEquals(123, $model->getUid(), 'uid field not used');
-	}
+    public function testGetUidWhenLocalisation()
+    {
+        $model = $this->getMock(
+            'tx_rnbase_model_base',
+            array('getTableName'),
+            array(array('uid' => 123, 'l18n_parent' => 456, 'sys_language_uid' => 789))
+        );
+        $model->expects($this->once())
+            ->method('getTableName')
+            ->will($this->returnValue('tt_content'));
 
-	public function testGetUidWhenLocalisation() {
-		$model = $this->getMock(
-			'tx_rnbase_model_base',
-			array('getTableName'),
-			array(array('uid' => 123, 'l18n_parent' => 456, 'sys_language_uid' => 789))
-		);
-		$model->expects($this->once())
-			->method('getTableName')
-			->will($this->returnValue('tt_content'));
+        $this->assertEquals(456, $model->getUid(), 'uid field not used');
+    }
 
-		$this->assertEquals(456, $model->getUid(), 'uid field not used');
-	}
+    public function testGetUidForNonTca()
+    {
+        $model = $this->getMock(
+            'tx_rnbase_model_base',
+            array('getTableName'),
+            array(
+                array(
+                    'uid' => '57',
+                    'field' => 'test',
+                )
+            )
+        );
+        $model->expects($this->once())
+            ->method('getTableName')
+            ->will($this->returnValue('tx_table_not_exists'));
+        $this->assertEquals(57, $model->getUid(), 'uid field not used');
+    }
 
-	public function testGetUidForNonTca() {
-		$model = $this->getMock(
-			'tx_rnbase_model_base',
-			array('getTableName'),
-			array(
-				array(
-					'uid' => '57',
-					'field' => 'test',
-				)
-			)
-		);
-		$model->expects($this->once())
-			->method('getTableName')
-			->will($this->returnValue('tx_table_not_exists'));
-		$this->assertEquals(57, $model->getUid(), 'uid field not used');
-	}
-
-	public function testGetUidForNonTable() {
-		$model = tx_rnbase::makeInstance(
-			'tx_rnbase_model_base',
-			array(
-				'uid' => '57',
-				'field' => 'test',
-			)
-		);
-		$this->assertEquals(57, $model->getUid(), 'uid field not used');
-	}
+    public function testGetUidForNonTable()
+    {
+        $model = tx_rnbase::makeInstance(
+            'tx_rnbase_model_base',
+            array(
+                'uid' => '57',
+                'field' => 'test',
+            )
+        );
+        $this->assertEquals(57, $model->getUid(), 'uid field not used');
+    }
 
 
-	public function testGetUidForTranslatedSingleRecord() {
-		$model = $this->getMock(
-			'tx_rnbase_model_base',
-			array('getTableName'),
-			array(array('uid' => 123, 'l18n_parent' => 0, 'sys_language_uid' => 789))
-		);
-		$model->expects($this->once())
-			->method('getTableName')
-			->will($this->returnValue('tt_content'));
+    public function testGetUidForTranslatedSingleRecord()
+    {
+        $model = $this->getMock(
+            'tx_rnbase_model_base',
+            array('getTableName'),
+            array(array('uid' => 123, 'l18n_parent' => 0, 'sys_language_uid' => 789))
+        );
+        $model->expects($this->once())
+            ->method('getTableName')
+            ->will($this->returnValue('tt_content'));
 
-		$this->assertEquals(123, $model->getUid(), 'uid field not used');
-	}
+        $this->assertEquals(123, $model->getUid(), 'uid field not used');
+    }
 
-	public function testGetSysLanguageUidWithoutTca() {
-		/* @var $model tx_rnbase_model_base */
-		$model = tx_rnbase::makeInstance(
-			'tx_rnbase_model_base'
-		);
-		$this->assertSame(0, $model->getSysLanguageUid());
-	}
-	public function testGetSysLanguageUidWithLanguageFieldInTca() {
-		/* @var $model tx_rnbase_model_base */
-		$model = tx_rnbase::makeInstance(
-			'tx_rnbase_model_base',
-			array(
-				'uid' => 57,
-				'header' => 'Home',
-				'sys_language_uid' => '5',
-			)
-		)->setTableName('tt_content');
-		$this->assertSame(5, $model->getSysLanguageUid());
-	}
+    public function testGetSysLanguageUidWithoutTca()
+    {
+        /* @var $model tx_rnbase_model_base */
+        $model = tx_rnbase::makeInstance(
+            'tx_rnbase_model_base'
+        );
+        $this->assertSame(0, $model->getSysLanguageUid());
+    }
+    public function testGetSysLanguageUidWithLanguageFieldInTca()
+    {
+        /* @var $model tx_rnbase_model_base */
+        $model = tx_rnbase::makeInstance(
+            'tx_rnbase_model_base',
+            array(
+                'uid' => 57,
+                'header' => 'Home',
+                'sys_language_uid' => '5',
+            )
+        )->setTableName('tt_content');
+        $this->assertSame(5, $model->getSysLanguageUid());
+    }
 
-	public function testGetTcaLabelWithoutTca() {
-		/* @var $model tx_rnbase_model_base */
-		$model = tx_rnbase::makeInstance(
-			'tx_rnbase_model_base'
-		);
-		$this->assertSame('', $model->getTcaLabel());
-	}
+    public function testGetTcaLabelWithoutTca()
+    {
+        /* @var $model tx_rnbase_model_base */
+        $model = tx_rnbase::makeInstance(
+            'tx_rnbase_model_base'
+        );
+        $this->assertSame('', $model->getTcaLabel());
+    }
 
-	public function testGetTcaLabelWithTca() {
-		/* @var $model tx_rnbase_model_base */
-		$model = tx_rnbase::makeInstance(
-			'tx_rnbase_model_base',
-			array(
-				'uid' => 57,
-				'header' => 'Home',
-			)
-		)->setTableName('tt_content');
-		$this->assertSame('Home', $model->getTcaLabel());
-	}
+    public function testGetTcaLabelWithTca()
+    {
+        /* @var $model tx_rnbase_model_base */
+        $model = tx_rnbase::makeInstance(
+            'tx_rnbase_model_base',
+            array(
+                'uid' => 57,
+                'header' => 'Home',
+            )
+        )->setTableName('tt_content');
+        $this->assertSame('Home', $model->getTcaLabel());
+    }
 
-	public function testGetCreationDateTimeWithoutTca() {
-		/* @var $model tx_rnbase_model_base */
-		$model = tx_rnbase::makeInstance(
-			'tx_rnbase_model_base'
-		);
-		$this->assertSame(NULL, $model->getCreationDateTime());
-	}
+    public function testGetCreationDateTimeWithoutTca()
+    {
+        /* @var $model tx_rnbase_model_base */
+        $model = tx_rnbase::makeInstance(
+            'tx_rnbase_model_base'
+        );
+        $this->assertSame(null, $model->getCreationDateTime());
+    }
 
-	public function testGetCreationDateTimeWithTca() {
-		/* @var $model tx_rnbase_model_base */
-		$model = tx_rnbase::makeInstance(
-			'tx_rnbase_model_base',
-			array(
-				'uid' => 57,
-				'crdate' => 1433161484,
-			)
-		)->setTableName('tt_content');
-		$this->assertInstanceOf('DateTime', $model->getCreationDateTime());
-		$this->assertSame('1433161484', $model->getCreationDateTime()->format('U'));
-	}
+    public function testGetCreationDateTimeWithTca()
+    {
+        /* @var $model tx_rnbase_model_base */
+        $model = tx_rnbase::makeInstance(
+            'tx_rnbase_model_base',
+            array(
+                'uid' => 57,
+                'crdate' => 1433161484,
+            )
+        )->setTableName('tt_content');
+        $this->assertInstanceOf('DateTime', $model->getCreationDateTime());
+        $this->assertSame('1433161484', $model->getCreationDateTime()->format('U'));
+    }
 
-	public function testGetLastModifyDateTimeWithoutTca() {
-		/* @var $model tx_rnbase_model_base */
-		$model = tx_rnbase::makeInstance(
-			'tx_rnbase_model_base'
-		);
-		$this->assertSame(NULL, $model->getLastModifyDateTime());
-	}
+    public function testGetLastModifyDateTimeWithoutTca()
+    {
+        /* @var $model tx_rnbase_model_base */
+        $model = tx_rnbase::makeInstance(
+            'tx_rnbase_model_base'
+        );
+        $this->assertSame(null, $model->getLastModifyDateTime());
+    }
 
-	public function testGetLastModifyDateTimeWithTca() {
-		/* @var $model tx_rnbase_model_base */
-		$model = tx_rnbase::makeInstance(
-			'tx_rnbase_model_base',
-			array(
-				'uid' => 57,
-				'tstamp' => 1433161484,
-			)
-		)->setTableName('tt_content');
-		$this->assertInstanceOf('DateTime', $model->getLastModifyDateTime());
-		$this->assertSame('1433161484', $model->getLastModifyDateTime()->format('U'));
-	}
-
+    public function testGetLastModifyDateTimeWithTca()
+    {
+        /* @var $model tx_rnbase_model_base */
+        $model = tx_rnbase::makeInstance(
+            'tx_rnbase_model_base',
+            array(
+                'uid' => 57,
+                'tstamp' => 1433161484,
+            )
+        )->setTableName('tt_content');
+        $this->assertInstanceOf('DateTime', $model->getLastModifyDateTime());
+        $this->assertSame('1433161484', $model->getLastModifyDateTime()->format('U'));
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/model/class.tx_rnbase_tests_model_Base_testcase.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/model/class.tx_rnbase_tests_model_Base_testcase.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/model/class.tx_rnbase_tests_model_Base_testcase.php']);
 }

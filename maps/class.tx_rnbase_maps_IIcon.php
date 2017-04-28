@@ -26,21 +26,21 @@
 /**
  * Common Interface for Icons
  */
-interface tx_rnbase_maps_IIcon {
+interface tx_rnbase_maps_IIcon
+{
 
-	/**
-	 * Returns the icon name
-	 *
-	 */
-	function getName();
+    /**
+     * Returns the icon name
+     */
+    public function getName();
 
-	/**
-	 * Renders this Icon
-	 * @return string
-	 */
-	function render();
+    /**
+     * Renders this Icon
+     * @return string
+     */
+    public function render();
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_IIcon.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_IIcon.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_IIcon.php']);
 }

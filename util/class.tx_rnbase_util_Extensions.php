@@ -25,63 +25,64 @@
 /**
  * Wrapperclass for TYPO3 Extension Manager
  * @author René Nitzsche
- *
  */
-class tx_rnbase_util_Extensions {
+class tx_rnbase_util_Extensions
+{
 
-	/**
-	 * @param string $method
-	 * @param array $arguments
-	 * @return mixed
-	 */
-	static public function __callStatic($method, array $arguments) {
-		return call_user_func_array(array(static::getExtensionManagementUtilityClass(), $method), $arguments);
-	}
+    /**
+     * @param string $method
+     * @param array $arguments
+     * @return mixed
+     */
+    public static function __callStatic($method, array $arguments)
+    {
+        return call_user_func_array(array(static::getExtensionManagementUtilityClass(), $method), $arguments);
+    }
 
-	/**
-	 * @return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility or t3lib_extMgm
-	 */
-	static protected function getExtensionManagementUtilityClass() {
-		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			$class = '\TYPO3\CMS\Core\Utility\ExtensionManagementUtility';
-		} else {
-			$class = 't3lib_extMgm';
-		}
+    /**
+     * @return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility or t3lib_extMgm
+     */
+    protected static function getExtensionManagementUtilityClass()
+    {
+        if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+            $class = '\TYPO3\CMS\Core\Utility\ExtensionManagementUtility';
+        } else {
+            $class = 't3lib_extMgm';
+        }
 
-		return $class;
-	}
+        return $class;
+    }
 
-	/**
-	 * Registers an Extbase module (main or sub) to the backend interface.
-	 * FOR USE IN ext_tables.php FILES
-	 *
-	 * @param string $extensionName
-	 * @param string $mainModuleName
-	 * @param string $subModuleName
-	 * @param string $position
-	 * @param array $controllerActions
-	 * @param array $moduleConfiguration
-	 *
-	 * @throws \InvalidArgumentException
-	 *
-	 * @return void
-	 */
-	public static function registerModule(
-		$extensionName,
-		$mainModuleName = '',
-		$subModuleName = '',
-		$position = '',
-		array $controllerActions = array(),
-		array $moduleConfiguration = array()
-	)
-	{
-		\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-			$extensionName,
-			$mainModuleName,
-			$subModuleName,
-			$position,
-			$controllerActions,
-			$moduleConfiguration
-		);
-	}
+    /**
+     * Registers an Extbase module (main or sub) to the backend interface.
+     * FOR USE IN ext_tables.php FILES
+     *
+     * @param string $extensionName
+     * @param string $mainModuleName
+     * @param string $subModuleName
+     * @param string $position
+     * @param array $controllerActions
+     * @param array $moduleConfiguration
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return void
+     */
+    public static function registerModule(
+        $extensionName,
+        $mainModuleName = '',
+        $subModuleName = '',
+        $position = '',
+        array $controllerActions = array(),
+        array $moduleConfiguration = array()
+    ) {
+        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+            $extensionName,
+            $mainModuleName,
+            $subModuleName,
+            $position,
+            $controllerActions,
+            $moduleConfiguration
+        );
+    }
 }

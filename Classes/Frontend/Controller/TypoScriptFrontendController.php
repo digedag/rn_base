@@ -23,30 +23,33 @@
  */
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-	/**
-	 * Tx_Rnbase_Frontend_Controller_TypoScriptFrontendController
-	 *
-	 * Wrapper für TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController seit TYPO3 6.x
-	 *
-	 * @package 		TYPO3
-	 * @subpackage	 	rn_base
-	 * @author 			Hannes Bochmann <rene@system25.de>
-	 * @license 		http://www.gnu.org/licenses/lgpl.html
-	 * 					GNU Lesser General Public License, version 3 or later
-	 */
-	class Tx_Rnbase_Frontend_Controller_TypoScriptFrontendController
-		extends TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController {}
+    /**
+     * Tx_Rnbase_Frontend_Controller_TypoScriptFrontendController
+     *
+     * Wrapper für TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController seit TYPO3 6.x
+     *
+     * @package         TYPO3
+     * @subpackage      rn_base
+     * @author          Hannes Bochmann <rene@system25.de>
+     * @license         http://www.gnu.org/licenses/lgpl.html
+     *                  GNU Lesser General Public License, version 3 or later
+     */
+    class Tx_Rnbase_Frontend_Controller_TypoScriptFrontendController extends TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+    {
+    }
 } else {
-	/**
-	 * Tx_Rnbase_Frontend_Controller_TypoScriptFrontendController
-	 *
-	 * Wrapper für tslib_fe bis TYPO3 6.x
-	 *
-	 * @package 		TYPO3
-	 * @subpackage	 	rn_base
-	 * @author 			Hannes Bochmann <rene@system25.de>
-	 * @license 		http://www.gnu.org/licenses/lgpl.html
-	 * 					GNU Lesser General Public License, version 3 or later
-	 */
-	class Tx_Rnbase_Frontend_Controller_TypoScriptFrontendController extends tslib_fe {}
+    /**
+     * Tx_Rnbase_Frontend_Controller_TypoScriptFrontendController
+     *
+     * Wrapper für tslib_fe bis TYPO3 6.x
+     *
+     * @package         TYPO3
+     * @subpackage      rn_base
+     * @author          Hannes Bochmann <rene@system25.de>
+     * @license         http://www.gnu.org/licenses/lgpl.html
+     *                  GNU Lesser General Public License, version 3 or later
+     */
+    class Tx_Rnbase_Frontend_Controller_TypoScriptFrontendController extends tslib_fe
+    {
+    }
 }

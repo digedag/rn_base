@@ -26,14 +26,15 @@
 /**
  * Common Interface for Controls
  */
-interface tx_rnbase_maps_IControl {
+interface tx_rnbase_maps_IControl
+{
 
-	/**
-	 * Render this control
-	 */
-	function render();
+    /**
+     * Render this control
+     */
+    public function render();
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_IControl.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_IControl.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_IControl.php']);
 }

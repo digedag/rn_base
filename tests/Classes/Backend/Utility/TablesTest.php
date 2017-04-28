@@ -26,54 +26,55 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 /**
  *
  */
-class Tx_Rnbase_Backend_Utility_TablesTest extends tx_rnbase_tests_BaseTestCase {
+class Tx_Rnbase_Backend_Utility_TablesTest extends tx_rnbase_tests_BaseTestCase
+{
 
-	/**
-	 * @group unit
-	 */
-	public function testPrepareTable() {
-		/* @var $tablesUtil Tx_Rnbase_Backend_Utility_Tables */
-		$tablesUtil = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Utility_Tables');
-		$entries = array(
-			tx_rnbase::makeInstance('Tx_Rnbase_Domain_Model_Data', array('uid'=>2, 'name'=>'foo')),
-			tx_rnbase::makeInstance('Tx_Rnbase_Domain_Model_Data', array('uid'=>5, 'name'=>'bar')),
-		);
-		$columns = array(
-			'uid' => array('title' => 'label_uid'),
-			'name' => array('title' => 'Name'),
-			'other' => array('title' => 'Other', 'method' => 'getUid'),
-		);
-		$options = array();
-		$options['checkbox'] = 1;
-		$options['dontcheck'][2] = 'XX';
-		$formTool = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Form_ToolBox');
+    /**
+     * @group unit
+     */
+    public function testPrepareTable()
+    {
+        /* @var $tablesUtil Tx_Rnbase_Backend_Utility_Tables */
+        $tablesUtil = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Utility_Tables');
+        $entries = array(
+            tx_rnbase::makeInstance('Tx_Rnbase_Domain_Model_Data', array('uid' => 2, 'name' => 'foo')),
+            tx_rnbase::makeInstance('Tx_Rnbase_Domain_Model_Data', array('uid' => 5, 'name' => 'bar')),
+        );
+        $columns = array(
+            'uid' => array('title' => 'label_uid'),
+            'name' => array('title' => 'Name'),
+            'other' => array('title' => 'Other', 'method' => 'getUid'),
+        );
+        $options = array();
+        $options['checkbox'] = 1;
+        $options['dontcheck'][2] = 'XX';
+        $formTool = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Form_ToolBox');
 
-		$result = $tablesUtil->prepareTable($entries, $columns, $formTool, $options);
-		$tableData = $result[0];
-		$this->assertEquals(3, count($tableData), 'Number of rows wrong');
+        $result = $tablesUtil->prepareTable($entries, $columns, $formTool, $options);
+        $tableData = $result[0];
+        $this->assertEquals(3, count($tableData), 'Number of rows wrong');
 
-		// Header prüfen
-		$this->assertEquals(4, count($tableData[0]), 'Number of cols wrong');
-		$this->assertEquals('&nbsp;', $tableData[0][0], 'Unexpected title for column 1');
-		$this->assertEquals('label_uid', $tableData[0][1], 'Unexpected title for column 2');
-		$this->assertEquals('Name', $tableData[0][2], 'Unexpected title for column 3');
+        // Header prüfen
+        $this->assertEquals(4, count($tableData[0]), 'Number of cols wrong');
+        $this->assertEquals('&nbsp;', $tableData[0][0], 'Unexpected title for column 1');
+        $this->assertEquals('label_uid', $tableData[0][1], 'Unexpected title for column 2');
+        $this->assertEquals('Name', $tableData[0][2], 'Unexpected title for column 3');
 
-		// erste Zeile
-		$this->assertEquals(4, count($tableData[1]), 'Number of cols wrong');
-		$this->assertContains('Info: XX', $tableData[1][0], 'Unexpected title for row 1');
-		$this->assertStringStartsNotWith('<input type="checkbox"', $tableData[1][0], 'Checkbox found');
-		$this->assertEquals('2', $tableData[1][1], 'Unexpected uid');
-		$this->assertEquals('foo', $tableData[1][2], 'Unexpected name');
-		$this->assertEquals('2', $tableData[1][3], 'Unexpected other');
+        // erste Zeile
+        $this->assertEquals(4, count($tableData[1]), 'Number of cols wrong');
+        $this->assertContains('Info: XX', $tableData[1][0], 'Unexpected title for row 1');
+        $this->assertStringStartsNotWith('<input type="checkbox"', $tableData[1][0], 'Checkbox found');
+        $this->assertEquals('2', $tableData[1][1], 'Unexpected uid');
+        $this->assertEquals('foo', $tableData[1][2], 'Unexpected name');
+        $this->assertEquals('2', $tableData[1][3], 'Unexpected other');
 
-		$this->assertEquals(4, count($tableData[2]), 'Number of cols wrong');
-		$this->assertStringStartsWith('<input type="checkbox"', $tableData[2][0], 'Checkbox not found');
-		$this->assertEquals('5', $tableData[2][1], 'Unexpected uid');
-		$this->assertEquals('bar', $tableData[2][2], 'Unexpected name');
-		$this->assertEquals('5', $tableData[2][3], 'Unexpected other');
+        $this->assertEquals(4, count($tableData[2]), 'Number of cols wrong');
+        $this->assertStringStartsWith('<input type="checkbox"', $tableData[2][0], 'Checkbox not found');
+        $this->assertEquals('5', $tableData[2][1], 'Unexpected uid');
+        $this->assertEquals('bar', $tableData[2][2], 'Unexpected name');
+        $this->assertEquals('5', $tableData[2][3], 'Unexpected other');
 
 // \tx_rnbase_util_Debug::debug($tableData,__FILE__.':'.__LINE__); // TODO: remove me
 // exit();
-	}
+    }
 }
-

@@ -29,32 +29,46 @@ tx_rnbase::load('tx_rnbase_util_SearchBase');
  *
  * @author Rene Nitzsche
  */
-class tx_rnbase_util_SearchGeneric extends tx_rnbase_util_SearchBase {
+class tx_rnbase_util_SearchGeneric extends tx_rnbase_util_SearchBase
+{
+    protected function getTableMappings()
+    {
+        $tableMapping = array();
+        // Hook to append other tables
+        tx_rnbase_util_Misc::callHook(
+            'rn_base',
+            'search_generic_getTableMapping_hook',
+            array('tableMapping' => &$tableMapping),
+            $this
+        );
 
-	protected function getTableMappings() {
-		$tableMapping = array();
-		// Hook to append other tables
-		tx_rnbase_util_Misc::callHook('rn_base', 'search_generic_getTableMapping_hook',
-			array('tableMapping' => &$tableMapping), $this);
-		return $tableMapping;
-	}
-  protected function getBaseTable() {
-  	return '';
-  }
-  function getWrapperClass() {
-  	return '';
-  }
+        return $tableMapping;
+    }
+    protected function getBaseTable()
+    {
+        return '';
+    }
+    public function getWrapperClass()
+    {
+        return '';
+    }
 
-	protected function getJoins($tableAliases) {
-		$join = '';
+    protected function getJoins($tableAliases)
+    {
+        $join = '';
 
-		// Hook to append other tables
-		tx_rnbase_util_Misc::callHook('rn_base', 'search_generic_getJoins_hook',
-			array('join' => &$join, 'tableAliases' => $tableAliases), $this);
-		return $join;
-	}
+        // Hook to append other tables
+        tx_rnbase_util_Misc::callHook(
+            'rn_base',
+            'search_generic_getJoins_hook',
+            array('join' => &$join, 'tableAliases' => $tableAliases),
+            $this
+        );
+
+        return $join;
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_SearchGeneric.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_SearchGeneric.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_SearchGeneric.php']);
 }

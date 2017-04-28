@@ -31,8 +31,7 @@ tx_rnbase::load('Tx_Rnbase_Exception_Base');
  *
  * Der Exception sollte eine Nachricht übergeben werden, da diese dann
  * ausgegeben wird.
- *
  */
-class Tx_Rnbase_Exception_PageNotFound404 extends Tx_Rnbase_Exception_Base {
-
+class Tx_Rnbase_Exception_PageNotFound404 extends Tx_Rnbase_Exception_Base
+{
 }

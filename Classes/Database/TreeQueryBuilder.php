@@ -35,109 +35,112 @@ tx_rnbase::load('Tx_Rnbase_Database_Connection');
  */
 class Tx_Rnbase_Database_TreeQueryBuilder
 {
-	/**
-	 * returns an array of pids from a page tree
-	 *
-	 * @param int|string $id      start page
-	 * @param array      $options additional options:
-	 *                              tableName: which table is to be used (default: pages)
-	 *                              depth: how many levels are descended in the page tree
-	 *                               (default: 999)
-	 *                              begin: at which level do we start (default: 0)
-	 *
-	 *
-	 * @return array
-	 *
-	 * @see Tx_Rnbase_Database_TreeQueryBuilder::getTreeUidListRecursive
-	 */
-	public function getPageTreeUidList($id, $options = array())
-	{
-		//@TODO: support page aliases in id parameter
-		$sqlOptions = array_merge(array('tableName' => 'pages'), $options);
-		$depth = !empty($options['depth']) ? $options['depth'] : 999;
-		$begin = !empty($options['begin']) ? $options['begin'] : 0;
+    /**
+     * returns an array of pids from a page tree
+     *
+     * @param int|string $id      start page
+     * @param array      $options additional options:
+     *                              tableName: which table is to be used (default: pages)
+     *                              depth: how many levels are descended in the page tree
+     *                               (default: 999)
+     *                              begin: at which level do we start (default: 0)
+     *
+     * @return array
+     *
+     * @see Tx_Rnbase_Database_TreeQueryBuilder::getTreeUidListRecursive
+     */
+    public function getPageTreeUidList($id, $options = array())
+    {
+        //@TODO: support page aliases in id parameter
+        $sqlOptions = array_merge(array('tableName' => 'pages'), $options);
+        $depth = !empty($options['depth']) ? $options['depth'] : 999;
+        $begin = !empty($options['begin']) ? $options['begin'] : 0;
 
-		unset($sqlOptions['depth']);
-		unset($sqlOptions['begin']);
-		return $this->getTreeUidListRecursive($id, $depth, $begin, $sqlOptions);
-	}
+        unset($sqlOptions['depth']);
+        unset($sqlOptions['begin']);
 
-	/**
-	 * returns an array of tree-like assigned entities like a pagetree
-	 * but could also handle any other hierarchical db structure
-	 *
-	 * @param int|string $id      id or list of ids comma separated
-	 * @param int        $depth
-	 * @param int        $begin
-	 * @param array      $options All options except "where" are forwarded to "doSelect"
-	 *                            directly. The parentField (pid) will be added to the where
-	 *                            clausle automaticly. additional options:
-	 *                              tableName: what table should be used (required)
-	 *                              parentField: the field where the parent id is stored
-	 *                               (default: pid)
-	 *                              idField: the field of the identifier that will be returned
-	 *                               (default: uid)
-	 *
-	 * @return array
-	 * @throws Exception
-	 */
-	public function getTreeUidListRecursive($id, $depth, $begin = 0, $options = array())
-	{
-		$depth = (int)$depth;
-		$begin = (int)$begin;
-		$parentField = !empty($options['parentField']) ? $options['parentField'] : 'pid';
-		$idField = !empty($options['idField']) ? $options['idField'] : 'uid';
+        return $this->getTreeUidListRecursive($id, $depth, $begin, $sqlOptions);
+    }
 
-		if ($begin == 0) {
-			$uidList = Tx_Rnbase_Utility_Strings::intExplode(',', $id);
-		} else {
-			$uidList = array();
-		}
-		if ($id && $depth > 0) {
+    /**
+     * returns an array of tree-like assigned entities like a pagetree
+     * but could also handle any other hierarchical db structure
+     *
+     * @param int|string $id      id or list of ids comma separated
+     * @param int        $depth
+     * @param int        $begin
+     * @param array      $options All options except "where" are forwarded to "doSelect"
+     *                            directly. The parentField (pid) will be added to the where
+     *                            clausle automaticly. additional options:
+     *                              tableName: what table should be used (required)
+     *                              parentField: the field where the parent id is stored
+     *                               (default: pid)
+     *                              idField: the field of the identifier that will be returned
+     *                               (default: uid)
+     *
+     * @return array
+     * @throws Exception
+     */
+    public function getTreeUidListRecursive($id, $depth, $begin = 0, $options = array())
+    {
+        $depth = (int)$depth;
+        $begin = (int)$begin;
+        $parentField = !empty($options['parentField']) ? $options['parentField'] : 'pid';
+        $idField = !empty($options['idField']) ? $options['idField'] : 'uid';
 
-			if (empty($options['tableName'])) {
-				throw new \Exception('tableName must be set in $options');
-			}
+        if ($begin == 0) {
+            $uidList = Tx_Rnbase_Utility_Strings::intExplode(',', $id);
+        } else {
+            $uidList = array();
+        }
+        if ($id && $depth > 0) {
+            if (empty($options['tableName'])) {
+                throw new \Exception('tableName must be set in $options');
+            }
 
-			if (empty($options['where'])) {
-				$options['where'] = '1=1';
-			}
-			$sqlOptions = $options;
-			$sqlOptions['where'] .= ' AND ' . $parentField . ' IN (' . $id . ')';
+            if (empty($options['where'])) {
+                $options['where'] = '1=1';
+            }
+            $sqlOptions = $options;
+            $sqlOptions['where'] .= ' AND ' . $parentField . ' IN (' . $id . ')';
 
-			/** @var Tx_Rnbase_Domain_Collection_Base $rows */
-			$rows = $this->getConnection()->doSelect(
-				$idField,
-				$sqlOptions['tableName'],
-				$sqlOptions
-			);
+            /**
+ * @var Tx_Rnbase_Domain_Collection_Base $rows
+*/
+            $rows = $this->getConnection()->doSelect(
+                $idField,
+                $sqlOptions['tableName'],
+                $sqlOptions
+            );
 
-			if ($rows) {
-				foreach ($rows as $row) {
-					if ($begin <= 0) {
-						$uidList[] = $row[$idField];
-					}
-					if ($depth > 1) {
-						$uidList = array_merge(
-							$uidList,
-							$this->getTreeUidListRecursive(
-								$row[$idField],
-								$depth - 1,
-								$begin - 1,
-								$options)
-						);
-					}
-				}
-			}
-		}
-		return $uidList;
-	}
+            if ($rows) {
+                foreach ($rows as $row) {
+                    if ($begin <= 0) {
+                        $uidList[] = $row[$idField];
+                    }
+                    if ($depth > 1) {
+                        $uidList = array_merge(
+                            $uidList,
+                            $this->getTreeUidListRecursive(
+                                $row[$idField],
+                                $depth - 1,
+                                $begin - 1,
+                                $options
+                            )
+                        );
+                    }
+                }
+            }
+        }
 
-	/**
-	 * @return Tx_Rnbase_Database_Connection
-	 */
-	protected function getConnection()
-	{
-		return Tx_Rnbase_Database_Connection::getInstance();
-	}
+        return $uidList;
+    }
+
+    /**
+     * @return Tx_Rnbase_Database_Connection
+     */
+    protected function getConnection()
+    {
+        return Tx_Rnbase_Database_Connection::getInstance();
+    }
 }

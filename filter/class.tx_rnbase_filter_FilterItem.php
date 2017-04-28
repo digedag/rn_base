@@ -25,51 +25,57 @@
 tx_rnbase::load('tx_rnbase_util_SearchBase');
 
 
-interface tx_rnbase_IFilterItem {
-	/**
-	 * Returns the name of item
-	 * @return string
-	 */
-	public function getName();
+interface tx_rnbase_IFilterItem
+{
+    /**
+     * Returns the name of item
+     * @return string
+     */
+    public function getName();
 
-	/**
-	 * Returns the current value
-	 * @return string
-	 */
-	public function getValue();
+    /**
+     * Returns the current value
+     * @return string
+     */
+    public function getValue();
 }
 
-class tx_rnbase_filter_FilterItem implements tx_rnbase_IFilterItem {
-	var $record;
-	function __construct($name, $value) {
-		$this->record = array();
-		$this->setName($name);
-		$this->setValue($value);
-	}
-	/**
-	 * Returns the name of item
-	 * @return string
-	 */
-	public function getName() {
-		return $this->record['name'];
-	}
-	public function setName($name) {
-		$this->record['name'] = $name;
-	}
+class tx_rnbase_filter_FilterItem implements tx_rnbase_IFilterItem
+{
+    public $record;
+    public function __construct($name, $value)
+    {
+        $this->record = array();
+        $this->setName($name);
+        $this->setValue($value);
+    }
+    /**
+     * Returns the name of item
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->record['name'];
+    }
+    public function setName($name)
+    {
+        $this->record['name'] = $name;
+    }
 
-	/**
-	 * Returns the current value
-	 * @return string
-	 */
-	public function getValue() {
-		return $this->record['value'];
-	}
-	public function setValue($value) {
-		$this->record['value'] = $value;
-	}
-
+    /**
+     * Returns the current value
+     * @return string
+     */
+    public function getValue()
+    {
+        return $this->record['value'];
+    }
+    public function setValue($value)
+    {
+        $this->record['value'] = $value;
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/filter/class.tx_rnbase_filter_FilterItem.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/filter/class.tx_rnbase_filter_FilterItem.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/filter/class.tx_rnbase_filter_FilterItem.php']);
 }

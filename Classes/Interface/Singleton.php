@@ -24,29 +24,33 @@
 
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-	/**
-	 * Tx_Rnbase_Utility_Singleton
-	 *
-	 * Wrapper für \TYPO3\CMS\Core\SingletonInterface seit TYPO3 6.x
-	 *
-	 * @package 		TYPO3
-	 * @subpackage	 	rn_base
-	 * @author 			Hannes Bochmann <rene@system25.de>
-	 * @license 		http://www.gnu.org/licenses/lgpl.html
-	 * 					GNU Lesser General Public License, version 3 or later
-	 */
-	interface Tx_Rnbase_Interface_Singleton extends \TYPO3\CMS\Core\SingletonInterface {}
+    /**
+     * Tx_Rnbase_Utility_Singleton
+     *
+     * Wrapper für \TYPO3\CMS\Core\SingletonInterface seit TYPO3 6.x
+     *
+     * @package         TYPO3
+     * @subpackage      rn_base
+     * @author          Hannes Bochmann <rene@system25.de>
+     * @license         http://www.gnu.org/licenses/lgpl.html
+     *                  GNU Lesser General Public License, version 3 or later
+     */
+    interface Tx_Rnbase_Interface_Singleton extends \TYPO3\CMS\Core\SingletonInterface
+    {
+    }
 } else {
-	/**
-	 * Tx_Rnbase_Interface_Singleton
-	 *
-	 * Wrapper für t3lib_Singleton bis TYPO3 6.x
-	 *
-	 * @package 		TYPO3
-	 * @subpackage	 	rn_base
-	 * @author 			Hannes Bochmann <rene@system25.de>
-	 * @license 		http://www.gnu.org/licenses/lgpl.html
-	 * 					GNU Lesser General Public License, version 3 or later
-	 */
-	interface Tx_Rnbase_Interface_Singleton extends t3lib_Singleton {}
+    /**
+     * Tx_Rnbase_Interface_Singleton
+     *
+     * Wrapper für t3lib_Singleton bis TYPO3 6.x
+     *
+     * @package         TYPO3
+     * @subpackage      rn_base
+     * @author          Hannes Bochmann <rene@system25.de>
+     * @license         http://www.gnu.org/licenses/lgpl.html
+     *                  GNU Lesser General Public License, version 3 or later
+     */
+    interface Tx_Rnbase_Interface_Singleton extends t3lib_Singleton
+    {
+    }
 }

@@ -27,44 +27,50 @@ tx_rnbase::load('tx_rnbase_maps_ICoord');
 /**
  * Default implementation for coordinates
  */
-class tx_rnbase_maps_Coord implements tx_rnbase_maps_ICoord {
-	private $latitude;
-	private $longitude;
+class tx_rnbase_maps_Coord implements tx_rnbase_maps_ICoord
+{
+    private $latitude;
+    private $longitude;
 
-	public function __construct($latitude=0.0, $longitude=0.0) {
-		$this->setLatitude($latitude);
-		$this->setLongitude($longitude);
-	}
-	/**
-	 * Returns the latitude
-	 * @return float
-	 */
-	public function getLatitude() {
-		return $this->latitude;
-	}
-	/**
-	 * Returns the longitude
-	 * @return float
-	 */
-	public function getLongitude(){
-		return $this->longitude;
-	}
-	/**
-	 * Returns the latitude
-	 * @param float $lat
-	 */
-	public function setLatitude($lat) {
-		$this->latitude = $lat;
-	}
-	/**
-	 * Returns the longitude
-	 * @param float $long
-	 */
-	public function setLongitude($long){
-		$this->longitude = $long;
-	}
+    public function __construct($latitude = 0.0, $longitude = 0.0)
+    {
+        $this->setLatitude($latitude);
+        $this->setLongitude($longitude);
+    }
+    /**
+     * Returns the latitude
+     * @return float
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+    /**
+     * Returns the longitude
+     * @return float
+     */
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
+    /**
+     * Returns the latitude
+     * @param float $lat
+     */
+    public function setLatitude($lat)
+    {
+        $this->latitude = $lat;
+    }
+    /**
+     * Returns the longitude
+     * @param float $long
+     */
+    public function setLongitude($long)
+    {
+        $this->longitude = $long;
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_Coord.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_Coord.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_Coord.php']);
 }

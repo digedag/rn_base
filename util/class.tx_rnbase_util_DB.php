@@ -28,28 +28,31 @@
  * this class just as proxy
  * use Tx_Rnbase_Database_Connection instead
  */
-class tx_rnbase_util_DB {
+class tx_rnbase_util_DB
+{
 
-	/**
-	 * @var string
-	 */
-	protected static $databaseConnectionClass = 'Tx_Rnbase_Database_Connection';
+    /**
+     * @var string
+     */
+    protected static $databaseConnectionClass = 'Tx_Rnbase_Database_Connection';
 
-	/**
-	 * just a proxy method calling all static methods non statically in
-	 * Tx_Rnbase_Database_Connection
-	 *
-	 * @param string $name
-	 * @param array $arguments
-	 *
-	 * @return mixed
-	 */
-	public static function __callstatic($name, $arguments) {
-		$databaseUtility = tx_rnbase::makeInstance(static::$databaseConnectionClass);
-		return call_user_func_array(array($databaseUtility, $name), $arguments);
-	}
+    /**
+     * just a proxy method calling all static methods non statically in
+     * Tx_Rnbase_Database_Connection
+     *
+     * @param string $name
+     * @param array $arguments
+     *
+     * @return mixed
+     */
+    public static function __callstatic($name, $arguments)
+    {
+        $databaseUtility = tx_rnbase::makeInstance(static::$databaseConnectionClass);
+
+        return call_user_func_array(array($databaseUtility, $name), $arguments);
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_DB.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_DB.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_DB.php']);
 }

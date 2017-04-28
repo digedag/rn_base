@@ -24,10 +24,10 @@
 
 /**
  *
- * @package 		TYPO3
- * @subpackage	 	rn_base
- * @author 			René Nitzsche <rene@system25.de>
+ * @package         TYPO3
+ * @subpackage      rn_base
+ * @author          René Nitzsche <rene@system25.de>
  */
-class Tx_Rnbase_Frontend_Marker_BaseMarker {
-
+class Tx_Rnbase_Frontend_Marker_BaseMarker
+{
 }

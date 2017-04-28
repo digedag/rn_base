@@ -33,20 +33,20 @@
  */
 interface Tx_Rnbase_Backend_Decorator_InterfaceDecorator
 {
-	/**
-	 * Formats a value
-	 *
-	 * @param string $columnValue
-	 * @param string $columnName
-	 * @param array $record
-	 * @param \Tx_Rnbase_Domain_Model_DataInterface $entry
-	 *
-	 * @return string
-	 */
-	public function format(
-		$columnValue,
-		$columnName,
-		array $record,
-		\Tx_Rnbase_Domain_Model_DataInterface $entry
-	);
+    /**
+     * Formats a value
+     *
+     * @param string $columnValue
+     * @param string $columnName
+     * @param array $record
+     * @param \Tx_Rnbase_Domain_Model_DataInterface $entry
+     *
+     * @return string
+     */
+    public function format(
+        $columnValue,
+        $columnName,
+        array $record,
+        \Tx_Rnbase_Domain_Model_DataInterface $entry
+    );
 }

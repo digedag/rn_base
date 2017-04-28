@@ -37,20 +37,19 @@
  */
 interface tx_rnbase_IModel
 {
-	/**
-	 * Returns the uid
-	 *
-	 * @return int
-	 */
-	public function getUid();
+    /**
+     * Returns the uid
+     *
+     * @return int
+     */
+    public function getUid();
 
-	/**
-	 * Returns the data record as array
-	 *
-	 * @return array
-	 */
-	public function getRecord();
-
+    /**
+     * Returns the data record as array
+     *
+     * @return array
+     */
+    public function getRecord();
 }
 /**
  * The realy to use interface for models!
@@ -61,7 +60,6 @@ interface tx_rnbase_IModel
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-interface Tx_Rnbase_Domain_Model_RecordInterface
-	extends tx_rnbase_IModel
+interface Tx_Rnbase_Domain_Model_RecordInterface extends tx_rnbase_IModel
 {
 }

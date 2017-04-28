@@ -34,21 +34,21 @@ die bisher in der conf.php stand.
 
 ```php
 if (TYPO3_MODE == 'BE') {
-	// register web_MkpostmanBackend
-	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-		'mkpostman',
-		'web',
-		'backend',
-		'bottom',
-		array(
-		),
-		array(
-			'access' => 'user,group',
-			'routeTarget' => 'DMK\\Mkpostman\\Backend\\ModuleBackend',
-			'icon' => 'EXT:mkpostman/ext_icon.gif',
-			'labels' => 'LLL:EXT:mkpostman/Resources/Private/Language/Backend.xlf',
-		)
-	);
+    // register web_MkpostmanBackend
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+        'mkpostman',
+        'web',
+        'backend',
+        'bottom',
+        array(
+        ),
+        array(
+            'access' => 'user,group',
+            'routeTarget' => 'DMK\\Mkpostman\\Backend\\ModuleBackend',
+            'icon' => 'EXT:mkpostman/ext_icon.gif',
+            'labels' => 'LLL:EXT:mkpostman/Resources/Private/Language/Backend.xlf',
+        )
+    );
 }
 ```
 
@@ -64,17 +64,17 @@ und den Extension-Key liefern:
  * @author Michael Wagner
  */
 class ModuleBackend
-	extends \tx_rnbase_mod_BaseModule
+    extends \tx_rnbase_mod_BaseModule
 {
-	/**
-	 * Method to get the extension key
-	 *
-	 * @return string Extension key
-	 */
-	public function getExtensionKey()
-	{
-		return 'mkpostman';
-	}
+    /**
+     * Method to get the extension key
+     *
+     * @return string Extension key
+     */
+    public function getExtensionKey()
+    {
+        return 'mkpostman';
+    }
 }
 ```
 
@@ -85,13 +85,13 @@ Zu der Modulhülle gehören die eigentlichen Module, die Module Functions.
 Diese werden ebenfalls über die ext_tables.php bei TYPO3 angemeldet. 
 ```php
 if (TYPO3_MODE == 'BE') {
-	// register subscriber be module
-	tx_rnbase_util_Extensions::insertModuleFunction(
-		'web_MkpostmanBackend',
-		'DMK\\Mkpostman\\Backend\\Module\\SubscriberModule',
-		null,
-		'LLL:EXT:mkpostman/Resources/Private/Language/Backend.xlf:label_func_subscriber'
-	);
+    // register subscriber be module
+    tx_rnbase_util_Extensions::insertModuleFunction(
+        'web_MkpostmanBackend',
+        'DMK\\Mkpostman\\Backend\\Module\\SubscriberModule',
+        null,
+        'LLL:EXT:mkpostman/Resources/Private/Language/Backend.xlf:label_func_subscriber'
+    );
 }
 ```
 
@@ -109,42 +109,42 @@ die wiederum meist als Tabgruppe im Backend ausgegeben werden:
  * @author Michael Wagner
  */
 class SubscriberModule
-	extends \tx_rnbase_mod_ExtendedModFunc
+    extends \tx_rnbase_mod_ExtendedModFunc
 {
-	/**
-	 * Method getFuncId
-	 *
-	 * @return	string
-	 */
-	protected function getFuncId()
-	{
-		return 'mkpostman_subscriber';
-	}
-	/**
-	 * Returns all sub handlers
-	 *
-	 * @return array
-	 */
-	protected function getSubMenuItems()
-	{
-		return array(
-			\tx_rnbase::makeInstance(
-				'DMK\\Mkpostman\\Backend\\Handler\\SubscriberHandler'
-			),
-		);
-	}
-	/**
-	 * Liefert false, wenn es keine SubSelectors gibt.
-	 * sonst ein Array mit den ausgewählten Werten.
-	 *
-	 * @param string $selectorStr
-	 *
-	 * @return array or false if not needed. Return empty array if no item found
-	 */
-	protected function makeSubSelectors(&$selectorStr)
-	{
-		return false;
-	}
+    /**
+     * Method getFuncId
+     *
+     * @return    string
+     */
+    protected function getFuncId()
+    {
+        return 'mkpostman_subscriber';
+    }
+    /**
+     * Returns all sub handlers
+     *
+     * @return array
+     */
+    protected function getSubMenuItems()
+    {
+        return array(
+            \tx_rnbase::makeInstance(
+                'DMK\\Mkpostman\\Backend\\Handler\\SubscriberHandler'
+            ),
+        );
+    }
+    /**
+     * Liefert false, wenn es keine SubSelectors gibt.
+     * sonst ein Array mit den ausgewählten Werten.
+     *
+     * @param string $selectorStr
+     *
+     * @return array or false if not needed. Return empty array if no item found
+     */
+    protected function makeSubSelectors(&$selectorStr)
+    {
+        return false;
+    }
 }
 ```
 
@@ -168,36 +168,36 @@ der verwendet werden kann:
  * @author Michael Wagner
  */
 class SubscriberHandler
-	extends \Tx_Rnbase_Backend_Handler_SearchHandler
+    extends \Tx_Rnbase_Backend_Handler_SearchHandler
 {
-	/**
-	 * Returns a unique ID for this handler.
-	 * This is used to created the subpart in template.
-	 *
-	 * @return string
-	 */
-	public function getSubModuleId()
-	{
-		return 'mkpostman_subscriber_main';
-	}
-	/**
-	 * Returns the label for Handler in SubMenu. You can use a label-Marker.
-	 *
-	 * @return string
-	 */
-	public function getSubLabel()
-	{
-		return '';
-	}
-	/**
-	 * The class for the searcher
-	 *
-	 * @return string
-	 */
-	protected function getListerClass()
-	{
-		return 'DMK\\Mkpostman\\Backend\\Lister\\SubscriberLister';
-	}
+    /**
+     * Returns a unique ID for this handler.
+     * This is used to created the subpart in template.
+     *
+     * @return string
+     */
+    public function getSubModuleId()
+    {
+        return 'mkpostman_subscriber_main';
+    }
+    /**
+     * Returns the label for Handler in SubMenu. You can use a label-Marker.
+     *
+     * @return string
+     */
+    public function getSubLabel()
+    {
+        return '';
+    }
+    /**
+     * The class for the searcher
+     *
+     * @return string
+     */
+    protected function getListerClass()
+    {
+        return 'DMK\\Mkpostman\\Backend\\Lister\\SubscriberLister';
+    }
 }
 ```
 
@@ -217,47 +217,47 @@ und steuert auch das Repository an, um die Daten für die Ausgabe zu holen.
  * @author Michael Wagner
  */
 class SubscriberLister
-	extends \Tx_Rnbase_Backend_Lister_AbstractLister
+    extends \Tx_Rnbase_Backend_Lister_AbstractLister
 {
-	/**
-	 * The Subscriber repository
-	 *
-	 * @return Tx_Rnbase_Domain_Repository_InterfaceSearch
-	 */
-	protected function getRepository()
-	{
-		return \DMK\Mkpostman\Factory::getSubscriberRepository();
-	}
-	/**
-	 * The decorator to render the rows
-	 *
-	 * @return string
-	 */
-	protected function getDecoratorClass()
-	{
-		return 'DMK\\Mkpostman\\Backend\\Decorator\\SubscriberDecorator';
-	}
-	/**
-	 * Liefert die Spalten für den Decorator.
-	 *
-	 * @param array $columns
-	 *
-	 * @return array
-	 */
-	protected function addDecoratorColumns(
-		array &$columns
-	) {
-		$columns['email'] = array(
-			'title' => 'label_tableheader_email',
-			'decorator' => $this->getDecorator(),
-		);
-		$columns['name'] = array(
-			'title' => 'label_tableheader_name',
-			'decorator' =>  $this->getDecorator(),
-		);
-		
-		return $columns;
-	}
+    /**
+     * The Subscriber repository
+     *
+     * @return Tx_Rnbase_Domain_Repository_InterfaceSearch
+     */
+    protected function getRepository()
+    {
+        return \DMK\Mkpostman\Factory::getSubscriberRepository();
+    }
+    /**
+     * The decorator to render the rows
+     *
+     * @return string
+     */
+    protected function getDecoratorClass()
+    {
+        return 'DMK\\Mkpostman\\Backend\\Decorator\\SubscriberDecorator';
+    }
+    /**
+     * Liefert die Spalten für den Decorator.
+     *
+     * @param array $columns
+     *
+     * @return array
+     */
+    protected function addDecoratorColumns(
+        array &$columns
+    ) {
+        $columns['email'] = array(
+            'title' => 'label_tableheader_email',
+            'decorator' => $this->getDecorator(),
+        );
+        $columns['name'] = array(
+            'title' => 'label_tableheader_name',
+            'decorator' =>  $this->getDecorator(),
+        );
+        
+        return $columns;
+    }
 }
 ```
 
@@ -275,36 +275,36 @@ jedes einzelnen Datensatzes für die Liste im Backendmodul.
  * @author Michael Wagner
  */
 class SubscriberDecorator
-	extends \Tx_Rnbase_Backend_Decorator_BaseDecorator
+    extends \Tx_Rnbase_Backend_Decorator_BaseDecorator
 {
-	/**
-	 * Renders the label column.
-	 *
-	 * @param \Tx_Rnbase_Domain_Model_DataInterface $item
-	 *
-	 * @return string
-	 */
-	protected function formatEmailColumn(
-		\Tx_Rnbase_Domain_Model_DataInterface $item
-	) {
-		return sprintf(
-			'<span title="UID: %2$d">%1$s</span>',
-			$item->getEmail(),
-			$item->getProperty('uid'),
-		);
-	}
-	/**
-	 * Renders the label column.
-	 *
-	 * @param \Tx_Rnbase_Domain_Model_DataInterface $item
-	 *
-	 * @return string
-	 */
-	protected function formatNameColumn(
-		\Tx_Rnbase_Domain_Model_DataInterface $item
-	) {
-		return trim($item->getFirstName() . ' ' . $item->getLastName()) ?: 'unknown';
-	}
+    /**
+     * Renders the label column.
+     *
+     * @param \Tx_Rnbase_Domain_Model_DataInterface $item
+     *
+     * @return string
+     */
+    protected function formatEmailColumn(
+        \Tx_Rnbase_Domain_Model_DataInterface $item
+    ) {
+        return sprintf(
+            '<span title="UID: %2$d">%1$s</span>',
+            $item->getEmail(),
+            $item->getProperty('uid'),
+        );
+    }
+    /**
+     * Renders the label column.
+     *
+     * @param \Tx_Rnbase_Domain_Model_DataInterface $item
+     *
+     * @return string
+     */
+    protected function formatNameColumn(
+        \Tx_Rnbase_Domain_Model_DataInterface $item
+    ) {
+        return trim($item->getFirstName() . ' ' . $item->getLastName()) ?: 'unknown';
+    }
 }
 ```
 

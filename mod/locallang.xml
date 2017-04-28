@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-	<meta type="array">
-		<type>module</type>
-		<description>Language labels for module &quot;user_txmkmailerM1&quot;</description>
-	</meta>
-	<data type="array">
-		<languageKey index="default" type="array">
-			<label index="msg_error">Error</label>
-			<label index="msg_template_not_found">Template not found.</label>
-			<label index="msg_subpart_not_found">Subpart not found</label>
-			<label index="label_no_subselectoritems_found">No items found to handle this module function.</label>
-			<label index="label_action">Action</label>
-			<label index="label_actions">Actions</label>
-			<label index="label_search">Search term</label>
-			<label index="label_btn_search">Search</label>
+    <meta type="array">
+        <type>module</type>
+        <description>Language labels for module &quot;user_txmkmailerM1&quot;</description>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="msg_error">Error</label>
+            <label index="msg_template_not_found">Template not found.</label>
+            <label index="msg_subpart_not_found">Subpart not found</label>
+            <label index="label_no_subselectoritems_found">No items found to handle this module function.</label>
+            <label index="label_action">Action</label>
+            <label index="label_actions">Actions</label>
+            <label index="label_search">Search term</label>
+            <label index="label_btn_search">Search</label>
 
-			<label index="label_hidden">Hidden entries:</label>
-			<label index="label_select_hide_hidden">hide</label>
-			<label index="label_select_show_hidden">show</label>
+            <label index="label_hidden">Hidden entries:</label>
+            <label index="label_select_hide_hidden">hide</label>
+            <label index="label_select_show_hidden">show</label>
 
-			<label index="label_show_details">Details</label>
+            <label index="label_show_details">Details</label>
 
-			<label index="msg_confirmation_deletion">Do you really wan't do delete this item?</label>
-		</languageKey>
-		<languageKey index="de" type="array">
-			<label index="msg_error">Fehler</label>
-			<label index="label_action">Aktion</label>
-			<label index="label_actions">Aktionen</label>
-			<label index="msg_confirmation_deletion">Soll dieser Datensatz wirklich gelöscht werden?</label>
-			<label index="label_search">Suchbegriff</label>
-			<label index="label_btn_search">Suchen</label>
+            <label index="msg_confirmation_deletion">Do you really wan't do delete this item?</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="msg_error">Fehler</label>
+            <label index="label_action">Aktion</label>
+            <label index="label_actions">Aktionen</label>
+            <label index="msg_confirmation_deletion">Soll dieser Datensatz wirklich gelöscht werden?</label>
+            <label index="label_search">Suchbegriff</label>
+            <label index="label_btn_search">Suchen</label>
 
-			<label index="label_hidden">Versteckte Einträge:</label>
-			<label index="label_select_hide_hidden">verstecken</label>
-			<label index="label_select_show_hidden">zeigen</label>
+            <label index="label_hidden">Versteckte Einträge:</label>
+            <label index="label_select_hide_hidden">verstecken</label>
+            <label index="label_select_show_hidden">zeigen</label>
 
-			<label index="label_show_details">Details</label>
-		</languageKey>
-	</data>
+            <label index="label_show_details">Details</label>
+        </languageKey>
+    </data>
 </T3locallang>

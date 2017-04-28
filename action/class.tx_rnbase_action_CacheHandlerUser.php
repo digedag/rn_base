@@ -37,32 +37,36 @@ tx_rnbase::load('tx_rnbase_cache_Manager');
  * @author Rene Nitzsche <rene@system25.de>
  * @author Michael Wagner <michael.wagner@dmk-ebusines.de>
  */
-class tx_rnbase_action_CacheHandlerUser extends tx_rnbase_action_CacheHandlerDefault {
+class tx_rnbase_action_CacheHandlerUser extends tx_rnbase_action_CacheHandlerDefault
+{
 
-	/**
-	 * Returns the current session id.
-	 *
-	 * @return string
-	 */
-	protected function getSessionId() {
-		if(session_id() == '') {
-			session_start();
-		}
-		return session_id();
-	}
+    /**
+     * Returns the current session id.
+     *
+     * @return string
+     */
+    protected function getSessionId()
+    {
+        if (session_id() == '') {
+            session_start();
+        }
+
+        return session_id();
+    }
 
 
-	/**
-	 * @return array
-	 */
-	protected function getCacheKeyParts() {
-		$keys = parent::getCacheKeyParts();
-		$keys[] = $this->getSessionId();
-		return $keys;
-	}
+    /**
+     * @return array
+     */
+    protected function getCacheKeyParts()
+    {
+        $keys = parent::getCacheKeyParts();
+        $keys[] = $this->getSessionId();
 
+        return $keys;
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/action/class.tx_rnbase_action_CacheHandlerUser.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/action/class.tx_rnbase_action_CacheHandlerUser.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/action/class.tx_rnbase_action_CacheHandlerUser.php']);
 }

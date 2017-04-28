@@ -23,29 +23,33 @@
  */
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-	/**
-	 * Tx_Rnbase_Frontend_Plugin
-	 *
-	 * Wrapper für TYPO3\CMS\Frontend\Plugin\AbstractPlugin seit TYPO3 6.x
-	 *
-	 * @package 		TYPO3
-	 * @subpackage	 	rn_base
-	 * @author 			Hannes Bochmann <rene@system25.de>
-	 * @license 		http://www.gnu.org/licenses/lgpl.html
-	 * 					GNU Lesser General Public License, version 3 or later
-	 */
-	class Tx_Rnbase_Frontend_Plugin extends TYPO3\CMS\Frontend\Plugin\AbstractPlugin {}
+    /**
+     * Tx_Rnbase_Frontend_Plugin
+     *
+     * Wrapper für TYPO3\CMS\Frontend\Plugin\AbstractPlugin seit TYPO3 6.x
+     *
+     * @package         TYPO3
+     * @subpackage      rn_base
+     * @author          Hannes Bochmann <rene@system25.de>
+     * @license         http://www.gnu.org/licenses/lgpl.html
+     *                  GNU Lesser General Public License, version 3 or later
+     */
+    class Tx_Rnbase_Frontend_Plugin extends TYPO3\CMS\Frontend\Plugin\AbstractPlugin
+    {
+    }
 } else {
-	/**
-	 * Tx_Rnbase_Frontend_Plugin
-	 *
-	 * Wrapper für tslib_pibase bis TYPO3 6.x
-	 *
-	 * @package 		TYPO3
-	 * @subpackage	 	rn_base
-	 * @author 			Hannes Bochmann <rene@system25.de>
-	 * @license 		http://www.gnu.org/licenses/lgpl.html
-	 * 					GNU Lesser General Public License, version 3 or later
-	 */
-	class Tx_Rnbase_Frontend_Plugin extends tslib_pibase {}
+    /**
+     * Tx_Rnbase_Frontend_Plugin
+     *
+     * Wrapper für tslib_pibase bis TYPO3 6.x
+     *
+     * @package         TYPO3
+     * @subpackage      rn_base
+     * @author          Hannes Bochmann <rene@system25.de>
+     * @license         http://www.gnu.org/licenses/lgpl.html
+     *                  GNU Lesser General Public License, version 3 or later
+     */
+    class Tx_Rnbase_Frontend_Plugin extends tslib_pibase
+    {
+    }
 }

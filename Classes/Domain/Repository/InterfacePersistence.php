@@ -31,16 +31,16 @@
  */
 interface Tx_Rnbase_Domain_Repository_InterfacePersistence
 {
-	/**
-	 * Persists an model
-	 *
-	 * @param Tx_Rnbase_Domain_Model_DomainInterface $model The model to persist
-	 * @param array|Tx_Rnbase_Domain_Model_Data $options Some options for the process
-	 *
-	 * @return void
-	 */
-	public function persist(
-		Tx_Rnbase_Domain_Model_DomainInterface $model,
-		$options = null
-	);
+    /**
+     * Persists an model
+     *
+     * @param Tx_Rnbase_Domain_Model_DomainInterface $model The model to persist
+     * @param array|Tx_Rnbase_Domain_Model_Data $options Some options for the process
+     *
+     * @return void
+     */
+    public function persist(
+        Tx_Rnbase_Domain_Model_DomainInterface $model,
+        $options = null
+    );
 }

@@ -24,29 +24,33 @@
 
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-	/**
-	 * Tx_Rnbase_Service_Base
-	 *
-	 * Wrapper für \TYPO3\CMS\Core\Service\AbstractService seit TYPO3 6.x
-	 *
-	 * @package 		TYPO3
-	 * @subpackage	 	rn_base
-	 * @author 			Hannes Bochmann <rene@system25.de>
-	 * @license 		http://www.gnu.org/licenses/lgpl.html
-	 * 					GNU Lesser General Public License, version 3 or later
-	 */
-	class Tx_Rnbase_Service_Base extends \TYPO3\CMS\Core\Service\AbstractService {}
+    /**
+     * Tx_Rnbase_Service_Base
+     *
+     * Wrapper für \TYPO3\CMS\Core\Service\AbstractService seit TYPO3 6.x
+     *
+     * @package         TYPO3
+     * @subpackage      rn_base
+     * @author          Hannes Bochmann <rene@system25.de>
+     * @license         http://www.gnu.org/licenses/lgpl.html
+     *                  GNU Lesser General Public License, version 3 or later
+     */
+    class Tx_Rnbase_Service_Base extends \TYPO3\CMS\Core\Service\AbstractService
+    {
+    }
 } else {
-	/**
-	 * Tx_Rnbase_Service_Base
-	 *
-	 * Wrapper für t3lib_svbase bis TYPO3 6.x
-	 *
-	 * @package 		TYPO3
-	 * @subpackage	 	rn_base
-	 * @author 			Hannes Bochmann <rene@system25.de>
-	 * @license 		http://www.gnu.org/licenses/lgpl.html
-	 * 					GNU Lesser General Public License, version 3 or later
-	 */
-	class Tx_Rnbase_Service_Base extends t3lib_svbase {}
+    /**
+     * Tx_Rnbase_Service_Base
+     *
+     * Wrapper für t3lib_svbase bis TYPO3 6.x
+     *
+     * @package         TYPO3
+     * @subpackage      rn_base
+     * @author          Hannes Bochmann <rene@system25.de>
+     * @license         http://www.gnu.org/licenses/lgpl.html
+     *                  GNU Lesser General Public License, version 3 or later
+     */
+    class Tx_Rnbase_Service_Base extends t3lib_svbase
+    {
+    }
 }

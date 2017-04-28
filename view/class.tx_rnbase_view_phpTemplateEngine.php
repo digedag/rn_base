@@ -37,10 +37,11 @@ tx_rnbase::load('tx_rnbase_view_Base');
 /**
  * Base class for all views
  */
-class tx_rnbase_view_phpTemplateEngine extends tx_rnbase_view_Base {
-
-  function __construct() {
-  }
+class tx_rnbase_view_phpTemplateEngine extends tx_rnbase_view_Base
+{
+    public function __construct()
+    {
+    }
 
   /**
    * Render the PHP template, translate and return the output as string
@@ -50,31 +51,30 @@ class tx_rnbase_view_phpTemplateEngine extends tx_rnbase_view_Base {
    * The return value is the rendered result of the template, followed by translation.
    * It is typically a (x)html string, but can be used for any other text based format.
    *
-   * @param	string		name of template file without the ".php" suffix
-   * @param	Tx_Rnbase_Configuration_ProcessorInterface	configuration instance
-   * @return	string		typically an (x)html string
+   * @param     string      name of template file without the ".php" suffix
+   * @param     Tx_Rnbase_Configuration_ProcessorInterface  configuration instance
+   * @return    string      typically an (x)html string
    */
-  function render($view, $configurations){
+    public function render($view, $configurations)
+    {
+        $link = $configurations->createLink();
 
-    $link = $configurations->createLink();
+        // Die ViewData bereitstellen
+        $viewData =& $configurations->getViewData();
 
-    // Die ViewData bereitstellen
-    $viewData =& $configurations->getViewData();
+        $formatter = tx_rnbase::makeInstance('tx_rnbase_util_FormatUtil', $configurations);
 
-    $formatter = tx_rnbase::makeInstance('tx_rnbase_util_FormatUtil', $configurations);
+        $path = $this->getTemplate($view);
+        // Für den PHP Include benötigen wir den absoluten Pfad
+        $path = tx_rnbase_util_Files::getFileAbsFileName($path);
 
-    $path = $this->getTemplate($view);
-    // Für den PHP Include benötigen wir den absoluten Pfad
-    $path = tx_rnbase_util_Files::getFileAbsFileName($path);
+        ob_start();
+        include($path);
+        $out = ob_get_clean();
 
-    ob_start();
-    include($path);
-    $out = ob_get_clean();
-    return $out;
-  }
-
-
+        return $out;
+    }
 }
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/view/class.tx_rnbase_view_phpTemplateEngine.php']) {
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/view/class.tx_rnbase_view_phpTemplateEngine.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/view/class.tx_rnbase_view_phpTemplateEngine.php']);
 }

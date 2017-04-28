@@ -31,8 +31,6 @@ tx_rnbase::load('tx_rnbase_configurations');
  * @subpackage rn_base
  * @author Michael Wagner
  */
-class Tx_Rnbase_Configuration_Processor
-	extends tx_rnbase_configurations
+class Tx_Rnbase_Configuration_Processor extends tx_rnbase_configurations
 {
-
 }

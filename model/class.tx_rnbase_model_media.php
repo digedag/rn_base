@@ -27,79 +27,84 @@ tx_rnbase::load('tx_rnbase_model_base');
 
 /**
  */
-class tx_rnbase_model_media extends tx_rnbase_model_base {
+class tx_rnbase_model_media extends tx_rnbase_model_base
+{
+    public $uid;
+    public $record;
 
-	var $uid;
-	var $record;
+    /**
+     */
+    public function __construct($rowOrUid)
+    {
+        if (is_object($rowOrUid)) {
+            // Das Media-Objekt auslesen
+            $this->initMedia($rowOrUid);
+        } else {
+            parent::__construct($rowOrUid);
+        }
+        $this->initAdditionalData();
+    }
 
-	/**
-	 */
-	function __construct($rowOrUid) {
-		if(is_object($rowOrUid)) {
-			// Das Media-Objekt auslesen
-			$this->initMedia($rowOrUid);
-		}
-		else {
-			parent::__construct($rowOrUid);
-		}
-		$this->initAdditionalData();
-	}
+    private function initMedia($media)
+    {
+        // Ab TYPO3 6.x wird nur noch FAL unterstützt.
+        if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+            // Bei FAL steckt in Media eine Referenz
+            if ($media instanceof TYPO3\CMS\Core\Resource\FileReference) {
+                $this->initFalReference($media);
+            } else {
+                $this->initFalFile($media);
+            }
+        } else {
+            // DAM
+            $this->uid = $media->meta['uid'];
+            $this->record = $media->meta;
+        }
+    }
+    /**
+     *
+     * @param TYPO3\CMS\Core\Resource\File $media
+     */
+    private function initFalFile($media)
+    {
+        $this->record = $media->getProperties();
+        $this->uid = $media->getUid();
+        $this->record['fal_file'] = '1'; // Das wird per TS ausgewertet. Die UID ist KEINE Referenz
+        $this->record['uid_local'] = $media->getUid();
+        $this->record['file_path'] = $media->getPublicUrl();
+        $this->record['file_abs_url'] = tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL') .$this->record['file_path'];
+    }
 
-	private function initMedia($media) {
-		// Ab TYPO3 6.x wird nur noch FAL unterstützt.
-		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			// Bei FAL steckt in Media eine Referenz
-			if($media instanceof TYPO3\CMS\Core\Resource\FileReference)
-				$this->initFalReference($media);
-			else
-				$this->initFalFile($media);
-		}
-		else {
-			// DAM
-			$this->uid = $media->meta['uid'];
-			$this->record = $media->meta;
-		}
-	}
-	/**
-	 *
-	 * @param TYPO3\CMS\Core\Resource\File $media
-	 */
-	private function initFalFile($media) {
-		$this->record = $media->getProperties();
-		$this->uid = $media->getUid();
-		$this->record['fal_file'] = '1'; // Das wird per TS ausgewertet. Die UID ist KEINE Referenz
-		$this->record['uid_local'] = $media->getUid();
-		$this->record['file_path'] = $media->getPublicUrl();
-		$this->record['file_abs_url'] = tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL') .$this->record['file_path'];
-	}
-
-	/**
-	 *
-	 * @param TYPO3\CMS\Core\Resource\FileReference $media
-	 */
-	private function initFalReference($media) {
-		$this->record = $media->getProperties();
-		// Wir verwenden hier die UID der Referenz
-		$this->uid = $media->getUid();
-		$this->record['uid'] = $media->getUid();
-		$this->record['file_path'] = $media->getPublicUrl();
-		$this->record['file_abs_url'] = tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL') .$this->record['file_path'];
-	}
-	private function initAdditionalData() {
-		$this->record['file'] = urldecode($this->record['file_path'].$this->record['file_name']);
-		// Some more file fields are useful
-		$this->record['file1'] = $this->record['file'];
-		$this->record['thumbnail'] = $this->record['file'];
-	}
-	/**
-	 * Kindklassen müssen diese Methode überschreiben und den Namen der gemappten Tabelle liefern!
-	 * @return Tabellenname als String
-	 */
-	function getTableName() {
-		return 'tx_dam';
-	}
+    /**
+     *
+     * @param TYPO3\CMS\Core\Resource\FileReference $media
+     */
+    private function initFalReference($media)
+    {
+        $this->record = $media->getProperties();
+        // Wir verwenden hier die UID der Referenz
+        $this->uid = $media->getUid();
+        $this->record['uid'] = $media->getUid();
+        $this->record['file_path'] = $media->getPublicUrl();
+        $this->record['file_abs_url'] = tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL') .$this->record['file_path'];
+    }
+    private function initAdditionalData()
+    {
+        $this->record['file'] = urldecode($this->record['file_path'].$this->record['file_name']);
+        // Some more file fields are useful
+        $this->record['file1'] = $this->record['file'];
+        $this->record['thumbnail'] = $this->record['file'];
+    }
+    /**
+     * Kindklassen müssen diese Methode überschreiben und den Namen der gemappten Tabelle liefern!
+     * @return Tabellenname als String
+     */
+    public function getTableName()
+    {
+        return 'tx_dam';
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/model/class.tx_rnbase_model_media.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/model/class.tx_rnbase_model_media.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/model/class.tx_rnbase_model_media.php']);
 }

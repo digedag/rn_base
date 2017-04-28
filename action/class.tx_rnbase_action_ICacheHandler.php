@@ -29,35 +29,35 @@
  * @author Rene Nitzsche <rene@system25.de>
  * @author Michael Wagner <michael.wagner@dmk-ebusines.de>
  */
-interface tx_rnbase_action_ICacheHandler {
+interface tx_rnbase_action_ICacheHandler
+{
 
-	/**
-	 * Initializes the cache handler
-	 *
-	 * @param tx_rnbase_action_BaseIOC $controller
-	 * @param string $confId
-	 */
-	public function init(
-		tx_rnbase_action_BaseIOC $controller,
-		$confId
-	);
+    /**
+     * Initializes the cache handler
+     *
+     * @param tx_rnbase_action_BaseIOC $controller
+     * @param string $confId
+     */
+    public function init(
+        tx_rnbase_action_BaseIOC $controller,
+        $confId
+    );
 
-	/**
-	 * Save output data to cache.
-	 *
-	 * @param string $output
-	 */
-	public function setOutput($output);
+    /**
+     * Save output data to cache.
+     *
+     * @param string $output
+     */
+    public function setOutput($output);
 
-	/**
-	 * Get output data from cache.
-	 *
-	 * @return string the output string or NULL
-	 */
-	public function getOutput();
-
+    /**
+     * Get output data from cache.
+     *
+     * @return string the output string or NULL
+     */
+    public function getOutput();
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/action/class.tx_rnbase_action_ICacheHandler.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/action/class.tx_rnbase_action_ICacheHandler.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/action/class.tx_rnbase_action_ICacheHandler.php']);
 }

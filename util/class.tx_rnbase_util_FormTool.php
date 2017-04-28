@@ -28,12 +28,14 @@ tx_rnbase::load('Tx_Rnbase_Backend_Form_ToolBox');
  * Diese Klasse stellt hilfreiche Funktionen zur Erstellung von Formularen
  * im Backend zur Verfügung
  */
-class tx_rnbase_util_FormTool extends Tx_Rnbase_Backend_Form_ToolBox {
-	public function init($doc, $module=NULL) {
-		parent::init($doc, $module);
-	}
+class tx_rnbase_util_FormTool extends Tx_Rnbase_Backend_Form_ToolBox
+{
+    public function init($doc, $module = null)
+    {
+        parent::init($doc, $module);
+    }
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_FormTool.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_FormTool.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_FormTool.php']) {
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_FormTool.php']);
 }

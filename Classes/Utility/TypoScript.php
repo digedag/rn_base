@@ -29,94 +29,96 @@
  * @subpackage Tx_Rnbase
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
- *		  GNU Lesser General Public License, version 3 or later
+ *        GNU Lesser General Public License, version 3 or later
  */
 class Tx_Rnbase_Utility_TypoScript
 {
-	/**
-	 * Creates an instance of the ts parser
-	 *
-	 * @return \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
-	 */
-	private static function getTsParser()
-	{
-		return tx_rnbase::makeInstance(
-			tx_rnbase_util_Typo3Classes::getTypoScriptParserClass()
-		);
-	}
+    /**
+     * Creates an instance of the ts parser
+     *
+     * @return \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
+     */
+    private static function getTsParser()
+    {
+        return tx_rnbase::makeInstance(
+            tx_rnbase_util_Typo3Classes::getTypoScriptParserClass()
+        );
+    }
 
-	/**
-	 * Parse the configuration of the given models
-	 *
-	 * @param string $typoScript
-	 *
-	 * @return array
-	 */
-	public static function parseTsConfig($typoScript)
-	{
-		$parser = self::getTsParser();
+    /**
+     * Parse the configuration of the given models
+     *
+     * @param string $typoScript
+     *
+     * @return array
+     */
+    public static function parseTsConfig($typoScript)
+    {
+        $parser = self::getTsParser();
 
-		$parser->parse(
-			$parser->checkIncludeLines($typoScript)
-		);
+        $parser->parse(
+            $parser->checkIncludeLines($typoScript)
+        );
 
-		return $parser->setup;
-	}
+        return $parser->setup;
+    }
 
-	/**
-	 * Removes all trailing dots recursively from TS settings array
-	 *
-	 * This method is taken from extbase TypoScriptService
-	 *
-	 * @param array $typoScriptArray
-	 *
-	 * @return array
-	 */
-	public static function convertTypoScriptArrayToPlainArray(array $typoScriptArray)
-	{
-		foreach ($typoScriptArray as $key => $value) {
-			if (substr($key, -1) === '.') {
-				$keyWithoutDot = substr($key, 0, -1);
-				$typoScriptNodeValue = isset($typoScriptArray[$keyWithoutDot]) ? $typoScriptArray[$keyWithoutDot] : null;
-				if (is_array($value)) {
-					$typoScriptArray[$keyWithoutDot] = self::convertTypoScriptArrayToPlainArray($value);
-					if (!is_null($typoScriptNodeValue)) {
-						$typoScriptArray[$keyWithoutDot]['_typoScriptNodeValue'] = $typoScriptNodeValue;
-					}
-					unset($typoScriptArray[$key]);
-				} else {
-					$typoScriptArray[$keyWithoutDot] = null;
-				}
-			}
-		}
-		return $typoScriptArray;
-	}
+    /**
+     * Removes all trailing dots recursively from TS settings array
+     *
+     * This method is taken from extbase TypoScriptService
+     *
+     * @param array $typoScriptArray
+     *
+     * @return array
+     */
+    public static function convertTypoScriptArrayToPlainArray(array $typoScriptArray)
+    {
+        foreach ($typoScriptArray as $key => $value) {
+            if (substr($key, -1) === '.') {
+                $keyWithoutDot = substr($key, 0, -1);
+                $typoScriptNodeValue = isset($typoScriptArray[$keyWithoutDot]) ? $typoScriptArray[$keyWithoutDot] : null;
+                if (is_array($value)) {
+                    $typoScriptArray[$keyWithoutDot] = self::convertTypoScriptArrayToPlainArray($value);
+                    if (!is_null($typoScriptNodeValue)) {
+                        $typoScriptArray[$keyWithoutDot]['_typoScriptNodeValue'] = $typoScriptNodeValue;
+                    }
+                    unset($typoScriptArray[$key]);
+                } else {
+                    $typoScriptArray[$keyWithoutDot] = null;
+                }
+            }
+        }
 
-	/**
-	 * Returns an array with Typoscript the old way (with dot).
-	 *
-	 * This method is taken from extbase TypoScriptService
-	 *
-	 * @param array $plainArray
-	 *
-	 * @return array
-	 */
-	public static function convertPlainArrayToTypoScriptArray(array $plainArray)
-	{
-		$typoScriptArray = array();
-		foreach ($plainArray as $key => $value) {
-			if (is_array($value)) {
-				if (isset($value['_typoScriptNodeValue'])) {
-					$typoScriptArray[$key] = $value['_typoScriptNodeValue'];
-					unset($value['_typoScriptNodeValue']);
-				}
-				// add dot only if not exists
-				$key = substr($key, -1) === '.' ? $key : $key . '.';
-				$typoScriptArray[$key] = self::convertPlainArrayToTypoScriptArray($value);
-			} else {
-				$typoScriptArray[$key] = is_null($value) ? '' : $value;
-			}
-		}
-		return $typoScriptArray;
-	}
+        return $typoScriptArray;
+    }
+
+    /**
+     * Returns an array with Typoscript the old way (with dot).
+     *
+     * This method is taken from extbase TypoScriptService
+     *
+     * @param array $plainArray
+     *
+     * @return array
+     */
+    public static function convertPlainArrayToTypoScriptArray(array $plainArray)
+    {
+        $typoScriptArray = array();
+        foreach ($plainArray as $key => $value) {
+            if (is_array($value)) {
+                if (isset($value['_typoScriptNodeValue'])) {
+                    $typoScriptArray[$key] = $value['_typoScriptNodeValue'];
+                    unset($value['_typoScriptNodeValue']);
+                }
+                // add dot only if not exists
+                $key = substr($key, -1) === '.' ? $key : $key . '.';
+                $typoScriptArray[$key] = self::convertPlainArrayToTypoScriptArray($value);
+            } else {
+                $typoScriptArray[$key] = is_null($value) ? '' : $value;
+            }
+        }
+
+        return $typoScriptArray;
+    }
 }

@@ -24,29 +24,33 @@
 
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-	/**
-	 * Tx_Rnbase_Scheduler_Task
-	 *
-	 * Wrapper für \TYPO3\CMS\Scheduler\Task\AbstractTask seit TYPO3 6.x
-	 *
-	 * @package 		TYPO3
-	 * @subpackage	 	rn_base
-	 * @author 			Hannes Bochmann <rene@system25.de>
-	 * @license 		http://www.gnu.org/licenses/lgpl.html
-	 * 					GNU Lesser General Public License, version 3 or later
-	 */
-	abstract class Tx_Rnbase_Scheduler_Task extends \TYPO3\CMS\Scheduler\Task\AbstractTask {}
+    /**
+     * Tx_Rnbase_Scheduler_Task
+     *
+     * Wrapper für \TYPO3\CMS\Scheduler\Task\AbstractTask seit TYPO3 6.x
+     *
+     * @package         TYPO3
+     * @subpackage      rn_base
+     * @author          Hannes Bochmann <rene@system25.de>
+     * @license         http://www.gnu.org/licenses/lgpl.html
+     *                  GNU Lesser General Public License, version 3 or later
+     */
+    abstract class Tx_Rnbase_Scheduler_Task extends \TYPO3\CMS\Scheduler\Task\AbstractTask
+    {
+    }
 } else {
-	/**
-	 * Tx_Rnbase_Scheduler_Task
-	 *
-	 * Wrapper für tx_scheduler_Task bis TYPO3 6.x
-	 *
-	 * @package 		TYPO3
-	 * @subpackage	 	rn_base
-	 * @author 			Hannes Bochmann <rene@system25.de>
-	 * @license 		http://www.gnu.org/licenses/lgpl.html
-	 * 					GNU Lesser General Public License, version 3 or later
-	 */
-	abstract class Tx_Rnbase_Scheduler_Task extends tx_scheduler_Task {}
+    /**
+     * Tx_Rnbase_Scheduler_Task
+     *
+     * Wrapper für tx_scheduler_Task bis TYPO3 6.x
+     *
+     * @package         TYPO3
+     * @subpackage      rn_base
+     * @author          Hannes Bochmann <rene@system25.de>
+     * @license         http://www.gnu.org/licenses/lgpl.html
+     *                  GNU Lesser General Public License, version 3 or later
+     */
+    abstract class Tx_Rnbase_Scheduler_Task extends tx_scheduler_Task
+    {
+    }
 }

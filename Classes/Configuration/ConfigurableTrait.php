@@ -31,80 +31,81 @@
  */
 trait Tx_Rnbase_Configuration_ConfigurableTrait
 {
-	/**
-	 * @var Tx_Rnbase_Configuration_ProcessorInterface
-	 */
-	protected $configurations = null;
+    /**
+     * @var Tx_Rnbase_Configuration_ProcessorInterface
+     */
+    protected $configurations = null;
 
-	/**
-	 * @var string
-	 */
-	protected $confId = '';
+    /**
+     * @var string
+     */
+    protected $confId = '';
 
-	/**
-	 * Set the configuration object
-	 *
-	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-	 *
-	 * @return Tx_Rnbase_Configuration_ConfigurableTrait
-	 */
-	public function setConfigurations(
-		Tx_Rnbase_Configuration_ProcessorInterface $configurations
-	) {
-		$this->configurations = $configurations;
+    /**
+     * Set the configuration object
+     *
+     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     *
+     * @return Tx_Rnbase_Configuration_ConfigurableTrait
+     */
+    public function setConfigurations(
+        Tx_Rnbase_Configuration_ProcessorInterface $configurations
+    ) {
+        $this->configurations = $configurations;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * The configuration object
-	 *
-	 * @return Tx_Rnbase_Configuration_ProcessorInterface
-	 */
-	protected function getConfigurations()
-	{
-		return $this->configurations;
-	}
+    /**
+     * The configuration object
+     *
+     * @return Tx_Rnbase_Configuration_ProcessorInterface
+     */
+    protected function getConfigurations()
+    {
+        return $this->configurations;
+    }
 
-	/**
-	 * Set the configuration id
-	 *
-	 * @param string $configurations
-	 *
-	 * @return Tx_Rnbase_Configuration_ConfigurableTrait
-	 */
-	public function setConfId(
-		$confId
-	) {
-		$this->confId = $confId;
+    /**
+     * Set the configuration id
+     *
+     * @param string $configurations
+     *
+     * @return Tx_Rnbase_Configuration_ConfigurableTrait
+     */
+    public function setConfId(
+        $confId
+    ) {
+        $this->confId = $confId;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * The configuration id
-	 *
-	 * @return string
-	 */
-	protected function getConfId()
-	{
-		return $this->confId;
-	}
+    /**
+     * The configuration id
+     *
+     * @return string
+     */
+    protected function getConfId()
+    {
+        return $this->confId;
+    }
 
-	/**
-	 * Returns a value from config
-	 *
-	 * @param string $path
-	 * @return array|string|null
-	 */
-	protected function getConfValue($path, $deep = false)
-	{
-		if (!$this->getConfigurations() instanceof Tx_Rnbase_Configuration_ProcessorInterface) {
-			return null;
-		}
-		return $this->getConfigurations()->get(
-			$this->getConfId() . $path,
-			$deep
-		);
-	}
+    /**
+     * Returns a value from config
+     *
+     * @param string $path
+     * @return array|string|null
+     */
+    protected function getConfValue($path, $deep = false)
+    {
+        if (!$this->getConfigurations() instanceof Tx_Rnbase_Configuration_ProcessorInterface) {
+            return null;
+        }
+
+        return $this->getConfigurations()->get(
+            $this->getConfId() . $path,
+            $deep
+        );
+    }
 }

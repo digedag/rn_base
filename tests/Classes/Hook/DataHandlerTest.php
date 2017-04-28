@@ -26,73 +26,79 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 /**
  * Tx_Rnbase_Hook_DataHandlerTest
  *
- * @package 		TYPO3
- * @subpackage	 	rn_base
- * @author 			Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
- * @license 		http://www.gnu.org/licenses/lgpl.html
- * 					GNU Lesser General Public License, version 3 or later
+ * @package         TYPO3
+ * @subpackage      rn_base
+ * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
+ * @license         http://www.gnu.org/licenses/lgpl.html
+ *                  GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Hook_DataHandlerTest extends tx_rnbase_tests_BaseTestCase {
+class Tx_Rnbase_Hook_DataHandlerTest extends tx_rnbase_tests_BaseTestCase
+{
 
-	/**
-	 * {@inheritDoc}
-	 * @see PHPUnit_Framework_TestCase::tearDown()
-	 */
-	protected function tearDown() {
-		if (isset($GLOBALS['TCA']['rn_base_test_table'])) {
-			unset($GLOBALS['TCA']['rn_base_test_table']);
-		}
-	}
+    /**
+     * {@inheritDoc}
+     * @see PHPUnit_Framework_TestCase::tearDown()
+     */
+    protected function tearDown()
+    {
+        if (isset($GLOBALS['TCA']['rn_base_test_table'])) {
+            unset($GLOBALS['TCA']['rn_base_test_table']);
+        }
+    }
 
-	/**
-	 * @group unit
-	 */
-	public function testHookIsRegistered() {
-		self::assertEquals(
-			'Tx_Rnbase_Hook_DataHandler->clearCacheForConfiguredTagsByTable',
-			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']['rn_base'],
-			'Hook falsch registriert'
-		);
-	}
+    /**
+     * @group unit
+     */
+    public function testHookIsRegistered()
+    {
+        self::assertEquals(
+            'Tx_Rnbase_Hook_DataHandler->clearCacheForConfiguredTagsByTable',
+            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']['rn_base'],
+            'Hook falsch registriert'
+        );
+    }
 
-	/**
-	 * @group unit
-	 */
-	public function testGetCacheManager() {
-		$cacheManager = $this->callInaccessibleMethod(tx_rnbase::makeInstance('Tx_Rnbase_Hook_DataHandler'), 'getCacheManager');
-		self::assertTrue(method_exists($cacheManager, 'flushCachesInGroupByTag'));
-	}
+    /**
+     * @group unit
+     */
+    public function testGetCacheManager()
+    {
+        $cacheManager = $this->callInaccessibleMethod(tx_rnbase::makeInstance('Tx_Rnbase_Hook_DataHandler'), 'getCacheManager');
+        self::assertTrue(method_exists($cacheManager, 'flushCachesInGroupByTag'));
+    }
 
-	/**
-	 * @group unit
-	 */
-	public function testClearCacheForConfiguredTagsByTable() {
-		$GLOBALS['TCA']['rn_base_test_table']['ctrl']['cacheTags'] = array('first-tag', 'second-tag');
+    /**
+     * @group unit
+     */
+    public function testClearCacheForConfiguredTagsByTable()
+    {
+        $GLOBALS['TCA']['rn_base_test_table']['ctrl']['cacheTags'] = array('first-tag', 'second-tag');
 
-		$cacheManager = $this->getMock(tx_rnbase_util_Typo3Classes::getCacheManagerClass(), array('flushCachesInGroupByTag'));
-		$cacheManager->expects(self::at(0))
-			->method('flushCachesInGroupByTag')
-			->with('pages', 'first-tag');
-		$cacheManager->expects(self::at(1))
-			->method('flushCachesInGroupByTag')
-			->with('pages', 'second-tag');
+        $cacheManager = $this->getMock(tx_rnbase_util_Typo3Classes::getCacheManagerClass(), array('flushCachesInGroupByTag'));
+        $cacheManager->expects(self::at(0))
+            ->method('flushCachesInGroupByTag')
+            ->with('pages', 'first-tag');
+        $cacheManager->expects(self::at(1))
+            ->method('flushCachesInGroupByTag')
+            ->with('pages', 'second-tag');
 
-		$dataHandler = $this->getMock('Tx_Rnbase_Hook_DataHandler', array('getCacheManager'));
-		$dataHandler->expects(self::once())
-			->method('getCacheManager')
-			->will(self::returnValue($cacheManager));
+        $dataHandler = $this->getMock('Tx_Rnbase_Hook_DataHandler', array('getCacheManager'));
+        $dataHandler->expects(self::once())
+            ->method('getCacheManager')
+            ->will(self::returnValue($cacheManager));
 
-		$dataHandler->clearCacheForConfiguredTagsByTable(array('table' => 'rn_base_test_table'));
-	}
+        $dataHandler->clearCacheForConfiguredTagsByTable(array('table' => 'rn_base_test_table'));
+    }
 
-	/**
-	 * @group unit
-	 */
-	public function testClearCacheForConfiguredTagsByTableIfNoneConfiguredInTca() {
-		$dataHandler = $this->getMock('Tx_Rnbase_Hook_DataHandler', array('getCacheManager'));
-		$dataHandler->expects(self::never())
-			->method('getCacheManager');
+    /**
+     * @group unit
+     */
+    public function testClearCacheForConfiguredTagsByTableIfNoneConfiguredInTca()
+    {
+        $dataHandler = $this->getMock('Tx_Rnbase_Hook_DataHandler', array('getCacheManager'));
+        $dataHandler->expects(self::never())
+            ->method('getCacheManager');
 
-		$dataHandler->clearCacheForConfiguredTagsByTable(array('table' => 'rn_base_test_table'));
-	}
+        $dataHandler->clearCacheForConfiguredTagsByTable(array('table' => 'rn_base_test_table'));
+    }
 }

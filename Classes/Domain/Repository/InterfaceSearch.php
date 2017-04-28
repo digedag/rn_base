@@ -31,13 +31,13 @@
  */
 interface Tx_Rnbase_Domain_Repository_InterfaceSearch
 {
-	/**
-	 * Search repository
-	 *
-	 * @param array $fields
-	 * @param array $options
-	 *
-	 * @return array
-	 */
-	public function search(array $fields, array $options);
+    /**
+     * Search repository
+     *
+     * @param array $fields
+     * @param array $options
+     *
+     * @return array
+     */
+    public function search(array $fields, array $options);
 }

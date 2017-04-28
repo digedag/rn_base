@@ -46,7 +46,9 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
      */
     public function testGetTreeRecursive()
     {
-        /** @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock */
+        /**
+ * @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock
+*/
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
                 $connection->expects(self::at(0))
@@ -116,7 +118,9 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
         $options = array(
             'depth' => 2
         );
-        /** @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock */
+        /**
+ * @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock
+*/
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
                 $connection->expects(self::at(0))
@@ -151,7 +155,9 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
             'where' => 'hidden=1'
         );
 
-        /** @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock */
+        /**
+ * @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock
+*/
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
                 $connection->expects(self::at(0))
@@ -185,7 +191,9 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
             'tableName' => 'tt_content'
         );
 
-        /** @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock */
+        /**
+ * @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock
+*/
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
                 $connection->expects(self::at(0))
@@ -231,7 +239,9 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
             'limit' => 1,
         );
 
-        /** @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock */
+        /**
+ * @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock
+*/
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
                 $connection->expects(self::at(0))
@@ -261,7 +271,6 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
                         )
                     )
                     ->will(self::returnValue(array()));
-
             }
         );
 
@@ -276,7 +285,9 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
             'parentField' => 'parent_id'
         );
 
-        /** @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock */
+        /**
+ * @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock
+*/
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
                 $connection->expects(self::at(0))
@@ -304,7 +315,6 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
                         )
                     )
                     ->will(self::returnValue(array()));
-
             }
         );
 
@@ -319,7 +329,9 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
             'idField' => 'entity_id'
         );
 
-        /** @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock */
+        /**
+ * @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock
+*/
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
                 $connection->expects(self::at(0))
@@ -347,7 +359,6 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
                         )
                     )
                     ->will(self::returnValue(array()));
-
             }
         );
 
@@ -358,7 +369,9 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
 
     public function testGetTreeWithCommaSeparatedPidList()
     {
-        /** @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock */
+        /**
+ * @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock
+*/
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
                 $connection->expects(self::at(0))

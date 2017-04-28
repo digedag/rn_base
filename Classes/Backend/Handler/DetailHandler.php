@@ -31,94 +31,93 @@ tx_rnbase::load('Tx_Rnbase_Backend_Handler_SearchHandler');
  * @subpackage Tx_Rnbase
  * @author Michael Wagner
  */
-abstract class Tx_Rnbase_Backend_Handler_DetailHandler
-	extends Tx_Rnbase_Backend_Handler_SearchHandler
+abstract class Tx_Rnbase_Backend_Handler_DetailHandler extends Tx_Rnbase_Backend_Handler_SearchHandler
 {
-	/**
-	 * Returns the current object for detail page.
-	 *
-	 * @return Tx_Rnbase_Domain_Model_RecordInterface
-	 */
-	abstract protected function getObject();
+    /**
+     * Returns the current object for detail page.
+     *
+     * @return Tx_Rnbase_Domain_Model_RecordInterface
+     */
+    abstract protected function getObject();
 
-	/**
-	 * Display the user interface for this handler
-	 *
-	 * @param string $template The subpart for handler in func template
-	 * @param tx_rnbase_mod_IModule $mod
-	 * @param array $options
-	 *
-	 * @return string
-	 */
-	// @codingStandardsIgnoreStart (interface/abstract mistake)
-	public function showScreen(
-		$template,
-		tx_rnbase_mod_IModule $mod,
-		$options
-	) {
-		// @codingStandardsIgnoreEnd
-		$this->init($mod, $options);
+    /**
+     * Display the user interface for this handler
+     *
+     * @param string $template The subpart for handler in func template
+     * @param tx_rnbase_mod_IModule $mod
+     * @param array $options
+     *
+     * @return string
+     */
+    // @codingStandardsIgnoreStart (interface/abstract mistake)
+    public function showScreen(
+        $template,
+        tx_rnbase_mod_IModule $mod,
+        $options
+    ) {
+        // @codingStandardsIgnoreEnd
+        $this->init($mod, $options);
 
-		$current = $this->getObject();
+        $current = $this->getObject();
 
-		$templateMod = tx_rnbase_util_Templates::getSubpart(
-			$template,
-			$current ? '###DETAILPART###' : '###SEARCHPART###'
-		);
+        $templateMod = tx_rnbase_util_Templates::getSubpart(
+            $template,
+            $current ? '###DETAILPART###' : '###SEARCHPART###'
+        );
 
-		$markerArray = $subpartArray = $wrappedSubpartArray = array();
+        $markerArray = $subpartArray = $wrappedSubpartArray = array();
 
-		$this->prepareMarkerArrays(
-			$templateMod,
-			$markerArray,
-			$subpartArray,
-			$wrappedSubpartArray
-		);
+        $this->prepareMarkerArrays(
+            $templateMod,
+            $markerArray,
+            $subpartArray,
+            $wrappedSubpartArray
+        );
 
-		if ($current) {
-			$templateMod = $this->showDetail(
-				$template,
-				$current,
-				$markerArray,
-				$subpartArray,
-				$wrappedSubpartArray
-			);
-		} else {
-			$templateMod = $this->showSearch(
-				$template,
-				$markerArray,
-				$subpartArray,
-				$wrappedSubpartArray
-			);
-		}
+        if ($current) {
+            $templateMod = $this->showDetail(
+                $template,
+                $current,
+                $markerArray,
+                $subpartArray,
+                $wrappedSubpartArray
+            );
+        } else {
+            $templateMod = $this->showSearch(
+                $template,
+                $markerArray,
+                $subpartArray,
+                $wrappedSubpartArray
+            );
+        }
 
-		return tx_rnbase_util_Templates::substituteMarkerArrayCached(
-			$templateMod,
-			$markerArray
-		);
-	}
+        return tx_rnbase_util_Templates::substituteMarkerArrayCached(
+            $templateMod,
+            $markerArray
+        );
+    }
 
-	/**
-	 * Base listing
-	 *
-	 * @param string $template
-	 * @param Tx_Rnbase_Domain_Model_RecordInterface $current
-	 * @param array $markerArray
-	 * @param array $subpartArray
-	 * @param array $wrappedSubpartArray
-	 *
-	 * @return string
-	 */
-	protected function showDetail(
-		$template,
-		Tx_Rnbase_Domain_Model_RecordInterface $current,
-		array &$markerArray = null,
-		array &$subpartArray = null,
-		array &$wrappedSubpartArray = null
-	) {
-		// @TODO: implement protected function showDetail(
-		throw new Exception('detail not implemented yet');
+    /**
+     * Base listing
+     *
+     * @param string $template
+     * @param Tx_Rnbase_Domain_Model_RecordInterface $current
+     * @param array $markerArray
+     * @param array $subpartArray
+     * @param array $wrappedSubpartArray
+     *
+     * @return string
+     */
+    protected function showDetail(
+        $template,
+        Tx_Rnbase_Domain_Model_RecordInterface $current,
+        array &$markerArray = null,
+        array &$subpartArray = null,
+        array &$wrappedSubpartArray = null
+    ) {
+        // @TODO: implement protected function showDetail(
+        throw new Exception('detail not implemented yet');
 
-		return $template;
-	}
+        return $template;
+    }
 }

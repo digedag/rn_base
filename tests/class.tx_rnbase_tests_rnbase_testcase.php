@@ -23,33 +23,39 @@
 ***************************************************************/
 
 
-class tx_rnbase_tests_rnbase_testcase extends Tx_Phpunit_TestCase {
-
-	function test_makeInstanceSimpleObject() {
-		$obj = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
-		$this->assertTrue(is_object($obj), 'Object not instantiated');
-	}
-	function test_makeInstanceObjectWithParameters() {
-		$obj = tx_rnbase::makeInstance('tx_rnbase_filter_FilterItem', 'name', 'value');
-		$this->assertTrue(is_object($obj), 'Object not instantiated');
-		$this->assertEquals($obj->record['name'], 'name', 'Attribute not set');
-		$this->assertEquals($obj->record['value'], 'value', 'Attribute not set');
-	}
-	/**
-	 */
-	function testMakeInstanceOfExtBaseClass() {
-		if(!$this->isExtBasePossible()) { $this->markTestSkipped(); }
-		$obj = tx_rnbase::makeInstance('Tx_T3sponsors_Domain_Model_Category');
-		$this->assertTrue(is_object($obj), 'Object not instantiated');
-	}
-	private function isExtBasePossible() {
-		tx_rnbase::load('tx_rnbase_util_TYPO3');
-		// TODO: bessere Testklasse finden
-		return FALSE && tx_rnbase_util_TYPO3::isExtLoaded('extbase') &&
-			tx_rnbase_util_TYPO3::isExtMinVersion('t3sponsors', 2001);
-	}
+class tx_rnbase_tests_rnbase_testcase extends Tx_Phpunit_TestCase
+{
+    public function test_makeInstanceSimpleObject()
+    {
+        $obj = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
+        $this->assertTrue(is_object($obj), 'Object not instantiated');
+    }
+    public function test_makeInstanceObjectWithParameters()
+    {
+        $obj = tx_rnbase::makeInstance('tx_rnbase_filter_FilterItem', 'name', 'value');
+        $this->assertTrue(is_object($obj), 'Object not instantiated');
+        $this->assertEquals($obj->record['name'], 'name', 'Attribute not set');
+        $this->assertEquals($obj->record['value'], 'value', 'Attribute not set');
+    }
+    /**
+     */
+    public function testMakeInstanceOfExtBaseClass()
+    {
+        if (!$this->isExtBasePossible()) {
+            $this->markTestSkipped();
+        }
+        $obj = tx_rnbase::makeInstance('Tx_T3sponsors_Domain_Model_Category');
+        $this->assertTrue(is_object($obj), 'Object not instantiated');
+    }
+    private function isExtBasePossible()
+    {
+        tx_rnbase::load('tx_rnbase_util_TYPO3');
+        // TODO: bessere Testklasse finden
+        return false && tx_rnbase_util_TYPO3::isExtLoaded('extbase') &&
+            tx_rnbase_util_TYPO3::isExtMinVersion('t3sponsors', 2001);
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/class.tx_rnbase_tests_rnbase_testcase.php']) {
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/class.tx_rnbase_tests_rnbase_testcase.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/class.tx_rnbase_tests_rnbase_testcase.php']);
 }

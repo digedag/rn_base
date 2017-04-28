@@ -27,21 +27,23 @@ tx_rnbase::load('tx_rnbase_maps_IControl');
 /**
  * Implementation for GoogleControls.
  */
-class tx_rnbase_maps_google_Control implements tx_rnbase_maps_IControl {
-
-	public function __construct($type) {
-		$this->type = $type;
-	}
-	/**
-	 * Returns an ID-String for the map provider.
-	 * @return string
-	 */
-	public function render() {
-		// Für die wec_map ist nur die ID notwendig
-		return $this->type;
-	}
+class tx_rnbase_maps_google_Control implements tx_rnbase_maps_IControl
+{
+    public function __construct($type)
+    {
+        $this->type = $type;
+    }
+    /**
+     * Returns an ID-String for the map provider.
+     * @return string
+     */
+    public function render()
+    {
+        // Für die wec_map ist nur die ID notwendig
+        return $this->type;
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/google/class.tx_rnbase_maps_google_Control.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/google/class.tx_rnbase_maps_google_Control.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/google/class.tx_rnbase_maps_google_Control.php']);
 }

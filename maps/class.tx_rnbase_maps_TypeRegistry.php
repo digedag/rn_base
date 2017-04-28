@@ -31,47 +31,55 @@ define('RNMAP_MAPTYPE_PHYSICAL', 4);
 /**
  * Registry
  */
-class tx_rnbase_maps_TypeRegistry {
-	static $instance = NULL;
-	private static $mapTypes = array(RNMAP_MAPTYPE_STREET, RNMAP_MAPTYPE_SATELLITE, RNMAP_MAPTYPE_HYBRID, RNMAP_MAPTYPE_PHYSICAL);
-	private $types = array();
-	private function __construct() {
-	}
-	/**
-	 * Returns the singleton instance
-	 *
-	 * @return tx_rnbase_maps_TypeRegistry
-	 */
-	static function getInstance() {
-		if(!is_object(self::$instance)) {
-			self::$instance = new tx_rnbase_maps_TypeRegistry();
-		}
-		return self::$instance;
-	}
-	function addType(tx_rnbase_maps_IMap $map, $typeId, $mapType) {
-		$this->types[$map->getPROVID()][$typeId] = $mapType;
-	}
-	/**
-	 * Returns a map specific type string
-	 *
-	 * @param tx_rnbase_maps_IMap $map
-	 * @param string $typeId
-	 * @return string
-	 */
-	function getType(tx_rnbase_maps_IMap $map, $typeId) {
-		$type = $this->types[$map->getPROVID()][$typeId];
-		return $type;
-	}
-	/**
-	 * Returns an array with all available default types
-	 *
-	 * @return array
-	 */
-	static function getMapTypes() {
-		return self::$mapTypes;
-	}
+class tx_rnbase_maps_TypeRegistry
+{
+    public static $instance = null;
+    private static $mapTypes = array(RNMAP_MAPTYPE_STREET, RNMAP_MAPTYPE_SATELLITE, RNMAP_MAPTYPE_HYBRID, RNMAP_MAPTYPE_PHYSICAL);
+    private $types = array();
+    private function __construct()
+    {
+    }
+    /**
+     * Returns the singleton instance
+     *
+     * @return tx_rnbase_maps_TypeRegistry
+     */
+    public static function getInstance()
+    {
+        if (!is_object(self::$instance)) {
+            self::$instance = new tx_rnbase_maps_TypeRegistry();
+        }
+
+        return self::$instance;
+    }
+    public function addType(tx_rnbase_maps_IMap $map, $typeId, $mapType)
+    {
+        $this->types[$map->getPROVID()][$typeId] = $mapType;
+    }
+    /**
+     * Returns a map specific type string
+     *
+     * @param tx_rnbase_maps_IMap $map
+     * @param string $typeId
+     * @return string
+     */
+    public function getType(tx_rnbase_maps_IMap $map, $typeId)
+    {
+        $type = $this->types[$map->getPROVID()][$typeId];
+
+        return $type;
+    }
+    /**
+     * Returns an array with all available default types
+     *
+     * @return array
+     */
+    public static function getMapTypes()
+    {
+        return self::$mapTypes;
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_TypeRegistry.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_TypeRegistry.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_TypeRegistry.php']);
 }

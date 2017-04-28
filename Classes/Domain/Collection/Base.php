@@ -32,52 +32,51 @@ Tx_Rnbase_Utility_Composer::autoload();
  * @subpackage rn_base
  * @author Michael Wagner
  */
-class Tx_Rnbase_Domain_Collection_Base
-	extends \Doctrine\Common\Collections\ArrayCollection
+class Tx_Rnbase_Domain_Collection_Base extends \Doctrine\Common\Collections\ArrayCollection
 {
-	/**
-	 * Only a wrapper for add
-	 *
-	 * @param mixed $value The element to add
-	 *
-	 * @return bool Always true
-	 */
-	public function append($value)
-	{
-		return $this->add($value);
-	}
+    /**
+     * Only a wrapper for add
+     *
+     * @param mixed $value The element to add
+     *
+     * @return bool Always true
+     */
+    public function append($value)
+    {
+        return $this->add($value);
+    }
 
-	/**
-	 * Exchange the collection for another one and returns the old elements.
-	 *
-	 * @param array $elements
-	 *
-	 * @return array
-	 */
-	public function exchange(
-		array $elements = array()
-	) {
-		$old = $this->toArray();
+    /**
+     * Exchange the collection for another one and returns the old elements.
+     *
+     * @param array $elements
+     *
+     * @return array
+     */
+    public function exchange(
+        array $elements = array()
+    ) {
+        $old = $this->toArray();
 
-		$this->clear();
+        $this->clear();
 
-		foreach ($elements as $offset => $value) {
-			$this->offsetSet($offset, $value);
-		}
+        foreach ($elements as $offset => $value) {
+            $this->offsetSet($offset, $value);
+        }
 
-		return $old;
-	}
+        return $old;
+    }
 
-	/**
-	 * Only an ArrayObject alias for exchange
-	 *
-	 * @param array $elements
-	 *
-	 * @return array
-	 */
-	public function exchangeArray (
-		array $elements = array()
-	) {
-		return $this->exchange($elements);
-	}
+    /**
+     * Only an ArrayObject alias for exchange
+     *
+     * @param array $elements
+     *
+     * @return array
+     */
+    public function exchangeArray(
+        array $elements = array()
+    ) {
+        return $this->exchange($elements);
+    }
 }

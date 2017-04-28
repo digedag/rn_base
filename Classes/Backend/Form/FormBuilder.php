@@ -1,5 +1,7 @@
 <?php
-if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
+if (!defined('TYPO3_MODE')) {
+    die('Access denied.');
+}
 
 /***************************************************************
  *  Copyright notice
@@ -27,117 +29,129 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
  * Replacement class for former FormEngine-class.
  * Use one instance per formular.
  *
- * @package 		TYPO3
- * @subpackage	 	rn_base
- * @author 			René Nitzsche <rene@system25.de>
+ * @package         TYPO3
+ * @subpackage      rn_base
+ * @author          René Nitzsche <rene@system25.de>
  */
 
-class Tx_Rnbase_Backend_Form_FormBuilder {
-	private $nodeFactory = NULL;
-	/** @var \TYPO3\CMS\Backend\Form\FormDataCompiler */
-	private $formDataCompiler = NULL;
-	private $formResultCompiler; // TODO
-	protected $formDataCache = array();
+class Tx_Rnbase_Backend_Form_FormBuilder
+{
+    private $nodeFactory = null;
+    /**
+     * @var \TYPO3\CMS\Backend\Form\FormDataCompiler
+     */
+    private $formDataCompiler = null;
+    private $formResultCompiler; // TODO
+    protected $formDataCache = array();
 
-	/**
-	 */
-	public function __construct() {
-		/** @var TcaDatabaseRecord $formDataGroup */
-		$formDataGroup = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormDataGroup\\TcaDatabaseRecord');
-		$this->formDataCompiler = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormDataCompiler', $formDataGroup);
-		$this->nodeFactory = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\NodeFactory');
-		$this->formResultCompiler = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormResultCompiler');
+    /**
+     */
+    public function __construct()
+    {
+        /**
+ * @var TcaDatabaseRecord $formDataGroup
+*/
+        $formDataGroup = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormDataGroup\\TcaDatabaseRecord');
+        $this->formDataCompiler = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormDataCompiler', $formDataGroup);
+        $this->nodeFactory = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\NodeFactory');
+        $this->formResultCompiler = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormResultCompiler');
+    }
+    public function initDefaultBEmode()
+    {
+    }
 
-	}
-	public function initDefaultBEmode() {
+    /**
+     *
+     * @return \TYPO3\CMS\Backend\Form\NodeFactory
+     */
+    public function getNodeFactory()
+    {
+        return $this->nodeFactory;
+    }
 
-	}
+    protected function isNEWRecord($uid)
+    {
+        return substr($uid, 0, 3) == 'NEW';
+    }
+    /**
+     * Compile formdata for database record. Result is cached.
+     * Bei der Neuanlage ($uid beginnt mit NEW) muss in $record die 'pid' gesetzt sein. Zusätzlich
+     * können werden Attribute mit default-Werten übergeben werden. Die Attribute müssen aber in der
+     * TCA[$table]['ctrl']['useColumnsForDefaultValues'] konfiguriert sein.
+     * @param string $table
+     * @param string $uid
+     * @param array $record should contain pid and other default values for record
+     * @return multitype:
+     */
+    protected function compileFormData($table, $uid, $record)
+    {
+        $key = $table.'_'.intval($uid);
+        if (!array_key_exists($key, $this->formDataCache)) {
+            if ($this->isNEWRecord($uid)) {
+                // Die UID ist hier die PID
+                // Es wird intern beim compile eine NEWuid festgelegt
+                // Vorbelegung von Felder ist noch nicht möglich...
+                $formDataCompilerInput = [
+                    'tableName' => $table,
+                    'vanillaUid' => (int)$record['pid'],
+                    'command' => 'new',
+                    'returnUrl' => '',
+                    'neighborRow' => [],
+                ];
+                foreach ($record as $key => $value) {
+                    if ($key == 'pid') {
+                        continue;
+                    }
+                    $formDataCompilerInput['neighborRow'][$key] = $value;
+                }
+            } else {
+                $formDataCompilerInput = [
+                        'tableName' => $table,
+                        'vanillaUid' => (int)$uid,
+                        'command' => 'edit',
+                        'returnUrl' => '',
+                ];
+            }
+            $this->formDataCache[$key] = $this->formDataCompiler->compile($formDataCompilerInput);
+        }
 
-	/**
-	 *
-	 * @return \TYPO3\CMS\Backend\Form\NodeFactory
-	 */
-	public function getNodeFactory() {
-		return $this->nodeFactory;
-	}
+        return $this->formDataCache[$key];
+    }
+    /**
+     *
+     * @param string $table
+     * @param array $row
+     * @param string $fieldName
+     * @return string
+     */
+    public function getSoloField($table, $row, $fieldName)
+    {
 
-	protected function isNEWRecord($uid) {
-		return substr($uid, 0, 3) == 'NEW';
-	}
-	/**
-	 * Compile formdata for database record. Result is cached.
-	 * Bei der Neuanlage ($uid beginnt mit NEW) muss in $record die 'pid' gesetzt sein. Zusätzlich
-	 * können werden Attribute mit default-Werten übergeben werden. Die Attribute müssen aber in der
-	 * TCA[$table]['ctrl']['useColumnsForDefaultValues'] konfiguriert sein.
-	 * @param string $table
-	 * @param string $uid
-	 * @param array $record should contain pid and other default values for record
-	 * @return multitype:
-	 */
-	protected function compileFormData($table, $uid, $record) {
+        // Wir benötigen pro DB-Tabelle ein data-Array mit den vorbereiteten Formular-Daten
+        $formData = $this->compileFormData($table, $row['uid'], $row);
+//         $options = $this->data;
+        $options = $formData;
+        // in den folgenden Key müssen die Daten aus der TCA rein. Wie geht das?
+        $options['tableName'] = $table;
+        $options['fieldName'] = $fieldName;
+        $options['databaseRow'] = $row;
+        $options['renderType'] = 'singleFieldContainer';
 
-		$key = $table.'_'.intval($uid);
-		if(!array_key_exists($key, $this->formDataCache)) {
-			if($this->isNEWRecord($uid)) {
-				// Die UID ist hier die PID
-				// Es wird intern beim compile eine NEWuid festgelegt
-				// Vorbelegung von Felder ist noch nicht möglich...
-				$formDataCompilerInput = [
-					'tableName' => $table,
-					'vanillaUid' => (int)$record['pid'],
-					'command' => 'new',
-					'returnUrl' => '',
-					'neighborRow' => [],
-				];
-				foreach ($record As $key => $value) {
-					if($key == 'pid') continue;
-					$formDataCompilerInput['neighborRow'][$key] = $value;
-				}
-			}
-			else {
-				$formDataCompilerInput = [
-						'tableName' => $table,
-						'vanillaUid' => (int)$uid,
-						'command' => 'edit',
-						'returnUrl' => '',
-				];
-			}
-			$this->formDataCache[$key] = $this->formDataCompiler->compile($formDataCompilerInput);
-		}
-		return $this->formDataCache[$key];
-	}
-	/**
-	 *
-	 * @param string $table
-	 * @param array $row
-	 * @param string $fieldName
-	 * @return string
-	 */
-	public function getSoloField($table, $row, $fieldName) {
+        $childResultArray = $this->nodeFactory->create($options)->render();
 
-		// Wir benötigen pro DB-Tabelle ein data-Array mit den vorbereiteten Formular-Daten
-		$formData = $this->compileFormData($table, $row['uid'], $row);
-//		$options = $this->data;
-		$options = $formData;
-		// in den folgenden Key müssen die Daten aus der TCA rein. Wie geht das?
-		$options['tableName'] = $table;
-		$options['fieldName'] = $fieldName;
-		$options['databaseRow'] = $row;
-		$options['renderType'] = 'singleFieldContainer';
-
-		$childResultArray = $this->nodeFactory->create($options)->render();
-
-		// TODO: dieser Aufruf sollte einmalig für das gesamte Formular erfolgen!
-		$this->formResultCompiler->mergeResult($childResultArray);
+        // TODO: dieser Aufruf sollte einmalig für das gesamte Formular erfolgen!
+        $this->formResultCompiler->mergeResult($childResultArray);
 
 
-		return $childResultArray['html'];
-	}
+        return $childResultArray['html'];
+    }
 
-	public function printNeededJSFunctions_top() {
-		return $this->formResultCompiler->JStop();
-	}
-	public function printNeededJSFunctions() {
-		return $this->formResultCompiler->printNeededJSFunctions(); // TODO
-	}
+    public function printNeededJSFunctions_top()
+    {
+        return $this->formResultCompiler->JStop();
+    }
+    public function printNeededJSFunctions()
+    {
+        return $this->formResultCompiler->printNeededJSFunctions(); // TODO
+    }
 }

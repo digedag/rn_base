@@ -25,7 +25,8 @@
 /**
  * Contains utility functions for ArrayObject
  */
-class tx_rnbase_util_Arrays {
+class tx_rnbase_util_Arrays
+{
 
   /**
    * Overwrite some of the array values
@@ -37,125 +38,135 @@ class tx_rnbase_util_Arrays {
    * @param    string   possible split charaters in case the first parameter is a hash string
    * @return   void
    */
-  public static function overwriteArray(&$arrayObj, $hashData, $splitCharacters = ',;:') {
-    $array = self::toHashArray($hashData, $splitCharacters);
-    foreach((array) $array as $key => $value) {
-      $arrayObj->offsetSet($key, $value);
+    public static function overwriteArray(&$arrayObj, $hashData, $splitCharacters = ',;:')
+    {
+        $array = self::toHashArray($hashData, $splitCharacters);
+        foreach ((array) $array as $key => $value) {
+            $arrayObj->offsetSet($key, $value);
+        }
     }
-  }
 
-	/**
-	 * Converts the given mixed data into an hashArray
-	 * Method taken from tx_div
-	 *
-	 * @param   mixed       data to be converted
-	 * @param   string      string of characters used to split first argument
-	 * @return  array       an hashArray
-	 */
-	private static function toHashArray($mixed, $splitCharacters = ',;:\s' ) {
-		if(is_string($mixed)) {
-			tx_rnbase::load('tx_rnbase_util_Misc');
-			$array = tx_rnbase_util_Misc::explode($mixed, $splitCharacters); // TODO: Enable empty values by defining a better explode functions.
-			for($i = 0, $len = count($array); $i < $len; $i = $i + 2) {
-				$hashArray[$array[$i]] = $array[$i+1];
-			}
-		} elseif(is_array($mixed)) {
-			$hashArray = $mixed;
-		} elseif(is_object($mixed) && method_exists($mixed, 'getArrayCopy')) {
-			$hashArray = $mixed->getArrayCopy();
-		} else {
-			$hashArray = array();
-		}
-		return $hashArray;
-	}
+    /**
+     * Converts the given mixed data into an hashArray
+     * Method taken from tx_div
+     *
+     * @param   mixed       data to be converted
+     * @param   string      string of characters used to split first argument
+     * @return  array       an hashArray
+     */
+    private static function toHashArray($mixed, $splitCharacters = ',;:\s')
+    {
+        if (is_string($mixed)) {
+            tx_rnbase::load('tx_rnbase_util_Misc');
+            $array = tx_rnbase_util_Misc::explode($mixed, $splitCharacters); // TODO: Enable empty values by defining a better explode functions.
+            for ($i = 0, $len = count($array); $i < $len; $i = $i + 2) {
+                $hashArray[$array[$i]] = $array[$i + 1];
+            }
+        } elseif (is_array($mixed)) {
+            $hashArray = $mixed;
+        } elseif (is_object($mixed) && method_exists($mixed, 'getArrayCopy')) {
+            $hashArray = $mixed->getArrayCopy();
+        } else {
+            $hashArray = array();
+        }
 
-	/**
-	 * Merges two arrays recursively and "binary safe".
-	 *
-	 * @see \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule();
-	 *
-	 * @param array $original
-	 * @param array $overrule
-	 * @param boolean $addKeys
-	 * @param boolean $includeEmptyValues
-	 * @param boolean $enableUnsetFeature
-	 * @return array
-	 */
-	public static function mergeRecursiveWithOverrule(
-		array $original,
-		array $overrule,
-		$addKeys = TRUE,
-		$includeEmptyValues = TRUE,
-		$enableUnsetFeature = TRUE
-	) {
-		if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
-				$original,
-				$overrule,
-				$addKeys,
-				$includeEmptyValues,
-				$enableUnsetFeature
-			);
-			return $original;
-		} else {
-			return t3lib_div::array_merge_recursive_overrule(
-				$original,
-				$overrule,
-				!$addKeys,
-				$includeEmptyValues,
-				$enableUnsetFeature
-			);
-		}
-	}
+        return $hashArray;
+    }
+
+    /**
+     * Merges two arrays recursively and "binary safe".
+     *
+     * @see \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule();
+     *
+     * @param array $original
+     * @param array $overrule
+     * @param bool $addKeys
+     * @param bool $includeEmptyValues
+     * @param bool $enableUnsetFeature
+     * @return array
+     */
+    public static function mergeRecursiveWithOverrule(
+        array $original,
+        array $overrule,
+        $addKeys = true,
+        $includeEmptyValues = true,
+        $enableUnsetFeature = true
+    ) {
+        if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
+                $original,
+                $overrule,
+                $addKeys,
+                $includeEmptyValues,
+                $enableUnsetFeature
+            );
+
+            return $original;
+        } else {
+            return t3lib_div::array_merge_recursive_overrule(
+                $original,
+                $overrule,
+                !$addKeys,
+                $includeEmptyValues,
+                $enableUnsetFeature
+            );
+        }
+    }
 
 
-	/**
-	 * @see \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule();
-	 *
-	 * @param array $arr Data array which should be outputted
-	 * @param mixed $valueList List of keys which should be listed in the output string. Pass a comma list or an array. An empty list outputs the whole array.
-	 * @param integer $valueLength Long string values are shortened to this length. Default: 20
-	 * @return string Output string with key names and their value as string
-	 */
-	static public function arrayToLogString(array $arr, $valueList = array(), $valueLength = 20) {
-		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
-		return $utility::arrayToLogString($arr, $valueList, $valueLength);
-	}
+    /**
+     * @see \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule();
+     *
+     * @param array $arr Data array which should be outputted
+     * @param mixed $valueList List of keys which should be listed in the output string. Pass a comma list or an array. An empty list outputs the whole array.
+     * @param int $valueLength Long string values are shortened to this length. Default: 20
+     * @return string Output string with key names and their value as string
+     */
+    public static function arrayToLogString(array $arr, $valueList = array(), $valueLength = 20)
+    {
+        $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
 
-	/**
-	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array
-	 * @see t3lib_div::xml2array
-	 *
-	 * @param string $string XML content to convert into an array
-	 * @param string $NSprefix The tag-prefix resolve, eg. a namespace like "T3:"
-	 * @param boolean $reportDocTag If set, the document tag will be set in the key "_DOCUMENT_TAG" of the output array
-	 * @return mixed If the parsing had errors, a string with the error message is returned. Otherwise an array with the content.
-	 * @see array2xml(),xml2arrayProcess()
-	 */
-	static public function xml2array($string, $NSprefix = '', $reportDocTag = FALSE) {
-		$utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
-		return $utility::xml2array($string, $NSprefix, $reportDocTag);
-	}
+        return $utility::arrayToLogString($arr, $valueList, $valueLength);
+    }
 
-	/**
-	 * Entfernt alle Keys welche nicht in needle vorhanden sind
-	 *
-	 * @param 	array	$aData		Zu filternde Daten
-	 * @param 	array	$aNeedle	Enthält die erlaubten Keys
-	 * @return 	array
-	 */
-	static public function removeNotIn(array $data, array $needle) {
-		if (!empty($needle)) {
-			foreach (array_keys($data) as $column) {
-				if (!in_array($column, $needle)) {
-					unset($data[$column]);
-				}
-			}
-		}
-		return $data;
-	}
+    /**
+     * @see \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array
+     * @see t3lib_div::xml2array
+     *
+     * @param string $string XML content to convert into an array
+     * @param string $NSprefix The tag-prefix resolve, eg. a namespace like "T3:"
+     * @param bool $reportDocTag If set, the document tag will be set in the key "_DOCUMENT_TAG" of the output array
+     * @return mixed If the parsing had errors, a string with the error message is returned. Otherwise an array with the content.
+     * @see array2xml(),xml2arrayProcess()
+     */
+    public static function xml2array($string, $NSprefix = '', $reportDocTag = false)
+    {
+        $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+
+        return $utility::xml2array($string, $NSprefix, $reportDocTag);
+    }
+
+    /**
+     * Entfernt alle Keys welche nicht in needle vorhanden sind
+     *
+     * @param   array   $aData      Zu filternde Daten
+     * @param   array   $aNeedle    Enthält die erlaubten Keys
+     * @return  array
+     */
+    public static function removeNotIn(array $data, array $needle)
+    {
+        if (!empty($needle)) {
+            foreach (array_keys($data) as $column) {
+                if (!in_array($column, $needle)) {
+                    unset($data[$column]);
+                }
+            }
+        }
+
+        return $data;
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Arrays.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Arrays.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Arrays.php']);
 }

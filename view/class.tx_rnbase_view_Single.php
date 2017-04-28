@@ -28,25 +28,27 @@ tx_rnbase::load('tx_rnbase_view_List');
 /**
  * Default view class to show a single record.
  */
-class tx_rnbase_view_Single extends tx_rnbase_view_List {
-	/**
-	 * Erstellen des Frontend-Outputs
-	 */
-	function createOutput($template, &$viewData, &$configurations, &$formatter){
+class tx_rnbase_view_Single extends tx_rnbase_view_List
+{
+    /**
+     * Erstellen des Frontend-Outputs
+     */
+    public function createOutput($template, &$viewData, &$configurations, &$formatter)
+    {
+        $confId = $this->getController()->getConfId();
+        // Die ViewData bereitstellen
+        $item = $viewData->offsetGet('item');
+        $itemPath = $this->getItemPath($configurations, $confId);
+        $markerClass = $this->getMarkerClass($configurations, $confId);
 
-		$confId = $this->getController()->getConfId();
-		// Die ViewData bereitstellen
-		$item = $viewData->offsetGet('item');
-		$itemPath = $this->getItemPath($configurations, $confId);
-		$markerClass = $this->getMarkerClass($configurations, $confId);
+        $marker = tx_rnbase::makeInstance($markerClass);
 
-		$marker = tx_rnbase::makeInstance($markerClass);
+        $out = $marker->parseTemplate($template, $item, $formatter, $confId.$itemPath.'.', strtoupper($itemPath));
 
-		$out = $marker->parseTemplate($template, $item, $formatter, $confId.$itemPath.'.', strtoupper($itemPath));
-		return $out;
-	}
+        return $out;
+    }
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/view/class.tx_rnbase_view_Single.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/view/class.tx_rnbase_view_Single.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/view/class.tx_rnbase_view_Single.php']) {
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/view/class.tx_rnbase_view_Single.php']);
 }

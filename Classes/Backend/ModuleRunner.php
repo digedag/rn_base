@@ -29,142 +29,142 @@
  * @subpackage Tx_Rnbase
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
- *		  GNU Lesser General Public License, version 3 or later
+ *        GNU Lesser General Public License, version 3 or later
  */
 class Tx_Rnbase_Backend_ModuleRunner
 {
-	/**
-	 * This method forwards the call like the TYPO3 CMS 7.x request handler
-	 *
-	 * @param string $moduleSignature
-	 *
-	 * @return bool TRUE, if the request request could be dispatched
-	 */
-	public function callModule($moduleSignature)
-	{
-		try {
-			$moduleConfiguration = $this->getModuleConfiguration($moduleSignature);
-			if (empty($moduleConfiguration['routeTarget'])) {
-				throw new \RuntimeException(
-					'Module target' . $moduleSignature . ' is not configured.',
-					1289918327
-				);
-			}
-		} catch (RuntimeException $e) {
-			return false;
-		}
+    /**
+     * This method forwards the call like the TYPO3 CMS 7.x request handler
+     *
+     * @param string $moduleSignature
+     *
+     * @return bool TRUE, if the request request could be dispatched
+     */
+    public function callModule($moduleSignature)
+    {
+        try {
+            $moduleConfiguration = $this->getModuleConfiguration($moduleSignature);
+            if (empty($moduleConfiguration['routeTarget'])) {
+                throw new \RuntimeException(
+                    'Module target' . $moduleSignature . ' is not configured.',
+                    1289918327
+                );
+            }
+        } catch (RuntimeException $e) {
+            return false;
+        }
 
-		$targetIdentifier = $moduleConfiguration['routeTarget'];
-		$target = $this->getCallableFromTarget($targetIdentifier);
+        $targetIdentifier = $moduleConfiguration['routeTarget'];
+        $target = $this->getCallableFromTarget($targetIdentifier);
 
-		self::initTargetConf($target, $moduleSignature);
+        self::initTargetConf($target, $moduleSignature);
 
-		// TYPO3\CMS\Core\Http\Response since 7.x
-		$response = null;
-		// Psr\Http\Message\ServerRequestInterface since 7.x
-		$request = null;
+        // TYPO3\CMS\Core\Http\Response since 7.x
+        $response = null;
+        // Psr\Http\Message\ServerRequestInterface since 7.x
+        $request = null;
 
-		return call_user_func_array(
-			$target,
-			array($request, $response)
-		);
-	}
+        return call_user_func_array(
+            $target,
+            array($request, $response)
+        );
+    }
 
-	/**
-	 * Initializes the modconf.
-	 *
-	 * @param string $target
-	 * @param string $moduleSignature
-	 *
-	 * @return void
-	 */
-	public function initTargetConf($target, $moduleSignature = '')
-	{
-		$moduleConfiguration = $this->getModuleConfiguration($moduleSignature);
+    /**
+     * Initializes the modconf.
+     *
+     * @param string $target
+     * @param string $moduleSignature
+     *
+     * @return void
+     */
+    public function initTargetConf($target, $moduleSignature = '')
+    {
+        $moduleConfiguration = $this->getModuleConfiguration($moduleSignature);
 
-		// set the MCONF
-		if (is_object($target)) {
-			$target->MCONF = $moduleConfiguration;
-		}
+        // set the MCONF
+        if (is_object($target)) {
+            $target->MCONF = $moduleConfiguration;
+        }
 
-		// set the global SOBE for backward compatibility
-		$GLOBALS['SOBE'] = $target;
+        // set the global SOBE for backward compatibility
+        $GLOBALS['SOBE'] = $target;
 
-		// set dispatch mode for module
-		$GLOBALS['MCONF']['script'] = '_DISPATCH';
-	}
+        // set dispatch mode for module
+        $GLOBALS['MCONF']['script'] = '_DISPATCH';
+    }
 
-	/**
-	 * Returns the module configuration which is provided during module registration
-	 *
-	 * @param string $moduleName
-	 *
-	 * @throws \RuntimeException
-	 *
-	 * @return array
-	 */
-	protected function getModuleConfiguration($moduleName = '')
-	{
-		if ($moduleName === '') {
-			tx_rnbase::load('tx_rnbase_parameters');
-			$moduleName = tx_rnbase_parameters::getGetParameters('M');
-		}
+    /**
+     * Returns the module configuration which is provided during module registration
+     *
+     * @param string $moduleName
+     *
+     * @throws \RuntimeException
+     *
+     * @return array
+     */
+    protected function getModuleConfiguration($moduleName = '')
+    {
+        if ($moduleName === '') {
+            tx_rnbase::load('tx_rnbase_parameters');
+            $moduleName = tx_rnbase_parameters::getGetParameters('M');
+        }
 
-		if (!isset($GLOBALS['TBE_MODULES']['_configuration'][$moduleName])) {
-			throw new \RuntimeException(
-				'Module ' . $moduleName . ' is not configured.',
-				1289918326
-			);
-		}
+        if (!isset($GLOBALS['TBE_MODULES']['_configuration'][$moduleName])) {
+            throw new \RuntimeException(
+                'Module ' . $moduleName . ' is not configured.',
+                1289918326
+            );
+        }
 
-		return $GLOBALS['TBE_MODULES']['_configuration'][$moduleName];
-	}
+        return $GLOBALS['TBE_MODULES']['_configuration'][$moduleName];
+    }
 
-	/**
-	 * Creates a callable out of the given parameter, which can be a string, a callable / closure or an array
-	 * which can be handed to call_user_func_array()
-	 *
-	 * This method is taken from TYPO3\CMS\Core\Http\Dispatcher (TYPO3-7.x)
-	 *
-	 * @param array|string|callable $target the target which is being resolved.
-	 *
-	 * @throws \InvalidArgumentException
-	 *
-	 * @return callable
-	 */
-	protected function getCallableFromTarget($target)
-	{
-		if (is_array($target)) {
-			return $target;
-		}
+    /**
+     * Creates a callable out of the given parameter, which can be a string, a callable / closure or an array
+     * which can be handed to call_user_func_array()
+     *
+     * This method is taken from TYPO3\CMS\Core\Http\Dispatcher (TYPO3-7.x)
+     *
+     * @param array|string|callable $target the target which is being resolved.
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return callable
+     */
+    protected function getCallableFromTarget($target)
+    {
+        if (is_array($target)) {
+            return $target;
+        }
 
-		if (is_object($target) && $target instanceof \Closure) {
-			return $target;
-		}
+        if (is_object($target) && $target instanceof \Closure) {
+            return $target;
+        }
 
-		// Only a class name is given
-		if (is_string($target) && strpos($target, ':') === false) {
-			$targetObject = Tx_Rnbase_Utility_T3General::makeInstance($target);
-			if (!method_exists($targetObject, '__invoke')) {
-				throw new InvalidArgumentException('Object "' . $target . '" doesn\'t implement an __invoke() method and cannot be used as target.', 1442431631);
-			}
+        // Only a class name is given
+        if (is_string($target) && strpos($target, ':') === false) {
+            $targetObject = Tx_Rnbase_Utility_T3General::makeInstance($target);
+            if (!method_exists($targetObject, '__invoke')) {
+                throw new InvalidArgumentException('Object "' . $target . '" doesn\'t implement an __invoke() method and cannot be used as target.', 1442431631);
+            }
 
-			return $targetObject;
-		}
+            return $targetObject;
+        }
 
-		// Check if the target is a concatenated string of "className::actionMethod"
-		if (is_string($target) && strpos($target, '::') !== false) {
-			list($className, $methodName) = explode('::', $target, 2);
-			$targetObject = Tx_Rnbase_Utility_T3General::makeInstance($className);
+        // Check if the target is a concatenated string of "className::actionMethod"
+        if (is_string($target) && strpos($target, '::') !== false) {
+            list($className, $methodName) = explode('::', $target, 2);
+            $targetObject = Tx_Rnbase_Utility_T3General::makeInstance($className);
 
-			return array($targetObject, $methodName);
-		}
+            return array($targetObject, $methodName);
+        }
 
-		// This needs to be checked at last as a string with object::method is recognize as callable
-		if (is_callable($target)) {
-			return $target;
-		}
+        // This needs to be checked at last as a string with object::method is recognize as callable
+        if (is_callable($target)) {
+            return $target;
+        }
 
-		throw new InvalidArgumentException('Invalid target for "' . $target . '", as it is not callable.', 1425381442);
-	}
+        throw new InvalidArgumentException('Invalid target for "' . $target . '", as it is not callable.', 1425381442);
+    }
 }

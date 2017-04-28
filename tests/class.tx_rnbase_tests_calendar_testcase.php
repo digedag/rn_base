@@ -25,29 +25,30 @@
 tx_rnbase::load('tx_rnbase_util_Calendar');
 
 
-class tx_rnbase_tests_calendar_testcase extends Tx_Phpunit_TestCase {
-  function test_calendar() {
+class tx_rnbase_tests_calendar_testcase extends Tx_Phpunit_TestCase
+{
+    public function test_calendar()
+    {
+        $cal = new tx_rnbase_util_Calendar();
+        $cal->setTime(mktime(20, 0, 0, 1, 1, 2005));
 
-    $cal = new tx_rnbase_util_Calendar();
-    $cal->setTime(mktime(20, 0, 0, 1, 1, 2005));
+        $this->assertEquals($cal->getTime(), 1104606000, 'Zeit falsch');
+        $this->assertEquals(strftime('%d.%m.%Y %H:%M:%S', $cal->getTime()), '01.01.2005 20:00:00', 'Zeit falsch');
 
-    $this->assertEquals($cal->getTime(), 1104606000, 'Zeit falsch');
-    $this->assertEquals(strftime('%d.%m.%Y %H:%M:%S', $cal->getTime()), '01.01.2005 20:00:00', 'Zeit falsch');
+        $cal->clear(CALENDAR_HOUR);
+        $this->assertEquals(strftime('%d.%m.%Y %H:%M:%S', $cal->getTime()), '01.01.2005 00:00:00', 'Zeit falsch');
+        $cal->add(CALENDAR_MONTH, -1);
+        $this->assertEquals(strftime('%d.%m.%Y %H:%M:%S', $cal->getTime()), '01.12.2004 00:00:00', 'Zeit falsch');
 
-    $cal->clear(CALENDAR_HOUR);
-    $this->assertEquals(strftime('%d.%m.%Y %H:%M:%S', $cal->getTime()), '01.01.2005 00:00:00', 'Zeit falsch');
-    $cal->add(CALENDAR_MONTH, -1);
-    $this->assertEquals(strftime('%d.%m.%Y %H:%M:%S', $cal->getTime()), '01.12.2004 00:00:00', 'Zeit falsch');
+        $cal->add(CALENDAR_YEAR, 3);
+        $this->assertEquals(strftime('%d.%m.%Y %H:%M:%S', $cal->getTime()), '01.12.2007 00:00:00', 'Zeit falsch');
 
-    $cal->add(CALENDAR_YEAR, 3);
-    $this->assertEquals(strftime('%d.%m.%Y %H:%M:%S', $cal->getTime()), '01.12.2007 00:00:00', 'Zeit falsch');
-
-    $cal->add(CALENDAR_DAY_OF_MONTH, -1);
-    $this->assertEquals(strftime('%d.%m.%Y %H:%M:%S', $cal->getTime()), '30.11.2007 00:00:00', 'Zeit falsch, ADD DAY_OF_MONTH');
-  }
+        $cal->add(CALENDAR_DAY_OF_MONTH, -1);
+        $this->assertEquals(strftime('%d.%m.%Y %H:%M:%S', $cal->getTime()), '30.11.2007 00:00:00', 'Zeit falsch, ADD DAY_OF_MONTH');
+    }
 }
 
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/class.tx_rnbase_tests_calendar_testcase.php']) {
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/class.tx_rnbase_tests_calendar_testcase.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/class.tx_rnbase_tests_calendar_testcase.php']);
 }

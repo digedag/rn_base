@@ -28,165 +28,171 @@ tx_rnbase::load('tx_rnbase_util_TYPO3');
 /**
  * Encapsulate debug functionality of TYPO3 for backward compatibility.
  */
-class tx_rnbase_util_Debug {
+class tx_rnbase_util_Debug
+{
 
-	/**
-	 * Makes debug output
-	 * Prints $var in bold between two vertical lines
-	 * If not $var the word 'debug' is printed
-	 * If $var is an array, the array is printed by t3lib_div::print_array()
-	 * Wrapper method for TYPO3 debug methods
-	 *
-	 * @param	mixed		Variable to print
-	 * @param	string		The header.
-	 * @param	string		Group for the debug console
-	 * @return	void
-	 */
-	public static function debug($var = '', $header = '', $group = 'Debug') {
-		if(tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-			return \TYPO3\CMS\Core\Utility\DebugUtility::debug($var, $header, $group);
-		}
-		else {
-			return t3lib_utility_Debug::debug($var, $header, $group);
-		}
-	}
-	/**
-	 * Returns HTML-code, which is a visual representation of a multidimensional array
-	 * use t3lib_div::print_array() in order to print an array
-	 * Returns false if $array_in is not an array
-	 *
-	 * @param	mixed		Array to view
-	 * @return	string		HTML output
-	 */
-	public static function viewArray($array_in) {
-		if(tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-			return \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($array_in);
-		}
-		else {
-			return t3lib_utility_Debug::viewArray($array_in);
-		}
-	}
+    /**
+     * Makes debug output
+     * Prints $var in bold between two vertical lines
+     * If not $var the word 'debug' is printed
+     * If $var is an array, the array is printed by t3lib_div::print_array()
+     * Wrapper method for TYPO3 debug methods
+     *
+     * @param   mixed       Variable to print
+     * @param   string      The header.
+     * @param   string      Group for the debug console
+     * @return  void
+     */
+    public static function debug($var = '', $header = '', $group = 'Debug')
+    {
+        if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+            return \TYPO3\CMS\Core\Utility\DebugUtility::debug($var, $header, $group);
+        } else {
+            return t3lib_utility_Debug::debug($var, $header, $group);
+        }
+    }
+    /**
+     * Returns HTML-code, which is a visual representation of a multidimensional array
+     * use t3lib_div::print_array() in order to print an array
+     * Returns false if $array_in is not an array
+     *
+     * @param   mixed       Array to view
+     * @return  string      HTML output
+     */
+    public static function viewArray($array_in)
+    {
+        if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+            return \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($array_in);
+        } else {
+            return t3lib_utility_Debug::viewArray($array_in);
+        }
+    }
 
-	/**
-	 * Displays the "path" of the function call stack in a string, using debug_backtrace
-	 *
-	 * @return string
-	 */
-	public static function getDebugTrail()
-	{
-		return implode(' // ', self::getTracePaths());
-	}
+    /**
+     * Displays the "path" of the function call stack in a string, using debug_backtrace
+     *
+     * @return string
+     */
+    public static function getDebugTrail()
+    {
+        return implode(' // ', self::getTracePaths());
+    }
 
-	/**
-	 * Displays the "path" of the function call stack in a string, using debug_backtrace
-	 *
-	 * @return array
-	 */
-	public static function getTracePaths()
-	{
-		$trail = debug_backtrace();
-		$trail = array_reverse($trail);
-		array_pop($trail);
-		$path = array();
-		$pathSiteLength = strlen(PATH_site);
-		foreach ($trail as $dat) {
-			$pathFragment = $dat['class'] . $dat['type'] . $dat['function'];
-			// add the path of the included file
-			if (in_array(
-				$dat['function'],
-				array('require', 'include', 'require_once', 'include_once')
-			)) {
-				$dat['args'][0] = substr($dat['args'][0], $pathSiteLength);
-				$dat['file'] = substr($dat['file'], $pathSiteLength);
-				$pathFragment .= '(' . $dat['args'][0] . '),' . $dat['file'];
-			}
-			$path[] = $pathFragment . '#' . $dat['line'];
-		}
+    /**
+     * Displays the "path" of the function call stack in a string, using debug_backtrace
+     *
+     * @return array
+     */
+    public static function getTracePaths()
+    {
+        $trail = debug_backtrace();
+        $trail = array_reverse($trail);
+        array_pop($trail);
+        $path = array();
+        $pathSiteLength = strlen(PATH_site);
+        foreach ($trail as $dat) {
+            $pathFragment = $dat['class'] . $dat['type'] . $dat['function'];
+            // add the path of the included file
+            if (in_array(
+                $dat['function'],
+                array('require', 'include', 'require_once', 'include_once')
+            )) {
+                $dat['args'][0] = substr($dat['args'][0], $pathSiteLength);
+                $dat['file'] = substr($dat['file'], $pathSiteLength);
+                $pathFragment .= '(' . $dat['args'][0] . '),' . $dat['file'];
+            }
+            $path[] = $pathFragment . '#' . $dat['line'];
+        }
 
-		return $path;
-	}
+        return $path;
+    }
 
-	/**
-	 * Checks, if the debug output is anabled.
-	 * the given key has to match with the key from the extconf.
-	 *
-	 * @return boolean
-	 */
-	public static function isDebugEnabled($key = NULL) {
-		static $debugKey = NULL;
-		if ($debugKey === NULL) {
-			tx_rnbase::load('Tx_Rnbase_Configuration_Processor');
-			$debugKey = Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'debugKey');
-		}
-		if (empty($debugKey)) {
-			return FALSE;
-		}
-		if ($key === NULL) {
-			$key = $_GET['debug'];
-		}
-		return $debugKey === $key;
-	}
+    /**
+     * Checks, if the debug output is anabled.
+     * the given key has to match with the key from the extconf.
+     *
+     * @return bool
+     */
+    public static function isDebugEnabled($key = null)
+    {
+        static $debugKey = null;
+        if ($debugKey === null) {
+            tx_rnbase::load('Tx_Rnbase_Configuration_Processor');
+            $debugKey = Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'debugKey');
+        }
+        if (empty($debugKey)) {
+            return false;
+        }
+        if ($key === null) {
+            $key = $_GET['debug'];
+        }
 
-	/**
-	 * Prüft, ob per Parameter oder Konfiguration der Debug für die Labels aktiv ist.
-	 *
-	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-	 * @return boolean or string with debug type (plain, html)
-	 */
-	public static function isLabelDebugEnabled(
-		Tx_Rnbase_Configuration_ProcessorInterface $configurations = NULL
-	) {
-		static $status = array();
-		// check global debug params
-		if (!isset($status['global'])) {
-			$status['global'] = !empty($_GET['labeldebug']) && self::isDebugEnabled()
-				? $_GET['labeldebug'] : self::isDebugEnabled();
-		}
-		if ($status['global']) {
-			return $status['global'];
-		}
-		// check plugin debug config
-		if ($configurations instanceof Tx_Rnbase_Configuration_Processor) {
-			$pluginId = $configurations->getPluginId();
-			if (!isset($status[$pluginId])) {
-				$status[$pluginId] = $configurations->get('labeldebug');
-			}
-			return empty($status[$pluginId]) ? FALSE : $status[$pluginId];
-		}
-		// no debug!
-		return FALSE;
-	}
+        return $debugKey === $key;
+    }
 
-	/**
-	 *
-	 * @param string $text
-	 * @param string $debug
-	 */
-	public static function wrapDebugInfo($text, $debug, array $options = array()) {
-		if (!empty($options['plain'])) {
-			return $text . ' [' . $debug . ']';
-		}
-		self::addDebugInfoHeaderData();
-		$out  = '<span class="rnbase-debug-text">';
-		$out .= 	'<span class="rnbase-debug-info">';
-		$out .= 		is_scalar($debug) ? $debug : var_export($debug, true);
-		$out .= 	'</span> ';
-		$out .= 	$text;
-		$out .= '</span> ';
-		return $out;
-	}
-	/**
-	 * Adds the CSS for the hidden debug info wrap for self::wrapDebugInfo
-	 */
-	private static function addDebugInfoHeaderData() {
-		static $added = false;
-		if ($added) {
-			return;
-		}
-		$added = true;
-		// javascript für das autocpmplete
-		$code  = '';
-		$code .= '
+    /**
+     * Prüft, ob per Parameter oder Konfiguration der Debug für die Labels aktiv ist.
+     *
+     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @return bool or string with debug type (plain, html)
+     */
+    public static function isLabelDebugEnabled(
+        Tx_Rnbase_Configuration_ProcessorInterface $configurations = null
+    ) {
+        static $status = array();
+        // check global debug params
+        if (!isset($status['global'])) {
+            $status['global'] = !empty($_GET['labeldebug']) && self::isDebugEnabled() ? $_GET['labeldebug'] : self::isDebugEnabled();
+        }
+        if ($status['global']) {
+            return $status['global'];
+        }
+        // check plugin debug config
+        if ($configurations instanceof Tx_Rnbase_Configuration_Processor) {
+            $pluginId = $configurations->getPluginId();
+            if (!isset($status[$pluginId])) {
+                $status[$pluginId] = $configurations->get('labeldebug');
+            }
+
+            return empty($status[$pluginId]) ? false : $status[$pluginId];
+        }
+        // no debug!
+        return false;
+    }
+
+    /**
+     *
+     * @param string $text
+     * @param string $debug
+     */
+    public static function wrapDebugInfo($text, $debug, array $options = array())
+    {
+        if (!empty($options['plain'])) {
+            return $text . ' [' . $debug . ']';
+        }
+        self::addDebugInfoHeaderData();
+        $out  = '<span class="rnbase-debug-text">';
+        $out .=    '<span class="rnbase-debug-info">';
+        $out .=        is_scalar($debug) ? $debug : var_export($debug, true);
+        $out .=    '</span> ';
+        $out .=    $text;
+        $out .= '</span> ';
+
+        return $out;
+    }
+    /**
+     * Adds the CSS for the hidden debug info wrap for self::wrapDebugInfo
+     */
+    private static function addDebugInfoHeaderData()
+    {
+        static $added = false;
+        if ($added) {
+            return;
+        }
+        $added = true;
+        // javascript für das autocpmplete
+        $code  = '';
+        $code .= '
 			.rnbase-debug-text {
 				border: 1px solid red;
 				padding: 3px 4px;
@@ -208,17 +214,16 @@ class tx_rnbase_util_Debug {
 				display: block;
 			}
 		';
-		if (TYPO3_MODE === 'BE') {
-			// @TODO: this is too late, for the most cases!
-			$GLOBALS['TBE_STYLES']['inDocStyles_TBEstyle'] .= $code;
-		} else {
-			$code = '<style type="text/css">' . $code . '</style>';
-			$GLOBALS['TSFE']->additionalHeaderData['rnbase-debug-info'] = $code;
-		}
-	}
-
+        if (TYPO3_MODE === 'BE') {
+            // @TODO: this is too late, for the most cases!
+            $GLOBALS['TBE_STYLES']['inDocStyles_TBEstyle'] .= $code;
+        } else {
+            $code = '<style type="text/css">' . $code . '</style>';
+            $GLOBALS['TSFE']->additionalHeaderData['rnbase-debug-info'] = $code;
+        }
+    }
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Debug.php']) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Debug.php']);
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Debug.php']);
 }

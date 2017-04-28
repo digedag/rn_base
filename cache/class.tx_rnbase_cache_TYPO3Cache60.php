@@ -30,73 +30,83 @@ tx_rnbase::load('tx_rnbase_cache_ICache');
  * The cache is configured via TYPO3_CONF_VARS as usual:
  * $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['your_cache_name']['backend'],
  * $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['your_cache_name']['options']
- *
  */
-class tx_rnbase_cache_TYPO3Cache60 implements tx_rnbase_cache_ICache {
-	private $cache; // The cache instance
-	private static $emptyArray = array();
-	public function __construct($cacheName) {
-		$this->checkCacheConfiguration($cacheName);
-		$cache = $this->getT3CacheManager()->getCache($cacheName);
-		if(!is_object($cache)) throw new Exception('Error creating cache with name: ' . $cacheName);
-		$this->setCache($cache);
-	}
+class tx_rnbase_cache_TYPO3Cache60 implements tx_rnbase_cache_ICache
+{
+    private $cache; // The cache instance
+    private static $emptyArray = array();
+    public function __construct($cacheName)
+    {
+        $this->checkCacheConfiguration($cacheName);
+        $cache = $this->getT3CacheManager()->getCache($cacheName);
+        if (!is_object($cache)) {
+            throw new Exception('Error creating cache with name: ' . $cacheName);
+        }
+        $this->setCache($cache);
+    }
 
-	/**
-	 * @return \TYPO3\CMS\Core\Cache\CacheManager
-	 */
-	private function getT3CacheManager() {
-		return $GLOBALS['typo3CacheManager'];
-	}
-	private function checkCacheConfiguration($cacheName) {
+    /**
+     * @return \TYPO3\CMS\Core\Cache\CacheManager
+     */
+    private function getT3CacheManager()
+    {
+        return $GLOBALS['typo3CacheManager'];
+    }
+    private function checkCacheConfiguration($cacheName)
+    {
+        if (!array_key_exists($cacheName, $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'])) {
+            // Der Cache ist nicht konfiguriert.
+            // Wir konfigurieren einen mit Defaults
+            $defaultCache[$cacheName] = array(
+                'backend' => 't3lib_cache_backend_TransientMemoryBackend',
+                'options' => array(
+                )
+            );
+            $this->getT3CacheManager()->setCacheConfigurations($defaultCache);
+        }
+    }
 
-		if(!array_key_exists($cacheName, $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'])) {
-			// Der Cache ist nicht konfiguriert.
-			// Wir konfigurieren einen mit Defaults
-			$defaultCache[$cacheName] = array(
-				'backend' => 't3lib_cache_backend_TransientMemoryBackend',
-				'options' => array(
-				)
-			);
-			$this->getT3CacheManager()->setCacheConfigurations($defaultCache);
-		}
-	}
-
-	/**
-	 * Retrieve a value from cache
-	 *
-	 * @param string $key
-	 */
-	public function get($key) {
-		return $this->getCache()->get($key);
-	}
-	public function has($key) {
-		return $this->getCache()->has($key);
-	}
-	public function set($key, $value, $lifetime = NULL) {
-		$this->getCache()->set($key, $value, self::$emptyArray, $lifetime);
-	}
-	public function remove($key) {
-		$this->getCache()->remove($key);
-	}
-	/**
-	 * Set the TYPO3 cache instance.
-	 *
-	 * @param \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache
-	 */
-	private function setCache(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache) {
-		$this->cache = $cache;
-	}
-	/**
-	 * Set the TYPO3 cache instance.
-	 *
-	 * @return \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
-	 */
-	private function getCache() {
-		return $this->cache;
-	}
+    /**
+     * Retrieve a value from cache
+     *
+     * @param string $key
+     */
+    public function get($key)
+    {
+        return $this->getCache()->get($key);
+    }
+    public function has($key)
+    {
+        return $this->getCache()->has($key);
+    }
+    public function set($key, $value, $lifetime = null)
+    {
+        $this->getCache()->set($key, $value, self::$emptyArray, $lifetime);
+    }
+    public function remove($key)
+    {
+        $this->getCache()->remove($key);
+    }
+    /**
+     * Set the TYPO3 cache instance.
+     *
+     * @param \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache
+     */
+    private function setCache(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache)
+    {
+        $this->cache = $cache;
+    }
+    /**
+     * Set the TYPO3 cache instance.
+     *
+     * @return \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+     */
+    private function getCache()
+    {
+        return $this->cache;
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/cache/class.tx_rnbase_cache_TYPO3Cache.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/cache/class.tx_rnbase_cache_TYPO3Cache.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/cache/class.tx_rnbase_cache_TYPO3Cache.php']);
 }

@@ -27,80 +27,91 @@ tx_rnbase::load('Tx_Rnbase_Backend_Utility_Icons');
 
 /**
  */
-class tx_rnbase_mod_Util {
-	/**
-	 * Retrieve (and update) a value from module data.
-	 * @param string $key
-	 * @param tx_rnbase_mod_IModule $mod
-	 * @param array $options
-	 */
-	public static function getModuleValue($key, tx_rnbase_mod_IModule $mod, $options=array()) {
-		$changedSettings = is_array($options['changed']) ? $options['changed'] : array();
-		$type = isset($options['type']) ? $options['type'] : '';
-		$modData = Tx_Rnbase_Backend_Utility::getModuleData(array ($key => ''), $changedSettings, $mod->getName(), $type);
-		return isset($modData[$key]) ? $modData[$key] : NULL;
-	}
-	/**
-	 * Returns all data for a module for current BE user.
-	 * @param tx_rnbase_mod_IModule $mod
-	 * @param	string $type If type is 'ses' then the data is stored as session-lasting data. This means that it'll be wiped out the next time the user logs in.
-	 */
-	public static function getUserData(tx_rnbase_mod_IModule $mod, $type='') {
-		$settings = $GLOBALS['BE_USER']->getModuleData($mod->getName(), $type);
-		return $settings;
-	}
+class tx_rnbase_mod_Util
+{
+    /**
+     * Retrieve (and update) a value from module data.
+     * @param string $key
+     * @param tx_rnbase_mod_IModule $mod
+     * @param array $options
+     */
+    public static function getModuleValue($key, tx_rnbase_mod_IModule $mod, $options = array())
+    {
+        $changedSettings = is_array($options['changed']) ? $options['changed'] : array();
+        $type = isset($options['type']) ? $options['type'] : '';
+        $modData = Tx_Rnbase_Backend_Utility::getModuleData(array($key => ''), $changedSettings, $mod->getName(), $type);
 
-	/**
-	 * Returns a TYPO3 sprite icon
-	 *
-	 * @param string $iconName
-	 * @param array $options
-	 * @param array $overlays
-	 *
-	 * @return string The full HTML tag (usually a <span>)
-	 */
-	public static function getSpriteIcon($iconName, array $options = array(), array $overlays = array()) {
-		return Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon($iconName, $options, $overlays);
-	}
-	/**
-	 * Returns a string with all available Icons in TYPO3 system. Each icon has a tooltip with its identifier.
-	 *
-	 * @return string
-	 */
-	public static function debugSprites() {
-		return Tx_Rnbase_Backend_Utility_Icons::debugSprites();
-	}
+        return isset($modData[$key]) ? $modData[$key] : null;
+    }
+    /**
+     * Returns all data for a module for current BE user.
+     * @param tx_rnbase_mod_IModule $mod
+     * @param   string $type If type is 'ses' then the data is stored as session-lasting data. This means that it'll be wiped out the next time the user logs in.
+     */
+    public static function getUserData(tx_rnbase_mod_IModule $mod, $type = '')
+    {
+        $settings = $GLOBALS['BE_USER']->getModuleData($mod->getName(), $type);
 
-	/**
-	 * Gibt einen selector mit den elementen im gegebenen array zurück
-	 *
-	 * @TODO: move to an selector!
-	 *
-	 * @param array $aItems Array mit den werten der Auswahlbox
-	 * @param mixed $selectedItem
-	 * @param string $sDefId ID-String des Elements
-	 * @param array $aData enthält die Formularelement für die Ausgabe im Screen. Keys: selector, label
-	 * @param array $aOptions zusätzliche Optionen: label, id
-	 * @return string selected item
-	 */
-	public static function showSelectorByArray($aItems, $selectedItem, $sDefId, &$aData, $aOptions=array()) {
-		$id = isset($aOptions['id']) && $aOptions['id'] ? $aOptions['id'] : $sDefId;
-		$pid = isset($aOptions['pid']) && $aOptions['pid'] ? $aOptions['pid'] : 0;
+        return $settings;
+    }
 
-		// Build select box items
-		$aData['selector'] = Tx_Rnbase_Backend_Utility::getFuncMenu(
-			$pid, 'SET['.$id.']', $selectedItem, $aItems
-		);
+    /**
+     * Returns a TYPO3 sprite icon
+     *
+     * @param string $iconName
+     * @param array $options
+     * @param array $overlays
+     *
+     * @return string The full HTML tag (usually a <span>)
+     */
+    public static function getSpriteIcon($iconName, array $options = array(), array $overlays = array())
+    {
+        return Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon($iconName, $options, $overlays);
+    }
+    /**
+     * Returns a string with all available Icons in TYPO3 system. Each icon has a tooltip with its identifier.
+     *
+     * @return string
+     */
+    public static function debugSprites()
+    {
+        return Tx_Rnbase_Backend_Utility_Icons::debugSprites();
+    }
 
-		//label
-		$aData['label'] = $aOptions['label'];
+    /**
+     * Gibt einen selector mit den elementen im gegebenen array zurück
+     *
+     * @TODO: move to an selector!
+     *
+     * @param array $aItems Array mit den werten der Auswahlbox
+     * @param mixed $selectedItem
+     * @param string $sDefId ID-String des Elements
+     * @param array $aData enthält die Formularelement für die Ausgabe im Screen. Keys: selector, label
+     * @param array $aOptions zusätzliche Optionen: label, id
+     * @return string selected item
+     */
+    public static function showSelectorByArray($aItems, $selectedItem, $sDefId, &$aData, $aOptions = array())
+    {
+        $id = isset($aOptions['id']) && $aOptions['id'] ? $aOptions['id'] : $sDefId;
+        $pid = isset($aOptions['pid']) && $aOptions['pid'] ? $aOptions['pid'] : 0;
 
-		// as the deleted fe users have always to be hidden the function returns always FALSE
-		//@todo wozu die alte abfrage? return $defId==$id ? FALSE : $selectedItem;
-		return $selectedItem;
-	}
+        // Build select box items
+        $aData['selector'] = Tx_Rnbase_Backend_Utility::getFuncMenu(
+            $pid,
+            'SET['.$id.']',
+            $selectedItem,
+            $aItems
+        );
+
+        //label
+        $aData['label'] = $aOptions['label'];
+
+        // as the deleted fe users have always to be hidden the function returns always FALSE
+        //@todo wozu die alte abfrage? return $defId==$id ? FALSE : $selectedItem;
+        return $selectedItem;
+    }
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_Util.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_Util.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_Util.php']) {
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_Util.php']);
 }

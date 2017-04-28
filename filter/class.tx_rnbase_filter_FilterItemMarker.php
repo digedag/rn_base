@@ -24,15 +24,18 @@
 
 tx_rnbase::load('tx_rnbase_util_BaseMarker');
 
-class tx_rnbase_filter_FilterItemMarker extends tx_rnbase_util_BaseMarker {
-	public function parseTemplate($template, &$item, &$formatter, $confId, $marker = 'FILTERITEM') {
-    $markerArray = $formatter->getItemMarkerArrayWrapped($item->record, $confId , 0, $marker.'_');
+class tx_rnbase_filter_FilterItemMarker extends tx_rnbase_util_BaseMarker
+{
+    public function parseTemplate($template, &$item, &$formatter, $confId, $marker = 'FILTERITEM')
+    {
+        $markerArray = $formatter->getItemMarkerArrayWrapped($item->record, $confId, 0, $marker.'_');
 
-		$out = $formatter->cObj->substituteMarkerArrayCached($template, $markerArray, $subpartArray, $wrappedSubpartArray);
-		return $out;
-	}
+        $out = $formatter->cObj->substituteMarkerArrayCached($template, $markerArray, $subpartArray, $wrappedSubpartArray);
+
+        return $out;
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/filter/class.tx_rnbase_filter_FilterItemMarker.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/filter/class.tx_rnbase_filter_FilterItemMarker.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/filter/class.tx_rnbase_filter_FilterItemMarker.php']);
 }

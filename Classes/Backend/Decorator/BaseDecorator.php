@@ -32,463 +32,461 @@ tx_rnbase::load('tx_rnbase_util_TCA');
  * @subpackage Tx_Rnbase
  * @author Michael Wagner
  */
-class Tx_Rnbase_Backend_Decorator_BaseDecorator
-	implements Tx_Rnbase_Backend_Decorator_InterfaceDecorator
+class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Decorator_InterfaceDecorator
 {
-	/**
-	 * The module
-	 *
-	 * @var tx_rnbase_mod_BaseModule
-	 */
-	private $mod = null;
+    /**
+     * The module
+     *
+     * @var tx_rnbase_mod_BaseModule
+     */
+    private $mod = null;
 
-	/**
-	 * The internal options object.
-	 *
-	 * @var Tx_Rnbase_Domain_Model_Data $options
-	 */
-	private $options = null;
+    /**
+     * The internal options object.
+     *
+     * @var Tx_Rnbase_Domain_Model_Data $options
+     */
+    private $options = null;
 
-	/**
-	 * Constructor
-	 *
-	 * @param tx_rnbase_mod_BaseModule $mod
-	 * @param array|Tx_Rnbase_Domain_Model_Data $options
-	 */
-	public function __construct(
-		tx_rnbase_mod_BaseModule $mod,
-		$options = array()
-	) {
-		$this->mod = $mod;
+    /**
+     * Constructor
+     *
+     * @param tx_rnbase_mod_BaseModule $mod
+     * @param array|Tx_Rnbase_Domain_Model_Data $options
+     */
+    public function __construct(
+        tx_rnbase_mod_BaseModule $mod,
+        $options = array()
+    ) {
+        $this->mod = $mod;
 
-		tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
-		$this->options = Tx_Rnbase_Domain_Model_Data::getInstance($options);
-	}
+        tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
+        $this->options = Tx_Rnbase_Domain_Model_Data::getInstance($options);
+    }
 
-	/**
-	 * Returns the module
-	 *
-	 * @return tx_rnbase_mod_IModule
-	 */
-	protected function getModule()
-	{
-		return $this->mod;
-	}
+    /**
+     * Returns the module
+     *
+     * @return tx_rnbase_mod_IModule
+     */
+    protected function getModule()
+    {
+        return $this->mod;
+    }
 
-	/**
-	 * The internal options object.
-	 *
-	 * @return Tx_Rnbase_Domain_Model_Data
-	 */
-	protected function getOptions()
-	{
-		return $this->options;
-	}
+    /**
+     * The internal options object.
+     *
+     * @return Tx_Rnbase_Domain_Model_Data
+     */
+    protected function getOptions()
+    {
+        return $this->options;
+    }
 
-	/**
-	 * Returns an instance of tx_rnbase_mod_IModule
-	 *
-	 * @return tx_rnbase_util_FormTool
-	 */
-	protected function getFormTool()
-	{
-		return $this->getModule()->getFormTool();
-	}
+    /**
+     * Returns an instance of tx_rnbase_mod_IModule
+     *
+     * @return tx_rnbase_util_FormTool
+     */
+    protected function getFormTool()
+    {
+        return $this->getModule()->getFormTool();
+    }
 
-	/**
-	 * Formats a value
-	 *
-	 * @param string $columnValue
-	 * @param string $columnName
-	 * @param array $record
-	 * @param Tx_Rnbase_Domain_Model_DataInterface $entry
-	 *
-	 * @return string
-	 */
-	public function format(
-		$columnValue,
-		$columnName,
-		array $record,
-		Tx_Rnbase_Domain_Model_DataInterface $entry
-	) {
-		$return = $columnValue;
+    /**
+     * Formats a value
+     *
+     * @param string $columnValue
+     * @param string $columnName
+     * @param array $record
+     * @param Tx_Rnbase_Domain_Model_DataInterface $entry
+     *
+     * @return string
+     */
+    public function format(
+        $columnValue,
+        $columnName,
+        array $record,
+        Tx_Rnbase_Domain_Model_DataInterface $entry
+    ) {
+        $return = $columnValue;
 
-		tx_rnbase::load('tx_rnbase_util_Strings');
-		$method = tx_rnbase_util_Strings::underscoredToLowerCamelCase($columnName);
-		$method = 'format' . ucfirst($method) . 'Column';
+        tx_rnbase::load('tx_rnbase_util_Strings');
+        $method = tx_rnbase_util_Strings::underscoredToLowerCamelCase($columnName);
+        $method = 'format' . ucfirst($method) . 'Column';
 
-		if (method_exists($this, $method)) {
-			$return = $this->{$method}($entry);
-		}
+        if (method_exists($this, $method)) {
+            $return = $this->{$method}($entry);
+        }
 
-		return $this->wrapValue($return, $entry, $columnName);
-	}
+        return $this->wrapValue($return, $entry, $columnName);
+    }
 
-	/**
-	 * Wraps the Value.
-	 * A childclass can extend this and wrap each value in a spac.
-	 * For example a strikethrough for disabled entries.
-	 *
-	 * @param string $formatedValue
-	 * @param Tx_Rnbase_Domain_Model_DataInterface $entry
-	 * @param string $columnName
-	 *
-	 * @return string
-	 */
-	protected function wrapValue(
-		$formatedValue,
-		Tx_Rnbase_Domain_Model_DataInterface $entry,
-		$columnName
-	) {
-		return $formatedValue;
-	}
+    /**
+     * Wraps the Value.
+     * A childclass can extend this and wrap each value in a spac.
+     * For example a strikethrough for disabled entries.
+     *
+     * @param string $formatedValue
+     * @param Tx_Rnbase_Domain_Model_DataInterface $entry
+     * @param string $columnName
+     *
+     * @return string
+     */
+    protected function wrapValue(
+        $formatedValue,
+        Tx_Rnbase_Domain_Model_DataInterface $entry,
+        $columnName
+    ) {
+        return $formatedValue;
+    }
 
-	/**
-	 * Renders the uid column.
-	 *
-	 * @param Tx_Rnbase_Domain_Model_DataInterface $entry
-	 *
-	 * @return string
-	 */
-	protected function formatUidColumn(
-		Tx_Rnbase_Domain_Model_DataInterface $entry
-	) {
-		$value = $entry->getProperty('uid');
+    /**
+     * Renders the uid column.
+     *
+     * @param Tx_Rnbase_Domain_Model_DataInterface $entry
+     *
+     * @return string
+     */
+    protected function formatUidColumn(
+        Tx_Rnbase_Domain_Model_DataInterface $entry
+    ) {
+        $value = $entry->getProperty('uid');
 
-		return sprintf(
-			'<span title="%2$s">%1$d</span>',
-			$value,
-			htmlentities(implode(CRLF, $this->buildSimpleEntryInfo($entry)))
-		);
-	}
+        return sprintf(
+            '<span title="%2$s">%1$d</span>',
+            $value,
+            htmlentities(implode(CRLF, $this->buildSimpleEntryInfo($entry)))
+        );
+    }
 
-	/**
-	 * Renders the uid column.
-	 *
-	 * @param Tx_Rnbase_Domain_Model_DataInterface $entry
-	 *
-	 * @return string
-	 */
-	protected function formatLabelColumn(
-		Tx_Rnbase_Domain_Model_DataInterface $entry
-	) {
-		$label = '';
+    /**
+     * Renders the uid column.
+     *
+     * @param Tx_Rnbase_Domain_Model_DataInterface $entry
+     *
+     * @return string
+     */
+    protected function formatLabelColumn(
+        Tx_Rnbase_Domain_Model_DataInterface $entry
+    ) {
+        $label = '';
 
 
-		// only for domain entries with table name
-		if (!$entry instanceof Tx_Rnbase_Domain_Model_DomainInterface) {
-			return $label;
-		}
+        // only for domain entries with table name
+        if (!$entry instanceof Tx_Rnbase_Domain_Model_DomainInterface) {
+            return $label;
+        }
 
-		if ($entry instanceof Tx_Rnbase_Domain_Model_Base) {
-			$label = $entry->getTcaLabel();
-		} else {
-			$labelField = tx_rnbase_util_TCA::getLabelFieldForTable(
-				$entry->getTableName()
-			);
+        if ($entry instanceof Tx_Rnbase_Domain_Model_Base) {
+            $label = $entry->getTcaLabel();
+        } else {
+            $labelField = tx_rnbase_util_TCA::getLabelFieldForTable(
+                $entry->getTableName()
+            );
 
-			if ($labelField !== 'uid' && $entry->getProperty($labelField)) {
-				$label = $entry->getProperty($labelField);
-			} elseif ($entry->getLabel()) {
-				$label = $entry->getLabel();
-			} elseif ($entry->getName()) {
-				$label = $entry->getName();
-			}
-		}
+            if ($labelField !== 'uid' && $entry->getProperty($labelField)) {
+                $label = $entry->getProperty($labelField);
+            } elseif ($entry->getLabel()) {
+                $label = $entry->getLabel();
+            } elseif ($entry->getName()) {
+                $label = $entry->getName();
+            }
+        }
 
-		return sprintf(
-			'<span title="%2$s">%1$s</span>',
-			(string) $label,
-			htmlentities(implode(CRLF, $this->buildSimpleEntryInfo($entry)))
-		);
-	}
+        return sprintf(
+            '<span title="%2$s">%1$s</span>',
+            (string) $label,
+            htmlentities(implode(CRLF, $this->buildSimpleEntryInfo($entry)))
+        );
+    }
 
-	/**
-	 * Builds a simple info of the entitiy.
-	 * Is curently used for title tags
-	 *
-	 * @param Tx_Rnbase_Domain_Model_DataInterface $entry
-	 *
-	 * @return array
-	 */
-	protected function buildSimpleEntryInfo(
-		Tx_Rnbase_Domain_Model_DataInterface $entry
-	) {
-		$infos = array();
+    /**
+     * Builds a simple info of the entitiy.
+     * Is curently used for title tags
+     *
+     * @param Tx_Rnbase_Domain_Model_DataInterface $entry
+     *
+     * @return array
+     */
+    protected function buildSimpleEntryInfo(
+        Tx_Rnbase_Domain_Model_DataInterface $entry
+    ) {
+        $infos = array();
 
-		$infos['uid'] = 'UID: ' . $entry->getProperty('uid');
+        $infos['uid'] = 'UID: ' . $entry->getProperty('uid');
 
-		// only for domain entries with table name
-		if ($entry instanceof Tx_Rnbase_Domain_Model_DomainInterface) {
-			$labelField = tx_rnbase_util_TCA::getLabelFieldForTable($entry->getTableName());
-			if ($labelField !== 'uid' && $entry->getProperty($labelField)) {
-				$infos['label'] = 'Label: ' . (string) $entry->getProperty($labelField);
-			}
+        // only for domain entries with table name
+        if ($entry instanceof Tx_Rnbase_Domain_Model_DomainInterface) {
+            $labelField = tx_rnbase_util_TCA::getLabelFieldForTable($entry->getTableName());
+            if ($labelField !== 'uid' && $entry->getProperty($labelField)) {
+                $infos['label'] = 'Label: ' . (string) $entry->getProperty($labelField);
+            }
 
-			$datefields = array(
-				'Creation' => tx_rnbase_util_TCA::getCrdateFieldForTable($entry->getTableName()),
-				'Last Change' => tx_rnbase_util_TCA::getTstampFieldForTable($entry->getTableName()),
-			);
-			foreach ($datefields as $dateTitle => $datefield) {
-				$date = $entry->getProperty($datefield);
-				if (!empty($date)) {
-					$infos[$datefield] = $dateTitle . ': ' . strftime(
-						'%d.%m.%y %H:%M:%S',
-						$date
-					);
-				}
-			}
-		}
+            $datefields = array(
+                'Creation' => tx_rnbase_util_TCA::getCrdateFieldForTable($entry->getTableName()),
+                'Last Change' => tx_rnbase_util_TCA::getTstampFieldForTable($entry->getTableName()),
+            );
+            foreach ($datefields as $dateTitle => $datefield) {
+                $date = $entry->getProperty($datefield);
+                if (!empty($date)) {
+                    $infos[$datefield] = $dateTitle . ': ' . strftime(
+                        '%d.%m.%y %H:%M:%S',
+                        $date
+                    );
+                }
+            }
+        }
 
-		return $infos;
+        return $infos;
+    }
 
-	}
+    /**
+     * Renders the useractions
+     *
+     * @param Tx_Rnbase_Domain_Model_DataInterface $item
+     *
+     * @return string
+     */
+    protected function formatActionsColumn(
+        Tx_Rnbase_Domain_Model_DataInterface $item
+    ) {
+        $return = '';
 
-	/**
-	 * Renders the useractions
-	 *
-	 * @param Tx_Rnbase_Domain_Model_DataInterface $item
-	 *
-	 * @return string
-	 */
-	protected function formatActionsColumn(
-		Tx_Rnbase_Domain_Model_DataInterface $item
-	) {
-		$return = '';
+        // only for domain entries with table name
+        if (!$item instanceof Tx_Rnbase_Domain_Model_DomainInterface) {
+            return $return;
+        }
 
-		// only for domain entries with table name
-		if (!$item instanceof Tx_Rnbase_Domain_Model_DomainInterface) {
-			return $return;
-		}
+        $actionConf = $this->getActionsConfig($item);
 
-		$actionConf = $this->getActionsConfig($item);
+        foreach ($actionConf as $actionKey => $actionConfig) {
+            $method = 'formatAction' . ucfirst($actionKey);
+            if (method_exists($this, $method)) {
+                $return .= $this->{$method}($item, $actionConfig);
+            }
+        }
 
-		foreach ($actionConf as $actionKey => $actionConfig) {
-			$method = 'formatAction' . ucfirst($actionKey);
-			if (method_exists($this, $method)) {
-				$return .= $this->{$method}($item, $actionConfig);
-			}
-		}
+        return $return;
+    }
 
-		return $return;
-	}
+    /**
+     * Renders the useractions
+     *
+     * @param Tx_Rnbase_Domain_Model_DomainInterface $item
+     * @param array $actionConfig
+     *
+     * @return string
+     */
+    protected function formatActionEdit(
+        Tx_Rnbase_Domain_Model_DomainInterface $item,
+        array $actionConfig = array()
+    ) {
+        return $this->getFormTool()->createEditLink(
+            $item->getTableName(),
+            // we use the real uid, not the uid of the parent!
+            $item->getProperty('uid'),
+            $actionConfig['title']
+        );
+    }
 
-	/**
-	 * Renders the useractions
-	 *
-	 * @param Tx_Rnbase_Domain_Model_DomainInterface $item
-	 * @param array $actionConfig
-	 *
-	 * @return string
-	 */
-	protected function formatActionEdit(
-		Tx_Rnbase_Domain_Model_DomainInterface $item,
-		array $actionConfig = array()
-	) {
-		return $this->getFormTool()->createEditLink(
-			$item->getTableName(),
-			// we use the real uid, not the uid of the parent!
-			$item->getProperty('uid'),
-			$actionConfig['title']
-		);
-	}
+    /**
+     * Renders the useractions
+     *
+     * @param Tx_Rnbase_Domain_Model_DomainInterface $item
+     * @param array $actionConfig
+     *
+     * @return string
+     */
+    protected function formatActionHide(
+        Tx_Rnbase_Domain_Model_DomainInterface $item,
+        array $actionConfig = array()
+    ) {
+        return $this->getFormTool()->createHideLink(
+            $item->getTableName(),
+            // we use the real uid, not the uid of the parent!
+            $item->getProperty('uid'),
+            $item->isHidden(),
+            array(
+                'label' => $actionConfig['title']
+            )
+        );
+    }
 
-	/**
-	 * Renders the useractions
-	 *
-	 * @param Tx_Rnbase_Domain_Model_DomainInterface $item
-	 * @param array $actionConfig
-	 *
-	 * @return string
-	 */
-	protected function formatActionHide(
-		Tx_Rnbase_Domain_Model_DomainInterface $item,
-		array $actionConfig = array()
-	) {
-		return $this->getFormTool()->createHideLink(
-			$item->getTableName(),
-			// we use the real uid, not the uid of the parent!
-			$item->getProperty('uid'),
-			$item->isHidden(),
-			array(
-				'label' => $actionConfig['title']
-			)
-		);
-	}
+    /**
+     * Renders the useractions
+     *
+     * @param Tx_Rnbase_Domain_Model_DomainInterface $item
+     * @param array $actionConfig
+     *
+     * @return string
+     */
+    protected function formatActionRemove(
+        Tx_Rnbase_Domain_Model_DomainInterface $item,
+        array $actionConfig = array()
+    ) {
+        return $this->getFormTool()->createDeleteLink(
+            $item->getTableName(),
+            // we use the real uid, not the uid of the parent!
+            $item->getProperty('uid'),
+            $actionConfig['title'],
+            array(
+                'confirm' => $actionConfig['confirm']
+            )
+        );
+    }
 
-	/**
-	 * Renders the useractions
-	 *
-	 * @param Tx_Rnbase_Domain_Model_DomainInterface $item
-	 * @param array $actionConfig
-	 *
-	 * @return string
-	 */
-	protected function formatActionRemove(
-		Tx_Rnbase_Domain_Model_DomainInterface $item,
-		array $actionConfig = array()
-	) {
-		return $this->getFormTool()->createDeleteLink(
-			$item->getTableName(),
-			// we use the real uid, not the uid of the parent!
-			$item->getProperty('uid'),
-			$actionConfig['title'],
-			array(
-				'confirm' => $actionConfig['confirm']
-			)
-		);
-	}
+    /**
+     * Renders the useractions
+     *
+     * @param Tx_Rnbase_Domain_Model_DomainInterface $item
+     * @param array $actionConfig
+     *
+     * @return string
+     */
+    protected function formatActionMoveup(
+        Tx_Rnbase_Domain_Model_DomainInterface $item,
+        array $actionConfig = array()
+    ) {
+        $uid = $item->getProperty('uid');
+        $fromUid = $uid;
+        $uidMap = $this->getUidMap($item);
+        // zwei schritte in der map zurück,
+        // denn wir wollen das aktuelle element vor das vorherige.
+        // typo3 verschiebt aber immer hinter elemente, also muss es hinter das vorvorletzte.
+        // wenn es kein vorvorletztes gibt,
+        // verschieben wir das vorletzte element hinter das aktuelle element
+        prev($uidMap);
+        $prevId = key($uidMap);
+        if ($prevId) {
+            prev($uidMap);
+            if (key($uidMap)) {
+                $prevId = key($uidMap);
+            } else {
+                $fromUid = $prevId;
+                $prevId = $uid;
+            }
+        }
+        if ($prevId) {
+            $action = $this->getFormTool()->createMoveUpLink(
+                $item->getTableName(),
+                $fromUid,
+                $prevId,
+                array(
+                    'label' => '',
+                    'title' => 'Move ' . $fromUid . ' after ' . $prevId,
+                )
+            );
+        } else {
+            tx_rnbase::load('tx_rnbase_mod_Util');
+            $action = tx_rnbase_mod_Util::getSpriteIcon('empty-icon');
+        }
 
-	/**
-	 * Renders the useractions
-	 *
-	 * @param Tx_Rnbase_Domain_Model_DomainInterface $item
-	 * @param array $actionConfig
-	 *
-	 * @return string
-	 */
-	protected function formatActionMoveup(
-		Tx_Rnbase_Domain_Model_DomainInterface $item,
-		array $actionConfig = array()
-	) {
-		$uid = $item->getProperty('uid');
-		$fromUid = $uid;
-		$uidMap = $this->getUidMap($item);
-		// zwei schritte in der map zurück,
-		// denn wir wollen das aktuelle element vor das vorherige.
-		// typo3 verschiebt aber immer hinter elemente, also muss es hinter das vorvorletzte.
-		// wenn es kein vorvorletztes gibt,
-		// verschieben wir das vorletzte element hinter das aktuelle element
-		prev($uidMap);
-		$prevId = key($uidMap);
-		if ($prevId) {
-			prev($uidMap);
-			if (key($uidMap)) {
-				$prevId = key($uidMap);
-			} else {
-				$fromUid = $prevId;
-				$prevId = $uid;
-			}
-		}
-		if ($prevId) {
-			$action = $this->getFormTool()->createMoveUpLink(
-				$item->getTableName(),
-				$fromUid,
-				$prevId,
-				array(
-					'label' => '',
-					'title' => 'Move ' . $fromUid . ' after ' . $prevId,
-				)
-			);
-		} else {
-			tx_rnbase::load('tx_rnbase_mod_Util');
-			$action = tx_rnbase_mod_Util::getSpriteIcon('empty-icon');
-		}
+        return $action;
+    }
 
-		return $action;
-	}
+    /**
+     * Renders the useractions
+     *
+     * @param Tx_Rnbase_Domain_Model_DomainInterface $item
+     * @param array $actionConfig
+     *
+     * @return string
+     */
+    protected function formatActionMovedown(
+        Tx_Rnbase_Domain_Model_DomainInterface $item,
+        array $actionConfig = array()
+    ) {
+        $uid = $item->getProperty('uid');
+        $uidMap = $this->getUidMap($item);
+        // einen schritt in der map nach vorne, denn wir wollen das aktuelle hinter dem nächsten platzieren.
+        next($uidMap);
+        $nextId = key($uidMap);
+        if ($nextId) {
+            $action = $this->getFormTool()->createMoveDownLink(
+                $item->getTableName(),
+                $uid,
+                $nextId,
+                array(
+                    'label' => '',
+                    'title' => 'Move ' . $uid . ' after ' . $nextId,
+                )
+            );
+        } else {
+            tx_rnbase::load('tx_rnbase_mod_Util');
+            $action = tx_rnbase_mod_Util::getSpriteIcon('empty-icon');
+        }
 
-	/**
-	 * Renders the useractions
-	 *
-	 * @param Tx_Rnbase_Domain_Model_DomainInterface $item
-	 * @param array $actionConfig
-	 *
-	 * @return string
-	 */
-	protected function formatActionMovedown(
-		Tx_Rnbase_Domain_Model_DomainInterface $item,
-		array $actionConfig = array()
-	) {
-		$uid = $item->getProperty('uid');
-		$uidMap = $this->getUidMap($item);
-		// einen schritt in der map nach vorne, denn wir wollen das aktuelle hinter dem nächsten platzieren.
-		next($uidMap);
-		$nextId = key($uidMap);
-		if ($nextId) {
-			$action = $this->getFormTool()->createMoveDownLink(
-				$item->getTableName(),
-				$uid,
-				$nextId,
-				array(
-					'label' => '',
-					'title' => 'Move ' . $uid . ' after ' . $nextId,
-				)
-			);
-		} else {
-			tx_rnbase::load('tx_rnbase_mod_Util');
-			$action = tx_rnbase_mod_Util::getSpriteIcon('empty-icon');
-		}
+        return $action;
+    }
 
-		return $action;
-	}
+    /**
+     * Returns the uid map and sets the pointer to the current element
+     *
+     * @param Tx_Rnbase_Domain_Model_RecordInterface $item
+     *
+     * @return array
+     */
+    protected function getUidMap(
+        Tx_Rnbase_Domain_Model_RecordInterface $item
+    ) {
+        if (!$this->getOptions()->hasUidMap()) {
+            return array();
+        }
 
-	/**
-	 * Returns the uid map and sets the pointer to the current element
-	 *
-	 * @param Tx_Rnbase_Domain_Model_RecordInterface $item
-	 *
-	 * @return array
-	 */
-	protected function getUidMap(
-		Tx_Rnbase_Domain_Model_RecordInterface $item
-	) {
-		if (!$this->getOptions()->hasUidMap()) {
-			return array();
-		}
+        $currentId = $item->getUid();
+        $map = $this->getOptions()->getUidMap();
 
-		$currentId = $item->getUid();
-		$map = $this->getOptions()->getUidMap();
+        while (key($map) !== null && key($map) != $currentId) {
+            next($map);
+        }
 
-		while (key($map) !== null && key($map) != $currentId) {
-			next($map);
-		}
+        return $map;
+    }
 
-		return $map;
-	}
+    /**
+     * Liefert die möglichen Optionen für die actions
+     *
+     * @param Tx_Rnbase_Domain_Model_DomainInterface $item
+     *
+     * @return array
+     */
+    protected function getActionsConfig(
+        Tx_Rnbase_Domain_Model_DomainInterface $item
+    ) {
+        $def = array('title' => '');
+        $actions = array(
+            'edit' => $def,
+            'hide' => $def,
+        );
 
-	/**
-	 * Liefert die möglichen Optionen für die actions
-	 *
-	 * @param Tx_Rnbase_Domain_Model_DomainInterface $item
-	 *
-	 * @return array
-	 */
-	protected function getActionsConfig(
-		Tx_Rnbase_Domain_Model_DomainInterface $item
-	) {
-		$def = array('title' => '');
-		$actions = array(
-			'edit' => $def,
-			'hide' => $def,
-		);
+        // add mopve up and move down buttons for sortable entities
+        if (tx_rnbase_util_TCA::getSortbyFieldForTable($item->getTableName())) {
+            $actions['moveup'] = $def;
+            $actions['movedown'] = $def;
+        }
 
-		// add mopve up and move down buttons for sortable entities
-		if (tx_rnbase_util_TCA::getSortbyFieldForTable($item->getTableName())) {
-			$actions['moveup'] = $def;
-			$actions['movedown'] = $def;
-		}
+        // add remove button only for admins
+        if ($this->isAdmin()) {
+            $actions['remove'] = $def;
+            $actions['remove']['confirm'] = '###LABEL_ENTRY_DELETE_CONFIRM###';
+        }
 
-		// add remove button only for admins
-		if ($this->isAdmin()) {
-			$actions['remove'] = $def;
-			$actions['remove']['confirm'] = '###LABEL_ENTRY_DELETE_CONFIRM###';
-		}
+        return $actions;
+    }
 
-		return $actions;
-	}
+    /**
+     * Is the current iser a admin?
+     *
+     * @return bool
+     */
+    protected function isAdmin()
+    {
+        if (is_object($GLOBALS['BE_USER'])) {
+            return (bool) $GLOBALS['BE_USER']->isAdmin();
+        }
 
-	/**
-	 * Is the current iser a admin?
-	 *
-	 * @return bool
-	 */
-	protected function isAdmin()
-	{
-		if (is_object($GLOBALS['BE_USER'])) {
-			return (bool) $GLOBALS['BE_USER']->isAdmin();
-		}
-
-		return false;
-	}
+        return false;
+    }
 }

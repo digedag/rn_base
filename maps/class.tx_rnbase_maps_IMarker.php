@@ -26,65 +26,66 @@
 /**
  * Common Interface for MapMarkers
  */
-interface tx_rnbase_maps_IMarker {
-	/**
-	 * Returns the country
-	 * @return string
-	 */
-	function getCountry();
-	/**
-	 * Returns the state/province
-	 * @return string
-	 */
-	function getState();
-	/**
-	 * Returns the street
-	 * @return string
-	 */
-	function getStreet();
-	/**
-	 * Returns the zip code
-	 * @return string
-	 */
-	function getZip();
-	/**
-	 * Returns the city
-	 * @return string
-	 */
-	function getCity();
-	/**
-	 * Returns a specific coordination
-	 * @return tx_rnbase_maps_ICoord
-	 */
-	function getCoords();
+interface tx_rnbase_maps_IMarker
+{
+    /**
+     * Returns the country
+     * @return string
+     */
+    public function getCountry();
+    /**
+     * Returns the state/province
+     * @return string
+     */
+    public function getState();
+    /**
+     * Returns the street
+     * @return string
+     */
+    public function getStreet();
+    /**
+     * Returns the zip code
+     * @return string
+     */
+    public function getZip();
+    /**
+     * Returns the city
+     * @return string
+     */
+    public function getCity();
+    /**
+     * Returns a specific coordination
+     * @return tx_rnbase_maps_ICoord
+     */
+    public function getCoords();
 
-	/**
-	 * Returns the Icon for this marker
-	 * @return tx_rnbase_maps_IIcon
-	 */
-	function getIcon();
-	/**
-	 * Returns the label
-	 * @return string
-	 */
-	function getTitle();
-	/**
-	 * Returns the description
-	 * @return string
-	 */
-	function getDescription();
-	/**
-	 * Minimum zoom level to show the marker
-	 * @return int 0 up to 18
-	 */
-	function getZoomMin();
-	/**
-	 * Maximum zoom level to show the marker
-	 * @return int 0 up to 18
-	 */
-	function getZoomMax();
+    /**
+     * Returns the Icon for this marker
+     * @return tx_rnbase_maps_IIcon
+     */
+    public function getIcon();
+    /**
+     * Returns the label
+     * @return string
+     */
+    public function getTitle();
+    /**
+     * Returns the description
+     * @return string
+     */
+    public function getDescription();
+    /**
+     * Minimum zoom level to show the marker
+     * @return int 0 up to 18
+     */
+    public function getZoomMin();
+    /**
+     * Maximum zoom level to show the marker
+     * @return int 0 up to 18
+     */
+    public function getZoomMax();
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_IMarker.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_IMarker.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_IMarker.php']);
 }

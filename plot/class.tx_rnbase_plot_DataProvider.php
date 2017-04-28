@@ -27,72 +27,81 @@ tx_rnbase::load('tx_rnbase_plot_IDataProvider');
 /**
  * This interface defines a data provider for plots
  */
-class tx_rnbase_plot_DataProvider implements tx_rnbase_plot_IDataProvider {
-	private $dataSets = array();
+class tx_rnbase_plot_DataProvider implements tx_rnbase_plot_IDataProvider
+{
+    private $dataSets = array();
 
-	public function getChartTitle($confArr) {
-		return $this->chartTitle;
-	}
-	public function setChartTitle($title) {
-		$this->chartTitle = $title;
-	}
-	/**
-	 * Returns the datasets for all plots
-	 * @return tx_rnbase_plot_IDataSetXY
-	 */
-	public function getDataSets($confArr, $plotType) {
-		return $this->dataSets;
-	}
-	/**
-	 * Returns the style for each data set. This is either an instance of tx_pbimagegraph_Fill_Array or
-	 * a simple php array with style data
-	 * @param $confArr
-	 * @return array
-	 */
-	public function getDataStyles($plotId, $confArr) {
-		// Es wird der Style mit der ID 0 ausgelesen. Hier können mehrere Angaben gemacht werden
-		$ret = array();
-		$type = $confArr['dataStyle.']['0'];
-		$data = $confArr['dataStyle.']['0.'];
-		switch($type) {
-			case 'color':
-			case 'addColor':
-				$strColors = tx_rnbase_util_Strings::trimExplode(',', $data['color']);
-				foreach($strColors As $color)
-					$ret[] = array('type' => 'color', 'color' => $color);
-			break;
-			case 'gradient':
-				$intDirection = tx_rnbase_plot_Builder::readConstant('IMAGE_GRAPH_GRAD_'.strtoupper($data['direction']));
-				$strColorsStart = tx_rnbase_util_Strings::trimExplode(',', $data['startColor']);
-				$strColorsEnd = tx_rnbase_util_Strings::trimExplode(',', $data['endColor']);
-				$maxStart = count($strColorsStart);
-				$maxEnd = count($strColorsEnd);
-				$max = $maxStart > $maxEnd ? $maxStart : $maxEnd;
-				for($i=0; $i<$max; $i++) {
-					$strStartColor = $i < $maxStart ? $strColorsStart[$i] : $strColorsStart[$maxStart-1];
-					$strEndColor = $i < $maxEnd ? $strColorsEnd[$i] : $strColorsEnd[$maxEnd-1];
-					$ret[] = array('type' => 'gradient', 'color' => array($intDirection, $strStartColor, $strEndColor));
-				}
-			break;
-		}
-		return $ret;
-	}
+    public function getChartTitle($confArr)
+    {
+        return $this->chartTitle;
+    }
+    public function setChartTitle($title)
+    {
+        $this->chartTitle = $title;
+    }
+    /**
+     * Returns the datasets for all plots
+     * @return tx_rnbase_plot_IDataSetXY
+     */
+    public function getDataSets($confArr, $plotType)
+    {
+        return $this->dataSets;
+    }
+    /**
+     * Returns the style for each data set. This is either an instance of tx_pbimagegraph_Fill_Array or
+     * a simple php array with style data
+     * @param $confArr
+     * @return array
+     */
+    public function getDataStyles($plotId, $confArr)
+    {
+        // Es wird der Style mit der ID 0 ausgelesen. Hier können mehrere Angaben gemacht werden
+        $ret = array();
+        $type = $confArr['dataStyle.']['0'];
+        $data = $confArr['dataStyle.']['0.'];
+        switch ($type) {
+            case 'color':
+            case 'addColor':
+                $strColors = tx_rnbase_util_Strings::trimExplode(',', $data['color']);
+                foreach ($strColors as $color) {
+                    $ret[] = array('type' => 'color', 'color' => $color);
+                }
+                break;
+            case 'gradient':
+                $intDirection = tx_rnbase_plot_Builder::readConstant('IMAGE_GRAPH_GRAD_'.strtoupper($data['direction']));
+                $strColorsStart = tx_rnbase_util_Strings::trimExplode(',', $data['startColor']);
+                $strColorsEnd = tx_rnbase_util_Strings::trimExplode(',', $data['endColor']);
+                $maxStart = count($strColorsStart);
+                $maxEnd = count($strColorsEnd);
+                $max = $maxStart > $maxEnd ? $maxStart : $maxEnd;
+                for ($i = 0; $i < $max; $i++) {
+                    $strStartColor = $i < $maxStart ? $strColorsStart[$i] : $strColorsStart[$maxStart - 1];
+                    $strEndColor = $i < $maxEnd ? $strColorsEnd[$i] : $strColorsEnd[$maxEnd - 1];
+                    $ret[] = array('type' => 'gradient', 'color' => array($intDirection, $strStartColor, $strEndColor));
+                }
+                break;
+        }
 
-	public function addPlot() {
-		$id = count($this->dataSets);
-		$this->dataSets[] = array();
-		return $id;
-	}
-	/**
-	 * Returns the uid
-	 * @return tx_rnbase_plot_IDataSetXY
-	 */
-	public function addDataSet($plotId, $dataSet) {
-		$this->dataSets[$plotId][] = $dataSet;
-	}
+        return $ret;
+    }
 
+    public function addPlot()
+    {
+        $id = count($this->dataSets);
+        $this->dataSets[] = array();
+
+        return $id;
+    }
+    /**
+     * Returns the uid
+     * @return tx_rnbase_plot_IDataSetXY
+     */
+    public function addDataSet($plotId, $dataSet)
+    {
+        $this->dataSets[$plotId][] = $dataSet;
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/plot/class.tx_rnbase_plot_DataProvider.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/plot/class.tx_rnbase_plot_DataProvider.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/plot/class.tx_rnbase_plot_DataProvider.php']);
 }

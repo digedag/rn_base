@@ -26,20 +26,21 @@
 /**
  * Common Interface for Maps
  */
-interface tx_rnbase_maps_ICoord {
+interface tx_rnbase_maps_ICoord
+{
 
-	/**
-	 * Returns the latitude
-	 * @return float
-	 */
-	public function getLatitude();
-	/**
-	 * Returns the longitude
-	 * @return float
-	 */
-	public function getLongitude();
+    /**
+     * Returns the latitude
+     * @return float
+     */
+    public function getLatitude();
+    /**
+     * Returns the longitude
+     * @return float
+     */
+    public function getLongitude();
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_ICoord.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_ICoord.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_ICoord.php']);
 }

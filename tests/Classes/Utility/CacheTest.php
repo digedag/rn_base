@@ -27,83 +27,86 @@ tx_rnbase::load('Tx_Rnbase_Utility_Cache');
 /**
  * Tx_Rnbase_Utility_MailTest
  *
- * @package 		TYPO3
- * @subpackage	 	Tx_Rnbase
- * @author 			Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
- * @license 		http://www.gnu.org/licenses/lgpl.html
- * 					GNU Lesser General Public License, version 3 or later
+ * @package         TYPO3
+ * @subpackage      Tx_Rnbase
+ * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
+ * @license         http://www.gnu.org/licenses/lgpl.html
+ *                  GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase {
+class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
+{
 
-	/**
-	 * @var string $cHashExcludedParametersBackup
-	 */
-	private $cHashExcludedParametersBackup = '';
+    /**
+     * @var string $cHashExcludedParametersBackup
+     */
+    private $cHashExcludedParametersBackup = '';
 
-	/**
-	 * {@inheritDoc}
-	 * @see PHPUnit_Framework_TestCase::setUp()
-	 */
-	protected function setUp() {
-		$this->cHashExcludedParametersBackup = $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'];
-		$GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'] = '';
+    /**
+     * {@inheritDoc}
+     * @see PHPUnit_Framework_TestCase::setUp()
+     */
+    protected function setUp()
+    {
+        $this->cHashExcludedParametersBackup = $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'];
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'] = '';
+    }
 
-	}
+    /**
+     * {@inheritDoc}
+     * @see PHPUnit_Framework_TestCase::tearDown()
+     */
+    protected function tearDown()
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'] = $this->cHashExcludedParametersBackup;
+        tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator')->setConfiguration(array(
+            'excludedParameters' => explode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'])));
+    }
 
-	/**
-	 * {@inheritDoc}
-	 * @see PHPUnit_Framework_TestCase::tearDown()
-	 */
-	protected function tearDown() {
-		$GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'] = $this->cHashExcludedParametersBackup;
-		tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator')->setConfiguration(array(
-			'excludedParameters' => explode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters']))
-		);
-	}
+    /**
+     * @group unit
+     */
+    public function testAddExcludedParametersForCacheHash()
+    {
+        $property = new ReflectionProperty('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator', 'excludedParameters');
+        $property->setAccessible(true);
+        $excludedParameters = array_flip($property->getValue(tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator')));
 
-	/**
-	 * @group unit
-	 */
-	public function testAddExcludedParametersForCacheHash() {
-		$property = new ReflectionProperty('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator', 'excludedParameters');
-		$property->setAccessible(TRUE);
-		$excludedParameters = array_flip($property->getValue(tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator')));
+        self::assertArrayNotHasKey('john', $excludedParameters);
+        self::assertArrayNotHasKey('doe', $excludedParameters);
+        self::assertSame('', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters']);
 
-		self::assertArrayNotHasKey('john', $excludedParameters);
-		self::assertArrayNotHasKey('doe', $excludedParameters);
-		self::assertSame('', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters']);
+        Tx_Rnbase_Utility_Cache::addExcludedParametersForCacheHash(array('john', 'doe'));
 
-		Tx_Rnbase_Utility_Cache::addExcludedParametersForCacheHash(array('john', 'doe'));
+        $excludedParameters = array_flip($property->getValue(tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator')));
 
-		$excludedParameters = array_flip($property->getValue(tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator')));
+        self::assertArrayHasKey('john', $excludedParameters);
+        self::assertArrayHasKey('doe', $excludedParameters);
 
-		self::assertArrayHasKey('john', $excludedParameters);
-		self::assertArrayHasKey('doe', $excludedParameters);
+        self::assertSame('john,doe', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters']);
+    }
 
-		self::assertSame('john,doe', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters']);
-	}
+    /**
+     * @group unit
+     */
+    public function testAddExcludedParametersForCacheHashIfSomeExistAlready()
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'] = 'L';
+        $property = new ReflectionProperty('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator', 'excludedParameters');
+        $property->setAccessible(true);
+        $excludedParameters = array_flip($property->getValue(tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator')));
 
-	/**
-	 * @group unit
-	 */
-	public function testAddExcludedParametersForCacheHashIfSomeExistAlready() {
-		$GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'] = 'L';
-		$property = new ReflectionProperty('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator', 'excludedParameters');
-		$property->setAccessible(TRUE);
-		$excludedParameters = array_flip($property->getValue(tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator')));
+        self::assertArrayNotHasKey('john', $excludedParameters);
+        self::assertArrayNotHasKey('doe', $excludedParameters);
+        self::assertSame('L', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters']);
 
-		self::assertArrayNotHasKey('john', $excludedParameters);
-		self::assertArrayNotHasKey('doe', $excludedParameters);
-		self::assertSame('L', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters']);
+        Tx_Rnbase_Utility_Cache::addExcludedParametersForCacheHash(array('john', 'doe'));
 
-		Tx_Rnbase_Utility_Cache::addExcludedParametersForCacheHash(array('john', 'doe'));
+        $excludedParameters = array_flip($property->getValue(tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator')));
 
-		$excludedParameters = array_flip($property->getValue(tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator')));
+        self::assertArrayHasKey('john', $excludedParameters);
+        self::assertArrayHasKey('doe', $excludedParameters);
+        self::assertArrayHasKey('L', $excludedParameters);
 
-		self::assertArrayHasKey('john', $excludedParameters);
-		self::assertArrayHasKey('doe', $excludedParameters);
-		self::assertArrayHasKey('L', $excludedParameters);
-
-		self::assertSame('L,john,doe', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters']);
-	}
+        self::assertSame('L,john,doe', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters']);
+    }
 }

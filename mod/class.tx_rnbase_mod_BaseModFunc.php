@@ -31,70 +31,79 @@ tx_rnbase::load('tx_rnbase_util_Templates');
 
 /**
  */
-abstract class tx_rnbase_mod_BaseModFunc implements tx_rnbase_mod_IModFunc {
-	/* @var $mod tx_rnbase_mod_IModule */
-	protected $mod;
-	public function init(tx_rnbase_mod_IModule $module, $conf) {
-		$this->mod = $module;
-	}
-	/**
-	 * Returns the base module
-	 *
-	 * @return tx_rnbase_mod_IModule
-	 */
-	public function getModule() {
-		return $this->mod;
-	}
-	public function main() {
-		$out = '';
-		$conf = $this->getModule()->getConfigurations();
+abstract class tx_rnbase_mod_BaseModFunc implements tx_rnbase_mod_IModFunc
+{
+    /* @var $mod tx_rnbase_mod_IModule */
+    protected $mod;
+    public function init(tx_rnbase_mod_IModule $module, $conf)
+    {
+        $this->mod = $module;
+    }
+    /**
+     * Returns the base module
+     *
+     * @return tx_rnbase_mod_IModule
+     */
+    public function getModule()
+    {
+        return $this->mod;
+    }
+    public function main()
+    {
+        $out = '';
+        $conf = $this->getModule()->getConfigurations();
 
-		$file = tx_rnbase_util_Files::getFileAbsFileName($conf->get($this->getConfId().'template'));
-		$templateCode = tx_rnbase_util_Network::getUrl($file);
-		if(!$templateCode) return $conf->getLL('msg_template_not_found').'<br />File: \'' . $file . '\'<br />ConfId: \'' . $this->getConfId().'template\'';
-		$subpart = '###'.strtoupper($this->getFuncId()).'###';
-		$template = tx_rnbase_util_Templates::getSubpart($templateCode, $subpart);
-		if(!$template) return $conf->getLL('msg_subpart_not_found'). ': ' . $subpart;
+        $file = tx_rnbase_util_Files::getFileAbsFileName($conf->get($this->getConfId().'template'));
+        $templateCode = tx_rnbase_util_Network::getUrl($file);
+        if (!$templateCode) {
+            return $conf->getLL('msg_template_not_found').'<br />File: \'' . $file . '\'<br />ConfId: \'' . $this->getConfId().'template\'';
+        }
+        $subpart = '###'.strtoupper($this->getFuncId()).'###';
+        $template = tx_rnbase_util_Templates::getSubpart($templateCode, $subpart);
+        if (!$template) {
+            return $conf->getLL('msg_subpart_not_found'). ': ' . $subpart;
+        }
 
-		$start = microtime(TRUE);
-		$memStart = memory_get_usage();
-		$out .= $this->getContent($template, $conf, $conf->getFormatter(), $this->getModule()->getFormTool());
-		if(tx_rnbase_util_BaseMarker::containsMarker($out, 'MOD_')) {
-			$markerArr = array();
-			$memEnd = memory_get_usage();
-			$markerArr['###MOD_PARSETIME###'] = (microtime(TRUE) - $start);
-			$markerArr['###MOD_MEMUSED###'] = ($memEnd - $memStart);
-			$markerArr['###MOD_MEMSTART###'] = $memStart;
-			$markerArr['###MOD_MEMEND###'] = $memEnd;
-			$out = tx_rnbase_util_Templates::substituteMarkerArrayCached($out, $markerArr);
-		}
-		return $out;
-	}
-	/**
-	 * Kindklassen implementieren diese Methode um den Modulinhalt zu erzeugen
-	 * @param string $template
-	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-	 * @param tx_rnbase_util_FormatUtil $formatter
-	 * @param tx_rnbase_util_FormTool $formTool
-	 * @return string
-	 */
-	abstract protected function getContent($template, &$configurations, &$formatter, $formTool);
-	/**
-	 * Liefert die ConfId für diese ModFunc
-	 *
-	 * @return string
-	 */
-	public function getConfId() {
-		return $this->getFuncId().'.';
-	}
-	/**
-	 * Jede Modulfunktion sollte über einen eigenen Schlüssel innerhalb des Moduls verfügen. Dieser
-	 * wird später für die Konfigruration verwendet
-	 *
-	 */
-	abstract protected function getFuncId();
+        $start = microtime(true);
+        $memStart = memory_get_usage();
+        $out .= $this->getContent($template, $conf, $conf->getFormatter(), $this->getModule()->getFormTool());
+        if (tx_rnbase_util_BaseMarker::containsMarker($out, 'MOD_')) {
+            $markerArr = array();
+            $memEnd = memory_get_usage();
+            $markerArr['###MOD_PARSETIME###'] = (microtime(true) - $start);
+            $markerArr['###MOD_MEMUSED###'] = ($memEnd - $memStart);
+            $markerArr['###MOD_MEMSTART###'] = $memStart;
+            $markerArr['###MOD_MEMEND###'] = $memEnd;
+            $out = tx_rnbase_util_Templates::substituteMarkerArrayCached($out, $markerArr);
+        }
+
+        return $out;
+    }
+    /**
+     * Kindklassen implementieren diese Methode um den Modulinhalt zu erzeugen
+     * @param string $template
+     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param tx_rnbase_util_FormatUtil $formatter
+     * @param tx_rnbase_util_FormTool $formTool
+     * @return string
+     */
+    abstract protected function getContent($template, &$configurations, &$formatter, $formTool);
+    /**
+     * Liefert die ConfId für diese ModFunc
+     *
+     * @return string
+     */
+    public function getConfId()
+    {
+        return $this->getFuncId().'.';
+    }
+    /**
+     * Jede Modulfunktion sollte über einen eigenen Schlüssel innerhalb des Moduls verfügen. Dieser
+     * wird später für die Konfigruration verwendet
+     */
+    abstract protected function getFuncId();
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_IModFunc.php'])	{
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_IModFunc.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_IModFunc.php']) {
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_IModFunc.php']);
 }

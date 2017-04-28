@@ -31,147 +31,146 @@
  */
 class Tx_Rnbase_Backend_Utility_SearcherUtility
 {
-	/**
-	 * The internal options object.
-	 *
-	 * @var Tx_Rnbase_Domain_Model_Data $options
-	 */
-	private $options = null;
+    /**
+     * The internal options object.
+     *
+     * @var Tx_Rnbase_Domain_Model_Data $options
+     */
+    private $options = null;
 
-	/**
-	 * Constructor
-	 *
-	 * @param array|Tx_Rnbase_Domain_Model_Data $options
-	 *
-	 * @return Tx_Rnbase_Backend_Utility_SearcherUtility
-	 */
-	public static function getInstance(
-		$options = array()
-	) {
-		return tx_rnbase::makeInstance(
-			'Tx_Rnbase_Backend_Utility_SearcherUtility',
-			$options
-		);
-	}
+    /**
+     * Constructor
+     *
+     * @param array|Tx_Rnbase_Domain_Model_Data $options
+     *
+     * @return Tx_Rnbase_Backend_Utility_SearcherUtility
+     */
+    public static function getInstance(
+        $options = array()
+    ) {
+        return tx_rnbase::makeInstance(
+            'Tx_Rnbase_Backend_Utility_SearcherUtility',
+            $options
+        );
+    }
 
-	/**
-	 * Constructor
-	 *
-	 * @param array|Tx_Rnbase_Domain_Model_Data $options
-	 *
-	 * @return void
-	 */
-	public function __construct(
-		$options = array()
-	) {
-		tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
-		$this->options = Tx_Rnbase_Domain_Model_Data::getInstance($options);
-	}
+    /**
+     * Constructor
+     *
+     * @param array|Tx_Rnbase_Domain_Model_Data $options
+     *
+     * @return void
+     */
+    public function __construct(
+        $options = array()
+    ) {
+        tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
+        $this->options = Tx_Rnbase_Domain_Model_Data::getInstance($options);
+    }
 
-	/**
-	 * The internal options object.
-	 *
-	 * @return Tx_Rnbase_Domain_Model_Data
-	 */
-	protected function getOptions()
-	{
-		return $this->options;
-	}
+    /**
+     * The internal options object.
+     *
+     * @return Tx_Rnbase_Domain_Model_Data
+     */
+    protected function getOptions()
+    {
+        return $this->options;
+    }
 
-	/**
-	 * The decorator instace.
-	 *
-	 * @param Tx_Rnbase_Domain_Repository_InterfaceSearch $repository
-	 * @param array $fields
-	 * @param array $options
-	 *
-	 * @return array|Traversable
-	 */
-	public function performSearch(
-		Tx_Rnbase_Domain_Repository_InterfaceSearch $repository,
-		array $fields,
-		array $options
-	) {
-		// we has to build a uid map for sortable tables!
-		$firstPrev = $lastNext = false;
-		$baseTableName = $this->getOptions()->getBaseTableName();
-		tx_rnbase::load('tx_rnbase_util_TCA');
-		if ((
-			$baseTableName
-			&& tx_rnbase_util_TCA::getSortbyFieldForTable($baseTableName)
-			&& ($options['limit'] || $options['offset'])
-		)) {
-			// normalize limit and offset values to int
-			array_key_exists('offset', $options) ? $options['offset'] = (int) $options['offset'] : null;
-			array_key_exists('limit', $options) ? $options['limit'] = (int) $options['limit'] : null;
-			// wir haben ein offset und benötigen die beiden elemente element davor.
-			if (!empty($options['offset'])) {
-				$firstPrev = true;
-				$downStep = $options['offset'] > 2 ? 2 : 1;
-				$options['offset'] -= $downStep;
-				// das limit um eins erhöhen um das negative offset zu korrigieren
-				if (isset($options['limit'])) {
-					$options['limit'] += $downStep;
-				}
-			}
-			// wir haben ein limit und benötigen das element danach.
-			if (!empty($options['limit'])) {
-				$lastNext = true;
-				$options['limit']++;
-			}
-		}
+    /**
+     * The decorator instace.
+     *
+     * @param Tx_Rnbase_Domain_Repository_InterfaceSearch $repository
+     * @param array $fields
+     * @param array $options
+     *
+     * @return array|Traversable
+     */
+    public function performSearch(
+        Tx_Rnbase_Domain_Repository_InterfaceSearch $repository,
+        array $fields,
+        array $options
+    ) {
+        // we has to build a uid map for sortable tables!
+        $firstPrev = $lastNext = false;
+        $baseTableName = $this->getOptions()->getBaseTableName();
+        tx_rnbase::load('tx_rnbase_util_TCA');
+        if ((
+            $baseTableName
+            && tx_rnbase_util_TCA::getSortbyFieldForTable($baseTableName)
+            && ($options['limit'] || $options['offset'])
+        )) {
+            // normalize limit and offset values to int
+            array_key_exists('offset', $options) ? $options['offset'] = (int) $options['offset'] : null;
+            array_key_exists('limit', $options) ? $options['limit'] = (int) $options['limit'] : null;
+            // wir haben ein offset und benötigen die beiden elemente element davor.
+            if (!empty($options['offset'])) {
+                $firstPrev = true;
+                $downStep = $options['offset'] > 2 ? 2 : 1;
+                $options['offset'] -= $downStep;
+                // das limit um eins erhöhen um das negative offset zu korrigieren
+                if (isset($options['limit'])) {
+                    $options['limit'] += $downStep;
+                }
+            }
+            // wir haben ein limit und benötigen das element danach.
+            if (!empty($options['limit'])) {
+                $lastNext = true;
+                $options['limit']++;
+            }
+        }
 
-		// perform the search
-		$items = $repository->search($fields, $options);
+        // perform the search
+        $items = $repository->search($fields, $options);
 
-		// reduce the itemy by first and last
-		if ($firstPrev || $lastNext) {
-			$isCollection = is_object($items);
-			$slice = array('offset' => 0, 'length' => count($items));
-			// das letzte entfernen, aber nur wenn genügend elemente im result sind
-			if ($lastNext && count($items) >= $options['limit']) {
-				$slice['length']--;
-				$lastNext = $isCollection ? $items->last() : end($items);
-			}
-			// das erste entfernen, wenn der offset reduziert wurde.
-			if ($firstPrev) {
-				$slice['offset']++;
-				$firstPrev = $isCollection ? $items->first() : reset($items);
-				// das zweite entfernen, wenn der offset um 2 reduziert wurde
-				if ($downStep > 1) {
-					$slice['offset']++;
-					$secondPrev = $isCollection ? $items->next() : next($items);
-				}
-			}
-			// reduce the items collection by the elements to show ans remove them map elements
-			if ($isCollection) {
-				$items->exchangeArray(
-					$items->slice($slice['offset'], $slice['length'])
-				);
-			} else {
-				$items = array_slice($items, $slice['offset'], $slice['length'], true);
-			}
+        // reduce the itemy by first and last
+        if ($firstPrev || $lastNext) {
+            $isCollection = is_object($items);
+            $slice = array('offset' => 0, 'length' => count($items));
+            // das letzte entfernen, aber nur wenn genügend elemente im result sind
+            if ($lastNext && count($items) >= $options['limit']) {
+                $slice['length']--;
+                $lastNext = $isCollection ? $items->last() : end($items);
+            }
+            // das erste entfernen, wenn der offset reduziert wurde.
+            if ($firstPrev) {
+                $slice['offset']++;
+                $firstPrev = $isCollection ? $items->first() : reset($items);
+                // das zweite entfernen, wenn der offset um 2 reduziert wurde
+                if ($downStep > 1) {
+                    $slice['offset']++;
+                    $secondPrev = $isCollection ? $items->next() : next($items);
+                }
+            }
+            // reduce the items collection by the elements to show ans remove them map elements
+            if ($isCollection) {
+                $items->exchangeArray(
+                    $items->slice($slice['offset'], $slice['length'])
+                );
+            } else {
+                $items = array_slice($items, $slice['offset'], $slice['length'], true);
+            }
+        }
 
-		}
+        // now build the uid map
+        $map = array();
+        if ($firstPrev instanceof Tx_Rnbase_Domain_Model_RecordInterface) {
+            $map[$firstPrev->getUid()] = array();
+        }
+        if ($secondPrev instanceof Tx_Rnbase_Domain_Model_RecordInterface) {
+            $map[$secondPrev->getUid()] = array();
+        }
+        foreach ($items as $item) {
+            $map[$item->getUid()] = array();
+        }
+        if ($lastNext instanceof Tx_Rnbase_Domain_Model_RecordInterface) {
+            $map[$lastNext->getUid()] = array();
+        }
 
-		// now build the uid map
-		$map = array();
-		if ($firstPrev instanceof Tx_Rnbase_Domain_Model_RecordInterface) {
-			$map[$firstPrev->getUid()] = array();
-		}
-		if ($secondPrev instanceof Tx_Rnbase_Domain_Model_RecordInterface) {
-			$map[$secondPrev->getUid()] = array();
-		}
-		foreach ($items as $item) {
-			$map[$item->getUid()] = array();
-		}
-		if ($lastNext instanceof Tx_Rnbase_Domain_Model_RecordInterface) {
-			$map[$lastNext->getUid()] = array();
-		}
+        // store the uid map to the options array
+        $this->getOptions()->setUidMap($map);
 
-		// store the uid map to the options array
-		$this->getOptions()->setUidMap($map);
-
-		return $items;
-	}
+        return $items;
+    }
 }

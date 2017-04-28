@@ -23,75 +23,84 @@
 /**
  * tx_rnbase_tests_fixtures_classes_Searcher
  *
- * @package 		TYPO3
- * @subpackage	 	rn_base
- * @author 			Hannes Bochmann
- * @license 		http://www.gnu.org/licenses/lgpl.html
- * 					GNU Lesser General Public License, version 3 or later
+ * @package         TYPO3
+ * @subpackage      rn_base
+ * @author          Hannes Bochmann
+ * @license         http://www.gnu.org/licenses/lgpl.html
+ *                  GNU Lesser General Public License, version 3 or later
  */
-class tx_rnbase_tests_fixtures_classes_Searcher extends tx_rnbase_util_SearchBase {
+class tx_rnbase_tests_fixtures_classes_Searcher extends tx_rnbase_util_SearchBase
+{
 
-	/**
-	 * @var boolean
-	 */
-	private $useAlias = FALSE;
+    /**
+     * @var boolean
+     */
+    private $useAlias = false;
 
-	/**
-	 * (non-PHPdoc)
-	 * @see tx_rnbase_util_SearchBase::getTableMappings()
-	 */
-	public function getTableMappings() {
-		$tableMapping = array();
-		$tableMapping[$this->getBaseTableAlias()] = $this->getBaseTable();
-		$tableMapping['CONTENT'] = 'tt_content';
-		$tableMapping['FEUSER'] = 'fe_users';
-		return $tableMapping;
-	}
+    /**
+     * (non-PHPdoc)
+     * @see tx_rnbase_util_SearchBase::getTableMappings()
+     */
+    public function getTableMappings()
+    {
+        $tableMapping = array();
+        $tableMapping[$this->getBaseTableAlias()] = $this->getBaseTable();
+        $tableMapping['CONTENT'] = 'tt_content';
+        $tableMapping['FEUSER'] = 'fe_users';
 
-	/**
-	 * (non-PHPdoc)
-	 * @see tx_rnbase_util_SearchBase::getBaseTable()
-	 */
-	public function getBaseTable() {
-		return 'pages';
-	}
+        return $tableMapping;
+    }
 
-	/**
-	 * (non-PHPdoc)
-	 * @see tx_rnbase_util_SearchBase::getBaseTableAlias()
-	 */
-	protected function getBaseTableAlias() {
-		return 'PAGE';
-	}
+    /**
+     * (non-PHPdoc)
+     * @see tx_rnbase_util_SearchBase::getBaseTable()
+     */
+    public function getBaseTable()
+    {
+        return 'pages';
+    }
 
-	/**
-	 * (non-PHPdoc)
-	 * @see tx_rnbase_util_SearchBase::getWrapperClass()
-	 */
-	public function getWrapperClass() {
-		return 'tx_rnbase_model_Base';
-	}
+    /**
+     * (non-PHPdoc)
+     * @see tx_rnbase_util_SearchBase::getBaseTableAlias()
+     */
+    protected function getBaseTableAlias()
+    {
+        return 'PAGE';
+    }
 
-	/**
-	 * (non-PHPdoc)
-	 * @see tx_rnbase_util_SearchBase::getJoins()
-	 */
-	protected function getJoins($tableAliases) {
-		return '';
-	}
+    /**
+     * (non-PHPdoc)
+     * @see tx_rnbase_util_SearchBase::getWrapperClass()
+     */
+    public function getWrapperClass()
+    {
+        return 'tx_rnbase_model_Base';
+    }
 
-	/**
-	 * (non-PHPdoc)
-	 * @see tx_rnbase_util_SearchBase::useAlias()
-	 */
-	protected function useAlias() {
-		return $this->useAlias;
-	}
+    /**
+     * (non-PHPdoc)
+     * @see tx_rnbase_util_SearchBase::getJoins()
+     */
+    protected function getJoins($tableAliases)
+    {
+        return '';
+    }
 
-	/**
-	 * @param boolean $useAlias
-	 */
-	public function setUseAlias($useAlias) {
-		$this->useAlias = $useAlias;
-	}
+    /**
+     * (non-PHPdoc)
+     * @see tx_rnbase_util_SearchBase::useAlias()
+     */
+    protected function useAlias()
+    {
+        return $this->useAlias;
+    }
+
+    /**
+     * @param boolean $useAlias
+     */
+    public function setUseAlias($useAlias)
+    {
+        $this->useAlias = $useAlias;
+    }
 }

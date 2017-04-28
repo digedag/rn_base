@@ -27,29 +27,30 @@
 /**
  * This interface defines a data provider for plots
  */
-interface tx_rnbase_plot_IDataProvider {
-	/**
-	 * Returns the data sets
-	 * @param $confArr
-	 * @param string $plotType
-	 * @return tx_rnbase_plot_IDataSet
-	 */
-	public function getDataSets($confArr, $plotType);
+interface tx_rnbase_plot_IDataProvider
+{
+    /**
+     * Returns the data sets
+     * @param $confArr
+     * @param string $plotType
+     * @return tx_rnbase_plot_IDataSet
+     */
+    public function getDataSets($confArr, $plotType);
 
-	/**
-	 * Returns the style for each data set. This is either an instance of tx_pbimagegraph_Fill_Array or
-	 * a simple php array with style data
-	 * @param $confArr
-	 * @return tx_pbimagegraph_Fill_Array or array
-	 */
-	public function getDataStyles($plotId, $confArr);
+    /**
+     * Returns the style for each data set. This is either an instance of tx_pbimagegraph_Fill_Array or
+     * a simple php array with style data
+     * @param $confArr
+     * @return tx_pbimagegraph_Fill_Array or array
+     */
+    public function getDataStyles($plotId, $confArr);
 
-	/**
-	 * Returns the chartTitle
-	 */
-	public function getChartTitle($confArr);
+    /**
+     * Returns the chartTitle
+     */
+    public function getChartTitle($confArr);
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/plot/class.tx_rnbase_plot_IDataProvider.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/plot/class.tx_rnbase_plot_IDataProvider.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/plot/class.tx_rnbase_plot_IDataProvider.php']);
 }

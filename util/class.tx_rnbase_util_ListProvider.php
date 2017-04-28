@@ -27,30 +27,33 @@ tx_rnbase::load('tx_rnbase_util_IListProvider');
 /**
  * Provide data for ListBuilder
  */
-class tx_rnbase_util_ListProvider implements tx_rnbase_util_IListProvider {
-	public function initBySearch($searchCallback, $fields, $options) {
-		$this->mode = 1;
-		$this->searchCallback = $searchCallback;
-		$this->fields = $fields;
-		$this->options = $options;
-	}
-	/**
-	 * Starts iteration over all items. The callback method is called for each single item.
-	 * @param array $callback
-	 */
-	public function iterateAll($itemCallback) {
-		switch($this->mode) {
-			case 1:
-				$this->options['callback'] = $itemCallback;
-				call_user_func($this->searchCallback, $this->fields, $this->options);
-				break;
-			default:
-				throw new Exception('Undefined list mode.');
-				break;
-		}
-	}
+class tx_rnbase_util_ListProvider implements tx_rnbase_util_IListProvider
+{
+    public function initBySearch($searchCallback, $fields, $options)
+    {
+        $this->mode = 1;
+        $this->searchCallback = $searchCallback;
+        $this->fields = $fields;
+        $this->options = $options;
+    }
+    /**
+     * Starts iteration over all items. The callback method is called for each single item.
+     * @param array $callback
+     */
+    public function iterateAll($itemCallback)
+    {
+        switch ($this->mode) {
+            case 1:
+                $this->options['callback'] = $itemCallback;
+                call_user_func($this->searchCallback, $this->fields, $this->options);
+                break;
+            default:
+                throw new Exception('Undefined list mode.');
+                break;
+        }
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_ListProvider.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_ListProvider.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_ListProvider.php']);
 }

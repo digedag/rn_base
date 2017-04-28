@@ -23,29 +23,33 @@
  */
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-	/**
-	 * Tx_Rnbase_Exception_Base
-	 *
-	 * Wrapper für TYPO3\CMS\Core\Exception seit TYPO3 6.x
-	 *
-	 * @package 		TYPO3
-	 * @subpackage	 	rn_base
-	 * @author 			Hannes Bochmann <rene@system25.de>
-	 * @license 		http://www.gnu.org/licenses/lgpl.html
-	 * 					GNU Lesser General Public License, version 3 or later
-	 */
-	class Tx_Rnbase_Exception_Base extends TYPO3\CMS\Core\Exception {}
+    /**
+     * Tx_Rnbase_Exception_Base
+     *
+     * Wrapper für TYPO3\CMS\Core\Exception seit TYPO3 6.x
+     *
+     * @package         TYPO3
+     * @subpackage      rn_base
+     * @author          Hannes Bochmann <rene@system25.de>
+     * @license         http://www.gnu.org/licenses/lgpl.html
+     *                  GNU Lesser General Public License, version 3 or later
+     */
+    class Tx_Rnbase_Exception_Base extends TYPO3\CMS\Core\Exception
+    {
+    }
 } else {
-	/**
-	 * Tx_Rnbase_Exception_Base
-	 *
-	 * Wrapper für t3lib_exception bis TYPO3 6.x
-	 *
-	 * @package 		TYPO3
-	 * @subpackage	 	rn_base
-	 * @author 			Hannes Bochmann <rene@system25.de>
-	 * @license 		http://www.gnu.org/licenses/lgpl.html
-	 * 					GNU Lesser General Public License, version 3 or later
-	 */
-	class Tx_Rnbase_Exception_Base extends t3lib_exception {}
+    /**
+     * Tx_Rnbase_Exception_Base
+     *
+     * Wrapper für t3lib_exception bis TYPO3 6.x
+     *
+     * @package         TYPO3
+     * @subpackage      rn_base
+     * @author          Hannes Bochmann <rene@system25.de>
+     * @license         http://www.gnu.org/licenses/lgpl.html
+     *                  GNU Lesser General Public License, version 3 or later
+     */
+    class Tx_Rnbase_Exception_Base extends t3lib_exception
+    {
+    }
 }

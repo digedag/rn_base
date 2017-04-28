@@ -1,55 +1,56 @@
 {
-	"name" : "digedag/rn-base",
-	"description" : "A base library for extensions. Uses MVC design principles and domain driven development for TYPO3 extension development.",
-	"version" : "1.3.2",
-	"type" : "typo3-cms-extension",
-	"keywords" : [
-		"TYPO3 CMS",
-		"mvc"
-	],
-	"homepage" : "http://www.system25.de/",
-	"license" : "GPL-2.0+",
-	"authors" : [{
-			"name" : "René Nitzsche",
-			"email" : "nitzsche@dmk-ebusiness.de",
-			"role" : "Developer"
-		}
-	],
-	"support" : {
-		"email" : "rene@system25.de",
-		"source" : "https://github.com/digedag/rn_base",
-		"issues" : "https://github.com/digedag/rn_base/issues"
-	},
-	"replace" : {
-		"rn_base" : "self.version",
-		"typo3-ter/rn-base" : "self.version",
-		"digedag/rn-base" : "self.version"
-	},
-	"require" : {
-		"typo3/cms-core" : ">=4.5.0 <=8.7.99"
-	},
-	"autoload" : {
-		"classmap" : [
-			"action/",
-			"cache/",
-			"Classes/",
-			"exception/",
-			"filter/",
-			"maps/",
-			"misc/",
-			"mod/",
-			"model/",
-			"plot/",
-			"sv1/",
-			"tests/",
-			"util/",
-			"view/"
-		],
-		"files" : [
-			"class.tx_rnbase.php",
-			"class.tx_rnbase_configurations.php",
-			"class.tx_rnbase_controller.php",
-			"class.tx_rnbase_parameters.php"
-		]
-	}
+    "name": "digedag/rn-base",
+    "description": "A base library for extensions. Uses MVC design principles and domain driven development for TYPO3 extension development.",
+    "version": "1.3.2",
+    "type": "typo3-cms-extension",
+    "keywords": [
+        "TYPO3 CMS",
+        "mvc"
+    ],
+    "homepage": "http://www.system25.de/",
+    "license": "GPL-2.0+",
+    "authors": [
+        {
+            "name": "René Nitzsche",
+            "email": "nitzsche@dmk-ebusiness.de",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "email": "rene@system25.de",
+        "source": "https://github.com/digedag/rn_base",
+        "issues": "https://github.com/digedag/rn_base/issues"
+    },
+    "replace": {
+        "rn_base": "self.version",
+        "typo3-ter/rn-base": "self.version",
+        "digedag/rn-base": "self.version"
+    },
+    "require": {
+        "typo3/cms-core": ">=4.5.0 <=8.7.99"
+    },
+    "autoload": {
+        "classmap": [
+            "action/",
+            "cache/",
+            "Classes/",
+            "exception/",
+            "filter/",
+            "maps/",
+            "misc/",
+            "mod/",
+            "model/",
+            "plot/",
+            "sv1/",
+            "tests/",
+            "util/",
+            "view/"
+        ],
+        "files": [
+            "class.tx_rnbase.php",
+            "class.tx_rnbase_configurations.php",
+            "class.tx_rnbase_controller.php",
+            "class.tx_rnbase_parameters.php"
+        ]
+    }
 }

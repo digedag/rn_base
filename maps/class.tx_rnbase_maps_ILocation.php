@@ -27,22 +27,23 @@ tx_rnbase::load('tx_rnbase_maps_ICoord');
 /**
  * Common Interface for a point on a map. This is either a geocode or a valid address
  */
-interface tx_rnbase_maps_ILocation extends tx_rnbase_maps_ICoord {
+interface tx_rnbase_maps_ILocation extends tx_rnbase_maps_ICoord
+{
 
-	/**
-	 * Returns the city name
-	 * @return string
-	 */
-	public function getCity();
-	/**
-	 * Returns the street
-	 * @return float
-	 */
-	public function getStreet();
-	public function getZip();
-	public function getCountryCode();
+    /**
+     * Returns the city name
+     * @return string
+     */
+    public function getCity();
+    /**
+     * Returns the street
+     * @return float
+     */
+    public function getStreet();
+    public function getZip();
+    public function getCountryCode();
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_ILocation.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_ILocation.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_ILocation.php']);
 }

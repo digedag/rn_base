@@ -27,16 +27,18 @@ tx_rnbase::load('tx_rnbase_util_TCA');
 /**
  * @author Hannes Bochmann <hannes.bochmann@dmk-business.de>
  */
-class tx_rnbase_tests_util_TYPO3_testcase extends Tx_Phpunit_TestCase {
+class tx_rnbase_tests_util_TYPO3_testcase extends Tx_Phpunit_TestCase
+{
 
-	/**
-	 * @group unit
-	 */
-	public function testGetHttpUtilityClass() {
-		$httpUtilityClass = tx_rnbase_util_TYPO3::getHttpUtilityClass();
-		$this->assertEquals(
-			'HTTP/1.1 404 Not Found',
-			$httpUtilityClass::HTTP_STATUS_404
-		);
-	}
+    /**
+     * @group unit
+     */
+    public function testGetHttpUtilityClass()
+    {
+        $httpUtilityClass = tx_rnbase_util_TYPO3::getHttpUtilityClass();
+        $this->assertEquals(
+            'HTTP/1.1 404 Not Found',
+            $httpUtilityClass::HTTP_STATUS_404
+        );
+    }
 }

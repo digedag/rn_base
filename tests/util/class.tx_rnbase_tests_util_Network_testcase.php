@@ -27,80 +27,86 @@ tx_rnbase::load('tx_rnbase_util_Network');
 /**
  * tx_rnbase_tests_util_Network_testcase
  *
- * @package 		TYPO3
- * @subpackage	 	rn_base
- * @author 			Hannes Bochmann <rene@system25.de>
- * @license 		http://www.gnu.org/licenses/lgpl.html
- * 					GNU Lesser General Public License, version 3 or later
+ * @package         TYPO3
+ * @subpackage      rn_base
+ * @author          Hannes Bochmann <rene@system25.de>
+ * @license         http://www.gnu.org/licenses/lgpl.html
+ *                  GNU Lesser General Public License, version 3 or later
  */
-class tx_rnbase_tests_util_Network_testcase extends tx_rnbase_tests_BaseTestCase {
+class tx_rnbase_tests_util_Network_testcase extends tx_rnbase_tests_BaseTestCase
+{
 
-	/**
-	 * @var string $devIpMaskBackup
-	 */
-	protected $devIpMaskBackup;
+    /**
+     * @var string $devIpMaskBackup
+     */
+    protected $devIpMaskBackup;
 
-	/**
-	 * @var string $devIpMaskBackup
-	 */
-	protected $remoteAddressBackup;
+    /**
+     * @var string $devIpMaskBackup
+     */
+    protected $remoteAddressBackup;
 
-	/**
-	 * (non-PHPdoc)
-	 * @see PHPUnit_Framework_TestCase::setUp()
-	 */
-	protected function setUp() {
-		$this->devIpMaskBackup = $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'];
-		$this->remoteAddressBackup = $_SERVER['REMOTE_ADDR'];
-	}
+    /**
+     * (non-PHPdoc)
+     * @see PHPUnit_Framework_TestCase::setUp()
+     */
+    protected function setUp()
+    {
+        $this->devIpMaskBackup = $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'];
+        $this->remoteAddressBackup = $_SERVER['REMOTE_ADDR'];
+    }
 
-	/**
-	 * (non-PHPdoc)
-	 * @see PHPUnit_Framework_TestCase::tearDown()
-	 */
-	protected function tearDown() {
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = $this->devIpMaskBackup;
-		$_SERVER['REMOTE_ADDR'] = $this->remoteAddressBackup;
-	}
+    /**
+     * (non-PHPdoc)
+     * @see PHPUnit_Framework_TestCase::tearDown()
+     */
+    protected function tearDown()
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = $this->devIpMaskBackup;
+        $_SERVER['REMOTE_ADDR'] = $this->remoteAddressBackup;
+    }
 
-	/**
-	 * @group unit
-	 */
-	public function testLocationHeaderUrl() {
-		self::assertEquals(
-			'http://www.google.de/url.html',
-			tx_rnbase_util_Network::locationHeaderUrl('http://www.google.de/url.html')
-		);
-	}
+    /**
+     * @group unit
+     */
+    public function testLocationHeaderUrl()
+    {
+        self::assertEquals(
+            'http://www.google.de/url.html',
+            tx_rnbase_util_Network::locationHeaderUrl('http://www.google.de/url.html')
+        );
+    }
 
-	/**
-	 * @param string $globalDevIpMask
-	 * @param string $devIpMask
-	 * @param string $remoteIp
-	 * @param boolean $expectedReturn
-	 * @group unit
-	 * @dataProvider dataProviderIsDevelopmentIp
-	 */
-	public function testIsDevelopmentIp($globalDevIpMask, $devIpMask, $remoteIp, $expectedReturn) {
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = $globalDevIpMask;
-		self::assertSame($expectedReturn, tx_rnbase_util_Network::isDevelopmentIp($remoteIp, $devIpMask));
-	}
+    /**
+     * @param string $globalDevIpMask
+     * @param string $devIpMask
+     * @param string $remoteIp
+     * @param boolean $expectedReturn
+     * @group unit
+     * @dataProvider dataProviderIsDevelopmentIp
+     */
+    public function testIsDevelopmentIp($globalDevIpMask, $devIpMask, $remoteIp, $expectedReturn)
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = $globalDevIpMask;
+        self::assertSame($expectedReturn, tx_rnbase_util_Network::isDevelopmentIp($remoteIp, $devIpMask));
+    }
 
-	/**
-	 * @return array
-	 */
-	public function dataProviderIsDevelopmentIp() {
-		return array(
-			array('127.0.0.1', '', '', TRUE, $_SERVER['REMOTE_ADDR'] = '127.0.0.1'),
-			array('1.2.3.4', '1.2.3.4', '1.2.3.4', TRUE),
-			array('4.3.2.1', '1.2.3.4', '1.2.3.4', TRUE),
-			array('4.3.2.1', '4.3.2.1', '1.2.3.4', FALSE),
-			array('4.3.2.1', '4.3.2.1', '', FALSE),
-			array('4.3.2.1', '', '1.2.3.4', FALSE),
-			array('', '1.2.3.4', '1.2.3.4', TRUE),
-			array('', '4.3.2.1', '1.2.3.4', FALSE),
-			array('4.3.2.1', '', '', FALSE),
-			array('', '', '4.3.2.1', FALSE),
-		);
-	}
+    /**
+     * @return array
+     */
+    public function dataProviderIsDevelopmentIp()
+    {
+        return array(
+            array('127.0.0.1', '', '', true, $_SERVER['REMOTE_ADDR'] = '127.0.0.1'),
+            array('1.2.3.4', '1.2.3.4', '1.2.3.4', true),
+            array('4.3.2.1', '1.2.3.4', '1.2.3.4', true),
+            array('4.3.2.1', '4.3.2.1', '1.2.3.4', false),
+            array('4.3.2.1', '4.3.2.1', '', false),
+            array('4.3.2.1', '', '1.2.3.4', false),
+            array('', '1.2.3.4', '1.2.3.4', true),
+            array('', '4.3.2.1', '1.2.3.4', false),
+            array('4.3.2.1', '', '', false),
+            array('', '', '4.3.2.1', false),
+        );
+    }
 }

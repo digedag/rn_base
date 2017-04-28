@@ -26,45 +26,48 @@ tx_rnbase::load('Tx_Rnbase_Service_Base');
 /**
  * Service "MediaPlayer" for playing mp3 media files.
  *
- * @author	Rene Nitzsche <rene@system25.de>
- * @package	TYPO3
- * @subpackage	tx_cfcleaguefe
+ * @author  Rene Nitzsche <rene@system25.de>
+ * @package     TYPO3
+ * @subpackage  tx_cfcleaguefe
  */
-class tx_rnbase_sv1_MediaPlayer extends Tx_Rnbase_Service_Base {
-  var $prefixId = 'tx_rnbase_sv1_MediaPlayer';  // Same as class name
-  var $scriptRelPath = 'sv1/class.tx_rnbase_sv1_MediaPlayer.php'; // Path to this script relative to the extension dir.
-  var $extKey = 'rn_base'; // The extension key.
+class tx_rnbase_sv1_MediaPlayer extends Tx_Rnbase_Service_Base
+{
+    public $prefixId = 'tx_rnbase_sv1_MediaPlayer';  // Same as class name
+    public $scriptRelPath = 'sv1/class.tx_rnbase_sv1_MediaPlayer.php'; // Path to this script relative to the extension dir.
+    public $extKey = 'rn_base'; // The extension key.
 
   /**
    * [Put your description here]
    *
-   * @return	[type]		...
+   * @return    [type]      ...
    */
-  function init() {
-    $available = parent::init();
-    // Here you can initialize your class.
-    // The class have to do a strict check if the service is available.
-    // The needed external programs are already checked in the parent class.
-    // If there's no reason for initialization you can remove this function.
-    return $available;
-  }
+    public function init()
+    {
+        $available = parent::init();
+        // Here you can initialize your class.
+        // The class have to do a strict check if the service is available.
+        // The needed external programs are already checked in the parent class.
+        // If there's no reason for initialization you can remove this function.
+        return $available;
+    }
 
-  function getPlayer($media, $conf) {
-    $mediaName = $media['file_name'];
-    $mediaPath = $media['file_path'];
+    public function getPlayer($media, $conf)
+    {
+        $mediaName = $media['file_name'];
+        $mediaPath = $media['file_path'];
 
     // Die genaue Konfig holen wir für den Dateityp
-    $fileType = $media['file_type'];
-    $playerConf = $conf[$fileType . '.']['player.'];
+        $fileType = $media['file_type'];
+        $playerConf = $conf[$fileType . '.']['player.'];
 
-    $color = $playerConf['backgroundColor'];
-    $autoStart = $playerConf['autoStart'];
-    $autoReplay = $playerConf['autoReplay'];
+        $color = $playerConf['backgroundColor'];
+        $autoStart = $playerConf['autoStart'];
+        $autoReplay = $playerConf['autoReplay'];
 
-    tx_rnbase::load('tx_rnbase_util_Extensions');
-    $fePath = tx_rnbase_util_Extensions::siteRelPath('rn_base') . 'sv1/';
+        tx_rnbase::load('tx_rnbase_util_Extensions');
+        $fePath = tx_rnbase_util_Extensions::siteRelPath('rn_base') . 'sv1/';
 
-    $out = '<object type="application/x-shockwave-flash" data="/'.
+        $out = '<object type="application/x-shockwave-flash" data="/'.
             $fePath. 'dewplayer.swf?son='.
            $mediaPath . $mediaName .
            '&amp;autostart=' . $autoStart.
@@ -78,12 +81,11 @@ class tx_rnbase_sv1_MediaPlayer extends Tx_Rnbase_Service_Base {
               '&amp;bgcolor='.$color.
               '" />'. $media['title'] .'</object>';
 
-    return $out;
-  }
-
+        return $out;
+    }
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/sv1/class.tx_rnbase_sv1_MediaPlayer.php'])	{
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/sv1/class.tx_rnbase_sv1_MediaPlayer.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/sv1/class.tx_rnbase_sv1_MediaPlayer.php']) {
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/sv1/class.tx_rnbase_sv1_MediaPlayer.php']);
 }

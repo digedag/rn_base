@@ -33,97 +33,97 @@
  */
 interface Tx_Rnbase_Domain_Model_DomainInterface
 {
-	/**
-	 * Liefert den aktuellen Tabellenname
-	 *
-	 * @return string
-	 */
-	public function getTableName();
+    /**
+     * Liefert den aktuellen Tabellenname
+     *
+     * @return string
+     */
+    public function getTableName();
 
-	/**
-	 * Setzt den aktuellen Tabellenname
-	 *
-	 * @param string $tableName
-	 * @return Tx_Rnbase_Domain_Model_Base
-	 */
-	/*public function setTableName($tableName = 0);*/
+    /**
+     * Setzt den aktuellen Tabellenname
+     *
+     * @param string $tableName
+     * @return Tx_Rnbase_Domain_Model_Base
+     */
+    /*public function setTableName($tableName = 0);*/
 
-	/**
-	 * Returns the uid
-	 *
-	 * @return int
-	 */
-	public function getUid();
+    /**
+     * Returns the uid
+     *
+     * @return int
+     */
+    public function getUid();
 
-	/**
-	 * Setzt einen Wert oder ersetzt alle Werte
-	 *
-	 * @param string|array $property
-	 * @param mixed $value
-	 * @return Tx_Rnbase_Domain_Model_Data
-	 */
-	public function setProperty($property, $value = NULL);
+    /**
+     * Setzt einen Wert oder ersetzt alle Werte
+     *
+     * @param string|array $property
+     * @param mixed $value
+     * @return Tx_Rnbase_Domain_Model_Data
+     */
+    public function setProperty($property, $value = null);
 
-	/**
-	 * Liefert einen bestimmten Wert oder alle.
-	 *
-	 * @param string $property
-	 * @return string
-	 */
-	public function getProperty($property = NULL);
+    /**
+     * Liefert einen bestimmten Wert oder alle.
+     *
+     * @param string $property
+     * @return string
+     */
+    public function getProperty($property = null);
 
-	/**
-	 * Entfernt einen Wert.
-	 *
-	 * @param string $property
-	 * @return Tx_Rnbase_Domain_Model_Data
-	 */
-	public function unsProperty($property);
+    /**
+     * Entfernt einen Wert.
+     *
+     * @param string $property
+     * @return Tx_Rnbase_Domain_Model_Data
+     */
+    public function unsProperty($property);
 
-	/**
-	 * Prüft ob eine Spalte gesetzt ist.
-	 *
-	 * @param string $property
-	 * @return string
-	 */
-	public function hasProperty($property);
+    /**
+     * Prüft ob eine Spalte gesetzt ist.
+     *
+     * @param string $property
+     * @return string
+     */
+    public function hasProperty($property);
 
-	/**
-	 * Ist der Datensatz als gelöscht markiert?
-	 * Wenn es keine Spalte oder TCA gibt, is es nie gelöscht!
-	 *
-	 * @return boolean
-	 */
-	public function isDeleted();
+    /**
+     * Ist der Datensatz als gelöscht markiert?
+     * Wenn es keine Spalte oder TCA gibt, is es nie gelöscht!
+     *
+     * @return bool
+     */
+    public function isDeleted();
 
-	/**
-	 * Ist der Datensatz als gelöscht markiert?
-	 * Wenn es keine Spalte oder TCA gibt, is es nie gelöscht!
-	 *
-	 * @return boolean
-	 */
-	public function isHidden();
+    /**
+     * Ist der Datensatz als gelöscht markiert?
+     * Wenn es keine Spalte oder TCA gibt, is es nie gelöscht!
+     *
+     * @return bool
+     */
+    public function isHidden();
 
-	/**
-	 * Check if this record is valid.
-	 * If FALSE, the record is maybe deleted in database.
-	 *
-	 * @return boolean
-	 */
-	public function isValid();
+    /**
+     * Check if this record is valid.
+     * If FALSE, the record is maybe deleted in database.
+     *
+     * @return bool
+     */
+    public function isValid();
 
-	/**
-	 * Check if record is persisted in database. This is if uid is not 0.
-	 *
-	 * @return boolean
-	 */
-	public function isPersisted();
+    /**
+     * Check if record is persisted in database. This is if uid is not 0.
+     *
+     * @return bool
+     */
+    public function isPersisted();
 
-	/**
-	 * Liefert bei Tabellen, die im $TCA definiert sind,
-	 * die Namen der Tabellenspalten als Array.
-	 *
-	 * @return array mit Spaltennamen oder 0
-	 */
-	public function getColumnNames();
+    /**
+     * Liefert bei Tabellen, die im $TCA definiert sind,
+     * die Namen der Tabellenspalten als Array.
+     *
+     * @return array mit Spaltennamen oder 0
+     */
+    public function getColumnNames();
 }

@@ -24,145 +24,152 @@
 
 tx_rnbase::load('tx_rnbase_util_PageBrowser');
 
-class tx_rnbase_tests_util_PageBrowser_testcase extends Tx_Phpunit_TestCase {
+class tx_rnbase_tests_util_PageBrowser_testcase extends Tx_Phpunit_TestCase
+{
+    public function test_getStateSimple()
+    {
+        $pb = new tx_rnbase_util_PageBrowser('test');
+        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $parameters->offsetSet($pb->getParamName('pointer'), 3);
+        $listSize = 103; //Gesamtgröße der darzustellenden Liste
+        $pageSize = 10; //Größe einer Seite
+        $pb->setState($parameters, $listSize, $pageSize);
 
-	public function test_getStateSimple() {
-		$pb = new tx_rnbase_util_PageBrowser('test');
-		$parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
-		$parameters->offsetSet($pb->getParamName('pointer'), 3);
-		$listSize = 103; //Gesamtgröße der darzustellenden Liste
-		$pageSize = 10; //Größe einer Seite
-		$pb->setState($parameters, $listSize, $pageSize);
+        $state = $pb->getState();
+        $this->assertEquals(30, $state['offset']);
+        $this->assertEquals(10, $state['limit']);
 
-		$state = $pb->getState();
-		$this->assertEquals(30, $state['offset']);
-		$this->assertEquals(10, $state['limit']);
+        $parameters->offsetSet($pb->getParamName('pointer'), 10);
+        $pb->setState($parameters, $listSize, $pageSize);
 
-		$parameters->offsetSet($pb->getParamName('pointer'), 10);
-		$pb->setState($parameters, $listSize, $pageSize);
+        $state = $pb->getState();
+        $this->assertEquals(100, $state['offset']);
+        $this->assertEquals(10, $state['limit']);
 
-		$state = $pb->getState();
-		$this->assertEquals(100, $state['offset']);
-		$this->assertEquals(10, $state['limit']);
+        // Listenende passt genau auf letzte Seite
+        $parameters->offsetSet($pb->getParamName('pointer'), 10);
+        $listSize = 100; //Gesamtgröße der darzustellenden Liste
+        $pb->setState($parameters, $listSize, $pageSize);
 
-		// Listenende passt genau auf letzte Seite
-		$parameters->offsetSet($pb->getParamName('pointer'), 10);
-		$listSize = 100; //Gesamtgröße der darzustellenden Liste
-		$pb->setState($parameters, $listSize, $pageSize);
+        $state = $pb->getState();
+        $this->assertEquals(90, $state['offset'], 'Offset ist falsch');
+        $this->assertEquals(10, $state['limit'], 'Limit ist falsch');
 
-		$state = $pb->getState();
-		$this->assertEquals(90, $state['offset'], 'Offset ist falsch');
-		$this->assertEquals(10, $state['limit'], 'Limit ist falsch');
+        $parameters->offsetSet($pb->getParamName('pointer'), 0);
+        $listSize = 5; //Gesamtgröße der darzustellenden Liste
+        $pb->setState($parameters, $listSize, $pageSize);
 
-		$parameters->offsetSet($pb->getParamName('pointer'), 0);
-		$listSize = 5; //Gesamtgröße der darzustellenden Liste
-		$pb->setState($parameters, $listSize, $pageSize);
+        $state = $pb->getState();
+        $this->assertEquals(0, $state['offset'], 'Offset ist falsch');
+        $this->assertEquals(5, $state['limit'], 'Limit ist falsch');
+    }
 
-		$state = $pb->getState();
-		$this->assertEquals(0, $state['offset'], 'Offset ist falsch');
-		$this->assertEquals(5, $state['limit'], 'Limit ist falsch');
-	}
+    public function test_getStateWithEmptyListAndNoPointer()
+    {
+        $pb = new tx_rnbase_util_PageBrowser('test');
+        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $listSize = 0; //Gesamtgröße der darzustellenden Liste
+        $pageSize = 10; //Größe einer Seite
+        $pb->setState($parameters, $listSize, $pageSize);
+        $state = $pb->getState();
+        $this->assertEquals(0, $state['offset'], 'Offset ist falsch');
+        $this->assertEquals(0, $state['limit'], 'Limit ist falsch');
+    }
 
-	public function test_getStateWithEmptyListAndNoPointer() {
-		$pb = new tx_rnbase_util_PageBrowser('test');
-		$parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
-		$listSize = 0; //Gesamtgröße der darzustellenden Liste
-		$pageSize = 10; //Größe einer Seite
-		$pb->setState($parameters, $listSize, $pageSize);
-		$state = $pb->getState();
-		$this->assertEquals(0, $state['offset'], 'Offset ist falsch');
-		$this->assertEquals(0, $state['limit'], 'Limit ist falsch');
-	}
+    public function test_getStateWithPointerOutOfRange()
+    {
+        $pb = new tx_rnbase_util_PageBrowser('test');
+        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $parameters->offsetSet($pb->getParamName('pointer'), 11);
+        $listSize = 103; //Gesamtgröße der darzustellenden Liste
+        $pageSize = 10; //Größe einer Seite
+        $pb->setState($parameters, $listSize, $pageSize);
 
-	public function test_getStateWithPointerOutOfRange() {
-		$pb = new tx_rnbase_util_PageBrowser('test');
-		$parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
-		$parameters->offsetSet($pb->getParamName('pointer'), 11);
-		$listSize = 103; //Gesamtgröße der darzustellenden Liste
-		$pageSize = 10; //Größe einer Seite
-		$pb->setState($parameters, $listSize, $pageSize);
+        $state = $pb->getState();
+        $this->assertEquals(100, $state['offset']);
+        $this->assertEquals(10, $state['limit']);
 
-		$state = $pb->getState();
-		$this->assertEquals(100, $state['offset']);
-		$this->assertEquals(10, $state['limit']);
+        $parameters->offsetSet($pb->getParamName('pointer'), 13);
+        $pb->setState($parameters, $listSize, $pageSize);
+        $state = $pb->getState();
+        $this->assertEquals(100, $state['offset']);
+        $this->assertEquals(10, $state['limit']);
 
-		$parameters->offsetSet($pb->getParamName('pointer'), 13);
-		$pb->setState($parameters, $listSize, $pageSize);
-		$state = $pb->getState();
-		$this->assertEquals(100, $state['offset']);
-		$this->assertEquals(10, $state['limit']);
+        $listSize = 98; //Gesamtgröße der darzustellenden Liste
+        $pb->setState($parameters, $listSize, $pageSize);
 
-		$listSize = 98; //Gesamtgröße der darzustellenden Liste
-		$pb->setState($parameters, $listSize, $pageSize);
+        $state = $pb->getState();
+        $this->assertEquals(90, $state['offset']);
+        $this->assertEquals(10, $state['limit']);
+    }
 
-		$state = $pb->getState();
-		$this->assertEquals(90, $state['offset']);
-		$this->assertEquals(10, $state['limit']);
-	}
+    public function test_getStateWithIllegalPointer()
+    {
+        $pb = new tx_rnbase_util_PageBrowser('test');
+        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $parameters->offsetSet($pb->getParamName('pointer'), -2);
+        $listSize = 103; //Gesamtgröße der darzustellenden Liste
+        $pageSize = 10; //Größe einer Seite
+        $pb->setState($parameters, $listSize, $pageSize);
 
-	public function test_getStateWithIllegalPointer() {
-		$pb = new tx_rnbase_util_PageBrowser('test');
-		$parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
-		$parameters->offsetSet($pb->getParamName('pointer'), -2);
-		$listSize = 103; //Gesamtgröße der darzustellenden Liste
-		$pageSize = 10; //Größe einer Seite
-		$pb->setState($parameters, $listSize, $pageSize);
+        $state = $pb->getState();
+        $this->assertEquals(0, $state['offset']);
+        $this->assertEquals(10, $state['limit']);
+    }
 
-		$state = $pb->getState();
-		$this->assertEquals(0, $state['offset']);
-		$this->assertEquals(10, $state['limit']);
-	}
+    public function test_getStateWithSmallList()
+    {
+        $pb = new tx_rnbase_util_PageBrowser('test');
+        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $parameters->offsetSet($pb->getParamName('pointer'), 2);
+        $listSize = 3; //Gesamtgröße der darzustellenden Liste
+        $pageSize = 10; //Größe einer Seite
+        $pb->setState($parameters, $listSize, $pageSize);
 
-	public function test_getStateWithSmallList() {
-		$pb = new tx_rnbase_util_PageBrowser('test');
-		$parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
-		$parameters->offsetSet($pb->getParamName('pointer'), 2);
-		$listSize = 3; //Gesamtgröße der darzustellenden Liste
-		$pageSize = 10; //Größe einer Seite
-		$pb->setState($parameters, $listSize, $pageSize);
+        $state = $pb->getState();
 
-		$state = $pb->getState();
+        $this->assertEquals(0, $state['offset'], 'Offset ist falsch');
+        $this->assertEquals(3, $state['limit'], 'Limit ist falsch');
+    }
 
-		$this->assertEquals(0, $state['offset'], 'Offset ist falsch');
-		$this->assertEquals(3, $state['limit'], 'Limit ist falsch');
-	}
+    /**
+     * @dataProvider dataProviderGetPointer
+     * @param int $pointer
+     * @param int $expectedPointer
+     */
+    public function test_getPointer($pointer, $expectedPointer)
+    {
+        /* @var $pageBrowser tx_rnbase_util_PageBrowser */
+        $pageBrowser = tx_rnbase::makeInstance('tx_rnbase_util_PageBrowser', 'test');
+        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $parameters->offsetSet($pageBrowser->getParamName('pointer'), $pointer);
+        $listSize = 100;
+        $pageSize = 10;
+        $pageBrowser->setState($parameters, $listSize, $pageSize);
 
-	/**
-	 * @dataProvider dataProviderGetPointer
-	 * @param int $pointer
-	 * @param int $expectedPointer
-	 */
-	public function test_getPointer($pointer, $expectedPointer) {
-		/* @var $pageBrowser tx_rnbase_util_PageBrowser */
-		$pageBrowser = tx_rnbase::makeInstance('tx_rnbase_util_PageBrowser', 'test');
-		$parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
-		$parameters->offsetSet($pageBrowser->getParamName('pointer'), $pointer);
-		$listSize = 100;
-		$pageSize = 10;
-		$pageBrowser->setState($parameters, $listSize, $pageSize);
+        self::assertSame($expectedPointer, $pageBrowser->getPointer());
+    }
 
-		self::assertSame($expectedPointer, $pageBrowser->getPointer());
-	}
-
-	/**
-	 * @return array
-	 */
-	public function dataProviderGetPointer() {
-		return array(
-			// before first page
-			array(-1, 0),
-			// at first page
-			array(0, 0),
-			// inside range
-			array(5, 5),
-			// last page
-			array(10, 10),
-			// outside range
-			array(11, 10),
-		);
-	}
+    /**
+     * @return array
+     */
+    public function dataProviderGetPointer()
+    {
+        return array(
+            // before first page
+            array(-1, 0),
+            // at first page
+            array(0, 0),
+            // inside range
+            array(5, 5),
+            // last page
+            array(10, 10),
+            // outside range
+            array(11, 10),
+        );
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/util/class.tx_rnbase_tests_util_PageBrowser_testcase.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/util/class.tx_rnbase_tests_util_PageBrowser_testcase.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/util/class.tx_rnbase_tests_util_PageBrowser_testcase.php']);
 }

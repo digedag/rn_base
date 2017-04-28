@@ -27,127 +27,136 @@ tx_rnbase::load('tx_rnbase_util_TSFAL');
 /**
  * tx_rnbase_tests_action_BaseIOC_testcase
  *
- * @package 		TYPO3
- * @subpackage	 	rn_base
- * @author 			Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
- * @license 		http://www.gnu.org/licenses/lgpl.html
- * 					GNU Lesser General Public License, version 3 or later
+ * @package         TYPO3
+ * @subpackage      rn_base
+ * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
+ * @license         http://www.gnu.org/licenses/lgpl.html
+ *                  GNU Lesser General Public License, version 3 or later
  */
-class tx_rnbase_tests_util_TSFAL_testcase extends tx_rnbase_tests_BaseTestCase {
+class tx_rnbase_tests_util_TSFAL_testcase extends tx_rnbase_tests_BaseTestCase
+{
 
-	/**
-	 * {@inheritDoc}
-	 * @see PHPUnit_Framework_TestCase::setUp()
-	 */
-	protected function setUp() {
-		if (!tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			self::markTestSkipped('FAL not present before TYPO3 6.0');
-		}
-	}
+    /**
+     * {@inheritDoc}
+     * @see PHPUnit_Framework_TestCase::setUp()
+     */
+    protected function setUp()
+    {
+        if (!tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+            self::markTestSkipped('FAL not present before TYPO3 6.0');
+        }
+    }
 
-	/**
-	 * @group unit
-	 */
-	public function testGetFileRepository() {
-		self::assertInstanceOf(
-			'TYPO3\\CMS\\Core\\Resource\\FileRepository',
-			$this->callInaccessibleMethod(tx_rnbase::makeInstance('tx_rnbase_util_TSFAL'), 'getFileRepository')
-		);
-	}
+    /**
+     * @group unit
+     */
+    public function testGetFileRepository()
+    {
+        self::assertInstanceOf(
+            'TYPO3\\CMS\\Core\\Resource\\FileRepository',
+            $this->callInaccessibleMethod(tx_rnbase::makeInstance('tx_rnbase_util_TSFAL'), 'getFileRepository')
+        );
+    }
 
-	/**
-	 * @group unit
-	 * @dataProvider dataProviderFetchFirstReference
-	 */
-	public function testFetchFirstReference(
-		array $configuration, array $contentObjectData, $expectedRefTable, $expectedRefField, $expectedUid
-	) {
+    /**
+     * @group unit
+     * @dataProvider dataProviderFetchFirstReference
+     */
+    public function testFetchFirstReference(
+        array $configuration,
+        array $contentObjectData,
+        $expectedRefTable,
+        $expectedRefField,
+        $expectedUid
+    ) {
+        $fileRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileRepository', array('findByRelation'));
+        $fileRepository->expects(self::once())
+            ->method('findByRelation')
+            ->with($expectedRefTable, $expectedRefField, $expectedUid);
 
-		$fileRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileRepository', array('findByRelation'));
-		$fileRepository->expects(self::once())
-			->method('findByRelation')
-			->with($expectedRefTable, $expectedRefField, $expectedUid);
+        $utility = $this->getMock('tx_rnbase_util_TSFAL', array('getFileRepository'));
+        $utility->expects(self::once())
+            ->method('getFileRepository')
+            ->will(self::returnValue($fileRepository));
 
-		$utility = $this->getMock('tx_rnbase_util_TSFAL', array('getFileRepository'));
-		$utility->expects(self::once())
-			->method('getFileRepository')
-			->will(self::returnValue($fileRepository));
+        $utility->cObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
+        $utility->cObj->data = $contentObjectData;
 
-		$utility->cObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
-		$utility->cObj->data = $contentObjectData;
+        $utility->fetchFirstReference('', $configuration);
+    }
 
-		$utility->fetchFirstReference('', $configuration);
-	}
+    /**
+     * @return array
+     */
+    public function dataProviderFetchFirstReference()
+    {
+        return array(
+            // refTable gesetzt
+            array(
+                array('refTable' => 'pages'), array('uid' => 456), 'pages', '', 456
+            ),
+            // refTable unbekannt
+            array(
+                array('refTable' => 'unknown'), array('uid' => 456), 'tt_content', '', 456
+            ),
+            // _LOCALIZED_UID in cObj->data gesetzt
+            array(
+                array(), array('uid' => 456, '_LOCALIZED_UID' => 123), 'tt_content', '', 123
+            ),
+            // refField gesetzt
+            array(
+                array('refField' => 'my_field'), array('uid' => 456), 'tt_content', 'my_field', 456
+            ),
+            // stdWrap auf refField
+            array(
+                array('refField.' => array('field' => 'test_field')),
+                array('uid' => 456, 'test_field' => 'my_field'), 'tt_content', 'my_field', 456
+            ),
+            // stdWrap auf refUid
+            array(
+                array('refUid.' => array('field' => 'test_field')),
+                array('uid' => 456, 'test_field' => 123), 'tt_content', '', 123
+            ),
+        );
+    }
 
-	/**
-	 * @return array
-	 */
-	public function dataProviderFetchFirstReference() {
-		return array(
-			// refTable gesetzt
-			array(
-				array('refTable' => 'pages'), array('uid' => 456), 'pages', '', 456
-			),
-			// refTable unbekannt
-			array(
-				array('refTable' => 'unknown'), array('uid' => 456), 'tt_content', '', 456
-			),
-			// _LOCALIZED_UID in cObj->data gesetzt
-			array(
-				array(), array('uid' => 456, '_LOCALIZED_UID' => 123), 'tt_content', '', 123
-			),
-			// refField gesetzt
-			array(
-				array('refField' => 'my_field'), array('uid' => 456), 'tt_content', 'my_field', 456
-			),
-			// stdWrap auf refField
-			array(
-				array('refField.' => array('field' => 'test_field')),
-				array('uid' => 456, 'test_field' => 'my_field'), 'tt_content', 'my_field', 456
-			),
-			// stdWrap auf refUid
-			array(
-				array('refUid.' => array('field' => 'test_field')),
-				array('uid' => 456, 'test_field' => 123), 'tt_content', '', 123
-			),
-		);
-	}
+    /**
+     * @group unit
+     */
+    public function testFetchFirstReferenceWhenFilesFound()
+    {
+        $fileRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileRepository', array('findByRelation'));
+        $fileRepository->expects(self::once())
+            ->method('findByRelation')
+            ->will(self::returnValue(array(0 => tx_rnbase::makeInstance('tx_rnbase_model_data', array('uid' => 123)))));
 
-	/**
-	 * @group unit
-	 */
-	public function testFetchFirstReferenceWhenFilesFound() {
-		$fileRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileRepository', array('findByRelation'));
-		$fileRepository->expects(self::once())
-			->method('findByRelation')
-			->will(self::returnValue(array(0 => tx_rnbase::makeInstance('tx_rnbase_model_data', array('uid' => 123)))));
+        $utility = $this->getMock('tx_rnbase_util_TSFAL', array('getFileRepository'));
+        $utility->expects(self::once())
+            ->method('getFileRepository')
+            ->will(self::returnValue($fileRepository));
 
-		$utility = $this->getMock('tx_rnbase_util_TSFAL', array('getFileRepository'));
-		$utility->expects(self::once())
-			->method('getFileRepository')
-			->will(self::returnValue($fileRepository));
+        $utility->cObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
 
-		$utility->cObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
+        self::assertSame(123, $utility->fetchFirstReference('', array()));
+    }
 
-		self::assertSame(123, $utility->fetchFirstReference('', array()));
-	}
+    /**
+     * @group unit
+     */
+    public function testFetchFirstReferenceWhenNoFilesFound()
+    {
+        $fileRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileRepository', array('findByRelation'));
+        $fileRepository->expects(self::once())
+            ->method('findByRelation')
+            ->will(self::returnValue(null));
 
-	/**
-	 * @group unit
-	 */
-	public function testFetchFirstReferenceWhenNoFilesFound() {
-		$fileRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileRepository', array('findByRelation'));
-		$fileRepository->expects(self::once())
-			->method('findByRelation')
-			->will(self::returnValue(NULL));
+        $utility = $this->getMock('tx_rnbase_util_TSFAL', array('getFileRepository'));
+        $utility->expects(self::once())
+            ->method('getFileRepository')
+            ->will(self::returnValue($fileRepository));
 
-		$utility = $this->getMock('tx_rnbase_util_TSFAL', array('getFileRepository'));
-		$utility->expects(self::once())
-			->method('getFileRepository')
-			->will(self::returnValue($fileRepository));
+        $utility->cObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
 
-		$utility->cObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
-
-		self::assertSame('', $utility->fetchFirstReference('', array()));
-	}
+        self::assertSame('', $utility->fetchFirstReference('', array()));
+    }
 }

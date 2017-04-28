@@ -32,79 +32,78 @@ tx_rnbase::load('tx_rnbase_model_data');
  * @subpackage tx_rnbase
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-class tx_rnbase_tests_mod_linker_ShowDetails_testcase
-	extends tx_rnbase_tests_BaseTestCase {
+class tx_rnbase_tests_mod_linker_ShowDetails_testcase extends tx_rnbase_tests_BaseTestCase
+{
 
-	/**
-	 *
-	 * @return void
-	 *
-	 * @group unit
-	 * @test
-	 */
-	public function testMakeLinkWithoutConfig()
-	{
-		$content = $this->makeLink();
-		// check the name of the submit button!
-		self::assertContains('name="showDetails[pages][14]"', $content);
-		// check the label of the submit button!
-		self::assertContains('value="###LABEL_SHOW_DETAILS###"', $content);
-	}
+    /**
+     *
+     * @return void
+     *
+     * @group unit
+     * @test
+     */
+    public function testMakeLinkWithoutConfig()
+    {
+        $content = $this->makeLink();
+        // check the name of the submit button!
+        self::assertContains('name="showDetails[pages][14]"', $content);
+        // check the label of the submit button!
+        self::assertContains('value="###LABEL_SHOW_DETAILS###"', $content);
+    }
 
-	/**
-	 *
-	 * @return void
-	 *
-	 * @group unit
-	 * @test
-	 */
-	public function testMakeLinkWithKeyAndLabelConfig()
-	{
-		$content = $this->makeLink(
-			NULL,
-			array(
-				'show_details_key' => 'showPage',
-				'show_details_label' => 'Page Details'
+    /**
+     *
+     * @return void
+     *
+     * @group unit
+     * @test
+     */
+    public function testMakeLinkWithKeyAndLabelConfig()
+    {
+        $content = $this->makeLink(
+            null,
+            array(
+                'show_details_key' => 'showPage',
+                'show_details_label' => 'Page Details'
 
-			)
-		);
-		// check the name of the submit button!
-		self::assertContains('name="showPage[14]"', $content);
-		// check the label of the submit button!
-		self::assertContains('value="Page Details', $content);
-	}
+            )
+        );
+        // check the name of the submit button!
+        self::assertContains('name="showPage[14]"', $content);
+        // check the label of the submit button!
+        self::assertContains('value="Page Details', $content);
+    }
 
-	/**
-	 *
-	 * @param tx_rnbase_model_base $model
-	 * @param array|tx_rnbase_model_data $options
-	 * @return string
-	 */
-	protected function makeLink($model = NULL, $options = NULL)
-	{
-		if (!$model instanceof tx_rnbase_model_base) {
-			$item = $this->getModel(array('uid' => 14))->setTableName('pages');
-		}
-		if (!$options instanceof tx_rnbase_model_data) {
-			$options = tx_rnbase_model_data::getInstance($options);
-		}
+    /**
+     *
+     * @param tx_rnbase_model_base $model
+     * @param array|tx_rnbase_model_data $options
+     * @return string
+     */
+    protected function makeLink($model = null, $options = null)
+    {
+        if (!$model instanceof tx_rnbase_model_base) {
+            $item = $this->getModel(array('uid' => 14))->setTableName('pages');
+        }
+        if (!$options instanceof tx_rnbase_model_data) {
+            $options = tx_rnbase_model_data::getInstance($options);
+        }
 
-		/* @var $linker tx_rnbase_mod_linker_ShowDetails */
-		$linker = tx_rnbase::makeInstance('tx_rnbase_mod_linker_ShowDetails');
+        /* @var $linker tx_rnbase_mod_linker_ShowDetails */
+        $linker = tx_rnbase::makeInstance('tx_rnbase_mod_linker_ShowDetails');
 
-		self::assertInstanceOf('tx_rnbase_mod_linker_LinkerInterface', $linker);
+        self::assertInstanceOf('tx_rnbase_mod_linker_LinkerInterface', $linker);
 
-		return $linker->makeLink(
-			$item,
-			tx_rnbase::makeInstance('tx_rnbase_util_FormTool'),
-			0,
-			$options
-		);
-
-	}
+        return $linker->makeLink(
+            $item,
+            tx_rnbase::makeInstance('tx_rnbase_util_FormTool'),
+            0,
+            $options
+        );
+    }
 }
 
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/mod/class.tx_rnbase_tests_mod_Tables_testcase.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/mod/class.tx_rnbase_tests_mod_Tables_testcase.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/mod/class.tx_rnbase_tests_mod_Tables_testcase.php']);
 }

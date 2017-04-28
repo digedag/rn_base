@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_rnbase
- *  @subpackage tx_rnbase_mod
- *  @author Hannes Bochmann
+ * @package tx_rnbase
+ * @subpackage tx_rnbase_mod
+ * @author Hannes Bochmann
  *
  *  Copyright notice
  *
@@ -34,34 +34,38 @@ tx_rnbase::load('tx_rnbase_mod_BaseModule');
  * @package tx_rnbase
  * @subpackage tx_rnbase_mod1
  */
-class tx_rnbase_tests_fixtures_classes_Mod extends tx_rnbase_mod_BaseModule {
-	var $pageinfo;
-    var $tabs;
+class tx_rnbase_tests_fixtures_classes_Mod extends tx_rnbase_mod_BaseModule
+{
+    public $pageinfo;
+    public $tabs;
 
     /**
      * Method to get the extension key
      *
-     * @return	string Extension key
+     * @return  string Extension key
      */
-	function getExtensionKey() {
-		return 'rnbase';
-	}
+    public function getExtensionKey()
+    {
+        return 'rnbase';
+    }
 
-	/**
-	 * Method to set the tabs for the mainmenu
-	 * Umstellung von SelectBox auf Menu
-	 */
-	protected function getFuncMenu() {
-		$mainmenu = $this->getFormTool()->showTabMenu($this->getPid(), 'function', $this->getName(), $this->MOD_MENU['function']);
-		return $mainmenu['menu'];
-	}
+    /**
+     * Method to set the tabs for the mainmenu
+     * Umstellung von SelectBox auf Menu
+     */
+    protected function getFuncMenu()
+    {
+        $mainmenu = $this->getFormTool()->showTabMenu($this->getPid(), 'function', $this->getName(), $this->MOD_MENU['function']);
 
-	/**
-	 * Returns the module ident name
-	 * @return string
-	 */
-	public function getName() {
-		return 'dummyMod';
-	}
+        return $mainmenu['menu'];
+    }
 
+    /**
+     * Returns the module ident name
+     * @return string
+     */
+    public function getName()
+    {
+        return 'dummyMod';
+    }
 }

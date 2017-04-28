@@ -30,20 +30,21 @@
  *
  * @deprecated use Tx_Rnbase_Backend_Decorator_InterfaceDecorator instead
  */
-interface tx_rnbase_mod_IDecorator {
+interface tx_rnbase_mod_IDecorator
+{
 
-	/**
-	 * Formatiert jede Zelle einer Tabelle im BE. Ausgenommen sind die Header
-	 *
-	 * @param string $value der aktuelle Wert
-	 * @param string $colName der Name der aktuellen Spalte
-	 * @param array $record der gesamte aktuelle record
-	 * @param tx_rnbase_model_base $item das gesamte aktuelle model
-	 * @return 	string html code to visualize the current value
-	 */
-	public function format($value, $colName, $record, tx_rnbase_model_base $item);
+    /**
+     * Formatiert jede Zelle einer Tabelle im BE. Ausgenommen sind die Header
+     *
+     * @param string $value der aktuelle Wert
+     * @param string $colName der Name der aktuellen Spalte
+     * @param array $record der gesamte aktuelle record
+     * @param tx_rnbase_model_base $item das gesamte aktuelle model
+     * @return  string html code to visualize the current value
+     */
+    public function format($value, $colName, $record, tx_rnbase_model_base $item);
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_IDecorator.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_IDecorator.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_IDecorator.php']) {
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_IDecorator.php']);
 }

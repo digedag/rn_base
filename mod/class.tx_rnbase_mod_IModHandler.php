@@ -27,31 +27,32 @@ tx_rnbase::load('tx_rnbase_mod_IModule');
 
 /**
  */
-interface tx_rnbase_mod_IModHandler {
-	/**
-	 * Returns a unique ID for this handler. This is used to created the subpart in template.
-	 * @return string
-	 */
-	public function getSubID();
-	/**
-	 * Returns the label for Handler in SubMenu. You can use a label-Marker.
-	 * @return string
-	 */
-	public function getSubLabel();
-	/**
-	 * This method is called each time the method func is clicked, to handle request data.
-	 * @param tx_rnbase_mod_IModule $mod
-	 */
-	public function handleRequest(tx_rnbase_mod_IModule $mod);
-	/**
-	 * Display the user interface for this handler
-	 * @param string $template the subpart for handler in func template
-	 * @param tx_rnbase_mod_IModule $mod
-	 * @param array $options
-	 */
-	public function showScreen($template, tx_rnbase_mod_IModule $mod, $options);
+interface tx_rnbase_mod_IModHandler
+{
+    /**
+     * Returns a unique ID for this handler. This is used to created the subpart in template.
+     * @return string
+     */
+    public function getSubID();
+    /**
+     * Returns the label for Handler in SubMenu. You can use a label-Marker.
+     * @return string
+     */
+    public function getSubLabel();
+    /**
+     * This method is called each time the method func is clicked, to handle request data.
+     * @param tx_rnbase_mod_IModule $mod
+     */
+    public function handleRequest(tx_rnbase_mod_IModule $mod);
+    /**
+     * Display the user interface for this handler
+     * @param string $template the subpart for handler in func template
+     * @param tx_rnbase_mod_IModule $mod
+     * @param array $options
+     */
+    public function showScreen($template, tx_rnbase_mod_IModule $mod, $options);
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_IModHandler.php'])	{
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_IModHandler.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_IModHandler.php']) {
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_IModHandler.php']);
 }

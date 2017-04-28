@@ -44,193 +44,193 @@ tx_rnbase::load('tx_rnbase_util_Files');
 class tx_rnbase_util_Lock
 {
 
-	/**
-	 * The name of the lock
-	 *
-	 * @var string
-	 */
-	private $name = 'default';
+    /**
+     * The name of the lock
+     *
+     * @var string
+     */
+    private $name = 'default';
 
-	/**
-	 * The lifetime of the lock
-	 *
-	 * @var int
-	 */
-	private $lifeTime = 0;
+    /**
+     * The lifetime of the lock
+     *
+     * @var int
+     */
+    private $lifeTime = 0;
 
-	/**
-	 * The log ressource
-	 *
-	 * @var string
-	 */
-	private $logFile = null;
+    /**
+     * The log ressource
+     *
+     * @var string
+     */
+    private $logFile = null;
 
-	/**
-	 * Creates a instance of the lock util.
-	 *
-	 * @param string $name
-	 * @param int $lifeTime
-	 *
-	 * @return tx_rnbase_util_Lock
-	 */
-	public static function getInstance($name, $lifeTime = 0)
-	{
-		return tx_rnbase::makeInstance('tx_rnbase_util_Lock', $name, $lifeTime);
-	}
+    /**
+     * Creates a instance of the lock util.
+     *
+     * @param string $name
+     * @param int $lifeTime
+     *
+     * @return tx_rnbase_util_Lock
+     */
+    public static function getInstance($name, $lifeTime = 0)
+    {
+        return tx_rnbase::makeInstance('tx_rnbase_util_Lock', $name, $lifeTime);
+    }
 
-	/**
-	 * Constructor
-	 *
-	 * @param string $name
-	 * @param int $lifeTime
-	 */
-	public function __construct($name, $lifeTime = 0)
-	{
-		$this->name = $name;
-		$this->lifeTime = (int) $lifeTime;
-	}
+    /**
+     * Constructor
+     *
+     * @param string $name
+     * @param int $lifeTime
+     */
+    public function __construct($name, $lifeTime = 0)
+    {
+        $this->name = $name;
+        $this->lifeTime = (int) $lifeTime;
+    }
 
-	/**
-	 * Returns the process name.
-	 *
-	 * @return string
-	 */
-	protected function getName()
-	{
-		return $this->name;
-	}
+    /**
+     * Returns the process name.
+     *
+     * @return string
+     */
+    protected function getName()
+    {
+        return $this->name;
+    }
 
-	/**
-	 * Returns the lifetime of the lock.
-	 *
-	 * @return int
-	 */
-	protected function getLifeTime()
-	{
-		return $this->lifeTime;
-	}
+    /**
+     * Returns the lifetime of the lock.
+     *
+     * @return int
+     */
+    protected function getLifeTime()
+    {
+        return $this->lifeTime;
+    }
 
-	/**
-	 * Returns the path to the lock file.
-	 *
-	 * @return string
-	 */
-	protected function getFile()
-	{
-		if ($this->logFile === null) {
-			$this->logFile = PATH_site . 'typo3temp/rn_base/' . $this->getName() . '.lock';
-		}
+    /**
+     * Returns the path to the lock file.
+     *
+     * @return string
+     */
+    protected function getFile()
+    {
+        if ($this->logFile === null) {
+            $this->logFile = PATH_site . 'typo3temp/rn_base/' . $this->getName() . '.lock';
+        }
 
-		return $this->logFile;
-	}
+        return $this->logFile;
+    }
 
-	/**
-	 * Locks a process.
-	 *
-	 * @return bool
-	 */
-	public function lockProcess()
-	{
-		if ($this->createLockFile()) {
-			return true;
-		}
+    /**
+     * Locks a process.
+     *
+     * @return bool
+     */
+    public function lockProcess()
+    {
+        if ($this->createLockFile()) {
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
 
-	/**
-	 * Unlocks a process.
-	 *
-	 * @return bool
-	 */
-	public function unlockProcess()
-	{
-		if ($this->deleteLockFile()) {
-			return true;
-		}
+    /**
+     * Unlocks a process.
+     *
+     * @return bool
+     */
+    public function unlockProcess()
+    {
+        if ($this->deleteLockFile()) {
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
-	 * Check, if the process is locked.
-	 *
-	 * If there is no file, the process is not locked.
-	 * Is there a file, then check the lifetime of the lock
-	 *
-	 * @return bool
-	 */
-	public function isLocked()
-	{
-		if (is_readable($this->getFile())) {
-			$lastCall = (int) trim(file_get_contents($this->getFile()));
-			if (!(
-					$this->getLifeTime() > 0
-					&& $lastCall < (time() - $this->getLifeTime())
-			)) {
-				return true;
-			}
-		}
+    /**
+     * Check, if the process is locked.
+     *
+     * If there is no file, the process is not locked.
+     * Is there a file, then check the lifetime of the lock
+     *
+     * @return bool
+     */
+    public function isLocked()
+    {
+        if (is_readable($this->getFile())) {
+            $lastCall = (int) trim(file_get_contents($this->getFile()));
+            if (!(
+                    $this->getLifeTime() > 0
+                    && $lastCall < (time() - $this->getLifeTime())
+            )) {
+                return true;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
-	 * Creates a lock file and stores the current time.
-	 *
-	 * @return bool
-	 */
-	private function createLockFile()
-	{
-		$fileName = $this->getFile();
+    /**
+     * Creates a lock file and stores the current time.
+     *
+     * @return bool
+     */
+    private function createLockFile()
+    {
+        $fileName = $this->getFile();
 
-		if (!is_dir(dirname($fileName))) {
-			tx_rnbase_util_Files::mkdir_deep(dirname($fileName));
-		}
+        if (!is_dir(dirname($fileName))) {
+            tx_rnbase_util_Files::mkdir_deep(dirname($fileName));
+        }
 
-		file_put_contents($fileName, time());
+        file_put_contents($fileName, time());
 
-		// fix filepermisions
-		tx_rnbase::load('Tx_Rnbase_Utility_T3General');
-		Tx_Rnbase_Utility_T3General::fixPermissions($fileName);
+        // fix filepermisions
+        tx_rnbase::load('Tx_Rnbase_Utility_T3General');
+        Tx_Rnbase_Utility_T3General::fixPermissions($fileName);
 
-		if (!is_readable($fileName)) {
-			tx_rnbase::load('tx_rnbase_util_Logger');
-			tx_rnbase_util_Logger::warn(
-				'Lock file could not be created for "' . $this->getName() . '" process!',
-				'rn_base',
-				array(
-					'process_name' => $this->getName(),
-					'life_time' => $this->getLifeTime(),
-					'lock_file' => $fileName,
+        if (!is_readable($fileName)) {
+            tx_rnbase::load('tx_rnbase_util_Logger');
+            tx_rnbase_util_Logger::warn(
+                'Lock file could not be created for "' . $this->getName() . '" process!',
+                'rn_base',
+                array(
+                    'process_name' => $this->getName(),
+                    'life_time' => $this->getLifeTime(),
+                    'lock_file' => $fileName,
 
-				)
-			);
+                )
+            );
 
-			return false;
-		}
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * Deletes the lock file.
-	 *
-	 * @return bool
-	 */
-	private function deleteLockFile()
-	{
-		if ($this->isLocked()) {
-			unlink($this->getFile());
+    /**
+     * Deletes the lock file.
+     *
+     * @return bool
+     */
+    private function deleteLockFile()
+    {
+        if ($this->isLocked()) {
+            unlink($this->getFile());
 
-			return true;
-		}
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Lock.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Lock.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_Lock.php']);
 }

@@ -24,10 +24,11 @@
 
 tx_rnbase::load('tx_rnbase_util_BaseMarker');
 
-class tx_rnbase_tests_basemarker_testcase extends Tx_Phpunit_TestCase {
-	function test_containsMarker() {
-
-		$template = '
+class tx_rnbase_tests_basemarker_testcase extends Tx_Phpunit_TestCase
+{
+    public function test_containsMarker()
+    {
+        $template = '
 <html>
 Das Spielergebnis:
 ###MATCH_HOME_NAME### - ###MATCH_GUEST_NAME###
@@ -35,13 +36,13 @@ Das Spielergebnis:
 </html>
 ';
 
-		$this->assertTrue(tx_rnbase_util_BaseMarker::containsMarker($template, 'MATCH'), 'Marker MATCH nicht gefunden');
-		$this->assertTrue(tx_rnbase_util_BaseMarker::containsMarker($template, 'MATCH_HOME'), 'Marker MATCH_HOME nicht gefunden');
-		$this->assertFalse(tx_rnbase_util_BaseMarker::containsMarker($template, 'MATCH_ERR'), 'Marker MATCH_ERR wurde gefunden');
-	}
+        $this->assertTrue(tx_rnbase_util_BaseMarker::containsMarker($template, 'MATCH'), 'Marker MATCH nicht gefunden');
+        $this->assertTrue(tx_rnbase_util_BaseMarker::containsMarker($template, 'MATCH_HOME'), 'Marker MATCH_HOME nicht gefunden');
+        $this->assertFalse(tx_rnbase_util_BaseMarker::containsMarker($template, 'MATCH_ERR'), 'Marker MATCH_ERR wurde gefunden');
+    }
 }
 
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/class.tx_rnbase_tests_basemarker_testcase.php']) {
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/class.tx_rnbase_tests_basemarker_testcase.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/class.tx_rnbase_tests_basemarker_testcase.php']);
 }

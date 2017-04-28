@@ -28,7 +28,6 @@ tx_rnbase::load('Tx_Rnbase_Utility_TypoScript');
  *
  * @author Michael Wagner
  */
-class tx_rnbase_util_TS
-	extends Tx_Rnbase_Utility_TypoScript
+class tx_rnbase_util_TS extends Tx_Rnbase_Utility_TypoScript
 {
 }

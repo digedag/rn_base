@@ -77,33 +77,33 @@ Danach sollte das Plugin korrekt integriert sein und sich als Content-Element au
 Nun benötigen wir natürlich noch den Action-Controller, der den eigentlichen Output des Plugins liefert. In rn_base werden verschiedene Basisklassen bereitgestellt. Am häufigsten wird die Actionklasse von tx_rnbase_action_BaseIOC erben und dann mininal folgendes Aussehen haben:
 ```php
 class tx_t3sponsors_actions_SponsorList extends tx_rnbase_action_BaseIOC {
-	/**
-	 *
-	 *
-	 * @param array_object $parameters
-	 * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-	 * @param array_object $viewData
-	 * @return string error msg or null
-	 */
-	protected function handleRequest(&$parameters,&$configurations, &$viewdata){
-		$srv = tx_t3sponsors_util_ServiceRegistry::getSponsorService();
-		$filter = tx_rnbase_filter_BaseFilter::createFilter($parameters, $configurations, $viewdata, $this->getConfId(). 'sponsor.filter.');
-		$fields = array();
-		$options = array();
-		$filter->init($fields, $options);
-		$service = tx_t3sponsors_util_ServiceRegistry::getSponsorService();
-		$cfg = array();
-		$cfg['colname'] = 'name1';
-		$cfg['searchcallback'] = array($service, 'search');
-		tx_rnbase_filter_BaseFilter::handleCharBrowser($configurations, $this->getConfId().'sponsor.charbrowser', $viewdata, $fields, $options, $cfg);
-		tx_rnbase_filter_BaseFilter::handlePageBrowser($configurations, $this->getConfId().'sponsor.pagebrowser', $viewdata, $fields, $options, $cfg);
-		$sponsors = $srv->search($fields, $options);
-		$viewdata->offsetSet('sponsors', $sponsors);
-		return null;
-	}
+    /**
+     *
+     *
+     * @param array_object $parameters
+     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param array_object $viewData
+     * @return string error msg or null
+     */
+    protected function handleRequest(&$parameters,&$configurations, &$viewdata){
+        $srv = tx_t3sponsors_util_ServiceRegistry::getSponsorService();
+        $filter = tx_rnbase_filter_BaseFilter::createFilter($parameters, $configurations, $viewdata, $this->getConfId(). 'sponsor.filter.');
+        $fields = array();
+        $options = array();
+        $filter->init($fields, $options);
+        $service = tx_t3sponsors_util_ServiceRegistry::getSponsorService();
+        $cfg = array();
+        $cfg['colname'] = 'name1';
+        $cfg['searchcallback'] = array($service, 'search');
+        tx_rnbase_filter_BaseFilter::handleCharBrowser($configurations, $this->getConfId().'sponsor.charbrowser', $viewdata, $fields, $options, $cfg);
+        tx_rnbase_filter_BaseFilter::handlePageBrowser($configurations, $this->getConfId().'sponsor.pagebrowser', $viewdata, $fields, $options, $cfg);
+        $sponsors = $srv->search($fields, $options);
+        $viewdata->offsetSet('sponsors', $sponsors);
+        return null;
+    }
 
-	function getTemplateName() { return 'sponsorlist';}
-	function getViewClassName() { return 'tx_t3sponsors_views_SponsorList';}
+    function getTemplateName() { return 'sponsorlist';}
+    function getViewClassName() { return 'tx_t3sponsors_views_SponsorList';}
 }
 ```
 Theoretisch kann die Methode **handleRequest()** direkt einen String zurückliefern. Dieser würde dann ohne weitere Verarbeitung im Frontend angezeigt. Im Beispiel oben wird statt dessen **NULL** zurückgegeben. Dadurch wird die Ausgabe über eine View-Klasse geleitet und man kann HTML-Template verwenden. Alle Daten, die für die Ausgabe benötigt werden, sollten in das Objekt $viewdata geschrieben werden.
@@ -113,24 +113,24 @@ Theoretisch kann die Methode **handleRequest()** direkt einen String zurücklief
 Wenn der Controller nun mit seiner Arbeit fertig ist und alle notwendigen Daten gesammelt bzw. verarbeitet wurden, dann ist die View-Klasse am Zug. Vom Controller wird der View über dessen Methode *render($view, &$configurations)* aufgerufen. Wie der Controller hat auch der View einige Dinge zu tun, die sich immer wieder gleichen: Das Laden des HTML-Templates und die Suche des gewünschten Subparts. Diese Arbeiten erledigt die Klasse tx_rnbase_view_Base. Wenn wir also unseren View davon erben lassen, dann hat die Klasse ungefähr dieses Aussehen:
 ```php
 class tx_t3sponsors_views_SponsorList extends tx_rnbase_view_Base {
-	function createOutput($template, &$viewData, &$configurations, &$formatter) {
-		// Wir holen die Daten von der Action ab
-		$sponsors =& $viewData->offsetGet('sponsors');
-		$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
-		$template = $listBuilder->render($sponsors,
-				$viewData, $template, 'tx_t3sponsors_marker_Sponsor',
-				'sponsorlist.sponsor.', 'SPONSOR', $formatter);
-		return $template;
-	}
-	/**
-	 * Subpart der im HTML-Template geladen werden soll. Dieser wird der Methode
-	 * createOutput automatisch als $template übergeben.
-	 *
-	 * @return string
-	 */
-	function getMainSubpart() {
-		return '###SPONSORLIST###';
-	}
+    function createOutput($template, &$viewData, &$configurations, &$formatter) {
+        // Wir holen die Daten von der Action ab
+        $sponsors =& $viewData->offsetGet('sponsors');
+        $listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
+        $template = $listBuilder->render($sponsors,
+                $viewData, $template, 'tx_t3sponsors_marker_Sponsor',
+                'sponsorlist.sponsor.', 'SPONSOR', $formatter);
+        return $template;
+    }
+    /**
+     * Subpart der im HTML-Template geladen werden soll. Dieser wird der Methode
+     * createOutput automatisch als $template übergeben.
+     *
+     * @return string
+     */
+    function getMainSubpart() {
+        return '###SPONSORLIST###';
+    }
 }
 ```
 Durch die Implementierung der Methode getMainSubpart() bekommt der View direkt den passenden Abschnitt aus dem HTML-Template übergeben. Doch wie findet der View eigentlich die Datei? Diese wird per Konvention ermittelt. Die Actionklasse definiert in der Methode **getTemplateName()** den Typoscript-Key für das HTML-Template. Wenn die Action-Klasse also **sponsorlist** liefert, dann wird das Template über den TS-Key **plugin.t3sponsors.sponsorlistTemplate** gesucht.
@@ -220,19 +220,19 @@ Im Falle, das verboseMayday nicht gesetzt ist, wird versucht eine Nutzer freundl
 Beispielkonfiguration TypoScript:
 ```
 plugin.tx_extension.error {
-	### alle fehler versteckt ausgeben
-	default = TEXT
-	default.current = 1
-	default.wrap = <!-- | -->
-	180150 = Oops, diesen Datensatz gibt es leider nicht mehr.
-	180160 = COA
-	180160 {
-		10 = TEXT
-		10.value = Dieser Eintrag ist leider nur für angemeldete Personen sichtbar. Bitte führen Sie eine erneute Suche durch.
-		10.wrap = <p>|</p>
-		### Suchplugin im Fehlerfall ausgeben
-		20 = < plugin.tx_mksearch
-	}
+    ### alle fehler versteckt ausgeben
+    default = TEXT
+    default.current = 1
+    default.wrap = <!-- | -->
+    180150 = Oops, diesen Datensatz gibt es leider nicht mehr.
+    180160 = COA
+    180160 {
+        10 = TEXT
+        10.value = Dieser Eintrag ist leider nur für angemeldete Personen sichtbar. Bitte führen Sie eine erneute Suche durch.
+        10.wrap = <p>|</p>
+        ### Suchplugin im Fehlerfall ausgeben
+        20 = < plugin.tx_mksearch
+    }
 }
 ```
 
@@ -241,13 +241,13 @@ Beispiel Sprachdatei
 ```xml
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-	<data type="array">
-		<languageKey index="default" type="array">
-			<label index="ERROR_default">Es ist ein unerwarteter Fehler aufgetreten!</label>
-			<label index="ERROR_180150">Oops, diesen Datensatz gibt es leider nicht mehr.</label>
-			<label index="ERROR_180160">Dieser Eintrag ist leider nur für angemeldete Personen sichtbar.</label>
-		</languageKey>
-	</data>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="ERROR_default">Es ist ein unerwarteter Fehler aufgetreten!</label>
+            <label index="ERROR_180150">Oops, diesen Datensatz gibt es leider nicht mehr.</label>
+            <label index="ERROR_180160">Dieser Eintrag ist leider nur für angemeldete Personen sichtbar.</label>
+        </languageKey>
+    </data>
 </T3locallang>
 ```
 
@@ -260,14 +260,14 @@ Diese Möglichkeit bietet sich aktuell nur über TypoScript oder einen eigenen E
 Beispiel für das Fangen von Exceptions über den Fehlercode im TypoScript:
 ```
 plugin.tx_extension {
-	catchException.180160 = COA
-	catchException.180160 {
-		10 = TEXT
-		10.value = Dieser Eintrag existiert leider nicht mehr. Eventuell könnte Sie dies interesieren:
-		10.wrap = <p>|</p>
-		20 = < plugin.tx_extension
-		20.action = tx_extension_action_AlternativeAusgabe
-	}
+    catchException.180160 = COA
+    catchException.180160 {
+        10 = TEXT
+        10.value = Dieser Eintrag existiert leider nicht mehr. Eventuell könnte Sie dies interesieren:
+        10.wrap = <p>|</p>
+        20 = < plugin.tx_extension
+        20.action = tx_extension_action_AlternativeAusgabe
+    }
 }
 ```
 
@@ -276,18 +276,18 @@ Man kann auf Ebene einer Action Resourcedateien einbinden. Das kann man direkt p
 
 ```
 plugin.tx_myext {
-	myview {
-		includeJSFooter {
-			1 = EXT:myext/Resources/Public/Scripts/validator.js
-		}
-		includeCSS {
-			1 = EXT:myext/Resources/Public/Styles/validator.css
-		}
-		includeJSlibs {
-			1 = //my-external-library
-			1.external = 1
-		}
-	}
+    myview {
+        includeJSFooter {
+            1 = EXT:myext/Resources/Public/Scripts/validator.js
+        }
+        includeCSS {
+            1 = EXT:myext/Resources/Public/Styles/validator.css
+        }
+        includeJSlibs {
+            1 = //my-external-library
+            1.external = 1
+        }
+    }
 }
 ```
 ##Cachehandling
@@ -295,12 +295,12 @@ Bei USER Plugins muss der Cache in den pages geleert werden, wenn sich ein Daten
 
 ```
 plugin.tx_myext {
-	myview {
-		cacheTags {
-			0 = first-tag
-			1 = second-tag
-		}
-	}
+    myview {
+        cacheTags {
+            0 = first-tag
+            1 = second-tag
+        }
+    }
 }
 ```
 

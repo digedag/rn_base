@@ -26,50 +26,52 @@
 /**
  * Common Interface for Maps
  */
-interface tx_rnbase_maps_IMap {
-	public function init(Tx_Rnbase_Configuration_ProcessorInterface $conf, $confId);
-	function initTypes(tx_rnbase_maps_TypeRegistry $registry);
-	/**
-	 * Adds a marker to this map
-	 * @param tx_rnbase_maps_IMarker $marker
-	 */
-	function addMarker(tx_rnbase_maps_IMarker $marker);
-	/**
-	 * Set a map type
-	 */
-	function setMapTypeStreet();
-	/**
-	 * Set a map type
-	 */
-	function setMapTypeHybrid();
-	/**
-	 * Set a map type
-	 */
-	function setMapTypeSatellite();
-	/**
-	 * Set a map type
-	 * @param string $mapType map specific type string
-	 */
-	function setMapType($mapType);
+interface tx_rnbase_maps_IMap
+{
+    public function init(Tx_Rnbase_Configuration_ProcessorInterface $conf, $confId);
+    public function initTypes(tx_rnbase_maps_TypeRegistry $registry);
+    /**
+     * Adds a marker to this map
+     * @param tx_rnbase_maps_IMarker $marker
+     */
+    public function addMarker(tx_rnbase_maps_IMarker $marker);
+    /**
+     * Set a map type
+     */
+    public function setMapTypeStreet();
+    /**
+     * Set a map type
+     */
+    public function setMapTypeHybrid();
+    /**
+     * Set a map type
+     */
+    public function setMapTypeSatellite();
+    /**
+     * Set a map type
+     * @param string $mapType map specific type string
+     */
+    public function setMapType($mapType);
 
-	/**
-	 * Add control
-	 * @param tx_rnbase_maps_IControl $control map specific control
-	 */
-	function addControl(tx_rnbase_maps_IControl $control);
+    /**
+     * Add control
+     * @param tx_rnbase_maps_IControl $control map specific control
+     */
+    public function addControl(tx_rnbase_maps_IControl $control);
 
-	/**
-	 * Render the map. Returns all the HTML- and JS-Code to display the map.
-	 * @return string
-	 */
-	function draw();
-	/**
-	 * Returns an ID-String for the map provider.
-	 * @return
-	 */
-	function getPROVID();
+    /**
+     * Render the map. Returns all the HTML- and JS-Code to display the map.
+     * @return string
+     */
+    public function draw();
+    /**
+     * Returns an ID-String for the map provider.
+     *
+     * @return
+     */
+    public function getPROVID();
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_IMap.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_IMap.php']);
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/maps/class.tx_rnbase_maps_IMap.php']);
 }

@@ -31,169 +31,169 @@
  */
 class Tx_Rnbase_Backend_Utility_DecoratorUtility
 {
-	/**
-	 * Optional decorator instance to use for columns.
-	 *
-	 * @var Tx_Rnbase_Backend_Decorator_InterfaceDecorator
-	 */
-	private $decorator = null;
+    /**
+     * Optional decorator instance to use for columns.
+     *
+     * @var Tx_Rnbase_Backend_Decorator_InterfaceDecorator
+     */
+    private $decorator = null;
 
-	/**
-	 * The options object
-	 *
-	 * @var Tx_Rnbase_Domain_Model_Data
-	 */
-	private $options = null;
+    /**
+     * The options object
+     *
+     * @var Tx_Rnbase_Domain_Model_Data
+     */
+    private $options = null;
 
-	/**
-	 * Constructor
-	 *
-	 * @param Tx_Rnbase_Backend_Decorator_InterfaceDecorator $decorator
-	 * @param Tx_Rnbase_Domain_Model_Data|array $options
-	 *
-	 * @return Tx_Rnbase_Backend_Utility_DecoratorUtility
-	 */
-	public static function getInstance(
-		Tx_Rnbase_Backend_Decorator_InterfaceDecorator $decorator = null,
-		$options = array()
-	) {
-		return tx_rnbase::makeInstance(
-			'Tx_Rnbase_Backend_Utility_DecoratorUtility',
-			$decorator,
-			$options
-		);
-	}
+    /**
+     * Constructor
+     *
+     * @param Tx_Rnbase_Backend_Decorator_InterfaceDecorator $decorator
+     * @param Tx_Rnbase_Domain_Model_Data|array $options
+     *
+     * @return Tx_Rnbase_Backend_Utility_DecoratorUtility
+     */
+    public static function getInstance(
+        Tx_Rnbase_Backend_Decorator_InterfaceDecorator $decorator = null,
+        $options = array()
+    ) {
+        return tx_rnbase::makeInstance(
+            'Tx_Rnbase_Backend_Utility_DecoratorUtility',
+            $decorator,
+            $options
+        );
+    }
 
-	/**
-	 * Constructor
-	 *
-	 * @param Tx_Rnbase_Backend_Decorator_InterfaceDecorator $decorator
-	 * @param Tx_Rnbase_Domain_Model_Data|array $options
-	 */
-	public function __construct(
-		Tx_Rnbase_Backend_Decorator_InterfaceDecorator $decorator = null,
-		$options = array()
-	) {
-		$this->decorator = $decorator;
-		tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
-		$this->options = Tx_Rnbase_Domain_Model_Data::getInstance($options);
-	}
+    /**
+     * Constructor
+     *
+     * @param Tx_Rnbase_Backend_Decorator_InterfaceDecorator $decorator
+     * @param Tx_Rnbase_Domain_Model_Data|array $options
+     */
+    public function __construct(
+        Tx_Rnbase_Backend_Decorator_InterfaceDecorator $decorator = null,
+        $options = array()
+    ) {
+        $this->decorator = $decorator;
+        tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
+        $this->options = Tx_Rnbase_Domain_Model_Data::getInstance($options);
+    }
 
-	/**
-	 * The decorator instace.
-	 *
-	 * @return Tx_Rnbase_Backend_Decorator_InterfaceDecorator
-	 */
-	protected function getDecorator()
-	{
-		if ($this->decorator instanceof Tx_Rnbase_Backend_Decorator_InterfaceDecorator) {
-			return $this->decorator;
-		}
+    /**
+     * The decorator instace.
+     *
+     * @return Tx_Rnbase_Backend_Decorator_InterfaceDecorator
+     */
+    protected function getDecorator()
+    {
+        if ($this->decorator instanceof Tx_Rnbase_Backend_Decorator_InterfaceDecorator) {
+            return $this->decorator;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * The decorator options object
-	 *
-	 * @return Tx_Rnbase_Domain_Model_Data
-	 */
-	protected function getOptions()
-	{
-		return $this->options;
-	}
+    /**
+     * The decorator options object
+     *
+     * @return Tx_Rnbase_Domain_Model_Data
+     */
+    protected function getOptions()
+    {
+        return $this->options;
+    }
 
-	/**
-	 * Adds the column 'uid' to the be list.
-	 *
-	 * @param array $columns
-	 *
-	 * @return Tx_Rnbase_Backend_Utility_DecoratorUtility
-	 */
-	public function addDecoratorColumnUid(
-		array &$columns
-	) {
-		$columns['uid'] = array(
-			'title' => 'label_tableheader_uid',
-			'decorator' => $this->getDecorator(),
-		);
+    /**
+     * Adds the column 'uid' to the be list.
+     *
+     * @param array $columns
+     *
+     * @return Tx_Rnbase_Backend_Utility_DecoratorUtility
+     */
+    public function addDecoratorColumnUid(
+        array &$columns
+    ) {
+        $columns['uid'] = array(
+            'title' => 'label_tableheader_uid',
+            'decorator' => $this->getDecorator(),
+        );
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Adds the column 'label' to the be list.
-	 *
-	 * @param array $columns
-	 *
-	 * @return Tx_Rnbase_Backend_Utility_DecoratorUtility
-	 */
-	public function addDecoratorColumnLabel(
-		array &$columns
-	) {
-		if ($this->getOptions()->hasBaseTableName()) {
-			tx_rnbase::load('tx_rnbase_util_TCA');
-			$labelField = tx_rnbase_util_TCA::getLabelFieldForTable(
-				$this->getOptions()->getBaseTableName()
-			);
-			if (!empty($labelField)) {
-				$columns['label'] = array(
-					'title' => 'label_tableheader_title',
-					'decorator' => $this->getDecorator(),
-				);
-			}
-		}
+    /**
+     * Adds the column 'label' to the be list.
+     *
+     * @param array $columns
+     *
+     * @return Tx_Rnbase_Backend_Utility_DecoratorUtility
+     */
+    public function addDecoratorColumnLabel(
+        array &$columns
+    ) {
+        if ($this->getOptions()->hasBaseTableName()) {
+            tx_rnbase::load('tx_rnbase_util_TCA');
+            $labelField = tx_rnbase_util_TCA::getLabelFieldForTable(
+                $this->getOptions()->getBaseTableName()
+            );
+            if (!empty($labelField)) {
+                $columns['label'] = array(
+                    'title' => 'label_tableheader_title',
+                    'decorator' => $this->getDecorator(),
+                );
+            }
+        }
 
-		// fallback, the uid column
-		if (!isset($columns['label']) && !isset($columns['uid'])) {
-			$this->addDecoratorColumnUid($columns);
-		}
+        // fallback, the uid column
+        if (!isset($columns['label']) && !isset($columns['uid'])) {
+            $this->addDecoratorColumnUid($columns);
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Adds the column 'sys_language_uid' to the be list.
-	 *
-	 * @param array $columns
-	 *
-	 * @return Tx_Rnbase_Backend_Utility_DecoratorUtility
-	 */
-	public function addDecoratorColumnLanguage(
-		array &$columns
-	) {
-		if ($this->getOptions()->hasBaseTableName()) {
-			tx_rnbase::load('tx_rnbase_util_TCA');
-			$sysLanguageUidField = tx_rnbase_util_TCA::getLanguageFieldForTable(
-				$this->getOptions()->getBaseTableName()
-			);
-			if (!empty($sysLanguageUidField)) {
-				$columns['sys_language_uid'] = array(
-					'title' => 'label_tableheader_language',
-					'decorator' => $this->getDecorator(),
-				);
-			}
-		}
+    /**
+     * Adds the column 'sys_language_uid' to the be list.
+     *
+     * @param array $columns
+     *
+     * @return Tx_Rnbase_Backend_Utility_DecoratorUtility
+     */
+    public function addDecoratorColumnLanguage(
+        array &$columns
+    ) {
+        if ($this->getOptions()->hasBaseTableName()) {
+            tx_rnbase::load('tx_rnbase_util_TCA');
+            $sysLanguageUidField = tx_rnbase_util_TCA::getLanguageFieldForTable(
+                $this->getOptions()->getBaseTableName()
+            );
+            if (!empty($sysLanguageUidField)) {
+                $columns['sys_language_uid'] = array(
+                    'title' => 'label_tableheader_language',
+                    'decorator' => $this->getDecorator(),
+                );
+            }
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Adds the column 'actions' to the be list.
-	 * this column contains the edit, hide, remove, ... actions.
-	 *
-	 * @param array $columns
+    /**
+     * Adds the column 'actions' to the be list.
+     * this column contains the edit, hide, remove, ... actions.
+     *
+     * @param array $columns
 
-	 * @return Tx_Rnbase_Backend_Utility_DecoratorUtility
-	 */
-	public function addDecoratorColumnActions(
-		array &$columns
-	) {
-		$columns['actions'] = array(
-			'title' => 'label_tableheader_actions',
-			'decorator' => $this->getDecorator(),
-		);
+     * @return Tx_Rnbase_Backend_Utility_DecoratorUtility
+     */
+    public function addDecoratorColumnActions(
+        array &$columns
+    ) {
+        $columns['actions'] = array(
+            'title' => 'label_tableheader_actions',
+            'decorator' => $this->getDecorator(),
+        );
 
-		return $this;
-	}
+        return $this;
+    }
 }
