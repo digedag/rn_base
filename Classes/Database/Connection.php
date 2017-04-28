@@ -334,9 +334,9 @@ class Tx_Rnbase_Database_Connection
 			'rn_base',
 			'util_db_do_insert_pre',
 			array(
-				'tablename' => $tablename,
+				'tablename' => &$tablename,
 				'values' => &$values,
-				'options' => $arr,
+				'options' => &$arr,
 			)
 		);
 
@@ -370,10 +370,10 @@ class Tx_Rnbase_Database_Connection
 			'rn_base',
 			'util_db_do_insert_post',
 			array(
-				'tablename' => $tablename,
-				'uid' => $insertId,
-				'values' => $values,
-				'options' => $arr,
+				'tablename' => &$tablename,
+				'uid' => &$insertId,
+				'values' => &$values,
+				'options' => &$arr,
 			)
 		);
 
@@ -431,11 +431,11 @@ class Tx_Rnbase_Database_Connection
 			'rn_base',
 			'util_db_do_update_pre',
 			array(
-				'tablename' => $tablename,
-				'where' => $where,
+				'tablename' => &$tablename,
+				'where' => &$where,
 				'values' => &$values,
-				'options' => $arr,
-				'noQuoteFields' => $noQuoteFields,
+				'options' => &$arr,
+				'noQuoteFields' => &$noQuoteFields,
 			)
 		);
 
@@ -463,12 +463,12 @@ class Tx_Rnbase_Database_Connection
 			'rn_base',
 			'util_db_do_update_post',
 			array(
-				'tablename' => $tablename,
-				'where' => $where,
-				'values' => $values,
-				'affectedRows' => $affectedRows,
-				'options' => $arr,
-				'noQuoteFields' => $noQuoteFields,
+				'tablename' => &$tablename,
+				'where' => &$where,
+				'values' => &$values,
+				'affectedRows' => &$affectedRows,
+				'options' => &$arr,
+				'noQuoteFields' => &$noQuoteFields,
 			)
 		);
 
@@ -492,9 +492,9 @@ class Tx_Rnbase_Database_Connection
 			'rn_base',
 			'util_db_do_delete_pre',
 			array(
-				'tablename' => $tablename,
-				'where' => $where,
-				'options' => $arr,
+				'tablename' => &$tablename,
+				'where' => &$where,
+				'options' => &$arr,
 			)
 		);
 
@@ -520,10 +520,10 @@ class Tx_Rnbase_Database_Connection
 			'rn_base',
 			'util_db_do_delete_post',
 			array(
-				'tablename' => $tablename,
-				'where' => $where,
-				'affectedRows' => $affectedRows,
-				'options' => $arr,
+				'tablename' => &$tablename,
+				'where' => &$where,
+				'affectedRows' => &$affectedRows,
+				'options' => &$arr,
 			)
 		);
 
