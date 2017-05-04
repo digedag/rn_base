@@ -3,6 +3,9 @@
 Änderungen
 ----------
 
+v1.3.3 (??.??.2017)
+ * new storage trait added
+
 v1.3.2 (28.04.2017)
  * table name in db quote methods are optionaly now
  * reference error for fixVersioningPid in backend utility fixed
