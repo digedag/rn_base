@@ -78,9 +78,7 @@ class tx_rnbase_util_Lang
         $isLocalizationOverride = false
     ) {
         if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-            /**
- * @var $languageFactory \TYPO3\CMS\Core\Localization\LocalizationFactory
-*/
+            /** @var $languageFactory \TYPO3\CMS\Core\Localization\LocalizationFactory */
             $languageFactory = tx_rnbase::makeInstance(
                 'TYPO3\\CMS\\Core\\Localization\\LocalizationFactory'
             );
