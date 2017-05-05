@@ -571,6 +571,16 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
     }
 
     /**
+     * The current language utility.
+     *
+     * @return tx_rnbase_util_Lang
+     */
+    protected function getLocalLangUtil()
+    {
+        return $this->localLangUtil;
+    }
+
+    /**
      * Returns the localized label of the LOCAL_LANG key.
      * This is a reimplementation from tslib_pibase::pi_getLL().
      *
@@ -582,7 +592,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
      */
     public function getLL($key, $alt = '', $hsc = false)
     {
-        return $this->localLangUtil->getLL(
+        return $this->getLocalLangUtil()->getLL(
             $key,
             $alt,
             $hsc,
@@ -1107,7 +1117,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
      */
     private function loadLL()
     {
-        $this->localLangUtil->loadLLFile($this->get('locallangFilename'));
+        $this->getLocalLangUtil()->loadLLFile($this->get('locallangFilename'));
 
         // Overlaying labels from additional locallangs are minor prior
         // we support comma separated lists and arrays
@@ -1121,11 +1131,11 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
 
         if (!empty($locallangOverlays)) {
             foreach ($locallangOverlays as $locallangOverlayFilename) {
-                $this->localLangUtil->loadLLFile($locallangOverlayFilename);
+                $this->getLocalLangUtil()->loadLLFile($locallangOverlayFilename);
             }
         }
         // Overlaying labels from TypoScript are higher prior (including fictitious language keys for non-system languages!):
-        $this->localLangUtil->loadLLTs($this->get('_LOCAL_LANG.'));
+        $this->getLocalLangUtil()->loadLLTs($this->get('_LOCAL_LANG.'));
     }
 
     /**
