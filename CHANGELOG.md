@@ -3,8 +3,11 @@
 Änderungen
 ----------
 
-v1.3.3 (??.??.2017)
+v1.3.4 (??.??.2017)
+
+v1.3.3 (09.05.2017)
  * new storage trait added
+ * dynamic tab menu fixed if there are no submenus
 
 v1.3.2 (28.04.2017)
  * table name in db quote methods are optionaly now
