@@ -309,3 +309,16 @@ Dieser View wird klassicherweise einen Datensatz aus einer Tabelle anzeigen. Dam
 ```php
 $TCA['tx_myext_data_for_my_view']['ctrl']['cacheTags'] = array('first-tag', 'second-tag');
 ```
+
+rn_base leert dann in Cache Gruppe "pages" alle Einträge mit dem konfigurierten Tag. Es ist also zwingend notwendig, dass alle gewünschten Caches der Gruppe "pages" angehören, die geleert werden sollen. Das ist bei der default Konfiguration von TYPO3 schon der Fall. Wenn aber z.B. auch der tt_news geleert werden soll, dann müssten die Caching Konfiguration angepasst werden:
+
+```php
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['tt_news_cache'] = array(
+    'backend' => 'MyCachingBackend',
+    'frontend' => 'MyCachingFrontend',
+    'options' => array(
+        ...
+    ),
+    'groups' => array('pages')
+);
+```
