@@ -869,10 +869,14 @@ class Tx_Rnbase_Backend_Form_ToolBox
                                 '\',this);"'
             );
         }
-        $out = '<div class="typo3-dyntabmenu-tabs">' . $this->getDoc()->getTabMenuRaw($menuItems) . '</div>';
-        // durch den Kommentar <!-- Tab menu --> wird das Menü 2-mal eingefügt vor TYPO3 7.6
-        // also entfernen wir den Kommentar
-        $out = str_replace('<!-- Tab menu -->', '', $out);
+
+        // In TYPO3 6 the getTabMenuRaw produces a division by zero error if there are no entries.
+        if (!empty($menuItems)) {
+            $out = '<div class="typo3-dyntabmenu-tabs">' . $this->getDoc()->getTabMenuRaw($menuItems) . '</div>';
+            // durch den Kommentar <!-- Tab menu --> wird das Menü 2-mal eingefügt vor TYPO3 7.6
+            // also entfernen wir den Kommentar
+            $out = str_replace('<!-- Tab menu -->', '', $out);
+        }
 
         $ret = array(
             'menu' => $out,
