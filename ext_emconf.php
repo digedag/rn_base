@@ -11,10 +11,10 @@
  ***************************************************************/
 $EM_CONF[$_EXTKEY] = array(
     'title' => 'A base library for extensions.',
-    'description' => 'Uses MVC design principles and domain driven development for TYPO3 extension development.',
+    'description' => 'TYPO3 plugins based on rn_base can use MVC design principles and domain driven development. This extension also provides an abstraction layer for TYPO3 API to support LTS version since 4.5.',
     'category' => 'misc',
     'shy' => 0,
-    'version' => '1.3.3',
+    'version' => '1.4.0',
     'dependencies' => 'cms',
     'conflicts' => '',
     'priority' => '',

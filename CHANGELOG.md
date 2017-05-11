@@ -3,7 +3,8 @@
 Änderungen
 ----------
 
-v1.3.4 (??.??.2017)
+v1.4.0 (11.05.2017)
+ * First TER release with support for TYPO3 8.7. Thanks to all contributors!!
 
 v1.3.3 (09.05.2017)
  * new storage trait added
