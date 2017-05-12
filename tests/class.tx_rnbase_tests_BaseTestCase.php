@@ -164,7 +164,7 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
 
         $model
             ->expects(self::any())
-            ->method('reset')
+            ->method($isNewModel ? 'loadRecord' : 'reset')
             ->will(self::returnSelf());
         $model
             ->expects(self::never())
