@@ -791,7 +791,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
 
     public function getTCEfields($formname)
     {
-        $ret = [];
+        $ret = array();
         $ret[] = $this->form->printNeededJSFunctions_top();
         $ret[] = implode('', $this->tceStack);
         $ret[] = $this->form->printNeededJSFunctions();
