@@ -47,7 +47,7 @@ class tx_rnbase_util_Templates
      */
     public static function getSubpart($template, $subpart)
     {
-        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+        if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
             $parser = tx_rnbase::makeInstance(
                 'TYPO3\\CMS\\Core\\Service\\MarkerBasedTemplateService'
             );
@@ -462,7 +462,7 @@ class tx_rnbase_util_Templates
      */
     public static function substituteSubpart($content, $marker, $subpartContent, $recursive = 1)
     {
-        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+        if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
             $parser = tx_rnbase::makeInstance(
                 'TYPO3\\CMS\\Core\\Service\\MarkerBasedTemplateService'
             );
