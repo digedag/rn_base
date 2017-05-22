@@ -103,7 +103,7 @@ abstract class tx_rnbase_action_BaseIOC
                     tx_rnbase_util_Misc::mayday('No template name defined!');
                 }
 
-                $view->setTemplateFile($configurations->get($tmplName.'Template', true));
+                $view->setTemplateFile($this->getTemplateFile());
                 tx_rnbase_util_Misc::pushTT(get_class($this), 'render');
                 $out = $view->render($tmplName, $configurations);
                 tx_rnbase_util_Misc::pullTT();
@@ -271,7 +271,27 @@ abstract class tx_rnbase_action_BaseIOC
      */
     public function getConfId()
     {
-        return $this->getTemplateName().'.';
+        return $this->getTemplateName() . '.';
+    }
+    /**
+     * Liefert den Pfad zum Template
+     *
+     * @return string
+     */
+    protected function getTemplateFile()
+    {
+        $file = $this->getConfigurations()->get(
+            $this->getConfId() . 'template.file', true
+        );
+
+        // check the old way
+        if (empty($file)) {
+            $file = $this->getConfigurations()->get(
+                $this->getTemplateName() . 'Template', true
+            );
+        }
+
+        return $file;
     }
     /**
      * Liefert den Default-Namen des Templates. Über diesen Namen
