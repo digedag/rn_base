@@ -179,7 +179,11 @@ class tx_rnbase_view_Base
      */
     public function getMainSubpart(&$viewData)
     {
-        return false;
+        $subpart = $subpart = $this->getController()->getConfigurations()->get(
+            $this->getController()->getConfId() . 'template.subpart'
+        );
+
+        return empty($subpart) ? false : $subpart;
     }
 
     /**
