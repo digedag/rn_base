@@ -3,6 +3,17 @@
 Änderungen
 ----------
 
+v1.4.2 (??.??.2017)
+
+v1.4.1 (30.05.2017)
+ * add subpart to ts by default  
+   TypoScript path: `action.template.subpart`
+ * add new path to configure the view template.  
+   Old, stil working Path: `actionTemplate`  
+   New: `action.template.file`
+ * using MarkerBasedTemplateService with TYPO3 7 or Higher
+ * model mocks in base unit tests fixed
+
 v1.4.0 (11.05.2017)
  * First TER release with support for TYPO3 8.7. Thanks to all contributors!!
 
