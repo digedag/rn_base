@@ -190,9 +190,16 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTest
     public function testMarkPageNotFoundIfPointerOutOfRange($pointer, $pageMarkedAsNotFound, $ignorePageNotFound)
     {
         $httpUtility = $this->getMock('HttpUtility_Dummy', array('setResponseCode'));
-        $httpUtility->expects($pageMarkedAsNotFound ? $this->once() : $this->never())
-            ->method('setResponseCode')
-            ->with(404);
+        if ($pageMarkedAsNotFound) {
+            $httpUtility
+                ->expects($this->once())
+                ->method('setResponseCode')
+                ->with(404);
+        } else {
+            $httpUtility
+                ->expects($this->never())
+                ->method('setResponseCode');
+        }
 
         $pageBrowser = $this->getMock(
             'tx_rnbase_util_PageBrowser',
@@ -239,14 +246,6 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTest
 class HttpUtility_Dummy
 {
     const HTTP_STATUS_404 = 404;
-
-    /**
-     * placeholder needed for older phpunit versions
-     */
-    public function setResponseCode()
-    {
-
-    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/util/class.tx_rnbase_tests_util_PageBrowser_testcase.php']) {
