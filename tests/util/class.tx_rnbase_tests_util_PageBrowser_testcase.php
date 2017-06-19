@@ -21,10 +21,10 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-
+tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_rnbase_util_PageBrowser');
 
-class tx_rnbase_tests_util_PageBrowser_testcase extends Tx_Phpunit_TestCase
+class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTestCase
 {
     public function test_getStateSimple()
     {
@@ -168,6 +168,77 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends Tx_Phpunit_TestCase
             array(11, 10),
         );
     }
+
+    /**
+     * @group unit
+     */
+    public function testGetHttpUtilityClass()
+    {
+        self::assertEquals(
+            tx_rnbase_util_Typo3Classes::getHttpUtilityClass(),
+            $this->callInaccessibleMethod(tx_rnbase::makeInstance('tx_rnbase_util_PageBrowser', 'test'), 'getHttpUtilityClass')
+        );
+    }
+
+    /**
+     * @param int $pointer
+     * @param bool $pageMarkedAsNotFound
+     * @param bool $ignorePageNotFound
+     * @group unit
+     * @dataProvider dataProviderMarkPageNotFoundIfPointerOutOfRange
+     */
+    public function testMarkPageNotFoundIfPointerOutOfRange($pointer, $pageMarkedAsNotFound, $ignorePageNotFound)
+    {
+        $httpUtility = $this->getMock('HttpUtility_Dummy', array('setResponseCode'));
+        $httpUtility->expects($pageMarkedAsNotFound ? $this->once() : $this->never())
+            ->method('setResponseCode')
+            ->with(404);
+
+        $pageBrowser = $this->getMock(
+            'tx_rnbase_util_PageBrowser',
+            array('getHttpUtilityClass'),
+            array('test')
+        );
+        $pageBrowser->expects($pageMarkedAsNotFound ? $this->once() : $this->never())
+            ->method('getHttpUtilityClass')
+            ->will($this->returnValue($httpUtility));
+
+        $pageBrowser->setPointer($pointer);
+        $pageBrowser->setListSize(10);
+        $pageBrowser->setPageSize(5);
+        // dieser Aufruf stellt fest, ob der Pointer außerhalb des Bereich ist
+        $pageBrowser->getState();
+
+        $configurations = $this->getMock('tx_rnbase_configurations', array('convertToUserInt'));
+        $configurationArray = array('test.' => array('ignorePageNotFound' => $ignorePageNotFound));
+        $configurations->init($configurationArray, null, 'rn_base', 'rn_base');
+        $configurations->expects($pageMarkedAsNotFound ? $this->once() : $this->never())
+            ->method('convertToUserInt');
+
+        $pageBrowser->markPageNotFoundIfPointerOutOfRange($configurations, 'test.');
+    }
+
+    /**
+     * @return number[][]|boolean[][]
+     */
+    public function dataProviderMarkPageNotFoundIfPointerOutOfRange()
+    {
+        return array(
+            array(123, true, false),
+            array(2, true, false),
+            array(1, false, false),
+            array(0, false, false),
+            array(123, false, true),
+            array(2, false, true),
+            array(1, false, true),
+            array(0, false, true),
+        );
+    }
+}
+
+class HttpUtility_Dummy
+{
+    const HTTP_STATUS_404 = 404;
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/tests/util/class.tx_rnbase_tests_util_PageBrowser_testcase.php']) {

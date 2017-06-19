@@ -188,6 +188,40 @@ class tx_rnbase_util_PageBrowser implements PageBrowser
     {
         return strtolower('pb-'. $this->pbid . '-' . $param);
     }
+
+    /**
+     * Die angefragte Seite war nicht vorhanden, also 404 schicken.
+     * @see https://webmasters.googleblog.com/2014/02/infinite-scroll-search-friendly.html
+     * Außerdem darf das Plugin dann nicht gecached werden, da ansonsten beim nächsten Aufruf
+     * ein 200er Response kommt, da die Seite dann aus dem Cache kommt. (TYPO3 cached nur
+     * das HTML, nicht die Header)
+     *
+     * @param tx_rnbase_util_PageBrowser $pageBrowser
+     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param string $confid
+     * @return void
+     */
+    public function markPageNotFoundIfPointerOutOfRange(Tx_Rnbase_Configuration_ProcessorInterface $configurations, $confid)
+    {
+        if ($this->isPointerOutOfRange() && !$configurations->getBool($confid . 'ignorePageNotFound')) {
+            $utilityClass = $this->getHttpUtilityClass();
+            // wegen den Tests von statischen Aufrufen
+            call_user_func_array(
+                array($utilityClass, 'setResponseCode'),
+                array($utilityClass::HTTP_STATUS_404)
+            );
+            $configurations->convertToUserInt();
+        }
+    }
+
+    /**
+     *
+     * @return string|\TYPO3\CMS\Core\Utility\HttpUtility
+     */
+    protected function getHttpUtilityClass()
+    {
+        return tx_rnbase_util_Typo3Classes::getHttpUtilityClass();
+    }
 }
 
 interface PageBrowser
