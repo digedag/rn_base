@@ -519,9 +519,10 @@ class tx_rnbase_util_TSFAL
      * @param int $itemId
      * @param int $mediaUid
      * @param int $pId
+     * @param int $sorting
      * @return int
      */
-    public static function addReference($tableName, $fieldName, $itemId, $mediaUid, $pId = 0)
+    public static function addReference($tableName, $fieldName, $itemId, $mediaUid, $pId = 0, $sorting = 1)
     {
         $data = array();
         $data['pid'] = $pId;
@@ -530,7 +531,7 @@ class tx_rnbase_util_TSFAL
         $data['tstamp'] = $data['crdate'] = time();
         $data['tablenames'] = $tableName;
         $data['fieldname'] = $fieldName;
-        $data['sorting_foreign'] = 1;
+        $data['sorting_foreign'] = $sorting;
         $data['table_local'] = 'sys_file';
 
         $id = tx_rnbase_util_DB::doInsert('sys_file_reference', $data);
