@@ -315,6 +315,10 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
                 // https://webmasters.googleblog.com/2014/02/infinite-scroll-search-friendly.html
                 $utility = tx_rnbase_util_Typo3Classes::getHttpUtilityClass();
                 $utility::setResponseCode($utility::HTTP_STATUS_404);
+                // außerdem darf das Plugin dann nicht gecached werden, da ansonsten beim nächsten Aufruf
+                // ein 200er Response kommt, da die Seite dann aus dem Cache kommt. (TYPO3 cached nur
+                // das HTML, nicht die Header)
+                $configurations->convertToUserInt();
             }
             if ($viewdata) {
                 $viewdata->offsetSet('pagebrowser', $pageBrowser);
