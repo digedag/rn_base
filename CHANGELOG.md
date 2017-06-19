@@ -3,13 +3,17 @@
 Änderungen
 ----------
 
-v1.4.2 (??.??.2017)
+v1.4.3 (??.??.2017)
+
+v1.4.2 (19.06.2017)
+ * set plugins USER_INT if a page outside the range of the pagebrowser is requested -> available through
+ method tx_rnbase_util_PageBrowser::markPageNotFoundIfPointerOutOfRange()
 
 v1.4.1 (30.05.2017)
- * add subpart to ts by default  
+ * add subpart to ts by default
    TypoScript path: `action.template.subpart`
- * add new path to configure the view template.  
-   Old, stil working Path: `actionTemplate`  
+ * add new path to configure the view template.
+   Old, stil working Path: `actionTemplate`
    New: `action.template.file`
  * using MarkerBasedTemplateService with TYPO3 7 or Higher
  * model mocks in base unit tests fixed
