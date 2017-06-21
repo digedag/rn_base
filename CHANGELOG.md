@@ -3,7 +3,10 @@
 Änderungen
 ----------
 
-v1.4.3 (??.??.2017)
+v1.4.4 (??.??.2017)
+
+v1.4.3 (21.06.2017)
+ * sorting can be set when adding file references (FAL)
 
 v1.4.2 (19.06.2017)
  * set plugins USER_INT if a page outside the range of the pagebrowser is requested -> available through
