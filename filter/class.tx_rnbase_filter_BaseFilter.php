@@ -115,12 +115,58 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
         // Optionen
         tx_rnbase_util_SearchBase::setConfigOptions($options, $this->getConfigurations(), $this->getConfId().'options.');
 
+        $fields = $this->handleSysCategoryFilter($fields);
+
         return $this->initFilter($fields, $options, $this->getParameters(), $this->getConfigurations(), $this->getConfId());
     }
+
+    /**
+     * @param array $fields
+     * @return array
+     */
+    protected function handleSysCategoryFilter(array $fields)
+    {
+        if ($this->getConfigurations()->get($this->getConfId() . 'useSysCategoriesOfItemFromParameters')) {
+            $fields = $this->getCategoryFilterUtility()->setFieldsBySysCategoriesOfItemFromParameters(
+                $fields, $this->getConfigurations(),
+                $this->getConfId() . 'useSysCategoriesOfItemFromParameters.'
+            );
+        }
+
+        if ($this->getConfigurations()->get($this->getConfId() . 'useSysCategoriesOfContentElement')) {
+            $fields = $this->getCategoryFilterUtility()->setFieldsBySysCategoriesOfContentElement(
+                $fields, $this->getConfigurations(),
+                $this->getConfId() . 'useSysCategoriesOfContentElement.'
+            );
+        }
+
+        if ($this->getConfigurations()->get($this->getConfId() . 'useSysCategoriesFromParameters')) {
+            $fields = $this->getCategoryFilterUtility()->setFieldsBySysCategoriesFromParameters(
+                $fields, $this->getConfigurations(),
+                $this->getConfId() . 'useSysCategoriesFromParameters.'
+            );
+        }
+
+        return $fields;
+    }
+
+    /**
+     * @return Tx_Rnbase_Category_FilterUtility
+     */
+    protected function getCategoryFilterUtility()
+    {
+        return tx_rnbase::makeInstance('Tx_Rnbase_Category_FilterUtility');
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see tx_rnbase_IFilter::hideResult()
+     */
     public function hideResult()
     {
         return false;
     }
+
     /**
      * Abgeleitete Filter können diese Methode überschreiben und zusätzlich Filter setzen
      *
