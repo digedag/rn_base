@@ -92,6 +92,7 @@ plugin_tx_mkextension.myListView.myFilterConfId.useSysCategoriesOfItemFromParame
 ```
 
 **filtern anhand der sys_category aus dem Inhaltselement**
+
 Bei jedem Inhaltselement können im BE sys_category Einträge gewählt werden. Diese lassen sich ganz einfach zum filtern verwenden. Dazu lediglich folgendes TypoScript:
 
 ```
