@@ -132,5 +132,9 @@ Wenn nach mehr als einer Kategorie gefiltert wird und ein Datensatz mehrere der 
 
 
 ```
-plugin_tx_mkextension.myListView.myFilterConfId.options.groupby = MY_BASE_ALIAS.uid
+plugin_tx_mkextension.myListView.myFilterConfId.options {
+    groupby = MY_BASE_ALIAS.uid
+    ### meistens notwendig, außer es sollen keine Models geliefert werden
+    forcewrapper = 1
+}
 ```
