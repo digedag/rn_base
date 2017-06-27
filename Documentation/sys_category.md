@@ -41,11 +41,21 @@ in getTableMappings() muss folgender Aufruf ergänzt werden:
 
 Der Methode kann alternativ als 2. Parameter ein anderer Alias als SYS_CATEGORY übergeben werden.
 
-in getJoins() muss folgender Aufruf ergänzt werden:
+in getJoins() muss folgender Aufruf ergänzt werden, wenn useAlias in der Search Klasse **true** liefert:
 
 ```php
 
     $joins .= $tx_rnbase::makeInstance('Tx_Rnbase_Category_SearchUtility')->addJoins(
+        $this->getBaseTable(), $this->getBaseTableAlias(), 'my_categories_field', $tableAliases
+    );
+
+```
+
+in getJoins() muss folgender Aufruf ergänzt werden, wenn useAlias in der Search Klasse **false** liefert:
+
+```php
+
+    $joins .= $tx_rnbase::makeInstance('Tx_Rnbase_Category_SearchUtility')->addJoinsWithoutAlias(
         $this->getBaseTable(), $this->getBaseTableAlias(), 'my_categories_field', $tableAliases
     );
 

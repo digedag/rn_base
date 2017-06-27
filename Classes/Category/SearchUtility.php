@@ -73,4 +73,29 @@ class Tx_Rnbase_Category_SearchUtility
 
         return $joins;
     }
+
+    /**
+     * @param string $baseTableName
+     * @param string $baseTableAlias
+     * @param string $fieldName
+     * @param array $givenTableAliases
+     * @param string $sysCategoryTableAlias
+     *
+     * @return string
+     */
+    public function addJoinsWithoutAlias(
+        $baseTableName, $baseTableAlias, $fieldName, array $givenTableAliases, $sysCategoryTableAlias = 'SYS_CATEGORY'
+    )
+    {
+        $joins = '';
+        if (isset($givenTableAliases[$sysCategoryTableAlias])) {
+            $joins =
+            ' LEFT JOIN sys_category_record_mm ON sys_category_record_mm.uid_foreign' .
+            ' = ' . $baseTableName . '.uid AND sys_category_record_mm.tablenames = "' .
+            $baseTableName . '" AND sys_category_record_mm.fieldname = "' . $fieldName . '"' .
+            ' LEFT JOIN sys_category ON sys_category.uid = sys_category_record_mm.uid_local';
+        }
+
+        return $joins;
+    }
 }
