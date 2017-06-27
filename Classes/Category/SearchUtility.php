@@ -65,7 +65,8 @@ class Tx_Rnbase_Category_SearchUtility
         if (isset($givenTableAliases[$sysCategoryTableAlias])) {
             $joins =
                 ' LEFT JOIN sys_category_record_mm AS ' . $sysCategoryTableAlias . '_MM ON ' . $sysCategoryTableAlias . '_MM.uid_foreign' .
-                ' = ' . $baseTableAlias . '.uid AND tablenames = "' . $baseTableName . '" AND fieldname = "' . $fieldName . '"' .
+                ' = ' . $baseTableAlias . '.uid AND ' . $sysCategoryTableAlias . '_MM.tablenames = "' .
+                $baseTableName . '" AND ' . $sysCategoryTableAlias . '_MM.fieldname = "' . $fieldName . '"' .
                 ' LEFT JOIN sys_category AS ' . $sysCategoryTableAlias . ' ON ' . $sysCategoryTableAlias .
                 '.uid = ' . $sysCategoryTableAlias . '_MM.uid_local';
         }
