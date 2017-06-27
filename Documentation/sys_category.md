@@ -125,3 +125,12 @@ plugin_tx_mkextension.myListView.myFilterConfId.useSysCategoriesFromParameters.s
 ```
 
 So könnte z.B. mit einem Kategoriefilter eine einfacher Filterung integriert werden, die Nutzer steuern können.
+
+**group by**
+
+Wenn nach mehr als einer Kategorie gefiltert wird und ein Datensatz mehrere der gefilterten Kategorien hat, dann muss group by gesetzt werden. Ansonsten werden Datensätze mehrfach angezeigt. Das TypoScript könnte so aussehen:
+
+
+```
+plugin_tx_mkextension.myListView.myFilterConfId.options.groupby = MY_BASE_ALIAS.uid
+```
