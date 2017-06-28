@@ -3,7 +3,10 @@
 Änderungen
 ----------
 
-v1.4.4 (??.??.2017)
+v1.4.5 (??.??.2017)
+
+v1.4.4 (28.06.2017)
+ * new features to make filtering by sys_category easy (e.g. in list views)
 
 v1.4.3 (21.06.2017)
  * sorting can be set when adding file references (FAL)
