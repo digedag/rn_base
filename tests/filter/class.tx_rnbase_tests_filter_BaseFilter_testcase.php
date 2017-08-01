@@ -56,7 +56,7 @@ class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTes
     }
 
     /**
-     * @group uinit
+     * @group unit
      */
     public function testInitDoesNothingByDefault()
     {
@@ -79,7 +79,7 @@ class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTes
     }
 
     /**
-     * @group uinit
+     * @group unit
      */
     public function testInitUsesSysCategoriesOfItemFromParametersSysCategoriesIfConfigured()
     {
@@ -114,7 +114,7 @@ class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTes
     }
 
     /**
-     * @group uinit
+     * @group unit
      */
     public function testInitUsesSysCategoriesOfPluginIfConfigured()
     {
@@ -149,7 +149,7 @@ class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTes
     }
 
     /**
-     * @group uinit
+     * @group unit
      */
     public function testInitUsesSysCategoriesFromParametersIfConfigured()
     {
@@ -181,5 +181,52 @@ class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTes
         $fields = $options = array('test' => 'test');
         $filter->init($fields, $options);
         self::assertEquals(array('test' => 'test', 'test2' => 'test2'), $fields);
+    }
+
+    /**
+     * @group unit
+     * @dataProvider dataProviderInitReturnsCorrectValue
+     */
+    public function testInitReturnsCorrectValue($initFilterReturnValue, $doSearchVariableValue, $expectedReturnValue)
+    {
+        $configurations = $this->createConfigurations(array(), 'mktegutfe');
+        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $filter = $this->getAccessibleMock(
+            'tx_rnbase_filter_BaseFilter', array('initFilter'),
+            array(
+                &$parameters,
+                &$configurations,
+                'myList.filter.'
+            )
+        );
+        $filter
+            ->expects(self::once())
+            ->method('initFilter')
+            ->will(self::returnValue($initFilterReturnValue));
+        $filter->_set('doSearch', $doSearchVariableValue);
+
+        $fields = $options = array();
+        self::assertSame($expectedReturnValue, $filter->init($fields, $options));
+    }
+
+    /**
+     * @return boolean[][]|NULL[][]
+     */
+    public function dataProviderInitReturnsCorrectValue()
+    {
+        return array(
+            // initFilter liefert true, doSearch nicht gesetzt, wir erwarten true
+            array(true, null, true),
+            // initFilter liefert false, doSearch nicht gesetzt, wir erwarten false
+            array(false, null, false),
+            // initFilter liefert false, doSearch steht auf true, wir erwarten true
+            array(false, true, true),
+            // initFilter liefert true, doSearch steht auf false, wir erwarten false
+            array(true, false, false),
+            // initFilter liefert true, doSearch steht auf true, wir erwarten true
+            array(true, true, true),
+            // initFilter liefert false, doSearch steht auf false, wir erwarten false
+            array(false, false, false),
+        );
     }
 }

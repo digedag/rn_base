@@ -114,6 +114,17 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
      */
     protected $filterItems;
 
+    /**
+     * @var null|boolean wenn $doSearch auf null steht wird der return Wert von initFilter()
+     * in init() zurück gegeben. Ansonsten der Wert von $doSearch, dieser hat also Vorrang.
+     */
+    protected $doSearch = null;
+
+    /**
+     * @param tx_rnbase_IParameters $parameters
+     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param string $confId
+     */
     public function __construct(&$parameters, &$configurations, $confId)
     {
         $this->configurations = $configurations;
@@ -165,7 +176,9 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 
         $fields = $this->handleSysCategoryFilter($fields);
 
-        return $this->initFilter($fields, $options, $this->getParameters(), $this->getConfigurations(), $this->getConfId());
+        return $this->shouldSearchBeDone(
+            $this->initFilter($fields, $options, $this->getParameters(), $this->getConfigurations(), $this->getConfId())
+        );
     }
 
     /**
@@ -204,6 +217,20 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
     protected function getCategoryFilterUtility()
     {
         return tx_rnbase::makeInstance('Tx_Rnbase_Category_FilterUtility');
+    }
+
+    /**
+     * @param boolean $fallback
+     * @return boolean
+     */
+    protected function shouldSearchBeDone($fallback)
+    {
+        $doSearch = $this->doSearch;
+        if ($doSearch === null) {
+            $doSearch = $fallback;
+        }
+
+        return $doSearch;
     }
 
     /**
