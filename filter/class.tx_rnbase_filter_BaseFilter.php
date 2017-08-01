@@ -26,6 +26,15 @@
 tx_rnbase::load('tx_rnbase_util_SearchBase');
 tx_rnbase::load('Tx_Rnbase_Database_Connection');
 
+/**
+ * tx_rnbase_IFilter
+ *
+ * @package         TYPO3
+ * @subpackage      rn_base
+ * @author          Rene Nitzsche <rene@system25.de>
+ * @license         http://www.gnu.org/licenses/lgpl.html
+ *                  GNU Lesser General Public License, version 3 or later
+ */
 interface tx_rnbase_IFilter
 {
     /**
@@ -57,16 +66,52 @@ interface tx_rnbase_IFilter
      */
     public function isSpecialSearch();
 }
+
+/**
+ * tx_rnbase_IFilterMarker
+ *
+ * @package         TYPO3
+ * @subpackage      rn_base
+ * @author          Rene Nitzsche <rene@system25.de>
+ * @license         http://www.gnu.org/licenses/lgpl.html
+ *                  GNU Lesser General Public License, version 3 or later
+ */
 interface tx_rnbase_IFilterMarker
 {
     public function parseTemplate($template, &$formatter, $confId, $marker = 'FILTER');
 }
 
+/**
+ * tx_rnbase_filter_BaseFilter
+ *
+ * @package         TYPO3
+ * @subpackage      rn_base
+ * @author          Rene Nitzsche <rene@system25.de>
+ * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
+ * @license         http://www.gnu.org/licenses/lgpl.html
+ *                  GNU Lesser General Public License, version 3 or later
+ */
 class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilterMarker
 {
+
+    /**
+     * @var Tx_Rnbase_Configuration_ProcessorInterface
+     */
     private $configurations;
+
+    /**
+     * @var tx_rnbase_IParameters
+     */
     private $parameters;
+
+    /**
+     * @var string
+     */
     private $confId;
+
+    /**
+     * @var array
+     */
     protected $filterItems;
 
     public function __construct(&$parameters, &$configurations, $confId)
@@ -75,6 +120,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
         $this->parameters = $parameters;
         $this->confId = $confId;
     }
+
     /**
      * Liefert das Config-Objekt
      *
@@ -84,6 +130,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
     {
         return $this->configurations;
     }
+
     /**
      * Liefert die Parameter
      *
@@ -93,6 +140,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
     {
         return $this->parameters;
     }
+
     /**
      * Liefert die Basis-ConfigId. Diese sollte immer mit einem Punkt enden: myview.
      *
@@ -102,6 +150,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
     {
         return $this->confId;
     }
+
     /**
      * Abgeleitete Filter können diese Methode überschreiben und zusätzlich Filter setzen
      *
@@ -112,7 +161,6 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
     public function init(&$fields, &$options)
     {
         tx_rnbase_util_SearchBase::setConfigFields($fields, $this->getConfigurations(), $this->getConfId().'fields.');
-        // Optionen
         tx_rnbase_util_SearchBase::setConfigOptions($options, $this->getConfigurations(), $this->getConfId().'options.');
 
         $fields = $this->handleSysCategoryFilter($fields);
@@ -181,6 +229,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
     {
         return true;
     }
+
     /**
      * Hilfsmethode zum Setzen von Filtern aus den Parametern. Ein schon gesetzter Wert im Field-Array
      * wird nicht überschrieben. Die
@@ -201,10 +250,14 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
         }
     }
 
+    /**
+     * @param tx_rnbase_IFilterItem $item
+     */
     public function addFilterItem(tx_rnbase_IFilterItem $item)
     {
         $this->filterItems[] = $item;
     }
+
     /**
      * Returns all filter items set.
      *
@@ -214,6 +267,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
     {
         return $this->filterItems;
     }
+
     /**
      * Fabrikmethode zur Erstellung von Filtern. Die Klasse des Filters kann entweder direkt angegeben werden oder
      * wird über die Config gelesen. Klappt beides nicht, wird der Standardfilter geliefert.
@@ -248,10 +302,15 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
         return is_array($this->inputData) && count($this->inputData);
     }
 
+    /**
+     * {@inheritDoc}
+     * @see tx_rnbase_IFilter::getMarker()
+     */
     public function getMarker()
     {
         return $this;
     }
+
     /**
      * Liefert einfach das Template zurück. Ein echter FilterMarker hat hier die Möglichkeit sein
      * Such-Formular in das HTML-Template zu schreiben.
