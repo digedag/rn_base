@@ -187,25 +187,29 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
      */
     protected function handleSysCategoryFilter(array $fields)
     {
-        if ($this->getConfigurations()->get($this->getConfId() . 'useSysCategoriesOfItemFromParameters')) {
-            $fields = $this->getCategoryFilterUtility()->setFieldsBySysCategoriesOfItemFromParameters(
-                $fields, $this->getConfigurations(),
-                $this->getConfId() . 'useSysCategoriesOfItemFromParameters.'
-            );
-        }
+        $typoScriptPathsToFilterUtilityMethod = array(
+            'useSysCategoriesOfItemFromParameters' => 'setFieldsBySysCategoriesOfItemFromParameters',
+            'useSysCategoriesOfContentElement' => 'setFieldsBySysCategoriesOfContentElement',
+            'useSysCategoriesFromParameters' => 'setFieldsBySysCategoriesFromParameters',
+        );
 
-        if ($this->getConfigurations()->get($this->getConfId() . 'useSysCategoriesOfContentElement')) {
-            $fields = $this->getCategoryFilterUtility()->setFieldsBySysCategoriesOfContentElement(
-                $fields, $this->getConfigurations(),
-                $this->getConfId() . 'useSysCategoriesOfContentElement.'
-            );
-        }
+        foreach ($typoScriptPathsToFilterUtilityMethod as $typoScriptPath => $filterUtilityMethod) {
+            if ($this->getConfigurations()->get($this->getConfId() . $typoScriptPath)) {
+                $fieldsBefore = $fields;
+                $fields = $this->getCategoryFilterUtility()->$filterUtilityMethod(
+                    $fields, $this->getConfigurations(),
+                    $this->getConfId() . $typoScriptPath . '.'
+                );
 
-        if ($this->getConfigurations()->get($this->getConfId() . 'useSysCategoriesFromParameters')) {
-            $fields = $this->getCategoryFilterUtility()->setFieldsBySysCategoriesFromParameters(
-                $fields, $this->getConfigurations(),
-                $this->getConfId() . 'useSysCategoriesFromParameters.'
-            );
+                if (
+                    $this->getConfigurations()->get($this->getConfId() . $typoScriptPath . '.dontSearchIfNoCategoriesFound') &&
+                    // wenn sich die $fields nicht geändert haben, dann wurden keine Kategorie
+                    // gefunden.
+                    $fieldsBefore == $fields
+                ) {
+                    $this->doSearch = false;
+                }
+            }
         }
 
         return $fields;

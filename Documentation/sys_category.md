@@ -148,3 +148,16 @@ plugin_tx_mkextension.myListView.myFilterConfId.options {
     forcewrapper = 1
 }
 ```
+
+**nur suchen wenn Kategorien gefunden wurden**
+
+Falls keine Suche durchgeführt werden soll, wenn keine Kategorien gefunden wurden (z.B. weil im Inhaltselement keine Kategorien gewählt wurden), dann kann das folgende TypoScript gesetzt werden
+
+
+```
+plugin_tx_mkextension.myListView.myFilterConfId {
+    useSysCategoriesOfItemFromParameters.dontSearchIfNoCategoriesFound = 1
+    useSysCategoriesOfContentElement.dontSearchIfNoCategoriesFound = 1
+    useSysCategoriesFromParameters.dontSearchIfNoCategoriesFound = 1
+}
+```
