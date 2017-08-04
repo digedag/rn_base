@@ -168,7 +168,7 @@ class Tx_Rnbase_Category_FilterUtility
      */
     public function setFieldsBySysCategoriesFromParameters(
         array $fields, Tx_Rnbase_Configuration_ProcessorInterface $configurations, $confId
-        )
+    )
     {
         $categoryUid = $configurations->getParameters()->getInt(
             $configurations->get($confId . 'parameterName'), $configurations->get($confId . 'parameterQualifier')

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package TYPO3
- * @subpackage tx_mktegutfe
+ * @subpackage tx_myext
  * @author Hannes Bochmann <hannes.bochmann@das-medienkombinat.de>
  *
  *  Copyright notice
@@ -56,14 +56,14 @@ class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTes
     }
 
     /**
-     * @group uinit
+     * @group unit
      */
-    public function testInitDoesNothingByDefault()
+    public function testInitCallsHandleSysCategoryFilterCorrect()
     {
-        $configurations = $this->createConfigurations(array(), 'mktegutfe');
+        $configurations = $this->createConfigurations(array(), 'myext');
         $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
-        $filter = $this->getMock(
-            'tx_rnbase_filter_BaseFilter', array('getCategoryFilterUtility'),
+        $filter = $this->getAccessibleMock(
+            'tx_rnbase_filter_BaseFilter', array('handleSysCategoryFilter'),
             array(
                 &$parameters,
                 &$configurations,
@@ -71,23 +71,35 @@ class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTes
             )
         );
         $filter
-            ->expects(self::never())
-            ->method('getCategoryFilterUtility');
+            ->expects(self::once())
+            ->method('handleSysCategoryFilter')
+            ->with(array())
+            ->will(self::returnValue(array('test')));
 
         $fields = $options = array();
         $filter->init($fields, $options);
+
+        self::assertEquals(array('test'), $fields);
+        self::assertNull($filter->_get('doSearch'), '$doSearch nicht null');
     }
 
     /**
-     * @group uinit
+     * @group unit
+     * @dataProvider dataProviderHandleSysCategoryFilter
      */
-    public function testInitUsesSysCategoriesOfItemFromParametersSysCategoriesIfConfigured()
-    {
+    public function testHandleSysCategoryFilter(
+        $confId, $dontSearchIfNoCategoriesFound, $filterUtilityMethod, $expectedFields, $expectedDoSearchValue
+    ) {
         $configurations = $this->createConfigurations(
-            array('myList.' => array('filter.' => array('useSysCategoriesOfItemFromParameters' => 1))), 'mktegutfe'
+            array('myList.' => array('filter.' => array(
+                $confId => 1,
+                $confId . '.' => array(
+                    'dontSearchIfNoCategoriesFound' => $dontSearchIfNoCategoriesFound
+                )
+            ))), 'myext'
         );
         $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
-        $filter = $this->getMock(
+        $filter = $this->getAccessibleMock(
             'tx_rnbase_filter_BaseFilter', array('getCategoryFilterUtility'),
             array(
                 &$parameters,
@@ -96,90 +108,114 @@ class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTes
             )
         );
 
-        $categoryFilterUtility = $this->getMock('Tx_Rnbase_Category_FilterUtility', array('setFieldsBySysCategoriesOfItemFromParameters'));
+        $categoryFilterUtility = $this->getMock('Tx_Rnbase_Category_FilterUtility', array($filterUtilityMethod));
         $categoryFilterUtility
             ->expects(self::once())
-            ->method('setFieldsBySysCategoriesOfItemFromParameters')
-            ->with(array('test' => 'test'), $configurations, 'myList.filter.useSysCategoriesOfItemFromParameters.')
-            ->will(self::returnValue(array('test' => 'test', 'test2' => 'test2')));
+            ->method($filterUtilityMethod)
+            ->with(array('test' => 'test'), $configurations, 'myList.filter.' . $confId . '.')
+            ->will(self::returnValue($expectedFields));
 
         $filter
             ->expects(self::once())
             ->method('getCategoryFilterUtility')
             ->will(self::returnValue($categoryFilterUtility));
 
-        $fields = $options = array('test' => 'test');
-        $filter->init($fields, $options);
-        self::assertEquals(array('test' => 'test', 'test2' => 'test2'), $fields);
+        $fields = array('test' => 'test');
+        $fields = $this->callInaccessibleMethod($filter, 'handleSysCategoryFilter', $fields);
+
+        self::assertEquals($expectedFields, $fields);
+        self::assertSame($expectedDoSearchValue, $filter->_get('doSearch'));
     }
 
     /**
-     * @group uinit
+     * @return string[][]|number[][]|string[][][]
      */
-    public function testInitUsesSysCategoriesOfPluginIfConfigured()
+    public function dataProviderHandleSysCategoryFilter()
     {
-        $configurations = $this->createConfigurations(
-            array('myList.' => array('filter.' => array('useSysCategoriesOfContentElement' => 1))), 'mktegutfe'
+        return array(
+            array(
+                'useSysCategoriesOfItemFromParameters', 0, 'setFieldsBySysCategoriesOfItemFromParameters',
+                array('test' => 'test', 'test2' => 'test2'), null
+            ),
+            array(
+                'useSysCategoriesOfItemFromParameters', 1, 'setFieldsBySysCategoriesOfItemFromParameters',
+                array('test' => 'test', 'test2' => 'test2'), null
+            ),
+            array(
+                'useSysCategoriesOfItemFromParameters', 1, 'setFieldsBySysCategoriesOfItemFromParameters',
+                array('test' => 'test'), false
+            ),
+            array(
+                'useSysCategoriesOfContentElement', 0, 'setFieldsBySysCategoriesOfContentElement',
+                array('test' => 'test', 'test2' => 'test2'), null
+            ),
+            array(
+                'useSysCategoriesOfContentElement', 1, 'setFieldsBySysCategoriesOfContentElement',
+                array('test' => 'test', 'test2' => 'test2'), null
+            ),
+            array(
+                'useSysCategoriesOfContentElement', 1, 'setFieldsBySysCategoriesOfContentElement',
+                array('test' => 'test'), false
+            ),
+            array(
+                'useSysCategoriesFromParameters', 0, 'setFieldsBySysCategoriesFromParameters',
+                array('test' => 'test', 'test2' => 'test2'), null
+            ),
+            array(
+                'useSysCategoriesFromParameters', 1, 'setFieldsBySysCategoriesFromParameters',
+                array('test' => 'test', 'test2' => 'test2'), null
+            ),
+            array(
+                'useSysCategoriesFromParameters', 1, 'setFieldsBySysCategoriesFromParameters',
+                array('test' => 'test'), false
+            ),
         );
+    }
+
+    /**
+     * @group unit
+     * @dataProvider dataProviderInitReturnsCorrectValue
+     */
+    public function testInitReturnsCorrectValue($initFilterReturnValue, $doSearchVariableValue, $expectedReturnValue)
+    {
+        $configurations = $this->createConfigurations(array(), 'myext');
         $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
-        $filter = $this->getMock(
-            'tx_rnbase_filter_BaseFilter', array('getCategoryFilterUtility'),
+        $filter = $this->getAccessibleMock(
+            'tx_rnbase_filter_BaseFilter', array('initFilter'),
             array(
                 &$parameters,
                 &$configurations,
                 'myList.filter.'
             )
         );
-
-        $categoryFilterUtility = $this->getMock('Tx_Rnbase_Category_FilterUtility', array('setFieldsBySysCategoriesOfContentElement'));
-        $categoryFilterUtility
-            ->expects(self::once())
-            ->method('setFieldsBySysCategoriesOfContentElement')
-            ->with(array('test' => 'test'), $configurations, 'myList.filter.useSysCategoriesOfContentElement.')
-            ->will(self::returnValue(array('test' => 'test', 'test2' => 'test2')));
-
         $filter
             ->expects(self::once())
-            ->method('getCategoryFilterUtility')
-            ->will(self::returnValue($categoryFilterUtility));
+            ->method('initFilter')
+            ->will(self::returnValue($initFilterReturnValue));
+        $filter->_set('doSearch', $doSearchVariableValue);
 
-        $fields = $options = array('test' => 'test');
-        $filter->init($fields, $options);
-        self::assertEquals(array('test' => 'test', 'test2' => 'test2'), $fields);
+        $fields = $options = array();
+        self::assertSame($expectedReturnValue, $filter->init($fields, $options));
     }
 
     /**
-     * @group uinit
+     * @return boolean[][]|NULL[][]
      */
-    public function testInitUsesSysCategoriesFromParametersIfConfigured()
+    public function dataProviderInitReturnsCorrectValue()
     {
-        $configurations = $this->createConfigurations(
-            array('myList.' => array('filter.' => array('useSysCategoriesFromParameters' => 1))), 'mktegutfe'
+        return array(
+            // initFilter liefert true, doSearch nicht gesetzt, wir erwarten true
+            array(true, null, true),
+            // initFilter liefert false, doSearch nicht gesetzt, wir erwarten false
+            array(false, null, false),
+            // initFilter liefert false, doSearch steht auf true, wir erwarten true
+            array(false, true, true),
+            // initFilter liefert true, doSearch steht auf false, wir erwarten false
+            array(true, false, false),
+            // initFilter liefert true, doSearch steht auf true, wir erwarten true
+            array(true, true, true),
+            // initFilter liefert false, doSearch steht auf false, wir erwarten false
+            array(false, false, false),
         );
-        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
-        $filter = $this->getMock(
-            'tx_rnbase_filter_BaseFilter', array('getCategoryFilterUtility'),
-            array(
-                &$parameters,
-                &$configurations,
-                'myList.filter.'
-            )
-            );
-
-        $categoryFilterUtility = $this->getMock('Tx_Rnbase_Category_FilterUtility', array('setFieldsBySysCategoriesFromParameters'));
-        $categoryFilterUtility
-            ->expects(self::once())
-            ->method('setFieldsBySysCategoriesFromParameters')
-            ->with(array('test' => 'test'), $configurations, 'myList.filter.useSysCategoriesFromParameters.')
-            ->will(self::returnValue(array('test' => 'test', 'test2' => 'test2')));
-
-        $filter
-            ->expects(self::once())
-            ->method('getCategoryFilterUtility')
-            ->will(self::returnValue($categoryFilterUtility));
-
-        $fields = $options = array('test' => 'test');
-        $filter->init($fields, $options);
-        self::assertEquals(array('test' => 'test', 'test2' => 'test2'), $fields);
     }
 }

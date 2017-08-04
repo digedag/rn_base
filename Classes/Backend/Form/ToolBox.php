@@ -659,7 +659,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
         // Die Options ermitteln
         foreach ($TCA[$table]['columns'][$column]['config']['items'] as $item) {
             $sel = '';
-            if ($value === (int)$item[1]) {
+            if ($value == $item[1]) {
                 $sel = 'selected="selected"';
             }
             $out .= '<option value="' . $item[1] . '" ' . $sel . '>' . $LANG->sL($item[0]) . '</option>';

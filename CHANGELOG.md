@@ -3,7 +3,12 @@
 Änderungen
 ----------
 
-v1.4.5 (??.??.2017)
+v1.4.6 (??.??.2017)
+
+v1.4.5 (02.08.2017)
+ * new variable $doSearch in tx_rnbase_filter_BaseFilter to control return value of init() more convenient. $doSearch can be set anywhere inside initFilter(). This overrules the return value of initFilter() if not null. This way it's easier to control whether a search should be done or not
+ * configurable if search with tx_rnbase_filter_BaseFilter should be stopped when no categories found
+
 
 v1.4.4 (28.06.2017)
  * new features to make filtering by sys_category easy (e.g. in list views)
