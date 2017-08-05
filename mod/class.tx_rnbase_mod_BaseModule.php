@@ -1,10 +1,9 @@
 <?php
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009-2016 Rene Nitzsche (rene@system25.de)
+*  (c) 2009-2017 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -46,8 +45,11 @@ tx_rnbase::load('Tx_Rnbase_Backend_Module_Base');
 abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base implements tx_rnbase_mod_IModule
 {
     public $doc;
+    /** @var Tx_Rnbase_Configuration_ProcessorInterface */
     private $configurations;
     private $formTool;
+    /** @var Tx_Rnbase_Backend_Template_ModuleTemplate */
+    private $moduleTemplate;
 
     /**
      * Initializes the backend module by setting internal variables, initializing the menu.
@@ -117,97 +119,34 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
     {
         // Einbindung der Modul-Funktionen
         $this->checkExtObj();
-        // Access check!
-        // The page will show only if there is a valid page and if this page may be viewed by the user
-        $this->pageinfo = Tx_Rnbase_Backend_Utility::readPageAccess($this->getPid(), $this->perms_clause);
-        $this->initDoc($this->getDoc());
 
-        if ($this->useModuleTemplate()) {
-            $this->setContentThroughModuleTemplate();
-        } else {
-            $this->setContentThroughDocumentTemplate();
-        }
+        $this->moduleTemplate = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Template_ModuleTemplate', $this, [
+            'form' => $this->getFormTag(),
+            'docstyles' => $this->getDocStyles(),
+            'template' => $this->getModuleTemplate(),
+        ]);
+        // Die Variable muss gesetzt sein.
+        $this->doc = $this->getModTemplate()->getDoc();
+
+        /* @var $parts Tx_Rnbase_Backend_Template_ModuleParts */
+        $parts = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Template_ModuleParts');
+        $this->prepareModuleParts($parts);
+
+        $this->content = $this->getModTemplate()->renderContent($parts);
     }
-
-    /**
-     * @return bool
-     */
-    protected function useModuleTemplate()
+    protected function prepareModuleParts($parts)
     {
-        return false;
-    }
+        // Access check. The page will show only if there is a valid page
+        // and if this page may be viewed by the user
+        $pageinfo = Tx_Rnbase_Backend_Utility::readPageAccess($this->getPid(), $this->perms_clause);
 
-    /**
-     * Der Weg bis TYPO3 6.2
-     * @return void
-     */
-    protected function setContentThroughDocumentTemplate()
-    {
-        global $BE_USER;
-
-        $markers = array();
-        $this->content .= $this->moduleContent(); // Muss vor der Erstellung des Headers geladen werden
-        $this->content .= $this->getDoc()->sectionEnd();  // Zur Sicherheit eine offene Section schließen
-
-        $header = $this->getDoc()->header($GLOBALS['LANG']->getLL('title'));
-        $this->content = $this->content; // ??
-        // ShortCut
-        if ($BE_USER->mayMakeShortcut()) {
-            $this->content .= $this->getDoc()->section(
-                '',
-                $this->getDoc()->makeShortcutIcon(
-                    'id',
-                    implode(',', array_keys($this->MOD_MENU)),
-                    $this->getName()
-                )
-            );
-        }
-        // Setting up the buttons and markers for docheader
-        $docHeaderButtons = $this->getButtons();
-        $markers['CSH'] = $docHeaderButtons['csh'];
-        $markers['HEADER'] = $header;
-        $markers['SELECTOR'] = $this->selector ? $this->selector : $this->subselector; // SubSelector is deprecated!!
-
-        // Das FUNC_MENU enthält die Modul-Funktionen, die per ext_tables.php registriert werden
-        $markers['FUNC_MENU'] = $this->getFuncMenu();
-        // SUBMENU sind zusätzliche Tabs die eine Modul-Funktion bei Bedarf einblenden kann.
-        $markers['SUBMENU'] = $this->tabs;
-        $markers['TABS'] = $this->tabs; // Deprecated use ###SUBMENU###
-        $markers['CONTENT'] = $this->content;
-
-        $content = $this->getDoc()->startPage($GLOBALS['LANG']->getLL('title'));
-        $content .= $this->getDoc()->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
-        $this->content = $this->getDoc()->insertStylesAndJS($content);
-    }
-
-    /**
-     * der Weg ab TYPO3 7.6
-     * @return void
-     */
-    protected function setContentThroughModuleTemplate()
-    {
-        /* @var $moduleTemplate TYPO3\CMS\Backend\Template\ModuleTemplate */
-        $moduleTemplate = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Template\\ModuleTemplate');
-        $moduleTemplate->getPageRenderer()->loadJquery();
-        $moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
-        // @TODO das Menü ist nicht funktionell. Weder werden die Locallang Labels
-        // ersetzt, noch funktioniert der onChange Event
-        $moduleTemplate->registerModuleMenu($this->getName());
-        // @TODO Shorticon wie in alter Version einfügen
-        $content = $moduleTemplate->header($GLOBALS['LANG']->getLL('title'));
-        // muss vor dem einfügen der Tabs aufgerufen werden, da die Tabs sonst leer bleiben
-        $this->moduleContent();
-        $content .= $moduleTemplate->section('', $this->tabs, false, false, 0, true);
-        $content .= $moduleTemplate->section('', $this->moduleContent(), false, false, 0, true);
-        // Workaround: jumpUrl wieder einfügen
-        // @TODO Weg finden dass ohne das DocumentTemplate zu machen
-        $content .= '<!--###POSTJSMARKER###-->';
-        $content = $this->getDoc()->insertStylesAndJS($content);
-        // @TODO haupttemplate eines BE moduls enthält evtl. JS/CSS etc.
-        // das wurde bisher über das DocumentTemplate eingefügt, was jetzt
-        // nicht mehr geht. Dafür muss ein Weg gefunden werden.
-        $moduleTemplate->setContent($content);
-        $this->content = $moduleTemplate->renderContent();
+        $parts->setContent($this->moduleContent());
+        $parts->setButtons($this->getButtons());
+        $parts->setTitle($GLOBALS['LANG']->getLL('title'));
+        $parts->setFuncMenu($this->getFuncMenu());
+        $parts->setPageInfo($pageinfo);
+        $parts->setSubMenu($this->tabs);
+        $parts->setSelector($this->selector ? $this->selector : $this->subselector);
     }
 
     /**
@@ -296,7 +235,6 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
     public function getConfigurations()
     {
         if (!$this->configurations) {
-            tx_rnbase::load('Tx_Rnbase_Configuration_Processor');
             tx_rnbase::load('tx_rnbase_util_Misc');
             tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
@@ -369,22 +307,21 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
      * Returns a template instance
      * Liefert die Instanzvariable doc. Die muss immer Public bleiben, weil auch einige TYPO3-Funktionen
      * direkt darauf zugreifen.
-     * @return template
+     * @return \TYPO3\CMS\Backend\Template\DocumentTemplate
      */
     public function getDoc()
     {
-        if (!$this->doc) {
-            if (isset($GLOBALS['TBE_TEMPLATE'])) {
-                $this->doc = $GLOBALS['TBE_TEMPLATE'];
-            } else {
-                $this->doc = tx_rnbase::makeInstance(
-                    tx_rnbase_util_Typo3Classes::getDocumentTemplateClass()
-                );
-            }
-        }
-
         return $this->doc;
     }
+    /**
+     * Returns the ModuleTemplate of rn_base used to render the module output.
+     * @return Tx_Rnbase_Backend_Template_ModuleTemplate
+     */
+    public function getModTemplate()
+    {
+        return $this->moduleTemplate;
+    }
+
     /**
      * Erstellt das Menu mit den Submodulen. Die ist als Auswahlbox oder per Tabs möglich und kann per TS eingestellt werden:
      * mod.mymod._cfg.funcmenu.useTabs
@@ -456,7 +393,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
         return '<form action="' . $modUrl . '" method="post" enctype="multipart/form-data">';
     }
     /**
-     * Returns the file for module HTML template. This can be overwritten.
+     * Returns the filename for module HTML template. This can be overwritten.
      * The first place to search for template is EXT:[your_ext_key]/mod1/template.html. If this file
      * not exists the default from rn_base is used. Overwrite this method to set your own location.
      * @return string
@@ -474,6 +411,9 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 
         return 'EXT:rn_base/mod/template.html';
     }
+    /**
+     * @deprecated remove
+     */
     protected function initDoc($doc)
     {
         $doc->backPath = $GLOBALS['BACK_PATH'];
@@ -559,7 +499,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
      */
     public function getButtons()
     {
-        global $BACK_PATH, $BE_USER;
+        global $BE_USER;
 
         $buttons = array(
             'csh' => '',
@@ -619,6 +559,3 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
     }
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_BaseModule.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/mod/class.tx_rnbase_mod_BaseModule.php']);
-}
