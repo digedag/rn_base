@@ -44,7 +44,8 @@ class Tx_Rnbase_Backend_Template_Override_DocumentTemplate extends Tx_Rnbase_Bac
             return $this->pageRenderer;
         }
         elseif (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-            return $this->initPageRenderer();
+            $this->initPageRenderer();
+            return $this->pageRenderer;
         }
         return parent::getPageRenderer();
     }

@@ -79,7 +79,6 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
         $content .= $parts->getContent(); // Muss vor der Erstellung des Headers geladen werden
         $content .= $this->getDoc()->sectionEnd();  // Zur Sicherheit eine offene Section schließen
 
-
         // Setting up the buttons and markers for docheader
         $docHeaderButtons = $parts->getButtons();
         $markers['CSH'] = $docHeaderButtons['csh'];
@@ -147,6 +146,10 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
         return $this->doc;
     }
 
+    /**
+     *
+     * @param TYPO3\CMS\Backend\Template\DocumentTemplate $doc
+     */
     protected function initDoc($doc)
     {
         $doc->backPath = $GLOBALS['BACK_PATH'];
@@ -158,6 +161,9 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
         $doc->setModuleTemplate($this->options['template']);
         if(!tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
             $doc->loadJavascriptLib('contrib/prototype/prototype.js');
+        }
+        else {
+            $doc->getPageRenderer()->loadJquery();
         }
         // JavaScript
         $doc->JScode .= '
