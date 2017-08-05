@@ -125,6 +125,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
             'docstyles' => $this->getDocStyles(),
             'template' => $this->getModuleTemplate(),
         ]);
+
         // Die Variable muss gesetzt sein.
         $this->doc = $this->getModTemplate()->getDoc();
 
@@ -240,8 +241,8 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 
             tx_rnbase_util_Misc::prepareTSFE(); // Ist bei Aufruf aus BE notwendig!
             // Den Backpath aus dem PageRenderer entfernen. Der wurde auf typo3/ gesetzt
-            if(method_exists($this->getPageRenderer(), 'setBackPath')) {
-                $this->getPageRenderer()->setBackPath('');
+            if(method_exists($this->getModTemplate()->getPageRenderer(), 'setBackPath')) {
+                $this->getModTemplate()->getPageRenderer()->setBackPath('');
             }
             $cObj = tx_rnbase_util_TYPO3::getContentObject();
 
