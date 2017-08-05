@@ -173,7 +173,7 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
         $doc->postCode = '
 			<script language="javascript" type="text/javascript">
 				script_ended = 1;
-				if (top.fsMod) top.fsMod.recentIds["web"] = ' . $this->id . ';</script>';
+				if (top.fsMod) top.fsMod.recentIds["web"] = ' . $this->options['pid'] . ';</script>';
     }
 
     private function prepareOptions($options)
