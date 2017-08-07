@@ -240,10 +240,6 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
             tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
             tx_rnbase_util_Misc::prepareTSFE(); // Ist bei Aufruf aus BE notwendig!
-            // Den Backpath aus dem PageRenderer entfernen. Der wurde auf typo3/ gesetzt
-            if(method_exists($this->getModTemplate()->getPageRenderer(), 'setBackPath')) {
-                $this->getModTemplate()->getPageRenderer()->setBackPath('');
-            }
             $cObj = tx_rnbase_util_TYPO3::getContentObject();
 
             $pageTSconfigFull = Tx_Rnbase_Backend_Utility::getPagesTSconfig($this->getPid());
@@ -431,19 +427,19 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
         $doc->loadJavascriptLib('contrib/prototype/prototype.js');
         // JavaScript
         $doc->JScode .= '
-			<script language="javascript" type="text/javascript">
-				script_ended = 0;
-				function jumpToUrl(URL)	{
-					document.location = URL;
-				}
-			</script>
-			';
+            <script language="javascript" type="text/javascript">
+                script_ended = 0;
+                function jumpToUrl(URL)	{
+                    document.location = URL;
+                }
+            </script>
+            ';
 
         // TODO: Die Zeile könnte problematisch sein...
         $doc->postCode = '
-			<script language="javascript" type="text/javascript">
-				script_ended = 1;
-				if (top.fsMod) top.fsMod.recentIds["web"] = ' . $this->id . ';</script>';
+            <script language="javascript" type="text/javascript">
+                script_ended = 1;
+                if (top.fsMod) top.fsMod.recentIds["web"] = ' . $this->id . ';</script>';
     }
 
     /**
@@ -455,19 +451,19 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
     protected function getDocStyles()
     {
         $css .= '
-	.rnbase_selector div {
-		float:left;
-		margin: 0 5px 10px 0;
-	}
-	.rnbase_content div {
-		float:left;
-		margin: 5px 5px 10px 0;
-	}
-	.cleardiv {clear:both;}
-	.rnbase_content .c-headLineTable td {
-		font-weight:bold;
-		color:#FFF!important;
-	}';
+    .rnbase_selector div {
+        float:left;
+        margin: 0 5px 10px 0;
+    }
+    .rnbase_content div {
+        float:left;
+        margin: 5px 5px 10px 0;
+    }
+    .cleardiv {clear:both;}
+    .rnbase_content .c-headLineTable td {
+        font-weight:bold;
+        color:#FFF!important;
+    }';
 
         return $css;
     }
