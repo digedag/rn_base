@@ -68,4 +68,27 @@ class tx_rnbase_tests_fixtures_classes_Mod extends tx_rnbase_mod_BaseModule
     {
         return 'dummyMod';
     }
+
+    /**
+     * workaround, da ansonsten ->main() aufgerufen werden müsste, um $doc zu setzen.
+     * In ->main() wird aber auch das rendering ausgeführt, was dann zu ungewollten Ausgaben,
+     * Fehlern etc. führt.
+     *
+     * {@inheritDoc}
+     * @see tx_rnbase_mod_BaseModule::getDoc()
+     */
+    public function getDoc()
+    {
+        if (!$this->doc) {
+            if (isset($GLOBALS['TBE_TEMPLATE'])) {
+                $this->doc = $GLOBALS['TBE_TEMPLATE'];
+            } else {
+                $this->doc = tx_rnbase::makeInstance(
+                    tx_rnbase_util_Typo3Classes::getDocumentTemplateClass()
+                    );
+            }
+        }
+
+        return $this->doc;
+    }
 }
