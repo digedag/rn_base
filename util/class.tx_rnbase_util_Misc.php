@@ -455,6 +455,7 @@ MAYDAYPAGE;
     }
     /**
      * Translates a string starting with LLL:
+     * This method works in FE and BE as well.
      *
      * @param string $title
      * @return string
@@ -462,11 +463,12 @@ MAYDAYPAGE;
     public static function translateLLL($title)
     {
         if (substr($title, 0, 4) === 'LLL:') {
-            if (array_key_exists('LANG', $GLOBALS)) {
-                return $GLOBALS['LANG']->sL($title);
-            }
-            if (array_key_exists('TSFE', $GLOBALS)) {
+            // Prefer TSFE in FE_MODE.
+            if (TYPO3_MODE == 'FE' && array_key_exists('TSFE', $GLOBALS)) {
                 return $GLOBALS['TSFE']->sL($title);
+            }
+            elseif (array_key_exists('LANG', $GLOBALS)) {
+                return $GLOBALS['LANG']->sL($title);
             }
 
             return '';
