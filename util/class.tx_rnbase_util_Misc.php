@@ -202,50 +202,50 @@ class tx_rnbase_util_Misc
 
         $sPage = <<<MAYDAYPAGE
 <!DOCTYPE html
-	PUBLIC '-//W3C//DTD XHTML 1.1//EN'
-	'http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd'>
+    PUBLIC '-//W3C//DTD XHTML 1.1//EN'
+    'http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en'>
-	<head>
-		<title>${extKey}::Mayday</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<meta name="robots" content="noindex, nofollow" />
-		<style type="text/css">
+    <head>
+        <title>${extKey}::Mayday</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="robots" content="noindex, nofollow" />
+        <style type="text/css">
 
-			#title {
-				color: red;
-				font-family: Verdana;
-			}
+            #title {
+                color: red;
+                font-family: Verdana;
+            }
 
-			#errormessage {
-				border: 2px solid red;
-				padding: 10px;
-				color: white;
-				background-color: red;
-				font-family: Verdana;
-				font-size: 12px;
-			}
+            #errormessage {
+                border: 2px solid red;
+                padding: 10px;
+                color: white;
+                background-color: red;
+                font-family: Verdana;
+                font-size: 12px;
+            }
 
-			.notice {
-				font-family: Verdana;
-				font-size: 9px;
-				font-style: italic;
-			}
+            .notice {
+                font-family: Verdana;
+                font-size: 9px;
+                font-style: italic;
+            }
 
-			#backtracetitle {
-			}
+            #backtracetitle {
+            }
 
-			.backtrace {
-				background-color: #FFFFCC;
-			}
+            .backtrace {
+                background-color: #FFFFCC;
+            }
 
-			HR {
-				border: 1px solid silver;
-			}
-		</style>
-	</head>
-	<body>
-		{$sContent}
-	</body>
+            HR {
+                border: 1px solid silver;
+            }
+        </style>
+    </head>
+    <body>
+        {$sContent}
+    </body>
 </html>
 
 MAYDAYPAGE;
@@ -405,6 +405,11 @@ MAYDAYPAGE;
             $GLOBALS['TSFE']->page = $GLOBALS['TSFE']->sys_page->getPage($pid);
         }
 
+        // Den Backpath aus dem PageRenderer entfernen. Der wurde auf typo3/ gesetzt
+        if(method_exists(tx_rnbase_util_TYPO3::getPageRenderer(), 'setBackPath')) {
+            tx_rnbase_util_TYPO3::getPageRenderer()->setBackPath('');
+        }
+
         return $GLOBALS['TSFE'];
     }
     /**
@@ -450,6 +455,7 @@ MAYDAYPAGE;
     }
     /**
      * Translates a string starting with LLL:
+     * This method works in FE and BE as well.
      *
      * @param string $title
      * @return string
@@ -457,11 +463,12 @@ MAYDAYPAGE;
     public static function translateLLL($title)
     {
         if (substr($title, 0, 4) === 'LLL:') {
-            if (array_key_exists('LANG', $GLOBALS)) {
-                return $GLOBALS['LANG']->sL($title);
-            }
-            if (array_key_exists('TSFE', $GLOBALS)) {
+            // Prefer TSFE in FE_MODE.
+            if (TYPO3_MODE == 'FE' && array_key_exists('TSFE', $GLOBALS)) {
                 return $GLOBALS['TSFE']->sL($title);
+            }
+            elseif (array_key_exists('LANG', $GLOBALS)) {
+                return $GLOBALS['LANG']->sL($title);
             }
 
             return '';

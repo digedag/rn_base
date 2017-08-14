@@ -603,7 +603,11 @@ class Tx_Rnbase_Backend_Form_ToolBox
         if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
             /* @var $inputField Tx_Rnbase_Backend_Form_Element_InputText */
             $inputField = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Form_Element_InputText', $this->getTCEForm()->getNodeFactory(), array());
-            $out = $inputField->renderHtml($name, $value, array('width' => $width, 'maxlength' => $maxlength));
+            $out = $inputField->renderHtml($name, $value, [
+                'width' => $width,
+                'maxlength' => $maxlength,
+                'eval' => ['int'],
+            ]);
         } else {
             $out = '
             <input type="text" name="' . $name . '_hr"'.$GLOBALS['TBE_TEMPLATE']->formWidth($width).
@@ -625,19 +629,39 @@ class Tx_Rnbase_Backend_Form_ToolBox
     {
         // Take care of current time zone. Thanks to Thomas Maroschik!
         $value += date('Z', $value);
+        if(tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
+            /* @var $inputField Tx_Rnbase_Backend_Form_Element_InputText */
+            $inputField = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Form_Element_InputText', $this->getTCEForm()->getNodeFactory(), array());
+            return $inputField->renderHtml($name, $value, [
+                'width' => 20,
+                'maxlength' => 20,
+                'eval' => 'datetime',
+            ]);
+        }
+        else {
+            return $this->createDateInput62($name, $value);
+        }
+    }
+    /**
+     * DateTime-Field rendering up to 6.2
+     * @param string $name
+     * @param int $value
+     * @return string
+     */
+    private function createDateInput62($name, $value)
+    {
         $out = '
             <input type="text" name="' . $name . '_hr"
                 onchange="typo3FormFieldGet(\'' . $name . '\', \'datetime\', \'\', 0,0);"'.
-            $GLOBALS['TBE_TEMPLATE']->formWidth(11).
-        ' />'.'
+                $GLOBALS['TBE_TEMPLATE']->formWidth(11).
+                ' />'.'
             <input type="hidden" value="'.htmlspecialchars($value).'" name="' . $name . '" />';
 
-        // JS-Code für die Initialisierung im TCEform eintragen
-        $this->form->extJSCODE .= 'typo3FormFieldSet("' . $name . '", "datetime", "", 0,0);';
+                // JS-Code für die Initialisierung im TCEform eintragen
+                $this->form->extJSCODE .= 'typo3FormFieldSet("' . $name . '", "datetime", "", 0,0);';
 
         return $out;
     }
-
     /**
      * Erstellt eine Selectbox mit festen Werten in der TCA.
      * Die Labels werden in der richtigen Sprache angezeigt.
