@@ -1,5 +1,6 @@
 <?php
 
+
 /***************************************************************
 *  Copyright notice
 *
@@ -30,6 +31,7 @@ tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 tx_rnbase::load('Tx_Rnbase_Backend_Utility_Icons');
 tx_rnbase::load('Tx_Rnbase_Backend_Module_Base');
+tx_rnbase::load('Tx_Rnbase_Utility_T3General');
 
 /**
  * Fertige Implementierung eines BE-Moduls. Das Modul ist dabei nur eine Hülle für die einzelnen Modulfunktionen.
@@ -324,20 +326,60 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
     }
 
     /**
+     * Zukünftig ab T3 7.6 das ModuleTemplate verwenden.
+     * @return bool
+     */
+    public function useModuleTemplate()
+    {
+        return true;
+    }
+
+    /**
      * Erstellt das Menu mit den Submodulen. Die ist als Auswahlbox oder per Tabs möglich und kann per TS eingestellt werden:
      * mod.mymod._cfg.funcmenu.useTabs
      */
     protected function getFuncMenu()
     {
-        $items = $this->getFuncMenuItems($this->MOD_MENU['function']);
-        $useTabs = intval($this->getConfigurations()->get('_cfg.funcmenu.useTabs')) > 0;
-        if ($useTabs) {
-            $menu = $this->getFormTool()->showTabMenu($this->getPid(), 'function', $this->getName(), $items);
-        } else {
-            $menu = $this->getFormTool()->showMenu($this->getPid(), 'function', $this->getName(), $items, $this->getModuleScript());
-        }
+        if($this->useModuleTemplate()) {
+            $menuRegistry = Tx_Rnbase_Utility_T3General::makeInstance(TYPO3\CMS\Backend\Template\Components\MenuRegistry::class);
+            $menu = $menuRegistry->makeMenu();
+            $modMenu = $this->MOD_MENU;
+            $modSettings = $this->MOD_SETTINGS;
+            $menu->setIdentifier('WebT3sportsJumpMenu'); //FIXME!!
 
-        return $menu['menu'];
+            foreach ($modMenu['function'] as $controller => $title) {
+                $item = $menu
+                    ->makeMenuItem()
+                    ->setHref(
+                        Tx_Rnbase_Backend_Utility::getModuleUrl(
+                            $this->getName(),
+                            [
+                                'id' => $this->getPid(),
+                                'SET' => [
+                                    'function' => $controller
+                                ]
+                            ]
+                        )
+                    )
+                    ->setTitle($title);
+                    if ($controller === $modSettings['function']) {
+                        $item->setActive(true);
+                    }
+                    $menu->addMenuItem($item);
+            }
+            return $menu;
+        }
+        else {
+            $items = $this->getFuncMenuItems($this->MOD_MENU['function']);
+            $useTabs = intval($this->getConfigurations()->get('_cfg.funcmenu.useTabs')) > 0;
+            if ($useTabs) {
+                $menu = $this->getFormTool()->showTabMenu($this->getPid(), 'function', $this->getName(), $items);
+            } else {
+                $menu = $this->getFormTool()->showMenu($this->getPid(), 'function', $this->getName(), $items, $this->getModuleScript());
+            }
+
+            return $menu['menu'];
+        }
     }
     /**
      * index.php or empty

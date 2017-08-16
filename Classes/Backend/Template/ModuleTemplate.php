@@ -1,4 +1,5 @@
 <?php
+
 /* *******************************************************
  *  Copyright notice
  *
@@ -54,20 +55,13 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
      */
     public function renderContent(Tx_Rnbase_Backend_Template_ModuleParts $parts)
     {
-        return $this->renderContent62($parts);
+        $method = $this->module->useModuleTemplate() ? 'renderContent76' : 'renderContent62';
+        return $this->$method($parts);
     }
 
     public function getPageRenderer()
     {
         return $this->getDoc()->getPageRenderer();
-    }
-    /**
-     * Zukünftig ab T3 7.6 das ModuleTemplate verwenden.
-     * @return bool
-     */
-    protected function useModuleTemplate()
-    {
-        return false;
     }
 
     /**
@@ -107,13 +101,13 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
     {
         /* @var $moduleTemplate TYPO3\CMS\Backend\Template\ModuleTemplate */
         $moduleTemplate = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Template\\ModuleTemplate');
-        $moduleTemplate->getPageRenderer()->loadJquery();
+//        $moduleTemplate->getPageRenderer()->loadJquery();
         $moduleTemplate->getDocHeaderComponent()->setMetaInformation($parts->getPageInfo());
-        // @TODO das Menü ist nicht funktionell. Weder werden die Locallang Labels
-        // ersetzt, noch funktioniert der onChange Event
-        $moduleTemplate->registerModuleMenu($this->options['modname']);
-        // @TODO Shorticon wie in alter Version einfügen
+        $this->registerMenu($moduleTemplate, $parts);
+        $this->generateButtons($moduleTemplate, $parts);
+
         $content = $moduleTemplate->header($parts->getTitle());
+        $content .= $moduleTemplate->section('', $parts->getSelector(), false, false, 0, true);
         $content .= $moduleTemplate->section('', $parts->getSubMenu(), false, false, 0, true);
         $content .= $moduleTemplate->section('', $parts->getContent(), false, false, 0, true);
         // Workaround: jumpUrl wieder einfügen
@@ -127,6 +121,45 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
         return $moduleTemplate->renderContent();
     }
 
+    /**
+     * Create the panel of buttons for submitting the form or otherwise perform operations.
+     *
+     * @param \TYPO3\CMS\Backend\Template\ModuleTemplate $moduleTemplate
+     */
+    protected function generateButtons($moduleTemplate, Tx_Rnbase_Backend_Template_ModuleParts $parts)
+    {
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        // CSH
+        $docHeaderButtons = $parts->getButtons();
+        if(isset($docHeaderButtons['csh']) && $docHeaderButtons['csh']) {
+            $cshButton = $buttonBar->makeHelpButton()
+                ->setModuleName($this->module->getName())
+                ->setFieldName('');
+            $buttonBar->addButton($cshButton);
+        }
+        if($this->module->getPid()) {
+            // Shortcut
+            $shortcutButton = $buttonBar->makeShortcutButton()
+                ->setModuleName($this->module->getName())
+                ->setGetVariables(['id', 'edit_record', 'pointer', 'new_unique_uid', 'search_field', 'search_levels', 'showLimit'])
+                ->setSetVariables(array_keys($this->module->MOD_MENU));
+            $buttonBar->addButton($shortcutButton);
+
+        }
+    }
+
+    /**
+     *
+     * @param \TYPO3\CMS\Backend\Template\ModuleTemplate $moduleTemplate
+     * @param Tx_Rnbase_Backend_Template_ModuleParts $parts
+     */
+    protected function registerMenu($moduleTemplate, Tx_Rnbase_Backend_Template_ModuleParts $parts)
+    {
+        // So funktioniert das nicht. Warum auch immer
+        // $moduleTemplate->registerModuleMenu($this->options['modname']);
+        // Das Menu wird im Module generiert und hier nur registriert
+        $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($parts->getFuncMenu());
+    }
 
     /**
      * Returns a template instance. Liefert die Instanzvariable doc.
