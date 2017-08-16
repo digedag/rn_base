@@ -606,7 +606,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
             $out = $inputField->renderHtml($name, $value, [
                 'width' => $width,
                 'maxlength' => $maxlength,
-                'eval' => ['int'],
+                'eval' => 'int',
             ]);
         } else {
             $out = '
