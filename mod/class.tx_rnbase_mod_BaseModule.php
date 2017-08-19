@@ -331,7 +331,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
      */
     public function useModuleTemplate()
     {
-        return true;
+        return false;
     }
 
     /**
