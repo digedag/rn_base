@@ -6,8 +6,7 @@ if (!defined('TYPO3_MODE')) {
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2015 Rene Nitzsche
- *  Contact: rene@system25.de
+ *  (c) 2016-2017 Rene Nitzsche (rene@system25.de)
  *  All rights reserved
  *
  * This library is free software; you can redistribute it and/or
@@ -134,7 +133,6 @@ class Tx_Rnbase_Backend_Form_FormBuilder
         // in den folgenden Key müssen die Daten aus der TCA rein. Wie geht das?
         $options['tableName'] = $table;
         $options['fieldName'] = $fieldName;
-        $options['databaseRow'] = $row;
         $options['renderType'] = 'singleFieldContainer';
 
         $childResultArray = $this->nodeFactory->create($options)->render();
