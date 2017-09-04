@@ -7,7 +7,7 @@ use TYPO3\CMS\Backend\Form\NodeFactory;
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2016 Rene Nitzsche (rene@system25.de)
+*  (c) 2016-2017 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is

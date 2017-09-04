@@ -3,7 +3,9 @@
 Änderungen
 ----------
 
-v1.4.6 (??.??.2017)
+v1.5.0 (??.??.2017)
+ * Required PHP version raised to 5.6
+ * better support of BE modules in TYPO3 7.6 and 8.7
 
 v1.4.5 (02.08.2017)
  * new variable $doSearch in tx_rnbase_filter_BaseFilter to control return value of init() more convenient. $doSearch can be set anywhere inside initFilter(). This overrules the return value of initFilter() if not null. This way it's easier to control whether a search should be done or not
