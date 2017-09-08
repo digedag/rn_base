@@ -414,7 +414,11 @@ class Tx_Rnbase_Backend_Form_ToolBox
         );
     }
 
-    private function buildJumpUrl($params, $options = array())
+    /**
+     * @param unknown $urlParameters
+     * @param array $options
+     */
+    protected function buildJumpUrl($urlParameters, $options = array())
     {
         if (!tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
             $currentLocation = $this->getLinkThisScript();
@@ -425,7 +429,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
             } else {
                 $dataHandlerEntryPoint = $GLOBALS['BACK_PATH'] . 'tce_db.php?';
             }
-            $jumpToUrl = $dataHandlerEntryPoint. 'redirect=' . $currentLocation . '&amp;' . $params;
+            $jumpToUrl = $dataHandlerEntryPoint. 'redirect=' . $currentLocation . '&amp;' . $urlParameters;
 
             // jetzt noch alles zur Formvalidierung einfügen damit
             // TYPO3 den Link akzeptiert und als valide einstuft
@@ -435,7 +439,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
             $jumpToUrl = '\'' . $jumpToUrl . '\'';
             $jumpToUrlMethod = 'jumpToUrl';
         } else {
-            $jumpToUrl = Tx_Rnbase_Backend_Utility::issueCommand($params, -1);
+            $jumpToUrl = Tx_Rnbase_Backend_Utility::issueCommand($urlParameters, -1);
             $jumpToUrlMethod = 'jumpExt';
         }
 
@@ -484,7 +488,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
      * @param string $jsCode
      * @param array $options
      */
-    private function getConfirmCode($jsCode, $options)
+    protected function getConfirmCode($jsCode, $options)
     {
         if (isset($options['confirm']) && strlen($options['confirm']) > 0) {
             return 'if(confirm('.Tx_Rnbase_Utility_Strings::quoteJSvalue($options['confirm']).')) {' . $jsCode .'} else {return false;}';
@@ -521,7 +525,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
      * @param array $options
      * @return string
      */
-    public function createLink($urlParams, $pid, $label, $options = array())
+    public function createLink($urlParams, $pid, $label, array $options = array())
     {
         // $options['sprite'] für abwärtskompatibilität
         if ($options['icon'] || $options['sprite']) {
@@ -539,15 +543,13 @@ class Tx_Rnbase_Backend_Form_ToolBox
 
         $title = '';
         if ($options['hover']) {
-            $title = ' title="'.$options['hover'].'" ';
+            $title = 'title="' . $options['hover'] . '"';
         }
 
         $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
-        $class = ' class="' . $class .'"';
+        $class = 'class="' . $class .'"';
 
         return '<a href="#" ' . $class . ' onclick="'.htmlspecialchars($jsCode).'" '. $title.'>'. $label .'</a>';
-
-        return $link;
     }
 
     /**
