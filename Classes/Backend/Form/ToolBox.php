@@ -504,7 +504,15 @@ class Tx_Rnbase_Backend_Form_ToolBox
     }
 
     /**
-     * Erstellt einen Link auf die aktuelle Location mit zusätzlichen Parametern
+     * Seit TYPO3 8.7 kann statt einem Linktext auch ein Icon ausgegeben werden. Dazu muss in den
+     * $options "iconIdentifier" (muss in IconRegistry vorhanden sein) und "iconSize" (siehe TYPO3\CMS\Core\Imaging\Icon)
+     * gesetzt werden.
+     *
+     * @param string $urlParams
+     * @param int $pid no longer used. kept for backwards compatibility
+     * @param string $label
+     * @param array $options
+     * @return string
      */
     public function createLink($urlParams, $pid, $label, $options = array())
     {
@@ -558,9 +566,13 @@ class Tx_Rnbase_Backend_Form_ToolBox
      */
     protected function createLinkSince87($urlParameter, $title, array $options = array())
     {
-        $icon = \Tx_Rnbase_Backend_Utility_Icons::getIconFactory()->getIcon(
-            $options['iconIdentifier'], $options['iconSize']
-        )->render();
+        if ($options['iconIdentifier'] && $options['iconSize']) {
+            $linkLabel = \Tx_Rnbase_Backend_Utility_Icons::getIconFactory()->getIcon(
+                $options['iconIdentifier'], $options['iconSize']
+            )->render();
+        } else {
+            $linkLabel = $title;
+        }
 
         $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
         $class = ' class="' . $class .'"';
@@ -571,7 +583,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
 
         return  '<a ' . $class . ' href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
                 . htmlspecialchars($title) . '">'
-                . $icon . '</a>';
+                . $linkLabel . '</a>';
     }
 
     /**
