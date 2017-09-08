@@ -508,10 +508,27 @@ class Tx_Rnbase_Backend_Form_ToolBox
      */
     public function createLink($urlParams, $pid, $label, $options = array())
     {
+        if (!tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
+            $link = $this->createLinkBefore87($urlParams, $label, $options);
+        } else {
+            $link = $this->createLinkSince87($urlParams, $label, $options);
+        }
+
+        return $link;
+    }
+
+    /**
+     * @param string $urlParams
+     * @param string $label
+     * @param array $options
+     * @return string
+     */
+    protected function createLinkBefore87($urlParams, $label, $options = array())
+    {
         $location = $this->getLinkThisScript(false);
         if ($options['icon'] && !tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
             $label = '<img '.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$options['icon']).
-                ' title="'.$label.'\" alt="" >';
+            ' title="'.$label.'\" alt="" >';
         }
         if ($options['sprite']) {
             tx_rnbase::load('tx_rnbase_mod_Util');
@@ -531,6 +548,30 @@ class Tx_Rnbase_Backend_Form_ToolBox
         $class = ' class="' . $class .'"';
 
         return '<a href="#" ' . $class . ' onclick="'.htmlspecialchars($jsCode).'" '. $title.'>'. $label .'</a>';
+    }
+
+    /**
+     * @param string $urlParameter
+     * @param string $title
+     * @param array $options
+     * @return string
+     */
+    protected function createLinkSince87($urlParameter, $title, array $options = array())
+    {
+        $icon = \Tx_Rnbase_Backend_Utility_Icons::getIconFactory()->getIcon(
+            $options['iconIdentifier'], $options['iconSize']
+        )->render();
+
+        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
+        $class = ' class="' . $class .'"';
+
+        $onClick =  'return jumpExt(' .
+                    Tx_Rnbase_Backend_Utility::getLinkToDataHandlerAction($urlParameter, -1) .
+                    ',\'#latest\');';
+
+        return  '<a ' . $class . ' href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
+                . htmlspecialchars($title) . '">'
+                . $icon . '</a>';
     }
 
     /**
@@ -1013,34 +1054,5 @@ class Tx_Rnbase_Backend_Form_ToolBox
         reset($trData->regTableItems_data);
 
         return $trData->regTableItems_data;
-    }
-
-    /**
-     * @param string $urlParameter
-     * @param string $iconIdentifier
-     * @param string $title
-     * @param array $options
-     * @return string
-     */
-    public function createButton($urlParameter, $iconIdentifier, $title, array $options = array())
-    {
-        if (!tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
-            return '';
-        }
-
-        $icon = \Tx_Rnbase_Backend_Utility_Icons::getIconFactory()->getIcon(
-            $iconIdentifier, TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL
-        )->render();
-
-        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
-        $class = ' class="' . $class .'"';
-
-        $onClick =  'return jumpExt(' .
-                    Tx_Rnbase_Backend_Utility::getLinkToDataHandlerAction($urlParameter, -1) .
-                    ',\'#latest\');';
-
-        return  '<a ' . $class . ' href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
-                . htmlspecialchars($title) . '">'
-                . $icon . '</a>';
     }
 }
