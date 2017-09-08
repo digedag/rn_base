@@ -1014,4 +1014,33 @@ class Tx_Rnbase_Backend_Form_ToolBox
 
         return $trData->regTableItems_data;
     }
+
+    /**
+     * @param string $urlParameter
+     * @param string $iconIdentifier
+     * @param string $title
+     * @param array $options
+     * @return string
+     */
+    public function createButton($urlParameter, $iconIdentifier, $title, array $options = array())
+    {
+        if (!tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
+            return '';
+        }
+
+        $icon = \Tx_Rnbase_Backend_Utility_Icons::getIconFactory()->getIcon(
+            $iconIdentifier, TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL
+        )->render();
+
+        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
+        $class = ' class="' . $class .'"';
+
+        $onClick =  'return jumpExt(' .
+                    Tx_Rnbase_Backend_Utility::getLinkToDataHandlerAction($urlParameter, -1) .
+                    ',\'#latest\');';
+
+        return  '<a ' . $class . ' href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
+                . htmlspecialchars($title) . '">'
+                . $icon . '</a>';
+    }
 }
