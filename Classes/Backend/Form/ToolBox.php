@@ -578,7 +578,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
         $class = ' class="' . $class .'"';
 
         $onClick =  'return jumpExt(' .
-                    Tx_Rnbase_Backend_Utility::getLinkToDataHandlerAction($urlParameter, -1) .
+                    tx_rnbase_mod_BaseModule::issueCommand($urlParameter, -1) .
                     ',\'#latest\');';
 
         return  '<a ' . $class . ' href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
