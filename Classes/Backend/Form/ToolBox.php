@@ -509,11 +509,11 @@ class Tx_Rnbase_Backend_Form_ToolBox
     }
 
     /**
-     * Statt einem Linktext auch ein Icon ausgegeben werden. Dazu muss in den
+     * Statt einem Linktext kann auch ein Icon ausgegeben werden. Dazu muss in den
      * $options "icon" und optional
      * "size" (siehe TYPO3\CMS\Core\Imaging\Icon) gesetzt werden. Ab TYPO3 7.x muss
-     * der icon Name in der IconRegistry vorhanden sein. Vorher muss er in
-     * $GLOBALS['BACK_PATH'] . 'gfx/' liegen
+     * der Icon Name in der IconRegistry vorhanden sein. Vorher muss er in
+     * $GLOBALS['BACK_PATH'] . 'gfx/' liegen.
      *
      * @param string $urlParams
      * @param int $pid wird nicht mehr verwendet. nur für abwärtskompatibilität
