@@ -168,7 +168,7 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
     /**
      * @group unit
      */
-    public function testBuildJumpUrlHandleConfirmCode()
+    public function testBuildJumpUrlHandlesConfirmCode()
     {
         $urlParameters = 'someParameters';
         $options = ['test'];
