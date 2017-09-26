@@ -3,9 +3,17 @@
 Änderungen
 ----------
 
-v1.5.0 (??.??.2017)
+v1.5.1 (??.??.2017)
+
+v1.5.0 (26.09.2017)
  * Required PHP version raised to 5.6
  * better support of BE modules in TYPO3 7.6 and 8.7
+ * Prefer TSFE translation in fe mode
+ * new method tx_rnbase_util_Arrays::arrayDiffAssocRecursive()
+ * use $GLOBALS['EXEC_TIME'] for crdate/tstamp instead of time()
+ * constants available without loading SearchBase explicitly
+ * added method tx_rnbase_cache_Manager::getCacheClass
+ * added method Tx_Rnbase_Utility_Cache::generateCacheHashForUrlQueryString
 
 v1.4.5 (02.08.2017)
  * new variable $doSearch in tx_rnbase_filter_BaseFilter to control return value of init() more convenient. $doSearch can be set anywhere inside initFilter(). This overrules the return value of initFilter() if not null. This way it's easier to control whether a search should be done or not
