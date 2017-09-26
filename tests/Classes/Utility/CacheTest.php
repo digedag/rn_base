@@ -42,6 +42,11 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
     private $cHashExcludedParametersBackup = '';
 
     /**
+     * @var string
+     */
+    private $encryptionKeyBackup;
+
+    /**
      * {@inheritDoc}
      * @see PHPUnit_Framework_TestCase::setUp()
      */
@@ -49,6 +54,9 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
     {
         $this->cHashExcludedParametersBackup = $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'];
         $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'] = '';
+
+        $this->encryptionKeyBackup = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'Tx_Rnbase_Utility_CacheTest';
     }
 
     /**
@@ -60,6 +68,8 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
         $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'] = $this->cHashExcludedParametersBackup;
         tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator')->setConfiguration(array(
             'excludedParameters' => explode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'])));
+
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = $this->encryptionKeyBackup;
     }
 
     /**
@@ -108,5 +118,16 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
         self::assertArrayHasKey('L', $excludedParameters);
 
         self::assertSame('L,john,doe', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters']);
+    }
+
+    /**
+     * @group unit
+     */
+    public function testGenerateCacheHashForUrlQueryString()
+    {
+        self::assertEquals(
+            '891f7812faa441d9b665f07dc289d1aa',
+            Tx_Rnbase_Utility_Cache::generateCacheHashForUrlQueryString('id=123&rn_base[parameter]=test')
+        );
     }
 }
