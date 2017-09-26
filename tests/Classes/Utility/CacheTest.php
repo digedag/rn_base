@@ -125,9 +125,8 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGenerateCacheHashForUrlQueryString()
     {
-        self::assertEquals(
-            '891f7812faa441d9b665f07dc289d1aa',
-            Tx_Rnbase_Utility_Cache::generateCacheHashForUrlQueryString('id=123&rn_base[parameter]=test')
-        );
+        $cacheHash = Tx_Rnbase_Utility_Cache::generateCacheHashForUrlQueryString('id=123&rn_base[parameter]=test');
+        self::assertTrue(is_string($cacheHash));
+        self::assertEquals(32, strlen($cacheHash));
     }
 }
