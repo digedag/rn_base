@@ -3,7 +3,10 @@
 Änderungen
 ----------
 
-v1.5.1 (??.??.2017)
+v1.5.2 (??.??.2017)
+
+v1.5.1 (09.10.2017)
+ * new method tx_rnbase_util_TYPO3::isCliMode()
 
 v1.5.0 (26.09.2017)
  * Required PHP version raised to 5.6
