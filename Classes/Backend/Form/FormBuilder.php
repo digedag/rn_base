@@ -84,8 +84,8 @@ class Tx_Rnbase_Backend_Form_FormBuilder
      */
     protected function compileFormData($table, $uid, $record)
     {
-        $key = $table.'_'.intval($uid);
-        if (!array_key_exists($key, $this->formDataCache)) {
+        $cacheKey = $table.'_'.$uid;//.intval($uid);
+        if (!array_key_exists($cacheKey, $this->formDataCache)) {
             if ($this->isNEWRecord($uid)) {
                 // Die UID ist hier die PID
                 // Es wird intern beim compile eine NEWuid festgelegt
@@ -111,10 +111,14 @@ class Tx_Rnbase_Backend_Form_FormBuilder
                         'returnUrl' => '',
                 ];
             }
-            $this->formDataCache[$key] = $this->formDataCompiler->compile($formDataCompilerInput);
+            $this->formDataCache[$cacheKey] = $this->formDataCompiler->compile($formDataCompilerInput);
+            if ($this->isNEWRecord($uid)) {
+                // Override generated with given uid
+                $this->formDataCache[$cacheKey]['databaseRow']['uid'] = $uid;
+            }
         }
 
-        return $this->formDataCache[$key];
+        return $this->formDataCache[$cacheKey];
     }
     /**
      *
