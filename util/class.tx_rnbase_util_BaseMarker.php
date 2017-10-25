@@ -232,7 +232,7 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
      * @param string $linkMarker
      * @param bool $remove TRUE removes the link with label
      */
-    public function disableLink(&$markerArray, &$subpartArray, &$wrappedSubpartArray, $linkMarker, $remove)
+    public static function disableLink(&$markerArray, &$subpartArray, &$wrappedSubpartArray, $linkMarker, $remove)
     {
         if ($remove) {
             $subpartArray['###'.$linkMarker . '###'] = '';
