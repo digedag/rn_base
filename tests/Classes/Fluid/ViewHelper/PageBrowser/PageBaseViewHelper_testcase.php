@@ -82,7 +82,7 @@ class PageBaseViewHelperTest extends BaseViewHelperTestCase
      * {@inheritDoc}
      * @see \Sys25\RnBase\Fluid\ViewHelper\BaseViewHelperTest::getPreparedVîewHelper()
      */
-    protected function getPreparedVîewHelper(PageBaseViewHelper $viewHelper)
+    protected function getPreparedVîewHelper($viewHelper)
     {
         $viewHelper = parent::getPreparedVîewHelper($viewHelper);
 
