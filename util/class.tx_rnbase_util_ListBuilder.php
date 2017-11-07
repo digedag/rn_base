@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006-2011 Rene Nitzsche
+ *  (c) 2006-2017 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -162,8 +162,6 @@ class tx_rnbase_util_ListBuilder
 
         $out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($template, $markerArray, $subpartArray);
         if ($debug) {
-            tx_rnbase::load('class.tx_rnbase_util_Misc.php');
-
             $wrapTime = tx_rnbase_util_FormatUtil::$time - $wrapTime;
             $wrapMem = tx_rnbase_util_FormatUtil::$mem - $wrapMem;
             tx_rnbase_util_Debug::debug(array(
@@ -333,8 +331,4 @@ class tx_rnbase_util_ListBuilder
 
         return $outerMarker;
     }
-}
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_ListBuilder.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_ListBuilder.php']);
 }

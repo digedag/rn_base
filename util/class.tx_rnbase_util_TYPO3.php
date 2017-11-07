@@ -94,6 +94,15 @@ class tx_rnbase_util_TYPO3
         return self::isTYPO3VersionOrHigher(8006000);
     }
     /**
+     * Prüft, ob mindestens TYPO3 Version 8.7 vorhanden ist.
+     *
+     * @return bool
+     */
+    public static function isTYPO87OrHigher()
+    {
+        return self::isTYPO3VersionOrHigher(8007000);
+    }
+    /**
      * Prüft, ob mindestens TYPO3 Version 4.7 vorhanden ist.
      *
      * @return bool
@@ -339,6 +348,20 @@ class tx_rnbase_util_TYPO3
     public static function getHttpUtilityClass()
     {
         return tx_rnbase_util_Typo3Classes::getHttpUtilityClass();
+    }
+
+    /**
+     * @return boolean
+     */
+    public static function isCliMode()
+    {
+        if (self::isTYPO80OrHigher()) {
+            $isCliMode = TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI;
+        } else {
+            $isCliMode = defined('TYPO3_cliMode');
+        }
+
+        return $isCliMode;
     }
 }
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rn_base/util/class.tx_rnbase_util_TYPO3.php']) {

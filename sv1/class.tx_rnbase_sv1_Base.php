@@ -294,7 +294,7 @@ abstract class tx_rnbase_sv1_Base extends Tx_Rnbase_Service_Base
         if (isset($GLOBALS['TCA'][$tablename]['ctrl']['crdate'])
             && !isset($data[$GLOBALS['TCA'][$tablename]['ctrl']['crdate']])
         ) {
-            $data[$GLOBALS['TCA'][$tablename]['ctrl']['crdate']] = time();
+            $data[$GLOBALS['TCA'][$tablename]['ctrl']['crdate']] = $GLOBALS['EXEC_TIME'];
         }
 
         return self::insertTimestamp($data, $tablename);
@@ -314,7 +314,7 @@ abstract class tx_rnbase_sv1_Base extends Tx_Rnbase_Service_Base
         if (isset($GLOBALS['TCA'][$tablename]['ctrl']['tstamp'])
             && !isset($data[$GLOBALS['TCA'][$tablename]['ctrl']['tstamp']])
         ) {
-            $data[$GLOBALS['TCA'][$tablename]['ctrl']['tstamp']] = time();
+            $data[$GLOBALS['TCA'][$tablename]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
         }
 
         return $data;

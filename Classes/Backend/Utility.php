@@ -133,4 +133,25 @@ class Tx_Rnbase_Backend_Utility
         $util = self::getBackendUtilityClass();
         $util::workspaceOL($table, $row, $wsid, $unsetMovePointers);
     }
+
+    /**
+     * @see TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction
+     * @see TYPO3\CMS\Backend\Template\DocumentTemplate::issueCommand
+     * @see template::issueCommand
+     *
+     * @param string $getParameters
+     * @param string $redirectUrl
+     * @return string
+     */
+    public static function issueCommand($getParameters, $redirectUrl = '')
+    {
+        if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
+            $link = TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction($getParameters, $redirectUrl);
+        } else {
+            $link = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getDocumentTemplateClass())
+                        ->issueCommand($getParameters, $redirectUrl);
+        }
+
+        return $link;
+    }
 }

@@ -55,7 +55,12 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
      */
     public function renderContent(Tx_Rnbase_Backend_Template_ModuleParts $parts)
     {
-        $method = $this->module->useModuleTemplate() ? 'renderContent76' : 'renderContent62';
+        if ($this->module->useModuleTemplate()) {
+            $method = tx_rnbase_util_TYPO3::isTYPO87OrHigher() ? 'renderContent87' : 'renderContent76';
+        } else {
+            $method = 'renderContent62';
+        }
+
         return $this->$method($parts);
     }
 
@@ -110,6 +115,35 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
         $content .= $moduleTemplate->section('', $parts->getSelector(), false, false, 0, true);
         $content .= $moduleTemplate->section('', $parts->getSubMenu(), false, false, 0, true);
         $content .= $moduleTemplate->section('', $parts->getContent(), false, false, 0, true);
+        // Workaround: jumpUrl wieder einfügen
+        // @TODO Weg finden dass ohne das DocumentTemplate zu machen
+        $content .= '<!--###POSTJSMARKER###-->';
+        $content = $this->getDoc()->insertStylesAndJS($content);
+        // @TODO haupttemplate eines BE moduls enthält evtl. JS/CSS etc.
+        // das wurde bisher über das DocumentTemplate eingefügt, was jetzt
+        // nicht mehr geht. Dafür muss ein Weg gefunden werden.
+        $moduleTemplate->setContent($content);
+        return $moduleTemplate->renderContent();
+    }
+
+    /**
+     * der Weg ab TYPO3 7.6
+     * TODO: fertig implementieren
+     * @return void
+     */
+    protected function renderContent87(Tx_Rnbase_Backend_Template_ModuleParts $parts)
+    {
+        /* @var $moduleTemplate TYPO3\CMS\Backend\Template\ModuleTemplate */
+        $moduleTemplate = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Template\\ModuleTemplate');
+        //        $moduleTemplate->getPageRenderer()->loadJquery();
+        $moduleTemplate->getDocHeaderComponent()->setMetaInformation($parts->getPageInfo());
+        $this->registerMenu($moduleTemplate, $parts);
+        $this->generateButtons($moduleTemplate, $parts);
+
+        $content = $moduleTemplate->header($parts->getTitle());
+        $content .= $parts->getSelector();
+        $content .= $parts->getSubMenu();
+        $content .= $parts->getContent();
         // Workaround: jumpUrl wieder einfügen
         // @TODO Weg finden dass ohne das DocumentTemplate zu machen
         $content .= '<!--###POSTJSMARKER###-->';
@@ -200,19 +234,19 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
         }
         // JavaScript
         $doc->JScode .= '
-			<script language="javascript" type="text/javascript">
-				script_ended = 0;
-				function jumpToUrl(URL)	{
-					document.location = URL;
-				}
-			</script>
-			';
+            <script language="javascript" type="text/javascript">
+                script_ended = 0;
+                function jumpToUrl(URL)	{
+                    document.location = URL;
+                }
+            </script>
+            ';
 
         // TODO: Die Zeile könnte problematisch sein...
         $doc->postCode = '
-			<script language="javascript" type="text/javascript">
-				script_ended = 1;
-				if (top.fsMod) top.fsMod.recentIds["web"] = ' . $this->options['pid'] . ';</script>';
+            <script language="javascript" type="text/javascript">
+                script_ended = 1;
+                if (top.fsMod) top.fsMod.recentIds["web"] = ' . $this->options['pid'] . ';</script>';
     }
 
     private function prepareOptions($options)

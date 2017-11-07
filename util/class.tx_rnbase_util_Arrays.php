@@ -113,7 +113,6 @@ class tx_rnbase_util_Arrays
         }
     }
 
-
     /**
      * @see \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule();
      *
@@ -164,6 +163,20 @@ class tx_rnbase_util_Arrays
         }
 
         return $data;
+    }
+
+    /**
+     * @see \TYPO3\CMS\Core\Utility\ArrayUtility::arrayDiffAssocRecursive()
+     */
+    public static function arrayDiffAssocRecursive(array $array1, array $array2) {
+        if (tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
+            $differenceArray = \TYPO3\CMS\Core\Utility\ArrayUtility::arrayDiffAssocRecursive($array1, $array2);
+        } else {
+            $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+            $differenceArray = $utility::arrayDiffAssocRecursive($array1, $array2);
+        }
+
+        return$differenceArray;
     }
 }
 

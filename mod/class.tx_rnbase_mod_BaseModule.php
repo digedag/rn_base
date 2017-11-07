@@ -582,23 +582,11 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
     }
 
     /**
-     * @see TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction
-     * @see TYPO3\CMS\Backend\Template\DocumentTemplate::issueCommand
-     * @see template::issueCommand
-     *
-     * @param string $getParameters
-     * @param string $redirectUrl
-     * @return string
+     * @deprecated use Tx_Rnbase_Backend_Utility::issueCommand instead
      */
     public function issueCommand($getParameters, $redirectUrl = '')
     {
-        if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
-            $link = TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction($getParameters, $redirectUrl);
-        } else {
-            $link = $this->getDoc()->issueCommand($getParameters, $redirectUrl);
-        }
-
-        return $link;
+        return Tx_Rnbase_Backend_Utility::issueCommand($getParameters, $redirectUrl);
     }
 }
 

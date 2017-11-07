@@ -414,27 +414,36 @@ class Tx_Rnbase_Backend_Form_ToolBox
         );
     }
 
-    private function buildJumpUrl($params, $options = array())
+    /**
+     * @param unknown $urlParameters
+     * @param array $options
+     */
+    protected function buildJumpUrl($urlParameters, $options = array())
     {
-        $currentLocation = $this->getLinkThisScript();
+        if (!tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
+            $currentLocation = $this->getLinkThisScript();
 
-        if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
-            $dataHandlerEntryPoint = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('tce_db') .
-                '&';
+            if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
+                $dataHandlerEntryPoint = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('tce_db') .
+                    '&';
+            } else {
+                $dataHandlerEntryPoint = $GLOBALS['BACK_PATH'] . 'tce_db.php?';
+            }
+            $jumpToUrl = $dataHandlerEntryPoint. 'redirect=' . $currentLocation . '&amp;' . $urlParameters;
+
+            // jetzt noch alles zur Formvalidierung einfügen damit
+            // TYPO3 den Link akzeptiert und als valide einstuft
+            // der Formularname ist immer tceAction
+            $jumpToUrl .= '&amp;vC=' . $GLOBALS['BE_USER']->veriCode();
+            $jumpToUrl .= Tx_Rnbase_Backend_Utility::getUrlToken('tceAction');
+            $jumpToUrl = '\'' . $jumpToUrl . '\'';
+            $jumpToUrlMethod = 'jumpToUrl';
         } else {
-            $dataHandlerEntryPoint = $GLOBALS['BACK_PATH'] . 'tce_db.php?';
+            $jumpToUrl = Tx_Rnbase_Backend_Utility::issueCommand($urlParameters, -1);
+            $jumpToUrlMethod = 'jumpExt';
         }
-        $jumpToUrl = $dataHandlerEntryPoint. 'redirect=' . $currentLocation . '&amp;' . $params;
 
-        //jetzt noch alles zur Formvalidierung einfügen damit
-        //TYPO3 den Link akzeptiert und als valide einstuft
-        // der Formularname ist immer tceAction
-        $jumpToUrl .= '&amp;vC=' . $GLOBALS['BE_USER']->veriCode();
-        $jumpToUrl .= Tx_Rnbase_Backend_Utility::getUrlToken('tceAction');
-
-        $jumpToUrl = '\'' . $jumpToUrl . '\'';
-
-        return $this->getConfirmCode('return jumpToUrl(' . $jumpToUrl . ');', $options);
+        return $this->getConfirmCode('return ' . $jumpToUrlMethod . '(' . $jumpToUrl . ');', $options);
     }
 
     /**
@@ -479,7 +488,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
      * @param string $jsCode
      * @param array $options
      */
-    private function getConfirmCode($jsCode, $options)
+    protected function getConfirmCode($jsCode, $options)
     {
         if (isset($options['confirm']) && strlen($options['confirm']) > 0) {
             return 'if(confirm('.Tx_Rnbase_Utility_Strings::quoteJSvalue($options['confirm']).')) {' . $jsCode .'} else {return false;}';
@@ -504,31 +513,41 @@ class Tx_Rnbase_Backend_Form_ToolBox
     }
 
     /**
-     * Erstellt einen Link auf die aktuelle Location mit zusätzlichen Parametern
+     * Statt einem Linktext kann auch ein Icon ausgegeben werden. Dazu muss in den
+     * $options "icon" und optional
+     * "size" (siehe TYPO3\CMS\Core\Imaging\Icon) gesetzt werden. Ab TYPO3 7.x muss
+     * der Icon Name in der IconRegistry vorhanden sein. Vorher muss er in
+     * $GLOBALS['BACK_PATH'] . 'gfx/' liegen.
+     *
+     * @param string $urlParams
+     * @param int $pid wird nicht mehr verwendet. nur für abwärtskompatibilität
+     * @param string $label
+     * @param array $options
+     * @return string
      */
-    public function createLink($urlParams, $pid, $label, $options = array())
+    public function createLink($urlParams, $pid, $label, array $options = array())
     {
-        $location = $this->getLinkThisScript(false);
-        if ($options['icon'] && !tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-            $label = '<img '.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$options['icon']).
-                ' title="'.$label.'\" alt="" >';
+        // $options['sprite'] für abwärtskompatibilität
+        if ($options['icon'] || $options['sprite']) {
+            $icon = isset($options['icon']) ? $options['icon'] : $options['sprite'];
+            if (!tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
+                $label =    '<img '.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/' . $icon) .
+                            ' title="' . $label . '\" alt="" >';
+            } else {
+                tx_rnbase::load('tx_rnbase_mod_Util');
+                $label = tx_rnbase_mod_Util::getSpriteIcon($icon, $options);
+            }
         }
-        if ($options['sprite']) {
-            tx_rnbase::load('tx_rnbase_mod_Util');
-            $label = tx_rnbase_mod_Util::getSpriteIcon($options['sprite']);
-        }
-        $location = $location.$urlParams;
-        $jsCode = "window.location.href='".$location. "'; return false;";
-        if (isset($options['confirm']) && strlen($options['confirm']) > 0) {
-            $jsCode = 'if(confirm('.Tx_Rnbase_Utility_Strings::quoteJSvalue($options['confirm']).')) {' . $jsCode .'} else {return false;}';
-        }
+
+        $jsCode = $this->buildJumpUrl($urlParams, $options);
+
         $title = '';
         if ($options['hover']) {
-            $title = ' title="'.$options['hover'].'" ';
+            $title = 'title="' . $options['hover'] . '"';
         }
 
         $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
-        $class = ' class="' . $class .'"';
+        $class = 'class="' . $class .'"';
 
         return '<a href="#" ' . $class . ' onclick="'.htmlspecialchars($jsCode).'" '. $title.'>'. $label .'</a>';
     }

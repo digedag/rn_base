@@ -1,7 +1,7 @@
 {
     "name": "digedag/rn-base",
     "description": "A base library for extensions. Uses MVC design principles and domain driven development for TYPO3 extension development.",
-    "version": "1.4.5",
+    "version": "1.5.1",
     "type": "typo3-cms-extension",
     "keywords": [
         "TYPO3 CMS",
@@ -30,6 +30,9 @@
         "typo3/cms": ">=4.5.0 <=8.7.99",
         "php": ">=5.6.0"
     },
+    "require-dev": {
+        "typo3/testing-framework": "*"
+    },
     "autoload": {
         "classmap": [
             "action/",
@@ -52,6 +55,7 @@
             "class.tx_rnbase_configurations.php",
             "class.tx_rnbase_controller.php",
             "class.tx_rnbase_parameters.php"
-        ]
+        ],
+        "psr-4": {"Sys25\\RnBase\\" : "Classes"}
     }
 }
