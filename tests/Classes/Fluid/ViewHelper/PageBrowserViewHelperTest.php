@@ -54,7 +54,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTestCase
      */
     public function testRenderReturnsEmptyStringIfNoPageBrowserSetToTemplateVariableContainer()
     {
-        $viewHelper = $this->getPreparedVîewHelper();
+        $viewHelper = $this->getPreparedVîewHelperWithPageBrowser();
         $renderedPageBrowser = $viewHelper->render();
         self::assertEquals('', $renderedPageBrowser, 'Pagebrowser doch gerendered');
     }
@@ -70,7 +70,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTestCase
         );
         $pageBrowser->setState(0, 1, 1);
 
-        $viewHelper = $this->getPreparedVîewHelper(PageBrowserViewHelper::class, $pageBrowser);
+        $viewHelper = $this->getPreparedVîewHelperWithPageBrowser(PageBrowserViewHelper::class, $pageBrowser);
         $renderedPageBrowser = $viewHelper->render(true, 10, 'CENTER', ' ', 'myQualifier');
         self::assertEquals('', $renderedPageBrowser, 'Pagebrowser doch gerendered');
     }
@@ -88,7 +88,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTestCase
         $pageBrowser->setPointer(0);
 
         $viewHelper = $this->getViewHelperMock();
-        $viewHelper = $this->getPreparedVîewHelper($viewHelper, $pageBrowser);
+        $viewHelper = $this->getPreparedVîewHelperWithPageBrowser($viewHelper, $pageBrowser);
 
         $viewHelper->expects($this->never())
             ->method('renderFirstPage');
@@ -129,7 +129,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTestCase
         $pageBrowser->setPointer(2);
 
         $viewHelper = $this->getViewHelperMock();
-        $viewHelper = $this->getPreparedVîewHelper($viewHelper, $pageBrowser);
+        $viewHelper = $this->getPreparedVîewHelperWithPageBrowser($viewHelper, $pageBrowser);
 
         $viewHelper->expects($this->at(0))
             ->method('renderFirstPage')
@@ -177,7 +177,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTestCase
         $pageBrowser->setPointer(0);
 
         $viewHelper = $this->getViewHelperMock();
-        $viewHelper = $this->getPreparedVîewHelper($viewHelper, $pageBrowser);
+        $viewHelper = $this->getPreparedVîewHelperWithPageBrowser($viewHelper, $pageBrowser);
 
         $viewHelper->expects($this->never())
             ->method('renderPrevPage');
@@ -229,7 +229,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTestCase
             'renderNormalPage', 'renderCurrentPage', 'renderNextPage', 'renderLastPage'
         );
         $viewHelper = $this->getViewHelperMock($methods);
-        $viewHelper = $this->getPreparedVîewHelper($viewHelper, $pageBrowser);
+        $viewHelper = $this->getPreparedVîewHelperWithPageBrowser($viewHelper, $pageBrowser);
 
         $viewHelper->expects($this->never())
             ->method('renderPrevPage');
@@ -278,7 +278,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTestCase
         $pageBrowser->setPointer(0);
 
         $viewHelper = $this->getViewHelperMock();
-        $viewHelper = $this->getPreparedVîewHelper($viewHelper, $pageBrowser);
+        $viewHelper = $this->getPreparedVîewHelperWithPageBrowser($viewHelper, $pageBrowser);
         $viewHelperVariableContainer = $this->getMock(
             'TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\ViewHelperVariableContainer',
             array('add', 'remove')
@@ -320,7 +320,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTestCase
         $pageBrowser->setPointer(0);
 
         $viewHelper = $this->getViewHelperMock();
-        $viewHelper = $this->getPreparedVîewHelper($viewHelper, $pageBrowser);
+        $viewHelper = $this->getPreparedVîewHelperWithPageBrowser($viewHelper, $pageBrowser);
         $viewHelperVariableContainer = $this->getMock(
             'TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\ViewHelperVariableContainer',
             array('add', 'remove')
@@ -379,7 +379,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTestCase
         $pageBrowser->setPointer(0);
 
         $viewHelper = $this->getViewHelperMock();
-        $viewHelper = $this->getPreparedVîewHelper($viewHelper, $pageBrowser);
+        $viewHelper = $this->getPreparedVîewHelperWithPageBrowser($viewHelper, $pageBrowser);
         $templateVariableContainer = $this->getMock(
             'TYPO3Fluid\\Fluid\\Core\\Variables\\StandardVariableProvider',
             array('add', 'remove'),
@@ -420,7 +420,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTestCase
         );
         $pageBrowser->setState(0, 1, 1);
 
-        $viewHelper = $this->getPreparedVîewHelper(PageBrowserViewHelper::class, $pageBrowser);
+        $viewHelper = $this->getPreparedVîewHelperWithPageBrowser(PageBrowserViewHelper::class, $pageBrowser);
 
         $renderingContext = new \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext();
         $viewHelperNode = $this->getAccessibleMock(
@@ -641,7 +641,9 @@ class PageBrowserViewHelperTest extends BaseViewHelperTestCase
      *
      * @return \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
      */
-    protected function getPreparedVîewHelper($viewHelper = PageBrowserViewHelper::class, \tx_rnbase_util_PageBrowser $pageBrowser = null)
+    protected function getPreparedVîewHelperWithPageBrowser(
+        $viewHelper = PageBrowserViewHelper::class, \tx_rnbase_util_PageBrowser $pageBrowser = null
+    )
     {
         $viewHelper = parent::getPreparedVîewHelper($viewHelper);
 
