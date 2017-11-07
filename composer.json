@@ -30,6 +30,9 @@
         "typo3/cms": ">=4.5.0 <=8.7.99",
         "php": ">=5.6.0"
     },
+    "require-dev": {
+        "typo3/testing-framework": "*"
+    },
     "autoload": {
         "classmap": [
             "action/",

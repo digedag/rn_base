@@ -39,7 +39,7 @@ tx_rnbase::load('tx_rnbase_util_Files');
 class tx_rnbase_view_Base
 {
     private $pathToTemplates;
-    private $_pathToFile;
+    protected $templateFile;
     private $controller;
 
     /**
@@ -238,9 +238,9 @@ class tx_rnbase_view_Base
      * @param string path to the file used as templates
      * @return void
      */
-    public function setTemplateFile($pathToFile)
+    public function setTemplateFile($templateFile)
     {
-        $this->_pathToFile = $pathToFile;
+        $this->templateFile = $templateFile;
     }
 
     /**
@@ -254,8 +254,8 @@ class tx_rnbase_view_Base
      */
     public function getTemplate($templateName, $extension = '.php', $forceAbsPath = 0)
     {
-        if (strlen($this->_pathToFile) > 0) {
-            return ($forceAbsPath) ? tx_rnbase_util_Files::getFileAbsFileName($this->_pathToFile) : $this->_pathToFile;
+        if (strlen($this->templateFile) > 0) {
+            return ($forceAbsPath) ? tx_rnbase_util_Files::getFileAbsFileName($this->templateFile) : $this->templateFile;
         }
         $path = $this->pathToTemplates;
         $path .= substr($path, -1, 1) == '/' ? $templateName : '/' . $templateName;

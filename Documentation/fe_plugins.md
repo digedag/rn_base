@@ -137,6 +137,109 @@ Durch die Implementierung der Methode getMainSubpart() bekommt der View direkt d
 
 Im Beispiel für das Template über den ListBuilder von rn_base gerendert. Nähere Informationen findet man beim [Rendern der Daten](rendering_data.md).
 
+### fluid
+Es gibt den View Sys25\RnBase\Fluid\View\Action, um die Templates mit fluid rendern zu können. Per default werden die fluid Dateien in den Ordner Templates, Layouts und Partials in 'EXT:' . $extensionKey . '/Resources/Private/' erwartet. Das kann auch überschrieben bzw. weitere hinzugefügt werden:
+
+```
+plugin.tx_myextension {
+    view {
+        templateRootPaths.0 = EXT:plugin_tx_mkextension/Resources/Private/MyOtherTemplates/
+        partialRootPaths.0 = EXT:plugin_tx_mkextension/Resources/Private/MyOtherPartials/
+        layoutRootPaths.0 = EXT:plugin_tx_mkextension/Resources/Private/MyOtherLayouts/
+    }
+}
+```
+
+Ist plugin.tx_myextension.templatePath konfiguriert, dann überschreibt das die Einstellungen in plugin.tx_myextension.view.templateRootPaths.0
+
+#### fluid standalone
+Es gibt auch einen Standalone-View, um Templates unabhängig von einer Action zu rendern. Das kann so genutzt werden:
+
+```php
+
+/* @var $configurations Tx_Rnbase_Configuration_ProcessorInterface */
+$view = \Sys25\RnBase\Fluid\View\Factory::getViewInstance($configurations);
+$view->setPartialRootPaths($partialsPaths);
+$view->setLayoutRootPaths($layoutPaths);
+$view->setTemplatePathAndFilename($absolutePathToTemplate);
+$view->assignMultiple(array('someData' => 'test'));
+return $view->render();
+
+```
+
+#### configurations ViewHelper
+Damit kann auf die get Methode der configurations zugegriffen werden:
+
+```html
+
+{namespace rn=Sys25\RnBase\Fluid\ViewHelper}
+
+{rn:configurations.get(confId: confId, typoscriptPath: 'my.path')}
+
+```
+
+#### pagebrowser ViewHelper
+Damit kann auf die get Methode der configurations zugegriffen werden:
+
+```html
+
+{namespace rn=Sys25\RnBase\Fluid\ViewHelper}
+
+<div class="pagebrowser">
+    <rn:pageBrowser
+        maxPages="5"
+        hideIfSinglePage="1"
+    >
+        <rn:pageBrowser.firstPage
+            addQueryString="TRUE"
+            argumentsToBeExcludedFromQueryString="{0: 'id', 1: 'L', 2: 'cHash'}"
+            section="comments"
+        >
+            &lt;&lt;
+        </rn:pageBrowser.firstPage>
+        <rn:pageBrowser.prevPage
+            addQueryString="TRUE"
+            argumentsToBeExcludedFromQueryString="{0: 'id', 1: 'L', 2: 'cHash'}"
+            section="comments"
+        >
+            &lt;
+        </rn:pageBrowser.prevPage>
+        <rn:pageBrowser.currentPage
+            addQueryString="TRUE"
+            argumentsToBeExcludedFromQueryString="{0: 'id', 1: 'L', 2: 'cHash'}"
+            class="active"
+            usePageNumberAsLinkText="1"
+            section="comments"
+        />
+        <rn:pageBrowser.normalPage
+            addQueryString="TRUE"
+            argumentsToBeExcludedFromQueryString="{0: 'id', 1: 'L', 2: 'cHash'}"
+            usePageNumberAsLinkText="1"
+            section="comments"
+        />
+        <rn:pageBrowser.nextPage
+            addQueryString="TRUE"
+            argumentsToBeExcludedFromQueryString="{0: 'id', 1: 'L', 2: 'cHash'}"
+            section="comments"
+        >
+            &gt;
+        </rn:pageBrowser.nextPage>
+        <rn:pageBrowser.lastPage
+            addQueryString="TRUE"
+            argumentsToBeExcludedFromQueryString="{0: 'id', 1: 'L', 2: 'cHash'}"
+            section="comments"
+        >
+            &gt;&gt;
+        </rn:pageBrowser.lastPage>
+    </rn:pageBrowser>
+</div>
+
+
+```
+
+
+Hinweis: Nicht alle fluid ViewHelper können ohne weiteres verwendet werden. Wenn z.B. ein Extbase Controller nötig ist,
+wie bei Formularen, dann funktioniert das nicht out-of-the-box.
 
 ## Das Model
 
