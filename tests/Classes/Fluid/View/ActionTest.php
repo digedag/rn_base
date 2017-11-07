@@ -41,6 +41,9 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
      */
     protected function setUp()
     {
+        if (!\tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
+            self::markTestSkipped('Fluid is only supported since TYPO3 8.7');
+        }
         \tx_rnbase_util_Misc::prepareTSFE(array('force' => true));
     }
 

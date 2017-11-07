@@ -46,6 +46,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTestCase
      */
     protected function setUp()
     {
+        parent::setUp();
         \tx_rnbase_util_Misc::prepareTSFE();
     }
 
