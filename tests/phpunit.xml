@@ -4,7 +4,6 @@
     convertWarningsToExceptions="true" processIsolation="false"
     stopOnFailure="true" syntaxCheck="true"
     testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
-    bootstrap="Bootstrap.php"
 >
 
 <testsuites>
