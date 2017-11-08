@@ -897,7 +897,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
     /**
      *
      */
-    public function _setCObjectData($data)
+    protected function _setCObjectData($data)
     {
         $this->_dataStore->offsetSet('tt_content.', $data);
     }
@@ -911,7 +911,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
      * @param array  direct setup input in form of a renderd TS array
      * @return void
      */
-    public function _setConfiguration($configuration)
+    protected function _setConfiguration($configuration)
     {
         foreach ((array)$configuration as $key => $value) {
             $this->_dataStore->offsetSet($key, $value);
@@ -927,7 +927,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
      * @param string  setup path from TS, example: 'plugin.tx_myextension.configuration.'
      * @return void
      */
-    public function _setTypoScript($setupPath = '')
+    protected function _setTypoScript($setupPath = '')
     {
         $setupPath = $setupPath ? $setupPath : $this->setupPath;
         if ($setupPath) {
@@ -984,7 +984,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
      * @param mixed  xml or rendered flexform array
      * @return void
      */
-    public function _setFlexForm($xmlOrArray)
+    protected function _setFlexForm($xmlOrArray)
     {
         $languagePointer = 'lDEF'; // we don't support languages here for now
         $valuePointer = 'vDEF';
@@ -1090,7 +1090,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
      *
      * @return array
      */
-    public function _queryArrayByPath($array, $path)
+    protected function _queryArrayByPath($array, $path)
     {
         $pathArray = explode('.', trim($path));
         for ($i = 0, $cnt = count($pathArray); $i < $cnt; $i++) {
