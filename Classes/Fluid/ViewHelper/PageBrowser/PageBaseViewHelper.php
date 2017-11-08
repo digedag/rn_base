@@ -1,5 +1,7 @@
 <?php
 namespace Sys25\RnBase\Fluid\ViewHelper\PageBrowser;
+use Sys25\RnBase\Fluid\ViewHelper\PageBrowserViewHelper;
+
 /***************************************************************
  * Copyright notice
  *
@@ -87,7 +89,7 @@ class PageBaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBas
         $currentPage = $this->templateVariableContainer->get('currentPage');
 
         $pageBrowserQualifier = $this->viewHelperVariableContainer->get(
-            PageBaseViewHelper::class, 'pageBrowserQualifier'
+            PageBrowserViewHelper::class, 'pageBrowserQualifier'
         );
         $pageBrowserParams = array(
             $pageBrowserQualifier => array(
