@@ -419,6 +419,7 @@ class tx_rnbase_controller
     {
         // TODO, die Configklasse sollte über TS variabel gehalten werden
         // Make configurations object
+        /* @var $configurations Tx_Rnbase_Configuration_Processor */
         $configurations = tx_rnbase::makeInstance($this->configurationsClassName);
 
         // Dieses cObj wird dem Controller von T3 übergeben
