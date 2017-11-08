@@ -98,7 +98,7 @@ class Tx_Rnbase_Utility_TcaToolTest extends Tx_Phpunit_TestCase
             )
         );
 
-        if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+        if (tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
             self::assertArrayNotHasKey('script', $wizards['add']);
             self::assertArrayNotHasKey('script', $wizards['edit']);
             self::assertArrayNotHasKey('script', $wizards['list']);
@@ -110,6 +110,18 @@ class Tx_Rnbase_Utility_TcaToolTest extends Tx_Phpunit_TestCase
             self::assertEquals('wizard_rte', $wizards['RTE']['module']['name']);
             self::assertEquals('wizard_colorpicker', $wizards['colorpicker']['module']['name']);
             self::assertEquals('wizard_link', $wizards['link']['module']['name']);
+        } elseif (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+            self::assertArrayNotHasKey('script', $wizards['add']);
+            self::assertArrayNotHasKey('script', $wizards['edit']);
+            self::assertArrayNotHasKey('script', $wizards['list']);
+            self::assertArrayNotHasKey('script', $wizards['RTE']);
+            self::assertArrayNotHasKey('script', $wizards['link']);
+            self::assertEquals('wizard_add', $wizards['add']['module']['name']);
+            self::assertEquals('wizard_edit', $wizards['edit']['module']['name']);
+            self::assertEquals('wizard_list', $wizards['list']['module']['name']);
+            self::assertEquals('wizard_rte', $wizards['RTE']['module']['name']);
+            self::assertEquals('wizard_colorpicker', $wizards['colorpicker']['module']['name']);
+            self::assertEquals('wizard_element_browser', $wizards['link']['module']['name']);
         } else {
             self::assertArrayNotHasKey('module', $wizards['add']);
             self::assertArrayNotHasKey('module', $wizards['edit']);
