@@ -205,7 +205,7 @@ class Tx_Rnbase_Utility_TcaToolTest extends Tx_Phpunit_TestCase
                 $wizards['RTE']['icon']
             );
             self::assertEquals(
-                'EXT:t3skin/icons/gfx/wizard_rte.gif',
+                'EXT:t3skin/icons/gfx/link_popup.gif',
                 $wizards['link']['icon']
             );
         } else {
