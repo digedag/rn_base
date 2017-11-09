@@ -83,10 +83,12 @@ class Action extends \tx_rnbase_view_Base
         $extensionKey, \Tx_Rnbase_Configuration_ProcessorInterface $configurations
     ){
         $typoScriptConfiguration = $this->getDefaultTypoScriptConfigurationForFluid($extensionKey);
-        // settings aus dem configurations-array holen
-        $typoScriptConfiguration['settings'] = $typoScriptConfiguration['settings'] + $configurations->getConfigArray();
-        // default settings['view'] mit der typoscript konfiguration mit dem key "view." ersetzen
-        $typoScriptConfiguration['view'] = array_merge(
+
+        $typoScriptConfiguration['settings'] = \tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
+            $typoScriptConfiguration['settings'], (array) $configurations->get('settings.')
+        );
+
+        $typoScriptConfiguration['view'] = \tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
             $typoScriptConfiguration['view'], (array) $configurations->get('view.')
         );
 
@@ -116,9 +118,9 @@ class Action extends \tx_rnbase_view_Base
         $typoScriptConfiguration['settings'] = array();
 
         $resourcesPath = 'EXT:' . $extensionKey . '/Resources/Private/';
-        $typoScriptConfiguration['view']['templateRootPaths.'][0] = $resourcesPath . '/Templates/';
-        $typoScriptConfiguration['view']['layoutRootPaths.'][0] = $resourcesPath . '/Layouts/';
-        $typoScriptConfiguration['view']['partialRootPaths.'][0] = $resourcesPath . '/Partials/';
+        $typoScriptConfiguration['view']['templateRootPaths.'][0] = $resourcesPath . 'Templates/';
+        $typoScriptConfiguration['view']['layoutRootPaths.'][0] = $resourcesPath . 'Layouts/';
+        $typoScriptConfiguration['view']['partialRootPaths.'][0] = $resourcesPath . 'Partials/';
 
         return $typoScriptConfiguration;
     }

@@ -323,4 +323,48 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
 
         self::assertEquals('<div class="test">testId</div>', $view->render('MyTestAction', $configurations));
     }
+
+    /**
+     * @group unit
+     */
+    public function testGetTypoScriptConfigurationForFluid()
+    {
+        $view = new Action();
+        $configurations = $this->createConfigurations(
+            array(
+                'view.' => array(
+                    'templateRootPaths.' => array(1 => 'additionalTemplatePath'),
+                    'layoutRootPaths.' => array(1 => 'additionalLayoutPath'),
+                    'partialRootPaths.' => array(1 => 'additionalPartialPath'),
+                ),
+                'settings.' => array(
+                    'mySettings' => 'test'
+                )
+            ),
+            'rn_base'
+        );
+
+        self::assertEquals(
+            array(
+                'view' => array(
+                    'templateRootPaths.' => array(
+                        0 => 'EXT:rn_base/Resources/Private/Templates/',
+                        1 => 'additionalTemplatePath'
+                    ),
+                    'layoutRootPaths.' => array(
+                        0 => 'EXT:rn_base/Resources/Private/Layouts/',
+                        1 => 'additionalLayoutPath'
+                    ),
+                    'partialRootPaths.' => array(
+                        0 => 'EXT:rn_base/Resources/Private/Partials/',
+                        1 => 'additionalPartialPath'
+                    ),
+                ),
+                'settings' => array(
+                    'mySettings' => 'test'
+                )
+            ),
+            $this->callInaccessibleMethod($view, 'getTypoScriptConfigurationForFluid', 'rn_base', $configurations)
+        );
+    }
 }

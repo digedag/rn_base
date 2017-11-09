@@ -140,7 +140,7 @@ Im Beispiel für das Template über den ListBuilder von rn_base gerendert. Nähe
 ### fluid
 Hinweis: Es muss mind. TYPO3 8.7 installiert sein.
 
-Es gibt den View Sys25\RnBase\Fluid\View\Action, um die Templates mit fluid rendern zu können. Per default werden die fluid Dateien in den Ordner Templates, Layouts und Partials in 'EXT:' . $extensionKey . '/Resources/Private/' erwartet. Das kann auch überschrieben bzw. weitere hinzugefügt werden:
+Es gibt den View Sys25\RnBase\Fluid\View\Action, um die Templates mit fluid rendern zu können. Per default werden die fluid Dateien in den Ordner Templates, Layouts und Partials in 'EXT:' . $extensionKey . '/Resources/Private/' erwartet. Das kann auch überschrieben bzw. weitere hinzugefügt werden, ganz nach der Konvention von ExtBase/Fluid:
 
 ```
 plugin.tx_myextension {
@@ -149,10 +149,12 @@ plugin.tx_myextension {
         partialRootPaths.0 = EXT:plugin_tx_mkextension/Resources/Private/MyOtherPartials/
         layoutRootPaths.0 = EXT:plugin_tx_mkextension/Resources/Private/MyOtherLayouts/
     }
+    settings {
+    }
 }
 ```
 
-Ist plugin.tx_myextension.templatePath konfiguriert, dann überschreibt das die Einstellungen in plugin.tx_myextension.view.templateRootPaths.0
+Ist plugin.tx_myextension.templatePath konfiguriert, dann überschreibt das die Einstellungen in plugin.tx_myextension.view.templateRootPaths.0. Das direkte setzen eines Templates mit plugin.tx_myextension.myAction.template.file bzw. plugin.tx_myextension.myActionTemplate ist auch weiterhin möglich.
 
 #### fluid standalone
 Es gibt auch einen Standalone-View, um Templates unabhängig von einer Action zu rendern. Das kann so genutzt werden:
