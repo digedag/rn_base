@@ -643,6 +643,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
 
     /**
      * Erstellt ein Eingabefeld für DateTime
+     * @todo fix prefilling of field in TYPO3 8.7
      */
     public function createDateInput($name, $value)
     {
