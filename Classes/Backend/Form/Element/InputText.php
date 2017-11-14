@@ -70,12 +70,15 @@ class Tx_Rnbase_Backend_Form_Element_InputText extends AbstractFormElement
             if (isset($config['range']['upper'])) {
                 $attributes['data-date-maxDate'] = (int)$config['range']['upper'];
             }
+            $icon = 'actions-edit-pick-date';
         } elseif (in_array('time', $evalList)) {
             $classes[] = 't3js-datetimepicker';
             $attributes['data-date-type'] = 'time';
+            $icon = 'actions-edit-pick-date';
         } elseif (in_array('timesec', $evalList)) {
             $classes[] = 't3js-datetimepicker';
             $attributes['data-date-type'] = 'timesec';
+            $icon = 'actions-edit-pick-date';
         }
 
         // for data-formengine-input-params
@@ -113,6 +116,10 @@ class Tx_Rnbase_Backend_Form_Element_InputText extends AbstractFormElement
 
         // This is the ACTUAL form field - values from the EDITABLE field must be transferred to this field which is the one that is written to the database.
         $html .= '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" />';
+
+        if ($icon) {
+            $html .= Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon($icon);
+        }
 
         return $html;
     }
