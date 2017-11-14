@@ -647,7 +647,9 @@ class Tx_Rnbase_Backend_Form_ToolBox
     public function createDateInput($name, $value)
     {
         // Take care of current time zone. Thanks to Thomas Maroschik!
-        $value += date('Z', $value);
+        if (tx_rnbase_util_Math::isInteger($value)) {
+            $value += date('Z', $value);
+        }
         if(tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
             $this->getDoc()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
             /* @var $inputField Tx_Rnbase_Backend_Form_Element_InputText */
