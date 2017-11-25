@@ -1,5 +1,7 @@
 <?php
 
+use TYPO3\CMS\Backend\Configuration\TsConfigParser;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -420,12 +422,15 @@ class Tx_Rnbase_Backend_Form_ToolBox
      */
     protected function buildJumpUrl($urlParameters, $options = array())
     {
-        if (!tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
-            $currentLocation = $this->getLinkThisScript();
+        if (tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
+            $jumpToUrl = Tx_Rnbase_Backend_Utility::issueCommand($urlParameters, -1);
+            $jumpToUrlMethod = 'jumpExt';
+        } else {
+            $currentLocation = $this->getLinkThisScript(true, $options);
 
             if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
                 $dataHandlerEntryPoint = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('tce_db') .
-                    '&';
+                '&';
             } else {
                 $dataHandlerEntryPoint = $GLOBALS['BACK_PATH'] . 'tce_db.php?';
             }
@@ -438,11 +443,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
             $jumpToUrl .= Tx_Rnbase_Backend_Utility::getUrlToken('tceAction');
             $jumpToUrl = '\'' . $jumpToUrl . '\'';
             $jumpToUrlMethod = 'jumpToUrl';
-        } else {
-            $jumpToUrl = Tx_Rnbase_Backend_Utility::issueCommand($urlParameters, -1);
-            $jumpToUrlMethod = 'jumpExt';
         }
-
         return $this->getConfirmCode('return ' . $jumpToUrlMethod . '(' . $jumpToUrl . ');', $options);
     }
 
@@ -451,11 +452,18 @@ class Tx_Rnbase_Backend_Form_ToolBox
      * @see \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript
      *
      * @param bool $encode
+     * @param array $options possible key "params" with array of url params
      * @return string
      */
-    protected function getLinkThisScript($encode = true)
+    protected function getLinkThisScript($encode = true, $options = array())
     {
-        $location = tx_rnbase_util_Link::linkThisScript(array('CB' => '', 'SET' => '', 'cmd' => '', 'popViewId' => ''));
+        $params = [
+            'CB' => '', 'SET' => '', 'cmd' => '', 'popViewId' => ''
+        ];
+        if (isset($options['params']) && is_array($options['params'])) {
+            $params = array_merge($params, $options['params']);
+        }
+        $location = tx_rnbase_util_Link::linkThisScript($params);
         if ($encode) {
             $location = str_replace('%20', '', rawurlencode($location));
         }
@@ -519,13 +527,13 @@ class Tx_Rnbase_Backend_Form_ToolBox
      * der Icon Name in der IconRegistry vorhanden sein. Vorher muss er in
      * $GLOBALS['BACK_PATH'] . 'gfx/' liegen.
      *
-     * @param string $urlParams
+     * @param string $commandParams url parameters for tce command handler
      * @param int $pid wird nicht mehr verwendet. nur für abwärtskompatibilität
      * @param string $label
      * @param array $options
      * @return string
      */
-    public function createLink($urlParams, $pid, $label, array $options = array())
+    public function createLink($commandParams, $pid, $label, array $options = array())
     {
         // $options['sprite'] für abwärtskompatibilität
         if ($options['icon'] || $options['sprite']) {
@@ -539,7 +547,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
             }
         }
 
-        $jsCode = $this->buildJumpUrl($urlParams, $options);
+        $jsCode = $this->buildJumpUrl($commandParams, $options);
 
         $title = '';
         if ($options['hover']) {

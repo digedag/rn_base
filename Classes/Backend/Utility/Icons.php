@@ -128,9 +128,7 @@ class Tx_Rnbase_Backend_Utility_Icons
      * @param array $options
      * @param array $overlays
      *
-     * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use IconFactory->getIcon instead
-     *
-     * @return unknown
+     * @return string
      */
     public static function getSpriteIcon(
         $iconName,
