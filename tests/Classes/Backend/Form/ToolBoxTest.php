@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 Rene Nitzsche (rene@system25.de)
+*  (c) 2010-2017 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -191,19 +191,19 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testCreateLink()
     {
-        $urlParameters = 'someParameters';
-        $options = ['test' => 'value'];
+        $urlParameters = 'someParameters=2&param2=bar';
+        $options = ['params'=>['someParameters' => '2', 'param2'=>'bar']];
 
-        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', array('buildJumpUrl'));
+        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', array('getLinkThisScript'));
         $formTool
             ->expects(self::once())
-            ->method('buildJumpUrl')
-            ->with($urlParameters, $options)
-            ->will(self::returnValue('jumpUrl'));
-
+            ->method('getLinkThisScript')
+            ->with(false, $options)
+            ->will(self::returnValue('scriptUrl'));
         self::assertEquals(
-            '<a href="#" class="' . Tx_Rnbase_Backend_Form_ToolBox::CSS_CLASS_BTN . '" onclick="jumpUrl" >mylabel</a>',
-            $formTool->createLink($urlParameters, 0, 'mylabel', $options)
+            htmlspecialchars('<a href="#" class="' . Tx_Rnbase_Backend_Form_ToolBox::CSS_CLASS_BTN .
+                '" onclick="'."window.location.href='scriptUrl'; return false;".'" >mylabel</a>'),
+            htmlspecialchars($formTool->createLink($urlParameters, 0, 'mylabel', $options))
         );
     }
 
@@ -212,19 +212,20 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testCreateLinkWithHover()
     {
-        $urlParameters = 'someParameters';
+        $urlParameters = 'someParameter=1';
         $options = ['hover' => 'hoverTitle'];
 
-        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', array('buildJumpUrl'));
+        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', array('getLinkThisScript'));
         $formTool
             ->expects(self::once())
-            ->method('buildJumpUrl')
-            ->with($urlParameters, $options)
-            ->will(self::returnValue('jumpUrl'));
+            ->method('getLinkThisScript')
+            ->with(false, ['params'=>['someParameter'=>1]])
+            ->will(self::returnValue('scriptUrl'));
 
         self::assertEquals(
-            '<a href="#" class="' . Tx_Rnbase_Backend_Form_ToolBox::CSS_CLASS_BTN . '" onclick="jumpUrl" title="hoverTitle">mylabel</a>',
-            $formTool->createLink($urlParameters, 0, 'mylabel', $options)
+            htmlspecialchars('<a href="#" class="' . Tx_Rnbase_Backend_Form_ToolBox::CSS_CLASS_BTN .
+                '" onclick="'."window.location.href='scriptUrl'; return false;".'" title="hoverTitle">mylabel</a>'),
+            htmlspecialchars($formTool->createLink($urlParameters, 0, 'mylabel', $options))
         );
     }
 
@@ -233,19 +234,20 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testCreateLinkWithCssClass()
     {
-        $urlParameters = 'someParameters';
+        $urlParameters = 'someParameter=1';
         $options = ['class' => 'myClass'];
 
-        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', array('buildJumpUrl'));
+        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', array('getLinkThisScript'));
         $formTool
             ->expects(self::once())
-            ->method('buildJumpUrl')
-            ->with($urlParameters, $options)
-            ->will(self::returnValue('jumpUrl'));
+            ->method('getLinkThisScript')
+            ->with(false, ['params'=>['someParameter'=>1]])
+            ->will(self::returnValue('scriptUrl'));
 
         self::assertEquals(
-            '<a href="#" class="myClass" onclick="jumpUrl" >mylabel</a>',
-            $formTool->createLink($urlParameters, 0, 'mylabel', $options)
+            htmlspecialchars('<a href="#" class="myClass" onclick="'.
+                "window.location.href='scriptUrl'; return false;".'" >mylabel</a>'),
+            htmlspecialchars($formTool->createLink($urlParameters, 0, 'mylabel', $options))
         );
     }
 

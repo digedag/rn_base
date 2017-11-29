@@ -1,7 +1,5 @@
 <?php
 
-use TYPO3\CMS\Backend\Configuration\TsConfigParser;
-
 /***************************************************************
 *  Copyright notice
 *
@@ -417,10 +415,15 @@ class Tx_Rnbase_Backend_Form_ToolBox
     }
 
     /**
-     * @param unknown $urlParameters
+     * Creates js code with command for TCE datahandler and redirect to current script.
+     * Simple example to delete a page record:
+     * $this->buildJumpUrl('cmd[pages][123][delete]=1')
+     *
+     * @param string $urlParameters command for datahandler
      * @param array $options
+     * @return string
      */
-    protected function buildJumpUrl($urlParameters, $options = array())
+    protected function buildJumpUrl($urlParameters, array $options = array())
     {
         if (tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
             $jumpToUrl = Tx_Rnbase_Backend_Utility::issueCommand($urlParameters, -1);
@@ -455,7 +458,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
      * @param array $options possible key "params" with array of url params
      * @return string
      */
-    protected function getLinkThisScript($encode = true, $options = array())
+    protected function getLinkThisScript($encode = true, array $options = array())
     {
         $params = [
             'CB' => '', 'SET' => '', 'cmd' => '', 'popViewId' => ''
@@ -521,19 +524,41 @@ class Tx_Rnbase_Backend_Form_ToolBox
     }
 
     /**
+     * @deprecated alias for createModuleLink()
+     * @see createModuleLink()
+     */
+    public function createLink($paramStr, $pid, $label, array $options = array())
+    {
+        $paramsArr = explode('&', $paramStr);
+        $params = [];
+        foreach ($paramsArr as $param) {
+            list($key, $value) = explode('=', $param);
+            $params[$key] = $value;
+        }
+        return $this->createModuleLink($params, $pid, $label, $options);
+    }
+
+    /**
+     * Create a link to current module script with additional parameters.
+     *
+     * possible options:
+     * - "icon": name of link icon
+     * - "hover": - possible content for title attribute
+     * - "class": - custom CSS class for link
+     *
      * Statt einem Linktext kann auch ein Icon ausgegeben werden. Dazu muss in den
      * $options "icon" und optional
      * "size" (siehe TYPO3\CMS\Core\Imaging\Icon) gesetzt werden. Ab TYPO3 7.x muss
      * der Icon Name in der IconRegistry vorhanden sein. Vorher muss er in
      * $GLOBALS['BACK_PATH'] . 'gfx/' liegen.
      *
-     * @param string $commandParams url parameters for tce command handler
+     * @param array $params additional url parameters for current script
      * @param int $pid wird nicht mehr verwendet. nur für abwärtskompatibilität
      * @param string $label
      * @param array $options
      * @return string
      */
-    public function createLink($commandParams, $pid, $label, array $options = array())
+    public function createModuleLink(array $params, $pid, $label, array $options = array())
     {
         // $options['sprite'] für abwärtskompatibilität
         if ($options['icon'] || $options['sprite']) {
@@ -547,7 +572,9 @@ class Tx_Rnbase_Backend_Form_ToolBox
             }
         }
 
-        $jsCode = $this->buildJumpUrl($commandParams, $options);
+        $location = $this->getLinkThisScript(false, ['params'=>$params]);
+
+        $jsCode = "window.location.href='".$location. "'; return false;";
 
         $title = '';
         if ($options['hover']) {

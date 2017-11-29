@@ -4,6 +4,7 @@
 ----------
 
 v1.6.1 (??.??.2017)
+ * #95 createLink() fixed
 
 v1.6.0 (29.11.2017)
  * params for redirect url possible when creating links with Tx_Rnbase_Backend_Form_ToolBox
