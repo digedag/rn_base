@@ -3,7 +3,17 @@
 Änderungen
 ----------
 
-v1.5.2 (??.??.2017)
+v1.6.1 (??.??.2017)
+
+v1.6.0 (29.11.2017)
+ * params for redirect url possible when creating links with Tx_Rnbase_Backend_Form_ToolBox
+ * bugfix apply timezone offset only if $value is integer in Tx_Rnbase_Backend_Form_ToolBox::createDateInput()
+ * add icon for datepicker
+ * fixed datepicker of Tx_Rnbase_Backend_Form_ToolBox::createDateInput() in TYPO3 8.7
+ * new View for Fluid including some crucial ViewHelpers (page browser and configurations->get())
+ * bugfix icons and link wizard module in TYPO3 8.7
+ * tx_rnbase_util_BaseMarker::disableLink() marked as static
+ * digedag/cfc_league#40 fixes formbuilder when creating new records
 
 v1.5.1 (09.10.2017)
  * new method tx_rnbase_util_TYPO3::isCliMode()
