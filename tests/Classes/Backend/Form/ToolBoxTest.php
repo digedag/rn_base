@@ -149,31 +149,67 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
     /**
      * @group unit
      */
-    public function testBuildJumpUrlInTypo387()
+    public function testGetJavaScriptForLinkToDataHandlerActionInTypo387()
     {
         if (!tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
             self::markTestSkipped('wir testen die Version ab TYPO3 8.7');
         }
 
         $formTool = tx_rnbase::makeInstance($this->buildAccessibleProxy('Tx_Rnbase_Backend_Form_ToolBox'));
+        $formTool->init(tx_rnbase::makeInstance('Tx_Rnbase_Backend_Template_Override_DocumentTemplate'), null);
         $options = ['test'];
         $urlParameters = 'someParameters';
 
         self::assertRegExp(
-            '/return jumpExt\(\'.*someParameters.*redirect=\'\+T3_THIS_LOCATION.*/',
-            $formTool->_call('buildJumpUrl', $urlParameters, $options)
+            '/return jumpToUrl\(\'.*someParameters.*redirect=\'\+T3_THIS_LOCATION.*/',
+            $formTool->_call('getJavaScriptForLinkToDataHandlerAction', $urlParameters, $options)
         );
     }
 
     /**
      * @group unit
      */
-    public function testBuildJumpUrlHandlesConfirmCode()
+    public function testGetJavaScriptForLinkToDataHandlerActionAddsNecessaryJavaScriptsInTypo387()
+    {
+        if (!tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
+            self::markTestSkipped('wir testen die Version ab TYPO3 8.7');
+        }
+
+        $formTool = $this->getAccessibleMock('Tx_Rnbase_Backend_Form_ToolBox', array('getBaseJavaScriptCode'));
+        $formTool
+            ->expects(self::once())
+            ->method('getBaseJavaScriptCode')
+            ->will(self::returnValue('javascriptCode'));
+
+        $pageRenderer = $this->getMock('stdClass', array('addJsInlineCode'));
+        $pageRenderer
+            ->expects(self::once())
+            ->method('addJsInlineCode')
+            ->with('rnBaseMethods', 'javascriptCode');
+
+        $document = $this->getMock('Tx_Rnbase_Backend_Template_Override_DocumentTemplate', array('getPageRenderer'));
+        $document
+            ->expects(self::once())
+            ->method('getPageRenderer')
+            ->will(self::returnValue($pageRenderer));
+
+        $formTool->init($document, null);
+        $options = ['test'];
+        $urlParameters = 'someParameters';
+
+        $formTool->_call('getJavaScriptForLinkToDataHandlerAction', $urlParameters, $options);
+    }
+
+    /**
+     * @group unit
+     */
+    public function testGetJavaScriptForLinkToDataHandlerActionHandlesConfirmCode()
     {
         $urlParameters = 'someParameters';
         $options = ['test'];
 
         $formTool = $this->getAccessibleMock('Tx_Rnbase_Backend_Form_ToolBox', array('getConfirmCode'));
+        $formTool->init(tx_rnbase::makeInstance('Tx_Rnbase_Backend_Template_Override_DocumentTemplate'), null);
         $formTool
             ->expects(self::once())
             ->method('getConfirmCode')
@@ -182,7 +218,7 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
 
         self::assertEquals(
             'confirm code handled',
-            $formTool->_call('buildJumpUrl', $urlParameters, $options)
+            $formTool->_call('getJavaScriptForLinkToDataHandlerAction', $urlParameters, $options)
         );
     }
 
@@ -259,18 +295,18 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
         if (!tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
             self::markTestSkipped('wir testen die Version ab TYPO3 8.7');
         }
-        $urlParameters = 'someParameters';
+        $urlParameters = 'parameter=test';
         $options = ['icon' => 'actions-add', 'class' => 'myClass'];
 
-        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', array('buildJumpUrl'));
+        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', array('getLinkThisScript'));
         $formTool
             ->expects(self::once())
-            ->method('buildJumpUrl')
-            ->with($urlParameters, $options)
+            ->method('getLinkThisScript')
+            ->with(false, ['params' => array('parameter' => 'test')])
             ->will(self::returnValue('jumpUrl'));
 
         self::assertRegExp(
-            '/<a href="#" class="myClass" onclick="jumpUrl" >.*<img.*actions\-add\.svg" width="16" height="16".*<\/a>/s',
+            '/<a href="#" class="myClass" onclick="window.location.href=\'jumpUrl\'; return false;" >.*<img.*actions\-add\.svg" width="16" height="16".*<\/a>/s',
             $formTool->createLink($urlParameters, 0, 'mylabel', $options)
         );
     }
@@ -283,19 +319,82 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
         if (!tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
             self::markTestSkipped('wir testen die Version ab TYPO3 8.7');
         }
-        $urlParameters = 'someParameters';
+        $urlParameters = 'parameter=test';
         $options = ['icon' => 'actions-add', 'class' => 'myClass', 'size' => 'default'];
 
-        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', array('buildJumpUrl'));
+        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', array('getLinkThisScript'));
         $formTool
             ->expects(self::once())
-            ->method('buildJumpUrl')
-            ->with($urlParameters, $options)
+            ->method('getLinkThisScript')
+            ->with(false, ['params' => array('parameter' => 'test')])
             ->will(self::returnValue('jumpUrl'));
 
         self::assertRegExp(
-            '/<a href="#" class="myClass" onclick="jumpUrl" >.*<img.*actions\-add\.svg" width="32" height="32".*<\/a>/s',
+            '/<a href="#" class="myClass" onclick="window.location.href=\'jumpUrl\'; return false;" >.*<img.*actions\-add\.svg" width="32" height="32".*<\/a>/s',
             $formTool->createLink($urlParameters, 0, 'mylabel', $options)
+        );
+    }
+
+    /**
+     * @group unit
+     */
+    public function testCreateLinkForDataHandlerAction()
+    {
+        $urlParameters = 'someParameters';
+        $options = ['test' => 'value'];
+
+        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', array('getJavaScriptForLinkToDataHandlerAction'));
+        $formTool
+            ->expects(self::once())
+            ->method('getJavaScriptForLinkToDataHandlerAction')
+            ->with($urlParameters, $options)
+            ->will(self::returnValue('jumpUrl'));
+
+        self::assertEquals(
+            '<a href="#" class="' . Tx_Rnbase_Backend_Form_ToolBox::CSS_CLASS_BTN . '" onclick="jumpUrl" >mylabel</a>',
+            $formTool->createLinkForDataHandlerAction($urlParameters, 'mylabel', $options)
+        );
+    }
+
+    /**
+     * @group unit
+     */
+    public function testCreateLinkForDataHandlerActionWithHover()
+    {
+        $urlParameters = 'someParameters';
+        $options = ['hover' => 'hoverTitle'];
+
+        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', array('getJavaScriptForLinkToDataHandlerAction'));
+        $formTool
+            ->expects(self::once())
+            ->method('getJavaScriptForLinkToDataHandlerAction')
+            ->with($urlParameters, $options)
+            ->will(self::returnValue('jumpUrl'));
+
+        self::assertEquals(
+            '<a href="#" class="' . Tx_Rnbase_Backend_Form_ToolBox::CSS_CLASS_BTN . '" onclick="jumpUrl" title="hoverTitle">mylabel</a>',
+            $formTool->createLinkForDataHandlerAction($urlParameters, 'mylabel', $options)
+        );
+    }
+
+    /**
+     * @group unit
+     */
+    public function testCreateLinkForDataHandlerActionWithCssClass()
+    {
+        $urlParameters = 'someParameters';
+        $options = ['class' => 'myClass'];
+
+        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', array('getJavaScriptForLinkToDataHandlerAction'));
+        $formTool
+            ->expects(self::once())
+            ->method('getJavaScriptForLinkToDataHandlerAction')
+            ->with($urlParameters, $options)
+            ->will(self::returnValue('jumpUrl'));
+
+        self::assertEquals(
+            '<a href="#" class="myClass" onclick="jumpUrl" >mylabel</a>',
+            $formTool->createLinkForDataHandlerAction($urlParameters, 'mylabel', $options)
         );
     }
 }

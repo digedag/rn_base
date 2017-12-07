@@ -275,7 +275,6 @@ class Tx_Rnbase_Backend_Form_ToolBox
         //fallback
         $sEnableColumn = ($sEnableColumn) ? $sEnableColumn : 'hidden';
         $label = isset($options['label']) ? $options['label'] : '';
-        $jumpToUrl = $this->getJavaScriptForLinkToDataHandlerAction('data['.$table.']['.$uid.']['. $sEnableColumn .']='.($unhide ? 0 : 1), $options);
 
         if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
             $image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon(
@@ -285,9 +284,13 @@ class Tx_Rnbase_Backend_Form_ToolBox
             $image = '<img'.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.($unhide ? 'button_hide.gif' : 'button_unhide.gif'), 'width="11" height="12"').' border="0" alt="" />';
         }
 
-        return '<a onclick="'.$jumpToUrl.'" href="#" title="' . ($unhide ? 'Show' : 'Hide').' UID: '.$uid . '">'.
-                $image .
-                $label.'</a>';
+        $options['hover'] = $unhide ? 'Show' : 'Hide' . ' UID: '. $uid;
+
+        return $this->createLinkForDataHandlerAction(
+            'data[' . $table . '][' . $uid . '][' . $sEnableColumn . ']=' . ($unhide ? 0 : 1),
+            $image . $label,
+            $options
+        );
     }
 
     /**
@@ -349,6 +352,8 @@ class Tx_Rnbase_Backend_Form_ToolBox
      * @param int $uid
      * @param int $moveId die uid des elements vor welches das element aus $uid gesetzt werden soll
      * @param array $options
+     *
+     * @TODO use $this->createLinkForDataHandlerAction
      */
     public function createMoveUpLink($table, $uid, $moveId, $options = array())
     {
@@ -385,6 +390,8 @@ class Tx_Rnbase_Backend_Form_ToolBox
      * @param int $uid
      * @param int $moveId die uid des elements nach welchem das element aus $uid gesetzt werden soll
      * @param array $options
+     *
+     * @TODO use $this->createLinkForDataHandlerAction
      */
     public function createMoveDownLink($table, $uid, $moveId, $options = array())
     {
@@ -487,14 +494,19 @@ class Tx_Rnbase_Backend_Form_ToolBox
      */
     public function createDeleteLink($table, $uid, $label = 'Remove', $options = array())
     {
-        $jsCode = $this->getJavaScriptForLinkToDataHandlerAction('cmd['.$table.']['.$uid.'][delete]=1', $options);
         if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
             $image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-delete');
         } else {
             $image = '<img'.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/deletedok.gif', 'width="16" height="16"').'  border="0" alt="" />';
         }
 
-        return '<a onclick="'.$jsCode.'" href="#" title="Delete UID: '.$uid.'">'. $image . $label.'</a>';
+        $options['hover'] = 'Delete UID: ' . $uid;
+
+        return $this->createLinkForDataHandlerAction(
+            'cmd['.$table.']['.$uid.'][delete]=1',
+            $image . $label,
+            $options
+        );
     }
 
     /**
@@ -1089,5 +1101,40 @@ class Tx_Rnbase_Backend_Form_ToolBox
         reset($trData->regTableItems_data);
 
         return $trData->regTableItems_data;
+    }
+
+    /**
+     * @param string $actionParameters
+     * @param string $label
+     * @param array $options
+     *
+     * @return string
+     */
+    public function createLinkForDataHandlerAction($actionParameters, $label, array $options = array())
+    {
+        // $options['sprite'] für abwärtskompatibilität
+        if ($options['icon'] || $options['sprite']) {
+            $icon = isset($options['icon']) ? $options['icon'] : $options['sprite'];
+            if (!tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
+                $label =    '<img ' . Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/' . $icon) .
+                ' title="' . $label . '\" alt="" >';
+            } else {
+                tx_rnbase::load('tx_rnbase_mod_Util');
+                $label = tx_rnbase_mod_Util::getSpriteIcon($icon, $options);
+            }
+        }
+
+        $jsCode = $this->getJavaScriptForLinkToDataHandlerAction($actionParameters, $options);
+
+        $title = '';
+        if ($options['hover']) {
+            $title = 'title="' . $options['hover'] . '"';
+        }
+
+        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
+        $class = 'class="' . $class . '"';
+
+        return '<a href="#" ' . $class . ' onclick="' . htmlspecialchars($jsCode) . '" ' .
+                $title . '>' . $label . '</a>';
     }
 }
