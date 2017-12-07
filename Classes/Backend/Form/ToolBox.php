@@ -275,7 +275,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
         //fallback
         $sEnableColumn = ($sEnableColumn) ? $sEnableColumn : 'hidden';
         $label = isset($options['label']) ? $options['label'] : '';
-        $jumpToUrl = $this->buildJumpUrl('data['.$table.']['.$uid.']['. $sEnableColumn .']='.($unhide ? 0 : 1), $options);
+        $jumpToUrl = $this->getJavaScriptForLinkToDataHandlerAction('data['.$table.']['.$uid.']['. $sEnableColumn .']='.($unhide ? 0 : 1), $options);
 
         if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
             $image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon(
@@ -352,7 +352,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
      */
     public function createMoveUpLink($table, $uid, $moveId, $options = array())
     {
-        $jsCode = $this->buildJumpUrl('cmd['.$table.']['.$uid.'][move]=-' . $moveId . '&prErr=1&uPT=1', $options);
+        $jsCode = $this->getJavaScriptForLinkToDataHandlerAction('cmd['.$table.']['.$uid.'][move]=-' . $moveId . '&prErr=1&uPT=1', $options);
         $label = isset($options['label']) ? $options['label'] : 'Move up';
         $title = isset($options['title']) ? $options['title'] : $label;
 
@@ -388,7 +388,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
      */
     public function createMoveDownLink($table, $uid, $moveId, $options = array())
     {
-        $jsCode = $this->buildJumpUrl('cmd['.$table.']['.$uid.'][move]=-' . $moveId, $options);
+        $jsCode = $this->getJavaScriptForLinkToDataHandlerAction('cmd['.$table.']['.$uid.'][move]=-' . $moveId, $options);
         $label = isset($options['label']) ? $options['label'] : 'Move up';
         $title = isset($options['title']) ? $options['title'] : $label;
 
@@ -417,17 +417,21 @@ class Tx_Rnbase_Backend_Form_ToolBox
     /**
      * Creates js code with command for TCE datahandler and redirect to current script.
      * Simple example to delete a page record:
-     * $this->buildJumpUrl('cmd[pages][123][delete]=1')
+     * $this->getJavaScriptForLinkToDataHandlerAction('cmd[pages][123][delete]=1')
      *
      * @param string $urlParameters command for datahandler
      * @param array $options
      * @return string
      */
-    protected function buildJumpUrl($urlParameters, array $options = array())
+    protected function getJavaScriptForLinkToDataHandlerAction($urlParameters, array $options = array())
     {
         if (tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
-            $jumpToUrl = Tx_Rnbase_Backend_Utility::issueCommand($urlParameters, -1);
-            $jumpToUrlMethod = 'jumpExt';
+            $jumpToUrl = Tx_Rnbase_Backend_Utility::getLinkToDataHandlerAction('&' . $urlParameters, -1);
+            // the jumpUrl method is no longer global available since TYPO3 8.7
+            $this->getDoc()->getPageRenderer()->addJsInlineCode(
+                'rnBaseMethods',
+                $this->getBaseJavaScriptCode()
+            );
         } else {
             $currentLocation = $this->getLinkThisScript(true, $options);
 
@@ -445,9 +449,8 @@ class Tx_Rnbase_Backend_Form_ToolBox
             $jumpToUrl .= '&amp;vC=' . $GLOBALS['BE_USER']->veriCode();
             $jumpToUrl .= Tx_Rnbase_Backend_Utility::getUrlToken('tceAction');
             $jumpToUrl = '\'' . $jumpToUrl . '\'';
-            $jumpToUrlMethod = 'jumpToUrl';
         }
-        return $this->getConfirmCode('return ' . $jumpToUrlMethod . '(' . $jumpToUrl . ');', $options);
+        return $this->getConfirmCode('return jumpToUrl(' . $jumpToUrl . ');', $options);
     }
 
     /**
@@ -484,7 +487,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
      */
     public function createDeleteLink($table, $uid, $label = 'Remove', $options = array())
     {
-        $jsCode = $this->buildJumpUrl('cmd['.$table.']['.$uid.'][delete]=1', $options);
+        $jsCode = $this->getJavaScriptForLinkToDataHandlerAction('cmd['.$table.']['.$uid.'][delete]=1', $options);
         if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
             $image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-delete');
         } else {
@@ -887,9 +890,19 @@ class Tx_Rnbase_Backend_Form_ToolBox
      */
     public function getJSCode($pid, $location = '')
     {
-        $location = $location ? $location : $this->getLinkThisScript();
-        // Add JavaScript functions to the page:
-        $JScode = $this->doc->wrapScriptTags('
+        return $this->doc->wrapScriptTags($this->getBaseJavaScriptCode($location));
+    }
+
+    /**
+     * @param string $location module url or empty
+     *
+     * @return string
+     */
+    protected function getBaseJavaScriptCode($location = '')
+    {
+        $location = $location ? $location : $this->getLinkThisScript(false);
+
+        $javaScriptCode = '
             function jumpToUrl(URL) {
                 window.location.href = URL;
                 return false;
@@ -911,11 +924,16 @@ class Tx_Rnbase_Backend_Form_ToolBox
                     top.content.nav_frame.refresh_nav();
                 }
             }
-            var T3_RETURN_URL = "'.str_replace('%20', '', rawurlencode(tx_rnbase_parameters::getPostOrGetParameter('returnUrl'))).'";
-            var T3_THIS_LOCATION="'.str_replace('%20', '', rawurlencode($location)).'"');
+            var T3_RETURN_URL = ' .
+                Tx_Rnbase_Utility_Strings::quoteJSvalue(
+                    str_replace('%20', '', rawurlencode(tx_rnbase_parameters::getPostOrGetParameter('returnUrl')))
+                ) . ';
+            var T3_THIS_LOCATION=' .
+                Tx_Rnbase_Utility_Strings::quoteJSvalue(str_replace('%20', '', rawurlencode($location)));
 
-        return $JScode;
+        return $javaScriptCode;
     }
+
     /**
      * Zeigt ein TabMenu
      *
