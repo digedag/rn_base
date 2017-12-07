@@ -435,6 +435,8 @@ class Tx_Rnbase_Backend_Form_ToolBox
         if (tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
             $jumpToUrl = Tx_Rnbase_Backend_Utility::getLinkToDataHandlerAction('&' . $urlParameters, -1);
             // the jumpUrl method is no longer global available since TYPO3 8.7
+            // furthermore we need the JS variable T3_THIS_LOCATION because it is used
+            // as redirect in getLinkToDataHandlerAction when -1 is passed
             $this->getDoc()->getPageRenderer()->addJsInlineCode(
                 'rnBaseMethods',
                 $this->getBaseJavaScriptCode()
