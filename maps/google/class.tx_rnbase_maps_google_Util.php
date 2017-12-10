@@ -36,14 +36,28 @@ class tx_rnbase_maps_google_Util
 {
 
     /**
+     * Possible options
+     * - fullinfo: if FALSE (default) there is latitude and longitude returned only
+     * - key: Google API key to be used.
      *
      * @param string $addressString
-     * @param string $fullInfo if FALSE there is latitude and longitude returned only
+     * @param array $options fullInfo
      * @return array
      */
-    public function lookupGeoCode($addressString, $fullInfo = false)
+    public function lookupGeoCode($addressString, $options = [])
     {
-        $request = 'https://maps.googleapis.com/maps/api/geocode/json?address='.rawurlencode($addressString).'&key=';
+    	$fullInfo = false;
+    	if(is_array($options)) {
+    		$fullInfo = isset($options['fullinfo']) ? $options['fullinfo'] : false;
+    	}
+    	else {
+    		// backward compat
+    		$fullInfo = $options;
+    		$options = [];
+    	}
+    	$key = isset($options['key']) ? $options['key'] : '';
+
+        $request = 'https://maps.googleapis.com/maps/api/geocode/json?address='.rawurlencode($addressString).'&key='.$key;
         $result = array();
 
         $time = microtime(true);
@@ -92,8 +106,4 @@ class tx_rnbase_maps_google_Util
 
         return tx_wecmap_cache::lookup($street, $city, $state, $zip, $country);
     }
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rn_base/maps/google/class.tx_rnbase_maps_google_Util.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rn_base/maps/google/class.tx_rnbase_maps_google_Util.php']);
 }
