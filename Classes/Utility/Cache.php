@@ -38,17 +38,54 @@ class Tx_Rnbase_Utility_Cache
      * @param array $parameters
      * @return void
      */
-    public static function addExcludedParametersForCacheHash($parameters)
+    public static function addExcludedParametersForCacheHash(array $parameters)
     {
+        self::addConfigurationToCacheHashCalculator(
+            'cHashExcludedParameters',
+            'excludedParameters',
+            $parameters
+        );
+    }
+
+    /**
+     * @param array $parameters
+     *
+     * @return void
+     */
+    public static function addCacheHashRequiredParameters(array $parameters)
+    {
+        self::addConfigurationToCacheHashCalculator(
+            'cHashRequiredParameters',
+            'requireCacheHashPresenceParameters',
+            $parameters
+        );
+    }
+
+    /**
+     * @param string $typo3ConfVarsKey
+     * @param string $cacheHashCalculatorInternalConfigurationKey
+     * @param array $configurationValue
+     *
+     * @return void
+     */
+    protected static function addConfigurationToCacheHashCalculator(
+        $typo3ConfVarsKey,
+        $cacheHashCalculatorInternalConfigurationKey,
+        array $configurationValue
+    ) {
         $startingGlue = '';
-        if ($GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters']) {
+        if ($GLOBALS['TYPO3_CONF_VARS']['FE'][$typo3ConfVarsKey]) {
             $startingGlue = ',';
         }
-        $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'] .= $startingGlue . join(',', $parameters);
-        $cacheHashCalculator = tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
-
+        $GLOBALS['TYPO3_CONF_VARS']['FE'][$typo3ConfVarsKey] .= $startingGlue . join(',', $configurationValue);
+        /* @var \TYPO3\CMS\Frontend\Page\CacheHashCalculator $cacheHashCalculator */
+        $cacheHashCalculator = \tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
         $cacheHashCalculator->setConfiguration(array(
-            'excludedParameters' => explode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'])));
+            $cacheHashCalculatorInternalConfigurationKey => explode(
+                ',',
+                $GLOBALS['TYPO3_CONF_VARS']['FE'][$typo3ConfVarsKey]
+            )
+        ));
     }
 
     /**

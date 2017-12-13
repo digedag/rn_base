@@ -47,6 +47,11 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
     private $encryptionKeyBackup;
 
     /**
+     * @var string $cHashExcludedParametersBackup
+     */
+    private $cHashRequiredParameters = '';
+
+    /**
      * {@inheritDoc}
      * @see PHPUnit_Framework_TestCase::setUp()
      */
@@ -57,6 +62,9 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
 
         $this->encryptionKeyBackup = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'Tx_Rnbase_Utility_CacheTest';
+
+        $this->cHashRequiredParameters = $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters'];
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters'] = '';
     }
 
     /**
@@ -70,6 +78,12 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
             'excludedParameters' => explode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'])));
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = $this->encryptionKeyBackup;
+
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters'] = $this->cHashRequiredParameters;
+        \tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator')->setConfiguration(array(
+            'requireCacheHashPresenceParameters' =>
+                explode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters'])
+        ));
     }
 
     /**
@@ -128,5 +142,65 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
         $cacheHash = Tx_Rnbase_Utility_Cache::generateCacheHashForUrlQueryString('id=123&rn_base[parameter]=test');
         self::assertTrue(is_string($cacheHash));
         self::assertEquals(32, strlen($cacheHash));
+    }
+
+    /**
+     * @group unit
+     */
+    public function testAddCacheHashRequiredParameters()
+    {
+        $property = new \ReflectionProperty(
+            'TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator',
+            'requireCacheHashPresenceParameters'
+        );
+        $property->setAccessible(true);
+        $requiredParameters = array_flip($property->getValue(
+            \tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator')
+        ));
+
+        self::assertArrayNotHasKey('john', $requiredParameters);
+        self::assertArrayNotHasKey('doe', $requiredParameters);
+        self::assertSame('', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters']);
+
+        Tx_Rnbase_Utility_Cache::addCacheHashRequiredParameters(array('john', 'doe'));
+
+        $requiredParameters = array_flip($property->getValue(\tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator')));
+
+        self::assertArrayHasKey('john', $requiredParameters);
+        self::assertArrayHasKey('doe', $requiredParameters);
+
+        self::assertSame('john,doe', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters']);
+    }
+
+    /**
+     * @group unit
+     */
+    public function testAddCacheHashRequiredParametersIfSomeExistAlready()
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters'] = 'L';
+        $property = new \ReflectionProperty(
+            'TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator',
+            'requireCacheHashPresenceParameters'
+        );
+        $property->setAccessible(true);
+        $requiredParameters = array_flip(
+            $property->getValue(\tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator')
+        ));
+
+        self::assertArrayNotHasKey('john', $requiredParameters);
+        self::assertArrayNotHasKey('doe', $requiredParameters);
+        self::assertSame('L', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters']);
+
+        Tx_Rnbase_Utility_Cache::addCacheHashRequiredParameters(array('john', 'doe'));
+
+        $requiredParameters = array_flip(
+            $property->getValue(\tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator')
+        ));
+
+        self::assertArrayHasKey('john', $requiredParameters);
+        self::assertArrayHasKey('doe', $requiredParameters);
+        self::assertArrayHasKey('L', $requiredParameters);
+
+        self::assertSame('L,john,doe', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters']);
     }
 }
