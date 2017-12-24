@@ -1,10 +1,12 @@
 (add new changes on top of this file)
 
-Änderungen
-----------
+Changelog
+---------
 
-v1.6.1 (??.??.2017)
+v1.6.1 (??.??.2017) (TER Release)
  * #95 createLink() fixed
+ * google_Util: it is possible to provide api key for geocode api
+ * IMPORTANT: This is the last version of rn_base with explizit support of TYPO3 4.5 LTS
 
 v1.6.0 (29.11.2017)
  * params for redirect url possible when creating links with Tx_Rnbase_Backend_Form_ToolBox
@@ -53,7 +55,7 @@ v1.4.1 (30.05.2017)
  * using MarkerBasedTemplateService with TYPO3 7 or Higher
  * model mocks in base unit tests fixed
 
-v1.4.0 (11.05.2017)
+v1.4.0 (11.05.2017) (TER Release)
  * First TER release with support for TYPO3 8.7. Thanks to all contributors!!
 
 v1.3.3 (09.05.2017)
