@@ -190,12 +190,25 @@ class tx_rnbase_util_TCA
     public static function loadTCA($tablename)
     {
         tx_rnbase::load('tx_rnbase_util_TYPO3');
-        if (tx_rnbase_util_TYPO3::isTYPO61OrHigher()) {
-            if (!is_array($GLOBALS['TCA'])) {
-                \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca();
-            }
-        } else {
-            t3lib_div::loadTCA($tablename);
+
+        switch (true) {
+            // TCA is loaded through Bootsrap since 8.x automatically
+            // except when using an eID
+            case (tx_rnbase_util_TYPO3::isTYPO80OrHigher()):
+                if (TYPO3_MODE === 'FE' && isset($_REQUEST['eID'])) {
+                    $eidUtility = tx_rnbase_util_Typo3Classes::getEidUtilityClass();
+                    $eidUtility::initTCA();
+                }
+                break;
+            case (tx_rnbase_util_TYPO3::isTYPO61OrHigher()):
+                if (!is_array($GLOBALS['TCA'])) {
+                    \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca();
+                }
+                break;
+
+            default:
+                t3lib_div::loadTCA($tablename);
+                break;
         }
     }
 
