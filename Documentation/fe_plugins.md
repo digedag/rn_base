@@ -2,7 +2,7 @@
 
 Die Extension rn_base stellt Klassen für die Entwicklung von TYPO3 Extensions bereit. Es werden dabei sehr viele Bereiche der Entwicklung abgedeckt, angefangen von der Plugin-Entwicklung nach MVC, über den Zugriff auf die Datenbank, die Verarbeitung von Typoscript, bis hin zur Entwicklung von BE-Modulen.
 
-##Die Grundlagen
+## Die Grundlagen
 
 In rn_base wird für die Pluginentwicklung nicht der herkömmliche Plugin-Ansatz auf Basis der
 Klasse **tslib_pibase** bzw. **\TYPO3\CMS\Frontend\Plugin\AbstractPlugin** verwendet. Stattdessen werden die Plugins nach dem Pattern Model-View-Controller umgesetzt. Die meisten Plugins in TYPO3 verfügen über verschiedene Darstellungen. Als Beispiel sei die bekannte Extension tt_news genannt. Diese liefert u.a. eine Newsliste, eine News-Detailansicht, ein Archiv, eine Suche und vieles andere mehr. Die Plugins auf Basis von rn_base haben bereits eine eingebaute Unterstützung für diese Darstellungen. Man muss im Flexform des Plugins lediglich den Namen der Klasse angeben und diese dann natürlich noch anlegen. Den Rest übernimmt der Basis-Controller in rn_base. Hier ein Auschnitt aus dem Flexform der Extension **t3sponsors**:
@@ -275,7 +275,7 @@ class tx_extkey_models_export extends Tx_Rnbase_Domain_Model_Base {
 Um die Models abzufragen oder Änderungen in die Datenbank zu übernehmen, wird in der Regel ein Repository verwendet.
 Mehr dazu unter [Repositories](repositories.md)
 
-##Typo3-Cache
+## Typo3-Cache
 
 Die Plugions sollten im TypoScript immer über ein gecachtes USER-Object, kein ungecachtes USER_INT-Object eingebunden werden!
 
@@ -295,11 +295,11 @@ $this->getConfigurations()->convertToUserInt();
 
 Bei einer Konvertierung von USER auf USER_INT ruft TYPO3 das Plugin mehrfach auf. Der Output des Aufrufs, bei dem die Konvertierung durchgeführt wird, wird komplett ignoriert. Stattdessen wird ein neuer Aufruf über USER_INT erzeugt. Die in rn_base integrierte Konvertierung kümmert sich bereits darum, daß die Plugins nicht unnötig doppelt aufgerufen werden. Dies geschieht dadurch, daß beim Setzen der Konvertierung eine Skip Exception geworfen und somit das Rendering ignoriert wird.
 
-##Exceptionhandling
+## Exceptionhandling
 
 In rn_base gibt es ein spezielles Exception Handling für den Frontendcontroller. Der Exceptionhandler fängt alle innerhalb des Plugins erzeugten Exceptions ab und erzeugt je nach Konfiguration eine entsprechende Ausgabe.
 
-###Extensionkonfiguration
+### Extensionkonfiguration
 
 Im Extensionmanager gibt es dazu Folgende Optionen:
 
@@ -320,7 +320,7 @@ Legt Fest, ob im Fehlerfall ein 503 Header gesetzt werden soll. Dies ist vor all
 Legt fest, ob und an welche Email-Adresse im Falle eines Fehlers versendet werden soll.
 
 
-###spezielle Fehlermeldungen
+### spezielle Fehlermeldungen
 
 Im Falle, das verboseMayday nicht gesetzt ist, wird versucht eine Nutzer freundliche Meldung auszugeben. Dazu wird der Fehlercode der Exception genutzt, um definierte Meldungen zu ermitteln. Zunächst wird im TypoScript nachgesehen. Wurde dort nichts zum Fehler gefunden, wird die Übersetzungsdatei geprüft. Ist auch hier nichts definiert, wird eine Defaultmeldung von rn_base ausgegeben.
 
@@ -358,7 +358,7 @@ Beispiel Sprachdatei
 </T3locallang>
 ```
 
-###Abfangen von Fehlern
+### Abfangen von Fehlern
 
 Alternativ zur speziellen Fehlermeldung, gibt es auch die Möglichkeit einen Fehler über TypoScript komplett abzufangen. Dies hat den Vorteil, das dann kein 503 Header gesetzt, kein DevLog Eintrag geschrieben und auch keine Fehler-E-Mail versendet wird.
 
@@ -378,7 +378,7 @@ plugin.tx_extension {
 }
 ```
 
-##Einbinden von JS und CSS-Dateien
+## Einbinden von JS und CSS-Dateien
 Man kann auf Ebene einer Action Resourcedateien einbinden. Das kann man direkt per Typoscript konfigurieren:
 
 ```
@@ -397,7 +397,8 @@ plugin.tx_myext {
     }
 }
 ```
-##Cachehandling
+## Cachehandling
+
 Bei USER Plugins muss der Cache in den pages geleert werden, wenn sich ein Datensatz ändert. Das geht mit rn_base ganz einfach. Zunächst müssen im TypoScript die Cache Tags für die Action definiert werden.
 
 ```
@@ -417,7 +418,7 @@ Dieser View wird klassicherweise einen Datensatz aus einer Tabelle anzeigen. Dam
 $TCA['tx_myext_data_for_my_view']['ctrl']['cacheTags'] = array('first-tag', 'second-tag');
 ```
 
-rn_base leert dann in Cache Gruppe "pages" alle Einträge mit dem konfigurierten Tag. Es ist also zwingend notwendig, dass alle gewünschten Caches der Gruppe "pages" angehören, die geleert werden sollen. Das ist bei der default Konfiguration von TYPO3 schon der Fall. Wenn aber z.B. auch der tt_news geleert werden soll, dann müssten die Caching Konfiguration angepasst werden:
+rn_base leert dann in Cache Gruppe "pages" alle Einträge mit dem konfigurierten Tag. Es ist also zwingend notwendig, dass alle gewünschten Caches der Gruppe **"pages"** angehören, die geleert werden sollen. Das ist bei der default Konfiguration von TYPO3 schon der Fall. Wenn aber z.B. auch der tt_news geleert werden soll, dann müssten die Caching Konfiguration angepasst werden:
 
 ```php
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['tt_news_cache'] = array(
