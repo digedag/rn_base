@@ -111,6 +111,7 @@ Theoretisch kann die Methode **handleRequest()** direkt einen String zurücklief
 ## Die Views
 
 Wenn der Controller nun mit seiner Arbeit fertig ist und alle notwendigen Daten gesammelt bzw. verarbeitet wurden, dann ist die View-Klasse am Zug. Vom Controller wird der View über dessen Methode *render($view, &$configurations)* aufgerufen. Wie der Controller hat auch der View einige Dinge zu tun, die sich immer wieder gleichen: Das Laden des HTML-Templates und die Suche des gewünschten Subparts. Diese Arbeiten erledigt die Klasse tx_rnbase_view_Base. Wenn wir also unseren View davon erben lassen, dann hat die Klasse ungefähr dieses Aussehen:
+
 ```php
 class tx_t3sponsors_views_SponsorList extends tx_rnbase_view_Base {
     function createOutput($template, &$viewData, &$configurations, &$formatter) {
@@ -237,11 +238,7 @@ Damit kann auf die get Methode der configurations zugegriffen werden:
         </rn:pageBrowser.lastPage>
     </rn:pageBrowser>
 </div>
-
-
 ```
-
-
 Hinweis: Nicht alle fluid ViewHelper können ohne weiteres verwendet werden. Wenn z.B. ein Extbase Controller nötig ist,
 wie bei Formularen, dann funktioniert das nicht out-of-the-box.
 
@@ -277,21 +274,21 @@ Mehr dazu unter [Repositories](repositories.md)
 
 ## Typo3-Cache
 
-Die Plugions sollten im TypoScript immer über ein gecachtes USER-Object, kein ungecachtes USER_INT-Object eingebunden werden!
+Die Plugins sollten im TypoScript immer über ein gecachtes USER-Object, kein ungecachtes USER_INT-Object eingebunden werden!
 
 Um nun eine bestimmte Action doch über ein USER_INT einzubinden, muss bzw sollte nie das ganze Plugin auf USER_INT umgestellt werden. Stattdessen sollte die Action in ein USER_INT konvertiert werden! Dies kann direkt über PHP in der Action als auch im Typoscript/Flexform getan werden: Beispiel für die Konvertierung im TypoScript:
+
 ```
-### global für alle actions convertieren
+ # global für alle actions convertieren
 plugin_tx_mkextension.toUserInt = 1
-### nur für die eine bestimmte action convertieren
+ # nur für die eine bestimmte action convertieren
 plugin_tx_mkextension.showdata.toUserInt = 1
 ```
 
 Convertierung direkt in der Action:
 ```php
 $this->getConfigurations()->convertToUserInt();
-### nur für die eine bestimmte action convertieren
-
+```
 
 Bei einer Konvertierung von USER auf USER_INT ruft TYPO3 das Plugin mehrfach auf. Der Output des Aufrufs, bei dem die Konvertierung durchgeführt wird, wird komplett ignoriert. Stattdessen wird ein neuer Aufruf über USER_INT erzeugt. Die in rn_base integrierte Konvertierung kümmert sich bereits darum, daß die Plugins nicht unnötig doppelt aufgerufen werden. Dies geschieht dadurch, daß beim Setzen der Konvertierung eine Skip Exception geworfen und somit das Rendering ignoriert wird.
 
@@ -301,7 +298,7 @@ In rn_base gibt es ein spezielles Exception Handling für den Frontendcontroller
 
 ### Extensionkonfiguration
 
-Im Extensionmanager gibt es dazu Folgende Optionen:
+Im Extensionmanager gibt es dazu folgende Optionen:
 
 **verboseMayday**
 
@@ -318,7 +315,6 @@ Legt Fest, ob im Fehlerfall ein 503 Header gesetzt werden soll. Dies ist vor all
 **sendEmailOnException**
 
 Legt fest, ob und an welche Email-Adresse im Falle eines Fehlers versendet werden soll.
-
 
 ### spezielle Fehlermeldungen
 
@@ -360,9 +356,9 @@ Beispiel Sprachdatei
 
 ### Abfangen von Fehlern
 
-Alternativ zur speziellen Fehlermeldung, gibt es auch die Möglichkeit einen Fehler über TypoScript komplett abzufangen. Dies hat den Vorteil, das dann kein 503 Header gesetzt, kein DevLog Eintrag geschrieben und auch keine Fehler-E-Mail versendet wird.
+Alternativ zur speziellen Fehlermeldung, gibt es auch die Möglichkeit einen Fehler über TypoScript komplett abzufangen. Dies hat den Vorteil, daß dann kein 503 Header gesetzt, kein DevLog Eintrag geschrieben und auch keine Fehler-E-Mail versendet wird.
 
-Diese Möglichkeit bietet sich aktuell nur über TypoScript oder einen eigenen Exception Handler.
+Diese Möglichkeit bietet sich aktuell über TypoScript oder einen eigenen Exception Handler.
 
 Beispiel für das Fangen von Exceptions über den Fehlercode im TypoScript:
 ```
@@ -379,6 +375,7 @@ plugin.tx_extension {
 ```
 
 ## Einbinden von JS und CSS-Dateien
+
 Man kann auf Ebene einer Action Resourcedateien einbinden. Das kann man direkt per Typoscript konfigurieren:
 
 ```
