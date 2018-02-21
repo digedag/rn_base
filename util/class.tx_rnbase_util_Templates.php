@@ -142,7 +142,7 @@ class tx_rnbase_util_Templates
         if (empty($included)) {
             $included = preg_replace_callback(
                 '!\<\!--[a-zA-Z0-9_ \s]*###[ ]*INCLUDE_TEMPLATE([^###]*)\###[a-zA-Z0-9_ \s]*-->!is',
-                array(self, 'cbIncludeSubTemplates'),
+                array(self::class, 'cbIncludeSubTemplates'),
                 $template
             );
             // store the template in the cache
