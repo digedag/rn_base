@@ -3,7 +3,14 @@
 Changelog
 ---------
 
-v1.6.1 (??.??.2017) (TER Release)
+v1.6.2 (22.02.2018)
+ * updated licence as GPL-2.0+ is outdated
+ * bugfix loading tca in TYPO3 and eID in TYPO3 8.7
+ * added new option dontSetPageToTsfe when preparing tsfe
+ * fix static callback with 'self' throws error in PHP>=7.2
+ * added wrapper for DatabaseRecordList
+
+v1.6.1 (24.12.2017) (TER Release)
  * #95 createLink() fixed
  * google_Util: it is possible to provide api key for geocode api
  * IMPORTANT: This is the last version of rn_base with explizit support of TYPO3 4.5 LTS
