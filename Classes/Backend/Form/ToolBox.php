@@ -975,12 +975,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
             $menuItems[] = array(
                 'isActive' => $SETTINGS[$name] == $key,
                 'label' => $value,
-                // jumpUrl ist ab TYPO3 6.2 nicht mehr nötig
-                // @TODO jumpUrl entfernen wenn kein Support mehr für 4.5
-                'url' => '#',
-                'addParams' =>    'onclick="jumpToUrl(\'' .
-                                $this->buildScriptURI(array('id' => $pid, 'SET['.$name.']' => $key)) .
-                                '\',this);"'
+                'url' => $this->buildScriptURI(array('id' => $pid, 'SET['.$name.']' => $key)),
             );
         }
 
