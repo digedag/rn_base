@@ -220,10 +220,15 @@ class tx_rnbase_controller
         }
         $out = '';
         if (is_array($actions)) {
-            foreach ($actions as $actionName) {
-                tx_rnbase_util_Misc::pushTT('call action', $actionName);
-                $out .= $this->doAction($actionName, $parameters, $configurations);
-                tx_rnbase_util_Misc::pullTT();
+            try {
+                foreach ($actions as $actionName) {
+                    tx_rnbase_util_Misc::pushTT('call action', $actionName);
+                    $out .= $this->doAction($actionName, $parameters, $configurations);
+                    tx_rnbase_util_Misc::pullTT();
+                }
+            } catch (tx_rnbase_exception_Skip $e) {
+                // Bei USER_INT im ersten Aufruf die Ausgabe unterdrücken
+                $out = '';
             }
         } else { // Call a single action
             tx_rnbase_util_Misc::pushTT('call action', $actionName);
@@ -252,7 +257,9 @@ class tx_rnbase_controller
                 $ret = $action->execute($parameters, $configurations);
             }
         } catch (tx_rnbase_exception_Skip $e) {
-            $ret = '';
+            // Wenn ein View USER_INT verlangt, dann muss das für alle gelten
+            // Darum die Exception weiter oben behandeln
+            throw $e;
         } catch (Tx_Rnbase_Exception_PageNotFound404 $e) {
             $message = Tx_Rnbase_Utility_Strings::trimExplode("\n", $e->getMessage(), true, 2);
             if (count($message) > 1) {
