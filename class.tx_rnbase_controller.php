@@ -219,21 +219,18 @@ class tx_rnbase_controller
             return $this->getUnknownAction();
         }
         $out = '';
-        if (is_array($actions)) {
-            try {
-                foreach ($actions as $actionName) {
-                    tx_rnbase_util_Misc::pushTT('call action', $actionName);
-                    $out .= $this->doAction($actionName, $parameters, $configurations);
-                    tx_rnbase_util_Misc::pullTT();
-                }
-            } catch (tx_rnbase_exception_Skip $e) {
-                // Bei USER_INT im ersten Aufruf die Ausgabe unterdrücken
-                $out = '';
+        if (!is_array($actions)) {
+            $actions = [$actions];
+        }
+        try {
+            foreach ($actions as $actionName) {
+                tx_rnbase_util_Misc::pushTT('call action', $actionName);
+                $out .= $this->doAction($actionName, $parameters, $configurations);
+                tx_rnbase_util_Misc::pullTT();
             }
-        } else { // Call a single action
-            tx_rnbase_util_Misc::pushTT('call action', $actionName);
-            $out .= $this->doAction($actions, $parameters, $configurations);
-            tx_rnbase_util_Misc::pullTT();
+        } catch (tx_rnbase_exception_Skip $e) {
+            // Bei USER_INT im ersten Aufruf die Ausgabe unterdrücken
+            $out = '';
         }
         tx_rnbase_util_Misc::pullTT();
 
