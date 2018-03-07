@@ -202,12 +202,16 @@ class tx_rnbase_util_FormatUtil
         $mem = memory_get_usage();
 
         $tmpArr = $this->cObj->data;
-
         // Ensure the initMarkers are part of the record
         if (is_array($initMarkers)) {
-            for ($i = 0, $cnt = count($initMarkers); $i < $cnt; $i++) {
-                if (!array_key_exists($initMarkers[$i], $record)) {
-                    $record[$initMarkers[$i]] = '';
+            if (is_array($noMap)) {
+                // It makes no sense to init markers that are not part of template
+                $initMarkers = array_diff($initMarkers, $noMap);
+            }
+
+            foreach ($initMarkers as $initMarker) {
+                if (!array_key_exists($initMarker, $record)) {
+                    $record[$initMarker] = '';
                 }
             }
         }
@@ -232,14 +236,14 @@ class tx_rnbase_util_FormatUtil
 
         $this->cObj->data = $record;
 
-    // Alle Metadaten auslesen und wrappen
-        $data = array();
+        // Alle Metadaten auslesen und wrappen
+        $data = [];
         foreach ($record as $colname => $value) {
             if (is_array($noMap) && in_array($colname, $noMap)) {
                 continue;
             }
 
-      // Für DATETIME gibt es eine Sonderbehandlung, um leere Werte zu behandeln
+            // Für DATETIME gibt es eine Sonderbehandlung, um leere Werte zu behandeln
             if ($conf[$colname] == 'DATETIME' && $conf[$colname.'.']['ifEmpty'] && !$value) {
                 $data[$colname] = $conf[$colname.'.']['ifEmpty'];
             } elseif ($conf[$colname]) {
