@@ -144,24 +144,7 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
      */
     public function getUid()
     {
-        $uid = 0;
-        $tableName = $this->getTableName();
-        if (!empty($tableName)) {
-            // Take care for localized records where uid of original record
-            // is stored in $record['l18n_parent'] instead of $record['uid']!
-            $languageParentField = tx_rnbase_util_TCA::getTransOrigPointerFieldForTable($tableName);
-            $sysLanguageUidField = tx_rnbase_util_TCA::getLanguageFieldForTable($tableName);
-            if (!(
-                empty($languageParentField)
-                && empty($sysLanguageUidField)
-                && ($this->isPropertyEmpty($sysLanguageUidField))
-                && ($this->isPropertyEmpty($languageParentField))
-            )) {
-                $uid = (int) $this->getProperty($languageParentField);
-            }
-        }
-
-        return $uid > 0 ? $uid : (int) $this->getUidRaw();
+        return tx_rnbase_util_TCA::getUid($this->getTableName(), $this->getRecord());
     }
 
     /**
