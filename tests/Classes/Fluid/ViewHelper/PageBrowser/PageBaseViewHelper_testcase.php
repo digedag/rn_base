@@ -29,7 +29,12 @@ use Sys25\RnBase\Fluid\ViewHelper\BaseViewHelperTestCase;
 // make sure thath BaseViewHelperTestCase is loaded as the autoloading in TYPO3 6.2
 // won't work resulting in a fatal error when this file is loaded
 // @todo can be removed when support for TYPO3 6.2 is dropped.
-require_once(\tx_rnbase_util_Extensions::extPath('rn_base') . 'tests/Classes/Fluid/ViewHelper/BaseViewHelperTest.php');
+if (!\tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
+    require_once
+        \tx_rnbase_util_Extensions::extPath('rn_base',
+        'tests/Classes/Fluid/ViewHelper/BaseViewHelperTest.php'
+    );
+}
 
 /**
  * Sys25\RnBase\Fluid\ViewHelper\PageBrowser$PageBaseViewHelperTest
