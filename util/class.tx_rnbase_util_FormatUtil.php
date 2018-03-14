@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006 Rene Nitzsche
+ *  (c) 2006-2018 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -22,6 +22,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 tx_rnbase::load('tx_rnbase_util_Strings');
+
 /**
  * Contains utility functions for formatting
  * TODO: Die Verwendung der Klasse \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer sollte überarbeitet werden.
@@ -41,12 +42,12 @@ class tx_rnbase_util_FormatUtil
 
   /**
    * Konstruktor
-   * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+   * @param Tx_Rnbase_Configuration_Processor $configurations
    */
     public function __construct($configurations)
     {
         $this->configurations = $configurations;
-        $this->cObj = $configurations->getCObj();
+        $this->cObj = $configurations->getCObj(tx_rnbase_util_FormatUtil::class);
     }
 
   /**

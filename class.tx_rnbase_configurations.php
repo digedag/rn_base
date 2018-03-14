@@ -338,10 +338,10 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
     }
 
     /**
-     * Create your individuell instance of cObj. For each id only one instance is created.
+     * Create your individual instance of cObj. For each id only one instance is created.
      * If id == 0 the will get the plugins original cOBj.
      *
-     * @param int $id any
+     * @param string $id any
      * @param string|null $cObjClass String Optional cObj-classname
      *
      * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|tslib_cObj
@@ -358,7 +358,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
             return $this->cObj;
         }
 
-        $cObj = $this->cObjs[$id];
+        $cObj = isset($this->cObjs[$id]) ? $this->cObjs[$id] : null;
 
         if (!is_object($cObj)) {
             $this->cObjs[$id] = tx_rnbase::makeInstance($cObjClass);

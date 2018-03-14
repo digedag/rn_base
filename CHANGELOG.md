@@ -3,6 +3,13 @@
 Changelog
 ---------
 
+v1.7.0 (??.??.2018)
+ * First release without support for TYPO3 4.5 LTS
+ * Same code cleanup to remove 4.5 specific code
+ * FormatUtil will generate markers with its own cObject instance. Before this change the plugins cObject was used.
+ * FormatUtil will not generate empty unused markers
+ * Global handling of SkipExceptions in plugin controller 
+ 
 v1.6.2 (22.02.2018)
  * updated licence as GPL-2.0+ is outdated
  * bugfix loading tca in TYPO3 and eID in TYPO3 8.7
