@@ -402,7 +402,7 @@ class tx_rnbase_util_TCA
             }
         }
 
-        return $uid > 0 ? $uid : $rawData['uid'];
+        return (int)($uid > 0 ? $uid : $rawData['uid']);
     }
 }
 
