@@ -44,6 +44,11 @@ class Tx_Rnbase_Backend_Form_ToolBox
     protected $doc;
 
     const CSS_CLASS_BTN = 'btn btn-default btn-sm';
+    /** some defVals for new record links */
+    const OPTION_DEFVALS = 'defvals';
+    const OPTION_TITLE = 'title';
+    const OPTION_CONFIRM = 'confirm';
+    const OPTION_PARAMS = 'params';
 
     /**
      *
@@ -175,15 +180,16 @@ class Tx_Rnbase_Backend_Form_ToolBox
     public function createNewButton($table, $pid, $options = array())
     {
         $params = '&edit['.$table.']['.$pid.']=new';
-        if (isset($options['params'])) {
-            $params .= $options['params'];
+        if (isset($options[self::OPTION_PARAMS])) {
+            $params .= $options[self::OPTION_PARAMS];
         }
-        $title = isset($options['title']) ? $options['title'] : $GLOBALS['LANG']->getLL('new', 1);
+        $params .= $this->buildDefVals($options);
+        $title = isset($options[self::OPTION_TITLE]) ? $options[self::OPTION_TITLE] : $GLOBALS['LANG']->getLL('new', 1);
         $name = isset($options['name']) ? $options['params'] : '';
 
         $jsCode = Tx_Rnbase_Backend_Utility::editOnClick($params, $GLOBALS['BACK_PATH']);
-        if (isset($options['confirm']) && strlen($options['confirm']) > 0) {
-            $jsCode = 'if(confirm('.Tx_Rnbase_Utility_Strings::quoteJSvalue($options['confirm']).')) {' . $jsCode .'} else {return false;}';
+        if (isset($options[self::OPTION_CONFIRM]) && strlen($options[self::OPTION_CONFIRM]) > 0) {
+            $jsCode = 'if(confirm('.Tx_Rnbase_Utility_Strings::quoteJSvalue($options[self::OPTION_CONFIRM]).')) {' . $jsCode .'} else {return false;}';
         }
 
         $btn = '<input type="button" name="'. $name.'" value="' . $title . '" ';
@@ -225,6 +231,13 @@ class Tx_Rnbase_Backend_Form_ToolBox
 
     /**
      * Erstellt einen Link zur Erstellung eines neuen Datensatzes
+     * Possible options:
+     * - params: some plain url params like "&myparam=4"
+     * - title: label for this link
+     * - confirm: some confirm message
+     * - defvals: an array for defVals like this: ['mytable' => ['myfield' => 'initialvalue', ]]
+     * - class: css class for a tag. default is "btn btn-default btn-sm"
+     *
      * @param string $table DB-Tabelle des Datensatzes
      * @param int $pid UID der Zielseite
      * @param string $label Bezeichnung des Links
@@ -234,14 +247,15 @@ class Tx_Rnbase_Backend_Form_ToolBox
     public function createNewLink($table, $pid, $label = 'New', $options = array())
     {
         $params = '&edit['.$table.']['.$pid.']=new';
-        if (isset($options['params'])) {
-            $params .= $options['params'];
+        if (isset($options[self::OPTION_PARAMS])) {
+            $params .= $options[self::OPTION_PARAMS];
         }
-        $title = isset($options['title']) ? $options['title'] : $GLOBALS['LANG']->getLL('new', 1);
+        $params .= $this->buildDefVals($options);
+        $title = isset($options[self::OPTION_TITLE]) ? $options[self::OPTION_TITLE] : $GLOBALS['LANG']->getLL('new', 1);
 
         $jsCode = Tx_Rnbase_Backend_Utility::editOnClick($params, $GLOBALS['BACK_PATH']);
-        if (isset($options['confirm']) && strlen($options['confirm']) > 0) {
-            $jsCode = 'if(confirm('.Tx_Rnbase_Utility_Strings::quoteJSvalue($options['confirm']).')) {' . $jsCode .'} else {return false;}';
+        if (isset($options[self::OPTION_CONFIRM]) && strlen($options[self::OPTION_CONFIRM]) > 0) {
+            $jsCode = 'if(confirm('.Tx_Rnbase_Utility_Strings::quoteJSvalue($options[self::OPTION_CONFIRM]).')) {' . $jsCode .'} else {return false;}';
         }
 
         if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
@@ -262,13 +276,13 @@ class Tx_Rnbase_Backend_Form_ToolBox
                 $image . $label . '</a>';
     }
 
-/**
- * Create a hide/unhide Link
- * @param string $table
- * @param int $uid
- * @param bool $unhide
- * @param array $options
- */
+    /**
+     * Create a hide/unhide Link
+     * @param string $table
+     * @param int $uid
+     * @param bool $unhide
+     * @param array $options
+     */
     public function createHideLink($table, $uid, $unhide = false, $options = array())
     {
         $sEnableColumn = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
@@ -523,6 +537,26 @@ class Tx_Rnbase_Backend_Form_ToolBox
         }
 
         return $jsCode;
+    }
+
+    /**
+     * Build defvals for URI from link options array
+     * @param array $options
+     * @return string
+     */
+    protected function buildDefVals(array $options)
+    {
+        $params = '';
+        if (isset($options['defvals']) && is_array($options['defvals'])) {
+            $defParams = [];
+            foreach ($options['defvals'] as $tableName => $fields) {
+                foreach ($fields as $fName => $fValue) {
+                    $defParams[] = sprintf('&defVals[%s][%s]=%s', rawurlencode($tableName), rawurlencode($fName), rawurlencode($fValue));
+                }
+            }
+            $params .= implode('', $defParams);
+        }
+        return $params;
     }
 
     public function createHidden($name, $value)

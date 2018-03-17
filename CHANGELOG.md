@@ -9,6 +9,7 @@ v1.7.0 (??.??.2018)
  * FormatUtil will generate markers with its own cObject instance. Before this change the plugins cObject was used.
  * FormatUtil will not generate empty unused markers
  * Global handling of SkipExceptions in plugin controller 
+ * Backend_ToolBox: support for defvals in new record links and buttons.
  
 v1.6.2 (22.02.2018)
  * updated licence as GPL-2.0+ is outdated

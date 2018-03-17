@@ -246,6 +246,28 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
     /**
      * @group unit
      */
+    public function testCreateNewLink()
+    {
+        $options = [
+            Tx_Rnbase_Backend_Form_ToolBox::OPTION_PARAMS =>'&someParameters=2&param2=bar',
+            Tx_Rnbase_Backend_Form_ToolBox::OPTION_DEFVALS => ['tx_cfcleague_games' => ['competition' => 2, 'round' => 4]],
+        ];
+
+        $formTool = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Form_ToolBox');
+        $result = $formTool->createNewLink('tx_cfcleague_games', 2, 'mylabel', $options);
+
+        self::assertContains('class="' . Tx_Rnbase_Backend_Form_ToolBox::CSS_CLASS_BTN.'"', $result);
+        self::assertContains('mylabel</a>', $result);
+        self::assertContains('edit[tx_cfcleague_games][2]=new', $result);
+        self::assertContains('defVals[tx_cfcleague_games][competition]=2', $result);
+        self::assertContains('defVals[tx_cfcleague_games][round]=4', $result);
+        self::assertContains('someParameters=2', $result);
+        self::assertContains('param2=bar', $result);
+    }
+
+    /**
+     * @group unit
+     */
     public function testCreateLinkWithHover()
     {
         $urlParameters = 'someParameter=1';
