@@ -54,6 +54,16 @@ abstract class tx_rnbase_util_SearchBase
     }
 
     /**
+     * returns the database connection to use
+     *
+     * @return Tx_Rnbase_Database_Connection
+     */
+    public function getDatabaseConnection()
+    {
+        return Tx_Rnbase_Database_Connection::getInstance();
+    }
+
+    /**
      * Suchanfrage an die Datenbank
      * Bei den Felder findet ein Mapping auf die eigentlichen DB-Felder statt. Dadurch werden
      * SQL-Injections erschwert und es sind JOINs möglich.
@@ -154,7 +164,7 @@ abstract class tx_rnbase_util_SearchBase
                         }
                         $joinedValues = array_values($joinedValues);
                         for ($i = 0, $cnt = count($joinedValues); $i < $cnt; $i++) {
-                            $wherePart = Tx_Rnbase_Database_Connection::getInstance()->setSingleWhereField(
+                            $wherePart = $this->getDatabaseConnection()->setSingleWhereField(
                                 $this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias],
                                 $operator,
                                 $col,
@@ -165,7 +175,7 @@ abstract class tx_rnbase_util_SearchBase
                             }
                         }
                     } else {
-                        $wherePart = Tx_Rnbase_Database_Connection::getInstance()->setSingleWhereField(
+                        $wherePart = $this->getDatabaseConnection()->setSingleWhereField(
                             $this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias],
                             $operator,
                             $col,
@@ -189,13 +199,13 @@ abstract class tx_rnbase_util_SearchBase
 
                 if ($joinedField['operator'] == OP_INSET_INT) {
                     // Values splitten und einzelne Abfragen mit OR verbinden
-                    $addWhere = Tx_Rnbase_Database_Connection::getInstance()->searchWhere(
+                    $addWhere = $this->getDatabaseConnection()->searchWhere(
                         $joinedField['value'],
                         implode(',', $joinedField['fields']),
                         'FIND_IN_SET_OR'
                     );
                 } else {
-                    $addWhere = Tx_Rnbase_Database_Connection::getInstance()->searchWhere(
+                    $addWhere = $this->getDatabaseConnection()->searchWhere(
                         $joinedField['value'],
                         implode(',', $joinedField['fields']),
                         $joinedField['operator']
@@ -321,7 +331,7 @@ abstract class tx_rnbase_util_SearchBase
             )
         ) {
             $sqlOptions['sqlonly'] = 1;
-            $query = Tx_Rnbase_Database_Connection::getInstance()->doSelect(
+            $query = $this->getDatabaseConnection()->doSelect(
                 $what,
                 $from,
                 $sqlOptions,
@@ -335,7 +345,7 @@ abstract class tx_rnbase_util_SearchBase
             );
         }
 
-        $result = Tx_Rnbase_Database_Connection::getInstance()->doSelect(
+        $result = $this->getDatabaseConnection()->doSelect(
             $what,
             $from,
             $sqlOptions,
@@ -582,7 +592,7 @@ abstract class tx_rnbase_util_SearchBase
         foreach ($tableAliasesToSetEnableFields as $tableAliaseToSetEnableFields) {
             if (isset($tableAliases[$tableAliaseToSetEnableFields])) {
                 $tableAlias = $this->useAlias() ? $tableAliaseToSetEnableFields : '';
-                $where .= Tx_Rnbase_Database_Connection::getInstance()->handleEnableFieldsOptions(
+                $where .= $this->getDatabaseConnection()->handleEnableFieldsOptions(
                     $options,
                     $this->tableMapping[$tableAliaseToSetEnableFields],
                     $tableAlias
