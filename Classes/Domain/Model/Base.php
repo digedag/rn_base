@@ -144,7 +144,7 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
      */
     public function getUid()
     {
-        return tx_rnbase_util_TCA::getUid($this->getTableName(), $this->getRecord());
+        return (int) tx_rnbase_util_TCA::getUid($this->getTableName(), $this->getRecord());
     }
 
     /**
