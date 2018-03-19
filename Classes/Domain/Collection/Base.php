@@ -79,4 +79,19 @@ class Tx_Rnbase_Domain_Collection_Base extends \Doctrine\Common\Collections\Arra
     ) {
         return $this->exchange($elements);
     }
+
+    /**
+     * Returns a list of uids
+     *
+     * @return array
+     */
+    public function getUids()
+    {
+        return $this->map(
+            function (Tx_Rnbase_Domain_Model_RecordInterface $model)
+            {
+                return $model->getUid();
+            }
+        )->toArray();
+    }
 }
