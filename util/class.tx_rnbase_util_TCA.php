@@ -377,6 +377,33 @@ class tx_rnbase_util_TCA
 
         return tx_rnbase_util_Arrays::removeNotIn($data, $needle);
     }
+    
+    /**
+     * Return the correct uid in respect of localisation
+     *
+     * @param string $tableName
+     * @param array $rawData
+     * @return int
+     */
+    public static function getUid($tableName, array $rawData) {
+        $uid = 0;
+        if (!empty($tableName)) {
+            // Take care for localized records where uid of original record
+            // is stored in $this->record['l18n_parent'] instead of $this->record['uid']!
+            $languageParentField = self::getTransOrigPointerFieldForTable($tableName);
+            $sysLanguageUidField = self::getLanguageFieldForTable($tableName);
+            if (!(
+                empty($languageParentField)
+                && empty($sysLanguageUidField)
+                && empty($rawData[$sysLanguageUidField])
+                && empty($rawData[$languageParentField])
+            )) {
+                $uid = $rawData[$languageParentField];
+            }
+        }
+
+        return $uid > 0 ? $uid : $rawData['uid'];
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rnbase/util/class.tx_rnbase_util_TCA.php']) {
