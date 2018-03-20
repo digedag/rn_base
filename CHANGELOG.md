@@ -3,7 +3,11 @@
 Changelog
 ---------
 
-v1.7.0 (??.??.2018)
+v1.7.1 (??.??.2018)
+
+v1.7.0 (20.3.2018)
+ * add get uids method to collection class
+ * getUid outsourced in util (#98)
  * First release without support for TYPO3 4.5 LTS
  * Same code cleanup to remove 4.5 specific code
  * FormatUtil will generate markers with its own cObject instance. Before this change the plugins cObject was used.
