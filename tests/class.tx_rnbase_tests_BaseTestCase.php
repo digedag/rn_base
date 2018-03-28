@@ -110,7 +110,7 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
             $extensionKey,
             $qualifier
         );
-        if ($arg instanceof tx_rnbase_parameters) {
+        if ($parameters instanceof tx_rnbase_parameters) {
             $configurations->setParameters($parameters);
         }
 
