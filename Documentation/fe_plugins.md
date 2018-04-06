@@ -427,3 +427,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['tt_news_ca
     'groups' => array('pages')
 );
 ```
+
+Hinweis zu tt_news: Die Cache Tags für alle tt_news Plugins sollten über TypoScript mit einer UserFunc hinzugefügt werden. Damit muss man nicht verschiedene Hooks nutzen und hat es global für jeden View.
+```ts
+plugin.tt_news.stdWrap.postUserFunc = Vendor\Myext\Utility\TtNewsUtility->addCacheTagsToPage
+```
