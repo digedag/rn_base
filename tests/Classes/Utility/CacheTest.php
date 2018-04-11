@@ -65,6 +65,8 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
 
         $this->cHashRequiredParameters = $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters'];
         $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters'] = '';
+
+        tx_rnbase_util_Misc::prepareTSFE(array('force' => true));
     }
 
     /**
@@ -84,6 +86,10 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
             'requireCacheHashPresenceParameters' =>
                 explode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters'])
         ));
+
+        $property = new ReflectionProperty(get_class(tx_rnbase_util_TYPO3::getTSFE()), 'pageCacheTags');
+        $property->setAccessible(true);
+        $property->setValue(\tx_rnbase_util_TYPO3::getTSFE(), []);
     }
 
     /**
@@ -202,5 +208,33 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
         self::assertArrayHasKey('L', $requiredParameters);
 
         self::assertSame('L,john,doe', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters']);
+    }
+
+    /**
+     * @group unit
+     */
+    public function testAddCacheTagsToPage()
+    {
+        $utility = tx_rnbase::makeInstance('Tx_Rnbase_Utility_Cache');
+
+        self::assertSame('test', $utility->addCacheTagsToPage('test', array(0 => 'firstTag', 1 => 'secondTag')));
+
+        $property = new \ReflectionProperty(get_class(\tx_rnbase_util_TYPO3::getTSFE()), 'pageCacheTags');
+        $property->setAccessible(true);
+        self::assertSame(array('firstTag', 'secondTag'), $property->getValue(\tx_rnbase_util_TYPO3::getTSFE()));
+    }
+
+    /**
+     * @group unit
+     */
+    public function testAddCacheTagsToPageIfNoConfiguration()
+    {
+        $utility = tx_rnbase::makeInstance('Tx_Rnbase_Utility_Cache');
+
+        self::assertSame('test', $utility->addCacheTagsToPage('test', array()));
+
+        $property = new \ReflectionProperty(get_class(\tx_rnbase_util_TYPO3::getTSFE()), 'pageCacheTags');
+        $property->setAccessible(true);
+        self::assertEmpty($property->getValue(\tx_rnbase_util_TYPO3::getTSFE()));
     }
 }

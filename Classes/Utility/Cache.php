@@ -106,4 +106,27 @@ class Tx_Rnbase_Utility_Cache
 
         return $hash;
     }
+
+    /**
+     * Is mainly used as user function in TypoScript. Example:
+     *
+     * plugin.tt_news.stdWrap.postUserFunc = Tx_Rnbase_Utility_Cache->addCacheTagsToPage
+     * plugin.tt_news.stdWrap.postUserFunc {
+     *      0 = tt_news
+     *      1 = tt_news_category
+     * }
+     *
+     * @param string $content
+     * @param array $cacheTags
+     *
+     * @return string
+     */
+    public function addCacheTagsToPage($content, array $cacheTags)
+    {
+        if (!empty($cacheTags)) {
+            tx_rnbase_util_TYPO3::getTSFE()->addCacheTags($cacheTags);
+        }
+
+        return $content;
+    }
 }

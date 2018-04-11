@@ -55,6 +55,10 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
     protected function tearDown()
     {
         $this->cleanUpPageRenderer();
+
+        $property = new ReflectionProperty(get_class(tx_rnbase_util_TYPO3::getTSFE()), 'pageCacheTags');
+        $property->setAccessible(true);
+        $property->setValue(\tx_rnbase_util_TYPO3::getTSFE(), []);
     }
 
     /**
