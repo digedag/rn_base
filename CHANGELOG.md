@@ -3,7 +3,10 @@
 Changelog
 ---------
 
-v1.7.1 (??.??.2018)
+v1.7.2 (??.??.2018)
+
+v1.7.1 (12.04.2018)
+ * provided user function to add cache tags from TypoScript etc. (can be used for plugins like tt_news -> check the documentation)
 
 v1.7.0 (20.3.2018)
  * add get uids method to collection class
@@ -12,9 +15,9 @@ v1.7.0 (20.3.2018)
  * Same code cleanup to remove 4.5 specific code
  * FormatUtil will generate markers with its own cObject instance. Before this change the plugins cObject was used.
  * FormatUtil will not generate empty unused markers
- * Global handling of SkipExceptions in plugin controller 
+ * Global handling of SkipExceptions in plugin controller
  * Backend_ToolBox: support for defvals in new record links and buttons.
- 
+
 v1.6.2 (22.02.2018)
  * updated licence as GPL-2.0+ is outdated
  * bugfix loading tca in TYPO3 and eID in TYPO3 8.7
