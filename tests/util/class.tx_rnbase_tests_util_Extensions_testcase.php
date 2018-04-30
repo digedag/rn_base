@@ -48,14 +48,6 @@ class tx_rnbase_tests_util_Extensions_testcase extends tx_rnbase_tests_BaseTestC
             Typo3ExtensionUtilityClass::$lastCalledMethod
         );
     }
-
-    /**
-     * @group unit
-     */
-    public function testExtRelPath()
-    {
-        self::assertSame('typo3conf/ext/rn_base/', tx_rnbase_util_Extensions::extRelPath('rn_base'));
-    }
 }
 
 class tx_rnbase_util_ExtensionsForTests extends tx_rnbase_util_Extensions

@@ -1,7 +1,5 @@
 <?php
 
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -86,29 +84,5 @@ class tx_rnbase_util_Extensions
             $controllerActions,
             $moduleConfiguration
         );
-    }
-
-    /**
-     * Returns the relative path to the extension as measured from the PATH_site (frontend)
-     * If the extension is not loaded the function will die with an error message
-     * Useful for images and links from the frontend
-     *
-     * @param string $extensionKey Extension key
-     * @return string
-     */
-    public static function extRelPath($extensionKey) {
-        if (tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
-            $relativPathToExtension = call_user_func_array(
-                array(self::getExtensionManagementUtilityClass(), 'siteRelPath'),
-                array($extensionKey)
-            );
-        } else {
-            $relativPathToExtension = call_user_func_array(
-                array(self::getExtensionManagementUtilityClass(), 'extRelPath'),
-                array($extensionKey)
-            );
-        }
-
-        return $relativPathToExtension;
     }
 }
