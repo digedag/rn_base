@@ -21,12 +21,7 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-    class Tx_Rnbase_RecordList_DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
-    {
-    }
-} else {
-    class Tx_Rnbase_RecordList_DatabaseRecordList extends \localRecordList
-    {
-    }
+
+class Tx_Rnbase_RecordList_DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
+{
 }

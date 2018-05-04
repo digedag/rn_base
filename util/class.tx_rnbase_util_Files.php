@@ -95,12 +95,11 @@ class tx_rnbase_util_Files
     }
 
     /**
-     * @return boolean TRUE if fName starts with file:
+     * @return bool true if fName starts with file
      */
     public static function isFALReference($fName)
     {
-        return tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
-                tx_rnbase_util_Strings::isFirstPartOfStr($fName, 'file:') : false;
+        return Tx_Rnbase_Utility_Strings::isFirstPartOfStr($fName, 'file:');
     }
     /**
      * Returns the 'border' attribute for an <img> tag only if the doctype is not xhtml_strict,xhtml_11 or xhtml_2 or if the config parameter 'disableImgBorderAttr' is not set.

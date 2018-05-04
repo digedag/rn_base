@@ -46,21 +46,14 @@ class Tx_Rnbase_Backend_Utility_Icons
     }
 
     /**
-     * @return \TYPO3\CMS\Backend\Utility\IconUtility or t3lib_iconWorks
+     * @return \TYPO3\CMS\Backend\Utility\IconUtility
      */
     protected static function getIconUtilityClass()
     {
         if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-            /**
- * @var $class \TYPO3\CMS\Core\Imaging\IconFactory
-*/
-            $class = tx_rnbase::makeInstance(
-                'TYPO3\\CMS\\Core\\Imaging\\IconFactory'
-            );
-        } elseif (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-            $class = 'TYPO3\\CMS\\Backend\\Utility\\IconUtility';
+            $class = 'TYPO3\\CMS\\Core\\Imaging\\IconFactory';
         } else {
-            $class = 't3lib_iconWorks';
+            $class = 'TYPO3\\CMS\\Backend\\Utility\\IconUtility';
         }
 
         return $class;

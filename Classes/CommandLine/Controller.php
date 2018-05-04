@@ -22,35 +22,17 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-tx_rnbase::load('tx_rnbase_util_TYPO3');
-if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-    /**
-     * Tx_Rnbase_CommandLine_Controller
-     *
-     * Wrapper für \TYPO3\CMS\Core\Controller\CommandLineController seit TYPO3 6.x
-     *
-     * @package         TYPO3
-     * @subpackage      rn_base
-     * @author          Hannes Bochmann <rene@system25.de>
-     * @license         http://www.gnu.org/licenses/lgpl.html
-     *                  GNU Lesser General Public License, version 3 or later
-     */
-    class Tx_Rnbase_CommandLine_Controller extends \TYPO3\CMS\Core\Controller\CommandLineController
-    {
-    }
-} else {
-    /**
-     * Tx_Rnbase_CommandLine_Controller
-     *
-     * Wrapper für t3lib_cli bis TYPO3 6.x
-     *
-     * @package         TYPO3
-     * @subpackage      rn_base
-     * @author          Hannes Bochmann <rene@system25.de>
-     * @license         http://www.gnu.org/licenses/lgpl.html
-     *                  GNU Lesser General Public License, version 3 or later
-     */
-    class Tx_Rnbase_CommandLine_Controller extends t3lib_cli
-    {
-    }
+/**
+ * Tx_Rnbase_CommandLine_Controller
+ *
+ * Wrapper für \TYPO3\CMS\Core\Controller\CommandLineController seit TYPO3 6.x
+ *
+ * @package         TYPO3
+ * @subpackage      rn_base
+ * @author          Hannes Bochmann <rene@system25.de>
+ * @license         http://www.gnu.org/licenses/lgpl.html
+ *                  GNU Lesser General Public License, version 3 or later
+ */
+class Tx_Rnbase_CommandLine_Controller extends \TYPO3\CMS\Core\Controller\CommandLineController
+{
 }

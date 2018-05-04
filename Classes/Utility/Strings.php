@@ -315,13 +315,7 @@ class Tx_Rnbase_Utility_Strings
      */
     public static function quoteJSvalue($string)
     {
-        if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-            $string = Tx_Rnbase_Utility_T3General::quoteJSvalue($string);
-        } else {
-            $string = $GLOBALS['LANG']->JScharCode($string);
-        }
-
-        return $string;
+       return Tx_Rnbase_Utility_T3General::quoteJSvalue($string);
     }
 
     /**

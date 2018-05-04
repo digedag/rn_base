@@ -98,9 +98,6 @@ class tx_rnbase_tests_util_Files_testcase extends Tx_Phpunit_TestCase
      */
     public function testMkdirDeepThrowsExceptionIfDirectoryCreationFails()
     {
-        if (!tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-            $this->markTestSkipped('Runtime Exception is not thrown before TYPO3 6.x');
-        }
         tx_rnbase_util_Files::mkdir_deep('http://localhost');
     }
 }

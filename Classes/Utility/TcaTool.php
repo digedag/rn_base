@@ -50,11 +50,6 @@ class Tx_Rnbase_Utility_TcaTool
     const ICON_INDEX_TYPO3_62_OR_HIGHER = 'typo3-62-or-higher';
 
     /**
-     * @var string
-     */
-    const ICON_INDEX_DEFAULT = 'default';
-
-    /**
      * @var array
      */
     private static $iconsByWizards = array(
@@ -62,31 +57,26 @@ class Tx_Rnbase_Utility_TcaTool
             self::ICON_INDEX_TYPO3_87_OR_HIGHER => 'actions-open',
             self::ICON_INDEX_TYPO3_76_OR_HIGHER => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
             self::ICON_INDEX_TYPO3_62_OR_HIGHER => 'EXT:t3skin/icons/gfx/edit2.gif',
-            self::ICON_INDEX_DEFAULT => 'edit2.gif',
         ),
         'add' => array(
             self::ICON_INDEX_TYPO3_87_OR_HIGHER => 'actions-add',
             self::ICON_INDEX_TYPO3_76_OR_HIGHER => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
             self::ICON_INDEX_TYPO3_62_OR_HIGHER => 'EXT:t3skin/icons/gfx/add.gif',
-            self::ICON_INDEX_DEFAULT => 'add.gif',
         ),
         'list' => array(
             self::ICON_INDEX_TYPO3_87_OR_HIGHER => 'actions-system-list-open',
             self::ICON_INDEX_TYPO3_76_OR_HIGHER => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_list.gif',
             self::ICON_INDEX_TYPO3_62_OR_HIGHER => 'EXT:t3skin/icons/gfx/list.gif',
-            self::ICON_INDEX_DEFAULT => 'list.gif',
         ),
         'richText' => array(
             self::ICON_INDEX_TYPO3_87_OR_HIGHER => 'actions-wizard-rte',
             self::ICON_INDEX_TYPO3_76_OR_HIGHER => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_rte.gif',
             self::ICON_INDEX_TYPO3_62_OR_HIGHER => 'EXT:t3skin/icons/gfx/wizard_rte.gif',
-            self::ICON_INDEX_DEFAULT => 'wizard_rte2.gif',
         ),
         'link' => array(
             self::ICON_INDEX_TYPO3_87_OR_HIGHER => 'actions-wizard-link',
             self::ICON_INDEX_TYPO3_76_OR_HIGHER => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
             self::ICON_INDEX_TYPO3_62_OR_HIGHER => 'EXT:t3skin/icons/gfx/link_popup.gif',
-            self::ICON_INDEX_DEFAULT => 'link_popup.gif',
         ),
     );
 
@@ -108,15 +98,10 @@ class Tx_Rnbase_Utility_TcaTool
      */
     public function addWizard(&$tcaTable, $colName, $wizardName, $moduleName, $urlParams = array())
     {
-        if (\tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-            $tcaTable['columns'][$colName]['config']['wizards'][$wizardName]['module'] = array(
-                    'name' => $moduleName,
-                    'urlParameters' => $urlParams
-            );
-        } else {
-            $tcaTable['columns'][$colName]['config']['wizards'][$wizardName]['script'] =
-                    $moduleName . '.php?' . http_build_query($urlParams);
-        }
+        $tcaTable['columns'][$colName]['config']['wizards'][$wizardName]['module'] = array(
+            'name' => $moduleName,
+            'urlParameters' => $urlParams,
+        );
     }
 
     /**
@@ -334,13 +319,7 @@ class Tx_Rnbase_Utility_TcaTool
         }
 
         $wizard = self::addWizardScriptForTypo3Version(
-            tx_rnbase_util_TYPO3::isTYPO87OrHigher() ?
-                'link' :
-                (
-                    tx_rnbase_util_TYPO3::isTYPO62OrHigher() ?
-                        'element_browser' :
-                        'link'
-                ),
+            tx_rnbase_util_TYPO3::isTYPO87OrHigher() ? 'link' : 'element_browser',
             $wizard
         );
 
@@ -382,10 +361,8 @@ class Tx_Rnbase_Utility_TcaTool
             $iconIndexByTypo3Version = self::ICON_INDEX_TYPO3_87_OR_HIGHER;
         } elseif(tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
             $iconIndexByTypo3Version = self::ICON_INDEX_TYPO3_76_OR_HIGHER;
-        } elseif(tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-            $iconIndexByTypo3Version = self::ICON_INDEX_TYPO3_62_OR_HIGHER;
         } else {
-            $iconIndexByTypo3Version = self::ICON_INDEX_DEFAULT;
+            $iconIndexByTypo3Version = self::ICON_INDEX_TYPO3_62_OR_HIGHER;
         }
 
         return self::$iconsByWizards[$wizard][$iconIndexByTypo3Version];
@@ -399,15 +376,9 @@ class Tx_Rnbase_Utility_TcaTool
     protected static function addWizardScriptForTypo3Version($wizardType, array $wizardConfig)
     {
         $completeWizardName = 'wizard_' . $wizardType;
-        if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-            $wizardConfig['module']['name'] = $completeWizardName;
-            if (isset($wizardConfig['script'])) {
-                unset($wizardConfig['script']);
-            }
-        } else {
-            if (!isset($wizardConfig['script'])) {
-                $wizardConfig['script'] = $completeWizardName . '.php';
-            }
+        $wizardConfig['module']['name'] = $completeWizardName;
+        if (isset($wizardConfig['script'])) {
+            unset($wizardConfig['script']);
         }
 
         return $wizardConfig;

@@ -82,8 +82,7 @@ class tx_rnbase_cache_Manager
      */
     public static function getCacheClass($cacheKey)
     {
-        $offset = tx_rnbase_util_TYPO3::isTYPO60OrHigher() ? 0 : 1;
-        return array_key_exists($cacheKey, self::$aliases) ? self::$aliases[$cacheKey][$offset] : $cacheKey;
+        return array_key_exists($cacheKey, self::$aliases) ? self::$aliases[$cacheKey][0] : $cacheKey;
     }
 
     /**
@@ -109,15 +108,7 @@ class tx_rnbase_cache_Manager
      */
     private static function getCacheImpl($name)
     {
-        if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-            return tx_rnbase::makeInstance('tx_rnbase_cache_TYPO3Cache62', $name);
-        } elseif (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-            return tx_rnbase::makeInstance('tx_rnbase_cache_TYPO3Cache60', $name);
-        } elseif (tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
-            return tx_rnbase::makeInstance('tx_rnbase_cache_TYPO3Cache46', $name);
-        }
-
-        return tx_rnbase::makeInstance('tx_rnbase_cache_TYPO3Cache', $name);
+        return tx_rnbase::makeInstance('tx_rnbase_cache_TYPO3Cache62', $name);
     }
 }
 

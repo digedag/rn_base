@@ -25,11 +25,8 @@
 
 tx_rnbase::load('tx_rnbase_util_SimpleMarker');
 
-tx_rnbase::load('tx_rnbase_util_TYPO3');
-if (!tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-    if (tx_rnbase_util_Extensions::isLoaded('dam')) {
-        require_once(tx_rnbase_util_Extensions::extPath('dam') . 'lib/class.tx_dam_db.php');
-    }
+if (tx_rnbase_util_Extensions::isLoaded('dam')) {
+    require_once(tx_rnbase_util_Extensions::extPath('dam') . 'lib/class.tx_dam_db.php');
 }
 
 
@@ -91,15 +88,14 @@ class tx_rnbase_util_MediaMarker extends tx_rnbase_util_SimpleMarker
         Tx_Rnbase_Configuration_ProcessorInterface $configurations,
         $confId
     ) {
-        if (!tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-            // Localize data (DAM 1.1.0)
-            if (method_exists(self::getDamDB(), 'getRecordOverlay')) {
-                $loc = self::getDamDB()->getRecordOverlay('tx_dam', $item->getRecord(), array('sys_language_uid' => $GLOBALS['TSFE']->sys_language_uid));
-                if ($loc) {
-                    $item->setProperty($loc);
-                }
+        // Localize data (DAM 1.1.0)
+        if (method_exists(self::getDamDB(), 'getRecordOverlay')) {
+            $loc = self::getDamDB()->getRecordOverlay('tx_dam', $item->getRecord(), array('sys_language_uid' => $GLOBALS['TSFE']->sys_language_uid));
+            if ($loc) {
+                $item->setProperty($loc);
             }
         }
+
         // TODO: record overlay for FAL??
         parent::prepareItem($item, $configurations, $confId);
     }

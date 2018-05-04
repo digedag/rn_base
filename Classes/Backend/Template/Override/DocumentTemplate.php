@@ -23,16 +23,11 @@
  */
 
 tx_rnbase::load('tx_rnbase_util_TYPO3');
-if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-    class Tx_Rnbase_Backend_Template_Override_Doc extends TYPO3\CMS\Backend\Template\DocumentTemplate
-    {
-    }
+
+class Tx_Rnbase_Backend_Template_Override_Doc extends TYPO3\CMS\Backend\Template\DocumentTemplate
+{
 }
-else {
-    class Tx_Rnbase_Backend_Template_Override_Doc extends template
-    {
-    }
-}
+
 class Tx_Rnbase_Backend_Template_Override_DocumentTemplate extends Tx_Rnbase_Backend_Template_Override_Doc
 {
     /**

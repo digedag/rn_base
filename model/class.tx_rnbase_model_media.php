@@ -47,18 +47,11 @@ class tx_rnbase_model_media extends tx_rnbase_model_base
 
     private function initMedia($media)
     {
-        // Ab TYPO3 6.x wird nur noch FAL unterstützt.
-        if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-            // Bei FAL steckt in Media eine Referenz
-            if ($media instanceof TYPO3\CMS\Core\Resource\FileReference) {
-                $this->initFalReference($media);
-            } else {
-                $this->initFalFile($media);
-            }
+        // Bei FAL steckt in Media eine Referenz
+        if ($media instanceof TYPO3\CMS\Core\Resource\FileReference) {
+            $this->initFalReference($media);
         } else {
-            // DAM
-            $this->uid = $media->meta['uid'];
-            $this->record = $media->meta;
+            $this->initFalFile($media);
         }
     }
     /**

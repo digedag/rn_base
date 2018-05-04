@@ -22,6 +22,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use TYPO3\CMS\Core\Core\Bootstrap;
+
 tx_rnbase::load('tx_rnbase_model_data');
 
 /**
@@ -200,15 +202,10 @@ class tx_rnbase_util_TCA
                     $eidUtility::initTCA();
                 }
                 break;
-            case (tx_rnbase_util_TYPO3::isTYPO61OrHigher()):
-                if (!is_array($GLOBALS['TCA'])) {
-                    \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca();
-                }
-                break;
-
             default:
-                t3lib_div::loadTCA($tablename);
-                break;
+                if (!is_array($GLOBALS['TCA'])) {
+                    Bootstrap::getInstance()->loadCachedTca();
+                }
         }
     }
 
@@ -377,7 +374,7 @@ class tx_rnbase_util_TCA
 
         return tx_rnbase_util_Arrays::removeNotIn($data, $needle);
     }
-    
+
     /**
      * Return the correct uid in respect of localisation
      *

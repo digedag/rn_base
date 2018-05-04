@@ -37,17 +37,6 @@ class tx_rnbase_tests_util_TSFAL_testcase extends tx_rnbase_tests_BaseTestCase
 {
 
     /**
-     * {@inheritDoc}
-     * @see PHPUnit_Framework_TestCase::setUp()
-     */
-    protected function setUp()
-    {
-        if (!tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-            self::markTestSkipped('FAL not present before TYPO3 6.0');
-        }
-    }
-
-    /**
      * @group unit
      */
     public function testGetFileRepository()

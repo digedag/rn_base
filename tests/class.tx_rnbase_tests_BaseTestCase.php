@@ -409,16 +409,10 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
         $class = new \ReflectionClass($className);
         $abstractModifier = $class->isAbstract() ? 'abstract ' : '';
 
-        $interfaces = '';
-        if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-            // @TODO: #43 refactor to a stand alone interface
-            $interfaces = 'Tx_Phpunit_Interface_AccessibleObject';
-        }
-        $interfaces = empty($interfaces) ? '' : ' implements ' . $interfaces;
-
+        // @TODO: #43 refactor to a stand alone interface
         eval(
             $abstractModifier . 'class ' . $accessibleClassName .
-                ' extends ' . $className . $interfaces . ' {' .
+                ' extends ' . $className . ' implements \\Tx_Phpunit_Interface_AccessibleObject {' .
                     'public function _call($methodName) {' .
                         'if ($methodName === \'\') {' .
                             'throw new \InvalidArgumentException(\'$methodName must not be empty.\', 1334663993);' .

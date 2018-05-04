@@ -23,6 +23,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use TYPO3\CMS\Backend\Form\DataPreprocessor;
+
 tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 tx_rnbase::load('Tx_Rnbase_Utility_Strings');
 tx_rnbase::load('tx_rnbase_util_Link');
@@ -1066,7 +1068,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
         );
 
         $ret = array();
-        if ((tx_rnbase_util_TYPO3::isTYPO62OrHigher() && is_array($MENU[$name]) && count($MENU[$name]) == 1)) {
+        if (is_array($MENU[$name]) && count($MENU[$name]) == 1) {
             $ret['menu'] = self::buildDummyMenu('SET['.$name.']', $MENU[$name]);
         } else {
             $funcMenu = tx_rnbase_util_TYPO3::isTYPO76OrHigher() ? 'getDropdownMenu' : 'getFuncMenu';
@@ -1129,9 +1131,8 @@ class Tx_Rnbase_Backend_Form_ToolBox
      */
     public function getTCEFormArray($table, $theUid, $isNew = false)
     {
-        $transferDataClass = tx_rnbase_util_TYPO3::isTYPO62OrHigher() ?
-            'TYPO3\\CMS\\Backend\\Form\\DataPreprocessor' : 't3lib_transferData';
-        $trData = tx_rnbase::makeInstance($transferDataClass);
+        /** @var DataPreprocessor $trData */
+        $trData = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\DataPreprocessor');
         $trData->addRawData = true;
         $trData->fetchRecord($table, $theUid, $isNew ? 'new' : '');    // 'new'
         reset($trData->regTableItems_data);

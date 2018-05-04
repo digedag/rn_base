@@ -37,7 +37,7 @@ class tx_rnbase_util_TYPO3
      */
     public static function isTYPO60OrHigher()
     {
-        return self::isTYPO3VersionOrHigher(6000000);
+        return true;
     }
     /**
      * Prüft, ob mindestens TYPO3 Version 6.1 vorhanden ist.
@@ -46,7 +46,7 @@ class tx_rnbase_util_TYPO3
      */
     public static function isTYPO61OrHigher()
     {
-        return self::isTYPO3VersionOrHigher(6001000);
+        return true;
     }
     /**
      * Prüft, ob mindestens TYPO3 Version 6.2 vorhanden ist.
@@ -55,7 +55,7 @@ class tx_rnbase_util_TYPO3
      */
     public static function isTYPO62OrHigher()
     {
-        return self::isTYPO3VersionOrHigher(6002000);
+        return true;
     }
     /**
      * Prüft, ob mindestens TYPO3 Version 7.0 vorhanden ist.
@@ -339,11 +339,8 @@ class tx_rnbase_util_TYPO3
                 self::$sysPage = $GLOBALS['TSFE']->sys_page;
             } // Use existing SysPage from TSFE
             else {
-                self::$sysPage = tx_rnbase::makeInstance(
-                    self::isTYPO60OrHigher() ?
-                    'TYPO3\CMS\Frontend\Page\PageRepository' : 't3lib_pageSelect'
-                );
-                self::$sysPage->init(0); // $this->showHiddenPage
+                self::$sysPage = tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+                self::$sysPage->init(0);
             }
         }
 

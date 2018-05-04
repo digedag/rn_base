@@ -22,35 +22,17 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-tx_rnbase::load('tx_rnbase_util_TYPO3');
-if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-    /**
-     * Tx_Rnbase_Service_Authentication
-     *
-     * Wrapper für \TYPO3\CMS\Sv\AuthenticationService seit TYPO3 6.x
-     *
-     * @package         TYPO3
-     * @subpackage      rn_base
-     * @author          Hannes Bochmann <rene@system25.de>
-     * @license         http://www.gnu.org/licenses/lgpl.html
-     *                  GNU Lesser General Public License, version 3 or later
-     */
-    class Tx_Rnbase_Service_Authentication extends \TYPO3\CMS\Sv\AuthenticationService
-    {
-    }
-} else {
-    /**
-     * Tx_Rnbase_Service_Authentication
-     *
-     * Wrapper für tx_sv_auth bis TYPO3 6.x
-     *
-     * @package         TYPO3
-     * @subpackage      rn_base
-     * @author          Hannes Bochmann <rene@system25.de>
-     * @license         http://www.gnu.org/licenses/lgpl.html
-     *                  GNU Lesser General Public License, version 3 or later
-     */
-    class Tx_Rnbase_Service_Authentication extends tx_sv_auth
-    {
-    }
+/**
+ * Tx_Rnbase_Service_Authentication
+ *
+ * Wrapper für \TYPO3\CMS\Sv\AuthenticationService seit TYPO3 6.x
+ *
+ * @package         TYPO3
+ * @subpackage      rn_base
+ * @author          Hannes Bochmann <rene@system25.de>
+ * @license         http://www.gnu.org/licenses/lgpl.html
+ *                  GNU Lesser General Public License, version 3 or later
+ */
+class Tx_Rnbase_Service_Authentication extends \TYPO3\CMS\Sv\AuthenticationService
+{
 }
