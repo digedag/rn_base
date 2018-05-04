@@ -294,14 +294,15 @@ class Tx_Rnbase_Utility_Strings
     }
 
     /**
-     * Wrapper method for t3lib_div::removeXSS() or \TYPO3\CMS\Core\Utility\GeneralUtility::removeXSS()
+     * Makes the given string safe against XSS.
      *
      * @param string $string Input string
+     *
      * @return string Input string with potential XSS code removed
      */
     public static function removeXSS($string)
     {
-        return Tx_Rnbase_Utility_T3General::removeXSS($string);
+        return htmlspecialchars($string);
     }
 
     /**

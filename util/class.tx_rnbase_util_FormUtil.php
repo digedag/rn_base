@@ -84,8 +84,8 @@ class tx_rnbase_util_FormUtil
             $params = $utility::explodeUrl2Array($params);
         }
         foreach ($params as $name => $value) {
-            $name = htmlspecialchars(tx_rnbase_util_Strings::removeXSS($name), ENT_QUOTES);
-            $value = htmlspecialchars(tx_rnbase_util_Strings::removeXSS($value), ENT_QUOTES);
+            $name = htmlspecialchars($name);
+            $value = htmlspecialchars($value);
             $sysHidden .= '<input type="hidden" name="'.$name.'" value="'.$value.'" />';
         }
 
