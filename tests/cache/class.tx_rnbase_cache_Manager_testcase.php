@@ -40,11 +40,7 @@ class tx_rnbase_cache_Manager_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetCacheClass()
     {
-        if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-            $expectedCacheClass = 'TYPO3\CMS\Core\Cache\Frontend\VariableFrontend';
-        } else {
-            $expectedCacheClass = 't3lib_cache_frontend_VariableFrontend';
-        }
+        $expectedCacheClass = 'TYPO3\\CMS\\Core\\Cache\\Frontend\\VariableFrontend';
 
         self::assertSame(
             $expectedCacheClass, tx_rnbase_cache_Manager::getCacheClass(tx_rnbase_cache_Manager::CACHE_FRONTEND_VARIABLE)

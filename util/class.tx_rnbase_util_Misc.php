@@ -22,6 +22,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
+
 tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
 /**
@@ -799,17 +801,9 @@ MAYDAYPAGE;
             $storeInSession
         );
 
-        if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-            /**
- * @var $flashMessageService FlashMessageService
-*/
-            $flashMessageService = tx_rnbase::makeInstance(
-                'TYPO3\CMS\Core\Messaging\FlashMessageService'
-            );
-            $flashMessageService->getMessageQueueByIdentifier()->enqueue($flashMessage);
-        } else {
-            t3lib_FlashMessageQueue::addMessage($flashMessage);
-        }
+        /** @var FlashMessageService $flashMessageService */
+        $flashMessageService = tx_rnbase::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+        $flashMessageService->getMessageQueueByIdentifier()->enqueue($flashMessage);
     }
 }
 

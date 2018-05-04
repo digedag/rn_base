@@ -22,6 +22,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\MathUtility;
+
 
 /**
  * Wrapper for math usage.
@@ -45,15 +47,7 @@ class tx_rnbase_util_Math
      */
     public static function isInteger($var)
     {
-        if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-            $isInteger = \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($var);
-        } elseif (tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
-            $isInteger = t3lib_utility_Math::canBeInterpretedAsInteger($var);
-        } else {
-            $isInteger = t3lib_div::testInt($var);
-        }
-
-        return $isInteger;
+        return MathUtility::canBeInterpretedAsInteger($var);
     }
 
     /**
@@ -68,13 +62,7 @@ class tx_rnbase_util_Math
      */
     public static function intInRange($theInt, $min, $max = 2000000000, $zeroValue = 0)
     {
-        if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-            return \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($theInt, $min, $max, $zeroValue);
-        } elseif (tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
-            return t3lib_utility_Math::forceIntegerInRange($theInt, $min, $max, $zeroValue);
-        } else {
-            return t3lib_div::intInRange($theInt, $min, $max, $zeroValue);
-        }
+        return MathUtility::forceIntegerInRange($theInt, $min, $max, $zeroValue);
     }
 }
 

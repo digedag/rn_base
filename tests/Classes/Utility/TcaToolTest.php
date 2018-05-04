@@ -71,12 +71,9 @@ class Tx_Rnbase_Utility_TcaToolTest extends Tx_Phpunit_TestCase
         } elseif (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
             $expectedLinkWizard['link']['icon'] = 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif';
             $expectedLinkWizard['link']['module']['name'] = 'wizard_element_browser';
-        } elseif (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+        } else {
             $expectedLinkWizard['link']['icon'] = 'EXT:t3skin/icons/gfx/link_popup.gif';
             $expectedLinkWizard['link']['module']['name'] = 'wizard_element_browser';
-        } else {
-            $expectedLinkWizard['link']['icon'] = 'link_popup.gif';
-            $expectedLinkWizard['link']['script'] = 'browse_links.php?mode=wizard';
         }
         self::assertEquals(ksort($expectedLinkWizard), ksort($linkWizard), 'link wizard nicht korrekt');
     }
@@ -98,34 +95,21 @@ class Tx_Rnbase_Utility_TcaToolTest extends Tx_Phpunit_TestCase
             )
         );
 
-        if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-            self::assertArrayNotHasKey('script', $wizards['add']);
-            self::assertArrayNotHasKey('script', $wizards['edit']);
-            self::assertArrayNotHasKey('script', $wizards['list']);
-            self::assertArrayNotHasKey('script', $wizards['RTE']);
-            self::assertArrayNotHasKey('script', $wizards['link']);
-            self::assertEquals('wizard_add', $wizards['add']['module']['name']);
-            self::assertEquals('wizard_edit', $wizards['edit']['module']['name']);
-            self::assertEquals('wizard_list', $wizards['list']['module']['name']);
-            self::assertEquals('wizard_rte', $wizards['RTE']['module']['name']);
-            self::assertEquals('wizard_colorpicker', $wizards['colorpicker']['module']['name']);
-        }
+        self::assertArrayNotHasKey('script', $wizards['add']);
+        self::assertArrayNotHasKey('script', $wizards['edit']);
+        self::assertArrayNotHasKey('script', $wizards['list']);
+        self::assertArrayNotHasKey('script', $wizards['RTE']);
+        self::assertArrayNotHasKey('script', $wizards['link']);
+        self::assertEquals('wizard_add', $wizards['add']['module']['name']);
+        self::assertEquals('wizard_edit', $wizards['edit']['module']['name']);
+        self::assertEquals('wizard_list', $wizards['list']['module']['name']);
+        self::assertEquals('wizard_rte', $wizards['RTE']['module']['name']);
+        self::assertEquals('wizard_colorpicker', $wizards['colorpicker']['module']['name']);
 
         if (tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
             self::assertEquals('wizard_link', $wizards['link']['module']['name']);
-        } elseif (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-            self::assertEquals('wizard_element_browser', $wizards['link']['module']['name']);
         } else {
-            self::assertArrayNotHasKey('module', $wizards['add']);
-            self::assertArrayNotHasKey('module', $wizards['edit']);
-            self::assertArrayNotHasKey('module', $wizards['list']);
-            self::assertArrayNotHasKey('module', $wizards['RTE']);
-            self::assertArrayNotHasKey('module', $wizards['link']);
-            self::assertEquals('wizard_add.php', $wizards['add']['script']);
-            self::assertEquals('wizard_edit.php', $wizards['edit']['script']);
-            self::assertEquals('wizard_list.php', $wizards['list']['script']);
-            self::assertEquals('wizard_colorpicker.php', $wizards['colorpicker']['script']);
-            self::assertEquals('wizard_link.php', $wizards['link']['script']);
+            self::assertEquals('wizard_element_browser', $wizards['link']['module']['name']);
         }
     }
 
@@ -187,7 +171,7 @@ class Tx_Rnbase_Utility_TcaToolTest extends Tx_Phpunit_TestCase
                 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
                 $wizards['link']['icon']
             );
-        } elseif (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+        } else {
             self::assertEquals(
                 'EXT:t3skin/icons/gfx/add.gif',
                 $wizards['add']['icon']
@@ -208,12 +192,6 @@ class Tx_Rnbase_Utility_TcaToolTest extends Tx_Phpunit_TestCase
                 'EXT:t3skin/icons/gfx/link_popup.gif',
                 $wizards['link']['icon']
             );
-        } else {
-            self::assertEquals('edit2.gif', $wizards['add']['icon']);
-            self::assertEquals('add.gif', $wizards['edit']['icon']);
-            self::assertEquals('list.gif', $wizards['list']['icon']);
-            self::assertEquals('wizard_rte2.gif', $wizards['RTE']['icon']);
-            self::assertEquals('link_popup.gif', $wizards['link']['icon']);
         }
     }
 

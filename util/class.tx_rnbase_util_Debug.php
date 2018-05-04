@@ -23,6 +23,8 @@
  ***************************************************************/
 
 
+use TYPO3\CMS\Core\Utility\DebugUtility;
+
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 
 /**
@@ -45,11 +47,7 @@ class tx_rnbase_util_Debug
      */
     public static function debug($var = '', $header = '', $group = 'Debug')
     {
-        if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-            return \TYPO3\CMS\Core\Utility\DebugUtility::debug($var, $header, $group);
-        } else {
-            return t3lib_utility_Debug::debug($var, $header, $group);
-        }
+        return DebugUtility::debug($var, $header, $group);
     }
     /**
      * Returns HTML-code, which is a visual representation of a multidimensional array
@@ -61,11 +59,7 @@ class tx_rnbase_util_Debug
      */
     public static function viewArray($array_in)
     {
-        if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-            return \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($array_in);
-        } else {
-            return t3lib_utility_Debug::viewArray($array_in);
-        }
+        return DebugUtility::viewArray($array_in);
     }
 
     /**

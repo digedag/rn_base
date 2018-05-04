@@ -21,6 +21,10 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
+use TYPO3\CMS\Core\TimeTracker\NullTimeTracker;
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+
 tx_rnbase::load('tx_rnbase_util_Network');
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_rnbase_util_Templates');
@@ -147,21 +151,13 @@ class tx_rnbase_tests_util_Templates_testcase extends tx_rnbase_tests_BaseTestCa
     }
     private function setTTOn()
     {
-        if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-            $GLOBALS['TT'] = new \TYPO3\CMS\Core\TimeTracker\TimeTracker;
-        } else {
-            $GLOBALS['TT'] = new t3lib_timeTrack;
-        }
+        $GLOBALS['TT'] = new TimeTracker;
 
         $GLOBALS['TT']->start();
     }
     private function setTTOff()
     {
-        if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-            $GLOBALS['TT'] = new \TYPO3\CMS\Core\TimeTracker\NullTimeTracker;
-        } else {
-            $GLOBALS['TT'] = new t3lib_timeTrackNull;
-        }
+        $GLOBALS['TT'] = new NullTimeTracker;
         $GLOBALS['TT']->start();
     }
 

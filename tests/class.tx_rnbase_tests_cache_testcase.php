@@ -52,17 +52,7 @@ class tx_rnbase_tests_cache_testcase extends Tx_Phpunit_TestCase
      */
     private static function createTYPO3Cache($name)
     {
-        if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-            $className = 'tx_rnbase_cache_TYPO3Cache62';
-        } elseif (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-            $className = 'tx_rnbase_cache_TYPO3Cache60';
-        } elseif (tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
-            $className = 'tx_rnbase_cache_TYPO3Cache46';
-        } else {
-            $className = 'tx_rnbase_cache_TYPO3Cache';
-        }
-
-        return tx_rnbase::makeInstance($className, $name);
+        return tx_rnbase::makeInstance('tx_rnbase_cache_TYPO3Cache62', $name);
     }
 }
 

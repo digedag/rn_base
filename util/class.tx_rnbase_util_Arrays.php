@@ -22,6 +22,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+
 /**
  * Contains utility functions for ArrayObject
  */
@@ -92,25 +94,15 @@ class tx_rnbase_util_Arrays
         $includeEmptyValues = true,
         $enableUnsetFeature = true
     ) {
-        if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
-                $original,
-                $overrule,
-                $addKeys,
-                $includeEmptyValues,
-                $enableUnsetFeature
-            );
+        ArrayUtility::mergeRecursiveWithOverrule(
+            $original,
+            $overrule,
+            $addKeys,
+            $includeEmptyValues,
+            $enableUnsetFeature
+        );
 
-            return $original;
-        } else {
-            return t3lib_div::array_merge_recursive_overrule(
-                $original,
-                $overrule,
-                !$addKeys,
-                $includeEmptyValues,
-                $enableUnsetFeature
-            );
-        }
+        return $original;
     }
 
     /**
@@ -170,7 +162,7 @@ class tx_rnbase_util_Arrays
      */
     public static function arrayDiffAssocRecursive(array $array1, array $array2) {
         if (tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
-            $differenceArray = \TYPO3\CMS\Core\Utility\ArrayUtility::arrayDiffAssocRecursive($array1, $array2);
+            $differenceArray = ArrayUtility::arrayDiffAssocRecursive($array1, $array2);
         } else {
             $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
             $differenceArray = $utility::arrayDiffAssocRecursive($array1, $array2);

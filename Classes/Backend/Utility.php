@@ -62,13 +62,7 @@ class Tx_Rnbase_Backend_Utility
      */
     protected static function getBackendUtilityClass()
     {
-        if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-            $backendUtilityClass = '\TYPO3\CMS\Backend\Utility\BackendUtility';
-        } else {
-            $backendUtilityClass = 't3lib_BEfunc';
-        }
-
-        return $backendUtilityClass;
+        return 'TYPO3\\CMS\\Backend\\Utility\\BackendUtility';
     }
 
     /**

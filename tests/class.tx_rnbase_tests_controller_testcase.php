@@ -226,10 +226,6 @@ class tx_rnbase_tests_controller_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public function testDoActionCallsPageNotFoundHandlingIfPageNotFoundException()
     {
-        if (!tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-            self::markTestSkipped('Dieses Feature wird erst ab TYPO3 6.2 unterstützt');
-        }
-
         $controller = $this->getMock('tx_rnbase_controller', array('getTsfe'));
         $tsfe = $this->getMock(
             tx_rnbase_util_Typo3Classes::getTypoScriptFrontendControllerClass(),

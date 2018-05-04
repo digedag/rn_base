@@ -24,11 +24,6 @@
 
 define('DEFAULT_LOCAL_FIELD', '_LOCALIZED_UID');
 
-tx_rnbase::load('tx_rnbase_util_TYPO3');
-if (!tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-    return;
-}
-
 tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 tx_rnbase::load('tx_rnbase_util_Strings');
 

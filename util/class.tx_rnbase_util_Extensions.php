@@ -40,17 +40,11 @@ class tx_rnbase_util_Extensions
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility or t3lib_extMgm
+     * @return string
      */
     protected static function getExtensionManagementUtilityClass()
     {
-        if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-            $class = '\TYPO3\CMS\Core\Utility\ExtensionManagementUtility';
-        } else {
-            $class = 't3lib_extMgm';
-        }
-
-        return $class;
+        return 'TYPO3\\CMS\\Core\\Utility\\ExtensionManagementUtility';
     }
 
     /**

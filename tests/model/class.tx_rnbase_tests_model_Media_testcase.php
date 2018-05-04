@@ -36,10 +36,6 @@ class tx_rnbase_tests_model_Media_testcase extends Tx_Phpunit_TestCase
      */
     public function testInitMediaForFalMediaSetsFalPropertiesToRecord()
     {
-        if (!tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-            $this->markTestSkipped('Runs only in TYPO3 6.0 and higher');
-        }
-
         $falModel = $this->getMock(
             'stdClass',
             array('getProperties', 'getUid', 'getPublicUrl')
