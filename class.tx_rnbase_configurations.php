@@ -27,6 +27,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
+use \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+
 /***************************************************************
  *
  * This is a refactored version of class tx_lib_configurations.
@@ -214,11 +216,13 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
      * like this: t3sports[param1]=value
      *
      * @param array $configurationArray the typoscript configuration array given from TYPO3
-     * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj
+     * @param ContentObjectRenderer|null $cObj
      * @param string $extensionKey the extension key for TYPO3
      * @param string $qualifier the prefix string for plugin parameters.
+     *
+     * @return void
      */
-    public function init(&$configurationArray, $cObj, $extensionKey, $qualifier)
+    public function init(array &$configurationArray, $cObj, $extensionKey, $qualifier)
     {
         // keep the cObj
         if (is_object($cObj)) {

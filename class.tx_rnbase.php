@@ -35,11 +35,12 @@ class tx_rnbase
      * or a given part of the filepath that contains enough information to find the class.
      *
      * This method is taken from tx_div. There is an additional cache to avoid double calls.
-     * This can saves a lot of time.
+     * This can save a lot of time.
+     *
      * TODO: lookup for classes folder
      *
-     * @param   string      classname or path matching for the type of loader
-     * @return  bool     TRUE if successfull, FALSE otherwise
+     * @param   string $classNameOrPathInformation classname or path matching for the type of loader
+     * @return  bool     true if successful, false otherwise
      * @see     tx_lib_t3Loader
      * @see     tx_lib_pearLoader
      */
