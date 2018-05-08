@@ -140,7 +140,6 @@ class Tx_Rnbase_Utility_TcaTool
      */
     public static function getWizards($table, array $options = array())
     {
-        $globalPid = isset($options['globalPid']) ? $options['globalPid'] : false;
         $wizards = array(
             '_PADDING' => 2,
             '_VERTICAL' => 1,
@@ -210,6 +209,7 @@ class Tx_Rnbase_Utility_TcaTool
      */
     protected static function getAddWizard($table, array $options = array())
     {
+        $globalPid = isset($options['globalPid']) ? $options['globalPid'] : false;
         $wizard = array(
             'type' => 'script',
             'title' => 'Create new entry',
@@ -239,6 +239,7 @@ class Tx_Rnbase_Utility_TcaTool
      */
     protected static function getListWizard($table, array $options = array())
     {
+        $globalPid = isset($options['globalPid']) ? $options['globalPid'] : false;
         $wizard = array(
             'type' => 'popup',
             'title' => 'List entries',
