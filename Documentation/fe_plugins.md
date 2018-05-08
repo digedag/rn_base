@@ -388,12 +388,14 @@ plugin.tx_myext {
             1 = EXT:myext/Resources/Public/Styles/validator.css
         }
         includeJSlibs {
-            1 = //my-external-library
+            1 = https://my-external-library
             1.external = 1
         }
     }
 }
 ```
+
+Externe Ressourcen sollte immer mit vollem Protokoll eingebunden werden. Eine Einbindung mit //my-external-library kann u.U. zu Problemen führen.
 ## Cachehandling
 
 Bei USER Plugins muss der Cache in den pages geleert werden, wenn sich ein Datensatz ändert. Das geht mit rn_base ganz einfach. Zunächst müssen im TypoScript die Cache Tags für die Action definiert werden.
