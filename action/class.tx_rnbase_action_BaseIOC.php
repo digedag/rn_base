@@ -147,8 +147,12 @@ abstract class tx_rnbase_action_BaseIOC
             $pageRenderer->addJsFooterFile($file);
         }
 
-        foreach ($this->getJavaScriptFilesByIncludePartConfId('includeJSlibs') as $javaScriptConfId => $file) {
-            $pageRenderer->addJsLibrary($javaScriptConfId, $file);
+        // support configuration key for javascript libraries from TYPO3 6.2 to 8.7
+        $javascriptLibraryKeys = array('includeJSlibs', 'includeJSLibs');
+        foreach ($javascriptLibraryKeys as $javascriptLibraryKey) {
+            foreach ($this->getJavaScriptFilesByIncludePartConfId($javascriptLibraryKey) as $javaScriptConfId => $file) {
+                $pageRenderer->addJsLibrary($javaScriptConfId, $file);
+            }
         }
 
         $files = $configurations->get($confId.'includeCSS.');

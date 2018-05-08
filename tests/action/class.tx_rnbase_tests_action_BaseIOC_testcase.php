@@ -147,6 +147,9 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
                     'second' => 'EXT:rn_base/ext_icon.gif',
                     'third' => '//www.dmk-ebusiness.de',
                     'third.' => array('external' => 1)
+                ),
+                'includeJSLibs.' => array(
+                    'fourth' => 'typo3conf/ext/rn_base/ext_conf_template.txt',
                 )
             )
         ), 'rn_base');
@@ -161,6 +164,7 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
         self::assertEquals('typo3conf/ext/rn_base/ext_emconf.php', $files['first']['file']);
         self::assertEquals('typo3conf/ext/rn_base/ext_icon.gif', $files['second']['file']);
         self::assertEquals('//www.dmk-ebusiness.de', $files['third']['file']);
+        self::assertEquals('typo3conf/ext/rn_base/ext_conf_template.txt', $files['fourth']['file']);
     }
 
     /**
