@@ -82,31 +82,4 @@ class tx_rnbase_util_MediaMarker extends tx_rnbase_util_SimpleMarker
 
         return $template;
     }
-
-    protected function prepareItem(
-        Tx_Rnbase_Domain_Model_DataInterface $item,
-        Tx_Rnbase_Configuration_ProcessorInterface $configurations,
-        $confId
-    ) {
-        // Localize data (DAM 1.1.0)
-        if (method_exists(self::getDamDB(), 'getRecordOverlay')) {
-            $loc = self::getDamDB()->getRecordOverlay('tx_dam', $item->getRecord(), array('sys_language_uid' => $GLOBALS['TSFE']->sys_language_uid));
-            if ($loc) {
-                $item->setProperty($loc);
-            }
-        }
-
-        // TODO: record overlay for FAL??
-        parent::prepareItem($item, $configurations, $confId);
-    }
-
-
-    private static function getDamDB()
-    {
-        if (!self::$damDb) {
-            self::$damDb = tx_rnbase::makeInstance('tx_dam_db');
-        }
-
-        return self::$damDb;
-    }
 }
