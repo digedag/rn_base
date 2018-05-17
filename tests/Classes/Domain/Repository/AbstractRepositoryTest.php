@@ -258,8 +258,9 @@ class Tx_Rnbase_Domain_Repository_AbstractRepositoryTest extends tx_rnbase_tests
      * @param array $mockedMethods
      * @return Tx_Rnbase_Repository_AbstractRepository
      */
-    private function getRepositoryMock($mockedMethods = array('getSearchClass', 'getWrapperClass'))
+    private function getRepositoryMock($mockedMethods = array())
     {
+        $mockedMethods = array_unique(array_merge($mockedMethods, array('getSearchClass', 'getWrapperClass')));
         $repository = $this->getMockForAbstractClass(
             'Tx_Rnbase_Repository_AbstractRepository',
             array(),
