@@ -144,7 +144,7 @@ class Tx_Rnbase_Backend_ModuleRunner
 
         // Only a class name is given
         if (is_string($target) && strpos($target, ':') === false) {
-            $targetObject = Tx_Rnbase_Utility_T3General::makeInstance($target);
+            $targetObject = tx_rnbase::makeInstance($target);
             if (!method_exists($targetObject, '__invoke')) {
                 throw new InvalidArgumentException('Object "' . $target . '" doesn\'t implement an __invoke() method and cannot be used as target.', 1442431631);
             }
