@@ -31,6 +31,10 @@ class Tx_Rnbase_Backend_Template_ModuleParts
     private $funcMenu;
     private $buttons;
     private $selector;
+
+    /**
+     * @var array
+     */
     private $pageInfo;
 
     public function getTitle()
@@ -110,14 +114,22 @@ class Tx_Rnbase_Backend_Template_ModuleParts
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function getPageInfo()
     {
         return $this->pageInfo;
     }
 
-    public function setPageInfo($pageInfo)
+    /**
+     * @param array $pageInfo
+     * @return Tx_Rnbase_Backend_Template_ModuleParts
+     */
+    public function setPageInfo(array $pageInfo)
     {
         $this->pageInfo = $pageInfo;
+
         return $this;
     }
 

@@ -147,7 +147,9 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
         $parts->setButtons($this->getButtons());
         $parts->setTitle($GLOBALS['LANG']->getLL('title'));
         $parts->setFuncMenu($this->getFuncMenu());
-        $parts->setPageInfo($pageinfo);
+        // if we got no array the user got no permissions for the
+        // selected page or no page is selected
+        $parts->setPageInfo(is_array($pageinfo) ? $pageinfo : array());
         $parts->setSubMenu($this->tabs);
         $parts->setSelector($this->selector ? $this->selector : $this->subselector);
     }
