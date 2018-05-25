@@ -241,7 +241,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
         // Add the local configuration, overwriting TS setup
         $this->_setConfiguration($configurationArray);
 
-        if (is_object($cObj)) {
+        if (is_object($cObj) && !$this->getBool('ignoreFlexFormConfiguration')) {
             // Flexformvalues have the maximal precedence
             $this->_setFlexForm($cObj->data['pi_flexform']);
         }
