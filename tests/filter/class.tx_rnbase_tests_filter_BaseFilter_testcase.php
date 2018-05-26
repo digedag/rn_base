@@ -36,7 +36,7 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTestcase
+class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTestCase
 {
 
     /**
