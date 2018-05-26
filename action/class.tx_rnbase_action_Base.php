@@ -45,7 +45,7 @@ class tx_rnbase_action_Base
    * Since this object has functions for database access and frontend your ControllerAction
    * should always provide cObj for model and view. This ensures only one instance per request.
    *
-   * @return an instance of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer or tslib_cObj
+   * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
    */
     public function getCObj()
     {

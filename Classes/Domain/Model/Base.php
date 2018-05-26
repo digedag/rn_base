@@ -268,7 +268,7 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
     /**
      * Liefert den aktuellen Tabellenname
      *
-     * @return Tabellenname als String
+     * @return string Tabellenname als String
      */
     public function getTableName()
     {
@@ -319,7 +319,7 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
      * @param array|null $options
      *     only_record_fields: validates only fields included in the record (default)
      *
-     * @return bolean
+     * @return bool
      */
     public function validateProperties($options = null)
     {

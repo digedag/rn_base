@@ -99,8 +99,8 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
      * @return bool TRUE, if the request request could be dispatched
      */
     public function __invoke(
-        /* Psr\Http\Message\ServerRequestInterface */ $request = null,
-        /* Psr\Http\Message\ResponseInterface */ $response = null
+        $request = null,
+        $response = null
     ) {
         $GLOBALS['MCONF']['script'] = '_DISPATCH';
 
@@ -511,7 +511,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
     }
     /**
      * @deprecated use mod_Tables
-     * @return multitype:multitype:string  multitype:multitype:string
+     * @return array
      */
     public function getTableLayout()
     {

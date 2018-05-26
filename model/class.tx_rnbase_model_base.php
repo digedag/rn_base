@@ -217,7 +217,7 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements Tx_Rnbase_Dom
     /**
      * Liefert den aktuellen Tabellenname
      *
-     * @return Tabellenname als String
+     * @return string Tabellenname
      */
     public function getTableName()
     {
@@ -262,7 +262,7 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements Tx_Rnbase_Dom
      *
      * @param array $options
      *     only_record_fields: validates only fields included in the record (default)
-     * @return bolean
+     * @return bool
      */
     public function validateProperties($options = null)
     {
@@ -347,10 +347,10 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements Tx_Rnbase_Dom
      * </pre>
      * Hier wäre <b>event.</b> die $confId und <b>date</b> der Spaltename
      *
-     * @param $formatter ein voll initialisierter Formatter für den Wrap
-     * @param $columnName der Name der Spalte
-     * @param $baseConfId Id der übergeordneten Config
-     * @param $colConfId Id der Spalte in der Config zum Aussetzen der Konvention (muss mit Punkt enden)
+     * @param object $formatter ein voll initialisierter Formatter für den Wrap
+     * @param string $columnName der Name der Spalte
+     * @param string $baseConfId ID der übergeordneten Config
+     * @param string $colConfId ID der Spalte in der Config zum Aussetzen der Konvention (muss mit Punkt enden)
      * @deprecated
      */
     public function getColumnWrapped($formatter, $columnName, $baseConfId, $colConfId = '')

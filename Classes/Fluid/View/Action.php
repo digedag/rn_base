@@ -39,9 +39,9 @@ class Action extends \tx_rnbase_view_Base
 
     /**
      * @param string $templateName
-     * @param tx_rnbase_configurations $configurations
+     * @param \tx_rnbase_configurations $configurations
      * @return string
-     * @throws Exception
+     * @throws \Exception
      */
     public function render($templateName, &$configurations)
     {

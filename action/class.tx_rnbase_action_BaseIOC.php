@@ -133,10 +133,10 @@ abstract class tx_rnbase_action_BaseIOC
 
         return $out;
     }
+
     /**
-     *
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param unknown $confId
+     * @param string $confId
      */
     protected function addResources($configurations, $confId)
     {

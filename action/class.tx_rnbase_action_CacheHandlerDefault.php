@@ -80,7 +80,7 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
     private $cacheKey = null;
 
     /**
-     * internal confiog value cache
+     * internal config value cache
      *
      * @var array
      */
@@ -137,7 +137,7 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
      *
      * @param string $confId
      * @param string $altValue
-     * @return Ambigous <string, multitype:>
+     * @return mixed
      */
     protected function getConfigValue($confId, $altValue = '')
     {
@@ -307,9 +307,6 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
     /**
      * Get output data from cache
      *
-     * @param tx_rnbase_action $plugin
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param string $confId
      * @return string the output string
      */
     public function getOutput()

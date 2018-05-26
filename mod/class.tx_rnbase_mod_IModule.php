@@ -48,7 +48,7 @@ interface tx_rnbase_mod_IModule
     public function getName();
     /**
      * Return current PID for Web-Modules
-     * @return uid
+     * @return int uid
      */
     public function getPid();
     /**

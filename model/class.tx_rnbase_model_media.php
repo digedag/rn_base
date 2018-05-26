@@ -90,7 +90,7 @@ class tx_rnbase_model_media extends tx_rnbase_model_base
     }
     /**
      * Kindklassen müssen diese Methode überschreiben und den Namen der gemappten Tabelle liefern!
-     * @return Tabellenname als String
+     * @return string Tabellenname
      */
     public function getTableName()
     {
