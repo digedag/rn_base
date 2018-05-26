@@ -67,7 +67,7 @@ class tx_rnbase_model_data implements Tx_Rnbase_Domain_Model_DataInterface, Iter
      */
     public function __construct($record = null)
     {
-        return $this->init($record);
+        $this->init($record);
     }
 
     /**

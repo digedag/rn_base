@@ -59,7 +59,7 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements Tx_Rnbase_Dom
      */
     public function __construct($rowOrUid = null)
     {
-        return $this->init($rowOrUid);
+        $this->init($rowOrUid);
     }
 
     /**
