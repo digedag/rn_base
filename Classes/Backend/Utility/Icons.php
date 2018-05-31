@@ -73,22 +73,17 @@ class Tx_Rnbase_Backend_Utility_Icons
         array $row,
         $size = 'default'
     ) {
-        $method = 'getSpriteIconForRecord';
-        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-            $method = 'getIconForRecord';
-            $arguments = array(
-                $table,
-                $row,
-                $size
-            );
-        } else {
-            $arguments = array(
-                $table,
-                $row
-            );
+        if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
+            return self::getIconFactory()->getIconForRecord($table, $row, $size);
         }
 
-        return self::__callStatic($method, $arguments);
+        return self::__callStatic(
+            'getSpriteIconForRecord',
+            array(
+                $table,
+                $row
+            )
+        );
     }
 
     /**
