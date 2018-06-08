@@ -1,10 +1,9 @@
 <?php
 
-
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009-2017 Rene Nitzsche (rene@system25.de)
+*  (c) 2009-2018 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -115,7 +114,6 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
      * Main function of the module. Write the content to $this->content
      * If you chose "web" as main module, you will need to consider the $this->id parameter which will contain the uid-number of the page clicked in the page tree
      *
-     * @return  [type]      ...
      */
     public function main()
     {
@@ -333,7 +331,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
      */
     public function useModuleTemplate()
     {
-        return true;
+        return tx_rnbase_util_TYPO3::isTYPO76OrHigher();
     }
 
     /**
