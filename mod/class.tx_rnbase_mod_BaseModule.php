@@ -333,7 +333,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
      */
     public function useModuleTemplate()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -427,15 +427,17 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
      */
     protected function getFormTag()
     {
-        $modUrl = Tx_Rnbase_Backend_Utility::getModuleUrl(
-            $this->getName(),
-            array(
-                'id' => $this->getPid()
-            ),
-            ''
-        );
+        $modUrl = Tx_Rnbase_Backend_Utility::getModuleUrl($this->getName());
 
-        return '<form action="' . $modUrl . '" method="post" enctype="multipart/form-data">';
+        return '<form action="' . $modUrl . '" method="post" enctype="multipart/form-data"><input type="hidden" name="id" value="' . htmlspecialchars($this->id) . '" />';
+    }
+    /**
+     *
+     * @return string
+     */
+    public function buildFormTag()
+    {
+        return $this->getFormTag();
     }
     /**
      * Returns the filename for module HTML template. This can be overwritten.

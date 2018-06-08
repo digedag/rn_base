@@ -105,12 +105,22 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
 //        $moduleTemplate->getPageRenderer()->loadJquery();
         $moduleTemplate->getDocHeaderComponent()->setMetaInformation($parts->getPageInfo());
         $this->registerMenu($moduleTemplate, $parts);
-        $this->generateButtons($moduleTemplate, $parts);
 
         $content = $moduleTemplate->header($parts->getTitle());
-        $content .= $parts->getSelector();
+        $content .= $this->module->buildFormTag();
+        if (is_string($parts->getFuncMenu())) {
+            // Fallback für Module, die das FuncMenu selbst als String generieren
+            $content .= $parts->getFuncMenu();
+        }
+
+        $content .= $parts->getSelector() .'<div style="clear:both;"></div>';
         $content .= $parts->getSubMenu();
         $content .= $parts->getContent();
+        $content .= '</form>';
+
+        // Es ist sinnvoll, die Buttons nach der Generierung des Content zu generieren
+        $this->generateButtons($moduleTemplate, $parts);
+
         // Workaround: jumpUrl wieder einfügen
         // @TODO Weg finden dass ohne das DocumentTemplate zu machen
         $content .= '<!--###POSTJSMARKER###-->';
@@ -159,7 +169,10 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
         // So funktioniert das nicht. Warum auch immer
         // $moduleTemplate->registerModuleMenu($this->options['modname']);
         // Das Menu wird im Module generiert und hier nur registriert
-        $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($parts->getFuncMenu());
+        if (is_object($parts->getFuncMenu())) {
+            // Das ist der empfohlene Weg
+            $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($parts->getFuncMenu());
+        }
     }
 
     /**
