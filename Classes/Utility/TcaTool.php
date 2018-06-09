@@ -49,6 +49,15 @@ class Tx_Rnbase_Utility_TcaTool
      */
     const ICON_INDEX_TYPO3_62_OR_HIGHER = 'typo3-62-or-higher';
 
+    const WIZARD_EDIT = 'edit';
+    const WIZARD_ADD = 'add';
+    const WIZARD_LIST = 'list';
+    const WIZARD_SUGGEST = 'suggest';
+    const WIZARD_RTE = 'RTE';
+    const WIZARD_LINK = 'link';
+    const WIZARD_COLORPICKER = 'colorpicker';
+    const WIZARD_TARGETTABLE = 'targettable';
+
     /**
      * @var array
      */
@@ -103,7 +112,86 @@ class Tx_Rnbase_Utility_TcaTool
             'urlParameters' => $urlParams,
         );
     }
+    /**
+     * Creates the wizard config for the tca. Support for TYPO3 7.6 and higher.
+     *
+     * usage:
+     * $myTableTCA = [
+     *   'ctrl' => [..]
+     *   'columns' => [
+     *     'col1' => [..],
+     *     ..
+     *   ]
+     * ];
+     * Tx_Rnbase_Utility_TcaTool::configureWizards($myTableTCA, [
+     *   'col1' => [
+     *       ### overwriting the default label
+     *       ### or anything else
+     *       'targettable' => 'tx_some_table',
+     *       'add' => array('title'  => 'my new title'),
+     *       'edit' => TRUE,
+     *       'suggest' => TRUE,
+     *       'RTE' => ['defaultExtras' => 'richtext[paste|bold...'],
+     *   ]
+     * ]);
+     * return $myTableTCA;
+     *
+     * @param array $tcaTable complete TCA config array for table
+     * @param array $options
+     */
+    public function configureWizards(array &$tcaTable, array $options)
+    {
+        foreach ($options as $col => $wizardOptions) {
+            $table = isset($wizardOptions[self::WIZARD_TARGETTABLE]) ? $wizardOptions[self::WIZARD_TARGETTABLE] : '';
+            $wizards = self::getWizards($table, $wizardOptions);
+            if (tx_rnbase_util_TYPO3::isTYPO86OrHigher()) {
+                // suggestWizard
+                if(isset($wizards[self::WIZARD_SUGGEST])) {
+                    $tcaTable['columns'][$col]['config']['suggestOptions'] = $wizards[self::WIZARD_SUGGEST];
+                    unset($wizards[self::WIZARD_SUGGEST]);
+                }
+                $controls = [self::WIZARD_ADD => 'addRecord', self::WIZARD_EDIT => 'editPopup'];
+                foreach ($controls as $wiz => $control) {
+                    if(isset($wizards[$wiz])) {
+                        $tcaTable['columns'][$col]['config']['fieldControl'][$control] = self::convertWiz2FieldControl(
+                            $wiz,
+                            $wizards[$wiz],
+                            $wizardOptions[$wiz]
+                        );
+                        unset($wizards[$wiz]);
+                    }
+                }
+            }
+            // Add RTE config to columnsOverrides
+            if (isset($wizardOptions[self::WIZARD_RTE])) {
+                $tcaTable['types'][0]['columnsOverrides'][$col] = tx_rnbase_util_TYPO3::isTYPO86OrHigher() ?
+                    ['config' => ['enableRichtext'=>1, 'richtextConfiguration' => 'default']]
+                    :
+                    ['defaultExtras' => isset($wizardOptions['defaultExtras']) ? $wizardOptions['defaultExtras'] : ''];
+                unset($wizards[self::WIZARD_RTE]);
+            }
 
+            $tcaTable['columns'][$col]['config']['wizards']= $wizards;
+        }
+    }
+    protected function convertWiz2FieldControl($type, $wizard, $wizardOptions) {
+        $control = [
+            'disabled' => false,
+            'options' => [],
+        ];
+        if ($type == self::WIZARD_ADD) {
+            $control['options'] = $wizard['params'];
+        }
+        elseif ($type == self::WIZARD_EDIT) {
+            $control['options']['windowOpenParameters'] = $wizard['JSopenParams'];
+        }
+
+        if(isset($wizard['title'])) {
+            $control['options']['title'] = $wizard['title'];
+        }
+
+        return $control;
+    }
     /**
      * Creates the wizard config for the tca
      *
@@ -130,32 +218,32 @@ class Tx_Rnbase_Utility_TcaTool
             '_VERTICAL' => 1,
         );
 
-        if (isset($options['edit'])) {
-            $wizards['edit'] = self::getEditWizard($table, $options);
+        if (isset($options[self::WIZARD_EDIT])) {
+            $wizards[self::WIZARD_EDIT] = self::getEditWizard($table, $options);
         }
 
-        if (isset($options['add'])) {
-            $wizards['add'] = self::getAddWizard($table, $options);
+        if (isset($options[self::WIZARD_ADD])) {
+            $wizards[self::WIZARD_ADD] = self::getAddWizard($table, $options);
         }
 
-        if (isset($options['list'])) {
-            $wizards['list'] = self::getListWizard($table, $options);
+        if (isset($options[self::WIZARD_LIST])) {
+            $wizards[self::WIZARD_LIST] = self::getListWizard($table, $options);
         }
 
-        if (isset($options['suggest'])) {
-            $wizards['suggest'] = self::getSuggestWizard($table, $options);
+        if (isset($options[self::WIZARD_SUGGEST])) {
+            $wizards[self::WIZARD_SUGGEST] = self::getSuggestWizard($table, $options);
         }
 
-        if (isset($options['RTE'])) {
-            $wizards['RTE'] = self::getRichTextWizard($table, $options);
+        if (isset($options[self::WIZARD_RTE])) {
+            $wizards[self::WIZARD_RTE] = self::getRichTextWizard($table, $options);
         }
 
-        if (isset($options['link'])) {
-            $wizards['link'] = self::getLinkWizard($table, $options);
+        if (isset($options[self::WIZARD_LINK])) {
+            $wizards[self::WIZARD_LINK] = self::getLinkWizard($table, $options);
         }
 
-        if (isset($options['colorpicker'])) {
-            $wizards['colorpicker'] = self::getColorPickerWizard($table, $options);
+        if (isset($options[self::WIZARD_COLORPICKER])) {
+            $wizards[self::WIZARD_COLORPICKER] = self::getColorPickerWizard($table, $options);
         }
 
         return $wizards;
