@@ -139,7 +139,7 @@ class Tx_Rnbase_Utility_TcaTool
      * @param array $tcaTable complete TCA config array for table
      * @param array $options
      */
-    public function configureWizards(array &$tcaTable, array $options)
+    public static function configureWizards(array &$tcaTable, array $options)
     {
         foreach ($options as $col => $wizardOptions) {
             $table = isset($wizardOptions[self::WIZARD_TARGETTABLE]) ? $wizardOptions[self::WIZARD_TARGETTABLE] : '';
