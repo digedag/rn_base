@@ -167,8 +167,10 @@ class Tx_Rnbase_Utility_TcaTool
                 $tcaTable['types'][0]['columnsOverrides'][$col] = tx_rnbase_util_TYPO3::isTYPO86OrHigher() ?
                     ['config' => ['enableRichtext'=>1, 'richtextConfiguration' => 'default']]
                     :
-                    ['defaultExtras' => isset($wizardOptions['defaultExtras']) ? $wizardOptions['defaultExtras'] : ''];
-                unset($wizards[self::WIZARD_RTE]);
+                    ['defaultExtras' => isset($wizardOptions[self::WIZARD_RTE]['defaultExtras']) ? $wizardOptions[self::WIZARD_RTE]['defaultExtras'] : ''];
+                if(tx_rnbase_util_TYPO3::isTYPO86OrHigher()) {
+                    unset($wizards[self::WIZARD_RTE]);
+                }
             }
 
             $tcaTable['columns'][$col]['config']['wizards']= $wizards;
