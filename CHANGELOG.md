@@ -3,7 +3,23 @@
 Changelog
 ---------
 
-v1.7.2 (??.??.2018)
+v1.8.1 (??.??.2018)
+
+v1.8.0 (14.06.2018)
+ * added method isTYPO90OrHigher
+ * support configuration key for javascript libraries from TYPO3 6.2 to 8.7 (on action configuration)
+ * bugfix set missing variable when retrieving wizards
+ * Require TYPO3 >= 6.2
+ * bugfix remove dependeny to dam in MediaMarker
+ * Replace usage of the deprecated removeXSS method with htmlspecialchars
+ * Drop XCLASS snippet
+ * Use rn_base for makeInstance in backend module runner
+ * bugfix make sure pageInfo is always an array in backend module
+ * new ignoreFlexFormConfiguration option on base level of extension conf
+ * unique template based rendering for 7.6 and higher
+ * activate new ModuleTemplate for all modules
+ * new method configueWizards() for TcaTool
+
 
 v1.7.1 (12.04.2018)
  * provided user function to add cache tags from TypoScript etc. (can be used for plugins like tt_news -> check the documentation)
