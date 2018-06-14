@@ -51,8 +51,15 @@ class Tx_Rnbase_Backend_Form_Element_InputText extends AbstractFormElement
     public function renderHtml($name, $value, $config)
     {
         $width = $config['width'];
-        //TYPO3 7.6 use $config['eval'][0]
-        $evalList = isset($config['eval']) ? (isset($config['eval'][0]) ? $config['eval'][0] : $config['eval']) : '';
+        $evalList = '';
+        if (isset($config['eval'])) {
+            //TYPO3 7.6 uses $config['eval'][0]
+            if (is_array($config['eval']) && isset($config['eval'][0])) {
+                $evalList = $config['eval'][0];
+            } else {
+                $evalList = $config['eval'];
+            }
+        }
         $evalList = Tx_Rnbase_Utility_Strings::trimExplode(',', $evalList, true);
 
         $classes = array();
