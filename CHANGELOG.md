@@ -3,7 +3,10 @@
 Changelog
 ---------
 
-v1.8.1 (??.??.2018)
+v1.8.2 (??.??.2018)
+
+v1.8.1 (21.06.2018)
+ * bugfix date input text element in TYPO3 8
 
 v1.8.0 (14.06.2018)
  * added method isTYPO90OrHigher
