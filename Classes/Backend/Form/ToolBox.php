@@ -24,6 +24,8 @@
 ***************************************************************/
 
 use TYPO3\CMS\Backend\Form\DataPreprocessor;
+use TYPO3\CMS\Backend\Form\Element\InputDateTimeElement;
+use TYPO3\CMS\Backend\Form\Element\InputTextElement;
 
 tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 tx_rnbase::load('Tx_Rnbase_Utility_Strings');
@@ -739,20 +741,59 @@ class Tx_Rnbase_Backend_Form_ToolBox
         if (tx_rnbase_util_Math::isInteger($value)) {
             $value += date('Z', $value);
         }
-        if(tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-            $this->getDoc()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
-            /* @var $inputField Tx_Rnbase_Backend_Form_Element_InputText */
-            $inputField = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Form_Element_InputText', $this->getTCEForm()->getNodeFactory(), array());
-            return $inputField->renderHtml($name, $value, [
-                'width' => 20,
-                'maxlength' => 20,
-                'eval' => 'datetime',
-            ]);
-        }
-        else {
+        if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
+            $this->initializeJavaScriptFormEngine();
+            $dateElementClass = tx_rnbase_util_TYPO3::isTYPO80OrHigher() ?
+                InputDateTimeElement::class : InputTextElement::class;
+
+            return tx_rnbase::makeInstance(
+                $dateElementClass,
+                $this->getTCEForm()->getNodeFactory(),
+                [
+                    'fieldName' => $name,
+                    'parameterArray' => [
+                        'itemFormElValue' => $value,
+                        'itemFormElName' => $name,
+                        'fieldConf' => [
+                            'config' => [
+                                'width' => 20,
+                                'maxlength' => 20,
+                                'eval' => 'datetime',
+                            ]
+                        ]
+                    ]
+                ]
+            )->render()['html'];
+        } else {
             return $this->createDateInput62($name, $value);
         }
     }
+
+    /**
+     * Inspired by TYPO3\CMS\Setup\Controller\SetupModuleController::__construct() and
+     * TYPO3\CMS\Backend\Form\FormResultCompiler::JSbottom()
+     *
+     * @return void
+     */
+    protected function initializeJavaScriptFormEngine()
+    {
+        $moduleUrl = Tx_Rnbase_Utility_Strings::quoteJSvalue(
+            Tx_Rnbase_Backend_Utility::getModuleUrl($this->getModule()->getName())
+        );
+        $usDateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '1' : '0';
+        $initializeFormEngineCallback = 'function(FormEngine) {
+            FormEngine.initialize(
+                ' . $moduleUrl . ',' . $usDateFormat . '
+            );
+        }';
+
+        $this->getDoc()->getPageRenderer()->loadRequireJsModule(
+            'TYPO3/CMS/Backend/FormEngine',
+            $initializeFormEngineCallback
+        );
+        $this->getDoc()->getPageRenderer()->addInlineSetting('FormEngine', 'formName', 'editform');
+    }
+
     /**
      * DateTime-Field rendering up to 6.2
      * @param string $name
