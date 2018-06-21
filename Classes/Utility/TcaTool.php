@@ -176,7 +176,7 @@ class Tx_Rnbase_Utility_TcaTool
             $tcaTable['columns'][$col]['config']['wizards']= $wizards;
         }
     }
-    protected function convertWiz2FieldControl($type, $wizard, $wizardOptions) {
+    protected static function convertWiz2FieldControl($type, $wizard, $wizardOptions) {
         $control = [
             'disabled' => false,
             'options' => [],
