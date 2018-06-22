@@ -151,7 +151,7 @@ abstract class tx_rnbase_action_BaseIOC
         $javascriptLibraryKeys = array('includeJSlibs', 'includeJSLibs');
         foreach ($javascriptLibraryKeys as $javascriptLibraryKey) {
             foreach ($this->getJavaScriptFilesByIncludePartConfId($javascriptLibraryKey) as $javaScriptConfId => $file) {
-                // external files should never concatenated. If you want
+                // external files should never be concatenated. If you want
                 // to do that, make them available locally
                 $pageRenderer->addJsLibrary(
                     $javaScriptConfId,
