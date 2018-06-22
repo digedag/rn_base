@@ -162,9 +162,20 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
         $files = $property->getValue(tx_rnbase_util_TYPO3::getPageRenderer());
 
         self::assertEquals('typo3conf/ext/rn_base/ext_emconf.php', $files['first']['file']);
+        self::assertFalse($files['first']['compress']);
+        self::assertFalse($files['first']['excludeFromConcatenation']);
+
         self::assertEquals('typo3conf/ext/rn_base/ext_icon.gif', $files['second']['file']);
+        self::assertFalse($files['second']['compress']);
+        self::assertFalse($files['second']['excludeFromConcatenation']);
+
         self::assertEquals('//www.dmk-ebusiness.de', $files['third']['file']);
+        self::assertFalse($files['third']['compress']);
+        self::assertTrue($files['third']['excludeFromConcatenation']);
+
         self::assertEquals('typo3conf/ext/rn_base/ext_conf_template.txt', $files['fourth']['file']);
+        self::assertFalse($files['fourth']['compress']);
+        self::assertFalse($files['fourth']['excludeFromConcatenation']);
     }
 
     /**
