@@ -3,7 +3,11 @@
 Changelog
 ---------
 
-v1.8.2 (??.??.2018)
+v1.8.3 (??.??.2018)
+
+v1.8.2 (22.06.2018)
+ * fixed PHP notice
+ * exclude external JS libraries from concatenation
 
 v1.8.1 (21.06.2018)
  * bugfix date input text element in TYPO3 8
