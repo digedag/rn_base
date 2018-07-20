@@ -28,7 +28,7 @@ tx_rnbase::load('Tx_Rnbase_Domain_Model_DataInterface');
  * Basic model with geter's and seter's
  *
  * @method int getUid()
- * @method int $uid)
+ * @method Tx_Rnbase_Domain_Model_Data setUid() setUid(int $uid)
  * @method bool hasUid()
  * @method Tx_Rnbase_Domain_Model_Data unsUid()
  *
