@@ -1064,7 +1064,8 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
 
         if (!$options['enablefieldsoff']) {
             if (is_object($GLOBALS['BE_USER']) &&
-                $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects']
+                $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] &&
+                !isset($options['enablefieldsfe'])
             ) {
                 $options['enablefieldsbe'] = 1;
                 if ($this->isFrontend()) {

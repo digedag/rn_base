@@ -120,7 +120,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
     /**
      * @group unit
      */
-    public function testDoSelectWithEnableFieldsFeSetsEnableFieldsForBeIfLoadHiddenObjectAndBeUser()
+    public function testDoSelectWithEnableFieldsFeLeavesEnableFieldsForFeIfLoadHiddenObjectAndBeUser()
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = 1;
         $options['sqlonly'] = 1;
@@ -131,14 +131,10 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
             ->will(self::returnValue(true));
         $sql = $databaseConnection->doSelect('*', 'tt_content', $options);
 
-        $this->assertRegExp('/deleted(` )?=/', $sql, 'deleted is missing');
-
-        $fields = array('hidden', 'starttime', 'endtime', 'fe_group');
+        $fields = array('hidden', 'starttime', 'endtime', 'fe_group', 'deleted');
         foreach ($fields as $field) {
-            $this->assertNotRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field.' found');
+            $this->assertRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field . ' not found');
         }
-
-        self::assertTrue(tx_rnbase_util_TYPO3::getTSFE()->no_cache, 'Cache nicht deaktiviert');
     }
 
     /**
@@ -148,7 +144,6 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = 1;
         $options['sqlonly'] = 1;
-        $options['enablefieldsfe'] = 1;
         $sql = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->doSelect('*', 'tt_content', $options);
 
         $this->assertRegExp('/deleted(` )?=/', $sql, 'deleted is missing');
@@ -164,7 +159,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
     /**
      * @group unit
      */
-    public function testDoSelectWithEnableFieldsFeSetsEnableFieldsForfeIfLoadHiddenObjectButNoBeUser()
+    public function testDoSelectWithEnableFieldsFeSetsEnableFieldsForFeIfLoadHiddenObjectButNoBeUser()
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = 1;
         $GLOBALS['BE_USER'] = null;
