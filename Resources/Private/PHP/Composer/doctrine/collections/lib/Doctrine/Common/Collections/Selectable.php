@@ -32,6 +32,7 @@ namespace Doctrine\Common\Collections;
  * EntityManager or Repositories.
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
+ *
  * @since  2.3
  */
 interface Selectable

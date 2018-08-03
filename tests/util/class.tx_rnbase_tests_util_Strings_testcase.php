@@ -25,9 +25,6 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
- *
- * @package TYPO3
- * @subpackage tx_rnbase
  * @author Rene Nitzsche <rene@system25.de>
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
@@ -50,7 +47,7 @@ class tx_rnbase_tests_util_Strings_testcase extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * Test for tx_rnbase_util_Strings::isLastPartOfStr
+     * Test for tx_rnbase_util_Strings::isLastPartOfStr.
      *
      * @return void
      *
@@ -71,23 +68,23 @@ class tx_rnbase_tests_util_Strings_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public function getIsLastPartOfStrData()
     {
-        return array(
-            __LINE__ => array(
+        return [
+            __LINE__ => [
                 'haystack' => 'test',
-                'needle' => 'test',
+                'needle'   => 'test',
                 'expected' => true,
-            ),
-            __LINE__ => array(
+            ],
+            __LINE__ => [
                 'haystack' => 'Hallo Welt',
-                'needle' => 'Welt',
+                'needle'   => 'Welt',
                 'expected' => true,
-            ),
-            __LINE__ => array(
+            ],
+            __LINE__ => [
                 'haystack' => 'Hallo Welt',
-                'needle' => 'Hallo',
+                'needle'   => 'Hallo',
                 'expected' => false,
-            ),
-        );
+            ],
+        ];
     }
 
     /**

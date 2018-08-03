@@ -25,21 +25,21 @@
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
- * Contains utility functions for ArrayObject
+ * Contains utility functions for ArrayObject.
  */
 class tx_rnbase_util_Arrays
 {
-
-  /**
-   * Overwrite some of the array values
-   *
-   * Overwrite a selection of the values by providing new ones
-   * in form of a data structure of the tx_div hash family.
-   *
-   * @param    mixed    hash array, SPL object or hash string ( i.e. "key1 : value1, key2 : valu2, ... ")
-   * @param    string   possible split charaters in case the first parameter is a hash string
-   * @return   void
-   */
+    /**
+     * Overwrite some of the array values.
+     *
+     * Overwrite a selection of the values by providing new ones
+     * in form of a data structure of the tx_div hash family.
+     *
+     * @param    mixed    hash array, SPL object or hash string ( i.e. "key1 : value1, key2 : valu2, ... ")
+     * @param    string   possible split charaters in case the first parameter is a hash string
+     *
+     * @return void
+     */
     public static function overwriteArray(&$arrayObj, $hashData, $splitCharacters = ',;:')
     {
         $array = self::toHashArray($hashData, $splitCharacters);
@@ -50,11 +50,12 @@ class tx_rnbase_util_Arrays
 
     /**
      * Converts the given mixed data into an hashArray
-     * Method taken from tx_div
+     * Method taken from tx_div.
      *
      * @param   mixed       data to be converted
      * @param   string      string of characters used to split first argument
-     * @return  array       an hashArray
+     *
+     * @return array an hashArray
      */
     private static function toHashArray($mixed, $splitCharacters = ',;:\s')
     {
@@ -69,7 +70,7 @@ class tx_rnbase_util_Arrays
         } elseif (is_object($mixed) && method_exists($mixed, 'getArrayCopy')) {
             $hashArray = $mixed->getArrayCopy();
         } else {
-            $hashArray = array();
+            $hashArray = [];
         }
 
         return $hashArray;
@@ -82,9 +83,10 @@ class tx_rnbase_util_Arrays
      *
      * @param array $original
      * @param array $overrule
-     * @param bool $addKeys
-     * @param bool $includeEmptyValues
-     * @param bool $enableUnsetFeature
+     * @param bool  $addKeys
+     * @param bool  $includeEmptyValues
+     * @param bool  $enableUnsetFeature
+     *
      * @return array
      */
     public static function mergeRecursiveWithOverrule(
@@ -108,12 +110,13 @@ class tx_rnbase_util_Arrays
     /**
      * @see \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule();
      *
-     * @param array $arr Data array which should be outputted
-     * @param mixed $valueList List of keys which should be listed in the output string. Pass a comma list or an array. An empty list outputs the whole array.
-     * @param int $valueLength Long string values are shortened to this length. Default: 20
+     * @param array $arr         Data array which should be outputted
+     * @param mixed $valueList   List of keys which should be listed in the output string. Pass a comma list or an array. An empty list outputs the whole array.
+     * @param int   $valueLength Long string values are shortened to this length. Default: 20
+     *
      * @return string Output string with key names and their value as string
      */
-    public static function arrayToLogString(array $arr, $valueList = array(), $valueLength = 20)
+    public static function arrayToLogString(array $arr, $valueList = [], $valueLength = 20)
     {
         $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
 
@@ -124,10 +127,12 @@ class tx_rnbase_util_Arrays
      * @see \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array
      * @see t3lib_div::xml2array
      *
-     * @param string $string XML content to convert into an array
-     * @param string $NSprefix The tag-prefix resolve, eg. a namespace like "T3:"
-     * @param bool $reportDocTag If set, the document tag will be set in the key "_DOCUMENT_TAG" of the output array
+     * @param string $string       XML content to convert into an array
+     * @param string $NSprefix     The tag-prefix resolve, eg. a namespace like "T3:"
+     * @param bool   $reportDocTag If set, the document tag will be set in the key "_DOCUMENT_TAG" of the output array
+     *
      * @return mixed If the parsing had errors, a string with the error message is returned. Otherwise an array with the content.
+     *
      * @see array2xml(),xml2arrayProcess()
      */
     public static function xml2array($string, $NSprefix = '', $reportDocTag = false)
@@ -138,11 +143,12 @@ class tx_rnbase_util_Arrays
     }
 
     /**
-     * Entfernt alle Keys welche nicht in needle vorhanden sind
+     * Entfernt alle Keys welche nicht in needle vorhanden sind.
      *
-     * @param   array   $aData      Zu filternde Daten
-     * @param   array   $aNeedle    Enthält die erlaubten Keys
-     * @return  array
+     * @param array $aData   Zu filternde Daten
+     * @param array $aNeedle Enthält die erlaubten Keys
+     *
+     * @return array
      */
     public static function removeNotIn(array $data, array $needle)
     {
@@ -160,7 +166,8 @@ class tx_rnbase_util_Arrays
     /**
      * @see \TYPO3\CMS\Core\Utility\ArrayUtility::arrayDiffAssocRecursive()
      */
-    public static function arrayDiffAssocRecursive(array $array1, array $array2) {
+    public static function arrayDiffAssocRecursive(array $array1, array $array2)
+    {
         if (tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
             $differenceArray = ArrayUtility::arrayDiffAssocRecursive($array1, $array2);
         } else {

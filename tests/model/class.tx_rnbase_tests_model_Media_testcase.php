@@ -25,12 +25,10 @@
 tx_rnbase::load('tx_rnbase_model_media');
 
 /**
- *
  * @author Hannes Bochmann <hannes.bochmann@dmk-business.de>
  */
 class tx_rnbase_tests_model_Media_testcase extends Tx_Phpunit_TestCase
 {
-
     /**
      * @group unit
      */
@@ -38,16 +36,16 @@ class tx_rnbase_tests_model_Media_testcase extends Tx_Phpunit_TestCase
     {
         $falModel = $this->getMock(
             'stdClass',
-            array('getProperties', 'getUid', 'getPublicUrl')
+            ['getProperties', 'getUid', 'getPublicUrl']
         );
         $falModel->expects($this->once())
             ->method('getProperties')
-            ->will($this->returnValue(array(
-                'title' => 'sample picture reference',
+            ->will($this->returnValue([
+                'title'       => 'sample picture reference',
                 'description' => 'this is a sample picture',
-                'otherField' => '/some/path',
-                'otherField2' => '/some/other/path'
-            )));
+                'otherField'  => '/some/path',
+                'otherField2' => '/some/other/path',
+            ]));
 
         $mediaModel = tx_rnbase::makeInstance('tx_rnbase_model_media', $falModel);
 

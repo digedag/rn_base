@@ -56,14 +56,11 @@ tx_rnbase::load('tx_rnbase_cache_Manager');
  *     include.params = myext|uid,tt_news|tt_news
  * }
  *
- * @package TYPO3
- * @subpackage tx_rnbase
  * @author Rene Nitzsche <rene@system25.de>
  * @author Michael Wagner <michael.wagner@dmk-ebusines.de>
  */
 class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHandler
 {
-
     /**
      * @var tx_rnbase_action_BaseIOC
      */
@@ -80,17 +77,17 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
     private $cacheKey = null;
 
     /**
-     * internal config value cache
+     * internal config value cache.
      *
      * @var array
      */
-    private $configCache = array();
+    private $configCache = [];
 
     /**
-     * Initializes the cache handler
+     * Initializes the cache handler.
      *
      * @param tx_rnbase_action_BaseIOC $controller
-     * @param string $confId
+     * @param string                   $confId
      */
     public function init(
         tx_rnbase_action_BaseIOC $controller,
@@ -137,13 +134,14 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
      *
      * @param string $confId
      * @param string $altValue
+     *
      * @return mixed
      */
     protected function getConfigValue($confId, $altValue = '')
     {
         if (!isset($this->configCache[$confId])) {
             $ret = $this->getConfigurations()->get(
-                $this->getConfId() . $confId,
+                $this->getConfId().$confId,
                 true
             );
 
@@ -154,7 +152,6 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
     }
 
     /**
-     *
      * @return string
      */
     protected function getCacheName()
@@ -163,7 +160,7 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
     }
 
     /**
-     * returns the cache lifetime. default is 1 minit
+     * returns the cache lifetime. default is 1 minit.
      *
      * @return int
      */
@@ -171,6 +168,7 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
     {
         return (int) $this->getConfigValue('expire', 60);
     }
+
     /**
      * Get a salt for the cache.
      *
@@ -180,9 +178,10 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
     {
         return $this->getConfigValue('salt', 'default');
     }
+
     /**
      * Returns the include params to the cache key.
-     * plugin.ty_myext.myaction._caching.include.params = qualifier|uid,tt_news|tt_news
+     * plugin.ty_myext.myaction._caching.include.params = qualifier|uid,tt_news|tt_news.
      *
      * @return int
      */
@@ -195,7 +194,7 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
     }
 
     /**
-     * returns the cache instance
+     * returns the cache instance.
      *
      * @return tx_rnbase_cache_ICache
      */
@@ -216,7 +215,7 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
         if ($this->cacheKey === null) {
             $keys = $this->getCacheKeyParts();
             $this->cacheKey = $this->cleanupCacheKey(
-                'AC-' . count($keys) . '-' . implode('-', $keys)
+                'AC-'.count($keys).'-'.implode('-', $keys)
             );
         }
 
@@ -228,7 +227,7 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
      */
     protected function getCacheKeyParts()
     {
-        $keys = array();
+        $keys = [];
         // TSFE hash, contains page id, domain, etc.
         $keys[] = tx_rnbase_util_TYPO3::getTSFE()->getHash();
         // the plugin ID (tt_content:uid or random md3, whenn rendered as USER in TS)
@@ -250,7 +249,7 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
             // the cobj to get the parameter value
             $cObj = $this->getConfigurations()->getCObj();
             foreach ($params as $param) {
-                $keys[] = 'P-' . $param . '-' . $cObj->getGlobal($param, $gp);
+                $keys[] = 'P-'.$param.'-'.$cObj->getGlobal($param, $gp);
             }
         }
 
@@ -260,21 +259,22 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
     /**
      * The key length is limited by the cache backend.
      * So we has to crop too long keys.
-     * default length is 250
+     * default length is 250.
      *
      * @param string $key
+     *
      * @return string
      */
     protected function cleanupCacheKey($key)
     {
         // cleanup the key
         $key = preg_replace(
-            array(
+            [
                 // replace unsupported signs
                 '/[^A-Za-z0-9_%\\-&]/',
                 // remove double underscores
-                '/_+/'
-            ),
+                '/_+/',
+            ],
             '_',
             $key
         );
@@ -282,18 +282,18 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
         // crop the key if to large
         $maxKeyLength = $this->getConfigValue('keylength', 250);
         if (strlen($key) > $maxKeyLength) {
-            $key = substr($key, 0, $maxKeyLength - 33) . '-' . md5($key);
+            $key = substr($key, 0, $maxKeyLength - 33).'-'.md5($key);
         }
 
         return $key;
     }
 
     /**
-     * Save output data to cache
+     * Save output data to cache.
      *
-     * @param string $output
+     * @param string                                     $output
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param string $confId
+     * @param string                                     $confId
      */
     public function setOutput($output)
     {
@@ -305,7 +305,7 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
     }
 
     /**
-     * Get output data from cache
+     * Get output data from cache.
      *
      * @return string the output string
      */

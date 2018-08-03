@@ -1,7 +1,9 @@
 <?php
+
 namespace Sys25\RnBase\Fluid\ViewHelper;
-use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
+
 use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
+use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 
 /***************************************************************
  * Copyright notice
@@ -27,16 +29,14 @@ use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Fluid\ViewHelper$Tx_Mktegutfe_ViewHelpers_PageBrowserViewHelper
+ * Sys25\RnBase\Fluid\ViewHelper$Tx_Mktegutfe_ViewHelpers_PageBrowserViewHelper.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
-
+class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+{
     /**
      * @var array
      */
@@ -45,7 +45,7 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
     /**
      * @var unknown
      */
-    private $pagePartsDef = array('normal','current','first','last','prev','next');
+    private $pagePartsDef = ['normal', 'current', 'first', 'last', 'prev', 'next'];
 
     /**
      * @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext
@@ -53,16 +53,17 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
     protected $renderingContext;
 
     /**
-     * An array of \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode
+     * An array of \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode.
      *
      * @var array
      */
     protected $childNodes = [];
 
     /**
-     * Setter for ChildNodes - as defined in ChildNodeAccessInterface
+     * Setter for ChildNodes - as defined in ChildNodeAccessInterface.
      *
      * @param array $childNodes Child nodes of this syntax tree node
+     *
      * @api
      */
     public function setChildNodes(array $childNodes)
@@ -71,13 +72,13 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
     }
 
     /**
-     * Handles rn_base PageBrowser
+     * Handles rn_base PageBrowser.
      *
-     * @param bool $hideIfSinglePage
-     * @param int $maxPages
-     * @param mixed $pageFloat Das richtet den Ausschnitt der gezeigten Seiten im PageBrowser ein.
-     * @param mixed $implode Seiten werden mittels dieses Trenners aufgelistet
-     * @param string $qualifier set this if you want to use another qualifier than the one defined in $configuration context
+     * @param bool   $hideIfSinglePage
+     * @param int    $maxPages
+     * @param mixed  $pageFloat        Das richtet den Ausschnitt der gezeigten Seiten im PageBrowser ein.
+     * @param mixed  $implode          Seiten werden mittels dieses Trenners aufgelistet
+     * @param string $qualifier        set this if you want to use another qualifier than the one defined in $configuration context
      *
      * @return string
      */
@@ -128,10 +129,10 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
     }
 
     /**
-     * @param int $pointer
+     * @param int    $pointer
      * @param string $pageFloat
-     * @param int $maxPages
-     * @param int $totalPages
+     * @param int    $maxPages
+     * @param int    $totalPages
      *
      * @return array[string]
      */
@@ -141,7 +142,7 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
         $maxPages,
         $totalPages
     ) {
-        $pageBrowserHtmlParts = array();
+        $pageBrowserHtmlParts = [];
 
         if ($this->notOnFirstPage($pointer)) {
             $pageBrowserHtmlParts[] = $this->renderFirstPage(0);
@@ -205,7 +206,7 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
         $firstPage,
         $lastPage
     ) {
-        $pageBrowserHtmlParts = array();
+        $pageBrowserHtmlParts = [];
         for ($i = $firstPage; $i < $lastPage; $i++) {
             $pageId = ($i == $pointer) ? 'current' : 'normal';
             switch ($pageId) {
@@ -245,12 +246,13 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
 
     /**
      * Ermittelt die erste und die letzte Seite, die im Browser gezeigt wird.
+     *
      * @return array with keys 'first' and 'last'
      */
     protected function getFirstAndLastPage($pointer, $pageFloat, $totalPages, $maxPages)
     {
         $pageFloat = $this->getPageFloat($pageFloat, $maxPages);
-        $ret = array();
+        $ret = [];
         if ($pageFloat > -1) {
             $ret['last'] = min($totalPages, max($pointer + 1 + $pageFloat, $maxPages));
             $ret['first'] = max(0, $ret['last'] - $maxPages);
@@ -261,7 +263,6 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
 
         return $ret;
     }
-
 
     protected function renderFirstPage($currentPage)
     {
@@ -276,7 +277,6 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
             'Sys25\\RnBase\\Fluid\\ViewHelper\\PageBrowser\\PrevPageViewHelper', $currentPage
         );
     }
-
 
     protected function renderNormalPage($currentPage)
     {
@@ -308,9 +308,10 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
 
     /**
      * iterates through child nodes and renders the given viewhelper.
-     * If then attribute is not set and no ThenViewHelper is found, all child nodes are rendered
+     * If then attribute is not set and no ThenViewHelper is found, all child nodes are rendered.
      *
      * @return string rendered ThenViewHelper or contents of <f:if> if no ThenViewHelper was found
+     *
      * @author Sebastian Kurfürst <sebastian@typo3.org>
      * @author Bastian Waidelich <bastian@typo3.org>
      * @author Stephan Reuther <stephan.reuther@das-medienkombinat.de>
@@ -339,10 +340,10 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
     }
 
     /**
-     * @param string $argumentsName
-     * @param string $closureName
-     * @param string $initializationPhpCode
-     * @param ViewHelperNode $node
+     * @param string           $argumentsName
+     * @param string           $closureName
+     * @param string           $initializationPhpCode
+     * @param ViewHelperNode   $node
      * @param TemplateCompiler $compiler
      */
     public function compile(
@@ -356,7 +357,6 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
         // an sich kein Problem. Bisher aber keinen weg gefunden, in renderStatic
         // an die childNodes zu kommen-
         $compiler->disable();
-        return null;
     }
 
     /**

@@ -32,36 +32,31 @@ class tx_rnbase_tests_util_SearchBase_testcase extends Tx_Phpunit_TestCase
         $options = $this->createOptions();
 
         // Test 1: Fehlerhaften Code in t3users korrigieren. Ein falsch gesetztes SEARCH_FIELD_JOINED muss ignoriert werden
-        $fields = array();
+        $fields = [];
         $fields[SEARCH_FIELD_JOINED][0]['cols'][] = 'FEUSER.UID';
         $ret = $searcher->search($fields, $options);
 
         $this->assertTrue(strpos($ret, 'AND  AND') === false, 'SQL is wrong');
     }
 
-    /**
-     */
     public function testSearchForCount()
     {
         $searcher = $this->getGenericSearcher();
-        $fields = array('FEUSER.uid' => array(OP_EQ_INT => 54));
+        $fields = ['FEUSER.uid' => [OP_EQ_INT => 54]];
         $options = $this->createOptions();
         $options['count'] = true;
 
         // SELECT FEUSER.* FROM fe_users AS FEUSER WHERE 1=1 AND FEUSER.uid = 54;
         $query = $searcher->search($fields, $options);
 
-
         // the count should be at the first
         $this->assertSame(0, strpos($query, 'SELECT count(*) as cnt FROM'));
         // check the uid where
         $this->assertContains(' FEUSER.uid = 54 ', $query);
 
-
         // SELECT FEUSER.* FROM fe_users AS FEUSER WHERE 1=1 AND FEUSER.uid = 54 GROUP BY FEUSER.usergroup
         $options['groupby'] = 'FEUSER.usergroup';
-        $query = $searcher->search($fields, $options);//
-
+        $query = $searcher->search($fields, $options); //
 
         // the count with the subselect should be at the first
         $this->assertSame(0, strpos($query, 'SELECT COUNT(*) AS cnt FROM'));
@@ -74,10 +69,9 @@ class tx_rnbase_tests_util_SearchBase_testcase extends Tx_Phpunit_TestCase
             strpos($query, ') AS COUNTWRAP WHERE 1=1')
         );
 
-
         // SELECT COUNT(FEUSER.uid) FROM fe_users AS FEUSER WHERE 1=1 AND FEUSER.uid = 54 GROUP BY FEUSER.usergroup
         $options['what'] = 'FEUSER.*, COUNT(FEUSER.uid) as usercount';
-        $query = $searcher->search($fields, $options);//
+        $query = $searcher->search($fields, $options); //
 
         // the count with the subselect should be at the first
         $this->assertSame(0, strpos($query, 'SELECT COUNT(*) AS cnt FROM'));
@@ -90,7 +84,6 @@ class tx_rnbase_tests_util_SearchBase_testcase extends Tx_Phpunit_TestCase
             strlen($query) - strlen(') AS COUNTWRAP WHERE 1=1'),
             strpos($query, ') AS COUNTWRAP WHERE 1=1')
         );
-
 
         // SELECT FEUSER.*, COUNT(FEUSER.uid) as usercount FROM fe_users AS FEUSER WHERE 1=1 AND FEUSER.uid = 54 GROUP BY FEUSER.usergroup HAVING usercount > 20
         $options['having'] = 'usercount > 20';
@@ -131,7 +124,7 @@ class tx_rnbase_tests_util_SearchBase_testcase extends Tx_Phpunit_TestCase
 
     private function createOptions()
     {
-        $options = array();
+        $options = [];
         $options['sqlonly'] = true;
         $options['searchdef']['basetable'] = 'fe_users';
         $options['searchdef']['usealias'] = true;
@@ -140,8 +133,8 @@ class tx_rnbase_tests_util_SearchBase_testcase extends Tx_Phpunit_TestCase
 
         return $options;
     }
+
     /**
-     *
      * @return tx_rnbase_util_SearchGeneric
      */
     private function getGenericSearcher()
@@ -155,11 +148,11 @@ class tx_rnbase_tests_util_SearchBase_testcase extends Tx_Phpunit_TestCase
     public function testSearchSetsEnableFieldsForJoinedTablesIfConfigured()
     {
         $searcher = tx_rnbase::makeInstance('tx_rnbase_tests_fixtures_classes_Searcher');
-        $fields = array(
-            'PAGE.uid' => array(OP_GT_INT => 0),
-            'CONTENT.uid' => array(OP_GT_INT => 0),
-            'FEUSER.uid' => array(OP_GT_INT => 0)
-        );
+        $fields = [
+            'PAGE.uid'    => [OP_GT_INT => 0],
+            'CONTENT.uid' => [OP_GT_INT => 0],
+            'FEUSER.uid'  => [OP_GT_INT => 0],
+        ];
         $options['sqlonly'] = true;
         $options['enableFieldsForAdditionalTableAliases'] = 'CONTENT';
 
@@ -188,11 +181,11 @@ class tx_rnbase_tests_util_SearchBase_testcase extends Tx_Phpunit_TestCase
     {
         $searcher = tx_rnbase::makeInstance('tx_rnbase_tests_fixtures_classes_Searcher');
         $searcher->setUseAlias(true);
-        $fields = array(
-            'PAGE.uid' => array(OP_GT_INT => 0),
-            'CONTENT.uid' => array(OP_GT_INT => 0),
-            'FEUSER.uid' => array(OP_GT_INT => 0)
-        );
+        $fields = [
+            'PAGE.uid'    => [OP_GT_INT => 0],
+            'CONTENT.uid' => [OP_GT_INT => 0],
+            'FEUSER.uid'  => [OP_GT_INT => 0],
+        ];
         $options['sqlonly'] = true;
         $options['enableFieldsForAdditionalTableAliases'] = 'CONTENT';
 
@@ -221,11 +214,11 @@ class tx_rnbase_tests_util_SearchBase_testcase extends Tx_Phpunit_TestCase
     {
         $searcher = tx_rnbase::makeInstance('tx_rnbase_tests_fixtures_classes_Searcher');
         $searcher->setUseAlias(true);
-        $fields = array(
-            'PAGE.uid' => array(OP_GT_INT => 0),
-            'CONTENT.uid' => array(OP_GT_INT => 0),
-            'FEUSER.uid' => array(OP_GT_INT => 0)
-        );
+        $fields = [
+            'PAGE.uid'    => [OP_GT_INT => 0],
+            'CONTENT.uid' => [OP_GT_INT => 0],
+            'FEUSER.uid'  => [OP_GT_INT => 0],
+        ];
         $options['sqlonly'] = true;
         $options['enableFieldsForAdditionalTableAliases'] = 'CONTENT,FEUSER';
 
@@ -254,11 +247,11 @@ class tx_rnbase_tests_util_SearchBase_testcase extends Tx_Phpunit_TestCase
     {
         $searcher = tx_rnbase::makeInstance('tx_rnbase_tests_fixtures_classes_Searcher');
         $searcher->setUseAlias(true);
-        $fields = array(
-            'PAGE.uid' => array(OP_GT_INT => 0),
-            'CONTENT.uid' => array(OP_GT_INT => 0),
-            'FEUSER.uid' => array(OP_GT_INT => 0)
-        );
+        $fields = [
+            'PAGE.uid'    => [OP_GT_INT => 0],
+            'CONTENT.uid' => [OP_GT_INT => 0],
+            'FEUSER.uid'  => [OP_GT_INT => 0],
+        ];
         $options['sqlonly'] = true;
 
         $query = $searcher->search($fields, $options);

@@ -26,30 +26,27 @@ tx_rnbase::load('Tx_Rnbase_Domain_Repository_AbstractRepository');
 tx_rnbase::load('Tx_Rnbase_Domain_Repository_InterfacePersistence');
 
 /**
- * Abstracte Persistance Repository
+ * Abstracte Persistance Repository.
  *
- * @package TYPO3
- * @subpackage Tx_Rnbase
  * @author Michael Wagner
  */
 abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnbase_Domain_Repository_InterfacePersistence
 {
-
     /**
-     * Creates an new model instance
+     * Creates an new model instance.
      *
      * @param array $record
      *
      * @return Tx_Rnbase_Domain_Model_DomainInterface
      */
     public function createNewModel(
-        array $record = array()
+        array $record = []
     ) {
         return $this->getEmptyModel()->setProperty($record);
     }
 
     /**
-     * Check the model wor the right instance
+     * Check the model wor the right instance.
      *
      * @param mixed $model
      *
@@ -59,14 +56,14 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
     {
         $wrapperClass = $this->getWrapperClass();
 
-        return ($model instanceof $wrapperClass);
+        return $model instanceof $wrapperClass;
     }
 
     /**
-     * Persists an model
+     * Persists an model.
      *
      * @param Tx_Rnbase_Domain_Model_DomainInterface $model
-     * @param array|Tx_Rnbase_Domain_Model_Data $options
+     * @param array|Tx_Rnbase_Domain_Model_Data      $options
      *
      * @throws Exception
      *
@@ -82,9 +79,9 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
         // check for right instance
         if (!$this->isModelWrapperClass($model)) {
             throw new Exception(
-                get_class($this) . '->persist only allows' .
-                ' handling instances of "' . $this->getWrapperClass() . '"' .
-                ', but "' . get_class($model) . '" given!'
+                get_class($this).'->persist only allows'.
+                ' handling instances of "'.$this->getWrapperClass().'"'.
+                ', but "'.get_class($model).'" given!'
             );
         }
 
@@ -143,7 +140,7 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
     }
 
     /**
-     * Bring db entry up to date
+     * Bring db entry up to date.
      *
      * @param Tx_Rnbase_Domain_Model_Data $transport
      *
@@ -157,7 +154,7 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
         // update the entity with the raw uid
         $this->getConnection()->doUpdate(
             $transport->getTableName(),
-            'uid=' . (int) $model->getProperty('uid'),
+            'uid='.(int) $model->getProperty('uid'),
             $transport->getData()
         );
 
@@ -165,7 +162,7 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
     }
 
     /**
-     * Creates a new entry in the db
+     * Creates a new entry in the db.
      *
      * @param Tx_Rnbase_Domain_Model_Data $transport
      *
@@ -202,10 +199,10 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
     }
 
     /**
-     * Refres the model with data after db operation and reset dirty flag
+     * Refres the model with data after db operation and reset dirty flag.
      *
      * @param Tx_Rnbase_Domain_Model_DomainInterface $model
-     * @param array $data
+     * @param array                                  $data
      *
      * @TODO there is curently no interface for a reset, implement one!
      *
@@ -228,14 +225,14 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
         // set the uid and force a record reload
         if ($model instanceof Tx_Rnbase_Domain_Model_Base) {
             $model->setProperty(
-                array('uid' => (int) $data['uid'])
+                ['uid' => (int) $data['uid']]
             );
             $model->reset();
         }
     }
 
     /**
-     * Returns the properties of the model, cleaned by the configured tca columns
+     * Returns the properties of the model, cleaned by the configured tca columns.
      *
      * @param Tx_Rnbase_Domain_Model_DomainInterface $model
      *
@@ -248,7 +245,7 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
 
         if (!is_array($columns) || empty($columns)) {
             // @TODO: throw exception or log into devlog?
-            return array();
+            return [];
         }
 
         tx_rnbase::load('tx_rnbase_util_Arrays');
@@ -256,7 +253,7 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
             $model->getProperty(),
             array_merge(
                 $columns,
-                array(
+                [
                     // allow to delete a entity
                     tx_rnbase_util_TCA::getDeletedFieldForTable(
                         $model->getTableName()
@@ -265,7 +262,7 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
                     tx_rnbase_util_TCA::getDisabledFieldForTable(
                         $model->getTableName()
                     ),
-                )
+                ]
             )
         );
 
@@ -273,7 +270,7 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
     }
 
     /**
-     * The database connection
+     * The database connection.
      *
      * @return Tx_Rnbase_Database_Connection
      */

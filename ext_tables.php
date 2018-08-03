@@ -1,4 +1,5 @@
 <?php
+
 defined('TYPO3_MODE') or die('Access denied.');
 
 if (TYPO3_MODE == 'BE') {
@@ -6,7 +7,7 @@ if (TYPO3_MODE == 'BE') {
     if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
         tx_rnbase::load('Tx_Rnbase_Backend_ModuleRunner');
         $GLOBALS['TBE_MODULES']['_dispatcher'] = array_merge(
-            array('Tx_Rnbase_Backend_ModuleRunner'),
+            ['Tx_Rnbase_Backend_ModuleRunner'],
             (array) $GLOBALS['TBE_MODULES']['_dispatcher']
         );
     }

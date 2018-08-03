@@ -23,10 +23,8 @@
  ***************************************************************/
 
 /**
- * Mcrypt module
+ * Mcrypt module.
  *
- * @package TYPO3
- * @subpackage Tx_Rnbase
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
@@ -51,6 +49,7 @@ class Tx_Rnbase_Utility_Crypt
      * Creates an crypt instance.
      *
      * @param array $config
+     *
      * @return Tx_Rnbase_Utility_Crypt
      */
     public static function getInstance($config = null)
@@ -59,9 +58,10 @@ class Tx_Rnbase_Utility_Crypt
     }
 
     /**
-     * The constructor
+     * The constructor.
      *
      * @param array $config
+     *
      * @return void
      */
     public function __construct($config = null)
@@ -72,7 +72,7 @@ class Tx_Rnbase_Utility_Crypt
     }
 
     /**
-     * Desctruct cipher module
+     * Desctruct cipher module.
      */
     public function __destruct()
     {
@@ -85,7 +85,7 @@ class Tx_Rnbase_Utility_Crypt
     }
 
     /**
-     * Returns the config
+     * Returns the config.
      *
      * @return Tx_Rnbase_Domain_Model_Data
      */
@@ -95,7 +95,7 @@ class Tx_Rnbase_Utility_Crypt
     }
 
     /**
-     * Returns the internal storage
+     * Returns the internal storage.
      *
      * @return Tx_Rnbase_Domain_Model_Data
      */
@@ -109,7 +109,7 @@ class Tx_Rnbase_Utility_Crypt
     }
 
     /**
-     * initialize the crypt module
+     * initialize the crypt module.
      *
      * @return void
      */
@@ -150,7 +150,7 @@ class Tx_Rnbase_Utility_Crypt
                                 MCRYPT_RAND
                             )
                         ),
-                        - mcrypt_enc_get_iv_size(
+                        -mcrypt_enc_get_iv_size(
                             $handler
                         )
                     )
@@ -200,9 +200,10 @@ class Tx_Rnbase_Utility_Crypt
     }
 
     /**
-     * Encrypts the given data using symmetric-key encryption
+     * Encrypts the given data using symmetric-key encryption.
      *
      * @param mixed $data
+     *
      * @return string
      */
     public function encrypt($data)
@@ -232,10 +233,12 @@ class Tx_Rnbase_Utility_Crypt
 
         return $encrypted;
     }
+
     /**
-     * Decrypts encrypted cipher using symmetric-key encryption
+     * Decrypts encrypted cipher using symmetric-key encryption.
      *
      * @param mixed $data
+     *
      * @return mixed
      */
     public function decrypt($data)

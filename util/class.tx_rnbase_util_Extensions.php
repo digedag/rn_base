@@ -23,20 +23,21 @@
  ***************************************************************/
 
 /**
- * Wrapperclass for TYPO3 Extension Manager
+ * Wrapperclass for TYPO3 Extension Manager.
+ *
  * @author René Nitzsche
  */
 class tx_rnbase_util_Extensions
 {
-
     /**
      * @param string $method
-     * @param array $arguments
+     * @param array  $arguments
+     *
      * @return mixed
      */
     public static function __callStatic($method, array $arguments)
     {
-        return call_user_func_array(array(static::getExtensionManagementUtilityClass(), $method), $arguments);
+        return call_user_func_array([static::getExtensionManagementUtilityClass(), $method], $arguments);
     }
 
     /**
@@ -49,14 +50,14 @@ class tx_rnbase_util_Extensions
 
     /**
      * Registers an Extbase module (main or sub) to the backend interface.
-     * FOR USE IN ext_tables.php FILES
+     * FOR USE IN ext_tables.php FILES.
      *
      * @param string $extensionName
      * @param string $mainModuleName
      * @param string $subModuleName
      * @param string $position
-     * @param array $controllerActions
-     * @param array $moduleConfiguration
+     * @param array  $controllerActions
+     * @param array  $moduleConfiguration
      *
      * @throws \InvalidArgumentException
      *
@@ -67,8 +68,8 @@ class tx_rnbase_util_Extensions
         $mainModuleName = '',
         $subModuleName = '',
         $position = '',
-        array $controllerActions = array(),
-        array $moduleConfiguration = array()
+        array $controllerActions = [],
+        array $moduleConfiguration = []
     ) {
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
             $extensionName,

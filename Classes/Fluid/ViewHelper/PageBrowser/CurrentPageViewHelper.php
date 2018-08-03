@@ -1,5 +1,7 @@
 <?php
+
 namespace Sys25\RnBase\Fluid\ViewHelper\PageBrowser;
+
 /***************************************************************
  * Copyright notice
  *
@@ -24,10 +26,8 @@ namespace Sys25\RnBase\Fluid\ViewHelper\PageBrowser;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Fluid\ViewHelper\PageBrowser$CurrentPageViewHelper
+ * Sys25\RnBase\Fluid\ViewHelper\PageBrowser$CurrentPageViewHelper.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later

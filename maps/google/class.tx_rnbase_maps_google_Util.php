@@ -27,38 +27,35 @@ tx_rnbase::load('tx_rnbase_util_Extensions');
 tx_rnbase::load('tx_rnbase_util_Strings');
 tx_rnbase::load('tx_rnbase_util_Logger');
 
-
-
 /**
  * .
  */
 class tx_rnbase_maps_google_Util
 {
-
     /**
      * Possible options
      * - fullinfo: if FALSE (default) there is latitude and longitude returned only
      * - key: Google API key to be used.
      *
      * @param string $addressString
-     * @param array $options fullInfo
+     * @param array  $options       fullInfo
+     *
      * @return array
      */
     public function lookupGeoCode($addressString, $options = [])
     {
-    	$fullInfo = false;
-    	if(is_array($options)) {
-    		$fullInfo = isset($options['fullinfo']) ? $options['fullinfo'] : false;
-    	}
-    	else {
-    		// backward compat
-    		$fullInfo = $options;
-    		$options = [];
-    	}
-    	$key = isset($options['key']) ? $options['key'] : '';
+        $fullInfo = false;
+        if (is_array($options)) {
+            $fullInfo = isset($options['fullinfo']) ? $options['fullinfo'] : false;
+        } else {
+            // backward compat
+            $fullInfo = $options;
+            $options = [];
+        }
+        $key = isset($options['key']) ? $options['key'] : '';
 
         $request = 'https://maps.googleapis.com/maps/api/geocode/json?address='.rawurlencode($addressString).'&key='.$key;
-        $result = array();
+        $result = [];
 
         $time = microtime(true);
         $curl = curl_init();
@@ -70,7 +67,7 @@ class tx_rnbase_maps_google_Util
         $requestTime = microtime(true) - $time;
 
         if ($requestTime > 2) {
-            tx_rnbase_util_Logger::notice('Long request time for Google address lookup ', 'rn_base', array('uri' => $request, 'time' => $requestTime));
+            tx_rnbase_util_Logger::notice('Long request time for Google address lookup ', 'rn_base', ['uri' => $request, 'time' => $requestTime]);
         }
 
         if ($response) {
@@ -89,13 +86,14 @@ class tx_rnbase_maps_google_Util
 
         return $result;
     }
+
     /**
-     *
      * @param string $street
      * @param string $zip
      * @param string $city
      * @param string $country
      * @param string $state
+     *
      * @throws Exception
      */
     public function lookupGeoCodeCached($street, $zip, $city, $country, $state = '')

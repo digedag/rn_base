@@ -25,22 +25,20 @@
 tx_rnbase::load('Tx_Rnbase_Domain_Model_DataInterface');
 
 /**
- * Basic model with geter's and seter's
+ * Basic model with geter's and seter's.
  *
  * @method int getUid()
  * @method Tx_Rnbase_Domain_Model_Data setUid() setUid(int $uid)
  * @method bool hasUid()
  * @method Tx_Rnbase_Domain_Model_Data unsUid()
  *
- * @package TYPO3
- * @subpackage rn_base
  * @author Michael Wagner
  */
 class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterface, IteratorAggregate
 {
     /**
      * A flag indication if the model was modified after initialisation
-     * (eg. by changing a property)
+     * (eg. by changing a property).
      *
      * @var bool
      */
@@ -51,10 +49,10 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
      *
      * @var array
      */
-    private $record = array();
+    private $record = [];
 
     /**
-     * Constructor of the data object
+     * Constructor of the data object.
      *
      * @param array|int|null $record
      *
@@ -66,10 +64,11 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
     }
 
     /**
-     * initialize the data
+     * initialize the data.
      *
      * @param array $record
-     * @return NULL
+     *
+     * @return null
      */
     protected function init($record = null)
     {
@@ -77,13 +76,11 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
             $this->record = $record;
         } else {
             $record = (int) $record;
-            $this->record = $record > 0 ? array('uid' => $record) : array();
+            $this->record = $record > 0 ? ['uid' => $record] : [];
         }
 
         // set the modified state to clean
         $this->resetCleanState();
-
-        return null;
     }
 
     /**
@@ -107,7 +104,7 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
     }
 
     /**
-     * Returns TRUE if the model has no data
+     * Returns TRUE if the model has no data.
      *
      * @return bool
      */
@@ -117,9 +114,10 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
     }
 
     /**
-     * create a new data model
+     * create a new data model.
      *
      * @param array $data
+     *
      * @return Tx_Rnbase_Domain_Model_Data
      */
     public static function getInstance($data = null)
@@ -135,7 +133,7 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
                 }
             }
         } else {
-            $data = array();
+            $data = [];
         }
 
         // use get_called_class for backwards compatibility!
@@ -143,10 +141,11 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
     }
 
     /**
-     * Setzt einen Wert oder ersetzt alle Werte
+     * Setzt einen Wert oder ersetzt alle Werte.
      *
      * @param string|array $property
-     * @param mixed $value
+     * @param mixed        $value
+     *
      * @return Tx_Rnbase_Domain_Model_Data
      */
     public function setProperty($property, $value = null)
@@ -168,6 +167,7 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
      * Liefert einen bestimmten Wert oder alle.
      *
      * @param string $property
+     *
      * @return string
      */
     public function getProperty($property = null)
@@ -183,6 +183,7 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
      * Liefert alle properties des Models.
      *
      * @param string $property
+     *
      * @return string
      */
     public function getProperties()
@@ -194,6 +195,7 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
      * Entfernt einen Wert.
      *
      * @param string $property
+     *
      * @return Tx_Rnbase_Domain_Model_Data
      */
     public function unsProperty($property)
@@ -211,6 +213,7 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
      * Prüft ob eine Spalte gesetzt ist.
      *
      * @param string $property
+     *
      * @return string
      */
     public function hasProperty($property)
@@ -222,6 +225,7 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
      * Prüft ob eine Spalte leer ist.
      *
      * @param string $property
+     *
      * @return bool
      */
     public function isPropertyEmpty($property)
@@ -230,9 +234,10 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
     }
 
     /**
-     * Converts field names for setters and geters
+     * Converts field names for setters and geters.
      *
      * @param string $string
+     *
      * @return string
      */
     protected function underscore($string)
@@ -243,11 +248,13 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
     }
 
     /**
-     * Set/Get attribute wrapper
+     * Set/Get attribute wrapper.
      *
      * @param string $method
-     * @param array $args
+     * @param array  $args
+     *
      * @throws Exception
+     *
      * @return mixed
      */
     public function __call($method, $args)
@@ -275,13 +282,12 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
                 return $this->hasProperty($key);
             default:
         }
+
         throw new Exception(
-            'Sorry, Invalid method ' . get_class($this) . '::' . $method .
-            '(' . print_r($args, 1) . ').',
+            'Sorry, Invalid method '.get_class($this).'::'.$method.
+            '('.print_r($args, 1).').',
             1406625817
         );
-
-        return null;
     }
 
     /**
@@ -297,7 +303,7 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
     }
 
     /**
-     * Attribute getter
+     * Attribute getter.
      *
      * @param string $var
      *
@@ -311,7 +317,7 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
     }
 
     /**
-     * Implementation of IteratorAggregate::getIterator()
+     * Implementation of IteratorAggregate::getIterator().
      *
      * WARNING: dont iterate over an object
      * and manipulate the value by reference like this:
@@ -335,7 +341,7 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
     {
         $array = $this->getProperties();
         foreach ($array as $key => $value) {
-            if ($value instanceof Tx_Rnbase_Domain_Model_Data) {
+            if ($value instanceof self) {
                 $array[$key] = $value->toArray();
             }
         }
@@ -344,29 +350,29 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
     }
 
     /**
-     * Wandelt das Model in einen String um
+     * Wandelt das Model in einen String um.
      *
      * @return string
      */
     public function toString()
     {
         $data = $this->getProperties();
-        $out  = get_class($this) . ' (' . CRLF;
+        $out = get_class($this).' ('.CRLF;
         foreach ($data as $key => $value) {
             $type = gettype($value);
             $value = is_bool($value) ? (int) $value : $value;
-            $value = is_string($value) ? '"' . $value . '"' : $value;
-            $value = is_object($value) ? implode(CRLF . TAB, explode(CRLF, (string) $value)) : $value;
+            $value = is_string($value) ? '"'.$value.'"' : $value;
+            $value = is_object($value) ? implode(CRLF.TAB, explode(CRLF, (string) $value)) : $value;
             $value = is_array($value) ? print_r($value, true) : $value;
-            $out .= TAB . $key . ' (' . $type . ')';
-            $out .= ': ' . $value . CRLF;
+            $out .= TAB.$key.' ('.$type.')';
+            $out .= ': '.$value.CRLF;
         }
 
-        return $out . ');';
+        return $out.');';
     }
 
     /**
-     * Wandelt das Model in einen String um
+     * Wandelt das Model in einen String um.
      *
      * @return string
      */

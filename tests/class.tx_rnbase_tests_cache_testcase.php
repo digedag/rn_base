@@ -38,16 +38,17 @@ class tx_rnbase_tests_cache_testcase extends Tx_Phpunit_TestCase
         $cache = self::createTYPO3Cache('__rnbaseTestTYPO3Cache__');
 
         $this->assertTrue(is_object($cache), 'Cache not instanciated');
-        $cache->set('key1', array('id' => '100'));
+        $cache->set('key1', ['id' => '100']);
         $arr = $cache->get('key1');
         $this->assertTrue(count($arr) == 1, 'Array has wrong size');
         $this->assertEquals($arr['id'], '100', 'Array content is wrong');
     }
 
     /**
-     * Returns the cache
+     * Returns the cache.
      *
      * @param string $name
+     *
      * @return tx_rnbase_cache_ICache
      */
     private static function createTYPO3Cache($name)

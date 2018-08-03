@@ -26,18 +26,15 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('Tx_Rnbase_Utility_Crypt');
 
 /**
- * Mcrypt
+ * Mcrypt.
  *
- * @package TYPO3
- * @subpackage rn_base
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
  *        GNU Lesser General Public License, version 3 or later
  */
 class Tx_Rnbase_Utility_CryptTest extends tx_rnbase_tests_BaseTestCase
 {
-    private $backup = array();
-
+    private $backup = [];
 
     /**
      * Sets up the fixture, for example, open a network connection.
@@ -48,7 +45,7 @@ class Tx_Rnbase_Utility_CryptTest extends tx_rnbase_tests_BaseTestCase
         $this->backup['encryptionKey']
             = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']
-            = 'FIKUmW4TMTJgcohLr2VZc6fIHD8yZV1Ey8pRurYEJiVErT5' .
+            = 'FIKUmW4TMTJgcohLr2VZc6fIHD8yZV1Ey8pRurYEJiVErT5'.
               'oYMAXVSxAPRZRZPwXUCroqD7REmnhxC64ck54gfiQP1fj3V';
     }
 
@@ -63,7 +60,7 @@ class Tx_Rnbase_Utility_CryptTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * Test the encrypt method
+     * Test the encrypt method.
      *
      * @return void
      *
@@ -71,31 +68,31 @@ class Tx_Rnbase_Utility_CryptTest extends tx_rnbase_tests_BaseTestCase
      * @test
      * @dataProvider getCryptionData
      */
-    public function testCryption(array $config = array())
+    public function testCryption(array $config = [])
     {
         $data = Tx_Rnbase_Domain_Model_Data::getInstance(
-            array(
-                'uid' => 5,
+            [
+                'uid'  => 5,
                 'body' => str_shuffle(
                     substr(
                         str_repeat(
-                            '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' . LF,
+                            '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.LF,
                             32768
                         ),
                         0,
                         10 // 32768
                     )
                 ),
-            )
+            ]
         );
 
         $crypt = Tx_Rnbase_Utility_Crypt::getInstance(
             array_merge(
-                array(
+                [
                     'cipher' => MCRYPT_BLOWFISH,
-                    'mode' => MCRYPT_MODE_ECB,
-                    'key' => 'th3S3cr3t',
-                ),
+                    'mode'   => MCRYPT_MODE_ECB,
+                    'key'    => 'th3S3cr3t',
+                ],
                 $config
             )
         );
@@ -115,35 +112,35 @@ class Tx_Rnbase_Utility_CryptTest extends tx_rnbase_tests_BaseTestCase
      */
     public function getCryptionData()
     {
-        return array(
-            __LINE__ => array(
-                'config' => array(
-                    'key' => 'FoOB4r',
+        return [
+            __LINE__ => [
+                'config' => [
+                    'key'       => 'FoOB4r',
                     'urlencode' => false,
-                    'base64' => false,
-                ),
-            ),
-            __LINE__ => array(
-                'config' => array(
-                    'key' => 'Crypt',
+                    'base64'    => false,
+                ],
+            ],
+            __LINE__ => [
+                'config' => [
+                    'key'       => 'Crypt',
                     'urlencode' => false,
-                    'base64' => true,
-                ),
-            ),
-            __LINE__ => array(
-                'config' => array(
-                    'key' => 'S3cure',
+                    'base64'    => true,
+                ],
+            ],
+            __LINE__ => [
+                'config' => [
+                    'key'       => 'S3cure',
                     'urlencode' => true,
-                    'base64' => false,
-                ),
-            ),
-            __LINE__ => array(
-                'config' => array(
-                    'key' => 'K4y',
+                    'base64'    => false,
+                ],
+            ],
+            __LINE__ => [
+                'config' => [
+                    'key'       => 'K4y',
                     'urlencode' => true,
-                    'base64' => true,
-                ),
-            ),
-        );
+                    'base64'    => true,
+                ],
+            ],
+        ];
     }
 }

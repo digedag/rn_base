@@ -28,7 +28,7 @@ class tx_rnbase_tests_configurations_testcase extends Tx_Phpunit_TestCase
     public function test_tsSetup()
     {
         $GLOBALS['TSFE'] = new tx_rnbase_tsfeDummy();
-        $GLOBALS['TSFE']->tmpl->setup['lib.']['match.'] = array('limit' => '10' , 'count' => '99');
+        $GLOBALS['TSFE']->tmpl->setup['lib.']['match.'] = ['limit' => '10', 'count' => '99'];
 
         $configurationArray['matchtable.']['match'] = '< lib.match';
         $configurationArray['matchtable.']['match.']['limit'] = '100';
@@ -39,13 +39,14 @@ class tx_rnbase_tests_configurations_testcase extends Tx_Phpunit_TestCase
         $this->assertEquals(100, $configurations->get('matchtable.match.limit'), 'Limit should be 100');
         $this->assertEquals(99, $configurations->get('matchtable.match.count'), 'count should be 99');
     }
-  /**
-   * Test flexform value with pointed keys.
-   */
+
+    /**
+     * Test flexform value with pointed keys.
+     */
     public function test_flexformSetup()
     {
         $GLOBALS['TSFE'] = new tx_rnbase_tsfeDummy();
-        $GLOBALS['TSFE']->tmpl->setup['lib.']['feuser.']['link'] = array('pid' => '10');
+        $GLOBALS['TSFE']->tmpl->setup['lib.']['feuser.']['link'] = ['pid' => '10'];
 
         $flexXml = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?> <T3FlexForms>  <data>  <sheet index="sDEF">  <language index="lDEF">  <field index="action">  <value index="vDEF">tx_rnuserregister_actions_Login</value>  </field>  <field index="feuserPages">  <value index="vDEF"></value>  </field>  <field index="feuserPagesRecursive">  <value index="vDEF"></value>  </field>  </language>  </sheet>  <sheet index="s_loginbox">  <language index="lDEF">  <field index="view.loginbox.header">  <value index="vDEF">Welcome</value>  </field>  <field index="view.loginbox.message">  <value index="vDEF"></value>   </field>  <field index="listview.fegroup.link.pid">  <value index="vDEF">25</value>   </field> <field index="detailview.feuser.link.pid">  <value index="vDEF">35</value>   </field>  </language>  </sheet>  </data> </T3FlexForms>';
         $configurationArray['template'] = 'test.html';
@@ -67,10 +68,10 @@ class tx_rnbase_tests_configurations_testcase extends Tx_Phpunit_TestCase
         $this->assertEquals('1', $configurations->get('view.dummy'), 'Dummy should be 1');
 
         $pid = $configurations->get('listview.fegroup.link.pid');
-        $this->assertEquals('25', $pid, 'PID from flexform should be 25 but was: ' . $pid);
+        $this->assertEquals('25', $pid, 'PID from flexform should be 25 but was: '.$pid);
 
         $pid = $configurations->get('detailview.feuser.link.pid');
-        $this->assertEquals('35', $pid, 'PID from flexform should be 35 but was: ' . $pid);
+        $this->assertEquals('35', $pid, 'PID from flexform should be 35 but was: '.$pid);
     }
 
     /**
@@ -83,29 +84,29 @@ class tx_rnbase_tests_configurations_testcase extends Tx_Phpunit_TestCase
      *  lib.rnbase.child = < lib.rnbase.root
      *  lib.rnbase.child {
      *      name = Child
-     *  }
+     *  }.
      */
     public function test_TsReference()
     {
         $GLOBALS['TSFE'] = new tx_rnbase_tsfeDummy();
-        $GLOBALS['TSFE']->tmpl->setup['lib.']['rnbase.'] = array();
+        $GLOBALS['TSFE']->tmpl->setup['lib.']['rnbase.'] = [];
         $lib = &$GLOBALS['TSFE']->tmpl->setup['lib.']['rnbase.'];
-        $lib['root.'] = array(
-            'root' => 'Root',
+        $lib['root.'] = [
+            'root'    => 'Root',
             'version' => '0.1.0',
-        );
+        ];
         $lib['child'] = '< lib.rnbase.root';
-        $lib['child.'] = array(
+        $lib['child.'] = [
             'child' => 'Child',
-        );
+        ];
         /* @var $configurations Tx_Rnbase_Configuration_ProcessorInterface */
         $configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
-        $configurationArray = array(
-            'recursive' => '< lib.rnbase.child',
-            'recursive.' => array(
-                'current' => 'This'
-            ),
-        );
+        $configurationArray = [
+            'recursive'  => '< lib.rnbase.child',
+            'recursive.' => [
+                'current' => 'This',
+            ],
+        ];
         $configurations->init($configurationArray, $configurations->getCObj(), 'rnbase', 'rnbase');
 
         $noDot = $configurations->get('recursive');
@@ -123,6 +124,7 @@ class tx_rnbase_tests_configurations_testcase extends Tx_Phpunit_TestCase
 class tx_rnbase_tsfeDummy
 {
     public $tmpl;
+
     public function __construct()
     {
         $this->tmpl = new tx_rnbase_templateDummy();

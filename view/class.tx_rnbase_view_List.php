@@ -1,39 +1,14 @@
 <?php
-/**
- * @package tx_rnbase
- * @subpackage tx_rnbase_view
- *
- *  Copyright notice
- *
- *  (c) 2011-2017 René Nitzsche <rene@system25.de>
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- */
+
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
 tx_rnbase::load('tx_rnbase_view_Base');
 
 /**
- * Generic list view
- * @package tx_rnbase
- * @subpackage tx_rnbase_view
+ * Generic list view.
+ *
  * @author René Nitzsche
  */
 class tx_rnbase_view_List extends tx_rnbase_view_Base
@@ -51,10 +26,11 @@ class tx_rnbase_view_List extends tx_rnbase_view_Base
      * $viewData in order to read its special configuration,
      * including redirection options etc.
      *
-     * @param string $template
-     * @param ArrayObject   $viewData
-     * @param Tx_Rnbase_Configuration_ProcessorInterface    $configurations
-     * @param tx_rnbase_util_FormatUtil $formatter
+     * @param string                                     $template
+     * @param ArrayObject                                $viewData
+     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param tx_rnbase_util_FormatUtil                  $formatter
+     *
      * @return mixed Ready rendered output or HTTP redirect
      */
     public function createOutput($template, &$viewData, &$configurations, &$formatter)
@@ -66,7 +42,7 @@ class tx_rnbase_view_List extends tx_rnbase_view_Base
         $confId = $this->getController()->getConfId();
 
         $markerArray = $formatter->getItemMarkerArrayWrapped($markerData, $confId.'markers.');
-        $subpartArray = array();
+        $subpartArray = [];
 
         $itemPath = $this->getItemPath($configurations, $confId);
         if ($filter && $filter->hideResult()) {
@@ -101,7 +77,7 @@ class tx_rnbase_view_List extends tx_rnbase_view_Base
     }
 
     /**
-     * Render other entities provided by plugin
+     * Render other entities provided by plugin.
      *
      * $viewdata->offsetSet(\tx_rnbase_view_List::VIEWDATA_ENTITIES, [
      *   'promotion' => [
@@ -111,11 +87,12 @@ class tx_rnbase_view_List extends tx_rnbase_view_Base
      *    ]
      *  );
      *
-     * @param string $template
-     * @param array $entities
-     * @param ArrayObject   $viewData
+     * @param string                    $template
+     * @param array                     $entities
+     * @param ArrayObject               $viewData
      * @param tx_rnbase_util_FormatUtil $formatter
-     * @param string $confId
+     * @param string                    $confId
+     *
      * @return []
      */
     protected function renderEntities($template, $entities, $viewData, $formatter, $confId)
@@ -166,6 +143,7 @@ class tx_rnbase_view_List extends tx_rnbase_view_Base
      * createOutput automatisch als $template übergeben.
      *
      * @param \ArrayObject $viewData
+     *
      * @return string
      */
     public function getMainSubpart(&$viewData)
@@ -173,7 +151,7 @@ class tx_rnbase_view_List extends tx_rnbase_view_Base
         $confId = $this->getController()->getConfId();
         $subpart = $this->getController()->getConfigurations()->get($confId.'template.subpart');
         if (!$subpart) {
-            $subpart = '###'. strtoupper(substr($confId, 0, strlen($confId) - 1)) . '###';
+            $subpart = '###'.strtoupper(substr($confId, 0, strlen($confId) - 1)).'###';
         }
 
         return $subpart;

@@ -25,7 +25,7 @@
 tx_rnbase::load('tx_rnbase_util_IListProvider');
 
 /**
- * Provide data for ListBuilder
+ * Provide data for ListBuilder.
  */
 class tx_rnbase_util_ListProvider implements tx_rnbase_util_IListProvider
 {
@@ -36,8 +36,10 @@ class tx_rnbase_util_ListProvider implements tx_rnbase_util_IListProvider
         $this->fields = $fields;
         $this->options = $options;
     }
+
     /**
      * Starts iteration over all items. The callback method is called for each single item.
+     *
      * @param array $callback
      */
     public function iterateAll($itemCallback)

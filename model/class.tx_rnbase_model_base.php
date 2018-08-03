@@ -28,7 +28,6 @@ tx_rnbase::load('tx_rnbase_util_TCA');
 // Die Datenbank-Klasse
 tx_rnbase::load('tx_rnbase_util_DB');
 
-
 /**
  * Basisklasse für die meisten Model-Klassen. Sie stellt einen Konstruktor bereit, der sowohl
  * mit einer UID als auch mit einem Datensatz aufgerufen werden kann. Die Daten werden
@@ -44,7 +43,6 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements Tx_Rnbase_Dom
     public $uid;
 
     /**
-     *
      * @var string|0
      */
     private $tableName = 0;
@@ -55,7 +53,8 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements Tx_Rnbase_Dom
      * Ensure to overwrite getTableName()!
      *
      * @param mixed $rowOrUid
-     * @return NULL
+     *
+     * @return null
      */
     public function __construct($rowOrUid = null)
     {
@@ -68,7 +67,8 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements Tx_Rnbase_Dom
      * Ensure to overwrite getTableName()!
      *
      * @param mixed $rowOrUid
-     * @return NULL
+     *
+     * @return null
      */
     public function tx_rnbase_model_base($rowOrUid = null)
     {
@@ -80,7 +80,8 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements Tx_Rnbase_Dom
      * As the result the instance should be completly loaded.
      *
      * @param mixed $rowOrUid
-     * @return NULL
+     *
+     * @return null
      */
     public function init($rowOrUid = null)
     {
@@ -91,21 +92,20 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements Tx_Rnbase_Dom
             $rowOrUid = (int) $rowOrUid;
             $this->uid = $rowOrUid;
             if ($rowOrUid === 0) {
-                $this->record = array();
+                $this->record = [];
             } elseif ($this->getTableName()) {
                 $this->record = tx_rnbase_util_DB::getRecord($this->getTableName(), $this->uid);
             }
             // Der Record sollte immer ein Array sein
-            $this->record = is_array($this->record) ? $this->record : array();
+            $this->record = is_array($this->record) ? $this->record : [];
         }
 
         // set the modified state to clean
         $this->resetCleanState();
-
-        return null;
     }
+
     /**
-     * Returns the records uid
+     * Returns the records uid.
      *
      * @return int
      */
@@ -135,6 +135,7 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements Tx_Rnbase_Dom
 
         return $label;
     }
+
     /**
      * Returns the Language id of the record.
      *
@@ -158,6 +159,7 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements Tx_Rnbase_Dom
      * Returns the creation date of the record as DateTime object.
      *
      * @param DateTimeZone $timezone
+     *
      * @return DateTime
      */
     public function getCreationDateTime($timezone = null)
@@ -169,7 +171,7 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements Tx_Rnbase_Dom
             if (!$this->isPropertyEmpty($field)) {
                 $tstamp = (int) $this->getProperty($field);
                 tx_rnbase::load('tx_rnbase_util_Dates');
-                $datetime = tx_rnbase_util_Dates::getDateTime('@' . $tstamp);
+                $datetime = tx_rnbase_util_Dates::getDateTime('@'.$tstamp);
             }
         }
 
@@ -190,7 +192,7 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements Tx_Rnbase_Dom
             if (!$this->isPropertyEmpty($field)) {
                 $tstamp = (int) $this->getProperty($field);
                 tx_rnbase::load('tx_rnbase_util_Dates');
-                $datetime = tx_rnbase_util_Dates::getDateTime('@' . $tstamp);
+                $datetime = tx_rnbase_util_Dates::getDateTime('@'.$tstamp);
             }
         }
 
@@ -198,7 +200,7 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements Tx_Rnbase_Dom
     }
 
     /**
-     * Reload this records from database
+     * Reload this records from database.
      *
      * @return tx_rnbase_model_base
      */
@@ -214,8 +216,9 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements Tx_Rnbase_Dom
 
         return $this;
     }
+
     /**
-     * Liefert den aktuellen Tabellenname
+     * Liefert den aktuellen Tabellenname.
      *
      * @return string Tabellenname
      */
@@ -225,9 +228,10 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements Tx_Rnbase_Dom
     }
 
     /**
-     * Setzt den aktuellen Tabellenname
+     * Setzt den aktuellen Tabellenname.
      *
      * @param string $tableName
+     *
      * @return tx_rnbase_model_base
      */
     public function setTableName($tableName = 0)
@@ -261,14 +265,15 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements Tx_Rnbase_Dom
      * validates the data of a model with the tca definition of a its table.
      *
      * @param array $options
-     *     only_record_fields: validates only fields included in the record (default)
+     *                       only_record_fields: validates only fields included in the record (default)
+     *
      * @return bool
      */
     public function validateProperties($options = null)
     {
         return tx_rnbase_util_TCA::validateModel(
             $this,
-            $options === null ? array('only_record_fields' => true) : $options
+            $options === null ? ['only_record_fields' => true] : $options
         );
     }
 
@@ -303,7 +308,7 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements Tx_Rnbase_Dom
     }
 
     /**
-     * Returns the record
+     * Returns the record.
      *
      * @return array
      */
@@ -326,7 +331,7 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements Tx_Rnbase_Dom
     }
 
     /**
-     * Liefert die TCA-Definition der in der Tabelle definierten Spalten
+     * Liefert die TCA-Definition der in der Tabelle definierten Spalten.
      *
      * @return array
      */
@@ -345,18 +350,19 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements Tx_Rnbase_Dom
      * <pre>
      * event.date.strftime = %d-%b-%y
      * </pre>
-     * Hier wäre <b>event.</b> die $confId und <b>date</b> der Spaltename
+     * Hier wäre <b>event.</b> die $confId und <b>date</b> der Spaltename.
      *
-     * @param object $formatter ein voll initialisierter Formatter für den Wrap
+     * @param object $formatter  ein voll initialisierter Formatter für den Wrap
      * @param string $columnName der Name der Spalte
      * @param string $baseConfId ID der übergeordneten Config
-     * @param string $colConfId ID der Spalte in der Config zum Aussetzen der Konvention (muss mit Punkt enden)
+     * @param string $colConfId  ID der Spalte in der Config zum Aussetzen der Konvention (muss mit Punkt enden)
+     *
      * @deprecated
      */
     public function getColumnWrapped($formatter, $columnName, $baseConfId, $colConfId = '')
     {
-        $colConfId = (strlen($colConfId)) ? $colConfId : $columnName . '.';
+        $colConfId = (strlen($colConfId)) ? $colConfId : $columnName.'.';
 
-        return $formatter->wrap($this->record[$columnName], $baseConfId . $colConfId);
+        return $formatter->wrap($this->record[$columnName], $baseConfId.$colConfId);
     }
 }

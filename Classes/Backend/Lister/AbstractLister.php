@@ -25,7 +25,7 @@
 tx_rnbase::load('Tx_Rnbase_Backend_Decorator_InterfaceDecorator');
 
 /**
- * Abstract Lister
+ * Abstract Lister.
  *
  * $lister = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Lister_AbstractLister', $mod);
  * $markerArray = array_merge(
@@ -33,21 +33,19 @@ tx_rnbase::load('Tx_Rnbase_Backend_Decorator_InterfaceDecorator');
  *  $lister->renderListMarkers()
  * );
  *
- * @package TYPO3
- * @subpackage Tx_Rnbase
  * @author Michael Wagner
  */
 abstract class Tx_Rnbase_Backend_Lister_AbstractLister
 {
     /**
-     * The storage for this lister
+     * The storage for this lister.
      *
      * @var Tx_Rnbase_Domain_Model_Data
      */
     private $storage = null;
 
     /**
-     * Returns the repository
+     * Returns the repository.
      *
      * @return Tx_Rnbase_Domain_Repository_InterfaceSearch
      */
@@ -69,22 +67,22 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param tx_rnbase_mod_BaseModule $module
+     * @param tx_rnbase_mod_BaseModule          $module
      * @param array|Tx_Rnbase_Domain_Model_Data $options
      */
     public function __construct(
         tx_rnbase_mod_BaseModule $module,
-        $options = array()
+        $options = []
     ) {
         tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
         $this->storage = Tx_Rnbase_Domain_Model_Data::getInstance(
-            array(
-                'module' => $module,
+            [
+                'module'  => $module,
                 'options' => $options,
-                'filter' => array(),
-            )
+                'filter'  => [],
+            ]
         );
 
         $this->init();
@@ -101,7 +99,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     }
 
     /**
-     * Can be overridden to initialize the lister
+     * Can be overridden to initialize the lister.
      *
      * @return void
      */
@@ -110,7 +108,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     }
 
     /**
-     * Returns the module
+     * Returns the module.
      *
      * @return Tx_Rnbase_Domain_Model_Data
      */
@@ -120,7 +118,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     }
 
     /**
-     * Returns the module
+     * Returns the module.
      *
      * @return tx_rnbase_mod_IModule
      */
@@ -130,7 +128,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     }
 
     /**
-     * Returns the configurations
+     * Returns the configurations.
      *
      * @return Tx_Rnbase_Configuration_ProcessorInterface
      */
@@ -140,7 +138,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     }
 
     /**
-     * Returns an instance of form tool from the module
+     * Returns an instance of form tool from the module.
      *
      * @return tx_rnbase_util_FormTool
      */
@@ -150,7 +148,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     }
 
     /**
-     * Returns the options or a specific property of the options
+     * Returns the options or a specific property of the options.
      *
      * @return Tx_Rnbase_Domain_Model_Data|mixed
      */
@@ -160,7 +158,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     }
 
     /**
-     * The Pager instance for the current listing
+     * The Pager instance for the current listing.
      *
      * @return tx_rnbase_util_BEPager
      */
@@ -170,7 +168,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
             $this->getStorage()->setPager(
                 tx_rnbase::makeInstance(
                     'tx_rnbase_util_BEPager',
-                    $this->getListerId() . 'Pager',
+                    $this->getListerId().'Pager',
                     $this->getModule()->getName(),
                     $this->getOptions()->getPid()
                 )
@@ -181,7 +179,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     }
 
     /**
-     * The filters the current listing
+     * The filters the current listing.
      *
      * @return Tx_Rnbase_Domain_Model_Data
      */
@@ -205,9 +203,9 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
             );
             if (!$decorator instanceof Tx_Rnbase_Backend_Decorator_InterfaceDecorator) {
                 throw new UnexpectedValueException(
-                    'The Decorator has to be an instance of' .
-                    ' "Tx_Rnbase_Backend_Decorator_InterfaceDecorator"' .
-                    ' but "' . get_class($decorator) . '" given.'
+                    'The Decorator has to be an instance of'.
+                    ' "Tx_Rnbase_Backend_Decorator_InterfaceDecorator"'.
+                    ' but "'.get_class($decorator).'" given.'
                 );
             }
             $this->getStorage()->setDecorator($decorator);
@@ -218,7 +216,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
 
     /**
      * The classname of the decorator to use.
-     * Has to implement the interface "Tx_Rnbase_Backend_Decorator_InterfaceDecorator"
+     * Has to implement the interface "Tx_Rnbase_Backend_Decorator_InterfaceDecorator".
      *
      * @return string
      */
@@ -235,7 +233,6 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
      * Returns the columns of the listing.
      * Dont override this in child class, use addDecoratorColumns instead!
      *
-     * @access private
      * @internal
      *
      * @return array
@@ -243,7 +240,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     protected function getDecoratorColumns()
     {
         if (!$this->getStorage()->hasDecoratorColumnsr()) {
-            $columns = array();
+            $columns = [];
             $this->addDecoratorColumns($columns);
             $this->getStorage()->setDecoratorColumns($columns);
         }
@@ -312,13 +309,13 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     }
 
     /**
-     * Renders the form and list and returns the filled marker array
+     * Renders the form and list and returns the filled marker array.
      *
      * @return array
      */
     public function renderListMarkers()
     {
-        $markerArray = array();
+        $markerArray = [];
 
         $markerArray['###SEARCHFORM###'] = $this->renderSearchForm();
 
@@ -330,7 +327,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     }
 
     /**
-     * Renders the Search Form
+     * Renders the Search Form.
      *
      * @return string
      */
@@ -351,14 +348,14 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
                     implode(' ', $filter)
                 );
             }
-            $out = '<table class="filters">' . $out . '</table>';
+            $out = '<table class="filters">'.$out.'</table>';
         }
 
         return $out;
     }
 
     /**
-     * Renders the result table html
+     * Renders the result table html.
      *
      * @return string
      */
@@ -368,7 +365,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
 
         if (empty($items)) {
             return $this->getConfigurations()->getLL(
-                'label_no_' . strtolower($this->getListerId()) . '_found'
+                'label_no_'.strtolower($this->getListerId()).'_found'
             );
         }
 
@@ -387,7 +384,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     }
 
     /**
-     * Renders the Pager
+     * Renders the Pager.
      *
      * @return string
      */
@@ -408,7 +405,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     }
 
     /**
-     * Returns the count of the complete list
+     * Returns the count of the complete list.
      *
      * @return int
      */
@@ -426,7 +423,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     }
 
     /**
-     * Returns the list with the filtered rows
+     * Returns the list with the filtered rows.
      *
      * @return array|Traversable
      */
@@ -472,17 +469,17 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
 
         $filter = $this->initFilter()->getFilter();
 
-        $fields = $options = array();
+        $fields = $options = [];
 
         $options['distinct'] = 1;
 
         // build the free text search
         if ($filter->hasSearchword()) {
-            $fields[SEARCH_FIELD_JOINED][] = array(
-                'value' => trim($filter->getSearchword()),
-                'cols' => $this->getSearchColumns(),
+            $fields[SEARCH_FIELD_JOINED][] = [
+                'value'    => trim($filter->getSearchword()),
+                'cols'     => $this->getSearchColumns(),
                 'operator' => OP_LIKE,
-            );
+            ];
         }
 
         // check the disabled filter
@@ -497,13 +494,13 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
         $this->prepareSorting($options);
         $this->prepareFieldsAndOptions($fields, $options);
 
-        $this->getStorage()->setFieldsAndOptions(array($fields, $options));
+        $this->getStorage()->setFieldsAndOptions([$fields, $options]);
 
-        return array($fields, $options);
+        return [$fields, $options];
     }
 
     /**
-     * Preper sorting of columns
+     * Preper sorting of columns.
      *
      * @param array $options
      *
@@ -525,16 +522,17 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
             // das Label in die notwendige SQL-Anweisung umwandeln. Normalerweise ein Spaltenname.
             $sortCol = $cols[$sortField]['sortable'];
             // Wenn am Ende ein Punkt steht, muss die Spalte zusammengefügt werden.
-            $sortCol = substr($sortCol, -1) === '.' ? $sortCol . $sortField : $sortCol;
+            $sortCol = substr($sortCol, -1) === '.' ? $sortCol.$sortField : $sortCol;
             $options['orderby'][$sortCol] = (strtolower($sortRev) == 'asc' ? 'asc' : 'desc');
         }
     }
+
     /**
      * Prepares the fields and options.
      * Childclasses should override this method to extend the filters!
      *
-     * @param   array   $fields
-     * @param   array   $options
+     * @param array $fields
+     * @param array $options
      *
      * @return void
      */
@@ -560,14 +558,14 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
         return tx_rnbase_mod_Util::getModuleValue(
             $key,
             $this->getModule(),
-            array(
-                'changed' => tx_rnbase_parameters::getPostOrGetParameter('SET')
-            )
+            [
+                'changed' => tx_rnbase_parameters::getPostOrGetParameter('SET'),
+            ]
         );
     }
 
     /**
-     * Initializes the filter array
+     * Initializes the filter array.
      *
      * @return Tx_Rnbase_Backend_Lister_AbstractLister
      */
@@ -582,18 +580,18 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
 
         $filters->setProperty(
             'searchword',
-            $this->getModuleValue($this->getListerId() . 'Searchword')
+            $this->getModuleValue($this->getListerId().'Searchword')
         );
         $filters->setProperty(
             'disabled',
-            $this->getModuleValue($this->getListerId() . 'Disabled')
+            $this->getModuleValue($this->getListerId().'Disabled')
         );
 
         return $this;
     }
 
     /**
-     * Returns the formdata and stores the filters
+     * Returns the formdata and stores the filters.
      *
      * @return array
      */
@@ -605,39 +603,39 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
         }
 
         $filter = $this->initFilter()->getFilter();
-        $data = array();
+        $data = [];
 
         if ($this->getSearchColumns()) {
-            $data['searchword'] = array(
+            $data['searchword'] = [
                 'field' => $this->getFormTool()->createTxtInput(
-                    'SET[' . $this->getListerId() . 'Searchword]',
+                    'SET['.$this->getListerId().'Searchword]',
                     $filter->getProperty('searchword'),
                     10
                 ),
                 'label' => '###LABEL_SEARCH###',
-            );
+            ];
         }
 
-        $data['disabled'] = array(
+        $data['disabled'] = [
             'field' => Tx_Rnbase_Backend_Utility::getFuncMenu(
                 $this->getOptions()->getPid(),
-                'SET[' . $this->getListerId() . 'Disabled]',
+                'SET['.$this->getListerId().'Disabled]',
                 $filter->getProperty('disabled'),
-                array(
+                [
                     0 => $this->getConfigurations()->getLL('label_select_hide_hidden'),
                     1 => $this->getConfigurations()->getLL('label_select_show_hidden'),
-                )
+                ]
             ),
             'label' => '###LABEL_HIDDEN###',
-        );
+        ];
 
-        $data['updatebutton'] = array(
+        $data['updatebutton'] = [
             'field' => $this->getFormTool()->createSubmit(
-                $this->getListerId() . 'Search',
+                $this->getListerId().'Search',
                 '###LABEL_BTN_SEARCH###'
             ),
             'label' => '',
-        );
+        ];
 
         $this->getStorage()->setSearchFormData($data);
 
@@ -645,7 +643,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     }
 
     /**
-     * Returns the Fields for the free text search
+     * Returns the Fields for the free text search.
      *
      * @return array
      */
@@ -659,9 +657,9 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
         }
 
         if (!is_array($columns)) {
-            $columns = array(
-                'uid'
-            );
+            $columns = [
+                'uid',
+            ];
         }
 
         return $columns;

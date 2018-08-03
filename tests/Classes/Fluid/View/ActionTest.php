@@ -1,5 +1,7 @@
 <?php
+
 namespace Sys25\RnBase\Fluid\View;
+
 /***************************************************************
  * Copyright notice
  *
@@ -24,19 +26,17 @@ namespace Sys25\RnBase\Fluid\View;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Fluid\View$ActionTest
+ * Sys25\RnBase\Fluid\View$ActionTest.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class ActionTest extends \tx_rnbase_tests_BaseTestCase
 {
-
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()
@@ -44,11 +44,12 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
         if (!\tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
             self::markTestSkipped('Fluid is only supported since TYPO3 8.7');
         }
-        \tx_rnbase_util_Misc::prepareTSFE(array('force' => true));
+        \tx_rnbase_util_Misc::prepareTSFE(['force' => true]);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
     protected function tearDown()
@@ -63,13 +64,13 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
      */
     public function testGetConfigurationId()
     {
-        $controller = $this->getMock('stdClass', array('getConfId'));
+        $controller = $this->getMock('stdClass', ['getConfId']);
         $controller
             ->expects(self::once())
             ->method('getConfId')
             ->willReturn('confId');
 
-        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', array('getController'));
+        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', ['getController']);
         $view
             ->expects(self::once())
             ->method('getController')
@@ -84,7 +85,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
     public function testRenderWithFixedTemplateFile()
     {
         $this->copyHtmlFilesToCommonResourcesFolder();
-        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', array('getConfigurationId'));
+        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', ['getConfigurationId']);
         $view
             ->expects(self::once())
             ->method('getConfigurationId')
@@ -92,7 +93,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
 
         $view->setTemplateFile('EXT:rn_base/tests/fixtures/html/MyTestAction.html');
         $parameters = \tx_rnbase::makeInstance('tx_rnbase_parameters');
-        $configurations = $this->createConfigurations(array(), 'rn_base', 'rn_base', $parameters);
+        $configurations = $this->createConfigurations([], 'rn_base', 'rn_base', $parameters);
 
         self::assertEquals('<div class="test">myConfId</div>', $view->render('MyTestAction', $configurations));
     }
@@ -104,20 +105,21 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
     {
         $this->copyHtmlFilesToCommonResourcesFolder(true);
 
-        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', array('getConfigurationId'));
+        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', ['getConfigurationId']);
         $view
             ->expects(self::once())
             ->method('getConfigurationId')
             ->willReturn('myConfId');
 
         $parameters = \tx_rnbase::makeInstance('tx_rnbase_parameters');
-        $configurations = $this->createConfigurations(array(), 'rn_base', 'rn_base', $parameters);
+        $configurations = $this->createConfigurations([], 'rn_base', 'rn_base', $parameters);
 
         self::assertEquals('<div class="test">myConfId</div>', $view->render('MyTestAction', $configurations));
     }
 
     /**
      * @param string $includeTemplate
+     *
      * @return void
      */
     protected function copyHtmlFilesToCommonResourcesFolder($includeTemplate = false)
@@ -143,20 +145,20 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
      */
     public function testRenderWithConfiguredPaths()
     {
-        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', array('getConfigurationId'));
+        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', ['getConfigurationId']);
         $view
             ->expects(self::once())
             ->method('getConfigurationId')
             ->willReturn('myConfId');
 
         $parameters = \tx_rnbase::makeInstance('tx_rnbase_parameters');
-        $configurationArray = array(
-            'view.' => array(
-                'templateRootPaths.' => array(0 => 'EXT:rn_base/tests/fixtures/html/'),
-                'layoutRootPaths.' => array(0 => 'EXT:rn_base/tests/fixtures/html/Layouts/'),
-                'partialRootPaths.' => array(0 => 'EXT:rn_base/tests/fixtures/html/Partials/')
-            )
-        );
+        $configurationArray = [
+            'view.' => [
+                'templateRootPaths.' => [0 => 'EXT:rn_base/tests/fixtures/html/'],
+                'layoutRootPaths.'   => [0 => 'EXT:rn_base/tests/fixtures/html/Layouts/'],
+                'partialRootPaths.'  => [0 => 'EXT:rn_base/tests/fixtures/html/Partials/'],
+            ],
+        ];
         $configurations = $this->createConfigurations($configurationArray, 'rn_base', 'rn_base', $parameters);
 
         self::assertEquals('<div class="test">myConfId</div>', $view->render('MyTestAction', $configurations));
@@ -168,16 +170,16 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
     public function testRenderWithOldTemplatePathsConfiguration()
     {
         $this->copyHtmlFilesToCommonResourcesFolder();
-        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', array('getConfigurationId'));
+        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', ['getConfigurationId']);
         $view
             ->expects(self::once())
             ->method('getConfigurationId')
             ->willReturn('myConfId');
 
         $parameters = \tx_rnbase::makeInstance('tx_rnbase_parameters');
-        $configurationArray = array(
-            'templatePath' =>'EXT:rn_base/tests/fixtures/html/'
-        );
+        $configurationArray = [
+            'templatePath' => 'EXT:rn_base/tests/fixtures/html/',
+        ];
         $configurations = $this->createConfigurations($configurationArray, 'rn_base', 'rn_base', $parameters);
 
         self::assertEquals('<div class="test">myConfId</div>', $view->render('MyTestAction', $configurations));
@@ -190,14 +192,14 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
     public function testRenderThrowsExceptionIfTemplateCanNotBeResolved()
     {
         $this->copyHtmlFilesToCommonResourcesFolder();
-        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', array('getConfigurationId'));
+        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', ['getConfigurationId']);
         $view
             ->expects(self::once())
             ->method('getConfigurationId')
             ->willReturn('myConfId');
 
         $parameters = \tx_rnbase::makeInstance('tx_rnbase_parameters');
-        $configurationArray = array();
+        $configurationArray = [];
         $configurations = $this->createConfigurations($configurationArray, 'rn_base', 'rn_base', $parameters);
 
         self::assertEquals('<div class="test">myConfId</div>', $view->render('MyUnknownTestAction', $configurations));
@@ -209,11 +211,11 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
     public function testRenderHandlesAssignsItemsCorrect()
     {
         $this->copyHtmlFilesToCommonResourcesFolder();
-        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', array('getConfigurationId'));
+        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', ['getConfigurationId']);
 
         $view->setTemplateFile('EXT:rn_base/tests/fixtures/html/MyTestAction2.html');
         $parameters = \tx_rnbase::makeInstance('tx_rnbase_parameters');
-        $configurations = $this->createConfigurations(array(), 'rn_base', 'rn_base', $parameters);
+        $configurations = $this->createConfigurations([], 'rn_base', 'rn_base', $parameters);
         $configurations->getViewData()->offsetSet('testAssignment', 'JohnDoe');
 
         self::assertEquals('JohnDoe', $view->render('MyTestAction', $configurations));
@@ -225,11 +227,11 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
     public function testRenderTrimsOutput()
     {
         $this->copyHtmlFilesToCommonResourcesFolder();
-        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', array('getConfigurationId'));
+        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', ['getConfigurationId']);
 
         $view->setTemplateFile('EXT:rn_base/tests/fixtures/html/MyTestActionWithTrimmableContent.html');
         $parameters = \tx_rnbase::makeInstance('tx_rnbase_parameters');
-        $configurations = $this->createConfigurations(array(), 'rn_base', 'rn_base', $parameters);
+        $configurations = $this->createConfigurations([], 'rn_base', 'rn_base', $parameters);
 
         self::assertEquals('<span>test</span>', $view->render('MyTestAction', $configurations));
     }
@@ -240,11 +242,11 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
     public function testRenderIfFilterNoObjectAndNoConfigurationId()
     {
         $this->copyHtmlFilesToCommonResourcesFolder();
-        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', array('getConfigurationId'));
+        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', ['getConfigurationId']);
 
         $view->setTemplateFile('EXT:rn_base/tests/fixtures/html/MyTestActionWithTrimmableContent.html');
         $parameters = \tx_rnbase::makeInstance('tx_rnbase_parameters');
-        $configurations = $this->createConfigurations(array(), 'rn_base', 'rn_base', $parameters);
+        $configurations = $this->createConfigurations([], 'rn_base', 'rn_base', $parameters);
         $configurations->getViewData()->offsetSet('filter', 'test');
 
         self::assertEquals('<span>test</span>', $view->render('MyTestAction', $configurations));
@@ -256,14 +258,14 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
     public function testRenderIfFilterObjectAndNoConfigurationId()
     {
         $this->copyHtmlFilesToCommonResourcesFolder();
-        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', array('getConfigurationId'));
+        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', ['getConfigurationId']);
 
         $view->setTemplateFile('EXT:rn_base/tests/fixtures/html/MyTestActionWithTrimmableContent.html');
         $parameters = \tx_rnbase::makeInstance('tx_rnbase_parameters');
-        $configurations = $this->createConfigurations(array(), 'rn_base', 'rn_base', $parameters);
+        $configurations = $this->createConfigurations([], 'rn_base', 'rn_base', $parameters);
         $configurations->getViewData()->offsetSet('filter', 'test');
 
-        $filter = $this->getMock('tx_rnbase_filter_BaseFilter', array('parseTemplate'), array(), '', false);
+        $filter = $this->getMock('tx_rnbase_filter_BaseFilter', ['parseTemplate'], [], '', false);
         $filter
             ->expects(self::never())
             ->method('parseTemplate');
@@ -279,7 +281,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
     public function testRenderIfFilterObjectAndConfigurationId()
     {
         $this->copyHtmlFilesToCommonResourcesFolder();
-        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', array('getConfigurationId'));
+        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', ['getConfigurationId']);
         $view
             ->expects(self::any())
             ->method('getConfigurationId')
@@ -287,9 +289,9 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
 
         $view->setTemplateFile('EXT:rn_base/tests/fixtures/html/MyTestAction.html');
         $parameters = \tx_rnbase::makeInstance('tx_rnbase_parameters');
-        $configurations = $this->createConfigurations(array(), 'rn_base', 'rn_base', $parameters);
+        $configurations = $this->createConfigurations([], 'rn_base', 'rn_base', $parameters);
 
-        $filter = $this->getMock('tx_rnbase_filter_BaseFilter', array('parseTemplate'), array(), '', false);
+        $filter = $this->getMock('tx_rnbase_filter_BaseFilter', ['parseTemplate'], [], '', false);
         $filter
             ->expects(self::once())
             ->method('parseTemplate')
@@ -307,7 +309,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
     public function testRenderIfFilterObjectButHasNoParseTemplateMethod()
     {
         $this->copyHtmlFilesToCommonResourcesFolder();
-        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', array('getConfigurationId'));
+        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', ['getConfigurationId']);
         $view
             ->expects(self::any())
             ->method('getConfigurationId')
@@ -315,9 +317,9 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
 
         $view->setTemplateFile('EXT:rn_base/tests/fixtures/html/MyTestAction.html');
         $parameters = \tx_rnbase::makeInstance('tx_rnbase_parameters');
-        $configurations = $this->createConfigurations(array(), 'rn_base', 'rn_base', $parameters);
+        $configurations = $this->createConfigurations([], 'rn_base', 'rn_base', $parameters);
 
-        $filter = $this->getMock('tx_rnbase_filter_BaseFilter', array('parseTemplateNew'), array(), '', false);
+        $filter = $this->getMock('tx_rnbase_filter_BaseFilter', ['parseTemplateNew'], [], '', false);
 
         $configurations->getViewData()->offsetSet('filter', $filter);
 
@@ -331,39 +333,39 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
     {
         $view = new Action();
         $configurations = $this->createConfigurations(
-            array(
-                'view.' => array(
-                    'templateRootPaths.' => array(1 => 'additionalTemplatePath'),
-                    'layoutRootPaths.' => array(1 => 'additionalLayoutPath'),
-                    'partialRootPaths.' => array(1 => 'additionalPartialPath'),
-                ),
-                'settings.' => array(
-                    'mySettings' => 'test'
-                )
-            ),
+            [
+                'view.' => [
+                    'templateRootPaths.' => [1 => 'additionalTemplatePath'],
+                    'layoutRootPaths.'   => [1 => 'additionalLayoutPath'],
+                    'partialRootPaths.'  => [1 => 'additionalPartialPath'],
+                ],
+                'settings.' => [
+                    'mySettings' => 'test',
+                ],
+            ],
             'rn_base'
         );
 
         self::assertEquals(
-            array(
-                'view' => array(
-                    'templateRootPaths.' => array(
+            [
+                'view' => [
+                    'templateRootPaths.' => [
                         0 => 'EXT:rn_base/Resources/Private/Templates/',
-                        1 => 'additionalTemplatePath'
-                    ),
-                    'layoutRootPaths.' => array(
+                        1 => 'additionalTemplatePath',
+                    ],
+                    'layoutRootPaths.' => [
                         0 => 'EXT:rn_base/Resources/Private/Layouts/',
-                        1 => 'additionalLayoutPath'
-                    ),
-                    'partialRootPaths.' => array(
+                        1 => 'additionalLayoutPath',
+                    ],
+                    'partialRootPaths.' => [
                         0 => 'EXT:rn_base/Resources/Private/Partials/',
-                        1 => 'additionalPartialPath'
-                    ),
-                ),
-                'settings' => array(
-                    'mySettings' => 'test'
-                )
-            ),
+                        1 => 'additionalPartialPath',
+                    ],
+                ],
+                'settings' => [
+                    'mySettings' => 'test',
+                ],
+            ],
             $this->callInaccessibleMethod($view, 'getTypoScriptConfigurationForFluid', 'rn_base', $configurations)
         );
     }

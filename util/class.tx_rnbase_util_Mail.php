@@ -22,73 +22,75 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 tx_rnbase::load('tx_rnbase_util_Logger');
 tx_rnbase::load('tx_rnbase_util_Strings');
-
-
 
 /**
  * Encapsulate simple mailing functionality of TYPO3 for backward compatibility.
  */
 class tx_rnbase_util_Mail
 {
-    private $attachments = array();
+    private $attachments = [];
     private $from;
     private $fromName;
     private $replyTo;
     private $replyToName;
 
-    /**
-     */
     public function __construct()
     {
     }
+
     public function send()
     {
         return $this->send45();
     }
+
     public function setSubject($subject)
     {
         $this->subject = $subject;
     }
+
     /**
-     *
      * @param string $emails kommaseparierter String mit Mailadressen
      */
     public function setTo($emails)
     {
         $this->toAsString = $emails;
     }
+
     public function setFrom($email, $name = '')
     {
         $this->from = $email;
         $this->fromName = $name;
     }
+
     public function setReplyTo($email, $name = null)
     {
         $this->replyTo = $email;
         $this->replyToName = $name;
     }
+
     public function setTextPart($part)
     {
         $this->textPart = $part;
     }
+
     public function setHtmlPart($part)
     {
         $this->htmlPart = $part;
     }
+
     public function addAttachment($src, $filename = '', $contentType = '')
     {
-        $this->attachments[] = array('src' => $src, 'filename' => $filename, 'contentType' => $contentType);
+        $this->attachments[] = ['src' => $src, 'filename' => $filename, 'contentType' => $contentType];
     }
 
     protected function send45()
     {
         /* @var $mail TYPO3\CMS\Core\Mail\MailMessage */
         $mail = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getMailMessageClass());
-        $mail->setFrom(array($this->from => $this->fromName));
+        $mail->setFrom([$this->from => $this->fromName]);
 
         $mail->setTo(tx_rnbase_util_Strings::trimExplode(',', $this->toAsString));
         $mail->setSubject($this->subject);
@@ -110,7 +112,7 @@ class tx_rnbase_util_Mail
                     tx_rnbase_util_Logger::warn(
                         'Adding attachment failed!',
                         'rn_base',
-                        array('subject' => $mail->subject, 'to' => $this->toAsString, 'attachment' => $attachment)
+                        ['subject' => $mail->subject, 'to' => $this->toAsString, 'attachment' => $attachment]
                     );
                 }
             }

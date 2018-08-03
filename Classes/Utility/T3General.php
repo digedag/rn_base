@@ -23,10 +23,8 @@
  ***************************************************************/
 
 /**
- * Wrapper for t3lib_div / TYPO3\\CMS\\Core\\Utility\\GeneralUtility
+ * Wrapper for t3lib_div / TYPO3\\CMS\\Core\\Utility\\GeneralUtility.
  *
- * @package TYPO3
- * @subpackage Tx_Rnbase
  * @author René Nitzsche
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
@@ -34,23 +32,22 @@
  */
 class Tx_Rnbase_Utility_T3General
 {
-
     /**
-     * Maps the static method to the typo3 util
+     * Maps the static method to the typo3 util.
      *
-     * @param string $method Method name
-     * @param array $arguments Parameters to pass throu the util
+     * @param string $method    Method name
+     * @param array  $arguments Parameters to pass throu the util
      *
      * @return mixed
      */
     public static function __callStatic($method, array $arguments)
     {
         return call_user_func_array(
-            array(
+            [
                 tx_rnbase_util_Typo3Classes::getGeneralUtilityClass(),
-                $method
+                $method,
 
-            ),
+            ],
             $arguments
         );
     }
@@ -64,7 +61,7 @@ class Tx_Rnbase_Utility_T3General
      * This function traverses a multidimensional array
      * and strips slashes to the values.
      * NOTE that the input array is and argument by reference.!!
-     * Twin-function to addSlashesOnArray
+     * Twin-function to addSlashesOnArray.
      *
      * @param array $theArray Multidimensional input array, (REFERENCE!)
      *
@@ -88,7 +85,7 @@ class Tx_Rnbase_Utility_T3General
      * This function traverses a multidimensional array
      * and adds slashes to the values.
      * NOTE that the input array is and argument by reference.!!
-     * Twin-function to stripSlashesOnArray
+     * Twin-function to stripSlashesOnArray.
      *
      * @param array $theArray Multidimensional input array, (REFERENCE!)
      *
@@ -106,12 +103,13 @@ class Tx_Rnbase_Utility_T3General
 
         return $theArray;
     }
+
     /**
      * AddSlash array
      * This function traverses a multidimensional array
      * and adds slashes to the values.
      * NOTE that the input array is and argument by reference.!!
-     * Twin-function to stripSlashesOnArray
+     * Twin-function to stripSlashesOnArray.
      *
      * @param array $theArray Multidimensional input array, (REFERENCE!)
      *
@@ -130,9 +128,9 @@ class Tx_Rnbase_Utility_T3General
     }
 
     /**
-     * Rename Array keys with a given mapping table
+     * Rename Array keys with a given mapping table.
      *
-     * @param array $array Array by reference which should be remapped
+     * @param array       $array        Array by reference which should be remapped
      * @param array|mixed $mappingTable Arraymap: array/$oldKey => $newKey)
      *
      * @return array
@@ -146,7 +144,7 @@ class Tx_Rnbase_Utility_T3General
     }
 
     /**
-     * Sorts an array by key recursive - uses natural sort order (aAbB-zZ)
+     * Sorts an array by key recursive - uses natural sort order (aAbB-zZ).
      *
      * @param array|mixed $array Array to be sorted recursively, passed by reference
      *
@@ -160,10 +158,10 @@ class Tx_Rnbase_Utility_T3General
     }
 
     /**
-     * Minifies JavaScript
+     * Minifies JavaScript.
      *
      * @param string $script Script to minify
-     * @param string $error Error message (if any)
+     * @param string $error  Error message (if any)
      *
      * @return string Minified script or source string if error happened
      */
@@ -180,10 +178,10 @@ class Tx_Rnbase_Utility_T3General
      * you can configure your way out of that
      * with settings like $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] etc.
      *
-     * @param string $url File/URL to read
-     * @param int $includeHeader Whether the HTTP header should be fetched or not.
+     * @param string     $url            File/URL to read
+     * @param int        $includeHeader  Whether the HTTP header should be fetched or not.
      * @param array|vool $requestHeaders HTTP headers to be used in the request
-     * @param array|bool $report Error code/message and response meta data
+     * @param array|bool $report         Error code/message and response meta data
      *
      * @return mixed The content from the resource or FALSE
      */
@@ -206,13 +204,13 @@ class Tx_Rnbase_Utility_T3General
     /**
      * Calls a user-defined function/method in class
      * Such a function/method should look like this:
-     * "function proc(&$params, &$ref) {...}"
+     * "function proc(&$params, &$ref) {...}".
      *
-     * @param string $funcName Function/Method reference or Closure
-     * @param mixed $params Parameters to be pass along (REFERENCE!)
-     * @param mixed $ref Reference to be passed along (REFERENCE!)
+     * @param string $funcName    Function/Method reference or Closure
+     * @param mixed  $params      Parameters to be pass along (REFERENCE!)
+     * @param mixed  $ref         Reference to be passed along (REFERENCE!)
      * @param string $checkPrefix Not used anymore since 6.0
-     * @param int $errorMode Error mode
+     * @param int    $errorMode   Error mode
      *
      * @return mixed Content from call or FALSE
      */

@@ -22,15 +22,12 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-
 tx_rnbase::load('tx_rnbase_util_SearchBase');
 tx_rnbase::load('Tx_Rnbase_Database_Connection');
 
 /**
- * tx_rnbase_IFilter
+ * tx_rnbase_IFilter.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Rene Nitzsche <rene@system25.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
@@ -38,7 +35,7 @@ tx_rnbase::load('Tx_Rnbase_Database_Connection');
 interface tx_rnbase_IFilter
 {
     /**
-     * Initialisiert den Filter
+     * Initialisiert den Filter.
      *
      * @param array $fields
      * @param array $options
@@ -46,7 +43,8 @@ interface tx_rnbase_IFilter
     public function init(&$fields, &$options);
 
     /**
-     * Liefert den Marker für den Filter
+     * Liefert den Marker für den Filter.
+     *
      * @return tx_rnbase_IFilterMarker
      */
     public function getMarker();
@@ -56,22 +54,23 @@ interface tx_rnbase_IFilter
      * It is up to the list view to handle this result.
      * This can be used to hide a result output if a search view is
      * initially displayed.
+     *
      * @return bool
      */
     public function hideResult();
+
     /**
      * Whether or not a user defined search is activated. This means some functions
      * like showing a charbrowser should be ignored.
+     *
      * @return bool
      */
     public function isSpecialSearch();
 }
 
 /**
- * tx_rnbase_IFilterMarker
+ * tx_rnbase_IFilterMarker.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Rene Nitzsche <rene@system25.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
@@ -82,10 +81,8 @@ interface tx_rnbase_IFilterMarker
 }
 
 /**
- * tx_rnbase_filter_BaseFilter
+ * tx_rnbase_filter_BaseFilter.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Rene Nitzsche <rene@system25.de>
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
@@ -93,7 +90,6 @@ interface tx_rnbase_IFilterMarker
  */
 class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilterMarker
 {
-
     /**
      * @var Tx_Rnbase_Configuration_ProcessorInterface
      */
@@ -115,15 +111,15 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
     protected $filterItems;
 
     /**
-     * @var null|boolean wenn $doSearch auf null steht wird der return Wert von initFilter()
-     * in init() zurück gegeben. Ansonsten der Wert von $doSearch, dieser hat also Vorrang.
+     * @var null|bool wenn auf null steht wird der return Wert von initFilter()
+     *                in init() zurück gegeben. Ansonsten der Wert von $doSearch, dieser hat also Vorrang.
      */
     protected $doSearch = null;
 
     /**
-     * @param tx_rnbase_IParameters $parameters
+     * @param tx_rnbase_IParameters                      $parameters
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param string $confId
+     * @param string                                     $confId
      */
     public function __construct(&$parameters, &$configurations, $confId)
     {
@@ -133,7 +129,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
     }
 
     /**
-     * Liefert das Config-Objekt
+     * Liefert das Config-Objekt.
      *
      * @return Tx_Rnbase_Configuration_ProcessorInterface
      */
@@ -143,7 +139,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
     }
 
     /**
-     * Liefert die Parameter
+     * Liefert die Parameter.
      *
      * @return tx_rnbase_parameters
      */
@@ -163,10 +159,11 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
     }
 
     /**
-     * Abgeleitete Filter können diese Methode überschreiben und zusätzlich Filter setzen
+     * Abgeleitete Filter können diese Methode überschreiben und zusätzlich Filter setzen.
      *
      * @param array $fields
      * @param array $options
+     *
      * @return bool if FALSE no search should be done
      */
     public function init(&$fields, &$options)
@@ -183,26 +180,27 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 
     /**
      * @param array $fields
+     *
      * @return array
      */
     protected function handleSysCategoryFilter(array $fields)
     {
-        $typoScriptPathsToFilterUtilityMethod = array(
+        $typoScriptPathsToFilterUtilityMethod = [
             'useSysCategoriesOfItemFromParameters' => 'setFieldsBySysCategoriesOfItemFromParameters',
-            'useSysCategoriesOfContentElement' => 'setFieldsBySysCategoriesOfContentElement',
-            'useSysCategoriesFromParameters' => 'setFieldsBySysCategoriesFromParameters',
-        );
+            'useSysCategoriesOfContentElement'     => 'setFieldsBySysCategoriesOfContentElement',
+            'useSysCategoriesFromParameters'       => 'setFieldsBySysCategoriesFromParameters',
+        ];
 
         foreach ($typoScriptPathsToFilterUtilityMethod as $typoScriptPath => $filterUtilityMethod) {
-            if ($this->getConfigurations()->get($this->getConfId() . $typoScriptPath)) {
+            if ($this->getConfigurations()->get($this->getConfId().$typoScriptPath)) {
                 $fieldsBefore = $fields;
                 $fields = $this->getCategoryFilterUtility()->$filterUtilityMethod(
                     $fields, $this->getConfigurations(),
-                    $this->getConfId() . $typoScriptPath . '.'
+                    $this->getConfId().$typoScriptPath.'.'
                 );
 
                 if (
-                    $this->getConfigurations()->get($this->getConfId() . $typoScriptPath . '.dontSearchIfNoCategoriesFound') &&
+                    $this->getConfigurations()->get($this->getConfId().$typoScriptPath.'.dontSearchIfNoCategoriesFound') &&
                     // wenn sich die $fields nicht geändert haben, dann wurden keine Kategorie
                     // gefunden.
                     $fieldsBefore == $fields
@@ -224,8 +222,9 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
     }
 
     /**
-     * @param boolean $fallback
-     * @return boolean
+     * @param bool $fallback
+     *
+     * @return bool
      */
     protected function shouldSearchBeDone($fallback)
     {
@@ -238,7 +237,8 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see tx_rnbase_IFilter::hideResult()
      */
     public function hideResult()
@@ -247,13 +247,14 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
     }
 
     /**
-     * Abgeleitete Filter können diese Methode überschreiben und zusätzlich Filter setzen
+     * Abgeleitete Filter können diese Methode überschreiben und zusätzlich Filter setzen.
      *
-     * @param array $fields
-     * @param array $options
-     * @param tx_rnbase_parameters $parameters
+     * @param array                                      $fields
+     * @param array                                      $options
+     * @param tx_rnbase_parameters                       $parameters
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param string $confId
+     * @param string                                     $confId
+     *
      * @return bool
      */
     protected function initFilter(&$fields, &$options, &$parameters, &$configurations, $confId)
@@ -263,13 +264,13 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
 
     /**
      * Hilfsmethode zum Setzen von Filtern aus den Parametern. Ein schon gesetzter Wert im Field-Array
-     * wird nicht überschrieben. Die
+     * wird nicht überschrieben. Die.
      *
-     * @param string $idstr
-     * @param array $fields
-     * @param tx_rnbase_parameters $parameters
+     * @param string                                     $idstr
+     * @param array                                      $fields
+     * @param tx_rnbase_parameters                       $parameters
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param string $operator Operator-Konstante
+     * @param string                                     $operator       Operator-Konstante
      */
     public function setField($idstr, &$fields, &$parameters, &$configurations, $operator = OP_LIKE)
     {
@@ -303,11 +304,12 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
      * Fabrikmethode zur Erstellung von Filtern. Die Klasse des Filters kann entweder direkt angegeben werden oder
      * wird über die Config gelesen. Klappt beides nicht, wird der Standardfilter geliefert.
      *
-     * @param tx_rnbase_parameters $parameters
+     * @param tx_rnbase_parameters                       $parameters
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param array_object $viewData
-     * @param string $confId ConfId des Filters
-     * @param string $filterClass Klassenname des Filters
+     * @param array_object                               $viewData
+     * @param string                                     $confId         ConfId des Filters
+     * @param string                                     $filterClass    Klassenname des Filters
+     *
      * @return tx_rnbase_IFilter
      */
     public static function createFilter($parameters, $configurations, $viewData, $confId, $filterClass = '')
@@ -324,7 +326,8 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
     }
 
     /**
-     * Whether or not a charbrowser should be ignored
+     * Whether or not a charbrowser should be ignored.
+     *
      * @return bool
      */
     public function isSpecialSearch()
@@ -334,7 +337,8 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see tx_rnbase_IFilter::getMarker()
      */
     public function getMarker()
@@ -346,10 +350,11 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
      * Liefert einfach das Template zurück. Ein echter FilterMarker hat hier die Möglichkeit sein
      * Such-Formular in das HTML-Template zu schreiben.
      *
-     * @param string $template HTML-Template
+     * @param string                    $template  HTML-Template
      * @param tx_rnbase_util_FormatUtil $formatter
-     * @param string $confId
-     * @param string $marker
+     * @param string                    $confId
+     * @param string                    $marker
+     *
      * @return string
      */
     public function parseTemplate($template, &$formatter, $confId, $marker = 'FILTER')
@@ -358,7 +363,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
     }
 
     /**
-     * Pagebrowser vorbereiten. Wir im Plugin nach dem init() des Filters aufgerufen:
+     * Pagebrowser vorbereiten. Wir im Plugin nach dem init() des Filters aufgerufen:.
      *
      *      // Soll ein PageBrowser verwendet werden
      *      tx_rnbase_filter_BaseFilter::handlePageBrowser($configurations,
@@ -369,13 +374,13 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
      *      );
      *
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param string $confid Die Confid des PageBrowsers. z.B. myview.org.pagebrowser ohne Punkt!
-     * @param ArrayObject $viewdata
-     * @param array $fields
-     * @param array $options
-     * @param array $cfg You have to set 'searchcallback' and optional 'pbid'
+     * @param string                                     $confid         Die Confid des PageBrowsers. z.B. myview.org.pagebrowser ohne Punkt!
+     * @param ArrayObject                                $viewdata
+     * @param array                                      $fields
+     * @param array                                      $options
+     * @param array                                      $cfg            You have to set 'searchcallback' and optional 'pbid'
      */
-    public static function handlePageBrowser(&$configurations, $confid, &$viewdata, &$fields, &$options, $cfg = array())
+    public static function handlePageBrowser(&$configurations, $confid, &$viewdata, &$fields, &$options, $cfg = [])
     {
         $confid .= '.';
         if (is_array($configurations->get($confid))) {
@@ -390,8 +395,8 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
                 $pageBrowserOptions = $options;
                 $pageBrowserOptions['count'] = 1;
                 // eigenes what?
-                if ($configurations->get($confid . 'what')) {
-                    $pageBrowserOptions['what'] = $configurations->get($confid . 'what');
+                if ($configurations->get($confid.'what')) {
+                    $pageBrowserOptions['what'] = $configurations->get($confid.'what');
                     // wir brauchen keinen countwrap wenn sich das what selbst darum
                     // kümmert
                     if (strpos(strtoupper($pageBrowserOptions['what']), 'COUNT(') !== false) {
@@ -406,7 +411,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
             // PageBrowser initialisieren
             $pbId = $cfg['pbid'] ? $cfg['pbid'] : 'pb';
             /**
-             * @var tx_rnbase_util_PageBrowser $pageBrowser
+             * @var tx_rnbase_util_PageBrowser
              */
             $pageBrowser = tx_rnbase::makeInstance('tx_rnbase_util_PageBrowser', $pbId);
             $pageSize = intval($configurations->get($confid.'limit'));
@@ -421,17 +426,17 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
                 $sql = call_user_func(
                     $searchCallback,
                     $fields,
-                    array_merge($options, array('sqlonly' => 1, 'rownum' => 1))
+                    array_merge($options, ['sqlonly' => 1, 'rownum' => 1])
                 );
                 // Jetzt besorgen wir uns die Position des aktuellen Eintrages
                 $res = Tx_Rnbase_Database_Connection::getInstance()->doSelect(
                     'ROW.rownum',
                     '('.$sql.') as ROW',
-                    array(
-                        'where' =>    'ROW.'.$cfg['pointerFromItem']['field'].'='.
+                    [
+                        'where' => 'ROW.'.$cfg['pointerFromItem']['field'].'='.
                                     $GLOBALS['TYPO3_DB']->fullQuoteStr($itemId, ''),
                         'enablefieldsoff' => true,
-                    )
+                    ]
                 );
                 // Jetzt haben wir ein Ergebnis, mit der Zeilennummer des Datensatzes.
                 if (!empty($res)) {
@@ -454,16 +459,16 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
     }
 
     /**
-     * Bindet einen Buchstaben-Browser ein
+     * Bindet einen Buchstaben-Browser ein.
      *
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param string $confid
-     * @param ArrayObject $viewData
-     * @param array $fields
-     * @param array $options
-     * @param array $cfg You have to set 'colname'. The database column used for character browsing.
+     * @param string                                     $confid
+     * @param ArrayObject                                $viewData
+     * @param array                                      $fields
+     * @param array                                      $options
+     * @param array                                      $cfg            You have to set 'colname'. The database column used for character browsing.
      */
-    public static function handleCharBrowser(&$configurations, $confid, &$viewData, &$fields, &$options, $cfg = array())
+    public static function handleCharBrowser(&$configurations, $confid, &$viewData, &$fields, &$options, $cfg = [])
     {
         if ($configurations->get($confid)) {
             $colName = $cfg['colname'];
@@ -474,7 +479,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
             $pagerData = self::findPagerData($fields, $options, $cfg);
 
             $firstChar = $configurations->getParameters()->offsetGet($pagerData['pointername']);
-            $firstChar = (strlen(trim($firstChar)) > 0) ? substr($firstChar, 0, ($firstChar{0} == '0' ? 3 : 1)) : $pagerData['default'];
+            $firstChar = (strlen(trim($firstChar)) > 0) ? substr($firstChar, 0, ($firstChar[0] == '0' ? 3 : 1)) : $pagerData['default'];
             // Existiert der Point in den aktuellen Daten
             $firstChar = array_key_exists($firstChar, $pagerData['list']) ? $firstChar : $pagerData['default'];
             $viewData->offsetSet('pagerData', $pagerData);
@@ -506,8 +511,10 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
      * @param array $fields
      * @param array $options
      * @param array $cfg
-     * @return array
+     *
      * @throws Exception
+     *
+     * @return array
      */
     private static function findPagerData($fields, $options, $cfg)
     {
@@ -518,7 +525,6 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
             throw new Exception('No search callback defined!');
         }
 
-
         $options['what'] = 'LEFT(UCASE('.$colName.'),1) As first_char, count(LEFT(UCASE('.$colName.'),1)) As size';
         $options['groupby'] = 'LEFT(UCASE('.$colName.'),1)';
         unset($options['limit']);
@@ -526,14 +532,14 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
         $rows = call_user_func($searchCallback, $fields, $options);
 
         $specials = tx_rnbase_util_SearchBase::getSpecialChars();
-        $wSpecials = array();
+        $wSpecials = [];
         foreach ($specials as $key => $special) {
             foreach ($special as $char) {
                 $wSpecials[$char] = $key;
             }
         }
 
-        $ret = array();
+        $ret = [];
         foreach ($rows as $row) {
             if (array_key_exists(($row['first_char']), $wSpecials)) {
                 $ret[$wSpecials[$row['first_char']]] = intval($ret[$wSpecials[$row['first_char']]]) + $row['size'];
@@ -553,7 +559,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
             $keys = array_keys($ret);
             $current = $keys[0];
         }
-        $data = array();
+        $data = [];
         $data['list'] = $ret;
         $data['default'] = $current;
         $data['pointername'] = array_key_exists('cbid', $cfg) && $cfg['cbid'] ? $cfg['cbid'] : 'charpointer';

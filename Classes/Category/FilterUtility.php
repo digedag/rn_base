@@ -23,28 +23,24 @@
  ***************************************************************/
 
 /**
- * Tx_Rnbase_Category_FilterUtility
+ * Tx_Rnbase_Category_FilterUtility.
  *
- * @package         TYPO3
- * @subpackage      Tx_Rnbase
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class Tx_Rnbase_Category_FilterUtility
 {
-
     /**
-     * @param array $fields
+     * @param array                                      $fields
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param string $confId
+     * @param string                                     $confId
      *
      * @return array
      */
     public function setFieldsBySysCategoriesOfItemFromParameters(
         array $fields, Tx_Rnbase_Configuration_ProcessorInterface $configurations, $confId
-    )
-    {
+    ) {
         if ($categories = $this->getCategoryUidsOfCurrentDetailViewItem($configurations, $confId)) {
             $fields = $this->getFieldsByCategories($categories, $fields, $configurations, $confId);
         }
@@ -54,14 +50,14 @@ class Tx_Rnbase_Category_FilterUtility
 
     /**
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param string $confId
+     * @param string                                     $confId
      *
      * @return array
      */
     protected function getCategoryUidsOfCurrentDetailViewItem(Tx_Rnbase_Configuration_ProcessorInterface $configurations, $confId)
     {
-        $categories = array();
-        foreach ($configurations->get($confId . 'supportedParameters.') as $configurationPerParameter) {
+        $categories = [];
+        foreach ($configurations->get($confId.'supportedParameters.') as $configurationPerParameter) {
             $detailViewParameter = $configurations->getParameters()->getInt(
                 $configurationPerParameter['parameterName'], $configurationPerParameter['parameterQualifier']
             );
@@ -80,28 +76,27 @@ class Tx_Rnbase_Category_FilterUtility
     /**
      * @param string $table
      * @param string $categoryField
-     * @param int $foreignUid
+     * @param int    $foreignUid
      *
      * @return array
      */
     protected function getCategoryUidsByReference($table, $categoryField, $foreignUid)
     {
         $databaseConnection = $this->getDatabaseConnection();
-        $categories =  $databaseConnection->doSelect(
+        $categories = $databaseConnection->doSelect(
             'uid_local', 'sys_category_record_mm',
-            array(
-                'where' =>
-                    'sys_category_record_mm.tablenames = ' .
-                    $databaseConnection->fullQuoteStr($table) . ' AND ' .
-                    'sys_category_record_mm.fieldname = ' .
-                    $databaseConnection->fullQuoteStr($categoryField) . ' AND ' .
-                    'sys_category_record_mm.uid_foreign = ' . intval($foreignUid),
-                'enablefieldsoff' => true
-            )
+            [
+                'where' => 'sys_category_record_mm.tablenames = '.
+                    $databaseConnection->fullQuoteStr($table).' AND '.
+                    'sys_category_record_mm.fieldname = '.
+                    $databaseConnection->fullQuoteStr($categoryField).' AND '.
+                    'sys_category_record_mm.uid_foreign = '.intval($foreignUid),
+                'enablefieldsoff' => true,
+            ]
         );
 
         $categories = array_map(
-            function($value) {
+            function ($value) {
                 return $value['uid_local'];
             },
             $categories
@@ -119,36 +114,35 @@ class Tx_Rnbase_Category_FilterUtility
     }
 
     /**
-     * @param array $categories
-     * @param array $fields
+     * @param array                                      $categories
+     * @param array                                      $fields
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param string $confId
+     * @param string                                     $confId
+     *
      * @return array
      */
     protected function getFieldsByCategories(
         array $categories, array $fields, Tx_Rnbase_Configuration_ProcessorInterface $configurations, $confId
-    )
-    {
+    ) {
         $sysCategoryTableAlias =
-            $configurations->get($confId . 'sysCategoryTableAlias') ?
-                $configurations->get($confId . 'sysCategoryTableAlias') :
+            $configurations->get($confId.'sysCategoryTableAlias') ?
+                $configurations->get($confId.'sysCategoryTableAlias') :
                 'SYS_CATEGORY';
-        $fields[$sysCategoryTableAlias . '.uid'] = array(OP_IN_INT => join(',', $categories));
+        $fields[$sysCategoryTableAlias.'.uid'] = [OP_IN_INT => implode(',', $categories)];
 
         return $fields;
     }
 
     /**
-     * @param array $fields
+     * @param array                                      $fields
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param string $confId
+     * @param string                                     $confId
      *
      * @return array
      */
     public function setFieldsBySysCategoriesOfContentElement(
         array $fields, Tx_Rnbase_Configuration_ProcessorInterface $configurations, $confId
-    )
-    {
+    ) {
         $categories = $this->getCategoryUidsByReference(
             'tt_content', 'categories', $configurations->getContentObject()->data['uid']
         );
@@ -160,21 +154,20 @@ class Tx_Rnbase_Category_FilterUtility
     }
 
     /**
-     * @param array $fields
+     * @param array                                      $fields
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param string $confId
+     * @param string                                     $confId
      *
      * @return array
      */
     public function setFieldsBySysCategoriesFromParameters(
         array $fields, Tx_Rnbase_Configuration_ProcessorInterface $configurations, $confId
-    )
-    {
+    ) {
         $categoryUid = $configurations->getParameters()->getInt(
-            $configurations->get($confId . 'parameterName'), $configurations->get($confId . 'parameterQualifier')
+            $configurations->get($confId.'parameterName'), $configurations->get($confId.'parameterQualifier')
         );
         if ($categoryUid) {
-            $fields = $this->getFieldsByCategories(array($categoryUid), $fields, $configurations, $confId);
+            $fields = $this->getFieldsByCategories([$categoryUid], $fields, $configurations, $confId);
         }
 
         return $fields;

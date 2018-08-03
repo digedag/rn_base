@@ -24,14 +24,13 @@
 
 tx_rnbase::load('tx_rnbase_view_List');
 
-
 /**
  * Default view class to show a single record.
  */
 class tx_rnbase_view_Single extends tx_rnbase_view_List
 {
     /**
-     * Erstellen des Frontend-Outputs
+     * Erstellen des Frontend-Outputs.
      */
     public function createOutput($template, &$viewData, &$configurations, &$formatter)
     {

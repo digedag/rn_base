@@ -1,6 +1,6 @@
 <?php
 /**
- *  Copyright notice
+ *  Copyright notice.
  *
  *  (c) 2016 René Nitzsche <rene@system25.de>
  *  All rights reserved
@@ -23,9 +23,6 @@
  */
 
 /**
- *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          René Nitzsche <rene@system25.de>
  */
 class Tx_Rnbase_Frontend_Marker_BaseMarker

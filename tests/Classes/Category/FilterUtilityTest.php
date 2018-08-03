@@ -25,20 +25,17 @@ tx_rnbase::load('Tx_Rnbase_Category_SearchUtility');
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
 /**
- * Tx_Rnbase_Category_FilterUtilityTest
+ * Tx_Rnbase_Category_FilterUtilityTest.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class Tx_Rnbase_Category_FilterUtilityTest extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
+     * {@inheritdoc}
      *
-     * {@inheritDoc}
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
     protected function tearDown()
@@ -64,26 +61,25 @@ class Tx_Rnbase_Category_FilterUtilityTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetCategoryUidsOfCurrentDetailViewItem()
     {
-        $databaseConnection = $this->getMock('Tx_Rnbase_Database_Connection', array('doSelect'));
+        $databaseConnection = $this->getMock('Tx_Rnbase_Database_Connection', ['doSelect']);
         $databaseConnection
             ->expects(self::once())
             ->method('doSelect')
             ->with(
                 'uid_local', 'sys_category_record_mm',
-                array(
-                    'where' =>
-                        'sys_category_record_mm.tablenames = \'second_table\' AND ' .
-                        'sys_category_record_mm.fieldname = \'second_field\' AND ' .
+                [
+                    'where' => 'sys_category_record_mm.tablenames = \'second_table\' AND '.
+                        'sys_category_record_mm.fieldname = \'second_field\' AND '.
                         'sys_category_record_mm.uid_foreign = 123',
-                    'enablefieldsoff' => true
-                )
+                    'enablefieldsoff' => true,
+                ]
             )
-            ->will(self::returnValue(array(
-                0 => array('uid_local' => 1),
-                1 => array('uid_local' => 2),
-            )));
+            ->will(self::returnValue([
+                0 => ['uid_local' => 1],
+                1 => ['uid_local' => 2],
+            ]));
 
-        $utility = $this->getMock('Tx_Rnbase_Category_FilterUtility', array('getDatabaseConnection'));
+        $utility = $this->getMock('Tx_Rnbase_Category_FilterUtility', ['getDatabaseConnection']);
         $utility
             ->expects(self::once())
             ->method('getDatabaseConnection')
@@ -91,33 +87,33 @@ class Tx_Rnbase_Category_FilterUtilityTest extends tx_rnbase_tests_BaseTestCase
 
         $_GET['second_ext']['second_parameter'] = 123;
         $configurations = $this->createConfigurations(
-            array('confId.' => array('supportedParameters.' => array(
-                0 => array(
+            ['confId.' => ['supportedParameters.' => [
+                0 => [
                     'parameterQualifier' => 'first_ext',
-                    'parameterName' => 'first_parameter',
-                    'table' => 'first_table',
-                    'categoryField' => 'first_field',
-                ),
-                1 => array(
+                    'parameterName'      => 'first_parameter',
+                    'table'              => 'first_table',
+                    'categoryField'      => 'first_field',
+                ],
+                1 => [
                     'parameterQualifier' => 'second_ext',
-                    'parameterName' => 'second_parameter',
-                    'table' => 'second_table',
-                    'categoryField' => 'second_field',
-                ),
-                2 => array(
+                    'parameterName'      => 'second_parameter',
+                    'table'              => 'second_table',
+                    'categoryField'      => 'second_field',
+                ],
+                2 => [
                     'parameterQualifier' => 'third_ext',
-                    'parameterName' => 'third_parameter',
-                    'table' => 'third_table',
-                    'categoryField' => 'third_field',
-                ),
-            ))),
+                    'parameterName'      => 'third_parameter',
+                    'table'              => 'third_table',
+                    'categoryField'      => 'third_field',
+                ],
+            ]]],
             'rn_base',
             '',
             tx_rnbase::makeInstance('tx_rnbase_parameters')
         );
 
         self::assertEquals(
-            array(1,2),
+            [1, 2],
             $this->callInaccessibleMethod($utility, 'getCategoryUidsOfCurrentDetailViewItem', $configurations, 'confId.')
         );
     }
@@ -127,19 +123,18 @@ class Tx_Rnbase_Category_FilterUtilityTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testSetFieldsBySysCategoriesOfItemFromParametersIfNoCategoriesFound()
     {
-        $configurations = $this->createConfigurations(array(), 'rn_base');
+        $configurations = $this->createConfigurations([], 'rn_base');
         $confId = 'confId.';
-        $utility = $this->getMock('Tx_Rnbase_Category_FilterUtility', array('getCategoryUidsOfCurrentDetailViewItem'));
+        $utility = $this->getMock('Tx_Rnbase_Category_FilterUtility', ['getCategoryUidsOfCurrentDetailViewItem']);
         $utility
             ->expects(self::once())
             ->method('getCategoryUidsOfCurrentDetailViewItem')
             ->with($configurations, $confId)
-            ->will(self::returnValue(array()));
-
+            ->will(self::returnValue([]));
 
         self::assertEquals(
-            array('test' => 'test'),
-            $utility->setFieldsBySysCategoriesOfItemFromParameters(array('test' => 'test'), $configurations, $confId)
+            ['test' => 'test'],
+            $utility->setFieldsBySysCategoriesOfItemFromParameters(['test' => 'test'], $configurations, $confId)
         );
     }
 
@@ -148,18 +143,18 @@ class Tx_Rnbase_Category_FilterUtilityTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testSetFieldsBySysCategoriesOfItemFromParametersIfCategoriesFound()
     {
-        $configurations = $this->createConfigurations(array(), 'rn_base');
+        $configurations = $this->createConfigurations([], 'rn_base');
         $confId = 'confId.';
-        $utility = $this->getMock('Tx_Rnbase_Category_FilterUtility', array('getCategoryUidsOfCurrentDetailViewItem'));
+        $utility = $this->getMock('Tx_Rnbase_Category_FilterUtility', ['getCategoryUidsOfCurrentDetailViewItem']);
         $utility
             ->expects(self::once())
             ->method('getCategoryUidsOfCurrentDetailViewItem')
             ->with($configurations, $confId)
-            ->will(self::returnValue(array(1,2,3)));
+            ->will(self::returnValue([1, 2, 3]));
 
         self::assertEquals(
-            array('test' => 'test', 'SYS_CATEGORY.uid' => array(OP_IN_INT => '1,2,3')),
-            $utility->setFieldsBySysCategoriesOfItemFromParameters(array('test' => 'test'), $configurations, $confId)
+            ['test' => 'test', 'SYS_CATEGORY.uid' => [OP_IN_INT => '1,2,3']],
+            $utility->setFieldsBySysCategoriesOfItemFromParameters(['test' => 'test'], $configurations, $confId)
         );
     }
 
@@ -169,17 +164,17 @@ class Tx_Rnbase_Category_FilterUtilityTest extends tx_rnbase_tests_BaseTestCase
     public function testSetFieldsBySysCategoriesOfItemFromParametersIfOtherAlias()
     {
         $confId = 'confId.';
-        $configurations = $this->createConfigurations(array($confId => array('sysCategoryTableAlias' => 'ALIAS')), 'rn_base');
-        $utility = $this->getMock('Tx_Rnbase_Category_FilterUtility', array('getCategoryUidsOfCurrentDetailViewItem'));
+        $configurations = $this->createConfigurations([$confId => ['sysCategoryTableAlias' => 'ALIAS']], 'rn_base');
+        $utility = $this->getMock('Tx_Rnbase_Category_FilterUtility', ['getCategoryUidsOfCurrentDetailViewItem']);
         $utility
             ->expects(self::once())
             ->method('getCategoryUidsOfCurrentDetailViewItem')
             ->with($configurations, $confId)
-            ->will(self::returnValue(array(1,2,3)));
+            ->will(self::returnValue([1, 2, 3]));
 
         self::assertEquals(
-            array('test' => 'test', 'ALIAS.uid' => array(OP_IN_INT => '1,2,3')),
-            $utility->setFieldsBySysCategoriesOfItemFromParameters(array('test' => 'test'), $configurations, $confId)
+            ['test' => 'test', 'ALIAS.uid' => [OP_IN_INT => '1,2,3']],
+            $utility->setFieldsBySysCategoriesOfItemFromParameters(['test' => 'test'], $configurations, $confId)
         );
     }
 
@@ -188,33 +183,32 @@ class Tx_Rnbase_Category_FilterUtilityTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetCategoryUidsByReference()
     {
-        $databaseConnection = $this->getMock('Tx_Rnbase_Database_Connection', array('doSelect'));
+        $databaseConnection = $this->getMock('Tx_Rnbase_Database_Connection', ['doSelect']);
         $databaseConnection
             ->expects(self::once())
             ->method('doSelect')
             ->with(
                 'uid_local', 'sys_category_record_mm',
-                array(
-                    'where' =>
-                        'sys_category_record_mm.tablenames = \'test_table\' AND ' .
-                        'sys_category_record_mm.fieldname = \'test_field\' AND ' .
+                [
+                    'where' => 'sys_category_record_mm.tablenames = \'test_table\' AND '.
+                        'sys_category_record_mm.fieldname = \'test_field\' AND '.
                         'sys_category_record_mm.uid_foreign = 123',
-                    'enablefieldsoff' => true
+                    'enablefieldsoff' => true,
+                ]
                 )
-                )
-            ->will(self::returnValue(array(
-                0 => array('uid_local' => 1),
-                1 => array('uid_local' => 2),
-            )));
+            ->will(self::returnValue([
+                0 => ['uid_local' => 1],
+                1 => ['uid_local' => 2],
+            ]));
 
-        $utility = $this->getMock('Tx_Rnbase_Category_FilterUtility', array('getDatabaseConnection'));
+        $utility = $this->getMock('Tx_Rnbase_Category_FilterUtility', ['getDatabaseConnection']);
         $utility
             ->expects(self::once())
             ->method('getDatabaseConnection')
             ->will(self::returnValue($databaseConnection));
 
         self::assertEquals(
-            array(1,2),
+            [1, 2],
             $this->callInaccessibleMethod($utility, 'getCategoryUidsByReference', 'test_table', 'test_field', 123)
         );
     }
@@ -226,19 +220,18 @@ class Tx_Rnbase_Category_FilterUtilityTest extends tx_rnbase_tests_BaseTestCase
     {
         $contentObject = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
         $contentObject->data['uid'] = 123;
-        $configurations = $this->createConfigurations(array(), 'rn_base', '', $contentObject);
+        $configurations = $this->createConfigurations([], 'rn_base', '', $contentObject);
         $confId = 'confId.';
-        $utility = $this->getMock('Tx_Rnbase_Category_FilterUtility', array('getCategoryUidsByReference'));
+        $utility = $this->getMock('Tx_Rnbase_Category_FilterUtility', ['getCategoryUidsByReference']);
         $utility
             ->expects(self::once())
             ->method('getCategoryUidsByReference')
             ->with('tt_content', 'categories', 123)
-            ->will(self::returnValue(array()));
-
+            ->will(self::returnValue([]));
 
         self::assertEquals(
-            array('test' => 'test'),
-            $utility->setFieldsBySysCategoriesOfContentElement(array('test' => 'test'), $configurations, $confId)
+            ['test' => 'test'],
+            $utility->setFieldsBySysCategoriesOfContentElement(['test' => 'test'], $configurations, $confId)
         );
     }
 
@@ -249,18 +242,18 @@ class Tx_Rnbase_Category_FilterUtilityTest extends tx_rnbase_tests_BaseTestCase
     {
         $contentObject = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
         $contentObject->data['uid'] = 123;
-        $configurations = $this->createConfigurations(array(), 'rn_base', '', $contentObject);
+        $configurations = $this->createConfigurations([], 'rn_base', '', $contentObject);
         $confId = 'confId.';
-        $utility = $this->getMock('Tx_Rnbase_Category_FilterUtility', array('getCategoryUidsByReference'));
+        $utility = $this->getMock('Tx_Rnbase_Category_FilterUtility', ['getCategoryUidsByReference']);
         $utility
             ->expects(self::once())
             ->method('getCategoryUidsByReference')
             ->with('tt_content', 'categories', 123)
-            ->will(self::returnValue(array(1,2,3)));
+            ->will(self::returnValue([1, 2, 3]));
 
         self::assertEquals(
-            array('test' => 'test', 'SYS_CATEGORY.uid' => array(OP_IN_INT => '1,2,3')),
-            $utility->setFieldsBySysCategoriesOfContentElement(array('test' => 'test'), $configurations, $confId)
+            ['test' => 'test', 'SYS_CATEGORY.uid' => [OP_IN_INT => '1,2,3']],
+            $utility->setFieldsBySysCategoriesOfContentElement(['test' => 'test'], $configurations, $confId)
         );
     }
 
@@ -273,19 +266,19 @@ class Tx_Rnbase_Category_FilterUtilityTest extends tx_rnbase_tests_BaseTestCase
         $contentObject->data['uid'] = 123;
         $confId = 'confId.';
         $configurations = $this->createConfigurations(
-            array($confId => array('sysCategoryTableAlias' => 'ALIAS')), 'rn_base', '', $contentObject
+            [$confId => ['sysCategoryTableAlias' => 'ALIAS']], 'rn_base', '', $contentObject
         );
 
-        $utility = $this->getMock('Tx_Rnbase_Category_FilterUtility', array('getCategoryUidsByReference'));
+        $utility = $this->getMock('Tx_Rnbase_Category_FilterUtility', ['getCategoryUidsByReference']);
         $utility
             ->expects(self::once())
             ->method('getCategoryUidsByReference')
             ->with('tt_content', 'categories', 123)
-            ->will(self::returnValue(array(1,2,3)));
+            ->will(self::returnValue([1, 2, 3]));
 
         self::assertEquals(
-            array('test' => 'test', 'ALIAS.uid' => array(OP_IN_INT => '1,2,3')),
-            $utility->setFieldsBySysCategoriesOfContentElement(array('test' => 'test'), $configurations, $confId)
+            ['test' => 'test', 'ALIAS.uid' => [OP_IN_INT => '1,2,3']],
+            $utility->setFieldsBySysCategoriesOfContentElement(['test' => 'test'], $configurations, $confId)
         );
     }
 
@@ -296,17 +289,17 @@ class Tx_Rnbase_Category_FilterUtilityTest extends tx_rnbase_tests_BaseTestCase
     {
         $confId = 'confId.';
         $configurations = $this->createConfigurations(
-            array($confId => array(
+            [$confId => [
                 'parameterQualifier' => 'second_ext',
-                'parameterName' => 'second_parameter'
-            )),
+                'parameterName'      => 'second_parameter',
+            ]],
             'rn_base', '', tx_rnbase::makeInstance('tx_rnbase_parameters')
         );
         $utility = tx_rnbase::makeInstance('Tx_Rnbase_Category_FilterUtility');
 
         self::assertEquals(
-            array('test' => 'test'),
-            $utility->setFieldsBySysCategoriesFromParameters(array('test' => 'test'), $configurations, $confId)
+            ['test' => 'test'],
+            $utility->setFieldsBySysCategoriesFromParameters(['test' => 'test'], $configurations, $confId)
         );
     }
 
@@ -318,17 +311,17 @@ class Tx_Rnbase_Category_FilterUtilityTest extends tx_rnbase_tests_BaseTestCase
         $_GET['second_ext']['second_parameter'] = 123;
         $confId = 'confId.';
         $configurations = $this->createConfigurations(
-            array($confId => array(
+            [$confId => [
                 'parameterQualifier' => 'second_ext',
-                'parameterName' => 'second_parameter'
-            )),
+                'parameterName'      => 'second_parameter',
+            ]],
             'rn_base', '', tx_rnbase::makeInstance('tx_rnbase_parameters')
         );
         $utility = tx_rnbase::makeInstance('Tx_Rnbase_Category_FilterUtility');
 
         self::assertEquals(
-            array('test' => 'test', 'SYS_CATEGORY.uid' => array(OP_IN_INT => '123')),
-            $utility->setFieldsBySysCategoriesFromParameters(array('test' => 'test'), $configurations, $confId)
+            ['test' => 'test', 'SYS_CATEGORY.uid' => [OP_IN_INT => '123']],
+            $utility->setFieldsBySysCategoriesFromParameters(['test' => 'test'], $configurations, $confId)
         );
     }
 
@@ -340,19 +333,19 @@ class Tx_Rnbase_Category_FilterUtilityTest extends tx_rnbase_tests_BaseTestCase
         $_GET['second_ext']['second_parameter'] = 123;
         $confId = 'confId.';
         $configurations = $this->createConfigurations(
-            array($confId => array(
+            [$confId => [
                 'sysCategoryTableAlias' => 'ALIAS',
-                'parameterQualifier' => 'second_ext',
-                'parameterName' => 'second_parameter'
-            )), 'rn_base', '', $contentObject,
+                'parameterQualifier'    => 'second_ext',
+                'parameterName'         => 'second_parameter',
+            ]], 'rn_base', '', $contentObject,
             tx_rnbase::makeInstance('tx_rnbase_parameters')
         );
 
         $utility = tx_rnbase::makeInstance('Tx_Rnbase_Category_FilterUtility');
 
         self::assertEquals(
-            array('test' => 'test', 'ALIAS.uid' => array(OP_IN_INT => '123')),
-            $utility->setFieldsBySysCategoriesFromParameters(array('test' => 'test'), $configurations, $confId)
+            ['test' => 'test', 'ALIAS.uid' => [OP_IN_INT => '123']],
+            $utility->setFieldsBySysCategoriesFromParameters(['test' => 'test'], $configurations, $confId)
         );
     }
 }

@@ -1,5 +1,7 @@
 <?php
+
 namespace Sys25\RnBase\Fluid\View;
+
 /***************************************************************
  * Copyright notice
  *
@@ -24,24 +26,21 @@ namespace Sys25\RnBase\Fluid\View;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Fluid\View$Factory
+ * Sys25\RnBase\Fluid\View$Factory.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class Factory
 {
-
     /**
      * @param tx_rnbase_configurations $configurations
-     * @param array $frameworkSettings
+     * @param array                    $frameworkSettings
      *
      * @return \Sys25\RnBase\Fluid\View\Standalone
      */
-    public static function getViewInstance(\tx_rnbase_configurations $configurations, $frameworkSettings = array())
+    public static function getViewInstance(\tx_rnbase_configurations $configurations, $frameworkSettings = [])
     {
         $view = \tx_rnbase::makeInstance('Sys25\\RnBase\\Fluid\\View\\Standalone', $configurations->getCObj());
 

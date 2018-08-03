@@ -43,7 +43,7 @@ class Value implements Expression
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function visit(ExpressionVisitor $visitor)
     {

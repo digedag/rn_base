@@ -1,4 +1,5 @@
 <?php
+
 namespace Sys25\RnBase\Fluid\View;
 
 /***************************************************************
@@ -25,18 +26,17 @@ namespace Sys25\RnBase\Fluid\View;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Fluid\View$StandloneTest
+ * Sys25\RnBase\Fluid\View$StandloneTest.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class StandloneTest extends \tx_rnbase_tests_BaseTestCase
+class StandaloneTest extends \tx_rnbase_tests_BaseTestCase
 {
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()

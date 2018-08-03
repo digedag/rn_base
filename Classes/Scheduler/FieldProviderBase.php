@@ -1,6 +1,6 @@
 <?php
 /**
- *  Copyright notice
+ *  Copyright notice.
  *
  *  (c) 2015 DMK E-BUSINESS GmbH  <dev@dmk-ebusiness.de>
  *  All rights reserved
@@ -23,25 +23,23 @@
  */
 
 /**
- * Tx_Rnbase_Scheduler_FieldProviderBase
+ * Tx_Rnbase_Scheduler_FieldProviderBase.
  *
  * stellt die abstrakten Methoden für Tx_Rnbase_Scheduler_FieldProvider bereit
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann <rene@system25.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 abstract class Tx_Rnbase_Scheduler_FieldProviderBase
 {
-
     /**
-     * Gets additional fields to render in the form to add/edit a task
+     * Gets additional fields to render in the form to add/edit a task.
      *
-     * @param array &$taskInfo Values of the fields from the add/edit task form
-     * @param Tx_Rnbase_Scheduler_Task $task The task object being edited. Null when adding a task!
+     * @param array                                                     &$taskInfo       Values of the fields from the add/edit task form
+     * @param Tx_Rnbase_Scheduler_Task                                  $task            The task object being edited. Null when adding a task!
      * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule $schedulerModule Reference to the scheduler backend module
+     *
      * @return array
      */
     abstract protected function _getAdditionalFields(
@@ -51,10 +49,11 @@ abstract class Tx_Rnbase_Scheduler_FieldProviderBase
     );
 
     /**
-     * Validates the additional fields' values
+     * Validates the additional fields' values.
      *
-     * @param array $submittedData An array containing the data submitted by the add/edit task form
+     * @param array                                                     $submittedData   An array containing the data submitted by the add/edit task form
      * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule Reference to the scheduler backend module
+     *
      * @return bool TRUE if validation was ok (or selected class is not relevant), FALSE otherwise
      */
     abstract protected function _validateAdditionalFields(
@@ -63,10 +62,11 @@ abstract class Tx_Rnbase_Scheduler_FieldProviderBase
     );
 
     /**
-     * Takes care of saving the additional fields' values in the task's object
+     * Takes care of saving the additional fields' values in the task's object.
      *
-     * @param array $submittedData An array containing the data submitted by the add/edit task form
-     * @param Tx_Rnbase_Scheduler_Task $task Reference to the scheduler backend module
+     * @param array                    $submittedData An array containing the data submitted by the add/edit task form
+     * @param Tx_Rnbase_Scheduler_Task $task          Reference to the scheduler backend module
+     *
      * @return void
      */
     abstract protected function _saveAdditionalFields(array $submittedData, Tx_Rnbase_Scheduler_Task $task);

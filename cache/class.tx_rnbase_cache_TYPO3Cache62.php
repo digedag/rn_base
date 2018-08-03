@@ -22,22 +22,19 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-
 tx_rnbase::load('tx_rnbase_cache_ICache');
 
-/**
- *
- */
 class tx_rnbase_cache_TYPO3Cache62 implements tx_rnbase_cache_ICache
 {
     private $cache; // The cache instance
-    private static $emptyArray = array();
+    private static $emptyArray = [];
+
     public function __construct($cacheName)
     {
         $this->checkCacheConfiguration($cacheName);
         $cache = $this->getT3CacheManager()->getCache($cacheName);
         if (!is_object($cache)) {
-            throw new Exception('Error creating cache with name: ' . $cacheName);
+            throw new Exception('Error creating cache with name: '.$cacheName);
         }
         $this->setCache($cache);
     }
@@ -51,22 +48,23 @@ class tx_rnbase_cache_TYPO3Cache62 implements tx_rnbase_cache_ICache
         // will be removed in two versions. Use \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance
         return tx_rnbase::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
     }
+
     private function checkCacheConfiguration($cacheName)
     {
         if (!array_key_exists($cacheName, $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'])) {
             // Der Cache ist nicht konfiguriert.
             // Wir konfigurieren einen mit Defaults
-            $defaultCache = array($cacheName => array(
+            $defaultCache = [$cacheName => [
                 'backend' => 'TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend',
-                'options' => array(
-                )
-            ));
+                'options' => [
+                ],
+            ]];
             $this->getT3CacheManager()->setCacheConfigurations($defaultCache);
         }
     }
 
     /**
-     * Retrieve a value from cache
+     * Retrieve a value from cache.
      *
      * @param string $key
      */
@@ -74,18 +72,22 @@ class tx_rnbase_cache_TYPO3Cache62 implements tx_rnbase_cache_ICache
     {
         return $this->getCache()->get($key);
     }
+
     public function has($key)
     {
         return $this->getCache()->has($key);
     }
+
     public function set($key, $value, $lifetime = null)
     {
         $this->getCache()->set($key, $value, self::$emptyArray, $lifetime);
     }
+
     public function remove($key)
     {
         $this->getCache()->remove($key);
     }
+
     /**
      * Set the TYPO3 cache instance.
      *
@@ -95,6 +97,7 @@ class tx_rnbase_cache_TYPO3Cache62 implements tx_rnbase_cache_ICache
     {
         $this->cache = $cache;
     }
+
     /**
      * Set the TYPO3 cache instance.
      *

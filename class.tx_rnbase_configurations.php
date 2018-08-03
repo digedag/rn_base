@@ -27,7 +27,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-use \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /***************************************************************
  *
@@ -45,7 +45,7 @@ use \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  * as always.
  ***************************************************************/
 
-/**
+/*
  * Object to load, hold, transport and deliver all or some TypoScript-Setup of an extension.
  *
  * It is very usefull to store all configuration of an extension into this object and to
@@ -78,7 +78,7 @@ tx_rnbase::load('Tx_Rnbase_Configuration_ProcessorInterface');
 tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
 /**
- * Configuration processor
+ * Configuration processor.
  *
  * @deprecated
  *     use Tx_Rnbase_Configuration_Processor for instances
@@ -118,25 +118,27 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
     private $_qualifier = '';
 
     /**
-     * die UID des Plugins (also des Content-Objekts)
+     * die UID des Plugins (also des Content-Objekts).
      *
      * @var int
      */
     private $pluginUid = 0;
 
     /**
-     * das originale cObj des Plugins
+     * das originale cObj des Plugins.
      *
      * @var tslib_cObj|\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+     *
      * @internal DO NOT USE THIS DIRECTLY! Use method getCObj() instead.
      */
     public $cObj = null;
 
     /**
-     * Container für alternative cObjs innerhalb des Plugins
+     * Container für alternative cObjs innerhalb des Plugins.
+     *
      * @var tslib_cObj[]|\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer[]
      */
-    private $cObjs = array();
+    private $cObjs = [];
 
     /**
      * @todo Unused?
@@ -164,7 +166,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
     /**
      * @var int[]
      */
-    private static $libIds = array();
+    private static $libIds = [];
 
     /**
      * Set this in the derived class or give the setupPath to the loadTypoScript method.
@@ -174,7 +176,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
     protected $setupPath = '';
 
     /**
-     * Util used to load and retrieve local lang labels
+     * Util used to load and retrieve local lang labels.
      *
      * @var tx_rnbase_util_Lang
      */
@@ -193,7 +195,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
         if (!$this instanceof Tx_Rnbase_Configuration_Processor) {
             $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
             $utility::deprecationLog(
-                'Usage of "tx_rnbase_configurations" are deprecated.' .
+                'Usage of "tx_rnbase_configurations" are deprecated.'.
                 ' Use "Tx_Rnbase_Configuration_Processor" instead.'
             );
         }
@@ -203,8 +205,9 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
         $this->_keepVars = new ArrayObject();
         $this->localLangUtil = tx_rnbase::makeInstance('tx_rnbase_util_Lang');
     }
+
     /**
-     * Initialize this instance with Configuration Array and cObj-Data
+     * Initialize this instance with Configuration Array and cObj-Data.
      *
      * A note to extensionKey and qualifier: both values should be set by plugins Typoscript-setup:
      *
@@ -215,10 +218,10 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
      * extensionKey is not used right now. The qualifier is used as prefix for plugin parameters
      * like this: t3sports[param1]=value
      *
-     * @param array $configurationArray the typoscript configuration array given from TYPO3
+     * @param array                      $configurationArray the typoscript configuration array given from TYPO3
      * @param ContentObjectRenderer|null $cObj
-     * @param string $extensionKey the extension key for TYPO3
-     * @param string $qualifier the prefix string for plugin parameters.
+     * @param string                     $extensionKey       the extension key for TYPO3
+     * @param string                     $qualifier          the prefix string for plugin parameters.
      *
      * @return void
      */
@@ -279,9 +282,9 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
      *
      * @param bool $convert
      *
-     * @return bool|void
-     *
      * @throws tx_rnbase_exception_Skip
+     *
+     * @return bool|void
      */
     public function convertToUserInt($convert = true)
     {
@@ -298,7 +301,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
     }
 
     /**
-     * Whether or not the current plugin is executed as USER_INT
+     * Whether or not the current plugin is executed as USER_INT.
      *
      * @return bool
      */
@@ -319,6 +322,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
     {
         return $this->getBool('uniqueParameters') == true;
     }
+
     /**
      * Returns a unique ID for this plugin.
      *
@@ -345,7 +349,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
      * Create your individual instance of cObj. For each id only one instance is created.
      * If id == 0 the will get the plugins original cOBj.
      *
-     * @param string $id any
+     * @param string      $id        any
      * @param string|null $cObjClass String Optional cObj-classname
      *
      * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|tslib_cObj
@@ -393,7 +397,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
 
     /**
      * Return the data container for view by reference. This container should be filled
-     * by Controller-Action
+     * by Controller-Action.
      *
      * @return ArrayObject
      */
@@ -404,7 +408,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
 
     /**
      * Returns the defined path to template directory. This is by default
-     * 'EXT:your_extension/templates/'. You can change this by TS setting templatePath
+     * 'EXT:your_extension/templates/'. You can change this by TS setting templatePath.
      *
      * @return string
      */
@@ -412,7 +416,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
     {
         $path = $this->get('templatePath');
 
-        return $path ? $path : 'EXT:' . $this->getExtensionKey() . '/views/templates/';
+        return $path ? $path : 'EXT:'.$this->getExtensionKey().'/views/templates/';
     }
 
     /**
@@ -450,8 +454,9 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
         // Make sure to keep all parameters
         $this->setKeepVars($parameters);
     }
+
     /**
-     * Returns request parameters
+     * Returns request parameters.
      *
      * @return tx_rnbase_IParameters
      */
@@ -461,7 +466,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
     }
 
     /**
-     * Returns the KeepVars-Array
+     * Returns the KeepVars-Array.
      *
      * @return ArrayObject
      */
@@ -471,7 +476,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
     }
 
     /**
-     * Set an ArrayObject with variables to keep between requests
+     * Set an ArrayObject with variables to keep between requests.
      *
      * @param tx_rnbase_IParameters $keepVars
      *
@@ -489,7 +494,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
     }
 
     /**
-     * Add a value that must be kept by parameters
+     * Add a value that must be kept by parameters.
      *
      * @param mixed $name
      * @param mixed $value
@@ -520,7 +525,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
      */
     public function createParamName($name)
     {
-        return $this->getQualifier() . '[' . $name . ']';
+        return $this->getQualifier().'['.$name.']';
     }
 
     /**
@@ -544,9 +549,10 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
     }
 
     /**
-     * Force a new qualifier for link creation
+     * Force a new qualifier for link creation.
      *
      * @param string $qualifier
+     *
      * @return Tx_Rnbase_Configuration_ProcessorInterface
      */
     public function setQualifier($qualifier)
@@ -557,7 +563,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
     }
 
     /**
-     * Returns the flexform data of this plugin as array
+     * Returns the flexform data of this plugin as array.
      *
      * @return array by reference
      */
@@ -567,7 +573,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
         if (!is_array($flex)) {
             tx_rnbase::load('tx_rnbase_util_Network');
             tx_rnbase::load('tx_rnbase_util_Arrays');
-            $flex = tx_rnbase_util_Network::getUrl(tx_rnbase_util_Extensions::extPath($this->getExtensionKey()) . $this->get('flexform'));
+            $flex = tx_rnbase_util_Network::getUrl(tx_rnbase_util_Extensions::extPath($this->getExtensionKey()).$this->get('flexform'));
             $flex = tx_rnbase_util_Arrays::xml2array($flex);
         }
 
@@ -590,7 +596,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
      *
      * @param string $key
      * @param string $alt
-     * @param bool $hsc
+     * @param bool   $hsc
      *
      * @return string
      */
@@ -604,10 +610,9 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
         );
     }
 
-
     /**
      * Returns a value from extension configuration.
-     * Can be called static
+     * Can be called static.
      *
      * @param string $extKey
      * @param string $cfgKey
@@ -622,7 +627,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
     }
 
     /**
-     * Get a value or an array by providing a relative pathKey
+     * Get a value or an array by providing a relative pathKey.
      *
      * The provided pathKey is relative to the part of the TS-Setup you have loaded. Examples:
      *
@@ -634,8 +639,8 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
      *
      * Mind: To query an array end with a DOT. To to query a single value end without DOT.
      *
-     * @param string             $pathKey relative setupPath
-     * @param bool               $deep
+     * @param string $pathKey relative setupPath
+     * @param bool   $deep
      *
      * @return array|string|null
      */
@@ -652,7 +657,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
         if (!is_array($ret) && $noEndingDot) {
             $arr = $this->_queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey.'.');
             if (is_array($arr)) {
-                $ret = array('key' => $ret, 'key.' => $arr);
+                $ret = ['key' => $ret, 'key.' => $arr];
             }
         }
         if (is_array($ret)) {
@@ -664,11 +669,11 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
     }
 
     /**
-     * Returns a boolean config value. The return value is FALSE if the value is empty or 0 or 'FALSE'
+     * Returns a boolean config value. The return value is FALSE if the value is empty or 0 or 'FALSE'.
      *
      * @param string $pathKey
-     * @param bool $deep
-     * @param bool $notDefined value to return if no value configured or empty
+     * @param bool   $deep
+     * @param bool   $notDefined value to return if no value configured or empty
      *
      * @return bool
      */
@@ -684,11 +689,12 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
 
         return (!$value || strtolower($value) == 'false') ? false : true;
     }
+
     /**
      * Returns a int config value.
      *
      * @param string $pathKey
-     * @param bool $deep
+     * @param bool   $deep
      *
      * @return int
      */
@@ -698,7 +704,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
     }
 
     /**
-     * Returns the complete TS config array
+     * Returns the complete TS config array.
      *
      * @return array
      */
@@ -727,13 +733,12 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
         return $ret;
     }
 
-
     /**
-     * Get a exploded value
+     * Get a exploded value.
      *
      * @param string $pathKey
      * @param string $delim
-     * @param bool $deep
+     * @param bool   $deep
      *
      * @return array
      */
@@ -744,14 +749,14 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
             return $value;
         }
         if (empty($value)) {
-            return array();
+            return [];
         }
 
         return tx_rnbase_util_Strings::trimExplode($delim, $value, true);
     }
 
     /**
-     * Query a uniform hash from a dataset like setup
+     * Query a uniform hash from a dataset like setup.
      *
      * persons.10.id = 103
      * persons.10.firstName = Peter
@@ -769,16 +774,16 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
      * usage: $configurations->queryHash('persons.', 'firstName', 'yearOfBirth');
      * result: array('Peter' => '1973', 'Susan' => '1965', 'Mary' => '1989');
      *
-     * @param string $pathKey relative pathKey
-     * @param string $keyName key of of the wanted key
+     * @param string $pathKey   relative pathKey
+     * @param string $keyName   key of of the wanted key
      * @param string $valueName key of of the wanted value
      *
-     * @return array  wanted Hash (key-value-pairs)
+     * @return array wanted Hash (key-value-pairs)
      */
     public function queryHash($pathKey, $keyName, $valueName)
     {
         $selection = $this->_dataStore->get($pathKey);
-        $array = array();
+        $array = [];
         foreach ($selection as $set) {
             $array[$set[$keyName]] = $set[$valueName];
         }
@@ -787,7 +792,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
     }
 
     /**
-     * Query a single dataset from a list of datasets by a key entry
+     * Query a single dataset from a list of datasets by a key entry.
      *
      * persons.10.id = 103
      * persons.10.firstName = Peter
@@ -808,7 +813,8 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
      * @param string  relative pathKey
      * @param string  key of key
      * @param string  value of key
-     * @return array  wanted dataset
+     *
+     * @return array wanted dataset
      */
     public function queryDataSet($path, $key, $value)
     {
@@ -821,7 +827,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
     }
 
     /**
-     * Query a single data from a list of datasets by a combination of key entries
+     * Query a single data from a list of datasets by a combination of key entries.
      *
      * persons.10.id = 103
      * persons.10.firstName = Peter
@@ -843,7 +849,8 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
      * @param string  key of key
      * @param string  value of key
      * @param string  key of the wanted result value
-     * @return string  wanted value
+     *
+     * @return string wanted value
      */
     public function queryData($path, $key, $value, $wanted)
     {
@@ -859,13 +866,14 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
      * Returns all keynames below a config branch. Any trailing points will be removed.
      *
      * @param string $confId
+     *
      * @return array of strings or empty array
      */
     public function getKeyNames($confId)
     {
         $dynaMarkers = $this->get($confId);
         if (!is_array($dynaMarkers)) {
-            return array();
+            return [];
         }
 
         return $this->getUniqueKeysNames($dynaMarkers);
@@ -875,11 +883,12 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
      * Returns all keynames below a config branch. Any trailing points will be removed.
      *
      * @param array $conf configuration array
+     *
      * @return array
      */
     public function getUniqueKeysNames(array $conf)
     {
-        $keys = array();
+        $keys = [];
 
         $dynaMarkers = array_keys($conf);
         if (empty($dynaMarkers)) {
@@ -898,37 +907,36 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
     // Private functions
     // -------------------------------------------------------------------------------------
 
-    /**
-     *
-     */
     protected function _setCObjectData($data)
     {
         $this->_dataStore->offsetSet('tt_content.', $data);
     }
 
     /**
-     * Load a (local) configuration array into the object
+     * Load a (local) configuration array into the object.
      *
      * An configuration array of rendered TypoScript like it is handeled to the main function
      * of plugins by the outer framework: tx_myextension_controller->main($out, $configurationArray).
      *
      * @param array  direct setup input in form of a renderd TS array
+     *
      * @return void
      */
     protected function _setConfiguration($configuration)
     {
-        foreach ((array)$configuration as $key => $value) {
+        foreach ((array) $configuration as $key => $value) {
             $this->_dataStore->offsetSet($key, $value);
         }
     }
 
     /**
-     * Load TypoScript Setup for an extension
+     * Load TypoScript Setup for an extension.
      *
      * Loads TS form the TS tree down from a node that you define by the $setupPath.
      * If no parameter is provided the setupPath is taken from a class variable of the same name.
      *
      * @param string  setup path from TS, example: 'plugin.tx_myextension.configuration.'
+     *
      * @return void
      */
     protected function _setTypoScript($setupPath = '')
@@ -936,7 +944,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
         $setupPath = $setupPath ? $setupPath : $this->setupPath;
         if ($setupPath) {
             $array = $this->_queryArrayByPath($GLOBALS['TSFE']->tmpl->setup, $setupPath);
-            foreach ((array)$array as $key => $value) {
+            foreach ((array) $array as $key => $value) {
                 $this->_dataStore->offsetSet($key, $value);
             }
         }
@@ -947,24 +955,24 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
         // Cancel Recursion on value level
         if (count($pathArray) == 1) {
             if (!is_array($dataArr)) {
-                $dataArr = array();
+                $dataArr = [];
             }
             $dataArr[$pathArray[0]] = $newValue;
 
             return $dataArr;
         }
 
-        $ret = array();
+        $ret = [];
 
         if (!$dataArr) {
-            $dataArr = array($pathArray[0] . '.' => '');
+            $dataArr = [$pathArray[0].'.' => ''];
         }
-        if (!array_key_exists($pathArray[0] . '.', $dataArr)) {
-            $dataArr[$pathArray[0] . '.'] = '';
+        if (!array_key_exists($pathArray[0].'.', $dataArr)) {
+            $dataArr[$pathArray[0].'.'] = '';
         }
 
         foreach ($dataArr as $key => $value) {
-            if ($key == $pathArray[0] . '.') {
+            if ($key == $pathArray[0].'.') {
                 // Go deeper
                 $ret[$key] = $this->insertIntoDataArray($value, array_slice($pathArray, 1), $newValue);
             } else {
@@ -974,8 +982,9 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
 
         return $ret;
     }
+
     /**
-     * Load flexformdata into the object
+     * Load flexformdata into the object.
      *
      * Takes a xml string or an already rendered array.
      * Typically it would come from the field tt_content.pi_flexform
@@ -986,6 +995,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
      * own loader function in an inherited class.
      *
      * @param mixed  xml or rendered flexform array
+     *
      * @return void
      */
     protected function _setFlexForm($xmlOrArray)
@@ -1019,10 +1029,10 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
                     if (count($pathArray) > 1) {
                         // Die Angabe im Flexform ist in Punktnotation
                         // Wir holen das Array im höchsten Knoten
-                        $dataArr = $this->_dataStore->offsetGet($pathArray[0] . '.');
+                        $dataArr = $this->_dataStore->offsetGet($pathArray[0].'.');
                         $newValue = $def[$valuePointer];
                         $newArr = $this->insertIntoDataArray($dataArr, array_slice($pathArray, 1), $newValue);
-                        $this->_dataStore->offsetSet($pathArray[0] . '.', $newArr);
+                        $this->_dataStore->offsetSet($pathArray[0].'.', $newArr);
                     } else {
                         $this->_dataStore->offsetSet($key, $def[$valuePointer]);
                     }
@@ -1065,11 +1075,13 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
     }
 
     /**
-     * Merges two TypoScript propery array, overlaing the $old_conf onto the $conf array
+     * Merges two TypoScript propery array, overlaing the $old_conf onto the $conf array.
      *
      * @param   array       TypoScript property array, the "base"
      * @param   array       TypoScript property array, the "overlay"
-     * @return  array       The resulting array
+     *
+     * @return array The resulting array
+     *
      * @see mergeTSRef(), tx_tstemplatestyler_modfunc1::joinTSarrays()
      */
     public static function joinTSarrays($conf, $old_conf)
@@ -1089,7 +1101,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
     }
 
     /**
-     * @param array $array
+     * @param array  $array
      * @param string $path
      *
      * @return array
@@ -1102,7 +1114,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
                 // Noch nicht beendet. Auf Reference prüfen
                 $array = $this->mergeTSReference(
                     $array[$pathArray[$i]],
-                    $array[$pathArray[$i] . '.']
+                    $array[$pathArray[$i].'.']
                 );
             } elseif (empty($pathArray[$i])) {
                 // It ends with a dot. We return the rest of the array
@@ -1117,7 +1129,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
     /**
      * Loads local language file for frontend rendering if defined in configuration.
      * Also locallang values from TypoScript property "_LOCAL_LANG" are merged onto the
-     * values. This is a reimplementation from tslib_pibase::pi_loadLL()
+     * values. This is a reimplementation from tslib_pibase::pi_loadLL().
      */
     private function loadLL()
     {
@@ -1143,7 +1155,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
     }
 
     /**
-     * (Try to) Render Typoscript recursively
+     * (Try to) Render Typoscript recursively.
      *
      * \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle() renders a TS array
      * only if the passed array structure is directly
@@ -1154,9 +1166,11 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
      * \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle() on each sub-array
      * which looks like being renderable.
      *
-     * @param array            $data    Deep data array parsed from Typoscript text
+     * @param array                                                                 $data Deep data array parsed from Typoscript text
      * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer or tslib_cObj $cObj
-     * @return array                Data array with Typoscript rendered
+     *
+     * @return array Data array with Typoscript rendered
+     *
      * @author Lars Heber
      */
     private function renderTS($data, $cObj)

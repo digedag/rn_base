@@ -25,13 +25,13 @@
 
 tx_rnbase::load('tx_rnbase_mod_IModule');
 
-/**
- */
 interface tx_rnbase_mod_IModFunc
 {
     public function init(tx_rnbase_mod_IModule $module, $conf);
+
     /**
-     * Liefert den HTML-String des Moduls
+     * Liefert den HTML-String des Moduls.
+     *
      * @return string
      */
     public function main();

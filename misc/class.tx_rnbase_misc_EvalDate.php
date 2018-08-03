@@ -23,17 +23,17 @@
  ***************************************************************/
 
 /**
- * Validates TCE-Date-Fields
+ * Validates TCE-Date-Fields.
  */
 class tx_rnbase_misc_EvalDate
 {
-
     /**
      * Javascript evaluation for date fields. Transforms various date
      * formats into the standard date format just like the evaluation
      * performed on regular TYPO3 date fields.
      *
      * @return string JavaScript code for evaluating the date field.
+     *
      * @todo    Add evaluations similar to what the backend already uses,
      *          converting periods and slashes into dashes and taking US date
      *          format into account.

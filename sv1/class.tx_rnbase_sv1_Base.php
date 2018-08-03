@@ -1,6 +1,6 @@
 <?php
 /**
- *  Copyright notice
+ *  Copyright notice.
  *
  *  (c) 2011 René Nitzsche <rene@system25.de>
  *  All rights reserved
@@ -23,7 +23,7 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
 tx_rnbase::load('tx_rnbase_util_SearchBase');
 tx_rnbase::load('Tx_Rnbase_Service_Base');
@@ -32,30 +32,28 @@ tx_rnbase::load('Tx_Rnbase_Service_Base');
  * Base service class
  * Class was originally written by Lars Heber for extension mklib.
  *
- * @package tx_rnbase
- * @subpackage tx_rnbase_sv1
  * @author René Nitzsche, Lars Heber, Michael Wagner
  */
 abstract class tx_rnbase_sv1_Base extends Tx_Rnbase_Service_Base
 {
-
     // 0: Hide record; 1: Soft-delete (via "deleted" field) record; 2: Really DELETE
     const DELETION_MODE_HIDE = 0;
     const DELETION_MODE_SOFTDELETE = 1;
     const DELETION_MODE_REALLYDELETE = 2;
 
     /**
-     * Return name of search class
+     * Return name of search class.
      *
      * @return string
      */
     abstract public function getSearchClass();
 
     /**
-     * Search database
+     * Search database.
      *
      * @param array $fields
      * @param array $options
+     *
      * @return array[Tx_Rnbase_Domain_Model_RecordInterface]
      */
     public function search($fields, $options)
@@ -66,9 +64,10 @@ abstract class tx_rnbase_sv1_Base extends Tx_Rnbase_Service_Base
     }
 
     /**
-     * Search the item for the given uid
+     * Search the item for the given uid.
      *
      * @param int $ct
+     *
      * @return Tx_Rnbase_Domain_Model_RecordInterface
      */
     public function get($uid)
@@ -79,30 +78,28 @@ abstract class tx_rnbase_sv1_Base extends Tx_Rnbase_Service_Base
     }
 
     /**
-     * Find all records
+     * Find all records.
      *
      * @return array[Tx_Rnbase_Domain_Model_RecordInterface]
      */
     public function findAll()
     {
-        return $this->search(array(), array());
+        return $this->search([], []);
     }
-
 
     /************************
      * Manipulation methods *
      ************************/
 
-
     /**
-     * Dummy model instance
+     * Dummy model instance.
      *
      * @var Tx_Rnbase_Domain_Model_RecordInterface
      */
     private $dummyModel;
 
     /**
-     * Return an instantiated dummy model without any content
+     * Return an instantiated dummy model without any content.
      *
      * This is used only to access several model info methods like
      * getTableName(), getColumnNames() etc.
@@ -113,18 +110,19 @@ abstract class tx_rnbase_sv1_Base extends Tx_Rnbase_Service_Base
     {
         if (!$this->dummyModel) {
             $searcher = tx_rnbase_util_SearchBase::getInstance($this->getSearchClass());
-            $this->dummyModel = tx_rnbase::makeInstance($searcher->getWrapperClass(), array('uid' => 0));
+            $this->dummyModel = tx_rnbase::makeInstance($searcher->getWrapperClass(), ['uid' => 0]);
         }
 
         return $this->dummyModel;
     }
 
     /**
-     * Create a new record
+     * Create a new record.
      *
-     * @param array     $data
-     * @param string    $table
-     * @return int  UID of just created record
+     * @param array  $data
+     * @param string $table
+     *
+     * @return int UID of just created record
      */
     public function create(array $data)
     {
@@ -141,15 +139,16 @@ abstract class tx_rnbase_sv1_Base extends Tx_Rnbase_Service_Base
     }
 
     /**
-     * Save model with new data
+     * Save model with new data.
      *
      * Overwrite this method to specify a specialised method signature,
      * and just call THIS method via parent::handleUpdate().
      * Additionally, the deriving implementation may perform further checks etc.
      *
      * @param Tx_Rnbase_Domain_Model_RecordInterface $model This model is being updated.
-     * @param array $data New data
-     * @param string $where Override default restriction by defining an explicite where clause
+     * @param array                                  $data  New data
+     * @param string                                 $where Override default restriction by defining an explicite where clause
+     *
      * @return Tx_Rnbase_Domain_Model_RecordInterface Updated model
      */
     public function handleUpdate(Tx_Rnbase_Domain_Model_RecordInterface $model, array $data, $where = '')
@@ -158,7 +157,7 @@ abstract class tx_rnbase_sv1_Base extends Tx_Rnbase_Service_Base
         $uid = intval($model->getUid());
 
         if (!$where) {
-            $where = '1=1 AND `'.$table . '`.`uid`='.$uid;
+            $where = '1=1 AND `'.$table.'`.`uid`='.$uid;
         }
 
         // remove uid if exists
@@ -175,13 +174,13 @@ abstract class tx_rnbase_sv1_Base extends Tx_Rnbase_Service_Base
     }
 
     /**
-     * Wrapper for actual deletion
+     * Wrapper for actual deletion.
      *
      * Delete records according to given ready-constructed "where" condition and deletion mode
      *
-     * @param string    $table
-     * @param string    $where      Ready-to-use where condition containing uid restriction
-     * @param int       $mode       @see self::handleDelete()
+     * @param string $table
+     * @param string $where Ready-to-use where condition containing uid restriction
+     * @param int    $mode  @see self::handleDelete()
      */
     protected function delete($table, $where, $mode)
     {
@@ -196,7 +195,7 @@ abstract class tx_rnbase_sv1_Base extends Tx_Rnbase_Service_Base
                 }
 
                 //else
-                $data = array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] => 1);
+                $data = [$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] => 1];
                 tx_rnbase_util_DB::doUpdate($table, $where, self::insertTimestamp($data, $table));
                 break;
 
@@ -208,7 +207,7 @@ abstract class tx_rnbase_sv1_Base extends Tx_Rnbase_Service_Base
                 }
 
                 //else
-                $data = array($GLOBALS['TCA'][$table]['ctrl']['delete'] => 1);
+                $data = [$GLOBALS['TCA'][$table]['ctrl']['delete'] => 1];
                 tx_rnbase_util_DB::doUpdate($table, $where, self::insertTimestamp($data, $table));
                 break;
 
@@ -223,16 +222,17 @@ abstract class tx_rnbase_sv1_Base extends Tx_Rnbase_Service_Base
     }
 
     /**
-     * Delete one model
+     * Delete one model.
      *
      * Overwrite this method to specify a specialised method signature,
      * and just call THIS method via parent::handleDelete().
      * Additionally, the deriving implementation may perform further checks etc.
      *
      * @param Tx_Rnbase_Domain_Model_RecordInterface $model This model is being updated.
-     * @param string $where Override default restriction by defining an explicite where clause
-     * @param int $mode Deletion mode with the following options: 0: Hide record; 1: Soft-delete (via "deleted" field) record; 2: Really DELETE record.
-     * @param int $table Wenn eine Tabelle angegeben wird, wird die des Models missachtet (wichtig für temp anzeigen)
+     * @param string                                 $where Override default restriction by defining an explicite where clause
+     * @param int                                    $mode  Deletion mode with the following options: 0: Hide record; 1: Soft-delete (via "deleted" field) record; 2: Really DELETE record.
+     * @param int                                    $table Wenn eine Tabelle angegeben wird, wird die des Models missachtet (wichtig für temp anzeigen)
+     *
      * @return Tx_Rnbase_Domain_Model_RecordInterface Updated (on success actually empty) model.
      */
     public function handleDelete(Tx_Rnbase_Domain_Model_RecordInterface $model, $where = '', $mode = 0, $table = null)
@@ -255,7 +255,7 @@ abstract class tx_rnbase_sv1_Base extends Tx_Rnbase_Service_Base
     }
 
     /**
-     * Einen Datensatz in der DB anlegen
+     * Einen Datensatz in der DB anlegen.
      *
      * Diese Methode kann in Child-Klassen einfach überschrieben werden um zusätzliche Funktionen
      * zu implementieren. Dann natürlich nicht vergessen diese Methode via parent::handleCreation()
@@ -279,13 +279,13 @@ abstract class tx_rnbase_sv1_Base extends Tx_Rnbase_Service_Base
      * ******************************************************
      */
 
-
     /**
-     * Insert crdate and timestamp into correct field (gotten from TCA)
+     * Insert crdate and timestamp into correct field (gotten from TCA).
      *
-     * @param   array   $data
-     * @param   string  $tablename
-     * @return  array
+     * @param array  $data
+     * @param string $tablename
+     *
+     * @return array
      */
     protected static function insertCrdateAndTimestamp($data, $tablename)
     {
@@ -301,11 +301,12 @@ abstract class tx_rnbase_sv1_Base extends Tx_Rnbase_Service_Base
     }
 
     /**
-     * Insert timestamp into correct field (gotten from TCA)
+     * Insert timestamp into correct field (gotten from TCA).
      *
-     * @param   array   $data
-     * @param   string  $tablename
-     * @return  array
+     * @param array  $data
+     * @param string $tablename
+     *
+     * @return array
      */
     private static function insertTimestamp($data, $tablename)
     {

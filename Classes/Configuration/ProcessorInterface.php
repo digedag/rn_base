@@ -23,10 +23,8 @@
  ***************************************************************/
 
 /**
- * Interface for configuiration processor
+ * Interface for configuiration processor.
  *
- * @package TYPO3
- * @subpackage rn_base
  * @author Michael Wagner
  */
 interface Tx_Rnbase_Configuration_ProcessorInterface
@@ -41,14 +39,14 @@ interface Tx_Rnbase_Configuration_ProcessorInterface
      *
      * @param bool $convert
      *
-     * @return bool|void
-     *
      * @throws tx_rnbase_exception_Skip
+     *
+     * @return bool|void
      */
     public function convertToUserInt($convert = true);
 
     /**
-     * Whether or not the current plugin is executed as USER_INT
+     * Whether or not the current plugin is executed as USER_INT.
      *
      * @return bool
      */
@@ -94,34 +92,35 @@ interface Tx_Rnbase_Configuration_ProcessorInterface
 
     /**
      * Return the data container for view by reference. This container should be filled
-     * by Controller-Action
+     * by Controller-Action.
      *
      * @return ArrayObject
      */
     public function getViewData();
 
     /**
-     * Returns the complete TS config array
+     * Returns the complete TS config array.
      *
      * @return array
      */
     public function getConfigArray();
+
     /**
-     * Get a value or an array by providing a relative pathKey
+     * Get a value or an array by providing a relative pathKey.
      *
      * @param string $pathKey Relative setupPath like detail.item.links.show
-     * @param bool $deep
+     * @param bool   $deep
      *
      * @return array|string|null
      */
     public function get($pathKey, $deep = false);
 
     /**
-     * Returns a boolean config value. The return value is FALSE if the value is empty or 0 or 'FALSE'
+     * Returns a boolean config value. The return value is FALSE if the value is empty or 0 or 'FALSE'.
      *
      * @param string $pathKey
-     * @param bool $deep
-     * @param bool $notDefined Value to return if no value configured or empty
+     * @param bool   $deep
+     * @param bool   $notDefined Value to return if no value configured or empty
      *
      * @return bool
      */
@@ -131,18 +130,18 @@ interface Tx_Rnbase_Configuration_ProcessorInterface
      * Returns a int config value.
      *
      * @param string $pathKey
-     * @param bool $deep
+     * @param bool   $deep
      *
      * @return int
      */
     public function getInt($pathKey, $deep = false);
 
     /**
-     * Get a exploded value
+     * Get a exploded value.
      *
      * @param string $pathKey
      * @param string $delim
-     * @param bool $deep
+     * @param bool   $deep
      *
      * @return array
      */

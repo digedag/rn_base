@@ -25,10 +25,8 @@
 tx_rnbase::load('tx_rnbase_configurations');
 
 /**
- * Trait to add configuration processor
+ * Trait to add configuration processor.
  *
- * @package TYPO3
- * @subpackage rn_base
  * @author Michael Wagner
  */
 class Tx_Rnbase_Configuration_Processor extends tx_rnbase_configurations

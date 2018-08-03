@@ -23,19 +23,17 @@
  ***************************************************************/
 
 /**
- * Tx_Rnbase_Utility_Cache
+ * Tx_Rnbase_Utility_Cache.
  *
- * @package         TYPO3
- * @subpackage      Tx_Rnbase
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class Tx_Rnbase_Utility_Cache
 {
-
     /**
      * @param array $parameters
+     *
      * @return void
      */
     public static function addExcludedParametersForCacheHash(array $parameters)
@@ -64,7 +62,7 @@ class Tx_Rnbase_Utility_Cache
     /**
      * @param string $typo3ConfVarsKey
      * @param string $cacheHashCalculatorInternalConfigurationKey
-     * @param array $configurationValue
+     * @param array  $configurationValue
      *
      * @return void
      */
@@ -77,30 +75,32 @@ class Tx_Rnbase_Utility_Cache
         if ($GLOBALS['TYPO3_CONF_VARS']['FE'][$typo3ConfVarsKey]) {
             $startingGlue = ',';
         }
-        $GLOBALS['TYPO3_CONF_VARS']['FE'][$typo3ConfVarsKey] .= $startingGlue . join(',', $configurationValue);
+        $GLOBALS['TYPO3_CONF_VARS']['FE'][$typo3ConfVarsKey] .= $startingGlue.implode(',', $configurationValue);
         /* @var \TYPO3\CMS\Frontend\Page\CacheHashCalculator $cacheHashCalculator */
         $cacheHashCalculator = \tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
-        $cacheHashCalculator->setConfiguration(array(
+        $cacheHashCalculator->setConfiguration([
             $cacheHashCalculatorInternalConfigurationKey => explode(
                 ',',
                 $GLOBALS['TYPO3_CONF_VARS']['FE'][$typo3ConfVarsKey]
-            )
-        ));
+            ),
+        ]);
     }
 
     /**
      * @param string $urlQueryString Query-parameters: "&xxx=yyy&zzz=uuu
+     *
      * @return string Hash of all the values
      */
-    public static function generateCacheHashForUrlQueryString($urlQueryString) {
+    public static function generateCacheHashForUrlQueryString($urlQueryString)
+    {
         if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
             /* @var $calculator \TYPO3\CMS\Frontend\Page\CacheHashCalculator */
             $calculator = tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
             $hash = $calculator->generateForParameters($urlQueryString);
-        } elseif(class_exists('t3lib_cacheHash')) {
+        } elseif (class_exists('t3lib_cacheHash')) {
             $calculator = new t3lib_cacheHash();
             $hash = $calculator->generateForParameters($urlQueryString);
-        } elseif (is_callable(array(t3lib_div, 'generateCHash'))) {
+        } elseif (is_callable([t3lib_div, 'generateCHash'])) {
             $hash = t3lib_div::generateCHash($urlQueryString);
         }
 
@@ -108,7 +108,7 @@ class Tx_Rnbase_Utility_Cache
     }
 
     /**
-     * Is mainly used as user function in TypoScript. Example:
+     * Is mainly used as user function in TypoScript. Example:.
      *
      * plugin.tt_news.stdWrap.postUserFunc = Tx_Rnbase_Utility_Cache->addCacheTagsToPage
      * plugin.tt_news.stdWrap.postUserFunc {
@@ -117,7 +117,7 @@ class Tx_Rnbase_Utility_Cache
      * }
      *
      * @param string $content
-     * @param array $cacheTags
+     * @param array  $cacheTags
      *
      * @return string
      */

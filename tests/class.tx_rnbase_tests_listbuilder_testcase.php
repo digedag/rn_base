@@ -25,7 +25,6 @@
 tx_rnbase::load('tx_rnbase_util_Misc');
 tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
-
 class tx_rnbase_tests_listbuilder_testcase extends Tx_Phpunit_TestCase
 {
     public function setup()
@@ -33,10 +32,11 @@ class tx_rnbase_tests_listbuilder_testcase extends Tx_Phpunit_TestCase
         unset($GLOBALS['TSFE']);
         tx_rnbase_util_Misc::prepareTSFE();
     }
+
     public function test_advList()
     {
-        $items = array();
-        $confArr = array();
+        $items = [];
+        $confArr = [];
         $configurations = $this->getConfig($confArr);
         $listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
         $html = $listBuilder->render(
@@ -66,8 +66,8 @@ class tx_rnbase_tests_listbuilder_testcase extends Tx_Phpunit_TestCase
 
     public function test_multiSubpartList()
     {
-        $items = array();
-        $confArr = array();
+        $items = [];
+        $confArr = [];
         $configurations = $this->getConfig($confArr);
         $listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
         $html = $listBuilder->render(
@@ -98,8 +98,8 @@ class tx_rnbase_tests_listbuilder_testcase extends Tx_Phpunit_TestCase
 
     public function test_simpleList()
     {
-        $items = array();
-        $confArr = array();
+        $items = [];
+        $confArr = [];
         $configurations = $this->getConfig($confArr);
         $listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
         $html = $listBuilder->render(
@@ -129,13 +129,14 @@ class tx_rnbase_tests_listbuilder_testcase extends Tx_Phpunit_TestCase
 
     private function getModels()
     {
-        $models = array();
+        $models = [];
         tx_rnbase::load('tx_rnbase_model_media');
-        $models[] = new tx_rnbase_model_media(array('uid' => 22, 'file_name' => 'file22.jpg'));
-        $models[] = new tx_rnbase_model_media(array('uid' => 33, 'file_name' => 'file33.jpg'));
+        $models[] = new tx_rnbase_model_media(['uid' => 22, 'file_name' => 'file22.jpg']);
+        $models[] = new tx_rnbase_model_media(['uid' => 33, 'file_name' => 'file33.jpg']);
 
         return $models;
     }
+
     private function getConfig($confArr)
     {
         $cObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());

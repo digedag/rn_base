@@ -1,6 +1,6 @@
 <?php
 /**
- *  Copyright notice
+ *  Copyright notice.
  *
  *  (c) 2016 René Nitzsche <rene@system25.de>
  *  All rights reserved
@@ -21,17 +21,12 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
-/**
- *
- */
 class Tx_Rnbase_Backend_Utility_Tables
 {
     /**
-     *
-     * @param array $entries
-     * @param array $columns
-     * @param tx_rnbase_util_FormTool $formTool
+     * @param array                                $entries
+     * @param array                                $columns
+     * @param tx_rnbase_util_FormTool              $formTool
      * @param Tx_Rnbase_Domain_Model_DataInterface $options
      *
      * @return array 0 are data and 1 layout
@@ -42,7 +37,7 @@ class Tx_Rnbase_Backend_Utility_Tables
         // das initiale TableLayout nicht mehr aus dem Doc holen. Damit wird in 7.6 das
         // Bootstrap-Layout verwendet.
         $tableLayout = $this->getTableLayout();
-        $tableData = array($this->getHeadline($columns, $options, $formTool));
+        $tableData = [$this->getHeadline($columns, $options, $formTool)];
         $rowCount = 1;
         $isRowOdd = false;
         foreach ($entries as $entry) {
@@ -69,7 +64,7 @@ class Tx_Rnbase_Backend_Utility_Tables
                 $tableLayout[$rowCount - 1] = is_array($tableLayout[$defName]) ? $tableLayout[$defName] : $tableLayout['defRow'];
                 // the spacial layout for the overlay rows
                 $layout = $tableLayout[$rowCount - 1];
-                $layout['tr'][0] = '<tr class="' . ($isRowOdd ? 'db_list_normal' : 'db_list_alt') . ' localization">';
+                $layout['tr'][0] = '<tr class="'.($isRowOdd ? 'db_list_normal' : 'db_list_alt').' localization">';
                 $isRowOdd = !$isRowOdd;
 
                 // render the overlays with the special layout
@@ -88,15 +83,15 @@ class Tx_Rnbase_Backend_Utility_Tables
             }
         }
 
-        return array($tableData, $tableLayout);
+        return [$tableData, $tableLayout];
     }
 
     /**
-     *
-     * @param array $entry
-     * @param array $columns
-     * @param tx_rnbase_util_FormTool $formTool
+     * @param array                                $entry
+     * @param array                                $columns
+     * @param tx_rnbase_util_FormTool              $formTool
      * @param Tx_Rnbase_Domain_Model_DataInterface $options
+     *
      * @return array
      */
     protected function prepareRow($entry, $columns, $formTool, $options)
@@ -108,10 +103,10 @@ class Tx_Rnbase_Backend_Utility_Tables
         if ($entry instanceof Tx_Rnbase_Domain_Model_RecordInterface) {
             $record = $entry->getRecord();
         }
-        $row = array();
+        $row = [];
         if ($options->getCheckbox() !== null) {
             $checkName = $options->getCheckboxname() ? $options->getCheckboxname() : 'checkEntry';
-            $dontcheck = is_array($options->getDontcheck()) ? $options->getDontcheck() : array();
+            $dontcheck = is_array($options->getDontcheck()) ? $options->getDontcheck() : [];
             // Check if entry is checkable
             if (!array_key_exists($record['uid'], $dontcheck)) {
                 $row[] = $formTool->createCheckbox($checkName.'[]', $record['uid']);
@@ -161,13 +156,13 @@ class Tx_Rnbase_Backend_Utility_Tables
             // von diesem die Methode format aufgerufen und der Wert, sowie der Name der aktuellen
             // Spalte übergeben. Ist nichts gesetzt wird einfach der aktuelle Wert verwendet.
             if (isset($data['method'])) {
-                $row[] = call_user_func(array($entry, $data['method']));
+                $row[] = call_user_func([$entry, $data['method']]);
             } elseif (isset($data['decorator'])) {
                 $decor = $data['decorator'];
                 if (!$decor instanceof Tx_Rnbase_Backend_Decorator_InterfaceDecorator) {
                     $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
                     $utility::deprecationLog(
-                        'Decorator "' . get_class($decor) . '" has to implement interface "Tx_Rnbase_Backend_Decorator_InterfaceDecorator".'
+                        'Decorator "'.get_class($decor).'" has to implement interface "Tx_Rnbase_Backend_Decorator_InterfaceDecorator".'
                     );
                 }
                 $row[] = $decor->format($record[$column], $column, $record, $entry);
@@ -183,17 +178,18 @@ class Tx_Rnbase_Backend_Utility_Tables
     }
 
     /**
-     * Liefert die passenden Überschrift für die Tabelle
+     * Liefert die passenden Überschrift für die Tabelle.
      *
-     * @param array $columns
-     * @param array $options
+     * @param array                   $columns
+     * @param array                   $options
      * @param tx_rnbase_util_FormTool $formTool
+     *
      * @return array
      */
-    private function getHeadline($columns = array(), $options, $formTool)
+    private function getHeadline($columns, $options, $formTool)
     {
         global $LANG;
-        $arr = array();
+        $arr = [];
         if ($options->getCheckbox()) {
             $arr[] = '&nbsp;'; // Spalte für Checkbox
         }
@@ -235,6 +231,7 @@ class Tx_Rnbase_Backend_Utility_Tables
      * returns all language overlays.
      *
      * @param Tx_Rnbase_Domain_Model_Base $entry
+     *
      * @return array[Tx_Rnbase_Domain_Model_Base]
      */
     private function getLangOverlayEntries(
@@ -245,20 +242,20 @@ class Tx_Rnbase_Backend_Utility_Tables
         $overlays = tx_rnbase_util_DB::doSelect(
             '*',
             $entry->getTableName(),
-            array(
-                        'where' => $parentField . '=' . $entry->getUid(),
+            [
+                        'where'        => $parentField.'='.$entry->getUid(),
                         'wrapperclass' => get_class($entry),
-                )
+                ]
         );
 
         return $overlays;
     }
 
     /**
-     *
      * @param Tx_Rnbase_Domain_Model_DataInterface $options
-     * @param Tx_Rnbase_Domain_Model_Base $obj
-     * @param tx_rnbase_util_FormTool $formTool
+     * @param Tx_Rnbase_Domain_Model_Base          $obj
+     * @param tx_rnbase_util_FormTool              $formTool
+     *
      * @return string
      */
     private function addLinker($options, $obj, $formTool)
@@ -271,14 +268,14 @@ class Tx_Rnbase_Backend_Utility_Tables
             foreach ($linkerArr as $linker) {
                 if (!$linker instanceof tx_rnbase_mod_linker_LinkerInterface) {
                     // backward compatibility, the interface with the makeLink method is new!
-                    if (!is_callable(array($linker, 'makeLink'))) {
+                    if (!is_callable([$linker, 'makeLink'])) {
                         throw new Exception(
-                            'Linker "' . get_class($linker) . '" has to implement interface "tx_rnbase_mod_linker_LinkerInterface".'
+                            'Linker "'.get_class($linker).'" has to implement interface "tx_rnbase_mod_linker_LinkerInterface".'
                         );
                     }
                     $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
                     $utility::deprecationLog(
-                        'Linker "' . get_class($linker) . '" has to implement interface "tx_rnbase_mod_linker_LinkerInterface".'
+                        'Linker "'.get_class($linker).'" has to implement interface "tx_rnbase_mod_linker_LinkerInterface".'
                     );
                 }
                 $out .= $linker->makeLink($obj, $formTool, $currentPid, $options);
@@ -289,7 +286,6 @@ class Tx_Rnbase_Backend_Utility_Tables
         return $out;
     }
 
-
     /**
      * Returns a table based on the input $data
      * This method is taken from TYPO3 core. It will be removed there for version 8.
@@ -298,8 +294,9 @@ class Tx_Rnbase_Backend_Utility_Tables
      * $content .= tx_rnbase_mod_Tables::buildTable($data, $module->getTableLayout());
      * Should we include a better default layout here??
      *
-     * @param array $data Multidim array with first levels = rows, second levels = cells
+     * @param array $data   Multidim array with first levels = rows, second levels = cells
      * @param array $layout If set, then this provides an alternative layout array instead of $this->tableLayout
+     *
      * @return string The HTML table.
      */
     public function buildTable($data, $layout = null)
@@ -322,76 +319,77 @@ class Tx_Rnbase_Backend_Utility_Tables
                         $cellWrap = is_array($layout[$cellCount]) ? $layout[$cellCount] : $layout['defCol'];
                         $cellWrap = is_array($rowLayout['defCol']) ? $rowLayout['defCol'] : $cellWrap;
                         $cellWrap = is_array($rowLayout[$cellCount]) ? $rowLayout[$cellCount] : $cellWrap;
-                        $rowResult .= $cellWrap[0] . $tableCell . $cellWrap[1];
+                        $rowResult .= $cellWrap[0].$tableCell.$cellWrap[1];
                         $cellCount++;
                     }
                 }
-                $rowWrap = is_array($layout['tr']) ? $layout['tr'] : array('<tr>', '</tr>');
+                $rowWrap = is_array($layout['tr']) ? $layout['tr'] : ['<tr>', '</tr>'];
                 $rowWrap = is_array($rowLayout['tr']) ? $rowLayout['tr'] : $rowWrap;
 
                 if (is_array($tableLayout['headRows']) && in_array($rowCount, $tableLayout['headRows'])) {
-                    $resultHead .= $rowWrap[0] . $rowResult . $rowWrap[1];
+                    $resultHead .= $rowWrap[0].$rowResult.$rowWrap[1];
                 } else {
-                    $result .= $rowWrap[0] . $rowResult . $rowWrap[1];
+                    $result .= $rowWrap[0].$rowResult.$rowWrap[1];
                 }
                 $rowCount++;
             }
             if (is_array($tableLayout['headRows'])) {
                 $result = '<thead>'.$resultHead.'</thead><tbody>'.$result.'</tbody>';
             } else {
-                $result = $resultHead . $result;
+                $result = $resultHead.$result;
             }
             $tableTag = tx_rnbase_util_TYPO3::isTYPO76OrHigher() ?
                 '<table class="table table-striped table-hover table-condensed">' :
                 '<table border="0" cellspacing="0" cellpadding="0" class="typo3-dblist" id="typo3-tmpltable">';
-            $tableWrap = is_array($tableLayout['table']) ? $tableLayout['table'] : array($tableTag, '</table>');
-            $result = $tableWrap[0] . $result . $tableWrap[1];
+            $tableWrap = is_array($tableLayout['table']) ? $tableLayout['table'] : [$tableTag, '</table>'];
+            $result = $tableWrap[0].$result.$tableWrap[1];
         }
 
         return $result;
     }
 
     /**
-     * Returns a default table layout
+     * Returns a default table layout.
+     *
      * @return array
      */
     public function getTableLayout()
     {
         return tx_rnbase_util_TYPO3::isTYPO76OrHigher() ?
-            array(
-                'headRows' => array(0),
-                'table' => array('<table class="table table-striped table-hover table-condensed">', '</table><br/>'),
-                '0' => array( // Format für 1. Zeile
-                        'tr'        => array('<tr class="">', '</tr>'),
+            [
+                'headRows' => [0],
+                'table'    => ['<table class="table table-striped table-hover table-condensed">', '</table><br/>'],
+                '0'        => [ // Format für 1. Zeile
+                        'tr'        => ['<tr class="">', '</tr>'],
                         // Format für jede Spalte in der 1. Zeile
-                        'defCol' => array('<td>', '</td>')
-                        ),
-                'defRow' => array( // Formate für alle Zeilen
-                        'tr'       => array('<tr class="">', '</tr>'),
-                        'defCol' => array('<td>', '</td>') // Format für jede Spalte in jeder Zeile
-                        ),
-                'defRowEven' => array( // Formate für alle geraden Zeilen
-                        'tr'       => array('<tr class="">', '</tr>'),
+                        'defCol' => ['<td>', '</td>'],
+                        ],
+                'defRow' => [ // Formate für alle Zeilen
+                        'tr'       => ['<tr class="">', '</tr>'],
+                        'defCol'   => ['<td>', '</td>'], // Format für jede Spalte in jeder Zeile
+                        ],
+                'defRowEven' => [ // Formate für alle geraden Zeilen
+                        'tr'       => ['<tr class="">', '</tr>'],
                         // Format für jede Spalte in jeder Zeile
-                        'defCol' => array('<td>', '</td>')
-                        )
-                ) :
-            array(
-                'table' => array('<table class="typo3-dblist" width="100%" cellspacing="0" cellpadding="0" border="0">', '</table><br/>'),
-                '0' => array( // Format für 1. Zeile
-                        'tr'        => array('<tr class="t3-row-header c-headLineTable">', '</tr>'),
+                        'defCol' => ['<td>', '</td>'],
+                        ],
+                ] :
+            [
+                'table' => ['<table class="typo3-dblist" width="100%" cellspacing="0" cellpadding="0" border="0">', '</table><br/>'],
+                '0'     => [ // Format für 1. Zeile
+                        'tr'        => ['<tr class="t3-row-header c-headLineTable">', '</tr>'],
                         // Format für jede Spalte in der 1. Zeile
-                        'defCol' => array('<td>', '</td>')
-                        ),
-                'defRow' => array( // Formate für alle Zeilen
-                        'tr'       => array('<tr class="db_list_normal">', '</tr>'),
-                        'defCol' => array('<td>', '</td>') // Format für jede Spalte in jeder Zeile
-                        ),
-                'defRowEven' => array( // Formate für alle geraden Zeilen
-                        'tr'       => array('<tr class="db_list_alt">', '</tr>'),
+                        'defCol' => ['<td>', '</td>'],
+                        ],
+                'defRow' => [ // Formate für alle Zeilen
+                        'tr'       => ['<tr class="db_list_normal">', '</tr>'],
+                        'defCol'   => ['<td>', '</td>'], // Format für jede Spalte in jeder Zeile
+                        ],
+                'defRowEven' => [ // Formate für alle geraden Zeilen
+                        'tr'       => ['<tr class="db_list_alt">', '</tr>'],
                         // Format für jede Spalte in jeder Zeile
-                        'defCol' => array('<td>', '</td>')
-                        )
-                );
+                        'defCol' => ['<td>', '</td>'],
+                        ],
+                ];
     }
 }

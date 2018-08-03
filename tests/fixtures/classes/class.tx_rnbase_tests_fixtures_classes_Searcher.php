@@ -21,29 +21,27 @@
  ***************************************************************/
 
 /**
- * tx_rnbase_tests_fixtures_classes_Searcher
+ * tx_rnbase_tests_fixtures_classes_Searcher.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class tx_rnbase_tests_fixtures_classes_Searcher extends tx_rnbase_util_SearchBase
 {
-
     /**
-     * @var boolean
+     * @var bool
      */
     private $useAlias = false;
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_rnbase_util_SearchBase::getTableMappings()
      */
     public function getTableMappings()
     {
-        $tableMapping = array();
+        $tableMapping = [];
         $tableMapping[$this->getBaseTableAlias()] = $this->getBaseTable();
         $tableMapping['CONTENT'] = 'tt_content';
         $tableMapping['FEUSER'] = 'fe_users';
@@ -52,7 +50,8 @@ class tx_rnbase_tests_fixtures_classes_Searcher extends tx_rnbase_util_SearchBas
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_rnbase_util_SearchBase::getBaseTable()
      */
     public function getBaseTable()
@@ -61,7 +60,8 @@ class tx_rnbase_tests_fixtures_classes_Searcher extends tx_rnbase_util_SearchBas
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_rnbase_util_SearchBase::getBaseTableAlias()
      */
     protected function getBaseTableAlias()
@@ -70,7 +70,8 @@ class tx_rnbase_tests_fixtures_classes_Searcher extends tx_rnbase_util_SearchBas
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_rnbase_util_SearchBase::getWrapperClass()
      */
     public function getWrapperClass()
@@ -79,7 +80,8 @@ class tx_rnbase_tests_fixtures_classes_Searcher extends tx_rnbase_util_SearchBas
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_rnbase_util_SearchBase::getJoins()
      */
     protected function getJoins($tableAliases)
@@ -88,7 +90,8 @@ class tx_rnbase_tests_fixtures_classes_Searcher extends tx_rnbase_util_SearchBas
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_rnbase_util_SearchBase::useAlias()
      */
     protected function useAlias()
@@ -97,7 +100,7 @@ class tx_rnbase_tests_fixtures_classes_Searcher extends tx_rnbase_util_SearchBas
     }
 
     /**
-     * @param boolean $useAlias
+     * @param bool $useAlias
      */
     public function setUseAlias($useAlias)
     {

@@ -23,17 +23,16 @@
  ***************************************************************/
 
 /**
- * Contains utility functions for HTML-Forms
+ * Contains utility functions for HTML-Forms.
  */
 class tx_rnbase_util_FormUtil
 {
-
     /**
      * Creates a HTML-Select.
      */
     public static function createSelect($name, $arr, $attr = 'class="inputField"')
     {
-        $out = '<select name="' . $name . '" ' . $attr . '>';
+        $out = '<select name="'.$name.'" '.$attr.'>';
         $value = $arr[1];
         // Die Options ermitteln
         foreach ($arr[0] as $key => $val) {
@@ -41,22 +40,23 @@ class tx_rnbase_util_FormUtil
             if (strval($value) == strval($key)) {
                 $sel = 'selected="selected"';
             }
-            $out .= '<option value="' . $key . '" ' . $sel . '>' . $val . '</option>';
+            $out .= '<option value="'.$key.'" '.$sel.'>'.$val.'</option>';
         }
 
         $out .= '</select>';
 
         return $out;
     }
+
     /**
-     * Returns Array as Hiddenfields
+     * Returns Array as Hiddenfields.
      */
     public static function getAsHiddenFields($arr, $qualifier = '')
     {
         $out = '';
         foreach ($arr as $key => $value) {
             $key = strlen($qualifier) > 0 ? $qualifier.'['.$key.']' : $key;
-            $out .= '<input type="hidden" name="' . $key . '" value="' . $value . '">';
+            $out .= '<input type="hidden" name="'.$key.'" value="'.$value.'">';
         }
 
         return $out;
@@ -70,13 +70,15 @@ class tx_rnbase_util_FormUtil
      * Die in der URL enthaltenen Parameter gehen verloren!
      *
      * @author Michael Wagner
+     *
      * @param string $url
+     *
      * @return string
      */
     public static function getHiddenFieldsForUrlParams($url)
     {
         $sysHidden = '';
-        $params = array();
+        $params = [];
 
         if (strpos($url, '?') !== false) {
             $params = substr($url, strpos($url, '?') + 1);

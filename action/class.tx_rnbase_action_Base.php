@@ -30,23 +30,24 @@ class tx_rnbase_action_Base
 {
     public $cObject;
 
-  /**
-   * This is the starting point of request processing.
-   * @param $parameters
-   * @param $configurations
-   */
+    /**
+     * This is the starting point of request processing.
+     *
+     * @param $parameters
+     * @param $configurations
+     */
     public function execute($parameters, $configurations)
     {
         return 'You should overwrite execute in your child action!';
     }
 
-  /**
-   * Returns an instanceof tslib_cObj or \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer.
-   * Since this object has functions for database access and frontend your ControllerAction
-   * should always provide cObj for model and view. This ensures only one instance per request.
-   *
-   * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
-   */
+    /**
+     * Returns an instanceof tslib_cObj or \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer.
+     * Since this object has functions for database access and frontend your ControllerAction
+     * should always provide cObj for model and view. This ensures only one instance per request.
+     *
+     * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+     */
     public function getCObj()
     {
         if (!$this->cObject) {
