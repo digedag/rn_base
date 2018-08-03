@@ -47,7 +47,7 @@ interface tx_rnbase_IFilter
 
     /**
      * Liefert den Marker für den Filter
-     * @return tx_rnbase_FilterMarker
+     * @return tx_rnbase_IFilterMarker
      */
     public function getMarker();
 
@@ -502,8 +502,12 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
     /**
      * Wir verwenden einen alphabetischen Pager. Also muß zunächst ermittelt werden, welche
      * Buchstaben überhaupt vorkommen.
-     * @param tx_cfcleaguefe_ProfileService $service
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     *
+     * @param array $fields
+     * @param array $options
+     * @param array $cfg
+     * @return array
+     * @throws Exception
      */
     private static function findPagerData($fields, $options, $cfg)
     {
