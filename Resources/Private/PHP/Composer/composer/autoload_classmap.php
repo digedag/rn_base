@@ -5,17 +5,17 @@
 $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
-return array(
-    'Doctrine\\Common\\Collections\\AbstractLazyCollection' => $vendorDir . '/doctrine/collections/lib/Doctrine/Common/Collections/AbstractLazyCollection.php',
-    'Doctrine\\Common\\Collections\\ArrayCollection' => $vendorDir . '/doctrine/collections/lib/Doctrine/Common/Collections/ArrayCollection.php',
-    'Doctrine\\Common\\Collections\\Collection' => $vendorDir . '/doctrine/collections/lib/Doctrine/Common/Collections/Collection.php',
-    'Doctrine\\Common\\Collections\\Criteria' => $vendorDir . '/doctrine/collections/lib/Doctrine/Common/Collections/Criteria.php',
-    'Doctrine\\Common\\Collections\\Expr\\ClosureExpressionVisitor' => $vendorDir . '/doctrine/collections/lib/Doctrine/Common/Collections/Expr/ClosureExpressionVisitor.php',
-    'Doctrine\\Common\\Collections\\Expr\\Comparison' => $vendorDir . '/doctrine/collections/lib/Doctrine/Common/Collections/Expr/Comparison.php',
-    'Doctrine\\Common\\Collections\\Expr\\CompositeExpression' => $vendorDir . '/doctrine/collections/lib/Doctrine/Common/Collections/Expr/CompositeExpression.php',
-    'Doctrine\\Common\\Collections\\Expr\\Expression' => $vendorDir . '/doctrine/collections/lib/Doctrine/Common/Collections/Expr/Expression.php',
-    'Doctrine\\Common\\Collections\\Expr\\ExpressionVisitor' => $vendorDir . '/doctrine/collections/lib/Doctrine/Common/Collections/Expr/ExpressionVisitor.php',
-    'Doctrine\\Common\\Collections\\Expr\\Value' => $vendorDir . '/doctrine/collections/lib/Doctrine/Common/Collections/Expr/Value.php',
-    'Doctrine\\Common\\Collections\\ExpressionBuilder' => $vendorDir . '/doctrine/collections/lib/Doctrine/Common/Collections/ExpressionBuilder.php',
-    'Doctrine\\Common\\Collections\\Selectable' => $vendorDir . '/doctrine/collections/lib/Doctrine/Common/Collections/Selectable.php',
-);
+return [
+    'Doctrine\\Common\\Collections\\AbstractLazyCollection'         => $vendorDir.'/doctrine/collections/lib/Doctrine/Common/Collections/AbstractLazyCollection.php',
+    'Doctrine\\Common\\Collections\\ArrayCollection'                => $vendorDir.'/doctrine/collections/lib/Doctrine/Common/Collections/ArrayCollection.php',
+    'Doctrine\\Common\\Collections\\Collection'                     => $vendorDir.'/doctrine/collections/lib/Doctrine/Common/Collections/Collection.php',
+    'Doctrine\\Common\\Collections\\Criteria'                       => $vendorDir.'/doctrine/collections/lib/Doctrine/Common/Collections/Criteria.php',
+    'Doctrine\\Common\\Collections\\Expr\\ClosureExpressionVisitor' => $vendorDir.'/doctrine/collections/lib/Doctrine/Common/Collections/Expr/ClosureExpressionVisitor.php',
+    'Doctrine\\Common\\Collections\\Expr\\Comparison'               => $vendorDir.'/doctrine/collections/lib/Doctrine/Common/Collections/Expr/Comparison.php',
+    'Doctrine\\Common\\Collections\\Expr\\CompositeExpression'      => $vendorDir.'/doctrine/collections/lib/Doctrine/Common/Collections/Expr/CompositeExpression.php',
+    'Doctrine\\Common\\Collections\\Expr\\Expression'               => $vendorDir.'/doctrine/collections/lib/Doctrine/Common/Collections/Expr/Expression.php',
+    'Doctrine\\Common\\Collections\\Expr\\ExpressionVisitor'        => $vendorDir.'/doctrine/collections/lib/Doctrine/Common/Collections/Expr/ExpressionVisitor.php',
+    'Doctrine\\Common\\Collections\\Expr\\Value'                    => $vendorDir.'/doctrine/collections/lib/Doctrine/Common/Collections/Expr/Value.php',
+    'Doctrine\\Common\\Collections\\ExpressionBuilder'              => $vendorDir.'/doctrine/collections/lib/Doctrine/Common/Collections/ExpressionBuilder.php',
+    'Doctrine\\Common\\Collections\\Selectable'                     => $vendorDir.'/doctrine/collections/lib/Doctrine/Common/Collections/Selectable.php',
+];

@@ -23,28 +23,31 @@
  ***************************************************************/
 
 /**
- * Default exception class
+ * Default exception class.
  */
 class tx_rnbase_util_Exception extends Exception
 {
     private $additional = false;
+
     /**
-     * Erstellt eine neue Exeption
+     * Erstellt eine neue Exeption.
+     *
      * @param string $message
-     * @param int $code
-     * @param mixed $additional
+     * @param int    $code
+     * @param mixed  $additional
      */
     public function __construct($message, $code = 0, $additional = false, $previous = null)
     {
         parent::__construct($message, $code, $previous);
         $this->additional = $additional;
     }
+
     /**
      * Liefert den Stacktrace und konvertiert ihn (htmlspecialchars).
      * Verhindert das die Exception-E-Mail zerstört werden,
      * da hier immer unvollständiger HTML-Code enthalten ist!
      *
-     * @return  string
+     * @return string
      */
     public function __toString()
     {
@@ -55,6 +58,7 @@ class tx_rnbase_util_Exception extends Exception
 
     /**
      * Liefert zusätzliche Daten.
+     *
      * @return mixed string or plain data
      */
     public function getAdditional($asString = true)

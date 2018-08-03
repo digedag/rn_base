@@ -19,13 +19,14 @@
 
 namespace Doctrine\Common\Collections;
 
-use Doctrine\Common\Collections\Expr\Expression;
 use Doctrine\Common\Collections\Expr\CompositeExpression;
+use Doctrine\Common\Collections\Expr\Expression;
 
 /**
  * Criteria for filtering Selectable collections.
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
+ *
  * @since 2.3
  */
 class Criteria
@@ -33,7 +34,7 @@ class Criteria
     /**
      * @var string
      */
-    const ASC  = 'ASC';
+    const ASC = 'ASC';
 
     /**
      * @var string
@@ -53,7 +54,7 @@ class Criteria
     /**
      * @var string[]
      */
-    private $orderings = array();
+    private $orderings = [];
 
     /**
      * @var int|null
@@ -137,9 +138,9 @@ class Criteria
             return $this->where($expression);
         }
 
-        $this->expression = new CompositeExpression(CompositeExpression::TYPE_AND, array(
-            $this->expression, $expression
-        ));
+        $this->expression = new CompositeExpression(CompositeExpression::TYPE_AND, [
+            $this->expression, $expression,
+        ]);
 
         return $this;
     }
@@ -158,9 +159,9 @@ class Criteria
             return $this->where($expression);
         }
 
-        $this->expression = new CompositeExpression(CompositeExpression::TYPE_OR, array(
-            $this->expression, $expression
-        ));
+        $this->expression = new CompositeExpression(CompositeExpression::TYPE_OR, [
+            $this->expression, $expression,
+        ]);
 
         return $this;
     }

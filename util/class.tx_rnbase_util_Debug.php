@@ -22,7 +22,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-
 use TYPO3\CMS\Core\Utility\DebugUtility;
 
 tx_rnbase::load('tx_rnbase_util_TYPO3');
@@ -32,30 +31,32 @@ tx_rnbase::load('tx_rnbase_util_TYPO3');
  */
 class tx_rnbase_util_Debug
 {
-
     /**
      * Makes debug output
      * Prints $var in bold between two vertical lines
      * If not $var the word 'debug' is printed
      * If $var is an array, the array is printed by t3lib_div::print_array()
-     * Wrapper method for TYPO3 debug methods
+     * Wrapper method for TYPO3 debug methods.
      *
      * @param   mixed       Variable to print
      * @param   string      The header.
      * @param   string      Group for the debug console
-     * @return  void
+     *
+     * @return void
      */
     public static function debug($var = '', $header = '', $group = 'Debug')
     {
         return DebugUtility::debug($var, $header, $group);
     }
+
     /**
      * Returns HTML-code, which is a visual representation of a multidimensional array
      * use t3lib_div::print_array() in order to print an array
-     * Returns false if $array_in is not an array
+     * Returns false if $array_in is not an array.
      *
      * @param   mixed       Array to view
-     * @return  string      HTML output
+     *
+     * @return string HTML output
      */
     public static function viewArray($array_in)
     {
@@ -63,7 +64,7 @@ class tx_rnbase_util_Debug
     }
 
     /**
-     * Displays the "path" of the function call stack in a string, using debug_backtrace
+     * Displays the "path" of the function call stack in a string, using debug_backtrace.
      *
      * @return string
      */
@@ -73,7 +74,7 @@ class tx_rnbase_util_Debug
     }
 
     /**
-     * Displays the "path" of the function call stack in a string, using debug_backtrace
+     * Displays the "path" of the function call stack in a string, using debug_backtrace.
      *
      * @return array
      */
@@ -82,20 +83,20 @@ class tx_rnbase_util_Debug
         $trail = debug_backtrace();
         $trail = array_reverse($trail);
         array_pop($trail);
-        $path = array();
+        $path = [];
         $pathSiteLength = strlen(PATH_site);
         foreach ($trail as $dat) {
-            $pathFragment = $dat['class'] . $dat['type'] . $dat['function'];
+            $pathFragment = $dat['class'].$dat['type'].$dat['function'];
             // add the path of the included file
             if (in_array(
                 $dat['function'],
-                array('require', 'include', 'require_once', 'include_once')
+                ['require', 'include', 'require_once', 'include_once']
             )) {
                 $dat['args'][0] = substr($dat['args'][0], $pathSiteLength);
                 $dat['file'] = substr($dat['file'], $pathSiteLength);
-                $pathFragment .= '(' . $dat['args'][0] . '),' . $dat['file'];
+                $pathFragment .= '('.$dat['args'][0].'),'.$dat['file'];
             }
-            $path[] = $pathFragment . '#' . $dat['line'];
+            $path[] = $pathFragment.'#'.$dat['line'];
         }
 
         return $path;
@@ -128,12 +129,13 @@ class tx_rnbase_util_Debug
      * Prüft, ob per Parameter oder Konfiguration der Debug für die Labels aktiv ist.
      *
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     *
      * @return bool or string with debug type (plain, html)
      */
     public static function isLabelDebugEnabled(
         Tx_Rnbase_Configuration_ProcessorInterface $configurations = null
     ) {
-        static $status = array();
+        static $status = [];
         // check global debug params
         if (!isset($status['global'])) {
             $status['global'] = !empty($_GET['labeldebug']) && self::isDebugEnabled() ? $_GET['labeldebug'] : self::isDebugEnabled();
@@ -155,27 +157,27 @@ class tx_rnbase_util_Debug
     }
 
     /**
-     *
      * @param string $text
      * @param string $debug
      */
-    public static function wrapDebugInfo($text, $debug, array $options = array())
+    public static function wrapDebugInfo($text, $debug, array $options = [])
     {
         if (!empty($options['plain'])) {
-            return $text . ' [' . $debug . ']';
+            return $text.' ['.$debug.']';
         }
         self::addDebugInfoHeaderData();
-        $out  = '<span class="rnbase-debug-text">';
-        $out .=    '<span class="rnbase-debug-info">';
-        $out .=        is_scalar($debug) ? $debug : var_export($debug, true);
-        $out .=    '</span> ';
-        $out .=    $text;
+        $out = '<span class="rnbase-debug-text">';
+        $out .= '<span class="rnbase-debug-info">';
+        $out .= is_scalar($debug) ? $debug : var_export($debug, true);
+        $out .= '</span> ';
+        $out .= $text;
         $out .= '</span> ';
 
         return $out;
     }
+
     /**
-     * Adds the CSS for the hidden debug info wrap for self::wrapDebugInfo
+     * Adds the CSS for the hidden debug info wrap for self::wrapDebugInfo.
      */
     private static function addDebugInfoHeaderData()
     {
@@ -185,7 +187,7 @@ class tx_rnbase_util_Debug
         }
         $added = true;
         // javascript für das autocpmplete
-        $code  = '';
+        $code = '';
         $code .= '
 			.rnbase-debug-text {
 				border: 1px solid red;
@@ -212,7 +214,7 @@ class tx_rnbase_util_Debug
             // @TODO: this is too late, for the most cases!
             $GLOBALS['TBE_STYLES']['inDocStyles_TBEstyle'] .= $code;
         } else {
-            $code = '<style type="text/css">' . $code . '</style>';
+            $code = '<style type="text/css">'.$code.'</style>';
             $GLOBALS['TSFE']->additionalHeaderData['rnbase-debug-info'] = $code;
         }
     }

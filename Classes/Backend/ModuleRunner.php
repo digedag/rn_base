@@ -23,10 +23,8 @@
  ***************************************************************/
 
 /**
- * Module Runner
+ * Module Runner.
  *
- * @package TYPO3
- * @subpackage Tx_Rnbase
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
  *        GNU Lesser General Public License, version 3 or later
@@ -34,7 +32,7 @@
 class Tx_Rnbase_Backend_ModuleRunner
 {
     /**
-     * This method forwards the call like the TYPO3 CMS 7.x request handler
+     * This method forwards the call like the TYPO3 CMS 7.x request handler.
      *
      * @param string $moduleSignature
      *
@@ -46,7 +44,7 @@ class Tx_Rnbase_Backend_ModuleRunner
             $moduleConfiguration = $this->getModuleConfiguration($moduleSignature);
             if (empty($moduleConfiguration['routeTarget'])) {
                 throw new \RuntimeException(
-                    'Module target' . $moduleSignature . ' is not configured.',
+                    'Module target'.$moduleSignature.' is not configured.',
                     1289918327
                 );
             }
@@ -66,7 +64,7 @@ class Tx_Rnbase_Backend_ModuleRunner
 
         return call_user_func_array(
             $target,
-            array($request, $response)
+            [$request, $response]
         );
     }
 
@@ -95,7 +93,7 @@ class Tx_Rnbase_Backend_ModuleRunner
     }
 
     /**
-     * Returns the module configuration which is provided during module registration
+     * Returns the module configuration which is provided during module registration.
      *
      * @param string $moduleName
      *
@@ -112,7 +110,7 @@ class Tx_Rnbase_Backend_ModuleRunner
 
         if (!isset($GLOBALS['TBE_MODULES']['_configuration'][$moduleName])) {
             throw new \RuntimeException(
-                'Module ' . $moduleName . ' is not configured.',
+                'Module '.$moduleName.' is not configured.',
                 1289918326
             );
         }
@@ -122,7 +120,7 @@ class Tx_Rnbase_Backend_ModuleRunner
 
     /**
      * Creates a callable out of the given parameter, which can be a string, a callable / closure or an array
-     * which can be handed to call_user_func_array()
+     * which can be handed to call_user_func_array().
      *
      * This method is taken from TYPO3\CMS\Core\Http\Dispatcher (TYPO3-7.x)
      *
@@ -146,7 +144,7 @@ class Tx_Rnbase_Backend_ModuleRunner
         if (is_string($target) && strpos($target, ':') === false) {
             $targetObject = tx_rnbase::makeInstance($target);
             if (!method_exists($targetObject, '__invoke')) {
-                throw new InvalidArgumentException('Object "' . $target . '" doesn\'t implement an __invoke() method and cannot be used as target.', 1442431631);
+                throw new InvalidArgumentException('Object "'.$target.'" doesn\'t implement an __invoke() method and cannot be used as target.', 1442431631);
             }
 
             return $targetObject;
@@ -157,7 +155,7 @@ class Tx_Rnbase_Backend_ModuleRunner
             list($className, $methodName) = explode('::', $target, 2);
             $targetObject = Tx_Rnbase_Utility_T3General::makeInstance($className);
 
-            return array($targetObject, $methodName);
+            return [$targetObject, $methodName];
         }
 
         // This needs to be checked at last as a string with object::method is recognize as callable
@@ -165,6 +163,6 @@ class Tx_Rnbase_Backend_ModuleRunner
             return $target;
         }
 
-        throw new InvalidArgumentException('Invalid target for "' . $target . '", as it is not callable.', 1425381442);
+        throw new InvalidArgumentException('Invalid target for "'.$target.'", as it is not callable.', 1425381442);
     }
 }

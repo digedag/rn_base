@@ -21,18 +21,16 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-
 define('DEFAULT_LOCAL_FIELD', '_LOCALIZED_UID');
 
 tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
- * Contains utility functions for FAL
+ * Contains utility functions for FAL.
  */
 class tx_rnbase_util_TSFAL
 {
-
     /**
      * Typoscript USER function for rendering DAM images.
      * This is a minimal Setup:
@@ -64,10 +62,11 @@ class tx_rnbase_util_TSFAL
      * media: Formatting options of the DAM record. Have a look at tx_dam to find all column names
      * limit: Limits the number of medias
      * offset: Start media output with an offset
-     * forcedIdField: force another reference column (other than UID or _LOCALIZED_UID)
+     * forcedIdField: force another reference column (other than UID or _LOCALIZED_UID).
      *
      * @param string $content
-     * @param array $tsConf
+     * @param array  $tsConf
+     *
      * @return string
      */
     public function printImages($content, $tsConf)
@@ -113,7 +112,7 @@ class tx_rnbase_util_TSFAL
         );
 
         // Now set the identifier
-        $markerArray = array('###MEDIA_PARENTUID###' => $parentUid);
+        $markerArray = ['###MEDIA_PARENTUID###' => $parentUid];
         $out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($out, $markerArray);
 
         return $out;
@@ -121,17 +120,18 @@ class tx_rnbase_util_TSFAL
 
     /**
      * returns the filelist comma seperated.
-     * this is equivalent to tx_dam_tsfe->fetchFileList
+     * this is equivalent to tx_dam_tsfe->fetchFileList.
      *
      * @param string $content
-     * @param array $tsConf
+     * @param array  $tsConf
+     *
      * @return string
      */
     public function fetchFileList($content, $tsConf)
     {
         $conf = $this->createConf($tsConf);
         $filelist = self::fetchFilesByTS($conf, $conf->getCObj());
-        $files = array();
+        $files = [];
         foreach ($filelist as $fileModel) {
             $files[] = $fileModel->getFilePath();
         }
@@ -147,13 +147,14 @@ class tx_rnbase_util_TSFAL
      * @param Tx_Rnbase_Configuration_ProcessorInterface $conf
      * @param $cObj
      * @param string $confId
+     *
      * @return array
      */
     public static function fetchFilesByTS($conf, $cObj, $confId = '')
     {
         /* @var $fileRepository \TYPO3\CMS\Core\Resource\FileRepository */
         $fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
-        $pics = array();
+        $pics = [];
         tx_rnbase::load('tx_rnbase_util_Strings');
         // Getting the files
         // Try DAM style
@@ -178,7 +179,6 @@ class tx_rnbase_util_TSFAL
             references = 27
              */
 
-
             // It's important that this always stays "fieldName" and not be renamed to "field" as it would otherwise collide with the stdWrap key of that name
             $referencesFieldName = $conf->getCObj()->stdWrap($conf->get($refConfId.'fieldName'), $conf->get($refConfId.'fieldName.'));
             if ($referencesFieldName) {
@@ -194,7 +194,7 @@ class tx_rnbase_util_TSFAL
                         $referencesForeignUid :
                         (isset($cObj->data['_LOCALIZED_UID']) ? $cObj->data['_LOCALIZED_UID'] : $cObj->data['uid']);
                 // Vermutlich kann hier auch nur ein Objekt geliefert werden...
-                $pics = array();
+                $pics = [];
                 $referencesForeignUid = tx_rnbase_util_Strings::intExplode(',', $referencesForeignUid);
                 foreach ($referencesForeignUid as $refForUid) {
                     if (!$conf->get($refConfId.'treatIdAsReference')) {
@@ -216,7 +216,7 @@ class tx_rnbase_util_TSFAL
         tx_rnbase_util_Misc::callHook(
             'rn_base',
             'util_TSFal_fetchFilesByTS_appendMedia_hook',
-            array('conf' => $conf, '$confId' => $confId, 'media' => &$pics),
+            ['conf' => $conf, '$confId' => $confId, 'media' => &$pics],
             null
         );
 
@@ -233,14 +233,15 @@ class tx_rnbase_util_TSFAL
 
         return $fileObjects;
     }
+
     /**
-     *
      * @param $pics
+     *
      * @return array[tx_rnbase_model_media]
      */
     protected static function convertRef2Media($pics)
     {
-        $fileObjects = array();
+        $fileObjects = [];
         if (is_array($pics)) {
             foreach ($pics as $pic) {
                 // getProperties() liefert derzeit nicht zurück
@@ -252,10 +253,12 @@ class tx_rnbase_util_TSFAL
 
         return $fileObjects;
     }
+
     /**
-     * Erstellt eine Instanz von Tx_Rnbase_Configuration_ProcessorInterface
+     * Erstellt eine Instanz von Tx_Rnbase_Configuration_ProcessorInterface.
      *
      * @param array $conf
+     *
      * @return Tx_Rnbase_Configuration_ProcessorInterface
      */
     public function createConf($conf)
@@ -267,7 +270,7 @@ class tx_rnbase_util_TSFAL
     }
 
     /**
-     * Returns the first reference of a file. Usage by typoscript:
+     * Returns the first reference of a file. Usage by typoscript:.
      *
      * lib.logo = IMAGE
      * lib.logo {
@@ -285,7 +288,8 @@ class tx_rnbase_util_TSFAL
      * }
      *
      * @param string $content
-     * @param array $conf
+     * @param array  $conf
+     *
      * @return string || int
      */
     public function fetchFirstReference($content, $configuration)
@@ -332,11 +336,12 @@ class tx_rnbase_util_TSFAL
     }
 
     /**
-     * Fetches FAL records
+     * Fetches FAL records.
      *
      * @param string $tablename
-     * @param int $uid
+     * @param int    $uid
      * @param string $refField
+     *
      * @return array[tx_rnbase_model_media]
      */
     public static function fetchFiles($tablename, $uid, $refField)
@@ -346,18 +351,21 @@ class tx_rnbase_util_TSFAL
 
         return $fileObjects;
     }
+
     /**
-     * Fetch FAL references
+     * Fetch FAL references.
+     *
      * @param string $tablename
-     * @param int $uid
+     * @param int    $uid
      * @param string $refField
+     *
      * @return array[\TYPO3\CMS\Core\Resource\FileReference]
      */
     public static function fetchReferences($tablename, $uid, $refField)
     {
         /**
- * @var \TYPO3\CMS\Core\Resource\FileRepository $fileRepository
-*/
+         * @var \TYPO3\CMS\Core\Resource\FileRepository
+         */
         $fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
         $refs = $fileRepository->findByRelation($tablename, $refField, $uid);
 
@@ -365,14 +373,15 @@ class tx_rnbase_util_TSFAL
     }
 
     /**
-     * Render thumbnails for references in backend
+     * Render thumbnails for references in backend.
+     *
      * @param $references
      * @param $size
      * @param $addAttr
      */
     public static function createThumbnails($references, $sizeArr = false)
     {
-        $ret = array();
+        $ret = [];
         foreach ($references as $fileRef) {
             /* @var $fileRef \TYPO3\CMS\Core\Resource\FileReference */
             if (!is_object($fileRef)) {
@@ -382,12 +391,12 @@ class tx_rnbase_util_TSFAL
             /* @var $fileObject \TYPO3\CMS\Core\Resource\File */
             $fileObject = $fileRef->getOriginalFile();
             if ($fileObject) {
-                $imageSetup = array();
+                $imageSetup = [];
                 unset($imageSetup['field']);
-                $sizeArr = $sizeArr ? $sizeArr : array('width' => 64, 'height' => 64);
+                $sizeArr = $sizeArr ? $sizeArr : ['width' => 64, 'height' => 64];
                 $imageSetup = array_merge($sizeArr, $imageSetup);
                 $imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, $imageSetup)->getPublicUrl(true);
-                $thumbnail = '<img src="' . $imageUrl . '" alt="' . htmlspecialchars($fileRef->getTitle()) . '">';
+                $thumbnail = '<img src="'.$imageUrl.'" alt="'.htmlspecialchars($fileRef->getTitle()).'">';
                 // TODO: Das geht bestimmt besser...
             }
             if ($thumbnail) {
@@ -399,7 +408,7 @@ class tx_rnbase_util_TSFAL
     }
 
     /**
-     * Returns the TCA description for a DAM media field
+     * Returns the TCA description for a DAM media field.
      *
      *  $options = array(
      *          'label' => 'Ein Bild',
@@ -410,10 +419,11 @@ class tx_rnbase_util_TSFAL
      *      )
      *
      * @param array $ref
-     * @param array $options    These options are merged into the resulting TCA
+     * @param array $options These options are merged into the resulting TCA
+     *
      * @return array
      */
-    public static function getMediaTCA($ref, $options = array())
+    public static function getMediaTCA($ref, $options = [])
     {
         // $options war früher ein String. Daher muss auf String getestet werden.
         $type = 'image';
@@ -427,50 +437,50 @@ class tx_rnbase_util_TSFAL
         $customSettingOverride = (
                 empty($options['config']['customSettingOverride'])
                 || !is_array($options['config']['customSettingOverride'])
-            ) ? array() : $options['config']['customSettingOverride'];
+            ) ? [] : $options['config']['customSettingOverride'];
         $allowedFileExtensions = (string) $options['config']['allowedFileExtensions'];
         $disallowedFileExtensions = (string) $options['config']['disallowedFileExtensions'];
         if ($type == 'image') {
             $customSettingOverride = array_merge(
-                array(
-                    'appearance' => array(
-                        'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:images.addFileReference'
-                    ),
+                [
+                    'appearance' => [
+                        'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:images.addFileReference',
+                    ],
                     // custom configuration for displaying fields in the overlay/reference table
                     // to use the imageoverlayPalette instead of the basicoverlayPalette
-                    'foreign_types' => array(
-                        '0' => array(
+                    'foreign_types' => [
+                        '0' => [
                             'showitem' => '
                                 --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-                                --palette--;;filePalette'
-                        ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array(
+                                --palette--;;filePalette',
+                        ],
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => [
                             'showitem' => '
                                 --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-                                --palette--;;filePalette'
-                        ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
+                                --palette--;;filePalette',
+                        ],
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => [
                             'showitem' => '
                                 --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-                                --palette--;;filePalette'
-                        ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array(
+                                --palette--;;filePalette',
+                        ],
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => [
                             'showitem' => '
                                 --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-                                --palette--;;filePalette'
-                        ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
+                                --palette--;;filePalette',
+                        ],
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => [
                             'showitem' => '
                                 --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-                                --palette--;;filePalette'
-                        ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
+                                --palette--;;filePalette',
+                        ],
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => [
                             'showitem' => '
                                 --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-                                --palette--;;filePalette'
-                        )
-                    )
-                ),
+                                --palette--;;filePalette',
+                        ],
+                    ],
+                ],
                 $customSettingOverride
             );
             if (empty($allowedFileExtensions)) {
@@ -478,21 +488,21 @@ class tx_rnbase_util_TSFAL
             }
         }
 
-        $tca = array(
-            'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.images',
+        $tca = [
+            'label'  => 'LLL:EXT:lang/locallang_general.xml:LGL.images',
             'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
                 $ref,
                 $customSettingOverride,
                 $allowedFileExtensions,
                 $disallowedFileExtensions
-            )
-        );
+            ),
+        ];
 
         if (!empty($tca) && is_array($options)) {
             foreach ($options as $key => $option) {
                 if (is_array($option)) {
                     if (!isset($tca[$key])) {
-                        $tca[$key] = array();
+                        $tca[$key] = [];
                     }
                     foreach ($option as $subkey => $suboption) {
                         $tca[$key][$subkey] = $suboption;
@@ -507,19 +517,20 @@ class tx_rnbase_util_TSFAL
     }
 
     /**
-     * Add a reference to a DAM media file
+     * Add a reference to a DAM media file.
      *
      * @param string $tableName
      * @param string $fieldName
-     * @param int $itemId
-     * @param int $mediaUid
-     * @param int $pId
-     * @param int $sorting
+     * @param int    $itemId
+     * @param int    $mediaUid
+     * @param int    $pId
+     * @param int    $sorting
+     *
      * @return int
      */
     public static function addReference($tableName, $fieldName, $itemId, $mediaUid, $pId = 0, $sorting = 1)
     {
-        $data = array();
+        $data = [];
         $data['pid'] = $pId;
         $data['uid_foreign'] = $itemId;
         $data['uid_local'] = $mediaUid;
@@ -542,18 +553,18 @@ class tx_rnbase_util_TSFAL
      *
      * @param string $tableName
      * @param string $fieldName
-     * @param int $itemId
-     * @param string $uids (list of sys_file_reference uids)
+     * @param int    $itemId
+     * @param string $uids      (list of sys_file_reference uids)
      */
     public static function deleteReferencesByReference($tableName, $fieldName, $itemId, $uids)
     {
-        $where  = 'tablenames = ' . tx_rnbase_util_DB::fullQuoteStr($tableName, 'sys_file_reference');
-        $where .= ' AND fieldname = ' . tx_rnbase_util_DB::fullQuoteStr($fieldName, 'sys_file_reference');
-        $where .= ' AND uid_foreign = ' . (int) $itemId;
+        $where = 'tablenames = '.tx_rnbase_util_DB::fullQuoteStr($tableName, 'sys_file_reference');
+        $where .= ' AND fieldname = '.tx_rnbase_util_DB::fullQuoteStr($fieldName, 'sys_file_reference');
+        $where .= ' AND uid_foreign = '.(int) $itemId;
         $uids = is_array($uids) ? $uids : tx_rnbase_util_Strings::intExplode(',', $uids);
         if (!empty($uids)) {
             $uids = implode(',', $uids);
-            $where .= ' AND uid IN (' . $uids .') ';
+            $where .= ' AND uid IN ('.$uids.') ';
         }
         tx_rnbase_util_DB::doDelete('sys_file_reference', $where);
         // Jetzt die Bildanzahl aktualisieren
@@ -565,8 +576,8 @@ class tx_rnbase_util_TSFAL
      *
      * @param string $tableName
      * @param string $fieldName
-     * @param int $itemId
-     * @param string $uids (list of sys_file uids)
+     * @param int    $itemId
+     * @param string $uids      (list of sys_file uids)
      */
     public static function deleteReferencesByFile($tableName, $fieldName, $itemId, $uids = '')
     {
@@ -578,17 +589,17 @@ class tx_rnbase_util_TSFAL
      *
      * @param string $tableName
      * @param string $fieldName
-     * @param int $itemId
-     * @param string $uids (list of sys_file uids)
+     * @param int    $itemId
+     * @param string $uids      (list of sys_file uids)
      */
     public static function deleteReferences($tableName, $fieldName, $itemId, $uids = '')
     {
-        $where  = 'tablenames = ' . tx_rnbase_util_DB::fullQuoteStr($tableName, 'sys_file_reference');
-        $where .= ' AND fieldname = ' . tx_rnbase_util_DB::fullQuoteStr($fieldName, 'sys_file_reference');
-        $where .= ' AND uid_foreign = ' . (int) $itemId;
+        $where = 'tablenames = '.tx_rnbase_util_DB::fullQuoteStr($tableName, 'sys_file_reference');
+        $where .= ' AND fieldname = '.tx_rnbase_util_DB::fullQuoteStr($fieldName, 'sys_file_reference');
+        $where .= ' AND uid_foreign = '.(int) $itemId;
         if (strlen(trim($uids))) {
             $uids = implode(',', tx_rnbase_util_Strings::intExplode(',', $uids));
-            $where .= ' AND uid_local IN (' . $uids .') ';
+            $where .= ' AND uid_local IN ('.$uids.') ';
         }
         tx_rnbase_util_DB::doDelete('sys_file_reference', $where);
         // Jetzt die Bildanzahl aktualisieren
@@ -596,23 +607,25 @@ class tx_rnbase_util_TSFAL
     }
 
     /**
-     * die Bildanzahl aktualisieren
+     * die Bildanzahl aktualisieren.
      */
     public static function updateImageCount($tableName, $fieldName, $itemId)
     {
-        $values = array();
+        $values = [];
         $values[$fieldName] = self::getImageCount($tableName, $fieldName, $itemId);
-        tx_rnbase_util_DB::doUpdate($tableName, 'uid=' . $itemId, $values);
+        tx_rnbase_util_DB::doUpdate($tableName, 'uid='.$itemId, $values);
     }
+
     /**
-     * Get picture count
+     * Get picture count.
+     *
      * @return int
      */
     public static function getImageCount($tableName, $fieldName, $itemId)
     {
-        $options['where']  = 'tablenames = ' . tx_rnbase_util_DB::fullQuoteStr($tableName, 'sys_file_reference');
-        $options['where'] .= ' AND fieldname = ' . tx_rnbase_util_DB::fullQuoteStr($fieldName, 'sys_file_reference');
-        $options['where'] .= ' AND uid_foreign = ' . (int) $itemId;
+        $options['where'] = 'tablenames = '.tx_rnbase_util_DB::fullQuoteStr($tableName, 'sys_file_reference');
+        $options['where'] .= ' AND fieldname = '.tx_rnbase_util_DB::fullQuoteStr($fieldName, 'sys_file_reference');
+        $options['where'] .= ' AND uid_foreign = '.(int) $itemId;
         $options['count'] = 1;
         $options['enablefieldsoff'] = 1;
         $ret = tx_rnbase_util_DB::doSelect('count(*) AS \'cnt\'', 'sys_file_reference', $options);
@@ -621,14 +634,15 @@ class tx_rnbase_util_TSFAL
     }
 
     /**
-     * Get picture usage count
+     * Get picture usage count.
      *
      * @param int $mediaUid
+     *
      * @return int
      */
     public static function getReferencesCount($mediaUid)
     {
-        $options['where'] = 'uid_local = ' . (int) $mediaUid;
+        $options['where'] = 'uid_local = '.(int) $mediaUid;
         $options['count'] = 1;
         $options['enablefieldsoff'] = 1;
         $ret = tx_rnbase_util_DB::doSelect('count(*) AS \'cnt\'', 'sys_file_reference', $options, 0);
@@ -638,10 +652,11 @@ class tx_rnbase_util_TSFAL
     }
 
     /**
-     * Return all references for the given reference data
+     * Return all references for the given reference data.
      *
      * @param string $refTable
      * @param string $refField
+     *
      * @return array
      */
     public static function getReferences($refTable, $refUid, $refField)
@@ -656,22 +671,23 @@ class tx_rnbase_util_TSFAL
         $info = $reference->getProperties();
         // add some fileinfo
         $info['file_path_name'] = $reference->getOriginalFile()->getPublicUrl();
-        $info['file_abs_url'] = tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL') . $info['file_path_name'];
+        $info['file_abs_url'] = tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL').$info['file_path_name'];
         $info['file_name'] = $info['name'];
 
         return $info;
     }
 
     /**
-     * Return file info for all references for the given reference data
+     * Return file info for all references for the given reference data.
      *
      * @param string $refTable
      * @param string $refField
+     *
      * @return array
      */
     public static function getReferencesFileInfo($refTable, $refUid, $refField)
     {
-        $infos = array();
+        $infos = [];
         foreach (self::getReferences($refTable, $refUid, $refField) as $reference) {
             $infos[$reference->getUid()] = static::getReferenceFileInfo($reference);
         }
@@ -680,11 +696,12 @@ class tx_rnbase_util_TSFAL
     }
 
     /**
-     * Return first reference for the given reference data
+     * Return first reference for the given reference data.
      *
      * @param string $refTable
-     * @param int $refUid
+     * @param int    $refUid
      * @param string $refField
+     *
      * @return \TYPO3\CMS\Core\Resource\FileReference
      */
     public static function getFirstReference($refTable, $refUid, $refField)
@@ -693,23 +710,28 @@ class tx_rnbase_util_TSFAL
 
         return reset($refs);
     }
+
     /**
-     * Return file info of first reference for the given reference data
+     * Return file info of first reference for the given reference data.
      *
      * @param string $refTable
-     * @param int $refUid
+     * @param int    $refUid
      * @param string $refField
+     *
      * @return array
      */
     public static function getFirstReferenceFileInfo($refTable, $refUid, $refField)
     {
         $reference = self::getFirstReference($refTable, $refUid, $refField);
 
-        return !$reference ? array() : static::getReferenceFileInfo($reference);
+        return !$reference ? [] : static::getReferenceFileInfo($reference);
     }
+
     /**
-     * Returns a single FAL file reference by uid
+     * Returns a single FAL file reference by uid.
+     *
      * @param int $uid uid of reference
+     *
      * @return \TYPO3\CMS\Core\Resource\FileReference
      */
     public static function getFileReferenceById($uid)
@@ -718,9 +740,9 @@ class tx_rnbase_util_TSFAL
     }
 
     /**
-     *
-     * @param string $target
+     * @param string                                                $target
      * @param int|\TYPO3\CMS\Core\Resource\ResourceStorageInterface $storage
+     *
      * @return \TYPO3\CMS\Core\Resource\File
      */
     public static function indexProcess($target, $storage)
@@ -730,7 +752,7 @@ class tx_rnbase_util_TSFAL
         if (is_scalar($storage)) {
             $storage = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getStorageObject(
                 $storage,
-                array(),
+                [],
                 $target
             );
         }

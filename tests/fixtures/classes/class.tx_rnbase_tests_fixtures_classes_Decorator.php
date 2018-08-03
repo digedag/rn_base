@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_rnbase
- * @subpackage tx_rnbase_mod
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -27,35 +25,28 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
 tx_rnbase::load('tx_rnbase_mod_IDecorator');
 
 /**
  * Diese Klasse ist für die Darstellung von Elementen im Backend verantwortlich.
- *
- * @package tx_rnbase
- * @subpackage tx_rnbase_mod1
  */
 class tx_rnbase_tests_fixtures_classes_Decorator implements tx_rnbase_mod_IDecorator
 {
-
     /**
-     *
-     * @param   tx_rnbase_mod_IModule   $mod
+     * @param tx_rnbase_mod_IModule $mod
      */
     public function __construct(tx_rnbase_mod_IModule $mod)
     {
         $this->mod = $mod;
     }
 
-
     /**
-     *
-     * @param   string                  $value
-     * @param   string                  $colName
-     * @param   array                   $record
-     * @param   tx_rnbase_model_base    $item
+     * @param string               $value
+     * @param string               $colName
+     * @param array                $record
+     * @param tx_rnbase_model_base $item
      */
     public function format($value, $colName, $record, tx_rnbase_model_base $item)
     {

@@ -31,6 +31,7 @@ use Doctrine\Common\Collections\Expr\Value;
  * may be different between implementations (Array vs ORM vs ODM).
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
+ *
  * @since  2.3
  */
 class ExpressionBuilder

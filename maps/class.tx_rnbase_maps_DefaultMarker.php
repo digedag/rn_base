@@ -25,7 +25,7 @@
 tx_rnbase::load('tx_rnbase_maps_IMarker');
 
 /**
- * Common Interface for Maps
+ * Common Interface for Maps.
  */
 class tx_rnbase_maps_DefaultMarker implements tx_rnbase_maps_IMarker
 {
@@ -39,86 +39,107 @@ class tx_rnbase_maps_DefaultMarker implements tx_rnbase_maps_IMarker
     private $description;
     private $minZoom = 0;
     private $maxZoom = 17;
+
     /**
-     * Returns the country
+     * Returns the country.
+     *
      * @return string
      */
     public function getCountry()
     {
         return $this->country;
     }
+
     /**
-     * Set the country
+     * Set the country.
+     *
      * @param string $country
      */
     public function setCountry($country)
     {
         $this->country = $country;
     }
+
     /**
-     * Returns the state/province
+     * Returns the state/province.
+     *
      * @return string
      */
     public function getState()
     {
         return $this->state;
     }
+
     /**
-     * Set the state/province
+     * Set the state/province.
+     *
      * @param string $state
      */
     public function setState($state)
     {
         $this->state = $state;
     }
+
     /**
-     * Returns the street
+     * Returns the street.
+     *
      * @return string
      */
     public function getStreet()
     {
         return $this->street;
     }
+
     /**
-     * Set the street
+     * Set the street.
+     *
      * @param string $street
      */
     public function setStreet($street)
     {
         $this->street = $street;
     }
+
     /**
-     * Returns the zip code
+     * Returns the zip code.
+     *
      * @return string
      */
     public function getZip()
     {
         return $this->zip;
     }
+
     /**
-     * Set the zip code
+     * Set the zip code.
+     *
      * @param string $zip
      */
     public function setZip($zip)
     {
         $this->zip = $zip;
     }
+
     /**
-     * Returns the city
+     * Returns the city.
+     *
      * @return string
      */
     public function getCity()
     {
         return $this->city;
     }
+
     /**
-     * Set the city
+     * Set the city.
+     *
      * @param string $city
      */
     public function setCity($city)
     {
         $this->city = $city;
     }
+
     /**
      * Returns the coordinates of this marker. This way is preferred to address data.
      *
@@ -128,8 +149,9 @@ class tx_rnbase_maps_DefaultMarker implements tx_rnbase_maps_IMarker
     {
         return $this->coords;
     }
+
     /**
-     * Set coordinates for this marker
+     * Set coordinates for this marker.
      *
      * @param tx_rnbase_maps_ICoord $coord
      */
@@ -142,44 +164,55 @@ class tx_rnbase_maps_DefaultMarker implements tx_rnbase_maps_IMarker
     {
         $this->icon = $icon;
     }
+
     public function getIcon()
     {
         return $this->icon;
     }
+
     public function getTitle()
     {
         return $this->title;
     }
+
     public function setTitle($title)
     {
         $this->title = $title;
     }
+
     public function getDescription()
     {
         return $this->description;
     }
+
     public function setDescription($desc)
     {
         $this->description = $desc;
     }
+
     public function getZoomMin()
     {
         return $this->minZoom;
     }
+
     public function getZoomMax()
     {
         return $this->maxZoom;
     }
+
     /**
-     * Set minimum zoom level for marker
+     * Set minimum zoom level for marker.
+     *
      * @param int $zoom
      */
     public function setZoomMin($zoom)
     {
         $this->minZoom = $zoom;
     }
+
     /**
-     * Set maximum zoom level for marker
+     * Set maximum zoom level for marker.
+     *
      * @param int $zoom
      */
     public function setZoomMax($zoom)

@@ -24,7 +24,6 @@
 
 tx_rnbase::load('tx_rnbase_util_Calendar');
 
-
 class tx_rnbase_tests_calendar_testcase extends Tx_Phpunit_TestCase
 {
     public function test_calendar()
@@ -47,4 +46,3 @@ class tx_rnbase_tests_calendar_testcase extends Tx_Phpunit_TestCase
         $this->assertEquals(strftime('%d.%m.%Y %H:%M:%S', $cal->getTime()), '30.11.2007 00:00:00', 'Zeit falsch, ADD DAY_OF_MONTH');
     }
 }
-

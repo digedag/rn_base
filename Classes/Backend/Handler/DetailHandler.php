@@ -25,10 +25,8 @@
 tx_rnbase::load('Tx_Rnbase_Backend_Handler_SearchHandler');
 
 /**
- * Abstract detail handler
+ * Abstract detail handler.
  *
- * @package TYPO3
- * @subpackage Tx_Rnbase
  * @author Michael Wagner
  */
 abstract class Tx_Rnbase_Backend_Handler_DetailHandler extends Tx_Rnbase_Backend_Handler_SearchHandler
@@ -41,11 +39,11 @@ abstract class Tx_Rnbase_Backend_Handler_DetailHandler extends Tx_Rnbase_Backend
     abstract protected function getObject();
 
     /**
-     * Display the user interface for this handler
+     * Display the user interface for this handler.
      *
-     * @param string $template The subpart for handler in func template
+     * @param string                $template The subpart for handler in func template
      * @param tx_rnbase_mod_IModule $mod
-     * @param array $options
+     * @param array                 $options
      *
      * @return string
      */
@@ -65,7 +63,7 @@ abstract class Tx_Rnbase_Backend_Handler_DetailHandler extends Tx_Rnbase_Backend
             $current ? '###DETAILPART###' : '###SEARCHPART###'
         );
 
-        $markerArray = $subpartArray = $wrappedSubpartArray = array();
+        $markerArray = $subpartArray = $wrappedSubpartArray = [];
 
         $this->prepareMarkerArrays(
             $templateMod,
@@ -98,13 +96,13 @@ abstract class Tx_Rnbase_Backend_Handler_DetailHandler extends Tx_Rnbase_Backend
     }
 
     /**
-     * Base listing
+     * Base listing.
      *
-     * @param string $template
+     * @param string                                 $template
      * @param Tx_Rnbase_Domain_Model_RecordInterface $current
-     * @param array $markerArray
-     * @param array $subpartArray
-     * @param array $wrappedSubpartArray
+     * @param array                                  $markerArray
+     * @param array                                  $subpartArray
+     * @param array                                  $wrappedSubpartArray
      *
      * @return string
      */
@@ -117,7 +115,6 @@ abstract class Tx_Rnbase_Backend_Handler_DetailHandler extends Tx_Rnbase_Backend
     ) {
         // @TODO: implement protected function showDetail(
         throw new Exception('detail not implemented yet');
-
         return $template;
     }
 }

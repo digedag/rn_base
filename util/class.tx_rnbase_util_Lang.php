@@ -26,18 +26,16 @@ tx_rnbase::load('tx_rnbase_util_Files');
 /**
  * Wrapper for language usage.
  *
- * @package TYPO3
- * @subpackage tx_rnbase
  * @author Rene Nitzsche
  */
 class tx_rnbase_util_Lang
 {
-    protected $LOCAL_LANG = array();
-    protected $LOCAL_LANG_charset = array();
+    protected $LOCAL_LANG = [];
+    protected $LOCAL_LANG_charset = [];
 
     /**
      * Load a local lang from a file.
-     * merging with the existing local lang
+     * merging with the existing local lang.
      *
      * @param string $filename
      *
@@ -65,8 +63,8 @@ class tx_rnbase_util_Lang
      * @param string $fileReference
      * @param string $languageKey
      * @param string $charset
-     * @param int $errorMode
-     * @param bool $isLocalizationOverride
+     * @param int    $errorMode
+     * @param bool   $isLocalizationOverride
      *
      * @return bool
      */
@@ -97,12 +95,12 @@ class tx_rnbase_util_Lang
         }
     }
 
-
     /**
      * Load local lang from TS. exsting local lang
-     * is enhanced/overlayed
+     * is enhanced/overlayed.
      *
      * @param array $langArr
+     *
      * @return void
      */
     public function loadLLTs($langArr)
@@ -115,7 +113,7 @@ class tx_rnbase_util_Lang
     }
 
     /**
-     * Get the configured language
+     * Get the configured language.
      *
      * @param bool $alt
      *
@@ -129,7 +127,7 @@ class tx_rnbase_util_Lang
     }
 
     /**
-     * Add a new local lang array from Typoscript _LOCAL_LANG. Merged with existing local lang
+     * Add a new local lang array from Typoscript _LOCAL_LANG. Merged with existing local lang.
      *
      * @param array $langArr
      *
@@ -144,7 +142,7 @@ class tx_rnbase_util_Lang
         //existing values in the local lang are overruled with those of the given array.
         tx_rnbase::load('tx_rnbase_util_Arrays');
         $this->LOCAL_LANG = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
-            is_array($this->LOCAL_LANG) ? $this->LOCAL_LANG : array(),
+            is_array($this->LOCAL_LANG) ? $this->LOCAL_LANG : [],
             $langArr
         );
     }
@@ -152,7 +150,7 @@ class tx_rnbase_util_Lang
     /**
      * Loads local language file for frontend rendering if defined in configuration.
      * Also locallang values from TypoScript property "_LOCAL_LANG" are merged onto the
-     * values. This is a reimplementation from tslib_pibase::pi_loadLL()
+     * values. This is a reimplementation from tslib_pibase::pi_loadLL().
      */
     protected function loadLLOverlay($langArr)
     {
@@ -181,7 +179,7 @@ class tx_rnbase_util_Lang
      * Loads local-language values by looking for a "locallang.php" file in the plugin class directory ($this->scriptRelPath) and if found includes it.
      * Also locallang values set in the TypoScript property "_LOCAL_LANG" are merged onto the values found in the "locallang.php" file.
      *
-     * @return  void
+     * @return void
      */
     protected function loadLLOverlay46($confLL)
     {
@@ -224,7 +222,7 @@ class tx_rnbase_util_Lang
     {
         $label = tx_rnbase_util_TYPO3::isTYPO46OrHigher() ? $this->getLL46($key, $alt, $hsc) : $this->getLL40($key, $alt, $hsc);
         if ($labelDebug) {
-            $options = array();
+            $options = [];
             if ($labelDebug !== 'html') {
                 $options['plain'] = true;
             }
@@ -283,7 +281,7 @@ class tx_rnbase_util_Lang
             $word = is_object($GLOBALS['LANG']) ? $GLOBALS['LANG']->getLL($key) : $alternativeLabel;
         }
 
-        $output = (isset($this->LLtestPrefix)) ? $this->LLtestPrefix . $word : $word;
+        $output = (isset($this->LLtestPrefix)) ? $this->LLtestPrefix.$word : $word;
 
         if ($hsc) {
             $output = htmlspecialchars($output);
@@ -291,7 +289,6 @@ class tx_rnbase_util_Lang
 
         return $output;
     }
-
 
     /**
      * Returns the localized label of the LOCAL_LANG key.
@@ -324,11 +321,11 @@ class tx_rnbase_util_Lang
             // Im BE die LANG fragen...
             $word = is_object($GLOBALS['LANG']) ? $GLOBALS['LANG']->getLL($key) : '';
             if (!$word) {
-                $word = $this->LLtestPrefixAlt . $alt;
+                $word = $this->LLtestPrefixAlt.$alt;
             }
         }
 
-        $output = $this->LLtestPrefix . $word;
+        $output = $this->LLtestPrefix.$word;
         if ($hsc) {
             $output = htmlspecialchars($output);
         }
@@ -337,7 +334,7 @@ class tx_rnbase_util_Lang
     }
 
     /**
-     * Split Label function
+     * Split Label function.
      *
      * @param string $key Key string. Accepts the "LLL:" prefix.
      *
@@ -351,7 +348,7 @@ class tx_rnbase_util_Lang
 
         if (!$lang) {
             throw new Exception(
-                'Languageservice for "' . TYPO3_MODE . '" not initialized yet.'
+                'Languageservice for "'.TYPO3_MODE.'" not initialized yet.'
             );
         }
 

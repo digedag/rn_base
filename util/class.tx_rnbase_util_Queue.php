@@ -1,6 +1,6 @@
 <?php
 /**
- * Queue class - under PHP 4
+ * Queue class - under PHP 4.
  *
  * @description This is an implementation of FIFO (First In First Out) queue.
  *
@@ -17,15 +17,14 @@
  * @greetings goes to all developers from Poland especially from php.pl :-)
  */
 
-
 /**
- * Default size of queue
+ * Default size of queue.
  */
 define('QUEUE_DEFAULT_SIZE', 15);
 
-
 /**
- * Implementation of FIFO queue
+ * Implementation of FIFO queue.
+ *
  * @version 1.9
  */
 class tx_rnbase_util_Queue
@@ -36,25 +35,26 @@ class tx_rnbase_util_Queue
     public $intArraySize;   // Size of array
     public $intCurrentSize; // Current size of array
 
-
-  /**
-   * Queue constructor
-   * @param int $intQueue - size of queue
-   */
+    /**
+     * Queue constructor.
+     *
+     * @param int $intQueue - size of queue
+     */
     public function __construct($intSize = QUEUE_DEFAULT_SIZE)
     {
-        $this->arrQueue     = array();
+        $this->arrQueue = [];
         $this->intArraySize = $intSize;
 
         $this->clear();
     }
 
-
-  /**
-   * Add item to queue
-   * @param obj &$objQueueItem - queue item object
-   * @return TRUE if added to queue or false if queue is full and item could not be added
-   */
+    /**
+     * Add item to queue.
+     *
+     * @param obj &$objQueueItem - queue item object
+     *
+     * @return true if added to queue or false if queue is full and item could not be added
+     */
     public function put(&$objQueueItem)
     {
         if ($this->intCurrentSize >= $this->intArraySize) {
@@ -73,11 +73,11 @@ class tx_rnbase_util_Queue
         return true;
     }
 
-
-  /**
-   * Get item from queue
-   * @return object (queue iteme) or false if there is now items in queue
-   */
+    /**
+     * Get item from queue.
+     *
+     * @return object (queue iteme) or false if there is now items in queue
+     */
     public function get()
     {
         if ($this->isEmpty()) {
@@ -97,24 +97,23 @@ class tx_rnbase_util_Queue
         return $objItem;
     }
 
-
-  /**
-   * Check if queue is empty
-   * @return TRUE if it is empty or false if not
-   */
+    /**
+     * Check if queue is empty.
+     *
+     * @return true if it is empty or false if not
+     */
     public function isEmpty()
     {
-        return ($this->intCurrentSize == 0 ? true : false);
+        return $this->intCurrentSize == 0 ? true : false;
     }
 
-
-  /**
-   * Clear queue
-   */
+    /**
+     * Clear queue.
+     */
     public function clear()
     {
         $this->arrCurrentSize = 0;
-        $this->intBegin       = 0;
-        $this->intEnd         = $this->intArraySize - 1;
+        $this->intBegin = 0;
+        $this->intEnd = $this->intArraySize - 1;
     }
 }

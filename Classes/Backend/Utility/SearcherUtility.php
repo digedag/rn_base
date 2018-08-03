@@ -23,10 +23,8 @@
  ***************************************************************/
 
 /**
- * Searcher Utility
+ * Searcher Utility.
  *
- * @package TYPO3
- * @subpackage Tx_Rnbase
  * @author Michael Wagner
  */
 class Tx_Rnbase_Backend_Utility_SearcherUtility
@@ -34,19 +32,19 @@ class Tx_Rnbase_Backend_Utility_SearcherUtility
     /**
      * The internal options object.
      *
-     * @var Tx_Rnbase_Domain_Model_Data $options
+     * @var Tx_Rnbase_Domain_Model_Data
      */
     private $options = null;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param array|Tx_Rnbase_Domain_Model_Data $options
      *
      * @return Tx_Rnbase_Backend_Utility_SearcherUtility
      */
     public static function getInstance(
-        $options = array()
+        $options = []
     ) {
         return tx_rnbase::makeInstance(
             'Tx_Rnbase_Backend_Utility_SearcherUtility',
@@ -55,14 +53,14 @@ class Tx_Rnbase_Backend_Utility_SearcherUtility
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param array|Tx_Rnbase_Domain_Model_Data $options
      *
      * @return void
      */
     public function __construct(
-        $options = array()
+        $options = []
     ) {
         tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
         $this->options = Tx_Rnbase_Domain_Model_Data::getInstance($options);
@@ -82,8 +80,8 @@ class Tx_Rnbase_Backend_Utility_SearcherUtility
      * The decorator instace.
      *
      * @param Tx_Rnbase_Domain_Repository_InterfaceSearch $repository
-     * @param array $fields
-     * @param array $options
+     * @param array                                       $fields
+     * @param array                                       $options
      *
      * @return array|Traversable
      */
@@ -127,7 +125,7 @@ class Tx_Rnbase_Backend_Utility_SearcherUtility
         // reduce the itemy by first and last
         if ($firstPrev || $lastNext) {
             $isCollection = is_object($items);
-            $slice = array('offset' => 0, 'length' => count($items));
+            $slice = ['offset' => 0, 'length' => count($items)];
             // das letzte entfernen, aber nur wenn genügend elemente im result sind
             if ($lastNext && count($items) >= $options['limit']) {
                 $slice['length']--;
@@ -154,18 +152,18 @@ class Tx_Rnbase_Backend_Utility_SearcherUtility
         }
 
         // now build the uid map
-        $map = array();
+        $map = [];
         if ($firstPrev instanceof Tx_Rnbase_Domain_Model_RecordInterface) {
-            $map[$firstPrev->getUid()] = array();
+            $map[$firstPrev->getUid()] = [];
         }
         if ($secondPrev instanceof Tx_Rnbase_Domain_Model_RecordInterface) {
-            $map[$secondPrev->getUid()] = array();
+            $map[$secondPrev->getUid()] = [];
         }
         foreach ($items as $item) {
-            $map[$item->getUid()] = array();
+            $map[$item->getUid()] = [];
         }
         if ($lastNext instanceof Tx_Rnbase_Domain_Model_RecordInterface) {
-            $map[$lastNext->getUid()] = array();
+            $map[$lastNext->getUid()] = [];
         }
 
         // store the uid map to the options array

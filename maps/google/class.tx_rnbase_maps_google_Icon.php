@@ -35,17 +35,21 @@ class tx_rnbase_maps_google_Icon implements tx_rnbase_maps_IIcon
     {
         $this->map = $map;
     }
+
     public function initFromTS($conf, $confId)
     {
     }
+
     public function setName($id)
     {
         $this->id = $id;
     }
+
     public function getName()
     {
         return $this->id;
     }
+
     public function setImage($img, $width = 0, $height = 0)
     {
         $this->image = $img;
@@ -53,10 +57,12 @@ class tx_rnbase_maps_google_Icon implements tx_rnbase_maps_IIcon
             $this->size = $width.','.$height;
         }
     }
+
     public function getImage()
     {
         return $this->image;
     }
+
     public function setShadow($img, $width = 0, $height = 0)
     {
         $this->shadow = $img;
@@ -64,36 +70,45 @@ class tx_rnbase_maps_google_Icon implements tx_rnbase_maps_IIcon
             $this->shadowSize = $width.','.$height;
         }
     }
+
     public function getShadow()
     {
         return $this->shadow;
     }
+
     public function getSize()
     {
         return $this->size;
     }
+
     public function getShadowSize()
     {
         return $this->shadowSize;
     }
+
     public function setAnchorPoint($x, $y)
     {
         $this->anchorPoint = $x.','.$y;
     }
+
     public function getAnchorPoint()
     {
         return $this->anchorPoint ? $this->anchorPoint : '0,0';
     }
+
     public function setInfoWindowAnchorPoint($x, $y)
     {
         $this->winAnchorPoint = $x.','.$y;
     }
+
     public function getInfoWindowAnchorPoint()
     {
         return $this->winAnchorPoint ? $this->winAnchorPoint : '0,0';
     }
+
     /**
      * Returns an ID-String for the map provider.
+     *
      * @return string
      */
     public function render()

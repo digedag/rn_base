@@ -24,7 +24,7 @@
 ***************************************************************/
 
 /**
- * Base interface for a decorator
+ * Base interface for a decorator.
  *
  * @method void __construct() __construct(tx_rnbase_mod_IModule $mod)
  *
@@ -32,15 +32,15 @@
  */
 interface tx_rnbase_mod_IDecorator
 {
-
     /**
-     * Formatiert jede Zelle einer Tabelle im BE. Ausgenommen sind die Header
+     * Formatiert jede Zelle einer Tabelle im BE. Ausgenommen sind die Header.
      *
-     * @param string $value der aktuelle Wert
-     * @param string $colName der Name der aktuellen Spalte
-     * @param array $record der gesamte aktuelle record
-     * @param tx_rnbase_model_base $item das gesamte aktuelle model
-     * @return  string html code to visualize the current value
+     * @param string               $value   der aktuelle Wert
+     * @param string               $colName der Name der aktuellen Spalte
+     * @param array                $record  der gesamte aktuelle record
+     * @param tx_rnbase_model_base $item    das gesamte aktuelle model
+     *
+     * @return string html code to visualize the current value
      */
     public function format($value, $colName, $record, tx_rnbase_model_base $item);
 }

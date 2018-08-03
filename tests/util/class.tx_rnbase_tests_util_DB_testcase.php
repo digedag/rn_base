@@ -28,14 +28,14 @@ tx_rnbase::load('Tx_Rnbase_Database_Connection');
 
 class tx_rnbase_tests_util_DB_testcase extends Tx_Phpunit_TestCase
 {
-
     /**
      * @var string
      */
     protected $databaseConnectionClassBackup = '';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()
@@ -55,7 +55,8 @@ class tx_rnbase_tests_util_DB_testcase extends Tx_Phpunit_TestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
     protected function tearDown()
@@ -79,7 +80,7 @@ class tx_rnbase_tests_util_DB_testcase extends Tx_Phpunit_TestCase
      */
     public function testClassHasNoMoreMethodsExceptCallStatic()
     {
-        self::assertEquals(array('__callstatic'), get_class_methods('tx_rnbase_util_DB'));
+        self::assertEquals(['__callstatic'], get_class_methods('tx_rnbase_util_DB'));
     }
 
     /**
@@ -89,20 +90,19 @@ class tx_rnbase_tests_util_DB_testcase extends Tx_Phpunit_TestCase
     {
         $this->getDatabaseConnectionClassReflectionProperty()->setValue(null, 'Tx_Rnbase_Database_ConnectionMock');
 
-        self::assertEquals(array('first', 'second'), tx_rnbase_util_DB::nonStaticTestMethod('first', 'second'));
+        self::assertEquals(['first', 'second'], tx_rnbase_util_DB::nonStaticTestMethod('first', 'second'));
     }
 }
 
 class Tx_Rnbase_Database_ConnectionMock extends Tx_Rnbase_Database_Connection
 {
-
     /**
      * Zugriff darauf würde scheitern wenn die Methode doch
-     * statisch aufgerufen wird
+     * statisch aufgerufen wird.
      *
      * @var array
      */
-    protected $returnProperty = array();
+    protected $returnProperty = [];
 
     /**
      * @param string $firstParameter
@@ -112,7 +112,7 @@ class Tx_Rnbase_Database_ConnectionMock extends Tx_Rnbase_Database_Connection
      */
     public function nonStaticTestMethod($firstParameter, $secondParameter)
     {
-        $this->returnProperty = array($firstParameter, $secondParameter);
+        $this->returnProperty = [$firstParameter, $secondParameter];
 
         return $this->returnProperty;
     }

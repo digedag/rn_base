@@ -25,27 +25,25 @@ tx_rnbase::load('tx_rnbase_util_db_Exception');
 tx_rnbase::load('tx_rnbase_util_db_IDatabase');
 
 /**
- * DB wrapper for external microsoft sql databases
+ * DB wrapper for external microsoft sql databases.
  *
  * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
  */
 class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
 {
-
     /**
-     *
      * @var resource
      */
     private $db = null;
 
     /**
-     *
      * @var int
      */
     private $lastInsertId = 0;
 
     /**
      * @param array $credentials
+     *
      * @throws tx_rnbase_util_db_Exception
      */
     public function __construct($credentials)
@@ -60,22 +58,22 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
     }
 
     /**
-     *
      * @param string $methodName
-     * @param array $args
+     * @param array  $args
+     *
      * @throws Exception
+     *
      * @deprecated never use undefined methods!
      */
     public function __call($methodName, $args)
     {
         throw new Exception('Sorry, the class "'.get_class($this->db).'" does not support the method "'.$methodName.'".');
-
-        return call_user_func_array(array($this->db, $methodName), $args);
+        return call_user_func_array([$this->db, $methodName], $args);
     }
 
     /**
-     *
      * @param unknown_type $data
+     *
      * @return string|unknown
      */
     protected function mssql_real_escape_string($data)
@@ -87,14 +85,14 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
             return $data;
         }
 
-        $nonDdisplayables = array(
+        $nonDdisplayables = [
                 '/%0[0-8bcef]/',            // url encoded 00-08, 11, 12, 14, 15
                 '/%1[0-9a-f]/',             // url encoded 16-31
                 '/[\x00-\x08]/',            // 00-08
                 '/\x0b/',                   // 11
                 '/\x0c/',                   // 12
-                '/[\x0e-\x1f]/'             // 14-31
-        );
+                '/[\x0e-\x1f]/',             // 14-31
+        ];
         foreach ($nonDdisplayables as $regex) {
             $data = preg_replace($regex, '', $data);
         }
@@ -103,19 +101,20 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
         return $data;
     }
 
-
     /**
      * Escaping and quoting values for MS SQL statements.
-     * Usage count/core: 100
+     * Usage count/core: 100.
      *
      * @param   string      Input string
      * @param   string      Table name for which to quote string. Just enter the table that the field-value is selected from (and any DBAL will look up which handler to use and then how to quote the string!).
-     * @return  string      Output string; Wrapped in single quotes and quotes in the string (" / ') and \ will be backslashed (or otherwise based on DBAL handler)
+     *
+     * @return string Output string; Wrapped in single quotes and quotes in the string (" / ') and \ will be backslashed (or otherwise based on DBAL handler)
+     *
      * @see quoteStr()
      */
     public function fullQuoteStr($str, $table)
     {
-        return '\'' . $this->mssql_real_escape_string($str) . '\'';
+        return '\''.$this->mssql_real_escape_string($str).'\'';
     }
 
     /**
@@ -124,13 +123,14 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
      * @param   array       Array with values (either associative or non-associative array)
      * @param   string      Table name for which to quote
      * @param   string/array        List/array of keys NOT to quote (eg. SQL functions) - ONLY for associative arrays
-     * @return  array       The input array with the values quoted
+     *
+     * @return array The input array with the values quoted
      */
     public function fullQuoteArray($arr, $table, $noQuote = false)
     {
         if (is_string($noQuote)) {
             $noQuote = explode(',', $noQuote);
-            // sanity check
+        // sanity check
         } elseif (!is_array($noQuote)) {
             $noQuote = false;
         }
@@ -145,7 +145,7 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
     }
 
     /**
-     * Creates a SELECT SQL-statement
+     * Creates a SELECT SQL-statement.
      *
      * @param string List of fields to select from the table. This is what comes right after "SELECT ...". Required value.
      * @param string Table(s) from which to select. This is what comes right after "FROM ...". Required value.
@@ -153,6 +153,7 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
      * @param string Optional GROUP BY field(s), if none, supply blank string.
      * @param string Optional ORDER BY field(s), if none, supply blank string.
      * @param string Optional LIMIT value ([begin,]max), if none, supply blank string.
+     *
      * @return string SQL Query
      */
     public function SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '')
@@ -161,15 +162,16 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
     }
 
     /**
-     * Creates and executes a SELECT SQL-statement
+     * Creates and executes a SELECT SQL-statement.
      *
      * @param   string      List of fields to select from the table. This is what comes right after "SELECT ...". Required value.
      * @param   string      Table(s) from which to select. This is what comes right after "FROM ...". Required value.
-     * @param   string      additional WHERE clauses put in the end of the query. NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself! DO NOT PUT IN GROUP BY, ORDER BY or LIMIT!
+     * @param string      additional WHERE clauses put in the end of the query. NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself! DO NOT PUT IN GROUP BY, ORDER BY or LIMIT!
      * @param   string      Optional GROUP BY field(s), if none, supply blank string.
      * @param   string      Optional ORDER BY field(s), if none, supply blank string.
      * @param   string      Optional LIMIT value ([begin,]max), if none, supply blank string.
-     * @return  pointer     MsSQL result pointer / DBAL object
+     *
+     * @return pointer MsSQL result pointer / DBAL object
      */
     public function exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '')
     {
@@ -178,12 +180,14 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
 
         return $res;
     }
+
     /**
      * Creates and executes an INSERT SQL-statement for $table from the array with field/value pairs $fields_values.
      *
      * @param string Table name
      * @param array Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$insertFields" with 'fieldname'=>'value' and pass it to this function as argument.
      * @param array
+     *
      * @return string SQL query
      */
     public function INSERTquery($table, $fields_values, $no_quote_fields = false)
@@ -195,13 +199,14 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
             $fields_values = $this->fullQuoteArray($fields_values, $table, $no_quote_fields);
 
             // Build query:
-            $query = 'INSERT INTO ' . $table .
-                ' (' . implode(',', array_keys($fields_values)) . ') VALUES ' .
-                '(' . implode(',', $fields_values) . ')';
+            $query = 'INSERT INTO '.$table.
+                ' ('.implode(',', array_keys($fields_values)).') VALUES '.
+                '('.implode(',', $fields_values).')';
 
             return $query;
         }
     }
+
     /**
      * Creates and executes an INSERT SQL-statement for $table from the array with field/value pairs $fields_values.
      *
@@ -210,7 +215,8 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
      * @param   string      Table name
      * @param   array       Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$insertFields" with 'fieldname'=>'value' and pass it to this function as argument.
      * @param   array
-     * @return  pointer     MsSQL result pointer / DBAL object
+     *
+     * @return pointer MsSQL result pointer / DBAL object
      */
     public function exec_INSERTquery($table, $fields_values, $no_quote_fields = false)
     {
@@ -232,29 +238,30 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
      * Creates and executes an UPDATE SQL-statement for $table where $where-clause (typ. 'uid=...') from the array with field/value pairs $fields_values.
      *
      * @param   string      Database tablename
-     * @param   string      WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
+     * @param string      WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
      * @param   array       Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$updateFields" with 'fieldname'=>'value' and pass it to this function as argument.
      * @param   array
+     *
      * @return string sql query
      */
     public function UPDATEquery($table, $where, $fields_values, $no_quote_fields = false)
     {
         // Table and fieldnames should be "SQL-injection-safe" when supplied to this
-            // function (contrary to values in the arrays which may be insecure).
+        // function (contrary to values in the arrays which may be insecure).
         if (is_string($where)) {
-            $fields = array();
+            $fields = [];
             if (is_array($fields_values) && count($fields_values)) {
                 // quote and escape values
                 $nArr = $this->fullQuoteArray($fields_values, $table, $no_quote_fields);
 
                 foreach ($nArr as $k => $v) {
-                    $fields[] = $k . '=' . $v;
+                    $fields[] = $k.'='.$v;
                 }
             }
 
-                // Build query:
-            $query = 'UPDATE ' . $table . ' SET ' . implode(',', $fields) .
-                    (strlen($where) > 0 ? ' WHERE ' . $where : '');
+            // Build query:
+            $query = 'UPDATE '.$table.' SET '.implode(',', $fields).
+                    (strlen($where) > 0 ? ' WHERE '.$where : '');
 
             return $query;
         } else {
@@ -264,14 +271,16 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
             );
         }
     }
+
     /**
      * Creates and executes an UPDATE SQL-statement for $table where $where-clause (typ. 'uid=...') from the array with field/value pairs $fields_values.
      *
      * @param   string      Database tablename
-     * @param   string      WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
+     * @param string      WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
      * @param   array       Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$updateFields" with 'fieldname'=>'value' and pass it to this function as argument.
      * @param   array
-     * @return  pointer     MsSQL result pointer / DBAL object
+     *
+     * @return pointer MsSQL result pointer / DBAL object
      */
     public function exec_UPDATEquery($table, $where, $fields_values, $no_quote_fields = false)
     {
@@ -282,10 +291,11 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
     }
 
     /**
-     * Creates and executes a DELETE SQL-statement for $table where $where-clause
+     * Creates and executes a DELETE SQL-statement for $table where $where-clause.
      *
      * @param   string      Database tablename
-     * @param   string      WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
+     * @param string      WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
+     *
      * @return string sql query
      */
     public function DELETEquery($table, $where)
@@ -294,11 +304,12 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
     }
 
     /**
-     * Creates and executes a DELETE SQL-statement for $table where $where-clause
+     * Creates and executes a DELETE SQL-statement for $table where $where-clause.
      *
      * @param   string      Database tablename
-     * @param   string      WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
-     * @return  pointer     MsSQL result pointer / DBAL object
+     * @param string      WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
+     *
+     * @return pointer MsSQL result pointer / DBAL object
      */
     public function exec_DELETEquery($table, $where)
     {
@@ -309,13 +320,14 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
     }
 
     /**
-     * Connects to database for TYPO3 sites:
+     * Connects to database for TYPO3 sites:.
      *
      * @param string $host
      * @param string $user
      * @param string $password
      * @param string $db
-     * @return  void
+     *
+     * @return void
      */
     private function connectDB($credArr)
     {
@@ -344,11 +356,12 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
     /**
      * Open a (persistent) connection to a MySQL server
      * mssql_pconnect() wrapper function
-     * Method is taken from t3lib_db
+     * Method is taken from t3lib_db.
      *
      * @param string Database host IP/domain
      * @param string Username to connect with.
      * @param string Password to connect with.
+     *
      * @return pointer Returns a positive MySQL persistent link identifier on success, or FALSE on error.
      */
     private function connect($credArr)
@@ -364,6 +377,7 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
         // check if MySQL extension is loaded
         if (!extension_loaded('mssql')) {
             $message = 'Database Error: It seems that MsSQL support for PHP is not installed!';
+
             throw new RuntimeException($message, 1271492606);
         }
 
@@ -379,8 +393,9 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
         @ini_restore('html_errors');
 
         if (!$link) {
-            $message = 'Database Error: Could not connect to MySQL server ' . $dbHost .
-                    ' with user ' . $dbUsername . ': ' . $error_msg;
+            $message = 'Database Error: Could not connect to MySQL server '.$dbHost.
+                    ' with user '.$dbUsername.': '.$error_msg;
+
             throw new RuntimeException($message, 1271492616);
         }
 
@@ -400,10 +415,11 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
 
     /**
      * Executes query
-     * mssql_query() wrapper function
+     * mssql_query() wrapper function.
      *
      * @param   string      Query to execute
-     * @return  pointer     Result pointer / DBAL object
+     *
+     * @return pointer Result pointer / DBAL object
      */
     public function sql_query($query)
     {
@@ -411,23 +427,27 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
 
         return $res;
     }
+
     /**
      * Returns an associative array that corresponds to the fetched row, or FALSE if there are no more rows.
-     * mssql_fetch_assoc() wrapper function
+     * mssql_fetch_assoc() wrapper function.
      *
      * @param   pointer     MySQL result pointer (of SELECT query) / DBAL object
-     * @return  array       Associative array of result row.
+     *
+     * @return array Associative array of result row.
      */
     public function sql_fetch_assoc($res)
     {
         return mssql_fetch_assoc($res);
     }
+
     /**
      * Free result memory
-     * mssql_free_result() wrapper function
+     * mssql_free_result() wrapper function.
      *
      * @param   pointer     MySQL result pointer to free / DBAL object
-     * @return  bool     Returns TRUE on success or FALSE on failure.
+     *
+     * @return bool Returns TRUE on success or FALSE on failure.
      */
     public function sql_free_result($res)
     {
@@ -436,9 +456,9 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
 
     /**
      * Returns the number of rows affected by the last INSERT, UPDATE or DELETE query
-     * mssql_affected_rows() wrapper function
+     * mssql_affected_rows() wrapper function.
      *
-     * @return  int     Number of rows affected by last query
+     * @return int Number of rows affected by last query
      */
     public function sql_affected_rows()
     {
@@ -446,11 +466,11 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
     }
 
     /**
-     * Get the ID generated from the previous INSERT operation
+     * Get the ID generated from the previous INSERT operation.
      *
      * @see http://www.php.net/manual/en/function.mssql-query.php#25274 For lastInsertId.
      *
-     * @return  int     The uid of the last inserted record.
+     * @return int The uid of the last inserted record.
      */
     public function sql_insert_id()
     {
@@ -459,9 +479,9 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
 
     /**
      * Returns the error status on the last sql() execution
-     * mssql_error() wrapper function
+     * mssql_error() wrapper function.
      *
-     * @return  string      MySQL error string.
+     * @return string MySQL error string.
      */
     public function sql_error()
     {

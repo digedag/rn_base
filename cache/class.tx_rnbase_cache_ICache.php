@@ -28,28 +28,32 @@
 interface tx_rnbase_cache_ICache
 {
     /**
-     * Retrieve a value from cache
+     * Retrieve a value from cache.
      *
      * @param string $key
+     *
      * @return mixed
      */
     public function get($key);
+
     /**
      * Check whether or not a cache entry with the specified identifier exists.
      *
      * @return bool
      */
     public function has($key);
+
     /**
-     * Put a value to the cache
+     * Put a value to the cache.
      *
      * @param string $key
-     * @param mixed $value
-     * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime
+     * @param mixed  $value
+     * @param int    $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime
      */
     public function set($key, $value, $lifetime = null);
+
     /**
-     * Remove a value from the cache
+     * Remove a value from the cache.
      *
      * @param string $key
      */

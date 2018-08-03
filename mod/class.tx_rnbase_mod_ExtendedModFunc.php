@@ -28,9 +28,8 @@ tx_rnbase::load('tx_rnbase_mod_IModFunc');
 tx_rnbase::load('tx_rnbase_util_BaseMarker');
 tx_rnbase::load('tx_rnbase_util_Templates');
 
-
 /**
- * ModFunc mit SubSelector und SubMenu
+ * ModFunc mit SubSelector und SubMenu.
  */
 abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
 {
@@ -42,8 +41,9 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
             $GLOBALS['LANG']->includeLLFile($file);
         }
     }
+
     /**
-     * Returns the base module
+     * Returns the base module.
      *
      * @return tx_rnbase_mod_IModule
      */
@@ -51,6 +51,7 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
     {
         return $this->mod;
     }
+
     public function main()
     {
         $out = '';
@@ -59,19 +60,19 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
         $file = tx_rnbase_util_Files::getFileAbsFileName($conf->get($this->getConfId().'template'));
         $templateCode = tx_rnbase_util_Network::getUrl($file);
         if (!$templateCode) {
-            return $conf->getLL('msg_template_not_found').'<br />File: \'' . $file . '\'<br />ConfId: \'' . $this->getConfId().'template\'';
+            return $conf->getLL('msg_template_not_found').'<br />File: \''.$file.'\'<br />ConfId: \''.$this->getConfId().'template\'';
         }
         $subpart = '###'.strtoupper($this->getFuncId()).'###';
         $template = tx_rnbase_util_Templates::getSubpart($templateCode, $subpart);
         if (!$template) {
-            return $conf->getLL('msg_subpart_not_found'). ': ' . $subpart;
+            return $conf->getLL('msg_subpart_not_found').': '.$subpart;
         }
 
         $start = microtime(true);
         $memStart = memory_get_usage();
         $out .= $this->createContent($template, $conf);
         if (tx_rnbase_util_BaseMarker::containsMarker($out, 'MOD_')) {
-            $markerArr = array();
+            $markerArr = [];
             $memEnd = memory_get_usage();
             $markerArr['###MOD_PARSETIME###'] = (microtime(true) - $start);
             $markerArr['###MOD_MEMUSED###'] = ($memEnd - $memStart);
@@ -82,14 +83,14 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
 
         return $out;
     }
+
     private function createContent($template, $conf)
     {
         $formTool = $this->getModule()->getFormTool();
 
         // TabMenu initialisieren
-        $menuItems = array();
+        $menuItems = [];
         $menu = $this->initSubMenu($menuItems, $this->getModule()->getFormTool());
-
 
         $this->getModule()->setSubMenu($menu['menu']);
 
@@ -105,7 +106,7 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
             return $subSels;
         }
 
-        $args = array();
+        $args = [];
 
         //$out .= $this->getContent($template, $conf, $conf->getFormatter(), $formTool);
 
@@ -116,9 +117,9 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
 
             $args[] = $templateSub;
             $args[] = $this->getModule();
-            $args[] = array('subSels' => $subSels);
+            $args[] = ['subSels' => $subSels];
             // Der Handler sollte nicht das gesamte Template bekommen, sondern nur seinen Subpart...
-            $subOut = call_user_func_array(array($handler, 'showScreen'), $args);
+            $subOut = call_user_func_array([$handler, 'showScreen'], $args);
         }
 
         // Jetzt noch die COMMON-PARTS
@@ -132,8 +133,9 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
 
         return $content;
     }
+
     /**
-     * Liefert die ConfId für diese ModFunc
+     * Liefert die ConfId für diese ModFunc.
      *
      * @return string
      */
@@ -141,16 +143,17 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
     {
         return $this->getFuncId().'.';
     }
+
     /**
      * Jede Modulfunktion sollte über einen eigenen Schlüssel innerhalb des Moduls verfügen. Dieser
-     * wird später für die Konfiguration verwendet
+     * wird später für die Konfiguration verwendet.
      */
     abstract protected function getFuncId();
 
     /**
-     *
-     * @param array $menuObjs
+     * @param array                   $menuObjs
      * @param tx_rnbase_util_FormTool $formTool
+     *
      * @return array
      */
     protected function initSubMenu(&$menuObjs, $formTool)
@@ -160,7 +163,7 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
             return;
         }
 
-        $menuItems = array();
+        $menuItems = [];
         foreach ($items as $idx => $tabItem) {
             $menuItems[$idx] = $tabItem->getSubLabel();
             $menuObjs[$idx] = $tabItem;
@@ -174,6 +177,7 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
 
         return $menu;
     }
+
     protected function showMessage($message, tx_rnbase_mod_IModHandler $handler)
     {
         $flashMessageClass = tx_rnbase_util_Typo3Classes::getFlashMessageClass();
@@ -192,14 +196,17 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
     }
 
     /**
-     * It is possible to overwrite this method and return an array of tab functions
+     * It is possible to overwrite this method and return an array of tab functions.
+     *
      * @return array
      */
     abstract protected function getSubMenuItems();
 
     /**
      * Liefert false, wenn es keine SubSelectors gibt. sonst ein Array mit den ausgewählten Werten.
+     *
      * @param string $selectorStr
+     *
      * @return array or false if not needed. Return empty array if no item found
      */
     abstract protected function makeSubSelectors(&$selectorStr);

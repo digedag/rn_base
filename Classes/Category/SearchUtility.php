@@ -23,21 +23,18 @@
  ***************************************************************/
 
 /**
- * Tx_Rnbase_Category_SearchUtility
+ * Tx_Rnbase_Category_SearchUtility.
  *
  * provides methods to enhance a searcher to support sys_category usage
  *
- * @package         TYPO3
- * @subpackage      Tx_Rnbase
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class Tx_Rnbase_Category_SearchUtility
 {
-
     /**
-     * @param array $tableMappings
+     * @param array  $tableMappings
      * @param string $tableAlias
      *
      * @return array
@@ -45,6 +42,7 @@ class Tx_Rnbase_Category_SearchUtility
     public function addTableMapping(array $tableMappings, $tableAlias = 'SYS_CATEGORY')
     {
         $tableMappings[$tableAlias] = 'sys_category';
+
         return $tableMappings;
     }
 
@@ -52,23 +50,22 @@ class Tx_Rnbase_Category_SearchUtility
      * @param string $baseTableName
      * @param string $baseTableAlias
      * @param string $fieldName
-     * @param array $givenTableAliases
+     * @param array  $givenTableAliases
      * @param string $sysCategoryTableAlias
      *
      * @return string
      */
     public function addJoins(
         $baseTableName, $baseTableAlias, $fieldName, array $givenTableAliases, $sysCategoryTableAlias = 'SYS_CATEGORY'
-    )
-    {
+    ) {
         $joins = '';
         if (isset($givenTableAliases[$sysCategoryTableAlias])) {
             $joins =
-                ' LEFT JOIN sys_category_record_mm AS ' . $sysCategoryTableAlias . '_MM ON ' . $sysCategoryTableAlias . '_MM.uid_foreign' .
-                ' = ' . $baseTableAlias . '.uid AND ' . $sysCategoryTableAlias . '_MM.tablenames = "' .
-                $baseTableName . '" AND ' . $sysCategoryTableAlias . '_MM.fieldname = "' . $fieldName . '"' .
-                ' LEFT JOIN sys_category AS ' . $sysCategoryTableAlias . ' ON ' . $sysCategoryTableAlias .
-                '.uid = ' . $sysCategoryTableAlias . '_MM.uid_local';
+                ' LEFT JOIN sys_category_record_mm AS '.$sysCategoryTableAlias.'_MM ON '.$sysCategoryTableAlias.'_MM.uid_foreign'.
+                ' = '.$baseTableAlias.'.uid AND '.$sysCategoryTableAlias.'_MM.tablenames = "'.
+                $baseTableName.'" AND '.$sysCategoryTableAlias.'_MM.fieldname = "'.$fieldName.'"'.
+                ' LEFT JOIN sys_category AS '.$sysCategoryTableAlias.' ON '.$sysCategoryTableAlias.
+                '.uid = '.$sysCategoryTableAlias.'_MM.uid_local';
         }
 
         return $joins;
@@ -78,21 +75,20 @@ class Tx_Rnbase_Category_SearchUtility
      * @param string $baseTableName
      * @param string $baseTableAlias
      * @param string $fieldName
-     * @param array $givenTableAliases
+     * @param array  $givenTableAliases
      * @param string $sysCategoryTableAlias
      *
      * @return string
      */
     public function addJoinsWithoutAlias(
         $baseTableName, $baseTableAlias, $fieldName, array $givenTableAliases, $sysCategoryTableAlias = 'SYS_CATEGORY'
-    )
-    {
+    ) {
         $joins = '';
         if (isset($givenTableAliases[$sysCategoryTableAlias])) {
             $joins =
-            ' LEFT JOIN sys_category_record_mm ON sys_category_record_mm.uid_foreign' .
-            ' = ' . $baseTableName . '.uid AND sys_category_record_mm.tablenames = "' .
-            $baseTableName . '" AND sys_category_record_mm.fieldname = "' . $fieldName . '"' .
+            ' LEFT JOIN sys_category_record_mm ON sys_category_record_mm.uid_foreign'.
+            ' = '.$baseTableName.'.uid AND sys_category_record_mm.tablenames = "'.
+            $baseTableName.'" AND sys_category_record_mm.fieldname = "'.$fieldName.'"'.
             ' LEFT JOIN sys_category ON sys_category.uid = sys_category_record_mm.uid_local';
         }
 

@@ -27,20 +27,19 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 tx_rnbase::load('tx_rnbase_model_data');
 
 /**
- * TODO: extend from Tx_Rnbase_Util_TCA
- * @package TYPO3
- * @subpackage tx_rnbase
+ * TODO: extend from Tx_Rnbase_Util_TCA.
+ *
  * @author Hannes Bochmann <hannes.bochmann@dmk-business.de>
  * @author Michael Wagner <michael.wagner@dmk-business.de>
  */
 class tx_rnbase_util_TCA
 {
-
     /**
-     * Liefert den Wert für ein Attribut aus dem ctrl-Bereich der TCA
+     * Liefert den Wert für ein Attribut aus dem ctrl-Bereich der TCA.
      *
      * @param string $tableName
      * @param string $fieldName
+     *
      * @return mixed
      */
     public static function getControlFieldForTable($tableName, $fieldName)
@@ -53,9 +52,10 @@ class tx_rnbase_util_TCA
     }
 
     /**
-     * Liefert den Spaltennamen für das Parent der aktuellen Lokalisierung
+     * Liefert den Spaltennamen für das Parent der aktuellen Lokalisierung.
      *
      * @param string $tableName
+     *
      * @return string
      */
     public static function getTransOrigPointerFieldForTable($tableName)
@@ -66,10 +66,12 @@ class tx_rnbase_util_TCA
 
         return $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'];
     }
+
     /**
-     * Liefert den Spaltennamen für das Parent der aktuellen Lokalisierung
+     * Liefert den Spaltennamen für das Parent der aktuellen Lokalisierung.
      *
      * @param string $tableName
+     *
      * @return string
      */
     public static function getLanguageFieldForTable($tableName)
@@ -80,10 +82,12 @@ class tx_rnbase_util_TCA
 
         return $GLOBALS['TCA'][$tableName]['ctrl']['languageField'];
     }
+
     /**
      * Liefert den Spaltennamen für den Titel der Tabelle.
      *
      * @param string $tableName
+     *
      * @return string
      */
     public static function getLabelFieldForTable($tableName)
@@ -94,10 +98,12 @@ class tx_rnbase_util_TCA
 
         return $GLOBALS['TCA'][$tableName]['ctrl']['label'];
     }
+
     /**
      * Liefert den Spaltennamen für den tstamp der Tabelle.
      *
      * @param string $tableName
+     *
      * @return string
      */
     public static function getTstampFieldForTable($tableName)
@@ -108,10 +114,12 @@ class tx_rnbase_util_TCA
 
         return $GLOBALS['TCA'][$tableName]['ctrl']['tstamp'];
     }
+
     /**
      * Liefert den Spaltennamen für den tstamp der Tabelle.
      *
      * @param string $tableName
+     *
      * @return string
      */
     public static function getCrdateFieldForTable($tableName)
@@ -122,10 +130,12 @@ class tx_rnbase_util_TCA
 
         return $GLOBALS['TCA'][$tableName]['ctrl']['crdate'];
     }
+
     /**
      * Liefert den Spaltennamen für die sortierung der Tabelle.
      *
      * @param string $tableName
+     *
      * @return string
      */
     public static function getSortbyFieldForTable($tableName)
@@ -136,28 +146,30 @@ class tx_rnbase_util_TCA
 
         return $GLOBALS['TCA'][$tableName]['ctrl']['sortby'];
     }
+
     /**
-     * Liefert alle EnableColumns einer Tabelle
+     * Liefert alle EnableColumns einer Tabelle.
      *
      * @param string $tableName
      *
      * @return array Array with values:
-     *     'fe_group' => 'fe_group',
-     *     'delete' =>'deleted',
-     *     'disabled' =>'hidden',
-     *     'starttime' => 'starttime',
-     *     'endtime' => 'endtime'
+     *               'fe_group' => 'fe_group',
+     *               'delete' =>'deleted',
+     *               'disabled' =>'hidden',
+     *               'starttime' => 'starttime',
+     *               'endtime' => 'endtime'
      */
     protected static function getEnableColumnsForTable($tableName)
     {
         if (empty($GLOBALS['TCA'][$tableName]) ||
             empty($GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'])
         ) {
-            return array();
+            return [];
         }
 
         return $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'];
     }
+
     /**
      * Liefert den Spaltennamen für die gelöschte elemente der Tabelle.
      *
@@ -171,6 +183,7 @@ class tx_rnbase_util_TCA
 
         return empty($cols['delete']) ? '' : $cols['delete'];
     }
+
     /**
      * Liefert den Spaltennamen für die deaktivierte elemente der Tabelle.
      *
@@ -187,6 +200,7 @@ class tx_rnbase_util_TCA
 
     /**
      * Load TCA for a specific table. Since T3 6.1 the complete TCA is loaded.
+     *
      * @param string $tablename
      */
     public static function loadTCA($tablename)
@@ -196,7 +210,7 @@ class tx_rnbase_util_TCA
         switch (true) {
             // TCA is loaded through Bootsrap since 8.x automatically
             // except when using an eID
-            case (tx_rnbase_util_TYPO3::isTYPO80OrHigher()):
+            case tx_rnbase_util_TYPO3::isTYPO80OrHigher():
                 if (TYPO3_MODE === 'FE' && isset($_REQUEST['eID'])) {
                     $eidUtility = tx_rnbase_util_Typo3Classes::getEidUtilityClass();
                     $eidUtility::initTCA();
@@ -213,8 +227,9 @@ class tx_rnbase_util_TCA
      * validates the data of a model with the tca definition of a its table.
      *
      * @param Tx_Rnbase_Domain_Model_RecordInterface $model
-     * @param array $options
-     *     only_record_fields: validates only fields included in the record
+     * @param array                                  $options
+     *                                                        only_record_fields: validates only fields included in the record
+     *
      * @return bolean
      */
     public static function validateModel(
@@ -231,10 +246,11 @@ class tx_rnbase_util_TCA
     /**
      * validates an array with data with the tca definition of a specific table.
      *
-     * @param array $record
+     * @param array  $record
      * @param string $tableName
-     * @param array $options
-     *     only_record_fields: validates only fields included in the record
+     * @param array  $options
+     *                          only_record_fields: validates only fields included in the record
+     *
      * @return bolean
      */
     public static function validateRecord(
@@ -246,7 +262,7 @@ class tx_rnbase_util_TCA
         $columns = self::getTcaColumns($tableName, $options);
 
         if (empty($columns)) {
-            throw new LogicException('No TCA found for "' . $tableName . '".');
+            throw new LogicException('No TCA found for "'.$tableName.'".');
         }
 
         foreach (array_keys($columns) as $column) {
@@ -275,8 +291,9 @@ class tx_rnbase_util_TCA
      * @param string $value
      * @param string $field
      * @param string $tableName
-     * @param array $options
-     *     only_record_fields: validates only fields included in the record
+     * @param array  $options
+     *                          only_record_fields: validates only fields included in the record
+     *
      * @return bool
      */
     public static function validateField(
@@ -328,18 +345,19 @@ class tx_rnbase_util_TCA
 
         return true;
     }
+
     /**
-     *
      * @param string $tableName
-     * @param array $options
-     *     only_record_fields: validates only fields included in the record
+     * @param array  $options
+     *                          only_record_fields: validates only fields included in the record
+     *
      * @return array
      */
     public static function getTcaColumns($tableName, $options = null)
     {
         self::loadTCA($tableName);
         $options = tx_rnbase_model_data::getInstance($options);
-        $columns = empty($GLOBALS['TCA'][$tableName]['columns']) ? array() : $GLOBALS['TCA'][$tableName]['columns'];
+        $columns = empty($GLOBALS['TCA'][$tableName]['columns']) ? [] : $GLOBALS['TCA'][$tableName]['columns'];
         $tcaOverrides = $options->getTcaOverrides();
         if (!empty($tcaOverrides['columns'])) {
             tx_rnbase::load('tx_rnbase_util_Arrays');
@@ -353,11 +371,12 @@ class tx_rnbase_util_TCA
     }
 
     /**
-     * Eleminate non-TCA-defined columns from given data
+     * Eleminate non-TCA-defined columns from given data.
      *
      * Doesn't do anything if no TCA columns are found.
      *
      * @param array $data Data to be filtered
+     *
      * @return array Data now containing only TCA-defined columns
      */
     public static function eleminateNonTcaColumns(
@@ -367,7 +386,7 @@ class tx_rnbase_util_TCA
         $needle = $model->getColumnNames();
         // if there is no array means, there is no tca or no columns
         if (!is_array($needle)) {
-            return array();
+            return [];
         }
 
         tx_rnbase::load('tx_rnbase_util_Arrays');
@@ -376,13 +395,15 @@ class tx_rnbase_util_TCA
     }
 
     /**
-     * Return the correct uid in respect of localisation
+     * Return the correct uid in respect of localisation.
      *
      * @param string $tableName
-     * @param array $rawData
+     * @param array  $rawData
+     *
      * @return int
      */
-    public static function getUid($tableName, array $rawData) {
+    public static function getUid($tableName, array $rawData)
+    {
         $uid = 0;
         if (!empty($tableName)) {
             // Take care for localized records where uid of original record

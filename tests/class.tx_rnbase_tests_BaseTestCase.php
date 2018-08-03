@@ -1,4 +1,5 @@
 <?php
+
 use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
 
 /***************************************************************
@@ -26,31 +27,28 @@ use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
 tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
 /**
- * Basis Testcase
+ * Basis Testcase.
  *
- * @package tx_rnbase
- * @subpackage tx_rnbase_tests
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
 {
-
     /**
-     * whether global variables should be backuped
+     * whether global variables should be backuped.
      *
      * @var bool
      */
     protected $backupGlobals = false;
 
     /**
-     * whether static attributes should be backuped
+     * whether static attributes should be backuped.
      *
      * @var bool
      */
     protected $backupStaticAttributes = false;
 
     /**
-     * Initialize database connection in $GLOBALS and connect if requested
+     * Initialize database connection in $GLOBALS and connect if requested.
      *
      * @return void
      */
@@ -72,11 +70,12 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
      *   array(), 'rn_base', 'rn_base',
      *   tx_rnbase::makeInstance('tx_rnbase_parameters'),
      *   tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass())
-     * );
+     * );.
      *
-     * @param array $configurationArray
+     * @param array  $configurationArray
      * @param string $extensionKey
      * @param string $qualifier
+     *
      * @return Tx_Rnbase_Configuration_ProcessorInterface
      */
     protected static function createConfigurations(
@@ -90,7 +89,7 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
         $cObj = null;
 
         $args = func_get_args();
-        $args = count($args) > 3 ? array_slice($args, 3) : array();
+        $args = count($args) > 3 ? array_slice($args, 3) : [];
 
         foreach ($args as $arg) {
             if ($arg instanceof tx_rnbase_parameters) {
@@ -117,30 +116,29 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
         return $configurations;
     }
 
-
-
     /**
-     * returns a mock of
+     * returns a mock of.
      *
-     * @param array $record
+     * @param array  $record
      * @param string $class
+     *
      * @return tx_rnbase_model_base|PHPUnit_Framework_MockObject_MockObject
      */
     protected function getModel(
         $record = null,
         $class = 'tx_rnbase_model_base',
-        array $methods = array()
+        array $methods = []
     ) {
         // $record has to be an array,
         // if there is an scalar value,
         // a db select fill be performed to get the record
         if (!is_array($record)) {
-            $record = array('uid' => (int) $record);
+            $record = ['uid' => (int) $record];
         }
 
         if (!tx_rnbase::load($class)) {
             throw new Exception(
-                'The model "' . $class . '" could not be loaded.'
+                'The model "'.$class.'" could not be loaded.'
             );
         }
 
@@ -153,13 +151,13 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
         $model = $this->getMock(
             $class,
             array_merge(
-                array(
+                [
                     $isNewModel ? 'loadRecord' : 'reset',
-                    'getColumnWrapped'
-                ),
+                    'getColumnWrapped',
+                ],
                 $methods
             ),
-            array($record)
+            [$record]
         );
 
         $model
@@ -174,7 +172,7 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Converts a YAML to a model mock
+     * Converts a YAML to a model mock.
      *
      * YAML example:
      * _model: Tx_Rnbase_Domain_Model_Base
@@ -232,7 +230,7 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
 
             return $model;
         } elseif (is_array($data)) {
-            $array = array();
+            $array = [];
             foreach ($data as $field => $value) {
                 if (is_array($value)) {
                     $value = $this->loadYaml($value);
@@ -258,13 +256,13 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
     private function yamlFindGetters(
         array $array
     ) {
-        $getters = array();
+        $getters = [];
 
         foreach (array_keys($array) as $field) {
-            if ($field{0} === 'g' &&
-                $field{1} === 'e' &&
-                $field{2} === 't' &&
-                strtoupper($field{3}) === $field{3}
+            if ($field[0] === 'g' &&
+                $field[1] === 'e' &&
+                $field[2] === 't' &&
+                strtoupper($field[3]) === $field[3]
             ) {
                 $getters[] = $field;
             }
@@ -284,7 +282,8 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
      *   ->callInaccessibleMethod(array($object, $methodname), array($arg1, $arg2))
      *
      * @param object|array $object The object to be invoked or an a array with object and $name
-     * @param string|array $name the name of the method to call or the arguments array
+     * @param string|array $name   the name of the method to call or the arguments array
+     *
      * @return mixed
      */
     protected function callInaccessibleMethod($object, $name)
@@ -309,11 +308,11 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Helper function to set an inaccessible property
+     * Helper function to set an inaccessible property.
      *
      * @param object $object
      * @param string $property
-     * @param mixed $value
+     * @param mixed  $value
      */
     protected function setInaccessibleProperty($object, $property, $value = null)
     {
@@ -324,10 +323,11 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Helper function to get an inaccessible property
+     * Helper function to get an inaccessible property.
      *
      * @param object $object
      * @param string $property
+     *
      * @return mixed
      */
     protected function getInaccessibleProperty($object, $property)
@@ -340,11 +340,11 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Helper function to set an inaccessible property
+     * Helper function to set an inaccessible property.
      *
      * @param string $class
      * @param string $property
-     * @param mixed $value
+     * @param mixed  $value
      */
     protected function setInaccessibleStaticProperty($class, $property, $value = null)
     {
@@ -357,23 +357,25 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
     /**
      * Creates a mock object which allows for calling protected methods
      * and access of protected properties.
-     * This method is taken from TYPO3 BaseTestCase
+     * This method is taken from TYPO3 BaseTestCase.
      *
-     * @param string $originalClassName name of class t
-     * @param array<string> $methods name of the methods to mock
-     * @param array $arguments arguments to pass to constructor
-     * @param string $mockClassName the class name to use for the mock class
-     * @param bool $callOriginalConstructor whether to call the constructor
-     * @param bool $callOriginalClone whether to call the __clone method
-     * @param bool $callAutoload whether to call any autoload function
+     * @param string        $originalClassName       name of class t
+     * @param array<string> $methods                 name of the methods to mock
+     * @param array         $arguments               arguments to pass to constructor
+     * @param string        $mockClassName           the class name to use for the mock class
+     * @param bool          $callOriginalConstructor whether to call the constructor
+     * @param bool          $callOriginalClone       whether to call the __clone method
+     * @param bool          $callAutoload            whether to call any autoload function
+     *
      * @return \PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface
-     *       a mock of $originalClassName with access methods added
+     *                                                                            a mock of $originalClassName with access methods added
+     *
      * @see \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase::getAccessibleMock
      */
     protected function getAccessibleMock(
         $originalClassName,
-        array $methods = array(),
-        array $arguments = array(),
+        array $methods = [],
+        array $arguments = [],
         $mockClassName = '',
         $callOriginalConstructor = true,
         $callOriginalClone = true,
@@ -397,10 +399,12 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
     /**
      * Creates a proxy class of the specified class which allows
      * for calling even protected methods and access of protected properties.
-     * This method is taken from TYPO3 BaseTestCase
+     * This method is taken from TYPO3 BaseTestCase.
      *
      * @param string $className Name of class to make available, must not be empty
+     *
      * @return string Fully qualified name of the built class, will not be empty
+     *
      * @see Tx_Extbase_Tests_Unit_BaseTestCase::buildAccessibleProxy
      */
     protected function buildAccessibleProxy($className)
@@ -411,95 +415,95 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
 
         // @TODO: #43 refactor to a stand alone interface
         eval(
-            $abstractModifier . 'class ' . $accessibleClassName .
-                ' extends ' . $className . ' implements \\Tx_Phpunit_Interface_AccessibleObject {' .
-                    'public function _call($methodName) {' .
-                        'if ($methodName === \'\') {' .
-                            'throw new \InvalidArgumentException(\'$methodName must not be empty.\', 1334663993);' .
-                        '}' .
-                        '$args = func_get_args();' .
-                        'return call_user_func_array(array($this, $methodName), array_slice($args, 1));' .
-                    '}' .
-                    'public function _callRef(' .
-                        '$methodName, &$arg1 = NULL, &$arg2 = NULL, &$arg3 = NULL, &$arg4 = NULL, &$arg5= NULL, &$arg6 = NULL, ' .
-                        '&$arg7 = NULL, &$arg8 = NULL, &$arg9 = NULL' .
-                    ') {' .
-                        'if ($methodName === \'\') {' .
-                            'throw new \InvalidArgumentException(\'$methodName must not be empty.\', 1334664210);' .
-                        '}' .
-                        'switch (func_num_args()) {' .
-                            'case 0:' .
-                                'throw new RuntimeException(\'The case of 0 arguments is not supposed to happen.\', 1334703124);' .
-                                'break;' .
-                            'case 1:' .
-                                '$returnValue = $this->$methodName();' .
-                                'break;' .
-                            'case 2:' .
-                                '$returnValue = $this->$methodName($arg1);' .
-                                'break;' .
-                            'case 3:' .
-                                '$returnValue = $this->$methodName($arg1, $arg2);' .
-                                'break;' .
-                            'case 4:' .
-                                '$returnValue = $this->$methodName($arg1, $arg2, $arg3);' .
-                                'break;' .
-                            'case 5:' .
-                                '$returnValue = $this->$methodName($arg1, $arg2, $arg3, $arg4);' .
-                                'break;' .
-                            'case 6:' .
-                                '$returnValue = $this->$methodName($arg1, $arg2, $arg3, $arg4, $arg5);' .
-                                'break;' .
-                            'case 7:' .
-                                '$returnValue = $this->$methodName($arg1, $arg2, $arg3, $arg4, $arg5, $arg6);' .
-                                'break;' .
-                            'case 8:' .
-                                '$returnValue = $this->$methodName($arg1, $arg2, $arg3, $arg4, $arg5, $arg6, $arg7);' .
-                                'break;' .
-                            'case 9:' .
-                                '$returnValue = $this->$methodName($arg1, $arg2, $arg3, $arg4, $arg5, $arg6, $arg7, $arg8);' .
-                                'break;' .
-                            'case 10:' .
-                                '$returnValue = $this->$methodName(' .
-                                    '$arg1, $arg2, $arg3, $arg4, $arg5, $arg6, $arg7, $arg8, $arg9' .
-                                ');' .
-                                'break;' .
-                            'default:' .
-                                'throw new \InvalidArgumentException(' .
-                                    '\'_callRef currently only allows calls to methods with no more than 9 parameters.\'' .
-                                ');' .
-                        '}' .
-                        'return $returnValue;' .
-                    '}' .
-                    'public function _set($propertyName, $value) {' .
-                        'if ($propertyName === \'\') {' .
-                            'throw new \InvalidArgumentException(\'$propertyName must not be empty.\', 1334664355);' .
-                        '}' .
-                        '$this->$propertyName = $value;' .
-                    '}' .
-                    'public function _setRef($propertyName, &$value) {' .
-                        'if ($propertyName === \'\') {' .
-                            'throw new \InvalidArgumentException(\'$propertyName must not be empty.\', 1334664545);' .
-                        '}' .
-                        '$this->$propertyName = $value;' .
-                    '}' .
-                    'public function _setStatic($propertyName, $value) {' .
-                        'if ($propertyName === \'\') {' .
-                            'throw new \InvalidArgumentException(\'$propertyName must not be empty.\', 1344242602);' .
-                        '}' .
-                        'self::$$propertyName = $value;' .
-                    '}' .
-                    'public function _get($propertyName) {' .
-                        'if ($propertyName === \'\') {' .
-                            'throw new \InvalidArgumentException(\'$propertyName must not be empty.\', 1334664967);' .
-                        '}' .
-                        'return $this->$propertyName;' .
-                    '}' .
-                    'public function _getStatic($propertyName) {' .
-                        'if ($propertyName === \'\') {' .
-                            'throw new \InvalidArgumentException(\'$propertyName must not be empty.\', 1344242603);' .
-                        '}' .
-                        'return self::$$propertyName;' .
-                    '}' .
+            $abstractModifier.'class '.$accessibleClassName.
+                ' extends '.$className.' implements \\Tx_Phpunit_Interface_AccessibleObject {'.
+                    'public function _call($methodName) {'.
+                        'if ($methodName === \'\') {'.
+                            'throw new \InvalidArgumentException(\'$methodName must not be empty.\', 1334663993);'.
+                        '}'.
+                        '$args = func_get_args();'.
+                        'return call_user_func_array(array($this, $methodName), array_slice($args, 1));'.
+                    '}'.
+                    'public function _callRef('.
+                        '$methodName, &$arg1 = NULL, &$arg2 = NULL, &$arg3 = NULL, &$arg4 = NULL, &$arg5= NULL, &$arg6 = NULL, '.
+                        '&$arg7 = NULL, &$arg8 = NULL, &$arg9 = NULL'.
+                    ') {'.
+                        'if ($methodName === \'\') {'.
+                            'throw new \InvalidArgumentException(\'$methodName must not be empty.\', 1334664210);'.
+                        '}'.
+                        'switch (func_num_args()) {'.
+                            'case 0:'.
+                                'throw new RuntimeException(\'The case of 0 arguments is not supposed to happen.\', 1334703124);'.
+                                'break;'.
+                            'case 1:'.
+                                '$returnValue = $this->$methodName();'.
+                                'break;'.
+                            'case 2:'.
+                                '$returnValue = $this->$methodName($arg1);'.
+                                'break;'.
+                            'case 3:'.
+                                '$returnValue = $this->$methodName($arg1, $arg2);'.
+                                'break;'.
+                            'case 4:'.
+                                '$returnValue = $this->$methodName($arg1, $arg2, $arg3);'.
+                                'break;'.
+                            'case 5:'.
+                                '$returnValue = $this->$methodName($arg1, $arg2, $arg3, $arg4);'.
+                                'break;'.
+                            'case 6:'.
+                                '$returnValue = $this->$methodName($arg1, $arg2, $arg3, $arg4, $arg5);'.
+                                'break;'.
+                            'case 7:'.
+                                '$returnValue = $this->$methodName($arg1, $arg2, $arg3, $arg4, $arg5, $arg6);'.
+                                'break;'.
+                            'case 8:'.
+                                '$returnValue = $this->$methodName($arg1, $arg2, $arg3, $arg4, $arg5, $arg6, $arg7);'.
+                                'break;'.
+                            'case 9:'.
+                                '$returnValue = $this->$methodName($arg1, $arg2, $arg3, $arg4, $arg5, $arg6, $arg7, $arg8);'.
+                                'break;'.
+                            'case 10:'.
+                                '$returnValue = $this->$methodName('.
+                                    '$arg1, $arg2, $arg3, $arg4, $arg5, $arg6, $arg7, $arg8, $arg9'.
+                                ');'.
+                                'break;'.
+                            'default:'.
+                                'throw new \InvalidArgumentException('.
+                                    '\'_callRef currently only allows calls to methods with no more than 9 parameters.\''.
+                                ');'.
+                        '}'.
+                        'return $returnValue;'.
+                    '}'.
+                    'public function _set($propertyName, $value) {'.
+                        'if ($propertyName === \'\') {'.
+                            'throw new \InvalidArgumentException(\'$propertyName must not be empty.\', 1334664355);'.
+                        '}'.
+                        '$this->$propertyName = $value;'.
+                    '}'.
+                    'public function _setRef($propertyName, &$value) {'.
+                        'if ($propertyName === \'\') {'.
+                            'throw new \InvalidArgumentException(\'$propertyName must not be empty.\', 1334664545);'.
+                        '}'.
+                        '$this->$propertyName = $value;'.
+                    '}'.
+                    'public function _setStatic($propertyName, $value) {'.
+                        'if ($propertyName === \'\') {'.
+                            'throw new \InvalidArgumentException(\'$propertyName must not be empty.\', 1344242602);'.
+                        '}'.
+                        'self::$$propertyName = $value;'.
+                    '}'.
+                    'public function _get($propertyName) {'.
+                        'if ($propertyName === \'\') {'.
+                            'throw new \InvalidArgumentException(\'$propertyName must not be empty.\', 1334664967);'.
+                        '}'.
+                        'return $this->$propertyName;'.
+                    '}'.
+                    'public function _getStatic($propertyName) {'.
+                        'if ($propertyName === \'\') {'.
+                            'throw new \InvalidArgumentException(\'$propertyName must not be empty.\', 1344242603);'.
+                        '}'.
+                        'return self::$$propertyName;'.
+                    '}'.
             '}'
         );
 
@@ -509,14 +513,14 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
     /**
      * Same as getMockForAbstractClass, with mockedMethods as secnd param only.
      *
-     * @param  string  $originalClassName
-     * @param  array   $mockedMethods
-     * @param  array   $arguments
-     * @param  string  $mockClassName
-     * @param  bool $callOriginalConstructor
-     * @param  bool $callOriginalClone
-     * @param  bool $callAutoload
-     * @param  bool $cloneArguments
+     * @param string $originalClassName
+     * @param array  $mockedMethods
+     * @param array  $arguments
+     * @param string $mockClassName
+     * @param bool   $callOriginalConstructor
+     * @param bool   $callOriginalClone
+     * @param bool   $callAutoload
+     * @param bool   $cloneArguments
      *
      * @throws PHPUnit_Framework_Exception
      *
@@ -524,8 +528,8 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
      */
     public function getMockForAbstract(
         $originalClassName,
-        $mockedMethods = array(),
-        array $arguments = array(),
+        $mockedMethods = [],
+        array $arguments = [],
         $mockClassName = '',
         $callOriginalConstructor = true,
         $callOriginalClone = true,
@@ -555,7 +559,7 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
                 'indpEnvCache'
             );
             $property->setAccessible(true);
-            $property->setValue(null, array());
+            $property->setValue(null, []);
         }
     }
 }

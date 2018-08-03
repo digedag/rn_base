@@ -31,17 +31,18 @@ class Tx_Rnbase_Backend_Template_Override_Doc extends TYPO3\CMS\Backend\Template
 class Tx_Rnbase_Backend_Template_Override_DocumentTemplate extends Tx_Rnbase_Backend_Template_Override_Doc
 {
     /**
-     * Override deprecated and removed method
+     * Override deprecated and removed method.
      */
     public function getPageRenderer()
     {
-        if(tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
             return $this->pageRenderer;
-        }
-        elseif (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
+        } elseif (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
             $this->initPageRenderer();
+
             return $this->pageRenderer;
         }
+
         return parent::getPageRenderer();
     }
 }

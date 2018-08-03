@@ -1,5 +1,7 @@
 <?php
+
 namespace Sys25\RnBase\Fluid\ViewHelper\Configurations;
+
 /***************************************************************
  * Copyright notice
  *
@@ -24,28 +26,28 @@ namespace Sys25\RnBase\Fluid\ViewHelper\Configurations;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Fluid\ViewHelper\Configurations$GetViewHelper
+ * Sys25\RnBase\Fluid\ViewHelper\Configurations$GetViewHelper.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class GetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
-
     /**
-     * ViewHelper for $configurations->get() calls
+     * ViewHelper for $configurations->get() calls.
      *
      * @param string $typoscriptPath
-     * @param string $confId leave it empty if you do not want to use it :)
+     * @param string $confId         leave it empty if you do not want to use it :)
+     *
      * @return mixed the typoscript value
+     *
      * @author Stephan Reuther <stephan.reuther@das-medienkombinat.de>
      */
     public function render($typoscriptPath = '', $confId = '')
     {
-        $value = $this->controllerContext->configurations->get($confId . $typoscriptPath);
+        $value = $this->controllerContext->configurations->get($confId.$typoscriptPath);
+
         return $value;
     }
 }

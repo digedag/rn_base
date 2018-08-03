@@ -26,10 +26,8 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
 
 /**
- * Data model unit tests
+ * Data model unit tests.
  *
- * @package TYPO3
- * @subpackage Tx_Rnbase
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
@@ -37,7 +35,7 @@ tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
 class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
 {
     /**
-     * Test the getProperties method
+     * Test the getProperties method.
      *
      * @return void
      *
@@ -49,14 +47,14 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
         $model = $this->getModel(
             null,
             'Tx_Rnbase_Domain_Model_Base',
-            array('getProperty')
+            ['getProperty']
         );
 
         $model
             ->expects(self::once())
             ->method('getProperty')
             ->with(self::equalTo(null))
-            ->will(self::returnValue(array('uid' => 1)));
+            ->will(self::returnValue(['uid' => 1]));
 
         $data = $model->getProperties();
 
@@ -66,7 +64,7 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * Test Magic calls
+     * Test Magic calls.
      *
      * @return void
      *
@@ -139,14 +137,14 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testRecursiveInstance()
     {
-        $data = array(
+        $data = [
             'gender' => 'm',
-            'name' => array(
+            'name'   => [
                 'first' => 'John',
-                'last' => 'Doe',
-                'test' => array(),
-            )
-        );
+                'last'  => 'Doe',
+                'test'  => [],
+            ],
+        ];
         $model = Tx_Rnbase_Domain_Model_Data::getInstance($data);
 
         $this->assertSame('m', $model->getGender());
@@ -190,10 +188,10 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
         $this->assertFalse($model->isDirty());
         // check with setProperty([])
         $model->setProperty(
-            array(
+            [
                 'first_name' => 'John',
-                'last_name' => 'Doe',
-            )
+                'last_name'  => 'Doe',
+            ]
         );
         $this->assertTrue($model->isDirty());
     }
@@ -218,17 +216,17 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * Creates a test object
+     * Creates a test object.
      *
      * @return Tx_Rnbase_Domain_Model_Data
      */
     private function getModelInstance()
     {
-        $data = array(
-            'uid' => 50,
+        $data = [
+            'uid'        => 50,
             'first_name' => 'John',
-            'last_name' => 'Doe',
-        );
+            'last_name'  => 'Doe',
+        ];
 
         return Tx_Rnbase_Domain_Model_Data::getInstance($data);
     }

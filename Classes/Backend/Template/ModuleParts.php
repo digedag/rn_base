@@ -45,6 +45,7 @@ class Tx_Rnbase_Backend_Template_ModuleParts
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -56,6 +57,7 @@ class Tx_Rnbase_Backend_Template_ModuleParts
     public function setHeader($header)
     {
         $this->header = $header;
+
         return $this;
     }
 
@@ -67,6 +69,7 @@ class Tx_Rnbase_Backend_Template_ModuleParts
     public function setContent($content)
     {
         $this->content = $content;
+
         return $this;
     }
 
@@ -78,6 +81,7 @@ class Tx_Rnbase_Backend_Template_ModuleParts
     public function setSubMenu($subMenu)
     {
         $this->subMenu = $subMenu;
+
         return $this;
     }
 
@@ -89,6 +93,7 @@ class Tx_Rnbase_Backend_Template_ModuleParts
     public function setFuncMenu($funcMenu)
     {
         $this->funcMenu = $funcMenu;
+
         return $this;
     }
 
@@ -100,6 +105,7 @@ class Tx_Rnbase_Backend_Template_ModuleParts
     public function setButtons($buttons)
     {
         $this->buttons = $buttons;
+
         return $this;
     }
 
@@ -111,6 +117,7 @@ class Tx_Rnbase_Backend_Template_ModuleParts
     public function setSelector($selector)
     {
         $this->selector = $selector;
+
         return $this;
     }
 
@@ -124,6 +131,7 @@ class Tx_Rnbase_Backend_Template_ModuleParts
 
     /**
      * @param array $pageInfo
+     *
      * @return Tx_Rnbase_Backend_Template_ModuleParts
      */
     public function setPageInfo(array $pageInfo)
@@ -132,6 +140,4 @@ class Tx_Rnbase_Backend_Template_ModuleParts
 
         return $this;
     }
-
-
 }

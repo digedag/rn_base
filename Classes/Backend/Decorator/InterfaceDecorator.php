@@ -23,22 +23,20 @@
  ***************************************************************/
 
 /**
- * Decorator interface
+ * Decorator interface.
  *
  * @method void __construct() __construct(tx_rnbase_mod_IModule $mod)
  *
- * @package TYPO3
- * @subpackage Tx_Rnbase
  * @author Michael Wagner
  */
 interface Tx_Rnbase_Backend_Decorator_InterfaceDecorator
 {
     /**
-     * Formats a value
+     * Formats a value.
      *
-     * @param string $columnValue
-     * @param string $columnName
-     * @param array $record
+     * @param string                                $columnValue
+     * @param string                                $columnName
+     * @param array                                 $record
      * @param \Tx_Rnbase_Domain_Model_DataInterface $entry
      *
      * @return string

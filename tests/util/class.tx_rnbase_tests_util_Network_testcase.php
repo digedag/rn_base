@@ -25,29 +25,27 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_rnbase_util_Network');
 
 /**
- * tx_rnbase_tests_util_Network_testcase
+ * tx_rnbase_tests_util_Network_testcase.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann <rene@system25.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class tx_rnbase_tests_util_Network_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
-     * @var string $devIpMaskBackup
+     * @var string
      */
     protected $devIpMaskBackup;
 
     /**
-     * @var string $devIpMaskBackup
+     * @var string
      */
     protected $remoteAddressBackup;
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()
@@ -57,7 +55,8 @@ class tx_rnbase_tests_util_Network_testcase extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
     protected function tearDown()
@@ -81,7 +80,7 @@ class tx_rnbase_tests_util_Network_testcase extends tx_rnbase_tests_BaseTestCase
      * @param string $globalDevIpMask
      * @param string $devIpMask
      * @param string $remoteIp
-     * @param boolean $expectedReturn
+     * @param bool   $expectedReturn
      * @group unit
      * @dataProvider dataProviderIsDevelopmentIp
      */
@@ -96,17 +95,17 @@ class tx_rnbase_tests_util_Network_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public function dataProviderIsDevelopmentIp()
     {
-        return array(
-            array('127.0.0.1', '', '', true, $_SERVER['REMOTE_ADDR'] = '127.0.0.1'),
-            array('1.2.3.4', '1.2.3.4', '1.2.3.4', true),
-            array('4.3.2.1', '1.2.3.4', '1.2.3.4', true),
-            array('4.3.2.1', '4.3.2.1', '1.2.3.4', false),
-            array('4.3.2.1', '4.3.2.1', '', false),
-            array('4.3.2.1', '', '1.2.3.4', false),
-            array('', '1.2.3.4', '1.2.3.4', true),
-            array('', '4.3.2.1', '1.2.3.4', false),
-            array('4.3.2.1', '', '', false),
-            array('', '', '4.3.2.1', false),
-        );
+        return [
+            ['127.0.0.1', '', '', true, $_SERVER['REMOTE_ADDR'] = '127.0.0.1'],
+            ['1.2.3.4', '1.2.3.4', '1.2.3.4', true],
+            ['4.3.2.1', '1.2.3.4', '1.2.3.4', true],
+            ['4.3.2.1', '4.3.2.1', '1.2.3.4', false],
+            ['4.3.2.1', '4.3.2.1', '', false],
+            ['4.3.2.1', '', '1.2.3.4', false],
+            ['', '1.2.3.4', '1.2.3.4', true],
+            ['', '4.3.2.1', '1.2.3.4', false],
+            ['4.3.2.1', '', '', false],
+            ['', '', '4.3.2.1', false],
+        ];
     }
 }

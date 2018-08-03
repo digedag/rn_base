@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_rnbase
- * @subpackage tx_rnbase_mod
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -25,14 +23,10 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
 tx_rnbase::load('tx_rnbase_mod_BaseModule');
 
 /**
- * Backend Modul für rnbase
- *
- * @package tx_rnbase
- * @subpackage tx_rnbase_mod1
+ * Backend Modul für rnbase.
  */
 class tx_rnbase_tests_fixtures_classes_Mod extends tx_rnbase_mod_BaseModule
 {
@@ -40,9 +34,9 @@ class tx_rnbase_tests_fixtures_classes_Mod extends tx_rnbase_mod_BaseModule
     public $tabs;
 
     /**
-     * Method to get the extension key
+     * Method to get the extension key.
      *
-     * @return  string Extension key
+     * @return string Extension key
      */
     public function getExtensionKey()
     {
@@ -51,7 +45,7 @@ class tx_rnbase_tests_fixtures_classes_Mod extends tx_rnbase_mod_BaseModule
 
     /**
      * Method to set the tabs for the mainmenu
-     * Umstellung von SelectBox auf Menu
+     * Umstellung von SelectBox auf Menu.
      */
     protected function getFuncMenu()
     {
@@ -61,7 +55,8 @@ class tx_rnbase_tests_fixtures_classes_Mod extends tx_rnbase_mod_BaseModule
     }
 
     /**
-     * Returns the module ident name
+     * Returns the module ident name.
+     *
      * @return string
      */
     public function getName()
@@ -74,7 +69,8 @@ class tx_rnbase_tests_fixtures_classes_Mod extends tx_rnbase_mod_BaseModule
      * In ->main() wird aber auch das rendering ausgeführt, was dann zu ungewollten Ausgaben,
      * Fehlern etc. führt.
      *
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see tx_rnbase_mod_BaseModule::getDoc()
      */
     public function getDoc()

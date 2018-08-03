@@ -27,40 +27,44 @@ define('RNMAP_MAPTYPE_SATELLITE', 2);
 define('RNMAP_MAPTYPE_HYBRID', 3);
 define('RNMAP_MAPTYPE_PHYSICAL', 4);
 
-
 /**
- * Registry
+ * Registry.
  */
 class tx_rnbase_maps_TypeRegistry
 {
     public static $instance = null;
-    private static $mapTypes = array(RNMAP_MAPTYPE_STREET, RNMAP_MAPTYPE_SATELLITE, RNMAP_MAPTYPE_HYBRID, RNMAP_MAPTYPE_PHYSICAL);
-    private $types = array();
+    private static $mapTypes = [RNMAP_MAPTYPE_STREET, RNMAP_MAPTYPE_SATELLITE, RNMAP_MAPTYPE_HYBRID, RNMAP_MAPTYPE_PHYSICAL];
+    private $types = [];
+
     private function __construct()
     {
     }
+
     /**
-     * Returns the singleton instance
+     * Returns the singleton instance.
      *
      * @return tx_rnbase_maps_TypeRegistry
      */
     public static function getInstance()
     {
         if (!is_object(self::$instance)) {
-            self::$instance = new tx_rnbase_maps_TypeRegistry();
+            self::$instance = new self();
         }
 
         return self::$instance;
     }
+
     public function addType(tx_rnbase_maps_IMap $map, $typeId, $mapType)
     {
         $this->types[$map->getPROVID()][$typeId] = $mapType;
     }
+
     /**
-     * Returns a map specific type string
+     * Returns a map specific type string.
      *
      * @param tx_rnbase_maps_IMap $map
-     * @param string $typeId
+     * @param string              $typeId
+     *
      * @return string
      */
     public function getType(tx_rnbase_maps_IMap $map, $typeId)
@@ -69,8 +73,9 @@ class tx_rnbase_maps_TypeRegistry
 
         return $type;
     }
+
     /**
-     * Returns an array with all available default types
+     * Returns an array with all available default types.
      *
      * @return array
      */

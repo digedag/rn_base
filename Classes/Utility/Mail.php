@@ -25,29 +25,26 @@
 /**
  * Encapsulate simple mailing functionality of TYPO3 for backward compatibility.
  *
- * @package TYPO3
- * @subpackage Tx_Rnbase
  * @author René Nitzsche
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
 class Tx_Rnbase_Utility_Mail
 {
-    protected $attachments = array();
+    protected $attachments = [];
     protected $from;
     protected $fromName;
     protected $replyTo;
     protected $replyToName;
-    protected $to = array();
+    protected $to = [];
 
-    /**
-     */
     public function __construct()
     {
     }
 
     /**
      * @param string $subject
+     *
      * @return Tx_Rnbase_Utility_Mail
      */
     public function setSubject($subject)
@@ -59,20 +56,22 @@ class Tx_Rnbase_Utility_Mail
 
     /**
      * comma separated list of mailaddresses.
+     *
      * @param string $emailAsString
      */
     public function setTo($emailAsString)
     {
         $addresses = tx_rnbase_util_Strings::trimExplode(',', $emailAsString);
-        $this->to = array();
+        $this->to = [];
         foreach ($addresses as $mailAddress) {
             $this->to[$mailAddress] = '';
         }
     }
+
     /**
-     *
      * @param string $email
      * @param string $name
+     *
      * @return Tx_Rnbase_Utility_Mail
      */
     public function addTo($email, $name = '')
@@ -83,9 +82,9 @@ class Tx_Rnbase_Utility_Mail
     }
 
     /**
-     *
      * @param string $email
      * @param string $name
+     *
      * @return Tx_Rnbase_Utility_Mail
      */
     public function setFrom($email, $name = '')
@@ -95,10 +94,11 @@ class Tx_Rnbase_Utility_Mail
 
         return $this;
     }
+
     /**
-     *
      * @param string $email
      * @param string $name
+     *
      * @return Tx_Rnbase_Utility_Mail
      */
     public function setReplyTo($email, $name = null)
@@ -108,9 +108,10 @@ class Tx_Rnbase_Utility_Mail
 
         return $this;
     }
+
     /**
-     *
      * @param string $part
+     *
      * @return Tx_Rnbase_Utility_Mail
      */
     public function setTextPart($part)
@@ -119,9 +120,10 @@ class Tx_Rnbase_Utility_Mail
 
         return $this;
     }
+
     /**
-     *
      * @param string $part
+     *
      * @return Tx_Rnbase_Utility_Mail
      */
     public function setHtmlPart($part)
@@ -130,23 +132,23 @@ class Tx_Rnbase_Utility_Mail
 
         return $this;
     }
+
     /**
-     *
      * @param string $src
      * @param string $filename
      * @param string $contentType
+     *
      * @return Tx_Rnbase_Utility_Mail
      */
     public function addAttachment($src, $filename = '', $contentType = '')
     {
-        $this->attachments[] = array('src' => $src, 'filename' => $filename, 'contentType' => $contentType);
+        $this->attachments[] = ['src' => $src, 'filename' => $filename, 'contentType' => $contentType];
 
         return $this;
     }
 
     /**
-     *
-     * @return integer the number of recipients who were accepted for delivery
+     * @return int the number of recipients who were accepted for delivery
      */
     public function send()
     {
@@ -177,7 +179,7 @@ class Tx_Rnbase_Utility_Mail
                     tx_rnbase_util_Logger::warn(
                         'Adding attachment failed!',
                         'rn_base',
-                        array('subject' => $mail->subject, 'to' => $this->toAsString, 'attachment' => $attachment)
+                        ['subject' => $mail->subject, 'to' => $this->toAsString, 'attachment' => $attachment]
                     );
                 }
             }
@@ -185,6 +187,7 @@ class Tx_Rnbase_Utility_Mail
 
         return $this->sendMessage($mail);
     }
+
     protected function sendMessage($mail)
     {
         return $mail->send();

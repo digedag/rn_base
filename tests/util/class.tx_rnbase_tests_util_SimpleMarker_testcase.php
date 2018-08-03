@@ -43,13 +43,13 @@ class tx_rnbase_tests_util_SimpleMarker_testcase extends tx_rnbase_tests_BaseTes
     public function testPrepareSubparts()
     {
         $formatter = $this->buildFormatter();
-        $item = tx_rnbase::makeInstance('tx_rnbase_model_base', array(
-            'uid' => 0,
+        $item = tx_rnbase::makeInstance('tx_rnbase_model_base', [
+            'uid'  => 0,
             'fcol' => 'foo',
             'bcol' => 'bar',
-        ));
+        ]);
         // die marker müssen im template vorhanden sein, da diese sonnst nicht gerendert werden
-        $template = <<<HTML
+        $template = <<<'HTML'
 ###ITEM_FCOL_IS_HIDDEN### ITEM_FCOL_IS_HIDDEN ###ITEM_FCOL_IS_HIDDEN###
 ###ITEM_FCOL_IS_VISIBLE### ITEM_FCOL_IS_VISIBLE ###ITEM_FCOL_IS_VISIBLE###
 ###ITEM_BCOL_IS_VERSTECKT### ITEM_BCOL_IS_VERSTECKT ###ITEM_BCOL_IS_VERSTECKT###
@@ -58,7 +58,7 @@ class tx_rnbase_tests_util_SimpleMarker_testcase extends tx_rnbase_tests_BaseTes
 ###ITEM_UNUSED_HIDDEN### ITEM_UNUSED_HIDDEN ###ITEM_UNUSED_HIDDEN###
 HTML;
         $marker = tx_rnbase::makeInstance('tx_rnbase_util_SimpleMarkerTests');
-        $wrappedSubpartArray = $subpartArray = array();
+        $wrappedSubpartArray = $subpartArray = [];
         $marker->prepareSubparts(
             $wrappedSubpartArray,
             $subpartArray,
@@ -99,26 +99,26 @@ HTML;
 
         $model = tx_rnbase::makeInstance(
             'tx_rnbase_model_base',
-            array(
-                'uid' => 1,
-                'field' => 'name',
+            [
+                'uid'        => 1,
+                'field'      => 'name',
                 'field.name' => 'fieldname',
-                'fieldname' => 'field.name',
-                'dot.name' => 'dotname',
-                'dotname' => 'dot.name',
-            )
+                'fieldname'  => 'field.name',
+                'dot.name'   => 'dotname',
+                'dotname'    => 'dot.name',
+            ]
         );
 
         $confId = 'hit.';
         $configurations = $this->createConfigurations(
-            array(
-                $confId => array(
-                    'dataMap.' => array(
+            [
+                $confId => [
+                    'dataMap.' => [
                         'dotFieldFields' => 'dot.name',
                         'dotValueFields' => 'dotname,unknown',
-                    )
-                )
-            ),
+                    ],
+                ],
+            ],
             'rn_base'
         );
 
@@ -155,12 +155,13 @@ HTML;
     }
 
     /**
-     * liefert einen formatter inklusive typoscript
+     * liefert einen formatter inklusive typoscript.
+     *
      * @return tx_rnbase_util_FormatUtil
      */
     protected function buildFormatter()
     {
-        $typoScript = <<<TS
+        $typoScript = <<<'TS'
 action.item.subparts {
 	fcol_is {
 		visible = TEXT

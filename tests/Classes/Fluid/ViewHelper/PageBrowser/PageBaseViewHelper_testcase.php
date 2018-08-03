@@ -1,4 +1,5 @@
 <?php
+
 namespace Sys25\RnBase\Fluid\ViewHelper\PageBrowser;
 
 use Sys25\RnBase\Fluid\ViewHelper\BaseViewHelperTestCase;
@@ -30,24 +31,20 @@ use Sys25\RnBase\Fluid\ViewHelper\BaseViewHelperTestCase;
 // won't work resulting in a fatal error when this file is loaded
 // @todo can be removed when support for TYPO3 6.2 is dropped.
 if (!\tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-    require_once
-        \tx_rnbase_util_Extensions::extPath('rn_base',
+    require_once \tx_rnbase_util_Extensions::extPath('rn_base',
         'tests/Classes/Fluid/ViewHelper/BaseViewHelperTest.php'
     );
 }
 
 /**
- * Sys25\RnBase\Fluid\ViewHelper\PageBrowser$PageBaseViewHelperTest
+ * Sys25\RnBase\Fluid\ViewHelper\PageBrowser$PageBaseViewHelperTest.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class PageBaseViewHelperTest extends BaseViewHelperTestCase
+class PageBaseViewHelper_testcase extends BaseViewHelperTestCase
 {
-
     /**
      * @group unit
      */
@@ -55,7 +52,7 @@ class PageBaseViewHelperTest extends BaseViewHelperTestCase
     {
         $viewHelper = $this->getMock(
             'Sys25\\RnBase\\Fluid\\ViewHelper\\PageBrowser\\PageBaseViewHelper',
-            array('renderChildren')
+            ['renderChildren']
         );
 
         $viewHelper->expects(self::once())
@@ -76,7 +73,7 @@ class PageBaseViewHelperTest extends BaseViewHelperTestCase
     {
         $viewHelper = $this->getMock(
             'Sys25\\RnBase\\Fluid\\ViewHelper\\PageBrowser\\PageBaseViewHelper',
-            array('renderChildren')
+            ['renderChildren']
         );
 
         $viewHelper->expects(self::never())
@@ -84,12 +81,13 @@ class PageBaseViewHelperTest extends BaseViewHelperTestCase
 
         $viewHelper = $this->getPreparedVîewHelper($viewHelper);
 
-        $renderedContent = $viewHelper->render(null, array(), 0, false, false, '', false, false, false, array(), true);
+        $renderedContent = $viewHelper->render(null, [], 0, false, false, '', false, false, false, [], true);
         self::assertContains('456', $renderedContent);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see \Sys25\RnBase\Fluid\ViewHelper\BaseViewHelperTest::getPreparedVîewHelper()
      */
     protected function getPreparedVîewHelper($viewHelper)
@@ -109,7 +107,7 @@ class PageBaseViewHelperTest extends BaseViewHelperTestCase
         $this->renderingContext->getVariableProvider()->add('pageNumber', 456);
 
         $viewHelper->initializeArguments();
-        $viewHelper->setArguments(array('data-tagname' => 'a'));
+        $viewHelper->setArguments(['data-tagname' => 'a']);
 
         return $viewHelper;
     }

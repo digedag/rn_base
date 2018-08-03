@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
@@ -28,11 +29,8 @@ if (!defined('TYPO3_MODE')) {
  * Replacement class for former FormEngine-class.
  * Use one instance per formular.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          René Nitzsche <rene@system25.de>
  */
-
 class Tx_Rnbase_Backend_Form_FormBuilder
 {
     private $nodeFactory = null;
@@ -41,26 +39,24 @@ class Tx_Rnbase_Backend_Form_FormBuilder
      */
     private $formDataCompiler = null;
     private $formResultCompiler; // TODO
-    protected $formDataCache = array();
+    protected $formDataCache = [];
 
-    /**
-     */
     public function __construct()
     {
         /**
- * @var TcaDatabaseRecord $formDataGroup
-*/
+         * @var TcaDatabaseRecord
+         */
         $formDataGroup = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormDataGroup\\TcaDatabaseRecord');
         $this->formDataCompiler = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormDataCompiler', $formDataGroup);
         $this->nodeFactory = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\NodeFactory');
         $this->formResultCompiler = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormResultCompiler');
     }
+
     public function initDefaultBEmode()
     {
     }
 
     /**
-     *
      * @return \TYPO3\CMS\Backend\Form\NodeFactory
      */
     public function getNodeFactory()
@@ -72,29 +68,32 @@ class Tx_Rnbase_Backend_Form_FormBuilder
     {
         return substr($uid, 0, 3) == 'NEW';
     }
+
     /**
      * Compile formdata for database record. Result is cached.
      * Bei der Neuanlage ($uid beginnt mit NEW) muss in $record die 'pid' gesetzt sein. Zusätzlich
      * können werden Attribute mit default-Werten übergeben werden. Die Attribute müssen aber in der
      * TCA[$table]['ctrl']['useColumnsForDefaultValues'] konfiguriert sein.
+     *
      * @param string $table
      * @param string $uid
-     * @param array $record should contain pid and other default values for record
+     * @param array  $record should contain pid and other default values for record
+     *
      * @return multitype:
      */
     protected function compileFormData($table, $uid, $record)
     {
-        $cacheKey = $table.'_'.$uid;//.intval($uid);
+        $cacheKey = $table.'_'.$uid; //.intval($uid);
         if (!array_key_exists($cacheKey, $this->formDataCache)) {
             if ($this->isNEWRecord($uid)) {
                 // Die UID ist hier die PID
                 // Es wird intern beim compile eine NEWuid festgelegt
                 // Vorbelegung von Felder ist noch nicht möglich...
                 $formDataCompilerInput = [
-                    'tableName' => $table,
-                    'vanillaUid' => (int)$record['pid'],
-                    'command' => 'new',
-                    'returnUrl' => '',
+                    'tableName'   => $table,
+                    'vanillaUid'  => (int) $record['pid'],
+                    'command'     => 'new',
+                    'returnUrl'   => '',
                     'neighborRow' => [],
                 ];
                 foreach ($record as $key => $value) {
@@ -105,10 +104,10 @@ class Tx_Rnbase_Backend_Form_FormBuilder
                 }
             } else {
                 $formDataCompilerInput = [
-                        'tableName' => $table,
-                        'vanillaUid' => (int)$uid,
-                        'command' => 'edit',
-                        'returnUrl' => '',
+                        'tableName'  => $table,
+                        'vanillaUid' => (int) $uid,
+                        'command'    => 'edit',
+                        'returnUrl'  => '',
                 ];
             }
             $this->formDataCache[$cacheKey] = $this->formDataCompiler->compile($formDataCompilerInput);
@@ -120,11 +119,12 @@ class Tx_Rnbase_Backend_Form_FormBuilder
 
         return $this->formDataCache[$cacheKey];
     }
+
     /**
-     *
      * @param string $table
-     * @param array $row
+     * @param array  $row
      * @param string $fieldName
+     *
      * @return string
      */
     public function getSoloField($table, $row, $fieldName)
@@ -144,7 +144,6 @@ class Tx_Rnbase_Backend_Form_FormBuilder
         // TODO: dieser Aufruf sollte einmalig für das gesamte Formular erfolgen!
         $this->formResultCompiler->mergeResult($childResultArray);
 
-
         return $childResultArray['html'];
     }
 
@@ -152,6 +151,7 @@ class Tx_Rnbase_Backend_Form_FormBuilder
     {
         return $this->formResultCompiler->JStop();
     }
+
     public function printNeededJSFunctions()
     {
         return $this->formResultCompiler->printNeededJSFunctions(); // TODO

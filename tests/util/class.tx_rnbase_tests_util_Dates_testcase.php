@@ -48,33 +48,36 @@ class tx_rnbase_tests_util_Dates_testcase extends Tx_Phpunit_TestCase
         $tstamp1 = tx_rnbase_util_Dates::date_mysql2tstamp($zeit1);
         $zeit2 = tx_rnbase_util_Dates::date_tstamp2mysql($tstamp1);
 
-//		$sDate = gmstrftime("%d.%m.%Y", $tstamp1);
+        //		$sDate = gmstrftime("%d.%m.%Y", $tstamp1);
         $this->assertEquals($zeit1, $zeit2);
     }
+
     public function test_convert4TCA2Timestamp()
     {
-        $record = array('datetime' => '2011-10-20 12:00:00', 'date' => '2011-10-20', 'emptydate' => '0000-00-00');
-        tx_rnbase_util_Dates::convert4TCA2Timestamp($record, array('datetime', 'date', 'emptydate'));
+        $record = ['datetime' => '2011-10-20 12:00:00', 'date' => '2011-10-20', 'emptydate' => '0000-00-00'];
+        tx_rnbase_util_Dates::convert4TCA2Timestamp($record, ['datetime', 'date', 'emptydate']);
         $this->assertEquals('1319112000', $record['datetime']);
         $this->assertEquals('1319068800', $record['date']);
         $this->assertEquals('0', $record['emptydate']);
     }
+
     public function test_convert4TCA2DateTime()
     {
-        $record = array('datetime' => '1319112000');
-        tx_rnbase_util_Dates::convert4TCA2DateTime($record, array('datetime'), true);
+        $record = ['datetime' => '1319112000'];
+        tx_rnbase_util_Dates::convert4TCA2DateTime($record, ['datetime'], true);
         $this->assertEquals('2011-10-20 12:00:00', $record['datetime']);
     }
+
     public function test_convert4TCA2Date()
     {
-        $record = array('date' => '1319068800');
-        tx_rnbase_util_Dates::convert4TCA2Date($record, array('date'), true);
+        $record = ['date' => '1319068800'];
+        tx_rnbase_util_Dates::convert4TCA2Date($record, ['date'], true);
         $this->assertEquals('2011-10-20', $record['date']);
     }
 
     /**
      * @param string $mysqlDate
-     * @param int $expectedTimestamp
+     * @param int    $expectedTimestamp
      *
      * @dataProvider dataProviderDateMysql2Tstamp
      */
@@ -88,10 +91,10 @@ class tx_rnbase_tests_util_Dates_testcase extends Tx_Phpunit_TestCase
      */
     public function dataProviderDateMysql2Tstamp()
     {
-        return array(
-            array('1985-08-14', 492818400),
-            array('aa-bb-cccc', null),
-            array('', null),
-        );
+        return [
+            ['1985-08-14', 492818400],
+            ['aa-bb-cccc', null],
+            ['', null],
+        ];
     }
 }

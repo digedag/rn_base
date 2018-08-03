@@ -26,7 +26,7 @@ tx_rnbase::load('tx_rnbase_maps_ILocation');
 tx_rnbase::load('tx_rnbase_maps_Coord');
 
 /**
- * Implementation for a POI with description. Useful to mark a point in a map
+ * Implementation for a POI with description. Useful to mark a point in a map.
  */
 class tx_rnbase_maps_POI extends tx_rnbase_maps_Coord implements tx_rnbase_maps_ILocation
 {
@@ -38,7 +38,7 @@ class tx_rnbase_maps_POI extends tx_rnbase_maps_Coord implements tx_rnbase_maps_
     private $zoomMin;
     private $zoomMax;
 
-    public function __construct($data = array())
+    public function __construct($data = [])
     {
         if (!$data) {
             return;
@@ -46,11 +46,12 @@ class tx_rnbase_maps_POI extends tx_rnbase_maps_Coord implements tx_rnbase_maps_
 
         $this->initField($data, 'lat', 'setLatitude');
         $this->initField($data, 'lng', 'setLongitude');
-        $fields = array('description', 'city', 'zip', 'countryCode', 'zoomMin', 'zoomMax');
+        $fields = ['description', 'city', 'zip', 'countryCode', 'zoomMin', 'zoomMax'];
         foreach ($fields as $field) {
             $this->initField($data, $field);
         }
     }
+
     private function initField($data, $fieldname, $methodName = '')
     {
         if (isset($data[$fieldname])) {
@@ -58,6 +59,7 @@ class tx_rnbase_maps_POI extends tx_rnbase_maps_Coord implements tx_rnbase_maps_
             $this->$methodName($data[$fieldname]);
         }
     }
+
     /**
      * @return int
      */
@@ -65,9 +67,10 @@ class tx_rnbase_maps_POI extends tx_rnbase_maps_Coord implements tx_rnbase_maps_
     {
         return $this->zoomMin;
     }
+
     /**
-     *
      * @param int $zoom
+     *
      * @return tx_rnbase_maps_POI
      */
     public function setZoomMin($zoom)
@@ -76,6 +79,7 @@ class tx_rnbase_maps_POI extends tx_rnbase_maps_Coord implements tx_rnbase_maps_
 
         return $this;
     }
+
     /**
      * @return int
      */
@@ -83,9 +87,10 @@ class tx_rnbase_maps_POI extends tx_rnbase_maps_Coord implements tx_rnbase_maps_
     {
         return $this->zoomMax;
     }
+
     /**
-     *
      * @param int $zoom
+     *
      * @return tx_rnbase_maps_POI
      */
     public function setZoomMax($zoom)
@@ -102,9 +107,10 @@ class tx_rnbase_maps_POI extends tx_rnbase_maps_Coord implements tx_rnbase_maps_
     {
         return $this->city;
     }
+
     /**
-     *
      * @param string $city
+     *
      * @return tx_rnbase_maps_POI
      */
     public function setCity($city)
@@ -121,9 +127,10 @@ class tx_rnbase_maps_POI extends tx_rnbase_maps_Coord implements tx_rnbase_maps_
     {
         return $this->street;
     }
+
     /**
-     *
      * @param string $street
+     *
      * @return tx_rnbase_maps_POI
      */
     public function setStreet($street)
@@ -140,9 +147,10 @@ class tx_rnbase_maps_POI extends tx_rnbase_maps_Coord implements tx_rnbase_maps_
     {
         return $this->zip;
     }
+
     /**
-     *
      * @param string $zip
+     *
      * @return tx_rnbase_maps_POI
      */
     public function setZip($zip)
@@ -159,9 +167,10 @@ class tx_rnbase_maps_POI extends tx_rnbase_maps_Coord implements tx_rnbase_maps_
     {
         return $this->countryCode;
     }
+
     /**
-     *
      * @param string $cc
+     *
      * @return tx_rnbase_maps_POI
      */
     public function setCountryCode($cc)
@@ -170,9 +179,10 @@ class tx_rnbase_maps_POI extends tx_rnbase_maps_Coord implements tx_rnbase_maps_
 
         return $this;
     }
+
     /**
-     *
      * @param string $desc
+     *
      * @return tx_rnbase_maps_POI
      */
     public function setDescription($desc)
@@ -181,6 +191,7 @@ class tx_rnbase_maps_POI extends tx_rnbase_maps_Coord implements tx_rnbase_maps_
 
         return $this;
     }
+
     /**
      * @return string
      */

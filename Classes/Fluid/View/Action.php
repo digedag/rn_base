@@ -1,5 +1,7 @@
 <?php
+
 namespace Sys25\RnBase\Fluid\View;
+
 /***************************************************************
  * Copyright notice
  *
@@ -24,24 +26,23 @@ namespace Sys25\RnBase\Fluid\View;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Fluid\View$Action
+ * Sys25\RnBase\Fluid\View$Action.
  *
  * View class for actions based on tx_rnbase_action_BaseIOC
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class Action extends \tx_rnbase_view_Base
 {
-
     /**
-     * @param string $templateName
+     * @param string                    $templateName
      * @param \tx_rnbase_configurations $configurations
-     * @return string
+     *
      * @throws \Exception
+     *
+     * @return string
      */
     public function render($templateName, &$configurations)
     {
@@ -75,13 +76,14 @@ class Action extends \tx_rnbase_view_Base
     }
 
     /**
-     * @param string $extensionKey
+     * @param string                                      $extensionKey
      * @param \Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     *
      * @return array
      */
     protected function getTypoScriptConfigurationForFluid(
         $extensionKey, \Tx_Rnbase_Configuration_ProcessorInterface $configurations
-    ){
+    ) {
         $typoScriptConfiguration = $this->getDefaultTypoScriptConfigurationForFluid($extensionKey);
 
         $typoScriptConfiguration['settings'] = \tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
@@ -93,10 +95,10 @@ class Action extends \tx_rnbase_view_Base
         );
 
         // support for old path configuration
-        $oldPaths = array('templateRootPath', 'layoutRootPath', 'partialRootPath');
+        $oldPaths = ['templateRootPath', 'layoutRootPath', 'partialRootPath'];
         foreach ($oldPaths as $oldPath) {
             if ($typoScriptConfiguration['view'][$oldPath]) {
-                $typoScriptConfiguration['view'][$oldPath . 's.'][0] = $typoScriptConfiguration['view'][$oldPath];
+                $typoScriptConfiguration['view'][$oldPath.'s.'][0] = $typoScriptConfiguration['view'][$oldPath];
             }
         }
 
@@ -108,32 +110,33 @@ class Action extends \tx_rnbase_view_Base
         return $typoScriptConfiguration;
     }
 
-
     /**
      * @param string $extensionKey
+     *
      * @return array
      */
     protected function getDefaultTypoScriptConfigurationForFluid($extensionKey)
     {
-        $typoScriptConfiguration['settings'] = array();
+        $typoScriptConfiguration['settings'] = [];
 
-        $resourcesPath = 'EXT:' . $extensionKey . '/Resources/Private/';
-        $typoScriptConfiguration['view']['templateRootPaths.'][0] = $resourcesPath . 'Templates/';
-        $typoScriptConfiguration['view']['layoutRootPaths.'][0] = $resourcesPath . 'Layouts/';
-        $typoScriptConfiguration['view']['partialRootPaths.'][0] = $resourcesPath . 'Partials/';
+        $resourcesPath = 'EXT:'.$extensionKey.'/Resources/Private/';
+        $typoScriptConfiguration['view']['templateRootPaths.'][0] = $resourcesPath.'Templates/';
+        $typoScriptConfiguration['view']['layoutRootPaths.'][0] = $resourcesPath.'Layouts/';
+        $typoScriptConfiguration['view']['partialRootPaths.'][0] = $resourcesPath.'Partials/';
 
         return $typoScriptConfiguration;
     }
 
     /**
-     * @param string $templateName
-     * @param array $typoScriptConfigurationForFluid
+     * @param string                                      $templateName
+     * @param array                                       $typoScriptConfigurationForFluid
      * @param \Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     *
      * @return \TYPO3\CMS\Fluid\View\StandaloneView
      */
     protected function initializeView(
         $templateName, $typoScriptConfigurationForFluid, \Tx_Rnbase_Configuration_ProcessorInterface $configurations
-    ){
+    ) {
         $view = Factory::getViewInstance($configurations, $typoScriptConfigurationForFluid);
         $view->setPartialRootPaths($typoScriptConfigurationForFluid['view']['partialRootPaths.']);
         $view->setLayoutRootPaths($typoScriptConfigurationForFluid['view']['layoutRootPaths.']);

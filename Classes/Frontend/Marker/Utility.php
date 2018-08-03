@@ -1,6 +1,6 @@
 <?php
 /**
- *  Copyright notice
+ *  Copyright notice.
  *
  *  (c) 2016 René Nitzsche <rene@system25.de>
  *  All rights reserved
@@ -23,29 +23,27 @@
  */
 
 /**
- *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          René Nitzsche <rene@system25.de>
  */
 class Tx_Rnbase_Frontend_Marker_Utility
 {
     /**
-     * Returns an array with all attribute names not used in template
+     * Returns an array with all attribute names not used in template.
      *
      * We accept Tx_Rnbase_Domain_Model_DataInterface, but the model must also
      * implement IteratorAggregate!
      *
      * @param Tx_Rnbase_Domain_Model_Data $item
-     * @param string $template
-     * @param string $marker
+     * @param string                      $template
+     * @param string                      $marker
+     *
      * @return array
      */
     public static function findUnusedAttributes(Tx_Rnbase_Domain_Model_DataInterface $item, $template, $marker)
     {
-        $ignore = array();
+        $ignore = [];
         $minfo = self::containsMarker($template, $marker.'___MINFO');
-        $minfoArr = array();
+        $minfoArr = [];
         foreach ($item as $key => $value) {
             if ($minfo) {
                 $minfoArr[$key] = $marker.'_'.strtoupper($key);
@@ -65,10 +63,11 @@ class Tx_Rnbase_Frontend_Marker_Utility
     /**
      * @param string $template
      * @param string $markerPrefix a string like MATCH_HOME
+     *
      * @return bool
      */
     public static function containsMarker($template, $markerPrefix)
     {
-        return (strpos($template, '###'.$markerPrefix) !== false);
+        return strpos($template, '###'.$markerPrefix) !== false;
     }
 }

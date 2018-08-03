@@ -23,20 +23,21 @@ namespace Doctrine\Common\Collections\Expr;
  * Comparison of a field with a value by the given operator.
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
+ *
  * @since  2.3
  */
 class Comparison implements Expression
 {
-    const EQ        = '=';
-    const NEQ       = '<>';
-    const LT        = '<';
-    const LTE       = '<=';
-    const GT        = '>';
-    const GTE       = '>=';
-    const IS        = '='; // no difference with EQ
-    const IN        = 'IN';
-    const NIN       = 'NIN';
-    const CONTAINS  = 'CONTAINS';
+    const EQ = '=';
+    const NEQ = '<>';
+    const LT = '<';
+    const LTE = '<=';
+    const GT = '>';
+    const GTE = '>=';
+    const IS = '='; // no difference with EQ
+    const IN = 'IN';
+    const NIN = 'NIN';
+    const CONTAINS = 'CONTAINS';
 
     /**
      * @var string
@@ -60,7 +61,7 @@ class Comparison implements Expression
      */
     public function __construct($field, $operator, $value)
     {
-        if ( ! ($value instanceof Value)) {
+        if (!($value instanceof Value)) {
             $value = new Value($value);
         }
 
@@ -94,7 +95,7 @@ class Comparison implements Expression
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function visit(ExpressionVisitor $visitor)
     {

@@ -26,26 +26,22 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_rnbase_model_data');
 
 /**
- *
- * @package tx_rnbase
- * @subpackage tx_rnbase_tests
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_rnbase_tests_model_Data_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
-     * test object with testdata
+     * test object with testdata.
      *
      * @return tx_rnbase_model_data
      */
     private function getModelInstance()
     {
-        $data = array(
-            'uid' => 50,
+        $data = [
+            'uid'        => 50,
             'first_name' => 'John',
-            'last_name' => 'Doe',
-        );
+            'last_name'  => 'Doe',
+        ];
 
         return tx_rnbase_model_data::getInstance($data);
     }
@@ -93,14 +89,14 @@ class tx_rnbase_tests_model_Data_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public function testRecursiveInstance()
     {
-        $data = array(
+        $data = [
             'gender' => 'm',
-            'name' => array(
+            'name'   => [
                 'first' => 'John',
-                'last' => 'Doe',
-                'test' => array(),
-            )
-        );
+                'last'  => 'Doe',
+                'test'  => [],
+            ],
+        ];
         $model = tx_rnbase_model_data::getInstance($data);
 
         $this->assertSame('m', $model->getGender());
@@ -133,6 +129,7 @@ class tx_rnbase_tests_model_Data_testcase extends tx_rnbase_tests_BaseTestCase
         // after setting the clear state, the model should be clean
         $this->assertFalse($model->isDirty());
     }
+
     /**
      * @test
      */
@@ -146,6 +143,7 @@ class tx_rnbase_tests_model_Data_testcase extends tx_rnbase_tests_BaseTestCase
         $model->unsFirstName();
         $this->assertTrue($model->isDirty());
     }
+
     /**
      * @test
      */
@@ -156,6 +154,7 @@ class tx_rnbase_tests_model_Data_testcase extends tx_rnbase_tests_BaseTestCase
         $model->record['first_name'];
         $this->assertFalse($model->isDirty());
     }
+
     /**
      * @test
      */

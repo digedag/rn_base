@@ -59,24 +59,24 @@ abstract class ExpressionVisitor
      *
      * @param Expression $expr
      *
-     * @return mixed
-     *
      * @throws \RuntimeException
+     *
+     * @return mixed
      */
     public function dispatch(Expression $expr)
     {
         switch (true) {
-            case ($expr instanceof Comparison):
+            case $expr instanceof Comparison:
                 return $this->walkComparison($expr);
 
-            case ($expr instanceof Value):
+            case $expr instanceof Value:
                 return $this->walkValue($expr);
 
-            case ($expr instanceof CompositeExpression):
+            case $expr instanceof CompositeExpression:
                 return $this->walkCompositeExpression($expr);
 
             default:
-                throw new \RuntimeException("Unknown Expression " . get_class($expr));
+                throw new \RuntimeException('Unknown Expression '.get_class($expr));
         }
     }
 }

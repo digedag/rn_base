@@ -25,11 +25,10 @@
 tx_rnbase::load('tx_rnbase_util_Extensions');
 
 /**
- * Statische Informationen über TYPO3
+ * Statische Informationen über TYPO3.
  */
 class tx_rnbase_util_TYPO3
 {
-
     /**
      * Prüft, ob mindestens TYPO3 Version 6.0 vorhanden ist.
      *
@@ -39,6 +38,7 @@ class tx_rnbase_util_TYPO3
     {
         return true;
     }
+
     /**
      * Prüft, ob mindestens TYPO3 Version 6.1 vorhanden ist.
      *
@@ -48,6 +48,7 @@ class tx_rnbase_util_TYPO3
     {
         return true;
     }
+
     /**
      * Prüft, ob mindestens TYPO3 Version 6.2 vorhanden ist.
      *
@@ -57,6 +58,7 @@ class tx_rnbase_util_TYPO3
     {
         return true;
     }
+
     /**
      * Prüft, ob mindestens TYPO3 Version 7.0 vorhanden ist.
      *
@@ -66,6 +68,7 @@ class tx_rnbase_util_TYPO3
     {
         return self::isTYPO3VersionOrHigher(7000000);
     }
+
     /**
      * Prüft, ob mindestens TYPO3 Version 7.6 vorhanden ist.
      *
@@ -75,6 +78,7 @@ class tx_rnbase_util_TYPO3
     {
         return self::isTYPO3VersionOrHigher(7006000);
     }
+
     /**
      * Prüft, ob mindestens TYPO3 Version 8 vorhanden ist.
      *
@@ -84,6 +88,7 @@ class tx_rnbase_util_TYPO3
     {
         return self::isTYPO3VersionOrHigher(8000000);
     }
+
     /**
      * Prüft, ob mindestens TYPO3 Version 8.6 vorhanden ist.
      *
@@ -93,6 +98,7 @@ class tx_rnbase_util_TYPO3
     {
         return self::isTYPO3VersionOrHigher(8006000);
     }
+
     /**
      * Prüft, ob mindestens TYPO3 Version 8.7 vorhanden ist.
      *
@@ -122,6 +128,7 @@ class tx_rnbase_util_TYPO3
     {
         return self::isTYPO3VersionOrHigher(4007000);
     }
+
     /**
      * Prüft, ob mindestens TYPO3 Version 4.6 vorhanden ist.
      *
@@ -131,6 +138,7 @@ class tx_rnbase_util_TYPO3
     {
         return self::isTYPO3VersionOrHigher(4006000);
     }
+
     /**
      * Prüft, ob mindestens TYPO3 Version 4.5 vorhanden ist.
      *
@@ -140,6 +148,7 @@ class tx_rnbase_util_TYPO3
     {
         return self::isTYPO3VersionOrHigher(4005000);
     }
+
     /**
      * Prüft, ob mindestens TYPO3 Version 4.4 vorhanden ist.
      *
@@ -149,6 +158,7 @@ class tx_rnbase_util_TYPO3
     {
         return self::isTYPO3VersionOrHigher(4004000);
     }
+
     /**
      * Prüft, ob mindestens TYPO3 Version 4.3 vorhanden ist.
      *
@@ -158,6 +168,7 @@ class tx_rnbase_util_TYPO3
     {
         return self::isTYPO3VersionOrHigher(4003000);
     }
+
     /**
      * Prüft, ob mindestens TYPO3 Version 4.2 vorhanden ist.
      *
@@ -167,11 +178,14 @@ class tx_rnbase_util_TYPO3
     {
         return self::isTYPO3VersionOrHigher(4002000);
     }
+
     private static $TYPO3_VERSION = false;
+
     /**
      * Prüft, ob eine bestimmte TYPO3 Version vorhanden ist.
      *
      * @param int $versionNumber
+     *
      * @return bool
      */
     public static function isTYPO3VersionOrHigher($version)
@@ -182,48 +196,55 @@ class tx_rnbase_util_TYPO3
 
         return self::$TYPO3_VERSION >= $version;
     }
+
     /**
      * Returns an integer from a three part version number, eg '4.12.3' -> 4012003
      * This method is taken from t3lib_utility_VersionNumber.
      *
      * @param $versionNumber string Version number on format x.x.x
+     *
      * @return int Integer version of version number (where each part can count to 999)
      */
     public static function convertVersionNumberToInteger($versionNumber)
     {
         $versionParts = explode('.', $versionNumber);
 
-        return intval((int) $versionParts[0] . str_pad((int) $versionParts[1], 3, '0', STR_PAD_LEFT) . str_pad((int) $versionParts[2], 3, '0', STR_PAD_LEFT));
+        return intval((int) $versionParts[0].str_pad((int) $versionParts[1], 3, '0', STR_PAD_LEFT).str_pad((int) $versionParts[2], 3, '0', STR_PAD_LEFT));
     }
 
     /**
-     * Liefert das EM_CONF-Array einer Extension
+     * Liefert das EM_CONF-Array einer Extension.
      *
      * @param string $extKey
+     *
      * @return array
      */
     public static function loadExtInfo($_EXTKEY)
     {
         $path = tx_rnbase_util_Extensions::extPath($_EXTKEY).'ext_emconf.php';
-        @include($path);
+        @include $path;
         if (is_array($EM_CONF[$_EXTKEY])) {
             return $EM_CONF[$_EXTKEY];
         }
 
-        return array();
+        return [];
     }
+
     /**
-     * Wrapper function for tx_rnbase_util_Extensions::isLoaded()
+     * Wrapper function for tx_rnbase_util_Extensions::isLoaded().
+     *
      * @param string $_EXTKEY
      */
     public static function isExtLoaded($_EXTKEY)
     {
         return tx_rnbase_util_Extensions::isLoaded($_EXTKEY);
     }
+
     /**
-     * Liefert die Versionsnummer einer Extension
+     * Liefert die Versionsnummer einer Extension.
      *
      * @param string $extKey
+     *
      * @return string
      */
     public static function getExtVersion($extKey)
@@ -232,10 +253,13 @@ class tx_rnbase_util_TYPO3
 
         return $info['version'];
     }
+
     /**
-     * Prüft, ob die Extension mindestens auf einer bestimmten Version steht
+     * Prüft, ob die Extension mindestens auf einer bestimmten Version steht.
+     *
      * @param string $_EXTKEY
-     * @param int $version
+     * @param int    $version
+     *
      * @return bool
      */
     public static function isExtMinVersion($_EXTKEY, $version)
@@ -248,7 +272,7 @@ class tx_rnbase_util_TYPO3
     }
 
     /**
-     * Get the current frontend user
+     * Get the current frontend user.
      *
      * @return \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication or tslib_feUserAuth current frontend user.
      */
@@ -256,8 +280,9 @@ class tx_rnbase_util_TYPO3
     {
         return $GLOBALS['TSFE']->fe_user;
     }
+
     /**
-     * Get the current frontend user uid
+     * Get the current frontend user uid.
      *
      * @return int current frontend user uid or FALSE
      */
@@ -267,16 +292,20 @@ class tx_rnbase_util_TYPO3
 
         return is_object($feuser) && isset($feuser->user['uid']) ? $feuser->user['uid'] : false;
     }
+
     /**
-     * Get the current backend user if available
+     * Get the current backend user if available.
+     *
      * @return t3lib_tsfeBeUserAuth
      */
     public static function getBEUser()
     {
         return $GLOBALS['BE_USER'];
     }
+
     /**
-     * Get the current backend user uid if available
+     * Get the current backend user uid if available.
+     *
      * @return int
      */
     public static function getBEUserUID()
@@ -287,7 +316,7 @@ class tx_rnbase_util_TYPO3
     }
 
     /**
-     * Creates a new instance of the cobject
+     * Creates a new instance of the cobject.
      *
      * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|tslib_cObj
      */
@@ -312,8 +341,9 @@ class tx_rnbase_util_TYPO3
 
         return $GLOBALS['TSFE'];
     }
+
     /**
-     * Returns the Page renderer instance
+     * Returns the Page renderer instance.
      *
      * @return \TYPO3\CMS\Core\Page\PageRenderer
      */
@@ -329,6 +359,7 @@ class tx_rnbase_util_TYPO3
     }
 
     private static $sysPage = null;
+
     /**
      * @return \TYPO3\CMS\Frontend\Page\PageRepository or t3lib_pageSelect
      */
@@ -348,9 +379,10 @@ class tx_rnbase_util_TYPO3
     }
 
     /**
-     * wrapper Methode mit Abhängigkeit von TYPO3 Version
+     * wrapper Methode mit Abhängigkeit von TYPO3 Version.
      *
      * @return string
+     *
      * @deprecated use tx_rnbase_util_Typo3Classes::getHttpUtilityClass
      */
     public static function getHttpUtilityClass()
@@ -359,7 +391,7 @@ class tx_rnbase_util_TYPO3
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public static function isCliMode()
     {

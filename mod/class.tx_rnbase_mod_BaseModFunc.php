@@ -28,19 +28,18 @@ tx_rnbase::load('tx_rnbase_mod_IModFunc');
 tx_rnbase::load('tx_rnbase_util_BaseMarker');
 tx_rnbase::load('tx_rnbase_util_Templates');
 
-
-/**
- */
 abstract class tx_rnbase_mod_BaseModFunc implements tx_rnbase_mod_IModFunc
 {
     /* @var $mod tx_rnbase_mod_IModule */
     protected $mod;
+
     public function init(tx_rnbase_mod_IModule $module, $conf)
     {
         $this->mod = $module;
     }
+
     /**
-     * Returns the base module
+     * Returns the base module.
      *
      * @return tx_rnbase_mod_IModule
      */
@@ -48,6 +47,7 @@ abstract class tx_rnbase_mod_BaseModFunc implements tx_rnbase_mod_IModFunc
     {
         return $this->mod;
     }
+
     public function main()
     {
         $out = '';
@@ -56,19 +56,19 @@ abstract class tx_rnbase_mod_BaseModFunc implements tx_rnbase_mod_IModFunc
         $file = tx_rnbase_util_Files::getFileAbsFileName($conf->get($this->getConfId().'template'));
         $templateCode = tx_rnbase_util_Network::getUrl($file);
         if (!$templateCode) {
-            return $conf->getLL('msg_template_not_found').'<br />File: \'' . $file . '\'<br />ConfId: \'' . $this->getConfId().'template\'';
+            return $conf->getLL('msg_template_not_found').'<br />File: \''.$file.'\'<br />ConfId: \''.$this->getConfId().'template\'';
         }
         $subpart = '###'.strtoupper($this->getFuncId()).'###';
         $template = tx_rnbase_util_Templates::getSubpart($templateCode, $subpart);
         if (!$template) {
-            return $conf->getLL('msg_subpart_not_found'). ': ' . $subpart;
+            return $conf->getLL('msg_subpart_not_found').': '.$subpart;
         }
 
         $start = microtime(true);
         $memStart = memory_get_usage();
         $out .= $this->getContent($template, $conf, $conf->getFormatter(), $this->getModule()->getFormTool());
         if (tx_rnbase_util_BaseMarker::containsMarker($out, 'MOD_')) {
-            $markerArr = array();
+            $markerArr = [];
             $memEnd = memory_get_usage();
             $markerArr['###MOD_PARSETIME###'] = (microtime(true) - $start);
             $markerArr['###MOD_MEMUSED###'] = ($memEnd - $memStart);
@@ -79,17 +79,21 @@ abstract class tx_rnbase_mod_BaseModFunc implements tx_rnbase_mod_IModFunc
 
         return $out;
     }
+
     /**
-     * Kindklassen implementieren diese Methode um den Modulinhalt zu erzeugen
-     * @param string $template
+     * Kindklassen implementieren diese Methode um den Modulinhalt zu erzeugen.
+     *
+     * @param string                                     $template
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param tx_rnbase_util_FormatUtil $formatter
-     * @param tx_rnbase_util_FormTool $formTool
+     * @param tx_rnbase_util_FormatUtil                  $formatter
+     * @param tx_rnbase_util_FormTool                    $formTool
+     *
      * @return string
      */
     abstract protected function getContent($template, &$configurations, &$formatter, $formTool);
+
     /**
-     * Liefert die ConfId für diese ModFunc
+     * Liefert die ConfId für diese ModFunc.
      *
      * @return string
      */
@@ -97,9 +101,10 @@ abstract class tx_rnbase_mod_BaseModFunc implements tx_rnbase_mod_IModFunc
     {
         return $this->getFuncId().'.';
     }
+
     /**
      * Jede Modulfunktion sollte über einen eigenen Schlüssel innerhalb des Moduls verfügen. Dieser
-     * wird später für die Konfigruration verwendet
+     * wird später für die Konfigruration verwendet.
      */
     abstract protected function getFuncId();
 }

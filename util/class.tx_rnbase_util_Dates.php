@@ -28,7 +28,7 @@ tx_rnbase::load('tx_rnbase_util_Strings');
  */
 class tx_rnbase_util_Dates
 {
-    private static $todayDateStrings = array();
+    private static $todayDateStrings = [];
 
     public static function getTodayDateString($format = 'Ymd')
     {
@@ -43,7 +43,9 @@ class tx_rnbase_util_Dates
      * date_mysql2german
      * wandelt ein MySQL-DATE (ISO-Date)
      * in ein traditionelles deutsches Datum um.
+     *
      * @param string $datum Format: yyyy-mm-dd
+     *
      * @return string Format dd-mm-yyyy oder einen leeren String, wenn kein gültiges Datum übergeben wurde
      */
     public static function date_mysql2german($datum)
@@ -55,47 +57,56 @@ class tx_rnbase_util_Dates
 
         return sprintf('%02d-%02d-%04d', $tag, $monat, $jahr);
     }
+
     /**
-     * Datumsumwandlung
+     * Datumsumwandlung.
      *
      * @param string $datum Format: yyyy-mm-dd
+     *
      * @return int yyyymmdd
      */
     public static function date_mysql2int($datum)
     {
         return intval(implode('', explode('-', $datum)));
     }
+
     /**
-     * Wandelt einen Integer der Form yyymmdd in ein MySQL-DATE (ISO-Date)
+     * Wandelt einen Integer der Form yyymmdd in ein MySQL-DATE (ISO-Date).
      *
      * @param int $datum
+     *
      * @return string yyyy-mm-dd
      */
     public static function date_int2mysql($datum)
     {
-        return substr($datum, 0, 4) . '-'. substr($datum, 4, 2) .'-'.substr($datum, 6, 2);
+        return substr($datum, 0, 4).'-'.substr($datum, 4, 2).'-'.substr($datum, 6, 2);
     }
+
     /**
-     * Rechnen mit int-Dates yyyymmdd
+     * Rechnen mit int-Dates yyyymmdd.
      *
      * @param int $intdate Form: yyyymmdd
      * @param int $days
+     *
      * @return int yyyymmdd
      */
     public static function date_addIntDays($intdate, $days)
     {
-        $dateArr = array(substr($intdate, 0, 4), substr($intdate, 4, 2), substr($intdate, 6, 2));
+        $dateArr = [substr($intdate, 0, 4), substr($intdate, 4, 2), substr($intdate, 6, 2)];
         $tstamp = gmmktime(0, 0, 0, $dateArr[1], $dateArr[2], $dateArr[0]);
         $tstamp += ((3600 * 24) * $days);
         $ret = gmdate('Ymd', $tstamp);
 
         return $ret;
     }
+
     /**
      * date_german2mysql
      * wandelt ein traditionelles deutsches Datum nach MySQL (ISO-Date).
      * Wir ein leerer String übergeben, dann wird 0000-00-00 geliefert.
+     *
      * @param string $datum Format: dd-mm-yyyy
+     *
      * @return string Format: yyyy-mm-dd
      */
     public static function date_german2mysql($datum)
@@ -107,22 +118,26 @@ class tx_rnbase_util_Dates
 
         return sprintf('%04d-%02d-%02d', $jahr, $monat, $tag);
     }
+
     /**
-     * Umwandlung Timestamp in einen Zeitstrings yyyy-mm-dd H:i:s
+     * Umwandlung Timestamp in einen Zeitstrings yyyy-mm-dd H:i:s.
      *
      * @param string $tstamp
+     *
      * @return string Format: yyyy-mm-dd H:i:s
      */
     public static function date_tstamp2mysql($tstamp, $useGMT = false)
     {
         return $useGMT ? gmdate('Y-m-d', $tstamp) : date('Y-m-d', $tstamp);
     }
+
     /**
      * Umwandlung eines Datums yyyy-mm-dd in einen Timestamp.
      * Es wird NULL geliefert wenn kein Timstamp berechnet werden
      * kann.
      *
      * @param string $date Format: yyyy-mm-dd
+     *
      * @return int or NULL if no timestamp could be calculated
      */
     public static function date_mysql2tstamp($date)
@@ -135,42 +150,48 @@ class tx_rnbase_util_Dates
             $tstamp = mktime(0, 0, 0, $monat, $tag, $jahr);
         }
         // If mktime arguments are invalid, the function returns FALSE  (before PHP 5.1 it returned -1).
-        return (!in_array($tstamp, array(false, -1))) ? $tstamp : null;
+        return (!in_array($tstamp, [false, -1])) ? $tstamp : null;
     }
 
     /**
-     * Umwandlung Timestamp in einen Zeitstrings yyyy-mm-dd H:i:s
+     * Umwandlung Timestamp in einen Zeitstrings yyyy-mm-dd H:i:s.
      *
      * @param string $tstamp
+     *
      * @return string Format: yyyy-mm-dd H:i:s
      */
     public static function datetime_tstamp2mysql($tstamp, $useGMT = false)
     {
         return $useGMT ? gmdate('Y-m-d H:i:s', $tstamp) : date('Y-m-d H:i:s', $tstamp);
     }
+
     private static $dateTime = null;
+
     /**
-     * Umwandlung eines Zeitstrings yyyy-mm-dd H:i:s in einen Timestamp
+     * Umwandlung eines Zeitstrings yyyy-mm-dd H:i:s in einen Timestamp.
      *
      * @param string $datetime Format: yyyy-mm-dd H:i:s
+     *
      * @return int
      */
     public static function datetime_mysql2tstamp($datetime, $timezone = 'CET')
     {
         list($datum, $zeit) = explode(' ', $datetime);
         list($jahr, $monat, $tag) = tx_rnbase_util_Strings::intExplode('-', $datum);
-        list($std, $min, $sec) = $zeit ? tx_rnbase_util_Strings::intExplode(':', $zeit) : array(0, 0, 0);
+        list($std, $min, $sec) = $zeit ? tx_rnbase_util_Strings::intExplode(':', $zeit) : [0, 0, 0];
 
         return self::getTimeStamp($jahr, $monat, $tag, $std, $min, $sec, $timezone);
     }
+
     /**
-     * Create timestamp
-     * @param int $jahr
-     * @param int $monat
-     * @param int $tag
-     * @param int $std
-     * @param int $min
-     * @param int $sec
+     * Create timestamp.
+     *
+     * @param int    $jahr
+     * @param int    $monat
+     * @param int    $tag
+     * @param int    $std
+     * @param int    $min
+     * @param int    $sec
      * @param string $timezone
      */
     public static function getTimeStamp($jahr = 0, $monat = 0, $tag = 0, $std = 0, $min = 0, $sec = 0, $timezone = 'UTC')
@@ -197,11 +218,14 @@ class tx_rnbase_util_Dates
 
         return self::$dateTime->format('U');
     }
+
     /**
      * date_mysql2german
      * wandelt ein MySQL-DATETIME
      * in ein traditionelles deutsches Datum mit Uhrzeit um.
+     *
      * @param string $datetime Format: yyyy-mm-dd HH:mm:ss
+     *
      * @return string Format HH:mm dd-mm-yyyy oder einen leeren String, wenn kein gültiges Datum übergeben wurde
      */
     public static function datetime_mysql2german($datetime)
@@ -215,11 +239,14 @@ class tx_rnbase_util_Dates
 
         return sprintf('%02d:%02d %02d-%02d-%04d', $std, $min, $tag, $monat, $jahr);
     }
+
     /**
      * datetime_german2mysql
      * wandelt ein traditionelles deutsches Datum nach MySQL (ISO-Date).
      * Wir ein leerer String übergeben, dann wird 0000-00-00 geliefert.
+     *
      * @param string $datetime Format: HH:mm dd-mm-yyyy
+     *
      * @return string Format: yyyy-mm-dd HH:mm:ss
      */
     public static function datetime_german2mysql($datetime)
@@ -235,7 +262,8 @@ class tx_rnbase_util_Dates
     }
 
     /**
-     * Wandelt Timestamps in einem TCA-Record in MySQL DateTime-Strings um
+     * Wandelt Timestamps in einem TCA-Record in MySQL DateTime-Strings um.
+     *
      * @param array $row
      * @param array $fields
      */
@@ -247,8 +275,10 @@ class tx_rnbase_util_Dates
             }
         }
     }
+
     /**
-     * Wandelt Timestamps in einem TCA-Record in MySQL Date-Strings um
+     * Wandelt Timestamps in einem TCA-Record in MySQL Date-Strings um.
+     *
      * @param array $row
      * @param array $fields
      */
@@ -260,8 +290,10 @@ class tx_rnbase_util_Dates
             }
         }
     }
+
     /**
-     * Wandelt MySQL DateTime-Strings in einem TCA-Record in Timestamps um
+     * Wandelt MySQL DateTime-Strings in einem TCA-Record in Timestamps um.
+     *
      * @param array $row
      * @param array $fields
      */
@@ -284,6 +316,7 @@ class tx_rnbase_util_Dates
      *  'Europe/Paris' for '2.0/DST' instead.
      *
      * @param string|DateTimeZone $timezone
+     *
      * @return DateTimeZone
      */
     public static function getDateTimeZone($timezone = null)
@@ -295,9 +328,11 @@ class tx_rnbase_util_Dates
 
         return is_null($timezone) ? $europeBerlin : new DateTimeZone($timezone);
     }
+
     /**
      * @param string|DateTimeZone $date
-     * @param string $timezone
+     * @param string              $timezone
+     *
      * @return DateTime
      */
     public static function getDateTime($date = null, $timezone = null)

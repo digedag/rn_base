@@ -26,6 +26,7 @@ namespace Doctrine\Common\Collections\Expr;
  * by {@ArrayCollection#select()}.
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
+ *
  * @since  2.3
  */
 class ClosureExpressionVisitor extends ExpressionVisitor
@@ -46,12 +47,12 @@ class ClosureExpressionVisitor extends ExpressionVisitor
             return $object[$field];
         }
 
-        $accessors = array('get', 'is');
+        $accessors = ['get', 'is'];
 
         foreach ($accessors as $accessor) {
             $accessor .= $field;
 
-            if ( ! method_exists($object, $accessor)) {
+            if (!method_exists($object, $accessor)) {
                 continue;
             }
 
@@ -59,7 +60,7 @@ class ClosureExpressionVisitor extends ExpressionVisitor
         }
 
         // __call should be triggered for get.
-        $accessor = $accessors[0] . $field;
+        $accessor = $accessors[0].$field;
 
         if (method_exists($object, '__call')) {
             return $object->$accessor();
@@ -83,8 +84,8 @@ class ClosureExpressionVisitor extends ExpressionVisitor
      */
     public static function sortByField($name, $orientation = 1, \Closure $next = null)
     {
-        if ( ! $next) {
-            $next = function() {
+        if (!$next) {
+            $next = function () {
                 return 0;
             };
         }
@@ -102,7 +103,7 @@ class ClosureExpressionVisitor extends ExpressionVisitor
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function walkComparison(Comparison $comparison)
     {
@@ -147,7 +148,7 @@ class ClosureExpressionVisitor extends ExpressionVisitor
 
             case Comparison::NIN:
                 return function ($object) use ($field, $value) {
-                    return ! in_array(ClosureExpressionVisitor::getObjectFieldValue($object, $field), $value);
+                    return !in_array(ClosureExpressionVisitor::getObjectFieldValue($object, $field), $value);
                 };
 
             case Comparison::CONTAINS:
@@ -156,12 +157,12 @@ class ClosureExpressionVisitor extends ExpressionVisitor
                 };
 
             default:
-                throw new \RuntimeException("Unknown comparison operator: " . $comparison->getOperator());
+                throw new \RuntimeException('Unknown comparison operator: '.$comparison->getOperator());
         }
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function walkValue(Value $value)
     {
@@ -169,17 +170,17 @@ class ClosureExpressionVisitor extends ExpressionVisitor
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function walkCompositeExpression(CompositeExpression $expr)
     {
-        $expressionList = array();
+        $expressionList = [];
 
         foreach ($expr->getExpressionList() as $child) {
             $expressionList[] = $this->dispatch($child);
         }
 
-        switch($expr->getType()) {
+        switch ($expr->getType()) {
             case CompositeExpression::TYPE_AND:
                 return $this->andExpressions($expressionList);
 
@@ -187,7 +188,7 @@ class ClosureExpressionVisitor extends ExpressionVisitor
                 return $this->orExpressions($expressionList);
 
             default:
-                throw new \RuntimeException("Unknown composite " . $expr->getType());
+                throw new \RuntimeException('Unknown composite '.$expr->getType());
         }
     }
 
@@ -200,10 +201,11 @@ class ClosureExpressionVisitor extends ExpressionVisitor
     {
         return function ($object) use ($expressions) {
             foreach ($expressions as $expression) {
-                if ( ! $expression($object)) {
+                if (!$expression($object)) {
                     return false;
                 }
             }
+
             return true;
         };
     }
@@ -221,6 +223,7 @@ class ClosureExpressionVisitor extends ExpressionVisitor
                     return true;
                 }
             }
+
             return false;
         };
     }

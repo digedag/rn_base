@@ -25,21 +25,15 @@ tx_rnbase::load('tx_rnbase_action_CacheHandlerDefault');
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 tx_rnbase::load('tx_rnbase_cache_Manager');
 
-
-
-
 /**
  * Caching handler that saves data for feusers. For unregistered users the handler uses PHP-Session-ID
  * for identification.
  *
- * @package TYPO3
- * @subpackage tx_rnbase
  * @author Rene Nitzsche <rene@system25.de>
  * @author Michael Wagner <michael.wagner@dmk-ebusines.de>
  */
 class tx_rnbase_action_CacheHandlerUser extends tx_rnbase_action_CacheHandlerDefault
 {
-
     /**
      * Returns the current session id.
      *
@@ -53,7 +47,6 @@ class tx_rnbase_action_CacheHandlerUser extends tx_rnbase_action_CacheHandlerDef
 
         return session_id();
     }
-
 
     /**
      * @return array

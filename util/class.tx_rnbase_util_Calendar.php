@@ -31,7 +31,7 @@ define('CALENDAR_HOUR', 10);
 define('CALENDAR_HOUR', 10);
 define('CALENDAR_MINUTE', 12);
 define('CALENDAR_SECOND', 13);
-/**
+/*
  * Field number for get and set indicating the day of the month. This is a synonym for DATE. The first day of the month has value 1.
  */
 define('CALENDAR_DAY_OF_MONTH', 5);
@@ -50,9 +50,9 @@ class tx_rnbase_util_Calendar
         $this->_init();
     }
 
-  /**
-   * Gets this Calendar's current time.
-   */
+    /**
+     * Gets this Calendar's current time.
+     */
     public function getTime()
     {
         return $this->_time;
@@ -63,12 +63,13 @@ class tx_rnbase_util_Calendar
         $this->_time = $timestamp;
     }
 
-  /**
-   * Date Arithmetic function. Adds the specified (signed) amount of time to the given time
-   * field, based on the calendar's rules.
-   * @param $field - the time field.
-   * @param $amount - the amount of date or time to be added to the field.
-   */
+    /**
+     * Date Arithmetic function. Adds the specified (signed) amount of time to the given time
+     * field, based on the calendar's rules.
+     *
+     * @param $field - the time field.
+     * @param $amount - the amount of date or time to be added to the field.
+     */
     public function add($field, $amount)
     {
         // Bis zur Woche können direkt die Sekunden aufaddiert werden
@@ -103,7 +104,7 @@ class tx_rnbase_util_Calendar
     }
 
     /**
-     * Erstellt den Timestamp aus dem Datumsarray
+     * Erstellt den Timestamp aus dem Datumsarray.
      */
     public function _mktime($dateArr)
     {
@@ -119,22 +120,23 @@ class tx_rnbase_util_Calendar
 
     public function _init()
     {
-        $this->_seconds = array( CALENDAR_SECOND => 1,
-                             CALENDAR_MINUTE => 60,
-                             CALENDAR_HOUR => 60 * 60,
-                             CALENDAR_DAY_OF_MONTH => 86400,
-                             CALENDAR_DAY_OF_YEAR => 86400,
+        $this->_seconds = [CALENDAR_SECOND          => 1,
+                             CALENDAR_MINUTE        => 60,
+                             CALENDAR_HOUR          => 60 * 60,
+                             CALENDAR_DAY_OF_MONTH  => 86400,
+                             CALENDAR_DAY_OF_YEAR   => 86400,
                              CALENDAR_WEEK_OF_MONTH => 86400 * 7,
-                             CALENDAR_WEEK_OF_YEAR => 86400 * 7 );
+                             CALENDAR_WEEK_OF_YEAR  => 86400 * 7, ];
 
-        $this->_clearHash = array( CALENDAR_SECOND => 'seconds',
-                             CALENDAR_MINUTE => 'minutes',
-                             CALENDAR_HOUR => 'hours',
+        $this->_clearHash = [CALENDAR_SECOND       => 'seconds',
+                             CALENDAR_MINUTE       => 'minutes',
+                             CALENDAR_HOUR         => 'hours',
                              CALENDAR_DAY_OF_MONTH => 'mday',
-                             CALENDAR_DAY_OF_YEAR => 'mday',
-                             CALENDAR_MONTH => 'mon',
-                             CALENDAR_YEAR => 'year' );
+                             CALENDAR_DAY_OF_YEAR  => 'mday',
+                             CALENDAR_MONTH        => 'mon',
+                             CALENDAR_YEAR         => 'year', ];
     }
+
     public function _getSeconds($field)
     {
         return $this->_seconds[$field];

@@ -25,8 +25,6 @@
 /**
  * This interface defines a base domain model.
  *
- * @package TYPO3
- * @subpackage rn_base
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
@@ -34,16 +32,17 @@
 interface Tx_Rnbase_Domain_Model_DynamicTableInterface
 {
     /**
-     * Liefert den aktuellen Tabellenname
+     * Liefert den aktuellen Tabellenname.
      *
      * @return string
      */
     public function getTableName();
 
     /**
-     * Setzt den aktuellen Tabellenname
+     * Setzt den aktuellen Tabellenname.
      *
      * @param string $tableName
+     *
      * @return Tx_Rnbase_Domain_Model_Base
      */
     public function setTableName($tableName = 0);

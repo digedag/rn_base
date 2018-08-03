@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
@@ -7,7 +8,7 @@ $versionParts = explode('.', TYPO3_version);
 $rnbaseExtPath = (intval($versionParts[0]) >= 6) ?
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('rn_base') :
     t3lib_extMgm::extPath('rn_base');
-require_once($rnbaseExtPath . 'class.tx_rnbase.php');
+require_once $rnbaseExtPath.'class.tx_rnbase.php';
 tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
 tx_rnbase::load('tx_rnbase_util_Debug');
@@ -32,4 +33,4 @@ tx_rnbase::load('Tx_Rnbase_Hook_DataHandler');
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']['rn_base'] =
     'Tx_Rnbase_Hook_DataHandler->clearCacheForConfiguredTagsByTable';
 
-require_once($rnbaseExtPath . 'Classes/Constants.php');
+require_once $rnbaseExtPath.'Classes/Constants.php';

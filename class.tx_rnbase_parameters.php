@@ -28,44 +28,51 @@ tx_rnbase::load('tx_rnbase_util_Arrays');
 interface tx_rnbase_IParameters
 {
     /**
-     * Liefert den Parameter-Wert
+     * Liefert den Parameter-Wert.
      *
      * @param string $paramName
      * @param string $qualifier
+     *
      * @return mixed
      */
     public function get($paramName, $qualifier = '');
+
     /**
-     * removes xss etc. from the value
+     * removes xss etc. from the value.
      *
      * @param string $field
+     *
      * @return string
      */
     public function getCleaned($paramName, $qualifier = '');
+
     /**
-     * Liefert den Parameter-Wert als int
+     * Liefert den Parameter-Wert als int.
      *
      * @param string $paramName
      * @param string $qualifier
+     *
      * @return int
      */
     public function getInt($paramName, $qualifier = '');
+
     /**
-     * Liefert alle Parameter-Werte
+     * Liefert alle Parameter-Werte.
      *
      * @param string $qualifier
+     *
      * @return array
      */
     public function getAll($qualifier = '');
 }
-
 
 class tx_rnbase_parameters extends ArrayObject implements tx_rnbase_IParameters
 {
     private $qualifier = '';
 
     /**
-     * Initialize this instance for a plugin
+     * Initialize this instance for a plugin.
+     *
      * @param string $qualifier
      */
     public function init($qualifier)
@@ -75,14 +82,17 @@ class tx_rnbase_parameters extends ArrayObject implements tx_rnbase_IParameters
         $parametersArray = $this->getParametersPlain($qualifier);
         tx_rnbase_util_Arrays::overwriteArray($this, $parametersArray);
     }
+
     public function setQualifier($qualifier)
     {
         $this->qualifier = $qualifier;
     }
+
     public function getQualifier()
     {
         return $this->qualifier;
     }
+
     public function get($paramName, $qualifier = '')
     {
         if ($qualifier) {
@@ -96,9 +106,10 @@ class tx_rnbase_parameters extends ArrayObject implements tx_rnbase_IParameters
     }
 
     /**
-     * removes xss from the value
+     * removes xss from the value.
      *
      * @param string $field
+     *
      * @return string
      */
     public function getCleaned($paramName, $qualifier = '')
@@ -111,30 +122,34 @@ class tx_rnbase_parameters extends ArrayObject implements tx_rnbase_IParameters
 
         return $value;
     }
+
     /**
-     * Liefert den Parameter-Wert als int
+     * Liefert den Parameter-Wert als int.
      *
      * @param string $paramName
      * @param string $qualifier
+     *
      * @return int
      */
     public function getInt($paramName, $qualifier = '')
     {
         return intval($this->get($paramName, $qualifier));
     }
+
     private function getParametersPlain($qualifier)
     {
         $parametersArray = self::getPostAndGetParametersMerged($qualifier);
 
         return $parametersArray;
     }
+
     public function getAll($qualifier = '')
     {
-        $ret = array();
+        $ret = [];
         $qualifier = $qualifier ? $qualifier : $this->getQualifier();
         $params = $this->getParametersPlain($qualifier);
         foreach ($params as $key => $value) {
-            $key = ($key{0} === 'N' && substr($key, 0, 3) === 'NK_') ? substr($key, 3) : $key;
+            $key = ($key[0] === 'N' && substr($key, 0, 3) === 'NK_') ? substr($key, 3) : $key;
             if (is_string($value)) {
                 $ret[$key] = $value;
             }
@@ -148,6 +163,7 @@ class tx_rnbase_parameters extends ArrayObject implements tx_rnbase_IParameters
      * @see \TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged
      *
      * @param string $parameter Key (variable name) from GET or POST vars
+     *
      * @return array Returns the GET vars merged recursively onto the POST vars.
      */
     public static function getPostAndGetParametersMerged($parameterName)
@@ -162,6 +178,7 @@ class tx_rnbase_parameters extends ArrayObject implements tx_rnbase_IParameters
      * @see \TYPO3\CMS\Core\Utility\GeneralUtility::_GP
      *
      * @param string $parameter Key (variable name) from GET or POST vars
+     *
      * @return array Returns the GET vars merged recursively onto the POST vars.
      */
     public static function getPostOrGetParameter($parameterName)
@@ -175,8 +192,9 @@ class tx_rnbase_parameters extends ArrayObject implements tx_rnbase_IParameters
      * @see t3lib_div::_GETset
      * @see \TYPO3\CMS\Core\Utility\GeneralUtility::_GETset
      *
-     * @param mixed $inputGet
+     * @param mixed  $inputGet
      * @param string $key
+     *
      * @return void
      */
     public static function setGetParameter($inputGet, $key = '')

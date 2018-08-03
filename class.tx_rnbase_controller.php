@@ -33,7 +33,6 @@
  * Note: Javadoc is mostly not up to date.
  ***************************************************************/
 
-
 /**
  * The central controller used as entry point for a plugin
  * This class should not be derived by other classes.
@@ -94,16 +93,10 @@
  * Used by: none
  *
  * @author René Nitzsche (rene@system25.de)
- * @package TYPO3
- * @subpackage rn_base
  */
-
-
 tx_rnbase::load('tx_rnbase_util_Misc');
 tx_rnbase::load('tx_rnbase_util_Arrays');
 tx_rnbase::load('tx_rnbase_util_Strings');
-
-
 
 class tx_rnbase_controller
 {
@@ -112,78 +105,78 @@ class tx_rnbase_controller
     public $configurations;
     public $defaultAction = 'defaultAction';
     public $cobj; // Plugins cObj instance from T3
-    private $errors = array();
+    private $errors = [];
 
-  /*
-   * main(): A factory method for the responsible action
-   *
-   * --------------------------------------------------------------------
-   * Summary: Finds and executes the action
-   * --------------------------------------------------------------------
-   *
-   *      a) Parameters and configurations are loaded into objects.
-   *      b) The action parameter "xy" matches the class "xyAction()".
-   *      c) Registered controller classes have precedence.
-   *
-   * --------------------------------------------------------------------
-   * The configuration goes into the configurations object
-   * --------------------------------------------------------------------
-   *
-   * The configuration array comes in as second parameter.
-   * It is the TS subtree down from the treenode of the plugins includation.
-   * It is loaded into the configurations object.
-   * That object is passed to all MVC classes.
-   *
-   * --------------------------------------------------------------------
-   * The parameters go into the parameters object
-   * --------------------------------------------------------------------
-   *
-   * The parameter array is filled from the GPvars marked by the qualifier from
-   * - GET prameters from a link or redirect:  ... &designator[action]=theAction&designator[parameterName]=value ....
-   * - POST parameters from a form
-   * The qualifier is also known as prefixId (and designator in tx_lib).
-   *
-   * --------------------------------------------------------------------
-   * Finding the action function
-   * --------------------------------------------------------------------
-   *
-   *  Ultimative fallback:                   '$this->unknownAction()'
-   *  Typical action:                        $parameters->action
-   *  Fixed action (related context boxes):  $configurations->action
-   *
-   * All "default-actions" are removed, since this is confusing and useless.
-   *
-   * The action parameter "xy" matches the function "xyAction()".
-   * By appending the postfix "Action" to the function name we assure,
-   * that no other functions than actions can be addressed be sending an action parameter.
-   * For security reasons, please don't append the Postfix "Action"for non action functions
-   * in controller classes.
-   *
-   * If no action is provided the fallback action is the defaultAction.
-   * If an invalid action is provided the function unknownAction() is called.
-   *
-   * --------------------------------------------------------------------
-   * Finding the ultimative action controller
-   * --------------------------------------------------------------------
-   *
-   * Additional controller classes can be registered that contain new actions or overwrite
-   * existing actions. This way you can develop extensions for extensions, without need of XCLASS.
-   * Registerd controller classes have precedence.
-   *
-   * Register a controller class B for this controller class A:
-   * $TYPO3_CONF_VARS['CONTROLLERS']['A']['B'] = 1;
-   *
-   * New register a controller class C for the controller class B:
-   * $TYPO3_CONF_VARS['CONTROLLERS']['B']['C'] = 1;
-   *
-   * Registration has to be done in lowercase typically in ext_tables.php.
-   *
-   * TODO: Write a registration function, so that the global variable is not accessed directly.
-   *
-   * @param  string   incomming content, not used by plugins
-   * @param  array    TS configuration subtree down from the treenode of the plugin
-   * @return string   the complete result of the plugin, typically it's (x)html
-   */
+    /*
+     * main(): A factory method for the responsible action
+     *
+     * --------------------------------------------------------------------
+     * Summary: Finds and executes the action
+     * --------------------------------------------------------------------
+     *
+     *      a) Parameters and configurations are loaded into objects.
+     *      b) The action parameter "xy" matches the class "xyAction()".
+     *      c) Registered controller classes have precedence.
+     *
+     * --------------------------------------------------------------------
+     * The configuration goes into the configurations object
+     * --------------------------------------------------------------------
+     *
+     * The configuration array comes in as second parameter.
+     * It is the TS subtree down from the treenode of the plugins includation.
+     * It is loaded into the configurations object.
+     * That object is passed to all MVC classes.
+     *
+     * --------------------------------------------------------------------
+     * The parameters go into the parameters object
+     * --------------------------------------------------------------------
+     *
+     * The parameter array is filled from the GPvars marked by the qualifier from
+     * - GET prameters from a link or redirect:  ... &designator[action]=theAction&designator[parameterName]=value ....
+     * - POST parameters from a form
+     * The qualifier is also known as prefixId (and designator in tx_lib).
+     *
+     * --------------------------------------------------------------------
+     * Finding the action function
+     * --------------------------------------------------------------------
+     *
+     *  Ultimative fallback:                   '$this->unknownAction()'
+     *  Typical action:                        $parameters->action
+     *  Fixed action (related context boxes):  $configurations->action
+     *
+     * All "default-actions" are removed, since this is confusing and useless.
+     *
+     * The action parameter "xy" matches the function "xyAction()".
+     * By appending the postfix "Action" to the function name we assure,
+     * that no other functions than actions can be addressed be sending an action parameter.
+     * For security reasons, please don't append the Postfix "Action"for non action functions
+     * in controller classes.
+     *
+     * If no action is provided the fallback action is the defaultAction.
+     * If an invalid action is provided the function unknownAction() is called.
+     *
+     * --------------------------------------------------------------------
+     * Finding the ultimative action controller
+     * --------------------------------------------------------------------
+     *
+     * Additional controller classes can be registered that contain new actions or overwrite
+     * existing actions. This way you can develop extensions for extensions, without need of XCLASS.
+     * Registerd controller classes have precedence.
+     *
+     * Register a controller class B for this controller class A:
+     * $TYPO3_CONF_VARS['CONTROLLERS']['A']['B'] = 1;
+     *
+     * New register a controller class C for the controller class B:
+     * $TYPO3_CONF_VARS['CONTROLLERS']['B']['C'] = 1;
+     *
+     * Registration has to be done in lowercase typically in ext_tables.php.
+     *
+     * TODO: Write a registration function, so that the global variable is not accessed directly.
+     *
+     * @param  string   incomming content, not used by plugins
+     * @param  array    TS configuration subtree down from the treenode of the plugin
+     * @return string   the complete result of the plugin, typically it's (x)html
+     */
 
     public function main($out, $configurationArray)
     {
@@ -222,6 +215,7 @@ class tx_rnbase_controller
         if (!is_array($actions)) {
             $actions = [$actions];
         }
+
         try {
             foreach ($actions as $actionName) {
                 tx_rnbase_util_Misc::pushTT('call action', $actionName);
@@ -238,15 +232,18 @@ class tx_rnbase_controller
     }
 
     /**
-     * Call a single action
-     * @param string $actionName class name
-     * @param tx_rnbase_IParams $parameters
+     * Call a single action.
+     *
+     * @param string                                     $actionName     class name
+     * @param tx_rnbase_IParams                          $parameters
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     *
      * @return string
      */
     public function doAction($actionName, &$parameters, &$configurations)
     {
         $ret = '';
+
         try {
             // Creating the responsible Action
             $action = tx_rnbase::makeInstance($actionName);
@@ -289,7 +286,8 @@ class tx_rnbase_controller
     }
 
     /**
-     * Returns all unhandeled exceptions
+     * Returns all unhandeled exceptions.
+     *
      * @return array[Exception] or empty array
      */
     public function getErrors()
@@ -298,8 +296,9 @@ class tx_rnbase_controller
     }
 
     /**
-     * Interne Verarbeitung der Exception
-     * @param Exception $e
+     * Interne Verarbeitung der Exception.
+     *
+     * @param Exception                                  $e
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
      */
     private function handleException($actionName, Exception $e, $configurations)
@@ -328,20 +327,19 @@ class tx_rnbase_controller
         return $exceptionHandler->handleException($actionName, $e, $configurations);
     }
 
-  /**
-   * This is returned, if an invalid action has been send.
-   *
-   * @return     string     error text
-   */
+    /**
+     * This is returned, if an invalid action has been send.
+     *
+     * @return string error text
+     */
     public function getUnknownAction()
     {
         return '<p id="unknown_action">Unknown action.</p>';
     }
 
-
-  //------------------------------------------------------------------------------------
-  // Private functions
-  //------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------
+    // Private functions
+    //------------------------------------------------------------------------------------
 
     /**
      * Find the actions to handle the request
@@ -360,7 +358,8 @@ class tx_rnbase_controller
      *
      * @param     object     the parameters object
      * @param     object     the configurations objet
-     * @return    array     an array with the actions or NULL
+     *
+     * @return array an array with the actions or NULL
      */
     protected function _findAction($parameters, $configurations)
     {
@@ -388,7 +387,7 @@ class tx_rnbase_controller
     }
 
     /**
-     * Find the action from parameter string or array
+     * Find the action from parameter string or array.
      *
      * The action value can be sent in two forms:
      * a) designator[action] = actionValue
@@ -399,7 +398,8 @@ class tx_rnbase_controller
      * because it is language dependant.
      *
      * @param   object   the parameter object
-     * @return  string   the action value
+     *
+     * @return string the action value
      */
     public function _getParameterAction($parameters)
     {
@@ -412,12 +412,13 @@ class tx_rnbase_controller
     }
 
     /**
-     * Make the configurations object
+     * Make the configurations object.
      *
      * Used by main()
      *
-     * @param array $configurationArray   the local configuration array
-     * @return Tx_Rnbase_Configuration_ProcessorInterface  the configurations
+     * @param array $configurationArray the local configuration array
+     *
+     * @return Tx_Rnbase_Configuration_ProcessorInterface the configurations
      */
     public function _makeConfigurationsObject($configurationArray)
     {
@@ -433,7 +434,8 @@ class tx_rnbase_controller
     }
 
     /**
-     * Returns an ArrayObject containing all parameters
+     * Returns an ArrayObject containing all parameters.
+     *
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
      */
     protected function _makeParameterObject($configurations)

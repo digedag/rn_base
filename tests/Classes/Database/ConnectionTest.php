@@ -27,17 +27,14 @@ tx_rnbase::load('tx_rnbase_util_SearchBase');
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
 /**
- * Tx_Rnbase_Database_ConnectionTest
+ * Tx_Rnbase_Database_ConnectionTest.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
      * @var int
      */
@@ -48,7 +45,8 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
     private $systemLogConfigurationBackup;
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()
@@ -65,7 +63,8 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
     protected function tearDown()
@@ -88,7 +87,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
         // TYPO3 >= 8 `deleted` = 0
         $this->assertRegExp('/deleted(` )?=/', $sql, 'deleted is missing');
 
-        $fields = array('hidden', 'starttime', 'endtime', 'fe_group');
+        $fields = ['hidden', 'starttime', 'endtime', 'fe_group'];
         foreach ($fields as $field) {
             $this->assertNotRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field.' found');
         }
@@ -103,9 +102,9 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
         $options['enablefieldsfe'] = 1;
         $sql = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->doSelect('*', 'tt_content', $options);
 
-        $fields = array('hidden', 'starttime', 'endtime', 'fe_group', 'deleted');
+        $fields = ['hidden', 'starttime', 'endtime', 'fe_group', 'deleted'];
         foreach ($fields as $field) {
-            $this->assertRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field . ' not found');
+            $this->assertRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field.' not found');
         }
     }
 
@@ -125,15 +124,15 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = 1;
         $options['sqlonly'] = 1;
         $options['enablefieldsfe'] = 1;
-        $databaseConnection = $this->getMock('Tx_Rnbase_Database_Connection', array('isFrontend'));
-        $databaseConnection ->expects(self::any())
+        $databaseConnection = $this->getMock('Tx_Rnbase_Database_Connection', ['isFrontend']);
+        $databaseConnection->expects(self::any())
             ->method('isFrontend')
             ->will(self::returnValue(true));
         $sql = $databaseConnection->doSelect('*', 'tt_content', $options);
 
-        $fields = array('hidden', 'starttime', 'endtime', 'fe_group', 'deleted');
+        $fields = ['hidden', 'starttime', 'endtime', 'fe_group', 'deleted'];
         foreach ($fields as $field) {
-            $this->assertRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field . ' not found');
+            $this->assertRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field.' not found');
         }
     }
 
@@ -148,7 +147,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
 
         $this->assertRegExp('/deleted(` )?=/', $sql, 'deleted is missing');
 
-        $fields = array('hidden', 'starttime', 'endtime', 'fe_group');
+        $fields = ['hidden', 'starttime', 'endtime', 'fe_group'];
         foreach ($fields as $field) {
             $this->assertNotRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field.' found');
         }
@@ -167,7 +166,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
         $options['enablefieldsfe'] = 1;
         $sql = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->doSelect('*', 'tt_content', $options);
 
-        $fields = array('hidden', 'starttime', 'endtime', 'fe_group', 'deleted');
+        $fields = ['hidden', 'starttime', 'endtime', 'fe_group', 'deleted'];
         foreach ($fields as $field) {
             $this->assertRegExp('/'.$field.'/', $sql, $field.' not found');
         }
@@ -185,7 +184,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
         $options['enablefieldsoff'] = 1;
         $sql = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->doSelect('*', 'tt_content', $options);
 
-        $fields = array('hidden', 'starttime', 'endtime', 'fe_group', 'deleted');
+        $fields = ['hidden', 'starttime', 'endtime', 'fe_group', 'deleted'];
         foreach ($fields as $field) {
             $this->assertNotRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field.' found');
         }
@@ -200,7 +199,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
         $options['enablefieldsoff'] = 1;
         $sql = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->doSelect('*', 'tt_content', $options);
 
-        $fields = array('hidden', 'starttime', 'endtime', 'fe_group', 'deleted');
+        $fields = ['hidden', 'starttime', 'endtime', 'fe_group', 'deleted'];
         foreach ($fields as $field) {
             $this->assertNotRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field.' found');
         }
@@ -217,17 +216,17 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
 
     public function singleFieldWhereProvider()
     {
-        return array(
-            array(OP_LIKE, 'm', ' '), // warum müssen mindestens 3 buchstaben vorliegen?
-            array(OP_LIKE, 'm & m', ' '), // warum wird alles verschluckt? ist das richtig?
-            array(OP_LIKE, 'my m', " (Table1.col1 LIKE '%my%') "),
-            array(OP_LIKE, 'my', " (Table1.col1 LIKE '%my%') "),
-            array(OP_LIKE, 'myValue', " (Table1.col1 LIKE '%myValue%') "),
-            array(OP_LIKE, 'myValue test', " (Table1.col1 LIKE '%myValue%') AND  (Table1.col1 LIKE '%test%') "),
-            array(OP_LIKE_CONST, 'myValue test', " (Table1.col1 LIKE '%myValue test%') "),
-            array(OP_INSET_INT, '23', " (FIND_IN_SET('23', Table1.col1)) "),
-            array(OP_INSET_INT, '23,38', " (FIND_IN_SET('23', Table1.col1) OR FIND_IN_SET('38', Table1.col1)) "),
-        );
+        return [
+            [OP_LIKE, 'm', ' '], // warum müssen mindestens 3 buchstaben vorliegen?
+            [OP_LIKE, 'm & m', ' '], // warum wird alles verschluckt? ist das richtig?
+            [OP_LIKE, 'my m', " (Table1.col1 LIKE '%my%') "],
+            [OP_LIKE, 'my', " (Table1.col1 LIKE '%my%') "],
+            [OP_LIKE, 'myValue', " (Table1.col1 LIKE '%myValue%') "],
+            [OP_LIKE, 'myValue test', " (Table1.col1 LIKE '%myValue%') AND  (Table1.col1 LIKE '%test%') "],
+            [OP_LIKE_CONST, 'myValue test', " (Table1.col1 LIKE '%myValue test%') "],
+            [OP_INSET_INT, '23', " (FIND_IN_SET('23', Table1.col1)) "],
+            [OP_INSET_INT, '23,38', " (FIND_IN_SET('23', Table1.col1) OR FIND_IN_SET('38', Table1.col1)) "],
+        ];
     }
 
     /**
@@ -243,7 +242,6 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
 
         $ret = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->searchWhere('23', 't1.club,t2.club', OP_IN_INT);
         $this->assertEquals(' (t1.club IN (23) OR t2.club IN (23) )', $ret, 'FIND_IN_SET failed.');
-
 
         $ret = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->searchWhere($sw, $fields, OP_EQ);
         $this->assertEquals($ret, " (tab1.bodytext = 'content' OR tab1.header = 'content' OR tab1.bodytext = 'management' OR tab1.header = 'management' OR tab1.bodytext = 'system' OR tab1.header = 'system' )", 'OR failed.');
@@ -265,7 +263,6 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     *
      * @deprecated use tx_rnbase_util_Strings::debugString
      */
     public static function debugString($str)
