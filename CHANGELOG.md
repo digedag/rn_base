@@ -3,7 +3,10 @@
 Changelog
 ---------
 
-v1.8.3 (??.??.2018)
+v1.8.4 (??.??.2018)
+
+v1.8.3 (03.08.2018)
+ * bugfix don't load hidden objects if enablefieldsfe is set explicitly
 
 v1.8.2 (22.06.2018)
  * fixed PHP notice
