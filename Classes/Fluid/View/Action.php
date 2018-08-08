@@ -1,5 +1,6 @@
 <?php
 namespace Sys25\RnBase\Fluid\View;
+
 /***************************************************************
  * Copyright notice
  *
@@ -81,7 +82,7 @@ class Action extends \tx_rnbase_view_Base
      */
     protected function getTypoScriptConfigurationForFluid(
         $extensionKey, \Tx_Rnbase_Configuration_ProcessorInterface $configurations
-    ){
+    ) {
         $typoScriptConfiguration = $this->getDefaultTypoScriptConfigurationForFluid($extensionKey);
 
         $typoScriptConfiguration['settings'] = \tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
@@ -133,7 +134,7 @@ class Action extends \tx_rnbase_view_Base
      */
     protected function initializeView(
         $templateName, $typoScriptConfigurationForFluid, \Tx_Rnbase_Configuration_ProcessorInterface $configurations
-    ){
+    ) {
         $view = Factory::getViewInstance($configurations, $typoScriptConfigurationForFluid);
         $view->setPartialRootPaths($typoScriptConfigurationForFluid['view']['partialRootPaths.']);
         $view->setLayoutRootPaths($typoScriptConfigurationForFluid['view']['layoutRootPaths.']);

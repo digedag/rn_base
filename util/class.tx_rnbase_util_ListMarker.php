@@ -47,18 +47,18 @@ class tx_rnbase_util_ListMarker
         $this->visitors = $visitors;
     }
 
-  /**
-   *
-   * @param tx_rnbase_util_IListProvider $provider
-   * @param string $template
-   * @param string $markerClassname
-   * @param string $confId
-   * @param string $marker
-   * @param tx_rnbase_util_FormatUtil $formatter
-   * @param mixed $markerParams
-   * @param int $offset
-   * @return array
-   */
+    /**
+     *
+     * @param tx_rnbase_util_IListProvider $provider
+     * @param string $template
+     * @param string $markerClassname
+     * @param string $confId
+     * @param string $marker
+     * @param tx_rnbase_util_FormatUtil $formatter
+     * @param mixed $markerParams
+     * @param int $offset
+     * @return array
+     */
     public function renderEach(tx_rnbase_util_IListProvider $provider, $template, $markerClassname, $confId, $marker, $formatter, $markerParams = false, $offset = 0)
     {
         $this->entryMarker = ($markerParams) ? tx_rnbase::makeInstance($markerClassname, $markerParams) : tx_rnbase::makeInstance($markerClassname);

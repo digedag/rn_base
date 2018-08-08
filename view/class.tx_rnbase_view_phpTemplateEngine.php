@@ -43,18 +43,18 @@ class tx_rnbase_view_phpTemplateEngine extends tx_rnbase_view_Base
     {
     }
 
-  /**
-   * Render the PHP template, translate and return the output as string
-   *
-   * The ".php" suffix is added in this function.
-   * Call this function after the $pathToTemplates is set.
-   * The return value is the rendered result of the template, followed by translation.
-   * It is typically a (x)html string, but can be used for any other text based format.
-   *
-   * @param     string      name of template file without the ".php" suffix
-   * @param     Tx_Rnbase_Configuration_ProcessorInterface  configuration instance
-   * @return    string      typically an (x)html string
-   */
+    /**
+     * Render the PHP template, translate and return the output as string
+     *
+     * The ".php" suffix is added in this function.
+     * Call this function after the $pathToTemplates is set.
+     * The return value is the rendered result of the template, followed by translation.
+     * It is typically a (x)html string, but can be used for any other text based format.
+     *
+     * @param     string      name of template file without the ".php" suffix
+     * @param     Tx_Rnbase_Configuration_ProcessorInterface  configuration instance
+     * @return    string      typically an (x)html string
+     */
     public function render($view, $configurations)
     {
         $link = $configurations->createLink();

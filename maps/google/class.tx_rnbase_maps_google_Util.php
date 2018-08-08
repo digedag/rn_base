@@ -46,16 +46,15 @@ class tx_rnbase_maps_google_Util
      */
     public function lookupGeoCode($addressString, $options = [])
     {
-    	$fullInfo = false;
-    	if(is_array($options)) {
-    		$fullInfo = isset($options['fullinfo']) ? $options['fullinfo'] : false;
-    	}
-    	else {
-    		// backward compat
-    		$fullInfo = $options;
-    		$options = [];
-    	}
-    	$key = isset($options['key']) ? $options['key'] : '';
+        $fullInfo = false;
+        if (is_array($options)) {
+            $fullInfo = isset($options['fullinfo']) ? $options['fullinfo'] : false;
+        } else {
+            // backward compat
+            $fullInfo = $options;
+            $options = [];
+        }
+        $key = isset($options['key']) ? $options['key'] : '';
 
         $request = 'https://maps.googleapis.com/maps/api/geocode/json?address='.rawurlencode($addressString).'&key='.$key;
         $result = array();

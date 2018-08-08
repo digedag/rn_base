@@ -238,7 +238,7 @@ class tx_rnbase
             throw new Exception('Classname contains invalid characters or has invalid format: ' . $info);
         }
 
-            // With this a possible alternative Key is also validated
+        // With this a possible alternative Key is also validated
         if (!$key = self::guessKey($alternativeKey ? $alternativeKey : $class)) {
             throw new Exception('No extension key found for classname: ' . $info);
         }

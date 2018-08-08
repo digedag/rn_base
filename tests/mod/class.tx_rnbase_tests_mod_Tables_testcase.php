@@ -417,4 +417,3 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
         $this->assertEquals('col1 Value 2', $aRet[0][2][1], 'Die zweite Zelle der zweiten Zeile ist falsch.');
     }
 }
-

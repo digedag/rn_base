@@ -142,20 +142,19 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         // CSH
         $docHeaderButtons = $parts->getButtons();
-        if(isset($docHeaderButtons['csh']) && $docHeaderButtons['csh']) {
+        if (isset($docHeaderButtons['csh']) && $docHeaderButtons['csh']) {
             $cshButton = $buttonBar->makeHelpButton()
                 ->setModuleName($this->module->getName())
                 ->setFieldName('');
             $buttonBar->addButton($cshButton);
         }
-        if($this->module->getPid()) {
+        if ($this->module->getPid()) {
             // Shortcut
             $shortcutButton = $buttonBar->makeShortcutButton()
                 ->setModuleName($this->module->getName())
                 ->setGetVariables(['id', 'edit_record', 'pointer', 'new_unique_uid', 'search_field', 'search_levels', 'showLimit'])
                 ->setSetVariables(array_keys($this->module->MOD_MENU));
             $buttonBar->addButton($shortcutButton);
-
         }
     }
 
@@ -206,10 +205,9 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
         $doc->inDocStylesArray[] = $doc->inDocStyles;
 //        $doc->tableLayout = $this->getTableLayout();
         $doc->setModuleTemplate($this->options['template']);
-        if(!tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
+        if (!tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
             $doc->loadJavascriptLib('contrib/prototype/prototype.js');
-        }
-        else {
+        } else {
             $doc->getPageRenderer()->loadJquery();
         }
         // JavaScript
@@ -231,16 +229,16 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
 
     private function prepareOptions($options)
     {
-        if(!isset($options['modname'])) {
+        if (!isset($options['modname'])) {
             $options['modname'] = $this->module->getName();
         }
-        if(!isset($options['pid'])) {
+        if (!isset($options['pid'])) {
             $options['pid'] = $this->module->getPid();
         }
-        if(!isset($options['template'])) {
+        if (!isset($options['template'])) {
             throw new Exception('No template for module found.');
         }
-        if(!isset($options['form'])) {
+        if (!isset($options['form'])) {
             $modUrl = Tx_Rnbase_Backend_Utility::getModuleUrl(
                 $options['modname'],
                 array(

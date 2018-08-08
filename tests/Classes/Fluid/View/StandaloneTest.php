@@ -33,7 +33,7 @@ namespace Sys25\RnBase\Fluid\View;
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class StandloneTest extends \tx_rnbase_tests_BaseTestCase
+class StandaloneTest extends \tx_rnbase_tests_BaseTestCase
 {
     /**
      * (non-PHPdoc)

@@ -447,7 +447,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTestCase
             ->method('evaluate')
             ->with($viewHelper->getRenderingContext())
             // damit testen wir ob die Daten in templateVariableContainer temporär korrekt gesetzt werden
-            ->willReturnCallback(function($renderingContext){
+            ->willReturnCallback(function ($renderingContext) {
                 $variableProvider = $renderingContext->getVariableProvider();
                 return $variableProvider->get('pageNumber') . ' ' . $variableProvider->get('currentPage');
             });
@@ -654,8 +654,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTestCase
      */
     protected function getPreparedVîewHelperWithPageBrowser(
         $viewHelper = PageBrowserViewHelper::class, \tx_rnbase_util_PageBrowser $pageBrowser = null
-    )
-    {
+    ) {
         $viewHelper = parent::getPreparedVîewHelper($viewHelper);
 
         if ($pageBrowser !== null) {

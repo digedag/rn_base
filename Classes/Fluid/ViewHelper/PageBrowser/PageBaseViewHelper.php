@@ -1,5 +1,6 @@
 <?php
 namespace Sys25\RnBase\Fluid\ViewHelper\PageBrowser;
+
 use Sys25\RnBase\Fluid\ViewHelper\PageBrowserViewHelper;
 
 /***************************************************************

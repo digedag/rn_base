@@ -230,20 +230,20 @@ interface PageBrowser
     public function getState();
     public function getMarker($markerClassName = 'tx_rnbase_util_PageBrowserMarker');
 
-  /**
-   * Returns the current pointer. This is the current page to show.
-   * @return int page to show
-   */
+    /**
+     * Returns the current pointer. This is the current page to show.
+     * @return int page to show
+     */
     public function getPointer();
-  /**
-   * Returns the complete number of items in list.
-   * @return int complete number of items
-   */
+    /**
+     * Returns the complete number of items in list.
+     * @return int complete number of items
+     */
     public function getListSize();
-  /**
-   * Returns the complete number of items per page.
-   * @return int complete number of items per page
-   */
+    /**
+     * Returns the complete number of items per page.
+     * @return int complete number of items per page
+     */
     public function getPageSize();
 }
 

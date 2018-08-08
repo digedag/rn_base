@@ -48,28 +48,28 @@ class tx_rnbase_util_Spyc
     public $LiteralPlaceHolder = '___YAML_Literal_Block___';
     public $SavedGroups = array();
 
-  /**#@+
-  * @access public
-  * @var mixed
-  */
+    /**#@+
+    * @access public
+    * @var mixed
+    */
     public $_nodeId;
 
-  /**
-   * Load YAML into a PHP array statically
-   *
-   * The load method, when supplied with a YAML stream (string or file),
-   * will do its best to convert YAML in a file into a PHP array.  Pretty
-   * simple.
-   *  Usage:
-   *  <code>
-   *   $array = tx_rnbase_util_Spyc::YAMLLoad('lucky.yaml');
-   *   print_r($array);
-   *  </code>
-   *
-   * @access public
-   * @return array
-   * @param string $input Path of YAML file or string containing YAML
-   */
+    /**
+     * Load YAML into a PHP array statically
+     *
+     * The load method, when supplied with a YAML stream (string or file),
+     * will do its best to convert YAML in a file into a PHP array.  Pretty
+     * simple.
+     *  Usage:
+     *  <code>
+     *   $array = tx_rnbase_util_Spyc::YAMLLoad('lucky.yaml');
+     *   print_r($array);
+     *  </code>
+     *
+     * @access public
+     * @return array
+     * @param string $input Path of YAML file or string containing YAML
+     */
     public function YAMLLoad($input)
     {
         $Spyc = new tx_rnbase_util_Spyc;
@@ -77,26 +77,26 @@ class tx_rnbase_util_Spyc
         return $Spyc->load($input);
     }
 
-  /**
-   * Dump YAML from PHP array statically
-   *
-   * The dump method, when supplied with an array, will do its best
-   * to convert the array into friendly YAML.  Pretty simple.  Feel free to
-   * save the returned string as nothing.yaml and pass it around.
-   *
-   * Oh, and you can decide how big the indent is and what the wordwrap
-   * for folding is.  Pretty cool -- just pass in 'FALSE' for either if
-   * you want to use the default.
-   *
-   * Indent's default is 2 spaces, wordwrap's default is 40 characters.  And
-   * you can turn off wordwrap by passing in 0.
-   *
-   * @access public
-   * @return string
-   * @param array $array PHP array
-   * @param int $indent Pass in FALSE to use the default, which is 2
-   * @param int $wordwrap Pass in 0 for no wordwrap, FALSE for default (40)
-   */
+    /**
+     * Dump YAML from PHP array statically
+     *
+     * The dump method, when supplied with an array, will do its best
+     * to convert the array into friendly YAML.  Pretty simple.  Feel free to
+     * save the returned string as nothing.yaml and pass it around.
+     *
+     * Oh, and you can decide how big the indent is and what the wordwrap
+     * for folding is.  Pretty cool -- just pass in 'FALSE' for either if
+     * you want to use the default.
+     *
+     * Indent's default is 2 spaces, wordwrap's default is 40 characters.  And
+     * you can turn off wordwrap by passing in 0.
+     *
+     * @access public
+     * @return string
+     * @param array $array PHP array
+     * @param int $indent Pass in FALSE to use the default, which is 2
+     * @param int $wordwrap Pass in 0 for no wordwrap, FALSE for default (40)
+     */
     public function YAMLDump($array, $indent = false, $wordwrap = false)
     {
         $spyc = new tx_rnbase_util_Spyc;
@@ -105,26 +105,26 @@ class tx_rnbase_util_Spyc
     }
 
 
-  /**
-   * Dump PHP array to YAML
-   *
-   * The dump method, when supplied with an array, will do its best
-   * to convert the array into friendly YAML.  Pretty simple.  Feel free to
-   * save the returned string as tasteful.yaml and pass it around.
-   *
-   * Oh, and you can decide how big the indent is and what the wordwrap
-   * for folding is.  Pretty cool -- just pass in 'FALSE' for either if
-   * you want to use the default.
-   *
-   * Indent's default is 2 spaces, wordwrap's default is 40 characters.  And
-   * you can turn off wordwrap by passing in 0.
-   *
-   * @access public
-   * @return string
-   * @param array $array PHP array
-   * @param int $indent Pass in FALSE to use the default, which is 2
-   * @param int $wordwrap Pass in 0 for no wordwrap, FALSE for default (40)
-   */
+    /**
+     * Dump PHP array to YAML
+     *
+     * The dump method, when supplied with an array, will do its best
+     * to convert the array into friendly YAML.  Pretty simple.  Feel free to
+     * save the returned string as tasteful.yaml and pass it around.
+     *
+     * Oh, and you can decide how big the indent is and what the wordwrap
+     * for folding is.  Pretty cool -- just pass in 'FALSE' for either if
+     * you want to use the default.
+     *
+     * Indent's default is 2 spaces, wordwrap's default is 40 characters.  And
+     * you can turn off wordwrap by passing in 0.
+     *
+     * @access public
+     * @return string
+     * @param array $array PHP array
+     * @param int $indent Pass in FALSE to use the default, which is 2
+     * @param int $wordwrap Pass in 0 for no wordwrap, FALSE for default (40)
+     */
     public function dump($array, $indent = false, $wordwrap = false)
     {
         // Dumps to some very clean YAML.  We'll have to add some more features
@@ -154,23 +154,23 @@ class tx_rnbase_util_Spyc
         return $string;
     }
 
-  /**
-   * Attempts to convert a key / value array item to YAML
-   * @access private
-   * @return string
-   * @param $key The name of the key
-   * @param $value The value of the item
-   * @param $indent The indent of the current node
-   */
+    /**
+     * Attempts to convert a key / value array item to YAML
+     * @access private
+     * @return string
+     * @param $key The name of the key
+     * @param $value The value of the item
+     * @param $indent The indent of the current node
+     */
     public function _yamlize($key, $value, $indent)
     {
         if (is_array($value)) {
             // It has children.  What to do?
-        // Make it the right kind of item
+            // Make it the right kind of item
             $string = $this->_dumpNode($key, null, $indent);
-        // Add the indent
+            // Add the indent
             $indent += $this->_dumpIndent;
-        // Yamlize the array
+            // Yamlize the array
             $string .= $this->_yamlizeArray($value, $indent);
         } elseif (!is_array($value)) {
             // It doesn't have children.  Yip.
@@ -180,13 +180,13 @@ class tx_rnbase_util_Spyc
         return $string;
     }
 
-  /**
-   * Attempts to convert an array to YAML
-   * @access private
-   * @return string
-   * @param $array The array you want to convert
-   * @param $indent The indent of the current level
-   */
+    /**
+     * Attempts to convert an array to YAML
+     * @access private
+     * @return string
+     * @param $array The array you want to convert
+     * @param $indent The indent of the current level
+     */
     public function _yamlizeArray($array, $indent)
     {
         if (is_array($array)) {
@@ -201,14 +201,14 @@ class tx_rnbase_util_Spyc
         }
     }
 
-  /**
-   * Returns YAML from a key and a value
-   * @access private
-   * @return string
-   * @param $key The name of the key
-   * @param $value The value of the item
-   * @param $indent The indent of the current node
-   */
+    /**
+     * Returns YAML from a key and a value
+     * @access private
+     * @return string
+     * @param $key The name of the key
+     * @param $value The value of the item
+     * @param $indent The indent of the current node
+     */
     public function _dumpNode($key, $value, $indent)
     {
         // do some folding here, for blocks
@@ -235,13 +235,13 @@ class tx_rnbase_util_Spyc
         return $string;
     }
 
-  /**
-   * Creates a literal block for dumping
-   * @access private
-   * @return string
-   * @param $value
-   * @param $indent int The value of the indent
-   */
+    /**
+     * Creates a literal block for dumping
+     * @access private
+     * @return string
+     * @param $value
+     * @param $indent int The value of the indent
+     */
     public function _doLiteralBlock($value, $indent)
     {
         $exploded = explode("\n", $value);
@@ -255,12 +255,12 @@ class tx_rnbase_util_Spyc
         return $newValue;
     }
 
-  /**
-   * Folds a string of text, if necessary
-   * @access private
-   * @return string
-   * @param $value The string you wish to fold
-   */
+    /**
+     * Folds a string of text, if necessary
+     * @access private
+     * @return string
+     * @param $value The string you wish to fold
+     */
     public function _doFolding($value, $indent)
     {
         // Don't do anything if wordwrap is set to 0
@@ -278,7 +278,7 @@ class tx_rnbase_util_Spyc
         return $value;
     }
 
-/* LOADING FUNCTIONS */
+    /* LOADING FUNCTIONS */
 
     public function load($input)
     {
@@ -334,12 +334,12 @@ class tx_rnbase_util_Spyc
         return $foo;
     }
 
-  /**
-   * Finds and returns the indentation of a YAML line
-   * @access private
-   * @return int
-   * @param string $line A line from the YAML file
-   */
+    /**
+     * Finds and returns the indentation of a YAML line
+     * @access private
+     * @return int
+     * @param string $line A line from the YAML file
+     */
     public function _getIndent($line)
     {
         if (!preg_match('/^ +/', $line, $match)) {
@@ -352,12 +352,12 @@ class tx_rnbase_util_Spyc
         return 0;
     }
 
-  /**
-   * Parses YAML code and returns an array for a node
-   * @access private
-   * @return array
-   * @param string $line A line from the YAML file
-   */
+    /**
+     * Parses YAML code and returns an array for a node
+     * @access private
+     * @return array
+     * @param string $line A line from the YAML file
+     */
     public function _parseLine($line)
     {
         if (!$line) {
@@ -390,12 +390,12 @@ class tx_rnbase_util_Spyc
 
 
 
-  /**
-   * Finds the type of the passed value, returns the value as the new type.
-   * @access private
-   * @param string $value
-   * @return mixed
-   */
+    /**
+     * Finds the type of the passed value, returns the value as the new type.
+     * @access private
+     * @param string $value
+     * @return mixed
+     */
     public function _toType($value)
     {
         if (strpos($value, '#') !== false) {
@@ -408,10 +408,10 @@ class tx_rnbase_util_Spyc
         } elseif (preg_match('/^\\[(.+)\\]$/', $value, $matches)) {
             // Inline Sequence
 
-          // Take out strings sequences and mappings
+            // Take out strings sequences and mappings
             $explode = $this->_inlineEscape($matches[1]);
 
-          // Propogate value array
+            // Propogate value array
             $value  = array();
             foreach ($explode as $v) {
                 $value[] = $this->_toType($v);
@@ -427,10 +427,10 @@ class tx_rnbase_util_Spyc
         } elseif (preg_match('/{(.+)}$/', $value, $matches)) {
             // Inline Mapping
 
-          // Take out strings sequences and mappings
+            // Take out strings sequences and mappings
             $explode = $this->_inlineEscape($matches[1]);
 
-          // Propogate value array
+            // Propogate value array
             $array = array();
             foreach ($explode as $v) {
                 $array = $array + $this->_toType($v);
@@ -453,20 +453,20 @@ class tx_rnbase_util_Spyc
         } elseif (is_numeric($value)) {
             $value = (float)$value;
         }
-    //     else {
-    //       // Just a normal string, right?
-    //     }
+        //     else {
+        //       // Just a normal string, right?
+        //     }
 
 
         //  print_r ($value);
         return $value;
     }
 
-  /**
-   * Used in inlines to check for more inlines or quoted strings
-   * @access private
-   * @return array
-   */
+    /**
+     * Used in inlines to check for more inlines or quoted strings
+     * @access private
+     * @return array
+     */
     public function _inlineEscape($inline)
     {
         // There's gotta be a cleaner way to do this...
@@ -576,7 +576,7 @@ class tx_rnbase_util_Spyc
             $this->_containsGroupAlias = false;
         }
 
-    // Adding string or numeric key to the innermost level or $this->arr.
+        // Adding string or numeric key to the innermost level or $this->arr.
         if ($key) {
             $_arr[$key] = $value;
         } else {
@@ -791,19 +791,19 @@ class tx_rnbase_util_Spyc
 
         if (preg_match('/^(.+):/', $line, $key)) {
             // It's a key/value pair most likely
-      // If the key is in double quotes pull it out
+            // If the key is in double quotes pull it out
             if (preg_match('/^(["\'](.*)["\'](\s)*:)/', $line, $matches)) {
                 $value = trim(str_replace($matches[1], '', $line));
                 $key   = $matches[2];
             } else {
                 // Do some guesswork as to the key and the value
-                    $explode = explode(':', $line);
+                $explode = explode(':', $line);
                 $key     = trim($explode[0]);
                 array_shift($explode);
                 $value   = trim(implode(':', $explode));
             }
 
-      // Set the type of the value.  Int, string, etc
+            // Set the type of the value.  Int, string, etc
             $value = $this->_toType($value);
             if (empty($key)) {
                 $array[]     = $value;

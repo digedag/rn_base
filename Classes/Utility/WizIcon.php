@@ -43,14 +43,13 @@ abstract class Tx_Rnbase_Utility_WizIcon
         tx_rnbase::load('tx_rnbase_util_TYPO3');
         if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
             $GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'][$id] = $clazz;
-        }
-        else {
+        } else {
             $wizard = tx_rnbase::makeInstance($clazz);
             // for TYPO3 8 we need an other way
             // Geht das? Die Methode ist protected...
             $pluginData = $wizard->getPluginData();
-            foreach ($pluginData As $id => $data) {
-                if(!isset($data['tsconfig'])) {
+            foreach ($pluginData as $id => $data) {
+                if (!isset($data['tsconfig'])) {
                     // Noch nicht für 8.x vorbereitet
                     continue;
                 }

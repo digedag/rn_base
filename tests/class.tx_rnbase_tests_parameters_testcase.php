@@ -74,4 +74,3 @@ class tx_rnbase_tests_parameters_testcase extends Tx_Phpunit_TestCase
         $this->assertEquals(0, $parameters->getInt('null'));
     }
 }
-

@@ -1,5 +1,6 @@
 <?php
 namespace Sys25\RnBase\Fluid\View;
+
 /***************************************************************
  * Copyright notice
  *

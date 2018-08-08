@@ -43,8 +43,7 @@ class Tx_Rnbase_Category_FilterUtility
      */
     public function setFieldsBySysCategoriesOfItemFromParameters(
         array $fields, Tx_Rnbase_Configuration_ProcessorInterface $configurations, $confId
-    )
-    {
+    ) {
         if ($categories = $this->getCategoryUidsOfCurrentDetailViewItem($configurations, $confId)) {
             $fields = $this->getFieldsByCategories($categories, $fields, $configurations, $confId);
         }
@@ -101,7 +100,7 @@ class Tx_Rnbase_Category_FilterUtility
         );
 
         $categories = array_map(
-            function($value) {
+            function ($value) {
                 return $value['uid_local'];
             },
             $categories
@@ -127,8 +126,7 @@ class Tx_Rnbase_Category_FilterUtility
      */
     protected function getFieldsByCategories(
         array $categories, array $fields, Tx_Rnbase_Configuration_ProcessorInterface $configurations, $confId
-    )
-    {
+    ) {
         $sysCategoryTableAlias =
             $configurations->get($confId . 'sysCategoryTableAlias') ?
                 $configurations->get($confId . 'sysCategoryTableAlias') :
@@ -147,8 +145,7 @@ class Tx_Rnbase_Category_FilterUtility
      */
     public function setFieldsBySysCategoriesOfContentElement(
         array $fields, Tx_Rnbase_Configuration_ProcessorInterface $configurations, $confId
-    )
-    {
+    ) {
         $categories = $this->getCategoryUidsByReference(
             'tt_content', 'categories', $configurations->getContentObject()->data['uid']
         );
@@ -168,8 +165,7 @@ class Tx_Rnbase_Category_FilterUtility
      */
     public function setFieldsBySysCategoriesFromParameters(
         array $fields, Tx_Rnbase_Configuration_ProcessorInterface $configurations, $confId
-    )
-    {
+    ) {
         $categoryUid = $configurations->getParameters()->getInt(
             $configurations->get($confId . 'parameterName'), $configurations->get($confId . 'parameterQualifier')
         );

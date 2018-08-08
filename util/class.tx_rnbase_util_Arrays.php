@@ -160,7 +160,8 @@ class tx_rnbase_util_Arrays
     /**
      * @see \TYPO3\CMS\Core\Utility\ArrayUtility::arrayDiffAssocRecursive()
      */
-    public static function arrayDiffAssocRecursive(array $array1, array $array2) {
+    public static function arrayDiffAssocRecursive(array $array1, array $array2)
+    {
         if (tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
             $differenceArray = ArrayUtility::arrayDiffAssocRecursive($array1, $array2);
         } else {

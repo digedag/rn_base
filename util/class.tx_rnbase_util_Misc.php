@@ -410,7 +410,7 @@ MAYDAYPAGE;
         }
 
         // Den Backpath aus dem PageRenderer entfernen. Der wurde auf typo3/ gesetzt
-        if(method_exists(tx_rnbase_util_TYPO3::getPageRenderer(), 'setBackPath')) {
+        if (method_exists(tx_rnbase_util_TYPO3::getPageRenderer(), 'setBackPath')) {
             tx_rnbase_util_TYPO3::getPageRenderer()->setBackPath('');
         }
 
@@ -470,8 +470,7 @@ MAYDAYPAGE;
             // Prefer TSFE in FE_MODE.
             if (TYPO3_MODE == 'FE' && array_key_exists('TSFE', $GLOBALS)) {
                 return $GLOBALS['TSFE']->sL($title);
-            }
-            elseif (array_key_exists('LANG', $GLOBALS)) {
+            } elseif (array_key_exists('LANG', $GLOBALS)) {
                 return $GLOBALS['LANG']->sL($title);
             }
 

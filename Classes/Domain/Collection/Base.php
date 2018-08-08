@@ -88,8 +88,7 @@ class Tx_Rnbase_Domain_Collection_Base extends \Doctrine\Common\Collections\Arra
     public function getUids()
     {
         return $this->map(
-            function (Tx_Rnbase_Domain_Model_RecordInterface $model)
-            {
+            function (Tx_Rnbase_Domain_Model_RecordInterface $model) {
                 return $model->getUid();
             }
         )->toArray();

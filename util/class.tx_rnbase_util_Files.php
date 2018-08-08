@@ -50,7 +50,7 @@ class tx_rnbase_util_Files
             /**
  * @var FileRepository $fileRepository
 */
-                $fileRepository = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Resource\FileRepository');
+            $fileRepository = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Resource\FileRepository');
             $fileObject = $fileRepository->findByUid(intval(substr($fName, 5)));
             $incFile = is_object($fileObject) ? $fileObject->getForLocalProcessing(false) : false;
         } else {
@@ -302,15 +302,15 @@ class tx_rnbase_util_Files
         return $utility::rmdir($path, $removeNonEmpty);
     }
 
-     /**
-      * (non-PHPdoc)
-      *
-      * @see t3lib_div::isAbsPath()
-      * @see TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath()
-      *
-      * @param string $path File path to evaluate
-      * @return bool
-      */
+    /**
+     * (non-PHPdoc)
+     *
+     * @see t3lib_div::isAbsPath()
+     * @see TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath()
+     *
+     * @param string $path File path to evaluate
+     * @return bool
+     */
     public static function isAbsPath($path)
     {
         $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();

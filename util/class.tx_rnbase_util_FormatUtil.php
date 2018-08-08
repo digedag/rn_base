@@ -32,45 +32,45 @@ class tx_rnbase_util_FormatUtil
     public $configurations;
     public $cObj;
 
-  // Wie kommen diese Werte in die Config??
-  // Sind es nicht auch eher Konfigwerte??
+    // Wie kommen diese Werte in die Config??
+    // Sind es nicht auch eher Konfigwerte??
     public $dateFormatKey = 'dateFormat';
     public $floatFormatKey = 'floatFormat';
     public $parseFuncTextKey = 'parseFuncText';
     public $parseFuncRteKey = 'parseFuncRte';
     public $timeFormatKey = 'timeFormat';
 
-  /**
-   * Konstruktor
-   * @param Tx_Rnbase_Configuration_Processor $configurations
-   */
+    /**
+     * Konstruktor
+     * @param Tx_Rnbase_Configuration_Processor $configurations
+     */
     public function __construct($configurations)
     {
         $this->configurations = $configurations;
         $this->cObj = $configurations->getCObj(tx_rnbase_util_FormatUtil::class);
     }
 
-  /**
-   * Returns configuration instance
-   *
-   * @return Tx_Rnbase_Configuration_ProcessorInterface
-   */
+    /**
+     * Returns configuration instance
+     *
+     * @return Tx_Rnbase_Configuration_ProcessorInterface
+     */
     public function getConfigurations()
     {
         return $this->configurations;
     }
 
-  /**
-   * Get human readability and localized date for a timestamp out of the internal data array
-   *
-   * If no format parameter is provided, the function tries to find one in the configurations
-   * by using the pathKey $this->dateFormatKey.
-   *
-   * @param     mixed       key of internal data array
-   * @param     string      format string
-   * @return    string      human readable date string
-   * @see       http://php.net/strftime
-   */
+    /**
+     * Get human readability and localized date for a timestamp out of the internal data array
+     *
+     * If no format parameter is provided, the function tries to find one in the configurations
+     * by using the pathKey $this->dateFormatKey.
+     *
+     * @param     mixed       key of internal data array
+     * @param     string      format string
+     * @return    string      human readable date string
+     * @see       http://php.net/strftime
+     */
     public function asDate($value, $format = null)
     {
         $format = $format ? $format : $this->configurations->get($this->dateFormatKey);
@@ -78,10 +78,10 @@ class tx_rnbase_util_FormatUtil
         return $format ? strftime($format, $value) : $value;
     }
 
-  /**
-   * Für die CASE Funktion aus. Das übergebene Daten-Array wird nur verwendet, wenn
-   * nicht das Standard-cObj verwendet wird ($cObjId != 0).
-   */
+    /**
+     * Für die CASE Funktion aus. Das übergebene Daten-Array wird nur verwendet, wenn
+     * nicht das Standard-cObj verwendet wird ($cObjId != 0).
+     */
     public function casefunc($conf, $dataArr, $cObjId = 0)
     {
         $cObj =& $this->configurations->getCObj($cObjId);
@@ -98,17 +98,17 @@ class tx_rnbase_util_FormatUtil
     }
 
 
-  /**
-   * Wrap the $content
-   */
+    /**
+     * Wrap the $content
+     */
     public function wrap($content, $confId, $dataArr = 0)
     {
         return $this->stdWrap($content, $this->configurations->get($confId), $dataArr);
     }
 
-  /**
-   * Call of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::stdWrap().
-   */
+    /**
+     * Call of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::stdWrap().
+     */
     public function stdWrap($content, $conf, $dataArr = 0)
     {
         $tmpArr = $this->cObj->data;
@@ -122,14 +122,14 @@ class tx_rnbase_util_FormatUtil
         return $ret;
     }
 
-  /**
-   * Führt einen Standardwrap durch und setzt vorher das data-Array des cObject
-   * auf die übergebenen Daten.
-   *
-   * @param array $dataArr data für cObject
-   * @param string $content
-   * @param string $confId
-   */
+    /**
+     * Führt einen Standardwrap durch und setzt vorher das data-Array des cObject
+     * auf die übergebenen Daten.
+     *
+     * @param array $dataArr data für cObject
+     * @param string $content
+     * @param string $confId
+     */
     public function dataStdWrap($dataArr, $content, $confId)
     {
         $tmpArr = $this->cObj->data;
@@ -144,10 +144,10 @@ class tx_rnbase_util_FormatUtil
 
         return $ret;
     }
-  /**
-   * Erzeugt das ein DAM-Bild
-   * @param $cObjId Id des CObjects das verwendet werden soll.
-   */
+    /**
+     * Erzeugt das ein DAM-Bild
+     * @param $cObjId Id des CObjects das verwendet werden soll.
+     */
     public function getDAMImage($image, $confId, $extensionKey = 0, $cObjId = 0)
     {
         $confArr = $this->configurations->get($confId);
@@ -159,9 +159,9 @@ class tx_rnbase_util_FormatUtil
         return $theImgCode;
     }
 
-   /**
-    * Liefert den Wert als Image. Intern wird \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::IMAGE verwendet
-    */
+    /**
+     * Liefert den Wert als Image. Intern wird \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::IMAGE verwendet
+     */
     public function getImage($image, $confId, $extensionKey = 0)
     {
         if (strlen($image) == 0) {
@@ -174,8 +174,8 @@ class tx_rnbase_util_FormatUtil
             ($extensionKey) ? $extensionKey : $this->configurations->getExtensionKey()
         ) . '/' .($image);
 
-       // Bei einfachen Bildern sollen die Einstellungen aus cObj->data nicht verwendet
-       // werden, um zu verhindern, daß z.B. eine Gallery angezeigt wird
+        // Bei einfachen Bildern sollen die Einstellungen aus cObj->data nicht verwendet
+        // werden, um zu verhindern, daß z.B. eine Gallery angezeigt wird
         $tmp = $this->cObj->data;
         $this->cObj->data = array();
         $theImgCode = $this->cObj->IMAGE($confArr);
@@ -249,15 +249,15 @@ class tx_rnbase_util_FormatUtil
                 $data[$colname] = $conf[$colname.'.']['ifEmpty'];
             } elseif ($conf[$colname]) {
                 // Get value using cObjGetSingle
-                    $this->cObj->setCurrentVal($value);
+                $this->cObj->setCurrentVal($value);
                 $data[$colname] = $this->cObj->cObjGetSingle($conf[$colname], $conf[$colname.'.']);
                 $this->cObj->setCurrentVal(false);
             } elseif ($conf[$colname] == 'CASE') {
                 $data[$colname] = $this->cObj->CASEFUNC($conf[$colname.'.']);
             } else {
                 // Es wird ein normaler Wrap gestartet
-                    // Zuerst Numberformat durchführen
-                    $value = $this->numberFormat($value, $conf[$colname.'.']);
+                // Zuerst Numberformat durchführen
+                $value = $this->numberFormat($value, $conf[$colname.'.']);
                 $data[$colname] = $this->stdWrap($value, $conf[$colname.'.']);
             }
         }
@@ -271,16 +271,16 @@ class tx_rnbase_util_FormatUtil
         return $markerArray;
     }
 
-  /**
-   * Adds number_format functionality to stdWrap-Conf.
-   * This method is taken from extension am_stdwrap_numberformat.
-   * TS-Syntax: number_format.
-   *
-   * @author Artem Matevosyan
-   * @param string $content
-   * @param array $conf
-   * @return string
-   */
+    /**
+     * Adds number_format functionality to stdWrap-Conf.
+     * This method is taken from extension am_stdwrap_numberformat.
+     * TS-Syntax: number_format.
+     *
+     * @author Artem Matevosyan
+     * @param string $content
+     * @param array $conf
+     * @return string
+     */
     public function numberFormat($content, &$conf)
     {
         if (!is_array($conf) || !array_key_exists('number_format.', $conf) || !is_double($content)) {
@@ -358,12 +358,12 @@ class tx_rnbase_util_FormatUtil
         return isset($TCA['tx_dam']) ? array_keys($TCA['tx_dam']['columns']) : 0;
     }
 
-  /**
-   * Füllt ein MarkerArray mit den Datens einer DAM-Mediadatei
-   * @param tx_dam_media $media : Die DAM-Datei
-   * @param string $confId : Configuration to wrap data
-   * @param string $mediaMarker : The marker to store the image or media. Additional data will be stored to $mediaMarker.'_'...
-   */
+    /**
+     * Füllt ein MarkerArray mit den Datens einer DAM-Mediadatei
+     * @param tx_dam_media $media : Die DAM-Datei
+     * @param string $confId : Configuration to wrap data
+     * @param string $mediaMarker : The marker to store the image or media. Additional data will be stored to $mediaMarker.'_'...
+     */
     public function getItemMarkerArray4DAM(&$media, $confId, $mediaMarker)
     {
         $conf = $this->configurations->get($confId);

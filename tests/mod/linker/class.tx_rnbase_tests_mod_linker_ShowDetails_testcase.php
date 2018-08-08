@@ -102,4 +102,3 @@ class tx_rnbase_tests_mod_linker_ShowDetails_testcase extends tx_rnbase_tests_Ba
         );
     }
 }
-

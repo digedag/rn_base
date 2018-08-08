@@ -114,76 +114,76 @@ class tx_rnbase_controller
     public $cobj; // Plugins cObj instance from T3
     private $errors = array();
 
-  /*
-   * main(): A factory method for the responsible action
-   *
-   * --------------------------------------------------------------------
-   * Summary: Finds and executes the action
-   * --------------------------------------------------------------------
-   *
-   *      a) Parameters and configurations are loaded into objects.
-   *      b) The action parameter "xy" matches the class "xyAction()".
-   *      c) Registered controller classes have precedence.
-   *
-   * --------------------------------------------------------------------
-   * The configuration goes into the configurations object
-   * --------------------------------------------------------------------
-   *
-   * The configuration array comes in as second parameter.
-   * It is the TS subtree down from the treenode of the plugins includation.
-   * It is loaded into the configurations object.
-   * That object is passed to all MVC classes.
-   *
-   * --------------------------------------------------------------------
-   * The parameters go into the parameters object
-   * --------------------------------------------------------------------
-   *
-   * The parameter array is filled from the GPvars marked by the qualifier from
-   * - GET prameters from a link or redirect:  ... &designator[action]=theAction&designator[parameterName]=value ....
-   * - POST parameters from a form
-   * The qualifier is also known as prefixId (and designator in tx_lib).
-   *
-   * --------------------------------------------------------------------
-   * Finding the action function
-   * --------------------------------------------------------------------
-   *
-   *  Ultimative fallback:                   '$this->unknownAction()'
-   *  Typical action:                        $parameters->action
-   *  Fixed action (related context boxes):  $configurations->action
-   *
-   * All "default-actions" are removed, since this is confusing and useless.
-   *
-   * The action parameter "xy" matches the function "xyAction()".
-   * By appending the postfix "Action" to the function name we assure,
-   * that no other functions than actions can be addressed be sending an action parameter.
-   * For security reasons, please don't append the Postfix "Action"for non action functions
-   * in controller classes.
-   *
-   * If no action is provided the fallback action is the defaultAction.
-   * If an invalid action is provided the function unknownAction() is called.
-   *
-   * --------------------------------------------------------------------
-   * Finding the ultimative action controller
-   * --------------------------------------------------------------------
-   *
-   * Additional controller classes can be registered that contain new actions or overwrite
-   * existing actions. This way you can develop extensions for extensions, without need of XCLASS.
-   * Registerd controller classes have precedence.
-   *
-   * Register a controller class B for this controller class A:
-   * $TYPO3_CONF_VARS['CONTROLLERS']['A']['B'] = 1;
-   *
-   * New register a controller class C for the controller class B:
-   * $TYPO3_CONF_VARS['CONTROLLERS']['B']['C'] = 1;
-   *
-   * Registration has to be done in lowercase typically in ext_tables.php.
-   *
-   * TODO: Write a registration function, so that the global variable is not accessed directly.
-   *
-   * @param  string   incomming content, not used by plugins
-   * @param  array    TS configuration subtree down from the treenode of the plugin
-   * @return string   the complete result of the plugin, typically it's (x)html
-   */
+    /*
+     * main(): A factory method for the responsible action
+     *
+     * --------------------------------------------------------------------
+     * Summary: Finds and executes the action
+     * --------------------------------------------------------------------
+     *
+     *      a) Parameters and configurations are loaded into objects.
+     *      b) The action parameter "xy" matches the class "xyAction()".
+     *      c) Registered controller classes have precedence.
+     *
+     * --------------------------------------------------------------------
+     * The configuration goes into the configurations object
+     * --------------------------------------------------------------------
+     *
+     * The configuration array comes in as second parameter.
+     * It is the TS subtree down from the treenode of the plugins includation.
+     * It is loaded into the configurations object.
+     * That object is passed to all MVC classes.
+     *
+     * --------------------------------------------------------------------
+     * The parameters go into the parameters object
+     * --------------------------------------------------------------------
+     *
+     * The parameter array is filled from the GPvars marked by the qualifier from
+     * - GET prameters from a link or redirect:  ... &designator[action]=theAction&designator[parameterName]=value ....
+     * - POST parameters from a form
+     * The qualifier is also known as prefixId (and designator in tx_lib).
+     *
+     * --------------------------------------------------------------------
+     * Finding the action function
+     * --------------------------------------------------------------------
+     *
+     *  Ultimative fallback:                   '$this->unknownAction()'
+     *  Typical action:                        $parameters->action
+     *  Fixed action (related context boxes):  $configurations->action
+     *
+     * All "default-actions" are removed, since this is confusing and useless.
+     *
+     * The action parameter "xy" matches the function "xyAction()".
+     * By appending the postfix "Action" to the function name we assure,
+     * that no other functions than actions can be addressed be sending an action parameter.
+     * For security reasons, please don't append the Postfix "Action"for non action functions
+     * in controller classes.
+     *
+     * If no action is provided the fallback action is the defaultAction.
+     * If an invalid action is provided the function unknownAction() is called.
+     *
+     * --------------------------------------------------------------------
+     * Finding the ultimative action controller
+     * --------------------------------------------------------------------
+     *
+     * Additional controller classes can be registered that contain new actions or overwrite
+     * existing actions. This way you can develop extensions for extensions, without need of XCLASS.
+     * Registerd controller classes have precedence.
+     *
+     * Register a controller class B for this controller class A:
+     * $TYPO3_CONF_VARS['CONTROLLERS']['A']['B'] = 1;
+     *
+     * New register a controller class C for the controller class B:
+     * $TYPO3_CONF_VARS['CONTROLLERS']['B']['C'] = 1;
+     *
+     * Registration has to be done in lowercase typically in ext_tables.php.
+     *
+     * TODO: Write a registration function, so that the global variable is not accessed directly.
+     *
+     * @param  string   incomming content, not used by plugins
+     * @param  array    TS configuration subtree down from the treenode of the plugin
+     * @return string   the complete result of the plugin, typically it's (x)html
+     */
 
     public function main($out, $configurationArray)
     {
@@ -328,20 +328,20 @@ class tx_rnbase_controller
         return $exceptionHandler->handleException($actionName, $e, $configurations);
     }
 
-  /**
-   * This is returned, if an invalid action has been send.
-   *
-   * @return     string     error text
-   */
+    /**
+     * This is returned, if an invalid action has been send.
+     *
+     * @return     string     error text
+     */
     public function getUnknownAction()
     {
         return '<p id="unknown_action">Unknown action.</p>';
     }
 
 
-  //------------------------------------------------------------------------------------
-  // Private functions
-  //------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------
+    // Private functions
+    //------------------------------------------------------------------------------------
 
     /**
      * Find the actions to handle the request

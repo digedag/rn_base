@@ -48,7 +48,7 @@ class tx_rnbase_tests_util_Dates_testcase extends Tx_Phpunit_TestCase
         $tstamp1 = tx_rnbase_util_Dates::date_mysql2tstamp($zeit1);
         $zeit2 = tx_rnbase_util_Dates::date_tstamp2mysql($tstamp1);
 
-//		$sDate = gmstrftime("%d.%m.%Y", $tstamp1);
+        //		$sDate = gmstrftime("%d.%m.%Y", $tstamp1);
         $this->assertEquals($zeit1, $zeit2);
     }
     public function test_convert4TCA2Timestamp()

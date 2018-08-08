@@ -41,4 +41,3 @@ Das Spielergebnis:
         $this->assertFalse(tx_rnbase_util_BaseMarker::containsMarker($template, 'MATCH_ERR'), 'Marker MATCH_ERR wurde gefunden');
     }
 }
-

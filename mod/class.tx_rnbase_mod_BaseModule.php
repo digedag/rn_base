@@ -193,7 +193,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
         if (is_array($this->extClassConf) && $this->extClassConf['name']) {
             $this->extObj = tx_rnbase::makeInstance($this->extClassConf['name']);
             $this->extObj->init($this, $this->extClassConf);
-                // Re-write:
+            // Re-write:
             tx_rnbase::load('tx_rnbase_parameters');
             $this->MOD_SETTINGS = Tx_Rnbase_Backend_Utility::getModuleData(
                 $this->MOD_MENU,
@@ -340,7 +340,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
      */
     protected function getFuncMenu()
     {
-        if($this->useModuleTemplate()) {
+        if ($this->useModuleTemplate()) {
             $menuRegistry = Tx_Rnbase_Utility_T3General::makeInstance(TYPO3\CMS\Backend\Template\Components\MenuRegistry::class);
             $menu = $menuRegistry->makeMenu();
             $modMenu = $this->MOD_MENU;
@@ -362,14 +362,13 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
                         )
                     )
                     ->setTitle($title);
-                    if ($controller === $modSettings['function']) {
-                        $item->setActive(true);
-                    }
-                    $menu->addMenuItem($item);
+                if ($controller === $modSettings['function']) {
+                    $item->setActive(true);
+                }
+                $menu->addMenuItem($item);
             }
             return $menu;
-        }
-        else {
+        } else {
             $items = $this->getFuncMenuItems($this->MOD_MENU['function']);
             $useTabs = intval($this->getConfigurations()->get('_cfg.funcmenu.useTabs')) > 0;
             if ($useTabs) {
@@ -552,7 +551,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
             'record_list' => '',
             'shortcut' => '',
         );
-            // TODO: CSH
+        // TODO: CSH
         $buttons['csh'] = Tx_Rnbase_Backend_Utility::cshItem(
             '_MOD_' . $this->getName(),
             '',
@@ -591,4 +590,3 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
         return Tx_Rnbase_Backend_Utility::issueCommand($getParameters, $redirectUrl);
     }
 }
-

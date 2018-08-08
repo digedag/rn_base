@@ -447,9 +447,9 @@ abstract class tx_rnbase_mod_base_Lister
 
 
 
-//////
-// Die folgenden Methoden sollten noch in andere Klassen verteilt werden.
-//////
+    //////
+    // Die folgenden Methoden sollten noch in andere Klassen verteilt werden.
+    //////
 
     /**
      * Suche nach einem Freitext. Wird ein leerer String
