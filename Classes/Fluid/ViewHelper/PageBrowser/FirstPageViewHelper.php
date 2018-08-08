@@ -1,5 +1,6 @@
 <?php
 namespace Sys25\RnBase\Fluid\ViewHelper\PageBrowser;
+
 /***************************************************************
  * Copyright notice
  *

@@ -130,7 +130,7 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
     {
         if (is_string($noQuote)) {
             $noQuote = explode(',', $noQuote);
-            // sanity check
+        // sanity check
         } elseif (!is_array($noQuote)) {
             $noQuote = false;
         }
@@ -240,7 +240,7 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
     public function UPDATEquery($table, $where, $fields_values, $no_quote_fields = false)
     {
         // Table and fieldnames should be "SQL-injection-safe" when supplied to this
-            // function (contrary to values in the arrays which may be insecure).
+        // function (contrary to values in the arrays which may be insecure).
         if (is_string($where)) {
             $fields = array();
             if (is_array($fields_values) && count($fields_values)) {
@@ -252,7 +252,7 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
                 }
             }
 
-                // Build query:
+            // Build query:
             $query = 'UPDATE ' . $table . ' SET ' . implode(',', $fields) .
                     (strlen($where) > 0 ? ' WHERE ' . $where : '');
 

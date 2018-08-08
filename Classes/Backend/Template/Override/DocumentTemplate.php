@@ -35,10 +35,9 @@ class Tx_Rnbase_Backend_Template_Override_DocumentTemplate extends Tx_Rnbase_Bac
      */
     public function getPageRenderer()
     {
-        if(tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
             return $this->pageRenderer;
-        }
-        elseif (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
+        } elseif (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
             $this->initPageRenderer();
             return $this->pageRenderer;
         }

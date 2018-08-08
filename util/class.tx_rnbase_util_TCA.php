@@ -382,7 +382,8 @@ class tx_rnbase_util_TCA
      * @param array $rawData
      * @return int
      */
-    public static function getUid($tableName, array $rawData) {
+    public static function getUid($tableName, array $rawData)
+    {
         $uid = 0;
         if (!empty($tableName)) {
             // Take care for localized records where uid of original record

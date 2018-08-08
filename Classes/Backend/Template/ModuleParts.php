@@ -132,6 +132,4 @@ class Tx_Rnbase_Backend_Template_ModuleParts
 
         return $this;
     }
-
-
 }

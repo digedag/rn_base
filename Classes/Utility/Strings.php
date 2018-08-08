@@ -316,7 +316,7 @@ class Tx_Rnbase_Utility_Strings
      */
     public static function quoteJSvalue($string)
     {
-       return Tx_Rnbase_Utility_T3General::quoteJSvalue($string);
+        return Tx_Rnbase_Utility_T3General::quoteJSvalue($string);
     }
 
     /**

@@ -24,7 +24,6 @@
 
 use TYPO3\CMS\Core\Utility\MathUtility;
 
-
 /**
  * Wrapper for math usage.
  */

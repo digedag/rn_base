@@ -74,7 +74,7 @@ class Tx_Rnbase_Backend_Utility_TablesTest extends tx_rnbase_tests_BaseTestCase
         $this->assertEquals('bar', $tableData[2][2], 'Unexpected name');
         $this->assertEquals('5', $tableData[2][3], 'Unexpected other');
 
-// \tx_rnbase_util_Debug::debug($tableData,__FILE__.':'.__LINE__); // TODO: remove me
+        // \tx_rnbase_util_Debug::debug($tableData,__FILE__.':'.__LINE__); // TODO: remove me
 // exit();
     }
 }

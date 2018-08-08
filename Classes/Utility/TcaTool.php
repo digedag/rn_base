@@ -146,13 +146,13 @@ class Tx_Rnbase_Utility_TcaTool
             $wizards = self::getWizards($table, $wizardOptions);
             if (tx_rnbase_util_TYPO3::isTYPO86OrHigher()) {
                 // suggestWizard
-                if(isset($wizards[self::WIZARD_SUGGEST])) {
+                if (isset($wizards[self::WIZARD_SUGGEST])) {
                     $tcaTable['columns'][$col]['config']['suggestOptions'] = $wizards[self::WIZARD_SUGGEST];
                     unset($wizards[self::WIZARD_SUGGEST]);
                 }
                 $controls = [self::WIZARD_ADD => 'addRecord', self::WIZARD_EDIT => 'editPopup'];
                 foreach ($controls as $wiz => $control) {
-                    if(isset($wizards[$wiz])) {
+                    if (isset($wizards[$wiz])) {
                         $tcaTable['columns'][$col]['config']['fieldControl'][$control] = self::convertWiz2FieldControl(
                             $wiz,
                             $wizards[$wiz],
@@ -168,7 +168,7 @@ class Tx_Rnbase_Utility_TcaTool
                     ['config' => ['enableRichtext'=>1, 'richtextConfiguration' => 'default']]
                     :
                     ['defaultExtras' => isset($wizardOptions[self::WIZARD_RTE]['defaultExtras']) ? $wizardOptions[self::WIZARD_RTE]['defaultExtras'] : ''];
-                if(tx_rnbase_util_TYPO3::isTYPO86OrHigher()) {
+                if (tx_rnbase_util_TYPO3::isTYPO86OrHigher()) {
                     unset($wizards[self::WIZARD_RTE]);
                 }
             }
@@ -176,19 +176,19 @@ class Tx_Rnbase_Utility_TcaTool
             $tcaTable['columns'][$col]['config']['wizards']= $wizards;
         }
     }
-    protected static function convertWiz2FieldControl($type, $wizard, $wizardOptions) {
+    protected static function convertWiz2FieldControl($type, $wizard, $wizardOptions)
+    {
         $control = [
             'disabled' => false,
             'options' => [],
         ];
         if ($type == self::WIZARD_ADD) {
             $control['options'] = $wizard['params'];
-        }
-        elseif ($type == self::WIZARD_EDIT) {
+        } elseif ($type == self::WIZARD_EDIT) {
             $control['options']['windowOpenParameters'] = $wizard['JSopenParams'];
         }
 
-        if(isset($wizard['title'])) {
+        if (isset($wizard['title'])) {
             $control['options']['title'] = $wizard['title'];
         }
 
@@ -449,7 +449,7 @@ class Tx_Rnbase_Utility_TcaTool
     {
         if (tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
             $iconIndexByTypo3Version = self::ICON_INDEX_TYPO3_87_OR_HIGHER;
-        } elseif(tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
+        } elseif (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
             $iconIndexByTypo3Version = self::ICON_INDEX_TYPO3_76_OR_HIGHER;
         } else {
             $iconIndexByTypo3Version = self::ICON_INDEX_TYPO3_62_OR_HIGHER;

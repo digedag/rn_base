@@ -1,5 +1,6 @@
 <?php
 namespace Sys25\RnBase\Fluid\ViewHelper;
+
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
 
@@ -35,7 +36,8 @@ use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
+class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+{
 
     /**
      * @var array

@@ -809,8 +809,8 @@ class Tx_Rnbase_Backend_Form_ToolBox
                 ' />'.'
             <input type="hidden" value="'.htmlspecialchars($value).'" name="' . $name . '" />';
 
-                // JS-Code für die Initialisierung im TCEform eintragen
-                $this->form->extJSCODE .= 'typo3FormFieldSet("' . $name . '", "datetime", "", 0,0);';
+        // JS-Code für die Initialisierung im TCEform eintragen
+        $this->form->extJSCODE .= 'typo3FormFieldSet("' . $name . '", "datetime", "", 0,0);';
 
         return $out;
     }

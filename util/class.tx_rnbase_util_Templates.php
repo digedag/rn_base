@@ -197,7 +197,7 @@ class tx_rnbase_util_Templates
     {
         tx_rnbase_util_Misc::pushTT('substituteMarkerArray');
 
-            // If not arrays then set them
+        // If not arrays then set them
         if (!is_array($markContentArray)) {
             $markContentArray = array();
         }    // Plain markers
@@ -230,52 +230,52 @@ class tx_rnbase_util_Templates
                 // Initialize storeArr
                 $storeArr = array();
 
-                    // Finding subparts and substituting them with the subpart as a marker
+                // Finding subparts and substituting them with the subpart as a marker
                 reset($sPkeys);
                 while (list(, $sPK) = each($sPkeys)) {
                     $content = self::substituteSubpart($content, $sPK, $sPK);
                 }
 
-                    // Finding subparts and wrapping them with markers
+                // Finding subparts and wrapping them with markers
                 reset($wPkeys);
                 while (list(, $wPK) = each($wPkeys)) {
                     $content = self::substituteSubpart($content, $wPK, array($wPK, $wPK));
                 }
 
-                    // traverse keys and quote them for reg ex.
+                // traverse keys and quote them for reg ex.
                 reset($aKeys);
                 while (list($tK, $tV) = each($aKeys)) {
                     $aKeys[$tK] = quotemeta($tV);
                 }
                 $regex = implode('|', $aKeys);
-                    // Doing regex's
+                // Doing regex's
                 $storeArr['c'] = explode($regex, $content);
                 preg_match_all('/'.$regex.'/', $content, $keyList);
                 $storeArr['k'] = $keyList[0];
-                    // Setting cache:
+                // Setting cache:
                 self::$substMarkerCache[$storeKey] = $storeArr;
 
-                    // Storing the cached data:
+                // Storing the cached data:
                 $GLOBALS['TSFE']->sys_page->storeHash($storeKey, serialize($storeArr), 'substMarkArrayCached');
 
                 $GLOBALS['TT']->setTSlogMessage('Parsing', 0);
             } else {
                 // Unserializing
                 $storeArr = unserialize($storeArrDat);
-                    // Setting cache:
+                // Setting cache:
                 self::$substMarkerCache[$storeKey] = $storeArr;
                 $GLOBALS['TT']->setTSlogMessage('Cached from DB', 0);
             }
         }
 
-            // Substitution/Merging:
-            // Merging content types together, resetting
+        // Substitution/Merging:
+        // Merging content types together, resetting
         $valueArr = array_merge($markContentArray, $subpartContentArray, $wrappedSubpartContentArray);
 
         $wSCA_reg = array();
         reset($storeArr['k']);
         $content = '';
-            // traversin the keyList array and merging the static and dynamic content
+        // traversin the keyList array and merging the static and dynamic content
         while (list($n, $keyN) = each($storeArr['k'])) {
             $content .= $storeArr['c'][$n];
             if (!is_array($valueArr[$keyN])) {
@@ -347,7 +347,7 @@ class tx_rnbase_util_Templates
     {
         tx_rnbase_util_Misc::pushTT('substituteMarkerArray');
 
-            // If not arrays then set them
+        // If not arrays then set them
         if (is_null($markContentArray)) {
             $markContentArray = array();
         }    // Plain markers
@@ -357,7 +357,7 @@ class tx_rnbase_util_Templates
         if (is_null($wrappedSubpartContentArray)) {
             $wrappedSubpartContentArray = array();
         }    // Subparts being wrapped
-            // Finding keys and check hash:
+        // Finding keys and check hash:
         $sPkeys = array_keys($subpartContentArray);
         $wPkeys = array_keys($wrappedSubpartContentArray);
         $mPKeys = array_keys($markContentArray);
@@ -388,22 +388,22 @@ class tx_rnbase_util_Templates
                 // Initialize storeArr
                 $storeArr = array();
 
-                    // Finding subparts and substituting them with the subpart as a marker
+                // Finding subparts and substituting them with the subpart as a marker
                 foreach ($sPkeys as $sPK) {
                     $content = self::substituteSubpart($content, $sPK, $sPK);
                 }
 
-                    // Finding subparts and wrapping them with markers
+                // Finding subparts and wrapping them with markers
                 foreach ($wPkeys as $wPK) {
                     $content = self::substituteSubpart($content, $wPK, array($wPK, $wPK));
                 }
 
-                    // traverse keys and quote them for reg ex.
+                // traverse keys and quote them for reg ex.
                 foreach ($aKeys as $tK => $tV) {
                     $aKeys[$tK] = preg_quote($tV, '/');
                 }
                 $regex = '/' . implode('|', $aKeys) . '/';
-                    // Doing regex's
+                // Doing regex's
                 $storeArr['c'] = preg_split($regex, $content);
                 preg_match_all($regex, $content, $keyList);
                 $storeArr['k'] = $keyList[0];
@@ -418,18 +418,18 @@ class tx_rnbase_util_Templates
             } else {
                 // Unserializing
                 $storeArr = unserialize($storeArrDat);
-                    // Setting cache:
+                // Setting cache:
                 self::$substMarkerCache[$storeKey] = $storeArr;
             }
         }
 
-            // Substitution/Merging:
-            // Merging content types together, resetting
+        // Substitution/Merging:
+        // Merging content types together, resetting
         $valueArr = array_merge($markContentArray, $subpartContentArray, $wrappedSubpartContentArray);
 
         $wSCA_reg = array();
         $content = '';
-            // traversing the keyList array and merging the static and dynamic content
+        // traversing the keyList array and merging the static and dynamic content
         foreach ($storeArr['k'] as $n => $keyN) {
             $content .= $storeArr['c'][$n];
             if (!is_array($valueArr[$keyN])) {

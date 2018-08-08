@@ -39,9 +39,9 @@ class tx_rnbase_tests_configurations_testcase extends Tx_Phpunit_TestCase
         $this->assertEquals(100, $configurations->get('matchtable.match.limit'), 'Limit should be 100');
         $this->assertEquals(99, $configurations->get('matchtable.match.count'), 'count should be 99');
     }
-  /**
-   * Test flexform value with pointed keys.
-   */
+    /**
+     * Test flexform value with pointed keys.
+     */
     public function test_flexformSetup()
     {
         $GLOBALS['TSFE'] = new tx_rnbase_tsfeDummy();

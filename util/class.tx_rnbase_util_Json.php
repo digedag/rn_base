@@ -131,38 +131,38 @@ class tx_rnbase_util_Json
 
         return self::$instance;
     }
-     /**
-      * constructs a new JSON instance
-      *
-      * @param    boollean-OR
-      *
-      *                           possible values:
-      *                           - SERVICES_JSON_LOOSE_TYPE:  loose typing.
-      *                                   "{...}" syntax creates associative arrays
-      *                                   instead of objects in decode().
-      *                           - SERVICES_JSON_SUPPRESS_ERRORS:  error suppression.
-      *                                   Values which can't be encoded (e.g. resources)
-      *                                   appear as NULL instead of throwing errors.
-      *                                   By default, a deeply-nested resource will
-      *                                   bubble up with an error, so all return values
-      *                                   from encode() should be checked with isError()
-      */
+    /**
+     * constructs a new JSON instance
+     *
+     * @param    boollean-OR
+     *
+     *                           possible values:
+     *                           - SERVICES_JSON_LOOSE_TYPE:  loose typing.
+     *                                   "{...}" syntax creates associative arrays
+     *                                   instead of objects in decode().
+     *                           - SERVICES_JSON_SUPPRESS_ERRORS:  error suppression.
+     *                                   Values which can't be encoded (e.g. resources)
+     *                                   appear as NULL instead of throwing errors.
+     *                                   By default, a deeply-nested resource will
+     *                                   bubble up with an error, so all return values
+     *                                   from encode() should be checked with isError()
+     */
     public function __construct($use = 0)
     {
         $this->use = $use;
     }
 
-   /**
-    * convert a string from one UTF-16 char to one UTF-8 char
-    *
-    * Normally should be handled by mb_convert_encoding, but
-    * provides a slower PHP-only method for installations
-    * that lack the multibye string extension.
-    *
-    * @param    string  $utf16  UTF-16 character
-    * @return   string  UTF-8 character
-    * @access   private
-    */
+    /**
+     * convert a string from one UTF-16 char to one UTF-8 char
+     *
+     * Normally should be handled by mb_convert_encoding, but
+     * provides a slower PHP-only method for installations
+     * that lack the multibye string extension.
+     *
+     * @param    string  $utf16  UTF-16 character
+     * @return   string  UTF-8 character
+     * @access   private
+     */
     public function utf162utf8($utf16)
     {
         // oh please oh please oh please oh please oh please
@@ -196,17 +196,17 @@ class tx_rnbase_util_Json
         return '';
     }
 
-   /**
-    * convert a string from one UTF-8 char to one UTF-16 char
-    *
-    * Normally should be handled by mb_convert_encoding, but
-    * provides a slower PHP-only method for installations
-    * that lack the multibye string extension.
-    *
-    * @param    string  $utf8   UTF-8 character
-    * @return   string  UTF-16 character
-    * @access   private
-    */
+    /**
+     * convert a string from one UTF-8 char to one UTF-16 char
+     *
+     * Normally should be handled by mb_convert_encoding, but
+     * provides a slower PHP-only method for installations
+     * that lack the multibye string extension.
+     *
+     * @param    string  $utf8   UTF-8 character
+     * @return   string  UTF-16 character
+     * @access   private
+     */
     public function utf82utf16($utf8)
     {
         // oh please oh please oh please oh please oh please
@@ -237,17 +237,17 @@ class tx_rnbase_util_Json
         return '';
     }
 
-   /**
-    * encodes an arbitrary variable into JSON format
-    *
-    * @param    boollean, string, array, or object to be encoded.
-    *                           see argument 1 to Services_JSON() above for array-parsing behavior.
-    *                           if var is a strng, note that encode() always expects it
-    *                           to be in ASCII or UTF-8 format!
-    *
-    * @return   mixed   JSON string representation of input var or an error if a problem occurs
-    * @access   public
-    */
+    /**
+     * encodes an arbitrary variable into JSON format
+     *
+     * @param    boollean, string, array, or object to be encoded.
+     *                           see argument 1 to Services_JSON() above for array-parsing behavior.
+     *                           if var is a strng, note that encode() always expects it
+     *                           to be in ASCII or UTF-8 format!
+     *
+     * @return   mixed   JSON string representation of input var or an error if a problem occurs
+     * @access   public
+     */
     public function encode($var)
     {
         switch (gettype($var)) {
@@ -371,15 +371,15 @@ class tx_rnbase_util_Json
         }
     }
 
-   /**
-    * array-walking function for use in generating JSON-formatted name-value pairs
-    *
-    * @param    string  $name   name of key to use
-    * @param    mixed   $value  reference to an array element to be encoded
-    *
-    * @return   string  JSON-formatted name-value pair, like '"name":value'
-    * @access   private
-    */
+    /**
+     * array-walking function for use in generating JSON-formatted name-value pairs
+     *
+     * @param    string  $name   name of key to use
+     * @param    mixed   $value  reference to an array element to be encoded
+     *
+     * @return   string  JSON-formatted name-value pair, like '"name":value'
+     * @access   private
+     */
     public function name_value($name, $value)
     {
         $encoded_value = $this->encode($value);
@@ -391,14 +391,14 @@ class tx_rnbase_util_Json
         return $this->encode(strval($name)) . ':' . $encoded_value;
     }
 
-   /**
-    * reduce a string by removing leading and trailing comments and whitespace
-    *
-    * @param    $str    string      string value to strip of comments and whitespace
-    *
-    * @return   string  string value stripped of comments and whitespace
-    * @access   private
-    */
+    /**
+     * reduce a string by removing leading and trailing comments and whitespace
+     *
+     * @param    $str    string      string value to strip of comments and whitespace
+     *
+     * @return   string  string value stripped of comments and whitespace
+     * @access   private
+     */
     public function reduce_string($str)
     {
         $str = preg_replace(array(
@@ -418,18 +418,18 @@ class tx_rnbase_util_Json
         return trim($str);
     }
 
-   /**
-    * decodes a JSON string into appropriate variable
-    *
-    * @param    string  $str    JSON-formatted string
-    *
-    * @return   boollean, string, array, or object
-    *                   corresponding to given JSON input string.
-    *                   See argument 1 to Services_JSON() above for object-output behavior.
-    *                   Note that decode() always returns strings
-    *                   in ASCII or UTF-8 format!
-    * @access   public
-    */
+    /**
+     * decodes a JSON string into appropriate variable
+     *
+     * @param    string  $str    JSON-formatted string
+     *
+     * @return   boollean, string, array, or object
+     *                   corresponding to given JSON input string.
+     *                   See argument 1 to Services_JSON() above for object-output behavior.
+     *                   Note that decode() always returns strings
+     *                   in ASCII or UTF-8 format!
+     * @access   public
+     */
     public function decode($str)
     {
         $str = $this->reduce_string($str);

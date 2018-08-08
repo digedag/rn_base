@@ -50,9 +50,9 @@ class tx_rnbase_util_Calendar
         $this->_init();
     }
 
-  /**
-   * Gets this Calendar's current time.
-   */
+    /**
+     * Gets this Calendar's current time.
+     */
     public function getTime()
     {
         return $this->_time;
@@ -63,12 +63,12 @@ class tx_rnbase_util_Calendar
         $this->_time = $timestamp;
     }
 
-  /**
-   * Date Arithmetic function. Adds the specified (signed) amount of time to the given time
-   * field, based on the calendar's rules.
-   * @param $field - the time field.
-   * @param $amount - the amount of date or time to be added to the field.
-   */
+    /**
+     * Date Arithmetic function. Adds the specified (signed) amount of time to the given time
+     * field, based on the calendar's rules.
+     * @param $field - the time field.
+     * @param $amount - the amount of date or time to be added to the field.
+     */
     public function add($field, $amount)
     {
         // Bis zur Woche können direkt die Sekunden aufaddiert werden

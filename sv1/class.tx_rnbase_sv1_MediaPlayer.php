@@ -56,7 +56,7 @@ class tx_rnbase_sv1_MediaPlayer extends Tx_Rnbase_Service_Base
         $mediaName = $media['file_name'];
         $mediaPath = $media['file_path'];
 
-    // Die genaue Konfig holen wir für den Dateityp
+        // Die genaue Konfig holen wir für den Dateityp
         $fileType = $media['file_type'];
         $playerConf = $conf[$fileType . '.']['player.'];
 
@@ -84,4 +84,3 @@ class tx_rnbase_sv1_MediaPlayer extends Tx_Rnbase_Service_Base
         return $out;
     }
 }
-
