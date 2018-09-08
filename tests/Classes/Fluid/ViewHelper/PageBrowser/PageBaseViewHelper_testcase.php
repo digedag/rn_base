@@ -1,7 +1,7 @@
 <?php
 namespace Sys25\RnBase\Fluid\ViewHelper\PageBrowser;
 
-use Sys25\RnBase\Fluid\ViewHelper\BaseViewHelperTestCase;
+use Sys25\RnBase\Fluid\ViewHelper\BaseViewHelperTest;
 
 /***************************************************************
  * Copyright notice
@@ -45,7 +45,7 @@ if (!\tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class PageBaseViewHelper_testcase extends BaseViewHelperTestCase
+class PageBaseViewHelper_testcase extends BaseViewHelperTest
 {
 
     /**

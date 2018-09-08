@@ -47,7 +47,7 @@ if (!\tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class PageBrowserViewHelperTest extends BaseViewHelperTestCase
+class PageBrowserViewHelperTest extends BaseViewHelperTest
 {
 
     /**
