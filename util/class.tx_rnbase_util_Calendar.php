@@ -28,7 +28,6 @@ define('CALENDAR_FEBRUARY', 1);
 define('CALENDAR_YEAR', 1);
 define('CALENDAR_MONTH', 2);
 define('CALENDAR_HOUR', 10);
-define('CALENDAR_HOUR', 10);
 define('CALENDAR_MINUTE', 12);
 define('CALENDAR_SECOND', 13);
 /**
