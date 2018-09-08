@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010-2017 Rene Nitzsche (rene@system25.de)
+*  (c) 2010-2018 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -227,8 +227,9 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testCreateLink()
     {
+        $pid = 123;
         $urlParameters = 'someParameters=2&param2=bar';
-        $options = ['params'=>['someParameters' => '2', 'param2'=>'bar']];
+        $options = ['params'=>['someParameters' => '2', 'param2'=>'bar', 'id' => $pid]];
 
         $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', array('getLinkThisScript'));
         $formTool
@@ -236,10 +237,11 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
             ->method('getLinkThisScript')
             ->with(false, $options)
             ->will(self::returnValue('scriptUrl'));
+        unset($options['params']['id']);
         self::assertEquals(
             htmlspecialchars('<a href="#" class="' . Tx_Rnbase_Backend_Form_ToolBox::CSS_CLASS_BTN .
                 '" onclick="'."window.location.href='scriptUrl'; return false;".'" >mylabel</a>'),
-            htmlspecialchars($formTool->createLink($urlParameters, 0, 'mylabel', $options))
+            htmlspecialchars($formTool->createLink($urlParameters, $pid, 'mylabel', $options))
         );
     }
 
@@ -277,7 +279,7 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
         $formTool
             ->expects(self::once())
             ->method('getLinkThisScript')
-            ->with(false, ['params'=>['someParameter'=>1]])
+            ->with(false, ['params'=>['someParameter'=>1, 'id' =>0]])
             ->will(self::returnValue('scriptUrl'));
 
         self::assertEquals(
@@ -299,13 +301,13 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
         $formTool
             ->expects(self::once())
             ->method('getLinkThisScript')
-            ->with(false, ['params'=>['someParameter'=>1]])
+            ->with(false, ['params'=>['someParameter'=>1, 'id' => 22]])
             ->will(self::returnValue('scriptUrl'));
 
         self::assertEquals(
             htmlspecialchars('<a href="#" class="myClass" onclick="'.
                 "window.location.href='scriptUrl'; return false;".'" >mylabel</a>'),
-            htmlspecialchars($formTool->createLink($urlParameters, 0, 'mylabel', $options))
+            htmlspecialchars($formTool->createLink($urlParameters, 22, 'mylabel', $options))
         );
     }
 

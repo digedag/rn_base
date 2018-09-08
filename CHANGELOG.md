@@ -4,6 +4,7 @@ Changelog
 ---------
 
 v1.8.4 (??.??.2018)
+ * link creation on POST requests fixed in BE modules
 
 v1.8.3 (03.08.2018)
  * bugfix don't load hidden objects if enablefieldsfe is set explicitly

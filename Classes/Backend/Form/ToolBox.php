@@ -608,7 +608,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
      * $GLOBALS['BACK_PATH'] . 'gfx/' liegen.
      *
      * @param array $params additional url parameters for current script
-     * @param int $pid wird nicht mehr verwendet. nur für abwärtskompatibilität
+     * @param int $pid PID of current page
      * @param string $label
      * @param array $options
      * @return string
@@ -626,7 +626,10 @@ class Tx_Rnbase_Backend_Form_ToolBox
                 $label = tx_rnbase_mod_Util::getSpriteIcon($icon, $options);
             }
         }
-
+        if (!isset($_GET['id']) && !isset($params['id'])) {
+            // ensure pid is set even on POST requests.
+            $params['id'] = $pid;
+        }
         $location = $this->getLinkThisScript(false, ['params'=>$params]);
 
         $jsCode = "window.location.href='".$location. "'; return false;";
