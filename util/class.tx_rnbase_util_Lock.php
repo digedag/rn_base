@@ -163,6 +163,14 @@ class tx_rnbase_util_Lock
      */
     public function isLocked()
     {
+        // when the file is on a NFS it might happen that file_get_contents
+        // can't find the file. This is due to the fact that the NFS
+        // most likely will cache file information and the file might
+        // been created only a few moments ago. So we work around this
+        // by opening and closing a file handle for the folder of the file
+        // which will invalidate the NFS cache.
+        // @see https://stackoverflow.com/questions/41723458/php-file-exists-or-is-file-does-not-answer-correctly-for-10-20s-on-nfs-files-ec
+        closedir(opendir(dirname($this->getFile())));
         if (is_readable($this->getFile())) {
             $lastCall = (int) trim(file_get_contents($this->getFile()));
             if (!(
@@ -188,14 +196,7 @@ class tx_rnbase_util_Lock
         if (!is_dir(dirname($fileName))) {
             tx_rnbase_util_Files::mkdir_deep(dirname($fileName));
         }
-
-        file_put_contents($fileName, time());
-
-        // fix filepermisions
-        tx_rnbase::load('Tx_Rnbase_Utility_T3General');
-        Tx_Rnbase_Utility_T3General::fixPermissions($fileName);
-
-        if (!is_readable($fileName)) {
+        if (!tx_rnbase_util_Files::writeFile($fileName, time(), true)) {
             tx_rnbase::load('tx_rnbase_util_Logger');
             tx_rnbase_util_Logger::warn(
                 'Lock file could not be created for "' . $this->getName() . '" process!',
