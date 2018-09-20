@@ -3,8 +3,13 @@
 Changelog
 ---------
 
-v1.8.4 (??.??.2018)
+v1.8.5 (??.??.2018)
+
+v1.8.4 (20.09.2018)
  * link creation on POST requests fixed in BE modules
+ * cleanup code and CS
+ * use TYPO3 API to write lock files
+ * optimized NFS handling when handling locks
 
 v1.8.3 (03.08.2018)
  * bugfix don't load hidden objects if enablefieldsfe is set explicitly
