@@ -44,6 +44,10 @@ class ExtbaseControllerWithCacheTagsTraitTest extends \tx_rnbase_tests_BaseTestC
      */
     protected function setUp()
     {
+        if (!method_exists($this, 'getMockForTrait')) {
+            self::markTestSkipped('mocking traits is not supported in this phpunit version.');
+        }
+
         \tx_rnbase_util_Misc::prepareTSFE(['force' => true]);
     }
 
