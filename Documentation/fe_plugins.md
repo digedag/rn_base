@@ -411,7 +411,7 @@ plugin.tx_myext {
 }
 ```
 
-Dieser View wird klassicherweise einen Datensatz aus einer Tabelle anzeigen. Damit der Cache bei Änderungen in dieser Tabelle automatisch geleert wird, müssen in der TCA für die Tabelle die Cache Tags definiert werden.
+Dieser View wird klassicherweise einen Datensatz aus einer Tabelle anzeigen. Damit der Cache bei Änderungen in dieser Tabelle automatisch geleert wird, müssen die Tags nach TYPO3 Konvention verwendet werden oder in der TCA für die Tabelle die Cache Tags definiert werden. Die TYPO3 Konvention lautet dass die Tabellennamen verwendet werden. Wenn ein Datensatz im BE gespeichert wird, löscht TYPO3 automatisch den Cache für die Tags mit dem Tabellennamen und Tabellenname + UID des Datensatz, also z.B. pages und pages_123. Durch rn_base können in der TCA aber weitere Cache Tags gesetzt werden.
 
 ```php
 $TCA['tx_myext_data_for_my_view']['ctrl']['cacheTags'] = array('first-tag', 'second-tag');
