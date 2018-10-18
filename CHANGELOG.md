@@ -3,7 +3,10 @@
 Changelog
 ---------
 
-v1.8.5 (??.??.2018)
+v1.8.6 (??.??.2018)
+
+v1.8.5 (18.10.2018)
+ * added trait for easy cache tags support of extbase controllers
 
 v1.8.4 (20.09.2018)
  * link creation on POST requests fixed in BE modules
