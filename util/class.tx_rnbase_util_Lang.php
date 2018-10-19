@@ -77,7 +77,7 @@ class tx_rnbase_util_Lang
         $errorMode = 0,
         $isLocalizationOverride = false
     ) {
-        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+        if (tx_rnbase_util_TYPO3::isTYPO74OrHigher()) {
             /** @var $languageFactory \TYPO3\CMS\Core\Localization\LocalizationFactory */
             $languageFactory = tx_rnbase::makeInstance(
                 'TYPO3\\CMS\\Core\\Localization\\LocalizationFactory'
@@ -90,11 +90,11 @@ class tx_rnbase_util_Lang
                 $errorMode,
                 $isLocalizationOverride
             );
-        } else {
-            $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
-
-            return $utility::readLLfile($fileReference, $languageKey, $charset);
         }
+
+        $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+
+        return $utility::readLLfile($fileReference, $languageKey, $charset);
     }
 
 
