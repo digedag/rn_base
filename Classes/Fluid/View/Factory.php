@@ -44,6 +44,7 @@ class Factory
      */
     public static function getViewInstance(\tx_rnbase_configurations $configurations, $frameworkSettings = array())
     {
+        /* @var $view \Sys25\RnBase\Fluid\View\Standalone */
         $view = \tx_rnbase::makeInstance('Sys25\\RnBase\\Fluid\\View\\Standalone', $configurations->getCObj());
 
         $objectManager = $view->getObjectManager();
@@ -51,7 +52,11 @@ class Factory
         $configurationManager->setConfiguration($frameworkSettings);
         $view->injectObjectManager($objectManager);
 
-        $controllerContext = $view->getRenderingContext()->getControllerContext();
+        $controllerContext = $view->getControllerContext();
+        if ($controllerContext === null) {
+            $controllerContext = $view->getRenderingContext()->getControllerContext();
+        }
+
         $controllerContext->configurations = $configurations;
 
         $view->setControllerContext($controllerContext);
