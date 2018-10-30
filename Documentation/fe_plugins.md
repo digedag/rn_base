@@ -139,7 +139,7 @@ Durch die Implementierung der Methode getMainSubpart() bekommt der View direkt d
 Im Beispiel für das Template über den ListBuilder von rn_base gerendert. Nähere Informationen findet man beim [Rendern der Daten](rendering_data.md).
 
 ### fluid
-Hinweis: Es muss mind. TYPO3 8.7 installiert sein.
+Hinweis: Es muss mind. TYPO3 7.6 installiert sein.
 
 Es gibt den View Sys25\RnBase\Fluid\View\Action, um die Templates mit fluid rendern zu können. Per default werden die fluid Dateien in den Ordner Templates, Layouts und Partials in 'EXT:' . $extensionKey . '/Resources/Private/' erwartet. Das kann auch überschrieben bzw. weitere hinzugefügt werden, ganz nach der Konvention von ExtBase/Fluid:
 
