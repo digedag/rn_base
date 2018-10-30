@@ -1,5 +1,5 @@
 <?php
-namespace Sys25\RnBase\Controller;
+namespace Sys25\RnBase\Controller\Extbase;
 
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
@@ -27,7 +27,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Controller$ExtbaseControllerWithCacheTagsTraitTest
+ * Sys25\RnBase\Controller\Extbase$CacheTagsTraitTest
  *
  * @package         TYPO3
  * @subpackage      rn_base
@@ -35,7 +35,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class ExtbaseControllerWithCacheTagsTraitTest extends \tx_rnbase_tests_BaseTestCase
+class CacheTagsTraitTest extends \tx_rnbase_tests_BaseTestCase
 {
 
     /**
@@ -143,7 +143,7 @@ class ExtbaseControllerWithCacheTagsTraitTest extends \tx_rnbase_tests_BaseTestC
      */
     protected function getTrait($actionMethod = 'action')
     {
-        $trait = $this->getMockForTrait(ExtbaseControllerWithCacheTagsTrait::class);
+        $trait = $this->getMockForTrait(CacheTagsTrait::class);
 
         $mockRequest = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Request::class);
         $mockRequest->expects($this->once())->method('getControllerActionName')->will($this->returnValue('action'));

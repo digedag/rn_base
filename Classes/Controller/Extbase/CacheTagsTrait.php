@@ -1,5 +1,5 @@
 <?php
-namespace Sys25\RnBase\Controller;
+namespace Sys25\RnBase\Controller\Extbase;
 
 /***************************************************************
  * Copyright notice
@@ -25,7 +25,7 @@ namespace Sys25\RnBase\Controller;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Controller$ExtbaseControllerWithCacheTagsTrait
+ * Sys25\RnBase\Controller\Extbase$CacheTagsTrait
  *
  * When using this trait you can configure your cache tags like this through TypoScript
  * for the actions of a extbase controller:
@@ -38,7 +38,7 @@ namespace Sys25\RnBase\Controller;
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-trait ExtbaseControllerWithCacheTagsTrait
+trait CacheTagsTrait
 {
 
     /**

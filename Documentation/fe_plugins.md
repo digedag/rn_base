@@ -440,7 +440,7 @@ plugin.tt_news.stdWrap.postUserFunc {
 ```
 
 ### Extbase Controller
-Das ganze gibt es auch für Extbase Controller. Dazu muss im Controller der Trait \Sys25\RnBase\Controller\ExtbaseControllerWithCacheTagsTrait hinzugefügt werden. Damit können per TypoScript die Cache Tags für Actions konfiguriert werden nach dem Schema plugin.ty_my_ext.settings.cacheTags.$lowerCamelCaseControllerNameOmittingController.$lowerCaseActionNameOmittingAction.0 = my_cache_tag. Für tx_news könnte ein Beispiel so aussehen:
+Das ganze gibt es auch für Extbase Controller. Dazu muss im Controller der Trait \Sys25\RnBase\Controller\Extbase\CacheTagsTrait hinzugefügt werden. Damit können per TypoScript die Cache Tags für Actions konfiguriert werden nach dem Schema plugin.ty_my_ext.settings.cacheTags.$lowerCamelCaseControllerNameOmittingController.$lowerCaseActionNameOmittingAction.0 = my_cache_tag. Für tx_news könnte ein Beispiel so aussehen:
 
 ```
 plugin.tx_news {
