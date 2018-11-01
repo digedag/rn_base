@@ -384,19 +384,20 @@ MAYDAYPAGE;
 
         // init the template
         if (!is_object($GLOBALS['TSFE']->tmpl) || $force) {
+            $GLOBALS['TSFE']->forceTemplateParsing = true;
             $GLOBALS['TSFE']->initTemplate();
             if (empty($GLOBALS['TSFE']->tmpl->getFileName_backPath)) {
                 $GLOBALS['TSFE']->tmpl->getFileName_backPath = PATH_site;
             }
         }
-
         // initial empty config
         if (!is_array($GLOBALS['TSFE']->config)) {
             $GLOBALS['TSFE']->config = array();
         }
-        if (!is_array($GLOBALS['TSFE']->config['config'])) {
-            $GLOBALS['TSFE']->config['config'] = array();
-        }
+
+        // Get config if not already gotten
+        // After this, we should have a valid config-array ready
+        $GLOBALS['TSFE']->getConfigArray();
 
         // init the language
         if (empty($GLOBALS['TSFE']->lang) || $force) {
