@@ -3,7 +3,10 @@
 Changelog
 ---------
 
-v1.8.7 (??.??.2018)
+v1.8.8 (??.??.2018)
+
+v1.8.7 (08.11.2018)
+ * new view helper to get post or get data
 
 v1.8.6 (30.10.2018)
  * refactored trait name for easy cache tags support of extbase controllers
