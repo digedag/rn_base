@@ -63,6 +63,5 @@ root_2:
         $this->assertArrayHasKey('name', $result['root_2']);
         $this->assertEquals('Moritz', $result['root_2']['name']);
         $this->assertArrayHasKey('record', $result['root_2']);
-
     }
 }
