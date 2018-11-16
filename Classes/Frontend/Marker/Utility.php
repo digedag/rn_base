@@ -44,13 +44,13 @@ class Tx_Rnbase_Frontend_Marker_Utility
     public static function findUnusedAttributes(Tx_Rnbase_Domain_Model_DataInterface $item, $template, $marker)
     {
         $ignore = array();
-        $minfo = self::containsMarker($template, $marker.'___MINFO');
+        $minfo = static::containsMarker($template, $marker.'___MINFO');
         $minfoArr = array();
         foreach ($item as $key => $value) {
             if ($minfo) {
                 $minfoArr[$key] = $marker.'_'.strtoupper($key);
             }
-            if (!self::containsMarker($template, $marker.'_'.strtoupper($key))) {
+            if (!static::containsMarker($template, $marker.'_'.strtoupper($key))) {
                 $ignore[] = $key;
             }
         }

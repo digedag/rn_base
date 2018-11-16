@@ -74,10 +74,10 @@ class Tx_Rnbase_Backend_Utility_Icons
         $size = 'default'
     ) {
         if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
-            return self::getIconFactory()->getIconForRecord($table, $row, $size);
+            return static::getIconFactory()->getIconForRecord($table, $row, $size);
         }
 
-        return self::__callStatic(
+        return static::__callStatic(
             'getSpriteIconForRecord',
             array(
                 $table,
@@ -95,15 +95,15 @@ class Tx_Rnbase_Backend_Utility_Icons
         $iconsAvailable = $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'];
 
         if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-            $iconsAvailable = self::getIconRegistry()->getAllRegisteredIconIdentifiers();
+            $iconsAvailable = static::getIconRegistry()->getAllRegisteredIconIdentifiers();
         }
 
-        $icons .= '<h2>iconsAvailable</h2>';
+        $icons = '<h2>iconsAvailable</h2>';
         foreach ($iconsAvailable as $icon) {
             $icons .= sprintf(
                 '<span title="%1$s">%2$s</span>',
                 $icon,
-                self::getSpriteIcon($icon)
+                static::getSpriteIcon($icon)
             );
         }
 
@@ -112,7 +112,7 @@ class Tx_Rnbase_Backend_Utility_Icons
 
     /**
      *
-     * @param unknown $iconName
+     * @param string $iconName
      * @param array $options
      * @param array $overlays
      *
@@ -135,7 +135,7 @@ class Tx_Rnbase_Backend_Utility_Icons
             $size = $options['size'];
         }
 
-        return self::getIconFactory()->getIcon($iconName, $size)->render();
+        return static::getIconFactory()->getIcon($iconName, $size)->render();
     }
 
     /**
@@ -158,7 +158,7 @@ class Tx_Rnbase_Backend_Utility_Icons
             return $class::mapRecordTypeToSpriteIconName($table, $row);
         }
 
-        return self::getIconFactory()->mapRecordTypeToIconIdentifier($table, $row);
+        return static::getIconFactory()->mapRecordTypeToIconIdentifier($table, $row);
     }
 
     /**

@@ -31,28 +31,28 @@ class tx_rnbase_util_Spyc
   * @access private
   * @var mixed
   */
-    public $_haveRefs;
-    public $_allNodes;
-    public $_allParent;
-    public $_lastIndent;
-    public $_lastNode;
-    public $_inBlock;
-    public $_isInline;
-    public $_dumpIndent;
-    public $_dumpWordWrap;
-    public $_containsGroupAnchor = false;
-    public $_containsGroupAlias = false;
-    public $path;
-    public $result;
-    public $LiteralBlockMarkers = array('>', '|');
-    public $LiteralPlaceHolder = '___YAML_Literal_Block___';
-    public $SavedGroups = array();
+    private $_haveRefs;
+    private $_allNodes;
+    private $_allParent;
+    private $_lastIndent;
+    private $_lastNode;
+    private $_inBlock;
+    private $_isInline;
+    private $_dumpIndent;
+    private $_dumpWordWrap;
+    private $_containsGroupAnchor = false;
+    private $_containsGroupAlias = false;
+    private $path;
+    private $result;
+    private $LiteralBlockMarkers = array('>', '|');
+    private $LiteralPlaceHolder = '___YAML_Literal_Block___';
+    private $SavedGroups = array();
 
     /**#@+
-    * @access public
+    * @access private
     * @var mixed
     */
-    public $_nodeId;
+    private $_nodeId;
 
     /**
      * Load YAML into a PHP array statically
@@ -70,7 +70,7 @@ class tx_rnbase_util_Spyc
      * @return array
      * @param string $input Path of YAML file or string containing YAML
      */
-    public function YAMLLoad($input)
+    public static function yamlLoad($input)
     {
         $Spyc = new tx_rnbase_util_Spyc;
 
@@ -97,7 +97,7 @@ class tx_rnbase_util_Spyc
      * @param int $indent Pass in FALSE to use the default, which is 2
      * @param int $wordwrap Pass in 0 for no wordwrap, FALSE for default (40)
      */
-    public function YAMLDump($array, $indent = false, $wordwrap = false)
+    public static function yamlDump($array, $indent = false, $wordwrap = false)
     {
         $spyc = new tx_rnbase_util_Spyc;
 
@@ -158,11 +158,11 @@ class tx_rnbase_util_Spyc
      * Attempts to convert a key / value array item to YAML
      * @access private
      * @return string
-     * @param $key The name of the key
-     * @param $value The value of the item
-     * @param $indent The indent of the current node
+     * @param string $key The name of the key
+     * @param string $value The value of the item
+     * @param int $indent The indent of the current node
      */
-    public function _yamlize($key, $value, $indent)
+    private function _yamlize($key, $value, $indent)
     {
         if (is_array($value)) {
             // It has children.  What to do?
@@ -187,7 +187,7 @@ class tx_rnbase_util_Spyc
      * @param $array The array you want to convert
      * @param $indent The indent of the current level
      */
-    public function _yamlizeArray($array, $indent)
+    private function _yamlizeArray($array, $indent)
     {
         if (is_array($array)) {
             $string = '';
@@ -209,7 +209,7 @@ class tx_rnbase_util_Spyc
      * @param $value The value of the item
      * @param $indent The indent of the current node
      */
-    public function _dumpNode($key, $value, $indent)
+    private function _dumpNode($key, $value, $indent)
     {
         // do some folding here, for blocks
         if (strpos($value, "\n") !== false || strpos($value, ': ') !== false || strpos($value, '- ') !== false) {
@@ -242,7 +242,7 @@ class tx_rnbase_util_Spyc
      * @param $value
      * @param $indent int The value of the indent
      */
-    public function _doLiteralBlock($value, $indent)
+    private function _doLiteralBlock($value, $indent)
     {
         $exploded = explode("\n", $value);
         $newValue = '|';
@@ -261,7 +261,7 @@ class tx_rnbase_util_Spyc
      * @return string
      * @param $value The string you wish to fold
      */
-    public function _doFolding($value, $indent)
+    private function _doFolding($value, $indent)
     {
         // Don't do anything if wordwrap is set to 0
         if ($this->_dumpWordWrap === 0) {
@@ -320,7 +320,7 @@ class tx_rnbase_util_Spyc
         return $this->result;
     }
 
-    public function loadFromSource($input)
+    private function loadFromSource($input)
     {
         if (!empty($input) && strpos($input, "\n") === false && file_exists($input)) {
             return file($input);
@@ -340,7 +340,7 @@ class tx_rnbase_util_Spyc
      * @return int
      * @param string $line A line from the YAML file
      */
-    public function _getIndent($line)
+    private function _getIndent($line)
     {
         if (!preg_match('/^ +/', $line, $match)) {
             return 0;
@@ -358,7 +358,7 @@ class tx_rnbase_util_Spyc
      * @return array
      * @param string $line A line from the YAML file
      */
-    public function _parseLine($line)
+    private function _parseLine($line)
     {
         if (!$line) {
             return array();
@@ -396,7 +396,7 @@ class tx_rnbase_util_Spyc
      * @param string $value
      * @return mixed
      */
-    public function _toType($value)
+    private function _toType($value)
     {
         if (strpos($value, '#') !== false) {
             $value = trim(preg_replace('/#(.+)$/', '', $value));
@@ -467,7 +467,7 @@ class tx_rnbase_util_Spyc
      * @access private
      * @return array
      */
-    public function _inlineEscape($inline)
+    private function _inlineEscape($inline)
     {
         // There's gotta be a cleaner way to do this...
         // While pure sequences seem to be nesting just fine,
@@ -537,7 +537,7 @@ class tx_rnbase_util_Spyc
         return $explode;
     }
 
-    public function literalBlockContinues($line, $lineIndent)
+    private function literalBlockContinues($line, $lineIndent)
     {
         if (!trim($line)) {
             return true;
@@ -549,7 +549,7 @@ class tx_rnbase_util_Spyc
         return false;
     }
 
-    public function addArray($array, $indent)
+    private function addArray($array, $indent)
     {
         $key = key($array);
         if (!isset($array[$key])) {
@@ -559,10 +559,8 @@ class tx_rnbase_util_Spyc
             $array[$key] = '';
         };
         $value = $array[$key];
-
         $tempPath = self::flatten($this->path);
         eval('$_arr = $this->result' . $tempPath . ';');
-
 
         if ($this->_containsGroupAlias) {
             do {
@@ -574,6 +572,9 @@ class tx_rnbase_util_Spyc
                 eval('$value = $this->result' . self::flatten($groupPath) . ';');
             } while (false);
             $this->_containsGroupAlias = false;
+        }
+        if (!is_array($_arr)) {
+            $_arr = [];
         }
 
         // Adding string or numeric key to the innermost level or $this->arr.
@@ -600,7 +601,7 @@ class tx_rnbase_util_Spyc
     }
 
 
-    public function flatten($array)
+    private static function flatten($array)
     {
         $tempPath = array();
         if (!empty($array)) {
@@ -618,7 +619,7 @@ class tx_rnbase_util_Spyc
 
 
 
-    public function startsLiteralBlock($line)
+    private function startsLiteralBlock($line)
     {
         $lastChar = substr(trim($line), -1);
         if (in_array($lastChar, $this->LiteralBlockMarkers)) {
@@ -628,7 +629,7 @@ class tx_rnbase_util_Spyc
         return false;
     }
 
-    public function addLiteralLine($literalBlock, $line, $literalBlockStyle)
+    private function addLiteralLine($literalBlock, $line, $literalBlockStyle)
     {
         $line = $this->stripIndent($line);
         $line = str_replace("\r\n", "\n", $line);
@@ -647,7 +648,7 @@ class tx_rnbase_util_Spyc
         return $literalBlock . $line;
     }
 
-    public function revertLiteralPlaceHolder($lineArray, $literalBlock)
+    private function revertLiteralPlaceHolder($lineArray, $literalBlock)
     {
         foreach ($lineArray as $k => $_) {
             if (substr($_, -1 * strlen($this->LiteralPlaceHolder)) == $this->LiteralPlaceHolder) {
@@ -658,7 +659,7 @@ class tx_rnbase_util_Spyc
         return $lineArray;
     }
 
-    public function stripIndent($line, $indent = -1)
+    private function stripIndent($line, $indent = -1)
     {
         if ($indent == -1) {
             $indent = $this->_getIndent($line);
@@ -667,7 +668,7 @@ class tx_rnbase_util_Spyc
         return substr($line, $indent);
     }
 
-    public function getParentPathByIndent($indent)
+    private function getParentPathByIndent($indent)
     {
         if ($indent == 0) {
             return array();
@@ -686,7 +687,7 @@ class tx_rnbase_util_Spyc
     }
 
 
-    public function clearBiggerPathValues($indent)
+    private function clearBiggerPathValues($indent)
     {
         if ($indent == 0) {
             $this->path = array();
@@ -705,12 +706,12 @@ class tx_rnbase_util_Spyc
     }
 
 
-    public function isComment($line)
+    private function isComment($line)
     {
         return (preg_match('/^#/', $line));
     }
 
-    public function isArrayElement($line)
+    private function isArrayElement($line)
     {
         if (!$line) {
             return false;
@@ -727,7 +728,7 @@ class tx_rnbase_util_Spyc
         return true;
     }
 
-    public function isHashElement($line)
+    private function isHashElement($line)
     {
         if (!preg_match('/^(.+?):/', $line, $matches)) {
             return false;
@@ -740,7 +741,7 @@ class tx_rnbase_util_Spyc
         return false;
     }
 
-    public function isLiteral($line)
+    private function isLiteral($line)
     {
         if ($this->isArrayElement($line)) {
             return false;
@@ -753,14 +754,14 @@ class tx_rnbase_util_Spyc
     }
 
 
-    public function startsMappedSequence($line)
+    private function startsMappedSequence($line)
     {
         if (preg_match('/^-(.*):$/', $line)) {
             return true;
         }
     }
 
-    public function returnMappedSequence($line)
+    private function returnMappedSequence($line)
     {
         $array = array();
         $key         = trim(substr(substr($line, 1), 0, -1));
@@ -769,7 +770,7 @@ class tx_rnbase_util_Spyc
         return $array;
     }
 
-    public function returnMappedValue($line)
+    private function returnMappedValue($line)
     {
         $array = array();
         $key         = trim(substr($line, 0, -1));
@@ -778,14 +779,14 @@ class tx_rnbase_util_Spyc
         return $array;
     }
 
-    public function startsMappedValue($line)
+    private function startsMappedValue($line)
     {
         if (preg_match('/^(.*):$/', $line)) {
             return true;
         }
     }
 
-    public function returnKeyValuePair($line)
+    private function returnKeyValuePair($line)
     {
         $array = array();
 
@@ -816,7 +817,7 @@ class tx_rnbase_util_Spyc
     }
 
 
-    public function returnArrayElement($line)
+    private function returnArrayElement($line)
     {
         if (strlen($line) <= 1) {
             return array(array());
@@ -830,7 +831,7 @@ class tx_rnbase_util_Spyc
     }
 
 
-    public function nodeContainsGroup($line)
+    private function nodeContainsGroup($line)
     {
         if (strpos($line, '&') === false && strpos($line, '*') === false) {
             return false;
@@ -851,7 +852,7 @@ class tx_rnbase_util_Spyc
         return false;
     }
 
-    public function addGroup($line, $group)
+    private function addGroup($line, $group)
     {
         if (substr($group, 0, 1) == '&') {
             $this->_containsGroupAnchor = substr($group, 1);
@@ -861,7 +862,7 @@ class tx_rnbase_util_Spyc
         }
     }
 
-    public function stripGroup($line, $group)
+    private function stripGroup($line, $group)
     {
         $line = trim(str_replace($group, '', $line));
 

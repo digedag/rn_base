@@ -65,8 +65,8 @@ class tx_rnbase_cache_Manager
      */
     public static function registerCache($name, $frontendKey, $backendKey, $options = array())
     {
-        $frontend = self::getCacheClass($frontendKey);
-        $backend  = self::getCacheClass($backendKey);
+        $frontend = static::getCacheClass($frontendKey);
+        $backend  = static::getCacheClass($backendKey);
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'][$name] = array(
             'frontend' => $frontend,
@@ -82,7 +82,7 @@ class tx_rnbase_cache_Manager
      */
     public static function getCacheClass($cacheKey)
     {
-        return array_key_exists($cacheKey, self::$aliases) ? self::$aliases[$cacheKey][0] : $cacheKey;
+        return array_key_exists($cacheKey, static::$aliases) ? static::$aliases[$cacheKey][0] : $cacheKey;
     }
 
     /**
@@ -94,11 +94,11 @@ class tx_rnbase_cache_Manager
     public static function getCache($name)
     {
         // Es muss ein passender Cache erstellt werden
-        if (!array_key_exists($name, self::$caches)) {
-            self::$caches[$name] = self::getCacheImpl($name);
+        if (!array_key_exists($name, static::$caches)) {
+            static::$caches[$name] = static::getCacheImpl($name);
         }
 
-        return self::$caches[$name];
+        return static::$caches[$name];
     }
     /**
      * Returns the cache instance

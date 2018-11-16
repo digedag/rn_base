@@ -109,7 +109,7 @@ class Tx_Rnbase_Backend_Utility
      */
     public static function fixVersioningPid($table, &$rr, $ignoreWorkspaceMatch = false)
     {
-        $util = self::getBackendUtilityClass();
+        $util = static::getBackendUtilityClass();
         $util::fixVersioningPid($table, $rr, $ignoreWorkspaceMatch);
     }
 
@@ -124,7 +124,7 @@ class Tx_Rnbase_Backend_Utility
      */
     public static function workspaceOL($table, &$row, $wsid = -99, $unsetMovePointers = false)
     {
-        $util = self::getBackendUtilityClass();
+        $util = static::getBackendUtilityClass();
         $util::workspaceOL($table, $row, $wsid, $unsetMovePointers);
     }
 
