@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************
  *  Copyright notice
  *
@@ -25,6 +24,47 @@
 /**
  * Wrapperclass for TYPO3 Extension Manager
  * @author René Nitzsche
+ *
+ * @method static \TYPO3\CMS\Core\Cache\CacheManager getCacheManager()
+ * @method static \TYPO3\CMS\Extbase\SignalSlot\Dispatcher getSignalSlotDispatcher()
+ * PATHS and other evaluation
+ * @method static bool isLoaded(string $key, bool $exitOnError = false)
+ * @method static string extPath(string $key, string $script = '')
+ * @method static string extRelPath(string $key)
+ * @method static string siteRelPath(string $key)
+ * @method static string getExtensionVersion(string $key)
+ * Adding BACKEND features
+ * @method static void addTCAcolumns(string $table, array $columnArray, bool $addTofeInterface = false)
+ * @method static void addToAllTCAtypes(string $table, string $newFieldsString, string $typeList = '', string $position = '')
+ * @method static void addFieldsToAllPalettesOfField(string $table, string $field, string $addFields, string $insertionPosition = '')
+ * @method static void addFieldsToPalette(string $table, string $palette, string $addFields, string $insertionPosition = '')
+ * @method static void addTcaSelectItem(string $table, string $field, array $item, string $relativeToField = '', string $relativePosition = '')
+ * @method static array getFileFieldTCAConfig(string $fieldName, array $customSettingOverride = [], string $allowedFileExtensions = '', string $disallowedFileExtensions = '')
+ * @method static void addFieldsToUserSettings(string $addFields, string $insertionPosition = '')
+ * @method static void allowTableOnStandardPages(string $table)
+ * @method static void addExtJSModule(string $extensionName, string $mainModuleName, string $subModuleName = '', string $position = '', array $moduleConfiguration = [])
+ * @method static array configureModule(string $moduleSignature, string $modulePath)
+ * @method static void addModule(string $main, string $sub = '', string $position = '', string $path = '', string $moduleConfiguration = [])
+ * @method static void registerExtDirectComponent(string $endpointName, string $callbackClass, string $moduleName = null, string $accessLevel = null)
+ * @method static void registerAjaxHandler(string $ajaxId, string $callbackMethod, bool $csrfTokenCheck = true)
+ * @method static void insertModuleFunction(string $modname, string $className, string $classPath = null, string $title, string $MM_key = 'function', string $WS = '')
+ * @method static void appendToTypoConfVars(string $group, string $key, string $content)
+ * @method static void addPageTSConfig(string $content)
+ * @method static void addUserTSConfig(string $content)
+ * Adding SERVICES features
+ * @method static void addService(string $extKey, string $serviceType, string $serviceKey, array $info)
+ * @method static array|false findService(string $serviceType, string $serviceSubType = '', array $excludeServiceKeys = [])
+ * @method static array findServiceByKey(string $serviceKey)
+ * @method static bool isServiceAvailable(string $serviceType, string $serviceKey, array $serviceDetails)
+ * @method static void deactivateService(string $serviceType, string $serviceKey)
+ * Adding FRONTEND features
+ * @method static void addPlugin(array $itemArray, string $type = 'list_type', string $extensionKey = null)
+ * @method static void addPiFlexFormValue(string $piKeyToMatch, string $value, string $CTypeToMatch = 'list')
+ * @method static void addToInsertRecords(string $table, string $content_table = 'tt_content', string $content_field = 'records')
+ * @method static void addStaticFile(string $extKey, string $path, string $title)
+ * @method static void registerPageTSConfigFile(string $extKey, string $filePath, string $title)
+ * @method static void addTypoScriptSetup(string $content)
+ * @method static void addTypoScriptConstants(string $content)
  */
 class tx_rnbase_util_Extensions
 {
