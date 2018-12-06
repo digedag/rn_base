@@ -167,9 +167,14 @@ class tx_rnbase_util_TCA
      */
     public static function getDeletedFieldForTable($tableName)
     {
-        $cols = self::getEnableColumnsForTable($tableName);
+        if ((
+            empty($GLOBALS['TCA'][$tableName]) ||
+            empty($GLOBALS['TCA'][$tableName]['ctrl']['delete'])
+        )) {
+            return '';
+        }
 
-        return empty($cols['delete']) ? '' : $cols['delete'];
+        return $GLOBALS['TCA'][$tableName]['ctrl']['delete'];
     }
     /**
      * Liefert den Spaltennamen für die deaktivierte elemente der Tabelle.
