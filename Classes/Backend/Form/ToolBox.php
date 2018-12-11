@@ -1160,7 +1160,8 @@ class Tx_Rnbase_Backend_Form_ToolBox
     {
         $data = tx_rnbase_parameters::getPostOrGetParameter($key);
         if (is_array($data)) {
-            list($itemid, ) = each($data);
+            reset($data);
+            $itemid = key($data);
             $changed[$key] = $itemid;
         }
         $ret = Tx_Rnbase_Backend_Utility::getModuleData(array($key => ''), $changed, $modName);

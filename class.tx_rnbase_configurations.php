@@ -1075,8 +1075,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
     public static function joinTSarrays($conf, $old_conf)
     {
         if (is_array($old_conf)) {
-            reset($old_conf);
-            while (list($key, $val) = each($old_conf)) {
+            foreach ($old_conf as $key => $val) {
                 if (is_array($val)) {
                     $conf[$key] = self::joinTSarrays($conf[$key], $val);
                 } else {

@@ -764,13 +764,12 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
     {
         $where = '';
         $where_p = array();
-        while (list(, $val) = each($kw)) {
+        foreach ($kw as $val) {
             $val = trim($val);
             if (!strlen($val)) {
                 continue;
             }
-            reset($searchFields);
-            while (list(, $field) = each($searchFields)) {
+            foreach ($searchFields as $field) {
                 list($tableAlias, $col) = explode('.', $field); // Split alias and column
                 $wherePart = $this->setSingleWhereField($tableAlias, $operator, $col, $val);
                 if (trim($wherePart) !== '') {
@@ -804,15 +803,13 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         // (FIND_IN_SET(1, match.player) OR FIND_IN_SET(4, match.player))
         $where = '';
         $where_p = array();
-        reset($kw);
-        while (list(, $val) = each($kw)) {
+        foreach ($kw as $val) {
             $val = trim($val);
             if (!strlen($val)) {
                 continue;
             }
             $val = $TYPO3_DB->escapeStrForLike($TYPO3_DB->quoteStr($val, $searchTable), $searchTable);
-            reset($searchFields);
-            while (list(, $field) = each($searchFields)) {
+            foreach ($searchFields as $field) {
                 $where_p[] = 'FIND_IN_SET(\''.$val.'\', '.$field.')';
             }
         }
@@ -837,13 +834,12 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
             list($searchTable, $col) = explode('.', $col);
         }
         $wheres = array();
-        while (list(, $val) = each($kw)) {
+        foreach ($kw as $val) {
             $val = trim($val);
             $where_p = array();
             if (strlen($val) >= 2) {
                 $val = $TYPO3_DB->escapeStrForLike($TYPO3_DB->quoteStr($val, $searchTable), $searchTable);
-                reset($searchFields);
-                while (list(, $field) = each($searchFields)) {
+                foreach ($searchFields as $field) {
                     $where_p[] = $field.' LIKE \'%'.$val.'%\'';
                 }
             }
