@@ -231,20 +231,17 @@ class tx_rnbase_util_Templates
                 $storeArr = array();
 
                 // Finding subparts and substituting them with the subpart as a marker
-                reset($sPkeys);
-                while (list(, $sPK) = each($sPkeys)) {
+                foreach ($sPkeys as $sPK) {
                     $content = self::substituteSubpart($content, $sPK, $sPK);
                 }
 
                 // Finding subparts and wrapping them with markers
-                reset($wPkeys);
-                while (list(, $wPK) = each($wPkeys)) {
+                foreach ($wPkeys as $wPK) {
                     $content = self::substituteSubpart($content, $wPK, array($wPK, $wPK));
                 }
 
                 // traverse keys and quote them for reg ex.
-                reset($aKeys);
-                while (list($tK, $tV) = each($aKeys)) {
+                foreach ($aKeys as $tK => $tV) {
                     $aKeys[$tK] = quotemeta($tV);
                 }
                 $regex = implode('|', $aKeys);
@@ -273,10 +270,9 @@ class tx_rnbase_util_Templates
         $valueArr = array_merge($markContentArray, $subpartContentArray, $wrappedSubpartContentArray);
 
         $wSCA_reg = array();
-        reset($storeArr['k']);
         $content = '';
         // traversin the keyList array and merging the static and dynamic content
-        while (list($n, $keyN) = each($storeArr['k'])) {
+        foreach ($storeArr['k'] as $n => $keyN) {
             $content .= $storeArr['c'][$n];
             if (!is_array($valueArr[$keyN])) {
                 $content .= $valueArr[$keyN];

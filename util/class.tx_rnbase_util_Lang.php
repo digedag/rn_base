@@ -159,7 +159,7 @@ class tx_rnbase_util_Lang
         if (!is_array($langArr)) {
             return;
         }
-        while (list($k, $lA) = each($langArr)) {
+        foreach ($langArr as $k => $lA) {
             if (is_array($lA)) {
                 $k = substr($k, 0, -1);
                 foreach ($lA as $llK => $llV) {

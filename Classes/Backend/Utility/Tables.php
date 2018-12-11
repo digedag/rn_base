@@ -149,7 +149,6 @@ class Tx_Rnbase_Backend_Utility_Tables
             $row[] = tx_rnbase_mod_Util::getSpriteIcon($spriteIconName);
         }
 
-        reset($columns);
         foreach ($columns as $column => $data) {
             // Da wir Daten für eine HTML Tabelle haben, werden
             // diese immer escaped, um XSS zu verhindern.

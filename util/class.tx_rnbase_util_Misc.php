@@ -288,7 +288,7 @@ MAYDAYPAGE;
             if (!count($mMixed)) {
                 $result .= "<tr><td><span style='" . $sStyleBlack . "'><b>".htmlspecialchars('EMPTY!').'</b></span></td></tr>';
             } else {
-                while (list($key, $val) = each($mMixed)) {
+                foreach ($mMixed as $key => $val) {
                     $result .= "<tr><td valign='top'><span style='" . $sStyleBlack . "'>".htmlspecialchars((string)$key).'</span></td><td>';
 
                     if (is_array($val)) {

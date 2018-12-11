@@ -369,7 +369,7 @@ class tx_rnbase_util_FormatUtil
         $conf = $this->configurations->get($confId);
         // Alle Metadaten auslesen und wrappen
         $meta = array();
-        while (list($colname, $value) = each($media->meta)) {
+        foreach ($media->meta as $colname => $value) {
             $meta[$colname] = $this->stdWrap($value, $conf[$colname.'.']);
         }
 

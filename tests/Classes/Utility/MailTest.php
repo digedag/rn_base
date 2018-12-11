@@ -87,9 +87,8 @@ class Tx_Rnbase_Utility_MailTest extends tx_rnbase_tests_BaseTestCase
         $this->assertInstanceOf('TYPO3\CMS\Core\Mail\MailMessage', $message);
 
         $this->assertEquals('my subject', $message->getSubject());
-        list($addr, $name) = each($message->getTo());
-        $this->assertEquals('to1@test.de', $addr);
-        $this->assertEquals('to1', $name);
+        $to = $message->getTo();
+        $this->assertSame(['to1@test.de' => 'to1'], $to);
     }
     /**
      * Erstellt Mail-Instanz. Aufruf von send liefert das interne Mail-Objekt als Ergebnis.

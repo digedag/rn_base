@@ -123,7 +123,6 @@ abstract class tx_rnbase_util_SearchBase
             }
         }
         if (is_array($joinedFields)) {
-            reset($joinedFields);
             foreach ($joinedFields as $key => $joinedField) {
                 // Für die JOINED-Fields müssen die Tabellen gesetzt werden, damit der SQL-JOIN passt
                 foreach ($joinedField['cols'] as $field) {
