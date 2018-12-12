@@ -48,7 +48,8 @@ class FactoryTest extends \tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @group unit
+     * @group integration
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testGetViewInstance()
     {

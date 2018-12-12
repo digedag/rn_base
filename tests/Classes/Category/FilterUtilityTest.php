@@ -60,7 +60,8 @@ class Tx_Rnbase_Category_FilterUtilityTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @group unit
+     * @group functional
+     * @TODO: refactor, requires $GLOBALS['TYPO3_DB']!
      */
     public function testGetCategoryUidsOfCurrentDetailViewItem()
     {
@@ -184,7 +185,8 @@ class Tx_Rnbase_Category_FilterUtilityTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @group unit
+     * @group functional
+     * @TODO: refactor, requires $GLOBALS['TYPO3_DB']!
      */
     public function testGetCategoryUidsByReference()
     {

@@ -30,7 +30,7 @@
  * @subpackage tx_rnbase_tests
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-class tx_rnbase_tests_parameters_testcase extends Tx_Phpunit_TestCase
+class tx_rnbase_tests_parameters_testcase extends tx_rnbase_tests_BaseTestCase
 {
     public function testGet()
     {

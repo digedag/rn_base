@@ -23,7 +23,7 @@
 ***************************************************************/
 
 
-class tx_rnbase_tests_rnbase_testcase extends Tx_Phpunit_TestCase
+class tx_rnbase_tests_rnbase_testcase extends tx_rnbase_tests_BaseTestCase
 {
     public function test_makeInstanceSimpleObject()
     {

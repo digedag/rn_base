@@ -76,7 +76,8 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @group unit
+     * @group functional
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testDoSelectWithEnableFieldsBe()
     {
@@ -95,7 +96,8 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @group unit
+     * @group functional
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testDoSelectWithEnableFieldsFe()
     {
@@ -110,7 +112,8 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @group unit
+     * @group functional
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testIsFrontend()
     {
@@ -118,7 +121,8 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @group unit
+     * @group functional
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testDoSelectWithEnableFieldsFeLeavesEnableFieldsForFeIfLoadHiddenObjectAndBeUser()
     {
@@ -138,7 +142,8 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @group unit
+     * @group functional
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testDoSelectWithLoadHiddenObjectDeactivatesCacheNotIfNotInFrontend()
     {
@@ -157,7 +162,8 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @group unit
+     * @group functional
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testDoSelectWithEnableFieldsFeSetsEnableFieldsForFeIfLoadHiddenObjectButNoBeUser()
     {
@@ -176,7 +182,8 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @group unit
+     * @group functional
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testDoSelectWithEnableFieldsOffSetsEnableFieldsForBeNotIfLoadHiddenObjectAndBeUser()
     {
@@ -192,7 +199,8 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @group unit
+     * @group functional
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testDoSelectWithEnableFieldsOff()
     {
@@ -231,7 +239,8 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @group unit
+     * @group functional
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function test_searchWhere()
     {

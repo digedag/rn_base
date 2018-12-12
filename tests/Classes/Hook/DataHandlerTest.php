@@ -47,7 +47,8 @@ class Tx_Rnbase_Hook_DataHandlerTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @group unit
+     * @group integration
+     * @TODO: refactor, requires initialiced typo3 config
      */
     public function testHookIsRegistered()
     {

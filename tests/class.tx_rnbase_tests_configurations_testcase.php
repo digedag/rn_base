@@ -23,7 +23,7 @@
 ***************************************************************/
 tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
-class tx_rnbase_tests_configurations_testcase extends Tx_Phpunit_TestCase
+class tx_rnbase_tests_configurations_testcase extends tx_rnbase_tests_BaseTestCase
 {
     public function test_tsSetup()
     {

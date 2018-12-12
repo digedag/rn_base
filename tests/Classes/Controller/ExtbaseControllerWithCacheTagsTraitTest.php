@@ -63,7 +63,8 @@ class ExtbaseControllerWithCacheTagsTraitTest extends \tx_rnbase_tests_BaseTestC
     }
 
     /**
-     * @group unit
+     * @group functional
+     * @TODO: refactor, requires database connection!
      */
     public function testHandleCacheTags()
     {
@@ -93,7 +94,8 @@ class ExtbaseControllerWithCacheTagsTraitTest extends \tx_rnbase_tests_BaseTestC
     }
 
     /**
-     * @group unit
+     * @group functional
+     * @TODO: refactor, requires database connection!
      */
     public function testHandleCacheTagsIfNotConfigured()
     {
@@ -109,7 +111,8 @@ class ExtbaseControllerWithCacheTagsTraitTest extends \tx_rnbase_tests_BaseTestC
     }
 
     /**
-     * @group unit
+     * @group functional
+     * @TODO: refactor, requires database connection!
      */
     public function testHandleCacheTagsIfConfiguredForOtherAction()
     {

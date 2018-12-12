@@ -246,7 +246,8 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @group unit
+     * @group functional
+     * @TODO: refactor, requires $GLOBALS['LANG']!
      */
     public function testCreateNewLink()
     {
@@ -326,7 +327,7 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
         $formTool
             ->expects(self::once())
             ->method('getLinkThisScript')
-            ->with(false, ['params' => array('parameter' => 'test')])
+            ->with(false, ['params' => array('parameter' => 'test', 'id' => '0')])
             ->will(self::returnValue('jumpUrl'));
 
         self::assertRegExp(
@@ -350,7 +351,7 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
         $formTool
             ->expects(self::once())
             ->method('getLinkThisScript')
-            ->with(false, ['params' => array('parameter' => 'test')])
+            ->with(false, ['params' => array('parameter' => 'test', 'id' => '0')])
             ->will(self::returnValue('jumpUrl'));
 
         self::assertRegExp(

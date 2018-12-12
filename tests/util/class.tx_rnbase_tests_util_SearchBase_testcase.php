@@ -24,7 +24,7 @@
 
 tx_rnbase::load('tx_rnbase_util_DB');
 
-class tx_rnbase_tests_util_SearchBase_testcase extends Tx_Phpunit_TestCase
+class tx_rnbase_tests_util_SearchBase_testcase extends tx_rnbase_tests_BaseTestCase
 {
     public function test_searchFieldJoinedWithoutValue()
     {

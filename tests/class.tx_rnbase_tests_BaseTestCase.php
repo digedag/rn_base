@@ -409,10 +409,17 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
         $class = new \ReflectionClass($className);
         $abstractModifier = $class->isAbstract() ? 'abstract ' : '';
 
+        $interface = '';
+        if (class_exists('\\Nimut\\TestingFramework\\MockObject\\AccessibleMockObjectInterface')) {
+            $interface = 'implements \\Nimut\\TestingFramework\\MockObject\\AccessibleMockObjectInterface';
+        } else if (class_exists('\\Tx_Phpunit_Interface_AccessibleObject')) {
+            $interface = 'implements \\Tx_Phpunit_Interface_AccessibleObject';
+        }
+
         // @TODO: #43 refactor to a stand alone interface
         eval(
             $abstractModifier . 'class ' . $accessibleClassName .
-                ' extends ' . $className . ' implements \\Tx_Phpunit_Interface_AccessibleObject {' .
+                ' extends ' . $className . ' ' . $interface . ' {' .
                     'public function _call($methodName) {' .
                         'if ($methodName === \'\') {' .
                             'throw new \InvalidArgumentException(\'$methodName must not be empty.\', 1334663993);' .

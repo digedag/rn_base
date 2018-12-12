@@ -30,7 +30,8 @@ class Tx_Rnbase_Backend_Utility_TablesTest extends tx_rnbase_tests_BaseTestCase
 {
 
     /**
-     * @group unit
+     * @group functional
+     * @TODO: refactor, requires $GLOBALS['LANG']!
      */
     public function testPrepareTable()
     {

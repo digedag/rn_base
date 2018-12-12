@@ -93,7 +93,8 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @group unit
+     * @group integration
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testAddExcludedParametersForCacheHash()
     {
@@ -116,7 +117,8 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @group unit
+     * @group integration
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testAddExcludedParametersForCacheHashIfSomeExistAlready()
     {
@@ -141,7 +143,8 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @group unit
+     * @group integration
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testGenerateCacheHashForUrlQueryString()
     {
@@ -151,7 +154,8 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @group unit
+     * @group integration
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testAddCacheHashRequiredParameters()
     {
@@ -179,7 +183,8 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @group unit
+     * @group integration
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testAddCacheHashRequiredParametersIfSomeExistAlready()
     {
@@ -211,7 +216,8 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @group unit
+     * @group integration
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testAddCacheTagsToPage()
     {
@@ -225,7 +231,8 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @group unit
+     * @group integration
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testAddCacheTagsToPageIfNoConfiguration()
     {

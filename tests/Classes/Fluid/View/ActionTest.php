@@ -60,7 +60,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @group unit
+     * @group integration
      */
     public function testGetConfigurationId()
     {
@@ -326,7 +326,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @group unit
+     * @group integration
      */
     public function testGetTypoScriptConfigurationForFluid()
     {

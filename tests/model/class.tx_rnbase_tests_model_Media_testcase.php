@@ -28,7 +28,7 @@ tx_rnbase::load('tx_rnbase_model_media');
  *
  * @author Hannes Bochmann <hannes.bochmann@dmk-business.de>
  */
-class tx_rnbase_tests_model_Media_testcase extends Tx_Phpunit_TestCase
+class tx_rnbase_tests_model_Media_testcase extends tx_rnbase_tests_BaseTestCase
 {
 
     /**

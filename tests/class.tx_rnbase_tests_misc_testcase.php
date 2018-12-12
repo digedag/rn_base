@@ -32,7 +32,7 @@ class tx_rnbase_dummyMisc extends tx_rnbase_util_Misc
     }
 }
 
-class tx_rnbase_tests_misc_testcase extends Tx_Phpunit_TestCase
+class tx_rnbase_tests_misc_testcase extends tx_rnbase_tests_BaseTestCase
 {
     public function test_encodeParams()
     {

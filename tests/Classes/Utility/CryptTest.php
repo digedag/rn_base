@@ -45,6 +45,16 @@ class Tx_Rnbase_Utility_CryptTest extends tx_rnbase_tests_BaseTestCase
      */
     protected function setUp()
     {
+
+        // Function mcrypt_module_open() is deprecated since PHP 7.1 and was removed in PHP 7.2
+        // switch to openssl like this https://github.com/contao/core/pull/8589/files
+
+        if (version_compare(PHP_VERSION, '7.1.0', '>')) {
+            $this->markTestSkipped(
+                'Function mcrypt_module_open() is deprecated since PHP 7.1 and was removed in PHP 7.2'
+            );
+        }
+
         $this->backup['encryptionKey']
             = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']

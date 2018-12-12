@@ -49,7 +49,8 @@ class PageBaseViewHelper_testcase extends BaseViewHelperTest
 {
 
     /**
-     * @group unit
+     * @group integration
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testChildrenAreUsedAsLinkTextByDefault()
     {
@@ -70,7 +71,8 @@ class PageBaseViewHelper_testcase extends BaseViewHelperTest
     }
 
     /**
-     * @group unit
+     * @group integration
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testPageNumberIsUsedAsLinkTextIfConfigured()
     {

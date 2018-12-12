@@ -33,6 +33,8 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
  */
 class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_tests_BaseTestCase
 {
+    private $backup = [];
+
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
@@ -41,6 +43,7 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_te
      */
     protected function setUp()
     {
+        $this->backup['TCA'] = $GLOBALS['TCA'];
         if (empty($GLOBALS['EXEC_TIME'])) {
             $GLOBALS['EXEC_TIME'] = time();
         }
@@ -54,6 +57,7 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_te
      */
     protected function tearDown()
     {
+        $GLOBALS['TCA'] = $this->backup['TCA'];
     }
 
     /**
@@ -104,6 +108,18 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_te
      */
     public function testPersistNewModel()
     {
+        // simulate tca
+        $GLOBALS['TCA']['tt_content'] = [
+            'ctrl' => [
+                'crdate' => 'crdate',
+                'tstamp' => 'tstamp',
+            ],
+            'columns' => [
+                'pid' => [],
+                'header' => [],
+            ]
+        ];
+
         $repo = $this->getRepository();
         $connection = $this->callInaccessibleMethod($repo, 'getConnection');
         $repo->getEmptyModel()->setTableName('tt_content');
@@ -148,7 +164,7 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_te
         // a new model requires no dirty state
         self::assertFalse($model->isDirty());
 
-        $repo->persist($model);
+        $repo->persist($model, []);
 
         // check dirty state after persist
         self::assertFalse($model->isDirty());
@@ -168,6 +184,17 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_te
      */
     public function testPersistExistingModel()
     {
+        // simulate tca
+        $GLOBALS['TCA']['tt_content'] = [
+            'ctrl' => [
+                'crdate' => 'crdate',
+                'tstamp' => 'tstamp',
+            ],
+            'columns' => [
+                'header' => [],
+            ]
+        ];
+
         $repo = $this->getRepository();
         $connection = $this->callInaccessibleMethod($repo, 'getConnection');
         $repo->getEmptyModel()->setTableName('tt_content');

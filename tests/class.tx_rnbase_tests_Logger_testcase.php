@@ -25,7 +25,7 @@
 tx_rnbase::load('tx_rnbase_util_Logger');
 
 
-class tx_rnbase_tests_Logger_testcase extends Tx_Phpunit_TestCase
+class tx_rnbase_tests_Logger_testcase extends tx_rnbase_tests_BaseTestCase
 {
     public function test_logger()
     {

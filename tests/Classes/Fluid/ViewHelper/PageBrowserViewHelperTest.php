@@ -61,7 +61,8 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
     }
 
     /**
-     * @group unit
+     * @group integration
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderReturnsEmptyStringIfNoPageBrowserSetToTemplateVariableContainer()
     {
@@ -71,7 +72,8 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
     }
 
     /**
-     * @group unit
+     * @group integration
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderReturnsEmptyStringIfOnePageAndHideIfSingelPageIsTrue()
     {
@@ -87,7 +89,8 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
     }
 
     /**
-     * @group unit
+     * @group integration
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderCallsOnlyNoRenderPageMethodIfPointerZeroAndReturnsEmptyString()
     {
@@ -128,7 +131,8 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
     }
 
     /**
-     * @group unit
+     * @group integration
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderCallsRenderFirstPageAndRenderPrevPageMethodIfPointer2AndTotalPages3AndReturnsCorrectBrowserParts()
     {
@@ -176,7 +180,8 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
     }
 
     /**
-     * @group unit
+     * @group integration
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderCallsRenderNextPageAndRenderLastPageMethodIfPointer0AndTotalPages2AndReturnsCorrectBrowserParts()
     {
@@ -224,7 +229,8 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
     }
 
     /**
-     * @group unit
+     * @group integration
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderCallsRenderNormalPageAndRenderCurrentPageCorrect()
     {
@@ -277,7 +283,8 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
     }
 
     /**
-     * @group unit
+     * @group integration
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderAddsAndRemovesQualifierCorrectInViewHelperVariableContainer()
     {
@@ -319,7 +326,8 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
     }
 
     /**
-     * @group unit
+     * @group integration
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderAddsAndRemovesQualifierCorrectInViewHelperVariableContainerIfQualifierFromConfigurations()
     {
@@ -378,7 +386,8 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
     }
 
     /**
-     * @group unit
+     * @group integration
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderAddsAndRemovesCountAndTotalPagesCorrectInTemplateVariableContainer()
     {
@@ -421,7 +430,8 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
     }
 
     /**
-     * @group unit
+     * @group integration
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderEvaluatesPageBrowserViewHelperInChildNodesCorrect()
     {
@@ -462,6 +472,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
     /**
      * @group integration
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderIfNoPageBrowser()
     {
@@ -480,6 +491,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
     /**
      * @group integration
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderRespectingHideIfSinglePageIfPresent()
     {
@@ -504,6 +516,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
     /**
      * @group integration
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderRespectingHideIfSinglePageIfNotPresent()
     {
@@ -527,6 +540,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
     /**
      * @group integration
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderIfOnFirstPage()
     {
@@ -556,6 +570,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
     /**
      * @group integration
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderIfOnMiddlePage()
     {
@@ -588,6 +603,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
     /**
      * @group integration
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderIfOnLastPage()
     {
@@ -618,6 +634,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
     /**
      * @group integration
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderRespectsMaxPagesConfiguration()
     {

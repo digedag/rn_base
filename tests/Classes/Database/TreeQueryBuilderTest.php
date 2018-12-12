@@ -28,7 +28,7 @@
  *
  * @author Mario Seidel <mario.seidel@dmk-ebusiness.de>
  */
-class Tx_Rnbase_Database_TreeQueryBuilderTest extends Tx_Phpunit_TestCase
+class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCase
 {
     /**
      * test tree sturcture like:
