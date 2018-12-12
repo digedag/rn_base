@@ -55,8 +55,6 @@ script:
     - >
         echo;
         echo "Running unit tests";
-        .Build/bin/phpunit -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit/PHP/
-        # Only start the unittests!
         .Build/bin/phpunit --group unit -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml tests/
 
 # disabled, because there are direct tx_rnbase::load calls in the files!
