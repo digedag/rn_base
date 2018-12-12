@@ -113,7 +113,7 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
             // throw an exception for new models
             if (!$model->isPersisted()) {
                 throw new Exception(
-                    'There is no data in "get_class($model)" to persist.'
+                    'There is no data in "' . get_class($model) . '" to persist.'
                 );
             }
 
