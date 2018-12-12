@@ -44,7 +44,7 @@ class Action extends \tx_rnbase_view_Base
      * @return string
      * @throws \Exception
      */
-    public function render($templateName, &$configurations)
+    public function render($templateName, $configurations)
     {
         $extensionKey = $configurations->getExtensionKey();
         if (strlen($extensionKey) === 0) {
