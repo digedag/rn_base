@@ -30,7 +30,10 @@
         "php": ">=5.6.0"
     },
     "require-dev": {
-        "typo3/testing-framework": "*"
+        "namelesscoder/typo3-repository-client": "^1.2",
+        "nimut/testing-framework": "^1.0",
+        "mikey179/vfsStream": "^1.4",
+        "phpunit/phpunit": "^4.7"
     },
     "autoload": {
         "classmap": [
@@ -56,5 +59,31 @@
             "class.tx_rnbase_parameters.php"
         ],
         "psr-4": {"Sys25\\RnBase\\" : "Classes"}
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Sys25\\RnBase\\Tests\\" : "Tests/Unit/PHP",
+            "TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/",
+            "TYPO3\\CMS\\Fluid\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/fluid/Tests/"
+        }
+    },
+    "config": {
+        "vendor-dir": ".Build/vendor",
+        "bin-dir": ".Build/bin",
+        "preferred-install": {
+            "typo3/cms": "source"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "mkdir -p .Build/Web/typo3conf/ext/",
+            "[ -L .Build/Web/typo3conf/ext/rn_base ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/rn_base"
+        ]
+    },
+    "extra": {
+        "typo3/cms": {
+            "cms-package-dir": "{$vendor-dir}/typo3/cms",
+            "web-dir": ".Build/Web"
+        }
     }
 }

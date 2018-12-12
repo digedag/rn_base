@@ -147,7 +147,8 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @group unit
+     * @group integration
+     * @TODO: refactor, requires $GLOBALS['BE_USER']!
      */
     public function testGetJavaScriptForLinkToDataHandlerActionInTypo387()
     {
@@ -167,7 +168,8 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @group unit
+     * @group integration
+     * @TODO: refactor, requires $GLOBALS['BE_USER']!
      */
     public function testGetJavaScriptForLinkToDataHandlerActionAddsNecessaryJavaScriptsInTypo387()
     {
@@ -201,7 +203,8 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @group unit
+     * @group integration
+     * @TODO: refactor, requires $GLOBALS['BE_USER']!
      */
     public function testGetJavaScriptForLinkToDataHandlerActionHandlesConfirmCode()
     {
@@ -246,7 +249,7 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @group functional
+     * @group integration
      * @TODO: refactor, requires $GLOBALS['LANG']!
      */
     public function testCreateNewLink()
