@@ -43,13 +43,11 @@ class tx_rnbase_view_Base
     private $controller;
 
     /**
-     * Enter description here...
-     *
      * @param string $view default name of view
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
      * @return string
      */
-    public function render($view, &$configurations)
+    public function render($view, $configurations)
     {
         $this->_init($configurations);
         $templateCode = tx_rnbase_util_Files::getFileResource($this->getTemplate($view, '.html'));
