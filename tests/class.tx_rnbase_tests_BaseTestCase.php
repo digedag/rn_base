@@ -412,7 +412,7 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
         $interface = '';
         if (class_exists('\\Nimut\\TestingFramework\\MockObject\\AccessibleMockObjectInterface')) {
             $interface = 'implements \\Nimut\\TestingFramework\\MockObject\\AccessibleMockObjectInterface';
-        } else if (class_exists('\\Tx_Phpunit_Interface_AccessibleObject')) {
+        } elseif (class_exists('\\Tx_Phpunit_Interface_AccessibleObject')) {
             $interface = 'implements \\Tx_Phpunit_Interface_AccessibleObject';
         }
 
