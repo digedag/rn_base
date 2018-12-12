@@ -27,13 +27,25 @@
     },
     "require": {
         "typo3/cms-core": "^6.2 || ^7.6 || ^8.7",
-        "php": ">=5.6.0"
+        "php": ">=5.6.0",
+        "ext-curl": "*",
+        "ext-dom": "*",
+        "ext-iconv": "*",
+        "ext-json": "*",
+        "ext-simplexml": "*",
+        "ext-zip": "*"
     },
     "require-dev": {
         "namelesscoder/typo3-repository-client": "^1.2",
         "nimut/testing-framework": "^1.0",
         "mikey179/vfsStream": "^1.4",
         "phpunit/phpunit": "^4.7"
+    },
+    "suggest": {
+        "ext-mcrypt": "*",
+        "ext-mysql": "*",
+        "ext-mysqli": "*",
+        "ext-mssql": "*"
     },
     "autoload": {
         "classmap": [
