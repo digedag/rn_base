@@ -301,7 +301,7 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
             // the new doctrine statemant since typo3 8
             is_a($res, 'Doctrine\\DBAL\\Driver\\Statement') ||
             // the old mysqli ressources
-            is_a($res ,'mysqli_result') ||
+            is_a($res, 'mysqli_result') ||
             // the very old mysql ressources
             is_resource($res)
         );
@@ -497,7 +497,6 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
             }
             $time = microtime(true);
             $mem = memory_get_usage();
-
         }
 
         $storeLastBuiltQuery = $database->store_lastBuiltQuery;
