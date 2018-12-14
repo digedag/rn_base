@@ -28,6 +28,20 @@
 class tx_rnbase_util_db_TYPO3 implements tx_rnbase_util_db_IDatabase, tx_rnbase_util_db_IDatabaseT3
 {
     /**
+     * Internally: Set to last built query (not necessarily executed...)
+     *
+     * @var string
+     */
+    public $debug_lastBuiltQuery = '';
+
+    /**
+     * Set "TRUE" if you want the last built query to be stored in $debug_lastBuiltQuery independent of $this->debugOutput
+     *
+     * @var bool
+     */
+    public $store_lastBuiltQuery = false;
+
+    /**
      * Creates a SELECT SQL-statement
      *
      * @param string List of fields to select from the table. This is what comes right after "SELECT ...". Required value.
@@ -40,7 +54,14 @@ class tx_rnbase_util_db_TYPO3 implements tx_rnbase_util_db_IDatabase, tx_rnbase_
      */
     public function SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '')
     {
-        return $GLOBALS['TYPO3_DB']->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
+        $query = $GLOBALS['TYPO3_DB']->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
+
+        // Return query
+        if ($this->store_lastBuiltQuery) {
+            $this->debug_lastBuiltQuery = $query;
+        }
+
+        return $query;
     }
 
     /**
@@ -56,6 +77,10 @@ class tx_rnbase_util_db_TYPO3 implements tx_rnbase_util_db_IDatabase, tx_rnbase_
      */
     public function exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '')
     {
+        if ($this->store_lastBuiltQuery) {
+            $this->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
+        }
+
         return $GLOBALS['TYPO3_DB']->exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
     }
     /**
@@ -68,7 +93,14 @@ class tx_rnbase_util_db_TYPO3 implements tx_rnbase_util_db_IDatabase, tx_rnbase_
      */
     public function INSERTquery($table, $fields_values, $no_quote_fields = false)
     {
-        return $GLOBALS['TYPO3_DB']->INSERTquery($table, $fields_values, $no_quote_fields);
+        $query = $GLOBALS['TYPO3_DB']->INSERTquery($table, $fields_values, $no_quote_fields);
+
+        // Return query
+        if ($this->store_lastBuiltQuery) {
+            $this->debug_lastBuiltQuery = $query;
+        }
+
+        return $query;
     }
     /**
      * Creates and executes an INSERT SQL-statement for $table from the array with field/value pairs $fields_values.
@@ -80,7 +112,10 @@ class tx_rnbase_util_db_TYPO3 implements tx_rnbase_util_db_IDatabase, tx_rnbase_
      */
     public function exec_INSERTquery($table, $fields_values, $no_quote_fields = false)
     {
-        return $GLOBALS['TYPO3_DB']->execINSERTquery($table, $fields_values, $no_quote_fields);
+        if ($this->store_lastBuiltQuery) {
+            $this->INSERTquery($table, $fields_values, $no_quote_fields);
+        }
+        return $GLOBALS['TYPO3_DB']->exec_INSERTquery($table, $fields_values, $no_quote_fields);
     }
 
     /**
@@ -94,7 +129,14 @@ class tx_rnbase_util_db_TYPO3 implements tx_rnbase_util_db_IDatabase, tx_rnbase_
      */
     public function UPDATEquery($table, $where, $fields_values, $no_quote_fields = false)
     {
-        return $GLOBALS['TYPO3_DB']->UPDATEquery($table, $where, $fields_values, $no_quote_fields);
+        $query = $GLOBALS['TYPO3_DB']->UPDATEquery($table, $where, $fields_values, $no_quote_fields);
+
+        // Return query
+        if ($this->store_lastBuiltQuery) {
+            $this->debug_lastBuiltQuery = $query;
+        }
+
+        return $query;
     }
     /**
      * Creates and executes an UPDATE SQL-statement for $table where $where-clause (typ. 'uid=...') from the array with field/value pairs $fields_values.
@@ -107,7 +149,11 @@ class tx_rnbase_util_db_TYPO3 implements tx_rnbase_util_db_IDatabase, tx_rnbase_
      */
     public function exec_UPDATEquery($table, $where, $fields_values, $no_quote_fields = false)
     {
-        return $GLOBALS['TYPO3_DB']->execUPDATEquery($table, $where, $fields_values, $no_quote_fields);
+        if ($this->store_lastBuiltQuery) {
+            $this->UPDATEquery($table, $where, $fields_values, $no_quote_fields);
+        }
+
+        return $GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, $where, $fields_values, $no_quote_fields);
     }
 
     /**
@@ -119,7 +165,14 @@ class tx_rnbase_util_db_TYPO3 implements tx_rnbase_util_db_IDatabase, tx_rnbase_
      */
     public function DELETEquery($table, $where)
     {
-        return $GLOBALS['TYPO3_DB']->DELETEquery($table, $where);
+        $query = $GLOBALS['TYPO3_DB']->DELETEquery($table, $where);
+
+        // Return query
+        if ($this->store_lastBuiltQuery) {
+            $this->debug_lastBuiltQuery = $query;
+        }
+
+        return $query;
     }
 
     /**
@@ -131,6 +184,10 @@ class tx_rnbase_util_db_TYPO3 implements tx_rnbase_util_db_IDatabase, tx_rnbase_
      */
     public function exec_DELETEquery($table, $where)
     {
+        if ($this->store_lastBuiltQuery) {
+            $this->DELETEquery($table, $where);
+        }
+
         return $GLOBALS['TYPO3_DB']->exec_DELETEquery($table, $where);
     }
 

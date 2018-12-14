@@ -84,6 +84,14 @@ class tx_rnbase_util_db_TYPO3DBAL implements tx_rnbase_util_db_IDatabase, tx_rnb
     }
 
     /**
+     * @return tx_rnbase_util_db_Builder
+     */
+    protected function getBuilderUtil()
+    {
+        return tx_rnbase_util_db_Builder::instance();
+    }
+
+    /**
      * Creates a SELECT SQL-statement
      *
      * Taken from TYPO3/CMS-CORE
@@ -107,15 +115,14 @@ class tx_rnbase_util_db_TYPO3DBAL implements tx_rnbase_util_db_IDatabase, tx_rnb
         $limit = ''
     ) {
         // Table and fieldnames should be "SQL-injection-safe" when supplied to this function
-        // Build basic query
-        $query = 'SELECT ' . $selectFields . ' FROM ' . $fromTable;
-        $query .= ((string)$whereClause !== '' ? ' WHERE ' . $whereClause : '');
-        // Group by
-        $query .= (string)$groupBy !== '' ? ' GROUP BY ' . $groupBy : '';
-        // Order by
-        $query .= (string)$orderBy !== '' ? ' ORDER BY ' . $orderBy : '';
-        // Group by
-        $query .= (string)$limit !== '' ? ' LIMIT ' . $limit : '';
+        $query = $this->getBuilderUtil()->SELECTquery(
+            $selectFields,
+            $fromTable,
+            $whereClause,
+            $groupBy,
+            $orderBy,
+            $limit
+        );
 
         // Return query
         if ($this->debugOutput || $this->store_lastBuiltQuery) {
@@ -175,19 +182,13 @@ class tx_rnbase_util_db_TYPO3DBAL implements tx_rnbase_util_db_IDatabase, tx_rnb
      */
     public function INSERTquery($table, $fieldsValues, $noQuoteFields = false)
     {
-
         // Table and fieldnames should be "SQL-injection-safe" when supplied to this
-        // function (contrary to values in the arrays which may be insecure).
-        if (!is_array($fieldsValues) || empty($fieldsValues)) {
+
+        $query = $this->getBuilderUtil()->INSERTquery($table, $fieldsValues, $noQuoteFields);
+
+        if ($query === null) {
             return null;
         }
-
-        // Quote and escape values
-        $fieldsValues = $this->fullQuoteArray($fieldsValues, $table, $noQuoteFields, true);
-
-        // Build query
-        $query = 'INSERT INTO ' . $table . ' (' . implode(',', array_keys($fieldsValues)) . ')' .
-            ' VALUES (' . implode(',', $fieldsValues) . ')';
 
         // Return query
         if ($this->debugOutput || $this->store_lastBuiltQuery) {
@@ -238,27 +239,12 @@ class tx_rnbase_util_db_TYPO3DBAL implements tx_rnbase_util_db_IDatabase, tx_rnb
         $noQuoteFields = false
     ) {
         // Table and fieldnames should be "SQL-injection-safe" when supplied to this
-        // function (contrary to values in the arrays which may be insecure).
-        if (!is_string($where)) {
-            throw new \InvalidArgumentException(
-                'TYPO3 Fatal Error: "Where" clause argument for UPDATE query must be a string!',
-                1270853880
-            );
-        }
-
-        $fields = [];
-        if (is_array($fieldsValues) && !empty($fieldsValues)) {
-            // Quote and escape values
-            $nArr = $this->fullQuoteArray($fieldsValues, $table, $noQuoteFields, true);
-            foreach ($nArr as $k => $v) {
-                $fields[] = $k . '=' . $v;
-            }
-        }
-
-        // Build query
-        $query = 'UPDATE ' . $table;
-        $query .= ' SET ' . implode(',', $fields);
-        $query .= ((string)$where !== '' ? ' WHERE ' . $where : '');
+        $query = $this->getBuilderUtil()->UPDATEquery(
+            $table,
+            $where,
+            $fieldsValues,
+            $noQuoteFields
+        );
 
         if ($this->debugOutput || $this->store_lastBuiltQuery) {
             $this->debug_lastBuiltQuery = $query;
@@ -303,16 +289,8 @@ class tx_rnbase_util_db_TYPO3DBAL implements tx_rnbase_util_db_IDatabase, tx_rnb
      */
     public function DELETEquery($table, $where)
     {
-        if (!is_string($where)) {
-            throw new \InvalidArgumentException(
-                'TYPO3 Fatal Error: "Where" clause argument for DELETE query must be a string!',
-                1270853881
-            );
-        }
-
         // Table and fieldnames should be "SQL-injection-safe" when supplied to this function
-        $query = 'DELETE FROM ' . $table;
-        $query .= ((string)$where !== '' ? ' WHERE ' . $where : '');
+        $query = $this->getBuilderUtil()->DELETEquery($table, $where);
 
         if ($this->debugOutput || $this->store_lastBuiltQuery) {
             $this->debug_lastBuiltQuery = $query;

@@ -710,7 +710,7 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
      */
     public function fullQuoteStr($str, $table = '', $allowNull = false)
     {
-        return $this->getDatabaseConnection()->fullQuoteStr($str, $table, $allowNull);
+        return tx_rnbase_util_db_Builder::instance()->fullQuoteStr($str, $table, $allowNull);
     }
 
     /**
@@ -724,7 +724,7 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
      */
     public function fullQuoteArray($arr, $table = '', $noQuote = false, $allowNull = false)
     {
-        return $this->getDatabaseConnection()->fullQuoteArray($arr, $table, $noQuote, $allowNull);
+        return tx_rnbase_util_db_Builder::instance()->fullQuoteArray($arr, $table, $noQuote, $allowNull);
     }
 
     /**
@@ -738,7 +738,7 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
      */
     public function quoteStr($str, $table = '')
     {
-        return $this->getDatabaseConnection()->quoteStr($str, $table);
+        return tx_rnbase_util_db_Builder::instance()->quoteStr($str, $table);
     }
 
     /**
@@ -751,7 +751,7 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
      */
     public function escapeStrForLike($str, $table)
     {
-        return $this->getDatabaseConnection()->escapeStrForLike($str, $table);
+        return tx_rnbase_util_db_Builder::instance()->escapeStrForLike($str, $table);
     }
 
     /**
