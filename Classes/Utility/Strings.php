@@ -134,10 +134,13 @@ class Tx_Rnbase_Utility_Strings
     }
     /**
      * Wrapper method for t3lib_div::trimExplode()
+     *
      * @param string $delimiter
      * @param string $string
      * @param bool $removeEmptyValues
      * @param int $limit
+     *
+     * @return string[]
      */
     public static function trimExplode($delimiter, $string, $removeEmptyValues = false, $limit = 0)
     {
