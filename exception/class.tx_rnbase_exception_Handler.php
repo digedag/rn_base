@@ -91,7 +91,7 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
      *
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
      *
-     * @return void
+     * @return bool
      */
     protected function send503HeaderOnException(Tx_Rnbase_Configuration_ProcessorInterface $configurations)
     {

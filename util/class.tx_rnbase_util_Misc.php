@@ -39,17 +39,17 @@ class tx_rnbase_util_Misc
      *
      * @param string $type
      * @param string $subType
-     * @return t3lib_svbase or \TYPO3\CMS\Core\Service\AbstractService
+     * @return \TYPO3\CMS\Core\Service\AbstractService
      */
     public static function getService($type, $subType = '')
     {
+        /** @var \TYPO3\CMS\Core\Service\AbstractService $service */
         $service = tx_rnbase::makeInstanceService($type, $subType);
 
         if (!is_object($service)) {
             tx_rnbase::load('tx_rnbase_util_Misc');
 
-            return self::mayday('Service ' . $type . ' - ' . $subType . ' not found!');
-            ;
+            self::mayday('Service ' . $type . ' - ' . $subType . ' not found!');
         }
 
         return $service;
@@ -630,6 +630,8 @@ MAYDAYPAGE;
      * @param string $actionName
      * @param Exception $e
      * @param array $options
+     *
+     * @return void
      */
     public static function sendErrorMail($mailAddr, $actionName, Exception $e, array $options = array())
     {
@@ -667,7 +669,7 @@ MAYDAYPAGE;
             $lock->lockProcess();
         }
 
-        return $mail->send();
+        $mail->send();
     }
 
     protected static function getErrorMailText($e, $actionName)
