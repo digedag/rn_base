@@ -259,12 +259,14 @@ class tx_rnbase_util_Files
      *
      * @see t3lib_div::mkdir_deep()
      * @see TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep()
+     *
+     * @return void
      */
     public static function mkdir_deep($directory, $deepDirectory = '')
     {
         $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
 
-        return $utility::mkdir_deep($directory, $deepDirectory);
+        $utility::mkdir_deep($directory, $deepDirectory);
     }
 
     /**
