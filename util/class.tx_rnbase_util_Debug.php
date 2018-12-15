@@ -47,7 +47,7 @@ class tx_rnbase_util_Debug
      */
     public static function debug($var = '', $header = '', $group = 'Debug')
     {
-        return DebugUtility::debug($var, $header, $group);
+        DebugUtility::debug($var, $header, $group);
     }
     /**
      * Returns HTML-code, which is a visual representation of a multidimensional array
