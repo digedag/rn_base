@@ -199,7 +199,12 @@ class tx_rnbase_util_db_Builder implements Tx_Rnbase_Interface_Singleton
      */
     public function quoteStr($str, $table)
     {
-        return $str;
+        // @FIXME: how to mysql_real_escape_string without a mysqli link?
+
+        $search = array("\\",  "\x00", "\n",  "\r",  "'",  '"', "\x1a");
+        $replace = array("\\\\","\\0","\\n", "\\r", "\'", '\"', "\\Z");
+
+        return str_replace($search, $replace, $str);
     }
 
     /**
@@ -264,6 +269,6 @@ class tx_rnbase_util_db_Builder implements Tx_Rnbase_Interface_Singleton
             $str = (int)$str;
         }
 
-        return $this->getConnection()->quote($str);
+        return '\'' . $this->quoteStr($str, $table) . '\'';
     }
 }
