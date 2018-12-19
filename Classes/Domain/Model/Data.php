@@ -47,7 +47,7 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
     private $isModified = false;
 
     /**
-     * holds the data!
+     * Holds the data!
      *
      * @var array
      */
@@ -66,10 +66,11 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
     }
 
     /**
-     * initialize the data
+     * Initialize the data
      *
-     * @param array $record
-     * @return NULL
+     * @param int|array $record
+     *
+     * @return null
      */
     protected function init($record = null)
     {
@@ -87,7 +88,7 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
     }
 
     /**
-     * sets the models's clean state, e.g. after it has been initialized.
+     * Sets the models's clean state, e.g. after it has been initialized.
      *
      * @return void
      */
@@ -117,9 +118,10 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
     }
 
     /**
-     * create a new data model
+     * Create a new data model
      *
-     * @param array $data
+     * @param array |Tx_Rnbase_Domain_Model_DataInterface $data
+     *
      * @return Tx_Rnbase_Domain_Model_Data
      */
     public static function getInstance($data = null)
@@ -147,17 +149,19 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
      *
      * @param string|array $property
      * @param mixed $value
-     * @return Tx_Rnbase_Domain_Model_Data
+     *
+     * @return $this
      */
     public function setProperty($property, $value = null)
     {
-        // wir Überschreiben den kompletten record
         if (is_array($property)) {
+            // wir Überschreiben den kompletten record
             $this->init($property);
-        } // wir setzen einen bestimmten wert
-        else {
+        } else {
+            // wir setzen einen bestimmten wert
             $this->record[$property] = $value;
         }
+
         // set the modified state
         $this->isModified = true;
 
@@ -167,8 +171,9 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
     /**
      * Liefert einen bestimmten Wert oder alle.
      *
-     * @param string $property
-     * @return string
+     * @param null|string $property
+     *
+     * @return string|array
      */
     public function getProperty($property = null)
     {
@@ -182,8 +187,7 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
     /**
      * Liefert alle properties des Models.
      *
-     * @param string $property
-     * @return string
+     * @return array
      */
     public function getProperties()
     {
@@ -194,7 +198,8 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
      * Entfernt einen Wert.
      *
      * @param string $property
-     * @return Tx_Rnbase_Domain_Model_Data
+     *
+     * @return $this
      */
     public function unsProperty($property)
     {
@@ -211,7 +216,8 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
      * Prüft ob eine Spalte gesetzt ist.
      *
      * @param string $property
-     * @return string
+     *
+     * @return bool
      */
     public function hasProperty($property)
     {
@@ -222,6 +228,7 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
      * Prüft ob eine Spalte leer ist.
      *
      * @param string $property
+     *
      * @return bool
      */
     public function isPropertyEmpty($property)
@@ -233,13 +240,14 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
      * Converts field names for setters and geters
      *
      * @param string $string
+     *
      * @return string
      */
     protected function underscore($string)
     {
-        tx_rnbase::load('tx_rnbase_util_Strings');
+        tx_rnbase::load('Tx_Rnbase_Utility_Strings');
 
-        return tx_rnbase_util_Strings::camelCaseToLowerCaseUnderscored($string);
+        return Tx_Rnbase_Utility_Strings::camelCaseToLowerCaseUnderscored($string);
     }
 
     /**
@@ -247,10 +255,12 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
      *
      * @param string $method
      * @param array $args
+     *
      * @throws Exception
+     *
      * @return mixed
      */
-    public function __call($method, $args)
+    public function __call($method, array $args)
     {
         switch (substr($method, 0, 3)) {
             // getColumnValue > record[column_value]
@@ -275,13 +285,12 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
                 return $this->hasProperty($key);
             default:
         }
+
         throw new Exception(
             'Sorry, Invalid method ' . get_class($this) . '::' . $method .
             '(' . print_r($args, 1) . ').',
             1406625817
         );
-
-        return null;
     }
 
     /**
