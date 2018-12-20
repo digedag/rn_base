@@ -442,7 +442,6 @@ abstract class tx_rnbase_mod_base_Lister
     protected function getNoItemsFoundMsg()
     {
         return '<p><strong>###LABEL_NO_'.strtoupper($this->getSearcherId()).'_FOUND###</strong></p><br/>';
-        ;
     }
 
 

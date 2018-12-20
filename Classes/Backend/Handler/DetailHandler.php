@@ -117,7 +117,5 @@ abstract class Tx_Rnbase_Backend_Handler_DetailHandler extends Tx_Rnbase_Backend
     ) {
         // @TODO: implement protected function showDetail(
         throw new Exception('detail not implemented yet');
-
-        return $template;
     }
 }

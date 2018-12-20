@@ -273,8 +273,6 @@ class tx_rnbase_model_data implements Tx_Rnbase_Domain_Model_DataInterface, Iter
             '(' . print_r($args, 1) . ').',
             1406625817
         );
-
-        return null;
     }
 
     /**
