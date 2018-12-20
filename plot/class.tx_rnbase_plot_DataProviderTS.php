@@ -40,7 +40,7 @@ class tx_rnbase_plot_DataProviderTS implements tx_rnbase_plot_IDataProvider
      */
     public function getDataSets($confArr, $plotType)
     {
-        return array($this->readDatasets($confArr['dataset.']));
+        return [$this->readDatasets($confArr['dataset.'])];
     }
 
     /**
@@ -72,7 +72,7 @@ class tx_rnbase_plot_DataProviderTS implements tx_rnbase_plot_IDataProvider
                         $intDirection = tx_rnbase_plot_Builder::readConstant('IMAGE_GRAPH_GRAD_'.strtoupper($arrConf[$strKey.'.']['direction']));
                         $strStartColor = $arrConf[$strKey.'.']['startColor'];
                         $strEndColor = $arrConf[$strKey.'.']['endColor'];
-                        $objFillStyle->addNew('gradient', array($intDirection, $strStartColor, $strEndColor), $strId);
+                        $objFillStyle->addNew('gradient', [$intDirection, $strStartColor, $strEndColor], $strId);
                         break;
                 }
             }
@@ -89,7 +89,7 @@ class tx_rnbase_plot_DataProviderTS implements tx_rnbase_plot_IDataProvider
      */
     private function readDatasets($arrConf)
     {
-        $objDatasets = array();
+        $objDatasets = [];
         $intCount = 0;
         if (is_array($arrConf)) {
             $templateServiceClass = tx_rnbase_util_Typo3Classes::getTemplateServiceClass();
@@ -162,7 +162,7 @@ class tx_rnbase_plot_DataProviderTS implements tx_rnbase_plot_IDataProvider
         $intMaximum = $arrConf['maximum'];
         $boolIncludeZero = $arrConf['includeZero'] == 'true' ? true : false;
         $strName = $arrConf['name'];
-        $objRandom = tx_pbimagegraph::factory('random', array($intCount, $intMinimum, $intMaximum, $boolIncludeZero));
+        $objRandom = tx_pbimagegraph::factory('random', [$intCount, $intMinimum, $intMaximum, $boolIncludeZero]);
         $objRandom->setName($strName);
 
         return $objRandom;

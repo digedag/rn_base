@@ -42,29 +42,29 @@ class Tx_Rnbase_Utility_TcaToolTest extends tx_rnbase_tests_BaseTestCase
     {
         $linkWizard = Tx_Rnbase_Utility_TcaTool::getWizards(
             '',
-            array(
-                'link' => array(
-                    'params' => array(
+            [
+                'link' => [
+                    'params' => [
                         'blindLinkOptions' => 'file,page,mail,spec,folder',
-                    ),
-                    'module' => array('urlParameters' => array('newKey' => 'wizard'))
-                )
-            )
+                    ],
+                    'module' => ['urlParameters' => ['newKey' => 'wizard']]
+                ]
+            ]
         );
 
-        $expectedLinkWizard = array(
+        $expectedLinkWizard = [
             '_PADDING' => 2,
             '_VERTICAL' => 1,
-            'link' => array(
+            'link' => [
                 'type' => 'popup',
                 'title' => 'LLL:EXT:cms/locallang_ttc.xml:header_link_formlabel',
                 'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
-                'params' => array(
+                'params' => [
                         'blindLinkOptions' => 'file,page,mail,spec,folder',
-                ),
-                'module' => array('urlParameters' => array('mode' => 'wizard', 'newKey' => 'wizard'))
-            )
-        );
+                ],
+                'module' => ['urlParameters' => ['mode' => 'wizard', 'newKey' => 'wizard']]
+            ]
+        ];
         if (tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
             $expectedLinkWizard['link']['icon'] = 'actions-add';
             $expectedLinkWizard['link']['module']['name'] = 'wizard_link';
@@ -85,14 +85,14 @@ class Tx_Rnbase_Utility_TcaToolTest extends tx_rnbase_tests_BaseTestCase
     {
         $wizards = Tx_Rnbase_Utility_TcaTool::getWizards(
             '',
-            array(
+            [
                 'add' => 1,
                 'edit' => 1,
                 'list' => 1,
                 'RTE' => 1,
                 'colorpicker' => 1,
                 'link' => 1,
-            )
+            ]
         );
 
         self::assertArrayNotHasKey('script', $wizards['add']);
@@ -120,13 +120,13 @@ class Tx_Rnbase_Utility_TcaToolTest extends tx_rnbase_tests_BaseTestCase
     {
         $wizards = Tx_Rnbase_Utility_TcaTool::getWizards(
             '',
-            array(
+            [
                 'add' => 1,
                 'edit' => 1,
                 'list' => 1,
                 'RTE' => 1,
                 'link' => 1,
-            )
+            ]
         );
 
         if (tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
@@ -200,7 +200,7 @@ class Tx_Rnbase_Utility_TcaToolTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetWizardsForColorpicker()
     {
-        $wizards = Tx_Rnbase_Utility_TcaTool::getWizards('', array('colorpicker' => 1));
+        $wizards = Tx_Rnbase_Utility_TcaTool::getWizards('', ['colorpicker' => 1]);
 
         self::assertEquals('colorbox', $wizards['colorpicker']['type']);
     }
@@ -212,7 +212,7 @@ class Tx_Rnbase_Utility_TcaToolTest extends tx_rnbase_tests_BaseTestCase
     {
         $wizards = Tx_Rnbase_Utility_TcaTool::getWizards(
             '',
-            array('colorpicker' => array('type' => 'myOwnType'))
+            ['colorpicker' => ['type' => 'myOwnType']]
         );
 
         self::assertEquals('myOwnType', $wizards['colorpicker']['type']);

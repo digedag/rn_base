@@ -96,7 +96,7 @@ class Tx_Rnbase_Utility_MailTest extends tx_rnbase_tests_BaseTestCase
      */
     protected function createMailMock()
     {
-        $mailMock = $this->getMock('Tx_Rnbase_Utility_Mail', array('sendMessage'));
+        $mailMock = $this->getMock('Tx_Rnbase_Utility_Mail', ['sendMessage']);
         $mailMock->expects($this->any())->method('sendMessage')->will($this->returnArgument(0));
 
         return $mailMock;

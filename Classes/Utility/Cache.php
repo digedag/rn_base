@@ -80,12 +80,13 @@ class Tx_Rnbase_Utility_Cache
         $GLOBALS['TYPO3_CONF_VARS']['FE'][$typo3ConfVarsKey] .= $startingGlue . join(',', $configurationValue);
         /* @var \TYPO3\CMS\Frontend\Page\CacheHashCalculator $cacheHashCalculator */
         $cacheHashCalculator = \tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
-        $cacheHashCalculator->setConfiguration(array(
+        $cacheHashCalculator->setConfiguration([
             $cacheHashCalculatorInternalConfigurationKey => explode(
                 ',',
                 $GLOBALS['TYPO3_CONF_VARS']['FE'][$typo3ConfVarsKey]
             )
-        ));
+        ]
+        );
     }
 
     /**
@@ -101,7 +102,7 @@ class Tx_Rnbase_Utility_Cache
         } elseif (class_exists('t3lib_cacheHash')) {
             $calculator = new t3lib_cacheHash();
             $hash = $calculator->generateForParameters($urlQueryString);
-        } elseif (is_callable(array(t3lib_div, 'generateCHash'))) {
+        } elseif (is_callable([t3lib_div, 'generateCHash'])) {
             $hash = t3lib_div::generateCHash($urlQueryString);
         }
 

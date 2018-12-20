@@ -54,7 +54,7 @@ class GetViewHelperTest extends \tx_rnbase_tests_BaseTestCase
      */
     public function testRender()
     {
-        $configurations = $this->createConfigurations(array('myConfId.' => array('mySubPath' => 'testValue')), 'rn_base');
+        $configurations = $this->createConfigurations(['myConfId.' => ['mySubPath' => 'testValue']], 'rn_base');
         $view = Factory::getViewInstance($configurations);
         $view->setTemplatePathAndFilename(
             \tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/GetViewHelper.html')

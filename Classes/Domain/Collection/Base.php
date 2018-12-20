@@ -54,7 +54,7 @@ class Tx_Rnbase_Domain_Collection_Base extends \Doctrine\Common\Collections\Arra
      * @return array
      */
     public function exchange(
-        array $elements = array()
+        array $elements = []
     ) {
         $old = $this->toArray();
 
@@ -75,7 +75,7 @@ class Tx_Rnbase_Domain_Collection_Base extends \Doctrine\Common\Collections\Arra
      * @return array
      */
     public function exchangeArray(
-        array $elements = array()
+        array $elements = []
     ) {
         return $this->exchange($elements);
     }

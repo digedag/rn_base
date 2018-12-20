@@ -6,17 +6,17 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit83752ce901b3366678da53a8b6c92962
 {
-    public static $prefixesPsr0 = array (
-        'D' => 
-        array (
-            'Doctrine\\Common\\Collections\\' => 
-            array (
+    public static $prefixesPsr0 = [
+        'D' =>
+        [
+            'Doctrine\\Common\\Collections\\' =>
+            [
                 0 => __DIR__ . '/..' . '/doctrine/collections/lib',
-            ),
-        ),
-    );
+            ],
+        ],
+    ];
 
-    public static $classMap = array (
+    public static $classMap = [
         'Doctrine\\Common\\Collections\\AbstractLazyCollection' => __DIR__ . '/..' . '/doctrine/collections/lib/Doctrine/Common/Collections/AbstractLazyCollection.php',
         'Doctrine\\Common\\Collections\\ArrayCollection' => __DIR__ . '/..' . '/doctrine/collections/lib/Doctrine/Common/Collections/ArrayCollection.php',
         'Doctrine\\Common\\Collections\\Collection' => __DIR__ . '/..' . '/doctrine/collections/lib/Doctrine/Common/Collections/Collection.php',
@@ -29,7 +29,7 @@ class ComposerStaticInit83752ce901b3366678da53a8b6c92962
         'Doctrine\\Common\\Collections\\Expr\\Value' => __DIR__ . '/..' . '/doctrine/collections/lib/Doctrine/Common/Collections/Expr/Value.php',
         'Doctrine\\Common\\Collections\\ExpressionBuilder' => __DIR__ . '/..' . '/doctrine/collections/lib/Doctrine/Common/Collections/ExpressionBuilder.php',
         'Doctrine\\Common\\Collections\\Selectable' => __DIR__ . '/..' . '/doctrine/collections/lib/Doctrine/Common/Collections/Selectable.php',
-    );
+    ];
 
     public static function getInitializer(ClassLoader $loader)
     {

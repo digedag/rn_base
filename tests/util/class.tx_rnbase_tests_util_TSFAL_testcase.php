@@ -58,12 +58,12 @@ class tx_rnbase_tests_util_TSFAL_testcase extends tx_rnbase_tests_BaseTestCase
         $expectedRefField,
         $expectedUid
     ) {
-        $fileRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileRepository', array('findByRelation'));
+        $fileRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileRepository', ['findByRelation']);
         $fileRepository->expects(self::once())
             ->method('findByRelation')
             ->with($expectedRefTable, $expectedRefField, $expectedUid);
 
-        $utility = $this->getMock('tx_rnbase_util_TSFAL', array('getFileRepository'));
+        $utility = $this->getMock('tx_rnbase_util_TSFAL', ['getFileRepository']);
         $utility->expects(self::once())
             ->method('getFileRepository')
             ->will(self::returnValue($fileRepository));
@@ -79,34 +79,34 @@ class tx_rnbase_tests_util_TSFAL_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public function dataProviderFetchFirstReference()
     {
-        return array(
+        return [
             // refTable gesetzt
-            array(
-                array('refTable' => 'pages'), array('uid' => 456), 'pages', '', 456
-            ),
+            [
+                ['refTable' => 'pages'], ['uid' => 456], 'pages', '', 456
+            ],
             // refTable unbekannt
-            array(
-                array('refTable' => 'unknown'), array('uid' => 456), 'tt_content', '', 456
-            ),
+            [
+                ['refTable' => 'unknown'], ['uid' => 456], 'tt_content', '', 456
+            ],
             // _LOCALIZED_UID in cObj->data gesetzt
-            array(
-                array(), array('uid' => 456, '_LOCALIZED_UID' => 123), 'tt_content', '', 123
-            ),
+            [
+                [], ['uid' => 456, '_LOCALIZED_UID' => 123], 'tt_content', '', 123
+            ],
             // refField gesetzt
-            array(
-                array('refField' => 'my_field'), array('uid' => 456), 'tt_content', 'my_field', 456
-            ),
+            [
+                ['refField' => 'my_field'], ['uid' => 456], 'tt_content', 'my_field', 456
+            ],
             // stdWrap auf refField
-            array(
-                array('refField.' => array('field' => 'test_field')),
-                array('uid' => 456, 'test_field' => 'my_field'), 'tt_content', 'my_field', 456
-            ),
+            [
+                ['refField.' => ['field' => 'test_field']],
+                ['uid' => 456, 'test_field' => 'my_field'], 'tt_content', 'my_field', 456
+            ],
             // stdWrap auf refUid
-            array(
-                array('refUid.' => array('field' => 'test_field')),
-                array('uid' => 456, 'test_field' => 123), 'tt_content', '', 123
-            ),
-        );
+            [
+                ['refUid.' => ['field' => 'test_field']],
+                ['uid' => 456, 'test_field' => 123], 'tt_content', '', 123
+            ],
+        ];
     }
 
     /**
@@ -114,19 +114,19 @@ class tx_rnbase_tests_util_TSFAL_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public function testFetchFirstReferenceWhenFilesFound()
     {
-        $fileRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileRepository', array('findByRelation'));
+        $fileRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileRepository', ['findByRelation']);
         $fileRepository->expects(self::once())
             ->method('findByRelation')
-            ->will(self::returnValue(array(0 => tx_rnbase::makeInstance('tx_rnbase_model_data', array('uid' => 123)))));
+            ->will(self::returnValue([0 => tx_rnbase::makeInstance('tx_rnbase_model_data', ['uid' => 123])]));
 
-        $utility = $this->getMock('tx_rnbase_util_TSFAL', array('getFileRepository'));
+        $utility = $this->getMock('tx_rnbase_util_TSFAL', ['getFileRepository']);
         $utility->expects(self::once())
             ->method('getFileRepository')
             ->will(self::returnValue($fileRepository));
 
         $utility->cObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
 
-        self::assertSame(123, $utility->fetchFirstReference('', array()));
+        self::assertSame(123, $utility->fetchFirstReference('', []));
     }
 
     /**
@@ -134,18 +134,18 @@ class tx_rnbase_tests_util_TSFAL_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public function testFetchFirstReferenceWhenNoFilesFound()
     {
-        $fileRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileRepository', array('findByRelation'));
+        $fileRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileRepository', ['findByRelation']);
         $fileRepository->expects(self::once())
             ->method('findByRelation')
             ->will(self::returnValue(null));
 
-        $utility = $this->getMock('tx_rnbase_util_TSFAL', array('getFileRepository'));
+        $utility = $this->getMock('tx_rnbase_util_TSFAL', ['getFileRepository']);
         $utility->expects(self::once())
             ->method('getFileRepository')
             ->will(self::returnValue($fileRepository));
 
         $utility->cObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
 
-        self::assertSame('', $utility->fetchFirstReference('', array()));
+        self::assertSame('', $utility->fetchFirstReference('', []));
     }
 }

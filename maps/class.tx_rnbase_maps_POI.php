@@ -38,7 +38,7 @@ class tx_rnbase_maps_POI extends tx_rnbase_maps_Coord implements tx_rnbase_maps_
     private $zoomMin;
     private $zoomMax;
 
-    public function __construct($data = array())
+    public function __construct($data = [])
     {
         if (!$data) {
             return;
@@ -46,7 +46,7 @@ class tx_rnbase_maps_POI extends tx_rnbase_maps_Coord implements tx_rnbase_maps_
 
         $this->initField($data, 'lat', 'setLatitude');
         $this->initField($data, 'lng', 'setLongitude');
-        $fields = array('description', 'city', 'zip', 'countryCode', 'zoomMin', 'zoomMax');
+        $fields = ['description', 'city', 'zip', 'countryCode', 'zoomMin', 'zoomMax'];
         foreach ($fields as $field) {
             $this->initField($data, $field);
         }

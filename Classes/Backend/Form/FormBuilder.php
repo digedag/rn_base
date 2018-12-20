@@ -37,7 +37,7 @@ class Tx_Rnbase_Backend_Form_FormBuilder
      */
     private $formDataCompiler = null;
     private $formResultCompiler; // TODO
-    protected $formDataCache = array();
+    protected $formDataCache = [];
 
     /**
      */

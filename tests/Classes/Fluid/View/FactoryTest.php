@@ -53,8 +53,8 @@ class FactoryTest extends \tx_rnbase_tests_BaseTestCase
      */
     public function testGetViewInstance()
     {
-        $configurations = $this->createConfigurations(array('someConfig'), 'rn_base');
-        $view = Factory::getViewInstance($configurations, array('someFrameworkSettings' => 'mySettings'));
+        $configurations = $this->createConfigurations(['someConfig'], 'rn_base');
+        $view = Factory::getViewInstance($configurations, ['someFrameworkSettings' => 'mySettings']);
 
         self::assertSame($configurations, $view->getControllerContext()->configurations);
 

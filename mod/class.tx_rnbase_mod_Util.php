@@ -35,11 +35,11 @@ class tx_rnbase_mod_Util
      * @param tx_rnbase_mod_IModule $mod
      * @param array $options
      */
-    public static function getModuleValue($key, tx_rnbase_mod_IModule $mod, $options = array())
+    public static function getModuleValue($key, tx_rnbase_mod_IModule $mod, $options = [])
     {
-        $changedSettings = is_array($options['changed']) ? $options['changed'] : array();
+        $changedSettings = is_array($options['changed']) ? $options['changed'] : [];
         $type = isset($options['type']) ? $options['type'] : '';
-        $modData = Tx_Rnbase_Backend_Utility::getModuleData(array($key => ''), $changedSettings, $mod->getName(), $type);
+        $modData = Tx_Rnbase_Backend_Utility::getModuleData([$key => ''], $changedSettings, $mod->getName(), $type);
 
         return isset($modData[$key]) ? $modData[$key] : null;
     }
@@ -64,7 +64,7 @@ class tx_rnbase_mod_Util
      *
      * @return string The full HTML tag (usually a <span>)
      */
-    public static function getSpriteIcon($iconName, array $options = array(), array $overlays = array())
+    public static function getSpriteIcon($iconName, array $options = [], array $overlays = [])
     {
         return Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon($iconName, $options, $overlays);
     }
@@ -90,7 +90,7 @@ class tx_rnbase_mod_Util
      * @param array $aOptions zusätzliche Optionen: label, id
      * @return string selected item
      */
-    public static function showSelectorByArray($aItems, $selectedItem, $sDefId, &$aData, $aOptions = array())
+    public static function showSelectorByArray($aItems, $selectedItem, $sDefId, &$aData, $aOptions = [])
     {
         $id = isset($aOptions['id']) && $aOptions['id'] ? $aOptions['id'] : $sDefId;
         $pid = isset($aOptions['pid']) && $aOptions['pid'] ? $aOptions['pid'] : 0;

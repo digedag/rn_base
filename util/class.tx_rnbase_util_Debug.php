@@ -82,14 +82,14 @@ class tx_rnbase_util_Debug
         $trail = debug_backtrace();
         $trail = array_reverse($trail);
         array_pop($trail);
-        $path = array();
+        $path = [];
         $pathSiteLength = strlen(PATH_site);
         foreach ($trail as $dat) {
             $pathFragment = $dat['class'] . $dat['type'] . $dat['function'];
             // add the path of the included file
             if (in_array(
                 $dat['function'],
-                array('require', 'include', 'require_once', 'include_once')
+                ['require', 'include', 'require_once', 'include_once']
             )) {
                 $dat['args'][0] = substr($dat['args'][0], $pathSiteLength);
                 $dat['file'] = substr($dat['file'], $pathSiteLength);
@@ -133,7 +133,7 @@ class tx_rnbase_util_Debug
     public static function isLabelDebugEnabled(
         Tx_Rnbase_Configuration_ProcessorInterface $configurations = null
     ) {
-        static $status = array();
+        static $status = [];
         // check global debug params
         if (!isset($status['global'])) {
             $status['global'] = !empty($_GET['labeldebug']) && self::isDebugEnabled() ? $_GET['labeldebug'] : self::isDebugEnabled();
@@ -159,7 +159,7 @@ class tx_rnbase_util_Debug
      * @param string $text
      * @param string $debug
      */
-    public static function wrapDebugInfo($text, $debug, array $options = array())
+    public static function wrapDebugInfo($text, $debug, array $options = [])
     {
         if (!empty($options['plain'])) {
             return $text . ' [' . $debug . ']';

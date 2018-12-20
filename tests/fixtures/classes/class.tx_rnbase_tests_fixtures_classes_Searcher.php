@@ -43,7 +43,7 @@ class tx_rnbase_tests_fixtures_classes_Searcher extends tx_rnbase_util_SearchBas
      */
     public function getTableMappings()
     {
-        $tableMapping = array();
+        $tableMapping = [];
         $tableMapping[$this->getBaseTableAlias()] = $this->getBaseTable();
         $tableMapping['CONTENT'] = 'tt_content';
         $tableMapping['FEUSER'] = 'fe_users';

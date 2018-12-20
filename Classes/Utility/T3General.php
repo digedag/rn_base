@@ -46,11 +46,11 @@ class Tx_Rnbase_Utility_T3General
     public static function __callStatic($method, array $arguments)
     {
         return call_user_func_array(
-            array(
+            [
                 tx_rnbase_util_Typo3Classes::getGeneralUtilityClass(),
                 $method
 
-            ),
+            ],
             $arguments
         );
     }

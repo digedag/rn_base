@@ -48,7 +48,7 @@ class Tx_Rnbase_Domain_Repository_AbstractRepositoryTest extends tx_rnbase_tests
         $options,
         $expectedOptions
     ) {
-        $fields = array();
+        $fields = [];
         $repository = $this->getRepositoryMock();
 
         $method = new ReflectionMethod(
@@ -57,7 +57,7 @@ class Tx_Rnbase_Domain_Repository_AbstractRepositoryTest extends tx_rnbase_tests
         );
         $method->setAccessible(true);
 
-        $method->invokeArgs($repository, array(&$fields, &$options));
+        $method->invokeArgs($repository, [&$fields, &$options]);
 
         self::assertEquals($expectedOptions, $options);
     }
@@ -67,12 +67,12 @@ class Tx_Rnbase_Domain_Repository_AbstractRepositoryTest extends tx_rnbase_tests
      */
     public function getOptions()
     {
-        return array(
-            array(array('enablefieldsoff' => true), array('enablefieldsoff' => true)),
-            array(array('enablefieldsbe' => true), array('enablefieldsbe' => true)),
-            array(array('enablefieldsfe' => true), array('enablefieldsfe' => true)),
-            array(array(), array('enablefieldsbe' => true))
-        );
+        return [
+            [['enablefieldsoff' => true], ['enablefieldsoff' => true]],
+            [['enablefieldsbe' => true], ['enablefieldsbe' => true]],
+            [['enablefieldsfe' => true], ['enablefieldsfe' => true]],
+            [[], ['enablefieldsbe' => true]]
+        ];
     }
 
     /**
@@ -97,12 +97,12 @@ class Tx_Rnbase_Domain_Repository_AbstractRepositoryTest extends tx_rnbase_tests
 
         $expectedModel = tx_rnbase::makeInstance(
             'tx_rnbase_model_base',
-            array('uid' => 123)
+            ['uid' => 123]
         );
 
         self::assertEquals(
             $expectedModel,
-            $repository->findByUid(array('uid' => 123))
+            $repository->findByUid(['uid' => 123])
         );
     }
 
@@ -133,25 +133,25 @@ class Tx_Rnbase_Domain_Repository_AbstractRepositoryTest extends tx_rnbase_tests
     public function testSearchCallsSearcherCorrect()
     {
         $repository = $this->getRepositoryMock(
-            array('getSearchClass', 'getWrapperClass', 'getSearcher', 'getCollectionClass')
+            ['getSearchClass', 'getWrapperClass', 'getSearcher', 'getCollectionClass']
         );
 
-        $fields = array('someField' => 1);
-        $options = array(
+        $fields = ['someField' => 1];
+        $options = [
             'collection' => 'TestCollection',
             'enablefieldsbe' => 1,
-        );
+        ];
 
         $searcher = $this->getMock(
             'tx_rnbase_util_SearchGeneric',
-            array('search')
+            ['search']
         );
 
         $searcher
             ->expects(self::once())
             ->method('search')
             ->with($fields, $options)
-            ->will(self::returnValue(array('searched')));
+            ->will(self::returnValue(['searched']));
 
         $repository
             ->expects(self::exactly(2))
@@ -164,7 +164,7 @@ class Tx_Rnbase_Domain_Repository_AbstractRepositoryTest extends tx_rnbase_tests
             ->will(self::returnValue($searcher));
 
         self::assertEquals(
-            array('searched'),
+            ['searched'],
             $repository->search($fields, $options),
             'falsch gesucht'
         );
@@ -181,8 +181,8 @@ class Tx_Rnbase_Domain_Repository_AbstractRepositoryTest extends tx_rnbase_tests
         $repository = $this->getRepositoryMock();
         $master = $this->getMock(
             'tx_rnbase_model_base',
-            array('getTableName'),
-            array(array('uid' => 123))
+            ['getTableName'],
+            [['uid' => 123]]
         );
         $master->expects($this->any())
             ->method('getTableName')
@@ -190,14 +190,14 @@ class Tx_Rnbase_Domain_Repository_AbstractRepositoryTest extends tx_rnbase_tests
 
         $overlay = $this->getMock(
             'tx_rnbase_model_base',
-            array('getTableName'),
-            array(array('uid' => 456, 'l18n_parent' => 123, 'sys_language_uid' => 789))
+            ['getTableName'],
+            [['uid' => 456, 'l18n_parent' => 123, 'sys_language_uid' => 789]]
         );
         $overlay->expects($this->any())
             ->method('getTableName')
             ->will($this->returnValue('tt_content'));
 
-        $items = $this->callInaccessibleMethod($repository, 'uniqueItems', array($master, $overlay), array('distinct' => true));
+        $items = $this->callInaccessibleMethod($repository, 'uniqueItems', [$master, $overlay], ['distinct' => true]);
 
         self::assertCount(1, $items);
         self::assertArrayHasKey(0, $items);
@@ -212,8 +212,8 @@ class Tx_Rnbase_Domain_Repository_AbstractRepositoryTest extends tx_rnbase_tests
         $repository = $this->getRepositoryMock();
         $master = $this->getMock(
             'tx_rnbase_model_base',
-            array('getTableName'),
-            array(array('uid' => 123))
+            ['getTableName'],
+            [['uid' => 123]]
         );
         $master->expects($this->any())
             ->method('getTableName')
@@ -221,14 +221,14 @@ class Tx_Rnbase_Domain_Repository_AbstractRepositoryTest extends tx_rnbase_tests
 
         $overlay = $this->getMock(
             'tx_rnbase_model_base',
-            array('getTableName'),
-            array(array('uid' => 456, 'l18n_parent' => 123, 'sys_language_uid' => 789))
+            ['getTableName'],
+            [['uid' => 456, 'l18n_parent' => 123, 'sys_language_uid' => 789]]
         );
         $overlay->expects($this->any())
             ->method('getTableName')
             ->will($this->returnValue('tt_content'));
 
-        $items = $this->callInaccessibleMethod($repository, 'uniqueItems', array($master, $overlay), array());
+        $items = $this->callInaccessibleMethod($repository, 'uniqueItems', [$master, $overlay], []);
 
         self::assertCount(2, $items);
         self::assertArrayHasKey(0, $items);
@@ -242,16 +242,16 @@ class Tx_Rnbase_Domain_Repository_AbstractRepositoryTest extends tx_rnbase_tests
      */
     public function testFindAll()
     {
-        $repository = $this->getRepositoryMock(array('search'));
+        $repository = $this->getRepositoryMock(['search']);
 
         $repository
             ->expects($this->once())
             ->method('search')
-            ->with(array(), array())
-            ->will($this->returnValue(array('searched')));
+            ->with([], [])
+            ->will($this->returnValue(['searched']));
 
         self::assertEquals(
-            array('searched'),
+            ['searched'],
             $repository->findAll(),
             'falsch gesucht'
         );
@@ -261,12 +261,12 @@ class Tx_Rnbase_Domain_Repository_AbstractRepositoryTest extends tx_rnbase_tests
      * @param array $mockedMethods
      * @return Tx_Rnbase_Repository_AbstractRepository
      */
-    private function getRepositoryMock($mockedMethods = array())
+    private function getRepositoryMock($mockedMethods = [])
     {
-        $mockedMethods = array_unique(array_merge($mockedMethods, array('getSearchClass', 'getWrapperClass')));
+        $mockedMethods = array_unique(array_merge($mockedMethods, ['getSearchClass', 'getWrapperClass']));
         $repository = $this->getMockForAbstractClass(
             'Tx_Rnbase_Repository_AbstractRepository',
-            array(),
+            [],
             '',
             false,
             false,
@@ -293,21 +293,21 @@ class Tx_Rnbase_Domain_Repository_AbstractRepositoryTest extends tx_rnbase_tests
     public function testSearchSingleIfItemsFound()
     {
         $repository = $this->getRepositoryMock(
-            array('search')
+            ['search']
         );
 
-        $expectedFields = array('fields');
-        $expectedOptions = array('orderby' => array(), 'limit' => 1);
+        $expectedFields = ['fields'];
+        $expectedOptions = ['orderby' => [], 'limit' => 1];
 
         $repository
             ->expects($this->once())
             ->method('search')
             ->with($expectedFields, $expectedOptions)
-            ->will($this->returnValue(array(0 => 'test')));
+            ->will($this->returnValue([0 => 'test']));
 
         self::assertEquals(
             'test',
-            $repository->searchSingle($expectedFields, array('orderby' => array()))
+            $repository->searchSingle($expectedFields, ['orderby' => []])
         );
     }
 
@@ -317,20 +317,20 @@ class Tx_Rnbase_Domain_Repository_AbstractRepositoryTest extends tx_rnbase_tests
     public function testSearchSingleIfNoItemsFound()
     {
         $repository = $this->getRepositoryMock(
-            array('search')
+            ['search']
         );
 
-        $expectedFields = array('fields');
-        $expectedOptions = array('orderby' => array(), 'limit' => 1);
+        $expectedFields = ['fields'];
+        $expectedOptions = ['orderby' => [], 'limit' => 1];
 
         $repository
             ->expects($this->once())
             ->method('search')
             ->with($expectedFields, $expectedOptions)
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         self::assertNull(
-            $repository->searchSingle($expectedFields, array('orderby' => array()))
+            $repository->searchSingle($expectedFields, ['orderby' => []])
         );
     }
 }

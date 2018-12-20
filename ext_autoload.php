@@ -9,7 +9,7 @@ if (class_exists('TYPO3\\CMS\\Core\\Utility\\ExtensionManagementUtility', true))
 }
 $extensionClassesPath = $extensionPath . 'Classes/';
 
-return array(
+return [
     'tx_rnbase' => $extensionPath . 'class.tx_rnbase.php',
     'tx_rnbase_action_base' => $extensionPath . 'action/class.tx_rnbase_action_Base.php',
     'tx_rnbase_action_baseioc' => $extensionPath . 'action/class.tx_rnbase_action_BaseIOC.php',
@@ -236,4 +236,4 @@ return array(
     'tx_rnbase_view_list' => $extensionPath . 'view/class.tx_rnbase_view_List.php',
     'tx_rnbase_view_phptemplateengine' => $extensionPath . 'view/class.tx_rnbase_view_phpTemplateEngine.php',
     'tx_rnbase_view_single' => $extensionPath . 'view/class.tx_rnbase_view_Single.php',
-);
+];

@@ -90,7 +90,7 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
         $cObj = null;
 
         $args = func_get_args();
-        $args = count($args) > 3 ? array_slice($args, 3) : array();
+        $args = count($args) > 3 ? array_slice($args, 3) : [];
 
         foreach ($args as $arg) {
             if ($arg instanceof tx_rnbase_parameters) {
@@ -139,8 +139,8 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
      */
     public function getMock(
         $originalClassName,
-        $methods = array(),
-        array $arguments = array(),
+        $methods = [],
+        array $arguments = [],
         $mockClassName = '',
         $callOriginalConstructor = true,
         $callOriginalClone = true,
@@ -199,13 +199,13 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
     protected function getModel(
         $record = null,
         $class = 'tx_rnbase_model_base',
-        array $methods = array()
+        array $methods = []
     ) {
         // $record has to be an array,
         // if there is an scalar value,
         // a db select fill be performed to get the record
         if (!is_array($record)) {
-            $record = array('uid' => (int) $record);
+            $record = ['uid' => (int) $record];
         }
 
         if (!tx_rnbase::load($class)) {
@@ -223,13 +223,13 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
         $model = $this->getMock(
             $class,
             array_merge(
-                array(
+                [
                     $isNewModel ? 'loadRecord' : 'reset',
                     'getColumnWrapped'
-                ),
+                ],
                 $methods
             ),
-            array($record)
+            [$record]
         );
 
         $model
@@ -303,7 +303,7 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
 
             return $model;
         } elseif (is_array($data)) {
-            $array = array();
+            $array = [];
             foreach ($data as $field => $value) {
                 if (is_array($value)) {
                     $value = $this->loadYaml($value);
@@ -329,7 +329,7 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
     private function yamlFindGetters(
         array $array
     ) {
-        $getters = array();
+        $getters = [];
 
         foreach (array_keys($array) as $field) {
             if ($field{0} === 'g' &&
@@ -443,8 +443,8 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
      */
     protected function getAccessibleMock(
         $originalClassName,
-        array $methods = array(),
-        array $arguments = array(),
+        array $methods = [],
+        array $arguments = [],
         $mockClassName = '',
         $callOriginalConstructor = true,
         $callOriginalClone = true,
@@ -602,8 +602,8 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
      */
     public function getMockForAbstract(
         $originalClassName,
-        $mockedMethods = array(),
-        array $arguments = array(),
+        $mockedMethods = [],
+        array $arguments = [],
         $mockClassName = '',
         $callOriginalConstructor = true,
         $callOriginalClone = true,
@@ -633,7 +633,7 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
                 'indpEnvCache'
             );
             $property->setAccessible(true);
-            $property->setValue(null, array());
+            $property->setValue(null, []);
         }
     }
 }

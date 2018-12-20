@@ -153,7 +153,7 @@ class tx_rnbase_util_TCA
         if (empty($GLOBALS['TCA'][$tableName]) ||
             empty($GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'])
         ) {
-            return array();
+            return [];
         }
 
         return $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'];
@@ -344,7 +344,7 @@ class tx_rnbase_util_TCA
     {
         self::loadTCA($tableName);
         $options = tx_rnbase_model_data::getInstance($options);
-        $columns = empty($GLOBALS['TCA'][$tableName]['columns']) ? array() : $GLOBALS['TCA'][$tableName]['columns'];
+        $columns = empty($GLOBALS['TCA'][$tableName]['columns']) ? [] : $GLOBALS['TCA'][$tableName]['columns'];
         $tcaOverrides = $options->getTcaOverrides();
         if (!empty($tcaOverrides['columns'])) {
             tx_rnbase::load('tx_rnbase_util_Arrays');
@@ -372,7 +372,7 @@ class tx_rnbase_util_TCA
         $needle = $model->getColumnNames();
         // if there is no array means, there is no tca or no columns
         if (!is_array($needle)) {
-            return array();
+            return [];
         }
 
         tx_rnbase::load('tx_rnbase_util_Arrays');

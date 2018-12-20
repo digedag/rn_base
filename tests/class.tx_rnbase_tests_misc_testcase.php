@@ -37,19 +37,19 @@ class tx_rnbase_tests_misc_testcase extends tx_rnbase_tests_BaseTestCase
     public function test_encodeParams()
     {
         $params['dat1'] = '1';
-        $params['dat2'] = array('1', '2');
+        $params['dat2'] = ['1', '2'];
         $params['dat3'] = 123;
         $hash1 = tx_rnbase_util_Misc::createHash($params);
         $this->assertEquals(8, strlen($hash1));
-        $params['dat2'] = array('2', '2');
+        $params['dat2'] = ['2', '2'];
         $hash2 = tx_rnbase_util_Misc::createHash($params);
         $this->assertEquals($hash2, $hash1);
         $hash2 = tx_rnbase_util_Misc::createHash($params, false);
         $this->assertTrue($hash2 != $hash1);
-        $params = array('1', array(1, 2), 123);
+        $params = ['1', [1, 2], 123];
         $hash2 = tx_rnbase_util_Misc::createHash($params);
         $this->assertEquals($hash2, $hash1);
-        $params = array(array(1, 2), '1', 123);
+        $params = [[1, 2], '1', 123];
         $hash2 = tx_rnbase_util_Misc::createHash($params);
         $this->assertEquals($hash2, $hash1);
     }

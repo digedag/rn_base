@@ -130,7 +130,7 @@ class tx_rnbase_parameters extends ArrayObject implements tx_rnbase_IParameters
     }
     public function getAll($qualifier = '')
     {
-        $ret = array();
+        $ret = [];
         $qualifier = $qualifier ? $qualifier : $this->getQualifier();
         $params = $this->getParametersPlain($qualifier);
         foreach ($params as $key => $value) {

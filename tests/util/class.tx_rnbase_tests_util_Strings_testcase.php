@@ -71,23 +71,23 @@ class tx_rnbase_tests_util_Strings_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public function getIsLastPartOfStrData()
     {
-        return array(
-            __LINE__ => array(
+        return [
+            __LINE__ => [
                 'haystack' => 'test',
                 'needle' => 'test',
                 'expected' => true,
-            ),
-            __LINE__ => array(
+            ],
+            __LINE__ => [
                 'haystack' => 'Hallo Welt',
                 'needle' => 'Welt',
                 'expected' => true,
-            ),
-            __LINE__ => array(
+            ],
+            __LINE__ => [
                 'haystack' => 'Hallo Welt',
                 'needle' => 'Hallo',
                 'expected' => false,
-            ),
-        );
+            ],
+        ];
     }
 
     /**

@@ -32,8 +32,8 @@ tx_rnbase::load('tx_rnbase_util_Files');
  */
 class tx_rnbase_util_Lang
 {
-    protected $LOCAL_LANG = array();
-    protected $LOCAL_LANG_charset = array();
+    protected $LOCAL_LANG = [];
+    protected $LOCAL_LANG_charset = [];
 
     /**
      * Load a local lang from a file.
@@ -144,7 +144,7 @@ class tx_rnbase_util_Lang
         //existing values in the local lang are overruled with those of the given array.
         tx_rnbase::load('tx_rnbase_util_Arrays');
         $this->LOCAL_LANG = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
-            is_array($this->LOCAL_LANG) ? $this->LOCAL_LANG : array(),
+            is_array($this->LOCAL_LANG) ? $this->LOCAL_LANG : [],
             $langArr
         );
     }
@@ -224,7 +224,7 @@ class tx_rnbase_util_Lang
     {
         $label = tx_rnbase_util_TYPO3::isTYPO46OrHigher() ? $this->getLL46($key, $alt, $hsc) : $this->getLL40($key, $alt, $hsc);
         if ($labelDebug) {
-            $options = array();
+            $options = [];
             if ($labelDebug !== 'html') {
                 $options['plain'] = true;
             }

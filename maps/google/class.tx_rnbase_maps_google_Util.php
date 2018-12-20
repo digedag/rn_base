@@ -57,7 +57,7 @@ class tx_rnbase_maps_google_Util
         $key = isset($options['key']) ? $options['key'] : '';
 
         $request = 'https://maps.googleapis.com/maps/api/geocode/json?address='.rawurlencode($addressString).'&key='.$key;
-        $result = array();
+        $result = [];
 
         $time = microtime(true);
         $curl = curl_init();
@@ -69,7 +69,8 @@ class tx_rnbase_maps_google_Util
         $requestTime = microtime(true) - $time;
 
         if ($requestTime > 2) {
-            tx_rnbase_util_Logger::notice('Long request time for Google address lookup ', 'rn_base', array('uri' => $request, 'time' => $requestTime));
+            tx_rnbase_util_Logger::notice('Long request time for Google address lookup ', 'rn_base', ['uri' => $request, 'time' => $requestTime]
+            );
         }
 
         if ($response) {

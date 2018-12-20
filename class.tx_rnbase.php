@@ -27,7 +27,7 @@
  */
 class tx_rnbase
 {
-    private static $loadedClasses = array();
+    private static $loadedClasses = [];
     /**
      * Load the class file
      *
@@ -87,7 +87,7 @@ class tx_rnbase
             if (func_num_args() > 1) {
                 // Das ist ein Konstruktor Aufruf mit Parametern
                 $args = func_get_args();
-                $ret = call_user_func_array(array($utility, 'makeInstance'), $args);
+                $ret = call_user_func_array([$utility, 'makeInstance'], $args);
             } else {
                 $ret = $utility::makeInstance($class);
             }
@@ -105,7 +105,7 @@ class tx_rnbase
      * @param mixed $excludeServiceKeys List of service keys which should be excluded in the search for a service. Array or comma list.
      * @return object The service object or an array with error info's.
      */
-    public static function makeInstanceService($serviceType, $serviceSubType = '', $excludeServiceKeys = array())
+    public static function makeInstanceService($serviceType, $serviceSubType = '', $excludeServiceKeys = [])
     {
         $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
 

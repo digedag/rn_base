@@ -26,7 +26,7 @@
  */
 class tx_rnbase_maps_Factory
 {
-    public static $typeInits = array();
+    public static $typeInits = [];
 
     /**
      * Erstellt eine GoogleMap
@@ -58,7 +58,7 @@ class tx_rnbase_maps_Factory
                     $image = $configurations->get($iconConfId.'shadow', true);
                     $icon->setShadow($image, $configurations->getInt($iconConfId.'shadow.file.maxW'), $configurations->getInt($iconConfId.'shadow.file.maxH'));
                     $name = $configurations->get($iconConfId.'name');
-                    $icon->setName($name ? $name : tx_rnbase_util_Misc::createHash(array('name' => $image)));
+                    $icon->setName($name ? $name : tx_rnbase_util_Misc::createHash(['name' => $image]));
                     $bubble->setIcon($icon);
                 }
                 $map->addMarker($bubble);

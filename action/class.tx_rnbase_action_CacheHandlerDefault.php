@@ -84,7 +84,7 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
      *
      * @var array
      */
-    private $configCache = array();
+    private $configCache = [];
 
     /**
      * Initializes the cache handler
@@ -228,7 +228,7 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
      */
     protected function getCacheKeyParts()
     {
-        $keys = array();
+        $keys = [];
         // TSFE hash, contains page id, domain, etc.
         $keys[] = tx_rnbase_util_TYPO3::getTSFE()->getHash();
         // the plugin ID (tt_content:uid or random md3, whenn rendered as USER in TS)
@@ -269,12 +269,12 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
     {
         // cleanup the key
         $key = preg_replace(
-            array(
+            [
                 // replace unsupported signs
                 '/[^A-Za-z0-9_%\\-&]/',
                 // remove double underscores
                 '/_+/'
-            ),
+            ],
             '_',
             $key
         );

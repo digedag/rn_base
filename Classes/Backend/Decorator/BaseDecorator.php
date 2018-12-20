@@ -56,7 +56,7 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
      */
     public function __construct(
         tx_rnbase_mod_BaseModule $mod,
-        $options = array()
+        $options = []
     ) {
         $this->mod = $mod;
 
@@ -213,7 +213,7 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
     protected function buildSimpleEntryInfo(
         Tx_Rnbase_Domain_Model_DataInterface $entry
     ) {
-        $infos = array();
+        $infos = [];
 
         $infos['uid'] = 'UID: ' . $entry->getProperty('uid');
 
@@ -224,10 +224,10 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
                 $infos['label'] = 'Label: ' . (string) $entry->getProperty($labelField);
             }
 
-            $datefields = array(
+            $datefields = [
                 'Creation' => tx_rnbase_util_TCA::getCrdateFieldForTable($entry->getTableName()),
                 'Last Change' => tx_rnbase_util_TCA::getTstampFieldForTable($entry->getTableName()),
-            );
+            ];
             foreach ($datefields as $dateTitle => $datefield) {
                 $date = $entry->getProperty($datefield);
                 if (!empty($date)) {
@@ -281,7 +281,7 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
      */
     protected function formatActionEdit(
         Tx_Rnbase_Domain_Model_DomainInterface $item,
-        array $actionConfig = array()
+        array $actionConfig = []
     ) {
         return $this->getFormTool()->createEditLink(
             $item->getTableName(),
@@ -301,16 +301,16 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
      */
     protected function formatActionHide(
         Tx_Rnbase_Domain_Model_DomainInterface $item,
-        array $actionConfig = array()
+        array $actionConfig = []
     ) {
         return $this->getFormTool()->createHideLink(
             $item->getTableName(),
             // we use the real uid, not the uid of the parent!
             $item->getProperty('uid'),
             $item->isHidden(),
-            array(
+            [
                 'label' => $actionConfig['title']
-            )
+            ]
         );
     }
 
@@ -324,16 +324,16 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
      */
     protected function formatActionRemove(
         Tx_Rnbase_Domain_Model_DomainInterface $item,
-        array $actionConfig = array()
+        array $actionConfig = []
     ) {
         return $this->getFormTool()->createDeleteLink(
             $item->getTableName(),
             // we use the real uid, not the uid of the parent!
             $item->getProperty('uid'),
             $actionConfig['title'],
-            array(
+            [
                 'confirm' => $actionConfig['confirm']
-            )
+            ]
         );
     }
 
@@ -347,7 +347,7 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
      */
     protected function formatActionMoveup(
         Tx_Rnbase_Domain_Model_DomainInterface $item,
-        array $actionConfig = array()
+        array $actionConfig = []
     ) {
         $uid = $item->getProperty('uid');
         $fromUid = $uid;
@@ -373,10 +373,10 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
                 $item->getTableName(),
                 $fromUid,
                 $prevId,
-                array(
+                [
                     'label' => '',
                     'title' => 'Move ' . $fromUid . ' after ' . $prevId,
-                )
+                ]
             );
         } else {
             tx_rnbase::load('tx_rnbase_mod_Util');
@@ -396,7 +396,7 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
      */
     protected function formatActionMovedown(
         Tx_Rnbase_Domain_Model_DomainInterface $item,
-        array $actionConfig = array()
+        array $actionConfig = []
     ) {
         $uid = $item->getProperty('uid');
         $uidMap = $this->getUidMap($item);
@@ -408,10 +408,10 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
                 $item->getTableName(),
                 $uid,
                 $nextId,
-                array(
+                [
                     'label' => '',
                     'title' => 'Move ' . $uid . ' after ' . $nextId,
-                )
+                ]
             );
         } else {
             tx_rnbase::load('tx_rnbase_mod_Util');
@@ -432,7 +432,7 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
         Tx_Rnbase_Domain_Model_RecordInterface $item
     ) {
         if (!$this->getOptions()->hasUidMap()) {
-            return array();
+            return [];
         }
 
         $currentId = $item->getUid();
@@ -455,11 +455,11 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
     protected function getActionsConfig(
         Tx_Rnbase_Domain_Model_DomainInterface $item
     ) {
-        $def = array('title' => '');
-        $actions = array(
+        $def = ['title' => ''];
+        $actions = [
             'edit' => $def,
             'hide' => $def,
-        );
+        ];
 
         // add mopve up and move down buttons for sortable entities
         if (tx_rnbase_util_TCA::getSortbyFieldForTable($item->getTableName())) {

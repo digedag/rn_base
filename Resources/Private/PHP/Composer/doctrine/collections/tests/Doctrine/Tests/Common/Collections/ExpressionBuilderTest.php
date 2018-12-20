@@ -93,7 +93,7 @@ class ExpressionBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testIn()
     {
-        $expr = $this->builder->in("a", array("b"));
+        $expr = $this->builder->in("a", ["b"]);
 
         $this->assertInstanceOf('Doctrine\Common\Collections\Expr\Comparison', $expr);
         $this->assertEquals(Comparison::IN, $expr->getOperator());
@@ -101,7 +101,7 @@ class ExpressionBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testNotIn()
     {
-        $expr = $this->builder->notIn("a", array("b"));
+        $expr = $this->builder->notIn("a", ["b"]);
 
         $this->assertInstanceOf('Doctrine\Common\Collections\Expr\Comparison', $expr);
         $this->assertEquals(Comparison::NIN, $expr->getOperator());

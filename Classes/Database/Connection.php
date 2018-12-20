@@ -85,12 +85,12 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         tx_rnbase_util_Misc::callHook(
             'rn_base',
             'util_db_do_select_pre',
-            array(
+            [
                 'what' => &$what,
                 'from' => &$from,
                 'options' => &$arr,
                 'debug' => &$debug,
-            )
+            ]
         );
 
         $debug = $debug ? $debug : intval($arr['debug']) > 0;
@@ -155,7 +155,7 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
             }
             if ($debug) {
                 tx_rnbase_util_Debug::debug($sql, 'SQL');
-                tx_rnbase_util_Debug::debug(array($what, $from, $arr));
+                tx_rnbase_util_Debug::debug([$what, $from, $arr]);
             }
         }
 
@@ -176,7 +176,7 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
 
         // use classic arrays or the collection
         // should be ever an collection, but for backward compatibility is this an array by default
-        $rows = array();
+        $rows = [];
         if ($arr['collection']) {
             if (!is_string($arr['collection']) || !class_exists($arr['collection'])) {
                 $arr['collection'] = 'Tx_Rnbase_Domain_Collection_Base';
@@ -220,19 +220,19 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         }
 
         if ($debug) {
-            tx_rnbase_util_Debug::debug(array(
+            tx_rnbase_util_Debug::debug([
                 'Rows retrieved ' => count($rows),
                 'Time ' => (microtime(true) - $time),
                 'Memory consumed ' => (memory_get_usage() - $mem),
-            ), 'SQL statistics');
+            ], 'SQL statistics');
         }
 
         tx_rnbase_util_Misc::callHook(
             'rn_base',
             'util_db_do_select_post',
-            array(
+            [
                 'rows' => &$rows,
-            )
+            ]
         );
 
         return $rows;
@@ -350,11 +350,11 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
      * @param int|array $debug
      * @return int UID of created record
      */
-    public function doInsert($tablename, $values, $arr = array())
+    public function doInsert($tablename, $values, $arr = [])
     {
         // fallback, $arr war früher $debug
         if (!is_array($arr)) {
-            $arr = array('debug' => $arr);
+            $arr = ['debug' => $arr];
         }
         $debug = intval($arr['debug']) > 0;
         $database = $this->getDatabaseConnection($arr);
@@ -362,11 +362,11 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         tx_rnbase_util_Misc::callHook(
             'rn_base',
             'util_db_do_insert_pre',
-            array(
+            [
                 'tablename' => &$tablename,
                 'values' => &$values,
                 'options' => &$arr,
-            )
+            ]
         );
 
         if ($debug) {
@@ -387,11 +387,11 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         $database->store_lastBuiltQuery = $storeLastBuiltQuery;
 
         if ($debug) {
-            tx_rnbase_util_Debug::debug(array(
+            tx_rnbase_util_Debug::debug([
                 'SQL ' => $sqlQuery,
                 'Time ' => (microtime(true) - $time),
                 'Memory consumed ' => (memory_get_usage() - $mem),
-            ), 'SQL statistics');
+            ], 'SQL statistics');
         }
 
         $insertId = $database->sql_insert_id();
@@ -399,12 +399,12 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         tx_rnbase_util_Misc::callHook(
             'rn_base',
             'util_db_do_insert_post',
-            array(
+            [
                 'tablename' => &$tablename,
                 'uid' => &$insertId,
                 'values' => &$values,
                 'options' => &$arr,
-            )
+            ]
         );
 
         return $insertId;
@@ -417,7 +417,7 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
      * @param int $debug
      * @return booloolean
      */
-    public function doQuery($sqlQuery, array $options = array())
+    public function doQuery($sqlQuery, array $options = [])
     {
         $debug = array_key_exists('debug', $options) ? intval($options['debug']) > 0 : false;
         $database = $this->getDatabaseConnection($options);
@@ -434,11 +434,11 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         $database->store_lastBuiltQuery = $storeLastBuiltQuery;
 
         if ($debug) {
-            tx_rnbase_util_Debug::debug(array(
+            tx_rnbase_util_Debug::debug([
                 'SQL ' => $sqlQuery,
                 'Time ' => (microtime(true) - $time),
                 'Memory consumed ' => (memory_get_usage() - $mem),
-            ), 'SQL statistics');
+            ], 'SQL statistics');
         }
 
         return $res;
@@ -453,11 +453,11 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
      * @param mixed $noQuoteFields Array or commaseparated string with fieldnames
      * @return int number of rows affected
      */
-    public function doUpdate($tablename, $where, $values, $arr = array(), $noQuoteFields = false)
+    public function doUpdate($tablename, $where, $values, $arr = [], $noQuoteFields = false)
     {
         // fallback, $arr war früher $debug
         if (!is_array($arr)) {
-            $arr = array('debug' => $arr);
+            $arr = ['debug' => $arr];
         }
         $debug = intval($arr['debug']) > 0;
         $database = $this->getDatabaseConnection($arr);
@@ -465,19 +465,19 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         tx_rnbase_util_Misc::callHook(
             'rn_base',
             'util_db_do_update_pre',
-            array(
+            [
                 'tablename' => &$tablename,
                 'where' => &$where,
                 'values' => &$values,
                 'options' => &$arr,
                 'noQuoteFields' => &$noQuoteFields,
-            )
+            ]
         );
 
         if ($debug) {
             $sql = $database->UPDATEquery($tablename, $where, $values, $noQuoteFields);
             tx_rnbase_util_Debug::debug($sql, 'SQL');
-            tx_rnbase_util_Debug::debug(array($tablename, $where, $values));
+            tx_rnbase_util_Debug::debug([$tablename, $where, $values]);
         }
 
         $storeLastBuiltQuery = $database->store_lastBuiltQuery;
@@ -498,14 +498,14 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         tx_rnbase_util_Misc::callHook(
             'rn_base',
             'util_db_do_update_post',
-            array(
+            [
                 'tablename' => &$tablename,
                 'where' => &$where,
                 'values' => &$values,
                 'affectedRows' => &$affectedRows,
                 'options' => &$arr,
                 'noQuoteFields' => &$noQuoteFields,
-            )
+            ]
         );
 
         return $affectedRows;
@@ -518,11 +518,11 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
      * @param array $arr
      * @return int number of rows affected
      */
-    public function doDelete($tablename, $where, $arr = array())
+    public function doDelete($tablename, $where, $arr = [])
     {
         // fallback, $arr war früher $debug
         if (!is_array($arr)) {
-            $arr = array('debug' => $arr);
+            $arr = ['debug' => $arr];
         }
         $debug = intval($arr['debug']) > 0;
         $database = $this->getDatabaseConnection($arr);
@@ -530,17 +530,17 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         tx_rnbase_util_Misc::callHook(
             'rn_base',
             'util_db_do_delete_pre',
-            array(
+            [
                 'tablename' => &$tablename,
                 'where' => &$where,
                 'options' => &$arr,
-            )
+            ]
         );
 
         if ($debug) {
             $sql = $database->DELETEquery($tablename, $where);
             tx_rnbase_util_Debug::debug($sql, 'SQL');
-            tx_rnbase_util_Debug::debug(array($tablename, $where));
+            tx_rnbase_util_Debug::debug([$tablename, $where]);
         }
 
         $storeLastBuiltQuery = $database->store_lastBuiltQuery;
@@ -559,12 +559,12 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         tx_rnbase_util_Misc::callHook(
             'rn_base',
             'util_db_do_delete_post',
-            array(
+            [
                 'tablename' => &$tablename,
                 'where' => &$where,
                 'affectedRows' => &$affectedRows,
                 'options' => &$arr,
-            )
+            ]
         );
 
         return $affectedRows;
@@ -627,7 +627,7 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
                 array_walk($cols, 'tx_rnbase_util_DB_prependAlias', $prefix);
             }
         } else {
-            $cols = array();
+            $cols = [];
         }
 
         return $cols;
@@ -659,7 +659,7 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
             $tce = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getDataHandlerClass());
             $tce->stripslashes_values = 0;
             // Wenn wir ein data-Array bekommen verwenden wir das
-            $tce->start($data ? $data : array(), $cmd ? $cmd : array());
+            $tce->start($data ? $data : [], $cmd ? $cmd : []);
 
             // set default TCA values specific for the user
             $TCAdefaultOverride = $GLOBALS['BE_USER']->getTSConfigProp('TCAdefaults');
@@ -677,10 +677,10 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
      * @param string $tableName
      * @param int $uid
      */
-    public function getRecord($tableName, $uid, $options = array())
+    public function getRecord($tableName, $uid, $options = [])
     {
         if (!is_array($options)) {
-            $options = array();
+            $options = [];
         }
         $options['where'] = 'uid='.intval($uid);
         if (!is_array($GLOBALS['TCA']) || !array_key_exists($tableName, $GLOBALS['TCA'])) {
@@ -688,7 +688,7 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         }
         $result = $this->doSelect('*', $tableName, $options);
 
-        return count($result) > 0 ? $result[0] : array();
+        return count($result) > 0 ? $result[0] : [];
     }
 
     /**
@@ -749,7 +749,7 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
             if ($operator == 'LIKE') {
                 $where = $this->_getSearchLike($kw, $searchFields);
             } elseif ($operator == 'OP_LIKE_CONST') {
-                $kw = array($sw);
+                $kw = [$sw];
                 $where = $this->_getSearchLike($kw, $searchFields);
             } elseif ($operator == 'FIND_IN_SET_OR') {
                 $where = $this->_getSearchSetOr($kw, $searchFields);
@@ -763,7 +763,7 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
     private function _getSearchOr($kw, $searchFields, $operator)
     {
         $where = '';
-        $where_p = array();
+        $where_p = [];
         foreach ($kw as $val) {
             $val = trim($val);
             if (!strlen($val)) {
@@ -802,7 +802,7 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         // (FIND_IN_SET(1, match.player)) AND (FIND_IN_SET(4, match.player))
         // (FIND_IN_SET(1, match.player) OR FIND_IN_SET(4, match.player))
         $where = '';
-        $where_p = array();
+        $where_p = [];
         foreach ($kw as $val) {
             $val = trim($val);
             if (!strlen($val)) {
@@ -833,10 +833,10 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
             $col = $searchFields[0];
             list($searchTable, $col) = explode('.', $col);
         }
-        $wheres = array();
+        $wheres = [];
         foreach ($kw as $val) {
             $val = trim($val);
-            $where_p = array();
+            $where_p = [];
             if (strlen($val) >= 2) {
                 $val = $TYPO3_DB->escapeStrForLike($TYPO3_DB->quoteStr($val, $searchTable), $searchTable);
                 foreach ($searchFields as $field) {
@@ -1023,7 +1023,7 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         if ($debug) {
             $sql = $GLOBALS['TYPO3_DB']->SELECTquery($what, $fromClause, $where, $groupBy, $orderBy);
             tx_rnbase_util_Debug::debug($sql, 'SQL');
-            tx_rnbase_util_Debug::debug(array($what, $from, $where));
+            tx_rnbase_util_Debug::debug([$what, $from, $where]);
         }
 
         $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -1036,7 +1036,7 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         );
 
         $wrapper = is_string($wrapperClass) ? tx_rnbase::makeInstanceClassName($wrapperClass) : 0;
-        $rows = array();
+        $rows = [];
         while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
             $rows[] = ($wrapper) ? new $wrapper($row) : $row;
         }
@@ -1077,11 +1077,11 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
             // Zur Where-Clause noch die gültigen Felder hinzufügen
             $sysPage = tx_rnbase_util_TYPO3::getSysPage();
             $mode = (TYPO3_MODE == 'BE') ? 1 : 0;
-            $ignoreArr = array();
+            $ignoreArr = [];
             if (intval($options['enablefieldsbe'])) {
                 $mode = 1;
                 // Im BE alle sonstigen Enable-Fields ignorieren
-                $ignoreArr = array('starttime' => 1, 'endtime' => 1, 'fe_group' => 1);
+                $ignoreArr = ['starttime' => 1, 'endtime' => 1, 'fe_group' => 1];
             } elseif (intval($options['enablefieldsfe'])) {
                 $mode = 0;
             }

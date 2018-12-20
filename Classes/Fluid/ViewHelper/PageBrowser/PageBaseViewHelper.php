@@ -75,7 +75,7 @@ class PageBaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBas
      */
     public function render(
         $pageUid = null,
-        array $additionalParams = array(),
+        array $additionalParams = [],
         $pageType = 0,
         $noCache = false,
         $noCacheHash = false,
@@ -83,7 +83,7 @@ class PageBaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBas
         $linkAccessRestrictedPages = false,
         $absolute = false,
         $addQueryString = false,
-        array $argumentsToBeExcludedFromQueryString = array(),
+        array $argumentsToBeExcludedFromQueryString = [],
         $usePageNumberAsLinkText = false
     ) {
         $this->tag->setTagName($this->arguments['data-tagname']);
@@ -93,11 +93,11 @@ class PageBaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBas
         $pageBrowserQualifier = $this->viewHelperVariableContainer->get(
             PageBrowserViewHelper::class, 'pageBrowserQualifier'
         );
-        $pageBrowserParams = array(
-            $pageBrowserQualifier => array(
+        $pageBrowserParams = [
+            $pageBrowserQualifier => [
                 $pageBrowser->getParamName('pointer') => $currentPage,
-            ),
-        );
+            ],
+        ];
         $additionalParams = \tx_rnbase_util_Arrays::mergeRecursiveWithOverrule($additionalParams, $pageBrowserParams);
 
         $uriBuilder = $this->controllerContext->getUriBuilder();

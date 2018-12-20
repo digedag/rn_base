@@ -42,7 +42,7 @@ class tx_rnbase_tests_util_Templates_testcase extends tx_rnbase_tests_BaseTestCa
     /**
      * @var array
      */
-    private $backup = array();
+    private $backup = [];
 
     public function setUp()
     {
@@ -61,7 +61,7 @@ class tx_rnbase_tests_util_Templates_testcase extends tx_rnbase_tests_BaseTestCa
     {
         $this->setTTOn();
         $runs = 10000;
-        $markerArr = array('###UID###' => 2, '###PID###' => 1, '###TITLE###' => 'My Titel 1');
+        $markerArr = ['###UID###' => 2, '###PID###' => 1, '###TITLE###' => 'My Titel 1'];
         $timeStart = microtime(true);
         $memStart = memory_get_usage();
         for ($i = 1; $i < $runs; $i++) {
@@ -81,14 +81,16 @@ class tx_rnbase_tests_util_Templates_testcase extends tx_rnbase_tests_BaseTestCa
         $time2 = microtime(true) - $timeStart;
         $memEnd2 = memory_get_usage() - $memStart;
 
-        $results = array();
-        $results['Serie 1'] = array('Info' => 'Timetrack on, Static MarkerArray', 'Time1' => $time1, 'Time2' => $time2,
-            'Mem1' => $memEnd1, 'Mem2' => $memEnd2);
+        $results = [];
+        $results['Serie 1'] = [
+            'Info' => 'Timetrack on, Static MarkerArray', 'Time1' => $time1, 'Time2' => $time2,
+            'Mem1' => $memEnd1, 'Mem2' => $memEnd2
+        ];
 
 
         $this->setTTOff();
         $runs = 10000;
-        $markerArr = array('###UID###' => 2, '###PID###' => 1, '###TITLE###' => 'My Titel 1');
+        $markerArr = ['###UID###' => 2, '###PID###' => 1, '###TITLE###' => 'My Titel 1'];
         $timeStart = microtime(true);
         $memStart = memory_get_usage();
         for ($i = 1; $i < $runs; $i++) {
@@ -107,8 +109,10 @@ class tx_rnbase_tests_util_Templates_testcase extends tx_rnbase_tests_BaseTestCa
         }
         $time2 = microtime(true) - $timeStart;
         $memEnd2 = memory_get_usage() - $memStart;
-        $results['Serie 2'] = array('Info' => 'Timetrack off, Static MarkerArray', 'Time1' => $time1, 'Time2' => $time2,
-            'Mem1' => $memEnd1, 'Mem2' => $memEnd2);
+        $results['Serie 2'] = [
+            'Info' => 'Timetrack off, Static MarkerArray', 'Time1' => $time1, 'Time2' => $time2,
+            'Mem1' => $memEnd1, 'Mem2' => $memEnd2
+        ];
     }
 
     public function test_includeSubTemplates()
@@ -134,7 +138,7 @@ class tx_rnbase_tests_util_Templates_testcase extends tx_rnbase_tests_BaseTestCa
     public function test_substMarkerArrayCached()
     {
         $this->setTTOff();
-        $markerArr = array('###UID###' => 2, '###PID###' => 1, '###TITLE###' => 'My Titel 1');
+        $markerArr = ['###UID###' => 2, '###PID###' => 1, '###TITLE###' => 'My Titel 1'];
         $cnt = tx_rnbase_util_Templates::substituteMarkerArrayCached(self::$template, $markerArr);
         $exp = '
 <html>

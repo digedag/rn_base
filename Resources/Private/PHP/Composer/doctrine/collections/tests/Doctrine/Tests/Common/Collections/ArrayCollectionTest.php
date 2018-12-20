@@ -159,16 +159,16 @@ class ArrayCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function provideDifferentElements()
     {
-        return array(
-            'indexed'     => array(array(1, 2, 3, 4, 5)),
-            'associative' => array(array('A' => 'a', 'B' => 'b', 'C' => 'c')),
-            'mixed'       => array(array('A' => 'a', 1, 'B' => 'b', 2, 3)),
-        );
+        return [
+            'indexed'     => [[1, 2, 3, 4, 5]],
+            'associative' => [['A' => 'a', 'B' => 'b', 'C' => 'c']],
+            'mixed'       => [['A' => 'a', 1, 'B' => 'b', 2, 3]],
+        ];
     }
 
     public function testRemove()
     {
-        $elements = array(1, 'A' => 'a', 2, 'B' => 'b', 3);
+        $elements = [1, 'A' => 'a', 2, 'B' => 'b', 3];
         $collection = new ArrayCollection($elements);
 
         $this->assertEquals(1, $collection->remove(0));
@@ -188,7 +188,7 @@ class ArrayCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testRemoveElement()
     {
-        $elements = array(1, 'A' => 'a', 2, 'B' => 'b', 3, 'A2' => 'a', 'B2' => 'b');
+        $elements = [1, 'A' => 'a', 2, 'B' => 'b', 3, 'A2' => 'a', 'B2' => 'b'];
         $collection = new ArrayCollection($elements);
 
         $this->assertTrue($collection->removeElement(1));
@@ -207,7 +207,7 @@ class ArrayCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testContainsKey()
     {
-        $elements = array(1, 'A' => 'a', 2, 'null' => null, 3, 'A2' => 'a', 'B2' => 'b');
+        $elements = [1, 'A' => 'a', 2, 'null' => null, 3, 'A2' => 'a', 'B2' => 'b'];
         $collection = new ArrayCollection($elements);
 
         $this->assertTrue($collection->containsKey(0),               "Contains index 0");
@@ -227,7 +227,7 @@ class ArrayCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testContains()
     {
-        $elements = array(1, 'A' => 'a', 2, 'null' => null, 3, 'A2' => 'a', 'zero' => 0);
+        $elements = [1, 'A' => 'a', 2, 'null' => null, 3, 'A2' => 'a', 'zero' => 0];
         $collection = new ArrayCollection($elements);
 
         $this->assertTrue($collection->contains(0),               "Contains Zero");
@@ -238,7 +238,7 @@ class ArrayCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testExists()
     {
-        $elements = array(1, 'A' => 'a', 2, 'null' => null, 3, 'A2' => 'a', 'zero' => 0);
+        $elements = [1, 'A' => 'a', 2, 'null' => null, 3, 'A2' => 'a', 'zero' => 0];
         $collection = new ArrayCollection($elements);
 
         $this->assertTrue($collection->exists(function($key, $element) {
@@ -252,7 +252,7 @@ class ArrayCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testIndexOf()
     {
-        $elements = array(1, 'A' => 'a', 2, 'null' => null, 3, 'A2' => 'a', 'zero' => 0);
+        $elements = [1, 'A' => 'a', 2, 'null' => null, 3, 'A2' => 'a', 'zero' => 0];
         $collection = new ArrayCollection($elements);
 
         $this->assertSame(array_search(2,              $elements, true), $collection->indexOf(2),              'Index of 2');
@@ -262,7 +262,7 @@ class ArrayCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testGet()
     {
-        $elements = array(1, 'A' => 'a', 2, 'null' => null, 3, 'A2' => 'a', 'zero' => 0);
+        $elements = [1, 'A' => 'a', 2, 'null' => null, 3, 'A2' => 'a', 'zero' => 0];
         $collection = new ArrayCollection($elements);
 
         $this->assertSame(2,    $collection->get(1),              'Get element by index');
@@ -278,18 +278,19 @@ class ArrayCollectionTest extends \PHPUnit_Framework_TestCase
         $object1->sortField = 2;
         $object2->sortField = 1;
 
-        $collection = new ArrayCollection(array(
+        $collection = new ArrayCollection([
             'object1' => $object1,
             'object2' => $object2,
-        ));
+        ]
+        );
 
         $this->assertSame(
-            array(
+            [
                 'object2' => $object2,
                 'object1' => $object1,
-            ),
+            ],
             $collection
-                ->matching(new Criteria(null, array('sortField' => Criteria::ASC)))
+                ->matching(new Criteria(null, ['sortField' => Criteria::ASC]))
                 ->toArray()
         );
     }

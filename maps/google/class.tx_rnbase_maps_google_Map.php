@@ -37,7 +37,7 @@ require_once(tx_rnbase_util_Extensions::extPath('wec_map').'map_service/google/c
 class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap
 {
     public static $PROVID = 'GOOGLEMAPS';
-    public static $mapTypes = array();
+    public static $mapTypes = [];
     /* @var $map tx_wecmap_map_google */
     private $map;
     private $conf;

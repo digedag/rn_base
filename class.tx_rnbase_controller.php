@@ -112,7 +112,7 @@ class tx_rnbase_controller
     public $configurations;
     public $defaultAction = 'defaultAction';
     public $cobj; // Plugins cObj instance from T3
-    private $errors = array();
+    private $errors = [];
 
     /*
      * main(): A factory method for the responsible action

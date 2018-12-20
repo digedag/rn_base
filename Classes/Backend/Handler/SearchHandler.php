@@ -44,7 +44,7 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
      *
      * @var Tx_Rnbase_Domain_Model_Data
      */
-    private $options = array();
+    private $options = [];
 
     /**
      * Returns the module
@@ -130,7 +130,7 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
      */
     protected function init(
         \tx_rnbase_mod_IModule $mod,
-        array &$options = array()
+        array &$options = []
     ) {
         $this->module = $mod;
 
@@ -195,7 +195,7 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
         // @codingStandardsIgnoreEnd
         $this->init($mod, $options);
 
-        $markerArray = $subpartArray = $wrappedSubpartArray = array();
+        $markerArray = $subpartArray = $wrappedSubpartArray = [];
 
         $this->prepareMarkerArrays(
             $template,

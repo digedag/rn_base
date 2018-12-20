@@ -62,17 +62,17 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
             tx_rnbase_util_Logger::fatal(
                 'Fatal error for action ' . $actionName,
                 $extKey,
-                array(
-                    'Exception' => array(
+                [
+                    'Exception' => [
                         'message' => $e->getMessage(),
                         'code' => $e->getCode(),
                         'file' => $e->getFile(),
                         'line' => $e->getLine(),
                         'trace' => $e->getTraceAsString(),
-                    ),
+                    ],
                     '_GET' => $_GET,
                     '_POST' => $_POST
-                )
+                ]
             );
         }
         // wir senden eine fehlermail
@@ -204,7 +204,7 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
         Tx_Rnbase_Configuration_ProcessorInterface $configurations,
         $type = 'error'
     ) {
-        static $calls = 0, $trace = array();
+        static $calls = 0, $trace = [];
 
         // konfiguration für die maximale anzahl an durchläufen holen.
         $maxCalls = $configurations->getInt('recursionCheck.maxCalls');
@@ -235,13 +235,13 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
         $configKey = md5(serialize($configurations->getConfigArray()));
 
         if (empty($trace[$type])) {
-            $trace[$type] = array();
+            $trace[$type] = [];
         }
         if (empty($trace[$type][$action])) {
-            $trace[$type][$action] = array();
+            $trace[$type][$action] = [];
         }
         if (empty($trace[$type][$action][$code])) {
-            $trace[$type][$action][$code] = array();
+            $trace[$type][$action][$code] = [];
         }
         if (empty($trace[$type][$action][$code][$configKey])) {
             $trace[$type][$action][$code][$configKey] = 0;

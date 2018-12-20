@@ -59,7 +59,7 @@ class Tx_Rnbase_Category_FilterUtility
      */
     protected function getCategoryUidsOfCurrentDetailViewItem(Tx_Rnbase_Configuration_ProcessorInterface $configurations, $confId)
     {
-        $categories = array();
+        $categories = [];
         foreach ($configurations->get($confId . 'supportedParameters.') as $configurationPerParameter) {
             $detailViewParameter = $configurations->getParameters()->getInt(
                 $configurationPerParameter['parameterName'], $configurationPerParameter['parameterQualifier']
@@ -88,7 +88,7 @@ class Tx_Rnbase_Category_FilterUtility
         $databaseConnection = $this->getDatabaseConnection();
         $categories =  $databaseConnection->doSelect(
             'uid_local', 'sys_category_record_mm',
-            array(
+            [
                 'where' =>
                     'sys_category_record_mm.tablenames = ' .
                     $databaseConnection->fullQuoteStr($table) . ' AND ' .
@@ -96,7 +96,7 @@ class Tx_Rnbase_Category_FilterUtility
                     $databaseConnection->fullQuoteStr($categoryField) . ' AND ' .
                     'sys_category_record_mm.uid_foreign = ' . intval($foreignUid),
                 'enablefieldsoff' => true
-            )
+            ]
         );
 
         $categories = array_map(
@@ -131,7 +131,7 @@ class Tx_Rnbase_Category_FilterUtility
             $configurations->get($confId . 'sysCategoryTableAlias') ?
                 $configurations->get($confId . 'sysCategoryTableAlias') :
                 'SYS_CATEGORY';
-        $fields[$sysCategoryTableAlias . '.uid'] = array(OP_IN_INT => join(',', $categories));
+        $fields[$sysCategoryTableAlias . '.uid'] = [OP_IN_INT => join(',', $categories)];
 
         return $fields;
     }
@@ -170,7 +170,7 @@ class Tx_Rnbase_Category_FilterUtility
             $configurations->get($confId . 'parameterName'), $configurations->get($confId . 'parameterQualifier')
         );
         if ($categoryUid) {
-            $fields = $this->getFieldsByCategories(array($categoryUid), $fields, $configurations, $confId);
+            $fields = $this->getFieldsByCategories([$categoryUid], $fields, $configurations, $confId);
         }
 
         return $fields;

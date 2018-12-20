@@ -100,7 +100,7 @@ class Action extends \tx_rnbase_view_Base
         );
 
         // support for old path configuration
-        $oldPaths = array('templateRootPath', 'layoutRootPath', 'partialRootPath');
+        $oldPaths = ['templateRootPath', 'layoutRootPath', 'partialRootPath'];
         foreach ($oldPaths as $oldPath) {
             if ($typoScriptConfiguration['view'][$oldPath]) {
                 $typoScriptConfiguration['view'][$oldPath . 's.'][0] = $typoScriptConfiguration['view'][$oldPath];
@@ -122,7 +122,7 @@ class Action extends \tx_rnbase_view_Base
      */
     protected function getDefaultTypoScriptConfigurationForFluid($extensionKey)
     {
-        $typoScriptConfiguration['settings'] = array();
+        $typoScriptConfiguration['settings'] = [];
 
         $resourcesPath = 'EXT:' . $extensionKey . '/Resources/Private/';
         $typoScriptConfiguration['view']['templateRootPaths.'][0] = $resourcesPath . 'Templates/';

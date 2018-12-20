@@ -124,7 +124,7 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
      */
     public function findAll()
     {
-        return $this->search(array(), array());
+        return $this->search([], []);
     }
 
     /**
@@ -153,8 +153,8 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
      * @return Tx_Rnbase_Domain_Model_DomainInterface
      */
     public function searchSingle(
-        array $fields = array(),
-        array $options = array()
+        array $fields = [],
+        array $options = []
     ) {
         $options['limit'] = 1;
 
@@ -234,7 +234,7 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
             // Die Sprache prüfen wir nur, wenn ein Sprachfeld gesetzt ist.
             if (!empty($languageField)) {
                 $tsfe = tx_rnbase_util_TYPO3::getTSFE();
-                $languages = array();
+                $languages = [];
                 if (isset($options['additionali18n'])) {
                     $languages = tx_rnbase_util_Strings::trimExplode(
                         ',',
@@ -296,7 +296,7 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
             && $options['distinct']
         )) {
             // seperate master and overlays
-            $master = $overlay = array();
+            $master = $overlay = [];
             /* @var $item Tx_Rnbase_Domain_Model_RecordInterface */
             foreach ($items as $item) {
                 $uid = (int) $item->getUid();
@@ -308,7 +308,7 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
                 }
             }
             // merge master and overlays and keep the order!
-            $new = array();
+            $new = [];
             // uniquemode can be master or overlay!
             $preferOverlay = empty($options['uniquemode']) || strtolower($options['uniquemode']) !== 'master';
             foreach ($items as $item) {

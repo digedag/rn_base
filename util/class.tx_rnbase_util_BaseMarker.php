@@ -32,11 +32,11 @@ tx_rnbase::load('Tx_Rnbase_Frontend_Marker_BaseMarker');
  */
 class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
 {
-    private $defaultMarkerArr = array();
+    private $defaultMarkerArr = [];
     /**
      * Array for dummy objects
      */
-    private static $emptyObjects = array();
+    private static $emptyObjects = [];
 
     public function __construct()
     {
@@ -69,11 +69,11 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
      */
     protected static function _getClassLabelMarkers($classname, &$formatter, $confId, $defaultMarkerArr = 0, $marker = 'PROFILE')
     {
-        $ret = array();
+        $ret = [];
         if ($classname) {
-            $obj = tx_rnbase::makeInstance($classname, array());
+            $obj = tx_rnbase::makeInstance($classname, []);
             $cols = $obj->getTCAColumns();
-            $labelArr = array();
+            $labelArr = [];
             foreach ($cols as $col => $colArr) {
                 $labelId = str_replace('.', '_', $confId.$col);
                 $label = $formatter->configurations->getLL($labelId);
@@ -96,10 +96,10 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
      */
     public function initTSLabelMarkers(&$formatter, $confId, $marker, $defaultMarkerArr = 0)
     {
-        $arr1 = array();
+        $arr1 = [];
         if ($labels = $formatter->configurations->get($confId.'labels')) {
             $labels = tx_rnbase_util_Strings::trimExplode(',', $labels);
-            $labelArr = array();
+            $labelArr = [];
             foreach ($labels as $label) {
                 // Für die Abfrage nach den Labels dürfen keine Punkte als Trenner verwendet werden
                 // Daher Umwandlung in Underscores
@@ -123,9 +123,9 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
      */
     public static function findUnusedCols(&$record, $template, $marker)
     {
-        $ignore = array();
+        $ignore = [];
         $minfo = self::containsMarker($template, $marker.'___MINFO');
-        $minfoArr = array();
+        $minfoArr = [];
         foreach ($record as $key => $value) {
             if ($minfo) {
                 $minfoArr[$key] = $marker.'_'.strtoupper($key);
@@ -237,7 +237,7 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
         if ($remove) {
             $subpartArray['###'.$linkMarker . '###'] = '';
         } else {
-            $wrappedSubpartArray['###'.$linkMarker . '###'] = array('', '');
+            $wrappedSubpartArray['###'.$linkMarker . '###'] = ['', ''];
         }
         $markerArray['###'.$linkMarker . 'URL###'] = '';
     }
@@ -287,13 +287,13 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
             return '';
         }
 
-        $out = array();
+        $out = [];
         $link = $configurations->createLink(); // Link auf die eigene Seite
-        $link->initByTS($configurations, $confId.'link.', array());
+        $link->initByTS($configurations, $confId.'link.', []);
         $token = md5(microtime());
         $link->label($token);
-        $emptyArr = array();
-        $wrappedSubpartArray = array();
+        $emptyArr = [];
+        $wrappedSubpartArray = [];
 
         $pagerName = $pagerData['pointername'] ? $pagerData['pointername'] : 'charpointer';
 
@@ -303,7 +303,7 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
             $myMarkerArray['###PB_ITEM_SIZE###'] = $size;
 
             if (strcmp($pointer, $curr_pointer)) {
-                $link->parameters(array($pagerName => $pointer));
+                $link->parameters([$pagerName => $pointer]);
                 $wrappedSubpartArray['###PB_ITEM_LINK###'] = explode($token, $link->makeTag());
             } else {
                 $wrappedSubpartArray['###PB_ITEM_LINK###'] = $emptyArr;
@@ -338,7 +338,7 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
     {
         if (!is_object(self::$emptyObjects[$classname])) {
             /* @var $dummy Tx_Rnbase_Domain_Model_DomainInterface */
-            $dummyInstance = tx_rnbase::makeInstance($classname, array('uid' => 0));
+            $dummyInstance = tx_rnbase::makeInstance($classname, ['uid' => 0]);
             if ($dummyInstance instanceof Tx_Rnbase_Domain_Model_DomainInterface
                 // for deprecated backward compatibility
                 || $dummyInstance instanceof tx_rnbase_model_base
@@ -438,7 +438,7 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
      */
     private static function getSuffixesToTry($configurations)
     {
-        $suffixesToTry = array();
+        $suffixesToTry = [];
         $salutation = $configurations->get('salutation');
 
         if ($salutation && ($salutation == 'informal')) {
@@ -476,7 +476,7 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
         tx_rnbase_util_Misc::pullTT();
     }
 
-    public static function substituteMarkerArrayCached($content, $markContentArray = array(), $subpartContentArray = array(), $wrappedSubpartContentArray = array())
+    public static function substituteMarkerArrayCached($content, $markContentArray = [], $subpartContentArray = [], $wrappedSubpartContentArray = [])
     {
         return tx_rnbase_util_Templates::substituteMarkerArrayCached($content, $markContentArray, $subpartContentArray, $wrappedSubpartContentArray);
     }

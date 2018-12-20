@@ -201,12 +201,12 @@ class tx_rnbase_util_Lock
             tx_rnbase_util_Logger::warn(
                 'Lock file could not be created for "' . $this->getName() . '" process!',
                 'rn_base',
-                array(
+                [
                     'process_name' => $this->getName(),
                     'life_time' => $this->getLifeTime(),
                     'lock_file' => $fileName,
 
-                )
+                ]
             );
 
             return false;

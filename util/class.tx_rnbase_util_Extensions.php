@@ -76,7 +76,7 @@ class tx_rnbase_util_Extensions
      */
     public static function __callStatic($method, array $arguments)
     {
-        return call_user_func_array(array(static::getExtensionManagementUtilityClass(), $method), $arguments);
+        return call_user_func_array([static::getExtensionManagementUtilityClass(), $method], $arguments);
     }
 
     /**
@@ -107,8 +107,8 @@ class tx_rnbase_util_Extensions
         $mainModuleName = '',
         $subModuleName = '',
         $position = '',
-        array $controllerActions = array(),
-        array $moduleConfiguration = array()
+        array $controllerActions = [],
+        array $moduleConfiguration = []
     ) {
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
             $extensionName,

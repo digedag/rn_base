@@ -33,12 +33,12 @@ class tx_rnbase_util_SearchGeneric extends tx_rnbase_util_SearchBase
 {
     protected function getTableMappings()
     {
-        $tableMapping = array();
+        $tableMapping = [];
         // Hook to append other tables
         tx_rnbase_util_Misc::callHook(
             'rn_base',
             'search_generic_getTableMapping_hook',
-            array('tableMapping' => &$tableMapping),
+            ['tableMapping' => &$tableMapping],
             $this
         );
 
@@ -61,7 +61,7 @@ class tx_rnbase_util_SearchGeneric extends tx_rnbase_util_SearchBase
         tx_rnbase_util_Misc::callHook(
             'rn_base',
             'search_generic_getJoins_hook',
-            array('join' => &$join, 'tableAliases' => $tableAliases),
+            ['join' => &$join, 'tableAliases' => $tableAliases],
             $this
         );
 

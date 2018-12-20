@@ -33,7 +33,7 @@ tx_rnbase::load('Tx_Rnbase_Frontend_Marker_Utility');
  */
 class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker
 {
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         if (array_key_exists('classname', $options)) {
             $this->setClassname($options['classname']);
@@ -72,7 +72,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker
         $markerArray = $formatter->getItemMarkerArrayWrapped($item->getProperty(), $confId, $ignore, $marker.'_', $item->getColumnNames());
 
         // subparts erzeugen
-        $wrappedSubpartArray = $subpartArray = array();
+        $wrappedSubpartArray = $subpartArray = [];
         $this->prepareSubparts($wrappedSubpartArray, $subpartArray, $template, $item, $formatter, $confId, $marker);
 
         // Links erzeugen
@@ -199,7 +199,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker
         $configurations = $formatter->getConfigurations();
         $pluginData = $configurations->getCObj()->data;
         $configurations->getCObj()->data = $item->getProperty();
-        $emptyArray = array('', '');
+        $emptyArray = ['', ''];
         $emptyString = '';
 
         foreach ($configurations->getKeyNames($confId.'subparts.') as $key) {
@@ -253,7 +253,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker
             $linkConfId = $confId . 'links.' . $linkId;
 
             // Die Parameter erzeugen
-            $params = array();
+            $params = [];
             $paramMap = (array) $configurations->get($linkConfId . '._cfg.params.');
             foreach ($paramMap as $paramName => $colName) {
                 if (is_scalar($colName) && array_key_exists($colName, $item->getProperty())) {
@@ -306,7 +306,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker
             $ret = $this->$method($paramName, $cfgArr, $item);
         } else {
             tx_rnbase::load($clazz);
-            $ret = call_user_func_array(array($clazz, $method), array($paramName, $cfgArr, $item));
+            $ret = call_user_func_array([$clazz, $method], [$paramName, $cfgArr, $item]);
         }
 
         return $ret;

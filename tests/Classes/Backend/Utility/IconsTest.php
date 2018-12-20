@@ -47,7 +47,7 @@ class Tx_Rnbase_Backend_Utility_IconsTest extends tx_rnbase_tests_BaseTestCase
         Tx_Rnbase_Backend_Utility_IconsForTest::skinImg(1, 2, 3, 4);
 
         self::assertEquals(
-            array('skinImg' => array(1, 2, 3, 4)),
+            ['skinImg' => [1, 2, 3, 4]],
             Typo3BackendUtilityIconsClass::$lastCalledMethod
         );
     }
@@ -74,7 +74,7 @@ class Typo3BackendUtilityIconsClass
     /**
      * @var array der key ist der methoden name, der value die übergebenen Parameter
      */
-    public static $lastCalledMethod = array();
+    public static $lastCalledMethod = [];
 
     /**
      * @param string $method
@@ -83,6 +83,6 @@ class Typo3BackendUtilityIconsClass
      */
     public static function __callStatic($method, $arguments)
     {
-        self::$lastCalledMethod = array($method => $arguments);
+        self::$lastCalledMethod = [$method => $arguments];
     }
 }

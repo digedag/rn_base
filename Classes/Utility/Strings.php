@@ -63,22 +63,22 @@ class Tx_Rnbase_Utility_Strings
      */
     public static function debugString($str)
     {
-        $bytes = array();
-        $hexArr = array();
+        $bytes = [];
+        $hexArr = [];
         for ($i = 0, $cnt = mb_strlen($str, '8bit'); $i < $cnt; $i++) {
-            $bytes[$i] = array(
+            $bytes[$i] = [
                     'ascii' => $str{$i},
                     'dec' => ord($str{$i}),
                     'hex' => dechex(ord($str{$i}))
-            );
+            ];
             $hexArr[$i] = dechex(ord($str{$i}));
         }
-        $ret = array(
+        $ret = [
                 'bytelength' => mb_strlen($str, '8bit'),
                 'bin2hex' => bin2hex($str),
                 'bytes' => $bytes,
                 'hexArr' => serialize($hexArr),
-        );
+        ];
 
         return $ret;
     }

@@ -43,7 +43,7 @@ class tx_rnbase_util_Queue
    */
     public function __construct($intSize = QUEUE_DEFAULT_SIZE)
     {
-        $this->arrQueue     = array();
+        $this->arrQueue     = [];
         $this->intArraySize = $intSize;
 
         $this->clear();

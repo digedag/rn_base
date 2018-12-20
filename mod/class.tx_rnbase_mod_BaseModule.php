@@ -147,7 +147,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
         $parts->setFuncMenu($this->getFuncMenu());
         // if we got no array the user got no permissions for the
         // selected page or no page is selected
-        $parts->setPageInfo(is_array($pageinfo) ? $pageinfo : array());
+        $parts->setPageInfo(is_array($pageinfo) ? $pageinfo : []);
         $parts->setSubMenu($this->tabs);
         $parts->setSelector($this->selector ? $this->selector : $this->subselector);
     }
@@ -175,7 +175,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
             . '</p>';
         $this->extObj->pObj = &$this; // Wozu diese Zuweisung? Die Submodule können getModule() verwenden...
 
-        if (is_callable(array($this->extObj, 'main'))) {
+        if (is_callable([$this->extObj, 'main'])) {
             $content .= $this->extObj->main();
         } else {
             $content .= 'Module '.get_class($this->extObj).' has no method main.';
@@ -297,7 +297,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
     {
         $this->content .= $this->getDoc()->endPage();
 
-        $params = $markerArray = $subpartArray = $wrappedSubpartArray = array();
+        $params = $markerArray = $subpartArray = $wrappedSubpartArray = [];
         tx_rnbase::load('tx_rnbase_util_BaseMarker');
         tx_rnbase::load('tx_rnbase_util_Templates');
         tx_rnbase_util_BaseMarker::callModules($this->content, $markerArray, $subpartArray, $wrappedSubpartArray, $params, $this->getConfigurations()->getFormatter());
@@ -405,7 +405,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
             }
         }
         if ($allowItems = $this->getConfigurations()->get('_cfg.funcmenu.allow')) {
-            $visibleItems = array();
+            $visibleItems = [];
             $allowItems = tx_rnbase_util_Strings::trimExplode(',', $allowItems);
             foreach ($allowItems as $item) {
                 $visibleItems[$item] = $items[$item];
@@ -516,23 +516,23 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
      */
     public function getTableLayout()
     {
-        return array(
-                    'table' => array('<table class="typo3-dblist" width="100%" cellspacing="0" cellpadding="0" border="0">', '</table><br/>'),
-                    '0' => array( // Format für 1. Zeile
-                        'tr'        => array('<tr class="t3-row-header c-headLineTable">', '</tr>'),
+        return [
+                    'table' => ['<table class="typo3-dblist" width="100%" cellspacing="0" cellpadding="0" border="0">', '</table><br/>'],
+                    '0' => [ // Format für 1. Zeile
+                        'tr'        => ['<tr class="t3-row-header c-headLineTable">', '</tr>'],
                         // Format für jede Spalte in der 1. Zeile
-                        'defCol' => array('<td>', '</td>')
-                    ),
-                    'defRow' => array( // Formate für alle Zeilen
-                        'tr'       => array('<tr class="db_list_normal">', '</tr>'),
-                        'defCol' => array('<td>', '</td>') // Format für jede Spalte in jeder Zeile
-                    ),
-                    'defRowEven' => array( // Formate für alle geraden Zeilen
-                        'tr'       => array('<tr class="db_list_alt">', '</tr>'),
+                        'defCol' => ['<td>', '</td>']
+                    ],
+                    'defRow' => [ // Formate für alle Zeilen
+                        'tr'       => ['<tr class="db_list_normal">', '</tr>'],
+                        'defCol' => ['<td>', '</td>'] // Format für jede Spalte in jeder Zeile
+                    ],
+                    'defRowEven' => [ // Formate für alle geraden Zeilen
+                        'tr'       => ['<tr class="db_list_alt">', '</tr>'],
                         // Format für jede Spalte in jeder Zeile
-                        'defCol' => array('<td>', '</td>')
-                    )
-                );
+                        'defCol' => ['<td>', '</td>']
+                    ]
+        ];
     }
 
 
@@ -545,12 +545,12 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
     {
         global $BE_USER;
 
-        $buttons = array(
+        $buttons = [
             'csh' => '',
             'view' => '',
             'record_list' => '',
             'shortcut' => '',
-        );
+        ];
         // TODO: CSH
         $buttons['csh'] = Tx_Rnbase_Backend_Utility::cshItem(
             '_MOD_' . $this->getName(),

@@ -45,7 +45,7 @@ tx_rnbase::load('tx_rnbase_util_Network');
  */
 class tx_rnbase_util_Link
 {
-    public $tagAttributes = array();       // setting attributes for the tag in general
+    public $tagAttributes = [];       // setting attributes for the tag in general
     public $classString = '';              // tags class attribute
     public $idString = '';                 // tags id attribute
     public $cObject;                       // instance of tx_rnbase_util_Typo3Classes::getContentObjectRendererClass()
@@ -54,15 +54,15 @@ class tx_rnbase_util_Link
     public $labelHasAlreadyHtmlSpecialChars = false; // is the label already HSC?
     public $noCacheBoolean = false;        // don't make a cHash
     public $noHashBoolean = false;         // add a no_cache=1 parameter
-    public $overruledParameters = array(); // parameters overruled by $parameters
-    public $parameters = array();              // parameters of the link
+    public $overruledParameters = []; // parameters overruled by $parameters
+    public $parameters = [];              // parameters of the link
     public $designatorString = '';         // parameter array name (prefixId) as controller namespace
     public $anchorString = '';             // section anchor as url target
     public $targetString = '';             // tags target attribute
     public $externalTargetString = '-1'; // external target defaults to new window
     public $titleString = '';              // tags title attribute
     public $titleHasAlreadyHtmlSpecialChars = false; //is title attribute already HSC?
-    private $typolinkParams = array();    // container for generic typolink parameters
+    private $typolinkParams = [];    // container for generic typolink parameters
     private $uniqueParameterId = null;     // used to build unique parameters for plugin
 
     // -------------------------------------------------------------------------------------
@@ -260,7 +260,7 @@ class tx_rnbase_util_Link
      * @param   mixed       parameters
      * @return  object      self
      */
-    public function overruled($overruledParameters = array())
+    public function overruled($overruledParameters = [])
     {
         if (is_object($overruledParameters)) {
             $overruledParameters = $overruledParameters->getArrayCopy();
@@ -283,7 +283,7 @@ class tx_rnbase_util_Link
      * @param   mixed       parameters
      * @return  object      self
      */
-    public function parameters($parameters = array())
+    public function parameters($parameters = [])
     {
         if (is_object($parameters)) {
             $parameters = $parameters->getArrayCopy();
@@ -305,7 +305,7 @@ class tx_rnbase_util_Link
      * @param   array       key value pairs
      * @return  object      self
      */
-    public function attributes($tagAttributes = array())
+    public function attributes($tagAttributes = [])
     {
         $this->tagAttributes = $tagAttributes;
 
@@ -504,9 +504,9 @@ class tx_rnbase_util_Link
      */
     public function _makeConfig($type)
     {
-        $conf = array();
-        $this->parameters = is_array($this->parameters) ? $this->parameters : array();
-        $this->overruledParameters = is_array($this->overruledParameters) ? $this->overruledParameters : array();
+        $conf = [];
+        $this->parameters = is_array($this->parameters) ? $this->parameters : [];
+        $this->overruledParameters = is_array($this->overruledParameters) ? $this->overruledParameters : [];
         unset($this->overruledParameters['DATA']);
         tx_rnbase::load('tx_rnbase_util_Arrays');
         $parameters = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
@@ -516,7 +516,7 @@ class tx_rnbase_util_Link
         foreach ((array) $parameters as $key => $value) {
             // Ggf. hier auf die Parameter der eigenen Extension prüfen
             if ($this->getUniqueParameterId() !== null) {
-                $value = array($key => $value);
+                $value = [$key => $value];
                 $key = $this->getUniqueParameterId();
             }
             $conf['additionalParams'] .= $this->makeUrlParam($key, $value);
@@ -600,7 +600,7 @@ class tx_rnbase_util_Link
 
         return $utility::implodeArrayForUrl(
             $qualifier ? $qualifier : $key,
-            $qualifier ? array($key => $value) : $value,
+            $qualifier ? [$key => $value] : $value,
             '',
             true,
             true
@@ -648,7 +648,7 @@ class tx_rnbase_util_Link
      */
     public function initByTS($configurations, $confId, $parameterArr)
     {
-        $parameterArr = is_array($parameterArr) ? $parameterArr : array();
+        $parameterArr = is_array($parameterArr) ? $parameterArr : [];
         $pid = $configurations->getCObj()->stdWrap(
             $configurations->get($confId.'pid'),
             $configurations->get($confId.'pid.')
@@ -694,7 +694,7 @@ class tx_rnbase_util_Link
         $atagParams = $configurations->get($confId.'atagparams.', true);
         if (is_array($atagParams)) {
             // Die Parameter werden jetzt nochmal per TS validiert und können somit dynamisch gesetzt werden
-            $attributes = array();
+            $attributes = [];
             foreach ($atagParams as $aParam => $lvalue) {
                 if (substr($aParam, strlen($aParam) - 1, 1) == '.') {
                     $aParam = substr($aParam, 0, strlen($aParam) - 1);
@@ -713,7 +713,7 @@ class tx_rnbase_util_Link
             $this->overruled();
         } elseif ($keepVarConf = $configurations->get($confId.'useKeepVars.')) {
             // Sonderoptionen für KeepVars gesetzt
-            $newKeepVars = array();
+            $newKeepVars = [];
             // skip empty values? default false!
             $skipEmpty = !empty($keepVarConf['skipEmpty']);
             $keepVars = $configurations->getKeepVars();
@@ -786,7 +786,7 @@ class tx_rnbase_util_Link
      * @param array $getParams Array of GET parameters to include
      * @return string
      */
-    public static function linkThisScript(array $getParams = array())
+    public static function linkThisScript(array $getParams = [])
     {
         $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
 

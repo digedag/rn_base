@@ -45,7 +45,7 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
     {
         $this->cleanUpPageRenderer();
 
-        tx_rnbase_util_Misc::prepareTSFE(array('force' => true));
+        tx_rnbase_util_Misc::prepareTSFE(['force' => true]);
     }
 
     /**
@@ -68,15 +68,15 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
     {
         $property = new ReflectionProperty('\\TYPO3\\CMS\\Core\\Page\\PageRenderer', 'jsFiles');
         $property->setAccessible(true);
-        $property->setValue(tx_rnbase_util_TYPO3::getPageRenderer(), array());
+        $property->setValue(tx_rnbase_util_TYPO3::getPageRenderer(), []);
 
         $property = new ReflectionProperty('\\TYPO3\\CMS\\Core\\Page\\PageRenderer', 'jsLibs');
         $property->setAccessible(true);
-        $property->setValue(tx_rnbase_util_TYPO3::getPageRenderer(), array());
+        $property->setValue(tx_rnbase_util_TYPO3::getPageRenderer(), []);
 
         $property = new ReflectionProperty('\\TYPO3\\CMS\\Core\\Page\\PageRenderer', 'cssFiles');
         $property->setAccessible(true);
-        $property->setValue(tx_rnbase_util_TYPO3::getPageRenderer(), array());
+        $property->setValue(tx_rnbase_util_TYPO3::getPageRenderer(), []);
     }
 
     /**
@@ -85,14 +85,14 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
     public function testAddRessourcesAddsCssFiles()
     {
         $action = $this->getAction();
-        $configurations = $this->createConfigurations(array(
-            'testConfId.' => array(
-                'includeCSS.' => array(
+        $configurations = $this->createConfigurations([
+            'testConfId.' => [
+                'includeCSS.' => [
                     1 => 'typo3conf/ext/rn_base/ext_emconf.php',
                     2 => 'EXT:rn_base/ext_icon.gif'
-                )
-            )
-        ), 'rn_base');
+                ]
+            ]
+        ], 'rn_base');
         $action->setConfigurations($configurations);
 
         $this->callInaccessibleMethod($action, 'addResources', $configurations, 'testConfId.');
@@ -111,16 +111,16 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
     public function testAddRessourcesAddsJavaScriptFooterFiles()
     {
         $action = $this->getAction();
-        $configurations = $this->createConfigurations(array(
-            'testConfId.' => array(
-                'includeJSFooter.' => array(
+        $configurations = $this->createConfigurations([
+            'testConfId.' => [
+                'includeJSFooter.' => [
                     '1' => 'typo3conf/ext/rn_base/ext_emconf.php',
                     '2' => 'EXT:rn_base/ext_icon.gif',
                     '3' => '//www.dmk-ebusiness.de',
-                    '3.' => array('external' => 1)
-                )
-            )
-        ), 'rn_base');
+                    '3.' => ['external' => 1]
+                ]
+            ]
+        ], 'rn_base');
         $action->setConfigurations($configurations);
 
         $this->callInaccessibleMethod($action, 'addResources', $configurations, 'testConfId.');
@@ -140,19 +140,19 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
     public function testAddRessourcesAddsJavaScriptLibraryFiles()
     {
         $action = $this->getAction();
-        $configurations = $this->createConfigurations(array(
-            'testConfId.' => array(
-                'includeJSlibs.' => array(
+        $configurations = $this->createConfigurations([
+            'testConfId.' => [
+                'includeJSlibs.' => [
                     'first' => 'typo3conf/ext/rn_base/ext_emconf.php',
                     'second' => 'EXT:rn_base/ext_icon.gif',
                     'third' => '//www.dmk-ebusiness.de',
-                    'third.' => array('external' => 1)
-                ),
-                'includeJSLibs.' => array(
+                    'third.' => ['external' => 1]
+                ],
+                'includeJSLibs.' => [
                     'fourth' => 'typo3conf/ext/rn_base/ext_conf_template.txt',
-                )
-            )
-        ), 'rn_base');
+                ]
+            ]
+        ], 'rn_base');
         $action->setConfigurations($configurations);
 
         $this->callInaccessibleMethod($action, 'addResources', $configurations, 'testConfId.');
@@ -184,14 +184,14 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
     public function testAddCacheTags()
     {
         $action = $this->getAction();
-        $configurations = $this->createConfigurations(array(
-            'testConfId.' => array(
-                'cacheTags.' => array(
+        $configurations = $this->createConfigurations([
+            'testConfId.' => [
+                'cacheTags.' => [
                     0 => 'first',
                     1 => 'second',
-                )
-            )
-        ), 'rn_base');
+                ]
+            ]
+        ], 'rn_base');
         $action->setConfigurations($configurations);
 
         $this->callInaccessibleMethod($action, 'addCacheTags');
@@ -200,7 +200,7 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
         $property->setAccessible(true);
         $cacheTags = $property->getValue(tx_rnbase_util_TYPO3::getTSFE());
 
-        self::assertEquals(array('first', 'second'), $cacheTags);
+        self::assertEquals(['first', 'second'], $cacheTags);
     }
 
     /**
@@ -209,7 +209,7 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
     public function testAddCacheTagsIfNotConfigured()
     {
         $action = $this->getAction();
-        $configurations = $this->createConfigurations(array('testConfId.' => array()), 'rn_base');
+        $configurations = $this->createConfigurations(['testConfId.' => []], 'rn_base');
         $action->setConfigurations($configurations);
 
         $this->callInaccessibleMethod($action, 'addCacheTags');
@@ -218,7 +218,7 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
         $property->setAccessible(true);
         $cacheTags = $property->getValue(tx_rnbase_util_TYPO3::getTSFE());
 
-        self::assertEquals(array(), $cacheTags);
+        self::assertEquals([], $cacheTags);
     }
 
     /**
@@ -228,12 +228,12 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
     {
         $action = $this->getMockForAbstractClass(
             'tx_rnbase_action_BaseIOC',
-            array(),
+            [],
             '',
             true,
             true,
             true,
-            array('getTemplateName', 'getViewClassName', 'handleRequest')
+            ['getTemplateName', 'getViewClassName', 'handleRequest']
         );
 
         $action->expects(self::any())

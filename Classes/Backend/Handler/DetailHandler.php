@@ -65,7 +65,7 @@ abstract class Tx_Rnbase_Backend_Handler_DetailHandler extends Tx_Rnbase_Backend
             $current ? '###DETAILPART###' : '###SEARCHPART###'
         );
 
-        $markerArray = $subpartArray = $wrappedSubpartArray = array();
+        $markerArray = $subpartArray = $wrappedSubpartArray = [];
 
         $this->prepareMarkerArrays(
             $templateMod,

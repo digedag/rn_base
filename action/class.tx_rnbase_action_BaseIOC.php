@@ -116,7 +116,7 @@ abstract class tx_rnbase_action_BaseIOC
         }
         if ($debug) {
             $memEnd = memory_get_usage();
-            tx_rnbase_util_Debug::debug(array(
+            tx_rnbase_util_Debug::debug([
                 'Action' => get_class($this),
                 'Conf Id' => $this->getConfId(),
                 'Execution Time' => (microtime(true) - $time),
@@ -126,7 +126,7 @@ abstract class tx_rnbase_action_BaseIOC
                 'Cached?' => $cached ? 'yes' : 'no',
                 'CacheHandler' => is_object($cacheHandler) ? get_class($cacheHandler) : '',
                 'SubstCacheEnabled?' => tx_rnbase_util_Templates::isSubstCacheEnabled() ? 'yes' : 'no',
-            ), 'View statistics for: '.$this->getConfId(). ' Key: ' . $debugKey);
+            ], 'View statistics for: '.$this->getConfId(). ' Key: ' . $debugKey);
         }
         // reset the substCache after each view!
         tx_rnbase_util_Templates::resetSubstCache();
@@ -148,7 +148,7 @@ abstract class tx_rnbase_action_BaseIOC
         }
 
         // support configuration key for javascript libraries from TYPO3 6.2 to 8.7
-        $javascriptLibraryKeys = array('includeJSlibs', 'includeJSLibs');
+        $javascriptLibraryKeys = ['includeJSlibs', 'includeJSLibs'];
         foreach ($javascriptLibraryKeys as $javascriptLibraryKey) {
             foreach ($this->getJavaScriptFilesByIncludePartConfId($javascriptLibraryKey) as $javaScriptConfId => $file) {
                 // external files should never be concatenated. If you want
@@ -185,7 +185,7 @@ abstract class tx_rnbase_action_BaseIOC
         $confId = $this->getConfId();
 
         $javaScriptConfIds = $configurations->getKeyNames($confId . $includePartConfId . '.');
-        $files = array();
+        $files = [];
         if (is_array($javaScriptConfIds)) {
             foreach ($javaScriptConfIds as $javaScriptConfId) {
                 $file = $configurations->get($confId . $includePartConfId . '.' . $javaScriptConfId);
@@ -342,7 +342,7 @@ abstract class tx_rnbase_action_BaseIOC
      * @param array $params
      * @return \tx_rnbase_util_Link link instance
      */
-    protected function createLink($configurations, $confId, $params = array())
+    protected function createLink($configurations, $confId, $params = [])
     {
         $link = $configurations->createLink();
         $link->initByTS($configurations, $confId, $params);

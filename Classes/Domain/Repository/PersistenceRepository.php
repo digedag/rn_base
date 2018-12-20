@@ -43,7 +43,7 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
      * @return Tx_Rnbase_Domain_Model_DomainInterface
      */
     public function createNewModel(
-        array $record = array()
+        array $record = []
     ) {
         return $this->getEmptyModel()->setProperty($record);
     }
@@ -228,7 +228,7 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
         // set the uid and force a record reload
         if ($model instanceof Tx_Rnbase_Domain_Model_Base) {
             $model->setProperty(
-                array('uid' => (int) $data['uid'])
+                ['uid' => (int) $data['uid']]
             );
             $model->reset();
         }
@@ -248,7 +248,7 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
 
         if (!is_array($columns) || empty($columns)) {
             // @TODO: throw exception or log into devlog?
-            return array();
+            return [];
         }
 
         tx_rnbase::load('tx_rnbase_util_Arrays');
@@ -256,7 +256,7 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
             $model->getProperty(),
             array_merge(
                 $columns,
-                array(
+                [
                     // allow to delete a entity
                     tx_rnbase_util_TCA::getDeletedFieldForTable(
                         $model->getTableName()
@@ -265,7 +265,7 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
                     tx_rnbase_util_TCA::getDisabledFieldForTable(
                         $model->getTableName()
                     ),
-                )
+                ]
             )
         );
 

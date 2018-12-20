@@ -70,16 +70,16 @@ class tx_rnbase_util_ListMarker
         $this->formatter = $formatter;
         $this->offset = $offset;
 
-        $this->parts = array();
+        $this->parts = [];
         $this->rowRoll = intval($formatter->configurations->get($confId.'roll.value'));
         $this->rowRollCnt = 0;
         $this->totalLineStart = intval($formatter->configurations->get($confId.'totalline.startValue'));
         $this->i = 0;
-        $provider->iterateAll(array($this, 'renderNext'));
+        $provider->iterateAll([$this, 'renderNext']);
 
         $parts = implode($formatter->configurations->get($confId.'implode'), $this->parts);
 
-        return array('result' => $parts, 'size' => $this->i);
+        return ['result' => $parts, 'size' => $this->i];
     }
     /**
      * Callback function for next item
@@ -89,13 +89,13 @@ class tx_rnbase_util_ListMarker
     {
         $this->setToData(
             $data,
-            array(
+            [
                 'roll' => $this->rowRollCnt,
                 // Marker für aktuelle Zeilenummer
                 'line' => $this->i,
                 // Marker für aktuelle Zeilenummer der Gesamtliste
                 'totalline' => $this->i + $this->totalLineStart + $this->offset,
-            )
+            ]
         );
         $this->handleVisitors($data);
         $part = $this->entryMarker->parseTemplate($this->info->getTemplate($data), $data, $this->formatter, $this->confId, $this->marker);
@@ -136,7 +136,7 @@ class tx_rnbase_util_ListMarker
 
         $this->info->init($template, $formatter, $marker);
 
-        $parts = array();
+        $parts = [];
         $rowRoll = $formatter->getConfigurations()->getInt($confId . 'roll.value');
         $rowRollCnt = 0;
         $totalLineStart = $formatter->getConfigurations()->getInt($confId.'totalline.startValue');
@@ -152,13 +152,13 @@ class tx_rnbase_util_ListMarker
             }
             $this->setToData(
                 $data,
-                array(
+                [
                     'roll' => $rowRollCnt,
                     // Marker für aktuelle Zeilenummer
                     'line' => $i,
                     // Marker für aktuelle Zeilenummer der Gesamtliste
                     'totalline' => $i + $totalLineStart + $offset,
-                )
+                ]
             );
             $this->handleVisitors($data);
             $part = $entryMarker->parseTemplate($this->info->getTemplate($data), $data, $formatter, $confId, $marker);

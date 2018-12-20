@@ -44,9 +44,9 @@ class tx_rnbase_util_Spyc
     private $_containsGroupAlias = false;
     private $path;
     private $result;
-    private $LiteralBlockMarkers = array('>', '|');
+    private $LiteralBlockMarkers = ['>', '|'];
     private $LiteralPlaceHolder = '___YAML_Literal_Block___';
-    private $SavedGroups = array();
+    private $SavedGroups = [];
 
     /**#@+
     * @access private
@@ -284,10 +284,10 @@ class tx_rnbase_util_Spyc
     {
         $source = $this->loadFromSource($input);
         if (empty($source)) {
-            return array();
+            return [];
         }
-        $this->path = array();
-        $this->result = array();
+        $this->path = [];
+        $this->result = [];
 
 
         for ($i = 0, $len = count($source); $i < $len; $i++) {
@@ -361,11 +361,11 @@ class tx_rnbase_util_Spyc
     private function _parseLine($line)
     {
         if (!$line) {
-            return array();
+            return [];
         }
         $line = trim($line);
         if (!$line) {
-            return array();
+            return [];
         }
 
         if ($group = $this->nodeContainsGroup($line)) {
@@ -412,7 +412,7 @@ class tx_rnbase_util_Spyc
             $explode = $this->_inlineEscape($matches[1]);
 
             // Propogate value array
-            $value  = array();
+            $value  = [];
             foreach ($explode as $v) {
                 $value[] = $this->_toType($v);
             }
@@ -423,7 +423,7 @@ class tx_rnbase_util_Spyc
             array_shift($array);
             $value = trim(implode(': ', $array));
             $value = $this->_toType($value);
-            $value = array($key => $value);
+            $value = [$key => $value];
         } elseif (preg_match('/{(.+)}$/', $value, $matches)) {
             // Inline Mapping
 
@@ -431,7 +431,7 @@ class tx_rnbase_util_Spyc
             $explode = $this->_inlineEscape($matches[1]);
 
             // Propogate value array
-            $array = array();
+            $array = [];
             foreach ($explode as $v) {
                 $array = $array + $this->_toType($v);
             }
@@ -442,12 +442,12 @@ class tx_rnbase_util_Spyc
             $value = (int)$value;
         } elseif (in_array(
             strtolower($value),
-            array('true', 'on', '+', 'yes', 'y')
+            ['true', 'on', '+', 'yes', 'y']
         )) {
             $value = true;
         } elseif (in_array(
             strtolower($value),
-            array('false', 'off', '-', 'no', 'n')
+            ['false', 'off', '-', 'no', 'n']
         )) {
             $value = false;
         } elseif (is_numeric($value)) {
@@ -474,7 +474,7 @@ class tx_rnbase_util_Spyc
         // pure mappings and mappings with sequences inside can't go very
         // deep.  This needs to be fixed.
 
-        $saved_strings = array();
+        $saved_strings = [];
 
         // Check for strings
         $regex = '/(?:(")|(?:\'))((?(1)[^"]+|[^\']+))(?(1)"|\')/';
@@ -555,7 +555,7 @@ class tx_rnbase_util_Spyc
         if (!isset($array[$key])) {
             return false;
         }
-        if ($array[$key] === array()) {
+        if ($array[$key] === []) {
             $array[$key] = '';
         };
         $value = $array[$key];
@@ -603,7 +603,7 @@ class tx_rnbase_util_Spyc
 
     private static function flatten($array)
     {
-        $tempPath = array();
+        $tempPath = [];
         if (!empty($array)) {
             foreach ($array as $_) {
                 if (!is_int($_)) {
@@ -671,7 +671,7 @@ class tx_rnbase_util_Spyc
     private function getParentPathByIndent($indent)
     {
         if ($indent == 0) {
-            return array();
+            return [];
         }
 
         $linePath = $this->path;
@@ -690,7 +690,7 @@ class tx_rnbase_util_Spyc
     private function clearBiggerPathValues($indent)
     {
         if ($indent == 0) {
-            $this->path = array();
+            $this->path = [];
         }
         if (empty($this->path)) {
             return true;
@@ -763,7 +763,7 @@ class tx_rnbase_util_Spyc
 
     private function returnMappedSequence($line)
     {
-        $array = array();
+        $array = [];
         $key         = trim(substr(substr($line, 1), 0, -1));
         $array[$key] = '';
 
@@ -772,7 +772,7 @@ class tx_rnbase_util_Spyc
 
     private function returnMappedValue($line)
     {
-        $array = array();
+        $array = [];
         $key         = trim(substr($line, 0, -1));
         $array[$key] = '';
 
@@ -788,7 +788,7 @@ class tx_rnbase_util_Spyc
 
     private function returnKeyValuePair($line)
     {
-        $array = array();
+        $array = [];
 
         if (preg_match('/^(.+):/', $line, $key)) {
             // It's a key/value pair most likely
@@ -820,9 +820,9 @@ class tx_rnbase_util_Spyc
     private function returnArrayElement($line)
     {
         if (strlen($line) <= 1) {
-            return array(array());
+            return [[]];
         } // Weird %)
-        $array = array();
+        $array = [];
         $value   = trim(substr($line, 1));
         $value   = $this->_toType($value);
         $array[] = $value;

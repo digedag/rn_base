@@ -56,7 +56,7 @@ class PageBaseViewHelper_testcase extends BaseViewHelperTest
     {
         $viewHelper = $this->getMock(
             'Sys25\\RnBase\\Fluid\\ViewHelper\\PageBrowser\\PageBaseViewHelper',
-            array('renderChildren')
+            ['renderChildren']
         );
 
         $viewHelper->expects(self::once())
@@ -78,7 +78,7 @@ class PageBaseViewHelper_testcase extends BaseViewHelperTest
     {
         $viewHelper = $this->getMock(
             'Sys25\\RnBase\\Fluid\\ViewHelper\\PageBrowser\\PageBaseViewHelper',
-            array('renderChildren')
+            ['renderChildren']
         );
 
         $viewHelper->expects(self::never())
@@ -86,7 +86,7 @@ class PageBaseViewHelper_testcase extends BaseViewHelperTest
 
         $viewHelper = $this->getPreparedVîewHelper($viewHelper);
 
-        $renderedContent = $viewHelper->render(null, array(), 0, false, false, '', false, false, false, array(), true);
+        $renderedContent = $viewHelper->render(null, [], 0, false, false, '', false, false, false, [], true);
         self::assertContains('456', $renderedContent);
     }
 
@@ -111,7 +111,7 @@ class PageBaseViewHelper_testcase extends BaseViewHelperTest
         $this->renderingContext->getVariableProvider()->add('pageNumber', 456);
 
         $viewHelper->initializeArguments();
-        $viewHelper->setArguments(array('data-tagname' => 'a'));
+        $viewHelper->setArguments(['data-tagname' => 'a']);
 
         return $viewHelper;
     }

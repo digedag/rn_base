@@ -17,6 +17,6 @@ class LazyArrayCollection extends AbstractLazyCollection
      */
     protected function doInitialize()
     {
-        $this->collection = new ArrayCollection(array('a', 'b', 'c'));
+        $this->collection = new ArrayCollection(['a', 'b', 'c']);
     }
 }

@@ -91,12 +91,12 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements Tx_Rnbase_Dom
             $rowOrUid = (int) $rowOrUid;
             $this->uid = $rowOrUid;
             if ($rowOrUid === 0) {
-                $this->record = array();
+                $this->record = [];
             } elseif ($this->getTableName()) {
                 $this->record = tx_rnbase_util_DB::getRecord($this->getTableName(), $this->uid);
             }
             // Der Record sollte immer ein Array sein
-            $this->record = is_array($this->record) ? $this->record : array();
+            $this->record = is_array($this->record) ? $this->record : [];
         }
 
         // set the modified state to clean
@@ -268,7 +268,7 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements Tx_Rnbase_Dom
     {
         return tx_rnbase_util_TCA::validateModel(
             $this,
-            $options === null ? array('only_record_fields' => true) : $options
+            $options === null ? ['only_record_fields' => true] : $options
         );
     }
 

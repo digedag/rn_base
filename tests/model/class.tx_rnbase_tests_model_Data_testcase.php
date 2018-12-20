@@ -41,11 +41,11 @@ class tx_rnbase_tests_model_Data_testcase extends tx_rnbase_tests_BaseTestCase
      */
     private function getModelInstance()
     {
-        $data = array(
+        $data = [
             'uid' => 50,
             'first_name' => 'John',
             'last_name' => 'Doe',
-        );
+        ];
 
         return tx_rnbase_model_data::getInstance($data);
     }
@@ -93,14 +93,14 @@ class tx_rnbase_tests_model_Data_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public function testRecursiveInstance()
     {
-        $data = array(
+        $data = [
             'gender' => 'm',
-            'name' => array(
+            'name' => [
                 'first' => 'John',
                 'last' => 'Doe',
-                'test' => array(),
-            )
-        );
+                'test' => [],
+            ]
+        ];
         $model = tx_rnbase_model_data::getInstance($data);
 
         $this->assertSame('m', $model->getGender());

@@ -45,7 +45,7 @@ class tx_rnbase_filter_FilterItem implements tx_rnbase_IFilterItem
     public $record;
     public function __construct($name, $value)
     {
-        $this->record = array();
+        $this->record = [];
         $this->setName($name);
         $this->setValue($value);
     }

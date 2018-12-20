@@ -44,7 +44,7 @@ class Tx_Rnbase_Backend_UtilityTest extends tx_rnbase_tests_BaseTestCase
         Tx_Rnbase_Backend_UtilityForTests::getRecordTitle(1, 2, 3, 4);
 
         self::assertEquals(
-            array('getRecordTitle' => array(1, 2, 3, 4)),
+            ['getRecordTitle' => [1, 2, 3, 4]],
             Typo3BackendUtilityClass::$lastCalledMethod
         );
     }
@@ -71,7 +71,7 @@ class Typo3BackendUtilityClass
     /**
      * @var array der key ist der methoden name, der value die übergebenen Parameter
      */
-    public static $lastCalledMethod = array();
+    public static $lastCalledMethod = [];
 
     /**
      * @param string $method
@@ -80,6 +80,6 @@ class Typo3BackendUtilityClass
      */
     public static function __callStatic($method, $arguments)
     {
-        self::$lastCalledMethod = array($method => $arguments);
+        self::$lastCalledMethod = [$method => $arguments];
     }
 }
