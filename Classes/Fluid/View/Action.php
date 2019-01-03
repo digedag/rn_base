@@ -60,9 +60,17 @@ class Action extends \tx_rnbase_view_Base
         $rnbaseViewData = $configurations->getViewData();
 
         // add variables
-        $variables = $configurations->get('variables.');
+        $variables = $configurations->getKeyNames('variables.');
         if (!empty($variables) && is_array($variables)) {
-            $view->assignMultiple($variables);
+            foreach ($variables as $variable) {
+                $view->assign(
+                    $variable,
+                    $configurations->get(
+                        'variables.' . $variable,
+                        true
+                    )
+                );
+            }
         }
         $view->assignMultiple((array) $rnbaseViewData);
 
