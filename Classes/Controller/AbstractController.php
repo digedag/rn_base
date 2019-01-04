@@ -86,7 +86,7 @@ abstract class AbstractController extends \tx_rnbase_action_BaseIOC
      *
      * @return $this
      */
-    protected function assignToView(string $name, $data)
+    protected function assignToView($name, $data)
     {
         $this->getViewData()->offsetSet($name, $data);
 
@@ -102,7 +102,7 @@ abstract class AbstractController extends \tx_rnbase_action_BaseIOC
      *
      * @return array|string|null
      */
-    protected function getConfigurationValue(string $confId)
+    protected function getConfigurationValue($confId)
     {
         return $this->getConfigurations()->get($this->getConfId() . $confId);
     }
