@@ -3,7 +3,17 @@
 Changelog
 ---------
 
-v1.8.8 (??.??.2018)
+v1.9.1 (??.??.2019)
+
+
+v1.9.0 (16.01.2019)
+ * __new DBAL-Driver which replaces the deprecated TYPO3_DB usage by new connection pool__
+ * get deleted field for table from tca fixed in tca utility
+ * typo3 requirement in composer changed to new subtree split
+ * new travis based unittesting
+ * deprecated usage of each function dropped
+ * new translate viewhelper for fluid added
+ 
 
 v1.8.7 (08.11.2018)
  * new view helper to get post or get data
