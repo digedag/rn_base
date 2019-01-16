@@ -429,7 +429,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
                     '('.$sql.') as ROW',
                     array(
                         'where' =>    'ROW.'.$cfg['pointerFromItem']['field'].'='.
-                                    $GLOBALS['TYPO3_DB']->fullQuoteStr($itemId, ''),
+                            Tx_Rnbase_Database_Connection::getInstance()->fullQuoteStr($itemId),
                         'enablefieldsoff' => true,
                     )
                 );
