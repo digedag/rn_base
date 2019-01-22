@@ -112,6 +112,15 @@ interface tx_rnbase_util_db_IDatabase
     public function exec_DELETEquery($table, $where);
 
     /**
+     * Executes query
+     * mysql_query() wrapper function
+     *
+     * @param   string      Query to execute
+     * @return  pointer     Result pointer / DBAL object
+     */
+    public function sql_query($query);
+
+    /**
      * Returns an associative array that corresponds to the fetched row, or FALSE if there are no more rows.
      * mysql_fetch_assoc() wrapper function
      *

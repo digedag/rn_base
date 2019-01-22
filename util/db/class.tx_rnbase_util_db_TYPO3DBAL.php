@@ -315,6 +315,18 @@ class tx_rnbase_util_db_TYPO3DBAL implements tx_rnbase_util_db_IDatabase, tx_rnb
     }
 
     /**
+     * Executes query
+     * mysql_query() wrapper function
+     *
+     * @param   string      Query to execute
+     * @return  pointer     Result pointer / DBAL object
+     */
+    public function sql_query($query)
+    {
+        return $this->getConnection()->executeQuery($query);
+    }
+
+    /**
      * Returns an associative array that corresponds to the fetched row, or FALSE if there are no more rows.
      *
      * @param \Doctrine\DBAL\Driver\Statement $res
