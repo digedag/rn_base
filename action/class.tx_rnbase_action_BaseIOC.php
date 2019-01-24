@@ -143,8 +143,15 @@ abstract class tx_rnbase_action_BaseIOC
         tx_rnbase::load('tx_rnbase_util_Files');
         $pageRenderer = tx_rnbase_util_TYPO3::getPageRenderer();
 
-        foreach ($this->getJavaScriptFilesByIncludePartConfId('includeJSFooter') as $file) {
-            $pageRenderer->addJsFooterFile($file);
+        foreach ($this->getJavaScriptFilesByIncludePartConfId('includeJSFooter') as $javaScriptConfId => $file) {
+            $pageRenderer->addJsFooterFile(
+                $file,
+                'text/javascript',
+                true,
+                false,
+                '',
+                boolval($configurations->get($confId . 'includeJSFooter.' . $javaScriptConfId . '.excludeFromConcatenation'))
+            );
         }
 
         $javascriptLibraryKeys = array(

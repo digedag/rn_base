@@ -117,7 +117,9 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
                     '1' => 'typo3conf/ext/rn_base/ext_emconf.php',
                     '2' => 'EXT:rn_base/ext_icon.gif',
                     '3' => '//www.dmk-ebusiness.de',
-                    '3.' => array('external' => 1)
+                    '3.' => array('external' => 1),
+                    '4' => 'EXT:rn_base/ext_conf_template.txt',
+                    '4.' => array('excludeFromConcatenation' => 1),
                 )
             )
         ), 'rn_base');
@@ -130,8 +132,16 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
         $files = $property->getValue(tx_rnbase_util_TYPO3::getPageRenderer());
 
         self::assertEquals('typo3conf/ext/rn_base/ext_emconf.php', $files['typo3conf/ext/rn_base/ext_emconf.php']['file']);
+        self::assertFalse($files['typo3conf/ext/rn_base/ext_emconf.php']['excludeFromConcatenation']);
+
         self::assertEquals('typo3conf/ext/rn_base/ext_icon.gif', $files['typo3conf/ext/rn_base/ext_icon.gif']['file']);
+        self::assertFalse($files['typo3conf/ext/rn_base/ext_icon.gif']['excludeFromConcatenation']);
+
         self::assertEquals('//www.dmk-ebusiness.de', $files['//www.dmk-ebusiness.de']['file']);
+        self::assertFalse($files['//www.dmk-ebusiness.de']['excludeFromConcatenation']);
+
+        self::assertEquals('typo3conf/ext/rn_base/ext_conf_template.txt', $files['typo3conf/ext/rn_base/ext_conf_template.txt']['file']);
+        self::assertTrue($files['typo3conf/ext/rn_base/ext_conf_template.txt']['excludeFromConcatenation']);
     }
 
     /**
