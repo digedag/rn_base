@@ -181,6 +181,47 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
     /**
      * @group unit
      */
+    public function testAddRessourcesAddsJavaScriptFooterLibraryFiles()
+    {
+        $action = $this->getAction();
+        $configurations = $this->createConfigurations(array(
+            'testConfId.' => array(
+                'includeJSFooterlibs.' => array(
+                    'first' => 'typo3conf/ext/rn_base/ext_emconf.php',
+                    'second' => 'EXT:rn_base/ext_icon.gif',
+                    'third' => '//www.dmk-ebusiness.de',
+                    'third.' => array('external' => 1)
+                ),
+            )
+        ), 'rn_base');
+        $action->setConfigurations($configurations);
+
+        $this->callInaccessibleMethod($action, 'addResources', $configurations, 'testConfId.');
+
+        $property = new ReflectionProperty('\\TYPO3\\CMS\\Core\\Page\\PageRenderer', 'jsLibs');
+        $property->setAccessible(true);
+        $pageRenderer = tx_rnbase_util_TYPO3::getPageRenderer();
+        $files = $property->getValue($pageRenderer);
+
+        self::assertEquals('typo3conf/ext/rn_base/ext_emconf.php', $files['first_jsfooterlibrary']['file']);
+        self::assertFalse($files['first_jsfooterlibrary']['compress']);
+        self::assertFalse($files['first_jsfooterlibrary']['excludeFromConcatenation']);
+        self::assertEquals($pageRenderer::PART_FOOTER, $files['first_jsfooterlibrary']['section']);
+
+        self::assertEquals('typo3conf/ext/rn_base/ext_icon.gif', $files['second_jsfooterlibrary']['file']);
+        self::assertFalse($files['second_jsfooterlibrary']['compress']);
+        self::assertFalse($files['second_jsfooterlibrary']['excludeFromConcatenation']);
+        self::assertEquals($pageRenderer::PART_FOOTER, $files['second_jsfooterlibrary']['section']);
+
+        self::assertEquals('//www.dmk-ebusiness.de', $files['third_jsfooterlibrary']['file']);
+        self::assertFalse($files['third_jsfooterlibrary']['compress']);
+        self::assertTrue($files['third_jsfooterlibrary']['excludeFromConcatenation']);
+        self::assertEquals($pageRenderer::PART_FOOTER, $files['third_jsfooterlibrary']['section']);
+    }
+
+    /**
+     * @group unit
+     */
     public function testAddCacheTags()
     {
         $action = $this->getAction();

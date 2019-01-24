@@ -408,6 +408,9 @@ plugin.tx_myext {
         includeJSFooter {
             1 = EXT:myext/Resources/Public/Scripts/validator.js
         }
+        includeJSFooterlibs {
+            1 = EXT:myext/Resources/Public/Scripts/validator.js
+        }
         includeCSS {
             1 = EXT:myext/Resources/Public/Styles/validator.css
         }
