@@ -147,10 +147,10 @@ abstract class tx_rnbase_action_BaseIOC
             $pageRenderer->addJsFooterFile(
                 $file,
                 'text/javascript',
-                true,
+                !$configurations->getBool($confId . 'includeJSFooter.' . $javaScriptConfId . '.dontCompress'),
                 false,
                 '',
-                boolval($configurations->get($confId . 'includeJSFooter.' . $javaScriptConfId . '.excludeFromConcatenation'))
+                $configurations->getBool($confId . 'includeJSFooter.' . $javaScriptConfId . '.excludeFromConcatenation')
             );
         }
 
