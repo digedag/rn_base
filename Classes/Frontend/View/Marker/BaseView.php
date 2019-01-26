@@ -104,16 +104,16 @@ class BaseView implements ViewInterface
         $templateCode,
         RequestInterface $request
         ) {
-            // check, if there are plugin markers to render
-            if (!\tx_rnbase_util_BaseMarker::containsMarker($templateCode, 'PLUGIN_')) {
-                return $templateCode;
-            }
+        // check, if there are plugin markers to render
+        if (!\tx_rnbase_util_BaseMarker::containsMarker($templateCode, 'PLUGIN_')) {
+            return $templateCode;
+        }
 
-            $configurations = $request->getConfigurations();
-            $confId = $request->getConfId();
+        $configurations = $request->getConfigurations();
+        $confId = $request->getConfId();
 
-            // build the data to render
-            $pluginData = array_merge(
+        // build the data to render
+        $pluginData = array_merge(
                 // use the current data (tt_conten) to render
                 (array) $configurations->getCObj()->data,
                 // add some aditional columns, for example from the flexform od typoscript directly
@@ -121,21 +121,21 @@ class BaseView implements ViewInterface
                     $confId . 'plugin.flexdata.'
                     )
                 );
-            // check for unused columns
-            $ignoreColumns = \tx_rnbase_util_BaseMarker::findUnusedCols(
+        // check for unused columns
+        $ignoreColumns = \tx_rnbase_util_BaseMarker::findUnusedCols(
                 $pluginData,
                 $templateCode,
                 'PLUGIN'
                 );
-            // create the marker array with the parsed columns
-            $markerArray = $configurations->getFormatter()->getItemMarkerArrayWrapped(
+        // create the marker array with the parsed columns
+        $markerArray = $configurations->getFormatter()->getItemMarkerArrayWrapped(
                 $pluginData,
                 $confId . 'plugin.',
                 $ignoreColumns,
                 'PLUGIN_'
             );
 
-            return \tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($templateCode, $markerArray);
+        return \tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($templateCode, $markerArray);
     }
 
     /**

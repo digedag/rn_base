@@ -40,8 +40,7 @@ class Request implements RequestInterface
         ParametersInterface $parameters,
         ConfigurationInterface $configurations,
         $confId
-    )
-    {
+    ) {
         $this->configurations = $configurations;
         $this->confId = $confId;
         $this->parameters = $parameters;

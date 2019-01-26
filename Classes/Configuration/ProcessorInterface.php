@@ -26,4 +26,6 @@ use Sys25\RnBase\Configuration\ConfigurationInterface;
  ***************************************************************/
 
 
-interface Tx_Rnbase_Configuration_ProcessorInterface extends ConfigurationInterface {}
+interface Tx_Rnbase_Configuration_ProcessorInterface extends ConfigurationInterface
+{
+}

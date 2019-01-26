@@ -1,7 +1,6 @@
 <?php
 namespace Sys25\RnBase\Frontend\Request;
 
-
 /***************************************************************
 * Copyright notice
 *
