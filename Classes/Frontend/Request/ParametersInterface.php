@@ -1,6 +1,6 @@
 <?php
 
-use Sys25\RnBase\Configuration\ConfigurationInterface;
+namespace Sys25\RnBase\Frontend\Request;
 
 /***************************************************************
  *  Copyright notice
@@ -26,4 +26,43 @@ use Sys25\RnBase\Configuration\ConfigurationInterface;
  ***************************************************************/
 
 
-interface Tx_Rnbase_Configuration_ProcessorInterface extends ConfigurationInterface {}
+/**
+ * Interface for configuiration processor
+ *
+ * @package TYPO3
+ * @subpackage rn_base
+ * @author Michael Wagner
+ */
+interface ParametersInterface
+{
+    /**
+     * Liefert den Parameter-Wert
+     *
+     * @param string $paramName
+     * @param string $qualifier
+     * @return mixed
+     */
+    public function get($paramName, $qualifier = '');
+    /**
+     * removes xss etc. from the value
+     *
+     * @param string $field
+     * @return string
+     */
+    public function getCleaned($paramName, $qualifier = '');
+    /**
+     * Liefert den Parameter-Wert als int
+     *
+     * @param string $paramName
+     * @param string $qualifier
+     * @return int
+     */
+    public function getInt($paramName, $qualifier = '');
+    /**
+     * Liefert alle Parameter-Werte
+     *
+     * @param string $qualifier
+     * @return array
+     */
+    public function getAll($qualifier = '');
+}

@@ -1,6 +1,9 @@
 <?php
 
+namespace Sys25\RnBase\Frontend\Request;
+
 use Sys25\RnBase\Configuration\ConfigurationInterface;
+use Sys25\RnBase\Frontend\View\ContextInterface;
 
 /***************************************************************
  *  Copyright notice
@@ -26,4 +29,30 @@ use Sys25\RnBase\Configuration\ConfigurationInterface;
  ***************************************************************/
 
 
-interface Tx_Rnbase_Configuration_ProcessorInterface extends ConfigurationInterface {}
+/**
+ * Interface for request
+ */
+interface RequestInterface
+{
+    /**
+     * @return ParametersInterface
+     */
+    public function getParameters():ParametersInterface;
+
+    /**
+     * @return ConfigurationInterface
+     */
+    public function getConfigurations():ConfigurationInterface;
+
+    /**
+     * @return string
+     */
+    public function getConfId():string;
+
+    /**
+     *
+     * @return ContextInterface
+     */
+    public function getViewContext():ContextInterface;
+
+}

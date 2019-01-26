@@ -1,6 +1,8 @@
 <?php
 
-use Sys25\RnBase\Configuration\ConfigurationInterface;
+namespace Sys25\RnBase\Frontend\View;
+
+use Sys25\RnBase\Frontend\Request\RequestInterface;
 
 /***************************************************************
  *  Copyright notice
@@ -26,4 +28,15 @@ use Sys25\RnBase\Configuration\ConfigurationInterface;
  ***************************************************************/
 
 
-interface Tx_Rnbase_Configuration_ProcessorInterface extends ConfigurationInterface {}
+/**
+ * Interface for view class
+ */
+interface ViewInterface
+{
+    /**
+     *
+     * @param string $viewName
+     * @param RequestInterface $request
+     */
+    public function render($viewName, RequestInterface $request);
+}
