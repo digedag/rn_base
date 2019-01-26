@@ -54,5 +54,4 @@ interface RequestInterface
      * @return ContextInterface
      */
     public function getViewContext():ContextInterface;
-
 }

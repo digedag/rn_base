@@ -1,8 +1,6 @@
 <?php
 namespace Sys25\RnBase\Frontend\View;
 
-
-
 /***************************************************************
 * Copyright notice
 *
