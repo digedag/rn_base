@@ -161,3 +161,8 @@ plugin_tx_mkextension.myListView.myFilterConfId {
     useSysCategoriesFromParameters.dontSearchIfNoCategoriesFound = 1
 }
 ```
+
+Domain-Model
+-----
+rn_base bietet auch ein Repository (Sys25\RnBase\Domain\Repository\CategoryRepository), 
+ein Model (Sys25\RnBase\Domain\Model\Category) und ein Searcher ((Sys25\RnBase\Search\Category)).
