@@ -3,7 +3,12 @@
 Changelog
 ---------
 
-v1.9.2 (??.??.2019)
+v1.9.3 (??.??.2019)
+
+v1.9.2 (06.02.2019)
+ * javascript footer library files can now be added for actions ([see documentation](Documentation/fe_plugins.md))
+ * javascript footer files can now be excluded from concatenation and compression ([see documentation](Documentation/fe_plugins.md))
+ * added model and repository for sys_category table ([see documentation](Documentation/sys_category.md))
 
 v1.9.1 (22.01.2019)
  * doQuery in DatabaseConnection fixed #132
