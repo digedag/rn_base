@@ -143,17 +143,29 @@ abstract class tx_rnbase_action_BaseIOC
         tx_rnbase::load('tx_rnbase_util_Files');
         $pageRenderer = tx_rnbase_util_TYPO3::getPageRenderer();
 
-        foreach ($this->getJavaScriptFilesByIncludePartConfId('includeJSFooter') as $file) {
-            $pageRenderer->addJsFooterFile($file);
+        foreach ($this->getJavaScriptFilesByIncludePartConfId('includeJSFooter') as $javaScriptConfId => $file) {
+            $pageRenderer->addJsFooterFile(
+                $file,
+                'text/javascript',
+                !$configurations->getBool($confId . 'includeJSFooter.' . $javaScriptConfId . '.dontCompress'),
+                false,
+                '',
+                $configurations->getBool($confId . 'includeJSFooter.' . $javaScriptConfId . '.excludeFromConcatenation')
+            );
         }
 
-        // support configuration key for javascript libraries from TYPO3 6.2 to 8.7
-        $javascriptLibraryKeys = array('includeJSlibs', 'includeJSLibs');
-        foreach ($javascriptLibraryKeys as $javascriptLibraryKey) {
+        $javascriptLibraryKeys = array(
+            // support configuration key for javascript libraries from TYPO3 6.2 to 8.7
+            'includeJSlibs' => 'addJsLibrary',
+            'includeJSLibs' => 'addJsLibrary',
+            'includeJSFooterlibs' => 'addJsFooterLibrary',
+        );
+
+        foreach ($javascriptLibraryKeys as $javascriptLibraryKey => $pageRendererAddMethod) {
             foreach ($this->getJavaScriptFilesByIncludePartConfId($javascriptLibraryKey) as $javaScriptConfId => $file) {
                 // external files should never be concatenated. If you want
                 // to do that, make them available locally
-                $pageRenderer->addJsLibrary(
+                $pageRenderer->$pageRendererAddMethod(
                     $javaScriptConfId,
                     $file,
                     'text/javascript',

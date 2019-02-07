@@ -431,42 +431,47 @@ class tx_rnbase_util_TSFAL
         $allowedFileExtensions = (string) $options['config']['allowedFileExtensions'];
         $disallowedFileExtensions = (string) $options['config']['disallowedFileExtensions'];
         if ($type == 'image') {
+            $ttContentLocallang = \tx_rnbase_util_TYPO3::isTYPO87OrHigher() ? 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf' :
+                'LLL:EXT:cms/locallang_ttc.xlf';
+            $commonTcaLocallang = \tx_rnbase_util_TYPO3::isTYPO87OrHigher() ? 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf' :
+                'LLL:EXT:lang/locallang_tca.xlf';
+
             $customSettingOverride = array_merge(
                 array(
                     'appearance' => array(
-                        'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:images.addFileReference'
+                        'createNewRelationLinkTitle' => $ttContentLocallang . ':images.addFileReference'
                     ),
                     // custom configuration for displaying fields in the overlay/reference table
                     // to use the imageoverlayPalette instead of the basicoverlayPalette
                     'foreign_types' => array(
                         '0' => array(
                             'showitem' => '
-                                --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+                                --palette--;' . $commonTcaLocallang . ':sys_file_reference.imageoverlayPalette;imageoverlayPalette,
                                 --palette--;;filePalette'
                         ),
                         \TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array(
                             'showitem' => '
-                                --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+                                --palette--;' . $commonTcaLocallang . ':sys_file_reference.imageoverlayPalette;imageoverlayPalette,
                                 --palette--;;filePalette'
                         ),
                         \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
                             'showitem' => '
-                                --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+                                --palette--;' . $commonTcaLocallang . ':sys_file_reference.imageoverlayPalette;imageoverlayPalette,
                                 --palette--;;filePalette'
                         ),
                         \TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array(
                             'showitem' => '
-                                --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+                                --palette--;' . $commonTcaLocallang . ':sys_file_reference.imageoverlayPalette;imageoverlayPalette,
                                 --palette--;;filePalette'
                         ),
                         \TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
                             'showitem' => '
-                                --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+                                --palette--;' . $commonTcaLocallang . ':sys_file_reference.imageoverlayPalette;imageoverlayPalette,
                                 --palette--;;filePalette'
                         ),
                         \TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
                             'showitem' => '
-                                --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+                                --palette--;' . $commonTcaLocallang . ':sys_file_reference.imageoverlayPalette;imageoverlayPalette,
                                 --palette--;;filePalette'
                         )
                     )
@@ -478,8 +483,10 @@ class tx_rnbase_util_TSFAL
             }
         }
 
+        $generalLocallang = \tx_rnbase_util_TYPO3::isTYPO87OrHigher() ? 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf' :
+            'LLL:EXT:lang/locallang_general.xml';
         $tca = array(
-            'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.images',
+            'label' => $generalLocallang . ':LGL.images',
             'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
                 $ref,
                 $customSettingOverride,

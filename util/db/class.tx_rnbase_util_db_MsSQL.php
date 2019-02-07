@@ -50,7 +50,7 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
      */
     public function __construct($credentials)
     {
-        if (!is_array($credentials)) {
+        if (empty($credentials) || !is_array($credentials)) {
             throw new tx_rnbase_util_db_Exception(
                 'No credentials given for database!'
             );
