@@ -5,6 +5,7 @@ use Sys25\RnBase\Frontend\Request\RequestInterface;
 use Sys25\RnBase\Frontend\View\ViewInterface;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Frontend\View\ContextInterface;
+use Sys25\RnBase\Frontend\View\AbstractView;
 
 /***************************************************************
 * Copyright notice
@@ -31,11 +32,8 @@ use Sys25\RnBase\Frontend\View\ContextInterface;
 
 /**
  */
-class BaseView implements ViewInterface
+class BaseView extends AbstractView implements ViewInterface
 {
-    private $pathToTemplates;
-    protected $templateFile;
-
     /**
      * @param RequestInterface $request
      * @return string
@@ -177,52 +175,4 @@ class BaseView implements ViewInterface
     {
     }
 
-    /**
-     * Set the path of the template directory
-     *
-     * You can make use the syntax EXT:myextension/somepath.
-     * It will be evaluated to the absolute path by tx_rnbase_util_Files::getFileAbsFileName()
-     *
-     * @param string path to the directory containing the php templates
-     * @return void
-     */
-    public function setTemplatePath($pathToTemplates)
-    {
-        $this->pathToTemplates = $pathToTemplates;
-    }
-
-    /**
-     * Set the path of the template file.
-     *
-     * You can make use the syntax EXT:myextension/template.php
-     *
-     * @param string path to the file used as templates
-     * @return void
-     */
-    public function setTemplateFile($templateFile)
-    {
-        $this->templateFile = $templateFile;
-    }
-
-    /**
-     * Returns the template to use.
-     * If TemplateFile is set, it is preferred. Otherwise
-     * the filename is build from pathToTemplates, the templateName and $extension.
-     *
-     * @param string name of template
-     * @param string file extension to use
-     * @return string complete filename of template
-     */
-    public function getTemplate($templateName, $extension = '.php', $forceAbsPath = 0)
-    {
-        if (strlen($this->templateFile) > 0) {
-            return ($forceAbsPath) ? \tx_rnbase_util_Files::getFileAbsFileName($this->templateFile) : $this->templateFile;
-        }
-        $path = $this->pathToTemplates;
-        $path .= substr($path, -1, 1) == '/' ? $templateName : '/' . $templateName;
-        $extLen = strlen($extension);
-        $path .= substr($path, ($extLen * -1), $extLen) == $extension ? '' : $extension;
-
-        return $path;
-    }
 }

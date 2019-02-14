@@ -39,4 +39,16 @@ interface ViewInterface
      * @param RequestInterface $request
      */
     public function render($viewName, RequestInterface $request);
+
+    /**
+     *
+     * @param string $pathToTemplates
+     */
+    public function setTemplatePath($pathToTemplates);
+
+    /**
+     *
+     * @param string $templateFile
+     */
+    public function setTemplateFile($templateFile);
 }
