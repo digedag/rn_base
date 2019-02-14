@@ -174,5 +174,4 @@ class BaseView extends AbstractView implements ViewInterface
     protected function _init(ConfigurationInterface $configurations)
     {
     }
-
 }
