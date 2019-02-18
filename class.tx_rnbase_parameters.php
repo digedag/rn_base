@@ -89,7 +89,7 @@ class tx_rnbase_parameters extends Parameters implements tx_rnbase_IParameters
      */
     public static function getGetParameters($var = null)
     {
-        parent::getGetParameters($var);
+        return parent::getGetParameters($var);
     }
 
     /**
