@@ -3,7 +3,12 @@
 Changelog
 ---------
 
-v1.9.3 (??.??.2019)
+v1.9.4 (??.??.2019)
+
+v1.9.3 (20.02.2019)
+ * refactored plugins
+ * View interface changed. New abstract base view class.
+ * bugfix for tx_rnbase_parameters::getGetParameters() to return again values
 
 v1.9.2 (06.02.2019)
  * javascript footer library files can now be added for actions ([see documentation](Documentation/fe_plugins.md))
