@@ -2,7 +2,6 @@
 
 namespace Sys25\RnBase\Frontend\Filter;
 
-
 /***************************************************************
  *  Copyright notice
  *
