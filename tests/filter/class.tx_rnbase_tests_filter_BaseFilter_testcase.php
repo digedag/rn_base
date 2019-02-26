@@ -1,4 +1,6 @@
 <?php
+use Sys25\RnBase\Frontend\Filter\Utility\Category;
+
 /**
  * @package TYPO3
  * @subpackage tx_myext
@@ -6,7 +8,7 @@
  *
  *  Copyright notice
  *
- *  (c) 2010 Hannes Bochmann <hannes.bochmann@das-medienkombinat.de>
+ *  (c) 2010-2019 Hannes Bochmann <hannes.bochmann@das-medienkombinat.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -47,7 +49,7 @@ class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTes
         $configurations = $this->createConfigurations(array(), 'rnbase');
         $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
         self::assertInstanceOf(
-            'Tx_Rnbase_Category_FilterUtility',
+            Category::class,
             $this->callInaccessibleMethod(
                 tx_rnbase::makeInstance('tx_rnbase_filter_BaseFilter', $parameters, $configurations, ''),
                 'getCategoryFilterUtility'
@@ -55,122 +57,6 @@ class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTes
         );
     }
 
-    /**
-     * @group unit
-     */
-    public function testInitCallsHandleSysCategoryFilterCorrect()
-    {
-        $configurations = $this->createConfigurations(array(), 'myext');
-        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
-        $filter = $this->getAccessibleMock(
-            'tx_rnbase_filter_BaseFilter', array('handleSysCategoryFilter'),
-            array(
-                &$parameters,
-                &$configurations,
-                'myList.filter.'
-            )
-        );
-        $filter
-            ->expects(self::once())
-            ->method('handleSysCategoryFilter')
-            ->with(array())
-            ->will(self::returnValue(array('test')));
-
-        $fields = $options = array();
-        $filter->init($fields, $options);
-
-        self::assertEquals(array('test'), $fields);
-        self::assertNull($filter->_get('doSearch'), '$doSearch nicht null');
-    }
-
-    /**
-     * @group unit
-     * @dataProvider dataProviderHandleSysCategoryFilter
-     */
-    public function testHandleSysCategoryFilter(
-        $confId, $dontSearchIfNoCategoriesFound, $filterUtilityMethod, $expectedFields, $expectedDoSearchValue
-    ) {
-        $configurations = $this->createConfigurations(
-            array('myList.' => array('filter.' => array(
-                $confId => 1,
-                $confId . '.' => array(
-                    'dontSearchIfNoCategoriesFound' => $dontSearchIfNoCategoriesFound
-                )
-            ))), 'myext'
-        );
-        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
-        $filter = $this->getAccessibleMock(
-            'tx_rnbase_filter_BaseFilter', array('getCategoryFilterUtility'),
-            array(
-                &$parameters,
-                &$configurations,
-                'myList.filter.'
-            )
-        );
-
-        $categoryFilterUtility = $this->getMock('Tx_Rnbase_Category_FilterUtility', array($filterUtilityMethod));
-        $categoryFilterUtility
-            ->expects(self::once())
-            ->method($filterUtilityMethod)
-            ->with(array('test' => 'test'), $configurations, 'myList.filter.' . $confId . '.')
-            ->will(self::returnValue($expectedFields));
-
-        $filter
-            ->expects(self::once())
-            ->method('getCategoryFilterUtility')
-            ->will(self::returnValue($categoryFilterUtility));
-
-        $fields = array('test' => 'test');
-        $fields = $this->callInaccessibleMethod($filter, 'handleSysCategoryFilter', $fields);
-
-        self::assertEquals($expectedFields, $fields);
-        self::assertSame($expectedDoSearchValue, $filter->_get('doSearch'));
-    }
-
-    /**
-     * @return string[][]|number[][]|string[][][]
-     */
-    public function dataProviderHandleSysCategoryFilter()
-    {
-        return array(
-            array(
-                'useSysCategoriesOfItemFromParameters', 0, 'setFieldsBySysCategoriesOfItemFromParameters',
-                array('test' => 'test', 'test2' => 'test2'), null
-            ),
-            array(
-                'useSysCategoriesOfItemFromParameters', 1, 'setFieldsBySysCategoriesOfItemFromParameters',
-                array('test' => 'test', 'test2' => 'test2'), null
-            ),
-            array(
-                'useSysCategoriesOfItemFromParameters', 1, 'setFieldsBySysCategoriesOfItemFromParameters',
-                array('test' => 'test'), false
-            ),
-            array(
-                'useSysCategoriesOfContentElement', 0, 'setFieldsBySysCategoriesOfContentElement',
-                array('test' => 'test', 'test2' => 'test2'), null
-            ),
-            array(
-                'useSysCategoriesOfContentElement', 1, 'setFieldsBySysCategoriesOfContentElement',
-                array('test' => 'test', 'test2' => 'test2'), null
-            ),
-            array(
-                'useSysCategoriesOfContentElement', 1, 'setFieldsBySysCategoriesOfContentElement',
-                array('test' => 'test'), false
-            ),
-            array(
-                'useSysCategoriesFromParameters', 0, 'setFieldsBySysCategoriesFromParameters',
-                array('test' => 'test', 'test2' => 'test2'), null
-            ),
-            array(
-                'useSysCategoriesFromParameters', 1, 'setFieldsBySysCategoriesFromParameters',
-                array('test' => 'test', 'test2' => 'test2'), null
-            ),
-            array(
-                'useSysCategoriesFromParameters', 1, 'setFieldsBySysCategoriesFromParameters',
-                array('test' => 'test'), false
-            ),
-        );
-    }
 
     /**
      * @group unit
@@ -194,7 +80,7 @@ class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTes
             ->will(self::returnValue($initFilterReturnValue));
         $filter->_set('doSearch', $doSearchVariableValue);
 
-        $fields = $options = array();
+        $fields = $options = [];
         self::assertSame($expectedReturnValue, $filter->init($fields, $options));
     }
 
@@ -203,7 +89,7 @@ class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTes
      */
     public function dataProviderInitReturnsCorrectValue()
     {
-        return array(
+        return [
             // initFilter liefert true, doSearch nicht gesetzt, wir erwarten true
             array(true, null, true),
             // initFilter liefert false, doSearch nicht gesetzt, wir erwarten false
@@ -216,6 +102,6 @@ class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTes
             array(true, true, true),
             // initFilter liefert false, doSearch steht auf false, wir erwarten false
             array(false, false, false),
-        );
+        ];
     }
 }
