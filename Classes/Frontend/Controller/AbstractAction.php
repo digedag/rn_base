@@ -6,7 +6,6 @@ use Sys25\RnBase\Frontend\Request\ParametersInterface;
 use Sys25\RnBase\Frontend\Request\RequestInterface;
 use Sys25\RnBase\Frontend\View\Factory;
 use Sys25\RnBase\Frontend\Request\Request;
-use Sys25\RnBase\Frontend\Request\Parameters;
 
 /***************************************************************
 * Copyright notice
@@ -36,8 +35,6 @@ use Sys25\RnBase\Frontend\Request\Parameters;
  */
 abstract class AbstractAction
 {
-    private $configurations = null;
-
     /**
      * This method is called by base controller
      * @param ParametersInterface $parameters
@@ -47,7 +44,6 @@ abstract class AbstractAction
      */
     public function execute(ParametersInterface $parameters, ConfigurationInterface $configurations)
     {
-        $this->setConfigurations($configurations);
         $debugKey = $configurations->get($this->getConfId().'_debugview');
 
         $debug = ($debugKey && ($debugKey === '1' ||
@@ -85,7 +81,7 @@ abstract class AbstractAction
                 $viewFactoryClassName = strlen($viewFactoryClassName) > 0 ? $viewFactoryClassName : Factory::class;
                 /* @var $viewFactory Factory */
                 $viewFactory = \tx_rnbase::makeInstance($viewFactoryClassName);
-                $view = $viewFactory->createView($request, $this->getViewClassName(), $this->getTemplateFile());
+                $view = $viewFactory->createView($request, $this->getViewClassName(), $this->getTemplateFile($configurations));
                 \tx_rnbase_util_Misc::pushTT(get_class($this), 'render');
                 // Das Template wird komplett angegeben
                 $tmplName = $this->getTemplateName();
@@ -100,7 +96,7 @@ abstract class AbstractAction
                 $cacheHandler->setOutput($out);
             }
 
-            $this->addCacheTags();
+            $this->addCacheTags($configurations);
         }
         if ($debug) {
             $memEnd = memory_get_usage();
@@ -131,14 +127,14 @@ abstract class AbstractAction
         \tx_rnbase::load('tx_rnbase_util_Files');
         $pageRenderer = \tx_rnbase_util_TYPO3::getPageRenderer();
 
-        foreach ($this->getJavaScriptFilesByIncludePartConfId('includeJSFooter') as $file) {
+        foreach ($this->getJavaScriptFilesByIncludePartConfId($configurations, 'includeJSFooter') as $file) {
             $pageRenderer->addJsFooterFile($file);
         }
 
         // support configuration key for javascript libraries from TYPO3 6.2 to 8.7
         $javascriptLibraryKeys = array('includeJSlibs', 'includeJSLibs');
         foreach ($javascriptLibraryKeys as $javascriptLibraryKey) {
-            foreach ($this->getJavaScriptFilesByIncludePartConfId($javascriptLibraryKey) as $javaScriptConfId => $file) {
+            foreach ($this->getJavaScriptFilesByIncludePartConfId($configurations, $javascriptLibraryKey) as $javaScriptConfId => $file) {
                 // external files should never be concatenated. If you want
                 // to do that, make them available locally
                 $pageRenderer->addJsLibrary(
@@ -167,9 +163,8 @@ abstract class AbstractAction
      * @param string $includePartConfId
      * @return array
      */
-    protected function getJavaScriptFilesByIncludePartConfId($includePartConfId)
+    protected function getJavaScriptFilesByIncludePartConfId($configurations, $includePartConfId)
     {
-        $configurations = $this->getConfigurations();
         $confId = $this->getConfId();
 
         $javaScriptConfIds = $configurations->getKeyNames($confId . $includePartConfId . '.');
@@ -186,43 +181,6 @@ abstract class AbstractAction
         }
 
         return $files;
-    }
-
-    /**
-     * Returns configurations object
-     * @return ConfigurationInterface
-     */
-    public function getConfigurations()
-    {
-        return $this->configurations;
-    }
-    /**
-     * Returns configurations object
-     * @return ConfigurationInterface
-     */
-    public function setConfigurations(ConfigurationInterface $configurations)
-    {
-        $this->configurations = $configurations;
-    }
-
-    /**
-     * Returns request parameters
-     *
-     * @return Parameters
-     */
-    public function getParameters()
-    {
-        return $this->getConfigurations()->getParameters();
-    }
-
-    /**
-     * Returns view data
-     *
-     * @return \ArrayObject
-     */
-    public function getViewData()
-    {
-        return $this->getConfigurations()->getViewData();
     }
 
     /**
@@ -260,9 +218,9 @@ abstract class AbstractAction
     /**
      * @return void
      */
-    protected function addCacheTags()
+    protected function addCacheTags($configurations)
     {
-        if ($cacheTags = (array) $this->getConfigurations()->get($this->getConfId() . 'cacheTags.')) {
+        if ($cacheTags = (array) $configurations->get($this->getConfId() . 'cacheTags.')) {
             \tx_rnbase_util_TYPO3::getTSFE()->addCacheTags($cacheTags);
         }
     }
@@ -280,15 +238,15 @@ abstract class AbstractAction
      *
      * @return string
      */
-    protected function getTemplateFile()
+    protected function getTemplateFile($configurations)
     {
-        $file = $this->getConfigurations()->get(
+        $file = $configurations->get(
             $this->getConfId() . 'template.file', true
-            );
+        );
 
         // check the old way
         if (empty($file)) {
-            $file = $this->getConfigurations()->get(
+            $file = $configurations->get(
                 $this->getTemplateName() . 'Template', true
                 );
         }
