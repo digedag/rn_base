@@ -38,7 +38,7 @@ use Sys25\RnBase\Frontend\Request\Parameters;
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Category_FilterUtilityTest extends \tx_rnbase_tests_BaseTestCase
+class CategoryTest extends \tx_rnbase_tests_BaseTestCase
 {
     protected $configurations;
     protected $categoryUtil;
@@ -88,24 +88,23 @@ class Tx_Rnbase_Category_FilterUtilityTest extends \tx_rnbase_tests_BaseTestCase
     public function testHandleSysCategoryFilter(
         $configs, $fields, $expectedFields, $expectedDoSearchValue
         ) {
+        foreach ($configs as $confId => $data) {
+            $this->configurations->get('myList.filter.'.$confId)->willReturn($data);
+        }
 
-            foreach ($configs as $confId => $data) {
-                $this->configurations->get('myList.filter.'.$confId)->willReturn($data);
-            }
-
-            $this->parametersMock->getInt('param1', 'myext')->willReturn(23);
-            $this->dbConnection->doSelect('uid_local', 'sys_category_record_mm', \Prophecy\Argument::any() )
+        $this->parametersMock->getInt('param1', 'myext')->willReturn(23);
+        $this->dbConnection->doSelect('uid_local', 'sys_category_record_mm', \Prophecy\Argument::any())
                 ->willReturn([
                     ['uid_local' => 3],
                     ['uid_local' => 5],
                 ]);
-            $this->dbConnection->fullQuoteStr('mytable')->willReturn('mytable');
-            $this->dbConnection->fullQuoteStr('catfield')->willReturn('catfield');
+        $this->dbConnection->fullQuoteStr('mytable')->willReturn('mytable');
+        $this->dbConnection->fullQuoteStr('catfield')->willReturn('catfield');
 
-            $doSearch = $this->categoryUtil->handleSysCategoryFilter($fields, null);
+        $doSearch = $this->categoryUtil->handleSysCategoryFilter($fields, null);
 
-            self::assertEquals($expectedFields, $fields);
-            self::assertSame($expectedDoSearchValue, $doSearch);
+        self::assertEquals($expectedFields, $fields);
+        self::assertSame($expectedDoSearchValue, $doSearch);
     }
 
     /**

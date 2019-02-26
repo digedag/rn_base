@@ -57,7 +57,7 @@ class Category
      * @param array $fields
      * @return bool | null
      */
-    public  function handleSysCategoryFilter(array &$fields, $doSearch)
+    public function handleSysCategoryFilter(array &$fields, $doSearch)
     {
         $typoScriptPathsToFilterUtilityMethod = [
             'useSysCategoriesOfItemFromParameters' => 'setFieldsBySysCategoriesOfItemFromParameters',
@@ -79,8 +79,8 @@ class Category
                     // gefunden.
                     $fieldsBefore == $fields
                     ) {
-                        $doSearch = false;
-                    }
+                    $doSearch = false;
+                }
             }
         }
 
@@ -98,7 +98,6 @@ class Category
     protected function setFieldsBySysCategoriesOfItemFromParameters(
         array $fields, $configurations, $confId
     ) {
-
         if ($categories = $this->lookupCategoryUidsFromParameters($configurations, $confId)) {
             $fields = $this->getFieldsByCategories($categories, $fields, $configurations, $confId);
         }
@@ -186,7 +185,6 @@ class Category
     protected function getFieldsByCategories(
         array $categories, array $fields, $configurations, $confId
     ) {
-
         $sysCategoryTableAlias =
             $configurations->get($confId . 'sysCategoryTableAlias') ?
                 $configurations->get($confId . 'sysCategoryTableAlias') :

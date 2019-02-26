@@ -2,7 +2,6 @@
 
 namespace Sys25\RnBase\Frontend\Filter;
 
-
 use Sys25\RnBase\Frontend\Request\RequestInterface;
 use Sys25\RnBase\Frontend\Request\ParametersInterface;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
@@ -234,6 +233,4 @@ class BaseFilter implements FilterInterface
         // In den meisten Projekten liegen die Nutzerdaten im Array inputData
         return is_array($this->inputData) && count($this->inputData);
     }
-
-
 }
