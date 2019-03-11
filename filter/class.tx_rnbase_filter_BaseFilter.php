@@ -1,6 +1,5 @@
 <?php
 
-use Sys25\RnBase\Frontend\Filter\Utility\Category;
 
 /***************************************************************
  *  Copyright notice
@@ -184,11 +183,15 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
     }
 
     /**
-     * @return Category
+     * @return Sys25\RnBase\Frontend\Filter\Utility\Category
      */
     protected function getCategoryFilterUtility()
     {
-        return tx_rnbase::makeInstance(Category::class, $this->getConfigurations(), $this->getConfId());
+        if (!tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
+            // Quick and dirty fix for T3 6.2
+            require_once dirname(__FILE__).'/../Classes/Frontend/Filter/Utililty/Category.php';
+        }
+        return tx_rnbase::makeInstance(Sys25\RnBase\Frontend\Filter\Utility\Category::class, $this->getConfigurations(), $this->getConfId());
     }
 
     /**
