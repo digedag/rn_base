@@ -34,6 +34,8 @@ use Sys25\RnBase\Frontend\View\AbstractView;
  */
 class BaseView extends AbstractView implements ViewInterface
 {
+    protected $subpart;
+
     /**
      * @param RequestInterface $request
      * @return string
@@ -50,7 +52,9 @@ class BaseView extends AbstractView implements ViewInterface
 
         // Die ViewData bereitstellen
         $viewData = $request->getViewContext();
+
         // Optional kann schon ein Subpart angegeben werden
+        $this->subpart = $configurations->get($request->getConfId() . 'template.subpart');
         $subpart = $this->getMainSubpart($viewData);
         if (!empty($subpart)) {
             $templateCode = \tx_rnbase_util_Templates::getSubpart($templateCode, $subpart);
@@ -159,11 +163,7 @@ class BaseView extends AbstractView implements ViewInterface
      */
     protected function getMainSubpart(ContextInterface $viewData)
     {
-        $subpart = $subpart = $this->getController()->getConfigurations()->get(
-            $this->getController()->getConfId() . 'template.subpart'
-            );
-
-        return empty($subpart) ? false : $subpart;
+        return $this->subpart ?: false;
     }
 
     /**
