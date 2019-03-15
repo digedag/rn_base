@@ -26,7 +26,7 @@
         "digedag/rn-base": "self.version"
     },
     "require": {
-      "typo3/cms-core": "^6.2 || ^7.6 || ^8.7",
+      "typo3/cms-core": "^6.2 || ^7.6 || ^8.7 || ^9.5",
       "php": ">=5.6.0"
     },
     "require-dev": {
