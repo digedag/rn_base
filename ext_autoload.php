@@ -40,6 +40,7 @@ return array(
     'tx_rnbase_cache_typo3cache62' => $extensionPath . 'cache/class.tx_rnbase_cache_TYPO3Cache62.php',
     'tx_rnbase_commandline_controller' => $extensionClassesPath . 'CommandLine/Controller.php',
     'tx_rnbase_configurations' => $extensionPath . 'class.tx_rnbase_configurations.php',
+    'tx_rnbase_configuration_processor' => $extensionPath . 'Classes/Configuration/Processor.php',
     'tx_rnbase_controller' => $extensionPath . 'class.tx_rnbase_controller.php',
     'tx_rnbase_database_connection' => $extensionClassesPath . 'Database/Connection.php',
     'tx_rnbase_database_connectionmock' => $extensionPath . 'tests/util/class.tx_rnbase_tests_util_DB_testcase.php',
