@@ -1,6 +1,5 @@
 <?php
 
-use Sys25\RnBase\Configuration\ConfigurationInterface;
 
 /***************************************************************
  *  Copyright notice
@@ -26,6 +25,6 @@ use Sys25\RnBase\Configuration\ConfigurationInterface;
  ***************************************************************/
 
 
-interface Tx_Rnbase_Configuration_ProcessorInterface extends ConfigurationInterface
+interface Tx_Rnbase_Configuration_ProcessorInterface extends \Sys25\RnBase\Configuration\ConfigurationInterface
 {
 }
