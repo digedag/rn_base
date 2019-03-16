@@ -187,10 +187,6 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
      */
     protected function getCategoryFilterUtility()
     {
-        if (!tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-            // Quick and dirty fix for T3 6.2
-            require_once dirname(__FILE__).'/../Classes/Frontend/Filter/Utililty/Category.php';
-        }
         return tx_rnbase::makeInstance(Sys25\RnBase\Frontend\Filter\Utility\Category::class, $this->getConfigurations(), $this->getConfId());
     }
 
@@ -276,7 +272,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
      *
      * @param tx_rnbase_parameters $parameters
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param array_object $viewData
+     * @param ArrayObject $viewData
      * @param string $confId ConfId des Filters
      * @param string $filterClass Klassenname des Filters
      * @return tx_rnbase_IFilter
