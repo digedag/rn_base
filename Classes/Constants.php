@@ -2,7 +2,7 @@
 /* ===========================================================================
     tx_rnbase_util_SearchBase
 =========================================================================== */
-if(!defined('SEARCH_FIELD_JOINED')) {
+if (!defined('SEARCH_FIELD_JOINED')) {
     // Sonderfall Freitextsuche in mehreren Feldern
     define('SEARCH_FIELD_JOINED', 'JOINED');
     // Sonderfall freie Where-Bedingung
