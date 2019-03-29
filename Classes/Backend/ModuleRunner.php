@@ -106,8 +106,14 @@ class Tx_Rnbase_Backend_ModuleRunner
     protected function getModuleConfiguration($moduleName = '')
     {
         if ($moduleName === '') {
-            tx_rnbase::load('tx_rnbase_parameters');
-            $moduleName = tx_rnbase_parameters::getGetParameters('M');
+            if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+                $moduleName = \tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Routing\Router::class)->match(
+                    \Sys25\RnBase\Frontend\Request\Parameters::getGetParameters('route')
+                )->getOption('moduleName');
+            } else {
+                tx_rnbase::load('tx_rnbase_parameters');
+                $moduleName = tx_rnbase_parameters::getGetParameters('M');
+            }
         }
 
         if (!isset($GLOBALS['TBE_MODULES']['_configuration'][$moduleName])) {

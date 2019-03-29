@@ -118,5 +118,24 @@ class tx_rnbase_util_Extensions
             $controllerActions,
             $moduleConfiguration
         );
+
+        // since TYPO3 9.5 the route target is hardcoded to \TYPO3\CMS\Extbase\Core\Bootstrap::handleBackendRequest
+        // but we want the route target that was initially configured
+        if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher() && $moduleConfiguration['routeTarget']) {
+            // fixing module configuration
+            // we assume the last element in $GLOBALS['TBE_MODULES']['_configuration']
+            // is the module that was just added. Otherwise we would
+            // have to build the module name by ourselves which would basically mean copying
+            // code from the core.
+            end($GLOBALS['TBE_MODULES']['_configuration']);
+            $moduleName = key($GLOBALS['TBE_MODULES']['_configuration']);
+            $GLOBALS['TBE_MODULES']['_configuration'][$moduleName]['routeTarget'] = $moduleConfiguration['routeTarget'];
+            reset($GLOBALS['TBE_MODULES']['_configuration']);
+
+            // fixing route
+            \tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Routing\Router::class)->getRoutes()[$moduleName]->setOption(
+                'target', $moduleConfiguration['routeTarget']
+            );
+        }
     }
 }
