@@ -34,7 +34,6 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
  */
 class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
 {
-
     protected function setUp()
     {
         if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
