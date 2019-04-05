@@ -35,6 +35,22 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
 {
 
+    protected function setUp()
+    {
+        if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+            $cacheManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
+            // needed for icon retrieval
+            if (!$cacheManager->hasCache('assets')) {
+                $cacheManager->registerCache(
+                    new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend(
+                        'assets',
+                        new \TYPO3\CMS\Core\Cache\Backend\NullBackend('tests', [])
+                    )
+                );
+            }
+        }
+    }
+
     /**
      * @group unit
      */
