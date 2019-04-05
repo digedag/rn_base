@@ -32,7 +32,7 @@ tx_rnbase::load('tx_rnbase_util_Typo3Classes');
  * @subpackage tx_rnbase_tests
  * @author Michael Wagner
  */
-abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
+abstract class tx_rnbase_tests_BaseTestCase extends \PHPUnit\Framework\TestCase
 {
 
     /**
