@@ -317,7 +317,7 @@ abstract class tx_rnbase_mod_base_Lister
             $this->getFormTool(),
             $options
         );
-        $out = $this->getModule()->getDoc()->table($tableData, $tableLayout);
+        $out = Tx_Rnbase_Backend_Utility_Tables::buildTable($tableData, $tableLayout);
         $content .= $out;
 
         return $out;
