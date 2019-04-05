@@ -17,7 +17,7 @@ env:
     - TYPO3_CORE="typo3/cms=^6.2.14"
     - TYPO3_CORE="typo3/cms=^7.6.0"
     - TYPO3_CORE="typo3/cms=^8.7.0"
-    - TYPO3_CORE="typo3/cms-minimal=^9.5"
+    - TYPO3_CORE="typo3/minimal=^9.5"
 
 matrix:
     exclude:
@@ -32,11 +32,11 @@ matrix:
         - php: 5.6
           env: TYPO3_CORE="typo3/cms=^8.7.0"
         - php: 5.6
-          env: TYPO3_CORE="typo3/cms-minimal=^9.5"
+          env: TYPO3_CORE="typo3/minimal=^9.5"
         - php: 7.0
-          env: TYPO3_CORE="typo3/cms-minimal=^9.5"
+          env: TYPO3_CORE="typo3/minimal=^9.5"
         - php: 7.1
-          env: TYPO3_CORE="typo3/cms-minimal=^9.5"
+          env: TYPO3_CORE="typo3/minimal=^9.5"
 
 sudo: false
 
