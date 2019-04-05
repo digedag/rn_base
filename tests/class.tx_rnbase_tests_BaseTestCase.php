@@ -24,6 +24,8 @@
  ***************************************************************/
 
 tx_rnbase::load('tx_rnbase_util_Typo3Classes');
+// make sure to load the constants
+require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'Classes/Constants.php');
 
 /**
  * Basis Testcase
