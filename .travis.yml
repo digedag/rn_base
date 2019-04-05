@@ -11,12 +11,13 @@ php:
     - 5.6
     - 7.0
     - 7.1
+    - 7.2
 
 env:
     - TYPO3_CORE="typo3/cms=^6.2.14"
     - TYPO3_CORE="typo3/cms=^7.6.0"
     - TYPO3_CORE="typo3/cms=^8.7.0"
-#    - TYPO3_CORE="typo3/cms-core=^9.6"
+    - TYPO3_CORE="typo3/cms-minimal=^9.5"
 
 matrix:
     exclude:
@@ -24,8 +25,18 @@ matrix:
           env: TYPO3_CORE="typo3/cms=^6.2.14"
         - php: 7.1
           env: TYPO3_CORE="typo3/cms=^6.2.14"
+        - php: 7.2
+          env: TYPO3_CORE="typo3/cms=^6.2.14"
+        - php: 7.2
+          env: TYPO3_CORE="typo3/cms=^7.6.0"
         - php: 5.6
           env: TYPO3_CORE="typo3/cms=^8.7.0"
+        - php: 5.6
+          env: TYPO3_CORE="typo3/cms-minimal=^9.5"
+        - php: 7.0
+          env: TYPO3_CORE="typo3/cms-minimal=^9.5"
+        - php: 7.1
+          env: TYPO3_CORE="typo3/cms-minimal=^9.5"
 
 sudo: false
 
