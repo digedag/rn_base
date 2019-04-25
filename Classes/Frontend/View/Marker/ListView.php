@@ -40,7 +40,6 @@ use Sys25\RnBase\Frontend\View\ContextInterface;
  */
 class ListView extends BaseView
 {
-
     const VIEWDATA_ITEMS = 'items';
     const VIEWDATA_FILTER = 'filter';
     const VIEWDATA_MARKER = 'marker';
@@ -164,5 +163,4 @@ class ListView extends BaseView
 
         return $marker ? $marker : 'tx_rnbase_util_SimpleMarker';
     }
-
 }
