@@ -50,9 +50,7 @@
             "sv1/",
             "tests/",
             "util/",
-            "view/"
-        ],
-        "files": [
+            "view/",
             "class.tx_rnbase.php",
             "class.tx_rnbase_configurations.php",
             "class.tx_rnbase_controller.php",
