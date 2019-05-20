@@ -22,11 +22,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-define('IMAGE_CANVAS_SYSTEM_FONT_PATH', PATH_site);
+define('IMAGE_CANVAS_SYSTEM_FONT_PATH', \Sys25\RnBase\Utility\Environment::getCurrentScript());
 tx_rnbase::load('tx_rnbase_util_Extensions');
 tx_rnbase::load('tx_rnbase_util_Network');
-require_once(PATH_site.tx_rnbase_util_Extensions::siteRelPath('pbimagegraph').'Image/class.tx_pbimagegraph.php');
-require_once(PATH_site.tx_rnbase_util_Extensions::siteRelPath('pbimagegraph').'Image/class.tx_pbimagegraph_canvas.php');
+require_once(\Sys25\RnBase\Utility\Environment::getCurrentScript().tx_rnbase_util_Extensions::siteRelPath('pbimagegraph').'Image/class.tx_pbimagegraph.php');
+require_once(\Sys25\RnBase\Utility\Environment::getCurrentScript().tx_rnbase_util_Extensions::siteRelPath('pbimagegraph').'Image/class.tx_pbimagegraph_canvas.php');
 
 
 /**
@@ -92,7 +92,7 @@ class tx_rnbase_plot_Builder
             $arrConf['height'] = $arrConf['height'] ? $arrConf['height'] : '300';
             if (!@file_exists(PATH_site . $strFileName) || true) { // TODO: remove me!!!
                 $objGraph = $this->makeCanvas($arrConf, $dp);
-                $objGraph->done(array('filename' => PATH_site . $strFileName));
+                $objGraph->done(array('filename' => \Sys25\RnBase\Utility\Environment::getCurrentScript() . $strFileName));
             }
             $strAltParam = $this->getAltParam($arrConf);
             switch (strtolower($arrConf['factory'])) {
@@ -208,7 +208,7 @@ class tx_rnbase_plot_Builder
     {
         if (is_array($arrSetup)) {
             if (!tx_rnbase_util_TYPO3::isTYPO42OrHigher()) {
-                require_once(PATH_site.'t3lib/class.t3lib_tstemplate.php');
+                require_once(\Sys25\RnBase\Utility\Environment::getCurrentScript().'t3lib/class.t3lib_tstemplate.php');
             }
             $templateServiceClass = tx_rnbase_util_Typo3Classes::getTemplateServiceClass();
             $arrSortedKeys = $templateServiceClass::sortedKeyList($arrSetup);
@@ -657,7 +657,7 @@ class tx_rnbase_plot_Builder
                     }
                     break;
                 case 'icon':
-                    $objMarker =& $objRef->addNew('tx_pbimagegraph_Marker_Icon', PATH_site.$arrConf['marker.']['image']);
+                    $objMarker =& $objRef->addNew('tx_pbimagegraph_Marker_Icon', \Sys25\RnBase\Utility\Environment::getCurrentScript().$arrConf['marker.']['image']);
                     break;
                 default:
                     $objMarker =& $objRef->addNew('tx_pbimagegraph_Marker_'.ucfirst($arrConf['marker']));

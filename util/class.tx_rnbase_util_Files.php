@@ -58,7 +58,7 @@ class tx_rnbase_util_Files
         }
         if ($incFile) {
             // Im BE muss ein absoluter Pfad verwendet werden
-            $fullPath = (TYPO3_MODE == 'BE') ? PATH_site.$incFile : $incFile;
+            $fullPath = (TYPO3_MODE == 'BE') ? \Sys25\RnBase\Utility\Environment::getCurrentScript().$incFile : $incFile;
             $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
             $fileinfo = $utility::split_fileref($incFile);
             if ($utility::inList('jpg,gif,jpeg,png', $fileinfo['fileext'])) {
