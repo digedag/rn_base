@@ -3,7 +3,14 @@
 Changelog
 ---------
 
-v1.9.4 (??.??.2019)
+v1.9.5 (??.??.2019)
+
+v1.9.4 (28.05.2019)
+ * bugfix added missing classes to autload for older TYPO3 versions
+ * filter class for new plugin api
+ * Dummy view for unit tests
+ * bugfix when manipulating cache hash calculator configuration
+ * bugfixes for non composer installations
 
 v1.9.3 (20.02.2019)
  * refactored plugins
