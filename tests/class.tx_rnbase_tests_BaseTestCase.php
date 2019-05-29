@@ -78,43 +78,14 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
      * @param string $extensionKey
      * @param string $qualifier
      * @return Tx_Rnbase_Configuration_ProcessorInterface
+     * @deprecated use tx_rnbase_tests_Utility::createConfigurations() instead
      */
     protected static function createConfigurations(
         array $configurationArray,
         $extensionKey,
         $qualifier = ''
     ) {
-        $qualifier = empty($qualifier) ? $extensionKey : $qualifier;
-
-        $parameters = null;
-        $cObj = null;
-
-        $args = func_get_args();
-        $args = count($args) > 3 ? array_slice($args, 3) : array();
-
-        foreach ($args as $arg) {
-            if ($arg instanceof tx_rnbase_parameters) {
-                $parameters = $arg;
-            }
-            $contentObjectRendererClass = tx_rnbase_util_Typo3Classes::getContentObjectRendererClass();
-            if ($arg instanceof $contentObjectRendererClass) {
-                $cObj = $arg;
-            }
-        }
-
-        /* @var $configurations Tx_Rnbase_Configuration_ProcessorInterface */
-        $configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
-        $configurations->init(
-            $configurationArray,
-            $cObj,
-            $extensionKey,
-            $qualifier
-        );
-        if ($parameters instanceof tx_rnbase_parameters) {
-            $configurations->setParameters($parameters);
-        }
-
-        return $configurations;
+        return tx_rnbase_tests_Utility::createConfigurations($configurationArray, $extensionKey, $qualifier);
     }
 
     /**
