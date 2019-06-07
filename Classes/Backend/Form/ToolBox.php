@@ -1039,7 +1039,6 @@ class Tx_Rnbase_Backend_Form_ToolBox
      */
     public function showTabMenu($pid, $name, $modName, $entries)
     {
-
         $MENU = [
             $name => $entries
         ];
