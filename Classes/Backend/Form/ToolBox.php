@@ -177,7 +177,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
      * @param array $options
      * @return string
      */
-    public function createNewButton($table, $pid, $options = array())
+    public function createNewButton($table, $pid, $options = [])
     {
         $params = '&edit['.$table.']['.$pid.']=new';
         if (isset($options[self::OPTION_PARAMS])) {
@@ -192,8 +192,11 @@ class Tx_Rnbase_Backend_Form_ToolBox
             $jsCode = 'if(confirm('.Tx_Rnbase_Utility_Strings::quoteJSvalue($options[self::OPTION_CONFIRM]).')) {' . $jsCode .'} else {return false;}';
         }
 
-        $btn = '<input type="button" name="'. $name.'" value="' . $title . '" ';
-        $btn .= 'onclick="'.htmlspecialchars($jsCode, -1).'"';
+        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
+        $class = ' class="' . $class .'"';
+
+        $btn = '<input type="button" name="'. $name.'" value="' . $title . '" ' . $class;
+        $btn .= ' onclick="'.htmlspecialchars($jsCode, -1).'"';
         $btn .= '/>';
 
         return $btn;
