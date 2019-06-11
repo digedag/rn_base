@@ -28,7 +28,7 @@
 interface tx_rnbase_mod_IModule
 {
     /**
-     * @return template
+     * @return Tx_Rnbase_Backend_Template_Override_DocumentTemplate
      */
     public function getDoc();
     /**
