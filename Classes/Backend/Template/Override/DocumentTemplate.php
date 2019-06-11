@@ -56,7 +56,8 @@ class Tx_Rnbase_Backend_Template_Override_DocumentTemplate extends Tx_Rnbase_Bac
      * @return string HTML content
      * @todo Define visibility
      */
-    public function spacer($dist) {
+    public function spacer($dist)
+    {
         if ($dist > 0) {
             return '<!-- Spacer element --><div style="padding-top: ' . (int)$dist . 'px;"></div>';
         }
