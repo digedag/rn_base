@@ -246,8 +246,8 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
                 $languages[] = '-1';
                 // Wenn eine bestimmte Sprache gesetzt ist, laden wir diese ebenfalls.
                 // andernfalls nutzen wir die default sprache
-                if (is_object($tsfe) && $tsfe->sys_language_content) {
-                    $languages[] = $tsfe->sys_language_content;
+                if (is_object($tsfe) && \Sys25\RnBase\Utility\FrontendControllerUtility::getLanguageContentId($tsfe)) {
+                    $languages[] = \Sys25\RnBase\Utility\FrontendControllerUtility::getLanguageContentId($tsfe);
                 } else {
                     // default language
                     $languages[] = '0';

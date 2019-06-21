@@ -351,13 +351,18 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         // Then get localization of record:
         // (if the content language is not the default language)
         $tsfe = tx_rnbase_util_TYPO3::getTSFE();
-        if (!is_object($tsfe) || !$tsfe->sys_language_content) {
+        if (!is_object($tsfe) || !\Sys25\RnBase\Utility\FrontendControllerUtility::getLanguageContentId($tsfe)) {
             return;
         }
 
         $OLmode = (isset($options['i18nolmode']) ? $options['i18nolmode'] : '');
         $sysPage = tx_rnbase_util_TYPO3::getSysPage();
-        $row = $sysPage->getRecordOverlay($tableName, $row, $tsfe->sys_language_content, $OLmode);
+        $row = $sysPage->getRecordOverlay(
+            $tableName,
+            $row,
+            \Sys25\RnBase\Utility\FrontendControllerUtility::getLanguageContentId($tsfe),
+            $OLmode
+        );
     }
 
     /**
