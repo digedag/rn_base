@@ -56,7 +56,7 @@ class PageBaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBas
         $this->registerTagAttribute('target', 'string', 'Target of link', false);
         $this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document', false);
         $this->registerArgument('data-tagname', 'string', 'Type of Tag to render', false, 'a');
-        $this->registerArgument('pageUid', 'int', 'Target page. See TypoLink destination', false, 0);
+        $this->registerArgument('pageUid', 'int', 'Target page. See TypoLink destination', false, null);
         $this->registerArgument(
             'additionalParams',
             'array',
