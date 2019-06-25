@@ -81,6 +81,7 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
      * - 'enablefieldsfe' - force enableFields check for FE
      * - 'db' - external database: tx_rnbase_util_db_IDatabase
      * - 'ignorei18n' - do not translate record to fe language
+     * - 'forcei18n' - force the translation of the record
      * - 'i18nolmode' - translation mode, possible value: 'hideNonTranslated'
      * </pre>
      *
@@ -341,10 +342,12 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         // Wert. Dadurch werden JS-Dateien nicht mehr geladen.
         // Ist dieser Aufruf im BE überhaupt sinnvoll?
         if ((
-            !(defined('TYPO3_MODE') && TYPO3_MODE === 'FE') ||
-            $options['enablefieldsoff'] ||
-            $options['ignorei18n'] &&
-            !$options['force_lookup_language']
+            (
+                !(defined('TYPO3_MODE') && TYPO3_MODE === 'FE') ||
+                $options['enablefieldsoff'] ||
+                $options['ignorei18n']
+            ) &&
+            !$options['forcei18n']
         )) {
             return;
         }
