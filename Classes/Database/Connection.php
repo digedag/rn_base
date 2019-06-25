@@ -343,7 +343,8 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         if ((
             !(defined('TYPO3_MODE') && TYPO3_MODE === 'FE') ||
             $options['enablefieldsoff'] ||
-            $options['ignorei18n']
+            $options['ignorei18n'] &&
+            !$options['force_lookup_language']
         )) {
             return;
         }
