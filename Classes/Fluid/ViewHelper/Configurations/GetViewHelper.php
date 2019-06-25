@@ -41,8 +41,8 @@ class GetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('typoscriptPath', 'string', 'typoscript path');
-        $this->registerArgument('confId', 'string', 'configuration ID');
+        $this->registerArgument('typoscriptPath', 'string', 'typoscript path', false, '');
+        $this->registerArgument('confId', 'string', 'configuration ID', false, '');
     }
 
     /**

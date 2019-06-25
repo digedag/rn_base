@@ -56,17 +56,53 @@ class PageBaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBas
         $this->registerTagAttribute('target', 'string', 'Target of link', false);
         $this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document', false);
         $this->registerArgument('data-tagname', 'string', 'Type of Tag to render', false, 'a');
-        $this->registerArgument('pageUid', 'int', 'Target page. See TypoLink destination');
-        $this->registerArgument('additionalParams', 'array', 'Additional query parameters that won\'t be prefixed like $arguments (overrule $arguments)');
-        $this->registerArgument('pageType', 'int', 'Type of the target page. See typolink.parameter');
-        $this->registerArgument('noCache', 'bool', 'Set this to disable caching for the target page. You should not need this.');
-        $this->registerArgument('noCacheHash', 'bool', 'Set this to suppress the cHash query parameter created by TypoLink. You should not need this.');
-        $this->registerArgument('section', 'string', 'The anchor to be added to the URI');
-        $this->registerArgument('linkAccessRestrictedPages', 'bool', 'If set, links pointing to access restricted pages will still link to the page even though the page cannot be accessed.');
-        $this->registerArgument('absolute', 'bool', 'If set, the URI of the rendered link is absolute');
-        $this->registerArgument('addQueryString', 'bool', 'If set, the current query parameters will be kept in the URI');
-        $this->registerArgument('argumentsToBeExcludedFromQueryString', 'array', 'Arguments to be removed from the URI. Only active if $addQueryString = TRUE');
-        $this->registerArgument('usePageNumberAsLinkText', 'bool', 'Use page number as link text?');
+        $this->registerArgument('pageUid', 'int', 'Target page. See TypoLink destination', false, 0);
+        $this->registerArgument(
+            'additionalParams',
+            'array',
+            'Additional query parameters that won\'t be prefixed like $arguments (overrule $arguments)',
+            false,
+            []
+        );
+        $this->registerArgument('pageType', 'int', 'Type of the target page. See typolink.parameter', false, 0);
+        $this->registerArgument(
+            'noCache',
+            'bool',
+            'Set this to disable caching for the target page. You should not need this.',
+            false,
+            false
+        );
+        $this->registerArgument(
+            'noCacheHash',
+            'bool',
+            'Set this to suppress the cHash query parameter created by TypoLink. You should not need this.',
+            false,
+            false
+        );
+        $this->registerArgument('section', 'string', 'The anchor to be added to the URI', false, '');
+        $this->registerArgument(
+            'linkAccessRestrictedPages',
+            'bool',
+            'If set, links pointing to access restricted pages will still link to the page even though the page cannot be accessed.',
+            false,
+            false
+        );
+        $this->registerArgument('absolute', 'bool', 'If set, the URI of the rendered link is absolute', false, false);
+        $this->registerArgument(
+            'addQueryString',
+            'bool',
+            'If set, the current query parameters will be kept in the URI',
+            false,
+            false
+        );
+        $this->registerArgument(
+            'argumentsToBeExcludedFromQueryString',
+            'array',
+            'Arguments to be removed from the URI. Only active if $addQueryString = TRUE',
+            false,
+            []
+        );
+        $this->registerArgument('usePageNumberAsLinkText', 'bool', 'Use page number as link text?', false, false);
     }
 
     /**
@@ -100,7 +136,7 @@ class PageBaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBas
         );
         $additionalParams = \tx_rnbase_util_Arrays::mergeRecursiveWithOverrule($additionalParams, $pageBrowserParams);
 
-        $uriBuilder = $this->controllerContext->getUriBuilder();
+        $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
         $uri = $uriBuilder
             ->reset()
             ->setTargetPageUid($pageUid)

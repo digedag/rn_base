@@ -27,7 +27,6 @@ namespace Sys25\RnBase\Fluid\ViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
-use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 
 /**
  * Sys25\RnBase\Fluid\ViewHelper\TranslateViewHelper

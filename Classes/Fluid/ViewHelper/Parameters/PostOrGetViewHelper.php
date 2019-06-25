@@ -41,7 +41,7 @@ class PostOrGetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewH
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('parameterName', 'string', 'parameter name');
+        $this->registerArgument('parameterName', 'string', 'parameter name', false, '');
     }
 
     /**
