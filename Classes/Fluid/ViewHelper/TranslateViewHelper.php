@@ -104,10 +104,9 @@ class TranslateViewHelper extends AbstractViewHelper
         // first try to translate from the rn base controller configuration
         if ((
             $renderingContext instanceof RenderingContext &&
-            $renderingContext->getControllerContext() instanceof ControllerContext &&
-            $renderingContext->getControllerContext()->configurations instanceof \Tx_Rnbase_Configuration_Processor
+            $renderingContext->getViewHelperVariableContainer()->getView()->getConfigurations() instanceof \Tx_Rnbase_Configuration_Processor
         )) {
-            return $renderingContext->getControllerContext()->configurations->getLL($key);
+            return $renderingContext->getViewHelperVariableContainer()->getView()->getConfigurations()->getLL($key);
         }
 
         // otherwise translate to the typo3 language service

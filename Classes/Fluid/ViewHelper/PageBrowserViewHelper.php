@@ -62,6 +62,19 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
     protected $childNodes = [];
 
     /**
+     * Arguments initialization
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('hideIfSinglePage', 'bool', 'Hie page browser if only single page', false, false);
+        $this->registerArgument('maxPages', 'int', 'Max number of pages to show', false, 10);
+        $this->registerArgument('pageFloat', 'string', 'page float', false, 'CENTER');
+        $this->registerArgument('implode', 'string', 'Used to join the page browser parts', false, ' ');
+        $this->registerArgument('qualifier', 'string', 'Qualifier for links', false, null);
+    }
+
+    /**
      * Setter for ChildNodes - as defined in ChildNodeAccessInterface
      *
      * @param array $childNodes Child nodes of this syntax tree node
@@ -75,27 +88,21 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
     /**
      * Handles rn_base PageBrowser
      *
-     * @param bool $hideIfSinglePage
-     * @param int $maxPages
-     * @param mixed $pageFloat Das richtet den Ausschnitt der gezeigten Seiten im PageBrowser ein.
-     * @param mixed $implode Seiten werden mittels dieses Trenners aufgelistet
-     * @param string $qualifier set this if you want to use another qualifier than the one defined in $configuration context
-     *
      * @return string
      */
-    public function render(
-        $hideIfSinglePage = false,
-        $maxPages = 10,
-        $pageFloat = 'CENTER',
-        $implode = ' ',
-        $qualifier = null
-    ) {
+    public function render()
+    {
+        $hideIfSinglePage = $this->arguments['hideIfSinglePage'];
+        $maxPages = $this->arguments['maxPages'];
+        $pageFloat = $this->arguments['pageFloat'];
+        $implode = $this->arguments['implode'];
+        $qualifier = $this->arguments['qualifier'];
+
         if (!$this->templateVariableContainer->offsetExists('pagebrowser')) {
             return '';
         }
-
         if ($qualifier === null) {
-            $qualifier = $this->controllerContext->configurations->getQualifier();
+            $qualifier = $this->getRenderingContext()->getViewHelperVariableContainer()->getView()->getConfigurations()->getQualifier();
         }
 
         $this->viewHelperVariableContainer->add(self::class, 'pageBrowserQualifier', $qualifier);

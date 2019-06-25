@@ -56,36 +56,36 @@ class PageBaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBas
         $this->registerTagAttribute('target', 'string', 'Target of link', false);
         $this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document', false);
         $this->registerArgument('data-tagname', 'string', 'Type of Tag to render', false, 'a');
+        $this->registerArgument('pageUid', 'int', 'Target page. See TypoLink destination');
+        $this->registerArgument('additionalParams', 'array', 'Additional query parameters that won\'t be prefixed like $arguments (overrule $arguments)');
+        $this->registerArgument('pageType', 'int', 'Type of the target page. See typolink.parameter');
+        $this->registerArgument('noCache', 'bool', 'Set this to disable caching for the target page. You should not need this.');
+        $this->registerArgument('noCacheHash', 'bool', 'Set this to suppress the cHash query parameter created by TypoLink. You should not need this.');
+        $this->registerArgument('section', 'string', 'The anchor to be added to the URI');
+        $this->registerArgument('linkAccessRestrictedPages', 'bool', 'If set, links pointing to access restricted pages will still link to the page even though the page cannot be accessed.');
+        $this->registerArgument('absolute', 'bool', 'If set, the URI of the rendered link is absolute');
+        $this->registerArgument('addQueryString', 'bool', 'If set, the current query parameters will be kept in the URI');
+        $this->registerArgument('argumentsToBeExcludedFromQueryString', 'array', 'Arguments to be removed from the URI. Only active if $addQueryString = TRUE');
+        $this->registerArgument('usePageNumberAsLinkText', 'bool', 'Use page number as link text?');
     }
 
     /**
-     * @param int $page target page. See TypoLink destination
-     * @param array $additionalParams query parameters to be attached to the resulting URI
-     * @param int $pageType type of the target page. See typolink.parameter
-     * @param bool $noCache set this to disable caching for the target page. You should not need this.
-     * @param bool $noCacheHash set this to supress the cHash query parameter created by TypoLink. You should not need this.
-     * @param string $section the anchor to be added to the URI
-     * @param bool $linkAccessRestrictedPages If set, links pointing to access restricted pages will still link to the page even though the page cannot be accessed.
-     * @param bool $absolute If set, the URI of the rendered link is absolute
-     * @param bool $addQueryString If set, the current query parameters will be kept in the URI
-     * @param array $argumentsToBeExcludedFromQueryString arguments to be removed from the URI. Only active if $addQueryString = TRUE
-     * @param bool $usePageNumberAsLinkText If set, the page number the link points to is used as link text
      * @return string Rendered page URI
-     * @author Bastian Waidelich <bastian@typo3.org>
      */
-    public function render(
-        $pageUid = null,
-        array $additionalParams = array(),
-        $pageType = 0,
-        $noCache = false,
-        $noCacheHash = false,
-        $section = '',
-        $linkAccessRestrictedPages = false,
-        $absolute = false,
-        $addQueryString = false,
-        array $argumentsToBeExcludedFromQueryString = array(),
-        $usePageNumberAsLinkText = false
-    ) {
+    public function render()
+    {
+        $pageUid = $this->arguments['pageUid'];
+        $additionalParams = $this->arguments['additionalParams'];
+        $pageType = $this->arguments['pageType'];
+        $noCache = $this->arguments['noCache'];
+        $noCacheHash = $this->arguments['noCacheHash'];
+        $section = $this->arguments['section'];
+        $linkAccessRestrictedPages = $this->arguments['linkAccessRestrictedPages'];
+        $absolute = $this->arguments['absolute'];
+        $addQueryString = $this->arguments['addQueryString'];
+        $argumentsToBeExcludedFromQueryString = $this->arguments['argumentsToBeExcludedFromQueryString'];
+        $usePageNumberAsLinkText = $this->arguments['usePageNumberAsLinkText'];
+
         $this->tag->setTagName($this->arguments['data-tagname']);
         $pageBrowser = $this->templateVariableContainer->offsetGet('pagebrowser');
         $currentPage = $this->templateVariableContainer->get('currentPage');
