@@ -3,8 +3,13 @@
 Changelog
 ---------
 
-v1.9.5 (??.0?.2019)
+v1.9.6 (??.0?.2019)
+ * 
+ 
+v1.9.5 (25.06.2019)
  * Some enhancements for backend module rendering for TYPO3 8
+ * Moved tx_rnbase_tests_BaseTestCase::createConfigurations() to own utility (tx_rnbase_tests_Utility) for standalone usage
+ * force_lookup_language option added in database connection
 
 v1.9.4 (28.05.2019)
  * bugfix added missing classes to autload for older TYPO3 versions
