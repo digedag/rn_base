@@ -83,7 +83,7 @@ class tx_rnbase_util_Debug
         $trail = array_reverse($trail);
         array_pop($trail);
         $path = array();
-        $pathSiteLength = strlen(\Sys25\RnBase\Utility\Environment::getCurrentScript());
+        $pathSiteLength = strlen(PATH_site);
         foreach ($trail as $dat) {
             $pathFragment = $dat['class'] . $dat['type'] . $dat['function'];
             // add the path of the included file

@@ -118,7 +118,7 @@ class tx_rnbase_util_Lock
     protected function getFile()
     {
         if ($this->logFile === null) {
-            $this->logFile = \Sys25\RnBase\Utility\Environment::getCurrentScript() . 'typo3temp/rn_base/' . $this->getName() . '.lock';
+            $this->logFile = PATH_site . 'typo3temp/rn_base/' . $this->getName() . '.lock';
         }
 
         return $this->logFile;

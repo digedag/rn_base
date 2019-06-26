@@ -750,10 +750,10 @@ class tx_rnbase_util_TSFAL
         if ($storageConfig['pathType'] === 'relative') {
             $relativeBasePath = $storageConfig['basePath'];
         } else {
-            if (strpos($storageConfig['basePath'], \Sys25\RnBase\Utility\Environment::getCurrentScript()) !== 0) {
+            if (strpos($storageConfig['basePath'], PATH_site) !== 0) {
                 throw new \LogicException('Could not determine relative storage path.');
             }
-            $relativeBasePath = substr($storageConfig['basePath'], strlen(\Sys25\RnBase\Utility\Environment::getCurrentScript()));
+            $relativeBasePath = substr($storageConfig['basePath'], strlen(PATH_site));
         }
 
         // build the identifier, trim the storage path from the target
