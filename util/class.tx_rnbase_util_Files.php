@@ -58,7 +58,7 @@ class tx_rnbase_util_Files
         }
         if ($incFile) {
             // Im BE muss ein absoluter Pfad verwendet werden
-            $fullPath = (TYPO3_MODE == 'BE') ? Sys25RnBaseTILITYnvironment::getPublicPath().$incFile : $incFile;
+            $fullPath = (TYPO3_MODE == 'BE') ? \Sys25\RnBase\Utility\Environment::getPublicPath().$incFile : $incFile;
             $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
             $fileinfo = $utility::split_fileref($incFile);
             if ($utility::inList('jpg,gif,jpeg,png', $fileinfo['fileext'])) {
@@ -140,12 +140,12 @@ class tx_rnbase_util_Files
      *
      * Returns the absolute filename of a relative reference, resolves the "EXT:" prefix
      * (way of referring to files inside extensions) and checks that the file is inside
-     * the Sys25RnBaseTILITYnvironment::getPublicPath() of the TYPO3 installation and implies a check with
+     * the \Sys25\RnBase\Utility\Environment::getPublicPath() of the TYPO3 installation and implies a check with
      * \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr().
      *
      * @param string $filename The input filename/filepath to evaluate
-     * @param bool $onlyRelative If $onlyRelative is set (which it is by default), then only return values relative to the current Sys25RnBaseTILITYnvironment::getPublicPath() is accepted.
-     * @param bool $relToTYPO3_mainDir If $relToTYPO3_mainDir is set, then relative paths are relative to PATH_typo3 constant - otherwise (default) they are relative to Sys25RnBaseTILITYnvironment::getPublicPath()
+     * @param bool $onlyRelative If $onlyRelative is set (which it is by default), then only return values relative to the current \Sys25\RnBase\Utility\Environment::getPublicPath() is accepted.
+     * @param bool $relToTYPO3_mainDir If $relToTYPO3_mainDir is set, then relative paths are relative to PATH_typo3 constant - otherwise (default) they are relative to \Sys25\RnBase\Utility\Environment::getPublicPath()
      * @return string Returns the absolute filename of $filename if valid, otherwise blank string.
      */
     public static function getFileAbsFileName($fName, $onlyRelative = true, $relToTYPO3_mainDir = false)

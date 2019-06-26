@@ -90,8 +90,8 @@ class tx_rnbase_util_Templates
     {
         $file = self::getTSTemplate()->getFileName($fileName);
 
-        if (TYPO3_MODE == 'BE' && strpos($file, Sys25RnBaseTILITYnvironment::getPublicPath()) === false) {
-            $file = Sys25RnBaseTILITYnvironment::getPublicPath().$file;
+        if (TYPO3_MODE == 'BE' && strpos($file, \Sys25\RnBase\Utility\Environment::getPublicPath()) === false) {
+            $file = \Sys25\RnBase\Utility\Environment::getPublicPath().$file;
         } // Im BE auf absoluten Pfad setzen
 
         $templateCode = tx_rnbase_util_Network::getUrl($file);

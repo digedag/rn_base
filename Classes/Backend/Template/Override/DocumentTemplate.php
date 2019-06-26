@@ -79,7 +79,7 @@ class Tx_Rnbase_Backend_Template_Override_DocumentTemplate extends Tx_Rnbase_Bac
             }
             $mainParams = Tx_Rnbase_Utility_T3General::implodeArrayForUrl('', $mainParams);
             if (!$script) {
-                $script = basename(Sys25RnBaseTILITYnvironment::getCurrentScript());
+                $script = basename(\Sys25\RnBase\Utility\Environment::getCurrentScript());
             }
             $menuDef = [];
             foreach ($menuItems as $value => $label) {

@@ -47,7 +47,7 @@ class tx_rnbase_tests_util_Templates_testcase extends tx_rnbase_tests_BaseTestCa
     public function setUp()
     {
         $this->backup['getFileName_backPath'] = tx_rnbase_util_Templates::getTSTemplate()->getFileName_backPath;
-        tx_rnbase_util_Templates::getTSTemplate()->getFileName_backPath = Sys25RnBaseTILITYnvironment::getPublicPath();
+        tx_rnbase_util_Templates::getTSTemplate()->getFileName_backPath = \Sys25\RnBase\Utility\Environment::getPublicPath();
     }
     public function tearDown()
     {

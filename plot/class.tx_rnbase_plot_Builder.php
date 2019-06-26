@@ -22,11 +22,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-define('IMAGE_CANVAS_SYSTEM_FONT_PATH', Sys25RnBaseTILITYnvironment::getPublicPath());
+define('IMAGE_CANVAS_SYSTEM_FONT_PATH', \Sys25\RnBase\Utility\Environment::getPublicPath());
 tx_rnbase::load('tx_rnbase_util_Extensions');
 tx_rnbase::load('tx_rnbase_util_Network');
-require_once(Sys25RnBaseTILITYnvironment::getPublicPath().tx_rnbase_util_Extensions::siteRelPath('pbimagegraph').'Image/class.tx_pbimagegraph.php');
-require_once(Sys25RnBaseTILITYnvironment::getPublicPath().tx_rnbase_util_Extensions::siteRelPath('pbimagegraph').'Image/class.tx_pbimagegraph_canvas.php');
+require_once(\Sys25\RnBase\Utility\Environment::getPublicPath().tx_rnbase_util_Extensions::siteRelPath('pbimagegraph').'Image/class.tx_pbimagegraph.php');
+require_once(\Sys25\RnBase\Utility\Environment::getPublicPath().tx_rnbase_util_Extensions::siteRelPath('pbimagegraph').'Image/class.tx_pbimagegraph_canvas.php');
 
 
 /**
@@ -90,9 +90,9 @@ class tx_rnbase_plot_Builder
             $arrConf['factory'] = $arrConf['factory'] ? $arrConf['factory'] : 'png';
             $arrConf['width'] = $arrConf['width'] ? $arrConf['width'] : '400';
             $arrConf['height'] = $arrConf['height'] ? $arrConf['height'] : '300';
-            if (!@file_exists(Sys25RnBaseTILITYnvironment::getPublicPath() . $strFileName) || true) { // TODO: remove me!!!
+            if (!@file_exists(\Sys25\RnBase\Utility\Environment::getPublicPath() . $strFileName) || true) { // TODO: remove me!!!
                 $objGraph = $this->makeCanvas($arrConf, $dp);
-                $objGraph->done(array('filename' => Sys25RnBaseTILITYnvironment::getPublicPath() . $strFileName));
+                $objGraph->done(array('filename' => \Sys25\RnBase\Utility\Environment::getPublicPath() . $strFileName));
             }
             $strAltParam = $this->getAltParam($arrConf);
             switch (strtolower($arrConf['factory'])) {
@@ -153,7 +153,7 @@ class tx_rnbase_plot_Builder
      * @param   string      Filename prefix, eg. "ImageGraph/"
      * @param   array       TS Configuration of the image
      * @param   string      Filename extension, eg. "png"
-     * @return  string      The relative filepath (relative to Sys25RnBaseTILITYnvironment::getPublicPath())
+     * @return  string      The relative filepath (relative to \Sys25\RnBase\Utility\Environment::getPublicPath())
      * @access private
      */
     private function getFileName($strPre, $arrConf, $strExtension)
@@ -208,7 +208,7 @@ class tx_rnbase_plot_Builder
     {
         if (is_array($arrSetup)) {
             if (!tx_rnbase_util_TYPO3::isTYPO42OrHigher()) {
-                require_once(Sys25RnBaseTILITYnvironment::getPublicPath().'t3lib/class.t3lib_tstemplate.php');
+                require_once(\Sys25\RnBase\Utility\Environment::getPublicPath().'t3lib/class.t3lib_tstemplate.php');
             }
             $templateServiceClass = tx_rnbase_util_Typo3Classes::getTemplateServiceClass();
             $arrSortedKeys = $templateServiceClass::sortedKeyList($arrSetup);
@@ -644,7 +644,7 @@ class tx_rnbase_plot_Builder
                                 switch ($strType) {
                                     case 'icon':
                                     //$Marker->addNew('icon_marker', './images/audi.png');
-                                        $objArrayMarker[$strKey] =& tx_pbimagegraph::factory('tx_pbimagegraph_Marker_Icon', Sys25RnBaseTILITYnvironment::getPublicPath().$arrConf['marker.'][$strKey.'.']['image']);
+                                        $objArrayMarker[$strKey] =& tx_pbimagegraph::factory('tx_pbimagegraph_Marker_Icon', \Sys25\RnBase\Utility\Environment::getPublicPath().$arrConf['marker.'][$strKey.'.']['image']);
                                         break;
                                     default:
                                         $objArrayMarker[$strKey] =& tx_pbimagegraph::factory('tx_pbimagegraph_Marker_'.ucfirst($strType));
@@ -657,7 +657,7 @@ class tx_rnbase_plot_Builder
                     }
                     break;
                 case 'icon':
-                    $objMarker =& $objRef->addNew('tx_pbimagegraph_Marker_Icon', Sys25RnBaseTILITYnvironment::getPublicPath().$arrConf['marker.']['image']);
+                    $objMarker =& $objRef->addNew('tx_pbimagegraph_Marker_Icon', \Sys25\RnBase\Utility\Environment::getPublicPath().$arrConf['marker.']['image']);
                     break;
                 default:
                     $objMarker =& $objRef->addNew('tx_pbimagegraph_Marker_'.ucfirst($arrConf['marker']));
@@ -789,7 +789,7 @@ class tx_rnbase_plot_Builder
                 break;
             case 'image':
                 $strImage = $arrConf['image'];
-                $objFillStyle =& tx_pbimagegraph::factory('tx_pbimagegraph_Fill_Image', Sys25RnBaseTILITYnvironment::getPublicPath().$strImage);
+                $objFillStyle =& tx_pbimagegraph::factory('tx_pbimagegraph_Fill_Image', \Sys25\RnBase\Utility\Environment::getPublicPath().$strImage);
                 break;
         }
 
