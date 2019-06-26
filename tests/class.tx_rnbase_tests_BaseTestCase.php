@@ -87,7 +87,10 @@ abstract class tx_rnbase_tests_BaseTestCase extends \PHPUnit\Framework\TestCase
         $extensionKey,
         $qualifier = ''
     ) {
-        return tx_rnbase_tests_Utility::createConfigurations($configurationArray, $extensionKey, $qualifier);
+        return call_user_func_array(
+            ['tx_rnbase_tests_Utility', 'createConfigurations'],
+            func_get_args()
+        );
     }
 
     /**
