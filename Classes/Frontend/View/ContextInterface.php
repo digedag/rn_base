@@ -29,6 +29,6 @@ namespace Sys25\RnBase\Frontend\View;
 /**
  * Interface for request
  */
-interface ContextInterface
+interface ContextInterface extends \ArrayAccess
 {
 }
