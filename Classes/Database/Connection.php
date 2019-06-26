@@ -86,7 +86,7 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
      * </pre>
      *
      * @param string $what Requested columns
-     * @param array $from Either the name of on table or an array with index 0 the from clause
+     * @param array | string $from Either the name of on table or an array with index 0 the from clause
      *              and index 1 the requested tablename and optional index 2 a table alias to use.
      * @param array $arr The options array
      * @param bool $debug Set to true to debug the sql string
