@@ -161,4 +161,11 @@ interface tx_rnbase_util_db_IDatabase
      * @return  string      MySQL error string.
      */
     public function sql_error();
+
+    /**
+     * Whether an actual connection to the database is established.
+     *
+     * @return bool
+     */
+    public function isConnected();
 }

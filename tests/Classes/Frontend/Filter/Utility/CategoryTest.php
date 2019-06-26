@@ -87,7 +87,10 @@ class CategoryTest extends \tx_rnbase_tests_BaseTestCase
      */
     public function testHandleSysCategoryFilter(
         $configs, $fields, $expectedFields, $expectedDoSearchValue
-        ) {
+    ) {
+        if (!defined('OP_IN_INT')) {
+            define('OP_IN_INT', 'IN');
+        }
         foreach ($configs as $confId => $data) {
             $this->configurations->get('myList.filter.'.$confId)->willReturn($data);
         }

@@ -462,4 +462,14 @@ class tx_rnbase_util_db_TYPO3DBAL implements tx_rnbase_util_db_IDatabase, tx_rnb
 
         return $this->getConnection()->quote($str);
     }
+
+    /**
+     * Whether an actual connection to the database is established.
+     *
+     * @return bool
+     */
+    public function isConnected()
+    {
+        return $this->getConnection()->isConnected();
+    }
 }

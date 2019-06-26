@@ -35,13 +35,20 @@ namespace Sys25\RnBase\Fluid\ViewHelper\Parameters;
  */
 class PostOrGetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
+    /**
+     * Arguments initialization
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('parameterName', 'string', 'parameter name', false, '');
+    }
 
     /**
-     * @param string $parameterName
      * @return mixed
      */
-    public function render($parameterName = '')
+    public function render()
     {
-        return \tx_rnbase_parameters::getPostOrGetParameter($parameterName);
+        return \tx_rnbase_parameters::getPostOrGetParameter($this->arguments['parameterName']);
     }
 }

@@ -95,7 +95,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface $response = null
      *
-     * @return bool TRUE, if the request request could be dispatched
+     * @return bool|\Psr\Http\Message\ResponseInterface TRUE, if the request request could be dispatched
      */
     public function __invoke(
         $request = null,
@@ -107,7 +107,11 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
         $this->main();
         $this->printContent();
 
-        return true;
+        if (!\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+            $response = true;
+        }
+
+        return $response;
     }
 
     /**

@@ -31,12 +31,24 @@
 
 class Tx_Rnbase_Backend_Form_FormBuilder
 {
+    /**
+     * @var \TYPO3\CMS\Backend\Form\NodeFactory
+     */
     private $nodeFactory = null;
+
     /**
      * @var \TYPO3\CMS\Backend\Form\FormDataCompiler
      */
     private $formDataCompiler = null;
-    private $formResultCompiler; // TODO
+
+    /**
+     * @var \TYPO3\CMS\Backend\Form\FormResultCompiler
+     */
+    private $formResultCompiler;
+
+    /**
+     * @var array
+     */
     protected $formDataCache = array();
 
     /**
@@ -44,13 +56,14 @@ class Tx_Rnbase_Backend_Form_FormBuilder
     public function __construct()
     {
         /**
- * @var TcaDatabaseRecord $formDataGroup
-*/
+         * @var \TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord $formDataGroup
+        */
         $formDataGroup = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormDataGroup\\TcaDatabaseRecord');
         $this->formDataCompiler = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormDataCompiler', $formDataGroup);
         $this->nodeFactory = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\NodeFactory');
         $this->formResultCompiler = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormResultCompiler');
     }
+
     public function initDefaultBEmode()
     {
     }
@@ -64,6 +77,10 @@ class Tx_Rnbase_Backend_Form_FormBuilder
         return $this->nodeFactory;
     }
 
+    /**
+     * @param $uid
+     * @return bool
+     */
     protected function isNEWRecord($uid)
     {
         return substr($uid, 0, 3) == 'NEW';
@@ -144,12 +161,25 @@ class Tx_Rnbase_Backend_Form_FormBuilder
         return $childResultArray['html'];
     }
 
+    /**
+     * @return string
+     */
     public function printNeededJSFunctions_top()
     {
-        return $this->formResultCompiler->JStop();
+        if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+            $result = $this->formResultCompiler->addCssFiles();
+        } else {
+            $result = $this->formResultCompiler->JStop();
+        }
+
+        return $result;
     }
+
+    /**
+     * @return string
+     */
     public function printNeededJSFunctions()
     {
-        return $this->formResultCompiler->printNeededJSFunctions(); // TODO
+        return $this->formResultCompiler->printNeededJSFunctions();
     }
 }
