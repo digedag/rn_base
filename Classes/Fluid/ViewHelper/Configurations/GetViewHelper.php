@@ -56,4 +56,12 @@ class GetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
             ->get($this->arguments['confId'] . $this->arguments['typoscriptPath']);
         return $value;
     }
+
+    /**
+     * @return \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext|\TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface
+     */
+    public function getRenderingContext()
+    {
+        return $this->renderingContext;
+    }
 }
