@@ -102,7 +102,7 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
             return '';
         }
         if ($qualifier === null) {
-            $qualifier = $this->getRenderingContext()->getViewHelperVariableContainer()->getView()->getConfigurations()->getQualifier();
+            $qualifier = $this->getQualifierFromConfigurations();
         }
 
         $this->viewHelperVariableContainer->add(self::class, 'pageBrowserQualifier', $qualifier);
@@ -134,6 +134,18 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
         $this->viewHelperVariableContainer->remove(self::class, 'pageBrowserQualifier');
 
         return $result;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getQualifierFromConfigurations()
+    {
+        return $this->getRenderingContext()
+            ->getViewHelperVariableContainer()
+            ->getView()
+            ->getConfigurations()
+            ->getQualifier();
     }
 
     /**
