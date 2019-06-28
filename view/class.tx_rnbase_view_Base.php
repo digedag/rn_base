@@ -156,10 +156,10 @@ class tx_rnbase_view_Base
     /**
      * Entry point for child classes
      *
-     * @param string $template
-     * @param array_object $viewData
+     * @param string                                     $template
+     * @param ArrayObject                                $viewData
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param tx_rnbase_util_FormatUtil $formatter
+     * @param tx_rnbase_util_FormatUtil                  $formatter
      */
     public function createOutput($template, &$viewData, &$configurations, &$formatter)
     {
