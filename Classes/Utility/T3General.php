@@ -31,6 +31,7 @@
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
+ * @method static mixed _GP(string $var)
  */
 class Tx_Rnbase_Utility_T3General
 {
