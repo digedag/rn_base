@@ -50,15 +50,14 @@ class StandaloneTest extends \tx_rnbase_tests_BaseTestCase
      * @group integration
      * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
-    public function testGetControllerContext()
+    public function testGetConfigurations()
     {
         $contentObject = \tx_rnbase::makeInstance(\tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
         $view = \tx_rnbase::makeInstance('Sys25\\RnBase\\Fluid\\View\\Standalone', $contentObject);
-        $controllerContext = new \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext();
-        $controllerContext->setRequest(new \TYPO3\CMS\Extbase\Mvc\Request());
-        $view->setControllerContext($controllerContext);
+        $configurations = \tx_rnbase_tests_Utility::createConfigurations([], 'rn_base');
+        $view->setConfigurations($configurations);
 
-        self::assertSame($controllerContext, $view->getControllerContext());
+        self::assertSame($configurations, $view->getConfigurations());
     }
 
     /**

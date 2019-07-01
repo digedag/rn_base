@@ -3,8 +3,8 @@
 Changelog
 ---------
 
-v1.9.6 (??.0?.2019)
- * 
+v1.10.0 (27.06.2019)
+ * added TYPO3 9 support
  
 v1.9.5 (25.06.2019)
  * Some enhancements for backend module rendering for TYPO3 8

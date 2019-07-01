@@ -317,4 +317,14 @@ class tx_rnbase_util_db_TYPO3 implements tx_rnbase_util_db_IDatabase, tx_rnbase_
     {
         return $GLOBALS['TYPO3_DB']->fullQuoteStr($str, $table, $allowNull);
     }
+
+    /**
+     * Whether an actual connection to the database is established.
+     *
+     * @return bool
+     */
+    public function isConnected()
+    {
+        return $GLOBALS['TYPO3_DB']->isConnected();
+    }
 }

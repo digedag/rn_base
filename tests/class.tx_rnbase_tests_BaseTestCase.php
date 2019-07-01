@@ -24,6 +24,8 @@
  ***************************************************************/
 
 tx_rnbase::load('tx_rnbase_util_Typo3Classes');
+// make sure to load the constants
+require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'Classes/Constants.php');
 
 /**
  * Basis Testcase
@@ -32,7 +34,7 @@ tx_rnbase::load('tx_rnbase_util_Typo3Classes');
  * @subpackage tx_rnbase_tests
  * @author Michael Wagner
  */
-abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
+abstract class tx_rnbase_tests_BaseTestCase extends \PHPUnit\Framework\TestCase
 {
 
     /**
@@ -85,7 +87,10 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
         $extensionKey,
         $qualifier = ''
     ) {
-        return tx_rnbase_tests_Utility::createConfigurations($configurationArray, $extensionKey, $qualifier);
+        return call_user_func_array(
+            ['tx_rnbase_tests_Utility', 'createConfigurations'],
+            func_get_args()
+        );
     }
 
     /**

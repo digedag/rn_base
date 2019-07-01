@@ -66,6 +66,9 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = 0;
 
         $this->beUserBackUp = $GLOBALS['BE_USER'];
+        if (!is_object($GLOBALS['BE_USER'])) {
+            $GLOBALS['BE_USER'] = new stdClass();
+        }
 
         tx_rnbase_util_TYPO3::getTSFE()->no_cache = false;
 
