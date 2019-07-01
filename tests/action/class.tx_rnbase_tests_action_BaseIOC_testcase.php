@@ -117,7 +117,9 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
                     '1' => 'typo3conf/ext/rn_base/ext_emconf.php',
                     '2' => 'EXT:rn_base/ext_icon.gif',
                     '3' => '//www.dmk-ebusiness.de',
-                    '3.' => array('external' => 1)
+                    '3.' => array('external' => 1),
+                    '4' => 'EXT:rn_base/ext_conf_template.txt',
+                    '4.' => array('excludeFromConcatenation' => 1, 'dontCompress' => 1),
                 )
             )
         ), 'rn_base');
@@ -130,8 +132,20 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
         $files = $property->getValue(tx_rnbase_util_TYPO3::getPageRenderer());
 
         self::assertEquals('typo3conf/ext/rn_base/ext_emconf.php', $files['typo3conf/ext/rn_base/ext_emconf.php']['file']);
+        self::assertFalse($files['typo3conf/ext/rn_base/ext_emconf.php']['excludeFromConcatenation']);
+        self::assertTrue($files['typo3conf/ext/rn_base/ext_emconf.php']['compress']);
+
         self::assertEquals('typo3conf/ext/rn_base/ext_icon.gif', $files['typo3conf/ext/rn_base/ext_icon.gif']['file']);
+        self::assertFalse($files['typo3conf/ext/rn_base/ext_icon.gif']['excludeFromConcatenation']);
+        self::assertTrue($files['typo3conf/ext/rn_base/ext_icon.gif']['compress']);
+
         self::assertEquals('//www.dmk-ebusiness.de', $files['//www.dmk-ebusiness.de']['file']);
+        self::assertFalse($files['//www.dmk-ebusiness.de']['excludeFromConcatenation']);
+        self::assertTrue($files['typo3conf/ext/rn_base/ext_emconf.php']['compress']);
+
+        self::assertEquals('typo3conf/ext/rn_base/ext_conf_template.txt', $files['typo3conf/ext/rn_base/ext_conf_template.txt']['file']);
+        self::assertTrue($files['typo3conf/ext/rn_base/ext_conf_template.txt']['excludeFromConcatenation']);
+        self::assertFalse($files['typo3conf/ext/rn_base/ext_conf_template.txt']['compress']);
     }
 
     /**
@@ -176,6 +190,47 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
         self::assertEquals('typo3conf/ext/rn_base/ext_conf_template.txt', $files['fourth']['file']);
         self::assertFalse($files['fourth']['compress']);
         self::assertFalse($files['fourth']['excludeFromConcatenation']);
+    }
+
+    /**
+     * @group unit
+     */
+    public function testAddRessourcesAddsJavaScriptFooterLibraryFiles()
+    {
+        $action = $this->getAction();
+        $configurations = $this->createConfigurations(array(
+            'testConfId.' => array(
+                'includeJSFooterlibs.' => array(
+                    'first' => 'typo3conf/ext/rn_base/ext_emconf.php',
+                    'second' => 'EXT:rn_base/ext_icon.gif',
+                    'third' => '//www.dmk-ebusiness.de',
+                    'third.' => array('external' => 1)
+                ),
+            )
+        ), 'rn_base');
+        $action->setConfigurations($configurations);
+
+        $this->callInaccessibleMethod($action, 'addResources', $configurations, 'testConfId.');
+
+        $property = new ReflectionProperty('\\TYPO3\\CMS\\Core\\Page\\PageRenderer', 'jsLibs');
+        $property->setAccessible(true);
+        $pageRenderer = tx_rnbase_util_TYPO3::getPageRenderer();
+        $files = $property->getValue($pageRenderer);
+
+        self::assertEquals('typo3conf/ext/rn_base/ext_emconf.php', $files['first_jsfooterlibrary']['file']);
+        self::assertFalse($files['first_jsfooterlibrary']['compress']);
+        self::assertFalse($files['first_jsfooterlibrary']['excludeFromConcatenation']);
+        self::assertEquals($pageRenderer::PART_FOOTER, $files['first_jsfooterlibrary']['section']);
+
+        self::assertEquals('typo3conf/ext/rn_base/ext_icon.gif', $files['second_jsfooterlibrary']['file']);
+        self::assertFalse($files['second_jsfooterlibrary']['compress']);
+        self::assertFalse($files['second_jsfooterlibrary']['excludeFromConcatenation']);
+        self::assertEquals($pageRenderer::PART_FOOTER, $files['second_jsfooterlibrary']['section']);
+
+        self::assertEquals('//www.dmk-ebusiness.de', $files['third_jsfooterlibrary']['file']);
+        self::assertFalse($files['third_jsfooterlibrary']['compress']);
+        self::assertTrue($files['third_jsfooterlibrary']['excludeFromConcatenation']);
+        self::assertEquals($pageRenderer::PART_FOOTER, $files['third_jsfooterlibrary']['section']);
     }
 
     /**

@@ -56,7 +56,7 @@ class FactoryTest extends \tx_rnbase_tests_BaseTestCase
         $configurations = $this->createConfigurations(array('someConfig'), 'rn_base');
         $view = Factory::getViewInstance($configurations, array('someFrameworkSettings' => 'mySettings'));
 
-        self::assertSame($configurations, $view->getControllerContext()->configurations);
+        self::assertSame($configurations, $view->getRenderingContext()->getViewHelperVariableContainer()->getView()->getConfigurations());
 
         $extbaseConfiguration = $view
             ->getObjectManager()

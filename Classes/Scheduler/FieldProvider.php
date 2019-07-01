@@ -72,6 +72,6 @@ abstract class Tx_Rnbase_Scheduler_FieldProvider extends Tx_Rnbase_Scheduler_Fie
      */
     public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task)
     {
-        return $this->_saveAdditionalFields($submittedData, $task);
+        $this->_saveAdditionalFields($submittedData, $task);
     }
 }

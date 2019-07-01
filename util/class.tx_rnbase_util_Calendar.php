@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006 Rene Nitzsche
+ *  (c) 2006-2019 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -35,6 +35,8 @@ define('CALENDAR_SECOND', 13);
  */
 define('CALENDAR_DAY_OF_MONTH', 5);
 define('CALENDAR_DAY_OF_YEAR', 6);
+define('CALENDAR_WEEK_OF_MONTH', 7);
+define('CALENDAR_WEEK_OF_YEAR', 8);
 
 /**
  * Simple Implementation of a calendar.
@@ -104,7 +106,7 @@ class tx_rnbase_util_Calendar
     /**
      * Erstellt den Timestamp aus dem Datumsarray
      */
-    public function _mktime($dateArr)
+    private function _mktime($dateArr)
     {
         return mktime(
             $dateArr['hours'],
@@ -116,7 +118,7 @@ class tx_rnbase_util_Calendar
         );
     }
 
-    public function _init()
+    private function _init()
     {
         $this->_seconds = array( CALENDAR_SECOND => 1,
                              CALENDAR_MINUTE => 60,
@@ -134,7 +136,8 @@ class tx_rnbase_util_Calendar
                              CALENDAR_MONTH => 'mon',
                              CALENDAR_YEAR => 'year' );
     }
-    public function _getSeconds($field)
+
+    private function _getSeconds($field)
     {
         return $this->_seconds[$field];
     }

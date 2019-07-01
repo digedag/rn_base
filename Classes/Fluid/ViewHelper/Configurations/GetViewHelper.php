@@ -35,18 +35,33 @@ namespace Sys25\RnBase\Fluid\ViewHelper\Configurations;
  */
 class GetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
+    /**
+     * Arguments initialization
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('typoscriptPath', 'string', 'typoscript path', false, '');
+        $this->registerArgument('confId', 'string', 'configuration ID', false, '');
+    }
 
     /**
      * ViewHelper for $configurations->get() calls
      *
-     * @param string $typoscriptPath
-     * @param string $confId leave it empty if you do not want to use it :)
      * @return mixed the typoscript value
-     * @author Stephan Reuther <stephan.reuther@das-medienkombinat.de>
      */
-    public function render($typoscriptPath = '', $confId = '')
+    public function render()
     {
-        $value = $this->controllerContext->configurations->get($confId . $typoscriptPath);
+        $value = $this->getRenderingContext()->getViewHelperVariableContainer()->getView()->getConfigurations()
+            ->get($this->arguments['confId'] . $this->arguments['typoscriptPath']);
         return $value;
+    }
+
+    /**
+     * @return \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext|\TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface
+     */
+    public function getRenderingContext()
+    {
+        return $this->renderingContext;
     }
 }

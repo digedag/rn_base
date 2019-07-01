@@ -29,11 +29,12 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 /**
  * Tx_Rnbase_Database_ConnectionTest
  *
- * @package         TYPO3
- * @subpackage      rn_base
- * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
- * @license         http://www.gnu.org/licenses/lgpl.html
- *                  GNU Lesser General Public License, version 3 or later
+ * @package TYPO3
+ * @subpackage Tx_Rnbase
+ * @author Hannes Bochmann
+ * @author Michael Wagner
+ * @license http://www.gnu.org/licenses/lgpl.html
+ *          GNU Lesser General Public License, version 3 or later
  */
 class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
 {
@@ -53,12 +54,24 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
      */
     protected function setUp()
     {
+    }
+
+    /**
+     * Initialices the TSFE an sets some TYPO3_CONF_VARS
+     * @return void
+     */
+    protected function prepareTsfeSetUp()
+    {
         $this->loadHiddenObjectsBackUp = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'];
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = 0;
 
         $this->beUserBackUp = $GLOBALS['BE_USER'];
+        if (!is_object($GLOBALS['BE_USER'])) {
+            $GLOBALS['BE_USER'] = new stdClass();
+        }
 
         tx_rnbase_util_TYPO3::getTSFE()->no_cache = false;
+
         // logging verhindern
         $this->systemLogConfigurationBackup = $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLog'];
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLog'] = '';
@@ -76,11 +89,127 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
+     * Tests the getDatabase method
+     *
+     * @group unit
+     * @test
+     */
+    public function testGetDatabaseForTypo3()
+    {
+        $this->assertInstanceOf(
+            'tx_rnbase_util_db_TYPO3',
+            $this->callInaccessibleMethod(
+                $this->getMock('Tx_Rnbase_Database_Connection'),
+                'getDatabase',
+                'typo3'
+            )
+        );
+    }
+
+    /**
+     * Tests the getDatabase method
+     *
+     * @group unit
+     * @test
+     */
+    public function testGetDatabaseForTypo3Dbal()
+    {
+        $this->assertInstanceOf(
+            'tx_rnbase_util_db_TYPO3DBAL',
+            $this->callInaccessibleMethod(
+                $this->getMock('Tx_Rnbase_Database_Connection'),
+                'getDatabase',
+                'typo3dbal'
+            )
+        );
+    }
+    /**
+     * Tests the getFrom method
+     *
+     * @group unit
+     * @dataProvider getGetFromTestData
+     * @test
+     */
+    public function testGetFrom($from, array $expects)
+    {
+        if (!empty($expects['raw']) && $expects['raw'] == 'autofill') {
+            $expects['raw'] = $from;
+        }
+
+        $this->assertEquals(
+            $expects,
+            $this->callInaccessibleMethod(
+                $this->getMock('Tx_Rnbase_Database_Connection', ['getDatabase']),
+                'getFrom',
+                $from
+            )
+        );
+    }
+
+    /**
+     * Dataprovider for getFrom test
+     *
+     * @return array
+     */
+    public function getGetFromTestData()
+    {
+        return [
+            __LINE__ => [
+                'from' => 'tt_content AS CONTENT',
+                'expects' => [
+                    'raw' => 'autofill',
+                    'table' => 'tt_content AS CONTENT',
+                    'alias' => false,
+                    'clause' => 'tt_content AS CONTENT',
+                ],
+            ],
+            __LINE__ => [
+                'from' => [
+                    'tt_content AS CONTENT',
+                    'tt_content',
+                    'CONTENT',
+                ],
+                'expects' => [
+                    'raw' => 'autofill',
+                    'table' => 'tt_content',
+                    'alias' => 'CONTENT',
+                    'clause' => 'tt_content AS CONTENT',
+                ],
+            ],
+            __LINE__ => [
+                'from' => [
+                    'table' => 'tt_content',
+
+                ],
+                'expects' => [
+                    'table' => 'tt_content',
+                    'alias' => false,
+                    'clause' => 'tt_content',
+                ],
+            ],
+            __LINE__ => [
+                'from' => [
+                    'table' => 'tt_content',
+                    'alias' => 'C',
+
+                ],
+                'expects' => [
+                    'table' => 'tt_content',
+                    'alias' => 'C',
+                    'clause' => 'tt_content AS C',
+                ],
+            ],
+        ];
+    }
+
+    /**
      * @group functional
      * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testDoSelectWithEnableFieldsBe()
     {
+        $this->prepareTsfeSetUp();
+
         $options['sqlonly'] = 1;
         $options['enablefieldsbe'] = 1;
         $sql = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->doSelect('*', 'tt_content', $options);
@@ -101,6 +230,8 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testDoSelectWithEnableFieldsFe()
     {
+        $this->prepareTsfeSetUp();
+
         $options['sqlonly'] = 1;
         $options['enablefieldsfe'] = 1;
         $sql = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->doSelect('*', 'tt_content', $options);
@@ -117,6 +248,8 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testIsFrontend()
     {
+        $this->prepareTsfeSetUp();
+
         self::assertFalse($this->callInaccessibleMethod(tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection'), 'isFrontend'));
     }
 
@@ -126,6 +259,8 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testDoSelectWithEnableFieldsFeLeavesEnableFieldsForFeIfLoadHiddenObjectAndBeUser()
     {
+        $this->prepareTsfeSetUp();
+
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = 1;
         $options['sqlonly'] = 1;
         $options['enablefieldsfe'] = 1;
@@ -147,6 +282,8 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testDoSelectWithLoadHiddenObjectDeactivatesCacheNotIfNotInFrontend()
     {
+        $this->prepareTsfeSetUp();
+
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = 1;
         $options['sqlonly'] = 1;
         $sql = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->doSelect('*', 'tt_content', $options);
@@ -167,6 +304,8 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testDoSelectWithEnableFieldsFeSetsEnableFieldsForFeIfLoadHiddenObjectButNoBeUser()
     {
+        $this->prepareTsfeSetUp();
+
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = 1;
         $GLOBALS['BE_USER'] = null;
         $options['sqlonly'] = 1;
@@ -187,6 +326,8 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testDoSelectWithEnableFieldsOffSetsEnableFieldsForBeNotIfLoadHiddenObjectAndBeUser()
     {
+        $this->prepareTsfeSetUp();
+
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = 1;
         $options['sqlonly'] = 1;
         $options['enablefieldsoff'] = 1;
@@ -204,6 +345,8 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testDoSelectWithEnableFieldsOff()
     {
+        $this->prepareTsfeSetUp();
+
         $options['sqlonly'] = 1;
         $options['enablefieldsoff'] = 1;
         $sql = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->doSelect('*', 'tt_content', $options);
@@ -244,6 +387,8 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
      */
     public function test_searchWhere()
     {
+        $this->prepareTsfeSetUp();
+
         $sw = 'content management, system';
         $fields = 'tab1.bodytext,tab1.header';
 

@@ -328,7 +328,7 @@ class tx_rnbase
         if (!isset($GLOBALS['TYPO3_LOADED_EXT']) || !is_array($GLOBALS['TYPO3_LOADED_EXT'])) {
             false;
         }
-        $uKeys = array_keys($GLOBALS['TYPO3_LOADED_EXT']);
+        $uKeys = array_keys((array) $GLOBALS['TYPO3_LOADED_EXT']);
         foreach ($uKeys as $uKey) {
             if (str_replace('_', '', $uKey) == str_replace('_', '', $rawKey)) {
                 $result =  $uKey;

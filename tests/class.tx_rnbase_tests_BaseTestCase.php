@@ -24,6 +24,8 @@
  ***************************************************************/
 
 tx_rnbase::load('tx_rnbase_util_Typo3Classes');
+// make sure to load the constants
+require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'Classes/Constants.php');
 
 /**
  * Basis Testcase
@@ -32,7 +34,7 @@ tx_rnbase::load('tx_rnbase_util_Typo3Classes');
  * @subpackage tx_rnbase_tests
  * @author Michael Wagner
  */
-abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
+abstract class tx_rnbase_tests_BaseTestCase extends \PHPUnit\Framework\TestCase
 {
 
     /**
@@ -78,43 +80,17 @@ abstract class tx_rnbase_tests_BaseTestCase extends PHPUnit_Framework_TestCase
      * @param string $extensionKey
      * @param string $qualifier
      * @return Tx_Rnbase_Configuration_ProcessorInterface
+     * @deprecated use tx_rnbase_tests_Utility::createConfigurations() instead
      */
     protected static function createConfigurations(
         array $configurationArray,
         $extensionKey,
         $qualifier = ''
     ) {
-        $qualifier = empty($qualifier) ? $extensionKey : $qualifier;
-
-        $parameters = null;
-        $cObj = null;
-
-        $args = func_get_args();
-        $args = count($args) > 3 ? array_slice($args, 3) : array();
-
-        foreach ($args as $arg) {
-            if ($arg instanceof tx_rnbase_parameters) {
-                $parameters = $arg;
-            }
-            $contentObjectRendererClass = tx_rnbase_util_Typo3Classes::getContentObjectRendererClass();
-            if ($arg instanceof $contentObjectRendererClass) {
-                $cObj = $arg;
-            }
-        }
-
-        /* @var $configurations Tx_Rnbase_Configuration_ProcessorInterface */
-        $configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
-        $configurations->init(
-            $configurationArray,
-            $cObj,
-            $extensionKey,
-            $qualifier
+        return call_user_func_array(
+            ['tx_rnbase_tests_Utility', 'createConfigurations'],
+            func_get_args()
         );
-        if ($parameters instanceof tx_rnbase_parameters) {
-            $configurations->setParameters($parameters);
-        }
-
-        return $configurations;
     }
 
     /**

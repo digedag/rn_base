@@ -92,7 +92,7 @@ class tx_rnbase_util_ListBuilder
             $markerArray = $subpartArray = array();
             $templateEntry = tx_rnbase_util_Templates::getSubpart($templateList, '###' . $marker . '###');
             $offset = 0;
-            $pageBrowser =& $viewData->offsetGet('pagebrowser');
+            $pageBrowser = $viewData->offsetGet('pagebrowser');
             if ($pageBrowser) {
                 $state = $pageBrowser->getState();
                 $offset = $state['offset'];
@@ -149,14 +149,14 @@ class tx_rnbase_util_ListBuilder
             $template = tx_rnbase_util_Templates::substituteSubpart($template, '###' . $outerMarker . 'S###', $out, 0);
         }
 
-        $markerArray = array();
-        $subpartArray = array();
+        $markerArray = [];
+        $subpartArray = [];
         $subpartArray['###' . $outerMarker . 'S###'] = $out;
 
         // Muss ein Formular mit angezeigt werden
         // Zuerst auf einen Filter prüfen
-        $filter  =& $viewData->offsetGet('filter');
-        if ($filter) {
+        $filter  = $viewData->offsetGet('filter');
+        if ($filter && method_exists($filter, 'getMarker')) {
             $template = $filter->getMarker()->parseTemplate($template, $formatter, $confId . 'filter.', $marker);
         }
 
@@ -285,13 +285,13 @@ class tx_rnbase_util_ListBuilder
             $template = tx_rnbase_util_Templates::substituteSubpart($template, '###' . $outerMarker . 'S###', $out, 0);
         }
 
-        $markerArray = array();
-        $subpartArray = array();
+        $markerArray = [];
+        $subpartArray = [];
 
         // Muss ein Formular mit angezeigt werden
         // Zuerst auf einen Filter prüfen
         $filter  = $viewData->offsetGet('filter');
-        if ($filter) {
+        if ($filter && method_exists($filter, 'getMarker')) {
             $template = $filter->getMarker()->parseTemplate($template, $formatter, $confId . 'filter.', $marker);
         }
         // Jetzt noch die alte Variante

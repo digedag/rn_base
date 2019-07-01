@@ -24,10 +24,23 @@ namespace Sys25\RnBase\Fluid\ViewHelper;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 
 /**
  * Sys25\RnBase\Fluid\ViewHelper\TranslateViewHelper
+ *
+ * {namespace rn=Sys25\RnBase\Fluid\ViewHelper}
+ *
+ * Usage to render label.description
+ *     Inline:
+ *         {varWithLabelDescriptionKey -> rn:translate()}
+ *         {f:format.raw(value: 'label.description') -> rn:translate()}
+ *     Tag:
+ *         <rn:translate key="label.description" />
+ *     Childs:
+ *         <rn:translate>label.description</rn:translate>
  *
  * @package TYPO3
  * @subpackage rn_base
@@ -35,25 +48,67 @@ use \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-class TranslateViewHelper extends AbstractTagBasedViewHelper
+class TranslateViewHelper extends AbstractViewHelper
 {
     /**
-     * Translates a rn base label
+     * Initialize ViewHelper arguments
      *
-     * @param string $key The key for the label to get the translation for
-     *
-     * @return string
+     * @return void
      */
-    public function render($key)
+    public function initializeArguments()
     {
-        return $this->getConfigurations()->getLL($key);
+        $this->registerArgument('key', 'string', 'The key to Translate.', false, null);
     }
 
     /**
-     * @return \Tx_Rnbase_Configuration_Processor
+     * Translates the label
+     *
+     * @return string
+     *
+     * @throws \Exception
      */
-    protected function getConfigurations()
+    public function render()
     {
-        return $this->controllerContext->configurations;
+        return static::renderStatic(
+            [
+                'key' => $this->arguments['key'],
+            ],
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
+
+    /**
+     * Translates the label
+     *
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     *
+     * @return string
+     *
+     * @throws \Exception
+     */
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+        $key = $arguments['key'];
+
+        if ($key === null) {
+            $key = trim((string) $renderChildrenClosure());
+        }
+
+        // first try to translate from the rn base controller configuration
+        if ((
+            $renderingContext instanceof RenderingContext &&
+            $renderingContext->getViewHelperVariableContainer()->getView()->getConfigurations() instanceof \Tx_Rnbase_Configuration_Processor
+        )) {
+            return $renderingContext->getViewHelperVariableContainer()->getView()->getConfigurations()->getLL($key);
+        }
+
+        // otherwise translate to the typo3 language service
+        return \tx_rnbase_util_Lang::sL($key);
     }
 }

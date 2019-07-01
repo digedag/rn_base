@@ -47,7 +47,7 @@ class tx_rnbase_util_Debug
      */
     public static function debug($var = '', $header = '', $group = 'Debug')
     {
-        return DebugUtility::debug($var, $header, $group);
+        DebugUtility::debug($var, $header, $group);
     }
     /**
      * Returns HTML-code, which is a visual representation of a multidimensional array
@@ -83,7 +83,7 @@ class tx_rnbase_util_Debug
         $trail = array_reverse($trail);
         array_pop($trail);
         $path = array();
-        $pathSiteLength = strlen(PATH_site);
+        $pathSiteLength = strlen(\Sys25\RnBase\Utility\Environment::getPublicPath());
         foreach ($trail as $dat) {
             $pathFragment = $dat['class'] . $dat['type'] . $dat['function'];
             // add the path of the included file

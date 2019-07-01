@@ -33,10 +33,9 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
 {
 
     /**
-     *
-     * @var resource
+     * @var \resource|false
      */
-    private $db = null;
+    private $db;
 
     /**
      *
@@ -50,7 +49,7 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
      */
     public function __construct($credentials)
     {
-        if (!is_array($credentials)) {
+        if (empty($credentials) || !is_array($credentials)) {
             throw new tx_rnbase_util_db_Exception(
                 'No credentials given for database!'
             );
@@ -313,7 +312,7 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
      * @param string $user
      * @param string $password
      * @param string $db
-     * @return  void
+     * @return \resource|false
      */
     private function connectDB($credArr)
     {
@@ -347,7 +346,7 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
      * @param string Database host IP/domain
      * @param string Username to connect with.
      * @param string Password to connect with.
-     * @return pointer Returns a positive MySQL persistent link identifier on success, or FALSE on error.
+     * @return \resource|false Returns a positive MySQL persistent link identifier on success, or FALSE on error.
      */
     private function connect($credArr)
     {

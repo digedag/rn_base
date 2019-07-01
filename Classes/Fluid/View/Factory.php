@@ -51,15 +51,7 @@ class Factory
         $configurationManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
         $configurationManager->setConfiguration($frameworkSettings);
         $view->injectObjectManager($objectManager);
-
-        $controllerContext = $view->getControllerContext();
-        if ($controllerContext === null) {
-            $controllerContext = $view->getRenderingContext()->getControllerContext();
-        }
-
-        $controllerContext->configurations = $configurations;
-
-        $view->setControllerContext($controllerContext);
+        $view->setConfigurations($configurations);
 
         return $view;
     }

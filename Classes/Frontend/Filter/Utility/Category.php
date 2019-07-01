@@ -1,4 +1,9 @@
 <?php
+
+namespace Sys25\RnBase\Frontend\Filter\Utility;
+
+use Sys25\RnBase\Configuration\ConfigurationInterface;
+
 /***************************************************************
  * Copyright notice
  *
@@ -31,20 +36,69 @@
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Category_FilterUtility
+class Category
 {
+    protected $configurations;
+    protected $confId;
+    private $dbConnection;
+
+    /**
+     *
+     * @param ConfigurationInterface $configurations
+     * @param string $confId
+     */
+    public function __construct(ConfigurationInterface $configurations, $confId)
+    {
+        $this->configurations = $configurations;
+        $this->confId = $confId;
+    }
 
     /**
      * @param array $fields
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @return bool | null
+     */
+    public function handleSysCategoryFilter(array &$fields, $doSearch)
+    {
+        $typoScriptPathsToFilterUtilityMethod = [
+            'useSysCategoriesOfItemFromParameters' => 'setFieldsBySysCategoriesOfItemFromParameters',
+            'useSysCategoriesOfContentElement' => 'setFieldsBySysCategoriesOfContentElement',
+            'useSysCategoriesFromParameters' => 'setFieldsBySysCategoriesFromParameters',
+        ];
+
+        foreach ($typoScriptPathsToFilterUtilityMethod as $typoScriptPath => $filterUtilityMethod) {
+            if ($this->configurations->get($this->confId . $typoScriptPath)) {
+                $fieldsBefore = $fields;
+                $fields = $this->$filterUtilityMethod(
+                    $fields, $this->configurations,
+                    $this->confId . $typoScriptPath . '.'
+                );
+
+                if (
+                    $this->configurations->get($this->confId . $typoScriptPath . '.dontSearchIfNoCategoriesFound') &&
+                    // wenn sich die $fields nicht geändert haben, dann wurden keine Kategorie
+                    // gefunden.
+                    $fieldsBefore == $fields
+                    ) {
+                    $doSearch = false;
+                }
+            }
+        }
+
+        return $doSearch;
+    }
+
+
+    /**
+     * @param array $fields
+     * @param ConfigurationInterface $configurations
      * @param string $confId
      *
      * @return array
      */
-    public function setFieldsBySysCategoriesOfItemFromParameters(
-        array $fields, Tx_Rnbase_Configuration_ProcessorInterface $configurations, $confId
+    protected function setFieldsBySysCategoriesOfItemFromParameters(
+        array $fields, $configurations, $confId
     ) {
-        if ($categories = $this->getCategoryUidsOfCurrentDetailViewItem($configurations, $confId)) {
+        if ($categories = $this->lookupCategoryUidsFromParameters($configurations, $confId)) {
             $fields = $this->getFieldsByCategories($categories, $fields, $configurations, $confId);
         }
 
@@ -52,27 +106,27 @@ class Tx_Rnbase_Category_FilterUtility
     }
 
     /**
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param ConfigurationInterface $configurations
      * @param string $confId
      *
      * @return array
      */
-    protected function getCategoryUidsOfCurrentDetailViewItem(Tx_Rnbase_Configuration_ProcessorInterface $configurations, $confId)
+    protected function lookupCategoryUidsFromParameters($configurations, $confId)
     {
+        $parameters = $configurations->getParameters();
         $categories = array();
-        foreach ($configurations->get($confId . 'supportedParameters.') as $configurationPerParameter) {
-            $detailViewParameter = $configurations->getParameters()->getInt(
-                $configurationPerParameter['parameterName'], $configurationPerParameter['parameterQualifier']
+        foreach ($configurations->get($confId . 'supportedParameters.') as $paramConfig) {
+            $referencedUid = $parameters->getInt(
+                $paramConfig['parameterName'], $paramConfig['parameterQualifier']
             );
 
-            if ($detailViewParameter) {
+            if ($referencedUid) {
                 $categories = $this->getCategoryUidsByReference(
-                    $configurationPerParameter['table'], $configurationPerParameter['categoryField'], $detailViewParameter
+                    $paramConfig['table'], $paramConfig['categoryField'], $referencedUid
                 );
                 continue;
             }
         }
-
         return $categories;
     }
 
@@ -88,7 +142,7 @@ class Tx_Rnbase_Category_FilterUtility
         $databaseConnection = $this->getDatabaseConnection();
         $categories =  $databaseConnection->doSelect(
             'uid_local', 'sys_category_record_mm',
-            array(
+            [
                 'where' =>
                     'sys_category_record_mm.tablenames = ' .
                     $databaseConnection->fullQuoteStr($table) . ' AND ' .
@@ -96,7 +150,7 @@ class Tx_Rnbase_Category_FilterUtility
                     $databaseConnection->fullQuoteStr($categoryField) . ' AND ' .
                     'sys_category_record_mm.uid_foreign = ' . intval($foreignUid),
                 'enablefieldsoff' => true
-            )
+            ]
         );
 
         $categories = array_map(
@@ -110,22 +164,26 @@ class Tx_Rnbase_Category_FilterUtility
     }
 
     /**
-     * @return Tx_Rnbase_Database_Connection
+     * @return \Tx_Rnbase_Database_Connection
      */
     protected function getDatabaseConnection()
     {
-        return Tx_Rnbase_Database_Connection::getInstance();
+        return $this->dbConnection ?: \Tx_Rnbase_Database_Connection::getInstance();
+    }
+    public function setDatabaseConnection(\Tx_Rnbase_Database_Connection $connection)
+    {
+        $this->dbConnection = $connection;
     }
 
     /**
      * @param array $categories
      * @param array $fields
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param ConfigurationInterface $configurations
      * @param string $confId
      * @return array
      */
     protected function getFieldsByCategories(
-        array $categories, array $fields, Tx_Rnbase_Configuration_ProcessorInterface $configurations, $confId
+        array $categories, array $fields, $configurations, $confId
     ) {
         $sysCategoryTableAlias =
             $configurations->get($confId . 'sysCategoryTableAlias') ?
@@ -138,14 +196,13 @@ class Tx_Rnbase_Category_FilterUtility
 
     /**
      * @param array $fields
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param ConfigurationInterface $configurations
      * @param string $confId
      *
      * @return array
      */
-    public function setFieldsBySysCategoriesOfContentElement(
-        array $fields, Tx_Rnbase_Configuration_ProcessorInterface $configurations, $confId
-    ) {
+    protected function setFieldsBySysCategoriesOfContentElement(array $fields, $configurations, $confId)
+    {
         $categories = $this->getCategoryUidsByReference(
             'tt_content', 'categories', $configurations->getContentObject()->data['uid']
         );
@@ -158,13 +215,13 @@ class Tx_Rnbase_Category_FilterUtility
 
     /**
      * @param array $fields
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param ConfigurationInterface $configurations
      * @param string $confId
      *
      * @return array
      */
-    public function setFieldsBySysCategoriesFromParameters(
-        array $fields, Tx_Rnbase_Configuration_ProcessorInterface $configurations, $confId
+    protected function setFieldsBySysCategoriesFromParameters(
+        array $fields, $configurations, $confId
     ) {
         $categoryUid = $configurations->getParameters()->getInt(
             $configurations->get($confId . 'parameterName'), $configurations->get($confId . 'parameterQualifier')

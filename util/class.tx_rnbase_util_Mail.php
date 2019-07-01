@@ -45,9 +45,13 @@ class tx_rnbase_util_Mail
     public function __construct()
     {
     }
+
+    /**
+     * @return void
+     */
     public function send()
     {
-        return $this->send45();
+        $this->send45();
     }
     public function setSubject($subject)
     {

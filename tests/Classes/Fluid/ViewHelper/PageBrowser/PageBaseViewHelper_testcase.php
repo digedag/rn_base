@@ -84,9 +84,9 @@ class PageBaseViewHelper_testcase extends BaseViewHelperTest
         $viewHelper->expects(self::never())
             ->method('renderChildren');
 
-        $viewHelper = $this->getPreparedVîewHelper($viewHelper);
+        $viewHelper = $this->getPreparedVîewHelper($viewHelper, ['usePageNumberAsLinkText' => true]);
 
-        $renderedContent = $viewHelper->render(null, array(), 0, false, false, '', false, false, false, array(), true);
+        $renderedContent = $viewHelper->render();
         self::assertContains('456', $renderedContent);
     }
 
@@ -94,7 +94,7 @@ class PageBaseViewHelper_testcase extends BaseViewHelperTest
      * {@inheritDoc}
      * @see \Sys25\RnBase\Fluid\ViewHelper\BaseViewHelperTest::getPreparedVîewHelper()
      */
-    protected function getPreparedVîewHelper($viewHelper)
+    protected function getPreparedVîewHelper($viewHelper, array $arguments = [])
     {
         $viewHelper = parent::getPreparedVîewHelper($viewHelper);
 
@@ -111,7 +111,14 @@ class PageBaseViewHelper_testcase extends BaseViewHelperTest
         $this->renderingContext->getVariableProvider()->add('pageNumber', 456);
 
         $viewHelper->initializeArguments();
-        $viewHelper->setArguments(array('data-tagname' => 'a'));
+        $viewHelper->setArguments(array_merge(
+            $arguments,
+            array(
+                'data-tagname' => 'a',
+                'additionalParams' => [],
+                'argumentsToBeExcludedFromQueryString' => []
+            )
+        ));
 
         return $viewHelper;
     }

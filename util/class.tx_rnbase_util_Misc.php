@@ -39,16 +39,17 @@ class tx_rnbase_util_Misc
      *
      * @param string $type
      * @param string $subType
-     * @return t3lib_svbase or \TYPO3\CMS\Core\Service\AbstractService
+     * @return \TYPO3\CMS\Core\Service\AbstractService
      */
     public static function getService($type, $subType = '')
     {
+        /** @var \TYPO3\CMS\Core\Service\AbstractService $service */
         $service = tx_rnbase::makeInstanceService($type, $subType);
 
         if (!is_object($service)) {
             tx_rnbase::load('tx_rnbase_util_Misc');
 
-            return self::mayday('Service ' . $type . ' - ' . $subType . ' not found!');
+            self::mayday('Service ' . $type . ' - ' . $subType . ' not found!');
         }
 
         return $service;
@@ -167,16 +168,16 @@ class tx_rnbase_util_Misc
 
         $aDebug[] = '<h2 id="backtracetitle">Call stack</h2>';
         $aDebug[] = '<div class="backtrace">';
-        $aDebug[] = '<span class="notice"><b>Call 0: </b>' . str_replace(PATH_site, '/', $aLocation['file']) . ':' . $aLocation['line']  . ' | <b>' . $aTrace1['class'] . $aTrace1['type'] .
+        $aDebug[] = '<span class="notice"><b>Call 0: </b>' . str_replace(\Sys25\RnBase\Utility\Environment::getPublicPath(), '/', $aLocation['file']) . ':' . $aLocation['line']  . ' | <b>' . $aTrace1['class'] . $aTrace1['type'] .
                                     $aTrace1['function'] . '</b></span><br/>With parameters: ' . (!empty($aTrace1['args']) ? self::viewMixed($aTrace1['args']) : ' no parameters');
         $aDebug[] = '<hr/>';
-        $aDebug[] = '<span class="notice"><b>Call -1: </b>' . str_replace(PATH_site, '/', $aTrace1['file']) . ':' . $aTrace1['line']  . ' | <b>' . $aTrace2['class'] . $aTrace2['type'] .
+        $aDebug[] = '<span class="notice"><b>Call -1: </b>' . str_replace(\Sys25\RnBase\Utility\Environment::getPublicPath(), '/', $aTrace1['file']) . ':' . $aTrace1['line']  . ' | <b>' . $aTrace2['class'] . $aTrace2['type'] .
                                     $aTrace2['function'] . '</b></span><br />With parameters: ' . (!empty($aTrace2['args']) ? self::viewMixed($aTrace2['args']) : ' no parameters');
         $aDebug[] = '<hr/>';
-        $aDebug[] = '<span class="notice"><b>Call -2: </b>' . str_replace(PATH_site, '/', $aTrace2['file']) . ':' . $aTrace2['line']  . ' | <b>' . $aTrace3['class'] . $aTrace3['type'] .
+        $aDebug[] = '<span class="notice"><b>Call -2: </b>' . str_replace(\Sys25\RnBase\Utility\Environment::getPublicPath(), '/', $aTrace2['file']) . ':' . $aTrace2['line']  . ' | <b>' . $aTrace3['class'] . $aTrace3['type'] .
                                     $aTrace3['function'] . '</b></span><br />With parameters: ' . (!empty($aTrace3['args']) ? self::viewMixed($aTrace3['args']) : ' no parameters');
         $aDebug[] = '<hr/>';
-        $aDebug[] = '<span class="notice"><b>Call -3: </b>' . str_replace(PATH_site, '/', $aTrace3['file']) . ':' . $aTrace3['line']  . ' | <b>' . $aTrace4['class'] .
+        $aDebug[] = '<span class="notice"><b>Call -3: </b>' . str_replace(\Sys25\RnBase\Utility\Environment::getPublicPath(), '/', $aTrace3['file']) . ':' . $aTrace3['line']  . ' | <b>' . $aTrace4['class'] .
                                     $aTrace4['type'] . $aTrace4['function'] . '</b></span><br />With parameters: ' . (!empty($aTrace4['args']) ? self::viewMixed($aTrace4['args']) : ' no parameters');
         $aDebug[] = '<hr/>';
 
@@ -352,10 +353,10 @@ MAYDAYPAGE;
         ) {
             if (!defined('PATH_tslib')) {
                 // PATH_tslib setzen
-                if (@is_dir(PATH_site.'typo3/sysext/cms/tslib/')) {
-                    define('PATH_tslib', PATH_site.'typo3/sysext/cms/tslib/');
-                } elseif (@is_dir(PATH_site.'tslib/')) {
-                    define('PATH_tslib', PATH_site.'tslib/');
+                if (@is_dir(\Sys25\RnBase\Utility\Environment::getPublicPath().'typo3/sysext/cms/tslib/')) {
+                    define('PATH_tslib', \Sys25\RnBase\Utility\Environment::getPublicPath().'typo3/sysext/cms/tslib/');
+                } elseif (@is_dir(\Sys25\RnBase\Utility\Environment::getPublicPath().'tslib/')) {
+                    define('PATH_tslib', \Sys25\RnBase\Utility\Environment::getPublicPath().'tslib/');
                 } else {
                     define('PATH_tslib', '');
                 }
@@ -385,7 +386,7 @@ MAYDAYPAGE;
         if (!is_object($GLOBALS['TSFE']->tmpl) || $force) {
             $GLOBALS['TSFE']->initTemplate();
             if (empty($GLOBALS['TSFE']->tmpl->getFileName_backPath)) {
-                $GLOBALS['TSFE']->tmpl->getFileName_backPath = PATH_site;
+                $GLOBALS['TSFE']->tmpl->getFileName_backPath = \Sys25\RnBase\Utility\Environment::getPublicPath();
             }
         }
 
@@ -629,6 +630,8 @@ MAYDAYPAGE;
      * @param string $actionName
      * @param Exception $e
      * @param array $options
+     *
+     * @return void
      */
     public static function sendErrorMail($mailAddr, $actionName, Exception $e, array $options = array())
     {
@@ -666,7 +669,7 @@ MAYDAYPAGE;
             $lock->lockProcess();
         }
 
-        return $mail->send();
+        $mail->send();
     }
 
     protected static function getErrorMailText($e, $actionName)

@@ -172,6 +172,30 @@ return $view->render();
 
 ```
 
+#### translate ViewHelper
+Damit wird ein label über die rnbase configuration übersetzt.
+In folgenden Beispielen wird das Label `label.description` übersetzt:
+
+```html
+{namespace rn=Sys25\RnBase\Fluid\ViewHelper}
+
+<!-- translate inline from variable -->
+{varWithLabelDescriptionKey -> rn:translate()}
+
+<!-- translate inlnie with connation -->
+{f:format.raw(value: 'label.description') -> rn:translate()}
+
+<!-- translate inlnie with key -->
+{rn:translate(key: 'label_filter_reset')}
+
+<!-- translate as fluid tag with key-->
+<rn:translate key="label.description" />
+
+<!-- translate as fluid tag with child content-->
+<rn:translate>label.description</rn:translate>
+```
+
+
 #### configurations ViewHelper
 Damit kann auf die get Methode der configurations zugegriffen werden:
 
@@ -382,6 +406,13 @@ Man kann auf Ebene einer Action Resourcedateien einbinden. Das kann man direkt p
 plugin.tx_myext {
     myview {
         includeJSFooter {
+            1 = EXT:myext/Resources/Public/Scripts/validator.js
+            1 {
+                excludeFromConcatenation = 1
+                dontCompress = 1
+            }
+        }
+        includeJSFooterlibs {
             1 = EXT:myext/Resources/Public/Scripts/validator.js
         }
         includeCSS {

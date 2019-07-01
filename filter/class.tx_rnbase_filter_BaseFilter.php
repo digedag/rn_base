@@ -1,5 +1,6 @@
 <?php
 
+
 /***************************************************************
  *  Copyright notice
  *
@@ -174,7 +175,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
         tx_rnbase_util_SearchBase::setConfigFields($fields, $this->getConfigurations(), $this->getConfId().'fields.');
         tx_rnbase_util_SearchBase::setConfigOptions($options, $this->getConfigurations(), $this->getConfId().'options.');
 
-        $fields = $this->handleSysCategoryFilter($fields);
+        $this->doSearch = $this->getCategoryFilterUtility()->handleSysCategoryFilter($fields, $this->doSearch);
 
         return $this->shouldSearchBeDone(
             $this->initFilter($fields, $options, $this->getParameters(), $this->getConfigurations(), $this->getConfId())
@@ -182,45 +183,11 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
     }
 
     /**
-     * @param array $fields
-     * @return array
-     */
-    protected function handleSysCategoryFilter(array $fields)
-    {
-        $typoScriptPathsToFilterUtilityMethod = array(
-            'useSysCategoriesOfItemFromParameters' => 'setFieldsBySysCategoriesOfItemFromParameters',
-            'useSysCategoriesOfContentElement' => 'setFieldsBySysCategoriesOfContentElement',
-            'useSysCategoriesFromParameters' => 'setFieldsBySysCategoriesFromParameters',
-        );
-
-        foreach ($typoScriptPathsToFilterUtilityMethod as $typoScriptPath => $filterUtilityMethod) {
-            if ($this->getConfigurations()->get($this->getConfId() . $typoScriptPath)) {
-                $fieldsBefore = $fields;
-                $fields = $this->getCategoryFilterUtility()->$filterUtilityMethod(
-                    $fields, $this->getConfigurations(),
-                    $this->getConfId() . $typoScriptPath . '.'
-                );
-
-                if (
-                    $this->getConfigurations()->get($this->getConfId() . $typoScriptPath . '.dontSearchIfNoCategoriesFound') &&
-                    // wenn sich die $fields nicht geändert haben, dann wurden keine Kategorie
-                    // gefunden.
-                    $fieldsBefore == $fields
-                ) {
-                    $this->doSearch = false;
-                }
-            }
-        }
-
-        return $fields;
-    }
-
-    /**
-     * @return Tx_Rnbase_Category_FilterUtility
+     * @return Sys25\RnBase\Frontend\Filter\Utility\Category
      */
     protected function getCategoryFilterUtility()
     {
-        return tx_rnbase::makeInstance('Tx_Rnbase_Category_FilterUtility');
+        return tx_rnbase::makeInstance(Sys25\RnBase\Frontend\Filter\Utility\Category::class, $this->getConfigurations(), $this->getConfId());
     }
 
     /**
@@ -305,7 +272,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
      *
      * @param tx_rnbase_parameters $parameters
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param array_object $viewData
+     * @param ArrayObject $viewData
      * @param string $confId ConfId des Filters
      * @param string $filterClass Klassenname des Filters
      * @return tx_rnbase_IFilter
@@ -429,7 +396,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
                     '('.$sql.') as ROW',
                     array(
                         'where' =>    'ROW.'.$cfg['pointerFromItem']['field'].'='.
-                                    $GLOBALS['TYPO3_DB']->fullQuoteStr($itemId, ''),
+                            Tx_Rnbase_Database_Connection::getInstance()->fullQuoteStr($itemId),
                         'enablefieldsoff' => true,
                     )
                 );

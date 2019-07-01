@@ -39,11 +39,24 @@ class Standalone extends \TYPO3\CMS\Fluid\View\StandaloneView
 {
 
     /**
-     * @return \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
+     * @var \Tx_Rnbase_Configuration_ProcessorInterface
      */
-    public function getControllerContext()
+    protected $configurations;
+
+    /**
+     * @return \Tx_Rnbase_Configuration_ProcessorInterface
+     */
+    public function getConfigurations()
     {
-        return $this->controllerContext;
+        return $this->configurations;
+    }
+
+    /**
+     * @param \Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     */
+    public function setConfigurations(\Tx_Rnbase_Configuration_ProcessorInterface $configurations)
+    {
+        $this->configurations = $configurations;
     }
 
     /**

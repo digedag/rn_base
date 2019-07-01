@@ -121,8 +121,15 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
             $subOut = call_user_func_array(array($handler, 'showScreen'), $args);
         }
 
-        // Jetzt noch die COMMON-PARTS
+        // wrap the content into a tab pane
+        if ($this->getModule()->useModuleTemplate()) {
+            $subOut = '<div class="tab-content"><div role="tabpanel" class="tab-pane active"><div class="form-section">' .
+                $subOut .
+            '</div></div></div>';
+        }
 
+        // Jetzt noch die COMMON-PARTS
+        $content = '';
         $content .= $formTool->getTCEForm()->printNeededJSFunctions_top();
         $content .= tx_rnbase_util_Templates::getSubpart($template, '###COMMON_START###');
         $content .= $subOut;

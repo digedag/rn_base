@@ -23,10 +23,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-use TYPO3\CMS\Backend\Form\DataPreprocessor;
-use TYPO3\CMS\Backend\Form\Element\InputDateTimeElement;
-use TYPO3\CMS\Backend\Form\Element\InputTextElement;
-
 tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 tx_rnbase::load('Tx_Rnbase_Utility_Strings');
 tx_rnbase::load('tx_rnbase_util_Link');
@@ -56,8 +52,8 @@ class Tx_Rnbase_Backend_Form_ToolBox
 
     /**
      *
-     * @param template $doc
-     * @param tx_rnbase_mod_IModule $module
+     * @param \Tx_Rnbase_Backend_Template_Override_DocumentTemplate $doc
+     * @param \tx_rnbase_mod_IModule $module
      */
     public function init($doc, $module)
     {
@@ -73,7 +69,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
         $this->form->backPath = $BACK_PATH;
     }
     /**
-     * @return template the BE template class
+     * @return \Tx_Rnbase_Backend_Template_Override_DocumentTemplate the BE template class
      */
     public function getDoc()
     {
@@ -116,9 +112,9 @@ class Tx_Rnbase_Backend_Form_ToolBox
 
     /**
      * Erstellt einen Link zur Bearbeitung eines Datensatzes
-     * @param $editTable DB-Tabelle des Datensatzes
-     * @param $editUid UID des Datensatzes
-     * @param Bezeichnung|string $label Bezeichnung des Links
+     * @param string $editTable DB-Tabelle des Datensatzes
+     * @param int $editUid UID des Datensatzes
+     * @param string $label Bezeichnung des Links
      * @param array $options
      * @return string
      */
@@ -181,7 +177,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
      * @param array $options
      * @return string
      */
-    public function createNewButton($table, $pid, $options = array())
+    public function createNewButton($table, $pid, $options = [])
     {
         $params = '&edit['.$table.']['.$pid.']=new';
         if (isset($options[self::OPTION_PARAMS])) {
@@ -196,8 +192,11 @@ class Tx_Rnbase_Backend_Form_ToolBox
             $jsCode = 'if(confirm('.Tx_Rnbase_Utility_Strings::quoteJSvalue($options[self::OPTION_CONFIRM]).')) {' . $jsCode .'} else {return false;}';
         }
 
-        $btn = '<input type="button" name="'. $name.'" value="' . $title . '" ';
-        $btn .= 'onclick="'.htmlspecialchars($jsCode, -1).'"';
+        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
+        $class = ' class="' . $class .'"';
+
+        $btn = '<input type="button" name="'. $name.'" value="' . $title . '" ' . $class;
+        $btn .= ' onclick="'.htmlspecialchars($jsCode, -1).'"';
         $btn .= '/>';
 
         return $btn;
@@ -313,9 +312,9 @@ class Tx_Rnbase_Backend_Form_ToolBox
 
     /**
      * Erstellt einen Link zur Anzeige von Informationen über einen Datensatz
-     * @param $editTable DB-Tabelle des Datensatzes
-     * @param $editUid UID des Datensatzes
-     * @param $label Bezeichnung des Links
+     * @param string $editTable DB-Tabelle des Datensatzes
+     * @param int $editUid UID des Datensatzes
+     * @param string $label Bezeichnung des Links
      */
     public function createInfoLink($editTable, $editUid, $label = 'Info')
     {
@@ -338,10 +337,10 @@ class Tx_Rnbase_Backend_Form_ToolBox
 
     /**
      * Erstellt einen Link zum Verschieben eines Datensatzes auf eine andere Seite
-     * @param $editTable DB-Tabelle des Datensatzes
-     * @param $recordUid UID des Datensatzes
-     * @param $currentPid PID der aktuellen Seite des Datensatzes
-     * @param $label Bezeichnung des Links
+     * @param string $editTable DB-Tabelle des Datensatzes
+     * @param int $recordUid UID des Datensatzes
+     * @param int $currentPid PID der aktuellen Seite des Datensatzes
+     * @param string $label Bezeichnung des Links
      */
     public function createMoveLink($editTable, $recordUid, $currentPid, $label = 'Move')
     {
@@ -481,7 +480,6 @@ class Tx_Rnbase_Backend_Form_ToolBox
     }
 
     /**
-     * @see t3lib_div::linkThisScript
      * @see \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript
      *
      * @param bool $encode
@@ -615,17 +613,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
      */
     public function createModuleLink(array $params, $pid, $label, array $options = array())
     {
-        // $options['sprite'] für abwärtskompatibilität
-        if ($options['icon'] || $options['sprite']) {
-            $icon = isset($options['icon']) ? $options['icon'] : $options['sprite'];
-            if (!tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-                $label =    '<img '.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/' . $icon) .
-                            ' title="' . $label . '\" alt="" >';
-            } else {
-                tx_rnbase::load('tx_rnbase_mod_Util');
-                $label = tx_rnbase_mod_Util::getSpriteIcon($icon, $options);
-            }
-        }
+        $label = $this->buildIconTag($options, $label);
         if (!isset($_GET['id']) && !isset($params['id'])) {
             // ensure pid is set even on POST requests.
             $params['id'] = $pid;
@@ -645,6 +633,23 @@ class Tx_Rnbase_Backend_Form_ToolBox
         return '<a href="#" ' . $class . ' onclick="'.htmlspecialchars($jsCode).'" '. $title.'>'. $label .'</a>';
     }
 
+    protected function buildIconTag(array $options, $label='')
+    {
+        $tag = $label;
+        // $options['sprite'] für abwärtskompatibilität
+        if ($options['icon'] || $options['sprite']) {
+            $icon = isset($options['icon']) ? $options['icon'] : $options['sprite'];
+            if (!tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
+                $tag =    '<img '.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/' . $icon) .
+                ' title="' . $label . '\" alt="" >';
+            } else {
+                // FIXME: label get lost here??
+                tx_rnbase::load('tx_rnbase_mod_Util');
+                $tag = tx_rnbase_mod_Util::getSpriteIcon($icon, $options);
+            }
+        }
+        return $tag;
+    }
     /**
      * Submit button for BE form.
      * If you set an icon in options, the output will like this:
@@ -654,12 +659,9 @@ class Tx_Rnbase_Backend_Form_ToolBox
      * @param string $confirmMsg
      * @param array $options
      */
-    public function createSubmit($name, $value, $confirmMsg = '', $options = array())
+    public function createSubmit($name, $value, $confirmMsg = '', $options = [])
     {
-        $icon = '';
-        if ($options['icon'] && !tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-            $icon = Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$options['icon']);
-        }
+        $icon = $this->buildIconTag($options, '');
         $onClick = '';
         if (strlen($confirmMsg)) {
             $onClick = 'onclick="return confirm('.Tx_Rnbase_Utility_Strings::quoteJSvalue($confirmMsg).')"';
@@ -670,7 +672,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
 
         if ($icon) {
             $btn = '<button type="submit" ' . $class . ' name="'. $name.'" value="' . htmlspecialchars($value) . '">' .
-                    '<img '.$icon.' alt="SomeAlternateText"></button>';
+                $icon.'</button>';
         } else {
             $btn = '<input type="submit" ' . $class . ' name="'. $name.'" value="' . htmlspecialchars($value) . '" ';
             $btn .= $onClick;
@@ -747,7 +749,9 @@ class Tx_Rnbase_Backend_Form_ToolBox
         if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
             $this->initializeJavaScriptFormEngine();
             $dateElementClass = tx_rnbase_util_TYPO3::isTYPO80OrHigher() ?
-                InputDateTimeElement::class : InputTextElement::class;
+                TYPO3\CMS\Backend\Form\Element\InputDateTimeElement::class
+                :
+                TYPO3\CMS\Backend\Form\Element\InputTextElement::class;
 
             return tx_rnbase::makeInstance(
                 $dateElementClass,
@@ -961,7 +965,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
         $this->tceStack[] = $pre . $this->form->getSoloField($table, $row, $fieldname) . $post;
     }
     /**
-     * @return TYPO3\CMS\Backend\Form\FormEngine
+     * @return \Tx_Rnbase_Backend_Form_FormBuilder
      */
     public function getTCEForm()
     {
@@ -1038,21 +1042,22 @@ class Tx_Rnbase_Backend_Form_ToolBox
      */
     public function showTabMenu($pid, $name, $modName, $entries)
     {
-        $MENU = array(
+        $MENU = [
             $name => $entries
-        );
+        ];
         $SETTINGS = Tx_Rnbase_Backend_Utility::getModuleData(
             $MENU,
-            tx_rnbase_parameters::getPostOrGetParameter('SET'),
+            \Tx_Rnbase_Utility_T3General::_GP('SET'),
             $modName
         );
-        $menuItems = array();
+
+        $menuItems = [];
         foreach ($entries as $key => $value) {
             if (strcmp($value, '') === 0) {
                 // skip empty entries!
                 continue;
             }
-            $menuItems[] = array(
+            $menuItems[] = [
                 'isActive' => $SETTINGS[$name] == $key,
                 'label' => $value,
                 // jumpUrl ist ab TYPO3 6.2 nicht mehr nötig
@@ -1061,7 +1066,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
                 'addParams' =>    'onclick="jumpToUrl(\'' .
                                 $this->buildScriptURI(array('id' => $pid, 'SET['.$name.']' => $key)) .
                                 '\',this);"'
-            );
+            ];
         }
 
         // In TYPO3 6 the getTabMenuRaw produces a division by zero error if there are no entries.
@@ -1072,10 +1077,10 @@ class Tx_Rnbase_Backend_Form_ToolBox
             $out = str_replace('<!-- Tab menu -->', '', $out);
         }
 
-        $ret = array(
+        $ret = [
             'menu' => $out,
             'value' => $SETTINGS[$name],
-        );
+        ];
 
         return $ret;
     }
@@ -1102,16 +1107,16 @@ class Tx_Rnbase_Backend_Form_ToolBox
      */
     public static function showMenu($pid, $name, $modName, $entries, $script = '', $addparams = '')
     {
-        $MENU = array(
+        $MENU = [
             $name => $entries
-        );
+        ];
         $SETTINGS = Tx_Rnbase_Backend_Utility::getModuleData(
             $MENU,
-            tx_rnbase_parameters::getPostOrGetParameter('SET'),
+            \Tx_Rnbase_Utility_T3General::_GP('SET'),
             $modName
         );
 
-        $ret = array();
+        $ret = [];
         if (is_array($MENU[$name]) && count($MENU[$name]) == 1) {
             $ret['menu'] = self::buildDummyMenu('SET['.$name.']', $MENU[$name]);
         } else {
@@ -1132,7 +1137,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
         // Ab T3 6.2 wird bei einem Menu-Eintrag keine Selectbox mehr erzeugt.
         // Also sieht man nicht, wo man sich befindet. Somit wird eine Dummy-Box
         // benötigt.
-        $options = array();
+        $options = [];
 
         foreach ($menuItems as $value => $label) {
             $options[] = sprintf(
@@ -1158,7 +1163,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
      */
     public function getStoredRequestData($key, $changed = array(), $modName = 'DEFRNBASEMOD')
     {
-        $data = tx_rnbase_parameters::getPostOrGetParameter($key);
+        $data = \Tx_Rnbase_Utility_T3General::_GP($key);
         if (is_array($data)) {
             reset($data);
             $itemid = key($data);
@@ -1176,7 +1181,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
      */
     public function getTCEFormArray($table, $theUid, $isNew = false)
     {
-        /** @var DataPreprocessor $trData */
+        /** @var TYPO3\CMS\Backend\Form\DataPreprocessor $trData */
         $trData = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\DataPreprocessor');
         $trData->addRawData = true;
         $trData->fetchRecord($table, $theUid, $isNew ? 'new' : '');    // 'new'

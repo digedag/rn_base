@@ -26,14 +26,14 @@
         "digedag/rn-base": "self.version"
     },
     "require": {
-        "typo3/cms-core": "^6.2 || ^7.6 || ^8.7",
-        "php": ">=5.6.0"
+      "typo3/cms-core": "^6.2 || ^7.6 || ^8.7 || ^9.5",
+      "php": ">=5.6.0"
     },
     "require-dev": {
         "namelesscoder/typo3-repository-client": "^1.2",
-        "nimut/testing-framework": "^1.0",
-        "mikey179/vfsStream": "^1.4",
-        "phpunit/phpunit": "^4.7"
+        "nimut/testing-framework": "^1.1 || ^2.0 || ^4.0",
+        "mikey179/vfsStream": "^1.4 || ^1.6",
+        "phpunit/phpunit": "^4.7|| ^7.0"
     },
     "autoload": {
         "classmap": [
@@ -50,13 +50,14 @@
             "sv1/",
             "tests/",
             "util/",
-            "view/"
-        ],
-        "files": [
+            "view/",
             "class.tx_rnbase.php",
             "class.tx_rnbase_configurations.php",
             "class.tx_rnbase_controller.php",
             "class.tx_rnbase_parameters.php"
+        ],
+        "files": [
+            "Classes/Constants.php"
         ],
         "psr-4": {"Sys25\\RnBase\\" : "Classes"}
     },

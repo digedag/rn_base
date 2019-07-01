@@ -29,6 +29,11 @@ tx_rnbase::load('tx_rnbase_mod_IModule');
  */
 interface tx_rnbase_mod_IModFunc
 {
+    const ICON_OK = -1;
+    const ICON_INFO = 1;
+    const ICON_WARN = 2;
+    const ICON_FATAL = 3;
+
     public function init(tx_rnbase_mod_IModule $module, $conf);
     /**
      * Liefert den HTML-String des Moduls

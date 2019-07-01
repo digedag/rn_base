@@ -81,9 +81,10 @@ class Tx_Rnbase_Utility_Cache
         /* @var \TYPO3\CMS\Frontend\Page\CacheHashCalculator $cacheHashCalculator */
         $cacheHashCalculator = \tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
         $cacheHashCalculator->setConfiguration(array(
-            $cacheHashCalculatorInternalConfigurationKey => explode(
+            $cacheHashCalculatorInternalConfigurationKey => Tx_Rnbase_Utility_Strings::trimExplode(
                 ',',
-                $GLOBALS['TYPO3_CONF_VARS']['FE'][$typo3ConfVarsKey]
+                $GLOBALS['TYPO3_CONF_VARS']['FE'][$typo3ConfVarsKey],
+                true
             )
         ));
     }

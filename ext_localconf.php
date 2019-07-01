@@ -10,11 +10,6 @@ $rnbaseExtPath = (intval($versionParts[0]) >= 6) ?
 require_once($rnbaseExtPath . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
-tx_rnbase::load('tx_rnbase_util_Debug');
-tx_rnbase::load('tx_rnbase_util_Extensions');
-tx_rnbase::load('tx_rnbase_parameters');
-tx_rnbase::load('Tx_Rnbase_Configuration_Processor');
-
 if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['rnbase']) &&
     Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'activateCache')) {
     tx_rnbase::load('tx_rnbase_cache_Manager');

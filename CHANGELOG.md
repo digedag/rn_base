@@ -3,7 +3,41 @@
 Changelog
 ---------
 
-v1.8.8 (??.??.2018)
+v1.10.0 (27.06.2019)
+ * added TYPO3 9 support
+ 
+v1.9.5 (25.06.2019)
+ * Some enhancements for backend module rendering for TYPO3 8
+ * Moved tx_rnbase_tests_BaseTestCase::createConfigurations() to own utility (tx_rnbase_tests_Utility) for standalone usage
+ * force_lookup_language option added in database connection
+
+v1.9.4 (28.05.2019)
+ * bugfix added missing classes to autload for older TYPO3 versions
+ * filter class for new plugin api
+ * Dummy view for unit tests
+ * bugfix when manipulating cache hash calculator configuration
+ * bugfixes for non composer installations
+
+v1.9.3 (20.02.2019)
+ * refactored plugins
+ * View interface changed. New abstract base view class.
+ * bugfix for tx_rnbase_parameters::getGetParameters() to return again values
+
+v1.9.2 (06.02.2019)
+ * javascript footer library files can now be added for actions ([see documentation](Documentation/fe_plugins.md))
+ * javascript footer files can now be excluded from concatenation and compression ([see documentation](Documentation/fe_plugins.md))
+ * added model and repository for sys_category table ([see documentation](Documentation/sys_category.md))
+
+v1.9.1 (22.01.2019)
+ * doQuery in DatabaseConnection fixed #132
+
+v1.9.0 (16.01.2019)
+ * __new DBAL-Driver which replaces the deprecated TYPO3_DB usage by new connection pool__
+ * get deleted field for table from tca fixed in tca utility
+ * typo3 requirement in composer changed to new subtree split
+ * new travis based unittesting
+ * deprecated usage of each function dropped
+ * new translate viewhelper for fluid added
 
 v1.8.7 (08.11.2018)
  * new view helper to get post or get data
@@ -68,7 +102,7 @@ v1.6.2 (22.02.2018)
  * added wrapper for DatabaseRecordList
 
 v1.6.1 (24.12.2017) (TER Release)
- * #95 createLink() fixed
+ * createLink() fixed #95
  * google_Util: it is possible to provide api key for geocode api
  * IMPORTANT: This is the last version of rn_base with explizit support of TYPO3 4.5 LTS
 
@@ -283,7 +317,7 @@ v1.0.16 (18.07.2016)
  *  [BREAKING CHANGE] class properties tx_rnbase_configurations have now a visibility. Thus access e.g. to _dataStore will now fail.
 
 v1.0.15 (20.06.2016)
- *  #53 it is possible to order plugins language file includes with `plugin.myplugin.locallangFilename._cfg.naturalOrder = 1`
+ *  it is possible to order plugins language file includes with `plugin.myplugin.locallangFilename._cfg.naturalOrder = 1` #53
  *  added generic static method to add flash messages
 
 v1.0.14 (15.06.2016)
