@@ -340,8 +340,8 @@ abstract class tx_rnbase_action_BaseIOC
      *
      * @param tx_rnbase_IParameters $parameters
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param array $viewdata
-     * @return string Errorstring or NULL
+     * @param ArrayObject $viewdata
+     * @return string|null Errorstring or NULL
      */
     abstract protected function handleRequest(&$parameters, &$configurations, &$viewdata);
 
