@@ -113,7 +113,7 @@ class Parameters extends \ArrayObject implements ParametersInterface
      * @see \TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged
      *
      * @param string $parameter Key (variable name) from GET or POST vars
-     * @return array Returns the GET vars merged recursively onto the POST vars.
+     * @return array|string Returns the GET vars merged recursively onto the POST vars.
      */
     public static function getPostAndGetParametersMerged($parameterName)
     {
@@ -126,7 +126,7 @@ class Parameters extends \ArrayObject implements ParametersInterface
      * @see \TYPO3\CMS\Core\Utility\GeneralUtility::_GP
      *
      * @param string $parameter Key (variable name) from GET or POST vars
-     * @return array Returns the GET vars merged recursively onto the POST vars.
+     * @return array|string Returns the GET vars merged recursively onto the POST vars.
      */
     public static function getPostOrGetParameter($parameterName)
     {

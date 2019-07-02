@@ -348,7 +348,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
      * @param string $id any
      * @param string|null $cObjClass String Optional cObj-classname
      *
-     * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|tslib_cObj
+     * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
      */
     public function getCObj($id = 0, $cObjClass = null)
     {
@@ -374,7 +374,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
     /**
      * The plugins original content object.
      *
-     * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|tslib_cObj
+     * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
      */
     public function getContentObject()
     {

@@ -65,6 +65,8 @@
  * @method static void registerPageTSConfigFile(string $extKey, string $filePath, string $title)
  * @method static void addTypoScriptSetup(string $content)
  * @method static void addTypoScriptConstants(string $content)
+ * @method static void addLLrefForTCAdescr(string $tca_descr_key, string $file_ref)
+ * @method static array getLoadedExtensionListArray()
  */
 class tx_rnbase_util_Extensions
 {
