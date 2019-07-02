@@ -3,6 +3,10 @@
 Changelog
 ---------
 
+v1.10.1 (02.07.2019)
+ * fixed/added some phpDoc
+ * added FrontendControllerUtility::getLanguageMode() and FrontendControllerUtility::getLanguageId
+ 
 v1.10.0 (27.06.2019)
  * added TYPO3 9 support
  
