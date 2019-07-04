@@ -788,7 +788,7 @@ MAYDAYPAGE;
      * @param string $message
      * @param string $title
      * @param number $severity
-     * @param string $storeInSession
+     * @param string|false $storeInSession
      *
      * @return void
      */
