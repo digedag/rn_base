@@ -310,14 +310,17 @@ abstract class tx_rnbase_mod_base_Lister
             $options['linker'] = $columns['linker'];
             unset($columns['linker']);
         }
-        tx_rnbase::load('tx_rnbase_mod_Tables');
-        list($tableData, $tableLayout) = tx_rnbase_mod_Tables::prepareTable(
+        /* @var Tx_Rnbase_Backend_Utility_Tables $tables */
+        $tables = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Utility_Tables');
+        list($tableData, $tableLayout) = $tables->prepareTable(
             $items,
             $columns,
             $this->getFormTool(),
             $options
         );
-        $out = Tx_Rnbase_Backend_Utility_Tables::buildTable($tableData, $tableLayout);
+
+        $out = $tables->buildTable($tableData, $tableLayout);
+
         $content .= $out;
 
         return $out;
@@ -375,20 +378,20 @@ abstract class tx_rnbase_mod_base_Lister
             );
         }
 
-        return array(
-            'uid' => array(
+        return [
+            'uid' => [
                 'title' => 'label_tableheader_uid',
                 'decorator' => $decorator,
-            ),
-            'label' => array(
+            ],
+            'label' => [
                 'title' => 'label_tableheader_label',
                 'decorator' => $decorator,
-            ),
-            'actions' => array(
+            ],
+            'actions' => [
                 'title' => 'label_tableheader_actions',
                 'decorator' => $decorator,
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -463,6 +466,7 @@ abstract class tx_rnbase_mod_base_Lister
     {
         $result = false;
         if (strlen(trim($searchword))) {
+            $joined = [];
             $joined['value'] = trim($searchword);
             $joined['cols'] = $cols;
             $joined['operator'] = OP_LIKE;
@@ -511,7 +515,9 @@ abstract class tx_rnbase_mod_base_Lister
     protected function showFreeTextSearchForm(&$marker, $key, array $options = array())
     {
         tx_rnbase::load('tx_rnbase_mod_Util');
-        $searchstring = tx_rnbase_mod_Util::getModuleValue($key, $this->getModule(), array('changed' => tx_rnbase_parameters::getPostOrGetParameter('SET')));
+        $searchstring = tx_rnbase_mod_Util::getModuleValue($key, $this->getModule(), [
+            'changed' => Tx_Rnbase_Utility_T3General::_GP('SET')
+        ]);
 
         // Erst das Suchfeld, danach der Button.
         $marker['field']    = $this->getFormTool()->createTxtInput('SET['.$key.']', $searchstring, 10);
@@ -522,12 +528,14 @@ abstract class tx_rnbase_mod_base_Lister
 
     protected function showHiddenSelector(&$marker, $options = array())
     {
-        $items = array(
-                0 => $GLOBALS['LANG']->getLL('label_select_hide_hidden'),
-                1 => $GLOBALS['LANG']->getLL('label_select_show_hidden'),
-        );
+        $items = [
+            0 => $GLOBALS['LANG']->getLL('label_select_hide_hidden'),
+            1 => $GLOBALS['LANG']->getLL('label_select_show_hidden'),
+        ];
         tx_rnbase::load('tx_rnbase_mod_Util');
-        $selectedItem = tx_rnbase_mod_Util::getModuleValue('showhidden', $this->getModule(), array('changed' => tx_rnbase_parameters::getPostOrGetParameter('SET')));
+        $selectedItem = tx_rnbase_mod_Util::getModuleValue('showhidden', $this->getModule(), [
+            'changed' => Tx_Rnbase_Utility_T3General::_GP('SET')
+        ]);
 
         $options['label'] = $options['label'] ? $options['label'] : $GLOBALS['LANG']->getLL('label_hidden');
 
