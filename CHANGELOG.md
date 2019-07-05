@@ -3,6 +3,9 @@
 Changelog
 ---------
 
+v1.10.2 (05.07.2019)
+ * support to return complete extension configuration below TYPO3 9
+ 
 v1.10.1 (02.07.2019)
  * fixed/added some phpDoc
  * added FrontendControllerUtility::getLanguageMode() and FrontendControllerUtility::getLanguageId
