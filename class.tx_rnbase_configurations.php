@@ -614,18 +614,22 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
      *
      * @return mixed
      */
-    public static function getExtensionCfgValue($extKey, $cfgKey)
+    public static function getExtensionCfgValue($extKey, $cfgKey = '')
     {
         if (tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
-            return tx_rnbase::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get(
+            $extConfig = tx_rnbase::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get(
                 $extKey,
                 $cfgKey
             );
         } else {
             $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extKey]);
 
-            return (is_array($extConfig) && array_key_exists($cfgKey, $extConfig)) ? $extConfig[$cfgKey] : false;
+            if ($cfgKey) {
+                $extConfig = (is_array($extConfig) && array_key_exists($cfgKey, $extConfig)) ? $extConfig[$cfgKey] : false;
+            }
         }
+
+        return $extConfig;
     }
 
     /**
