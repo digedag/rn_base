@@ -29,7 +29,6 @@ tx_rnbase::load('tx_rnbase_util_Strings');
 if (!tx_rnbase_util_Extensions::isLoaded('wec_map')) {
     throw new Exception('Extension wec_map must be installed to use GoogleMaps!');
 }
-require_once(tx_rnbase_util_Extensions::extPath('wec_map').'map_service/google/class.tx_wecmap_map_google.php');
 
 /**
  * Implementation for GoogleMaps based on extension wec_map.
@@ -38,13 +37,14 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap
 {
     public static $PROVID = 'GOOGLEMAPS';
     public static $mapTypes = array();
-    /* @var $map tx_wecmap_map_google */
+    /* @var $map \JBartels\WecMap\MapService\Google\Map */
     private $map;
     private $conf;
     private $confId;
 
     public function init(Tx_Rnbase_Configuration_ProcessorInterface $conf, $confId)
     {
+        throw new Exception('Not implemented right now!');
         $this->conf = $conf;
         $this->confId = $confId;
         $apiKey = $conf->get($confId.'google.apikey');
@@ -52,7 +52,8 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap
         $width = $conf->get($confId.'width');
         $height = $conf->get($confId.'height');
 
-        $this->map = tx_rnbase::makeInstance('tx_wecmap_map_google', $apiKey, $width, $height);
+        $this->map = tx_rnbase::makeInstance('JBartels\WecMap\MapService\Google\Map', $apiKey, $width, $height);
+
         // Der MapType
         $mapType = $conf->get($confId.'maptype') ? constant($conf->get($confId.'maptype')) : null;
         $types = array_flip(tx_rnbase_maps_TypeRegistry::getMapTypes());
