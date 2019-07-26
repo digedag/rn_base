@@ -361,12 +361,17 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
 
         $OLmode = (isset($options['i18nolmode']) ? $options['i18nolmode'] : '');
         $sysPage = tx_rnbase_util_TYPO3::getSysPage();
-        $row = $sysPage->getRecordOverlay(
-            $tableName,
-            $row,
-            \Sys25\RnBase\Utility\FrontendControllerUtility::getLanguageContentId($tsfe),
-            $OLmode
-        );
+
+        if ($tableName === 'pages') {
+            $row = $sysPage->getPageOverlay($row);
+        } else {
+            $row = $sysPage->getRecordOverlay(
+                $tableName,
+                $row,
+                \Sys25\RnBase\Utility\FrontendControllerUtility::getLanguageContentId($tsfe),
+                $OLmode
+            );
+        }
     }
 
     /**
