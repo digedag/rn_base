@@ -198,19 +198,13 @@ class tx_rnbase_util_TCA
     {
         tx_rnbase::load('tx_rnbase_util_TYPO3');
 
-        switch (true) {
-            // TCA is loaded through Bootsrap since 8.x automatically
-            // except when using an eID
-            case (tx_rnbase_util_TYPO3::isTYPO80OrHigher()):
-                if (TYPO3_MODE === 'FE' && isset($_REQUEST['eID'])) {
-                    $eidUtility = tx_rnbase_util_Typo3Classes::getEidUtilityClass();
-                    $eidUtility::initTCA();
-                }
-                break;
-            default:
-                if (!is_array($GLOBALS['TCA'])) {
-                    Bootstrap::getInstance()->loadCachedTca();
-                }
+        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher() && TYPO3_MODE === 'FE' && isset($_REQUEST['eID'])) {
+            $eidUtility = tx_rnbase_util_Typo3Classes::getEidUtilityClass();
+            $eidUtility::initTCA();
+        } else {
+            if (!is_array($GLOBALS['TCA'])) {
+                Bootstrap::getInstance()->loadCachedTca();
+            }
         }
     }
 
