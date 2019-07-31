@@ -418,6 +418,36 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
         $this->assertEquals($ret, ' (tab1.bodytext = 0 OR tab1.header = 0 )', 'OR failed.');
     }
 
+
+    /**
+     * Tests the lookupLanguage method
+     *
+     * @group functional
+     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
+     */
+    public function testLookupLanguageGivesCorrectOverlayForPages()
+    {
+        $this->prepareTsfeSetUp();
+
+        $row = [ 'uid' => 123, 'title' => 'test DE' ];
+        $tableName = 'pages';
+        $options = [ 'forcei18n' => true ];
+        $connectionMock = $this->getMock('Tx_Rnbase_Database_Connection', ['getDatabase']);
+
+        $reflectionObject = new \ReflectionObject($connectionMock);
+        $reflectionMethod = $reflectionObject->getMethod('lookupLanguage');
+        $reflectionMethod->setAccessible(true);
+
+        //TODO: mock page repo and set sys lang
+
+        $reflectionMethod->invokeArgs($connectionMock, [&$row, $tableName, $options]);
+
+        $this->assertEquals(
+            'test EN',
+            $row['title']
+        );
+    }
+
     /**
      *
      * @deprecated use tx_rnbase_util_Strings::debugString
