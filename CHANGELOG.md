@@ -3,6 +3,11 @@
 Changelog
 ---------
 
+v1.10.3 (05.07.2019)
+ * wec_map integration deactivated
+ * Bugfix TCA loading for TYPO3 8.7+
+ * Bugfix load language overlay for pages.
+
 v1.10.2 (05.07.2019)
  * support to return complete extension configuration below TYPO3 9
  
