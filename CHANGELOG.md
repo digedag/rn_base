@@ -3,6 +3,9 @@
 Changelog
 ---------
 
+v1.10.4 (06.07.2019)
+ * Revert bugfix TCA loading for TYPO3 8.7+
+
 v1.10.3 (05.07.2019)
  * wec_map integration deactivated
  * Bugfix TCA loading for TYPO3 8.7+
