@@ -22,7 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-use TYPO3\CMS\Core\Core\Bootstrap;
 
 tx_rnbase::load('tx_rnbase_model_data');
 
@@ -198,12 +197,14 @@ class tx_rnbase_util_TCA
     {
         tx_rnbase::load('tx_rnbase_util_TYPO3');
 
-        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher() && TYPO3_MODE === 'FE' && isset($_REQUEST['eID'])) {
-            $eidUtility = tx_rnbase_util_Typo3Classes::getEidUtilityClass();
-            $eidUtility::initTCA();
+        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+            if( TYPO3_MODE === 'FE' && isset($_REQUEST['eID'])) {
+                $eidUtility = tx_rnbase_util_Typo3Classes::getEidUtilityClass();
+                $eidUtility::initTCA();
+            }
         } else {
             if (!is_array($GLOBALS['TCA'])) {
-                Bootstrap::getInstance()->loadCachedTca();
+                \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca();
             }
         }
     }
@@ -214,7 +215,7 @@ class tx_rnbase_util_TCA
      * @param Tx_Rnbase_Domain_Model_RecordInterface $model
      * @param array $options
      *     only_record_fields: validates only fields included in the record
-     * @return bolean
+     * @return boolean
      */
     public static function validateModel(
         Tx_Rnbase_Domain_Model_RecordInterface $model,
@@ -234,7 +235,7 @@ class tx_rnbase_util_TCA
      * @param string $tableName
      * @param array $options
      *     only_record_fields: validates only fields included in the record
-     * @return bolean
+     * @return boolean
      */
     public static function validateRecord(
         array $record,
