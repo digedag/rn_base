@@ -305,7 +305,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
      *
      * @param bool $returnContent
      *
-     * @return  void
+     * @return  null|string
      */
     public function printContent($returnContent = false)
     {
@@ -321,6 +321,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
             return $content;
         } else {
             echo $content;
+            return null;
         }
     }
 
