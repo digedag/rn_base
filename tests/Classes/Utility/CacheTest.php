@@ -35,21 +35,10 @@ tx_rnbase::load('Tx_Rnbase_Utility_Cache');
  */
 class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
 {
-
-    /**
-     * @var string $cHashExcludedParametersBackup
-     */
-    private $cHashExcludedParametersBackup = '';
-
     /**
      * @var string
      */
     private $encryptionKeyBackup;
-
-    /**
-     * @var string $cHashExcludedParametersBackup
-     */
-    private $cHashRequiredParameters = '';
 
     /**
      * {@inheritDoc}
@@ -57,16 +46,20 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
      */
     protected function setUp()
     {
-        $this->cHashExcludedParametersBackup = $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'];
-        $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'] = '';
+        if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+            $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'] = [];
+            $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['requireCacheHashPresenceParameters'] = [];
+        } else {
+            $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'] = '';
+            $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters'] = '';
+        }
+        tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)->setConfiguration(array(
+            'excludedParameters' => [],
+            'requireCacheHashPresenceParameters' => [],
+        ));
 
         $this->encryptionKeyBackup = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'Tx_Rnbase_Utility_CacheTest';
-
-        $this->cHashRequiredParameters = $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters'];
-        $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters'] = '';
-
-        tx_rnbase_util_Misc::prepareTSFE(array('force' => true));
     }
 
     /**
@@ -75,77 +68,124 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
      */
     protected function tearDown()
     {
-        $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'] = $this->cHashExcludedParametersBackup;
-        tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator')->setConfiguration(array(
-            'excludedParameters' => explode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'])));
-
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = $this->encryptionKeyBackup;
-
-        $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters'] = $this->cHashRequiredParameters;
-        \tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator')->setConfiguration(array(
-            'requireCacheHashPresenceParameters' =>
-                explode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters'])
-        ));
-
-        $property = new ReflectionProperty(get_class(tx_rnbase_util_TYPO3::getTSFE()), 'pageCacheTags');
-        $property->setAccessible(true);
-        $property->setValue(\tx_rnbase_util_TYPO3::getTSFE(), []);
     }
 
     /**
-     * @group integration
-     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
+     * @group unit
      */
     public function testAddExcludedParametersForCacheHash()
     {
-        $property = new ReflectionProperty('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator', 'excludedParameters');
-        $property->setAccessible(true);
-        $excludedParameters = array_flip($property->getValue(tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator')));
+        if (!\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+            self::markTestSkipped('This test is designed to run since TYPO3 9');
+        }
 
-        self::assertArrayNotHasKey('john', $excludedParameters);
-        self::assertArrayNotHasKey('doe', $excludedParameters);
+        $property = new ReflectionProperty(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class, 'excludedParameters');
+        $property->setAccessible(true);
+        $excludedParameters = $property->getValue(
+            tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
+        );
+
+        self::assertSame([], $excludedParameters);
+        self::assertSame([], $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters']);
+
+        Tx_Rnbase_Utility_Cache::addExcludedParametersForCacheHash(array('john', 'doe'));
+
+        $excludedParameters = $property->getValue(
+            tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
+        );
+
+        self::assertSame(['john', 'doe'], $excludedParameters);
+        self::assertSame(['john' ,'doe'], $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters']);
+    }
+
+    /**
+     * @group unit
+     */
+    public function testAddExcludedParametersForCacheHashBeforeTypo39()
+    {
+        if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+            self::markTestSkipped('This test is designed to run below TYPO3 9');
+        }
+
+        $property = new ReflectionProperty(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class, 'excludedParameters');
+        $property->setAccessible(true);
+        $excludedParameters = $property->getValue(
+            tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
+        );
+
+        self::assertSame([], $excludedParameters);
         self::assertSame('', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters']);
 
         Tx_Rnbase_Utility_Cache::addExcludedParametersForCacheHash(array('john', 'doe'));
 
-        $excludedParameters = array_flip($property->getValue(tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator')));
+        $excludedParameters = $property->getValue(
+            tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
+        );
 
-        self::assertArrayHasKey('john', $excludedParameters);
-        self::assertArrayHasKey('doe', $excludedParameters);
-
+        self::assertSame(['john', 'doe'], $excludedParameters);
         self::assertSame('john,doe', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters']);
     }
 
     /**
-     * @group integration
-     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
+     * @group unit
      */
     public function testAddExcludedParametersForCacheHashIfSomeExistAlready()
     {
-        $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'] = 'L, gclid';
-        $property = new ReflectionProperty('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator', 'excludedParameters');
-        $property->setAccessible(true);
-        $excludedParameters = array_flip($property->getValue(tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator')));
+        if (!\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+            self::markTestSkipped('This test is designed to run since TYPO3 9');
+        }
 
-        self::assertArrayNotHasKey('john', $excludedParameters);
-        self::assertArrayNotHasKey('doe', $excludedParameters);
-        self::assertSame('L, gclid', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters']);
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'] = ['L', 'gclid'];
+        $property = new ReflectionProperty(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class, 'excludedParameters');
+        $property->setAccessible(true);
+        $property->setValue(
+            tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class),
+            ['L', 'gclid']
+        );
 
         Tx_Rnbase_Utility_Cache::addExcludedParametersForCacheHash(array('john', 'doe'));
 
-        $excludedParameters = array_flip($property->getValue(tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator')));
+        $excludedParameters = $property->getValue(
+            tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
+        );
 
-        self::assertArrayHasKey('john', $excludedParameters);
-        self::assertArrayHasKey('doe', $excludedParameters);
-        self::assertArrayHasKey('L', $excludedParameters);
-        self::assertArrayHasKey('gclid', $excludedParameters);
+        self::assertSame(['L', 'gclid', 'john', 'doe'], $excludedParameters);
+        self::assertSame(
+            ['L', 'gclid', 'john', 'doe'],
+            $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters']
+        );
+    }
 
+    /**
+     * @group unit
+     */
+    public function testAddExcludedParametersForCacheHashIfSomeExistAlreadyBeforeTypo39()
+    {
+        if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+            self::markTestSkipped('This test is designed to run below TYPO3 9');
+        }
+
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'] = 'L, gclid';
+        $property = new ReflectionProperty(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class, 'excludedParameters');
+        $property->setAccessible(true);
+        $property->setValue(
+            tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class),
+            ['L', 'gclid']
+        );
+
+        Tx_Rnbase_Utility_Cache::addExcludedParametersForCacheHash(array('john', 'doe'));
+
+        $excludedParameters = $property->getValue(
+            tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
+        );
+
+        self::assertSame(['L', 'gclid', 'john', 'doe'], $excludedParameters);
         self::assertSame('L, gclid,john,doe', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters']);
     }
 
     /**
-     * @group integration
-     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
+     * @group unit
      */
     public function testGenerateCacheHashForUrlQueryString()
     {
@@ -155,65 +195,130 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @group integration
-     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
+     * @group unit
      */
     public function testAddCacheHashRequiredParameters()
     {
+        if (!\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+            self::markTestSkipped('This test is designed to run since TYPO3 9');
+        }
+
         $property = new \ReflectionProperty(
-            'TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator',
+            \TYPO3\CMS\Frontend\Page\CacheHashCalculator::class,
             'requireCacheHashPresenceParameters'
         );
         $property->setAccessible(true);
-        $requiredParameters = array_flip($property->getValue(
-            \tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator')
-        ));
+        $requiredParameters = $property->getValue(
+            \tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
+        );
 
-        self::assertArrayNotHasKey('john', $requiredParameters);
-        self::assertArrayNotHasKey('doe', $requiredParameters);
+        self::assertSame([], $requiredParameters);
+        self::assertSame([], $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['requireCacheHashPresenceParameters']);
+
+        Tx_Rnbase_Utility_Cache::addCacheHashRequiredParameters(array('john', 'doe'));
+
+        $requiredParameters = $property->getValue(
+            \tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
+        );
+
+        self::assertSame(['john', 'doe'], $requiredParameters);
+        self::assertSame(
+            ['john', 'doe'],
+            $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['requireCacheHashPresenceParameters']
+        );
+    }
+
+    /**
+     * @group unit
+     */
+    public function testAddCacheHashRequiredParametersBeforeTypo39()
+    {
+        if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+            self::markTestSkipped('This test is designed to run below TYPO3 9');
+        }
+
+        $property = new \ReflectionProperty(
+            \TYPO3\CMS\Frontend\Page\CacheHashCalculator::class,
+            'requireCacheHashPresenceParameters'
+        );
+        $property->setAccessible(true);
+        $requiredParameters = $property->getValue(
+            \tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
+        );
+
+        self::assertSame([], $requiredParameters);
         self::assertSame('', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters']);
 
         Tx_Rnbase_Utility_Cache::addCacheHashRequiredParameters(array('john', 'doe'));
 
-        $requiredParameters = array_flip($property->getValue(\tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator')));
+        $requiredParameters = $property->getValue(
+            \tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
+        );
 
-        self::assertArrayHasKey('john', $requiredParameters);
-        self::assertArrayHasKey('doe', $requiredParameters);
-
+        self::assertSame(['john', 'doe'], $requiredParameters);
         self::assertSame('john,doe', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters']);
     }
 
     /**
-     * @group integration
-     * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
+     * @group unit
      */
     public function testAddCacheHashRequiredParametersIfSomeExistAlready()
     {
-        $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters'] = 'L, gclid';
+        if (!\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+            self::markTestSkipped('This test is designed to run since TYPO3 9');
+        }
+
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['requireCacheHashPresenceParameters'] = ['L', 'gclid'];
         $property = new \ReflectionProperty(
-            'TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator',
+            \TYPO3\CMS\Frontend\Page\CacheHashCalculator::class,
             'requireCacheHashPresenceParameters'
         );
         $property->setAccessible(true);
-        $requiredParameters = array_flip(
-            $property->getValue(\tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator')
-        ));
-
-        self::assertArrayNotHasKey('john', $requiredParameters);
-        self::assertArrayNotHasKey('doe', $requiredParameters);
-        self::assertSame('L, gclid', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters']);
+        $requiredParameters = $property->setValue(
+            \tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class),
+            ['L', 'gclid']
+        );
 
         Tx_Rnbase_Utility_Cache::addCacheHashRequiredParameters(array('john', 'doe'));
 
-        $requiredParameters = array_flip(
-            $property->getValue(\tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator')
-        ));
+        $requiredParameters = $property->getValue(
+            \tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
+        );
 
-        self::assertArrayHasKey('john', $requiredParameters);
-        self::assertArrayHasKey('doe', $requiredParameters);
-        self::assertArrayHasKey('L', $requiredParameters);
-        self::assertArrayHasKey('gclid', $requiredParameters);
+        self::assertSame(['L', 'gclid', 'john', 'doe'], $requiredParameters);
+        self::assertSame(
+            ['L', 'gclid', 'john', 'doe'],
+            $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['requireCacheHashPresenceParameters']
+        );
+    }
 
+    /**
+     * @group unit
+     */
+    public function testAddCacheHashRequiredParametersIfSomeExistAlreadyBeforeTypo39()
+    {
+        if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+            self::markTestSkipped('This test is designed to run below TYPO3 9');
+        }
+
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters'] = 'L, gclid';
+        $property = new \ReflectionProperty(
+            \TYPO3\CMS\Frontend\Page\CacheHashCalculator::class,
+            'requireCacheHashPresenceParameters'
+        );
+        $property->setAccessible(true);
+        $requiredParameters = $property->setValue(
+            \tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class),
+            ['L', 'gclid']
+        );
+
+        Tx_Rnbase_Utility_Cache::addCacheHashRequiredParameters(array('john', 'doe'));
+
+        $requiredParameters = $property->getValue(
+            \tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
+        );
+
+        self::assertSame(['L', 'gclid', 'john', 'doe'], $requiredParameters);
         self::assertSame('L, gclid,john,doe', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters']);
     }
 

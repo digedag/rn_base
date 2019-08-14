@@ -33,15 +33,19 @@
  */
 class Tx_Rnbase_Utility_Cache
 {
-
     /**
      * @param array $parameters
      * @return void
      */
     public static function addExcludedParametersForCacheHash(array $parameters)
     {
+        if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+            $typo3ConfVarsEntry =& $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'];
+        } else {
+            $typo3ConfVarsEntry =& $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'];
+        }
         self::addConfigurationToCacheHashCalculator(
-            'cHashExcludedParameters',
+            $typo3ConfVarsEntry,
             'excludedParameters',
             $parameters
         );
@@ -54,38 +58,47 @@ class Tx_Rnbase_Utility_Cache
      */
     public static function addCacheHashRequiredParameters(array $parameters)
     {
+        if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+            $typo3ConfVarsEntry =& $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['requireCacheHashPresenceParameters'];
+        } else {
+            $typo3ConfVarsEntry =& $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters'];
+        }
         self::addConfigurationToCacheHashCalculator(
-            'cHashRequiredParameters',
+            $typo3ConfVarsEntry,
             'requireCacheHashPresenceParameters',
             $parameters
         );
     }
 
     /**
-     * @param string $typo3ConfVarsKey
+     * @param mixed $typo3ConfVarsEntry
      * @param string $cacheHashCalculatorInternalConfigurationKey
      * @param array $configurationValue
      *
      * @return void
      */
     protected static function addConfigurationToCacheHashCalculator(
-        $typo3ConfVarsKey,
+        &$typo3ConfVarsEntry,
         $cacheHashCalculatorInternalConfigurationKey,
         array $configurationValue
     ) {
-        $startingGlue = '';
-        if ($GLOBALS['TYPO3_CONF_VARS']['FE'][$typo3ConfVarsKey]) {
-            $startingGlue = ',';
+        if (!\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+            $startingGlue = '';
+            if ($typo3ConfVarsEntry) {
+                $startingGlue = ',';
+            }
+            $typo3ConfVarsEntry .= $startingGlue . join(',', $configurationValue);
+
+            $cacheHashCalculatorInternalConfiguration =
+                Tx_Rnbase_Utility_Strings::trimExplode(',', $typo3ConfVarsEntry, true);
+        } else {
+            $cacheHashCalculatorInternalConfiguration = $typo3ConfVarsEntry =
+                array_merge($typo3ConfVarsEntry, $configurationValue);
         }
-        $GLOBALS['TYPO3_CONF_VARS']['FE'][$typo3ConfVarsKey] .= $startingGlue . join(',', $configurationValue);
         /* @var \TYPO3\CMS\Frontend\Page\CacheHashCalculator $cacheHashCalculator */
         $cacheHashCalculator = \tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
         $cacheHashCalculator->setConfiguration(array(
-            $cacheHashCalculatorInternalConfigurationKey => Tx_Rnbase_Utility_Strings::trimExplode(
-                ',',
-                $GLOBALS['TYPO3_CONF_VARS']['FE'][$typo3ConfVarsKey],
-                true
-            )
+            $cacheHashCalculatorInternalConfigurationKey => $cacheHashCalculatorInternalConfiguration
         ));
     }
 
