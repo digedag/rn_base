@@ -105,10 +105,18 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 
         $this->init();
         $this->main();
-        $this->printContent();
 
         if (!\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+            $this->printContent();
             $response = true;
+        } else {
+            // response is null if
+            // $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['simplifiedControllerActionDispatching'] is true
+            if ($response == null) {
+                $response = new \TYPO3\CMS\Core\Http\HtmlResponse($this->printContent(true));
+            } else {
+                $this->printContent();
+            }
         }
 
         return $response;
@@ -295,9 +303,11 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
     /**
      * Prints out the module HTML
      *
+     * @param bool $returnContent
+     *
      * @return  void
      */
-    public function printContent()
+    public function printContent($returnContent = false)
     {
         $this->content .= $this->getDoc()->endPage();
 
@@ -307,7 +317,11 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
         tx_rnbase_util_BaseMarker::callModules($this->content, $markerArray, $subpartArray, $wrappedSubpartArray, $params, $this->getConfigurations()->getFormatter());
         $content = tx_rnbase_util_Templates::substituteMarkerArrayCached($this->content, $markerArray, $subpartArray, $wrappedSubpartArray);
 
-        echo $content;
+        if ($returnContent) {
+            return $content;
+        } else {
+            echo $content;
+        }
     }
 
     /**
