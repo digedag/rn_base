@@ -1,6 +1,9 @@
 <?php
 namespace Sys25\RnBase\Utility;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+
 /***************************************************************
  * Copyright notice
  *
@@ -94,5 +97,30 @@ class Environment
 
         // Deprecated path related constant
         return PATH_typo3conf;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getCurrentLanguageKey(): string
+    {
+        if (TYPO3_MODE === 'BE') {
+            $languageKey = $GLOBALS['LANG']->lang;
+        } else {
+            if (\tx_rnbase_util_TYPO3::isTYPO95OrHigher()) {
+                if (isset($GLOBALS['TYPO3_REQUEST'])
+                    && $GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface
+                    && $GLOBALS['TYPO3_REQUEST']->getAttribute('language') instanceof SiteLanguage)
+                {
+                    $languageKey = $GLOBALS['TYPO3_REQUEST']->getAttribute('language')->getTypo3Language();
+                } else {
+                    $languageKey = $GLOBALS['TSFE']->config['config']['language'] ?? 'default';
+                }
+            } else {
+                $languageKey = $GLOBALS['TSFE']->lang;
+            }
+        }
+
+        return $languageKey;
     }
 }
