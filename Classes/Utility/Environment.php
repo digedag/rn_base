@@ -110,8 +110,7 @@ class Environment
             if (\tx_rnbase_util_TYPO3::isTYPO95OrHigher()) {
                 if (isset($GLOBALS['TYPO3_REQUEST'])
                     && $GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface
-                    && $GLOBALS['TYPO3_REQUEST']->getAttribute('language') instanceof SiteLanguage)
-                {
+                    && $GLOBALS['TYPO3_REQUEST']->getAttribute('language') instanceof SiteLanguage) {
                     $languageKey = $GLOBALS['TYPO3_REQUEST']->getAttribute('language')->getTypo3Language();
                 } else {
                     $languageKey = $GLOBALS['TSFE']->config['config']['language'] ?? 'default';
