@@ -3,6 +3,11 @@
 Changelog
 ---------
 
+v1.10.5 (19.08.2019)
+ * add compatibility to add cache hash calc configurations in TYPO3 9
+ * add support if simplifiedControllerActionDispatching is active in TYPO3 9
+ * new method to get current language in FE and BE
+
 v1.10.4 (06.07.2019)
  * Revert bugfix TCA loading for TYPO3 8.7+
 
