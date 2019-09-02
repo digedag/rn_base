@@ -3,6 +3,9 @@
 Changelog
 ---------
 
+v1.10.6 (02.09.2019)
+ * bugfix in environment utility to support php 5.6
+ 
 v1.10.5 (19.08.2019)
  * add compatibility to add cache hash calc configurations in TYPO3 9
  * add support if simplifiedControllerActionDispatching is active in TYPO3 9
