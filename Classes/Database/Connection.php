@@ -320,10 +320,6 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         }
 
         $sysPage = tx_rnbase_util_TYPO3::getSysPage();
-        if (!$sysPage->versioningPreview) {
-            return;
-        }
-
         $sysPage->versionOL($tableName, $row);
         $sysPage->fixVersioningPid($tableName, $row);
     }
