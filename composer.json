@@ -32,7 +32,7 @@
     "require-dev": {
         "namelesscoder/typo3-repository-client": "^1.2",
         "nimut/testing-framework": "^1.1 || ^2.0 || ^4.0",
-        "mikey179/vfsStream": "^1.4 || ^1.6",
+        "mikey179/vfsstream": "^1.4 || ^1.6",
         "phpunit/phpunit": "^4.7|| ^7.0"
     },
     "autoload": {
