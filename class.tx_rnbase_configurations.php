@@ -1056,7 +1056,9 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
 
     private function mergeTSReference($value, $conf)
     {
-        if (!is_scalar($value)) {return $conf;}
+        if (!is_scalar($value)) {
+            return $conf;
+        }
         if (substr($value, 0, 1) != '<') {
             return $conf;
         }
