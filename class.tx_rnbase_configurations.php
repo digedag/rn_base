@@ -1022,21 +1022,25 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
             unset($data['s_tssetup']);
         }
         foreach ((array) $data as $sheet => $languages) {
-            foreach ((array) $languages[$languagePointer] as $key => $def) {
+            if (!is_array($languages)) {
+                continue;
+            }
+            foreach ($languages[$languagePointer] as $key => $def) {
                 // Wir nehmen Flexformwerte nur, wenn sie sinnvolle Daten enthalten
                 // Sonst werden evt. vorhandenen Daten überschrieben
-                if (!(strlen($def[$valuePointer]) == 0)) { // || $def[$valuePointer] == '0')
-                    $pathArray = explode('.', trim($key));
-                    if (count($pathArray) > 1) {
-                        // Die Angabe im Flexform ist in Punktnotation
-                        // Wir holen das Array im höchsten Knoten
-                        $dataArr = $this->_dataStore->offsetGet($pathArray[0] . '.');
-                        $newValue = $def[$valuePointer];
-                        $newArr = $this->insertIntoDataArray($dataArr, array_slice($pathArray, 1), $newValue);
-                        $this->_dataStore->offsetSet($pathArray[0] . '.', $newArr);
-                    } else {
-                        $this->_dataStore->offsetSet($key, $def[$valuePointer]);
-                    }
+                if (!is_array($def) || (strlen($def[$valuePointer]) == 0)) {
+                    continue;
+                }
+                $pathArray = explode('.', trim($key));
+                if (count($pathArray) > 1) {
+                    // Die Angabe im Flexform ist in Punktnotation
+                    // Wir holen das Array im höchsten Knoten
+                    $dataArr = $this->_dataStore->offsetGet($pathArray[0] . '.');
+                    $newValue = $def[$valuePointer];
+                    $newArr = $this->insertIntoDataArray($dataArr, array_slice($pathArray, 1), $newValue);
+                    $this->_dataStore->offsetSet($pathArray[0] . '.', $newArr);
+                } else {
+                    $this->_dataStore->offsetSet($key, $def[$valuePointer]);
                 }
             }
         }
@@ -1052,6 +1056,7 @@ class tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInter
 
     private function mergeTSReference($value, $conf)
     {
+        if (!is_scalar($value)) {return $conf;}
         if (substr($value, 0, 1) != '<') {
             return $conf;
         }
