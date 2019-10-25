@@ -21,7 +21,6 @@
         "issues": "https://github.com/digedag/rn_base/issues"
     },
     "replace": {
-        "rn_base": "self.version",
         "typo3-ter/rn-base": "self.version",
         "digedag/rn-base": "self.version"
     },
@@ -84,6 +83,7 @@
     "extra": {
         "typo3/cms": {
             "cms-package-dir": "{$vendor-dir}/typo3/cms",
+            "extension-key": "rn_base",
             "web-dir": ".Build/Web"
         }
     }
