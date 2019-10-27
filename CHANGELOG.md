@@ -3,6 +3,11 @@
 Changelog
 ---------
 
+v1.10.7 (27.10.2019)
+ * configurations: Illegal string offset fixed in `_setFlexForm()`
+ * some warnings fixed for TYPO3 9.5
+ * fixed warnings in composer.json 
+
 v1.10.6 (02.09.2019)
  * bugfix in environment utility to support php 5.6
  
