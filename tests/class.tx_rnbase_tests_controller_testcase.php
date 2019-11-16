@@ -253,20 +253,6 @@ class tx_rnbase_tests_controller_testcase extends tx_rnbase_tests_BaseTestCase
 }
 
 /**
- * nochmal bereitstellen damit die original klasse nicht geladen wird
- *
- * @author Hannes Bochmann
- */
-class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
-{
-    public function handleException($actionName, Exception $e, Tx_Rnbase_Configuration_ProcessorInterface $configurations)
-    {
-        return $actionName . ' ' . $e->getMessage();
-    }
-}
-
-/**
- * nochmal bereitstellen damit die original klasse nicht geladen wird
  *
  * @author Hannes Bochmann
  */
