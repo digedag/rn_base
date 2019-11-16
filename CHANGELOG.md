@@ -3,6 +3,10 @@
 Changelog
 ---------
 
+v1.10.8 (??.11.2019)
+ * #161 fix missing test class on exception handling
+ * New wrapper class for TYPO3 registry functionality
+
 v1.10.7 (27.10.2019)
  * configurations: Illegal string offset fixed in `_setFlexForm()`
  * some warnings fixed for TYPO3 9.5
