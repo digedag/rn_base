@@ -100,4 +100,4 @@ jobs:
         echo "Release comment ${TAG_MESSAGE}";
         echo;
         echo;
-        $HOME/.composer/vendor/bin/ter-client upload oelib . -u "$TYPO3_ORG_USERNAME" -p "$TYPO3_ORG_PASS" -m "$TAG_MESSAGE";
+        $HOME/.composer/vendor/bin/ter-client upload rn_base . -u "$TYPO3_ORG_USERNAME" -p "$TYPO3_ORG_PASS" -m "$TAG_MESSAGE";

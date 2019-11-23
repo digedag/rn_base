@@ -3,7 +3,7 @@
 Changelog
 ---------
 
-v1.10.8 (23.11.2019)
+v1.10.9 (23.11.2019)
  * #161 fix missing test class on exception handling for non-composer installs
  * New wrapper class for TYPO3 registry functionality
  * #164 autodeploy new versions to TER
