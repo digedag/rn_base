@@ -7,17 +7,17 @@ language: php
 #        on_success: change
 #        on_failure: always
 
-php:
-    - 5.6
-    - 7.0
-    - 7.1
-    - 7.2
+#php:
+#  - 5.6
+#  - 7.0
+#  - 7.1
+#  - 7.2
 
-env:
-    - TYPO3_CORE="typo3/cms=^6.2.14"
-    - TYPO3_CORE="typo3/cms=^7.6.0"
-    - TYPO3_CORE="typo3/cms=^8.7.0"
-    - TYPO3_CORE="typo3/minimal=^9.5"
+#env:
+#  - TYPO3_CORE="typo3/cms=^6.2.14"
+#  - TYPO3_CORE="typo3/cms=^7.6.0"
+#  - TYPO3_CORE="typo3/cms=^8.7.0"
+#  - TYPO3_CORE="typo3/minimal=^9.5"
 
 sudo: false
 
