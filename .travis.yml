@@ -80,8 +80,8 @@ jobs:
     - stage: test
       php: 7.2
       env: TYPO3_CORE="typo3/minimal=^9.5"
-    - stage: release to ter
-      if: tag IS present AND env(TYPO3_ORG_USERNAME) IS present AND env(TYPO3_ORG_PASS) IS present
+    - stage: release
+#      if: tag IS present AND env(TYPO3_ORG_USERNAME) IS present AND env(TYPO3_ORG_PASS) IS present
       php: "7.2"
       before_install: skip
       install: skip
