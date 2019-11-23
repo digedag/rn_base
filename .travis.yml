@@ -56,46 +56,46 @@ script:
 
 jobs:
     include:
-        - stage: test
-          php: 5.6
-          env: TYPO3_CORE="typo3/cms=^6.2.14"
-        - stage: test
-          php: 5.6
-          env: TYPO3_CORE="typo3/cms=^7.6.0"
-        - stage: test
-          php: 7.0
-          env: TYPO3_CORE="typo3/cms=^7.6.0"
-        - stage: test
-          php: 7.0
-          env: TYPO3_CORE="typo3/cms=^8.7.0"
-        - stage: test
-          php: 7.1
-          env: TYPO3_CORE="typo3/cms=^7.6.0"
-        - stage: test
-          php: 7.1
-          env: TYPO3_CORE="typo3/cms=^8.7.0"
-        - stage: test
-          php: 7.2
-          env: TYPO3_CORE="typo3/cms=^8.7.0"
-        - stage: test
-          php: 7.2
-          env: TYPO3_CORE="typo3/minimal=^9.5"
-        - stage: release to ter
-          if: tag IS present AND env(TYPO3_ORG_USERNAME) IS present AND env(TYPO3_ORG_PASS) IS present
-          php: "7.2"
-          before_install: skip
-          install: skip
-          before_script: skip
-          script:
-          - >
-            echo;
-            echo "Preparing upload of release ${TRAVIS_TAG} to TER";
-            echo;
-            echo;
-            composer global require helhum/ter-client;
-          - >
-            echo;
-            echo "Removing development-only files";
-            echo;
-            echo;
-            ls -al
+    - stage: test
+      php: 5.6
+      env: TYPO3_CORE="typo3/cms=^6.2.14"
+    - stage: test
+      php: 5.6
+      env: TYPO3_CORE="typo3/cms=^7.6.0"
+    - stage: test
+      php: 7.0
+      env: TYPO3_CORE="typo3/cms=^7.6.0"
+    - stage: test
+      php: 7.0
+      env: TYPO3_CORE="typo3/cms=^8.7.0"
+    - stage: test
+      php: 7.1
+      env: TYPO3_CORE="typo3/cms=^7.6.0"
+    - stage: test
+      php: 7.1
+      env: TYPO3_CORE="typo3/cms=^8.7.0"
+    - stage: test
+      php: 7.2
+      env: TYPO3_CORE="typo3/cms=^8.7.0"
+    - stage: test
+      php: 7.2
+      env: TYPO3_CORE="typo3/minimal=^9.5"
+    - stage: release to ter
+      if: tag IS present AND env(TYPO3_ORG_USERNAME) IS present AND env(TYPO3_ORG_PASS) IS present
+      php: "7.2"
+      before_install: skip
+      install: skip
+      before_script: skip
+      script:
+      - >
+        echo;
+        echo "Preparing upload of release ${TRAVIS_TAG} to TER";
+        echo;
+        echo;
+        composer global require helhum/ter-client;
+      - >
+        echo;
+        echo "Removing development-only files";
+        echo;
+        echo;
+        ls -al
