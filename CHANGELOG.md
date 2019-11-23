@@ -3,9 +3,10 @@
 Changelog
 ---------
 
-v1.10.8 (??.11.2019)
- * #161 fix missing test class on exception handling
+v1.10.8 (23.11.2019)
+ * #161 fix missing test class on exception handling for non-composer installs
  * New wrapper class for TYPO3 registry functionality
+ * #164 autodeploy new versions to TER
 
 v1.10.7 (27.10.2019)
  * configurations: Illegal string offset fixed in `_setFlexForm()`
