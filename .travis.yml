@@ -81,7 +81,7 @@ jobs:
       php: 7.2
       env: TYPO3_CORE="typo3/minimal=^9.5"
     - stage: release
-#      if: tag IS present AND env(TYPO3_ORG_USERNAME) IS present AND env(TYPO3_ORG_PASS) IS present
+      if: tag IS present AND env(TYPO3_ORG_USERNAME) IS present AND env(TYPO3_ORG_PASS) IS present
       php: "7.2"
       before_install: skip
       install: skip
@@ -94,8 +94,10 @@ jobs:
         echo;
         composer global require helhum/ter-client;
       - >
+        TAG_MESSAGE=`git tag -n10 -l $TRAVIS_TAG | sed 's/^[0-9.]*[ ]*//g'`;
         echo;
-        echo "Removing development-only files";
+        echo "Uploading release ${TRAVIS_TAG} to TER";
+        echo "Release comment ${TAG_MESSAGE}";
         echo;
         echo;
-        ls -al
+        $HOME/.composer/vendor/bin/ter-client upload oelib . -u "$TYPO3_ORG_USERNAME" -p "$TYPO3_ORG_PASS" -m "$TAG_MESSAGE";
