@@ -39,6 +39,7 @@
             "action/",
             "cache/",
             "Classes/",
+            "Legacy/",
             "exception/",
             "filter/",
             "maps/",
@@ -51,7 +52,6 @@
             "util/",
             "view/",
             "class.tx_rnbase.php",
-            "class.tx_rnbase_configurations.php",
             "class.tx_rnbase_controller.php",
             "class.tx_rnbase_parameters.php"
         ],
