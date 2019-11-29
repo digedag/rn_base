@@ -919,8 +919,8 @@ class Tx_Rnbase_Backend_Form_ToolBox
     public function createSortLink($sSortField, $sLabel)
     {
         //das ist aktuell gesetzt
-        $sCurrentSortField = tx_rnbase_parameters::getPostOrGetParameter('sortField');
-        $sCurrentSortRev = tx_rnbase_parameters::getPostOrGetParameter('sortRev');
+        $sCurrentSortField = Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('sortField');
+        $sCurrentSortRev = Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('sortRev');
         //wir verweisen immer auf die aktuelle Seite
         //es kann aber schon ein sort parameter gesetzt sein
         //weshalb wir alte entfernen
@@ -1024,7 +1024,9 @@ class Tx_Rnbase_Backend_Form_ToolBox
             }
             var T3_RETURN_URL = ' .
                 Tx_Rnbase_Utility_Strings::quoteJSvalue(
-                    str_replace('%20', '', rawurlencode(tx_rnbase_parameters::getPostOrGetParameter('returnUrl')))
+                    str_replace('%20', '', rawurlencode(
+                        Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('returnUrl'))
+                    )
                 ) . ';
             var T3_THIS_LOCATION=' .
                 Tx_Rnbase_Utility_Strings::quoteJSvalue(str_replace('%20', '', rawurlencode($location)));

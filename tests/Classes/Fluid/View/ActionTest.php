@@ -92,7 +92,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
             ->willReturn('myConfId');
 
         $view->setTemplateFile('EXT:rn_base/tests/fixtures/html/MyTestAction.html');
-        $parameters = \tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $parameters = \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $configurations = $this->createConfigurations(array(), 'rn_base', 'rn_base', $parameters);
 
         self::assertEquals('<div class="test">myConfId</div>', $view->render('MyTestAction', $configurations));
@@ -111,7 +111,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
             ->method('getConfigurationId')
             ->willReturn('myConfId');
 
-        $parameters = \tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $parameters = \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $configurations = $this->createConfigurations(array(), 'rn_base', 'rn_base', $parameters);
 
         self::assertEquals('<div class="test">myConfId</div>', $view->render('MyTestAction', $configurations));
@@ -150,7 +150,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
             ->method('getConfigurationId')
             ->willReturn('myConfId');
 
-        $parameters = \tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $parameters = \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $configurationArray = array(
             'view.' => array(
                 'templateRootPaths.' => array(0 => 'EXT:rn_base/tests/fixtures/html/'),
@@ -175,7 +175,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
             ->method('getConfigurationId')
             ->willReturn('myConfId');
 
-        $parameters = \tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $parameters = \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $configurationArray = array(
             'templatePath' =>'EXT:rn_base/tests/fixtures/html/'
         );
@@ -197,7 +197,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
             ->method('getConfigurationId')
             ->willReturn('myConfId');
 
-        $parameters = \tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $parameters = \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $configurationArray = array();
         $configurations = $this->createConfigurations($configurationArray, 'rn_base', 'rn_base', $parameters);
 
@@ -213,7 +213,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
         $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', array('getConfigurationId'));
 
         $view->setTemplateFile('EXT:rn_base/tests/fixtures/html/MyTestAction2.html');
-        $parameters = \tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $parameters = \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $configurations = $this->createConfigurations(array(), 'rn_base', 'rn_base', $parameters);
         $configurations->getViewData()->offsetSet('testAssignment', 'JohnDoe');
 
@@ -229,7 +229,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
         $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', array('getConfigurationId'));
 
         $view->setTemplateFile('EXT:rn_base/tests/fixtures/html/MyTestActionWithTrimmableContent.html');
-        $parameters = \tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $parameters = \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $configurations = $this->createConfigurations(array(), 'rn_base', 'rn_base', $parameters);
 
         self::assertEquals('<span>test</span>', $view->render('MyTestAction', $configurations));
@@ -244,7 +244,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
         $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', array('getConfigurationId'));
 
         $view->setTemplateFile('EXT:rn_base/tests/fixtures/html/MyTestActionWithTrimmableContent.html');
-        $parameters = \tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $parameters = \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $configurations = $this->createConfigurations(array(), 'rn_base', 'rn_base', $parameters);
         $configurations->getViewData()->offsetSet('filter', 'test');
 
@@ -260,7 +260,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
         $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', array('getConfigurationId'));
 
         $view->setTemplateFile('EXT:rn_base/tests/fixtures/html/MyTestActionWithTrimmableContent.html');
-        $parameters = \tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $parameters = \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $configurations = $this->createConfigurations(array(), 'rn_base', 'rn_base', $parameters);
         $configurations->getViewData()->offsetSet('filter', 'test');
 
@@ -287,7 +287,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
             ->will(self::returnValue('testId'));
 
         $view->setTemplateFile('EXT:rn_base/tests/fixtures/html/MyTestAction.html');
-        $parameters = \tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $parameters = \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $configurations = $this->createConfigurations(array(), 'rn_base', 'rn_base', $parameters);
 
         $filter = $this->getMock('tx_rnbase_filter_BaseFilter', array('parseTemplate'), array(), '', false);
@@ -315,7 +315,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
             ->will(self::returnValue('testId'));
 
         $view->setTemplateFile('EXT:rn_base/tests/fixtures/html/MyTestAction.html');
-        $parameters = \tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $parameters = \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $configurations = $this->createConfigurations(array(), 'rn_base', 'rn_base', $parameters);
 
         $filter = $this->getMock('tx_rnbase_filter_BaseFilter', array('parseTemplateNew'), array(), '', false);

@@ -72,7 +72,7 @@ abstract class tx_rnbase_tests_BaseTestCase extends \PHPUnit\Framework\TestCase
      * Sample:
      * self::createConfigurations(
      *   array(), 'rn_base', 'rn_base',
-     *   tx_rnbase::makeInstance('tx_rnbase_parameters'),
+     *   tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class),
      *   tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass())
      * );
      *

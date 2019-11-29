@@ -512,8 +512,8 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     protected function prepareSorting(
         array &$options
     ) {
-        $sortField = tx_rnbase_parameters::getPostOrGetParameter('sortField');
-        $sortRev = tx_rnbase_parameters::getPostOrGetParameter('sortRev');
+        $sortField = Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('sortField');
+        $sortRev = Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('sortRev');
 
         if (!empty($sortField)) {
             $cols = $this->getDecoratorColumns();
@@ -554,15 +554,12 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
      */
     protected function getModuleValue($key)
     {
-        tx_rnbase::load('tx_rnbase_mod_Util');
-        tx_rnbase::load('tx_rnbase_parameters');
-
         return tx_rnbase_mod_Util::getModuleValue(
             $key,
             $this->getModule(),
-            array(
-                'changed' => tx_rnbase_parameters::getPostOrGetParameter('SET')
-            )
+            [
+                'changed' => Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('SET')
+            ]
         );
     }
 

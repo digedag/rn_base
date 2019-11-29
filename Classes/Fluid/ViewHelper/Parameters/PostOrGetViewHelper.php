@@ -49,6 +49,6 @@ class PostOrGetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewH
      */
     public function render()
     {
-        return \tx_rnbase_parameters::getPostOrGetParameter($this->arguments['parameterName']);
+        return \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter($this->arguments['parameterName']);
     }
 }

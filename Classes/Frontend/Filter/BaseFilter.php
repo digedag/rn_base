@@ -170,8 +170,8 @@ class BaseFilter implements FilterInterface
      *
      * @param string $idstr
      * @param array $fields
-     * @param tx_rnbase_parameters $parameters
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param \Sys25\RnBase\Frontend\Request\Parameters $parameters
+     * @param \Sys25\RnBase\Configuration\ConfigurationInterface $configurations
      * @param string $operator Operator-Konstante
      */
     public function setField($idstr, &$fields, $parameters, $configurations, $operator = OP_LIKE)
@@ -185,9 +185,9 @@ class BaseFilter implements FilterInterface
     }
 
     /**
-     * @param tx_rnbase_IFilterItem $item
+     * @param \tx_rnbase_IFilterItem $item
      */
-    public function addFilterItem(tx_rnbase_IFilterItem $item)
+    public function addFilterItem(\tx_rnbase_IFilterItem $item)
     {
         $this->filterItems[] = $item;
     }
@@ -195,7 +195,7 @@ class BaseFilter implements FilterInterface
     /**
      * Returns all filter items set.
      *
-     * @return array[tx_rnbase_IFilterItem]
+     * @return array[\tx_rnbase_IFilterItem]
      */
     public function getFilterItems()
     {

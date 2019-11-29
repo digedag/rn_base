@@ -1,4 +1,6 @@
 <?php
+use Sys25\RnBase\Frontend\Request\Parameters;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -438,11 +440,11 @@ class tx_rnbase_controller
      */
     protected function _makeParameterObject($configurations)
     {
-        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $parameters = tx_rnbase::makeInstance(Parameters::class);
         $parameters->setQualifier($configurations->getQualifier());
 
         // get parametersArray for defined qualifier
-        $parametersArray = tx_rnbase_parameters::getPostAndGetParametersMerged($configurations->getQualifier());
+        $parametersArray = Parameters::getPostAndGetParametersMerged($configurations->getQualifier());
         if ($configurations->isUniqueParameters() && array_key_exists($configurations->getPluginId(), $parametersArray)) {
             $parametersArray = $parametersArray[$configurations->getPluginId()];
         }

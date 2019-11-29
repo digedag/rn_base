@@ -206,10 +206,9 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
             $this->extObj = tx_rnbase::makeInstance($this->extClassConf['name']);
             $this->extObj->init($this, $this->extClassConf);
             // Re-write:
-            tx_rnbase::load('tx_rnbase_parameters');
             $this->MOD_SETTINGS = Tx_Rnbase_Backend_Utility::getModuleData(
                 $this->MOD_MENU,
-                tx_rnbase_parameters::getPostOrGetParameter('SET'),
+                \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('SET'),
                 $this->getName(),
                 $this->modMenu_type,
                 $this->modMenu_dontValidateList,
@@ -272,7 +271,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 
             // init the parameters object
             $this->configurations->setParameters(
-                tx_rnbase::makeInstance('tx_rnbase_parameters')
+                tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class)
             );
             $this->configurations->getParameters()->init('SET');
         }

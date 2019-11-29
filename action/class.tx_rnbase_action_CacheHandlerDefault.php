@@ -244,8 +244,8 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
             // all get and post vars
             tx_rnbase::load('tx_rnbase_util_Arrays');
             $gp = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
-                tx_rnbase_parameters::getGetParameters(),
-                tx_rnbase_parameters::getPostParameters()
+                Sys25\RnBase\Frontend\Request\Parameters::getGetParameters(),
+                Sys25\RnBase\Frontend\Request\Parameters::getPostParameters()
             );
             // the cobj to get the parameter value
             $cObj = $this->getConfigurations()->getCObj();

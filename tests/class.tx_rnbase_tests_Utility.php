@@ -36,7 +36,7 @@ class tx_rnbase_tests_Utility
      * Sample:
      * tx_rnbase_tests_Utility::createConfigurations(
      *   array(), 'rn_base', 'rn_base',
-     *   tx_rnbase::makeInstance('tx_rnbase_parameters'),
+     *   tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class),
      *   tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass())
      * );
      *
@@ -59,7 +59,7 @@ class tx_rnbase_tests_Utility
         $args = count($args) > 3 ? array_slice($args, 3) : array();
 
         foreach ($args as $arg) {
-            if ($arg instanceof tx_rnbase_parameters) {
+            if ($arg instanceof \Sys25\RnBase\Frontend\Request\Parameters) {
                 $parameters = $arg;
             }
             $contentObjectRendererClass = tx_rnbase_util_Typo3Classes::getContentObjectRendererClass();
@@ -76,7 +76,7 @@ class tx_rnbase_tests_Utility
             $extensionKey,
             $qualifier
         );
-        if ($parameters instanceof tx_rnbase_parameters) {
+        if ($parameters instanceof \Sys25\RnBase\Frontend\Request\Parameters) {
             $configurations->setParameters($parameters);
         }
 

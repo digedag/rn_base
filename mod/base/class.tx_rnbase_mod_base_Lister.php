@@ -258,8 +258,8 @@ abstract class tx_rnbase_mod_base_Lister
      */
     protected function prepareSorting(&$options)
     {
-        $sortField = tx_rnbase_parameters::getPostOrGetParameter('sortField');
-        $sortRev = tx_rnbase_parameters::getPostOrGetParameter('sortRev');
+        $sortField = \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('sortField');
+        $sortRev = \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('sortRev');
 
         if (!empty($sortField)) {
             $cols = $this->getColumns();

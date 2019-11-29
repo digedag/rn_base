@@ -742,13 +742,13 @@ class tx_rnbase_util_Link
             }
             $add = $keepVarConf['add'];
             if ($add) {
-                $add = tx_rnbase_util_Strings::trimExplode(',', $add);
+                $add = \Tx_Rnbase_Utility_Strings::trimExplode(',', $add);
                 foreach ($add as $linkvar) {
-                    $linkvar = tx_rnbase_util_Strings::trimExplode('=', $linkvar);
+                    $linkvar = \Tx_Rnbase_Utility_Strings::trimExplode('=', $linkvar);
                     if (count($linkvar) < 2) {
                         // tt_news::* or ttnews::id
-                        list($qualifier, $name) = tx_rnbase_util_Strings::trimExplode('::', $linkvar[0]);
-                        if ($value = tx_rnbase_parameters::getPostOrGetParameter($qualifier)) {
+                        list($qualifier, $name) = \Tx_Rnbase_Utility_Strings::trimExplode('::', $linkvar[0]);
+                        if ($value = \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter($qualifier)) {
                             if ($name == '*' && is_array($value)) {
                                 foreach ($value as $paramName => $paramValue) {
                                     if ($skipEmpty && empty($paramValue)) {

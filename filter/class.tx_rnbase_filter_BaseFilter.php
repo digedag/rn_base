@@ -146,7 +146,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
     /**
      * Liefert die Parameter
      *
-     * @return tx_rnbase_parameters
+     * @return \Sys25\RnBase\Frontend\Request\Parameters
      */
     protected function getParameters()
     {
@@ -218,7 +218,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
      *
      * @param array $fields
      * @param array $options
-     * @param tx_rnbase_parameters $parameters
+     * @param \Sys25\RnBase\Frontend\Request\Parameters $parameters
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
      * @param string $confId
      * @return bool
@@ -234,7 +234,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
      *
      * @param string $idstr
      * @param array $fields
-     * @param tx_rnbase_parameters $parameters
+     * @param \Sys25\RnBase\Frontend\Request\Parameters $parameters
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
      * @param string $operator Operator-Konstante
      */
@@ -270,7 +270,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
      * Fabrikmethode zur Erstellung von Filtern. Die Klasse des Filters kann entweder direkt angegeben werden oder
      * wird über die Config gelesen. Klappt beides nicht, wird der Standardfilter geliefert.
      *
-     * @param tx_rnbase_parameters $parameters
+     * @param \Sys25\RnBase\Frontend\Request\Parameters $parameters
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
      * @param ArrayObject $viewData
      * @param string $confId ConfId des Filters

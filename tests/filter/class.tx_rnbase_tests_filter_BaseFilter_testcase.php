@@ -46,8 +46,8 @@ class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTes
      */
     public function testGetCategoryFilterUtility()
     {
-        $configurations = $this->createConfigurations(array(), 'rnbase');
-        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $configurations = \tx_rnbase_tests_Utility::createConfigurations([], 'rnbase');
+        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         self::assertInstanceOf(
             Category::class,
             $this->callInaccessibleMethod(
@@ -64,8 +64,8 @@ class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTes
      */
     public function testInitReturnsCorrectValue($initFilterReturnValue, $doSearchVariableValue, $expectedReturnValue)
     {
-        $configurations = $this->createConfigurations(array(), 'myext');
-        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $configurations = \tx_rnbase_tests_Utility::createConfigurations([], 'myext');
+        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $filter = $this->getAccessibleMock(
             'tx_rnbase_filter_BaseFilter', array('initFilter'),
             array(

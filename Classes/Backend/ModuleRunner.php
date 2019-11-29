@@ -111,8 +111,7 @@ class Tx_Rnbase_Backend_ModuleRunner
                     \Sys25\RnBase\Frontend\Request\Parameters::getGetParameters('route')
                 )->getOption('moduleName');
             } else {
-                tx_rnbase::load('tx_rnbase_parameters');
-                $moduleName = tx_rnbase_parameters::getGetParameters('M');
+                $moduleName = Sys25\RnBase\Frontend\Request\Parameters::getGetParameters('M');
             }
         }
 

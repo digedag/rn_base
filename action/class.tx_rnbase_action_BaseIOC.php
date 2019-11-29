@@ -1,4 +1,5 @@
 <?php
+
 /***************************************************************
 *  Copyright notice
 *
@@ -47,7 +48,7 @@ abstract class tx_rnbase_action_BaseIOC
     private $configurations = null;
 
     /**
-     * @param tx_rnbase_parameters $parameters
+     * @param Sys25\RnBase\Frontend\Request\Parameters $parameters
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
      *
      * @return string
