@@ -46,6 +46,3 @@ class Tx_Rnbase_Error_ProductionExceptionHandler extends \Sys25\RnBase\Typo3Wrap
 class Tx_Rnbase_RecordList_DatabaseRecordList extends \Sys25\RnBase\Typo3Wrapper\RecordList\DatabaseRecordList
 {
 }
-
-
-
