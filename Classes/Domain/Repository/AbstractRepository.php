@@ -1,4 +1,6 @@
 <?php
+use Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface;
+
 /***************************************************************
  * Copyright notice
  *
@@ -23,7 +25,6 @@
  ***************************************************************/
 
 tx_rnbase::load('Tx_Rnbase_Domain_Repository_InterfaceSearch');
-tx_rnbase::load('Tx_Rnbase_Interface_Singleton');
 
 /**
  * Abstracte Repository Klasse
@@ -32,7 +33,7 @@ tx_rnbase::load('Tx_Rnbase_Interface_Singleton');
  * @subpackage Tx_Rnbase
  * @author Michael Wagner
  */
-abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnbase_Domain_Repository_InterfaceSearch, Tx_Rnbase_Interface_Singleton
+abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnbase_Domain_Repository_InterfaceSearch, SingletonInterface
 {
 
     /**

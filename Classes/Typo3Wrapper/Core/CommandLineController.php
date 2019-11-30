@@ -1,8 +1,11 @@
 <?php
+
+namespace Sys25\RnBase\Typo3Wrapper\Core;
+
 /**
  *  Copyright notice
  *
- *  (c) 2016 Hannes Bochmann <rene@system25.de>
+ *  (c) 2019 René Nitzsche <rene@system25.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,16 +26,16 @@
  */
 
 /**
- * Tx_Rnbase_Error_ProductionExceptionHandler
+ * Tx_Rnbase_Utility_Singleton
  *
- * Wrapper für TYPO3\CMS\Core\Error\ProductionExceptionHandler seit TYPO3 6.x
+ * Wrapper für \TYPO3\CMS\Core\Controller\CommandLineController seit TYPO3 7.x
  *
  * @package         TYPO3
  * @subpackage      rn_base
- * @author          Hannes Bochmann <rene@system25.de>
+ * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Error_ProductionExceptionHandler extends TYPO3\CMS\Core\Error\ProductionExceptionHandler
+class CommandLineController extends \TYPO3\CMS\Core\Controller\CommandLineController
 {
 }

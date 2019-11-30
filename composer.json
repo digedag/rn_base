@@ -52,8 +52,7 @@
             "util/",
             "view/",
             "class.tx_rnbase.php",
-            "class.tx_rnbase_controller.php",
-            "class.tx_rnbase_parameters.php"
+            "class.tx_rnbase_controller.php"
         ],
         "files": [
             "Classes/Constants.php"

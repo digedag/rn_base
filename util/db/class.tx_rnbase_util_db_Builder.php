@@ -1,4 +1,6 @@
 <?php
+use Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface;
+
 /***************************************************************
  * Copyright notice
  *
@@ -32,7 +34,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-class tx_rnbase_util_db_Builder implements Tx_Rnbase_Interface_Singleton
+class tx_rnbase_util_db_Builder implements SingletonInterface
 {
     /**
      * @return tx_rnbase_util_db_Builder

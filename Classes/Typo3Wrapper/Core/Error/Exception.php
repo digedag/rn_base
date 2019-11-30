@@ -1,8 +1,11 @@
 <?php
+
+namespace Sys25\RnBase\Typo3Wrapper\Core\Error;
+
 /**
  *  Copyright notice
  *
- *  (c) 2015 Hannes Bochmann <rene@system25.de>
+ *  (c) 2016 Hannes Bochmann <rene@system25.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,9 +26,8 @@
  */
 
 /**
- * Tx_Rnbase_Utility_Singleton
  *
- * Wrapper für \TYPO3\CMS\Core\SingletonInterface seit TYPO3 6.x
+ * Wrapper für TYPO3\CMS\Core\Error\Exception seit TYPO3 6.x
  *
  * @package         TYPO3
  * @subpackage      rn_base
@@ -33,6 +35,6 @@
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-interface Tx_Rnbase_Interface_Singleton extends \TYPO3\CMS\Core\SingletonInterface
+class Exception extends \TYPO3\CMS\Core\Error\Exception
 {
 }

@@ -1,5 +1,7 @@
 <?php
 
+use Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -27,7 +29,6 @@ tx_rnbase::load('tx_rnbase_util_Debug');
 tx_rnbase::load('tx_rnbase_util_Misc');
 tx_rnbase::load('tx_rnbase_util_Strings');
 tx_rnbase::load('tx_rnbase_util_Typo3Classes');
-tx_rnbase::load('Tx_Rnbase_Interface_Singleton');
 
 /**
  * Contains utility functions for database access
@@ -42,7 +43,7 @@ tx_rnbase::load('Tx_Rnbase_Interface_Singleton');
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
+class Tx_Rnbase_Database_Connection implements SingletonInterface
 {
 
     /**
@@ -398,7 +399,7 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
      *
      * @return tx_rnbase_util_db_IDatabase
      *
-     * @throws \Tx_Rnbase_Error_Exception
+     * @throws \Sys25\RnBase\Typo3Wrapper\Core\Error\Exception
      */
     public function getDatabaseConnection($options = null)
     {
@@ -425,7 +426,7 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
 
         if (!$db instanceof tx_rnbase_util_db_IDatabase) {
             throw \tx_rnbase::makeInstance(
-              'Tx_Rnbase_Error_Exception',
+                \Sys25\RnBase\Typo3Wrapper\Core\Error\Exception::class,
                 'The db "' . get_class($db) . '" has to implement' .
                 ' the tx_rnbase_util_db_IDatabase interface'
             );
@@ -1132,14 +1133,14 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
     {
         if (tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
             throw \tx_rnbase::makeInstance(
-                'Tx_Rnbase_Error_Exception',
+                \Sys25\RnBase\Typo3Wrapper\Core\Error\Exception::class,
                 'Tx_Rnbase_Database_Connection::queryDB was removed in TYPO3 9'
             );
         }
 
         if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
             throw \tx_rnbase::makeInstance(
-                'Tx_Rnbase_Error_Exception',
+                \Sys25\RnBase\Typo3Wrapper\Core\Error\Exception::class,
                 'Tx_Rnbase_Database_Connection::queryDB is deprecated an will be removed in TYPO3 9'
             );
         }

@@ -20,7 +20,32 @@ interface tx_rnbase_IParameters extends Sys25\RnBase\Frontend\Request\Parameters
 class tx_rnbase_parameters extends Sys25\RnBase\Frontend\Request\Parameters implements tx_rnbase_IParameters
 {
 }
-/** @deprecated not supported anymore. use commands instead */
-class Tx_Rnbase_CommandLine_Controller extends \TYPO3\CMS\Core\Controller\CommandLineController
+/** @deprecated */
+class Tx_Rnbase_CommandLine_Controller extends \Sys25\RnBase\Typo3Wrapper\Core\CommandLineController
 {
 }
+/** @deprecated */
+interface Tx_Rnbase_Interface_Singleton extends \Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface
+{
+}
+
+/** @deprecated */
+class Tx_Rnbase_Error_ErrorHandler extends \Sys25\RnBase\Typo3Wrapper\Core\Error\ErrorHandler
+{
+}
+/** @deprecated */
+class Tx_Rnbase_Error_Exception extends \Sys25\RnBase\Typo3Wrapper\Core\Error\Exception
+{
+}
+/** @deprecated */
+class Tx_Rnbase_Error_ProductionExceptionHandler extends \Sys25\RnBase\Typo3Wrapper\Core\Error\ProductionExceptionHandler
+{
+}
+
+/** @deprecated */
+class Tx_Rnbase_RecordList_DatabaseRecordList extends \Sys25\RnBase\Typo3Wrapper\RecordList\DatabaseRecordList
+{
+}
+
+
+

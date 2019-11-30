@@ -1,4 +1,7 @@
 <?php
+
+namespace Sys25\RnBase\Typo3Wrapper\RecordList;
+
 /***************************************************************
  * Copyright notice
  *
@@ -22,6 +25,6 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-class Tx_Rnbase_RecordList_DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
+class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
 {
 }
