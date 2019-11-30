@@ -18,7 +18,6 @@ tx_rnbase_util_TYPO3::getHttpUtilityClass() | t3lib_utility_Http | \TYPO3\\CMS\\
 Tx_Rnbase_Service_Base | t3lib_svbase | \TYPO3\CMS\Core\Service\AbstractService
 Tx_Rnbase_Backend_Utility | t3lib_BEfunc | \TYPO3\CMS\Backend\Utility\BackendUtility
 Tx_Rnbase_Interface_Singleton | t3lib_Singleton | \TYPO3\CMS\Core\SingletonInterface
-Tx_Rnbase_CommandLine_Controller | t3lib_cli | \TYPO3\CMS\Core\Controller\CommandLineController
 Tx_Rnbase_Backend_Utility_Icons | t3lib_iconWorks | \TYPO3\CMS\Backend\Utility\IconUtility
 Tx_Rnbase_Scheduler_Task | tx_scheduler_Task | \TYPO3\CMS\Scheduler\Task\AbstractTask
 Tx_Rnbase_Scheduler_FieldProvider | tx_scheduler_AdditionalFieldProvider | \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface

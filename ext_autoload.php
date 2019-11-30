@@ -38,7 +38,7 @@ return array(
     'tx_rnbase_cache_typo3cache46' => $extensionPath . 'cache/class.tx_rnbase_cache_TYPO3Cache46.php',
     'tx_rnbase_cache_typo3cache60' => $extensionPath . 'cache/class.tx_rnbase_cache_TYPO3Cache60.php',
     'tx_rnbase_cache_typo3cache62' => $extensionPath . 'cache/class.tx_rnbase_cache_TYPO3Cache62.php',
-    'tx_rnbase_commandline_controller' => $extensionClassesPath . 'CommandLine/Controller.php',
+    'tx_rnbase_commandline_controller' => $extensionPath . 'Legacy/classes.php',
     'tx_rnbase_configurations' => $extensionPath . 'Legacy/classes.php',
     'tx_rnbase_configuration_processor' => $extensionPath . 'Classes/Configuration/Processor.php',
     'tx_rnbase_controller' => $extensionPath . 'class.tx_rnbase_controller.php',

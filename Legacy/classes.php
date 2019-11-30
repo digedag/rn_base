@@ -20,3 +20,7 @@ interface tx_rnbase_IParameters extends Sys25\RnBase\Frontend\Request\Parameters
 class tx_rnbase_parameters extends Sys25\RnBase\Frontend\Request\Parameters implements tx_rnbase_IParameters
 {
 }
+/** @deprecated not supported anymore. use commands instead */
+class Tx_Rnbase_CommandLine_Controller extends \TYPO3\CMS\Core\Controller\CommandLineController
+{
+}
