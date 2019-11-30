@@ -1,6 +1,8 @@
 <?php
 namespace Sys25\RnBase\Controller;
 
+use Sys25\RnBase\Configuration\Processor;
+
 /***************************************************************
  * Copyright notice
  *
@@ -75,7 +77,7 @@ class AbstractControllerTest extends \tx_rnbase_tests_BaseTestCase
     public function testAssignToViewShouldStoreDataCorrectly()
     {
         $action = $this->getMockForAbstractClass(AbstractController::class);
-        $configuration = \tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
+        $configuration = \tx_rnbase::makeInstance(Processor::class);
         $action->setConfigurations($configuration);
         $this->callInaccessibleMethod($action, 'assignToView', 'test', '57');
         $this->assertSame('57', $configuration->getViewData()->offsetGet('test'));
@@ -93,7 +95,7 @@ class AbstractControllerTest extends \tx_rnbase_tests_BaseTestCase
     {
         $action = $this->getMockForAbstractClass(AbstractController::class);
         $action->expects($this->once())->method('getTemplateName')->willReturn('action');
-        $configuration = $this->getMock('Tx_Rnbase_Configuration_Processor');
+        $configuration = $this->getMock(Processor::class);
         $configuration->expects($this->once())->method('get')->with('action.cid')->willReturn('works');
         $action->setConfigurations($configuration);
         $this->assertSame('works', $this->callInaccessibleMethod($action, 'getConfigurationValue', 'cid'));
