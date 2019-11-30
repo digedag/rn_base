@@ -20,9 +20,11 @@ interface tx_rnbase_IParameters extends Sys25\RnBase\Frontend\Request\Parameters
 class tx_rnbase_parameters extends Sys25\RnBase\Frontend\Request\Parameters implements tx_rnbase_IParameters
 {
 }
-/** @deprecated */
-class Tx_Rnbase_CommandLine_Controller extends \Sys25\RnBase\Typo3Wrapper\Core\CommandLineController
-{
+if (class_exists('Sys25\RnBase\Typo3Wrapper\Core\CommandLineController')) {
+    /** @deprecated */
+    class Tx_Rnbase_CommandLine_Controller extends \Sys25\RnBase\Typo3Wrapper\Core\CommandLineController
+    {
+    }
 }
 /** @deprecated */
 interface Tx_Rnbase_Interface_Singleton extends \Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface
