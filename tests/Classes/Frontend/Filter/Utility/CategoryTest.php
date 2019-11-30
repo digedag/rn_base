@@ -2,6 +2,7 @@
 namespace Sys25\RnBase\Frontend\Filter\Utility;
 
 use Sys25\RnBase\Frontend\Request\Parameters;
+use Sys25\RnBase\Configuration\Processor;
 
 /***************************************************************
 *  Copyright notice
@@ -49,7 +50,7 @@ class CategoryTest extends \tx_rnbase_tests_BaseTestCase
     {
         $this->dbConnection = $this->prophesize(\Tx_Rnbase_Database_Connection::class);
         $this->parametersMock = $this->prophesize(Parameters::class);
-        $this->configurations = $this->prophesize(\Tx_Rnbase_Configuration_Processor::class);
+        $this->configurations = $this->prophesize(Processor::class);
         $this->configurations->getParameters()->willReturn($this->parametersMock->reveal());
         $this->categoryUtil = new Category($this->configurations->reveal(), 'myList.filter.');
         $this->categoryUtil->setDatabaseConnection($this->dbConnection->reveal());
