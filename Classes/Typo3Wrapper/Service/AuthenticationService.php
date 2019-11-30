@@ -1,8 +1,11 @@
 <?php
+
+namespace Sys25\RnBase\Typo3Wrapper\Service;
+
 /**
  *  Copyright notice
  *
- *  (c) 2015 Hannes Bochmann <rene@system25.de>
+ *  (c) 2019 René Nitzsche <rene@system25.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,9 +26,8 @@
  */
 
 /**
- * Tx_Rnbase_Service_Base
  *
- * Wrapper für \TYPO3\CMS\Core\Service\AbstractService seit TYPO3 6.x
+ * Wrapper für \TYPO3\CMS\Sv\AuthenticationService seit TYPO3 6.x
  *
  * @package         TYPO3
  * @subpackage      rn_base
@@ -33,6 +35,6 @@
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Service_Base extends \TYPO3\CMS\Core\Service\AbstractService
+class AuthenticationService extends \TYPO3\CMS\Sv\AuthenticationService
 {
 }

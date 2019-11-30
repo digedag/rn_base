@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  Copyright notice
  *
@@ -23,12 +24,6 @@
  */
 
 /**
- * benötigte Klassen einbinden
- */
-tx_rnbase::load('tx_rnbase_util_SearchBase');
-tx_rnbase::load('Tx_Rnbase_Service_Base');
-
-/**
  * Base service class
  * Class was originally written by Lars Heber for extension mklib.
  *
@@ -36,7 +31,7 @@ tx_rnbase::load('Tx_Rnbase_Service_Base');
  * @subpackage tx_rnbase_sv1
  * @author René Nitzsche, Lars Heber, Michael Wagner
  */
-abstract class tx_rnbase_sv1_Base extends Tx_Rnbase_Service_Base
+abstract class tx_rnbase_sv1_Base extends \Sys25\RnBase\Typo3Wrapper\Service\AbstractService
 {
 
     // 0: Hide record; 1: Soft-delete (via "deleted" field) record; 2: Really DELETE

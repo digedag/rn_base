@@ -25,6 +25,9 @@ namespace Sys25\RnBase\Typo3Wrapper\Core;
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
+if (!class_exists('\TYPO3\CMS\Core\Controller\CommandLineController')) {
+    return ;
+}
 /**
  * Tx_Rnbase_Utility_Singleton
  *

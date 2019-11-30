@@ -21,7 +21,6 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-tx_rnbase::load('Tx_Rnbase_Service_Base');
 
 /**
  * Service "MediaPlayer" for playing mp3 media files.
@@ -30,7 +29,7 @@ tx_rnbase::load('Tx_Rnbase_Service_Base');
  * @package     TYPO3
  * @subpackage  tx_cfcleaguefe
  */
-class tx_rnbase_sv1_MediaPlayer extends Tx_Rnbase_Service_Base
+class tx_rnbase_sv1_MediaPlayer extends \Sys25\RnBase\Typo3Wrapper\Service\AbstractService
 {
     public $prefixId = 'tx_rnbase_sv1_MediaPlayer';  // Same as class name
     public $scriptRelPath = 'sv1/class.tx_rnbase_sv1_MediaPlayer.php'; // Path to this script relative to the extension dir.
