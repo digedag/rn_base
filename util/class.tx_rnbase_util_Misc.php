@@ -341,8 +341,7 @@ MAYDAYPAGE;
         $force = array_key_exists('force', $options) ? true : false;
 
         if (!is_object($GLOBALS['TT'])) {
-            $className = tx_rnbase_util_Typo3Classes::getTimeTrackClass();
-            $GLOBALS['TT'] = new $className;
+            $GLOBALS['TT'] = tx_rnbase_util_Typo3Classes::getTimeTracker();
             $GLOBALS['TT']->start();
         }
 

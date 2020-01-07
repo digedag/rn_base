@@ -147,6 +147,28 @@ class tx_rnbase_util_Typo3Classes
         ));
     }
     /**
+     * @return \TYPO3\CMS\Core\TimeTracker\TimeTracker
+     */
+    public static function getTimeTracker($enabled = null)
+    {
+        if (null === $enabled) {
+            $beCookie = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']) ?: 'be_typo_user';
+            $enabled = (bool) $_COOKIE[$beCookie];
+        }
+
+        // for typo3 6 or 7 we has to initialise a NullTimeTracker if tracker is disabled
+        if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+            if ($enabled) {
+                return new TYPO3\CMS\Core\TimeTracker\TimeTracker();
+            }
+
+            return new TYPO3\CMS\Core\TimeTracker\NullTimeTracker();
+        }
+
+        return new TYPO3\CMS\Core\TimeTracker\TimeTracker($enabled);
+    }
+    /**
+     * @deprecated use getTimeTracker
      * @return string|TYPO3\CMS\Core\TimeTracker\NullTimeTracker
      */
     public static function getTimeTrackClass()
