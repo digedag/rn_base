@@ -26,14 +26,13 @@ namespace Sys25\RnBase\Utility;
  ***************************************************************/
 
 /**
- * Wrapper for TYPO3 registry
+ * Wrapper for TYPO3 registry.
  */
 class Registry
 {
     private $domain;
 
     /**
-     *
      * @param string $domain Extension key for extensions starting with 'tx_' / 'Tx_' / 'user_' or 'core' for core registry entries
      */
     public function __construct($domain = '')
@@ -42,11 +41,14 @@ class Registry
     }
 
     /**
-     * Read a value from registry
-     * @param string $key The key of the entry to return.
-     * @param string $domain Extension key for extensions starting with 'tx_' / 'Tx_' / 'user_' or 'core' for core registry entries
-     * @param mixed $defaultValue Optional default value to use if this entry has never been set. Defaults to NULL.
-     * @return mixed The value of the entry.
+     * Read a value from registry.
+     *
+     * @param string $key          the key of the entry to return
+     * @param string $domain       Extension key for extensions starting with 'tx_' / 'Tx_' / 'user_' or 'core' for core registry entries
+     * @param mixed  $defaultValue Optional default value to use if this entry has never been set. Defaults to NULL.
+     *
+     * @return mixed the value of the entry
+     *
      * @throws \InvalidArgumentException Throws an exception if the given namespace is not valid
      */
     public function get($key, $domain = '')
@@ -54,15 +56,15 @@ class Registry
         $domain = $domain ? $domain : $this->domain;
         /* @var $registry \TYPO3\CMS\Core\Registry */
         $registry = \tx_rnbase::makeInstance(\TYPO3\CMS\Core\Registry::class);
+
         return $registry->get($domain, $key);
     }
 
     /**
+     * @param string $key    the key of the entry to set
+     * @param mixed  $value  The value to set. This can be any PHP data type; this class takes care of serialization if necessary.
+     * @param string $domain extension key for extensions starting with 'tx_' / 'Tx_' / 'user_' or 'core' for core registry entries
      *
-     * @param string $key The key of the entry to set.
-     * @param mixed $value The value to set. This can be any PHP data type; this class takes care of serialization if necessary.
-     * @param string $domain Extension key for extensions starting with 'tx_' / 'Tx_' / 'user_' or 'core' for core registry entries.
-     * @return void
      * @throws \InvalidArgumentException Throws an exception if the given namespace is not valid
      */
     public function set($key, $value, $domain = '')
@@ -70,6 +72,7 @@ class Registry
         $domain = $domain ? $domain : $this->domain;
         /* @var $registry \TYPO3\CMS\Core\Registry */
         $registry = \tx_rnbase::makeInstance(\TYPO3\CMS\Core\Registry::class);
+
         return $registry->set($domain, $key, $value);
     }
 }

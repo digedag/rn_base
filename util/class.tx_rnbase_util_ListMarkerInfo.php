@@ -25,6 +25,7 @@
 interface ListMarkerInfo
 {
     public function init($template, &$formatter, $marker);
+
     public function getTemplate(&$item);
 }
 
@@ -36,6 +37,7 @@ class tx_rnbase_util_ListMarkerInfo implements ListMarkerInfo
     public function __construct()
     {
     }
+
     public function init($template, &$formatter, $marker)
     {
         $this->template = $template;

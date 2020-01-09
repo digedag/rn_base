@@ -29,7 +29,6 @@ tx_rnbase::load('tx_rnbase_util_TCA');
  */
 class tx_rnbase_tests_util_TYPO3_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
      * @group unit
      */

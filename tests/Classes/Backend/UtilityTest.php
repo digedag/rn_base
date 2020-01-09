@@ -25,17 +25,14 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 
 /**
- * tx_rnbase_tests_controller_testcase
+ * tx_rnbase_tests_controller_testcase.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann <rene@system25.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class Tx_Rnbase_Backend_UtilityTest extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
      * @group unit
      */
@@ -52,7 +49,6 @@ class Tx_Rnbase_Backend_UtilityTest extends tx_rnbase_tests_BaseTestCase
 
 class Tx_Rnbase_Backend_UtilityForTests extends Tx_Rnbase_Backend_Utility
 {
-
     /**
      * @return Typo3BackendUtilityClass
      */
@@ -67,7 +63,6 @@ class Tx_Rnbase_Backend_UtilityForTests extends Tx_Rnbase_Backend_Utility
  */
 class Typo3BackendUtilityClass
 {
-
     /**
      * @var array der key ist der methoden name, der value die übergebenen Parameter
      */
@@ -75,8 +70,7 @@ class Typo3BackendUtilityClass
 
     /**
      * @param string $method
-     * @param array $arguments
-     * @return void
+     * @param array  $arguments
      */
     public static function __callStatic($method, $arguments)
     {

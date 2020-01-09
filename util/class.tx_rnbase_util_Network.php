@@ -26,21 +26,19 @@ tx_rnbase::load('tx_rnbase_util_TYPO3');
 tx_rnbase::load('tx_rnbase_util_Misc');
 
 /**
- * tx_rnbase_util_Network
+ * tx_rnbase_util_Network.
  *
  * Wrapper for Network related functions
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann <dev@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class tx_rnbase_util_Network
 {
-
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see t3lib_div::cmpIP()
      * @see TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP()
      */
@@ -55,10 +53,11 @@ class tx_rnbase_util_Network
      * @see t3lib_div::getUrl()
      * @see TYPO3\CMS\Core\Utility\GeneralUtility::getUrl()
      *
-     * @param string $url File/URL to read
-     * @param int $includeHeader Whether the HTTP header should be fetched or not. 0=disable, 1=fetch header+content, 2=fetch header only
+     * @param string      $url            File/URL to read
+     * @param int         $includeHeader  Whether the HTTP header should be fetched or not. 0=disable, 1=fetch header+content, 2=fetch header only
      * @param array|false $requestHeaders HTTP headers to be used in the request
-     * @param array $report Error code/message and, if $includeHeader is 1, response meta data (HTTP status and content type)
+     * @param array       $report         Error code/message and, if $includeHeader is 1, response meta data (HTTP status and content type)
+     *
      * @return mixed The content from the resource given as input. FALSE if an error has occurred.
      */
     public static function getUrl($url, $includeHeader = 0, $requestHeaders = false, &$report = null)
@@ -73,7 +72,8 @@ class tx_rnbase_util_Network
      * @see TYPO3\CMS\Core\Utility\GeneralUtility::isValidUrl()
      *
      * @param string $url The URL to be validated
-     * @return boolean Whether the given URL is valid
+     *
+     * @return bool Whether the given URL is valid
      */
     public static function isValidUrl($url)
     {
@@ -86,7 +86,8 @@ class tx_rnbase_util_Network
      * @see t3lib_div::locationHeaderUrl()
      * @see TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl()
      *
-     * @param string $path URL / path to prepend full URL addressing to.
+     * @param string $path URL / path to prepend full URL addressing to
+     *
      * @return string
      */
     public static function locationHeaderUrl($path)
@@ -102,15 +103,13 @@ class tx_rnbase_util_Network
      * Location redirect header. By default the HTTP status code sent is
      * a 'HTTP/1.1 303 See Other'.
      *
-     * @param string $url The target URL to redirect to
+     * @param string $url        The target URL to redirect to
      * @param string $httpStatus An optional HTTP status header. Default is 'HTTP/1.1 303 See Other'
-     *
-     * @return  void
      */
     public static function redirect($url, $httpStatus = null)
     {
         $utility = tx_rnbase_util_Typo3Classes::getHttpUtilityClass();
-        if ($httpStatus === null) {
+        if (null === $httpStatus) {
             $httpStatus = $utility::HTTP_STATUS_303;
         }
         $utility::redirect($url, $httpStatus);
@@ -119,6 +118,7 @@ class tx_rnbase_util_Network
     /**
      * @param string $remoteAddress
      * @param string $devIPmask
+     *
      * @return bool
      */
     public static function isDevelopmentIp($remoteAddress = '', $devIPmask = '')

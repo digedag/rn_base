@@ -1,4 +1,5 @@
 <?php
+
 namespace Sys25\RnBase\Controller;
 
 /***************************************************************
@@ -25,7 +26,7 @@ namespace Sys25\RnBase\Controller;
 ***************************************************************/
 
 /**
- * Abstract Controller
+ * Abstract Controller.
  *
  * Abstract methods to implement:
  *   - protected function doRequest() To start the Dance!
@@ -34,10 +35,10 @@ namespace Sys25\RnBase\Controller;
  * Per default a fluid Template is used, which has to be configured.
  * See https://github.com/digedag/rn_base/blob/master/Documentation/fe_plugins.md#fluid
  *
- * @package TYPO3
- * @subpackage Sys25\RnBase
  * @author Michael Waner
+ *
  * @deprecated use \Sys25\RnBase\Frontend\Controller\AbstractAction
+ *
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
@@ -51,11 +52,12 @@ abstract class AbstractController extends \tx_rnbase_action_BaseIOC
     }
 
     /**
-     * Wrapper method clean code
+     * Wrapper method clean code.
      *
      * @return string Errorstring or NULL
      */
     abstract protected function doRequest();
+
     /*
      * {
      * $parameters = $this->getParameters();
@@ -83,7 +85,7 @@ abstract class AbstractController extends \tx_rnbase_action_BaseIOC
      * Helper method to set some data directly to the view.
      *
      * @param string $name
-     * @param mixed $data
+     * @param mixed  $data
      *
      * @return $this
      */
@@ -95,7 +97,7 @@ abstract class AbstractController extends \tx_rnbase_action_BaseIOC
     }
 
     /**
-     * Just a wraper for Tx_Rnbase_Configuration_ProcessorInterface::get
+     * Just a wraper for Tx_Rnbase_Configuration_ProcessorInterface::get.
      *
      * The configuration id of this controller will be prefixed.
      *
@@ -105,6 +107,6 @@ abstract class AbstractController extends \tx_rnbase_action_BaseIOC
      */
     protected function getConfigurationValue($confId)
     {
-        return $this->getConfigurations()->get($this->getConfId() . $confId);
+        return $this->getConfigurations()->get($this->getConfId().$confId);
     }
 }

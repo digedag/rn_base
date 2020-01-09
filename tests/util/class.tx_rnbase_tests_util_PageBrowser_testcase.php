@@ -134,6 +134,7 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTest
 
     /**
      * @dataProvider dataProviderGetPointer
+     *
      * @param int $pointer
      * @param int $expectedPointer
      */
@@ -181,7 +182,7 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTest
     }
 
     /**
-     * @param int $pointer
+     * @param int  $pointer
      * @param bool $pageMarkedAsNotFound
      * @param bool $ignorePageNotFound
      * @group unit

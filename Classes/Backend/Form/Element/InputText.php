@@ -27,15 +27,12 @@ use TYPO3\CMS\Backend\Form\NodeFactory;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
-
 /**
- * Rendert ein einfaches Input-Field
+ * Rendert ein einfaches Input-Field.
  */
 class Tx_Rnbase_Backend_Form_Element_InputText extends AbstractFormElement
 {
     /**
-     *
      * @param array $data not used right now!
      */
     public function __construct(NodeFactory $nodeFactory, array $data)
@@ -73,10 +70,10 @@ class Tx_Rnbase_Backend_Form_Element_InputText extends AbstractFormElement
                 $attributes['data-date-type'] = 'date';
             }
             if (isset($config['range']['lower'])) {
-                $attributes['data-date-minDate'] = (int)$config['range']['lower'];
+                $attributes['data-date-minDate'] = (int) $config['range']['lower'];
             }
             if (isset($config['range']['upper'])) {
-                $attributes['data-date-maxDate'] = (int)$config['range']['upper'];
+                $attributes['data-date-maxDate'] = (int) $config['range']['upper'];
             }
             $icon = 'actions-edit-pick-date';
         } elseif (in_array('time', $evalList)) {
@@ -102,8 +99,8 @@ class Tx_Rnbase_Backend_Form_Element_InputText extends AbstractFormElement
         $attributes['id'] = StringUtility::getUniqueId('formengine-input-');
         $attributes['value'] = '';
 
-        if (isset($config['max']) && (int)$config['max'] > 0) {
-            $attributes['maxlength'] = (int)$config['max'];
+        if (isset($config['max']) && (int) $config['max'] > 0) {
+            $attributes['maxlength'] = (int) $config['max'];
         }
         if (!empty($classes)) {
             $attributes['class'] = implode(' ', $classes);
@@ -111,19 +108,19 @@ class Tx_Rnbase_Backend_Form_Element_InputText extends AbstractFormElement
 
         $attributeString = '';
         foreach ($attributes as $attributeName => $attributeValue) {
-            $attributeString .= ' ' . $attributeName . '="' . htmlspecialchars($attributeValue) . '"';
+            $attributeString .= ' '.$attributeName.'="'.htmlspecialchars($attributeValue).'"';
         }
 
         //$width = (int)$this->formMaxWidth($size);
         $width = $GLOBALS['TBE_TEMPLATE']->formWidth($width);
         $html = '
          <input type="text"'
-                . $attributeString
-                . $width
-        . ' />';
+                .$attributeString
+                .$width
+        .' />';
 
         // This is the ACTUAL form field - values from the EDITABLE field must be transferred to this field which is the one that is written to the database.
-        $html .= '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" />';
+        $html .= '<input type="hidden" name="'.$name.'" value="'.htmlspecialchars($value).'" />';
 
         if ($icon) {
             $html .= Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon($icon);

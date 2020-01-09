@@ -1,4 +1,5 @@
 <?php
+
 namespace Sys25\RnBase\Frontend\Request;
 
 /***************************************************************
@@ -24,14 +25,13 @@ namespace Sys25\RnBase\Frontend\Request;
 * This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-/**
- */
 class Parameters extends \ArrayObject implements ParametersInterface
 {
     private $qualifier = '';
 
     /**
-     * Initialize this instance for a plugin
+     * Initialize this instance for a plugin.
+     *
      * @param string $qualifier
      */
     public function init($qualifier)
@@ -41,14 +41,17 @@ class Parameters extends \ArrayObject implements ParametersInterface
         $parametersArray = $this->getParametersPlain($qualifier);
         \tx_rnbase_util_Arrays::overwriteArray($this, $parametersArray);
     }
+
     public function setQualifier($qualifier)
     {
         $this->qualifier = $qualifier;
     }
+
     public function getQualifier()
     {
         return $this->qualifier;
     }
+
     public function get($paramName, $qualifier = '')
     {
         if ($qualifier) {
@@ -62,9 +65,10 @@ class Parameters extends \ArrayObject implements ParametersInterface
     }
 
     /**
-     * removes xss from the value
+     * removes xss from the value.
      *
      * @param string $field
+     *
      * @return string
      */
     public function getCleaned($paramName, $qualifier = '')
@@ -77,30 +81,34 @@ class Parameters extends \ArrayObject implements ParametersInterface
 
         return $value;
     }
+
     /**
-     * Liefert den Parameter-Wert als int
+     * Liefert den Parameter-Wert als int.
      *
      * @param string $paramName
      * @param string $qualifier
+     *
      * @return int
      */
     public function getInt($paramName, $qualifier = '')
     {
         return intval($this->get($paramName, $qualifier));
     }
+
     private function getParametersPlain($qualifier)
     {
         $parametersArray = self::getPostAndGetParametersMerged($qualifier);
 
         return $parametersArray;
     }
+
     public function getAll($qualifier = '')
     {
         $ret = array();
         $qualifier = $qualifier ? $qualifier : $this->getQualifier();
         $params = $this->getParametersPlain($qualifier);
         foreach ($params as $key => $value) {
-            $key = ($key{0} === 'N' && substr($key, 0, 3) === 'NK_') ? substr($key, 3) : $key;
+            $key = ('N' === $key[0] && 'NK_' === substr($key, 0, 3)) ? substr($key, 3) : $key;
             if (is_string($value)) {
                 $ret[$key] = $value;
             }
@@ -113,7 +121,8 @@ class Parameters extends \ArrayObject implements ParametersInterface
      * @see \TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged
      *
      * @param string $parameter Key (variable name) from GET or POST vars
-     * @return array|string Returns the GET vars merged recursively onto the POST vars.
+     *
+     * @return array|string returns the GET vars merged recursively onto the POST vars
      */
     public static function getPostAndGetParametersMerged($parameterName)
     {
@@ -126,7 +135,8 @@ class Parameters extends \ArrayObject implements ParametersInterface
      * @see \TYPO3\CMS\Core\Utility\GeneralUtility::_GP
      *
      * @param string $parameter Key (variable name) from GET or POST vars
-     * @return array|string Returns the GET vars merged recursively onto the POST vars.
+     *
+     * @return array|string returns the GET vars merged recursively onto the POST vars
      */
     public static function getPostOrGetParameter($parameterName)
     {
@@ -138,9 +148,8 @@ class Parameters extends \ArrayObject implements ParametersInterface
     /**
      * @see \TYPO3\CMS\Core\Utility\GeneralUtility::_GETset
      *
-     * @param mixed $inputGet
+     * @param mixed  $inputGet
      * @param string $key
-     * @return void
      */
     public static function setGetParameter($inputGet, $key = '')
     {

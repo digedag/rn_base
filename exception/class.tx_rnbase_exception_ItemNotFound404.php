@@ -34,6 +34,7 @@ tx_rnbase::load('Tx_Rnbase_Exception_PageNotFound404');
  * ausgegeben wird.
  *
  * @author Hannes Bochmann <dev@dmk-ebusiness.de>
+ *
  * @deprecated use Tx_Rnbase_Exception_ItemNotFound404
  */
 class tx_rnbase_exception_ItemNotFound404 extends Tx_Rnbase_Exception_PageNotFound404

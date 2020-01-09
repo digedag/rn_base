@@ -23,16 +23,14 @@
  ***************************************************************/
 
 /**
- * Repository Interface for searching
+ * Repository Interface for searching.
  *
- * @package TYPO3
- * @subpackage Tx_Rnbase
  * @author Michael Wagner
  */
 interface Tx_Rnbase_Domain_Repository_InterfaceSearch
 {
     /**
-     * Search repository
+     * Search repository.
      *
      * @param array $fields
      * @param array $options

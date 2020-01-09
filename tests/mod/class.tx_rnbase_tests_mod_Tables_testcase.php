@@ -38,7 +38,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
     private $currentRequestUri;
 
     /**
-     * Initialisiert allgemeine Testdaten
+     * Initialisiert allgemeine Testdaten.
      */
     public function setUp()
     {
@@ -52,13 +52,11 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
             $GLOBALS['LOCAL_LANG']['default']['Header Col1'] = 'Header Col1';
         }
 
-        $this-> backupAndSetCurrentRequestUri();
+        $this->backupAndSetCurrentRequestUri();
 
         $this->resetIndependentEnvironmentCache();
     }
 
-    /**
-     */
     protected function tearDown()
     {
         $this->restoreCurrentRequestUri();
@@ -68,19 +66,14 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
      * Auf der CLI ist keine URL vorhanden und somit ist auch
      * nicht die normale BE URL vorhanden, welche für die Sortlinks benötigt wird.
      * Also setzen wir die URL einfach fest damit die Tests auch auf der CLI laufen.
-     *
-     * @return void
      */
     private function backupAndSetCurrentRequestUri()
     {
-        $this->currentRequestUri =  $_SERVER['REQUEST_URI'];
+        $this->currentRequestUri = $_SERVER['REQUEST_URI'];
         $commonBeUrl = '/typo3/mod.php?M=tools_txphpunitbeM1';
         $_SERVER['REQUEST_URI'] = $commonBeUrl;
     }
 
-    /**
-     * @return void
-     */
     private function restoreCurrentRequestUri()
     {
         $_SERVER['REQUEST_URI'] = $this->currentRequestUri;
@@ -96,11 +89,11 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
         $aEntries = array(
                 0 => tx_rnbase::makeInstance('tx_rnbase_model_base', array(
                         'uid' => 1,
-                        'col1' => 'col1 Value 1'
+                        'col1' => 'col1 Value 1',
                 )),
                 1 => tx_rnbase::makeInstance('tx_rnbase_model_base', array(
                         'uid' => 2,
-                        'col1' => 'col1 Value 2'
+                        'col1' => 'col1 Value 2',
                 )),
         );
         $aColumns = array(
@@ -109,7 +102,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
                 ),
                 'col1' => array(
                         'title' => 'Header Col1',
-                )
+                ),
         );
         $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, array());
 
@@ -139,11 +132,11 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
         $aEntries = array(
                 0 => array(
                         'uid' => 1,
-                        'col1' => 'col1 Value 1'
+                        'col1' => 'col1 Value 1',
                 ),
                 1 => array(
                         'uid' => 2,
-                        'col1' => 'col1 Value 2'
+                        'col1' => 'col1 Value 2',
                 ),
         );
         $aColumns = array(
@@ -152,7 +145,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
                 ),
                 'col1' => array(
                         'title' => 'Header Col1',
-                )
+                ),
         );
         $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, array());
 
@@ -186,11 +179,11 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
         $aEntries = array(
                 0 => tx_rnbase::makeInstance('tx_rnbase_model_base', array(
                         'uid' => 1,
-                        'col1' => 'col1 Value 1'
+                        'col1' => 'col1 Value 1',
                 )),
                 1 => tx_rnbase::makeInstance('tx_rnbase_model_base', array(
                         'uid' => 2,
-                        'col1' => 'col1 Value 2'
+                        'col1' => 'col1 Value 2',
                 )),
         );
         $aColumns = array(
@@ -201,7 +194,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
                 'col1' => array(
                         'title' => 'Header Col1',
                         'decorator' => &$oDecorator,
-                )
+                ),
         );
         $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, array());
 
@@ -229,11 +222,11 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
         $aEntries = array(
                 0 => array(
                         'uid' => 1,
-                        'col1' => 'col1 Value 1'
+                        'col1' => 'col1 Value 1',
                 ),
                 1 => array(
                         'uid' => 2,
-                        'col1' => 'col1 Value 2'
+                        'col1' => 'col1 Value 2',
                 ),
         );
         $aColumns = array(
@@ -243,7 +236,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
                 ),
                 'col1' => array(
                         'title' => 'Header Col1',
-                )
+                ),
         );
         $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, array());
         //allgmein
@@ -273,11 +266,11 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
         $aEntries = array(
                 0 => array(
                         'uid' => 1,
-                        'col1' => 'col1 Value 1'
+                        'col1' => 'col1 Value 1',
                 ),
                 1 => array(
                         'uid' => 2,
-                        'col1' => 'col1 Value 2'
+                        'col1' => 'col1 Value 2',
                 ),
         );
         $aColumns = array(
@@ -287,7 +280,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
                 ),
                 'col1' => array(
                         'title' => 'Header Col1',
-                )
+                ),
         );
         $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, array());
 
@@ -324,11 +317,11 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
         $aEntries = array(
                 0 => array(
                         'uid' => 1,
-                        'col1' => 'col1 Value 1'
+                        'col1' => 'col1 Value 1',
                 ),
                 1 => array(
                         'uid' => 2,
-                        'col1' => 'col1 Value 2'
+                        'col1' => 'col1 Value 2',
                 ),
         );
         $aColumns = array(
@@ -338,7 +331,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
                 ),
                 'col1' => array(
                         'title' => 'Header Col1',
-                )
+                ),
         );
         $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, array());
 
@@ -377,11 +370,11 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
         $aEntries = array(
                 0 => array(
                         'uid' => 1,
-                        'col1' => 'col1 Value 1'
+                        'col1' => 'col1 Value 1',
                 ),
                 1 => array(
                         'uid' => 2,
-                        'col1' => 'col1 Value 2'
+                        'col1' => 'col1 Value 2',
                 ),
         );
         $aColumns = array(
@@ -391,7 +384,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
                 ),
                 'col1' => array(
                         'title' => 'Header Col1',
-                )
+                ),
         );
         $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, array());
 

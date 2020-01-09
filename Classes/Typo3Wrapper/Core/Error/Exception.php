@@ -3,7 +3,7 @@
 namespace Sys25\RnBase\Typo3Wrapper\Core\Error;
 
 /**
- *  Copyright notice
+ *  Copyright notice.
  *
  *  (c) 2016 Hannes Bochmann <rene@system25.de>
  *  All rights reserved
@@ -26,11 +26,8 @@ namespace Sys25\RnBase\Typo3Wrapper\Core\Error;
  */
 
 /**
+ * Wrapper für TYPO3\CMS\Core\Error\Exception seit TYPO3 6.x.
  *
- * Wrapper für TYPO3\CMS\Core\Error\Exception seit TYPO3 6.x
- *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann <rene@system25.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later

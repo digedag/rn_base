@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2016 René Nitzsche <rene@system25.de>
  * All rights reserved
@@ -23,21 +23,18 @@
  */
 
 /**
- * Logger utility
+ * Logger utility.
  *
  * Usage:
  *  Tx_Rnbase_Utility_Logger::warning('ext_key', 'logger warning');
  *  Tx_Rnbase_Utility_Logger::getLogger('ext_key')->emergency('logger emergency');
  *
- * @package TYPO3
- * @subpackage Tx_Rnbase
  * @author Michael Wagner
  */
 final class Tx_Rnbase_Utility_Logger
 {
-
     /**
-     * The TYPO3 log manager
+     * The TYPO3 log manager.
      *
      * @return \TYPO3\CMS\Core\Log\LogManager
      */
@@ -49,7 +46,7 @@ final class Tx_Rnbase_Utility_Logger
     }
 
     /**
-     * The logger for the specivic extension
+     * The logger for the specivic extension.
      *
      * @param string $extKey
      *
@@ -63,9 +60,9 @@ final class Tx_Rnbase_Utility_Logger
     /**
      * Shortcut to log an EMERGENCY record.
      *
-     * @param string $extkey Extensionkey or logger name.
-     * @param string $message Log message.
-     * @param array $data Additional data to log
+     * @param string $extkey  extensionkey or logger name
+     * @param string $message log message
+     * @param array  $data    Additional data to log
      *
      * @return \TYPO3\CMS\Core\Log\Logger $this
      */
@@ -77,9 +74,9 @@ final class Tx_Rnbase_Utility_Logger
     /**
      * Shortcut to log an ALERT record.
      *
-     * @param string $extkey Extensionkey or logger name.
-     * @param string $message Log message.
-     * @param array $data Additional data to log
+     * @param string $extkey  extensionkey or logger name
+     * @param string $message log message
+     * @param array  $data    Additional data to log
      *
      * @return \TYPO3\CMS\Core\Log\Logger $this
      */
@@ -91,9 +88,9 @@ final class Tx_Rnbase_Utility_Logger
     /**
      * Shortcut to log a CRITICAL record.
      *
-     * @param string $extkey Extensionkey or logger name.
-     * @param string $message Log message.
-     * @param array $data Additional data to log
+     * @param string $extkey  extensionkey or logger name
+     * @param string $message log message
+     * @param array  $data    Additional data to log
      *
      * @return \TYPO3\CMS\Core\Log\Logger $this
      */
@@ -105,9 +102,9 @@ final class Tx_Rnbase_Utility_Logger
     /**
      * Shortcut to log an ERROR record.
      *
-     * @param string $extkey Extensionkey or logger name.
-     * @param string $message Log message.
-     * @param array $data Additional data to log
+     * @param string $extkey  extensionkey or logger name
+     * @param string $message log message
+     * @param array  $data    Additional data to log
      *
      * @return \TYPO3\CMS\Core\Log\Logger $this
      */
@@ -119,9 +116,9 @@ final class Tx_Rnbase_Utility_Logger
     /**
      * Shortcut to log a WARNING record.
      *
-     * @param string $extkey Extensionkey or logger name.
-     * @param string $message Log message.
-     * @param array $data Additional data to log
+     * @param string $extkey  extensionkey or logger name
+     * @param string $message log message
+     * @param array  $data    Additional data to log
      *
      * @return \TYPO3\CMS\Core\Log\Logger $this
      */
@@ -133,9 +130,9 @@ final class Tx_Rnbase_Utility_Logger
     /**
      * Shortcut to log a NOTICE record.
      *
-     * @param string $extkey Extensionkey or logger name.
-     * @param string $message Log message.
-     * @param array $data Additional data to log
+     * @param string $extkey  extensionkey or logger name
+     * @param string $message log message
+     * @param array  $data    Additional data to log
      *
      * @return \TYPO3\CMS\Core\Log\Logger $this
      */
@@ -147,9 +144,9 @@ final class Tx_Rnbase_Utility_Logger
     /**
      * Shortcut to log an INFORMATION record.
      *
-     * @param string $extkey Extensionkey or logger name.
-     * @param string $message Log message.
-     * @param array $data Additional data to log
+     * @param string $extkey  extensionkey or logger name
+     * @param string $message log message
+     * @param array  $data    Additional data to log
      *
      * @return \TYPO3\CMS\Core\Log\Logger $this
      */
@@ -161,9 +158,9 @@ final class Tx_Rnbase_Utility_Logger
     /**
      * Shortcut to log a DEBUG record.
      *
-     * @param string $extkey Extensionkey or logger name.
-     * @param string $message Log message.
-     * @param array $data Additional data to log
+     * @param string $extkey  extensionkey or logger name
+     * @param string $message log message
+     * @param array  $data    Additional data to log
      *
      * @return \TYPO3\CMS\Core\Log\Logger $this
      */

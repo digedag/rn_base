@@ -105,7 +105,7 @@ class Tx_Rnbase_Domain_Model_BaseTest extends tx_rnbase_tests_BaseTestCase
                 array(
                     'uid' => '57',
                     'field' => 'test',
-                )
+                ),
             )
         );
         $model->expects($this->once())
@@ -125,7 +125,6 @@ class Tx_Rnbase_Domain_Model_BaseTest extends tx_rnbase_tests_BaseTestCase
         );
         self::assertSame(57, $model->getUid(), 'uid field not used');
     }
-
 
     public function testGetUidForTranslatedSingleRecord()
     {
@@ -149,6 +148,7 @@ class Tx_Rnbase_Domain_Model_BaseTest extends tx_rnbase_tests_BaseTestCase
         );
         self::assertSame(0, $model->getSysLanguageUid());
     }
+
     public function testGetSysLanguageUidWithLanguageFieldInTca()
     {
         /* @var $model Tx_Rnbase_Domain_Model_Base */
@@ -236,11 +236,13 @@ class Tx_Rnbase_Domain_Model_BaseTest extends tx_rnbase_tests_BaseTestCase
         $model = $this->getModel(array('uid' => 57), 'Tx_Rnbase_Domain_Model_Base');
         $this->assertFalse($model->isValid());
     }
+
     public function testIsValidShouldBeTrueForOnlyTitle()
     {
         $model = $this->getModel(array('title' => 'foo'), 'Tx_Rnbase_Domain_Model_Base');
         $this->assertTrue($model->isValid());
     }
+
     public function testIsValidShouldBeTrueForUidAndTitle()
     {
         $model = $this->getModel(array('uid' => 57, 'title' => 'foo'), 'Tx_Rnbase_Domain_Model_Base');

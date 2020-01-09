@@ -26,18 +26,20 @@ tx_rnbase::load('tx_rnbase_util_TYPO3');
 tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
- * Contains some helpful methods for file handling
+ * Contains some helpful methods for file handling.
  */
 class tx_rnbase_util_Files
 {
     /**
      * Returns content of a file. If it's an image the content of the file is not returned but rather an image tag is.
      * This method is taken from tslib_content
-     * TODO: cache result
+     * TODO: cache result.
      *
      * @param string The filename, being a TypoScript resource data type or a FAL-Reference (file:123)
      * @param string Additional parameters (attributes). Default is empty alt and title tags.
+     *
      * @return string If jpg,gif,jpeg,png: returns image_tag with picture in. If html,txt: returns content string
+     *
      * @see FILE()
      */
     public static function getFileResource($fName, $options = array())
@@ -48,8 +50,8 @@ class tx_rnbase_util_Files
         }
         if (self::isFALReference($fName)) {
             /**
- * @var FileRepository $fileRepository
-*/
+             * @var FileRepository
+             */
             $fileRepository = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Resource\FileRepository');
             $fileObject = $fileRepository->findByUid(intval(substr($fName, 5)));
             $incFile = is_object($fileObject) ? $fileObject->getForLocalProcessing(false) : false;
@@ -81,11 +83,11 @@ class tx_rnbase_util_Files
 
     /**
      * Returns the reference to a 'resource' in TypoScript.
-     * This could be from the filesystem if '/' is found in the value $fileFromSetup, else from the resource-list
+     * This could be from the filesystem if '/' is found in the value $fileFromSetup, else from the resource-list.
      *
-     * @param string $file TypoScript "resource" data type value.
+     * @param string $file typoScript "resource" data type value
      *
-     * @return string Resulting filename, if any.
+     * @return string resulting filename, if any
      */
     public static function getFileName($file)
     {
@@ -101,11 +103,13 @@ class tx_rnbase_util_Files
     {
         return Tx_Rnbase_Utility_Strings::isFirstPartOfStr($fName, 'file:');
     }
+
     /**
      * Returns the 'border' attribute for an <img> tag only if the doctype is not xhtml_strict,xhtml_11 or xhtml_2 or if the config parameter 'disableImgBorderAttr' is not set.
-     * This method is taken from tslib_content
+     * This method is taken from tslib_content.
      *
      * @param string the border attribute
+     *
      * @return string the border attribute
      */
     private static function getBorderAttr($borderAttr)
@@ -118,15 +122,18 @@ class tx_rnbase_util_Files
 
     /**
      * Check if a file exists and is readable within TYPO3.
+     *
      * @param   string File name
-     * @return string File name with absolute path or FALSE.
+     *
+     * @return string file name with absolute path or FALSE
+     *
      * @throws Exception
      */
     public static function checkFile($fName)
     {
         $absFile = self::getFileAbsFileName($fName);
         if (!(self::isAllowedAbsPath($absFile) && @is_file($absFile))) {
-            throw new Exception('File not found: ' . $fName);
+            throw new Exception('File not found: '.$fName);
         }
         if (!@is_readable($absFile)) {
             throw new Exception('File is not readable: '.$absFile);
@@ -143,10 +150,11 @@ class tx_rnbase_util_Files
      * the \Sys25\RnBase\Utility\Environment::getPublicPath() of the TYPO3 installation and implies a check with
      * \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr().
      *
-     * @param string $filename The input filename/filepath to evaluate
-     * @param bool $onlyRelative If $onlyRelative is set (which it is by default), then only return values relative to the current \Sys25\RnBase\Utility\Environment::getPublicPath() is accepted.
-     * @param bool $relToTYPO3_mainDir If $relToTYPO3_mainDir is set, then relative paths are relative to PATH_typo3 constant - otherwise (default) they are relative to \Sys25\RnBase\Utility\Environment::getPublicPath()
-     * @return string Returns the absolute filename of $filename if valid, otherwise blank string.
+     * @param string $filename           The input filename/filepath to evaluate
+     * @param bool   $onlyRelative       if $onlyRelative is set (which it is by default), then only return values relative to the current \Sys25\RnBase\Utility\Environment::getPublicPath() is accepted
+     * @param bool   $relToTYPO3_mainDir If $relToTYPO3_mainDir is set, then relative paths are relative to PATH_typo3 constant - otherwise (default) they are relative to \Sys25\RnBase\Utility\Environment::getPublicPath()
+     *
+     * @return string returns the absolute filename of $filename if valid, otherwise blank string
      */
     public static function getFileAbsFileName($fName, $onlyRelative = true, $relToTYPO3_mainDir = false)
     {
@@ -154,20 +162,21 @@ class tx_rnbase_util_Files
 
         return $utility::getFileAbsFileName($fName, $onlyRelative, $relToTYPO3_mainDir);
     }
+
     /**
      * Append file on directory
-     * http://stackoverflow.com/a/15575293
+     * http://stackoverflow.com/a/15575293.
      */
     public static function join()
     {
         $paths = array();
         foreach (func_get_args() as $arg) {
-            if ($arg !== '') {
+            if ('' !== $arg) {
                 $paths[] = $arg;
             }
         }
 
-        return preg_replace('#/+#', '/', join('/', $paths));
+        return preg_replace('#/+#', '/', implode('/', $paths));
     }
 
     /**
@@ -178,7 +187,8 @@ class tx_rnbase_util_Files
      * Der Dateiuname wird optional in Kleinbuchstaben umgewandelt.
      *
      * @param string $name
-     * @param bool $forceLowerCase
+     * @param bool   $forceLowerCase
+     *
      * @return string
      */
     public static function cleanupFileName($name, $forceLowerCase = true)
@@ -196,12 +206,14 @@ class tx_rnbase_util_Files
 
         return $forceLowerCase ? strtolower($cleaned) : $cleaned;
     }
+
     /**
-     * Create a zip-archive from a list of files
+     * Create a zip-archive from a list of files.
      *
-     * @param array $files
+     * @param array  $files
      * @param string $destination full path of zip file
-     * @param bool $overwrite
+     * @param bool   $overwrite
+     *
      * @return bool TRUE, if zip file was created
      */
     public static function makeZipFile($files = array(), $destination = '', $overwrite = false)
@@ -236,7 +248,7 @@ class tx_rnbase_util_Files
 
         //create the archive
         $zip = new ZipArchive();
-        if ($zip->open($destination, $overwrite ? ZipArchive::OVERWRITE : ZipArchive::CREATE) !== true) {
+        if (true !== $zip->open($destination, $overwrite ? ZipArchive::OVERWRITE : ZipArchive::CREATE)) {
             return false;
         }
         //add the files
@@ -253,14 +265,12 @@ class tx_rnbase_util_Files
     }
 
     /**
-     * Wrapper of mkdir_deep for the various TYPO3 Versions
+     * Wrapper of mkdir_deep for the various TYPO3 Versions.
      *
      * (non-PHPdoc)
      *
      * @see t3lib_div::mkdir_deep()
      * @see TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep()
-     *
-     * @return void
      */
     public static function mkdir_deep($directory, $deepDirectory = '')
     {
@@ -270,15 +280,16 @@ class tx_rnbase_util_Files
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
      *
      * @see t3lib_div::writeFile()
      * @see TYPO3\CMS\Core\Utility\GeneralUtility::writeFile()
      *
-     * @param string $file Filepath to write to
-     * @param string $content Content to write
-     * @param bool $changePermissions If TRUE, permissions are forced to be set
-     * @return bool TRUE if the file was successfully opened and written to.
+     * @param string $file              Filepath to write to
+     * @param string $content           Content to write
+     * @param bool   $changePermissions If TRUE, permissions are forced to be set
+     *
+     * @return bool TRUE if the file was successfully opened and written to
      */
     public static function writeFile($file, $content, $changePermissions = false)
     {
@@ -288,13 +299,14 @@ class tx_rnbase_util_Files
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
      *
      * @see t3lib_div::writeFile()
      * @see TYPO3\CMS\Core\Utility\GeneralUtility::writeFile()
      *
-     * @param string $path Absolute path to folder, see PHP rmdir() function. Removes trailing slash internally.
-     * @param bool $removeNonEmpty Allow deletion of non-empty directories
+     * @param string $path           Absolute path to folder, see PHP rmdir() function. Removes trailing slash internally.
+     * @param bool   $removeNonEmpty Allow deletion of non-empty directories
+     *
      * @return bool TRUE if @rmdir went well!
      */
     public static function rmdir($path, $removeNonEmpty = false)
@@ -305,12 +317,13 @@ class tx_rnbase_util_Files
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
      *
      * @see t3lib_div::isAbsPath()
      * @see TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath()
      *
      * @param string $path File path to evaluate
+     *
      * @return bool
      */
     public static function isAbsPath($path)
@@ -321,12 +334,13 @@ class tx_rnbase_util_Files
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
      *
      * @see t3lib_div::isAllowedAbsPath()
      * @see TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath()
      *
      * @param string $path File path to evaluate
+     *
      * @return bool
      */
     public static function isAllowedAbsPath($path)

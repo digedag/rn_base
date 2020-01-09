@@ -36,27 +36,25 @@
  *         return $storage->getUser();
  *     }
  *
- * @package TYPO3
- * @subpackage rn_base
  * @author Michael Wagner
  */
 trait Tx_Rnbase_Domain_Model_StorageTrait
 {
     /**
-     * The storage
+     * The storage.
      *
      * @var Tx_Rnbase_Domain_Model_Data
      */
     private $storage = null;
 
     /**
-     * Returns a storage
+     * Returns a storage.
      *
      * @return Tx_Rnbase_Domain_Model_Data
      */
     protected function getStorage()
     {
-        if ($this->storage === null) {
+        if (null === $this->storage) {
             $this->storage = tx_rnbase::makeInstance(
                 'Tx_Rnbase_Domain_Model_Data'
             );

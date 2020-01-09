@@ -22,12 +22,9 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
- * parameters testcase
+ * parameters testcase.
  *
- * @package tx_rnbase
- * @subpackage tx_rnbase_tests
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_rnbase_tests_parameters_testcase extends tx_rnbase_tests_BaseTestCase

@@ -1,7 +1,8 @@
 <?php
+
 use Sys25\RnBase\Frontend\Filter\Utility\Category;
 
-/**
+/*
  * @package TYPO3
  * @subpackage tx_myext
  * @author Hannes Bochmann <hannes.bochmann@das-medienkombinat.de>
@@ -30,17 +31,14 @@ use Sys25\RnBase\Frontend\Filter\Utility\Category;
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
 /**
- * tx_rnbase_tests_filter_BaseFilter_testcase
+ * tx_rnbase_tests_filter_BaseFilter_testcase.
  *
- * @package         TYPO3
- * @subpackage      tx_rnbase
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
      * @group unit
      */
@@ -57,7 +55,6 @@ class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTes
         );
     }
 
-
     /**
      * @group unit
      * @dataProvider dataProviderInitReturnsCorrectValue
@@ -72,7 +69,7 @@ class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTes
             array(
                 &$parameters,
                 &$configurations,
-                'myList.filter.'
+                'myList.filter.',
             )
         );
         $filter

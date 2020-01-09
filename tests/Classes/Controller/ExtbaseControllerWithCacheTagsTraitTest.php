@@ -1,4 +1,5 @@
 <?php
+
 namespace Sys25\RnBase\Controller\Extbase;
 
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -27,19 +28,17 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Controller\Extbase$CacheTagsTraitTest
+ * Sys25\RnBase\Controller\Extbase$CacheTagsTraitTest.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class ExtbaseControllerWithCacheTagsTraitTest extends \tx_rnbase_tests_BaseTestCase
 {
-
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see \PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()
@@ -52,7 +51,8 @@ class ExtbaseControllerWithCacheTagsTraitTest extends \tx_rnbase_tests_BaseTestC
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see \PHPUnit_Framework_TestCase::tearDown()
      */
     protected function tearDown()
@@ -76,9 +76,9 @@ class ExtbaseControllerWithCacheTagsTraitTest extends \tx_rnbase_tests_BaseTestC
                     'action' => [
                         0 => 'firstTag',
                         1 => 'secondTag',
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ];
         $property = new \ReflectionProperty(ActionController::class, 'settings');
         $property->setAccessible(true);
@@ -124,9 +124,9 @@ class ExtbaseControllerWithCacheTagsTraitTest extends \tx_rnbase_tests_BaseTestC
                     'otherAction' => [
                         0 => 'firstTag',
                         1 => 'secondTag',
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ];
         $property = new \ReflectionProperty(ActionController::class, 'settings');
         $property->setAccessible(true);

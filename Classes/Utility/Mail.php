@@ -25,8 +25,6 @@
 /**
  * Encapsulate simple mailing functionality of TYPO3 for backward compatibility.
  *
- * @package TYPO3
- * @subpackage Tx_Rnbase
  * @author René Nitzsche
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
@@ -34,20 +32,24 @@
 class Tx_Rnbase_Utility_Mail
 {
     protected $attachments = array();
+
     protected $from;
+
     protected $fromName;
+
     protected $replyTo;
+
     protected $replyToName;
+
     protected $to = array();
 
-    /**
-     */
     public function __construct()
     {
     }
 
     /**
      * @param string $subject
+     *
      * @return Tx_Rnbase_Utility_Mail
      */
     public function setSubject($subject)
@@ -59,6 +61,7 @@ class Tx_Rnbase_Utility_Mail
 
     /**
      * comma separated list of mailaddresses.
+     *
      * @param string $emailAsString
      */
     public function setTo($emailAsString)
@@ -69,10 +72,11 @@ class Tx_Rnbase_Utility_Mail
             $this->to[$mailAddress] = '';
         }
     }
+
     /**
-     *
      * @param string $email
      * @param string $name
+     *
      * @return Tx_Rnbase_Utility_Mail
      */
     public function addTo($email, $name = '')
@@ -83,9 +87,9 @@ class Tx_Rnbase_Utility_Mail
     }
 
     /**
-     *
      * @param string $email
      * @param string $name
+     *
      * @return Tx_Rnbase_Utility_Mail
      */
     public function setFrom($email, $name = '')
@@ -95,10 +99,11 @@ class Tx_Rnbase_Utility_Mail
 
         return $this;
     }
+
     /**
-     *
      * @param string $email
      * @param string $name
+     *
      * @return Tx_Rnbase_Utility_Mail
      */
     public function setReplyTo($email, $name = null)
@@ -108,9 +113,10 @@ class Tx_Rnbase_Utility_Mail
 
         return $this;
     }
+
     /**
-     *
      * @param string $part
+     *
      * @return Tx_Rnbase_Utility_Mail
      */
     public function setTextPart($part)
@@ -119,9 +125,10 @@ class Tx_Rnbase_Utility_Mail
 
         return $this;
     }
+
     /**
-     *
      * @param string $part
+     *
      * @return Tx_Rnbase_Utility_Mail
      */
     public function setHtmlPart($part)
@@ -130,11 +137,12 @@ class Tx_Rnbase_Utility_Mail
 
         return $this;
     }
+
     /**
-     *
      * @param string $src
      * @param string $filename
      * @param string $contentType
+     *
      * @return Tx_Rnbase_Utility_Mail
      */
     public function addAttachment($src, $filename = '', $contentType = '')
@@ -145,8 +153,7 @@ class Tx_Rnbase_Utility_Mail
     }
 
     /**
-     *
-     * @return integer the number of recipients who were accepted for delivery
+     * @return int the number of recipients who were accepted for delivery
      */
     public function send()
     {
@@ -185,6 +192,7 @@ class Tx_Rnbase_Utility_Mail
 
         return $this->sendMessage($mail);
     }
+
     protected function sendMessage($mail)
     {
         return $mail->send();

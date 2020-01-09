@@ -36,10 +36,14 @@ if (!tx_rnbase_util_Extensions::isLoaded('wec_map')) {
 class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap
 {
     public static $PROVID = 'GOOGLEMAPS';
+
     public static $mapTypes = array();
+
     /* @var $map \JBartels\WecMap\MapService\Google\Map */
     private $map;
+
     private $conf;
+
     private $confId;
 
     public function init(Tx_Rnbase_Configuration_ProcessorInterface $conf, $confId)
@@ -69,6 +73,7 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap
             }
         }
     }
+
     public function initTypes(tx_rnbase_maps_TypeRegistry $registry)
     {
         $registry->addType($this, RNMAP_MAPTYPE_STREET, 'G_NORMAL_MAP');
@@ -76,16 +81,19 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap
         $registry->addType($this, RNMAP_MAPTYPE_HYBRID, 'G_HYBRID_MAP');
         $registry->addType($this, RNMAP_MAPTYPE_PHYSICAL, 'G_PHYSICAL_MAP');
     }
+
     /**
-     * Set a map type
+     * Set a map type.
+     *
      * @param string $mapType map specific type string
      */
     public function setMapType($mapType)
     {
         $this->getWecMap()->setType($mapType);
     }
+
     /**
-     * Adds a control
+     * Adds a control.
      *
      * @param tx_rnbase_maps_IControl $control
      */
@@ -95,7 +103,8 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap
     }
 
     /**
-     * Adds a marker to this map
+     * Adds a marker to this map.
+     *
      * @param tx_rnbase_maps_IMarker $marker
      */
     public function addMarker(tx_rnbase_maps_IMarker $marker)
@@ -135,14 +144,17 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap
             $iconName
         );
     }
+
     public function draw()
     {
         $code = $this->map->drawMap();
 
         return $code;
     }
+
     /**
-     * Returns an instance of wec map
+     * Returns an instance of wec map.
+     *
      * @return tx_wecmap_map_google
      */
     public function getWecMap()
@@ -159,6 +171,7 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap
     {
         return self::$PROVID;
     }
+
     public function getMapName()
     {
         return $this->getWecMap()->mapName;

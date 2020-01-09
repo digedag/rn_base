@@ -25,10 +25,8 @@
 tx_rnbase::load('Tx_Rnbase_Domain_Repository_AbstractRepository');
 
 /**
- * Test for abstract repository
+ * Test for abstract repository.
  *
- * @package TYPO3
- * @subpackage Tx_Rnbase
  * @author Michael Wagner
  */
 class Tx_Rnbase_Domain_Repository_AbstractRepositoryTest extends tx_rnbase_tests_BaseTestCase
@@ -36,6 +34,7 @@ class Tx_Rnbase_Domain_Repository_AbstractRepositoryTest extends tx_rnbase_tests
     protected function setUp()
     {
     }
+
     protected function tearDown()
     {
     }
@@ -71,7 +70,7 @@ class Tx_Rnbase_Domain_Repository_AbstractRepositoryTest extends tx_rnbase_tests
             array(array('enablefieldsoff' => true), array('enablefieldsoff' => true)),
             array(array('enablefieldsbe' => true), array('enablefieldsbe' => true)),
             array(array('enablefieldsfe' => true), array('enablefieldsfe' => true)),
-            array(array(), array('enablefieldsbe' => true))
+            array(array(), array('enablefieldsbe' => true)),
         );
     }
 
@@ -259,6 +258,7 @@ class Tx_Rnbase_Domain_Repository_AbstractRepositoryTest extends tx_rnbase_tests
 
     /**
      * @param array $mockedMethods
+     *
      * @return Tx_Rnbase_Repository_AbstractRepository
      */
     private function getRepositoryMock($mockedMethods = array())

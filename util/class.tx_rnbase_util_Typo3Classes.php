@@ -24,10 +24,8 @@
 
 /**
  * Get a class name independent of the TYPO3 Version. The API
- * of the desired class should be the same
+ * of the desired class should be the same.
  *
- * @package TYPO3
- * @subpackage rn_base
  * @author Hannes Bochmann
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
@@ -35,6 +33,7 @@
 class tx_rnbase_util_Typo3Classes
 {
     const LOWER6 = 'lower6';
+
     const HIGHER6 = 'higher6';
 
     /**
@@ -44,7 +43,7 @@ class tx_rnbase_util_Typo3Classes
     {
         return self::getClassByCurrentTypo3Version(array(
             self::LOWER6 => 't3lib_FlashMessage',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Messaging\\FlashMessage'
+            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
         ));
     }
 
@@ -55,7 +54,7 @@ class tx_rnbase_util_Typo3Classes
     {
         return self::getClassByCurrentTypo3Version(array(
             self::LOWER6 => 't3lib_tceforms',
-            self::HIGHER6 => 'TYPO3\\CMS\\Backend\\Form\\FormEngine'
+            self::HIGHER6 => 'TYPO3\\CMS\\Backend\\Form\\FormEngine',
         ));
     }
 
@@ -66,7 +65,7 @@ class tx_rnbase_util_Typo3Classes
     {
         return self::getClassByCurrentTypo3Version(array(
             self::LOWER6 => 't3lib_basicFileFunctions',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility'
+            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility',
         ));
     }
 
@@ -77,7 +76,7 @@ class tx_rnbase_util_Typo3Classes
     {
         return self::getClassByCurrentTypo3Version(array(
             self::LOWER6 => 't3lib_tsparser_ext',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService'
+            self::HIGHER6 => 'TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService',
         ));
     }
 
@@ -88,7 +87,7 @@ class tx_rnbase_util_Typo3Classes
     {
         return self::getClassByCurrentTypo3Version(array(
             self::LOWER6 => 'tslib_cObj',
-            self::HIGHER6 => 'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'
+            self::HIGHER6 => 'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer',
         ));
     }
 
@@ -99,7 +98,7 @@ class tx_rnbase_util_Typo3Classes
     {
         return self::getClassByCurrentTypo3Version(array(
             self::LOWER6 => 'tslib_fe',
-            self::HIGHER6 => 'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController'
+            self::HIGHER6 => 'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
         ));
     }
 
@@ -110,7 +109,7 @@ class tx_rnbase_util_Typo3Classes
     {
         return self::getClassByCurrentTypo3Version(array(
             self::LOWER6 => 'tslib_feUserAuth',
-            self::HIGHER6 => 'TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication'
+            self::HIGHER6 => 'TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication',
         ));
     }
 
@@ -121,7 +120,7 @@ class tx_rnbase_util_Typo3Classes
     {
         return self::getClassByCurrentTypo3Version(array(
             self::LOWER6 => 't3lib_cs',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Charset\\CharsetConverter'
+            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Charset\\CharsetConverter',
         ));
     }
 
@@ -132,7 +131,7 @@ class tx_rnbase_util_Typo3Classes
     {
         return self::getClassByCurrentTypo3Version(array(
             self::LOWER6 => 't3lib_tcemain',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\DataHandling\\DataHandler'
+            self::HIGHER6 => 'TYPO3\\CMS\\Core\\DataHandling\\DataHandler',
         ));
     }
 
@@ -143,9 +142,10 @@ class tx_rnbase_util_Typo3Classes
     {
         return self::getClassByCurrentTypo3Version(array(
             self::LOWER6 => 't3lib_SpriteManager',
-            self::HIGHER6 => 'TYPO3\\CMS\Backend\\Sprite\\SpriteManager'
+            self::HIGHER6 => 'TYPO3\\CMS\Backend\\Sprite\\SpriteManager',
         ));
     }
+
     /**
      * @return \TYPO3\CMS\Core\TimeTracker\TimeTracker
      */
@@ -167,8 +167,10 @@ class tx_rnbase_util_Typo3Classes
 
         return new TYPO3\CMS\Core\TimeTracker\TimeTracker($enabled);
     }
+
     /**
      * @deprecated use getTimeTracker
+     *
      * @return string|TYPO3\CMS\Core\TimeTracker\NullTimeTracker
      */
     public static function getTimeTrackClass()
@@ -183,7 +185,7 @@ class tx_rnbase_util_Typo3Classes
 
         return self::getClassByCurrentTypo3Version(array(
             self::LOWER6 => 't3lib_timeTrack',
-            self::HIGHER6 => $higher6Class
+            self::HIGHER6 => $higher6Class,
         ));
     }
 
@@ -194,7 +196,7 @@ class tx_rnbase_util_Typo3Classes
     {
         return self::getClassByCurrentTypo3Version(array(
             self::LOWER6 => 't3lib_exec',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Utility\\CommandUtility'
+            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Utility\\CommandUtility',
         ));
     }
 
@@ -205,7 +207,7 @@ class tx_rnbase_util_Typo3Classes
     {
         return self::getClassByCurrentTypo3Version(array(
             self::LOWER6 => 't3lib_mail_Message',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Mail\\MailMessage'
+            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Mail\\MailMessage',
         ));
     }
 
@@ -216,19 +218,20 @@ class tx_rnbase_util_Typo3Classes
     {
         return self::getClassByCurrentTypo3Version(array(
             self::LOWER6 => 't3lib_parsehtml',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Html\\HtmlParser'
+            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Html\\HtmlParser',
         ));
     }
 
     /**
      * @return string|TYPO3\CMS\Core\Utility\GeneralUtility
+     *
      * @see Tx_Rnbase_Utility_T3General for better usage
      */
     public static function getGeneralUtilityClass()
     {
         return self::getClassByCurrentTypo3Version(array(
             self::LOWER6 => 't3lib_div',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Utility\\GeneralUtility'
+            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Utility\\GeneralUtility',
         ));
     }
 
@@ -239,7 +242,7 @@ class tx_rnbase_util_Typo3Classes
     {
         return self::getClassByCurrentTypo3Version(array(
             self::LOWER6 => 't3lib_TSparser',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser'
+            self::HIGHER6 => 'TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser',
         ));
     }
 
@@ -250,7 +253,7 @@ class tx_rnbase_util_Typo3Classes
     {
         return self::getClassByCurrentTypo3Version(array(
             self::LOWER6 => 'template',
-            self::HIGHER6 => 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate'
+            self::HIGHER6 => 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate',
         ));
     }
 
@@ -261,7 +264,7 @@ class tx_rnbase_util_Typo3Classes
     {
         return self::getClassByCurrentTypo3Version(array(
             self::LOWER6 => 't3lib_TStemplate',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\TypoScript\\TemplateService'
+            self::HIGHER6 => 'TYPO3\\CMS\\Core\\TypoScript\\TemplateService',
         ));
     }
 
@@ -272,7 +275,7 @@ class tx_rnbase_util_Typo3Classes
     {
         return self::getClassByCurrentTypo3Version(array(
             self::LOWER6 => 't3lib_utility_Http',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Utility\\HttpUtility'
+            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Utility\\HttpUtility',
         ));
     }
 
@@ -283,7 +286,7 @@ class tx_rnbase_util_Typo3Classes
     {
         return self::getClassByCurrentTypo3Version(array(
             self::LOWER6 => 'mediumDoc',
-            self::HIGHER6 => 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate'
+            self::HIGHER6 => 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate',
         ));
     }
 
@@ -294,7 +297,7 @@ class tx_rnbase_util_Typo3Classes
     {
         return self::getClassByCurrentTypo3Version(array(
             self::LOWER6 => 't3lib_l10n_parser_Llxml',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Localization\\Parser\\LocallangXmlParser'
+            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Localization\\Parser\\LocallangXmlParser',
         ));
     }
 
@@ -305,7 +308,7 @@ class tx_rnbase_util_Typo3Classes
     {
         return self::getClassByCurrentTypo3Version(array(
             self::LOWER6 => 't3lib_userAuth',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication'
+            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication',
         ));
     }
 
@@ -316,7 +319,7 @@ class tx_rnbase_util_Typo3Classes
     {
         return self::getClassByCurrentTypo3Version(array(
             self::LOWER6 => 't3lib_rteapi',
-            self::HIGHER6 => 'TYPO3\\CMS\\Backend\\Rte\\AbstractRte'
+            self::HIGHER6 => 'TYPO3\\CMS\\Backend\\Rte\\AbstractRte',
         ));
     }
 
@@ -327,7 +330,7 @@ class tx_rnbase_util_Typo3Classes
     {
         return self::getClassByCurrentTypo3Version(array(
             self::LOWER6 => 't3lib_sqlparser',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Database\\SqlParser'
+            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Database\\SqlParser',
         ));
     }
 
@@ -338,7 +341,7 @@ class tx_rnbase_util_Typo3Classes
     {
         return self::getClassByCurrentTypo3Version(array(
             self::LOWER6 => 't3lib_tsfeBeUserAuth',
-            self::HIGHER6 => 'TYPO3\\CMS\\Backend\\FrontendBackendUserAuthentication'
+            self::HIGHER6 => 'TYPO3\\CMS\\Backend\\FrontendBackendUserAuthentication',
         ));
     }
 
@@ -349,7 +352,7 @@ class tx_rnbase_util_Typo3Classes
     {
         return self::getClassByCurrentTypo3Version(array(
             self::LOWER6 => 't3lib_beUserAuth',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication'
+            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication',
         ));
     }
 
@@ -360,7 +363,7 @@ class tx_rnbase_util_Typo3Classes
     {
         return self::getClassByCurrentTypo3Version(array(
             self::LOWER6 => 'tslib_eidtools',
-            self::HIGHER6 => 'TYPO3\\CMS\\Frontend\\Utility\\EidUtility'
+            self::HIGHER6 => 'TYPO3\\CMS\\Frontend\\Utility\\EidUtility',
         ));
     }
 
@@ -374,6 +377,7 @@ class tx_rnbase_util_Typo3Classes
 
     /**
      * @param array $possibleClasses
+     *
      * @return string
      */
     protected static function getClassByCurrentTypo3Version(array $possibleClasses)

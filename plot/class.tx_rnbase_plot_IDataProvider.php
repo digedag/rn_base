@@ -25,28 +25,32 @@
 // Die Datenbank-Klasse
 
 /**
- * This interface defines a data provider for plots
+ * This interface defines a data provider for plots.
  */
 interface tx_rnbase_plot_IDataProvider
 {
     /**
-     * Returns the data sets
+     * Returns the data sets.
+     *
      * @param $confArr
      * @param string $plotType
+     *
      * @return tx_rnbase_plot_IDataSet
      */
     public function getDataSets($confArr, $plotType);
 
     /**
      * Returns the style for each data set. This is either an instance of tx_pbimagegraph_Fill_Array or
-     * a simple php array with style data
+     * a simple php array with style data.
+     *
      * @param $confArr
+     *
      * @return tx_pbimagegraph_Fill_Array or array
      */
     public function getDataStyles($plotId, $confArr);
 
     /**
-     * Returns the chartTitle
+     * Returns the chartTitle.
      */
     public function getChartTitle($confArr);
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  *  (c) 2007-2015 Rene Nitzsche (rene@system25.de)
  * All rights reserved
@@ -21,24 +21,17 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  */
-
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_rnbase_model_data');
 
 /**
- * tests for tx_rnbase_mod_linker_ShowDetails
+ * tests for tx_rnbase_mod_linker_ShowDetails.
  *
- * @package TYPO3
- * @subpackage tx_rnbase
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_rnbase_tests_mod_linker_ShowDetails_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
-     *
-     * @return void
-     *
      * @group unit
      * @test
      */
@@ -52,9 +45,6 @@ class tx_rnbase_tests_mod_linker_ShowDetails_testcase extends tx_rnbase_tests_Ba
     }
 
     /**
-     *
-     * @return void
-     *
      * @group unit
      * @test
      */
@@ -64,8 +54,7 @@ class tx_rnbase_tests_mod_linker_ShowDetails_testcase extends tx_rnbase_tests_Ba
             null,
             array(
                 'show_details_key' => 'showPage',
-                'show_details_label' => 'Page Details'
-
+                'show_details_label' => 'Page Details',
             )
         );
         // check the name of the submit button!
@@ -75,9 +64,9 @@ class tx_rnbase_tests_mod_linker_ShowDetails_testcase extends tx_rnbase_tests_Ba
     }
 
     /**
-     *
-     * @param tx_rnbase_model_base $model
+     * @param tx_rnbase_model_base       $model
      * @param array|tx_rnbase_model_data $options
+     *
      * @return string
      */
     protected function makeLink($model = null, $options = null)

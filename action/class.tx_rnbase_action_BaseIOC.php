@@ -20,12 +20,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-
 tx_rnbase::load('tx_rnbase_util_Misc');
 tx_rnbase::load('tx_rnbase_util_Debug');
 tx_rnbase::load('tx_rnbase_util_Templates');
 tx_rnbase::load('tx_rnbase_util_Strings');
-
 
 /**
  * Abstract base class for an action. This action is build to implement the
@@ -38,8 +36,6 @@ tx_rnbase::load('tx_rnbase_util_Strings');
  *
  * This class works with PHP5 only!
  *
- * @package TYPO3
- * @subpackage tx_rnbase
  * @author Rene Nitzsche <rene@system25.de>
  * @author Michael Wagner <michael.wagner@dmk-ebusines.de>
  */
@@ -48,7 +44,7 @@ abstract class tx_rnbase_action_BaseIOC
     private $configurations = null;
 
     /**
-     * @param Sys25\RnBase\Frontend\Request\Parameters $parameters
+     * @param Sys25\RnBase\Frontend\Request\Parameters   $parameters
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
      *
      * @return string
@@ -60,7 +56,7 @@ abstract class tx_rnbase_action_BaseIOC
 
         $debug = (
             $debugKey && (
-            $debugKey === '1' ||
+            '1' === $debugKey ||
                 ($_GET['debug'] && array_key_exists($debugKey, array_flip(tx_rnbase_util_Strings::trimExplode(',', $_GET['debug'])))) ||
                 ($_POST['debug'] && array_key_exists($debugKey, array_flip(tx_rnbase_util_Strings::trimExplode(',', $_POST['debug']))))
         )
@@ -69,11 +65,11 @@ abstract class tx_rnbase_action_BaseIOC
             $time = microtime(true);
             $memStart = memory_get_usage();
         }
-        if ($configurations->getBool($this->getConfId() . 'toUserInt')) {
+        if ($configurations->getBool($this->getConfId().'toUserInt')) {
             if ($debug) {
                 tx_rnbase_util_Debug::debug(
                     'Converting to USER_INT!',
-                    'View statistics for: ' . $this->getConfId(). ' Key: ' . $debugKey
+                    'View statistics for: '.$this->getConfId().' Key: '.$debugKey
                 );
             }
             $configurations->convertToUserInt();
@@ -85,14 +81,14 @@ abstract class tx_rnbase_action_BaseIOC
         $out = $cacheHandler ? $cacheHandler->getOutput() : '';
         $cached = !empty($out);
         if (!$cached) {
-            $viewData =& $configurations->getViewData();
+            $viewData = &$configurations->getViewData();
             tx_rnbase_util_Misc::pushTT(get_class($this), 'handleRequest');
             $out = $this->handleRequest($parameters, $configurations, $viewData);
             tx_rnbase_util_Misc::pullTT();
             if (!$out) {
                 // View
                 // It is possible to set another view via typoscript
-                $viewClassName = $configurations->get($this->getConfId() . 'viewClassName');
+                $viewClassName = $configurations->get($this->getConfId().'viewClassName');
                 $viewClassName = strlen($viewClassName) > 0 ? $viewClassName : $this->getViewClassName();
                 // TODO: error handling...
                 $view = tx_rnbase::makeInstance($viewClassName);
@@ -129,7 +125,7 @@ abstract class tx_rnbase_action_BaseIOC
                 'Cached?' => $cached ? 'yes' : 'no',
                 'CacheHandler' => is_object($cacheHandler) ? get_class($cacheHandler) : '',
                 'SubstCacheEnabled?' => tx_rnbase_util_Templates::isSubstCacheEnabled() ? 'yes' : 'no',
-            ), 'View statistics for: '.$this->getConfId(). ' Key: ' . $debugKey);
+            ), 'View statistics for: '.$this->getConfId().' Key: '.$debugKey);
         }
         // reset the substCache after each view!
         tx_rnbase_util_Templates::resetSubstCache();
@@ -139,7 +135,7 @@ abstract class tx_rnbase_action_BaseIOC
 
     /**
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param string $confId
+     * @param string                                     $confId
      */
     protected function addResources($configurations, $confId)
     {
@@ -150,10 +146,10 @@ abstract class tx_rnbase_action_BaseIOC
             $pageRenderer->addJsFooterFile(
                 $file,
                 'text/javascript',
-                !$configurations->getBool($confId . 'includeJSFooter.' . $javaScriptConfId . '.dontCompress'),
+                !$configurations->getBool($confId.'includeJSFooter.'.$javaScriptConfId.'.dontCompress'),
                 false,
                 '',
-                $configurations->getBool($confId . 'includeJSFooter.' . $javaScriptConfId . '.excludeFromConcatenation')
+                $configurations->getBool($confId.'includeJSFooter.'.$javaScriptConfId.'.excludeFromConcatenation')
             );
         }
 
@@ -175,7 +171,7 @@ abstract class tx_rnbase_action_BaseIOC
                     false,
                     false,
                     '',
-                    boolval($configurations->get($confId . $javascriptLibraryKey . '.' . $javaScriptConfId . '.external'))
+                    boolval($configurations->get($confId.$javascriptLibraryKey.'.'.$javaScriptConfId.'.external'))
                 );
             }
         }
@@ -192,6 +188,7 @@ abstract class tx_rnbase_action_BaseIOC
 
     /**
      * @param string $includePartConfId
+     *
      * @return array
      */
     protected function getJavaScriptFilesByIncludePartConfId($includePartConfId)
@@ -199,12 +196,12 @@ abstract class tx_rnbase_action_BaseIOC
         $configurations = $this->getConfigurations();
         $confId = $this->getConfId();
 
-        $javaScriptConfIds = $configurations->getKeyNames($confId . $includePartConfId . '.');
+        $javaScriptConfIds = $configurations->getKeyNames($confId.$includePartConfId.'.');
         $files = array();
         if (is_array($javaScriptConfIds)) {
             foreach ($javaScriptConfIds as $javaScriptConfId) {
-                $file = $configurations->get($confId . $includePartConfId . '.' . $javaScriptConfId);
-                if (!$configurations->get($confId . $includePartConfId . '.' . $javaScriptConfId . '.external')) {
+                $file = $configurations->get($confId.$includePartConfId.'.'.$javaScriptConfId);
+                if (!$configurations->get($confId.$includePartConfId.'.'.$javaScriptConfId.'.external')) {
                     $file = tx_rnbase_util_Files::getFileName($file);
                 }
 
@@ -216,15 +213,18 @@ abstract class tx_rnbase_action_BaseIOC
     }
 
     /**
-     * Returns configurations object
+     * Returns configurations object.
+     *
      * @return Tx_Rnbase_Configuration_ProcessorInterface
      */
     public function getConfigurations()
     {
         return $this->configurations;
     }
+
     /**
-     * Returns configurations object
+     * Returns configurations object.
+     *
      * @return Tx_Rnbase_Configuration_ProcessorInterface
      */
     public function setConfigurations(Tx_Rnbase_Configuration_ProcessorInterface $configurations)
@@ -233,7 +233,7 @@ abstract class tx_rnbase_action_BaseIOC
     }
 
     /**
-     * Returns request parameters
+     * Returns request parameters.
      *
      * @return tx_rnbase_IParameters
      */
@@ -243,7 +243,7 @@ abstract class tx_rnbase_action_BaseIOC
     }
 
     /**
-     * Returns view data
+     * Returns view data.
      *
      * @return ArrayObject
      */
@@ -256,7 +256,8 @@ abstract class tx_rnbase_action_BaseIOC
      * Find a configured cache handler.
      *
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param string $confId
+     * @param string                                     $confId
+     *
      * @return tx_rnbase_action_ICacheHandler
      */
     protected function getCacheHandler($configurations, $confId)
@@ -266,7 +267,7 @@ abstract class tx_rnbase_action_BaseIOC
             return null;
         }
 
-        $class = $configurations->get($confId  .'class');
+        $class = $configurations->get($confId.'class');
         if (!$class) {
             return false;
         }
@@ -274,9 +275,7 @@ abstract class tx_rnbase_action_BaseIOC
         /* @var $handler tx_rnbase_action_ICacheHandler */
         $handler = tx_rnbase::makeInstance($class);
         if (!$handler instanceof tx_rnbase_action_ICacheHandler) {
-            throw new Exception(
-                '"' . $class . '" has to implement "tx_rnbase_action_ICacheHandler".'
-            );
+            throw new Exception('"'.$class.'" has to implement "tx_rnbase_action_ICacheHandler".');
         }
 
         $handler->init($this, $confId);
@@ -284,79 +283,84 @@ abstract class tx_rnbase_action_BaseIOC
         return $handler;
     }
 
-    /**
-     * @return void
-     */
     protected function addCacheTags()
     {
-        if ($cacheTags = (array) $this->getConfigurations()->get($this->getConfId() . 'cacheTags.')) {
+        if ($cacheTags = (array) $this->getConfigurations()->get($this->getConfId().'cacheTags.')) {
             tx_rnbase_util_TYPO3::getTSFE()->addCacheTags($cacheTags);
         }
     }
 
     /**
-     * Liefert die ConfId für den View
+     * Liefert die ConfId für den View.
+     *
      * @return string
      */
     public function getConfId()
     {
-        return $this->getTemplateName() . '.';
+        return $this->getTemplateName().'.';
     }
+
     /**
-     * Liefert den Pfad zum Template
+     * Liefert den Pfad zum Template.
      *
      * @return string
      */
     protected function getTemplateFile()
     {
         $file = $this->getConfigurations()->get(
-            $this->getConfId() . 'template.file',
+            $this->getConfId().'template.file',
             true
         );
 
         // check the old way
         if (empty($file)) {
             $file = $this->getConfigurations()->get(
-                $this->getTemplateName() . 'Template',
+                $this->getTemplateName().'Template',
                 true
             );
         }
 
         return $file;
     }
+
     /**
      * Liefert den Default-Namen des Templates. Über diesen Namen
      * wird per Konvention auch auf ein per TS konfiguriertes HTML-Template
      * geprüft. Dessen Key wird aus dem Name und dem String "Template"
-     * gebildet: [tmpname]Template
+     * gebildet: [tmpname]Template.
+     *
      * @return string
      */
     abstract protected function getTemplateName();
 
     /**
-     * Liefert den Namen der View-Klasse
+     * Liefert den Namen der View-Klasse.
+     *
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     *
      * @return string
      */
     abstract protected function getViewClassName();
+
     /**
      * Kindklassen führen ihr die eigentliche Arbeit durch. Zugriff auf das
-     * Backend und befüllen der viewdata
+     * Backend und befüllen der viewdata.
      *
-     * @param tx_rnbase_IParameters $parameters
+     * @param tx_rnbase_IParameters                      $parameters
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param ArrayObject $viewdata
+     * @param ArrayObject                                $viewdata
+     *
      * @return string|null Errorstring or NULL
      */
     abstract protected function handleRequest(&$parameters, &$configurations, &$viewdata);
-
 
     /**
      * Create a fully initialized link instance. Useful for controllers with formular handling.
      *
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param string $confId
-     * @param array $params
+     * @param string                                     $confId
+     * @param array                                      $params
+     *
      * @return \tx_rnbase_util_Link link instance
      */
     protected function createLink($configurations, $confId, $params = array())

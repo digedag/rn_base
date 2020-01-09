@@ -24,7 +24,7 @@
 
 tx_rnbase::load('tx_rnbase_util_Exception');
 /**
- * Default exception class
+ * Default exception class.
  */
 class tx_rnbase_util_db_Exception extends tx_rnbase_util_Exception
 {

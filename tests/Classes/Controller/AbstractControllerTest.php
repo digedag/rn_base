@@ -1,4 +1,5 @@
 <?php
+
 namespace Sys25\RnBase\Controller;
 
 use Sys25\RnBase\Configuration\Processor;
@@ -27,10 +28,8 @@ use Sys25\RnBase\Configuration\Processor;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Controller\Extbase$CacheTagsTraitTest
+ * Sys25\RnBase\Controller\Extbase$CacheTagsTraitTest.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
@@ -38,9 +37,8 @@ use Sys25\RnBase\Configuration\Processor;
 class AbstractControllerTest extends \tx_rnbase_tests_BaseTestCase
 {
     /**
-     * Test the handleRequest method
+     * Test the handleRequest method.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -67,9 +65,8 @@ class AbstractControllerTest extends \tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * Test the assignToView method
+     * Test the assignToView method.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -84,9 +81,8 @@ class AbstractControllerTest extends \tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * Test the getConfigurationValue method
+     * Test the getConfigurationValue method.
      *
-     * @return void
      *
      * @group unit
      * @test

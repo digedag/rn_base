@@ -1,4 +1,5 @@
 <?php
+
 namespace Sys25\RnBase\Fluid\ViewHelper\PageBrowser;
 
 use Sys25\RnBase\Fluid\ViewHelper\BaseViewHelperTest;
@@ -37,17 +38,14 @@ if (!\tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
 }
 
 /**
- * Sys25\RnBase\Fluid\ViewHelper\PageBrowser$PageBaseViewHelperTest
+ * Sys25\RnBase\Fluid\ViewHelper\PageBrowser$PageBaseViewHelperTest.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class PageBaseViewHelper_testcase extends BaseViewHelperTest
 {
-
     /**
      * @group integration
      * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
@@ -91,7 +89,8 @@ class PageBaseViewHelper_testcase extends BaseViewHelperTest
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see \Sys25\RnBase\Fluid\ViewHelper\BaseViewHelperTest::getPreparedVîewHelper()
      */
     protected function getPreparedVîewHelper($viewHelper, array $arguments = [])
@@ -117,7 +116,7 @@ class PageBaseViewHelper_testcase extends BaseViewHelperTest
             array(
                 'data-tagname' => 'a',
                 'additionalParams' => [],
-                'argumentsToBeExcludedFromQueryString' => []
+                'argumentsToBeExcludedFromQueryString' => [],
             )
         ));
 

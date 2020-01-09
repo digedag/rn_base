@@ -25,12 +25,10 @@
 tx_rnbase::load('tx_rnbase_model_media');
 
 /**
- *
  * @author Hannes Bochmann <hannes.bochmann@dmk-business.de>
  */
 class tx_rnbase_tests_model_Media_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
      * @group unit
      */
@@ -46,7 +44,7 @@ class tx_rnbase_tests_model_Media_testcase extends tx_rnbase_tests_BaseTestCase
                 'title' => 'sample picture reference',
                 'description' => 'this is a sample picture',
                 'otherField' => '/some/path',
-                'otherField2' => '/some/other/path'
+                'otherField2' => '/some/other/path',
             )));
 
         $mediaModel = tx_rnbase::makeInstance('tx_rnbase_model_media', $falModel);

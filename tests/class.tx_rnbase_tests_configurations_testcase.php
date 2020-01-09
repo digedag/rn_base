@@ -28,7 +28,7 @@ class tx_rnbase_tests_configurations_testcase extends tx_rnbase_tests_BaseTestCa
     public function test_tsSetup()
     {
         $GLOBALS['TSFE'] = new tx_rnbase_tsfeDummy();
-        $GLOBALS['TSFE']->tmpl->setup['lib.']['match.'] = array('limit' => '10' , 'count' => '99');
+        $GLOBALS['TSFE']->tmpl->setup['lib.']['match.'] = array('limit' => '10', 'count' => '99');
 
         $configurationArray['matchtable.']['match'] = '< lib.match';
         $configurationArray['matchtable.']['match.']['limit'] = '100';
@@ -39,6 +39,7 @@ class tx_rnbase_tests_configurations_testcase extends tx_rnbase_tests_BaseTestCa
         $this->assertEquals(100, $configurations->get('matchtable.match.limit'), 'Limit should be 100');
         $this->assertEquals(99, $configurations->get('matchtable.match.count'), 'count should be 99');
     }
+
     /**
      * Test flexform value with pointed keys.
      */
@@ -67,10 +68,10 @@ class tx_rnbase_tests_configurations_testcase extends tx_rnbase_tests_BaseTestCa
         $this->assertEquals('1', $configurations->get('view.dummy'), 'Dummy should be 1');
 
         $pid = $configurations->get('listview.fegroup.link.pid');
-        $this->assertEquals('25', $pid, 'PID from flexform should be 25 but was: ' . $pid);
+        $this->assertEquals('25', $pid, 'PID from flexform should be 25 but was: '.$pid);
 
         $pid = $configurations->get('detailview.feuser.link.pid');
-        $this->assertEquals('35', $pid, 'PID from flexform should be 35 but was: ' . $pid);
+        $this->assertEquals('35', $pid, 'PID from flexform should be 35 but was: '.$pid);
     }
 
     /**
@@ -83,7 +84,7 @@ class tx_rnbase_tests_configurations_testcase extends tx_rnbase_tests_BaseTestCa
      *  lib.rnbase.child = < lib.rnbase.root
      *  lib.rnbase.child {
      *      name = Child
-     *  }
+     *  }.
      */
     public function test_TsReference()
     {
@@ -103,7 +104,7 @@ class tx_rnbase_tests_configurations_testcase extends tx_rnbase_tests_BaseTestCa
         $configurationArray = array(
             'recursive' => '< lib.rnbase.child',
             'recursive.' => array(
-                'current' => 'This'
+                'current' => 'This',
             ),
         );
         $configurations->init($configurationArray, $configurations->getCObj(), 'rnbase', 'rnbase');
@@ -123,6 +124,7 @@ class tx_rnbase_tests_configurations_testcase extends tx_rnbase_tests_BaseTestCa
 class tx_rnbase_tsfeDummy
 {
     public $tmpl;
+
     public function __construct()
     {
         $this->tmpl = new tx_rnbase_templateDummy();

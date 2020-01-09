@@ -1,4 +1,5 @@
 <?php
+
 namespace Sys25\RnBase\Frontend\Request;
 
 use Sys25\RnBase\Configuration\ConfigurationInterface;
@@ -28,14 +29,16 @@ use Sys25\RnBase\Frontend\View\ContextInterface;
 * This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-/**
- */
 class Request implements RequestInterface
 {
     private $configurations = null;
+
     private $confId = null;
+
     private $parameters = null;
+
     private $viewContext = null;
+
     public function __construct(
         ParametersInterface $parameters,
         ConfigurationInterface $configurations,
@@ -46,6 +49,7 @@ class Request implements RequestInterface
         $this->parameters = $parameters;
         $this->viewContext = new ViewContext();
     }
+
     public function getConfigurations(): ConfigurationInterface
     {
         return $this->configurations;

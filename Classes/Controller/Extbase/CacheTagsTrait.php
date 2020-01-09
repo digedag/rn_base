@@ -1,4 +1,5 @@
 <?php
+
 namespace Sys25\RnBase\Controller\Extbase;
 
 /***************************************************************
@@ -25,34 +26,25 @@ namespace Sys25\RnBase\Controller\Extbase;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Controller\Extbase$CacheTagsTrait
+ * Sys25\RnBase\Controller\Extbase$CacheTagsTrait.
  *
  * When using this trait you can configure your cache tags like this through TypoScript
  * for the actions of a extbase controller:
  * plugin.ty_my_ext.settings.cacheTags.$lowerCamelCaseControllerNameOmittingController.$lowerCaseActionNameOmittingAction.0 = my_cache_tag
  * example for tx_news: plugin.tx_news.settings.cacheTags.news.detail.0 = my_cache_tag_for_the_news_detail_view
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 trait CacheTagsTrait
 {
-
-    /**
-     * @return void
-     */
     public function callActionMethod()
     {
         parent::callActionMethod();
         $this->handleCacheTags();
     }
 
-    /**
-     * @return void
-     */
     protected function handleCacheTags()
     {
         if ($cacheTags = $this->settings['cacheTags'][strtolower($this->request->getControllerName())][$this->request->getControllerActionName()]) {

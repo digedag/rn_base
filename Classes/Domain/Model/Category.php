@@ -1,4 +1,5 @@
 <?php
+
 namespace Sys25\RnBase\Domain\Model;
 
 /***************************************************************
@@ -25,19 +26,17 @@ namespace Sys25\RnBase\Domain\Model;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Domain\Model$CategoryRepository
+ * Sys25\RnBase\Domain\Model$CategoryRepository.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class Category extends \Tx_Rnbase_Domain_Model_Base
 {
-
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see Tx_Rnbase_Domain_Model_Base::getTableName()
      */
     public function getTableName()

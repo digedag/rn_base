@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
@@ -8,7 +9,6 @@ tx_rnbase_util_Extensions::addService(
     'mediaplayer' /* sv type */,
     'tx_rnbase_sv1_MediaPlayer' /* sv key */,
     array(
-
     'title' => 'Media Player',
     'description' => 'Playing DAM mediafiles based on DEW Flash-Player',
 

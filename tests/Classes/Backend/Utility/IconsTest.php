@@ -25,17 +25,14 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('Tx_Rnbase_Backend_Utility_Icons');
 
 /**
- * Tx_Rnbase_Backend_Utility_IconsTest
+ * Tx_Rnbase_Backend_Utility_IconsTest.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann <rene@system25.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class Tx_Rnbase_Backend_Utility_IconsTest extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
      * @group unit
      */
@@ -55,7 +52,6 @@ class Tx_Rnbase_Backend_Utility_IconsTest extends tx_rnbase_tests_BaseTestCase
 
 class Tx_Rnbase_Backend_Utility_IconsForTest extends Tx_Rnbase_Backend_Utility_Icons
 {
-
     /**
      * @return Typo3BackendUtilityClass
      */
@@ -70,7 +66,6 @@ class Tx_Rnbase_Backend_Utility_IconsForTest extends Tx_Rnbase_Backend_Utility_I
  */
 class Typo3BackendUtilityIconsClass
 {
-
     /**
      * @var array der key ist der methoden name, der value die übergebenen Parameter
      */
@@ -78,8 +73,7 @@ class Typo3BackendUtilityIconsClass
 
     /**
      * @param string $method
-     * @param array $arguments
-     * @return void
+     * @param array  $arguments
      */
     public static function __callStatic($method, $arguments)
     {

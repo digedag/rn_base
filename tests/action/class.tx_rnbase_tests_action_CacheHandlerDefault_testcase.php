@@ -26,15 +26,12 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_rnbase_action_CacheHandlerDefault');
 
 /**
- * tests for tx_rnbase_util_Templates
+ * tests for tx_rnbase_util_Templates.
  *
- * @package TYPO3
- * @subpackage tx_rnbase
  * @author Michael Wagner <michael.wagner@dmk-ebusines.de>
  */
 class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
      * @var array
      */
@@ -44,6 +41,7 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
     {
         $this->backup['_GET'] = $_GET;
     }
+
     public function tearDown()
     {
         $_GET = $this->backup['_GET'];
@@ -52,7 +50,6 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
     /**
      * getCacheName method test.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -67,10 +64,10 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
             )
         );
     }
+
     /**
      * getCacheName method test.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -85,10 +82,10 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
             )
         );
     }
+
     /**
      * getTimeout method test.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -103,10 +100,10 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
             )
         );
     }
+
     /**
      * getTimeout method test.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -121,10 +118,10 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
             )
         );
     }
+
     /**
      * getSalt method test.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -139,10 +136,10 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
             )
         );
     }
+
     /**
      * getSalt method test.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -157,10 +154,10 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
             )
         );
     }
+
     /**
      * getIcludeParams method test.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -169,24 +166,24 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
     {
         self::assertSame(
             array(
-                'myaction|uid'
+                'myaction|uid',
             ),
             $this->callInaccessibleMethod(
                 $this->getHandlerMock(
                     array(
                         'include.' => array(
-                            'params' => 'myaction|uid'
-                        )
+                            'params' => 'myaction|uid',
+                        ),
                     )
                 ),
                 'getIcludeParams'
             )
         );
     }
+
     /**
      * getIcludeParams method test.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -205,7 +202,6 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
     /**
      * getCache method test.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -226,7 +222,6 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
      *
      * @param string $initialKey
      * @param string $cleanedKey
-     * @return void
      *
      * @dataProvider getCleanupCacheKeyData
      * @group unit
@@ -270,7 +265,7 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
             ),
             __LINE__ => array(
                 'initialKey' => $s124,
-                'cleanedKey' => substr($s124, 0, 50 - 33) . '-' . md5($s124),
+                'cleanedKey' => substr($s124, 0, 50 - 33).'-'.md5($s124),
                 'config' => array('keylength' => 50),
             ),
         );
@@ -279,7 +274,6 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
     /**
      * getCacheKey method test.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -317,7 +311,6 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
     /**
      * getCacheKeyParts method test.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -328,8 +321,8 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
             array(
                 'salt' => 'wuerze',
                 'include.' => array(
-                    'params' => 'myext|uid'
-                )
+                    'params' => 'myext|uid',
+                ),
             )
         );
         // the get parameter for myext|uid
@@ -339,7 +332,6 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
             $handler,
             'getCacheKeyParts'
         );
-
 
         // at first position has to be a md5 hash
         // we could not test the validity.
@@ -378,8 +370,8 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
     }
 
     /**
-     *
      * @param array $config
+     *
      * @return PHPUnit_Framework_MockObject_MockObject|tx_rnbase_action_CacheHandlerDefault
      */
     protected function getHandlerMock(
@@ -400,7 +392,7 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
             array(
                 $confId => array(
                     '_caching.' => $config,
-                )
+                ),
             ),
             'rn_base',
             'rn_base',
@@ -414,7 +406,7 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
         $handler
             ->expects($this->any())
             ->method('getConfId')
-            ->will($this->returnValue($confId . '_caching.'));
+            ->will($this->returnValue($confId.'_caching.'));
 
         return $handler;
     }

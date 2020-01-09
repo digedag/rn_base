@@ -30,7 +30,6 @@
  */
 class tx_rnbase_util_DB
 {
-
     /**
      * @var string
      */
@@ -38,14 +37,14 @@ class tx_rnbase_util_DB
 
     /**
      * just a proxy method calling all static methods non statically in
-     * Tx_Rnbase_Database_Connection
+     * Tx_Rnbase_Database_Connection.
      *
      * @param string $name
-     * @param array $arguments
+     * @param array  $arguments
      *
      * @return mixed
      */
-    public static function __callstatic($name, $arguments)
+    public static function __callStatic($name, $arguments)
     {
         $databaseUtility = tx_rnbase::makeInstance(static::$databaseConnectionClass);
 

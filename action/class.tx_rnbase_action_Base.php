@@ -32,6 +32,7 @@ class tx_rnbase_action_Base
 
     /**
      * This is the starting point of request processing.
+     *
      * @param $parameters
      * @param $configurations
      */

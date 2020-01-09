@@ -22,15 +22,13 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
- * Common Interface for Controls
+ * Common Interface for Controls.
  */
 interface tx_rnbase_maps_IControl
 {
-
     /**
-     * Render this control
+     * Render this control.
      */
     public function render();
 }

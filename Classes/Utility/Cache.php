@@ -23,10 +23,8 @@
  ***************************************************************/
 
 /**
- * Tx_Rnbase_Utility_Cache
+ * Tx_Rnbase_Utility_Cache.
  *
- * @package         TYPO3
- * @subpackage      Tx_Rnbase
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
@@ -35,14 +33,13 @@ class Tx_Rnbase_Utility_Cache
 {
     /**
      * @param array $parameters
-     * @return void
      */
     public static function addExcludedParametersForCacheHash(array $parameters)
     {
         if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
-            $typo3ConfVarsEntry =& $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'];
+            $typo3ConfVarsEntry = &$GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'];
         } else {
-            $typo3ConfVarsEntry =& $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'];
+            $typo3ConfVarsEntry = &$GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'];
         }
         self::addConfigurationToCacheHashCalculator(
             $typo3ConfVarsEntry,
@@ -53,15 +50,13 @@ class Tx_Rnbase_Utility_Cache
 
     /**
      * @param array $parameters
-     *
-     * @return void
      */
     public static function addCacheHashRequiredParameters(array $parameters)
     {
         if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
-            $typo3ConfVarsEntry =& $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['requireCacheHashPresenceParameters'];
+            $typo3ConfVarsEntry = &$GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['requireCacheHashPresenceParameters'];
         } else {
-            $typo3ConfVarsEntry =& $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters'];
+            $typo3ConfVarsEntry = &$GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters'];
         }
         self::addConfigurationToCacheHashCalculator(
             $typo3ConfVarsEntry,
@@ -71,11 +66,9 @@ class Tx_Rnbase_Utility_Cache
     }
 
     /**
-     * @param mixed $typo3ConfVarsEntry
+     * @param mixed  $typo3ConfVarsEntry
      * @param string $cacheHashCalculatorInternalConfigurationKey
-     * @param array $configurationValue
-     *
-     * @return void
+     * @param array  $configurationValue
      */
     protected static function addConfigurationToCacheHashCalculator(
         &$typo3ConfVarsEntry,
@@ -87,7 +80,7 @@ class Tx_Rnbase_Utility_Cache
             if ($typo3ConfVarsEntry) {
                 $startingGlue = ',';
             }
-            $typo3ConfVarsEntry .= $startingGlue . join(',', $configurationValue);
+            $typo3ConfVarsEntry .= $startingGlue.implode(',', $configurationValue);
 
             $cacheHashCalculatorInternalConfiguration =
                 Tx_Rnbase_Utility_Strings::trimExplode(',', $typo3ConfVarsEntry, true);
@@ -98,12 +91,13 @@ class Tx_Rnbase_Utility_Cache
         /* @var \TYPO3\CMS\Frontend\Page\CacheHashCalculator $cacheHashCalculator */
         $cacheHashCalculator = \tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
         $cacheHashCalculator->setConfiguration(array(
-            $cacheHashCalculatorInternalConfigurationKey => $cacheHashCalculatorInternalConfiguration
+            $cacheHashCalculatorInternalConfigurationKey => $cacheHashCalculatorInternalConfiguration,
         ));
     }
 
     /**
      * @param string $urlQueryString Query-parameters: "&xxx=yyy&zzz=uuu
+     *
      * @return string Hash of all the values
      */
     public static function generateCacheHashForUrlQueryString($urlQueryString)
@@ -123,7 +117,7 @@ class Tx_Rnbase_Utility_Cache
     }
 
     /**
-     * Is mainly used as user function in TypoScript. Example:
+     * Is mainly used as user function in TypoScript. Example:.
      *
      * plugin.tt_news.stdWrap.postUserFunc = Tx_Rnbase_Utility_Cache->addCacheTagsToPage
      * plugin.tt_news.stdWrap.postUserFunc {
@@ -132,7 +126,7 @@ class Tx_Rnbase_Utility_Cache
      * }
      *
      * @param string $content
-     * @param array $cacheTags
+     * @param array  $cacheTags
      *
      * @return string
      */

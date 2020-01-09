@@ -1,4 +1,5 @@
 <?php
+
 namespace Sys25\RnBase\Frontend\View\Marker;
 
 use Sys25\RnBase\Frontend\Request\RequestInterface;
@@ -30,14 +31,13 @@ use Sys25\RnBase\Frontend\View\AbstractView;
 * This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-/**
- */
 class BaseView extends AbstractView implements ViewInterface
 {
     protected $subpart;
 
     /**
      * @param RequestInterface $request
+     *
      * @return string
      */
     public function render($view, RequestInterface $request)
@@ -47,20 +47,20 @@ class BaseView extends AbstractView implements ViewInterface
         $templateCode = \tx_rnbase_util_Files::getFileResource($this->getTemplate($view, '.html'));
         if (!strlen($templateCode)) {
             \tx_rnbase::load('tx_rnbase_util_Misc');
-            \tx_rnbase_util_Misc::mayday('TEMPLATE NOT FOUND: ' . $this->getTemplate($view, '.html'));
+            \tx_rnbase_util_Misc::mayday('TEMPLATE NOT FOUND: '.$this->getTemplate($view, '.html'));
         }
 
         // Die ViewData bereitstellen
         $viewData = $request->getViewContext();
 
         // Optional kann schon ein Subpart angegeben werden
-        $this->subpart = $configurations->get($request->getConfId() . 'template.subpart');
+        $this->subpart = $configurations->get($request->getConfId().'template.subpart');
         $subpart = $this->getMainSubpart($viewData);
         if (!empty($subpart)) {
             $templateCode = \tx_rnbase_util_Templates::getSubpart($templateCode, $subpart);
             if (!strlen($templateCode)) {
                 \tx_rnbase::load('tx_rnbase_util_Misc');
-                \tx_rnbase_util_Misc::mayday('SUBPART NOT FOUND: ' . $subpart);
+                \tx_rnbase_util_Misc::mayday('SUBPART NOT FOUND: '.$subpart);
             }
         }
 
@@ -96,10 +96,11 @@ class BaseView extends AbstractView implements ViewInterface
     }
 
     /**
-     * render plugin data and additional flexdata
+     * render plugin data and additional flexdata.
      *
-     * @param string $templateCode
+     * @param string           $templateCode
      * @param RequestInterface $request
+     *
      * @return string
      */
     protected function renderPluginData(
@@ -120,7 +121,7 @@ class BaseView extends AbstractView implements ViewInterface
             (array) $configurations->getCObj()->data,
             // add some aditional columns, for example from the flexform od typoscript directly
             $configurations->getExploded(
-                $confId . 'plugin.flexdata.'
+                $confId.'plugin.flexdata.'
             )
         );
         // check for unused columns
@@ -132,7 +133,7 @@ class BaseView extends AbstractView implements ViewInterface
         // create the marker array with the parsed columns
         $markerArray = $configurations->getFormatter()->getItemMarkerArrayWrapped(
             $pluginData,
-            $confId . 'plugin.',
+            $confId.'plugin.',
             $ignoreColumns,
             'PLUGIN_'
         );
@@ -141,10 +142,10 @@ class BaseView extends AbstractView implements ViewInterface
     }
 
     /**
-     * Entry point for child classes
+     * Entry point for child classes.
      *
-     * @param string $template
-     * @param RequestInterface $configurations
+     * @param string                     $template
+     * @param RequestInterface           $configurations
      * @param \tx_rnbase_util_FormatUtil $formatter
      */
     protected function createOutput($template, RequestInterface $request, $formatter)

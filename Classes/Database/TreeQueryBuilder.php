@@ -25,25 +25,23 @@
 tx_rnbase::load('Tx_Rnbase_Database_Connection');
 
 /**
- * methods for generating queries on a hierarchical tree structure
+ * methods for generating queries on a hierarchical tree structure.
  *
  * Tx_Rnbase_Database_TreeQueryBuilder
  *
- * @package           TYPO3
- * @subpackage        rn_base
  * @author            <mario.seidel> <mario.seidel@dmk-ebusines.de
  */
 class Tx_Rnbase_Database_TreeQueryBuilder
 {
     /**
-     * returns an array of pids from a page tree
+     * returns an array of pids from a page tree.
      *
      * @param int|string $id      start page
      * @param array      $options additional options:
-     *                              tableName: which table is to be used (default: pages)
-     *                              depth: how many levels are descended in the page tree
-     *                               (default: 999)
-     *                              begin: at which level do we start (default: 0)
+     *                            tableName: which table is to be used (default: pages)
+     *                            depth: how many levels are descended in the page tree
+     *                            (default: 999)
+     *                            begin: at which level do we start (default: 0)
      *
      * @return array
      *
@@ -64,7 +62,7 @@ class Tx_Rnbase_Database_TreeQueryBuilder
 
     /**
      * returns an array of tree-like assigned entities like a pagetree
-     * but could also handle any other hierarchical db structure
+     * but could also handle any other hierarchical db structure.
      *
      * @param int|string $id      id or list of ids comma separated
      * @param int        $depth
@@ -72,23 +70,24 @@ class Tx_Rnbase_Database_TreeQueryBuilder
      * @param array      $options All options except "where" are forwarded to "doSelect"
      *                            directly. The parentField (pid) will be added to the where
      *                            clausle automaticly. additional options:
-     *                              tableName: what table should be used (required)
-     *                              parentField: the field where the parent id is stored
-     *                               (default: pid)
-     *                              idField: the field of the identifier that will be returned
-     *                               (default: uid)
+     *                            tableName: what table should be used (required)
+     *                            parentField: the field where the parent id is stored
+     *                            (default: pid)
+     *                            idField: the field of the identifier that will be returned
+     *                            (default: uid)
      *
      * @return array
+     *
      * @throws Exception
      */
     public function getTreeUidListRecursive($id, $depth, $begin = 0, $options = array())
     {
-        $depth = (int)$depth;
-        $begin = (int)$begin;
+        $depth = (int) $depth;
+        $begin = (int) $begin;
         $parentField = !empty($options['parentField']) ? $options['parentField'] : 'pid';
         $idField = !empty($options['idField']) ? $options['idField'] : 'uid';
 
-        if ($begin == 0) {
+        if (0 == $begin) {
             $uidList = Tx_Rnbase_Utility_Strings::intExplode(',', $id);
         } else {
             $uidList = array();
@@ -102,11 +101,11 @@ class Tx_Rnbase_Database_TreeQueryBuilder
                 $options['where'] = '1=1';
             }
             $sqlOptions = $options;
-            $sqlOptions['where'] .= ' AND ' . $parentField . ' IN (' . $id . ')';
+            $sqlOptions['where'] .= ' AND '.$parentField.' IN ('.$id.')';
 
             /**
- * @var Tx_Rnbase_Domain_Collection_Base $rows
-*/
+             * @var Tx_Rnbase_Domain_Collection_Base
+             */
             $rows = $this->getConnection()->doSelect(
                 $idField,
                 $sqlOptions['tableName'],

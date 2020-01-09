@@ -1,4 +1,5 @@
 <?php
+
 namespace Sys25\RnBase\Fluid\ViewHelper\Configurations;
 
 /***************************************************************
@@ -25,10 +26,8 @@ namespace Sys25\RnBase\Fluid\ViewHelper\Configurations;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Fluid\ViewHelper\Configurations$GetViewHelper
+ * Sys25\RnBase\Fluid\ViewHelper\Configurations$GetViewHelper.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
@@ -36,7 +35,7 @@ namespace Sys25\RnBase\Fluid\ViewHelper\Configurations;
 class GetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
     /**
-     * Arguments initialization
+     * Arguments initialization.
      */
     public function initializeArguments()
     {
@@ -46,14 +45,15 @@ class GetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
     }
 
     /**
-     * ViewHelper for $configurations->get() calls
+     * ViewHelper for $configurations->get() calls.
      *
      * @return mixed the typoscript value
      */
     public function render()
     {
         $value = $this->getRenderingContext()->getViewHelperVariableContainer()->getView()->getConfigurations()
-            ->get($this->arguments['confId'] . $this->arguments['typoscriptPath']);
+            ->get($this->arguments['confId'].$this->arguments['typoscriptPath']);
+
         return $value;
     }
 

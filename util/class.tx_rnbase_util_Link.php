@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This class is a wrapper around \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink
+ * This class is a wrapper around \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink.
  *
  * PHP versions 4 and 5
  *
@@ -30,7 +30,7 @@
 tx_rnbase::load('tx_rnbase_util_Network');
 
 /**
- * This class is a wrapper around \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink
+ * This class is a wrapper around \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink.
  *
  * It is not a full implementation of typolink functionality
  * but targeted to the day-to-day requirements. The idea is to provide
@@ -40,29 +40,45 @@ tx_rnbase::load('tx_rnbase_util_Network');
  * Depends on: the TS link function
  *
  * @author     Elmar Hinz <elmar.hinz@team-red.net>
- * @package    TYPO3
- * @subpackage lib
  */
 class tx_rnbase_util_Link
 {
     public $tagAttributes = array();       // setting attributes for the tag in general
+
     public $classString = '';              // tags class attribute
+
     public $idString = '';                 // tags id attribute
+
     public $cObject;                       // instance of tx_rnbase_util_Typo3Classes::getContentObjectRendererClass()
+
     public $destination = '';              // page id, alias, external link, etc.
+
     public $labelString = '';              // tags label
+
     public $labelHasAlreadyHtmlSpecialChars = false; // is the label already HSC?
+
     public $noCacheBoolean = false;        // don't make a cHash
+
     public $noHashBoolean = false;         // add a no_cache=1 parameter
+
     public $overruledParameters = array(); // parameters overruled by $parameters
+
     public $parameters = array();              // parameters of the link
+
     public $designatorString = '';         // parameter array name (prefixId) as controller namespace
+
     public $anchorString = '';             // section anchor as url target
+
     public $targetString = '';             // tags target attribute
+
     public $externalTargetString = '-1'; // external target defaults to new window
+
     public $titleString = '';              // tags title attribute
+
     public $titleHasAlreadyHtmlSpecialChars = false; //is title attribute already HSC?
+
     private $typolinkParams = array();    // container for generic typolink parameters
+
     private $uniqueParameterId = null;     // used to build unique parameters for plugin
 
     // -------------------------------------------------------------------------------------
@@ -70,14 +86,13 @@ class tx_rnbase_util_Link
     // -------------------------------------------------------------------------------------
 
     /**
-     * Construct a link object
+     * Construct a link object.
      *
      * By default this object wraps \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typolink();
      * The $cObjectClass parameter can be used to provide a mock object
      * for unit tests.
      *
      * @param   object      mock object for testing purpuses
-     * @return  void
      */
     public function __construct($cObject = null)
     {
@@ -85,7 +100,7 @@ class tx_rnbase_util_Link
             $this->cObject = $cObject;
         } else {
             $this->cObject = tx_rnbase::makeInstance(
-                $cObject === null ? tx_rnbase_util_Typo3Classes::getContentObjectRendererClass() : $cObject
+                null === $cObject ? tx_rnbase_util_Typo3Classes::getContentObjectRendererClass() : $cObject
             );
         }
     }
@@ -103,12 +118,13 @@ class tx_rnbase_util_Link
     // -------------------------------------------------------------------------------------
 
     /**
-     * Set the section anchor of the url
+     * Set the section anchor of the url.
      *
      * Anchor of page as url target.
      *
      * @param   string      the anchor
-     * @return  object      self
+     *
+     * @return object self
      */
     public function anchor($anchorString)
     {
@@ -118,7 +134,7 @@ class tx_rnbase_util_Link
     }
 
     /**
-     * Set the designator (parameter array name) as controler namespace
+     * Set the designator (parameter array name) as controler namespace.
      *
      * Put the parameters into this array.
      * <samp>Example: &tx_example[parameterName]=parameterValue</samp>
@@ -126,7 +142,8 @@ class tx_rnbase_util_Link
      * pararmeterValue is the value of one array element.
      *
      * @param   string      parameter array name
-     * @return  object      self
+     *
+     * @return object self
      */
     public function designator($designatorString)
     {
@@ -136,10 +153,11 @@ class tx_rnbase_util_Link
     }
 
     /**
-     * Set the id attribute of the tag
+     * Set the id attribute of the tag.
      *
      * @param   string      id attribute
-     * @return  object      self
+     *
+     * @return object self
      */
     public function idAttribute($idString)
     {
@@ -147,10 +165,12 @@ class tx_rnbase_util_Link
 
         return $this;
     }
+
     /**
-     * Add a param for typolink config
+     * Add a param for typolink config.
+     *
      * @param string $name
-     * @param mixed $value
+     * @param mixed  $value
      */
     public function addTypolinkParam($name, $value)
     {
@@ -158,10 +178,11 @@ class tx_rnbase_util_Link
     }
 
     /**
-     * Set the class attribute of the tag
+     * Set the class attribute of the tag.
      *
      * @param   string      class name
-     * @return  object      self
+     *
+     * @return object self
      */
     public function classAttribute($classString)
     {
@@ -171,11 +192,13 @@ class tx_rnbase_util_Link
     }
 
     /**
-     * Set the links destination
+     * Set the links destination.
      *
-     * @param   mixed       pageId, page alias, external url, etc.
+     * @param   mixed       pageId, page alias, external url, etc
      * @param   bool     if TRUE don't parse through htmlspecialchars()
-     * @return  object      self
+     *
+     * @return object self
+     *
      * @see         TSref => typolink => parameter
      * @see         \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink()
      */
@@ -187,10 +210,11 @@ class tx_rnbase_util_Link
     }
 
     /**
-     * Add no_cache=1 and disable the cHash parameter
+     * Add no_cache=1 and disable the cHash parameter.
      *
      * @param   bool     if TRUE don't make a cHash, set no_cache=1
-     * @return  object      self
+     *
+     * @return object self
      */
     public function noCache()
     {
@@ -200,10 +224,11 @@ class tx_rnbase_util_Link
     }
 
     /**
-     * Disable the cHash parameter
+     * Disable the cHash parameter.
      *
      * @param   bool     if TRUE don't make a cHash
-     * @return  object      self
+     *
+     * @return object self
      */
     public function noHash()
     {
@@ -213,13 +238,14 @@ class tx_rnbase_util_Link
     }
 
     /**
-     * Set the links label
+     * Set the links label.
      *
      * By default the label will be parsed through htmlspecialchars().
      *
      * @param   string      the label
      * @param   bool     if TRUE don't parse through htmlspecialchars()
-     * @return  object      self
+     *
+     * @return object self
      */
     public function label($labelString, $hasAlreadyHtmlSpecialChars = false)
     {
@@ -230,7 +256,7 @@ class tx_rnbase_util_Link
     }
 
     /**
-     * Returns the label
+     * Returns the label.
      *
      * @return string
      */
@@ -238,16 +264,19 @@ class tx_rnbase_util_Link
     {
         return $this->labelString;
     }
+
     public function getUniqueParameterId()
     {
         return $this->uniqueParameterId;
     }
+
     public function setUniqueParameterId($id)
     {
         $this->uniqueParameterId = $id;
     }
+
     /**
-     * Set array of parameters to be overruled by parameters
+     * Set array of parameters to be overruled by parameters.
      *
      * The parameters will create a common array with the name $this->designatorString.
      * <samp>Example: &tx_example[parameterName]=parameterValue</samp>
@@ -258,7 +287,8 @@ class tx_rnbase_util_Link
      * Like in tslib_pibase::pi_linkTP_keepPIvars the element DATA is unset during processing.
      *
      * @param   mixed       parameters
-     * @return  object      self
+     *
+     * @return object self
      */
     public function overruled($overruledParameters = array())
     {
@@ -271,7 +301,7 @@ class tx_rnbase_util_Link
     }
 
     /**
-     * Set array of new parameters to add to the link url
+     * Set array of new parameters to add to the link url.
      *
      * The parameters will create a common array with the name $this->designatorString.
      * <samp>Example: &tx_example[parameterName]=parameterValue</samp>
@@ -281,7 +311,8 @@ class tx_rnbase_util_Link
      * This parameters overrule parameters in $this->baseParameters.
      *
      * @param   mixed       parameters
-     * @return  object      self
+     *
+     * @return object self
      */
     public function parameters($parameters = array())
     {
@@ -294,7 +325,7 @@ class tx_rnbase_util_Link
     }
 
     /**
-     * Set the attributes of the tag
+     * Set the attributes of the tag.
      *
      * This is a general approach to set tag attributes by an array hash.
      *
@@ -303,7 +334,8 @@ class tx_rnbase_util_Link
      * @see     targetAttribute()
      *
      * @param   array       key value pairs
-     * @return  object      self
+     *
+     * @return object self
      */
     public function attributes($tagAttributes = array())
     {
@@ -319,7 +351,8 @@ class tx_rnbase_util_Link
      * @see     targetAttribute()
      *
      * @param   string      target attribute
-     * @return  object      self
+     *
+     * @return object self
      */
     public function target($targetString)
     {
@@ -329,10 +362,11 @@ class tx_rnbase_util_Link
     }
 
     /**
-     * Set target attribute of the tag
+     * Set target attribute of the tag.
      *
      * @param   string      target attribute
-     * @return  object      self
+     *
+     * @return object self
      */
     public function targetAttribute($targetString)
     {
@@ -343,10 +377,11 @@ class tx_rnbase_util_Link
 
     /**
      * Set external target attribute of the tag
-     * Defaults to _blank
+     * Defaults to _blank.
      *
      * @param   string      external target attribute
-     * @return  object      self
+     *
+     * @return object self
      */
     public function externalTargetAttribute($targetString)
     {
@@ -363,7 +398,8 @@ class tx_rnbase_util_Link
      *
      * @param   string      title attribute
      * @param   bool     if TRUE don't apply htmlspecialchars() again
-     * @return  object      self
+     *
+     * @return object self
      */
     public function title($titleString, $hasAlreadyHtmlSpecialChars = false)
     {
@@ -373,11 +409,12 @@ class tx_rnbase_util_Link
     }
 
     /**
-     * Set title attribute of the tag
+     * Set title attribute of the tag.
      *
      * @param   string      title attribute
      * @param   bool     if TRUE don't apply htmlspecialchars() again
-     * @return  object      self
+     *
+     * @return object self
      */
     public function titleAttribute($titleString, $hasAlreadyHtmlSpecialChars = false)
     {
@@ -392,9 +429,9 @@ class tx_rnbase_util_Link
     // -------------------------------------------------------------------------------------
 
     /**
-     * Return the link as tag
+     * Return the link as tag.
      *
-     * @return  string      the link tag
+     * @return string the link tag
      */
     public function makeTag()
     {
@@ -407,10 +444,11 @@ class tx_rnbase_util_Link
     }
 
     /**
-     * Return the link as url
+     * Return the link as url.
      *
      * @param   bool     set to TRUE to run htmlspecialchars() on generated url
-     * @return  string      the link url
+     *
+     * @return string the link url
      */
     public function makeUrl($applyHtmlspecialchars = true)
     {
@@ -428,6 +466,7 @@ class tx_rnbase_util_Link
      *
      * @param string $url
      * @param string $schema
+     *
      * @return string
      */
     public static function parseAbsUrl($url, $schema = false)
@@ -443,8 +482,8 @@ class tx_rnbase_util_Link
                 function ($match) use ($schema) {
                     // $match[1] contains 'href="' or 'src="'
                     // $match[2] contains the url '/service/contact.html'
-                    return $match[1] .
-                        tx_rnbase_util_Link::parseAbsUrl($match[2], $schema) .
+                    return $match[1].
+                        self::parseAbsUrl($match[2], $schema).
                         '"';
                 },
                 ltrim($url, '/')
@@ -454,11 +493,11 @@ class tx_rnbase_util_Link
 
         // rebuild the url without schema
         $urlParts = parse_url(self::addDefaultSchemaIfRequired($url));
-        $urlPath  = isset($urlParts['path']) ? $urlParts['path'] : '';
-        $urlPath .= isset($urlParts['query']) ? '?' . $urlParts['query'] : '';
-        $urlPath .= isset($urlParts['fragment']) ? '#' . $urlParts['fragment'] : '';
+        $urlPath = isset($urlParts['path']) ? $urlParts['path'] : '';
+        $urlPath .= isset($urlParts['query']) ? '?'.$urlParts['query'] : '';
+        $urlPath .= isset($urlParts['fragment']) ? '#'.$urlParts['fragment'] : '';
 
-        return rtrim($schema, '/') . '/'. ltrim($urlPath, '/');
+        return rtrim($schema, '/').'/'.ltrim($urlPath, '/');
     }
 
     /**
@@ -466,23 +505,22 @@ class tx_rnbase_util_Link
      * Also fügen wir dann ein default Schema hinzu damit parse_url korrekt funktioniert.
      *
      * @param string $url
+     *
      * @return string
      */
     public static function addDefaultSchemaIfRequired($url)
     {
-        if (version_compare(phpversion(), '5.4.7', '<') && substr($url, 0, 2) == '//') {
-            $url = 'http:' . $url;
+        if (version_compare(phpversion(), '5.4.7', '<') && '//' == substr($url, 0, 2)) {
+            $url = 'http:'.$url;
         }
 
         return $url;
     }
 
     /**
-     * Redirect the page to the url
+     * Redirect the page to the url.
      *
      * @param string $httpStatus An optional HTTP status header. Default is 'HTTP/1.1 303 See Other'
-     *
-     * @return  void
      */
     public function redirect($httpStatus = null)
     {
@@ -496,11 +534,11 @@ class tx_rnbase_util_Link
     // -------------------------------------------------------------------------------------
 
     /**
-     * Make the full configuration for the typolink function
+     * Make the full configuration for the typolink function.
      *
-     * @param   string      $type: tag oder url
-     * @return  array       the configuration
-     * @access  private
+     * @param string $type: tag oder url
+     *
+     * @return array the configuration
      */
     public function _makeConfig($type)
     {
@@ -515,7 +553,7 @@ class tx_rnbase_util_Link
         );
         foreach ((array) $parameters as $key => $value) {
             // Ggf. hier auf die Parameter der eigenen Extension prüfen
-            if ($this->getUniqueParameterId() !== null) {
+            if (null !== $this->getUniqueParameterId()) {
                 $value = array($key => $value);
                 $key = $this->getUniqueParameterId();
             }
@@ -532,10 +570,10 @@ class tx_rnbase_util_Link
         } else {
             $conf['no_cache'] = 0;
         }
-        if ($this->destination !== '') {
+        if ('' !== $this->destination) {
             $conf['parameter'] = $this->destination;
         }
-        if ($type == 'url') {
+        if ('url' == $type) {
             $conf['returnLast'] = 'url';
         }
         if ($this->anchorString) {
@@ -544,28 +582,27 @@ class tx_rnbase_util_Link
         if ($this->targetString) {
             $conf['target'] = $this->targetString;
         }
-        $conf['extTarget'] = ($this->externalTargetString != '-1') ? $this->externalTargetString : '_blank';
+        $conf['extTarget'] = ('-1' != $this->externalTargetString) ? $this->externalTargetString : '_blank';
         if ($this->classString) {
-            $conf['ATagParams'] .= 'class="' . $this->classString . '" ';
+            $conf['ATagParams'] .= 'class="'.$this->classString.'" ';
         }
         if ($this->idString) {
-            $conf['ATagParams'] .= 'id="' . $this->idString . '" ';
+            $conf['ATagParams'] .= 'id="'.$this->idString.'" ';
         }
         if ($this->titleString) {
             $title = ($this->titleHasAlreadyHtmlSpecialChars) ? $this->titleString : htmlspecialchars($this->titleString);
-            $conf['ATagParams'] .= 'title="' . $title . '" ';
+            $conf['ATagParams'] .= 'title="'.$title.'" ';
         }
         if (is_array($this->tagAttributes)
                 && (count($this->tagAttributes) > 0)) {
             foreach ($this->tagAttributes as $key => $value) {
-                $conf['ATagParams'] .= ' ' .  $key . '="' . htmlspecialchars($value) . '" ';
+                $conf['ATagParams'] .= ' '.$key.'="'.htmlspecialchars($value).'" ';
             }
         }
         // Weiter generische Attribute setzen
         if (count($this->typolinkParams)) {
             $conf = array_merge($conf, $this->typolinkParams);
         }
-
 
         return $conf;
     }
@@ -575,10 +612,11 @@ class tx_rnbase_util_Link
      * Examples:
      * $key='param'; $value='123' => &qualifier[param]=123
      * $key='ttnews::param'; $value='123' => &ttnews[param]=123
-     * $key='::param'; $value='123' => &param=123
+     * $key='::param'; $value='123' => &param=123.
      *
      * @param string $key
      * @param string $value
+     *
      * @return string
      */
     protected function makeUrlParam($key, $value)
@@ -592,8 +630,8 @@ class tx_rnbase_util_Link
 
         if (!is_array($value)) {
             return '&'
-                . rawurlencode($qualifier ? $qualifier . '[' . $key . ']' : $key)
-                . '=' . rawurlencode($value);
+                .rawurlencode($qualifier ? $qualifier.'['.$key.']' : $key)
+                .'='.rawurlencode($value);
         }
 
         $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
@@ -608,10 +646,9 @@ class tx_rnbase_util_Link
     }
 
     /**
-     * Make the label for the link
+     * Make the label for the link.
      *
-     * @return  string      the label
-     * @access  private
+     * @return string the label
      */
     public function _makeLabel()
     {
@@ -619,7 +656,7 @@ class tx_rnbase_util_Link
     }
 
     /**
-     * Generate absolute urls
+     * Generate absolute urls.
      *
      * @param bool $flag
      * @param server schema
@@ -629,20 +666,22 @@ class tx_rnbase_util_Link
         $this->absUrl = $flag ? true : false;
         $this->absUrlSchema = $schema;
     }
+
     public function isAbsUrl()
     {
         return $this->absUrl;
     }
+
     public function getAbsUrlSchema()
     {
         return $this->absUrlSchema;
     }
 
     /**
-     * Init this link by typoscript setup
+     * Init this link by typoscript setup.
      *
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param string $confId
+     * @param string                                     $confId
      *
      * @return tx_rnbase_util_Link
      */
@@ -669,8 +708,8 @@ class tx_rnbase_util_Link
         else {
             $this->destination($pid ? $pid : $GLOBALS['TSFE']->id);
             // absolute und ggf. schema url erzeugen
-            if ($absUrl = $configurations->get($confId . 'absurl')) {
-                $this->setAbsUrl(true, ($absUrl == 1 || strtolower($absUrl) == 'true') ? '' : $absUrl);
+            if ($absUrl = $configurations->get($confId.'absurl')) {
+                $this->setAbsUrl(true, (1 == $absUrl || 'true' == strtolower($absUrl)) ? '' : $absUrl);
             }
         }
 
@@ -696,7 +735,7 @@ class tx_rnbase_util_Link
             // Die Parameter werden jetzt nochmal per TS validiert und können somit dynamisch gesetzt werden
             $attributes = array();
             foreach ($atagParams as $aParam => $lvalue) {
-                if (substr($aParam, strlen($aParam) - 1, 1) == '.') {
+                if ('.' == substr($aParam, strlen($aParam) - 1, 1)) {
                     $aParam = substr($aParam, 0, strlen($aParam) - 1);
                     if (array_key_exists($aParam, $atagParams)) {
                         continue;
@@ -749,17 +788,17 @@ class tx_rnbase_util_Link
                         // tt_news::* or ttnews::id
                         list($qualifier, $name) = \Tx_Rnbase_Utility_Strings::trimExplode('::', $linkvar[0]);
                         if ($value = \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter($qualifier)) {
-                            if ($name == '*' && is_array($value)) {
+                            if ('*' == $name && is_array($value)) {
                                 foreach ($value as $paramName => $paramValue) {
                                     if ($skipEmpty && empty($paramValue)) {
                                         continue;
                                     }
-                                    if (strpos($paramName, 'NK_') === false) {
-                                        $newKeepVars[$qualifier.'::'.$paramName] =  $paramValue;
+                                    if (false === strpos($paramName, 'NK_')) {
+                                        $newKeepVars[$qualifier.'::'.$paramName] = $paramValue;
                                     }
                                 }
                             } else {
-                                $newKeepVars[$linkvar[0]] =  $value[$name];
+                                $newKeepVars[$linkvar[0]] = $value[$name];
                             }
                         }
                     } else {
@@ -784,6 +823,7 @@ class tx_rnbase_util_Link
      * @see \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript
      *
      * @param array $getParams Array of GET parameters to include
+     *
      * @return string
      */
     public static function linkThisScript(array $getParams = array())

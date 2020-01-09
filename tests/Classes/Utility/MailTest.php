@@ -26,19 +26,15 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('Tx_Rnbase_Utility_Mail');
 
 /**
- * Mcrypt
+ * Mcrypt.
  *
- * @package TYPO3
- * @subpackage rn_base
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
  *        GNU Lesser General Public License, version 3 or later
  */
 class Tx_Rnbase_Utility_MailTest extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
-     *
      * @group unit
      * @test
      */
@@ -58,21 +54,17 @@ class Tx_Rnbase_Utility_MailTest extends tx_rnbase_tests_BaseTestCase
 
         $tos = $message->getTo();
         $this->assertEquals(3, count($tos));
-        for ($i = 1; $i < 4; $i++) {
+        for ($i = 1; $i < 4; ++$i) {
             $this->assertArrayHasKey('to'.$i.'@test.de', $tos);
         }
     }
 
     /**
-     *
-     * @return void
-     *
      * @group unit
      * @test
      */
     public function testSendMail()
     {
-
         /* @var $mail Tx_Rnbase_Utility_Mail */
         $mail = $this->createMailMock();
         $this->assertInstanceOf('Tx_Rnbase_Utility_Mail', $mail);
@@ -90,8 +82,10 @@ class Tx_Rnbase_Utility_MailTest extends tx_rnbase_tests_BaseTestCase
         $to = $message->getTo();
         $this->assertSame(['to1@test.de' => 'to1'], $to);
     }
+
     /**
      * Erstellt Mail-Instanz. Aufruf von send liefert das interne Mail-Objekt als Ergebnis.
+     *
      * @return Tx_Rnbase_Utility_Mail
      */
     protected function createMailMock()

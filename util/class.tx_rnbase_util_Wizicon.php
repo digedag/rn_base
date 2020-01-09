@@ -30,7 +30,6 @@
 abstract class tx_rnbase_util_Wizicon
 {
     /**
-     *
      * @param string $id
      * @param string $clazz
      */
@@ -38,11 +37,13 @@ abstract class tx_rnbase_util_Wizicon
     {
         $GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'][$id] = $clazz;
     }
+
     /**
-     * Adds the T3sports report plugin wizard icon
+     * Adds the T3sports report plugin wizard icon.
      *
      * @param array Input array with wizard items for plugins
-     * @return array Modified input array, having the items for T3sports plugins added.
+     *
+     * @return array modified input array, having the items for T3sports plugins added
      */
     public function proc($wizardItems)
     {
@@ -53,13 +54,15 @@ abstract class tx_rnbase_util_Wizicon
                 'icon' => $plugin['icon'],
                 'title' => $lang->getLL($plugin['title']),
                 'description' => $lang->getLL($plugin['description']),
-                'params' => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]='.$id
+                'params' => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]='.$id,
             );
         }
 
         return $wizardItems;
     }
+
     abstract protected function getPluginData();
+
     abstract protected function getLLFile();
 
     /**

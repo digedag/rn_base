@@ -26,15 +26,15 @@ tx_rnbase::load('tx_rnbase_util_Misc');
 tx_rnbase::load('tx_rnbase_util_Templates');
 tx_rnbase::load('Tx_Rnbase_Frontend_Marker_BaseMarker');
 
-
 /**
  * Base class for Markers.
  */
 class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
 {
     private $defaultMarkerArr = array();
+
     /**
-     * Array for dummy objects
+     * Array for dummy objects.
      */
     private static $emptyObjects = array();
 
@@ -43,11 +43,11 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
     }
 
     /**
-     * Initialisiert die Labels für die eine Model-Klasse
+     * Initialisiert die Labels für die eine Model-Klasse.
      *
-     * @param string $classname child class of Tx_Rnbase_Domain_Model_RecordInterface or NULL
+     * @param string                    $classname        child class of Tx_Rnbase_Domain_Model_RecordInterface or NULL
      * @param tx_rnbase_util_FormatUtil $formatter
-     * @param array $defaultMarkerArr
+     * @param array                     $defaultMarkerArr
      */
     protected function prepareLabelMarkers($classname, &$formatter, $confId, $marker, $defaultMarkerArr = 0)
     {
@@ -58,13 +58,14 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
     }
 
     /**
-     * Initialisiert die Labels für die eine Model-Klasse
+     * Initialisiert die Labels für die eine Model-Klasse.
      *
-     * @param string $classname child class of Tx_Rnbase_Domain_Model_RecordInterface or NULL
+     * @param string                    $classname        child class of Tx_Rnbase_Domain_Model_RecordInterface or NULL
      * @param tx_rnbase_util_FormatUtil $formatter
-     * @param string $confId
-     * @param array $defaultMarkerArr
-     * @param string $marker
+     * @param string                    $confId
+     * @param array                     $defaultMarkerArr
+     * @param string                    $marker
+     *
      * @return array
      */
     protected static function _getClassLabelMarkers($classname, &$formatter, $confId, $defaultMarkerArr = 0, $marker = 'PROFILE')
@@ -86,12 +87,13 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
     }
 
     /**
-     * Return label markers defined by Typoscript
+     * Return label markers defined by Typoscript.
      *
      * @param tx_rnbase_util_FormatUtil $formatter
-     * @param string $confId
-     * @param string $marker
-     * @param array $defaultMarkerArr
+     * @param string                    $confId
+     * @param string                    $marker
+     * @param array                     $defaultMarkerArr
+     *
      * @return array
      */
     public function initTSLabelMarkers(&$formatter, $confId, $marker, $defaultMarkerArr = 0)
@@ -112,13 +114,16 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
 
         return $this->defaultMarkerArr;
     }
+
     /**
-     * Returns an array with all column names not used in template
+     * Returns an array with all column names not used in template.
      *
-     * @param array $record
+     * @param array  $record
      * @param string $template
      * @param string $marker
+     *
      * @return array
+     *
      * @deprecated use Tx_Rnbase_Frontend_Marker_Utility::findUnusedAttributes
      */
     public static function findUnusedCols(&$record, $template, $marker)
@@ -142,10 +147,11 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
         return $ignore;
     }
 
-
     protected static $token = '';
+
     /**
      * Returns a token string.
+     *
      * @return string
      */
     protected static function getToken()
@@ -156,18 +162,21 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
 
         return self::$token;
     }
+
     /**
      * Check existing of a link or url in template string.
+     *
      * @param string $linkId
      * @param string $marker
      * @param string $template
-     * @param bool $makeUrl is set to TRUE if url was found
-     * @param bool $makeLink is set to TRUE if link was found
-     * @return boolean is TRUE if link or url was found
+     * @param bool   $makeUrl  is set to TRUE if url was found
+     * @param bool   $makeLink is set to TRUE if link was found
+     *
+     * @return bool is TRUE if link or url was found
      */
     public static function checkLinkExistence($linkId, $marker, $template, &$makeUrl = true, &$makeLink = true)
     {
-        $linkMarker = $marker . '_' . strtoupper($linkId).'LINK';
+        $linkMarker = $marker.'_'.strtoupper($linkId).'LINK';
         // Do we need links
         $makeUrl = $makeLink = true;
         if ($template) {
@@ -180,18 +189,19 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
 
         return $linkMarker;
     }
+
     /**
-     * Link setzen
+     * Link setzen.
      *
-     * @param array $markerArray
-     * @param array $subpartArray
-     * @param array $wrappedSubpartArray
+     * @param array                     $markerArray
+     * @param array                     $subpartArray
+     * @param array                     $wrappedSubpartArray
      * @param tx_rnbase_util_FormatUtil $formatter
-     * @param string $confId
-     * @param string $linkId
-     * @param string $marker
-     * @param array $parameterArr
-     * @param string $template the HTML template used. This enabled check if link is necessary.
+     * @param string                    $confId
+     * @param string                    $linkId
+     * @param string                    $marker
+     * @param array                     $parameterArr
+     * @param string                    $template            the HTML template used. This enabled check if link is necessary.
      */
     public static function initLink(&$markerArray, &$subpartArray, &$wrappedSubpartArray, $formatter, $confId, $linkId, $marker, $parameterArr, $template = '')
     {
@@ -201,7 +211,7 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
             return; // Nothing to do
         }
 
-        $linkObj =& $formatter->getConfigurations()->createLink();
+        $linkObj = &$formatter->getConfigurations()->createLink();
         $token = self::getToken();
         $linkObj->label($token);
         $links = $formatter->getConfigurations()->get($confId.'links.');
@@ -209,10 +219,10 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
             $linkObj->initByTS($formatter->getConfigurations(), $confId.'links.'.$linkId.'.', $parameterArr);
 
             if ($makeLink) {
-                $wrappedSubpartArray['###'.$linkMarker . '###'] = explode($token, $linkObj->makeTag());
+                $wrappedSubpartArray['###'.$linkMarker.'###'] = explode($token, $linkObj->makeTag());
             }
             if ($makeUrl) {
-                $markerArray['###'.$linkMarker . 'URL###'] = $linkObj->makeUrl(
+                $markerArray['###'.$linkMarker.'URL###'] = $linkObj->makeUrl(
                     $formatter->getConfigurations()->getBool($confId.'links.'.$linkId.'.applyHtmlSpecialChars', false, false)
                 );
             }
@@ -226,34 +236,36 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
             );
         }
     }
+
     /**
-     * Remove Link-Markers
+     * Remove Link-Markers.
      *
      * @param string $linkMarker
-     * @param bool $remove TRUE removes the link with label
+     * @param bool   $remove     TRUE removes the link with label
      */
     public static function disableLink(&$markerArray, &$subpartArray, &$wrappedSubpartArray, $linkMarker, $remove)
     {
         if ($remove) {
-            $subpartArray['###'.$linkMarker . '###'] = '';
+            $subpartArray['###'.$linkMarker.'###'] = '';
         } else {
-            $wrappedSubpartArray['###'.$linkMarker . '###'] = array('', '');
+            $wrappedSubpartArray['###'.$linkMarker.'###'] = array('', '');
         }
-        $markerArray['###'.$linkMarker . 'URL###'] = '';
+        $markerArray['###'.$linkMarker.'URL###'] = '';
     }
 
     /**
-     * Den PageBrowser in ein Template integrieren
+     * Den PageBrowser in ein Template integrieren.
      *
-     * @param string $template
+     * @param string                     $template
      * @param tx_rnbase_util_PageBrowser $pagebrowser
-     * @param tx_rnbase_util_FormatUtil $formatter
-     * @param string $confId
+     * @param tx_rnbase_util_FormatUtil  $formatter
+     * @param string                     $confId
+     *
      * @return string
      */
     public static function fillPageBrowser($template, &$pagebrowser, &$formatter, $confId)
     {
-        if (strlen(trim($template)) == 0) {
+        if (0 == strlen(trim($template))) {
             return '';
         }
         if (!is_object($pagebrowser) || !is_object($pagebrowser->getMarker())) {
@@ -273,8 +285,9 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
     }
 
     /**
-     * Returns the filled template for a character browser
-     * @param string $template
+     * Returns the filled template for a character browser.
+     *
+     * @param string                                     $template
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
      */
     public static function fillCharBrowser($template, $markerArray, $pagerData, $curr_pointer, $configurations, $confId)
@@ -315,7 +328,7 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
     }
 
     /**
-     * Liefert das DefaultMarkerArray
+     * Liefert das DefaultMarkerArray.
      *
      * @return array
      */
@@ -332,6 +345,7 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
      * contain all tca-defined fields with an empty string as value.
      *
      * @param string $classname
+     *
      * @return object
      */
     protected static function getEmptyInstance($classname)
@@ -356,7 +370,6 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
     }
 
     /**
-     *
      * @param tx_rnbase_util_FormatUtil $formatter
      */
     public static function callModules($template, &$markerArray, &$subpartArray, &$wrappedSubpartArray, &$params, &$formatter)
@@ -364,12 +377,13 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
         self::callModuleSubparts($template, $subpartArray, $wrappedSubpartArray, $params, $formatter);
         self::callModuleMarkers($template, $markerArray, $params, $formatter);
     }
+
     /**
-     * Call services for single markers
+     * Call services for single markers.
      *
-     * @param string $template
-     * @param array $markerArray
-     * @param array $params
+     * @param string                    $template
+     * @param array                     $markerArray
+     * @param array                     $params
      * @param tx_rnbase_util_FormatUtil $formatter
      */
     protected static function callModuleMarkers($template, &$markerArray, &$params, $formatter)
@@ -387,8 +401,8 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
                 $module = tx_rnbase::makeInstanceService('markermodule', substr($marker, 14));
                 if (is_object($module)) {
                     $value = $module->getMarkerValue($params, $formatter);
-                    if ($value !== false) {
-                        $markerArray['###' . $marker . '###'] =  $value;
+                    if (false !== $value) {
+                        $markerArray['###'.$marker.'###'] = $value;
                     }
                 }
             } elseif (preg_match('/LABEL_.*/', $marker)) {
@@ -397,8 +411,9 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
                     $completeKey = $marker.$suffix;
                     // Hier kommt immer ein leerer String zurück, weil T3 keinen Alternativ-String unterstützt
                     $translation = $formatter->getConfigurations()->getLL(strtolower($completeKey));
-                    if ($translation !== '') {
+                    if ('' !== $translation) {
                         $markerArray['###'.$marker.'###'] = $translation;
+
                         break;
                     }
                 }
@@ -416,17 +431,18 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
                 if (is_object($module)) {
                     $subTemplate = tx_rnbase_util_Templates::getSubpart($template, '###'.$marker.'###');
                     $subpart = $module->parseTemplate($subTemplate, $params, $formatter);
-                    if ($subpart !== false) {
+                    if (false !== $subpart) {
                         if (is_array($subpart)) {
-                            $wrappedSubpartArray['###' . $marker . '###'] = $subpart;
+                            $wrappedSubpartArray['###'.$marker.'###'] = $subpart;
                         } else {
-                            $subpartArray['###' . $marker . '###'] = $subpart;
+                            $subpartArray['###'.$marker.'###'] = $subpart;
                         }
                     }
                 }
             }
         }
     }
+
     /**
      * Gets an ordered list of language label suffixes that should be tried to
      * get localizations in the preferred order of formality.
@@ -434,6 +450,7 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
      * Method copied from Tx_Oelib_SalutationSwitcher of Oliver Klee
      *
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     *
      * @return array ordered list of suffixes from "", "_formal" and "_informal", will not be empty
      */
     private static function getSuffixesToTry($configurations)
@@ -441,7 +458,7 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
         $suffixesToTry = array();
         $salutation = $configurations->get('salutation');
 
-        if ($salutation && ($salutation == 'informal')) {
+        if ($salutation && ('informal' == $salutation)) {
             $suffixesToTry[] = '_informal';
         }
         $suffixesToTry[] = '_formal';
@@ -453,14 +470,16 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
     /**
      * @param string $template
      * @param string $markerPrefix a string like MATCH_HOME
+     *
      * @return bool
      */
     public static function containsMarker($template, $markerPrefix)
     {
-        return (strpos($template, '###'.$markerPrefix) !== false);
+        return false !== strpos($template, '###'.$markerPrefix);
     }
+
     /**
-     * Start TimeTrack section
+     * Start TimeTrack section.
      *
      * @param string $message
      */
@@ -468,8 +487,9 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
     {
         tx_rnbase_util_Misc::pushTT(get_class($this), $message);
     }
+
     /**
-     * End TimeTrack section
+     * End TimeTrack section.
      */
     protected function pullTT()
     {

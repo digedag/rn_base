@@ -49,7 +49,7 @@ class tx_rnbase_tests_util_SimpleMarker_testcase extends tx_rnbase_tests_BaseTes
             'bcol' => 'bar',
         ));
         // die marker müssen im template vorhanden sein, da diese sonnst nicht gerendert werden
-        $template = <<<HTML
+        $template = <<<'HTML'
 ###ITEM_FCOL_IS_HIDDEN### ITEM_FCOL_IS_HIDDEN ###ITEM_FCOL_IS_HIDDEN###
 ###ITEM_FCOL_IS_VISIBLE### ITEM_FCOL_IS_VISIBLE ###ITEM_FCOL_IS_VISIBLE###
 ###ITEM_BCOL_IS_VERSTECKT### ITEM_BCOL_IS_VERSTECKT ###ITEM_BCOL_IS_VERSTECKT###
@@ -116,8 +116,8 @@ HTML;
                     'dataMap.' => array(
                         'dotFieldFields' => 'dot.name',
                         'dotValueFields' => 'dotname,unknown',
-                    )
-                )
+                    ),
+                ),
             ),
             'rn_base'
         );
@@ -155,12 +155,13 @@ HTML;
     }
 
     /**
-     * liefert einen formatter inklusive typoscript
+     * liefert einen formatter inklusive typoscript.
+     *
      * @return tx_rnbase_util_FormatUtil
      */
     protected function buildFormatter()
     {
-        $typoScript = <<<TS
+        $typoScript = <<<'TS'
 action.item.subparts {
 	fcol_is {
 		visible = TEXT

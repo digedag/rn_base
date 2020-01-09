@@ -1,4 +1,5 @@
 <?php
+
 namespace Sys25\RnBase\Fluid\View;
 
 /***************************************************************
@@ -25,19 +26,16 @@ namespace Sys25\RnBase\Fluid\View;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Fluid\View$Standalone
+ * Sys25\RnBase\Fluid\View$Standalone.
  *
  * wrapper for thre standalone view of fluid
  *
- * @package         TYPO3
- * @subpackage
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class Standalone extends \TYPO3\CMS\Fluid\View\StandaloneView
 {
-
     /**
      * @var \Tx_Rnbase_Configuration_ProcessorInterface
      */

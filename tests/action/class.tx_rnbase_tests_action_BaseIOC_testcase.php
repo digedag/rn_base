@@ -26,19 +26,17 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_rnbase_action_BaseIOC');
 
 /**
- * tx_rnbase_tests_action_BaseIOC_testcase
+ * tx_rnbase_tests_action_BaseIOC_testcase.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()
@@ -49,7 +47,8 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
     protected function tearDown()
@@ -61,9 +60,6 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
         $property->setValue(\tx_rnbase_util_TYPO3::getTSFE(), []);
     }
 
-    /**
-     * @return void
-     */
     protected function cleanUpPageRenderer()
     {
         $property = new ReflectionProperty('\\TYPO3\\CMS\\Core\\Page\\PageRenderer', 'jsFiles');
@@ -89,9 +85,9 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
             'testConfId.' => array(
                 'includeCSS.' => array(
                     1 => 'typo3conf/ext/rn_base/ext_emconf.php',
-                    2 => 'EXT:rn_base/ext_icon.gif'
-                )
-            )
+                    2 => 'EXT:rn_base/ext_icon.gif',
+                ),
+            ),
         ), 'rn_base');
         $action->setConfigurations($configurations);
 
@@ -120,8 +116,8 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
                     '3.' => array('external' => 1),
                     '4' => 'EXT:rn_base/ext_conf_template.txt',
                     '4.' => array('excludeFromConcatenation' => 1, 'dontCompress' => 1),
-                )
-            )
+                ),
+            ),
         ), 'rn_base');
         $action->setConfigurations($configurations);
 
@@ -160,12 +156,12 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
                     'first' => 'typo3conf/ext/rn_base/ext_emconf.php',
                     'second' => 'EXT:rn_base/ext_icon.gif',
                     'third' => '//www.dmk-ebusiness.de',
-                    'third.' => array('external' => 1)
+                    'third.' => array('external' => 1),
                 ),
                 'includeJSLibs.' => array(
                     'fourth' => 'typo3conf/ext/rn_base/ext_conf_template.txt',
-                )
-            )
+                ),
+            ),
         ), 'rn_base');
         $action->setConfigurations($configurations);
 
@@ -204,9 +200,9 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
                     'first' => 'typo3conf/ext/rn_base/ext_emconf.php',
                     'second' => 'EXT:rn_base/ext_icon.gif',
                     'third' => '//www.dmk-ebusiness.de',
-                    'third.' => array('external' => 1)
+                    'third.' => array('external' => 1),
                 ),
-            )
+            ),
         ), 'rn_base');
         $action->setConfigurations($configurations);
 
@@ -244,8 +240,8 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends tx_rnbase_tests_BaseTestCa
                 'cacheTags.' => array(
                     0 => 'first',
                     1 => 'second',
-                )
-            )
+                ),
+            ),
         ), 'rn_base');
         $action->setConfigurations($configurations);
 

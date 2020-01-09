@@ -25,9 +25,8 @@ namespace Sys25\RnBase\Frontend\View;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
- * Interface for request
+ * Interface for request.
  */
 interface ContextInterface extends \ArrayAccess
 {

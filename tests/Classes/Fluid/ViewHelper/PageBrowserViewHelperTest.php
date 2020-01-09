@@ -1,10 +1,9 @@
 <?php
+
 namespace Sys25\RnBase\Fluid\ViewHelper;
 
-use Sys25\RnBase\Fluid\ViewHelper\PageBrowser\PageBaseViewHelper;
 use Sys25\RnBase\Fluid\ViewHelper\PageBrowser\CurrentPageViewHelper;
 use Sys25\RnBase\Fluid\View\Factory;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 
 /***************************************************************
  * Copyright notice
@@ -40,19 +39,17 @@ if (!\tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
 }
 
 /**
- * Sys25\RnBase\Fluid\ViewHelper$PageBrowserViewHelperTest
+ * Sys25\RnBase\Fluid\ViewHelper$PageBrowserViewHelperTest.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class PageBrowserViewHelperTest extends BaseViewHelperTest
 {
-
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()
@@ -260,7 +257,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
         $methods = array(
             'renderFirstPage', 'renderPrevPage',
-            'renderNormalPage', 'renderCurrentPage', 'renderNextPage', 'renderLastPage'
+            'renderNormalPage', 'renderCurrentPage', 'renderNextPage', 'renderLastPage',
         );
         $viewHelper = $this->getViewHelperMock($methods);
         $viewHelper = $this->getPreparedVîewHelperWithPageBrowser($viewHelper, $pageBrowser, false, 10, 'CENTER', ' ', 'myQualifier');
@@ -471,7 +468,8 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
             // damit testen wir ob die Daten in templateVariableContainer temporär korrekt gesetzt werden
             ->willReturnCallback(function ($renderingContext) {
                 $variableProvider = $renderingContext->getVariableProvider();
-                return $variableProvider->get('pageNumber') . ' ' . $variableProvider->get('currentPage');
+
+                return $variableProvider->get('pageNumber').' '.$variableProvider->get('currentPage');
             });
         $viewHelper->setChildNodes(array($viewHelperNode));
 
@@ -568,14 +566,14 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
             \tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/PageBrowserViewHelper.html')
         );
         self::assertRegExp(
-            '/<div class="pagebrowser">' .
-            '<a class="current" href=".*&amp;rn_base%5Bpb-1-pointer%5D=0">1<\/a> ' .
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=1">2<\/a> ' .
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=2">3<\/a> ' .
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=3">4<\/a> ' .
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=4">5<\/a> ' .
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=1">next<\/a> ' .
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=9">last<\/a>' .
+            '/<div class="pagebrowser">'.
+            '<a class="current" href=".*&amp;rn_base%5Bpb-1-pointer%5D=0">1<\/a> '.
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=1">2<\/a> '.
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=2">3<\/a> '.
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=3">4<\/a> '.
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=4">5<\/a> '.
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=1">next<\/a> '.
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=9">last<\/a>'.
             '<\/div>/',
             trim($view->render())
         );
@@ -599,16 +597,16 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
         );
 
         self::assertRegExp(
-            '/<div class="pagebrowser">' .
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=0">first<\/a> ' .
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=2">previous<\/a> ' .
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=1">2<\/a> ' .
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=2">3<\/a> ' .
-            '<a class="current" href=".*&amp;rn_base%5Bpb-1-pointer%5D=3">4<\/a> ' .
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=4">5<\/a> ' .
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=5">6<\/a> ' .
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=4">next<\/a> ' .
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=9">last<\/a>' .
+            '/<div class="pagebrowser">'.
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=0">first<\/a> '.
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=2">previous<\/a> '.
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=1">2<\/a> '.
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=2">3<\/a> '.
+            '<a class="current" href=".*&amp;rn_base%5Bpb-1-pointer%5D=3">4<\/a> '.
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=4">5<\/a> '.
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=5">6<\/a> '.
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=4">next<\/a> '.
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=9">last<\/a>'.
             '<\/div>/',
             trim($view->render())
         );
@@ -632,14 +630,14 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
         );
 
         self::assertRegExp(
-            '/<div class="pagebrowser">' .
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=0">first<\/a> ' .
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=8">previous<\/a> ' .
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=5">6<\/a> ' .
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=6">7<\/a> ' .
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=7">8<\/a> ' .
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=8">9<\/a> ' .
-            '<a class="current" href=".*&amp;rn_base%5Bpb-1-pointer%5D=9">10<\/a>' .
+            '/<div class="pagebrowser">'.
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=0">first<\/a> '.
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=8">previous<\/a> '.
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=5">6<\/a> '.
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=6">7<\/a> '.
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=7">8<\/a> '.
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=8">9<\/a> '.
+            '<a class="current" href=".*&amp;rn_base%5Bpb-1-pointer%5D=9">10<\/a>'.
             '<\/div>/',
             trim($view->render())
         );
@@ -663,14 +661,14 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
         );
 
         self::assertRegExp(
-            '/<div class="pagebrowser">' .
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=0">first<\/a> ' .
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=2">previous<\/a> ' .
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=2">3<\/a> ' .
-            '<a class="current" href=".*&amp;rn_base%5Bpb-1-pointer%5D=3">4<\/a> ' .
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=4">5<\/a> ' .
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=4">next<\/a> ' .
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=9">last<\/a>' .
+            '/<div class="pagebrowser">'.
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=0">first<\/a> '.
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=2">previous<\/a> '.
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=2">3<\/a> '.
+            '<a class="current" href=".*&amp;rn_base%5Bpb-1-pointer%5D=3">4<\/a> '.
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=4">5<\/a> '.
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=4">next<\/a> '.
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=9">last<\/a>'.
             '<\/div>/',
             trim($view->render())
         );
@@ -678,7 +676,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
     /**
      * @param string | \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper
-     * @param tx_rnbase_util_PageBrowser $pageBrowser
+     * @param tx_rnbase_util_PageBrowser                                   $pageBrowser
      *
      * @return \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
      */
@@ -693,7 +691,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
     ) {
         $viewHelper = parent::getPreparedVîewHelper($viewHelper);
 
-        if ($pageBrowser !== null) {
+        if (null !== $pageBrowser) {
             $this->renderingContext->getVariableProvider()->add('pagebrowser', $pageBrowser);
         }
         $viewHelper->setArguments([
@@ -716,7 +714,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
         array $methods = array(
             'getPageFloat', 'getFirstAndLastPage', 'renderFirstPage', 'renderPrevPage',
             'renderNormalPage', 'renderCurrentPage', 'renderNextPage', 'renderLastPage',
-            'getQualifierFromConfigurations'
+            'getQualifierFromConfigurations',
         )
     ) {
         return $this->getMock(

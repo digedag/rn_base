@@ -1,4 +1,5 @@
 <?php
+
 namespace Sys25\RnBase\Frontend\Filter\Utility;
 
 use Sys25\RnBase\Frontend\Request\Parameters;
@@ -29,12 +30,9 @@ use Sys25\RnBase\Configuration\Processor;
 \tx_rnbase::load('Tx_Rnbase_Category_SearchUtility');
 \tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
-
 /**
- * Tx_Rnbase_Category_FilterUtilityTest
+ * Tx_Rnbase_Category_FilterUtilityTest.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
@@ -42,8 +40,11 @@ use Sys25\RnBase\Configuration\Processor;
 class CategoryTest extends \tx_rnbase_tests_BaseTestCase
 {
     protected $configurations;
+
     protected $categoryUtil;
+
     protected $parametersMock;
+
     protected $dbConnection;
 
     public function setUp()
@@ -55,9 +56,10 @@ class CategoryTest extends \tx_rnbase_tests_BaseTestCase
         $this->categoryUtil = new Category($this->configurations->reveal(), 'myList.filter.');
         $this->categoryUtil->setDatabaseConnection($this->dbConnection->reveal());
     }
+
     /**
+     * {@inheritdoc}
      *
-     * {@inheritDoc}
      * @see \PHPUnit_Framework_TestCase::tearDown()
      */
     protected function tearDown()
@@ -68,6 +70,7 @@ class CategoryTest extends \tx_rnbase_tests_BaseTestCase
     }
 
     // ---------------------------------
+
     /**
      * @group unit
      */
@@ -140,7 +143,7 @@ class CategoryTest extends \tx_rnbase_tests_BaseTestCase
                 ],
 
                 ['TABLE.field' => [OP_EQ_INT => 23]],
-                ['TABLE.field' => [OP_EQ_INT => 23], 'CAT.uid' => ['IN' => '3,5']], null
+                ['TABLE.field' => [OP_EQ_INT => 23], 'CAT.uid' => ['IN' => '3,5']], null,
             ],
         ];
     }

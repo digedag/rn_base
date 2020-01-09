@@ -1,4 +1,5 @@
 <?php
+
 namespace Sys25\RnBase\Fluid\ViewHelper;
 
 /***************************************************************
@@ -25,24 +26,22 @@ namespace Sys25\RnBase\Fluid\ViewHelper;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Fluid\ViewHelper$BaseViewHelperTest
+ * Sys25\RnBase\Fluid\ViewHelper$BaseViewHelperTest.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 abstract class BaseViewHelperTest extends \tx_rnbase_tests_BaseTestCase
 {
-
     /**
      * @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext
      */
     protected $renderingContext;
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()

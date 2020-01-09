@@ -154,9 +154,6 @@ class tx_rnbase_tests_controller_testcase extends tx_rnbase_tests_BaseTestCase
         );
     }
 
-    /**
-     * @return void
-     */
     private function setExceptionHandlerConfig($exceptionHandler = '')
     {
         $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rn_base']);
@@ -253,7 +250,6 @@ class tx_rnbase_tests_controller_testcase extends tx_rnbase_tests_BaseTestCase
 }
 
 /**
- *
  * @author Hannes Bochmann
  */
 class tx_rnbase_exception_HandlerWithoutCorrectInterface
@@ -274,7 +270,6 @@ class tx_rnbase_exception_CustomHandler implements tx_rnbase_exception_IHandler
 
 class tx_rnbase_tests_action_throwItemNotFound404Exception
 {
-
     /**
      * @throws tx_rnbase_exception_ItemNotFound404
      */
@@ -286,7 +281,6 @@ class tx_rnbase_tests_action_throwItemNotFound404Exception
 
 class tx_rnbase_tests_action_throwPageNotFoundException
 {
-
     /**
      * @throws TYPO3\CMS\Core\Error\Http\PageNotFoundException
      */

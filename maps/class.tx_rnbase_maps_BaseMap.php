@@ -25,39 +25,40 @@
 tx_rnbase::load('tx_rnbase_maps_IMap');
 tx_rnbase::load('tx_rnbase_maps_TypeRegistry');
 
-
-
 /**
- * Common Interface for Maps
+ * Common Interface for Maps.
  */
 abstract class tx_rnbase_maps_BaseMap implements tx_rnbase_maps_IMap
 {
     /**
-     * Set a map type
+     * Set a map type.
      */
     public function setMapTypeStreet()
     {
         $type = tx_rnbase_maps_TypeRegistry::getInstance()->getType($this, RNMAP_MAPTYPE_STREET);
         $this->setMapType($type);
     }
+
     /**
-     * Set a map type
+     * Set a map type.
      */
     public function setMapTypeHybrid()
     {
         $type = tx_rnbase_maps_TypeRegistry::getInstance()->getType($this, RNMAP_MAPTYPE_HYBRID);
         $this->setMapType($type);
     }
+
     /**
-     * Set a map type
+     * Set a map type.
      */
     public function setMapTypePhysical()
     {
         $type = tx_rnbase_maps_TypeRegistry::getInstance()->getType($this, RNMAP_MAPTYPE_PHYSICAL);
         $this->setMapType($type);
     }
+
     /**
-     * Set a map type
+     * Set a map type.
      */
     public function setMapTypeSatellite()
     {

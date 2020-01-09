@@ -26,16 +26,12 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_rnbase_model_data');
 
 /**
- *
- * @package tx_rnbase
- * @subpackage tx_rnbase_tests
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_rnbase_tests_model_Data_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
-     * test object with testdata
+     * test object with testdata.
      *
      * @return tx_rnbase_model_data
      */
@@ -80,7 +76,7 @@ class tx_rnbase_tests_model_Data_testcase extends tx_rnbase_tests_BaseTestCase
 
     /**
      * @test
-     * @expectedException Exception
+     * @expectedException \Exception
      * @expectedExceptionCode 1406625817
      */
     public function testMagicCallThrowsException()
@@ -99,7 +95,7 @@ class tx_rnbase_tests_model_Data_testcase extends tx_rnbase_tests_BaseTestCase
                 'first' => 'John',
                 'last' => 'Doe',
                 'test' => array(),
-            )
+            ),
         );
         $model = tx_rnbase_model_data::getInstance($data);
 
@@ -133,6 +129,7 @@ class tx_rnbase_tests_model_Data_testcase extends tx_rnbase_tests_BaseTestCase
         // after setting the clear state, the model should be clean
         $this->assertFalse($model->isDirty());
     }
+
     /**
      * @test
      */
@@ -146,6 +143,7 @@ class tx_rnbase_tests_model_Data_testcase extends tx_rnbase_tests_BaseTestCase
         $model->unsFirstName();
         $this->assertTrue($model->isDirty());
     }
+
     /**
      * @test
      */
@@ -156,6 +154,7 @@ class tx_rnbase_tests_model_Data_testcase extends tx_rnbase_tests_BaseTestCase
         $model->record['first_name'];
         $this->assertFalse($model->isDirty());
     }
+
     /**
      * @test
      */

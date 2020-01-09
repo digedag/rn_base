@@ -26,10 +26,8 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('Tx_Rnbase_Utility_Crypt');
 
 /**
- * Mcrypt
+ * Mcrypt.
  *
- * @package TYPO3
- * @subpackage rn_base
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
  *        GNU Lesser General Public License, version 3 or later
@@ -38,14 +36,12 @@ class Tx_Rnbase_Utility_CryptTest extends tx_rnbase_tests_BaseTestCase
 {
     private $backup = array();
 
-
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      */
     protected function setUp()
     {
-
         // Function mcrypt_module_open() is deprecated since PHP 7.1 and was removed in PHP 7.2
         // switch to openssl like this https://github.com/contao/core/pull/8589/files
 
@@ -58,7 +54,7 @@ class Tx_Rnbase_Utility_CryptTest extends tx_rnbase_tests_BaseTestCase
         $this->backup['encryptionKey']
             = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']
-            = 'FIKUmW4TMTJgcohLr2VZc6fIHD8yZV1Ey8pRurYEJiVErT5' .
+            = 'FIKUmW4TMTJgcohLr2VZc6fIHD8yZV1Ey8pRurYEJiVErT5'.
               'oYMAXVSxAPRZRZPwXUCroqD7REmnhxC64ck54gfiQP1fj3V';
     }
 
@@ -73,9 +69,8 @@ class Tx_Rnbase_Utility_CryptTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * Test the encrypt method
+     * Test the encrypt method.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -89,7 +84,7 @@ class Tx_Rnbase_Utility_CryptTest extends tx_rnbase_tests_BaseTestCase
                 'body' => str_shuffle(
                     substr(
                         str_repeat(
-                            '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' . LF,
+                            '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.LF,
                             32768
                         ),
                         0,

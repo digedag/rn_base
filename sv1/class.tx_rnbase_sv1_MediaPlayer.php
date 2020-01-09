@@ -26,20 +26,20 @@
  * Service "MediaPlayer" for playing mp3 media files.
  *
  * @author  Rene Nitzsche <rene@system25.de>
- * @package     TYPO3
- * @subpackage  tx_cfcleaguefe
  */
 class tx_rnbase_sv1_MediaPlayer extends \Sys25\RnBase\Typo3Wrapper\Service\AbstractService
 {
     public $prefixId = 'tx_rnbase_sv1_MediaPlayer';  // Same as class name
+
     public $scriptRelPath = 'sv1/class.tx_rnbase_sv1_MediaPlayer.php'; // Path to this script relative to the extension dir.
+
     public $extKey = 'rn_base'; // The extension key.
 
-  /**
-   * [Put your description here]
-   *
-   * @return    [type]      ...
-   */
+    /**
+     * [Put your description here].
+     *
+     * @return [type] ...
+     */
     public function init()
     {
         $available = parent::init();
@@ -57,28 +57,28 @@ class tx_rnbase_sv1_MediaPlayer extends \Sys25\RnBase\Typo3Wrapper\Service\Abstr
 
         // Die genaue Konfig holen wir für den Dateityp
         $fileType = $media['file_type'];
-        $playerConf = $conf[$fileType . '.']['player.'];
+        $playerConf = $conf[$fileType.'.']['player.'];
 
         $color = $playerConf['backgroundColor'];
         $autoStart = $playerConf['autoStart'];
         $autoReplay = $playerConf['autoReplay'];
 
         tx_rnbase::load('tx_rnbase_util_Extensions');
-        $fePath = tx_rnbase_util_Extensions::siteRelPath('rn_base') . 'sv1/';
+        $fePath = tx_rnbase_util_Extensions::siteRelPath('rn_base').'sv1/';
 
         $out = '<object type="application/x-shockwave-flash" data="/'.
-            $fePath. 'dewplayer.swf?son='.
-           $mediaPath . $mediaName .
-           '&amp;autostart=' . $autoStart.
-           '&amp;autoreplay=' . $autoReplay.
-           '&amp;bgcolor='. $color .
+            $fePath.'dewplayer.swf?son='.
+           $mediaPath.$mediaName.
+           '&amp;autostart='.$autoStart.
+           '&amp;autoreplay='.$autoReplay.
+           '&amp;bgcolor='.$color.
            '" width="200" height="20"><param name="movie" value="/'.
             $fePath.'dewplayer.swf?son='.
-            $mediaPath . $mediaName.
+            $mediaPath.$mediaName.
               '&amp;autostart='.$autoStart.
               '&amp;autoreplay='.$autoReplay.
               '&amp;bgcolor='.$color.
-              '" />'. $media['title'] .'</object>';
+              '" />'.$media['title'].'</object>';
 
         return $out;
     }
