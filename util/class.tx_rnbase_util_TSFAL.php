@@ -692,7 +692,7 @@ class tx_rnbase_util_TSFAL
      * @param string $refTable
      * @param int $refUid
      * @param string $refField
-     * @return \TYPO3\CMS\Core\Resource\FileReference
+     * @return false|\TYPO3\CMS\Core\Resource\FileReference
      */
     public static function getFirstReference($refTable, $refUid, $refField)
     {
