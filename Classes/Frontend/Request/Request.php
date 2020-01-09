@@ -3,8 +3,8 @@
 namespace Sys25\RnBase\Frontend\Request;
 
 use Sys25\RnBase\Configuration\ConfigurationInterface;
-use Sys25\RnBase\Frontend\View\ViewContext;
 use Sys25\RnBase\Frontend\View\ContextInterface;
+use Sys25\RnBase\Frontend\View\ViewContext;
 
 /***************************************************************
 * Copyright notice

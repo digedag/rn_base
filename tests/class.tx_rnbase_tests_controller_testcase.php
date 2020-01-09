@@ -178,13 +178,13 @@ class tx_rnbase_tests_controller_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public function testDoActionIfNoExceptionIsFoundCallsNotGetTsfe()
     {
-        $controller = $this->getMock('tx_rnbase_controller', array('getTsfe'));
+        $controller = $this->getMock('tx_rnbase_controller', ['getTsfe']);
 
         $controller->expects($this->never())
             ->method('getTsfe');
 
         $parameters = null;
-        $configurations = $this->createConfigurations(array(), 'rn_base');
+        $configurations = $this->createConfigurations([], 'rn_base');
         $controller->doAction('unknown', $parameters, $configurations);
     }
 
@@ -193,11 +193,11 @@ class tx_rnbase_tests_controller_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public function testDoActionCallsPageNotFoundHandlingIfItemNotFound404Exception()
     {
-        $controller = $this->getMock('tx_rnbase_controller', array('getTsfe'));
+        $controller = $this->getMock('tx_rnbase_controller', ['getTsfe']);
         $tsfe = $this->getMock(
             tx_rnbase_util_Typo3Classes::getTypoScriptFrontendControllerClass(),
-            array('pageNotFoundAndExit'),
-            array(),
+            ['pageNotFoundAndExit'],
+            [],
             '',
             false
         );
@@ -223,11 +223,11 @@ class tx_rnbase_tests_controller_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public function testDoActionCallsPageNotFoundHandlingIfPageNotFoundException()
     {
-        $controller = $this->getMock('tx_rnbase_controller', array('getTsfe'));
+        $controller = $this->getMock('tx_rnbase_controller', ['getTsfe']);
         $tsfe = $this->getMock(
             tx_rnbase_util_Typo3Classes::getTypoScriptFrontendControllerClass(),
-            array('pageNotFoundAndExit'),
-            array(),
+            ['pageNotFoundAndExit'],
+            [],
             '',
             false
         );

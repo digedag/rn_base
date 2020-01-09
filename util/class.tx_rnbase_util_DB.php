@@ -48,6 +48,6 @@ class tx_rnbase_util_DB
     {
         $databaseUtility = tx_rnbase::makeInstance(static::$databaseConnectionClass);
 
-        return call_user_func_array(array($databaseUtility, $name), $arguments);
+        return call_user_func_array([$databaseUtility, $name], $arguments);
     }
 }

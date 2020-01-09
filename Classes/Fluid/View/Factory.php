@@ -40,7 +40,7 @@ class Factory
      *
      * @return \Sys25\RnBase\Fluid\View\Standalone
      */
-    public static function getViewInstance(\tx_rnbase_configurations $configurations, $frameworkSettings = array())
+    public static function getViewInstance(\tx_rnbase_configurations $configurations, $frameworkSettings = [])
     {
         /* @var $view \Sys25\RnBase\Fluid\View\Standalone */
         $view = \tx_rnbase::makeInstance('Sys25\\RnBase\\Fluid\\View\\Standalone', $configurations->getCObj());

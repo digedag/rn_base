@@ -81,11 +81,11 @@ class tx_rnbase_view_Base
         $out = $this->renderPluginData($out, $configurations);
 
         if ($controller) {
-            $params = array();
+            $params = [];
             $params['confid'] = $controller->getConfId();
             $params['item'] = $controller->getViewData()->offsetGet('item');
             $params['items'] = $controller->getViewData()->offsetGet('items');
-            $markerArray = $subpartArray = $wrappedSubpartArray = array();
+            $markerArray = $subpartArray = $wrappedSubpartArray = [];
             tx_rnbase_util_BaseMarker::callModules(
                 $out,
                 $markerArray,

@@ -41,10 +41,10 @@ class tx_rnbase_util_Typo3Classes
      */
     public static function getFlashMessageClass()
     {
-        return self::getClassByCurrentTypo3Version(array(
+        return self::getClassByCurrentTypo3Version([
             self::LOWER6 => 't3lib_FlashMessage',
             self::HIGHER6 => 'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-        ));
+        ]);
     }
 
     /**
@@ -52,10 +52,10 @@ class tx_rnbase_util_Typo3Classes
      */
     public static function getBackendFormEngineClass()
     {
-        return self::getClassByCurrentTypo3Version(array(
+        return self::getClassByCurrentTypo3Version([
             self::LOWER6 => 't3lib_tceforms',
             self::HIGHER6 => 'TYPO3\\CMS\\Backend\\Form\\FormEngine',
-        ));
+        ]);
     }
 
     /**
@@ -63,10 +63,10 @@ class tx_rnbase_util_Typo3Classes
      */
     public static function getBasicFileUtilityClass()
     {
-        return self::getClassByCurrentTypo3Version(array(
+        return self::getClassByCurrentTypo3Version([
             self::LOWER6 => 't3lib_basicFileFunctions',
             self::HIGHER6 => 'TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility',
-        ));
+        ]);
     }
 
     /**
@@ -74,10 +74,10 @@ class tx_rnbase_util_Typo3Classes
      */
     public static function getExtendedTypoScriptTemplateServiceClass()
     {
-        return self::getClassByCurrentTypo3Version(array(
+        return self::getClassByCurrentTypo3Version([
             self::LOWER6 => 't3lib_tsparser_ext',
             self::HIGHER6 => 'TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService',
-        ));
+        ]);
     }
 
     /**
@@ -85,10 +85,10 @@ class tx_rnbase_util_Typo3Classes
      */
     public static function getContentObjectRendererClass()
     {
-        return self::getClassByCurrentTypo3Version(array(
+        return self::getClassByCurrentTypo3Version([
             self::LOWER6 => 'tslib_cObj',
             self::HIGHER6 => 'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer',
-        ));
+        ]);
     }
 
     /**
@@ -96,10 +96,10 @@ class tx_rnbase_util_Typo3Classes
      */
     public static function getTypoScriptFrontendControllerClass()
     {
-        return self::getClassByCurrentTypo3Version(array(
+        return self::getClassByCurrentTypo3Version([
             self::LOWER6 => 'tslib_fe',
             self::HIGHER6 => 'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
-        ));
+        ]);
     }
 
     /**
@@ -107,10 +107,10 @@ class tx_rnbase_util_Typo3Classes
      */
     public static function getFrontendUserAuthenticationClass()
     {
-        return self::getClassByCurrentTypo3Version(array(
+        return self::getClassByCurrentTypo3Version([
             self::LOWER6 => 'tslib_feUserAuth',
             self::HIGHER6 => 'TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication',
-        ));
+        ]);
     }
 
     /**
@@ -118,10 +118,10 @@ class tx_rnbase_util_Typo3Classes
      */
     public static function getCharsetConverterClass()
     {
-        return self::getClassByCurrentTypo3Version(array(
+        return self::getClassByCurrentTypo3Version([
             self::LOWER6 => 't3lib_cs',
             self::HIGHER6 => 'TYPO3\\CMS\\Core\\Charset\\CharsetConverter',
-        ));
+        ]);
     }
 
     /**
@@ -129,10 +129,10 @@ class tx_rnbase_util_Typo3Classes
      */
     public static function getDataHandlerClass()
     {
-        return self::getClassByCurrentTypo3Version(array(
+        return self::getClassByCurrentTypo3Version([
             self::LOWER6 => 't3lib_tcemain',
             self::HIGHER6 => 'TYPO3\\CMS\\Core\\DataHandling\\DataHandler',
-        ));
+        ]);
     }
 
     /**
@@ -140,10 +140,10 @@ class tx_rnbase_util_Typo3Classes
      */
     public static function getSpriteManagerClass()
     {
-        return self::getClassByCurrentTypo3Version(array(
+        return self::getClassByCurrentTypo3Version([
             self::LOWER6 => 't3lib_SpriteManager',
             self::HIGHER6 => 'TYPO3\\CMS\Backend\\Sprite\\SpriteManager',
-        ));
+        ]);
     }
 
     /**
@@ -183,10 +183,10 @@ class tx_rnbase_util_Typo3Classes
             }
         }
 
-        return self::getClassByCurrentTypo3Version(array(
+        return self::getClassByCurrentTypo3Version([
             self::LOWER6 => 't3lib_timeTrack',
             self::HIGHER6 => $higher6Class,
-        ));
+        ]);
     }
 
     /**
@@ -194,10 +194,10 @@ class tx_rnbase_util_Typo3Classes
      */
     public static function getCommandUtilityClass()
     {
-        return self::getClassByCurrentTypo3Version(array(
+        return self::getClassByCurrentTypo3Version([
             self::LOWER6 => 't3lib_exec',
             self::HIGHER6 => 'TYPO3\\CMS\\Core\\Utility\\CommandUtility',
-        ));
+        ]);
     }
 
     /**
@@ -205,10 +205,10 @@ class tx_rnbase_util_Typo3Classes
      */
     public static function getMailMessageClass()
     {
-        return self::getClassByCurrentTypo3Version(array(
+        return self::getClassByCurrentTypo3Version([
             self::LOWER6 => 't3lib_mail_Message',
             self::HIGHER6 => 'TYPO3\\CMS\\Core\\Mail\\MailMessage',
-        ));
+        ]);
     }
 
     /**
@@ -216,10 +216,10 @@ class tx_rnbase_util_Typo3Classes
      */
     public static function getHtmlParserClass()
     {
-        return self::getClassByCurrentTypo3Version(array(
+        return self::getClassByCurrentTypo3Version([
             self::LOWER6 => 't3lib_parsehtml',
             self::HIGHER6 => 'TYPO3\\CMS\\Core\\Html\\HtmlParser',
-        ));
+        ]);
     }
 
     /**
@@ -229,10 +229,10 @@ class tx_rnbase_util_Typo3Classes
      */
     public static function getGeneralUtilityClass()
     {
-        return self::getClassByCurrentTypo3Version(array(
+        return self::getClassByCurrentTypo3Version([
             self::LOWER6 => 't3lib_div',
             self::HIGHER6 => 'TYPO3\\CMS\\Core\\Utility\\GeneralUtility',
-        ));
+        ]);
     }
 
     /**
@@ -240,10 +240,10 @@ class tx_rnbase_util_Typo3Classes
      */
     public static function getTypoScriptParserClass()
     {
-        return self::getClassByCurrentTypo3Version(array(
+        return self::getClassByCurrentTypo3Version([
             self::LOWER6 => 't3lib_TSparser',
             self::HIGHER6 => 'TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser',
-        ));
+        ]);
     }
 
     /**
@@ -251,10 +251,10 @@ class tx_rnbase_util_Typo3Classes
      */
     public static function getDocumentTemplateClass()
     {
-        return self::getClassByCurrentTypo3Version(array(
+        return self::getClassByCurrentTypo3Version([
             self::LOWER6 => 'template',
             self::HIGHER6 => 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate',
-        ));
+        ]);
     }
 
     /**
@@ -262,10 +262,10 @@ class tx_rnbase_util_Typo3Classes
      */
     public static function getTemplateServiceClass()
     {
-        return self::getClassByCurrentTypo3Version(array(
+        return self::getClassByCurrentTypo3Version([
             self::LOWER6 => 't3lib_TStemplate',
             self::HIGHER6 => 'TYPO3\\CMS\\Core\\TypoScript\\TemplateService',
-        ));
+        ]);
     }
 
     /**
@@ -273,10 +273,10 @@ class tx_rnbase_util_Typo3Classes
      */
     public static function getHttpUtilityClass()
     {
-        return self::getClassByCurrentTypo3Version(array(
+        return self::getClassByCurrentTypo3Version([
             self::LOWER6 => 't3lib_utility_Http',
             self::HIGHER6 => 'TYPO3\\CMS\\Core\\Utility\\HttpUtility',
-        ));
+        ]);
     }
 
     /**
@@ -284,10 +284,10 @@ class tx_rnbase_util_Typo3Classes
      */
     public static function getMediumDocumentTemplateClass()
     {
-        return self::getClassByCurrentTypo3Version(array(
+        return self::getClassByCurrentTypo3Version([
             self::LOWER6 => 'mediumDoc',
             self::HIGHER6 => 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate',
-        ));
+        ]);
     }
 
     /**
@@ -295,10 +295,10 @@ class tx_rnbase_util_Typo3Classes
      */
     public static function getLocalizationParserClass()
     {
-        return self::getClassByCurrentTypo3Version(array(
+        return self::getClassByCurrentTypo3Version([
             self::LOWER6 => 't3lib_l10n_parser_Llxml',
             self::HIGHER6 => 'TYPO3\\CMS\\Core\\Localization\\Parser\\LocallangXmlParser',
-        ));
+        ]);
     }
 
     /**
@@ -306,10 +306,10 @@ class tx_rnbase_util_Typo3Classes
      */
     public static function getAbstractUserAuthenticationClass()
     {
-        return self::getClassByCurrentTypo3Version(array(
+        return self::getClassByCurrentTypo3Version([
             self::LOWER6 => 't3lib_userAuth',
             self::HIGHER6 => 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication',
-        ));
+        ]);
     }
 
     /**
@@ -317,10 +317,10 @@ class tx_rnbase_util_Typo3Classes
      */
     public static function getAbstractRteClass()
     {
-        return self::getClassByCurrentTypo3Version(array(
+        return self::getClassByCurrentTypo3Version([
             self::LOWER6 => 't3lib_rteapi',
             self::HIGHER6 => 'TYPO3\\CMS\\Backend\\Rte\\AbstractRte',
-        ));
+        ]);
     }
 
     /**
@@ -328,10 +328,10 @@ class tx_rnbase_util_Typo3Classes
      */
     public static function getSqlParserClass()
     {
-        return self::getClassByCurrentTypo3Version(array(
+        return self::getClassByCurrentTypo3Version([
             self::LOWER6 => 't3lib_sqlparser',
             self::HIGHER6 => 'TYPO3\\CMS\\Core\\Database\\SqlParser',
-        ));
+        ]);
     }
 
     /**
@@ -339,10 +339,10 @@ class tx_rnbase_util_Typo3Classes
      */
     public static function getFrontendBackendUserAuthenticationClass()
     {
-        return self::getClassByCurrentTypo3Version(array(
+        return self::getClassByCurrentTypo3Version([
             self::LOWER6 => 't3lib_tsfeBeUserAuth',
             self::HIGHER6 => 'TYPO3\\CMS\\Backend\\FrontendBackendUserAuthentication',
-        ));
+        ]);
     }
 
     /**
@@ -350,10 +350,10 @@ class tx_rnbase_util_Typo3Classes
      */
     public static function getBackendUserAuthenticationClass()
     {
-        return self::getClassByCurrentTypo3Version(array(
+        return self::getClassByCurrentTypo3Version([
             self::LOWER6 => 't3lib_beUserAuth',
             self::HIGHER6 => 'TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication',
-        ));
+        ]);
     }
 
     /**
@@ -361,10 +361,10 @@ class tx_rnbase_util_Typo3Classes
      */
     public static function getEidUtilityClass()
     {
-        return self::getClassByCurrentTypo3Version(array(
+        return self::getClassByCurrentTypo3Version([
             self::LOWER6 => 'tslib_eidtools',
             self::HIGHER6 => 'TYPO3\\CMS\\Frontend\\Utility\\EidUtility',
-        ));
+        ]);
     }
 
     /**

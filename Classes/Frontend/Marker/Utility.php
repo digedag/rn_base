@@ -41,9 +41,9 @@ class Tx_Rnbase_Frontend_Marker_Utility
      */
     public static function findUnusedAttributes(Tx_Rnbase_Domain_Model_DataInterface $item, $template, $marker)
     {
-        $ignore = array();
+        $ignore = [];
         $minfo = static::containsMarker($template, $marker.'___MINFO');
-        $minfoArr = array();
+        $minfoArr = [];
         foreach ($item as $key => $value) {
             if ($minfo) {
                 $minfoArr[$key] = $marker.'_'.strtoupper($key);

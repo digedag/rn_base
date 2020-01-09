@@ -127,11 +127,11 @@ class PageBaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBas
             PageBrowserViewHelper::class,
             'pageBrowserQualifier'
         );
-        $pageBrowserParams = array(
-            $pageBrowserQualifier => array(
+        $pageBrowserParams = [
+            $pageBrowserQualifier => [
                 $pageBrowser->getParamName('pointer') => $currentPage,
-            ),
-        );
+            ],
+        ];
         $additionalParams = \tx_rnbase_util_Arrays::mergeRecursiveWithOverrule($additionalParams, $pageBrowserParams);
 
         $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();

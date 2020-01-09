@@ -68,7 +68,7 @@ class tx_rnbase_util_Arrays
         } elseif (is_object($mixed) && method_exists($mixed, 'getArrayCopy')) {
             $hashArray = $mixed->getArrayCopy();
         } else {
-            $hashArray = array();
+            $hashArray = [];
         }
 
         return $hashArray;
@@ -114,7 +114,7 @@ class tx_rnbase_util_Arrays
      *
      * @return string Output string with key names and their value as string
      */
-    public static function arrayToLogString(array $arr, $valueList = array(), $valueLength = 20)
+    public static function arrayToLogString(array $arr, $valueList = [], $valueLength = 20)
     {
         $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
 

@@ -28,7 +28,7 @@ tx_rnbase::load('tx_rnbase_util_Strings');
  */
 class tx_rnbase_util_Dates
 {
-    private static $todayDateStrings = array();
+    private static $todayDateStrings = [];
 
     public static function getTodayDateString($format = 'Ymd')
     {
@@ -92,7 +92,7 @@ class tx_rnbase_util_Dates
      */
     public static function date_addIntDays($intdate, $days)
     {
-        $dateArr = array(substr($intdate, 0, 4), substr($intdate, 4, 2), substr($intdate, 6, 2));
+        $dateArr = [substr($intdate, 0, 4), substr($intdate, 4, 2), substr($intdate, 6, 2)];
         $tstamp = gmmktime(0, 0, 0, $dateArr[1], $dateArr[2], $dateArr[0]);
         $tstamp += ((3600 * 24) * $days);
         $ret = gmdate('Ymd', $tstamp);
@@ -150,7 +150,7 @@ class tx_rnbase_util_Dates
             $tstamp = mktime(0, 0, 0, $monat, $tag, $jahr);
         }
         // If mktime arguments are invalid, the function returns FALSE  (before PHP 5.1 it returned -1).
-        return (!in_array($tstamp, array(false, -1))) ? $tstamp : null;
+        return (!in_array($tstamp, [false, -1])) ? $tstamp : null;
     }
 
     /**
@@ -178,7 +178,7 @@ class tx_rnbase_util_Dates
     {
         list($datum, $zeit) = explode(' ', $datetime);
         list($jahr, $monat, $tag) = tx_rnbase_util_Strings::intExplode('-', $datum);
-        list($std, $min, $sec) = $zeit ? tx_rnbase_util_Strings::intExplode(':', $zeit) : array(0, 0, 0);
+        list($std, $min, $sec) = $zeit ? tx_rnbase_util_Strings::intExplode(':', $zeit) : [0, 0, 0];
 
         return self::getTimeStamp($jahr, $monat, $tag, $std, $min, $sec, $timezone);
     }

@@ -319,7 +319,7 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
     {
         return tx_rnbase_util_TCA::validateModel(
             $this,
-            null === $options ? array('only_record_fields' => true) : $options
+            null === $options ? ['only_record_fields' => true] : $options
         );
     }
 

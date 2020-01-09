@@ -34,7 +34,7 @@ tx_rnbase::load('tx_rnbase_util_Network');
  */
 class tx_rnbase_util_Templates
 {
-    public static $substMarkerCache = array();
+    public static $substMarkerCache = [];
 
     private static $tmpl;
 
@@ -150,7 +150,7 @@ class tx_rnbase_util_Templates
         if (empty($included)) {
             $included = preg_replace_callback(
                 '!\<\!--[a-zA-Z0-9_ \s]*###[ ]*INCLUDE_TEMPLATE([^###]*)\###[a-zA-Z0-9_ \s]*-->!is',
-                array(self::class, 'cbIncludeSubTemplates'),
+                [self::class, 'cbIncludeSubTemplates'],
                 $template
             );
             // store the template in the cache
@@ -164,7 +164,6 @@ class tx_rnbase_util_Templates
 
     /**
      * This callback is called by the includeSubTemplates preg_replace.
-     *
      *
      * @param unknown $match
      *
@@ -205,19 +204,19 @@ class tx_rnbase_util_Templates
      *
      * @see substituteSubpart(), substituteMarker(), substituteMarkerInObject(), TEMPLATE()
      */
-    public function substituteMarkerArrayCached_old($content, $markContentArray = array(), $subpartContentArray = array(), $wrappedSubpartContentArray = array())
+    public function substituteMarkerArrayCached_old($content, $markContentArray = [], $subpartContentArray = [], $wrappedSubpartContentArray = [])
     {
         tx_rnbase_util_Misc::pushTT('substituteMarkerArray');
 
         // If not arrays then set them
         if (!is_array($markContentArray)) {
-            $markContentArray = array();
+            $markContentArray = [];
         }    // Plain markers
         if (!is_array($subpartContentArray)) {
-            $subpartContentArray = array();
+            $subpartContentArray = [];
         }    // Subparts being directly substituted
         if (!is_array($wrappedSubpartContentArray)) {
-            $wrappedSubpartContentArray = array();
+            $wrappedSubpartContentArray = [];
         }    // Subparts being wrapped
 
         // Finding keys and check hash:
@@ -230,7 +229,7 @@ class tx_rnbase_util_Templates
             return $content;
         }
         asort($aKeys);
-        $storeKey = md5('substituteMarkerArrayCached_storeKey:'.serialize(array($content, $aKeys)));
+        $storeKey = md5('substituteMarkerArrayCached_storeKey:'.serialize([$content, $aKeys]));
 
         if (self::$substMarkerCache[$storeKey]) {
             $storeArr = self::$substMarkerCache[$storeKey];
@@ -239,7 +238,7 @@ class tx_rnbase_util_Templates
             $storeArrDat = $GLOBALS['TSFE']->sys_page->getHash($storeKey, 0);
             if (!isset($storeArrDat)) {
                 // Initialize storeArr
-                $storeArr = array();
+                $storeArr = [];
 
                 // Finding subparts and substituting them with the subpart as a marker
                 foreach ($sPkeys as $sPK) {
@@ -248,7 +247,7 @@ class tx_rnbase_util_Templates
 
                 // Finding subparts and wrapping them with markers
                 foreach ($wPkeys as $wPK) {
-                    $content = self::substituteSubpart($content, $wPK, array($wPK, $wPK));
+                    $content = self::substituteSubpart($content, $wPK, [$wPK, $wPK]);
                 }
 
                 // traverse keys and quote them for reg ex.
@@ -280,7 +279,7 @@ class tx_rnbase_util_Templates
         // Merging content types together, resetting
         $valueArr = array_merge($markContentArray, $subpartContentArray, $wrappedSubpartContentArray);
 
-        $wSCA_reg = array();
+        $wSCA_reg = [];
         $content = '';
         // traversin the keyList array and merging the static and dynamic content
         foreach ($storeArr['k'] as $n => $keyN) {
@@ -362,13 +361,13 @@ class tx_rnbase_util_Templates
 
         // If not arrays then set them
         if (is_null($markContentArray)) {
-            $markContentArray = array();
+            $markContentArray = [];
         }    // Plain markers
         if (is_null($subpartContentArray)) {
-            $subpartContentArray = array();
+            $subpartContentArray = [];
         }    // Subparts being directly substituted
         if (is_null($wrappedSubpartContentArray)) {
-            $wrappedSubpartContentArray = array();
+            $wrappedSubpartContentArray = [];
         }    // Subparts being wrapped
         // Finding keys and check hash:
         $sPkeys = array_keys($subpartContentArray);
@@ -388,7 +387,7 @@ class tx_rnbase_util_Templates
 
         $storeKey = '';
         if (self::isSubstCacheEnabled()) {
-            $storeKey = md5('substituteMarkerArrayCached_storeKey:'.serialize(array($content, $mPKeys, $sPkeys, $wPkeys)));
+            $storeKey = md5('substituteMarkerArrayCached_storeKey:'.serialize([$content, $mPKeys, $sPkeys, $wPkeys]));
         }
 
         if (self::isSubstCacheEnabled() && self::$substMarkerCache[$storeKey]) {
@@ -399,7 +398,7 @@ class tx_rnbase_util_Templates
             }
             if (!self::isSubstCacheEnabled() || !isset($storeArrDat)) {
                 // Initialize storeArr
-                $storeArr = array();
+                $storeArr = [];
 
                 // Finding subparts and substituting them with the subpart as a marker
                 foreach ($sPkeys as $sPK) {
@@ -408,7 +407,7 @@ class tx_rnbase_util_Templates
 
                 // Finding subparts and wrapping them with markers
                 foreach ($wPkeys as $wPK) {
-                    $content = self::substituteSubpart($content, $wPK, array($wPK, $wPK));
+                    $content = self::substituteSubpart($content, $wPK, [$wPK, $wPK]);
                 }
 
                 // traverse keys and quote them for reg ex.
@@ -440,7 +439,7 @@ class tx_rnbase_util_Templates
         // Merging content types together, resetting
         $valueArr = array_merge($markContentArray, $subpartContentArray, $wrappedSubpartContentArray);
 
-        $wSCA_reg = array();
+        $wSCA_reg = [];
         $content = '';
         // traversing the keyList array and merging the static and dynamic content
         foreach ($storeArr['k'] as $n => $keyN) {

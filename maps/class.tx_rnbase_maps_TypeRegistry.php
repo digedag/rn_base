@@ -34,9 +34,9 @@ class tx_rnbase_maps_TypeRegistry
 {
     public static $instance = null;
 
-    private static $mapTypes = array(RNMAP_MAPTYPE_STREET, RNMAP_MAPTYPE_SATELLITE, RNMAP_MAPTYPE_HYBRID, RNMAP_MAPTYPE_PHYSICAL);
+    private static $mapTypes = [RNMAP_MAPTYPE_STREET, RNMAP_MAPTYPE_SATELLITE, RNMAP_MAPTYPE_HYBRID, RNMAP_MAPTYPE_PHYSICAL];
 
-    private $types = array();
+    private $types = [];
 
     private function __construct()
     {

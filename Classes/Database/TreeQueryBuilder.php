@@ -47,10 +47,10 @@ class Tx_Rnbase_Database_TreeQueryBuilder
      *
      * @see Tx_Rnbase_Database_TreeQueryBuilder::getTreeUidListRecursive
      */
-    public function getPageTreeUidList($id, $options = array())
+    public function getPageTreeUidList($id, $options = [])
     {
         //@TODO: support page aliases in id parameter
-        $sqlOptions = array_merge(array('tableName' => 'pages'), $options);
+        $sqlOptions = array_merge(['tableName' => 'pages'], $options);
         $depth = !empty($options['depth']) ? $options['depth'] : 999;
         $begin = !empty($options['begin']) ? $options['begin'] : 0;
 
@@ -80,7 +80,7 @@ class Tx_Rnbase_Database_TreeQueryBuilder
      *
      * @throws Exception
      */
-    public function getTreeUidListRecursive($id, $depth, $begin = 0, $options = array())
+    public function getTreeUidListRecursive($id, $depth, $begin = 0, $options = [])
     {
         $depth = (int) $depth;
         $begin = (int) $begin;
@@ -90,7 +90,7 @@ class Tx_Rnbase_Database_TreeQueryBuilder
         if (0 == $begin) {
             $uidList = Tx_Rnbase_Utility_Strings::intExplode(',', $id);
         } else {
-            $uidList = array();
+            $uidList = [];
         }
         if ($id && $depth > 0) {
             if (empty($options['tableName'])) {

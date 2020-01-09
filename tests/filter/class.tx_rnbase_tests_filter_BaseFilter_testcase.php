@@ -65,12 +65,12 @@ class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTes
         $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $filter = $this->getAccessibleMock(
             'tx_rnbase_filter_BaseFilter',
-            array('initFilter'),
-            array(
+            ['initFilter'],
+            [
                 &$parameters,
                 &$configurations,
                 'myList.filter.',
-            )
+            ]
         );
         $filter
             ->expects(self::once())
@@ -89,17 +89,17 @@ class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTes
     {
         return [
             // initFilter liefert true, doSearch nicht gesetzt, wir erwarten true
-            array(true, null, true),
+            [true, null, true],
             // initFilter liefert false, doSearch nicht gesetzt, wir erwarten false
-            array(false, null, false),
+            [false, null, false],
             // initFilter liefert false, doSearch steht auf true, wir erwarten true
-            array(false, true, true),
+            [false, true, true],
             // initFilter liefert true, doSearch steht auf false, wir erwarten false
-            array(true, false, false),
+            [true, false, false],
             // initFilter liefert true, doSearch steht auf true, wir erwarten true
-            array(true, true, true),
+            [true, true, true],
             // initFilter liefert false, doSearch steht auf false, wir erwarten false
-            array(false, false, false),
+            [false, false, false],
         ];
     }
 }

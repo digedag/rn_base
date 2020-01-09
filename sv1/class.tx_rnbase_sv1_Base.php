@@ -81,7 +81,7 @@ abstract class tx_rnbase_sv1_Base extends \Sys25\RnBase\Typo3Wrapper\Service\Abs
      */
     public function findAll()
     {
-        return $this->search(array(), array());
+        return $this->search([], []);
     }
 
     /************************
@@ -107,7 +107,7 @@ abstract class tx_rnbase_sv1_Base extends \Sys25\RnBase\Typo3Wrapper\Service\Abs
     {
         if (!$this->dummyModel) {
             $searcher = tx_rnbase_util_SearchBase::getInstance($this->getSearchClass());
-            $this->dummyModel = tx_rnbase::makeInstance($searcher->getWrapperClass(), array('uid' => 0));
+            $this->dummyModel = tx_rnbase::makeInstance($searcher->getWrapperClass(), ['uid' => 0]);
         }
 
         return $this->dummyModel;
@@ -192,7 +192,7 @@ abstract class tx_rnbase_sv1_Base extends \Sys25\RnBase\Typo3Wrapper\Service\Abs
                 }
 
                 //else
-                $data = array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] => 1);
+                $data = [$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] => 1];
                 tx_rnbase_util_DB::doUpdate($table, $where, self::insertTimestamp($data, $table));
 
                 break;
@@ -205,7 +205,7 @@ abstract class tx_rnbase_sv1_Base extends \Sys25\RnBase\Typo3Wrapper\Service\Abs
                 }
 
                 //else
-                $data = array($GLOBALS['TCA'][$table]['ctrl']['delete'] => 1);
+                $data = [$GLOBALS['TCA'][$table]['ctrl']['delete'] => 1];
                 tx_rnbase_util_DB::doUpdate($table, $where, self::insertTimestamp($data, $table));
 
                 break;

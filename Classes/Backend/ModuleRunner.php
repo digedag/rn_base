@@ -61,7 +61,7 @@ class Tx_Rnbase_Backend_ModuleRunner
 
         return call_user_func_array(
             $target,
-            array($request, $response)
+            [$request, $response]
         );
     }
 
@@ -152,7 +152,7 @@ class Tx_Rnbase_Backend_ModuleRunner
             list($className, $methodName) = explode('::', $target, 2);
             $targetObject = Tx_Rnbase_Utility_T3General::makeInstance($className);
 
-            return array($targetObject, $methodName);
+            return [$targetObject, $methodName];
         }
 
         // This needs to be checked at last as a string with object::method is recognize as callable

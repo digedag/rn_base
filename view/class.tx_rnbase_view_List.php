@@ -44,7 +44,7 @@ class tx_rnbase_view_List extends tx_rnbase_view_Base
         $confId = $this->getController()->getConfId();
 
         $markerArray = $formatter->getItemMarkerArrayWrapped($markerData, $confId.'markers.');
-        $subpartArray = array();
+        $subpartArray = [];
 
         $itemPath = $this->getItemPath($configurations, $confId);
         if ($filter && $filter->hideResult()) {

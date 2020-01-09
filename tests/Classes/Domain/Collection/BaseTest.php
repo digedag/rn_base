@@ -37,7 +37,6 @@ class Tx_Rnbase_Domain_Collection_BaseTest extends tx_rnbase_tests_BaseTestCase
     /**
      * Test the getUids method.
      *
-     *
      * @group unit
      * @test
      */

@@ -51,7 +51,7 @@ class tx_rnbase_maps_Util
 
         try {
             $subpart = tx_rnbase_util_Templates::getSubpartFromFile($file, $subpartName);
-            $ret = str_replace(array("\r\n", "\n", "\r"), '', $subpart);
+            $ret = str_replace(["\r\n", "\n", "\r"], '', $subpart);
         } catch (Exception $e) {
             $ret = '';
         }

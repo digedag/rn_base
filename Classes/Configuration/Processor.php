@@ -160,7 +160,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
     /**
      * @var int[]
      */
-    private static $libIds = array();
+    private static $libIds = [];
 
     /**
      * Set this in the derived class or give the setupPath to the loadTypoScript method.
@@ -653,7 +653,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
         if (!is_array($ret) && $noEndingDot) {
             $arr = $this->_queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey.'.');
             if (is_array($arr)) {
-                $ret = array('key' => $ret, 'key.' => $arr);
+                $ret = ['key' => $ret, 'key.' => $arr];
             }
         }
         if (is_array($ret)) {
@@ -745,7 +745,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
             return $value;
         }
         if (empty($value)) {
-            return array();
+            return [];
         }
 
         return \tx_rnbase_util_Strings::trimExplode($delim, $value, true);
@@ -779,7 +779,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
     public function queryHash($pathKey, $keyName, $valueName)
     {
         $selection = $this->_dataStore->get($pathKey);
-        $array = array();
+        $array = [];
         foreach ($selection as $set) {
             $array[$set[$keyName]] = $set[$valueName];
         }
@@ -869,7 +869,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
     {
         $dynaMarkers = $this->get($confId);
         if (!is_array($dynaMarkers)) {
-            return array();
+            return [];
         }
 
         return $this->getUniqueKeysNames($dynaMarkers);
@@ -884,7 +884,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
      */
     public function getUniqueKeysNames(array $conf)
     {
-        $keys = array();
+        $keys = [];
 
         $dynaMarkers = array_keys($conf);
         if (empty($dynaMarkers)) {
@@ -947,17 +947,17 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
         // Cancel Recursion on value level
         if (1 == count($pathArray)) {
             if (!is_array($dataArr)) {
-                $dataArr = array();
+                $dataArr = [];
             }
             $dataArr[$pathArray[0]] = $newValue;
 
             return $dataArr;
         }
 
-        $ret = array();
+        $ret = [];
 
         if (!$dataArr) {
-            $dataArr = array($pathArray[0].'.' => '');
+            $dataArr = [$pathArray[0].'.' => ''];
         }
         if (!array_key_exists($pathArray[0].'.', $dataArr)) {
             $dataArr[$pathArray[0].'.'] = '';

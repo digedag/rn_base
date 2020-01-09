@@ -31,7 +31,7 @@ tx_rnbase::load('tx_rnbase_util_Strings');
  */
 class tx_rnbase_util_Mail
 {
-    private $attachments = array();
+    private $attachments = [];
 
     private $from;
 
@@ -87,14 +87,14 @@ class tx_rnbase_util_Mail
 
     public function addAttachment($src, $filename = '', $contentType = '')
     {
-        $this->attachments[] = array('src' => $src, 'filename' => $filename, 'contentType' => $contentType);
+        $this->attachments[] = ['src' => $src, 'filename' => $filename, 'contentType' => $contentType];
     }
 
     protected function send45()
     {
         /* @var $mail TYPO3\CMS\Core\Mail\MailMessage */
         $mail = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getMailMessageClass());
-        $mail->setFrom(array($this->from => $this->fromName));
+        $mail->setFrom([$this->from => $this->fromName]);
 
         $mail->setTo(tx_rnbase_util_Strings::trimExplode(',', $this->toAsString));
         $mail->setSubject($this->subject);
@@ -116,7 +116,7 @@ class tx_rnbase_util_Mail
                     tx_rnbase_util_Logger::warn(
                         'Adding attachment failed!',
                         'rn_base',
-                        array('subject' => $mail->subject, 'to' => $this->toAsString, 'attachment' => $attachment)
+                        ['subject' => $mail->subject, 'to' => $this->toAsString, 'attachment' => $attachment]
                     );
                 }
             }

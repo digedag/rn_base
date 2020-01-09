@@ -36,16 +36,16 @@ class tx_rnbase_tests_model_Media_testcase extends tx_rnbase_tests_BaseTestCase
     {
         $falModel = $this->getMock(
             'stdClass',
-            array('getProperties', 'getUid', 'getPublicUrl')
+            ['getProperties', 'getUid', 'getPublicUrl']
         );
         $falModel->expects($this->once())
             ->method('getProperties')
-            ->will($this->returnValue(array(
+            ->will($this->returnValue([
                 'title' => 'sample picture reference',
                 'description' => 'this is a sample picture',
                 'otherField' => '/some/path',
                 'otherField2' => '/some/other/path',
-            )));
+            ]));
 
         $mediaModel = tx_rnbase::makeInstance('tx_rnbase_model_media', $falModel);
 

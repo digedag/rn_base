@@ -2,11 +2,11 @@
 
 namespace Sys25\RnBase\Frontend\View\Marker;
 
-use Sys25\RnBase\Frontend\Request\RequestInterface;
-use Sys25\RnBase\Frontend\View\ViewInterface;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
-use Sys25\RnBase\Frontend\View\ContextInterface;
+use Sys25\RnBase\Frontend\Request\RequestInterface;
 use Sys25\RnBase\Frontend\View\AbstractView;
+use Sys25\RnBase\Frontend\View\ContextInterface;
+use Sys25\RnBase\Frontend\View\ViewInterface;
 
 /***************************************************************
 * Copyright notice
@@ -72,11 +72,11 @@ class BaseView extends AbstractView implements ViewInterface
         $out = $this->createOutput($templateCode, $request, $configurations->getFormatter());
         $out = $this->renderPluginData($out, $request);
 
-        $params = array();
+        $params = [];
         $params['confid'] = $request->getConfId();
         $params['item'] = $request->getViewContext()->offsetGet('item');
         $params['items'] = $request->getViewContext()->offsetGet('items');
-        $markerArray = $subpartArray = $wrappedSubpartArray = array();
+        $markerArray = $subpartArray = $wrappedSubpartArray = [];
         \tx_rnbase_util_BaseMarker::callModules(
             $out,
             $markerArray,

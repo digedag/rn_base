@@ -2,8 +2,8 @@
 
 namespace Sys25\RnBase\Fluid\ViewHelper;
 
-use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
+use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 
 /***************************************************************
  * Copyright notice
@@ -45,7 +45,7 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
     /**
      * @var unknown
      */
-    private $pagePartsDef = array('normal', 'current', 'first', 'last', 'prev', 'next');
+    private $pagePartsDef = ['normal', 'current', 'first', 'last', 'prev', 'next'];
 
     /**
      * @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext
@@ -161,7 +161,7 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
         $maxPages,
         $totalPages
     ) {
-        $pageBrowserHtmlParts = array();
+        $pageBrowserHtmlParts = [];
 
         if ($this->notOnFirstPage($pointer)) {
             $pageBrowserHtmlParts[] = $this->renderFirstPage(0);
@@ -225,7 +225,7 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
         $firstPage,
         $lastPage
     ) {
-        $pageBrowserHtmlParts = array();
+        $pageBrowserHtmlParts = [];
         for ($i = $firstPage; $i < $lastPage; ++$i) {
             $pageId = ($i == $pointer) ? 'current' : 'normal';
             switch ($pageId) {
@@ -272,7 +272,7 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
     protected function getFirstAndLastPage($pointer, $pageFloat, $totalPages, $maxPages)
     {
         $pageFloat = $this->getPageFloat($pageFloat, $maxPages);
-        $ret = array();
+        $ret = [];
         if ($pageFloat > -1) {
             $ret['last'] = min($totalPages, max($pointer + 1 + $pageFloat, $maxPages));
             $ret['first'] = max(0, $ret['last'] - $maxPages);

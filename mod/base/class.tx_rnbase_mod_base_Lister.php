@@ -44,9 +44,9 @@ abstract class tx_rnbase_mod_base_Lister
      *
      * @var array
      */
-    protected $options = array();
+    protected $options = [];
 
-    private $filterValues = array();
+    private $filterValues = [];
 
     /**
      * Current hidden option.
@@ -61,7 +61,7 @@ abstract class tx_rnbase_mod_base_Lister
      * @param tx_rnbase_mod_IModule $mod
      * @param array                 $options
      */
-    public function __construct(tx_rnbase_mod_IModule $mod, array $options = array())
+    public function __construct(tx_rnbase_mod_IModule $mod, array $options = [])
     {
         $this->init($mod, $options);
     }
@@ -90,7 +90,7 @@ abstract class tx_rnbase_mod_base_Lister
     public function clearFilterValues()
     {
         unset($this->filterValues);
-        $this->filterValues = array();
+        $this->filterValues = [];
     }
 
     /**
@@ -128,8 +128,8 @@ abstract class tx_rnbase_mod_base_Lister
      */
     public function getSearchForm()
     {
-        $data = array();
-        $options = array('pid' => $this->options['pid']);
+        $data = [];
+        $options = ['pid' => $this->options['pid']];
 
         $this->setFilterValue('searchword', $this->showFreeTextSearchForm(
             $data['search'],
@@ -144,10 +144,10 @@ abstract class tx_rnbase_mod_base_Lister
 
         $this->addMoreFields($data, $options);
         if ($updateButton = $this->getSearchButton()) {
-            $data['updatebutton'] = array(
+            $data['updatebutton'] = [
                     'label' => '',
                     'button' => $updateButton,
-                );
+                ];
         }
 
         $out = $this->buildFilterTable($data);
@@ -208,7 +208,7 @@ abstract class tx_rnbase_mod_base_Lister
             $this->options['pid']
         );
 
-        $fields = $options = array();
+        $fields = $options = [];
         $this->prepareFieldsAndOptions($fields, $options);
 
         // Get counted data
@@ -230,11 +230,11 @@ abstract class tx_rnbase_mod_base_Lister
             $sPagerData = $pagerData['limits'].' - '.$pagerData['pages'];
         }
 
-        return array(
+        return [
                 'table' => $content,
                 'totalsize' => $cnt,
                 'pager' => '<div class="pager">'.$sPagerData.'</div>',
-            );
+            ];
     }
 
     /**
@@ -466,7 +466,7 @@ abstract class tx_rnbase_mod_base_Lister
      * @param string $searchword
      * @param array  $cols
      */
-    protected static function buildFreeText(&$fields, $searchword, array $cols = array())
+    protected static function buildFreeText(&$fields, $searchword, array $cols = [])
     {
         $result = false;
         if (strlen(trim($searchword))) {
@@ -518,7 +518,7 @@ abstract class tx_rnbase_mod_base_Lister
      *
      * @return string search term
      */
-    protected function showFreeTextSearchForm(&$marker, $key, array $options = array())
+    protected function showFreeTextSearchForm(&$marker, $key, array $options = [])
     {
         tx_rnbase::load('tx_rnbase_mod_Util');
         $searchstring = tx_rnbase_mod_Util::getModuleValue($key, $this->getModule(), [
@@ -532,7 +532,7 @@ abstract class tx_rnbase_mod_base_Lister
         return $searchstring;
     }
 
-    protected function showHiddenSelector(&$marker, $options = array())
+    protected function showHiddenSelector(&$marker, $options = [])
     {
         $items = [
             0 => $GLOBALS['LANG']->getLL('label_select_hide_hidden'),

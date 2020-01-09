@@ -186,7 +186,7 @@ class tx_rnbase_util_FormatUtil
         // Bei einfachen Bildern sollen die Einstellungen aus cObj->data nicht verwendet
         // werden, um zu verhindern, daß z.B. eine Gallery angezeigt wird
         $tmp = $this->cObj->data;
-        $this->cObj->data = array();
+        $this->cObj->data = [];
         $theImgCode = $this->cObj->IMAGE($confArr);
 
         $this->cObj->data = $tmp;
@@ -208,7 +208,7 @@ class tx_rnbase_util_FormatUtil
     public function getItemMarkerArrayWrapped($record, $confId, $noMap = 0, $markerPrefix = '', $initMarkers = 0)
     {
         if (!is_array($record)) {
-            return array();
+            return [];
         }
 
         $start = microtime(true);
@@ -243,8 +243,8 @@ class tx_rnbase_util_FormatUtil
 
         if (array_key_exists('__MINFO', $record)) {
             // Die TS-Config in die Ausgabe integrieren
-            $record['__MINFO'] .= tx_rnbase_util_Debug::viewArray(array('TS-Path' => $confId));
-            $record['__MINFO'] .= tx_rnbase_util_Debug::viewArray(array($conf));
+            $record['__MINFO'] .= tx_rnbase_util_Debug::viewArray(['TS-Path' => $confId]);
+            $record['__MINFO'] .= tx_rnbase_util_Debug::viewArray([$conf]);
         }
 
         $this->cObj->data = $record;
@@ -344,7 +344,7 @@ class tx_rnbase_util_FormatUtil
      */
     public function getItemMarkerArray(&$record, $noMap = 0, $markerPrefix = '', $initMarkers = 0)
     {
-        $markerArray = array();
+        $markerArray = [];
 
         $noMap = is_array($noMap) ? array_flip($noMap) : $noMap;
         // Marker vordefinieren
@@ -384,14 +384,14 @@ class tx_rnbase_util_FormatUtil
     {
         $conf = $this->configurations->get($confId);
         // Alle Metadaten auslesen und wrappen
-        $meta = array();
+        $meta = [];
         foreach ($media->meta as $colname => $value) {
             $meta[$colname] = $this->stdWrap($value, $conf[$colname.'.']);
         }
 
         $markerArray = self::getItemMarkerArray(
             $meta,
-            array('l18n_diffsource'),
+            ['l18n_diffsource'],
             $mediaMarker.'_',
             self::getDAMColumns()
         );

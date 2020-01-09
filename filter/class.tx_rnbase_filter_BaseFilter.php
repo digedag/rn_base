@@ -111,7 +111,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
     protected $filterItems;
 
     /**
-     * @var null|bool wenn auf null steht wird der return Wert von initFilter()
+     * @var bool|null wenn auf null steht wird der return Wert von initFilter()
      *                in init() zurück gegeben. Ansonsten der Wert von $doSearch, dieser hat also Vorrang.
      */
     protected $doSearch = null;
@@ -345,7 +345,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
      * @param array                                      $options
      * @param array                                      $cfg            You have to set 'searchcallback' and optional 'pbid'
      */
-    public static function handlePageBrowser(&$configurations, $confid, &$viewdata, &$fields, &$options, $cfg = array())
+    public static function handlePageBrowser(&$configurations, $confid, &$viewdata, &$fields, &$options, $cfg = [])
     {
         $confid .= '.';
         if (is_array($configurations->get($confid))) {
@@ -391,17 +391,17 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
                 $sql = call_user_func(
                     $searchCallback,
                     $fields,
-                    array_merge($options, array('sqlonly' => 1, 'rownum' => 1))
+                    array_merge($options, ['sqlonly' => 1, 'rownum' => 1])
                 );
                 // Jetzt besorgen wir uns die Position des aktuellen Eintrages
                 $res = Tx_Rnbase_Database_Connection::getInstance()->doSelect(
                     'ROW.rownum',
                     '('.$sql.') as ROW',
-                    array(
+                    [
                         'where' => 'ROW.'.$cfg['pointerFromItem']['field'].'='.
                             Tx_Rnbase_Database_Connection::getInstance()->fullQuoteStr($itemId),
                         'enablefieldsoff' => true,
-                    )
+                    ]
                 );
                 // Jetzt haben wir ein Ergebnis, mit der Zeilennummer des Datensatzes.
                 if (!empty($res)) {
@@ -433,7 +433,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
      * @param array                                      $options
      * @param array                                      $cfg            You have to set 'colname'. The database column used for character browsing.
      */
-    public static function handleCharBrowser(&$configurations, $confid, &$viewData, &$fields, &$options, $cfg = array())
+    public static function handleCharBrowser(&$configurations, $confid, &$viewData, &$fields, &$options, $cfg = [])
     {
         if ($configurations->get($confid)) {
             $colName = $cfg['colname'];
@@ -497,14 +497,14 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
         $rows = call_user_func($searchCallback, $fields, $options);
 
         $specials = tx_rnbase_util_SearchBase::getSpecialChars();
-        $wSpecials = array();
+        $wSpecials = [];
         foreach ($specials as $key => $special) {
             foreach ($special as $char) {
                 $wSpecials[$char] = $key;
             }
         }
 
-        $ret = array();
+        $ret = [];
         foreach ($rows as $row) {
             if (array_key_exists(($row['first_char']), $wSpecials)) {
                 $ret[$wSpecials[$row['first_char']]] = intval($ret[$wSpecials[$row['first_char']]]) + $row['size'];
@@ -524,7 +524,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
             $keys = array_keys($ret);
             $current = $keys[0];
         }
-        $data = array();
+        $data = [];
         $data['list'] = $ret;
         $data['default'] = $current;
         $data['pointername'] = array_key_exists('cbid', $cfg) && $cfg['cbid'] ? $cfg['cbid'] : 'charpointer';

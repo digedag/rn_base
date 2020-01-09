@@ -156,18 +156,18 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTest
      */
     public function dataProviderGetPointer()
     {
-        return array(
+        return [
             // before first page
-            array(-1, 0),
+            [-1, 0],
             // at first page
-            array(0, 0),
+            [0, 0],
             // inside range
-            array(5, 5),
+            [5, 5],
             // last page
-            array(10, 10),
+            [10, 10],
             // outside range
-            array(11, 10),
-        );
+            [11, 10],
+        ];
     }
 
     /**
@@ -190,7 +190,7 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTest
      */
     public function testMarkPageNotFoundIfPointerOutOfRange($pointer, $pageMarkedAsNotFound, $ignorePageNotFound)
     {
-        $httpUtility = $this->getMock('HttpUtility_Dummy', array('setResponseCode'));
+        $httpUtility = $this->getMock('HttpUtility_Dummy', ['setResponseCode']);
         if ($pageMarkedAsNotFound) {
             $httpUtility
                 ->expects($this->once())
@@ -204,8 +204,8 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTest
 
         $pageBrowser = $this->getMock(
             'tx_rnbase_util_PageBrowser',
-            array('getHttpUtilityClass'),
-            array('test')
+            ['getHttpUtilityClass'],
+            ['test']
         );
         $pageBrowser->expects($pageMarkedAsNotFound ? $this->once() : $this->never())
             ->method('getHttpUtilityClass')
@@ -217,8 +217,8 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTest
         // dieser Aufruf stellt fest, ob der Pointer außerhalb des Bereich ist
         $pageBrowser->getState();
 
-        $configurations = $this->getMock('tx_rnbase_configurations', array('convertToUserInt'));
-        $configurationArray = array('test.' => array('ignorePageNotFound' => $ignorePageNotFound));
+        $configurations = $this->getMock('tx_rnbase_configurations', ['convertToUserInt']);
+        $configurationArray = ['test.' => ['ignorePageNotFound' => $ignorePageNotFound]];
         $configurations->init($configurationArray, null, 'rn_base', 'rn_base');
         $configurations->expects($pageMarkedAsNotFound ? $this->once() : $this->never())
             ->method('convertToUserInt');
@@ -231,16 +231,16 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTest
      */
     public function dataProviderMarkPageNotFoundIfPointerOutOfRange()
     {
-        return array(
-            array(123, true, false),
-            array(2, true, false),
-            array(1, false, false),
-            array(0, false, false),
-            array(123, false, true),
-            array(2, false, true),
-            array(1, false, true),
-            array(0, false, true),
-        );
+        return [
+            [123, true, false],
+            [2, true, false],
+            [1, false, false],
+            [0, false, false],
+            [123, false, true],
+            [2, false, true],
+            [1, false, true],
+            [0, false, true],
+        ];
     }
 }
 

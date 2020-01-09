@@ -54,7 +54,7 @@ class PageBaseViewHelper_testcase extends BaseViewHelperTest
     {
         $viewHelper = $this->getMock(
             'Sys25\\RnBase\\Fluid\\ViewHelper\\PageBrowser\\PageBaseViewHelper',
-            array('renderChildren')
+            ['renderChildren']
         );
 
         $viewHelper->expects(self::once())
@@ -76,7 +76,7 @@ class PageBaseViewHelper_testcase extends BaseViewHelperTest
     {
         $viewHelper = $this->getMock(
             'Sys25\\RnBase\\Fluid\\ViewHelper\\PageBrowser\\PageBaseViewHelper',
-            array('renderChildren')
+            ['renderChildren']
         );
 
         $viewHelper->expects(self::never())
@@ -113,11 +113,11 @@ class PageBaseViewHelper_testcase extends BaseViewHelperTest
         $viewHelper->initializeArguments();
         $viewHelper->setArguments(array_merge(
             $arguments,
-            array(
+            [
                 'data-tagname' => 'a',
                 'additionalParams' => [],
                 'argumentsToBeExcludedFromQueryString' => [],
-            )
+            ]
         ));
 
         return $viewHelper;

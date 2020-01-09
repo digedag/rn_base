@@ -31,7 +31,7 @@
  */
 class Tx_Rnbase_Utility_Mail
 {
-    protected $attachments = array();
+    protected $attachments = [];
 
     protected $from;
 
@@ -41,7 +41,7 @@ class Tx_Rnbase_Utility_Mail
 
     protected $replyToName;
 
-    protected $to = array();
+    protected $to = [];
 
     public function __construct()
     {
@@ -67,7 +67,7 @@ class Tx_Rnbase_Utility_Mail
     public function setTo($emailAsString)
     {
         $addresses = tx_rnbase_util_Strings::trimExplode(',', $emailAsString);
-        $this->to = array();
+        $this->to = [];
         foreach ($addresses as $mailAddress) {
             $this->to[$mailAddress] = '';
         }
@@ -147,7 +147,7 @@ class Tx_Rnbase_Utility_Mail
      */
     public function addAttachment($src, $filename = '', $contentType = '')
     {
-        $this->attachments[] = array('src' => $src, 'filename' => $filename, 'contentType' => $contentType);
+        $this->attachments[] = ['src' => $src, 'filename' => $filename, 'contentType' => $contentType];
 
         return $this;
     }
@@ -184,7 +184,7 @@ class Tx_Rnbase_Utility_Mail
                     tx_rnbase_util_Logger::warn(
                         'Adding attachment failed!',
                         'rn_base',
-                        array('subject' => $mail->subject, 'to' => $this->toAsString, 'attachment' => $attachment)
+                        ['subject' => $mail->subject, 'to' => $this->toAsString, 'attachment' => $attachment]
                     );
                 }
             }

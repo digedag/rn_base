@@ -112,8 +112,8 @@ abstract class tx_rnbase_tests_BaseTestCase extends \PHPUnit\Framework\TestCase
      */
     public function getMock(
         $originalClassName,
-        $methods = array(),
-        array $arguments = array(),
+        $methods = [],
+        array $arguments = [],
         $mockClassName = '',
         $callOriginalConstructor = true,
         $callOriginalClone = true,
@@ -172,13 +172,13 @@ abstract class tx_rnbase_tests_BaseTestCase extends \PHPUnit\Framework\TestCase
     protected function getModel(
         $record = null,
         $class = 'tx_rnbase_model_base',
-        array $methods = array()
+        array $methods = []
     ) {
         // $record has to be an array,
         // if there is an scalar value,
         // a db select fill be performed to get the record
         if (!is_array($record)) {
-            $record = array('uid' => (int) $record);
+            $record = ['uid' => (int) $record];
         }
 
         if (!tx_rnbase::load($class)) {
@@ -194,13 +194,13 @@ abstract class tx_rnbase_tests_BaseTestCase extends \PHPUnit\Framework\TestCase
         $model = $this->getMock(
             $class,
             array_merge(
-                array(
+                [
                     $isNewModel ? 'loadRecord' : 'reset',
                     'getColumnWrapped',
-                ),
+                ],
                 $methods
             ),
-            array($record)
+            [$record]
         );
 
         $model
@@ -276,7 +276,7 @@ abstract class tx_rnbase_tests_BaseTestCase extends \PHPUnit\Framework\TestCase
 
             return $model;
         } elseif (is_array($data)) {
-            $array = array();
+            $array = [];
             foreach ($data as $field => $value) {
                 if (is_array($value)) {
                     $value = $this->loadYaml($value);
@@ -302,7 +302,7 @@ abstract class tx_rnbase_tests_BaseTestCase extends \PHPUnit\Framework\TestCase
     private function yamlFindGetters(
         array $array
     ) {
-        $getters = array();
+        $getters = [];
 
         foreach (array_keys($array) as $field) {
             if ('g' === $field[0] &&
@@ -420,8 +420,8 @@ abstract class tx_rnbase_tests_BaseTestCase extends \PHPUnit\Framework\TestCase
      */
     protected function getAccessibleMock(
         $originalClassName,
-        array $methods = array(),
-        array $arguments = array(),
+        array $methods = [],
+        array $arguments = [],
         $mockClassName = '',
         $callOriginalConstructor = true,
         $callOriginalClone = true,
@@ -581,8 +581,8 @@ abstract class tx_rnbase_tests_BaseTestCase extends \PHPUnit\Framework\TestCase
      */
     public function getMockForAbstract(
         $originalClassName,
-        $mockedMethods = array(),
-        array $arguments = array(),
+        $mockedMethods = [],
+        array $arguments = [],
         $mockClassName = '',
         $callOriginalConstructor = true,
         $callOriginalClone = true,
@@ -609,7 +609,7 @@ abstract class tx_rnbase_tests_BaseTestCase extends \PHPUnit\Framework\TestCase
                 'indpEnvCache'
             );
             $property->setAccessible(true);
-            $property->setValue(null, array());
+            $property->setValue(null, []);
         }
     }
 }

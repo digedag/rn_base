@@ -37,7 +37,7 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap
 {
     public static $PROVID = 'GOOGLEMAPS';
 
-    public static $mapTypes = array();
+    public static $mapTypes = [];
 
     /* @var $map \JBartels\WecMap\MapService\Google\Map */
     private $map;

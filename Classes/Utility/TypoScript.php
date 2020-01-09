@@ -102,7 +102,7 @@ class Tx_Rnbase_Utility_TypoScript
      */
     public static function convertPlainArrayToTypoScriptArray(array $plainArray)
     {
-        $typoScriptArray = array();
+        $typoScriptArray = [];
         foreach ($plainArray as $key => $value) {
             if (is_array($value)) {
                 if (isset($value['_typoScriptNodeValue'])) {

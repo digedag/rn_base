@@ -65,33 +65,33 @@ class Tx_Rnbase_Utility_TcaTool
     /**
      * @var array
      */
-    private static $iconsByWizards = array(
-        'edit' => array(
+    private static $iconsByWizards = [
+        'edit' => [
             self::ICON_INDEX_TYPO3_87_OR_HIGHER => 'actions-open',
             self::ICON_INDEX_TYPO3_76_OR_HIGHER => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
             self::ICON_INDEX_TYPO3_62_OR_HIGHER => 'EXT:t3skin/icons/gfx/edit2.gif',
-        ),
-        'add' => array(
+        ],
+        'add' => [
             self::ICON_INDEX_TYPO3_87_OR_HIGHER => 'actions-add',
             self::ICON_INDEX_TYPO3_76_OR_HIGHER => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
             self::ICON_INDEX_TYPO3_62_OR_HIGHER => 'EXT:t3skin/icons/gfx/add.gif',
-        ),
-        'list' => array(
+        ],
+        'list' => [
             self::ICON_INDEX_TYPO3_87_OR_HIGHER => 'actions-system-list-open',
             self::ICON_INDEX_TYPO3_76_OR_HIGHER => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_list.gif',
             self::ICON_INDEX_TYPO3_62_OR_HIGHER => 'EXT:t3skin/icons/gfx/list.gif',
-        ),
-        'richText' => array(
+        ],
+        'richText' => [
             self::ICON_INDEX_TYPO3_87_OR_HIGHER => 'actions-wizard-rte',
             self::ICON_INDEX_TYPO3_76_OR_HIGHER => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_rte.gif',
             self::ICON_INDEX_TYPO3_62_OR_HIGHER => 'EXT:t3skin/icons/gfx/wizard_rte.gif',
-        ),
-        'link' => array(
+        ],
+        'link' => [
             self::ICON_INDEX_TYPO3_87_OR_HIGHER => 'actions-wizard-link',
             self::ICON_INDEX_TYPO3_76_OR_HIGHER => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
             self::ICON_INDEX_TYPO3_62_OR_HIGHER => 'EXT:t3skin/icons/gfx/link_popup.gif',
-        ),
-    );
+        ],
+    ];
 
     /**
      * Add a wizard to column.
@@ -109,12 +109,12 @@ class Tx_Rnbase_Utility_TcaTool
      *
      * @deprecated use getWizards()
      */
-    public function addWizard(&$tcaTable, $colName, $wizardName, $moduleName, $urlParams = array())
+    public function addWizard(&$tcaTable, $colName, $wizardName, $moduleName, $urlParams = [])
     {
-        $tcaTable['columns'][$colName]['config']['wizards'][$wizardName]['module'] = array(
+        $tcaTable['columns'][$colName]['config']['wizards'][$wizardName]['module'] = [
             'name' => $moduleName,
             'urlParameters' => $urlParams,
-        );
+        ];
     }
 
     /**
@@ -221,12 +221,12 @@ class Tx_Rnbase_Utility_TcaTool
      *
      * @return array
      */
-    public static function getWizards($table, array $options = array())
+    public static function getWizards($table, array $options = [])
     {
-        $wizards = array(
+        $wizards = [
             '_PADDING' => 2,
             '_VERTICAL' => 1,
-        );
+        ];
 
         if (isset($options[self::WIZARD_EDIT])) {
             $wizards[self::WIZARD_EDIT] = self::getEditWizard($table, $options);
@@ -265,15 +265,15 @@ class Tx_Rnbase_Utility_TcaTool
      *
      * @return array
      */
-    protected static function getEditWizard($table, array $options = array())
+    protected static function getEditWizard($table, array $options = [])
     {
-        $wizard = array(
+        $wizard = [
             'type' => 'popup',
             'title' => 'Edit entry',
             'icon' => self::getIconByWizard('edit'),
             'popup_onlyOpenIfSelected' => 1,
             'JSopenParams' => 'height=576,width=720,status=0,menubar=0,scrollbars=1',
-        );
+        ];
         $wizard = self::addWizardScriptForTypo3Version('edit', $wizard);
         if (is_array($options['edit'])) {
             $wizard =
@@ -292,19 +292,19 @@ class Tx_Rnbase_Utility_TcaTool
      *
      * @return array
      */
-    protected static function getAddWizard($table, array $options = array())
+    protected static function getAddWizard($table, array $options = [])
     {
         $globalPid = isset($options['globalPid']) ? $options['globalPid'] : false;
-        $wizard = array(
+        $wizard = [
             'type' => 'script',
             'title' => 'Create new entry',
             'icon' => self::getIconByWizard('add'),
-            'params' => array(
+            'params' => [
                 'table' => $table,
                 'pid' => ($globalPid ? '###STORAGE_PID###' : '###CURRENT_PID###'),
                 'setValue' => 'prepend',
-            ),
-        );
+            ],
+        ];
         $wizard = self::addWizardScriptForTypo3Version('add', $wizard);
         if (is_array($options['add'])) {
             $wizard =
@@ -323,19 +323,19 @@ class Tx_Rnbase_Utility_TcaTool
      *
      * @return array
      */
-    protected static function getListWizard($table, array $options = array())
+    protected static function getListWizard($table, array $options = [])
     {
         $globalPid = isset($options['globalPid']) ? $options['globalPid'] : false;
-        $wizard = array(
+        $wizard = [
             'type' => 'popup',
             'title' => 'List entries',
             'icon' => self::getIconByWizard('list'),
-            'params' => array(
+            'params' => [
                 'table' => $table,
                 'pid' => ($globalPid ? '###STORAGE_PID###' : '###CURRENT_PID###'),
-            ),
+            ],
             'JSopenParams' => 'height=576,width=720,status=0,menubar=0,scrollbars=1',
-        );
+        ];
         $wizard = self::addWizardScriptForTypo3Version('list', $wizard);
         if (is_array($options['list'])) {
             $wizard =
@@ -354,16 +354,16 @@ class Tx_Rnbase_Utility_TcaTool
      *
      * @return array
      */
-    protected static function getSuggestWizard($table, array $options = array())
+    protected static function getSuggestWizard($table, array $options = [])
     {
-        $wizard = array(
+        $wizard = [
             'type' => 'suggest',
-            'default' => array(
+            'default' => [
                 'maxItemsInResultList' => 8,
                 // true: LIKE %term% false: LIKE term%
                 'searchWholePhrase' => true,
-            ),
-        );
+            ],
+        ];
         if (is_array($options['suggest'])) {
             $wizard =
                 tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
@@ -381,15 +381,15 @@ class Tx_Rnbase_Utility_TcaTool
      *
      * @return array
      */
-    protected static function getRichTextWizard($table, array $options = array())
+    protected static function getRichTextWizard($table, array $options = [])
     {
-        $wizard = array(
+        $wizard = [
             'notNewRecords' => 1,
             'RTEonly' => 1,
             'type' => 'script',
             'title' => 'Full screen Rich Text Editing',
             'icon' => self::getIconByWizard('richText'),
-        );
+        ];
         $wizard = self::addWizardScriptForTypo3Version('rte', $wizard);
 
         return $wizard;
@@ -401,19 +401,19 @@ class Tx_Rnbase_Utility_TcaTool
      *
      * @return array
      */
-    protected static function getLinkWizard($table, array $options = array())
+    protected static function getLinkWizard($table, array $options = [])
     {
-        $wizard = array(
+        $wizard = [
             'type' => 'popup',
             'title' => 'LLL:EXT:cms/locallang_ttc.xml:header_link_formlabel',
             'icon' => self::getIconByWizard('link'),
             'script' => 'browse_links.php?mode=wizard',
             'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
-            'params' => array(
+            'params' => [
                 'blindLinkOptions' => '',
-            ),
-            'module' => array('urlParameters' => array('mode' => 'wizard')),
-        );
+            ],
+            'module' => ['urlParameters' => ['mode' => 'wizard']],
+        ];
         if (is_array($options['link'])) {
             $wizard =
                 tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
@@ -436,13 +436,13 @@ class Tx_Rnbase_Utility_TcaTool
      *
      * @return array
      */
-    protected static function getColorPickerWizard($table, array $options = array())
+    protected static function getColorPickerWizard($table, array $options = [])
     {
-        $wizard = array(
+        $wizard = [
             'type' => 'colorbox',
             'title' => 'Colorpicker',
             'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
-        );
+        ];
 
         if (is_array($options['colorpicker'])) {
             $wizard = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(

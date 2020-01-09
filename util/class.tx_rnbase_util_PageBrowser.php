@@ -105,7 +105,7 @@ class tx_rnbase_util_PageBrowser implements PageBrowser
         // LS: 100 -> 90+10
         // 100/10 = 10 -1
         $limit = $this->listSize < $this->pageSize ? $this->listSize : $this->pageSize;
-        $ret = array('offset' => $offset, 'limit' => $limit);
+        $ret = ['offset' => $offset, 'limit' => $limit];
 
         return $ret;
     }
@@ -226,8 +226,8 @@ class tx_rnbase_util_PageBrowser implements PageBrowser
             $utilityClass = $this->getHttpUtilityClass();
             // wegen den Tests von statischen Aufrufen
             call_user_func_array(
-                array($utilityClass, 'setResponseCode'),
-                array($utilityClass::HTTP_STATUS_404)
+                [$utilityClass, 'setResponseCode'],
+                [$utilityClass::HTTP_STATUS_404]
             );
             $configurations->convertToUserInt();
         }

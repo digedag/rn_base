@@ -120,12 +120,12 @@ class tx_rnbase_util_TSDAM
 
         $damDb = tx_rnbase::makeInstance('tx_dam_db');
 
-        $medias = array();
+        $medias = [];
         foreach ($damPics as $baseRecord) {
             $mediaObj = tx_rnbase::makeInstance('tx_rnbase_model_media', $baseRecord['uid']);
             // Localize data (DAM 1.1.0)
             if (method_exists($damDb, 'getRecordOverlay')) {
-                $loc = $damDb->getRecordOverlay('tx_dam', $mediaObj->getRecord(), array('sys_language_uid' => $GLOBALS['TSFE']->sys_language_uid));
+                $loc = $damDb->getRecordOverlay('tx_dam', $mediaObj->getRecord(), ['sys_language_uid' => $GLOBALS['TSFE']->sys_language_uid]);
                 if ($loc) {
                     $mediaObj->setProperty($loc);
                 }
@@ -253,7 +253,7 @@ class tx_rnbase_util_TSDAM
     {
         require_once tx_rnbase_util_Extensions::extPath('dam').'lib/class.tx_dam_image.php';
         $files = $damFiles['rows'];
-        $ret = array();
+        $ret = [];
         foreach ($files as $key => $info) {
             $ret[] = tx_dam_image::previewImgTag($info['file_path'].$info['file_name'], $size, $addAtrr);
         }
@@ -265,7 +265,7 @@ class tx_rnbase_util_TSDAM
     {
         require_once tx_rnbase_util_Extensions::extPath('dam').'lib/class.tx_dam.php';
         $files = $damFiles['rows'];
-        $ret = array();
+        $ret = [];
         foreach ($files as $key => $info) {
             $thumbScript = $GLOBALS['BACK_PATH'].'thumbs.php';
             $filepath = tx_dam::path_makeAbsolute($info['file_path']);
@@ -291,7 +291,7 @@ class tx_rnbase_util_TSDAM
      *
      * @return array
      */
-    public static function getMediaTCA($ref, $options = array())
+    public static function getMediaTCA($ref, $options = [])
     {
         // $options war früher ein String. Daher muss auf String getestet werden.
         $type = 'image_field';
@@ -303,7 +303,7 @@ class tx_rnbase_util_TSDAM
             unset($options['type']);
         }
 
-        $tca = array();
+        $tca = [];
         if (tx_rnbase_util_Extensions::isLoaded('dam')) {
             require_once tx_rnbase_util_Extensions::extPath('dam').'tca_media_field.php';
             $tca = txdam_getMediaTCA($type, $ref);
@@ -312,7 +312,7 @@ class tx_rnbase_util_TSDAM
             foreach ($options as $key => $option) {
                 if (is_array($option)) {
                     if (!isset($tca[$key])) {
-                        $tca[$key] = array();
+                        $tca[$key] = [];
                     }
                     foreach ($option as $subkey => $suboption) {
                         $tca[$key][$subkey] = $suboption;
@@ -335,7 +335,7 @@ class tx_rnbase_util_TSDAM
      */
     public static function addReference($tableName, $fieldName, $itemId, $uid)
     {
-        $data = array();
+        $data = [];
         $data['uid_foreign'] = $itemId;
         $data['uid_local'] = $uid;
         $data['tablenames'] = $tableName;
@@ -373,7 +373,7 @@ class tx_rnbase_util_TSDAM
      */
     public static function updateImageCount($tableName, $fieldName, $itemId)
     {
-        $values = array();
+        $values = [];
         $values[$fieldName] = self::getImageCount($tableName, $fieldName, $itemId);
         tx_rnbase_util_DB::doUpdate($tableName, 'uid='.$itemId, $values, 0);
     }
@@ -440,7 +440,7 @@ class tx_rnbase_util_TSDAM
     public static function getReferencesFileInfo($refTable, $refUid, $refField)
     {
         $refs = self::getReferences($refTable, $refUid, $refField);
-        $res = array();
+        $res = [];
         if (isset($refs['rows']) && count($refs['rows'])) {
             foreach ($refs['rows'] as $uid => $record) {
                 $fileInfo = self::getFileInfo($record);
@@ -469,12 +469,12 @@ class tx_rnbase_util_TSDAM
         $refs = self::getReferences($refTable, $refUid, $refField);
 
         if (!empty($refs)) {
-            $res = array();
+            $res = [];
             // Loop through all data ...
             foreach ($refs as $key => $data) {
                 // ... and use only the first record WITH its uid!
                 $uid = key($refs[$key]);
-                $res[$key] = array($uid => $data[$uid]);
+                $res[$key] = [$uid => $data[$uid]];
             }
 
             return $res;
@@ -523,11 +523,11 @@ class tx_rnbase_util_TSDAM
         global $PAGES_TYPES, $BE_USER;
         if (!is_array($PAGES_TYPES) || !array_key_exists(254, $PAGES_TYPES)) {
             // SysFolder als definieren
-            $PAGES_TYPES[254] = array(
+            $PAGES_TYPES[254] = [
                 'type' => 'sys',
                 'icon' => 'sysf.gif',
                 'allowedTables' => '*',
-            );
+            ];
         }
         // Check BE User
         if (!is_object($BE_USER) || !is_array($BE_USER->user)) {

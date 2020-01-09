@@ -64,8 +64,8 @@ class tx_rnbase_util_Misc
     public static function lookupServices($serviceType)
     {
         global $T3_SERVICES;
-        $priority = array(); // Remember highest priority
-        $services = array();
+        $priority = []; // Remember highest priority
+        $services = [];
         if (is_array($T3_SERVICES[$serviceType])) {
             foreach ($T3_SERVICES[$serviceType] as $key => $info) {
                 if ($info['available'] and (!isset($priority[$info['subtype']]) || $info['priority'] >= $priority[$info['subtype']])) {
@@ -95,7 +95,7 @@ class tx_rnbase_util_Misc
         $idxArr = range(1, $anzahl);
         shuffle($idxArr);
         $limit = ($limit > 0 && $limit < $anzahl) ? $limit : $anzahl;
-        $ret = array();
+        $ret = [];
         for ($i = 0; $i < $limit; ++$i) {
             $ret[] = $items[($idxArr[$i] - 1)];
         }
@@ -168,7 +168,7 @@ class tx_rnbase_util_Misc
         $aTrace3 = array_shift($aTrace);
         $aTrace4 = array_shift($aTrace);
 
-        $aDebug = array();
+        $aDebug = [];
 
         $aDebug[] = '<h2 id="backtracetitle">Call stack</h2>';
         $aDebug[] = '<div class="backtrace">';
@@ -193,7 +193,7 @@ class tx_rnbase_util_Misc
         $aDebug[] = '</div>';
 
         if (intval(Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'forceException4Mayday'))) {
-            throw tx_rnbase::makeInstance('tx_rnbase_util_Exception', $msg, 0, array('Info' => $aDebug));
+            throw tx_rnbase::makeInstance('tx_rnbase_util_Exception', $msg, 0, ['Info' => $aDebug]);
         }
 
         $aDebug[] = '<br/>';
@@ -281,11 +281,11 @@ MAYDAYPAGE;
         $sStyleRed = $sStyle.'color: red;';
         $sStyleGreen = $sStyle.'color: green;';
 
-        $aBgColors = array(
+        $aBgColors = [
             'FFFFFF', 'F8F8F8', 'EEEEEE', 'E7E7E7', 'DDDDDD', 'D7D7D7',
             'CCCCCC', 'C6C6C6', 'BBBBBB', 'B6B6B6', 'AAAAAA', 'A5A5A5',
             '999999', '949494', '888888', '848484', '777777', '737373',
-        );
+        ];
 
         if (is_array($mMixed)) {
             $result = "<table border=1 style='border: 1px solid silver' cellpadding=1 cellspacing=0 bgcolor='#".$aBgColors[$iLevel]."'>";
@@ -339,7 +339,7 @@ MAYDAYPAGE;
      *
      * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController or tslib_fe
      */
-    public static function prepareTSFE($options = array())
+    public static function prepareTSFE($options = [])
     {
         $pid = array_key_exists('pid', $options) ? $options['pid'] : 1;
         $type = array_key_exists('type', $options) ? $options['type'] : 99;
@@ -397,10 +397,10 @@ MAYDAYPAGE;
 
         // initial empty config
         if (!is_array($GLOBALS['TSFE']->config)) {
-            $GLOBALS['TSFE']->config = array();
+            $GLOBALS['TSFE']->config = [];
         }
         if (!is_array($GLOBALS['TSFE']->config['config'])) {
-            $GLOBALS['TSFE']->config['config'] = array();
+            $GLOBALS['TSFE']->config['config'] = [];
         }
 
         // init the language
@@ -431,14 +431,14 @@ MAYDAYPAGE;
      */
     public static function removeUmlauts($str)
     {
-        $array = array('ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'ß' => 'ss', 'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue');
+        $array = ['ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'ß' => 'ss', 'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue'];
 
         return strtr($str, $array);
     }
 
     public static function objImplode($sep, $arr)
     {
-        $uids = array();
+        $uids = [];
         foreach ($arr as $obj) {
             $uids[] = $obj->uid;
         }
@@ -457,7 +457,7 @@ MAYDAYPAGE;
     public static function validateSearchString($searchterm, $minLength = 3)
     {
         // Suchteile splitten
-        $ret = array();
+        $ret = [];
         $arr = tx_rnbase_util_Strings::trimExplode(' ', $searchterm);
         foreach ($arr as $term) {
             if (strlen($term) >= $minLength) {
@@ -574,7 +574,7 @@ MAYDAYPAGE;
     {
         $pattern = '/['.$splitCharacters.']+/';
         $results = preg_split($pattern, $value, -1, PREG_SPLIT_NO_EMPTY);
-        $return = array();
+        $return = [];
         foreach ($results as $result) {
             $return[] = trim($result);
         }
@@ -599,11 +599,11 @@ MAYDAYPAGE;
         if (!strcmp($pidList, '')) {
             $pidList = tx_rnbase_util_TYPO3::getTSFE()->id;
         }
-        $options = is_array($options) ? $options : array('recursive' => $options);
+        $options = is_array($options) ? $options : ['recursive' => $options];
         $options['recursive'] = tx_rnbase_util_Math::intInRange($options['recursive'], 0);
         $pidListArr = array_unique(tx_rnbase_util_Strings::trimExplode(',', $pidList, 1));
 
-        $pidList = array();
+        $pidList = [];
         foreach ($pidListArr as $val) {
             $val = tx_rnbase_util_Math::intInRange($val, 0);
             if ($val) {
@@ -650,7 +650,7 @@ MAYDAYPAGE;
      * @param Exception $e
      * @param array     $options
      */
-    public static function sendErrorMail($mailAddr, $actionName, Exception $e, array $options = array())
+    public static function sendErrorMail($mailAddr, $actionName, Exception $e, array $options = [])
     {
         $ignoreMailLock = (array_key_exists('ignoremaillock', $options) && $options['ignoremaillock']);
 

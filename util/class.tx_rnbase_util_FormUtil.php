@@ -78,7 +78,7 @@ class tx_rnbase_util_FormUtil
     public static function getHiddenFieldsForUrlParams($url)
     {
         $sysHidden = '';
-        $params = array();
+        $params = [];
 
         if (false !== strpos($url, '?')) {
             $params = substr($url, strpos($url, '?') + 1);

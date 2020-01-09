@@ -2,10 +2,10 @@
 
 namespace Sys25\RnBase\Frontend\Filter;
 
-use Sys25\RnBase\Frontend\Request\RequestInterface;
-use Sys25\RnBase\Frontend\Request\ParametersInterface;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Frontend\Filter\Utility\Category;
+use Sys25\RnBase\Frontend\Request\ParametersInterface;
+use Sys25\RnBase\Frontend\Request\RequestInterface;
 
 /***************************************************************
  *  Copyright notice
@@ -54,7 +54,7 @@ class BaseFilter implements FilterInterface
     protected $filterItems;
 
     /**
-     * @var null|bool wenn auf null steht wird der return Wert von initFilter()
+     * @var bool|null wenn auf null steht wird der return Wert von initFilter()
      *                in init() zurück gegeben. Ansonsten der Wert von $doSearch, dieser hat also Vorrang.
      */
     protected $doSearch = null;

@@ -39,7 +39,6 @@ class AbstractControllerTest extends \tx_rnbase_tests_BaseTestCase
     /**
      * Test the handleRequest method.
      *
-     *
      * @group unit
      * @test
      */
@@ -57,7 +56,7 @@ class AbstractControllerTest extends \tx_rnbase_tests_BaseTestCase
         $reflectionMethod->setAccessible(true);
         $ret = $reflectionMethod->invokeArgs(
             $action,
-            array(&$dummy, &$dummy, &$dummy)
+            [&$dummy, &$dummy, &$dummy]
         );
         // the handleRequest expects returns the first argument
         // this argument should be null. doRequest has no argument!
@@ -66,7 +65,6 @@ class AbstractControllerTest extends \tx_rnbase_tests_BaseTestCase
 
     /**
      * Test the assignToView method.
-     *
      *
      * @group unit
      * @test
@@ -82,7 +80,6 @@ class AbstractControllerTest extends \tx_rnbase_tests_BaseTestCase
 
     /**
      * Test the getConfigurationValue method.
-     *
      *
      * @group unit
      * @test

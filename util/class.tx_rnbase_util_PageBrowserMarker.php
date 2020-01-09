@@ -31,7 +31,7 @@ tx_rnbase::load('tx_rnbase_util_Math');
  */
 class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
 {
-    private $pagePartsDef = array('normal', 'current', 'first', 'last', 'prev', 'next', 'prev_bullets', 'next_bullets');
+    private $pagePartsDef = ['normal', 'current', 'first', 'last', 'prev', 'next', 'prev_bullets', 'next_bullets'];
 
     /**
      * Erstellung des PageBrowserMarkers.
@@ -111,18 +111,18 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
         $pageFloat = $this->getPageFloat($configurations->get($pbConfId.'pagefloat'), $maxPages);
         $firstLastArr = $this->getFirstLastPage($pointer, $pageFloat, $totalPages, $maxPages);
 
-        $arr = array(
+        $arr = [
             'count' => $count,
             'rangefrom' => $rangeFrom,
             'rangeto' => $rangeTo,
             'totalpages' => $totalPages,
-        );
+        ];
         $markerArray = $formatter->getItemMarkerArrayWrapped($arr, $pbConfId, 0, $pbMarker.'_');
 
         $subpartArray = $this->createSubpartArray($pbMarker);
 
         //---- Ab jetzt werden die Templates gefüllt
-        $parts = array(); // Hier werden alle Teile des Browser gesammelt
+        $parts = []; // Hier werden alle Teile des Browser gesammelt
         // Der Marker für die erste Seite
         if ($templates['first'] && 0 != $pointer) {
             $parts[] = $this->getPageString(0, $pointer, 'first', $templates, $formatter, $pbConfId, $pbMarker);
@@ -171,7 +171,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
      */
     protected function getPageString($currentPage, $pointer, $pageId, &$templates, &$formatter, $pbConfId, $pbMarker)
     {
-        $rec = array();
+        $rec = [];
         $rec['number'] = $currentPage + 1;
 
         $pageTemplate = $templates[$pageId];
@@ -179,10 +179,10 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
         $pageMarker = $pbMarker.'_'.strtoupper($pageId).'_PAGE_';
 
         $pageMarkerArray = $formatter->getItemMarkerArrayWrapped($rec, $pageConfId, 0, $pageMarker);
-        $pageSubpartArray = array();
+        $pageSubpartArray = [];
 
         if ($this->link) {
-            $this->link->parameters(array($this->pageBrowser->getParamName('pointer') => $currentPage));
+            $this->link->parameters([$this->pageBrowser->getParamName('pointer') => $currentPage]);
             $pageWrappedSubpartArray['###'.$pageMarker.'LINK###'] = explode($this->token, $this->link->makeTag());
             $pageMarkerArray['###'.$pageMarker.'LINKURL###'] = $this->link->makeUrl();
         } else {
@@ -202,7 +202,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
      */
     private function getFirstLastPage($pointer, $pageFloat, $totalPages, $maxPages)
     {
-        $ret = array();
+        $ret = [];
         if ($pageFloat > -1) {
             $ret['last'] = min($totalPages, max($pointer + 1 + $pageFloat, $maxPages));
             $ret['first'] = max(0, $ret['last'] - $maxPages);
@@ -243,7 +243,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
      */
     protected function getTemplates($template, $pbMarker)
     {
-        $ret = array();
+        $ret = [];
         foreach ($this->pagePartsDef as $part) {
             $ret[$part] = tx_rnbase_util_Templates::getSubpart($template, '###'.$pbMarker.'_'.strtoupper($part).'_PAGE###');
         }
@@ -256,7 +256,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
      */
     private function createSubpartArray($pbMarker)
     {
-        $ret = array();
+        $ret = [];
 
         foreach ($this->pagePartsDef as $part) {
             $ret['###'.$pbMarker.'_'.strtoupper($part).'_PAGE###'] = '';
@@ -274,9 +274,9 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
     protected function initLink(&$configuration, $pbConfId)
     {
         $this->link = $configuration->createLink();
-        $this->link->initByTS($configuration, $pbConfId.'link.', array());
+        $this->link->initByTS($configuration, $pbConfId.'link.', []);
         $this->token = md5(microtime());
         $this->link->label($this->token);
-        $this->noLink = array('', '');
+        $this->noLink = ['', ''];
     }
 }

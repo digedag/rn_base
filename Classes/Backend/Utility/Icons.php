@@ -41,7 +41,7 @@ class Tx_Rnbase_Backend_Utility_Icons
      */
     public static function __callStatic($method, array $arguments)
     {
-        return call_user_func_array(array(static::getIconUtilityClass(), $method), $arguments);
+        return call_user_func_array([static::getIconUtilityClass(), $method], $arguments);
     }
 
     /**
@@ -78,10 +78,10 @@ class Tx_Rnbase_Backend_Utility_Icons
 
         return static::__callStatic(
             'getSpriteIconForRecord',
-            array(
+            [
                 $table,
                 $row,
-            )
+            ]
         );
     }
 
@@ -119,8 +119,8 @@ class Tx_Rnbase_Backend_Utility_Icons
      */
     public static function getSpriteIcon(
         $iconName,
-        array $options = array(),
-        array $overlays = array()
+        array $options = [],
+        array $overlays = []
     ) {
         // @TODO: shoult be used for TYPO3 7 too!
         if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {

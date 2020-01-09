@@ -42,11 +42,11 @@ class tx_rnbase_util_Files
      *
      * @see FILE()
      */
-    public static function getFileResource($fName, $options = array())
+    public static function getFileResource($fName, $options = [])
     {
         if (!(is_object($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE']->tmpl))) {
             tx_rnbase::load('tx_rnbase_util_Misc');
-            tx_rnbase_util_Misc::prepareTSFE(array('force' => true));
+            tx_rnbase_util_Misc::prepareTSFE(['force' => true]);
         }
         if (self::isFALReference($fName)) {
             /**
@@ -169,7 +169,7 @@ class tx_rnbase_util_Files
      */
     public static function join()
     {
-        $paths = array();
+        $paths = [];
         foreach (func_get_args() as $arg) {
             if ('' !== $arg) {
                 $paths[] = $arg;
@@ -216,7 +216,7 @@ class tx_rnbase_util_Files
      *
      * @return bool TRUE, if zip file was created
      */
-    public static function makeZipFile($files = array(), $destination = '', $overwrite = false)
+    public static function makeZipFile($files = [], $destination = '', $overwrite = false)
     {
         if (!extension_loaded('zip')) {
             tx_rnbase::load('tx_rnbase_util_Logger');
@@ -230,7 +230,7 @@ class tx_rnbase_util_Files
         }
 
         //vars
-        $valid_files = array();
+        $valid_files = [];
         //if files were passed in...
         if (!is_array($files)) {
             return false;

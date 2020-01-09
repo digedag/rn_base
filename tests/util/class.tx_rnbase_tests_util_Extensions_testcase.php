@@ -41,7 +41,7 @@ class tx_rnbase_tests_util_Extensions_testcase extends tx_rnbase_tests_BaseTestC
         tx_rnbase_util_ExtensionsForTests::extPath(1, 2, 3, 4);
 
         self::assertEquals(
-            array('extPath' => array(1, 2, 3, 4)),
+            ['extPath' => [1, 2, 3, 4]],
             Typo3ExtensionUtilityClass::$lastCalledMethod
         );
     }
@@ -66,7 +66,7 @@ class Typo3ExtensionUtilityClass
     /**
      * @var array der key ist der methoden name, der value die übergebenen Parameter
      */
-    public static $lastCalledMethod = array();
+    public static $lastCalledMethod = [];
 
     /**
      * @param string $method
@@ -74,6 +74,6 @@ class Typo3ExtensionUtilityClass
      */
     public static function __callStatic($method, $arguments)
     {
-        self::$lastCalledMethod = array($method => $arguments);
+        self::$lastCalledMethod = [$method => $arguments];
     }
 }

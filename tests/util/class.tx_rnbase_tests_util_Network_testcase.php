@@ -95,17 +95,17 @@ class tx_rnbase_tests_util_Network_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public function dataProviderIsDevelopmentIp()
     {
-        return array(
-            array('127.0.0.1', '', '', true, $_SERVER['REMOTE_ADDR'] = '127.0.0.1'),
-            array('1.2.3.4', '1.2.3.4', '1.2.3.4', true),
-            array('4.3.2.1', '1.2.3.4', '1.2.3.4', true),
-            array('4.3.2.1', '4.3.2.1', '1.2.3.4', false),
-            array('4.3.2.1', '4.3.2.1', '', false),
-            array('4.3.2.1', '', '1.2.3.4', false),
-            array('', '1.2.3.4', '1.2.3.4', true),
-            array('', '4.3.2.1', '1.2.3.4', false),
-            array('4.3.2.1', '', '', false),
-            array('', '', '4.3.2.1', false),
-        );
+        return [
+            ['127.0.0.1', '', '', true, $_SERVER['REMOTE_ADDR'] = '127.0.0.1'],
+            ['1.2.3.4', '1.2.3.4', '1.2.3.4', true],
+            ['4.3.2.1', '1.2.3.4', '1.2.3.4', true],
+            ['4.3.2.1', '4.3.2.1', '1.2.3.4', false],
+            ['4.3.2.1', '4.3.2.1', '', false],
+            ['4.3.2.1', '', '1.2.3.4', false],
+            ['', '1.2.3.4', '1.2.3.4', true],
+            ['', '4.3.2.1', '1.2.3.4', false],
+            ['4.3.2.1', '', '', false],
+            ['', '', '4.3.2.1', false],
+        ];
     }
 }

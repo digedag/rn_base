@@ -71,7 +71,6 @@ class Tx_Rnbase_Utility_TypoScriptTest extends tx_rnbase_tests_BaseTestCase
     /**
      * Test the convertTypoScriptArrayToPlainArray method.
      *
-     *
      * @group unit
      * @test
      */
@@ -87,7 +86,6 @@ class Tx_Rnbase_Utility_TypoScriptTest extends tx_rnbase_tests_BaseTestCase
 
     /**
      * Test the convertPlainArrayToTypoScriptArray method.
-     *
      *
      * @group unit
      * @test

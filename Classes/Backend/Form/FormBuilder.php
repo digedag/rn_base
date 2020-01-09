@@ -46,7 +46,7 @@ class Tx_Rnbase_Backend_Form_FormBuilder
     /**
      * @var array
      */
-    protected $formDataCache = array();
+    protected $formDataCache = [];
 
     public function __construct()
     {

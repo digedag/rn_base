@@ -53,7 +53,7 @@ class Tx_Rnbase_Backend_Utility_DecoratorUtility
      */
     public static function getInstance(
         Tx_Rnbase_Backend_Decorator_InterfaceDecorator $decorator = null,
-        $options = array()
+        $options = []
     ) {
         return tx_rnbase::makeInstance(
             'Tx_Rnbase_Backend_Utility_DecoratorUtility',
@@ -70,7 +70,7 @@ class Tx_Rnbase_Backend_Utility_DecoratorUtility
      */
     public function __construct(
         Tx_Rnbase_Backend_Decorator_InterfaceDecorator $decorator = null,
-        $options = array()
+        $options = []
     ) {
         $this->decorator = $decorator;
         tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
@@ -111,10 +111,10 @@ class Tx_Rnbase_Backend_Utility_DecoratorUtility
     public function addDecoratorColumnUid(
         array &$columns
     ) {
-        $columns['uid'] = array(
+        $columns['uid'] = [
             'title' => 'label_tableheader_uid',
             'decorator' => $this->getDecorator(),
-        );
+        ];
 
         return $this;
     }
@@ -135,10 +135,10 @@ class Tx_Rnbase_Backend_Utility_DecoratorUtility
                 $this->getOptions()->getBaseTableName()
             );
             if (!empty($labelField)) {
-                $columns['label'] = array(
+                $columns['label'] = [
                     'title' => 'label_tableheader_title',
                     'decorator' => $this->getDecorator(),
-                );
+                ];
             }
         }
 
@@ -166,10 +166,10 @@ class Tx_Rnbase_Backend_Utility_DecoratorUtility
                 $this->getOptions()->getBaseTableName()
             );
             if (!empty($sysLanguageUidField)) {
-                $columns['sys_language_uid'] = array(
+                $columns['sys_language_uid'] = [
                     'title' => 'label_tableheader_language',
                     'decorator' => $this->getDecorator(),
-                );
+                ];
             }
         }
 
@@ -187,10 +187,10 @@ class Tx_Rnbase_Backend_Utility_DecoratorUtility
     public function addDecoratorColumnActions(
         array &$columns
     ) {
-        $columns['actions'] = array(
+        $columns['actions'] = [
             'title' => 'label_tableheader_actions',
             'decorator' => $this->getDecorator(),
-        );
+        ];
 
         return $this;
     }

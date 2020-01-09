@@ -67,7 +67,7 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase
      */
     public function __call($methodName, $args)
     {
-        return call_user_func_array(array($this->db, $methodName), $args);
+        return call_user_func_array([$this->db, $methodName], $args);
     }
 
     /**
@@ -303,7 +303,7 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase
         if ($resource) {
             $result = $resource->fetch_row();
             if (isset($result[0]) && $result[0] && false !== strpos($result[0], 'NO_BACKSLASH_ESCAPES')) {
-                $modes = array_diff(GeneralUtility::trimExplode(',', $result[0]), array('NO_BACKSLASH_ESCAPES'));
+                $modes = array_diff(GeneralUtility::trimExplode(',', $result[0]), ['NO_BACKSLASH_ESCAPES']);
                 $query = 'SET sql_mode=\''.$this->db->real_escape_string(implode(',', $modes)).'\';';
                 $this->sql_query($query);
                 GeneralUtility::sysLog(

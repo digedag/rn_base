@@ -57,7 +57,7 @@ class tx_rnbase_tests_Utility
         $cObj = null;
 
         $args = func_get_args();
-        $args = count($args) > 3 ? array_slice($args, 3) : array();
+        $args = count($args) > 3 ? array_slice($args, 3) : [];
 
         foreach ($args as $arg) {
             if ($arg instanceof \Sys25\RnBase\Frontend\Request\Parameters) {

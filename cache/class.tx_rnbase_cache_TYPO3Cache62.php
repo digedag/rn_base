@@ -28,7 +28,7 @@ class tx_rnbase_cache_TYPO3Cache62 implements tx_rnbase_cache_ICache
 {
     private $cache; // The cache instance
 
-    private static $emptyArray = array();
+    private static $emptyArray = [];
 
     public function __construct($cacheName)
     {
@@ -55,11 +55,11 @@ class tx_rnbase_cache_TYPO3Cache62 implements tx_rnbase_cache_ICache
         if (!array_key_exists($cacheName, $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'])) {
             // Der Cache ist nicht konfiguriert.
             // Wir konfigurieren einen mit Defaults
-            $defaultCache = array($cacheName => array(
+            $defaultCache = [$cacheName => [
                 'backend' => 'TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend',
-                'options' => array(
-                ),
-            ));
+                'options' => [
+                ],
+            ]];
             $this->getT3CacheManager()->setCacheConfigurations($defaultCache);
         }
     }

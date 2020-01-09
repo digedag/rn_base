@@ -37,7 +37,7 @@ tx_rnbase::load('tx_rnbase_util_Debug');
  */
 class tx_rnbase_util_ListBuilder
 {
-    private $visitors = array();
+    private $visitors = [];
 
     /**
      * Constructor.
@@ -86,7 +86,7 @@ class tx_rnbase_util_ListBuilder
         /* @var $listMarker tx_rnbase_util_ListMarker */
         $listMarker = tx_rnbase::makeInstance('tx_rnbase_util_ListMarker', $this->info->getListMarkerInfo());
         while ($templateList = tx_rnbase_util_Templates::getSubpart($template, '###'.$outerMarker.'S###')) {
-            $markerArray = $subpartArray = array();
+            $markerArray = $subpartArray = [];
             $templateEntry = tx_rnbase_util_Templates::getSubpart($templateList, '###'.$marker.'###');
             $offset = 0;
             $pageBrowser = $viewData->offsetGet('pagebrowser');
@@ -161,13 +161,13 @@ class tx_rnbase_util_ListBuilder
         if ($debug) {
             $wrapTime = tx_rnbase_util_FormatUtil::$time - $wrapTime;
             $wrapMem = tx_rnbase_util_FormatUtil::$mem - $wrapMem;
-            tx_rnbase_util_Debug::debug(array(
+            tx_rnbase_util_Debug::debug([
                     'Execustion time' => (microtime(true) - $time),
                     'WrapTime' => $wrapTime,
                     'WrapMem' => $wrapMem,
                     'Memory start' => $mem,
                     'Memory consumed' => (memory_get_usage() - $mem),
-                ), 'ListBuilder Statistics for: '.$confId.' Key: '.$debugKey);
+                ], 'ListBuilder Statistics for: '.$confId.' Key: '.$debugKey);
         }
 
         return $out;
@@ -231,7 +231,7 @@ class tx_rnbase_util_ListBuilder
                     $offset = $state['offset'];
                 }
 
-                $markerArray = $subpartArray = array();
+                $markerArray = $subpartArray = [];
                 $listMarker->addVisitors($this->visitors);
                 $out = $listMarker->render(
                     $dataArr,
@@ -305,14 +305,14 @@ class tx_rnbase_util_ListBuilder
 
             $wrapTime = tx_rnbase_util_FormatUtil::$time - $wrapTime;
             $wrapMem = tx_rnbase_util_FormatUtil::$mem - $wrapMem;
-            tx_rnbase_util_Debug::debug(array(
+            tx_rnbase_util_Debug::debug([
                     'Rows' => count($dataArr),
                     'Execustion time' => (microtime(true) - $time),
                     'WrapTime' => $wrapTime,
                     'WrapMem' => $wrapMem,
                     'Memory start' => $mem,
                     'Memory consumed' => (memory_get_usage() - $mem),
-                ), 'ListBuilder Statistics for: '.$confId.' Key: '.$debugKey);
+                ], 'ListBuilder Statistics for: '.$confId.' Key: '.$debugKey);
         }
 
         return $out;

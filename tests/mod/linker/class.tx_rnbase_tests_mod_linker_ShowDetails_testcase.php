@@ -52,10 +52,10 @@ class tx_rnbase_tests_mod_linker_ShowDetails_testcase extends tx_rnbase_tests_Ba
     {
         $content = $this->makeLink(
             null,
-            array(
+            [
                 'show_details_key' => 'showPage',
                 'show_details_label' => 'Page Details',
-            )
+            ]
         );
         // check the name of the submit button!
         self::assertContains('name="showPage[14]"', $content);
@@ -72,7 +72,7 @@ class tx_rnbase_tests_mod_linker_ShowDetails_testcase extends tx_rnbase_tests_Ba
     protected function makeLink($model = null, $options = null)
     {
         if (!$model instanceof tx_rnbase_model_base) {
-            $item = $this->getModel(array('uid' => 14))->setTableName('pages');
+            $item = $this->getModel(['uid' => 14])->setTableName('pages');
         }
         if (!$options instanceof tx_rnbase_model_data) {
             $options = tx_rnbase_model_data::getInstance($options);

@@ -35,7 +35,7 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
     /**
      * @var array
      */
-    private $backup = array();
+    private $backup = [];
 
     public function setUp()
     {
@@ -50,7 +50,6 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
     /**
      * getCacheName method test.
      *
-     *
      * @group unit
      * @test
      */
@@ -59,7 +58,7 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
         self::assertSame(
             'myext',
             $this->callInaccessibleMethod(
-                $this->getHandlerMock(array('name' => 'myext')),
+                $this->getHandlerMock(['name' => 'myext']),
                 'getCacheName'
             )
         );
@@ -67,7 +66,6 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
 
     /**
      * getCacheName method test.
-     *
      *
      * @group unit
      * @test
@@ -86,7 +84,6 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
     /**
      * getTimeout method test.
      *
-     *
      * @group unit
      * @test
      */
@@ -95,7 +92,7 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
         self::assertSame(
             19,
             $this->callInaccessibleMethod(
-                $this->getHandlerMock(array('expire' => '19')),
+                $this->getHandlerMock(['expire' => '19']),
                 'getTimeout'
             )
         );
@@ -103,7 +100,6 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
 
     /**
      * getTimeout method test.
-     *
      *
      * @group unit
      * @test
@@ -122,7 +118,6 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
     /**
      * getSalt method test.
      *
-     *
      * @group unit
      * @test
      */
@@ -131,7 +126,7 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
         self::assertSame(
             '$4lt',
             $this->callInaccessibleMethod(
-                $this->getHandlerMock(array('salt' => '$4lt')),
+                $this->getHandlerMock(['salt' => '$4lt']),
                 'getSalt'
             )
         );
@@ -139,7 +134,6 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
 
     /**
      * getSalt method test.
-     *
      *
      * @group unit
      * @test
@@ -158,23 +152,22 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
     /**
      * getIcludeParams method test.
      *
-     *
      * @group unit
      * @test
      */
     public function testGetIcludeParamsFromTs()
     {
         self::assertSame(
-            array(
+            [
                 'myaction|uid',
-            ),
+            ],
             $this->callInaccessibleMethod(
                 $this->getHandlerMock(
-                    array(
-                        'include.' => array(
+                    [
+                        'include.' => [
                             'params' => 'myaction|uid',
-                        ),
-                    )
+                        ],
+                    ]
                 ),
                 'getIcludeParams'
             )
@@ -184,14 +177,13 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
     /**
      * getIcludeParams method test.
      *
-     *
      * @group unit
      * @test
      */
     public function testGetIcludeParamsFromDef()
     {
         self::assertSame(
-            array(),
+            [],
             $this->callInaccessibleMethod(
                 $this->getHandlerMock(),
                 'getIcludeParams'
@@ -201,7 +193,6 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
 
     /**
      * getCache method test.
-     *
      *
      * @group unit
      * @test
@@ -230,7 +221,7 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
     public function testCleanupCacheKey(
         $initialKey,
         $cleanedKey,
-        array $config = array()
+        array $config = []
     ) {
         self::assertSame(
             $cleanedKey,
@@ -252,28 +243,27 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
         // 124 sign long string
         $s124 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789abcdefghijklmnopqrstuvwxyz--ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789abcdefghijklmnopqrstuvwxyz';
 
-        return array(
-            __LINE__ => array(
+        return [
+            __LINE__ => [
                 'initialKey' => 'myaction._caching.',
                 'cleanedKey' => 'myaction_caching_',
-                'config' => array(),
-            ),
-            __LINE__ => array(
+                'config' => [],
+            ],
+            __LINE__ => [
                 'initialKey' => 'abcABC!"§$%&/()=?+#*\'-.,_:;',
                 'cleanedKey' => 'abcABC_%&_-_',
-                'config' => array(),
-            ),
-            __LINE__ => array(
+                'config' => [],
+            ],
+            __LINE__ => [
                 'initialKey' => $s124,
                 'cleanedKey' => substr($s124, 0, 50 - 33).'-'.md5($s124),
-                'config' => array('keylength' => 50),
-            ),
-        );
+                'config' => ['keylength' => 50],
+            ],
+        ];
     }
 
     /**
      * getCacheKey method test.
-     *
      *
      * @group unit
      * @test
@@ -281,8 +271,8 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
     public function testGetCacheKey()
     {
         $handler = $this->getHandlerMock(
-            array(),
-            array('getCacheKeyParts')
+            [],
+            ['getCacheKeyParts']
         );
 
         $handler
@@ -290,12 +280,12 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
             ->method('getCacheKeyParts')
             ->will(
                 $this->returnValue(
-                    array(
+                    [
                         '5cf65f278437ad017929be07800927d3',
                         '57',
                         'myaction._caching',
                         'salt',
-                    )
+                    ]
                 )
             );
 
@@ -311,19 +301,18 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
     /**
      * getCacheKeyParts method test.
      *
-     *
      * @group unit
      * @test
      */
     public function testGetCacheKeyParts()
     {
         $handler = $this->getHandlerMock(
-            array(
+            [
                 'salt' => 'wuerze',
-                'include.' => array(
+                'include.' => [
                     'params' => 'myext|uid',
-                ),
-            )
+                ],
+            ]
         );
         // the get parameter for myext|uid
         $_GET['myext']['uid'] = 57;
@@ -375,12 +364,12 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
      * @return PHPUnit_Framework_MockObject_MockObject|tx_rnbase_action_CacheHandlerDefault
      */
     protected function getHandlerMock(
-        array $config = array(),
-        array $methods = array()
+        array $config = [],
+        array $methods = []
     ) {
         $handler = $this->getMock(
             'tx_rnbase_action_CacheHandlerDefault',
-            array_merge(array('getConfigurations', 'getConfId'), $methods)
+            array_merge(['getConfigurations', 'getConfId'], $methods)
         );
 
         // create cobject with the plugin id.
@@ -389,11 +378,11 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
 
         $confId = 'myaction.';
         $configurations = $this->createConfigurations(
-            array(
-                $confId => array(
+            [
+                $confId => [
                     '_caching.' => $config,
-                ),
-            ),
+                ],
+            ],
             'rn_base',
             'rn_base',
             $cObj

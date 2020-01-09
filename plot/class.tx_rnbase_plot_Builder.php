@@ -39,7 +39,7 @@ class tx_rnbase_plot_Builder
 {
     private $ctx;
 
-    private static $arrPlotClassAlias = array(
+    private static $arrPlotClassAlias = [
             'AREA' => 'tx_pbimagegraph_Plot_Area',
             'BAND' => 'tx_pbimagegraph_Plot_Band',
             'BAR' => 'tx_pbimagegraph_Plot_Bar',
@@ -57,7 +57,7 @@ class tx_rnbase_plot_Builder
             'SMOOTH_LINE' => 'tx_pbimagegraph_Plot_Smoothed_Line',
             'SMOOTH_RADAR' => 'tx_pbimagegraph_Plot_Smoothed_Radar',
             'FIT_LINE' => 'tx_pbimagegraph_Plot_Fit_Line',
-        );
+        ];
 
     private function __construct()
     {
@@ -92,7 +92,7 @@ class tx_rnbase_plot_Builder
             $arrConf['height'] = $arrConf['height'] ? $arrConf['height'] : '300';
             if (!@file_exists(\Sys25\RnBase\Utility\Environment::getPublicPath().$strFileName) || true) { // TODO: remove me!!!
                 $objGraph = $this->makeCanvas($arrConf, $dp);
-                $objGraph->done(array('filename' => \Sys25\RnBase\Utility\Environment::getPublicPath().$strFileName));
+                $objGraph->done(['filename' => \Sys25\RnBase\Utility\Environment::getPublicPath().$strFileName]);
             }
             $strAltParam = $this->getAltParam($arrConf);
             switch (strtolower($arrConf['factory'])) {
@@ -356,7 +356,7 @@ class tx_rnbase_plot_Builder
                 $strAxisX = $arrConf['axis.']['x.']['type'] ? 'tx_pbimagegraph_Axis_'.ucfirst($arrConf['axis.']['x.']['type']) : 'tx_pbimagegraph_Axis_Category';
                 $strAxisY = $arrConf['axis.']['y.']['type'] ? 'tx_pbimagegraph_Axis_'.ucfirst($arrConf['axis.']['y.']['type']) : 'tx_pbimagegraph_Axis';
                 $strDirection = $arrConf['direction'] ? $arrConf['direction'] : 'vertical';
-                $Plotarea = tx_pbimagegraph::factory('plotarea', array($strAxisX, $strAxisY, $strDirection));
+                $Plotarea = tx_pbimagegraph::factory('plotarea', [$strAxisX, $strAxisY, $strDirection]);
         }
 
         $this->cObjGet($arrConf, $Plotarea);
@@ -477,7 +477,7 @@ class tx_rnbase_plot_Builder
 
     private function convertDataSet($dataSets)
     {
-        $ret = array();
+        $ret = [];
         // Zunächst mal einfache Arrays unterstützen
         foreach ($dataSets as $dataSet) {
             if (is_array($dataSet)) {
@@ -563,7 +563,7 @@ class tx_rnbase_plot_Builder
                 }
             }
         }
-        $objMatrix = tx_pbimagegraph::factory('tx_pbimagegraph_Layout_Matrix', array($intRows, $intCols, $boolAutoCreate));
+        $objMatrix = tx_pbimagegraph::factory('tx_pbimagegraph_Layout_Matrix', [$intRows, $intCols, $boolAutoCreate]);
         $intRow = 0;
         if (is_array($arrConf)) {
             foreach ($arrConf as $strRow => $mixRow) {
@@ -601,7 +601,7 @@ class tx_rnbase_plot_Builder
         $intSize = $arrConf['size'];
         $intAngle = $arrConf['angle'];
         $strColor = $arrConf['color'];
-        $objTitle = tx_pbimagegraph::factory('title', array('Title', array('size' => $intSize, 'angle' => $intAngle, 'color' => $strColor)));
+        $objTitle = tx_pbimagegraph::factory('title', ['Title', ['size' => $intSize, 'angle' => $intAngle, 'color' => $strColor]]);
         $this->setElementProperties($objTitle, $arrConf);
         $objTitle->setText($this->getDataProvider()->getChartTitle($arrConf));
 
@@ -696,7 +696,7 @@ class tx_rnbase_plot_Builder
             $this->setMarkerProperties($objMarker, $arrConf['marker.']);
             $this->setElementProperties($objMarker, $arrConf['marker.']);
             if ($arrConf['marker.']['pointing']) {
-                $objPointing = &$objRef->addNew('tx_pbimagegraph_Marker_Pointing_'.ucfirst($arrConf['marker.']['pointing']), array($arrConf['marker.']['pointing.']['radius'], $objMarker));
+                $objPointing = &$objRef->addNew('tx_pbimagegraph_Marker_Pointing_'.ucfirst($arrConf['marker.']['pointing']), [$arrConf['marker.']['pointing.']['radius'], $objMarker]);
                 $objSetMarker = &$objPointing;
             } else {
                 $objSetMarker = &$objMarker;
@@ -730,7 +730,7 @@ class tx_rnbase_plot_Builder
     {
         switch ($strType) {
             case 'array':
-                    $objRef->setDataPreProcessor(tx_pbimagegraph::factory('tx_pbimagegraph_DataPreprocessor_Array', array($arrConf)));
+                    $objRef->setDataPreProcessor(tx_pbimagegraph::factory('tx_pbimagegraph_DataPreprocessor_Array', [$arrConf]));
 
                 break;
             default:
@@ -793,7 +793,7 @@ class tx_rnbase_plot_Builder
                 $strStartColor = $arrConf['startColor'];
                 $strEndColor = $arrConf['endColor'];
                 $intSolidColor = $arrConf['color'];
-                $objFillStyle = &tx_pbimagegraph::factory('gradient', array($intDirection, $strStartColor, $strEndColor));
+                $objFillStyle = &tx_pbimagegraph::factory('gradient', [$intDirection, $strStartColor, $strEndColor]);
 
                 break;
             case 'fill_array':
@@ -819,7 +819,7 @@ class tx_rnbase_plot_Builder
                                     $strEndColor = $arrConf[$strKey.'.']['endColor'];
                                     $intSolidColor = $arrConf[$strKey.'.']['color'];
                                     $strId = $arrConf[$strKey.'.']['id'];
-                                    $objFillStyle->addNew('gradient', array($intDirection, $strStartColor, $strEndColor), $strId);
+                                    $objFillStyle->addNew('gradient', [$intDirection, $strStartColor, $strEndColor], $strId);
 
                                     break;
                             }
@@ -858,11 +858,11 @@ class tx_rnbase_plot_Builder
         $arrConf['color2'] = $arrConf['color2'] ? $arrConf['color2'] : 'white';
         switch ($strValue) {
             case 'dashed':
-                $objLineStyle = &tx_pbimagegraph::factory('tx_pbimagegraph_Line_Dashed', array($arrConf['color1'], $arrConf['color2']));
+                $objLineStyle = &tx_pbimagegraph::factory('tx_pbimagegraph_Line_Dashed', [$arrConf['color1'], $arrConf['color2']]);
 
                 break;
             case 'dotted':
-                $objLineStyle = &tx_pbimagegraph::factory('tx_pbimagegraph_Line_Dotted', array($arrConf['color1'], $arrConf['color2']));
+                $objLineStyle = &tx_pbimagegraph::factory('tx_pbimagegraph_Line_Dotted', [$arrConf['color1'], $arrConf['color2']]);
 
                 break;
             case 'solid':

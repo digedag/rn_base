@@ -35,7 +35,7 @@ class tx_rnbase_tests_util_Files_testcase extends tx_rnbase_tests_BaseTestCase
     /**
      * @var array
      */
-    protected $testFilesToDelete = array();
+    protected $testFilesToDelete = [];
 
     /**
      * (non-PHPdoc).

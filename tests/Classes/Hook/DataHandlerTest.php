@@ -71,9 +71,9 @@ class Tx_Rnbase_Hook_DataHandlerTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testClearCacheForConfiguredTagsByTable()
     {
-        $GLOBALS['TCA']['rn_base_test_table']['ctrl']['cacheTags'] = array('first-tag', 'second-tag');
+        $GLOBALS['TCA']['rn_base_test_table']['ctrl']['cacheTags'] = ['first-tag', 'second-tag'];
 
-        $cacheManager = $this->getMock(tx_rnbase_util_Typo3Classes::getCacheManagerClass(), array('flushCachesInGroupByTag'));
+        $cacheManager = $this->getMock(tx_rnbase_util_Typo3Classes::getCacheManagerClass(), ['flushCachesInGroupByTag']);
         $cacheManager->expects(self::at(0))
             ->method('flushCachesInGroupByTag')
             ->with('pages', 'first-tag');
@@ -81,12 +81,12 @@ class Tx_Rnbase_Hook_DataHandlerTest extends tx_rnbase_tests_BaseTestCase
             ->method('flushCachesInGroupByTag')
             ->with('pages', 'second-tag');
 
-        $dataHandler = $this->getMock('Tx_Rnbase_Hook_DataHandler', array('getCacheManager'));
+        $dataHandler = $this->getMock('Tx_Rnbase_Hook_DataHandler', ['getCacheManager']);
         $dataHandler->expects(self::once())
             ->method('getCacheManager')
             ->will(self::returnValue($cacheManager));
 
-        $dataHandler->clearCacheForConfiguredTagsByTable(array('table' => 'rn_base_test_table'));
+        $dataHandler->clearCacheForConfiguredTagsByTable(['table' => 'rn_base_test_table']);
     }
 
     /**
@@ -94,10 +94,10 @@ class Tx_Rnbase_Hook_DataHandlerTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testClearCacheForConfiguredTagsByTableIfNoneConfiguredInTca()
     {
-        $dataHandler = $this->getMock('Tx_Rnbase_Hook_DataHandler', array('getCacheManager'));
+        $dataHandler = $this->getMock('Tx_Rnbase_Hook_DataHandler', ['getCacheManager']);
         $dataHandler->expects(self::never())
             ->method('getCacheManager');
 
-        $dataHandler->clearCacheForConfiguredTagsByTable(array('table' => 'rn_base_test_table'));
+        $dataHandler->clearCacheForConfiguredTagsByTable(['table' => 'rn_base_test_table']);
     }
 }

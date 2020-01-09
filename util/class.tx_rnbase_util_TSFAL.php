@@ -112,7 +112,7 @@ class tx_rnbase_util_TSFAL
         );
 
         // Now set the identifier
-        $markerArray = array('###MEDIA_PARENTUID###' => $parentUid);
+        $markerArray = ['###MEDIA_PARENTUID###' => $parentUid];
         $out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($out, $markerArray);
 
         return $out;
@@ -131,7 +131,7 @@ class tx_rnbase_util_TSFAL
     {
         $conf = $this->createConf($tsConf);
         $filelist = self::fetchFilesByTS($conf, $conf->getCObj());
-        $files = array();
+        $files = [];
         foreach ($filelist as $fileModel) {
             $files[] = $fileModel->getFilePath();
         }
@@ -154,7 +154,7 @@ class tx_rnbase_util_TSFAL
     {
         /* @var $fileRepository \TYPO3\CMS\Core\Resource\FileRepository */
         $fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
-        $pics = array();
+        $pics = [];
         tx_rnbase::load('tx_rnbase_util_Strings');
         // Getting the files
         // Try DAM style
@@ -194,7 +194,7 @@ class tx_rnbase_util_TSFAL
                         $referencesForeignUid :
                         (isset($cObj->data['_LOCALIZED_UID']) ? $cObj->data['_LOCALIZED_UID'] : $cObj->data['uid']);
                 // Vermutlich kann hier auch nur ein Objekt geliefert werden...
-                $pics = array();
+                $pics = [];
                 $referencesForeignUid = tx_rnbase_util_Strings::intExplode(',', $referencesForeignUid);
                 foreach ($referencesForeignUid as $refForUid) {
                     if (!$conf->get($refConfId.'treatIdAsReference')) {
@@ -216,7 +216,7 @@ class tx_rnbase_util_TSFAL
         tx_rnbase_util_Misc::callHook(
             'rn_base',
             'util_TSFal_fetchFilesByTS_appendMedia_hook',
-            array('conf' => $conf, '$confId' => $confId, 'media' => &$pics),
+            ['conf' => $conf, '$confId' => $confId, 'media' => &$pics],
             null
         );
 
@@ -241,7 +241,7 @@ class tx_rnbase_util_TSFAL
      */
     protected static function convertRef2Media($pics)
     {
-        $fileObjects = array();
+        $fileObjects = [];
         if (is_array($pics)) {
             foreach ($pics as $pic) {
                 // getProperties() liefert derzeit nicht zurück
@@ -381,7 +381,7 @@ class tx_rnbase_util_TSFAL
      */
     public static function createThumbnails($references, $sizeArr = false)
     {
-        $ret = array();
+        $ret = [];
         foreach ($references as $fileRef) {
             /* @var $fileRef \TYPO3\CMS\Core\Resource\FileReference */
             if (!is_object($fileRef)) {
@@ -391,9 +391,9 @@ class tx_rnbase_util_TSFAL
             /* @var $fileObject \TYPO3\CMS\Core\Resource\File */
             $fileObject = $fileRef->getOriginalFile();
             if ($fileObject) {
-                $imageSetup = array();
+                $imageSetup = [];
                 unset($imageSetup['field']);
-                $sizeArr = $sizeArr ? $sizeArr : array('width' => 64, 'height' => 64);
+                $sizeArr = $sizeArr ? $sizeArr : ['width' => 64, 'height' => 64];
                 $imageSetup = array_merge($sizeArr, $imageSetup);
                 $imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, $imageSetup)->getPublicUrl(true);
                 $thumbnail = '<img src="'.$imageUrl.'" alt="'.htmlspecialchars($fileRef->getTitle()).'">';
@@ -423,7 +423,7 @@ class tx_rnbase_util_TSFAL
      *
      * @return array
      */
-    public static function getMediaTCA($ref, $options = array())
+    public static function getMediaTCA($ref, $options = [])
     {
         // $options war früher ein String. Daher muss auf String getestet werden.
         $type = 'image';
@@ -437,7 +437,7 @@ class tx_rnbase_util_TSFAL
         $customSettingOverride = (
             empty($options['config']['customSettingOverride'])
                 || !is_array($options['config']['customSettingOverride'])
-        ) ? array() : $options['config']['customSettingOverride'];
+        ) ? [] : $options['config']['customSettingOverride'];
         $allowedFileExtensions = (string) $options['config']['allowedFileExtensions'];
         $disallowedFileExtensions = (string) $options['config']['disallowedFileExtensions'];
         if ('image' == $type) {
@@ -447,45 +447,45 @@ class tx_rnbase_util_TSFAL
                 'LLL:EXT:lang/locallang_tca.xlf';
 
             $customSettingOverride = array_merge(
-                array(
-                    'appearance' => array(
+                [
+                    'appearance' => [
                         'createNewRelationLinkTitle' => $ttContentLocallang.':images.addFileReference',
-                    ),
+                    ],
                     // custom configuration for displaying fields in the overlay/reference table
                     // to use the imageoverlayPalette instead of the basicoverlayPalette
-                    'foreign_types' => array(
-                        '0' => array(
+                    'foreign_types' => [
+                        '0' => [
                             'showitem' => '
                                 --palette--;'.$commonTcaLocallang.':sys_file_reference.imageoverlayPalette;imageoverlayPalette,
                                 --palette--;;filePalette',
-                        ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array(
+                        ],
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => [
                             'showitem' => '
                                 --palette--;'.$commonTcaLocallang.':sys_file_reference.imageoverlayPalette;imageoverlayPalette,
                                 --palette--;;filePalette',
-                        ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
+                        ],
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => [
                             'showitem' => '
                                 --palette--;'.$commonTcaLocallang.':sys_file_reference.imageoverlayPalette;imageoverlayPalette,
                                 --palette--;;filePalette',
-                        ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array(
+                        ],
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => [
                             'showitem' => '
                                 --palette--;'.$commonTcaLocallang.':sys_file_reference.imageoverlayPalette;imageoverlayPalette,
                                 --palette--;;filePalette',
-                        ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
+                        ],
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => [
                             'showitem' => '
                                 --palette--;'.$commonTcaLocallang.':sys_file_reference.imageoverlayPalette;imageoverlayPalette,
                                 --palette--;;filePalette',
-                        ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
+                        ],
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => [
                             'showitem' => '
                                 --palette--;'.$commonTcaLocallang.':sys_file_reference.imageoverlayPalette;imageoverlayPalette,
                                 --palette--;;filePalette',
-                        ),
-                    ),
-                ),
+                        ],
+                    ],
+                ],
                 $customSettingOverride
             );
             if (empty($allowedFileExtensions)) {
@@ -495,7 +495,7 @@ class tx_rnbase_util_TSFAL
 
         $generalLocallang = \tx_rnbase_util_TYPO3::isTYPO87OrHigher() ? 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf' :
             'LLL:EXT:lang/locallang_general.xml';
-        $tca = array(
+        $tca = [
             'label' => $generalLocallang.':LGL.images',
             'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
                 $ref,
@@ -503,13 +503,13 @@ class tx_rnbase_util_TSFAL
                 $allowedFileExtensions,
                 $disallowedFileExtensions
             ),
-        );
+        ];
 
         if (!empty($tca) && is_array($options)) {
             foreach ($options as $key => $option) {
                 if (is_array($option)) {
                     if (!isset($tca[$key])) {
-                        $tca[$key] = array();
+                        $tca[$key] = [];
                     }
                     foreach ($option as $subkey => $suboption) {
                         $tca[$key][$subkey] = $suboption;
@@ -537,7 +537,7 @@ class tx_rnbase_util_TSFAL
      */
     public static function addReference($tableName, $fieldName, $itemId, $mediaUid, $pId = 0, $sorting = 1)
     {
-        $data = array();
+        $data = [];
         $data['pid'] = $pId;
         $data['uid_foreign'] = $itemId;
         $data['uid_local'] = $mediaUid;
@@ -618,7 +618,7 @@ class tx_rnbase_util_TSFAL
      */
     public static function updateImageCount($tableName, $fieldName, $itemId)
     {
-        $values = array();
+        $values = [];
         $values[$fieldName] = self::getImageCount($tableName, $fieldName, $itemId);
         tx_rnbase_util_DB::doUpdate($tableName, 'uid='.$itemId, $values);
     }
@@ -694,7 +694,7 @@ class tx_rnbase_util_TSFAL
      */
     public static function getReferencesFileInfo($refTable, $refUid, $refField)
     {
-        $infos = array();
+        $infos = [];
         foreach (self::getReferences($refTable, $refUid, $refField) as $reference) {
             $infos[$reference->getUid()] = static::getReferenceFileInfo($reference);
         }
@@ -731,7 +731,7 @@ class tx_rnbase_util_TSFAL
     {
         $reference = self::getFirstReference($refTable, $refUid, $refField);
 
-        return !$reference ? array() : static::getReferenceFileInfo($reference);
+        return !$reference ? [] : static::getReferenceFileInfo($reference);
     }
 
     /**
@@ -758,7 +758,7 @@ class tx_rnbase_util_TSFAL
         if (is_scalar($storage)) {
             $storage = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getStorageObject(
                 $storage,
-                array(),
+                [],
                 $target
             );
         }

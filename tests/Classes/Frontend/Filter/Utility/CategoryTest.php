@@ -2,8 +2,8 @@
 
 namespace Sys25\RnBase\Frontend\Filter\Utility;
 
-use Sys25\RnBase\Frontend\Request\Parameters;
 use Sys25\RnBase\Configuration\Processor;
+use Sys25\RnBase\Frontend\Request\Parameters;
 
 /***************************************************************
 *  Copyright notice

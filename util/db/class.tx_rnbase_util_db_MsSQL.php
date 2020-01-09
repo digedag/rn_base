@@ -67,7 +67,7 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
     {
         throw new Exception('Sorry, the class "'.get_class($this->db).'" does not support the method "'.$methodName.'".');
 
-        return call_user_func_array(array($this->db, $methodName), $args);
+        return call_user_func_array([$this->db, $methodName], $args);
     }
 
     /**
@@ -84,14 +84,14 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
             return $data;
         }
 
-        $nonDdisplayables = array(
+        $nonDdisplayables = [
                 '/%0[0-8bcef]/',            // url encoded 00-08, 11, 12, 14, 15
                 '/%1[0-9a-f]/',             // url encoded 16-31
                 '/[\x00-\x08]/',            // 00-08
                 '/\x0b/',                   // 11
                 '/\x0c/',                   // 12
                 '/[\x0e-\x1f]/',             // 14-31
-        );
+        ];
         foreach ($nonDdisplayables as $regex) {
             $data = preg_replace($regex, '', $data);
         }
@@ -248,7 +248,7 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
         // Table and fieldnames should be "SQL-injection-safe" when supplied to this
         // function (contrary to values in the arrays which may be insecure).
         if (is_string($where)) {
-            $fields = array();
+            $fields = [];
             if (is_array($fields_values) && count($fields_values)) {
                 // quote and escape values
                 $nArr = $this->fullQuoteArray($fields_values, $table, $no_quote_fields);
@@ -337,7 +337,7 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
         $ret = mssql_select_db($schema, $link);
 
         if (!$ret) {
-            throw new RuntimeException('Could not select MsSQL database '.$TYPO3_db, 1271953993);
+            throw new RuntimeException('Could not select MsSQL database '.$schema, 1271953993);
         }
 
         return $link;

@@ -32,7 +32,7 @@ tx_rnbase::load('tx_rnbase_util_Strings');
  */
 abstract class tx_rnbase_util_SearchBase
 {
-    private static $instances = array();
+    private static $instances = [];
 
     private $tableMapping;
 
@@ -95,10 +95,10 @@ abstract class tx_rnbase_util_SearchBase
     public function search($fields, $options)
     {
         if (!is_array($fields)) {
-            $fields = array();
+            $fields = [];
         }
         $this->_initSearch($options);
-        $tableAliases = array();
+        $tableAliases = [];
         if (isset($fields[SEARCH_FIELD_JOINED])) {
             $joinedFields = $fields[SEARCH_FIELD_JOINED];
             unset($fields[SEARCH_FIELD_JOINED]);
@@ -123,7 +123,7 @@ abstract class tx_rnbase_util_SearchBase
                 } // CUSTOM ignorieren
                 list($tableAlias, $col) = explode('.', $alias);
                 if (!array_key_exists($tableAlias, $tableAliases)) {
-                    $tableAliases[$tableAlias] = array();
+                    $tableAliases[$tableAlias] = [];
                 }
             }
         }
@@ -133,7 +133,7 @@ abstract class tx_rnbase_util_SearchBase
                 foreach ($joinedField['cols'] as $field) {
                     list($tableAlias, $col) = explode('.', $field);
                     if (!isset($tableAliases[$tableAlias])) {
-                        $tableAliases[$tableAlias] = array();
+                        $tableAliases[$tableAlias] = [];
                     }
                     $joinedFields[$key]['fields'][] = ($this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias]).'.'.strtolower($col);
                 }
@@ -143,16 +143,16 @@ abstract class tx_rnbase_util_SearchBase
         if (is_array($additionalTableAliases = $options['additionalTableAliases'])) {
             foreach ($additionalTableAliases as $additionalTableAlias) {
                 if (!isset($tableAliases[$additionalTableAlias])) {
-                    $tableAliases[$additionalTableAlias] = array();
+                    $tableAliases[$additionalTableAlias] = [];
                 }
             }
         }
 
-        tx_rnbase_util_Misc::callHook('rn_base', 'searchbase_handleTableMapping', array(
+        tx_rnbase_util_Misc::callHook('rn_base', 'searchbase_handleTableMapping', [
             'tableAliases' => &$tableAliases, 'joinedFields' => &$joinedFields,
             'customFields' => &$customFields, 'options' => &$options,
             'tableMappings' => &$this->tableMapping,
-        ), $this);
+        ], $this);
         $what = $this->getWhat($options, $tableAliases);
         $from = $this->getFrom($options, $tableAliases);
         $where = '1=1';
@@ -228,7 +228,7 @@ abstract class tx_rnbase_util_SearchBase
             $where .= $this->setEnableFieldsForAdditionalTableAliases($tableAliases, $options);
         }
 
-        $sqlOptions = array();
+        $sqlOptions = [];
         $sqlOptions['where'] = $where;
         if ($options['pidlist']) {
             $sqlOptions['pidlist'] = $options['pidlist'];
@@ -286,7 +286,7 @@ abstract class tx_rnbase_util_SearchBase
         }
         if (!isset($options['count']) && is_array($options['orderby'])) {
             // Aus dem Array einen String bauen
-            $orderby = array();
+            $orderby = [];
             if (array_key_exists('RAND', $options['orderby']) && $options['orderby']['RAND']) {
                 $orderby[] = 'RAND()';
             } else {
@@ -346,10 +346,10 @@ abstract class tx_rnbase_util_SearchBase
             );
             $what = 'COUNT(*) AS cnt';
             $from = '('.$query.') AS COUNTWRAP';
-            $sqlOptions = array(
+            $sqlOptions = [
                 'enablefieldsoff' => true,
                 'sqlonly' => empty($options['sqlonly']) ? 0 : $options['sqlonly'],
-            );
+            ];
         }
 
         $result = $this->getDatabaseConnection()->doSelect(
@@ -452,7 +452,7 @@ abstract class tx_rnbase_util_SearchBase
         $this->setGeneric($options);
         if (!is_array($this->tableMapping)) {
             $tableMapping = $this->getTableMappings();
-            $tableMapping = is_array($tableMapping) ? $tableMapping : array();
+            $tableMapping = is_array($tableMapping) ? $tableMapping : [];
             if ($this->isGeneric()) {
                 $this->addGenericTableMappings($tableMapping, $options['searchdef']);
             }
@@ -577,7 +577,7 @@ abstract class tx_rnbase_util_SearchBase
         if (!$table) {
             throw new Exception('SearchBase: No base table found!');
         }
-        $from = array($table, $table);
+        $from = [$table, $table];
         if ($this->useAlias()) {
             $alias = $this->getGenericBaseTableAlias();
             // Wenn vorhanden einen Alias für die Basetable setzen
@@ -669,15 +669,15 @@ abstract class tx_rnbase_util_SearchBase
                      * wie override oder force, dann wird direkt ignoriert
                      */
                     if (isset($options[$optionName]) && !is_array($options[$optionName])) {
-                        if (!in_array($optionName, array('override', 'force'))) {
+                        if (!in_array($optionName, ['override', 'force'])) {
                             tx_rnbase::load('tx_rnbase_util_Logger');
                             tx_rnbase_util_Logger::warn(
                                 'Invalid configuration for config option "'.$optionName.'".',
                                 'rn_base',
-                                array(
+                                [
                                     'option_name' => $optionName,
                                     'cfg' => $cfg,
-                                )
+                                ]
                             );
                         }
 
@@ -786,11 +786,11 @@ abstract class tx_rnbase_util_SearchBase
      */
     public static function getSpecialChars()
     {
-        $specials = array();
-        $specials['0-9'] = array('1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.', '@', '');
-        $specials['A'] = array('A', 'Ä');
-        $specials['O'] = array('O', 'Ö');
-        $specials['U'] = array('U', 'Ü');
+        $specials = [];
+        $specials['0-9'] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.', '@', ''];
+        $specials['A'] = ['A', 'Ä'];
+        $specials['O'] = ['O', 'Ö'];
+        $specials['U'] = ['U', 'Ü'];
 
         return $specials;
     }

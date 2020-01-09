@@ -32,7 +32,7 @@ class tx_rnbase_tests_util_SearchBase_testcase extends tx_rnbase_tests_BaseTestC
         $options = $this->createOptions();
 
         // Test 1: Fehlerhaften Code in t3users korrigieren. Ein falsch gesetztes SEARCH_FIELD_JOINED muss ignoriert werden
-        $fields = array();
+        $fields = [];
         $fields[SEARCH_FIELD_JOINED][0]['cols'][] = 'FEUSER.UID';
         $ret = $searcher->search($fields, $options);
 
@@ -42,7 +42,7 @@ class tx_rnbase_tests_util_SearchBase_testcase extends tx_rnbase_tests_BaseTestC
     public function testSearchForCount()
     {
         $searcher = $this->getGenericSearcher();
-        $fields = array('FEUSER.uid' => array(OP_EQ_INT => 54));
+        $fields = ['FEUSER.uid' => [OP_EQ_INT => 54]];
         $options = $this->createOptions();
         $options['count'] = true;
 
@@ -124,7 +124,7 @@ class tx_rnbase_tests_util_SearchBase_testcase extends tx_rnbase_tests_BaseTestC
 
     private function createOptions()
     {
-        $options = array();
+        $options = [];
         $options['sqlonly'] = true;
         $options['searchdef']['basetable'] = 'fe_users';
         $options['searchdef']['usealias'] = true;
@@ -148,11 +148,11 @@ class tx_rnbase_tests_util_SearchBase_testcase extends tx_rnbase_tests_BaseTestC
     public function testSearchSetsEnableFieldsForJoinedTablesIfConfigured()
     {
         $searcher = tx_rnbase::makeInstance('tx_rnbase_tests_fixtures_classes_Searcher');
-        $fields = array(
-            'PAGE.uid' => array(OP_GT_INT => 0),
-            'CONTENT.uid' => array(OP_GT_INT => 0),
-            'FEUSER.uid' => array(OP_GT_INT => 0),
-        );
+        $fields = [
+            'PAGE.uid' => [OP_GT_INT => 0],
+            'CONTENT.uid' => [OP_GT_INT => 0],
+            'FEUSER.uid' => [OP_GT_INT => 0],
+        ];
         $options['sqlonly'] = true;
         $options['enableFieldsForAdditionalTableAliases'] = 'CONTENT';
 
@@ -181,11 +181,11 @@ class tx_rnbase_tests_util_SearchBase_testcase extends tx_rnbase_tests_BaseTestC
     {
         $searcher = tx_rnbase::makeInstance('tx_rnbase_tests_fixtures_classes_Searcher');
         $searcher->setUseAlias(true);
-        $fields = array(
-            'PAGE.uid' => array(OP_GT_INT => 0),
-            'CONTENT.uid' => array(OP_GT_INT => 0),
-            'FEUSER.uid' => array(OP_GT_INT => 0),
-        );
+        $fields = [
+            'PAGE.uid' => [OP_GT_INT => 0],
+            'CONTENT.uid' => [OP_GT_INT => 0],
+            'FEUSER.uid' => [OP_GT_INT => 0],
+        ];
         $options['sqlonly'] = true;
         $options['enableFieldsForAdditionalTableAliases'] = 'CONTENT';
 
@@ -214,11 +214,11 @@ class tx_rnbase_tests_util_SearchBase_testcase extends tx_rnbase_tests_BaseTestC
     {
         $searcher = tx_rnbase::makeInstance('tx_rnbase_tests_fixtures_classes_Searcher');
         $searcher->setUseAlias(true);
-        $fields = array(
-            'PAGE.uid' => array(OP_GT_INT => 0),
-            'CONTENT.uid' => array(OP_GT_INT => 0),
-            'FEUSER.uid' => array(OP_GT_INT => 0),
-        );
+        $fields = [
+            'PAGE.uid' => [OP_GT_INT => 0],
+            'CONTENT.uid' => [OP_GT_INT => 0],
+            'FEUSER.uid' => [OP_GT_INT => 0],
+        ];
         $options['sqlonly'] = true;
         $options['enableFieldsForAdditionalTableAliases'] = 'CONTENT,FEUSER';
 
@@ -247,11 +247,11 @@ class tx_rnbase_tests_util_SearchBase_testcase extends tx_rnbase_tests_BaseTestC
     {
         $searcher = tx_rnbase::makeInstance('tx_rnbase_tests_fixtures_classes_Searcher');
         $searcher->setUseAlias(true);
-        $fields = array(
-            'PAGE.uid' => array(OP_GT_INT => 0),
-            'CONTENT.uid' => array(OP_GT_INT => 0),
-            'FEUSER.uid' => array(OP_GT_INT => 0),
-        );
+        $fields = [
+            'PAGE.uid' => [OP_GT_INT => 0],
+            'CONTENT.uid' => [OP_GT_INT => 0],
+            'FEUSER.uid' => [OP_GT_INT => 0],
+        ];
         $options['sqlonly'] = true;
 
         $query = $searcher->search($fields, $options);

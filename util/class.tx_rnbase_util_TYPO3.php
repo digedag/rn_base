@@ -247,7 +247,7 @@ class tx_rnbase_util_TYPO3
             return $EM_CONF[$_EXTKEY];
         }
 
-        return array();
+        return [];
     }
 
     /**

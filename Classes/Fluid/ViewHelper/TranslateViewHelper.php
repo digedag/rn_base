@@ -25,9 +25,9 @@ namespace Sys25\RnBase\Fluid\ViewHelper;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 
 /**
  * Sys25\RnBase\Fluid\ViewHelper\TranslateViewHelper.

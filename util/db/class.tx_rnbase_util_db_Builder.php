@@ -196,8 +196,8 @@ class tx_rnbase_util_db_Builder implements SingletonInterface
     {
         // @FIXME: how to mysql_real_escape_string without a mysqli link?
 
-        $search = array('\\',  "\x00", "\n",  "\r",  "'",  '"', "\x1a");
-        $replace = array('\\\\', '\\0', '\\n', '\\r', "\'", '\"', '\\Z');
+        $search = ['\\',  "\x00", "\n",  "\r",  "'",  '"', "\x1a"];
+        $replace = ['\\\\', '\\0', '\\n', '\\r', "\'", '\"', '\\Z'];
 
         return str_replace($search, $replace, $str);
     }

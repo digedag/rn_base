@@ -76,12 +76,12 @@ abstract class Tx_Rnbase_Utility_WizIcon
         $lang = $this->includeLocalLang();
         $plugins = $this->getPluginData();
         foreach ($plugins as $id => $plugin) {
-            $wizardItems['plugins_'.$id] = array(
+            $wizardItems['plugins_'.$id] = [
                 'icon' => $plugin['icon'],
                 'title' => $lang->getLL($plugin['title']),
                 'description' => $lang->getLL($plugin['description']),
                 'params' => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]='.$id,
-            );
+            ];
         }
 
         return $wizardItems;

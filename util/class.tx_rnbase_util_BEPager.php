@@ -39,7 +39,7 @@ class tx_rnbase_util_BEPager
 
     public $init = false;
 
-    public function __construct($id, $modName, $pid, $listSize = 0, $conf = array())
+    public function __construct($id, $modName, $pid, $listSize = 0, $conf = [])
     {
         $this->id = strlen(trim($id)) ? trim($id) : 'pager';
         $this->pid = $pid;
@@ -88,7 +88,7 @@ class tx_rnbase_util_BEPager
     public function getLimits()
     {
         return is_array($this->conf['limits']) ? $this->conf['limits'] :
-                array('10' => '10 Einträge', '25' => '25 Einträge', '50' => '50 Einträge', '100' => '100 Einträge');
+                ['10' => '10 Einträge', '25' => '25 Einträge', '50' => '50 Einträge', '100' => '100 Einträge'];
     }
 
     public function setState()
@@ -106,7 +106,7 @@ class tx_rnbase_util_BEPager
         $totalPages = ceil($count / $results_at_a_time);
         // Wir zeigen erstmal maximal 200 Einträge in diesem Menu. Bei sehr großen Listen
         // kommt es sonst zu Speicher-Problemen
-        $pages = array();
+        $pages = [];
         for ($i = 0; $i < $totalPages; ++$i) {
             if ($i > 200) {
                 break;

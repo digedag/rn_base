@@ -29,7 +29,7 @@ tx_rnbase::load('tx_rnbase_plot_IDataProvider');
  */
 class tx_rnbase_plot_DataProvider implements tx_rnbase_plot_IDataProvider
 {
-    private $dataSets = array();
+    private $dataSets = [];
 
     public function getChartTitle($confArr)
     {
@@ -62,7 +62,7 @@ class tx_rnbase_plot_DataProvider implements tx_rnbase_plot_IDataProvider
     public function getDataStyles($plotId, $confArr)
     {
         // Es wird der Style mit der ID 0 ausgelesen. Hier können mehrere Angaben gemacht werden
-        $ret = array();
+        $ret = [];
         $type = $confArr['dataStyle.']['0'];
         $data = $confArr['dataStyle.']['0.'];
         switch ($type) {
@@ -70,7 +70,7 @@ class tx_rnbase_plot_DataProvider implements tx_rnbase_plot_IDataProvider
             case 'addColor':
                 $strColors = tx_rnbase_util_Strings::trimExplode(',', $data['color']);
                 foreach ($strColors as $color) {
-                    $ret[] = array('type' => 'color', 'color' => $color);
+                    $ret[] = ['type' => 'color', 'color' => $color];
                 }
 
                 break;
@@ -84,7 +84,7 @@ class tx_rnbase_plot_DataProvider implements tx_rnbase_plot_IDataProvider
                 for ($i = 0; $i < $max; ++$i) {
                     $strStartColor = $i < $maxStart ? $strColorsStart[$i] : $strColorsStart[$maxStart - 1];
                     $strEndColor = $i < $maxEnd ? $strColorsEnd[$i] : $strColorsEnd[$maxEnd - 1];
-                    $ret[] = array('type' => 'gradient', 'color' => array($intDirection, $strStartColor, $strEndColor));
+                    $ret[] = ['type' => 'gradient', 'color' => [$intDirection, $strStartColor, $strEndColor]];
                 }
 
                 break;
@@ -96,7 +96,7 @@ class tx_rnbase_plot_DataProvider implements tx_rnbase_plot_IDataProvider
     public function addPlot()
     {
         $id = count($this->dataSets);
-        $this->dataSets[] = array();
+        $this->dataSets[] = [];
 
         return $id;
     }

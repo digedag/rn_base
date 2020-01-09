@@ -1,8 +1,8 @@
 <?php
 
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
 use TYPO3\CMS\Backend\Form\NodeFactory;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /***************************************************************
 *  Copyright notice
@@ -59,8 +59,8 @@ class Tx_Rnbase_Backend_Form_Element_InputText extends AbstractFormElement
         }
         $evalList = Tx_Rnbase_Utility_Strings::trimExplode(',', $evalList, true);
 
-        $classes = array();
-        $attributes = array();
+        $classes = [];
+        $attributes = [];
 
         if (in_array('datetime', $evalList, true) || in_array('date', $evalList)) {
             $classes[] = 't3js-datetimepicker';
@@ -87,11 +87,11 @@ class Tx_Rnbase_Backend_Form_Element_InputText extends AbstractFormElement
         }
 
         // for data-formengine-input-params
-        $paramsList = array(
+        $paramsList = [
             'field' => $name,
             'evalList' => implode(',', $evalList),
             'is_in' => '',
-        );
+        ];
 
         $attributes['data-formengine-validation-rules'] = $this->getValidationDataAsJsonString($config);
         $attributes['data-formengine-input-params'] = json_encode($paramsList);

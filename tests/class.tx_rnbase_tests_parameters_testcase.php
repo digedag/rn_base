@@ -31,13 +31,13 @@ class tx_rnbase_tests_parameters_testcase extends tx_rnbase_tests_BaseTestCase
 {
     public function testGet()
     {
-        $params = array(
+        $params = [
             'empty' => '',
             'zero' => '0',
             'seven' => '7',
             'hello' => 'hello',
             'NK_world' => 'world',
-        );
+        ];
 
         /* @var $parameters \Sys25\RnBase\Frontend\Request\Parameters */
         $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class, $params);
@@ -52,13 +52,13 @@ class tx_rnbase_tests_parameters_testcase extends tx_rnbase_tests_BaseTestCase
 
     public function testGetInt()
     {
-        $params = array(
+        $params = [
             'empty' => '',
             'zero' => '0',
             'seven' => '7',
             'hello' => 'hello',
             'NK_world' => 'world',
-        );
+        ];
 
         /* @var $parameters \Sys25\RnBase\Frontend\Request\Parameters */
         $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class, $params);

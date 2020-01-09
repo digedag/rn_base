@@ -66,7 +66,7 @@ final class Tx_Rnbase_Utility_Logger
      *
      * @return \TYPO3\CMS\Core\Log\Logger $this
      */
-    public static function emergency($extkey, $message, array $data = array())
+    public static function emergency($extkey, $message, array $data = [])
     {
         return static::getLogger($extkey)->emergency($message, $data);
     }
@@ -80,7 +80,7 @@ final class Tx_Rnbase_Utility_Logger
      *
      * @return \TYPO3\CMS\Core\Log\Logger $this
      */
-    public static function alert($extkey, $message, array $data = array())
+    public static function alert($extkey, $message, array $data = [])
     {
         return static::getLogger($extkey)->alert($message, $data);
     }
@@ -94,7 +94,7 @@ final class Tx_Rnbase_Utility_Logger
      *
      * @return \TYPO3\CMS\Core\Log\Logger $this
      */
-    public static function critical($extkey, $message, array $data = array())
+    public static function critical($extkey, $message, array $data = [])
     {
         return static::getLogger($extkey)->critical($message, $data);
     }
@@ -108,7 +108,7 @@ final class Tx_Rnbase_Utility_Logger
      *
      * @return \TYPO3\CMS\Core\Log\Logger $this
      */
-    public static function error($extkey, $message, array $data = array())
+    public static function error($extkey, $message, array $data = [])
     {
         return static::getLogger($extkey)->error($message, $data);
     }
@@ -122,7 +122,7 @@ final class Tx_Rnbase_Utility_Logger
      *
      * @return \TYPO3\CMS\Core\Log\Logger $this
      */
-    public static function warning($extkey, $message, array $data = array())
+    public static function warning($extkey, $message, array $data = [])
     {
         return static::getLogger($extkey)->warning($message, $data);
     }
@@ -136,7 +136,7 @@ final class Tx_Rnbase_Utility_Logger
      *
      * @return \TYPO3\CMS\Core\Log\Logger $this
      */
-    public static function notice($extkey, $message, array $data = array())
+    public static function notice($extkey, $message, array $data = [])
     {
         return static::getLogger($extkey)->notice($message, $data);
     }
@@ -150,7 +150,7 @@ final class Tx_Rnbase_Utility_Logger
      *
      * @return \TYPO3\CMS\Core\Log\Logger $this
      */
-    public static function info($extkey, $message, array $data = array())
+    public static function info($extkey, $message, array $data = [])
     {
         return static::getLogger($extkey)->info($message, $data);
     }
@@ -164,7 +164,7 @@ final class Tx_Rnbase_Utility_Logger
      *
      * @return \TYPO3\CMS\Core\Log\Logger $this
      */
-    public static function debug($extkey, $message, array $data = array())
+    public static function debug($extkey, $message, array $data = [])
     {
         return static::getLogger($extkey)->debug($message, $data);
     }

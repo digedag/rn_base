@@ -50,10 +50,10 @@ class Tx_Rnbase_Backend_Utility
     public static function __callStatic($method, array $arguments)
     {
         return call_user_func_array(
-            array(
+            [
                 static::getBackendUtilityClass(),
                 $method,
-            ),
+            ],
             $arguments
         );
     }

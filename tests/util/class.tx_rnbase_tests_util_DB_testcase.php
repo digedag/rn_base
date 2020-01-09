@@ -80,7 +80,7 @@ class tx_rnbase_tests_util_DB_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public function testClassHasNoMoreMethodsExceptCallStatic()
     {
-        self::assertEquals(array('__callstatic'), get_class_methods('tx_rnbase_util_DB'));
+        self::assertEquals(['__callstatic'], get_class_methods('tx_rnbase_util_DB'));
     }
 
     /**
@@ -90,7 +90,7 @@ class tx_rnbase_tests_util_DB_testcase extends tx_rnbase_tests_BaseTestCase
     {
         $this->getDatabaseConnectionClassReflectionProperty()->setValue(null, 'Tx_Rnbase_Database_ConnectionMock');
 
-        self::assertEquals(array('first', 'second'), tx_rnbase_util_DB::nonStaticTestMethod('first', 'second'));
+        self::assertEquals(['first', 'second'], tx_rnbase_util_DB::nonStaticTestMethod('first', 'second'));
     }
 }
 
@@ -102,7 +102,7 @@ class Tx_Rnbase_Database_ConnectionMock extends Tx_Rnbase_Database_Connection
      *
      * @var array
      */
-    protected $returnProperty = array();
+    protected $returnProperty = [];
 
     /**
      * @param string $firstParameter
@@ -112,7 +112,7 @@ class Tx_Rnbase_Database_ConnectionMock extends Tx_Rnbase_Database_Connection
      */
     public function nonStaticTestMethod($firstParameter, $secondParameter)
     {
-        $this->returnProperty = array($firstParameter, $secondParameter);
+        $this->returnProperty = [$firstParameter, $secondParameter];
 
         return $this->returnProperty;
     }

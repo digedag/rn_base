@@ -37,7 +37,6 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
     /**
      * Test the getProperties method.
      *
-     *
      * @group unit
      * @test
      */
@@ -46,14 +45,14 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
         $model = $this->getModel(
             null,
             'Tx_Rnbase_Domain_Model_Base',
-            array('getProperty')
+            ['getProperty']
         );
 
         $model
             ->expects(self::once())
             ->method('getProperty')
             ->with(self::equalTo(null))
-            ->will(self::returnValue(array('uid' => 1)));
+            ->will(self::returnValue(['uid' => 1]));
 
         $data = $model->getProperties();
 
@@ -64,7 +63,6 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
 
     /**
      * Test Magic calls.
-     *
      *
      * @group unit
      * @test
@@ -97,7 +95,6 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
     /**
      * Test record overloding for getters.
      *
-     *
      * @group unit
      * @test
      */
@@ -112,7 +109,6 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
     /**
      * Test if magic calls throw exception on unknown method.
      *
-     *
      * @group unit
      * @test
      * @expectedException \Exception
@@ -126,20 +122,19 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
     /**
      * Test getInstance with recursive data.
      *
-     *
      * @group unit
      * @test
      */
     public function testRecursiveInstance()
     {
-        $data = array(
+        $data = [
             'gender' => 'm',
-            'name' => array(
+            'name' => [
                 'first' => 'John',
                 'last' => 'Doe',
-                'test' => array(),
-            ),
-        );
+                'test' => [],
+            ],
+        ];
         $model = Tx_Rnbase_Domain_Model_Data::getInstance($data);
 
         $this->assertSame('m', $model->getGender());
@@ -151,7 +146,6 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
 
     /**
      * Test dirty state.
-     *
      *
      * @group unit
      * @test
@@ -165,7 +159,6 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
 
     /**
      * Test dirty state.
-     *
      *
      * @group unit
      * @test
@@ -181,17 +174,16 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
         $this->assertFalse($model->isDirty());
         // check with setProperty([])
         $model->setProperty(
-            array(
+            [
                 'first_name' => 'John',
                 'last_name' => 'Doe',
-            )
+            ]
         );
         $this->assertTrue($model->isDirty());
     }
 
     /**
      * Test dirty state.
-     *
      *
      * @group unit
      * @test
@@ -214,11 +206,11 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
      */
     private function getModelInstance()
     {
-        $data = array(
+        $data = [
             'uid' => 50,
             'first_name' => 'John',
             'last_name' => 'Doe',
-        );
+        ];
 
         return Tx_Rnbase_Domain_Model_Data::getInstance($data);
     }

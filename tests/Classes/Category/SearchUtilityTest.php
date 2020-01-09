@@ -39,16 +39,16 @@ class Tx_Rnbase_Category_SearchUtilityTest extends tx_rnbase_tests_BaseTestCase
     public function testAddTableMapping()
     {
         self::assertEquals(
-            array('SYS_CATEGORY' => 'sys_category'),
-            tx_rnbase::makeInstance('Tx_Rnbase_Category_SearchUtility')->addTableMapping(array())
+            ['SYS_CATEGORY' => 'sys_category'],
+            tx_rnbase::makeInstance('Tx_Rnbase_Category_SearchUtility')->addTableMapping([])
         );
         self::assertEquals(
-            array('ALREADY' => 'present', 'SYS_CATEGORY' => 'sys_category'),
-            tx_rnbase::makeInstance('Tx_Rnbase_Category_SearchUtility')->addTableMapping(array('ALREADY' => 'present'))
+            ['ALREADY' => 'present', 'SYS_CATEGORY' => 'sys_category'],
+            tx_rnbase::makeInstance('Tx_Rnbase_Category_SearchUtility')->addTableMapping(['ALREADY' => 'present'])
         );
         self::assertEquals(
-            array('MY_NEW_ALIAS' => 'sys_category'),
-            tx_rnbase::makeInstance('Tx_Rnbase_Category_SearchUtility')->addTableMapping(array(), 'MY_NEW_ALIAS')
+            ['MY_NEW_ALIAS' => 'sys_category'],
+            tx_rnbase::makeInstance('Tx_Rnbase_Category_SearchUtility')->addTableMapping([], 'MY_NEW_ALIAS')
         );
     }
 
@@ -66,7 +66,7 @@ class Tx_Rnbase_Category_SearchUtilityTest extends tx_rnbase_tests_BaseTestCase
                 'my_table',
                 'MY_ALIAS',
                 'my_field',
-                array('SYS_CATEGORY' => 1)
+                ['SYS_CATEGORY' => 1]
             )
         );
 
@@ -76,7 +76,7 @@ class Tx_Rnbase_Category_SearchUtilityTest extends tx_rnbase_tests_BaseTestCase
                 'my_table',
                 'MY_ALIAS',
                 'my_field',
-                array('SOME_OTHER_ALIAS' => 1)
+                ['SOME_OTHER_ALIAS' => 1]
             )
         );
 
@@ -86,7 +86,7 @@ class Tx_Rnbase_Category_SearchUtilityTest extends tx_rnbase_tests_BaseTestCase
                 'my_table',
                 'MY_ALIAS',
                 'my_field',
-                array('SYS_CATEGORY' => 1),
+                ['SYS_CATEGORY' => 1],
                 'SYS_CATEGORY_2'
             )
         );
@@ -100,7 +100,7 @@ class Tx_Rnbase_Category_SearchUtilityTest extends tx_rnbase_tests_BaseTestCase
                 'my_table',
                 'MY_ALIAS',
                 'my_field',
-                array('SYS_CATEGORY_2' => 1),
+                ['SYS_CATEGORY_2' => 1],
                 'SYS_CATEGORY_2'
             )
         );
@@ -120,7 +120,7 @@ class Tx_Rnbase_Category_SearchUtilityTest extends tx_rnbase_tests_BaseTestCase
                 'my_table',
                 'MY_ALIAS',
                 'my_field',
-                array('SYS_CATEGORY' => 1)
+                ['SYS_CATEGORY' => 1]
             )
         );
 
@@ -130,7 +130,7 @@ class Tx_Rnbase_Category_SearchUtilityTest extends tx_rnbase_tests_BaseTestCase
                 'my_table',
                 'MY_ALIAS',
                 'my_field',
-                array('SOME_OTHER_ALIAS' => 1)
+                ['SOME_OTHER_ALIAS' => 1]
             )
         );
 
@@ -140,7 +140,7 @@ class Tx_Rnbase_Category_SearchUtilityTest extends tx_rnbase_tests_BaseTestCase
                 'my_table',
                 'MY_ALIAS',
                 'my_field',
-                array('SYS_CATEGORY' => 1),
+                ['SYS_CATEGORY' => 1],
                 'SYS_CATEGORY_2'
             )
         );
@@ -154,7 +154,7 @@ class Tx_Rnbase_Category_SearchUtilityTest extends tx_rnbase_tests_BaseTestCase
                 'my_table',
                 'MY_ALIAS',
                 'my_field',
-                array('SYS_CATEGORY_2' => 1),
+                ['SYS_CATEGORY_2' => 1],
                 'SYS_CATEGORY_2'
             )
         );

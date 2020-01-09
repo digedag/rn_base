@@ -74,15 +74,15 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
      */
     public function __construct(
         tx_rnbase_mod_BaseModule $module,
-        $options = array()
+        $options = []
     ) {
         tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
         $this->storage = Tx_Rnbase_Domain_Model_Data::getInstance(
-            array(
+            [
                 'module' => $module,
                 'options' => $options,
-                'filter' => array(),
-            )
+                'filter' => [],
+            ]
         );
 
         $this->init();
@@ -234,7 +234,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     protected function getDecoratorColumns()
     {
         if (!$this->getStorage()->hasDecoratorColumnsr()) {
-            $columns = array();
+            $columns = [];
             $this->addDecoratorColumns($columns);
             $this->getStorage()->setDecoratorColumns($columns);
         }
@@ -310,7 +310,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
      */
     public function renderListMarkers()
     {
-        $markerArray = array();
+        $markerArray = [];
 
         $markerArray['###SEARCHFORM###'] = $this->renderSearchForm();
 
@@ -464,17 +464,17 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
 
         $filter = $this->initFilter()->getFilter();
 
-        $fields = $options = array();
+        $fields = $options = [];
 
         $options['distinct'] = 1;
 
         // build the free text search
         if ($filter->hasSearchword()) {
-            $fields[SEARCH_FIELD_JOINED][] = array(
+            $fields[SEARCH_FIELD_JOINED][] = [
                 'value' => trim($filter->getSearchword()),
                 'cols' => $this->getSearchColumns(),
                 'operator' => OP_LIKE,
-            );
+            ];
         }
 
         // check the disabled filter
@@ -489,9 +489,9 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
         $this->prepareSorting($options);
         $this->prepareFieldsAndOptions($fields, $options);
 
-        $this->getStorage()->setFieldsAndOptions(array($fields, $options));
+        $this->getStorage()->setFieldsAndOptions([$fields, $options]);
 
-        return array($fields, $options);
+        return [$fields, $options];
     }
 
     /**
@@ -591,39 +591,39 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
         }
 
         $filter = $this->initFilter()->getFilter();
-        $data = array();
+        $data = [];
 
         if ($this->getSearchColumns()) {
-            $data['searchword'] = array(
+            $data['searchword'] = [
                 'field' => $this->getFormTool()->createTxtInput(
                     'SET['.$this->getListerId().'Searchword]',
                     $filter->getProperty('searchword'),
                     10
                 ),
                 'label' => '###LABEL_SEARCH###',
-            );
+            ];
         }
 
-        $data['disabled'] = array(
+        $data['disabled'] = [
             'field' => Tx_Rnbase_Backend_Utility::getFuncMenu(
                 $this->getOptions()->getPid(),
                 'SET['.$this->getListerId().'Disabled]',
                 $filter->getProperty('disabled'),
-                array(
+                [
                     0 => $this->getConfigurations()->getLL('label_select_hide_hidden'),
                     1 => $this->getConfigurations()->getLL('label_select_show_hidden'),
-                )
+                ]
             ),
             'label' => '###LABEL_HIDDEN###',
-        );
+        ];
 
-        $data['updatebutton'] = array(
+        $data['updatebutton'] = [
             'field' => $this->getFormTool()->createSubmit(
                 $this->getListerId().'Search',
                 '###LABEL_BTN_SEARCH###'
             ),
             'label' => '',
-        );
+        ];
 
         $this->getStorage()->setSearchFormData($data);
 
@@ -645,9 +645,9 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
         }
 
         if (!is_array($columns)) {
-            $columns = array(
+            $columns = [
                 'uid',
-            );
+            ];
         }
 
         return $columns;

@@ -49,7 +49,7 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
      *
      * @var array
      */
-    private $record = array();
+    private $record = [];
 
     /**
      * Constructor of the data object.
@@ -72,7 +72,7 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
             $this->record = $record;
         } else {
             $record = (int) $record;
-            $this->record = $record > 0 ? array('uid' => $record) : array();
+            $this->record = $record > 0 ? ['uid' => $record] : [];
         }
 
         // set the modified state to clean
@@ -129,7 +129,7 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
                 }
             }
         } else {
-            $data = array();
+            $data = [];
         }
 
         // use get_called_class for backwards compatibility!
@@ -163,7 +163,7 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
     /**
      * Liefert einen bestimmten Wert oder alle.
      *
-     * @param null|string $property
+     * @param string|null $property
      *
      * @return string|array
      */

@@ -116,7 +116,7 @@ class Category
     protected function lookupCategoryUidsFromParameters($configurations, $confId)
     {
         $parameters = $configurations->getParameters();
-        $categories = array();
+        $categories = [];
         foreach ($configurations->get($confId.'supportedParameters.') as $paramConfig) {
             $referencedUid = $parameters->getInt(
                 $paramConfig['parameterName'],
@@ -201,7 +201,7 @@ class Category
             $configurations->get($confId.'sysCategoryTableAlias') ?
                 $configurations->get($confId.'sysCategoryTableAlias') :
                 'SYS_CATEGORY';
-        $fields[$sysCategoryTableAlias.'.uid'] = array(OP_IN_INT => implode(',', $categories));
+        $fields[$sysCategoryTableAlias.'.uid'] = [OP_IN_INT => implode(',', $categories)];
 
         return $fields;
     }
@@ -244,7 +244,7 @@ class Category
             $configurations->get($confId.'parameterQualifier')
         );
         if ($categoryUid) {
-            $fields = $this->getFieldsByCategories(array($categoryUid), $fields, $configurations, $confId);
+            $fields = $this->getFieldsByCategories([$categoryUid], $fields, $configurations, $confId);
         }
 
         return $fields;

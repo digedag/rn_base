@@ -57,7 +57,6 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_te
     /**
      * Test the IsModelWrapperClass method.
      *
-     *
      * @group unit
      * @test
      */
@@ -76,7 +75,6 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_te
     /**
      * Test the IsModelWrapperClass method.
      *
-     *
      * @group unit
      * @test
      */
@@ -93,7 +91,6 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_te
 
     /**
      * Test the persist method.
-     *
      *
      * @group unit
      * @test
@@ -116,7 +113,7 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_te
         $connection = $this->callInaccessibleMethod($repo, 'getConnection');
         $repo->getEmptyModel()->setTableName('tt_content');
         $model = $this->getModel(
-            array('pid' => 5, 'header' => 'New element', 'unknown_column' => 'temp'),
+            ['pid' => 5, 'header' => 'New element', 'unknown_column' => 'temp'],
             'Tx_Rnbase_Domain_Model_Base'
         )->setTableName('tt_content');
 
@@ -169,7 +166,6 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_te
     /**
      * Test the persist method.
      *
-     *
      * @group unit
      * @test
      */
@@ -190,7 +186,7 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_te
         $connection = $this->callInaccessibleMethod($repo, 'getConnection');
         $repo->getEmptyModel()->setTableName('tt_content');
         $model = $this->getModel(
-            array('uid' => 7, 'pid' => 5, 'header' => 'New element', 'unknown_column' => 'temp'),
+            ['uid' => 7, 'pid' => 5, 'header' => 'New element', 'unknown_column' => 'temp'],
             'Tx_Rnbase_Domain_Model_Base'
         )->setTableName('tt_content');
 
@@ -246,7 +242,6 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_te
     /**
      * Test the persist method.
      *
-     *
      * @group unit
      * @test
      */
@@ -255,7 +250,7 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_te
         $repo = $this->getRepository();
         $connection = $this->callInaccessibleMethod($repo, 'getConnection');
         $repo->getEmptyModel()->setTableName('tt_content');
-        $record = array('uid' => 7, 'pid' => 5, 'header' => 'New element', 'unknown_column' => 'temp');
+        $record = ['uid' => 7, 'pid' => 5, 'header' => 'New element', 'unknown_column' => 'temp'];
         $model = $this->getModel(
             $record,
             'Tx_Rnbase_Domain_Model_Base'
@@ -290,7 +285,7 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_te
      * @return PHPUnit_Framework_MockObject_MockObject|Tx_Rnbase_Domain_Repository_PersistenceRepository
      */
     protected function getRepository(
-        array $methods = array()
+        array $methods = []
     ) {
         tx_rnbase::load('Tx_Rnbase_Database_Connection');
         $connection = $this->getMock(
@@ -303,13 +298,13 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_te
         tx_rnbase::load('Tx_Rnbase_Domain_Repository_PersistenceRepository');
         $repo = $this->getMockForAbstractClass(
             'Tx_Rnbase_Domain_Repository_PersistenceRepository',
-            array(),
+            [],
             '',
             true,
             true,
             true,
             array_merge(
-                array('getConnection', 'getSearchClass', 'getWrapperClass', 'getEmptyModel'),
+                ['getConnection', 'getSearchClass', 'getWrapperClass', 'getEmptyModel'],
                 $methods
             )
         );

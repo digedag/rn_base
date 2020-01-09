@@ -71,7 +71,7 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
      */
     protected function renderContent62(Tx_Rnbase_Backend_Template_ModuleParts $parts)
     {
-        $markers = array();
+        $markers = [];
         $content .= $parts->getContent(); // Muss vor der Erstellung des Headers geladen werden
         $content .= $this->getDoc()->sectionEnd();  // Zur Sicherheit eine offene Section schließen
 
@@ -240,9 +240,9 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
         if (!isset($options['form'])) {
             $modUrl = Tx_Rnbase_Backend_Utility::getModuleUrl(
                 $options['modname'],
-                array(
+                [
                     'id' => $options['pid'],
-                ),
+                ],
                 ''
             );
             $options['form'] = '<form action="'.$modUrl.'" method="post" enctype="multipart/form-data">';

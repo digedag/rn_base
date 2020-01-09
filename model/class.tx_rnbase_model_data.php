@@ -53,7 +53,7 @@ class tx_rnbase_model_data implements Tx_Rnbase_Domain_Model_DataInterface, Iter
      *
      * @var array
      */
-    public $record = array();
+    public $record = [];
 
     /**
      * constructor of the data object.
@@ -76,7 +76,7 @@ class tx_rnbase_model_data implements Tx_Rnbase_Domain_Model_DataInterface, Iter
             $this->record = $record;
         } else {
             $record = (int) $record;
-            $this->record = $record > 0 ? array('uid' => $record) : array();
+            $this->record = $record > 0 ? ['uid' => $record] : [];
         }
 
         // set the modified state to clean
@@ -133,7 +133,7 @@ class tx_rnbase_model_data implements Tx_Rnbase_Domain_Model_DataInterface, Iter
                 }
             }
         } else {
-            $data = array();
+            $data = [];
         }
 
         return tx_rnbase::makeInstance('tx_rnbase_model_data', $data);

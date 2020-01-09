@@ -57,9 +57,9 @@ class tx_rnbase_util_MediaMarker extends tx_rnbase_util_SimpleMarker
         tx_rnbase_util_Misc::callHook(
             'rn_base',
             'mediaMarker_beforeRendering',
-            array('template' => &$template, 'item' => &$item, 'formatter' => &$formatter,
+            ['template' => &$template, 'item' => &$item, 'formatter' => &$formatter,
             'confId' => $confId,
-            'marker' => $marker, ),
+            'marker' => $marker, ],
             $this
         );
 
@@ -79,7 +79,7 @@ class tx_rnbase_util_MediaMarker extends tx_rnbase_util_SimpleMarker
      */
     protected function prepareTemplate($template, $item, $formatter, $confId, $marker)
     {
-        tx_rnbase_util_Misc::callHook('rn_base', 'mediaMarker_initRecord', array('item' => &$item, 'template' => &$template), $this);
+        tx_rnbase_util_Misc::callHook('rn_base', 'mediaMarker_initRecord', ['item' => &$item, 'template' => &$template], $this);
 
         return $template;
     }
