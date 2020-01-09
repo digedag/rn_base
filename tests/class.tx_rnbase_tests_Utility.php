@@ -44,7 +44,7 @@ class tx_rnbase_tests_Utility
      * @param string $extensionKey
      * @param string $qualifier
      *
-     * @return Tx_Rnbase_Configuration_ProcessorInterface
+     * @return \Sys25\RnBase\Configuration\ConfigurationInterface
      */
     public static function createConfigurations(
         array $configurationArray,
@@ -69,15 +69,15 @@ class tx_rnbase_tests_Utility
             }
         }
 
-        /* @var $configurations Tx_Rnbase_Configuration_ProcessorInterface */
-        $configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
+        /* @var $configurations \Sys25\RnBase\Configuration\ConfigurationInterface */
+        $configurations = tx_rnbase::makeInstance(\Sys25\RnBase\Configuration\Processor::class);
         $configurations->init(
             $configurationArray,
             $cObj,
             $extensionKey,
             $qualifier
         );
-        if ($parameters instanceof \Sys25\RnBase\Frontend\Request\Parameters) {
+        if ($parameters instanceof \Sys25\RnBase\Frontend\Request\ParametersInterface) {
             $configurations->setParameters($parameters);
         }
 
