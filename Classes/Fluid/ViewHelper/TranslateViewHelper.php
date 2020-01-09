@@ -1,4 +1,5 @@
 <?php
+
 namespace Sys25\RnBase\Fluid\ViewHelper;
 
 /***************************************************************
@@ -26,10 +27,10 @@ namespace Sys25\RnBase\Fluid\ViewHelper;
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 
 /**
- * Sys25\RnBase\Fluid\ViewHelper\TranslateViewHelper
+ * Sys25\RnBase\Fluid\ViewHelper\TranslateViewHelper.
  *
  * {namespace rn=Sys25\RnBase\Fluid\ViewHelper}
  *
@@ -42,8 +43,6 @@ use \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
  *     Childs:
  *         <rn:translate>label.description</rn:translate>
  *
- * @package TYPO3
- * @subpackage rn_base
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
@@ -51,9 +50,7 @@ use \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 class TranslateViewHelper extends AbstractViewHelper
 {
     /**
-     * Initialize ViewHelper arguments
-     *
-     * @return void
+     * Initialize ViewHelper arguments.
      */
     public function initializeArguments()
     {
@@ -61,7 +58,7 @@ class TranslateViewHelper extends AbstractViewHelper
     }
 
     /**
-     * Translates the label
+     * Translates the label.
      *
      * @return string
      *
@@ -79,10 +76,10 @@ class TranslateViewHelper extends AbstractViewHelper
     }
 
     /**
-     * Translates the label
+     * Translates the label.
      *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
+     * @param array                     $arguments
+     * @param \Closure                  $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      *
      * @return string
@@ -96,7 +93,7 @@ class TranslateViewHelper extends AbstractViewHelper
     ) {
         $key = $arguments['key'];
 
-        if ($key === null) {
+        if (null === $key) {
             $key = trim((string) $renderChildrenClosure());
         }
 

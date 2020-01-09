@@ -27,7 +27,7 @@ namespace Sys25\RnBase\Frontend\Filter;
 interface FilterInterface
 {
     /**
-     * Initialisiert den Filter
+     * Initialisiert den Filter.
      *
      * @param array $fields
      * @param array $options
@@ -39,6 +39,7 @@ interface FilterInterface
      * It is up to the list view to handle this result.
      * This can be used to hide a result output if a search view is
      * initially displayed.
+     *
      * @return bool
      */
     public function hideResult();
@@ -46,6 +47,7 @@ interface FilterInterface
     /**
      * Whether or not a user defined search is activated. This means some functions
      * like showing a charbrowser should be ignored.
+     *
      * @return bool
      */
     public function isSpecialSearch();

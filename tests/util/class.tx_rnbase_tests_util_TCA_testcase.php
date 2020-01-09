@@ -26,17 +26,13 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_rnbase_util_TCA');
 
 /**
- * tx_rnbase_tests_util_TCA Tests
+ * tx_rnbase_tests_util_TCA Tests.
  *
- * @package TYPO3
- * @subpackage tx_rnbase
  * @author Hannes Bochmann <hannes.bochmann@dmk-business.de>
  * @author Michael Wagner <michael.wagner@dmk-business.de>
  */
 class tx_rnbase_tests_util_TCA_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
-
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
@@ -56,11 +52,7 @@ class tx_rnbase_tests_util_TCA_testcase extends tx_rnbase_tests_BaseTestCase
         $GLOBALS['TCA']['pages']['columns']['storage_pid']['config']['minitems'] = '0';
     }
 
-
     /**
-     *
-     * @return void
-     *
      * @group unit
      * @test
      */
@@ -73,9 +65,6 @@ class tx_rnbase_tests_util_TCA_testcase extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     *
-     * @return void
-     *
      * @group unit
      * @test
      */
@@ -88,9 +77,6 @@ class tx_rnbase_tests_util_TCA_testcase extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     *
-     * @return void
-     *
      * @group unit
      * @test
      */
@@ -104,9 +90,6 @@ class tx_rnbase_tests_util_TCA_testcase extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     *
-     * @return void
-     *
      * @group unit
      * @test
      */
@@ -119,9 +102,6 @@ class tx_rnbase_tests_util_TCA_testcase extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     *
-     * @return void
-     *
      * @group unit
      * @test
      */
@@ -134,9 +114,6 @@ class tx_rnbase_tests_util_TCA_testcase extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     *
-     * @return void
-     *
      * @group unit
      * @test
      */
@@ -153,9 +130,8 @@ class tx_rnbase_tests_util_TCA_testcase extends tx_rnbase_tests_BaseTestCase
      * is testing th following methods:
      *     tx_rnbase_util_TCA::validateModel();
      *     tx_rnbase_util_TCA::validateRecord();
-     *     tx_rnbase_model_base::validateProperties();
+     *     tx_rnbase_model_base::validateProperties();.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -217,7 +193,6 @@ class tx_rnbase_tests_util_TCA_testcase extends tx_rnbase_tests_BaseTestCase
             );
         }
     }
-
 
     /**
      * Liefert die Daten für den testValidateModel testcase.

@@ -27,27 +27,23 @@ use Sys25\RnBase\Frontend\Request\RequestInterface;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
- * Interface for view class
+ * Interface for view class.
  */
 interface ViewInterface
 {
     /**
-     *
-     * @param string $viewName
+     * @param string           $viewName
      * @param RequestInterface $request
      */
     public function render($viewName, RequestInterface $request);
 
     /**
-     *
      * @param string $pathToTemplates
      */
     public function setTemplatePath($pathToTemplates);
 
     /**
-     *
      * @param string $templateFile
      */
     public function setTemplateFile($templateFile);

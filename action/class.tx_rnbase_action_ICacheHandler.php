@@ -24,19 +24,16 @@
 /**
  * Interface for action based fe-caching handler.
  *
- * @package TYPO3
- * @subpackage tx_rnbase
  * @author Rene Nitzsche <rene@system25.de>
  * @author Michael Wagner <michael.wagner@dmk-ebusines.de>
  */
 interface tx_rnbase_action_ICacheHandler
 {
-
     /**
-     * Initializes the cache handler
+     * Initializes the cache handler.
      *
      * @param tx_rnbase_action_BaseIOC $controller
-     * @param string $confId
+     * @param string                   $confId
      */
     public function init(
         tx_rnbase_action_BaseIOC $controller,

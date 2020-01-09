@@ -23,10 +23,8 @@
  ***************************************************************/
 
 /**
- * Trait to add configuration processor
+ * Trait to add configuration processor.
  *
- * @package TYPO3
- * @subpackage rn_base
  * @author Michael Wagner
  */
 trait Tx_Rnbase_Configuration_ConfigurableTrait
@@ -42,7 +40,7 @@ trait Tx_Rnbase_Configuration_ConfigurableTrait
     protected $confId = '';
 
     /**
-     * Set the configuration object
+     * Set the configuration object.
      *
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
      *
@@ -57,7 +55,7 @@ trait Tx_Rnbase_Configuration_ConfigurableTrait
     }
 
     /**
-     * The configuration object
+     * The configuration object.
      *
      * @return Tx_Rnbase_Configuration_ProcessorInterface
      */
@@ -67,7 +65,7 @@ trait Tx_Rnbase_Configuration_ConfigurableTrait
     }
 
     /**
-     * Set the configuration id
+     * Set the configuration id.
      *
      * @param string $configurations
      *
@@ -82,7 +80,7 @@ trait Tx_Rnbase_Configuration_ConfigurableTrait
     }
 
     /**
-     * The configuration id
+     * The configuration id.
      *
      * @return string
      */
@@ -92,9 +90,10 @@ trait Tx_Rnbase_Configuration_ConfigurableTrait
     }
 
     /**
-     * Returns a value from config
+     * Returns a value from config.
      *
      * @param string $path
+     *
      * @return array|string|null
      */
     protected function getConfValue($path, $deep = false)
@@ -104,7 +103,7 @@ trait Tx_Rnbase_Configuration_ConfigurableTrait
         }
 
         return $this->getConfigurations()->get(
-            $this->getConfId() . $path,
+            $this->getConfId().$path,
             $deep
         );
     }

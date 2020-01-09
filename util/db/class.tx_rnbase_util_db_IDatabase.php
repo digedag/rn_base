@@ -23,33 +23,35 @@
  ***************************************************************/
 
 /**
- * Wrapper interface to databases
+ * Wrapper interface to databases.
  */
 interface tx_rnbase_util_db_IDatabase
 {
     /**
-     * Creates a SELECT SQL-statement
+     * Creates a SELECT SQL-statement.
      *
      * @param string List of fields to select from the table. This is what comes right after "SELECT ...". Required value.
      * @param string Table(s) from which to select. This is what comes right after "FROM ...". Required value.
      * @param string additional WHERE clauses put in the end of the query. NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself! DO NOT PUT IN GROUP BY, ORDER BY or LIMIT!
-     * @param string Optional GROUP BY field(s), if none, supply blank string.
-     * @param string Optional ORDER BY field(s), if none, supply blank string.
-     * @param string Optional LIMIT value ([begin,]max), if none, supply blank string.
+     * @param string optional GROUP BY field(s), if none, supply blank string
+     * @param string optional ORDER BY field(s), if none, supply blank string
+     * @param string optional LIMIT value ([begin,]max), if none, supply blank string
+     *
      * @return string SQL Query
      */
     public function SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '');
 
     /**
-     * Creates and executes a SELECT SQL-statement
+     * Creates and executes a SELECT SQL-statement.
      *
      * @param   string      List of fields to select from the table. This is what comes right after "SELECT ...". Required value.
      * @param   string      Table(s) from which to select. This is what comes right after "FROM ...". Required value.
-     * @param   string      additional WHERE clauses put in the end of the query. NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself! DO NOT PUT IN GROUP BY, ORDER BY or LIMIT!
-     * @param   string      Optional GROUP BY field(s), if none, supply blank string.
-     * @param   string      Optional ORDER BY field(s), if none, supply blank string.
-     * @param   string      Optional LIMIT value ([begin,]max), if none, supply blank string.
-     * @return  pointer     MySQL result pointer / DBAL object
+     * @param string      additional WHERE clauses put in the end of the query. NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself! DO NOT PUT IN GROUP BY, ORDER BY or LIMIT!
+     * @param   string      optional GROUP BY field(s), if none, supply blank string
+     * @param   string      optional ORDER BY field(s), if none, supply blank string
+     * @param   string      optional LIMIT value ([begin,]max), if none, supply blank string
+     *
+     * @return pointer MySQL result pointer / DBAL object
      */
     public function exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '');
 
@@ -59,16 +61,19 @@ interface tx_rnbase_util_db_IDatabase
      * @param string Table name
      * @param array Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$insertFields" with 'fieldname'=>'value' and pass it to this function as argument.
      * @param array
+     *
      * @return string SQL query
      */
     public function INSERTquery($table, $fields_values, $no_quote_fields = false);
+
     /**
      * Creates and executes an INSERT SQL-statement for $table from the array with field/value pairs $fields_values.
      *
      * @param   string      Table name
      * @param   array       Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$insertFields" with 'fieldname'=>'value' and pass it to this function as argument.
      * @param   array
-     * @return  pointer     MySQL result pointer / DBAL object
+     *
+     * @return pointer MySQL result pointer / DBAL object
      */
     public function exec_INSERTquery($table, $fields_values, $no_quote_fields = false);
 
@@ -76,89 +81,97 @@ interface tx_rnbase_util_db_IDatabase
      * Creates and executes an UPDATE SQL-statement for $table where $where-clause (typ. 'uid=...') from the array with field/value pairs $fields_values.
      *
      * @param   string      Database tablename
-     * @param   string      WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
+     * @param string      WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
      * @param   array       Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$updateFields" with 'fieldname'=>'value' and pass it to this function as argument.
      * @param   array
+     *
      * @return string sql query
      */
     public function UPDATEquery($table, $where, $fields_values, $no_quote_fields = false);
+
     /**
      * Creates and executes an UPDATE SQL-statement for $table where $where-clause (typ. 'uid=...') from the array with field/value pairs $fields_values.
      *
      * @param   string      Database tablename
-     * @param   string      WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
+     * @param string      WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
      * @param   array       Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$updateFields" with 'fieldname'=>'value' and pass it to this function as argument.
      * @param   array
-     * @return  pointer     MySQL result pointer / DBAL object
+     *
+     * @return pointer MySQL result pointer / DBAL object
      */
     public function exec_UPDATEquery($table, $where, $fields_values, $no_quote_fields = false);
 
     /**
-     * Creates and executes a DELETE SQL-statement for $table where $where-clause
+     * Creates and executes a DELETE SQL-statement for $table where $where-clause.
      *
      * @param   string      Database tablename
-     * @param   string      WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
+     * @param string      WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
+     *
      * @return string sql query
      */
     public function DELETEquery($table, $where);
 
     /**
-     * Creates and executes a DELETE SQL-statement for $table where $where-clause
+     * Creates and executes a DELETE SQL-statement for $table where $where-clause.
      *
      * @param   string      Database tablename
-     * @param   string      WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
-     * @return  pointer     MySQL result pointer / DBAL object
+     * @param string      WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
+     *
+     * @return pointer MySQL result pointer / DBAL object
      */
     public function exec_DELETEquery($table, $where);
 
     /**
      * Executes query
-     * mysql_query() wrapper function
+     * mysql_query() wrapper function.
      *
      * @param   string      Query to execute
-     * @return  pointer     Result pointer / DBAL object
+     *
+     * @return pointer Result pointer / DBAL object
      */
     public function sql_query($query);
 
     /**
      * Returns an associative array that corresponds to the fetched row, or FALSE if there are no more rows.
-     * mysql_fetch_assoc() wrapper function
+     * mysql_fetch_assoc() wrapper function.
      *
      * @param   pointer     MySQL result pointer (of SELECT query) / DBAL object
-     * @return  array       Associative array of result row.
+     *
+     * @return array associative array of result row
      */
     public function sql_fetch_assoc($res);
 
     /**
      * Free result memory
-     * mysql_free_result() wrapper function
+     * mysql_free_result() wrapper function.
      *
      * @param   pointer     MySQL result pointer to free / DBAL object
-     * @return  bool     Returns TRUE on success or FALSE on failure.
+     *
+     * @return bool returns TRUE on success or FALSE on failure
      */
     public function sql_free_result($res);
 
     /**
      * Returns the number of rows affected by the last INSERT, UPDATE or DELETE query
-     * mysql_affected_rows() wrapper function
+     * mysql_affected_rows() wrapper function.
      *
-     * @return  int     Number of rows affected by last query
+     * @return int Number of rows affected by last query
      */
     public function sql_affected_rows();
 
     /**
      * Get the ID generated from the previous INSERT operation
-     * mysql_insert_id() wrapper function
+     * mysql_insert_id() wrapper function.
      *
-     * @return  int     The uid of the last inserted record.
+     * @return int the uid of the last inserted record
      */
     public function sql_insert_id();
 
     /**
      * Returns the error status on the last sql() execution
-     * mysql_error() wrapper function
+     * mysql_error() wrapper function.
      *
-     * @return  string      MySQL error string.
+     * @return string mySQL error string
      */
     public function sql_error();
 

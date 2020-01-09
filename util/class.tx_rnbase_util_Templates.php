@@ -35,14 +35,17 @@ tx_rnbase::load('tx_rnbase_util_Network');
 class tx_rnbase_util_Templates
 {
     public static $substMarkerCache = array();
+
     private static $tmpl;
+
     private static $substCacheEnabled = null;
 
     /**
-     * Shortcut to t3lib_parsehtml::getSubpart
+     * Shortcut to t3lib_parsehtml::getSubpart.
      *
      * @param string $template
      * @param string $subpart
+     *
      * @return string
      */
     public static function getSubpart($template, $subpart)
@@ -79,35 +82,39 @@ class tx_rnbase_util_Templates
 
         return self::$tmpl;
     }
+
     /**
-     * Returns a subpart from file
+     * Returns a subpart from file.
+     *
      * @param string $fileName filepath or url
      * @param string $subpart
+     *
      * @return string
+     *
      * @throws Exception if file or subpart not found
      */
     public static function getSubpartFromFile($fileName, $subpart)
     {
         $file = self::getTSTemplate()->getFileName($fileName);
 
-        if (TYPO3_MODE == 'BE' && strpos($file, \Sys25\RnBase\Utility\Environment::getPublicPath()) === false) {
+        if (TYPO3_MODE == 'BE' && false === strpos($file, \Sys25\RnBase\Utility\Environment::getPublicPath())) {
             $file = \Sys25\RnBase\Utility\Environment::getPublicPath().$file;
         } // Im BE auf absoluten Pfad setzen
 
         $templateCode = tx_rnbase_util_Network::getUrl($file);
         if (!$templateCode) {
-            throw new Exception('File not found: '. htmlspecialchars($fileName));
+            throw new Exception('File not found: '.htmlspecialchars($fileName));
         }
         $template = self::getSubpart($templateCode, $subpart);
         if (!$template) {
-            throw new Exception('Subpart not found! File: '. htmlspecialchars($file) . ' Subpart: ' . htmlspecialchars($subpart));
+            throw new Exception('Subpart not found! File: '.htmlspecialchars($file).' Subpart: '.htmlspecialchars($subpart));
         }
 
         return $template;
     }
 
     /**
-     * check the template for includes
+     * check the template for includes.
      *
      * Examples: (the @ seperates the file from the subpart)
      *     <!--
@@ -119,6 +126,7 @@ class tx_rnbase_util_Templates
      *     <!-- ### INCLUDE_TEMPLATE EXT:rn_base/res/simplegallery.html@DAM_IMAGES ### -->
      *
      * @param string $template
+     *
      * @return string
      */
     public static function includeSubTemplates($template)
@@ -134,7 +142,7 @@ class tx_rnbase_util_Templates
         if (!tx_rnbase_util_TYPO3::getTSFE()->no_cache) {
             tx_rnbase::load('tx_rnbase_cache_Manager');
             $cache = tx_rnbase_cache_Manager::getCache('rnbase');
-            $cacheKey = 'includeSubTemplateFor_' . md5($template);
+            $cacheKey = 'includeSubTemplateFor_'.md5($template);
             $included = $cache->get($cacheKey);
         }
 
@@ -155,27 +163,29 @@ class tx_rnbase_util_Templates
     }
 
     /**
-     * This callback is called by the includeSubTemplates preg_replace
+     * This callback is called by the includeSubTemplates preg_replace.
      *
-     * @access private
      *
      * @param unknown $match
+     *
      * @return string
      */
     public static function cbIncludeSubTemplates($match)
     {
         list($filePath, $subPart) = tx_rnbase_util_Strings::trimExplode('@', $match[1]);
+
         try {
             $fileContent = self::getSubpartFromFile(
                 $filePath,
-                '###' . strtoupper($subPart) . '###'
+                '###'.strtoupper($subPart).'###'
             );
         } catch (Exception $e) {
-            $fileContent = '<!-- ' . $e->getMessage() .' -->';
+            $fileContent = '<!-- '.$e->getMessage().' -->';
         }
 
         return $fileContent;
     }
+
     /**
      * Multi substitution function with caching.
      *
@@ -186,11 +196,13 @@ class tx_rnbase_util_Templates
      * $subpartContentArray works exactly like markContentArray only is whole subparts substituted and not only a single marker.
      * $wrappedSubpartContentArray is an array of arrays with 0/1 keys where the subparts pointed to by the main key is wrapped with the 0/1 value alternating.
      *
-     * @param   string      The content stream, typically HTML template content.
-     * @param   array       Regular marker-array where the 'keys' are substituted in $content with their values
-     * @param   array       Exactly like markContentArray only is whole subparts substituted and not only a single marker.
-     * @param   array       An array of arrays with 0/1 keys where the subparts pointed to by the main key is wrapped with the 0/1 value alternating.
-     * @return  string      The output content stream
+     * @param   string      the content stream, typically HTML template content
+     * @param array       Regular marker-array where the 'keys' are substituted in $content with their values
+     * @param   array       exactly like markContentArray only is whole subparts substituted and not only a single marker
+     * @param   array       an array of arrays with 0/1 keys where the subparts pointed to by the main key is wrapped with the 0/1 value alternating
+     *
+     * @return string The output content stream
+     *
      * @see substituteSubpart(), substituteMarker(), substituteMarkerInObject(), TEMPLATE()
      */
     public function substituteMarkerArrayCached_old($content, $markContentArray = array(), $subpartContentArray = array(), $wrappedSubpartContentArray = array())
@@ -219,7 +231,6 @@ class tx_rnbase_util_Templates
         }
         asort($aKeys);
         $storeKey = md5('substituteMarkerArrayCached_storeKey:'.serialize(array($content, $aKeys)));
-
 
         if (self::$substMarkerCache[$storeKey]) {
             $storeArr = self::$substMarkerCache[$storeKey];
@@ -278,7 +289,7 @@ class tx_rnbase_util_Templates
                 $content .= $valueArr[$keyN];
             } else {
                 $content .= $valueArr[$keyN][(intval($wSCA_reg[$keyN]) % 2)];
-                $wSCA_reg[$keyN]++;
+                ++$wSCA_reg[$keyN];
             }
         }
         $content .= $storeArr['c'][count($storeArr['k'])];
@@ -289,33 +300,37 @@ class tx_rnbase_util_Templates
     }
 
     /**
-     * Whether or not the caching in substituteMarkerArrayCached is enabled
+     * Whether or not the caching in substituteMarkerArrayCached is enabled.
+     *
      * @return bool
      */
     public static function isSubstCacheEnabled()
     {
-        if (self::$substCacheEnabled === null) {
+        if (null === self::$substCacheEnabled) {
             self::$substCacheEnabled = (bool) Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'activateSubstCache');
         }
 
         return self::$substCacheEnabled;
     }
+
     /**
-     * Enable caching in substituteMarkerArrayCached
+     * Enable caching in substituteMarkerArrayCached.
      */
     public static function enableSubstCache()
     {
         self::$substCacheEnabled = true;
     }
+
     /**
-     * Disable caching in substituteMarkerArrayCached
+     * Disable caching in substituteMarkerArrayCached.
      */
     public static function disableSubstCache()
     {
         self::$substCacheEnabled = false;
     }
+
     /**
-     * resets the cache configuration for substituteMarkerArrayCached
+     * resets the cache configuration for substituteMarkerArrayCached.
      */
     public static function resetSubstCache()
     {
@@ -332,11 +347,13 @@ class tx_rnbase_util_Templates
      * $subpartContentArray works exactly like markContentArray only is whole subparts substituted and not only a single marker.
      * $wrappedSubpartContentArray is an array of arrays with 0/1 keys where the subparts pointed to by the main key is wrapped with the 0/1 value alternating.
      *
-     * @param   string      The content stream, typically HTML template content.
-     * @param   array       Regular marker-array where the 'keys' are substituted in $content with their values
-     * @param   array       Exactly like markContentArray only is whole subparts substituted and not only a single marker.
-     * @param   array       An array of arrays with 0/1 keys where the subparts pointed to by the main key is wrapped with the 0/1 value alternating.
-     * @return  string      The output content stream
+     * @param   string      the content stream, typically HTML template content
+     * @param array       Regular marker-array where the 'keys' are substituted in $content with their values
+     * @param   array       exactly like markContentArray only is whole subparts substituted and not only a single marker
+     * @param   array       an array of arrays with 0/1 keys where the subparts pointed to by the main key is wrapped with the 0/1 value alternating
+     *
+     * @return string The output content stream
+     *
      * @see substituteSubpart(), substituteMarker(), substituteMarkerInObject(), TEMPLATE()
      */
     public static function substituteMarkerArrayCached($content, array $markContentArray = null, array $subpartContentArray = null, array $wrappedSubpartContentArray = null)
@@ -398,7 +415,7 @@ class tx_rnbase_util_Templates
                 foreach ($aKeys as $tK => $tV) {
                     $aKeys[$tK] = preg_quote($tV, '/');
                 }
-                $regex = '/' . implode('|', $aKeys) . '/';
+                $regex = '/'.implode('|', $aKeys).'/';
                 // Doing regex's
                 $storeArr['c'] = preg_split($regex, $content);
                 preg_match_all($regex, $content, $keyList);
@@ -432,7 +449,7 @@ class tx_rnbase_util_Templates
                 $content .= $valueArr[$keyN];
             } else {
                 $content .= $valueArr[$keyN][(intval($wSCA_reg[$keyN]) % 2)];
-                $wSCA_reg[$keyN]++;
+                ++$wSCA_reg[$keyN];
             }
         }
         $content .= $storeArr['c'][count($storeArr['k'])];
@@ -441,19 +458,22 @@ class tx_rnbase_util_Templates
 
         return $content;
     }
+
     /**
      * Substitute subpart in input template stream.
      * This function substitutes a subpart in $content with the content of $subpartContent.
-     * Wrapper for t3lib_parsehtml::substituteSubpart which behaves identical
+     * Wrapper for t3lib_parsehtml::substituteSubpart which behaves identical.
      *
-     * @param   string      The content stream, typically HTML template content.
+     * @param   string      the content stream, typically HTML template content
      * @param   string      The marker string, typically on the form "###[the marker string]###"
      * @param   mixed       The content to insert instead of the subpart found. If a string, then just plain substitution happens (includes removing the
      *                              HTML comments of the subpart if found). If $subpartContent happens to be an array, it's [0] and [1] elements are wrapped around
      *                              the EXISTING content of the subpart (fetched by getSubpart()) thereby not removing the original content.
-     * @param   bool     If $recursive is set, the function calls itself with the content set to the remaining part of the content after the second
-     *                              marker. This means that proceding subparts are ALSO substituted!
-     * @return  string      The processed HTML content string.
+     * @param bool     If $recursive is set, the function calls itself with the content set to the remaining part of the content after the second
+     *                               marker. This means that proceding subparts are ALSO substituted!
+     *
+     * @return string the processed HTML content string
+     *
      * @see getSubpart(), t3lib_parsehtml::substituteSubpart()
      */
     public static function substituteSubpart($content, $marker, $subpartContent, $recursive = 1)

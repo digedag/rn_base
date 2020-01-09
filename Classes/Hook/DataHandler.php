@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -22,19 +22,15 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  */
 
-
 /**
- * Tx_Rnbase_Hook_DataHandler
+ * Tx_Rnbase_Hook_DataHandler.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class Tx_Rnbase_Hook_DataHandler
 {
-
     /**
      * Flushes the cache if a news record was edited.
      * This happens on two levels: by UID and by PID.

@@ -25,31 +25,27 @@
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_rnbase_util_XmlElement');
 
-
 /**
- *
- * @package tx_rnbase
- * @subpackage tx_rnbase_tests
  * @author René Nitzsche <rene@system25.de>
  */
 class tx_rnbase_tests_util_XmlElement_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
-     * Simple test to ensure class is available
+     * Simple test to ensure class is available.
      */
     public function testMakeInstance()
     {
-        $xml = <<<EOT
+        $xml = <<<'EOT'
 <?xml version="1.0" encoding="UTF-8"?>
 <root/>
 EOT;
         $node = tx_rnbase::makeInstance('tx_rnbase_util_XmlElement', $xml);
         $this->assertTrue($node instanceof tx_rnbase_util_XmlElement);
     }
+
     public function testIsEmpty()
     {
-        $xml = <<<EOT
+        $xml = <<<'EOT'
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
 				<child1 value="123"/>
@@ -71,7 +67,7 @@ EOT;
 
     public function testGetIntFromPath()
     {
-        $xml = <<<EOT
+        $xml = <<<'EOT'
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
 				<child1 value="123"/>
@@ -90,6 +86,7 @@ EOT;
 
     /**
      * @param string $xml
+     *
      * @return tx_rnbase_util_XmlElement
      */
     private function parseXml($xml)

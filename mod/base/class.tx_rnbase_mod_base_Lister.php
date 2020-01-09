@@ -22,9 +22,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
- * Basisklasse für Suchfunktionen in BE-Modulen
+ * Basisklasse für Suchfunktionen in BE-Modulen.
  *
  * @author René Nitzsche <rene@system25.de>
  * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
@@ -33,15 +32,16 @@ abstract class tx_rnbase_mod_base_Lister
 {
     const KEY_SHOWHIDDEN = 'showhidden';
 
-
     /**
-     * Selector Klasse
+     * Selector Klasse.
+     *
      * @var tx_rnbase_mod_IModule
      */
     private $mod = null;
 
     /**
-     * Otions
+     * Otions.
+     *
      * @var array
      */
     protected $options = array();
@@ -49,17 +49,17 @@ abstract class tx_rnbase_mod_base_Lister
     private $filterValues = array();
 
     /**
-     * Current hidden option
-     * @var     string
+     * Current hidden option.
+     *
+     * @var string
      */
     protected $currentShowHidden = 1;
 
-
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param   tx_rnbase_mod_IModule   $mod
-     * @param   array                   $options
+     * @param tx_rnbase_mod_IModule $mod
+     * @param array                 $options
      */
     public function __construct(tx_rnbase_mod_IModule $mod, array $options = array())
     {
@@ -67,7 +67,8 @@ abstract class tx_rnbase_mod_base_Lister
     }
 
     /**
-     * Set a value to filter data
+     * Set a value to filter data.
+     *
      * @param string $key
      * @param string $value
      */
@@ -75,14 +76,17 @@ abstract class tx_rnbase_mod_base_Lister
     {
         $this->filterValues[$key] = $value;
     }
+
     /**
-     * Returns a filter value
+     * Returns a filter value.
+     *
      * @param string $key
      */
     public function getFilterValue($key)
     {
         return $this->filterValues[$key];
     }
+
     public function clearFilterValues()
     {
         unset($this->filterValues);
@@ -90,17 +94,16 @@ abstract class tx_rnbase_mod_base_Lister
     }
 
     /**
-     * Init object
+     * Init object.
      *
-     * @param   tx_rnbase_mod_IModule   $mod
-     * @param   array                   $options
+     * @param tx_rnbase_mod_IModule $mod
+     * @param array                 $options
      */
     protected function init(tx_rnbase_mod_IModule $mod, $options)
     {
         $this->options = $options;
         $this->mod = $mod;
     }
-
 
     /**
      * @return string
@@ -119,8 +122,9 @@ abstract class tx_rnbase_mod_base_Lister
     abstract protected function getService();
 
     /**
-     * Returns the complete search form
-     * @return  string
+     * Returns the complete search form.
+     *
+     * @return string
      */
     public function getSearchForm()
     {
@@ -142,7 +146,7 @@ abstract class tx_rnbase_mod_base_Lister
         if ($updateButton = $this->getSearchButton()) {
             $data['updatebutton'] = array(
                     'label' => '',
-                    'button' => $updateButton
+                    'button' => $updateButton,
                 );
         }
 
@@ -154,6 +158,7 @@ abstract class tx_rnbase_mod_base_Lister
     /**
      * Kindklassen haben die Möglichkeit weitere Formularfelder
      * zu registrieren.
+     *
      * @param array $data
      * @param array $options
      */
@@ -168,8 +173,9 @@ abstract class tx_rnbase_mod_base_Lister
     }
 
     /**
-     * Returns the search button
-     * @return  string|false
+     * Returns the search button.
+     *
+     * @return string|false
      */
     protected function getSearchButton()
     {
@@ -182,12 +188,13 @@ abstract class tx_rnbase_mod_base_Lister
     }
 
     /**
-     * Bildet die Resultliste mit Pager
+     * Bildet die Resultliste mit Pager.
      *
      * @param tx_mklib_mod1_searcher_Base $callingClass
-     * @param object $srv
-     * @param array $fields
-     * @param array $options
+     * @param object                      $srv
+     * @param array                       $fields
+     * @param array                       $options
+     *
      * @return string
      */
     public function getResultList()
@@ -196,7 +203,7 @@ abstract class tx_rnbase_mod_base_Lister
         /* @var $pager tx_rnbase_util_BEPager */
         $pager = tx_rnbase::makeInstance(
             'tx_rnbase_util_BEPager',
-            $this->getSearcherId() . 'Pager',
+            $this->getSearcherId().'Pager',
             $this->getModule()->getName(),
             $this->options['pid']
         );
@@ -220,28 +227,28 @@ abstract class tx_rnbase_mod_base_Lister
         //nur wenn es auch Ergebnisse gibt. sonst reicht die noItemsFoundMsg
         $sPagerData = '';
         if ($cnt) {
-            $sPagerData = $pagerData['limits'] . ' - ' .$pagerData['pages'];
+            $sPagerData = $pagerData['limits'].' - '.$pagerData['pages'];
         }
 
         return array(
-                'table'    => $content,
+                'table' => $content,
                 'totalsize' => $cnt,
-                'pager'    => '<div class="pager">' . $sPagerData .'</div>',
+                'pager' => '<div class="pager">'.$sPagerData.'</div>',
             );
     }
 
     /**
      * Kann von der Kindklasse überschrieben werden, um weitere Filter zu setzen.
      *
-     * @param   array   $fields
-     * @param   array   $options
+     * @param array $fields
+     * @param array $options
      */
     protected function prepareFieldsAndOptions(array &$fields, array &$options)
     {
         $options['distinct'] = 1;
         self::buildFreeText($fields, $this->getFilterValue('searchword'), $this->getSearchColumns());
 
-        if (($value = $this->getFilterValue(self::KEY_SHOWHIDDEN)) !== null) {
+        if (null !== ($value = $this->getFilterValue(self::KEY_SHOWHIDDEN))) {
             // Wenn gesetzt, dann anzeigen
             if ($value) {
                 $options['enablefieldsbe'] = 1;
@@ -253,7 +260,8 @@ abstract class tx_rnbase_mod_base_Lister
     }
 
     /**
-     * Sortierung vorbereiten
+     * Sortierung vorbereiten.
+     *
      * @param array $options
      */
     protected function prepareSorting(&$options)
@@ -271,13 +279,14 @@ abstract class tx_rnbase_mod_base_Lister
             // das Label in die notwendige SQL-Anweisung umwandeln. Normalerweise ein Spaltenname.
             $sortCol = $cols[$sortField]['sortable'];
             // Wenn am Ende ein Punkt steht, muss die Spalte zusammengefügt werden.
-            $sortCol = substr($sortCol, -1) === '.' ? $sortCol.$sortField : $sortCol;
-            $options['orderby'][$sortCol] = (strtolower($sortRev) == 'asc' ? 'asc' : 'desc');
+            $sortCol = '.' === substr($sortCol, -1) ? $sortCol.$sortField : $sortCol;
+            $options['orderby'][$sortCol] = ('asc' == strtolower($sortRev) ? 'asc' : 'desc');
         }
     }
 
     /**
-     * Liefert die Spalten, in denen gesucht werden soll
+     * Liefert die Spalten, in denen gesucht werden soll.
+     *
      * @return array
      */
     abstract protected function getSearchColumns();
@@ -285,22 +294,21 @@ abstract class tx_rnbase_mod_base_Lister
     /**
      * Start creation of result list.
      *
-     * @param string $content
+     * @param string            $content
      * @param array|Traversable $items
+     *
      * @return string
      */
     protected function showItems(&$content, $items)
     {
         if (!(is_array($items) || $items instanceof Traversable)) {
-            throw new Exception(
-                'Argument 2 passed to' . __METHOD__ . '() must be of the type array or Traversable.'
-            );
+            throw new Exception('Argument 2 passed to'.__METHOD__.'() must be of the type array or Traversable.');
         }
 
-        if (count($items) === 0) {
+        if (0 === count($items)) {
             $content = $this->getNoItemsFoundMsg();
 
-            return;//stop
+            return; //stop
         }
 
         $options = $this->getOptions();
@@ -353,7 +361,7 @@ abstract class tx_rnbase_mod_base_Lister
     ) {
         $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
         $utility::deprecationLog(
-            '"' . get_class($decorator) . '"::getColumns' .
+            '"'.get_class($decorator).'"::getColumns'.
             ' is deprecated. Use "getDecoratorColumns" instead.'
         );
 
@@ -373,7 +381,7 @@ abstract class tx_rnbase_mod_base_Lister
         if (!$decorator instanceof Tx_Rnbase_Backend_Decorator_InterfaceDecorator) {
             $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
             $utility::deprecationLog(
-                'Decorator "' . get_class($decorator) . '"' .
+                'Decorator "'.get_class($decorator).'"'.
                 ' should implement "Tx_Rnbase_Backend_Decorator_InterfaceDecorator".'
             );
         }
@@ -390,12 +398,11 @@ abstract class tx_rnbase_mod_base_Lister
             'actions' => [
                 'title' => 'label_tableheader_actions',
                 'decorator' => $decorator,
-            ]
+            ],
         ];
     }
 
     /**
-     *
      * @param array $fields
      * @param array $options
      */
@@ -408,9 +415,9 @@ abstract class tx_rnbase_mod_base_Lister
     }
 
     /**
-     * Returns an instance of tx_rnbase_mod_IModule
+     * Returns an instance of tx_rnbase_mod_IModule.
      *
-     * @return  tx_rnbase_mod_IModule
+     * @return tx_rnbase_mod_IModule
      */
     protected function getModule()
     {
@@ -418,9 +425,9 @@ abstract class tx_rnbase_mod_base_Lister
     }
 
     /**
-     * Returns an instance of tx_rnbase_mod_IModule
+     * Returns an instance of tx_rnbase_mod_IModule.
      *
-     * @return  tx_rnbase_mod_IModule
+     * @return tx_rnbase_mod_IModule
      */
     protected function getOptions()
     {
@@ -428,9 +435,9 @@ abstract class tx_rnbase_mod_base_Lister
     }
 
     /**
-     * Returns an instance of tx_rnbase_mod_IModule
+     * Returns an instance of tx_rnbase_mod_IModule.
      *
-     * @return  tx_rnbase_util_FormTool
+     * @return tx_rnbase_util_FormTool
      */
     protected function getFormTool()
     {
@@ -438,17 +445,14 @@ abstract class tx_rnbase_mod_base_Lister
     }
 
     /**
-     * Returns the message in case no items could be found in showItems()
+     * Returns the message in case no items could be found in showItems().
      *
-     * @return  string
+     * @return string
      */
     protected function getNoItemsFoundMsg()
     {
         return '<p><strong>###LABEL_NO_'.strtoupper($this->getSearcherId()).'_FOUND###</strong></p><br/>';
-        ;
     }
-
-
 
     //////
     // Die folgenden Methoden sollten noch in andere Klassen verteilt werden.
@@ -458,9 +462,9 @@ abstract class tx_rnbase_mod_base_Lister
      * Suche nach einem Freitext. Wird ein leerer String
      * übergeben, dann wird nicht gesucht.
      *
-     * @param array $fields
+     * @param array  $fields
      * @param string $searchword
-     * @param array $cols
+     * @param array  $cols
      */
     protected static function buildFreeText(&$fields, $searchword, array $cols = array())
     {
@@ -478,9 +482,9 @@ abstract class tx_rnbase_mod_base_Lister
     }
 
     /**
+     * @param array $data
      *
-     * @param   array   $data
-     * @return  string
+     * @return string
      */
     protected function buildFilterTable(array $data)
     {
@@ -489,9 +493,9 @@ abstract class tx_rnbase_mod_base_Lister
             $out .= '<table class="filters">';
             foreach ($data as $label => $filter) {
                 $out .= '<tr>';
-                $out .= '<td>'. (isset($filter['label']) ? $filter['label'] : $label).'</td>';
+                $out .= '<td>'.(isset($filter['label']) ? $filter['label'] : $label).'</td>';
                 unset($filter['label']);
-                $out .= '<td>'. implode(' ', $filter) .'</td>';
+                $out .= '<td>'.implode(' ', $filter).'</td>';
 
                 $out .= '</tr>';
             }
@@ -500,27 +504,29 @@ abstract class tx_rnbase_mod_base_Lister
 
         return $out;
     }
+
     /**
      * Method to display a form with an input array, a description and a submit button.
      * Keys are 'field' and 'button'.
      *
-     * @param string $out marker array with input fields
-     * @param string $key mod key
-     * @param array $options
-     *              string  buttonName      name of the submit button. default is key.
-     *              string  buttonValue     value of the sumbit button. default is LLL:label_button_search.
-     *              string  label           label of the sumbit button. default is LLL:label_search.
+     * @param string $out     marker array with input fields
+     * @param string $key     mod key
+     * @param array  $options
+     *                        string  buttonName      name of the submit button. default is key.
+     *                        string  buttonValue     value of the sumbit button. default is LLL:label_button_search.
+     *                        string  label           label of the sumbit button. default is LLL:label_search.
+     *
      * @return string search term
      */
     protected function showFreeTextSearchForm(&$marker, $key, array $options = array())
     {
         tx_rnbase::load('tx_rnbase_mod_Util');
         $searchstring = tx_rnbase_mod_Util::getModuleValue($key, $this->getModule(), [
-            'changed' => Tx_Rnbase_Utility_T3General::_GP('SET')
+            'changed' => Tx_Rnbase_Utility_T3General::_GP('SET'),
         ]);
 
         // Erst das Suchfeld, danach der Button.
-        $marker['field']    = $this->getFormTool()->createTxtInput('SET['.$key.']', $searchstring, 10);
+        $marker['field'] = $this->getFormTool()->createTxtInput('SET['.$key.']', $searchstring, 10);
         $marker['label'] = $options['label'] ? $options['label'] : '###LABEL_SEARCH###';
 
         return $searchstring;
@@ -534,7 +540,7 @@ abstract class tx_rnbase_mod_base_Lister
         ];
         tx_rnbase::load('tx_rnbase_mod_Util');
         $selectedItem = tx_rnbase_mod_Util::getModuleValue('showhidden', $this->getModule(), [
-            'changed' => Tx_Rnbase_Utility_T3General::_GP('SET')
+            'changed' => Tx_Rnbase_Utility_T3General::_GP('SET'),
         ]);
 
         $options['label'] = $options['label'] ? $options['label'] : $GLOBALS['LANG']->getLL('label_hidden');

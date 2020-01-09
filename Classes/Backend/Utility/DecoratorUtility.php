@@ -23,10 +23,8 @@
  ***************************************************************/
 
 /**
- * Decorator Utility
+ * Decorator Utility.
  *
- * @package TYPO3
- * @subpackage Tx_Rnbase
  * @author Michael Wagner
  */
 class Tx_Rnbase_Backend_Utility_DecoratorUtility
@@ -39,17 +37,17 @@ class Tx_Rnbase_Backend_Utility_DecoratorUtility
     private $decorator = null;
 
     /**
-     * The options object
+     * The options object.
      *
      * @var Tx_Rnbase_Domain_Model_Data
      */
     private $options = null;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param Tx_Rnbase_Backend_Decorator_InterfaceDecorator $decorator
-     * @param Tx_Rnbase_Domain_Model_Data|array $options
+     * @param Tx_Rnbase_Domain_Model_Data|array              $options
      *
      * @return Tx_Rnbase_Backend_Utility_DecoratorUtility
      */
@@ -65,10 +63,10 @@ class Tx_Rnbase_Backend_Utility_DecoratorUtility
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param Tx_Rnbase_Backend_Decorator_InterfaceDecorator $decorator
-     * @param Tx_Rnbase_Domain_Model_Data|array $options
+     * @param Tx_Rnbase_Domain_Model_Data|array              $options
      */
     public function __construct(
         Tx_Rnbase_Backend_Decorator_InterfaceDecorator $decorator = null,
@@ -94,7 +92,7 @@ class Tx_Rnbase_Backend_Utility_DecoratorUtility
     }
 
     /**
-     * The decorator options object
+     * The decorator options object.
      *
      * @return Tx_Rnbase_Domain_Model_Data
      */
@@ -183,7 +181,7 @@ class Tx_Rnbase_Backend_Utility_DecoratorUtility
      * this column contains the edit, hide, remove, ... actions.
      *
      * @param array $columns
-
+     *
      * @return Tx_Rnbase_Backend_Utility_DecoratorUtility
      */
     public function addDecoratorColumnActions(

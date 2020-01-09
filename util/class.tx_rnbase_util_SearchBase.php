@@ -26,15 +26,18 @@ tx_rnbase::load('Tx_Rnbase_Database_Connection');
 tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
- * Service for accessing team information
+ * Service for accessing team information.
  *
  * @author Rene Nitzsche
  */
 abstract class tx_rnbase_util_SearchBase
 {
     private static $instances = array();
+
     private $tableMapping;
+
     private $generic = false;
+
     private $genericData;
 
     /**
@@ -42,6 +45,7 @@ abstract class tx_rnbase_util_SearchBase
      * Klassenname sollte aber stimmen.
      *
      * @param string $classname
+     *
      * @return tx_rnbase_util_SearchBase
      */
     public static function getInstance($classname)
@@ -54,7 +58,7 @@ abstract class tx_rnbase_util_SearchBase
     }
 
     /**
-     * returns the database connection to use
+     * returns the database connection to use.
      *
      * @return Tx_Rnbase_Database_Connection
      */
@@ -68,7 +72,7 @@ abstract class tx_rnbase_util_SearchBase
      * Bei den Felder findet ein Mapping auf die eigentlichen DB-Felder statt. Dadurch werden
      * SQL-Injections erschwert und es sind JOINs möglich.
      * Field-Schema: TABLEALIAS.COLNAME
-     * Beispiel: TEAM.NAME, TEAM.UID
+     * Beispiel: TEAM.NAME, TEAM.UID.
      *
      * Options: Zusätzliche Bedingungen für Abfrage.
      * LIMIT, ORDERBY
@@ -83,8 +87,9 @@ abstract class tx_rnbase_util_SearchBase
      * Hierfür gibt es das Sonderfeld SEARCH_FIELD_CUSTOM. Dieses erwartet ein String mit dem
      * Sub-Select. Dieser wird direkt in die Query eingebunden.
      *
-     * @param array $fields Felder nach denen gesucht wird
+     * @param array $fields  Felder nach denen gesucht wird
      * @param array $options
+     *
      * @return array oder int
      */
     public function search($fields, $options)
@@ -130,7 +135,7 @@ abstract class tx_rnbase_util_SearchBase
                     if (!isset($tableAliases[$tableAlias])) {
                         $tableAliases[$tableAlias] = array();
                     }
-                    $joinedFields[$key]['fields'][] = ($this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias]).'.' . strtolower($col);
+                    $joinedFields[$key]['fields'][] = ($this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias]).'.'.strtolower($col);
                 }
             }
         }
@@ -146,7 +151,7 @@ abstract class tx_rnbase_util_SearchBase
         tx_rnbase_util_Misc::callHook('rn_base', 'searchbase_handleTableMapping', array(
             'tableAliases' => &$tableAliases, 'joinedFields' => &$joinedFields,
             'customFields' => &$customFields, 'options' => &$options,
-            'tableMappings' => &$this->tableMapping
+            'tableMappings' => &$this->tableMapping,
         ), $this);
         $what = $this->getWhat($options, $tableAliases);
         $from = $this->getFrom($options, $tableAliases);
@@ -162,15 +167,15 @@ abstract class tx_rnbase_util_SearchBase
                             tx_rnbase_util_Misc::mayday('JOINED field required data array. Check up your search config.', 'rn_base');
                         }
                         $joinedValues = array_values($joinedValues);
-                        for ($i = 0, $cnt = count($joinedValues); $i < $cnt; $i++) {
+                        for ($i = 0, $cnt = count($joinedValues); $i < $cnt; ++$i) {
                             $wherePart = $this->getDatabaseConnection()->setSingleWhereField(
                                 $this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias],
                                 $operator,
                                 $col,
                                 $joinedValues[$i]
                             );
-                            if (trim($wherePart) !== '') {
-                                $where .= ' AND ' . $wherePart;
+                            if ('' !== trim($wherePart)) {
+                                $where .= ' AND '.$wherePart;
                             }
                         }
                     } else {
@@ -180,8 +185,8 @@ abstract class tx_rnbase_util_SearchBase
                             $col,
                             $value
                         );
-                        if (trim($wherePart) !== '') {
-                            $where .= ' AND ' . $wherePart;
+                        if ('' !== trim($wherePart)) {
+                            $where .= ' AND '.$wherePart;
                         }
                     }
                 }
@@ -196,7 +201,7 @@ abstract class tx_rnbase_util_SearchBase
                     continue;
                 }
 
-                if ($joinedField['operator'] == OP_INSET_INT) {
+                if (OP_INSET_INT == $joinedField['operator']) {
                     // Values splitten und einzelne Abfragen mit OR verbinden
                     $addWhere = $this->getDatabaseConnection()->searchWhere(
                         $joinedField['value'],
@@ -211,12 +216,12 @@ abstract class tx_rnbase_util_SearchBase
                     );
                 }
                 if ($addWhere) {
-                    $where .= ' AND ' . $addWhere;
+                    $where .= ' AND '.$addWhere;
                 }
             }
         }
         if (isset($customFields)) {
-            $where .= ' AND ' . $customFields;
+            $where .= ' AND '.$customFields;
         }
 
         if ($options['enableFieldsForAdditionalTableAliases']) {
@@ -292,14 +297,15 @@ abstract class tx_rnbase_util_SearchBase
                     // free Order-Clause
                     if (strstr($field, SEARCH_FIELD_CUSTOM)) {
                         $orderby[] = $order;
+
                         continue;
                     }
                     list($tableAlias, $col) = explode('.', $field);
                     $tableAlias = $this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias];
                     if ($tableAlias) {
-                        $orderby[] = $tableAlias.'.' . strtolower($col) . ' ' . (strtoupper($order) == 'DESC' ? 'DESC' : 'ASC');
+                        $orderby[] = $tableAlias.'.'.strtolower($col).' '.('DESC' == strtoupper($order) ? 'DESC' : 'ASC');
                     } else {
-                        $orderby[] = $field . ' ' . (strtoupper($order) == 'DESC' ? 'DESC' : 'ASC');
+                        $orderby[] = $field.' '.('DESC' == strtoupper($order) ? 'DESC' : 'ASC');
                     }
                 }
             }
@@ -317,7 +323,6 @@ abstract class tx_rnbase_util_SearchBase
             $sqlOptions['wrapperclass'] = $options['wrapperclass'] ? $options['wrapperclass'] : $this->getGenericWrapperClass();
         }
 
-
         // if we have to do a count and there still is a count in the custom what
         // or there is a having or a groupby
         // so we have to wrap the query into a subquery to count the results
@@ -326,7 +331,7 @@ abstract class tx_rnbase_util_SearchBase
             && (
                 (
                     isset($options['what'])
-                    && strpos(strtoupper($options['what']), 'COUNT(') !== false
+                    && false !== strpos(strtoupper($options['what']), 'COUNT(')
                 )
                 || $options['groupby']
                 || $options['having']
@@ -340,7 +345,7 @@ abstract class tx_rnbase_util_SearchBase
                 $options['debug'] ? 1 : 0
             );
             $what = 'COUNT(*) AS cnt';
-            $from = '(' . $query . ') AS COUNTWRAP';
+            $from = '('.$query.') AS COUNTWRAP';
             $sqlOptions = array(
                 'enablefieldsoff' => true,
                 'sqlonly' => empty($options['sqlonly']) ? 0 : $options['sqlonly'],
@@ -361,13 +366,15 @@ abstract class tx_rnbase_util_SearchBase
     }
 
     /**
-     * Wurden DB-Beziehungen per Options-Array übergeben
+     * Wurden DB-Beziehungen per Options-Array übergeben.
+     *
      * @return bool
      */
     protected function isGeneric()
     {
         return $this->generic;
     }
+
     private function setGeneric($options)
     {
         if (is_array($options)) {
@@ -375,9 +382,11 @@ abstract class tx_rnbase_util_SearchBase
             $this->genericData = $options['searchdef'];
         }
     }
+
     /**
      * Returns the configured basetable. If this call is not generic it returns the value
-     * from getBaseTable()
+     * from getBaseTable().
+     *
      * @return string
      */
     private function getGenericBaseTable()
@@ -388,9 +397,11 @@ abstract class tx_rnbase_util_SearchBase
 
         return $this->getBaseTable();
     }
+
     /**
      * Returns the configured wrapper class. If this call is not generic it returns the value
-     * from getWrapperClass()
+     * from getWrapperClass().
+     *
      * @return string
      */
     private function getGenericWrapperClass()
@@ -401,8 +412,10 @@ abstract class tx_rnbase_util_SearchBase
 
         return $this->getWrapperClass();
     }
+
     /**
-     * Returns the configured basetable. If this call is not generic it returns the value
+     * Returns the configured basetable. If this call is not generic it returns the value.
+     *
      * @return string
      */
     private function getGenericJoins($tableAliases)
@@ -424,7 +437,7 @@ abstract class tx_rnbase_util_SearchBase
                     }
 
                     if ($makeJoin) {
-                        $join .= ' ' . $data['join'];
+                        $join .= ' '.$data['join'];
                     }
                 }
             }
@@ -446,8 +459,9 @@ abstract class tx_rnbase_util_SearchBase
             $this->tableMapping = array_merge($tableMapping, array_flip($tableMapping));
         }
     }
+
     /**
-     * Erstellt weitere Tablemappings, die per Konfiguration definiert wurden
+     * Erstellt weitere Tablemappings, die per Konfiguration definiert wurden.
      *
      * @param array $tableMapping
      * @param array $options
@@ -465,24 +479,27 @@ abstract class tx_rnbase_util_SearchBase
     /**
      * Kindklassen müssen ein Array bereitstellen, in denen die Aliases der
      * Tabellen zu den eigentlichen Tabellennamen gemappt werden.
+     *
      * @return array(alias => tablename, ...)
      */
     abstract protected function getTableMappings();
 
     /**
-     * Name der Basistabelle, in der gesucht wird
+     * Name der Basistabelle, in der gesucht wird.
      */
     abstract protected function getBaseTable();
+
     /**
      * Name des Alias' der Basistabelle, in der gesucht wird
-     * Nicht abstract wg. Abwärts-Kompatibilität
+     * Nicht abstract wg. Abwärts-Kompatibilität.
      */
     protected function getBaseTableAlias()
     {
         return '';
     }
+
     /**
-     * Liefert den Alias der Basetable
+     * Liefert den Alias der Basetable.
      *
      * @return string
      */
@@ -496,7 +513,8 @@ abstract class tx_rnbase_util_SearchBase
     }
 
     /**
-     * Name der Klasse, in die die Ergebnisse gemappt werden
+     * Name der Klasse, in die die Ergebnisse gemappt werden.
+     *
      * @return string
      */
     abstract public function getWrapperClass();
@@ -506,6 +524,7 @@ abstract class tx_rnbase_util_SearchBase
      * sollte ein leerer String geliefert werden.
      *
      * @param array $tableAliases
+     *
      * @return string
      */
     abstract protected function getJoins($tableAliases);
@@ -538,17 +557,18 @@ abstract class tx_rnbase_util_SearchBase
         $ret = $distinct.$table.'.*'.$rownum;
         if (isset($options['count'])) {
             $cntWhat = isset($options['distinct']) ? $table.'.uid' : '*';
-            $ret = 'count('. $distinct . $cntWhat.') as cnt';
+            $ret = 'count('.$distinct.$cntWhat.') as cnt';
         }
 
         return $ret;
     }
 
     /**
-     * Build the from part of sql statement
+     * Build the from part of sql statement.
      *
      * @param array $options
      * @param array $tableAliases
+     *
      * @return array
      */
     protected function getFrom($options, $tableAliases)
@@ -562,13 +582,13 @@ abstract class tx_rnbase_util_SearchBase
             $alias = $this->getGenericBaseTableAlias();
             // Wenn vorhanden einen Alias für die Basetable setzen
             if ($alias) {
-                $from[0] .= ' AS ' . $alias;
+                $from[0] .= ' AS '.$alias;
                 $from[2] = $alias;
             }
         }
         $joins = $this->getGenericJoins($tableAliases);
         if (isset($options['rownum'])) {
-            $from[0] = '(SELECT @rownum:=0) _r, ' . $from[0];
+            $from[0] = '(SELECT @rownum:=0) _r, '.$from[0];
         }
 
         if (strlen($joins)) {
@@ -581,6 +601,7 @@ abstract class tx_rnbase_util_SearchBase
     /**
      * @param array $tableAliases
      * @param array $options
+     *
      * @return string
      */
     protected function setEnableFieldsForAdditionalTableAliases(array $tableAliases, array $options)
@@ -606,11 +627,11 @@ abstract class tx_rnbase_util_SearchBase
     }
 
     /**
-     * Optionen aus der TS-Config setzen
+     * Optionen aus der TS-Config setzen.
      *
-     * @param array $options
+     * @param array                                      $options
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param string $confId Id der TS-Config z.B. myview.options.
+     * @param string                                     $confId         Id der TS-Config z.B. myview.options.
      */
     public static function setConfigOptions(&$options, $configurations, $confId)
     {
@@ -618,8 +639,9 @@ abstract class tx_rnbase_util_SearchBase
         if (is_array($cfgOptions)) {
             foreach ($cfgOptions as $option => $cfg) {
                 // Auf einfache Option ohne Klammerung prüfen
-                if (substr($option, -1) != '.') {
+                if ('.' != substr($option, -1)) {
                     $options[$option] = $cfg;
+
                     continue;
                 }
                 // Ohne Angaben nix zu tun
@@ -650,7 +672,7 @@ abstract class tx_rnbase_util_SearchBase
                         if (!in_array($optionName, array('override', 'force'))) {
                             tx_rnbase::load('tx_rnbase_util_Logger');
                             tx_rnbase_util_Logger::warn(
-                                'Invalid configuration for config option "' . $optionName . '".',
+                                'Invalid configuration for config option "'.$optionName.'".',
                                 'rn_base',
                                 array(
                                     'option_name' => $optionName,
@@ -658,10 +680,11 @@ abstract class tx_rnbase_util_SearchBase
                                 )
                             );
                         }
+
                         continue;
                     }
                     $tableAlias = strtoupper(substr($table, 0, strlen($table) - 1));
-                    if (is_array($data) && $option == 'searchdef.') {
+                    if (is_array($data) && 'searchdef.' == $option) {
                         foreach ($data as $col => $value) {
                             $options[$optionName][strtolower($tableAlias)][substr($col, 0, strlen($col) - 1)] = $value;
                         }
@@ -678,7 +701,7 @@ abstract class tx_rnbase_util_SearchBase
     }
 
     /**
-     * Felder über ein Configarray setzen
+     * Felder über ein Configarray setzen.
      *
      * @param array $fields
      * @param array $cfgFields
@@ -688,19 +711,20 @@ abstract class tx_rnbase_util_SearchBase
         if (is_array($cfgFields)) {
             foreach ($cfgFields as $field => $cfg) {
                 // Tabellen-Alias
-                $tableAlias = (substr($field, strlen($field) - 1, 1) == '.') ?
+                $tableAlias = ('.' == substr($field, strlen($field) - 1, 1)) ?
                                             strtoupper(substr($field, 0, strlen($field) - 1)) : strtoupper($field);
 
-                if ($tableAlias == SEARCH_FIELD_JOINED) {
+                if (SEARCH_FIELD_JOINED == $tableAlias) {
                     // Hier sieht die Konfig etwas anders aus
                     foreach ($cfg as $jField) {
                         $jField['operator'] = constant($jField['operator']);
                         $jField['cols'] = tx_rnbase_util_Strings::trimExplode(',', $jField['cols']);
                         $fields[SEARCH_FIELD_JOINED][] = $jField;
                     }
+
                     continue;
                 }
-                if ($tableAlias == SEARCH_FIELD_CUSTOM) {
+                if (SEARCH_FIELD_CUSTOM == $tableAlias) {
                     $fields[SEARCH_FIELD_CUSTOM] = $cfg;
                 }
 
@@ -724,11 +748,11 @@ abstract class tx_rnbase_util_SearchBase
     }
 
     /**
-     * Vergleichsfelder aus der TS-Config setzen
+     * Vergleichsfelder aus der TS-Config setzen.
      *
-     * @param array $fields
+     * @param array                                      $fields
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param string $confId Id der TS-Config z.B. myview.fields.
+     * @param string                                     $confId         Id der TS-Config z.B. myview.fields.
      */
     public static function setConfigFields(&$fields, $configurations, $confId)
     {
@@ -739,11 +763,11 @@ abstract class tx_rnbase_util_SearchBase
     /**
      * Checks existence of search field in parameters and adds it to fieldarray.
      *
-     * @param string $idstr
-     * @param array $fields
-     * @param arrayObject $parameters
+     * @param string                                     $idstr
+     * @param array                                      $fields
+     * @param arrayObject                                $parameters
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param string $operator
+     * @param string                                     $operator
      */
     public function setField($idstr, &$fields, &$parameters, &$configurations, $operator = OP_LIKE)
     {
@@ -754,8 +778,9 @@ abstract class tx_rnbase_util_SearchBase
             $configurations->addKeepVar($configurations->createParamName($idstr), $fields[$idstr]);
         }
     }
+
     /**
-     * Special Chars used by Charbrowser
+     * Special Chars used by Charbrowser.
      *
      * @return array
      */

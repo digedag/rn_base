@@ -1,4 +1,5 @@
 <?php
+
 namespace Sys25\RnBase\Fluid\ViewHelper\PageBrowser;
 
 use Sys25\RnBase\Fluid\ViewHelper\PageBrowserViewHelper;
@@ -27,26 +28,22 @@ use Sys25\RnBase\Fluid\ViewHelper\PageBrowserViewHelper;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Fluid\ViewHelper\PageBrowser$PageBaseViewHelper
+ * Sys25\RnBase\Fluid\ViewHelper\PageBrowser$PageBaseViewHelper.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class PageBaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
 {
-
     /**
      * @var string
      */
     protected $tagName = 'a';
 
     /**
-     * Arguments initialization
+     * Arguments initialization.
      *
-     * @return void
      * @author Sebastian Kurfürst <sebastian@typo3.org>
      */
     public function initializeArguments()

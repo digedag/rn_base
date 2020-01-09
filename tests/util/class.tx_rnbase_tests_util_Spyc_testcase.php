@@ -25,9 +25,6 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_rnbase_util_Spyc');
 
 /**
- *
- * @package TYPO3
- * @subpackage tx_rnbase
  * @author Rene Nitzsche <rene@system25.de>
  */
 class tx_rnbase_tests_util_Spyc_testcase extends tx_rnbase_tests_BaseTestCase
@@ -46,6 +43,7 @@ root_2:
     uid: 2
     label: Guy 2
 ';
+
     public function testYamlLoad()
     {
         $result = tx_rnbase_util_Spyc::yamlLoad(static::YAML);

@@ -28,10 +28,8 @@ use Sys25\RnBase\Configuration\ConfigurationInterface;
  ***************************************************************/
 
 /**
- * Tx_Rnbase_Category_FilterUtility
+ * Tx_Rnbase_Category_FilterUtility.
  *
- * @package         TYPO3
- * @subpackage      Tx_Rnbase
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
@@ -39,13 +37,14 @@ use Sys25\RnBase\Configuration\ConfigurationInterface;
 class Category
 {
     protected $configurations;
+
     protected $confId;
+
     private $dbConnection;
 
     /**
-     *
      * @param ConfigurationInterface $configurations
-     * @param string $confId
+     * @param string                 $confId
      */
     public function __construct(ConfigurationInterface $configurations, $confId)
     {
@@ -55,6 +54,7 @@ class Category
 
     /**
      * @param array $fields
+     *
      * @return bool | null
      */
     public function handleSysCategoryFilter(array &$fields, $doSearch)
@@ -66,16 +66,16 @@ class Category
         ];
 
         foreach ($typoScriptPathsToFilterUtilityMethod as $typoScriptPath => $filterUtilityMethod) {
-            if ($this->configurations->get($this->confId . $typoScriptPath)) {
+            if ($this->configurations->get($this->confId.$typoScriptPath)) {
                 $fieldsBefore = $fields;
                 $fields = $this->$filterUtilityMethod(
                     $fields,
                     $this->configurations,
-                    $this->confId . $typoScriptPath . '.'
+                    $this->confId.$typoScriptPath.'.'
                 );
 
                 if (
-                    $this->configurations->get($this->confId . $typoScriptPath . '.dontSearchIfNoCategoriesFound') &&
+                    $this->configurations->get($this->confId.$typoScriptPath.'.dontSearchIfNoCategoriesFound') &&
                     // wenn sich die $fields nicht geändert haben, dann wurden keine Kategorie
                     // gefunden.
                     $fieldsBefore == $fields
@@ -88,11 +88,10 @@ class Category
         return $doSearch;
     }
 
-
     /**
-     * @param array $fields
+     * @param array                  $fields
      * @param ConfigurationInterface $configurations
-     * @param string $confId
+     * @param string                 $confId
      *
      * @return array
      */
@@ -110,7 +109,7 @@ class Category
 
     /**
      * @param ConfigurationInterface $configurations
-     * @param string $confId
+     * @param string                 $confId
      *
      * @return array
      */
@@ -118,7 +117,7 @@ class Category
     {
         $parameters = $configurations->getParameters();
         $categories = array();
-        foreach ($configurations->get($confId . 'supportedParameters.') as $paramConfig) {
+        foreach ($configurations->get($confId.'supportedParameters.') as $paramConfig) {
             $referencedUid = $parameters->getInt(
                 $paramConfig['parameterName'],
                 $paramConfig['parameterQualifier']
@@ -130,33 +129,34 @@ class Category
                     $paramConfig['categoryField'],
                     $referencedUid
                 );
+
                 continue;
             }
         }
+
         return $categories;
     }
 
     /**
      * @param string $table
      * @param string $categoryField
-     * @param int $foreignUid
+     * @param int    $foreignUid
      *
      * @return array
      */
     protected function getCategoryUidsByReference($table, $categoryField, $foreignUid)
     {
         $databaseConnection = $this->getDatabaseConnection();
-        $categories =  $databaseConnection->doSelect(
+        $categories = $databaseConnection->doSelect(
             'uid_local',
             'sys_category_record_mm',
             [
-                'where' =>
-                    'sys_category_record_mm.tablenames = ' .
-                    $databaseConnection->fullQuoteStr($table) . ' AND ' .
-                    'sys_category_record_mm.fieldname = ' .
-                    $databaseConnection->fullQuoteStr($categoryField) . ' AND ' .
-                    'sys_category_record_mm.uid_foreign = ' . intval($foreignUid),
-                'enablefieldsoff' => true
+                'where' => 'sys_category_record_mm.tablenames = '.
+                    $databaseConnection->fullQuoteStr($table).' AND '.
+                    'sys_category_record_mm.fieldname = '.
+                    $databaseConnection->fullQuoteStr($categoryField).' AND '.
+                    'sys_category_record_mm.uid_foreign = '.intval($foreignUid),
+                'enablefieldsoff' => true,
             ]
         );
 
@@ -177,16 +177,18 @@ class Category
     {
         return $this->dbConnection ?: \Tx_Rnbase_Database_Connection::getInstance();
     }
+
     public function setDatabaseConnection(\Tx_Rnbase_Database_Connection $connection)
     {
         $this->dbConnection = $connection;
     }
 
     /**
-     * @param array $categories
-     * @param array $fields
+     * @param array                  $categories
+     * @param array                  $fields
      * @param ConfigurationInterface $configurations
-     * @param string $confId
+     * @param string                 $confId
+     *
      * @return array
      */
     protected function getFieldsByCategories(
@@ -196,18 +198,18 @@ class Category
         $confId
     ) {
         $sysCategoryTableAlias =
-            $configurations->get($confId . 'sysCategoryTableAlias') ?
-                $configurations->get($confId . 'sysCategoryTableAlias') :
+            $configurations->get($confId.'sysCategoryTableAlias') ?
+                $configurations->get($confId.'sysCategoryTableAlias') :
                 'SYS_CATEGORY';
-        $fields[$sysCategoryTableAlias . '.uid'] = array(OP_IN_INT => join(',', $categories));
+        $fields[$sysCategoryTableAlias.'.uid'] = array(OP_IN_INT => implode(',', $categories));
 
         return $fields;
     }
 
     /**
-     * @param array $fields
+     * @param array                  $fields
      * @param ConfigurationInterface $configurations
-     * @param string $confId
+     * @param string                 $confId
      *
      * @return array
      */
@@ -226,9 +228,9 @@ class Category
     }
 
     /**
-     * @param array $fields
+     * @param array                  $fields
      * @param ConfigurationInterface $configurations
-     * @param string $confId
+     * @param string                 $confId
      *
      * @return array
      */
@@ -238,8 +240,8 @@ class Category
         $confId
     ) {
         $categoryUid = $configurations->getParameters()->getInt(
-            $configurations->get($confId . 'parameterName'),
-            $configurations->get($confId . 'parameterQualifier')
+            $configurations->get($confId.'parameterName'),
+            $configurations->get($confId.'parameterQualifier')
         );
         if ($categoryUid) {
             $fields = $this->getFieldsByCategories(array($categoryUid), $fields, $configurations, $confId);

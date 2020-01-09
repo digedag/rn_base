@@ -25,10 +25,8 @@
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
 /**
- * Test for persistence repository
+ * Test for persistence repository.
  *
- * @package TYPO3
- * @subpackage Tx_Rnbase
  * @author Michael Wagner
  */
 class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_tests_BaseTestCase
@@ -38,8 +36,6 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_te
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
-     *
-     * @return void
      */
     protected function setUp()
     {
@@ -52,8 +48,6 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_te
     /**
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
-     *
-     * @return void
      */
     protected function tearDown()
     {
@@ -61,9 +55,8 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_te
     }
 
     /**
-     * Test the IsModelWrapperClass method
+     * Test the IsModelWrapperClass method.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -79,10 +72,10 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_te
             )
         );
     }
+
     /**
-     * Test the IsModelWrapperClass method
+     * Test the IsModelWrapperClass method.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -99,9 +92,8 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_te
     }
 
     /**
-     * Test the persist method
+     * Test the persist method.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -117,7 +109,7 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_te
             'columns' => [
                 'pid' => [],
                 'header' => [],
-            ]
+            ],
         ];
 
         $repo = $this->getRepository();
@@ -175,9 +167,8 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_te
     }
 
     /**
-     * Test the persist method
+     * Test the persist method.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -192,7 +183,7 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_te
             ],
             'columns' => [
                 'header' => [],
-            ]
+            ],
         ];
 
         $repo = $this->getRepository();
@@ -253,9 +244,8 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_te
     }
 
     /**
-     * Test the persist method
+     * Test the persist method.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -293,7 +283,7 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_te
     }
 
     /**
-     * The mocked repo to test
+     * The mocked repo to test.
      *
      * @param array $methods
      *

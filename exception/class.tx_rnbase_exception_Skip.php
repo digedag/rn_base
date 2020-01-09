@@ -23,7 +23,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-
 /**
  * Wird diese Exception innerhalb einer Action geworfen,
  * wird keine Fehlermeldung gelogtgt und ausgegeben.

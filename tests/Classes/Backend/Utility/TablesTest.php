@@ -23,12 +23,8 @@
 ***************************************************************/
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
-/**
- *
- */
 class Tx_Rnbase_Backend_Utility_TablesTest extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
      * @group functional
      * @TODO: refactor, requires $GLOBALS['LANG']!

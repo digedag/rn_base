@@ -1,4 +1,5 @@
 <?php
+
 use Sys25\RnBase\Frontend\Request\Parameters;
 
 /***************************************************************
@@ -35,8 +36,7 @@ use Sys25\RnBase\Frontend\Request\Parameters;
  * Note: Javadoc is mostly not up to date.
  ***************************************************************/
 
-
-/**
+/*
  * The central controller used as entry point for a plugin
  * This class should not be derived by other classes.
  *
@@ -100,20 +100,22 @@ use Sys25\RnBase\Frontend\Request\Parameters;
  * @subpackage rn_base
  */
 
-
 tx_rnbase::load('tx_rnbase_util_Misc');
 tx_rnbase::load('tx_rnbase_util_Arrays');
 tx_rnbase::load('tx_rnbase_util_Strings');
 
-
-
 class tx_rnbase_controller
 {
     public $configurationsClassName = 'Tx_Rnbase_Configuration_Processor'; // You may overwrite this in your subclass with an own configurations class.
+
     public $parameters;
+
     public $configurations;
+
     public $defaultAction = 'defaultAction';
+
     public $cobj; // Plugins cObj instance from T3
+
     private $errors = array();
 
     /*
@@ -224,6 +226,7 @@ class tx_rnbase_controller
         if (!is_array($actions)) {
             $actions = [$actions];
         }
+
         try {
             foreach ($actions as $actionName) {
                 tx_rnbase_util_Misc::pushTT('call action', $actionName);
@@ -240,15 +243,18 @@ class tx_rnbase_controller
     }
 
     /**
-     * Call a single action
-     * @param string $actionName class name
-     * @param tx_rnbase_IParams $parameters
+     * Call a single action.
+     *
+     * @param string                                     $actionName     class name
+     * @param tx_rnbase_IParams                          $parameters
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     *
      * @return string
      */
     public function doAction($actionName, &$parameters, &$configurations)
     {
         $ret = '';
+
         try {
             // Creating the responsible Action
             $action = tx_rnbase::makeInstance($actionName);
@@ -291,7 +297,8 @@ class tx_rnbase_controller
     }
 
     /**
-     * Returns all unhandeled exceptions
+     * Returns all unhandeled exceptions.
+     *
      * @return array[Exception] or empty array
      */
     public function getErrors()
@@ -300,8 +307,9 @@ class tx_rnbase_controller
     }
 
     /**
-     * Interne Verarbeitung der Exception
-     * @param Exception $e
+     * Interne Verarbeitung der Exception.
+     *
+     * @param Exception                                  $e
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
      */
     private function handleException($actionName, Exception $e, $configurations)
@@ -333,13 +341,12 @@ class tx_rnbase_controller
     /**
      * This is returned, if an invalid action has been send.
      *
-     * @return     string     error text
+     * @return string error text
      */
     public function getUnknownAction()
     {
         return '<p id="unknown_action">Unknown action.</p>';
     }
-
 
     //------------------------------------------------------------------------------------
     // Private functions
@@ -362,7 +369,8 @@ class tx_rnbase_controller
      *
      * @param     object     the parameters object
      * @param     object     the configurations objet
-     * @return    array     an array with the actions or NULL
+     *
+     * @return array an array with the actions or NULL
      */
     protected function _findAction($parameters, $configurations)
     {
@@ -380,7 +388,7 @@ class tx_rnbase_controller
         if ($action) {
             $action = tx_rnbase_util_Strings::trimExplode(',', $action);
         }
-        if (is_array($action) && count($action) == 1) {
+        if (is_array($action) && 1 == count($action)) {
             $action = tx_rnbase_util_Strings::trimExplode('|', $action[0]); // Nochmal mit Pipe versuchen
         }
         // If there is still no action we use defined defaultAction
@@ -390,7 +398,7 @@ class tx_rnbase_controller
     }
 
     /**
-     * Find the action from parameter string or array
+     * Find the action from parameter string or array.
      *
      * The action value can be sent in two forms:
      * a) designator[action] = actionValue
@@ -401,7 +409,8 @@ class tx_rnbase_controller
      * because it is language dependant.
      *
      * @param   object   the parameter object
-     * @return  string   the action value
+     *
+     * @return string the action value
      */
     public function _getParameterAction($parameters)
     {
@@ -414,12 +423,13 @@ class tx_rnbase_controller
     }
 
     /**
-     * Make the configurations object
+     * Make the configurations object.
      *
      * Used by main()
      *
-     * @param array $configurationArray   the local configuration array
-     * @return Tx_Rnbase_Configuration_ProcessorInterface  the configurations
+     * @param array $configurationArray the local configuration array
+     *
+     * @return Tx_Rnbase_Configuration_ProcessorInterface the configurations
      */
     public function _makeConfigurationsObject($configurationArray)
     {
@@ -435,7 +445,8 @@ class tx_rnbase_controller
     }
 
     /**
-     * Returns an ArrayObject containing all parameters
+     * Returns an ArrayObject containing all parameters.
+     *
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
      */
     protected function _makeParameterObject($configurations)

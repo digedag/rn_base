@@ -1,4 +1,5 @@
 <?php
+
 namespace Sys25\RnBase\Search;
 
 /***************************************************************
@@ -25,19 +26,17 @@ namespace Sys25\RnBase\Search;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Search$Category
+ * Sys25\RnBase\Search$Category.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class Category extends \tx_rnbase_util_SearchBase
 {
-
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see tx_rnbase_util_SearchBase::getTableMappings()
      */
     protected function getTableMappings()
@@ -49,7 +48,8 @@ class Category extends \tx_rnbase_util_SearchBase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see tx_rnbase_util_SearchBase::useAlias()
      */
     protected function useAlias()
@@ -58,7 +58,8 @@ class Category extends \tx_rnbase_util_SearchBase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see tx_rnbase_util_SearchBase::getBaseTableAlias()
      */
     protected function getBaseTableAlias()
@@ -67,7 +68,8 @@ class Category extends \tx_rnbase_util_SearchBase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see tx_rnbase_util_SearchBase::getBaseTable()
      */
     protected function getBaseTable()
@@ -76,7 +78,8 @@ class Category extends \tx_rnbase_util_SearchBase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see tx_rnbase_util_SearchBase::getWrapperClass()
      */
     public function getWrapperClass()
@@ -85,7 +88,8 @@ class Category extends \tx_rnbase_util_SearchBase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see tx_rnbase_util_SearchBase::getJoins()
      */
     protected function getJoins($tableAliases)
@@ -94,8 +98,8 @@ class Category extends \tx_rnbase_util_SearchBase
         $tableMappings = $this->getTableMappings();
         $baseAlias = $this->getBaseTableAlias();
         if (isset($tableAliases['SYS_CATEGORY_RECORD_MM'])) {
-            $joins =    ' LEFT JOIN ' . $tableMappings['SYS_CATEGORY_RECORD_MM'] . ' AS SYS_CATEGORY_RECORD_MM ON' .
-                        ' SYS_CATEGORY_RECORD_MM.uid_local = ' . $baseAlias . '.uid';
+            $joins = ' LEFT JOIN '.$tableMappings['SYS_CATEGORY_RECORD_MM'].' AS SYS_CATEGORY_RECORD_MM ON'.
+                        ' SYS_CATEGORY_RECORD_MM.uid_local = '.$baseAlias.'.uid';
         }
 
         return $joins;

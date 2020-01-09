@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  Copyright notice
+ *  Copyright notice.
  *
  *  (c) 2016 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  *  All rights reserved
@@ -24,7 +24,7 @@
  */
 
 /**
- * Class Tx_Rnbase_Database_TreeQueryBuilderTest
+ * Class Tx_Rnbase_Database_TreeQueryBuilderTest.
  *
  * @author Mario Seidel <mario.seidel@dmk-ebusiness.de>
  */
@@ -42,13 +42,13 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
      *    |
      *    -- 6
      *       |
-     *       -- 7
+     *       -- 7.
      */
     public function testGetTreeRecursive()
     {
         /**
- * @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock
-*/
+         * @var Tx_Rnbase_Database_TreeQueryBuilder
+         */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
                 $connection->expects(self::at(0))
@@ -107,7 +107,6 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
             }
         );
 
-
         $uidList = $treeQueryBuildMock->getPageTreeUidList(1);
 
         $this->assertEquals(array(1, 2, 3, 4, 6, 7), $uidList);
@@ -116,11 +115,11 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
     public function testLimitedTreeByDepth()
     {
         $options = array(
-            'depth' => 2
+            'depth' => 2,
         );
         /**
- * @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock
-*/
+         * @var Tx_Rnbase_Database_TreeQueryBuilder
+         */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
                 $connection->expects(self::at(0))
@@ -143,7 +142,6 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
             }
         );
 
-
         $uidList = $treeQueryBuildMock->getPageTreeUidList(1, $options);
 
         $this->assertEquals(array(1, 2, 3, 6), $uidList);
@@ -152,12 +150,12 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
     public function testAddPidToCustomQueryCorrectly()
     {
         $options = array(
-            'where' => 'hidden=1'
+            'where' => 'hidden=1',
         );
 
         /**
- * @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock
-*/
+         * @var Tx_Rnbase_Database_TreeQueryBuilder
+         */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
                 $connection->expects(self::at(0))
@@ -188,12 +186,12 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
     public function testSetCustomTableNameCorrectly()
     {
         $options = array(
-            'tableName' => 'tt_content'
+            'tableName' => 'tt_content',
         );
 
         /**
- * @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock
-*/
+         * @var Tx_Rnbase_Database_TreeQueryBuilder
+         */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
                 $connection->expects(self::at(0))
@@ -240,8 +238,8 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
         );
 
         /**
- * @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock
-*/
+         * @var Tx_Rnbase_Database_TreeQueryBuilder
+         */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
                 $connection->expects(self::at(0))
@@ -253,7 +251,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
                             'where' => '(starttime > 12345 AND endtime < 98765) AND pid IN (1)',
                             'tableName' => 'tt_content',
                             'orderby' => 'header',
-                            'limit' => 1
+                            'limit' => 1,
                         )
                     )
                     ->will(self::returnValue(array(array('uid' => 2))));
@@ -267,7 +265,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
                             'where' => '(starttime > 12345 AND endtime < 98765) AND pid IN (2)',
                             'tableName' => 'tt_content',
                             'orderby' => 'header',
-                            'limit' => 1
+                            'limit' => 1,
                         )
                     )
                     ->will(self::returnValue(array()));
@@ -282,12 +280,12 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
     public function testSetCustomParentField()
     {
         $options = array(
-            'parentField' => 'parent_id'
+            'parentField' => 'parent_id',
         );
 
         /**
- * @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock
-*/
+         * @var Tx_Rnbase_Database_TreeQueryBuilder
+         */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
                 $connection->expects(self::at(0))
@@ -298,7 +296,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
                         array(
                             'where' => '1=1 AND parent_id IN (1)',
                             'tableName' => 'pages',
-                            'parentField' => 'parent_id'
+                            'parentField' => 'parent_id',
                         )
                     )
                     ->will(self::returnValue(array(array('uid' => 5))));
@@ -311,7 +309,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
                         array(
                             'where' => '1=1 AND parent_id IN (5)',
                             'tableName' => 'pages',
-                            'parentField' => 'parent_id'
+                            'parentField' => 'parent_id',
                         )
                     )
                     ->will(self::returnValue(array()));
@@ -326,12 +324,12 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
     public function testSetCustomKeyField()
     {
         $options = array(
-            'idField' => 'entity_id'
+            'idField' => 'entity_id',
         );
 
         /**
- * @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock
-*/
+         * @var Tx_Rnbase_Database_TreeQueryBuilder
+         */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
                 $connection->expects(self::at(0))
@@ -342,7 +340,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
                         array(
                             'where' => '1=1 AND pid IN (1)',
                             'tableName' => 'pages',
-                            'idField' => 'entity_id'
+                            'idField' => 'entity_id',
                         )
                     )
                     ->will(self::returnValue(array(array('entity_id' => 5))));
@@ -355,7 +353,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
                         array(
                             'where' => '1=1 AND pid IN (5)',
                             'tableName' => 'pages',
-                            'idField' => 'entity_id'
+                            'idField' => 'entity_id',
                         )
                     )
                     ->will(self::returnValue(array()));
@@ -370,8 +368,8 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
     public function testGetTreeWithCommaSeparatedPidList()
     {
         /**
- * @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock
-*/
+         * @var Tx_Rnbase_Database_TreeQueryBuilder
+         */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
                 $connection->expects(self::at(0))
@@ -418,7 +416,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
     }
 
     /**
-     * get a mock with tree structure defined in the expectFunc
+     * get a mock with tree structure defined in the expectFunc.
      *
      * @param \Closure $expectFunc
      *

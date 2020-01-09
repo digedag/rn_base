@@ -33,15 +33,16 @@ tx_rnbase::load('tx_rnbase_mod_IModule');
  *
  * Diese Klasse hier soll eine einheitliche API über alle LTS-Versionen bieten. Intern werden die
  * jeweils passenden TYPO3-Klasse genutzt, nach außen sollte das aber für die Module keine Rolle spielen.
- *
- *
  */
 class Tx_Rnbase_Backend_Template_ModuleTemplate
 {
     private $template;
+
     private $doc;
+
     /** @var tx_rnbase_mod_IModule */
     private $module;
+
     private $options;
 
     public function __construct(tx_rnbase_mod_IModule $module, $options = [])
@@ -95,8 +96,7 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
 
     /**
      * der Weg ab TYPO3 7.6
-     * TODO: fertig implementieren
-     * @return void
+     * TODO: fertig implementieren.
      */
     protected function renderContent76(Tx_Rnbase_Backend_Template_ModuleParts $parts)
     {
@@ -113,7 +113,7 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
             $content .= $parts->getFuncMenu();
         }
 
-        $content .= $parts->getSelector() .'<div style="clear:both;"></div>';
+        $content .= $parts->getSelector().'<div style="clear:both;"></div>';
         $content .= $parts->getSubMenu();
         $content .= $parts->getContent();
         $content .= '</form>';
@@ -129,6 +129,7 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
         // das wurde bisher über das DocumentTemplate eingefügt, was jetzt
         // nicht mehr geht. Dafür muss ein Weg gefunden werden.
         $moduleTemplate->setContent($content);
+
         return $moduleTemplate->renderContent();
     }
 
@@ -159,9 +160,8 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
     }
 
     /**
-     *
      * @param \TYPO3\CMS\Backend\Template\ModuleTemplate $moduleTemplate
-     * @param Tx_Rnbase_Backend_Template_ModuleParts $parts
+     * @param Tx_Rnbase_Backend_Template_ModuleParts     $parts
      */
     protected function registerMenu($moduleTemplate, Tx_Rnbase_Backend_Template_ModuleParts $parts)
     {
@@ -193,7 +193,6 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
     }
 
     /**
-     *
      * @param TYPO3\CMS\Backend\Template\DocumentTemplate $doc
      */
     protected function initDoc($doc)
@@ -224,7 +223,7 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
         $doc->postCode = '
             <script language="javascript" type="text/javascript">
                 script_ended = 1;
-                if (top.fsMod) top.fsMod.recentIds["web"] = ' . $this->options['pid'] . ';</script>';
+                if (top.fsMod) top.fsMod.recentIds["web"] = '.$this->options['pid'].';</script>';
     }
 
     private function prepareOptions($options)
@@ -242,11 +241,11 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
             $modUrl = Tx_Rnbase_Backend_Utility::getModuleUrl(
                 $options['modname'],
                 array(
-                    'id' => $options['pid']
+                    'id' => $options['pid'],
                 ),
                 ''
             );
-            $options['form'] = '<form action="' . $modUrl . '" method="post" enctype="multipart/form-data">';
+            $options['form'] = '<form action="'.$modUrl.'" method="post" enctype="multipart/form-data">';
         }
 
         return $options;

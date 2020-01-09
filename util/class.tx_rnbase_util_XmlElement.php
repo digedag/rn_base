@@ -23,14 +23,13 @@
 ***************************************************************/
 
 /**
- * Ein Model eines XMls
+ * Ein Model eines XMls.
  */
 class tx_rnbase_util_XmlElement extends SimpleXMLElement
 {
-
     /**
-     *
      * @param string $path
+     *
      * @return tx_rnbase_util_XmlElement
      */
     public function getNodeFromPath($paths)
@@ -40,7 +39,7 @@ class tx_rnbase_util_XmlElement extends SimpleXMLElement
         $xml = $this;
         foreach ($paths as $nodeName) {
             if (isset($xml->{$nodeName})
-                && $xml->{$nodeName} instanceof tx_rnbase_util_XmlElement) {
+                && $xml->{$nodeName} instanceof self) {
                 $xml = $xml->{$nodeName};
             } else {
                 return null;
@@ -48,7 +47,7 @@ class tx_rnbase_util_XmlElement extends SimpleXMLElement
         }
 
         // return xml node
-        if ($xml instanceof tx_rnbase_util_XmlElement) {
+        if ($xml instanceof self) {
             return $xml;
         }
 
@@ -57,6 +56,7 @@ class tx_rnbase_util_XmlElement extends SimpleXMLElement
 
     /**
      * @param string $path
+     *
      * @return string
      */
     public function getAttributeFromPath($path)
@@ -65,17 +65,19 @@ class tx_rnbase_util_XmlElement extends SimpleXMLElement
         $attribute = array_pop($paths);
 
         $xml = empty($paths) ? $this : $this->getNodeFromPath($paths);
-        if ($xml instanceof tx_rnbase_util_XmlElement
+        if ($xml instanceof self
                 && isset($xml[$attribute])) {
-            return (string)  $xml[$attribute];
+            return (string) $xml[$attribute];
         }
 
         return null;
     }
 
     /**
-     * Existiert ein Wert für den angegebenen Pfad
+     * Existiert ein Wert für den angegebenen Pfad.
+     *
      * @param string $path
+     *
      * @return bool
      */
     public function hasValueForPath($path)
@@ -89,11 +91,10 @@ class tx_rnbase_util_XmlElement extends SimpleXMLElement
         );
     }
 
-
     /**
+     * @param string $path    Beispiel: node1.node2.node3
+     * @param mixed  $default
      *
-     * @param string $path Beispiel: node1.node2.node3
-     * @param mixed $default
      * @return mixed
      */
     public function getValueFromPath($path, $default = null)
@@ -109,7 +110,9 @@ class tx_rnbase_util_XmlElement extends SimpleXMLElement
 
     /**
      * Liefert ein Datumsobjekt anhand eines Strings im XML.
+     *
      * @param string $path
+     *
      * @return DateTime
      */
     public function getDateTimeFromPath($path)
@@ -123,7 +126,9 @@ class tx_rnbase_util_XmlElement extends SimpleXMLElement
 
     /**
      * Liefert ein double anhand eines Strings im XML.
+     *
      * @param string $path
+     *
      * @return float
      */
     public function getIntFromPath($path)
@@ -144,24 +149,29 @@ class tx_rnbase_util_XmlElement extends SimpleXMLElement
      * @TODO: kommazahlen abtrennen und umwandeln!
      *
      * @param string $path
+     *
      * @return float
      */
     public function getBigIntFromPath($path)
     {
         return null;
     }
+
     /**
-     * Prüft, ob das Tag Attribute oder ChildNodes hat
+     * Prüft, ob das Tag Attribute oder ChildNodes hat.
+     *
      * @return bool
      */
     public function isEmpty()
     {
-        return count($this->children()) == 0 && count($this->attributes()) == 0;
+        return 0 == count($this->children()) && 0 == count($this->attributes());
     }
 
     /**
      * Liefert ein double anhand eines Strings im XML.
+     *
      * @param string $path
+     *
      * @return float
      */
     public function getFloatFromPath($path)
@@ -178,8 +188,10 @@ class tx_rnbase_util_XmlElement extends SimpleXMLElement
 
     /**
      * Liefert ein double anhand eines Strings im XML.
+     *
      * @param string $path
-     * @param int $digits
+     * @param int    $digits
+     *
      * @return float
      */
     public function getPriceFromPath($path, $digits = 2)

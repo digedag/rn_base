@@ -2,7 +2,7 @@
 
 namespace Sys25\RnBase\Typo3Wrapper\Core;
 
-/**
+/*
  *  Copyright notice
  *
  *  (c) 2019 René Nitzsche <rene@system25.de>
@@ -26,15 +26,13 @@ namespace Sys25\RnBase\Typo3Wrapper\Core;
  */
 
 if (!class_exists('\TYPO3\CMS\Core\Controller\CommandLineController')) {
-    return ;
+    return;
 }
 /**
- * Tx_Rnbase_Utility_Singleton
+ * Tx_Rnbase_Utility_Singleton.
  *
  * Wrapper für \TYPO3\CMS\Core\Controller\CommandLineController seit TYPO3 7.x
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later

@@ -1,4 +1,5 @@
 <?php
+
 namespace Sys25\RnBase\Fluid\View;
 
 /***************************************************************
@@ -25,19 +26,17 @@ namespace Sys25\RnBase\Fluid\View;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Fluid\View$ActionTest
+ * Sys25\RnBase\Fluid\View$ActionTest.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class ActionTest extends \tx_rnbase_tests_BaseTestCase
 {
-
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()
@@ -49,7 +48,8 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
     protected function tearDown()
@@ -119,7 +119,6 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
 
     /**
      * @param string $includeTemplate
-     * @return void
      */
     protected function copyHtmlFilesToCommonResourcesFolder($includeTemplate = false)
     {
@@ -155,8 +154,8 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
             'view.' => array(
                 'templateRootPaths.' => array(0 => 'EXT:rn_base/tests/fixtures/html/'),
                 'layoutRootPaths.' => array(0 => 'EXT:rn_base/tests/fixtures/html/Layouts/'),
-                'partialRootPaths.' => array(0 => 'EXT:rn_base/tests/fixtures/html/Partials/')
-            )
+                'partialRootPaths.' => array(0 => 'EXT:rn_base/tests/fixtures/html/Partials/'),
+            ),
         );
         $configurations = $this->createConfigurations($configurationArray, 'rn_base', 'rn_base', $parameters);
 
@@ -177,7 +176,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
 
         $parameters = \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $configurationArray = array(
-            'templatePath' =>'EXT:rn_base/tests/fixtures/html/'
+            'templatePath' => 'EXT:rn_base/tests/fixtures/html/',
         );
         $configurations = $this->createConfigurations($configurationArray, 'rn_base', 'rn_base', $parameters);
 
@@ -339,8 +338,8 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
                     'partialRootPaths.' => array(1 => 'additionalPartialPath'),
                 ),
                 'settings.' => array(
-                    'mySettings' => 'test'
-                )
+                    'mySettings' => 'test',
+                ),
             ),
             'rn_base'
         );
@@ -350,20 +349,20 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
                 'view' => array(
                     'templateRootPaths.' => array(
                         0 => 'EXT:rn_base/Resources/Private/Templates/',
-                        1 => 'additionalTemplatePath'
+                        1 => 'additionalTemplatePath',
                     ),
                     'layoutRootPaths.' => array(
                         0 => 'EXT:rn_base/Resources/Private/Layouts/',
-                        1 => 'additionalLayoutPath'
+                        1 => 'additionalLayoutPath',
                     ),
                     'partialRootPaths.' => array(
                         0 => 'EXT:rn_base/Resources/Private/Partials/',
-                        1 => 'additionalPartialPath'
+                        1 => 'additionalPartialPath',
                     ),
                 ),
                 'settings' => array(
-                    'mySettings' => 'test'
-                )
+                    'mySettings' => 'test',
+                ),
             ),
             $this->callInaccessibleMethod($view, 'getTypoScriptConfigurationForFluid', 'rn_base', $configurations)
         );

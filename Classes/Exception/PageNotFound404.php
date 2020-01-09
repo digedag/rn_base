@@ -1,6 +1,6 @@
 <?php
 /**
- *  Copyright notice
+ *  Copyright notice.
  *
  *  (c) 2017 René Nitzsche <rene@system25.de>
  *  All rights reserved
@@ -21,7 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
 tx_rnbase::load('Tx_Rnbase_Exception_Base');
 
 /**

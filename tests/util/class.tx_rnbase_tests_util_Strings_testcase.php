@@ -25,9 +25,6 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
- *
- * @package TYPO3
- * @subpackage tx_rnbase
  * @author Rene Nitzsche <rene@system25.de>
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
@@ -46,13 +43,12 @@ class tx_rnbase_tests_util_Strings_testcase extends tx_rnbase_tests_BaseTestCase
 
         $text = tx_rnbase_util_Strings::hexArr2bin(unserialize($iso8Str));
         $value = $text;
-        $this->assertTrue(tx_rnbase_util_Strings::isUtf8String($value) === false, 'String sollte nicht in UTF-8 sein.');
+        $this->assertTrue(false === tx_rnbase_util_Strings::isUtf8String($value), 'String sollte nicht in UTF-8 sein.');
     }
 
     /**
-     * Test for tx_rnbase_util_Strings::isLastPartOfStr
+     * Test for tx_rnbase_util_Strings::isLastPartOfStr.
      *
-     * @return void
      *
      * @group unit
      * @test

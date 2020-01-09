@@ -51,6 +51,7 @@ class tx_rnbase_tests_util_Dates_testcase extends tx_rnbase_tests_BaseTestCase
         //		$sDate = gmstrftime("%d.%m.%Y", $tstamp1);
         $this->assertEquals($zeit1, $zeit2);
     }
+
     public function test_convert4TCA2Timestamp()
     {
         $record = array('datetime' => '2011-10-20 12:00:00', 'date' => '2011-10-20', 'emptydate' => '0000-00-00');
@@ -59,12 +60,14 @@ class tx_rnbase_tests_util_Dates_testcase extends tx_rnbase_tests_BaseTestCase
         $this->assertEquals('1319068800', $record['date']);
         $this->assertEquals('0', $record['emptydate']);
     }
+
     public function test_convert4TCA2DateTime()
     {
         $record = array('datetime' => '1319112000');
         tx_rnbase_util_Dates::convert4TCA2DateTime($record, array('datetime'), true);
         $this->assertEquals('2011-10-20 12:00:00', $record['datetime']);
     }
+
     public function test_convert4TCA2Date()
     {
         $record = array('date' => '1319068800');
@@ -74,7 +77,7 @@ class tx_rnbase_tests_util_Dates_testcase extends tx_rnbase_tests_BaseTestCase
 
     /**
      * @param string $mysqlDate
-     * @param int $expectedTimestamp
+     * @param int    $expectedTimestamp
      *
      * @dataProvider dataProviderDateMysql2Tstamp
      */

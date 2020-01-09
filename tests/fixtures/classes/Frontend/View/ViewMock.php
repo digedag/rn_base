@@ -1,7 +1,7 @@
 <?php
+
 namespace Sys25\RnBase\Frontend\View;
 
-use Sys25\RnBase\Frontend\Request\Parameters;
 use Sys25\RnBase\Frontend\Request\RequestInterface;
 
 /***************************************************************
@@ -27,19 +27,18 @@ use Sys25\RnBase\Frontend\Request\RequestInterface;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
-/**
- *
- */
 class ViewMock extends AbstractView implements ViewInterface
 {
     private $viewName;
+
     private $request;
+
     public function render($viewName, RequestInterface $request)
     {
         $this->viewName = $viewName;
         $this->request = $request;
     }
+
     /**
      * @return string
      */

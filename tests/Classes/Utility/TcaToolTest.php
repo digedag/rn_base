@@ -1,6 +1,6 @@
 <?php
 /**
- *  Copyright notice
+ *  Copyright notice.
  *
  *  (c) 2010 Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  *  All rights reserved
@@ -24,17 +24,14 @@
 tx_rnbase::load('Tx_Rnbase_Utility_TcaTool');
 
 /**
- * Tx_Rnbase_Utility_TcaToolTest
+ * Tx_Rnbase_Utility_TcaToolTest.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class Tx_Rnbase_Utility_TcaToolTest extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
      * @group unit
      */
@@ -47,8 +44,8 @@ class Tx_Rnbase_Utility_TcaToolTest extends tx_rnbase_tests_BaseTestCase
                     'params' => array(
                         'blindLinkOptions' => 'file,page,mail,spec,folder',
                     ),
-                    'module' => array('urlParameters' => array('newKey' => 'wizard'))
-                )
+                    'module' => array('urlParameters' => array('newKey' => 'wizard')),
+                ),
             )
         );
 
@@ -62,8 +59,8 @@ class Tx_Rnbase_Utility_TcaToolTest extends tx_rnbase_tests_BaseTestCase
                 'params' => array(
                         'blindLinkOptions' => 'file,page,mail,spec,folder',
                 ),
-                'module' => array('urlParameters' => array('mode' => 'wizard', 'newKey' => 'wizard'))
-            )
+                'module' => array('urlParameters' => array('mode' => 'wizard', 'newKey' => 'wizard')),
+            ),
         );
         if (tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
             $expectedLinkWizard['link']['icon'] = 'actions-add';

@@ -28,14 +28,14 @@ tx_rnbase::load('Tx_Rnbase_Database_Connection');
 
 class tx_rnbase_tests_util_DB_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
      * @var string
      */
     protected $databaseConnectionClassBackup = '';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()
@@ -55,7 +55,8 @@ class tx_rnbase_tests_util_DB_testcase extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
     protected function tearDown()
@@ -95,10 +96,9 @@ class tx_rnbase_tests_util_DB_testcase extends tx_rnbase_tests_BaseTestCase
 
 class Tx_Rnbase_Database_ConnectionMock extends Tx_Rnbase_Database_Connection
 {
-
     /**
      * Zugriff darauf würde scheitern wenn die Methode doch
-     * statisch aufgerufen wird
+     * statisch aufgerufen wird.
      *
      * @var array
      */

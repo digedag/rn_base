@@ -44,10 +44,12 @@ class tx_rnbase_util_SearchGeneric extends tx_rnbase_util_SearchBase
 
         return $tableMapping;
     }
+
     protected function getBaseTable()
     {
         return '';
     }
+
     public function getWrapperClass()
     {
         return '';

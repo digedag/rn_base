@@ -24,17 +24,16 @@
  ***************************************************************/
 
 /**
- *
  * @author rene
+ *
  * @deprecated use Tx_Rnbase_Backend_Utility_Tables
  */
 class tx_rnbase_mod_Tables
 {
     /**
-     *
-     * @param array $entries
-     * @param array $columns
-     * @param tx_rnbase_util_FormTool $formTool
+     * @param array                                $entries
+     * @param array                                $columns
+     * @param tx_rnbase_util_FormTool              $formTool
      * @param Tx_Rnbase_Domain_Model_DataInterface $options
      *
      * @deprecated
@@ -54,12 +53,12 @@ class tx_rnbase_mod_Tables
      * $content .= tx_rnbase_mod_Tables::buildTable($data, $module->getTableLayout());
      * Should we include a better default layout here??
      *
-     * @param array $data Multidim array with first levels = rows, second levels = cells
+     * @param array $data   Multidim array with first levels = rows, second levels = cells
      * @param array $layout If set, then this provides an alternative layout array instead of $this->tableLayout
      *
      * @deprecated
      *
-     * @return string The HTML table.
+     * @return string the HTML table
      */
     public static function buildTable($data, $layout = null)
     {
@@ -67,7 +66,7 @@ class tx_rnbase_mod_Tables
     }
 
     /**
-     * Returns a default table layout
+     * Returns a default table layout.
      *
      * @deprecated
      *
@@ -79,7 +78,7 @@ class tx_rnbase_mod_Tables
     }
 
     /**
-     * Returns the new utility
+     * Returns the new utility.
      *
      * @return Tx_Rnbase_Backend_Utility_Tables
      */

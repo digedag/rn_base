@@ -1,48 +1,22 @@
 <?php
+
 namespace Sys25\RnBase\Frontend\View\Marker;
 
-use Sys25\RnBase\Frontend\View\ViewInterface;
-use Sys25\RnBase\Frontend\View\AbstractView;
 use Sys25\RnBase\Frontend\Request\RequestInterface;
-use Sys25\RnBase\Frontend\View\ContextInterface;
 
 /**
- * @package tx_rnbase
- * @subpackage tx_rnbase_view
+ * Generic list view.
  *
- *  Copyright notice
- *
- *  (c) 2011-2017 René Nitzsche <rene@system25.de>
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- */
-
-/**
- * Generic list view
- * @package tx_rnbase
- * @subpackage tx_rnbase_view
  * @author René Nitzsche
  */
 class ListView extends BaseView
 {
     const VIEWDATA_ITEMS = 'items';
+
     const VIEWDATA_FILTER = 'filter';
+
     const VIEWDATA_MARKER = 'marker';
+
     const VIEWDATA_ENTITIES = 'entities';
 
     /**
@@ -53,9 +27,10 @@ class ListView extends BaseView
      * $viewData in order to read its special configuration,
      * including redirection options etc.
      *
-     * @param string $template
-     * @param RequestInterface $request
+     * @param string                     $template
+     * @param RequestInterface           $request
      * @param \tx_rnbase_util_FormatUtil $formatter
+     *
      * @return mixed Ready rendered output or HTTP redirect
      */
     public function createOutput($template, RequestInterface $request, $formatter)
@@ -104,7 +79,7 @@ class ListView extends BaseView
     }
 
     /**
-     * Render other entities provided by plugin
+     * Render other entities provided by plugin.
      *
      * $viewdata->offsetSet(\tx_rnbase_view_List::VIEWDATA_ENTITIES, [
      *   'promotion' => [
@@ -114,11 +89,12 @@ class ListView extends BaseView
      *    ]
      *  );
      *
-     * @param string $template
-     * @param array $entities
-     * @param \ArrayObject   $viewData
+     * @param string                     $template
+     * @param array                      $entities
+     * @param \ArrayObject               $viewData
      * @param \tx_rnbase_util_FormatUtil $formatter
-     * @param string $confId
+     * @param string                     $confId
+     *
      * @return []
      */
     protected function renderEntities($template, $entities, $viewData, $formatter, $confId)

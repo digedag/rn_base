@@ -27,10 +27,8 @@ tx_rnbase::load('tx_rnbase_util_SearchBase');
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
 /**
- * Tx_Rnbase_Database_ConnectionTest
+ * Tx_Rnbase_Database_ConnectionTest.
  *
- * @package TYPO3
- * @subpackage Tx_Rnbase
  * @author Hannes Bochmann
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
@@ -38,7 +36,6 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
  */
 class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
      * @var int
      */
@@ -49,7 +46,8 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
     private $systemLogConfigurationBackup;
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()
@@ -57,8 +55,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * Initialices the TSFE an sets some TYPO3_CONF_VARS
-     * @return void
+     * Initialices the TSFE an sets some TYPO3_CONF_VARS.
      */
     protected function prepareTsfeSetUp()
     {
@@ -78,7 +75,8 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
     protected function tearDown()
@@ -89,7 +87,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * Tests the getDatabase method
+     * Tests the getDatabase method.
      *
      * @group unit
      * @test
@@ -107,7 +105,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * Tests the getDatabase method
+     * Tests the getDatabase method.
      *
      * @group unit
      * @test
@@ -123,8 +121,9 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
             )
         );
     }
+
     /**
-     * Tests the getFrom method
+     * Tests the getFrom method.
      *
      * @group unit
      * @dataProvider getGetFromTestData
@@ -132,7 +131,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetFrom($from, array $expects)
     {
-        if (!empty($expects['raw']) && $expects['raw'] == 'autofill') {
+        if (!empty($expects['raw']) && 'autofill' == $expects['raw']) {
             $expects['raw'] = $from;
         }
 
@@ -147,7 +146,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * Dataprovider for getFrom test
+     * Dataprovider for getFrom test.
      *
      * @return array
      */
@@ -179,7 +178,6 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
             __LINE__ => [
                 'from' => [
                     'table' => 'tt_content',
-
                 ],
                 'expects' => [
                     'table' => 'tt_content',
@@ -191,7 +189,6 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
                 'from' => [
                     'table' => 'tt_content',
                     'alias' => 'C',
-
                 ],
                 'expects' => [
                     'table' => 'tt_content',
@@ -238,7 +235,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
 
         $fields = array('hidden', 'starttime', 'endtime', 'fe_group', 'deleted');
         foreach ($fields as $field) {
-            $this->assertRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field . ' not found');
+            $this->assertRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field.' not found');
         }
     }
 
@@ -265,14 +262,14 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
         $options['sqlonly'] = 1;
         $options['enablefieldsfe'] = 1;
         $databaseConnection = $this->getMock('Tx_Rnbase_Database_Connection', array('isFrontend'));
-        $databaseConnection ->expects(self::any())
+        $databaseConnection->expects(self::any())
             ->method('isFrontend')
             ->will(self::returnValue(true));
         $sql = $databaseConnection->doSelect('*', 'tt_content', $options);
 
         $fields = array('hidden', 'starttime', 'endtime', 'fe_group', 'deleted');
         foreach ($fields as $field) {
-            $this->assertRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field . ' not found');
+            $this->assertRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field.' not found');
         }
     }
 
@@ -398,7 +395,6 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
         $ret = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->searchWhere('23', 't1.club,t2.club', OP_IN_INT);
         $this->assertEquals(' (t1.club IN (23) OR t2.club IN (23) )', $ret, 'FIND_IN_SET failed.');
 
-
         $ret = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->searchWhere($sw, $fields, OP_EQ);
         $this->assertEquals($ret, " (tab1.bodytext = 'content' OR tab1.header = 'content' OR tab1.bodytext = 'management' OR tab1.header = 'management' OR tab1.bodytext = 'system' OR tab1.header = 'system' )", 'OR failed.');
 
@@ -418,9 +414,8 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
         $this->assertEquals($ret, ' (tab1.bodytext = 0 OR tab1.header = 0 )', 'OR failed.');
     }
 
-
     /**
-     * Tests the lookupLanguage method
+     * Tests the lookupLanguage method.
      *
      * @group functional
      * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
@@ -429,9 +424,9 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
     {
         $this->prepareTsfeSetUp();
 
-        $row = [ 'uid' => 123, 'title' => 'test DE' ];
+        $row = ['uid' => 123, 'title' => 'test DE'];
         $tableName = 'pages';
-        $options = [ 'forcei18n' => true ];
+        $options = ['forcei18n' => true];
         $connectionMock = $this->getMock('Tx_Rnbase_Database_Connection', ['getDatabase']);
 
         $reflectionObject = new \ReflectionObject($connectionMock);
@@ -449,7 +444,6 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     *
      * @deprecated use tx_rnbase_util_Strings::debugString
      */
     public static function debugString($str)

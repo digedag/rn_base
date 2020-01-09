@@ -26,25 +26,26 @@ tx_rnbase::load('tx_rnbase_util_Templates');
 tx_rnbase::load('tx_rnbase_util_Files');
 
 /**
- * Depends on: none
+ * Depends on: none.
  *
  * Base class for all views.
  * TODO: This class should have a default template path and an optional user defined path. So
  * templates can be searched in both.
  *
  * @author René Nitzsche <rene@system25.de>
- * @package TYPO3
- * @subpackage rn_base
  */
 class tx_rnbase_view_Base
 {
     private $pathToTemplates;
+
     protected $templateFile;
+
     private $controller;
 
     /**
-     * @param string $view default name of view
+     * @param string                                     $view           default name of view
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     *
      * @return string
      */
     public function render($view, $configurations)
@@ -53,18 +54,18 @@ class tx_rnbase_view_Base
         $templateCode = tx_rnbase_util_Files::getFileResource($this->getTemplate($view, '.html'));
         if (!strlen($templateCode)) {
             tx_rnbase::load('tx_rnbase_util_Misc');
-            tx_rnbase_util_Misc::mayday('TEMPLATE NOT FOUND: ' . $this->getTemplate($view, '.html'));
+            tx_rnbase_util_Misc::mayday('TEMPLATE NOT FOUND: '.$this->getTemplate($view, '.html'));
         }
 
         // Die ViewData bereitstellen
-        $viewData =& $configurations->getViewData();
+        $viewData = &$configurations->getViewData();
         // Optional kann schon ein Subpart angegeben werden
         $subpart = $this->getMainSubpart($viewData);
         if (!empty($subpart)) {
             $templateCode = tx_rnbase_util_Templates::getSubpart($templateCode, $subpart);
             if (!strlen($templateCode)) {
                 tx_rnbase::load('tx_rnbase_util_Misc');
-                tx_rnbase_util_Misc::mayday('SUBPART NOT FOUND: ' . $subpart);
+                tx_rnbase_util_Misc::mayday('SUBPART NOT FOUND: '.$subpart);
             }
         }
 
@@ -105,10 +106,11 @@ class tx_rnbase_view_Base
     }
 
     /**
-     * render plugin data and additional flexdata
+     * render plugin data and additional flexdata.
      *
-     * @param string $templateCode
+     * @param string                                     $templateCode
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     *
      * @return string
      */
     protected function renderPluginData(
@@ -133,7 +135,7 @@ class tx_rnbase_view_Base
             (array) $configurations->getCObj()->data,
             // add some aditional columns, for example from the flexform od typoscript directly
             $configurations->getExploded(
-                $confId . 'plugin.flexdata.'
+                $confId.'plugin.flexdata.'
             )
         );
         // check for unused columns
@@ -145,7 +147,7 @@ class tx_rnbase_view_Base
         // create the marker array with the parsed columns
         $markerArray = $configurations->getFormatter()->getItemMarkerArrayWrapped(
             $pluginData,
-            $confId . 'plugin.',
+            $confId.'plugin.',
             $ignoreColumns,
             'PLUGIN_'
         );
@@ -154,7 +156,7 @@ class tx_rnbase_view_Base
     }
 
     /**
-     * Entry point for child classes
+     * Entry point for child classes.
      *
      * @param string                                     $template
      * @param ArrayObject                                $viewData
@@ -178,7 +180,7 @@ class tx_rnbase_view_Base
     public function getMainSubpart(&$viewData)
     {
         $subpart = $subpart = $this->getController()->getConfigurations()->get(
-            $this->getController()->getConfId() . 'template.subpart'
+            $this->getController()->getConfId().'template.subpart'
         );
 
         return empty($subpart) ? false : $subpart;
@@ -194,13 +196,13 @@ class tx_rnbase_view_Base
     }
 
     /**
-     * Set the path of the template directory
+     * Set the path of the template directory.
      *
      * You can make use the syntax EXT:myextension/somepath.
      * It will be evaluated to the absolute path by tx_rnbase_util_Files::getFileAbsFileName()
      *
      * @param string path to the directory containing the php templates
-     * @return void
+     *
      * @see intro text of this class above
      */
     public function setTemplatePath($pathToTemplates)
@@ -209,7 +211,7 @@ class tx_rnbase_view_Base
     }
 
     /**
-     * Set the used controller
+     * Set the used controller.
      *
      * @param tx_rnbase_action_BaseIOC $controller
      */
@@ -219,7 +221,7 @@ class tx_rnbase_view_Base
     }
 
     /**
-     * Returns the used controller
+     * Returns the used controller.
      *
      * @return tx_rnbase_action_BaseIOC
      */
@@ -234,7 +236,6 @@ class tx_rnbase_view_Base
      * You can make use the syntax EXT:myextension/template.php
      *
      * @param string path to the file used as templates
-     * @return void
      */
     public function setTemplateFile($templateFile)
     {
@@ -248,6 +249,7 @@ class tx_rnbase_view_Base
      *
      * @param string name of template
      * @param string file extension to use
+     *
      * @return complete filename of template
      */
     public function getTemplate($templateName, $extension = '.php', $forceAbsPath = 0)
@@ -256,7 +258,7 @@ class tx_rnbase_view_Base
             return ($forceAbsPath) ? tx_rnbase_util_Files::getFileAbsFileName($this->templateFile) : $this->templateFile;
         }
         $path = $this->pathToTemplates;
-        $path .= substr($path, -1, 1) == '/' ? $templateName : '/' . $templateName;
+        $path .= '/' == substr($path, -1, 1) ? $templateName : '/'.$templateName;
         $extLen = strlen($extension);
         $path .= substr($path, ($extLen * -1), $extLen) == $extension ? '' : $extension;
 

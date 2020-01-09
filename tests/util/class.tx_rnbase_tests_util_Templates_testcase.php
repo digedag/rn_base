@@ -30,15 +30,12 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_rnbase_util_Templates');
 
 /**
- * tests for tx_rnbase_util_Templates
+ * tests for tx_rnbase_util_Templates.
  *
- * @package TYPO3
- * @subpackage tx_rnbase
  * @author Rene Nitzsche <rene@system25.de>
  */
 class tx_rnbase_tests_util_Templates_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
      * @var array
      */
@@ -49,14 +46,12 @@ class tx_rnbase_tests_util_Templates_testcase extends tx_rnbase_tests_BaseTestCa
         $this->backup['getFileName_backPath'] = tx_rnbase_util_Templates::getTSTemplate()->getFileName_backPath;
         tx_rnbase_util_Templates::getTSTemplate()->getFileName_backPath = \Sys25\RnBase\Utility\Environment::getPublicPath();
     }
+
     public function tearDown()
     {
         tx_rnbase_util_Templates::getTSTemplate()->getFileName_backPath = $this->backup['getFileName_backPath'];
     }
 
-    /**
-     *
-     */
     public function notest_performanceSimpleMarker()
     {
         $this->setTTOn();
@@ -64,7 +59,7 @@ class tx_rnbase_tests_util_Templates_testcase extends tx_rnbase_tests_BaseTestCa
         $markerArr = array('###UID###' => 2, '###PID###' => 1, '###TITLE###' => 'My Titel 1');
         $timeStart = microtime(true);
         $memStart = memory_get_usage();
-        for ($i = 1; $i < $runs; $i++) {
+        for ($i = 1; $i < $runs; ++$i) {
             $markerArr['###UID###'] = $i;
             tx_rnbase_util_Templates::substituteMarkerArrayCached(self::$template, $markerArr);
         }
@@ -74,7 +69,7 @@ class tx_rnbase_tests_util_Templates_testcase extends tx_rnbase_tests_BaseTestCa
         $runs = 20000;
         $timeStart = microtime(true);
         $memStart = memory_get_usage();
-        for ($i = 1; $i < $runs; $i++) {
+        for ($i = 1; $i < $runs; ++$i) {
             $markerArr['###UID###'] = $i;
             tx_rnbase_util_Templates::substituteMarkerArrayCached(self::$template, $markerArr);
         }
@@ -83,15 +78,14 @@ class tx_rnbase_tests_util_Templates_testcase extends tx_rnbase_tests_BaseTestCa
 
         $results = array();
         $results['Serie 1'] = array('Info' => 'Timetrack on, Static MarkerArray', 'Time1' => $time1, 'Time2' => $time2,
-            'Mem1' => $memEnd1, 'Mem2' => $memEnd2);
-
+            'Mem1' => $memEnd1, 'Mem2' => $memEnd2, );
 
         $this->setTTOff();
         $runs = 10000;
         $markerArr = array('###UID###' => 2, '###PID###' => 1, '###TITLE###' => 'My Titel 1');
         $timeStart = microtime(true);
         $memStart = memory_get_usage();
-        for ($i = 1; $i < $runs; $i++) {
+        for ($i = 1; $i < $runs; ++$i) {
             $markerArr['###UID###'] = $i;
             tx_rnbase_util_Templates::substituteMarkerArrayCached(self::$template, $markerArr);
         }
@@ -101,14 +95,14 @@ class tx_rnbase_tests_util_Templates_testcase extends tx_rnbase_tests_BaseTestCa
         $runs = 20000;
         $timeStart = microtime(true);
         $memStart = memory_get_usage();
-        for ($i = 1; $i < $runs; $i++) {
+        for ($i = 1; $i < $runs; ++$i) {
             $markerArr['###UID###'] = $i;
             tx_rnbase_util_Templates::substituteMarkerArrayCached(self::$template, $markerArr);
         }
         $time2 = microtime(true) - $timeStart;
         $memEnd2 = memory_get_usage() - $memStart;
         $results['Serie 2'] = array('Info' => 'Timetrack off, Static MarkerArray', 'Time1' => $time1, 'Time2' => $time2,
-            'Mem1' => $memEnd1, 'Mem2' => $memEnd2);
+            'Mem1' => $memEnd1, 'Mem2' => $memEnd2, );
     }
 
     public function test_includeSubTemplates()
@@ -131,6 +125,7 @@ class tx_rnbase_tests_util_Templates_testcase extends tx_rnbase_tests_BaseTestCa
 
         $this->assertEquals($expected, $included);
     }
+
     public function test_substMarkerArrayCached()
     {
         $this->setTTOff();
@@ -149,15 +144,17 @@ class tx_rnbase_tests_util_Templates_testcase extends tx_rnbase_tests_BaseTestCa
 
         $this->assertEquals($exp, $cnt);
     }
+
     private function setTTOn()
     {
-        $GLOBALS['TT'] = new TimeTracker;
+        $GLOBALS['TT'] = new TimeTracker();
 
         $GLOBALS['TT']->start();
     }
+
     private function setTTOff()
     {
-        $GLOBALS['TT'] = new NullTimeTracker;
+        $GLOBALS['TT'] = new NullTimeTracker();
         $GLOBALS['TT']->start();
     }
 

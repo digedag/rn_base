@@ -24,17 +24,18 @@
 
 tx_rnbase::load('tx_rnbase_util_SearchBase');
 
-
 interface tx_rnbase_IFilterItem
 {
     /**
-     * Returns the name of item
+     * Returns the name of item.
+     *
      * @return string
      */
     public function getName();
 
     /**
-     * Returns the current value
+     * Returns the current value.
+     *
      * @return string
      */
     public function getValue();
@@ -43,33 +44,39 @@ interface tx_rnbase_IFilterItem
 class tx_rnbase_filter_FilterItem implements tx_rnbase_IFilterItem
 {
     public $record;
+
     public function __construct($name, $value)
     {
         $this->record = array();
         $this->setName($name);
         $this->setValue($value);
     }
+
     /**
-     * Returns the name of item
+     * Returns the name of item.
+     *
      * @return string
      */
     public function getName()
     {
         return $this->record['name'];
     }
+
     public function setName($name)
     {
         $this->record['name'] = $name;
     }
 
     /**
-     * Returns the current value
+     * Returns the current value.
+     *
      * @return string
      */
     public function getValue()
     {
         return $this->record['value'];
     }
+
     public function setValue($value)
     {
         $this->record['value'] = $value;

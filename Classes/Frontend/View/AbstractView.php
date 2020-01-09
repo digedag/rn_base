@@ -1,4 +1,5 @@
 <?php
+
 namespace Sys25\RnBase\Frontend\View;
 
 /***************************************************************
@@ -24,21 +25,19 @@ namespace Sys25\RnBase\Frontend\View;
 * This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-/**
- */
 abstract class AbstractView
 {
     protected $pathToTemplates;
+
     protected $templateFile;
 
     /**
-     * Set the path of the template directory
+     * Set the path of the template directory.
      *
      * You can make use the syntax EXT:myextension/somepath.
      * It will be evaluated to the absolute path by tx_rnbase_util_Files::getFileAbsFileName()
      *
      * @param string path to the directory containing the php templates
-     * @return void
      */
     public function setTemplatePath($pathToTemplates)
     {
@@ -51,7 +50,6 @@ abstract class AbstractView
      * You can make use the syntax EXT:myextension/template.php
      *
      * @param string path to the file used as templates
-     * @return void
      */
     public function setTemplateFile($templateFile)
     {
@@ -65,6 +63,7 @@ abstract class AbstractView
      *
      * @param string name of template
      * @param string file extension to use
+     *
      * @return string complete filename of template
      */
     public function getTemplate($templateName, $extension = '.php', $forceAbsPath = 0)
@@ -73,7 +72,7 @@ abstract class AbstractView
             return ($forceAbsPath) ? \tx_rnbase_util_Files::getFileAbsFileName($this->templateFile) : $this->templateFile;
         }
         $path = $this->pathToTemplates;
-        $path .= substr($path, -1, 1) == '/' ? $templateName : '/' . $templateName;
+        $path .= '/' == substr($path, -1, 1) ? $templateName : '/'.$templateName;
         $extLen = strlen($extension);
         $path .= substr($path, ($extLen * -1), $extLen) == $extension ? '' : $extension;
 

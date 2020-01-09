@@ -25,7 +25,7 @@
 tx_rnbase::load('tx_rnbase_plot_IDataProvider');
 
 /**
- * Data provider for plots configured by Typoscript
+ * Data provider for plots configured by Typoscript.
  */
 class tx_rnbase_plot_DataProviderTS implements tx_rnbase_plot_IDataProvider
 {
@@ -35,7 +35,8 @@ class tx_rnbase_plot_DataProviderTS implements tx_rnbase_plot_IDataProvider
     }
 
     /**
-     * Returns the dataset
+     * Returns the dataset.
+     *
      * @return tx_rnbase_plot_IDataSetXY
      */
     public function getDataSets($confArr, $plotType)
@@ -45,8 +46,10 @@ class tx_rnbase_plot_DataProviderTS implements tx_rnbase_plot_IDataProvider
 
     /**
      * Returns the style for each data set. This is either an instance of tx_pbimagegraph_Fill_Array or
-     * a simple php array with style data
+     * a simple php array with style data.
+     *
      * @param $confArr
+     *
      * @return tx_pbimagegraph_Fill_Array
      */
     public function getDataStyles($plotId, $confArr)
@@ -67,12 +70,14 @@ class tx_rnbase_plot_DataProviderTS implements tx_rnbase_plot_IDataProvider
                     case 'addColor':
                         $strColor = $arrConf[$strKey.'.']['color'];
                         $objFillStyle->addColor($strColor, $strId);
+
                         break;
                     case 'gradient':
                         $intDirection = tx_rnbase_plot_Builder::readConstant('IMAGE_GRAPH_GRAD_'.strtoupper($arrConf[$strKey.'.']['direction']));
                         $strStartColor = $arrConf[$strKey.'.']['startColor'];
                         $strEndColor = $arrConf[$strKey.'.']['endColor'];
                         $objFillStyle->addNew('gradient', array($intDirection, $strStartColor, $strEndColor), $strId);
+
                         break;
                 }
             }
@@ -82,10 +87,11 @@ class tx_rnbase_plot_DataProviderTS implements tx_rnbase_plot_IDataProvider
     }
 
     /**
-     * Read the datasets
+     * Read the datasets.
      *
      * @param   array       The array with TypoScript properties for the object
-     * @return  object      The Dataset object
+     *
+     * @return object The Dataset object
      */
     private function readDatasets($arrConf)
     {
@@ -100,12 +106,14 @@ class tx_rnbase_plot_DataProviderTS implements tx_rnbase_plot_IDataProvider
                     switch ($strValue) {
                         case 'trivial':
                             $objDatasets[$intCount] = $this->datasetTrivial($arrConf[$strKey.'.']);
+
                             break;
                         case 'random':
                             $objDatasets[$intCount] = $this->datasetRandom($arrConf[$strKey.'.']);
+
                             break;
                     }
-                    $intCount++;
+                    ++$intCount;
                 }
             }
         }
@@ -114,14 +122,14 @@ class tx_rnbase_plot_DataProviderTS implements tx_rnbase_plot_IDataProvider
     }
 
     /**
-     * Set a single trivial dataset
+     * Set a single trivial dataset.
      *
      * @param   object      The parent Dataset object
      * @param   array       The array with TypoScript properties for the object
      */
     private function datasetTrivial($arrConf)
     {
-        $dataSet =& tx_pbimagegraph::factory('dataset');
+        $dataSet = &tx_pbimagegraph::factory('dataset');
         if (is_array($arrConf)) {
             $strName = $arrConf['name'];
             $dataSet->setName($strName);
@@ -130,9 +138,9 @@ class tx_rnbase_plot_DataProviderTS implements tx_rnbase_plot_IDataProvider
             foreach ($arrKeys as $strKey) {
                 $strValue = $arrConf[$strKey];
                 if (intval($strKey) && !strstr($strKey, '.')) {
-                    if ($strValue == 'point') {
+                    if ('point' == $strValue) {
                         $mixX = $arrConf[$strKey.'.']['x'];
-                        if ($arrConf[$strKey.'.']['y'] == 'null') {
+                        if ('null' == $arrConf[$strKey.'.']['y']) {
                             $mixY = null;
                         } elseif (is_array($arrConf[$strKey.'.']['y.'])) {
                             $mixY = $arrConf[$strKey.'.']['y.'];
@@ -150,17 +158,18 @@ class tx_rnbase_plot_DataProviderTS implements tx_rnbase_plot_IDataProvider
     }
 
     /**
-     * Create a single random dataset
+     * Create a single random dataset.
      *
      * @param   array       The array with TypoScript properties for the object
-     * @return  object      Single dataset
+     *
+     * @return object Single dataset
      */
     private function datasetRandom($arrConf)
     {
         $intCount = $arrConf['count'];
         $intMinimum = $arrConf['minimum'];
         $intMaximum = $arrConf['maximum'];
-        $boolIncludeZero = $arrConf['includeZero'] == 'true' ? true : false;
+        $boolIncludeZero = 'true' == $arrConf['includeZero'] ? true : false;
         $strName = $arrConf['name'];
         $objRandom = tx_pbimagegraph::factory('random', array($intCount, $intMinimum, $intMaximum, $boolIncludeZero));
         $objRandom->setName($strName);

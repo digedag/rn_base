@@ -22,12 +22,9 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 tx_rnbase::load('tx_rnbase_util_Logger');
 tx_rnbase::load('tx_rnbase_util_Strings');
-
-
 
 /**
  * Encapsulate simple mailing functionality of TYPO3 for backward compatibility.
@@ -35,54 +32,59 @@ tx_rnbase::load('tx_rnbase_util_Strings');
 class tx_rnbase_util_Mail
 {
     private $attachments = array();
+
     private $from;
+
     private $fromName;
+
     private $replyTo;
+
     private $replyToName;
 
-    /**
-     */
     public function __construct()
     {
     }
 
-    /**
-     * @return void
-     */
     public function send()
     {
         $this->send45();
     }
+
     public function setSubject($subject)
     {
         $this->subject = $subject;
     }
+
     /**
-     *
      * @param string $emails kommaseparierter String mit Mailadressen
      */
     public function setTo($emails)
     {
         $this->toAsString = $emails;
     }
+
     public function setFrom($email, $name = '')
     {
         $this->from = $email;
         $this->fromName = $name;
     }
+
     public function setReplyTo($email, $name = null)
     {
         $this->replyTo = $email;
         $this->replyToName = $name;
     }
+
     public function setTextPart($part)
     {
         $this->textPart = $part;
     }
+
     public function setHtmlPart($part)
     {
         $this->htmlPart = $part;
     }
+
     public function addAttachment($src, $filename = '', $contentType = '')
     {
         $this->attachments[] = array('src' => $src, 'filename' => $filename, 'contentType' => $contentType);

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  Copyright notice
+ *  Copyright notice.
  *
  *  (c) 2011 René Nitzsche <rene@system25.de>
  *  All rights reserved
@@ -27,30 +27,30 @@
  * Base service class
  * Class was originally written by Lars Heber for extension mklib.
  *
- * @package tx_rnbase
- * @subpackage tx_rnbase_sv1
  * @author René Nitzsche, Lars Heber, Michael Wagner
  */
 abstract class tx_rnbase_sv1_Base extends \Sys25\RnBase\Typo3Wrapper\Service\AbstractService
 {
-
     // 0: Hide record; 1: Soft-delete (via "deleted" field) record; 2: Really DELETE
     const DELETION_MODE_HIDE = 0;
+
     const DELETION_MODE_SOFTDELETE = 1;
+
     const DELETION_MODE_REALLYDELETE = 2;
 
     /**
-     * Return name of search class
+     * Return name of search class.
      *
      * @return string
      */
     abstract public function getSearchClass();
 
     /**
-     * Search database
+     * Search database.
      *
      * @param array $fields
      * @param array $options
+     *
      * @return array[Tx_Rnbase_Domain_Model_RecordInterface]
      */
     public function search($fields, $options)
@@ -61,9 +61,10 @@ abstract class tx_rnbase_sv1_Base extends \Sys25\RnBase\Typo3Wrapper\Service\Abs
     }
 
     /**
-     * Search the item for the given uid
+     * Search the item for the given uid.
      *
      * @param int $ct
+     *
      * @return Tx_Rnbase_Domain_Model_RecordInterface
      */
     public function get($uid)
@@ -74,7 +75,7 @@ abstract class tx_rnbase_sv1_Base extends \Sys25\RnBase\Typo3Wrapper\Service\Abs
     }
 
     /**
-     * Find all records
+     * Find all records.
      *
      * @return array[Tx_Rnbase_Domain_Model_RecordInterface]
      */
@@ -83,21 +84,19 @@ abstract class tx_rnbase_sv1_Base extends \Sys25\RnBase\Typo3Wrapper\Service\Abs
         return $this->search(array(), array());
     }
 
-
     /************************
      * Manipulation methods *
      ************************/
 
-
     /**
-     * Dummy model instance
+     * Dummy model instance.
      *
      * @var Tx_Rnbase_Domain_Model_RecordInterface
      */
     private $dummyModel;
 
     /**
-     * Return an instantiated dummy model without any content
+     * Return an instantiated dummy model without any content.
      *
      * This is used only to access several model info methods like
      * getTableName(), getColumnNames() etc.
@@ -115,11 +114,12 @@ abstract class tx_rnbase_sv1_Base extends \Sys25\RnBase\Typo3Wrapper\Service\Abs
     }
 
     /**
-     * Create a new record
+     * Create a new record.
      *
-     * @param array     $data
-     * @param string    $table
-     * @return int  UID of just created record
+     * @param array  $data
+     * @param string $table
+     *
+     * @return int UID of just created record
      */
     public function create(array $data)
     {
@@ -136,15 +136,16 @@ abstract class tx_rnbase_sv1_Base extends \Sys25\RnBase\Typo3Wrapper\Service\Abs
     }
 
     /**
-     * Save model with new data
+     * Save model with new data.
      *
      * Overwrite this method to specify a specialised method signature,
      * and just call THIS method via parent::handleUpdate().
      * Additionally, the deriving implementation may perform further checks etc.
      *
-     * @param Tx_Rnbase_Domain_Model_RecordInterface $model This model is being updated.
-     * @param array $data New data
-     * @param string $where Override default restriction by defining an explicite where clause
+     * @param Tx_Rnbase_Domain_Model_RecordInterface $model this model is being updated
+     * @param array                                  $data  New data
+     * @param string                                 $where Override default restriction by defining an explicite where clause
+     *
      * @return Tx_Rnbase_Domain_Model_RecordInterface Updated model
      */
     public function handleUpdate(Tx_Rnbase_Domain_Model_RecordInterface $model, array $data, $where = '')
@@ -153,7 +154,7 @@ abstract class tx_rnbase_sv1_Base extends \Sys25\RnBase\Typo3Wrapper\Service\Abs
         $uid = intval($model->getUid());
 
         if (!$where) {
-            $where = '1=1 AND `'.$table . '`.`uid`='.$uid;
+            $where = '1=1 AND `'.$table.'`.`uid`='.$uid;
         }
 
         // remove uid if exists
@@ -170,13 +171,13 @@ abstract class tx_rnbase_sv1_Base extends \Sys25\RnBase\Typo3Wrapper\Service\Abs
     }
 
     /**
-     * Wrapper for actual deletion
+     * Wrapper for actual deletion.
      *
      * Delete records according to given ready-constructed "where" condition and deletion mode
      *
-     * @param string    $table
-     * @param string    $where      Ready-to-use where condition containing uid restriction
-     * @param int       $mode       @see self::handleDelete()
+     * @param string $table
+     * @param string $where Ready-to-use where condition containing uid restriction
+     * @param int    $mode  @see self::handleDelete()
      */
     protected function delete($table, $where, $mode)
     {
@@ -193,6 +194,7 @@ abstract class tx_rnbase_sv1_Base extends \Sys25\RnBase\Typo3Wrapper\Service\Abs
                 //else
                 $data = array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] => 1);
                 tx_rnbase_util_DB::doUpdate($table, $where, self::insertTimestamp($data, $table));
+
                 break;
 
                 // Soft-delete model
@@ -205,11 +207,13 @@ abstract class tx_rnbase_sv1_Base extends \Sys25\RnBase\Typo3Wrapper\Service\Abs
                 //else
                 $data = array($GLOBALS['TCA'][$table]['ctrl']['delete'] => 1);
                 tx_rnbase_util_DB::doUpdate($table, $where, self::insertTimestamp($data, $table));
+
                 break;
 
                 // Really hard-delete model
             case self::DELETION_MODE_REALLYDELETE:
                 tx_rnbase_util_DB::doDelete($table, $where);
+
                 break;
 
             default:
@@ -218,17 +222,18 @@ abstract class tx_rnbase_sv1_Base extends \Sys25\RnBase\Typo3Wrapper\Service\Abs
     }
 
     /**
-     * Delete one model
+     * Delete one model.
      *
      * Overwrite this method to specify a specialised method signature,
      * and just call THIS method via parent::handleDelete().
      * Additionally, the deriving implementation may perform further checks etc.
      *
-     * @param Tx_Rnbase_Domain_Model_RecordInterface $model This model is being updated.
-     * @param string $where Override default restriction by defining an explicite where clause
-     * @param int $mode Deletion mode with the following options: 0: Hide record; 1: Soft-delete (via "deleted" field) record; 2: Really DELETE record.
-     * @param int $table Wenn eine Tabelle angegeben wird, wird die des Models missachtet (wichtig für temp anzeigen)
-     * @return Tx_Rnbase_Domain_Model_RecordInterface Updated (on success actually empty) model.
+     * @param Tx_Rnbase_Domain_Model_RecordInterface $model this model is being updated
+     * @param string                                 $where Override default restriction by defining an explicite where clause
+     * @param int                                    $mode  deletion mode with the following options: 0: Hide record; 1: Soft-delete (via "deleted" field) record; 2: Really DELETE record
+     * @param int                                    $table Wenn eine Tabelle angegeben wird, wird die des Models missachtet (wichtig für temp anzeigen)
+     *
+     * @return Tx_Rnbase_Domain_Model_RecordInterface updated (on success actually empty) model
      */
     public function handleDelete(Tx_Rnbase_Domain_Model_RecordInterface $model, $where = '', $mode = 0, $table = null)
     {
@@ -250,7 +255,7 @@ abstract class tx_rnbase_sv1_Base extends \Sys25\RnBase\Typo3Wrapper\Service\Abs
     }
 
     /**
-     * Einen Datensatz in der DB anlegen
+     * Einen Datensatz in der DB anlegen.
      *
      * Diese Methode kann in Child-Klassen einfach überschrieben werden um zusätzliche Funktionen
      * zu implementieren. Dann natürlich nicht vergessen diese Methode via parent::handleCreation()
@@ -274,13 +279,13 @@ abstract class tx_rnbase_sv1_Base extends \Sys25\RnBase\Typo3Wrapper\Service\Abs
      * ******************************************************
      */
 
-
     /**
-     * Insert crdate and timestamp into correct field (gotten from TCA)
+     * Insert crdate and timestamp into correct field (gotten from TCA).
      *
-     * @param   array   $data
-     * @param   string  $tablename
-     * @return  array
+     * @param array  $data
+     * @param string $tablename
+     *
+     * @return array
      */
     protected static function insertCrdateAndTimestamp($data, $tablename)
     {
@@ -296,11 +301,12 @@ abstract class tx_rnbase_sv1_Base extends \Sys25\RnBase\Typo3Wrapper\Service\Abs
     }
 
     /**
-     * Insert timestamp into correct field (gotten from TCA)
+     * Insert timestamp into correct field (gotten from TCA).
      *
-     * @param   array   $data
-     * @param   string  $tablename
-     * @return  array
+     * @param array  $data
+     * @param string $tablename
+     *
+     * @return array
      */
     private static function insertTimestamp($data, $tablename)
     {

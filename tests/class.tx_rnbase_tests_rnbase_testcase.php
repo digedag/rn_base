@@ -22,7 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 class tx_rnbase_tests_rnbase_testcase extends tx_rnbase_tests_BaseTestCase
 {
     public function test_makeInstanceSimpleObject()
@@ -30,6 +29,7 @@ class tx_rnbase_tests_rnbase_testcase extends tx_rnbase_tests_BaseTestCase
         $obj = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
         $this->assertTrue(is_object($obj), 'Object not instantiated');
     }
+
     public function test_makeInstanceObjectWithParameters()
     {
         $obj = tx_rnbase::makeInstance('tx_rnbase_filter_FilterItem', 'name', 'value');
@@ -37,8 +37,7 @@ class tx_rnbase_tests_rnbase_testcase extends tx_rnbase_tests_BaseTestCase
         $this->assertEquals($obj->record['name'], 'name', 'Attribute not set');
         $this->assertEquals($obj->record['value'], 'value', 'Attribute not set');
     }
-    /**
-     */
+
     public function testMakeInstanceOfExtBaseClass()
     {
         if (!$this->isExtBasePossible()) {
@@ -47,6 +46,7 @@ class tx_rnbase_tests_rnbase_testcase extends tx_rnbase_tests_BaseTestCase
         $obj = tx_rnbase::makeInstance('Tx_T3sponsors_Domain_Model_Category');
         $this->assertTrue(is_object($obj), 'Object not instantiated');
     }
+
     private function isExtBasePossible()
     {
         tx_rnbase::load('tx_rnbase_util_TYPO3');

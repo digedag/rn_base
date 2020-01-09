@@ -26,17 +26,14 @@ tx_rnbase::load('Tx_Rnbase_Domain_Repository_AbstractRepository');
 tx_rnbase::load('Tx_Rnbase_Domain_Repository_InterfacePersistence');
 
 /**
- * Abstracte Persistance Repository
+ * Abstracte Persistance Repository.
  *
- * @package TYPO3
- * @subpackage Tx_Rnbase
  * @author Michael Wagner
  */
 abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnbase_Domain_Repository_InterfacePersistence
 {
-
     /**
-     * Creates an new model instance
+     * Creates an new model instance.
      *
      * @param array $record
      *
@@ -49,7 +46,7 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
     }
 
     /**
-     * Check the model wor the right instance
+     * Check the model wor the right instance.
      *
      * @param mixed $model
      *
@@ -59,18 +56,16 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
     {
         $wrapperClass = $this->getWrapperClass();
 
-        return ($model instanceof $wrapperClass);
+        return $model instanceof $wrapperClass;
     }
 
     /**
-     * Persists an model
+     * Persists an model.
      *
      * @param Tx_Rnbase_Domain_Model_DomainInterface $model
-     * @param array|Tx_Rnbase_Domain_Model_Data $options
+     * @param array|Tx_Rnbase_Domain_Model_Data      $options
      *
      * @throws Exception
-     *
-     * @return void
      */
     public function persist(
         Tx_Rnbase_Domain_Model_DomainInterface $model,
@@ -81,11 +76,7 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
 
         // check for right instance
         if (!$this->isModelWrapperClass($model)) {
-            throw new Exception(
-                get_class($this) . '->persist only allows' .
-                ' handling instances of "' . $this->getWrapperClass() . '"' .
-                ', but "' . get_class($model) . '" given!'
-            );
+            throw new Exception(get_class($this).'->persist only allows'.' handling instances of "'.$this->getWrapperClass().'"'.', but "'.get_class($model).'" given!');
         }
 
         // nothing todo, if the model has no changes
@@ -112,9 +103,7 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
         if (empty($data)) {
             // throw an exception for new models
             if (!$model->isPersisted()) {
-                throw new Exception(
-                    'There is no data in "' . get_class($model) . '" to persist.'
-                );
+                throw new Exception('There is no data in "'.get_class($model).'" to persist.');
             }
 
             return;
@@ -143,11 +132,9 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
     }
 
     /**
-     * Bring db entry up to date
+     * Bring db entry up to date.
      *
      * @param Tx_Rnbase_Domain_Model_Data $transport
-     *
-     * @return void
      */
     private function persistUpdate(
         Tx_Rnbase_Domain_Model_Data $transport
@@ -157,7 +144,7 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
         // update the entity with the raw uid
         $this->getConnection()->doUpdate(
             $transport->getTableName(),
-            'uid=' . (int) $model->getProperty('uid'),
+            'uid='.(int) $model->getProperty('uid'),
             $transport->getData()
         );
 
@@ -165,11 +152,9 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
     }
 
     /**
-     * Creates a new entry in the db
+     * Creates a new entry in the db.
      *
      * @param Tx_Rnbase_Domain_Model_Data $transport
-     *
-     * @return void
      */
     private function persistNew(
         Tx_Rnbase_Domain_Model_Data $transport
@@ -202,14 +187,12 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
     }
 
     /**
-     * Refres the model with data after db operation and reset dirty flag
+     * Refres the model with data after db operation and reset dirty flag.
      *
      * @param Tx_Rnbase_Domain_Model_DomainInterface $model
-     * @param array $data
+     * @param array                                  $data
      *
      * @TODO there is curently no interface for a reset, implement one!
-     *
-     * @return void
      */
     protected function refreshModelData(
         Tx_Rnbase_Domain_Model_DomainInterface $model,
@@ -235,7 +218,7 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
     }
 
     /**
-     * Returns the properties of the model, cleaned by the configured tca columns
+     * Returns the properties of the model, cleaned by the configured tca columns.
      *
      * @param Tx_Rnbase_Domain_Model_DomainInterface $model
      *
@@ -273,7 +256,7 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
     }
 
     /**
-     * The database connection
+     * The database connection.
      *
      * @return Tx_Rnbase_Database_Connection
      */

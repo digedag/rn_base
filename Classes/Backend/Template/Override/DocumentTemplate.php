@@ -31,12 +31,15 @@ class Tx_Rnbase_Backend_Template_Override_Doc extends TYPO3\CMS\Backend\Template
 class Tx_Rnbase_Backend_Template_Override_DocumentTemplate extends Tx_Rnbase_Backend_Template_Override_Doc
 {
     const STATE_OK = -1;
+
     const STATE_NOTICE = 1;
+
     const STATE_WARNING = 2;
+
     const STATE_ERROR = 3;
 
     /**
-     * Override deprecated and removed method
+     * Override deprecated and removed method.
      */
     public function getPageRenderer()
     {
@@ -44,8 +47,10 @@ class Tx_Rnbase_Backend_Template_Override_DocumentTemplate extends Tx_Rnbase_Bac
             return $this->pageRenderer;
         } elseif (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
             $this->initPageRenderer();
+
             return $this->pageRenderer;
         }
+
         return parent::getPageRenderer();
     }
 
@@ -56,19 +61,21 @@ class Tx_Rnbase_Backend_Template_Override_DocumentTemplate extends Tx_Rnbase_Bac
      * *** ************************************************ *** */
 
     /**
-     * Creates a tab menu from an array definition
+     * Creates a tab menu from an array definition.
      *
      * Returns a tab menu for a module
      * Requires the JS function jumpToUrl() to be available
      *
-     * @param mixed $mainParams is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
-     * @param string $elementName it the form elements name, probably something like "SET[...]
-     * @param string $currentValue is the value to be selected currently.
-     * @param array $menuItems is an array with the menu items for the selector box
-     * @param string $script is the script to send the &id to, if empty it's automatically found
-     * @param string $addparams is additional parameters to pass to the script.
+     * @param mixed  $mainParams   is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
+     * @param string $elementName  it the form elements name, probably something like "SET[...]
+     * @param string $currentValue is the value to be selected currently
+     * @param array  $menuItems    is an array with the menu items for the selector box
+     * @param string $script       is the script to send the &id to, if empty it's automatically found
+     * @param string $addparams    is additional parameters to pass to the script
+     *
      * @return string HTML code for tab menu
-     * @deprecated in Core since TYPO3 CMS 8, was removed from Core in TYPO3 CMS 9.
+     *
+     * @deprecated in Core since TYPO3 CMS 8, was removed from Core in TYPO3 CMS 9
      */
     public function getTabMenu($mainParams, $elementName, $currentValue, $menuItems, $script = '', $addparams = '')
     {
@@ -83,21 +90,22 @@ class Tx_Rnbase_Backend_Template_Override_DocumentTemplate extends Tx_Rnbase_Bac
             }
             $menuDef = [];
             foreach ($menuItems as $value => $label) {
-                $menuDef[$value]['isActive'] = (string)$currentValue === (string)$value;
+                $menuDef[$value]['isActive'] = (string) $currentValue === (string) $value;
                 $menuDef[$value]['label'] = htmlspecialchars($label, ENT_COMPAT, 'UTF-8', false);
-                $menuDef[$value]['url'] = $script . '?' . $mainParams . $addparams . '&' . $elementName . '=' . $value;
+                $menuDef[$value]['url'] = $script.'?'.$mainParams.$addparams.'&'.$elementName.'='.$value;
             }
             $content = $this->getTabMenuRaw($menuDef);
         }
+
         return $content;
     }
 
     /**
-     * Creates the HTML content for the tab menu
+     * Creates the HTML content for the tab menu.
      *
      * @param array $menuItems Menu items for tabs
+     *
      * @return string Table HTML
-     * @access private
      */
     public function getTabMenuRaw($menuItems)
     {
@@ -110,35 +118,40 @@ class Tx_Rnbase_Backend_Template_Override_DocumentTemplate extends Tx_Rnbase_Bac
             $label = $def['label'];
             $url = htmlspecialchars($def['url']);
             $params = $def['addParams'];
-            $options .= '<li class="' . $class . '">' . '<a href="' . $url . '" ' . $params . '>' . $label . '</a>' . '</li>';
+            $options .= '<li class="'.$class.'">'.'<a href="'.$url.'" '.$params.'>'.$label.'</a>'.'</li>';
         }
-        return '<ul class="nav nav-tabs" role="tablist">' . $options . '</ul>';
+
+        return '<ul class="nav nav-tabs" role="tablist">'.$options.'</ul>';
     }
 
     /**
-     * Returns a blank <div>-section with a height
+     * Returns a blank <div>-section with a height.
      *
-     * @param integer $dist Padding-top for the div-section (should be margin-top but konqueror (3.1) doesn't like it :-(
+     * @param int $dist Padding-top for the div-section (should be margin-top but konqueror (3.1) doesn't like it :-(
+     *
      * @return string HTML content
+     *
      * @todo Define visibility
      */
     public function spacer($dist)
     {
         if ($dist > 0) {
-            return '<!-- Spacer element --><div style="padding-top: ' . (int)$dist . 'px;"></div>';
+            return '<!-- Spacer element --><div style="padding-top: '.(int) $dist.'px;"></div>';
         }
     }
 
     /**
-     * Begins an output section and sets header and content
+     * Begins an output section and sets header and content.
      *
-     * @param string $label The header
-     * @param string $text The HTML-content
-     * @param bool $nostrtoupper	A flag that will prevent the header from being converted to uppercase
-     * @param bool $sH Defines the type of header (if set, "<h3>" rather than the default "h4")
-     * @param int $type The number of an icon to show with the header (see the icon-function). -1,1,2,3
-     * @param bool $allowHTMLinHeader If set, HTML tags are allowed in $label (otherwise this value is by default htmlspecialchars()'ed)
+     * @param string $label             The header
+     * @param string $text              The HTML-content
+     * @param bool   $nostrtoupper      A flag that will prevent the header from being converted to uppercase
+     * @param bool   $sH                Defines the type of header (if set, "<h3>" rather than the default "h4")
+     * @param int    $type              The number of an icon to show with the header (see the icon-function). -1,1,2,3
+     * @param bool   $allowHTMLinHeader If set, HTML tags are allowed in $label (otherwise this value is by default htmlspecialchars()'ed)
+     *
      * @return string HTML content
+     *
      * @see icons(), sectionHeader()
      */
     public function section($label, $text, $nostrtoupper = false, $sH = false, $type = 0, $allowHTMLinHeader = false)
@@ -148,46 +161,46 @@ class Tx_Rnbase_Backend_Template_Override_DocumentTemplate extends Tx_Rnbase_Bac
         }
         $title = $label;
         $message = $text;
-        $disableIcon = $type == 0;
+        $disableIcon = 0 == $type;
 
         $classes = [
             self::STATE_NOTICE => 'info',
             self::STATE_OK => 'success',
             self::STATE_WARNING => 'warning',
-            self::STATE_ERROR => 'danger'
+            self::STATE_ERROR => 'danger',
         ];
         $icons = [
             self::STATE_NOTICE => 'lightbulb-o',
             self::STATE_OK => 'check',
             self::STATE_WARNING => 'exclamation',
-            self::STATE_ERROR => 'times'
+            self::STATE_ERROR => 'times',
         ];
         $stateClass = isset($classes[$type]) ? $classes[$type] : null;
         $icon = isset($icons[$type]) ? $icons[$type] : null;
         $iconTemplate = '';
         if (!$disableIcon) {
-            $iconTemplate = '' .
-                '<div class="media-left">' .
-                  '<span class="fa-stack fa-lg callout-icon">' .
-                    '<i class="fa fa-circle fa-stack-2x"></i>' .
-                    '<i class="fa fa-' . htmlspecialchars($icon) . ' fa-stack-1x"></i>' .
-                  '</span>' .
+            $iconTemplate = ''.
+                '<div class="media-left">'.
+                  '<span class="fa-stack fa-lg callout-icon">'.
+                    '<i class="fa fa-circle fa-stack-2x"></i>'.
+                    '<i class="fa fa-'.htmlspecialchars($icon).' fa-stack-1x"></i>'.
+                  '</span>'.
                 '</div>';
         }
         $titleTemplate = '';
-        if ($title !== null) {
+        if (null !== $title) {
             $title = $allowHTMLinHeader ? $title : htmlspecialchars($title);
-            $titleTemplate = '<h4 class="callout-title">' . $title . '</h4>';
+            $titleTemplate = '<h4 class="callout-title">'.$title.'</h4>';
         }
 
-        return '<div class="callout callout-' . htmlspecialchars($stateClass) . '">' .
-                 '<div class="media">' .
-                    $iconTemplate .
-                   '<div class="media-body">' .
-                     $titleTemplate .
-                   '<div class="callout-body">' . $message . '</div>' .
-                   '</div>' .
-                 '</div>' .
+        return '<div class="callout callout-'.htmlspecialchars($stateClass).'">'.
+                 '<div class="media">'.
+                    $iconTemplate.
+                   '<div class="media-body">'.
+                     $titleTemplate.
+                   '<div class="callout-body">'.$message.'</div>'.
+                   '</div>'.
+                 '</div>'.
                '</div>';
     }
 }

@@ -25,10 +25,8 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('Tx_Rnbase_Utility_Cache');
 
 /**
- * Tx_Rnbase_Utility_MailTest
+ * Tx_Rnbase_Utility_MailTest.
  *
- * @package         TYPO3
- * @subpackage      Tx_Rnbase
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
@@ -41,7 +39,8 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
     private $encryptionKeyBackup;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()
@@ -63,7 +62,8 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
     protected function tearDown()
@@ -96,7 +96,7 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
         );
 
         self::assertSame(['john', 'doe'], $excludedParameters);
-        self::assertSame(['john' ,'doe'], $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters']);
+        self::assertSame(['john', 'doe'], $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters']);
     }
 
     /**

@@ -23,21 +23,17 @@
  ***************************************************************/
 
 /**
- * Persistence Interface
+ * Persistence Interface.
  *
- * @package TYPO3
- * @subpackage Tx_Rnbase
  * @author Michael Wagner
  */
 interface Tx_Rnbase_Domain_Repository_InterfacePersistence
 {
     /**
-     * Persists an model
+     * Persists an model.
      *
-     * @param Tx_Rnbase_Domain_Model_DomainInterface $model The model to persist
-     * @param array|Tx_Rnbase_Domain_Model_Data $options Some options for the process
-     *
-     * @return void
+     * @param Tx_Rnbase_Domain_Model_DomainInterface $model   The model to persist
+     * @param array|Tx_Rnbase_Domain_Model_Data      $options Some options for the process
      */
     public function persist(
         Tx_Rnbase_Domain_Model_DomainInterface $model,

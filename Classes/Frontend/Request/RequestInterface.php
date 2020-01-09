@@ -28,30 +28,28 @@ use Sys25\RnBase\Frontend\View\ContextInterface;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
- * Interface for request
+ * Interface for request.
  */
 interface RequestInterface
 {
     /**
      * @return ParametersInterface
      */
-    public function getParameters():ParametersInterface;
+    public function getParameters(): ParametersInterface;
 
     /**
      * @return ConfigurationInterface
      */
-    public function getConfigurations():ConfigurationInterface;
+    public function getConfigurations(): ConfigurationInterface;
 
     /**
      * @return string
      */
-    public function getConfId():string;
+    public function getConfId(): string;
 
     /**
-     *
      * @return ContextInterface
      */
-    public function getViewContext():ContextInterface;
+    public function getViewContext(): ContextInterface;
 }

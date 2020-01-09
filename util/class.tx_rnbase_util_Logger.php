@@ -31,57 +31,71 @@ tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 class tx_rnbase_util_Logger
 {
     private static $minLog = false;
+
     const LOGLEVEL_DEBUG = -1;
+
     const LOGLEVEL_INFO = 0;
+
     const LOGLEVEL_NOTICE = 1;
+
     const LOGLEVEL_WARN = 2;
+
     const LOGLEVEL_FATAL = 3;
 
     /**
-     * Log a debug message
+     * Log a debug message.
+     *
      * @param string $msg
      * @param string $extKey
-     * @param mixed $dataVar
+     * @param mixed  $dataVar
      */
     public static function debug($msg, $extKey, $dataVar = false)
     {
         self::devLog($msg, $extKey, -1, $dataVar);
     }
+
     /**
-     * Log a notice
+     * Log a notice.
+     *
      * @param string $msg
      * @param string $extKey
-     * @param mixed $dataVar
+     * @param mixed  $dataVar
      */
     public static function info($msg, $extKey, $dataVar = false)
     {
         self::devLog($msg, $extKey, 0, $dataVar);
     }
+
     /**
-     * Log a notice
+     * Log a notice.
+     *
      * @param string $msg
      * @param string $extKey
-     * @param mixed $dataVar
+     * @param mixed  $dataVar
      */
     public static function notice($msg, $extKey, $dataVar = false)
     {
         self::devLog($msg, $extKey, 1, $dataVar);
     }
+
     /**
-     * Log a warning
+     * Log a warning.
+     *
      * @param string $msg
      * @param string $extKey
-     * @param mixed $dataVar
+     * @param mixed  $dataVar
      */
     public static function warn($msg, $extKey, $dataVar = false)
     {
         self::devLog($msg, $extKey, 2, $dataVar);
     }
+
     /**
-     * Log a fatal error
+     * Log a fatal error.
+     *
      * @param string $msg
      * @param string $extKey
-     * @param mixed $dataVar
+     * @param mixed  $dataVar
      */
     public static function fatal($msg, $extKey, $dataVar = false)
     {
@@ -90,43 +104,52 @@ class tx_rnbase_util_Logger
 
     /**
      * Whether or not log level notice is enabled.
-     * This works only in conjunction with extension devlog
+     * This works only in conjunction with extension devlog.
+     *
      * @return bool
      */
     public static function isDebugEnabled()
     {
         return self::isLogLevel(-1);
     }
+
     /**
      * Whether or not log level notice is enabled.
-     * This works only in conjunction with extension devlog
+     * This works only in conjunction with extension devlog.
+     *
      * @return bool
      */
     public static function isInfoEnabled()
     {
         return self::isLogLevel(0);
     }
+
     /**
      * Whether or not log level notice is enabled.
-     * This works only in conjunction with extension devlog
+     * This works only in conjunction with extension devlog.
+     *
      * @return bool
      */
     public static function isNoticeEnabled()
     {
         return self::isLogLevel(1);
     }
+
     /**
      * Whether or not log level warning is enabled.
-     * This works only in conjunction with extension devlog
+     * This works only in conjunction with extension devlog.
+     *
      * @return bool
      */
     public static function isWarningEnabled()
     {
         return self::isLogLevel(2);
     }
+
     /**
      * Whether or not log level fatal is enabled.
-     * This works only in conjunction with extension devlog
+     * This works only in conjunction with extension devlog.
+     *
      * @return bool
      */
     public static function isFatalEnabled()
@@ -136,14 +159,15 @@ class tx_rnbase_util_Logger
 
     /**
      * @param int $level
+     *
      * @return bool
      */
     private static function isLogLevel($level)
     {
-        if (self::$minLog === false) {
+        if (false === self::$minLog) {
             if (tx_rnbase_util_Extensions::isLoaded('devlog')) {
                 $minLog = Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('devlog', 'minLogLevel');
-                self::$minLog = $minLog !== false ? $minLog : -1;
+                self::$minLog = false !== $minLog ? $minLog : -1;
             }
         }
         $isEnabled = $level >= self::$minLog;
@@ -152,13 +176,12 @@ class tx_rnbase_util_Logger
     }
 
     /**
-     * Wrapper method for t3lib_div::devLog() or \TYPO3\CMS\Core\Utility\GeneralUtility::devLog()
+     * Wrapper method for t3lib_div::devLog() or \TYPO3\CMS\Core\Utility\GeneralUtility::devLog().
      *
-     * @param string $msg Message (in english).
-     * @param string $extKey Extension key (from which extension you are calling the log)
-     * @param int $severity Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
-     * @param mixed $dataVar Additional data you want to pass to the logger.
-     * @return void
+     * @param string $msg      message (in english)
+     * @param string $extKey   Extension key (from which extension you are calling the log)
+     * @param int    $severity Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
+     * @param mixed  $dataVar  additional data you want to pass to the logger
      */
     public static function devLog($msg, $extKey, $severity = 0, $dataVar = false)
     {

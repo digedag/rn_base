@@ -22,20 +22,21 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
- * Common Interface for Maps
+ * Common Interface for Maps.
  */
 interface tx_rnbase_maps_ICoord
 {
-
     /**
-     * Returns the latitude
+     * Returns the latitude.
+     *
      * @return float
      */
     public function getLatitude();
+
     /**
-     * Returns the longitude
+     * Returns the longitude.
+     *
      * @return float
      */
     public function getLongitude();

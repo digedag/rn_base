@@ -25,17 +25,14 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_rnbase_util_TSFAL');
 
 /**
- * tx_rnbase_tests_action_BaseIOC_testcase
+ * tx_rnbase_tests_action_BaseIOC_testcase.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class tx_rnbase_tests_util_TSFAL_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
      * @group unit
      */
@@ -82,29 +79,29 @@ class tx_rnbase_tests_util_TSFAL_testcase extends tx_rnbase_tests_BaseTestCase
         return array(
             // refTable gesetzt
             array(
-                array('refTable' => 'pages'), array('uid' => 456), 'pages', '', 456
+                array('refTable' => 'pages'), array('uid' => 456), 'pages', '', 456,
             ),
             // refTable unbekannt
             array(
-                array('refTable' => 'unknown'), array('uid' => 456), 'tt_content', '', 456
+                array('refTable' => 'unknown'), array('uid' => 456), 'tt_content', '', 456,
             ),
             // _LOCALIZED_UID in cObj->data gesetzt
             array(
-                array(), array('uid' => 456, '_LOCALIZED_UID' => 123), 'tt_content', '', 123
+                array(), array('uid' => 456, '_LOCALIZED_UID' => 123), 'tt_content', '', 123,
             ),
             // refField gesetzt
             array(
-                array('refField' => 'my_field'), array('uid' => 456), 'tt_content', 'my_field', 456
+                array('refField' => 'my_field'), array('uid' => 456), 'tt_content', 'my_field', 456,
             ),
             // stdWrap auf refField
             array(
                 array('refField.' => array('field' => 'test_field')),
-                array('uid' => 456, 'test_field' => 'my_field'), 'tt_content', 'my_field', 456
+                array('uid' => 456, 'test_field' => 'my_field'), 'tt_content', 'my_field', 456,
             ),
             // stdWrap auf refUid
             array(
                 array('refUid.' => array('field' => 'test_field')),
-                array('uid' => 456, 'test_field' => 123), 'tt_content', '', 123
+                array('uid' => 456, 'test_field' => 123), 'tt_content', '', 123,
             ),
         );
     }

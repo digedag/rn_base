@@ -1,4 +1,5 @@
 <?php
+
 namespace Sys25\RnBase\Fluid\View;
 
 /***************************************************************
@@ -25,29 +26,28 @@ namespace Sys25\RnBase\Fluid\View;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Fluid\View$Action
+ * Sys25\RnBase\Fluid\View$Action.
  *
  * View class for actions based on tx_rnbase_action_BaseIOC
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class Action extends \tx_rnbase_view_Base
 {
-
     /**
-     * @param string $templateName
+     * @param string                    $templateName
      * @param \tx_rnbase_configurations $configurations
+     *
      * @return string
+     *
      * @throws \Exception
      */
     public function render($templateName, $configurations)
     {
         $extensionKey = $configurations->getExtensionKey();
-        if (strlen($extensionKey) === 0) {
+        if (0 === strlen($extensionKey)) {
             throw new \Exception('The extension key yould not be resolved. Please check your typoscript configuration.');
         }
 
@@ -66,7 +66,7 @@ class Action extends \tx_rnbase_view_Base
                 $view->assign(
                     $variable,
                     $configurations->get(
-                        'variables.' . $variable,
+                        'variables.'.$variable,
                         true
                     )
                 );
@@ -92,8 +92,9 @@ class Action extends \tx_rnbase_view_Base
     }
 
     /**
-     * @param string $extensionKey
+     * @param string                                      $extensionKey
      * @param \Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     *
      * @return array
      */
     protected function getTypoScriptConfigurationForFluid(
@@ -116,39 +117,40 @@ class Action extends \tx_rnbase_view_Base
         $oldPaths = array('templateRootPath', 'layoutRootPath', 'partialRootPath');
         foreach ($oldPaths as $oldPath) {
             if ($typoScriptConfiguration['view'][$oldPath]) {
-                $typoScriptConfiguration['view'][$oldPath . 's.'][0] = $typoScriptConfiguration['view'][$oldPath];
+                $typoScriptConfiguration['view'][$oldPath.'s.'][0] = $typoScriptConfiguration['view'][$oldPath];
             }
         }
 
         // support "templatePath" configuration like tx_rnbase_view_Base::getTemplate()
-        if (strlen($configurations->get('templatePath')) !== 0) {
+        if (0 !== strlen($configurations->get('templatePath'))) {
             $typoScriptConfiguration['view']['templateRootPaths.'][0] = $configurations->get('templatePath');
         }
 
         return $typoScriptConfiguration;
     }
 
-
     /**
      * @param string $extensionKey
+     *
      * @return array
      */
     protected function getDefaultTypoScriptConfigurationForFluid($extensionKey)
     {
         $typoScriptConfiguration['settings'] = array();
 
-        $resourcesPath = 'EXT:' . $extensionKey . '/Resources/Private/';
-        $typoScriptConfiguration['view']['templateRootPaths.'][0] = $resourcesPath . 'Templates/';
-        $typoScriptConfiguration['view']['layoutRootPaths.'][0] = $resourcesPath . 'Layouts/';
-        $typoScriptConfiguration['view']['partialRootPaths.'][0] = $resourcesPath . 'Partials/';
+        $resourcesPath = 'EXT:'.$extensionKey.'/Resources/Private/';
+        $typoScriptConfiguration['view']['templateRootPaths.'][0] = $resourcesPath.'Templates/';
+        $typoScriptConfiguration['view']['layoutRootPaths.'][0] = $resourcesPath.'Layouts/';
+        $typoScriptConfiguration['view']['partialRootPaths.'][0] = $resourcesPath.'Partials/';
 
         return $typoScriptConfiguration;
     }
 
     /**
-     * @param string $templateName
-     * @param array $typoScriptConfigurationForFluid
+     * @param string                                      $templateName
+     * @param array                                       $typoScriptConfigurationForFluid
      * @param \Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     *
      * @return \TYPO3\CMS\Fluid\View\StandaloneView
      */
     protected function initializeView(

@@ -40,14 +40,15 @@ class tx_rnbase_tests_cache_testcase extends tx_rnbase_tests_BaseTestCase
         $this->assertTrue(is_object($cache), 'Cache not instanciated');
         $cache->set('key1', array('id' => '100'));
         $arr = $cache->get('key1');
-        $this->assertTrue(count($arr) == 1, 'Array has wrong size');
+        $this->assertTrue(1 == count($arr), 'Array has wrong size');
         $this->assertEquals($arr['id'], '100', 'Array content is wrong');
     }
 
     /**
-     * Returns the cache
+     * Returns the cache.
      *
      * @param string $name
+     *
      * @return tx_rnbase_cache_ICache
      */
     private static function createTYPO3Cache($name)

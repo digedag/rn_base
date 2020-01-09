@@ -23,13 +23,14 @@
 
 /**
  * Replacement for tx_div
- * Some method come from TYPO3 Extension lib/div from author Elmar Hinz <elmar.hinz@team-red.net>
+ * Some method come from TYPO3 Extension lib/div from author Elmar Hinz <elmar.hinz@team-red.net>.
  */
 class tx_rnbase
 {
     private static $loadedClasses = array();
+
     /**
-     * Load the class file
+     * Load the class file.
      *
      * Load the file for a given classname 'tx_key_path_file'
      * or a given part of the filepath that contains enough information to find the class.
@@ -39,8 +40,10 @@ class tx_rnbase
      *
      * TODO: lookup for classes folder
      *
-     * @param   string $classNameOrPathInformation classname or path matching for the type of loader
-     * @return  bool     true if successful, false otherwise
+     * @param string $classNameOrPathInformation classname or path matching for the type of loader
+     *
+     * @return bool true if successful, false otherwise
+     *
      * @see     tx_lib_t3Loader
      * @see     tx_lib_pearLoader
      */
@@ -66,7 +69,7 @@ class tx_rnbase
      * Usage:
      * $obj = tx_rnbase::makeInstance('tx_ext_myclass');
      * or with parameters:
-     * $obj = tx_rnbase::makeInstance('tx_ext_myclass', 'arg1', 'arg2', ...);
+     * $obj = tx_rnbase::makeInstance('tx_ext_myclass', 'arg1', 'arg2', ...);.
      *
      * This works also for TYPO3 4.2 and lower.
      *
@@ -74,7 +77,9 @@ class tx_rnbase
      *
      * @param   string      classname
      * @param   mixed optional more parameters for constructor
-     * @return  object|Exception    instance of the class or FALSE if it fails
+     *
+     * @return object|Exception instance of the class or FALSE if it fails
+     *
      * @see         t3lib_div::makeInstance
      * @see         load()
      */
@@ -100,10 +105,11 @@ class tx_rnbase
      * Find the best service and check if it works.
      * Returns object of the service class.
      *
-     * @param string $serviceType Type of service (service key).
-     * @param string $serviceSubType Sub type like file extensions or similar. Defined by the service.
-     * @param mixed $excludeServiceKeys List of service keys which should be excluded in the search for a service. Array or comma list.
-     * @return object The service object or an array with error info's.
+     * @param string $serviceType        type of service (service key)
+     * @param string $serviceSubType     Sub type like file extensions or similar. Defined by the service.
+     * @param mixed  $excludeServiceKeys List of service keys which should be excluded in the search for a service. Array or comma list.
+     *
+     * @return object the service object or an array with error info's
      */
     public static function makeInstanceService($serviceType, $serviceSubType = '', $excludeServiceKeys = array())
     {
@@ -113,14 +119,16 @@ class tx_rnbase
     }
 
     /**
-     * Load the class file, return the classname or the ux_classname
+     * Load the class file, return the classname or the ux_classname.
      *
      * This is an extension to t3lib_div::makeInstanceClassName. The advantage
      * is that it tries to autoload the file. In combination with the shorter
      * notation it simplyfies the finding of the classname.
      *
      * @param   string      classname
-     * @return  string      classname or ux_classsname (maybe  service classname)
+     *
+     * @return string classname or ux_classsname (maybe  service classname)
+     *
      * @see     tx_div::makeInstance
      * @see     tx_lib_t3Loader
      * @see     tx_lib_pearLoader
@@ -133,7 +141,7 @@ class tx_rnbase
             $outputName = self::makeInstanceClassNameT3($inputName);
         }
         if (!$outputName && tx_rnbase_util_Extensions::isLoaded('lib')) {
-            require_once(tx_rnbase_util_Extensions::extPath('lib') . 'class.tx_lib_pearLoader.php');
+            require_once tx_rnbase_util_Extensions::extPath('lib').'class.tx_lib_pearLoader.php';
             $outputName = tx_lib_pearLoader::makeInstanceClassName($inputName);
         }
 
@@ -141,7 +149,7 @@ class tx_rnbase
     }
 
     /**
-     * Load a t3 class
+     * Load a t3 class.
      *
      * Loads from extension directories ext, sysext, etc.
      *
@@ -161,7 +169,8 @@ class tx_rnbase
      * @param   string      extension key that varies from classname
      * @param   string      prefix of classname
      * @param   string      ending of classname
-     * @return  bool     TRUE if class was loaded
+     *
+     * @return bool TRUE if class was loaded
      */
     private static function loadT3($minimalInformation, $alternativeKey = '', $prefix = 'class.', $suffix = '.php')
     {
@@ -188,7 +197,7 @@ class tx_rnbase
     }
 
     /**
-     * Load a t3 class and make an instance
+     * Load a t3 class and make an instance.
      *
      * Returns ux_ extension classname if any by, making use of t3lib_div::makeInstanceClassName
      *
@@ -196,7 +205,9 @@ class tx_rnbase
      * @param   string      extension key that varies from classnames
      * @param   string      prefix of classname
      * @param   string      ending of classname
-     * @return  string      classname or ux_ classname
+     *
+     * @return string classname or ux_ classname
+     *
      * @see         t3lib_div::makeInstanceClassName
      * @see         load()
      */
@@ -207,8 +218,9 @@ class tx_rnbase
         return (self::loadT3($class, $alternativeKey, $prefix, $suffix)) ?
             $utility::makeInstanceClassName($class) : false;
     }
+
     /**
-     * Returns an array with information about a class
+     * Returns an array with information about a class.
      *
      * @param string $minimalInformation
      * @param string $alternativeKey
@@ -223,24 +235,24 @@ class tx_rnbase
         $qSuffix = preg_quote($suffix, '/');
         // If it is a path extract the key first.
         // Either the relevant part starts with a slash: xyz/[tx_].....php
-        if (preg_match('/^.*\/([0-9A-Za-z_]+)' . $qSuffix . '$/', $info, $matches)) {
+        if (preg_match('/^.*\/([0-9A-Za-z_]+)'.$qSuffix.'$/', $info, $matches)) {
             $class = $matches[1];
-        } elseif (preg_match('/^.*\.([0-9A-Za-z_]+)' . $qSuffix . '$/', $info, $matches)) {
+        } elseif (preg_match('/^.*\.([0-9A-Za-z_]+)'.$qSuffix.'$/', $info, $matches)) {
             // Or it starts with a Dot: class.[tx_]....php
             $class = $matches[1];
-        } elseif (preg_match('/^([0-9A-Za-z_]+)' . $qSuffix . '$/', $info, $matches)) {
+        } elseif (preg_match('/^([0-9A-Za-z_]+)'.$qSuffix.'$/', $info, $matches)) {
             // Or it starts directly with the relevant part
             $class = $matches[1];
         } elseif (preg_match('/^[0-9a-zA-Z_]+$/', trim($info), $matches)) {
             // It may be the key itself
             $class = $info;
         } else {
-            throw new Exception('Classname contains invalid characters or has invalid format: ' . $info);
+            throw new Exception('Classname contains invalid characters or has invalid format: '.$info);
         }
 
         // With this a possible alternative Key is also validated
         if (!$key = self::guessKey($alternativeKey ? $alternativeKey : $class)) {
-            throw new Exception('No extension key found for classname: ' . $info);
+            throw new Exception('No extension key found for classname: '.$info);
         }
 
         $isExtBase = false;
@@ -254,7 +266,7 @@ class tx_rnbase
         } elseif (preg_match('/^[0-9A-Za-z_]*$/', $class)) { // without tx_ prefix
             $parts = explode('_', trim($class));
         } else {
-            throw new Exception('getClassInfo() called with invalid classname: ' . $info);
+            throw new Exception('getClassInfo() called with invalid classname: '.$info);
         }
 
         // Set extPath for key (first element)
@@ -267,8 +279,8 @@ class tx_rnbase
 
         $dir = $isExtBase ? 'Classes/' : '';
         // Build the relative path if any
-        foreach ((array)$parts as $part) {
-            $dir .= $part . '/';
+        foreach ((array) $parts as $part) {
+            $dir .= $part.'/';
         }
         // if an alternative Key is given use that
         $ret['class'] = $class;
@@ -276,17 +288,17 @@ class tx_rnbase
         $ret['extkey'] = $key;
         $ret['extpath'] = tx_rnbase_util_Extensions::extPath($key);
         if ($isExtBase) {
-            $path = $ret['extpath'] . $dir . $last . $suffix;
+            $path = $ret['extpath'].$dir.$last.$suffix;
         } else {
-            $path = $ret['extpath'] . $dir . $prefix . $class . $suffix;
+            $path = $ret['extpath'].$dir.$prefix.$class.$suffix;
         }
         if (!is_file($path)) {
             // Now we try INSIDE the last directory (dir and last may be empty)
             // ext(/dir)/last
             // ext(/dir)/last/prefix.tx_key_parts_last.php.
-            $path = $ret['extpath'] . $dir . $last. '/' . $prefix . $class . $suffix;
+            $path = $ret['extpath'].$dir.$last.'/'.$prefix.$class.$suffix;
             if (!is_file($path)) {
-                throw new Exception('Class path not found: ' . $path);
+                throw new Exception('Class path not found: '.$path);
             }
         }
         $ret['path'] = $path;
@@ -296,7 +308,7 @@ class tx_rnbase
 
     /**
      * Find path to load
-     * Method from tx_lib_t3Loader
+     * Method from tx_lib_t3Loader.
      *
      * see load
      *
@@ -304,7 +316,9 @@ class tx_rnbase
      * @param   string      extension key that varies from classnames
      * @param   string      prefix of classname
      * @param   string      ending of classname
-     * @return  string      the path, FALSE if invalid
+     *
+     * @return string the path, FALSE if invalid
+     *
      * @see         load()
      */
     private static function _findT3($minimalInformation, $alternativeKey = '', $prefix = 'class.', $suffix = '.php')
@@ -315,13 +329,15 @@ class tx_rnbase
     }
 
     /**
-     * Check if the given extension key is within the loaded extensions
+     * Check if the given extension key is within the loaded extensions.
      *
      * The key can be given in the regular format or with underscores stripped.
      *
      * @author Elmar Hinz
+     *
      * @param   string      extension key to check
-     * @return  bool     is the key valid?
+     *
+     * @return bool is the key valid?
      */
     private static function getValidKey($rawKey)
     {
@@ -331,16 +347,15 @@ class tx_rnbase
         $uKeys = array_keys((array) $GLOBALS['TYPO3_LOADED_EXT']);
         foreach ($uKeys as $uKey) {
             if (str_replace('_', '', $uKey) == str_replace('_', '', $rawKey)) {
-                $result =  $uKey;
+                $result = $uKey;
             }
         }
 
         return $result ? $result : false;
     }
 
-
     /**
-     * Guess the key from the given information
+     * Guess the key from the given information.
      *
      * Guessing has the following order:
      *
@@ -363,8 +378,10 @@ class tx_rnbase
      *    </pre>
      *
      * @author Elmar Hinz
+     *
      * @param   string      the minimal necessary information (see 1-4)
-     * @return  string      the guessed key, FALSE if no result
+     *
+     * @return string the guessed key, FALSE if no result
      */
     private static function guessKey($minimalInformation)
     {

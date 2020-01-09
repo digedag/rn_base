@@ -70,7 +70,7 @@ class tx_rnbase_tests_model_Base_testcase extends tx_rnbase_tests_BaseTestCase
                 array(
                     'uid' => '57',
                     'field' => 'test',
-                )
+                ),
             )
         );
         $model->expects($this->once())
@@ -90,7 +90,6 @@ class tx_rnbase_tests_model_Base_testcase extends tx_rnbase_tests_BaseTestCase
         );
         $this->assertEquals(57, $model->getUid(), 'uid field not used');
     }
-
 
     public function testGetUidForTranslatedSingleRecord()
     {
@@ -114,6 +113,7 @@ class tx_rnbase_tests_model_Base_testcase extends tx_rnbase_tests_BaseTestCase
         );
         $this->assertSame(0, $model->getSysLanguageUid());
     }
+
     public function testGetSysLanguageUidWithLanguageFieldInTca()
     {
         /* @var $model tx_rnbase_model_base */

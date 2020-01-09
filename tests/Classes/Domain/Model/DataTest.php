@@ -26,10 +26,8 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
 
 /**
- * Data model unit tests
+ * Data model unit tests.
  *
- * @package TYPO3
- * @subpackage Tx_Rnbase
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
@@ -37,9 +35,8 @@ tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
 class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
 {
     /**
-     * Test the getProperties method
+     * Test the getProperties method.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -66,9 +63,8 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * Test Magic calls
+     * Test Magic calls.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -101,7 +97,6 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
     /**
      * Test record overloding for getters.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -117,11 +112,10 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
     /**
      * Test if magic calls throw exception on unknown method.
      *
-     * @return void
      *
      * @group unit
      * @test
-     * @expectedException Exception
+     * @expectedException \Exception
      * @expectedExceptionCode 1406625817
      */
     public function testMagicCallThrowsException()
@@ -132,7 +126,6 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
     /**
      * Test getInstance with recursive data.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -145,7 +138,7 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
                 'first' => 'John',
                 'last' => 'Doe',
                 'test' => array(),
-            )
+            ),
         );
         $model = Tx_Rnbase_Domain_Model_Data::getInstance($data);
 
@@ -159,7 +152,6 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
     /**
      * Test dirty state.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -174,7 +166,6 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
     /**
      * Test dirty state.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -201,7 +192,6 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
     /**
      * Test dirty state.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -218,7 +208,7 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * Creates a test object
+     * Creates a test object.
      *
      * @return Tx_Rnbase_Domain_Model_Data
      */

@@ -41,6 +41,7 @@ class FrontendControllerUtility
      * @see https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/9.4/Deprecation-85543-Language-relatedPropertiesInTypoScriptFrontendControllerAndPageRepository.html
      *
      * @param \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $typoScriptFrontendController
+     *
      * @return int
      */
     public static function getLanguageContentId($typoScriptFrontendController)
@@ -59,6 +60,7 @@ class FrontendControllerUtility
      * @see https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/9.4/Deprecation-85543-Language-relatedPropertiesInTypoScriptFrontendControllerAndPageRepository.html
      *
      * @param \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $typoScriptFrontendController
+     *
      * @return string
      */
     public static function getLanguageMode($typoScriptFrontendController)
@@ -77,6 +79,7 @@ class FrontendControllerUtility
      * @see https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/9.4/Deprecation-85543-Language-relatedPropertiesInTypoScriptFrontendControllerAndPageRepository.html
      *
      * @param \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $typoScriptFrontendController
+     *
      * @return int
      */
     public static function getLanguageId($typoScriptFrontendController)

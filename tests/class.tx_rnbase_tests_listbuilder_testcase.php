@@ -25,7 +25,6 @@
 tx_rnbase::load('tx_rnbase_util_Misc');
 tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
-
 class tx_rnbase_tests_listbuilder_testcase extends tx_rnbase_tests_BaseTestCase
 {
     public function setup()
@@ -33,6 +32,7 @@ class tx_rnbase_tests_listbuilder_testcase extends tx_rnbase_tests_BaseTestCase
         unset($GLOBALS['TSFE']);
         tx_rnbase_util_Misc::prepareTSFE();
     }
+
     public function test_advList()
     {
         $items = array();
@@ -136,6 +136,7 @@ class tx_rnbase_tests_listbuilder_testcase extends tx_rnbase_tests_BaseTestCase
 
         return $models;
     }
+
     private function getConfig($confArr)
     {
         $cObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());

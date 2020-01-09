@@ -1,8 +1,9 @@
 <?php
+
 namespace Sys25\RnBase\Search;
 
 /**
- *  Copyright notice
+ *  Copyright notice.
  *
  *  (c) René Nitzsche <rene@system25.de>
  *  All rights reserved
@@ -25,16 +26,14 @@ namespace Sys25\RnBase\Search;
  */
 
 /**
- * Class CategoryTest
+ * Class CategoryTest.
  *
- * @package Sys25\RnBase\Search
  * @author  Hannes Bochmann
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
 class CategoryTest extends \tx_rnbase_tests_BaseTestCase
 {
-
     /**
      * @group unit
      */
@@ -51,7 +50,7 @@ class CategoryTest extends \tx_rnbase_tests_BaseTestCase
      */
     public function testGetJoinsForSysCategoryRecordMmTable()
     {
-        $expectedJoin = ' LEFT JOIN sys_category_record_mm AS SYS_CATEGORY_RECORD_MM ON' .
+        $expectedJoin = ' LEFT JOIN sys_category_record_mm AS SYS_CATEGORY_RECORD_MM ON'.
                         ' SYS_CATEGORY_RECORD_MM.uid_local = SYS_CATEGORY.uid';
 
         self::assertEquals(
