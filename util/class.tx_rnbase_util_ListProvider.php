@@ -52,6 +52,7 @@ class tx_rnbase_util_ListProvider implements tx_rnbase_util_IListProvider
                 break;
             default:
                 throw new Exception('Undefined list mode.');
+
                 break;
         }
     }
