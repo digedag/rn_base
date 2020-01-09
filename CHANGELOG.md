@@ -3,6 +3,9 @@
 Changelog
 ---------
 
+v1.11.1 (09.02.2020)
+ * configuration processor usage for tests fixed
+ 
 v1.11.0 (09.02.2020)
  * #165 wip refactoring of classes to psr4  
     **BREAKING CHANGE**: tx_rnbase_IParameters is not used anymore.  
