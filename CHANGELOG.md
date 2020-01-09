@@ -3,6 +3,13 @@
 Changelog
 ---------
 
+v1.11.0 (09.02.2020)
+ * #165 wip refactoring of classes to psr4  
+    **BREAKING CHANGE**: tx_rnbase_IParameters is not used anymore.  
+    Replace usage and typehints to new Sys25\RnBase\Frontend\Request\ParametersInterface
+ * #168 Use disabled TimeTracker instead of the removed NullTimeTracker
+ * php codestyle rule switched to symfony
+
 v1.10.9 (23.11.2019)
  * #161 fix missing test class on exception handling for non-composer installs
  * New wrapper class for TYPO3 registry functionality
