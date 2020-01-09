@@ -190,8 +190,8 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
             $this instanceof \tx_rnbase_configurations) {
             $utility = \tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
             $utility::deprecationLog(
-                'Usage of "tx_rnbase_configurations" are deprecated.'.
-                ' Use "Tx_Rnbase_Configuration_Processor" instead.'
+                'Usage of "'.get_class($this).'" are deprecated.'.
+                ' Use "\Sys25\RnBase\Configuration\Processor" instead.'
             );
         }
 
