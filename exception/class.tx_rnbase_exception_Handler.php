@@ -96,7 +96,8 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
     protected function send503HeaderOnException(Tx_Rnbase_Configuration_ProcessorInterface $configurations)
     {
         //sending a 503 header?
-        return ((
+        return (
+            (
                 //shall we basically send a 503 header?
                 intval(Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'send503HeaderOnException')) && (
                     //the plugin has the oppurtunity to prevent sending a 503 header

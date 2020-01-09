@@ -58,7 +58,11 @@ class Tx_Rnbase_Category_SearchUtility
      * @return string
      */
     public function addJoins(
-        $baseTableName, $baseTableAlias, $fieldName, array $givenTableAliases, $sysCategoryTableAlias = 'SYS_CATEGORY'
+        $baseTableName,
+        $baseTableAlias,
+        $fieldName,
+        array $givenTableAliases,
+        $sysCategoryTableAlias = 'SYS_CATEGORY'
     ) {
         $joins = '';
         if (isset($givenTableAliases[$sysCategoryTableAlias])) {
@@ -83,7 +87,11 @@ class Tx_Rnbase_Category_SearchUtility
      * @return string
      */
     public function addJoinsWithoutAlias(
-        $baseTableName, $baseTableAlias, $fieldName, array $givenTableAliases, $sysCategoryTableAlias = 'SYS_CATEGORY'
+        $baseTableName,
+        $baseTableAlias,
+        $fieldName,
+        array $givenTableAliases,
+        $sysCategoryTableAlias = 'SYS_CATEGORY'
     ) {
         $joins = '';
         if (isset($givenTableAliases[$sysCategoryTableAlias])) {

@@ -127,7 +127,8 @@ class PageBaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBas
         $currentPage = $this->templateVariableContainer->get('currentPage');
 
         $pageBrowserQualifier = $this->viewHelperVariableContainer->get(
-            PageBrowserViewHelper::class, 'pageBrowserQualifier'
+            PageBrowserViewHelper::class,
+            'pageBrowserQualifier'
         );
         $pageBrowserParams = array(
             $pageBrowserQualifier => array(

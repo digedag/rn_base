@@ -1024,8 +1024,12 @@ class Tx_Rnbase_Backend_Form_ToolBox
             }
             var T3_RETURN_URL = ' .
                 Tx_Rnbase_Utility_Strings::quoteJSvalue(
-                    str_replace('%20', '', rawurlencode(
-                        Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('returnUrl'))
+                    str_replace(
+                        '%20',
+                        '',
+                        rawurlencode(
+                            Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('returnUrl')
+                        )
                     )
                 ) . ';
             var T3_THIS_LOCATION=' .
@@ -1124,8 +1128,12 @@ class Tx_Rnbase_Backend_Form_ToolBox
         } else {
             $funcMenu = tx_rnbase_util_TYPO3::isTYPO76OrHigher() ? 'getDropdownMenu' : 'getFuncMenu';
             $ret['menu'] = Tx_Rnbase_Backend_Utility::$funcMenu(
-                $pid, 'SET['.$name.']', $SETTINGS[$name],
-                $MENU[$name], $script, $addparams
+                $pid,
+                'SET['.$name.']',
+                $SETTINGS[$name],
+                $MENU[$name],
+                $script,
+                $addparams
             );
         }
         $ret['value'] = $SETTINGS[$name];

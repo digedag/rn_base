@@ -58,10 +58,12 @@ abstract class tx_rnbase_action_BaseIOC
         $this->setConfigurations($configurations);
         $debugKey = $configurations->get($this->getConfId().'_debugview');
 
-        $debug = ($debugKey && ($debugKey === '1' ||
+        $debug = (
+            $debugKey && (
+            $debugKey === '1' ||
                 ($_GET['debug'] && array_key_exists($debugKey, array_flip(tx_rnbase_util_Strings::trimExplode(',', $_GET['debug'])))) ||
                 ($_POST['debug'] && array_key_exists($debugKey, array_flip(tx_rnbase_util_Strings::trimExplode(',', $_POST['debug']))))
-                )
+        )
         );
         if ($debug) {
             $time = microtime(true);
@@ -308,13 +310,15 @@ abstract class tx_rnbase_action_BaseIOC
     protected function getTemplateFile()
     {
         $file = $this->getConfigurations()->get(
-            $this->getConfId() . 'template.file', true
+            $this->getConfId() . 'template.file',
+            true
         );
 
         // check the old way
         if (empty($file)) {
             $file = $this->getConfigurations()->get(
-                $this->getTemplateName() . 'Template', true
+                $this->getTemplateName() . 'Template',
+                true
             );
         }
 

@@ -62,7 +62,7 @@ abstract class Tx_Rnbase_Utility_WizIcon
                 // Wizardkonfiguration hinzufügen
                 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
                     '<INCLUDE_TYPOSCRIPT: source="'.$configFile.'">'
-                    );
+                );
             }
         }
     }

@@ -43,7 +43,8 @@ class tx_rnbase_cache_Manager_testcase extends tx_rnbase_tests_BaseTestCase
         $expectedCacheClass = 'TYPO3\\CMS\\Core\\Cache\\Frontend\\VariableFrontend';
 
         self::assertSame(
-            $expectedCacheClass, tx_rnbase_cache_Manager::getCacheClass(tx_rnbase_cache_Manager::CACHE_FRONTEND_VARIABLE)
+            $expectedCacheClass,
+            tx_rnbase_cache_Manager::getCacheClass(tx_rnbase_cache_Manager::CACHE_FRONTEND_VARIABLE)
         );
     }
 }

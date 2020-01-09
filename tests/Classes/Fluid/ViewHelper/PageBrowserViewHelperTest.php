@@ -33,10 +33,10 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 // won't work resulting in a fatal error when this file is loaded
 // @todo can be removed when support for TYPO3 6.2 is dropped.
 if (!\tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-    require_once
-    \tx_rnbase_util_Extensions::extPath('rn_base',
+    require_once \tx_rnbase_util_Extensions::extPath(
+        'rn_base',
         'tests/Classes/Fluid/ViewHelper/BaseViewHelperTest.php'
-        );
+    );
 }
 
 /**
@@ -112,7 +112,13 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
         $viewHelper = $this->getViewHelperMock();
         $viewHelper = $this->getPreparedVîewHelperWithPageBrowser(
-            $viewHelper, $pageBrowser, false, 10, 'CENTER', ' ', 'myQualifier'
+            $viewHelper,
+            $pageBrowser,
+            false,
+            10,
+            'CENTER',
+            ' ',
+            'myQualifier'
         );
 
         $viewHelper->expects($this->never())
@@ -540,7 +546,8 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
         );
 
         self::assertRegExp(
-            '/<div class="pagebrowser"><a href=".*&amp;rn_base%5Bpb-1-pointer%5D=0">1<\/a><\/div>/', trim($view->render())
+            '/<div class="pagebrowser"><a href=".*&amp;rn_base%5Bpb-1-pointer%5D=0">1<\/a><\/div>/',
+            trim($view->render())
         );
     }
 

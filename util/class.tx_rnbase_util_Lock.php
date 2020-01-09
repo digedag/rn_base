@@ -174,8 +174,8 @@ class tx_rnbase_util_Lock
         if (is_readable($this->getFile())) {
             $lastCall = (int) trim(file_get_contents($this->getFile()));
             if (!(
-                    $this->getLifeTime() > 0
-                    && $lastCall < (time() - $this->getLifeTime())
+                $this->getLifeTime() > 0 &&
+                $lastCall < (time() - $this->getLifeTime())
             )) {
                 return true;
             }

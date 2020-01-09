@@ -287,14 +287,16 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
     protected function renderFirstPage($currentPage)
     {
         return $this->renderAnyPageViewHelperIfExists(
-            'Sys25\\RnBase\\Fluid\\ViewHelper\\PageBrowser\\FirstPageViewHelper', $currentPage
+            'Sys25\\RnBase\\Fluid\\ViewHelper\\PageBrowser\\FirstPageViewHelper',
+            $currentPage
         );
     }
 
     protected function renderPrevPage($currentPage)
     {
         return $this->renderAnyPageViewHelperIfExists(
-            'Sys25\\RnBase\\Fluid\\ViewHelper\\PageBrowser\\PrevPageViewHelper', $currentPage
+            'Sys25\\RnBase\\Fluid\\ViewHelper\\PageBrowser\\PrevPageViewHelper',
+            $currentPage
         );
     }
 
@@ -302,28 +304,32 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
     protected function renderNormalPage($currentPage)
     {
         return $this->renderAnyPageViewHelperIfExists(
-            'Sys25\\RnBase\\Fluid\\ViewHelper\\PageBrowser\\NormalPageViewHelper', $currentPage
+            'Sys25\\RnBase\\Fluid\\ViewHelper\\PageBrowser\\NormalPageViewHelper',
+            $currentPage
         );
     }
 
     protected function renderCurrentPage($currentPage)
     {
         return $this->renderAnyPageViewHelperIfExists(
-            'Sys25\\RnBase\\Fluid\\ViewHelper\\PageBrowser\\CurrentPageViewHelper', $currentPage
+            'Sys25\\RnBase\\Fluid\\ViewHelper\\PageBrowser\\CurrentPageViewHelper',
+            $currentPage
         );
     }
 
     protected function renderNextPage($currentPage)
     {
         return $this->renderAnyPageViewHelperIfExists(
-            'Sys25\\RnBase\\Fluid\\ViewHelper\\PageBrowser\\NextPageViewHelper', $currentPage
+            'Sys25\\RnBase\\Fluid\\ViewHelper\\PageBrowser\\NextPageViewHelper',
+            $currentPage
         );
     }
 
     protected function renderLastPage($currentPage)
     {
         return $this->renderAnyPageViewHelperIfExists(
-            'Sys25\\RnBase\\Fluid\\ViewHelper\\PageBrowser\\LastPageViewHelper', $currentPage
+            'Sys25\\RnBase\\Fluid\\ViewHelper\\PageBrowser\\LastPageViewHelper',
+            $currentPage
         );
     }
 
@@ -367,7 +373,11 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
      * @param TemplateCompiler $compiler
      */
     public function compile(
-        $argumentsName, $closureName, &$initializationPhpCode, ViewHelperNode $node, TemplateCompiler $compiler
+        $argumentsName,
+        $closureName,
+        &$initializationPhpCode,
+        ViewHelperNode $node,
+        TemplateCompiler $compiler
     ) {
         $this->setViewHelperNode($node);
         $this->setChildNodes($node->getChildNodes());

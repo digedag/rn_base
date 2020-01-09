@@ -425,9 +425,9 @@ class tx_rnbase_util_TSFAL
             unset($options['type']);
         }
         $customSettingOverride = (
-                empty($options['config']['customSettingOverride'])
+            empty($options['config']['customSettingOverride'])
                 || !is_array($options['config']['customSettingOverride'])
-            ) ? array() : $options['config']['customSettingOverride'];
+        ) ? array() : $options['config']['customSettingOverride'];
         $allowedFileExtensions = (string) $options['config']['allowedFileExtensions'];
         $disallowedFileExtensions = (string) $options['config']['disallowedFileExtensions'];
         if ($type == 'image') {

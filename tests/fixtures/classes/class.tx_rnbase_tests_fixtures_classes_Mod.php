@@ -85,7 +85,7 @@ class tx_rnbase_tests_fixtures_classes_Mod extends tx_rnbase_mod_BaseModule
             } else {
                 $this->doc = tx_rnbase::makeInstance(
                     tx_rnbase_util_Typo3Classes::getDocumentTemplateClass()
-                    );
+                );
             }
         }
 

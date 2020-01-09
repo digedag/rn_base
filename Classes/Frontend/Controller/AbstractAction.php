@@ -46,11 +46,13 @@ abstract class AbstractAction
     {
         $debugKey = $configurations->get($this->getConfId().'_debugview');
 
-        $debug = ($debugKey && ($debugKey === '1' ||
-            ($_GET['debug'] && array_key_exists($debugKey, array_flip(\tx_rnbase_util_Strings::trimExplode(',', $_GET['debug'])))) ||
-            ($_POST['debug'] && array_key_exists($debugKey, array_flip(\tx_rnbase_util_Strings::trimExplode(',', $_POST['debug']))))
+        $debug = (
+            $debugKey && (
+                $debugKey === '1' ||
+                ($_GET['debug'] && array_key_exists($debugKey, array_flip(\tx_rnbase_util_Strings::trimExplode(',', $_GET['debug'])))) ||
+                ($_POST['debug'] && array_key_exists($debugKey, array_flip(\tx_rnbase_util_Strings::trimExplode(',', $_POST['debug']))))
             )
-            );
+        );
         if ($debug) {
             $time = microtime(true);
             $memStart = memory_get_usage();
@@ -145,7 +147,7 @@ abstract class AbstractAction
                     false,
                     '',
                     boolval($configurations->get($confId . $javascriptLibraryKey . '.' . $javaScriptConfId . '.external'))
-                    );
+                );
             }
         }
 
@@ -207,7 +209,7 @@ abstract class AbstractAction
         if (!$handler instanceof \tx_rnbase_action_ICacheHandler) {
             throw new \Exception(
                 '"' . $class . '" has to implement "tx_rnbase_action_ICacheHandler".'
-                );
+            );
         }
 
         $handler->init($this, $confId);
@@ -241,14 +243,16 @@ abstract class AbstractAction
     protected function getTemplateFile($configurations)
     {
         $file = $configurations->get(
-            $this->getConfId() . 'template.file', true
+            $this->getConfId() . 'template.file',
+            true
         );
 
         // check the old way
         if (empty($file)) {
             $file = $configurations->get(
-                $this->getTemplateName() . 'Template', true
-                );
+                $this->getTemplateName() . 'Template',
+                true
+            );
         }
 
         return $file;

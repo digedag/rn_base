@@ -136,7 +136,8 @@ class tx_rnbase_util_Extensions
 
             // fixing route
             \tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Routing\Router::class)->getRoutes()[$moduleName]->setOption(
-                'target', $moduleConfiguration['routeTarget']
+                'target',
+                $moduleConfiguration['routeTarget']
             );
         }
     }

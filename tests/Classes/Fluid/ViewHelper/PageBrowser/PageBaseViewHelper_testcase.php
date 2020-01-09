@@ -30,8 +30,8 @@ use Sys25\RnBase\Fluid\ViewHelper\BaseViewHelperTest;
 // won't work resulting in a fatal error when this file is loaded
 // @todo can be removed when support for TYPO3 6.2 is dropped.
 if (!\tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-    require_once
-        \tx_rnbase_util_Extensions::extPath('rn_base',
+    require_once \tx_rnbase_util_Extensions::extPath(
+        'rn_base',
         'tests/Classes/Fluid/ViewHelper/BaseViewHelperTest.php'
     );
 }
@@ -105,7 +105,8 @@ class PageBaseViewHelper_testcase extends BaseViewHelperTest
         );
 
         $this->renderingContext->getVariableProvider()->add(
-            'pagebrowser', \tx_rnbase::makeInstance('tx_rnbase_util_PageBrowser', 123)
+            'pagebrowser',
+            \tx_rnbase::makeInstance('tx_rnbase_util_PageBrowser', 123)
         );
         $this->renderingContext->getVariableProvider()->add('currentPage', 123);
         $this->renderingContext->getVariableProvider()->add('pageNumber', 456);

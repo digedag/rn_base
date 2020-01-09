@@ -66,21 +66,31 @@ class Tx_Rnbase_Category_SearchUtilityTest extends tx_rnbase_tests_BaseTestCase
             ' = MY_ALIAS.uid AND SYS_CATEGORY_MM.tablenames = "my_table" AND SYS_CATEGORY_MM.fieldname = "my_field"' .
             ' LEFT JOIN sys_category AS SYS_CATEGORY ON SYS_CATEGORY.uid = SYS_CATEGORY_MM.uid_local',
             tx_rnbase::makeInstance('Tx_Rnbase_Category_SearchUtility')->addJoins(
-                'my_table', 'MY_ALIAS', 'my_field', array('SYS_CATEGORY' => 1)
+                'my_table',
+                'MY_ALIAS',
+                'my_field',
+                array('SYS_CATEGORY' => 1)
             )
         );
 
         self::assertEquals(
             '',
             tx_rnbase::makeInstance('Tx_Rnbase_Category_SearchUtility')->addJoins(
-                'my_table', 'MY_ALIAS', 'my_field', array('SOME_OTHER_ALIAS' => 1)
+                'my_table',
+                'MY_ALIAS',
+                'my_field',
+                array('SOME_OTHER_ALIAS' => 1)
             )
         );
 
         self::assertEquals(
             '',
             tx_rnbase::makeInstance('Tx_Rnbase_Category_SearchUtility')->addJoins(
-                'my_table', 'MY_ALIAS', 'my_field', array('SYS_CATEGORY' => 1), 'SYS_CATEGORY_2'
+                'my_table',
+                'MY_ALIAS',
+                'my_field',
+                array('SYS_CATEGORY' => 1),
+                'SYS_CATEGORY_2'
             )
         );
 
@@ -90,7 +100,11 @@ class Tx_Rnbase_Category_SearchUtilityTest extends tx_rnbase_tests_BaseTestCase
             ' = MY_ALIAS.uid AND SYS_CATEGORY_2_MM.tablenames = "my_table" AND SYS_CATEGORY_2_MM.fieldname = "my_field"' .
             ' LEFT JOIN sys_category AS SYS_CATEGORY_2 ON SYS_CATEGORY_2.uid = SYS_CATEGORY_2_MM.uid_local',
             tx_rnbase::makeInstance('Tx_Rnbase_Category_SearchUtility')->addJoins(
-                'my_table', 'MY_ALIAS', 'my_field', array('SYS_CATEGORY_2' => 1), 'SYS_CATEGORY_2'
+                'my_table',
+                'MY_ALIAS',
+                'my_field',
+                array('SYS_CATEGORY_2' => 1),
+                'SYS_CATEGORY_2'
             )
         );
     }
@@ -106,21 +120,31 @@ class Tx_Rnbase_Category_SearchUtilityTest extends tx_rnbase_tests_BaseTestCase
             ' = my_table.uid AND sys_category_record_mm.tablenames = "my_table" AND sys_category_record_mm.fieldname = "my_field"' .
             ' LEFT JOIN sys_category ON sys_category.uid = sys_category_record_mm.uid_local',
             tx_rnbase::makeInstance('Tx_Rnbase_Category_SearchUtility')->addJoinsWithoutAlias(
-                'my_table', 'MY_ALIAS', 'my_field', array('SYS_CATEGORY' => 1)
+                'my_table',
+                'MY_ALIAS',
+                'my_field',
+                array('SYS_CATEGORY' => 1)
             )
         );
 
         self::assertEquals(
             '',
             tx_rnbase::makeInstance('Tx_Rnbase_Category_SearchUtility')->addJoinsWithoutAlias(
-                'my_table', 'MY_ALIAS', 'my_field', array('SOME_OTHER_ALIAS' => 1)
+                'my_table',
+                'MY_ALIAS',
+                'my_field',
+                array('SOME_OTHER_ALIAS' => 1)
             )
         );
 
         self::assertEquals(
             '',
             tx_rnbase::makeInstance('Tx_Rnbase_Category_SearchUtility')->addJoinsWithoutAlias(
-                'my_table', 'MY_ALIAS', 'my_field', array('SYS_CATEGORY' => 1), 'SYS_CATEGORY_2'
+                'my_table',
+                'MY_ALIAS',
+                'my_field',
+                array('SYS_CATEGORY' => 1),
+                'SYS_CATEGORY_2'
             )
         );
 
@@ -130,7 +154,11 @@ class Tx_Rnbase_Category_SearchUtilityTest extends tx_rnbase_tests_BaseTestCase
             ' = my_table.uid AND sys_category_record_mm.tablenames = "my_table" AND sys_category_record_mm.fieldname = "my_field"' .
             ' LEFT JOIN sys_category ON sys_category.uid = sys_category_record_mm.uid_local',
             tx_rnbase::makeInstance('Tx_Rnbase_Category_SearchUtility')->addJoinsWithoutAlias(
-                'my_table', 'MY_ALIAS', 'my_field', array('SYS_CATEGORY_2' => 1), 'SYS_CATEGORY_2'
+                'my_table',
+                'MY_ALIAS',
+                'my_field',
+                array('SYS_CATEGORY_2' => 1),
+                'SYS_CATEGORY_2'
             )
         );
     }

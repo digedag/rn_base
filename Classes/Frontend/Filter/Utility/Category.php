@@ -69,7 +69,8 @@ class Category
             if ($this->configurations->get($this->confId . $typoScriptPath)) {
                 $fieldsBefore = $fields;
                 $fields = $this->$filterUtilityMethod(
-                    $fields, $this->configurations,
+                    $fields,
+                    $this->configurations,
                     $this->confId . $typoScriptPath . '.'
                 );
 
@@ -96,7 +97,9 @@ class Category
      * @return array
      */
     protected function setFieldsBySysCategoriesOfItemFromParameters(
-        array $fields, $configurations, $confId
+        array $fields,
+        $configurations,
+        $confId
     ) {
         if ($categories = $this->lookupCategoryUidsFromParameters($configurations, $confId)) {
             $fields = $this->getFieldsByCategories($categories, $fields, $configurations, $confId);
@@ -117,12 +120,15 @@ class Category
         $categories = array();
         foreach ($configurations->get($confId . 'supportedParameters.') as $paramConfig) {
             $referencedUid = $parameters->getInt(
-                $paramConfig['parameterName'], $paramConfig['parameterQualifier']
+                $paramConfig['parameterName'],
+                $paramConfig['parameterQualifier']
             );
 
             if ($referencedUid) {
                 $categories = $this->getCategoryUidsByReference(
-                    $paramConfig['table'], $paramConfig['categoryField'], $referencedUid
+                    $paramConfig['table'],
+                    $paramConfig['categoryField'],
+                    $referencedUid
                 );
                 continue;
             }
@@ -141,7 +147,8 @@ class Category
     {
         $databaseConnection = $this->getDatabaseConnection();
         $categories =  $databaseConnection->doSelect(
-            'uid_local', 'sys_category_record_mm',
+            'uid_local',
+            'sys_category_record_mm',
             [
                 'where' =>
                     'sys_category_record_mm.tablenames = ' .
@@ -183,7 +190,10 @@ class Category
      * @return array
      */
     protected function getFieldsByCategories(
-        array $categories, array $fields, $configurations, $confId
+        array $categories,
+        array $fields,
+        $configurations,
+        $confId
     ) {
         $sysCategoryTableAlias =
             $configurations->get($confId . 'sysCategoryTableAlias') ?
@@ -204,7 +214,9 @@ class Category
     protected function setFieldsBySysCategoriesOfContentElement(array $fields, $configurations, $confId)
     {
         $categories = $this->getCategoryUidsByReference(
-            'tt_content', 'categories', $configurations->getContentObject()->data['uid']
+            'tt_content',
+            'categories',
+            $configurations->getContentObject()->data['uid']
         );
         if ($categories) {
             $fields = $this->getFieldsByCategories($categories, $fields, $configurations, $confId);
@@ -221,10 +233,13 @@ class Category
      * @return array
      */
     protected function setFieldsBySysCategoriesFromParameters(
-        array $fields, $configurations, $confId
+        array $fields,
+        $configurations,
+        $confId
     ) {
         $categoryUid = $configurations->getParameters()->getInt(
-            $configurations->get($confId . 'parameterName'), $configurations->get($confId . 'parameterQualifier')
+            $configurations->get($confId . 'parameterName'),
+            $configurations->get($confId . 'parameterQualifier')
         );
         if ($categoryUid) {
             $fields = $this->getFieldsByCategories(array($categoryUid), $fields, $configurations, $confId);

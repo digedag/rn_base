@@ -258,7 +258,8 @@ abstract class tx_rnbase_tests_BaseTestCase extends \PHPUnit\Framework\TestCase
             // find all getter methods to mock.
             $getters = $this->yamlFindGetters($data);
 
-            $clazz = (empty($data['_model']) ? 'tx_rnbase_model_base' : $data['_model']
+            $clazz = (
+                empty($data['_model']) ? 'tx_rnbase_model_base' : $data['_model']
             );
 
             tx_rnbase::load($clazz);
@@ -270,7 +271,8 @@ abstract class tx_rnbase_tests_BaseTestCase extends \PHPUnit\Framework\TestCase
 
             // mock the getters and return the value from the nested yaml
             foreach ($getters as $getter) {
-                ($model
+                (
+                    $model
                     ->expects(self::any())
                     ->method($getter)
                     ->will($this->returnValue($this->loadYaml($data[$getter], false)))

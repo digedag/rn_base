@@ -193,7 +193,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
             $utility::deprecationLog(
                 'Usage of "tx_rnbase_configurations" are deprecated.' .
                 ' Use "Tx_Rnbase_Configuration_Processor" instead.'
-                );
+            );
         }
 
         $this->_dataStore = new \ArrayObject();
@@ -599,7 +599,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
             $alt,
             $hsc,
             \tx_rnbase_util_Debug::isLabelDebugEnabled($this)
-            );
+        );
     }
 
 
@@ -618,7 +618,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
             $extConfig = \tx_rnbase::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get(
                 $extKey,
                 $cfgKey
-                );
+            );
         } else {
             $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extKey]);
 
@@ -1114,7 +1114,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
                 $array = $this->mergeTSReference(
                     $array[$pathArray[$i]],
                     $array[$pathArray[$i] . '.']
-                    );
+                );
             } elseif (empty($pathArray[$i])) {
                 // It ends with a dot. We return the rest of the array
                 return $array;

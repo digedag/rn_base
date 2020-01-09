@@ -87,7 +87,10 @@ class CategoryTest extends \tx_rnbase_tests_BaseTestCase
      * @dataProvider dataProviderHandleSysCategoryFilter
      */
     public function testHandleSysCategoryFilter(
-        $configs, $fields, $expectedFields, $expectedDoSearchValue
+        $configs,
+        $fields,
+        $expectedFields,
+        $expectedDoSearchValue
     ) {
         if (!defined('OP_IN_INT')) {
             define('OP_IN_INT', 'IN');

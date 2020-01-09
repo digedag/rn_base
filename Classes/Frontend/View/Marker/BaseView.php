@@ -105,7 +105,7 @@ class BaseView extends AbstractView implements ViewInterface
     protected function renderPluginData(
         $templateCode,
         RequestInterface $request
-        ) {
+    ) {
         // check, if there are plugin markers to render
         if (!\tx_rnbase_util_BaseMarker::containsMarker($templateCode, 'PLUGIN_')) {
             return $templateCode;
@@ -116,26 +116,26 @@ class BaseView extends AbstractView implements ViewInterface
 
         // build the data to render
         $pluginData = array_merge(
-                // use the current data (tt_conten) to render
-                (array) $configurations->getCObj()->data,
-                // add some aditional columns, for example from the flexform od typoscript directly
-                $configurations->getExploded(
-                    $confId . 'plugin.flexdata.'
-                    )
-                );
+            // use the current data (tt_conten) to render
+            (array) $configurations->getCObj()->data,
+            // add some aditional columns, for example from the flexform od typoscript directly
+            $configurations->getExploded(
+                $confId . 'plugin.flexdata.'
+            )
+        );
         // check for unused columns
         $ignoreColumns = \tx_rnbase_util_BaseMarker::findUnusedCols(
-                $pluginData,
-                $templateCode,
-                'PLUGIN'
-                );
+            $pluginData,
+            $templateCode,
+            'PLUGIN'
+        );
         // create the marker array with the parsed columns
         $markerArray = $configurations->getFormatter()->getItemMarkerArrayWrapped(
-                $pluginData,
-                $confId . 'plugin.',
-                $ignoreColumns,
-                'PLUGIN_'
-            );
+            $pluginData,
+            $confId . 'plugin.',
+            $ignoreColumns,
+            'PLUGIN_'
+        );
 
         return \tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($templateCode, $markerArray);
     }

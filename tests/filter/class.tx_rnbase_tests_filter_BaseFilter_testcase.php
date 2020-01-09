@@ -67,7 +67,8 @@ class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTes
         $configurations = \tx_rnbase_tests_Utility::createConfigurations([], 'myext');
         $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $filter = $this->getAccessibleMock(
-            'tx_rnbase_filter_BaseFilter', array('initFilter'),
+            'tx_rnbase_filter_BaseFilter',
+            array('initFilter'),
             array(
                 &$parameters,
                 &$configurations,
