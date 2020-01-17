@@ -2,7 +2,7 @@
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
-/**
+/*
  * Converts to and from JSON format.
  *
  * JSON (JavaScript Object Notation) is a lightweight data-interchange
@@ -60,7 +60,7 @@
  * @see        http://pear.php.net/pepr/pepr-proposal-show.php?id=198
  */
 
-/**
+/*
  * Marker constant for Services_JSON::decode(), used to flag stack state.
  */
 define('SERVICES_JSON_SLICE', 1);

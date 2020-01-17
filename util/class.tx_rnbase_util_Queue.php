@@ -17,7 +17,7 @@
  * @greetings goes to all developers from Poland especially from php.pl :-)
  */
 
-/**
+/*
  * Default size of queue.
  */
 define('QUEUE_DEFAULT_SIZE', 15);
