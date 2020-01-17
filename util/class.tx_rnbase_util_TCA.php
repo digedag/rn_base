@@ -214,6 +214,10 @@ class tx_rnbase_util_TCA
             if (TYPO3_MODE === 'FE' && isset($_REQUEST['eID'])) {
                 $eidUtility = tx_rnbase_util_Typo3Classes::getEidUtilityClass();
                 $eidUtility::initTCA();
+            } else {
+                if (!is_array($GLOBALS['TCA'])) {
+                    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadBaseTca(true);
+                }
             }
         } else {
             if (!is_array($GLOBALS['TCA'])) {
