@@ -85,6 +85,9 @@
             "cms-package-dir": "{$vendor-dir}/typo3/cms",
             "extension-key": "rn_base",
             "web-dir": ".Build/Web"
+        },
+        "branch-alias": {
+            "dev-master": "1.11.x-dev"
         }
     }
 }
