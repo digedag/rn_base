@@ -477,4 +477,14 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
     {
         return mssql_get_last_message();
     }
+
+    /**
+     * Whether an actual connection to the database is established.
+     *
+     * @return bool
+     */
+    public function isConnected()
+    {
+        return false !== $this->db;
+    }
 }

@@ -386,4 +386,14 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase
     {
         return $this->db->error;
     }
+
+    /**
+     * Whether an actual connection to the database is established.
+     *
+     * @return bool
+     */
+    public function isConnected()
+    {
+        return $this->isConnected;
+    }
 }
