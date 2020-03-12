@@ -2,7 +2,7 @@
 /* *******************************************************
  *  Copyright notice
  *
- *  (c) 2017-2019 René Nitzsche <rene@system25.de>
+ *  (c) 2017-2020 René Nitzsche <rene@system25.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -202,5 +202,20 @@ class Tx_Rnbase_Backend_Template_Override_DocumentTemplate extends Tx_Rnbase_Bac
                    '</div>'.
                  '</div>'.
                '</div>';
+    }
+
+    /**
+     * Inserts a hr tag divider
+     *
+     * @param int $dist The margin-top/-bottom of the <hr> ruler.
+     * @return string HTML content
+     */
+    public function divider($dist)
+    {
+        if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+            return parent::divider($dist);
+        }
+        $dist = (int)$dist;
+        return '<!-- DIVIDER --><hr style="margin-top: ' . $dist . 'px; margin-bottom: ' . $dist . 'px;" />';
     }
 }
