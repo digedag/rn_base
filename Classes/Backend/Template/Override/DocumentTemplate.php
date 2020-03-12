@@ -205,9 +205,10 @@ class Tx_Rnbase_Backend_Template_Override_DocumentTemplate extends Tx_Rnbase_Bac
     }
 
     /**
-     * Inserts a hr tag divider
+     * Inserts a hr tag divider.
      *
-     * @param int $dist The margin-top/-bottom of the <hr> ruler.
+     * @param int $dist the margin-top/-bottom of the <hr> ruler
+     *
      * @return string HTML content
      */
     public function divider($dist)
@@ -215,7 +216,8 @@ class Tx_Rnbase_Backend_Template_Override_DocumentTemplate extends Tx_Rnbase_Bac
         if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
             return parent::divider($dist);
         }
-        $dist = (int)$dist;
-        return '<!-- DIVIDER --><hr style="margin-top: ' . $dist . 'px; margin-bottom: ' . $dist . 'px;" />';
+        $dist = (int) $dist;
+
+        return '<!-- DIVIDER --><hr style="margin-top: '.$dist.'px; margin-bottom: '.$dist.'px;" />';
     }
 }
