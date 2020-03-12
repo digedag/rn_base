@@ -56,10 +56,10 @@ abstract class tx_rnbase_action_BaseIOC
 
         $debug = (
             $debugKey && (
-            '1' === $debugKey ||
+                '1' === $debugKey ||
                 ($_GET['debug'] && array_key_exists($debugKey, array_flip(tx_rnbase_util_Strings::trimExplode(',', $_GET['debug'])))) ||
                 ($_POST['debug'] && array_key_exists($debugKey, array_flip(tx_rnbase_util_Strings::trimExplode(',', $_POST['debug']))))
-        )
+            )
         );
         if ($debug) {
             $time = microtime(true);
