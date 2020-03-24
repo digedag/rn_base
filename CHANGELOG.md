@@ -3,6 +3,10 @@
 Changelog
 ---------
 
+v1.11.2 (24.03.2020)
+ * fix missing isConnected method for MsSQL and MySQL db drivers
+ * make sure TCA get's loaded in loadTCA since TYPO3 8.x 
+
 v1.11.1 (09.02.2020)
  * configuration processor usage for tests fixed
  
