@@ -81,6 +81,7 @@ class Tx_Rnbase_Backend_Utility
     public static function getUrlToken($formName = 'securityToken', $tokenName = 'formToken')
     {
         $formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
+
         return '&'.$tokenName.'='.$formProtection->generateToken($formName);
     }
 
@@ -139,6 +140,7 @@ class Tx_Rnbase_Backend_Utility
     public static function issueCommand($getParameters, $redirectUrl = '')
     {
         $link = TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction($getParameters, $redirectUrl);
+
         return $link;
     }
 }
