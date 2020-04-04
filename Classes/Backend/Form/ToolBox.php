@@ -55,12 +55,12 @@ class Tx_Rnbase_Backend_Form_ToolBox
     const OPTION_PARAMS = 'params';
 
     /**
-     * Clipboard object
+     * Clipboard object.
      *
      * @var \TYPO3\CMS\Backend\Clipboard\Clipboard
      */
     private $clipObj;
-    
+
     /**
      * @param \Tx_Rnbase_Backend_Template_Override_DocumentTemplate $doc
      * @param \tx_rnbase_mod_IModule                                $module
@@ -162,11 +162,12 @@ class Tx_Rnbase_Backend_Form_ToolBox
     {
         $this->addBaseInlineJSCode();
         $image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-document-history-open');
-        $moduleUrl = \Tx_Rnbase_Backend_Utility::getModuleUrl('record_history', ['element' => $table . ':' . $recordUid]);
-        $onClick = 'return jumpExt(' . \Tx_Rnbase_Utility_Strings::quoteJSvalue($moduleUrl) . ',\'#latest\');';
-        return '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
-            . htmlspecialchars($GLOBALS['LANG']->getLL('history')) . '">'
-            . $image . '</a>';
+        $moduleUrl = \Tx_Rnbase_Backend_Utility::getModuleUrl('record_history', ['element' => $table.':'.$recordUid]);
+        $onClick = 'return jumpExt('.\Tx_Rnbase_Utility_Strings::quoteJSvalue($moduleUrl).',\'#latest\');';
+
+        return '<a class="btn btn-default" href="#" onclick="'.htmlspecialchars($onClick).'" title="'
+            .htmlspecialchars($GLOBALS['LANG']->getLL('history')).'">'
+            .$image.'</a>';
     }
 
     /**
@@ -332,16 +333,16 @@ class Tx_Rnbase_Backend_Form_ToolBox
     {
         $this->initClipboard();
         $this->addBaseInlineJSCode();
-        $isSel = (string)$this->clipObj->isSelected($editTable, $recordUid);
-        $image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-edit-cut' . ($isSel ? '-release' : ''));
-        
+        $isSel = (string) $this->clipObj->isSelected($editTable, $recordUid);
+        $image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-edit-cut'.($isSel ? '-release' : ''));
+
         return '<a class="btn btn-default" href="#" onclick="'
-            . htmlspecialchars('return jumpSelf(' . 
+            .htmlspecialchars('return jumpSelf('.
                 \Tx_Rnbase_Utility_Strings::quoteJSvalue(
-                    $this->clipObj->selUrlDB($editTable, $recordUid, 0, ($isSel === 'cut'), ['returnUrl' => ''])
-                ) . ');')
-            . '" title="' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.cut')) . '">'
-                . $image . '</a>';
+                    $this->clipObj->selUrlDB($editTable, $recordUid, 0, ('cut' === $isSel), ['returnUrl' => ''])
+                ).');')
+            .'" title="'.htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.cut')).'">'
+                .$image.'</a>';
     }
 
     private function initClipboard()
@@ -350,7 +351,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
             $this->clipObj = \tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
             // Initialize - reads the clipboard content from the user session
             $this->clipObj->initializeClipboard();
-            
+
             $CB = \Tx_Rnbase_Utility_T3General::_GET('CB');
             $this->clipObj->setCmd($CB);
             // Clean up pad
@@ -734,6 +735,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
             TYPO3\CMS\Backend\Form\Element\InputDateTimeElement::class
             :
             TYPO3\CMS\Backend\Form\Element\InputTextElement::class;
+
         return tx_rnbase::makeInstance(
             $dateElementClass,
             $this->getTCEForm()->getNodeFactory(),
@@ -954,8 +956,8 @@ class Tx_Rnbase_Backend_Form_ToolBox
 
     /**
      * Add inline JS-Code for functions jumpToUrl(), jumpExt(), jumpSelf(), setHighlight()
-     * and global Vars T3_RETURN_URL and T3_THIS_LOCATION to PageRenderer
-     * 
+     * and global Vars T3_RETURN_URL and T3_THIS_LOCATION to PageRenderer.
+     *
      * @param string $location
      */
     public function addBaseInlineJSCode($location = '')
@@ -968,11 +970,11 @@ class Tx_Rnbase_Backend_Form_ToolBox
             $this->getBaseJavaScriptCode($location)
         );
     }
-    
+
     /**
      * Provide JS-Code for functions jumpToUrl(), jumpExt(), jumpSelf(), setHighlight()
-     * and global Vars T3_RETURN_URL and T3_THIS_LOCATION
-     * 
+     * and global Vars T3_RETURN_URL and T3_THIS_LOCATION.
+     *
      * @param string $location module url or empty
      *
      * @return string
