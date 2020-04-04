@@ -3,6 +3,10 @@
 Changelog
 ---------
 
+v1.11.3 (??.0?.2020)
+ * remove 6.2 code from BE-ToolBox
+ * fix clipboard link in ToolBox 
+
 v1.11.2 (24.03.2020)
  * fix missing isConnected method for MsSQL and MySQL db drivers
  * make sure TCA get's loaded in loadTCA since TYPO3 8.x 

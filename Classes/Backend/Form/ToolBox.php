@@ -55,6 +55,13 @@ class Tx_Rnbase_Backend_Form_ToolBox
     const OPTION_PARAMS = 'params';
 
     /**
+     * Clipboard object
+     *
+     * @var \TYPO3\CMS\Backend\Clipboard\Clipboard
+     */
+    private $clipObj;
+    
+    /**
      * @param \Tx_Rnbase_Backend_Template_Override_DocumentTemplate $doc
      * @param \tx_rnbase_mod_IModule                                $module
      */
@@ -133,21 +140,13 @@ class Tx_Rnbase_Backend_Form_ToolBox
         $params = '&edit['.$editTable.']['.$editUid.']=edit';
         $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
         $class = ' class="'.$class.'"';
-
         $label = isset($options['label']) ? $options['label'] : $label;
+        $onClick = htmlspecialchars(Tx_Rnbase_Backend_Utility::editOnClick($params));
 
-        if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-            $onClick = htmlspecialchars(Tx_Rnbase_Backend_Utility::editOnClick($params));
-
-            return '<a href="#" '.$class.' onclick="'.$onClick.'" title="Edit UID: '.$editUid.'">'
-                    .Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-page-open')
-                    .$label
-                    .'</a>';
-        } else {
-            return '<a href="#" onclick="'.htmlspecialchars(Tx_Rnbase_Backend_Utility::editOnClick($params, $GLOBALS['BACK_PATH'])).'">'.
-                    '<img'.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif', 'width="11" height="12"').' title="Edit UID: '.$editUid.'" border="0" alt="Edit" />'.
-                    $label.'</a>';
-        }
+        return '<a href="#" '.$class.' onclick="'.$onClick.'" title="Edit UID: '.$editUid.'">'
+                .Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-page-open')
+                .$label
+                .'</a>';
     }
 
     /**
@@ -161,23 +160,13 @@ class Tx_Rnbase_Backend_Form_ToolBox
      */
     public function createHistoryLink($table, $recordUid, $label = '')
     {
-        if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-            $image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-document-history-open');
-        } else {
-            $image = sprintf(
-                '<img %s title="%s" alt="">',
-                Tx_Rnbase_Backend_Utility_Icons::skinImg(
-                    $GLOBALS['BACK_PATH'],
-                    'gfx/history2.gif',
-                    'width="13" height="12"'
-                ),
-                $GLOBALS['LANG']->getLL('history', 1)
-            );
-        }
-
-        return "<a href=\"#\" onclick=\"return jumpExt('".$GLOBALS['BACK_PATH'].
-                'show_rechis.php?element='.rawurlencode($table.':'.$recordUid).
-                "','#latest');\">".$image.$label.'</a>';
+        $this->addBaseInlineJSCode();
+        $image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-document-history-open');
+        $moduleUrl = \Tx_Rnbase_Backend_Utility::getModuleUrl('record_history', ['element' => $table . ':' . $recordUid]);
+        $onClick = 'return jumpExt(' . \Tx_Rnbase_Utility_Strings::quoteJSvalue($moduleUrl) . ',\'#latest\');';
+        return '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
+            . htmlspecialchars($GLOBALS['LANG']->getLL('history')) . '">'
+            . $image . '</a>';
     }
 
     /**
@@ -275,17 +264,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
         if (isset($options[self::OPTION_CONFIRM]) && strlen($options[self::OPTION_CONFIRM]) > 0) {
             $jsCode = 'if(confirm('.Tx_Rnbase_Utility_Strings::quoteJSvalue($options[self::OPTION_CONFIRM]).')) {'.$jsCode.'} else {return false;}';
         }
-
-        if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-            $image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-document-new');
-        } else {
-            $image = '<img'.
-                Tx_Rnbase_Backend_Utility_Icons::skinImg(
-                    $GLOBALS['BACK_PATH'],
-                    'gfx/new_'.('pages' == $table ? 'page' : 'el').'.gif',
-                    'width="'.('pages' == $table ? 13 : 11).'" height="12"'
-                ).' alt="" />';
-        }
+        $image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-document-new');
 
         $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
         $class = ' class="'.$class.'"';
@@ -335,21 +314,10 @@ class Tx_Rnbase_Backend_Form_ToolBox
      */
     public function createInfoLink($editTable, $editUid, $label = 'Info')
     {
-        if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-            $image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-document-info');
-        } else {
-            $image = sprintf(
-                '<img %s title="Edit %s" alt="">',
-                Tx_Rnbase_Backend_Utility_Icons::skinImg(
-                    $GLOBALS['BACK_PATH'],
-                    'gfx/zoom2.gif',
-                    'width="13" height="12"'
-                ),
-                $editUid
-            );
-        }
+        $image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-document-info');
 
-        return '<a href="#" onclick="top.launchView('."'".$editTable."', ' ".$editUid."'); return false;".'">'.$image.$label.'</a>';
+        return '<a class="btn btn-default" href="#" onclick="top.launchView('."'".$editTable."', ' ".$editUid."'); return false;".'">'.
+            $image.$label.'</a>';
     }
 
     /**
@@ -362,22 +330,34 @@ class Tx_Rnbase_Backend_Form_ToolBox
      */
     public function createMoveLink($editTable, $recordUid, $currentPid, $label = 'Move')
     {
-        if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-            $image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-edit-cut');
-        } else {
-            $image = sprintf(
-                '<img %s title="UID:  %s" alt="">',
-                Tx_Rnbase_Backend_Utility_Icons::skinImg(
-                    $GLOBALS['BACK_PATH'],
-                    'gfx/clip_cut.gif',
-                    'width="13" height="12"'
-                ),
-                $recordUid
-            );
-        }
+        $this->initClipboard();
+        $this->addBaseInlineJSCode();
+        $isSel = (string)$this->clipObj->isSelected($editTable, $recordUid);
+        $image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-edit-cut' . ($isSel ? '-release' : ''));
+        
+        return '<a class="btn btn-default" href="#" onclick="'
+            . htmlspecialchars('return jumpSelf(' . 
+                \Tx_Rnbase_Utility_Strings::quoteJSvalue(
+                    $this->clipObj->selUrlDB($editTable, $recordUid, 0, ($isSel === 'cut'), ['returnUrl' => ''])
+                ) . ');')
+            . '" title="' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.cut')) . '">'
+                . $image . '</a>';
+    }
 
-        return "<a href=\"#\" onclick=\"return jumpSelf('/typo3/db_list.php?id=".$currentPid.'&amp;CB[el]['.$editTable
-                     .'%7C'.$recordUid."]=1');\">".$image.$label.'</a>';
+    private function initClipboard()
+    {
+        if (!$this->clipObj) {
+            $this->clipObj = \tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
+            // Initialize - reads the clipboard content from the user session
+            $this->clipObj->initializeClipboard();
+            
+            $CB = \Tx_Rnbase_Utility_T3General::_GET('CB');
+            $this->clipObj->setCmd($CB);
+            // Clean up pad
+            $this->clipObj->cleanCurrent();
+            // Save the clipboard content
+            $this->clipObj->endClipboard();
+        }
     }
 
     /**
@@ -473,19 +453,12 @@ class Tx_Rnbase_Backend_Form_ToolBox
             // the jumpUrl method is no longer global available since TYPO3 8.7
             // furthermore we need the JS variable T3_THIS_LOCATION because it is used
             // as redirect in getLinkToDataHandlerAction when -1 is passed
-            $this->getDoc()->getPageRenderer()->addJsInlineCode(
-                'rnBaseMethods',
-                $this->getBaseJavaScriptCode()
-            );
+            $this->addBaseInlineJSCode();
         } else {
             $currentLocation = $this->getLinkThisScript(true, $options);
 
-            if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
-                $dataHandlerEntryPoint = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('tce_db').
-                '&';
-            } else {
-                $dataHandlerEntryPoint = $GLOBALS['BACK_PATH'].'tce_db.php?';
-            }
+            $dataHandlerEntryPoint = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('tce_db').
+            '&';
             $jumpToUrl = $dataHandlerEntryPoint.'redirect='.$currentLocation.'&amp;'.$urlParameters;
 
             // jetzt noch alles zur Formvalidierung einfügen damit
@@ -533,12 +506,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
      */
     public function createDeleteLink($table, $uid, $label = 'Remove', $options = [])
     {
-        if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-            $image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-delete');
-        } else {
-            $image = '<img'.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/deletedok.gif', 'width="16" height="16"').'  border="0" alt="" />';
-        }
-
+        $image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-delete');
         $options['hover'] = 'Delete UID: '.$uid;
 
         return $this->createLinkForDataHandlerAction(
@@ -666,14 +634,9 @@ class Tx_Rnbase_Backend_Form_ToolBox
         // $options['sprite'] für abwärtskompatibilität
         if ($options['icon'] || $options['sprite']) {
             $icon = isset($options['icon']) ? $options['icon'] : $options['sprite'];
-            if (!tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-                $tag = '<img '.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$icon).
-                ' title="'.$label.'\" alt="" >';
-            } else {
-                // FIXME: label get lost here??
-                tx_rnbase::load('tx_rnbase_mod_Util');
-                $tag = tx_rnbase_mod_Util::getSpriteIcon($icon, $options);
-            }
+            // FIXME: label get lost here??
+            tx_rnbase::load('tx_rnbase_mod_Util');
+            $tag = tx_rnbase_mod_Util::getSpriteIcon($icon, $options);
         }
 
         return $tag;
@@ -744,24 +707,13 @@ class Tx_Rnbase_Backend_Form_ToolBox
      */
     public function createIntInput($name, $value, $width, $maxlength = 10)
     {
-        if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-            /* @var $inputField Tx_Rnbase_Backend_Form_Element_InputText */
-            $inputField = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Form_Element_InputText', $this->getTCEForm()->getNodeFactory(), []);
-            $out = $inputField->renderHtml($name, $value, [
-                'width' => $width,
-                'maxlength' => $maxlength,
-                'eval' => 'int',
-            ]);
-        } else {
-            $out = '
-            <input type="text" name="'.$name.'_hr"'.$GLOBALS['TBE_TEMPLATE']->formWidth($width).
-                        ' onchange="typo3FormFieldGet(\''.$name.'\', \'int\', \'\', 0,0);"'.
-                        $GLOBALS['TBE_TEMPLATE']->formWidth(12).' maxlength="'.$maxlength.'"/>'.'
-            <input type="hidden" value="'.htmlspecialchars($value).'" name="'.$name.'" />';
-
-            // JS-Code für die Initialisierung im TCEform eintragen
-            $this->form->extJSCODE .= 'typo3FormFieldSet("'.$name.'", "int", "", 0,0);';
-        }
+        /* @var $inputField Tx_Rnbase_Backend_Form_Element_InputText */
+        $inputField = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Form_Element_InputText', $this->getTCEForm()->getNodeFactory(), []);
+        $out = $inputField->renderHtml($name, $value, [
+            'width' => $width,
+            'maxlength' => $maxlength,
+            'eval' => 'int',
+        ]);
 
         return $out;
     }
@@ -777,34 +729,29 @@ class Tx_Rnbase_Backend_Form_ToolBox
         if (tx_rnbase_util_Math::isInteger($value)) {
             $value += date('Z', $value);
         }
-        if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-            $this->initializeJavaScriptFormEngine();
-            $dateElementClass = tx_rnbase_util_TYPO3::isTYPO80OrHigher() ?
-                TYPO3\CMS\Backend\Form\Element\InputDateTimeElement::class
-                :
-                TYPO3\CMS\Backend\Form\Element\InputTextElement::class;
-
-            return tx_rnbase::makeInstance(
-                $dateElementClass,
-                $this->getTCEForm()->getNodeFactory(),
-                [
-                    'fieldName' => $name,
-                    'parameterArray' => [
-                        'itemFormElValue' => $value,
-                        'itemFormElName' => $name,
-                        'fieldConf' => [
-                            'config' => [
-                                'width' => 20,
-                                'maxlength' => 20,
-                                'eval' => 'datetime',
-                            ],
+        $this->initializeJavaScriptFormEngine();
+        $dateElementClass = tx_rnbase_util_TYPO3::isTYPO80OrHigher() ?
+            TYPO3\CMS\Backend\Form\Element\InputDateTimeElement::class
+            :
+            TYPO3\CMS\Backend\Form\Element\InputTextElement::class;
+        return tx_rnbase::makeInstance(
+            $dateElementClass,
+            $this->getTCEForm()->getNodeFactory(),
+            [
+                'fieldName' => $name,
+                'parameterArray' => [
+                    'itemFormElValue' => $value,
+                    'itemFormElName' => $name,
+                    'fieldConf' => [
+                        'config' => [
+                            'width' => 20,
+                            'maxlength' => 20,
+                            'eval' => 'datetime',
                         ],
                     ],
-                ]
-            )->render()['html'];
-        } else {
-            return $this->createDateInput62($name, $value);
-        }
+                ],
+            ]
+        )->render()['html'];
     }
 
     /**
@@ -828,29 +775,6 @@ class Tx_Rnbase_Backend_Form_ToolBox
             $initializeFormEngineCallback
         );
         $this->getDoc()->getPageRenderer()->addInlineSetting('FormEngine', 'formName', 'editform');
-    }
-
-    /**
-     * DateTime-Field rendering up to 6.2.
-     *
-     * @param string $name
-     * @param int    $value
-     *
-     * @return string
-     */
-    private function createDateInput62($name, $value)
-    {
-        $out = '
-            <input type="text" name="'.$name.'_hr"
-                onchange="typo3FormFieldGet(\''.$name.'\', \'datetime\', \'\', 0,0);"'.
-                $GLOBALS['TBE_TEMPLATE']->formWidth(11).
-                ' />'.'
-            <input type="hidden" value="'.htmlspecialchars($value).'" name="'.$name.'" />';
-
-        // JS-Code für die Initialisierung im TCEform eintragen
-        $this->form->extJSCODE .= 'typo3FormFieldSet("'.$name.'", "datetime", "", 0,0);';
-
-        return $out;
     }
 
     /**
@@ -1029,6 +953,26 @@ class Tx_Rnbase_Backend_Form_ToolBox
     }
 
     /**
+     * Add inline JS-Code for functions jumpToUrl(), jumpExt(), jumpSelf(), setHighlight()
+     * and global Vars T3_RETURN_URL and T3_THIS_LOCATION to PageRenderer
+     * 
+     * @param string $location
+     */
+    public function addBaseInlineJSCode($location = '')
+    {
+        // the jumpUrl method is no longer global available since TYPO3 8.7
+        // furthermore we need the JS variable T3_THIS_LOCATION because it is used
+        // as redirect in getLinkToDataHandlerAction when -1 is passed
+        $this->getDoc()->getPageRenderer()->addJsInlineCode(
+            'rnBaseMethods',
+            $this->getBaseJavaScriptCode($location)
+        );
+    }
+    
+    /**
+     * Provide JS-Code for functions jumpToUrl(), jumpExt(), jumpSelf(), setHighlight()
+     * and global Vars T3_RETURN_URL and T3_THIS_LOCATION
+     * 
      * @param string $location module url or empty
      *
      * @return string
@@ -1256,13 +1200,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
         // $options['sprite'] für abwärtskompatibilität
         if ($options['icon'] || $options['sprite']) {
             $icon = isset($options['icon']) ? $options['icon'] : $options['sprite'];
-            if (!tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-                $label = '<img '.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$icon).
-                ' title="'.$label.'\" alt="" >';
-            } else {
-                tx_rnbase::load('tx_rnbase_mod_Util');
-                $label = tx_rnbase_mod_Util::getSpriteIcon($icon, $options);
-            }
+            $label = tx_rnbase_mod_Util::getSpriteIcon($icon, $options);
         }
 
         $jsCode = $this->getJavaScriptForLinkToDataHandlerAction($actionParameters, $options);

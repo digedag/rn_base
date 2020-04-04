@@ -2,7 +2,7 @@
 /***************************************************************
  * Copyright notice
  *
- * (c) 2015 René Nitzsche <rene@system25.de>
+ * (c) 2015-2020 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -76,15 +76,11 @@ class Tx_Rnbase_Backend_Utility
      *
      * @throws \InvalidArgumentException
      *
-     * @deprecated since TYPO3 7
-     *
      * @return string A URL GET variable including ampersand
      */
     public static function getUrlToken($formName = 'securityToken', $tokenName = 'formToken')
     {
-        \TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
         $formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
-
         return '&'.$tokenName.'='.$formProtection->generateToken($formName);
     }
 
@@ -134,7 +130,6 @@ class Tx_Rnbase_Backend_Utility
     /**
      * @see TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction
      * @see TYPO3\CMS\Backend\Template\DocumentTemplate::issueCommand
-     * @see template::issueCommand
      *
      * @param string $getParameters
      * @param string $redirectUrl
@@ -143,13 +138,7 @@ class Tx_Rnbase_Backend_Utility
      */
     public static function issueCommand($getParameters, $redirectUrl = '')
     {
-        if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
-            $link = TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction($getParameters, $redirectUrl);
-        } else {
-            $link = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getDocumentTemplateClass())
-                        ->issueCommand($getParameters, $redirectUrl);
-        }
-
+        $link = TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction($getParameters, $redirectUrl);
         return $link;
     }
 }
