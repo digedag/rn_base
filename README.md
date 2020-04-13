@@ -4,7 +4,8 @@ rn_base
 [![rn_base](ext_icon.gif)](https://github.com/digedag/rn_base)
 [![Latest Stable Version](https://img.shields.io/packagist/v/digedag/rn-base.svg?maxAge=3600&style=flat-square)](https://packagist.org/packages/digedag/rn-base)
 [![Total Downloads](https://img.shields.io/packagist/dt/digedag/rn-base.svg?maxAge=3600&style=flat-square)](https://packagist.org/packages/digedag/rn-base)
-[![Build Status](https://img.shields.io/travis/digedag/rn_base.svg?maxAge=3600&style=flat-square)](https://travis-ci.org/digedag/rn_base)
+[![Build Status](https://api.travis-ci.org/digedag/rn_base.png)](https://travis-ci.org/digedag/rn_base)
+[![StyleCI](https://styleci.io/repos/21685882/shield?branch=master)](https://styleci.io/repos/21685882/)
 [![License](https://img.shields.io/packagist/l/digedag/rn-base.svg?maxAge=3600&style=flat-square)](https://packagist.org/packages/digedag/rn-base)
 
 What is this extension for?
