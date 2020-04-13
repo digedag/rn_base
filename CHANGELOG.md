@@ -3,7 +3,7 @@
 Changelog
 ---------
 
-v1.11.3 (13.04.2020)
+v1.11.4 (13.04.2020)
  * remove 6.2 code from BE-ToolBox
  * fix clipboard link in ToolBox 
 
