@@ -2,8 +2,7 @@
 
 namespace Sys25\RnBase\Typo3Wrapper\Service;
 
-
-/**
+/*
  *  Copyright notice.
  *
  *  (c) 2019 René Nitzsche <rene@system25.de>
@@ -30,8 +29,7 @@ if (\tx_rnbase_util_TYPO3::isTYPO95OrHigher()) {
     class AuthenticationService extends \TYPO3\CMS\Core\Authentication\AuthenticationService
     {
     }
-}
-else {
+} else {
     /**
      * Wrapper für \TYPO3\CMS\Sv\AuthenticationService seit TYPO3 6.x.
      *
