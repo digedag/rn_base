@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Typo3Wrapper\Service;
 
+
 /**
  *  Copyright notice.
  *
@@ -25,13 +26,20 @@ namespace Sys25\RnBase\Typo3Wrapper\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-/**
- * Wrapper für \TYPO3\CMS\Sv\AuthenticationService seit TYPO3 6.x.
- *
- * @author          Hannes Bochmann <rene@system25.de>
- * @license         http://www.gnu.org/licenses/lgpl.html
- *                  GNU Lesser General Public License, version 3 or later
- */
-class AuthenticationService extends \TYPO3\CMS\Sv\AuthenticationService
-{
+if (\tx_rnbase_util_TYPO3::isTYPO95OrHigher()) {
+    class AuthenticationService extends \TYPO3\CMS\Core\Authentication\AuthenticationService
+    {
+    }
+}
+else {
+    /**
+     * Wrapper für \TYPO3\CMS\Sv\AuthenticationService seit TYPO3 6.x.
+     *
+     * @author          Hannes Bochmann <rene@system25.de>
+     * @license         http://www.gnu.org/licenses/lgpl.html
+     *                  GNU Lesser General Public License, version 3 or later
+     */
+    class AuthenticationService extends \TYPO3\CMS\Sv\AuthenticationService
+    {
+    }
 }
