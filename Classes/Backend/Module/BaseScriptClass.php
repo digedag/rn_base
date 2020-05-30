@@ -1,4 +1,5 @@
 <?php
+
 namespace Sys25\RnBase\Backend\Module;
 
 /*
@@ -24,9 +25,9 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Takeover from TYPO3 accourding to 
- * https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/9.5/Deprecation-86225-ClassesBaseScriptClassAndAbstractFunctionModule.html
- * 
+ * Takeover from TYPO3 accourding to
+ * https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/9.5/Deprecation-86225-ClassesBaseScriptClassAndAbstractFunctionModule.html.
+ *
  * Parent class for 'ScriptClasses' in backend modules.
  *
  * EXAMPLE PROTOTYPE
@@ -68,7 +69,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * THEN WE CALL THE main() METHOD AND THIS SHOULD SPARK THE CREATION OF THE MODULE OUTPUT.
  * $GLOBALS['SOBE']->main();
- *
  */
 class BaseScriptClass
 {
@@ -76,22 +76,25 @@ class BaseScriptClass
      * Loaded with the global array $MCONF which holds some module configuration from the conf.php file of backend modules.
      *
      * @see init()
+     *
      * @var array
      */
     public $MCONF = [];
 
     /**
-     * The integer value of the GET/POST var, 'id'. Used for submodules to the 'Web' module (page id)
+     * The integer value of the GET/POST var, 'id'. Used for submodules to the 'Web' module (page id).
      *
      * @see init()
+     *
      * @var int
      */
     public $id;
 
     /**
-     * The value of GET/POST var, 'CMD'
+     * The value of GET/POST var, 'CMD'.
      *
      * @see init()
+     *
      * @var mixed
      */
     public $CMD;
@@ -100,6 +103,7 @@ class BaseScriptClass
      * A WHERE clause for selection records from the pages table based on read-permissions of the current backend user.
      *
      * @see init()
+     *
      * @var string
      */
     public $perms_clause;
@@ -108,24 +112,27 @@ class BaseScriptClass
      * The module menu items array. Each key represents a key for which values can range between the items in the array of that key.
      *
      * @see init()
+     *
      * @var array
      */
     public $MOD_MENU = [
-        'function' => []
+        'function' => [],
     ];
 
     /**
-     * Current settings for the keys of the MOD_MENU array
+     * Current settings for the keys of the MOD_MENU array.
      *
      * @see $MOD_MENU
+     *
      * @var array
      */
     public $MOD_SETTINGS = [];
 
     /**
-     * Module TSconfig based on PAGE TSconfig / USER TSconfig
+     * Module TSconfig based on PAGE TSconfig / USER TSconfig.
      *
      * @see menuConfig()
+     *
      * @var array
      */
     public $modTSconfig;
@@ -135,6 +142,7 @@ class BaseScriptClass
      * Can be set from extension classes of this class before the init() function is called.
      *
      * @see menuConfig(), \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()
+     *
      * @var string
      */
     public $modMenu_type = '';
@@ -144,6 +152,7 @@ class BaseScriptClass
      * Can be set from extension classes of this class before the init() function is called.
      *
      * @see menuConfig(), \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()
+     *
      * @var string
      */
     public $modMenu_dontValidateList = '';
@@ -153,20 +162,22 @@ class BaseScriptClass
      * Can be set from extension classes of this class before the init() function is called.
      *
      * @see menuConfig(), \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()
+     *
      * @var string
      */
     public $modMenu_setDefaultList = '';
 
     /**
-     * Contains module configuration parts from TBE_MODULES_EXT if found
+     * Contains module configuration parts from TBE_MODULES_EXT if found.
      *
      * @see handleExternalFunctionValue()
+     *
      * @var array
      */
     public $extClassConf;
 
     /**
-     * Generally used for accumulating the output content of backend modules
+     * Generally used for accumulating the output content of backend modules.
      *
      * @var string
      */
@@ -181,6 +192,7 @@ class BaseScriptClass
      * May contain an instance of a 'Function menu module' which connects to this backend module.
      *
      * @see checkExtObj()
+     *
      * @var AbstractFunctionModule
      */
     public $extObj;
@@ -191,11 +203,11 @@ class BaseScriptClass
     protected $pageRenderer;
 
     /**
-     * Constructor deprecates the class
+     * Constructor deprecates the class.
      */
     public function __construct()
     {
-        trigger_error(
+        @trigger_error(
             'Class BaseScriptClass is deprecated and will be removed in TYPO3 v10.0',
             E_USER_DEPRECATED
         );
@@ -212,7 +224,7 @@ class BaseScriptClass
         if (!$this->MCONF['name']) {
             $this->MCONF = $GLOBALS['MCONF'];
         }
-        $this->id = (int)GeneralUtility::_GP('id');
+        $this->id = (int) GeneralUtility::_GP('id');
         $this->CMD = GeneralUtility::_GP('CMD');
         $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
         $this->menuConfig();
@@ -229,7 +241,7 @@ class BaseScriptClass
     public function menuConfig()
     {
         // Page / user TSconfig settings and blinding of menu-items
-        $this->modTSconfig['properties'] = BackendUtility::getPagesTSconfig($this->id)['mod.'][$this->MCONF['name'] . '.'] ?? [];
+        $this->modTSconfig['properties'] = BackendUtility::getPagesTSconfig($this->id)['mod.'][$this->MCONF['name'].'.'] ?? [];
         $this->MOD_MENU['function'] = $this->mergeExternalItems($this->MCONF['name'], 'function', $this->MOD_MENU['function']);
         $blindActions = $this->modTSconfig['properties']['menu.']['function.'] ?? [];
         foreach ($blindActions as $key => $value) {
@@ -241,13 +253,16 @@ class BaseScriptClass
     }
 
     /**
-     * Merges menu items from global array $TBE_MODULES_EXT
+     * Merges menu items from global array $TBE_MODULES_EXT.
      *
      * @param string $modName Module name for which to find value
      * @param string $menuKey Menu key, eg. 'function' for the function menu.
-     * @param array $menuArr The part of a MOD_MENU array to work on.
-     * @return array Modified array part.
+     * @param array  $menuArr the part of a MOD_MENU array to work on
+     *
+     * @return array modified array part
+     *
      * @internal
+     *
      * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(), menuConfig()
      */
     public function mergeExternalItems($modName, $menuKey, $menuArr)
@@ -255,24 +270,26 @@ class BaseScriptClass
         $mergeArray = $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey];
         if (is_array($mergeArray)) {
             foreach ($mergeArray as $k => $v) {
-                if (((string)$v['ws'] === '' || $this->getBackendUser()->workspace === 0 && GeneralUtility::inList($v['ws'], 'online')) || $this->getBackendUser()->workspace === -1 && GeneralUtility::inList($v['ws'], 'offline') || $this->getBackendUser()->workspace > 0 && GeneralUtility::inList($v['ws'], 'custom')) {
+                if (('' === (string) $v['ws'] || 0 === $this->getBackendUser()->workspace && GeneralUtility::inList($v['ws'], 'online')) || -1 === $this->getBackendUser()->workspace && GeneralUtility::inList($v['ws'], 'offline') || $this->getBackendUser()->workspace > 0 && GeneralUtility::inList($v['ws'], 'custom')) {
                     $menuArr[$k] = $this->getLanguageService()->sL($v['title']);
                 }
             }
         }
+
         return $menuArr;
     }
 
     /**
      * Loads $this->extClassConf with the configuration for the CURRENT function of the menu.
      *
-     * @param string $MM_key The key to MOD_MENU for which to fetch configuration. 'function' is default since it is first and foremost used to get information per "extension object" (I think that is what its called)
+     * @param string $MM_key   The key to MOD_MENU for which to fetch configuration. 'function' is default since it is first and foremost used to get information per "extension object" (I think that is what its called)
      * @param string $MS_value The value-key to fetch from the config array. If NULL (default) MOD_SETTINGS[$MM_key] will be used. This is useful if you want to force another function than the one defined in MOD_SETTINGS[function]. Call this in init() function of your Script Class: handleExternalFunctionValue('function', $forcedSubModKey)
+     *
      * @see getExternalItemConfig(), init()
      */
     public function handleExternalFunctionValue($MM_key = 'function', $MS_value = null)
     {
-        if ($MS_value === null) {
+        if (null === $MS_value) {
             $MS_value = $this->MOD_SETTINGS[$MM_key];
         }
         $this->extClassConf = $this->getExternalItemConfig($this->MCONF['name'], $MM_key, $MS_value);
@@ -284,15 +301,18 @@ class BaseScriptClass
      *
      * @param string $modName Module name
      * @param string $menuKey Menu key, eg. "function" for the function menu. See $this->MOD_MENU
-     * @param string $value Optionally the value-key to fetch from the array that would otherwise have been returned if this value was not set. Look source...
-     * @return mixed The value from the TBE_MODULES_EXT array.
+     * @param string $value   Optionally the value-key to fetch from the array that would otherwise have been returned if this value was not set. Look source...
+     *
+     * @return mixed the value from the TBE_MODULES_EXT array
+     *
      * @see handleExternalFunctionValue()
      */
     public function getExternalItemConfig($modName, $menuKey, $value = '')
     {
         if (isset($GLOBALS['TBE_MODULES_EXT'][$modName])) {
-            return (string)$value !== '' ? $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey][$value] : $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey];
+            return '' !== (string) $value ? $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey][$value] : $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey];
         }
+
         return null;
     }
 
@@ -336,11 +356,11 @@ class BaseScriptClass
     }
 
     /**
-     * Calls the 'main' function inside the "Function menu module" if present
+     * Calls the 'main' function inside the "Function menu module" if present.
      */
     public function extObjContent()
     {
-        if ($this->extObj === null) {
+        if (null === $this->extObj) {
             $flashMessage = GeneralUtility::makeInstance(
                 FlashMessage::class,
                 $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:no_modules_registered'),
@@ -361,7 +381,7 @@ class BaseScriptClass
     }
 
     /**
-     * Return the content of the 'main' function inside the "Function menu module" if present
+     * Return the content of the 'main' function inside the "Function menu module" if present.
      *
      * @return string
      */
@@ -372,11 +392,13 @@ class BaseScriptClass
         $this->extObjContent();
         $newContent = $this->content;
         $this->content = $savedContent;
+
         return $newContent;
     }
 
     /**
-     * Returns the Language Service
+     * Returns the Language Service.
+     *
      * @return LanguageService
      */
     protected function getLanguageService()
@@ -385,7 +407,8 @@ class BaseScriptClass
     }
 
     /**
-     * Returns the Backend User
+     * Returns the Backend User.
+     *
      * @return BackendUserAuthentication
      */
     protected function getBackendUser()
@@ -398,7 +421,7 @@ class BaseScriptClass
      */
     protected function getPageRenderer()
     {
-        if ($this->pageRenderer === null) {
+        if (null === $this->pageRenderer) {
             $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         }
 
