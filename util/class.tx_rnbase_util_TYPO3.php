@@ -148,7 +148,7 @@ class tx_rnbase_util_TYPO3
     {
         return self::isTYPO3VersionOrHigher(10004000);
     }
-    
+
     /**
      * Prüft, ob mindestens TYPO3 Version 4.7 vorhanden ist.
      *

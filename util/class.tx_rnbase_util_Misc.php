@@ -380,8 +380,7 @@ MAYDAYPAGE;
                     $site,
                     $site->getDefaultLanguage()
                 );
-            }
-            else {
+            } else {
                 $GLOBALS['TSFE'] = tx_rnbase::makeInstance(
                     $typoScriptFrontendControllerClass,
                     $GLOBALS['TYPO3_CONF_VARS'],
