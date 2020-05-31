@@ -369,7 +369,7 @@ abstract class tx_rnbase_mod_base_Lister
      *
      * @return array
      */
-    protected function getDecoratorColumns( $decorator)
+    protected function getDecoratorColumns($decorator)
     {
         return [
             'uid' => [
