@@ -337,7 +337,7 @@ MAYDAYPAGE;
     /**
      * Prepare classes for FE-rendering if it is needed in TYPO3 backend.
      *
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController or tslib_fe
+     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController|\tslib_fe
      */
     public static function prepareTSFE($options = [])
     {
@@ -356,7 +356,7 @@ MAYDAYPAGE;
             !($GLOBALS['TSFE'] instanceof $typoScriptFrontendControllerClass) ||
             $force
         ) {
-            if (!defined('PATH_tslib')) {
+            if (!tx_rnbase_util_TYPO3::isTYPO70OrHigher() && !defined('PATH_tslib')) {
                 // PATH_tslib setzen
                 if (@is_dir(\Sys25\RnBase\Utility\Environment::getPublicPath().'typo3/sysext/cms/tslib/')) {
                     define('PATH_tslib', \Sys25\RnBase\Utility\Environment::getPublicPath().'typo3/sysext/cms/tslib/');
@@ -367,51 +367,68 @@ MAYDAYPAGE;
                 }
             }
 
-            $GLOBALS['TSFE'] = tx_rnbase::makeInstance(
-                $typoScriptFrontendControllerClass,
-                $GLOBALS['TYPO3_CONF_VARS'],
-                $pid,
-                $type
-            );
+            if (tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+                $rootLine = null;
+                if ($pid > 0) {
+                    $rootLine = \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($pid);
+                }
+                $siteMatcher = tx_rnbase::makeInstance(TYPO3\CMS\Core\Routing\SiteMatcher::class);
+                $site = $siteMatcher->matchByPageId($pid, $rootLine);
+                $GLOBALS['TSFE'] = tx_rnbase::makeInstance(
+                    $typoScriptFrontendControllerClass,
+                    $GLOBALS['TYPO3_CONF_VARS'],
+                    $site,
+                    $site->getDefaultLanguage()
+                );
+            }
+            else {
+                $GLOBALS['TSFE'] = tx_rnbase::makeInstance(
+                    $typoScriptFrontendControllerClass,
+                    $GLOBALS['TYPO3_CONF_VARS'],
+                    $pid,
+                    $type
+                );
+            }
         }
+        /* @var $tsfe TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
+        $tsfe = $GLOBALS['TSFE'];
 
         // base user groups
-        if (empty($GLOBALS['TSFE']->gr_list) || $force) {
+        // todo:         $userAspect = $this->context->getAspect('frontend.user');
+        if (!tx_rnbase_util_TYPO3::isTYPO95OrHigher() && empty($tsfe->gr_list) || $force) {
             $GLOBALS['TSFE']->gr_list = '0,-1';
         }
 
         // init the syspage for pageSelect
-        if (!is_object($GLOBALS['TSFE']->sys_page) || $force) {
-            $temp_sys_page = tx_rnbase_util_TYPO3::getSysPage();
-            $temp_sys_page->init(0);
-            $GLOBALS['TSFE']->sys_page = $temp_sys_page;
+        if (!is_object($tsfe->sys_page) || $force) {
+            $tsfe->sys_page = tx_rnbase_util_TYPO3::getSysPage();
         }
 
         // init the template
-        if (!is_object($GLOBALS['TSFE']->tmpl) || $force) {
-            $GLOBALS['TSFE']->initTemplate();
+        if (!tx_rnbase_util_TYPO3::isTYPO95OrHigher() && (!is_object($tsfe->tmpl) || $force)) {
+            $tsfe->initTemplate();
             if (empty($GLOBALS['TSFE']->tmpl->getFileName_backPath)) {
                 $GLOBALS['TSFE']->tmpl->getFileName_backPath = \Sys25\RnBase\Utility\Environment::getPublicPath();
             }
         }
 
         // initial empty config
-        if (!is_array($GLOBALS['TSFE']->config)) {
-            $GLOBALS['TSFE']->config = [];
+        if (!is_array($tsfe->config)) {
+            $tsfe->config = [];
         }
-        if (!is_array($GLOBALS['TSFE']->config['config'])) {
-            $GLOBALS['TSFE']->config['config'] = [];
+        if (!is_array($tsfe->config['config'])) {
+            $tsfe->config['config'] = [];
         }
 
         // init the language
-        if (empty($GLOBALS['TSFE']->lang) || $force) {
-            $GLOBALS['TSFE']->initLLvars();
+        if (!tx_rnbase_util_TYPO3::isTYPO95OrHigher() && (empty($tsfe->lang) || $force)) {
+            $tsfe->initLLvars();
         }
 
         if (!$options['dontSetPageToTsfe']
-            && (!is_array($GLOBALS['TSFE']->page) || $GLOBALS['TSFE']->page['uid'] != $pid)
+            && (!is_array($tsfe->page) || $tsfe->page['uid'] != $pid)
         ) {
-            $GLOBALS['TSFE']->page = $GLOBALS['TSFE']->sys_page->getPage($pid);
+            $tsfe->page = $tsfe->sys_page->getPage($pid);
         }
 
         // Den Backpath aus dem PageRenderer entfernen. Der wurde auf typo3/ gesetzt
@@ -419,7 +436,7 @@ MAYDAYPAGE;
             tx_rnbase_util_TYPO3::getPageRenderer()->setBackPath('');
         }
 
-        return $GLOBALS['TSFE'];
+        return $tsfe;
     }
 
     /**

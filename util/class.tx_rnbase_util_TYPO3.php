@@ -140,6 +140,16 @@ class tx_rnbase_util_TYPO3
     }
 
     /**
+     * Prüft, ob mindestens TYPO3 Version 10.3 vorhanden ist.
+     *
+     * @return bool
+     */
+    public static function isTYPO104OrHigher()
+    {
+        return self::isTYPO3VersionOrHigher(10004000);
+    }
+    
+    /**
      * Prüft, ob mindestens TYPO3 Version 4.7 vorhanden ist.
      *
      * @return bool

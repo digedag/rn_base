@@ -186,15 +186,6 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
      */
     public function __construct()
     {
-        if ($this instanceof \Tx_Rnbase_Configuration_Processor ||
-            $this instanceof \tx_rnbase_configurations) {
-            $utility = \tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
-            $utility::deprecationLog(
-                'Usage of "'.get_class($this).'" are deprecated.'.
-                ' Use "\Sys25\RnBase\Configuration\Processor" instead.'
-            );
-        }
-
         $this->_dataStore = new \ArrayObject();
         $this->_viewData = new \ArrayObject();
         $this->_keepVars = new \ArrayObject();

@@ -315,25 +315,3 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
         return $items;
     }
 }
-
-/**
- * The old class for backwards compatibility.
- *
- * @deprecated: will be dropped in the feature!
- *
- * @author Michael Wagner
- */
-abstract class Tx_Rnbase_Repository_AbstractRepository extends Tx_Rnbase_Domain_Repository_AbstractRepository
-{
-    /**
-     * Constructor to log deprecation!
-     */
-    public function __construct()
-    {
-        $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
-        $utility::deprecationLog(
-            'Usage of "Tx_Rnbase_Repository_AbstractRepository" is deprecated'.
-            'Please use "Tx_Rnbase_Domain_Repository_AbstractRepository" instead!'
-        );
-    }
-}

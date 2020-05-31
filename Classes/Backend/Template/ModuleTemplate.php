@@ -3,7 +3,7 @@
 /* *******************************************************
  *  Copyright notice
  *
- *  (c) 2017 René Nitzsche <rene@system25.de>
+ *  (c) 2017-2020 René Nitzsche <rene@system25.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,7 +23,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-tx_rnbase::load('tx_rnbase_mod_IModule');
 /**
  * Die Klasse wrapped die Template-Klassen für BE-Module in TYPO3. Diese sind recht starken
  * Änderungen in der API unterworfen. Bis zur 6.2 gab es recht unterschiedliche Templateklassen,
@@ -178,7 +177,7 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
      * Returns a template instance. Liefert die Instanzvariable doc.
      * Die Instanz wird bis einschließlich T3 8.7 erstellt.
      *
-     * @return template|TYPO3\CMS\Backend\Template\DocumentTemplate|Tx_Rnbase_Backend_Template_Override_DocumentTemplate
+     * @return TYPO3\CMS\Backend\Template\DocumentTemplate|Tx_Rnbase_Backend_Template_Override_DocumentTemplate
      */
     public function getDoc()
     {
@@ -193,7 +192,7 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
     }
 
     /**
-     * @param TYPO3\CMS\Backend\Template\DocumentTemplate $doc
+     * @param \Tx_Rnbase_Backend_Template_Override_DocumentTemplate $doc
      */
     protected function initDoc($doc)
     {
@@ -207,7 +206,7 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
         if (!tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
             $doc->loadJavascriptLib('contrib/prototype/prototype.js');
         } else {
-            $doc->getPageRenderer()->loadJquery();
+//            $doc->getPageRenderer()->loadJquery();
         }
         // JavaScript
         $doc->JScode .= '

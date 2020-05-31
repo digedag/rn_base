@@ -491,23 +491,3 @@ class Tx_Rnbase_Utility_TcaTool
         return $wizardConfig;
     }
 }
-
-/**
- * the old class for backwards compatibility.
- *
- * @deprecated: will be dropped in the future!
- */
-class Tx_Rnbase_Util_TCATool extends Tx_Rnbase_Utility_TcaTool
-{
-    /**
-     * constructor to log deprecation!
-     */
-    public function __construct()
-    {
-        $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
-        $utility::deprecationLog(
-            'Usage of "Tx_Rnbase_Util_TCATool" is deprecated'.
-            'Please use "Tx_Rnbase_Utility_TcaTool" instead!'
-        );
-    }
-}

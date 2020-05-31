@@ -22,7 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-tx_rnbase::load('tx_rnbase_util_TYPO3');
 
 class Tx_Rnbase_Backend_Template_Override_Doc extends TYPO3\CMS\Backend\Template\DocumentTemplate
 {

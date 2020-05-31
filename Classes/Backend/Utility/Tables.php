@@ -158,12 +158,6 @@ class Tx_Rnbase_Backend_Utility_Tables
                 $row[] = call_user_func([$entry, $data['method']]);
             } elseif (isset($data['decorator'])) {
                 $decor = $data['decorator'];
-                if (!$decor instanceof Tx_Rnbase_Backend_Decorator_InterfaceDecorator) {
-                    $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
-                    $utility::deprecationLog(
-                        'Decorator "'.get_class($decor).'" has to implement interface "Tx_Rnbase_Backend_Decorator_InterfaceDecorator".'
-                    );
-                }
                 $row[] = $decor->format($record[$column], $column, $record, $entry);
             } else {
                 $row[] = $record[$column];
@@ -271,10 +265,6 @@ class Tx_Rnbase_Backend_Utility_Tables
                     if (!is_callable([$linker, 'makeLink'])) {
                         throw new Exception('Linker "'.get_class($linker).'" has to implement interface "tx_rnbase_mod_linker_LinkerInterface".');
                     }
-                    $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
-                    $utility::deprecationLog(
-                        'Linker "'.get_class($linker).'" has to implement interface "tx_rnbase_mod_linker_LinkerInterface".'
-                    );
                 }
                 $out .= $linker->makeLink($obj, $formTool, $currentPid, $options);
                 $out .= $linkerimplode;

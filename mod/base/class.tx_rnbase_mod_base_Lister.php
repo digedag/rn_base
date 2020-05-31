@@ -359,12 +359,6 @@ abstract class tx_rnbase_mod_base_Lister
     protected function getColumns(
         $decorator
     ) {
-        $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
-        $utility::deprecationLog(
-            '"'.get_class($decorator).'"::getColumns'.
-            ' is deprecated. Use "getDecoratorColumns" instead.'
-        );
-
         return $this->getDecoratorColumns($decorator);
     }
 
@@ -375,17 +369,8 @@ abstract class tx_rnbase_mod_base_Lister
      *
      * @return array
      */
-    protected function getDecoratorColumns(
-        $decorator
-    ) {
-        if (!$decorator instanceof Tx_Rnbase_Backend_Decorator_InterfaceDecorator) {
-            $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
-            $utility::deprecationLog(
-                'Decorator "'.get_class($decorator).'"'.
-                ' should implement "Tx_Rnbase_Backend_Decorator_InterfaceDecorator".'
-            );
-        }
-
+    protected function getDecoratorColumns( $decorator)
+    {
         return [
             'uid' => [
                 'title' => 'label_tableheader_uid',

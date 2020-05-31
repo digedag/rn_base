@@ -98,7 +98,7 @@ class tx_rnbase_util_Typo3Classes
     {
         return self::getClassByCurrentTypo3Version([
             self::LOWER6 => 'tslib_fe',
-            self::HIGHER6 => 'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
+            self::HIGHER6 => 'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController',
         ]);
     }
 
