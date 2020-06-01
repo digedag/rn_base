@@ -14,7 +14,7 @@ $EM_CONF[$_EXTKEY] = [
     'description' => 'TYPO3 plugins based on rn_base can use MVC design principles and domain driven development. This extension also provides an abstraction layer for TYPO3 API to support LTS version since 6.2.',
     'category' => 'misc',
     'shy' => 0,
-    'version' => '1.11.4',
+    'version' => '1.12.0',
     'dependencies' => 'cms',
     'conflicts' => '',
     'priority' => '',
@@ -33,7 +33,7 @@ $EM_CONF[$_EXTKEY] = [
     'CGLcompliance_note' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '6.2.0-9.5.99',
+            'typo3' => '7.6.0-10.4.99',
             'php' => '5.6.0-8.9.99',
         ],
         'conflicts' => [

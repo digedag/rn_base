@@ -1,4 +1,7 @@
 <?php
+
+namespace Sys25\RnBase\Backend\Utility;
+
 /***************************************************************
  * Copyright notice
  *
@@ -25,7 +28,7 @@
 /**
  * Tx_Rnbase_Backend_Utility.
  *
- * Wrapper für t3lib_BEfunc bzw \TYPO3\CMS\Backend\Utility\BackendUtility
+ * Wrapper for \TYPO3\CMS\Backend\Utility\BackendUtility
  *
  * @author Hannes Bochmann
  * @license http://www.gnu.org/licenses/lgpl.html
@@ -37,7 +40,7 @@
  * @method static string getFuncMenu(mixed $mainParams, string $elementName, string $currentValue, array $menuItems, string $script = '', string $addParams = '')
  * @method static array getModuleData(array $MOD_MENU_MOD_MENU, array $CHANGED_SETTINGS, string $modName, string $type = '', string $dontValidateList = '', string $setDefaultList = '')
  */
-class Tx_Rnbase_Backend_Utility
+class BackendUtility
 {
     /**
      * Magic method to forward the call to the right be util.
@@ -65,7 +68,7 @@ class Tx_Rnbase_Backend_Utility
      */
     protected static function getBackendUtilityClass()
     {
-        return 'TYPO3\\CMS\\Backend\\Utility\\BackendUtility';
+        return \TYPO3\CMS\Backend\Utility\BackendUtility::class;
     }
 
     /**
@@ -129,8 +132,8 @@ class Tx_Rnbase_Backend_Utility
     }
 
     /**
-     * @see TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction
-     * @see TYPO3\CMS\Backend\Template\DocumentTemplate::issueCommand
+     * @see \TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction
+     * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::issueCommand
      *
      * @param string $getParameters
      * @param string $redirectUrl
@@ -139,8 +142,26 @@ class Tx_Rnbase_Backend_Utility
      */
     public static function issueCommand($getParameters, $redirectUrl = '')
     {
-        $link = TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction($getParameters, $redirectUrl);
+        $link = \TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction($getParameters, $redirectUrl);
 
         return $link;
+    }
+
+    /**
+     * Returns the URL to a given module
+     *
+     * @param string $moduleName Name of the module
+     * @param array $urlParameters URL parameters that should be added as key value pairs
+     * @return string Calculated URL
+     */
+    public static function getModuleUrl($moduleName, $urlParameters = [])
+    {
+        $uriBuilder = \tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        try {
+            $uri = $uriBuilder->buildUriFromRoute($moduleName, $urlParameters);
+        } catch (\TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException $e) {
+            $uri = $uriBuilder->buildUriFromRoutePath($moduleName, $urlParameters);
+        }
+        return (string)$uri;
     }
 }

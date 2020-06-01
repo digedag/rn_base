@@ -5,6 +5,10 @@ interface Tx_Rnbase_Configuration_ProcessorInterface extends \Sys25\RnBase\Confi
 {
 }
 /** @deprecated */
+class tx_rnbase_util_TYPO3 extends Sys25\RnBase\Utility\TYPO3
+{
+}
+/** @deprecated */
 class tx_rnbase_configurations extends Sys25\RnBase\Configuration\Processor
 {
 }
@@ -59,6 +63,14 @@ abstract class Tx_Rnbase_Repository_AbstractRepository extends \Tx_Rnbase_Domain
 {
 }
 /** @deprecated */
-class Tx_Rnbase_Util_TCATool extends Tx_Rnbase_Utility_TcaTool
+class Tx_Rnbase_Utility_TcaTool extends Sys25\RnBase\Backend\Utility\TcaTool
+{
+}
+/** @deprecated */
+class Tx_Rnbase_Util_TCATool extends Sys25\RnBase\Backend\Utility\TcaTool
+{
+}
+/** @deprecated */
+class Tx_Rnbase_Backend_Utility extends Sys25\RnBase\Backend\Utility\BackendUtility
 {
 }

@@ -1,8 +1,11 @@
 <?php
+
+namespace Sys25\RnBase\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2008-2014 Rene Nitzsche (rene@system25.de)
+ *  (c) 2008-2020 Rene Nitzsche (rene@system25.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,12 +25,11 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_Extensions');
 
 /**
  * Statische Informationen über TYPO3.
  */
-class tx_rnbase_util_TYPO3
+class TYPO3
 {
     /**
      * Prüft, ob mindestens TYPO3 Version 6.0 vorhanden ist.
@@ -251,7 +253,7 @@ class tx_rnbase_util_TYPO3
      */
     public static function loadExtInfo($_EXTKEY)
     {
-        $path = tx_rnbase_util_Extensions::extPath($_EXTKEY).'ext_emconf.php';
+        $path = \tx_rnbase_util_Extensions::extPath($_EXTKEY).'ext_emconf.php';
         @include $path;
         if (is_array($EM_CONF[$_EXTKEY])) {
             return $EM_CONF[$_EXTKEY];
@@ -267,7 +269,7 @@ class tx_rnbase_util_TYPO3
      */
     public static function isExtLoaded($_EXTKEY)
     {
-        return tx_rnbase_util_Extensions::isLoaded($_EXTKEY);
+        return \tx_rnbase_util_Extensions::isLoaded($_EXTKEY);
     }
 
     /**
@@ -326,7 +328,7 @@ class tx_rnbase_util_TYPO3
     /**
      * Get the current backend user if available.
      *
-     * @return t3lib_tsfeBeUserAuth
+     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
      */
     public static function getBEUser()
     {
@@ -348,12 +350,12 @@ class tx_rnbase_util_TYPO3
     /**
      * Creates a new instance of the cobject.
      *
-     * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|tslib_cObj
+     * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
      */
     public static function getContentObject()
     {
-        return tx_rnbase::makeInstance(
-            tx_rnbase_util_Typo3Classes::getContentObjectRendererClass()
+        return \tx_rnbase::makeInstance(
+            \tx_rnbase_util_Typo3Classes::getContentObjectRendererClass()
         );
     }
 
@@ -365,8 +367,8 @@ class tx_rnbase_util_TYPO3
     public static function getTSFE()
     {
         if (!is_object($GLOBALS['TSFE'])) {
-            tx_rnbase::load('tx_rnbase_util_Misc');
-            tx_rnbase_util_Misc::prepareTSFE();
+            \tx_rnbase::load('tx_rnbase_util_Misc');
+            \tx_rnbase_util_Misc::prepareTSFE();
         }
 
         return $GLOBALS['TSFE'];
@@ -380,8 +382,8 @@ class tx_rnbase_util_TYPO3
     public static function getPageRenderer()
     {
         if (self::isTYPO80OrHigher()) {
-            return tx_rnbase::makeInstance(
-                'TYPO3\\CMS\\Core\\Page\\PageRenderer'
+            return \tx_rnbase::makeInstance(
+                'TYPO3\CMS\Core\\Page\PageRenderer'
             );
         }
 
@@ -400,7 +402,7 @@ class tx_rnbase_util_TYPO3
                 self::$sysPage = $GLOBALS['TSFE']->sys_page;
             } // Use existing SysPage from TSFE
             else {
-                self::$sysPage = tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+                self::$sysPage = \tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
                 if (!self::isTYPO95OrHigher()) {
                     self::$sysPage->init(0);
                 }
@@ -419,7 +421,7 @@ class tx_rnbase_util_TYPO3
      */
     public static function getHttpUtilityClass()
     {
-        return tx_rnbase_util_Typo3Classes::getHttpUtilityClass();
+        return \tx_rnbase_util_Typo3Classes::getHttpUtilityClass();
     }
 
     /**

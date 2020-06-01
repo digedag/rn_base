@@ -1,8 +1,11 @@
 <?php
+
+namespace Sys25\RnBase\Backend\Utility;
+
 /***************************************************************
  * Copyright notice
  *
- *  (c) 2015 René Nitzsche <rene@system25.de>
+ *  (c) 2015-2020 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,6 +25,9 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use tx_rnbase_util_Arrays;
+use Sys25\RnBase\Utility\TYPO3;
+
 /**
  * TCA Util and wrapper methods.
  *
@@ -29,7 +35,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Utility_TcaTool
+class TcaTool
 {
     /**
      * @var string
@@ -149,7 +155,7 @@ class Tx_Rnbase_Utility_TcaTool
         foreach ($options as $col => $wizardOptions) {
             $table = isset($wizardOptions[self::WIZARD_TARGETTABLE]) ? $wizardOptions[self::WIZARD_TARGETTABLE] : '';
             $wizards = self::getWizards($table, $wizardOptions);
-            if (tx_rnbase_util_TYPO3::isTYPO86OrHigher()) {
+            if (\tx_rnbase_util_TYPO3::isTYPO86OrHigher()) {
                 // suggestWizard
                 if (isset($wizards[self::WIZARD_SUGGEST])) {
                     $tcaTable['columns'][$col]['config']['suggestOptions'] = $wizards[self::WIZARD_SUGGEST];
@@ -169,11 +175,11 @@ class Tx_Rnbase_Utility_TcaTool
             }
             // Add RTE config to columnsOverrides
             if (isset($wizardOptions[self::WIZARD_RTE])) {
-                $tcaTable['types'][0]['columnsOverrides'][$col] = tx_rnbase_util_TYPO3::isTYPO86OrHigher() ?
+                $tcaTable['types'][0]['columnsOverrides'][$col] = \tx_rnbase_util_TYPO3::isTYPO86OrHigher() ?
                     ['config' => ['enableRichtext' => 1, 'richtextConfiguration' => 'default']]
                     :
                     ['defaultExtras' => isset($wizardOptions[self::WIZARD_RTE]['defaultExtras']) ? $wizardOptions[self::WIZARD_RTE]['defaultExtras'] : ''];
-                if (tx_rnbase_util_TYPO3::isTYPO86OrHigher()) {
+                if (\tx_rnbase_util_TYPO3::isTYPO86OrHigher()) {
                     unset($wizards[self::WIZARD_RTE]);
                 }
             }
@@ -257,6 +263,21 @@ class Tx_Rnbase_Utility_TcaTool
         }
 
         return $wizards;
+    }
+
+    /**
+     * @return string
+     */
+    public static function buildGeneralLabel($label)
+    {
+        $sysLangFile = TYPO3::isTYPO87OrHigher() ?
+            'Resources/Private/Language/locallang_general.xlf' : 'locallang_general.xml';
+        return sprintf(
+            'LLL:EXT:%s/%s:LGL.%s',
+            TYPO3::isTYPO104OrHigher() ? 'core' : 'lang',
+            $sysLangFile,
+            $label
+        );
     }
 
     /**
@@ -423,7 +444,7 @@ class Tx_Rnbase_Utility_TcaTool
         }
 
         $wizard = self::addWizardScriptForTypo3Version(
-            tx_rnbase_util_TYPO3::isTYPO87OrHigher() ? 'link' : 'element_browser',
+            TYPO3::isTYPO87OrHigher() ? 'link' : 'element_browser',
             $wizard
         );
 
@@ -463,12 +484,10 @@ class Tx_Rnbase_Utility_TcaTool
      */
     protected static function getIconByWizard($wizard)
     {
-        if (tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
+        if (TYPO3::isTYPO87OrHigher()) {
             $iconIndexByTypo3Version = self::ICON_INDEX_TYPO3_87_OR_HIGHER;
-        } elseif (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
-            $iconIndexByTypo3Version = self::ICON_INDEX_TYPO3_76_OR_HIGHER;
         } else {
-            $iconIndexByTypo3Version = self::ICON_INDEX_TYPO3_62_OR_HIGHER;
+            $iconIndexByTypo3Version = self::ICON_INDEX_TYPO3_76_OR_HIGHER;
         }
 
         return self::$iconsByWizards[$wizard][$iconIndexByTypo3Version];
