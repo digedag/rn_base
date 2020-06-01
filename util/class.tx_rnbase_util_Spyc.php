@@ -571,7 +571,7 @@ class tx_rnbase_util_Spyc
         if (!isset($array[$key])) {
             return false;
         }
-        if ($array[$key] === []) {
+        if ([] === $array[$key]) {
             $array[$key] = '';
         }
         $value = $array[$key];

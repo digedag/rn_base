@@ -25,7 +25,6 @@ namespace Sys25\RnBase\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * Statische Informationen über TYPO3.
  */

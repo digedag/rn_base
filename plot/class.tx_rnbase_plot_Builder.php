@@ -286,25 +286,32 @@ class tx_rnbase_plot_Builder
                 // Data
                 case 'DATASET':
                     $objOutput = self::DATASET($arrConf); // ??
+
                     break;
                 case 'RANDOM':
                     $objOutput = self::RANDOM($arrConf); // ??
+
                     break;
                 case 'FUNCTION':
                     $objOutput = self::FUNCTIO($arrConf); // ??
+
                     break;
                 case 'VECTOR':
                     $objOutput = self::VECTOR($arrConf); // ??
+
                     break;
                 // Axis
                 case 'CATEGORY':
                     $objOutput = self::CATEGORY($arrConf); // ??
+
                     break;
                 case 'AXIS':
                     $objOutput = self::AXIS($arrConf); // ??
+
                     break;
                 case 'AXIS_LOG':
                     $objOutput = self::AXIS_LOG($arrConf); // ??
+
                     break;
                 // Title
                 case 'TITLE':
