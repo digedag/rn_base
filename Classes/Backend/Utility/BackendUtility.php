@@ -148,20 +148,23 @@ class BackendUtility
     }
 
     /**
-     * Returns the URL to a given module
+     * Returns the URL to a given module.
      *
-     * @param string $moduleName Name of the module
-     * @param array $urlParameters URL parameters that should be added as key value pairs
+     * @param string $moduleName    Name of the module
+     * @param array  $urlParameters URL parameters that should be added as key value pairs
+     *
      * @return string Calculated URL
      */
     public static function getModuleUrl($moduleName, $urlParameters = [])
     {
         $uriBuilder = \tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+
         try {
             $uri = $uriBuilder->buildUriFromRoute($moduleName, $urlParameters);
         } catch (\TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException $e) {
             $uri = $uriBuilder->buildUriFromRoutePath($moduleName, $urlParameters);
         }
-        return (string)$uri;
+
+        return (string) $uri;
     }
 }

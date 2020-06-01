@@ -272,6 +272,7 @@ class TcaTool
     {
         $sysLangFile = TYPO3::isTYPO87OrHigher() ?
             'Resources/Private/Language/locallang_general.xlf' : 'locallang_general.xml';
+
         return sprintf(
             'LLL:EXT:%s/%s:LGL.%s',
             TYPO3::isTYPO104OrHigher() ? 'core' : 'lang',
