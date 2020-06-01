@@ -1,4 +1,5 @@
 <?php
+
 use Sys25\RnBase\Utility\TYPO3;
 
 /***************************************************************
@@ -462,8 +463,7 @@ class tx_rnbase_util_TSFAL
             );
             if (TYPO3::isTYPO95OrHigher()) {
                 unset($customSettingOverride['foreign_types']);
-            }
-            else {
+            } else {
                 unset($customSettingOverride['overrideChildTca']['types']);
             }
             if (empty($allowedFileExtensions)) {
@@ -520,6 +520,7 @@ class tx_rnbase_util_TSFAL
                                 --palette--;;filePalette',
             ];
         }
+
         return $types;
     }
 
