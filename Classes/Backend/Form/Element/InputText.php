@@ -111,7 +111,7 @@ class Tx_Rnbase_Backend_Form_Element_InputText extends AbstractFormElement
             $attributeString .= ' '.$attributeName.'="'.htmlspecialchars($attributeValue).'"';
         }
 
-        $width = $width ? 'width:' . ceil($width * 9.58) . 'px;' : 'form-control form-control-adapt';
+        $width = $width ? 'width:'.ceil($width * 9.58).'px;' : 'form-control form-control-adapt';
         $style = sprintf(' style="%s"', $width);
         $html = '
          <input type="text"'

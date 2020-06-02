@@ -546,7 +546,7 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
      * @param string $sqlQuery
      * @param int    $debug
      *
-     * @return boolean
+     * @return bool
      */
     public function doQuery($sqlQuery, array $options = [])
     {
