@@ -1,4 +1,9 @@
 <?php
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use Sys25\RnBase\Utility\TYPO3;
+
 /* *******************************************************
  *  Copyright notice
  *
@@ -22,11 +27,11 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-class Tx_Rnbase_Backend_Template_Override_Doc extends TYPO3\CMS\Backend\Template\DocumentTemplate
-{
-}
+// class Tx_Rnbase_Backend_Template_Override_Doc extends TYPO3\CMS\Backend\Template\DocumentTemplate
+// {
+// }
 
-class Tx_Rnbase_Backend_Template_Override_DocumentTemplate extends Tx_Rnbase_Backend_Template_Override_Doc
+class Tx_Rnbase_Backend_Template_Override_DocumentTemplate // extends Tx_Rnbase_Backend_Template_Override_Doc
 {
     const STATE_OK = -1;
 
@@ -35,6 +40,46 @@ class Tx_Rnbase_Backend_Template_Override_DocumentTemplate extends Tx_Rnbase_Bac
     const STATE_WARNING = 2;
 
     const STATE_ERROR = 3;
+
+    /**
+     * Similar to $JScode but for use as array with associative keys to prevent double inclusion of JS code. a <script> tag is automatically wrapped around.
+     *
+     * @var array
+     */
+    public $JScodeArray = ['jumpToUrl' => '
+function jumpToUrl(URL) {
+	window.location.href = URL;
+	return false;
+}
+	'];
+
+    /**
+     * JavaScript files loaded for every page in the Backend
+     *
+     * @var array
+     */
+    protected $jsFiles = [];
+
+    /**
+     * JavaScript files loaded for every page in the Backend, but explicitly excluded from concatenation (useful for libraries etc.)
+     *
+     * @var array
+     */
+    protected $jsFilesNoConcatenation = [];
+
+    /**
+     * @var PageRenderer
+     */
+    protected $pageRenderer;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        // Initializes the page rendering object:
+        $this->initPageRenderer();
+    }
 
     /**
      * Override deprecated and removed method.
@@ -217,5 +262,185 @@ class Tx_Rnbase_Backend_Template_Override_DocumentTemplate extends Tx_Rnbase_Bac
         $dist = (int) $dist;
 
         return '<!-- DIVIDER --><hr style="margin-top: '.$dist.'px; margin-bottom: '.$dist.'px;" />';
+    }
+
+    /**
+     * Insert post rendering document style into already rendered content
+     *
+     * @param string $content style-content to insert.
+     * @return string content with inserted styles
+     * @deprecated should be removed
+     */
+    public function insertStylesAndJS($content)
+    {
+        $styles = LF . implode(LF, $this->inDocStylesArray);
+        $content = str_replace('/*###POSTCSSMARKER###*/', $styles, $content);
+
+        // Insert accumulated JS
+        $jscode = $this->JScode . LF . GeneralUtility::wrapJS(implode(LF, $this->JScodeArray));
+        $content = str_replace('<!--###POSTJSMARKER###-->', $jscode, $content);
+        return $content;
+    }
+
+    /**
+     * Returns <input> attributes to set the width of an text-type input field.
+     * For client browsers with no CSS support the cols/size attribute is returned.
+     * For CSS compliant browsers (recommended) a ' style="width: ...px;"' is returned.
+     *
+     * @param int $size A relative number which multiplied with approx. 10 will lead to the width in pixels
+     * @param bool $textarea A flag you can set for textareas - DEPRECATED as there is no difference any more between the two
+     * @param string $styleOverride A string which will be returned as attribute-value for style="" instead of the calculated width (if CSS is enabled)
+     * @return string Tag attributes for an <input> tag (regarding width)
+     */
+    public function formWidth($size = 48, $textarea = false, $styleOverride = '')
+    {
+        return ' style="' . ($styleOverride ?: 'width:' . ceil($size * 9.58) . 'px;') . '"';
+    }
+
+    /**
+     * Define the template for the module
+     *
+     * @param string $filename filename
+     * @return void
+     */
+    public function setModuleTemplate($filename)
+    {
+        $this->moduleTemplate = $this->getHtmlTemplate($filename);
+    }
+
+    /**
+     * Function to load a HTML template file with markers.
+     * When calling from own extension, use  syntax getHtmlTemplate('EXT:extkey/template.html')
+     *
+     * @param string $filename tmpl name, usually in the typo3/template/ directory
+     * @return string HTML of template
+     */
+    public function getHtmlTemplate($filename)
+    {
+        // setting the name of the original HTML template
+        $this->moduleTemplateFilename = $filename;
+        if ($GLOBALS['TBE_STYLES']['htmlTemplates'][$filename]) {
+            $filename = $GLOBALS['TBE_STYLES']['htmlTemplates'][$filename];
+        }
+        if (GeneralUtility::isFirstPartOfStr($filename, 'EXT:')) {
+            $filename = GeneralUtility::getFileAbsFileName($filename, true, true);
+        } elseif (!GeneralUtility::isAbsPath($filename)) {
+            $filename = GeneralUtility::resolveBackPath($filename);
+        } elseif (!GeneralUtility::isAllowedAbsPath($filename)) {
+            $filename = '';
+        }
+        $htmlTemplate = '';
+        if ($filename !== '') {
+            $htmlTemplate = GeneralUtility::getUrl($filename);
+        }
+        return $htmlTemplate;
+    }
+
+    /**
+     * Returns page end; This includes finishing form, div, body and html tags.
+     *
+     * @return string The HTML end of a page
+     * @see startPage()
+     */
+    public function endPage()
+    {
+        $str = $this->sectionEnd() . $this->postCode . $this->wrapScriptTags(BackendUtility::getUpdateSignalCode()) . ($this->form ? '
+</form>' : '');
+        // If something is in buffer like debug, put it to end of page
+        if (ob_get_contents()) {
+            $str .= ob_get_clean();
+            if (!headers_sent()) {
+                header('Content-Encoding: None');
+            }
+        }
+        $str .= ($this->divClass ? '
+
+<!-- Wrapping DIV-section for whole page END -->
+</div>' : '') . $this->endOfPageJsBlock;
+
+        return $str;
+    }
+    /**
+     * Ends and output section
+     * Returns the </div>-end tag AND clears the ->sectionFlag (but does so only IF the sectionFlag is set - that is a section is 'open')
+     * See sectionBegin() also.
+     *
+     * @return string HTML content
+     */
+    public function sectionEnd()
+    {
+        if ($this->sectionFlag) {
+            $this->sectionFlag = 0;
+            return '
+	</div>
+	<!-- *********************
+	      End output section.
+	     ********************* -->
+';
+        } else {
+            return '';
+        }
+    }
+    /**
+     * Wraps the input string in script tags.
+     * Automatic re-identing of the JS code is done by using the first line as ident reference.
+     * This is nice for identing JS code with PHP code on the same level.
+     *
+     * @param string $string Input string
+     * @param bool $linebreak Wrap script element in linebreaks? Default is TRUE.
+     * @return string Output string
+     */
+    public function wrapScriptTags($string, $linebreak = true)
+    {
+        if (trim($string)) {
+            // <script wrapped in nl?
+            $cr = $linebreak ? LF : '';
+            // Remove nl from the beginning
+            $string = ltrim($string, LF);
+            // Re-ident to one tab using the first line as reference
+            if ($string[0] === TAB) {
+                $string = TAB . ltrim($string, TAB);
+            }
+            $string = $cr . '<script type="text/javascript">
+/*<![CDATA[*/
+' . $string . '
+/*]]>*/
+</script>' . $cr;
+        }
+        return trim($string);
+    }
+
+    /**
+     * Initializes the page renderer object
+     */
+    protected function initPageRenderer()
+    {
+        if ($this->pageRenderer !== null) {
+            return;
+        }
+        $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $this->pageRenderer->setLanguage($GLOBALS['LANG']->lang);
+        $this->pageRenderer->enableConcatenateCss();
+        $this->pageRenderer->enableConcatenateJavascript();
+        $this->pageRenderer->enableCompressCss();
+        $this->pageRenderer->enableCompressJavascript();
+        // Add all JavaScript files defined in $this->jsFiles to the PageRenderer
+        foreach ($this->jsFilesNoConcatenation as $file) {
+            $this->pageRenderer->addJsFile(
+                $file,
+                'text/javascript',
+                true,
+                false,
+                '',
+                true
+                );
+        }
+        // Add all JavaScript files defined in $this->jsFiles to the PageRenderer
+        foreach ($this->jsFiles as $file) {
+            $this->pageRenderer->addJsFile($file);
+        }
+        if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] === 1) {
+            $this->pageRenderer->enableDebugMode();
+        }
     }
 }

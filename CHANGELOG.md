@@ -6,7 +6,8 @@ Changelog
 v1.12.0 (??.0?.2020)
  * added support for TYPO3 10.4 LTS
  * dropped support for TYPO3 6.2 LTS
- * #165 wip refactoring of classes to psr4  
+ * #165 wip refactoring of classes to PSR-4  
+ * BC: drop old rendering of BE-Modules without ModuleTemplate
 
 v1.11.4 (13.04.2020)
  * remove 6.2 code from BE-ToolBox

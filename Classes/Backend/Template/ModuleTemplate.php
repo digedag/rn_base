@@ -55,42 +55,12 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
      */
     public function renderContent(Tx_Rnbase_Backend_Template_ModuleParts $parts)
     {
-        $method = $this->module->useModuleTemplate() ? 'renderContent76' : 'renderContent62';
-
-        return $this->$method($parts);
+        return $this->renderContent76($parts);
     }
 
     public function getPageRenderer()
     {
         return $this->getDoc()->getPageRenderer();
-    }
-
-    /**
-     * @return string complete module html code
-     */
-    protected function renderContent62(Tx_Rnbase_Backend_Template_ModuleParts $parts)
-    {
-        $markers = [];
-        $content .= $parts->getContent(); // Muss vor der Erstellung des Headers geladen werden
-        $content .= $this->getDoc()->sectionEnd();  // Zur Sicherheit eine offene Section schließen
-
-        // Setting up the buttons and markers for docheader
-        $docHeaderButtons = $parts->getButtons();
-        $markers['CSH'] = $docHeaderButtons['csh'];
-        $markers['HEADER'] = $this->getDoc()->header($parts->getTitle());
-        $markers['SELECTOR'] = $parts->getSelector();
-        // Das FUNC_MENU enthält die Modul-Funktionen, die per ext_tables.php registriert werden
-        $markers['FUNC_MENU'] = $parts->getFuncMenu();
-
-        // SUBMENU sind zusätzliche Tabs die eine Modul-Funktion bei Bedarf einblenden kann.
-        $markers['SUBMENU'] = $parts->getSubMenu();
-        $markers['TABS'] = $markers['SUBMENU']; // Deprecated use ###SUBMENU###
-        $markers['CONTENT'] = $content;
-
-        $content = $this->getDoc()->startPage($parts->getTitle());
-        $content .= $this->getDoc()->moduleBody($parts->getPageInfo(), $docHeaderButtons, $markers);
-
-        return $this->getDoc()->insertStylesAndJS($content);
     }
 
     /**
@@ -203,11 +173,7 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
         $doc->inDocStylesArray[] = $doc->inDocStyles;
 //        $doc->tableLayout = $this->getTableLayout();
         $doc->setModuleTemplate($this->options['template']);
-        if (!tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
-            $doc->loadJavascriptLib('contrib/prototype/prototype.js');
-        } else {
 //            $doc->getPageRenderer()->loadJquery();
-        }
         // JavaScript
         $doc->JScode .= '
             <script language="javascript" type="text/javascript">

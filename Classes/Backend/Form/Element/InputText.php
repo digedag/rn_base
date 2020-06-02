@@ -111,12 +111,12 @@ class Tx_Rnbase_Backend_Form_Element_InputText extends AbstractFormElement
             $attributeString .= ' '.$attributeName.'="'.htmlspecialchars($attributeValue).'"';
         }
 
-        //$width = (int)$this->formMaxWidth($size);
-        $width = $GLOBALS['TBE_TEMPLATE']->formWidth($width);
+        $width = $width ? 'width:' . ceil($width * 9.58) . 'px;' : 'form-control form-control-adapt';
+        $style = sprintf(' style="%s"', $width);
         $html = '
          <input type="text"'
                 .$attributeString
-                .$width
+                .$style
         .' />';
 
         // This is the ACTUAL form field - values from the EDITABLE field must be transferred to this field which is the one that is written to the database.

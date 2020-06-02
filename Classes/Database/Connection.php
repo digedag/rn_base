@@ -1,6 +1,7 @@
 <?php
 
 use Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface;
+use Sys25\RnBase\Utility\TYPO3;
 
 /***************************************************************
  *  Copyright notice
@@ -545,7 +546,7 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
      * @param string $sqlQuery
      * @param int    $debug
      *
-     * @return booloolean
+     * @return boolean
      */
     public function doQuery($sqlQuery, array $options = [])
     {
@@ -814,14 +815,16 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
 
         if (!$tce || $data || $cmd) {
             // Die TCEmain laden
-            tx_rnbase::load('tx_rnbase_util_Typo3Classes');
             $tce = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getDataHandlerClass());
             $tce->stripslashes_values = 0;
             // Wenn wir ein data-Array bekommen verwenden wir das
             $tce->start($data ? $data : [], $cmd ? $cmd : []);
 
             // set default TCA values specific for the user
-            $TCAdefaultOverride = $GLOBALS['BE_USER']->getTSConfigProp('TCAdefaults');
+            $TCAdefaultOverride = TYPO3::isTYPO95OrHigher() ?
+                TYPO3::getBEUser()->getTSConfig('TCAdefaults')['properties'] :
+                TYPO3::getBEUser()->getTSConfigProp('TCAdefaults')
+            ;
             if (is_array($TCAdefaultOverride)) {
                 $tce->setDefaultsFromUserTS($TCAdefaultOverride);
             }

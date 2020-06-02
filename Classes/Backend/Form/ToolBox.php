@@ -313,11 +313,14 @@ class Tx_Rnbase_Backend_Form_ToolBox
      * @param int    $editUid   UID des Datensatzes
      * @param string $label     Bezeichnung des Links
      */
-    public function createInfoLink($editTable, $editUid, $label = 'Info')
+    public function createInfoLink($editTable, $editUid, $label = 'Info', $options = [])
     {
         $image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-document-info');
+        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
+        $class = ' class="'.$class.'"';
+        $label = isset($options['label']) ? $options['label'] : $label;
 
-        return '<a class="btn btn-default" href="#" onclick="top.launchView('."'".$editTable."', ' ".$editUid."'); return false;".'">'.
+        return '<a '.$class.' href="#" onclick="top.launchView('."'".$editTable."', ' ".$editUid."'); return false;".'">'.
             $image.$label.'</a>';
     }
 
