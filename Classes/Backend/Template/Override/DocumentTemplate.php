@@ -86,9 +86,9 @@ function jumpToUrl(URL) {
      */
     public function getPageRenderer()
     {
-        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+        if (TYPO3::isTYPO80OrHigher()) {
             return $this->pageRenderer;
-        } elseif (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
+        } else {
             $this->initPageRenderer();
 
             return $this->pageRenderer;
@@ -118,7 +118,6 @@ function jumpToUrl(URL) {
      *
      * @return string HTML code for tab menu
      *
-     * @deprecated in Core since TYPO3 CMS 8, was removed from Core in TYPO3 CMS 9
      */
     public function getTabMenu($mainParams, $elementName, $currentValue, $menuItems, $script = '', $addparams = '')
     {
@@ -156,7 +155,7 @@ function jumpToUrl(URL) {
             return '';
         }
         $options = '';
-        foreach ($menuItems as $id => $def) {
+        foreach ($menuItems as $def) {
             $class = $def['isActive'] ? 'active' : '';
             $label = $def['label'];
             $url = htmlspecialchars($def['url']);
@@ -199,7 +198,7 @@ function jumpToUrl(URL) {
      */
     public function section($label, $text, $nostrtoupper = false, $sH = false, $type = 0, $allowHTMLinHeader = false)
     {
-        if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+        if (!TYPO3::isTYPO80OrHigher()) {
             return parent::section($label, $text, $nostrtoupper, $sH, $type, $allowHTMLinHeader);
         }
         $title = $label;
