@@ -1,4 +1,5 @@
 <?php
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -54,14 +55,14 @@ function jumpToUrl(URL) {
 	'];
 
     /**
-     * JavaScript files loaded for every page in the Backend
+     * JavaScript files loaded for every page in the Backend.
      *
      * @var array
      */
     protected $jsFiles = [];
 
     /**
-     * JavaScript files loaded for every page in the Backend, but explicitly excluded from concatenation (useful for libraries etc.)
+     * JavaScript files loaded for every page in the Backend, but explicitly excluded from concatenation (useful for libraries etc.).
      *
      * @var array
      */
@@ -73,7 +74,7 @@ function jumpToUrl(URL) {
     protected $pageRenderer;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -117,7 +118,6 @@ function jumpToUrl(URL) {
      * @param string $addparams    is additional parameters to pass to the script
      *
      * @return string HTML code for tab menu
-     *
      */
     public function getTabMenu($mainParams, $elementName, $currentValue, $menuItems, $script = '', $addparams = '')
     {
@@ -264,20 +264,23 @@ function jumpToUrl(URL) {
     }
 
     /**
-     * Insert post rendering document style into already rendered content
+     * Insert post rendering document style into already rendered content.
      *
-     * @param string $content style-content to insert.
+     * @param string $content style-content to insert
+     *
      * @return string content with inserted styles
+     *
      * @deprecated should be removed
      */
     public function insertStylesAndJS($content)
     {
-        $styles = LF . implode(LF, $this->inDocStylesArray);
+        $styles = LF.implode(LF, $this->inDocStylesArray);
         $content = str_replace('/*###POSTCSSMARKER###*/', $styles, $content);
 
         // Insert accumulated JS
-        $jscode = $this->JScode . LF . GeneralUtility::wrapJS(implode(LF, $this->JScodeArray));
+        $jscode = $this->JScode.LF.GeneralUtility::wrapJS(implode(LF, $this->JScodeArray));
         $content = str_replace('<!--###POSTJSMARKER###-->', $jscode, $content);
+
         return $content;
     }
 
@@ -286,21 +289,21 @@ function jumpToUrl(URL) {
      * For client browsers with no CSS support the cols/size attribute is returned.
      * For CSS compliant browsers (recommended) a ' style="width: ...px;"' is returned.
      *
-     * @param int $size A relative number which multiplied with approx. 10 will lead to the width in pixels
-     * @param bool $textarea A flag you can set for textareas - DEPRECATED as there is no difference any more between the two
+     * @param int    $size          A relative number which multiplied with approx. 10 will lead to the width in pixels
+     * @param bool   $textarea      A flag you can set for textareas - DEPRECATED as there is no difference any more between the two
      * @param string $styleOverride A string which will be returned as attribute-value for style="" instead of the calculated width (if CSS is enabled)
+     *
      * @return string Tag attributes for an <input> tag (regarding width)
      */
     public function formWidth($size = 48, $textarea = false, $styleOverride = '')
     {
-        return ' style="' . ($styleOverride ?: 'width:' . ceil($size * 9.58) . 'px;') . '"';
+        return ' style="'.($styleOverride ?: 'width:'.ceil($size * 9.58).'px;').'"';
     }
 
     /**
-     * Define the template for the module
+     * Define the template for the module.
      *
      * @param string $filename filename
-     * @return void
      */
     public function setModuleTemplate($filename)
     {
@@ -309,9 +312,10 @@ function jumpToUrl(URL) {
 
     /**
      * Function to load a HTML template file with markers.
-     * When calling from own extension, use  syntax getHtmlTemplate('EXT:extkey/template.html')
+     * When calling from own extension, use  syntax getHtmlTemplate('EXT:extkey/template.html').
      *
      * @param string $filename tmpl name, usually in the typo3/template/ directory
+     *
      * @return string HTML of template
      */
     public function getHtmlTemplate($filename)
@@ -329,9 +333,10 @@ function jumpToUrl(URL) {
             $filename = '';
         }
         $htmlTemplate = '';
-        if ($filename !== '') {
+        if ('' !== $filename) {
             $htmlTemplate = GeneralUtility::getUrl($filename);
         }
+
         return $htmlTemplate;
     }
 
@@ -339,11 +344,12 @@ function jumpToUrl(URL) {
      * Returns page end; This includes finishing form, div, body and html tags.
      *
      * @return string The HTML end of a page
+     *
      * @see startPage()
      */
     public function endPage()
     {
-        $str = $this->sectionEnd() . $this->postCode . $this->wrapScriptTags(BackendUtility::getUpdateSignalCode()) . ($this->form ? '
+        $str = $this->sectionEnd().$this->postCode.$this->wrapScriptTags(BackendUtility::getUpdateSignalCode()).($this->form ? '
 </form>' : '');
         // If something is in buffer like debug, put it to end of page
         if (ob_get_contents()) {
@@ -355,10 +361,11 @@ function jumpToUrl(URL) {
         $str .= ($this->divClass ? '
 
 <!-- Wrapping DIV-section for whole page END -->
-</div>' : '') . $this->endOfPageJsBlock;
+</div>' : '').$this->endOfPageJsBlock;
 
         return $str;
     }
+
     /**
      * Ends and output section
      * Returns the </div>-end tag AND clears the ->sectionFlag (but does so only IF the sectionFlag is set - that is a section is 'open')
@@ -370,6 +377,7 @@ function jumpToUrl(URL) {
     {
         if ($this->sectionFlag) {
             $this->sectionFlag = 0;
+
             return '
 	</div>
 	<!-- *********************
@@ -380,13 +388,15 @@ function jumpToUrl(URL) {
             return '';
         }
     }
+
     /**
      * Wraps the input string in script tags.
      * Automatic re-identing of the JS code is done by using the first line as ident reference.
      * This is nice for identing JS code with PHP code on the same level.
      *
-     * @param string $string Input string
-     * @param bool $linebreak Wrap script element in linebreaks? Default is TRUE.
+     * @param string $string    Input string
+     * @param bool   $linebreak wrap script element in linebreaks? Default is TRUE
+     *
      * @return string Output string
      */
     public function wrapScriptTags($string, $linebreak = true)
@@ -397,24 +407,25 @@ function jumpToUrl(URL) {
             // Remove nl from the beginning
             $string = ltrim($string, LF);
             // Re-ident to one tab using the first line as reference
-            if ($string[0] === TAB) {
-                $string = TAB . ltrim($string, TAB);
+            if (TAB === $string[0]) {
+                $string = TAB.ltrim($string, TAB);
             }
-            $string = $cr . '<script type="text/javascript">
+            $string = $cr.'<script type="text/javascript">
 /*<![CDATA[*/
-' . $string . '
+'.$string.'
 /*]]>*/
-</script>' . $cr;
+</script>'.$cr;
         }
+
         return trim($string);
     }
 
     /**
-     * Initializes the page renderer object
+     * Initializes the page renderer object.
      */
     protected function initPageRenderer()
     {
-        if ($this->pageRenderer !== null) {
+        if (null !== $this->pageRenderer) {
             return;
         }
         $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
@@ -432,13 +443,13 @@ function jumpToUrl(URL) {
                 false,
                 '',
                 true
-                );
+            );
         }
         // Add all JavaScript files defined in $this->jsFiles to the PageRenderer
         foreach ($this->jsFiles as $file) {
             $this->pageRenderer->addJsFile($file);
         }
-        if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] === 1) {
+        if (1 === (int) $GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
             $this->pageRenderer->enableDebugMode();
         }
     }
