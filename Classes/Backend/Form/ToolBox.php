@@ -289,13 +289,9 @@ class Tx_Rnbase_Backend_Form_ToolBox
         $sEnableColumn = ($sEnableColumn) ? $sEnableColumn : 'hidden';
         $label = isset($options['label']) ? $options['label'] : '';
 
-        if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-            $image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon(
-                $unhide ? 'actions-edit-unhide' : 'actions-edit-hide'
-            );
-        } else {
-            $image = '<img'.Tx_Rnbase_Backend_Utility_Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.($unhide ? 'button_hide.gif' : 'button_unhide.gif'), 'width="11" height="12"').' border="0" alt="" />';
-        }
+        $image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon(
+            $unhide ? 'actions-edit-unhide' : 'actions-edit-hide'
+        );
 
         $options['hover'] = $unhide ? 'Show' : 'Hide'.' UID: '.$uid;
 
@@ -1204,11 +1200,10 @@ class Tx_Rnbase_Backend_Form_ToolBox
         // $options['sprite'] für abwärtskompatibilität
         if ($options['icon'] || $options['sprite']) {
             $icon = isset($options['icon']) ? $options['icon'] : $options['sprite'];
-            $label = tx_rnbase_mod_Util::getSpriteIcon($icon, $options);
+            $label = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon($icon, $options);
         }
 
         $jsCode = $this->getJavaScriptForLinkToDataHandlerAction($actionParameters, $options);
-
         $title = '';
         if ($options['hover']) {
             $title = 'title="'.$options['hover'].'"';
