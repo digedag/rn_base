@@ -198,9 +198,6 @@ function jumpToUrl(URL) {
      */
     public function section($label, $text, $nostrtoupper = false, $sH = false, $type = 0, $allowHTMLinHeader = false)
     {
-        if (!TYPO3::isTYPO80OrHigher()) {
-            return parent::section($label, $text, $nostrtoupper, $sH, $type, $allowHTMLinHeader);
-        }
         $title = $label;
         $message = $text;
         $disableIcon = 0 == $type;
@@ -255,9 +252,9 @@ function jumpToUrl(URL) {
      */
     public function divider($dist)
     {
-        if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-            return parent::divider($dist);
-        }
+//         if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+//             return parent::divider($dist);
+//         }
         $dist = (int) $dist;
 
         return '<!-- DIVIDER --><hr style="margin-top: '.$dist.'px; margin-bottom: '.$dist.'px;" />';
@@ -349,7 +346,7 @@ function jumpToUrl(URL) {
      */
     public function endPage()
     {
-        $str = $this->sectionEnd().$this->postCode.$this->wrapScriptTags(BackendUtility::getUpdateSignalCode()).($this->form ? '
+        $str = $this->postCode.$this->wrapScriptTags(BackendUtility::getUpdateSignalCode()).($this->form ? '
 </form>' : '');
         // If something is in buffer like debug, put it to end of page
         if (ob_get_contents()) {
@@ -364,29 +361,6 @@ function jumpToUrl(URL) {
 </div>' : '').$this->endOfPageJsBlock;
 
         return $str;
-    }
-
-    /**
-     * Ends and output section
-     * Returns the </div>-end tag AND clears the ->sectionFlag (but does so only IF the sectionFlag is set - that is a section is 'open')
-     * See sectionBegin() also.
-     *
-     * @return string HTML content
-     */
-    public function sectionEnd()
-    {
-        if ($this->sectionFlag) {
-            $this->sectionFlag = 0;
-
-            return '
-	</div>
-	<!-- *********************
-	      End output section.
-	     ********************* -->
-';
-        } else {
-            return '';
-        }
     }
 
     /**

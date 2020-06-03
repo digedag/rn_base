@@ -128,7 +128,9 @@ class Tx_Rnbase_Backend_Form_FormBuilder
                 $this->formDataCache[$cacheKey]['databaseRow']['uid'] = $uid;
             }
         }
-
+        if (empty($this->formDataCache[$cacheKey]['inlineStructure'])) {
+            $this->formDataCache[$cacheKey]['inlineStructure']['stable'] = [];
+        }
         return $this->formDataCache[$cacheKey];
     }
 
@@ -149,7 +151,6 @@ class Tx_Rnbase_Backend_Form_FormBuilder
         $options['tableName'] = $table;
         $options['fieldName'] = $fieldName;
         $options['renderType'] = 'singleFieldContainer';
-
         $childResultArray = $this->nodeFactory->create($options)->render();
 
         // TODO: dieser Aufruf sollte einmalig für das gesamte Formular erfolgen!

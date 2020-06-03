@@ -2,6 +2,8 @@
 
 namespace Sys25\RnBase\Backend\Utility;
 
+use Sys25\RnBase\Utility\TYPO3;
+
 /***************************************************************
  * Copyright notice
  *
@@ -157,12 +159,19 @@ class BackendUtility
      */
     public static function getModuleUrl($moduleName, $urlParameters = [])
     {
+        /* @var $uriBuilder \TYPO3\CMS\Backend\Routing\UriBuilder */
         $uriBuilder = \tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
 
         try {
             $uri = $uriBuilder->buildUriFromRoute($moduleName, $urlParameters);
         } catch (\TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException $e) {
-            $uri = $uriBuilder->buildUriFromRoutePath($moduleName, $urlParameters);
+            if (TYPO3::isTYPO95OrHigher()) {
+                $uri = $uriBuilder->buildUriFromRoutePath($moduleName, $urlParameters);
+            }
+            else {
+                // no route registered, use the fallback logic to check for a module
+                $uri = $uriBuilder->buildUriFromModule($moduleName, $urlParameters);
+            }
         }
 
         return (string) $uri;
