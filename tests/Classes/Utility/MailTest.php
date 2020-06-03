@@ -58,11 +58,12 @@ class Tx_Rnbase_Utility_MailTest extends tx_rnbase_tests_BaseTestCase
 
         $tos = $message->getTo();
         $this->assertEquals(3, count($tos));
-        foreach ($tos as $toAddress) {
+
+        foreach ($tos as $key => $value) {
             if (TYPO3::isTYPO104OrHigher()) {
-                $this->assertContains($toAddress->toString(), $addresses);
+                $this->assertContains($value->toString(), $addresses);
             } else {
-                $this->assertContains($toAddress, $addresses);
+                $this->assertContains($key, $addresses);
             }
         }
     }
