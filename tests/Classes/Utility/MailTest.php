@@ -1,4 +1,5 @@
 <?php
+
 use Sys25\RnBase\Utility\TYPO3;
 
 /***************************************************************
@@ -60,8 +61,7 @@ class Tx_Rnbase_Utility_MailTest extends tx_rnbase_tests_BaseTestCase
         foreach ($tos as $toAddress) {
             if (TYPO3::isTYPO104OrHigher()) {
                 $this->assertContains($toAddress->toString(), $addresses);
-            }
-            else {
+            } else {
                 $this->assertContains($toAddress, $addresses);
             }
         }
@@ -90,10 +90,8 @@ class Tx_Rnbase_Utility_MailTest extends tx_rnbase_tests_BaseTestCase
         /* @var $to \Symfony\Component\Mime\Address */
         $to = $message->getTo();
         if (TYPO3::isTYPO104OrHigher()) {
-
-        }
-        else {
-            $this->assertSame(['to1@test.de' => 'to1'],  $to);
+        } else {
+            $this->assertSame(['to1@test.de' => 'to1'], $to);
         }
     }
 

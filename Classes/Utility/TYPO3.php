@@ -228,14 +228,14 @@ class TYPO3
         return self::$TYPO3_VERSION >= $version;
     }
 
-    private static function findTYPO3Version():string
+    private static function findTYPO3Version(): string
     {
         if (class_exists('TYPO3\CMS\Core\Information\Typo3Version')) {
             /* @var $t3version \TYPO3\CMS\Core\Information\Typo3Version */
             $t3version = \tx_rnbase::makeInstance('TYPO3\CMS\Core\Information\Typo3Version');
+
             return $t3version->getVersion();
-        }
-        else {
+        } else {
             return TYPO3_version;
         }
     }
