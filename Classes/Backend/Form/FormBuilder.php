@@ -131,6 +131,7 @@ class Tx_Rnbase_Backend_Form_FormBuilder
         if (empty($this->formDataCache[$cacheKey]['inlineStructure'])) {
             $this->formDataCache[$cacheKey]['inlineStructure']['stable'] = [];
         }
+
         return $this->formDataCache[$cacheKey];
     }
 
