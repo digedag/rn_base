@@ -167,8 +167,7 @@ class BackendUtility
         } catch (\TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException $e) {
             if (TYPO3::isTYPO95OrHigher()) {
                 $uri = $uriBuilder->buildUriFromRoutePath($moduleName, $urlParameters);
-            }
-            else {
+            } else {
                 // no route registered, use the fallback logic to check for a module
                 $uri = $uriBuilder->buildUriFromModule($moduleName, $urlParameters);
             }
