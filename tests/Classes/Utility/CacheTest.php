@@ -1,4 +1,6 @@
 <?php
+use Sys25\RnBase\Utility\TYPO3;
+
 /***************************************************************
  * Copyright notice
  *
@@ -21,11 +23,9 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('Tx_Rnbase_Utility_Cache');
 
 /**
- * Tx_Rnbase_Utility_MailTest.
+ * TODO: rewrite this test and remove testing of TYPO3 internals. This class should test rn_base code only.
  *
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
@@ -76,10 +76,11 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testAddExcludedParametersForCacheHash()
     {
-        if (!\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+        if (!TYPO3::isTYPO90OrHigher() || TYPO3::isTYPO104OrHigher()) {
             self::markTestSkipped('This test is designed to run since TYPO3 9');
         }
 
+        // TODO: This is TYPO3 internal code that should not be used by this test case!
         $property = new ReflectionProperty(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class, 'excludedParameters');
         $property->setAccessible(true);
         $excludedParameters = $property->getValue(
@@ -104,7 +105,7 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testAddExcludedParametersForCacheHashBeforeTypo39()
     {
-        if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+        if (TYPO3::isTYPO90OrHigher()) {
             self::markTestSkipped('This test is designed to run below TYPO3 9');
         }
 
@@ -132,7 +133,7 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testAddExcludedParametersForCacheHashIfSomeExistAlready()
     {
-        if (!\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+        if (!TYPO3::isTYPO90OrHigher() || TYPO3::isTYPO104OrHigher()) {
             self::markTestSkipped('This test is designed to run since TYPO3 9');
         }
 
@@ -162,7 +163,7 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testAddExcludedParametersForCacheHashIfSomeExistAlreadyBeforeTypo39()
     {
-        if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+        if (TYPO3::isTYPO90OrHigher()) {
             self::markTestSkipped('This test is designed to run below TYPO3 9');
         }
 
@@ -199,7 +200,7 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testAddCacheHashRequiredParameters()
     {
-        if (!\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+        if (!TYPO3::isTYPO90OrHigher() || TYPO3::isTYPO104OrHigher()) {
             self::markTestSkipped('This test is designed to run since TYPO3 9');
         }
 
@@ -233,7 +234,7 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testAddCacheHashRequiredParametersBeforeTypo39()
     {
-        if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+        if (TYPO3::isTYPO90OrHigher()) {
             self::markTestSkipped('This test is designed to run below TYPO3 9');
         }
 
@@ -264,7 +265,7 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testAddCacheHashRequiredParametersIfSomeExistAlready()
     {
-        if (!\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+        if (!TYPO3::isTYPO90OrHigher() || TYPO3::isTYPO104OrHigher()) {
             self::markTestSkipped('This test is designed to run since TYPO3 9');
         }
 
@@ -297,7 +298,7 @@ class Tx_Rnbase_Utility_CacheTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testAddCacheHashRequiredParametersIfSomeExistAlreadyBeforeTypo39()
     {
-        if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+        if (TYPO3::isTYPO90OrHigher()) {
             self::markTestSkipped('This test is designed to run below TYPO3 9');
         }
 

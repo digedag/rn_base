@@ -639,8 +639,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
         if ($options['icon'] || $options['sprite']) {
             $icon = isset($options['icon']) ? $options['icon'] : $options['sprite'];
             // FIXME: label get lost here??
-            tx_rnbase::load('tx_rnbase_mod_Util');
-            $tag = tx_rnbase_mod_Util::getSpriteIcon($icon, $options);
+            $tag = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon($icon, $options);
         }
 
         return $tag;

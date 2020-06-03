@@ -222,10 +222,22 @@ class TYPO3
     public static function isTYPO3VersionOrHigher($version)
     {
         if (false === self::$TYPO3_VERSION) {
-            self::$TYPO3_VERSION = self::convertVersionNumberToInteger(TYPO3_version);
+            self::$TYPO3_VERSION = self::convertVersionNumberToInteger(self::findTYPO3Version());
         }
 
         return self::$TYPO3_VERSION >= $version;
+    }
+
+    private static function findTYPO3Version():string
+    {
+        if (class_exists('TYPO3\CMS\Core\Information\Typo3Version')) {
+            /* @var $t3version \TYPO3\CMS\Core\Information\Typo3Version */
+            $t3version = \tx_rnbase::makeInstance('TYPO3\CMS\Core\Information\Typo3Version');
+            return $t3version->getVersion();
+        }
+        else {
+            return TYPO3_version;
+        }
     }
 
     /**

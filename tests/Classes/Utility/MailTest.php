@@ -1,4 +1,6 @@
 <?php
+use Sys25\RnBase\Utility\TYPO3;
+
 /***************************************************************
  * Copyright notice
  *
@@ -45,7 +47,8 @@ class Tx_Rnbase_Utility_MailTest extends tx_rnbase_tests_BaseTestCase
         $mail->setFrom('test@test.com', 'fromname');
         $mail->setSubject('my subject');
 
-        $mail->setTo('to1@test.de, to2@test.de, to3@test.de');
+        $addresses = ['to1@test.de', 'to2@test.de', 'to3@test.de'];
+        $mail->setTo(implode(', ', $addresses));
 
         /* @var $message TYPO3\CMS\Core\Mail\MailMessage */
         $message = $mail->send();
@@ -54,8 +57,13 @@ class Tx_Rnbase_Utility_MailTest extends tx_rnbase_tests_BaseTestCase
 
         $tos = $message->getTo();
         $this->assertEquals(3, count($tos));
-        for ($i = 1; $i < 4; ++$i) {
-            $this->assertArrayHasKey('to'.$i.'@test.de', $tos);
+        foreach ($tos as $toAddress) {
+            if (TYPO3::isTYPO104OrHigher()) {
+                $this->assertContains($toAddress->toString(), $addresses);
+            }
+            else {
+                $this->assertContains($toAddress, $addresses);
+            }
         }
     }
 
@@ -79,8 +87,14 @@ class Tx_Rnbase_Utility_MailTest extends tx_rnbase_tests_BaseTestCase
         $this->assertInstanceOf('TYPO3\CMS\Core\Mail\MailMessage', $message);
 
         $this->assertEquals('my subject', $message->getSubject());
+        /* @var $to \Symfony\Component\Mime\Address */
         $to = $message->getTo();
-        $this->assertSame(['to1@test.de' => 'to1'], $to);
+        if (TYPO3::isTYPO104OrHigher()) {
+
+        }
+        else {
+            $this->assertSame(['to1@test.de' => 'to1'],  $to);
+        }
     }
 
     /**

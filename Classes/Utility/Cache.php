@@ -24,6 +24,7 @@
 
 /**
  * Tx_Rnbase_Utility_Cache.
+ * TODO: rename class to a better name as it is used for cHash handling.
  *
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
