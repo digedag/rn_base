@@ -91,6 +91,7 @@ class tx_rnbase_util_Files
             return tx_rnbase_util_Templates::getTSTemplate()->getFileName($file);
         }
         $fs = tx_rnbase::makeInstance('TYPO3\CMS\Frontend\Resource\FilePathSanitizer');
+
         return $fs->sanitize($file);
     }
 
