@@ -28,7 +28,6 @@ use Psr\Log\LogLevel;
 
 /**
  * Default logger class.
- *
  */
 class Logger
 {
@@ -202,6 +201,7 @@ class Logger
     {
         /* @var $logManager \TYPO3\CMS\Core\Log\LogManager */
         $logManager = \tx_rnbase::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class);
+
         return $logManager->getLogger($extKey);
     }
 }
