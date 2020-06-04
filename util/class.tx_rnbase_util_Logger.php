@@ -1,5 +1,8 @@
 <?php
 
+use Sys25\RnBase\Utility\TYPO3;
+use Psr\Log\LogLevel;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -185,7 +188,23 @@ class tx_rnbase_util_Logger
      */
     public static function devLog($msg, $extKey, $severity = 0, $dataVar = false)
     {
-        $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
-        $utility::devLog($msg, $extKey, $severity, $dataVar);
+        if (TYPO3::isTYPO95OrHigher()) {
+            /* @var $logManager \TYPO3\CMS\Core\Log\LogManager */
+            $logManager = tx_rnbase::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class);
+            $logger = $logManager->getLogger($extKey);
+            $methods = [
+                -1 => LogLevel::DEBUG,
+                0 => LogLevel::INFO,
+                1 => LogLevel::NOTICE,
+                2 => LogLevel::WARNING,
+                3 => LogLevel::ERROR,
+            ];
+            $level = array_key_exists($severity, $methods) ? $methods[$severity] : LogLevel::INFO;
+            $logger->log($level, $msg, is_array($dataVar) ? $dataVar : [$dataVar]);
+        }
+        else {
+            $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+            $utility::devLog($msg, $extKey, $severity, $dataVar);
+        }
     }
 }
