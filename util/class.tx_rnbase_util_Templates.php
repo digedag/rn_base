@@ -95,7 +95,7 @@ class tx_rnbase_util_Templates
      */
     public static function getSubpartFromFile($fileName, $subpart)
     {
-        $file = self::getTSTemplate()->getFileName($fileName);
+        $file = tx_rnbase_util_Files::getFileName($fileName);
 
         if (TYPO3_MODE == 'BE' && false === strpos($file, \Sys25\RnBase\Utility\Environment::getPublicPath())) {
             $file = \Sys25\RnBase\Utility\Environment::getPublicPath().$file;

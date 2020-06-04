@@ -68,6 +68,7 @@
  * @method static void addTypoScriptConstants(string $content)
  * @method static void addLLrefForTCAdescr(string $tca_descr_key, string $file_ref)
  * @method static array getLoadedExtensionListArray()
+ * @see TYPO3\CMS\Core\Utility\ExtensionManagementUtility
  */
 class tx_rnbase_util_Extensions
 {

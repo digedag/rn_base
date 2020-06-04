@@ -1,9 +1,11 @@
 <?php
 
+use Sys25\RnBase\Utility\TYPO3;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2009-2014 Rene Nitzsche
+ *  (c) 2009-2020 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -21,9 +23,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
-
-tx_rnbase::load('tx_rnbase_util_TYPO3');
-tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
  * Contains some helpful methods for file handling.
@@ -45,13 +44,10 @@ class tx_rnbase_util_Files
     public static function getFileResource($fName, $options = [])
     {
         if (!(is_object($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE']->tmpl))) {
-            tx_rnbase::load('tx_rnbase_util_Misc');
             tx_rnbase_util_Misc::prepareTSFE(['force' => true]);
         }
         if (self::isFALReference($fName)) {
-            /**
-             * @var FileRepository
-             */
+            /* @var \TYPO3\CMS\Core\Resource\FileRepository */
             $fileRepository = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Resource\FileRepository');
             $fileObject = $fileRepository->findByUid(intval(substr($fName, 5)));
             $incFile = is_object($fileObject) ? $fileObject->getForLocalProcessing(false) : false;
@@ -91,9 +87,11 @@ class tx_rnbase_util_Files
      */
     public static function getFileName($file)
     {
-        tx_rnbase::load('tx_rnbase_util_Templates');
-
-        return tx_rnbase_util_Templates::getTSTemplate()->getFileName($file);
+        if (!TYPO3::isTYPO95OrHigher()) {
+            return tx_rnbase_util_Templates::getTSTemplate()->getFileName($file);
+        }
+        $fs = tx_rnbase::makeInstance('TYPO3\CMS\Frontend\Resource\FilePathSanitizer');
+        return $fs->sanitize($file);
     }
 
     /**
