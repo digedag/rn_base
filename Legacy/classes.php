@@ -74,3 +74,7 @@ class Tx_Rnbase_Util_TCATool extends Sys25\RnBase\Backend\Utility\TcaTool
 class Tx_Rnbase_Backend_Utility extends Sys25\RnBase\Backend\Utility\BackendUtility
 {
 }
+/** @deprecated */
+class tx_rnbase_util_Logger extends Sys25\RnBase\Utility\Logger
+{
+}
