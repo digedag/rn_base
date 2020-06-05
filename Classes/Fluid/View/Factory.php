@@ -2,6 +2,9 @@
 
 namespace Sys25\RnBase\Fluid\View;
 
+
+use Sys25\RnBase\Configuration\ConfigurationInterface;
+
 /***************************************************************
  * Copyright notice
  *
@@ -35,12 +38,12 @@ namespace Sys25\RnBase\Fluid\View;
 class Factory
 {
     /**
-     * @param \Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param array                                       $frameworkSettings
+     * @param ConfigurationInterface $configurations
+     * @param array $frameworkSettings
      *
      * @return \Sys25\RnBase\Fluid\View\Standalone
      */
-    public static function getViewInstance(\Tx_Rnbase_Configuration_ProcessorInterface $configurations, $frameworkSettings = [])
+    public static function getViewInstance(ConfigurationInterface $configurations, $frameworkSettings = [])
     {
         /* @var $view \Sys25\RnBase\Fluid\View\Standalone */
         $view = \tx_rnbase::makeInstance('Sys25\\RnBase\\Fluid\\View\\Standalone', $configurations->getCObj());
