@@ -35,12 +35,12 @@ namespace Sys25\RnBase\Fluid\View;
 class Factory
 {
     /**
-     * @param tx_rnbase_configurations $configurations
-     * @param array                    $frameworkSettings
+     * @param \Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param array                                       $frameworkSettings
      *
      * @return \Sys25\RnBase\Fluid\View\Standalone
      */
-    public static function getViewInstance(\tx_rnbase_configurations $configurations, $frameworkSettings = [])
+    public static function getViewInstance(\Tx_Rnbase_Configuration_ProcessorInterface $configurations, $frameworkSettings = [])
     {
         /* @var $view \Sys25\RnBase\Fluid\View\Standalone */
         $view = \tx_rnbase::makeInstance('Sys25\\RnBase\\Fluid\\View\\Standalone', $configurations->getCObj());
