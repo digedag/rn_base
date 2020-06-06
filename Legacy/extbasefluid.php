@@ -4,9 +4,10 @@ namespace Sys25\RnBase\Controller\Extbase {
     /**
      * @deprecated
      */
-    trait CacheTagsTrait {
+    trait CacheTagsTrait
+    {
         use \Sys25\RnBase\ExtBaseFluid\Controller\CacheTagsTrait;
-    };
+    }
 }
 
 namespace Sys25\RnBase\Fluid\View {

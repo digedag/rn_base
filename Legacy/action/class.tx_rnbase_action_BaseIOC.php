@@ -35,6 +35,7 @@ use Sys25\RnBase\Frontend\Controller\AbstractAction;
  *
  * @author Rene Nitzsche <rene@system25.de>
  * @author Michael Wagner <michael.wagner@dmk-ebusines.de>
+ *
  * @deprecated
  * @see AbstractAction
  */

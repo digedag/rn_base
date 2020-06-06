@@ -19,6 +19,7 @@ namespace Sys25\RnBase\Controller {
             // @codingStandardsIgnoreEnd
             return $this->doRequest();
         }
+
         abstract protected function doRequest();
 
         protected function getViewClassName()

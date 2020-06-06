@@ -28,7 +28,6 @@ use Sys25\RnBase\Fluid\ViewHelper\PageBrowserViewHelper;
  ***************************************************************/
 
 /**
- *
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later

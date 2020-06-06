@@ -24,6 +24,7 @@
 
 /**
  * Default view class to show a single record.
+ *
  * @deprecated use \Sys25\RnBase\Frontend\View\Marker\ListView
  */
 class tx_rnbase_view_Single extends tx_rnbase_view_List
