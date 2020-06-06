@@ -3,7 +3,7 @@
 Changelog
 ---------
 
-v1.12.0 (??.0?.2020)
+v1.12.0 (06.06.2020)
  * raised required PHP version to 7.1
  * added support for TYPO3 10.4 LTS
  * dropped support for TYPO3 6.2 LTS
