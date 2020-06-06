@@ -187,9 +187,9 @@ class BaseFilter implements FilterInterface
     }
 
     /**
-     * @param \tx_rnbase_IFilterItem $item
+     * @param IFilterItem $item
      */
-    public function addFilterItem(\tx_rnbase_IFilterItem $item)
+    public function addFilterItem(IFilterItem $item)
     {
         $this->filterItems[] = $item;
     }
@@ -197,7 +197,7 @@ class BaseFilter implements FilterInterface
     /**
      * Returns all filter items set.
      *
-     * @return array[\tx_rnbase_IFilterItem]
+     * @return IFilterItem[]
      */
     public function getFilterItems()
     {

@@ -1,9 +1,11 @@
 <?php
 
+namespace Sys25\RnBase\Frontend\Filter;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2009 Rene Nitzsche
+ *  (c) 2009-2020 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -22,26 +24,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_SearchBase');
-
-interface tx_rnbase_IFilterItem
-{
-    /**
-     * Returns the name of item.
-     *
-     * @return string
-     */
-    public function getName();
-
-    /**
-     * Returns the current value.
-     *
-     * @return string
-     */
-    public function getValue();
-}
-
-class tx_rnbase_filter_FilterItem implements tx_rnbase_IFilterItem
+class FilterItem implements IFilterItem
 {
     public $record;
 
