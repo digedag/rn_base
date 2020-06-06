@@ -1,11 +1,6 @@
 <?php
 
 /**
- * benötigte Klassen einbinden.
- */
-tx_rnbase::load('tx_rnbase_view_Base');
-
-/**
  * Generic list view.
  *
  * @author René Nitzsche
