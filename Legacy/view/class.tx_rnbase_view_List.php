@@ -4,6 +4,7 @@
  * Generic list view.
  *
  * @author René Nitzsche
+ *
  * @deprecated use \Sys25\RnBase\Frontend\View\Marker\ListView
  */
 class tx_rnbase_view_List extends tx_rnbase_view_Base

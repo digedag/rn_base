@@ -2,7 +2,6 @@
 
 namespace Sys25\RnBase\Search\Category;
 
-
 /***************************************************************
 *  Copyright notice
 *
@@ -33,7 +32,7 @@ namespace Sys25\RnBase\Search\Category;
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Category_SearchUtilityTest extends \tx_rnbase_tests_BaseTestCase
+class SearchUtilityTest extends \tx_rnbase_tests_BaseTestCase
 {
     /**
      * @group unit

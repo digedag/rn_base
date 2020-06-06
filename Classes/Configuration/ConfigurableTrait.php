@@ -1,6 +1,6 @@
 <?php
-namespace Sys25\RnBase\Configuration;
 
+namespace Sys25\RnBase\Configuration;
 
 /***************************************************************
  *  Copyright notice

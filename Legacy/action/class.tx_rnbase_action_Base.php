@@ -26,6 +26,7 @@ use Sys25\RnBase\Utility\TYPO3;
 /**
  * Baseclass for all actions. An Actions is intended to be the controller
  * for a request. The action prepares the model and view.
+ *
  * @deprecated
  * @see AbstractAction
  */

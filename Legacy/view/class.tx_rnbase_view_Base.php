@@ -29,6 +29,7 @@
  * templates can be searched in both.
  *
  * @author René Nitzsche <rene@system25.de>
+ *
  * @deprecated use \Sys25\RnBase\Frontend\View\Marker\BaseView
  */
 class tx_rnbase_view_Base

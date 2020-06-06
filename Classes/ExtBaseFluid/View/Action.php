@@ -26,8 +26,7 @@ namespace Sys25\RnBase\ExtBaseFluid\View;
  ***************************************************************/
 
 /**
- *
- * View class for actions based on tx_rnbase_action_BaseIOC
+ * View class for actions based on tx_rnbase_action_BaseIOC.
  *
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
