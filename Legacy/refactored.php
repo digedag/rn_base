@@ -1,5 +1,11 @@
 <?php
 
+namespace Sys25\RnBase\Search {
+    /** @deprecated */
+    class Category extends \Sys25\RnBase\Search\Category\Category
+    {
+    }
+}
 
 namespace Sys25\RnBase\Controller {
     /**

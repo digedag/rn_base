@@ -78,3 +78,7 @@ class Tx_Rnbase_Backend_Utility extends Sys25\RnBase\Backend\Utility\BackendUtil
 class tx_rnbase_util_Logger extends Sys25\RnBase\Utility\Logger
 {
 }
+/** @deprecated */
+class Tx_Rnbase_Category_SearchUtility extends Sys25\RnBase\Search\Category\SearchUtility
+{
+}

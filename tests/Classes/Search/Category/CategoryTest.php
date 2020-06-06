@@ -1,6 +1,6 @@
 <?php
 
-namespace Sys25\RnBase\Search;
+namespace Sys25\RnBase\Search\Category;
 
 /**
  *  Copyright notice.

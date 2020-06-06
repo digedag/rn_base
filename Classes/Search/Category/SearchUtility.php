@@ -1,4 +1,7 @@
 <?php
+
+namespace Sys25\RnBase\Search\Category;
+
 /***************************************************************
  * Copyright notice
  *
@@ -31,7 +34,7 @@
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Category_SearchUtility
+class SearchUtility
 {
     /**
      * @param array  $tableMappings

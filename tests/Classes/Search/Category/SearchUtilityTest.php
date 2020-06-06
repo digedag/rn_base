@@ -1,4 +1,8 @@
 <?php
+
+namespace Sys25\RnBase\Search\Category;
+
+
 /***************************************************************
 *  Copyright notice
 *
@@ -21,8 +25,6 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-tx_rnbase::load('Tx_Rnbase_Category_SearchUtility');
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
 /**
  * Tx_Rnbase_Category_SearchUtilityTest.
@@ -31,7 +33,7 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Category_SearchUtilityTest extends tx_rnbase_tests_BaseTestCase
+class Tx_Rnbase_Category_SearchUtilityTest extends \tx_rnbase_tests_BaseTestCase
 {
     /**
      * @group unit
@@ -40,15 +42,15 @@ class Tx_Rnbase_Category_SearchUtilityTest extends tx_rnbase_tests_BaseTestCase
     {
         self::assertEquals(
             ['SYS_CATEGORY' => 'sys_category'],
-            tx_rnbase::makeInstance('Tx_Rnbase_Category_SearchUtility')->addTableMapping([])
+            \tx_rnbase::makeInstance(SearchUtility::class)->addTableMapping([])
         );
         self::assertEquals(
             ['ALREADY' => 'present', 'SYS_CATEGORY' => 'sys_category'],
-            tx_rnbase::makeInstance('Tx_Rnbase_Category_SearchUtility')->addTableMapping(['ALREADY' => 'present'])
+            \tx_rnbase::makeInstance(SearchUtility::class)->addTableMapping(['ALREADY' => 'present'])
         );
         self::assertEquals(
             ['MY_NEW_ALIAS' => 'sys_category'],
-            tx_rnbase::makeInstance('Tx_Rnbase_Category_SearchUtility')->addTableMapping([], 'MY_NEW_ALIAS')
+            \tx_rnbase::makeInstance(SearchUtility::class)->addTableMapping([], 'MY_NEW_ALIAS')
         );
     }
 
@@ -62,7 +64,7 @@ class Tx_Rnbase_Category_SearchUtilityTest extends tx_rnbase_tests_BaseTestCase
             ' AS SYS_CATEGORY_MM ON SYS_CATEGORY_MM.uid_foreign'.
             ' = MY_ALIAS.uid AND SYS_CATEGORY_MM.tablenames = "my_table" AND SYS_CATEGORY_MM.fieldname = "my_field"'.
             ' LEFT JOIN sys_category AS SYS_CATEGORY ON SYS_CATEGORY.uid = SYS_CATEGORY_MM.uid_local',
-            tx_rnbase::makeInstance('Tx_Rnbase_Category_SearchUtility')->addJoins(
+            \tx_rnbase::makeInstance(SearchUtility::class)->addJoins(
                 'my_table',
                 'MY_ALIAS',
                 'my_field',
@@ -72,7 +74,7 @@ class Tx_Rnbase_Category_SearchUtilityTest extends tx_rnbase_tests_BaseTestCase
 
         self::assertEquals(
             '',
-            tx_rnbase::makeInstance('Tx_Rnbase_Category_SearchUtility')->addJoins(
+            \tx_rnbase::makeInstance(SearchUtility::class)->addJoins(
                 'my_table',
                 'MY_ALIAS',
                 'my_field',
@@ -82,7 +84,7 @@ class Tx_Rnbase_Category_SearchUtilityTest extends tx_rnbase_tests_BaseTestCase
 
         self::assertEquals(
             '',
-            tx_rnbase::makeInstance('Tx_Rnbase_Category_SearchUtility')->addJoins(
+            \tx_rnbase::makeInstance(SearchUtility::class)->addJoins(
                 'my_table',
                 'MY_ALIAS',
                 'my_field',
@@ -96,7 +98,7 @@ class Tx_Rnbase_Category_SearchUtilityTest extends tx_rnbase_tests_BaseTestCase
             ' AS SYS_CATEGORY_2_MM ON SYS_CATEGORY_2_MM.uid_foreign'.
             ' = MY_ALIAS.uid AND SYS_CATEGORY_2_MM.tablenames = "my_table" AND SYS_CATEGORY_2_MM.fieldname = "my_field"'.
             ' LEFT JOIN sys_category AS SYS_CATEGORY_2 ON SYS_CATEGORY_2.uid = SYS_CATEGORY_2_MM.uid_local',
-            tx_rnbase::makeInstance('Tx_Rnbase_Category_SearchUtility')->addJoins(
+            \tx_rnbase::makeInstance(SearchUtility::class)->addJoins(
                 'my_table',
                 'MY_ALIAS',
                 'my_field',
@@ -116,7 +118,7 @@ class Tx_Rnbase_Category_SearchUtilityTest extends tx_rnbase_tests_BaseTestCase
             ' ON sys_category_record_mm.uid_foreign'.
             ' = my_table.uid AND sys_category_record_mm.tablenames = "my_table" AND sys_category_record_mm.fieldname = "my_field"'.
             ' LEFT JOIN sys_category ON sys_category.uid = sys_category_record_mm.uid_local',
-            tx_rnbase::makeInstance('Tx_Rnbase_Category_SearchUtility')->addJoinsWithoutAlias(
+            \tx_rnbase::makeInstance(SearchUtility::class)->addJoinsWithoutAlias(
                 'my_table',
                 'MY_ALIAS',
                 'my_field',
@@ -126,7 +128,7 @@ class Tx_Rnbase_Category_SearchUtilityTest extends tx_rnbase_tests_BaseTestCase
 
         self::assertEquals(
             '',
-            tx_rnbase::makeInstance('Tx_Rnbase_Category_SearchUtility')->addJoinsWithoutAlias(
+            \tx_rnbase::makeInstance(SearchUtility::class)->addJoinsWithoutAlias(
                 'my_table',
                 'MY_ALIAS',
                 'my_field',
@@ -136,7 +138,7 @@ class Tx_Rnbase_Category_SearchUtilityTest extends tx_rnbase_tests_BaseTestCase
 
         self::assertEquals(
             '',
-            tx_rnbase::makeInstance('Tx_Rnbase_Category_SearchUtility')->addJoinsWithoutAlias(
+            \tx_rnbase::makeInstance(SearchUtility::class)->addJoinsWithoutAlias(
                 'my_table',
                 'MY_ALIAS',
                 'my_field',
@@ -150,7 +152,7 @@ class Tx_Rnbase_Category_SearchUtilityTest extends tx_rnbase_tests_BaseTestCase
             ' ON sys_category_record_mm.uid_foreign'.
             ' = my_table.uid AND sys_category_record_mm.tablenames = "my_table" AND sys_category_record_mm.fieldname = "my_field"'.
             ' LEFT JOIN sys_category ON sys_category.uid = sys_category_record_mm.uid_local',
-            tx_rnbase::makeInstance('Tx_Rnbase_Category_SearchUtility')->addJoinsWithoutAlias(
+            \tx_rnbase::makeInstance(SearchUtility::class)->addJoinsWithoutAlias(
                 'my_table',
                 'MY_ALIAS',
                 'my_field',

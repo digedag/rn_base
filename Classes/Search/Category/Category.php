@@ -1,6 +1,6 @@
 <?php
 
-namespace Sys25\RnBase\Search;
+namespace Sys25\RnBase\Search\Category;
 
 /***************************************************************
  * Copyright notice
@@ -37,7 +37,7 @@ class Category extends \tx_rnbase_util_SearchBase
     /**
      * {@inheritdoc}
      *
-     * @see tx_rnbase_util_SearchBase::getTableMappings()
+     * @see \tx_rnbase_util_SearchBase::getTableMappings()
      */
     protected function getTableMappings()
     {
@@ -50,7 +50,7 @@ class Category extends \tx_rnbase_util_SearchBase
     /**
      * {@inheritdoc}
      *
-     * @see tx_rnbase_util_SearchBase::useAlias()
+     * @see \tx_rnbase_util_SearchBase::useAlias()
      */
     protected function useAlias()
     {
@@ -60,7 +60,7 @@ class Category extends \tx_rnbase_util_SearchBase
     /**
      * {@inheritdoc}
      *
-     * @see tx_rnbase_util_SearchBase::getBaseTableAlias()
+     * @see \tx_rnbase_util_SearchBase::getBaseTableAlias()
      */
     protected function getBaseTableAlias()
     {
@@ -70,7 +70,7 @@ class Category extends \tx_rnbase_util_SearchBase
     /**
      * {@inheritdoc}
      *
-     * @see tx_rnbase_util_SearchBase::getBaseTable()
+     * @see \tx_rnbase_util_SearchBase::getBaseTable()
      */
     protected function getBaseTable()
     {
@@ -80,7 +80,7 @@ class Category extends \tx_rnbase_util_SearchBase
     /**
      * {@inheritdoc}
      *
-     * @see tx_rnbase_util_SearchBase::getWrapperClass()
+     * @see \tx_rnbase_util_SearchBase::getWrapperClass()
      */
     public function getWrapperClass()
     {
@@ -90,7 +90,7 @@ class Category extends \tx_rnbase_util_SearchBase
     /**
      * {@inheritdoc}
      *
-     * @see tx_rnbase_util_SearchBase::getJoins()
+     * @see \tx_rnbase_util_SearchBase::getJoins()
      */
     protected function getJoins($tableAliases)
     {

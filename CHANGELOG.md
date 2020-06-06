@@ -10,6 +10,7 @@ v1.12.0 (??.0?.2020)
  * #165 wip refactoring of classes to PSR-4  
  * BC: drop old rendering of BE-Modules without ModuleTemplate
  * Clean up: all ExtBase/Fluid classes moved to a new common namespace `Sys25\RnBase\ExtBaseFluid` 
+ * Clean up: common namespace for category search classes
 
 v1.11.4 (13.04.2020)
  * remove 6.2 code from BE-ToolBox
