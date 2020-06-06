@@ -1,8 +1,11 @@
 <?php
+namespace Sys25\RnBase\Configuration;
+
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2007-2017 Rene Nitzsche <rene@system25.de>
+ *  (c) 2007-2020 Rene Nitzsche <rene@system25.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,10 +30,10 @@
  *
  * @author Michael Wagner
  */
-trait Tx_Rnbase_Configuration_ConfigurableTrait
+trait ConfigurableTrait
 {
     /**
-     * @var Tx_Rnbase_Configuration_ProcessorInterface
+     * @var ConfigurationInterface
      */
     protected $configurations = null;
 
@@ -42,12 +45,12 @@ trait Tx_Rnbase_Configuration_ConfigurableTrait
     /**
      * Set the configuration object.
      *
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param ConfigurationInterface $configurations
      *
-     * @return Tx_Rnbase_Configuration_ConfigurableTrait
+     * @return ConfigurableTrait
      */
     public function setConfigurations(
-        Tx_Rnbase_Configuration_ProcessorInterface $configurations
+        ConfigurationInterface $configurations
     ) {
         $this->configurations = $configurations;
 
@@ -57,7 +60,7 @@ trait Tx_Rnbase_Configuration_ConfigurableTrait
     /**
      * The configuration object.
      *
-     * @return Tx_Rnbase_Configuration_ProcessorInterface
+     * @return ConfigurationInterface
      */
     protected function getConfigurations()
     {
@@ -69,7 +72,7 @@ trait Tx_Rnbase_Configuration_ConfigurableTrait
      *
      * @param string $configurations
      *
-     * @return Tx_Rnbase_Configuration_ConfigurableTrait
+     * @return ConfigurableTrait
      */
     public function setConfId(
         $confId
@@ -98,7 +101,7 @@ trait Tx_Rnbase_Configuration_ConfigurableTrait
      */
     protected function getConfValue($path, $deep = false)
     {
-        if (!$this->getConfigurations() instanceof Tx_Rnbase_Configuration_ProcessorInterface) {
+        if (!$this->getConfigurations() instanceof ConfigurationInterface) {
             return null;
         }
 

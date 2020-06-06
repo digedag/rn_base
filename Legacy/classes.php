@@ -82,3 +82,8 @@ class tx_rnbase_util_Logger extends Sys25\RnBase\Utility\Logger
 class Tx_Rnbase_Category_SearchUtility extends Sys25\RnBase\Search\Category\SearchUtility
 {
 }
+/** @deprecated */
+trait Tx_Rnbase_Configuration_ConfigurableTrait
+{
+    use Sys25\RnBase\Configuration\ConfigurableTrait;
+}
