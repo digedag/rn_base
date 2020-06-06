@@ -75,6 +75,7 @@ tt_content.list.20.tx_t3sponsors    =< plugin.tx_t3sponsors
 ```
 Danach sollte das Plugin korrekt integriert sein und sich als Content-Element auswählen lassen.
 Nun benötigen wir natürlich noch den Action-Controller, der den eigentlichen Output des Plugins liefert. In rn_base werden verschiedene Basisklassen bereitgestellt. Am häufigsten wird die Actionklasse von tx_rnbase_action_BaseIOC erben und dann mininal folgendes Aussehen haben:
+
 ```php
 class tx_t3sponsors_actions_SponsorList extends tx_rnbase_action_BaseIOC {
     /**
@@ -310,6 +311,7 @@ plugin_tx_mkextension.showdata.toUserInt = 1
 ```
 
 Convertierung direkt in der Action:
+
 ```php
 $this->getConfigurations()->convertToUserInt();
 ```
@@ -345,6 +347,7 @@ Legt fest, ob und an welche Email-Adresse im Falle eines Fehlers versendet werde
 Im Falle, das verboseMayday nicht gesetzt ist, wird versucht eine Nutzer freundliche Meldung auszugeben. Dazu wird der Fehlercode der Exception genutzt, um definierte Meldungen zu ermitteln. Zunächst wird im TypoScript nachgesehen. Wurde dort nichts zum Fehler gefunden, wird die Übersetzungsdatei geprüft. Ist auch hier nichts definiert, wird eine Defaultmeldung von rn_base ausgegeben.
 
 Beispielkonfiguration TypoScript:
+
 ```
 plugin.tx_extension.error {
     ### alle fehler versteckt ausgeben
@@ -427,6 +430,7 @@ plugin.tx_myext {
 ```
 
 Externe Ressourcen sollte immer mit vollem Protokoll eingebunden werden. Eine Einbindung mit //my-external-library kann u.U. zu Problemen führen.
+
 ## Cachehandling
 
 Bei USER Plugins muss der Cache in den pages geleert werden, wenn sich ein Datensatz ändert. Das geht mit rn_base ganz einfach. Zunächst müssen im TypoScript die Cache Tags für die Action definiert werden.
@@ -462,6 +466,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['tt_news_ca
 ```
 
 Hinweis zu sonstigen Extensions, die nicht auf rn_base basieren: Die Cache Tags für die Plugins sollten über TypoScript mit einer UserFunc hinzugefügt werden. Damit muss man nicht verschiedene Hooks nutzen und hat es global für jeden View. Hier ein Beispiel für tt_news:
+
 ```ts
 plugin.tt_news.stdWrap.postUserFunc = Tx_Rnbase_Utility_Cache->addCacheTagsToPage
 plugin.tt_news.stdWrap.postUserFunc {
@@ -471,7 +476,7 @@ plugin.tt_news.stdWrap.postUserFunc {
 ```
 
 ### Extbase Controller
-Das ganze gibt es auch für Extbase Controller. Dazu muss im Controller der Trait \Sys25\RnBase\ExtBaseFluid\Controller\CacheTagsTrait hinzugefügt werden. Damit können per TypoScript die Cache Tags für Actions konfiguriert werden nach dem Schema plugin.ty_my_ext.settings.cacheTags.$lowerCamelCaseControllerNameOmittingController.$lowerCaseActionNameOmittingAction.0 = my_cache_tag. Für tx_news könnte ein Beispiel so aussehen:
+Das ganze gibt es auch für Extbase Controller. Dazu muss im Controller der Trait `\Sys25\RnBase\ExtBaseFluid\Controller\CacheTagsTrait` hinzugefügt werden. Damit können per TypoScript die Cache Tags für Actions konfiguriert werden nach dem Schema `plugin.ty_my_ext.settings.cacheTags.$lowerCamelCaseControllerNameOmittingController.$lowerCaseActionNameOmittingAction.0 = my_cache_tag`. Für tx_news könnte ein Beispiel so aussehen:
 
 ```
 plugin.tx_news {

@@ -1,5 +1,7 @@
 <?php
 
+use Sys25\RnBase\Utility\TYPO3;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -20,11 +22,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
-tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
 /**
  * Baseclass for all actions. An Actions is intended to be the controller
  * for a request. The action prepares the model and view.
+ * @deprecated
+ * @see AbstractAction
  */
 class tx_rnbase_action_Base
 {
@@ -51,7 +54,7 @@ class tx_rnbase_action_Base
     public function getCObj()
     {
         if (!$this->cObject) {
-            $this->cObject = tx_rnbase_util_TYPO3::getContentObject();
+            $this->cObject = TYPO3::getContentObject();
         }
 
         return $this->cObject;

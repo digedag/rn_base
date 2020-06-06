@@ -71,37 +71,30 @@ abstract class AbstractAction
         // Add JS or CSS files
         $this->addResources($configurations, $this->getConfId());
 
-        $cacheHandler = $this->getCacheHandler($configurations, $this->getConfId().'_caching.');
-        $out = $cacheHandler ? $cacheHandler->getOutput() : '';
-        $cached = !empty($out);
-        if (!$cached) {
-            \tx_rnbase_util_Misc::pushTT(get_class($this), 'handleRequest');
-            $request = new Request($parameters, $configurations, $this->getConfId());
-            $out = $this->handleRequest($request);
+        \tx_rnbase_util_Misc::pushTT(get_class($this), 'handleRequest');
+        $request = new Request($parameters, $configurations, $this->getConfId());
+        $out = $this->handleRequest($request);
+        \tx_rnbase_util_Misc::pullTT();
+        if (!$out) {
+            // View
+            $viewFactoryClassName = $configurations->get($this->getConfId().'viewFactoryClassName');
+            $viewFactoryClassName = strlen($viewFactoryClassName) > 0 ? $viewFactoryClassName : Factory::class;
+            /* @var $viewFactory Factory */
+            $viewFactory = \tx_rnbase::makeInstance($viewFactoryClassName);
+            $view = $viewFactory->createView($request, $this->getViewClassName(), $this->getTemplateFile($configurations));
+            \tx_rnbase_util_Misc::pushTT(get_class($this), 'render');
+            // Das Template wird komplett angegeben
+            $tmplName = $this->getTemplateName();
+            if (!$tmplName || !strlen($tmplName)) {
+                \tx_rnbase_util_Misc::mayday('No template name defined!');
+            }
+
+            $out = $view->render($tmplName, $request);
             \tx_rnbase_util_Misc::pullTT();
-            if (!$out) {
-                // View
-                $viewFactoryClassName = $configurations->get($this->getConfId().'viewFactoryClassName');
-                $viewFactoryClassName = strlen($viewFactoryClassName) > 0 ? $viewFactoryClassName : Factory::class;
-                /* @var $viewFactory Factory */
-                $viewFactory = \tx_rnbase::makeInstance($viewFactoryClassName);
-                $view = $viewFactory->createView($request, $this->getViewClassName(), $this->getTemplateFile($configurations));
-                \tx_rnbase_util_Misc::pushTT(get_class($this), 'render');
-                // Das Template wird komplett angegeben
-                $tmplName = $this->getTemplateName();
-                if (!$tmplName || !strlen($tmplName)) {
-                    \tx_rnbase_util_Misc::mayday('No template name defined!');
-                }
-
-                $out = $view->render($tmplName, $request);
-                \tx_rnbase_util_Misc::pullTT();
-            }
-            if ($cacheHandler) {
-                $cacheHandler->setOutput($out);
-            }
-
-            $this->addCacheTags($configurations);
         }
+
+        $this->addCacheTags($configurations);
+
         if ($debug) {
             $memEnd = memory_get_usage();
             \tx_rnbase_util_Debug::debug([
@@ -111,8 +104,6 @@ abstract class AbstractAction
                 'Memory Start' => $memStart,
                 'Memory End' => $memEnd,
                 'Memory Consumed' => ($memEnd - $memStart),
-                'Cached?' => $cached ? 'yes' : 'no',
-                'CacheHandler' => is_object($cacheHandler) ? get_class($cacheHandler) : '',
                 'SubstCacheEnabled?' => \tx_rnbase_util_Templates::isSubstCacheEnabled() ? 'yes' : 'no',
             ], 'View statistics for: '.$this->getConfId().' Key: '.$debugKey);
         }
@@ -186,37 +177,6 @@ abstract class AbstractAction
         }
 
         return $files;
-    }
-
-    /**
-     * Find a configured cache handler.
-     *
-     * @param ConfigurationInterface $configurations
-     * @param string                 $confId
-     *
-     * @return \tx_rnbase_action_ICacheHandler
-     */
-    protected function getCacheHandler($configurations, $confId)
-    {
-        // no caching if disabled!
-        if (\tx_rnbase_util_TYPO3::getTSFE()->no_cache) {
-            return null;
-        }
-
-        $class = $configurations->get($confId.'class');
-        if (!$class) {
-            return false;
-        }
-
-        /* @var $handler \tx_rnbase_action_ICacheHandler */
-        $handler = \tx_rnbase::makeInstance($class);
-        if (!$handler instanceof \tx_rnbase_action_ICacheHandler) {
-            throw new \Exception('"'.$class.'" has to implement "tx_rnbase_action_ICacheHandler".');
-        }
-
-        $handler->init($this, $confId);
-
-        return $handler;
     }
 
     protected function addCacheTags($configurations)

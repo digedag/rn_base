@@ -1,5 +1,7 @@
 <?php
 
+use Sys25\RnBase\Frontend\Controller\AbstractAction;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -20,11 +22,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_Misc');
-tx_rnbase::load('tx_rnbase_util_Debug');
-tx_rnbase::load('tx_rnbase_util_Templates');
-tx_rnbase::load('tx_rnbase_util_Strings');
-
 /**
  * Abstract base class for an action. This action is build to implement the
  * pattern Inversion of Control (IOC). If you implement a child class you have
@@ -38,6 +35,8 @@ tx_rnbase::load('tx_rnbase_util_Strings');
  *
  * @author Rene Nitzsche <rene@system25.de>
  * @author Michael Wagner <michael.wagner@dmk-ebusines.de>
+ * @deprecated
+ * @see AbstractAction
  */
 abstract class tx_rnbase_action_BaseIOC
 {

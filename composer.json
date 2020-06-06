@@ -37,7 +37,6 @@
     },
     "autoload": {
         "classmap": [
-            "action/",
             "cache/",
             "Classes/",
             "Legacy/",
@@ -51,7 +50,6 @@
             "sv1/",
             "tests/",
             "util/",
-            "view/",
             "class.tx_rnbase.php",
             "class.tx_rnbase_controller.php"
         ],

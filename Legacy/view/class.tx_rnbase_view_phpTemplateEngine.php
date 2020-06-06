@@ -35,6 +35,8 @@ tx_rnbase::load('tx_rnbase_view_Base');
 
 /**
  * Base class for all views.
+ * @deprecated
+ * @see \Sys25\RnBase\Frontend\View\AbstractView
  */
 class tx_rnbase_view_phpTemplateEngine extends tx_rnbase_view_Base
 {

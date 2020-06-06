@@ -20,10 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
-tx_rnbase::load('tx_rnbase_action_BaseIOC');
-tx_rnbase::load('tx_rnbase_util_BaseMarker');
-tx_rnbase::load('tx_rnbase_util_Templates');
-tx_rnbase::load('tx_rnbase_util_Files');
 
 /**
  * Depends on: none.
@@ -33,6 +29,7 @@ tx_rnbase::load('tx_rnbase_util_Files');
  * templates can be searched in both.
  *
  * @author René Nitzsche <rene@system25.de>
+ * @deprecated use \Sys25\RnBase\Frontend\View\Marker\BaseView
  */
 class tx_rnbase_view_Base
 {
