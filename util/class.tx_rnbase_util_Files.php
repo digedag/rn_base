@@ -48,7 +48,7 @@ class tx_rnbase_util_Files
         }
         if (self::isFALReference($fName)) {
             /* @var \TYPO3\CMS\Core\Resource\FileRepository */
-            $fileRepository = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Resource\FileRepository');
+            $fileRepository = \tx_rnbase::makeInstance('TYPO3\CMS\Core\Resource\FileRepository');
             $fileObject = $fileRepository->findByUid(intval(substr($fName, 5)));
             $incFile = is_object($fileObject) ? $fileObject->getForLocalProcessing(false) : false;
         } else {
