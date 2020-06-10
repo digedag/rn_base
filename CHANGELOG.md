@@ -3,6 +3,9 @@
 Changelog
 ---------
 
+v1.12.1 (10.06.2020)
+ * #190 fix class not found exception
+
 v1.12.0 (06.06.2020)
  * raised required PHP version to 7.1
  * added support for TYPO3 10.4 LTS
