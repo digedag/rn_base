@@ -53,8 +53,8 @@ class tx_rnbase_cache_TYPO3Cache62 implements tx_rnbase_cache_ICache
     }
 
     /**
-     *
      * @param string $cacheName
+     *
      * @return \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
      */
     private function checkCacheConfiguration($cacheName)
@@ -71,12 +71,12 @@ class tx_rnbase_cache_TYPO3Cache62 implements tx_rnbase_cache_ICache
                     ],
                 ]];
                 $this->getT3CacheManager()->setCacheConfigurations($defaultCache);
-            }
-            else {
+            } else {
                 // Wir setzen einfach einen Null-Cache
                 return new NullFrontend($cacheName);
             }
         }
+
         return $this->getT3CacheManager()->getCache($cacheName);
     }
 

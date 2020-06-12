@@ -39,7 +39,7 @@ class tx_rnbase_util_Templates
     private static $substCacheEnabled = null;
 
     /**
-     * Shortcut to \TYPO3\CMS\Core\Service\MarkerBasedTemplateService::getSubpart
+     * Shortcut to \TYPO3\CMS\Core\Service\MarkerBasedTemplateService::getSubpart.
      *
      * @param string $template
      * @param string $subpart
