@@ -91,3 +91,9 @@ trait Tx_Rnbase_Configuration_ConfigurableTrait
 interface tx_rnbase_IFilterItem extends Sys25\RnBase\Frontend\Filter\IFilterItem
 {
 }
+/** @deprecated */
+class tx_rnbase_filter_FilterItem
+    extends Sys25\RnBase\Frontend\Filter\FilterItem
+    implements tx_rnbase_IFilterItem
+{
+}
