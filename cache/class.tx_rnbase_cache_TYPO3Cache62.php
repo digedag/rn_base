@@ -1,5 +1,8 @@
 <?php
 
+use Sys25\RnBase\Utility\TYPO3;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,8 +35,7 @@ class tx_rnbase_cache_TYPO3Cache62 implements tx_rnbase_cache_ICache
 
     public function __construct($cacheName)
     {
-        $this->checkCacheConfiguration($cacheName);
-        $cache = $this->getT3CacheManager()->getCache($cacheName);
+        $cache = $this->checkCacheConfiguration($cacheName);
         if (!is_object($cache)) {
             throw new Exception('Error creating cache with name: '.$cacheName);
         }
@@ -50,18 +52,32 @@ class tx_rnbase_cache_TYPO3Cache62 implements tx_rnbase_cache_ICache
         return tx_rnbase::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
     }
 
+    /**
+     *
+     * @param string $cacheName
+     * @return \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+     */
     private function checkCacheConfiguration($cacheName)
     {
         if (!array_key_exists($cacheName, $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'])) {
             // Der Cache ist nicht konfiguriert.
             // Wir konfigurieren einen mit Defaults
-            $defaultCache = [$cacheName => [
-                'backend' => 'TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend',
-                'options' => [
-                ],
-            ]];
-            $this->getT3CacheManager()->setCacheConfigurations($defaultCache);
+            // Das funktioniert aber nur noch bis zur 9.5
+            // https://forge.typo3.org/issues/91641
+            if (!TYPO3::isTYPO104OrHigher()) {
+                $defaultCache = [$cacheName => [
+                    'backend' => 'TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend',
+                    'options' => [
+                    ],
+                ]];
+                $this->getT3CacheManager()->setCacheConfigurations($defaultCache);
+            }
+            else {
+                // Wir setzen einfach einen Null-Cache
+                return new NullFrontend($cacheName);
+            }
         }
+        return $this->getT3CacheManager()->getCache($cacheName);
     }
 
     /**

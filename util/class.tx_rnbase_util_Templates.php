@@ -1,9 +1,11 @@
 <?php
 
+use Sys25\RnBase\Utility\TYPO3;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2009-2013 Rene Nitzsche
+ *  (c) 2009-2020 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -22,10 +24,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_Misc');
-tx_rnbase::load('tx_rnbase_util_TYPO3');
-tx_rnbase::load('tx_rnbase_util_Network');
-
 /**
  * Contains utility functions for HTML-Templates
  * This is mainly a replacement for tslib_content::substituteMarkerArrayCached(). There is a memory
@@ -41,7 +39,7 @@ class tx_rnbase_util_Templates
     private static $substCacheEnabled = null;
 
     /**
-     * Shortcut to t3lib_parsehtml::getSubpart.
+     * Shortcut to \TYPO3\CMS\Core\Service\MarkerBasedTemplateService::getSubpart
      *
      * @param string $template
      * @param string $subpart
@@ -50,15 +48,12 @@ class tx_rnbase_util_Templates
      */
     public static function getSubpart($template, $subpart)
     {
-        if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-            $parser = tx_rnbase::makeInstance(
-                'TYPO3\\CMS\\Core\\Service\\MarkerBasedTemplateService'
-            );
-            $content = $parser->getSubpart($template, $subpart);
-        } else {
-            $parser = tx_rnbase_util_Typo3Classes::getHtmlParserClass();
-            $content = $parser::getSubpart($template, $subpart);
-        }
+        \TYPO3\CMS\Core\Service\MarkerBasedTemplateService::class;
+        $parser = tx_rnbase::makeInstance(
+            'TYPO3\CMS\Core\Service\MarkerBasedTemplateService'
+        );
+        $content = $parser->getSubpart($template, $subpart);
+
         // check for Subtemplates
         return self::includeSubTemplates($content);
     }
@@ -138,9 +133,7 @@ class tx_rnbase_util_Templates
 
         $cache = $included = false;
 
-        tx_rnbase::load('tx_rnbase_util_TYPO3');
-        if (!tx_rnbase_util_TYPO3::getTSFE()->no_cache) {
-            tx_rnbase::load('tx_rnbase_cache_Manager');
+        if (!TYPO3::getTSFE()->no_cache) {
             $cache = tx_rnbase_cache_Manager::getCache('rnbase');
             $cacheKey = 'includeSubTemplateFor_'.md5($template);
             $included = $cache->get($cacheKey);
@@ -165,7 +158,7 @@ class tx_rnbase_util_Templates
     /**
      * This callback is called by the includeSubTemplates preg_replace.
      *
-     * @param unknown $match
+     * @param array $match
      *
      * @return string
      */
@@ -235,7 +228,7 @@ class tx_rnbase_util_Templates
             $storeArr = self::$substMarkerCache[$storeKey];
             $GLOBALS['TT']->setTSlogMessage('Cached', 0);
         } else {
-            $storeArrDat = $GLOBALS['TSFE']->sys_page->getHash($storeKey, 0);
+            $storeArrDat = TYPO3::getSysPage()->getHash($storeKey, 0);
             if (!isset($storeArrDat)) {
                 // Initialize storeArr
                 $storeArr = [];
@@ -257,6 +250,7 @@ class tx_rnbase_util_Templates
                 $regex = implode('|', $aKeys);
                 // Doing regex's
                 $storeArr['c'] = explode($regex, $content);
+                $keyList = [];
                 preg_match_all('/'.$regex.'/', $content, $keyList);
                 $storeArr['k'] = $keyList[0];
                 // Setting cache:
@@ -394,7 +388,7 @@ class tx_rnbase_util_Templates
             $storeArr = self::$substMarkerCache[$storeKey];
         } else {
             if (self::isSubstCacheEnabled()) {
-                $storeArrDat = tx_rnbase_util_TYPO3::getSysPage()->getHash($storeKey);
+                $storeArrDat = TYPO3::getSysPage()->getHash($storeKey);
             }
             if (!self::isSubstCacheEnabled() || !isset($storeArrDat)) {
                 // Initialize storeArr
@@ -417,6 +411,7 @@ class tx_rnbase_util_Templates
                 $regex = '/'.implode('|', $aKeys).'/';
                 // Doing regex's
                 $storeArr['c'] = preg_split($regex, $content);
+                $keyList = [];
                 preg_match_all($regex, $content, $keyList);
                 $storeArr['k'] = $keyList[0];
 
@@ -425,7 +420,7 @@ class tx_rnbase_util_Templates
                     self::$substMarkerCache[$storeKey] = $storeArr;
 
                     // Storing the cached data:
-                    tx_rnbase_util_TYPO3::getSysPage()->storeHash($storeKey, serialize($storeArr), 'substMarkArrayCached');
+                    TYPO3::getSysPage()->storeHash($storeKey, serialize($storeArr), 'substMarkArrayCached');
                 }
             } else {
                 // Unserializing
