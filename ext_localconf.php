@@ -13,11 +13,12 @@ if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations
     );
 }
 
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = intval(Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'loadHiddenObjects'));
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = (int) Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'loadHiddenObjects');
 
 //@TODO Warum funktioniert das Autolading hier nicht?
 tx_rnbase::load('Tx_Rnbase_Hook_DataHandler');
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']['rn_base'] =
     'Tx_Rnbase_Hook_DataHandler->clearCacheForConfiguredTagsByTable';
 
-require_once $rnbaseExtPath.'Classes/Constants.php';
+// still necessary?
+require_once \tx_rnbase_util_Extensions::extPath('rn_base').'Classes/Constants.php';
