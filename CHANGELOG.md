@@ -3,9 +3,9 @@
 Changelog
 ---------
 
-v1.12.2 (??.06.2020)
+v1.12.2 (14.06.2020)
  * interface fixed in legacy filter item
- * Dummy cache fixed in TYPO3 10
+ * dummy cache fixed in TYPO3 10
 
 v1.12.1 (10.06.2020)
  * #190 fix class not found exception
