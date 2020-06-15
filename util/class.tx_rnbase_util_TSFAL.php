@@ -503,7 +503,7 @@ class tx_rnbase_util_TSFAL
     {
         $commonTcaLocallang = \tx_rnbase_util_TYPO3::isTYPO87OrHigher() ? 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf' :
             'LLL:EXT:lang/locallang_tca.xlf';
-        $paletteLabel = TYPO3::isTYPO95OrHigher() ? '' : $commonTcaLocallang.':sys_file_reference.imageoverlayPalette;';
+        $paletteLabel = TYPO3::isTYPO95OrHigher() ? '' : $commonTcaLocallang.':sys_file_reference.imageoverlayPalette';
         $typeDefs = [
             '0',
             \TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT,
