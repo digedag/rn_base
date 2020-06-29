@@ -2,7 +2,10 @@
 
 Changelog
 ---------
-
+v1.12.3 (29.06.2020)
+ * remove ending semicolon to fix TCA palette syntax
+ * fixed namespaces of old fluid classes
+ 
 v1.12.2 (14.06.2020)
  * interface fixed in legacy filter item
  * dummy cache fixed in TYPO3 10
