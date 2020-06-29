@@ -2,7 +2,7 @@
 
 namespace Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowser;
 
-use Sys25\RnBase\Fluid\ViewHelper\BaseViewHelperTest;
+use Sys25\RnBase\ExtBaseFluid\ViewHelper\BaseViewHelperTest;
 use Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowserViewHelper;
 
 /***************************************************************
@@ -29,7 +29,7 @@ use Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowserViewHelper;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Fluid\ViewHelper\PageBrowser$PageBaseViewHelperTest.
+ * Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowser$PageBaseViewHelperTest.
  *
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
@@ -44,7 +44,7 @@ class PageBaseViewHelper_testcase extends BaseViewHelperTest
     public function testChildrenAreUsedAsLinkTextByDefault()
     {
         $viewHelper = $this->getMock(
-            'Sys25\\RnBase\\Fluid\\ViewHelper\\PageBrowser\\PageBaseViewHelper',
+            'Sys25\\RnBase\\ExtBaseFluid\\ViewHelper\\PageBrowser\\PageBaseViewHelper',
             ['renderChildren']
         );
 
@@ -66,7 +66,7 @@ class PageBaseViewHelper_testcase extends BaseViewHelperTest
     public function testPageNumberIsUsedAsLinkTextIfConfigured()
     {
         $viewHelper = $this->getMock(
-            'Sys25\\RnBase\\Fluid\\ViewHelper\\PageBrowser\\PageBaseViewHelper',
+            'Sys25\\RnBase\\ExtBaseFluid\\ViewHelper\\PageBrowser\\PageBaseViewHelper',
             ['renderChildren']
         );
 
@@ -82,7 +82,7 @@ class PageBaseViewHelper_testcase extends BaseViewHelperTest
     /**
      * {@inheritdoc}
      *
-     * @see \Sys25\RnBase\Fluid\ViewHelper\BaseViewHelperTest::getPreparedVîewHelper()
+     * @see \Sys25\RnBase\ExtBaseFluid\ViewHelper\BaseViewHelperTest::getPreparedVîewHelper()
      */
     protected function getPreparedVîewHelper($viewHelper, array $arguments = [])
     {

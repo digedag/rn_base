@@ -26,7 +26,7 @@ namespace Sys25\RnBase\ExtBaseFluid\ViewHelper\Configurations;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Fluid\ViewHelper\Configurations$GetViewHelper.
+ * Sys25\RnBase\ExtBaseFluid\ViewHelper\Configurations$GetViewHelper.
  *
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html

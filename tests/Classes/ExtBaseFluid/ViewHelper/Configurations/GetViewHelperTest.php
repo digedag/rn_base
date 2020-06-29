@@ -2,7 +2,7 @@
 
 namespace Sys25\RnBase\ExtBaseFluid\ViewHelper\Configurations;
 
-use Sys25\RnBase\Fluid\View\Factory;
+use Sys25\RnBase\ExtBaseFluid\View\Factory;
 
 /***************************************************************
  * Copyright notice
@@ -28,7 +28,7 @@ use Sys25\RnBase\Fluid\View\Factory;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Fluid\ViewHelper\Configurations$GetViewHelperTest.
+ * Sys25\RnBase\ExtBaseFluid\ViewHelper\Configurations$GetViewHelperTest.
  *
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html

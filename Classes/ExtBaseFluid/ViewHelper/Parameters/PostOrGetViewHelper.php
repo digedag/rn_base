@@ -26,7 +26,7 @@ namespace Sys25\RnBase\ExtBaseFluid\ViewHelper\Parameters;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Fluid\ViewHelper\Parameters$PostOrGetViewHelper.
+ * Sys25\RnBase\ExtBaseFluid\ViewHelper\Parameters$PostOrGetViewHelper.
  *
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html

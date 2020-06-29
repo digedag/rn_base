@@ -28,7 +28,7 @@ use Sys25\RnBase\Configuration\ConfigurationInterface;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Fluid\View$Factory.
+ * Sys25\RnBase\ExtBaseFluid\View$Factory.
  *
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
@@ -40,12 +40,12 @@ class Factory
      * @param ConfigurationInterface $configurations
      * @param array                  $frameworkSettings
      *
-     * @return \Sys25\RnBase\Fluid\View\Standalone
+     * @return \Sys25\RnBase\ExtBaseFluid\View\Standalone
      */
     public static function getViewInstance(ConfigurationInterface $configurations, $frameworkSettings = [])
     {
-        /* @var $view \Sys25\RnBase\Fluid\View\Standalone */
-        $view = \tx_rnbase::makeInstance('Sys25\\RnBase\\Fluid\\View\\Standalone', $configurations->getCObj());
+        /* @var $view \Sys25\RnBase\ExtBaseFluid\View\Standalone */
+        $view = \tx_rnbase::makeInstance('Sys25\\RnBase\\ExtBaseFluid\\View\\Standalone', $configurations->getCObj());
 
         $objectManager = $view->getObjectManager();
         $configurationManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');

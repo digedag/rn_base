@@ -26,7 +26,7 @@ namespace Sys25\RnBase\ExtBaseFluid\ViewHelper;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Fluid\ViewHelper$BaseViewHelperTest.
+ * Sys25\RnBase\ExtBaseFluid\ViewHelper$BaseViewHelperTest.
  *
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html

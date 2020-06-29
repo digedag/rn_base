@@ -142,7 +142,7 @@ Im Beispiel für das Template über den ListBuilder von rn_base gerendert. Nähe
 ### fluid
 Hinweis: Es muss mind. TYPO3 7.6 installiert sein.
 
-Es gibt den View Sys25\RnBase\Fluid\View\Action, um die Templates mit fluid rendern zu können. Per default werden die fluid Dateien in den Ordner Templates, Layouts und Partials in 'EXT:' . $extensionKey . '/Resources/Private/' erwartet. Das kann auch überschrieben bzw. weitere hinzugefügt werden, ganz nach der Konvention von ExtBase/Fluid:
+Es gibt den View Sys25\RnBase\ExtBaseFluid\View\Action, um die Templates mit fluid rendern zu können. Per default werden die fluid Dateien in den Ordner Templates, Layouts und Partials in 'EXT:' . $extensionKey . '/Resources/Private/' erwartet. Das kann auch überschrieben bzw. weitere hinzugefügt werden, ganz nach der Konvention von ExtBase/Fluid:
 
 ```
 plugin.tx_myextension {
@@ -164,7 +164,7 @@ Es gibt auch einen Standalone-View, um Templates unabhängig von einer Action zu
 ```php
 
 /* @var $configurations Tx_Rnbase_Configuration_ProcessorInterface */
-$view = \Sys25\RnBase\Fluid\View\Factory::getViewInstance($configurations);
+$view = \Sys25\RnBase\ExtBaseFluid\View\Factory::getViewInstance($configurations);
 $view->setPartialRootPaths($partialsPaths);
 $view->setLayoutRootPaths($layoutPaths);
 $view->setTemplatePathAndFilename($absolutePathToTemplate);
@@ -178,7 +178,7 @@ Damit wird ein label über die rnbase configuration übersetzt.
 In folgenden Beispielen wird das Label `label.description` übersetzt:
 
 ```html
-{namespace rn=Sys25\RnBase\Fluid\ViewHelper}
+{namespace rn=Sys25\RnBase\ExtBaseFluid\ViewHelper}
 
 <!-- translate inline from variable -->
 {varWithLabelDescriptionKey -> rn:translate()}
@@ -202,7 +202,7 @@ Damit kann auf die get Methode der configurations zugegriffen werden:
 
 ```html
 
-{namespace rn=Sys25\RnBase\Fluid\ViewHelper}
+{namespace rn=Sys25\RnBase\ExtBaseFluid\ViewHelper}
 
 {rn:configurations.get(confId: confId, typoscriptPath: 'my.path')}
 
@@ -213,7 +213,7 @@ Damit kann auf die get Methode der configurations zugegriffen werden:
 
 ```html
 
-{namespace rn=Sys25\RnBase\Fluid\ViewHelper}
+{namespace rn=Sys25\RnBase\ExtBaseFluid\ViewHelper}
 
 <div class="pagebrowser">
     <rn:pageBrowser

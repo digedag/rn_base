@@ -26,7 +26,7 @@ namespace Sys25\RnBase\ExtBaseFluid\View;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Fluid\View$ActionTest.
+ * Sys25\RnBase\ExtBaseFluid\View$ActionTest.
  *
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
@@ -70,7 +70,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
             ->method('getConfId')
             ->willReturn('confId');
 
-        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', ['getController']);
+        $view = $this->getMock('Sys25\\RnBase\\ExtBaseFluid\\View\\Action', ['getController']);
         $view
             ->expects(self::once())
             ->method('getController')
@@ -85,7 +85,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
     public function testRenderWithFixedTemplateFile()
     {
         $this->copyHtmlFilesToCommonResourcesFolder();
-        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', ['getConfigurationId']);
+        $view = $this->getMock('Sys25\\RnBase\\ExtBaseFluid\\View\\Action', ['getConfigurationId']);
         $view
             ->expects(self::once())
             ->method('getConfigurationId')
@@ -105,7 +105,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
     {
         $this->copyHtmlFilesToCommonResourcesFolder(true);
 
-        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', ['getConfigurationId']);
+        $view = $this->getMock('Sys25\\RnBase\\ExtBaseFluid\\View\\Action', ['getConfigurationId']);
         $view
             ->expects(self::once())
             ->method('getConfigurationId')
@@ -143,7 +143,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
      */
     public function testRenderWithConfiguredPaths()
     {
-        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', ['getConfigurationId']);
+        $view = $this->getMock('Sys25\\RnBase\\ExtBaseFluid\\View\\Action', ['getConfigurationId']);
         $view
             ->expects(self::once())
             ->method('getConfigurationId')
@@ -168,7 +168,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
     public function testRenderWithOldTemplatePathsConfiguration()
     {
         $this->copyHtmlFilesToCommonResourcesFolder();
-        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', ['getConfigurationId']);
+        $view = $this->getMock('Sys25\\RnBase\\ExtBaseFluid\\View\\Action', ['getConfigurationId']);
         $view
             ->expects(self::once())
             ->method('getConfigurationId')
@@ -190,7 +190,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
     public function testRenderThrowsExceptionIfTemplateCanNotBeResolved()
     {
         $this->copyHtmlFilesToCommonResourcesFolder();
-        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', ['getConfigurationId']);
+        $view = $this->getMock('Sys25\\RnBase\\ExtBaseFluid\\View\\Action', ['getConfigurationId']);
         $view
             ->expects(self::once())
             ->method('getConfigurationId')
@@ -209,7 +209,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
     public function testRenderHandlesAssignsItemsCorrect()
     {
         $this->copyHtmlFilesToCommonResourcesFolder();
-        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', ['getConfigurationId']);
+        $view = $this->getMock('Sys25\\RnBase\\ExtBaseFluid\\View\\Action', ['getConfigurationId']);
 
         $view->setTemplateFile('EXT:rn_base/tests/fixtures/html/MyTestAction2.html');
         $parameters = \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
@@ -225,7 +225,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
     public function testRenderTrimsOutput()
     {
         $this->copyHtmlFilesToCommonResourcesFolder();
-        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', ['getConfigurationId']);
+        $view = $this->getMock('Sys25\\RnBase\\ExtBaseFluid\\View\\Action', ['getConfigurationId']);
 
         $view->setTemplateFile('EXT:rn_base/tests/fixtures/html/MyTestActionWithTrimmableContent.html');
         $parameters = \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
@@ -240,7 +240,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
     public function testRenderIfFilterNoObjectAndNoConfigurationId()
     {
         $this->copyHtmlFilesToCommonResourcesFolder();
-        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', ['getConfigurationId']);
+        $view = $this->getMock('Sys25\\RnBase\\ExtBaseFluid\\View\\Action', ['getConfigurationId']);
 
         $view->setTemplateFile('EXT:rn_base/tests/fixtures/html/MyTestActionWithTrimmableContent.html');
         $parameters = \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
@@ -256,7 +256,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
     public function testRenderIfFilterObjectAndNoConfigurationId()
     {
         $this->copyHtmlFilesToCommonResourcesFolder();
-        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', ['getConfigurationId']);
+        $view = $this->getMock('Sys25\\RnBase\\ExtBaseFluid\\View\\Action', ['getConfigurationId']);
 
         $view->setTemplateFile('EXT:rn_base/tests/fixtures/html/MyTestActionWithTrimmableContent.html');
         $parameters = \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
@@ -279,7 +279,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
     public function testRenderIfFilterObjectAndConfigurationId()
     {
         $this->copyHtmlFilesToCommonResourcesFolder();
-        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', ['getConfigurationId']);
+        $view = $this->getMock('Sys25\\RnBase\\ExtBaseFluid\\View\\Action', ['getConfigurationId']);
         $view
             ->expects(self::any())
             ->method('getConfigurationId')
@@ -307,7 +307,7 @@ class ActionTest extends \tx_rnbase_tests_BaseTestCase
     public function testRenderIfFilterObjectButHasNoParseTemplateMethod()
     {
         $this->copyHtmlFilesToCommonResourcesFolder();
-        $view = $this->getMock('Sys25\\RnBase\\Fluid\\View\\Action', ['getConfigurationId']);
+        $view = $this->getMock('Sys25\\RnBase\\ExtBaseFluid\\View\\Action', ['getConfigurationId']);
         $view
             ->expects(self::any())
             ->method('getConfigurationId')

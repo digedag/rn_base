@@ -26,7 +26,7 @@ namespace Sys25\RnBase\ExtBaseFluid\View;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Fluid\View$Factory.
+ * Sys25\RnBase\ExtBaseFluid\View$Factory.
  *
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html

@@ -30,9 +30,9 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
- * Sys25\RnBase\Fluid\ViewHelper\TranslateViewHelper.
+ * Sys25\RnBase\ExtBaseFluid\ViewHelper\TranslateViewHelper.
  *
- * {namespace rn=Sys25\RnBase\Fluid\ViewHelper}
+ * {namespace rn=Sys25\RnBase\ExtBaseFluid\ViewHelper}
  *
  * Usage to render label.description
  *     Inline:
