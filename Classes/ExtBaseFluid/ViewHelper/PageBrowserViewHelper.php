@@ -347,7 +347,7 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
         $this->templateVariableContainer->add('childNodes', $this->childNodes);
 
         // support view helper with old namespace
-        $oldPageViewHelperName  = str_replace('ExtBaseFluid', 'Fluid', $pageViewHelperName);
+        $oldPageViewHelperName = str_replace('ExtBaseFluid', 'Fluid', $pageViewHelperName);
         foreach ($this->childNodes as $childNode) {
             if (
                 $childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode &&
