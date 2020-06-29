@@ -2,7 +2,7 @@
 
 namespace Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowser;
 
-use Sys25\RnBase\Fluid\ViewHelper\PageBrowserViewHelper;
+use Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowserViewHelper;
 
 /***************************************************************
  * Copyright notice

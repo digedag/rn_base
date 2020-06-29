@@ -26,7 +26,7 @@ namespace Sys25\RnBase\ExtBaseFluid\View;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Fluid\View$Standalone.
+ * Sys25\RnBase\ExtBaseFluid\View$Standalone.
  *
  * wrapper for thre standalone view of fluid
  *

@@ -29,7 +29,7 @@ use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Fluid\ViewHelper$Tx_Mktegutfe_ViewHelpers_PageBrowserViewHelper.
+ * Sys25\RnBase\ExtBaseFluid\ViewHelper$Tx_Mktegutfe_ViewHelpers_PageBrowserViewHelper.
  *
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
@@ -287,7 +287,7 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
     protected function renderFirstPage($currentPage)
     {
         return $this->renderAnyPageViewHelperIfExists(
-            'Sys25\\RnBase\\Fluid\\ViewHelper\\PageBrowser\\FirstPageViewHelper',
+            'Sys25\\RnBase\\ExtBaseFluid\\ViewHelper\\PageBrowser\\FirstPageViewHelper',
             $currentPage
         );
     }
@@ -295,7 +295,7 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
     protected function renderPrevPage($currentPage)
     {
         return $this->renderAnyPageViewHelperIfExists(
-            'Sys25\\RnBase\\Fluid\\ViewHelper\\PageBrowser\\PrevPageViewHelper',
+            'Sys25\\RnBase\\ExtBaseFluid\\ViewHelper\\PageBrowser\\PrevPageViewHelper',
             $currentPage
         );
     }
@@ -303,7 +303,7 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
     protected function renderNormalPage($currentPage)
     {
         return $this->renderAnyPageViewHelperIfExists(
-            'Sys25\\RnBase\\Fluid\\ViewHelper\\PageBrowser\\NormalPageViewHelper',
+            'Sys25\\RnBase\\ExtBaseFluid\\ViewHelper\\PageBrowser\\NormalPageViewHelper',
             $currentPage
         );
     }
@@ -311,7 +311,7 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
     protected function renderCurrentPage($currentPage)
     {
         return $this->renderAnyPageViewHelperIfExists(
-            'Sys25\\RnBase\\Fluid\\ViewHelper\\PageBrowser\\CurrentPageViewHelper',
+            'Sys25\\RnBase\\ExtBaseFluid\\ViewHelper\\PageBrowser\\CurrentPageViewHelper',
             $currentPage
         );
     }
@@ -319,7 +319,7 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
     protected function renderNextPage($currentPage)
     {
         return $this->renderAnyPageViewHelperIfExists(
-            'Sys25\\RnBase\\Fluid\\ViewHelper\\PageBrowser\\NextPageViewHelper',
+            'Sys25\\RnBase\\ExtBaseFluid\\ViewHelper\\PageBrowser\\NextPageViewHelper',
             $currentPage
         );
     }
@@ -327,7 +327,7 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
     protected function renderLastPage($currentPage)
     {
         return $this->renderAnyPageViewHelperIfExists(
-            'Sys25\\RnBase\\Fluid\\ViewHelper\\PageBrowser\\LastPageViewHelper',
+            'Sys25\\RnBase\\ExtBaseFluid\\ViewHelper\\PageBrowser\\LastPageViewHelper',
             $currentPage
         );
     }
@@ -345,10 +345,16 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
     protected function renderAnyPageViewHelperIfExists($pageViewHelperName, $currentPage)
     {
         $this->templateVariableContainer->add('childNodes', $this->childNodes);
+
+        // support view helper with old namespace
+        $oldPageViewHelperName  = str_replace('ExtBaseFluid', 'Fluid', $pageViewHelperName);
         foreach ($this->childNodes as $childNode) {
             if (
                 $childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode &&
-                $childNode->getViewHelperClassName() === $pageViewHelperName
+                (
+                    $childNode->getViewHelperClassName() === $pageViewHelperName
+                    || $childNode->getViewHelperClassName() === $oldPageViewHelperName
+                )
             ) {
                 $this->templateVariableContainer->add('currentPage', $currentPage);
                 $this->templateVariableContainer->add('pageNumber', $currentPage + 1);

@@ -26,7 +26,7 @@ namespace Sys25\RnBase\ExtBaseFluid\View;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Fluid\View$StandloneTest.
+ * Sys25\RnBase\ExtBaseFluid\View$StandloneTest.
  *
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
@@ -53,7 +53,7 @@ class StandaloneTest extends \tx_rnbase_tests_BaseTestCase
     public function testGetConfigurations()
     {
         $contentObject = \tx_rnbase::makeInstance(\tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
-        $view = \tx_rnbase::makeInstance('Sys25\\RnBase\\Fluid\\View\\Standalone', $contentObject);
+        $view = \tx_rnbase::makeInstance('Sys25\\RnBase\\ExtBaseFluid\\View\\Standalone', $contentObject);
         $configurations = \tx_rnbase_tests_Utility::createConfigurations([], 'rn_base');
         $view->setConfigurations($configurations);
 
@@ -68,7 +68,7 @@ class StandaloneTest extends \tx_rnbase_tests_BaseTestCase
     {
         $objectManager = new \TYPO3\CMS\Extbase\Object\ObjectManager();
         $contentObject = \tx_rnbase::makeInstance(\tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
-        $view = \tx_rnbase::makeInstance('Sys25\\RnBase\\Fluid\\View\\Standalone', $contentObject);
+        $view = \tx_rnbase::makeInstance('Sys25\\RnBase\\ExtBaseFluid\\View\\Standalone', $contentObject);
         $view->injectObjectManager($objectManager);
 
         self::assertSame($objectManager, $view->getObjectManager());

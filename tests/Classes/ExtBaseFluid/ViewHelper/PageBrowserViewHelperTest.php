@@ -29,7 +29,7 @@ use Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowser\CurrentPageViewHelper;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Fluid\ViewHelper$PageBrowserViewHelperTest.
+ * Sys25\RnBase\ExtBaseFluid\ViewHelper$PageBrowserViewHelperTest.
  *
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html

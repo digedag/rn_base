@@ -26,7 +26,7 @@ namespace Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowser;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Fluid\ViewHelper\PageBrowser$CurrentPageViewHelper.
+ * Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowser$CurrentPageViewHelper.
  *
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html

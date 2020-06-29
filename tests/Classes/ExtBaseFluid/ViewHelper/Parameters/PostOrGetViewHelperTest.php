@@ -28,7 +28,7 @@ use Sys25\RnBase\ExtBaseFluid\View\Factory;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Fluid\ViewHelper\Configurations$GetViewHelperTest.
+ * Sys25\RnBase\ExtBaseFluid\ViewHelper\Configurations$GetViewHelperTest.
  *
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
