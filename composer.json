@@ -75,6 +75,25 @@
         "post-autoload-dump": [
             "mkdir -p .Build/Web/typo3conf/ext/",
             "[ -L .Build/Web/typo3conf/ext/rn_base ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/rn_base"
+        ],
+        "test:phpcs": [
+            "[ -e .Build/bin/php-cs-fixer ] || composer update",
+            ".Build/bin/php-cs-fixer fix -v --dry-run --diff"
+        ],
+        "test:phpunit": [
+            "[ -e .Build/bin/phpunit ] || composer update",
+            "export TYPO3_PATH_WEB=$PWD/.Build/Web && .Build/bin/phpunit"
+        ],
+        "test": [
+            "@test:phpcs",
+            "@test:phpunit"
+        ],
+        "fix:phpcs": [
+            "[ -e .Build/bin/php-cs-fixer ] || composer update",
+            ".Build/bin/php-cs-fixer fix -v"
+        ],
+        "fix": [
+            "@fix:phpcs"
         ]
     },
     "extra": {
