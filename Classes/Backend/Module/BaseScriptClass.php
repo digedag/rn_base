@@ -241,11 +241,11 @@ class BaseScriptClass
     public function menuConfig()
     {
         // Page / user TSconfig settings and blinding of menu-items
-        $this->modTSconfig['properties'] = BackendUtility::getPagesTSconfig($this->id)['mod.'][$this->MCONF['name'].'.'] ?? [];
+        $this->modTSconfig['properties'] = BackendUtility::getPagesTSconfig($this->id)['mod.'][$this->MCONF['name'] . '.'] ?? [];
         $this->MOD_MENU['function'] = $this->mergeExternalItems($this->MCONF['name'], 'function', $this->MOD_MENU['function']);
         $blindActions = $this->modTSconfig['properties']['menu.']['function.'] ?? [];
         foreach ($blindActions as $key => $value) {
-            if (!$value && array_key_exists($key, $this->MOD_MENU['function'])) {
+            if (!$value && \array_key_exists($key, $this->MOD_MENU['function'])) {
                 unset($this->MOD_MENU['function'][$key]);
             }
         }
@@ -268,7 +268,7 @@ class BaseScriptClass
     public function mergeExternalItems($modName, $menuKey, $menuArr)
     {
         $mergeArray = $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey];
-        if (is_array($mergeArray)) {
+        if (\is_array($mergeArray)) {
             foreach ($mergeArray as $k => $v) {
                 if (('' === (string) $v['ws'] || 0 === $this->getBackendUser()->workspace && GeneralUtility::inList($v['ws'], 'online')) || -1 === $this->getBackendUser()->workspace && GeneralUtility::inList($v['ws'], 'offline') || $this->getBackendUser()->workspace > 0 && GeneralUtility::inList($v['ws'], 'custom')) {
                     $menuArr[$k] = $this->getLanguageService()->sL($v['title']);
@@ -326,7 +326,7 @@ class BaseScriptClass
      */
     public function checkExtObj()
     {
-        if (is_array($this->extClassConf) && $this->extClassConf['name']) {
+        if (\is_array($this->extClassConf) && $this->extClassConf['name']) {
             $this->extObj = GeneralUtility::makeInstance($this->extClassConf['name']);
             $this->extObj->init($this, $this->extClassConf);
             // Re-write:
@@ -339,7 +339,7 @@ class BaseScriptClass
      */
     public function checkSubExtObj()
     {
-        if (is_object($this->extObj)) {
+        if (\is_object($this->extObj)) {
             $this->extObj->checkExtObj();
         }
     }
@@ -350,7 +350,7 @@ class BaseScriptClass
      */
     public function extObjHeader()
     {
-        if (is_callable([$this->extObj, 'head'])) {
+        if (\is_callable([$this->extObj, 'head'])) {
             $this->extObj->head();
         }
     }
@@ -374,7 +374,7 @@ class BaseScriptClass
             $defaultFlashMessageQueue->enqueue($flashMessage);
         } else {
             $this->extObj->pObj = $this;
-            if (is_callable([$this->extObj, 'main'])) {
+            if (\is_callable([$this->extObj, 'main'])) {
                 $this->content .= $this->extObj->main();
             }
         }

@@ -47,8 +47,6 @@ class Tx_Rnbase_Domain_Collection_Base extends \Doctrine\Common\Collections\Arra
     /**
      * Exchange the collection for another one and returns the old elements.
      *
-     * @param array $elements
-     *
      * @return array
      */
     public function exchange(
@@ -67,8 +65,6 @@ class Tx_Rnbase_Domain_Collection_Base extends \Doctrine\Common\Collections\Arra
 
     /**
      * Only an ArrayObject alias for exchange.
-     *
-     * @param array $elements
      *
      * @return array
      */

@@ -232,7 +232,7 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase
         // Select DB
         $ret = $this->db->select_db($schema);
         if (!$ret) {
-            throw new RuntimeException('Could not select MySQL database '.$schema.': '.mysql_error(), 1271953992);
+            throw new RuntimeException('Could not select MySQL database ' . $schema . ': ' . mysql_error(), 1271953992);
         }
         $this->setSqlMode();
     }
@@ -252,14 +252,14 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase
             throw new \RuntimeException('Database Error: PHP mysqli extension not loaded. This is a must have for TYPO3 CMS!', 1271492607);
         }
 
-        $dbHost = $credArr['host'] ? $credArr['host'] : 'localhost';
+        $dbHost = $credArr['host'] ?: 'localhost';
         $dbUsername = $credArr['username'];
         $dbPassword = $credArr['password'];
         $dbPort = isset($credArr['port']) ? (int) $credArr['port'] : 3306;
         $dbSocket = empty($credArr['socket']) ? null : $credArr['socket'];
         $dbCompress = !empty($credArr['dbClientCompress']) && 'localhost' != $dbHost && '127.0.0.1' != $dbHost;
         if (isset($credArr['no_pconnect']) && !$credArr['no_pconnect']) {
-            $dbHost = 'p:'.$dbHost;
+            $dbHost = 'p:' . $dbHost;
         }
 
         $this->db = mysqli_init();
@@ -275,8 +275,8 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase
         );
 
         if (!$connected) {
-            $message = 'Database Error: Could not connect to MySQL server '.$dbHost.
-                ' with user '.$dbUsername.': '.$this->sql_error();
+            $message = 'Database Error: Could not connect to MySQL server ' . $dbHost .
+                ' with user ' . $dbUsername . ': ' . $this->sql_error();
 
             throw new RuntimeException($message, 1271492616);
         }
@@ -304,10 +304,10 @@ class tx_rnbase_util_db_MySQL implements tx_rnbase_util_db_IDatabase
             $result = $resource->fetch_row();
             if (isset($result[0]) && $result[0] && false !== strpos($result[0], 'NO_BACKSLASH_ESCAPES')) {
                 $modes = array_diff(GeneralUtility::trimExplode(',', $result[0]), ['NO_BACKSLASH_ESCAPES']);
-                $query = 'SET sql_mode=\''.$this->db->real_escape_string(implode(',', $modes)).'\';';
+                $query = 'SET sql_mode=\'' . $this->db->real_escape_string(implode(',', $modes)) . '\';';
                 $this->sql_query($query);
                 GeneralUtility::sysLog(
-                    'NO_BACKSLASH_ESCAPES could not be removed from SQL mode: '.$this->sql_error(),
+                    'NO_BACKSLASH_ESCAPES could not be removed from SQL mode: ' . $this->sql_error(),
                     'rn_base',
                     GeneralUtility::SYSLOG_SEVERITY_ERROR
                 );

@@ -82,7 +82,7 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
             $content .= $parts->getFuncMenu();
         }
 
-        $content .= $parts->getSelector().'<div style="clear:both;"></div>';
+        $content .= $parts->getSelector() . '<div style="clear:both;"></div>';
         $content .= $parts->getSubMenu();
         $content .= $parts->getContent();
         $content .= '</form>';
@@ -130,7 +130,6 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
 
     /**
      * @param \TYPO3\CMS\Backend\Template\ModuleTemplate $moduleTemplate
-     * @param Tx_Rnbase_Backend_Template_ModuleParts     $parts
      */
     protected function registerMenu($moduleTemplate, Tx_Rnbase_Backend_Template_ModuleParts $parts)
     {
@@ -188,7 +187,7 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
         $doc->postCode = '
             <script language="javascript" type="text/javascript">
                 script_ended = 1;
-                if (top.fsMod) top.fsMod.recentIds["web"] = '.$this->options['pid'].';</script>';
+                if (top.fsMod) top.fsMod.recentIds["web"] = ' . $this->options['pid'] . ';</script>';
     }
 
     private function prepareOptions($options)
@@ -210,7 +209,7 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
                 ],
                 ''
             );
-            $options['form'] = '<form action="'.$modUrl.'" method="post" enctype="multipart/form-data">';
+            $options['form'] = '<form action="' . $modUrl . '" method="post" enctype="multipart/form-data">';
         }
 
         return $options;

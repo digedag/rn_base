@@ -33,8 +33,6 @@ interface tx_rnbase_maps_IMap
 
     /**
      * Adds a marker to this map.
-     *
-     * @param tx_rnbase_maps_IMarker $marker
      */
     public function addMarker(tx_rnbase_maps_IMarker $marker);
 

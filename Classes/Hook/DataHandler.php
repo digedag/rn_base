@@ -34,8 +34,6 @@ class Tx_Rnbase_Hook_DataHandler
     /**
      * Flushes the cache if a news record was edited.
      * This happens on two levels: by UID and by PID.
-     *
-     * @param array $params
      */
     public function clearCacheForConfiguredTagsByTable(array $params)
     {

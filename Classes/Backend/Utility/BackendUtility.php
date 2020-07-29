@@ -48,13 +48,12 @@ class BackendUtility
      * Magic method to forward the call to the right be util.
      *
      * @param string $method
-     * @param array  $arguments
      *
      * @return mixed
      */
     public static function __callStatic($method, array $arguments)
     {
-        return call_user_func_array(
+        return \call_user_func_array(
             [
                 static::getBackendUtilityClass(),
                 $method,
@@ -87,7 +86,7 @@ class BackendUtility
     {
         $formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
 
-        return '&'.$tokenName.'='.$formProtection->generateToken($formName);
+        return '&' . $tokenName . '=' . $formProtection->generateToken($formName);
     }
 
     /**

@@ -65,7 +65,7 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
      */
     public function __call($methodName, $args)
     {
-        throw new Exception('Sorry, the class "'.get_class($this->db).'" does not support the method "'.$methodName.'".');
+        throw new Exception('Sorry, the class "' . get_class($this->db) . '" does not support the method "' . $methodName . '".');
 
         return call_user_func_array([$this->db, $methodName], $args);
     }
@@ -113,7 +113,7 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
      */
     public function fullQuoteStr($str, $table)
     {
-        return '\''.$this->mssql_real_escape_string($str).'\'';
+        return '\'' . $this->mssql_real_escape_string($str) . '\'';
     }
 
     /**
@@ -198,9 +198,9 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
             $fields_values = $this->fullQuoteArray($fields_values, $table, $no_quote_fields);
 
             // Build query:
-            $query = 'INSERT INTO '.$table.
-                ' ('.implode(',', array_keys($fields_values)).') VALUES '.
-                '('.implode(',', $fields_values).')';
+            $query = 'INSERT INTO ' . $table .
+                ' (' . implode(',', array_keys($fields_values)) . ') VALUES ' .
+                '(' . implode(',', $fields_values) . ')';
 
             return $query;
         }
@@ -226,7 +226,7 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
         // treten hier SQL-Fehler auf, wenn " im Datensatz vorkommt.
         $query = str_replace('"', '""', $query);
 
-        $query = 'exec("'.$query.';'.PHP_EOL.'SELECT @@IDENTITY as uid");';
+        $query = 'exec("' . $query . ';' . PHP_EOL . 'SELECT @@IDENTITY as uid");';
         $res = $this->sql_query($query);
         list($this->lastInsertId) = mssql_fetch_row($res);
 
@@ -254,13 +254,13 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
                 $nArr = $this->fullQuoteArray($fields_values, $table, $no_quote_fields);
 
                 foreach ($nArr as $k => $v) {
-                    $fields[] = $k.'='.$v;
+                    $fields[] = $k . '=' . $v;
                 }
             }
 
             // Build query:
-            $query = 'UPDATE '.$table.' SET '.implode(',', $fields).
-                    (strlen($where) > 0 ? ' WHERE '.$where : '');
+            $query = 'UPDATE ' . $table . ' SET ' . implode(',', $fields) .
+                    (strlen($where) > 0 ? ' WHERE ' . $where : '');
 
             return $query;
         } else {
@@ -337,7 +337,7 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
         $ret = mssql_select_db($schema, $link);
 
         if (!$ret) {
-            throw new RuntimeException('Could not select MsSQL database '.$schema, 1271953993);
+            throw new RuntimeException('Could not select MsSQL database ' . $schema, 1271953993);
         }
 
         return $link;
@@ -356,7 +356,7 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
      */
     private function connect($credArr)
     {
-        $dbHost = $credArr['host'] ? $credArr['host'] : 'localhost';
+        $dbHost = $credArr['host'] ?: 'localhost';
         $dbUsername = $credArr['username'];
         $dbPassword = $credArr['password'];
 
@@ -383,8 +383,8 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
         @ini_restore('html_errors');
 
         if (!$link) {
-            $message = 'Database Error: Could not connect to MySQL server '.$dbHost.
-                    ' with user '.$dbUsername.': '.$error_msg;
+            $message = 'Database Error: Could not connect to MySQL server ' . $dbHost .
+                    ' with user ' . $dbUsername . ': ' . $error_msg;
 
             throw new RuntimeException($message, 1271492616);
         }

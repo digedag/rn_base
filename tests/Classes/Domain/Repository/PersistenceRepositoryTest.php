@@ -280,8 +280,6 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_te
     /**
      * The mocked repo to test.
      *
-     * @param array $methods
-     *
      * @return PHPUnit_Framework_MockObject_MockObject|Tx_Rnbase_Domain_Repository_PersistenceRepository
      */
     protected function getRepository(

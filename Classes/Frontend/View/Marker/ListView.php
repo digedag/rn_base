@@ -28,7 +28,6 @@ class ListView extends BaseView
      * including redirection options etc.
      *
      * @param string                     $template
-     * @param RequestInterface           $request
      * @param \tx_rnbase_util_FormatUtil $formatter
      *
      * @return mixed Ready rendered output or HTTP redirect
@@ -43,16 +42,16 @@ class ListView extends BaseView
         $markerData = $viewData->offsetGet(self::VIEWDATA_MARKER);
         $confId = $request->getConfId();
 
-        $markerArray = $configurations->getFormatter()->getItemMarkerArrayWrapped($markerData, $confId.'markers.');
+        $markerArray = $configurations->getFormatter()->getItemMarkerArrayWrapped($markerData, $confId . 'markers.');
         $subpartArray = [];
 
         $itemPath = $this->getItemPath($configurations, $confId);
         if ($filter && $filter->hideResult()) {
-            $subpartArray['###'.strtoupper($itemPath).'S###'] = '';
+            $subpartArray['###' . strtoupper($itemPath) . 'S###'] = '';
             $template = $filter->getMarker()->parseTemplate(
                 $template,
                 $configurations->getFormatter(),
-                $confId.$itemPath.'.filter.',
+                $confId . $itemPath . '.filter.',
                 strtoupper($itemPath)
             );
         } else {
@@ -65,7 +64,7 @@ class ListView extends BaseView
                 $viewData,
                 $template,
                 $markerClass,
-                $confId.$itemPath.'.',
+                $confId . $itemPath . '.',
                 strtoupper($itemPath),
                 $configurations->getFormatter()
             );
@@ -106,20 +105,20 @@ class ListView extends BaseView
         foreach ($entities as $itemPath => $entityData) {
             $markerClass = isset($entityData['markerclass']) ? $entityData['markerclass'] : 'tx_rnbase_util_SimpleMarker';
             $entity = $entityData['entity'];
-            if (is_array($entity)) {
+            if (\is_array($entity)) {
                 $listBuilder = \tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
                 $template = $listBuilder->render(
                     $entity,
                     $viewData,
                     $template,
                     $markerClass,
-                    $confId.$itemPath.'.',
+                    $confId . $itemPath . '.',
                     strtoupper($itemPath),
                     $formatter
                 );
             } else {
                 $marker = \tx_rnbase::makeInstance($markerClass);
-                $template = $marker->parseTemplate($template, $entity, $formatter, $confId.$itemPath.'.', strtoupper($itemPath));
+                $template = $marker->parseTemplate($template, $entity, $formatter, $confId . $itemPath . '.', strtoupper($itemPath));
             }
         }
 
@@ -128,14 +127,14 @@ class ListView extends BaseView
 
     protected function getItemPath($configurations, $confId)
     {
-        $itemPath = $configurations->get($confId.'template.itempath');
+        $itemPath = $configurations->get($confId . 'template.itempath');
 
         return $itemPath ? $itemPath : 'item';
     }
 
     protected function getMarkerClass($configurations, $confId)
     {
-        $marker = $configurations->get($confId.'template.markerclass');
+        $marker = $configurations->get($confId . 'template.markerclass');
 
         return $marker ? $marker : 'tx_rnbase_util_SimpleMarker';
     }

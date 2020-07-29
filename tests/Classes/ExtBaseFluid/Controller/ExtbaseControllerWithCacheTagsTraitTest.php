@@ -57,7 +57,7 @@ class ExtbaseControllerWithCacheTagsTraitTest extends \tx_rnbase_tests_BaseTestC
      */
     protected function tearDown()
     {
-        $property = new \ReflectionProperty(get_class(\tx_rnbase_util_TYPO3::getTSFE()), 'pageCacheTags');
+        $property = new \ReflectionProperty(\get_class(\tx_rnbase_util_TYPO3::getTSFE()), 'pageCacheTags');
         $property->setAccessible(true);
         $property->setValue(\tx_rnbase_util_TYPO3::getTSFE(), []);
     }
@@ -86,7 +86,7 @@ class ExtbaseControllerWithCacheTagsTraitTest extends \tx_rnbase_tests_BaseTestC
 
         $this->callInaccessibleMethod($trait, 'handleCacheTags');
 
-        $property = new \ReflectionProperty(get_class(\tx_rnbase_util_TYPO3::getTSFE()), 'pageCacheTags');
+        $property = new \ReflectionProperty(\get_class(\tx_rnbase_util_TYPO3::getTSFE()), 'pageCacheTags');
         $property->setAccessible(true);
         $cacheTags = $property->getValue(\tx_rnbase_util_TYPO3::getTSFE());
 
@@ -103,7 +103,7 @@ class ExtbaseControllerWithCacheTagsTraitTest extends \tx_rnbase_tests_BaseTestC
 
         $this->callInaccessibleMethod($trait, 'handleCacheTags');
 
-        $property = new \ReflectionProperty(get_class(\tx_rnbase_util_TYPO3::getTSFE()), 'pageCacheTags');
+        $property = new \ReflectionProperty(\get_class(\tx_rnbase_util_TYPO3::getTSFE()), 'pageCacheTags');
         $property->setAccessible(true);
         $cacheTags = $property->getValue(\tx_rnbase_util_TYPO3::getTSFE());
 
@@ -134,7 +134,7 @@ class ExtbaseControllerWithCacheTagsTraitTest extends \tx_rnbase_tests_BaseTestC
 
         $this->callInaccessibleMethod($trait, 'handleCacheTags');
 
-        $property = new \ReflectionProperty(get_class(\tx_rnbase_util_TYPO3::getTSFE()), 'pageCacheTags');
+        $property = new \ReflectionProperty(\get_class(\tx_rnbase_util_TYPO3::getTSFE()), 'pageCacheTags');
         $property->setAccessible(true);
         $cacheTags = $property->getValue(\tx_rnbase_util_TYPO3::getTSFE());
 

@@ -66,8 +66,6 @@ class Tx_Rnbase_Utility_TypoScript
      *
      * This method is taken from extbase TypoScriptService
      *
-     * @param array $typoScriptArray
-     *
      * @return array
      */
     public static function convertTypoScriptArrayToPlainArray(array $typoScriptArray)
@@ -78,7 +76,7 @@ class Tx_Rnbase_Utility_TypoScript
                 $typoScriptNodeValue = isset($typoScriptArray[$keyWithoutDot]) ? $typoScriptArray[$keyWithoutDot] : null;
                 if (is_array($value)) {
                     $typoScriptArray[$keyWithoutDot] = self::convertTypoScriptArrayToPlainArray($value);
-                    if (!is_null($typoScriptNodeValue)) {
+                    if (null !== $typoScriptNodeValue) {
                         $typoScriptArray[$keyWithoutDot]['_typoScriptNodeValue'] = $typoScriptNodeValue;
                     }
                     unset($typoScriptArray[$key]);
@@ -96,8 +94,6 @@ class Tx_Rnbase_Utility_TypoScript
      *
      * This method is taken from extbase TypoScriptService
      *
-     * @param array $plainArray
-     *
      * @return array
      */
     public static function convertPlainArrayToTypoScriptArray(array $plainArray)
@@ -110,10 +106,10 @@ class Tx_Rnbase_Utility_TypoScript
                     unset($value['_typoScriptNodeValue']);
                 }
                 // add dot only if not exists
-                $key = '.' === substr($key, -1) ? $key : $key.'.';
+                $key = '.' === substr($key, -1) ? $key : $key . '.';
                 $typoScriptArray[$key] = self::convertPlainArrayToTypoScriptArray($value);
             } else {
-                $typoScriptArray[$key] = is_null($value) ? '' : $value;
+                $typoScriptArray[$key] = null === $value ? '' : $value;
             }
         }
 

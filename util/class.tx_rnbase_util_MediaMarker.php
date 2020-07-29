@@ -25,7 +25,7 @@
 tx_rnbase::load('tx_rnbase_util_SimpleMarker');
 
 if (tx_rnbase_util_Extensions::isLoaded('dam')) {
-    require_once tx_rnbase_util_Extensions::extPath('dam').'lib/class.tx_dam_db.php';
+    require_once tx_rnbase_util_Extensions::extPath('dam') . 'lib/class.tx_dam_db.php';
 }
 
 /**

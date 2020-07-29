@@ -51,7 +51,7 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
         tx_rnbase::load('tx_rnbase_util_SearchBase');
         $searcher = tx_rnbase_util_SearchBase::getInstance($this->getSearchClass());
         if (!$searcher instanceof tx_rnbase_util_SearchBase) {
-            throw new Exception(get_class($this).'->getSearchClass() has to return a classname'.' of class which extends tx_rnbase_util_SearchBase!');
+            throw new Exception(static::class . '->getSearchClass() has to return a classname' . ' of class which extends tx_rnbase_util_SearchBase!');
         }
 
         return $searcher;
@@ -126,9 +126,6 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
     /**
      * Search database.
      *
-     * @param array $fields
-     * @param array $options
-     *
      * @return Tx_Rnbase_Domain_Collection_Base
      */
     public function search(array $fields, array $options)
@@ -142,9 +139,6 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
 
     /**
      * Search database.
-     *
-     * @param array $fields
-     * @param array $options
      *
      * @return Tx_Rnbase_Domain_Model_DomainInterface
      */
@@ -165,9 +159,6 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
 
     /**
      * On default, return hidden and deleted fields in backend.
-     *
-     * @param array $fields
-     * @param array $options
      */
     protected function prepareFieldsAndOptions(
         array &$fields,
@@ -184,9 +175,6 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
 
     /**
      * On default, return hidden and deleted fields in backend.
-     *
-     * @param array $fields
-     * @param array $options
      */
     protected function handleEnableFieldsOptions(
         array &$fields,
@@ -205,9 +193,6 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
     /**
      * Setzt eventuelle Sprachparameter,
      * damit nur valide Daten für die aktuelle Sprache ausgelesen werden.
-     *
-     * @param array $fields
-     * @param array $options
      */
     protected function handleLanguageOptions(
         array &$fields,
@@ -250,7 +235,6 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
      * Modifiziert die Ergebisliste.
      *
      * @param Traversable|array $items
-     * @param array             $options
      *
      * @return array[Tx_Rnbase_Domain_Model_DomainInterface]
      */
@@ -270,7 +254,6 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
      * Dabei werden die Sprachoverlays bevorzugt.
      *
      * @param Traversable|array $items
-     * @param array             $options
      *
      * @return array[Tx_Rnbase_Domain_Model_RecordInterface]
      */

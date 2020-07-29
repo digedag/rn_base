@@ -49,7 +49,6 @@ class tx_rnbase_util_ListMarker
     }
 
     /**
-     * @param tx_rnbase_util_IListProvider $provider
      * @param string                       $template
      * @param string                       $markerClassname
      * @param string                       $confId
@@ -72,13 +71,13 @@ class tx_rnbase_util_ListMarker
         $this->offset = $offset;
 
         $this->parts = [];
-        $this->rowRoll = intval($formatter->configurations->get($confId.'roll.value'));
+        $this->rowRoll = (int) ($formatter->configurations->get($confId . 'roll.value'));
         $this->rowRollCnt = 0;
-        $this->totalLineStart = intval($formatter->configurations->get($confId.'totalline.startValue'));
+        $this->totalLineStart = (int) ($formatter->configurations->get($confId . 'totalline.startValue'));
         $this->i = 0;
         $provider->iterateAll([$this, 'renderNext']);
 
-        $parts = implode($formatter->configurations->get($confId.'implode'), $this->parts);
+        $parts = implode($formatter->configurations->get($confId . 'implode'), $this->parts);
 
         return ['result' => $parts, 'size' => $this->i];
     }
@@ -143,12 +142,12 @@ class tx_rnbase_util_ListMarker
         $this->info->init($template, $formatter, $marker);
 
         $parts = [];
-        $rowRoll = $formatter->getConfigurations()->getInt($confId.'roll.value');
+        $rowRoll = $formatter->getConfigurations()->getInt($confId . 'roll.value');
         $rowRollCnt = 0;
-        $totalLineStart = $formatter->getConfigurations()->getInt($confId.'totalline.startValue');
+        $totalLineStart = $formatter->getConfigurations()->getInt($confId . 'totalline.startValue');
         // Gesamtzahl der Liste als Register speichern
-        $registerName = $formatter->getConfigurations()->get($confId.'registerNameLbSize');
-        $GLOBALS['TSFE']->register[$registerName ? $registerName : 'RNBASE_LB_SIZE'] = count($dataArr);
+        $registerName = $formatter->getConfigurations()->get($confId . 'registerNameLbSize');
+        $GLOBALS['TSFE']->register[$registerName ?: 'RNBASE_LB_SIZE'] = count($dataArr);
         $i = 0;
         foreach ($dataArr as $data) {
             /* @var $data Tx_Rnbase_Domain_Model_DomainInterface */
@@ -173,7 +172,7 @@ class tx_rnbase_util_ListMarker
             ++$i;
         }
         $parts = implode(
-            $formatter->getConfigurations()->get($confId.'implode', true),
+            $formatter->getConfigurations()->get($confId . 'implode', true),
             $parts
         );
 
@@ -184,7 +183,6 @@ class tx_rnbase_util_ListMarker
      * Extends the object, depending on its instance class.
      *
      * @param objetc $object
-     * @param array  $values
      */
     protected function setToData($object, array $values)
     {

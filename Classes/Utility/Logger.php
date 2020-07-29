@@ -186,8 +186,8 @@ class Logger
             self::LOGLEVEL_WARN => LogLevel::WARNING,
             self::LOGLEVEL_FATAL => LogLevel::ERROR,
         ];
-        $level = array_key_exists($severity, $methods) ? $methods[$severity] : LogLevel::INFO;
-        $logger->log($level, $msg, is_array($dataVar) ? $dataVar : [$dataVar]);
+        $level = \array_key_exists($severity, $methods) ? $methods[$severity] : LogLevel::INFO;
+        $logger->log($level, $msg, \is_array($dataVar) ? $dataVar : [$dataVar]);
     }
 
     /**

@@ -54,7 +54,7 @@ class tx_rnbase_maps_google_Icon implements tx_rnbase_maps_IIcon
     {
         $this->image = $img;
         if ($width + $height > 0) {
-            $this->size = $width.','.$height;
+            $this->size = $width . ',' . $height;
         }
     }
 
@@ -67,7 +67,7 @@ class tx_rnbase_maps_google_Icon implements tx_rnbase_maps_IIcon
     {
         $this->shadow = $img;
         if ($width + $height > 0) {
-            $this->shadowSize = $width.','.$height;
+            $this->shadowSize = $width . ',' . $height;
         }
     }
 
@@ -88,7 +88,7 @@ class tx_rnbase_maps_google_Icon implements tx_rnbase_maps_IIcon
 
     public function setAnchorPoint($x, $y)
     {
-        $this->anchorPoint = $x.','.$y;
+        $this->anchorPoint = $x . ',' . $y;
     }
 
     public function getAnchorPoint()
@@ -98,7 +98,7 @@ class tx_rnbase_maps_google_Icon implements tx_rnbase_maps_IIcon
 
     public function setInfoWindowAnchorPoint($x, $y)
     {
-        $this->winAnchorPoint = $x.','.$y;
+        $this->winAnchorPoint = $x . ',' . $y;
     }
 
     public function getInfoWindowAnchorPoint()
@@ -116,14 +116,14 @@ class tx_rnbase_maps_google_Icon implements tx_rnbase_maps_IIcon
         $mapName = $this->map->getMapName();
 
         $image = $this->getImage();
-        $size = $this->getSize() ? $this->getSize() : '20,20';
+        $size = $this->getSize() ?: '20,20';
         $shadow = $this->getShadow();
-        $shadowSize = $this->getShadowSize() ? $this->getShadowSize() : '20,20';
+        $shadowSize = $this->getShadowSize() ?: '20,20';
 
-        $ret = 'WecMap.addIcon("'.$mapName.'", "'.$this->getName().
-                '", "'.$image.'", "'.$shadow.
-                '", new google.maps.Size('.$size.'), new google.maps.Size('.$shadowSize.
-                '), new google.maps.Point('.$this->getAnchorPoint().'), new google.maps.Point('.$this->getInfoWindowAnchorPoint().'));';
+        $ret = 'WecMap.addIcon("' . $mapName . '", "' . $this->getName() .
+                '", "' . $image . '", "' . $shadow .
+                '", new google.maps.Size(' . $size . '), new google.maps.Size(' . $shadowSize .
+                '), new google.maps.Point(' . $this->getAnchorPoint() . '), new google.maps.Point(' . $this->getInfoWindowAnchorPoint() . '));';
 
         // Für die wec_map ist nur die ID notwendig
         return $ret;

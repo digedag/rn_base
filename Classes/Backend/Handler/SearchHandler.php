@@ -99,7 +99,7 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
     public function getSubModuleId()
     {
         tx_rnbase::load('Tx_Rnbase_Utility_Strings');
-        $modId = str_replace('\\', '_', get_class($this));
+        $modId = str_replace('\\', '_', static::class);
         $modId = Tx_Rnbase_Utility_Strings::underscoredToLowerCamelCase($modId);
 
         return $modId;
@@ -123,10 +123,9 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
      * Returns the handler options.
      *
      * @param \tx_rnbase_mod_IModule $mod
-     * @param array                  $options
      */
     protected function init(
-        \tx_rnbase_mod_IModule $mod,
+        tx_rnbase_mod_IModule $mod,
         array &$options = []
     ) {
         $this->module = $mod;
@@ -155,9 +154,6 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
      * Can be overriden by the child handler to extend the marker arrays.
      *
      * @param string $template
-     * @param array  $markerArray
-     * @param array  $subpartArray
-     * @param array  $wrappedSubpartArray
      *
      * @return string
      */
@@ -176,7 +172,6 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
      * Display the user interface for this handler.
      *
      * @param string                $template The subpart for handler in func template
-     * @param tx_rnbase_mod_IModule $mod
      * @param array                 $options
      *
      * @return string
@@ -261,7 +256,7 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
         );
 
         if (!$lister instanceof Tx_Rnbase_Backend_Lister_AbstractLister) {
-            throw new Exception('The likster "'.get_class($lister).'" has to extend "Tx_Rnbase_Backend_Lister_AbstractLister"');
+            throw new Exception('The likster "' . get_class($lister) . '" has to extend "Tx_Rnbase_Backend_Lister_AbstractLister"');
         }
 
         return $lister;
@@ -270,8 +265,6 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
     /**
      * This method is called each time the method func is clicked,
      * to handle request data.
-     *
-     * @param tx_rnbase_mod_IModule $mod
      *
      * @return string|null With error message
      */

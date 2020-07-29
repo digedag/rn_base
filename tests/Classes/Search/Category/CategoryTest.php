@@ -50,7 +50,7 @@ class CategoryTest extends \tx_rnbase_tests_BaseTestCase
      */
     public function testGetJoinsForSysCategoryRecordMmTable()
     {
-        $expectedJoin = ' LEFT JOIN sys_category_record_mm AS SYS_CATEGORY_RECORD_MM ON'.
+        $expectedJoin = ' LEFT JOIN sys_category_record_mm AS SYS_CATEGORY_RECORD_MM ON' .
                         ' SYS_CATEGORY_RECORD_MM.uid_local = SYS_CATEGORY.uid';
 
         self::assertEquals(

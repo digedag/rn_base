@@ -40,7 +40,7 @@ class tx_rnbase_util_db_Builder implements SingletonInterface
      */
     public static function instance()
     {
-        return tx_rnbase::makeInstance(get_called_class());
+        return tx_rnbase::makeInstance(static::class);
     }
 
     /**
@@ -68,14 +68,14 @@ class tx_rnbase_util_db_Builder implements SingletonInterface
     ) {
         // Table and fieldnames should be "SQL-injection-safe" when supplied to this function
         // Build basic query
-        $query = 'SELECT '.$selectFields.' FROM '.$fromTable;
-        $query .= ('' !== (string) $whereClause ? ' WHERE '.$whereClause : '');
+        $query = 'SELECT ' . $selectFields . ' FROM ' . $fromTable;
+        $query .= ('' !== (string) $whereClause ? ' WHERE ' . $whereClause : '');
         // Group by
-        $query .= '' !== (string) $groupBy ? ' GROUP BY '.$groupBy : '';
+        $query .= '' !== (string) $groupBy ? ' GROUP BY ' . $groupBy : '';
         // Order by
-        $query .= '' !== (string) $orderBy ? ' ORDER BY '.$orderBy : '';
+        $query .= '' !== (string) $orderBy ? ' ORDER BY ' . $orderBy : '';
         // Group by
-        $query .= '' !== (string) $limit ? ' LIMIT '.$limit : '';
+        $query .= '' !== (string) $limit ? ' LIMIT ' . $limit : '';
 
         return $query;
     }
@@ -104,8 +104,8 @@ class tx_rnbase_util_db_Builder implements SingletonInterface
         $fieldsValues = $this->fullQuoteArray($fieldsValues, $table, $noQuoteFields, true);
 
         // Build query
-        $query = 'INSERT INTO '.$table.' ('.implode(',', array_keys($fieldsValues)).')'.
-            ' VALUES ('.implode(',', $fieldsValues).')';
+        $query = 'INSERT INTO ' . $table . ' (' . implode(',', array_keys($fieldsValues)) . ')' .
+            ' VALUES (' . implode(',', $fieldsValues) . ')';
 
         return $query;
     }
@@ -142,14 +142,14 @@ class tx_rnbase_util_db_Builder implements SingletonInterface
             // Quote and escape values
             $nArr = $this->fullQuoteArray($fieldsValues, $table, $noQuoteFields, true);
             foreach ($nArr as $k => $v) {
-                $fields[] = $k.'='.$v;
+                $fields[] = $k . '=' . $v;
             }
         }
 
         // Build query
-        $query = 'UPDATE '.$table;
-        $query .= ' SET '.implode(',', $fields);
-        $query .= ('' !== (string) $where ? ' WHERE '.$where : '');
+        $query = 'UPDATE ' . $table;
+        $query .= ' SET ' . implode(',', $fields);
+        $query .= ('' !== (string) $where ? ' WHERE ' . $where : '');
 
         return $query;
     }
@@ -173,8 +173,8 @@ class tx_rnbase_util_db_Builder implements SingletonInterface
         }
 
         // Table and fieldnames should be "SQL-injection-safe" when supplied to this function
-        $query = 'DELETE FROM '.$table;
-        $query .= ('' !== (string) $where ? ' WHERE '.$where : '');
+        $query = 'DELETE FROM ' . $table;
+        $query .= ('' !== (string) $where ? ' WHERE ' . $where : '');
 
         return $query;
     }
@@ -266,6 +266,6 @@ class tx_rnbase_util_db_Builder implements SingletonInterface
             $str = (int) $str;
         }
 
-        return '\''.$this->quoteStr($str, $table).'\'';
+        return '\'' . $this->quoteStr($str, $table) . '\'';
     }
 }

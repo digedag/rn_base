@@ -33,8 +33,8 @@ class Factory
     {
         $configurations = $context->getConfigurations();
         // It is possible to set another view via typoscript
-        $viewClassName = $configurations->get($context->getConfId().'viewClassName');
-        $viewClassName = strlen($viewClassName) > 0 ? $viewClassName : $fallbackViewClassName;
+        $viewClassName = $configurations->get($context->getConfId() . 'viewClassName');
+        $viewClassName = \strlen($viewClassName) > 0 ? $viewClassName : $fallbackViewClassName;
         $view = \tx_rnbase::makeInstance($viewClassName);
         $view->setTemplatePath($configurations->getTemplatePath());
         $view->setTemplateFile($templateFile);

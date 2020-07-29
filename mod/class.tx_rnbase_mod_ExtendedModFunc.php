@@ -37,7 +37,7 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
     {
         $this->mod = $module;
         $configurations = $this->getModule()->getConfigurations();
-        if ($file = $configurations->get($this->getConfId().'locallang')) {
+        if ($file = $configurations->get($this->getConfId() . 'locallang')) {
             $GLOBALS['LANG']->includeLLFile($file);
         }
     }
@@ -57,15 +57,15 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
         $out = '';
         $conf = $this->getModule()->getConfigurations();
 
-        $file = tx_rnbase_util_Files::getFileAbsFileName($conf->get($this->getConfId().'template'));
+        $file = tx_rnbase_util_Files::getFileAbsFileName($conf->get($this->getConfId() . 'template'));
         $templateCode = tx_rnbase_util_Network::getUrl($file);
         if (!$templateCode) {
-            return $conf->getLL('msg_template_not_found').'<br />File: \''.$file.'\'<br />ConfId: \''.$this->getConfId().'template\'';
+            return $conf->getLL('msg_template_not_found') . '<br />File: \'' . $file . '\'<br />ConfId: \'' . $this->getConfId() . 'template\'';
         }
-        $subpart = '###'.strtoupper($this->getFuncId()).'###';
+        $subpart = '###' . strtoupper($this->getFuncId()) . '###';
         $template = tx_rnbase_util_Templates::getSubpart($templateCode, $subpart);
         if (!$template) {
-            return $conf->getLL('msg_subpart_not_found').': '.$subpart;
+            return $conf->getLL('msg_subpart_not_found') . ': ' . $subpart;
         }
 
         $start = microtime(true);
@@ -112,7 +112,7 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
 
         $handler = $menuItems[$menu['value']];
         if (is_object($handler)) {
-            $subpart = '###'.strtoupper($handler->getSubID()).'###';
+            $subpart = '###' . strtoupper($handler->getSubID()) . '###';
             $templateSub = tx_rnbase_util_Templates::getSubpart($template, $subpart);
 
             $args[] = $templateSub;
@@ -124,8 +124,8 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
 
         // wrap the content into a tab pane
         if ($this->getModule()->useModuleTemplate()) {
-            $subOut = '<div class="tab-content"><div role="tabpanel" class="tab-pane active"><div class="form-section">'.
-                $subOut.
+            $subOut = '<div class="tab-content"><div role="tabpanel" class="tab-pane active"><div class="form-section">' .
+                $subOut .
             '</div></div></div>';
         }
 
@@ -148,7 +148,7 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
      */
     public function getConfId()
     {
-        return $this->getFuncId().'.';
+        return $this->getFuncId() . '.';
     }
 
     /**
@@ -180,7 +180,7 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
             }
         }
 
-        $menu = $formTool->showTabMenu($this->getModule()->getPid(), 'mn_'.$this->getFuncId(), $this->getModule()->getName(), $menuItems);
+        $menu = $formTool->showTabMenu($this->getModule()->getPid(), 'mn_' . $this->getFuncId(), $this->getModule()->getName(), $menuItems);
 
         return $menu;
     }

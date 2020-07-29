@@ -170,7 +170,7 @@ class PageBaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBas
     {
         if (!empty($this->arguments['data-wrap'])) {
             $wrap = explode('|', $this->arguments['data-wrap'], 2);
-            $content = $wrap[0].$content.$wrap[1];
+            $content = $wrap[0] . $content . $wrap[1];
         }
 
         return $content;

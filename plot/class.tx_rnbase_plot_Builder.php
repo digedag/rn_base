@@ -25,8 +25,8 @@
 define('IMAGE_CANVAS_SYSTEM_FONT_PATH', \Sys25\RnBase\Utility\Environment::getPublicPath());
 tx_rnbase::load('tx_rnbase_util_Extensions');
 tx_rnbase::load('tx_rnbase_util_Network');
-require_once \Sys25\RnBase\Utility\Environment::getPublicPath().tx_rnbase_util_Extensions::siteRelPath('pbimagegraph').'Image/class.tx_pbimagegraph.php';
-require_once \Sys25\RnBase\Utility\Environment::getPublicPath().tx_rnbase_util_Extensions::siteRelPath('pbimagegraph').'Image/class.tx_pbimagegraph_canvas.php';
+require_once \Sys25\RnBase\Utility\Environment::getPublicPath() . tx_rnbase_util_Extensions::siteRelPath('pbimagegraph') . 'Image/class.tx_pbimagegraph.php';
+require_once \Sys25\RnBase\Utility\Environment::getPublicPath() . tx_rnbase_util_Extensions::siteRelPath('pbimagegraph') . 'Image/class.tx_pbimagegraph_canvas.php';
 
 /**
  * Builder class for the 'pbimagegraph' extension. The class is modifed version of
@@ -87,24 +87,24 @@ class tx_rnbase_plot_Builder
 
         if ($arrConf) {
             $strFileName = $this->getFileName('ImageGraph/', $arrConf, $arrConf['factory']);
-            $arrConf['factory'] = $arrConf['factory'] ? $arrConf['factory'] : 'png';
-            $arrConf['width'] = $arrConf['width'] ? $arrConf['width'] : '400';
-            $arrConf['height'] = $arrConf['height'] ? $arrConf['height'] : '300';
-            if (!@file_exists(\Sys25\RnBase\Utility\Environment::getPublicPath().$strFileName) || true) { // TODO: remove me!!!
+            $arrConf['factory'] = $arrConf['factory'] ?: 'png';
+            $arrConf['width'] = $arrConf['width'] ?: '400';
+            $arrConf['height'] = $arrConf['height'] ?: '300';
+            if (!@file_exists(\Sys25\RnBase\Utility\Environment::getPublicPath() . $strFileName) || true) { // TODO: remove me!!!
                 $objGraph = $this->makeCanvas($arrConf, $dp);
-                $objGraph->done(['filename' => \Sys25\RnBase\Utility\Environment::getPublicPath().$strFileName]);
+                $objGraph->done(['filename' => \Sys25\RnBase\Utility\Environment::getPublicPath() . $strFileName]);
             }
             $strAltParam = $this->getAltParam($arrConf);
             switch (strtolower($arrConf['factory'])) {
                 case 'svg':
-                    $strOutput = '<object width="'.$arrConf['width'].'" height="'.$arrConf['height'].'" type="image/svg+xml" data="'.$strFileName.'">Browser does not support SVG files!</object>';
+                    $strOutput = '<object width="' . $arrConf['width'] . '" height="' . $arrConf['height'] . '" type="image/svg+xml" data="' . $strFileName . '">Browser does not support SVG files!</object>';
 
                     break;
                 case 'pdf':
-                    header('Location: '.tx_rnbase_util_Network::locationHeaderUrl($strFileName));
+                    header('Location: ' . tx_rnbase_util_Network::locationHeaderUrl($strFileName));
                     exit;
                 default:
-                    $strOutput = '<img width="'.$arrConf['width'].'" height="'.$arrConf['height'].'" src="/'.$strFileName.'" '.$strAltParam.' />';
+                    $strOutput = '<img width="' . $arrConf['width'] . '" height="' . $arrConf['height'] . '" src="/' . $strFileName . '" ' . $strAltParam . ' />';
             }
         }
 
@@ -137,7 +137,7 @@ class tx_rnbase_plot_Builder
         } else {
             $arrConf['antialias'] = 'off';
         }
-        $arrParams['antialias'] = $arrConf['antialias'] ? $arrConf['antialias'] : 'off';
+        $arrParams['antialias'] = $arrConf['antialias'] ?: 'off';
         $canvas = &tx_pbimagegraph_Canvas::factory($arrConf['factory'], $arrParams);
         $objGraph = &tx_pbimagegraph::factory('graph', $canvas);
         $this->setElementProperties($objGraph, $arrConf);
@@ -161,10 +161,10 @@ class tx_rnbase_plot_Builder
     private function getFileName($strPre, $arrConf, $strExtension)
     {
         $tempPath = 'typo3temp/'; // Path to the temporary directory
-        $data = serialize($this->getDataProvider()).serialize($arrConf);
+        $data = serialize($this->getDataProvider()) . serialize($arrConf);
         $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
 
-        return $tempPath.$strPre.$utility::shortMD5($data).'.'.$strExtension;
+        return $tempPath . $strPre . $utility::shortMD5($data) . '.' . $strExtension;
     }
 
     /**
@@ -180,19 +180,19 @@ class tx_rnbase_plot_Builder
         $strAltText = $arrConf['altText'];
         $strTitleText = $arrConf['titleText'];
         $strLongDesc = $arrConf['longdescURL'];
-        $strAltParam = ' alt="'.htmlspecialchars(strip_tags($strAltText)).'"';
+        $strAltParam = ' alt="' . htmlspecialchars(strip_tags($strAltText)) . '"';
         $strEmptyTitleHandling = 'useAlt';
         if ($arrConf['emptyTitleHandling']) {
             // choices: 'keepEmpty' | 'useAlt' | 'removeAttr'
             $strEmptyTitleHandling = $arrConf['emptyTitleHandling'];
         }
         if ($strTitleText || 'keepEmpty' == $strEmptyTitleHandling) {
-            $strAltParam .= ' title="'.htmlspecialchars(strip_tags($strTitleText)).'"';
+            $strAltParam .= ' title="' . htmlspecialchars(strip_tags($strTitleText)) . '"';
         } elseif (!$strTitleText && 'useAlt' == $strEmptyTitleHandling) {
-            $strAltParam .= ' title="'.htmlspecialchars(strip_tags($strAltText)).'"';
+            $strAltParam .= ' title="' . htmlspecialchars(strip_tags($strAltText)) . '"';
         }
         if ($strLongDesc) {
-            $strAltParam .= ' longdesc="'.htmlspecialchars(strip_tags($strLongDesc)).'"';
+            $strAltParam .= ' longdesc="' . htmlspecialchars(strip_tags($strLongDesc)) . '"';
         }
 
         return $strAltParam;
@@ -212,14 +212,14 @@ class tx_rnbase_plot_Builder
     {
         if (is_array($arrSetup)) {
             if (!tx_rnbase_util_TYPO3::isTYPO42OrHigher()) {
-                require_once \Sys25\RnBase\Utility\Environment::getPublicPath().'t3lib/class.t3lib_tstemplate.php';
+                require_once \Sys25\RnBase\Utility\Environment::getPublicPath() . 't3lib/class.t3lib_tstemplate.php';
             }
             $templateServiceClass = tx_rnbase_util_Typo3Classes::getTemplateServiceClass();
             $arrSortedKeys = $templateServiceClass::sortedKeyList($arrSetup);
             foreach ($arrSortedKeys as $strKey) {
                 $strCobjName = $arrSetup[$strKey];
-                if (intval($strKey) && !strstr($strKey, '.')) {
-                    $arrConf = $arrSetup[$strKey.'.'];
+                if ((int) $strKey && !strstr($strKey, '.')) {
+                    $arrConf = $arrSetup[$strKey . '.'];
                     $objOutput = $this->cObjGetSingle($strCobjName, $arrConf, $objRef);
                 }
             }
@@ -360,9 +360,9 @@ class tx_rnbase_plot_Builder
 
                 break;
             default:
-                $strAxisX = $arrConf['axis.']['x.']['type'] ? 'tx_pbimagegraph_Axis_'.ucfirst($arrConf['axis.']['x.']['type']) : 'tx_pbimagegraph_Axis_Category';
-                $strAxisY = $arrConf['axis.']['y.']['type'] ? 'tx_pbimagegraph_Axis_'.ucfirst($arrConf['axis.']['y.']['type']) : 'tx_pbimagegraph_Axis';
-                $strDirection = $arrConf['direction'] ? $arrConf['direction'] : 'vertical';
+                $strAxisX = $arrConf['axis.']['x.']['type'] ? 'tx_pbimagegraph_Axis_' . ucfirst($arrConf['axis.']['x.']['type']) : 'tx_pbimagegraph_Axis_Category';
+                $strAxisY = $arrConf['axis.']['y.']['type'] ? 'tx_pbimagegraph_Axis_' . ucfirst($arrConf['axis.']['y.']['type']) : 'tx_pbimagegraph_Axis';
+                $strDirection = $arrConf['direction'] ?: 'vertical';
                 $Plotarea = tx_pbimagegraph::factory('plotarea', [$strAxisX, $strAxisY, $strDirection]);
         }
 
@@ -388,8 +388,8 @@ class tx_rnbase_plot_Builder
     {
         $strType = $arrConf['type'];
         $intAxis = IMAGE_GRAPH_AXIS_Y;
-        eval('\$intAxis = IMAGE_GRAPH_AXIS_'.strtoupper($arrConf['axis']).';');
-        $Marker = &$objRef->addNew('tx_pbimagegraph_Axis_Marker_'.ucfirst($strType), null, $intAxis);
+        eval('\$intAxis = IMAGE_GRAPH_AXIS_' . strtoupper($arrConf['axis']) . ';');
+        $Marker = &$objRef->addNew('tx_pbimagegraph_Axis_Marker_' . ucfirst($strType), null, $intAxis);
         $this->setElementProperties($Marker, $arrConf);
         switch ($strType) {
             case 'area':
@@ -439,7 +439,7 @@ class tx_rnbase_plot_Builder
     {
         $intAxis = false;
         if (isset($arrConf['axis'])) {
-            eval('\$intAxis = IMAGE_GRAPH_AXIS_'.strtoupper($arrConf['axis']).';');
+            eval('\$intAxis = IMAGE_GRAPH_AXIS_' . strtoupper($arrConf['axis']) . ';');
         }
 
         // Für jedes DataSet muss ein Plot angelegt werden
@@ -514,7 +514,7 @@ class tx_rnbase_plot_Builder
     public function VERT_HOR($arrConf, $strCobjName)
     {
         $objEmpty = null;
-        $percentage = $arrConf['percentage'] ? $arrConf['percentage'] : '50';
+        $percentage = $arrConf['percentage'] ?: '50';
         $Vert_Hor = '';
         $cObjCount = 1;
         if (is_array($arrConf)) {
@@ -522,8 +522,8 @@ class tx_rnbase_plot_Builder
             $sKeyArray = $templateServiceClass::sortedKeyList($arrConf);
             foreach ($sKeyArray as $theKey) {
                 $theValue = $arrConf[$theKey];
-                if (intval($theKey) && !strstr($theKey, '.')) {
-                    $conf = $arrConf[$theKey.'.'];
+                if ((int) $theKey && !strstr($theKey, '.')) {
+                    $conf = $arrConf[$theKey . '.'];
                     if (1 == $cObjCount) {
                         $objTopLeft = $this->cObjGetSingle($theValue, $conf, $objEmpty);
                         ++$cObjCount;
@@ -536,7 +536,7 @@ class tx_rnbase_plot_Builder
                 }
             }
         }
-        eval('\$Vert_Hor = tx_pbimagegraph::'.strtolower($strCobjName).'(\$objTopLeft, \$objBottomRight, \$percentage);');
+        eval('\$Vert_Hor = tx_pbimagegraph::' . strtolower($strCobjName) . '(\$objTopLeft, \$objBottomRight, \$percentage);');
 
         return $Vert_Hor;
     }
@@ -555,11 +555,11 @@ class tx_rnbase_plot_Builder
         $intCols = 0;
         $intRows = 0;
         $objEmpty = null;
-        $boolAutoCreate = $arrConf['autoCreate'] ? $arrConf['autoCreate'] : true;
+        $boolAutoCreate = $arrConf['autoCreate'] ?: true;
         $templateServiceClass = tx_rnbase_util_Typo3Classes::getTemplateServiceClass();
         if (is_array($arrConf)) {
             foreach ($arrConf as $strRow => $mixRow) {
-                if (intval(rtrim($strRow, '.'))) {
+                if ((int) (rtrim($strRow, '.'))) {
                     ++$intRows;
                     $intThisCols = count($templateServiceClass::sortedKeyList($mixRow));
                     if (0 == $intCols) {
@@ -574,12 +574,12 @@ class tx_rnbase_plot_Builder
         $intRow = 0;
         if (is_array($arrConf)) {
             foreach ($arrConf as $strRow => $mixRow) {
-                if (intval(rtrim($strRow, '.'))) {
+                if ((int) (rtrim($strRow, '.'))) {
                     $arrSortedCols = $templateServiceClass::sortedKeyList($mixRow);
                     foreach ($arrSortedCols as $intCol => $intColKey) {
                         $strcObj = $mixRow[$intColKey];
-                        $arrcObjProperties = $mixRow[$intColKey.'.'];
-                        if (intval($intColKey) && !strstr($intColKey, '.') && 'PLOTAREA' == $strcObj) {
+                        $arrcObjProperties = $mixRow[$intColKey . '.'];
+                        if ((int) $intColKey && !strstr($intColKey, '.') && 'PLOTAREA' == $strcObj) {
                             if ('PLOTAREA' == $strcObj) {
                                 $objPlotarea = &$objMatrix->getEntry($intRow, $intCol);
                                 $this->cObjGet($arrcObjProperties, $objPlotarea, $dp);
@@ -623,10 +623,10 @@ class tx_rnbase_plot_Builder
      */
     private function GRID(&$objRef, $arrConf)
     {
-        $strType = $arrConf['type'].'_grid';
+        $strType = $arrConf['type'] . '_grid';
         $strAxis = $arrConf['axis'];
         $intAxis = 1;
-        eval('\$intAxis = IMAGE_GRAPH_AXIS_'.strtoupper($strAxis).';');
+        eval('\$intAxis = IMAGE_GRAPH_AXIS_' . strtoupper($strAxis) . ';');
         $Grid = &$objRef->addNew($strType, $intAxis);
         $this->setElementProperties($Grid, $arrConf);
     }
@@ -664,8 +664,8 @@ class tx_rnbase_plot_Builder
             switch ($arrConf['marker']) {
                 case 'value':
                     $intAxis = 0;
-                    eval('\$intAxis = IMAGE_GRAPH_'.strtoupper($arrConf['marker.']['useValue']).';');
-                    $objMarker = &$objRef->addNew('tx_pbimagegraph_Marker_'.ucfirst($arrConf['marker']), $intAxis);
+                    eval('\$intAxis = IMAGE_GRAPH_' . strtoupper($arrConf['marker.']['useValue']) . ';');
+                    $objMarker = &$objRef->addNew('tx_pbimagegraph_Marker_' . ucfirst($arrConf['marker']), $intAxis);
 
                     break;
                 case 'array':
@@ -675,18 +675,18 @@ class tx_rnbase_plot_Builder
                         $arrKeys = $templateServiceClass::sortedKeyList($arrConf['marker.']);
                         foreach ($arrKeys as $strKey) {
                             $strType = $arrConf['marker.'][$strKey];
-                            if (intval($strKey) && !strstr($strKey, '.')) {
+                            if ((int) $strKey && !strstr($strKey, '.')) {
                                 switch ($strType) {
                                     case 'icon':
                                     //$Marker->addNew('icon_marker', './images/audi.png');
-                                        $objArrayMarker[$strKey] = &tx_pbimagegraph::factory('tx_pbimagegraph_Marker_Icon', \Sys25\RnBase\Utility\Environment::getPublicPath().$arrConf['marker.'][$strKey.'.']['image']);
+                                        $objArrayMarker[$strKey] = &tx_pbimagegraph::factory('tx_pbimagegraph_Marker_Icon', \Sys25\RnBase\Utility\Environment::getPublicPath() . $arrConf['marker.'][$strKey . '.']['image']);
 
                                         break;
                                     default:
-                                        $objArrayMarker[$strKey] = &tx_pbimagegraph::factory('tx_pbimagegraph_Marker_'.ucfirst($strType));
+                                        $objArrayMarker[$strKey] = &tx_pbimagegraph::factory('tx_pbimagegraph_Marker_' . ucfirst($strType));
                                 }
-                                $this->setMarkerProperties($objArrayMarker[$strKey], $arrConf['marker.'][$strKey.'.']);
-                                $this->setElementProperties($objArrayMarker[$strKey], $arrConf['marker.'][$strKey.'.']);
+                                $this->setMarkerProperties($objArrayMarker[$strKey], $arrConf['marker.'][$strKey . '.']);
+                                $this->setElementProperties($objArrayMarker[$strKey], $arrConf['marker.'][$strKey . '.']);
                                 $objMarker->add($objArrayMarker[$strKey]);
                             }
                         }
@@ -694,16 +694,16 @@ class tx_rnbase_plot_Builder
 
                     break;
                 case 'icon':
-                    $objMarker = &$objRef->addNew('tx_pbimagegraph_Marker_Icon', \Sys25\RnBase\Utility\Environment::getPublicPath().$arrConf['marker.']['image']);
+                    $objMarker = &$objRef->addNew('tx_pbimagegraph_Marker_Icon', \Sys25\RnBase\Utility\Environment::getPublicPath() . $arrConf['marker.']['image']);
 
                     break;
                 default:
-                    $objMarker = &$objRef->addNew('tx_pbimagegraph_Marker_'.ucfirst($arrConf['marker']));
+                    $objMarker = &$objRef->addNew('tx_pbimagegraph_Marker_' . ucfirst($arrConf['marker']));
             }
             $this->setMarkerProperties($objMarker, $arrConf['marker.']);
             $this->setElementProperties($objMarker, $arrConf['marker.']);
             if ($arrConf['marker.']['pointing']) {
-                $objPointing = &$objRef->addNew('tx_pbimagegraph_Marker_Pointing_'.ucfirst($arrConf['marker.']['pointing']), [$arrConf['marker.']['pointing.']['radius'], $objMarker]);
+                $objPointing = &$objRef->addNew('tx_pbimagegraph_Marker_Pointing_' . ucfirst($arrConf['marker.']['pointing']), [$arrConf['marker.']['pointing.']['radius'], $objMarker]);
                 $objSetMarker = &$objPointing;
             } else {
                 $objSetMarker = &$objMarker;
@@ -721,7 +721,7 @@ class tx_rnbase_plot_Builder
     public function setRangeMarker(&$objRef, $arrConf)
     {
         foreach ($arrConf as $strKey => $strValue) {
-            $mixId = $strValue['id'] ? $strValue['id'] : false;
+            $mixId = $strValue['id'] ?: false;
             $objRef->addRangeMarker($strValue['min'], $strValue['max'], $mixId);
         }
     }
@@ -741,7 +741,7 @@ class tx_rnbase_plot_Builder
 
                 break;
             default:
-                $objRef->setDataPreProcessor(tx_pbimagegraph::factory('tx_pbimagegraph_DataPreprocessor_'.ucfirst($strType), $arrConf['format']));
+                $objRef->setDataPreProcessor(tx_pbimagegraph::factory('tx_pbimagegraph_DataPreprocessor_' . ucfirst($strType), $arrConf['format']));
         }
     }
 
@@ -769,7 +769,7 @@ class tx_rnbase_plot_Builder
     {
         $objFillStyle = tx_pbimagegraph::factory('tx_pbimagegraph_Fill_Array');
         foreach ($fillStyleArr as $fillStyle) {
-            $strId = $fillStyle['id'] ? $fillStyle['id'] : false;
+            $strId = $fillStyle['id'] ?: false;
             switch ($fillStyle['type']) {
                 case 'color':
                     $objFillStyle->addColor($fillStyle['color'], $strId);
@@ -796,7 +796,7 @@ class tx_rnbase_plot_Builder
     {
         switch ($strValue) {
             case 'gradient':
-                $intDirection = $this->readConstant('IMAGE_GRAPH_GRAD_'.strtoupper($arrConf['direction']));
+                $intDirection = $this->readConstant('IMAGE_GRAPH_GRAD_' . strtoupper($arrConf['direction']));
                 $strStartColor = $arrConf['startColor'];
                 $strEndColor = $arrConf['endColor'];
                 $intSolidColor = $arrConf['color'];
@@ -811,21 +811,21 @@ class tx_rnbase_plot_Builder
                     $arrKeys = $templateServiceClass::sortedKeyList($arrConf);
                     foreach ($arrKeys as $strKey) {
                         $strType = $arrConf[$strKey];
-                        if (intval($strKey) && !strstr($strKey, '.')) {
+                        if ((int) $strKey && !strstr($strKey, '.')) {
                             switch ($strType) {
                                 case 'addColor':
-                                    $strColor = $arrConf[$strKey.'.']['color'];
-                                    $strId = $arrConf[$strKey.'.']['id'] ? $arrConf[$strKey.'.']['id'] : false;
+                                    $strColor = $arrConf[$strKey . '.']['color'];
+                                    $strId = $arrConf[$strKey . '.']['id'] ?: false;
                                     $objFillStyle->addColor($strColor, $strId);
 
                                     break;
                                 case 'gradient':
-                                    $intDirection = $this->readConstant('IMAGE_GRAPH_GRAD_'.strtoupper($arrConf[$strKey.'.']['direction']));
+                                    $intDirection = $this->readConstant('IMAGE_GRAPH_GRAD_' . strtoupper($arrConf[$strKey . '.']['direction']));
 
-                                    $strStartColor = $arrConf[$strKey.'.']['startColor'];
-                                    $strEndColor = $arrConf[$strKey.'.']['endColor'];
-                                    $intSolidColor = $arrConf[$strKey.'.']['color'];
-                                    $strId = $arrConf[$strKey.'.']['id'];
+                                    $strStartColor = $arrConf[$strKey . '.']['startColor'];
+                                    $strEndColor = $arrConf[$strKey . '.']['endColor'];
+                                    $intSolidColor = $arrConf[$strKey . '.']['color'];
+                                    $strId = $arrConf[$strKey . '.']['id'];
                                     $objFillStyle->addNew('gradient', [$intDirection, $strStartColor, $strEndColor], $strId);
 
                                     break;
@@ -837,7 +837,7 @@ class tx_rnbase_plot_Builder
                 break;
             case 'image':
                 $strImage = $arrConf['image'];
-                $objFillStyle = &tx_pbimagegraph::factory('tx_pbimagegraph_Fill_Image', \Sys25\RnBase\Utility\Environment::getPublicPath().$strImage);
+                $objFillStyle = &tx_pbimagegraph::factory('tx_pbimagegraph_Fill_Image', \Sys25\RnBase\Utility\Environment::getPublicPath() . $strImage);
 
                 break;
         }
@@ -860,9 +860,9 @@ class tx_rnbase_plot_Builder
      */
     public function setLineStyle(&$objRef, $strValue, $arrConf, $strAction)
     {
-        $arrConf['color'] = $arrConf['color'] ? $arrConf['color'] : 'red';
-        $arrConf['color1'] = $arrConf['color1'] ? $arrConf['color1'] : 'red';
-        $arrConf['color2'] = $arrConf['color2'] ? $arrConf['color2'] : 'white';
+        $arrConf['color'] = $arrConf['color'] ?: 'red';
+        $arrConf['color1'] = $arrConf['color1'] ?: 'red';
+        $arrConf['color2'] = $arrConf['color2'] ?: 'white';
         switch ($strValue) {
             case 'dashed':
                 $objLineStyle = &tx_pbimagegraph::factory('tx_pbimagegraph_Line_Dashed', [$arrConf['color1'], $arrConf['color2']]);
@@ -886,11 +886,11 @@ class tx_rnbase_plot_Builder
                     $arrKeys = $templateServiceClass::sortedKeyList($arrConf);
                     foreach ($arrKeys as $strKey) {
                         $strType = $arrConf[$strKey];
-                        if (intval($strKey) && !strstr($strKey, '.')) {
+                        if ((int) $strKey && !strstr($strKey, '.')) {
                             switch ($strType) {
                                 case 'addColor':
-                                    $strColor = $arrConf[$strKey.'.']['color'] ? $arrConf[$strKey.'.']['color'] : 'red';
-                                    $strId = $arrConf[$strKey.'.']['id'] ? $arrConf[$strKey.'.']['id'] : false;
+                                    $strColor = $arrConf[$strKey . '.']['color'] ?: 'red';
+                                    $strId = $arrConf[$strKey . '.']['id'] ?: false;
                                     $objLineStyle->addColor($strColor, $strId);
 
                                     break;
@@ -925,8 +925,8 @@ class tx_rnbase_plot_Builder
      */
     public function showShadow(&$objRef, $arrConf)
     {
-        $strColor = $arrConf['color'] ? $arrConf['color'] : 'black@0.2';
-        $intSize = $arrConf['size'] ? $arrConf['size'] : '5';
+        $strColor = $arrConf['color'] ?: 'black@0.2';
+        $intSize = $arrConf['size'] ?: '5';
         $objRef->showShadow($strColor, $intSize);
     }
 
@@ -969,7 +969,7 @@ class tx_rnbase_plot_Builder
     public function setAlignment(&$objRef, $strValue)
     {
         $strAlignment = IMAGE_GRAPH_ALIGN_CENTER_X;
-        eval('\$strAlignment = IMAGE_GRAPH_ALIGN_'.strtoupper($strValue).';');
+        eval('\$strAlignment = IMAGE_GRAPH_ALIGN_' . strtoupper($strValue) . ';');
         $objRef->setAlignment($strAlignment);
     }
 
@@ -1024,7 +1024,7 @@ class tx_rnbase_plot_Builder
         $intAxis = 1;
         foreach ($arrConf as $strKey => $strValue) {
             $strKey = rtrim($strKey, '.');
-            eval('\$intAxis = IMAGE_GRAPH_AXIS_'.strtoupper($strKey).';');
+            eval('\$intAxis = IMAGE_GRAPH_AXIS_' . strtoupper($strKey) . ';');
             $objAxis = &$objRef->getAxis($intAxis);
             $this->setAxisProperties($objAxis, $strValue);
             $this->setElementProperties($objAxis, $strValue);
@@ -1033,8 +1033,8 @@ class tx_rnbase_plot_Builder
                 $arrKeys = $templateServiceClass::sortedKeyList($strValue);
                 foreach ($arrKeys as $strKey) {
                     $strCobjName = $strValue[$strKey];
-                    if (intval($strKey) && !strstr($strKey, '.')) {
-                        $arrConfAxis = $strValue[$strKey.'.'];
+                    if ((int) $strKey && !strstr($strKey, '.')) {
+                        $arrConfAxis = $strValue[$strKey . '.'];
                         switch ($strCobjName) {
                             case 'marker':
                                 $this->setAxisMarker($objRef, $intAxis, $arrConfAxis);
@@ -1085,7 +1085,7 @@ class tx_rnbase_plot_Builder
     {
         if (is_array($arrConf)) {
             foreach ($arrConf as $strKey => $strValue) {
-                if (intval(rtrim($strKey, '.'))) {
+                if ((int) (rtrim($strKey, '.'))) {
                     $arrInterval[] = $strValue['value'];
                 }
             }
@@ -1105,8 +1105,8 @@ class tx_rnbase_plot_Builder
     {
         if (is_array($arrConf)) {
             foreach ($arrConf as $strKey => $strValue) {
-                if (intval(rtrim($strKey, '.'))) {
-                    $this->setAxisProperties($objRef, $strValue, intval(rtrim($strKey, '.')));
+                if ((int) (rtrim($strKey, '.'))) {
+                    $this->setAxisProperties($objRef, $strValue, (int) (rtrim($strKey, '.')));
                 }
             }
         }
@@ -1122,7 +1122,7 @@ class tx_rnbase_plot_Builder
     {
         if (is_array($arrConf)) {
             foreach ($arrConf as $strKey => $strValue) {
-                if (intval(rtrim($strKey, '.'))) {
+                if ((int) (rtrim($strKey, '.'))) {
                     $strValue['value2'] = isset($strValue['value2']) ? $strValue['value2'] : false;
                     $strValue['text'] = isset($strValue['text']) ? $strValue['text'] : false;
                     $objRef->addMark($strValue['value'], $strValue['value2'], $strValue['text']);
@@ -1175,7 +1175,7 @@ class tx_rnbase_plot_Builder
             switch ($strKey) {
                 // element
                 case 'background':
-                    $this->setFillStyle($objRef, $strValue, $arrConf[$strKey.'.'], 'setBackground');
+                    $this->setFillStyle($objRef, $strValue, $arrConf[$strKey . '.'], 'setBackground');
 
                     break;
                 case 'backgroundColor':
@@ -1183,11 +1183,11 @@ class tx_rnbase_plot_Builder
 
                     break;
                 case 'shadow':
-                    $this->showShadow($objRef, $arrConf[$strKey.'.']);
+                    $this->showShadow($objRef, $arrConf[$strKey . '.']);
 
                     break;
                 case 'borderStyle':
-                    $this->setLineStyle($objRef, $strValue, $arrConf[$strKey.'.'], 'setBorderStyle');
+                    $this->setLineStyle($objRef, $strValue, $arrConf[$strKey . '.'], 'setBorderStyle');
 
                     break;
                 case 'borderColor':
@@ -1195,7 +1195,7 @@ class tx_rnbase_plot_Builder
 
                     break;
                 case 'lineStyle':
-                    $this->setLineStyle($objRef, $strValue, $arrConf[$strKey.'.'], 'setLineStyle');
+                    $this->setLineStyle($objRef, $strValue, $arrConf[$strKey . '.'], 'setLineStyle');
 
                     break;
                 case 'lineColor':
@@ -1203,7 +1203,7 @@ class tx_rnbase_plot_Builder
 
                     break;
                 case 'fillStyle':
-                    $this->setFillStyle($objRef, $strValue, $arrConf[$strKey.'.'], 'setFillStyle');
+                    $this->setFillStyle($objRef, $strValue, $arrConf[$strKey . '.'], 'setFillStyle');
 
                     break;
                 case 'fillColor':
@@ -1211,7 +1211,7 @@ class tx_rnbase_plot_Builder
 
                     break;
                 case 'font':
-                    $this->setFont($objRef, $arrConf[$strKey.'.']);
+                    $this->setFont($objRef, $arrConf[$strKey . '.']);
 
                     break;
                 case 'padding':
@@ -1243,7 +1243,7 @@ class tx_rnbase_plot_Builder
 
                     break;
                 case 'dataSelector':
-                    $this->setDataSelector($objRef, $strValue, $arrConf[$strKey.'.']);
+                    $this->setDataSelector($objRef, $strValue, $arrConf[$strKey . '.']);
 
                     break;
             }
@@ -1269,7 +1269,7 @@ class tx_rnbase_plot_Builder
                         break;
                     case 'label':
                         $intLabel = IMAGE_GRAPH_LABEL_ZERO;
-                        eval('\$intLabel = IMAGE_GRAPH_LABEL_'.strtoupper($strValue).';');
+                        eval('\$intLabel = IMAGE_GRAPH_LABEL_' . strtoupper($strValue) . ';');
                         $objRef->showLabel($intLabel);
 
                         break;
@@ -1431,7 +1431,7 @@ class tx_rnbase_plot_Builder
 
                     break;
                 case 'plotarea':
-                    $this->setPlotarea($objRef, $strValue, $arrConf[$strKey.'.']);
+                    $this->setPlotarea($objRef, $strValue, $arrConf[$strKey . '.']);
 
                     break;
                 case 'showMarker':
@@ -1457,7 +1457,7 @@ class tx_rnbase_plot_Builder
 
                     break;
                 case 'barWidth.':
-                    $strUnit = $strValue['unit'] ? $strValue['unit'] : false;
+                    $strUnit = $strValue['unit'] ?: false;
                     $objRef->setBarWidth($strValue['value'], $strUnit);
 
                     break;
@@ -1476,7 +1476,7 @@ class tx_rnbase_plot_Builder
         foreach ($arrConf as $strKey => $strValue) {
             switch ($strKey) {
                 case 'whiskerSize':
-                    $strSize = $strValue ? $strValue : false;
+                    $strSize = $strValue ?: false;
                     $objRef->setWhiskerSize($strSize);
 
                     break;
@@ -1499,7 +1499,7 @@ class tx_rnbase_plot_Builder
 
                     break;
                 case 'startingAngle.':
-                    $strDirection = $strValue['direction'] ? $strValue['direction'] : 'ccw';
+                    $strDirection = $strValue['direction'] ?: 'ccw';
                     $objRef->setStartingAngle($strValue['angle'], $strDirection);
 
                     break;
@@ -1543,7 +1543,7 @@ class tx_rnbase_plot_Builder
                     break;
                 case 'arrowMarker.':
                     $intAxis = 0;
-                    eval('\$intAxis = IMAGE_GRAPH_'.strtoupper($strValue['useValue']).';');
+                    eval('\$intAxis = IMAGE_GRAPH_' . strtoupper($strValue['useValue']) . ';');
                     $objMarker = &$objRef->addNew('tx_pbimagegraph_Marker_Value', $intAxis);
                     $objRef->setArrowMarker($objMarker);
                     $this->setElementProperties($objMarker, $strValue);
@@ -1559,11 +1559,11 @@ class tx_rnbase_plot_Builder
 
                     break;
                 case 'arrowLineStyle':
-                    $this->setLineStyle($objRef, $strValue, $arrConf[$strKey.'.'], 'setArrowLineStyle');
+                    $this->setLineStyle($objRef, $strValue, $arrConf[$strKey . '.'], 'setArrowLineStyle');
 
                     break;
                 case 'arrowFillStyle':
-                    $this->setFillStyle($objRef, $strValue, $arrConf[$strKey.'.'], 'setArrowFillStyle');
+                    $this->setFillStyle($objRef, $strValue, $arrConf[$strKey . '.'], 'setArrowFillStyle');
 
                     break;
                 case 'rangeMarker.':
@@ -1571,7 +1571,7 @@ class tx_rnbase_plot_Builder
 
                     break;
                 case 'rangeMarkerFillStyle':
-                    $this->setFillStyle($objRef, $strValue, $arrConf[$strKey.'.'], 'setRangeMarkerFillStyle');
+                    $this->setFillStyle($objRef, $strValue, $arrConf[$strKey . '.'], 'setRangeMarkerFillStyle');
 
                     break;
             }

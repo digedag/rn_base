@@ -135,7 +135,7 @@ abstract class tx_rnbase_util_SearchBase
                     if (!isset($tableAliases[$tableAlias])) {
                         $tableAliases[$tableAlias] = [];
                     }
-                    $joinedFields[$key]['fields'][] = ($this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias]).'.'.strtolower($col);
+                    $joinedFields[$key]['fields'][] = ($this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias]) . '.' . strtolower($col);
                 }
             }
         }
@@ -175,7 +175,7 @@ abstract class tx_rnbase_util_SearchBase
                                 $joinedValues[$i]
                             );
                             if ('' !== trim($wherePart)) {
-                                $where .= ' AND '.$wherePart;
+                                $where .= ' AND ' . $wherePart;
                             }
                         }
                     } else {
@@ -186,7 +186,7 @@ abstract class tx_rnbase_util_SearchBase
                             $value
                         );
                         if ('' !== trim($wherePart)) {
-                            $where .= ' AND '.$wherePart;
+                            $where .= ' AND ' . $wherePart;
                         }
                     }
                 }
@@ -216,12 +216,12 @@ abstract class tx_rnbase_util_SearchBase
                     );
                 }
                 if ($addWhere) {
-                    $where .= ' AND '.$addWhere;
+                    $where .= ' AND ' . $addWhere;
                 }
             }
         }
         if (isset($customFields)) {
-            $where .= ' AND '.$customFields;
+            $where .= ' AND ' . $customFields;
         }
 
         if ($options['enableFieldsForAdditionalTableAliases']) {
@@ -303,9 +303,9 @@ abstract class tx_rnbase_util_SearchBase
                     list($tableAlias, $col) = explode('.', $field);
                     $tableAlias = $this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias];
                     if ($tableAlias) {
-                        $orderby[] = $tableAlias.'.'.strtolower($col).' '.('DESC' == strtoupper($order) ? 'DESC' : 'ASC');
+                        $orderby[] = $tableAlias . '.' . strtolower($col) . ' ' . ('DESC' == strtoupper($order) ? 'DESC' : 'ASC');
                     } else {
-                        $orderby[] = $field.' '.('DESC' == strtoupper($order) ? 'DESC' : 'ASC');
+                        $orderby[] = $field . ' ' . ('DESC' == strtoupper($order) ? 'DESC' : 'ASC');
                     }
                 }
             }
@@ -320,7 +320,7 @@ abstract class tx_rnbase_util_SearchBase
             isset($options['forcewrapper'])
         )) {
             // der Filter kann ebenfalls eine Klasse setzen. Diese hat Vorrang.
-            $sqlOptions['wrapperclass'] = $options['wrapperclass'] ? $options['wrapperclass'] : $this->getGenericWrapperClass();
+            $sqlOptions['wrapperclass'] = $options['wrapperclass'] ?: $this->getGenericWrapperClass();
         }
 
         // if we have to do a count and there still is a count in the custom what
@@ -345,7 +345,7 @@ abstract class tx_rnbase_util_SearchBase
                 $options['debug'] ? 1 : 0
             );
             $what = 'COUNT(*) AS cnt';
-            $from = '('.$query.') AS COUNTWRAP';
+            $from = '(' . $query . ') AS COUNTWRAP';
             $sqlOptions = [
                 'enablefieldsoff' => true,
                 'sqlonly' => empty($options['sqlonly']) ? 0 : $options['sqlonly'],
@@ -437,7 +437,7 @@ abstract class tx_rnbase_util_SearchBase
                     }
 
                     if ($makeJoin) {
-                        $join .= ' '.$data['join'];
+                        $join .= ' ' . $data['join'];
                     }
                 }
             }
@@ -538,7 +538,7 @@ abstract class tx_rnbase_util_SearchBase
     protected function useAlias()
     {
         if ($this->isGeneric()) {
-            return intval($this->genericData['usealias']) > 0;
+            return (int) ($this->genericData['usealias']) > 0;
         }
 
         return false;
@@ -554,10 +554,10 @@ abstract class tx_rnbase_util_SearchBase
         $rownum = isset($options['rownum']) ? ', @rownum:=@rownum+1 AS rownum ' : '';
         $table = $this->getGenericBaseTable();
         $table = $this->useAlias() ? $this->getGenericBaseTableAlias() : $table;
-        $ret = $distinct.$table.'.*'.$rownum;
+        $ret = $distinct . $table . '.*' . $rownum;
         if (isset($options['count'])) {
-            $cntWhat = isset($options['distinct']) ? $table.'.uid' : '*';
-            $ret = 'count('.$distinct.$cntWhat.') as cnt';
+            $cntWhat = isset($options['distinct']) ? $table . '.uid' : '*';
+            $ret = 'count(' . $distinct . $cntWhat . ') as cnt';
         }
 
         return $ret;
@@ -582,13 +582,13 @@ abstract class tx_rnbase_util_SearchBase
             $alias = $this->getGenericBaseTableAlias();
             // Wenn vorhanden einen Alias für die Basetable setzen
             if ($alias) {
-                $from[0] .= ' AS '.$alias;
+                $from[0] .= ' AS ' . $alias;
                 $from[2] = $alias;
             }
         }
         $joins = $this->getGenericJoins($tableAliases);
         if (isset($options['rownum'])) {
-            $from[0] = '(SELECT @rownum:=0) _r, '.$from[0];
+            $from[0] = '(SELECT @rownum:=0) _r, ' . $from[0];
         }
 
         if (strlen($joins)) {
@@ -599,9 +599,6 @@ abstract class tx_rnbase_util_SearchBase
     }
 
     /**
-     * @param array $tableAliases
-     * @param array $options
-     *
      * @return string
      */
     protected function setEnableFieldsForAdditionalTableAliases(array $tableAliases, array $options)
@@ -672,7 +669,7 @@ abstract class tx_rnbase_util_SearchBase
                         if (!in_array($optionName, ['override', 'force'])) {
                             tx_rnbase::load('tx_rnbase_util_Logger');
                             tx_rnbase_util_Logger::warn(
-                                'Invalid configuration for config option "'.$optionName.'".',
+                                'Invalid configuration for config option "' . $optionName . '".',
                                 'rn_base',
                                 [
                                     'option_name' => $optionName,
@@ -690,7 +687,7 @@ abstract class tx_rnbase_util_SearchBase
                         }
                     } elseif (is_array($data)) {
                         foreach ($data as $col => $value) {
-                            $options[$optionName][$tableAlias.'.'.$col] = $value;
+                            $options[$optionName][$tableAlias . '.' . $col] = $value;
                         }
                     } else { // Ohne Array erfolgt direkt eine Ausgabe (Beispiel RAND = 1)
                         $options[$optionName][$table] = $data;
@@ -740,7 +737,7 @@ abstract class tx_rnbase_util_SearchBase
                         continue;
                     }
                     foreach ($data as $op => $value) {
-                        $fields[$tableAlias.'.'.$colName][constant($op)] = $value;
+                        $fields[$tableAlias . '.' . $colName][constant($op)] = $value;
                     }
                 }
             }

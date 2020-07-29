@@ -45,7 +45,7 @@ class Action extends \tx_rnbase_view_Base
     public function render($templateName, $configurations)
     {
         $extensionKey = $configurations->getExtensionKey();
-        if (0 === strlen($extensionKey)) {
+        if (0 === \strlen($extensionKey)) {
             throw new \Exception('The extension key yould not be resolved. Please check your typoscript configuration.');
         }
 
@@ -59,12 +59,12 @@ class Action extends \tx_rnbase_view_Base
 
         // add variables
         $variables = $configurations->getKeyNames('variables.');
-        if (!empty($variables) && is_array($variables)) {
+        if (!empty($variables) && \is_array($variables)) {
             foreach ($variables as $variable) {
                 $view->assign(
                     $variable,
                     $configurations->get(
-                        'variables.'.$variable,
+                        'variables.' . $variable,
                         true
                     )
                 );
@@ -75,7 +75,7 @@ class Action extends \tx_rnbase_view_Base
         $out = $view->render();
         if (
             ($filter = $rnbaseViewData->offsetGet('filter')) &&
-            is_object($filter) &&
+            \is_object($filter) &&
             method_exists($filter, 'parseTemplate') &&
             ($configurationId = $this->getConfigurationId())
         ) {
@@ -91,7 +91,6 @@ class Action extends \tx_rnbase_view_Base
 
     /**
      * @param string                                      $extensionKey
-     * @param \Tx_Rnbase_Configuration_ProcessorInterface $configurations
      *
      * @return array
      */
@@ -115,12 +114,12 @@ class Action extends \tx_rnbase_view_Base
         $oldPaths = ['templateRootPath', 'layoutRootPath', 'partialRootPath'];
         foreach ($oldPaths as $oldPath) {
             if ($typoScriptConfiguration['view'][$oldPath]) {
-                $typoScriptConfiguration['view'][$oldPath.'s.'][0] = $typoScriptConfiguration['view'][$oldPath];
+                $typoScriptConfiguration['view'][$oldPath . 's.'][0] = $typoScriptConfiguration['view'][$oldPath];
             }
         }
 
         // support "templatePath" configuration like tx_rnbase_view_Base::getTemplate()
-        if (0 !== strlen($configurations->get('templatePath'))) {
+        if (0 !== \strlen($configurations->get('templatePath'))) {
             $typoScriptConfiguration['view']['templateRootPaths.'][0] = $configurations->get('templatePath');
         }
 
@@ -136,10 +135,10 @@ class Action extends \tx_rnbase_view_Base
     {
         $typoScriptConfiguration['settings'] = [];
 
-        $resourcesPath = 'EXT:'.$extensionKey.'/Resources/Private/';
-        $typoScriptConfiguration['view']['templateRootPaths.'][0] = $resourcesPath.'Templates/';
-        $typoScriptConfiguration['view']['layoutRootPaths.'][0] = $resourcesPath.'Layouts/';
-        $typoScriptConfiguration['view']['partialRootPaths.'][0] = $resourcesPath.'Partials/';
+        $resourcesPath = 'EXT:' . $extensionKey . '/Resources/Private/';
+        $typoScriptConfiguration['view']['templateRootPaths.'][0] = $resourcesPath . 'Templates/';
+        $typoScriptConfiguration['view']['layoutRootPaths.'][0] = $resourcesPath . 'Layouts/';
+        $typoScriptConfiguration['view']['partialRootPaths.'][0] = $resourcesPath . 'Partials/';
 
         return $typoScriptConfiguration;
     }
@@ -147,7 +146,6 @@ class Action extends \tx_rnbase_view_Base
     /**
      * @param string                                      $templateName
      * @param array                                       $typoScriptConfigurationForFluid
-     * @param \Tx_Rnbase_Configuration_ProcessorInterface $configurations
      *
      * @return \TYPO3\CMS\Fluid\View\StandaloneView
      */
@@ -180,7 +178,7 @@ class Action extends \tx_rnbase_view_Base
     protected function getConfigurationId()
     {
         $configurationId = '';
-        if (is_object($controller = $this->getController())) {
+        if (\is_object($controller = $this->getController())) {
             if (method_exists($controller, 'getConfId')) {
                 $configurationId = $controller->getConfId();
             }

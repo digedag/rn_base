@@ -75,7 +75,6 @@ class tx_rnbase_util_Extensions
 {
     /**
      * @param string $method
-     * @param array  $arguments
      *
      * @return mixed
      */
@@ -100,8 +99,6 @@ class tx_rnbase_util_Extensions
      * @param string $mainModuleName
      * @param string $subModuleName
      * @param string $position
-     * @param array  $controllerActions
-     * @param array  $moduleConfiguration
      *
      * @throws \InvalidArgumentException
      */

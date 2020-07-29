@@ -95,7 +95,7 @@ class Tx_Rnbase_Backend_Form_FormBuilder
      */
     protected function compileFormData($table, $uid, $record)
     {
-        $cacheKey = $table.'_'.$uid; //.intval($uid);
+        $cacheKey = $table . '_' . $uid; //.intval($uid);
         if (!array_key_exists($cacheKey, $this->formDataCache)) {
             if ($this->isNEWRecord($uid)) {
                 // Die UID ist hier die PID

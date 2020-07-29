@@ -45,8 +45,6 @@ trait ConfigurableTrait
     /**
      * Set the configuration object.
      *
-     * @param ConfigurationInterface $configurations
-     *
      * @return ConfigurableTrait
      */
     public function setConfigurations(
@@ -106,7 +104,7 @@ trait ConfigurableTrait
         }
 
         return $this->getConfigurations()->get(
-            $this->getConfId().$path,
+            $this->getConfId() . $path,
             $deep
         );
     }

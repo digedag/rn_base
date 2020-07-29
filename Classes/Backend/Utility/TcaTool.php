@@ -148,7 +148,6 @@ class TcaTool
      * return $myTableTCA;
      *
      * @param array $tcaTable complete TCA config array for table
-     * @param array $options
      */
     public static function configureWizards(array &$tcaTable, array $options)
     {
@@ -223,7 +222,6 @@ class TcaTool
      * ),
      *
      * @param string $table
-     * @param array  $options
      *
      * @return array
      */
@@ -283,7 +281,6 @@ class TcaTool
 
     /**
      * @param string $table
-     * @param array  $options
      *
      * @return array
      */
@@ -297,7 +294,7 @@ class TcaTool
             'JSopenParams' => 'height=576,width=720,status=0,menubar=0,scrollbars=1',
         ];
         $wizard = self::addWizardScriptForTypo3Version('edit', $wizard);
-        if (is_array($options['edit'])) {
+        if (\is_array($options['edit'])) {
             $wizard =
                 tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
                     $wizard,
@@ -310,7 +307,6 @@ class TcaTool
 
     /**
      * @param string $table
-     * @param array  $options
      *
      * @return array
      */
@@ -328,7 +324,7 @@ class TcaTool
             ],
         ];
         $wizard = self::addWizardScriptForTypo3Version('add', $wizard);
-        if (is_array($options['add'])) {
+        if (\is_array($options['add'])) {
             $wizard =
                 tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
                     $wizard,
@@ -341,7 +337,6 @@ class TcaTool
 
     /**
      * @param string $table
-     * @param array  $options
      *
      * @return array
      */
@@ -359,7 +354,7 @@ class TcaTool
             'JSopenParams' => 'height=576,width=720,status=0,menubar=0,scrollbars=1',
         ];
         $wizard = self::addWizardScriptForTypo3Version('list', $wizard);
-        if (is_array($options['list'])) {
+        if (\is_array($options['list'])) {
             $wizard =
                 tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
                     $wizard,
@@ -372,7 +367,6 @@ class TcaTool
 
     /**
      * @param string $table
-     * @param array  $options
      *
      * @return array
      */
@@ -386,7 +380,7 @@ class TcaTool
                 'searchWholePhrase' => true,
             ],
         ];
-        if (is_array($options['suggest'])) {
+        if (\is_array($options['suggest'])) {
             $wizard =
                 tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
                     $wizard,
@@ -399,7 +393,6 @@ class TcaTool
 
     /**
      * @param string $table
-     * @param array  $options
      *
      * @return array
      */
@@ -419,7 +412,6 @@ class TcaTool
 
     /**
      * @param string $table
-     * @param array  $options
      *
      * @return array
      */
@@ -436,7 +428,7 @@ class TcaTool
             ],
             'module' => ['urlParameters' => ['mode' => 'wizard']],
         ];
-        if (is_array($options['link'])) {
+        if (\is_array($options['link'])) {
             $wizard =
                 tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
                     $wizard,
@@ -454,7 +446,6 @@ class TcaTool
 
     /**
      * @param string $table
-     * @param array  $options
      *
      * @return array
      */
@@ -466,7 +457,7 @@ class TcaTool
             'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
         ];
 
-        if (is_array($options['colorpicker'])) {
+        if (\is_array($options['colorpicker'])) {
             $wizard = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
                 $wizard,
                 $options['colorpicker']
@@ -496,13 +487,12 @@ class TcaTool
 
     /**
      * @param string $wizardType
-     * @param array  $wizardConfig
      *
      * @return array
      */
     protected static function addWizardScriptForTypo3Version($wizardType, array $wizardConfig)
     {
-        $completeWizardName = 'wizard_'.$wizardType;
+        $completeWizardName = 'wizard_' . $wizardType;
         $wizardConfig['module']['name'] = $completeWizardName;
         if (isset($wizardConfig['script'])) {
             unset($wizardConfig['script']);

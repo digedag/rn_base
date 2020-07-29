@@ -40,11 +40,11 @@ class tx_rnbase_maps_Util
      */
     public static function getMapTemplate($configurations, $confId)
     {
-        $file = $configurations->get($confId.'template');
+        $file = $configurations->get($confId . 'template');
         if (!$file) {
             return '';
         }
-        $subpartName = $configurations->get($confId.'subpart');
+        $subpartName = $configurations->get($confId . 'subpart');
         if (!$subpartName) {
             return '';
         }
@@ -78,7 +78,7 @@ class tx_rnbase_maps_Util
         $o1 = deg2rad($lon1);
         $o2 = deg2rad($lon2);
         $radius = 'K' == $distanceType ? 6372.795 : 3959.8712;
-        $distance = 2 * $radius * asin(min(1, sqrt(pow(sin(($l2 - $l1) / 2), 2) + cos($l1) * cos($l2) * pow(sin(($o2 - $o1) / 2), 2))));
+        $distance = 2 * $radius * asin(min(1, sqrt(sin(($l2 - $l1) / 2) ** 2 + cos($l1) * cos($l2) * sin(($o2 - $o1) / 2) ** 2)));
 
         return $distance;
     }
@@ -92,7 +92,6 @@ class tx_rnbase_maps_Util
      * Create a bubble for GoogleMaps. This can be done if the item has address data.
      *
      * @param string                   $template
-     * @param tx_rnbase_maps_ILocation $item
      */
     public static function createMapBubble(tx_rnbase_maps_ILocation $item)
     {

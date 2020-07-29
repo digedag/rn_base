@@ -269,7 +269,7 @@ class tx_rnbase_controller
             $message = Tx_Rnbase_Utility_Strings::trimExplode("\n", $e->getMessage(), true, 2);
             if (count($message) > 1) {
                 // Default 404 anhängen
-                $message[1] .= "\n".$GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling_statheader'];
+                $message[1] .= "\n" . $GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling_statheader'];
             }
             $this->getTsfe()->pageNotFoundAndExit(
                 count($message) > 1 ? $message[0] : $e->getMessage(),
@@ -309,7 +309,6 @@ class tx_rnbase_controller
     /**
      * Interne Verarbeitung der Exception.
      *
-     * @param Exception                                  $e
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
      */
     private function handleException($actionName, Exception $e, $configurations)
@@ -376,7 +375,7 @@ class tx_rnbase_controller
     {
         // What should be preferred? Config or Request?
         // An action from parameter is preferred
-        $action = !intval($configurations->get('ignoreActionParam')) ? $this->_getParameterAction($parameters) : false;
+        $action = !(int) ($configurations->get('ignoreActionParam')) ? $this->_getParameterAction($parameters) : false;
         if (!$action) {
             $action = $configurations->get('action');
         } else {

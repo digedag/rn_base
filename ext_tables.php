@@ -1,6 +1,6 @@
 <?php
 
-defined('TYPO3_MODE') or die('Access denied.');
+defined('TYPO3_MODE') || exit('Access denied.');
 
 if (TYPO3_MODE == 'BE') {
     // register rnbase dispatcher for modules before the extbase dispatcher

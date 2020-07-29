@@ -95,11 +95,11 @@ class CategoryTest extends \tx_rnbase_tests_BaseTestCase
         $expectedFields,
         $expectedDoSearchValue
     ) {
-        if (!defined('OP_IN_INT')) {
-            define('OP_IN_INT', 'IN');
+        if (!\defined('OP_IN_INT')) {
+            \define('OP_IN_INT', 'IN');
         }
         foreach ($configs as $confId => $data) {
-            $this->configurations->get('myList.filter.'.$confId)->willReturn($data);
+            $this->configurations->get('myList.filter.' . $confId)->willReturn($data);
         }
 
         $this->parametersMock->getInt('param1', 'myext')->willReturn(23);

@@ -71,7 +71,7 @@ class tx_rnbase_util_PageBrowser implements PageBrowser
      */
     public function setPointerByParameters($parameters)
     {
-        $this->setPointer(is_object($parameters) ? intval($parameters->offsetGet($this->getParamName('pointer'))) : 0);
+        $this->setPointer(is_object($parameters) ? (int) ($parameters->offsetGet($this->getParamName('pointer'))) : 0);
     }
 
     /**
@@ -94,7 +94,7 @@ class tx_rnbase_util_PageBrowser implements PageBrowser
         $offset = $this->pointer * $this->pageSize;
         // Wenn der Offset größer ist als die verfügbaren Einträge, dann den Offset neu berechnen.
         if ($offset >= $this->listSize) {
-            $offset = intval(((ceil($this->listSize / $this->pageSize)) - 1) * $this->pageSize);
+            $offset = (int) (((ceil($this->listSize / $this->pageSize)) - 1) * $this->pageSize);
             if ($this->listSize > 0) {
                 $this->pointerOutOfRange = true;
             }
@@ -117,7 +117,7 @@ class tx_rnbase_util_PageBrowser implements PageBrowser
      */
     public function getLastPage()
     {
-        return intval($this->getListSize() / $this->getPageSize());
+        return (int) ($this->getListSize() / $this->getPageSize());
     }
 
     /**
@@ -154,7 +154,7 @@ class tx_rnbase_util_PageBrowser implements PageBrowser
      */
     public function setListSize($totalSize)
     {
-        $this->listSize = intval($totalSize);
+        $this->listSize = (int) $totalSize;
     }
 
     /**
@@ -205,7 +205,7 @@ class tx_rnbase_util_PageBrowser implements PageBrowser
      */
     public function getParamName($param)
     {
-        return strtolower('pb-'.$this->pbid.'-'.$param);
+        return strtolower('pb-' . $this->pbid . '-' . $param);
     }
 
     /**
@@ -217,12 +217,11 @@ class tx_rnbase_util_PageBrowser implements PageBrowser
      * das HTML, nicht die Header)
      *
      * @param tx_rnbase_util_PageBrowser                 $pageBrowser
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
      * @param string                                     $confid
      */
     public function markPageNotFoundIfPointerOutOfRange(Tx_Rnbase_Configuration_ProcessorInterface $configurations, $confid)
     {
-        if ($this->isPointerOutOfRange() && !$configurations->getBool($confid.'ignorePageNotFound')) {
+        if ($this->isPointerOutOfRange() && !$configurations->getBool($confid . 'ignorePageNotFound')) {
             $utilityClass = $this->getHttpUtilityClass();
             // wegen den Tests von statischen Aufrufen
             call_user_func_array(

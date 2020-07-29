@@ -212,10 +212,10 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
     public function init(array &$configurationArray, $cObj, $extensionKey, $qualifier)
     {
         // keep the cObj
-        if (is_object($cObj)) {
+        if (\is_object($cObj)) {
             $this->cObj = $cObj;
             $this->cObjs[0] = $this->cObj;
-            $this->pluginUid = is_object($cObj) ? $this->createPluginId() : 0;
+            $this->pluginUid = \is_object($cObj) ? $this->createPluginId() : 0;
 
             // make the data of the cObj available
             $this->_setCObjectData($cObj->data);
@@ -228,14 +228,14 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
         // Add the local configuration, overwriting TS setup
         $this->_setConfiguration($configurationArray);
 
-        if (is_object($cObj) && !$this->getBool('ignoreFlexFormConfiguration')) {
+        if (\is_object($cObj) && !$this->getBool('ignoreFlexFormConfiguration')) {
             // Flexformvalues have the maximal precedence
             $this->_setFlexForm($cObj->data['pi_flexform']);
         }
 
         // A qualifier and extkey from TS are preferred
-        $this->_extensionKey = $this->get('extensionKey') ? $this->get('extensionKey') : $extensionKey;
-        $this->_qualifier = $this->get('qualifier') ? $this->get('qualifier') : $qualifier;
+        $this->_extensionKey = $this->get('extensionKey') ?: $extensionKey;
+        $this->_qualifier = $this->get('qualifier') ?: $qualifier;
 
         $this->_formatter = \tx_rnbase::makeInstance('tx_rnbase_util_FormatUtil', $this);
 
@@ -315,12 +315,12 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
     private function createPluginId()
     {
         $id = 0;
-        if (is_array($this->cObj->data)) {
+        if (\is_array($this->cObj->data)) {
             $id = $this->cObj->data['uid'];
-            if (array_key_exists('doktype', $this->cObj->data)) {
+            if (\array_key_exists('doktype', $this->cObj->data)) {
                 // Es handelt sich um ein Plugin, daß per TS eingebunden wurde. In data steht der
                 // Record der Seite.
-                $base = array_key_exists($id, self::$libIds) ? (intval(self::$libIds[$id]) + 1) : 1;
+                $base = \array_key_exists($id, self::$libIds) ? ((int) (self::$libIds[$id]) + 1) : 1;
                 self::$libIds[$id] = $base;
                 $id = (100000 + $id) * $base;
             }
@@ -342,7 +342,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
     {
         $cObjClass = null === $cObjClass ? \tx_rnbase_util_Typo3Classes::getContentObjectRendererClass() : $cObjClass;
         if (0 == strcmp($id, '0')) {
-            if (!is_object($this->cObj)) {
+            if (!\is_object($this->cObj)) {
                 $this->cObj = \tx_rnbase::makeInstance($cObjClass);
                 $this->cObjs[0] = $this->cObj;
             }
@@ -352,7 +352,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
 
         $cObj = isset($this->cObjs[$id]) ? $this->cObjs[$id] : null;
 
-        if (!is_object($cObj)) {
+        if (!\is_object($cObj)) {
             $this->cObjs[$id] = \tx_rnbase::makeInstance($cObjClass);
         }
 
@@ -400,7 +400,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
     {
         $path = $this->get('templatePath');
 
-        return $path ? $path : 'EXT:'.$this->getExtensionKey().'/views/templates/';
+        return $path ? $path : 'EXT:' . $this->getExtensionKey() . '/views/templates/';
     }
 
     /**
@@ -501,7 +501,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
      */
     public function createParamName($name)
     {
-        return $this->getQualifier().'['.$name.']';
+        return $this->getQualifier() . '[' . $name . ']';
     }
 
     /**
@@ -546,10 +546,10 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
     public function &getFlexFormArray()
     {
         static $flex;
-        if (!is_array($flex)) {
+        if (!\is_array($flex)) {
             \tx_rnbase::load('tx_rnbase_util_Network');
             \tx_rnbase::load('tx_rnbase_util_Arrays');
-            $flex = \tx_rnbase_util_Network::getUrl(\tx_rnbase_util_Extensions::extPath($this->getExtensionKey()).$this->get('flexform'));
+            $flex = \tx_rnbase_util_Network::getUrl(\tx_rnbase_util_Extensions::extPath($this->getExtensionKey()) . $this->get('flexform'));
             $flex = \tx_rnbase_util_Arrays::xml2array($flex);
         }
 
@@ -606,7 +606,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
             $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extKey]);
 
             if ($cfgKey) {
-                $extConfig = (is_array($extConfig) && array_key_exists($cfgKey, $extConfig)) ? $extConfig[$cfgKey] : false;
+                $extConfig = (\is_array($extConfig) && \array_key_exists($cfgKey, $extConfig)) ? $extConfig[$cfgKey] : false;
             }
         }
 
@@ -640,14 +640,14 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
         // Wenn am Ende kein Punkt steht, ist das Ergebnis ein String
         // deep ist nur dann sinnvoll, wenn ohne Punkt am Ende gefragt wird.
         $ret = $this->_queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey);
-        $noEndingDot = '.' != substr($pathKey, strlen($pathKey) - 1, 1);
-        if (!is_array($ret) && $noEndingDot) {
-            $arr = $this->_queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey.'.');
-            if (is_array($arr)) {
+        $noEndingDot = '.' != substr($pathKey, \strlen($pathKey) - 1, 1);
+        if (!\is_array($ret) && $noEndingDot) {
+            $arr = $this->_queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey . '.');
+            if (\is_array($arr)) {
                 $ret = ['key' => $ret, 'key.' => $arr];
             }
         }
-        if (is_array($ret)) {
+        if (\is_array($ret)) {
             $ret = $this->renderTS($ret, $this->getCObj());
             $ret = $noEndingDot ? $ret['key'] : $ret;
         }
@@ -667,7 +667,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
     public function getBool($pathKey, $deep = false, $notDefined = false)
     {
         $value = $this->get($pathKey, $deep);
-        if (is_array($value)) {
+        if (\is_array($value)) {
             return true;
         }
         if ('' == $value) {
@@ -687,7 +687,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
      */
     public function getInt($pathKey, $deep = false)
     {
-        return intval($this->get($pathKey, $deep));
+        return (int) ($this->get($pathKey, $deep));
     }
 
     /**
@@ -732,7 +732,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
     public function getExploded($pathKey, $delim = ',', $deep = false)
     {
         $value = $this->get($pathKey, $deep);
-        if (is_array($value)) {
+        if (\is_array($value)) {
             return $value;
         }
         if (empty($value)) {
@@ -859,7 +859,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
     public function getKeyNames($confId)
     {
         $dynaMarkers = $this->get($confId);
-        if (!is_array($dynaMarkers)) {
+        if (!\is_array($dynaMarkers)) {
             return [];
         }
 
@@ -924,7 +924,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
      */
     protected function _setTypoScript($setupPath = '')
     {
-        $setupPath = $setupPath ? $setupPath : $this->setupPath;
+        $setupPath = $setupPath ?: $this->setupPath;
         if ($setupPath) {
             $array = $this->_queryArrayByPath($GLOBALS['TSFE']->tmpl->setup, $setupPath);
             foreach ((array) $array as $key => $value) {
@@ -936,8 +936,8 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
     public function insertIntoDataArray($dataArr, $pathArray, $newValue)
     {
         // Cancel Recursion on value level
-        if (1 == count($pathArray)) {
-            if (!is_array($dataArr)) {
+        if (1 == \count($pathArray)) {
+            if (!\is_array($dataArr)) {
                 $dataArr = [];
             }
             $dataArr[$pathArray[0]] = $newValue;
@@ -948,16 +948,16 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
         $ret = [];
 
         if (!$dataArr) {
-            $dataArr = [$pathArray[0].'.' => ''];
+            $dataArr = [$pathArray[0] . '.' => ''];
         }
-        if (!array_key_exists($pathArray[0].'.', $dataArr)) {
-            $dataArr[$pathArray[0].'.'] = '';
+        if (!\array_key_exists($pathArray[0] . '.', $dataArr)) {
+            $dataArr[$pathArray[0] . '.'] = '';
         }
 
         foreach ($dataArr as $key => $value) {
-            if ($pathArray[0].'.' == $key) {
+            if ($pathArray[0] . '.' == $key) {
                 // Go deeper
-                $ret[$key] = $this->insertIntoDataArray($value, array_slice($pathArray, 1), $newValue);
+                $ret[$key] = $this->insertIntoDataArray($value, \array_slice($pathArray, 1), $newValue);
             } else {
                 $ret[$key] = $value;
             }
@@ -988,7 +988,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
             return false;
         }
         // Converting flexform data into array if neccessary
-        if (is_array($xmlOrArray)) {
+        if (\is_array($xmlOrArray)) {
             $array = $xmlOrArray;
         } else {
             \tx_rnbase::load('tx_rnbase_util_Arrays');
@@ -1002,21 +1002,21 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
             unset($data['s_tssetup']);
         }
         foreach ((array) $data as $sheet => $languages) {
-            if (!is_array($languages)) {
+            if (!\is_array($languages)) {
                 continue;
             }
             foreach ($languages[$languagePointer] as $key => $def) {
                 // Wir nehmen Flexformwerte nur, wenn sie sinnvolle Daten enthalten
                 // Sonst werden evt. vorhandenen Daten überschrieben
-                if (!(0 == strlen($def[$valuePointer]))) { // || $def[$valuePointer] == '0')
+                if (!(0 == \strlen($def[$valuePointer]))) { // || $def[$valuePointer] == '0')
                     $pathArray = explode('.', trim($key));
-                    if (count($pathArray) > 1) {
+                    if (\count($pathArray) > 1) {
                         // Die Angabe im Flexform ist in Punktnotation
                         // Wir holen das Array im höchsten Knoten
-                        $dataArr = $this->_dataStore->offsetGet($pathArray[0].'.');
+                        $dataArr = $this->_dataStore->offsetGet($pathArray[0] . '.');
                         $newValue = $def[$valuePointer];
-                        $newArr = $this->insertIntoDataArray($dataArr, array_slice($pathArray, 1), $newValue);
-                        $this->_dataStore->offsetSet($pathArray[0].'.', $newArr);
+                        $newArr = $this->insertIntoDataArray($dataArr, \array_slice($pathArray, 1), $newValue);
+                        $this->_dataStore->offsetSet($pathArray[0] . '.', $newArr);
                     } else {
                         $this->_dataStore->offsetSet($key, $def[$valuePointer]);
                     }
@@ -1048,7 +1048,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
         list($linkValue, $linkConf) = $tsParser->getVal($key, $GLOBALS['TSFE']->tmpl->setup);
 
         // Konfigurationen mergen
-        if (is_array($conf) && count($conf)) {
+        if (\is_array($conf) && \count($conf)) {
             $linkConf = self::joinTSarrays($linkConf, $conf);
         }
 
@@ -1070,9 +1070,9 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
      */
     public static function joinTSarrays($conf, $old_conf)
     {
-        if (is_array($old_conf)) {
+        if (\is_array($old_conf)) {
             foreach ($old_conf as $key => $val) {
-                if (is_array($val)) {
+                if (\is_array($val)) {
                     $conf[$key] = self::joinTSarrays($conf[$key], $val);
                 } else {
                     $conf[$key] = $val;
@@ -1092,12 +1092,12 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
     protected function _queryArrayByPath($array, $path)
     {
         $pathArray = explode('.', trim($path));
-        for ($i = 0, $cnt = count($pathArray); $i < $cnt; ++$i) {
+        for ($i = 0, $cnt = \count($pathArray); $i < $cnt; ++$i) {
             if ($i < ($cnt - 1)) {
                 // Noch nicht beendet. Auf Reference prüfen
                 $array = $this->mergeTSReference(
                     $array[$pathArray[$i]],
-                    $array[$pathArray[$i].'.']
+                    $array[$pathArray[$i] . '.']
                 );
             } elseif (empty($pathArray[$i])) {
                 // It ends with a dot. We return the rest of the array
@@ -1121,7 +1121,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
         // Overlaying labels from additional locallangs are minor prior
         // we support comma separated lists and arrays
         $locallangOverlays = (array) $this->get('locallangFilename.');
-        if (array_key_exists('_cfg.', $locallangOverlays)) {
+        if (\array_key_exists('_cfg.', $locallangOverlays)) {
             unset($locallangOverlays['_cfg.']);
             if ($this->getBool('locallangFilename._cfg.naturalOrder')) {
                 ksort($locallangOverlays);
@@ -1160,9 +1160,9 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
     {
         foreach ($data as $key => $value) {
             // Array key with trailing '.'?
-            if ('.' == substr($key, strlen($key) - 1, 1)) {
+            if ('.' == substr($key, \strlen($key) - 1, 1)) {
                 // Remove last character
-                $key_1 = substr($key, 0, strlen($key) - 1);
+                $key_1 = substr($key, 0, \strlen($key) - 1);
                 // Same key WITHOUT '.' exists as well? Treat as renderable Typoscript!
                 if (isset($data[$key_1])) {
                     $data[$key_1] = $cObj->cObjGetSingle($data[$key_1], $data[$key]);

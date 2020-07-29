@@ -83,9 +83,9 @@ class tx_rnbase_util_XmlElement extends SimpleXMLElement
     public function hasValueForPath($path)
     {
         $var = $this->getNodeFromPath($path);
-        $var = is_null($var) ? $this->getAttributeFromPath($path) : $var;
+        $var = null === $var ? $this->getAttributeFromPath($path) : $var;
 
-        return !is_null($var) && (
+        return null !== $var && (
             isset($var)
             && strlen((string) $var)
         );
@@ -103,7 +103,7 @@ class tx_rnbase_util_XmlElement extends SimpleXMLElement
             return $default;
         }
         $var = $this->getNodeFromPath($path);
-        $var = is_null($var) ? $this->getAttributeFromPath($path) : (string) $var;
+        $var = null === $var ? $this->getAttributeFromPath($path) : (string) $var;
 
         return $var;
     }
@@ -134,7 +134,7 @@ class tx_rnbase_util_XmlElement extends SimpleXMLElement
     public function getIntFromPath($path)
     {
         $value = $this->getValueFromPath($path);
-        if (!is_null($value)) {
+        if (null !== $value) {
             $value = (int) $value;
         }
 
@@ -177,7 +177,7 @@ class tx_rnbase_util_XmlElement extends SimpleXMLElement
     public function getFloatFromPath($path)
     {
         $value = $this->getValueFromPath($path);
-        if (!is_null($value)) {
+        if (null !== $value) {
             // komma zu dot umwandeln
             $value = str_replace(',', '.', $value);
             $value = (float) $value;
@@ -197,8 +197,8 @@ class tx_rnbase_util_XmlElement extends SimpleXMLElement
     public function getPriceFromPath($path, $digits = 2)
     {
         $value = $this->getIntFromPath($path);
-        if (!is_null($value)) {
-            $digits = (int) '1'.str_repeat('0', $digits);
+        if (null !== $value) {
+            $digits = (int) '1' . str_repeat('0', $digits);
             // komma zu dot umwandeln
             $value = (float) ($value / $digits);
         }
@@ -219,7 +219,7 @@ class tx_rnbase_util_XmlElement extends SimpleXMLElement
      */
     public function addCData($value, $key = null)
     {
-        if (!is_null($key)) {
+        if (null !== $key) {
             $node = $this->addChild($key);
 
             return $node->addCData($value);

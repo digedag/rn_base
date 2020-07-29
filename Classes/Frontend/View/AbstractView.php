@@ -68,12 +68,12 @@ abstract class AbstractView
      */
     public function getTemplate($templateName, $extension = '.php', $forceAbsPath = 0)
     {
-        if (strlen($this->templateFile) > 0) {
+        if (\strlen($this->templateFile) > 0) {
             return ($forceAbsPath) ? \tx_rnbase_util_Files::getFileAbsFileName($this->templateFile) : $this->templateFile;
         }
         $path = $this->pathToTemplates;
-        $path .= '/' == substr($path, -1, 1) ? $templateName : '/'.$templateName;
-        $extLen = strlen($extension);
+        $path .= '/' == substr($path, -1, 1) ? $templateName : '/' . $templateName;
+        $extLen = \strlen($extension);
         $path .= substr($path, ($extLen * -1), $extLen) == $extension ? '' : $extension;
 
         return $path;

@@ -62,7 +62,7 @@ class Environment
     public static function getPublicPath()
     {
         if (\tx_rnbase_util_TYPO3::isTYPO95OrHigher()) {
-            return \TYPO3\CMS\Core\Core\Environment::getPublicPath().'/';
+            return \TYPO3\CMS\Core\Core\Environment::getPublicPath() . '/';
         }
 
         // Deprecated path related constant
@@ -77,7 +77,7 @@ class Environment
     public static function getPublicTypo3Path()
     {
         if (\tx_rnbase_util_TYPO3::isTYPO95OrHigher()) {
-            return \TYPO3\CMS\Core\Core\Environment::getPublicPath().'/typo3/';
+            return \TYPO3\CMS\Core\Core\Environment::getPublicPath() . '/typo3/';
         }
 
         // Deprecated path related constant
@@ -92,7 +92,7 @@ class Environment
     public static function getPublicTypo3confPath()
     {
         if (\tx_rnbase_util_TYPO3::isTYPO95OrHigher()) {
-            return \TYPO3\CMS\Core\Core\Environment::getPublicPath().'/typo3conf';
+            return \TYPO3\CMS\Core\Core\Environment::getPublicPath() . '/typo3conf';
         }
 
         // Deprecated path related constant

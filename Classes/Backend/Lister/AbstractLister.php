@@ -60,7 +60,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     protected function getListerId()
     {
         tx_rnbase::load('Tx_Rnbase_Utility_Strings');
-        $confId = str_replace('\\', '_', get_class($this));
+        $confId = str_replace('\\', '_', static::class);
         $confId = Tx_Rnbase_Utility_Strings::underscoredToLowerCamelCase($confId);
 
         return $confId;
@@ -69,7 +69,6 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     /**
      * Constructor.
      *
-     * @param tx_rnbase_mod_BaseModule          $module
      * @param array|Tx_Rnbase_Domain_Model_Data $options
      */
     public function __construct(
@@ -166,7 +165,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
             $this->getStorage()->setPager(
                 tx_rnbase::makeInstance(
                     'tx_rnbase_util_BEPager',
-                    $this->getListerId().'Pager',
+                    $this->getListerId() . 'Pager',
                     $this->getModule()->getName(),
                     $this->getOptions()->getPid()
                 )
@@ -200,7 +199,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
                 $this->getOptions()
             );
             if (!$decorator instanceof Tx_Rnbase_Backend_Decorator_InterfaceDecorator) {
-                throw new UnexpectedValueException('The Decorator has to be an instance of'.' "Tx_Rnbase_Backend_Decorator_InterfaceDecorator"'.' but "'.get_class($decorator).'" given.');
+                throw new UnexpectedValueException('The Decorator has to be an instance of' . ' "Tx_Rnbase_Backend_Decorator_InterfaceDecorator"' . ' but "' . get_class($decorator) . '" given.');
             }
             $this->getStorage()->setDecorator($decorator);
         }
@@ -245,8 +244,6 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     /**
      * Adds the columns of the listing.
      * A childclass can extend this method to add its own columns.
-     *
-     * @param array $columns
      *
      * @return Tx_Rnbase_Backend_Lister_AbstractLister
      */
@@ -343,7 +340,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
                     implode(' ', $filter)
                 );
             }
-            $out = '<table class="filters">'.$out.'</table>';
+            $out = '<table class="filters">' . $out . '</table>';
         }
 
         return $out;
@@ -360,7 +357,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
 
         if (empty($items)) {
             return $this->getConfigurations()->getLL(
-                'label_no_'.strtolower($this->getListerId()).'_found'
+                'label_no_' . strtolower($this->getListerId()) . '_found'
             );
         }
 
@@ -496,8 +493,6 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
 
     /**
      * Preper sorting of columns.
-     *
-     * @param array $options
      */
     protected function prepareSorting(
         array &$options
@@ -515,7 +510,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
             // das Label in die notwendige SQL-Anweisung umwandeln. Normalerweise ein Spaltenname.
             $sortCol = $cols[$sortField]['sortable'];
             // Wenn am Ende ein Punkt steht, muss die Spalte zusammengefügt werden.
-            $sortCol = '.' === substr($sortCol, -1) ? $sortCol.$sortField : $sortCol;
+            $sortCol = '.' === substr($sortCol, -1) ? $sortCol . $sortField : $sortCol;
             $options['orderby'][$sortCol] = ('asc' == strtolower($sortRev) ? 'asc' : 'desc');
         }
     }
@@ -523,9 +518,6 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     /**
      * Prepares the fields and options.
      * Childclasses should override this method to extend the filters!
-     *
-     * @param array $fields
-     * @param array $options
      */
     protected function prepareFieldsAndOptions(
         array &$fields,
@@ -568,11 +560,11 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
 
         $filters->setProperty(
             'searchword',
-            $this->getModuleValue($this->getListerId().'Searchword')
+            $this->getModuleValue($this->getListerId() . 'Searchword')
         );
         $filters->setProperty(
             'disabled',
-            $this->getModuleValue($this->getListerId().'Disabled')
+            $this->getModuleValue($this->getListerId() . 'Disabled')
         );
 
         return $this;
@@ -596,7 +588,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
         if ($this->getSearchColumns()) {
             $data['searchword'] = [
                 'field' => $this->getFormTool()->createTxtInput(
-                    'SET['.$this->getListerId().'Searchword]',
+                    'SET[' . $this->getListerId() . 'Searchword]',
                     $filter->getProperty('searchword'),
                     10
                 ),
@@ -607,7 +599,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
         $data['disabled'] = [
             'field' => Tx_Rnbase_Backend_Utility::getFuncMenu(
                 $this->getOptions()->getPid(),
-                'SET['.$this->getListerId().'Disabled]',
+                'SET[' . $this->getListerId() . 'Disabled]',
                 $filter->getProperty('disabled'),
                 [
                     0 => $this->getConfigurations()->getLL('label_select_hide_hidden'),
@@ -619,7 +611,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
 
         $data['updatebutton'] = [
             'field' => $this->getFormTool()->createSubmit(
-                $this->getListerId().'Search',
+                $this->getListerId() . 'Search',
                 '###LABEL_BTN_SEARCH###'
             ),
             'label' => '',

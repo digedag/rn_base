@@ -1,7 +1,7 @@
 <?php
 
 if (!defined('TYPO3_MODE')) {
-    die('Access denied.');
+    exit('Access denied.');
 }
 
 tx_rnbase_util_Extensions::addService(
@@ -21,7 +21,7 @@ tx_rnbase_util_Extensions::addService(
     'os' => '',
     'exec' => '',
 
-    'classFile' => tx_rnbase_util_Extensions::extPath($_EXTKEY).'sv1/class.tx_rnbase_sv1_MediaPlayer.php',
+    'classFile' => tx_rnbase_util_Extensions::extPath($_EXTKEY) . 'sv1/class.tx_rnbase_sv1_MediaPlayer.php',
     'className' => 'tx_rnbase_sv1_MediaPlayer',
         ]
 );

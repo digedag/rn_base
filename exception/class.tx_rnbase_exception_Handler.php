@@ -35,8 +35,6 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
      * Interne Verarbeitung der Exception.
      *
      * @param string                                     $actionName
-     * @param Exception                                  $e
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
      *
      * @return string error message
      */
@@ -56,9 +54,9 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
         tx_rnbase::load('tx_rnbase_util_Logger');
         if (tx_rnbase_util_Logger::isFatalEnabled()) {
             $extKey = $configurations->getExtensionKey();
-            $extKey = $extKey ? $extKey : 'rn_base';
+            $extKey = $extKey ?: 'rn_base';
             tx_rnbase_util_Logger::fatal(
-                'Fatal error for action '.$actionName,
+                'Fatal error for action ' . $actionName,
                 $extKey,
                 [
                     'Exception' => [
@@ -86,8 +84,6 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
     }
 
     /**
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     *
      * @return bool
      */
     protected function send503HeaderOnException(Tx_Rnbase_Configuration_ProcessorInterface $configurations)
@@ -96,7 +92,7 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
         return
             (
                 //shall we basically send a 503 header?
-                intval(Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'send503HeaderOnException')) && (
+                (int) (Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'send503HeaderOnException')) && (
                     //the plugin has the oppurtunity to prevent sending a 503 header
                     //by setting plugin.plugin_name.send503HeaderOnException = 0 in the TS config.
                     //if this option is not set we use the ext config
@@ -115,18 +111,16 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
      * Build an error message string for frontend.
      *
      * @param string                                     $actionName
-     * @param Exception                                  $e
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
      */
     protected function getErrorMessage($actionName, Exception $e, Tx_Rnbase_Configuration_ProcessorInterface $configurations)
     {
         if (Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'verboseMayday')) {
             return '<div>'
-                    .'<strong>UNCAUGHT EXCEPTION FOR VIEW: '.$actionName.'</strong>'
-                    .'<br />CODE: '.$e->getCode()
-                    .'<br />MESSAGE: '.$e->getMessage()
-                    .'<br />STACK: <pre>'.$e->__toString().'</pre>'
-                .'</div>';
+                    . '<strong>UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName . '</strong>'
+                    . '<br />CODE: ' . $e->getCode()
+                    . '<br />MESSAGE: ' . $e->getMessage()
+                    . '<br />STACK: <pre>' . $e->__toString() . '</pre>'
+                . '</div>';
         }
 
         // typoscript nach fehlermeldungen prüfen
@@ -135,16 +129,16 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
         // welches die selbe fehlermeldung produziert
         if (!$this->checkExceptionRecursion($actionName, $e, $configurations)) {
             // aktuelle meldung setzen, damit diese ggf. über ts ausgelesen werden kann (.current = 1)
-            $configurations->getCObj()->setCurrentVal('ERROR '.$e->getCode().': '.$e->getMessage());
+            $configurations->getCObj()->setCurrentVal('ERROR ' . $e->getCode() . ': ' . $e->getMessage());
             // meldung auslesen
-            $ret = $configurations->get('error.'.$e->getCode(), true);
-            $ret = $ret ? $ret : $configurations->get('error.default', true);
+            $ret = $configurations->get('error.' . $e->getCode(), true);
+            $ret = $ret ?: $configurations->get('error.default', true);
         }
         // nun die sprachlabels nach einem fehler überprüfen.
-        $ret = isset($ret) && $ret ? $ret : $configurations->getLL('ERROR_'.$e->getCode(), '');
-        $ret = $ret ? $ret : $configurations->getLL('ERROR_default', '');
+        $ret = isset($ret) && $ret ? $ret : $configurations->getLL('ERROR_' . $e->getCode(), '');
+        $ret = $ret ?: $configurations->getLL('ERROR_default', '');
         // fallback message
-        $ret = $ret ? $ret : '<div><strong>Leider ist ein unerwarteter Fehler aufgetreten.</strong></div>';
+        $ret = $ret ?: '<div><strong>Leider ist ein unerwarteter Fehler aufgetreten.</strong></div>';
 
         return $ret;
     }
@@ -157,8 +151,6 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
      * um die fehlerbehandlung weiter leufen zu lassen.
      *
      * @param string                                     $actionName
-     * @param Exception                                  $e
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
      *
      * @return string|null
      */
@@ -173,9 +165,9 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
         // welches die selbe fehlermeldung produziert
         if (!$this->checkExceptionRecursion($actionName, $e, $configurations, 'catch')) {
             // aktuelle meldung setzen, damit diese ggf. über ts ausgelesen werden kann (.current = 1)
-            $configurations->getCObj()->setCurrentVal('ERROR '.$e->getCode().': '.$e->getMessage());
+            $configurations->getCObj()->setCurrentVal('ERROR ' . $e->getCode() . ': ' . $e->getMessage());
             // meldung auslesen
-            $ret = $configurations->get('catchException.'.$e->getCode(), true);
+            $ret = $configurations->get('catchException.' . $e->getCode(), true);
             if (!empty($ret)) {
                 return $ret;
             }
@@ -194,8 +186,6 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
      * also die methode nur ein mal auftaucht.
      *
      * @param string                                     $actionName
-     * @param Exception                                  $e
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
      *
      * @return bool
      */
@@ -209,17 +199,17 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
 
         // konfiguration für die maximale anzahl an durchläufen holen.
         $maxCalls = $configurations->getInt('recursionCheck.maxCalls');
-        $maxCalls = $maxCalls ? $maxCalls : 50;
+        $maxCalls = $maxCalls ?: 50;
         $maxThrows = $configurations->getInt('recursionCheck.maxThrows');
-        $maxThrows = $maxThrows ? $maxThrows : 1;
+        $maxThrows = $maxThrows ?: 1;
 
         // bei mehr als 50 exception calls, müssen wir davon ausgehen,
         // das ein kritischer fehler vorliegt
         if (++$calls > $maxCalls) {
             tx_rnbase_util_Logger::fatal(
-                'Too much recursion in "'.get_class($this).'"'
-                    .' That should not have happened.'
-                    .' It looks as if there is a problem with a faulty configuration.',
+                'Too much recursion in "' . static::class . '"'
+                    . ' That should not have happened.'
+                    . ' It looks as if there is a problem with a faulty configuration.',
                 'rn_base'
             );
 

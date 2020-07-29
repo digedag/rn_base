@@ -187,14 +187,14 @@ class tx_rnbase_util_Json
                 // return a 2-byte UTF-8 character
                 // see: http://www.cl.cam.ac.uk/~mgk25/unicode.html#utf-8
                 return chr(0xC0 | (($bytes >> 6) & 0x1F))
-                     .chr(0x80 | ($bytes & 0x3F));
+                     . chr(0x80 | ($bytes & 0x3F));
 
             case (0xFFFF & $bytes) == $bytes:
                 // return a 3-byte UTF-8 character
                 // see: http://www.cl.cam.ac.uk/~mgk25/unicode.html#utf-8
                 return chr(0xE0 | (($bytes >> 12) & 0x0F))
-                     .chr(0x80 | (($bytes >> 6) & 0x3F))
-                     .chr(0x80 | ($bytes & 0x3F));
+                     . chr(0x80 | (($bytes >> 6) & 0x3F))
+                     . chr(0x80 | ($bytes & 0x3F));
         }
 
         // ignoring UTF-32 for now, sorry
@@ -229,13 +229,13 @@ class tx_rnbase_util_Json
                 // return a UTF-16 character from a 2-byte UTF-8 char
                 // see: http://www.cl.cam.ac.uk/~mgk25/unicode.html#utf-8
                 return chr(0x07 & (ord($utf8[0]) >> 2))
-                     .chr((0xC0 & (ord($utf8[0]) << 6)) | (0x3F & ord($utf8[1])));
+                     . chr((0xC0 & (ord($utf8[0]) << 6)) | (0x3F & ord($utf8[1])));
 
             case 3:
                 // return a UTF-16 character from a 3-byte UTF-8 char
                 // see: http://www.cl.cam.ac.uk/~mgk25/unicode.html#utf-8
                 return chr((0xF0 & (ord($utf8[0]) << 4)) | (0x0F & (ord($utf8[1]) >> 2)))
-                     .chr((0xC0 & (ord($utf8[1]) << 6)) | (0x7F & ord($utf8[2])));
+                     . chr((0xC0 & (ord($utf8[1]) << 6)) | (0x7F & ord($utf8[2])));
         }
 
         // ignoring UTF-32 for now, sorry
@@ -310,7 +310,7 @@ class tx_rnbase_util_Json
                         case 0x2F == $ord_var_c:
                         case 0x5C == $ord_var_c:
                             // double quote, slash, slosh
-                            $ascii .= '\\'.$var[$c];
+                            $ascii .= '\\' . $var[$c];
 
                             break;
 
@@ -323,7 +323,7 @@ class tx_rnbase_util_Json
                     }
                 }
 
-                return '"'.$ascii.'"';
+                return '"' . $ascii . '"';
 
             case 'array':
                /*
@@ -358,7 +358,7 @@ class tx_rnbase_util_Json
                     }
                 }
 
-                return '{'.implode(',', $properties).'}';
+                return '{' . implode(',', $properties) . '}';
 
             case 'object':
                 $vars = get_object_vars($var);
@@ -375,10 +375,10 @@ class tx_rnbase_util_Json
                     }
                 }
 
-                return '{'.implode(',', $properties).'}';
+                return '{' . implode(',', $properties) . '}';
 
             default:
-                return ($this->use & SERVICES_JSON_SUPPRESS_ERRORS) ? 'null' : new tx_mkforms_util_Json(gettype($var).' can not be encoded as JSON string');
+                return ($this->use & SERVICES_JSON_SUPPRESS_ERRORS) ? 'null' : new tx_mkforms_util_Json(gettype($var) . ' can not be encoded as JSON string');
         }
     }
 
@@ -398,7 +398,7 @@ class tx_rnbase_util_Json
             return $encoded_value;
         }
 
-        return $this->encode(strval($name)).':'.$encoded_value;
+        return $this->encode((string) $name) . ':' . $encoded_value;
     }
 
     /**
@@ -514,7 +514,7 @@ class tx_rnbase_util_Json
                             case preg_match('/\\\u[0-9A-F]{4}/i', substr($chrs, $c, 6)):
                                 // single, escaped unicode character
                                 $utf16 = chr(hexdec(substr($chrs, ($c + 2), 2)))
-                                       .chr(hexdec(substr($chrs, ($c + 4), 2)));
+                                       . chr(hexdec(substr($chrs, ($c + 4), 2)));
                                 $utf8 .= $this->utf162utf8($utf16);
                                 $c += 5;
 
@@ -615,7 +615,7 @@ class tx_rnbase_util_Json
 
                             if (SERVICES_JSON_IN_ARR == reset($stk)) {
                                 // we are in an array, so just push an element onto the stack
-                                array_push($arr, $this->decode($slice));
+                                $arr[] = $this->decode($slice);
                             } elseif (SERVICES_JSON_IN_OBJ == reset($stk)) {
                                 // we are in an object, so figure
                                 // out the property name and set an

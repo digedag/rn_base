@@ -68,10 +68,10 @@ class tx_rnbase_tests_configurations_testcase extends tx_rnbase_tests_BaseTestCa
         $this->assertEquals('1', $configurations->get('view.dummy'), 'Dummy should be 1');
 
         $pid = $configurations->get('listview.fegroup.link.pid');
-        $this->assertEquals('25', $pid, 'PID from flexform should be 25 but was: '.$pid);
+        $this->assertEquals('25', $pid, 'PID from flexform should be 25 but was: ' . $pid);
 
         $pid = $configurations->get('detailview.feuser.link.pid');
-        $this->assertEquals('35', $pid, 'PID from flexform should be 35 but was: '.$pid);
+        $this->assertEquals('35', $pid, 'PID from flexform should be 35 but was: ' . $pid);
     }
 
     /**

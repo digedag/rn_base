@@ -78,10 +78,6 @@ class TranslateViewHelper extends AbstractViewHelper
     /**
      * Translates the label.
      *
-     * @param array                     $arguments
-     * @param \Closure                  $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
      * @return string
      *
      * @throws \Exception

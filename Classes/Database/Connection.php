@@ -51,7 +51,7 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
      */
     public static function getInstance()
     {
-        return tx_rnbase::makeInstance(get_called_class());
+        return tx_rnbase::makeInstance(static::class);
     }
 
     /**
@@ -105,7 +105,7 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
             ]
         );
 
-        $debug = $debug ? $debug : intval($arr['debug']) > 0;
+        $debug = $debug ?: (int) ($arr['debug']) > 0;
         if ($debug) {
             $time = microtime(true);
             $mem = memory_get_usage();
@@ -122,24 +122,24 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
         $where = is_string($arr['where']) ? $arr['where'] : '1=1';
         $groupBy = is_string($arr['groupby']) ? $arr['groupby'] : '';
         if ($groupBy) {
-            $groupBy .= is_string($arr['having']) > 0 ? ' HAVING '.$arr['having'] : '';
+            $groupBy .= is_string($arr['having']) > 0 ? ' HAVING ' . $arr['having'] : '';
         }
         $orderBy = is_string($arr['orderby']) ? $arr['orderby'] : '';
-        $offset = intval($arr['offset']) > 0 ? intval($arr['offset']) : 0;
-        $limit = intval($arr['limit']) > 0 ? intval($arr['limit']) : '';
+        $offset = (int) ($arr['offset']) > 0 ? (int) ($arr['offset']) : 0;
+        $limit = (int) ($arr['limit']) > 0 ? (int) ($arr['limit']) : '';
         $pidList = is_string($arr['pidlist']) ? $arr['pidlist'] : '';
-        $recursive = intval($arr['recursive']) ? intval($arr['recursive']) : 0;
+        $recursive = (int) ($arr['recursive']) ?: 0;
         $i18n = is_string($arr['i18n']) > 0 ? $arr['i18n'] : '';
-        $sqlOnly = intval($arr['sqlonly']) > 0 ? intval($arr['sqlonly']) : '';
+        $sqlOnly = (int) ($arr['sqlonly']) > 0 ? (int) ($arr['sqlonly']) : '';
         $union = is_string($arr['union']) > 0 ? $arr['union'] : '';
 
         // offset und limit kombinieren
         // bei gesetztem limit ist offset optional
         if ($limit) {
-            $limit = ($offset > 0) ? $offset.','.$limit : $limit;
+            $limit = ($offset > 0) ? $offset . ',' . $limit : $limit;
         } elseif ($offset) {
             // Bei gesetztem Offset ist limit Pflicht (default 1000)
-            $limit = ($limit > 0) ? $offset.','.$limit : $offset.',1000';
+            $limit = ($limit > 0) ? $offset . ',' . $limit : $offset . ',1000';
         } else {
             $limit = '';
         }
@@ -149,16 +149,16 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
         // Das sollte wegfallen. Die OL werden weiter unten geladen
         if (strlen($i18n) > 0) {
             $i18n = implode(',', Tx_Rnbase_Utility_Strings::intExplode(',', $i18n));
-            $where .= ' AND '.($tableAlias ? $tableAlias : $tableName).'.sys_language_uid IN ('.$i18n.')';
+            $where .= ' AND ' . ($tableAlias ?: $tableName) . '.sys_language_uid IN (' . $i18n . ')';
         }
 
         if (strlen($pidList) > 0) {
-            $where .= ' AND '.($tableAlias ? $tableAlias : $tableName).'.pid'.
-                ' IN ('.tx_rnbase_util_Misc::getPidList($pidList, $recursive).')';
+            $where .= ' AND ' . ($tableAlias ?: $tableName) . '.pid' .
+                ' IN (' . tx_rnbase_util_Misc::getPidList($pidList, $recursive) . ')';
         }
 
         if (strlen($union) > 0) {
-            $where .= ' UNION '.$union;
+            $where .= ' UNION ' . $union;
         }
 
         $database = $this->getDatabaseConnection($arr);
@@ -270,7 +270,7 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
             if (isset($fromRaw['table'])) {
                 // check the required fields
                 $fromRaw['alias'] = $fromRaw['alias'] ?: $tableAlias;
-                $fromRaw['clause'] = $fromRaw['clause'] ?: $fromRaw['table'].($fromRaw['alias'] ? ' AS '.$fromRaw['alias'] : '');
+                $fromRaw['clause'] = $fromRaw['clause'] ?: $fromRaw['table'] . ($fromRaw['alias'] ? ' AS ' . $fromRaw['alias'] : '');
 
                 return $fromRaw;
             }
@@ -425,7 +425,7 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
         }
 
         if (!$db instanceof tx_rnbase_util_db_IDatabase) {
-            throw \tx_rnbase::makeInstance(\Sys25\RnBase\Typo3Wrapper\Core\Error\Exception::class, 'The db "'.get_class($db).'" has to implement'.' the tx_rnbase_util_db_IDatabase interface');
+            throw \tx_rnbase::makeInstance(\Sys25\RnBase\Typo3Wrapper\Core\Error\Exception::class, 'The db "' . get_class($db) . '" has to implement' . ' the tx_rnbase_util_db_IDatabase interface');
         }
 
         return $db;
@@ -456,7 +456,7 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
         } else {
             $dbCfg = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rn_base']['db'][$key];
             if (!is_array($dbCfg)) {
-                throw tx_rnbase::makeInstance('tx_rnbase_util_db_Exception', 'No config for database '.$key.' found!');
+                throw tx_rnbase::makeInstance('tx_rnbase_util_db_Exception', 'No config for database ' . $key . ' found!');
             }
             $db = tx_rnbase::makeInstance('tx_rnbase_util_db_MySQL', $dbCfg);
         }
@@ -481,7 +481,7 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
         if (!is_array($arr)) {
             $arr = ['debug' => $arr];
         }
-        $debug = intval($arr['debug']) > 0;
+        $debug = (int) ($arr['debug']) > 0;
 
         $database = $this->getDatabaseConnection($arr);
 
@@ -550,7 +550,7 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
      */
     public function doQuery($sqlQuery, array $options = [])
     {
-        $debug = array_key_exists('debug', $options) ? intval($options['debug']) > 0 : false;
+        $debug = array_key_exists('debug', $options) ? (int) ($options['debug']) > 0 : false;
         $database = $this->getDatabaseConnection($options);
         if ($debug) {
             $time = microtime(true);
@@ -592,7 +592,7 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
         if (!is_array($arr)) {
             $arr = ['debug' => $arr];
         }
-        $debug = intval($arr['debug']) > 0;
+        $debug = (int) ($arr['debug']) > 0;
         $database = $this->getDatabaseConnection($arr);
 
         tx_rnbase_util_Misc::callHook(
@@ -662,7 +662,7 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
         if (!is_array($arr)) {
             $arr = ['debug' => $arr];
         }
-        $debug = intval($arr['debug']) > 0;
+        $debug = (int) ($arr['debug']) > 0;
         $database = $this->getDatabaseConnection($arr);
 
         tx_rnbase_util_Misc::callHook(
@@ -818,7 +818,7 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
             $tce = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getDataHandlerClass());
             $tce->stripslashes_values = 0;
             // Wenn wir ein data-Array bekommen verwenden wir das
-            $tce->start($data ? $data : [], $cmd ? $cmd : []);
+            $tce->start($data ?: [], $cmd ?: []);
 
             // set default TCA values specific for the user
             $TCAdefaultOverride = TYPO3::isTYPO95OrHigher() ?
@@ -844,7 +844,7 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
         if (!is_array($options)) {
             $options = [];
         }
-        $options['where'] = 'uid='.intval($uid);
+        $options['where'] = 'uid=' . (int) $uid;
         if (!is_array($GLOBALS['TCA']) || !array_key_exists($tableName, $GLOBALS['TCA'])) {
             $options['enablefieldsoff'] = 1;
         }
@@ -881,7 +881,7 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
         if (!$this->testResource($res) && $database->sql_error()) {
             $msg = 'SQL QUERY IS NOT VALID';
             $msg .= '<br/>';
-            $msg .= '<b>'.$database->sql_error().'</b>';
+            $msg .= '<b>' . $database->sql_error() . '</b>';
             $msg .= '<br />';
             $msg .= $database->debug_lastBuiltQuery;
             // We need to pass the extKey, otherwise no devlog was written.
@@ -944,7 +944,7 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
             }
         }
         if (count($where_p)) {
-            $where .= ' ('.implode('OR ', $where_p).')';
+            $where .= ' (' . implode('OR ', $where_p) . ')';
         }
 
         return $where;
@@ -975,11 +975,11 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
             }
             $val = $this->escapeStrForLike($this->quoteStr($val, $searchTable), $searchTable);
             foreach ($searchFields as $field) {
-                $where_p[] = 'FIND_IN_SET(\''.$val.'\', '.$field.')';
+                $where_p[] = 'FIND_IN_SET(\'' . $val . '\', ' . $field . ')';
             }
         }
         if (count($where_p)) {
-            $where .= ' ('.implode(' OR ', $where_p).')';
+            $where .= ' (' . implode(' OR ', $where_p) . ')';
         }
 
         return $where;
@@ -1006,11 +1006,11 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
             if (strlen($val) >= 2) {
                 $val = $this->escapeStrForLike($this->quoteStr($val, $searchTable), $searchTable);
                 foreach ($searchFields as $field) {
-                    $where_p[] = $field.' LIKE \'%'.$val.'%\'';
+                    $where_p[] = $field . ' LIKE \'%' . $val . '%\'';
                 }
             }
             if (count($where_p)) {
-                $wheres[] = ' ('.implode(' OR ', $where_p).')';
+                $wheres[] = ' (' . implode(' OR ', $where_p) . ')';
             }
         }
         $where = count($wheres) ? implode(' AND ', $wheres) : '';
@@ -1035,7 +1035,7 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
             case OP_NOTIN_INT:
             case OP_IN_INT:
                 $value = implode(',', tx_rnbase_util_Strings::intExplode(',', $value));
-                $where .= $tableAlias.'.'.strtolower($col).' '.$operator.' ('.$value.')';
+                $where .= $tableAlias . '.' . strtolower($col) . ' ' . $operator . ' (' . $value . ')';
 
                 break;
             case OP_NOTIN:
@@ -1045,41 +1045,41 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
                     $values[$i] = $this->fullQuoteStr($values[$i], $tableAlias);
                 }
                 $value = implode(',', $values);
-                $where .= $tableAlias.'.'.strtolower($col).' '.(OP_IN == $operator ? 'IN' : 'NOT IN').' ('.$value.')';
+                $where .= $tableAlias . '.' . strtolower($col) . ' ' . (OP_IN == $operator ? 'IN' : 'NOT IN') . ' (' . $value . ')';
 
                 break;
             case OP_NOTIN_SQL:
             case OP_IN_SQL:
-                $where .= $tableAlias.'.'.strtolower($col).' '.(OP_IN_SQL == $operator ? 'IN' : 'NOT IN').' ('.$value.')';
+                $where .= $tableAlias . '.' . strtolower($col) . ' ' . (OP_IN_SQL == $operator ? 'IN' : 'NOT IN') . ' (' . $value . ')';
 
                 break;
             case OP_INSET_INT:
                 // Values splitten und einzelne Abfragen mit OR verbinden
-                $where = $this->searchWhere($value, $tableAlias.'.'.strtolower($col), 'FIND_IN_SET_OR');
+                $where = $this->searchWhere($value, $tableAlias . '.' . strtolower($col), 'FIND_IN_SET_OR');
 
                 break;
             case OP_EQ:
-                $where .= $tableAlias.'.'.strtolower($col).' = '.$this->fullQuoteStr($value, $tableAlias);
+                $where .= $tableAlias . '.' . strtolower($col) . ' = ' . $this->fullQuoteStr($value, $tableAlias);
 
                 break;
             case OP_NOTEQ:
-                $where .= $tableAlias.'.'.strtolower($col).' != '.$this->fullQuoteStr($value, $tableAlias);
+                $where .= $tableAlias . '.' . strtolower($col) . ' != ' . $this->fullQuoteStr($value, $tableAlias);
 
                 break;
             case OP_LT:
-                $where .= $tableAlias.'.'.strtolower($col).' < '.$this->fullQuoteStr($value, $tableAlias);
+                $where .= $tableAlias . '.' . strtolower($col) . ' < ' . $this->fullQuoteStr($value, $tableAlias);
 
                 break;
             case OP_LTEQ:
-                $where .= $tableAlias.'.'.strtolower($col).' <= '.$this->fullQuoteStr($value, $tableAlias);
+                $where .= $tableAlias . '.' . strtolower($col) . ' <= ' . $this->fullQuoteStr($value, $tableAlias);
 
                 break;
             case OP_GT:
-                $where .= $tableAlias.'.'.strtolower($col).' > '.$this->fullQuoteStr($value, $tableAlias);
+                $where .= $tableAlias . '.' . strtolower($col) . ' > ' . $this->fullQuoteStr($value, $tableAlias);
 
                 break;
             case OP_GTEQ:
-                $where .= $tableAlias.'.'.strtolower($col).' >= '.$this->fullQuoteStr($value, $tableAlias);
+                $where .= $tableAlias . '.' . strtolower($col) . ' >= ' . $this->fullQuoteStr($value, $tableAlias);
 
                 break;
             case OP_EQ_INT:
@@ -1088,27 +1088,27 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
             case OP_LT_INT:
             case OP_GTEQ_INT:
             case OP_LTEQ_INT:
-                $where .= $tableAlias.'.'.strtolower($col).' '.$operator.' '.intval($value);
+                $where .= $tableAlias . '.' . strtolower($col) . ' ' . $operator . ' ' . (int) $value;
 
                 break;
             case OP_EQ_NOCASE:
-                $where .= 'lower('.$tableAlias.'.'.strtolower($col).') = lower('.$this->fullQuoteStr($value, $tableAlias).')';
+                $where .= 'lower(' . $tableAlias . '.' . strtolower($col) . ') = lower(' . $this->fullQuoteStr($value, $tableAlias) . ')';
 
                 break;
             case OP_LIKE:
                 // Stringvergleich mit LIKE
-                $where .= $this->searchWhere($value, $tableAlias.'.'.strtolower($col));
+                $where .= $this->searchWhere($value, $tableAlias . '.' . strtolower($col));
 
                 break;
             case OP_LIKE_CONST:
-                $where .= $this->searchWhere($value, $tableAlias.'.'.strtolower($col), OP_LIKE_CONST);
+                $where .= $this->searchWhere($value, $tableAlias . '.' . strtolower($col), OP_LIKE_CONST);
 
                 break;
             default:
-                tx_rnbase_util_Misc::mayday('Unknown Operator for comparation defined: '.$operator);
+                tx_rnbase_util_Misc::mayday('Unknown Operator for comparation defined: ' . $operator);
         }
 
-        return $where.' ';
+        return $where . ' ';
     }
 
     /**
@@ -1179,7 +1179,7 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
             $fromClause = $from[0];
         }
 
-        $limit = intval($limit) > 0 ? intval($limit) : '';
+        $limit = (int) $limit > 0 ? (int) $limit : '';
 
         // Zur Where-Clause noch die gültigen Felder hinzufügen
         $contentObjectRendererClass = tx_rnbase_util_Typo3Classes::getContentObjectRendererClass();
@@ -1214,7 +1214,6 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
     }
 
     /**
-     * @param array  $options
      * @param string $tableName
      * @param string $tableAlias
      *
@@ -1244,11 +1243,11 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
             $sysPage = tx_rnbase_util_TYPO3::getSysPage();
             $mode = (TYPO3_MODE == 'BE') ? 1 : 0;
             $ignoreArr = [];
-            if (intval($options['enablefieldsbe'])) {
+            if ((int) ($options['enablefieldsbe'])) {
                 $mode = 1;
                 // Im BE alle sonstigen Enable-Fields ignorieren
                 $ignoreArr = ['starttime' => 1, 'endtime' => 1, 'fe_group' => 1];
-            } elseif (intval($options['enablefieldsfe'])) {
+            } elseif ((int) ($options['enablefieldsfe'])) {
                 $mode = 0;
             }
             // Workspaces: Bei Tabellen mit Workspace-Support werden die EnableFields automatisch reduziert. Die Extension
@@ -1257,7 +1256,7 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
             // Wir setzen zusätzlich pid >=0, damit Version-Records nicht erscheinen
             // allerdings nur, wenn die Tabelle versionierbar ist!
             if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['versioningWS'])) {
-                $enableFields .= ' AND '.$tableName.'.pid >=0';
+                $enableFields .= ' AND ' . $tableName . '.pid >=0';
             }
             // Replace tablename with alias
             if ($tableAlias) {
@@ -1279,5 +1278,5 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
 
 function tx_rnbase_util_DB_prependAlias(&$item, $key, $alias)
 {
-    $item = $alias.'.'.$item;
+    $item = $alias . '.' . $item;
 }

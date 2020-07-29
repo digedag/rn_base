@@ -101,7 +101,7 @@ class Tx_Rnbase_Database_TreeQueryBuilder
                 $options['where'] = '1=1';
             }
             $sqlOptions = $options;
-            $sqlOptions['where'] .= ' AND '.$parentField.' IN ('.$id.')';
+            $sqlOptions['where'] .= ' AND ' . $parentField . ' IN (' . $id . ')';
 
             /**
              * @var Tx_Rnbase_Domain_Collection_Base

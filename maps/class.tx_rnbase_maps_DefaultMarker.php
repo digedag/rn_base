@@ -161,8 +161,6 @@ class tx_rnbase_maps_DefaultMarker implements tx_rnbase_maps_IMarker
 
     /**
      * Set coordinates for this marker.
-     *
-     * @param tx_rnbase_maps_ICoord $coord
      */
     public function setCoords(tx_rnbase_maps_ICoord $coord)
     {

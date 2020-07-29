@@ -43,8 +43,6 @@ interface tx_rnbase_mod_IModHandler
 
     /**
      * This method is called each time the method func is clicked, to handle request data.
-     *
-     * @param tx_rnbase_mod_IModule $mod
      */
     public function handleRequest(tx_rnbase_mod_IModule $mod);
 
@@ -52,7 +50,6 @@ interface tx_rnbase_mod_IModHandler
      * Display the user interface for this handler.
      *
      * @param string                $template the subpart for handler in func template
-     * @param tx_rnbase_mod_IModule $mod
      * @param array                 $options
      */
     public function showScreen($template, tx_rnbase_mod_IModule $mod, $options);

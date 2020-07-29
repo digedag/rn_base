@@ -34,7 +34,6 @@ interface ViewInterface
 {
     /**
      * @param string           $viewName
-     * @param RequestInterface $request
      */
     public function render($viewName, RequestInterface $request);
 

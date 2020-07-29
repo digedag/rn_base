@@ -121,13 +121,13 @@ class tx_rnbase_tests_util_Link_testcase extends tx_rnbase_tests_BaseTestCase
                 'typolink' => '//www.digedag.de/service/faq.html',
                 'absUrl' => true,
                 'schema' => '',
-                'expected' => tx_rnbase_util_Misc::getIndpEnv('TYPO3_REQUEST_DIR').'service/faq.html',
+                'expected' => tx_rnbase_util_Misc::getIndpEnv('TYPO3_REQUEST_DIR') . 'service/faq.html',
             ],
             __LINE__ => [
                     'typolink' => '//www.digedag.de/service/faq.html',
                     'absUrl' => true,
                     'schema' => false,
-                    'expected' => tx_rnbase_util_Misc::getIndpEnv('TYPO3_REQUEST_DIR').'service/faq.html',
+                    'expected' => tx_rnbase_util_Misc::getIndpEnv('TYPO3_REQUEST_DIR') . 'service/faq.html',
             ],
             // makeTag
             __LINE__ => [
@@ -183,14 +183,14 @@ class tx_rnbase_tests_util_Link_testcase extends tx_rnbase_tests_BaseTestCase
                 'typolink' => '<a href="http://www.digedag.de/service/faq.html">FAQ</a>',
                 'absUrl' => true,
                 'schema' => '',
-                'expected' => '<a href="'.tx_rnbase_util_Misc::getIndpEnv('TYPO3_REQUEST_DIR').'service/faq.html">FAQ</a>',
+                'expected' => '<a href="' . tx_rnbase_util_Misc::getIndpEnv('TYPO3_REQUEST_DIR') . 'service/faq.html">FAQ</a>',
                 'method' => 'makeTag',
             ],
             __LINE__ => [
                 'typolink' => '<a href="http://www.digedag.de/service/faq.html">FAQ</a>',
                 'absUrl' => true,
                 'schema' => false,
-                'expected' => '<a href="'.tx_rnbase_util_Misc::getIndpEnv('TYPO3_REQUEST_DIR').'service/faq.html">FAQ</a>',
+                'expected' => '<a href="' . tx_rnbase_util_Misc::getIndpEnv('TYPO3_REQUEST_DIR') . 'service/faq.html">FAQ</a>',
                 'method' => 'makeTag',
             ],
             // invalide tags bleiben unangetatset!
@@ -269,29 +269,29 @@ class tx_rnbase_tests_util_Link_testcase extends tx_rnbase_tests_BaseTestCase
         // self::assertEquals('&myext[lvl0][value]=Level 0&myext[p][lvl1][value]=Level 1', rawurldecode($paramStr));
 
         self::assertEquals(
-            '&myext[lvl0][value]=Level 0'.
-            '&myext[lvl0][lvl1][value]=Level 1'.
-            '&myext[lvl0][lvl1][lvl2][value]=Level 2'.
-            '&myext[lvl0][lvl1][lvl2][lvl3][value]=Level 3'.
+            '&myext[lvl0][value]=Level 0' .
+            '&myext[lvl0][lvl1][value]=Level 1' .
+            '&myext[lvl0][lvl1][lvl2][value]=Level 2' .
+            '&myext[lvl0][lvl1][lvl2][lvl3][value]=Level 3' .
             '&myext[lvl0][lvl1][lvl2][lvl3][lvl4][value]=Level 4',
             rawurldecode($this->callInaccessibleMethod($link, 'makeUrlParam', $largeParamKey, $largeParamValues))
         );
         // check qualifier override
         self::assertEquals(
-            '&yourext[lvl0][value]=Level 0'.
-            '&yourext[lvl0][lvl1][value]=Level 1'.
-            '&yourext[lvl0][lvl1][lvl2][value]=Level 2'.
-            '&yourext[lvl0][lvl1][lvl2][lvl3][value]=Level 3'.
+            '&yourext[lvl0][value]=Level 0' .
+            '&yourext[lvl0][lvl1][value]=Level 1' .
+            '&yourext[lvl0][lvl1][lvl2][value]=Level 2' .
+            '&yourext[lvl0][lvl1][lvl2][lvl3][value]=Level 3' .
             '&yourext[lvl0][lvl1][lvl2][lvl3][lvl4][value]=Level 4',
-            rawurldecode($this->callInaccessibleMethod($link, 'makeUrlParam', 'yourext::'.$largeParamKey, $largeParamValues))
+            rawurldecode($this->callInaccessibleMethod($link, 'makeUrlParam', 'yourext::' . $largeParamKey, $largeParamValues))
         );
         // check without  override
         $link->designatorString = '';
         self::assertEquals(
-            '&lvl0[value]=Level 0'.
-            '&lvl0[lvl1][value]=Level 1'.
-            '&lvl0[lvl1][lvl2][value]=Level 2'.
-            '&lvl0[lvl1][lvl2][lvl3][value]=Level 3'.
+            '&lvl0[value]=Level 0' .
+            '&lvl0[lvl1][value]=Level 1' .
+            '&lvl0[lvl1][lvl2][value]=Level 2' .
+            '&lvl0[lvl1][lvl2][lvl3][value]=Level 3' .
             '&lvl0[lvl1][lvl2][lvl3][lvl4][value]=Level 4',
             rawurldecode($this->callInaccessibleMethod($link, 'makeUrlParam', $largeParamKey, $largeParamValues))
         );

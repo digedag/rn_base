@@ -56,12 +56,12 @@ class Parameters extends \ArrayObject implements ParametersInterface
     {
         if ($qualifier) {
             $params = $this->getParametersPlain($qualifier);
-            $value = array_key_exists($paramName, $params) ? $params[$paramName] : $params['NK_'.$paramName];
+            $value = \array_key_exists($paramName, $params) ? $params[$paramName] : $params['NK_' . $paramName];
 
             return $value;
         }
 
-        return $this->offsetExists($paramName) ? $this->offsetGet($paramName) : $this->offsetGet('NK_'.$paramName);
+        return $this->offsetExists($paramName) ? $this->offsetGet($paramName) : $this->offsetGet('NK_' . $paramName);
     }
 
     /**
@@ -75,7 +75,7 @@ class Parameters extends \ArrayObject implements ParametersInterface
     {
         $value = $this->get($paramName, $qualifier);
         // remove Cross-Site Scripting
-        if (!empty($value) && strlen($value) > 3) {
+        if (!empty($value) && \strlen($value) > 3) {
             $value = htmlspecialchars($value);
         }
 
@@ -92,7 +92,7 @@ class Parameters extends \ArrayObject implements ParametersInterface
      */
     public function getInt($paramName, $qualifier = '')
     {
-        return intval($this->get($paramName, $qualifier));
+        return (int) ($this->get($paramName, $qualifier));
     }
 
     private function getParametersPlain($qualifier)
@@ -105,11 +105,11 @@ class Parameters extends \ArrayObject implements ParametersInterface
     public function getAll($qualifier = '')
     {
         $ret = [];
-        $qualifier = $qualifier ? $qualifier : $this->getQualifier();
+        $qualifier = $qualifier ?: $this->getQualifier();
         $params = $this->getParametersPlain($qualifier);
         foreach ($params as $key => $value) {
             $key = ('N' === $key[0] && 'NK_' === substr($key, 0, 3)) ? substr($key, 3) : $key;
-            if (is_string($value)) {
+            if (\is_string($value)) {
                 $ret[$key] = $value;
             }
         }

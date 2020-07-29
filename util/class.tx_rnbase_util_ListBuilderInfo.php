@@ -57,7 +57,7 @@ class tx_rnbase_util_ListBuilderInfo implements ListBuilderInfo
      */
     public function getEmptyListMessage($confId, &$viewData, &$configurations)
     {
-        return $configurations->getLL($configurations->get($confId.'listinfo.llkeyEmpty'));
+        return $configurations->getLL($configurations->get($confId . 'listinfo.llkeyEmpty'));
     }
 
     public function setMarkerArrays(&$markerArray, &$subpartArray, &$wrappedSubpartArray)

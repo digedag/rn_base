@@ -160,7 +160,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
         // selected page or no page is selected
         $parts->setPageInfo(is_array($pageinfo) ? $pageinfo : []);
         $parts->setSubMenu($this->tabs);
-        $parts->setSelector($this->selector ? $this->selector : $this->subselector);
+        $parts->setSelector($this->selector ?: $this->subselector);
     }
 
     /**
@@ -184,14 +184,14 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
     {
         // Dummy-Button für automatisch Submit
         $content = '<p style="position:absolute; top:-5000px; left:-5000px;">'
-            .'<input type="submit" />'
-            .'</p>';
+            . '<input type="submit" />'
+            . '</p>';
         $this->extObj->pObj = &$this; // Wozu diese Zuweisung? Die Submodule können getModule() verwenden...
 
         if (is_callable([$this->extObj, 'main'])) {
             $content .= $this->extObj->main();
         } else {
-            $content .= 'Module '.get_class($this->extObj).' has no method main.';
+            $content .= 'Module ' . get_class($this->extObj) . ' has no method main.';
         }
 
         return $content;
@@ -259,16 +259,16 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
             $cObj = tx_rnbase_util_TYPO3::getContentObject();
 
             $pageTSconfigFull = Tx_Rnbase_Backend_Utility::getPagesTSconfig($this->getPid());
-            $pageTSconfig = $pageTSconfigFull['mod.'][$this->getExtensionKey().'.'];
+            $pageTSconfig = $pageTSconfigFull['mod.'][$this->getExtensionKey() . '.'];
             $pageTSconfig['lib.'] = $pageTSconfigFull['lib.'];
 
-            $userTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.'.$this->getExtensionKey().'.');
+            $userTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.' . $this->getExtensionKey() . '.');
             if (!empty($userTSconfig['properties'])) {
                 tx_rnbase::load('tx_rnbase_util_Arrays');
                 $pageTSconfig = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule($pageTSconfig, $userTSconfig['properties']);
             }
 
-            $qualifier = $pageTSconfig['qualifier'] ? $pageTSconfig['qualifier'] : $this->getExtensionKey();
+            $qualifier = $pageTSconfig['qualifier'] ?: $this->getExtensionKey();
             $this->configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
             $this->configurations->init($pageTSconfig, $cObj, $this->getExtensionKey(), $qualifier);
 
@@ -402,7 +402,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
             return $menu;
         } else {
             $items = $this->getFuncMenuItems($this->MOD_MENU['function']);
-            $useTabs = intval($this->getConfigurations()->get('_cfg.funcmenu.useTabs')) > 0;
+            $useTabs = (int) ($this->getConfigurations()->get('_cfg.funcmenu.useTabs')) > 0;
             if ($useTabs) {
                 $menu = $this->getFormTool()->showTabMenu($this->getPid(), 'function', $this->getName(), $items);
             } else {
@@ -463,7 +463,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
     {
         $modUrl = Tx_Rnbase_Backend_Utility::getModuleUrl($this->getName());
 
-        return '<form action="'.$modUrl.'" method="post" name="editform" enctype="multipart/form-data"><input type="hidden" name="id" value="'.htmlspecialchars($this->id).'" />';
+        return '<form action="' . $modUrl . '" method="post" name="editform" enctype="multipart/form-data"><input type="hidden" name="id" value="' . htmlspecialchars($this->id) . '" />';
     }
 
     /**
@@ -487,7 +487,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
         if (file_exists(tx_rnbase_util_Files::getFileAbsFileName($filename, true, true))) {
             return $filename;
         }
-        $filename = 'EXT:'.$this->getExtensionKey().'/mod1/template.html';
+        $filename = 'EXT:' . $this->getExtensionKey() . '/mod1/template.html';
         if (file_exists(tx_rnbase_util_Files::getFileAbsFileName($filename, true, true))) {
             return $filename;
         }
@@ -522,7 +522,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
         $doc->postCode = '
             <script language="javascript" type="text/javascript">
                 script_ended = 1;
-                if (top.fsMod) top.fsMod.recentIds["web"] = '.$this->id.';</script>';
+                if (top.fsMod) top.fsMod.recentIds["web"] = ' . $this->id . ';</script>';
     }
 
     /**
@@ -595,7 +595,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
         ];
         // TODO: CSH
         $buttons['csh'] = Tx_Rnbase_Backend_Utility::cshItem(
-            '_MOD_'.$this->getName(),
+            '_MOD_' . $this->getName(),
             '',
             $GLOBALS['BACK_PATH'],
             '',

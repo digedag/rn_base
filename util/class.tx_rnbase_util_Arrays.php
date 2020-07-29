@@ -79,8 +79,6 @@ class tx_rnbase_util_Arrays
      *
      * @see \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule();
      *
-     * @param array $original
-     * @param array $overrule
      * @param bool  $addKeys
      * @param bool  $includeEmptyValues
      * @param bool  $enableUnsetFeature

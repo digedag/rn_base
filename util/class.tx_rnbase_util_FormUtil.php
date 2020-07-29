@@ -32,15 +32,15 @@ class tx_rnbase_util_FormUtil
      */
     public static function createSelect($name, $arr, $attr = 'class="inputField"')
     {
-        $out = '<select name="'.$name.'" '.$attr.'>';
+        $out = '<select name="' . $name . '" ' . $attr . '>';
         $value = $arr[1];
         // Die Options ermitteln
         foreach ($arr[0] as $key => $val) {
             $sel = '';
-            if (strval($value) == strval($key)) {
+            if ((string) $value == (string) $key) {
                 $sel = 'selected="selected"';
             }
-            $out .= '<option value="'.$key.'" '.$sel.'>'.$val.'</option>';
+            $out .= '<option value="' . $key . '" ' . $sel . '>' . $val . '</option>';
         }
 
         $out .= '</select>';
@@ -55,8 +55,8 @@ class tx_rnbase_util_FormUtil
     {
         $out = '';
         foreach ($arr as $key => $value) {
-            $key = strlen($qualifier) > 0 ? $qualifier.'['.$key.']' : $key;
-            $out .= '<input type="hidden" name="'.$key.'" value="'.$value.'">';
+            $key = strlen($qualifier) > 0 ? $qualifier . '[' . $key . ']' : $key;
+            $out .= '<input type="hidden" name="' . $key . '" value="' . $value . '">';
         }
 
         return $out;
@@ -88,7 +88,7 @@ class tx_rnbase_util_FormUtil
         foreach ($params as $name => $value) {
             $name = htmlspecialchars($name);
             $value = htmlspecialchars($value);
-            $sysHidden .= '<input type="hidden" name="'.$name.'" value="'.$value.'" />';
+            $sysHidden .= '<input type="hidden" name="' . $name . '" value="' . $value . '" />';
         }
 
         return $sysHidden;

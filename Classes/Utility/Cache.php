@@ -32,9 +32,6 @@
  */
 class Tx_Rnbase_Utility_Cache
 {
-    /**
-     * @param array $parameters
-     */
     public static function addExcludedParametersForCacheHash(array $parameters)
     {
         if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
@@ -49,9 +46,6 @@ class Tx_Rnbase_Utility_Cache
         );
     }
 
-    /**
-     * @param array $parameters
-     */
     public static function addCacheHashRequiredParameters(array $parameters)
     {
         if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
@@ -69,7 +63,6 @@ class Tx_Rnbase_Utility_Cache
     /**
      * @param mixed  $typo3ConfVarsEntry
      * @param string $cacheHashCalculatorInternalConfigurationKey
-     * @param array  $configurationValue
      */
     protected static function addConfigurationToCacheHashCalculator(
         &$typo3ConfVarsEntry,
@@ -81,7 +74,7 @@ class Tx_Rnbase_Utility_Cache
             if ($typo3ConfVarsEntry) {
                 $startingGlue = ',';
             }
-            $typo3ConfVarsEntry .= $startingGlue.implode(',', $configurationValue);
+            $typo3ConfVarsEntry .= $startingGlue . implode(',', $configurationValue);
 
             $cacheHashCalculatorInternalConfiguration =
                 Tx_Rnbase_Utility_Strings::trimExplode(',', $typo3ConfVarsEntry, true);
@@ -127,7 +120,6 @@ class Tx_Rnbase_Utility_Cache
      * }
      *
      * @param string $content
-     * @param array  $cacheTags
      *
      * @return string
      */

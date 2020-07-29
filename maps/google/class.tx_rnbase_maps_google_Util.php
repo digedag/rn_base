@@ -54,7 +54,7 @@ class tx_rnbase_maps_google_Util
         }
         $key = isset($options['key']) ? $options['key'] : '';
 
-        $request = 'https://maps.googleapis.com/maps/api/geocode/json?address='.rawurlencode($addressString).'&key='.$key;
+        $request = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . rawurlencode($addressString) . '&key=' . $key;
         $result = [];
 
         $time = microtime(true);

@@ -108,19 +108,19 @@ class Tx_Rnbase_Backend_Form_Element_InputText extends AbstractFormElement
 
         $attributeString = '';
         foreach ($attributes as $attributeName => $attributeValue) {
-            $attributeString .= ' '.$attributeName.'="'.htmlspecialchars($attributeValue).'"';
+            $attributeString .= ' ' . $attributeName . '="' . htmlspecialchars($attributeValue) . '"';
         }
 
-        $width = $width ? 'width:'.ceil($width * 9.58).'px;' : 'form-control form-control-adapt';
+        $width = $width ? 'width:' . ceil($width * 9.58) . 'px;' : 'form-control form-control-adapt';
         $style = sprintf(' style="%s"', $width);
         $html = '
          <input type="text"'
-                .$attributeString
-                .$style
-        .' />';
+                . $attributeString
+                . $style
+        . ' />';
 
         // This is the ACTUAL form field - values from the EDITABLE field must be transferred to this field which is the one that is written to the database.
-        $html .= '<input type="hidden" name="'.$name.'" value="'.htmlspecialchars($value).'" />';
+        $html .= '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" />';
 
         if ($icon) {
             $html .= Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon($icon);

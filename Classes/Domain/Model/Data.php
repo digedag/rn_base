@@ -133,7 +133,7 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
         }
 
         // use get_called_class for backwards compatibility!
-        return tx_rnbase::makeInstance(get_called_class(), $data);
+        return tx_rnbase::makeInstance(static::class, $data);
     }
 
     /**
@@ -169,7 +169,7 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
      */
     public function getProperty($property = null)
     {
-        if (is_null($property)) {
+        if (null === $property) {
             return $this->record;
         }
 
@@ -246,7 +246,6 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
      * Set/Get attribute wrapper.
      *
      * @param string $method
-     * @param array  $args
      *
      * @throws Exception
      *
@@ -278,7 +277,7 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
             default:
         }
 
-        throw new Exception('Sorry, Invalid method '.get_class($this).'::'.$method.'('.print_r($args, 1).').', 1406625817);
+        throw new Exception('Sorry, Invalid method ' . static::class . '::' . $method . '(' . print_r($args, 1) . ').', 1406625817);
     }
 
     /**
@@ -348,18 +347,18 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
     public function toString()
     {
         $data = $this->getProperties();
-        $out = get_class($this).' ('.CRLF;
+        $out = static::class . ' (' . CRLF;
         foreach ($data as $key => $value) {
             $type = gettype($value);
             $value = is_bool($value) ? (int) $value : $value;
-            $value = is_string($value) ? '"'.$value.'"' : $value;
-            $value = is_object($value) ? implode(CRLF.TAB, explode(CRLF, (string) $value)) : $value;
+            $value = is_string($value) ? '"' . $value . '"' : $value;
+            $value = is_object($value) ? implode(CRLF . TAB, explode(CRLF, (string) $value)) : $value;
             $value = is_array($value) ? print_r($value, true) : $value;
-            $out .= TAB.$key.' ('.$type.')';
-            $out .= ': '.$value.CRLF;
+            $out .= TAB . $key . ' (' . $type . ')';
+            $out .= ': ' . $value . CRLF;
         }
 
-        return $out.');';
+        return $out . ');';
     }
 
     /**

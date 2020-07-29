@@ -93,16 +93,16 @@ class tx_rnbase_util_Templates
         $file = tx_rnbase_util_Files::getFileName($fileName);
 
         if (TYPO3_MODE == 'BE' && false === strpos($file, \Sys25\RnBase\Utility\Environment::getPublicPath())) {
-            $file = \Sys25\RnBase\Utility\Environment::getPublicPath().$file;
+            $file = \Sys25\RnBase\Utility\Environment::getPublicPath() . $file;
         } // Im BE auf absoluten Pfad setzen
 
         $templateCode = tx_rnbase_util_Network::getUrl($file);
         if (!$templateCode) {
-            throw new Exception('File not found: '.htmlspecialchars($fileName));
+            throw new Exception('File not found: ' . htmlspecialchars($fileName));
         }
         $template = self::getSubpart($templateCode, $subpart);
         if (!$template) {
-            throw new Exception('Subpart not found! File: '.htmlspecialchars($file).' Subpart: '.htmlspecialchars($subpart));
+            throw new Exception('Subpart not found! File: ' . htmlspecialchars($file) . ' Subpart: ' . htmlspecialchars($subpart));
         }
 
         return $template;
@@ -135,7 +135,7 @@ class tx_rnbase_util_Templates
 
         if (!TYPO3::getTSFE()->no_cache) {
             $cache = tx_rnbase_cache_Manager::getCache('rnbase');
-            $cacheKey = 'includeSubTemplateFor_'.md5($template);
+            $cacheKey = 'includeSubTemplateFor_' . md5($template);
             $included = $cache->get($cacheKey);
         }
 
@@ -169,10 +169,10 @@ class tx_rnbase_util_Templates
         try {
             $fileContent = self::getSubpartFromFile(
                 $filePath,
-                '###'.strtoupper($subPart).'###'
+                '###' . strtoupper($subPart) . '###'
             );
         } catch (Exception $e) {
-            $fileContent = '<!-- '.$e->getMessage().' -->';
+            $fileContent = '<!-- ' . $e->getMessage() . ' -->';
         }
 
         return $fileContent;
@@ -222,7 +222,7 @@ class tx_rnbase_util_Templates
             return $content;
         }
         asort($aKeys);
-        $storeKey = md5('substituteMarkerArrayCached_storeKey:'.serialize([$content, $aKeys]));
+        $storeKey = md5('substituteMarkerArrayCached_storeKey:' . serialize([$content, $aKeys]));
 
         if (self::$substMarkerCache[$storeKey]) {
             $storeArr = self::$substMarkerCache[$storeKey];
@@ -251,7 +251,7 @@ class tx_rnbase_util_Templates
                 // Doing regex's
                 $storeArr['c'] = explode($regex, $content);
                 $keyList = [];
-                preg_match_all('/'.$regex.'/', $content, $keyList);
+                preg_match_all('/' . $regex . '/', $content, $keyList);
                 $storeArr['k'] = $keyList[0];
                 // Setting cache:
                 self::$substMarkerCache[$storeKey] = $storeArr;
@@ -281,7 +281,7 @@ class tx_rnbase_util_Templates
             if (!is_array($valueArr[$keyN])) {
                 $content .= $valueArr[$keyN];
             } else {
-                $content .= $valueArr[$keyN][(intval($wSCA_reg[$keyN]) % 2)];
+                $content .= $valueArr[$keyN][((int) ($wSCA_reg[$keyN]) % 2)];
                 ++$wSCA_reg[$keyN];
             }
         }
@@ -354,13 +354,13 @@ class tx_rnbase_util_Templates
         tx_rnbase_util_Misc::pushTT('substituteMarkerArray');
 
         // If not arrays then set them
-        if (is_null($markContentArray)) {
+        if (null === $markContentArray) {
             $markContentArray = [];
         }    // Plain markers
-        if (is_null($subpartContentArray)) {
+        if (null === $subpartContentArray) {
             $subpartContentArray = [];
         }    // Subparts being directly substituted
-        if (is_null($wrappedSubpartContentArray)) {
+        if (null === $wrappedSubpartContentArray) {
             $wrappedSubpartContentArray = [];
         }    // Subparts being wrapped
         // Finding keys and check hash:
@@ -381,7 +381,7 @@ class tx_rnbase_util_Templates
 
         $storeKey = '';
         if (self::isSubstCacheEnabled()) {
-            $storeKey = md5('substituteMarkerArrayCached_storeKey:'.serialize([$content, $mPKeys, $sPkeys, $wPkeys]));
+            $storeKey = md5('substituteMarkerArrayCached_storeKey:' . serialize([$content, $mPKeys, $sPkeys, $wPkeys]));
         }
 
         if (self::isSubstCacheEnabled() && self::$substMarkerCache[$storeKey]) {
@@ -408,7 +408,7 @@ class tx_rnbase_util_Templates
                 foreach ($aKeys as $tK => $tV) {
                     $aKeys[$tK] = preg_quote($tV, '/');
                 }
-                $regex = '/'.implode('|', $aKeys).'/';
+                $regex = '/' . implode('|', $aKeys) . '/';
                 // Doing regex's
                 $storeArr['c'] = preg_split($regex, $content);
                 $keyList = [];
@@ -442,7 +442,7 @@ class tx_rnbase_util_Templates
             if (!is_array($valueArr[$keyN])) {
                 $content .= $valueArr[$keyN];
             } else {
-                $content .= $valueArr[$keyN][(intval($wSCA_reg[$keyN]) % 2)];
+                $content .= $valueArr[$keyN][((int) ($wSCA_reg[$keyN]) % 2)];
                 ++$wSCA_reg[$keyN];
             }
         }

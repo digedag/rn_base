@@ -57,9 +57,6 @@ abstract class tx_rnbase_mod_base_Lister
 
     /**
      * Constructor.
-     *
-     * @param tx_rnbase_mod_IModule $mod
-     * @param array                 $options
      */
     public function __construct(tx_rnbase_mod_IModule $mod, array $options = [])
     {
@@ -96,7 +93,6 @@ abstract class tx_rnbase_mod_base_Lister
     /**
      * Init object.
      *
-     * @param tx_rnbase_mod_IModule $mod
      * @param array                 $options
      */
     protected function init(tx_rnbase_mod_IModule $mod, $options)
@@ -133,7 +129,7 @@ abstract class tx_rnbase_mod_base_Lister
 
         $this->setFilterValue('searchword', $this->showFreeTextSearchForm(
             $data['search'],
-            $this->getSearcherId().'Search',
+            $this->getSearcherId() . 'Search',
             $options
         ));
 
@@ -180,7 +176,7 @@ abstract class tx_rnbase_mod_base_Lister
     protected function getSearchButton()
     {
         $out = $this->getFormTool()->createSubmit(
-            $this->getSearcherId().'Search',
+            $this->getSearcherId() . 'Search',
             '###LABEL_BTN_SEARCH###'
         );
 
@@ -203,7 +199,7 @@ abstract class tx_rnbase_mod_base_Lister
         /* @var $pager tx_rnbase_util_BEPager */
         $pager = tx_rnbase::makeInstance(
             'tx_rnbase_util_BEPager',
-            $this->getSearcherId().'Pager',
+            $this->getSearcherId() . 'Pager',
             $this->getModule()->getName(),
             $this->options['pid']
         );
@@ -227,21 +223,18 @@ abstract class tx_rnbase_mod_base_Lister
         //nur wenn es auch Ergebnisse gibt. sonst reicht die noItemsFoundMsg
         $sPagerData = '';
         if ($cnt) {
-            $sPagerData = $pagerData['limits'].' - '.$pagerData['pages'];
+            $sPagerData = $pagerData['limits'] . ' - ' . $pagerData['pages'];
         }
 
         return [
                 'table' => $content,
                 'totalsize' => $cnt,
-                'pager' => '<div class="pager">'.$sPagerData.'</div>',
+                'pager' => '<div class="pager">' . $sPagerData . '</div>',
             ];
     }
 
     /**
      * Kann von der Kindklasse überschrieben werden, um weitere Filter zu setzen.
-     *
-     * @param array $fields
-     * @param array $options
      */
     protected function prepareFieldsAndOptions(array &$fields, array &$options)
     {
@@ -279,7 +272,7 @@ abstract class tx_rnbase_mod_base_Lister
             // das Label in die notwendige SQL-Anweisung umwandeln. Normalerweise ein Spaltenname.
             $sortCol = $cols[$sortField]['sortable'];
             // Wenn am Ende ein Punkt steht, muss die Spalte zusammengefügt werden.
-            $sortCol = '.' === substr($sortCol, -1) ? $sortCol.$sortField : $sortCol;
+            $sortCol = '.' === substr($sortCol, -1) ? $sortCol . $sortField : $sortCol;
             $options['orderby'][$sortCol] = ('asc' == strtolower($sortRev) ? 'asc' : 'desc');
         }
     }
@@ -302,7 +295,7 @@ abstract class tx_rnbase_mod_base_Lister
     protected function showItems(&$content, $items)
     {
         if (!(is_array($items) || $items instanceof Traversable)) {
-            throw new Exception('Argument 2 passed to'.__METHOD__.'() must be of the type array or Traversable.');
+            throw new Exception('Argument 2 passed to' . __METHOD__ . '() must be of the type array or Traversable.');
         }
 
         if (0 === count($items)) {
@@ -387,10 +380,6 @@ abstract class tx_rnbase_mod_base_Lister
         ];
     }
 
-    /**
-     * @param array $fields
-     * @param array $options
-     */
     protected function getCount(array &$fields, array $options)
     {
         // Get counted data
@@ -436,7 +425,7 @@ abstract class tx_rnbase_mod_base_Lister
      */
     protected function getNoItemsFoundMsg()
     {
-        return '<p><strong>###LABEL_NO_'.strtoupper($this->getSearcherId()).'_FOUND###</strong></p><br/>';
+        return '<p><strong>###LABEL_NO_' . strtoupper($this->getSearcherId()) . '_FOUND###</strong></p><br/>';
     }
 
     //////
@@ -449,7 +438,6 @@ abstract class tx_rnbase_mod_base_Lister
      *
      * @param array  $fields
      * @param string $searchword
-     * @param array  $cols
      */
     protected static function buildFreeText(&$fields, $searchword, array $cols = [])
     {
@@ -467,8 +455,6 @@ abstract class tx_rnbase_mod_base_Lister
     }
 
     /**
-     * @param array $data
-     *
      * @return string
      */
     protected function buildFilterTable(array $data)
@@ -478,9 +464,9 @@ abstract class tx_rnbase_mod_base_Lister
             $out .= '<table class="filters">';
             foreach ($data as $label => $filter) {
                 $out .= '<tr>';
-                $out .= '<td>'.(isset($filter['label']) ? $filter['label'] : $label).'</td>';
+                $out .= '<td>' . (isset($filter['label']) ? $filter['label'] : $label) . '</td>';
                 unset($filter['label']);
-                $out .= '<td>'.implode(' ', $filter).'</td>';
+                $out .= '<td>' . implode(' ', $filter) . '</td>';
 
                 $out .= '</tr>';
             }
@@ -511,8 +497,8 @@ abstract class tx_rnbase_mod_base_Lister
         ]);
 
         // Erst das Suchfeld, danach der Button.
-        $marker['field'] = $this->getFormTool()->createTxtInput('SET['.$key.']', $searchstring, 10);
-        $marker['label'] = $options['label'] ? $options['label'] : '###LABEL_SEARCH###';
+        $marker['field'] = $this->getFormTool()->createTxtInput('SET[' . $key . ']', $searchstring, 10);
+        $marker['label'] = $options['label'] ?: '###LABEL_SEARCH###';
 
         return $searchstring;
     }
@@ -528,7 +514,7 @@ abstract class tx_rnbase_mod_base_Lister
             'changed' => Tx_Rnbase_Utility_T3General::_GP('SET'),
         ]);
 
-        $options['label'] = $options['label'] ? $options['label'] : $GLOBALS['LANG']->getLL('label_hidden');
+        $options['label'] = $options['label'] ?: $GLOBALS['LANG']->getLL('label_hidden');
 
         return tx_rnbase_mod_Util::showSelectorByArray($items, $selectedItem, 'showhidden', $marker, $options);
     }
