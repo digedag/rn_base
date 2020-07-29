@@ -1,7 +1,7 @@
 <?php
 
 if (!defined('TYPO3_MODE')) {
-    die('Access denied.');
+    exit('Access denied.');
 }
 
 if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['rnbase']) &&
@@ -21,4 +21,4 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clea
     'Tx_Rnbase_Hook_DataHandler->clearCacheForConfiguredTagsByTable';
 
 // still necessary?
-require_once \tx_rnbase_util_Extensions::extPath('rn_base').'Classes/Constants.php';
+require_once \tx_rnbase_util_Extensions::extPath('rn_base') . 'Classes/Constants.php';

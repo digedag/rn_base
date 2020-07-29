@@ -145,13 +145,13 @@ class tx_rnbase_util_Spyc
         // and options soon.  And better support for folding.
 
         // New features and options.
-        if (false === $indent or !is_numeric($indent)) {
+        if (false === $indent || !is_numeric($indent)) {
             $this->_dumpIndent = 2;
         } else {
             $this->_dumpIndent = $indent;
         }
 
-        if (false === $wordwrap or !is_numeric($wordwrap)) {
+        if (false === $wordwrap || !is_numeric($wordwrap)) {
             $this->_dumpWordWrap = 40;
         } else {
             $this->_dumpWordWrap = $wordwrap;
@@ -243,10 +243,10 @@ class tx_rnbase_util_Spyc
 
         if (is_int($key)) {
             // It's a sequence
-            $string = $spaces.'- '.$value."\n";
+            $string = $spaces . '- ' . $value . "\n";
         } else {
             // It's mapped
-            $string = $spaces.$key.': '.$value."\n";
+            $string = $spaces . $key . ': ' . $value . "\n";
         }
 
         return $string;
@@ -267,7 +267,7 @@ class tx_rnbase_util_Spyc
         $indent += $this->_dumpIndent;
         $spaces = str_repeat(' ', $indent);
         foreach ($exploded as $line) {
-            $newValue .= "\n".$spaces.trim($line);
+            $newValue .= "\n" . $spaces . trim($line);
         }
 
         return $newValue;
@@ -291,7 +291,7 @@ class tx_rnbase_util_Spyc
             $indent += $this->_dumpIndent;
             $indent = str_repeat(' ', $indent);
             $wrapped = wordwrap($value, $this->_dumpWordWrap, "\n$indent");
-            $value = ">\n".$indent.$wrapped;
+            $value = ">\n" . $indent . $wrapped;
         }
 
         return $value;
@@ -318,7 +318,7 @@ class tx_rnbase_util_Spyc
             }
 
             if ($literalBlockStyle = $this->startsLiteralBlock($line)) {
-                $line = rtrim($line, $literalBlockStyle."\n");
+                $line = rtrim($line, $literalBlockStyle . "\n");
                 $literalBlock = '';
                 $line .= $this->LiteralPlaceHolder;
 
@@ -455,7 +455,7 @@ class tx_rnbase_util_Spyc
                 $array = $array + $this->_toType($v);
             }
             $value = $array;
-        } elseif ('null' == strtolower($value) or '' == $value or '~' == $value) {
+        } elseif ('null' == strtolower($value) || '' == $value || '~' == $value) {
             $value = null;
         } elseif (preg_match('/^[0-9]+$/', $value)) {
             $value = (int) $value;
@@ -576,7 +576,7 @@ class tx_rnbase_util_Spyc
         }
         $value = $array[$key];
         $tempPath = self::flatten($this->path);
-        eval('$_arr = $this->result'.$tempPath.';');
+        eval('$_arr = $this->result' . $tempPath . ';');
 
         if ($this->_containsGroupAlias) {
             do {
@@ -586,7 +586,7 @@ class tx_rnbase_util_Spyc
                     break;
                 }
                 $groupPath = $this->SavedGroups[$this->_containsGroupAlias];
-                eval('$value = $this->result'.self::flatten($groupPath).';');
+                eval('$value = $this->result' . self::flatten($groupPath) . ';');
             } while (false);
             $this->_containsGroupAlias = false;
         }
@@ -609,7 +609,7 @@ class tx_rnbase_util_Spyc
 
         $this->path[$indent] = $key;
 
-        eval('$this->result'.$tempPath.' = $_arr;');
+        eval('$this->result' . $tempPath . ' = $_arr;');
 
         if ($this->_containsGroupAnchor) {
             $this->SavedGroups[$this->_containsGroupAnchor] = $this->path;
@@ -649,17 +649,17 @@ class tx_rnbase_util_Spyc
         $line = str_replace("\r\n", "\n", $line);
 
         if ('|' == $literalBlockStyle) {
-            return $literalBlock.$line;
+            return $literalBlock . $line;
         }
         if (0 == strlen($line)) {
-            return $literalBlock."\n";
+            return $literalBlock . "\n";
         }
 
         if ("\n" != $line) {
-            $line = trim($line, "\r\n ").' ';
+            $line = trim($line, "\r\n ") . ' ';
         }
 
-        return $literalBlock.$line;
+        return $literalBlock . $line;
     }
 
     private function revertLiteralPlaceHolder($lineArray, $literalBlock)

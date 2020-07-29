@@ -252,7 +252,7 @@ class TYPO3
     {
         $versionParts = explode('.', $versionNumber);
 
-        return intval((int) $versionParts[0].str_pad((int) $versionParts[1], 3, '0', STR_PAD_LEFT).str_pad((int) $versionParts[2], 3, '0', STR_PAD_LEFT));
+        return (int) ((int) $versionParts[0] . str_pad((int) $versionParts[1], 3, '0', STR_PAD_LEFT) . str_pad((int) $versionParts[2], 3, '0', STR_PAD_LEFT));
     }
 
     /**
@@ -264,9 +264,9 @@ class TYPO3
      */
     public static function loadExtInfo($_EXTKEY)
     {
-        $path = \tx_rnbase_util_Extensions::extPath($_EXTKEY).'ext_emconf.php';
+        $path = \tx_rnbase_util_Extensions::extPath($_EXTKEY) . 'ext_emconf.php';
         @include $path;
-        if (is_array($EM_CONF[$_EXTKEY])) {
+        if (\is_array($EM_CONF[$_EXTKEY])) {
             return $EM_CONF[$_EXTKEY];
         }
 
@@ -311,7 +311,7 @@ class TYPO3
             return false;
         }
 
-        return intval($version) <= self::convertVersionNumberToInteger(self::getExtVersion($_EXTKEY));
+        return (int) $version <= self::convertVersionNumberToInteger(self::getExtVersion($_EXTKEY));
     }
 
     /**
@@ -333,7 +333,7 @@ class TYPO3
     {
         $feuser = self::getFEUser();
 
-        return is_object($feuser) && isset($feuser->user['uid']) ? $feuser->user['uid'] : false;
+        return \is_object($feuser) && isset($feuser->user['uid']) ? $feuser->user['uid'] : false;
     }
 
     /**
@@ -355,7 +355,7 @@ class TYPO3
     {
         $beuser = self::getBEUser();
 
-        return is_object($beuser) && isset($beuser->user['uid']) ? $beuser->user['uid'] : false;
+        return \is_object($beuser) && isset($beuser->user['uid']) ? $beuser->user['uid'] : false;
     }
 
     /**
@@ -377,7 +377,7 @@ class TYPO3
      */
     public static function getTSFE()
     {
-        if (!is_object($GLOBALS['TSFE'])) {
+        if (!\is_object($GLOBALS['TSFE'])) {
             \tx_rnbase::load('tx_rnbase_util_Misc');
             \tx_rnbase_util_Misc::prepareTSFE();
         }
@@ -408,8 +408,8 @@ class TYPO3
      */
     public static function getSysPage()
     {
-        if (!is_object(self::$sysPage)) {
-            if (is_object($GLOBALS['TSFE']->sys_page)) {
+        if (!\is_object(self::$sysPage)) {
+            if (\is_object($GLOBALS['TSFE']->sys_page)) {
                 self::$sysPage = $GLOBALS['TSFE']->sys_page;
             } // Use existing SysPage from TSFE
             else {
@@ -443,7 +443,7 @@ class TYPO3
         if (self::isTYPO80OrHigher()) {
             $isCliMode = TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI;
         } else {
-            $isCliMode = defined('TYPO3_cliMode');
+            $isCliMode = \defined('TYPO3_cliMode');
         }
 
         return $isCliMode;

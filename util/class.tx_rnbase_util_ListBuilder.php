@@ -55,8 +55,6 @@ class tx_rnbase_util_ListBuilder
 
     /**
      * Add a visitor callback. It is called for each item before rendering.
-     *
-     * @param array $callback
      */
     public function addVisitor(array $callback)
     {
@@ -66,7 +64,7 @@ class tx_rnbase_util_ListBuilder
     public function renderEach(tx_rnbase_util_IListProvider $provider, $viewData, $template, $markerClassname, $confId, $marker, $formatter, $markerParams = null)
     {
         $viewData = is_object($viewData) ? $viewData : new ArrayObject();
-        $debugKey = $formatter->getConfigurations()->get($confId.'_debuglb');
+        $debugKey = $formatter->getConfigurations()->get($confId . '_debuglb');
         $debug = (
             $debugKey &&
             (
@@ -85,9 +83,9 @@ class tx_rnbase_util_ListBuilder
         $outerMarker = $this->getOuterMarker($marker, $template);
         /* @var $listMarker tx_rnbase_util_ListMarker */
         $listMarker = tx_rnbase::makeInstance('tx_rnbase_util_ListMarker', $this->info->getListMarkerInfo());
-        while ($templateList = tx_rnbase_util_Templates::getSubpart($template, '###'.$outerMarker.'S###')) {
+        while ($templateList = tx_rnbase_util_Templates::getSubpart($template, '###' . $outerMarker . 'S###')) {
             $markerArray = $subpartArray = [];
-            $templateEntry = tx_rnbase_util_Templates::getSubpart($templateList, '###'.$marker.'###');
+            $templateEntry = tx_rnbase_util_Templates::getSubpart($templateList, '###' . $marker . '###');
             $offset = 0;
             $pageBrowser = $viewData->offsetGet('pagebrowser');
             if ($pageBrowser) {
@@ -103,7 +101,7 @@ class tx_rnbase_util_ListBuilder
                 $pagerData,
                 $charPointer,
                 $formatter->getConfigurations(),
-                $confId.'charbrowser.'
+                $confId . 'charbrowser.'
             );
 
             $listMarker->addVisitors($this->visitors);
@@ -118,43 +116,43 @@ class tx_rnbase_util_ListBuilder
                 $offset
             );
             if ($ret['size'] > 0) {
-                $subpartArray['###'.$marker.'###'] = $ret['result'];
-                $subpartArray['###'.$marker.'EMPTYLIST###'] = '';
+                $subpartArray['###' . $marker . '###'] = $ret['result'];
+                $subpartArray['###' . $marker . 'EMPTYLIST###'] = '';
                 // Das Menu für den PageBrowser einsetzen
                 if ($pageBrowser) {
                     $subpartArray['###PAGEBROWSER###'] = tx_rnbase_util_BaseMarker::fillPageBrowser(
                         tx_rnbase_util_Templates::getSubpart($template, '###PAGEBROWSER###'),
                         $pageBrowser,
                         $formatter,
-                        $confId.'pagebrowser.'
+                        $confId . 'pagebrowser.'
                     );
                     $listSize = $pageBrowser->getListSize();
                 } else {
                     $listSize = $ret['size'];
                 }
-                $markerArray['###'.$marker.'COUNT###'] = $formatter->wrap($listSize, $confId.'count.');
+                $markerArray['###' . $marker . 'COUNT###'] = $formatter->wrap($listSize, $confId . 'count.');
 
                 $out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($templateList, $markerArray, $subpartArray);
             } else {
                 // Support für EMPTYLIST-Block
-                if (tx_rnbase_util_BaseMarker::containsMarker($template, $marker.'EMPTYLIST')) {
-                    $out = tx_rnbase_util_Templates::getSubpart($template, '###'.$marker.'EMPTYLIST###');
+                if (tx_rnbase_util_BaseMarker::containsMarker($template, $marker . 'EMPTYLIST')) {
+                    $out = tx_rnbase_util_Templates::getSubpart($template, '###' . $marker . 'EMPTYLIST###');
                 } else {
                     $out = $this->info->getEmptyListMessage($confId, $viewData, $formatter->getConfigurations());
                 }
             }
-            $template = tx_rnbase_util_Templates::substituteSubpart($template, '###'.$outerMarker.'S###', $out, 0);
+            $template = tx_rnbase_util_Templates::substituteSubpart($template, '###' . $outerMarker . 'S###', $out, 0);
         }
 
         $markerArray = [];
         $subpartArray = [];
-        $subpartArray['###'.$outerMarker.'S###'] = $out;
+        $subpartArray['###' . $outerMarker . 'S###'] = $out;
 
         // Muss ein Formular mit angezeigt werden
         // Zuerst auf einen Filter prüfen
         $filter = $viewData->offsetGet('filter');
         if ($filter && method_exists($filter, 'getMarker')) {
-            $template = $filter->getMarker()->parseTemplate($template, $formatter, $confId.'filter.', $marker);
+            $template = $filter->getMarker()->parseTemplate($template, $formatter, $confId . 'filter.', $marker);
         }
 
         $out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($template, $markerArray, $subpartArray);
@@ -167,7 +165,7 @@ class tx_rnbase_util_ListBuilder
                     'WrapMem' => $wrapMem,
                     'Memory start' => $mem,
                     'Memory consumed' => (memory_get_usage() - $mem),
-                ], 'ListBuilder Statistics for: '.$confId.' Key: '.$debugKey);
+                ], 'ListBuilder Statistics for: ' . $confId . ' Key: ' . $debugKey);
         }
 
         return $out;
@@ -202,7 +200,7 @@ class tx_rnbase_util_ListBuilder
     public function render(&$dataArr, $viewData, $template, $markerClassname, $confId, $marker, $formatter, $markerParams = null)
     {
         $viewData = is_object($viewData) ? $viewData : new ArrayObject();
-        $debugKey = $formatter->getConfigurations()->get($confId.'_debuglb');
+        $debugKey = $formatter->getConfigurations()->get($confId . '_debuglb');
         $debug = (
             $debugKey && (
                 '1' === $debugKey ||
@@ -218,12 +216,12 @@ class tx_rnbase_util_ListBuilder
         }
 
         $outerMarker = $this->getOuterMarker($marker, $template);
-        while (($templateList = tx_rnbase_util_Templates::getSubpart($template, '###'.$outerMarker.'S###'))) {
+        while (($templateList = tx_rnbase_util_Templates::getSubpart($template, '###' . $outerMarker . 'S###'))) {
             if ((is_array($dataArr) || $dataArr instanceof Traversable) && count($dataArr)) {
                 /* @var $listMarker tx_rnbase_util_ListMarker */
                 $listMarker = tx_rnbase::makeInstance('tx_rnbase_util_ListMarker', $this->info->getListMarkerInfo());
 
-                $templateEntry = tx_rnbase_util_Templates::getSubpart($templateList, '###'.$marker.'###');
+                $templateEntry = tx_rnbase_util_Templates::getSubpart($templateList, '###' . $marker . '###');
                 $offset = 0;
                 $pageBrowser = $viewData->offsetGet('pagebrowser');
                 if ($pageBrowser) {
@@ -243,21 +241,21 @@ class tx_rnbase_util_ListBuilder
                     $markerParams,
                     $offset
                 );
-                $subpartArray['###'.$marker.'###'] = $out;
-                $subpartArray['###'.$marker.'EMPTYLIST###'] = '';
+                $subpartArray['###' . $marker . '###'] = $out;
+                $subpartArray['###' . $marker . 'EMPTYLIST###'] = '';
                 // Das Menu für den PageBrowser einsetzen
                 if ($pageBrowser) {
                     $subpartArray['###PAGEBROWSER###'] = tx_rnbase_util_BaseMarker::fillPageBrowser(
                         tx_rnbase_util_Templates::getSubpart($template, '###PAGEBROWSER###'),
                         $pageBrowser,
                         $formatter,
-                        $confId.'pagebrowser.'
+                        $confId . 'pagebrowser.'
                     );
                     $listSize = $pageBrowser->getListSize();
                 } else {
                     $listSize = count($dataArr);
                 }
-                $markerArray['###'.$marker.'COUNT###'] = $formatter->wrap($listSize, $confId.'count.');
+                $markerArray['###' . $marker . 'COUNT###'] = $formatter->wrap($listSize, $confId . 'count.');
 
                 // charbrowser
                 $pagerData = $viewData->offsetGet('pagerData');
@@ -268,19 +266,19 @@ class tx_rnbase_util_ListBuilder
                     $pagerData,
                     $charPointer,
                     $formatter->getConfigurations(),
-                    $confId.'charbrowser.'
+                    $confId . 'charbrowser.'
                 );
 
                 $out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($templateList, $markerArray, $subpartArray);
             } else {
                 // Support für EMPTYLIST-Block
-                if (tx_rnbase_util_BaseMarker::containsMarker($template, $marker.'EMPTYLIST')) {
-                    $out = tx_rnbase_util_Templates::getSubpart($template, '###'.$marker.'EMPTYLIST###');
+                if (tx_rnbase_util_BaseMarker::containsMarker($template, $marker . 'EMPTYLIST')) {
+                    $out = tx_rnbase_util_Templates::getSubpart($template, '###' . $marker . 'EMPTYLIST###');
                 } else {
                     $out = $this->info->getEmptyListMessage($confId, $viewData, $formatter->getConfigurations());
                 }
             }
-            $template = tx_rnbase_util_Templates::substituteSubpart($template, '###'.$outerMarker.'S###', $out, 0);
+            $template = tx_rnbase_util_Templates::substituteSubpart($template, '###' . $outerMarker . 'S###', $out, 0);
         }
 
         $markerArray = [];
@@ -290,7 +288,7 @@ class tx_rnbase_util_ListBuilder
         // Zuerst auf einen Filter prüfen
         $filter = $viewData->offsetGet('filter');
         if ($filter && method_exists($filter, 'getMarker')) {
-            $template = $filter->getMarker()->parseTemplate($template, $formatter, $confId.'filter.', $marker);
+            $template = $filter->getMarker()->parseTemplate($template, $formatter, $confId . 'filter.', $marker);
         }
         // Jetzt noch die alte Variante
         $markerArray['###SEARCHFORM###'] = '';
@@ -312,7 +310,7 @@ class tx_rnbase_util_ListBuilder
                     'WrapMem' => $wrapMem,
                     'Memory start' => $mem,
                     'Memory consumed' => (memory_get_usage() - $mem),
-                ], 'ListBuilder Statistics for: '.$confId.' Key: '.$debugKey);
+                ], 'ListBuilder Statistics for: ' . $confId . ' Key: ' . $debugKey);
         }
 
         return $out;
@@ -323,8 +321,8 @@ class tx_rnbase_util_ListBuilder
         $outerMarker = $marker;
         $len = strlen($marker) - 1;
         if ('Y' == $marker[$len] &&
-            !tx_rnbase_util_BaseMarker::containsMarker($template, $marker.'S###')) {
-            $outerMarker = substr($marker, 0, $len).'IE';
+            !tx_rnbase_util_BaseMarker::containsMarker($template, $marker . 'S###')) {
+            $outerMarker = substr($marker, 0, $len) . 'IE';
         }
 
         return $outerMarker;

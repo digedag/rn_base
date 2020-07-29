@@ -229,7 +229,6 @@ class tx_rnbase_util_TCA
     /**
      * validates the data of a model with the tca definition of a its table.
      *
-     * @param Tx_Rnbase_Domain_Model_RecordInterface $model
      * @param array                                  $options
      *                                                        only_record_fields: validates only fields included in the record
      *
@@ -249,7 +248,6 @@ class tx_rnbase_util_TCA
     /**
      * validates an array with data with the tca definition of a specific table.
      *
-     * @param array  $record
      * @param string $tableName
      * @param array  $options
      *                          only_record_fields: validates only fields included in the record
@@ -265,7 +263,7 @@ class tx_rnbase_util_TCA
         $columns = self::getTcaColumns($tableName, $options);
 
         if (empty($columns)) {
-            throw new LogicException('No TCA found for "'.$tableName.'".');
+            throw new LogicException('No TCA found for "' . $tableName . '".');
         }
 
         foreach (array_keys($columns) as $column) {
@@ -402,7 +400,6 @@ class tx_rnbase_util_TCA
      * Return the correct uid in respect of localisation.
      *
      * @param string $tableName
-     * @param array  $rawData
      *
      * @return int
      */

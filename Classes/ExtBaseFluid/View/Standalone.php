@@ -49,9 +49,6 @@ class Standalone extends \TYPO3\CMS\Fluid\View\StandaloneView
         return $this->configurations;
     }
 
-    /**
-     * @param \Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     */
     public function setConfigurations(\Tx_Rnbase_Configuration_ProcessorInterface $configurations)
     {
         $this->configurations = $configurations;
@@ -65,9 +62,6 @@ class Standalone extends \TYPO3\CMS\Fluid\View\StandaloneView
         return $this->objectManager;
     }
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
-     */
     public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager)
     {
         $this->objectManager = $objectManager;

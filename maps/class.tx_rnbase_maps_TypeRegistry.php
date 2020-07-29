@@ -64,7 +64,6 @@ class tx_rnbase_maps_TypeRegistry
     /**
      * Returns a map specific type string.
      *
-     * @param tx_rnbase_maps_IMap $map
      * @param string              $typeId
      *
      * @return string

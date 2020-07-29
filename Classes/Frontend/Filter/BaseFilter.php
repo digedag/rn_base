@@ -111,8 +111,8 @@ class BaseFilter implements FilterInterface
      */
     public function init(&$fields, &$options)
     {
-        \tx_rnbase_util_SearchBase::setConfigFields($fields, $this->getConfigurations(), $this->getConfId().'fields.');
-        \tx_rnbase_util_SearchBase::setConfigOptions($options, $this->getConfigurations(), $this->getConfId().'options.');
+        \tx_rnbase_util_SearchBase::setConfigFields($fields, $this->getConfigurations(), $this->getConfId() . 'fields.');
+        \tx_rnbase_util_SearchBase::setConfigOptions($options, $this->getConfigurations(), $this->getConfId() . 'options.');
 
         $this->doSearch = $this->getCategoryFilterUtility()->handleSysCategoryFilter($fields, $this->doSearch);
 
@@ -157,7 +157,6 @@ class BaseFilter implements FilterInterface
      *
      * @param array            $fields
      * @param array            $options
-     * @param RequestInterface $request
      *
      * @return bool
      */
@@ -186,9 +185,6 @@ class BaseFilter implements FilterInterface
         }
     }
 
-    /**
-     * @param IFilterItem $item
-     */
     public function addFilterItem(IFilterItem $item)
     {
         $this->filterItems[] = $item;
@@ -208,7 +204,6 @@ class BaseFilter implements FilterInterface
      * Fabrikmethode zur Erstellung von Filtern. Die Klasse des Filters kann entweder direkt angegeben werden oder
      * wird über die Config gelesen. Klappt beides nicht, wird der Standardfilter geliefert.
      *
-     * @param RequestInterface $request
      * @param string           $confId
      * @param string           $filterClass Klassenname des Filters
      *
@@ -218,9 +213,9 @@ class BaseFilter implements FilterInterface
     {
         $configurations = $request->getConfigurations();
 
-        $filterClass = ($filterClass) ? $filterClass : $configurations->get($confId.'class');
-        $filterClass = ($filterClass) ? $filterClass : $configurations->get($confId.'filter');
-        $filterClass = ($filterClass) ? $filterClass : self::class;
+        $filterClass = ($filterClass) ?: $configurations->get($confId . 'class');
+        $filterClass = ($filterClass) ?: $configurations->get($confId . 'filter');
+        $filterClass = ($filterClass) ?: self::class;
         $filter = \tx_rnbase::makeInstance($filterClass, $request, $confId);
         $request->getViewContext()->offsetSet('filter', $filter);
 
@@ -235,6 +230,6 @@ class BaseFilter implements FilterInterface
     public function isSpecialSearch()
     {
         // In den meisten Projekten liegen die Nutzerdaten im Array inputData
-        return is_array($this->inputData) && count($this->inputData);
+        return \is_array($this->inputData) && \count($this->inputData);
     }
 }

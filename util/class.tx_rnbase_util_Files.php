@@ -49,21 +49,21 @@ class tx_rnbase_util_Files
         if (self::isFALReference($fName)) {
             /* @var \TYPO3\CMS\Core\Resource\FileRepository */
             $fileRepository = \tx_rnbase::makeInstance('TYPO3\CMS\Core\Resource\FileRepository');
-            $fileObject = $fileRepository->findByUid(intval(substr($fName, 5)));
+            $fileObject = $fileRepository->findByUid((int) (substr($fName, 5)));
             $incFile = is_object($fileObject) ? $fileObject->getForLocalProcessing(false) : false;
         } else {
             $incFile = self::getFileName($fName);
         }
         if ($incFile) {
             // Im BE muss ein absoluter Pfad verwendet werden
-            $fullPath = (TYPO3_MODE == 'BE') ? \Sys25\RnBase\Utility\Environment::getPublicPath().$incFile : $incFile;
+            $fullPath = (TYPO3_MODE == 'BE') ? \Sys25\RnBase\Utility\Environment::getPublicPath() . $incFile : $incFile;
             $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
             $fileinfo = $utility::split_fileref($incFile);
             if ($utility::inList('jpg,gif,jpeg,png', $fileinfo['fileext'])) {
                 $imgFile = $incFile;
                 $imgInfo = @getimagesize($imgFile);
                 $addParams = isset($options['addparams']) ? $options['addparams'] : 'alt="" title=""';
-                $ret = '<img src="'.$GLOBALS['TSFE']->absRefPrefix.$imgFile.'" width="'.$imgInfo[0].'" height="'.$imgInfo[1].'"'.self::getBorderAttr(' border="0"').' '.$addParams.' />';
+                $ret = '<img src="' . $GLOBALS['TSFE']->absRefPrefix . $imgFile . '" width="' . $imgInfo[0] . '" height="' . $imgInfo[1] . '"' . self::getBorderAttr(' border="0"') . ' ' . $addParams . ' />';
             } elseif (file_exists($fullPath) && filesize($fullPath) < 1024 * 1024) {
                 $ret = @file_get_contents($fullPath);
                 $subpart = isset($options['subpart']) ? $options['subpart'] : '';
@@ -132,10 +132,10 @@ class tx_rnbase_util_Files
     {
         $absFile = self::getFileAbsFileName($fName);
         if (!(self::isAllowedAbsPath($absFile) && @is_file($absFile))) {
-            throw new Exception('File not found: '.$fName);
+            throw new Exception('File not found: ' . $fName);
         }
         if (!@is_readable($absFile)) {
-            throw new Exception('File is not readable: '.$absFile);
+            throw new Exception('File is not readable: ' . $absFile);
         }
 
         return $absFile;

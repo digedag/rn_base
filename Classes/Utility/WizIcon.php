@@ -51,14 +51,14 @@ abstract class Tx_Rnbase_Utility_WizIcon
                     continue;
                 }
                 Tx_Rnbase_Backend_Utility_Icons::getIconRegistry()->registerIcon(
-                    $id.'-icon',
+                    $id . '-icon',
                     'TYPO3\\CMS\Core\\Imaging\\IconProvider\\BitmapIconProvider',
                     ['source' => $data['icon']]
                 );
                 $configFile = $data['tsconfig'];
                 // Wizardkonfiguration hinzufügen
                 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
-                    '<INCLUDE_TYPOSCRIPT: source="'.$configFile.'">'
+                    '<INCLUDE_TYPOSCRIPT: source="' . $configFile . '">'
                 );
             }
         }
@@ -76,11 +76,11 @@ abstract class Tx_Rnbase_Utility_WizIcon
         $lang = $this->includeLocalLang();
         $plugins = $this->getPluginData();
         foreach ($plugins as $id => $plugin) {
-            $wizardItems['plugins_'.$id] = [
+            $wizardItems['plugins_' . $id] = [
                 'icon' => $plugin['icon'],
                 'title' => $lang->getLL($plugin['title']),
                 'description' => $lang->getLL($plugin['description']),
-                'params' => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]='.$id,
+                'params' => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=' . $id,
             ];
         }
 

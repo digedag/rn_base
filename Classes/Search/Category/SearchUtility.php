@@ -37,7 +37,6 @@ namespace Sys25\RnBase\Search\Category;
 class SearchUtility
 {
     /**
-     * @param array  $tableMappings
      * @param string $tableAlias
      *
      * @return array
@@ -53,7 +52,6 @@ class SearchUtility
      * @param string $baseTableName
      * @param string $baseTableAlias
      * @param string $fieldName
-     * @param array  $givenTableAliases
      * @param string $sysCategoryTableAlias
      *
      * @return string
@@ -68,11 +66,11 @@ class SearchUtility
         $joins = '';
         if (isset($givenTableAliases[$sysCategoryTableAlias])) {
             $joins =
-                ' LEFT JOIN sys_category_record_mm AS '.$sysCategoryTableAlias.'_MM ON '.$sysCategoryTableAlias.'_MM.uid_foreign'.
-                ' = '.$baseTableAlias.'.uid AND '.$sysCategoryTableAlias.'_MM.tablenames = "'.
-                $baseTableName.'" AND '.$sysCategoryTableAlias.'_MM.fieldname = "'.$fieldName.'"'.
-                ' LEFT JOIN sys_category AS '.$sysCategoryTableAlias.' ON '.$sysCategoryTableAlias.
-                '.uid = '.$sysCategoryTableAlias.'_MM.uid_local';
+                ' LEFT JOIN sys_category_record_mm AS ' . $sysCategoryTableAlias . '_MM ON ' . $sysCategoryTableAlias . '_MM.uid_foreign' .
+                ' = ' . $baseTableAlias . '.uid AND ' . $sysCategoryTableAlias . '_MM.tablenames = "' .
+                $baseTableName . '" AND ' . $sysCategoryTableAlias . '_MM.fieldname = "' . $fieldName . '"' .
+                ' LEFT JOIN sys_category AS ' . $sysCategoryTableAlias . ' ON ' . $sysCategoryTableAlias .
+                '.uid = ' . $sysCategoryTableAlias . '_MM.uid_local';
         }
 
         return $joins;
@@ -82,7 +80,6 @@ class SearchUtility
      * @param string $baseTableName
      * @param string $baseTableAlias
      * @param string $fieldName
-     * @param array  $givenTableAliases
      * @param string $sysCategoryTableAlias
      *
      * @return string
@@ -97,9 +94,9 @@ class SearchUtility
         $joins = '';
         if (isset($givenTableAliases[$sysCategoryTableAlias])) {
             $joins =
-            ' LEFT JOIN sys_category_record_mm ON sys_category_record_mm.uid_foreign'.
-            ' = '.$baseTableName.'.uid AND sys_category_record_mm.tablenames = "'.
-            $baseTableName.'" AND sys_category_record_mm.fieldname = "'.$fieldName.'"'.
+            ' LEFT JOIN sys_category_record_mm ON sys_category_record_mm.uid_foreign' .
+            ' = ' . $baseTableName . '.uid AND sys_category_record_mm.tablenames = "' .
+            $baseTableName . '" AND sys_category_record_mm.fieldname = "' . $fieldName . '"' .
             ' LEFT JOIN sys_category ON sys_category.uid = sys_category_record_mm.uid_local';
         }
 

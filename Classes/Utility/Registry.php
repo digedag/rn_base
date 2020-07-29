@@ -53,7 +53,7 @@ class Registry
      */
     public function get($key, $domain = '')
     {
-        $domain = $domain ? $domain : $this->domain;
+        $domain = $domain ?: $this->domain;
         /* @var $registry \TYPO3\CMS\Core\Registry */
         $registry = \tx_rnbase::makeInstance(\TYPO3\CMS\Core\Registry::class);
 
@@ -69,7 +69,7 @@ class Registry
      */
     public function set($key, $value, $domain = '')
     {
-        $domain = $domain ? $domain : $this->domain;
+        $domain = $domain ?: $this->domain;
         /* @var $registry \TYPO3\CMS\Core\Registry */
         $registry = \tx_rnbase::makeInstance(\TYPO3\CMS\Core\Registry::class);
 

@@ -52,7 +52,7 @@ class GetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
     public function render()
     {
         $value = $this->getRenderingContext()->getViewHelperVariableContainer()->getView()->getConfigurations()
-            ->get($this->arguments['confId'].$this->arguments['typoscriptPath']);
+            ->get($this->arguments['confId'] . $this->arguments['typoscriptPath']);
 
         return $value;
     }

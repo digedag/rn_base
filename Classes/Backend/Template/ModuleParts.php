@@ -136,8 +136,6 @@ class Tx_Rnbase_Backend_Template_ModuleParts
     }
 
     /**
-     * @param array $pageInfo
-     *
      * @return Tx_Rnbase_Backend_Template_ModuleParts
      */
     public function setPageInfo(array $pageInfo)

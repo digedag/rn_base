@@ -134,7 +134,7 @@ function jumpToUrl(URL) {
             foreach ($menuItems as $value => $label) {
                 $menuDef[$value]['isActive'] = (string) $currentValue === (string) $value;
                 $menuDef[$value]['label'] = htmlspecialchars($label, ENT_COMPAT, 'UTF-8', false);
-                $menuDef[$value]['url'] = $script.'?'.$mainParams.$addparams.'&'.$elementName.'='.$value;
+                $menuDef[$value]['url'] = $script . '?' . $mainParams . $addparams . '&' . $elementName . '=' . $value;
             }
             $content = $this->getTabMenuRaw($menuDef);
         }
@@ -160,10 +160,10 @@ function jumpToUrl(URL) {
             $label = $def['label'];
             $url = htmlspecialchars($def['url']);
             $params = $def['addParams'];
-            $options .= '<li class="'.$class.'">'.'<a href="'.$url.'" '.$params.'>'.$label.'</a>'.'</li>';
+            $options .= '<li class="' . $class . '">' . '<a href="' . $url . '" ' . $params . '>' . $label . '</a>' . '</li>';
         }
 
-        return '<ul class="nav nav-tabs" role="tablist">'.$options.'</ul>';
+        return '<ul class="nav nav-tabs" role="tablist">' . $options . '</ul>';
     }
 
     /**
@@ -178,7 +178,7 @@ function jumpToUrl(URL) {
     public function spacer($dist)
     {
         if ($dist > 0) {
-            return '<!-- Spacer element --><div style="padding-top: '.(int) $dist.'px;"></div>';
+            return '<!-- Spacer element --><div style="padding-top: ' . (int) $dist . 'px;"></div>';
         }
     }
 
@@ -218,28 +218,28 @@ function jumpToUrl(URL) {
         $icon = isset($icons[$type]) ? $icons[$type] : null;
         $iconTemplate = '';
         if (!$disableIcon) {
-            $iconTemplate = ''.
-                '<div class="media-left">'.
-                  '<span class="fa-stack fa-lg callout-icon">'.
-                    '<i class="fa fa-circle fa-stack-2x"></i>'.
-                    '<i class="fa fa-'.htmlspecialchars($icon).' fa-stack-1x"></i>'.
-                  '</span>'.
+            $iconTemplate = '' .
+                '<div class="media-left">' .
+                  '<span class="fa-stack fa-lg callout-icon">' .
+                    '<i class="fa fa-circle fa-stack-2x"></i>' .
+                    '<i class="fa fa-' . htmlspecialchars($icon) . ' fa-stack-1x"></i>' .
+                  '</span>' .
                 '</div>';
         }
         $titleTemplate = '';
         if (null !== $title) {
             $title = $allowHTMLinHeader ? $title : htmlspecialchars($title);
-            $titleTemplate = '<h4 class="callout-title">'.$title.'</h4>';
+            $titleTemplate = '<h4 class="callout-title">' . $title . '</h4>';
         }
 
-        return '<div class="callout callout-'.htmlspecialchars($stateClass).'">'.
-                 '<div class="media">'.
-                    $iconTemplate.
-                   '<div class="media-body">'.
-                     $titleTemplate.
-                   '<div class="callout-body">'.$message.'</div>'.
-                   '</div>'.
-                 '</div>'.
+        return '<div class="callout callout-' . htmlspecialchars($stateClass) . '">' .
+                 '<div class="media">' .
+                    $iconTemplate .
+                   '<div class="media-body">' .
+                     $titleTemplate .
+                   '<div class="callout-body">' . $message . '</div>' .
+                   '</div>' .
+                 '</div>' .
                '</div>';
     }
 
@@ -257,7 +257,7 @@ function jumpToUrl(URL) {
 //         }
         $dist = (int) $dist;
 
-        return '<!-- DIVIDER --><hr style="margin-top: '.$dist.'px; margin-bottom: '.$dist.'px;" />';
+        return '<!-- DIVIDER --><hr style="margin-top: ' . $dist . 'px; margin-bottom: ' . $dist . 'px;" />';
     }
 
     /**
@@ -271,11 +271,11 @@ function jumpToUrl(URL) {
      */
     public function insertStylesAndJS($content)
     {
-        $styles = LF.implode(LF, $this->inDocStylesArray);
+        $styles = LF . implode(LF, $this->inDocStylesArray);
         $content = str_replace('/*###POSTCSSMARKER###*/', $styles, $content);
 
         // Insert accumulated JS
-        $jscode = $this->JScode.LF.GeneralUtility::wrapJS(implode(LF, $this->JScodeArray));
+        $jscode = $this->JScode . LF . GeneralUtility::wrapJS(implode(LF, $this->JScodeArray));
         $content = str_replace('<!--###POSTJSMARKER###-->', $jscode, $content);
 
         return $content;
@@ -294,7 +294,7 @@ function jumpToUrl(URL) {
      */
     public function formWidth($size = 48, $textarea = false, $styleOverride = '')
     {
-        return ' style="'.($styleOverride ?: 'width:'.ceil($size * 9.58).'px;').'"';
+        return ' style="' . ($styleOverride ?: 'width:' . ceil($size * 9.58) . 'px;') . '"';
     }
 
     /**
@@ -346,7 +346,7 @@ function jumpToUrl(URL) {
      */
     public function endPage()
     {
-        $str = $this->postCode.$this->wrapScriptTags(BackendUtility::getUpdateSignalCode()).($this->form ? '
+        $str = $this->postCode . $this->wrapScriptTags(BackendUtility::getUpdateSignalCode()) . ($this->form ? '
 </form>' : '');
         // If something is in buffer like debug, put it to end of page
         if (ob_get_contents()) {
@@ -358,7 +358,7 @@ function jumpToUrl(URL) {
         $str .= ($this->divClass ? '
 
 <!-- Wrapping DIV-section for whole page END -->
-</div>' : '').$this->endOfPageJsBlock;
+</div>' : '') . $this->endOfPageJsBlock;
 
         return $str;
     }
@@ -382,13 +382,13 @@ function jumpToUrl(URL) {
             $string = ltrim($string, LF);
             // Re-ident to one tab using the first line as reference
             if (TAB === $string[0]) {
-                $string = TAB.ltrim($string, TAB);
+                $string = TAB . ltrim($string, TAB);
             }
-            $string = $cr.'<script type="text/javascript">
+            $string = $cr . '<script type="text/javascript">
 /*<![CDATA[*/
-'.$string.'
+' . $string . '
 /*]]>*/
-</script>'.$cr;
+</script>' . $cr;
         }
 
         return trim($string);

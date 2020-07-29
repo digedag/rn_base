@@ -104,8 +104,6 @@ class Tx_Rnbase_Backend_Utility_DecoratorUtility
     /**
      * Adds the column 'uid' to the be list.
      *
-     * @param array $columns
-     *
      * @return Tx_Rnbase_Backend_Utility_DecoratorUtility
      */
     public function addDecoratorColumnUid(
@@ -121,8 +119,6 @@ class Tx_Rnbase_Backend_Utility_DecoratorUtility
 
     /**
      * Adds the column 'label' to the be list.
-     *
-     * @param array $columns
      *
      * @return Tx_Rnbase_Backend_Utility_DecoratorUtility
      */
@@ -153,8 +149,6 @@ class Tx_Rnbase_Backend_Utility_DecoratorUtility
     /**
      * Adds the column 'sys_language_uid' to the be list.
      *
-     * @param array $columns
-     *
      * @return Tx_Rnbase_Backend_Utility_DecoratorUtility
      */
     public function addDecoratorColumnLanguage(
@@ -179,8 +173,6 @@ class Tx_Rnbase_Backend_Utility_DecoratorUtility
     /**
      * Adds the column 'actions' to the be list.
      * this column contains the edit, hide, remove, ... actions.
-     *
-     * @param array $columns
      *
      * @return Tx_Rnbase_Backend_Utility_DecoratorUtility
      */

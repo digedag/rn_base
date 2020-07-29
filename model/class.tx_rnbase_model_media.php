@@ -62,7 +62,7 @@ class tx_rnbase_model_media extends tx_rnbase_model_base
         $this->record['fal_file'] = '1'; // Das wird per TS ausgewertet. Die UID ist KEINE Referenz
         $this->record['uid_local'] = $media->getUid();
         $this->record['file_path'] = $media->getPublicUrl();
-        $this->record['file_abs_url'] = tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL').$this->record['file_path'];
+        $this->record['file_abs_url'] = tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL') . $this->record['file_path'];
     }
 
     /**
@@ -75,12 +75,12 @@ class tx_rnbase_model_media extends tx_rnbase_model_base
         $this->uid = $media->getUid();
         $this->record['uid'] = $media->getUid();
         $this->record['file_path'] = $media->getPublicUrl();
-        $this->record['file_abs_url'] = tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL').$this->record['file_path'];
+        $this->record['file_abs_url'] = tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL') . $this->record['file_path'];
     }
 
     private function initAdditionalData()
     {
-        $this->record['file'] = urldecode($this->record['file_path'].$this->record['file_name']);
+        $this->record['file'] = urldecode($this->record['file_path'] . $this->record['file_name']);
         // Some more file fields are useful
         $this->record['file1'] = $this->record['file'];
         $this->record['thumbnail'] = $this->record['file'];

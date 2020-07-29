@@ -51,21 +51,21 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap
         throw new Exception('Not implemented right now!');
         $this->conf = $conf;
         $this->confId = $confId;
-        $apiKey = $conf->get($confId.'google.apikey');
-        $apiKey = $apiKey ? $apiKey : null;
-        $width = $conf->get($confId.'width');
-        $height = $conf->get($confId.'height');
+        $apiKey = $conf->get($confId . 'google.apikey');
+        $apiKey = $apiKey ?: null;
+        $width = $conf->get($confId . 'width');
+        $height = $conf->get($confId . 'height');
 
         $this->map = tx_rnbase::makeInstance('JBartels\WecMap\MapService\Google\Map', $apiKey, $width, $height);
 
         // Der MapType
-        $mapType = $conf->get($confId.'maptype') ? constant($conf->get($confId.'maptype')) : null;
+        $mapType = $conf->get($confId . 'maptype') ? constant($conf->get($confId . 'maptype')) : null;
         $types = array_flip(tx_rnbase_maps_TypeRegistry::getMapTypes());
         if ($mapType && array_key_exists($mapType, $types)) {
             $this->setMapType(tx_rnbase_maps_TypeRegistry::getInstance()->getType($this, $mapType));
         }
         // Controls
-        $controls = $conf->get($confId.'google.controls');
+        $controls = $conf->get($confId . 'google.controls');
         if ($controls) {
             $controls = tx_rnbase_util_Strings::trimExplode(',', $controls);
             foreach ($controls as $control) {
@@ -94,8 +94,6 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap
 
     /**
      * Adds a control.
-     *
-     * @param tx_rnbase_maps_IControl $control
      */
     public function addControl(tx_rnbase_maps_IControl $control)
     {
@@ -104,8 +102,6 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap
 
     /**
      * Adds a marker to this map.
-     *
-     * @param tx_rnbase_maps_IMarker $marker
      */
     public function addMarker(tx_rnbase_maps_IMarker $marker)
     {
@@ -121,7 +117,7 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap
             $this->getWecMap()->addMarkerByLatLong(
                 $coord->getLatitude(),
                 $coord->getLongitude(),
-                ($marker->getTitle() ? $marker->getTitle() : ''),
+                ($marker->getTitle() ?: ''),
                 $marker->getDescription(),
                 $marker->getZoomMin(),
                 $marker->getZoomMax(),
@@ -137,7 +133,7 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap
             $marker->getState(),
             $marker->getZip(),
             $marker->getCountry(),
-            ($marker->getTitle() ? $marker->getTitle() : ''),
+            ($marker->getTitle() ?: ''),
             $marker->getDescription(),
             $marker->getZoomMin(),
             $marker->getZoomMax(),

@@ -459,7 +459,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
             ->willReturnCallback(function ($renderingContext) {
                 $variableProvider = $renderingContext->getVariableProvider();
 
-                return $variableProvider->get('pageNumber').' '.$variableProvider->get('currentPage');
+                return $variableProvider->get('pageNumber') . ' ' . $variableProvider->get('currentPage');
             });
         $viewHelper->setChildNodes([$viewHelperNode]);
 
@@ -556,14 +556,14 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
             \tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/PageBrowserViewHelper.html')
         );
         self::assertRegExp(
-            '/<div class="pagebrowser">'.
-            '<a class="current" href=".*&amp;rn_base%5Bpb-1-pointer%5D=0">1<\/a> '.
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=1">2<\/a> '.
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=2">3<\/a> '.
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=3">4<\/a> '.
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=4">5<\/a> '.
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=1">next<\/a> '.
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=9">last<\/a>'.
+            '/<div class="pagebrowser">' .
+            '<a class="current" href=".*&amp;rn_base%5Bpb-1-pointer%5D=0">1<\/a> ' .
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=1">2<\/a> ' .
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=2">3<\/a> ' .
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=3">4<\/a> ' .
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=4">5<\/a> ' .
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=1">next<\/a> ' .
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=9">last<\/a>' .
             '<\/div>/',
             trim($view->render())
         );
@@ -587,16 +587,16 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
         );
 
         self::assertRegExp(
-            '/<div class="pagebrowser">'.
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=0">first<\/a> '.
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=2">previous<\/a> '.
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=1">2<\/a> '.
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=2">3<\/a> '.
-            '<a class="current" href=".*&amp;rn_base%5Bpb-1-pointer%5D=3">4<\/a> '.
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=4">5<\/a> '.
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=5">6<\/a> '.
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=4">next<\/a> '.
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=9">last<\/a>'.
+            '/<div class="pagebrowser">' .
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=0">first<\/a> ' .
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=2">previous<\/a> ' .
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=1">2<\/a> ' .
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=2">3<\/a> ' .
+            '<a class="current" href=".*&amp;rn_base%5Bpb-1-pointer%5D=3">4<\/a> ' .
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=4">5<\/a> ' .
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=5">6<\/a> ' .
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=4">next<\/a> ' .
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=9">last<\/a>' .
             '<\/div>/',
             trim($view->render())
         );
@@ -620,14 +620,14 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
         );
 
         self::assertRegExp(
-            '/<div class="pagebrowser">'.
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=0">first<\/a> '.
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=8">previous<\/a> '.
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=5">6<\/a> '.
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=6">7<\/a> '.
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=7">8<\/a> '.
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=8">9<\/a> '.
-            '<a class="current" href=".*&amp;rn_base%5Bpb-1-pointer%5D=9">10<\/a>'.
+            '/<div class="pagebrowser">' .
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=0">first<\/a> ' .
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=8">previous<\/a> ' .
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=5">6<\/a> ' .
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=6">7<\/a> ' .
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=7">8<\/a> ' .
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=8">9<\/a> ' .
+            '<a class="current" href=".*&amp;rn_base%5Bpb-1-pointer%5D=9">10<\/a>' .
             '<\/div>/',
             trim($view->render())
         );
@@ -651,14 +651,14 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
         );
 
         self::assertRegExp(
-            '/<div class="pagebrowser">'.
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=0">first<\/a> '.
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=2">previous<\/a> '.
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=2">3<\/a> '.
-            '<a class="current" href=".*&amp;rn_base%5Bpb-1-pointer%5D=3">4<\/a> '.
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=4">5<\/a> '.
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=4">next<\/a> '.
-            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=9">last<\/a>'.
+            '/<div class="pagebrowser">' .
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=0">first<\/a> ' .
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=2">previous<\/a> ' .
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=2">3<\/a> ' .
+            '<a class="current" href=".*&amp;rn_base%5Bpb-1-pointer%5D=3">4<\/a> ' .
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=4">5<\/a> ' .
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=4">next<\/a> ' .
+            '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=9">last<\/a>' .
             '<\/div>/',
             trim($view->render())
         );
@@ -696,8 +696,6 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
     }
 
     /**
-     * @param array $methods
-     *
      * @return \Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowserViewHelper
      */
     protected function getViewHelperMock(

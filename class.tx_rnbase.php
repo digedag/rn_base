@@ -141,7 +141,7 @@ class tx_rnbase
             $outputName = self::makeInstanceClassNameT3($inputName);
         }
         if (!$outputName && tx_rnbase_util_Extensions::isLoaded('lib')) {
-            require_once tx_rnbase_util_Extensions::extPath('lib').'class.tx_lib_pearLoader.php';
+            require_once tx_rnbase_util_Extensions::extPath('lib') . 'class.tx_lib_pearLoader.php';
             $outputName = tx_lib_pearLoader::makeInstanceClassName($inputName);
         }
 
@@ -235,24 +235,24 @@ class tx_rnbase
         $qSuffix = preg_quote($suffix, '/');
         // If it is a path extract the key first.
         // Either the relevant part starts with a slash: xyz/[tx_].....php
-        if (preg_match('/^.*\/([0-9A-Za-z_]+)'.$qSuffix.'$/', $info, $matches)) {
+        if (preg_match('/^.*\/([0-9A-Za-z_]+)' . $qSuffix . '$/', $info, $matches)) {
             $class = $matches[1];
-        } elseif (preg_match('/^.*\.([0-9A-Za-z_]+)'.$qSuffix.'$/', $info, $matches)) {
+        } elseif (preg_match('/^.*\.([0-9A-Za-z_]+)' . $qSuffix . '$/', $info, $matches)) {
             // Or it starts with a Dot: class.[tx_]....php
             $class = $matches[1];
-        } elseif (preg_match('/^([0-9A-Za-z_]+)'.$qSuffix.'$/', $info, $matches)) {
+        } elseif (preg_match('/^([0-9A-Za-z_]+)' . $qSuffix . '$/', $info, $matches)) {
             // Or it starts directly with the relevant part
             $class = $matches[1];
         } elseif (preg_match('/^[0-9a-zA-Z_]+$/', trim($info), $matches)) {
             // It may be the key itself
             $class = $info;
         } else {
-            throw new Exception('Classname contains invalid characters or has invalid format: '.$info);
+            throw new Exception('Classname contains invalid characters or has invalid format: ' . $info);
         }
 
         // With this a possible alternative Key is also validated
-        if (!$key = self::guessKey($alternativeKey ? $alternativeKey : $class)) {
-            throw new Exception('No extension key found for classname: '.$info);
+        if (!$key = self::guessKey($alternativeKey ?: $class)) {
+            throw new Exception('No extension key found for classname: ' . $info);
         }
 
         $isExtBase = false;
@@ -266,7 +266,7 @@ class tx_rnbase
         } elseif (preg_match('/^[0-9A-Za-z_]*$/', $class)) { // without tx_ prefix
             $parts = explode('_', trim($class));
         } else {
-            throw new Exception('getClassInfo() called with invalid classname: '.$info);
+            throw new Exception('getClassInfo() called with invalid classname: ' . $info);
         }
 
         // Set extPath for key (first element)
@@ -280,7 +280,7 @@ class tx_rnbase
         $dir = $isExtBase ? 'Classes/' : '';
         // Build the relative path if any
         foreach ((array) $parts as $part) {
-            $dir .= $part.'/';
+            $dir .= $part . '/';
         }
         // if an alternative Key is given use that
         $ret['class'] = $class;
@@ -288,17 +288,17 @@ class tx_rnbase
         $ret['extkey'] = $key;
         $ret['extpath'] = tx_rnbase_util_Extensions::extPath($key);
         if ($isExtBase) {
-            $path = $ret['extpath'].$dir.$last.$suffix;
+            $path = $ret['extpath'] . $dir . $last . $suffix;
         } else {
-            $path = $ret['extpath'].$dir.$prefix.$class.$suffix;
+            $path = $ret['extpath'] . $dir . $prefix . $class . $suffix;
         }
         if (!is_file($path)) {
             // Now we try INSIDE the last directory (dir and last may be empty)
             // ext(/dir)/last
             // ext(/dir)/last/prefix.tx_key_parts_last.php.
-            $path = $ret['extpath'].$dir.$last.'/'.$prefix.$class.$suffix;
+            $path = $ret['extpath'] . $dir . $last . '/' . $prefix . $class . $suffix;
             if (!is_file($path)) {
-                throw new Exception('Class path not found: '.$path);
+                throw new Exception('Class path not found: ' . $path);
             }
         }
         $ret['path'] = $path;

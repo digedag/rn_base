@@ -42,7 +42,6 @@ abstract class Tx_Rnbase_Backend_Handler_DetailHandler extends Tx_Rnbase_Backend
      * Display the user interface for this handler.
      *
      * @param string                $template The subpart for handler in func template
-     * @param tx_rnbase_mod_IModule $mod
      * @param array                 $options
      *
      * @return string
@@ -99,7 +98,6 @@ abstract class Tx_Rnbase_Backend_Handler_DetailHandler extends Tx_Rnbase_Backend
      * Base listing.
      *
      * @param string                                 $template
-     * @param Tx_Rnbase_Domain_Model_RecordInterface $current
      * @param array                                  $markerArray
      * @param array                                  $subpartArray
      * @param array                                  $wrappedSubpartArray

@@ -33,23 +33,11 @@ use Sys25\RnBase\Frontend\View\ContextInterface;
  */
 interface RequestInterface
 {
-    /**
-     * @return ParametersInterface
-     */
     public function getParameters(): ParametersInterface;
 
-    /**
-     * @return ConfigurationInterface
-     */
     public function getConfigurations(): ConfigurationInterface;
 
-    /**
-     * @return string
-     */
     public function getConfId(): string;
 
-    /**
-     * @return ContextInterface
-     */
     public function getViewContext(): ContextInterface;
 }

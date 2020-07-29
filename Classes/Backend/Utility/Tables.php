@@ -64,7 +64,7 @@ class Tx_Rnbase_Backend_Utility_Tables
                 $tableLayout[$rowCount - 1] = is_array($tableLayout[$defName]) ? $tableLayout[$defName] : $tableLayout['defRow'];
                 // the spacial layout for the overlay rows
                 $layout = $tableLayout[$rowCount - 1];
-                $layout['tr'][0] = '<tr class="'.($isRowOdd ? 'db_list_normal' : 'db_list_alt').' localization">';
+                $layout['tr'][0] = '<tr class="' . ($isRowOdd ? 'db_list_normal' : 'db_list_alt') . ' localization">';
                 $isRowOdd = !$isRowOdd;
 
                 // render the overlays with the special layout
@@ -105,11 +105,11 @@ class Tx_Rnbase_Backend_Utility_Tables
         }
         $row = [];
         if (null !== $options->getCheckbox()) {
-            $checkName = $options->getCheckboxname() ? $options->getCheckboxname() : 'checkEntry';
+            $checkName = $options->getCheckboxname() ?: 'checkEntry';
             $dontcheck = is_array($options->getDontcheck()) ? $options->getDontcheck() : [];
             // Check if entry is checkable
             if (!array_key_exists($record['uid'], $dontcheck)) {
-                $row[] = $formTool->createCheckbox($checkName.'[]', $record['uid']);
+                $row[] = $formTool->createCheckbox($checkName . '[]', $record['uid']);
             } else {
                 if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
                     $row[] = sprintf(
@@ -212,7 +212,7 @@ class Tx_Rnbase_Backend_Utility_Tables
             if (isset($data['sortable'])) {
                 $label = $formTool->createSortLink($column, $label);
             }
-            $arr[] = $label ? $label : $data['title'];
+            $arr[] = $label ?: $data['title'];
         }
         if ($options->getLinker()) {
             $arr[] = $LANG->getLL('label_action');
@@ -237,7 +237,7 @@ class Tx_Rnbase_Backend_Utility_Tables
             '*',
             $entry->getTableName(),
             [
-                        'where' => $parentField.'='.$entry->getUid(),
+                        'where' => $parentField . '=' . $entry->getUid(),
                         'wrapperclass' => get_class($entry),
                 ]
         );
@@ -257,13 +257,13 @@ class Tx_Rnbase_Backend_Utility_Tables
         $out = '';
         $linkerArr = $options->getLinker();
         if ((is_array($linkerArr) || $linkerArr instanceof Traversable) && !empty($linkerArr)) {
-            $linkerimplode = $options->getLinkerimplode() ? $options->getLinkerimplode() : '<br />';
+            $linkerimplode = $options->getLinkerimplode() ?: '<br />';
             $currentPid = (int) $options->getPid();
             foreach ($linkerArr as $linker) {
                 if (!$linker instanceof tx_rnbase_mod_linker_LinkerInterface) {
                     // backward compatibility, the interface with the makeLink method is new!
                     if (!is_callable([$linker, 'makeLink'])) {
-                        throw new Exception('Linker "'.get_class($linker).'" has to implement interface "tx_rnbase_mod_linker_LinkerInterface".');
+                        throw new Exception('Linker "' . get_class($linker) . '" has to implement interface "tx_rnbase_mod_linker_LinkerInterface".');
                     }
                 }
                 $out .= $linker->makeLink($obj, $formTool, $currentPid, $options);
@@ -307,7 +307,7 @@ class Tx_Rnbase_Backend_Utility_Tables
                         $cellWrap = is_array($layout[$cellCount]) ? $layout[$cellCount] : $layout['defCol'];
                         $cellWrap = is_array($rowLayout['defCol']) ? $rowLayout['defCol'] : $cellWrap;
                         $cellWrap = is_array($rowLayout[$cellCount]) ? $rowLayout[$cellCount] : $cellWrap;
-                        $rowResult .= $cellWrap[0].$tableCell.$cellWrap[1];
+                        $rowResult .= $cellWrap[0] . $tableCell . $cellWrap[1];
                         ++$cellCount;
                     }
                 }
@@ -315,22 +315,22 @@ class Tx_Rnbase_Backend_Utility_Tables
                 $rowWrap = is_array($rowLayout['tr']) ? $rowLayout['tr'] : $rowWrap;
 
                 if (is_array($tableLayout['headRows']) && in_array($rowCount, $tableLayout['headRows'])) {
-                    $resultHead .= $rowWrap[0].$rowResult.$rowWrap[1];
+                    $resultHead .= $rowWrap[0] . $rowResult . $rowWrap[1];
                 } else {
-                    $result .= $rowWrap[0].$rowResult.$rowWrap[1];
+                    $result .= $rowWrap[0] . $rowResult . $rowWrap[1];
                 }
                 ++$rowCount;
             }
             if (is_array($tableLayout['headRows'])) {
-                $result = '<thead>'.$resultHead.'</thead><tbody>'.$result.'</tbody>';
+                $result = '<thead>' . $resultHead . '</thead><tbody>' . $result . '</tbody>';
             } else {
-                $result = $resultHead.$result;
+                $result = $resultHead . $result;
             }
             $tableTag = tx_rnbase_util_TYPO3::isTYPO76OrHigher() ?
                 '<table class="table table-striped table-hover table-condensed">' :
                 '<table border="0" cellspacing="0" cellpadding="0" class="typo3-dblist" id="typo3-tmpltable">';
             $tableWrap = is_array($tableLayout['table']) ? $tableLayout['table'] : [$tableTag, '</table>'];
-            $result = $tableWrap[0].$result.$tableWrap[1];
+            $result = $tableWrap[0] . $result . $tableWrap[1];
         }
 
         return $result;

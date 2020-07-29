@@ -81,7 +81,7 @@ class tx_rnbase_util_FormatUtil
      */
     public function asDate($value, $format = null)
     {
-        $format = $format ? $format : $this->configurations->get($this->dateFormatKey);
+        $format = $format ?: $this->configurations->get($this->dateFormatKey);
 
         return $format ? strftime($format, $value) : $value;
     }
@@ -177,11 +177,11 @@ class tx_rnbase_util_FormatUtil
             return '';
         }
         $confArr = $this->configurations->get($confId);
-        $confArr['file'] = 'uploads/tx_'.str_replace(
+        $confArr['file'] = 'uploads/tx_' . str_replace(
             '_',
             '',
-            ($extensionKey) ? $extensionKey : $this->configurations->getExtensionKey()
-        ).'/'.($image);
+            ($extensionKey) ?: $this->configurations->getExtensionKey()
+        ) . '/' . ($image);
 
         // Bei einfachen Bildern sollen die Einstellungen aus cObj->data nicht verwendet
         // werden, um zu verhindern, daß z.B. eine Gallery angezeigt wird
@@ -257,20 +257,20 @@ class tx_rnbase_util_FormatUtil
             }
 
             // Für DATETIME gibt es eine Sonderbehandlung, um leere Werte zu behandeln
-            if ('DATETIME' == $conf[$colname] && $conf[$colname.'.']['ifEmpty'] && !$value) {
-                $data[$colname] = $conf[$colname.'.']['ifEmpty'];
+            if ('DATETIME' == $conf[$colname] && $conf[$colname . '.']['ifEmpty'] && !$value) {
+                $data[$colname] = $conf[$colname . '.']['ifEmpty'];
             } elseif ($conf[$colname]) {
                 // Get value using cObjGetSingle
                 $this->cObj->setCurrentVal($value);
-                $data[$colname] = $this->cObj->cObjGetSingle($conf[$colname], $conf[$colname.'.']);
+                $data[$colname] = $this->cObj->cObjGetSingle($conf[$colname], $conf[$colname . '.']);
                 $this->cObj->setCurrentVal(false);
             } elseif ('CASE' == $conf[$colname]) {
-                $data[$colname] = $this->cObj->CASEFUNC($conf[$colname.'.']);
+                $data[$colname] = $this->cObj->CASEFUNC($conf[$colname . '.']);
             } else {
                 // Es wird ein normaler Wrap gestartet
                 // Zuerst Numberformat durchführen
-                $value = $this->numberFormat($value, $conf[$colname.'.']);
-                $data[$colname] = $this->stdWrap($value, $conf[$colname.'.']);
+                $value = $this->numberFormat($value, $conf[$colname . '.']);
+                $data[$colname] = $this->stdWrap($value, $conf[$colname . '.']);
             }
         }
         reset($record);
@@ -300,7 +300,7 @@ class tx_rnbase_util_FormatUtil
         if (!is_array($conf) || !array_key_exists('number_format.', $conf) || !is_float($content)) {
             return $content;
         }
-        if ($conf['number_format.']['dontCheckFloat'] || number_format(floatval($content), 0, '.', '') != $content) {
+        if ($conf['number_format.']['dontCheckFloat'] || number_format((float) $content, 0, '.', '') != $content) {
             if ($conf['number_format'] || $conf['number_format.']) {
                 // default
                 $decimal = 2;
@@ -386,20 +386,20 @@ class tx_rnbase_util_FormatUtil
         // Alle Metadaten auslesen und wrappen
         $meta = [];
         foreach ($media->meta as $colname => $value) {
-            $meta[$colname] = $this->stdWrap($value, $conf[$colname.'.']);
+            $meta[$colname] = $this->stdWrap($value, $conf[$colname . '.']);
         }
 
         $markerArray = self::getItemMarkerArray(
             $meta,
             ['l18n_diffsource'],
-            $mediaMarker.'_',
+            $mediaMarker . '_',
             self::getDAMColumns()
         );
 
         // Jetzt die eigentliche Datei einbinden
-        $filePath = $media->getMeta('file_path').$media->getMeta('file_name');
+        $filePath = $media->getMeta('file_path') . $media->getMeta('file_name');
         if (TXDAM_mtype_image == $media->meta['media_type']) {
-            $markerArray['###'.$mediaMarker.'_IMGTAG###'] = $this->getDAMImage($filePath, $confId);
+            $markerArray['###' . $mediaMarker . '_IMGTAG###'] = $this->getDAMImage($filePath, $confId);
         }
 
         return $markerArray;

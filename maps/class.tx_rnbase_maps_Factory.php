@@ -37,11 +37,11 @@ class tx_rnbase_maps_Factory
     public static function createGoogleMap(&$configurations, $confId)
     {
         $map = self::createMap('tx_rnbase_maps_google_Map', $configurations, $confId);
-        $keys = $configurations->getKeyNames($confId.'poi.');
+        $keys = $configurations->getKeyNames($confId . 'poi.');
         if (isset($keys)) {
             tx_rnbase::load('tx_rnbase_maps_Util');
             foreach ($keys as $key) {
-                $poi = $configurations->get($confId.'poi.'.$key.'.');
+                $poi = $configurations->get($confId . 'poi.' . $key . '.');
                 $poi = tx_rnbase::makeInstance('tx_rnbase_maps_POI', $poi);
                 $bubble = tx_rnbase_maps_Util::createMapBubble($poi);
                 if (!$bubble) {
@@ -49,15 +49,15 @@ class tx_rnbase_maps_Factory
                 }
                 $bubble->setDescription($poi->getDescription());
                 // Prüfen, ob ein Icon konfiguriert ist
-                $iconConfId = $confId.'poi.'.$key.'.icon.';
+                $iconConfId = $confId . 'poi.' . $key . '.icon.';
                 if ($configurations->get($iconConfId)) {
                     $icon = new tx_rnbase_maps_google_Icon($map);
-                    $image = $configurations->get($iconConfId.'image', true);
-                    $icon->setImage($image, $configurations->getInt($iconConfId.'image.file.maxW'), $configurations->getInt($iconConfId.'image.file.maxH'));
-                    $image = $configurations->get($iconConfId.'shadow', true);
-                    $icon->setShadow($image, $configurations->getInt($iconConfId.'shadow.file.maxW'), $configurations->getInt($iconConfId.'shadow.file.maxH'));
-                    $name = $configurations->get($iconConfId.'name');
-                    $icon->setName($name ? $name : tx_rnbase_util_Misc::createHash(['name' => $image]));
+                    $image = $configurations->get($iconConfId . 'image', true);
+                    $icon->setImage($image, $configurations->getInt($iconConfId . 'image.file.maxW'), $configurations->getInt($iconConfId . 'image.file.maxH'));
+                    $image = $configurations->get($iconConfId . 'shadow', true);
+                    $icon->setShadow($image, $configurations->getInt($iconConfId . 'shadow.file.maxW'), $configurations->getInt($iconConfId . 'shadow.file.maxH'));
+                    $name = $configurations->get($iconConfId . 'name');
+                    $icon->setName($name ?: tx_rnbase_util_Misc::createHash(['name' => $image]));
                     $bubble->setIcon($icon);
                 }
                 $map->addMarker($bubble);

@@ -34,9 +34,6 @@ tx_rnbase::load('tx_rnbase_mod_IDecorator');
  */
 class tx_rnbase_tests_fixtures_classes_Decorator implements tx_rnbase_mod_IDecorator
 {
-    /**
-     * @param tx_rnbase_mod_IModule $mod
-     */
     public function __construct(tx_rnbase_mod_IModule $mod)
     {
         $this->mod = $mod;
@@ -46,7 +43,6 @@ class tx_rnbase_tests_fixtures_classes_Decorator implements tx_rnbase_mod_IDecor
      * @param string               $value
      * @param string               $colName
      * @param array                $record
-     * @param tx_rnbase_model_base $item
      */
     public function format($value, $colName, $record, tx_rnbase_model_base $item)
     {

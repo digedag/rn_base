@@ -67,7 +67,7 @@ class tx_rnbase_util_Dates
      */
     public static function date_mysql2int($datum)
     {
-        return intval(implode('', explode('-', $datum)));
+        return (int) (implode('', explode('-', $datum)));
     }
 
     /**
@@ -79,7 +79,7 @@ class tx_rnbase_util_Dates
      */
     public static function date_int2mysql($datum)
     {
-        return substr($datum, 0, 4).'-'.substr($datum, 4, 2).'-'.substr($datum, 6, 2);
+        return substr($datum, 0, 4) . '-' . substr($datum, 4, 2) . '-' . substr($datum, 6, 2);
     }
 
     /**
@@ -263,9 +263,6 @@ class tx_rnbase_util_Dates
 
     /**
      * Wandelt Timestamps in einem TCA-Record in MySQL DateTime-Strings um.
-     *
-     * @param array $row
-     * @param array $fields
      */
     public static function convert4TCA2DateTime(array &$row, array $fields, $useGMT = false)
     {
@@ -278,9 +275,6 @@ class tx_rnbase_util_Dates
 
     /**
      * Wandelt Timestamps in einem TCA-Record in MySQL Date-Strings um.
-     *
-     * @param array $row
-     * @param array $fields
      */
     public static function convert4TCA2Date(array &$row, array $fields, $useGMT = false)
     {
@@ -293,9 +287,6 @@ class tx_rnbase_util_Dates
 
     /**
      * Wandelt MySQL DateTime-Strings in einem TCA-Record in Timestamps um.
-     *
-     * @param array $row
-     * @param array $fields
      */
     public static function convert4TCA2Timestamp(array &$row, array $fields, $timezone = 'GMT')
     {
@@ -322,11 +313,11 @@ class tx_rnbase_util_Dates
     public static function getDateTimeZone($timezone = null)
     {
         static $europeBerlin = null;
-        if (is_null($timezone) && is_null($europeBerlin)) {
+        if (null === $timezone && null === $europeBerlin) {
             $europeBerlin = new DateTimeZone('Europe/Berlin');
         }
 
-        return is_null($timezone) ? $europeBerlin : new DateTimeZone($timezone);
+        return null === $timezone ? $europeBerlin : new DateTimeZone($timezone);
     }
 
     /**

@@ -482,8 +482,8 @@ class tx_rnbase_util_Link
                 function ($match) use ($schema) {
                     // $match[1] contains 'href="' or 'src="'
                     // $match[2] contains the url '/service/contact.html'
-                    return $match[1].
-                        self::parseAbsUrl($match[2], $schema).
+                    return $match[1] .
+                        self::parseAbsUrl($match[2], $schema) .
                         '"';
                 },
                 ltrim($url, '/')
@@ -494,10 +494,10 @@ class tx_rnbase_util_Link
         // rebuild the url without schema
         $urlParts = parse_url(self::addDefaultSchemaIfRequired($url));
         $urlPath = isset($urlParts['path']) ? $urlParts['path'] : '';
-        $urlPath .= isset($urlParts['query']) ? '?'.$urlParts['query'] : '';
-        $urlPath .= isset($urlParts['fragment']) ? '#'.$urlParts['fragment'] : '';
+        $urlPath .= isset($urlParts['query']) ? '?' . $urlParts['query'] : '';
+        $urlPath .= isset($urlParts['fragment']) ? '#' . $urlParts['fragment'] : '';
 
-        return rtrim($schema, '/').'/'.ltrim($urlPath, '/');
+        return rtrim($schema, '/') . '/' . ltrim($urlPath, '/');
     }
 
     /**
@@ -510,8 +510,8 @@ class tx_rnbase_util_Link
      */
     public static function addDefaultSchemaIfRequired($url)
     {
-        if (version_compare(phpversion(), '5.4.7', '<') && '//' == substr($url, 0, 2)) {
-            $url = 'http:'.$url;
+        if (version_compare(PHP_VERSION, '5.4.7', '<') && '//' == substr($url, 0, 2)) {
+            $url = 'http:' . $url;
         }
 
         return $url;
@@ -584,19 +584,19 @@ class tx_rnbase_util_Link
         }
         $conf['extTarget'] = ('-1' != $this->externalTargetString) ? $this->externalTargetString : '_blank';
         if ($this->classString) {
-            $conf['ATagParams'] .= 'class="'.$this->classString.'" ';
+            $conf['ATagParams'] .= 'class="' . $this->classString . '" ';
         }
         if ($this->idString) {
-            $conf['ATagParams'] .= 'id="'.$this->idString.'" ';
+            $conf['ATagParams'] .= 'id="' . $this->idString . '" ';
         }
         if ($this->titleString) {
             $title = ($this->titleHasAlreadyHtmlSpecialChars) ? $this->titleString : htmlspecialchars($this->titleString);
-            $conf['ATagParams'] .= 'title="'.$title.'" ';
+            $conf['ATagParams'] .= 'title="' . $title . '" ';
         }
         if (is_array($this->tagAttributes)
                 && (count($this->tagAttributes) > 0)) {
             foreach ($this->tagAttributes as $key => $value) {
-                $conf['ATagParams'] .= ' '.$key.'="'.htmlspecialchars($value).'" ';
+                $conf['ATagParams'] .= ' ' . $key . '="' . htmlspecialchars($value) . '" ';
             }
         }
         // Weiter generische Attribute setzen
@@ -630,14 +630,14 @@ class tx_rnbase_util_Link
 
         if (!is_array($value)) {
             return '&'
-                .rawurlencode($qualifier ? $qualifier.'['.$key.']' : $key)
-                .'='.rawurlencode($value);
+                . rawurlencode($qualifier ? $qualifier . '[' . $key . ']' : $key)
+                . '=' . rawurlencode($value);
         }
 
         $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
 
         return $utility::implodeArrayForUrl(
-            $qualifier ? $qualifier : $key,
+            $qualifier ?: $key,
             $qualifier ? [$key => $value] : $value,
             '',
             true,
@@ -689,26 +689,26 @@ class tx_rnbase_util_Link
     {
         $parameterArr = is_array($parameterArr) ? $parameterArr : [];
         $pid = $configurations->getCObj()->stdWrap(
-            $configurations->get($confId.'pid'),
-            $configurations->get($confId.'pid.')
+            $configurations->get($confId . 'pid'),
+            $configurations->get($confId . 'pid.')
         );
-        $qualifier = $configurations->get($confId.'qualifier');
+        $qualifier = $configurations->get($confId . 'qualifier');
         if ($qualifier) {
             $this->designator($qualifier);
         }
-        $target = $configurations->get($confId.'target');
+        $target = $configurations->get($confId . 'target');
         if ($target) {
             $this->target($target);
         }
 
         // feste URL für externen Link
-        if ($fixed = $configurations->get($confId.'fixedUrl', true)) {
+        if ($fixed = $configurations->get($confId . 'fixedUrl', true)) {
             $this->destination($fixed);
         } // Das Ziel der Seite vorbereiten
         else {
-            $this->destination($pid ? $pid : $GLOBALS['TSFE']->id);
+            $this->destination($pid ?: $GLOBALS['TSFE']->id);
             // absolute und ggf. schema url erzeugen
-            if ($absUrl = $configurations->get($confId.'absurl')) {
+            if ($absUrl = $configurations->get($confId . 'absurl')) {
                 $this->setAbsUrl(true, (1 == $absUrl || 'true' == strtolower($absUrl)) ? '' : $absUrl);
             }
         }
@@ -717,12 +717,12 @@ class tx_rnbase_util_Link
             $this->anchor(htmlspecialchars($parameterArr['SECTION']));
             unset($parameterArr['SECTION']);
         } else {
-            $this->anchor((string) $configurations->get($confId.'section', true));
+            $this->anchor((string) $configurations->get($confId . 'section', true));
         }
         $this->parameters($parameterArr);
 
         // eigene Parameter für typolink, die einfach weitergegeben werden
-        $typolinkCfg = $configurations->get($confId.'typolink.');
+        $typolinkCfg = $configurations->get($confId . 'typolink.');
         if (is_array($typolinkCfg)) {
             foreach ($typolinkCfg as $cfgName => $cfgValue) {
                 $this->addTypolinkParam($cfgName, $cfgValue);
@@ -730,7 +730,7 @@ class tx_rnbase_util_Link
         }
 
         // Zusätzliche Parameter für den Link
-        $atagParams = $configurations->get($confId.'atagparams.', true);
+        $atagParams = $configurations->get($confId . 'atagparams.', true);
         if (is_array($atagParams)) {
             // Die Parameter werden jetzt nochmal per TS validiert und können somit dynamisch gesetzt werden
             $attributes = [];
@@ -741,16 +741,16 @@ class tx_rnbase_util_Link
                         continue;
                     }
                 }
-                $attributes[$aParam] = $configurations->getCObj()->stdWrap($atagParams[$aParam], $atagParams[$aParam.'.']);
+                $attributes[$aParam] = $configurations->getCObj()->stdWrap($atagParams[$aParam], $atagParams[$aParam . '.']);
             }
             $this->attributes($attributes);
         }
 
         // KeepVars prüfen
         // Per Default sind die KeepVars nicht aktiviert. Mit useKeepVars == 1 können sie hinzugefügt werden
-        if (!$configurations->get($confId.'useKeepVars')) {
+        if (!$configurations->get($confId . 'useKeepVars')) {
             $this->overruled();
-        } elseif ($keepVarConf = $configurations->get($confId.'useKeepVars.')) {
+        } elseif ($keepVarConf = $configurations->get($confId . 'useKeepVars.')) {
             // Sonderoptionen für KeepVars gesetzt
             $newKeepVars = [];
             // skip empty values? default false!
@@ -794,7 +794,7 @@ class tx_rnbase_util_Link
                                         continue;
                                     }
                                     if (false === strpos($paramName, 'NK_')) {
-                                        $newKeepVars[$qualifier.'::'.$paramName] = $paramValue;
+                                        $newKeepVars[$qualifier . '::' . $paramName] = $paramValue;
                                     }
                                 }
                             } else {
@@ -808,10 +808,10 @@ class tx_rnbase_util_Link
             }
             $this->overruled($newKeepVars);
         }
-        if ($configurations->get($confId.'noCache')) {
+        if ($configurations->get($confId . 'noCache')) {
             $this->noCache();
         }
-        if ($configurations->get($confId.'noHash')) {
+        if ($configurations->get($confId . 'noHash')) {
             $this->noHash();
         }
 

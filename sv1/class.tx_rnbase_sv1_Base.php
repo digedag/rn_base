@@ -116,7 +116,6 @@ abstract class tx_rnbase_sv1_Base extends \Sys25\RnBase\Typo3Wrapper\Service\Abs
     /**
      * Create a new record.
      *
-     * @param array  $data
      * @param string $table
      *
      * @return int UID of just created record
@@ -151,10 +150,10 @@ abstract class tx_rnbase_sv1_Base extends \Sys25\RnBase\Typo3Wrapper\Service\Abs
     public function handleUpdate(Tx_Rnbase_Domain_Model_RecordInterface $model, array $data, $where = '')
     {
         $table = $model->getTableName();
-        $uid = intval($model->getUid());
+        $uid = (int) ($model->getUid());
 
         if (!$where) {
-            $where = '1=1 AND `'.$table.'`.`uid`='.$uid;
+            $where = '1=1 AND `' . $table . '`.`uid`=' . $uid;
         }
 
         // remove uid if exists
@@ -241,10 +240,10 @@ abstract class tx_rnbase_sv1_Base extends \Sys25\RnBase\Typo3Wrapper\Service\Abs
             $table = $model->getTableName();
         }
 
-        $uid = intval($model->getUid());
+        $uid = (int) ($model->getUid());
 
         if (!$where) {
-            $where = '1=1 AND `'.$table.'`.`uid`='.$uid;
+            $where = '1=1 AND `' . $table . '`.`uid`=' . $uid;
         }
 
         $this->delete($table, $where, $mode);
@@ -260,8 +259,6 @@ abstract class tx_rnbase_sv1_Base extends \Sys25\RnBase\Typo3Wrapper\Service\Abs
      * Diese Methode kann in Child-Klassen einfach überschrieben werden um zusätzliche Funktionen
      * zu implementieren. Dann natürlich nicht vergessen diese Methode via parent::handleCreation()
      * aufzurufen ;)
-     *
-     * @param array $data
      *
      * @return model
      */

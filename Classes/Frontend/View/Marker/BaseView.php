@@ -36,8 +36,6 @@ class BaseView extends AbstractView implements ViewInterface
     protected $subpart;
 
     /**
-     * @param RequestInterface $request
-     *
      * @return string
      */
     public function render($view, RequestInterface $request)
@@ -45,27 +43,27 @@ class BaseView extends AbstractView implements ViewInterface
         $configurations = $request->getConfigurations();
         $this->_init($configurations);
         $templateCode = \tx_rnbase_util_Files::getFileResource($this->getTemplate($view, '.html'));
-        if (!strlen($templateCode)) {
+        if (!\strlen($templateCode)) {
             \tx_rnbase::load('tx_rnbase_util_Misc');
-            \tx_rnbase_util_Misc::mayday('TEMPLATE NOT FOUND: '.$this->getTemplate($view, '.html'));
+            \tx_rnbase_util_Misc::mayday('TEMPLATE NOT FOUND: ' . $this->getTemplate($view, '.html'));
         }
 
         // Die ViewData bereitstellen
         $viewData = $request->getViewContext();
 
         // Optional kann schon ein Subpart angegeben werden
-        $this->subpart = $configurations->get($request->getConfId().'template.subpart');
+        $this->subpart = $configurations->get($request->getConfId() . 'template.subpart');
         $subpart = $this->getMainSubpart($viewData);
         if (!empty($subpart)) {
             $templateCode = \tx_rnbase_util_Templates::getSubpart($templateCode, $subpart);
-            if (!strlen($templateCode)) {
+            if (!\strlen($templateCode)) {
                 \tx_rnbase::load('tx_rnbase_util_Misc');
-                \tx_rnbase_util_Misc::mayday('SUBPART NOT FOUND: '.$subpart);
+                \tx_rnbase_util_Misc::mayday('SUBPART NOT FOUND: ' . $subpart);
             }
         }
 
         // disable substitution marker cache
-        if ($configurations->getBool($request->getConfId().'_caching.disableSubstCache')) {
+        if ($configurations->getBool($request->getConfId() . '_caching.disableSubstCache')) {
             \tx_rnbase_util_Templates::disableSubstCache();
         }
 
@@ -99,7 +97,6 @@ class BaseView extends AbstractView implements ViewInterface
      * render plugin data and additional flexdata.
      *
      * @param string           $templateCode
-     * @param RequestInterface $request
      *
      * @return string
      */
@@ -121,7 +118,7 @@ class BaseView extends AbstractView implements ViewInterface
             (array) $configurations->getCObj()->data,
             // add some aditional columns, for example from the flexform od typoscript directly
             $configurations->getExploded(
-                $confId.'plugin.flexdata.'
+                $confId . 'plugin.flexdata.'
             )
         );
         // check for unused columns
@@ -133,7 +130,7 @@ class BaseView extends AbstractView implements ViewInterface
         // create the marker array with the parsed columns
         $markerArray = $configurations->getFormatter()->getItemMarkerArrayWrapped(
             $pluginData,
-            $confId.'plugin.',
+            $confId . 'plugin.',
             $ignoreColumns,
             'PLUGIN_'
         );
@@ -169,8 +166,6 @@ class BaseView extends AbstractView implements ViewInterface
 
     /**
      * This method is called first.
-     *
-     * @param ConfigurationInterface $configurations
      */
     protected function _init(ConfigurationInterface $configurations)
     {

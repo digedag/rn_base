@@ -70,27 +70,27 @@ HTML;
         );
 
         // auszugebende subparts
-        $this->assertTrue(array_key_exists('###ITEM_FCOL_IS_HIDDEN###', $wrappedSubpartArray), 'FailedOn:'.__LINE__);
-        $this->assertTrue(is_array($wrappedSubpartArray['###ITEM_FCOL_IS_HIDDEN###']), 'FailedOn:'.__LINE__);
-        $this->assertEquals('', $wrappedSubpartArray['###ITEM_FCOL_IS_HIDDEN###'][0], 'FailedOn:'.__LINE__);
-        $this->assertEquals('', $wrappedSubpartArray['###ITEM_FCOL_IS_HIDDEN###'][1], 'FailedOn:'.__LINE__);
-        $this->assertTrue(array_key_exists('###ITEM_BCOL_IS_VERSTECKT###', $wrappedSubpartArray), 'FailedOn:'.__LINE__);
-        $this->assertTrue(array_key_exists('###ITEM_UNUSED_VISIBLE###', $wrappedSubpartArray), 'FailedOn:'.__LINE__);
-        $this->assertFalse(array_key_exists('###ITEM_FCOL_IS_VISIBLE###', $wrappedSubpartArray), 'FailedOn:'.__LINE__);
-        $this->assertFalse(array_key_exists('###ITEM_BCOL_IS_SICHTBAR###', $wrappedSubpartArray), 'FailedOn:'.__LINE__);
-        $this->assertFalse(array_key_exists('###ITEM_UNUSED_HIDDEN###', $wrappedSubpartArray), 'FailedOn:'.__LINE__);
-        $this->assertFalse(array_key_exists('###ITEM_NOT_IN_TEMPLATE_HIDDEN###', $wrappedSubpartArray), 'FailedOn:'.__LINE__);
+        $this->assertTrue(array_key_exists('###ITEM_FCOL_IS_HIDDEN###', $wrappedSubpartArray), 'FailedOn:' . __LINE__);
+        $this->assertTrue(is_array($wrappedSubpartArray['###ITEM_FCOL_IS_HIDDEN###']), 'FailedOn:' . __LINE__);
+        $this->assertEquals('', $wrappedSubpartArray['###ITEM_FCOL_IS_HIDDEN###'][0], 'FailedOn:' . __LINE__);
+        $this->assertEquals('', $wrappedSubpartArray['###ITEM_FCOL_IS_HIDDEN###'][1], 'FailedOn:' . __LINE__);
+        $this->assertTrue(array_key_exists('###ITEM_BCOL_IS_VERSTECKT###', $wrappedSubpartArray), 'FailedOn:' . __LINE__);
+        $this->assertTrue(array_key_exists('###ITEM_UNUSED_VISIBLE###', $wrappedSubpartArray), 'FailedOn:' . __LINE__);
+        $this->assertFalse(array_key_exists('###ITEM_FCOL_IS_VISIBLE###', $wrappedSubpartArray), 'FailedOn:' . __LINE__);
+        $this->assertFalse(array_key_exists('###ITEM_BCOL_IS_SICHTBAR###', $wrappedSubpartArray), 'FailedOn:' . __LINE__);
+        $this->assertFalse(array_key_exists('###ITEM_UNUSED_HIDDEN###', $wrappedSubpartArray), 'FailedOn:' . __LINE__);
+        $this->assertFalse(array_key_exists('###ITEM_NOT_IN_TEMPLATE_HIDDEN###', $wrappedSubpartArray), 'FailedOn:' . __LINE__);
 
         // subparts, die nicht ausgegeben werden sollen
-        $this->assertFalse(array_key_exists('###ITEM_FCOL_IS_HIDDEN###', $subpartArray), 'FailedOn:'.__LINE__);
-        $this->assertFalse(array_key_exists('###ITEM_BCOL_IS_VERSTECKT###', $subpartArray), 'FailedOn:'.__LINE__);
-        $this->assertFalse(array_key_exists('###ITEM_UNUSED_VISIBLE###', $subpartArray), 'FailedOn:'.__LINE__);
-        $this->assertTrue(array_key_exists('###ITEM_FCOL_IS_VISIBLE###', $subpartArray), 'FailedOn:'.__LINE__);
-        $this->assertTrue(is_string('###ITEM_FCOL_IS_VISIBLE###'), 'FailedOn:'.__LINE__);
-        $this->assertEquals('', $subpartArray['###ITEM_FCOL_IS_VISIBLE###'], 'FailedOn:'.__LINE__);
-        $this->assertTrue(array_key_exists('###ITEM_BCOL_IS_SICHTBAR###', $subpartArray), 'FailedOn:'.__LINE__);
-        $this->assertTrue(array_key_exists('###ITEM_UNUSED_HIDDEN###', $subpartArray), 'FailedOn:'.__LINE__);
-        $this->assertFalse(array_key_exists('###ITEM_NOT_IN_TEMPLATE_HIDDEN###', $subpartArray), 'FailedOn:'.__LINE__);
+        $this->assertFalse(array_key_exists('###ITEM_FCOL_IS_HIDDEN###', $subpartArray), 'FailedOn:' . __LINE__);
+        $this->assertFalse(array_key_exists('###ITEM_BCOL_IS_VERSTECKT###', $subpartArray), 'FailedOn:' . __LINE__);
+        $this->assertFalse(array_key_exists('###ITEM_UNUSED_VISIBLE###', $subpartArray), 'FailedOn:' . __LINE__);
+        $this->assertTrue(array_key_exists('###ITEM_FCOL_IS_VISIBLE###', $subpartArray), 'FailedOn:' . __LINE__);
+        $this->assertTrue(is_string('###ITEM_FCOL_IS_VISIBLE###'), 'FailedOn:' . __LINE__);
+        $this->assertEquals('', $subpartArray['###ITEM_FCOL_IS_VISIBLE###'], 'FailedOn:' . __LINE__);
+        $this->assertTrue(array_key_exists('###ITEM_BCOL_IS_SICHTBAR###', $subpartArray), 'FailedOn:' . __LINE__);
+        $this->assertTrue(array_key_exists('###ITEM_UNUSED_HIDDEN###', $subpartArray), 'FailedOn:' . __LINE__);
+        $this->assertFalse(array_key_exists('###ITEM_NOT_IN_TEMPLATE_HIDDEN###', $subpartArray), 'FailedOn:' . __LINE__);
     }
 
     public function testPrepareItem()

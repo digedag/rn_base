@@ -70,7 +70,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker
         $ignore = $item instanceof Tx_Rnbase_Domain_Model_DataInterface ?
                     Tx_Rnbase_Frontend_Marker_Utility::findUnusedAttributes($item, $template, $marker) :
                     self::findUnusedCols($item->getRecord(), $template, $marker);
-        $markerArray = $formatter->getItemMarkerArrayWrapped($item->getProperty(), $confId, $ignore, $marker.'_', $item->getColumnNames());
+        $markerArray = $formatter->getItemMarkerArrayWrapped($item->getProperty(), $confId, $ignore, $marker . '_', $item->getColumnNames());
 
         // subparts erzeugen
         $wrappedSubpartArray = $subpartArray = [];
@@ -122,7 +122,6 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker
     /**
      * Führt vor dem parsen Änderungen am Model durch.
      *
-     * @param Tx_Rnbase_Domain_Model_DataInterface       $item
      * @param Tx_Rnbase_Configuration_ProcessorInterface &$configurations
      * @param string                                     &$confId
      */
@@ -135,8 +134,8 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker
             return;
         }
 
-        $dotFieldFields = $configurations->getExploded($confId.'dataMap.dotFieldFields');
-        $dotValueFields = $configurations->getExploded($confId.'dataMap.dotValueFields');
+        $dotFieldFields = $configurations->getExploded($confId . 'dataMap.dotFieldFields');
+        $dotValueFields = $configurations->getExploded($confId . 'dataMap.dotValueFields');
         $mapFields = array_merge($dotFieldFields, $dotValueFields);
 
         if (empty($mapFields)) {
@@ -149,7 +148,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker
         // ein CASE im TS benötigt
 
         foreach ($mapFields as $field) {
-            $newField = '_'.str_replace('.', '_', $field);
+            $newField = '_' . str_replace('.', '_', $field);
             $value = $item->getProperty($field);
             if (in_array($field, $dotFieldFields)) {
                 $item->setProperty($newField, $value);
@@ -207,26 +206,26 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker
         $emptyArray = ['', ''];
         $emptyString = '';
 
-        foreach ($configurations->getKeyNames($confId.'subparts.') as $key) {
-            $spConfId = $confId.'subparts.'.$key.'.';
-            $spMarker = $marker.'_'.strtoupper($key);
-            $markerVisible = $configurations->get($spConfId.'marker.visible');
+        foreach ($configurations->getKeyNames($confId . 'subparts.') as $key) {
+            $spConfId = $confId . 'subparts.' . $key . '.';
+            $spMarker = $marker . '_' . strtoupper($key);
+            $markerVisible = $configurations->get($spConfId . 'marker.visible');
             $markerVisible = empty($markerVisible) ? 'VISIBLE' : strtoupper($markerVisible);
-            $markerVisible = $spMarker.'_'.$markerVisible;
-            $markerHidden = $configurations->get($spConfId.'marker.hidden');
+            $markerVisible = $spMarker . '_' . $markerVisible;
+            $markerHidden = $configurations->get($spConfId . 'marker.hidden');
             $markerHidden = empty($markerHidden) ? 'HIDDEN' : strtoupper($markerHidden);
-            $markerHidden = $spMarker.'_'.$markerHidden;
+            $markerHidden = $spMarker . '_' . $markerHidden;
 
             if (!(self::containsMarker($template, $markerVisible)
                 || self::containsMarker($template, $markerHidden))) {
                 continue;
             }
-            if ($configurations->getBool($spConfId.'visible', true, false)) {
-                $wrappedSubpartArray['###'.$markerVisible.'###'] = $emptyArray;
-                $subpartArray['###'.$markerHidden.'###'] = $emptyString;
+            if ($configurations->getBool($spConfId . 'visible', true, false)) {
+                $wrappedSubpartArray['###' . $markerVisible . '###'] = $emptyArray;
+                $subpartArray['###' . $markerHidden . '###'] = $emptyString;
             } else {
-                $subpartArray['###'.$markerVisible.'###'] = $emptyString;
-                $wrappedSubpartArray['###'.$markerHidden.'###'] = $emptyArray;
+                $subpartArray['###' . $markerVisible . '###'] = $emptyString;
+                $wrappedSubpartArray['###' . $markerHidden . '###'] = $emptyArray;
             }
         }
         $configurations->getCObj()->data = $pluginData;
@@ -248,18 +247,18 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker
         $pluginData = $configurations->getCObj()->data;
         $configurations->getCObj()->data = $item->getProperty();
 
-        $linkIds = $configurations->getKeyNames($confId.'links.');
+        $linkIds = $configurations->getKeyNames($confId . 'links.');
         for ($i = 0, $cnt = count($linkIds); $i < $cnt; ++$i) {
             $linkId = $linkIds[$i];
             // Check if link is defined in template
             if (!self::checkLinkExistence($linkId, $marker, $template)) {
                 continue;
             }
-            $linkConfId = $confId.'links.'.$linkId;
+            $linkConfId = $confId . 'links.' . $linkId;
 
             // Die Parameter erzeugen
             $params = [];
-            $paramMap = (array) $configurations->get($linkConfId.'._cfg.params.');
+            $paramMap = (array) $configurations->get($linkConfId . '._cfg.params.');
             foreach ($paramMap as $paramName => $colName) {
                 if (is_scalar($colName) && array_key_exists($colName, $item->getProperty())) {
                     $params[$paramName] = $item->getProperty($colName);
@@ -269,20 +268,20 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker
                 }
             }
             // check for charbrowser config and add the parameter
-            if ($configurations->getBool($linkConfId.'._cfg.charbrowser')) {
-                $cbId = $configurations->get($linkConfId.'._cfg.charbrowser.cbid');
+            if ($configurations->getBool($linkConfId . '._cfg.charbrowser')) {
+                $cbId = $configurations->get($linkConfId . '._cfg.charbrowser.cbid');
                 $cbId = empty($cbId) ? 'charpointer' : $cbId;
-                $cbColname = $configurations->get($linkConfId.'._cfg.charbrowser.colname');
+                $cbColname = $configurations->get($linkConfId . '._cfg.charbrowser.colname');
                 $cbColname = empty($cbColname) ? 'uid' : $cbColname;
                 $params[$cbId] = strtoupper(substr((string) $item->getProperty($cbColname), 0, 1));
             }
 
             // @TODO: that only works on Tx_Rnbase_Domain_Model_DomainInterface!
-            if ($configurations->getBool($linkConfId.'.skipPersistedCheck') || $item->isPersisted()) {
+            if ($configurations->getBool($linkConfId . '.skipPersistedCheck') || $item->isPersisted()) {
                 $this->initLink($markerArray, $subpartArray, $wrappedSubpartArray, $formatter, $confId, $linkId, $marker, $params, $template);
             } else {
-                $linkMarker = $marker.'_'.strtoupper($linkId).'LINK';
-                $remove = intval($configurations->get($linkConfId.'.removeIfDisabled'));
+                $linkMarker = $marker . '_' . strtoupper($linkId) . 'LINK';
+                $remove = (int) ($configurations->get($linkConfId . '.removeIfDisabled'));
                 $this->disableLink($markerArray, $subpartArray, $wrappedSubpartArray, $linkMarker, $remove > 0);
             }
         }

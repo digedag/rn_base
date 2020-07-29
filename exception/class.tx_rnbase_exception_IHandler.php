@@ -31,8 +31,6 @@ interface tx_rnbase_exception_IHandler
      * Interne Verarbeitung der Exception.
      *
      * @param string                                     $actionName
-     * @param Exception                                  $e
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
      *
      * @return string error message
      */

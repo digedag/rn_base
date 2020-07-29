@@ -35,7 +35,6 @@ class Tx_Rnbase_Backend_Utility_Icons
 {
     /**
      * @param string $method
-     * @param array  $arguments
      *
      * @return mixed
      */
@@ -62,7 +61,6 @@ class Tx_Rnbase_Backend_Utility_Icons
      * This method is used throughout the TYPO3 Backend to show icons for a DB record.
      *
      * @param string $table
-     * @param array  $row
      * @param string $size  "large" "small" or "default", see the constants of the Icon class
      *
      * @return Icon
@@ -112,8 +110,6 @@ class Tx_Rnbase_Backend_Utility_Icons
 
     /**
      * @param string $iconName
-     * @param array  $options
-     * @param array  $overlays
      *
      * @return string
      */

@@ -61,7 +61,7 @@ class tx_rnbase_maps_POI extends tx_rnbase_maps_Coord implements tx_rnbase_maps_
     private function initField($data, $fieldname, $methodName = '')
     {
         if (isset($data[$fieldname])) {
-            $methodName = $methodName ? $methodName : 'set'.ucfirst($fieldname);
+            $methodName = $methodName ?: 'set' . ucfirst($fieldname);
             $this->$methodName($data[$fieldname]);
         }
     }

@@ -43,7 +43,7 @@ class Tx_Rnbase_Backend_ModuleRunner
         try {
             $moduleConfiguration = $this->getModuleConfiguration($moduleSignature);
             if (empty($moduleConfiguration['routeTarget'])) {
-                throw new \RuntimeException('Module target'.$moduleSignature.' is not configured.', 1289918327);
+                throw new \RuntimeException('Module target' . $moduleSignature . ' is not configured.', 1289918327);
             }
         } catch (RuntimeException $e) {
             return false;
@@ -109,7 +109,7 @@ class Tx_Rnbase_Backend_ModuleRunner
         }
 
         if (!isset($GLOBALS['TBE_MODULES']['_configuration'][$moduleName])) {
-            throw new \RuntimeException('Module '.$moduleName.' is not configured.', 1289918326);
+            throw new \RuntimeException('Module ' . $moduleName . ' is not configured.', 1289918326);
         }
 
         return $GLOBALS['TBE_MODULES']['_configuration'][$moduleName];
@@ -141,7 +141,7 @@ class Tx_Rnbase_Backend_ModuleRunner
         if (is_string($target) && false === strpos($target, ':')) {
             $targetObject = tx_rnbase::makeInstance($target);
             if (!method_exists($targetObject, '__invoke')) {
-                throw new InvalidArgumentException('Object "'.$target.'" doesn\'t implement an __invoke() method and cannot be used as target.', 1442431631);
+                throw new InvalidArgumentException('Object "' . $target . '" doesn\'t implement an __invoke() method and cannot be used as target.', 1442431631);
             }
 
             return $targetObject;
@@ -160,6 +160,6 @@ class Tx_Rnbase_Backend_ModuleRunner
             return $target;
         }
 
-        throw new InvalidArgumentException('Invalid target for "'.$target.'", as it is not callable.', 1425381442);
+        throw new InvalidArgumentException('Invalid target for "' . $target . '", as it is not callable.', 1425381442);
     }
 }

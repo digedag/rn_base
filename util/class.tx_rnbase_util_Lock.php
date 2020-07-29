@@ -115,7 +115,7 @@ class tx_rnbase_util_Lock
     protected function getFile()
     {
         if (null === $this->logFile) {
-            $this->logFile = \Sys25\RnBase\Utility\Environment::getPublicPath().'typo3temp/rn_base/'.$this->getName().'.lock';
+            $this->logFile = \Sys25\RnBase\Utility\Environment::getPublicPath() . 'typo3temp/rn_base/' . $this->getName() . '.lock';
         }
 
         return $this->logFile;
@@ -195,7 +195,7 @@ class tx_rnbase_util_Lock
         if (!tx_rnbase_util_Files::writeFile($fileName, time(), true)) {
             tx_rnbase::load('tx_rnbase_util_Logger');
             tx_rnbase_util_Logger::warn(
-                'Lock file could not be created for "'.$this->getName().'" process!',
+                'Lock file could not be created for "' . $this->getName() . '" process!',
                 'rn_base',
                 [
                     'process_name' => $this->getName(),

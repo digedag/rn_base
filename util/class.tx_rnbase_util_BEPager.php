@@ -72,12 +72,12 @@ class tx_rnbase_util_BEPager
 
     public function setSetting($name, $value)
     {
-        $this->settings[$this->getDataName().'_'.$name] = $value;
+        $this->settings[$this->getDataName() . '_' . $name] = $value;
     }
 
     public function getSetting($name)
     {
-        return $this->settings[$this->getDataName().'_'.$name];
+        return $this->settings[$this->getDataName() . '_' . $name];
     }
 
     /**
@@ -97,7 +97,7 @@ class tx_rnbase_util_BEPager
             return;
         }
         $sizes = $this->getLimits();
-        $menu = tx_rnbase_util_FormTool::showMenu($this->pid, $this->getDataName().'_limit', $this->modName, $sizes);
+        $menu = tx_rnbase_util_FormTool::showMenu($this->pid, $this->getDataName() . '_limit', $this->modName, $sizes);
         $this->setSetting('limit', $menu['value']);
         $this->setSetting('limitMenu', $menu['menu']);
 
@@ -111,9 +111,9 @@ class tx_rnbase_util_BEPager
             if ($i > 200) {
                 break;
             }
-            $pages[$i * $results_at_a_time] = 'Seite '.$i;
+            $pages[$i * $results_at_a_time] = 'Seite ' . $i;
         }
-        $menu = tx_rnbase_util_FormTool::showMenu($this->pid, $this->getDataName().'_offset', $this->modName, $pages);
+        $menu = tx_rnbase_util_FormTool::showMenu($this->pid, $this->getDataName() . '_offset', $this->modName, $pages);
         $this->setSetting('offset', $menu['value']);
         $this->setSetting('offsetMenu', $menu['menu']);
         $this->init = true;
@@ -136,6 +136,6 @@ class tx_rnbase_util_BEPager
 
     public function getDataName()
     {
-        return $this->id.'data';
+        return $this->id . 'data';
     }
 }

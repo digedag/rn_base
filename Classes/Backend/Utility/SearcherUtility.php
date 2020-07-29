@@ -77,10 +77,6 @@ class Tx_Rnbase_Backend_Utility_SearcherUtility
     /**
      * The decorator instace.
      *
-     * @param Tx_Rnbase_Domain_Repository_InterfaceSearch $repository
-     * @param array                                       $fields
-     * @param array                                       $options
-     *
      * @return array|Traversable
      */
     public function performSearch(

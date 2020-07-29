@@ -64,7 +64,7 @@ class tx_rnbase_tests_util_Files_testcase extends tx_rnbase_tests_BaseTestCase
      */
     protected function getUniqueId($prefix = '')
     {
-        return $prefix.str_replace('.', '', uniqid(mt_rand(), true));
+        return $prefix . str_replace('.', '', uniqid(mt_rand(), true));
     }
 
     /**
@@ -72,10 +72,10 @@ class tx_rnbase_tests_util_Files_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public function testMkdirDeepCreatesDirectory()
     {
-        $directory = 'typo3temp/'.$this->getUniqueId('test_');
+        $directory = 'typo3temp/' . $this->getUniqueId('test_');
         tx_rnbase_util_Files::mkdir_deep(\Sys25\RnBase\Utility\Environment::getPublicPath(), $directory);
-        $this->testFilesToDelete[] = \Sys25\RnBase\Utility\Environment::getPublicPath().$directory;
-        $this->assertTrue(is_dir(\Sys25\RnBase\Utility\Environment::getPublicPath().$directory));
+        $this->testFilesToDelete[] = \Sys25\RnBase\Utility\Environment::getPublicPath() . $directory;
+        $this->assertTrue(is_dir(\Sys25\RnBase\Utility\Environment::getPublicPath() . $directory));
     }
 
     /**
@@ -83,12 +83,12 @@ class tx_rnbase_tests_util_Files_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public function testMkdirDeepCreatesSubdirectoriesRecursive()
     {
-        $directory = 'typo3temp/'.$this->getUniqueId('test_');
-        $subDirectory = $directory.'/foo';
+        $directory = 'typo3temp/' . $this->getUniqueId('test_');
+        $subDirectory = $directory . '/foo';
         tx_rnbase_util_Files::mkdir_deep(\Sys25\RnBase\Utility\Environment::getPublicPath(), $subDirectory);
-        $this->testFilesToDelete[] = \Sys25\RnBase\Utility\Environment::getPublicPath().$subDirectory;
-        $this->testFilesToDelete[] = \Sys25\RnBase\Utility\Environment::getPublicPath().$directory;
-        $this->assertTrue(is_dir(\Sys25\RnBase\Utility\Environment::getPublicPath().$subDirectory));
+        $this->testFilesToDelete[] = \Sys25\RnBase\Utility\Environment::getPublicPath() . $subDirectory;
+        $this->testFilesToDelete[] = \Sys25\RnBase\Utility\Environment::getPublicPath() . $directory;
+        $this->assertTrue(is_dir(\Sys25\RnBase\Utility\Environment::getPublicPath() . $subDirectory));
     }
 
     /**

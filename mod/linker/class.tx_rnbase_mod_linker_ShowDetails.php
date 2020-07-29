@@ -42,11 +42,11 @@ class tx_rnbase_mod_linker_ShowDetails implements tx_rnbase_mod_linker_LinkerInt
      */
     public function makeLink($item, $formTool, $currentPid, $options)
     {
-        $uidkey = $options->getShowDetailsKey() ? $options->getShowDetailsKey() : 'showDetails['.$item->getTableName().']';
+        $uidkey = $options->getShowDetailsKey() ?: 'showDetails[' . $item->getTableName() . ']';
         $label = $options->hasShowDetailsLabel() ? $options->getShowDetailsLabel() : '###LABEL_SHOW_DETAILS###';
 
         return $formTool->createSubmit(
-            $uidkey.'['.$item->uid.']',
+            $uidkey . '[' . $item->uid . ']',
             $label
         );
     }

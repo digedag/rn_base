@@ -77,13 +77,13 @@ class tx_rnbase_util_TSFAL
         tx_rnbase::load('tx_rnbase_util_Templates');
         $conf = $this->createConf($tsConf);
         $file = $conf->get('template');
-        $file = $file ? $file : 'EXT:rn_base/res/simplegallery.html';
+        $file = $file ?: 'EXT:rn_base/res/simplegallery.html';
         $subpartName = $conf->get('subpartName');
-        $subpartName = $subpartName ? $subpartName : '###DAM_IMAGES###';
+        $subpartName = $subpartName ?: '###DAM_IMAGES###';
         $templateCode = tx_rnbase_util_Templates::getSubpartFromFile($file, $subpartName);
 
         if (!$templateCode) {
-            return '<!-- NO TEMPLATE OR SUBPART '.$subpartName.' FOUND -->';
+            return '<!-- NO TEMPLATE OR SUBPART ' . $subpartName . ' FOUND -->';
         }
 
         // Is there a customized language field configured
@@ -95,7 +95,7 @@ class tx_rnbase_util_TSFAL
             $conf->getCObj()->data[DEFAULT_LOCAL_FIELD] = $conf->getCObj()->data[$langField];
         }
         // Check if there is a valid uid given.
-        $parentUid = intval($conf->getCObj()->data[DEFAULT_LOCAL_FIELD] ? $conf->getCObj()->data[DEFAULT_LOCAL_FIELD] : $conf->getCObj()->data['uid']);
+        $parentUid = (int) ($conf->getCObj()->data[DEFAULT_LOCAL_FIELD] ?: $conf->getCObj()->data['uid']);
         if (!$parentUid) {
             return '<!-- Invalid data record given -->';
         }
@@ -161,17 +161,17 @@ class tx_rnbase_util_TSFAL
         tx_rnbase::load('tx_rnbase_util_Strings');
         // Getting the files
         // Try DAM style
-        if ($conf->get($confId.'refTable')) {
-            $referencesForeignTable = $conf->getCObj()->stdWrap($conf->get($confId.'refTable'), $conf->get($confId.'refTable.'));
-            $referencesFieldName = $conf->getCObj()->stdWrap($conf->get($confId.'refField'), $conf->get($confId.'refField.'));
-            $referencesForeignUid = $conf->getCObj()->stdWrap($conf->get($confId.'refUid'), $conf->get($confId.'refUid.'));
+        if ($conf->get($confId . 'refTable')) {
+            $referencesForeignTable = $conf->getCObj()->stdWrap($conf->get($confId . 'refTable'), $conf->get($confId . 'refTable.'));
+            $referencesFieldName = $conf->getCObj()->stdWrap($conf->get($confId . 'refField'), $conf->get($confId . 'refField.'));
+            $referencesForeignUid = $conf->getCObj()->stdWrap($conf->get($confId . 'refUid'), $conf->get($confId . 'refUid.'));
             if (!$referencesForeignUid) {
                 $referencesForeignUid = isset($cObj->data['_LOCALIZED_UID']) ?
                                         $cObj->data['_LOCALIZED_UID'] : $cObj->data['uid'];
             }
             $pics = $fileRepository->findByRelation($referencesForeignTable, $referencesFieldName, $referencesForeignUid);
-        } elseif (is_array($conf->get($confId.'references.'))) {
-            $refConfId = $confId.'references.';
+        } elseif (is_array($conf->get($confId . 'references.'))) {
+            $refConfId = $confId . 'references.';
             /*
             The TypoScript could look like this:# all items related to the page.media field:
             references {
@@ -183,30 +183,29 @@ class tx_rnbase_util_TSFAL
              */
 
             // It's important that this always stays "fieldName" and not be renamed to "field" as it would otherwise collide with the stdWrap key of that name
-            $referencesFieldName = $conf->getCObj()->stdWrap($conf->get($refConfId.'fieldName'), $conf->get($refConfId.'fieldName.'));
+            $referencesFieldName = $conf->getCObj()->stdWrap($conf->get($refConfId . 'fieldName'), $conf->get($refConfId . 'fieldName.'));
             if ($referencesFieldName) {
                 $table = $cObj->getCurrentTable();
-                if ('pages' === $table && isset($cObj->data['_LOCALIZED_UID']) && intval($cObj->data['sys_language_uid']) > 0) {
+                if ('pages' === $table && isset($cObj->data['_LOCALIZED_UID']) && (int) ($cObj->data['sys_language_uid']) > 0) {
                     $table = 'pages_language_overlay';
                 }
-                $referencesForeignTable = $conf->getCObj()->stdWrap($conf->get($refConfId.'table'), $conf->get($refConfId.'table.'));
-                $referencesForeignTable = $referencesForeignTable ? $referencesForeignTable : $table;
+                $referencesForeignTable = $conf->getCObj()->stdWrap($conf->get($refConfId . 'table'), $conf->get($refConfId . 'table.'));
+                $referencesForeignTable = $referencesForeignTable ?: $table;
 
-                $referencesForeignUid = $conf->getCObj()->stdWrap($conf->get($refConfId.'uid'), $conf->get($refConfId.'uid.'));
-                $referencesForeignUid = $referencesForeignUid ?
-                        $referencesForeignUid :
+                $referencesForeignUid = $conf->getCObj()->stdWrap($conf->get($refConfId . 'uid'), $conf->get($refConfId . 'uid.'));
+                $referencesForeignUid = $referencesForeignUid ?:
                         (isset($cObj->data['_LOCALIZED_UID']) ? $cObj->data['_LOCALIZED_UID'] : $cObj->data['uid']);
                 // Vermutlich kann hier auch nur ein Objekt geliefert werden...
                 $pics = [];
                 $referencesForeignUid = tx_rnbase_util_Strings::intExplode(',', $referencesForeignUid);
                 foreach ($referencesForeignUid as $refForUid) {
-                    if (!$conf->get($refConfId.'treatIdAsReference')) {
+                    if (!$conf->get($refConfId . 'treatIdAsReference')) {
                         $pics[] = $fileRepository->findFileReferenceByUid($refForUid);
                     } else {
                         $pics[] = $fileRepository->findByRelation($referencesForeignTable, $referencesFieldName, $refForUid);
                     }
                 }
-            } elseif ($refUids = $conf->getCObj()->stdWrap($conf->get($refConfId.'uid'), $conf->get($refConfId.'uid.'))) {
+            } elseif ($refUids = $conf->getCObj()->stdWrap($conf->get($refConfId . 'uid'), $conf->get($refConfId . 'uid.'))) {
                 if (!empty($refUids)) {
                     $refUids = tx_rnbase_util_Strings::intExplode(',', $refUids);
                     foreach ($refUids as $refUid) {
@@ -224,8 +223,8 @@ class tx_rnbase_util_TSFAL
         );
 
         // gibt es ein Limit/offset
-        $offset = intval($conf->get($confId.'offset'));
-        $limit = intval($conf->get($confId.'limit'));
+        $offset = (int) ($conf->get($confId . 'offset'));
+        $limit = (int) ($conf->get($confId . 'limit'));
         if (!empty($pics) && $limit) {
             $pics = array_slice($pics, $offset, $limit);
         } elseif (!empty($pics) && $offset) {
@@ -300,9 +299,9 @@ class tx_rnbase_util_TSFAL
         $contentObject = $this->cObj;
 
         if ($configuration['refUid'] || $configuration['refUid.']) {
-            $uid = intval($contentObject->stdWrap($configuration['refUid'], $configuration['refUid.']));
+            $uid = (int) ($contentObject->stdWrap($configuration['refUid'], $configuration['refUid.']));
         } else {
-            $uid = $contentObject->data['_LOCALIZED_UID'] ? $contentObject->data['_LOCALIZED_UID'] : $contentObject->data['uid'];
+            $uid = $contentObject->data['_LOCALIZED_UID'] ?: $contentObject->data['uid'];
         }
         $refTable = ($configuration['refTable'] && is_array($GLOBALS['TCA'][$configuration['refTable']])) ?
                     $configuration['refTable'] : 'tt_content';
@@ -396,10 +395,10 @@ class tx_rnbase_util_TSFAL
             if ($fileObject) {
                 $imageSetup = [];
                 unset($imageSetup['field']);
-                $sizeArr = $sizeArr ? $sizeArr : ['width' => 64, 'height' => 64];
+                $sizeArr = $sizeArr ?: ['width' => 64, 'height' => 64];
                 $imageSetup = array_merge($sizeArr, $imageSetup);
                 $imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, $imageSetup)->getPublicUrl(true);
-                $thumbnail = '<img src="'.$imageUrl.'" alt="'.htmlspecialchars($fileRef->getTitle()).'">';
+                $thumbnail = '<img src="' . $imageUrl . '" alt="' . htmlspecialchars($fileRef->getTitle()) . '">';
                 // TODO: Das geht bestimmt besser...
             }
             if ($thumbnail) {
@@ -450,7 +449,7 @@ class tx_rnbase_util_TSFAL
             $customSettingOverride = array_merge(
                 [
                     'appearance' => [
-                        'createNewRelationLinkTitle' => $ttContentLocallang.':images.addFileReference',
+                        'createNewRelationLinkTitle' => $ttContentLocallang . ':images.addFileReference',
                     ],
                     // custom configuration for displaying fields in the overlay/reference table
                     // to use the imageoverlayPalette instead of the basicoverlayPalette
@@ -503,7 +502,7 @@ class tx_rnbase_util_TSFAL
     {
         $commonTcaLocallang = \tx_rnbase_util_TYPO3::isTYPO87OrHigher() ? 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf' :
             'LLL:EXT:lang/locallang_tca.xlf';
-        $paletteLabel = TYPO3::isTYPO95OrHigher() ? '' : $commonTcaLocallang.':sys_file_reference.imageoverlayPalette';
+        $paletteLabel = TYPO3::isTYPO95OrHigher() ? '' : $commonTcaLocallang . ':sys_file_reference.imageoverlayPalette';
         $typeDefs = [
             '0',
             \TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT,
@@ -516,7 +515,7 @@ class tx_rnbase_util_TSFAL
         foreach ($typeDefs as $typeDef) {
             $types[$typeDef] = [
                 'showitem' => '
-                                --palette--;'.$paletteLabel.';imageoverlayPalette,
+                                --palette--;' . $paletteLabel . ';imageoverlayPalette,
                                 --palette--;;filePalette',
             ];
         }
@@ -566,13 +565,13 @@ class tx_rnbase_util_TSFAL
      */
     public static function deleteReferencesByReference($tableName, $fieldName, $itemId, $uids)
     {
-        $where = 'tablenames = '.tx_rnbase_util_DB::fullQuoteStr($tableName, 'sys_file_reference');
-        $where .= ' AND fieldname = '.tx_rnbase_util_DB::fullQuoteStr($fieldName, 'sys_file_reference');
-        $where .= ' AND uid_foreign = '.(int) $itemId;
+        $where = 'tablenames = ' . tx_rnbase_util_DB::fullQuoteStr($tableName, 'sys_file_reference');
+        $where .= ' AND fieldname = ' . tx_rnbase_util_DB::fullQuoteStr($fieldName, 'sys_file_reference');
+        $where .= ' AND uid_foreign = ' . (int) $itemId;
         $uids = is_array($uids) ? $uids : tx_rnbase_util_Strings::intExplode(',', $uids);
         if (!empty($uids)) {
             $uids = implode(',', $uids);
-            $where .= ' AND uid IN ('.$uids.') ';
+            $where .= ' AND uid IN (' . $uids . ') ';
         }
         tx_rnbase_util_DB::doDelete('sys_file_reference', $where);
         // Jetzt die Bildanzahl aktualisieren
@@ -602,12 +601,12 @@ class tx_rnbase_util_TSFAL
      */
     public static function deleteReferences($tableName, $fieldName, $itemId, $uids = '')
     {
-        $where = 'tablenames = '.tx_rnbase_util_DB::fullQuoteStr($tableName, 'sys_file_reference');
-        $where .= ' AND fieldname = '.tx_rnbase_util_DB::fullQuoteStr($fieldName, 'sys_file_reference');
-        $where .= ' AND uid_foreign = '.(int) $itemId;
+        $where = 'tablenames = ' . tx_rnbase_util_DB::fullQuoteStr($tableName, 'sys_file_reference');
+        $where .= ' AND fieldname = ' . tx_rnbase_util_DB::fullQuoteStr($fieldName, 'sys_file_reference');
+        $where .= ' AND uid_foreign = ' . (int) $itemId;
         if (strlen(trim($uids))) {
             $uids = implode(',', tx_rnbase_util_Strings::intExplode(',', $uids));
-            $where .= ' AND uid_local IN ('.$uids.') ';
+            $where .= ' AND uid_local IN (' . $uids . ') ';
         }
         tx_rnbase_util_DB::doDelete('sys_file_reference', $where);
         // Jetzt die Bildanzahl aktualisieren
@@ -621,7 +620,7 @@ class tx_rnbase_util_TSFAL
     {
         $values = [];
         $values[$fieldName] = self::getImageCount($tableName, $fieldName, $itemId);
-        tx_rnbase_util_DB::doUpdate($tableName, 'uid='.$itemId, $values);
+        tx_rnbase_util_DB::doUpdate($tableName, 'uid=' . $itemId, $values);
     }
 
     /**
@@ -631,9 +630,9 @@ class tx_rnbase_util_TSFAL
      */
     public static function getImageCount($tableName, $fieldName, $itemId)
     {
-        $options['where'] = 'tablenames = '.tx_rnbase_util_DB::fullQuoteStr($tableName, 'sys_file_reference');
-        $options['where'] .= ' AND fieldname = '.tx_rnbase_util_DB::fullQuoteStr($fieldName, 'sys_file_reference');
-        $options['where'] .= ' AND uid_foreign = '.(int) $itemId;
+        $options['where'] = 'tablenames = ' . tx_rnbase_util_DB::fullQuoteStr($tableName, 'sys_file_reference');
+        $options['where'] .= ' AND fieldname = ' . tx_rnbase_util_DB::fullQuoteStr($fieldName, 'sys_file_reference');
+        $options['where'] .= ' AND uid_foreign = ' . (int) $itemId;
         $options['count'] = 1;
         $options['enablefieldsoff'] = 1;
         $ret = tx_rnbase_util_DB::doSelect('count(*) AS \'cnt\'', 'sys_file_reference', $options);
@@ -650,11 +649,11 @@ class tx_rnbase_util_TSFAL
      */
     public static function getReferencesCount($mediaUid)
     {
-        $options['where'] = 'uid_local = '.(int) $mediaUid;
+        $options['where'] = 'uid_local = ' . (int) $mediaUid;
         $options['count'] = 1;
         $options['enablefieldsoff'] = 1;
         $ret = tx_rnbase_util_DB::doSelect('count(*) AS \'cnt\'', 'sys_file_reference', $options, 0);
-        $cnt = count($ret) ? intval($ret[0]['cnt']) : 0;
+        $cnt = count($ret) ? (int) ($ret[0]['cnt']) : 0;
 
         return $cnt;
     }
@@ -673,13 +672,13 @@ class tx_rnbase_util_TSFAL
     }
 
     protected static function getReferenceFileInfo(
-        \TYPO3\CMS\Core\Resource\FileReference $reference
+        TYPO3\CMS\Core\Resource\FileReference $reference
     ) {
         // getProperties gets merged values from reference and the orig file
         $info = $reference->getProperties();
         // add some fileinfo
         $info['file_path_name'] = $reference->getOriginalFile()->getPublicUrl();
-        $info['file_abs_url'] = tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL').$info['file_path_name'];
+        $info['file_abs_url'] = tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL') . $info['file_path_name'];
         $info['file_name'] = $info['name'];
 
         return $info;

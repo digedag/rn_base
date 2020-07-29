@@ -84,7 +84,7 @@ class tx_rnbase_util_Debug
         $path = [];
         $pathSiteLength = strlen(\Sys25\RnBase\Utility\Environment::getPublicPath());
         foreach ($trail as $dat) {
-            $pathFragment = $dat['class'].$dat['type'].$dat['function'];
+            $pathFragment = $dat['class'] . $dat['type'] . $dat['function'];
             // add the path of the included file
             if (in_array(
                 $dat['function'],
@@ -92,9 +92,9 @@ class tx_rnbase_util_Debug
             )) {
                 $dat['args'][0] = substr($dat['args'][0], $pathSiteLength);
                 $dat['file'] = substr($dat['file'], $pathSiteLength);
-                $pathFragment .= '('.$dat['args'][0].'),'.$dat['file'];
+                $pathFragment .= '(' . $dat['args'][0] . '),' . $dat['file'];
             }
-            $path[] = $pathFragment.'#'.$dat['line'];
+            $path[] = $pathFragment . '#' . $dat['line'];
         }
 
         return $path;
@@ -161,7 +161,7 @@ class tx_rnbase_util_Debug
     public static function wrapDebugInfo($text, $debug, array $options = [])
     {
         if (!empty($options['plain'])) {
-            return $text.' ['.$debug.']';
+            return $text . ' [' . $debug . ']';
         }
         self::addDebugInfoHeaderData();
         $out = '<span class="rnbase-debug-text">';
@@ -212,7 +212,7 @@ class tx_rnbase_util_Debug
             // @TODO: this is too late, for the most cases!
             $GLOBALS['TBE_STYLES']['inDocStyles_TBEstyle'] .= $code;
         } else {
-            $code = '<style type="text/css">'.$code.'</style>';
+            $code = '<style type="text/css">' . $code . '</style>';
             $GLOBALS['TSFE']->additionalHeaderData['rnbase-debug-info'] = $code;
         }
     }

@@ -101,14 +101,14 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
         // example: "9-16 von 19 News"
         $rangeFrom = $state['offset'] + 1;
         $rangeTo = ($pointer != $totalPages - 1) ? ($pointer + 1) * $state['limit'] : $count;
-        if (1 == $totalPages && $configurations->get($pbConfId.'hideIfSinglePage')) {
+        if (1 == $totalPages && $configurations->get($pbConfId . 'hideIfSinglePage')) {
             return '';
         }
-        $maxPages = intval($configurations->get($pbConfId.'maxPages'));
-        $maxPages = tx_rnbase_util_Math::intInRange($maxPages ? $maxPages : 10, 1, 100);
+        $maxPages = (int) ($configurations->get($pbConfId . 'maxPages'));
+        $maxPages = tx_rnbase_util_Math::intInRange($maxPages ?: 10, 1, 100);
         $templates = $this->getTemplates($template, $pbMarker);
 
-        $pageFloat = $this->getPageFloat($configurations->get($pbConfId.'pagefloat'), $maxPages);
+        $pageFloat = $this->getPageFloat($configurations->get($pbConfId . 'pagefloat'), $maxPages);
         $firstLastArr = $this->getFirstLastPage($pointer, $pageFloat, $totalPages, $maxPages);
 
         $arr = [
@@ -117,7 +117,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
             'rangeto' => $rangeTo,
             'totalpages' => $totalPages,
         ];
-        $markerArray = $formatter->getItemMarkerArrayWrapped($arr, $pbConfId, 0, $pbMarker.'_');
+        $markerArray = $formatter->getItemMarkerArrayWrapped($arr, $pbConfId, 0, $pbMarker . '_');
 
         $subpartArray = $this->createSubpartArray($pbMarker);
 
@@ -159,8 +159,8 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
             $parts[] = $this->getPageString($totalPages - 1, $pointer, 'last', $templates, $formatter, $pbConfId, $pbMarker);
         }
 
-        $implode = $configurations->get($pbConfId.'.implode');
-        $subpartArray['###'.$pbMarker.'_NORMAL_PAGE###'] = implode($parts, $implode ? $implode : ' ');
+        $implode = $configurations->get($pbConfId . '.implode');
+        $subpartArray['###' . $pbMarker . '_NORMAL_PAGE###'] = implode($parts, $implode ?: ' ');
         $ret = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($template, $markerArray, $subpartArray);
 
         return $ret;
@@ -175,19 +175,19 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
         $rec['number'] = $currentPage + 1;
 
         $pageTemplate = $templates[$pageId];
-        $pageConfId = $pbConfId.'page.'.$pageId.'.';
-        $pageMarker = $pbMarker.'_'.strtoupper($pageId).'_PAGE_';
+        $pageConfId = $pbConfId . 'page.' . $pageId . '.';
+        $pageMarker = $pbMarker . '_' . strtoupper($pageId) . '_PAGE_';
 
         $pageMarkerArray = $formatter->getItemMarkerArrayWrapped($rec, $pageConfId, 0, $pageMarker);
         $pageSubpartArray = [];
 
         if ($this->link) {
             $this->link->parameters([$this->pageBrowser->getParamName('pointer') => $currentPage]);
-            $pageWrappedSubpartArray['###'.$pageMarker.'LINK###'] = explode($this->token, $this->link->makeTag());
-            $pageMarkerArray['###'.$pageMarker.'LINKURL###'] = $this->link->makeUrl();
+            $pageWrappedSubpartArray['###' . $pageMarker . 'LINK###'] = explode($this->token, $this->link->makeTag());
+            $pageMarkerArray['###' . $pageMarker . 'LINKURL###'] = $this->link->makeUrl();
         } else {
-            $pageWrappedSubpartArray['###'.$pageMarker.'LINK###'] = $noLink;
-            $pageMarkerArray['###'.$pageMarker.'LINKURL###'] = '';
+            $pageWrappedSubpartArray['###' . $pageMarker . 'LINK###'] = $noLink;
+            $pageMarkerArray['###' . $pageMarker . 'LINKURL###'] = '';
         }
 
         $out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($pageTemplate, $pageMarkerArray, $pageSubpartArray, $pageWrappedSubpartArray);
@@ -245,7 +245,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
     {
         $ret = [];
         foreach ($this->pagePartsDef as $part) {
-            $ret[$part] = tx_rnbase_util_Templates::getSubpart($template, '###'.$pbMarker.'_'.strtoupper($part).'_PAGE###');
+            $ret[$part] = tx_rnbase_util_Templates::getSubpart($template, '###' . $pbMarker . '_' . strtoupper($part) . '_PAGE###');
         }
 
         return $ret;
@@ -259,7 +259,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
         $ret = [];
 
         foreach ($this->pagePartsDef as $part) {
-            $ret['###'.$pbMarker.'_'.strtoupper($part).'_PAGE###'] = '';
+            $ret['###' . $pbMarker . '_' . strtoupper($part) . '_PAGE###'] = '';
         }
 
         return $ret;
@@ -274,7 +274,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
     protected function initLink(&$configuration, $pbConfId)
     {
         $this->link = $configuration->createLink();
-        $this->link->initByTS($configuration, $pbConfId.'link.', []);
+        $this->link->initByTS($configuration, $pbConfId . 'link.', []);
         $this->token = md5(microtime());
         $this->link->label($this->token);
         $this->noLink = ['', ''];

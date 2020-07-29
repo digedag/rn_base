@@ -42,13 +42,13 @@ class Tx_Rnbase_Frontend_Marker_Utility
     public static function findUnusedAttributes(Tx_Rnbase_Domain_Model_DataInterface $item, $template, $marker)
     {
         $ignore = [];
-        $minfo = static::containsMarker($template, $marker.'___MINFO');
+        $minfo = static::containsMarker($template, $marker . '___MINFO');
         $minfoArr = [];
         foreach ($item as $key => $value) {
             if ($minfo) {
-                $minfoArr[$key] = $marker.'_'.strtoupper($key);
+                $minfoArr[$key] = $marker . '_' . strtoupper($key);
             }
-            if (!static::containsMarker($template, $marker.'_'.strtoupper($key))) {
+            if (!static::containsMarker($template, $marker . '_' . strtoupper($key))) {
                 $ignore[] = $key;
             }
         }
@@ -68,6 +68,6 @@ class Tx_Rnbase_Frontend_Marker_Utility
      */
     public static function containsMarker($template, $markerPrefix)
     {
-        return false !== strpos($template, '###'.$markerPrefix);
+        return false !== strpos($template, '###' . $markerPrefix);
     }
 }

@@ -256,7 +256,7 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
             ],
             __LINE__ => [
                 'initialKey' => $s124,
-                'cleanedKey' => substr($s124, 0, 50 - 33).'-'.md5($s124),
+                'cleanedKey' => substr($s124, 0, 50 - 33) . '-' . md5($s124),
                 'config' => ['keylength' => 50],
             ],
         ];
@@ -359,8 +359,6 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
     }
 
     /**
-     * @param array $config
-     *
      * @return PHPUnit_Framework_MockObject_MockObject|tx_rnbase_action_CacheHandlerDefault
      */
     protected function getHandlerMock(
@@ -395,7 +393,7 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends tx_rnbase_test
         $handler
             ->expects($this->any())
             ->method('getConfId')
-            ->will($this->returnValue($confId.'_caching.'));
+            ->will($this->returnValue($confId . '_caching.'));
 
         return $handler;
     }

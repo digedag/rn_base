@@ -49,7 +49,6 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
     /**
      * Constructor.
      *
-     * @param tx_rnbase_mod_BaseModule          $mod
      * @param array|Tx_Rnbase_Domain_Model_Data $options
      */
     public function __construct(
@@ -97,8 +96,6 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
      *
      * @param string                               $columnValue
      * @param string                               $columnName
-     * @param array                                $record
-     * @param Tx_Rnbase_Domain_Model_DataInterface $entry
      *
      * @return string
      */
@@ -112,7 +109,7 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
 
         tx_rnbase::load('tx_rnbase_util_Strings');
         $method = tx_rnbase_util_Strings::underscoredToLowerCamelCase($columnName);
-        $method = 'format'.ucfirst($method).'Column';
+        $method = 'format' . ucfirst($method) . 'Column';
 
         if (method_exists($this, $method)) {
             $return = $this->{$method}($entry);
@@ -127,7 +124,6 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
      * For example a strikethrough for disabled entries.
      *
      * @param string                               $formatedValue
-     * @param Tx_Rnbase_Domain_Model_DataInterface $entry
      * @param string                               $columnName
      *
      * @return string
@@ -142,8 +138,6 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
 
     /**
      * Renders the uid column.
-     *
-     * @param Tx_Rnbase_Domain_Model_DataInterface $entry
      *
      * @return string
      */
@@ -161,8 +155,6 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
 
     /**
      * Renders the uid column.
-     *
-     * @param Tx_Rnbase_Domain_Model_DataInterface $entry
      *
      * @return string
      */
@@ -203,8 +195,6 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
      * Builds a simple info of the entitiy.
      * Is curently used for title tags.
      *
-     * @param Tx_Rnbase_Domain_Model_DataInterface $entry
-     *
      * @return array
      */
     protected function buildSimpleEntryInfo(
@@ -212,13 +202,13 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
     ) {
         $infos = [];
 
-        $infos['uid'] = 'UID: '.$entry->getProperty('uid');
+        $infos['uid'] = 'UID: ' . $entry->getProperty('uid');
 
         // only for domain entries with table name
         if ($entry instanceof Tx_Rnbase_Domain_Model_DomainInterface) {
             $labelField = tx_rnbase_util_TCA::getLabelFieldForTable($entry->getTableName());
             if ('uid' !== $labelField && $entry->getProperty($labelField)) {
-                $infos['label'] = 'Label: '.(string) $entry->getProperty($labelField);
+                $infos['label'] = 'Label: ' . (string) $entry->getProperty($labelField);
             }
 
             $datefields = [
@@ -228,7 +218,7 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
             foreach ($datefields as $dateTitle => $datefield) {
                 $date = $entry->getProperty($datefield);
                 if (!empty($date)) {
-                    $infos[$datefield] = $dateTitle.': '.strftime(
+                    $infos[$datefield] = $dateTitle . ': ' . strftime(
                         '%d.%m.%y %H:%M:%S',
                         $date
                     );
@@ -241,8 +231,6 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
 
     /**
      * Renders the useractions.
-     *
-     * @param Tx_Rnbase_Domain_Model_DataInterface $item
      *
      * @return string
      */
@@ -259,7 +247,7 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
         $actionConf = $this->getActionsConfig($item);
 
         foreach ($actionConf as $actionKey => $actionConfig) {
-            $method = 'formatAction'.ucfirst($actionKey);
+            $method = 'formatAction' . ucfirst($actionKey);
             if (method_exists($this, $method)) {
                 $return .= $this->{$method}($item, $actionConfig);
             }
@@ -270,9 +258,6 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
 
     /**
      * Renders the useractions.
-     *
-     * @param Tx_Rnbase_Domain_Model_DomainInterface $item
-     * @param array                                  $actionConfig
      *
      * @return string
      */
@@ -290,9 +275,6 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
 
     /**
      * Renders the useractions.
-     *
-     * @param Tx_Rnbase_Domain_Model_DomainInterface $item
-     * @param array                                  $actionConfig
      *
      * @return string
      */
@@ -314,9 +296,6 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
     /**
      * Renders the useractions.
      *
-     * @param Tx_Rnbase_Domain_Model_DomainInterface $item
-     * @param array                                  $actionConfig
-     *
      * @return string
      */
     protected function formatActionRemove(
@@ -336,9 +315,6 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
 
     /**
      * Renders the useractions.
-     *
-     * @param Tx_Rnbase_Domain_Model_DomainInterface $item
-     * @param array                                  $actionConfig
      *
      * @return string
      */
@@ -372,7 +348,7 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
                 $prevId,
                 [
                     'label' => '',
-                    'title' => 'Move '.$fromUid.' after '.$prevId,
+                    'title' => 'Move ' . $fromUid . ' after ' . $prevId,
                 ]
             );
         } else {
@@ -385,9 +361,6 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
 
     /**
      * Renders the useractions.
-     *
-     * @param Tx_Rnbase_Domain_Model_DomainInterface $item
-     * @param array                                  $actionConfig
      *
      * @return string
      */
@@ -407,7 +380,7 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
                 $nextId,
                 [
                     'label' => '',
-                    'title' => 'Move '.$uid.' after '.$nextId,
+                    'title' => 'Move ' . $uid . ' after ' . $nextId,
                 ]
             );
         } else {
@@ -420,8 +393,6 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
 
     /**
      * Returns the uid map and sets the pointer to the current element.
-     *
-     * @param Tx_Rnbase_Domain_Model_RecordInterface $item
      *
      * @return array
      */
@@ -444,8 +415,6 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
 
     /**
      * Liefert die möglichen Optionen für die actions.
-     *
-     * @param Tx_Rnbase_Domain_Model_DomainInterface $item
      *
      * @return array
      */

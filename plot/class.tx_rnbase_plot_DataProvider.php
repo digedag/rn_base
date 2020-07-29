@@ -75,7 +75,7 @@ class tx_rnbase_plot_DataProvider implements tx_rnbase_plot_IDataProvider
 
                 break;
             case 'gradient':
-                $intDirection = tx_rnbase_plot_Builder::readConstant('IMAGE_GRAPH_GRAD_'.strtoupper($data['direction']));
+                $intDirection = tx_rnbase_plot_Builder::readConstant('IMAGE_GRAPH_GRAD_' . strtoupper($data['direction']));
                 $strColorsStart = tx_rnbase_util_Strings::trimExplode(',', $data['startColor']);
                 $strColorsEnd = tx_rnbase_util_Strings::trimExplode(',', $data['endColor']);
                 $maxStart = count($strColorsStart);

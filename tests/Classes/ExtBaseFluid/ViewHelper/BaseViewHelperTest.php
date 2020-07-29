@@ -60,7 +60,7 @@ abstract class BaseViewHelperTest extends \tx_rnbase_tests_BaseTestCase
      */
     protected function getPreparedVîewHelper($viewHelper)
     {
-        if (!is_object($viewHelper)) {
+        if (!\is_object($viewHelper)) {
             $viewHelper = \tx_rnbase::makeInstance($viewHelper);
         }
 

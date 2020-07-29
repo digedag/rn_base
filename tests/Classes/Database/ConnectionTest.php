@@ -217,7 +217,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
 
         $fields = ['hidden', 'starttime', 'endtime', 'fe_group'];
         foreach ($fields as $field) {
-            $this->assertNotRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field.' found');
+            $this->assertNotRegExp('/' . $field . '(` )?(=|<=)/', $sql, $field . ' found');
         }
     }
 
@@ -235,7 +235,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
 
         $fields = ['hidden', 'starttime', 'endtime', 'fe_group', 'deleted'];
         foreach ($fields as $field) {
-            $this->assertRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field.' not found');
+            $this->assertRegExp('/' . $field . '(` )?(=|<=)/', $sql, $field . ' not found');
         }
     }
 
@@ -269,7 +269,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
 
         $fields = ['hidden', 'starttime', 'endtime', 'fe_group', 'deleted'];
         foreach ($fields as $field) {
-            $this->assertRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field.' not found');
+            $this->assertRegExp('/' . $field . '(` )?(=|<=)/', $sql, $field . ' not found');
         }
     }
 
@@ -289,7 +289,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
 
         $fields = ['hidden', 'starttime', 'endtime', 'fe_group'];
         foreach ($fields as $field) {
-            $this->assertNotRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field.' found');
+            $this->assertNotRegExp('/' . $field . '(` )?(=|<=)/', $sql, $field . ' found');
         }
 
         self::assertFalse(tx_rnbase_util_TYPO3::getTSFE()->no_cache, 'Cache doch deaktiviert');
@@ -311,7 +311,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
 
         $fields = ['hidden', 'starttime', 'endtime', 'fe_group', 'deleted'];
         foreach ($fields as $field) {
-            $this->assertRegExp('/'.$field.'/', $sql, $field.' not found');
+            $this->assertRegExp('/' . $field . '/', $sql, $field . ' not found');
         }
 
         self::assertFalse(tx_rnbase_util_TYPO3::getTSFE()->no_cache, 'Cache nicht aktiviert');
@@ -332,7 +332,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
 
         $fields = ['hidden', 'starttime', 'endtime', 'fe_group', 'deleted'];
         foreach ($fields as $field) {
-            $this->assertNotRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field.' found');
+            $this->assertNotRegExp('/' . $field . '(` )?(=|<=)/', $sql, $field . ' found');
         }
     }
 
@@ -350,7 +350,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
 
         $fields = ['hidden', 'starttime', 'endtime', 'fe_group', 'deleted'];
         foreach ($fields as $field) {
-            $this->assertNotRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field.' found');
+            $this->assertNotRegExp('/' . $field . '(` )?(=|<=)/', $sql, $field . ' found');
         }
     }
 
@@ -398,7 +398,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
         $ret = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->searchWhere($sw, $fields, OP_EQ);
         $this->assertEquals($ret, " (tab1.bodytext = 'content' OR tab1.header = 'content' OR tab1.bodytext = 'management' OR tab1.header = 'management' OR tab1.bodytext = 'system' OR tab1.header = 'system' )", 'OR failed.');
 
-        $ret = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->searchWhere($sw.', 32', $fields, 'FIND_IN_SET_OR');
+        $ret = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->searchWhere($sw . ', 32', $fields, 'FIND_IN_SET_OR');
         $this->assertEquals($ret, " (FIND_IN_SET('content', tab1.bodytext) OR FIND_IN_SET('content', tab1.header) OR FIND_IN_SET('management', tab1.bodytext) OR FIND_IN_SET('management', tab1.header) OR FIND_IN_SET('system', tab1.bodytext) OR FIND_IN_SET('system', tab1.header) OR FIND_IN_SET('32', tab1.bodytext) OR FIND_IN_SET('32', tab1.header))", 'FIND_IN_SET failed');
 
         $ret = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->searchWhere($sw, $fields, 'LIKE');

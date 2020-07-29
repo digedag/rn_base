@@ -376,8 +376,6 @@ class tx_rnbase_util_Typo3Classes
     }
 
     /**
-     * @param array $possibleClasses
-     *
      * @return string
      */
     protected static function getClassByCurrentTypo3Version(array $possibleClasses)

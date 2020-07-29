@@ -274,7 +274,7 @@ class tx_rnbase_util_Lang
             $word = is_object($GLOBALS['LANG']) ? $GLOBALS['LANG']->getLL($key) : $alternativeLabel;
         }
 
-        $output = (isset($this->LLtestPrefix)) ? $this->LLtestPrefix.$word : $word;
+        $output = (isset($this->LLtestPrefix)) ? $this->LLtestPrefix . $word : $word;
 
         if ($hsc) {
             $output = htmlspecialchars($output);
@@ -314,11 +314,11 @@ class tx_rnbase_util_Lang
             // Im BE die LANG fragen...
             $word = is_object($GLOBALS['LANG']) ? $GLOBALS['LANG']->getLL($key) : '';
             if (!$word) {
-                $word = $this->LLtestPrefixAlt.$alt;
+                $word = $this->LLtestPrefixAlt . $alt;
             }
         }
 
-        $output = $this->LLtestPrefix.$word;
+        $output = $this->LLtestPrefix . $word;
         if ($hsc) {
             $output = htmlspecialchars($output);
         }
@@ -340,7 +340,7 @@ class tx_rnbase_util_Lang
         $lang = $GLOBALS[TYPO3_MODE == 'BE' ? 'LANG' : 'TSFE'];
 
         if (!$lang) {
-            throw new Exception('Languageservice for "'.TYPO3_MODE.'" not initialized yet.');
+            throw new Exception('Languageservice for "' . TYPO3_MODE . '" not initialized yet.');
         }
 
         return $lang->sL($key);

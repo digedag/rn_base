@@ -43,7 +43,6 @@ class Category
     private $dbConnection;
 
     /**
-     * @param ConfigurationInterface $configurations
      * @param string                 $confId
      */
     public function __construct(ConfigurationInterface $configurations, $confId)
@@ -53,8 +52,6 @@ class Category
     }
 
     /**
-     * @param array $fields
-     *
      * @return bool | null
      */
     public function handleSysCategoryFilter(array &$fields, $doSearch)
@@ -66,16 +63,16 @@ class Category
         ];
 
         foreach ($typoScriptPathsToFilterUtilityMethod as $typoScriptPath => $filterUtilityMethod) {
-            if ($this->configurations->get($this->confId.$typoScriptPath)) {
+            if ($this->configurations->get($this->confId . $typoScriptPath)) {
                 $fieldsBefore = $fields;
                 $fields = $this->$filterUtilityMethod(
                     $fields,
                     $this->configurations,
-                    $this->confId.$typoScriptPath.'.'
+                    $this->confId . $typoScriptPath . '.'
                 );
 
                 if (
-                    $this->configurations->get($this->confId.$typoScriptPath.'.dontSearchIfNoCategoriesFound') &&
+                    $this->configurations->get($this->confId . $typoScriptPath . '.dontSearchIfNoCategoriesFound') &&
                     // wenn sich die $fields nicht geändert haben, dann wurden keine Kategorie
                     // gefunden.
                     $fieldsBefore == $fields
@@ -89,7 +86,6 @@ class Category
     }
 
     /**
-     * @param array                  $fields
      * @param ConfigurationInterface $configurations
      * @param string                 $confId
      *
@@ -117,7 +113,7 @@ class Category
     {
         $parameters = $configurations->getParameters();
         $categories = [];
-        foreach ($configurations->get($confId.'supportedParameters.') as $paramConfig) {
+        foreach ($configurations->get($confId . 'supportedParameters.') as $paramConfig) {
             $referencedUid = $parameters->getInt(
                 $paramConfig['parameterName'],
                 $paramConfig['parameterQualifier']
@@ -151,11 +147,11 @@ class Category
             'uid_local',
             'sys_category_record_mm',
             [
-                'where' => 'sys_category_record_mm.tablenames = '.
-                    $databaseConnection->fullQuoteStr($table).' AND '.
-                    'sys_category_record_mm.fieldname = '.
-                    $databaseConnection->fullQuoteStr($categoryField).' AND '.
-                    'sys_category_record_mm.uid_foreign = '.intval($foreignUid),
+                'where' => 'sys_category_record_mm.tablenames = ' .
+                    $databaseConnection->fullQuoteStr($table) . ' AND ' .
+                    'sys_category_record_mm.fieldname = ' .
+                    $databaseConnection->fullQuoteStr($categoryField) . ' AND ' .
+                    'sys_category_record_mm.uid_foreign = ' . (int) $foreignUid,
                 'enablefieldsoff' => true,
             ]
         );
@@ -184,8 +180,6 @@ class Category
     }
 
     /**
-     * @param array                  $categories
-     * @param array                  $fields
      * @param ConfigurationInterface $configurations
      * @param string                 $confId
      *
@@ -198,16 +192,14 @@ class Category
         $confId
     ) {
         $sysCategoryTableAlias =
-            $configurations->get($confId.'sysCategoryTableAlias') ?
-                $configurations->get($confId.'sysCategoryTableAlias') :
+            $configurations->get($confId . 'sysCategoryTableAlias') ?:
                 'SYS_CATEGORY';
-        $fields[$sysCategoryTableAlias.'.uid'] = [OP_IN_INT => implode(',', $categories)];
+        $fields[$sysCategoryTableAlias . '.uid'] = [OP_IN_INT => implode(',', $categories)];
 
         return $fields;
     }
 
     /**
-     * @param array                  $fields
      * @param ConfigurationInterface $configurations
      * @param string                 $confId
      *
@@ -228,7 +220,6 @@ class Category
     }
 
     /**
-     * @param array                  $fields
      * @param ConfigurationInterface $configurations
      * @param string                 $confId
      *
@@ -240,8 +231,8 @@ class Category
         $confId
     ) {
         $categoryUid = $configurations->getParameters()->getInt(
-            $configurations->get($confId.'parameterName'),
-            $configurations->get($confId.'parameterQualifier')
+            $configurations->get($confId . 'parameterName'),
+            $configurations->get($confId . 'parameterQualifier')
         );
         if ($categoryUid) {
             $fields = $this->getFieldsByCategories([$categoryUid], $fields, $configurations, $confId);

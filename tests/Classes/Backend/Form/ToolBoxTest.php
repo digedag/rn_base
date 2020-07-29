@@ -258,8 +258,8 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
             ->will(self::returnValue('scriptUrl'));
         unset($options['params']['id']);
         self::assertEquals(
-            htmlspecialchars('<a href="#" class="'.Tx_Rnbase_Backend_Form_ToolBox::CSS_CLASS_BTN.
-                '" onclick="'."window.location.href='scriptUrl'; return false;".'" >mylabel</a>'),
+            htmlspecialchars('<a href="#" class="' . Tx_Rnbase_Backend_Form_ToolBox::CSS_CLASS_BTN .
+                '" onclick="' . "window.location.href='scriptUrl'; return false;" . '" >mylabel</a>'),
             htmlspecialchars($formTool->createLink($urlParameters, $pid, 'mylabel', $options))
         );
     }
@@ -278,7 +278,7 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
         $formTool = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Form_ToolBox');
         $result = $formTool->createNewLink('tx_cfcleague_games', 2, 'mylabel', $options);
 
-        self::assertContains('class="'.Tx_Rnbase_Backend_Form_ToolBox::CSS_CLASS_BTN.'"', $result);
+        self::assertContains('class="' . Tx_Rnbase_Backend_Form_ToolBox::CSS_CLASS_BTN . '"', $result);
         self::assertContains('mylabel</a>', $result);
         self::assertContains('edit[tx_cfcleague_games][2]=new', $result);
         self::assertContains('defVals[tx_cfcleague_games][competition]=2', $result);
@@ -303,8 +303,8 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
             ->will(self::returnValue('scriptUrl'));
 
         self::assertEquals(
-            htmlspecialchars('<a href="#" class="'.Tx_Rnbase_Backend_Form_ToolBox::CSS_CLASS_BTN.
-                '" onclick="'."window.location.href='scriptUrl'; return false;".'" title="hoverTitle">mylabel</a>'),
+            htmlspecialchars('<a href="#" class="' . Tx_Rnbase_Backend_Form_ToolBox::CSS_CLASS_BTN .
+                '" onclick="' . "window.location.href='scriptUrl'; return false;" . '" title="hoverTitle">mylabel</a>'),
             htmlspecialchars($formTool->createLink($urlParameters, 0, 'mylabel', $options))
         );
     }
@@ -325,8 +325,8 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
             ->will(self::returnValue('scriptUrl'));
 
         self::assertEquals(
-            htmlspecialchars('<a href="#" class="myClass" onclick="'.
-                "window.location.href='scriptUrl'; return false;".'" >mylabel</a>'),
+            htmlspecialchars('<a href="#" class="myClass" onclick="' .
+                "window.location.href='scriptUrl'; return false;" . '" >mylabel</a>'),
             htmlspecialchars($formTool->createLink($urlParameters, 22, 'mylabel', $options))
         );
     }
@@ -397,7 +397,7 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
             ->will(self::returnValue('jumpUrl'));
 
         self::assertEquals(
-            '<a href="#" class="'.Tx_Rnbase_Backend_Form_ToolBox::CSS_CLASS_BTN.'" onclick="jumpUrl" >mylabel</a>',
+            '<a href="#" class="' . Tx_Rnbase_Backend_Form_ToolBox::CSS_CLASS_BTN . '" onclick="jumpUrl" >mylabel</a>',
             $formTool->createLinkForDataHandlerAction($urlParameters, 'mylabel', $options)
         );
     }
@@ -418,7 +418,7 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
             ->will(self::returnValue('jumpUrl'));
 
         self::assertEquals(
-            '<a href="#" class="'.Tx_Rnbase_Backend_Form_ToolBox::CSS_CLASS_BTN.'" onclick="jumpUrl" title="hoverTitle">mylabel</a>',
+            '<a href="#" class="' . Tx_Rnbase_Backend_Form_ToolBox::CSS_CLASS_BTN . '" onclick="jumpUrl" title="hoverTitle">mylabel</a>',
             $formTool->createLinkForDataHandlerAction($urlParameters, 'mylabel', $options)
         );
     }

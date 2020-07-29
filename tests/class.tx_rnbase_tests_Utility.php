@@ -40,7 +40,6 @@ class tx_rnbase_tests_Utility
      *   tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass())
      * );.
      *
-     * @param array  $configurationArray
      * @param string $extensionKey
      * @param string $qualifier
      *

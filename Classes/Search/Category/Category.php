@@ -98,8 +98,8 @@ class Category extends \tx_rnbase_util_SearchBase
         $tableMappings = $this->getTableMappings();
         $baseAlias = $this->getBaseTableAlias();
         if (isset($tableAliases['SYS_CATEGORY_RECORD_MM'])) {
-            $joins = ' LEFT JOIN '.$tableMappings['SYS_CATEGORY_RECORD_MM'].' AS SYS_CATEGORY_RECORD_MM ON'.
-                        ' SYS_CATEGORY_RECORD_MM.uid_local = '.$baseAlias.'.uid';
+            $joins = ' LEFT JOIN ' . $tableMappings['SYS_CATEGORY_RECORD_MM'] . ' AS SYS_CATEGORY_RECORD_MM ON' .
+                        ' SYS_CATEGORY_RECORD_MM.uid_local = ' . $baseAlias . '.uid';
         }
 
         return $joins;

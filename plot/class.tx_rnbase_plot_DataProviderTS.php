@@ -63,19 +63,19 @@ class tx_rnbase_plot_DataProviderTS implements tx_rnbase_plot_IDataProvider
         $arrKeys = $templateServiceClass::sortedKeyList($arrConf);
         foreach ($arrKeys as $strKey) {
             $strType = $arrConf[$strKey];
-            if (intval($strKey) && !strstr($strKey, '.')) {
-                $strId = $arrConf[$strKey.'.']['id'] ? $arrConf[$strKey.'.']['id'] : false;
+            if ((int) $strKey && !strstr($strKey, '.')) {
+                $strId = $arrConf[$strKey . '.']['id'] ?: false;
                 switch ($strType) {
                     case 'color':
                     case 'addColor':
-                        $strColor = $arrConf[$strKey.'.']['color'];
+                        $strColor = $arrConf[$strKey . '.']['color'];
                         $objFillStyle->addColor($strColor, $strId);
 
                         break;
                     case 'gradient':
-                        $intDirection = tx_rnbase_plot_Builder::readConstant('IMAGE_GRAPH_GRAD_'.strtoupper($arrConf[$strKey.'.']['direction']));
-                        $strStartColor = $arrConf[$strKey.'.']['startColor'];
-                        $strEndColor = $arrConf[$strKey.'.']['endColor'];
+                        $intDirection = tx_rnbase_plot_Builder::readConstant('IMAGE_GRAPH_GRAD_' . strtoupper($arrConf[$strKey . '.']['direction']));
+                        $strStartColor = $arrConf[$strKey . '.']['startColor'];
+                        $strEndColor = $arrConf[$strKey . '.']['endColor'];
                         $objFillStyle->addNew('gradient', [$intDirection, $strStartColor, $strEndColor], $strId);
 
                         break;
@@ -102,14 +102,14 @@ class tx_rnbase_plot_DataProviderTS implements tx_rnbase_plot_IDataProvider
             $arrKeys = $templateServiceClass::sortedKeyList($arrConf);
             foreach ($arrKeys as $strKey) {
                 $strValue = $arrConf[$strKey];
-                if (intval($strKey) && !strstr($strKey, '.')) {
+                if ((int) $strKey && !strstr($strKey, '.')) {
                     switch ($strValue) {
                         case 'trivial':
-                            $objDatasets[$intCount] = $this->datasetTrivial($arrConf[$strKey.'.']);
+                            $objDatasets[$intCount] = $this->datasetTrivial($arrConf[$strKey . '.']);
 
                             break;
                         case 'random':
-                            $objDatasets[$intCount] = $this->datasetRandom($arrConf[$strKey.'.']);
+                            $objDatasets[$intCount] = $this->datasetRandom($arrConf[$strKey . '.']);
 
                             break;
                     }
@@ -137,17 +137,17 @@ class tx_rnbase_plot_DataProviderTS implements tx_rnbase_plot_IDataProvider
             $arrKeys = $templateServiceClass::sortedKeyList($arrConf);
             foreach ($arrKeys as $strKey) {
                 $strValue = $arrConf[$strKey];
-                if (intval($strKey) && !strstr($strKey, '.')) {
+                if ((int) $strKey && !strstr($strKey, '.')) {
                     if ('point' == $strValue) {
-                        $mixX = $arrConf[$strKey.'.']['x'];
-                        if ('null' == $arrConf[$strKey.'.']['y']) {
+                        $mixX = $arrConf[$strKey . '.']['x'];
+                        if ('null' == $arrConf[$strKey . '.']['y']) {
                             $mixY = null;
-                        } elseif (is_array($arrConf[$strKey.'.']['y.'])) {
-                            $mixY = $arrConf[$strKey.'.']['y.'];
+                        } elseif (is_array($arrConf[$strKey . '.']['y.'])) {
+                            $mixY = $arrConf[$strKey . '.']['y.'];
                         } else {
-                            $mixY = $arrConf[$strKey.'.']['y'];
+                            $mixY = $arrConf[$strKey . '.']['y'];
                         }
-                        $strId = $arrConf[$strKey.'.']['id'];
+                        $strId = $arrConf[$strKey . '.']['id'];
                         $dataSet->addPoint($mixX, $mixY, $strId);
                     }
                 }

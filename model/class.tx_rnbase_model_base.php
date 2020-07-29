@@ -167,7 +167,7 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements Tx_Rnbase_Dom
             if (!$this->isPropertyEmpty($field)) {
                 $tstamp = (int) $this->getProperty($field);
                 tx_rnbase::load('tx_rnbase_util_Dates');
-                $datetime = tx_rnbase_util_Dates::getDateTime('@'.$tstamp);
+                $datetime = tx_rnbase_util_Dates::getDateTime('@' . $tstamp);
             }
         }
 
@@ -188,7 +188,7 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements Tx_Rnbase_Dom
             if (!$this->isPropertyEmpty($field)) {
                 $tstamp = (int) $this->getProperty($field);
                 tx_rnbase::load('tx_rnbase_util_Dates');
-                $datetime = tx_rnbase_util_Dates::getDateTime('@'.$tstamp);
+                $datetime = tx_rnbase_util_Dates::getDateTime('@' . $tstamp);
             }
         }
 
@@ -357,8 +357,8 @@ class tx_rnbase_model_base extends tx_rnbase_model_data implements Tx_Rnbase_Dom
      */
     public function getColumnWrapped($formatter, $columnName, $baseConfId, $colConfId = '')
     {
-        $colConfId = (strlen($colConfId)) ? $colConfId : $columnName.'.';
+        $colConfId = (strlen($colConfId)) ? $colConfId : $columnName . '.';
 
-        return $formatter->wrap($this->record[$columnName], $baseConfId.$colConfId);
+        return $formatter->wrap($this->record[$columnName], $baseConfId . $colConfId);
     }
 }

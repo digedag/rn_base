@@ -54,7 +54,7 @@ class Tx_Rnbase_Utility_CryptTest extends tx_rnbase_tests_BaseTestCase
         $this->backup['encryptionKey']
             = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']
-            = 'FIKUmW4TMTJgcohLr2VZc6fIHD8yZV1Ey8pRurYEJiVErT5'.
+            = 'FIKUmW4TMTJgcohLr2VZc6fIHD8yZV1Ey8pRurYEJiVErT5' .
               'oYMAXVSxAPRZRZPwXUCroqD7REmnhxC64ck54gfiQP1fj3V';
     }
 
@@ -83,7 +83,7 @@ class Tx_Rnbase_Utility_CryptTest extends tx_rnbase_tests_BaseTestCase
                 'body' => str_shuffle(
                     substr(
                         str_repeat(
-                            '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.LF,
+                            '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' . LF,
                             32768
                         ),
                         0,

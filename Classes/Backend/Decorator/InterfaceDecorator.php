@@ -36,7 +36,6 @@ interface Tx_Rnbase_Backend_Decorator_InterfaceDecorator
      *
      * @param string                                $columnValue
      * @param string                                $columnName
-     * @param array                                 $record
      * @param \Tx_Rnbase_Domain_Model_DataInterface $entry
      *
      * @return string
@@ -45,6 +44,6 @@ interface Tx_Rnbase_Backend_Decorator_InterfaceDecorator
         $columnValue,
         $columnName,
         array $record,
-        \Tx_Rnbase_Domain_Model_DataInterface $entry
+        Tx_Rnbase_Domain_Model_DataInterface $entry
     );
 }

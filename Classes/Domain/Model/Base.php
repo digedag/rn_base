@@ -208,7 +208,7 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
                 $tstamp = (int) $this->getProperty($field);
                 tx_rnbase::load('tx_rnbase_util_Dates');
                 $datetime = tx_rnbase_util_Dates::getDateTime(
-                    '@'.$tstamp,
+                    '@' . $tstamp,
                     $timezone
                 );
             }
@@ -235,7 +235,7 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
                 $tstamp = (int) $this->getProperty($field);
                 tx_rnbase::load('tx_rnbase_util_Dates');
                 $datetime = tx_rnbase_util_Dates::getDateTime(
-                    '@'.$tstamp,
+                    '@' . $tstamp,
                     $timezone
                 );
             }
