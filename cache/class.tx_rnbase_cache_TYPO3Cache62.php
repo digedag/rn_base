@@ -110,7 +110,7 @@ class tx_rnbase_cache_TYPO3Cache62 implements tx_rnbase_cache_ICache
      *
      * @param \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache
      */
-    private function setCache(TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache)
+    private function setCache(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache)
     {
         $this->cache = $cache;
     }
