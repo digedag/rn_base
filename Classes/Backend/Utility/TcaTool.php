@@ -25,8 +25,8 @@ namespace Sys25\RnBase\Backend\Utility;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use tx_rnbase_util_Arrays;
 use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase_util_Arrays;
 
 /**
  * TCA Util and wrapper methods.

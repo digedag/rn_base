@@ -1,9 +1,9 @@
 <?php
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Sys25\RnBase\Utility\TYPO3;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use Sys25\RnBase\Utility\TYPO3;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /* *******************************************************
  *  Copyright notice
