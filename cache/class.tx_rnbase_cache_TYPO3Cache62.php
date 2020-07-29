@@ -108,8 +108,6 @@ class tx_rnbase_cache_TYPO3Cache62 implements tx_rnbase_cache_ICache
 
     /**
      * Set the TYPO3 cache instance.
-     *
-     * @param FrontendInterface $cache
      */
     private function setCache(FrontendInterface $cache)
     {
