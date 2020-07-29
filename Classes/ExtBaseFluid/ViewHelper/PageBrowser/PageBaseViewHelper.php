@@ -51,6 +51,7 @@ class PageBaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBas
         $this->registerTagAttribute('target', 'string', 'Target of link', false);
         $this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document', false);
         $this->registerArgument('data-tagname', 'string', 'Type of Tag to render', false, 'a');
+        $this->registerArgument('data-wrap', 'string', 'Wrap around the Page', false, '|');
         $this->registerArgument('pageUid', 'int', 'Target page. See TypoLink destination', false, null);
         $this->registerArgument(
             'additionalParams',
@@ -155,6 +156,23 @@ class PageBaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBas
             $this->tag->setContent($this->renderChildren());
         }
 
-        return $this->tag->render();
+        return $this->wrapContent($this->tag->render());
+    }
+
+    /**
+     * Wraps the Link.
+     *
+     * @param $content
+     *
+     * @return string
+     */
+    protected function wrapContent($content)
+    {
+        if (!empty($this->arguments['data-wrap'])) {
+            $wrap = explode('|', $this->arguments['data-wrap'], 2);
+            $content = $wrap[0].$content.$wrap[1];
+        }
+
+        return $content;
     }
 }
