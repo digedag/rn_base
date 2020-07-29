@@ -1,8 +1,5 @@
 <?php
 
-use Sys25\RnBase\Utility\TYPO3;
-use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -24,6 +21,10 @@ use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
+
+use Sys25\RnBase\Utility\TYPO3;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 
 tx_rnbase::load('tx_rnbase_cache_ICache');
 
@@ -55,7 +56,7 @@ class tx_rnbase_cache_TYPO3Cache62 implements tx_rnbase_cache_ICache
     /**
      * @param string $cacheName
      *
-     * @return \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+     * @return FrontendInterface
      */
     private function checkCacheConfiguration($cacheName)
     {
@@ -108,9 +109,9 @@ class tx_rnbase_cache_TYPO3Cache62 implements tx_rnbase_cache_ICache
     /**
      * Set the TYPO3 cache instance.
      *
-     * @param \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache
+     * @param FrontendInterface $cache
      */
-    private function setCache(TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache)
+    private function setCache(FrontendInterface $cache)
     {
         $this->cache = $cache;
     }
@@ -118,7 +119,7 @@ class tx_rnbase_cache_TYPO3Cache62 implements tx_rnbase_cache_ICache
     /**
      * Set the TYPO3 cache instance.
      *
-     * @return \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+     * @return FrontendInterface
      */
     private function getCache()
     {
