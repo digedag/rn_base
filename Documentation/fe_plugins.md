@@ -216,52 +216,52 @@ Damit kann auf die get Methode der configurations zugegriffen werden:
 {namespace rn=Sys25\RnBase\ExtBaseFluid\ViewHelper}
 
 <div class="pagebrowser">
-    <rn:pageBrowser
-        maxPages="5"
-        hideIfSinglePage="1"
-    >
-        <rn:pageBrowser.firstPage
-            addQueryString="TRUE"
-            argumentsToBeExcludedFromQueryString="{0: 'id', 1: 'L', 2: 'cHash'}"
-            section="comments"
+    <ul class="pagination flex-wrap">
+        <rn:pageBrowser
+            maxPages="5"
+            hideIfSinglePage="1"
         >
-            &lt;&lt;
-        </rn:pageBrowser.firstPage>
-        <rn:pageBrowser.prevPage
-            addQueryString="TRUE"
-            argumentsToBeExcludedFromQueryString="{0: 'id', 1: 'L', 2: 'cHash'}"
-            section="comments"
-        >
-            &lt;
-        </rn:pageBrowser.prevPage>
-        <rn:pageBrowser.currentPage
-            addQueryString="TRUE"
-            argumentsToBeExcludedFromQueryString="{0: 'id', 1: 'L', 2: 'cHash'}"
-            class="active"
-            usePageNumberAsLinkText="1"
-            section="comments"
-        />
-        <rn:pageBrowser.normalPage
-            addQueryString="TRUE"
-            argumentsToBeExcludedFromQueryString="{0: 'id', 1: 'L', 2: 'cHash'}"
-            usePageNumberAsLinkText="1"
-            section="comments"
-        />
-        <rn:pageBrowser.nextPage
-            addQueryString="TRUE"
-            argumentsToBeExcludedFromQueryString="{0: 'id', 1: 'L', 2: 'cHash'}"
-            section="comments"
-        >
-            &gt;
-        </rn:pageBrowser.nextPage>
-        <rn:pageBrowser.lastPage
-            addQueryString="TRUE"
-            argumentsToBeExcludedFromQueryString="{0: 'id', 1: 'L', 2: 'cHash'}"
-            section="comments"
-        >
-            &gt;&gt;
-        </rn:pageBrowser.lastPage>
-    </rn:pageBrowser>
+            <rn:pageBrowser.firstPage
+                data-wrap='<li class="page-item">|</li>'
+                addQueryString="TRUE"
+                argumentsToBeExcludedFromQueryString="{0: 'id', 1: 'L', 2: 'cHash'}"
+                section="comments"
+            >&lt;&lt;</rn:pageBrowser.firstPage>
+            <rn:pageBrowser.prevPage
+                data-wrap='<li class="page-item">|</li>'
+                addQueryString="TRUE"
+                argumentsToBeExcludedFromQueryString="{0: 'id', 1: 'L', 2: 'cHash'}"
+                section="comments"
+            >&lt;</rn:pageBrowser.prevPage>
+            <rn:pageBrowser.currentPage
+                data-wrap='<li class="page-item active">|</li>'
+                addQueryString="TRUE"
+                argumentsToBeExcludedFromQueryString="{0: 'id', 1: 'L', 2: 'cHash'}"
+                class="active"
+                usePageNumberAsLinkText="1"
+                section="comments"
+            />
+            <rn:pageBrowser.normalPage
+                data-wrap='<li class="page-item">|</li>'
+                addQueryString="TRUE"
+                argumentsToBeExcludedFromQueryString="{0: 'id', 1: 'L', 2: 'cHash'}"
+                usePageNumberAsLinkText="1"
+                section="comments"
+            />
+            <rn:pageBrowser.nextPage
+                data-wrap='<li class="page-item">|</li>'
+                addQueryString="TRUE"
+                argumentsToBeExcludedFromQueryString="{0: 'id', 1: 'L', 2: 'cHash'}"
+                section="comments"
+            >&gt;</rn:pageBrowser.nextPage>
+            <rn:pageBrowser.lastPage
+                data-wrap='<li class="page-item">|</li>'
+                addQueryString="TRUE"
+                argumentsToBeExcludedFromQueryString="{0: 'id', 1: 'L', 2: 'cHash'}"
+                section="comments"
+            >&gt;&gt;</rn:pageBrowser.lastPage>
+        </rn:pageBrowser>
+    </ul>
 </div>
 ```
 Hinweis: Nicht alle fluid ViewHelper können ohne weiteres verwendet werden. Wenn z.B. ein Extbase Controller nötig ist,
