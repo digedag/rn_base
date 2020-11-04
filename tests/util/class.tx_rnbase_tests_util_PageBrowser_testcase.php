@@ -227,7 +227,7 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTest
     }
 
     /**
-     * @return number[][]|boolean[][]
+     * @return number[][]|bool[][]
      */
     public function dataProviderMarkPageNotFoundIfPointerOutOfRange()
     {

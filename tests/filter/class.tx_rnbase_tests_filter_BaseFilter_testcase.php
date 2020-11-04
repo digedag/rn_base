@@ -83,7 +83,7 @@ class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTes
     }
 
     /**
-     * @return boolean[][]|NULL[][]
+     * @return bool[][]|null[][]
      */
     public function dataProviderInitReturnsCorrectValue()
     {
