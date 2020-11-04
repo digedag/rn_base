@@ -2,6 +2,15 @@
 
 Changelog
 ---------
+
+v1.12.4 (04.11.2020)
+ * Add wrap option to pagebrowser viewhelper
+ * Add pagebrowser ul example to documentation
+ * #200 Add GitHub Actions
+ * Append test and fix composer scripts  
+   Run tests with `composer test`  
+   Fix phpcs with `composer fix`
+   
 v1.12.3 (29.06.2020)
  * remove ending semicolon to fix TCA palette syntax
  * fixed namespaces of old fluid classes
