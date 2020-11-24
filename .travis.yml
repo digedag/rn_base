@@ -67,9 +67,24 @@ jobs:
       env: TYPO3_CORE="typo3/cms=^8.7.0"
     - stage: test
       php: 7.2
+      env: TYPO3_CORE="typo3/cms=^8.7.0"
+    - stage: test
+      php: 7.2
+      env: TYPO3_CORE="typo3/minimal=^9.5"
+    - stage: test
+      php: 7.3
+      env: TYPO3_CORE="typo3/minimal=^9.5"
+    - stage: test
+      php: 7.4
       env: TYPO3_CORE="typo3/minimal=^9.5"
     - stage: test
       php: 7.2
+      env: TYPO3_CORE="typo3/minimal=^10.4"
+    - stage: test
+      php: 7.3
+      env: TYPO3_CORE="typo3/minimal=^10.4"
+    - stage: test
+      php: 7.4
       env: TYPO3_CORE="typo3/minimal=^10.4"
     - stage: release
       if: tag IS present AND env(TYPO3_ORG_USERNAME) IS present AND env(TYPO3_ORG_PASS) IS present
