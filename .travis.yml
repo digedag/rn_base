@@ -19,8 +19,6 @@ language: php
 #  - TYPO3_CORE="typo3/cms=^8.7.0"
 #  - TYPO3_CORE="typo3/minimal=^9.5"
 
-sudo: false
-
 addons:
     apt:
         packages:
@@ -28,7 +26,7 @@ addons:
 
 cache:
     directories:
-        - $HOME/.composer/cache
+        - $HOME/.config/composer/cache
 
 before_install:
     - phpenv config-rm xdebug.ini
@@ -106,4 +104,4 @@ jobs:
         echo "Release comment ${TAG_MESSAGE}";
         echo;
         echo;
-        $HOME/.composer/vendor/bin/ter-client upload rn_base . -u "$TYPO3_ORG_USERNAME" -p "$TYPO3_ORG_PASS" -m "$TAG_MESSAGE";
+        $HOME/.config/composer/vendor/bin/ter-client upload rn_base . -u "$TYPO3_ORG_USERNAME" -p "$TYPO3_ORG_PASS" -m "$TAG_MESSAGE";

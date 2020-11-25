@@ -3,6 +3,10 @@
 Changelog
 ---------
 
+v1.12.5 (25.11.2020)
+ * fix release stage in TravisCI
+ * #201 run TravisCI build with PHP 7.3 and 7.4
+
 v1.12.4 (04.11.2020)
  * Add wrap option to pagebrowser viewhelper
  * Add pagebrowser ul example to documentation
