@@ -173,6 +173,6 @@ class tx_rnbase_util_Arrays
             $differenceArray = $utility::arrayDiffAssocRecursive($array1, $array2);
         }
 
-        return$differenceArray;
+        return $differenceArray;
     }
 }

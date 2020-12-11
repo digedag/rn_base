@@ -270,7 +270,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
         $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
         $class = ' class="'.$class.'"';
 
-        return    '<a href="#" title="'.$title.'" '.$class.' onclick="'.htmlspecialchars($jsCode, -1).'">'.
+        return '<a href="#" title="'.$title.'" '.$class.' onclick="'.htmlspecialchars($jsCode, -1).'">'.
                 $image.$label.'</a>';
     }
 

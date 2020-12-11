@@ -258,7 +258,7 @@ MAYDAYPAGE;
 
         $dieOnMayday = intval(Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'dieOnMayday'));
         if ($dieOnMayday) {
-            die($sPage);
+            exit($sPage);
         } else {
             echo $sPage;
         }

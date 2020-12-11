@@ -217,7 +217,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     protected function getDecoratorClass()
     {
         if ($this->getOptions()->hasDecoratorClass()) {
-            return$this->getOptions()->getDecoratorClass();
+            return $this->getOptions()->getDecoratorClass();
         }
 
         return 'Tx_Rnbase_Backend_Decorator_BaseDecorator';

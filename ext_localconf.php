@@ -1,7 +1,7 @@
 <?php
 
 if (!defined('TYPO3_MODE')) {
-    die('Access denied.');
+    exit('Access denied.');
 }
 
 if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['rnbase']) &&
