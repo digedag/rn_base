@@ -195,6 +195,19 @@ class Tx_Rnbase_Utility_Strings
     }
 
     /**
+     * Returns a given string with underscores as lowerCamelCase.
+     * Example: Converts minimal_value to minimalValue.
+     *
+     * @param string $string: String to be converted to lowercase underscore
+     *
+     * @return string lowercase_and_underscored_string
+     */
+    public static function underscoredToUpperCamelCase($string)
+    {
+        return Tx_Rnbase_Utility_T3General::underscoredToUpperCamelCase($string);
+    }
+
+    /**
      * Convert an array with hexadecimal byte values to binary string.
      *
      * @param array $arr

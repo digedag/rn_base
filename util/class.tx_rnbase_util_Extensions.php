@@ -121,25 +121,70 @@ class tx_rnbase_util_Extensions
             $controllerActions,
             $moduleConfiguration
         );
+        static::fixModuleRouteTarget($extensionName, $mainModuleName, $subModuleName, $moduleConfiguration);
+    }
 
-        // since TYPO3 9.5 the route target is hardcoded to \TYPO3\CMS\Extbase\Core\Bootstrap::handleBackendRequest
-        // but we want the route target that was initially configured
-        if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher() && $moduleConfiguration['routeTarget']) {
-            // fixing module configuration
-            // we assume the last element in $GLOBALS['TBE_MODULES']['_configuration']
-            // is the module that was just added. Otherwise we would
-            // have to build the module name by ourselves which would basically mean copying
-            // code from the core.
-            end($GLOBALS['TBE_MODULES']['_configuration']);
-            $moduleName = key($GLOBALS['TBE_MODULES']['_configuration']);
-            $GLOBALS['TBE_MODULES']['_configuration'][$moduleName]['routeTarget'] = $moduleConfiguration['routeTarget'];
-            reset($GLOBALS['TBE_MODULES']['_configuration']);
-
-            // fixing route
+    /**
+     * Correct the route target.
+     *
+     * Since TYPO3 9.5 the route target is hardcoded to \TYPO3\CMS\Extbase\Core\Bootstrap::handleBackendRequest
+     * We want the route target that was initially configured to the rnbase based module.
+     *
+     * @param $extensionName
+     * @param string $mainModuleName
+     * @param string $subModuleName
+     * @param array $moduleConfiguration
+     */
+    private static function fixModuleRouteTarget(
+        $extensionName,
+        $mainModuleName = '',
+        $subModuleName = '',
+        array $moduleConfiguration = []
+    ) {
+        if (\Sys25\RnBase\Utility\TYPO3::isTYPO90OrHigher() && $moduleConfiguration['routeTarget']) {
+            $moduleName = static::buildModuleSignature($extensionName, $mainModuleName, $subModuleName);
             \tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Routing\Router::class)->getRoutes()[$moduleName]->setOption(
                 'target',
                 $moduleConfiguration['routeTarget']
             );
         }
+    }
+
+    /**
+     * Creates the Backend Module signature by  extension, module and submodule.
+     *
+     * Since TYPO3 10 ['TBE_MODULES']['_configuration'] are not sorted by adding order in every case.
+     * So we has parts taken from \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule
+     * and build the signature to fix the routeTarget.
+     *
+     * @param $extensionName
+     * @param string $mainModuleName
+     * @param string $subModuleName
+     *
+     * @return string
+     */
+    private static function buildModuleSignature(
+        $extensionName,
+        $mainModuleName = '',
+        $subModuleName = ''
+    ) {
+        if (false !== $delimiterPosition = strrpos($extensionName, '.')) {
+            $extensionName = substr($extensionName, $delimiterPosition + 1);
+        }
+        $extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
+
+        if ('' !== $mainModuleName && !array_key_exists($mainModuleName, $GLOBALS['TBE_MODULES'])) {
+            $mainModuleName = $extensionName.Tx_Rnbase_Utility_Strings::underscoredToUpperCamelCase($mainModuleName);
+        } else {
+            $mainModuleName = '' !== $mainModuleName ? $mainModuleName : 'web';
+        }
+
+        $moduleSignature = $mainModuleName;
+        if ('' !== $subModuleName) {
+            $subModuleName = $extensionName.Tx_Rnbase_Utility_Strings::underscoredToUpperCamelCase($subModuleName);
+            $moduleSignature .= '_'.$subModuleName;
+        }
+
+        return $moduleSignature;
     }
 }
