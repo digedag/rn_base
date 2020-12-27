@@ -48,8 +48,10 @@ class QueryBuilderFacade
         $limit = (int) intval($arr['limit']) > 0 ? $arr['limit'] : '';
         $pidList = is_string($arr['pidlist']) ? $arr['pidlist'] : '';
         $recursive = intval($arr['recursive']) ? intval($arr['recursive']) : 0;
-        $i18n = is_string($arr['i18n']) > 0 ? $arr['i18n'] : '';
-        $union = is_string($arr['union']) > 0 ? $arr['union'] : '';
+        // TODO: is i18n still necessary?
+        // $i18n = is_string($arr['i18n']) > 0 ? $arr['i18n'] : '';
+        // TODO: how to handle UNIONs?
+        // $union = is_string($arr['union']) > 0 ? $arr['union'] : '';
 
         $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable($tableName);
         $queryBuilder->getRestrictions();
@@ -71,15 +73,21 @@ class QueryBuilderFacade
                 $queryBuilder->having($having);
             }
         }
-
         if (strlen($pidList) > 0) {
-//             $queryBuilder->andWhere( )
-//             $where .= ' AND '.($tableAlias ? $tableAlias : $tableName).'.pid'.
-//                 ' IN ('.\tx_rnbase_util_Misc::getPidList($pidList, $recursive).')';
+            $pidList = \Tx_Rnbase_Utility_Strings::intExplode(',', \tx_rnbase_util_Misc::getPidList($pidList, $recursive));
+            // is there a problem with page aliases here?
+            $placeholder = $queryBuilder->createNamedParameter($pidList, \Doctrine\DBAL\Connection::PARAM_INT_ARRAY);
+            $queryBuilder->andWhere(sprintf('%s.pid IN (%s)', $tableAlias, $placeholder));
         }
 
         foreach ($joins as $join) {
-            $queryBuilder->innerJoin($tableAlias, $join->getTable(), $join->getAlias(), $join->getOnClause());
+            if (Join::TYPE_INNER == $join->getType()) {
+                $queryBuilder->innerJoin($tableAlias, $join->getTable(), $join->getAlias(), $join->getOnClause());
+            } elseif (Join::TYPE_LEFT == $join->getType()) {
+                $queryBuilder->leftJoin($tableAlias, $join->getTable(), $join->getAlias(), $join->getOnClause());
+            } elseif (Join::TYPE_RIGHT == $join->getType()) {
+                $queryBuilder->rightJoin($tableAlias, $join->getTable(), $join->getAlias(), $join->getOnClause());
+            }
         }
 
         if ($debug) {

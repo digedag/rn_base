@@ -49,7 +49,7 @@ class From
     }
 
     /**
-     * @return mixed
+     * @return Join[]
      */
     public function getJoins()
     {
