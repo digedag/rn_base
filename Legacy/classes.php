@@ -79,6 +79,10 @@ class tx_rnbase_util_Logger extends Sys25\RnBase\Utility\Logger
 {
 }
 /** @deprecated */
+abstract class tx_rnbase_util_SearchBase extends Sys25\RnBase\Search\SearchBase
+{
+}
+/** @deprecated */
 class Tx_Rnbase_Category_SearchUtility extends Sys25\RnBase\Search\Category\SearchUtility
 {
 }
