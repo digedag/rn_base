@@ -1,4 +1,6 @@
 <?php
+use Sys25\RnBase\Database\From;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -21,9 +23,6 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-tx_rnbase::load('tx_rnbase_util_DB');
-tx_rnbase::load('Tx_Rnbase_Database_Connection');
-tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
  * Service for accessing team information.
@@ -156,7 +155,6 @@ abstract class tx_rnbase_util_SearchBase
         $what = $this->getWhat($options, $tableAliases);
         $from = $this->getFrom($options, $tableAliases);
         $where = '1=1';
-
         foreach ($tableAliases as $tableAlias => $colData) {
             foreach ($colData as $col => $data) {
                 foreach ($data as $operator => $value) {
@@ -351,7 +349,6 @@ abstract class tx_rnbase_util_SearchBase
                 'sqlonly' => empty($options['sqlonly']) ? 0 : $options['sqlonly'],
             ];
         }
-
         $result = $this->getDatabaseConnection()->doSelect(
             $what,
             $from,
@@ -422,6 +419,7 @@ abstract class tx_rnbase_util_SearchBase
     {
         $join = '';
         if ($this->isGeneric()) {
+            // FIXME: how should this work and is it possible to migrate to Join Array?
             $aliasArr = $this->genericData['alias'];
             if (is_array($aliasArr)) {
                 foreach ($aliasArr as $alias => $data) {
@@ -442,8 +440,14 @@ abstract class tx_rnbase_util_SearchBase
                 }
             }
         }
-        $join .= $this->getJoins($tableAliases);
-
+        $joins = $this->getJoins($tableAliases);
+        if (is_array($joins)) {
+            // FIXME: merge with generics
+            $join = $joins;
+        }
+        else {
+            $join .= $joins;
+        }
         return $join;
     }
 
@@ -577,6 +581,8 @@ abstract class tx_rnbase_util_SearchBase
         if (!$table) {
             throw new Exception('SearchBase: No base table found!');
         }
+        $useFromClass = true;
+
         $from = [$table, $table];
         if ($this->useAlias()) {
             $alias = $this->getGenericBaseTableAlias();
@@ -586,13 +592,22 @@ abstract class tx_rnbase_util_SearchBase
                 $from[2] = $alias;
             }
         }
-        $joins = $this->getGenericJoins($tableAliases);
+        // remove support for rownum
         if (isset($options['rownum'])) {
+            $useFromClass = false;
             $from[0] = '(SELECT @rownum:=0) _r, '.$from[0];
         }
 
-        if (strlen($joins)) {
+        $joins = $this->getGenericJoins($tableAliases);
+        if (is_array($joins)) {
+            $from[0] = $joins;
+        }
+        elseif (strlen($joins)) {
+            $useFromClass = false;
             $from[0] .= $joins;
+        }
+        if ($useFromClass) {
+            $from = new From($table, $alias, $joins);
         }
 
         return $from;

@@ -2,6 +2,9 @@
 
 use Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface;
 use Sys25\RnBase\Utility\TYPO3;
+use Sys25\RnBase\Database\QueryBuilderFacade;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use Sys25\RnBase\Database\From;
 
 /***************************************************************
  *  Copyright notice
@@ -25,11 +28,6 @@ use Sys25\RnBase\Utility\TYPO3;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_TYPO3');
-tx_rnbase::load('tx_rnbase_util_Debug');
-tx_rnbase::load('tx_rnbase_util_Misc');
-tx_rnbase::load('tx_rnbase_util_Strings');
-tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
 /**
  * Contains utility functions for database access.
@@ -84,11 +82,11 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
      * - 'i18nolmode' - translation mode, possible value: 'hideNonTranslated'
      * </pre>
      *
-     * @param string         $what  Requested columns
-     * @param array | string $from  Either the name of on table or an array with index 0 the from clause
-     *                              and index 1 the requested tablename and optional index 2 a table alias to use
-     * @param array          $arr   The options array
-     * @param bool           $debug Set to true to debug the sql string
+     * @param string $what  Requested columns
+     * @param array | string | From $from  Either the name of on table or an array with index 0 an array of Join or a from clause string
+     *                   and index 1 the requested tablename and optional index 2 a table alias to use
+     * @param array $arr The options array
+     * @param bool $debug Set to true to debug the sql string
      *
      * @return array
      */
@@ -113,11 +111,65 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
 
         $arr['debug'] = $debug;
         $arr['what'] = $what;
+        $from = From::buildInstance($from);
 
-        $arr['from'] = $this->getFrom($from);
-        $tableName = $arr['from']['table'];
-        $fromClause = $arr['from']['clause'];
-        $tableAlias = $arr['from']['alias'];
+        $qbFacade = new QueryBuilderFacade();
+        $queryBuilder = $qbFacade->doSelect($what, $from, $arr);
+
+        if ($queryBuilder) {
+            $rows = $this->doSelectByQueryBuilder($queryBuilder, $from, $arr);
+        }
+        else {
+            $rows = $this->doSelectLegacy($what, $from, $arr, $debug);
+        }
+        if (is_string($rows)) {
+            // sqlOnly
+            return $rows;
+        }
+
+        if ($debug) {
+            tx_rnbase_util_Debug::debug([
+                'Rows retrieved ' => count($rows),
+                'Time ' => (microtime(true) - $time),
+                'Memory consumed ' => (memory_get_usage() - $mem),
+                'QB used' => is_object($queryBuilder),
+            ], 'SQL statistics');
+        }
+
+        tx_rnbase_util_Misc::callHook(
+            'rn_base',
+            'util_db_do_select_post',
+            [
+                'rows' => &$rows,
+            ]
+        );
+
+        return $rows;
+    }
+
+    private function doSelectByQueryBuilder(QueryBuilder $queryBuilder, From $from, array $arr)
+    {
+        $sqlOnly = intval($arr['sqlonly']) > 0;
+
+        if ($sqlOnly) {
+            return $queryBuilder->getSQL();
+        }
+
+        $rows = $this->initRows($arr);
+        $wrapper = is_string($arr['wrapperclass']) ? trim($arr['wrapperclass']) : 0;
+        $callback = isset($arr['callback']) ? $arr['callback'] : false;
+
+        foreach ($queryBuilder->execute()->fetchAll() as $row) {
+            $this->appendRow($rows, $row, $from->getTableName(), $wrapper, $callback, $arr);
+        }
+        return $rows;
+    }
+
+    private function doSelectLegacy($what, From $from, $arr, $debug)
+    {
+        $tableName = $from->getTableName();
+        $fromClause = $from->getClause();
+        $tableAlias = $from->getAlias();
 
         $where = is_string($arr['where']) ? $arr['where'] : '1=1';
         $groupBy = is_string($arr['groupby']) ? $arr['groupby'] : '';
@@ -169,7 +221,7 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
             }
             if ($debug) {
                 tx_rnbase_util_Debug::debug($sql, 'SQL');
-                tx_rnbase_util_Debug::debug([$what, $from, $arr]);
+                tx_rnbase_util_Debug::debug([$what, $from, $arr], 'Parts');
             }
         }
 
@@ -190,104 +242,60 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
 
         // use classic arrays or the collection
         // should be ever an collection, but for backward compatibility is this an array by default
-        $rows = [];
-        if ($arr['collection']) {
-            if (!is_string($arr['collection']) || !class_exists($arr['collection'])) {
-                $arr['collection'] = 'Tx_Rnbase_Domain_Collection_Base';
-            }
-            $rows = tx_rnbase::makeInstance(
-                $arr['collection'],
-                $rows
-            );
-        }
+        $rows = $this->initRows($arr);
 
         if ($this->testResource($res)) {
             $wrapper = is_string($arr['wrapperclass']) ? trim($arr['wrapperclass']) : 0;
             $callback = isset($arr['callback']) ? $arr['callback'] : false;
 
             while (($row = $database->sql_fetch_assoc($res))) {
-                // Workspacesupport
-                $this->lookupWorkspace($row, $tableName, $arr);
-                $this->lookupLanguage($row, $tableName, $arr);
-                if (!is_array($row)) {
-                    continue;
-                }
-                $item = ($wrapper) ? tx_rnbase::makeInstance($wrapper, $row) : $row;
-                if ($item instanceof Tx_Rnbase_Domain_Model_DynamicTableInterface
-                    // @TODO: backward compatibility for old models will be removed soon
-                    || $item instanceof tx_rnbase_model_base
-                ) {
-                    $item->setTablename($tableName);
-                }
-                if ($callback) {
-                    call_user_func($callback, $item);
-                    unset($item);
-                } else {
-                    if (is_array($rows)) {
-                        $rows[] = $item;
-                    } else {
-                        $rows->append($item);
-                    }
-                }
+                $this->appendRow($rows, $row, $tableName, $wrapper, $callback, $arr);
             }
             $database->sql_free_result($res);
         }
-
-        if ($debug) {
-            tx_rnbase_util_Debug::debug([
-                'Rows retrieved ' => count($rows),
-                'Time ' => (microtime(true) - $time),
-                'Memory consumed ' => (memory_get_usage() - $mem),
-            ], 'SQL statistics');
-        }
-
-        tx_rnbase_util_Misc::callHook(
-            'rn_base',
-            'util_db_do_select_post',
-            [
-                'rows' => &$rows,
-            ]
-        );
-
         return $rows;
     }
 
-    /**
-     * Creates the from array.
-     *
-     * @param $fromRaw
-     *
-     * @return array
-     */
-    protected function getFrom($fromRaw)
+    private function appendRow(&$rows, $row, $tableName, $wrapper, $callback, $arr)
     {
-        $tableName = $fromRaw;
-        $fromClause = $fromRaw;
-        $tableAlias = false;
-
-        if (is_array($fromRaw)) {
-            // we have already the new assoc array!
-            if (isset($fromRaw['table'])) {
-                // check the required fields
-                $fromRaw['alias'] = $fromRaw['alias'] ?: $tableAlias;
-                $fromRaw['clause'] = $fromRaw['clause'] ?: $fromRaw['table'].($fromRaw['alias'] ? ' AS '.$fromRaw['alias'] : '');
-
-                return $fromRaw;
-            }
-            // else the old array
-            $tableName = $fromRaw[1];
-            $fromClause = $fromRaw[0];
-            $tableAlias = isset($fromRaw[2]) && strlen(trim($fromRaw[2])) > 0 ? trim($fromRaw[2]) : $tableAlias;
+        // Workspacesupport
+        $this->lookupWorkspace($row, $tableName, $arr);
+        $this->lookupLanguage($row, $tableName, $arr);
+        if (!is_array($row)) {
+            return ;
         }
+        $item = ($wrapper) ? tx_rnbase::makeInstance($wrapper, $row) : $row;
+        if ($item instanceof Tx_Rnbase_Domain_Model_DynamicTableInterface
+            // @TODO: backward compatibility for old models will be removed soon
+            || $item instanceof tx_rnbase_model_base
+            ) {
+            $item->setTablename($tableName);
+        }
+        if ($callback) {
+            call_user_func($callback, $item);
+            unset($item);
+        } else {
+            if (is_array($rows)) {
+                $rows[] = $item;
+            } else {
+                $rows->append($item);
+            }
+        }
+    }
 
-        $from = [
-            'raw' => $fromRaw,
-            'table' => $tableName,
-            'alias' => $tableAlias,
-            'clause' => $fromClause,
-        ];
-
-        return $from;
+    private function initRows(array $options)
+    {
+        $rows = [];
+        if ($options['collection']) {
+            if (!is_string($options['collection']) || !class_exists($options['collection'])) {
+                $options['collection'] = 'Tx_Rnbase_Domain_Collection_Base';
+            }
+            $rows = tx_rnbase::makeInstance(
+                $options['collection'],
+                $rows
+            );
+        }
+        return $rows;
     }
 
     /**
@@ -1143,74 +1151,6 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
         list($year, $month, $day) = explode('-', $date);
 
         return sprintf('%02d-%02d-%04d', $day, $month, $year);
-    }
-
-    /**
-     * Make a query to database. You will receive an array with result rows. All
-     * database resources are closed after each call.
-     * A Hidden and Delete-Clause for FE-Requests is added for requested table.
-     *
-     * @param $what Requested columns
-     * @param $from Either the name of on table or an array with index 0 the from clause
-     *              and index 1 the requested tablename
-     * @param $where
-     * @param $groupby
-     * @param $orderby
-     * @param $wrapperClass Name einer WrapperKlasse für jeden Datensatz
-     * @param $limit = '' Limits number of results
-     * @param $debug = 0 Set to 1 to debug sql-String
-     *
-     * @deprecated use tx_rnbase_util_DB::doSelect()
-     */
-    public function queryDB($what, $from, $where, $groupBy = '', $orderBy = '', $wrapperClass = 0, $limit = '', $debug = 0)
-    {
-        if (tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
-            throw \tx_rnbase::makeInstance(\Sys25\RnBase\Typo3Wrapper\Core\Error\Exception::class, 'Tx_Rnbase_Database_Connection::queryDB was removed in TYPO3 9');
-        }
-
-        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-            throw \tx_rnbase::makeInstance(\Sys25\RnBase\Typo3Wrapper\Core\Error\Exception::class, 'Tx_Rnbase_Database_Connection::queryDB is deprecated an will be removed in TYPO3 9');
-        }
-
-        $tableName = $from;
-        $fromClause = $from;
-        if (is_array($from)) {
-            $tableName = $from[1];
-            $fromClause = $from[0];
-        }
-
-        $limit = intval($limit) > 0 ? intval($limit) : '';
-
-        // Zur Where-Clause noch die gültigen Felder hinzufügen
-        $contentObjectRendererClass = tx_rnbase_util_Typo3Classes::getContentObjectRendererClass();
-        $where .= $contentObjectRendererClass::enableFields($tableName);
-
-        if ($debug) {
-            $sql = $GLOBALS['TYPO3_DB']->SELECTquery($what, $fromClause, $where, $groupBy, $orderBy);
-            tx_rnbase_util_Debug::debug($sql, 'SQL');
-            tx_rnbase_util_Debug::debug([$what, $from, $where]);
-        }
-
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-            $what,
-            $fromClause,
-            $where,
-            $groupBy,
-            $orderBy,
-            $limit
-        );
-
-        $wrapper = is_string($wrapperClass) ? tx_rnbase::makeInstanceClassName($wrapperClass) : 0;
-        $rows = [];
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-            $rows[] = ($wrapper) ? new $wrapper($row) : $row;
-        }
-        $GLOBALS['TYPO3_DB']->sql_free_result($res);
-        if ($debug) {
-            tx_rnbase_util_Debug::debug(count($rows), 'Rows retrieved');
-        }
-
-        return $rows;
     }
 
     /**
