@@ -24,9 +24,6 @@ namespace Sys25\RnBase\Database;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-
-/**
- */
 class Join
 {
     const TYPE_INNER = 'inner';
@@ -38,7 +35,7 @@ class Join
     private $alias;
     private $type;
 
-    public function __construct($fromAlias, $table, $onClause, $alias='', $type = self::TYPE_INNER)
+    public function __construct($fromAlias, $table, $onClause, $alias = '', $type = self::TYPE_INNER)
     {
         $this->fromAlias = $fromAlias;
         $this->table = $table;

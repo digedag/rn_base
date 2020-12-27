@@ -1,10 +1,10 @@
 <?php
 
+use Sys25\RnBase\Database\From;
+use Sys25\RnBase\Database\QueryBuilderFacade;
 use Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface;
 use Sys25\RnBase\Utility\TYPO3;
-use Sys25\RnBase\Database\QueryBuilderFacade;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use Sys25\RnBase\Database\From;
 
 /***************************************************************
  *  Copyright notice
@@ -27,7 +27,6 @@ use Sys25\RnBase\Database\From;
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
-
 
 /**
  * Contains utility functions for database access.
@@ -118,8 +117,7 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
 
         if ($queryBuilder) {
             $rows = $this->doSelectByQueryBuilder($queryBuilder, $from, $arr);
-        }
-        else {
+        } else {
             $rows = $this->doSelectLegacy($what, $from, $arr, $debug);
         }
         if (is_string($rows)) {
@@ -162,6 +160,7 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
         foreach ($queryBuilder->execute()->fetchAll() as $row) {
             $this->appendRow($rows, $row, $from->getTableName(), $wrapper, $callback, $arr);
         }
+
         return $rows;
     }
 
@@ -253,6 +252,7 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
             }
             $database->sql_free_result($res);
         }
+
         return $rows;
     }
 
@@ -262,7 +262,7 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
         $this->lookupWorkspace($row, $tableName, $arr);
         $this->lookupLanguage($row, $tableName, $arr);
         if (!is_array($row)) {
-            return ;
+            return;
         }
         $item = ($wrapper) ? tx_rnbase::makeInstance($wrapper, $row) : $row;
         if ($item instanceof Tx_Rnbase_Domain_Model_DynamicTableInterface
@@ -295,6 +295,7 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
                 $rows
             );
         }
+
         return $rows;
     }
 

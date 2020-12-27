@@ -24,9 +24,6 @@ namespace Sys25\RnBase\Database;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-
-/**
- */
 class From
 {
     private $tableName;
@@ -79,7 +76,7 @@ class From
         $this->clause = $clause;
     }
 
-    public static function buildInstance($fromRaw) : From
+    public static function buildInstance($fromRaw): From
     {
         if ($fromRaw instanceof From) {
             return $fromRaw;

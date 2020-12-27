@@ -27,12 +27,9 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-
-/**
- */
 class QueryBuilderFacade
 {
-    public function doSelect($what, From $from, $arr):?QueryBuilder
+    public function doSelect($what, From $from, $arr): ?QueryBuilder
     {
         // if (isset($from['clause']) && !is_array($from['clause'])) {
         if (!empty($from->getClause())) {
@@ -81,7 +78,6 @@ class QueryBuilderFacade
 //                 ' IN ('.\tx_rnbase_util_Misc::getPidList($pidList, $recursive).')';
         }
 
-
         foreach ($joins as $join) {
             $queryBuilder->innerJoin($tableAlias, $join->getTable(), $join->getAlias(), $join->getOnClause());
         }
@@ -94,7 +90,7 @@ class QueryBuilderFacade
         return $queryBuilder;
     }
 
-    private function getConnectionPool():ConnectionPool
+    private function getConnectionPool(): ConnectionPool
     {
         return \tx_rnbase::makeInstance(ConnectionPool::class);
     }

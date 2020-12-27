@@ -1,4 +1,5 @@
 <?php
+
 use Sys25\RnBase\Database\From;
 
 /***************************************************************
@@ -444,10 +445,10 @@ abstract class tx_rnbase_util_SearchBase
         if (is_array($joins)) {
             // FIXME: merge with generics
             $join = $joins;
-        }
-        else {
+        } else {
             $join .= $joins;
         }
+
         return $join ?: [];
     }
 
@@ -601,8 +602,7 @@ abstract class tx_rnbase_util_SearchBase
         $joins = $this->getGenericJoins($tableAliases);
         if (is_array($joins)) {
             $from[0] = $joins;
-        }
-        elseif (strlen($joins)) {
+        } elseif (strlen($joins)) {
             $useFromClass = false;
             $from[0] .= $joins;
         }
