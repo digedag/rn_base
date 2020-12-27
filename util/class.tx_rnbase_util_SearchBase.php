@@ -448,7 +448,7 @@ abstract class tx_rnbase_util_SearchBase
         else {
             $join .= $joins;
         }
-        return $join;
+        return $join ?: [];
     }
 
     private function _initSearch($options)
@@ -606,6 +606,7 @@ abstract class tx_rnbase_util_SearchBase
             $useFromClass = false;
             $from[0] .= $joins;
         }
+
         if ($useFromClass) {
             $from = new From($table, $alias, $joins);
         }
