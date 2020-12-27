@@ -89,16 +89,16 @@ class From
         if (is_array($fromRaw)) {
             // we have already the new assoc array!
             if (isset($fromRaw['table'])) {
+                $tableName = $fromRaw['table'];
                 // check the required fields
-                $fromRaw['alias'] = $fromRaw['alias'] ?: $tableAlias;
-                $fromRaw['clause'] = $fromRaw['clause'] ?: $fromRaw['table'].($fromRaw['alias'] ? ' AS '.$fromRaw['alias'] : '');
-
-                return $fromRaw;
+                $tableAlias = $fromRaw['alias'] ?: $tableAlias;
+                $joinsOrFromClause = $fromRaw['clause'] ?: $fromRaw['table'].($fromRaw['alias'] ? ' AS '.$fromRaw['alias'] : '');
+            } else {
+                // else the old array
+                $tableName = $fromRaw[1];
+                $joinsOrFromClause = $fromRaw[0];
+                $tableAlias = isset($fromRaw[2]) && strlen(trim($fromRaw[2])) > 0 ? trim($fromRaw[2]) : $tableAlias;
             }
-            // else the old array
-            $tableName = $fromRaw[1];
-            $joinsOrFromClause = $fromRaw[0];
-            $tableAlias = isset($fromRaw[2]) && strlen(trim($fromRaw[2])) > 0 ? trim($fromRaw[2]) : $tableAlias;
         }
 
         $from = new From($tableName, $tableAlias, is_array($joinsOrFromClause) ? $joinsOrFromClause : []);

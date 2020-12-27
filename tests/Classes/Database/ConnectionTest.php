@@ -22,9 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('Tx_Rnbase_Database_Connection');
-tx_rnbase::load('tx_rnbase_util_SearchBase');
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
 /**
  * Tx_Rnbase_Database_ConnectionTest.
@@ -120,83 +117,6 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
                 'typo3dbal'
             )
         );
-    }
-
-    /**
-     * Tests the getFrom method.
-     *
-     * @group unit
-     * @dataProvider getGetFromTestData
-     * @test
-     */
-    public function testGetFrom($from, array $expects)
-    {
-        if (!empty($expects['raw']) && 'autofill' == $expects['raw']) {
-            $expects['raw'] = $from;
-        }
-
-        $this->assertEquals(
-            $expects,
-            $this->callInaccessibleMethod(
-                $this->getMock('Tx_Rnbase_Database_Connection', ['getDatabase']),
-                'getFrom',
-                $from
-            )
-        );
-    }
-
-    /**
-     * Dataprovider for getFrom test.
-     *
-     * @return array
-     */
-    public function getGetFromTestData()
-    {
-        return [
-            __LINE__ => [
-                'from' => 'tt_content AS CONTENT',
-                'expects' => [
-                    'raw' => 'autofill',
-                    'table' => 'tt_content AS CONTENT',
-                    'alias' => false,
-                    'clause' => 'tt_content AS CONTENT',
-                ],
-            ],
-            __LINE__ => [
-                'from' => [
-                    'tt_content AS CONTENT',
-                    'tt_content',
-                    'CONTENT',
-                ],
-                'expects' => [
-                    'raw' => 'autofill',
-                    'table' => 'tt_content',
-                    'alias' => 'CONTENT',
-                    'clause' => 'tt_content AS CONTENT',
-                ],
-            ],
-            __LINE__ => [
-                'from' => [
-                    'table' => 'tt_content',
-                ],
-                'expects' => [
-                    'table' => 'tt_content',
-                    'alias' => false,
-                    'clause' => 'tt_content',
-                ],
-            ],
-            __LINE__ => [
-                'from' => [
-                    'table' => 'tt_content',
-                    'alias' => 'C',
-                ],
-                'expects' => [
-                    'table' => 'tt_content',
-                    'alias' => 'C',
-                    'clause' => 'tt_content AS C',
-                ],
-            ],
-        ];
     }
 
     /**
