@@ -25,10 +25,8 @@ namespace Sys25\RnBase\Database;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 class FromTest extends \tx_rnbase_tests_BaseTestCase
 {
-
     /**
      * Tests the getFrom method.
      *
@@ -47,7 +45,6 @@ class FromTest extends \tx_rnbase_tests_BaseTestCase
         $this->assertEquals($expects['table'], $fromInstance->getTableName());
         $this->assertEquals($expects['alias'], $fromInstance->getAlias());
         $this->assertEquals($expects['clause'], $fromInstance->getClause());
-
     }
 
     /**
