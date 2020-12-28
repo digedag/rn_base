@@ -39,6 +39,11 @@ class From
         $this->joins = $joins;
     }
 
+    public function isComplexTable()
+    {
+        return false !== strpos($this->tableName, ' ');
+    }
+
     /**
      * @return mixed
      */
@@ -94,8 +99,8 @@ class From
                 $tableAlias = $fromRaw['alias'] ?: $tableAlias;
                 if ($fromRaw['clause']) {
                     $joinsOrFromClause = $fromRaw['clause'];
-                } elseif ($tableAlias) {
-                    $joinsOrFromClause = $tableName.' AS '.$tableAlias;
+//                 } elseif ($tableAlias) {
+//                     $joinsOrFromClause = $tableName.' AS '.$tableAlias;
                 }
             } else {
                 // else the old array

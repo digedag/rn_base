@@ -95,7 +95,7 @@ class FromTest extends \tx_rnbase_tests_BaseTestCase
                 'expects' => [
                     'table' => 'tt_content',
                     'alias' => 'C',
-                    'clause' => 'tt_content AS C',
+                    'clause' => '',
                 ],
             ],
         ];

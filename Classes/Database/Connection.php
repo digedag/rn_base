@@ -178,7 +178,9 @@ class Connection implements SingletonInterface
     {
         $tableName = $from->getTableName();
         $fromClause = $from->getClause();
+        $fromClause = $fromClause ?: ($from->isComplexTable() ? $tableName : '');
         $tableAlias = $from->getAlias();
+        $fromClause = $fromClause ?: trim(sprintf('%s %s', $tableName, $tableAlias));
 
         $where = is_string($arr['where']) ? $arr['where'] : '1=1';
         $groupBy = is_string($arr['groupby']) ? $arr['groupby'] : '';

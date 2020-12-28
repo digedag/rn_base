@@ -37,14 +37,14 @@ class QueryBuilderFacade
     public function doSelect($what, From $from, $arr): ?QueryBuilder
     {
         // if (isset($from['clause']) && !is_array($from['clause'])) {
-        if (!empty($from->getClause())) {
+        if (!empty($from->getClause()) || $from->isComplexTable()) {
             return null;
         }
         $joins = $from->getJoins();
         $tableName = $from->getTableName();
         $tableAlias = $from->getAlias();
 
-        $where = is_string($arr['where']) ? $arr['where'] : null;
+        $where = isset($arr['where']) ? $arr['where'] : null;
         $groupBy = is_string($arr['groupby']) ? $arr['groupby'] : '';
         $having = is_string($arr['having']) ? $arr['having'] : '';
         $debug = intval($arr['debug']) > 0;
@@ -62,9 +62,6 @@ class QueryBuilderFacade
         $queryBuilder->getRestrictions();
         $queryBuilder->selectLiteral($what) // TODO: use selectLiteral on demand only
             ->from($tableName, $tableAlias != $tableName ? $tableAlias : null);
-        if ($where) {
-            $queryBuilder->where($where);
-        }
 
         $this->handleEnableFieldsOptions($queryBuilder, $arr);
 
@@ -98,6 +95,12 @@ class QueryBuilderFacade
             } elseif (Join::TYPE_RIGHT == $join->getType()) {
                 $queryBuilder->rightJoin($tableAlias, $join->getTable(), $join->getAlias(), $join->getOnClause());
             }
+        }
+
+        if (is_string($where)) {
+            $queryBuilder->where($where);
+        } elseif (is_callable($where)) {
+            $where($queryBuilder);
         }
 
         if ($debug) {
