@@ -4,8 +4,11 @@ namespace Sys25\RnBase\Database;
 
 use Sys25\RnBase\Database\Query\From;
 use Sys25\RnBase\Database\Query\Join;
+use tx_rnbase;
+use tx_rnbase_util_TYPO3;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 
 /***************************************************************
  *  Copyright notice
@@ -41,7 +44,7 @@ class QueryBuilderFacade
         $tableName = $from->getTableName();
         $tableAlias = $from->getAlias();
 
-        $where = is_string($arr['where']) ? $arr['where'] : '1=1';
+        $where = is_string($arr['where']) ? $arr['where'] : null;
         $groupBy = is_string($arr['groupby']) ? $arr['groupby'] : '';
         $having = is_string($arr['having']) ? $arr['having'] : '';
         $debug = intval($arr['debug']) > 0;
@@ -58,8 +61,13 @@ class QueryBuilderFacade
         $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable($tableName);
         $queryBuilder->getRestrictions();
         $queryBuilder->selectLiteral($what) // TODO: use selectLiteral on demand only
-            ->from($tableName, $tableAlias)
-            ->where($where);
+            ->from($tableName, $tableAlias != $tableName ? $tableAlias : null);
+        if ($where) {
+            $queryBuilder->where($where);
+        }
+
+        $this->handleEnableFieldsOptions($queryBuilder, $arr);
+
         if ($limit) {
             $queryBuilder->setMaxResults($limit);
         }
@@ -98,6 +106,44 @@ class QueryBuilderFacade
         }
 
         return $queryBuilder;
+    }
+
+    private function handleEnableFieldsOptions(QueryBuilder $queryBuilder, array $options)
+    {
+        if ($options['enablefieldsoff']) {
+            $queryBuilder->getRestrictions()->removeAll();
+        } else {
+            // Für Redakteure versteckte Objekte im FE einblenden
+            if (is_object($GLOBALS['BE_USER']) &&
+                $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] &&
+                !isset($options['enablefieldsfe'])
+            ) {
+                $options['enablefieldsbe'] = 1;
+                if ($this->isFrontend()) {
+                    // wir nehmen nicht tx_rnbase_util_TYPO3::getTSFE()->set_no_cache weil das durch
+                    // $GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter'] deaktiviert werden
+                    // kann. Das wollen wir aber nicht. Der Cache muss in jedem Fall deaktiviert werden.
+                    // Ansonsten könnten darin Dinge landen, die normale Nutzer nicht
+                    // sehen dürfen.
+                    tx_rnbase_util_TYPO3::getTSFE()->no_cache = true;
+                }
+            }
+
+            if (intval($options['enablefieldsbe'])) {
+                $queryBuilder
+                    ->getRestrictions()
+                    ->removeAll()
+                    ->add(tx_rnbase::makeInstance(DeletedRestriction::class));
+            }
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    private function isFrontend()
+    {
+        return TYPO3_MODE == 'FE';
     }
 
     private function getConnectionPool(): ConnectionPool

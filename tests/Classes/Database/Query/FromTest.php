@@ -55,16 +55,16 @@ class FromTest extends \tx_rnbase_tests_BaseTestCase
     public function getGetFromTestData()
     {
         return [
-            __LINE__ => [
-                'from' => 'tt_content AS CONTENT',
+            [
+                'from' => 'tt_content',
                 'expects' => [
                     'raw' => 'autofill',
-                    'table' => 'tt_content AS CONTENT', // this is senseless
-                    'alias' => 'tt_content AS CONTENT',
-                    'clause' => 'tt_content AS CONTENT',
+                    'table' => 'tt_content',
+                    'alias' => 'tt_content',
+                    'clause' => '',
                 ],
             ],
-            __LINE__ => [
+            [
                 'from' => [
                     'tt_content AS CONTENT',
                     'tt_content',
@@ -77,17 +77,17 @@ class FromTest extends \tx_rnbase_tests_BaseTestCase
                     'clause' => 'tt_content AS CONTENT',
                 ],
             ],
-            __LINE__ => [
+            [
                 'from' => [
                     'table' => 'tt_content',
                 ],
                 'expects' => [
                     'table' => 'tt_content',
                     'alias' => 'tt_content',
-                    'clause' => 'tt_content',
+                    'clause' => '',
                 ],
             ],
-            __LINE__ => [
+            [
                 'from' => [
                     'table' => 'tt_content',
                     'alias' => 'C',

@@ -83,7 +83,7 @@ class From
         }
 
         $tableName = $fromRaw;
-        $joinsOrFromClause = $fromRaw;
+        $joinsOrFromClause = '';
         $tableAlias = false;
 
         if (is_array($fromRaw)) {
@@ -92,7 +92,11 @@ class From
                 $tableName = $fromRaw['table'];
                 // check the required fields
                 $tableAlias = $fromRaw['alias'] ?: $tableAlias;
-                $joinsOrFromClause = $fromRaw['clause'] ?: $fromRaw['table'].($fromRaw['alias'] ? ' AS '.$fromRaw['alias'] : '');
+                if ($fromRaw['clause']) {
+                    $joinsOrFromClause = $fromRaw['clause'];
+                } elseif ($tableAlias) {
+                    $joinsOrFromClause = $tableName.' AS '.$tableAlias;
+                }
             } else {
                 // else the old array
                 $tableName = $fromRaw[1];
