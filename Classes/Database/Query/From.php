@@ -1,6 +1,6 @@
 <?php
 
-namespace Sys25\RnBase\Database;
+namespace Sys25\RnBase\Database\Query;
 
 /***************************************************************
  *  Copyright notice
@@ -32,6 +32,13 @@ class From
     private $joins;
     private $clause;
 
+    public function __construct($tableName, $alias, array $joins = [])
+    {
+        $this->tableName = $tableName;
+        $this->alias = $alias;
+        $this->joins = $joins;
+    }
+
     /**
      * @return mixed
      */
@@ -62,13 +69,6 @@ class From
     public function getClause()
     {
         return $this->clause;
-    }
-
-    public function __construct($tableName, $alias, array $joins = [])
-    {
-        $this->tableName = $tableName;
-        $this->alias = $alias;
-        $this->joins = $joins;
     }
 
     public function setClause($clause)

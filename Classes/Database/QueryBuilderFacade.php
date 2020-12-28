@@ -2,6 +2,8 @@
 
 namespace Sys25\RnBase\Database;
 
+use Sys25\RnBase\Database\Query\From;
+use Sys25\RnBase\Database\Query\Join;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
@@ -68,7 +70,7 @@ class QueryBuilderFacade
             $queryBuilder->add('orderBy', $orderBy);
         }
         if ($groupBy) {
-            $queryBuilder->addGroupBy($groupBy);
+            $queryBuilder->getConcreteQueryBuilder()->groupBy($groupBy);
             if ($having) {
                 $queryBuilder->having($having);
             }

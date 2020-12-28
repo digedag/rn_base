@@ -1,6 +1,6 @@
 <?php
 
-use Sys25\RnBase\Database\From;
+use Sys25\RnBase\Database\Query\From;
 use Sys25\RnBase\Database\QueryBuilderFacade;
 use Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface;
 use Sys25\RnBase\Utility\TYPO3;

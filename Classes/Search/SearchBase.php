@@ -3,15 +3,13 @@
 namespace Sys25\RnBase\Search;
 
 use Exception;
-use tx_rnbase;
-use tx_rnbase_util_Misc;
-use tx_rnbase_util_Logger;
-
-use Tx_Rnbase_Database_Connection;
-use Tx_Rnbase_Utility_Strings;
-
-use Sys25\RnBase\Database\From;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
+use Sys25\RnBase\Database\Query\From;
+use tx_rnbase;
+use Tx_Rnbase_Database_Connection;
+use tx_rnbase_util_Logger;
+use tx_rnbase_util_Misc;
+use Tx_Rnbase_Utility_Strings;
 
 /***************************************************************
  *  Copyright notice
@@ -37,7 +35,6 @@ use Sys25\RnBase\Configuration\ConfigurationInterface;
  ***************************************************************/
 
 /**
- *
  * @author Rene Nitzsche
  */
 abstract class SearchBase
@@ -207,26 +204,26 @@ abstract class SearchBase
                 // Ignore invalid queries
                 if (!isset($joinedField['value']) || !isset($joinedField['operator']) ||
                     !isset($joinedField['fields']) || !$joinedField['fields']) {
-                        continue;
-                    }
+                    continue;
+                }
 
-                    if (OP_INSET_INT == $joinedField['operator']) {
-                        // Values splitten und einzelne Abfragen mit OR verbinden
-                        $addWhere = $this->getDatabaseConnection()->searchWhere(
+                if (OP_INSET_INT == $joinedField['operator']) {
+                    // Values splitten und einzelne Abfragen mit OR verbinden
+                    $addWhere = $this->getDatabaseConnection()->searchWhere(
                             $joinedField['value'],
                             implode(',', $joinedField['fields']),
                             'FIND_IN_SET_OR'
-                            );
-                    } else {
-                        $addWhere = $this->getDatabaseConnection()->searchWhere(
+                        );
+                } else {
+                    $addWhere = $this->getDatabaseConnection()->searchWhere(
                             $joinedField['value'],
                             implode(',', $joinedField['fields']),
                             $joinedField['operator']
-                            );
-                    }
-                    if ($addWhere) {
-                        $where .= ' AND '.$addWhere;
-                    }
+                    );
+                }
+                if ($addWhere) {
+                    $where .= ' AND '.$addWhere;
+                }
             }
         }
         if (isset($customFields)) {
@@ -328,14 +325,14 @@ abstract class SearchBase
                 ) ||
             isset($options['forcewrapper'])
             )) {
-                // der Filter kann ebenfalls eine Klasse setzen. Diese hat Vorrang.
-                $sqlOptions['wrapperclass'] = $options['wrapperclass'] ? $options['wrapperclass'] : $this->getGenericWrapperClass();
-            }
+            // der Filter kann ebenfalls eine Klasse setzen. Diese hat Vorrang.
+            $sqlOptions['wrapperclass'] = $options['wrapperclass'] ? $options['wrapperclass'] : $this->getGenericWrapperClass();
+        }
 
-            // if we have to do a count and there still is a count in the custom what
-            // or there is a having or a groupby
-            // so we have to wrap the query into a subquery to count the results
-            if (!$options['disableCountWrap'] &&
+        // if we have to do a count and there still is a count in the custom what
+        // or there is a having or a groupby
+        // so we have to wrap the query into a subquery to count the results
+        if (!$options['disableCountWrap'] &&
                 isset($options['count'])
                 && (
                     (
@@ -346,31 +343,31 @@ abstract class SearchBase
                     || $options['having']
                     )
                 ) {
-                    $sqlOptions['sqlonly'] = 1;
-                    $query = $this->getDatabaseConnection()->doSelect(
+            $sqlOptions['sqlonly'] = 1;
+            $query = $this->getDatabaseConnection()->doSelect(
                         $what,
                         $from,
                         $sqlOptions,
                         $options['debug'] ? 1 : 0
                         );
-                    $what = 'COUNT(*) AS cnt';
-                    $from = '('.$query.') AS COUNTWRAP';
-                    $sqlOptions = [
+            $what = 'COUNT(*) AS cnt';
+            $from = '('.$query.') AS COUNTWRAP';
+            $sqlOptions = [
                         'enablefieldsoff' => true,
                         'sqlonly' => empty($options['sqlonly']) ? 0 : $options['sqlonly'],
                     ];
-                }
-                $result = $this->getDatabaseConnection()->doSelect(
+        }
+        $result = $this->getDatabaseConnection()->doSelect(
                     $what,
                     $from,
                     $sqlOptions,
                     $options['debug'] ? 1 : 0
                     );
-                if (isset($options['sqlonly'])) {
-                    return $result;
-                }
-                // else:
-                return isset($options['count']) ? $result[0]['cnt'] : $result;
+        if (isset($options['sqlonly'])) {
+            return $result;
+        }
+        // else:
+        return isset($options['count']) ? $result[0]['cnt'] : $result;
     }
 
     /**

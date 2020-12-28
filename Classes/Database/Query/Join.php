@@ -1,6 +1,6 @@
 <?php
 
-namespace Sys25\RnBase\Database;
+namespace Sys25\RnBase\Database\Query;
 
 /***************************************************************
  *  Copyright notice
