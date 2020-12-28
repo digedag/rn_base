@@ -1,15 +1,27 @@
 <?php
 
+namespace Sys25\RnBase\Database;
+
 use Sys25\RnBase\Database\Query\From;
-use Sys25\RnBase\Database\QueryBuilderFacade;
 use Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface;
 use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase;
+use Tx_Rnbase_Domain_Model_DynamicTableInterface;
+use tx_rnbase_model_base;
+use tx_rnbase_util_db_Builder;
+use tx_rnbase_util_db_IDatabase;
+use tx_rnbase_util_Debug;
+use tx_rnbase_util_Misc;
+use tx_rnbase_util_TCA;
+use tx_rnbase_util_TYPO3;
+use tx_rnbase_util_Typo3Classes;
+use Tx_Rnbase_Utility_Strings;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006-2013 Rene Nitzsche
+ *  (c) 2006-2021 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -31,20 +43,18 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 /**
  * Contains utility functions for database access.
  *
- * Tx_Rnbase_Database_Connection
- *
  * @author Rene Nitzsche
  * @author Michael Wagner
  * @author Hannes Bochmann
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Database_Connection implements SingletonInterface
+class Connection implements SingletonInterface
 {
     /**
      * returns an instance of this class.
      *
-     * @return Tx_Rnbase_Database_Connection
+     * @return Connection
      */
     public static function getInstance()
     {
@@ -791,7 +801,9 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
         if (is_array($cols)) {
             $cols = array_keys($cols);
             if (strlen(trim($prefix))) {
-                array_walk($cols, 'tx_rnbase_util_DB_prependAlias', $prefix);
+                array_walk($cols, function (&$item) use ($prefix) {
+                    $item = $prefix.'.'.$item;
+                });
             }
         } else {
             $cols = [];
@@ -820,23 +832,19 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
      */
     public function &getTCEmain($data = 0, $cmd = 0)
     {
-        $tce;
+        // Die TCEmain laden
+        $tce = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getDataHandlerClass());
+        $tce->stripslashes_values = 0;
+        // Wenn wir ein data-Array bekommen verwenden wir das
+        $tce->start($data ? $data : [], $cmd ? $cmd : []);
 
-        if (!$tce || $data || $cmd) {
-            // Die TCEmain laden
-            $tce = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getDataHandlerClass());
-            $tce->stripslashes_values = 0;
-            // Wenn wir ein data-Array bekommen verwenden wir das
-            $tce->start($data ? $data : [], $cmd ? $cmd : []);
-
-            // set default TCA values specific for the user
-            $TCAdefaultOverride = TYPO3::isTYPO95OrHigher() ?
-                TYPO3::getBEUser()->getTSConfig('TCAdefaults')['properties'] :
-                TYPO3::getBEUser()->getTSConfigProp('TCAdefaults')
-            ;
-            if (is_array($TCAdefaultOverride)) {
-                $tce->setDefaultsFromUserTS($TCAdefaultOverride);
-            }
+        // set default TCA values specific for the user
+        $TCAdefaultOverride = TYPO3::isTYPO95OrHigher() ?
+            TYPO3::getBEUser()->getTSConfig('TCAdefaults')['properties'] :
+            TYPO3::getBEUser()->getTSConfigProp('TCAdefaults')
+        ;
+        if (is_array($TCAdefaultOverride)) {
+            $tce->setDefaultsFromUserTS($TCAdefaultOverride);
         }
 
         return $tce;
@@ -1043,13 +1051,13 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
         switch ($operator) {
             case OP_NOTIN_INT:
             case OP_IN_INT:
-                $value = implode(',', tx_rnbase_util_Strings::intExplode(',', $value));
+                $value = implode(',', Tx_Rnbase_Utility_Strings::intExplode(',', $value));
                 $where .= $tableAlias.'.'.strtolower($col).' '.$operator.' ('.$value.')';
 
                 break;
             case OP_NOTIN:
             case OP_IN:
-                $values = tx_rnbase_util_Strings::trimExplode(',', $value);
+                $values = Tx_Rnbase_Utility_Strings::trimExplode(',', $value);
                 for ($i = 0, $cnt = count($values); $i < $cnt; ++$i) {
                     $values[$i] = $this->fullQuoteStr($values[$i], $tableAlias);
                 }
@@ -1216,9 +1224,4 @@ class Tx_Rnbase_Database_Connection implements SingletonInterface
     {
         return TYPO3_MODE == 'FE';
     }
-}
-
-function tx_rnbase_util_DB_prependAlias(&$item, $key, $alias)
-{
-    $item = $alias.'.'.$item;
 }

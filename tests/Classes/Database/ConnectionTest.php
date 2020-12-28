@@ -1,4 +1,13 @@
 <?php
+
+namespace Sys25\RnBase\Database;
+
+use PHPUnit_Framework_TestCase;
+use tx_rnbase;
+use tx_rnbase_tests_BaseTestCase;
+use tx_rnbase_util_TYPO3;
+use Tx_Rnbase_Utility_Strings;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -30,7 +39,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
+class ConnectionTest extends tx_rnbase_tests_BaseTestCase
 {
     /**
      * @var int
@@ -40,6 +49,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
     private $beUserBackUp;
 
     private $systemLogConfigurationBackup;
+    private $connection;
 
     /**
      * (non-PHPdoc).
@@ -48,6 +58,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
      */
     protected function setUp()
     {
+        $this->connection = tx_rnbase::makeInstance(Connection::class);
     }
 
     /**
@@ -93,7 +104,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
         $this->assertInstanceOf(
             'tx_rnbase_util_db_TYPO3',
             $this->callInaccessibleMethod(
-                $this->getMock('Tx_Rnbase_Database_Connection'),
+                $this->getMock(Connection::class),
                 'getDatabase',
                 'typo3'
             )
@@ -128,7 +139,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
 
         $options['sqlonly'] = 1;
         $options['enablefieldsbe'] = 1;
-        $sql = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->doSelect('*', 'tt_content', $options);
+        $sql = $this->connection->doSelect('*', 'tt_content', $options);
 
         // TYPO3 <= 7 deleted=0
         // TYPO3 >= 8 `deleted` = 0
@@ -150,7 +161,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
 
         $options['sqlonly'] = 1;
         $options['enablefieldsfe'] = 1;
-        $sql = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->doSelect('*', 'tt_content', $options);
+        $sql = $this->connection->doSelect('*', 'tt_content', $options);
 
         $fields = ['hidden', 'starttime', 'endtime', 'fe_group', 'deleted'];
         foreach ($fields as $field) {
@@ -180,7 +191,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = 1;
         $options['sqlonly'] = 1;
         $options['enablefieldsfe'] = 1;
-        $databaseConnection = $this->getMock('Tx_Rnbase_Database_Connection', ['isFrontend']);
+        $databaseConnection = $this->getMock(Connection::class, ['isFrontend']);
         $databaseConnection->expects(self::any())
             ->method('isFrontend')
             ->will(self::returnValue(true));
@@ -202,7 +213,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
 
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = 1;
         $options['sqlonly'] = 1;
-        $sql = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->doSelect('*', 'tt_content', $options);
+        $sql = $this->connection->doSelect('*', 'tt_content', $options);
 
         $this->assertRegExp('/deleted(` )?=/', $sql, 'deleted is missing');
 
@@ -226,7 +237,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
         $GLOBALS['BE_USER'] = null;
         $options['sqlonly'] = 1;
         $options['enablefieldsfe'] = 1;
-        $sql = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->doSelect('*', 'tt_content', $options);
+        $sql = $this->connection->doSelect('*', 'tt_content', $options);
 
         $fields = ['hidden', 'starttime', 'endtime', 'fe_group', 'deleted'];
         foreach ($fields as $field) {
@@ -247,7 +258,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = 1;
         $options['sqlonly'] = 1;
         $options['enablefieldsoff'] = 1;
-        $sql = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->doSelect('*', 'tt_content', $options);
+        $sql = $this->connection->doSelect('*', 'tt_content', $options);
 
         $fields = ['hidden', 'starttime', 'endtime', 'fe_group', 'deleted'];
         foreach ($fields as $field) {
@@ -265,7 +276,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
 
         $options['sqlonly'] = 1;
         $options['enablefieldsoff'] = 1;
-        $sql = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->doSelect('*', 'tt_content', $options);
+        $sql = $this->connection->doSelect('*', 'tt_content', $options);
 
         $fields = ['hidden', 'starttime', 'endtime', 'fe_group', 'deleted'];
         foreach ($fields as $field) {
@@ -278,7 +289,7 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
      */
     public function test_setSingleWhereFieldWithOneTable($operator, $value, $expected)
     {
-        $ret = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->setSingleWhereField('Table1', $operator, 'Col1', $value);
+        $ret = $this->connection->setSingleWhereField('Table1', $operator, 'Col1', $value);
         $this->assertEquals($expected, $ret);
     }
 
@@ -308,28 +319,28 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
         $sw = 'content management, system';
         $fields = 'tab1.bodytext,tab1.header';
 
-        $ret = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->searchWhere('23', 'tab1.single', 'FIND_IN_SET_OR');
+        $ret = $this->connection->searchWhere('23', 'tab1.single', 'FIND_IN_SET_OR');
         $this->assertEquals(" (FIND_IN_SET('23', tab1.single))", $ret, 'FIND_IN_SET failed.');
 
-        $ret = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->searchWhere('23', 't1.club,t2.club', OP_IN_INT);
+        $ret = $this->connection->searchWhere('23', 't1.club,t2.club', OP_IN_INT);
         $this->assertEquals(' (t1.club IN (23) OR t2.club IN (23) )', $ret, 'FIND_IN_SET failed.');
 
-        $ret = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->searchWhere($sw, $fields, OP_EQ);
+        $ret = $this->connection->searchWhere($sw, $fields, OP_EQ);
         $this->assertEquals($ret, " (tab1.bodytext = 'content' OR tab1.header = 'content' OR tab1.bodytext = 'management' OR tab1.header = 'management' OR tab1.bodytext = 'system' OR tab1.header = 'system' )", 'OR failed.');
 
-        $ret = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->searchWhere($sw.', 32', $fields, 'FIND_IN_SET_OR');
+        $ret = $this->connection->searchWhere($sw.', 32', $fields, 'FIND_IN_SET_OR');
         $this->assertEquals($ret, " (FIND_IN_SET('content', tab1.bodytext) OR FIND_IN_SET('content', tab1.header) OR FIND_IN_SET('management', tab1.bodytext) OR FIND_IN_SET('management', tab1.header) OR FIND_IN_SET('system', tab1.bodytext) OR FIND_IN_SET('system', tab1.header) OR FIND_IN_SET('32', tab1.bodytext) OR FIND_IN_SET('32', tab1.header))", 'FIND_IN_SET failed');
 
-        $ret = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->searchWhere($sw, $fields, 'LIKE');
+        $ret = $this->connection->searchWhere($sw, $fields, 'LIKE');
         $this->assertEquals($ret, " (tab1.bodytext LIKE '%content%' OR tab1.header LIKE '%content%') AND  (tab1.bodytext LIKE '%management%' OR tab1.header LIKE '%management%') AND  (tab1.bodytext LIKE '%system%' OR tab1.header LIKE '%system%')", 'LIKE failed.');
 
         $sw = 'content\'; INSERT';
         $fields = 'tab1.bodytext,tab1.header';
-        $ret = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->searchWhere($sw, $fields, OP_EQ);
+        $ret = $this->connection->searchWhere($sw, $fields, OP_EQ);
         $this->assertEquals($ret, " (tab1.bodytext = 'content\';' OR tab1.header = 'content\';' OR tab1.bodytext = 'INSERT' OR tab1.header = 'INSERT' )", 'OR failed.');
 
         $sw = 0;
-        $ret = tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection')->searchWhere($sw, $fields, OP_EQ_INT);
+        $ret = $this->connection->searchWhere($sw, $fields, OP_EQ_INT);
         $this->assertEquals($ret, ' (tab1.bodytext = 0 OR tab1.header = 0 )', 'OR failed.');
     }
 
@@ -367,8 +378,6 @@ class Tx_Rnbase_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
      */
     public static function debugString($str)
     {
-        tx_rnbase::load('tx_rnbase_util_Strings');
-
-        return tx_rnbase_util_Strings::debugString($str);
+        return Tx_Rnbase_Utility_Strings::debugString($str);
     }
 }

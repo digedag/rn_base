@@ -22,8 +22,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('Tx_Rnbase_Database_Connection');
-
 /**
  * methods for generating queries on a hierarchical tree structure.
  *

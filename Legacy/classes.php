@@ -17,6 +17,10 @@ class Tx_Rnbase_Configuration_Processor extends tx_rnbase_configurations
 {
 }
 /** @deprecated */
+class Tx_Rnbase_Database_Connection extends Sys25\RnBase\Database\Connection
+{
+}
+/** @deprecated */
 interface tx_rnbase_IParameters extends Sys25\RnBase\Frontend\Request\ParametersInterface
 {
 }
