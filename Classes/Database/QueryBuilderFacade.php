@@ -105,7 +105,7 @@ class QueryBuilderFacade
 
         if ($debug) {
             \tx_rnbase_util_Debug::debug($queryBuilder->getSQL(), 'SQL');
-            \tx_rnbase_util_Debug::debug([$what, $from, $arr], 'Parts');
+            \tx_rnbase_util_Debug::debug(['what' => $what, 'from' => $from, 'options' => $arr, 'params' => $queryBuilder->getParameters()], 'Parts');
         }
 
         return $queryBuilder;
