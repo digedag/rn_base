@@ -1046,6 +1046,8 @@ class Connection implements SingletonInterface
      * @param string $operator   operator constant
      * @param string $col        name of column
      * @param string $value      value to compare to
+     *
+     * @deprecated moved to ConditionBuilder
      */
     public function setSingleWhereField($tableAlias, $operator, $col, $value)
     {

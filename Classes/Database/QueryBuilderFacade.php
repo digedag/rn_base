@@ -59,7 +59,6 @@ class QueryBuilderFacade
         // $union = is_string($arr['union']) > 0 ? $arr['union'] : '';
 
         $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable($tableName);
-        $queryBuilder->getRestrictions();
         $queryBuilder->selectLiteral($what) // TODO: use selectLiteral on demand only
             ->from($tableName, $tableAlias != $tableName ? $tableAlias : null);
 
