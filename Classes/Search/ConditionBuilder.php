@@ -181,7 +181,6 @@ class ConditionBuilder
      */
     private function setSingleWhereField(QueryBuilder $qb, $tableAlias, $operator, $col, $value)
     {
-        $where = '';
         switch ($operator) {
             case OP_NOTIN_INT:
             case OP_IN_INT:
@@ -204,31 +203,37 @@ class ConditionBuilder
                 break;
             case OP_INSET_INT:
                 // Values splitten und einzelne Abfragen mit OR verbinden
-                $where = $this->searchWhere($qb, $value, $tableAlias.'.'.strtolower($col), 'FIND_IN_SET_OR');
+                $this->searchWhere($qb, $value, $tableAlias.'.'.strtolower($col), 'FIND_IN_SET_OR');
 
                 break;
             case OP_EQ:
-                $where .= $tableAlias.'.'.strtolower($col).' = '.$this->dbConnection->fullQuoteStr($value, $tableAlias);
+                $qb->andWhere(sprintf('%s.%s = %s', $tableAlias, strtolower($col),
+                    $qb->createNamedParameter($value, \PDO::PARAM_STR)));
 
                 break;
             case OP_NOTEQ:
-                $where .= $tableAlias.'.'.strtolower($col).' != '.$this->dbConnection->fullQuoteStr($value, $tableAlias);
+                $qb->andWhere(sprintf('%s.%s != %s', $tableAlias, strtolower($col),
+                    $qb->createNamedParameter($value, \PDO::PARAM_STR)));
 
                 break;
             case OP_LT:
-                $where .= $tableAlias.'.'.strtolower($col).' < '.$this->dbConnection->fullQuoteStr($value, $tableAlias);
+                $qb->andWhere(sprintf('%s.%s < %s', $tableAlias, strtolower($col),
+                    $qb->createNamedParameter($value, \PDO::PARAM_STR)));
 
                 break;
             case OP_LTEQ:
-                $where .= $tableAlias.'.'.strtolower($col).' <= '.$this->dbConnection->fullQuoteStr($value, $tableAlias);
+                $qb->andWhere(sprintf('%s.%s <= %s', $tableAlias, strtolower($col),
+                    $qb->createNamedParameter($value, \PDO::PARAM_STR)));
 
                 break;
             case OP_GT:
-                $where .= $tableAlias.'.'.strtolower($col).' > '.$this->dbConnection->fullQuoteStr($value, $tableAlias);
+                $qb->andWhere(sprintf('%s.%s > %s', $tableAlias, strtolower($col),
+                    $qb->createNamedParameter($value, \PDO::PARAM_STR)));
 
                 break;
             case OP_GTEQ:
-                $where .= $tableAlias.'.'.strtolower($col).' >= '.$this->dbConnection->fullQuoteStr($value, $tableAlias);
+                $qb->andWhere(sprintf('%s.%s >= %s', $tableAlias, strtolower($col),
+                    $qb->createNamedParameter($value, \PDO::PARAM_STR)));
 
                 break;
             case OP_EQ_INT:
@@ -237,26 +242,26 @@ class ConditionBuilder
             case OP_LT_INT:
             case OP_GTEQ_INT:
             case OP_LTEQ_INT:
-                $where .= $tableAlias.'.'.strtolower($col).' '.$operator.' '.intval($value);
+                $qb->andWhere(sprintf('%s.%s %s %s', $tableAlias, strtolower($col), $operator,
+                    $qb->createNamedParameter($value, \PDO::PARAM_STR)));
 
                 break;
             case OP_EQ_NOCASE:
-                $where .= 'lower('.$tableAlias.'.'.strtolower($col).') = lower('.$this->dbConnection->fullQuoteStr($value, $tableAlias).')';
+                $qb->andWhere(sprintf('lower(%s.%s) = lower(%s)', $tableAlias, strtolower($col),
+                    $qb->createNamedParameter($value, \PDO::PARAM_STR)));
 
                 break;
             case OP_LIKE:
                 // Stringvergleich mit LIKE
-                $where .= $this->searchWhere($qb, $value, $tableAlias.'.'.strtolower($col));
+                $this->searchWhere($qb, $value, $tableAlias.'.'.strtolower($col));
                 break;
             case OP_LIKE_CONST:
-                $where .= $this->searchWhere($qb, $value, $tableAlias.'.'.strtolower($col), OP_LIKE_CONST);
+                $this->searchWhere($qb, $value, $tableAlias.'.'.strtolower($col), OP_LIKE_CONST);
 
                 break;
             default:
                 tx_rnbase_util_Misc::mayday('Unknown Operator for comparation defined: '.$operator);
         }
-
-        return $where.' ';
     }
 
     /**
@@ -273,19 +278,19 @@ class ConditionBuilder
      *
      * @return string the WHERE clause
      */
-    public function searchWhere(QueryBuilder $qb, $sw, $searchFieldList, $operator = 'LIKE')
+    private function searchWhere(QueryBuilder $qb, $sw, $searchFieldList, $operator = 'LIKE')
     {
         $where = '';
         if ('' !== $sw) {
             $searchFields = explode(',', $searchFieldList);
             $kw = preg_split('/[ ,]/', $sw);
             if ('LIKE' == $operator) {
-                $where = $this->_getSearchLike($qb, $kw, $searchFields);
+                $this->_getSearchLike($qb, $kw, $searchFields);
             } elseif ('OP_LIKE_CONST' == $operator) {
                 $kw = [$sw];
-                $where = $this->_getSearchLike($qb, $kw, $searchFields);
+                $this->_getSearchLike($qb, $kw, $searchFields);
             } elseif ('FIND_IN_SET_OR' == $operator) {
-                $where = $this->_getSearchSetOr($qb, $kw, $searchFields);
+                $this->_getSearchSetOr($qb, $kw, $searchFields);
             } else {
                 $where = $this->_getSearchOr($qb, $kw, $searchFields, $operator);
             }
@@ -351,28 +356,18 @@ class ConditionBuilder
      */
     private function _getSearchLike(QueryBuilder $qb, $kw, $searchFields)
     {
-        $searchTable = ''; // Für TYPO3 nicht relevant
-        if (\tx_rnbase_util_TYPO3::isExtLoaded('dbal')) {
-            // Bei dbal darf die Tabelle nicht leer sein. Wir setzen die erste Tabelle in den searchfields
-            $col = $searchFields[0];
-            list($searchTable, $col) = explode('.', $col);
-        }
-        $wheres = [];
         foreach ($kw as $val) {
             $val = trim($val);
             $where_p = [];
             if (strlen($val) >= 2) {
-                $val = $this->dbConnection->escapeStrForLike($this->dbConnection->quoteStr($val, $searchTable), $searchTable);
+                $namedParam = $qb->createNamedParameter('%'.$val.'%');
                 foreach ($searchFields as $field) {
-                    $where_p[] = $field.' LIKE \'%'.$val.'%\'';
+                    $where_p[] = sprintf('%s LIKE %s', $field, $namedParam);
                 }
             }
-            if (count($where_p)) {
-                $wheres[] = ' ('.implode(' OR ', $where_p).')';
+            if (!empty($where_p)) {
+                $qb->andWhere(implode(' OR ', $where_p));
             }
         }
-        $where = count($wheres) ? implode(' AND ', $wheres) : '';
-
-        return $where;
     }
 }
