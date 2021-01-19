@@ -38,7 +38,7 @@ class Action extends \tx_rnbase_view_Base
 {
     /**
      * @param string                    $templateName
-     * @param \tx_rnbase_configurations $configurations
+     * @param \tx_rnbase_configurations|RequestInterface $configurations
      *
      * @return string
      *
@@ -47,7 +47,10 @@ class Action extends \tx_rnbase_view_Base
     public function render($templateName, $configurations)
     {
         if ($configurations instanceof RequestInterface) {
+            $rnbaseViewData = $configurations->getViewContext();
             $configurations = $configurations->getConfigurations();
+        } else {
+            $rnbaseViewData = $configurations->getViewData();
         }
 
         $extensionKey = $configurations->getExtensionKey();
@@ -60,8 +63,6 @@ class Action extends \tx_rnbase_view_Base
             $this->getTypoScriptConfigurationForFluid($extensionKey, $configurations),
             $configurations
         );
-
-        $rnbaseViewData = $configurations->getViewData();
 
         // add variables
         $variables = $configurations->getKeyNames('variables.');
