@@ -2,6 +2,8 @@
 
 namespace Sys25\RnBase\ExtBaseFluid\View;
 
+use Sys25\RnBase\Frontend\Request\RequestInterface;
+
 /***************************************************************
  * Copyright notice
  *
@@ -44,6 +46,10 @@ class Action extends \tx_rnbase_view_Base
      */
     public function render($templateName, $configurations)
     {
+        if ($configurations instanceof RequestInterface) {
+            $configurations = $configurations->getConfigurations();
+        }
+
         $extensionKey = $configurations->getExtensionKey();
         if (0 === strlen($extensionKey)) {
             throw new \Exception('The extension key yould not be resolved. Please check your typoscript configuration.');
