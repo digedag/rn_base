@@ -3,11 +3,13 @@
 Changelog
 ---------
 
+v1.12.6 (28.01.2021)
+ * #176 Fix route target correction for backend modules
+ * make fluid action view compatible with AbstractAction
+ 
 v1.12.5 (25.11.2020)
  * fix release stage in TravisCI
  * #201 run TravisCI build with PHP 7.3 and 7.4
- * #176 Fix route target correction for backend modules
- * make fluid action view compatible with AbstractAction
 
 v1.12.4 (04.11.2020)
  * Add wrap option to pagebrowser viewhelper
