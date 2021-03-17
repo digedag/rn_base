@@ -618,6 +618,7 @@ abstract class SearchBase
         $rownum = isset($options['rownum']) ? ', @rownum:=@rownum+1 AS rownum ' : '';
         $table = $this->getGenericBaseTable();
         $table = $this->useAlias() ? $this->getGenericBaseTableAlias() : $table;
+        $table = sprintf('`%s`', $table);
         $ret = $distinct.$table.'.*'.$rownum;
         if (isset($options['count'])) {
             $cntWhat = isset($options['distinct']) ? $table.'.uid' : '*';
