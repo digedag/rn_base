@@ -3,6 +3,9 @@
 Changelog
 ---------
 
+v1.13.0 (??.03.2021)
+ * #202 [DatabaseConnection](Documentation/database_access.md) and SearchBase support TYPO3 QueryBuilder 
+
 v1.12.5 (25.11.2020)
  * fix release stage in TravisCI
  * #201 run TravisCI build with PHP 7.3 and 7.4
