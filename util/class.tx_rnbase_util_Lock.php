@@ -115,7 +115,15 @@ class tx_rnbase_util_Lock
     protected function getFile()
     {
         if (null === $this->logFile) {
-            $this->logFile = \Sys25\RnBase\Utility\Environment::getPublicPath().'typo3temp/rn_base/'.$this->getName().'.lock';
+            if (\Sys25\RnBase\Utility\TYPO3::isTYPO95OrHigher()) {
+                $folder = \TYPO3\CMS\Core\Core\Environment::getVarPath().'/lock/rn_base/';
+            } else {
+                $folder = \Sys25\RnBase\Utility\Environment::getPublicPath().'typo3temp/rn_base/';
+            }
+            if (!is_dir($folder) {
+                \tx_rnbase_util_Files::mkdir_deep($folder);
+            }
+            $this->logFile = $folder.$this->getName().'.lock';
         }
 
         return $this->logFile;
