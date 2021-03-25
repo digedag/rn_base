@@ -103,12 +103,12 @@ class tx_rnbase_util_Mail
         }
         // Or set it after like this
         if ($this->htmlPart) {
-            $mail->setBody($this->htmlPart, 'text/html');
+            $mail->html($this->htmlPart);
         }
 
         // Add alternative parts with addPart()
         if ($this->textPart) {
-            $mail->addPart($this->textPart, 'text/plain');
+            $mail->text($this->textPart);
         }
         if (!empty($this->attachments)) {
             foreach ($this->attachments as $attachment) {
