@@ -120,7 +120,7 @@ class tx_rnbase_util_Lock
             } else {
                 $folder = \Sys25\RnBase\Utility\Environment::getPublicPath().'typo3temp/rn_base/';
             }
-            if (!is_dir($folder) {
+            if (!is_dir($folder)) {
                 \tx_rnbase_util_Files::mkdir_deep($folder);
             }
             $this->logFile = $folder.$this->getName().'.lock';
