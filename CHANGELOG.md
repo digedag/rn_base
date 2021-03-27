@@ -3,6 +3,9 @@
 Changelog
 ---------
 
+v1.13.0 (??.03.2021)
+ * #202 [DatabaseConnection](Documentation/database_access.md) and SearchBase support TYPO3 QueryBuilder 
+
 v1.12.6 (28.01.2021)
  * #176 Fix route target correction for backend modules
  * make fluid action view compatible with AbstractAction

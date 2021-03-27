@@ -1,36 +1,44 @@
 <?php
+
+namespace Sys25\RnBase\Search;
+
+use Exception;
+use Sys25\RnBase\Configuration\ConfigurationInterface;
+use Sys25\RnBase\Database\Query\From;
+use tx_rnbase;
+use Tx_Rnbase_Database_Connection;
+use tx_rnbase_util_Logger;
+use tx_rnbase_util_Misc;
+use Tx_Rnbase_Utility_Strings;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2008 Rene Nitzsche (rene@system25.de)
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-tx_rnbase::load('tx_rnbase_util_DB');
-tx_rnbase::load('Tx_Rnbase_Database_Connection');
-tx_rnbase::load('tx_rnbase_util_Strings');
+ *  Copyright notice
+ *
+ *  (c) 2008-2020 Rene Nitzsche (rene@system25.de)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
- * Service for accessing team information.
- *
  * @author Rene Nitzsche
  */
-abstract class tx_rnbase_util_SearchBase
+abstract class SearchBase
 {
     private static $instances = [];
 
@@ -46,7 +54,7 @@ abstract class tx_rnbase_util_SearchBase
      *
      * @param string $classname
      *
-     * @return tx_rnbase_util_SearchBase
+     * @return SearchBase
      */
     public static function getInstance($classname)
     {
@@ -103,6 +111,7 @@ abstract class tx_rnbase_util_SearchBase
             $joinedFields = $fields[SEARCH_FIELD_JOINED];
             unset($fields[SEARCH_FIELD_JOINED]);
         }
+        $customFields = null;
         if (isset($fields[SEARCH_FIELD_CUSTOM])) {
             $customFields = $fields[SEARCH_FIELD_CUSTOM];
             unset($fields[SEARCH_FIELD_CUSTOM]);
@@ -155,81 +164,106 @@ abstract class tx_rnbase_util_SearchBase
         ], $this);
         $what = $this->getWhat($options, $tableAliases);
         $from = $this->getFrom($options, $tableAliases);
-        $where = '1=1';
 
-        foreach ($tableAliases as $tableAlias => $colData) {
-            foreach ($colData as $col => $data) {
-                foreach ($data as $operator => $value) {
-                    if (is_array($value)) {
-                        // There is more then one value to test against column
-                        $joinedValues = $value[SEARCH_FIELD_JOINED];
-                        if (!is_array($joinedValues)) {
-                            tx_rnbase_util_Misc::mayday('JOINED field required data array. Check up your search config.', 'rn_base');
-                        }
-                        $joinedValues = array_values($joinedValues);
-                        for ($i = 0, $cnt = count($joinedValues); $i < $cnt; ++$i) {
-                            $wherePart = $this->getDatabaseConnection()->setSingleWhereField(
-                                $this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias],
-                                $operator,
-                                $col,
-                                $joinedValues[$i]
-                            );
-                            if ('' !== trim($wherePart)) {
-                                $where .= ' AND '.$wherePart;
-                            }
-                        }
-                    } else {
-                        $wherePart = $this->getDatabaseConnection()->setSingleWhereField(
-                            $this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias],
-                            $operator,
-                            $col,
-                            $value
-                        );
-                        if ('' !== trim($wherePart)) {
-                            $where .= ' AND '.$wherePart;
-                        }
-                    }
-                }
-            }
-        }
-        // Jetzt die Freitextsuche über mehrere Felder
-        if (is_array($joinedFields)) {
-            foreach ($joinedFields as $joinedField) {
-                // Ignore invalid queries
-                if (!isset($joinedField['value']) || !isset($joinedField['operator']) ||
-                        !isset($joinedField['fields']) || !$joinedField['fields']) {
-                    continue;
-                }
+        $sqlOptions = $this->initSqlOptions($options);
 
-                if (OP_INSET_INT == $joinedField['operator']) {
-                    // Values splitten und einzelne Abfragen mit OR verbinden
-                    $addWhere = $this->getDatabaseConnection()->searchWhere(
-                        $joinedField['value'],
-                        implode(',', $joinedField['fields']),
-                        'FIND_IN_SET_OR'
-                    );
-                } else {
-                    $addWhere = $this->getDatabaseConnection()->searchWhere(
-                        $joinedField['value'],
-                        implode(',', $joinedField['fields']),
-                        $joinedField['operator']
-                    );
-                }
-                if ($addWhere) {
-                    $where .= ' AND '.$addWhere;
-                }
-            }
-        }
-        if (isset($customFields)) {
-            $where .= ' AND '.$customFields;
-        }
-
-        if ($options['enableFieldsForAdditionalTableAliases']) {
+        $where = null;
+        if ($this->useQueryBuilder()) {
+            $conditionBuilder = new \Sys25\RnBase\Search\ConditionBuilder($this->useAlias(), $this->getDatabaseConnection());
+            $where = function (QueryBuilder $qb) use ($conditionBuilder, $tableAliases, $joinedFields, $customFields) {
+                $conditionBuilder->apply($qb, $tableAliases, $joinedFields, $customFields);
+            };
+        } else {
+            $where = '1=1';
+            $where .= $this->buildConditions($tableAliases);
+            $where .= $this->buildJoinedConditions($joinedFields);
+            $where .= $this->buildCustomConditions($customFields);
             $where .= $this->setEnableFieldsForAdditionalTableAliases($tableAliases, $options);
         }
 
-        $sqlOptions = [];
         $sqlOptions['where'] = $where;
+
+        if (!isset($options['count']) && is_array($options['orderby'])) {
+            // Aus dem Array einen String bauen
+            $orderby = [];
+            if (array_key_exists('RAND', $options['orderby']) && $options['orderby']['RAND']) {
+                $orderby[] = 'RAND()';
+            } else {
+                if (array_key_exists('RAND', $options['orderby'])) {
+                    unset($options['orderby']['RAND']);
+                }
+                foreach ($options['orderby'] as $field => $order) {
+                    // free Order-Clause
+                    if (strstr($field, SEARCH_FIELD_CUSTOM)) {
+                        $orderby[] = $order;
+
+                        continue;
+                    }
+                    list($tableAlias, $col) = explode('.', $field);
+                    $tableAlias = $this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias];
+                    if ($tableAlias) {
+                        $orderby[] = $tableAlias.'.'.strtolower($col).' '.('DESC' == strtoupper($order) ? 'DESC' : 'ASC');
+                    } else {
+                        $orderby[] = $field.' '.('DESC' == strtoupper($order) ? 'DESC' : 'ASC');
+                    }
+                }
+            }
+            $sqlOptions['orderby'] = implode(',', $orderby);
+        }
+        if (!(isset($options['count'])) && (
+            !(
+                isset($options['what']) ||
+                isset($options['groupby']) ||
+                isset($options['sqlonly'])
+            ) || isset($options['forcewrapper']))) {
+            // der Filter kann ebenfalls eine Klasse setzen. Diese hat Vorrang.
+            $sqlOptions['wrapperclass'] = $options['wrapperclass'] ? $options['wrapperclass'] : $this->getGenericWrapperClass();
+        }
+
+        // if we have to do a count and there still is a count in the custom what
+        // or there is a having or a groupby
+        // so we have to wrap the query into a subquery to count the results
+        if (!$options['disableCountWrap'] &&
+                isset($options['count'])
+                && (
+                    (
+                        isset($options['what'])
+                        && false !== strpos(strtoupper($options['what']), 'COUNT(')
+                    )
+                    || $options['groupby']
+                    || $options['having']
+                )
+            ) {
+            $sqlOptions['sqlonly'] = 1;
+            $query = $this->getDatabaseConnection()->doSelect(
+                $what,
+                $from,
+                $sqlOptions,
+                $options['debug'] ? 1 : 0
+            );
+            $what = 'COUNT(*) AS cnt';
+            $from = '('.$query.') AS COUNTWRAP';
+            $sqlOptions = [
+                'enablefieldsoff' => true,
+                'sqlonly' => empty($options['sqlonly']) ? 0 : $options['sqlonly'],
+            ];
+        }
+        $result = $this->getDatabaseConnection()->doSelect(
+                    $what,
+                    $from,
+                    $sqlOptions,
+                    $options['debug'] ? 1 : 0
+                    );
+        if (isset($options['sqlonly'])) {
+            return $result;
+        }
+        // else:
+        return isset($options['count']) ? $result[0]['cnt'] : $result;
+    }
+
+    private function initSqlOptions($options)
+    {
+        $sqlOptions = [];
         if ($options['pidlist']) {
             $sqlOptions['pidlist'] = $options['pidlist'];
         }
@@ -284,85 +318,102 @@ abstract class tx_rnbase_util_SearchBase
         if ($options['array_object']) {
             $sqlOptions['collection'] = 'ArrayObject';
         }
-        if (!isset($options['count']) && is_array($options['orderby'])) {
-            // Aus dem Array einen String bauen
-            $orderby = [];
-            if (array_key_exists('RAND', $options['orderby']) && $options['orderby']['RAND']) {
-                $orderby[] = 'RAND()';
-            } else {
-                if (array_key_exists('RAND', $options['orderby'])) {
-                    unset($options['orderby']['RAND']);
-                }
-                foreach ($options['orderby'] as $field => $order) {
-                    // free Order-Clause
-                    if (strstr($field, SEARCH_FIELD_CUSTOM)) {
-                        $orderby[] = $order;
 
-                        continue;
-                    }
-                    list($tableAlias, $col) = explode('.', $field);
-                    $tableAlias = $this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias];
-                    if ($tableAlias) {
-                        $orderby[] = $tableAlias.'.'.strtolower($col).' '.('DESC' == strtoupper($order) ? 'DESC' : 'ASC');
+        return $sqlOptions;
+    }
+
+    /**
+     * Freitextsuche über mehrere Felder.
+     *
+     * @param array $joinedFields
+     *
+     * @return string
+     */
+    private function buildJoinedConditions($joinedFields): string
+    {
+        $where = '';
+        // Jetzt die Freitextsuche über mehrere Felder
+        if (is_array($joinedFields)) {
+            foreach ($joinedFields as $joinedField) {
+                // Ignore invalid queries
+                if (!isset($joinedField['value']) || !isset($joinedField['operator']) ||
+                    !isset($joinedField['fields']) || !$joinedField['fields']) {
+                    continue;
+                }
+
+                if (OP_INSET_INT == $joinedField['operator']) {
+                    // Values splitten und einzelne Abfragen mit OR verbinden
+                    $addWhere = $this->getDatabaseConnection()->searchWhere(
+                            $joinedField['value'],
+                            implode(',', $joinedField['fields']),
+                            'FIND_IN_SET_OR'
+                        );
+                } else {
+                    $addWhere = $this->getDatabaseConnection()->searchWhere(
+                            $joinedField['value'],
+                            implode(',', $joinedField['fields']),
+                            $joinedField['operator']
+                        );
+                }
+                if ($addWhere) {
+                    $where .= ' AND '.$addWhere;
+                }
+            }
+        }
+
+        return $where;
+    }
+
+    private function buildCustomConditions($customFields): string
+    {
+        $where = '';
+        if ($customFields) {
+            $where .= ' AND '.$customFields;
+        }
+
+        return $where;
+    }
+
+    private function buildConditions($tableAliases): string
+    {
+        $where = '';
+        foreach ($tableAliases as $tableAlias => $colData) {
+            foreach ($colData as $col => $data) {
+                foreach ($data as $operator => $value) {
+                    if (is_array($value)) {
+                        // There is more then one value to test against column
+                        $joinedValues = $value[SEARCH_FIELD_JOINED];
+                        if (!is_array($joinedValues)) {
+                            tx_rnbase_util_Misc::mayday('JOINED field required data array. Check up your search config.', 'rn_base');
+                        }
+                        $joinedValues = array_values($joinedValues);
+                        for ($i = 0, $cnt = count($joinedValues); $i < $cnt; ++$i) {
+                            $wherePart = $this->getDatabaseConnection()->setSingleWhereField(
+                                $this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias],
+                                $operator,
+                                $col,
+                                $joinedValues[$i]
+                            );
+                            if ('' !== trim($wherePart)) {
+                                $where .= ' AND '.$wherePart;
+                            }
+                        }
                     } else {
-                        $orderby[] = $field.' '.('DESC' == strtoupper($order) ? 'DESC' : 'ASC');
+                        $wherePart = $this->getDatabaseConnection()->setSingleWhereField(
+                            $this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias],
+                            $operator,
+                            $col,
+                            $value
+                        );
+                        if ('' !== trim($wherePart)) {
+                            $where .= ' AND '.$wherePart;
+                        }
                     }
                 }
             }
-            $sqlOptions['orderby'] = implode(',', $orderby);
-        }
-        if (!(isset($options['count'])) && (
-            !(
-                isset($options['what']) ||
-                isset($options['groupby']) ||
-                isset($options['sqlonly'])
-            ) ||
-            isset($options['forcewrapper'])
-        )) {
-            // der Filter kann ebenfalls eine Klasse setzen. Diese hat Vorrang.
-            $sqlOptions['wrapperclass'] = $options['wrapperclass'] ? $options['wrapperclass'] : $this->getGenericWrapperClass();
         }
 
-        // if we have to do a count and there still is a count in the custom what
-        // or there is a having or a groupby
-        // so we have to wrap the query into a subquery to count the results
-        if (!$options['disableCountWrap'] &&
-            isset($options['count'])
-            && (
-                (
-                    isset($options['what'])
-                    && false !== strpos(strtoupper($options['what']), 'COUNT(')
-                )
-                || $options['groupby']
-                || $options['having']
-            )
-        ) {
-            $sqlOptions['sqlonly'] = 1;
-            $query = $this->getDatabaseConnection()->doSelect(
-                $what,
-                $from,
-                $sqlOptions,
-                $options['debug'] ? 1 : 0
-            );
-            $what = 'COUNT(*) AS cnt';
-            $from = '('.$query.') AS COUNTWRAP';
-            $sqlOptions = [
-                'enablefieldsoff' => true,
-                'sqlonly' => empty($options['sqlonly']) ? 0 : $options['sqlonly'],
-            ];
-        }
-
-        $result = $this->getDatabaseConnection()->doSelect(
-            $what,
-            $from,
-            $sqlOptions,
-            $options['debug'] ? 1 : 0
-        );
-        if (isset($options['sqlonly'])) {
-            return $result;
-        }
-        // else:
-        return isset($options['count']) ? $result[0]['cnt'] : $result;
+        return $where;
     }
 
     /**
@@ -422,12 +473,13 @@ abstract class tx_rnbase_util_SearchBase
     {
         $join = '';
         if ($this->isGeneric()) {
+            // FIXME: how should this work and is it possible to migrate to Join Array?
             $aliasArr = $this->genericData['alias'];
             if (is_array($aliasArr)) {
                 foreach ($aliasArr as $alias => $data) {
                     $makeJoin = isset($tableAliases[$alias]);
                     if (!$makeJoin && array_key_exists('joincondition', $data)) {
-                        $jconds = tx_rnbase_util_Strings::trimExplode(',', $data['joincondition']);
+                        $jconds = Tx_Rnbase_Utility_Strings::trimExplode(',', $data['joincondition']);
                         foreach ($jconds as $jcond) {
                             $makeJoin = $makeJoin || isset($tableAliases[$jcond]);
                             if ($makeJoin) {
@@ -442,9 +494,21 @@ abstract class tx_rnbase_util_SearchBase
                 }
             }
         }
-        $join .= $this->getJoins($tableAliases);
+        $joins = $this->getJoins($tableAliases);
+        if (is_array($joins)) {
+            // FIXME: merge with generics
+            $join = $joins;
+        } else {
+            $join .= $joins;
+        }
 
-        return $join;
+        return $join ?: [];
+    }
+
+    private function useQueryBuilder(): bool
+    {
+        // erstmal wird der QB genutzt, wenn die Implementierung ein Array für die Joins liefert
+        return is_array($this->getJoins($tableAliases));
     }
 
     private function _initSearch($options)
@@ -554,6 +618,7 @@ abstract class tx_rnbase_util_SearchBase
         $rownum = isset($options['rownum']) ? ', @rownum:=@rownum+1 AS rownum ' : '';
         $table = $this->getGenericBaseTable();
         $table = $this->useAlias() ? $this->getGenericBaseTableAlias() : $table;
+        $table = sprintf('`%s`', $table);
         $ret = $distinct.$table.'.*'.$rownum;
         if (isset($options['count'])) {
             $cntWhat = isset($options['distinct']) ? $table.'.uid' : '*';
@@ -577,6 +642,8 @@ abstract class tx_rnbase_util_SearchBase
         if (!$table) {
             throw new Exception('SearchBase: No base table found!');
         }
+        $useFromClass = true;
+
         $from = [$table, $table];
         if ($this->useAlias()) {
             $alias = $this->getGenericBaseTableAlias();
@@ -586,13 +653,22 @@ abstract class tx_rnbase_util_SearchBase
                 $from[2] = $alias;
             }
         }
-        $joins = $this->getGenericJoins($tableAliases);
+        // remove support for rownum
         if (isset($options['rownum'])) {
+            $useFromClass = false;
             $from[0] = '(SELECT @rownum:=0) _r, '.$from[0];
         }
 
-        if (strlen($joins)) {
+        $joins = $this->getGenericJoins($tableAliases);
+        if (is_array($joins)) {
+            $from[0] = $joins;
+        } elseif (strlen($joins)) {
+            $useFromClass = false;
             $from[0] .= $joins;
+        }
+
+        if ($useFromClass) {
+            $from = new From($table, $alias, $joins);
         }
 
         return $from;
@@ -604,14 +680,18 @@ abstract class tx_rnbase_util_SearchBase
      *
      * @return string
      */
-    protected function setEnableFieldsForAdditionalTableAliases(array $tableAliases, array $options)
+    protected function setEnableFieldsForAdditionalTableAliases(array $tableAliases, array $options): string
     {
+        $where = '';
+        if (!$options['enableFieldsForAdditionalTableAliases']) {
+            return $where;
+        }
+
         // FIXME: keys für Optionen sind grundsätzlich klein geschrieben
-        $tableAliasesToSetEnableFields = tx_rnbase_util_Strings::trimExplode(
+        $tableAliasesToSetEnableFields = Tx_Rnbase_Utility_Strings::trimExplode(
             ',',
             $options['enableFieldsForAdditionalTableAliases']
         );
-        $where = '';
         foreach ($tableAliasesToSetEnableFields as $tableAliaseToSetEnableFields) {
             if (isset($tableAliases[$tableAliaseToSetEnableFields])) {
                 $tableAlias = $this->useAlias() ? $tableAliaseToSetEnableFields : '';
@@ -629,9 +709,9 @@ abstract class tx_rnbase_util_SearchBase
     /**
      * Optionen aus der TS-Config setzen.
      *
-     * @param array                                      $options
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param string                                     $confId         Id der TS-Config z.B. myview.options.
+     * @param array $options
+     * @param ConfigurationInterface $configurations
+     * @param string $confId         Id der TS-Config z.B. myview.options.
      */
     public static function setConfigOptions(&$options, $configurations, $confId)
     {
@@ -678,7 +758,7 @@ abstract class tx_rnbase_util_SearchBase
                                     'option_name' => $optionName,
                                     'cfg' => $cfg,
                                 ]
-                            );
+                                );
                         }
 
                         continue;
@@ -712,13 +792,13 @@ abstract class tx_rnbase_util_SearchBase
             foreach ($cfgFields as $field => $cfg) {
                 // Tabellen-Alias
                 $tableAlias = ('.' == substr($field, strlen($field) - 1, 1)) ?
-                                            strtoupper(substr($field, 0, strlen($field) - 1)) : strtoupper($field);
+                strtoupper(substr($field, 0, strlen($field) - 1)) : strtoupper($field);
 
                 if (SEARCH_FIELD_JOINED == $tableAlias) {
                     // Hier sieht die Konfig etwas anders aus
                     foreach ($cfg as $jField) {
                         $jField['operator'] = constant($jField['operator']);
-                        $jField['cols'] = tx_rnbase_util_Strings::trimExplode(',', $jField['cols']);
+                        $jField['cols'] = Tx_Rnbase_Utility_Strings::trimExplode(',', $jField['cols']);
                         $fields[SEARCH_FIELD_JOINED][] = $jField;
                     }
 
@@ -751,7 +831,7 @@ abstract class tx_rnbase_util_SearchBase
      * Vergleichsfelder aus der TS-Config setzen.
      *
      * @param array                                      $fields
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param ConfigurationInterface $configurations
      * @param string                                     $confId         Id der TS-Config z.B. myview.fields.
      */
     public static function setConfigFields(&$fields, $configurations, $confId)
@@ -763,13 +843,13 @@ abstract class tx_rnbase_util_SearchBase
     /**
      * Checks existence of search field in parameters and adds it to fieldarray.
      *
-     * @param string                                     $idstr
-     * @param array                                      $fields
-     * @param arrayObject                                $parameters
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param string                                     $operator
+     * @param string $idstr
+     * @param array $fields
+     * @param \ArrayObject $parameters
+     * @param ConfigurationInterface $configurations
+     * @param string $operator
      */
-    public function setField($idstr, &$fields, &$parameters, &$configurations, $operator = OP_LIKE)
+    public function setField($idstr, &$fields, $parameters, $configurations, $operator = OP_LIKE)
     {
         if (!isset($fields[$idstr][$operator]) && $parameters->offsetGet($idstr)) {
             $fields[$idstr][$operator] = $parameters->offsetGet($idstr);

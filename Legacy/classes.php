@@ -17,6 +17,10 @@ class Tx_Rnbase_Configuration_Processor extends tx_rnbase_configurations
 {
 }
 /** @deprecated */
+class Tx_Rnbase_Database_Connection extends Sys25\RnBase\Database\Connection
+{
+}
+/** @deprecated */
 interface tx_rnbase_IParameters extends Sys25\RnBase\Frontend\Request\ParametersInterface
 {
 }
@@ -76,6 +80,10 @@ class Tx_Rnbase_Backend_Utility extends Sys25\RnBase\Backend\Utility\BackendUtil
 }
 /** @deprecated */
 class tx_rnbase_util_Logger extends Sys25\RnBase\Utility\Logger
+{
+}
+/** @deprecated */
+abstract class tx_rnbase_util_SearchBase extends Sys25\RnBase\Search\SearchBase
 {
 }
 /** @deprecated */
