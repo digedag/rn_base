@@ -21,7 +21,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('Tx_Rnbase_Scheduler_FieldProviderBase');
+
+use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
+use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * Tx_Rnbase_Scheduler_FieldProvider.
@@ -43,7 +45,7 @@ abstract class Tx_Rnbase_Scheduler_FieldProvider extends Tx_Rnbase_Scheduler_Fie
      *
      * @return array
      */
-    public function getAdditionalFields(array &$taskInfo, $task, TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule)
+    public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $schedulerModule)
     {
         return $this->_getAdditionalFields($taskInfo, $task, $schedulerModule);
     }
@@ -56,7 +58,7 @@ abstract class Tx_Rnbase_Scheduler_FieldProvider extends Tx_Rnbase_Scheduler_Fie
      *
      * @return bool TRUE if validation was ok (or selected class is not relevant), FALSE otherwise
      */
-    public function validateAdditionalFields(array &$submittedData, TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule)
+    public function validateAdditionalFields(array &$submittedData, SchedulerModuleController $schedulerModule)
     {
         return $this->_validateAdditionalFields($submittedData, $schedulerModule);
     }
@@ -67,7 +69,7 @@ abstract class Tx_Rnbase_Scheduler_FieldProvider extends Tx_Rnbase_Scheduler_Fie
      * @param array                                  $submittedData An array containing the data submitted by the add/edit task form
      * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task          Reference to the scheduler backend module
      */
-    public function saveAdditionalFields(array $submittedData, TYPO3\CMS\Scheduler\Task\AbstractTask $task)
+    public function saveAdditionalFields(array $submittedData, AbstractTask $task)
     {
         $this->_saveAdditionalFields($submittedData, $task);
     }

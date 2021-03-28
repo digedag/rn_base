@@ -1,6 +1,7 @@
 <?php
 
 use Sys25\RnBase\Utility\TYPO3;
+use TYPO3\CMS\Core\Resource\FileReference;
 
 /***************************************************************
  *  Copyright notice
@@ -673,7 +674,7 @@ class tx_rnbase_util_TSFAL
     }
 
     protected static function getReferenceFileInfo(
-        TYPO3\CMS\Core\Resource\FileReference $reference
+        FileReference $reference
     ) {
         // getProperties gets merged values from reference and the orig file
         $info = $reference->getProperties();

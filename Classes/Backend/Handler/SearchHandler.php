@@ -98,7 +98,6 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
      */
     public function getSubModuleId()
     {
-        tx_rnbase::load('Tx_Rnbase_Utility_Strings');
         $modId = str_replace('\\', '_', get_class($this));
         $modId = Tx_Rnbase_Utility_Strings::underscoredToLowerCamelCase($modId);
 
@@ -133,7 +132,6 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
 
         $options['pid'] = $mod->getPid();
 
-        tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
         $this->options = Tx_Rnbase_Domain_Model_Data::getInstance($options);
 
         $this->prepare();
@@ -144,10 +142,6 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
      */
     protected function prepare()
     {
-//         ($this->getOptions()
-//             ->setPid($this->getModule()->getPid())
-//             ->setBaseTableName('tt_content')
-//         );
     }
 
     /**
