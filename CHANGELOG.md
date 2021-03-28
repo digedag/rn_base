@@ -3,9 +3,10 @@
 Changelog
 ---------
 
-v1.13.0 (??.03.2021)
+v1.13.0 (28.03.2021)
  * #202 [DatabaseConnection](Documentation/database_access.md) and SearchBase support TYPO3 QueryBuilder 
  * Remove unused classes
+ * use var/lock folder for locks since TYPO3 9.5
 
 v1.12.6 (28.01.2021)
  * #176 Fix route target correction for backend modules
