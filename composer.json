@@ -44,7 +44,6 @@
             "maps/",
             "mod/",
             "model/",
-            "sv1/",
             "tests/",
             "util/",
             "class.tx_rnbase.php",
