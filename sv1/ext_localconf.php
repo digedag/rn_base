@@ -6,8 +6,8 @@ if (!defined('TYPO3_MODE')) {
 
 tx_rnbase_util_Extensions::addService(
     $_EXTKEY,
-    'mediaplayer' /* sv type */,
-    'tx_rnbase_sv1_MediaPlayer' /* sv key */,
+    'mediaplayer' /* sv type */ ,
+    'tx_rnbase_sv1_MediaPlayer' /* sv key */ ,
     [
     'title' => 'Media Player',
     'description' => 'Playing DAM mediafiles based on DEW Flash-Player',

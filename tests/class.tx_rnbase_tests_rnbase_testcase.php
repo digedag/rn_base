@@ -24,13 +24,13 @@
 
 class tx_rnbase_tests_rnbase_testcase extends tx_rnbase_tests_BaseTestCase
 {
-    public function test_makeInstanceSimpleObject()
+    public function testMakeInstanceSimpleObject()
     {
         $obj = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
         $this->assertTrue(is_object($obj), 'Object not instantiated');
     }
 
-    public function test_makeInstanceObjectWithParameters()
+    public function testMakeInstanceObjectWithParameters()
     {
         $obj = tx_rnbase::makeInstance('tx_rnbase_filter_FilterItem', 'name', 'value');
         $this->assertTrue(is_object($obj), 'Object not instantiated');

@@ -287,7 +287,7 @@ class ConnectionTest extends tx_rnbase_tests_BaseTestCase
     /**
      * @dataProvider singleFieldWhereProvider
      */
-    public function test_setSingleWhereFieldWithOneTable($operator, $value, $expected)
+    public function testSetSingleWhereFieldWithOneTable($operator, $value, $expected)
     {
         $ret = $this->connection->setSingleWhereField('Table1', $operator, 'Col1', $value);
         $this->assertEquals($expected, $ret);
@@ -312,7 +312,7 @@ class ConnectionTest extends tx_rnbase_tests_BaseTestCase
      * @group functional
      * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
-    public function test_searchWhere()
+    public function testSearchWhere()
     {
         $this->prepareTsfeSetUp();
 

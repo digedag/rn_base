@@ -26,7 +26,7 @@ tx_rnbase::load('tx_rnbase_util_Dates');
 
 class tx_rnbase_tests_util_Dates_testcase extends tx_rnbase_tests_BaseTestCase
 {
-    public function test_datetime_getTimeStamp()
+    public function testDatetimeGetTimeStamp()
     {
         $tstamp = tx_rnbase_util_Dates::getTimeStamp(1970, 1, 1, 1, 0, 0, 'CET');
         $this->assertEquals(0, $tstamp);
@@ -34,7 +34,7 @@ class tx_rnbase_tests_util_Dates_testcase extends tx_rnbase_tests_BaseTestCase
         $this->assertEquals(3600, $tstamp);
     }
 
-    public function test_datetime_mysql2tstamp()
+    public function testDatetimeMysql2tstamp()
     {
         $tstamp = tx_rnbase_util_Dates::datetime_mysql2tstamp('1970-01-1 01:00:00', 'CET');
         $this->assertEquals(0, $tstamp);
@@ -42,7 +42,7 @@ class tx_rnbase_tests_util_Dates_testcase extends tx_rnbase_tests_BaseTestCase
         $this->assertEquals(0, $tstamp);
     }
 
-    public function test_dateConv()
+    public function testDateConv()
     {
         $zeit1 = '2009-02-11';
         $tstamp1 = tx_rnbase_util_Dates::date_mysql2tstamp($zeit1);
@@ -52,7 +52,7 @@ class tx_rnbase_tests_util_Dates_testcase extends tx_rnbase_tests_BaseTestCase
         $this->assertEquals($zeit1, $zeit2);
     }
 
-    public function test_convert4TCA2Timestamp()
+    public function testConvert4TCA2Timestamp()
     {
         $record = ['datetime' => '2011-10-20 12:00:00', 'date' => '2011-10-20', 'emptydate' => '0000-00-00'];
         tx_rnbase_util_Dates::convert4TCA2Timestamp($record, ['datetime', 'date', 'emptydate']);
@@ -61,14 +61,14 @@ class tx_rnbase_tests_util_Dates_testcase extends tx_rnbase_tests_BaseTestCase
         $this->assertEquals('0', $record['emptydate']);
     }
 
-    public function test_convert4TCA2DateTime()
+    public function testConvert4TCA2DateTime()
     {
         $record = ['datetime' => '1319112000'];
         tx_rnbase_util_Dates::convert4TCA2DateTime($record, ['datetime'], true);
         $this->assertEquals('2011-10-20 12:00:00', $record['datetime']);
     }
 
-    public function test_convert4TCA2Date()
+    public function testConvert4TCA2Date()
     {
         $record = ['date' => '1319068800'];
         tx_rnbase_util_Dates::convert4TCA2Date($record, ['date'], true);
@@ -81,7 +81,7 @@ class tx_rnbase_tests_util_Dates_testcase extends tx_rnbase_tests_BaseTestCase
      *
      * @dataProvider dataProviderDateMysql2Tstamp
      */
-    public function test_date_mysql2tstamp($mysqlDate, $expectedTimestamp)
+    public function testDateMysql2tstamp($mysqlDate, $expectedTimestamp)
     {
         self::assertSame($expectedTimestamp, tx_rnbase_util_Dates::date_mysql2tstamp($mysqlDate));
     }

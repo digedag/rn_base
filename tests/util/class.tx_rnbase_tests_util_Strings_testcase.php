@@ -30,7 +30,7 @@ tx_rnbase::load('tx_rnbase_util_Strings');
  */
 class tx_rnbase_tests_util_Strings_testcase extends tx_rnbase_tests_BaseTestCase
 {
-    public function test_isUtf8String()
+    public function testIsUtf8String()
     {
         // UTF-8 Text: 'The € - ä ö ü';
         $utf8Str = 'a:18:{i:0;s:2:"54";i:1;s:2:"68";i:2;s:2:"65";i:3;s:2:"20";i:4;s:2:"e2";i:5;s:2:"82";i:6;s:2:"ac";i:7;s:2:"20";i:8;s:2:"2d";i:9;s:2:"20";i:10;s:2:"c3";i:11;s:2:"a4";i:12;s:2:"20";i:13;s:2:"c3";i:14;s:2:"b6";i:15;s:2:"20";i:16;s:2:"c3";i:17;s:2:"bc";}';

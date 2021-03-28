@@ -33,7 +33,7 @@ class tx_rnbase_tests_listbuilder_testcase extends tx_rnbase_tests_BaseTestCase
         tx_rnbase_util_Misc::prepareTSFE();
     }
 
-    public function test_advList()
+    public function testAdvList()
     {
         $items = [];
         $confArr = [];
@@ -64,7 +64,7 @@ class tx_rnbase_tests_listbuilder_testcase extends tx_rnbase_tests_BaseTestCase
         $this->assertEquals($html, self::$listAdvFilled, 'Liste ist falsch');
     }
 
-    public function test_multiSubpartList()
+    public function testMultiSubpartList()
     {
         $items = [];
         $confArr = [];
@@ -96,7 +96,7 @@ class tx_rnbase_tests_listbuilder_testcase extends tx_rnbase_tests_BaseTestCase
         $this->assertEquals($html, self::$listMultiSubpartFilled, 'Liste ist falsch');
     }
 
-    public function test_simpleList()
+    public function testSimpleList()
     {
         $items = [];
         $confArr = [];

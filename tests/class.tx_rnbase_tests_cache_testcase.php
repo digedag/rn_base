@@ -26,14 +26,14 @@ tx_rnbase::load('tx_rnbase_util_TYPO3');
 
 class tx_rnbase_tests_cache_testcase extends tx_rnbase_tests_BaseTestCase
 {
-    public function test_CacheManager()
+    public function testCacheManager()
     {
         tx_rnbase::load('tx_rnbase_cache_Manager');
         $cache = tx_rnbase_cache_Manager::getCache('__rnbaseMgrCache__');
         $this->assertTrue(is_object($cache), 'No Cache instanciated');
     }
 
-    public function test_TYPO3Cache()
+    public function testTYPO3Cache()
     {
         $cache = self::createTYPO3Cache('__rnbaseTestTYPO3Cache__');
 

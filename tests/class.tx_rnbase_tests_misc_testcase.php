@@ -34,7 +34,7 @@ class tx_rnbase_dummyMisc extends tx_rnbase_util_Misc
 
 class tx_rnbase_tests_misc_testcase extends tx_rnbase_tests_BaseTestCase
 {
-    public function test_encodeParams()
+    public function testEncodeParams()
     {
         $params['dat1'] = '1';
         $params['dat2'] = ['1', '2'];

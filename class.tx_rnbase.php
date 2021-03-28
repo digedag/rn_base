@@ -342,7 +342,7 @@ class tx_rnbase
     private static function getValidKey($rawKey)
     {
         if (!isset($GLOBALS['TYPO3_LOADED_EXT']) || !is_array($GLOBALS['TYPO3_LOADED_EXT'])) {
-            false;
+            return false;
         }
         $uKeys = array_keys((array) $GLOBALS['TYPO3_LOADED_EXT']);
         foreach ($uKeys as $uKey) {

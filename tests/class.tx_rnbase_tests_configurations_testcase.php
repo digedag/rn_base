@@ -25,7 +25,7 @@ tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
 class tx_rnbase_tests_configurations_testcase extends tx_rnbase_tests_BaseTestCase
 {
-    public function test_tsSetup()
+    public function testTsSetup()
     {
         $GLOBALS['TSFE'] = new tx_rnbase_tsfeDummy();
         $GLOBALS['TSFE']->tmpl->setup['lib.']['match.'] = ['limit' => '10', 'count' => '99'];
@@ -43,7 +43,7 @@ class tx_rnbase_tests_configurations_testcase extends tx_rnbase_tests_BaseTestCa
     /**
      * Test flexform value with pointed keys.
      */
-    public function test_flexformSetup()
+    public function testFlexformSetup()
     {
         $GLOBALS['TSFE'] = new tx_rnbase_tsfeDummy();
         $GLOBALS['TSFE']->tmpl->setup['lib.']['feuser.']['link'] = ['pid' => '10'];
@@ -86,7 +86,7 @@ class tx_rnbase_tests_configurations_testcase extends tx_rnbase_tests_BaseTestCa
      *      name = Child
      *  }.
      */
-    public function test_TsReference()
+    public function testTsReference()
     {
         $GLOBALS['TSFE'] = new tx_rnbase_tsfeDummy();
         $GLOBALS['TSFE']->tmpl->setup['lib.']['rnbase.'] = [];

@@ -26,7 +26,7 @@ tx_rnbase::load('tx_rnbase_util_PageBrowser');
 
 class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTestCase
 {
-    public function test_getStateSimple()
+    public function testGetStateSimple()
     {
         $pb = new tx_rnbase_util_PageBrowser('test');
         $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
@@ -64,7 +64,7 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTest
         $this->assertEquals(5, $state['limit'], 'Limit ist falsch');
     }
 
-    public function test_getStateWithEmptyListAndNoPointer()
+    public function testGetStateWithEmptyListAndNoPointer()
     {
         $pb = new tx_rnbase_util_PageBrowser('test');
         $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
@@ -76,7 +76,7 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTest
         $this->assertEquals(0, $state['limit'], 'Limit ist falsch');
     }
 
-    public function test_getStateWithPointerOutOfRange()
+    public function testGetStateWithPointerOutOfRange()
     {
         $pb = new tx_rnbase_util_PageBrowser('test');
         $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
@@ -103,7 +103,7 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTest
         $this->assertEquals(10, $state['limit']);
     }
 
-    public function test_getStateWithIllegalPointer()
+    public function testGetStateWithIllegalPointer()
     {
         $pb = new tx_rnbase_util_PageBrowser('test');
         $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
@@ -117,7 +117,7 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTest
         $this->assertEquals(10, $state['limit']);
     }
 
-    public function test_getStateWithSmallList()
+    public function testGetStateWithSmallList()
     {
         $pb = new tx_rnbase_util_PageBrowser('test');
         $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
@@ -138,7 +138,7 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTest
      * @param int $pointer
      * @param int $expectedPointer
      */
-    public function test_getPointer($pointer, $expectedPointer)
+    public function testGetPointer($pointer, $expectedPointer)
     {
         /* @var $pageBrowser tx_rnbase_util_PageBrowser */
         $pageBrowser = tx_rnbase::makeInstance('tx_rnbase_util_PageBrowser', 'test');

@@ -27,7 +27,7 @@ tx_rnbase::load('Tx_Rnbase_Domain_Model_Base');
 
 class Tx_Rnbase_Domain_Model_BaseTest extends tx_rnbase_tests_BaseTestCase
 {
-    public function test_magiccall()
+    public function testMagiccall()
     {
         $model = new Tx_Rnbase_Domain_Model_Base(['uid' => 1, 'test_value' => 45]);
         self::assertEquals(45, $model->getTestValue());

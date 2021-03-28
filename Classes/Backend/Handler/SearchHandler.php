@@ -126,7 +126,7 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
      * @param array                  $options
      */
     protected function init(
-        \tx_rnbase_mod_IModule $mod,
+        tx_rnbase_mod_IModule $mod,
         array &$options = []
     ) {
         $this->module = $mod;

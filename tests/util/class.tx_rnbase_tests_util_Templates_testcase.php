@@ -105,7 +105,7 @@ class tx_rnbase_tests_util_Templates_testcase extends tx_rnbase_tests_BaseTestCa
             'Mem1' => $memEnd1, 'Mem2' => $memEnd2, ];
     }
 
-    public function test_includeSubTemplates()
+    public function testIncludeSubTemplates()
     {
         $fixture = tx_rnbase_util_Network::getUrl(
             tx_rnbase_util_Extensions::extPath(
@@ -126,7 +126,7 @@ class tx_rnbase_tests_util_Templates_testcase extends tx_rnbase_tests_BaseTestCa
         $this->assertEquals($expected, $included);
     }
 
-    public function test_substMarkerArrayCached()
+    public function testSubstMarkerArrayCached()
     {
         $this->setTTOff();
         $markerArr = ['###UID###' => 2, '###PID###' => 1, '###TITLE###' => 'My Titel 1'];

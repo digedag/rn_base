@@ -26,7 +26,7 @@ tx_rnbase::load('tx_rnbase_util_BaseMarker');
 
 class tx_rnbase_tests_basemarker_testcase extends tx_rnbase_tests_BaseTestCase
 {
-    public function test_containsMarker()
+    public function testContainsMarker()
     {
         $template = '
 <html>
