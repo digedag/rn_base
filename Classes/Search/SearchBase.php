@@ -168,7 +168,7 @@ abstract class SearchBase
         $sqlOptions = $this->initSqlOptions($options);
 
         $where = null;
-        if ($this->useQueryBuilder()) {
+        if ($this->useQueryBuilder($tableAliases)) {
             $conditionBuilder = new \Sys25\RnBase\Search\ConditionBuilder($this->useAlias(), $this->getDatabaseConnection());
             $where = function (QueryBuilder $qb) use ($conditionBuilder, $tableAliases, $joinedFields, $customFields) {
                 $conditionBuilder->apply($qb, $tableAliases, $joinedFields, $customFields);
@@ -211,11 +211,11 @@ abstract class SearchBase
             $sqlOptions['orderby'] = implode(',', $orderby);
         }
         if (!(isset($options['count'])) && (
-            !(
-                isset($options['what']) ||
-                isset($options['groupby']) ||
-                isset($options['sqlonly'])
-            ) || isset($options['forcewrapper']))) {
+                !(
+                    isset($options['what']) ||
+                    isset($options['groupby']) ||
+                    isset($options['sqlonly'])
+                ) || isset($options['forcewrapper']))) {
             // der Filter kann ebenfalls eine Klasse setzen. Diese hat Vorrang.
             $sqlOptions['wrapperclass'] = $options['wrapperclass'] ? $options['wrapperclass'] : $this->getGenericWrapperClass();
         }
@@ -224,16 +224,16 @@ abstract class SearchBase
         // or there is a having or a groupby
         // so we have to wrap the query into a subquery to count the results
         if (!$options['disableCountWrap'] &&
-                isset($options['count'])
-                && (
-                    (
-                        isset($options['what'])
-                        && false !== strpos(strtoupper($options['what']), 'COUNT(')
-                    )
-                    || $options['groupby']
-                    || $options['having']
+            isset($options['count'])
+            && (
+                (
+                    isset($options['what'])
+                    && false !== strpos(strtoupper($options['what']), 'COUNT(')
                 )
-            ) {
+                || $options['groupby']
+                || $options['having']
+            )
+        ) {
             $sqlOptions['sqlonly'] = 1;
             $query = $this->getDatabaseConnection()->doSelect(
                 $what,
@@ -249,11 +249,11 @@ abstract class SearchBase
             ];
         }
         $result = $this->getDatabaseConnection()->doSelect(
-                    $what,
-                    $from,
-                    $sqlOptions,
-                    $options['debug'] ? 1 : 0
-                    );
+            $what,
+            $from,
+            $sqlOptions,
+            $options['debug'] ? 1 : 0
+        );
         if (isset($options['sqlonly'])) {
             return $result;
         }
@@ -344,16 +344,16 @@ abstract class SearchBase
                 if (OP_INSET_INT == $joinedField['operator']) {
                     // Values splitten und einzelne Abfragen mit OR verbinden
                     $addWhere = $this->getDatabaseConnection()->searchWhere(
-                            $joinedField['value'],
-                            implode(',', $joinedField['fields']),
-                            'FIND_IN_SET_OR'
-                        );
+                        $joinedField['value'],
+                        implode(',', $joinedField['fields']),
+                        'FIND_IN_SET_OR'
+                    );
                 } else {
                     $addWhere = $this->getDatabaseConnection()->searchWhere(
-                            $joinedField['value'],
-                            implode(',', $joinedField['fields']),
-                            $joinedField['operator']
-                        );
+                        $joinedField['value'],
+                        implode(',', $joinedField['fields']),
+                        $joinedField['operator']
+                    );
                 }
                 if ($addWhere) {
                     $where .= ' AND '.$addWhere;
@@ -505,7 +505,7 @@ abstract class SearchBase
         return $join ?: [];
     }
 
-    private function useQueryBuilder(): bool
+    private function useQueryBuilder($tableAliases): bool
     {
         // erstmal wird der QB genutzt, wenn die Implementierung ein Array für die Joins liefert
         return is_array($this->getJoins($tableAliases));
@@ -758,7 +758,7 @@ abstract class SearchBase
                                     'option_name' => $optionName,
                                     'cfg' => $cfg,
                                 ]
-                                );
+                            );
                         }
 
                         continue;
@@ -792,7 +792,7 @@ abstract class SearchBase
             foreach ($cfgFields as $field => $cfg) {
                 // Tabellen-Alias
                 $tableAlias = ('.' == substr($field, strlen($field) - 1, 1)) ?
-                strtoupper(substr($field, 0, strlen($field) - 1)) : strtoupper($field);
+                    strtoupper(substr($field, 0, strlen($field) - 1)) : strtoupper($field);
 
                 if (SEARCH_FIELD_JOINED == $tableAlias) {
                     // Hier sieht die Konfig etwas anders aus
