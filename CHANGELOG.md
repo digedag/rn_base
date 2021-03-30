@@ -3,6 +3,9 @@
 Changelog
 ---------
 
+v1.13.2 (30.03.2021)
+ * fixed sending mails before TYPO3 10.4
+ 
 v1.13.1 (28.03.2021)
  * #202 [DatabaseConnection](Documentation/database_access.md) and SearchBase support TYPO3 QueryBuilder 
  * Remove unused classes
