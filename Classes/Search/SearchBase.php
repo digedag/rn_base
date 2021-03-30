@@ -105,6 +105,9 @@ abstract class SearchBase
         if (!is_array($fields)) {
             $fields = [];
         }
+        if (!is_array($options)) {
+            $options = [];
+        }
         $this->_initSearch($options);
         $tableAliases = [];
         if (isset($fields[SEARCH_FIELD_JOINED])) {
