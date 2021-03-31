@@ -3,6 +3,9 @@
 Changelog
 ---------
 
+v1.13.4 (31.03.2021)
+ * fixed bug in new search base
+ 
 v1.13.3 (30.03.2021)
  * fixed sending mails before TYPO3 10.4
  * fixed search base when adding joins
