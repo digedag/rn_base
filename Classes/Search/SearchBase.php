@@ -100,14 +100,8 @@ abstract class SearchBase
      *
      * @return array oder int
      */
-    public function search($fields, $options)
+    public function search(array $fields, array $options = [])
     {
-        if (!is_array($fields)) {
-            $fields = [];
-        }
-        if (!is_array($options)) {
-            $options = [];
-        }
         $this->_initSearch($options);
         $tableAliases = [];
         if (isset($fields[SEARCH_FIELD_JOINED])) {
@@ -514,7 +508,7 @@ abstract class SearchBase
         return is_array($this->getJoins($tableAliases));
     }
 
-    private function _initSearch($options)
+    private function _initSearch(array $options)
     {
         $this->setGeneric($options);
         if (!is_array($this->tableMapping)) {
