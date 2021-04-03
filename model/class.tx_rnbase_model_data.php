@@ -269,10 +269,7 @@ class tx_rnbase_model_data implements Tx_Rnbase_Domain_Model_DataInterface, Iter
                 return $this->hasProperty($key);
             default:
         }
-
         throw new Exception('Sorry, Invalid method '.get_class($this).'::'.$method.'('.print_r($args, 1).').', 1406625817);
-
-        return null;
     }
 
     /**

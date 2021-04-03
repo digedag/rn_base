@@ -66,8 +66,6 @@ class tx_rnbase_util_db_MsSQL implements tx_rnbase_util_db_IDatabase
     public function __call($methodName, $args)
     {
         throw new Exception('Sorry, the class "'.get_class($this->db).'" does not support the method "'.$methodName.'".');
-
-        return call_user_func_array([$this->db, $methodName], $args);
     }
 
     /**
