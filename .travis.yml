@@ -7,38 +7,17 @@ language: php
 #        on_success: change
 #        on_failure: always
 
-php:
-    - 5.6
-    - 7.0
-    - 7.1
-    - 7.2
+#php:
+#  - 5.6
+#  - 7.0
+#  - 7.1
+#  - 7.2
 
-env:
-    - TYPO3_CORE="typo3/cms=^6.2.14"
-    - TYPO3_CORE="typo3/cms=^7.6.0"
-    - TYPO3_CORE="typo3/cms=^8.7.0"
-    - TYPO3_CORE="typo3/minimal=^9.5"
-
-matrix:
-    exclude:
-        - php: 7.0
-          env: TYPO3_CORE="typo3/cms=^6.2.14"
-        - php: 7.1
-          env: TYPO3_CORE="typo3/cms=^6.2.14"
-        - php: 7.2
-          env: TYPO3_CORE="typo3/cms=^6.2.14"
-        - php: 7.2
-          env: TYPO3_CORE="typo3/cms=^7.6.0"
-        - php: 5.6
-          env: TYPO3_CORE="typo3/cms=^8.7.0"
-        - php: 5.6
-          env: TYPO3_CORE="typo3/minimal=^9.5"
-        - php: 7.0
-          env: TYPO3_CORE="typo3/minimal=^9.5"
-        - php: 7.1
-          env: TYPO3_CORE="typo3/minimal=^9.5"
-
-sudo: false
+#env:
+#  - TYPO3_CORE="typo3/cms=^6.2.14"
+#  - TYPO3_CORE="typo3/cms=^7.6.0"
+#  - TYPO3_CORE="typo3/cms=^8.7.0"
+#  - TYPO3_CORE="typo3/minimal=^9.5"
 
 addons:
     apt:
@@ -47,7 +26,7 @@ addons:
 
 cache:
     directories:
-        - $HOME/.composer/cache
+        - $HOME/.config/composer/cache
 
 before_install:
     - phpenv config-rm xdebug.ini
@@ -67,9 +46,62 @@ script:
         echo;
         echo "Running unit tests";
         .Build/bin/phpunit
-
 # disabled, because there are direct tx_rnbase::load calls in the files!
 #  - >
 #    echo;
 #    echo "Running php lint";
 #    find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
+
+jobs:
+    include:
+    - stage: test
+      php: 7.1
+      env: TYPO3_CORE="typo3/cms=^7.6.0"
+    - stage: test
+      php: 7.1
+      env: TYPO3_CORE="typo3/cms=^8.7.0"
+    - stage: test
+      php: 7.2
+      env: TYPO3_CORE="typo3/cms=^8.7.0"
+    - stage: test
+      php: 7.2
+      env: TYPO3_CORE="typo3/cms=^8.7.0"
+    - stage: test
+      php: 7.2
+      env: TYPO3_CORE="typo3/minimal=^9.5"
+    - stage: test
+      php: 7.3
+      env: TYPO3_CORE="typo3/minimal=^9.5"
+    - stage: test
+      php: 7.4
+      env: TYPO3_CORE="typo3/minimal=^9.5"
+    - stage: test
+      php: 7.2
+      env: TYPO3_CORE="typo3/minimal=^10.4"
+    - stage: test
+      php: 7.3
+      env: TYPO3_CORE="typo3/minimal=^10.4"
+    - stage: test
+      php: 7.4
+      env: TYPO3_CORE="typo3/minimal=^10.4"
+    - stage: release
+      if: tag IS present AND env(TYPO3_ORG_USERNAME) IS present AND env(TYPO3_ORG_PASS) IS present
+      php: "7.2"
+      before_install: skip
+      install: skip
+      before_script: skip
+      script:
+      - >
+        echo;
+        echo "Preparing upload of release ${TRAVIS_TAG} to TER";
+        echo;
+        echo;
+        composer global require helhum/ter-client;
+      - >
+        TAG_MESSAGE=`git tag -n10 -l $TRAVIS_TAG | sed 's/^[0-9.]*[ ]*//g'`;
+        echo;
+        echo "Uploading release ${TRAVIS_TAG} to TER";
+        echo "Release comment ${TAG_MESSAGE}";
+        echo;
+        echo;
+        $HOME/.config/composer/vendor/bin/ter-client upload rn_base . -u "$TYPO3_ORG_USERNAME" -p "$TYPO3_ORG_PASS" -m "$TAG_MESSAGE";

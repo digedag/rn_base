@@ -26,10 +26,8 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('Tx_Rnbase_Domain_Collection_Base');
 
 /**
- * collection unit tests
+ * collection unit tests.
  *
- * @package TYPO3
- * @subpackage Tx_Rnbase
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
@@ -37,9 +35,7 @@ tx_rnbase::load('Tx_Rnbase_Domain_Collection_Base');
 class Tx_Rnbase_Domain_Collection_BaseTest extends tx_rnbase_tests_BaseTestCase
 {
     /**
-     * Test the getUids method
-     *
-     * @return void
+     * Test the getUids method.
      *
      * @group unit
      * @test

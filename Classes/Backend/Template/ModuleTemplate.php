@@ -3,7 +3,7 @@
 /* *******************************************************
  *  Copyright notice
  *
- *  (c) 2017 René Nitzsche <rene@system25.de>
+ *  (c) 2017-2020 René Nitzsche <rene@system25.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,7 +23,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-tx_rnbase::load('tx_rnbase_mod_IModule');
 /**
  * Die Klasse wrapped die Template-Klassen für BE-Module in TYPO3. Diese sind recht starken
  * Änderungen in der API unterworfen. Bis zur 6.2 gab es recht unterschiedliche Templateklassen,
@@ -33,15 +32,16 @@ tx_rnbase::load('tx_rnbase_mod_IModule');
  *
  * Diese Klasse hier soll eine einheitliche API über alle LTS-Versionen bieten. Intern werden die
  * jeweils passenden TYPO3-Klasse genutzt, nach außen sollte das aber für die Module keine Rolle spielen.
- *
- *
  */
 class Tx_Rnbase_Backend_Template_ModuleTemplate
 {
     private $template;
+
     private $doc;
+
     /** @var tx_rnbase_mod_IModule */
     private $module;
+
     private $options;
 
     public function __construct(tx_rnbase_mod_IModule $module, $options = [])
@@ -55,9 +55,7 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
      */
     public function renderContent(Tx_Rnbase_Backend_Template_ModuleParts $parts)
     {
-        $method = $this->module->useModuleTemplate() ? 'renderContent76' : 'renderContent62';
-
-        return $this->$method($parts);
+        return $this->renderContent76($parts);
     }
 
     public function getPageRenderer()
@@ -66,37 +64,8 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
     }
 
     /**
-     * @return string complete module html code
-     */
-    protected function renderContent62(Tx_Rnbase_Backend_Template_ModuleParts $parts)
-    {
-        $markers = array();
-        $content .= $parts->getContent(); // Muss vor der Erstellung des Headers geladen werden
-        $content .= $this->getDoc()->sectionEnd();  // Zur Sicherheit eine offene Section schließen
-
-        // Setting up the buttons and markers for docheader
-        $docHeaderButtons = $parts->getButtons();
-        $markers['CSH'] = $docHeaderButtons['csh'];
-        $markers['HEADER'] = $this->getDoc()->header($parts->getTitle());
-        $markers['SELECTOR'] = $parts->getSelector();
-        // Das FUNC_MENU enthält die Modul-Funktionen, die per ext_tables.php registriert werden
-        $markers['FUNC_MENU'] = $parts->getFuncMenu();
-
-        // SUBMENU sind zusätzliche Tabs die eine Modul-Funktion bei Bedarf einblenden kann.
-        $markers['SUBMENU'] = $parts->getSubMenu();
-        $markers['TABS'] = $markers['SUBMENU']; // Deprecated use ###SUBMENU###
-        $markers['CONTENT'] = $content;
-
-        $content = $this->getDoc()->startPage($parts->getTitle());
-        $content .= $this->getDoc()->moduleBody($parts->getPageInfo(), $docHeaderButtons, $markers);
-
-        return $this->getDoc()->insertStylesAndJS($content);
-    }
-
-    /**
      * der Weg ab TYPO3 7.6
-     * TODO: fertig implementieren
-     * @return void
+     * TODO: fertig implementieren.
      */
     protected function renderContent76(Tx_Rnbase_Backend_Template_ModuleParts $parts)
     {
@@ -113,7 +82,7 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
             $content .= $parts->getFuncMenu();
         }
 
-        $content .= $parts->getSelector() .'<div style="clear:both;"></div>';
+        $content .= $parts->getSelector().'<div style="clear:both;"></div>';
         $content .= $parts->getSubMenu();
         $content .= $parts->getContent();
         $content .= '</form>';
@@ -129,6 +98,7 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
         // das wurde bisher über das DocumentTemplate eingefügt, was jetzt
         // nicht mehr geht. Dafür muss ein Weg gefunden werden.
         $moduleTemplate->setContent($content);
+
         return $moduleTemplate->renderContent();
     }
 
@@ -159,9 +129,8 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
     }
 
     /**
-     *
      * @param \TYPO3\CMS\Backend\Template\ModuleTemplate $moduleTemplate
-     * @param Tx_Rnbase_Backend_Template_ModuleParts $parts
+     * @param Tx_Rnbase_Backend_Template_ModuleParts     $parts
      */
     protected function registerMenu($moduleTemplate, Tx_Rnbase_Backend_Template_ModuleParts $parts)
     {
@@ -178,7 +147,7 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
      * Returns a template instance. Liefert die Instanzvariable doc.
      * Die Instanz wird bis einschließlich T3 8.7 erstellt.
      *
-     * @return template|TYPO3\CMS\Backend\Template\DocumentTemplate|Tx_Rnbase_Backend_Template_Override_DocumentTemplate
+     * @return TYPO3\CMS\Backend\Template\DocumentTemplate|Tx_Rnbase_Backend_Template_Override_DocumentTemplate
      */
     public function getDoc()
     {
@@ -193,8 +162,7 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
     }
 
     /**
-     *
-     * @param TYPO3\CMS\Backend\Template\DocumentTemplate $doc
+     * @param \Tx_Rnbase_Backend_Template_Override_DocumentTemplate $doc
      */
     protected function initDoc($doc)
     {
@@ -205,11 +173,7 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
         $doc->inDocStylesArray[] = $doc->inDocStyles;
 //        $doc->tableLayout = $this->getTableLayout();
         $doc->setModuleTemplate($this->options['template']);
-        if (!tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
-            $doc->loadJavascriptLib('contrib/prototype/prototype.js');
-        } else {
-            $doc->getPageRenderer()->loadJquery();
-        }
+//            $doc->getPageRenderer()->loadJquery();
         // JavaScript
         $doc->JScode .= '
             <script language="javascript" type="text/javascript">
@@ -224,7 +188,7 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
         $doc->postCode = '
             <script language="javascript" type="text/javascript">
                 script_ended = 1;
-                if (top.fsMod) top.fsMod.recentIds["web"] = ' . $this->options['pid'] . ';</script>';
+                if (top.fsMod) top.fsMod.recentIds["web"] = '.$this->options['pid'].';</script>';
     }
 
     private function prepareOptions($options)
@@ -241,12 +205,12 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
         if (!isset($options['form'])) {
             $modUrl = Tx_Rnbase_Backend_Utility::getModuleUrl(
                 $options['modname'],
-                array(
-                    'id' => $options['pid']
-                ),
+                [
+                    'id' => $options['pid'],
+                ],
                 ''
             );
-            $options['form'] = '<form action="' . $modUrl . '" method="post" enctype="multipart/form-data">';
+            $options['form'] = '<form action="'.$modUrl.'" method="post" enctype="multipart/form-data">';
         }
 
         return $options;

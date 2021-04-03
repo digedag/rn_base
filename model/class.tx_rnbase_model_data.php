@@ -25,7 +25,7 @@
 tx_rnbase::load('Tx_Rnbase_Domain_Model_DataInterface');
 
 /**
- * Basic model with geter's and seter's
+ * Basic model with geter's and seter's.
  *
  * @method int getUid()
  * @method intteger $uid)
@@ -36,34 +36,29 @@ tx_rnbase::load('Tx_Rnbase_Domain_Model_DataInterface');
  *              please use Tx_Rnbase_Domain_Model_Data
  *              THIS CLASS WILL BE DROPPED IN THE FUTURE!!!
  *
- * @package tx_rnbase
- * @subpackage tx_rnbase_model
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_rnbase_model_data implements Tx_Rnbase_Domain_Model_DataInterface, IteratorAggregate
 {
-
     /**
      * A flag indication if the model was modified after initialisation
-     * (eg. by changing a property)
+     * (eg. by changing a property).
      *
      * @var bool
      */
     private $isModified = false;
 
     /**
-     *
      * @TODO: declare as private!
      *
      * @var array
      */
-    public $record = array();
+    public $record = [];
 
     /**
-     * constructor of the data object
+     * constructor of the data object.
      *
      * @param array $record
-     * @return NULL
      */
     public function __construct($record = null)
     {
@@ -71,10 +66,9 @@ class tx_rnbase_model_data implements Tx_Rnbase_Domain_Model_DataInterface, Iter
     }
 
     /**
-     * initialize the data
+     * initialize the data.
      *
      * @param array $record
-     * @return NULL
      */
     public function init($record = null)
     {
@@ -82,7 +76,7 @@ class tx_rnbase_model_data implements Tx_Rnbase_Domain_Model_DataInterface, Iter
             $this->record = $record;
         } else {
             $record = (int) $record;
-            $this->record = $record > 0 ? array('uid' => $record) : array();
+            $this->record = $record > 0 ? ['uid' => $record] : [];
         }
 
         // set the modified state to clean
@@ -93,8 +87,6 @@ class tx_rnbase_model_data implements Tx_Rnbase_Domain_Model_DataInterface, Iter
 
     /**
      * sets the models's clean state, e.g. after it has been initialized.
-     *
-     * @return void
      */
     protected function resetCleanState()
     {
@@ -112,7 +104,7 @@ class tx_rnbase_model_data implements Tx_Rnbase_Domain_Model_DataInterface, Iter
     }
 
     /**
-     * Returns TRUE if the model has no data
+     * Returns TRUE if the model has no data.
      *
      * @return bool
      */
@@ -122,14 +114,15 @@ class tx_rnbase_model_data implements Tx_Rnbase_Domain_Model_DataInterface, Iter
     }
 
     /**
-     * create a new data model
+     * create a new data model.
      *
      * @param array $data
+     *
      * @return tx_rnbase_model_data
      */
     public static function getInstance($data = null)
     {
-        if ($data instanceof tx_rnbase_model_data) {
+        if ($data instanceof self) {
             return $data;
         }
         if (is_array($data)) {
@@ -140,17 +133,18 @@ class tx_rnbase_model_data implements Tx_Rnbase_Domain_Model_DataInterface, Iter
                 }
             }
         } else {
-            $data = array();
+            $data = [];
         }
 
         return tx_rnbase::makeInstance('tx_rnbase_model_data', $data);
     }
 
     /**
-     * Setzt einen Wert oder ersetzt alle Werte
+     * Setzt einen Wert oder ersetzt alle Werte.
      *
      * @param string|array $property
-     * @param mixed $value
+     * @param mixed        $value
+     *
      * @return tx_rnbase_model_data
      */
     public function setProperty($property, $value = null)
@@ -172,6 +166,7 @@ class tx_rnbase_model_data implements Tx_Rnbase_Domain_Model_DataInterface, Iter
      * Liefert einen bestimmten Wert oder alle.
      *
      * @param string $property
+     *
      * @return string
      */
     public function getProperty($property = null)
@@ -187,6 +182,7 @@ class tx_rnbase_model_data implements Tx_Rnbase_Domain_Model_DataInterface, Iter
      * Entfernt einen Wert.
      *
      * @param string $property
+     *
      * @return tx_rnbase_model_data
      */
     public function unsProperty($property)
@@ -204,6 +200,7 @@ class tx_rnbase_model_data implements Tx_Rnbase_Domain_Model_DataInterface, Iter
      * Prüft ob eine Spalte gesetzt ist.
      *
      * @param string $property
+     *
      * @return string
      */
     public function hasProperty($property)
@@ -215,6 +212,7 @@ class tx_rnbase_model_data implements Tx_Rnbase_Domain_Model_DataInterface, Iter
      * Prüft ob eine Spalte leer ist.
      *
      * @param string $property
+     *
      * @return bool
      */
     public function isPropertyEmpty($property)
@@ -223,9 +221,10 @@ class tx_rnbase_model_data implements Tx_Rnbase_Domain_Model_DataInterface, Iter
     }
 
     /**
-     * Converts field names for setters and geters
+     * Converts field names for setters and geters.
      *
      * @param string $string
+     *
      * @return string
      */
     protected function underscore($string)
@@ -236,11 +235,13 @@ class tx_rnbase_model_data implements Tx_Rnbase_Domain_Model_DataInterface, Iter
     }
 
     /**
-     * Set/Get attribute wrapper
+     * Set/Get attribute wrapper.
      *
      * @param string $method
-     * @param array $args
+     * @param array  $args
+     *
      * @throws Exception
+     *
      * @return mixed
      */
     public function __call($method, $args)
@@ -268,15 +269,11 @@ class tx_rnbase_model_data implements Tx_Rnbase_Domain_Model_DataInterface, Iter
                 return $this->hasProperty($key);
             default:
         }
-        throw new Exception(
-            'Sorry, Invalid method ' . get_class($this) . '::' . $method .
-            '(' . print_r($args, 1) . ').',
-            1406625817
-        );
+        throw new Exception('Sorry, Invalid method '.get_class($this).'::'.$method.'('.print_r($args, 1).').', 1406625817);
     }
 
     /**
-     * Implementation of IteratorAggregate::getIterator()
+     * Implementation of IteratorAggregate::getIterator().
      *
      * WARNING: dont iterate over an object
      * and manipulate the value by reference like this:
@@ -300,7 +297,7 @@ class tx_rnbase_model_data implements Tx_Rnbase_Domain_Model_DataInterface, Iter
     {
         $array = $this->getProperty();
         foreach ($array as $key => $value) {
-            if ($value instanceof tx_rnbase_model_data) {
+            if ($value instanceof self) {
                 $array[$key] = $value->toArray();
             }
         }
@@ -309,29 +306,29 @@ class tx_rnbase_model_data implements Tx_Rnbase_Domain_Model_DataInterface, Iter
     }
 
     /**
-     * Wandelt das Model in einen String um
+     * Wandelt das Model in einen String um.
      *
      * @return string
      */
     public function toString()
     {
         $data = $this->getProperty();
-        $out  = get_class($this) . ' (' . CRLF;
+        $out = get_class($this).' ('.CRLF;
         foreach ($data as $key => $value) {
             $type = gettype($value);
             $value = is_bool($value) ? (int) $value : $value;
-            $value = is_string($value) ? '"' . $value . '"' : $value;
-            $value = is_object($value) ? implode(CRLF . TAB, explode(CRLF, (string) $value)) : $value;
+            $value = is_string($value) ? '"'.$value.'"' : $value;
+            $value = is_object($value) ? implode(CRLF.TAB, explode(CRLF, (string) $value)) : $value;
             $value = is_array($value) ? print_r($value, true) : $value;
-            $out .= TAB . $key . ' (' . $type . ')';
-            $out .= ': ' . $value . CRLF;
+            $out .= TAB.$key.' ('.$type.')';
+            $out .= ': '.$value.CRLF;
         }
 
-        return $out . ');';
+        return $out.');';
     }
 
     /**
-     * Wandelt das Model in einen String um
+     * Wandelt das Model in einen String um.
      *
      * @return string
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- *  Copyright notice
+ *  Copyright notice.
  *
  *  (c) 2015 Hannes Bochmann <rene@system25.de>
  *  All rights reserved
@@ -23,12 +23,10 @@
  */
 
 /**
- * Tx_Rnbase_Backend_Utility_Icons
+ * Tx_Rnbase_Backend_Utility_Icons.
  *
  * Wrapper für \TYPO3\CMS\Backend\Utility\IconUtility bzw. t3lib_iconWorks
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann <rene@system25.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
@@ -37,12 +35,13 @@ class Tx_Rnbase_Backend_Utility_Icons
 {
     /**
      * @param string $method
-     * @param array $arguments
+     * @param array  $arguments
+     *
      * @return mixed
      */
     public static function __callStatic($method, array $arguments)
     {
-        return call_user_func_array(array(static::getIconUtilityClass(), $method), $arguments);
+        return call_user_func_array([static::getIconUtilityClass(), $method], $arguments);
     }
 
     /**
@@ -60,11 +59,11 @@ class Tx_Rnbase_Backend_Utility_Icons
     }
 
     /**
-     * This method is used throughout the TYPO3 Backend to show icons for a DB record
+     * This method is used throughout the TYPO3 Backend to show icons for a DB record.
      *
      * @param string $table
-     * @param array $row
-     * @param string $size "large" "small" or "default", see the constants of the Icon class
+     * @param array  $row
+     * @param string $size  "large" "small" or "default", see the constants of the Icon class
      *
      * @return Icon
      */
@@ -79,15 +78,16 @@ class Tx_Rnbase_Backend_Utility_Icons
 
         return static::__callStatic(
             'getSpriteIconForRecord',
-            array(
+            [
                 $table,
-                $row
-            )
+                $row,
+            ]
         );
     }
 
     /**
      * Returns a string with all available Icons in TYPO3 system. Each icon has a tooltip with its identifier.
+     *
      * @return string
      */
     public static function debugSprites()
@@ -111,17 +111,16 @@ class Tx_Rnbase_Backend_Utility_Icons
     }
 
     /**
-     *
      * @param string $iconName
-     * @param array $options
-     * @param array $overlays
+     * @param array  $options
+     * @param array  $overlays
      *
      * @return string
      */
     public static function getSpriteIcon(
         $iconName,
-        array $options = array(),
-        array $overlays = array()
+        array $options = [],
+        array $overlays = []
     ) {
         // @TODO: shoult be used for TYPO3 7 too!
         if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
@@ -141,12 +140,12 @@ class Tx_Rnbase_Backend_Utility_Icons
     /**
      * This helper functions looks up the column that is used for the type of
      * the chosen TCA table. And then fetches the corresponding iconname
-     * based on the chosen iconsprite class in this TCA
+     * based on the chosen iconsprite class in this TCA.
      *
      * see ext:core/Configuration/TCA/pages.php for an example with the TCA table "pages"
      *
      * @param string $table The TCA table
-     * @param array $row The selected record
+     * @param array  $row   The selected record
      *
      * @return string The CSS class for the sprite icon of that DB record
      */
@@ -162,7 +161,7 @@ class Tx_Rnbase_Backend_Utility_Icons
     }
 
     /**
-     * The TYPO3 icon factory
+     * The TYPO3 icon factory.
      *
      * @return \TYPO3\CMS\Core\Imaging\IconFactory
      */
@@ -174,7 +173,7 @@ class Tx_Rnbase_Backend_Utility_Icons
     }
 
     /**
-     * The TYPO3 icon factory
+     * The TYPO3 icon factory.
      *
      * @return \TYPO3\CMS\Core\Imaging\IconRegistry
      */

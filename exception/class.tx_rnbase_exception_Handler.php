@@ -31,22 +31,20 @@ tx_rnbase::load('tx_rnbase_exception_IHandler');
  */
 class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
 {
-
     /**
-     * Interne Verarbeitung der Exception
+     * Interne Verarbeitung der Exception.
      *
-     * @param string $actionName
-     * @param Exception $e
+     * @param string                                     $actionName
+     * @param Exception                                  $e
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
      *
      * @return string error message
      */
     public function handleException($actionName, Exception $e, Tx_Rnbase_Configuration_ProcessorInterface $configurations)
     {
-
         // wir prüfen erst mal, ob die exception gefangen werden soll
         $catch = $this->catchException($actionName, $e, $configurations);
-        if ($catch !== null) {
+        if (null !== $catch) {
             return $catch;
         }
 
@@ -60,19 +58,19 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
             $extKey = $configurations->getExtensionKey();
             $extKey = $extKey ? $extKey : 'rn_base';
             tx_rnbase_util_Logger::fatal(
-                'Fatal error for action ' . $actionName,
+                'Fatal error for action '.$actionName,
                 $extKey,
-                array(
-                    'Exception' => array(
+                [
+                    'Exception' => [
                         'message' => $e->getMessage(),
                         'code' => $e->getCode(),
                         'file' => $e->getFile(),
                         'line' => $e->getLine(),
                         'trace' => $e->getTraceAsString(),
-                    ),
+                    ],
                     '_GET' => $_GET,
-                    '_POST' => $_POST
-                )
+                    '_POST' => $_POST,
+                ]
             );
         }
         // wir senden eine fehlermail
@@ -88,7 +86,6 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
     }
 
     /**
-     *
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
      *
      * @return bool
@@ -96,38 +93,40 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
     protected function send503HeaderOnException(Tx_Rnbase_Configuration_ProcessorInterface $configurations)
     {
         //sending a 503 header?
-        return ((
+        return
+            (
                 //shall we basically send a 503 header?
                 intval(Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'send503HeaderOnException')) && (
                     //the plugin has the oppurtunity to prevent sending a 503 header
                     //by setting plugin.plugin_name.send503HeaderOnException = 0 in the TS config.
                     //if this option is not set we use the ext config
                     !array_key_exists('send503HeaderOnException', $configurations->getConfigArray()) ||
-                    $configurations->get('send503HeaderOnException') != 0
+                    0 != $configurations->get('send503HeaderOnException')
                 )
             ) ||
             (
                 //did the plugin define to send the 503 header
-                $configurations->get('send503HeaderOnException') == 1
+                1 == $configurations->get('send503HeaderOnException')
             )
-        );
+        ;
     }
 
     /**
-     * Build an error message string for frontend
-     * @param string $actionName
-     * @param Exception $e
+     * Build an error message string for frontend.
+     *
+     * @param string                                     $actionName
+     * @param Exception                                  $e
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
      */
     protected function getErrorMessage($actionName, Exception $e, Tx_Rnbase_Configuration_ProcessorInterface $configurations)
     {
         if (Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'verboseMayday')) {
             return '<div>'
-                    . '<strong>UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName . '</strong>'
-                    . '<br />CODE: ' . $e->getCode()
-                    . '<br />MESSAGE: ' . $e->getMessage()
-                    . '<br />STACK: <pre>' . $e->__toString() . '</pre>'
-                . '</div>';
+                    .'<strong>UNCAUGHT EXCEPTION FOR VIEW: '.$actionName.'</strong>'
+                    .'<br />CODE: '.$e->getCode()
+                    .'<br />MESSAGE: '.$e->getMessage()
+                    .'<br />STACK: <pre>'.$e->__toString().'</pre>'
+                .'</div>';
         }
 
         // typoscript nach fehlermeldungen prüfen
@@ -157,10 +156,11 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
      * liefert entweder eine ausgabe (string) oder NULL,
      * um die fehlerbehandlung weiter leufen zu lassen.
      *
-     * @param string $actionName
-     * @param Exception $e
+     * @param string                                     $actionName
+     * @param Exception                                  $e
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @return string|NULL
+     *
+     * @return string|null
      */
     protected function catchException(
         $actionName,
@@ -175,7 +175,7 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
             // aktuelle meldung setzen, damit diese ggf. über ts ausgelesen werden kann (.current = 1)
             $configurations->getCObj()->setCurrentVal('ERROR '.$e->getCode().': '.$e->getMessage());
             // meldung auslesen
-            $ret = $configurations->get('catchException.' . $e->getCode(), true);
+            $ret = $configurations->get('catchException.'.$e->getCode(), true);
             if (!empty($ret)) {
                 return $ret;
             }
@@ -193,9 +193,10 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
      * wodurch der stack auch bei mehrfacher rekursion immer gleich ist,
      * also die methode nur ein mal auftaucht.
      *
-     * @param string $actionName
-     * @param Exception $e
+     * @param string                                     $actionName
+     * @param Exception                                  $e
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     *
      * @return bool
      */
     private function checkExceptionRecursion(
@@ -204,7 +205,7 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
         Tx_Rnbase_Configuration_ProcessorInterface $configurations,
         $type = 'error'
     ) {
-        static $calls = 0, $trace = array();
+        static $calls = 0, $trace = [];
 
         // konfiguration für die maximale anzahl an durchläufen holen.
         $maxCalls = $configurations->getInt('recursionCheck.maxCalls');
@@ -217,8 +218,8 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
         if (++$calls > $maxCalls) {
             tx_rnbase_util_Logger::fatal(
                 'Too much recursion in "'.get_class($this).'"'
-                    . ' That should not have happened.'
-                    . ' It looks as if there is a problem with a faulty configuration.',
+                    .' That should not have happened.'
+                    .' It looks as if there is a problem with a faulty configuration.',
                 'rn_base'
             );
 
@@ -235,18 +236,18 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
         $configKey = md5(serialize($configurations->getConfigArray()));
 
         if (empty($trace[$type])) {
-            $trace[$type] = array();
+            $trace[$type] = [];
         }
         if (empty($trace[$type][$action])) {
-            $trace[$type][$action] = array();
+            $trace[$type][$action] = [];
         }
         if (empty($trace[$type][$action][$code])) {
-            $trace[$type][$action][$code] = array();
+            $trace[$type][$action][$code] = [];
         }
         if (empty($trace[$type][$action][$code][$configKey])) {
             $trace[$type][$action][$code][$configKey] = 0;
         }
-        $trace[$type][$action][$code][$configKey]++;
+        ++$trace[$type][$action][$code][$configKey];
 
         if (isset($trace[$type][$action][$code][$configKey])
             && $trace[$type][$action][$code][$configKey] > $maxThrows

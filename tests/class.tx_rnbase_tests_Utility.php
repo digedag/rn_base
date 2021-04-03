@@ -36,14 +36,15 @@ class tx_rnbase_tests_Utility
      * Sample:
      * tx_rnbase_tests_Utility::createConfigurations(
      *   array(), 'rn_base', 'rn_base',
-     *   tx_rnbase::makeInstance('tx_rnbase_parameters'),
+     *   tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class),
      *   tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass())
-     * );
+     * );.
      *
-     * @param array $configurationArray
+     * @param array  $configurationArray
      * @param string $extensionKey
      * @param string $qualifier
-     * @return Tx_Rnbase_Configuration_ProcessorInterface
+     *
+     * @return \Sys25\RnBase\Configuration\ConfigurationInterface
      */
     public static function createConfigurations(
         array $configurationArray,
@@ -56,10 +57,10 @@ class tx_rnbase_tests_Utility
         $cObj = null;
 
         $args = func_get_args();
-        $args = count($args) > 3 ? array_slice($args, 3) : array();
+        $args = count($args) > 3 ? array_slice($args, 3) : [];
 
         foreach ($args as $arg) {
-            if ($arg instanceof tx_rnbase_parameters) {
+            if ($arg instanceof \Sys25\RnBase\Frontend\Request\Parameters) {
                 $parameters = $arg;
             }
             $contentObjectRendererClass = tx_rnbase_util_Typo3Classes::getContentObjectRendererClass();
@@ -68,15 +69,15 @@ class tx_rnbase_tests_Utility
             }
         }
 
-        /* @var $configurations Tx_Rnbase_Configuration_ProcessorInterface */
-        $configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
+        /* @var $configurations \Sys25\RnBase\Configuration\ConfigurationInterface */
+        $configurations = tx_rnbase::makeInstance(\Sys25\RnBase\Configuration\Processor::class);
         $configurations->init(
             $configurationArray,
             $cObj,
             $extensionKey,
             $qualifier
         );
-        if ($parameters instanceof tx_rnbase_parameters) {
+        if ($parameters instanceof \Sys25\RnBase\Frontend\Request\ParametersInterface) {
             $configurations->setParameters($parameters);
         }
 

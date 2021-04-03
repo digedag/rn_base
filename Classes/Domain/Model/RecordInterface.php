@@ -29,8 +29,6 @@
  *
  * @deprecated please use Tx_Rnbase_Domain_Model_RecordInterface!
  *
- * @package TYPO3
- * @subpackage rn_base
  * @author René Nitzsche
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
@@ -38,14 +36,14 @@
 interface tx_rnbase_IModel
 {
     /**
-     * Returns the uid
+     * Returns the uid.
      *
      * @return int
      */
     public function getUid();
 
     /**
-     * Returns the data record as array
+     * Returns the data record as array.
      *
      * @return array
      */
@@ -54,8 +52,6 @@ interface tx_rnbase_IModel
 /**
  * The realy to use interface for models!
  *
- * @package TYPO3
- * @subpackage rn_base
  * @author René Nitzsche
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later

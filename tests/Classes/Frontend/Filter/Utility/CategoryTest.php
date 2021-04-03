@@ -1,6 +1,8 @@
 <?php
+
 namespace Sys25\RnBase\Frontend\Filter\Utility;
 
+use Sys25\RnBase\Configuration\Processor;
 use Sys25\RnBase\Frontend\Request\Parameters;
 
 /***************************************************************
@@ -28,12 +30,9 @@ use Sys25\RnBase\Frontend\Request\Parameters;
 \tx_rnbase::load('Tx_Rnbase_Category_SearchUtility');
 \tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
-
 /**
- * Tx_Rnbase_Category_FilterUtilityTest
+ * Tx_Rnbase_Category_FilterUtilityTest.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
@@ -41,22 +40,26 @@ use Sys25\RnBase\Frontend\Request\Parameters;
 class CategoryTest extends \tx_rnbase_tests_BaseTestCase
 {
     protected $configurations;
+
     protected $categoryUtil;
+
     protected $parametersMock;
+
     protected $dbConnection;
 
     public function setUp()
     {
         $this->dbConnection = $this->prophesize(\Tx_Rnbase_Database_Connection::class);
         $this->parametersMock = $this->prophesize(Parameters::class);
-        $this->configurations = $this->prophesize(\Tx_Rnbase_Configuration_Processor::class);
+        $this->configurations = $this->prophesize(Processor::class);
         $this->configurations->getParameters()->willReturn($this->parametersMock->reveal());
         $this->categoryUtil = new Category($this->configurations->reveal(), 'myList.filter.');
         $this->categoryUtil->setDatabaseConnection($this->dbConnection->reveal());
     }
+
     /**
+     * {@inheritdoc}
      *
-     * {@inheritDoc}
      * @see \PHPUnit_Framework_TestCase::tearDown()
      */
     protected function tearDown()
@@ -67,6 +70,7 @@ class CategoryTest extends \tx_rnbase_tests_BaseTestCase
     }
 
     // ---------------------------------
+
     /**
      * @group unit
      */
@@ -86,7 +90,10 @@ class CategoryTest extends \tx_rnbase_tests_BaseTestCase
      * @dataProvider dataProviderHandleSysCategoryFilter
      */
     public function testHandleSysCategoryFilter(
-        $configs, $fields, $expectedFields, $expectedDoSearchValue
+        $configs,
+        $fields,
+        $expectedFields,
+        $expectedDoSearchValue
     ) {
         if (!defined('OP_IN_INT')) {
             define('OP_IN_INT', 'IN');
@@ -136,7 +143,7 @@ class CategoryTest extends \tx_rnbase_tests_BaseTestCase
                 ],
 
                 ['TABLE.field' => [OP_EQ_INT => 23]],
-                ['TABLE.field' => [OP_EQ_INT => 23], 'CAT.uid' => ['IN' => '3,5']], null
+                ['TABLE.field' => [OP_EQ_INT => 23], 'CAT.uid' => ['IN' => '3,5']], null,
             ],
         ];
     }

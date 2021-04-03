@@ -29,55 +29,67 @@ tx_rnbase::load('tx_rnbase_util_TYPO3');
  */
 class tx_rnbase_cache_Manager
 {
-    private static $caches = array();
+    private static $caches = [];
+
     const CACHE_FRONTEND_VARIABLE = 'VariableFrontend';
+
     const CACHE_FRONTEND_STRING = 'StringFrontend';
+
     const CACHE_FRONTEND_PHP = 'PhpFrontend';
+
     const CACHE_BACKEND_T3DATABASE = 'T3Database';
+
     const CACHE_BACKEND_MEMCACHED = 'Memcached';
+
     const CACHE_BACKEND_FILE = 'File';
+
     const CACHE_BACKEND_REDIS = 'Redis';
+
     const CACHE_BACKEND_APC = 'Apc';
+
     const CACHE_BACKEND_PDO = 'Pdo';
+
     const CACHE_BACKEND_TRANSIENTMEMORY = 'TransientMemory';
+
     const CACHE_BACKEND_NULL = 'Null';
 
-    private static $aliases = array(
-        self::CACHE_FRONTEND_VARIABLE => array('TYPO3\CMS\Core\Cache\Frontend\VariableFrontend','t3lib_cache_frontend_VariableFrontend'),
-        self::CACHE_FRONTEND_STRING => array('TYPO3\CMS\Core\Cache\Frontend\StringFrontend','t3lib_cache_frontend_StringFrontend'),
-        self::CACHE_FRONTEND_PHP => array('TYPO3\CMS\Core\Cache\Frontend\PhpFrontend','t3lib_cache_frontend_PhpFrontend'),
-        self::CACHE_BACKEND_T3DATABASE => array('TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend','t3lib_cache_backend_DbBackend'),
-        self::CACHE_BACKEND_MEMCACHED => array('TYPO3\CMS\Core\Cache\Backend\MemcachedBackend','t3lib_cache_backend_MemcachedBackend'),
-        self::CACHE_BACKEND_FILE => array('TYPO3\CMS\Core\Cache\Backend\FileBackend','t3lib_cache_backend_FileBackend'),
-        self::CACHE_BACKEND_REDIS => array('TYPO3\CMS\Core\Cache\Backend\RedisBackend','t3lib_cache_backend_RedisBackend'),
-        self::CACHE_BACKEND_APC => array('TYPO3\CMS\Core\Cache\Backend\ApcBackend','t3lib_cache_backend_ApcBackend'),
-        self::CACHE_BACKEND_PDO => array('TYPO3\CMS\Core\Cache\Backend\PdoBackend','t3lib_cache_backend_PdoBackend'),
-        self::CACHE_BACKEND_TRANSIENTMEMORY => array('TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend','t3lib_cache_backend_TransientMemoryBackend'),
-        self::CACHE_BACKEND_NULL => array('TYPO3\CMS\Core\Cache\Backend\NullBackend','t3lib_cache_backend_NullBackend'),
-    );
+    private static $aliases = [
+        self::CACHE_FRONTEND_VARIABLE => ['TYPO3\CMS\Core\Cache\Frontend\VariableFrontend', 't3lib_cache_frontend_VariableFrontend'],
+        self::CACHE_FRONTEND_STRING => ['TYPO3\CMS\Core\Cache\Frontend\StringFrontend', 't3lib_cache_frontend_StringFrontend'],
+        self::CACHE_FRONTEND_PHP => ['TYPO3\CMS\Core\Cache\Frontend\PhpFrontend', 't3lib_cache_frontend_PhpFrontend'],
+        self::CACHE_BACKEND_T3DATABASE => ['TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend', 't3lib_cache_backend_DbBackend'],
+        self::CACHE_BACKEND_MEMCACHED => ['TYPO3\CMS\Core\Cache\Backend\MemcachedBackend', 't3lib_cache_backend_MemcachedBackend'],
+        self::CACHE_BACKEND_FILE => ['TYPO3\CMS\Core\Cache\Backend\FileBackend', 't3lib_cache_backend_FileBackend'],
+        self::CACHE_BACKEND_REDIS => ['TYPO3\CMS\Core\Cache\Backend\RedisBackend', 't3lib_cache_backend_RedisBackend'],
+        self::CACHE_BACKEND_APC => ['TYPO3\CMS\Core\Cache\Backend\ApcBackend', 't3lib_cache_backend_ApcBackend'],
+        self::CACHE_BACKEND_PDO => ['TYPO3\CMS\Core\Cache\Backend\PdoBackend', 't3lib_cache_backend_PdoBackend'],
+        self::CACHE_BACKEND_TRANSIENTMEMORY => ['TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend', 't3lib_cache_backend_TransientMemoryBackend'],
+        self::CACHE_BACKEND_NULL => ['TYPO3\CMS\Core\Cache\Backend\NullBackend', 't3lib_cache_backend_NullBackend'],
+    ];
 
     /**
-     * Register a TYPO3 cache
+     * Register a TYPO3 cache.
+     *
      * @param string $name
      * @param string $frontendKey see constants
-     * @param string $backendKey see constants
-     * @param array $options
+     * @param string $backendKey  see constants
+     * @param array  $options
      */
-    public static function registerCache($name, $frontendKey, $backendKey, $options = array())
+    public static function registerCache($name, $frontendKey, $backendKey, $options = [])
     {
         $frontend = static::getCacheClass($frontendKey);
-        $backend  = static::getCacheClass($backendKey);
+        $backend = static::getCacheClass($backendKey);
 
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'][$name] = array(
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'][$name] = [
             'frontend' => $frontend,
             'backend' => $backend,
-            'options' => $options
-        );
+            'options' => $options,
+        ];
     }
 
     /**
-     *
      * @param string $cacheKey @see self::CACHE_FRONTEND_*
+     *
      * @return string
      */
     public static function getCacheClass($cacheKey)
@@ -86,9 +98,10 @@ class tx_rnbase_cache_Manager
     }
 
     /**
-     * Liefert einen Cache
+     * Liefert einen Cache.
      *
      * @param string $name
+     *
      * @return tx_rnbase_cache_ICache
      */
     public static function getCache($name)
@@ -100,10 +113,12 @@ class tx_rnbase_cache_Manager
 
         return static::$caches[$name];
     }
+
     /**
-     * Returns the cache instance
+     * Returns the cache instance.
      *
      * @param string $name
+     *
      * @return tx_rnbase_cache_ICache
      */
     private static function getCacheImpl($name)

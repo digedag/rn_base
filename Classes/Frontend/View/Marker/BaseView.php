@@ -1,11 +1,12 @@
 <?php
+
 namespace Sys25\RnBase\Frontend\View\Marker;
 
-use Sys25\RnBase\Frontend\Request\RequestInterface;
-use Sys25\RnBase\Frontend\View\ViewInterface;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
-use Sys25\RnBase\Frontend\View\ContextInterface;
+use Sys25\RnBase\Frontend\Request\RequestInterface;
 use Sys25\RnBase\Frontend\View\AbstractView;
+use Sys25\RnBase\Frontend\View\ContextInterface;
+use Sys25\RnBase\Frontend\View\ViewInterface;
 
 /***************************************************************
 * Copyright notice
@@ -30,14 +31,13 @@ use Sys25\RnBase\Frontend\View\AbstractView;
 * This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-/**
- */
 class BaseView extends AbstractView implements ViewInterface
 {
     protected $subpart;
 
     /**
      * @param RequestInterface $request
+     *
      * @return string
      */
     public function render($view, RequestInterface $request)
@@ -47,20 +47,20 @@ class BaseView extends AbstractView implements ViewInterface
         $templateCode = \tx_rnbase_util_Files::getFileResource($this->getTemplate($view, '.html'));
         if (!strlen($templateCode)) {
             \tx_rnbase::load('tx_rnbase_util_Misc');
-            \tx_rnbase_util_Misc::mayday('TEMPLATE NOT FOUND: ' . $this->getTemplate($view, '.html'));
+            \tx_rnbase_util_Misc::mayday('TEMPLATE NOT FOUND: '.$this->getTemplate($view, '.html'));
         }
 
         // Die ViewData bereitstellen
         $viewData = $request->getViewContext();
 
         // Optional kann schon ein Subpart angegeben werden
-        $this->subpart = $configurations->get($request->getConfId() . 'template.subpart');
+        $this->subpart = $configurations->get($request->getConfId().'template.subpart');
         $subpart = $this->getMainSubpart($viewData);
         if (!empty($subpart)) {
             $templateCode = \tx_rnbase_util_Templates::getSubpart($templateCode, $subpart);
             if (!strlen($templateCode)) {
                 \tx_rnbase::load('tx_rnbase_util_Misc');
-                \tx_rnbase_util_Misc::mayday('SUBPART NOT FOUND: ' . $subpart);
+                \tx_rnbase_util_Misc::mayday('SUBPART NOT FOUND: '.$subpart);
             }
         }
 
@@ -72,11 +72,11 @@ class BaseView extends AbstractView implements ViewInterface
         $out = $this->createOutput($templateCode, $request, $configurations->getFormatter());
         $out = $this->renderPluginData($out, $request);
 
-        $params = array();
+        $params = [];
         $params['confid'] = $request->getConfId();
         $params['item'] = $request->getViewContext()->offsetGet('item');
         $params['items'] = $request->getViewContext()->offsetGet('items');
-        $markerArray = $subpartArray = $wrappedSubpartArray = array();
+        $markerArray = $subpartArray = $wrappedSubpartArray = [];
         \tx_rnbase_util_BaseMarker::callModules(
             $out,
             $markerArray,
@@ -96,16 +96,17 @@ class BaseView extends AbstractView implements ViewInterface
     }
 
     /**
-     * render plugin data and additional flexdata
+     * render plugin data and additional flexdata.
      *
-     * @param string $templateCode
+     * @param string           $templateCode
      * @param RequestInterface $request
+     *
      * @return string
      */
     protected function renderPluginData(
         $templateCode,
         RequestInterface $request
-        ) {
+    ) {
         // check, if there are plugin markers to render
         if (!\tx_rnbase_util_BaseMarker::containsMarker($templateCode, 'PLUGIN_')) {
             return $templateCode;
@@ -116,35 +117,35 @@ class BaseView extends AbstractView implements ViewInterface
 
         // build the data to render
         $pluginData = array_merge(
-                // use the current data (tt_conten) to render
-                (array) $configurations->getCObj()->data,
-                // add some aditional columns, for example from the flexform od typoscript directly
-                $configurations->getExploded(
-                    $confId . 'plugin.flexdata.'
-                    )
-                );
+            // use the current data (tt_conten) to render
+            (array) $configurations->getCObj()->data,
+            // add some aditional columns, for example from the flexform od typoscript directly
+            $configurations->getExploded(
+                $confId.'plugin.flexdata.'
+            )
+        );
         // check for unused columns
         $ignoreColumns = \tx_rnbase_util_BaseMarker::findUnusedCols(
-                $pluginData,
-                $templateCode,
-                'PLUGIN'
-                );
+            $pluginData,
+            $templateCode,
+            'PLUGIN'
+        );
         // create the marker array with the parsed columns
         $markerArray = $configurations->getFormatter()->getItemMarkerArrayWrapped(
-                $pluginData,
-                $confId . 'plugin.',
-                $ignoreColumns,
-                'PLUGIN_'
-            );
+            $pluginData,
+            $confId.'plugin.',
+            $ignoreColumns,
+            'PLUGIN_'
+        );
 
         return \tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($templateCode, $markerArray);
     }
 
     /**
-     * Entry point for child classes
+     * Entry point for child classes.
      *
-     * @param string $template
-     * @param RequestInterface $configurations
+     * @param string                     $template
+     * @param RequestInterface           $configurations
      * @param \tx_rnbase_util_FormatUtil $formatter
      */
     protected function createOutput($template, RequestInterface $request, $formatter)

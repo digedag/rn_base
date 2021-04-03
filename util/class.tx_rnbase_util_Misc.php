@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
 /**
- * Contains some helpful methods
+ * Contains some helpful methods.
  */
 class tx_rnbase_util_Misc
 {
@@ -39,6 +39,7 @@ class tx_rnbase_util_Misc
      *
      * @param string $type
      * @param string $subType
+     *
      * @return \TYPO3\CMS\Core\Service\AbstractService
      */
     public static function getService($type, $subType = '')
@@ -49,11 +50,12 @@ class tx_rnbase_util_Misc
         if (!is_object($service)) {
             tx_rnbase::load('tx_rnbase_util_Misc');
 
-            self::mayday('Service ' . $type . ' - ' . $subType . ' not found!');
+            self::mayday('Service '.$type.' - '.$subType.' not found!');
         }
 
         return $service;
     }
+
     /**
      * Returns an array with all subtypes for given service key.
      *
@@ -62,8 +64,8 @@ class tx_rnbase_util_Misc
     public static function lookupServices($serviceType)
     {
         global $T3_SERVICES;
-        $priority = array(); // Remember highest priority
-        $services = array();
+        $priority = []; // Remember highest priority
+        $services = [];
         if (is_array($T3_SERVICES[$serviceType])) {
             foreach ($T3_SERVICES[$serviceType] as $key => $info) {
                 if ($info['available'] and (!isset($priority[$info['subtype']]) || $info['priority'] >= $priority[$info['subtype']])) {
@@ -81,8 +83,10 @@ class tx_rnbase_util_Misc
      * Limit gesetzt werden, um die Anzahl der auszugebenden Items weiter einzuschränken.
      * Damit kann man aus einem Pool von Items (bspw. die neuesten 10 Items) per Zufall eine gewünschte
      * Anzahl von Items anzeigen.
+     *
      * @param array $items
-     * @param int $limit
+     * @param int   $limit
+     *
      * @return array
      */
     public static function randomizeItems(array $items, $limit = 0)
@@ -91,8 +95,8 @@ class tx_rnbase_util_Misc
         $idxArr = range(1, $anzahl);
         shuffle($idxArr);
         $limit = ($limit > 0 && $limit < $anzahl) ? $limit : $anzahl;
-        $ret = array();
-        for ($i = 0; $i < $limit; $i++) {
+        $ret = [];
+        for ($i = 0; $i < $limit; ++$i) {
             $ret[] = $items[($idxArr[$i] - 1)];
         }
         reset($ret);
@@ -101,13 +105,12 @@ class tx_rnbase_util_Misc
     }
 
     /**
-     * Calls a hook
+     * Calls a hook.
      *
      * @param string $extKey
      * @param string $hookKey
-     * @param array $params
-     * @param mixed $parent instance of calling class or 0
-     * @return void
+     * @param array  $params
+     * @param mixed  $parent  instance of calling class or 0
      */
     public static function callHook($extKey, $hookKey, $params, $parent = 0)
     {
@@ -126,14 +129,16 @@ class tx_rnbase_util_Misc
     /**
      * Calls a userdefined function/method in class
      * Such a function/method should look like this: "function proc(&$params, &$ref)    {...}"
-     * Usage: 17
+     * Usage: 17.
      *
      * @param   string      Function/Method reference, '[file-reference":"]["&"]class/function["->"method-name]'. You can prefix this reference with "[file-reference]:" and tx_rnbase_util_Files::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl->encodeSpURL". Finally; you can prefix the class name with "&" if you want to reuse a former instance of the same object call ("singleton").
      * @param   mixed       Parameters to be pass along (typically an array) (REFERENCE!)
      * @param   mixed       Reference to be passed along (typically "$this" - being a reference to the calling object) (REFERENCE!)
      * @param   string      Required prefix of class or function name
      * @param   int     Error mode (when class/function could not be found): 0 - call debug(), 1 - do nothing, 2 - raise an exception (allows to call a user function that may return FALSE)
-     * @return  mixed       Content from method/function call or false if the class/method/function was not found
+     *
+     * @return mixed Content from method/function call or false if the class/method/function was not found
+     *
      * @see getUserObj()
      */
     public static function callUserFunction($funcName, &$params, &$ref, $checkPrefix = 'user_', $errorMode = 0)
@@ -147,8 +152,7 @@ class tx_rnbase_util_Misc
      * Stops PHP execution : die() if some critical error appeared
      * This method is taken from the great ameos_formidable extension.
      *
-     * @param   string      $msg: the error message
-     * @return  void
+     * @param string $msg: the error message
      */
     public static function mayday($msg, $extKey = '')
     {
@@ -157,45 +161,45 @@ class tx_rnbase_util_Misc
         tx_rnbase::load('tx_rnbase_util_Debug');
 
         tx_rnbase_util_Logger::fatal($msg, $extKey ? $extKey : 'rn_base');
-        $aTrace        = debug_backtrace();
-        $aLocation    = array_shift($aTrace);
-        $aTrace1    = array_shift($aTrace);
-        $aTrace2    = array_shift($aTrace);
-        $aTrace3    = array_shift($aTrace);
-        $aTrace4    = array_shift($aTrace);
+        $aTrace = debug_backtrace();
+        $aLocation = array_shift($aTrace);
+        $aTrace1 = array_shift($aTrace);
+        $aTrace2 = array_shift($aTrace);
+        $aTrace3 = array_shift($aTrace);
+        $aTrace4 = array_shift($aTrace);
 
-        $aDebug = array();
+        $aDebug = [];
 
         $aDebug[] = '<h2 id="backtracetitle">Call stack</h2>';
         $aDebug[] = '<div class="backtrace">';
-        $aDebug[] = '<span class="notice"><b>Call 0: </b>' . str_replace(\Sys25\RnBase\Utility\Environment::getPublicPath(), '/', $aLocation['file']) . ':' . $aLocation['line']  . ' | <b>' . $aTrace1['class'] . $aTrace1['type'] .
-                                    $aTrace1['function'] . '</b></span><br/>With parameters: ' . (!empty($aTrace1['args']) ? self::viewMixed($aTrace1['args']) : ' no parameters');
+        $aDebug[] = '<span class="notice"><b>Call 0: </b>'.str_replace(\Sys25\RnBase\Utility\Environment::getPublicPath(), '/', $aLocation['file']).':'.$aLocation['line'].' | <b>'.$aTrace1['class'].$aTrace1['type'].
+                                    $aTrace1['function'].'</b></span><br/>With parameters: '.(!empty($aTrace1['args']) ? self::viewMixed($aTrace1['args']) : ' no parameters');
         $aDebug[] = '<hr/>';
-        $aDebug[] = '<span class="notice"><b>Call -1: </b>' . str_replace(\Sys25\RnBase\Utility\Environment::getPublicPath(), '/', $aTrace1['file']) . ':' . $aTrace1['line']  . ' | <b>' . $aTrace2['class'] . $aTrace2['type'] .
-                                    $aTrace2['function'] . '</b></span><br />With parameters: ' . (!empty($aTrace2['args']) ? self::viewMixed($aTrace2['args']) : ' no parameters');
+        $aDebug[] = '<span class="notice"><b>Call -1: </b>'.str_replace(\Sys25\RnBase\Utility\Environment::getPublicPath(), '/', $aTrace1['file']).':'.$aTrace1['line'].' | <b>'.$aTrace2['class'].$aTrace2['type'].
+                                    $aTrace2['function'].'</b></span><br />With parameters: '.(!empty($aTrace2['args']) ? self::viewMixed($aTrace2['args']) : ' no parameters');
         $aDebug[] = '<hr/>';
-        $aDebug[] = '<span class="notice"><b>Call -2: </b>' . str_replace(\Sys25\RnBase\Utility\Environment::getPublicPath(), '/', $aTrace2['file']) . ':' . $aTrace2['line']  . ' | <b>' . $aTrace3['class'] . $aTrace3['type'] .
-                                    $aTrace3['function'] . '</b></span><br />With parameters: ' . (!empty($aTrace3['args']) ? self::viewMixed($aTrace3['args']) : ' no parameters');
+        $aDebug[] = '<span class="notice"><b>Call -2: </b>'.str_replace(\Sys25\RnBase\Utility\Environment::getPublicPath(), '/', $aTrace2['file']).':'.$aTrace2['line'].' | <b>'.$aTrace3['class'].$aTrace3['type'].
+                                    $aTrace3['function'].'</b></span><br />With parameters: '.(!empty($aTrace3['args']) ? self::viewMixed($aTrace3['args']) : ' no parameters');
         $aDebug[] = '<hr/>';
-        $aDebug[] = '<span class="notice"><b>Call -3: </b>' . str_replace(\Sys25\RnBase\Utility\Environment::getPublicPath(), '/', $aTrace3['file']) . ':' . $aTrace3['line']  . ' | <b>' . $aTrace4['class'] .
-                                    $aTrace4['type'] . $aTrace4['function'] . '</b></span><br />With parameters: ' . (!empty($aTrace4['args']) ? self::viewMixed($aTrace4['args']) : ' no parameters');
+        $aDebug[] = '<span class="notice"><b>Call -3: </b>'.str_replace(\Sys25\RnBase\Utility\Environment::getPublicPath(), '/', $aTrace3['file']).':'.$aTrace3['line'].' | <b>'.$aTrace4['class'].
+                                    $aTrace4['type'].$aTrace4['function'].'</b></span><br />With parameters: '.(!empty($aTrace4['args']) ? self::viewMixed($aTrace4['args']) : ' no parameters');
         $aDebug[] = '<hr/>';
 
         if ($debugTrail = tx_rnbase_util_Debug::getDebugTrail()) {
-            $aDebug[] = '<span class="notice">' . $debugTrail . '</span>';
+            $aDebug[] = '<span class="notice">'.$debugTrail.'</span>';
             $aDebug[] = '<hr/>';
         }
 
         $aDebug[] = '</div>';
 
         if (intval(Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'forceException4Mayday'))) {
-            throw tx_rnbase::makeInstance('tx_rnbase_util_Exception', $msg, 0, array('Info' => $aDebug));
+            throw tx_rnbase::makeInstance('tx_rnbase_util_Exception', $msg, 0, ['Info' => $aDebug]);
         }
 
         $aDebug[] = '<br/>';
 
-        $sContent =    '<h1 id="title">Mayday</h1>';
-        $sContent .= '<div id="errormessage">' . $msg . '</div>';
+        $sContent = '<h1 id="title">Mayday</h1>';
+        $sContent .= '<div id="errormessage">'.$msg.'</div>';
         $sContent .= '<hr />';
         $verbose = intval(Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'verboseMayday'));
         if ($verbose) {
@@ -254,9 +258,9 @@ MAYDAYPAGE;
 
         $dieOnMayday = intval(Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'dieOnMayday'));
         if ($dieOnMayday) {
-            die($sPage);
+            exit($sPage);
         } else {
-            echo($sPage);
+            echo $sPage;
         }
     }
 
@@ -265,36 +269,37 @@ MAYDAYPAGE;
      * This method is taken from the great ameos_formidable extension.
      *
      * @param mixed $mMixed
-     * @param bool $bRecursive
-     * @param int $iLevel
+     * @param bool  $bRecursive
+     * @param int   $iLevel
+     *
      * @return string
      */
     private static function viewMixed($mMixed, $bRecursive = true, $iLevel = 0)
     {
         $sStyle = 'font-family: Verdana; font-size: 9px;';
-        $sStyleBlack = $sStyle . 'color: black;';
-        $sStyleRed = $sStyle . 'color: red;';
-        $sStyleGreen = $sStyle . 'color: green;';
+        $sStyleBlack = $sStyle.'color: black;';
+        $sStyleRed = $sStyle.'color: red;';
+        $sStyleGreen = $sStyle.'color: green;';
 
-        $aBgColors = array(
+        $aBgColors = [
             'FFFFFF', 'F8F8F8', 'EEEEEE', 'E7E7E7', 'DDDDDD', 'D7D7D7',
             'CCCCCC', 'C6C6C6', 'BBBBBB', 'B6B6B6', 'AAAAAA', 'A5A5A5',
-            '999999', '949494', '888888', '848484', '777777', '737373'
-        );
+            '999999', '949494', '888888', '848484', '777777', '737373',
+        ];
 
         if (is_array($mMixed)) {
-            $result = "<table border=1 style='border: 1px solid silver' cellpadding=1 cellspacing=0 bgcolor='#" . $aBgColors[$iLevel] . "'>";
+            $result = "<table border=1 style='border: 1px solid silver' cellpadding=1 cellspacing=0 bgcolor='#".$aBgColors[$iLevel]."'>";
 
             if (!count($mMixed)) {
-                $result .= "<tr><td><span style='" . $sStyleBlack . "'><b>".htmlspecialchars('EMPTY!').'</b></span></td></tr>';
+                $result .= "<tr><td><span style='".$sStyleBlack."'><b>".htmlspecialchars('EMPTY!').'</b></span></td></tr>';
             } else {
                 foreach ($mMixed as $key => $val) {
-                    $result .= "<tr><td valign='top'><span style='" . $sStyleBlack . "'>".htmlspecialchars((string)$key).'</span></td><td>';
+                    $result .= "<tr><td valign='top'><span style='".$sStyleBlack."'>".htmlspecialchars((string) $key).'</span></td><td>';
 
                     if (is_array($val)) {
                         $result .= self::viewMixed($val, $bRecursive, $iLevel + 1);
                     } else {
-                        $result .= "<span style='" . $sStyleRed . "'>".self::viewMixed($val, $bRecursive, $iLevel + 1).'<br /></span>';
+                        $result .= "<span style='".$sStyleRed."'>".self::viewMixed($val, $bRecursive, $iLevel + 1).'<br /></span>';
                     }
 
                     $result .= '</td></tr>';
@@ -303,37 +308,38 @@ MAYDAYPAGE;
 
             $result .= '</table>';
         } elseif (is_resource($mMixed)) {
-            $result = "<span style='" . $sStyleGreen . "'>RESOURCE: </span>" . $mMixed;
+            $result = "<span style='".$sStyleGreen."'>RESOURCE: </span>".$mMixed;
         } elseif (is_object($mMixed)) {
             if ($bRecursive) {
-                $result = "<span style='" . $sStyleGreen . "'>OBJECT (" . get_class($mMixed) .') : </span>' . self::viewMixed(get_object_vars($mMixed), false, $iLevel + 1);
+                $result = "<span style='".$sStyleGreen."'>OBJECT (".get_class($mMixed).') : </span>'.self::viewMixed(get_object_vars($mMixed), false, $iLevel + 1);
             } else {
-                $result = "<span style='" . $sStyleGreen . "'>OBJECT (" . get_class($mMixed) .') : !RECURSION STOPPED!</span>';
+                $result = "<span style='".$sStyleGreen."'>OBJECT (".get_class($mMixed).') : !RECURSION STOPPED!</span>';
             }
         } elseif (is_bool($mMixed)) {
-            $result = "<span style='" . $sStyleGreen . "'>BOOLEAN: </span>" . ($mMixed ? 'TRUE' : 'FALSE');
+            $result = "<span style='".$sStyleGreen."'>BOOLEAN: </span>".($mMixed ? 'TRUE' : 'FALSE');
         } elseif (is_string($mMixed)) {
             if (empty($mMixed)) {
-                $result = "<span style='" . $sStyleGreen . "'>STRING(0)</span>";
+                $result = "<span style='".$sStyleGreen."'>STRING(0)</span>";
             } else {
-                $result = "<span style='" . $sStyleGreen . "'>STRING(" . strlen($mMixed) . '): </span>' . nl2br(htmlspecialchars((string)$mMixed));
+                $result = "<span style='".$sStyleGreen."'>STRING(".strlen($mMixed).'): </span>'.nl2br(htmlspecialchars((string) $mMixed));
             }
         } elseif (is_null($mMixed)) {
-            $result = "<span style='" . $sStyleGreen . "'>!NULL!</span>";
-        } elseif (is_integer($mMixed)) {
-            $result = "<span style='" . $sStyleGreen . "'>INTEGER: </span>" . $mMixed;
+            $result = "<span style='".$sStyleGreen."'>!NULL!</span>";
+        } elseif (is_int($mMixed)) {
+            $result = "<span style='".$sStyleGreen."'>INTEGER: </span>".$mMixed;
         } else {
-            $result = "<span style='" . $sStyleGreen . "'>MIXED: </span>" . nl2br(htmlspecialchars(strval($mMixed)));
+            $result = "<span style='".$sStyleGreen."'>MIXED: </span>".nl2br(htmlspecialchars(strval($mMixed)));
         }
 
         return $result;
     }
+
     /**
      * Prepare classes for FE-rendering if it is needed in TYPO3 backend.
      *
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController or tslib_fe
+     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController|\tslib_fe
      */
-    public static function prepareTSFE($options = array())
+    public static function prepareTSFE($options = [])
     {
         $pid = array_key_exists('pid', $options) ? $options['pid'] : 1;
         $type = array_key_exists('type', $options) ? $options['type'] : 99;
@@ -341,8 +347,7 @@ MAYDAYPAGE;
         $force = array_key_exists('force', $options) ? true : false;
 
         if (!is_object($GLOBALS['TT'])) {
-            $className = tx_rnbase_util_Typo3Classes::getTimeTrackClass();
-            $GLOBALS['TT'] = new $className;
+            $GLOBALS['TT'] = tx_rnbase_util_Typo3Classes::getTimeTracker();
             $GLOBALS['TT']->start();
         }
 
@@ -351,7 +356,7 @@ MAYDAYPAGE;
             !($GLOBALS['TSFE'] instanceof $typoScriptFrontendControllerClass) ||
             $force
         ) {
-            if (!defined('PATH_tslib')) {
+            if (!tx_rnbase_util_TYPO3::isTYPO70OrHigher() && !defined('PATH_tslib')) {
                 // PATH_tslib setzen
                 if (@is_dir(\Sys25\RnBase\Utility\Environment::getPublicPath().'typo3/sysext/cms/tslib/')) {
                     define('PATH_tslib', \Sys25\RnBase\Utility\Environment::getPublicPath().'typo3/sysext/cms/tslib/');
@@ -362,51 +367,67 @@ MAYDAYPAGE;
                 }
             }
 
-            $GLOBALS['TSFE'] = tx_rnbase::makeInstance(
-                $typoScriptFrontendControllerClass,
-                $GLOBALS['TYPO3_CONF_VARS'],
-                $pid,
-                $type
-            );
+            if (tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+                $rootLine = null;
+                if ($pid > 0) {
+                    $rootLine = \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($pid);
+                }
+                $siteMatcher = tx_rnbase::makeInstance(TYPO3\CMS\Core\Routing\SiteMatcher::class);
+                $site = $siteMatcher->matchByPageId($pid, $rootLine);
+                $GLOBALS['TSFE'] = tx_rnbase::makeInstance(
+                    $typoScriptFrontendControllerClass,
+                    $GLOBALS['TYPO3_CONF_VARS'],
+                    $site,
+                    $site->getDefaultLanguage()
+                );
+            } else {
+                $GLOBALS['TSFE'] = tx_rnbase::makeInstance(
+                    $typoScriptFrontendControllerClass,
+                    $GLOBALS['TYPO3_CONF_VARS'],
+                    $pid,
+                    $type
+                );
+            }
         }
+        /* @var $tsfe TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
+        $tsfe = $GLOBALS['TSFE'];
 
         // base user groups
-        if (empty($GLOBALS['TSFE']->gr_list) || $force) {
+        // todo:         $userAspect = $this->context->getAspect('frontend.user');
+        if (!tx_rnbase_util_TYPO3::isTYPO95OrHigher() && empty($tsfe->gr_list) || $force) {
             $GLOBALS['TSFE']->gr_list = '0,-1';
         }
 
         // init the syspage for pageSelect
-        if (!is_object($GLOBALS['TSFE']->sys_page) || $force) {
-            $temp_sys_page = tx_rnbase_util_TYPO3::getSysPage();
-            $temp_sys_page->init(0);
-            $GLOBALS['TSFE']->sys_page = $temp_sys_page;
+        if (!is_object($tsfe->sys_page) || $force) {
+            $tsfe->sys_page = tx_rnbase_util_TYPO3::getSysPage();
         }
 
         // init the template
-        if (!is_object($GLOBALS['TSFE']->tmpl) || $force) {
-            $GLOBALS['TSFE']->initTemplate();
+        if (!tx_rnbase_util_TYPO3::isTYPO95OrHigher() && (!is_object($tsfe->tmpl) || $force)) {
+            $tsfe->initTemplate();
             if (empty($GLOBALS['TSFE']->tmpl->getFileName_backPath)) {
                 $GLOBALS['TSFE']->tmpl->getFileName_backPath = \Sys25\RnBase\Utility\Environment::getPublicPath();
             }
         }
 
         // initial empty config
-        if (!is_array($GLOBALS['TSFE']->config)) {
-            $GLOBALS['TSFE']->config = array();
+        if (!is_array($tsfe->config)) {
+            $tsfe->config = [];
         }
-        if (!is_array($GLOBALS['TSFE']->config['config'])) {
-            $GLOBALS['TSFE']->config['config'] = array();
+        if (!is_array($tsfe->config['config'])) {
+            $tsfe->config['config'] = [];
         }
 
         // init the language
-        if (empty($GLOBALS['TSFE']->lang) || $force) {
-            $GLOBALS['TSFE']->initLLvars();
+        if (!tx_rnbase_util_TYPO3::isTYPO95OrHigher() && (empty($tsfe->lang) || $force)) {
+            $tsfe->initLLvars();
         }
 
         if (!$options['dontSetPageToTsfe']
-            && (!is_array($GLOBALS['TSFE']->page) || $GLOBALS['TSFE']->page['uid'] != $pid)
+            && (!is_array($tsfe->page) || $tsfe->page['uid'] != $pid)
         ) {
-            $GLOBALS['TSFE']->page = $GLOBALS['TSFE']->sys_page->getPage($pid);
+            $tsfe->page = $tsfe->sys_page->getPage($pid);
         }
 
         // Den Backpath aus dem PageRenderer entfernen. Der wurde auf typo3/ gesetzt
@@ -414,40 +435,45 @@ MAYDAYPAGE;
             tx_rnbase_util_TYPO3::getPageRenderer()->setBackPath('');
         }
 
-        return $GLOBALS['TSFE'];
+        return $tsfe;
     }
+
     /**
      * Umlaute durch normale Buchstaben erstetzen. Aus Ü wird Ue.
      *
      * @param string $str
+     *
      * @return string
      */
     public static function removeUmlauts($str)
     {
-        $array = array( 'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'ß' => 'ss', 'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue');
+        $array = ['ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'ß' => 'ss', 'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue'];
 
         return strtr($str, $array);
     }
+
     public static function objImplode($sep, $arr)
     {
-        $uids = array();
+        $uids = [];
         foreach ($arr as $obj) {
             $uids[] = $obj->uid;
         }
 
         return implode($sep, $uids);
     }
+
     /**
      * Validate a search string for minimum length. All smaller parts are removed.
      *
      * @param string $searchterm
-     * @param int $minLength
+     * @param int    $minLength
+     *
      * @return string
      */
     public static function validateSearchString($searchterm, $minLength = 3)
     {
         // Suchteile splitten
-        $ret = array();
+        $ret = [];
         $arr = tx_rnbase_util_Strings::trimExplode(' ', $searchterm);
         foreach ($arr as $term) {
             if (strlen($term) >= $minLength) {
@@ -457,16 +483,18 @@ MAYDAYPAGE;
 
         return trim(implode(' ', $ret));
     }
+
     /**
      * Translates a string starting with LLL:
      * This method works in FE and BE as well.
      *
      * @param string $title
+     *
      * @return string
      */
     public static function translateLLL($title)
     {
-        if (substr($title, 0, 4) === 'LLL:') {
+        if ('LLL:' === substr($title, 0, 4)) {
             // Prefer TSFE in FE_MODE.
             if (TYPO3_MODE == 'FE' && array_key_exists('TSFE', $GLOBALS)) {
                 return $GLOBALS['TSFE']->sL($title);
@@ -485,9 +513,10 @@ MAYDAYPAGE;
      * ensure submitted parameters are not modified.
      * The order of values doesn't matter.
      *
-     * @param array $params
-     * @param string $salt a secret salt string
-     * @param bool $daily Hash values changed with every new day
+     * @param array  $params
+     * @param string $salt   a secret salt string
+     * @param bool   $daily  Hash values changed with every new day
+     *
      * @return string with 8 characters
      */
     public static function createHash($params, $salt = 'secret', $daily = true)
@@ -511,7 +540,7 @@ MAYDAYPAGE;
     }
 
     /**
-     * Start TimeTrack section
+     * Start TimeTrack section.
      *
      * @param string $message
      */
@@ -521,8 +550,9 @@ MAYDAYPAGE;
             $GLOBALS['TT']->push($label, $message);
         }
     }
+
     /**
-     * End TimeTrack section
+     * End TimeTrack section.
      */
     public static function pullTT()
     {
@@ -530,9 +560,10 @@ MAYDAYPAGE;
             $GLOBALS['TT']->pull();
         }
     }
+
     /**
      * The TimeTracking uses a lot of memory. So it should be used for testcases only.
-     * By default the timetracking is not enabled
+     * By default the timetracking is not enabled.
      *
      * @param bool $flag
      */
@@ -540,8 +571,9 @@ MAYDAYPAGE;
     {
         self::$enableTT = $flag;
     }
+
     /**
-     * Explode a list into an array
+     * Explode a list into an array.
      *
      * Explodes a string by any number of the given charactrs.
      * By default it uses comma, semicolon, colon and whitespace.
@@ -551,13 +583,14 @@ MAYDAYPAGE;
      *
      * @param   string      string to split
      * @param   string      regular expression that defines the splitter
-     * @return  array       with the results
+     *
+     * @return array with the results
      */
     public static function explode($value, $splitCharacters = ',;:\s')
     {
-        $pattern = '/[' . $splitCharacters . ']+/';
+        $pattern = '/['.$splitCharacters.']+/';
         $results = preg_split($pattern, $value, -1, PREG_SPLIT_NO_EMPTY);
-        $return = array();
+        $return = [];
         foreach ($results as $result) {
             $return[] = trim($result);
         }
@@ -566,9 +599,9 @@ MAYDAYPAGE;
     }
 
     /**
-     * Same method as tslib_pibase::pi_getPidList()
+     * Same method as tslib_pibase::pi_getPidList().
      *
-     * @param string $pidList Commaseparated list of pids
+     * @param string    $pidList Commaseparated list of pids
      * @param int|array $options The options array with deprecated recursive support
      *
      * @return string commaseparated list of pids
@@ -582,11 +615,11 @@ MAYDAYPAGE;
         if (!strcmp($pidList, '')) {
             $pidList = tx_rnbase_util_TYPO3::getTSFE()->id;
         }
-        $options = is_array($options) ? $options : array('recursive' => $options);
+        $options = is_array($options) ? $options : ['recursive' => $options];
         $options['recursive'] = tx_rnbase_util_Math::intInRange($options['recursive'], 0);
         $pidListArr = array_unique(tx_rnbase_util_Strings::trimExplode(',', $pidList, 1));
 
-        $pidList = array();
+        $pidList = [];
         foreach ($pidListArr as $val) {
             $val = tx_rnbase_util_Math::intInRange($val, 0);
             if ($val) {
@@ -609,11 +642,12 @@ MAYDAYPAGE;
     /**
      * Returns a given CamelCasedString as an lowercase string with underscores.
      * Example: Converts BlogExample to blog_example, and minimalValue to minimal_value
-     * Taken from t3lib_div for backward compatibility
+     * Taken from t3lib_div for backward compatibility.
      *
      * @deprecated use tx_rnbase_util_Strings::camelCaseToLowerCaseUnderscored instead
      *
      * @param string $string: String to be converted to lowercase underscore
+     *
      * @return string lowercase_and_underscored_string
      */
     public static function camelCaseToLowerCaseUnderscored($string)
@@ -625,15 +659,14 @@ MAYDAYPAGE;
     }
 
     /**
-     * Sendout an error mail
-     * @param string $mailAddr commaseperated recipients
-     * @param string $actionName
-     * @param Exception $e
-     * @param array $options
+     * Sendout an error mail.
      *
-     * @return void
+     * @param string    $mailAddr   commaseperated recipients
+     * @param string    $actionName
+     * @param Exception $e
+     * @param array     $options
      */
-    public static function sendErrorMail($mailAddr, $actionName, Exception $e, array $options = array())
+    public static function sendErrorMail($mailAddr, $actionName, Exception $e, array $options = [])
     {
         $ignoreMailLock = (array_key_exists('ignoremaillock', $options) && $options['ignoremaillock']);
 
@@ -657,7 +690,7 @@ MAYDAYPAGE;
 
         tx_rnbase::load('Tx_Rnbase_Configuration_Processor');
         $from = Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'fromEmail');
-        $from = $from ? $from : 'error@' . self::getIndpEnv('TYPO3_HOST_ONLY');
+        $from = $from ? $from : 'error@'.self::getIndpEnv('TYPO3_HOST_ONLY');
         $mail->setFrom($from);
 
         $mail->setTo($mailAddr);
@@ -675,10 +708,10 @@ MAYDAYPAGE;
     protected static function getErrorMailText($e, $actionName)
     {
         $textPart = 'This is an automatic email from TYPO3. Don\'t answer!'."\n\n";
-        $textPart .= 'UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName ."\n\n";
-        $textPart .= 'Message: ' . $e->getMessage()."\n\n";
-        $textPart .= "Stacktrace:\n". $e->__toString()."\n";
-        $textPart .= 'SITE_URL: ' . self::getIndpEnv('TYPO3_SITE_URL')."\n";
+        $textPart .= 'UNCAUGHT EXCEPTION FOR VIEW: '.$actionName."\n\n";
+        $textPart .= 'Message: '.$e->getMessage()."\n\n";
+        $textPart .= "Stacktrace:\n".$e->__toString()."\n";
+        $textPart .= 'SITE_URL: '.self::getIndpEnv('TYPO3_SITE_URL')."\n";
 
         tx_rnbase::load('tx_rnbase_util_TYPO3');
         $textPart .= 'BE_USER: '.tx_rnbase_util_TYPO3::getBEUserUID()."\n";
@@ -690,31 +723,31 @@ MAYDAYPAGE;
     protected static function getErrorMailHtml($e, $actionName)
     {
         $htmlPart = '<strong>This is an automatic email from TYPO3. Don\'t answer!</strong>';
-        $htmlPart .= '<div><strong>UNCAUGHT EXCEPTION FOR VIEW: ' . $actionName .'</strong></div>';
-        $htmlPart .= '<p><strong>Message:</strong><br />' . $e->getMessage() . '</p>';
+        $htmlPart .= '<div><strong>UNCAUGHT EXCEPTION FOR VIEW: '.$actionName.'</strong></div>';
+        $htmlPart .= '<p><strong>Message:</strong><br />'.$e->getMessage().'</p>';
         $htmlPart .= '<p><strong>Stacktrace:</strong><pre>'.$e->__toString().'</pre></p>';
-        $htmlPart .= '<p><strong>SITE_URL</strong><br />'. self::getIndpEnv('TYPO3_SITE_URL'). '</p>';
+        $htmlPart .= '<p><strong>SITE_URL</strong><br />'.self::getIndpEnv('TYPO3_SITE_URL').'</p>';
 
         $get = self::removePasswordParams($_GET);
         if (count($get)) {
-            $htmlPart .= '<p><strong>_GET</strong><br />'. var_export($get, true). '</p>';
+            $htmlPart .= '<p><strong>_GET</strong><br />'.var_export($get, true).'</p>';
         }
 
         $post = self::removePasswordParams($_POST);
         if (count($post)) {
-            $htmlPart .= '<p><strong>_POST</strong><br />'. var_export($post, true). '</p>';
+            $htmlPart .= '<p><strong>_POST</strong><br />'.var_export($post, true).'</p>';
         }
 
         $cookie = self::removePasswordParams($_COOKIE);
         if (count($cookie)) {
-            $htmlPart .= '<p><strong>_COOKIE</strong><br />'. var_export($cookie, true). '</p>';
+            $htmlPart .= '<p><strong>_COOKIE</strong><br />'.var_export($cookie, true).'</p>';
         }
 
-        $htmlPart .= '<p><strong>_SERVER</strong><br />'. var_export(self::removePasswordParams($_SERVER), true). '</p>';
+        $htmlPart .= '<p><strong>_SERVER</strong><br />'.var_export(self::removePasswordParams($_SERVER), true).'</p>';
         if ($e instanceof tx_rnbase_util_Exception) {
             $additional = $e->getAdditional();
             if ($additional) {
-                $htmlPart .= '<p><strong>Additional Data:</strong><br />' . strval($additional) . '</p>';
+                $htmlPart .= '<p><strong>Additional Data:</strong><br />'.strval($additional).'</p>';
             }
         }
 
@@ -729,7 +762,7 @@ MAYDAYPAGE;
     {
         foreach ($parameters as $parameterName => $parameterValue) {
             if (is_array($parameterValue)) {
-                $parameters[$parameterName] =  self::removePasswordParams($parameterValue);
+                $parameters[$parameterName] = self::removePasswordParams($parameterValue);
             } elseif (preg_match('/passwor(t|d)/', $parameterName)) {
                 unset($parameters[$parameterName]);
             }
@@ -739,7 +772,8 @@ MAYDAYPAGE;
     }
 
     /**
-     * Returns currently loaded LL files
+     * Returns currently loaded LL files.
+     *
      * @return array
      */
     public static function getLoadedLLFiles()
@@ -752,7 +786,8 @@ MAYDAYPAGE;
      * This should be used instead of getEnv() and $_SERVER/ENV_VARS to get reliable values for all situations.
      *
      * @param   string      Name of the "environment variable"/"server variable" you wish to use. Valid values are SCRIPT_NAME, SCRIPT_FILENAME, REQUEST_URI, PATH_INFO, REMOTE_ADDR, REMOTE_HOST, HTTP_REFERER, HTTP_HOST, HTTP_USER_AGENT, HTTP_ACCEPT_LANGUAGE, QUERY_STRING, TYPO3_DOCUMENT_ROOT, TYPO3_HOST_ONLY, TYPO3_HOST_ONLY, TYPO3_REQUEST_HOST, TYPO3_REQUEST_URL, TYPO3_REQUEST_SCRIPT, TYPO3_REQUEST_DIR, TYPO3_SITE_URL, _ARRAY
-     * @return  string      Value based on the input key, independent of server/os environment.
+     *
+     * @return string value based on the input key, independent of server/os environment
      */
     public static function getIndpEnv($getEnvName)
     {
@@ -762,7 +797,7 @@ MAYDAYPAGE;
     }
 
     /**
-     * Wrapper method for t3lib_div::milliseconds() or \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds()
+     * Wrapper method for t3lib_div::milliseconds() or \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds().
      *
      * @return int The unixtime as milliseconds
      */
@@ -774,9 +809,7 @@ MAYDAYPAGE;
     }
 
     /**
-     * Wrapper method for t3lib_div::logDeprecatedFunction() or \TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction()
-     *
-     * @return void
+     * Wrapper method for t3lib_div::logDeprecatedFunction() or \TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction().
      */
     public static function logDeprecatedFunction()
     {
@@ -785,12 +818,10 @@ MAYDAYPAGE;
     }
 
     /**
-     * @param string $message
-     * @param string $title
-     * @param number $severity
-     * @param string $storeInSession
-     *
-     * @return void
+     * @param string       $message
+     * @param string       $title
+     * @param number       $severity
+     * @param string|false $storeInSession
      */
     public static function addFlashMessage($message, $title = '', $severity = 0, $storeInSession = false)
     {

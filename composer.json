@@ -21,40 +21,46 @@
         "issues": "https://github.com/digedag/rn_base/issues"
     },
     "replace": {
-        "rn_base": "self.version",
         "typo3-ter/rn-base": "self.version",
         "digedag/rn-base": "self.version"
     },
     "require": {
-      "typo3/cms-core": "^6.2 || ^7.6 || ^8.7 || ^9.5",
-      "php": ">=5.6.0"
+        "typo3/cms-core": "^7.6 || ^8.7 || ^9.5 || ^10.4",
+        "php": ">=7.1.0",
+        "php": ">=5.6.0",
+        "ext-curl": "*",
+        "ext-dom": "*",
+        "ext-iconv": "*",
+        "ext-json": "*",
+        "ext-simplexml": "*",
+        "ext-zip": "*"
     },
     "require-dev": {
         "namelesscoder/typo3-repository-client": "^1.2",
-        "nimut/testing-framework": "^1.1 || ^2.0 || ^4.0",
-        "mikey179/vfsStream": "^1.4 || ^1.6",
-        "phpunit/phpunit": "^4.7|| ^7.0"
+        "nimut/testing-framework": "^1.1 || ^2.0 || ^4.0 || ^5.0",
+        "mikey179/vfsstream": "^1.4 || ^1.6",
+        "phpunit/phpunit": "^4.7|| ^7.0",
+        "friendsofphp/php-cs-fixer": "^2.15"
+    },
+    "suggest": {
+        "ext-mcrypt": "*",
+        "ext-mysql": "*",
+        "ext-mysqli": "*",
+        "ext-mssql": "*"
     },
     "autoload": {
         "classmap": [
-            "action/",
             "cache/",
             "Classes/",
+            "Legacy/",
             "exception/",
-            "filter/",
             "maps/",
-            "misc/",
             "mod/",
             "model/",
-            "plot/",
-            "sv1/",
             "tests/",
             "util/",
-            "view/",
             "class.tx_rnbase.php",
-            "class.tx_rnbase_configurations.php",
-            "class.tx_rnbase_controller.php",
-            "class.tx_rnbase_parameters.php"
+            "class.tx_rnbase_controller.php"
         ],
         "files": [
             "Classes/Constants.php"
@@ -79,12 +85,35 @@
         "post-autoload-dump": [
             "mkdir -p .Build/Web/typo3conf/ext/",
             "[ -L .Build/Web/typo3conf/ext/rn_base ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/rn_base"
+        ],
+        "test:phpcs": [
+            "[ -e .Build/bin/php-cs-fixer ] || composer update",
+            ".Build/bin/php-cs-fixer fix -v --dry-run --diff"
+        ],
+        "test:phpunit": [
+            "[ -e .Build/bin/phpunit ] || composer update",
+            "export TYPO3_PATH_WEB=$PWD/.Build/Web && .Build/bin/phpunit"
+        ],
+        "test": [
+            "@test:phpcs",
+            "@test:phpunit"
+        ],
+        "fix:phpcs": [
+            "[ -e .Build/bin/php-cs-fixer ] || composer update",
+            ".Build/bin/php-cs-fixer fix -v"
+        ],
+        "fix": [
+            "@fix:phpcs"
         ]
     },
     "extra": {
         "typo3/cms": {
             "cms-package-dir": "{$vendor-dir}/typo3/cms",
+            "extension-key": "rn_base",
             "web-dir": ".Build/Web"
+        },
+        "branch-alias": {
+            "dev-master": "1.13.x-dev"
         }
     }
 }

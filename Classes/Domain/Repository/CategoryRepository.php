@@ -1,4 +1,5 @@
 <?php
+
 namespace Sys25\RnBase\Domain\Repository;
 
 use Sys25\RnBase\Search\Category;
@@ -27,10 +28,8 @@ use Sys25\RnBase\Search\Category;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Domain\Repository$CategoryRepository
+ * Sys25\RnBase\Domain\Repository$CategoryRepository.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
@@ -38,7 +37,8 @@ use Sys25\RnBase\Search\Category;
 class CategoryRepository extends \Tx_Rnbase_Domain_Repository_PersistenceRepository
 {
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_mklib_repository_Abstract::getSearchClass()
      */
     protected function getSearchClass()

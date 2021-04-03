@@ -1,4 +1,5 @@
 <?php
+
 namespace Sys25\RnBase\Frontend\View;
 
 /***************************************************************
@@ -24,8 +25,6 @@ namespace Sys25\RnBase\Frontend\View;
 * This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-/**
- */
 class ViewContext extends \ArrayObject implements ContextInterface
 {
 }

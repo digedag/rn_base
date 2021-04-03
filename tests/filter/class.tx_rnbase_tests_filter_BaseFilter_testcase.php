@@ -1,7 +1,8 @@
 <?php
+
 use Sys25\RnBase\Frontend\Filter\Utility\Category;
 
-/**
+/*
  * @package TYPO3
  * @subpackage tx_myext
  * @author Hannes Bochmann <hannes.bochmann@das-medienkombinat.de>
@@ -30,24 +31,21 @@ use Sys25\RnBase\Frontend\Filter\Utility\Category;
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
 /**
- * tx_rnbase_tests_filter_BaseFilter_testcase
+ * tx_rnbase_tests_filter_BaseFilter_testcase.
  *
- * @package         TYPO3
- * @subpackage      tx_rnbase
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
      * @group unit
      */
     public function testGetCategoryFilterUtility()
     {
-        $configurations = $this->createConfigurations(array(), 'rnbase');
-        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $configurations = \tx_rnbase_tests_Utility::createConfigurations([], 'rnbase');
+        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         self::assertInstanceOf(
             Category::class,
             $this->callInaccessibleMethod(
@@ -57,22 +55,22 @@ class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTes
         );
     }
 
-
     /**
      * @group unit
      * @dataProvider dataProviderInitReturnsCorrectValue
      */
     public function testInitReturnsCorrectValue($initFilterReturnValue, $doSearchVariableValue, $expectedReturnValue)
     {
-        $configurations = $this->createConfigurations(array(), 'myext');
-        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $configurations = \tx_rnbase_tests_Utility::createConfigurations([], 'myext');
+        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $filter = $this->getAccessibleMock(
-            'tx_rnbase_filter_BaseFilter', array('initFilter'),
-            array(
+            'tx_rnbase_filter_BaseFilter',
+            ['initFilter'],
+            [
                 &$parameters,
                 &$configurations,
-                'myList.filter.'
-            )
+                'myList.filter.',
+            ]
         );
         $filter
             ->expects(self::once())
@@ -85,23 +83,23 @@ class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTes
     }
 
     /**
-     * @return boolean[][]|NULL[][]
+     * @return bool[][]|null[][]
      */
     public function dataProviderInitReturnsCorrectValue()
     {
         return [
             // initFilter liefert true, doSearch nicht gesetzt, wir erwarten true
-            array(true, null, true),
+            [true, null, true],
             // initFilter liefert false, doSearch nicht gesetzt, wir erwarten false
-            array(false, null, false),
+            [false, null, false],
             // initFilter liefert false, doSearch steht auf true, wir erwarten true
-            array(false, true, true),
+            [false, true, true],
             // initFilter liefert true, doSearch steht auf false, wir erwarten false
-            array(true, false, false),
+            [true, false, false],
             // initFilter liefert true, doSearch steht auf true, wir erwarten true
-            array(true, true, true),
+            [true, true, true],
             // initFilter liefert false, doSearch steht auf false, wir erwarten false
-            array(false, false, false),
+            [false, false, false],
         ];
     }
 }

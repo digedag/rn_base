@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -22,12 +22,9 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  */
 
-
 /**
- * extension configs
+ * extension configs.
  *
- * @package TYPO3
- * @subpackage Tx_Rnbase
  * @author Michael Wagner
  */
 final class Tx_Rnbase_Utility_Composer
@@ -35,13 +32,11 @@ final class Tx_Rnbase_Utility_Composer
     public static $loaded = false;
 
     /**
-     * preloads the
-     *
-     * @return void
+     * preloads the.
      */
     public static function autoload()
     {
-        if (self::$loaded === true) {
+        if (true === self::$loaded) {
             return;
         }
         require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(

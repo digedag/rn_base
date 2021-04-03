@@ -38,27 +38,25 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
     private $currentRequestUri;
 
     /**
-     * Initialisiert allgemeine Testdaten
+     * Initialisiert allgemeine Testdaten.
      */
     public function setUp()
     {
         $this->oFormTool = tx_rnbase::makeInstance('tx_rnbase_util_FormTool');
         // Die Local-Lang wurde in 4.6 verändert
         if (tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
-            $GLOBALS['LOCAL_LANG']['default']['Header Uid'][0] = array('source' => 'Header Uid', 'target' => 'Header Uid');
-            $GLOBALS['LOCAL_LANG']['default']['Header Col1'][0] = array('source' => 'Header Col1', 'target' => 'Header Col1');
+            $GLOBALS['LOCAL_LANG']['default']['Header Uid'][0] = ['source' => 'Header Uid', 'target' => 'Header Uid'];
+            $GLOBALS['LOCAL_LANG']['default']['Header Col1'][0] = ['source' => 'Header Col1', 'target' => 'Header Col1'];
         } else {
             $GLOBALS['LOCAL_LANG']['default']['Header Uid'] = 'Header Uid';
             $GLOBALS['LOCAL_LANG']['default']['Header Col1'] = 'Header Col1';
         }
 
-        $this-> backupAndSetCurrentRequestUri();
+        $this->backupAndSetCurrentRequestUri();
 
         $this->resetIndependentEnvironmentCache();
     }
 
-    /**
-     */
     protected function tearDown()
     {
         $this->restoreCurrentRequestUri();
@@ -68,19 +66,14 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
      * Auf der CLI ist keine URL vorhanden und somit ist auch
      * nicht die normale BE URL vorhanden, welche für die Sortlinks benötigt wird.
      * Also setzen wir die URL einfach fest damit die Tests auch auf der CLI laufen.
-     *
-     * @return void
      */
     private function backupAndSetCurrentRequestUri()
     {
-        $this->currentRequestUri =  $_SERVER['REQUEST_URI'];
+        $this->currentRequestUri = $_SERVER['REQUEST_URI'];
         $commonBeUrl = '/typo3/mod.php?M=tools_txphpunitbeM1';
         $_SERVER['REQUEST_URI'] = $commonBeUrl;
     }
 
-    /**
-     * @return void
-     */
     private function restoreCurrentRequestUri()
     {
         $_SERVER['REQUEST_URI'] = $this->currentRequestUri;
@@ -93,25 +86,25 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public function testPrepareTableWithoutLinkerDecoratorOrCallbackMethodWithEntriesGivenAsModelsReturnsCorrectTable()
     {
-        $aEntries = array(
-                0 => tx_rnbase::makeInstance('tx_rnbase_model_base', array(
+        $aEntries = [
+                0 => tx_rnbase::makeInstance('tx_rnbase_model_base', [
                         'uid' => 1,
-                        'col1' => 'col1 Value 1'
-                )),
-                1 => tx_rnbase::makeInstance('tx_rnbase_model_base', array(
+                        'col1' => 'col1 Value 1',
+                ]),
+                1 => tx_rnbase::makeInstance('tx_rnbase_model_base', [
                         'uid' => 2,
-                        'col1' => 'col1 Value 2'
-                )),
-        );
-        $aColumns = array(
-                'uid' => array(
+                        'col1' => 'col1 Value 2',
+                ]),
+        ];
+        $aColumns = [
+                'uid' => [
                         'title' => 'Header Uid',
-                ),
-                'col1' => array(
+                ],
+                'col1' => [
                         'title' => 'Header Col1',
-                )
-        );
-        $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, array());
+                ],
+        ];
+        $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, []);
 
         //allgmein
         $this->assertEquals(3, count($aRet[0]), 'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
@@ -136,25 +129,25 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public function testPrepareTableWithoutLinkerDecoratorOrCallbackMethodWithEntriesGivenAsArraysReturnsCorrectTable()
     {
-        $aEntries = array(
-                0 => array(
+        $aEntries = [
+                0 => [
                         'uid' => 1,
-                        'col1' => 'col1 Value 1'
-                ),
-                1 => array(
+                        'col1' => 'col1 Value 1',
+                ],
+                1 => [
                         'uid' => 2,
-                        'col1' => 'col1 Value 2'
-                ),
-        );
-        $aColumns = array(
-                'uid' => array(
+                        'col1' => 'col1 Value 2',
+                ],
+        ];
+        $aColumns = [
+                'uid' => [
                         'title' => 'Header Uid',
-                ),
-                'col1' => array(
+                ],
+                'col1' => [
                         'title' => 'Header Col1',
-                )
-        );
-        $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, array());
+                ],
+        ];
+        $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, []);
 
         //allgmein
         $this->assertEquals(3, count($aRet[0]), 'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
@@ -183,27 +176,27 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
             'tx_rnbase_tests_fixtures_classes_Decorator',
             tx_rnbase::makeInstance('tx_rnbase_tests_fixtures_classes_Mod')
         );
-        $aEntries = array(
-                0 => tx_rnbase::makeInstance('tx_rnbase_model_base', array(
+        $aEntries = [
+                0 => tx_rnbase::makeInstance('tx_rnbase_model_base', [
                         'uid' => 1,
-                        'col1' => 'col1 Value 1'
-                )),
-                1 => tx_rnbase::makeInstance('tx_rnbase_model_base', array(
+                        'col1' => 'col1 Value 1',
+                ]),
+                1 => tx_rnbase::makeInstance('tx_rnbase_model_base', [
                         'uid' => 2,
-                        'col1' => 'col1 Value 2'
-                )),
-        );
-        $aColumns = array(
-                'uid' => array(
+                        'col1' => 'col1 Value 2',
+                ]),
+        ];
+        $aColumns = [
+                'uid' => [
                         'title' => 'Header Uid',
                         'decorator' => &$oDecorator,
-                ),
-                'col1' => array(
+                ],
+                'col1' => [
                         'title' => 'Header Col1',
                         'decorator' => &$oDecorator,
-                )
-        );
-        $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, array());
+                ],
+        ];
+        $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, []);
 
         //allgmein
         $this->assertEquals(3, count($aRet[0]), 'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
@@ -226,26 +219,26 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public function testPrepareTableWithSortableButNothingSelectedReturnsCorrectTable()
     {
-        $aEntries = array(
-                0 => array(
+        $aEntries = [
+                0 => [
                         'uid' => 1,
-                        'col1' => 'col1 Value 1'
-                ),
-                1 => array(
+                        'col1' => 'col1 Value 1',
+                ],
+                1 => [
                         'uid' => 2,
-                        'col1' => 'col1 Value 2'
-                ),
-        );
-        $aColumns = array(
-            'uid' => array(
+                        'col1' => 'col1 Value 2',
+                ],
+        ];
+        $aColumns = [
+            'uid' => [
                         'title' => 'Header Uid',
                         'sortable' => 'TestPrefix.',
-                ),
-                'col1' => array(
+                ],
+                'col1' => [
                         'title' => 'Header Col1',
-                )
-        );
-        $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, array());
+                ],
+        ];
+        $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, []);
         //allgmein
         $this->assertEquals(3, count($aRet[0]), 'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
         //Header - es sollte nur das sorting angegeben sein ohne pfeil
@@ -270,26 +263,26 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
     public function testPrepareTableWithSortableChangesSortingCorrect()
     {
         $_GET['sortField'] = 'uid';
-        $aEntries = array(
-                0 => array(
+        $aEntries = [
+                0 => [
                         'uid' => 1,
-                        'col1' => 'col1 Value 1'
-                ),
-                1 => array(
+                        'col1' => 'col1 Value 1',
+                ],
+                1 => [
                         'uid' => 2,
-                        'col1' => 'col1 Value 2'
-                ),
-        );
-        $aColumns = array(
-                'uid' => array(
+                        'col1' => 'col1 Value 2',
+                ],
+        ];
+        $aColumns = [
+                'uid' => [
                         'title' => 'Header Uid',
                         'sortable' => 'TestPrefix.',
-                ),
-                'col1' => array(
+                ],
+                'col1' => [
                         'title' => 'Header Col1',
-                )
-        );
-        $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, array());
+                ],
+        ];
+        $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, []);
 
         //allgmein
         $this->assertEquals(3, count($aRet[0]), 'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
@@ -321,26 +314,26 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
     {
         $_GET['sortField'] = 'uid';
         $_GET['sortRev'] = 'desc';
-        $aEntries = array(
-                0 => array(
+        $aEntries = [
+                0 => [
                         'uid' => 1,
-                        'col1' => 'col1 Value 1'
-                ),
-                1 => array(
+                        'col1' => 'col1 Value 1',
+                ],
+                1 => [
                         'uid' => 2,
-                        'col1' => 'col1 Value 2'
-                ),
-        );
-        $aColumns = array(
-                'uid' => array(
+                        'col1' => 'col1 Value 2',
+                ],
+        ];
+        $aColumns = [
+                'uid' => [
                         'title' => 'Header Uid',
                         'sortable' => 'TestPrefix.',
-                ),
-                'col1' => array(
+                ],
+                'col1' => [
                         'title' => 'Header Col1',
-                )
-        );
-        $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, array());
+                ],
+        ];
+        $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, []);
 
         //allgmein
         $this->assertEquals(3, count($aRet[0]), 'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
@@ -374,26 +367,26 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
         //weiterer Param, der erhalten bleiben sollte
         $_SERVER['REQUEST_URI'] = $_SERVER['REQUEST_URI'].'&sortField=title&sortRev=desc&additionalParam=test';
 
-        $aEntries = array(
-                0 => array(
+        $aEntries = [
+                0 => [
                         'uid' => 1,
-                        'col1' => 'col1 Value 1'
-                ),
-                1 => array(
+                        'col1' => 'col1 Value 1',
+                ],
+                1 => [
                         'uid' => 2,
-                        'col1' => 'col1 Value 2'
-                ),
-        );
-        $aColumns = array(
-                'uid' => array(
+                        'col1' => 'col1 Value 2',
+                ],
+        ];
+        $aColumns = [
+                'uid' => [
                         'title' => 'Header Uid',
                         'sortable' => 'TestPrefix.',
-                ),
-                'col1' => array(
+                ],
+                'col1' => [
                         'title' => 'Header Col1',
-                )
-        );
-        $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, array());
+                ],
+        ];
+        $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, []);
 
         //allgmein
         $this->assertEquals(3, count($aRet[0]), 'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');

@@ -36,12 +36,12 @@ use TYPO3\CMS\Core\Context\Context;
  */
 class FrontendControllerUtility
 {
-
     /**
      * @see https://forge.typo3.org/issues/85543
      * @see https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/9.4/Deprecation-85543-Language-relatedPropertiesInTypoScriptFrontendControllerAndPageRepository.html
      *
      * @param \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $typoScriptFrontendController
+     *
      * @return int
      */
     public static function getLanguageContentId($typoScriptFrontendController)
@@ -53,5 +53,43 @@ class FrontendControllerUtility
         }
 
         return $languageContentId;
+    }
+
+    /**
+     * @see https://forge.typo3.org/issues/85543
+     * @see https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/9.4/Deprecation-85543-Language-relatedPropertiesInTypoScriptFrontendControllerAndPageRepository.html
+     *
+     * @param \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $typoScriptFrontendController
+     *
+     * @return string
+     */
+    public static function getLanguageMode($typoScriptFrontendController)
+    {
+        if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+            $languageMode = \tx_rnbase::makeInstance(Context::class)->getAspect('language')->getLegacyLanguageMode();
+        } else {
+            $languageMode = $typoScriptFrontendController->sys_language_mode;
+        }
+
+        return $languageMode;
+    }
+
+    /**
+     * @see https://forge.typo3.org/issues/85543
+     * @see https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/9.4/Deprecation-85543-Language-relatedPropertiesInTypoScriptFrontendControllerAndPageRepository.html
+     *
+     * @param \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $typoScriptFrontendController
+     *
+     * @return int
+     */
+    public static function getLanguageId($typoScriptFrontendController)
+    {
+        if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+            $languageId = \tx_rnbase::makeInstance(Context::class)->getAspect('language')->getId();
+        } else {
+            $languageId = $typoScriptFrontendController->sys_language_uid;
+        }
+
+        return $languageId;
     }
 }

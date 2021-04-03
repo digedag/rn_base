@@ -27,28 +27,28 @@ tx_rnbase::load('Tx_Rnbase_Domain_Model_Base');
 
 class Tx_Rnbase_Domain_Model_BaseTest extends tx_rnbase_tests_BaseTestCase
 {
-    public function test_magiccall()
+    public function testMagiccall()
     {
-        $model = new Tx_Rnbase_Domain_Model_Base(array('uid' => 1, 'test_value' => 45));
+        $model = new Tx_Rnbase_Domain_Model_Base(['uid' => 1, 'test_value' => 45]);
         self::assertEquals(45, $model->getTestValue());
     }
 
     public function testSetPropertyArray()
     {
         $model = $this->getModel(
-            array(
+            [
                 'first_name' => 'Max',
-            ),
+            ],
             'Tx_Rnbase_Domain_Model_Base'
         );
 
         // set a new record
         $model->setProperty(
-            array(
+            [
                 'uid' => 7,
                 'first_name' => 'John',
                 'last_name' => 'Doe',
-            )
+            ]
         );
 
         self::assertTrue($model->isDirty());
@@ -59,9 +59,9 @@ class Tx_Rnbase_Domain_Model_BaseTest extends tx_rnbase_tests_BaseTestCase
 
         // // check uid overriding
         $model->setProperty(
-            array(
+            [
                 'uid' => 5,
-            )
+            ]
         );
 
         self::assertEquals(7, $model->getUid());
@@ -72,8 +72,8 @@ class Tx_Rnbase_Domain_Model_BaseTest extends tx_rnbase_tests_BaseTestCase
     {
         $model = $this->getMock(
             'Tx_Rnbase_Domain_Model_Base',
-            array('getTableName'),
-            array(array('uid' => '123'))
+            ['getTableName'],
+            [['uid' => '123']]
         );
         $model->expects($this->once())
             ->method('getTableName')
@@ -86,8 +86,8 @@ class Tx_Rnbase_Domain_Model_BaseTest extends tx_rnbase_tests_BaseTestCase
     {
         $model = $this->getMock(
             'Tx_Rnbase_Domain_Model_Base',
-            array('getTableName'),
-            array(array('uid' => '123', 'l18n_parent' => '456', 'sys_language_uid' => '789'))
+            ['getTableName'],
+            [['uid' => '123', 'l18n_parent' => '456', 'sys_language_uid' => '789']]
         );
         $model->expects($this->once())
             ->method('getTableName')
@@ -100,13 +100,13 @@ class Tx_Rnbase_Domain_Model_BaseTest extends tx_rnbase_tests_BaseTestCase
     {
         $model = $this->getMock(
             'Tx_Rnbase_Domain_Model_Base',
-            array('getTableName'),
-            array(
-                array(
+            ['getTableName'],
+            [
+                [
                     'uid' => '57',
                     'field' => 'test',
-                )
-            )
+                ],
+            ]
         );
         $model->expects($this->once())
             ->method('getTableName')
@@ -118,21 +118,20 @@ class Tx_Rnbase_Domain_Model_BaseTest extends tx_rnbase_tests_BaseTestCase
     {
         $model = tx_rnbase::makeInstance(
             'Tx_Rnbase_Domain_Model_Base',
-            array(
+            [
                 'uid' => '57',
                 'field' => 'test',
-            )
+            ]
         );
         self::assertSame(57, $model->getUid(), 'uid field not used');
     }
-
 
     public function testGetUidForTranslatedSingleRecord()
     {
         $model = $this->getMock(
             'Tx_Rnbase_Domain_Model_Base',
-            array('getTableName'),
-            array(array('uid' => '123', 'l18n_parent' => '0', 'sys_language_uid' => '789'))
+            ['getTableName'],
+            [['uid' => '123', 'l18n_parent' => '0', 'sys_language_uid' => '789']]
         );
         $model->expects($this->once())
             ->method('getTableName')
@@ -149,16 +148,17 @@ class Tx_Rnbase_Domain_Model_BaseTest extends tx_rnbase_tests_BaseTestCase
         );
         self::assertSame(0, $model->getSysLanguageUid());
     }
+
     public function testGetSysLanguageUidWithLanguageFieldInTca()
     {
         /* @var $model Tx_Rnbase_Domain_Model_Base */
         $model = tx_rnbase::makeInstance(
             'Tx_Rnbase_Domain_Model_Base',
-            array(
+            [
                 'uid' => '57',
                 'header' => 'Home',
                 'sys_language_uid' => '5',
-            )
+            ]
         )->setTableName('tt_content');
         self::assertSame(5, $model->getSysLanguageUid());
     }
@@ -177,10 +177,10 @@ class Tx_Rnbase_Domain_Model_BaseTest extends tx_rnbase_tests_BaseTestCase
         /* @var $model Tx_Rnbase_Domain_Model_Base */
         $model = tx_rnbase::makeInstance(
             'Tx_Rnbase_Domain_Model_Base',
-            array(
+            [
                 'uid' => 57,
                 'header' => 'Home',
-            )
+            ]
         )->setTableName('tt_content');
         self::assertSame('Home', $model->getTcaLabel());
     }
@@ -199,10 +199,10 @@ class Tx_Rnbase_Domain_Model_BaseTest extends tx_rnbase_tests_BaseTestCase
         /* @var $model Tx_Rnbase_Domain_Model_Base */
         $model = tx_rnbase::makeInstance(
             'Tx_Rnbase_Domain_Model_Base',
-            array(
+            [
                 'uid' => 57,
                 'crdate' => 1433161484,
-            )
+            ]
         )->setTableName('tt_content');
         self::assertInstanceOf('DateTime', $model->getCreationDateTime());
         self::assertSame('1433161484', $model->getCreationDateTime()->format('U'));
@@ -222,10 +222,10 @@ class Tx_Rnbase_Domain_Model_BaseTest extends tx_rnbase_tests_BaseTestCase
         /* @var $model Tx_Rnbase_Domain_Model_Base */
         $model = tx_rnbase::makeInstance(
             'Tx_Rnbase_Domain_Model_Base',
-            array(
+            [
                 'uid' => 57,
                 'tstamp' => 1433161484,
-            )
+            ]
         )->setTableName('tt_content');
         self::assertInstanceOf('DateTime', $model->getLastModifyDateTime());
         self::assertSame('1433161484', $model->getLastModifyDateTime()->format('U'));
@@ -233,17 +233,19 @@ class Tx_Rnbase_Domain_Model_BaseTest extends tx_rnbase_tests_BaseTestCase
 
     public function testIsValidShouldBeFalseForOnlyUid()
     {
-        $model = $this->getModel(array('uid' => 57), 'Tx_Rnbase_Domain_Model_Base');
+        $model = $this->getModel(['uid' => 57], 'Tx_Rnbase_Domain_Model_Base');
         $this->assertFalse($model->isValid());
     }
+
     public function testIsValidShouldBeTrueForOnlyTitle()
     {
-        $model = $this->getModel(array('title' => 'foo'), 'Tx_Rnbase_Domain_Model_Base');
+        $model = $this->getModel(['title' => 'foo'], 'Tx_Rnbase_Domain_Model_Base');
         $this->assertTrue($model->isValid());
     }
+
     public function testIsValidShouldBeTrueForUidAndTitle()
     {
-        $model = $this->getModel(array('uid' => 57, 'title' => 'foo'), 'Tx_Rnbase_Domain_Model_Base');
+        $model = $this->getModel(['uid' => 57, 'title' => 'foo'], 'Tx_Rnbase_Domain_Model_Base');
         $this->assertTrue($model->isValid());
     }
 }

@@ -154,9 +154,6 @@ class tx_rnbase_tests_controller_testcase extends tx_rnbase_tests_BaseTestCase
         );
     }
 
-    /**
-     * @return void
-     */
     private function setExceptionHandlerConfig($exceptionHandler = '')
     {
         $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rn_base']);
@@ -181,13 +178,13 @@ class tx_rnbase_tests_controller_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public function testDoActionIfNoExceptionIsFoundCallsNotGetTsfe()
     {
-        $controller = $this->getMock('tx_rnbase_controller', array('getTsfe'));
+        $controller = $this->getMock('tx_rnbase_controller', ['getTsfe']);
 
         $controller->expects($this->never())
             ->method('getTsfe');
 
         $parameters = null;
-        $configurations = $this->createConfigurations(array(), 'rn_base');
+        $configurations = $this->createConfigurations([], 'rn_base');
         $controller->doAction('unknown', $parameters, $configurations);
     }
 
@@ -196,11 +193,11 @@ class tx_rnbase_tests_controller_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public function testDoActionCallsPageNotFoundHandlingIfItemNotFound404Exception()
     {
-        $controller = $this->getMock('tx_rnbase_controller', array('getTsfe'));
+        $controller = $this->getMock('tx_rnbase_controller', ['getTsfe']);
         $tsfe = $this->getMock(
             tx_rnbase_util_Typo3Classes::getTypoScriptFrontendControllerClass(),
-            array('pageNotFoundAndExit'),
-            array(),
+            ['pageNotFoundAndExit'],
+            [],
             '',
             false
         );
@@ -226,11 +223,11 @@ class tx_rnbase_tests_controller_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public function testDoActionCallsPageNotFoundHandlingIfPageNotFoundException()
     {
-        $controller = $this->getMock('tx_rnbase_controller', array('getTsfe'));
+        $controller = $this->getMock('tx_rnbase_controller', ['getTsfe']);
         $tsfe = $this->getMock(
             tx_rnbase_util_Typo3Classes::getTypoScriptFrontendControllerClass(),
-            array('pageNotFoundAndExit'),
-            array(),
+            ['pageNotFoundAndExit'],
+            [],
             '',
             false
         );
@@ -253,21 +250,6 @@ class tx_rnbase_tests_controller_testcase extends tx_rnbase_tests_BaseTestCase
 }
 
 /**
- * nochmal bereitstellen damit die original klasse nicht geladen wird
- *
- * @author Hannes Bochmann
- */
-class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
-{
-    public function handleException($actionName, Exception $e, Tx_Rnbase_Configuration_ProcessorInterface $configurations)
-    {
-        return $actionName . ' ' . $e->getMessage();
-    }
-}
-
-/**
- * nochmal bereitstellen damit die original klasse nicht geladen wird
- *
  * @author Hannes Bochmann
  */
 class tx_rnbase_exception_HandlerWithoutCorrectInterface
@@ -288,7 +270,6 @@ class tx_rnbase_exception_CustomHandler implements tx_rnbase_exception_IHandler
 
 class tx_rnbase_tests_action_throwItemNotFound404Exception
 {
-
     /**
      * @throws tx_rnbase_exception_ItemNotFound404
      */
@@ -300,7 +281,6 @@ class tx_rnbase_tests_action_throwItemNotFound404Exception
 
 class tx_rnbase_tests_action_throwPageNotFoundException
 {
-
     /**
      * @throws TYPO3\CMS\Core\Error\Http\PageNotFoundException
      */

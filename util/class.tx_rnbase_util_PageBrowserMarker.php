@@ -26,24 +26,22 @@ tx_rnbase::load('tx_rnbase_util_BaseMarker');
 tx_rnbase::load('tx_rnbase_util_PageBrowser');
 tx_rnbase::load('tx_rnbase_util_Math');
 
-
-
 /**
- * Contains utility functions for HTML-Forms
+ * Contains utility functions for HTML-Forms.
  */
 class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
 {
-    private $pagePartsDef = array('normal', 'current', 'first', 'last', 'prev', 'next', 'prev_bullets', 'next_bullets');
+    private $pagePartsDef = ['normal', 'current', 'first', 'last', 'prev', 'next', 'prev_bullets', 'next_bullets'];
 
     /**
-     * Erstellung des PageBrowserMarkers
+     * Erstellung des PageBrowserMarkers.
      */
     public function __construct()
     {
     }
 
     /**
-     * Initialisierung des PageBrowserMarkers mit den PageBrowser
+     * Initialisierung des PageBrowserMarkers mit den PageBrowser.
      */
     public function setPageBrowser($pageBrowser)
     {
@@ -51,7 +49,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
     }
 
     /**
-     * Liefert die Limit-Angaben für die DB-Anfrage
+     * Liefert die Limit-Angaben für die DB-Anfrage.
      *
      *  <!-- ###PAGEBROWSER### START -->
      *      <div class="pagebrowser">
@@ -103,7 +101,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
         // example: "9-16 von 19 News"
         $rangeFrom = $state['offset'] + 1;
         $rangeTo = ($pointer != $totalPages - 1) ? ($pointer + 1) * $state['limit'] : $count;
-        if ($totalPages == 1 && $configurations->get($pbConfId.'hideIfSinglePage')) {
+        if (1 == $totalPages && $configurations->get($pbConfId.'hideIfSinglePage')) {
             return '';
         }
         $maxPages = intval($configurations->get($pbConfId.'maxPages'));
@@ -113,20 +111,20 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
         $pageFloat = $this->getPageFloat($configurations->get($pbConfId.'pagefloat'), $maxPages);
         $firstLastArr = $this->getFirstLastPage($pointer, $pageFloat, $totalPages, $maxPages);
 
-        $arr = array(
+        $arr = [
             'count' => $count,
             'rangefrom' => $rangeFrom,
             'rangeto' => $rangeTo,
-            'totalpages' => $totalPages
-        );
+            'totalpages' => $totalPages,
+        ];
         $markerArray = $formatter->getItemMarkerArrayWrapped($arr, $pbConfId, 0, $pbMarker.'_');
 
         $subpartArray = $this->createSubpartArray($pbMarker);
 
         //---- Ab jetzt werden die Templates gefüllt
-        $parts = array(); // Hier werden alle Teile des Browser gesammelt
+        $parts = []; // Hier werden alle Teile des Browser gesammelt
         // Der Marker für die erste Seite
-        if ($templates['first'] && $pointer != 0) {
+        if ($templates['first'] && 0 != $pointer) {
             $parts[] = $this->getPageString(0, $pointer, 'first', $templates, $formatter, $pbConfId, $pbMarker);
         }
 
@@ -141,7 +139,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
         }
 
         // Jetzt über alle Seiten iterieren
-        for ($i = $firstLastArr['first']; $i < $firstLastArr['last']; $i++) {
+        for ($i = $firstLastArr['first']; $i < $firstLastArr['last']; ++$i) {
             $pageId = ($i == $pointer && $templates['current']) ? 'current' : 'normal';
             $parts[] = $this->getPageString($i, $pointer, $pageId, $templates, $formatter, $pbConfId, $pbMarker);
         }
@@ -169,11 +167,11 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
     }
 
     /**
-     * Liefert das passende Template für die aktuelle Seite
+     * Liefert das passende Template für die aktuelle Seite.
      */
     protected function getPageString($currentPage, $pointer, $pageId, &$templates, &$formatter, $pbConfId, $pbMarker)
     {
-        $rec = array();
+        $rec = [];
         $rec['number'] = $currentPage + 1;
 
         $pageTemplate = $templates[$pageId];
@@ -181,10 +179,10 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
         $pageMarker = $pbMarker.'_'.strtoupper($pageId).'_PAGE_';
 
         $pageMarkerArray = $formatter->getItemMarkerArrayWrapped($rec, $pageConfId, 0, $pageMarker);
-        $pageSubpartArray = array();
+        $pageSubpartArray = [];
 
         if ($this->link) {
-            $this->link->parameters(array($this->pageBrowser->getParamName('pointer') => $currentPage));
+            $this->link->parameters([$this->pageBrowser->getParamName('pointer') => $currentPage]);
             $pageWrappedSubpartArray['###'.$pageMarker.'LINK###'] = explode($this->token, $this->link->makeTag());
             $pageMarkerArray['###'.$pageMarker.'LINKURL###'] = $this->link->makeUrl();
         } else {
@@ -199,11 +197,12 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
 
     /**
      * Ermittelt die erste und die letzte Seite, die im Browser gezeigt wird.
+     *
      * @return array with keys 'first' and 'last'
      */
     private function getFirstLastPage($pointer, $pageFloat, $totalPages, $maxPages)
     {
-        $ret = array();
+        $ret = [];
         if ($pageFloat > -1) {
             $ret['last'] = min($totalPages, max($pointer + 1 + $pageFloat, $maxPages));
             $ret['first'] = max(0, $ret['last'] - $maxPages);
@@ -222,7 +221,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
     private function getPageFloat($pageFloat, $maxPages)
     {
         if ($pageFloat) {
-            if (strtoupper($pageFloat) == 'CENTER') {
+            if ('CENTER' == strtoupper($pageFloat)) {
                 $pageFloat = ceil(($maxPages - 1) / 2);
             } else {
                 $pageFloat = tx_rnbase_util_Math::intInRange($pageFloat, -1, $maxPages - 1);
@@ -235,7 +234,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
     }
 
     /**
-     * Liefert ein Array mit allen verfügbaren Subtemplates der Seiten
+     * Liefert ein Array mit allen verfügbaren Subtemplates der Seiten.
      *
      * @param string $template
      * @param string $pbMarker
@@ -244,9 +243,9 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
      */
     protected function getTemplates($template, $pbMarker)
     {
-        $ret = array();
+        $ret = [];
         foreach ($this->pagePartsDef as $part) {
-            $ret[$part] = tx_rnbase_util_Templates::getSubpart($template, '###'.$pbMarker.'_' . strtoupper($part) . '_PAGE###');
+            $ret[$part] = tx_rnbase_util_Templates::getSubpart($template, '###'.$pbMarker.'_'.strtoupper($part).'_PAGE###');
         }
 
         return $ret;
@@ -257,10 +256,10 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
      */
     private function createSubpartArray($pbMarker)
     {
-        $ret = array();
+        $ret = [];
 
         foreach ($this->pagePartsDef as $part) {
-            $ret['###'.$pbMarker.'_' . strtoupper($part) . '_PAGE###'] = '';
+            $ret['###'.$pbMarker.'_'.strtoupper($part).'_PAGE###'] = '';
         }
 
         return $ret;
@@ -269,14 +268,15 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
     /**
      * Initialisiert die interne Link-Instanz
      * TODO: Konfigurierbar machen!!
+     *
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configuration
      */
     protected function initLink(&$configuration, $pbConfId)
     {
         $this->link = $configuration->createLink();
-        $this->link->initByTS($configuration, $pbConfId.'link.', array());
+        $this->link->initByTS($configuration, $pbConfId.'link.', []);
         $this->token = md5(microtime());
         $this->link->label($this->token);
-        $this->noLink = array('', '');
+        $this->noLink = ['', ''];
     }
 }

@@ -1,4 +1,7 @@
 <?php
+
+use Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface;
+
 /***************************************************************
  * Copyright notice
  *
@@ -23,39 +26,32 @@
  ***************************************************************/
 
 tx_rnbase::load('Tx_Rnbase_Domain_Repository_InterfaceSearch');
-tx_rnbase::load('Tx_Rnbase_Interface_Singleton');
 
 /**
- * Abstracte Repository Klasse
+ * Abstracte Repository Klasse.
  *
- * @package TYPO3
- * @subpackage Tx_Rnbase
  * @author Michael Wagner
  */
-abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnbase_Domain_Repository_InterfaceSearch, Tx_Rnbase_Interface_Singleton
+abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnbase_Domain_Repository_InterfaceSearch, SingletonInterface
 {
-
     /**
-     * Liefert den Namen der Suchklasse
+     * Liefert den Namen der Suchklasse.
      *
-     * @return  string
+     * @return string
      */
     abstract protected function getSearchClass();
 
     /**
-     * Liefert den Searcher
+     * Liefert den Searcher.
      *
-     * @return  tx_rnbase_util_SearchBase
+     * @return tx_rnbase_util_SearchBase
      */
     protected function getSearcher()
     {
         tx_rnbase::load('tx_rnbase_util_SearchBase');
         $searcher = tx_rnbase_util_SearchBase::getInstance($this->getSearchClass());
         if (!$searcher instanceof tx_rnbase_util_SearchBase) {
-            throw new Exception(
-                get_class($this) . '->getSearchClass() has to return a classname' .
-                ' of class which extends tx_rnbase_util_SearchBase!'
-            );
+            throw new Exception(get_class($this).'->getSearchClass() has to return a classname'.' of class which extends tx_rnbase_util_SearchBase!');
         }
 
         return $searcher;
@@ -65,7 +61,7 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
      * Returns the Collection class.
      * Can be overriden by the child repository class.
      *
-     * @return  string
+     * @return string
      */
     protected function getCollectionClass()
     {
@@ -75,7 +71,7 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
     /**
      * Liefert die Model Klasse.
      *
-     * @return  string
+     * @return string
      */
     protected function getWrapperClass()
     {
@@ -83,7 +79,7 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
     }
 
     /**
-     * Return an instantiated dummy model without any content
+     * Return an instantiated dummy model without any content.
      *
      * This is used only to access several model info methods like
      * getTableName(), getColumnNames() etc.
@@ -118,17 +114,17 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
     }
 
     /**
-     * Returns all items
+     * Returns all items.
      *
      * @return Tx_Rnbase_Domain_Collection_Base
      */
     public function findAll()
     {
-        return $this->search(array(), array());
+        return $this->search([], []);
     }
 
     /**
-     * Search database
+     * Search database.
      *
      * @param array $fields
      * @param array $options
@@ -145,7 +141,7 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
     }
 
     /**
-     * Search database
+     * Search database.
      *
      * @param array $fields
      * @param array $options
@@ -153,12 +149,12 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
      * @return Tx_Rnbase_Domain_Model_DomainInterface
      */
     public function searchSingle(
-        array $fields = array(),
-        array $options = array()
+        array $fields = [],
+        array $options = []
     ) {
         $options['limit'] = 1;
 
-        $items =  $this->search($fields, $options);
+        $items = $this->search($fields, $options);
 
         if (!empty($items[0])) {
             return $items[0];
@@ -168,12 +164,10 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
     }
 
     /**
-     * On default, return hidden and deleted fields in backend
+     * On default, return hidden and deleted fields in backend.
      *
      * @param array $fields
      * @param array $options
-     *
-     * @return void
      */
     protected function prepareFieldsAndOptions(
         array &$fields,
@@ -188,14 +182,11 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
         $this->handleLanguageOptions($fields, $options);
     }
 
-
     /**
-     * On default, return hidden and deleted fields in backend
+     * On default, return hidden and deleted fields in backend.
      *
      * @param array $fields
      * @param array $options
-     *
-     * @return void
      */
     protected function handleEnableFieldsOptions(
         array &$fields,
@@ -217,8 +208,6 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
      *
      * @param array $fields
      * @param array $options
-     *
-     * @return void
      */
     protected function handleLanguageOptions(
         array &$fields,
@@ -234,7 +223,7 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
             // Die Sprache prüfen wir nur, wenn ein Sprachfeld gesetzt ist.
             if (!empty($languageField)) {
                 $tsfe = tx_rnbase_util_TYPO3::getTSFE();
-                $languages = array();
+                $languages = [];
                 if (isset($options['additionali18n'])) {
                     $languages = tx_rnbase_util_Strings::trimExplode(
                         ',',
@@ -258,10 +247,10 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
     }
 
     /**
-     * Modifiziert die Ergebisliste
+     * Modifiziert die Ergebisliste.
      *
      * @param Traversable|array $items
-     * @param array $options
+     * @param array             $options
      *
      * @return array[Tx_Rnbase_Domain_Model_DomainInterface]
      */
@@ -281,7 +270,7 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
      * Dabei werden die Sprachoverlays bevorzugt.
      *
      * @param Traversable|array $items
-     * @param array $options
+     * @param array             $options
      *
      * @return array[Tx_Rnbase_Domain_Model_RecordInterface]
      */
@@ -296,7 +285,7 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
             && $options['distinct']
         )) {
             // seperate master and overlays
-            $master = $overlay = array();
+            $master = $overlay = [];
             /* @var $item Tx_Rnbase_Domain_Model_RecordInterface */
             foreach ($items as $item) {
                 $uid = (int) $item->getUid();
@@ -308,9 +297,9 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
                 }
             }
             // merge master and overlays and keep the order!
-            $new = array();
+            $new = [];
             // uniquemode can be master or overlay!
-            $preferOverlay = empty($options['uniquemode']) || strtolower($options['uniquemode']) !== 'master';
+            $preferOverlay = empty($options['uniquemode']) || 'master' !== strtolower($options['uniquemode']);
             foreach ($items as $item) {
                 $uid = (int) $item->getUid();
                 $new[$uid] = !empty($overlay[$uid]) && $preferOverlay ? $overlay[$uid] : $master[$uid];
@@ -324,31 +313,5 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
         }
 
         return $items;
-    }
-}
-
-/**
- * The old class for backwards compatibility
- *
- * @deprecated: will be dropped in the feature!
- *
- * @package TYPO3
- * @subpackage Tx_Rnbase
- * @author Michael Wagner
- */
-abstract class Tx_Rnbase_Repository_AbstractRepository extends Tx_Rnbase_Domain_Repository_AbstractRepository
-{
-    /**
-     * Constructor to log deprecation!
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
-        $utility::deprecationLog(
-            'Usage of "Tx_Rnbase_Repository_AbstractRepository" is deprecated' .
-            'Please use "Tx_Rnbase_Domain_Repository_AbstractRepository" instead!'
-        );
     }
 }

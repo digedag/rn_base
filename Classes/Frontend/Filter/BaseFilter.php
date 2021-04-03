@@ -2,10 +2,10 @@
 
 namespace Sys25\RnBase\Frontend\Filter;
 
-use Sys25\RnBase\Frontend\Request\RequestInterface;
-use Sys25\RnBase\Frontend\Request\ParametersInterface;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Frontend\Filter\Utility\Category;
+use Sys25\RnBase\Frontend\Request\ParametersInterface;
+use Sys25\RnBase\Frontend\Request\RequestInterface;
 
 /***************************************************************
  *  Copyright notice
@@ -31,7 +31,6 @@ use Sys25\RnBase\Frontend\Filter\Utility\Category;
 
 class BaseFilter implements FilterInterface
 {
-
     /**
      * @var ConfigurationInterface
      */
@@ -55,14 +54,14 @@ class BaseFilter implements FilterInterface
     protected $filterItems;
 
     /**
-     * @var null|boolean wenn $doSearch auf null steht wird der return Wert von initFilter()
-     * in init() zurück gegeben. Ansonsten der Wert von $doSearch, dieser hat also Vorrang.
+     * @var bool|null wenn auf null steht wird der return Wert von initFilter()
+     *                in init() zurück gegeben. Ansonsten der Wert von $doSearch, dieser hat also Vorrang.
      */
     protected $doSearch = null;
 
     /**
      * @param RequestInterface $request
-     * @param string $confId
+     * @param string           $confId
      */
     public function __construct($request, $confId)
     {
@@ -73,7 +72,7 @@ class BaseFilter implements FilterInterface
     }
 
     /**
-     * Liefert das Config-Objekt
+     * Liefert das Config-Objekt.
      *
      * @return ConfigurationInterface
      */
@@ -83,7 +82,7 @@ class BaseFilter implements FilterInterface
     }
 
     /**
-     * Liefert die Parameter
+     * Liefert die Parameter.
      *
      * @return ParametersInterface
      */
@@ -103,10 +102,11 @@ class BaseFilter implements FilterInterface
     }
 
     /**
-     * Abgeleitete Filter können diese Methode überschreiben und zusätzlich Filter setzen
+     * Abgeleitete Filter können diese Methode überschreiben und zusätzlich Filter setzen.
      *
      * @param array $fields
      * @param array $options
+     *
      * @return bool if FALSE no search should be done
      */
     public function init(&$fields, &$options)
@@ -130,13 +130,14 @@ class BaseFilter implements FilterInterface
     }
 
     /**
-     * @param boolean $fallback
-     * @return boolean
+     * @param bool $fallback
+     *
+     * @return bool
      */
     protected function shouldSearchBeDone($fallback)
     {
         $doSearch = $this->doSearch;
-        if ($doSearch === null) {
+        if (null === $doSearch) {
             $doSearch = $fallback;
         }
 
@@ -144,7 +145,7 @@ class BaseFilter implements FilterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function hideResult()
     {
@@ -152,11 +153,12 @@ class BaseFilter implements FilterInterface
     }
 
     /**
-     * Abgeleitete Filter können diese Methode überschreiben und zusätzlich Filter setzen
+     * Abgeleitete Filter können diese Methode überschreiben und zusätzlich Filter setzen.
      *
-     * @param array $fields
-     * @param array $options
+     * @param array            $fields
+     * @param array            $options
      * @param RequestInterface $request
+     *
      * @return bool
      */
     protected function initFilter(&$fields, &$options, RequestInterface $request)
@@ -166,13 +168,13 @@ class BaseFilter implements FilterInterface
 
     /**
      * Hilfsmethode zum Setzen von Filtern aus den Parametern. Ein schon gesetzter Wert im Field-Array
-     * wird nicht überschrieben. Die
+     * wird nicht überschrieben. Die.
      *
-     * @param string $idstr
-     * @param array $fields
-     * @param tx_rnbase_parameters $parameters
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param string $operator Operator-Konstante
+     * @param string                                             $idstr
+     * @param array                                              $fields
+     * @param \Sys25\RnBase\Frontend\Request\Parameters          $parameters
+     * @param \Sys25\RnBase\Configuration\ConfigurationInterface $configurations
+     * @param string                                             $operator       Operator-Konstante
      */
     public function setField($idstr, &$fields, $parameters, $configurations, $operator = OP_LIKE)
     {
@@ -185,9 +187,9 @@ class BaseFilter implements FilterInterface
     }
 
     /**
-     * @param tx_rnbase_IFilterItem $item
+     * @param IFilterItem $item
      */
-    public function addFilterItem(tx_rnbase_IFilterItem $item)
+    public function addFilterItem(IFilterItem $item)
     {
         $this->filterItems[] = $item;
     }
@@ -195,7 +197,7 @@ class BaseFilter implements FilterInterface
     /**
      * Returns all filter items set.
      *
-     * @return array[tx_rnbase_IFilterItem]
+     * @return IFilterItem[]
      */
     public function getFilterItems()
     {
@@ -207,8 +209,9 @@ class BaseFilter implements FilterInterface
      * wird über die Config gelesen. Klappt beides nicht, wird der Standardfilter geliefert.
      *
      * @param RequestInterface $request
-     * @param string $confId
-     * @param string $filterClass Klassenname des Filters
+     * @param string           $confId
+     * @param string           $filterClass Klassenname des Filters
+     *
      * @return FilterInterface
      */
     public static function createFilter(RequestInterface $request, $confId, $filterClass = '')
@@ -217,7 +220,7 @@ class BaseFilter implements FilterInterface
 
         $filterClass = ($filterClass) ? $filterClass : $configurations->get($confId.'class');
         $filterClass = ($filterClass) ? $filterClass : $configurations->get($confId.'filter');
-        $filterClass = ($filterClass) ? $filterClass : BaseFilter::class;
+        $filterClass = ($filterClass) ? $filterClass : self::class;
         $filter = \tx_rnbase::makeInstance($filterClass, $request, $confId);
         $request->getViewContext()->offsetSet('filter', $filter);
 
@@ -225,7 +228,8 @@ class BaseFilter implements FilterInterface
     }
 
     /**
-     * Whether or not a charbrowser should be ignored
+     * Whether or not a charbrowser should be ignored.
+     *
      * @return bool
      */
     public function isSpecialSearch()

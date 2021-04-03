@@ -1,8 +1,11 @@
 <?php
+
+use Sys25\RnBase\Utility\TYPO3;
+
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010-2018 Rene Nitzsche (rene@system25.de)
+*  (c) 2010-2020 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -21,13 +24,10 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
 /**
- * Tx_Rnbase_Backend_Form_ToolBoxTest
+ * Tx_Rnbase_Backend_Form_ToolBoxTest.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
@@ -55,13 +55,13 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testCreateSelectSingleByArrayCallsJustCreateSelectByArray()
     {
-        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', array('createSelectByArray'));
+        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', ['createSelectByArray']);
         $formTool->expects(self::once())
             ->method('createSelectByArray')
-            ->with(1, 2, array('test1'), array('test2'))
+            ->with(1, 2, ['test1'], ['test2'])
             ->will(self::returnValue('returned'));
 
-        self::assertEquals('returned', $formTool->createSelectSingleByArray(1, 2, array('test1'), array('test2')));
+        self::assertEquals('returned', $formTool->createSelectSingleByArray(1, 2, ['test1'], ['test2']));
     }
 
     /**
@@ -70,7 +70,7 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
     public function testCreateSelectByArray()
     {
         $formTool = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Form_ToolBox');
-        $select = $formTool->createSelectByArray('testSelect', 2, array(1 => 'John', 2 => 'Doe'));
+        $select = $formTool->createSelectByArray('testSelect', 2, [1 => 'John', 2 => 'Doe']);
         $expectedSelect = '<select name="testSelect" class="select"><option value="1" >John</option><option value="2" selected="selected">Doe</option></select>';
 
         self::assertEquals($expectedSelect, $select);
@@ -85,8 +85,8 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
         $select = $formTool->createSelectByArray(
             'testSelect',
             1,
-            array(1 => 'John', 2 => 'Doe'),
-            array('reload' => true)
+            [1 => 'John', 2 => 'Doe'],
+            ['reload' => true]
         );
         $expectedSelect = '<select name="testSelect" class="select" onchange=" this.form.submit(); " ><option value="1" selected="selected">John</option><option value="2" >Doe</option></select>';
 
@@ -102,8 +102,8 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
         $select = $formTool->createSelectByArray(
             'testSelect',
             1,
-            array(1 => 'John', 2 => 'Doe'),
-            array('onchange' => 'myJsFunction')
+            [1 => 'John', 2 => 'Doe'],
+            ['onchange' => 'myJsFunction']
         );
         $expectedSelect = '<select name="testSelect" class="select" onchange="myJsFunction" ><option value="1" selected="selected">John</option><option value="2" >Doe</option></select>';
 
@@ -119,8 +119,8 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
         $select = $formTool->createSelectByArray(
             'testSelect',
             1,
-            array(1 => 'John', 2 => 'Doe'),
-            array('onchange' => 'myJsFunction', 'reload' => true)
+            [1 => 'John', 2 => 'Doe'],
+            ['onchange' => 'myJsFunction', 'reload' => true]
         );
         $expectedSelect = '<select name="testSelect" class="select" onchange=" this.form.submit(); myJsFunction" ><option value="1" selected="selected">John</option><option value="2" >Doe</option></select>';
 
@@ -136,8 +136,8 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
         $select = $formTool->createSelectByArray(
             'testSelect',
             '1,2',
-            array(1 => 'John', 2 => 'Doe'),
-            array('multiple' => true)
+            [1 => 'John', 2 => 'Doe'],
+            ['multiple' => true]
         );
         $expectedSelect = '<select name="testSelect[]" class="select" multiple="multiple"><option value="1" selected="selected">John</option><option value="2" selected="selected">Doe</option></select>';
 
@@ -153,8 +153,8 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
         $select = $formTool->createSelectByArray(
             'testSelect',
             '1,2',
-            array(1 => 'John', 2 => 'Doe'),
-            array('size' => 20)
+            [1 => 'John', 2 => 'Doe'],
+            ['size' => 20]
         );
         $expectedSelect = '<select name="testSelect" class="select" size="20"><option value="1" selected="selected">John</option><option value="2" selected="selected">Doe</option></select>';
 
@@ -164,10 +164,11 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
     /**
      * @group integration
      * @TODO: refactor, requires $GLOBALS['BE_USER']!
+     * @TODO: this test should test rn_base code, not TYPO3 internals
      */
     public function testGetJavaScriptForLinkToDataHandlerActionInTypo387()
     {
-        if (!tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
+        if (!TYPO3::isTYPO87OrHigher() || TYPO3::isTYPO104OrHigher()) {
             self::markTestSkipped('wir testen die Version ab TYPO3 8.7');
         }
 
@@ -188,23 +189,23 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetJavaScriptForLinkToDataHandlerActionAddsNecessaryJavaScriptsInTypo387()
     {
-        if (!tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
+        if (!TYPO3::isTYPO87OrHigher()) {
             self::markTestSkipped('wir testen die Version ab TYPO3 8.7');
         }
 
-        $formTool = $this->getAccessibleMock('Tx_Rnbase_Backend_Form_ToolBox', array('getBaseJavaScriptCode'));
+        $formTool = $this->getAccessibleMock('Tx_Rnbase_Backend_Form_ToolBox', ['getBaseJavaScriptCode']);
         $formTool
             ->expects(self::once())
             ->method('getBaseJavaScriptCode')
             ->will(self::returnValue('javascriptCode'));
 
-        $pageRenderer = $this->getMock('stdClass', array('addJsInlineCode'));
+        $pageRenderer = $this->getMock('stdClass', ['addJsInlineCode']);
         $pageRenderer
             ->expects(self::once())
             ->method('addJsInlineCode')
             ->with('rnBaseMethods', 'javascriptCode');
 
-        $document = $this->getMock('Tx_Rnbase_Backend_Template_Override_DocumentTemplate', array('getPageRenderer'));
+        $document = $this->getMock('Tx_Rnbase_Backend_Template_Override_DocumentTemplate', ['getPageRenderer']);
         $document
             ->expects(self::once())
             ->method('getPageRenderer')
@@ -226,7 +227,7 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
         $urlParameters = 'someParameters';
         $options = ['test'];
 
-        $formTool = $this->getAccessibleMock('Tx_Rnbase_Backend_Form_ToolBox', array('getConfirmCode'));
+        $formTool = $this->getAccessibleMock('Tx_Rnbase_Backend_Form_ToolBox', ['getConfirmCode']);
         $formTool->init(tx_rnbase::makeInstance('Tx_Rnbase_Backend_Template_Override_DocumentTemplate'), null);
         $formTool
             ->expects(self::once())
@@ -247,9 +248,9 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
     {
         $pid = 123;
         $urlParameters = 'someParameters=2&param2=bar';
-        $options = ['params'=>['someParameters' => '2', 'param2'=>'bar', 'id' => $pid]];
+        $options = ['params' => ['someParameters' => '2', 'param2' => 'bar', 'id' => $pid]];
 
-        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', array('getLinkThisScript'));
+        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', ['getLinkThisScript']);
         $formTool
             ->expects(self::once())
             ->method('getLinkThisScript')
@@ -257,7 +258,7 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
             ->will(self::returnValue('scriptUrl'));
         unset($options['params']['id']);
         self::assertEquals(
-            htmlspecialchars('<a href="#" class="' . Tx_Rnbase_Backend_Form_ToolBox::CSS_CLASS_BTN .
+            htmlspecialchars('<a href="#" class="'.Tx_Rnbase_Backend_Form_ToolBox::CSS_CLASS_BTN.
                 '" onclick="'."window.location.href='scriptUrl'; return false;".'" >mylabel</a>'),
             htmlspecialchars($formTool->createLink($urlParameters, $pid, 'mylabel', $options))
         );
@@ -270,14 +271,14 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
     public function testCreateNewLink()
     {
         $options = [
-            Tx_Rnbase_Backend_Form_ToolBox::OPTION_PARAMS =>'&someParameters=2&param2=bar',
+            Tx_Rnbase_Backend_Form_ToolBox::OPTION_PARAMS => '&someParameters=2&param2=bar',
             Tx_Rnbase_Backend_Form_ToolBox::OPTION_DEFVALS => ['tx_cfcleague_games' => ['competition' => 2, 'round' => 4]],
         ];
 
         $formTool = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Form_ToolBox');
         $result = $formTool->createNewLink('tx_cfcleague_games', 2, 'mylabel', $options);
 
-        self::assertContains('class="' . Tx_Rnbase_Backend_Form_ToolBox::CSS_CLASS_BTN.'"', $result);
+        self::assertContains('class="'.Tx_Rnbase_Backend_Form_ToolBox::CSS_CLASS_BTN.'"', $result);
         self::assertContains('mylabel</a>', $result);
         self::assertContains('edit[tx_cfcleague_games][2]=new', $result);
         self::assertContains('defVals[tx_cfcleague_games][competition]=2', $result);
@@ -294,15 +295,15 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
         $urlParameters = 'someParameter=1';
         $options = ['hover' => 'hoverTitle'];
 
-        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', array('getLinkThisScript'));
+        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', ['getLinkThisScript']);
         $formTool
             ->expects(self::once())
             ->method('getLinkThisScript')
-            ->with(false, ['params'=>['someParameter'=>1, 'id' =>0]])
+            ->with(false, ['params' => ['someParameter' => 1, 'id' => 0]])
             ->will(self::returnValue('scriptUrl'));
 
         self::assertEquals(
-            htmlspecialchars('<a href="#" class="' . Tx_Rnbase_Backend_Form_ToolBox::CSS_CLASS_BTN .
+            htmlspecialchars('<a href="#" class="'.Tx_Rnbase_Backend_Form_ToolBox::CSS_CLASS_BTN.
                 '" onclick="'."window.location.href='scriptUrl'; return false;".'" title="hoverTitle">mylabel</a>'),
             htmlspecialchars($formTool->createLink($urlParameters, 0, 'mylabel', $options))
         );
@@ -316,11 +317,11 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
         $urlParameters = 'someParameter=1';
         $options = ['class' => 'myClass'];
 
-        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', array('getLinkThisScript'));
+        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', ['getLinkThisScript']);
         $formTool
             ->expects(self::once())
             ->method('getLinkThisScript')
-            ->with(false, ['params'=>['someParameter'=>1, 'id' => 22]])
+            ->with(false, ['params' => ['someParameter' => 1, 'id' => 22]])
             ->will(self::returnValue('scriptUrl'));
 
         self::assertEquals(
@@ -331,21 +332,22 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
+     * @TODO: mock T3 dependencies
      * @group unit
      */
     public function testCreateLinkWithIconForTypo387()
     {
-        if (!tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
+        if (!TYPO3::isTYPO87OrHigher() || TYPO3::isTYPO104OrHigher()) {
             self::markTestSkipped('wir testen die Version ab TYPO3 8.7');
         }
         $urlParameters = 'parameter=test';
         $options = ['icon' => 'actions-add', 'class' => 'myClass'];
 
-        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', array('getLinkThisScript'));
+        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', ['getLinkThisScript']);
         $formTool
             ->expects(self::once())
             ->method('getLinkThisScript')
-            ->with(false, ['params' => array('parameter' => 'test', 'id' => '0')])
+            ->with(false, ['params' => ['parameter' => 'test', 'id' => '0']])
             ->will(self::returnValue('jumpUrl'));
 
         self::assertRegExp(
@@ -355,21 +357,22 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
+     * @TODO: mock T3 dependencies
      * @group unit
      */
     public function testCreateLinkWithIconAndSizeForTypo387()
     {
-        if (!tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
+        if (!TYPO3::isTYPO87OrHigher() || TYPO3::isTYPO104OrHigher()) {
             self::markTestSkipped('wir testen die Version ab TYPO3 8.7');
         }
         $urlParameters = 'parameter=test';
         $options = ['icon' => 'actions-add', 'class' => 'myClass', 'size' => 'default'];
 
-        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', array('getLinkThisScript'));
+        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', ['getLinkThisScript']);
         $formTool
             ->expects(self::once())
             ->method('getLinkThisScript')
-            ->with(false, ['params' => array('parameter' => 'test', 'id' => '0')])
+            ->with(false, ['params' => ['parameter' => 'test', 'id' => '0']])
             ->will(self::returnValue('jumpUrl'));
 
         self::assertRegExp(
@@ -386,7 +389,7 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
         $urlParameters = 'someParameters';
         $options = ['test' => 'value'];
 
-        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', array('getJavaScriptForLinkToDataHandlerAction'));
+        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', ['getJavaScriptForLinkToDataHandlerAction']);
         $formTool
             ->expects(self::once())
             ->method('getJavaScriptForLinkToDataHandlerAction')
@@ -394,7 +397,7 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
             ->will(self::returnValue('jumpUrl'));
 
         self::assertEquals(
-            '<a href="#" class="' . Tx_Rnbase_Backend_Form_ToolBox::CSS_CLASS_BTN . '" onclick="jumpUrl" >mylabel</a>',
+            '<a href="#" class="'.Tx_Rnbase_Backend_Form_ToolBox::CSS_CLASS_BTN.'" onclick="jumpUrl" >mylabel</a>',
             $formTool->createLinkForDataHandlerAction($urlParameters, 'mylabel', $options)
         );
     }
@@ -407,7 +410,7 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
         $urlParameters = 'someParameters';
         $options = ['hover' => 'hoverTitle'];
 
-        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', array('getJavaScriptForLinkToDataHandlerAction'));
+        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', ['getJavaScriptForLinkToDataHandlerAction']);
         $formTool
             ->expects(self::once())
             ->method('getJavaScriptForLinkToDataHandlerAction')
@@ -415,7 +418,7 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
             ->will(self::returnValue('jumpUrl'));
 
         self::assertEquals(
-            '<a href="#" class="' . Tx_Rnbase_Backend_Form_ToolBox::CSS_CLASS_BTN . '" onclick="jumpUrl" title="hoverTitle">mylabel</a>',
+            '<a href="#" class="'.Tx_Rnbase_Backend_Form_ToolBox::CSS_CLASS_BTN.'" onclick="jumpUrl" title="hoverTitle">mylabel</a>',
             $formTool->createLinkForDataHandlerAction($urlParameters, 'mylabel', $options)
         );
     }
@@ -428,7 +431,7 @@ class Tx_Rnbase_Backend_Form_ToolBoxTest extends tx_rnbase_tests_BaseTestCase
         $urlParameters = 'someParameters';
         $options = ['class' => 'myClass'];
 
-        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', array('getJavaScriptForLinkToDataHandlerAction'));
+        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', ['getJavaScriptForLinkToDataHandlerAction']);
         $formTool
             ->expects(self::once())
             ->method('getJavaScriptForLinkToDataHandlerAction')

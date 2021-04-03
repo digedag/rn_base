@@ -25,16 +25,21 @@
 tx_rnbase::load('tx_rnbase_util_FormTool');
 
 /**
- * Pager für BE-Module
+ * Pager für BE-Module.
  */
 class tx_rnbase_util_BEPager
 {
     public $id;
+
     public $pid;
+
     public $listSize;
+
     public $settings;
+
     public $init = false;
-    public function __construct($id, $modName, $pid, $listSize = 0, $conf = array())
+
+    public function __construct($id, $modName, $pid, $listSize = 0, $conf = [])
     {
         $this->id = strlen(trim($id)) ? trim($id) : 'pager';
         $this->pid = $pid;
@@ -42,16 +47,19 @@ class tx_rnbase_util_BEPager
         $this->conf = $conf;
         $this->setListSize($listSize);
     }
+
     public function setListSize($listSize)
     {
         $this->listSize = $listSize;
     }
+
     public function getListSize()
     {
         return $this->listSize;
     }
+
     /**
-     * Setzt die Daten für den SQL-Select
+     * Setzt die Daten für den SQL-Select.
      *
      * @param array $options
      */
@@ -66,20 +74,23 @@ class tx_rnbase_util_BEPager
     {
         $this->settings[$this->getDataName().'_'.$name] = $value;
     }
+
     public function getSetting($name)
     {
         return $this->settings[$this->getDataName().'_'.$name];
     }
+
     /**
-     * Returns the array with page size limit
+     * Returns the array with page size limit.
      *
      * @return array
      */
     public function getLimits()
     {
         return is_array($this->conf['limits']) ? $this->conf['limits'] :
-                array('10' => '10 Einträge', '25' => '25 Einträge', '50' => '50 Einträge', '100' => '100 Einträge');
+                ['10' => '10 Einträge', '25' => '25 Einträge', '50' => '50 Einträge', '100' => '100 Einträge'];
     }
+
     public function setState()
     {
         if ($this->init) {
@@ -95,21 +106,23 @@ class tx_rnbase_util_BEPager
         $totalPages = ceil($count / $results_at_a_time);
         // Wir zeigen erstmal maximal 200 Einträge in diesem Menu. Bei sehr großen Listen
         // kommt es sonst zu Speicher-Problemen
-        $pages = array();
-        for ($i = 0; $i < $totalPages; $i++) {
+        $pages = [];
+        for ($i = 0; $i < $totalPages; ++$i) {
             if ($i > 200) {
                 break;
             }
-            $pages[$i * $results_at_a_time] = 'Seite '. $i;
+            $pages[$i * $results_at_a_time] = 'Seite '.$i;
         }
         $menu = tx_rnbase_util_FormTool::showMenu($this->pid, $this->getDataName().'_offset', $this->modName, $pages);
         $this->setSetting('offset', $menu['value']);
         $this->setSetting('offsetMenu', $menu['menu']);
         $this->init = true;
     }
+
     /**
      * Liefert die Eingabeelemente des Pagers. Das sind die Auswahlbox der Seitengrösse
-     * und die Seitenauswahl. Das Rückgabearray hat zwei Keys: pager und options
+     * und die Seitenauswahl. Das Rückgabearray hat zwei Keys: pager und options.
+     *
      * @return array
      */
     public function render()

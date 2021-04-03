@@ -22,17 +22,16 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-/**
- */
 class tx_rnbase_maps_Factory
 {
-    public static $typeInits = array();
+    public static $typeInits = [];
 
     /**
-     * Erstellt eine GoogleMap
+     * Erstellt eine GoogleMap.
      *
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param string $confId
+     * @param string                                     $confId
+     *
      * @return tx_rnbase_maps_google_Map
      */
     public static function createGoogleMap(&$configurations, $confId)
@@ -58,7 +57,7 @@ class tx_rnbase_maps_Factory
                     $image = $configurations->get($iconConfId.'shadow', true);
                     $icon->setShadow($image, $configurations->getInt($iconConfId.'shadow.file.maxW'), $configurations->getInt($iconConfId.'shadow.file.maxH'));
                     $name = $configurations->get($iconConfId.'name');
-                    $icon->setName($name ? $name : tx_rnbase_util_Misc::createHash(array('name' => $image)));
+                    $icon->setName($name ? $name : tx_rnbase_util_Misc::createHash(['name' => $image]));
                     $bubble->setIcon($icon);
                 }
                 $map->addMarker($bubble);
@@ -67,48 +66,60 @@ class tx_rnbase_maps_Factory
 
         return $map;
     }
+
     /**
-     * creates a control
+     * creates a control.
+     *
      * @return tx_rnbase_maps_IControl
      */
     public static function createGoogleControlLargeMap()
     {
         return tx_rnbase::makeInstance('tx_rnbase_maps_google_Control', 'largeMap');
     }
+
     /**
-     * creates a control
+     * creates a control.
+     *
      * @return tx_rnbase_maps_IControl
      */
     public static function createGoogleControlSmallMap()
     {
         return tx_rnbase::makeInstance('tx_rnbase_maps_google_Control', 'smallMap');
     }
+
     /**
-     * creates a control
+     * creates a control.
+     *
      * @return tx_rnbase_maps_IControl
      */
     public static function createGoogleControlScale()
     {
         return tx_rnbase::makeInstance('tx_rnbase_maps_google_Control', 'scale');
     }
+
     /**
-     * creates a control
+     * creates a control.
+     *
      * @return tx_rnbase_maps_IControl
      */
     public static function createGoogleControlSmallZoom()
     {
         return tx_rnbase::makeInstance('tx_rnbase_maps_google_Control', 'smallZoom');
     }
+
     /**
-     * creates a control
+     * creates a control.
+     *
      * @return tx_rnbase_maps_IControl
      */
     public static function createGoogleControlOverview()
     {
         return tx_rnbase::makeInstance('tx_rnbase_maps_google_Control', 'overviewMap');
     }
+
     /**
-     * creates a control
+     * creates a control.
+     *
      * @return tx_rnbase_maps_IControl
      */
     public static function createGoogleControlMapType()
@@ -117,9 +128,10 @@ class tx_rnbase_maps_Factory
     }
 
     /**
-     * Erstellt eine Map
+     * Erstellt eine Map.
      *
      * @param string $clazzName
+     *
      * @return tx_rnbase_maps_IMap
      */
     public static function createMap($clazzName, &$configurations, $confId)

@@ -1,5 +1,9 @@
 <?php
+
 namespace Sys25\RnBase\Utility;
+
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
 /***************************************************************
  * Copyright notice
@@ -53,13 +57,12 @@ class Environment
      * PATH_site, without the trailing slash. For non-composer installations, the project path = the public path.
      *
      * @return string
-     *
      * @return string
      */
     public static function getPublicPath()
     {
         if (\tx_rnbase_util_TYPO3::isTYPO95OrHigher()) {
-            return \TYPO3\CMS\Core\Core\Environment::getPublicPath() . '/';
+            return \TYPO3\CMS\Core\Core\Environment::getPublicPath().'/';
         }
 
         // Deprecated path related constant
@@ -67,14 +70,14 @@ class Environment
     }
 
     /**
-     * The public web folder of typo3
+     * The public web folder of typo3.
      *
      * @return string
      */
     public static function getPublicTypo3Path()
     {
         if (\tx_rnbase_util_TYPO3::isTYPO95OrHigher()) {
-            return \TYPO3\CMS\Core\Core\Environment::getPublicPath() . '/typo3/';
+            return \TYPO3\CMS\Core\Core\Environment::getPublicPath().'/typo3/';
         }
 
         // Deprecated path related constant
@@ -82,17 +85,44 @@ class Environment
     }
 
     /**
-     * The public web folder of typo3conf
+     * The public web folder of typo3conf.
      *
      * @return string
      */
     public static function getPublicTypo3confPath()
     {
         if (\tx_rnbase_util_TYPO3::isTYPO95OrHigher()) {
-            return \TYPO3\CMS\Core\Core\Environment::getPublicPath() . '/typo3conf';
+            return \TYPO3\CMS\Core\Core\Environment::getPublicPath().'/typo3conf';
         }
 
         // Deprecated path related constant
         return PATH_typo3conf;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getCurrentLanguageKey()
+    {
+        if (TYPO3_MODE === 'BE') {
+            return $GLOBALS['LANG']->lang;
+        }
+        if (!\tx_rnbase_util_TYPO3::isTYPO95OrHigher()) {
+            return $GLOBALS['TSFE']->lang;
+        }
+
+        $request = isset($GLOBALS['TYPO3_REQUEST']) ? $GLOBALS['TYPO3_REQUEST'] : null;
+        $languageKey = isset($GLOBALS['TSFE']->config['config']['language'])
+            ? $GLOBALS['TSFE']->config['config']['language'] : 'default';
+
+        if (!$request instanceof ServerRequestInterface) {
+            return $languageKey;
+        }
+
+        if (!$request->getAttribute('language') instanceof SiteLanguage) {
+            return $languageKey;
+        }
+
+        return $request->getAttribute('language')->getTypo3Language();
     }
 }

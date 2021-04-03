@@ -1,6 +1,6 @@
 <?php
 /**
- * Queue class - under PHP 4
+ * Queue class - under PHP 4.
  *
  * @description This is an implementation of FIFO (First In First Out) queue.
  *
@@ -17,43 +17,47 @@
  * @greetings goes to all developers from Poland especially from php.pl :-)
  */
 
-
-/**
- * Default size of queue
+/*
+ * Default size of queue.
  */
 define('QUEUE_DEFAULT_SIZE', 15);
 
-
 /**
- * Implementation of FIFO queue
+ * Implementation of FIFO queue.
+ *
  * @version 1.9
  */
 class tx_rnbase_util_Queue
 {
     public $arrQueue;       // Array of queue items
+
     public $intBegin;       // Begin of queue - head
+
     public $intEnd;         // End of queue - tail
+
     public $intArraySize;   // Size of array
+
     public $intCurrentSize; // Current size of array
 
-
-  /**
-   * Queue constructor
-   * @param int $intQueue - size of queue
-   */
+    /**
+     * Queue constructor.
+     *
+     * @param int $intQueue - size of queue
+     */
     public function __construct($intSize = QUEUE_DEFAULT_SIZE)
     {
-        $this->arrQueue     = array();
+        $this->arrQueue = [];
         $this->intArraySize = $intSize;
 
         $this->clear();
     }
 
-
     /**
-     * Add item to queue
+     * Add item to queue.
+     *
      * @param obj &$objQueueItem - queue item object
-     * @return TRUE if added to queue or false if queue is full and item could not be added
+     *
+     * @return true if added to queue or false if queue is full and item could not be added
      */
     public function put(&$objQueueItem)
     {
@@ -64,18 +68,18 @@ class tx_rnbase_util_Queue
         if ($this->intEnd == $this->intArraySize - 1) {
             $this->intEnd = 0;
         } else {
-            $this->intEnd++;
+            ++$this->intEnd;
         }
 
         $this->arrQueue[$this->intEnd] = $objQueueItem;
-        $this->intCurrentSize++;
+        ++$this->intCurrentSize;
 
         return true;
     }
 
-
     /**
-     * Get item from queue
+     * Get item from queue.
+     *
      * @return object (queue iteme) or false if there is now items in queue
      */
     public function get()
@@ -89,32 +93,31 @@ class tx_rnbase_util_Queue
         if ($this->intBegin == $this->intArraySize - 1) {
             $this->intBegin = 0;
         } else {
-            $this->intBegin++;
+            ++$this->intBegin;
         }
 
-        $this->intCurrentSize--;
+        --$this->intCurrentSize;
 
         return $objItem;
     }
 
-
     /**
-     * Check if queue is empty
-     * @return TRUE if it is empty or false if not
+     * Check if queue is empty.
+     *
+     * @return true if it is empty or false if not
      */
     public function isEmpty()
     {
-        return ($this->intCurrentSize == 0 ? true : false);
+        return 0 == $this->intCurrentSize ? true : false;
     }
 
-
     /**
-     * Clear queue
+     * Clear queue.
      */
     public function clear()
     {
         $this->arrCurrentSize = 0;
-        $this->intBegin       = 0;
-        $this->intEnd         = $this->intArraySize - 1;
+        $this->intBegin = 0;
+        $this->intEnd = $this->intArraySize - 1;
     }
 }

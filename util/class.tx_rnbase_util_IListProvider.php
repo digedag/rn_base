@@ -23,7 +23,7 @@
  ***************************************************************/
 
 /**
- * Provide data for ListBuilder
+ * Provide data for ListBuilder.
  */
 interface tx_rnbase_util_IListProvider
 {

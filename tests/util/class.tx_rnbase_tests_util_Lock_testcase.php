@@ -25,18 +25,13 @@
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_rnbase_util_Lock');
 
-
 /**
- * Basis Testcase
+ * Basis Testcase.
  *
- * @package tx_rnbase
- * @subpackage tx_rnbase_tests
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_rnbase_tests_util_Lock_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
-
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
@@ -56,7 +51,7 @@ class tx_rnbase_tests_util_Lock_testcase extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * removes the test lock file
+     * removes the test lock file.
      */
     private function removeLock()
     {
@@ -65,11 +60,7 @@ class tx_rnbase_tests_util_Lock_testcase extends tx_rnbase_tests_BaseTestCase
         @unlink($filename);
     }
 
-
     /**
-     *
-     * @return void
-     *
      * @group unit
      * @test
      */

@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_rnbase
- * @subpackage tx_rnbase_mod
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -26,43 +24,36 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-/**
- * benötigte Klassen einbinden
+/*
+ * benötigte Klassen einbinden.
  */
 tx_rnbase::load('tx_rnbase_mod_IDecorator');
 
 /**
  * Diese Klasse ist für die Darstellung von Elementen im Backend verantwortlich.
- *
- * @package tx_rnbase
- * @subpackage tx_rnbase_mod1
  */
 class tx_rnbase_tests_fixtures_classes_Decorator implements tx_rnbase_mod_IDecorator
 {
-
     /**
-     *
-     * @param   tx_rnbase_mod_IModule   $mod
+     * @param tx_rnbase_mod_IModule $mod
      */
     public function __construct(tx_rnbase_mod_IModule $mod)
     {
         $this->mod = $mod;
     }
 
-
     /**
-     *
-     * @param   string                  $value
-     * @param   string                  $colName
-     * @param   array                   $record
-     * @param   tx_rnbase_model_base    $item
+     * @param string               $value
+     * @param string               $colName
+     * @param array                $record
+     * @param tx_rnbase_model_base $item
      */
     public function format($value, $colName, $record, tx_rnbase_model_base $item)
     {
         $ret = $value;
 
         //wir manipulieren ein bisschen die daten um zu sehen ob der decorator ansprint
-        if ($colName == 'col1') {
+        if ('col1' == $colName) {
             $ret = str_replace('col1', 'spalte1', $ret);
         }
 

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  Copyright notice
+ *  Copyright notice.
  *
  *  (c) 2016 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  *  All rights reserved
@@ -24,7 +24,7 @@
  */
 
 /**
- * Class Tx_Rnbase_Database_TreeQueryBuilderTest
+ * Class Tx_Rnbase_Database_TreeQueryBuilderTest.
  *
  * @author Mario Seidel <mario.seidel@dmk-ebusiness.de>
  */
@@ -42,13 +42,13 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
      *    |
      *    -- 6
      *       |
-     *       -- 7
+     *       -- 7.
      */
     public function testGetTreeRecursive()
     {
         /**
- * @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock
-*/
+         * @var Tx_Rnbase_Database_TreeQueryBuilder
+         */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
                 $connection->expects(self::at(0))
@@ -56,71 +56,70 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
                     ->with(
                         'uid',
                         'pages',
-                        array('where' => '1=1 AND pid IN (1)', 'tableName' => 'pages')
+                        ['where' => '1=1 AND pid IN (1)', 'tableName' => 'pages']
                     )
-                    ->will(self::returnValue(array(array('uid' => 2))));
+                    ->will(self::returnValue([['uid' => 2]]));
 
                 $connection->expects(self::at(1))
                     ->method('doSelect')
                     ->with(
                         'uid',
                         'pages',
-                        array('where' => '1=1 AND pid IN (2)', 'tableName' => 'pages')
+                        ['where' => '1=1 AND pid IN (2)', 'tableName' => 'pages']
                     )
-                    ->will(self::returnValue(array(array('uid' => 3), array('uid' => 6))));
+                    ->will(self::returnValue([['uid' => 3], ['uid' => 6]]));
 
                 $connection->expects(self::at(2))
                     ->method('doSelect')
                     ->with(
                         'uid',
                         'pages',
-                        array('where' => '1=1 AND pid IN (3)', 'tableName' => 'pages')
+                        ['where' => '1=1 AND pid IN (3)', 'tableName' => 'pages']
                     )
-                    ->will(self::returnValue(array(array('uid' => 4))));
+                    ->will(self::returnValue([['uid' => 4]]));
 
                 $connection->expects(self::at(3))
                     ->method('doSelect')
                     ->with(
                         'uid',
                         'pages',
-                        array('where' => '1=1 AND pid IN (4)', 'tableName' => 'pages')
+                        ['where' => '1=1 AND pid IN (4)', 'tableName' => 'pages']
                     )
-                    ->will(self::returnValue(array()));
+                    ->will(self::returnValue([]));
 
                 $connection->expects(self::at(4))
                     ->method('doSelect')
                     ->with(
                         'uid',
                         'pages',
-                        array('where' => '1=1 AND pid IN (6)', 'tableName' => 'pages')
+                        ['where' => '1=1 AND pid IN (6)', 'tableName' => 'pages']
                     )
-                    ->will(self::returnValue(array(array('uid' => 7))));
+                    ->will(self::returnValue([['uid' => 7]]));
 
                 $connection->expects(self::at(5))
                     ->method('doSelect')
                     ->with(
                         'uid',
                         'pages',
-                        array('where' => '1=1 AND pid IN (7)', 'tableName' => 'pages')
+                        ['where' => '1=1 AND pid IN (7)', 'tableName' => 'pages']
                     )
-                    ->will(self::returnValue(array()));
+                    ->will(self::returnValue([]));
             }
         );
 
-
         $uidList = $treeQueryBuildMock->getPageTreeUidList(1);
 
-        $this->assertEquals(array(1, 2, 3, 4, 6, 7), $uidList);
+        $this->assertEquals([1, 2, 3, 4, 6, 7], $uidList);
     }
 
     public function testLimitedTreeByDepth()
     {
-        $options = array(
-            'depth' => 2
-        );
+        $options = [
+            'depth' => 2,
+        ];
         /**
- * @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock
-*/
+         * @var Tx_Rnbase_Database_TreeQueryBuilder
+         */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
                 $connection->expects(self::at(0))
@@ -128,36 +127,35 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
                     ->with(
                         'uid',
                         'pages',
-                        array('where' => '1=1 AND pid IN (1)', 'tableName' => 'pages')
+                        ['where' => '1=1 AND pid IN (1)', 'tableName' => 'pages']
                     )
-                    ->will(self::returnValue(array(array('uid' => 2))));
+                    ->will(self::returnValue([['uid' => 2]]));
 
                 $connection->expects(self::at(1))
                     ->method('doSelect')
                     ->with(
                         'uid',
                         'pages',
-                        array('where' => '1=1 AND pid IN (2)', 'tableName' => 'pages')
+                        ['where' => '1=1 AND pid IN (2)', 'tableName' => 'pages']
                     )
-                    ->will(self::returnValue(array(array('uid' => 3), array('uid' => 6))));
+                    ->will(self::returnValue([['uid' => 3], ['uid' => 6]]));
             }
         );
 
-
         $uidList = $treeQueryBuildMock->getPageTreeUidList(1, $options);
 
-        $this->assertEquals(array(1, 2, 3, 6), $uidList);
+        $this->assertEquals([1, 2, 3, 6], $uidList);
     }
 
     public function testAddPidToCustomQueryCorrectly()
     {
-        $options = array(
-            'where' => 'hidden=1'
-        );
+        $options = [
+            'where' => 'hidden=1',
+        ];
 
         /**
- * @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock
-*/
+         * @var Tx_Rnbase_Database_TreeQueryBuilder
+         */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
                 $connection->expects(self::at(0))
@@ -165,35 +163,35 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
                     ->with(
                         'uid',
                         'pages',
-                        array('where' => 'hidden=1 AND pid IN (1)', 'tableName' => 'pages')
+                        ['where' => 'hidden=1 AND pid IN (1)', 'tableName' => 'pages']
                     )
-                    ->will(self::returnValue(array(array('uid' => 2))));
+                    ->will(self::returnValue([['uid' => 2]]));
 
                 $connection->expects(self::at(1))
                     ->method('doSelect')
                     ->with(
                         'uid',
                         'pages',
-                        array('where' => 'hidden=1 AND pid IN (2)', 'tableName' => 'pages')
+                        ['where' => 'hidden=1 AND pid IN (2)', 'tableName' => 'pages']
                     )
-                    ->will(self::returnValue(array(array('uid' => 3))));
+                    ->will(self::returnValue([['uid' => 3]]));
             }
         );
 
         $uidList = $treeQueryBuildMock->getPageTreeUidList(1, $options);
 
-        $this->assertEquals(array(1, 2, 3), $uidList);
+        $this->assertEquals([1, 2, 3], $uidList);
     }
 
     public function testSetCustomTableNameCorrectly()
     {
-        $options = array(
-            'tableName' => 'tt_content'
-        );
+        $options = [
+            'tableName' => 'tt_content',
+        ];
 
         /**
- * @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock
-*/
+         * @var Tx_Rnbase_Database_TreeQueryBuilder
+         */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
                 $connection->expects(self::at(0))
@@ -201,47 +199,47 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
                     ->with(
                         'uid',
                         'tt_content',
-                        array('where' => '1=1 AND pid IN (1)', 'tableName' => 'tt_content')
+                        ['where' => '1=1 AND pid IN (1)', 'tableName' => 'tt_content']
                     )
-                    ->will(self::returnValue(array(array('uid' => 33), array('uid' => 44))));
+                    ->will(self::returnValue([['uid' => 33], ['uid' => 44]]));
 
                 $connection->expects(self::at(1))
                     ->method('doSelect')
                     ->with(
                         'uid',
                         'tt_content',
-                        array('where' => '1=1 AND pid IN (33)', 'tableName' => 'tt_content')
+                        ['where' => '1=1 AND pid IN (33)', 'tableName' => 'tt_content']
                     )
-                    ->will(self::returnValue(array()));
+                    ->will(self::returnValue([]));
 
                 $connection->expects(self::at(2))
                     ->method('doSelect')
                     ->with(
                         'uid',
                         'tt_content',
-                        array('where' => '1=1 AND pid IN (44)', 'tableName' => 'tt_content')
+                        ['where' => '1=1 AND pid IN (44)', 'tableName' => 'tt_content']
                     )
-                    ->will(self::returnValue(array()));
+                    ->will(self::returnValue([]));
             }
         );
 
         $uidList = $treeQueryBuildMock->getTreeUidListRecursive(1, 2, 0, $options);
 
-        $this->assertEquals(array(1, 33, 44), $uidList);
+        $this->assertEquals([1, 33, 44], $uidList);
     }
 
     public function testSetQueryOptions()
     {
-        $options = array(
+        $options = [
             'where' => '(starttime > 12345 AND endtime < 98765)',
             'tableName' => 'tt_content',
             'orderby' => 'header',
             'limit' => 1,
-        );
+        ];
 
         /**
- * @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock
-*/
+         * @var Tx_Rnbase_Database_TreeQueryBuilder
+         */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
                 $connection->expects(self::at(0))
@@ -249,45 +247,45 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
                     ->with(
                         'uid',
                         'tt_content',
-                        array(
+                        [
                             'where' => '(starttime > 12345 AND endtime < 98765) AND pid IN (1)',
                             'tableName' => 'tt_content',
                             'orderby' => 'header',
-                            'limit' => 1
-                        )
+                            'limit' => 1,
+                        ]
                     )
-                    ->will(self::returnValue(array(array('uid' => 2))));
+                    ->will(self::returnValue([['uid' => 2]]));
 
                 $connection->expects(self::at(1))
                     ->method('doSelect')
                     ->with(
                         'uid',
                         'tt_content',
-                        array(
+                        [
                             'where' => '(starttime > 12345 AND endtime < 98765) AND pid IN (2)',
                             'tableName' => 'tt_content',
                             'orderby' => 'header',
-                            'limit' => 1
-                        )
+                            'limit' => 1,
+                        ]
                     )
-                    ->will(self::returnValue(array()));
+                    ->will(self::returnValue([]));
             }
         );
 
         $uidList = $treeQueryBuildMock->getTreeUidListRecursive(1, 2, 0, $options);
 
-        $this->assertEquals(array(1, 2), $uidList);
+        $this->assertEquals([1, 2], $uidList);
     }
 
     public function testSetCustomParentField()
     {
-        $options = array(
-            'parentField' => 'parent_id'
-        );
+        $options = [
+            'parentField' => 'parent_id',
+        ];
 
         /**
- * @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock
-*/
+         * @var Tx_Rnbase_Database_TreeQueryBuilder
+         */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
                 $connection->expects(self::at(0))
@@ -295,43 +293,43 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
                     ->with(
                         'uid',
                         'pages',
-                        array(
+                        [
                             'where' => '1=1 AND parent_id IN (1)',
                             'tableName' => 'pages',
-                            'parentField' => 'parent_id'
-                        )
+                            'parentField' => 'parent_id',
+                        ]
                     )
-                    ->will(self::returnValue(array(array('uid' => 5))));
+                    ->will(self::returnValue([['uid' => 5]]));
 
                 $connection->expects(self::at(1))
                     ->method('doSelect')
                     ->with(
                         'uid',
                         'pages',
-                        array(
+                        [
                             'where' => '1=1 AND parent_id IN (5)',
                             'tableName' => 'pages',
-                            'parentField' => 'parent_id'
-                        )
+                            'parentField' => 'parent_id',
+                        ]
                     )
-                    ->will(self::returnValue(array()));
+                    ->will(self::returnValue([]));
             }
         );
 
         $uidList = $treeQueryBuildMock->getPageTreeUidList(1, $options);
 
-        $this->assertEquals(array(1, 5), $uidList);
+        $this->assertEquals([1, 5], $uidList);
     }
 
     public function testSetCustomKeyField()
     {
-        $options = array(
-            'idField' => 'entity_id'
-        );
+        $options = [
+            'idField' => 'entity_id',
+        ];
 
         /**
- * @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock
-*/
+         * @var Tx_Rnbase_Database_TreeQueryBuilder
+         */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
                 $connection->expects(self::at(0))
@@ -339,39 +337,39 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
                     ->with(
                         'entity_id',
                         'pages',
-                        array(
+                        [
                             'where' => '1=1 AND pid IN (1)',
                             'tableName' => 'pages',
-                            'idField' => 'entity_id'
-                        )
+                            'idField' => 'entity_id',
+                        ]
                     )
-                    ->will(self::returnValue(array(array('entity_id' => 5))));
+                    ->will(self::returnValue([['entity_id' => 5]]));
 
                 $connection->expects(self::at(1))
                     ->method('doSelect')
                     ->with(
                         'entity_id',
                         'pages',
-                        array(
+                        [
                             'where' => '1=1 AND pid IN (5)',
                             'tableName' => 'pages',
-                            'idField' => 'entity_id'
-                        )
+                            'idField' => 'entity_id',
+                        ]
                     )
-                    ->will(self::returnValue(array()));
+                    ->will(self::returnValue([]));
             }
         );
 
         $uidList = $treeQueryBuildMock->getPageTreeUidList(1, $options);
 
-        $this->assertEquals(array(1, 5), $uidList);
+        $this->assertEquals([1, 5], $uidList);
     }
 
     public function testGetTreeWithCommaSeparatedPidList()
     {
         /**
- * @var Tx_Rnbase_Database_TreeQueryBuilder $treeQueryBuildMock
-*/
+         * @var Tx_Rnbase_Database_TreeQueryBuilder
+         */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
                 $connection->expects(self::at(0))
@@ -379,46 +377,46 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
                     ->with(
                         'uid',
                         'pages',
-                        array('where' => '1=1 AND pid IN (1,2,3)', 'tableName' => 'pages')
+                        ['where' => '1=1 AND pid IN (1,2,3)', 'tableName' => 'pages']
                     )
-                    ->will(self::returnValue(array(array('uid' => 5))));
+                    ->will(self::returnValue([['uid' => 5]]));
 
                 $connection->expects(self::at(1))
                     ->method('doSelect')
                     ->with(
                         'uid',
                         'pages',
-                        array('where' => '1=1 AND pid IN (5)', 'tableName' => 'pages')
+                        ['where' => '1=1 AND pid IN (5)', 'tableName' => 'pages']
                     )
-                    ->will(self::returnValue(array(array('uid' => 6), array('uid' => 7))));
+                    ->will(self::returnValue([['uid' => 6], ['uid' => 7]]));
 
                 $connection->expects(self::at(2))
                     ->method('doSelect')
                     ->with(
                         'uid',
                         'pages',
-                        array('where' => '1=1 AND pid IN (6)', 'tableName' => 'pages')
+                        ['where' => '1=1 AND pid IN (6)', 'tableName' => 'pages']
                     )
-                    ->will(self::returnValue(array()));
+                    ->will(self::returnValue([]));
 
                 $connection->expects(self::at(3))
                     ->method('doSelect')
                     ->with(
                         'uid',
                         'pages',
-                        array('where' => '1=1 AND pid IN (7)', 'tableName' => 'pages')
+                        ['where' => '1=1 AND pid IN (7)', 'tableName' => 'pages']
                     )
-                    ->will(self::returnValue(array()));
+                    ->will(self::returnValue([]));
             }
         );
 
         $uidList = $treeQueryBuildMock->getPageTreeUidList('1,2,3');
 
-        $this->assertEquals(array(1, 2, 3, 5, 6, 7), $uidList);
+        $this->assertEquals([1, 2, 3, 5, 6, 7], $uidList);
     }
 
     /**
-     * get a mock with tree structure defined in the expectFunc
+     * get a mock with tree structure defined in the expectFunc.
      *
      * @param \Closure $expectFunc
      *
@@ -437,7 +435,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
         tx_rnbase::load('Tx_Rnbase_Database_TreeQueryBuilder');
         $treeQueryBuildMock = $this->getMock(
             'Tx_Rnbase_Database_TreeQueryBuilder',
-            array('getConnection')
+            ['getConnection']
         );
 
         $treeQueryBuildMock

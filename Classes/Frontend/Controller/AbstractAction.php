@@ -1,11 +1,12 @@
 <?php
+
 namespace Sys25\RnBase\Frontend\Controller;
 
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Frontend\Request\ParametersInterface;
+use Sys25\RnBase\Frontend\Request\Request;
 use Sys25\RnBase\Frontend\Request\RequestInterface;
 use Sys25\RnBase\Frontend\View\Factory;
-use Sys25\RnBase\Frontend\Request\Request;
 
 /***************************************************************
 * Copyright notice
@@ -36,8 +37,9 @@ use Sys25\RnBase\Frontend\Request\Request;
 abstract class AbstractAction
 {
     /**
-     * This method is called by base controller
-     * @param ParametersInterface $parameters
+     * This method is called by base controller.
+     *
+     * @param ParametersInterface    $parameters
      * @param ConfigurationInterface $configurations
      *
      * @return string
@@ -46,20 +48,22 @@ abstract class AbstractAction
     {
         $debugKey = $configurations->get($this->getConfId().'_debugview');
 
-        $debug = ($debugKey && ($debugKey === '1' ||
-            ($_GET['debug'] && array_key_exists($debugKey, array_flip(\tx_rnbase_util_Strings::trimExplode(',', $_GET['debug'])))) ||
-            ($_POST['debug'] && array_key_exists($debugKey, array_flip(\tx_rnbase_util_Strings::trimExplode(',', $_POST['debug']))))
+        $debug = (
+            $debugKey && (
+                '1' === $debugKey ||
+                ($_GET['debug'] && array_key_exists($debugKey, array_flip(\tx_rnbase_util_Strings::trimExplode(',', $_GET['debug'])))) ||
+                ($_POST['debug'] && array_key_exists($debugKey, array_flip(\tx_rnbase_util_Strings::trimExplode(',', $_POST['debug']))))
             )
-            );
+        );
         if ($debug) {
             $time = microtime(true);
             $memStart = memory_get_usage();
         }
-        if ($configurations->getBool($this->getConfId() . 'toUserInt')) {
+        if ($configurations->getBool($this->getConfId().'toUserInt')) {
             if ($debug) {
                 \tx_rnbase_util_Debug::debug(
                     'Converting to USER_INT!',
-                    'View statistics for: ' . $this->getConfId(). ' Key: ' . $debugKey
+                    'View statistics for: '.$this->getConfId().' Key: '.$debugKey
                 );
             }
             $configurations->convertToUserInt();
@@ -67,50 +71,41 @@ abstract class AbstractAction
         // Add JS or CSS files
         $this->addResources($configurations, $this->getConfId());
 
-        $cacheHandler = $this->getCacheHandler($configurations, $this->getConfId().'_caching.');
-        $out = $cacheHandler ? $cacheHandler->getOutput() : '';
-        $cached = !empty($out);
-        if (!$cached) {
-            \tx_rnbase_util_Misc::pushTT(get_class($this), 'handleRequest');
-            $request = new Request($parameters, $configurations, $this->getConfId());
-            $out = $this->handleRequest($request);
+        \tx_rnbase_util_Misc::pushTT(get_class($this), 'handleRequest');
+        $request = new Request($parameters, $configurations, $this->getConfId());
+        $out = $this->handleRequest($request);
+        \tx_rnbase_util_Misc::pullTT();
+        if (!$out) {
+            // View
+            $viewFactoryClassName = $configurations->get($this->getConfId().'viewFactoryClassName');
+            $viewFactoryClassName = strlen($viewFactoryClassName) > 0 ? $viewFactoryClassName : Factory::class;
+            /* @var $viewFactory Factory */
+            $viewFactory = \tx_rnbase::makeInstance($viewFactoryClassName);
+            $view = $viewFactory->createView($request, $this->getViewClassName(), $this->getTemplateFile($configurations));
+            \tx_rnbase_util_Misc::pushTT(get_class($this), 'render');
+            // Das Template wird komplett angegeben
+            $tmplName = $this->getTemplateName();
+            if (!$tmplName || !strlen($tmplName)) {
+                \tx_rnbase_util_Misc::mayday('No template name defined!');
+            }
+
+            $out = $view->render($tmplName, $request);
             \tx_rnbase_util_Misc::pullTT();
-            if (!$out) {
-                // View
-                $viewFactoryClassName = $configurations->get($this->getConfId() . 'viewFactoryClassName');
-                $viewFactoryClassName = strlen($viewFactoryClassName) > 0 ? $viewFactoryClassName : Factory::class;
-                /* @var $viewFactory Factory */
-                $viewFactory = \tx_rnbase::makeInstance($viewFactoryClassName);
-                $view = $viewFactory->createView($request, $this->getViewClassName(), $this->getTemplateFile($configurations));
-                \tx_rnbase_util_Misc::pushTT(get_class($this), 'render');
-                // Das Template wird komplett angegeben
-                $tmplName = $this->getTemplateName();
-                if (!$tmplName || !strlen($tmplName)) {
-                    \tx_rnbase_util_Misc::mayday('No template name defined!');
-                }
-
-                $out = $view->render($tmplName, $request);
-                \tx_rnbase_util_Misc::pullTT();
-            }
-            if ($cacheHandler) {
-                $cacheHandler->setOutput($out);
-            }
-
-            $this->addCacheTags($configurations);
         }
+
+        $this->addCacheTags($configurations);
+
         if ($debug) {
             $memEnd = memory_get_usage();
-            \tx_rnbase_util_Debug::debug(array(
+            \tx_rnbase_util_Debug::debug([
                 'Action' => get_class($this),
                 'Conf Id' => $this->getConfId(),
                 'Execution Time' => (microtime(true) - $time),
                 'Memory Start' => $memStart,
                 'Memory End' => $memEnd,
                 'Memory Consumed' => ($memEnd - $memStart),
-                'Cached?' => $cached ? 'yes' : 'no',
-                'CacheHandler' => is_object($cacheHandler) ? get_class($cacheHandler) : '',
                 'SubstCacheEnabled?' => \tx_rnbase_util_Templates::isSubstCacheEnabled() ? 'yes' : 'no',
-            ), 'View statistics for: '.$this->getConfId(). ' Key: ' . $debugKey);
+            ], 'View statistics for: '.$this->getConfId().' Key: '.$debugKey);
         }
         // reset the substCache after each view!
         \tx_rnbase_util_Templates::resetSubstCache();
@@ -120,7 +115,7 @@ abstract class AbstractAction
 
     /**
      * @param ConfigurationInterface $configurations
-     * @param string $confId
+     * @param string                 $confId
      */
     protected function addResources(ConfigurationInterface $configurations, $confId)
     {
@@ -132,7 +127,7 @@ abstract class AbstractAction
         }
 
         // support configuration key for javascript libraries from TYPO3 6.2 to 8.7
-        $javascriptLibraryKeys = array('includeJSlibs', 'includeJSLibs');
+        $javascriptLibraryKeys = ['includeJSlibs', 'includeJSLibs'];
         foreach ($javascriptLibraryKeys as $javascriptLibraryKey) {
             foreach ($this->getJavaScriptFilesByIncludePartConfId($configurations, $javascriptLibraryKey) as $javaScriptConfId => $file) {
                 // external files should never be concatenated. If you want
@@ -144,8 +139,8 @@ abstract class AbstractAction
                     false,
                     false,
                     '',
-                    boolval($configurations->get($confId . $javascriptLibraryKey . '.' . $javaScriptConfId . '.external'))
-                    );
+                    boolval($configurations->get($confId.$javascriptLibraryKey.'.'.$javaScriptConfId.'.external'))
+                );
             }
         }
 
@@ -161,18 +156,19 @@ abstract class AbstractAction
 
     /**
      * @param string $includePartConfId
+     *
      * @return array
      */
     protected function getJavaScriptFilesByIncludePartConfId($configurations, $includePartConfId)
     {
         $confId = $this->getConfId();
 
-        $javaScriptConfIds = $configurations->getKeyNames($confId . $includePartConfId . '.');
-        $files = array();
+        $javaScriptConfIds = $configurations->getKeyNames($confId.$includePartConfId.'.');
+        $files = [];
         if (is_array($javaScriptConfIds)) {
             foreach ($javaScriptConfIds as $javaScriptConfId) {
-                $file = $configurations->get($confId . $includePartConfId . '.' . $javaScriptConfId);
-                if (!$configurations->get($confId . $includePartConfId . '.' . $javaScriptConfId . '.external')) {
+                $file = $configurations->get($confId.$includePartConfId.'.'.$javaScriptConfId);
+                if (!$configurations->get($confId.$includePartConfId.'.'.$javaScriptConfId.'.external')) {
                     $file = \tx_rnbase_util_Files::getFileName($file);
                 }
 
@@ -183,112 +179,87 @@ abstract class AbstractAction
         return $files;
     }
 
-    /**
-     * Find a configured cache handler.
-     *
-     * @param ConfigurationInterface $configurations
-     * @param string $confId
-     * @return \tx_rnbase_action_ICacheHandler
-     */
-    protected function getCacheHandler($configurations, $confId)
-    {
-        // no caching if disabled!
-        if (\tx_rnbase_util_TYPO3::getTSFE()->no_cache) {
-            return null;
-        }
-
-        $class = $configurations->get($confId  .'class');
-        if (!$class) {
-            return false;
-        }
-
-        /* @var $handler \tx_rnbase_action_ICacheHandler */
-        $handler = \tx_rnbase::makeInstance($class);
-        if (!$handler instanceof \tx_rnbase_action_ICacheHandler) {
-            throw new \Exception(
-                '"' . $class . '" has to implement "tx_rnbase_action_ICacheHandler".'
-                );
-        }
-
-        $handler->init($this, $confId);
-
-        return $handler;
-    }
-
-    /**
-     * @return void
-     */
     protected function addCacheTags($configurations)
     {
-        if ($cacheTags = (array) $configurations->get($this->getConfId() . 'cacheTags.')) {
+        if ($cacheTags = (array) $configurations->get($this->getConfId().'cacheTags.')) {
             \tx_rnbase_util_TYPO3::getTSFE()->addCacheTags($cacheTags);
         }
     }
 
     /**
-     * Liefert die ConfId für den View
+     * Liefert die ConfId für den View.
+     *
      * @return string
      */
     public function getConfId()
     {
-        return $this->getTemplateName() . '.';
+        return $this->getTemplateName().'.';
     }
+
     /**
-     * Liefert den Pfad zum Template
+     * Liefert den Pfad zum Template.
      *
      * @return string
      */
     protected function getTemplateFile($configurations)
     {
         $file = $configurations->get(
-            $this->getConfId() . 'template.file', true
+            $this->getConfId().'template.file',
+            true
         );
 
         // check the old way
         if (empty($file)) {
             $file = $configurations->get(
-                $this->getTemplateName() . 'Template', true
-                );
+                $this->getTemplateName().'Template',
+                true
+            );
         }
 
         return $file;
     }
+
     /**
      * Liefert den Default-Namen des Templates. Über diesen Namen
      * wird per Konvention auch auf ein per TS konfiguriertes HTML-Template
      * geprüft. Dessen Key wird aus dem Name und dem String "Template"
-     * gebildet: [tmpname]Template
+     * gebildet: [tmpname]Template.
+     *
      * @return string
      */
     abstract protected function getTemplateName();
 
     /**
-     * Liefert den Namen der View-Klasse
+     * Liefert den Namen der View-Klasse.
+     *
      * @param ConfigurationInterface $configurations
+     *
      * @return string
      */
     abstract protected function getViewClassName();
+
     /**
      * Kindklassen führen ihr die eigentliche Arbeit durch. Zugriff auf das
-     * Backend und befüllen der viewdata
+     * Backend und befüllen der viewdata.
      *
-     * @param ParametersInterface $parameters
+     * @param ParametersInterface    $parameters
      * @param ConfigurationInterface $configurations
-     * @param array $viewdata
+     * @param array                  $viewdata
+     *
      * @return string Errorstring or NULL
      */
     abstract protected function handleRequest(RequestInterface $request);
-
 
     /**
      * Create a fully initialized link instance. Useful for controllers with formular handling.
      *
      * @param ConfigurationInterface $configurations
-     * @param string $confId
-     * @param array $params
+     * @param string                 $confId
+     * @param array                  $params
+     *
      * @return \tx_rnbase_util_Link link instance
      */
-    protected function createLink($configurations, $confId, $params = array())
+    protected function createLink($configurations, $confId, $params = [])
     {
         $link = $configurations->createLink();
         $link->initByTS($configurations, $confId, $params);

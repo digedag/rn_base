@@ -23,10 +23,8 @@
  ***************************************************************/
 
 /**
- * Wrapper interface to databases
+ * Wrapper interface to databases.
  *
- * @package TYPO3
- * @subpackage rn_base
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
@@ -34,15 +32,16 @@
 interface tx_rnbase_util_db_IDatabaseT3
 {
     /**
-     * Substitution for PHP function "addslashes()"
+     * Substitution for PHP function "addslashes()".
      *
      * Use this function instead of the PHP addslashes() function when you build queries
      * this will prepare your code for DBAL.
      * NOTICE: You must wrap the output of this function in SINGLE QUOTES to be DBAL compatible.
      * Unless you have to apply the single quotes yourself you should rather use ->fullQuoteStr()!
      *
-     * @param string $str Input string
-     * @param string $table Table name for which to quote string.
+     * @param string $str   Input string
+     * @param string $table table name for which to quote string
+     *
      * @return string Output string; Quotes (" / ') and \ will be backslashed (or otherwise based on DBAL handler)
      */
     public function quoteStr($str, $table);
@@ -50,8 +49,8 @@ interface tx_rnbase_util_db_IDatabaseT3
     /**
      * Escaping values for SQL LIKE statements.
      *
-     * @param string $str Input string
-     * @param string $table Table name for which to escape string.
+     * @param string $str   Input string
+     * @param string $table table name for which to escape string
      *
      * @return string Output string; % and _ will be escaped with \ (or otherwise based on DBAL handler)
      */
@@ -60,10 +59,10 @@ interface tx_rnbase_util_db_IDatabaseT3
     /**
      * Will fullquote all values in the one-dimensional array so they are ready to "implode" for an sql query.
      *
-     * @param array $arr Array with values (either associative or non-associative array)
-     * @param string $table Table name for which to quote
-     * @param bool|array|string $noQuote List/array of keys NOT to quote (eg. SQL functions) - ONLY for associative arrays
-     * @param bool $allowNull Whether to allow NULL values
+     * @param array             $arr       Array with values (either associative or non-associative array)
+     * @param string            $table     Table name for which to quote
+     * @param bool|array|string $noQuote   List/array of keys NOT to quote (eg. SQL functions) - ONLY for associative arrays
+     * @param bool              $allowNull Whether to allow NULL values
      *
      * @return array The input array with the values quoted
      */
@@ -72,9 +71,9 @@ interface tx_rnbase_util_db_IDatabaseT3
     /**
      * Escaping and quoting values for SQL statements.
      *
-     * @param string $str Input string
-     * @param string $table Table name for which to quote string.
-     * @param bool $allowNull Whether to allow NULL values
+     * @param string $str       Input string
+     * @param string $table     table name for which to quote string
+     * @param bool   $allowNull Whether to allow NULL values
      *
      * @return string Output string
      */

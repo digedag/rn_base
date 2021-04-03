@@ -23,10 +23,8 @@
  ***************************************************************/
 
 /**
- * TCA Util and wrapper methods
+ * TCA Util and wrapper methods.
  *
- * @package TYPO3
- * @subpackage Tx_Rnbase
  * @author René Nitzsche
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
@@ -34,7 +32,6 @@
 abstract class Tx_Rnbase_Utility_WizIcon
 {
     /**
-     *
      * @param string $clazz
      * @param string $clazzFile
      */
@@ -62,33 +59,36 @@ abstract class Tx_Rnbase_Utility_WizIcon
                 // Wizardkonfiguration hinzufügen
                 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
                     '<INCLUDE_TYPOSCRIPT: source="'.$configFile.'">'
-                    );
+                );
             }
         }
     }
 
     /**
-     * Adds plugin wizard icon
+     * Adds plugin wizard icon.
      *
      * @param array Input array with wizard items for plugins
-     * @return array Modified input array, having the items for plugins added.
+     *
+     * @return array modified input array, having the items for plugins added
      */
     public function proc($wizardItems)
     {
         $lang = $this->includeLocalLang();
         $plugins = $this->getPluginData();
         foreach ($plugins as $id => $plugin) {
-            $wizardItems['plugins_'.$id] = array(
+            $wizardItems['plugins_'.$id] = [
                 'icon' => $plugin['icon'],
                 'title' => $lang->getLL($plugin['title']),
                 'description' => $lang->getLL($plugin['description']),
-                'params' => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]='.$id
-            );
+                'params' => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]='.$id,
+            ];
         }
 
         return $wizardItems;
     }
+
     abstract protected function getPluginData();
+
     abstract protected function getLLFile();
 
     /**

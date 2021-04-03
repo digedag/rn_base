@@ -25,7 +25,7 @@
 tx_rnbase::load('tx_rnbase_util_Files');
 
 /**
- * Util to handle locking of processes
+ * Util to handle locking of processes.
  *
  * Usage:
  * $lock = tx_rnbase_util_Lock::getInstance('process-name', 1800);
@@ -37,29 +37,26 @@ tx_rnbase::load('tx_rnbase_util_Files');
  * $lock->unlockProcess();
  * return true;
  *
- * @package tx_rnbase
- * @subpackage tx_rnbase_model
  * @author Michael Wagner
  */
 class tx_rnbase_util_Lock
 {
-
     /**
-     * The name of the lock
+     * The name of the lock.
      *
      * @var string
      */
     private $name = 'default';
 
     /**
-     * The lifetime of the lock
+     * The lifetime of the lock.
      *
      * @var int
      */
     private $lifeTime = 0;
 
     /**
-     * The log ressource
+     * The log ressource.
      *
      * @var string
      */
@@ -69,7 +66,7 @@ class tx_rnbase_util_Lock
      * Creates a instance of the lock util.
      *
      * @param string $name
-     * @param int $lifeTime
+     * @param int    $lifeTime
      *
      * @return tx_rnbase_util_Lock
      */
@@ -79,10 +76,10 @@ class tx_rnbase_util_Lock
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $name
-     * @param int $lifeTime
+     * @param int    $lifeTime
      */
     public function __construct($name, $lifeTime = 0)
     {
@@ -117,8 +114,16 @@ class tx_rnbase_util_Lock
      */
     protected function getFile()
     {
-        if ($this->logFile === null) {
-            $this->logFile = \Sys25\RnBase\Utility\Environment::getPublicPath() . 'typo3temp/rn_base/' . $this->getName() . '.lock';
+        if (null === $this->logFile) {
+            if (\Sys25\RnBase\Utility\TYPO3::isTYPO95OrHigher()) {
+                $folder = \TYPO3\CMS\Core\Core\Environment::getVarPath().'/lock/rn_base/';
+            } else {
+                $folder = \Sys25\RnBase\Utility\Environment::getPublicPath().'typo3temp/rn_base/';
+            }
+            if (!is_dir($folder)) {
+                \tx_rnbase_util_Files::mkdir_deep($folder);
+            }
+            $this->logFile = $folder.$this->getName().'.lock';
         }
 
         return $this->logFile;
@@ -137,7 +142,6 @@ class tx_rnbase_util_Lock
 
         return false;
     }
-
 
     /**
      * Unlocks a process.
@@ -174,8 +178,8 @@ class tx_rnbase_util_Lock
         if (is_readable($this->getFile())) {
             $lastCall = (int) trim(file_get_contents($this->getFile()));
             if (!(
-                    $this->getLifeTime() > 0
-                    && $lastCall < (time() - $this->getLifeTime())
+                $this->getLifeTime() > 0 &&
+                $lastCall < (time() - $this->getLifeTime())
             )) {
                 return true;
             }
@@ -199,14 +203,13 @@ class tx_rnbase_util_Lock
         if (!tx_rnbase_util_Files::writeFile($fileName, time(), true)) {
             tx_rnbase::load('tx_rnbase_util_Logger');
             tx_rnbase_util_Logger::warn(
-                'Lock file could not be created for "' . $this->getName() . '" process!',
+                'Lock file could not be created for "'.$this->getName().'" process!',
                 'rn_base',
-                array(
+                [
                     'process_name' => $this->getName(),
                     'life_time' => $this->getLifeTime(),
                     'lock_file' => $fileName,
-
-                )
+                ]
             );
 
             return false;

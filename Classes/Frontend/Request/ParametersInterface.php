@@ -25,43 +25,47 @@ namespace Sys25\RnBase\Frontend\Request;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
- * Interface for configuiration processor
+ * Interface for configuiration processor.
  *
- * @package TYPO3
- * @subpackage rn_base
  * @author Michael Wagner
  */
 interface ParametersInterface
 {
     /**
-     * Liefert den Parameter-Wert
+     * Liefert den Parameter-Wert.
      *
      * @param string $paramName
      * @param string $qualifier
+     *
      * @return mixed
      */
     public function get($paramName, $qualifier = '');
+
     /**
-     * removes xss etc. from the value
+     * removes xss etc. from the value.
      *
      * @param string $field
+     *
      * @return string
      */
     public function getCleaned($paramName, $qualifier = '');
+
     /**
-     * Liefert den Parameter-Wert als int
+     * Liefert den Parameter-Wert als int.
      *
      * @param string $paramName
      * @param string $qualifier
+     *
      * @return int
      */
     public function getInt($paramName, $qualifier = '');
+
     /**
-     * Liefert alle Parameter-Werte
+     * Liefert alle Parameter-Werte.
      *
      * @param string $qualifier
+     *
      * @return array
      */
     public function getAll($qualifier = '');

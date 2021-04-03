@@ -25,17 +25,17 @@
 tx_rnbase::load('tx_rnbase_maps_ICoord');
 tx_rnbase::load('tx_rnbase_maps_ILocation');
 
-
 /**
- * Util methods
+ * Util methods.
  */
 class tx_rnbase_maps_Util
 {
     /**
-     * Returns the maps template from $confId.'template'
+     * Returns the maps template from $confId.'template'.
      *
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param string $confId
+     * @param string                                     $confId
+     *
      * @return string empty string if template was not found
      */
     public static function getMapTemplate($configurations, $confId)
@@ -48,9 +48,10 @@ class tx_rnbase_maps_Util
         if (!$subpartName) {
             return '';
         }
+
         try {
             $subpart = tx_rnbase_util_Templates::getSubpartFromFile($file, $subpartName);
-            $ret = str_replace(array("\r\n", "\n", "\r"), '', $subpart);
+            $ret = str_replace(["\r\n", "\n", "\r"], '', $subpart);
         } catch (Exception $e) {
             $ret = '';
         }
@@ -60,12 +61,14 @@ class tx_rnbase_maps_Util
 
     /**
      * Calculate distance for two long/lat-points.
-     * Method used from wec_map
-     * @param float $lat1
-     * @param float $lon1
-     * @param float $lat2
-     * @param float $lon2
+     * Method used from wec_map.
+     *
+     * @param float  $lat1
+     * @param float  $lon1
+     * @param float  $lat2
+     * @param float  $lon2
      * @param string $distanceType
+     *
      * @return float
      */
     public static function calculateDistance($lat1, $lon1, $lat2, $lon2, $distanceType = 'K')
@@ -74,7 +77,7 @@ class tx_rnbase_maps_Util
         $l2 = deg2rad($lat2);
         $o1 = deg2rad($lon1);
         $o2 = deg2rad($lon2);
-        $radius = $distanceType == 'K' ? 6372.795 : 3959.8712;
+        $radius = 'K' == $distanceType ? 6372.795 : 3959.8712;
         $distance = 2 * $radius * asin(min(1, sqrt(pow(sin(($l2 - $l1) / 2), 2) + cos($l1) * cos($l2) * pow(sin(($o2 - $o1) / 2), 2))));
 
         return $distance;
@@ -84,9 +87,11 @@ class tx_rnbase_maps_Util
     {
         return !(!$item->getCity() && !$item->getZip() && !$item->getLongitude() && !$item->getLatitude());
     }
+
     /**
      * Create a bubble for GoogleMaps. This can be done if the item has address data.
-     * @param string $template
+     *
+     * @param string                   $template
      * @param tx_rnbase_maps_ILocation $item
      */
     public static function createMapBubble(tx_rnbase_maps_ILocation $item)

@@ -1,4 +1,5 @@
 <?php
+
 namespace Sys25\RnBase\Frontend\View;
 
 use Sys25\RnBase\Frontend\Request\RequestInterface;
@@ -26,15 +27,13 @@ use Sys25\RnBase\Frontend\Request\RequestInterface;
 * This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-/**
- */
 class Factory
 {
     public function createView(RequestInterface $context, $fallbackViewClassName, $templateFile)
     {
         $configurations = $context->getConfigurations();
         // It is possible to set another view via typoscript
-        $viewClassName = $configurations->get($context->getConfId() . 'viewClassName');
+        $viewClassName = $configurations->get($context->getConfId().'viewClassName');
         $viewClassName = strlen($viewClassName) > 0 ? $viewClassName : $fallbackViewClassName;
         $view = \tx_rnbase::makeInstance($viewClassName);
         $view->setTemplatePath($configurations->getTemplatePath());
