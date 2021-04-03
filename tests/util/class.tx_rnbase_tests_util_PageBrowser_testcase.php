@@ -26,10 +26,10 @@ tx_rnbase::load('tx_rnbase_util_PageBrowser');
 
 class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTestCase
 {
-    public function test_getStateSimple()
+    public function testGetStateSimple()
     {
         $pb = new tx_rnbase_util_PageBrowser('test');
-        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $parameters->offsetSet($pb->getParamName('pointer'), 3);
         $listSize = 103; //Gesamtgröße der darzustellenden Liste
         $pageSize = 10; //Größe einer Seite
@@ -64,10 +64,10 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTest
         $this->assertEquals(5, $state['limit'], 'Limit ist falsch');
     }
 
-    public function test_getStateWithEmptyListAndNoPointer()
+    public function testGetStateWithEmptyListAndNoPointer()
     {
         $pb = new tx_rnbase_util_PageBrowser('test');
-        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $listSize = 0; //Gesamtgröße der darzustellenden Liste
         $pageSize = 10; //Größe einer Seite
         $pb->setState($parameters, $listSize, $pageSize);
@@ -76,10 +76,10 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTest
         $this->assertEquals(0, $state['limit'], 'Limit ist falsch');
     }
 
-    public function test_getStateWithPointerOutOfRange()
+    public function testGetStateWithPointerOutOfRange()
     {
         $pb = new tx_rnbase_util_PageBrowser('test');
-        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $parameters->offsetSet($pb->getParamName('pointer'), 11);
         $listSize = 103; //Gesamtgröße der darzustellenden Liste
         $pageSize = 10; //Größe einer Seite
@@ -103,10 +103,10 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTest
         $this->assertEquals(10, $state['limit']);
     }
 
-    public function test_getStateWithIllegalPointer()
+    public function testGetStateWithIllegalPointer()
     {
         $pb = new tx_rnbase_util_PageBrowser('test');
-        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $parameters->offsetSet($pb->getParamName('pointer'), -2);
         $listSize = 103; //Gesamtgröße der darzustellenden Liste
         $pageSize = 10; //Größe einer Seite
@@ -117,10 +117,10 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTest
         $this->assertEquals(10, $state['limit']);
     }
 
-    public function test_getStateWithSmallList()
+    public function testGetStateWithSmallList()
     {
         $pb = new tx_rnbase_util_PageBrowser('test');
-        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $parameters->offsetSet($pb->getParamName('pointer'), 2);
         $listSize = 3; //Gesamtgröße der darzustellenden Liste
         $pageSize = 10; //Größe einer Seite
@@ -134,14 +134,15 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTest
 
     /**
      * @dataProvider dataProviderGetPointer
+     *
      * @param int $pointer
      * @param int $expectedPointer
      */
-    public function test_getPointer($pointer, $expectedPointer)
+    public function testGetPointer($pointer, $expectedPointer)
     {
         /* @var $pageBrowser tx_rnbase_util_PageBrowser */
         $pageBrowser = tx_rnbase::makeInstance('tx_rnbase_util_PageBrowser', 'test');
-        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $parameters->offsetSet($pageBrowser->getParamName('pointer'), $pointer);
         $listSize = 100;
         $pageSize = 10;
@@ -155,18 +156,18 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTest
      */
     public function dataProviderGetPointer()
     {
-        return array(
+        return [
             // before first page
-            array(-1, 0),
+            [-1, 0],
             // at first page
-            array(0, 0),
+            [0, 0],
             // inside range
-            array(5, 5),
+            [5, 5],
             // last page
-            array(10, 10),
+            [10, 10],
             // outside range
-            array(11, 10),
-        );
+            [11, 10],
+        ];
     }
 
     /**
@@ -181,7 +182,7 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTest
     }
 
     /**
-     * @param int $pointer
+     * @param int  $pointer
      * @param bool $pageMarkedAsNotFound
      * @param bool $ignorePageNotFound
      * @group unit
@@ -189,7 +190,7 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTest
      */
     public function testMarkPageNotFoundIfPointerOutOfRange($pointer, $pageMarkedAsNotFound, $ignorePageNotFound)
     {
-        $httpUtility = $this->getMock('HttpUtility_Dummy', array('setResponseCode'));
+        $httpUtility = $this->getMock('HttpUtility_Dummy', ['setResponseCode']);
         if ($pageMarkedAsNotFound) {
             $httpUtility
                 ->expects($this->once())
@@ -203,8 +204,8 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTest
 
         $pageBrowser = $this->getMock(
             'tx_rnbase_util_PageBrowser',
-            array('getHttpUtilityClass'),
-            array('test')
+            ['getHttpUtilityClass'],
+            ['test']
         );
         $pageBrowser->expects($pageMarkedAsNotFound ? $this->once() : $this->never())
             ->method('getHttpUtilityClass')
@@ -216,8 +217,8 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTest
         // dieser Aufruf stellt fest, ob der Pointer außerhalb des Bereich ist
         $pageBrowser->getState();
 
-        $configurations = $this->getMock('tx_rnbase_configurations', array('convertToUserInt'));
-        $configurationArray = array('test.' => array('ignorePageNotFound' => $ignorePageNotFound));
+        $configurations = $this->getMock('tx_rnbase_configurations', ['convertToUserInt']);
+        $configurationArray = ['test.' => ['ignorePageNotFound' => $ignorePageNotFound]];
         $configurations->init($configurationArray, null, 'rn_base', 'rn_base');
         $configurations->expects($pageMarkedAsNotFound ? $this->once() : $this->never())
             ->method('convertToUserInt');
@@ -226,20 +227,20 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTest
     }
 
     /**
-     * @return number[][]|boolean[][]
+     * @return number[][]|bool[][]
      */
     public function dataProviderMarkPageNotFoundIfPointerOutOfRange()
     {
-        return array(
-            array(123, true, false),
-            array(2, true, false),
-            array(1, false, false),
-            array(0, false, false),
-            array(123, false, true),
-            array(2, false, true),
-            array(1, false, true),
-            array(0, false, true),
-        );
+        return [
+            [123, true, false],
+            [2, true, false],
+            [1, false, false],
+            [0, false, false],
+            [123, false, true],
+            [2, false, true],
+            [1, false, true],
+            [0, false, true],
+        ];
     }
 }
 

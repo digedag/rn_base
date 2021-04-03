@@ -26,10 +26,8 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('Tx_Rnbase_Utility_Crypt');
 
 /**
- * Mcrypt
+ * Mcrypt.
  *
- * @package TYPO3
- * @subpackage rn_base
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
  *        GNU Lesser General Public License, version 3 or later
@@ -37,7 +35,7 @@ tx_rnbase::load('Tx_Rnbase_Utility_Crypt');
 class Tx_Rnbase_Utility_TypoScriptTest extends tx_rnbase_tests_BaseTestCase
 {
     /**
-     * Testdata for ts array convertion
+     * Testdata for ts array convertion.
      *
      * @var array
      */
@@ -46,14 +44,15 @@ class Tx_Rnbase_Utility_TypoScriptTest extends tx_rnbase_tests_BaseTestCase
             '10.' => [
                 'value' => 'Hello World!',
                 'foo.' => [
-                    'bar' => 5
-                ]
+                    'bar' => 5,
+                ],
             ],
-            '10' => 'TEXT'
-        ]
+            '10' => 'TEXT',
+        ],
     ];
+
     /**
-     * Testdata for ts array convertion
+     * Testdata for ts array convertion.
      *
      * @var array
      */
@@ -62,17 +61,15 @@ class Tx_Rnbase_Utility_TypoScriptTest extends tx_rnbase_tests_BaseTestCase
             '10' => [
                 'value' => 'Hello World!',
                 'foo' => [
-                    'bar' => 5
+                    'bar' => 5,
                 ],
-                '_typoScriptNodeValue' => 'TEXT'
-            ]
-        ]
+                '_typoScriptNodeValue' => 'TEXT',
+            ],
+        ],
     ];
 
     /**
-     * Test the convertTypoScriptArrayToPlainArray method
-     *
-     * @return void
+     * Test the convertTypoScriptArrayToPlainArray method.
      *
      * @group unit
      * @test
@@ -88,9 +85,7 @@ class Tx_Rnbase_Utility_TypoScriptTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * Test the convertPlainArrayToTypoScriptArray method
-     *
-     * @return void
+     * Test the convertPlainArrayToTypoScriptArray method.
      *
      * @group unit
      * @test

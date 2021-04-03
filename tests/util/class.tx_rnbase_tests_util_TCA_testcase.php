@@ -26,17 +26,13 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_rnbase_util_TCA');
 
 /**
- * tx_rnbase_tests_util_TCA Tests
+ * tx_rnbase_tests_util_TCA Tests.
  *
- * @package TYPO3
- * @subpackage tx_rnbase
  * @author Hannes Bochmann <hannes.bochmann@dmk-business.de>
  * @author Michael Wagner <michael.wagner@dmk-business.de>
  */
 class tx_rnbase_tests_util_TCA_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
-
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
@@ -56,11 +52,7 @@ class tx_rnbase_tests_util_TCA_testcase extends tx_rnbase_tests_BaseTestCase
         $GLOBALS['TCA']['pages']['columns']['storage_pid']['config']['minitems'] = '0';
     }
 
-
     /**
-     *
-     * @return void
-     *
      * @group unit
      * @test
      */
@@ -73,9 +65,6 @@ class tx_rnbase_tests_util_TCA_testcase extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     *
-     * @return void
-     *
      * @group unit
      * @test
      */
@@ -88,9 +77,6 @@ class tx_rnbase_tests_util_TCA_testcase extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     *
-     * @return void
-     *
      * @group unit
      * @test
      */
@@ -104,9 +90,6 @@ class tx_rnbase_tests_util_TCA_testcase extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     *
-     * @return void
-     *
      * @group unit
      * @test
      */
@@ -119,9 +102,6 @@ class tx_rnbase_tests_util_TCA_testcase extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     *
-     * @return void
-     *
      * @group unit
      * @test
      */
@@ -134,9 +114,6 @@ class tx_rnbase_tests_util_TCA_testcase extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     *
-     * @return void
-     *
      * @group unit
      * @test
      */
@@ -153,9 +130,7 @@ class tx_rnbase_tests_util_TCA_testcase extends tx_rnbase_tests_BaseTestCase
      * is testing th following methods:
      *     tx_rnbase_util_TCA::validateModel();
      *     tx_rnbase_util_TCA::validateRecord();
-     *     tx_rnbase_model_base::validateProperties();
-     *
-     * @return void
+     *     tx_rnbase_model_base::validateProperties();.
      *
      * @group unit
      * @test
@@ -169,7 +144,7 @@ class tx_rnbase_tests_util_TCA_testcase extends tx_rnbase_tests_BaseTestCase
         /* @var $options tx_rnbase_model_data */
         $options = tx_rnbase::makeInstance(
             'tx_rnbase_model_data',
-            is_array($options) ? $options : array()
+            is_array($options) ? $options : []
         );
 
         // test the tx_rnbase_util_TCA::validateModel method
@@ -218,7 +193,6 @@ class tx_rnbase_tests_util_TCA_testcase extends tx_rnbase_tests_BaseTestCase
         }
     }
 
-
     /**
      * Liefert die Daten für den testValidateModel testcase.
      *
@@ -226,61 +200,61 @@ class tx_rnbase_tests_util_TCA_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public function getValidateModelData()
     {
-        return array(
-            __LINE__ => array(
+        return [
+            __LINE__ => [
                 // title is requiren and we check only the fields are in the record => valid, title is not empty
                 'record' => tx_rnbase::makeInstance(
                     'tx_rnbase_model_base',
-                    array('title' => 'test', 'storage_pid' => '1')
+                    ['title' => 'test', 'storage_pid' => '1']
                 )->setTableName('pages'),
-                'options' => array('only_record_fields' => true),
+                'options' => ['only_record_fields' => true],
                 true,
-            ),
-            __LINE__ => array(
+            ],
+            __LINE__ => [
                 // title is requiren but we check the whole tca definition > invalid missing fields in record
                 'record' => tx_rnbase::makeInstance(
                     'tx_rnbase_model_base',
-                    array('title' => 'test', 'storage_pid' => '1')
+                    ['title' => 'test', 'storage_pid' => '1']
                 )->setTableName('pages'),
-                'options' => array('only_record_fields' => false),
+                'options' => ['only_record_fields' => false],
                 false,
-            ),
-            __LINE__ => array(
+            ],
+            __LINE__ => [
                 // title is requiren and we check only the fields are in the record => invalid, title is required
                 'record' => tx_rnbase::makeInstance(
                     'tx_rnbase_model_base',
-                    array('title' => '', 'storage_pid' => '1')
+                    ['title' => '', 'storage_pid' => '1']
                 )->setTableName('pages'),
-                'options' => array('only_record_fields' => true),
+                'options' => ['only_record_fields' => true],
                 false,
-            ),
-            __LINE__ => array(
+            ],
+            __LINE__ => [
                 // storage_pid is required (minitems) and we check only the fields are in the record => invalid, storage_pid is required!
                 'record' => tx_rnbase::makeInstance(
                     'tx_rnbase_model_base',
-                    array('title' => 'test', 'storage_pid' => '0')
+                    ['title' => 'test', 'storage_pid' => '0']
                 )->setTableName('pages'),
-                'options' => array('only_record_fields' => true),
+                'options' => ['only_record_fields' => true],
                 false,
-            ),
-            __LINE__ => array(
+            ],
+            __LINE__ => [
                 // of is'nt a field in tca, so we add tca_overrides to define as required!
                 'record' => tx_rnbase::makeInstance(
                     'tx_rnbase_model_base',
-                    array('title' => 'oftest', 'storage_pid' => '1', 'of' => '')
+                    ['title' => 'oftest', 'storage_pid' => '1', 'of' => '']
                 )->setTableName('pages'),
-                'options' => array('only_record_fields' => true, 'tca_overrides' => array('columns' => array('of' => array('config' => array('eval' => 'required'))))),
+                'options' => ['only_record_fields' => true, 'tca_overrides' => ['columns' => ['of' => ['config' => ['eval' => 'required']]]]],
                 false,
-            ),
-            __LINE__ => array(
+            ],
+            __LINE__ => [
                 // of is'nt a field in tca, so we add tca_overrides to define as required!
                 'record' => tx_rnbase::makeInstance(
                     'tx_rnbase_model_base',
-                    array('title' => 'oftest', 'storage_pid' => '1', 'of' => 'done')
+                    ['title' => 'oftest', 'storage_pid' => '1', 'of' => 'done']
                 )->setTableName('pages'),
-                'options' => array('only_record_fields' => true, 'tca_overrides' => array('columns' => array('of' => array('config' => array('eval' => 'required'))))),
+                'options' => ['only_record_fields' => true, 'tca_overrides' => ['columns' => ['of' => ['config' => ['eval' => 'required']]]]],
                 true,
-            ),
-        );
+            ],
+        ];
     }
 }

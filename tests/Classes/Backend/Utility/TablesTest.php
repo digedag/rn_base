@@ -23,12 +23,8 @@
 ***************************************************************/
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
-/**
- *
- */
 class Tx_Rnbase_Backend_Utility_TablesTest extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
      * @group functional
      * @TODO: refactor, requires $GLOBALS['LANG']!
@@ -37,16 +33,16 @@ class Tx_Rnbase_Backend_Utility_TablesTest extends tx_rnbase_tests_BaseTestCase
     {
         /* @var $tablesUtil Tx_Rnbase_Backend_Utility_Tables */
         $tablesUtil = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Utility_Tables');
-        $entries = array(
-            tx_rnbase::makeInstance('Tx_Rnbase_Domain_Model_Data', array('uid' => 2, 'name' => 'foo')),
-            tx_rnbase::makeInstance('Tx_Rnbase_Domain_Model_Data', array('uid' => 5, 'name' => 'bar')),
-        );
-        $columns = array(
-            'uid' => array('title' => 'label_uid'),
-            'name' => array('title' => 'Name'),
-            'other' => array('title' => 'Other', 'method' => 'getUid'),
-        );
-        $options = array();
+        $entries = [
+            tx_rnbase::makeInstance('Tx_Rnbase_Domain_Model_Data', ['uid' => 2, 'name' => 'foo']),
+            tx_rnbase::makeInstance('Tx_Rnbase_Domain_Model_Data', ['uid' => 5, 'name' => 'bar']),
+        ];
+        $columns = [
+            'uid' => ['title' => 'label_uid'],
+            'name' => ['title' => 'Name'],
+            'other' => ['title' => 'Other', 'method' => 'getUid'],
+        ];
+        $options = [];
         $options['checkbox'] = 1;
         $options['dontcheck'][2] = 'XX';
         $formTool = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Form_ToolBox');

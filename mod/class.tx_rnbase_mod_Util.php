@@ -25,28 +25,29 @@
 tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 tx_rnbase::load('Tx_Rnbase_Backend_Utility_Icons');
 
-/**
- */
 class tx_rnbase_mod_Util
 {
     /**
      * Retrieve (and update) a value from module data.
-     * @param string $key
+     *
+     * @param string                $key
      * @param tx_rnbase_mod_IModule $mod
-     * @param array $options
+     * @param array                 $options
      */
-    public static function getModuleValue($key, tx_rnbase_mod_IModule $mod, $options = array())
+    public static function getModuleValue($key, tx_rnbase_mod_IModule $mod, $options = [])
     {
-        $changedSettings = is_array($options['changed']) ? $options['changed'] : array();
+        $changedSettings = is_array($options['changed']) ? $options['changed'] : [];
         $type = isset($options['type']) ? $options['type'] : '';
-        $modData = Tx_Rnbase_Backend_Utility::getModuleData(array($key => ''), $changedSettings, $mod->getName(), $type);
+        $modData = Tx_Rnbase_Backend_Utility::getModuleData([$key => ''], $changedSettings, $mod->getName(), $type);
 
         return isset($modData[$key]) ? $modData[$key] : null;
     }
+
     /**
      * Returns all data for a module for current BE user.
+     *
      * @param tx_rnbase_mod_IModule $mod
-     * @param   string $type If type is 'ses' then the data is stored as session-lasting data. This means that it'll be wiped out the next time the user logs in.
+     * @param string                $type If type is 'ses' then the data is stored as session-lasting data. This means that it'll be wiped out the next time the user logs in.
      */
     public static function getUserData(tx_rnbase_mod_IModule $mod, $type = '')
     {
@@ -56,18 +57,19 @@ class tx_rnbase_mod_Util
     }
 
     /**
-     * Returns a TYPO3 sprite icon
+     * Returns a TYPO3 sprite icon.
      *
      * @param string $iconName
-     * @param array $options
-     * @param array $overlays
+     * @param array  $options
+     * @param array  $overlays
      *
      * @return string The full HTML tag (usually a <span>)
      */
-    public static function getSpriteIcon($iconName, array $options = array(), array $overlays = array())
+    public static function getSpriteIcon($iconName, array $options = [], array $overlays = [])
     {
         return Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon($iconName, $options, $overlays);
     }
+
     /**
      * Returns a string with all available Icons in TYPO3 system. Each icon has a tooltip with its identifier.
      *
@@ -79,18 +81,19 @@ class tx_rnbase_mod_Util
     }
 
     /**
-     * Gibt einen selector mit den elementen im gegebenen array zurück
+     * Gibt einen selector mit den elementen im gegebenen array zurück.
      *
      * @TODO: move to an selector!
      *
-     * @param array $aItems Array mit den werten der Auswahlbox
-     * @param mixed $selectedItem
-     * @param string $sDefId ID-String des Elements
-     * @param array $aData enthält die Formularelement für die Ausgabe im Screen. Keys: selector, label
-     * @param array $aOptions zusätzliche Optionen: label, id
+     * @param array  $aItems       Array mit den werten der Auswahlbox
+     * @param mixed  $selectedItem
+     * @param string $sDefId       ID-String des Elements
+     * @param array  $aData        enthält die Formularelement für die Ausgabe im Screen. Keys: selector, label
+     * @param array  $aOptions     zusätzliche Optionen: label, id
+     *
      * @return string selected item
      */
-    public static function showSelectorByArray($aItems, $selectedItem, $sDefId, &$aData, $aOptions = array())
+    public static function showSelectorByArray($aItems, $selectedItem, $sDefId, &$aData, $aOptions = [])
     {
         $id = isset($aOptions['id']) && $aOptions['id'] ? $aOptions['id'] : $sDefId;
         $pid = isset($aOptions['pid']) && $aOptions['pid'] ? $aOptions['pid'] : 0;

@@ -22,65 +22,84 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
- * Common Interface for MapMarkers
+ * Common Interface for MapMarkers.
  */
 interface tx_rnbase_maps_IMarker
 {
     /**
-     * Returns the country
+     * Returns the country.
+     *
      * @return string
      */
     public function getCountry();
+
     /**
-     * Returns the state/province
+     * Returns the state/province.
+     *
      * @return string
      */
     public function getState();
+
     /**
-     * Returns the street
+     * Returns the street.
+     *
      * @return string
      */
     public function getStreet();
+
     /**
-     * Returns the zip code
+     * Returns the zip code.
+     *
      * @return string
      */
     public function getZip();
+
     /**
-     * Returns the city
+     * Returns the city.
+     *
      * @return string
      */
     public function getCity();
+
     /**
-     * Returns a specific coordination
+     * Returns a specific coordination.
+     *
      * @return tx_rnbase_maps_ICoord
      */
     public function getCoords();
 
     /**
-     * Returns the Icon for this marker
+     * Returns the Icon for this marker.
+     *
      * @return tx_rnbase_maps_IIcon
      */
     public function getIcon();
+
     /**
-     * Returns the label
+     * Returns the label.
+     *
      * @return string
      */
     public function getTitle();
+
     /**
-     * Returns the description
+     * Returns the description.
+     *
      * @return string
      */
     public function getDescription();
+
     /**
-     * Minimum zoom level to show the marker
+     * Minimum zoom level to show the marker.
+     *
      * @return int 0 up to 18
      */
     public function getZoomMin();
+
     /**
-     * Maximum zoom level to show the marker
+     * Maximum zoom level to show the marker.
+     *
      * @return int 0 up to 18
      */
     public function getZoomMax();

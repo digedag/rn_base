@@ -24,10 +24,8 @@
 
 /**
  * This interface defines a base domain model.
- * TODO: this interface should extend IteratorAggregate
+ * TODO: this interface should extend IteratorAggregate.
  *
- * @package TYPO3
- * @subpackage rn_base
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
@@ -49,10 +47,10 @@ interface Tx_Rnbase_Domain_Model_DataInterface
     public function isEmpty();
 
     /**
-     * Setzt einen Wert oder ersetzt alle Werte
+     * Setzt einen Wert oder ersetzt alle Werte.
      *
      * @param string|array $property
-     * @param mixed $value
+     * @param mixed        $value
      *
      * @return Tx_Rnbase_Domain_Model_Data
      */

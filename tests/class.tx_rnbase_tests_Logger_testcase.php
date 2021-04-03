@@ -24,18 +24,17 @@
 
 tx_rnbase::load('tx_rnbase_util_Logger');
 
-
 class tx_rnbase_tests_Logger_testcase extends tx_rnbase_tests_BaseTestCase
 {
-    public function test_logger()
+    public function testLogger()
     {
         if (tx_rnbase_util_Extensions::isLoaded('devlog')) {
             $minLog = Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('devlog', 'minLogLevel');
-            if ($minLog === false) {
+            if (false === $minLog) {
                 $ret = tx_rnbase_util_Logger::isNoticeEnabled();
                 $this->assertTrue($ret, 'Notice funktioniert nicht.');
             }
-            if ($minLog == 1) {
+            if (1 == $minLog) {
                 $ret = tx_rnbase_util_Logger::isNoticeEnabled();
                 $this->assertTrue($ret, 'Notice funktioniert nicht.');
                 $ret = tx_rnbase_util_Logger::isWarningEnabled();
@@ -47,7 +46,7 @@ class tx_rnbase_tests_Logger_testcase extends tx_rnbase_tests_BaseTestCase
                 $ret = tx_rnbase_util_Logger::isDebugEnabled();
                 $this->assertFalse($ret, 'Debug funktioniert nicht.');
             }
-            if ($minLog == 3) {
+            if (3 == $minLog) {
                 $ret = tx_rnbase_util_Logger::isNoticeEnabled();
                 $this->assertFalse($ret, 'Notice funktioniert nicht.');
                 $ret = tx_rnbase_util_Logger::isWarningEnabled();

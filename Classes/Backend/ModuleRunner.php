@@ -23,10 +23,8 @@
  ***************************************************************/
 
 /**
- * Module Runner
+ * Module Runner.
  *
- * @package TYPO3
- * @subpackage Tx_Rnbase
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
  *        GNU Lesser General Public License, version 3 or later
@@ -34,7 +32,7 @@
 class Tx_Rnbase_Backend_ModuleRunner
 {
     /**
-     * This method forwards the call like the TYPO3 CMS 7.x request handler
+     * This method forwards the call like the TYPO3 CMS 7.x request handler.
      *
      * @param string $moduleSignature
      *
@@ -45,10 +43,7 @@ class Tx_Rnbase_Backend_ModuleRunner
         try {
             $moduleConfiguration = $this->getModuleConfiguration($moduleSignature);
             if (empty($moduleConfiguration['routeTarget'])) {
-                throw new \RuntimeException(
-                    'Module target' . $moduleSignature . ' is not configured.',
-                    1289918327
-                );
+                throw new \RuntimeException('Module target'.$moduleSignature.' is not configured.', 1289918327);
             }
         } catch (RuntimeException $e) {
             return false;
@@ -66,7 +61,7 @@ class Tx_Rnbase_Backend_ModuleRunner
 
         return call_user_func_array(
             $target,
-            array($request, $response)
+            [$request, $response]
         );
     }
 
@@ -75,8 +70,6 @@ class Tx_Rnbase_Backend_ModuleRunner
      *
      * @param string $target
      * @param string $moduleSignature
-     *
-     * @return void
      */
     public function initTargetConf($target, $moduleSignature = '')
     {
@@ -95,7 +88,7 @@ class Tx_Rnbase_Backend_ModuleRunner
     }
 
     /**
-     * Returns the module configuration which is provided during module registration
+     * Returns the module configuration which is provided during module registration.
      *
      * @param string $moduleName
      *
@@ -105,16 +98,18 @@ class Tx_Rnbase_Backend_ModuleRunner
      */
     protected function getModuleConfiguration($moduleName = '')
     {
-        if ($moduleName === '') {
-            tx_rnbase::load('tx_rnbase_parameters');
-            $moduleName = tx_rnbase_parameters::getGetParameters('M');
+        if ('' === $moduleName) {
+            if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+                $moduleName = \tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Routing\Router::class)->match(
+                    \Sys25\RnBase\Frontend\Request\Parameters::getGetParameters('route')
+                )->getOption('moduleName');
+            } else {
+                $moduleName = Sys25\RnBase\Frontend\Request\Parameters::getGetParameters('M');
+            }
         }
 
         if (!isset($GLOBALS['TBE_MODULES']['_configuration'][$moduleName])) {
-            throw new \RuntimeException(
-                'Module ' . $moduleName . ' is not configured.',
-                1289918326
-            );
+            throw new \RuntimeException('Module '.$moduleName.' is not configured.', 1289918326);
         }
 
         return $GLOBALS['TBE_MODULES']['_configuration'][$moduleName];
@@ -122,11 +117,11 @@ class Tx_Rnbase_Backend_ModuleRunner
 
     /**
      * Creates a callable out of the given parameter, which can be a string, a callable / closure or an array
-     * which can be handed to call_user_func_array()
+     * which can be handed to call_user_func_array().
      *
      * This method is taken from TYPO3\CMS\Core\Http\Dispatcher (TYPO3-7.x)
      *
-     * @param array|string|callable $target the target which is being resolved.
+     * @param array|string|callable $target the target which is being resolved
      *
      * @throws \InvalidArgumentException
      *
@@ -143,21 +138,21 @@ class Tx_Rnbase_Backend_ModuleRunner
         }
 
         // Only a class name is given
-        if (is_string($target) && strpos($target, ':') === false) {
+        if (is_string($target) && false === strpos($target, ':')) {
             $targetObject = tx_rnbase::makeInstance($target);
             if (!method_exists($targetObject, '__invoke')) {
-                throw new InvalidArgumentException('Object "' . $target . '" doesn\'t implement an __invoke() method and cannot be used as target.', 1442431631);
+                throw new InvalidArgumentException('Object "'.$target.'" doesn\'t implement an __invoke() method and cannot be used as target.', 1442431631);
             }
 
             return $targetObject;
         }
 
         // Check if the target is a concatenated string of "className::actionMethod"
-        if (is_string($target) && strpos($target, '::') !== false) {
+        if (is_string($target) && false !== strpos($target, '::')) {
             list($className, $methodName) = explode('::', $target, 2);
             $targetObject = Tx_Rnbase_Utility_T3General::makeInstance($className);
 
-            return array($targetObject, $methodName);
+            return [$targetObject, $methodName];
         }
 
         // This needs to be checked at last as a string with object::method is recognize as callable
@@ -165,6 +160,6 @@ class Tx_Rnbase_Backend_ModuleRunner
             return $target;
         }
 
-        throw new InvalidArgumentException('Invalid target for "' . $target . '", as it is not callable.', 1425381442);
+        throw new InvalidArgumentException('Invalid target for "'.$target.'", as it is not callable.', 1425381442);
     }
 }

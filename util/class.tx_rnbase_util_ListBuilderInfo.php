@@ -23,18 +23,20 @@
  ***************************************************************/
 
 /**
- * Provide additional data for ListBuilder
+ * Provide additional data for ListBuilder.
  */
 interface ListBuilderInfo
 {
     /**
-     * Get a message string for empty list
+     * Get a message string for empty list.
      *
-     * @param array_object $viewData
+     * @param array_object                               $viewData
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     *
      * @return string
      */
     public function getEmptyListMessage($confId, &$viewData, &$configurations);
+
     public function getListMarkerInfo();
 
     public function setMarkerArrays(&$markerArray, &$subpartArray, &$wrappedSubpartArray);
@@ -44,22 +46,24 @@ interface ListBuilderInfo
  */
 class tx_rnbase_util_ListBuilderInfo implements ListBuilderInfo
 {
-
     /**
      * Get a message string for empty list. This is an language string. The key is
-     * taken from ts-config: [item].listinfo.llkeyEmpty
+     * taken from ts-config: [item].listinfo.llkeyEmpty.
      *
-     * @param array_object $viewData
+     * @param array_object                               $viewData
      * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     *
      * @return string
      */
     public function getEmptyListMessage($confId, &$viewData, &$configurations)
     {
         return $configurations->getLL($configurations->get($confId.'listinfo.llkeyEmpty'));
     }
+
     public function setMarkerArrays(&$markerArray, &$subpartArray, &$wrappedSubpartArray)
     {
     }
+
     public function getListMarkerInfo()
     {
         return null;

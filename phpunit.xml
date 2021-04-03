@@ -1,0 +1,31 @@
+<phpunit
+    backupGlobals="true"
+    backupStaticAttributes="false"
+    bootstrap=".Build/vendor/nimut/testing-framework/res/Configuration/UnitTestsBootstrap.php"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertWarningsToExceptions="true"
+    forceCoversAnnotation="false"
+    processIsolation="false"
+    stopOnError="false"
+    stopOnFailure="false"
+    stopOnIncomplete="false"
+    stopOnSkipped="false"
+    verbose="false"
+>
+
+    <!-- all tests in the test dir -->
+    <testsuites>
+        <testsuite name="RnBase Unit Tests">
+            <directory>tests/</directory>
+        </testsuite>
+    </testsuites>
+
+    <!-- only the tests in group unit -->
+    <groups>
+        <include>
+            <group>unit</group>
+        </include>
+    </groups>
+
+</phpunit>

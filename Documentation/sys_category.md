@@ -106,7 +106,7 @@ plugin_tx_mkextension.myListView.myFilterConfId.useSysCategoriesOfItemFromParame
 Bei jedem Inhaltselement können im BE sys_category Einträge gewählt werden. Diese lassen sich ganz einfach zum filtern verwenden. Dazu lediglich folgendes TypoScript:
 
 ```
-plugin_tx_mkextension.myListView.myFilterConfId.useSysCategoriesOfPlugin = 1
+plugin_tx_mkextension.myListView.myFilterConfId.useSysCategoriesOfContentElement = 1
 ```
 
 Wenn ein anderer Alias für die sys_category als SYS_CATEGORY verwendet werden soll, dann diesen einfach so konfigurieren:
@@ -161,3 +161,8 @@ plugin_tx_mkextension.myListView.myFilterConfId {
     useSysCategoriesFromParameters.dontSearchIfNoCategoriesFound = 1
 }
 ```
+
+Domain-Model
+-----
+rn_base bietet auch ein Repository (Sys25\RnBase\Domain\Repository\CategoryRepository), 
+ein Model (Sys25\RnBase\Domain\Model\Category) und ein Searcher ((Sys25\RnBase\Search\Category)).

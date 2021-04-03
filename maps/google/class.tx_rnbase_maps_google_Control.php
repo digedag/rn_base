@@ -33,8 +33,10 @@ class tx_rnbase_maps_google_Control implements tx_rnbase_maps_IControl
     {
         $this->type = $type;
     }
+
     /**
      * Returns an ID-String for the map provider.
+     *
      * @return string
      */
     public function render()

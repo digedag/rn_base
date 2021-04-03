@@ -3,7 +3,140 @@
 Changelog
 ---------
 
-v1.8.8 (??.??.2018)
+v1.13.4 (31.03.2021)
+ * fixed bug in new search base
+ 
+v1.13.3 (30.03.2021)
+ * fixed sending mails before TYPO3 10.4
+ * fixed search base when adding joins
+ 
+v1.13.1 (28.03.2021)
+ * #202 [DatabaseConnection](Documentation/database_access.md) and SearchBase support TYPO3 QueryBuilder 
+ * Remove unused classes
+ * use var/lock folder for locks since TYPO3 9.5
+
+v1.12.6 (28.01.2021)
+ * #176 Fix route target correction for backend modules
+ * make fluid action view compatible with AbstractAction
+ 
+v1.12.5 (25.11.2020)
+ * fix release stage in TravisCI
+ * #201 run TravisCI build with PHP 7.3 and 7.4
+
+v1.12.4 (04.11.2020)
+ * Add wrap option to pagebrowser viewhelper
+ * Add pagebrowser ul example to documentation
+ * #200 Add GitHub Actions
+ * Append test and fix composer scripts  
+   Run tests with `composer test`  
+   Fix phpcs with `composer fix`
+   
+v1.12.3 (29.06.2020)
+ * remove ending semicolon to fix TCA palette syntax
+ * fixed namespaces of old fluid classes
+ 
+v1.12.2 (14.06.2020)
+ * interface fixed in legacy filter item
+ * dummy cache fixed in TYPO3 10
+
+v1.12.1 (10.06.2020)
+ * #190 fix class not found exception
+
+v1.12.0 (06.06.2020)
+ * raised required PHP version to 7.1
+ * added support for TYPO3 10.4 LTS
+ * dropped support for TYPO3 6.2 LTS
+ * #165 wip refactoring of classes to PSR-4  
+ * BC: drop old rendering of BE-Modules without ModuleTemplate
+ * Clean up: all ExtBase/Fluid classes moved to a new common namespace `Sys25\RnBase\ExtBaseFluid` 
+ * Clean up: common namespace for category search classes
+
+v1.11.4 (13.04.2020)
+ * remove 6.2 code from BE-ToolBox
+ * fix clipboard link in ToolBox 
+
+v1.11.2 (24.03.2020)
+ * fix missing isConnected method for MsSQL and MySQL db drivers
+ * make sure TCA get's loaded in loadTCA since TYPO3 8.x 
+
+v1.11.1 (09.02.2020)
+ * configuration processor usage for tests fixed
+ 
+v1.11.0 (09.02.2020)
+ * #165 wip refactoring of classes to psr4  
+    **BREAKING CHANGE**: tx_rnbase_IParameters is not used anymore.  
+    Replace usage and typehints to new Sys25\RnBase\Frontend\Request\ParametersInterface
+ * #168 Use disabled TimeTracker instead of the removed NullTimeTracker
+ * php codestyle rule switched to symfony
+
+v1.10.9 (23.11.2019)
+ * #161 fix missing test class on exception handling for non-composer installs
+ * New wrapper class for TYPO3 registry functionality
+ * #164 autodeploy new versions to TER
+
+v1.10.7 (27.10.2019)
+ * configurations: Illegal string offset fixed in `_setFlexForm()`
+ * some warnings fixed for TYPO3 9.5
+ * fixed warnings in composer.json 
+
+v1.10.6 (02.09.2019)
+ * bugfix in environment utility to support php 5.6
+ 
+v1.10.5 (19.08.2019)
+ * add compatibility to add cache hash calc configurations in TYPO3 9
+ * add support if simplifiedControllerActionDispatching is active in TYPO3 9
+ * new method to get current language in FE and BE
+
+v1.10.4 (06.07.2019)
+ * Revert bugfix TCA loading for TYPO3 8.7+
+
+v1.10.3 (05.07.2019)
+ * wec_map integration deactivated
+ * Bugfix TCA loading for TYPO3 8.7+
+ * Bugfix load language overlay for pages.
+
+v1.10.2 (05.07.2019)
+ * support to return complete extension configuration below TYPO3 9
+ 
+v1.10.1 (02.07.2019)
+ * fixed/added some phpDoc
+ * added FrontendControllerUtility::getLanguageMode() and FrontendControllerUtility::getLanguageId
+ 
+v1.10.0 (27.06.2019)
+ * added TYPO3 9 support
+ 
+v1.9.5 (25.06.2019)
+ * Some enhancements for backend module rendering for TYPO3 8
+ * Moved tx_rnbase_tests_BaseTestCase::createConfigurations() to own utility (tx_rnbase_tests_Utility) for standalone usage
+ * force_lookup_language option added in database connection
+
+v1.9.4 (28.05.2019)
+ * bugfix added missing classes to autload for older TYPO3 versions
+ * filter class for new plugin api
+ * Dummy view for unit tests
+ * bugfix when manipulating cache hash calculator configuration
+ * bugfixes for non composer installations
+
+v1.9.3 (20.02.2019)
+ * refactored plugins
+ * View interface changed. New abstract base view class.
+ * bugfix for tx_rnbase_parameters::getGetParameters() to return again values
+
+v1.9.2 (06.02.2019)
+ * javascript footer library files can now be added for actions ([see documentation](Documentation/fe_plugins.md))
+ * javascript footer files can now be excluded from concatenation and compression ([see documentation](Documentation/fe_plugins.md))
+ * added model and repository for sys_category table ([see documentation](Documentation/sys_category.md))
+
+v1.9.1 (22.01.2019)
+ * doQuery in DatabaseConnection fixed #132
+
+v1.9.0 (16.01.2019)
+ * __new DBAL-Driver which replaces the deprecated TYPO3_DB usage by new connection pool__
+ * get deleted field for table from tca fixed in tca utility
+ * typo3 requirement in composer changed to new subtree split
+ * new travis based unittesting
+ * deprecated usage of each function dropped
+ * new translate viewhelper for fluid added
 
 v1.8.7 (08.11.2018)
  * new view helper to get post or get data
@@ -68,7 +201,7 @@ v1.6.2 (22.02.2018)
  * added wrapper for DatabaseRecordList
 
 v1.6.1 (24.12.2017) (TER Release)
- * #95 createLink() fixed
+ * createLink() fixed #95
  * google_Util: it is possible to provide api key for geocode api
  * IMPORTANT: This is the last version of rn_base with explizit support of TYPO3 4.5 LTS
 
@@ -283,7 +416,7 @@ v1.0.16 (18.07.2016)
  *  [BREAKING CHANGE] class properties tx_rnbase_configurations have now a visibility. Thus access e.g. to _dataStore will now fail.
 
 v1.0.15 (20.06.2016)
- *  #53 it is possible to order plugins language file includes with `plugin.myplugin.locallangFilename._cfg.naturalOrder = 1`
+ *  it is possible to order plugins language file includes with `plugin.myplugin.locallangFilename._cfg.naturalOrder = 1` #53
  *  added generic static method to add flash messages
 
 v1.0.14 (15.06.2016)

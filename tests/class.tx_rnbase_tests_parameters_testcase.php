@@ -22,28 +22,25 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
- * parameters testcase
+ * parameters testcase.
  *
- * @package tx_rnbase
- * @subpackage tx_rnbase_tests
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_rnbase_tests_parameters_testcase extends tx_rnbase_tests_BaseTestCase
 {
     public function testGet()
     {
-        $params = array(
+        $params = [
             'empty' => '',
             'zero' => '0',
             'seven' => '7',
             'hello' => 'hello',
             'NK_world' => 'world',
-        );
+        ];
 
-        /* @var $parameters tx_rnbase_parameters */
-        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters', $params);
+        /* @var $parameters \Sys25\RnBase\Frontend\Request\Parameters */
+        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class, $params);
 
         $this->assertEquals('', $parameters->get('empty'));
         $this->assertEquals('0', $parameters->get('zero'));
@@ -55,16 +52,16 @@ class tx_rnbase_tests_parameters_testcase extends tx_rnbase_tests_BaseTestCase
 
     public function testGetInt()
     {
-        $params = array(
+        $params = [
             'empty' => '',
             'zero' => '0',
             'seven' => '7',
             'hello' => 'hello',
             'NK_world' => 'world',
-        );
+        ];
 
-        /* @var $parameters tx_rnbase_parameters */
-        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters', $params);
+        /* @var $parameters \Sys25\RnBase\Frontend\Request\Parameters */
+        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class, $params);
 
         $this->assertEquals(0, $parameters->getInt('empty'));
         $this->assertEquals(0, $parameters->getInt('zero'));

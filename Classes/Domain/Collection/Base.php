@@ -26,16 +26,14 @@ tx_rnbase::load('Tx_Rnbase_Utility_Composer');
 Tx_Rnbase_Utility_Composer::autoload();
 
 /**
- * Only a wrapper for doctrine array collection
+ * Only a wrapper for doctrine array collection.
  *
- * @package TYPO3
- * @subpackage rn_base
  * @author Michael Wagner
  */
 class Tx_Rnbase_Domain_Collection_Base extends \Doctrine\Common\Collections\ArrayCollection
 {
     /**
-     * Only a wrapper for add
+     * Only a wrapper for add.
      *
      * @param mixed $value The element to add
      *
@@ -54,7 +52,7 @@ class Tx_Rnbase_Domain_Collection_Base extends \Doctrine\Common\Collections\Arra
      * @return array
      */
     public function exchange(
-        array $elements = array()
+        array $elements = []
     ) {
         $old = $this->toArray();
 
@@ -68,20 +66,20 @@ class Tx_Rnbase_Domain_Collection_Base extends \Doctrine\Common\Collections\Arra
     }
 
     /**
-     * Only an ArrayObject alias for exchange
+     * Only an ArrayObject alias for exchange.
      *
      * @param array $elements
      *
      * @return array
      */
     public function exchangeArray(
-        array $elements = array()
+        array $elements = []
     ) {
         return $this->exchange($elements);
     }
 
     /**
-     * Returns a list of uids
+     * Returns a list of uids.
      *
      * @return array
      */

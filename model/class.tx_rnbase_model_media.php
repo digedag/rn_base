@@ -25,15 +25,12 @@
 // Die Datenbank-Klasse
 tx_rnbase::load('tx_rnbase_model_base');
 
-/**
- */
 class tx_rnbase_model_media extends tx_rnbase_model_base
 {
     public $uid;
+
     public $record;
 
-    /**
-     */
     public function __construct($rowOrUid)
     {
         if (is_object($rowOrUid)) {
@@ -54,8 +51,8 @@ class tx_rnbase_model_media extends tx_rnbase_model_base
             $this->initFalFile($media);
         }
     }
+
     /**
-     *
      * @param TYPO3\CMS\Core\Resource\File $media
      */
     private function initFalFile($media)
@@ -65,11 +62,10 @@ class tx_rnbase_model_media extends tx_rnbase_model_base
         $this->record['fal_file'] = '1'; // Das wird per TS ausgewertet. Die UID ist KEINE Referenz
         $this->record['uid_local'] = $media->getUid();
         $this->record['file_path'] = $media->getPublicUrl();
-        $this->record['file_abs_url'] = tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL') .$this->record['file_path'];
+        $this->record['file_abs_url'] = tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL').$this->record['file_path'];
     }
 
     /**
-     *
      * @param TYPO3\CMS\Core\Resource\FileReference $media
      */
     private function initFalReference($media)
@@ -79,8 +75,9 @@ class tx_rnbase_model_media extends tx_rnbase_model_base
         $this->uid = $media->getUid();
         $this->record['uid'] = $media->getUid();
         $this->record['file_path'] = $media->getPublicUrl();
-        $this->record['file_abs_url'] = tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL') .$this->record['file_path'];
+        $this->record['file_abs_url'] = tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL').$this->record['file_path'];
     }
+
     private function initAdditionalData()
     {
         $this->record['file'] = urldecode($this->record['file_path'].$this->record['file_name']);
@@ -88,8 +85,10 @@ class tx_rnbase_model_media extends tx_rnbase_model_base
         $this->record['file1'] = $this->record['file'];
         $this->record['thumbnail'] = $this->record['file'];
     }
+
     /**
      * Kindklassen müssen diese Methode überschreiben und den Namen der gemappten Tabelle liefern!
+     *
      * @return string Tabellenname
      */
     public function getTableName()

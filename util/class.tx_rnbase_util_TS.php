@@ -24,7 +24,7 @@
 tx_rnbase::load('Tx_Rnbase_Utility_TypoScript');
 
 /**
- * Contains utility functions for TypoScript
+ * Contains utility functions for TypoScript.
  *
  * @author Michael Wagner
  */

@@ -23,55 +23,66 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-/**
- */
 interface tx_rnbase_mod_IModule
 {
     /**
-     * @return template
+     * @return Tx_Rnbase_Backend_Template_Override_DocumentTemplate
      */
     public function getDoc();
+
     /**
-     * Returns the form tool
+     * Returns the form tool.
+     *
      * @return tx_rnbase_util_FormTool
      */
     public function getFormTool();
+
     /**
-     * Returns the configuration
+     * Returns the configuration.
+     *
      * @return Tx_Rnbase_Configuration_ProcessorInterface
      */
     public function getConfigurations();
+
     /**
-     * Returns the module ident name
+     * Returns the module ident name.
+     *
      * @return string
      */
     public function getName();
+
     /**
-     * Return current PID for Web-Modules
+     * Return current PID for Web-Modules.
+     *
      * @return int uid
      */
     public function getPid();
+
     /**
-     * Submenu String for the marker ###TABS###
+     * Submenu String for the marker ###TABS###.
+     *
      * @param $menuString
      */
     public function setSubMenu($menuString);
+
     /**
-     * Selector String for the marker ###SELECTOR###
+     * Selector String for the marker ###SELECTOR###.
+     *
      * @param $selectorString
      */
     public function setSelector($selectorString);
+
     /**
      * @param string $message
      * @param string $title;
-     * @param int $severity Optional severity, must be either of t3lib_message_AbstractMessage::INFO, t3lib_message_AbstractMessage::OK,
-     *                t3lib_message_AbstractMessage::WARNING or t3lib_message_AbstractMessage::ERROR. Default is t3lib_message_AbstractMessage::OK.
-     *  const NOTICE  = -2;
-     *  const INFO    = -1;
-     *  const OK      = 0;
-     *  const WARNING = 1;
-     *  const ERROR   = 2;
-     * @param bool $storeInSession Optional, defines whether the message should be stored in the session or only for one request (default)
+     * @param int    $severity       Optional severity, must be either of t3lib_message_AbstractMessage::INFO, t3lib_message_AbstractMessage::OK,
+     *                               t3lib_message_AbstractMessage::WARNING or t3lib_message_AbstractMessage::ERROR. Default is t3lib_message_AbstractMessage::OK.
+     *                               const NOTICE  = -2;
+     *                               const INFO    = -1;
+     *                               const OK      = 0;
+     *                               const WARNING = 1;
+     *                               const ERROR   = 2;
+     * @param bool   $storeInSession Optional, defines whether the message should be stored in the session or only for one request (default)
      */
     public function addMessage($message, $title = '', $severity = 0, $storeInSession = false);
 }

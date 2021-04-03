@@ -23,10 +23,8 @@
  ***************************************************************/
 
 /**
- * Contains utility functions for TypoScript
+ * Contains utility functions for TypoScript.
  *
- * @package TYPO3
- * @subpackage Tx_Rnbase
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
  *        GNU Lesser General Public License, version 3 or later
@@ -34,7 +32,7 @@
 class Tx_Rnbase_Utility_TypoScript
 {
     /**
-     * Creates an instance of the ts parser
+     * Creates an instance of the ts parser.
      *
      * @return \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
      */
@@ -46,7 +44,7 @@ class Tx_Rnbase_Utility_TypoScript
     }
 
     /**
-     * Parse the configuration of the given models
+     * Parse the configuration of the given models.
      *
      * @param string $typoScript
      *
@@ -64,7 +62,7 @@ class Tx_Rnbase_Utility_TypoScript
     }
 
     /**
-     * Removes all trailing dots recursively from TS settings array
+     * Removes all trailing dots recursively from TS settings array.
      *
      * This method is taken from extbase TypoScriptService
      *
@@ -75,7 +73,7 @@ class Tx_Rnbase_Utility_TypoScript
     public static function convertTypoScriptArrayToPlainArray(array $typoScriptArray)
     {
         foreach ($typoScriptArray as $key => $value) {
-            if (substr($key, -1) === '.') {
+            if ('.' === substr($key, -1)) {
                 $keyWithoutDot = substr($key, 0, -1);
                 $typoScriptNodeValue = isset($typoScriptArray[$keyWithoutDot]) ? $typoScriptArray[$keyWithoutDot] : null;
                 if (is_array($value)) {
@@ -104,7 +102,7 @@ class Tx_Rnbase_Utility_TypoScript
      */
     public static function convertPlainArrayToTypoScriptArray(array $plainArray)
     {
-        $typoScriptArray = array();
+        $typoScriptArray = [];
         foreach ($plainArray as $key => $value) {
             if (is_array($value)) {
                 if (isset($value['_typoScriptNodeValue'])) {
@@ -112,7 +110,7 @@ class Tx_Rnbase_Utility_TypoScript
                     unset($value['_typoScriptNodeValue']);
                 }
                 // add dot only if not exists
-                $key = substr($key, -1) === '.' ? $key : $key . '.';
+                $key = '.' === substr($key, -1) ? $key : $key.'.';
                 $typoScriptArray[$key] = self::convertPlainArrayToTypoScriptArray($value);
             } else {
                 $typoScriptArray[$key] = is_null($value) ? '' : $value;

@@ -1,9 +1,27 @@
 <?php
 
+namespace Sys25\RnBase\Database;
+
+use Sys25\RnBase\Database\Query\From;
+use Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface;
+use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase;
+use Tx_Rnbase_Domain_Model_DynamicTableInterface;
+use tx_rnbase_model_base;
+use tx_rnbase_util_db_Builder;
+use tx_rnbase_util_db_IDatabase;
+use tx_rnbase_util_Debug;
+use tx_rnbase_util_Misc;
+use tx_rnbase_util_TCA;
+use tx_rnbase_util_TYPO3;
+use tx_rnbase_util_Typo3Classes;
+use Tx_Rnbase_Utility_Strings;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006-2013 Rene Nitzsche
+ *  (c) 2006-2021 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -22,32 +40,21 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_TYPO3');
-tx_rnbase::load('tx_rnbase_util_Debug');
-tx_rnbase::load('tx_rnbase_util_Misc');
-tx_rnbase::load('tx_rnbase_util_Strings');
-tx_rnbase::load('tx_rnbase_util_Typo3Classes');
-tx_rnbase::load('Tx_Rnbase_Interface_Singleton');
-
 /**
- * Contains utility functions for database access
+ * Contains utility functions for database access.
  *
- * Tx_Rnbase_Database_Connection
- *
- * @package         TYPO3
- * @subpackage      rn_base
- * @author          Rene Nitzsche <rene@system25.de>
- * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
- * @license         http://www.gnu.org/licenses/lgpl.html
- *                  GNU Lesser General Public License, version 3 or later
+ * @author Rene Nitzsche
+ * @author Michael Wagner
+ * @author Hannes Bochmann
+ * @license http://www.gnu.org/licenses/lgpl.html
+ *          GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
+class Connection implements SingletonInterface
 {
-
     /**
      * returns an instance of this class.
      *
-     * @return Tx_Rnbase_Database_Connection
+     * @return Connection
      */
     public static function getInstance()
     {
@@ -55,8 +62,16 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
     }
 
     /**
-     * Generische Schnittstelle für Datenbankabfragen. Anstatt vieler Parameter wird hier ein
+     * Generische Schnittstelle für Datenbankabfragen.
+     *
+     * Anstatt vieler Parameter wird hier ein
      * Hash als Parameter verwendet, der mögliche Informationen aufnimmt.
+     * der from sollte wiefolgt aussehen:
+     * <pre>
+     * - 'table' - the table name,
+     * - 'alias' - the table alias
+     * - 'clause' - the complete where clause with joins or subselects or whatever you want
+     * </pre>
      * Es sind die folgenden Parameter zulässig:
      * <pre>
      * - 'where' - the Where-Clause
@@ -72,25 +87,29 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
      * - 'enablefieldsfe' - force enableFields check for FE
      * - 'db' - external database: tx_rnbase_util_db_IDatabase
      * - 'ignorei18n' - do not translate record to fe language
+     * - 'forcei18n' - force the translation of the record
      * - 'i18nolmode' - translation mode, possible value: 'hideNonTranslated'
      * </pre>
-     * @param string $what requested columns
-     * @param string $from either the name of on table or an array with index 0 the from clause
-     *              and index 1 the requested tablename and optional index 2 a table alias to use.
-     * @param array $arr the options array
-     * @param bool $debug = 0 Set to 1 to debug sql-String
+     *
+     * @param string $what  Requested columns
+     * @param array | string | From $from  Either the name of on table or an array with index 0 an array of Join or a from clause string
+     *                   and index 1 the requested tablename and optional index 2 a table alias to use
+     * @param array $arr The options array
+     * @param bool $debug Set to true to debug the sql string
+     *
+     * @return array
      */
-    public function doSelect($what, $from, $arr, $debug = 0)
+    public function doSelect($what, $from, $arr, $debug = false)
     {
         tx_rnbase_util_Misc::callHook(
             'rn_base',
             'util_db_do_select_pre',
-            array(
+            [
                 'what' => &$what,
                 'from' => &$from,
                 'options' => &$arr,
                 'debug' => &$debug,
-            )
+            ]
         );
 
         $debug = $debug ? $debug : intval($arr['debug']) > 0;
@@ -98,18 +117,75 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
             $time = microtime(true);
             $mem = memory_get_usage();
         }
-        $tableName = $from;
-        $fromClause = $from;
-        if (is_array($from)) {
-            $tableName = $from[1];
-            $fromClause = $from[0];
-            $tableAlias = isset($from[2]) && strlen(trim($from[2])) > 0 ? trim($from[2]) : false;
+
+        $arr['debug'] = $debug;
+        $arr['what'] = $what;
+        $from = From::buildInstance($from);
+
+        $qbFacade = new QueryBuilderFacade();
+        $queryBuilder = $qbFacade->doSelect($what, $from, $arr);
+
+        if ($queryBuilder) {
+            $rows = $this->doSelectByQueryBuilder($queryBuilder, $from, $arr);
+        } else {
+            $rows = $this->doSelectLegacy($what, $from, $arr, $debug);
         }
+        if (is_string($rows)) {
+            // sqlOnly
+            return $rows;
+        }
+
+        if ($debug) {
+            tx_rnbase_util_Debug::debug([
+                'Rows retrieved ' => count($rows),
+                'Time ' => (microtime(true) - $time),
+                'Memory consumed ' => (memory_get_usage() - $mem),
+                'QB used' => is_object($queryBuilder),
+            ], 'SQL statistics');
+        }
+
+        tx_rnbase_util_Misc::callHook(
+            'rn_base',
+            'util_db_do_select_post',
+            [
+                'rows' => &$rows,
+            ]
+        );
+
+        return $rows;
+    }
+
+    private function doSelectByQueryBuilder(QueryBuilder $queryBuilder, From $from, array $arr)
+    {
+        $sqlOnly = intval($arr['sqlonly']) > 0;
+
+        if ($sqlOnly) {
+            return $queryBuilder->getSQL();
+        }
+
+        $rows = $this->initRows($arr);
+        $wrapper = is_string($arr['wrapperclass']) ? trim($arr['wrapperclass']) : 0;
+        $callback = isset($arr['callback']) ? $arr['callback'] : false;
+
+        foreach ($queryBuilder->execute()->fetchAll() as $row) {
+            $this->appendRow($rows, $row, $from->getTableName(), $wrapper, $callback, $arr);
+        }
+
+        return $rows;
+    }
+
+    private function doSelectLegacy($what, From $from, $arr, $debug)
+    {
+        $tableName = $from->getTableName();
+        $fromClause = $from->getClause();
+        $fromClause = $fromClause ?: ($from->isComplexTable() ? $tableName : '');
+        $tableAlias = $from->getAlias();
+        $fromClause = $fromClause ?: trim(sprintf('%s %s', $tableName, $tableAlias));
 
         $where = is_string($arr['where']) ? $arr['where'] : '1=1';
         $groupBy = is_string($arr['groupby']) ? $arr['groupby'] : '';
         if ($groupBy) {
-            $groupBy .= is_string($arr['having']) > 0 ? ' HAVING ' . $arr['having'] : '';
+            $groupBy .= is_string($arr['having']) > 0 ? ' HAVING '.$arr['having'] : '';
         }
         $orderBy = is_string($arr['orderby']) ? $arr['orderby'] : '';
         $offset = intval($arr['offset']) > 0 ? intval($arr['offset']) : 0;
@@ -123,10 +199,10 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         // offset und limit kombinieren
         // bei gesetztem limit ist offset optional
         if ($limit) {
-            $limit = ($offset > 0) ? $offset . ',' . $limit : $limit;
-        } // Bei gesetztem Offset ist limit Pflicht (default 1000)
-        elseif ($offset) {
-            $limit = ($limit > 0) ? $offset . ',' . $limit : $offset . ',1000';
+            $limit = ($offset > 0) ? $offset.','.$limit : $limit;
+        } elseif ($offset) {
+            // Bei gesetztem Offset ist limit Pflicht (default 1000)
+            $limit = ($limit > 0) ? $offset.','.$limit : $offset.',1000';
         } else {
             $limit = '';
         }
@@ -135,16 +211,17 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
 
         // Das sollte wegfallen. Die OL werden weiter unten geladen
         if (strlen($i18n) > 0) {
-            $i18n = implode(',', tx_rnbase_util_Strings::intExplode(',', $i18n));
-            $where .= ' AND ' . ($tableAlias ? $tableAlias : $tableName) . '.sys_language_uid IN (' . $i18n . ')';
+            $i18n = implode(',', Tx_Rnbase_Utility_Strings::intExplode(',', $i18n));
+            $where .= ' AND '.($tableAlias ? $tableAlias : $tableName).'.sys_language_uid IN ('.$i18n.')';
         }
 
         if (strlen($pidList) > 0) {
-            $where .= ' AND ' . ($tableAlias ? $tableAlias : $tableName) . '.pid IN (' . tx_rnbase_util_DB::_getPidList($pidList, $recursive) . ')';
+            $where .= ' AND '.($tableAlias ? $tableAlias : $tableName).'.pid'.
+                ' IN ('.tx_rnbase_util_Misc::getPidList($pidList, $recursive).')';
         }
 
         if (strlen($union) > 0) {
-            $where .= ' UNION ' . $union;
+            $where .= ' UNION '.$union;
         }
 
         $database = $this->getDatabaseConnection($arr);
@@ -155,7 +232,7 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
             }
             if ($debug) {
                 tx_rnbase_util_Debug::debug($sql, 'SQL');
-                tx_rnbase_util_Debug::debug(array($what, $from, $arr));
+                tx_rnbase_util_Debug::debug([$what, $from, $arr], 'Parts');
             }
         }
 
@@ -176,81 +253,85 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
 
         // use classic arrays or the collection
         // should be ever an collection, but for backward compatibility is this an array by default
-        $rows = array();
-        if ($arr['collection']) {
-            if (!is_string($arr['collection']) || !class_exists($arr['collection'])) {
-                $arr['collection'] = 'Tx_Rnbase_Domain_Collection_Base';
-            }
-            $rows = tx_rnbase::makeInstance(
-                $arr['collection'],
-                $rows
-            );
-        }
+        $rows = $this->initRows($arr);
 
         if ($this->testResource($res)) {
             $wrapper = is_string($arr['wrapperclass']) ? trim($arr['wrapperclass']) : 0;
             $callback = isset($arr['callback']) ? $arr['callback'] : false;
 
             while (($row = $database->sql_fetch_assoc($res))) {
-                // Workspacesupport
-                $this->lookupWorkspace($row, $tableName, $arr);
-                $this->lookupLanguage($row, $tableName, $arr);
-                if (!is_array($row)) {
-                    continue;
-                }
-                $item = ($wrapper) ? tx_rnbase::makeInstance($wrapper, $row) : $row;
-                if ($item instanceof Tx_Rnbase_Domain_Model_DynamicTableInterface
-                    // @TODO: backward compatibility for old models will be removed soon
-                    || $item instanceof tx_rnbase_model_base
-                ) {
-                    $item->setTablename($tableName);
-                }
-                if ($callback) {
-                    call_user_func($callback, $item);
-                    unset($item);
-                } else {
-                    if (is_array($rows)) {
-                        $rows[] = $item;
-                    } else {
-                        $rows->append($item);
-                    }
-                }
+                $this->appendRow($rows, $row, $tableName, $wrapper, $callback, $arr);
             }
             $database->sql_free_result($res);
         }
 
-        if ($debug) {
-            tx_rnbase_util_Debug::debug(array(
-                'Rows retrieved ' => count($rows),
-                'Time ' => (microtime(true) - $time),
-                'Memory consumed ' => (memory_get_usage() - $mem),
-            ), 'SQL statistics');
-        }
+        return $rows;
+    }
 
-        tx_rnbase_util_Misc::callHook(
-            'rn_base',
-            'util_db_do_select_post',
-            array(
-                'rows' => &$rows,
-            )
-        );
+    private function appendRow(&$rows, $row, $tableName, $wrapper, $callback, $arr)
+    {
+        // Workspacesupport
+        $this->lookupWorkspace($row, $tableName, $arr);
+        $this->lookupLanguage($row, $tableName, $arr);
+        if (!is_array($row)) {
+            return;
+        }
+        $item = ($wrapper) ? tx_rnbase::makeInstance($wrapper, $row) : $row;
+        if ($item instanceof Tx_Rnbase_Domain_Model_DynamicTableInterface
+            // @TODO: backward compatibility for old models will be removed soon
+            || $item instanceof tx_rnbase_model_base
+            ) {
+            $item->setTablename($tableName);
+        }
+        if ($callback) {
+            call_user_func($callback, $item);
+            unset($item);
+        } else {
+            if (is_array($rows)) {
+                $rows[] = $item;
+            } else {
+                $rows->append($item);
+            }
+        }
+    }
+
+    private function initRows(array $options)
+    {
+        $rows = [];
+        if ($options['collection']) {
+            if (!is_string($options['collection']) || !class_exists($options['collection'])) {
+                $options['collection'] = 'Tx_Rnbase_Domain_Collection_Base';
+            }
+            $rows = tx_rnbase::makeInstance(
+                $options['collection'],
+                $rows
+            );
+        }
 
         return $rows;
     }
 
     /**
-     * The ressourc has to be a valid ressource or an mysqli instance
+     * The ressourc has to be a doctrine statement, a valid ressource or an mysqli instance.
      *
      * @param mixed $res
+     *
      * @return bool
      */
     private function testResource($res)
     {
-        return is_resource($res) || $res instanceof mysqli_result;
+        return
+            // the new doctrine statemant since typo3 8
+            is_a($res, 'Doctrine\\DBAL\\Driver\\Statement') ||
+            // the old mysqli ressources
+            is_a($res, 'mysqli_result') ||
+            // the very old mysql ressources
+            is_resource($res)
+        ;
     }
 
     /**
-     * Check for workspace overlays
+     * Check for workspace overlays.
      *
      * @param array $row
      */
@@ -261,20 +342,16 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         }
 
         $sysPage = tx_rnbase_util_TYPO3::getSysPage();
-        if (!$sysPage->versioningPreview) {
-            return;
-        }
-
         $sysPage->versionOL($tableName, $row);
         $sysPage->fixVersioningPid($tableName, $row);
     }
 
     /**
-     * Autotranslate a record to fe language
+     * Autotranslate a record to fe language.
      *
-     * @param array $row
+     * @param array  $row
      * @param string $tableName
-     * @param array $options
+     * @param array  $options
      */
     private function lookupLanguage(&$row, $tableName, $options)
     {
@@ -283,9 +360,12 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         // Wert. Dadurch werden JS-Dateien nicht mehr geladen.
         // Ist dieser Aufruf im BE überhaupt sinnvoll?
         if ((
-            !(defined('TYPO3_MODE') && TYPO3_MODE === 'FE') ||
-            $options['enablefieldsoff'] ||
-            $options['ignorei18n']
+            (
+                !(defined('TYPO3_MODE') && TYPO3_MODE === 'FE') ||
+                $options['enablefieldsoff'] ||
+                $options['ignorei18n']
+            ) &&
+            !$options['forcei18n']
         )) {
             return;
         }
@@ -293,15 +373,34 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         // Then get localization of record:
         // (if the content language is not the default language)
         $tsfe = tx_rnbase_util_TYPO3::getTSFE();
-        if (!is_object($tsfe) || !$tsfe->sys_language_content) {
+        if (!is_object($tsfe) || !\Sys25\RnBase\Utility\FrontendControllerUtility::getLanguageContentId($tsfe)) {
             return;
         }
 
         $OLmode = (isset($options['i18nolmode']) ? $options['i18nolmode'] : '');
         $sysPage = tx_rnbase_util_TYPO3::getSysPage();
-        $row = $sysPage->getRecordOverlay($tableName, $row, $tsfe->sys_language_content, $OLmode);
+
+        if ('pages' === $tableName) {
+            $row = $sysPage->getPageOverlay($row);
+        } else {
+            $row = $sysPage->getRecordOverlay(
+                $tableName,
+                $row,
+                \Sys25\RnBase\Utility\FrontendControllerUtility::getLanguageContentId($tsfe),
+                $OLmode
+            );
+        }
     }
 
+    /**
+     * Returns the where for the enablefields of the table.
+     *
+     * @param string $tableName
+     * @param string $mode
+     * @param string $tableAlias
+     *
+     * @return mixed|string
+     */
     public function enableFields($tableName, $mode, $tableAlias = '')
     {
         $sysPage = tx_rnbase_util_TYPO3::getSysPage();
@@ -315,64 +414,115 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
     }
 
     /**
+     * Returns the database connection.
      *
-     * @param array
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection|tx_rnbase_util_db_IDatabase
+     * @param array|string $options
+     *
+     * @return tx_rnbase_util_db_IDatabase
+     *
+     * @throws \Sys25\RnBase\Typo3Wrapper\Core\Error\Exception
      */
     public function getDatabaseConnection($options = null)
     {
+        $dbKey = is_string($options) ? $options : 'typo3';
+        $db = null;
+
         if (is_array($options) && !empty($options['db'])) {
             $dbConfig = &$options['db'];
             if (is_string($dbConfig)) {
-                $db = $this->getDatabase($dbConfig);
+                $dbKey = $dbConfig;
             } elseif (is_object($dbConfig)) {
                 $db = $dbConfig;
             }
-            if (!$db instanceof tx_rnbase_util_db_IDatabase) {
-                tx_rnbase::load('tx_rnbase_util_Logger');
-                tx_rnbase_util_Logger::warn(
-                    'The db "' . get_class($db) . '" has to implement' .
-                        ' the tx_rnbase_util_db_IDatabase interface',
-                    'rn_base'
-                );
-                $db = null;
-            }
         }
 
-        return is_object($db) ? $db : $GLOBALS['TYPO3_DB'];
+        // use the doctrine dbal connection instead of $GLOBALS['TYPO3_DB']
+        if ('typo3' == $dbKey && tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
+            $dbKey = 'typo3dbal';
+        }
+
+        if (null === $db) {
+            $db = $this->getDatabase($dbKey);
+        }
+
+        if (!$db instanceof tx_rnbase_util_db_IDatabase) {
+            throw \tx_rnbase::makeInstance(\Sys25\RnBase\Typo3Wrapper\Core\Error\Exception::class, 'The db "'.get_class($db).'" has to implement'.' the tx_rnbase_util_db_IDatabase interface');
+        }
+
+        return $db;
     }
 
     /**
-     * Make a SQL INSERT Statement
+     * Returns the database instance.
      *
-     * @param string $tablename
-     * @param array $values
+     * @param string $key Database identifier defined in localconf.php. Always in lowercase!
+     *
+     * @return tx_rnbase_util_db_IDatabase
+     */
+    protected function getDatabase($key = 'typo3')
+    {
+        $key = strtolower($key);
+        // @TODO is it necessary to cache this?
+        // the connection has to be reconected after cache load,
+        // so only the credentials are stored in cache, but this is critical,
+        // so the cache was removed for the moment!
+//        tx_rnbase::load('tx_rnbase_cache_Manager');
+//        $cache = tx_rnbase_cache_Manager::getCache('rnbase_databases');
+//        $db = $cache->get('db_' . $key);
+//        if (!$db) {
+        if ('typo3' == $key) {
+            $db = tx_rnbase::makeInstance('tx_rnbase_util_db_TYPO3');
+        } elseif ('typo3dbal' == $key) {
+            $db = tx_rnbase::makeInstance('tx_rnbase_util_db_TYPO3DBAL');
+        } else {
+            $dbCfg = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rn_base']['db'][$key];
+            if (!is_array($dbCfg)) {
+                throw tx_rnbase::makeInstance('tx_rnbase_util_db_Exception', 'No config for database '.$key.' found!');
+            }
+            $db = tx_rnbase::makeInstance('tx_rnbase_util_db_MySQL', $dbCfg);
+        }
+//            $cache->set($key, $db);
+//        }
+
+        return $db;
+    }
+
+    /**
+     * Make a SQL INSERT Statement.
+     *
+     * @param string    $tablename
+     * @param array     $values
      * @param int|array $debug
+     *
      * @return int UID of created record
      */
-    public function doInsert($tablename, $values, $arr = array())
+    public function doInsert($tablename, $values, $arr = [])
     {
         // fallback, $arr war früher $debug
         if (!is_array($arr)) {
-            $arr = array('debug' => $arr);
+            $arr = ['debug' => $arr];
         }
         $debug = intval($arr['debug']) > 0;
+
         $database = $this->getDatabaseConnection($arr);
 
         tx_rnbase_util_Misc::callHook(
             'rn_base',
             'util_db_do_insert_pre',
-            array(
+            [
                 'tablename' => &$tablename,
                 'values' => &$values,
                 'options' => &$arr,
-            )
+            ]
         );
 
-        if ($debug) {
+        if ($debug || !empty($arr['sqlonly'])) {
+            $sqlQuery = $database->INSERTquery($tablename, $values);
+            if (!empty($arr['sqlonly'])) {
+                return $sqlQuery;
+            }
             $time = microtime(true);
             $mem = memory_get_usage();
-            $sqlQuery = $database->INSERTquery($tablename, $values);
         }
 
         $storeLastBuiltQuery = $database->store_lastBuiltQuery;
@@ -387,11 +537,11 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         $database->store_lastBuiltQuery = $storeLastBuiltQuery;
 
         if ($debug) {
-            tx_rnbase_util_Debug::debug(array(
+            tx_rnbase_util_Debug::debug([
                 'SQL ' => $sqlQuery,
                 'Time ' => (microtime(true) - $time),
                 'Memory consumed ' => (memory_get_usage() - $mem),
-            ), 'SQL statistics');
+            ], 'SQL statistics');
         }
 
         $insertId = $database->sql_insert_id();
@@ -399,25 +549,27 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         tx_rnbase_util_Misc::callHook(
             'rn_base',
             'util_db_do_insert_post',
-            array(
+            [
                 'tablename' => &$tablename,
                 'uid' => &$insertId,
                 'values' => &$values,
                 'options' => &$arr,
-            )
+            ]
         );
 
         return $insertId;
     }
+
     /**
      * Make a plain SQL Query.
      * Notice: The db resource is not closed by this method. The caller is in charge to do this!
      *
      * @param string $sqlQuery
-     * @param int $debug
-     * @return booloolean
+     * @param int    $debug
+     *
+     * @return bool
      */
-    public function doQuery($sqlQuery, array $options = array())
+    public function doQuery($sqlQuery, array $options = [])
     {
         $debug = array_key_exists('debug', $options) ? intval($options['debug']) > 0 : false;
         $database = $this->getDatabaseConnection($options);
@@ -434,30 +586,32 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         $database->store_lastBuiltQuery = $storeLastBuiltQuery;
 
         if ($debug) {
-            tx_rnbase_util_Debug::debug(array(
+            tx_rnbase_util_Debug::debug([
                 'SQL ' => $sqlQuery,
                 'Time ' => (microtime(true) - $time),
                 'Memory consumed ' => (memory_get_usage() - $mem),
-            ), 'SQL statistics');
+            ], 'SQL statistics');
         }
 
         return $res;
     }
+
     /**
      * Make a database UPDATE.
      *
      * @param string $tablename
      * @param string $where
-     * @param array $values
-     * @param array $arr
-     * @param mixed $noQuoteFields Array or commaseparated string with fieldnames
+     * @param array  $values
+     * @param array  $arr
+     * @param mixed  $noQuoteFields Array or commaseparated string with fieldnames
+     *
      * @return int number of rows affected
      */
-    public function doUpdate($tablename, $where, $values, $arr = array(), $noQuoteFields = false)
+    public function doUpdate($tablename, $where, $values, $arr = [], $noQuoteFields = false)
     {
         // fallback, $arr war früher $debug
         if (!is_array($arr)) {
-            $arr = array('debug' => $arr);
+            $arr = ['debug' => $arr];
         }
         $debug = intval($arr['debug']) > 0;
         $database = $this->getDatabaseConnection($arr);
@@ -465,19 +619,22 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         tx_rnbase_util_Misc::callHook(
             'rn_base',
             'util_db_do_update_pre',
-            array(
+            [
                 'tablename' => &$tablename,
                 'where' => &$where,
                 'values' => &$values,
                 'options' => &$arr,
                 'noQuoteFields' => &$noQuoteFields,
-            )
+            ]
         );
 
-        if ($debug) {
+        if ($debug || !empty($arr['sqlonly'])) {
             $sql = $database->UPDATEquery($tablename, $where, $values, $noQuoteFields);
+            if (!empty($arr['sqlonly'])) {
+                return $sql;
+            }
             tx_rnbase_util_Debug::debug($sql, 'SQL');
-            tx_rnbase_util_Debug::debug(array($tablename, $where, $values));
+            tx_rnbase_util_Debug::debug([$tablename, $where, $values]);
         }
 
         $storeLastBuiltQuery = $database->store_lastBuiltQuery;
@@ -498,31 +655,33 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         tx_rnbase_util_Misc::callHook(
             'rn_base',
             'util_db_do_update_post',
-            array(
+            [
                 'tablename' => &$tablename,
                 'where' => &$where,
                 'values' => &$values,
                 'affectedRows' => &$affectedRows,
                 'options' => &$arr,
                 'noQuoteFields' => &$noQuoteFields,
-            )
+            ]
         );
 
         return $affectedRows;
     }
+
     /**
-     * Make a database DELETE
+     * Make a database DELETE.
      *
      * @param string $tablename
      * @param string $where
-     * @param array $arr
+     * @param array  $arr
+     *
      * @return int number of rows affected
      */
-    public function doDelete($tablename, $where, $arr = array())
+    public function doDelete($tablename, $where, $arr = [])
     {
         // fallback, $arr war früher $debug
         if (!is_array($arr)) {
-            $arr = array('debug' => $arr);
+            $arr = ['debug' => $arr];
         }
         $debug = intval($arr['debug']) > 0;
         $database = $this->getDatabaseConnection($arr);
@@ -530,17 +689,20 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         tx_rnbase_util_Misc::callHook(
             'rn_base',
             'util_db_do_delete_pre',
-            array(
+            [
                 'tablename' => &$tablename,
                 'where' => &$where,
                 'options' => &$arr,
-            )
+            ]
         );
 
-        if ($debug) {
+        if ($debug || !empty($arr['sqlonly'])) {
             $sql = $database->DELETEquery($tablename, $where);
+            if (!empty($arr['sqlonly'])) {
+                return $sql;
+            }
             tx_rnbase_util_Debug::debug($sql, 'SQL');
-            tx_rnbase_util_Debug::debug(array($tablename, $where));
+            tx_rnbase_util_Debug::debug([$tablename, $where]);
         }
 
         $storeLastBuiltQuery = $database->store_lastBuiltQuery;
@@ -559,12 +721,12 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         tx_rnbase_util_Misc::callHook(
             'rn_base',
             'util_db_do_delete_post',
-            array(
+            [
                 'tablename' => &$tablename,
                 'where' => &$where,
                 'affectedRows' => &$affectedRows,
                 'options' => &$arr,
-            )
+            ]
         );
 
         return $affectedRows;
@@ -573,28 +735,30 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
     /**
      * Escaping and quoting values for SQL statements.
      *
-     * @param string $str Input string
-     * @param string $table Table name for which to quote string. Just enter the table that the field-value is selected from (and any DBAL will look up which handler to use and then how to quote the string!).
-     * @param bool $allowNull Whether to allow NULL values
+     * @param string $str       Input string
+     * @param string $table     Table name for which to quote string. Just enter the table that the field-value is selected from (and any DBAL will look up which handler to use and then how to quote the string!).
+     * @param bool   $allowNull Whether to allow NULL values
+     *
      * @return string Output string; Wrapped in single quotes and quotes in the string (" / ') and \ will be backslashed (or otherwise based on DBAL handler)
      */
     public function fullQuoteStr($str, $table = '', $allowNull = false)
     {
-        return $GLOBALS['TYPO3_DB']->fullQuoteStr($str, $table, $allowNull);
+        return tx_rnbase_util_db_Builder::instance()->fullQuoteStr($str, $table, $allowNull);
     }
 
     /**
      * Will fullquote all values in the one-dimensional array so they are ready to "implode" for an sql query.
      *
-     * @param array $arr Array with values (either associative or non-associative array)
-     * @param string $table Table name for which to quote
-     * @param bool|array $noQuote List/array of keys NOT to quote (eg. SQL functions) - ONLY for associative arrays
-     * @param bool $allowNull Whether to allow NULL values
+     * @param array      $arr       Array with values (either associative or non-associative array)
+     * @param string     $table     Table name for which to quote
+     * @param bool|array $noQuote   List/array of keys NOT to quote (eg. SQL functions) - ONLY for associative arrays
+     * @param bool       $allowNull Whether to allow NULL values
+     *
      * @return array The input array with the values quoted
      */
     public function fullQuoteArray($arr, $table = '', $noQuote = false, $allowNull = false)
     {
-        return $GLOBALS['TYPO3_DB']->fullQuoteArray($arr, $table, $noQuote, $allowNull);
+        return tx_rnbase_util_db_Builder::instance()->fullQuoteArray($arr, $table, $noQuote, $allowNull);
     }
 
     /**
@@ -602,20 +766,35 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
      * Use this function instead of the PHP addslashes() function when you build queries - this will prepare your code for DBAL.
      * NOTICE: You must wrap the output of this function in SINGLE QUOTES to be DBAL compatible. Unless you have to apply the single quotes yourself you should rather use ->fullQuoteStr()!
      *
-     * @param string $str Input string
+     * @param string $str   Input string
      * @param string $table Table name for which to quote string. Just enter the table that the field-value is selected from (and any DBAL will look up which handler to use and then how to quote the string!).
+     *
      * @return string Output string; Quotes (" / ') and \ will be backslashed (or otherwise based on DBAL handler)
      */
     public function quoteStr($str, $table = '')
     {
-        return $GLOBALS['TYPO3_DB']->quoteStr($str, $table);
+        return tx_rnbase_util_db_Builder::instance()->quoteStr($str, $table);
+    }
+
+    /**
+     * Escaping values for SQL LIKE statements.
+     *
+     * @param string $str   Input string
+     * @param string $table table name for which to escape string
+     *
+     * @return string Output string; % and _ will be escaped with \ (or otherwise based on DBAL handler)
+     */
+    public function escapeStrForLike($str, $table)
+    {
+        return tx_rnbase_util_db_Builder::instance()->escapeStrForLike($str, $table);
     }
 
     /**
      * Returns an array with column names of a TCA defined table.
      *
      * @param string $tcaTableName
-     * @param string $prefix if set, each columnname is preceded by this alias
+     * @param string $prefix       if set, each columnname is preceded by this alias
+     *
      * @return array
      */
     public function getColumnNames($tcaTableName, $prefix = '')
@@ -624,19 +803,22 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         if (is_array($cols)) {
             $cols = array_keys($cols);
             if (strlen(trim($prefix))) {
-                array_walk($cols, 'tx_rnbase_util_DB_prependAlias', $prefix);
+                array_walk($cols, function (&$item) use ($prefix) {
+                    $item = $prefix.'.'.$item;
+                });
             }
         } else {
-            $cols = array();
+            $cols = [];
         }
 
         return $cols;
     }
 
     /**
-     * Liefert die TCA-Definition der in der Tabelle definierten Spalten
+     * Liefert die TCA-Definition der in der Tabelle definierten Spalten.
      *
      * @param string $tcaTableName
+     *
      * @return array or 0
      */
     public function getTCAColumns($tcaTableName)
@@ -646,26 +828,25 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
 
         return isset($TCA[$tcaTableName]) ? $TCA[$tcaTableName]['columns'] : 0;
     }
+
     /**
-     * Liefert eine initialisierte TCEmain
+     * Liefert eine initialisierte TCEmain.
      */
     public function &getTCEmain($data = 0, $cmd = 0)
     {
-        $tce;
+        // Die TCEmain laden
+        $tce = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getDataHandlerClass());
+        $tce->stripslashes_values = 0;
+        // Wenn wir ein data-Array bekommen verwenden wir das
+        $tce->start($data ? $data : [], $cmd ? $cmd : []);
 
-        if (!$tce || $data || $cmd) {
-            // Die TCEmain laden
-            tx_rnbase::load('tx_rnbase_util_Typo3Classes');
-            $tce = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getDataHandlerClass());
-            $tce->stripslashes_values = 0;
-            // Wenn wir ein data-Array bekommen verwenden wir das
-            $tce->start($data ? $data : array(), $cmd ? $cmd : array());
-
-            // set default TCA values specific for the user
-            $TCAdefaultOverride = $GLOBALS['BE_USER']->getTSConfigProp('TCAdefaults');
-            if (is_array($TCAdefaultOverride)) {
-                $tce->setDefaultsFromUserTS($TCAdefaultOverride);
-            }
+        // set default TCA values specific for the user
+        $TCAdefaultOverride = TYPO3::isTYPO95OrHigher() ?
+            TYPO3::getBEUser()->getTSConfig('TCAdefaults')['properties'] :
+            TYPO3::getBEUser()->getTSConfigProp('TCAdefaults')
+        ;
+        if (is_array($TCAdefaultOverride)) {
+            $tce->setDefaultsFromUserTS($TCAdefaultOverride);
         }
 
         return $tce;
@@ -675,12 +856,12 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
      * Get record with uid from table.
      *
      * @param string $tableName
-     * @param int $uid
+     * @param int    $uid
      */
-    public function getRecord($tableName, $uid, $options = array())
+    public function getRecord($tableName, $uid, $options = [])
     {
         if (!is_array($options)) {
-            $options = array();
+            $options = [];
         }
         $options['where'] = 'uid='.intval($uid);
         if (!is_array($GLOBALS['TCA']) || !array_key_exists($tableName, $GLOBALS['TCA'])) {
@@ -688,12 +869,13 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         }
         $result = $this->doSelect('*', $tableName, $options);
 
-        return count($result) > 0 ? $result[0] : array();
+        return count($result) > 0 ? $result[0] : [];
     }
 
     /**
      * Same method as tx_rnbase_util_Typo3Classes::getTypoScriptFrontendControllerClass()::pi_getPidList()
-     * If you  need this functionality use tx_rnbase_util_Misc::getPidList()
+     * If you  need this functionality use tx_rnbase_util_Misc::getPidList().
+     *
      * @deprecated use tx_rnbase_util_Misc::getPidList!
      */
     public function _getPidList($pid_list, $recursive = 0)
@@ -706,18 +888,19 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
      * This method is taken from the great ameos_formidable extension.
      *
      * @param mixed $res
+     *
      * @return bool|\mysqli_result|object MySQLi result object / DBAL object
      */
     public function watchOutDB($res, $database = null)
     {
         if (!is_object($database)) {
-            $database = $GLOBALS['TYPO3_DB'];
+            $database = $this->getDatabaseConnection();
         }
 
         if (!$this->testResource($res) && $database->sql_error()) {
             $msg = 'SQL QUERY IS NOT VALID';
             $msg .= '<br/>';
-            $msg .= '<b>' . $database->sql_error() . '</b>';
+            $msg .= '<b>'.$database->sql_error().'</b>';
             $msg .= '<br />';
             $msg .= $database->debug_lastBuiltQuery;
             // We need to pass the extKey, otherwise no devlog was written.
@@ -730,28 +913,29 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
     /**
      * Generates a search where clause based on the input search words (AND operation - all search words must be found in record.)
      * Example: The $sw is "content management, system" (from an input form) and the $searchFieldList is "bodytext,header" then the
-     * output will be ' (bodytext LIKE "%content%" OR header LIKE "%content%") AND (bodytext LIKE "%management%" OR header LIKE "%management%") AND (bodytext LIKE "%system%" OR header LIKE "%system%")'
+     * output will be ' (bodytext LIKE "%content%" OR header LIKE "%content%") AND (bodytext LIKE "%management%" OR header LIKE "%management%") AND (bodytext LIKE "%system%" OR header LIKE "%system%")'.
      *
      * METHOD FROM tslib_content
      *
-     * @param string $sw        The search words. These will be separated by space and comma.
-     * @param string $searchFieldList       The fields to search in
-     * @param string $operator  'LIKE' oder 'FIND_IN_SET'
-     * @param string $searchTable   The table name you search in (recommended for DBAL compliance. Will be prepended field names as well)
-     * @return  string      The WHERE clause.
+     * @param string $sw              The search words. These will be separated by space and comma.
+     * @param string $searchFieldList The fields to search in
+     * @param string $operator        'LIKE' oder 'FIND_IN_SET'
+     * @param string $searchTable     The table name you search in (recommended for DBAL compliance. Will be prepended field names as well)
+     *
+     * @return string the WHERE clause
      */
     public function searchWhere($sw, $searchFieldList, $operator = 'LIKE')
     {
         $where = '';
-        if ($sw !== '') {
+        if ('' !== $sw) {
             $searchFields = explode(',', $searchFieldList);
             $kw = preg_split('/[ ,]/', $sw);
-            if ($operator == 'LIKE') {
+            if ('LIKE' == $operator) {
                 $where = $this->_getSearchLike($kw, $searchFields);
-            } elseif ($operator == 'OP_LIKE_CONST') {
-                $kw = array($sw);
+            } elseif ('OP_LIKE_CONST' == $operator) {
+                $kw = [$sw];
                 $where = $this->_getSearchLike($kw, $searchFields);
-            } elseif ($operator == 'FIND_IN_SET_OR') {
+            } elseif ('FIND_IN_SET_OR' == $operator) {
                 $where = $this->_getSearchSetOr($kw, $searchFields);
             } else {
                 $where = $this->_getSearchOr($kw, $searchFields, $operator);
@@ -760,10 +944,11 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
 
         return $where;
     }
+
     private function _getSearchOr($kw, $searchFields, $operator)
     {
         $where = '';
-        $where_p = array();
+        $where_p = [];
         foreach ($kw as $val) {
             $val = trim($val);
             if (!strlen($val)) {
@@ -772,7 +957,7 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
             foreach ($searchFields as $field) {
                 list($tableAlias, $col) = explode('.', $field); // Split alias and column
                 $wherePart = $this->setSingleWhereField($tableAlias, $operator, $col, $val);
-                if (trim($wherePart) !== '') {
+                if ('' !== trim($wherePart)) {
                     $where_p[] = $wherePart;
                 }
             }
@@ -783,14 +968,13 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
 
         return $where;
     }
+
     /**
-     *
      * @param array $kw
      * @param array $searchFields
      */
     private function _getSearchSetOr($kw, $searchFields)
     {
-        global $TYPO3_DB;
         $searchTable = '';
         // Aus den searchFields muss eine Tabelle geholt werden (Erstmal nur DBAL)
         if (tx_rnbase_util_TYPO3::isExtLoaded('dbal') && is_array($searchFields) && !empty($searchFields)) {
@@ -802,13 +986,13 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         // (FIND_IN_SET(1, match.player)) AND (FIND_IN_SET(4, match.player))
         // (FIND_IN_SET(1, match.player) OR FIND_IN_SET(4, match.player))
         $where = '';
-        $where_p = array();
+        $where_p = [];
         foreach ($kw as $val) {
             $val = trim($val);
             if (!strlen($val)) {
                 continue;
             }
-            $val = $TYPO3_DB->escapeStrForLike($TYPO3_DB->quoteStr($val, $searchTable), $searchTable);
+            $val = $this->escapeStrForLike($this->quoteStr($val, $searchTable), $searchTable);
             foreach ($searchFields as $field) {
                 $where_p[] = 'FIND_IN_SET(\''.$val.'\', '.$field.')';
             }
@@ -819,26 +1003,27 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
 
         return $where;
     }
+
     /**
      * Create a where condition for string search in different database tables and columns.
+     *
      * @param array $kw
      * @param array $searchFields
      */
     private function _getSearchLike($kw, $searchFields)
     {
-        global $TYPO3_DB;
         $searchTable = ''; // Für TYPO3 nicht relevant
         if (tx_rnbase_util_TYPO3::isExtLoaded('dbal')) {
             // Bei dbal darf die Tabelle nicht leer sein. Wir setzen die erste Tabelle in den searchfields
             $col = $searchFields[0];
             list($searchTable, $col) = explode('.', $col);
         }
-        $wheres = array();
+        $wheres = [];
         foreach ($kw as $val) {
             $val = trim($val);
-            $where_p = array();
+            $where_p = [];
             if (strlen($val) >= 2) {
-                $val = $TYPO3_DB->escapeStrForLike($TYPO3_DB->quoteStr($val, $searchTable), $searchTable);
+                $val = $this->escapeStrForLike($this->quoteStr($val, $searchTable), $searchTable);
                 foreach ($searchFields as $field) {
                     $where_p[] = $field.' LIKE \'%'.$val.'%\'';
                 }
@@ -851,15 +1036,18 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
 
         return $where;
     }
+
     /**
      * Build a single where clause. This is a compare of a column to a value with a given operator.
      * Based on the operator the string is hopefully correctly build. It is up to the client to
      * connect these single clauses with boolean operator for a complete where clause.
      *
      * @param string $tableAlias database tablename or alias
-     * @param string $operator operator constant
-     * @param string $col name of column
-     * @param string $value value to compare to
+     * @param string $operator   operator constant
+     * @param string $col        name of column
+     * @param string $value      value to compare to
+     *
+     * @deprecated moved to ConditionBuilder
      */
     public function setSingleWhereField($tableAlias, $operator, $col, $value)
     {
@@ -867,43 +1055,53 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
         switch ($operator) {
             case OP_NOTIN_INT:
             case OP_IN_INT:
-                $value = implode(',', tx_rnbase_util_Strings::intExplode(',', $value));
-                $where .= $tableAlias.'.' . strtolower($col) . ' '.$operator.' (' . $value . ')';
+                $value = implode(',', Tx_Rnbase_Utility_Strings::intExplode(',', $value));
+                $where .= $tableAlias.'.'.strtolower($col).' '.$operator.' ('.$value.')';
+
                 break;
             case OP_NOTIN:
             case OP_IN:
-                $values = tx_rnbase_util_Strings::trimExplode(',', $value);
-                for ($i = 0, $cnt = count($values); $i < $cnt; $i++) {
-                    $values[$i] = $GLOBALS['TYPO3_DB']->fullQuoteStr($values[$i], $tableAlias);
+                $values = Tx_Rnbase_Utility_Strings::trimExplode(',', $value);
+                for ($i = 0, $cnt = count($values); $i < $cnt; ++$i) {
+                    $values[$i] = $this->fullQuoteStr($values[$i], $tableAlias);
                 }
                 $value = implode(',', $values);
-                $where .= $tableAlias.'.' . strtolower($col) . ' '. ($operator == OP_IN ? 'IN' : 'NOT IN') .' (' . $value . ')';
+                $where .= $tableAlias.'.'.strtolower($col).' '.(OP_IN == $operator ? 'IN' : 'NOT IN').' ('.$value.')';
+
                 break;
             case OP_NOTIN_SQL:
             case OP_IN_SQL:
-                $where .= $tableAlias.'.' . strtolower($col) . ' '. ($operator == OP_IN_SQL ? 'IN' : 'NOT IN') .' (' . $value . ')';
+                $where .= $tableAlias.'.'.strtolower($col).' '.(OP_IN_SQL == $operator ? 'IN' : 'NOT IN').' ('.$value.')';
+
                 break;
             case OP_INSET_INT:
                 // Values splitten und einzelne Abfragen mit OR verbinden
-                $where = $this->searchWhere($value, $tableAlias.'.' . strtolower($col), 'FIND_IN_SET_OR');
+                $where = $this->searchWhere($value, $tableAlias.'.'.strtolower($col), 'FIND_IN_SET_OR');
+
                 break;
             case OP_EQ:
-                $where .= $tableAlias.'.' . strtolower($col) . ' = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias);
+                $where .= $tableAlias.'.'.strtolower($col).' = '.$this->fullQuoteStr($value, $tableAlias);
+
                 break;
             case OP_NOTEQ:
-                $where .= $tableAlias.'.' . strtolower($col) . ' != ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias);
+                $where .= $tableAlias.'.'.strtolower($col).' != '.$this->fullQuoteStr($value, $tableAlias);
+
                 break;
             case OP_LT:
-                $where .= $tableAlias.'.' . strtolower($col) . ' < ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias);
+                $where .= $tableAlias.'.'.strtolower($col).' < '.$this->fullQuoteStr($value, $tableAlias);
+
                 break;
             case OP_LTEQ:
-                $where .= $tableAlias.'.' . strtolower($col) . ' <= ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias);
+                $where .= $tableAlias.'.'.strtolower($col).' <= '.$this->fullQuoteStr($value, $tableAlias);
+
                 break;
             case OP_GT:
-                $where .= $tableAlias.'.' . strtolower($col) . ' > ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias);
+                $where .= $tableAlias.'.'.strtolower($col).' > '.$this->fullQuoteStr($value, $tableAlias);
+
                 break;
             case OP_GTEQ:
-                $where .= $tableAlias.'.' . strtolower($col) . ' >= ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias);
+                $where .= $tableAlias.'.'.strtolower($col).' >= '.$this->fullQuoteStr($value, $tableAlias);
+
                 break;
             case OP_EQ_INT:
             case OP_NOTEQ_INT:
@@ -911,29 +1109,34 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
             case OP_LT_INT:
             case OP_GTEQ_INT:
             case OP_LTEQ_INT:
-                $where .= $tableAlias.'.' . strtolower($col) . ' '.$operator.' ' . intval($value);
+                $where .= $tableAlias.'.'.strtolower($col).' '.$operator.' '.intval($value);
+
                 break;
             case OP_EQ_NOCASE:
-                $where .= 'lower('.$tableAlias.'.' . strtolower($col) . ') = lower(' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias) . ')';
+                $where .= 'lower('.$tableAlias.'.'.strtolower($col).') = lower('.$this->fullQuoteStr($value, $tableAlias).')';
+
                 break;
             case OP_LIKE:
                 // Stringvergleich mit LIKE
-                $where .= $this->searchWhere($value, $tableAlias . '.' . strtolower($col));
+                $where .= $this->searchWhere($value, $tableAlias.'.'.strtolower($col));
+
                 break;
             case OP_LIKE_CONST:
-                $where .= $this->searchWhere($value, $tableAlias . '.' . strtolower($col), OP_LIKE_CONST);
+                $where .= $this->searchWhere($value, $tableAlias.'.'.strtolower($col), OP_LIKE_CONST);
+
                 break;
             default:
-                tx_rnbase_util_Misc::mayday('Unknown Operator for comparation defined: ' . $operator);
+                tx_rnbase_util_Misc::mayday('Unknown Operator for comparation defined: '.$operator);
         }
 
-        return $where . ' ';
+        return $where.' ';
     }
 
     /**
      * Format a MySQL-DATE (ISO-Date) into mm-dd-YYYY.
      *
      * @param string $date Format: yyyy-mm-dd
+     *
      * @return string Format mm-dd-YYYY or empty string, if $date is not valid
      */
     public function date_mysql2mdY($date)
@@ -948,7 +1151,9 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
 
     /**
      * Format a MySQL-DATE (ISO-Date) into dd-mm-YYYY.
+     *
      * @param string $date Format: yyyy-mm-dd
+     *
      * @return string Format dd-mm-yyyy or empty string, if $date is not valid
      */
     public function date_mysql2dmY($date)
@@ -962,96 +1167,10 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
     }
 
     /**
-     * Returns the database instance
-     * @param string $key database identifier defined in localconf.php. Always in lowercase!
-     * @return tx_rnbase_util_db_IDatabase
-     */
-    public function getDatabase($key = 'typo3')
-    {
-        $key = strtolower($key);
-        tx_rnbase::load('tx_rnbase_cache_Manager');
-        $cache = tx_rnbase_cache_Manager::getCache('rnbase_databases');
-        $db = $cache->get('db_'.$key);
-        if (!$db) {
-            if ($key == 'typo3') {
-                $db = tx_rnbase::makeInstance('tx_rnbase_util_db_TYPO3');
-            } else {
-                $dbCfg = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rn_base']['db'][$key];
-                if (!is_array($dbCfg)) {
-                    tx_rnbase::load('tx_rnbase_util_db_Exception');
-                    throw new tx_rnbase_util_db_Exception('No config for database ' . $key . ' found!');
-                }
-                $db = tx_rnbase::makeInstance('tx_rnbase_util_db_MySQL', $dbCfg);
-            }
-            $cache->set($key, $db);
-        }
-
-        return $db;
-    }
-
-    /**
-     * Make a query to database. You will receive an array with result rows. All
-     * database resources are closed after each call.
-     * A Hidden and Delete-Clause for FE-Requests is added for requested table.
-     *
-     * @param $what requested columns
-     * @param $from either the name of on table or an array with index 0 the from clause
-     *              and index 1 the requested tablename
-     * @param $where
-     * @param $groupby
-     * @param $orderby
-     * @param $wrapperClass Name einer WrapperKlasse für jeden Datensatz
-     * @param $limit = '' Limits number of results
-     * @param $debug = 0 Set to 1 to debug sql-String
-     * @deprecated use tx_rnbase_util_DB::doSelect()
-     */
-    public function queryDB($what, $from, $where, $groupBy = '', $orderBy = '', $wrapperClass = 0, $limit = '', $debug = 0)
-    {
-        $tableName = $from;
-        $fromClause = $from;
-        if (is_array($from)) {
-            $tableName = $from[1];
-            $fromClause = $from[0];
-        }
-
-        $limit = intval($limit) > 0 ? intval($limit) : '';
-
-        // Zur Where-Clause noch die gültigen Felder hinzufügen
-        $contentObjectRendererClass = tx_rnbase_util_Typo3Classes::getContentObjectRendererClass();
-        $where .= $contentObjectRendererClass::enableFields($tableName);
-
-        if ($debug) {
-            $sql = $GLOBALS['TYPO3_DB']->SELECTquery($what, $fromClause, $where, $groupBy, $orderBy);
-            tx_rnbase_util_Debug::debug($sql, 'SQL');
-            tx_rnbase_util_Debug::debug(array($what, $from, $where));
-        }
-
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-            $what,
-            $fromClause,
-            $where,
-            $groupBy,
-            $orderBy,
-            $limit
-        );
-
-        $wrapper = is_string($wrapperClass) ? tx_rnbase::makeInstanceClassName($wrapperClass) : 0;
-        $rows = array();
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-            $rows[] = ($wrapper) ? new $wrapper($row) : $row;
-        }
-        $GLOBALS['TYPO3_DB']->sql_free_result($res);
-        if ($debug) {
-            tx_rnbase_util_Debug::debug(count($rows), 'Rows retrieved');
-        }
-
-        return $rows;
-    }
-
-    /**
-     * @param array $options
+     * @param array  $options
      * @param string $tableName
      * @param string $tableAlias
+     *
      * @return string
      */
     public function handleEnableFieldsOptions(array $options, $tableName, $tableAlias)
@@ -1077,11 +1196,11 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
             // Zur Where-Clause noch die gültigen Felder hinzufügen
             $sysPage = tx_rnbase_util_TYPO3::getSysPage();
             $mode = (TYPO3_MODE == 'BE') ? 1 : 0;
-            $ignoreArr = array();
+            $ignoreArr = [];
             if (intval($options['enablefieldsbe'])) {
                 $mode = 1;
                 // Im BE alle sonstigen Enable-Fields ignorieren
-                $ignoreArr = array('starttime' => 1, 'endtime' => 1, 'fe_group' => 1);
+                $ignoreArr = ['starttime' => 1, 'endtime' => 1, 'fe_group' => 1];
             } elseif (intval($options['enablefieldsfe'])) {
                 $mode = 0;
             }
@@ -1091,7 +1210,7 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
             // Wir setzen zusätzlich pid >=0, damit Version-Records nicht erscheinen
             // allerdings nur, wenn die Tabelle versionierbar ist!
             if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['versioningWS'])) {
-                $enableFields .= ' AND ' . $tableName . '.pid >=0';
+                $enableFields .= ' AND '.$tableName.'.pid >=0';
             }
             // Replace tablename with alias
             if ($tableAlias) {
@@ -1109,9 +1228,4 @@ class Tx_Rnbase_Database_Connection implements Tx_Rnbase_Interface_Singleton
     {
         return TYPO3_MODE == 'FE';
     }
-}
-
-function tx_rnbase_util_DB_prependAlias(&$item, $key, $alias)
-{
-    $item = $alias . '.' . $item;
 }

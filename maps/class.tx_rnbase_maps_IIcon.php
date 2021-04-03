@@ -22,20 +22,19 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
- * Common Interface for Icons
+ * Common Interface for Icons.
  */
 interface tx_rnbase_maps_IIcon
 {
-
     /**
-     * Returns the icon name
+     * Returns the icon name.
      */
     public function getName();
 
     /**
-     * Renders this Icon
+     * Renders this Icon.
+     *
      * @return string
      */
     public function render();

@@ -75,6 +75,7 @@ tt_content.list.20.tx_t3sponsors    =< plugin.tx_t3sponsors
 ```
 Danach sollte das Plugin korrekt integriert sein und sich als Content-Element auswählen lassen.
 Nun benötigen wir natürlich noch den Action-Controller, der den eigentlichen Output des Plugins liefert. In rn_base werden verschiedene Basisklassen bereitgestellt. Am häufigsten wird die Actionklasse von tx_rnbase_action_BaseIOC erben und dann mininal folgendes Aussehen haben:
+
 ```php
 class tx_t3sponsors_actions_SponsorList extends tx_rnbase_action_BaseIOC {
     /**
@@ -138,109 +139,9 @@ Durch die Implementierung der Methode getMainSubpart() bekommt der View direkt d
 
 Im Beispiel für das Template über den ListBuilder von rn_base gerendert. Nähere Informationen findet man beim [Rendern der Daten](rendering_data.md).
 
-### fluid
-Hinweis: Es muss mind. TYPO3 7.6 installiert sein.
+### Alternative Rendering-Engines
 
-Es gibt den View Sys25\RnBase\Fluid\View\Action, um die Templates mit fluid rendern zu können. Per default werden die fluid Dateien in den Ordner Templates, Layouts und Partials in 'EXT:' . $extensionKey . '/Resources/Private/' erwartet. Das kann auch überschrieben bzw. weitere hinzugefügt werden, ganz nach der Konvention von ExtBase/Fluid:
-
-```
-plugin.tx_myextension {
-    view {
-        templateRootPaths.0 = EXT:plugin_tx_mkextension/Resources/Private/MyOtherTemplates/
-        partialRootPaths.0 = EXT:plugin_tx_mkextension/Resources/Private/MyOtherPartials/
-        layoutRootPaths.0 = EXT:plugin_tx_mkextension/Resources/Private/MyOtherLayouts/
-    }
-    settings {
-    }
-}
-```
-
-Ist plugin.tx_myextension.templatePath konfiguriert, dann überschreibt das die Einstellungen in plugin.tx_myextension.view.templateRootPaths.0. Das direkte setzen eines Templates mit plugin.tx_myextension.myAction.template.file bzw. plugin.tx_myextension.myActionTemplate ist auch weiterhin möglich.
-
-#### fluid standalone
-Es gibt auch einen Standalone-View, um Templates unabhängig von einer Action zu rendern. Das kann so genutzt werden:
-
-```php
-
-/* @var $configurations Tx_Rnbase_Configuration_ProcessorInterface */
-$view = \Sys25\RnBase\Fluid\View\Factory::getViewInstance($configurations);
-$view->setPartialRootPaths($partialsPaths);
-$view->setLayoutRootPaths($layoutPaths);
-$view->setTemplatePathAndFilename($absolutePathToTemplate);
-$view->assignMultiple(array('someData' => 'test'));
-return $view->render();
-
-```
-
-#### configurations ViewHelper
-Damit kann auf die get Methode der configurations zugegriffen werden:
-
-```html
-
-{namespace rn=Sys25\RnBase\Fluid\ViewHelper}
-
-{rn:configurations.get(confId: confId, typoscriptPath: 'my.path')}
-
-```
-
-#### pagebrowser ViewHelper
-Damit kann auf die get Methode der configurations zugegriffen werden:
-
-```html
-
-{namespace rn=Sys25\RnBase\Fluid\ViewHelper}
-
-<div class="pagebrowser">
-    <rn:pageBrowser
-        maxPages="5"
-        hideIfSinglePage="1"
-    >
-        <rn:pageBrowser.firstPage
-            addQueryString="TRUE"
-            argumentsToBeExcludedFromQueryString="{0: 'id', 1: 'L', 2: 'cHash'}"
-            section="comments"
-        >
-            &lt;&lt;
-        </rn:pageBrowser.firstPage>
-        <rn:pageBrowser.prevPage
-            addQueryString="TRUE"
-            argumentsToBeExcludedFromQueryString="{0: 'id', 1: 'L', 2: 'cHash'}"
-            section="comments"
-        >
-            &lt;
-        </rn:pageBrowser.prevPage>
-        <rn:pageBrowser.currentPage
-            addQueryString="TRUE"
-            argumentsToBeExcludedFromQueryString="{0: 'id', 1: 'L', 2: 'cHash'}"
-            class="active"
-            usePageNumberAsLinkText="1"
-            section="comments"
-        />
-        <rn:pageBrowser.normalPage
-            addQueryString="TRUE"
-            argumentsToBeExcludedFromQueryString="{0: 'id', 1: 'L', 2: 'cHash'}"
-            usePageNumberAsLinkText="1"
-            section="comments"
-        />
-        <rn:pageBrowser.nextPage
-            addQueryString="TRUE"
-            argumentsToBeExcludedFromQueryString="{0: 'id', 1: 'L', 2: 'cHash'}"
-            section="comments"
-        >
-            &gt;
-        </rn:pageBrowser.nextPage>
-        <rn:pageBrowser.lastPage
-            addQueryString="TRUE"
-            argumentsToBeExcludedFromQueryString="{0: 'id', 1: 'L', 2: 'cHash'}"
-            section="comments"
-        >
-            &gt;&gt;
-        </rn:pageBrowser.lastPage>
-    </rn:pageBrowser>
-</div>
-```
-Hinweis: Nicht alle fluid ViewHelper können ohne weiteres verwendet werden. Wenn z.B. ein Extbase Controller nötig ist,
-wie bei Formularen, dann funktioniert das nicht out-of-the-box.
+Alternativ kann die Ausgabe der Daten auf per [Twig](https://github.com/DMKEBUSINESSGMBH/typo3-t3twig) oder [Fluid](fluid.md) erfolgen.
 
 ## Das Model
 
@@ -286,6 +187,7 @@ plugin_tx_mkextension.showdata.toUserInt = 1
 ```
 
 Convertierung direkt in der Action:
+
 ```php
 $this->getConfigurations()->convertToUserInt();
 ```
@@ -321,6 +223,7 @@ Legt fest, ob und an welche Email-Adresse im Falle eines Fehlers versendet werde
 Im Falle, das verboseMayday nicht gesetzt ist, wird versucht eine Nutzer freundliche Meldung auszugeben. Dazu wird der Fehlercode der Exception genutzt, um definierte Meldungen zu ermitteln. Zunächst wird im TypoScript nachgesehen. Wurde dort nichts zum Fehler gefunden, wird die Übersetzungsdatei geprüft. Ist auch hier nichts definiert, wird eine Defaultmeldung von rn_base ausgegeben.
 
 Beispielkonfiguration TypoScript:
+
 ```
 plugin.tx_extension.error {
     ### alle fehler versteckt ausgeben
@@ -383,6 +286,13 @@ plugin.tx_myext {
     myview {
         includeJSFooter {
             1 = EXT:myext/Resources/Public/Scripts/validator.js
+            1 {
+                excludeFromConcatenation = 1
+                dontCompress = 1
+            }
+        }
+        includeJSFooterlibs {
+            1 = EXT:myext/Resources/Public/Scripts/validator.js
         }
         includeCSS {
             1 = EXT:myext/Resources/Public/Styles/validator.css
@@ -396,6 +306,7 @@ plugin.tx_myext {
 ```
 
 Externe Ressourcen sollte immer mit vollem Protokoll eingebunden werden. Eine Einbindung mit //my-external-library kann u.U. zu Problemen führen.
+
 ## Cachehandling
 
 Bei USER Plugins muss der Cache in den pages geleert werden, wenn sich ein Datensatz ändert. Das geht mit rn_base ganz einfach. Zunächst müssen im TypoScript die Cache Tags für die Action definiert werden.
@@ -431,6 +342,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['tt_news_ca
 ```
 
 Hinweis zu sonstigen Extensions, die nicht auf rn_base basieren: Die Cache Tags für die Plugins sollten über TypoScript mit einer UserFunc hinzugefügt werden. Damit muss man nicht verschiedene Hooks nutzen und hat es global für jeden View. Hier ein Beispiel für tt_news:
+
 ```ts
 plugin.tt_news.stdWrap.postUserFunc = Tx_Rnbase_Utility_Cache->addCacheTagsToPage
 plugin.tt_news.stdWrap.postUserFunc {
@@ -440,7 +352,7 @@ plugin.tt_news.stdWrap.postUserFunc {
 ```
 
 ### Extbase Controller
-Das ganze gibt es auch für Extbase Controller. Dazu muss im Controller der Trait \Sys25\RnBase\Controller\Extbase\CacheTagsTrait hinzugefügt werden. Damit können per TypoScript die Cache Tags für Actions konfiguriert werden nach dem Schema plugin.ty_my_ext.settings.cacheTags.$lowerCamelCaseControllerNameOmittingController.$lowerCaseActionNameOmittingAction.0 = my_cache_tag. Für tx_news könnte ein Beispiel so aussehen:
+Das ganze gibt es auch für Extbase Controller. Dazu muss im Controller der Trait `\Sys25\RnBase\ExtBaseFluid\Controller\CacheTagsTrait` hinzugefügt werden. Damit können per TypoScript die Cache Tags für Actions konfiguriert werden nach dem Schema `plugin.ty_my_ext.settings.cacheTags.$lowerCamelCaseControllerNameOmittingController.$lowerCaseActionNameOmittingAction.0 = my_cache_tag`. Für tx_news könnte ein Beispiel so aussehen:
 
 ```
 plugin.tx_news {

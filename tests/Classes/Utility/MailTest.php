@@ -1,4 +1,7 @@
 <?php
+
+use Sys25\RnBase\Utility\TYPO3;
+
 /***************************************************************
  * Copyright notice
  *
@@ -26,19 +29,15 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('Tx_Rnbase_Utility_Mail');
 
 /**
- * Mcrypt
+ * Mcrypt.
  *
- * @package TYPO3
- * @subpackage rn_base
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
  *        GNU Lesser General Public License, version 3 or later
  */
 class Tx_Rnbase_Utility_MailTest extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
-     *
      * @group unit
      * @test
      */
@@ -49,7 +48,8 @@ class Tx_Rnbase_Utility_MailTest extends tx_rnbase_tests_BaseTestCase
         $mail->setFrom('test@test.com', 'fromname');
         $mail->setSubject('my subject');
 
-        $mail->setTo('to1@test.de, to2@test.de, to3@test.de');
+        $addresses = ['to1@test.de', 'to2@test.de', 'to3@test.de'];
+        $mail->setTo(implode(', ', $addresses));
 
         /* @var $message TYPO3\CMS\Core\Mail\MailMessage */
         $message = $mail->send();
@@ -58,21 +58,22 @@ class Tx_Rnbase_Utility_MailTest extends tx_rnbase_tests_BaseTestCase
 
         $tos = $message->getTo();
         $this->assertEquals(3, count($tos));
-        for ($i = 1; $i < 4; $i++) {
-            $this->assertArrayHasKey('to'.$i.'@test.de', $tos);
+
+        foreach ($tos as $key => $value) {
+            if (TYPO3::isTYPO104OrHigher()) {
+                $this->assertContains($value->toString(), $addresses);
+            } else {
+                $this->assertContains($key, $addresses);
+            }
         }
     }
 
     /**
-     *
-     * @return void
-     *
      * @group unit
      * @test
      */
     public function testSendMail()
     {
-
         /* @var $mail Tx_Rnbase_Utility_Mail */
         $mail = $this->createMailMock();
         $this->assertInstanceOf('Tx_Rnbase_Utility_Mail', $mail);
@@ -87,16 +88,22 @@ class Tx_Rnbase_Utility_MailTest extends tx_rnbase_tests_BaseTestCase
         $this->assertInstanceOf('TYPO3\CMS\Core\Mail\MailMessage', $message);
 
         $this->assertEquals('my subject', $message->getSubject());
+        /* @var $to \Symfony\Component\Mime\Address */
         $to = $message->getTo();
-        $this->assertSame(['to1@test.de' => 'to1'], $to);
+        if (TYPO3::isTYPO104OrHigher()) {
+        } else {
+            $this->assertSame(['to1@test.de' => 'to1'], $to);
+        }
     }
+
     /**
      * Erstellt Mail-Instanz. Aufruf von send liefert das interne Mail-Objekt als Ergebnis.
+     *
      * @return Tx_Rnbase_Utility_Mail
      */
     protected function createMailMock()
     {
-        $mailMock = $this->getMock('Tx_Rnbase_Utility_Mail', array('sendMessage'));
+        $mailMock = $this->getMock('Tx_Rnbase_Utility_Mail', ['sendMessage']);
         $mailMock->expects($this->any())->method('sendMessage')->will($this->returnArgument(0));
 
         return $mailMock;

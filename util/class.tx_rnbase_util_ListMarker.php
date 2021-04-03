@@ -32,14 +32,15 @@ class tx_rnbase_util_ListMarker
     public function __construct(ListMarkerInfo $listMarkerInfo = null)
     {
         if ($listMarkerInfo) {
-            $this->info =& $listMarkerInfo;
+            $this->info = &$listMarkerInfo;
         } else {
             $this->info = tx_rnbase::makeInstance('tx_rnbase_util_ListMarkerInfo');
         }
     }
 
     /**
-     * Add a visitor callback. It is called for each item before rendering
+     * Add a visitor callback. It is called for each item before rendering.
+     *
      * @param array $visitors array of callback arrays
      */
     public function addVisitors(array $visitors)
@@ -48,15 +49,15 @@ class tx_rnbase_util_ListMarker
     }
 
     /**
-     *
      * @param tx_rnbase_util_IListProvider $provider
-     * @param string $template
-     * @param string $markerClassname
-     * @param string $confId
-     * @param string $marker
-     * @param tx_rnbase_util_FormatUtil $formatter
-     * @param mixed $markerParams
-     * @param int $offset
+     * @param string                       $template
+     * @param string                       $markerClassname
+     * @param string                       $confId
+     * @param string                       $marker
+     * @param tx_rnbase_util_FormatUtil    $formatter
+     * @param mixed                        $markerParams
+     * @param int                          $offset
+     *
      * @return array
      */
     public function renderEach(tx_rnbase_util_IListProvider $provider, $template, $markerClassname, $confId, $marker, $formatter, $markerParams = false, $offset = 0)
@@ -70,42 +71,45 @@ class tx_rnbase_util_ListMarker
         $this->formatter = $formatter;
         $this->offset = $offset;
 
-        $this->parts = array();
+        $this->parts = [];
         $this->rowRoll = intval($formatter->configurations->get($confId.'roll.value'));
         $this->rowRollCnt = 0;
         $this->totalLineStart = intval($formatter->configurations->get($confId.'totalline.startValue'));
         $this->i = 0;
-        $provider->iterateAll(array($this, 'renderNext'));
+        $provider->iterateAll([$this, 'renderNext']);
 
         $parts = implode($formatter->configurations->get($confId.'implode'), $this->parts);
 
-        return array('result' => $parts, 'size' => $this->i);
+        return ['result' => $parts, 'size' => $this->i];
     }
+
     /**
-     * Callback function for next item
+     * Callback function for next item.
+     *
      * @param Tx_Rnbase_Domain_Model_DomainInterface $data
      */
     public function renderNext($data)
     {
         $this->setToData(
             $data,
-            array(
+            [
                 'roll' => $this->rowRollCnt,
                 // Marker für aktuelle Zeilenummer
                 'line' => $this->i,
                 // Marker für aktuelle Zeilenummer der Gesamtliste
                 'totalline' => $this->i + $this->totalLineStart + $this->offset,
-            )
+            ]
         );
         $this->handleVisitors($data);
         $part = $this->entryMarker->parseTemplate($this->info->getTemplate($data), $data, $this->formatter, $this->confId, $this->marker);
         $this->parts[] = $part;
         $this->rowRollCnt = ($this->rowRollCnt >= $this->rowRoll) ? 0 : $this->rowRollCnt + 1;
-        $this->i++;
+        ++$this->i;
     }
 
     /**
-     * Call all visitors for an item
+     * Call all visitors for an item.
+     *
      * @param object $data
      */
     private function handleVisitors($data)
@@ -119,15 +123,17 @@ class tx_rnbase_util_ListMarker
     }
 
     /**
-     * Render an array of objects
-     * @param array|Traversable $dataArr
-     * @param string $template
-     * @param string $markerClassname
-     * @param string $confId
-     * @param string $marker
+     * Render an array of objects.
+     *
+     * @param array|Traversable         $dataArr
+     * @param string                    $template
+     * @param string                    $markerClassname
+     * @param string                    $confId
+     * @param string                    $marker
      * @param tx_rnbase_util_FormatUtil $formatter
-     * @param mixed $markerParams
-     * @param int $offset
+     * @param mixed                     $markerParams
+     * @param int                       $offset
+     *
      * @return array
      */
     public function render($dataArr, $template, $markerClassname, $confId, $marker, &$formatter, $markerParams = false, $offset = 0)
@@ -136,8 +142,8 @@ class tx_rnbase_util_ListMarker
 
         $this->info->init($template, $formatter, $marker);
 
-        $parts = array();
-        $rowRoll = $formatter->getConfigurations()->getInt($confId . 'roll.value');
+        $parts = [];
+        $rowRoll = $formatter->getConfigurations()->getInt($confId.'roll.value');
         $rowRollCnt = 0;
         $totalLineStart = $formatter->getConfigurations()->getInt($confId.'totalline.startValue');
         // Gesamtzahl der Liste als Register speichern
@@ -152,22 +158,22 @@ class tx_rnbase_util_ListMarker
             }
             $this->setToData(
                 $data,
-                array(
+                [
                     'roll' => $rowRollCnt,
                     // Marker für aktuelle Zeilenummer
                     'line' => $i,
                     // Marker für aktuelle Zeilenummer der Gesamtliste
                     'totalline' => $i + $totalLineStart + $offset,
-                )
+                ]
             );
             $this->handleVisitors($data);
             $part = $entryMarker->parseTemplate($this->info->getTemplate($data), $data, $formatter, $confId, $marker);
             $parts[] = $part;
             $rowRollCnt = ($rowRollCnt >= $rowRoll) ? 0 : $rowRollCnt + 1;
-            $i++;
+            ++$i;
         }
         $parts = implode(
-            $formatter->getConfigurations()->get($confId . 'implode', true),
+            $formatter->getConfigurations()->get($confId.'implode', true),
             $parts
         );
 
@@ -175,11 +181,10 @@ class tx_rnbase_util_ListMarker
     }
 
     /**
-     * Extends the object, depending on its instance class
+     * Extends the object, depending on its instance class.
      *
      * @param objetc $object
-     * @param array $values
-     * @return void
+     * @param array  $values
      */
     protected function setToData($object, array $values)
     {

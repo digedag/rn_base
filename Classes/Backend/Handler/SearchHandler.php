@@ -25,29 +25,28 @@
 tx_rnbase::load('tx_rnbase_mod_IModHandler');
 
 /**
- * Abstract search handler
+ * Abstract search handler.
  *
- * @package TYPO3
- * @subpackage Tx_Rnbase
  * @author Michael Wagner
  */
 abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_IModHandler
 {
     /**
-     * The current mod
+     * The current mod.
      *
      * @var tx_rnbase_mod_BaseModule
      */
     private $module = null;
+
     /**
-     * The options object for the handler
+     * The options object for the handler.
      *
      * @var Tx_Rnbase_Domain_Model_Data
      */
-    private $options = array();
+    private $options = [];
 
     /**
-     * Returns the module
+     * Returns the module.
      *
      * @return tx_rnbase_mod_IModule
      */
@@ -57,7 +56,7 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
     }
 
     /**
-     * Returns an instance of form tool from the module
+     * Returns an instance of form tool from the module.
      *
      * @return tx_rnbase_util_FormTool
      */
@@ -67,7 +66,7 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
     }
 
     /**
-     * Returns the options
+     * Returns the options.
      *
      * @param string $key
      *
@@ -76,7 +75,7 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
     protected function getOptions(
         $key = null
     ) {
-        if ($key === null) {
+        if (null === $key) {
             return $this->options;
         }
 
@@ -84,7 +83,7 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
     }
 
     /**
-     * The class for the lister
+     * The class for the lister.
      *
      * @return string
      */
@@ -99,7 +98,6 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
      */
     public function getSubModuleId()
     {
-        tx_rnbase::load('Tx_Rnbase_Utility_Strings');
         $modId = str_replace('\\', '_', get_class($this));
         $modId = Tx_Rnbase_Utility_Strings::underscoredToLowerCamelCase($modId);
 
@@ -109,7 +107,7 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
     /**
      * Returns a unique ID for this handler.
      * This is used to created the subpart in template.
-     * This maps to the new getSubModuleId method
+     * This maps to the new getSubModuleId method.
      *
      * @return string
      */
@@ -121,48 +119,39 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
     }
 
     /**
-     * Returns the handler options
+     * Returns the handler options.
      *
      * @param \tx_rnbase_mod_IModule $mod
-     * @param array $options
-     *
-     * @return void
+     * @param array                  $options
      */
     protected function init(
-        \tx_rnbase_mod_IModule $mod,
-        array &$options = array()
+        tx_rnbase_mod_IModule $mod,
+        array &$options = []
     ) {
         $this->module = $mod;
 
         $options['pid'] = $mod->getPid();
 
-        tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
         $this->options = Tx_Rnbase_Domain_Model_Data::getInstance($options);
 
         $this->prepare();
     }
 
     /**
-     * Prepares the handler
-     *
-     * @return void
+     * Prepares the handler.
      */
     protected function prepare()
     {
-//         ($this->getOptions()
-//             ->setPid($this->getModule()->getPid())
-//             ->setBaseTableName('tt_content')
-//         );
     }
 
     /**
      * Prepares the marker arrays.
-     * Can be overriden by the child handler to extend the marker arrays
+     * Can be overriden by the child handler to extend the marker arrays.
      *
      * @param string $template
-     * @param array $markerArray
-     * @param array $subpartArray
-     * @param array $wrappedSubpartArray
+     * @param array  $markerArray
+     * @param array  $subpartArray
+     * @param array  $wrappedSubpartArray
      *
      * @return string
      */
@@ -178,11 +167,11 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
     }
 
     /**
-     * Display the user interface for this handler
+     * Display the user interface for this handler.
      *
-     * @param string $template The subpart for handler in func template
+     * @param string                $template The subpart for handler in func template
      * @param tx_rnbase_mod_IModule $mod
-     * @param array $options
+     * @param array                 $options
      *
      * @return string
      */
@@ -195,7 +184,7 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
         // @codingStandardsIgnoreEnd
         $this->init($mod, $options);
 
-        $markerArray = $subpartArray = $wrappedSubpartArray = array();
+        $markerArray = $subpartArray = $wrappedSubpartArray = [];
 
         $this->prepareMarkerArrays(
             $template,
@@ -211,7 +200,6 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
             $wrappedSubpartArray
         );
 
-
         return tx_rnbase_util_Templates::substituteMarkerArrayCached(
             $template,
             $markerArray
@@ -219,12 +207,12 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
     }
 
     /**
-     * Base listing
+     * Base listing.
      *
      * @param string $template
-     * @param array $markerArray
-     * @param array $subpartArray
-     * @param array $wrappedSubpartArray
+     * @param array  $markerArray
+     * @param array  $subpartArray
+     * @param array  $wrappedSubpartArray
      *
      * @return string
      */
@@ -254,7 +242,7 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
     }
 
     /**
-     * Creates the lister instance
+     * Creates the lister instance.
      *
      * @return Tx_Rnbase_Backend_Lister_AbstractLister
      */
@@ -267,9 +255,7 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
         );
 
         if (!$lister instanceof Tx_Rnbase_Backend_Lister_AbstractLister) {
-            throw new Exception(
-                'The likster "' . get_class($lister) . '" has to extend "Tx_Rnbase_Backend_Lister_AbstractLister"'
-            );
+            throw new Exception('The likster "'.get_class($lister).'" has to extend "Tx_Rnbase_Backend_Lister_AbstractLister"');
         }
 
         return $lister;
@@ -281,7 +267,7 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
      *
      * @param tx_rnbase_mod_IModule $mod
      *
-     * @return null|string With error message
+     * @return string|null With error message
      */
     public function handleRequest(tx_rnbase_mod_IModule $mod)
     {

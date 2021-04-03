@@ -22,7 +22,8 @@
  ***************************************************************/
 
 /**
- * Wrapperclass for TYPO3 Extension Manager
+ * Wrapperclass for TYPO3 Extension Manager.
+ *
  * @author René Nitzsche
  *
  * @method static \TYPO3\CMS\Core\Cache\CacheManager getCacheManager()
@@ -65,18 +66,22 @@
  * @method static void registerPageTSConfigFile(string $extKey, string $filePath, string $title)
  * @method static void addTypoScriptSetup(string $content)
  * @method static void addTypoScriptConstants(string $content)
+ * @method static void addLLrefForTCAdescr(string $tca_descr_key, string $file_ref)
+ * @method static array getLoadedExtensionListArray()
+ *
+ * @see TYPO3\CMS\Core\Utility\ExtensionManagementUtility
  */
 class tx_rnbase_util_Extensions
 {
-
     /**
      * @param string $method
-     * @param array $arguments
+     * @param array  $arguments
+     *
      * @return mixed
      */
     public static function __callStatic($method, array $arguments)
     {
-        return call_user_func_array(array(static::getExtensionManagementUtilityClass(), $method), $arguments);
+        return call_user_func_array([static::getExtensionManagementUtilityClass(), $method], $arguments);
     }
 
     /**
@@ -89,26 +94,24 @@ class tx_rnbase_util_Extensions
 
     /**
      * Registers an Extbase module (main or sub) to the backend interface.
-     * FOR USE IN ext_tables.php FILES
+     * FOR USE IN ext_tables.php FILES.
      *
      * @param string $extensionName
      * @param string $mainModuleName
      * @param string $subModuleName
      * @param string $position
-     * @param array $controllerActions
-     * @param array $moduleConfiguration
+     * @param array  $controllerActions
+     * @param array  $moduleConfiguration
      *
      * @throws \InvalidArgumentException
-     *
-     * @return void
      */
     public static function registerModule(
         $extensionName,
         $mainModuleName = '',
         $subModuleName = '',
         $position = '',
-        array $controllerActions = array(),
-        array $moduleConfiguration = array()
+        array $controllerActions = [],
+        array $moduleConfiguration = []
     ) {
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
             $extensionName,
@@ -118,5 +121,70 @@ class tx_rnbase_util_Extensions
             $controllerActions,
             $moduleConfiguration
         );
+        static::fixModuleRouteTarget($extensionName, $mainModuleName, $subModuleName, $moduleConfiguration);
+    }
+
+    /**
+     * Correct the route target.
+     *
+     * Since TYPO3 9.5 the route target is hardcoded to \TYPO3\CMS\Extbase\Core\Bootstrap::handleBackendRequest
+     * We want the route target that was initially configured to the rnbase based module.
+     *
+     * @param $extensionName
+     * @param string $mainModuleName
+     * @param string $subModuleName
+     * @param array $moduleConfiguration
+     */
+    private static function fixModuleRouteTarget(
+        $extensionName,
+        $mainModuleName = '',
+        $subModuleName = '',
+        array $moduleConfiguration = []
+    ) {
+        if (\Sys25\RnBase\Utility\TYPO3::isTYPO90OrHigher() && $moduleConfiguration['routeTarget']) {
+            $moduleName = static::buildModuleSignature($extensionName, $mainModuleName, $subModuleName);
+            \tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Routing\Router::class)->getRoutes()[$moduleName]->setOption(
+                'target',
+                $moduleConfiguration['routeTarget']
+            );
+        }
+    }
+
+    /**
+     * Creates the Backend Module signature by  extension, module and submodule.
+     *
+     * Since TYPO3 10 ['TBE_MODULES']['_configuration'] are not sorted by adding order in every case.
+     * So we has parts taken from \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule
+     * and build the signature to fix the routeTarget.
+     *
+     * @param $extensionName
+     * @param string $mainModuleName
+     * @param string $subModuleName
+     *
+     * @return string
+     */
+    private static function buildModuleSignature(
+        $extensionName,
+        $mainModuleName = '',
+        $subModuleName = ''
+    ) {
+        if (false !== $delimiterPosition = strrpos($extensionName, '.')) {
+            $extensionName = substr($extensionName, $delimiterPosition + 1);
+        }
+        $extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
+
+        if ('' !== $mainModuleName && !array_key_exists($mainModuleName, $GLOBALS['TBE_MODULES'])) {
+            $mainModuleName = $extensionName.Tx_Rnbase_Utility_Strings::underscoredToUpperCamelCase($mainModuleName);
+        } else {
+            $mainModuleName = '' !== $mainModuleName ? $mainModuleName : 'web';
+        }
+
+        $moduleSignature = $mainModuleName;
+        if ('' !== $subModuleName) {
+            $subModuleName = $extensionName.Tx_Rnbase_Utility_Strings::underscoredToUpperCamelCase($subModuleName);
+            $moduleSignature .= '_'.$subModuleName;
+        }
+
+        return $moduleSignature;
     }
 }

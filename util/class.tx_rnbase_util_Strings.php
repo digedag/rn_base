@@ -25,13 +25,16 @@ tx_rnbase::load('Tx_Rnbase_Utility_Strings');
 
 /**
  * String utilities.
+ *
  * @deprecated use Tx_Rnbase_Utility_Strings
  */
 class tx_rnbase_util_Strings
 {
     /**
-     * Check whether or not the given string ist utf-8 encoded
+     * Check whether or not the given string ist utf-8 encoded.
+     *
      * @param string $str
+     *
      * @return int utf-8 level or false if non-utf-8 string found
      */
     public static function isUtf8String($str)
@@ -41,7 +44,9 @@ class tx_rnbase_util_Strings
 
     /**
      * Returns byte data about a string.
+     *
      * @param string $str
+     *
      * @return array
      */
     public static function debugString($str)
@@ -50,10 +55,11 @@ class tx_rnbase_util_Strings
     }
 
     /**
-     * Returns TRUE if the first part of $haystack matches the string $needle
+     * Returns TRUE if the first part of $haystack matches the string $needle.
      *
      * @param string $haystack Full string to check
-     * @param string $needle Reference string which must be found as the "first part" of the full string
+     * @param string $needle   Reference string which must be found as the "first part" of the full string
+     *
      * @return bool TRUE if $partStr was found to be equal to the first part of $str
      */
     public static function isFirstPartOfStr($haystack, $needle)
@@ -62,9 +68,12 @@ class tx_rnbase_util_Strings
     }
 
     /**
-     * Wrapper for t3lib_div::testInt and \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($var)
+     * Wrapper for t3lib_div::testInt and \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($var).
+     *
      * @param mixed $var
+     *
      * @return bool
+     *
      * @deprecated use tx_rnbase_util_Math::isInteger
      */
     public static function isInteger($var)
@@ -73,10 +82,11 @@ class tx_rnbase_util_Strings
     }
 
     /**
-     * Returns TRUE if the last part of $haystack matches the string $needle
+     * Returns TRUE if the last part of $haystack matches the string $needle.
      *
      * @param string $haystack Full string to check
-     * @param string $needle Reference string which must be found as the "first part" of the full string
+     * @param string $needle   Reference string which must be found as the "first part" of the full string
+     *
      * @return bool TRUE if $partStr was found to be equal to the first part of $str
      */
     public static function isLastPartOfStr($haystack, $needle)
@@ -85,22 +95,27 @@ class tx_rnbase_util_Strings
     }
 
     /**
-     * Wrapper method for t3lib_div::intExplode()
+     * Wrapper method for t3lib_div::intExplode().
+     *
      * @param string $delimiter
      * @param string $string
-     * @param bool $onlyNonEmptyValues
-     * @param int $limit
+     * @param bool   $onlyNonEmptyValues
+     * @param int    $limit
      */
     public static function intExplode($delimiter, $string, $onlyNonEmptyValues = false, $limit = 0)
     {
         return Tx_Rnbase_Utility_Strings::intExplode($delimiter, $string, $onlyNonEmptyValues, $limit);
     }
+
     /**
-     * Wrapper method for t3lib_div::trimExplode()
+     * Wrapper method for t3lib_div::trimExplode().
+     *
      * @param string $delimiter
      * @param string $string
-     * @param bool $removeEmptyValues
-     * @param int $limit
+     * @param bool   $removeEmptyValues
+     * @param int    $limit
+     *
+     * @return string[]
      */
     public static function trimExplode($delimiter, $string, $removeEmptyValues = false, $limit = 0)
     {
@@ -108,9 +123,10 @@ class tx_rnbase_util_Strings
     }
 
     /**
-     * Wrapped Method t3lib_div::getRandomHexString()
+     * Wrapped Method t3lib_div::getRandomHexString().
      *
      * @param int $count
+     *
      * @return string
      */
     public static function getRandomHexString($count)
@@ -121,9 +137,10 @@ class tx_rnbase_util_Strings
     /**
      * Returns a given CamelCasedString as an lowercase string with underscores.
      * Example: Converts BlogExample to blog_example, and minimalValue to minimal_value
-     * Taken from t3lib_div for backward compatibility
+     * Taken from t3lib_div for backward compatibility.
      *
      * @param string $string: String to be converted to lowercase underscore
+     *
      * @return string lowercase_and_underscored_string
      */
     public static function camelCaseToLowerCaseUnderscored($string)
@@ -133,9 +150,10 @@ class tx_rnbase_util_Strings
 
     /**
      * Returns a given string with underscores as lowerCamelCase.
-     * Example: Converts minimal_value to minimalValue
+     * Example: Converts minimal_value to minimalValue.
      *
      * @param string $string: String to be converted to lowercase underscore
+     *
      * @return string lowercase_and_underscored_string
      */
     public static function underscoredToLowerCamelCase($string)
@@ -145,7 +163,9 @@ class tx_rnbase_util_Strings
 
     /**
      * Convert an array with hexadecimal byte values to binary string.
+     *
      * @param array $arr
+     *
      * @return string
      */
     public static function hexArr2bin($arr)
@@ -153,12 +173,12 @@ class tx_rnbase_util_Strings
         return Tx_Rnbase_Utility_Strings::hexArr2bin($arr);
     }
 
-
     /**
-     * Wrapper method for t3lib_div::inList() or \TYPO3\CMS\Core\Utility\GeneralUtility::inList()
+     * Wrapper method for t3lib_div::inList() or \TYPO3\CMS\Core\Utility\GeneralUtility::inList().
      *
      * @param string $list Comma-separated list of items (string)
      * @param string $item Item to check for
+     *
      * @return bool TRUE if $item is in $list
      */
     public static function inList($list, $item)
@@ -185,6 +205,7 @@ class tx_rnbase_util_Strings
      * does not break the script AND want to make sure the charset is preserved.
      *
      * @param string $string Input string
+     *
      * @return string Input string with potential XSS code removed
      */
     public static function quoteJSvalue($string)
@@ -193,9 +214,10 @@ class tx_rnbase_util_Strings
     }
 
     /**
-     * Wrapper method for t3lib_div::validEmail() or \TYPO3\CMS\Core\Utility\GeneralUtility::validEmail()
+     * Wrapper method for t3lib_div::validEmail() or \TYPO3\CMS\Core\Utility\GeneralUtility::validEmail().
      *
      * @param string $email Input string to evaluate
+     *
      * @return bool Returns TRUE if the $email address (input string) is valid
      */
     public static function validEmail($email)

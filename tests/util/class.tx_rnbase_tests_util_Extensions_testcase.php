@@ -25,17 +25,14 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_rnbase_util_Extensions');
 
 /**
- * tx_rnbase_tests_util_Extensions_testcase
+ * tx_rnbase_tests_util_Extensions_testcase.
  *
- * @package         TYPO3
- * @subpackage      rn_base
  * @author          Hannes Bochmann <rene@system25.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class tx_rnbase_tests_util_Extensions_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
      * @group unit
      */
@@ -44,7 +41,7 @@ class tx_rnbase_tests_util_Extensions_testcase extends tx_rnbase_tests_BaseTestC
         tx_rnbase_util_ExtensionsForTests::extPath(1, 2, 3, 4);
 
         self::assertEquals(
-            array('extPath' => array(1, 2, 3, 4)),
+            ['extPath' => [1, 2, 3, 4]],
             Typo3ExtensionUtilityClass::$lastCalledMethod
         );
     }
@@ -52,7 +49,6 @@ class tx_rnbase_tests_util_Extensions_testcase extends tx_rnbase_tests_BaseTestC
 
 class tx_rnbase_util_ExtensionsForTests extends tx_rnbase_util_Extensions
 {
-
     /**
      * @return Typo3BackendUtilityClass
      */
@@ -67,19 +63,17 @@ class tx_rnbase_util_ExtensionsForTests extends tx_rnbase_util_Extensions
  */
 class Typo3ExtensionUtilityClass
 {
-
     /**
      * @var array der key ist der methoden name, der value die übergebenen Parameter
      */
-    public static $lastCalledMethod = array();
+    public static $lastCalledMethod = [];
 
     /**
      * @param string $method
-     * @param array $arguments
-     * @return void
+     * @param array  $arguments
      */
     public static function __callStatic($method, $arguments)
     {
-        self::$lastCalledMethod = array($method => $arguments);
+        self::$lastCalledMethod = [$method => $arguments];
     }
 }

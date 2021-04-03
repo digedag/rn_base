@@ -35,8 +35,6 @@ tx_rnbase::load('tx_rnbase_util_TCA');
  * Die Daten werden in den Instanzvariablen $uid und $record abgelegt.
  * Der Umfang von $record kann aber je nach Aufruf unterschiedlich sein!
  *
- * @package TYPO3
- * @subpackage rn_base
  * @author René Nitzsche
  * @author Michael Wagner
  */
@@ -55,8 +53,6 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
      * Ensure to overwrite getTableName()!
      *
      * @param mixed $rowOrUid
-     *
-     * @return void
      */
     public function __construct($rowOrUid = null)
     {
@@ -68,8 +64,6 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
      * As the result the instance should be completly loaded.
      *
      * @param mixed $rowOrUid
-     *
-     * @return null
      */
     protected function init($rowOrUid = null)
     {
@@ -90,8 +84,6 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
 
     /**
      * Loads the record to the model by its uid.
-     *
-     * @return void
      */
     protected function loadRecord()
     {
@@ -111,10 +103,10 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
     }
 
     /**
-     * Setzt einen Wert oder ersetzt alle Werte
+     * Setzt einen Wert oder ersetzt alle Werte.
      *
      * @param string|array $property
-     * @param mixed $value
+     * @param mixed        $value
      *
      * @return Tx_Rnbase_Domain_Model_Data
      */
@@ -123,7 +115,7 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
         if (is_array($property)) {
             foreach ($property as $subProperty => $subValue) {
                 // ignore uid overriding!!!
-                if ($subProperty === 'uid' && $this->hasUid()) {
+                if ('uid' === $subProperty && $this->hasUid()) {
                     continue;
                 }
                 parent::setProperty($subProperty, $subValue);
@@ -178,6 +170,7 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
 
         return $label;
     }
+
     /**
      * Returns the Language id of the record.
      *
@@ -215,7 +208,7 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
                 $tstamp = (int) $this->getProperty($field);
                 tx_rnbase::load('tx_rnbase_util_Dates');
                 $datetime = tx_rnbase_util_Dates::getDateTime(
-                    '@' . $tstamp,
+                    '@'.$tstamp,
                     $timezone
                 );
             }
@@ -242,7 +235,7 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
                 $tstamp = (int) $this->getProperty($field);
                 tx_rnbase::load('tx_rnbase_util_Dates');
                 $datetime = tx_rnbase_util_Dates::getDateTime(
-                    '@' . $tstamp,
+                    '@'.$tstamp,
                     $timezone
                 );
             }
@@ -252,7 +245,7 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
     }
 
     /**
-     * Reload this records from database
+     * Reload this records from database.
      *
      * @return Tx_Rnbase_Domain_Model_Base
      */
@@ -265,8 +258,9 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
 
         return $this;
     }
+
     /**
-     * Liefert den aktuellen Tabellenname
+     * Liefert den aktuellen Tabellenname.
      *
      * @return string Tabellenname als String
      */
@@ -276,7 +270,7 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
     }
 
     /**
-     * Setzt den aktuellen Tabellenname
+     * Setzt den aktuellen Tabellenname.
      *
      * @param string $tableName
      *
@@ -317,7 +311,7 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
      * Validates the data of a model with the tca definition of a its table.
      *
      * @param array|null $options
-     *     only_record_fields: validates only fields included in the record (default)
+     *                            only_record_fields: validates only fields included in the record (default)
      *
      * @return bool
      */
@@ -325,7 +319,7 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
     {
         return tx_rnbase_util_TCA::validateModel(
             $this,
-            $options === null ? array('only_record_fields' => true) : $options
+            null === $options ? ['only_record_fields' => true] : $options
         );
     }
 
@@ -360,7 +354,7 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
     }
 
     /**
-     * Returns the record
+     * Returns the record.
      *
      * @return array
      */
@@ -383,7 +377,7 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
     }
 
     /**
-     * Liefert die TCA-Definition der in der Tabelle definierten Spalten
+     * Liefert die TCA-Definition der in der Tabelle definierten Spalten.
      *
      * @return array mit Spaltennamen oder 0
      */
