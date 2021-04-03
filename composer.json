@@ -25,8 +25,15 @@
         "digedag/rn-base": "self.version"
     },
     "require": {
-      "typo3/cms-core": "^7.6 || ^8.7 || ^9.5 || ^10.4",
-      "php": ">=7.1.0"
+        "typo3/cms-core": "^7.6 || ^8.7 || ^9.5 || ^10.4",
+        "php": ">=7.1.0",
+        "php": ">=5.6.0",
+        "ext-curl": "*",
+        "ext-dom": "*",
+        "ext-iconv": "*",
+        "ext-json": "*",
+        "ext-simplexml": "*",
+        "ext-zip": "*"
     },
     "require-dev": {
         "namelesscoder/typo3-repository-client": "^1.2",
@@ -34,6 +41,12 @@
         "mikey179/vfsstream": "^1.4 || ^1.6",
         "phpunit/phpunit": "^4.7|| ^7.0",
         "friendsofphp/php-cs-fixer": "^2.15"
+    },
+    "suggest": {
+        "ext-mcrypt": "*",
+        "ext-mysql": "*",
+        "ext-mysqli": "*",
+        "ext-mssql": "*"
     },
     "autoload": {
         "classmap": [
