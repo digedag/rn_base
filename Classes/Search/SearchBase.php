@@ -11,6 +11,8 @@ use tx_rnbase_util_Logger;
 use tx_rnbase_util_Misc;
 use Tx_Rnbase_Utility_Strings;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Connection;
 
 /***************************************************************
  *  Copyright notice
@@ -232,18 +234,24 @@ abstract class SearchBase
             )
         ) {
             $sqlOptions['sqlonly'] = 1;
-            $query = $this->getDatabaseConnection()->doSelect(
+            $queryOrBuilder = $this->getDatabaseConnection()->doSelect(
                 $what,
                 $from,
                 $sqlOptions,
                 $options['debug'] ? 1 : 0
             );
-            $what = 'COUNT(*) AS cnt';
-            $from = '('.$query.') AS COUNTWRAP';
-            $sqlOptions = [
-                'enablefieldsoff' => true,
-                'sqlonly' => empty($options['sqlonly']) ? 0 : $options['sqlonly'],
-            ];
+
+            if ($queryOrBuilder instanceof QueryBuilder) {
+                return $this->countQuery($queryOrBuilder);
+            }
+            else {
+                $what = 'COUNT(*) AS cnt';
+                $from = '('. $queryOrBuilder .') AS COUNTWRAP';
+                $sqlOptions = [
+                    'enablefieldsoff' => true,
+                    'sqlonly' => empty($options['sqlonly']) ? 0 : $options['sqlonly'],
+                ];
+            }
         }
         $result = $this->getDatabaseConnection()->doSelect(
             $what,
@@ -251,11 +259,20 @@ abstract class SearchBase
             $sqlOptions,
             $options['debug'] ? 1 : 0
         );
+
         if (isset($options['sqlonly'])) {
             return $result;
         }
         // else:
         return isset($options['count']) ? $result[0]['cnt'] : $result;
+    }
+
+    private function countQuery(QueryBuilder $qb): int
+    {
+        $countQuery = sprintf('SELECT COUNT(*) AS cnt FROM (%s) AS COUNTWRAP', $qb->getSQL());
+        $stmt = $this->getConnection()->executeQuery($countQuery, $qb->getParameters(), $qb->getParameterTypes());
+        $result = $stmt->fetchAll();
+        return $result[0]['cnt'];
     }
 
     private function initSqlOptions($options)
@@ -870,5 +887,11 @@ abstract class SearchBase
         $specials['U'] = ['U', 'Ü'];
 
         return $specials;
+    }
+
+    private function getConnection(): Connection
+    {
+        $pool = \tx_rnbase::makeInstance(ConnectionPool::class);
+        return $pool->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
     }
 }

@@ -77,7 +77,7 @@ class Connection implements SingletonInterface
      * - 'where' - the Where-Clause
      * - 'groupby' - the GroupBy-Clause
      * - 'orderby' - the OrderBy-Clause
-     * - 'sqlonly' - returns the generated SQL statement. No database access.
+     * - 'sqlonly' - returns the generated SQL statement or prepared QueryBuilder instance. No database access.
      * - 'limit' - limits the number of result rows
      * - 'wrapperclass' - A wrapper for each result rows
      * - 'pidlist' - A list of page-IDs to search for records
@@ -130,7 +130,7 @@ class Connection implements SingletonInterface
         } else {
             $rows = $this->doSelectLegacy($what, $from, $arr, $debug);
         }
-        if (is_string($rows)) {
+        if (is_string($rows) || $rows instanceof QueryBuilder) {
             // sqlOnly
             return $rows;
         }
@@ -160,7 +160,7 @@ class Connection implements SingletonInterface
         $sqlOnly = intval($arr['sqlonly']) > 0;
 
         if ($sqlOnly) {
-            return $queryBuilder->getSQL();
+            return $queryBuilder;
         }
 
         $rows = $this->initRows($arr);
