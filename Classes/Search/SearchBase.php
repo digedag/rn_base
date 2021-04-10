@@ -10,9 +10,9 @@ use Tx_Rnbase_Database_Connection;
 use tx_rnbase_util_Logger;
 use tx_rnbase_util_Misc;
 use Tx_Rnbase_Utility_Strings;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
 /***************************************************************
  *  Copyright notice
@@ -243,10 +243,9 @@ abstract class SearchBase
 
             if ($queryOrBuilder instanceof QueryBuilder) {
                 return $this->countQuery($queryOrBuilder);
-            }
-            else {
+            } else {
                 $what = 'COUNT(*) AS cnt';
-                $from = '('. $queryOrBuilder .') AS COUNTWRAP';
+                $from = '('.$queryOrBuilder.') AS COUNTWRAP';
                 $sqlOptions = [
                     'enablefieldsoff' => true,
                     'sqlonly' => empty($options['sqlonly']) ? 0 : $options['sqlonly'],
@@ -272,6 +271,7 @@ abstract class SearchBase
         $countQuery = sprintf('SELECT COUNT(*) AS cnt FROM (%s) AS COUNTWRAP', $qb->getSQL());
         $stmt = $this->getConnection()->executeQuery($countQuery, $qb->getParameters(), $qb->getParameterTypes());
         $result = $stmt->fetchAll();
+
         return $result[0]['cnt'];
     }
 
@@ -892,6 +892,7 @@ abstract class SearchBase
     private function getConnection(): Connection
     {
         $pool = \tx_rnbase::makeInstance(ConnectionPool::class);
+
         return $pool->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
     }
 }
