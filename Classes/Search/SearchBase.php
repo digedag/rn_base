@@ -619,7 +619,7 @@ abstract class SearchBase
             return intval($this->genericData['usealias']) > 0;
         }
 
-        return false;
+        return '' !== $this->getBaseTableAlias();
     }
 
     protected function getWhat($options, $tableAliases)
