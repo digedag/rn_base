@@ -3,10 +3,11 @@
 Changelog
 ---------
 
-v1.13.5 (??.04.2021)
+v1.13.5 (11.04.2021)
  * add support for wrapped query count in QueryBuilder mode
  * Option `sqlonly` will return prepared QueryBuilder instead of plain sql string in QueryBuilder mode
  * Some cleanup in composer.json and PHP code. Thanks to Oliver Klee!
+ * SearchBase will use alias mode if `getBaseTableAlias()` is overwritten. No need to override `useAlias()` too.
 
 v1.13.4 (31.03.2021)
  * fixed bug in new search base
