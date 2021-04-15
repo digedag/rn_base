@@ -39,10 +39,12 @@ final class Tx_Rnbase_Utility_Composer
         if (true === self::$loaded) {
             return;
         }
-        require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(
-            'rn_base',
-            'Resources/Private/PHP/Composer/autoload.php'
-        );
+
+        $autoloader = dirname(dirname(__DIR__)).'/Resources/Private/PHP/Composer/autoload.php';
+        if (is_file($autoloader)) {
+            require_once $autoloader;
+        }
+
         self::$loaded = true;
     }
 }
