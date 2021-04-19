@@ -160,7 +160,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
         }
 
         $implode = $configurations->get($pbConfId.'.implode');
-        $subpartArray['###'.$pbMarker.'_NORMAL_PAGE###'] = implode($parts, $implode ? $implode : ' ');
+        $subpartArray['###'.$pbMarker.'_NORMAL_PAGE###'] = implode($implode ? $implode : ' ', $parts);
         $ret = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($template, $markerArray, $subpartArray);
 
         return $ret;
