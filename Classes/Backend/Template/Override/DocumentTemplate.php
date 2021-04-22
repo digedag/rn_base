@@ -94,8 +94,6 @@ function jumpToUrl(URL) {
 
             return $this->pageRenderer;
         }
-
-        return parent::getPageRenderer();
     }
 
     /* *** ************************************************ *** *
