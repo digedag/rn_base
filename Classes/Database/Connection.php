@@ -133,7 +133,7 @@ class Connection implements SingletonInterface
         } else {
             $rows = $this->doSelectLegacy($what, $from, $arr, $debug);
         }
-        if (is_string($rows) || ( TYPO3::isTYPO87OrHigher() && $rows instanceof QueryBuilder)) {
+        if (is_string($rows) || (TYPO3::isTYPO87OrHigher() && $rows instanceof QueryBuilder)) {
             // sqlOnly
             return $rows;
         }
