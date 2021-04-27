@@ -122,15 +122,18 @@ class Connection implements SingletonInterface
         $arr['what'] = $what;
         $from = From::buildInstance($from);
 
-        $qbFacade = new QueryBuilderFacade();
-        $queryBuilder = $qbFacade->doSelect($what, $from, $arr);
+        $queryBuilder = null;
+        if (TYPO3::isTYPO87OrHigher()) {
+            $qbFacade = new QueryBuilderFacade();
+            $queryBuilder = $qbFacade->doSelect($what, $from, $arr);
+        }
 
         if ($queryBuilder) {
             $rows = $this->doSelectByQueryBuilder($queryBuilder, $from, $arr);
         } else {
             $rows = $this->doSelectLegacy($what, $from, $arr, $debug);
         }
-        if (is_string($rows) || $rows instanceof QueryBuilder) {
+        if (is_string($rows) || ( TYPO3::isTYPO87OrHigher() && $rows instanceof QueryBuilder)) {
             // sqlOnly
             return $rows;
         }
