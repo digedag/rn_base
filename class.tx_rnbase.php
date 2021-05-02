@@ -1,5 +1,6 @@
 <?php
 
+use Sys25\RnBase\Utility\TYPO3;
 use Sys25\RnBase\Utility\Typo3Classes;
 
 /***************************************************************
@@ -45,9 +46,6 @@ class tx_rnbase
      * @param string $classNameOrPathInformation classname or path matching for the type of loader
      *
      * @return bool true if successful, false otherwise
-     *
-     * @see     tx_lib_t3Loader
-     * @see     tx_lib_pearLoader
      */
     public static function load($classNameOrPathInformation)
     {
@@ -137,10 +135,6 @@ class tx_rnbase
         if (!$outputName) {
             $outputName = self::makeInstanceClassNameT3($inputName);
         }
-        if (!$outputName && tx_rnbase_util_Extensions::isLoaded('lib')) {
-            require_once tx_rnbase_util_Extensions::extPath('lib').'class.tx_lib_pearLoader.php';
-            $outputName = tx_lib_pearLoader::makeInstanceClassName($inputName);
-        }
 
         return $outputName;
     }
@@ -179,14 +173,12 @@ class tx_rnbase
         $path = self::_findT3($minimalInformation, $alternativeKey, $prefix, $suffix);
 
         if ($path) {
-            if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+            if (TYPO3::isTYPO80OrHigher()) {
                 // Needed for require_once, only fallback, should do the autoloading!
                 global $TYPO3_CONF_VARS;
                 require_once $path;
-            } elseif (class_exists('\TYPO3\CMS\Core\Utility\GeneralUtility')) {
-                \TYPO3\CMS\Core\Utility\GeneralUtility::requireOnce($path);
             } else {
-                t3lib_div::requireOnce($path);
+                \TYPO3\CMS\Core\Utility\GeneralUtility::requireOnce($path);
             }
         }
 
@@ -229,6 +221,7 @@ class tx_rnbase
         }
 
         $qSuffix = preg_quote($suffix, '/');
+        $matches = [];
         // If it is a path extract the key first.
         // Either the relevant part starts with a slash: xyz/[tx_].....php
         if (preg_match('/^.*\/([0-9A-Za-z_]+)'.$qSuffix.'$/', $info, $matches)) {
@@ -384,6 +377,7 @@ class tx_rnbase
         $info = trim($minimalInformation);
         $key = false;
         if ($info) {
+            $matches = [];
             // Can it be the key itself?
             if (!$key && preg_match('/^([A-Za-z_]*)$/', $info, $matches)) {
                 $key = $matches[1];
