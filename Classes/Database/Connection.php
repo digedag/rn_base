@@ -4,18 +4,17 @@ namespace Sys25\RnBase\Database;
 
 use Sys25\RnBase\Database\Query\From;
 use Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface;
+use Sys25\RnBase\Utility\Misc;
+use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
+use Sys25\RnBase\Utility\Typo3Classes;
 use tx_rnbase;
 use Tx_Rnbase_Domain_Model_DynamicTableInterface;
 use tx_rnbase_model_base;
 use tx_rnbase_util_db_Builder;
 use tx_rnbase_util_db_IDatabase;
 use tx_rnbase_util_Debug;
-use tx_rnbase_util_Misc;
 use tx_rnbase_util_TCA;
-use tx_rnbase_util_TYPO3;
-use tx_rnbase_util_Typo3Classes;
-use Tx_Rnbase_Utility_Strings;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
 /***************************************************************
@@ -101,7 +100,7 @@ class Connection implements SingletonInterface
      */
     public function doSelect($what, $from, $arr, $debug = false)
     {
-        tx_rnbase_util_Misc::callHook(
+        Misc::callHook(
             'rn_base',
             'util_db_do_select_pre',
             [
@@ -147,7 +146,7 @@ class Connection implements SingletonInterface
             ], 'SQL statistics');
         }
 
-        tx_rnbase_util_Misc::callHook(
+        Misc::callHook(
             'rn_base',
             'util_db_do_select_post',
             [
@@ -214,13 +213,13 @@ class Connection implements SingletonInterface
 
         // Das sollte wegfallen. Die OL werden weiter unten geladen
         if (strlen($i18n) > 0) {
-            $i18n = implode(',', Tx_Rnbase_Utility_Strings::intExplode(',', $i18n));
+            $i18n = implode(',', Strings::intExplode(',', $i18n));
             $where .= ' AND '.($tableAlias ? $tableAlias : $tableName).'.sys_language_uid IN ('.$i18n.')';
         }
 
         if (strlen($pidList) > 0) {
             $where .= ' AND '.($tableAlias ? $tableAlias : $tableName).'.pid'.
-                ' IN ('.tx_rnbase_util_Misc::getPidList($pidList, $recursive).')';
+                ' IN ('.Misc::getPidList($pidList, $recursive).')';
         }
 
         if (strlen($union) > 0) {
@@ -344,7 +343,7 @@ class Connection implements SingletonInterface
             return;
         }
 
-        $sysPage = tx_rnbase_util_TYPO3::getSysPage();
+        $sysPage = TYPO3::getSysPage();
         $sysPage->versionOL($tableName, $row);
         $sysPage->fixVersioningPid($tableName, $row);
     }
@@ -375,13 +374,13 @@ class Connection implements SingletonInterface
 
         // Then get localization of record:
         // (if the content language is not the default language)
-        $tsfe = tx_rnbase_util_TYPO3::getTSFE();
+        $tsfe = TYPO3::getTSFE();
         if (!is_object($tsfe) || !\Sys25\RnBase\Utility\FrontendControllerUtility::getLanguageContentId($tsfe)) {
             return;
         }
 
         $OLmode = (isset($options['i18nolmode']) ? $options['i18nolmode'] : '');
-        $sysPage = tx_rnbase_util_TYPO3::getSysPage();
+        $sysPage = TYPO3::getSysPage();
 
         if ('pages' === $tableName) {
             $row = $sysPage->getPageOverlay($row);
@@ -406,7 +405,7 @@ class Connection implements SingletonInterface
      */
     public function enableFields($tableName, $mode, $tableAlias = '')
     {
-        $sysPage = tx_rnbase_util_TYPO3::getSysPage();
+        $sysPage = TYPO3::getSysPage();
         $enableFields = $sysPage->enableFields($tableName, $mode);
         if ($tableAlias) {
             // Replace tablename with alias
@@ -440,7 +439,7 @@ class Connection implements SingletonInterface
         }
 
         // use the doctrine dbal connection instead of $GLOBALS['TYPO3_DB']
-        if ('typo3' == $dbKey && tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
+        if ('typo3' == $dbKey && TYPO3::isTYPO87OrHigher()) {
             $dbKey = 'typo3dbal';
         }
 
@@ -509,7 +508,7 @@ class Connection implements SingletonInterface
 
         $database = $this->getDatabaseConnection($arr);
 
-        tx_rnbase_util_Misc::callHook(
+        Misc::callHook(
             'rn_base',
             'util_db_do_insert_pre',
             [
@@ -549,7 +548,7 @@ class Connection implements SingletonInterface
 
         $insertId = $database->sql_insert_id();
 
-        tx_rnbase_util_Misc::callHook(
+        Misc::callHook(
             'rn_base',
             'util_db_do_insert_post',
             [
@@ -619,7 +618,7 @@ class Connection implements SingletonInterface
         $debug = intval($arr['debug']) > 0;
         $database = $this->getDatabaseConnection($arr);
 
-        tx_rnbase_util_Misc::callHook(
+        Misc::callHook(
             'rn_base',
             'util_db_do_update_pre',
             [
@@ -655,7 +654,7 @@ class Connection implements SingletonInterface
 
         $affectedRows = $database->sql_affected_rows();
 
-        tx_rnbase_util_Misc::callHook(
+        Misc::callHook(
             'rn_base',
             'util_db_do_update_post',
             [
@@ -689,7 +688,7 @@ class Connection implements SingletonInterface
         $debug = intval($arr['debug']) > 0;
         $database = $this->getDatabaseConnection($arr);
 
-        tx_rnbase_util_Misc::callHook(
+        Misc::callHook(
             'rn_base',
             'util_db_do_delete_pre',
             [
@@ -721,7 +720,7 @@ class Connection implements SingletonInterface
 
         $affectedRows = $database->sql_affected_rows();
 
-        tx_rnbase_util_Misc::callHook(
+        Misc::callHook(
             'rn_base',
             'util_db_do_delete_post',
             [
@@ -838,7 +837,7 @@ class Connection implements SingletonInterface
     public function &getTCEmain($data = 0, $cmd = 0)
     {
         // Die TCEmain laden
-        $tce = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getDataHandlerClass());
+        $tce = tx_rnbase::makeInstance(Typo3Classes::getDataHandlerClass());
         $tce->stripslashes_values = 0;
         // Wenn wir ein data-Array bekommen verwenden wir das
         $tce->start($data ? $data : [], $cmd ? $cmd : []);
@@ -876,14 +875,14 @@ class Connection implements SingletonInterface
     }
 
     /**
-     * Same method as tx_rnbase_util_Typo3Classes::getTypoScriptFrontendControllerClass()::pi_getPidList()
+     * Same method as Typo3Classes::getTypoScriptFrontendControllerClass()::pi_getPidList()
      * If you  need this functionality use tx_rnbase_util_Misc::getPidList().
      *
      * @deprecated use tx_rnbase_util_Misc::getPidList!
      */
     public function _getPidList($pid_list, $recursive = 0)
     {
-        return tx_rnbase_util_Misc::getPidList($pid_list, $recursive);
+        return Misc::getPidList($pid_list, $recursive);
     }
 
     /**
@@ -907,7 +906,7 @@ class Connection implements SingletonInterface
             $msg .= '<br />';
             $msg .= $database->debug_lastBuiltQuery;
             // We need to pass the extKey, otherwise no devlog was written.
-            tx_rnbase_util_Misc::mayday(nl2br($msg), 'rn_base');
+            Misc::mayday(nl2br($msg), 'rn_base');
         }
 
         return $res;
@@ -980,7 +979,7 @@ class Connection implements SingletonInterface
     {
         $searchTable = '';
         // Aus den searchFields muss eine Tabelle geholt werden (Erstmal nur DBAL)
-        if (tx_rnbase_util_TYPO3::isExtLoaded('dbal') && is_array($searchFields) && !empty($searchFields)) {
+        if (TYPO3::isExtLoaded('dbal') && is_array($searchFields) && !empty($searchFields)) {
             $col = $searchFields[0];
             list($searchTable, $col) = explode('.', $col);
         }
@@ -1016,7 +1015,7 @@ class Connection implements SingletonInterface
     private function _getSearchLike($kw, $searchFields)
     {
         $searchTable = ''; // Für TYPO3 nicht relevant
-        if (tx_rnbase_util_TYPO3::isExtLoaded('dbal')) {
+        if (TYPO3::isExtLoaded('dbal')) {
             // Bei dbal darf die Tabelle nicht leer sein. Wir setzen die erste Tabelle in den searchfields
             $col = $searchFields[0];
             list($searchTable, $col) = explode('.', $col);
@@ -1058,13 +1057,13 @@ class Connection implements SingletonInterface
         switch ($operator) {
             case OP_NOTIN_INT:
             case OP_IN_INT:
-                $value = implode(',', Tx_Rnbase_Utility_Strings::intExplode(',', $value));
+                $value = implode(',', Strings::intExplode(',', $value));
                 $where .= $tableAlias.'.'.strtolower($col).' '.$operator.' ('.$value.')';
 
                 break;
             case OP_NOTIN:
             case OP_IN:
-                $values = Tx_Rnbase_Utility_Strings::trimExplode(',', $value);
+                $values = Strings::trimExplode(',', $value);
                 for ($i = 0, $cnt = count($values); $i < $cnt; ++$i) {
                     $values[$i] = $this->fullQuoteStr($values[$i], $tableAlias);
                 }
@@ -1129,7 +1128,7 @@ class Connection implements SingletonInterface
 
                 break;
             default:
-                tx_rnbase_util_Misc::mayday('Unknown Operator for comparation defined: '.$operator);
+                Misc::mayday('Unknown Operator for comparation defined: '.$operator);
         }
 
         return $where.' ';
@@ -1192,12 +1191,12 @@ class Connection implements SingletonInterface
                     // kann. Das wollen wir aber nicht. Der Cache muss in jedem Fall deaktiviert werden.
                     // Ansonsten könnten darin Dinge landen, die normale Nutzer nicht
                     // sehen dürfen.
-                    tx_rnbase_util_TYPO3::getTSFE()->no_cache = true;
+                    TYPO3::getTSFE()->no_cache = true;
                 }
             }
 
             // Zur Where-Clause noch die gültigen Felder hinzufügen
-            $sysPage = tx_rnbase_util_TYPO3::getSysPage();
+            $sysPage = TYPO3::getSysPage();
             $mode = (TYPO3_MODE == 'BE') ? 1 : 0;
             $ignoreArr = [];
             if (intval($options['enablefieldsbe'])) {

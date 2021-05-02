@@ -102,11 +102,7 @@ class tx_rnbase_util_Lang
      */
     public function loadLLTs($langArr)
     {
-        if (tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
-            $this->loadLLOverlay46($langArr);
-        } else {
-            $this->loadLLOverlay($langArr);
-        }
+        $this->loadLLOverlay46($langArr);
     }
 
     /**
@@ -140,34 +136,6 @@ class tx_rnbase_util_Lang
             is_array($this->LOCAL_LANG) ? $this->LOCAL_LANG : [],
             $langArr
         );
-    }
-
-    /**
-     * Loads local language file for frontend rendering if defined in configuration.
-     * Also locallang values from TypoScript property "_LOCAL_LANG" are merged onto the
-     * values. This is a reimplementation from tslib_pibase::pi_loadLL().
-     */
-    protected function loadLLOverlay($langArr)
-    {
-        if (!is_array($langArr)) {
-            return;
-        }
-        foreach ($langArr as $k => $lA) {
-            if (is_array($lA)) {
-                $k = substr($k, 0, -1);
-                foreach ($lA as $llK => $llV) {
-                    if (!is_array($llV)) {
-                        $this->LOCAL_LANG[$k][$llK] = $llV;
-                        if ('default' != $k) {
-                            // For labels coming from the TypoScript (database) the charset is assumed to
-                            // be "forceCharset" and if that is not set, assumed to be that of the individual
-                            // system languages (thus no conversion)
-                            $this->LOCAL_LANG_charset[$k][$llK] = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
-                        }
-                    }
-                }
-            }
-        }
     }
 
     /**
@@ -213,7 +181,7 @@ class tx_rnbase_util_Lang
      */
     public function getLL($key, $alt = '', $hsc = false, $labelDebug = false)
     {
-        $label = tx_rnbase_util_TYPO3::isTYPO46OrHigher() ? $this->getLL46($key, $alt, $hsc) : $this->getLL40($key, $alt, $hsc);
+        $label = $this->getLL46($key, $alt, $hsc);
         if ($labelDebug) {
             $options = [];
             if ('html' !== $labelDebug) {
@@ -276,49 +244,6 @@ class tx_rnbase_util_Lang
 
         $output = (isset($this->LLtestPrefix)) ? $this->LLtestPrefix.$word : $word;
 
-        if ($hsc) {
-            $output = htmlspecialchars($output);
-        }
-
-        return $output;
-    }
-
-    /**
-     * Returns the localized label of the LOCAL_LANG key.
-     * This is a reimplementation from tslib_pibase::pi_getLL().
-     *
-     * @param string $key
-     * @param string $alt
-     * @param string $hsc
-     *
-     * @return string
-     */
-    private function getLL40($key, $alt = '', $hsc = false)
-    {
-        if (!strcmp(substr($key, 0, 4), 'LLL:')) {
-            return self::sL($key);
-        }
-
-        if (isset($this->LOCAL_LANG[$this->getLLKey()][$key])) {
-            $tsfe = tx_rnbase_util_TYPO3::getTSFE();
-            // The "from" charset is normally empty and thus it will convert from the charset of the system language, but if it is set (see ->pi_loadLL()) it will be used.
-            $word = $tsfe->csConv($this->LOCAL_LANG[$this->getLLKey()][$key], $this->LOCAL_LANG_charset[$this->getLLKey()][$key]);
-        } elseif ($this->getLLKey(true) && isset($this->LOCAL_LANG[$this->getLLKey(true)][$key])) {
-            tx_rnbase_util_TYPO3::getTSFE();
-            // The "from" charset is normally empty and thus it will convert from the charset of the system language, but if it is set (see ->pi_loadLL()) it will be used.
-            $word = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->getLLKey(true)][$key], $this->LOCAL_LANG_charset[$this->getLLKey(true)][$key]);
-        } elseif (isset($this->LOCAL_LANG['default'][$key])) {
-            // No charset conversion because default is english and thereby ASCII
-            $word = $this->LOCAL_LANG['default'][$key];
-        } else {
-            // Im BE die LANG fragen...
-            $word = is_object($GLOBALS['LANG']) ? $GLOBALS['LANG']->getLL($key) : '';
-            if (!$word) {
-                $word = $this->LLtestPrefixAlt.$alt;
-            }
-        }
-
-        $output = $this->LLtestPrefix.$word;
         if ($hsc) {
             $output = htmlspecialchars($output);
         }

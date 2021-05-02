@@ -103,3 +103,35 @@ interface tx_rnbase_IFilterItem extends Sys25\RnBase\Frontend\Filter\IFilterItem
 class tx_rnbase_filter_FilterItem extends Sys25\RnBase\Frontend\Filter\FilterItem implements tx_rnbase_IFilterItem
 {
 }
+/** @deprecated */
+final class Tx_Rnbase_Utility_Composer extends Sys25\RnBase\Utility\Composer
+{
+}
+/** @deprecated */
+class Tx_Rnbase_Utility_Strings extends Sys25\RnBase\Utility\Strings
+{
+}
+/** @deprecated */
+class tx_rnbase_util_Strings extends Sys25\RnBase\Utility\Strings
+{
+}
+/** @deprecated */
+class tx_rnbase_util_Math extends Sys25\RnBase\Utility\Math
+{
+}
+/** @deprecated */
+class Tx_Rnbase_Utility_T3General extends Sys25\RnBase\Utility\T3General
+{
+}
+/** @deprecated */
+class tx_rnbase_util_Typo3Classes extends Sys25\RnBase\Utility\Typo3Classes
+{
+}
+/** @deprecated */
+class tx_rnbase_util_Misc extends Sys25\RnBase\Utility\Misc
+{
+}
+/** @deprecated */
+class tx_rnbase_util_Network extends Sys25\RnBase\Utility\Network
+{
+}

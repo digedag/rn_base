@@ -1,8 +1,11 @@
 <?php
+
+namespace Sys25\RnBase\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012-2013 Rene Nitzsche (rene@system25.de)
+ *  (c) 2012-2021 Rene Nitzsche (rene@system25.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,7 +30,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Wrapper for math usage.
  */
-class tx_rnbase_util_Math
+class Math
 {
     /**
      * Tests if the input can be interpreted as integer.
@@ -62,8 +65,6 @@ class tx_rnbase_util_Math
      * @param int $zeroValue default value if input is FALSE
      *
      * @return int The input value forced into the boundaries of $min and $max
-     *
-     * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Math::forceIntegerInRange() instead
      */
     public static function intInRange($theInt, $min, $max = 2000000000, $zeroValue = 0)
     {

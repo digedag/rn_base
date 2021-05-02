@@ -43,14 +43,8 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
     public function setUp()
     {
         $this->oFormTool = tx_rnbase::makeInstance('tx_rnbase_util_FormTool');
-        // Die Local-Lang wurde in 4.6 verändert
-        if (tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
-            $GLOBALS['LOCAL_LANG']['default']['Header Uid'][0] = ['source' => 'Header Uid', 'target' => 'Header Uid'];
-            $GLOBALS['LOCAL_LANG']['default']['Header Col1'][0] = ['source' => 'Header Col1', 'target' => 'Header Col1'];
-        } else {
-            $GLOBALS['LOCAL_LANG']['default']['Header Uid'] = 'Header Uid';
-            $GLOBALS['LOCAL_LANG']['default']['Header Col1'] = 'Header Col1';
-        }
+        $GLOBALS['LOCAL_LANG']['default']['Header Uid'][0] = ['source' => 'Header Uid', 'target' => 'Header Uid'];
+        $GLOBALS['LOCAL_LANG']['default']['Header Col1'][0] = ['source' => 'Header Col1', 'target' => 'Header Col1'];
 
         $this->backupAndSetCurrentRequestUri();
 
@@ -253,8 +247,6 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
         $this->assertEquals(2, count($aRet[0][2]), 'Das Array der zweiten Zeile hat die falsche Anzahl an Elementen.');
         $this->assertEquals(2, $aRet[0][2][0], 'Die erste Zelle der zweiten Zeile ist falsch.');
         $this->assertEquals('col1 Value 2', $aRet[0][2][1], 'Die zweite Zelle der zweiten Zeile ist falsch.');
-
-        $_SERVER['REQUEST_URI'] = $currentUriBackup;
     }
 
     /**

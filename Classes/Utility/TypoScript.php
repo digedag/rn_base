@@ -1,4 +1,7 @@
 <?php
+
+use Sys25\RnBase\Utility\Typo3Classes;
+
 /***************************************************************
  * Copyright notice
  *
@@ -39,7 +42,7 @@ class Tx_Rnbase_Utility_TypoScript
     private static function getTsParser()
     {
         return tx_rnbase::makeInstance(
-            tx_rnbase_util_Typo3Classes::getTypoScriptParserClass()
+            Typo3Classes::getTypoScriptParserClass()
         );
     }
 

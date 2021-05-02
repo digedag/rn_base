@@ -1,9 +1,11 @@
 <?php
 
+namespace Sys25\RnBase\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Rene Nitzsche
+ *  (c) 2013-2021 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -22,36 +24,29 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_TYPO3');
-tx_rnbase::load('tx_rnbase_util_Misc');
-
 /**
- * tx_rnbase_util_Network.
- *
- * Wrapper for Network related functions
+ * Wrapper for Network related functions.
  *
  * @author          Hannes Bochmann <dev@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class tx_rnbase_util_Network
+class Network
 {
     /**
      * (non-PHPdoc).
      *
-     * @see t3lib_div::cmpIP()
-     * @see TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP()
+     * @see \TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP()
      */
     public static function cmpIP($baseIP, $list)
     {
-        $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+        $utility = Typo3Classes::getGeneralUtilityClass();
 
         return $utility::cmpIP($baseIP, $list);
     }
 
     /**
-     * @see t3lib_div::getUrl()
-     * @see TYPO3\CMS\Core\Utility\GeneralUtility::getUrl()
+     * @see \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl()
      *
      * @param string      $url            File/URL to read
      * @param int         $includeHeader  Whether the HTTP header should be fetched or not. 0=disable, 1=fetch header+content, 2=fetch header only
@@ -62,14 +57,13 @@ class tx_rnbase_util_Network
      */
     public static function getUrl($url, $includeHeader = 0, $requestHeaders = false, &$report = null)
     {
-        $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+        $utility = Typo3Classes::getGeneralUtilityClass();
 
         return $utility::getUrl($url, $includeHeader, $requestHeaders, $report);
     }
 
     /**
-     * @see t3lib_div::isValidUrl()
-     * @see TYPO3\CMS\Core\Utility\GeneralUtility::isValidUrl()
+     * @see \TYPO3\CMS\Core\Utility\GeneralUtility::isValidUrl()
      *
      * @param string $url The URL to be validated
      *
@@ -77,14 +71,13 @@ class tx_rnbase_util_Network
      */
     public static function isValidUrl($url)
     {
-        $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+        $utility = Typo3Classes::getGeneralUtilityClass();
 
         return $utility::isValidUrl($url);
     }
 
     /**
-     * @see t3lib_div::locationHeaderUrl()
-     * @see TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl()
+     * @see \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl()
      *
      * @param string $path URL / path to prepend full URL addressing to
      *
@@ -92,7 +85,7 @@ class tx_rnbase_util_Network
      */
     public static function locationHeaderUrl($path)
     {
-        $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+        $utility = Typo3Classes::getGeneralUtilityClass();
 
         return $utility::locationHeaderUrl($path);
     }
@@ -108,7 +101,7 @@ class tx_rnbase_util_Network
      */
     public static function redirect($url, $httpStatus = null)
     {
-        $utility = tx_rnbase_util_Typo3Classes::getHttpUtilityClass();
+        $utility = Typo3Classes::getHttpUtilityClass();
         if (null === $httpStatus) {
             $httpStatus = $utility::HTTP_STATUS_303;
         }
@@ -126,7 +119,7 @@ class tx_rnbase_util_Network
         $devIPmask = trim(strcmp($devIPmask, '') ?
             $devIPmask : $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']);
         $remoteAddress = trim(strcmp($remoteAddress, '') ?
-            $remoteAddress : tx_rnbase_util_Misc::getIndpEnv('REMOTE_ADDR'));
+            $remoteAddress : Misc::getIndpEnv('REMOTE_ADDR'));
 
         return self::cmpIP($remoteAddress, $devIPmask);
     }

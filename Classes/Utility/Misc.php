@@ -1,5 +1,7 @@
 <?php
 
+namespace Sys25\RnBase\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,14 +24,19 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
+use Exception;
+use Sys25\RnBase\Configuration\Processor as ConfigurationProcessor;
+use tx_rnbase;
+use tx_rnbase_util_Dates;
+use tx_rnbase_util_Debug;
+use tx_rnbase_util_Lock;
+use tx_rnbase_util_Logger;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-
-tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
 /**
  * Contains some helpful methods.
  */
-class tx_rnbase_util_Misc
+class Misc
 {
     private static $enableTT = false;
 
@@ -48,8 +55,6 @@ class tx_rnbase_util_Misc
         $service = tx_rnbase::makeInstanceService($type, $subType);
 
         if (!is_object($service)) {
-            tx_rnbase::load('tx_rnbase_util_Misc');
-
             self::mayday('Service '.$type.' - '.$subType.' not found!');
         }
 
@@ -67,7 +72,7 @@ class tx_rnbase_util_Misc
         $priority = []; // Remember highest priority
         $services = [];
         if (is_array($T3_SERVICES[$serviceType])) {
-            foreach ($T3_SERVICES[$serviceType] as $key => $info) {
+            foreach ($T3_SERVICES[$serviceType] as $info) {
                 if ($info['available'] and (!isset($priority[$info['subtype']]) || $info['priority'] >= $priority[$info['subtype']])) {
                     $priority[$info['subtype']] = $info['priority'];
                     $services[$info['subtype']] = $info;
@@ -116,7 +121,7 @@ class tx_rnbase_util_Misc
     {
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extKey][$hookKey])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extKey][$hookKey] as $funcRef) {
-                $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+                $utility = Typo3Classes::getGeneralUtilityClass();
                 $utility::callUserFunction(
                     $funcRef,
                     $params,
@@ -143,7 +148,7 @@ class tx_rnbase_util_Misc
      */
     public static function callUserFunction($funcName, &$params, &$ref, $checkPrefix = 'user_', $errorMode = 0)
     {
-        $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+        $utility = Typo3Classes::getGeneralUtilityClass();
 
         return $utility::callUserFunction($funcName, $params, $ref);
     }
@@ -156,10 +161,6 @@ class tx_rnbase_util_Misc
      */
     public static function mayday($msg, $extKey = '')
     {
-        tx_rnbase::load('Tx_Rnbase_Configuration_Processor');
-        tx_rnbase::load('tx_rnbase_util_Logger');
-        tx_rnbase::load('tx_rnbase_util_Debug');
-
         tx_rnbase_util_Logger::fatal($msg, $extKey ? $extKey : 'rn_base');
         $aTrace = debug_backtrace();
         $aLocation = array_shift($aTrace);
@@ -192,7 +193,7 @@ class tx_rnbase_util_Misc
 
         $aDebug[] = '</div>';
 
-        if (intval(Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'forceException4Mayday'))) {
+        if (intval(ConfigurationProcessor::getExtensionCfgValue('rn_base', 'forceException4Mayday'))) {
             throw tx_rnbase::makeInstance('tx_rnbase_util_Exception', $msg, 0, ['Info' => $aDebug]);
         }
 
@@ -201,7 +202,7 @@ class tx_rnbase_util_Misc
         $sContent = '<h1 id="title">Mayday</h1>';
         $sContent .= '<div id="errormessage">'.$msg.'</div>';
         $sContent .= '<hr />';
-        $verbose = intval(Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'verboseMayday'));
+        $verbose = intval(ConfigurationProcessor::getExtensionCfgValue('rn_base', 'verboseMayday'));
         if ($verbose) {
             $sContent .= implode('', $aDebug);
         }
@@ -256,7 +257,7 @@ class tx_rnbase_util_Misc
 
 MAYDAYPAGE;
 
-        $dieOnMayday = intval(Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'dieOnMayday'));
+        $dieOnMayday = (int) ConfigurationProcessor::getExtensionCfgValue('rn_base', 'dieOnMayday');
         if ($dieOnMayday) {
             exit($sPage);
         } else {
@@ -337,7 +338,7 @@ MAYDAYPAGE;
     /**
      * Prepare classes for FE-rendering if it is needed in TYPO3 backend.
      *
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController|\tslib_fe
+     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
      */
     public static function prepareTSFE($options = [])
     {
@@ -347,16 +348,16 @@ MAYDAYPAGE;
         $force = array_key_exists('force', $options) ? true : false;
 
         if (!is_object($GLOBALS['TT'])) {
-            $GLOBALS['TT'] = tx_rnbase_util_Typo3Classes::getTimeTracker();
+            $GLOBALS['TT'] = Typo3Classes::getTimeTracker();
             $GLOBALS['TT']->start();
         }
 
-        $typoScriptFrontendControllerClass = tx_rnbase_util_Typo3Classes::getTypoScriptFrontendControllerClass();
+        $typoScriptFrontendControllerClass = Typo3Classes::getTypoScriptFrontendControllerClass();
         if (!is_object($GLOBALS['TSFE']) ||
             !($GLOBALS['TSFE'] instanceof $typoScriptFrontendControllerClass) ||
             $force
         ) {
-            if (!tx_rnbase_util_TYPO3::isTYPO70OrHigher() && !defined('PATH_tslib')) {
+            if (!TYPO3::isTYPO70OrHigher() && !defined('PATH_tslib')) {
                 // PATH_tslib setzen
                 if (@is_dir(\Sys25\RnBase\Utility\Environment::getPublicPath().'typo3/sysext/cms/tslib/')) {
                     define('PATH_tslib', \Sys25\RnBase\Utility\Environment::getPublicPath().'typo3/sysext/cms/tslib/');
@@ -367,12 +368,12 @@ MAYDAYPAGE;
                 }
             }
 
-            if (tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+            if (TYPO3::isTYPO90OrHigher()) {
                 $rootLine = null;
                 if ($pid > 0) {
                     $rootLine = \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($pid);
                 }
-                $siteMatcher = tx_rnbase::makeInstance(TYPO3\CMS\Core\Routing\SiteMatcher::class);
+                $siteMatcher = tx_rnbase::makeInstance(\TYPO3\CMS\Core\Routing\SiteMatcher::class);
                 $site = $siteMatcher->matchByPageId($pid, $rootLine);
                 $GLOBALS['TSFE'] = tx_rnbase::makeInstance(
                     $typoScriptFrontendControllerClass,
@@ -389,25 +390,25 @@ MAYDAYPAGE;
                 );
             }
         }
-        /* @var $tsfe TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
+        /* @var $tsfe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
         $tsfe = $GLOBALS['TSFE'];
 
         // base user groups
         // todo:         $userAspect = $this->context->getAspect('frontend.user');
-        if (!tx_rnbase_util_TYPO3::isTYPO95OrHigher() && empty($tsfe->gr_list) || $force) {
+        if (!TYPO3::isTYPO95OrHigher() && empty($tsfe->gr_list) || $force) {
             $GLOBALS['TSFE']->gr_list = '0,-1';
         }
 
         // init the syspage for pageSelect
         if (!is_object($tsfe->sys_page) || $force) {
-            $tsfe->sys_page = tx_rnbase_util_TYPO3::getSysPage();
+            $tsfe->sys_page = TYPO3::getSysPage();
         }
 
         // init the template
-        if (!tx_rnbase_util_TYPO3::isTYPO95OrHigher() && (!is_object($tsfe->tmpl) || $force)) {
+        if (!TYPO3::isTYPO95OrHigher() && (!is_object($tsfe->tmpl) || $force)) {
             $tsfe->initTemplate();
             if (empty($GLOBALS['TSFE']->tmpl->getFileName_backPath)) {
-                $GLOBALS['TSFE']->tmpl->getFileName_backPath = \Sys25\RnBase\Utility\Environment::getPublicPath();
+                $GLOBALS['TSFE']->tmpl->getFileName_backPath = Environment::getPublicPath();
             }
         }
 
@@ -420,7 +421,7 @@ MAYDAYPAGE;
         }
 
         // init the language
-        if (!tx_rnbase_util_TYPO3::isTYPO95OrHigher() && (empty($tsfe->lang) || $force)) {
+        if (!TYPO3::isTYPO95OrHigher() && (empty($tsfe->lang) || $force)) {
             $tsfe->initLLvars();
         }
 
@@ -431,8 +432,8 @@ MAYDAYPAGE;
         }
 
         // Den Backpath aus dem PageRenderer entfernen. Der wurde auf typo3/ gesetzt
-        if (method_exists(tx_rnbase_util_TYPO3::getPageRenderer(), 'setBackPath')) {
-            tx_rnbase_util_TYPO3::getPageRenderer()->setBackPath('');
+        if (method_exists(TYPO3::getPageRenderer(), 'setBackPath')) {
+            TYPO3::getPageRenderer()->setBackPath('');
         }
 
         return $tsfe;
@@ -474,7 +475,7 @@ MAYDAYPAGE;
     {
         // Suchteile splitten
         $ret = [];
-        $arr = tx_rnbase_util_Strings::trimExplode(' ', $searchterm);
+        $arr = Strings::trimExplode(' ', $searchterm);
         foreach ($arr as $term) {
             if (strlen($term) >= $minLength) {
                 $ret[] = $term;
@@ -523,11 +524,10 @@ MAYDAYPAGE;
     {
         $str = '';
         if ($daily) {
-            tx_rnbase::load('tx_rnbase_util_Dates');
             $str .= tx_rnbase_util_Dates::getTodayDateString();
         }
         sort($params);
-        foreach ($params as $key => $value) {
+        foreach ($params as $value) {
             if (is_array($value)) {
                 $value = 1;
             } // Arrays werden erstmal nicht unterstützt
@@ -610,20 +610,18 @@ MAYDAYPAGE;
         $pidList,
         $options = 0
     ) {
-        tx_rnbase::load('tx_rnbase_util_Math');
-        tx_rnbase::load('tx_rnbase_util_Typo3Classes');
         if (!strcmp($pidList, '')) {
-            $pidList = tx_rnbase_util_TYPO3::getTSFE()->id;
+            $pidList = TYPO3::getTSFE()->id;
         }
         $options = is_array($options) ? $options : ['recursive' => $options];
-        $options['recursive'] = tx_rnbase_util_Math::intInRange($options['recursive'], 0);
-        $pidListArr = array_unique(tx_rnbase_util_Strings::trimExplode(',', $pidList, 1));
+        $options['recursive'] = Math::intInRange($options['recursive'], 0);
+        $pidListArr = array_unique(Strings::trimExplode(',', $pidList, 1));
 
         $pidList = [];
         foreach ($pidListArr as $val) {
-            $val = tx_rnbase_util_Math::intInRange($val, 0);
+            $val = Math::intInRange($val, 0);
             if ($val) {
-                $cObj = tx_rnbase_util_TYPO3::getContentObject();
+                $cObj = TYPO3::getContentObject();
                 $list = $cObj->getTreeList(
                     (-1 * $val),
                     $options['recursive'],
@@ -644,7 +642,7 @@ MAYDAYPAGE;
      * Example: Converts BlogExample to blog_example, and minimalValue to minimal_value
      * Taken from t3lib_div for backward compatibility.
      *
-     * @deprecated use tx_rnbase_util_Strings::camelCaseToLowerCaseUnderscored instead
+     * @deprecated use Strings::camelCaseToLowerCaseUnderscored instead
      *
      * @param string $string: String to be converted to lowercase underscore
      *
@@ -653,9 +651,8 @@ MAYDAYPAGE;
     public static function camelCaseToLowerCaseUnderscored($string)
     {
         self::logDeprecatedFunction();
-        tx_rnbase::load('tx_rnbase_util_Strings');
 
-        return tx_rnbase_util_Strings::camelCaseToLowerCaseUnderscored($string);
+        return Strings::camelCaseToLowerCaseUnderscored($string);
     }
 
     /**
@@ -663,7 +660,7 @@ MAYDAYPAGE;
      *
      * @param string    $mailAddr   commaseperated recipients
      * @param string    $actionName
-     * @param Exception $e
+     * @param \Exception $e
      * @param array     $options
      */
     public static function sendErrorMail($mailAddr, $actionName, Exception $e, array $options = [])
@@ -684,12 +681,11 @@ MAYDAYPAGE;
         $textPart = self::getErrorMailText($e, $actionName);
         $htmlPart = self::getErrorMailHtml($e, $actionName);
 
-        /* @var $mail tx_rnbase_util_Mail */
+        /* @var $mail \tx_rnbase_util_Mail */
         $mail = tx_rnbase::makeInstance('tx_rnbase_util_Mail');
         $mail->setSubject('Exception on site '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
 
-        tx_rnbase::load('Tx_Rnbase_Configuration_Processor');
-        $from = Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'fromEmail');
+        $from = ConfigurationProcessor::getExtensionCfgValue('rn_base', 'fromEmail');
         $from = $from ? $from : 'error@'.self::getIndpEnv('TYPO3_HOST_ONLY');
         $mail->setFrom($from);
 
@@ -714,8 +710,8 @@ MAYDAYPAGE;
         $textPart .= 'SITE_URL: '.self::getIndpEnv('TYPO3_SITE_URL')."\n";
 
         tx_rnbase::load('tx_rnbase_util_TYPO3');
-        $textPart .= 'BE_USER: '.tx_rnbase_util_TYPO3::getBEUserUID()."\n";
-        $textPart .= 'FE_USER: '.tx_rnbase_util_TYPO3::getFEUserUID()."\n";
+        $textPart .= 'BE_USER: '.TYPO3::getBEUserUID()."\n";
+        $textPart .= 'FE_USER: '.TYPO3::getFEUserUID()."\n";
 
         return $textPart;
     }
@@ -744,7 +740,7 @@ MAYDAYPAGE;
         }
 
         $htmlPart .= '<p><strong>_SERVER</strong><br />'.var_export(self::removePasswordParams($_SERVER), true).'</p>';
-        if ($e instanceof tx_rnbase_util_Exception) {
+        if ($e instanceof \tx_rnbase_util_Exception) {
             $additional = $e->getAdditional();
             if ($additional) {
                 $htmlPart .= '<p><strong>Additional Data:</strong><br />'.strval($additional).'</p>';
@@ -752,8 +748,8 @@ MAYDAYPAGE;
         }
 
         tx_rnbase::load('tx_rnbase_util_TYPO3');
-        $htmlPart .= '<p><strong>BE_USER:</strong> '.tx_rnbase_util_TYPO3::getBEUserUID().'</p>';
-        $htmlPart .= '<p><strong>FE_USER:</strong> '.tx_rnbase_util_TYPO3::getFEUserUID().'</p>';
+        $htmlPart .= '<p><strong>BE_USER:</strong> '.TYPO3::getBEUserUID().'</p>';
+        $htmlPart .= '<p><strong>FE_USER:</strong> '.TYPO3::getFEUserUID().'</p>';
 
         return $htmlPart;
     }
@@ -791,7 +787,7 @@ MAYDAYPAGE;
      */
     public static function getIndpEnv($getEnvName)
     {
-        $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+        $utility = Typo3Classes::getGeneralUtilityClass();
 
         return $utility::getIndpEnv($getEnvName);
     }
@@ -803,7 +799,7 @@ MAYDAYPAGE;
      */
     public static function milliseconds()
     {
-        $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+        $utility = Typo3Classes::getGeneralUtilityClass();
 
         return $utility::milliseconds();
     }
@@ -813,7 +809,7 @@ MAYDAYPAGE;
      */
     public static function logDeprecatedFunction()
     {
-        $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+        $utility = Typo3Classes::getGeneralUtilityClass();
         $utility::logDeprecatedFunction();
     }
 
@@ -826,7 +822,7 @@ MAYDAYPAGE;
     public static function addFlashMessage($message, $title = '', $severity = 0, $storeInSession = false)
     {
         $flashMessage = tx_rnbase::makeInstance(
-            tx_rnbase_util_Typo3Classes::getFlashMessageClass(),
+            Typo3Classes::getFlashMessageClass(),
             $message,
             $title,
             $severity,

@@ -29,6 +29,7 @@ namespace Sys25\RnBase\Configuration;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
+use Sys25\RnBase\Utility\Typo3Classes;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /***************************************************************
@@ -291,7 +292,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
      */
     public function isPluginUserInt()
     {
-        $contentObjectRendererClass = \tx_rnbase_util_Typo3Classes::getContentObjectRendererClass();
+        $contentObjectRendererClass = Typo3Classes::getContentObjectRendererClass();
 
         return $this->getCObj()->getUserObjectType() == $contentObjectRendererClass::OBJECTTYPE_USER_INT;
     }
@@ -340,7 +341,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
      */
     public function getCObj($id = 0, $cObjClass = null)
     {
-        $cObjClass = null === $cObjClass ? \tx_rnbase_util_Typo3Classes::getContentObjectRendererClass() : $cObjClass;
+        $cObjClass = null === $cObjClass ? Typo3Classes::getContentObjectRendererClass() : $cObjClass;
         if (0 == strcmp($id, '0')) {
             if (!is_object($this->cObj)) {
                 $this->cObj = \tx_rnbase::makeInstance($cObjClass);
@@ -1025,7 +1026,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
         }
         if ($flexTs) {
             // This handles ts setup from flexform
-            $tsParser = \tx_rnbase::makeInstance(\tx_rnbase_util_Typo3Classes::getTypoScriptParserClass());
+            $tsParser = \tx_rnbase::makeInstance(Typo3Classes::getTypoScriptParserClass());
             $tsParser->setup = $this->_dataStore->getArrayCopy();
             $tsParser->parse($flexTs);
             $flexTsData = $tsParser->setup;
@@ -1042,7 +1043,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
         // das < abschneiden, um den pfad zum link zu erhalten
         $key = trim(substr($value, 1));
 
-        $tsParser = \tx_rnbase::makeInstance(\tx_rnbase_util_Typo3Classes::getTypoScriptParserClass());
+        $tsParser = \tx_rnbase::makeInstance(Typo3Classes::getTypoScriptParserClass());
 
         // $name and $conf is loaded with the referenced values.
         list($linkValue, $linkConf) = $tsParser->getVal($key, $GLOBALS['TSFE']->tmpl->setup);

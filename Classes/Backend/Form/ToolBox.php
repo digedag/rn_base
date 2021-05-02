@@ -1,5 +1,7 @@
 <?php
 
+use Sys25\RnBase\Utility\Typo3Classes;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -22,12 +24,6 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-
-tx_rnbase::load('Tx_Rnbase_Backend_Utility');
-tx_rnbase::load('Tx_Rnbase_Utility_Strings');
-tx_rnbase::load('tx_rnbase_util_Link');
-tx_rnbase::load('tx_rnbase_util_Typo3Classes');
-tx_rnbase::load('Tx_Rnbase_Backend_Utility_Icons');
 
 /**
  * Diese Klasse stellt hilfreiche Funktionen zur Erstellung von Formularen
@@ -74,7 +70,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
         // TCEform für das Formular erstellen
         $this->form = tx_rnbase_util_TYPO3::isTYPO76OrHigher() ?
             tx_rnbase::makeInstance('Tx_Rnbase_Backend_Form_FormBuilder') :
-            tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getBackendFormEngineClass());
+            tx_rnbase::makeInstance(Typo3Classes::getBackendFormEngineClass());
         $this->form->initDefaultBEmode();
         $this->form->backPath = $BACK_PATH;
     }

@@ -1,4 +1,7 @@
 <?php
+
+use Sys25\RnBase\Utility\Typo3Classes;
+
 /***************************************************************
  * Copyright notice
  *
@@ -158,7 +161,7 @@ class Tx_Rnbase_Utility_Mail
     public function send()
     {
         /* @var $mail TYPO3\CMS\Core\Mail\MailMessage */
-        $mail = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getMailMessageClass());
+        $mail = tx_rnbase::makeInstance(Typo3Classes::getMailMessageClass());
         $mail->setFrom($this->from, $this->fromName);
 
         foreach ($this->to as $email => $name) {

@@ -1,5 +1,7 @@
 <?php
 
+use Sys25\RnBase\Utility\Typo3Classes;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -80,15 +82,13 @@ class tx_rnbase
      *
      * @return object|Exception instance of the class or FALSE if it fails
      *
-     * @see         t3lib_div::makeInstance
      * @see         load()
      */
     public static function makeInstance($class)
     {
         $ret = false;
         if (self::load($class)) {
-            self::load('tx_rnbase_util_Typo3Classes');
-            $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+            $utility = Typo3Classes::getGeneralUtilityClass();
             if (func_num_args() > 1) {
                 // Das ist ein Konstruktor Aufruf mit Parametern
                 $args = func_get_args();
@@ -113,7 +113,7 @@ class tx_rnbase
      */
     public static function makeInstanceService($serviceType, $serviceSubType = '', $excludeServiceKeys = [])
     {
-        $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+        $utility = Typo3Classes::getGeneralUtilityClass();
 
         return $utility::makeInstanceService($serviceType, $serviceSubType, $excludeServiceKeys);
     }
@@ -129,9 +129,6 @@ class tx_rnbase
      *
      * @return string classname or ux_classsname (maybe  service classname)
      *
-     * @see     tx_div::makeInstance
-     * @see     tx_lib_t3Loader
-     * @see     tx_lib_pearLoader
      * @deprecated use makeInstance() with optional parameters for constructor
      */
     public static function makeInstanceClassName($inputName)
@@ -208,12 +205,11 @@ class tx_rnbase
      *
      * @return string classname or ux_ classname
      *
-     * @see         t3lib_div::makeInstanceClassName
      * @see         load()
      */
     private static function makeInstanceClassNameT3($class, $alternativeKey = '', $prefix = 'class.', $suffix = '.php')
     {
-        $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+        $utility = Typo3Classes::getGeneralUtilityClass();
 
         return (self::loadT3($class, $alternativeKey, $prefix, $suffix)) ?
             $utility::makeInstanceClassName($class) : false;

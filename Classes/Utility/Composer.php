@@ -1,7 +1,11 @@
 <?php
+
+namespace Sys25\RnBase\Utility;
+
 /**
  * Copyright notice.
  *
+ * (c) 2008-2021 Rene Nitzsche (rene@system25.de)
  * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
  *
@@ -27,7 +31,7 @@
  *
  * @author Michael Wagner
  */
-final class Tx_Rnbase_Utility_Composer
+class Composer
 {
     public static $loaded = false;
 

@@ -31,21 +31,11 @@ namespace Sys25\RnBase\Utility;
 class TYPO3
 {
     /**
-     * Prüft, ob mindestens TYPO3 Version 6.0 vorhanden ist.
+     * Prüft, ob mindestens TYPO3 Version 6.2 vorhanden ist.
      *
      * @return bool
      */
     public static function isTYPO60OrHigher()
-    {
-        return true;
-    }
-
-    /**
-     * Prüft, ob mindestens TYPO3 Version 6.1 vorhanden ist.
-     *
-     * @return bool
-     */
-    public static function isTYPO61OrHigher()
     {
         return true;
     }
@@ -150,66 +140,6 @@ class TYPO3
         return self::isTYPO3VersionOrHigher(10004000);
     }
 
-    /**
-     * Prüft, ob mindestens TYPO3 Version 4.7 vorhanden ist.
-     *
-     * @return bool
-     */
-    public static function isTYPO47OrHigher()
-    {
-        return self::isTYPO3VersionOrHigher(4007000);
-    }
-
-    /**
-     * Prüft, ob mindestens TYPO3 Version 4.6 vorhanden ist.
-     *
-     * @return bool
-     */
-    public static function isTYPO46OrHigher()
-    {
-        return self::isTYPO3VersionOrHigher(4006000);
-    }
-
-    /**
-     * Prüft, ob mindestens TYPO3 Version 4.5 vorhanden ist.
-     *
-     * @return bool
-     */
-    public static function isTYPO45OrHigher()
-    {
-        return self::isTYPO3VersionOrHigher(4005000);
-    }
-
-    /**
-     * Prüft, ob mindestens TYPO3 Version 4.4 vorhanden ist.
-     *
-     * @return bool
-     */
-    public static function isTYPO44OrHigher()
-    {
-        return self::isTYPO3VersionOrHigher(4004000);
-    }
-
-    /**
-     * Prüft, ob mindestens TYPO3 Version 4.3 vorhanden ist.
-     *
-     * @return bool
-     */
-    public static function isTYPO43OrHigher()
-    {
-        return self::isTYPO3VersionOrHigher(4003000);
-    }
-
-    /**
-     * Prüft, ob mindestens TYPO3 Version 4.2 vorhanden ist.
-     *
-     * @return bool
-     */
-    public static function isTYPO42OrHigher()
-    {
-        return self::isTYPO3VersionOrHigher(4002000);
-    }
-
     private static $TYPO3_VERSION = false;
 
     /**
@@ -266,8 +196,8 @@ class TYPO3
     {
         $path = \tx_rnbase_util_Extensions::extPath($_EXTKEY).'ext_emconf.php';
         @include $path;
-        if (is_array($EM_CONF[$_EXTKEY])) {
-            return $EM_CONF[$_EXTKEY];
+        if (is_array($GLOBALS['EM_CONF'][$_EXTKEY])) {
+            return $GLOBALS['EM_CONF'][$_EXTKEY];
         }
 
         return [];
@@ -366,7 +296,7 @@ class TYPO3
     public static function getContentObject()
     {
         return \tx_rnbase::makeInstance(
-            \tx_rnbase_util_Typo3Classes::getContentObjectRendererClass()
+            Typo3Classes::getContentObjectRendererClass()
         );
     }
 
@@ -378,8 +308,7 @@ class TYPO3
     public static function getTSFE()
     {
         if (!is_object($GLOBALS['TSFE'])) {
-            \tx_rnbase::load('tx_rnbase_util_Misc');
-            \tx_rnbase_util_Misc::prepareTSFE();
+            Misc::prepareTSFE();
         }
 
         return $GLOBALS['TSFE'];
@@ -428,11 +357,11 @@ class TYPO3
      *
      * @return string
      *
-     * @deprecated use tx_rnbase_util_Typo3Classes::getHttpUtilityClass
+     * @deprecated use Typo3Classes::getHttpUtilityClass
      */
     public static function getHttpUtilityClass()
     {
-        return \tx_rnbase_util_Typo3Classes::getHttpUtilityClass();
+        return Typo3Classes::getHttpUtilityClass();
     }
 
     /**

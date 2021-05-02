@@ -2,6 +2,8 @@
 
 namespace Sys25\RnBase\Frontend\Request;
 
+use Sys25\RnBase\Utility\Typo3Classes;
+
 /***************************************************************
 * Copyright notice
 *
@@ -126,7 +128,7 @@ class Parameters extends \ArrayObject implements ParametersInterface
      */
     public static function getPostAndGetParametersMerged($parameterName)
     {
-        $utility = \tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+        $utility = Typo3Classes::getGeneralUtilityClass();
 
         return $utility::_GPmerged($parameterName);
     }
@@ -140,7 +142,7 @@ class Parameters extends \ArrayObject implements ParametersInterface
      */
     public static function getPostOrGetParameter($parameterName)
     {
-        $utility = \tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+        $utility = Typo3Classes::getGeneralUtilityClass();
 
         return $utility::_GP($parameterName);
     }
@@ -153,7 +155,7 @@ class Parameters extends \ArrayObject implements ParametersInterface
      */
     public static function setGetParameter($inputGet, $key = '')
     {
-        $utility = \tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+        $utility = Typo3Classes::getGeneralUtilityClass();
         $utility::_GETset($inputGet, $key);
     }
 
@@ -168,7 +170,7 @@ class Parameters extends \ArrayObject implements ParametersInterface
      */
     public static function getGetParameters($var = null)
     {
-        $utility = \tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+        $utility = Typo3Classes::getGeneralUtilityClass();
 
         return $utility::_GET($var);
     }
@@ -184,7 +186,7 @@ class Parameters extends \ArrayObject implements ParametersInterface
      */
     public static function getPostParameters($var = null)
     {
-        $utility = \tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+        $utility = Typo3Classes::getGeneralUtilityClass();
 
         return $utility::_POST($var);
     }

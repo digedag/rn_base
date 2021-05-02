@@ -1,8 +1,11 @@
 <?php
+
+namespace Sys25\RnBase\Utility;
+
 /***************************************************************
  * Copyright notice
  *
- *  (c) 2016 René Nitzsche <rene@system25.de>
+ *  (c) 2016-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -36,7 +39,7 @@
  * @method static int md5int(string $str)
  * @method static bool isOnCurrentHost(string $url)
  */
-class Tx_Rnbase_Utility_T3General
+class T3General
 {
     /**
      * Maps the static method to the typo3 util.
@@ -50,7 +53,7 @@ class Tx_Rnbase_Utility_T3General
     {
         return call_user_func_array(
             [
-                tx_rnbase_util_Typo3Classes::getGeneralUtilityClass(),
+                Typo3Classes::getGeneralUtilityClass(),
                 $method,
             ],
             $arguments
@@ -75,11 +78,11 @@ class Tx_Rnbase_Utility_T3General
     public static function stripSlashesOnArray(array &$theArray)
     {
         // there is no need to do this anymore!
-        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+        if (TYPO3::isTYPO80OrHigher()) {
             return $theArray;
         }
 
-        $util = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+        $util = Typo3Classes::getGeneralUtilityClass();
         $util::stripSlashesOnArray($theArray);
 
         return $theArray;
@@ -99,11 +102,11 @@ class Tx_Rnbase_Utility_T3General
     public static function addSlashesOnArray(array &$theArray)
     {
         // there is no need to do this anymore!
-        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+        if (TYPO3::isTYPO80OrHigher()) {
             return $theArray;
         }
 
-        $util = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+        $util = Typo3Classes::getGeneralUtilityClass();
         $util::addSlashesOnArray($theArray);
 
         return $theArray;
@@ -123,11 +126,11 @@ class Tx_Rnbase_Utility_T3General
     public static function slashArray(array $arr, $cmd)
     {
         // there is no need to do this anymore!
-        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+        if (TYPO3::isTYPO80OrHigher()) {
             return $arr;
         }
 
-        $util = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+        $util = Typo3Classes::getGeneralUtilityClass();
 
         return $util::addSlashesOnArray($arr, $cmd);
     }
@@ -142,7 +145,7 @@ class Tx_Rnbase_Utility_T3General
      */
     public static function remapArrayKeys(array &$array, $mappingTable)
     {
-        $util = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+        $util = Typo3Classes::getGeneralUtilityClass();
         $util::remapArrayKeys($array, $mappingTable);
 
         return $array;
@@ -157,7 +160,7 @@ class Tx_Rnbase_Utility_T3General
      */
     public static function naturalKeySortRecursive(&$array)
     {
-        $util = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+        $util = Typo3Classes::getGeneralUtilityClass();
 
         return $util::naturalKeySortRecursive($array);
     }
@@ -172,7 +175,7 @@ class Tx_Rnbase_Utility_T3General
      */
     public static function minifyJavaScript($script, &$error = '')
     {
-        $util = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+        $util = Typo3Classes::getGeneralUtilityClass();
 
         return $util::minifyJavaScript($script, $error);
     }
@@ -185,7 +188,7 @@ class Tx_Rnbase_Utility_T3General
      *
      * @param string     $url            File/URL to read
      * @param int        $includeHeader  whether the HTTP header should be fetched or not
-     * @param array|vool $requestHeaders HTTP headers to be used in the request
+     * @param array|bool $requestHeaders HTTP headers to be used in the request
      * @param array|bool $report         Error code/message and response meta data
      *
      * @return mixed The content from the resource or FALSE
@@ -196,9 +199,7 @@ class Tx_Rnbase_Utility_T3General
         $requestHeaders = false,
         &$report = null
     ) {
-        tx_rnbase::load('tx_rnbase_util_Network');
-
-        return tx_rnbase_util_Network::getUrl(
+        return Network::getUrl(
             $url,
             $includeHeader,
             $requestHeaders,
@@ -226,7 +227,7 @@ class Tx_Rnbase_Utility_T3General
         $checkPrefix = '',
         $errorMode = 0
     ) {
-        $util = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+        $util = Typo3Classes::getGeneralUtilityClass();
 
         return $util::callUserFunction($funcName, $params, $ref, $checkPrefix, $errorMode);
     }

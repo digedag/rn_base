@@ -1,8 +1,11 @@
 <?php
+
+namespace Sys25\RnBase\Utility;
+
 /***************************************************************
  * Copyright notice
  *
- *  (c) 2016 René Nitzsche <rene@system25.de>
+ *  (c) 2016-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,15 +25,13 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('Tx_Rnbase_Utility_T3General');
-
 /**
  * Wrapper for t3lib_div / TYPO3\\CMS\\Core\\Utility\\GeneralUtility.
  *
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Utility_Strings
+class Strings
 {
     /**
      * Check whether or not the given string ist utf-8 encoded.
@@ -83,7 +84,7 @@ class Tx_Rnbase_Utility_Strings
      */
     public static function isFirstPartOfStr($haystack, $needle)
     {
-        return Tx_Rnbase_Utility_T3General::isFirstPartOfStr($haystack, $needle);
+        return T3General::isFirstPartOfStr($haystack, $needle);
     }
 
     /**
@@ -97,7 +98,7 @@ class Tx_Rnbase_Utility_Strings
      */
     public static function isInteger($var)
     {
-        return tx_rnbase_util_Math::isInteger($var);
+        return Math::isInteger($var);
     }
 
     /**
@@ -126,7 +127,7 @@ class Tx_Rnbase_Utility_Strings
      */
     public static function intExplode($delimiter, $string, $onlyNonEmptyValues = false, $limit = 0)
     {
-        return Tx_Rnbase_Utility_T3General::intExplode($delimiter, $string, $onlyNonEmptyValues, $limit);
+        return T3General::intExplode($delimiter, $string, $onlyNonEmptyValues, $limit);
     }
 
     /**
@@ -141,7 +142,7 @@ class Tx_Rnbase_Utility_Strings
      */
     public static function trimExplode($delimiter, $string, $removeEmptyValues = false, $limit = 0)
     {
-        return Tx_Rnbase_Utility_T3General::trimExplode($delimiter, $string, $removeEmptyValues, $limit);
+        return T3General::trimExplode($delimiter, $string, $removeEmptyValues, $limit);
     }
 
     /**
@@ -153,7 +154,7 @@ class Tx_Rnbase_Utility_Strings
      */
     public static function getRandomHexString($count)
     {
-        return Tx_Rnbase_Utility_T3General::getRandomHexString($count);
+        return T3General::getRandomHexString($count);
     }
 
     /**
@@ -167,7 +168,7 @@ class Tx_Rnbase_Utility_Strings
      */
     public static function camelCaseToLowerCaseUnderscored($string)
     {
-        return Tx_Rnbase_Utility_T3General::camelCaseToLowerCaseUnderscored($string);
+        return T3General::camelCaseToLowerCaseUnderscored($string);
     }
 
     /**
@@ -180,7 +181,7 @@ class Tx_Rnbase_Utility_Strings
      */
     public static function underscoredToLowerCamelCase($string)
     {
-        return Tx_Rnbase_Utility_T3General::underscoredToLowerCamelCase($string);
+        return T3General::underscoredToLowerCamelCase($string);
     }
 
     /**
@@ -193,7 +194,7 @@ class Tx_Rnbase_Utility_Strings
      */
     public static function underscoredToUpperCamelCase($string)
     {
-        return Tx_Rnbase_Utility_T3General::underscoredToUpperCamelCase($string);
+        return T3General::underscoredToUpperCamelCase($string);
     }
 
     /**
@@ -312,7 +313,7 @@ class Tx_Rnbase_Utility_Strings
      */
     public static function inList($list, $item)
     {
-        return Tx_Rnbase_Utility_T3General::inList($list, $item);
+        return T3General::inList($list, $item);
     }
 
     /**
@@ -339,7 +340,7 @@ class Tx_Rnbase_Utility_Strings
      */
     public static function quoteJSvalue($string)
     {
-        return Tx_Rnbase_Utility_T3General::quoteJSvalue($string);
+        return T3General::quoteJSvalue($string);
     }
 
     /**
@@ -351,6 +352,6 @@ class Tx_Rnbase_Utility_Strings
      */
     public static function validEmail($email)
     {
-        return Tx_Rnbase_Utility_T3General::validEmail($email);
+        return T3General::validEmail($email);
     }
 }

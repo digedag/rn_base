@@ -1,4 +1,7 @@
 <?php
+
+use Sys25\RnBase\Utility\Typo3Classes;
+
 /**
  * Copyright notice.
  *
@@ -52,6 +55,6 @@ class Tx_Rnbase_Hook_DataHandler
      */
     protected function getCacheManager()
     {
-        return tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getCacheManagerClass());
+        return tx_rnbase::makeInstance(Typo3Classes::getCacheManagerClass());
     }
 }
