@@ -3,6 +3,18 @@
 Changelog
 ---------
 
+v1.14.0 (??.05.2021)
+ * #165 Moved all domain classes to PSR-4
+ * BC: deprecated interface `tx_rnbase_IModel` removed
+ * BC: `Tx_Rnbase_Domain_Model_Base` doesn't extend `Tx_Rnbase_Domain_Model_Data` anymore
+ * BC: `Sys25\RnBase\Domain\Model\Category` doesn't extend `Tx_Rnbase_Domain_Model_Base` anymore
+ * BC: `Tx_Rnbase_Domain_Model_StorageTrait` uses `Sys25\RnBase\Domain\Model\DataModel` instead of `Tx_Rnbase_Domain_Model_Data`
+ * BC: `Tx_Rnbase_Domain_Repository_InterfacePersistence::persist()` requires now `Sys25\RnBase\Domain\Model\DomainInterface`
+ * BC: `AbstractRepository::getCollectionClass()` returns now `Sys25\RnBase\Domain\Repository\BaseCollection`
+ * BC: `Tx_Rnbase_Domain_Repository_PersistenceRepository` doesn't extend `Tx_Rnbase_Domain_Repository_InterfacePersistence` anymore
+ * BC: `PersistenceRepository::refreshModelData()` uses `DomainInterface` now
+ * BC: `PersistenceRepository::getCleanModelData()` uses `DomainInterface` now
+
 v1.13.8 (09.05.2021)
  * CS-Fixer updated
  * Wrapper for TimeTracker fixed
@@ -12,6 +24,7 @@ v1.13.6 (09.05.2021)
  * #165 Moved some utility classes to PSR-4
  * (BC) removed detection methods for TYPO3 4.x
  * #207 disable querybuilder in T3 7.6
+ 
 
 v1.13.5 (11.04.2021)
  * add support for wrapped query count in QueryBuilder mode

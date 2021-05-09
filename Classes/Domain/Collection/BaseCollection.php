@@ -1,8 +1,13 @@
 <?php
+
+namespace Sys25\RnBase\Domain\Collection;
+
+use Sys25\RnBase\Domain\Model\RecordInterface;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2016 Rene Nitzsche <rene@system25.de>
+ *  (c) 2016-2021 Rene Nitzsche <rene@system25.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,15 +27,14 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('Tx_Rnbase_Utility_Composer');
-Tx_Rnbase_Utility_Composer::autoload();
+\Tx_Rnbase_Utility_Composer::autoload();
 
 /**
  * Only a wrapper for doctrine array collection.
  *
  * @author Michael Wagner
  */
-class Tx_Rnbase_Domain_Collection_Base extends \Doctrine\Common\Collections\ArrayCollection
+class BaseCollection extends \Doctrine\Common\Collections\ArrayCollection
 {
     /**
      * Only a wrapper for add.
@@ -86,7 +90,7 @@ class Tx_Rnbase_Domain_Collection_Base extends \Doctrine\Common\Collections\Arra
     public function getUids()
     {
         return $this->map(
-            function (Tx_Rnbase_Domain_Model_RecordInterface $model) {
+            function (RecordInterface $model) {
                 return $model->getUid();
             }
         )->toArray();

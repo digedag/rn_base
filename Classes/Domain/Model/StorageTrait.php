@@ -1,9 +1,13 @@
 <?php
 
+namespace Sys25\RnBase\Domain\Model;
+
+use tx_rnbase;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2007-2015 Rene Nitzsche <rene@system25.de>
+ *  (c) 2007-2021 Rene Nitzsche <rene@system25.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -38,26 +42,24 @@
  *
  * @author Michael Wagner
  */
-trait Tx_Rnbase_Domain_Model_StorageTrait
+trait StorageTrait
 {
     /**
      * The storage.
      *
-     * @var Tx_Rnbase_Domain_Model_Data
+     * @var DataModel
      */
     private $storage = null;
 
     /**
      * Returns a storage.
      *
-     * @return Tx_Rnbase_Domain_Model_Data
+     * @return DataModel
      */
     protected function getStorage()
     {
         if (null === $this->storage) {
-            $this->storage = tx_rnbase::makeInstance(
-                'Tx_Rnbase_Domain_Model_Data'
-            );
+            $this->storage = tx_rnbase::makeInstance(DataModel::class);
         }
 
         return $this->storage;

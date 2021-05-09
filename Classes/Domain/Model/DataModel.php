@@ -1,8 +1,17 @@
 <?php
+
+namespace Sys25\RnBase\Domain\Model;
+
+use ArrayIterator;
+use Exception;
+use IteratorAggregate;
+use Sys25\RnBase\Utility\Strings;
+use tx_rnbase;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2007-2015 Rene Nitzsche <rene@system25.de>
+ *  (c) 2007-2021 Rene Nitzsche <rene@system25.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,8 +31,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('Tx_Rnbase_Domain_Model_DataInterface');
-
 /**
  * Basic model with geter's and seter's.
  *
@@ -34,7 +41,7 @@ tx_rnbase::load('Tx_Rnbase_Domain_Model_DataInterface');
  *
  * @author Michael Wagner
  */
-class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterface, IteratorAggregate
+class DataModel implements DataInterface, IteratorAggregate
 {
     /**
      * A flag indication if the model was modified after initialisation
@@ -112,9 +119,9 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
     /**
      * Create a new data model.
      *
-     * @param array |Tx_Rnbase_Domain_Model_DataInterface $data
+     * @param array |DataInterface $data
      *
-     * @return Tx_Rnbase_Domain_Model_Data
+     * @return DataModel
      */
     public static function getInstance($data = null)
     {
@@ -133,7 +140,7 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
         }
 
         // use get_called_class for backwards compatibility!
-        return tx_rnbase::makeInstance(get_called_class(), $data);
+        return \tx_rnbase::makeInstance(get_called_class(), $data);
     }
 
     /**
@@ -237,9 +244,7 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
      */
     protected function underscore($string)
     {
-        tx_rnbase::load('Tx_Rnbase_Utility_Strings');
-
-        return Tx_Rnbase_Utility_Strings::camelCaseToLowerCaseUnderscored($string);
+        return Strings::camelCaseToLowerCaseUnderscored($string);
     }
 
     /**
@@ -316,7 +321,7 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
      * user this to manipulate the data:
      * foreach($data as $key => $var) { $data->setProperty($key, 0); };
      *
-     * @return ArrayIterator
+     * @return \ArrayIterator
      */
     public function getIterator()
     {

@@ -2,18 +2,18 @@
 
 ## Search Repository
 
-There is a abstract repository `Tx_Rnbase_Domain_Repository_AbstractRepository` whose only job is to help you fetch entities of a certain type.
+There is a abstract repository `Sys25\RnBase\Domain\Repository\AbstractRepository` whose only job is to help you fetch entities of a certain type.
 
 ## Persistence Repository
 
-The persistence repository `Tx_Rnbase_Domain_Repository_PersistenceRepository` 
+The persistence repository `Sys25\RnBase\Domain\Repository\PersistenceRepository` 
 extends the search repository and provides manipulation methods.
 
 There are two new methods in the repository:
 
-* `Tx_Rnbase_Domain_Model_DomainInterface createNewModel ( [ array $record = array() ] )` :  
+* `Sys25\RnBase\Domain\Model\DomainInterface createNewModel ( [ array $record = array() ] )` :  
    Creates a new model instance, optionaly with a initial record
-* `void persist ( Tx_Rnbase_Domain_Model_DomainInterface $model [, array $options = array() ] )` :  
+* `void persist ( Sys25\RnBase\Domain\Model\DomainInterface $model [, array $options = array() ] )` :  
    persists a model in the database.  
    For a new models a insert will be performed.  
    For exiting entries a update will be performed.

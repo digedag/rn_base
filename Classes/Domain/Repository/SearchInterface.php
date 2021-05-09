@@ -1,8 +1,11 @@
 <?php
+
+namespace Sys25\RnBase\Domain\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
- * (c) 2015 René Nitzsche <rene@system25.de>
+ * (c) 2015-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,7 +30,7 @@
  *
  * @author Michael Wagner
  */
-interface Tx_Rnbase_Domain_Repository_InterfaceSearch
+interface SearchInterface
 {
     /**
      * Search repository.

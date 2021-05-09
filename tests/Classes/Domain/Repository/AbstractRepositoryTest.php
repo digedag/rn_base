@@ -1,4 +1,7 @@
 <?php
+
+use Sys25\RnBase\Domain\Repository\AbstractRepository;
+
 /***************************************************************
  * Copyright notice
  *
@@ -22,14 +25,12 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('Tx_Rnbase_Domain_Repository_AbstractRepository');
-
 /**
  * Test for abstract repository.
  *
  * @author Michael Wagner
  */
-class Tx_Rnbase_Domain_Repository_AbstractRepositoryTest extends tx_rnbase_tests_BaseTestCase
+class AbstractRepositoryTest extends tx_rnbase_tests_BaseTestCase
 {
     protected function setUp()
     {
@@ -51,7 +52,7 @@ class Tx_Rnbase_Domain_Repository_AbstractRepositoryTest extends tx_rnbase_tests
         $repository = $this->getRepositoryMock();
 
         $method = new ReflectionMethod(
-            'Tx_Rnbase_Repository_AbstractRepository',
+            AbstractRepository::class,
             'handleEnableFieldsOptions'
         );
         $method->setAccessible(true);

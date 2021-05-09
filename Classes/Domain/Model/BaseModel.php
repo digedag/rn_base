@@ -1,8 +1,18 @@
 <?php
+
+namespace Sys25\RnBase\Domain\Model;
+
+use DateTime;
+use DateTimeZone;
+use Sys25\RnBase\Database\Connection;
+use tx_rnbase;
+use tx_rnbase_util_Dates;
+use tx_rnbase_util_TCA;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2007-2015 Rene Nitzsche <rene@system25.de>
+ *  (c) 2007-2021 Rene Nitzsche <rene@system25.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,12 +32,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
-tx_rnbase::load('Tx_Rnbase_Domain_Model_DomainInterface');
-tx_rnbase::load('Tx_Rnbase_Domain_Model_DynamicTableInterface');
-tx_rnbase::load('Tx_Rnbase_Domain_Model_RecordInterface');
-tx_rnbase::load('tx_rnbase_util_TCA');
-
 /**
  * Basisklasse für die meisten Model-Klassen.
  * Sie stellt einen Konstruktor bereit,
@@ -38,7 +42,7 @@ tx_rnbase::load('tx_rnbase_util_TCA');
  * @author René Nitzsche
  * @author Michael Wagner
  */
-class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DomainInterface, Tx_Rnbase_Domain_Model_DynamicTableInterface, Tx_Rnbase_Domain_Model_RecordInterface
+class BaseModel extends DataModel implements DomainInterface, DynamicTableInterface, RecordInterface
 {
     /**
      * The table name of this record.
@@ -92,8 +96,7 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
             return;
         }
 
-        tx_rnbase::load('Tx_Rnbase_Database_Connection');
-        $db = Tx_Rnbase_Database_Connection::getInstance();
+        $db = Connection::getInstance();
         $record = $db->getRecord(
             $this->getTableName(),
             $this->getUidRaw()
@@ -108,7 +111,7 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
      * @param string|array $property
      * @param mixed        $value
      *
-     * @return Tx_Rnbase_Domain_Model_Data
+     * @return DataModel
      */
     public function setProperty($property, $value = null)
     {
@@ -206,7 +209,6 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
             $field = tx_rnbase_util_TCA::getCrdateFieldForTable($tableName);
             if (!$this->isPropertyEmpty($field)) {
                 $tstamp = (int) $this->getProperty($field);
-                tx_rnbase::load('tx_rnbase_util_Dates');
                 $datetime = tx_rnbase_util_Dates::getDateTime(
                     '@'.$tstamp,
                     $timezone
@@ -247,7 +249,7 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
     /**
      * Reload this records from database.
      *
-     * @return Tx_Rnbase_Domain_Model_Base
+     * @return BaseModel
      */
     public function reset()
     {
@@ -274,7 +276,7 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
      *
      * @param string $tableName
      *
-     * @return Tx_Rnbase_Domain_Model_Base
+     * @return BaseModel
      */
     public function setTableName($tableName = 0)
     {

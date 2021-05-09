@@ -28,8 +28,6 @@ use Sys25\RnBase\Search\Category;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Domain\Repository$CategoryRepository.
- *
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
@@ -39,7 +37,7 @@ class CategoryRepository extends \Tx_Rnbase_Domain_Repository_PersistenceReposit
     /**
      * (non-PHPdoc).
      *
-     * @see tx_mklib_repository_Abstract::getSearchClass()
+     * @see AbstractRepository::getSearchClass()
      */
     protected function getSearchClass()
     {

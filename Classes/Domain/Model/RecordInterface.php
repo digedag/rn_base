@@ -1,8 +1,11 @@
 <?php
+
+namespace Sys25\RnBase\Domain\Model;
+
 /***************************************************************
  * Copyright notice
  *
- *  (c) 2007-2015 Rene Nitzsche <rene@system25.de>
+ *  (c) 2007-2021 Rene Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,39 +26,12 @@
  ***************************************************************/
 
 /**
- * This interface defines a base model.
- * for backwards compatibility we use tx_rnbase_IModel as base interface
- * but please use Tx_Rnbase_Domain_Model_RecordInterface!
- *
- * @deprecated please use Tx_Rnbase_Domain_Model_RecordInterface!
- *
- * @author René Nitzsche
- * @license http://www.gnu.org/licenses/lgpl.html
- *          GNU Lesser General Public License, version 3 or later
- */
-interface tx_rnbase_IModel
-{
-    /**
-     * Returns the uid.
-     *
-     * @return int
-     */
-    public function getUid();
-
-    /**
-     * Returns the data record as array.
-     *
-     * @return array
-     */
-    public function getRecord();
-}
-/**
  * The realy to use interface for models!
  *
  * @author René Nitzsche
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-interface Tx_Rnbase_Domain_Model_RecordInterface extends tx_rnbase_IModel
+interface RecordInterface
 {
 }

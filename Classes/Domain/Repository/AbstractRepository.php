@@ -1,11 +1,22 @@
 <?php
 
+namespace Sys25\RnBase\Domain\Repository;
+
+use Exception;
+use Sys25\RnBase\Domain\Collection\BaseCollection;
+use Sys25\RnBase\Domain\Model\DomainInterface;
+use Sys25\RnBase\Domain\Model\RecordInterface;
+use Sys25\RnBase\Search\SearchBase;
 use Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface;
+use Sys25\RnBase\Utility\Strings;
+use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase;
+use tx_rnbase_util_TCA;
 
 /***************************************************************
  * Copyright notice
  *
- * (c) 2015-2016 René Nitzsche <rene@system25.de>
+ * (c) 2015-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,14 +36,12 @@ use Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('Tx_Rnbase_Domain_Repository_InterfaceSearch');
-
 /**
  * Abstracte Repository Klasse.
  *
  * @author Michael Wagner
  */
-abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnbase_Domain_Repository_InterfaceSearch, SingletonInterface
+abstract class AbstractRepository implements SearchInterface, SingletonInterface
 {
     /**
      * Liefert den Namen der Suchklasse.
@@ -44,13 +53,12 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
     /**
      * Liefert den Searcher.
      *
-     * @return tx_rnbase_util_SearchBase
+     * @return SearchBase
      */
     protected function getSearcher()
     {
-        tx_rnbase::load('tx_rnbase_util_SearchBase');
-        $searcher = tx_rnbase_util_SearchBase::getInstance($this->getSearchClass());
-        if (!$searcher instanceof tx_rnbase_util_SearchBase) {
+        $searcher = SearchBase::getInstance($this->getSearchClass());
+        if (!$searcher instanceof SearchBase) {
             throw new Exception(get_class($this).'->getSearchClass() has to return a classname'.' of class which extends tx_rnbase_util_SearchBase!');
         }
 
@@ -65,7 +73,7 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
      */
     protected function getCollectionClass()
     {
-        return 'Tx_Rnbase_Domain_Collection_Base';
+        return BaseCollection::class;
     }
 
     /**
@@ -84,7 +92,7 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
      * This is used only to access several model info methods like
      * getTableName(), getColumnNames() etc.
      *
-     * @return Tx_Rnbase_Domain_Model_DomainInterface
+     * @return DomainInterface
      */
     public function getEmptyModel()
     {
@@ -96,11 +104,11 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
      *
      * @param int|array $rowOrUid
      *
-     * @return Tx_Rnbase_Domain_Model_DomainInterface|null
+     * @return DomainInterface|null
      */
     public function findByUid($rowOrUid)
     {
-        /* @var $model Tx_Rnbase_Domain_Model_DomainInterface */
+        /* @var $model DomainInterface */
         $model = tx_rnbase::makeInstance(
             $this->getWrapperClass(),
             $rowOrUid
@@ -116,7 +124,7 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
     /**
      * Returns all items.
      *
-     * @return Tx_Rnbase_Domain_Collection_Base
+     * @return BaseCollection
      */
     public function findAll()
     {
@@ -129,7 +137,7 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
      * @param array $fields
      * @param array $options
      *
-     * @return Tx_Rnbase_Domain_Collection_Base
+     * @return BaseCollection
      */
     public function search(array $fields, array $options)
     {
@@ -146,7 +154,7 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
      * @param array $fields
      * @param array $options
      *
-     * @return Tx_Rnbase_Domain_Model_DomainInterface
+     * @return DomainInterface
      */
     public function searchSingle(
         array $fields = [],
@@ -222,10 +230,10 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
             $languageField = tx_rnbase_util_TCA::getLanguageFieldForTable($tableName);
             // Die Sprache prüfen wir nur, wenn ein Sprachfeld gesetzt ist.
             if (!empty($languageField)) {
-                $tsfe = tx_rnbase_util_TYPO3::getTSFE();
+                $tsfe = TYPO3::getTSFE();
                 $languages = [];
                 if (isset($options['additionali18n'])) {
-                    $languages = tx_rnbase_util_Strings::trimExplode(
+                    $languages = Strings::trimExplode(
                         ',',
                         $options['additionali18n'],
                         true
@@ -249,10 +257,10 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
     /**
      * Modifiziert die Ergebisliste.
      *
-     * @param Traversable|array $items
+     * @param \Traversable|array $items
      * @param array             $options
      *
-     * @return array[Tx_Rnbase_Domain_Model_DomainInterface]
+     * @return array[DomainInterface]
      */
     protected function prepareItems(
         $items,
@@ -269,10 +277,10 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
      * Entfernt alle doppelten Datensatze, wenn die Option distinct gesetzt ist.
      * Dabei werden die Sprachoverlays bevorzugt.
      *
-     * @param Traversable|array $items
+     * @param \Traversable|array $items
      * @param array             $options
      *
-     * @return array[Tx_Rnbase_Domain_Model_RecordInterface]
+     * @return array[RecordInterface]
      */
     protected function uniqueItems(
         $items,
@@ -280,13 +288,13 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
     ) {
         // uniqueue, if there are models and the distinct option
         if ((
-            $items[0] instanceof Tx_Rnbase_Domain_Model_RecordInterface
+            $items[0] instanceof RecordInterface
             && isset($options['distinct'])
             && $options['distinct']
         )) {
             // seperate master and overlays
             $master = $overlay = [];
-            /* @var $item Tx_Rnbase_Domain_Model_RecordInterface */
+            /* @var $item RecordInterface */
             foreach ($items as $item) {
                 $uid = (int) $item->getUid();
                 $realUid = (int) $item->getProperty('uid');

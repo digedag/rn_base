@@ -1,6 +1,7 @@
 <?php
 
 use Sys25\RnBase\Frontend\Request\Parameters;
+use Sys25\RnBase\Utility\TYPO3;
 
 /***************************************************************
  *  Copyright notice
@@ -293,7 +294,7 @@ class tx_rnbase_controller
      */
     protected function getTsfe()
     {
-        return tx_rnbase_util_TYPO3::getTSFE();
+        return TYPO3::getTSFE();
     }
 
     /**

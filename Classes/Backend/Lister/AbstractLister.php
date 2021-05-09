@@ -1,4 +1,8 @@
 <?php
+
+use Sys25\RnBase\Domain\Repository\AbstractRepository;
+use Sys25\RnBase\Utility\Strings;
+
 /***************************************************************
  * Copyright notice
  *
@@ -47,7 +51,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     /**
      * Returns the repository.
      *
-     * @return Tx_Rnbase_Domain_Repository_InterfaceSearch
+     * @return Sys25\RnBase\Domain\Repository\SearchInterface
      */
     abstract protected function getRepository();
 
@@ -59,9 +63,8 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
      */
     protected function getListerId()
     {
-        tx_rnbase::load('Tx_Rnbase_Utility_Strings');
         $confId = str_replace('\\', '_', get_class($this));
-        $confId = Tx_Rnbase_Utility_Strings::underscoredToLowerCamelCase($confId);
+        $confId = Strings::underscoredToLowerCamelCase($confId);
 
         return $confId;
     }
@@ -76,7 +79,6 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
         tx_rnbase_mod_BaseModule $module,
         $options = []
     ) {
-        tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
         $this->storage = Tx_Rnbase_Domain_Model_Data::getInstance(
             [
                 'module' => $module,
@@ -90,7 +92,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
         // set the baseTable for this lister, if not set.
         // required for some table operations, eq language column!
         if (!$this->getOptions()->hasBaseTableName()) {
-            if ($this->getRepository() instanceof Tx_Rnbase_Domain_Repository_AbstractRepository) {
+            if ($this->getRepository() instanceof AbstractRepository) {
                 $this->getOptions()->setBaseTableName(
                     $this->getRepository()->getEmptyModel()->getTableName()
                 );

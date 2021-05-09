@@ -1,8 +1,14 @@
 <?php
+
+namespace Sys25\RnBase\Domain\Repository;
+
+use Sys25\RnBase\Domain\Model\DataModel;
+use Sys25\RnBase\Domain\Model\DomainInterface;
+
 /***************************************************************
  * Copyright notice
  *
- * (c) 2016 René Nitzsche <rene@system25.de>
+ * (c) 2016-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,16 +33,16 @@
  *
  * @author Michael Wagner
  */
-interface Tx_Rnbase_Domain_Repository_InterfacePersistence
+interface PersistenceInterface
 {
     /**
      * Persists an model.
      *
-     * @param Tx_Rnbase_Domain_Model_DomainInterface $model   The model to persist
-     * @param array|Tx_Rnbase_Domain_Model_Data      $options Some options for the process
+     * @param DomainInterface $model   The model to persist
+     * @param array|DataModel $options Some options for the process
      */
     public function persist(
-        Tx_Rnbase_Domain_Model_DomainInterface $model,
+        DomainInterface $model,
         $options = null
     );
 }

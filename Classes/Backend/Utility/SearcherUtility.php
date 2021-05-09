@@ -1,4 +1,7 @@
 <?php
+
+use Sys25\RnBase\Domain\Repository\SearchInterface;
+
 /***************************************************************
  * Copyright notice
  *
@@ -77,14 +80,14 @@ class Tx_Rnbase_Backend_Utility_SearcherUtility
     /**
      * The decorator instace.
      *
-     * @param Tx_Rnbase_Domain_Repository_InterfaceSearch $repository
-     * @param array                                       $fields
-     * @param array                                       $options
+     * @param Sys25\RnBase\Domain\Repository\SearchInterface $repository
+     * @param array $fields
+     * @param array $options
      *
      * @return array|Traversable
      */
     public function performSearch(
-        Tx_Rnbase_Domain_Repository_InterfaceSearch $repository,
+        SearchInterface $repository,
         array $fields,
         array $options
     ) {

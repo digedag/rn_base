@@ -1,8 +1,21 @@
 <?php
+
+namespace Sys25\RnBase\Domain\Repository;
+
+use Exception;
+use Sys25\RnBase\Database\Connection;
+use Sys25\RnBase\Domain\Model\BaseModel;
+use Sys25\RnBase\Domain\Model\DataInterface;
+use Sys25\RnBase\Domain\Model\DataModel;
+use Sys25\RnBase\Domain\Model\DomainInterface;
+use tx_rnbase;
+use tx_rnbase_util_Arrays;
+use tx_rnbase_util_TCA;
+
 /***************************************************************
  * Copyright notice
  *
- * (c) 2016 René Nitzsche <rene@system25.de>
+ * (c) 2016-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,22 +35,19 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('Tx_Rnbase_Domain_Repository_AbstractRepository');
-tx_rnbase::load('Tx_Rnbase_Domain_Repository_InterfacePersistence');
-
 /**
  * Abstracte Persistance Repository.
  *
  * @author Michael Wagner
  */
-abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnbase_Domain_Repository_InterfacePersistence
+abstract class PersistenceRepository extends AbstractRepository implements PersistenceInterface
 {
     /**
      * Creates an new model instance.
      *
      * @param array $record
      *
-     * @return Tx_Rnbase_Domain_Model_DomainInterface
+     * @return DomainInterface
      */
     public function createNewModel(
         array $record = []
@@ -62,17 +72,16 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
     /**
      * Persists an model.
      *
-     * @param Tx_Rnbase_Domain_Model_DomainInterface $model
-     * @param array|Tx_Rnbase_Domain_Model_Data      $options
+     * @param DomainInterface $model
+     * @param array|DataModel      $options
      *
      * @throws Exception
      */
     public function persist(
-        Tx_Rnbase_Domain_Model_DomainInterface $model,
+        DomainInterface $model,
         $options = null
     ) {
-        tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
-        $options = Tx_Rnbase_Domain_Model_Data::getInstance($options);
+        $options = DataModel::getInstance($options);
 
         // check for right instance
         if (!$this->isModelWrapperClass($model)) {
@@ -81,14 +90,13 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
 
         // nothing todo, if the model has no changes
         if (!$options->getSkipDirtyCheck() && (
-            $model instanceof Tx_Rnbase_Domain_Model_DataInterface &&
+            $model instanceof DataInterface &&
             !$model->isDirty() &&
             $model->isPersisted()
         )) {
             return;
         }
 
-        tx_rnbase::load('tx_rnbase_util_TCA');
         $tableName = $this->getEmptyModel()->getTableName();
 
         // the data to write
@@ -118,7 +126,7 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
         }
 
         // @TODO: use an persistance transport model!
-        $transport = Tx_Rnbase_Domain_Model_Data::getInstance();
+        $transport = DataModel::getInstance();
         $transport->setOptions($options);
         $transport->setModel($model);
         $transport->setTableName($tableName);
@@ -134,10 +142,10 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
     /**
      * Bring db entry up to date.
      *
-     * @param Tx_Rnbase_Domain_Model_Data $transport
+     * @param DataModel $transport
      */
     private function persistUpdate(
-        Tx_Rnbase_Domain_Model_Data $transport
+        DataModel $transport
     ) {
         $model = $transport->getModel();
 
@@ -154,10 +162,10 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
     /**
      * Creates a new entry in the db.
      *
-     * @param Tx_Rnbase_Domain_Model_Data $transport
+     * @param DataModel $transport
      */
     private function persistNew(
-        Tx_Rnbase_Domain_Model_Data $transport
+        DataModel $transport
     ) {
         $model = $transport->getModel();
         $data = $transport->getData();
@@ -189,17 +197,17 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
     /**
      * Refres the model with data after db operation and reset dirty flag.
      *
-     * @param Tx_Rnbase_Domain_Model_DomainInterface $model
-     * @param array                                  $data
+     * @param DomainInterface $model
+     * @param array $data
      *
      * @TODO there is curently no interface for a reset, implement one!
      */
     protected function refreshModelData(
-        Tx_Rnbase_Domain_Model_DomainInterface $model,
+        DomainInterface $model,
         array $data
     ) {
         // merge the model data with the stored one, so nontca columns kept
-        if ($model instanceof Tx_Rnbase_Domain_Model_Data) {
+        if ($model instanceof DataModel) {
             $model->setProperty(
                 array_merge(
                     $model->getProperty(),
@@ -209,7 +217,7 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
         }
 
         // set the uid and force a record reload
-        if ($model instanceof Tx_Rnbase_Domain_Model_Base) {
+        if ($model instanceof BaseModel) {
             $model->setProperty(
                 ['uid' => (int) $data['uid']]
             );
@@ -220,12 +228,12 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
     /**
      * Returns the properties of the model, cleaned by the configured tca columns.
      *
-     * @param Tx_Rnbase_Domain_Model_DomainInterface $model
+     * @param DomainInterface $model
      *
      * @return array
      */
     protected function getCleanModelData(
-        Tx_Rnbase_Domain_Model_DomainInterface $model
+        DomainInterface $model
     ) {
         $columns = $model->getColumnNames();
 
@@ -258,10 +266,10 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
     /**
      * The database connection.
      *
-     * @return Tx_Rnbase_Database_Connection
+     * @return Connection
      */
     protected function getConnection()
     {
-        return Tx_Rnbase_Database_Connection::getInstance();
+        return Connection::getInstance();
     }
 }
