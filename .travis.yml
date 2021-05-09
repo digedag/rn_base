@@ -56,9 +56,6 @@ jobs:
     include:
     - stage: test
       php: 7.1
-      env: TYPO3_CORE="typo3/cms=^7.6.0"
-    - stage: test
-      php: 7.1
       env: TYPO3_CORE="typo3/cms=^8.7.0"
     - stage: test
       php: 7.2

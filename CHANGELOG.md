@@ -3,8 +3,10 @@
 Changelog
 ---------
 
-v1.13.7 (09.05.2021)
+v1.13.8 (09.05.2021)
  * CS-Fixer updated
+ * Wrapper for TimeTracker fixed
+ * Travis tests for TYPO3 7.6 removed
 
 v1.13.6 (09.05.2021)
  * #165 Moved some utility classes to PSR-4

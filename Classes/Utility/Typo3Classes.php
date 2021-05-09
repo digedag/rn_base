@@ -161,13 +161,13 @@ class Typo3Classes
         // for typo3 6 or 7 we has to initialise a NullTimeTracker if tracker is disabled
         if (!TYPO3::isTYPO80OrHigher()) {
             if ($enabled) {
-                return new TYPO3\CMS\Core\TimeTracker\TimeTracker();
+                return new \TYPO3\CMS\Core\TimeTracker\TimeTracker();
             }
 
-            return new TYPO3\CMS\Core\TimeTracker\NullTimeTracker();
+            return new \TYPO3\CMS\Core\TimeTracker\NullTimeTracker();
         }
 
-        return new TYPO3\CMS\Core\TimeTracker\TimeTracker($enabled);
+        return new \TYPO3\CMS\Core\TimeTracker\TimeTracker($enabled);
     }
 
     /**
