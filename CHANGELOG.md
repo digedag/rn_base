@@ -3,7 +3,7 @@
 Changelog
 ---------
 
-v1.13.6 (??.05.2021)
+v1.13.6 (09.05.2021)
  * #165 Moved some utility classes to PSR-4
  * (BC) removed detection methods for TYPO3 4.x
  * #207 disable querybuilder in T3 7.6
