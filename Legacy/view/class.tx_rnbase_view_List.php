@@ -9,13 +9,13 @@
  */
 class tx_rnbase_view_List extends tx_rnbase_view_Base
 {
-    const VIEWDATA_ITEMS = 'items';
+    public const VIEWDATA_ITEMS = 'items';
 
-    const VIEWDATA_FILTER = 'filter';
+    public const VIEWDATA_FILTER = 'filter';
 
-    const VIEWDATA_MARKER = 'marker';
+    public const VIEWDATA_MARKER = 'marker';
 
-    const VIEWDATA_ENTITIES = 'entities';
+    public const VIEWDATA_ENTITIES = 'entities';
 
     /**
      * Do the output rendering.

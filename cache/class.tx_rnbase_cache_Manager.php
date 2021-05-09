@@ -31,27 +31,27 @@ class tx_rnbase_cache_Manager
 {
     private static $caches = [];
 
-    const CACHE_FRONTEND_VARIABLE = 'VariableFrontend';
+    public const CACHE_FRONTEND_VARIABLE = 'VariableFrontend';
 
-    const CACHE_FRONTEND_STRING = 'StringFrontend';
+    public const CACHE_FRONTEND_STRING = 'StringFrontend';
 
-    const CACHE_FRONTEND_PHP = 'PhpFrontend';
+    public const CACHE_FRONTEND_PHP = 'PhpFrontend';
 
-    const CACHE_BACKEND_T3DATABASE = 'T3Database';
+    public const CACHE_BACKEND_T3DATABASE = 'T3Database';
 
-    const CACHE_BACKEND_MEMCACHED = 'Memcached';
+    public const CACHE_BACKEND_MEMCACHED = 'Memcached';
 
-    const CACHE_BACKEND_FILE = 'File';
+    public const CACHE_BACKEND_FILE = 'File';
 
-    const CACHE_BACKEND_REDIS = 'Redis';
+    public const CACHE_BACKEND_REDIS = 'Redis';
 
-    const CACHE_BACKEND_APC = 'Apc';
+    public const CACHE_BACKEND_APC = 'Apc';
 
-    const CACHE_BACKEND_PDO = 'Pdo';
+    public const CACHE_BACKEND_PDO = 'Pdo';
 
-    const CACHE_BACKEND_TRANSIENTMEMORY = 'TransientMemory';
+    public const CACHE_BACKEND_TRANSIENTMEMORY = 'TransientMemory';
 
-    const CACHE_BACKEND_NULL = 'Null';
+    public const CACHE_BACKEND_NULL = 'Null';
 
     private static $aliases = [
         self::CACHE_FRONTEND_VARIABLE => ['TYPO3\CMS\Core\Cache\Frontend\VariableFrontend', 't3lib_cache_frontend_VariableFrontend'],

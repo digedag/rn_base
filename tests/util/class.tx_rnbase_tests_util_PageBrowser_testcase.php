@@ -246,5 +246,5 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTest
 
 class HttpUtility_Dummy
 {
-    const HTTP_STATUS_404 = 404;
+    public const HTTP_STATUS_404 = 404;
 }

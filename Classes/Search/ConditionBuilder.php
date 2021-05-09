@@ -35,34 +35,34 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 class ConditionBuilder
 {
     // Sonderfall Freitextsuche in mehreren Feldern
-    const SEARCH_FIELD_JOINED = 'JOINED';
+    public const SEARCH_FIELD_JOINED = 'JOINED';
 
     // Sonderfall freie Where-Bedingung
-    const SEARCH_FIELD_CUSTOM = 'CUSTOM';
+    public const SEARCH_FIELD_CUSTOM = 'CUSTOM';
 
-    const OP_IN = 'IN STR';
-    const OP_NOTIN = 'NOTIN STR';
+    public const OP_IN = 'IN STR';
+    public const OP_NOTIN = 'NOTIN STR';
     // IN für numerische Werte
-    const OP_NOTIN_INT = 'NOT IN';
-    const OP_IN_INT = 'IN';
-    const OP_IN_SQL = 'IN SQL';
-    const OP_NOTIN_SQL = 'NOTIN SQL';
-    const OP_INSET_INT = 'FIND_IN_SET';
-    const OP_LIKE = 'LIKE';
-    const OP_LIKE_CONST = 'OP_LIKE_CONST';
-    const OP_EQ_INT = '=';
-    const OP_NOTEQ = 'OP_NOTEQ';
-    const OP_NOTEQ_INT = '!=';
-    const OP_EQ_NOCASE = 'OP_EQ_NOCASE';
-    const OP_LT_INT = '<';
-    const OP_LTEQ_INT = '<=';
-    const OP_GT_INT = '>';
-    const OP_GTEQ_INT = '>=';
-    const OP_GT = '>STR';
-    const OP_GTEQ = '>=STR';
-    const OP_LT = '<STR';
-    const OP_LTEQ = '<=STR';
-    const OP_EQ = '=STR';
+    public const OP_NOTIN_INT = 'NOT IN';
+    public const OP_IN_INT = 'IN';
+    public const OP_IN_SQL = 'IN SQL';
+    public const OP_NOTIN_SQL = 'NOTIN SQL';
+    public const OP_INSET_INT = 'FIND_IN_SET';
+    public const OP_LIKE = 'LIKE';
+    public const OP_LIKE_CONST = 'OP_LIKE_CONST';
+    public const OP_EQ_INT = '=';
+    public const OP_NOTEQ = 'OP_NOTEQ';
+    public const OP_NOTEQ_INT = '!=';
+    public const OP_EQ_NOCASE = 'OP_EQ_NOCASE';
+    public const OP_LT_INT = '<';
+    public const OP_LTEQ_INT = '<=';
+    public const OP_GT_INT = '>';
+    public const OP_GTEQ_INT = '>=';
+    public const OP_GT = '>STR';
+    public const OP_GTEQ = '>=STR';
+    public const OP_LT = '<STR';
+    public const OP_LTEQ = '<=STR';
+    public const OP_EQ = '=STR';
 
     private $useAlias;
     private $dbConnection;

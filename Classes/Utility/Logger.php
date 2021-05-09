@@ -33,15 +33,15 @@ class Logger
 {
     private static $minLog = false;
 
-    const LOGLEVEL_DEBUG = -1;
+    public const LOGLEVEL_DEBUG = -1;
 
-    const LOGLEVEL_INFO = 0;
+    public const LOGLEVEL_INFO = 0;
 
-    const LOGLEVEL_NOTICE = 1;
+    public const LOGLEVEL_NOTICE = 1;
 
-    const LOGLEVEL_WARN = 2;
+    public const LOGLEVEL_WARN = 2;
 
-    const LOGLEVEL_FATAL = 3;
+    public const LOGLEVEL_FATAL = 3;
 
     /**
      * Log a debug message.

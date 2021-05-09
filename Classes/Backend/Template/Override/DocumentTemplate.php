@@ -34,13 +34,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class Tx_Rnbase_Backend_Template_Override_DocumentTemplate // extends Tx_Rnbase_Backend_Template_Override_Doc
 {
-    const STATE_OK = -1;
+    public const STATE_OK = -1;
 
-    const STATE_NOTICE = 1;
+    public const STATE_NOTICE = 1;
 
-    const STATE_WARNING = 2;
+    public const STATE_WARNING = 2;
 
-    const STATE_ERROR = 3;
+    public const STATE_ERROR = 3;
 
     /**
      * Similar to $JScode but for use as array with associative keys to prevent double inclusion of JS code. a <script> tag is automatically wrapped around.

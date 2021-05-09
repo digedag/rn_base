@@ -30,7 +30,7 @@
  */
 abstract class tx_rnbase_mod_base_Lister
 {
-    const KEY_SHOWHIDDEN = 'showhidden';
+    public const KEY_SHOWHIDDEN = 'showhidden';
 
     /**
      * Selector Klasse.

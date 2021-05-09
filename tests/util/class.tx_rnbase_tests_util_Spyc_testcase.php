@@ -29,7 +29,7 @@ tx_rnbase::load('tx_rnbase_util_Spyc');
  */
 class tx_rnbase_tests_util_Spyc_testcase extends tx_rnbase_tests_BaseTestCase
 {
-    const YAML = '---
+    public const YAML = '---
 root_1:
   # some comment
   name: Max

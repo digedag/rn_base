@@ -26,9 +26,9 @@ namespace Sys25\RnBase\Database\Query;
 
 class Join
 {
-    const TYPE_INNER = 'inner';
-    const TYPE_LEFT = 'left';
-    const TYPE_RIGHT = 'right';
+    public const TYPE_INNER = 'inner';
+    public const TYPE_LEFT = 'left';
+    public const TYPE_RIGHT = 'right';
     private $fromAlias;
     private $table;
     private $onClause;

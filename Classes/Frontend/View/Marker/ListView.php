@@ -11,13 +11,13 @@ use Sys25\RnBase\Frontend\Request\RequestInterface;
  */
 class ListView extends BaseView
 {
-    const VIEWDATA_ITEMS = 'items';
+    public const VIEWDATA_ITEMS = 'items';
 
-    const VIEWDATA_FILTER = 'filter';
+    public const VIEWDATA_FILTER = 'filter';
 
-    const VIEWDATA_MARKER = 'marker';
+    public const VIEWDATA_MARKER = 'marker';
 
-    const VIEWDATA_ENTITIES = 'entities';
+    public const VIEWDATA_ENTITIES = 'entities';
 
     /**
      * Do the output rendering.

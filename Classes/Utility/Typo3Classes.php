@@ -34,9 +34,9 @@ namespace Sys25\RnBase\Utility;
  */
 class Typo3Classes
 {
-    const LOWER6 = 'lower6';
+    public const LOWER6 = 'lower6';
 
-    const HIGHER6 = 'higher6';
+    public const HIGHER6 = 'higher6';
 
     /**
      * @return string|\TYPO3\CMS\Core\Messaging\FlashMessage

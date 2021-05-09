@@ -40,33 +40,33 @@ class TcaTool
     /**
      * @var string
      */
-    const ICON_INDEX_TYPO3_87_OR_HIGHER = 'typo3-87-or-higher';
+    public const ICON_INDEX_TYPO3_87_OR_HIGHER = 'typo3-87-or-higher';
 
     /**
      * @var string
      */
-    const ICON_INDEX_TYPO3_76_OR_HIGHER = 'typo3-76-or-higher';
+    public const ICON_INDEX_TYPO3_76_OR_HIGHER = 'typo3-76-or-higher';
 
     /**
      * @var string
      */
-    const ICON_INDEX_TYPO3_62_OR_HIGHER = 'typo3-62-or-higher';
+    public const ICON_INDEX_TYPO3_62_OR_HIGHER = 'typo3-62-or-higher';
 
-    const WIZARD_EDIT = 'edit';
+    public const WIZARD_EDIT = 'edit';
 
-    const WIZARD_ADD = 'add';
+    public const WIZARD_ADD = 'add';
 
-    const WIZARD_LIST = 'list';
+    public const WIZARD_LIST = 'list';
 
-    const WIZARD_SUGGEST = 'suggest';
+    public const WIZARD_SUGGEST = 'suggest';
 
-    const WIZARD_RTE = 'RTE';
+    public const WIZARD_RTE = 'RTE';
 
-    const WIZARD_LINK = 'link';
+    public const WIZARD_LINK = 'link';
 
-    const WIZARD_COLORPICKER = 'colorpicker';
+    public const WIZARD_COLORPICKER = 'colorpicker';
 
-    const WIZARD_TARGETTABLE = 'targettable';
+    public const WIZARD_TARGETTABLE = 'targettable';
 
     /**
      * @var array

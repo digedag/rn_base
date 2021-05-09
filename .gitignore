@@ -10,5 +10,5 @@ composer.lock
 
 ###ignore backups and caches
 *.bak
-.php_cs.cache
+*.cache
 .scannerwork

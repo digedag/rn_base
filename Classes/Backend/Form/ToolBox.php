@@ -39,16 +39,16 @@ class Tx_Rnbase_Backend_Form_ToolBox
 
     protected $doc;
 
-    const CSS_CLASS_BTN = 'btn btn-default btn-sm';
+    public const CSS_CLASS_BTN = 'btn btn-default btn-sm';
 
     /** some defVals for new record links */
-    const OPTION_DEFVALS = 'defvals';
+    public const OPTION_DEFVALS = 'defvals';
 
-    const OPTION_TITLE = 'title';
+    public const OPTION_TITLE = 'title';
 
-    const OPTION_CONFIRM = 'confirm';
+    public const OPTION_CONFIRM = 'confirm';
 
-    const OPTION_PARAMS = 'params';
+    public const OPTION_PARAMS = 'params';
 
     /**
      * Clipboard object.
