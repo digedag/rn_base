@@ -1,8 +1,8 @@
 <?php
 
+use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Domain\Repository\AbstractRepository;
 use Sys25\RnBase\Utility\Strings;
-use Sys25\RnBase\Domain\Model\DataModel;
 
 /***************************************************************
  * Copyright notice

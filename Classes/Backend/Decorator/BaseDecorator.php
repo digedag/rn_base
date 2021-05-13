@@ -1,18 +1,18 @@
 <?php
+
 namespace Sys25\RnBase\Backend\Decorator;
 
-use Sys25\RnBase\Domain\Model\DataModel;
-use Sys25\RnBase\Domain\Model\DataInterface;
-use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Domain\Model\BaseModel;
+use Sys25\RnBase\Domain\Model\DataInterface;
+use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Domain\Model\DomainInterface;
 use Sys25\RnBase\Domain\Model\RecordInterface;
-
+use Sys25\RnBase\Utility\Strings;
 use tx_rnbase_mod_BaseModule;
 use tx_rnbase_mod_IModule;
+use tx_rnbase_mod_Util;
 use tx_rnbase_util_FormTool;
 use tx_rnbase_util_TCA;
-use tx_rnbase_mod_Util;
 
 /***************************************************************
  * Copyright notice

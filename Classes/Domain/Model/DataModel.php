@@ -6,7 +6,6 @@ use ArrayIterator;
 use Exception;
 use IteratorAggregate;
 use Sys25\RnBase\Utility\Strings;
-use tx_rnbase;
 
 /***************************************************************
  *  Copyright notice

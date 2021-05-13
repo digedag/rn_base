@@ -3,6 +3,8 @@
 namespace Sys25\RnBase\Database;
 
 use Sys25\RnBase\Database\Query\From;
+use Sys25\RnBase\Domain\Collection\BaseCollection;
+use Sys25\RnBase\Domain\Model\DynamicTableInterface;
 use Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface;
 use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
@@ -14,10 +16,6 @@ use tx_rnbase_util_db_Builder;
 use tx_rnbase_util_db_IDatabase;
 use tx_rnbase_util_Debug;
 use tx_rnbase_util_TCA;
-
-use Sys25\RnBase\Domain\Collection\BaseCollection;
-use Sys25\RnBase\Domain\Model\DynamicTableInterface;
-
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
 /***************************************************************

@@ -1,8 +1,8 @@
 <?php
 
-use Sys25\RnBase\Domain\Repository\SearchInterface;
 use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Domain\Model\RecordInterface;
+use Sys25\RnBase\Domain\Repository\SearchInterface;
 
 /***************************************************************
  * Copyright notice

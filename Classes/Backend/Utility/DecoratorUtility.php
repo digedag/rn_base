@@ -1,4 +1,5 @@
 <?php
+
 use Sys25\RnBase\Backend\Decorator\InterfaceDecorator;
 use Sys25\RnBase\Domain\Model\DataModel;
 

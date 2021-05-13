@@ -1,4 +1,5 @@
 <?php
+
 namespace Sys25\RnBase\Backend\Decorator;
 
 use Sys25\RnBase\Domain\Model\DataInterface;
