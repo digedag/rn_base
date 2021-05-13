@@ -1,4 +1,6 @@
 <?php
+use Sys25\RnBase\Domain\Model\DataInterface;
+
 /**
  *  Copyright notice.
  *
@@ -30,16 +32,16 @@ class Tx_Rnbase_Frontend_Marker_Utility
     /**
      * Returns an array with all attribute names not used in template.
      *
-     * We accept Tx_Rnbase_Domain_Model_DataInterface, but the model must also
+     * We accept DataInterface, but the model must also
      * implement IteratorAggregate!
      *
-     * @param Tx_Rnbase_Domain_Model_Data $item
-     * @param string                      $template
-     * @param string                      $marker
+     * @param DataInterface $item
+     * @param string $template
+     * @param string $marker
      *
      * @return array
      */
-    public static function findUnusedAttributes(Tx_Rnbase_Domain_Model_DataInterface $item, $template, $marker)
+    public static function findUnusedAttributes(DataInterface $item, $template, $marker)
     {
         $ignore = [];
         $minfo = static::containsMarker($template, $marker.'___MINFO');

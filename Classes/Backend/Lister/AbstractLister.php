@@ -2,6 +2,7 @@
 
 use Sys25\RnBase\Domain\Repository\AbstractRepository;
 use Sys25\RnBase\Utility\Strings;
+use Sys25\RnBase\Domain\Model\DataModel;
 
 /***************************************************************
  * Copyright notice
@@ -44,7 +45,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     /**
      * The storage for this lister.
      *
-     * @var Tx_Rnbase_Domain_Model_Data
+     * @var DataModel
      */
     private $storage = null;
 
@@ -73,13 +74,13 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
      * Constructor.
      *
      * @param tx_rnbase_mod_BaseModule          $module
-     * @param array|Tx_Rnbase_Domain_Model_Data $options
+     * @param array|DataModel $options
      */
     public function __construct(
         tx_rnbase_mod_BaseModule $module,
         $options = []
     ) {
-        $this->storage = Tx_Rnbase_Domain_Model_Data::getInstance(
+        $this->storage = DataModel::getInstance(
             [
                 'module' => $module,
                 'options' => $options,
@@ -110,7 +111,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     /**
      * Returns the module.
      *
-     * @return Tx_Rnbase_Domain_Model_Data
+     * @return DataModel
      */
     protected function getStorage()
     {
@@ -150,7 +151,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     /**
      * Returns the options or a specific property of the options.
      *
-     * @return Tx_Rnbase_Domain_Model_Data|mixed
+     * @return DataModel|mixed
      */
     protected function getOptions()
     {
@@ -181,7 +182,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     /**
      * The filters the current listing.
      *
-     * @return Tx_Rnbase_Domain_Model_Data
+     * @return DataModel
      */
     protected function getFilter()
     {
@@ -641,7 +642,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     {
         if ($this->getOptions()->hasSearchColumns()) {
             $columns = $this->getOptions()->getSearchColumns();
-            if ($columns instanceof Tx_Rnbase_Domain_Model_Data) {
+            if ($columns instanceof DataModel) {
                 $columns = $columns->toArray();
             }
         }

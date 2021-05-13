@@ -1,4 +1,19 @@
 <?php
+namespace Sys25\RnBase\Backend\Decorator;
+
+use Sys25\RnBase\Domain\Model\DataModel;
+use Sys25\RnBase\Domain\Model\DataInterface;
+use Sys25\RnBase\Utility\Strings;
+use Sys25\RnBase\Domain\Model\BaseModel;
+use Sys25\RnBase\Domain\Model\DomainInterface;
+use Sys25\RnBase\Domain\Model\RecordInterface;
+
+use tx_rnbase_mod_BaseModule;
+use tx_rnbase_mod_IModule;
+use tx_rnbase_util_FormTool;
+use tx_rnbase_util_TCA;
+use tx_rnbase_mod_Util;
+
 /***************************************************************
  * Copyright notice
  *
@@ -22,15 +37,12 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('Tx_Rnbase_Backend_Decorator_InterfaceDecorator');
-tx_rnbase::load('tx_rnbase_util_TCA');
-
 /**
  * Base Decorator.
  *
  * @author Michael Wagner
  */
-class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Decorator_InterfaceDecorator
+class BaseDecorator implements InterfaceDecorator
 {
     /**
      * The module.
@@ -42,7 +54,7 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
     /**
      * The internal options object.
      *
-     * @var Tx_Rnbase_Domain_Model_Data
+     * @var DataModel
      */
     private $options = null;
 
@@ -50,7 +62,7 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
      * Constructor.
      *
      * @param tx_rnbase_mod_BaseModule          $mod
-     * @param array|Tx_Rnbase_Domain_Model_Data $options
+     * @param array|DataModel $options
      */
     public function __construct(
         tx_rnbase_mod_BaseModule $mod,
@@ -58,8 +70,7 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
     ) {
         $this->mod = $mod;
 
-        tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
-        $this->options = Tx_Rnbase_Domain_Model_Data::getInstance($options);
+        $this->options = DataModel::getInstance($options);
     }
 
     /**
@@ -75,7 +86,7 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
     /**
      * The internal options object.
      *
-     * @return Tx_Rnbase_Domain_Model_Data
+     * @return DataModel
      */
     protected function getOptions()
     {
@@ -98,7 +109,7 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
      * @param string                               $columnValue
      * @param string                               $columnName
      * @param array                                $record
-     * @param Tx_Rnbase_Domain_Model_DataInterface $entry
+     * @param DataInterface $entry
      *
      * @return string
      */
@@ -106,12 +117,11 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
         $columnValue,
         $columnName,
         array $record,
-        Tx_Rnbase_Domain_Model_DataInterface $entry
+        DataInterface $entry
     ) {
         $return = $columnValue;
 
-        tx_rnbase::load('tx_rnbase_util_Strings');
-        $method = tx_rnbase_util_Strings::underscoredToLowerCamelCase($columnName);
+        $method = Strings::underscoredToLowerCamelCase($columnName);
         $method = 'format'.ucfirst($method).'Column';
 
         if (method_exists($this, $method)) {
@@ -127,14 +137,14 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
      * For example a strikethrough for disabled entries.
      *
      * @param string                               $formatedValue
-     * @param Tx_Rnbase_Domain_Model_DataInterface $entry
+     * @param DataInterface $entry
      * @param string                               $columnName
      *
      * @return string
      */
     protected function wrapValue(
         $formatedValue,
-        Tx_Rnbase_Domain_Model_DataInterface $entry,
+        DataInterface $entry,
         $columnName
     ) {
         return $formatedValue;
@@ -143,12 +153,12 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
     /**
      * Renders the uid column.
      *
-     * @param Tx_Rnbase_Domain_Model_DataInterface $entry
+     * @param DataInterface $entry
      *
      * @return string
      */
     protected function formatUidColumn(
-        Tx_Rnbase_Domain_Model_DataInterface $entry
+        DataInterface $entry
     ) {
         $value = $entry->getProperty('uid');
 
@@ -162,21 +172,21 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
     /**
      * Renders the uid column.
      *
-     * @param Tx_Rnbase_Domain_Model_DataInterface $entry
+     * @param DataInterface $entry
      *
      * @return string
      */
     protected function formatLabelColumn(
-        Tx_Rnbase_Domain_Model_DataInterface $entry
+        DataInterface $entry
     ) {
         $label = '';
 
         // only for domain entries with table name
-        if (!$entry instanceof Tx_Rnbase_Domain_Model_DomainInterface) {
+        if (!$entry instanceof DomainInterface) {
             return $label;
         }
 
-        if ($entry instanceof Tx_Rnbase_Domain_Model_Base) {
+        if ($entry instanceof BaseModel) {
             $label = $entry->getTcaLabel();
         } else {
             $labelField = tx_rnbase_util_TCA::getLabelFieldForTable(
@@ -203,19 +213,19 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
      * Builds a simple info of the entitiy.
      * Is curently used for title tags.
      *
-     * @param Tx_Rnbase_Domain_Model_DataInterface $entry
+     * @param DataInterface $entry
      *
      * @return array
      */
     protected function buildSimpleEntryInfo(
-        Tx_Rnbase_Domain_Model_DataInterface $entry
+        DataInterface $entry
     ) {
         $infos = [];
 
         $infos['uid'] = 'UID: '.$entry->getProperty('uid');
 
         // only for domain entries with table name
-        if ($entry instanceof Tx_Rnbase_Domain_Model_DomainInterface) {
+        if ($entry instanceof DomainInterface) {
             $labelField = tx_rnbase_util_TCA::getLabelFieldForTable($entry->getTableName());
             if ('uid' !== $labelField && $entry->getProperty($labelField)) {
                 $infos['label'] = 'Label: '.(string) $entry->getProperty($labelField);
@@ -242,17 +252,16 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
     /**
      * Renders the useractions.
      *
-     * @param Tx_Rnbase_Domain_Model_DataInterface $item
+     * @param DataInterface $item
      *
      * @return string
      */
-    protected function formatActionsColumn(
-        Tx_Rnbase_Domain_Model_DataInterface $item
-    ) {
+    protected function formatActionsColumn(DataInterface $item)
+    {
         $return = '';
 
         // only for domain entries with table name
-        if (!$item instanceof Tx_Rnbase_Domain_Model_DomainInterface) {
+        if (!$item instanceof DomainInterface) {
             return $return;
         }
 
@@ -271,13 +280,13 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
     /**
      * Renders the useractions.
      *
-     * @param Tx_Rnbase_Domain_Model_DomainInterface $item
-     * @param array                                  $actionConfig
+     * @param DomainInterface $item
+     * @param array $actionConfig
      *
      * @return string
      */
     protected function formatActionEdit(
-        Tx_Rnbase_Domain_Model_DomainInterface $item,
+        DomainInterface $item,
         array $actionConfig = []
     ) {
         return $this->getFormTool()->createEditLink(
@@ -291,13 +300,13 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
     /**
      * Renders the useractions.
      *
-     * @param Tx_Rnbase_Domain_Model_DomainInterface $item
-     * @param array                                  $actionConfig
+     * @param DomainInterface $item
+     * @param array $actionConfig
      *
      * @return string
      */
     protected function formatActionHide(
-        Tx_Rnbase_Domain_Model_DomainInterface $item,
+        DomainInterface $item,
         array $actionConfig = []
     ) {
         return $this->getFormTool()->createHideLink(
@@ -314,13 +323,13 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
     /**
      * Renders the useractions.
      *
-     * @param Tx_Rnbase_Domain_Model_DomainInterface $item
-     * @param array                                  $actionConfig
+     * @param DomainInterface $item
+     * @param array $actionConfig
      *
      * @return string
      */
     protected function formatActionRemove(
-        Tx_Rnbase_Domain_Model_DomainInterface $item,
+        DomainInterface $item,
         array $actionConfig = []
     ) {
         return $this->getFormTool()->createDeleteLink(
@@ -337,13 +346,13 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
     /**
      * Renders the useractions.
      *
-     * @param Tx_Rnbase_Domain_Model_DomainInterface $item
-     * @param array                                  $actionConfig
+     * @param DomainInterface $item
+     * @param array $actionConfig
      *
      * @return string
      */
     protected function formatActionMoveup(
-        Tx_Rnbase_Domain_Model_DomainInterface $item,
+        DomainInterface $item,
         array $actionConfig = []
     ) {
         $uid = $item->getProperty('uid');
@@ -376,7 +385,6 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
                 ]
             );
         } else {
-            tx_rnbase::load('tx_rnbase_mod_Util');
             $action = tx_rnbase_mod_Util::getSpriteIcon('empty-icon');
         }
 
@@ -386,13 +394,13 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
     /**
      * Renders the useractions.
      *
-     * @param Tx_Rnbase_Domain_Model_DomainInterface $item
-     * @param array                                  $actionConfig
+     * @param DomainInterface $item
+     * @param array $actionConfig
      *
      * @return string
      */
     protected function formatActionMovedown(
-        Tx_Rnbase_Domain_Model_DomainInterface $item,
+        DomainInterface $item,
         array $actionConfig = []
     ) {
         $uid = $item->getProperty('uid');
@@ -411,7 +419,6 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
                 ]
             );
         } else {
-            tx_rnbase::load('tx_rnbase_mod_Util');
             $action = tx_rnbase_mod_Util::getSpriteIcon('empty-icon');
         }
 
@@ -421,13 +428,12 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
     /**
      * Returns the uid map and sets the pointer to the current element.
      *
-     * @param Tx_Rnbase_Domain_Model_RecordInterface $item
+     * @param RecordInterface $item
      *
      * @return array
      */
-    protected function getUidMap(
-        Tx_Rnbase_Domain_Model_RecordInterface $item
-    ) {
+    protected function getUidMap(RecordInterface $item)
+    {
         if (!$this->getOptions()->hasUidMap()) {
             return [];
         }
@@ -445,13 +451,12 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
     /**
      * Liefert die möglichen Optionen für die actions.
      *
-     * @param Tx_Rnbase_Domain_Model_DomainInterface $item
+     * @param DomainInterface $item
      *
      * @return array
      */
-    protected function getActionsConfig(
-        Tx_Rnbase_Domain_Model_DomainInterface $item
-    ) {
+    protected function getActionsConfig(DomainInterface $item)
+    {
         $def = ['title' => ''];
         $actions = [
             'edit' => $def,

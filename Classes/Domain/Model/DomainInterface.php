@@ -46,7 +46,7 @@ interface DomainInterface
      *
      * @param string $tableName
      *
-     * @return Tx_Rnbase_Domain_Model_Base
+     * @return DataModel
      */
     /*public function setTableName($tableName = 0);*/
 

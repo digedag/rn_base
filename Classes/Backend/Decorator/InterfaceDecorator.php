@@ -1,4 +1,8 @@
 <?php
+namespace Sys25\RnBase\Backend\Decorator;
+
+use Sys25\RnBase\Domain\Model\DataInterface;
+
 /***************************************************************
  * Copyright notice
  *
@@ -29,7 +33,7 @@
  *
  * @author Michael Wagner
  */
-interface Tx_Rnbase_Backend_Decorator_InterfaceDecorator
+interface InterfaceDecorator
 {
     /**
      * Formats a value.
@@ -37,7 +41,7 @@ interface Tx_Rnbase_Backend_Decorator_InterfaceDecorator
      * @param string                                $columnValue
      * @param string                                $columnName
      * @param array                                 $record
-     * @param \Tx_Rnbase_Domain_Model_DataInterface $entry
+     * @param DataInterface $entry
      *
      * @return string
      */
@@ -45,6 +49,6 @@ interface Tx_Rnbase_Backend_Decorator_InterfaceDecorator
         $columnValue,
         $columnName,
         array $record,
-        Tx_Rnbase_Domain_Model_DataInterface $entry
+        DataInterface $entry
     );
 }

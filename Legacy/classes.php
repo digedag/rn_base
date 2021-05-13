@@ -184,10 +184,15 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository extends Sys25\RnBa
 abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Sys25\RnBase\Domain\Repository\PersistenceRepository implements Tx_Rnbase_Domain_Repository_InterfacePersistence
 {
 }
-
-echo __LINE__.'<br>';
 /** @deprecated */
 abstract class Tx_Rnbase_Repository_AbstractRepository extends \Tx_Rnbase_Domain_Repository_AbstractRepository
 {
 }
-echo __LINE__.'<br>';
+/** @deprecated */
+interface Tx_Rnbase_Backend_Decorator_InterfaceDecorator extends Sys25\RnBase\Backend\Decorator\InterfaceDecorator
+{
+}
+/** @deprecated */
+class Tx_Rnbase_Backend_Decorator_BaseDecorator extends Sys25\RnBase\Backend\Decorator\BaseDecorator implements Tx_Rnbase_Backend_Decorator_InterfaceDecorator
+{
+}

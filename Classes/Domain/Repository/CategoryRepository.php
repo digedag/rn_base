@@ -32,7 +32,7 @@ use Sys25\RnBase\Search\Category;
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class CategoryRepository extends \Tx_Rnbase_Domain_Repository_PersistenceRepository
+class CategoryRepository extends PersistenceRepository
 {
     /**
      * (non-PHPdoc).

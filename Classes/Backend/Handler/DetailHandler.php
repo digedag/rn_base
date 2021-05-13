@@ -1,4 +1,7 @@
 <?php
+
+use Sys25\RnBase\Domain\Model\RecordInterface;
+
 /***************************************************************
  * Copyright notice
  *
@@ -22,8 +25,6 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('Tx_Rnbase_Backend_Handler_SearchHandler');
-
 /**
  * Abstract detail handler.
  *
@@ -34,7 +35,7 @@ abstract class Tx_Rnbase_Backend_Handler_DetailHandler extends Tx_Rnbase_Backend
     /**
      * Returns the current object for detail page.
      *
-     * @return Tx_Rnbase_Domain_Model_RecordInterface
+     * @return RecordInterface
      */
     abstract protected function getObject();
 
@@ -98,17 +99,17 @@ abstract class Tx_Rnbase_Backend_Handler_DetailHandler extends Tx_Rnbase_Backend
     /**
      * Base listing.
      *
-     * @param string                                 $template
-     * @param Tx_Rnbase_Domain_Model_RecordInterface $current
-     * @param array                                  $markerArray
-     * @param array                                  $subpartArray
-     * @param array                                  $wrappedSubpartArray
+     * @param string $template
+     * @param RecordInterface $current
+     * @param array $markerArray
+     * @param array $subpartArray
+     * @param array $wrappedSubpartArray
      *
      * @return string
      */
     protected function showDetail(
         $template,
-        Tx_Rnbase_Domain_Model_RecordInterface $current,
+        RecordInterface $current,
         array &$markerArray = null,
         array &$subpartArray = null,
         array &$wrappedSubpartArray = null

@@ -1,4 +1,6 @@
 <?php
+use Sys25\RnBase\Domain\Model\DataModel;
+
 /***************************************************************
  * Copyright notice
  *
@@ -41,7 +43,7 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
     /**
      * The options object for the handler.
      *
-     * @var Tx_Rnbase_Domain_Model_Data
+     * @var DataModel
      */
     private $options = [];
 
@@ -70,11 +72,10 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
      *
      * @param string $key
      *
-     * @return Tx_Rnbase_Domain_Model_Data
+     * @return DataModel
      */
-    protected function getOptions(
-        $key = null
-    ) {
+    protected function getOptions($key = null)
+    {
         if (null === $key) {
             return $this->options;
         }
@@ -132,7 +133,7 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
 
         $options['pid'] = $mod->getPid();
 
-        $this->options = Tx_Rnbase_Domain_Model_Data::getInstance($options);
+        $this->options = DataModel::getInstance($options);
 
         $this->prepare();
     }

@@ -1,4 +1,6 @@
 <?php
+use Sys25\RnBase\Domain\Model\DataModel;
+
 /***************************************************************
  * Copyright notice
  *
@@ -32,16 +34,16 @@
 class Tx_Rnbase_Utility_Crypt
 {
     /**
-     * The confiog for the cryption.
+     * The config for the cryption.
      *
-     * @var Tx_Rnbase_Domain_Model_Data
+     * @var DataModel
      */
     private $storage = null;
 
     /**
      * The confiog for the cryption.
      *
-     * @var Tx_Rnbase_Domain_Model_Data
+     * @var DataModel
      */
     private $config = null;
 
@@ -64,8 +66,7 @@ class Tx_Rnbase_Utility_Crypt
      */
     public function __construct($config = null)
     {
-        tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
-        $this->config = Tx_Rnbase_Domain_Model_Data::getInstance($config);
+        $this->config = DataModel::getInstance($config);
         $this->init();
     }
 
@@ -85,7 +86,7 @@ class Tx_Rnbase_Utility_Crypt
     /**
      * Returns the config.
      *
-     * @return Tx_Rnbase_Domain_Model_Data
+     * @return DataModel
      */
     protected function getConfig()
     {
@@ -95,12 +96,12 @@ class Tx_Rnbase_Utility_Crypt
     /**
      * Returns the internal storage.
      *
-     * @return Tx_Rnbase_Domain_Model_Data
+     * @return DataModel
      */
     protected function getStorage()
     {
         if (null === $this->storage) {
-            $this->storage = Tx_Rnbase_Domain_Model_Data::getInstance();
+            $this->storage = DataModel::getInstance();
         }
 
         return $this->storage;

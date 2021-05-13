@@ -35,9 +35,9 @@ use tx_rnbase;
  * Basic model with geter's and seter's.
  *
  * @method int getUid()
- * @method Tx_Rnbase_Domain_Model_Data setUid() setUid(int $uid)
+ * @method DataModel setUid() setUid(int $uid)
  * @method bool hasUid()
- * @method Tx_Rnbase_Domain_Model_Data unsUid()
+ * @method DataModel unsUid()
  *
  * @author Michael Wagner
  */

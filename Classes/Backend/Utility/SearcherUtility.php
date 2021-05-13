@@ -1,6 +1,8 @@
 <?php
 
 use Sys25\RnBase\Domain\Repository\SearchInterface;
+use Sys25\RnBase\Domain\Model\DataModel;
+use Sys25\RnBase\Domain\Model\RecordInterface;
 
 /***************************************************************
  * Copyright notice
@@ -35,14 +37,14 @@ class Tx_Rnbase_Backend_Utility_SearcherUtility
     /**
      * The internal options object.
      *
-     * @var Tx_Rnbase_Domain_Model_Data
+     * @var DataModel
      */
     private $options = null;
 
     /**
      * Constructor.
      *
-     * @param array|Tx_Rnbase_Domain_Model_Data $options
+     * @param array|DataModel $options
      *
      * @return Tx_Rnbase_Backend_Utility_SearcherUtility
      */
@@ -58,19 +60,18 @@ class Tx_Rnbase_Backend_Utility_SearcherUtility
     /**
      * Constructor.
      *
-     * @param array|Tx_Rnbase_Domain_Model_Data $options
+     * @param array|DataModel $options
      */
     public function __construct(
         $options = []
     ) {
-        tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
-        $this->options = Tx_Rnbase_Domain_Model_Data::getInstance($options);
+        $this->options = DataModel::getInstance($options);
     }
 
     /**
      * The internal options object.
      *
-     * @return Tx_Rnbase_Domain_Model_Data
+     * @return DataModel
      */
     protected function getOptions()
     {
@@ -94,7 +95,6 @@ class Tx_Rnbase_Backend_Utility_SearcherUtility
         // we has to build a uid map for sortable tables!
         $firstPrev = $lastNext = false;
         $baseTableName = $this->getOptions()->getBaseTableName();
-        tx_rnbase::load('tx_rnbase_util_TCA');
         if ((
             $baseTableName
             && tx_rnbase_util_TCA::getSortbyFieldForTable($baseTableName)
@@ -154,16 +154,16 @@ class Tx_Rnbase_Backend_Utility_SearcherUtility
 
         // now build the uid map
         $map = [];
-        if ($firstPrev instanceof Tx_Rnbase_Domain_Model_RecordInterface) {
+        if ($firstPrev instanceof RecordInterface) {
             $map[$firstPrev->getUid()] = [];
         }
-        if ($secondPrev instanceof Tx_Rnbase_Domain_Model_RecordInterface) {
+        if ($secondPrev instanceof RecordInterface) {
             $map[$secondPrev->getUid()] = [];
         }
         foreach ($items as $item) {
             $map[$item->getUid()] = [];
         }
-        if ($lastNext instanceof Tx_Rnbase_Domain_Model_RecordInterface) {
+        if ($lastNext instanceof RecordInterface) {
             $map[$lastNext->getUid()] = [];
         }
 

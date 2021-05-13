@@ -9,12 +9,15 @@ use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
 use Sys25\RnBase\Utility\Typo3Classes;
 use tx_rnbase;
-use Tx_Rnbase_Domain_Model_DynamicTableInterface;
 use tx_rnbase_model_base;
 use tx_rnbase_util_db_Builder;
 use tx_rnbase_util_db_IDatabase;
 use tx_rnbase_util_Debug;
 use tx_rnbase_util_TCA;
+
+use Sys25\RnBase\Domain\Collection\BaseCollection;
+use Sys25\RnBase\Domain\Model\DynamicTableInterface;
+
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
 /***************************************************************
@@ -279,7 +282,7 @@ class Connection implements SingletonInterface
             return;
         }
         $item = ($wrapper) ? tx_rnbase::makeInstance($wrapper, $row) : $row;
-        if ($item instanceof Tx_Rnbase_Domain_Model_DynamicTableInterface
+        if ($item instanceof DynamicTableInterface
             // @TODO: backward compatibility for old models will be removed soon
             || $item instanceof tx_rnbase_model_base
             ) {
@@ -302,7 +305,7 @@ class Connection implements SingletonInterface
         $rows = [];
         if ($options['collection']) {
             if (!is_string($options['collection']) || !class_exists($options['collection'])) {
-                $options['collection'] = 'Tx_Rnbase_Domain_Collection_Base';
+                $options['collection'] = BaseCollection::class;
             }
             $rows = tx_rnbase::makeInstance(
                 $options['collection'],

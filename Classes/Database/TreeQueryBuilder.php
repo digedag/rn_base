@@ -1,5 +1,7 @@
 <?php
 
+use Sys25\RnBase\Database\Connection;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -102,7 +104,7 @@ class Tx_Rnbase_Database_TreeQueryBuilder
             $sqlOptions['where'] .= ' AND '.$parentField.' IN ('.$id.')';
 
             /**
-             * @var Tx_Rnbase_Domain_Collection_Base
+             * @var Sys25\RnBase\Domain\Collection\BaseCollection
              */
             $rows = $this->getConnection()->doSelect(
                 $idField,
@@ -134,10 +136,10 @@ class Tx_Rnbase_Database_TreeQueryBuilder
     }
 
     /**
-     * @return Tx_Rnbase_Database_Connection
+     * @return Connection
      */
     protected function getConnection()
     {
-        return Tx_Rnbase_Database_Connection::getInstance();
+        return Connection::getInstance();
     }
 }
