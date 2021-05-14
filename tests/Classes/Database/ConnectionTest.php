@@ -2,7 +2,6 @@
 
 namespace Sys25\RnBase\Database;
 
-use PHPUnit_Framework_TestCase;
 use stdClass;
 use Sys25\RnBase\Tests\BaseTestCase;
 use Sys25\RnBase\Utility\Strings;
@@ -53,7 +52,7 @@ class ConnectionTest extends BaseTestCase
     /**
      * (non-PHPdoc).
      *
-     * @see PHPUnit_Framework_TestCase::setUp()
+     * @see \PHPUnit\Framework\TestCase::setUp()
      */
     protected function setUp()
     {
@@ -83,7 +82,7 @@ class ConnectionTest extends BaseTestCase
     /**
      * (non-PHPdoc).
      *
-     * @see PHPUnit_Framework_TestCase::tearDown()
+     * @see \PHPUnit\Framework\TestCase::tearDown()
      */
     protected function tearDown()
     {

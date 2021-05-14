@@ -114,8 +114,6 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
      * @param bool   $callOriginalMethods
      * @param null   $proxyTarget
      *
-     * @throws \PHPUnit_Framework_Exception
-     *
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
     public function getMock(
@@ -580,8 +578,6 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
      * @param bool   $callOriginalClone
      * @param bool   $callAutoload
      * @param bool   $cloneArguments
-     *
-     * @throws \PHPUnit_Framework_Exception
      *
      * @return \PHPUnit_Framework_MockObject_MockObject
      */

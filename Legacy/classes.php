@@ -214,11 +214,3 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator extends Sys25\RnBase\Backend\Dec
 class Tx_Rnbase_Database_TreeQueryBuilder extends Sys25\RnBase\Database\TreeQueryBuilder
 {
 }
-/** @deprecated */
-abstract class tx_rnbase_tests_BaseTestCase extends Sys25\RnBase\Tests\BaseTestCase
-{
-}
-/** @deprecated */
-class tx_rnbase_tests_Utility extends Sys25\RnBase\Tests\TestUtility
-{
-}
