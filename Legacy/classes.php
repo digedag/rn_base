@@ -65,6 +65,22 @@ class Tx_Rnbase_Service_Base extends \Sys25\RnBase\Typo3Wrapper\Service\Abstract
 {
 }
 /** @deprecated */
+abstract class Tx_Rnbase_Backend_Handler_SearchHandler extends Sys25\RnBase\Backend\Handler\SearchHandler
+{
+}
+/** @deprecated */
+abstract class Tx_Rnbase_Backend_Handler_DetailHandler extends Sys25\RnBase\Backend\Handler\DetailHandler
+{
+}
+/** @deprecated */
+abstract class Tx_Rnbase_Backend_Lister_AbstractLister extends Sys25\RnBase\Backend\Lister\AbstractLister
+{
+}
+/** @deprecated */
+class Tx_Rnbase_Backend_Module_Base extends \Sys25\RnBase\Backend\Module\ModuleBase
+{
+}
+/** @deprecated */
 class Tx_Rnbase_Utility_TcaTool extends Sys25\RnBase\Backend\Utility\TcaTool
 {
 }
@@ -73,7 +89,27 @@ class Tx_Rnbase_Util_TCATool extends Sys25\RnBase\Backend\Utility\TcaTool
 {
 }
 /** @deprecated */
+class Tx_Rnbase_Backend_Template_Override_DocumentTemplate extends Sys25\RnBase\Backend\Template\Override\DocumentTemplate
+{
+}
+/** @deprecated */
+class Tx_Rnbase_Backend_Template_ModuleParts extends Sys25\RnBase\Backend\Template\ModuleParts
+{
+}
+/** @deprecated */
+class Tx_Rnbase_Backend_Template_ModuleTemplate extends Sys25\RnBase\Backend\Template\ModuleTemplate
+{
+}
+/** @deprecated */
 class Tx_Rnbase_Backend_Utility extends Sys25\RnBase\Backend\Utility\BackendUtility
+{
+}
+/** @deprecated */
+class Tx_Rnbase_Backend_Utility_DecoratorUtility extends Sys25\RnBase\Backend\Utility\DecoratorUtility
+{
+}
+/** @deprecated */
+class Tx_Rnbase_Backend_Utility_SearcherUtility extends Sys25\RnBase\Backend\Utility\SearcherUtility
 {
 }
 /** @deprecated */
@@ -96,7 +132,10 @@ class Tx_Rnbase_Backend_Utility_Icons extends Sys25\RnBase\Backend\Utility\Icons
 class Tx_Rnbase_Backend_Utility_Tables extends Sys25\RnBase\Backend\Utility\Tables
 {
 }
-
+/** @deprecated */
+class Tx_Rnbase_Backend_ModuleRunner extends Sys25\RnBase\Backend\ModuleRunner
+{
+}
 /** @deprecated */
 class tx_rnbase_util_Logger extends Sys25\RnBase\Utility\Logger
 {

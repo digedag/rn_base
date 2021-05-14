@@ -3,6 +3,7 @@
 namespace Sys25\RnBase\Backend\Form;
 
 use Sys25\RnBase\Backend\Form\Element\InputText;
+use Sys25\RnBase\Backend\Template\Override\DocumentTemplate;
 use Sys25\RnBase\Backend\Utility\BackendUtility;
 use Sys25\RnBase\Backend\Utility\Icons;
 use Sys25\RnBase\Frontend\Request\Parameters;
@@ -71,8 +72,8 @@ class ToolBox
     private $clipObj;
 
     /**
-     * @param \Tx_Rnbase_Backend_Template_Override_DocumentTemplate $doc
-     * @param \tx_rnbase_mod_IModule                                $module
+     * @param DocumentTemplate $doc
+     * @param \tx_rnbase_mod_IModule $module
      */
     public function init($doc, $module)
     {
@@ -81,13 +82,13 @@ class ToolBox
         $this->module = $module;
 
         // TCEform für das Formular erstellen
-        $this->form = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Form_FormBuilder');
+        $this->form = tx_rnbase::makeInstance(FormBuilder::class);
         $this->form->initDefaultBEmode();
         $this->form->backPath = $BACK_PATH;
     }
 
     /**
-     * @return \Tx_Rnbase_Backend_Template_Override_DocumentTemplate the BE template class
+     * @return DocumentTemplate the BE template class
      */
     public function getDoc()
     {
@@ -897,7 +898,7 @@ class ToolBox
     }
 
     /**
-     * @return \Tx_Rnbase_Backend_Form_FormBuilder
+     * @return FormBuilder
      */
     public function getTCEForm()
     {

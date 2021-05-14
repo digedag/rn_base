@@ -2,11 +2,11 @@
 
 namespace Sys25\RnBase\Backend\Utility;
 
-use TYPO3\CMS\Core\Localization\LanguageService;
 use Sys25\RnBase\Backend\Form\ToolBox;
 use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Tests\BaseTestCase;
 use tx_rnbase;
+use TYPO3\CMS\Core\Localization\LanguageService;
 
 /***************************************************************
 *  Copyright notice

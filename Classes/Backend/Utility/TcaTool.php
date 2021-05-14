@@ -5,7 +5,7 @@ namespace Sys25\RnBase\Backend\Utility;
 /***************************************************************
  * Copyright notice
  *
- *  (c) 2015-2020 René Nitzsche <rene@system25.de>
+ *  (c) 2015-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -75,27 +75,22 @@ class TcaTool
         'edit' => [
             self::ICON_INDEX_TYPO3_87_OR_HIGHER => 'actions-open',
             self::ICON_INDEX_TYPO3_76_OR_HIGHER => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
-            self::ICON_INDEX_TYPO3_62_OR_HIGHER => 'EXT:t3skin/icons/gfx/edit2.gif',
         ],
         'add' => [
             self::ICON_INDEX_TYPO3_87_OR_HIGHER => 'actions-add',
             self::ICON_INDEX_TYPO3_76_OR_HIGHER => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
-            self::ICON_INDEX_TYPO3_62_OR_HIGHER => 'EXT:t3skin/icons/gfx/add.gif',
         ],
         'list' => [
             self::ICON_INDEX_TYPO3_87_OR_HIGHER => 'actions-system-list-open',
             self::ICON_INDEX_TYPO3_76_OR_HIGHER => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_list.gif',
-            self::ICON_INDEX_TYPO3_62_OR_HIGHER => 'EXT:t3skin/icons/gfx/list.gif',
         ],
         'richText' => [
             self::ICON_INDEX_TYPO3_87_OR_HIGHER => 'actions-wizard-rte',
             self::ICON_INDEX_TYPO3_76_OR_HIGHER => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_rte.gif',
-            self::ICON_INDEX_TYPO3_62_OR_HIGHER => 'EXT:t3skin/icons/gfx/wizard_rte.gif',
         ],
         'link' => [
             self::ICON_INDEX_TYPO3_87_OR_HIGHER => 'actions-wizard-link',
             self::ICON_INDEX_TYPO3_76_OR_HIGHER => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
-            self::ICON_INDEX_TYPO3_62_OR_HIGHER => 'EXT:t3skin/icons/gfx/link_popup.gif',
         ],
     ];
 

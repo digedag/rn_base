@@ -1,11 +1,22 @@
 <?php
 
+namespace Sys25\RnBase\Backend\Handler;
+
+use Exception;
+use Sys25\RnBase\Backend\Lister\AbstractLister;
 use Sys25\RnBase\Domain\Model\DataModel;
+use Sys25\RnBase\Utility\Strings;
+use tx_rnbase;
+use tx_rnbase_mod_BaseModule;
+use tx_rnbase_mod_IModHandler;
+use tx_rnbase_mod_IModule;
+use tx_rnbase_util_FormTool;
+use tx_rnbase_util_Templates;
 
 /***************************************************************
  * Copyright notice
  *
- * (c) 2016 René Nitzsche <rene@system25.de>
+ * (c) 2016-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,14 +36,12 @@ use Sys25\RnBase\Domain\Model\DataModel;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_mod_IModHandler');
-
 /**
  * Abstract search handler.
  *
  * @author Michael Wagner
  */
-abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_IModHandler
+abstract class SearchHandler implements tx_rnbase_mod_IModHandler
 {
     /**
      * The current mod.
@@ -101,7 +110,7 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
     public function getSubModuleId()
     {
         $modId = str_replace('\\', '_', get_class($this));
-        $modId = Tx_Rnbase_Utility_Strings::underscoredToLowerCamelCase($modId);
+        $modId = Strings::underscoredToLowerCamelCase($modId);
 
         return $modId;
     }
@@ -246,7 +255,7 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
     /**
      * Creates the lister instance.
      *
-     * @return Tx_Rnbase_Backend_Lister_AbstractLister
+     * @return AbstractLister
      */
     protected function getLister()
     {
@@ -256,8 +265,8 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
             $this->getOptions()
         );
 
-        if (!$lister instanceof Tx_Rnbase_Backend_Lister_AbstractLister) {
-            throw new Exception('The likster "'.get_class($lister).'" has to extend "Tx_Rnbase_Backend_Lister_AbstractLister"');
+        if (!$lister instanceof AbstractLister) {
+            throw new Exception('The lister "'.get_class($lister).'" has to extend "Sys25\RnBase\Backend\Lister\AbstractLister"');
         }
 
         return $lister;

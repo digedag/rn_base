@@ -1,9 +1,17 @@
 <?php
 
+namespace Sys25\RnBase\Backend\Template;
+
+use Exception;
+use Sys25\RnBase\Backend\Template\Override\DocumentTemplate;
+use Sys25\RnBase\Backend\Utility\BackendUtility;
+use tx_rnbase;
+use tx_rnbase_mod_IModule;
+
 /* *******************************************************
  *  Copyright notice
  *
- *  (c) 2017-2020 René Nitzsche <rene@system25.de>
+ *  (c) 2017-2021 René Nitzsche <rene@system25.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,9 +39,9 @@
  * abgespeckte API und sollte ab 7.6 verwendet werden. Leider ändert sich die API in der 8.7 nochmals.
  *
  * Diese Klasse hier soll eine einheitliche API über alle LTS-Versionen bieten. Intern werden die
- * jeweils passenden TYPO3-Klasse genutzt, nach außen sollte das aber für die Module keine Rolle spielen.
+ * jeweils passenden TYPO3-Klassen genutzt, nach außen sollte das aber für die Module keine Rolle spielen.
  */
-class Tx_Rnbase_Backend_Template_ModuleTemplate
+class ModuleTemplate
 {
     private $template;
 
@@ -53,7 +61,7 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
     /**
      * @return string complete module html code
      */
-    public function renderContent(Tx_Rnbase_Backend_Template_ModuleParts $parts)
+    public function renderContent(ModuleParts $parts)
     {
         return $this->renderContent76($parts);
     }
@@ -67,9 +75,9 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
      * der Weg ab TYPO3 7.6
      * TODO: fertig implementieren.
      */
-    protected function renderContent76(Tx_Rnbase_Backend_Template_ModuleParts $parts)
+    protected function renderContent76(ModuleParts $parts)
     {
-        /* @var $moduleTemplate TYPO3\CMS\Backend\Template\ModuleTemplate */
+        /* @var $moduleTemplate \TYPO3\CMS\Backend\Template\ModuleTemplate */
         $moduleTemplate = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Template\\ModuleTemplate');
 //        $moduleTemplate->getPageRenderer()->loadJquery();
         $moduleTemplate->getDocHeaderComponent()->setMetaInformation($parts->getPageInfo());
@@ -107,7 +115,7 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
      *
      * @param \TYPO3\CMS\Backend\Template\ModuleTemplate $moduleTemplate
      */
-    protected function generateButtons($moduleTemplate, Tx_Rnbase_Backend_Template_ModuleParts $parts)
+    protected function generateButtons($moduleTemplate, ModuleParts $parts)
     {
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         // CSH
@@ -130,9 +138,9 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
 
     /**
      * @param \TYPO3\CMS\Backend\Template\ModuleTemplate $moduleTemplate
-     * @param Tx_Rnbase_Backend_Template_ModuleParts     $parts
+     * @param ModuleParts     $parts
      */
-    protected function registerMenu($moduleTemplate, Tx_Rnbase_Backend_Template_ModuleParts $parts)
+    protected function registerMenu($moduleTemplate, ModuleParts $parts)
     {
         // So funktioniert das nicht. Warum auch immer
         // $moduleTemplate->registerModuleMenu($this->options['modname']);
@@ -147,14 +155,12 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
      * Returns a template instance. Liefert die Instanzvariable doc.
      * Die Instanz wird bis einschließlich T3 8.7 erstellt.
      *
-     * @return TYPO3\CMS\Backend\Template\DocumentTemplate|Tx_Rnbase_Backend_Template_Override_DocumentTemplate
+     * @return DocumentTemplate|\TYPO3\CMS\Backend\Template\DocumentTemplate
      */
     public function getDoc()
     {
         if (!$this->doc) {
-            $this->doc = tx_rnbase::makeInstance(
-                'Tx_Rnbase_Backend_Template_Override_DocumentTemplate'
-            );
+            $this->doc = tx_rnbase::makeInstance(DocumentTemplate::class);
             $this->initDoc($this->doc);
         }
 
@@ -162,7 +168,7 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
     }
 
     /**
-     * @param \Tx_Rnbase_Backend_Template_Override_DocumentTemplate $doc
+     * @param DocumentTemplate $doc
      */
     protected function initDoc($doc)
     {
@@ -203,7 +209,7 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
             throw new Exception('No template for module found.');
         }
         if (!isset($options['form'])) {
-            $modUrl = Tx_Rnbase_Backend_Utility::getModuleUrl(
+            $modUrl = BackendUtility::getModuleUrl(
                 $options['modname'],
                 [
                     'id' => $options['pid'],

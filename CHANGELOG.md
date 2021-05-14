@@ -16,6 +16,7 @@ v1.14.0 (??.05.2021)
  * BC: `PersistenceRepository::refreshModelData()` uses `DomainInterface` now
  * BC: `PersistenceRepository::getCleanModelData()` uses `DomainInterface` now
  * BC: `Tx_Rnbase_Backend_Decorator_InterfaceDecorator::format()` uses `DataInterface` now
+ * BC: `Tx_Rnbase_Backend_AbstractFunctionModule` removed
 
 v1.13.8 (09.05.2021)
  * CS-Fixer updated

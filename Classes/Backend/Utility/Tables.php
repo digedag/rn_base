@@ -1,18 +1,19 @@
 <?php
+
 namespace Sys25\RnBase\Backend\Utility;
 
 use Exception;
-use Traversable;
 use Sys25\RnBase\Database\Connection;
 use Sys25\RnBase\Domain\Model\BaseModel;
 use Sys25\RnBase\Domain\Model\DataInterface;
 use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Domain\Model\RecordInterface;
+use Traversable;
 use tx_rnbase;
+use tx_rnbase_mod_linker_LinkerInterface;
 use tx_rnbase_mod_Util;
 use tx_rnbase_util_FormTool;
 use tx_rnbase_util_TCA;
-use tx_rnbase_mod_linker_LinkerInterface;
 
 /**
  *  Copyright notice.

@@ -1,13 +1,18 @@
 <?php
 
+namespace Sys25\RnBase\Backend\Utility;
+
 use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Domain\Model\RecordInterface;
 use Sys25\RnBase\Domain\Repository\SearchInterface;
+use Traversable;
+use tx_rnbase;
+use tx_rnbase_util_TCA;
 
 /***************************************************************
  * Copyright notice
  *
- * (c) 2016 René Nitzsche <rene@system25.de>
+ * (c) 2016-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,7 +37,7 @@ use Sys25\RnBase\Domain\Repository\SearchInterface;
  *
  * @author Michael Wagner
  */
-class Tx_Rnbase_Backend_Utility_SearcherUtility
+class SearcherUtility
 {
     /**
      * The internal options object.
@@ -46,15 +51,12 @@ class Tx_Rnbase_Backend_Utility_SearcherUtility
      *
      * @param array|DataModel $options
      *
-     * @return Tx_Rnbase_Backend_Utility_SearcherUtility
+     * @return SearcherUtility
      */
     public static function getInstance(
         $options = []
     ) {
-        return tx_rnbase::makeInstance(
-            'Tx_Rnbase_Backend_Utility_SearcherUtility',
-            $options
-        );
+        return tx_rnbase::makeInstance(SearcherUtility::class, $options);
     }
 
     /**
@@ -62,9 +64,8 @@ class Tx_Rnbase_Backend_Utility_SearcherUtility
      *
      * @param array|DataModel $options
      */
-    public function __construct(
-        $options = []
-    ) {
+    public function __construct($options = [])
+    {
         $this->options = DataModel::getInstance($options);
     }
 
@@ -81,7 +82,7 @@ class Tx_Rnbase_Backend_Utility_SearcherUtility
     /**
      * The decorator instace.
      *
-     * @param Sys25\RnBase\Domain\Repository\SearchInterface $repository
+     * @param SearchInterface $repository
      * @param array $fields
      * @param array $options
      *

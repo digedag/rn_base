@@ -1,4 +1,8 @@
 <?php
+
+use Sys25\RnBase\Backend\Utility\Icons;
+use Sys25\RnBase\Utility\TYPO3;
+
 /***************************************************************
  * Copyright notice
  *
@@ -37,8 +41,7 @@ abstract class Tx_Rnbase_Utility_WizIcon
      */
     public static function addWizicon($clazz, $clazzFile)
     {
-        tx_rnbase::load('tx_rnbase_util_TYPO3');
-        if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+        if (!TYPO3::isTYPO80OrHigher()) {
             $GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'][$id] = $clazz;
         } else {
             $wizard = tx_rnbase::makeInstance($clazz);
@@ -50,7 +53,7 @@ abstract class Tx_Rnbase_Utility_WizIcon
                     // Noch nicht für 8.x vorbereitet
                     continue;
                 }
-                Tx_Rnbase_Backend_Utility_Icons::getIconRegistry()->registerIcon(
+                Icons::getIconRegistry()->registerIcon(
                     $id.'-icon',
                     'TYPO3\\CMS\Core\\Imaging\\IconProvider\\BitmapIconProvider',
                     ['source' => $data['icon']]

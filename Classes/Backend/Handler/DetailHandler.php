@@ -1,11 +1,16 @@
 <?php
 
+namespace Sys25\RnBase\Backend\Handler;
+
+use Exception;
 use Sys25\RnBase\Domain\Model\RecordInterface;
+use tx_rnbase_mod_IModule;
+use tx_rnbase_util_Templates;
 
 /***************************************************************
  * Copyright notice
  *
- * (c) 2016 René Nitzsche <rene@system25.de>
+ * (c) 2016-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,7 +35,7 @@ use Sys25\RnBase\Domain\Model\RecordInterface;
  *
  * @author Michael Wagner
  */
-abstract class Tx_Rnbase_Backend_Handler_DetailHandler extends Tx_Rnbase_Backend_Handler_SearchHandler
+abstract class DetailHandler extends SearchHandler
 {
     /**
      * Returns the current object for detail page.
