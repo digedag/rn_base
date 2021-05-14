@@ -1,8 +1,13 @@
 <?php
+
+namespace Sys25\RnBase\Exception;
+
+use Exception;
+
 /**
  *  Copyright notice.
  *
- *  (c) 2016 Hannes Bochmann <rene@system25.de>
+ *  (c) 2015-2021 René Nitzsche <rene@system25.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,14 +28,11 @@
  */
 
 /**
- * Tx_Rnbase_Exception_Base.
- *
- * Wrapper für TYPO3\CMS\Core\Exception seit TYPO3 6.x
  *
  * @author          Hannes Bochmann <rene@system25.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Exception_Base extends TYPO3\CMS\Core\Exception
+class BaseException extends Exception
 {
 }

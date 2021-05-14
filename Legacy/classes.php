@@ -4,12 +4,18 @@
 interface Tx_Rnbase_Configuration_ProcessorInterface extends \Sys25\RnBase\Configuration\ConfigurationInterface
 {
 }
-
+/** @deprecated */
+class Tx_Rnbase_Exception_Base extends Sys25\RnBase\Exception\BaseException
+{
+}
+/** @deprecated */
+class Tx_Rnbase_Exception_PageNotFound404 extends Sys25\RnBase\Exception\PageNotFound404
+{
+}
 /** @deprecated */
 class tx_rnbase_util_TYPO3 extends Sys25\RnBase\Utility\TYPO3
 {
 }
-
 /** @deprecated */
 class tx_rnbase_configurations extends Sys25\RnBase\Configuration\Processor
 {
