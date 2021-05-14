@@ -1,14 +1,23 @@
 <?php
+namespace Sys25\RnBase\Backend\Utility;
 
+use Exception;
+use Traversable;
+use Sys25\RnBase\Database\Connection;
 use Sys25\RnBase\Domain\Model\BaseModel;
 use Sys25\RnBase\Domain\Model\DataInterface;
 use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Domain\Model\RecordInterface;
+use tx_rnbase;
+use tx_rnbase_mod_Util;
+use tx_rnbase_util_FormTool;
+use tx_rnbase_util_TCA;
+use tx_rnbase_mod_linker_LinkerInterface;
 
 /**
  *  Copyright notice.
  *
- *  (c) 2016 René Nitzsche <rene@system25.de>
+ *  (c) 2016-2021 René Nitzsche <rene@system25.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,8 +36,15 @@ use Sys25\RnBase\Domain\Model\RecordInterface;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-class Tx_Rnbase_Backend_Utility_Tables
+class Tables
 {
+    private $lang;
+
+    public function __construct($lang = null)
+    {
+        $this->lang = $lang ?: $GLOBALS['LANG'];
+    }
+
     /**
      * @param array                                $entries
      * @param array                                $columns
@@ -120,7 +136,7 @@ class Tx_Rnbase_Backend_Utility_Tables
                 $row[] = sprintf(
                     '<span title="Info: %s">%s</span>',
                     $dontcheck[$record['uid']],
-                    Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon(
+                    Icons::getSpriteIcon(
                         'actions-document-info'
                     )
                 );
@@ -130,7 +146,7 @@ class Tx_Rnbase_Backend_Utility_Tables
         if ($options->getAddRecordSprite()) {
             $spriteIconName = 'mimetypes-other-other';
             if ($entry instanceof RecordInterface && $entry->getTableName()) {
-                $spriteIconName = Tx_Rnbase_Backend_Utility_Icons::mapRecordTypeToSpriteIconName(
+                $spriteIconName = Icons::mapRecordTypeToSpriteIconName(
                     $entry->getTableName(),
                     $record
                 );
@@ -175,7 +191,6 @@ class Tx_Rnbase_Backend_Utility_Tables
      */
     private function getHeadline($columns = [], $options, $formTool)
     {
-        global $LANG;
         $arr = [];
         if ($options->getCheckbox()) {
             $arr[] = '&nbsp;'; // Spalte für Checkbox
@@ -194,9 +209,9 @@ class Tx_Rnbase_Backend_Utility_Tables
                 continue;
             }
 
-            $label = $LANG->getLL(isset($data['title']) ? $data['title'] : $column);
+            $label = $this->getLang()->getLL(isset($data['title']) ? $data['title'] : $column);
             if (!$label && isset($data['title'])) {
-                $label = $LANG->sL($data['title']);
+                $label = $this->getLang()->sL($data['title']);
             }
             //es gibt die Möglichkeit sortable zu setzen. damit wird
             //nach dem title eine sortierung eingeblendet.
@@ -209,7 +224,7 @@ class Tx_Rnbase_Backend_Utility_Tables
             $arr[] = $label ? $label : $data['title'];
         }
         if ($options->getLinker()) {
-            $arr[] = $LANG->getLL('label_action');
+            $arr[] = $this->getLang()->getLL('label_action');
         }
 
         return $arr;
@@ -225,7 +240,7 @@ class Tx_Rnbase_Backend_Utility_Tables
     private function getLangOverlayEntries(RecordInterface $entry)
     {
         $parentField = tx_rnbase_util_TCA::getTransOrigPointerFieldForTable($entry->getTableName());
-        $overlays = tx_rnbase_util_DB::doSelect(
+        $overlays = Connection::getInstance()->doSelect(
             '*',
             $entry->getTableName(),
             [
@@ -318,9 +333,7 @@ class Tx_Rnbase_Backend_Utility_Tables
             } else {
                 $result = $resultHead.$result;
             }
-            $tableTag = tx_rnbase_util_TYPO3::isTYPO76OrHigher() ?
-                '<table class="table table-striped table-hover table-condensed">' :
-                '<table border="0" cellspacing="0" cellpadding="0" class="typo3-dblist" id="typo3-tmpltable">';
+            $tableTag = '<table class="table table-striped table-hover table-condensed">';
             $tableWrap = is_array($tableLayout['table']) ? $tableLayout['table'] : [$tableTag, '</table>'];
             $result = $tableWrap[0].$result.$tableWrap[1];
         }
@@ -353,5 +366,10 @@ class Tx_Rnbase_Backend_Utility_Tables
                 'defCol' => ['<td>', '</td>'],
             ],
         ];
+    }
+
+    private function getLang()
+    {
+        return $this->lang;
     }
 }

@@ -114,7 +114,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
      * @param bool   $callOriginalMethods
      * @param null   $proxyTarget
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit\Framework\MockObject\MockObject
      */
     public function getMock(
         $originalClassName,

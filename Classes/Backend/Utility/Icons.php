@@ -162,7 +162,7 @@ class Icons
     public static function getIconFactory()
     {
         return tx_rnbase::makeInstance(
-            'TYPO3\\CMS\\Core\\Imaging\\IconFactory'
+            \TYPO3\CMS\Core\Imaging\IconFactory::class
         );
     }
 

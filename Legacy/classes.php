@@ -93,6 +93,11 @@ class Tx_Rnbase_Backend_Utility_Icons extends Sys25\RnBase\Backend\Utility\Icons
 {
 }
 /** @deprecated */
+class Tx_Rnbase_Backend_Utility_Tables extends Sys25\RnBase\Backend\Utility\Tables
+{
+}
+
+/** @deprecated */
 class tx_rnbase_util_Logger extends Sys25\RnBase\Utility\Logger
 {
 }

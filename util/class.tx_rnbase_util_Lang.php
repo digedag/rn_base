@@ -21,7 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-tx_rnbase::load('tx_rnbase_util_Files');
 
 /**
  * Wrapper for language usage.
@@ -131,7 +130,6 @@ class tx_rnbase_util_Lang
         }
         //new values from the given array are added to the existing local lang.
         //existing values in the local lang are overruled with those of the given array.
-        tx_rnbase::load('tx_rnbase_util_Arrays');
         $this->LOCAL_LANG = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
             is_array($this->LOCAL_LANG) ? $this->LOCAL_LANG : [],
             $langArr
