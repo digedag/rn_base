@@ -1,8 +1,14 @@
 <?php
+
+namespace Sys25\RnBase\Backend\Utility;
+
+use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase;
+
 /**
  *  Copyright notice.
  *
- *  (c) 2015 Hannes Bochmann <rene@system25.de>
+ *  (c) 2016-2021 Rene Nitzsche (rene@system25.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,15 +29,13 @@
  */
 
 /**
- * Tx_Rnbase_Backend_Utility_Icons.
+ * Wrapper für \TYPO3\CMS\Backend\Utility\IconUtility bzw. t3lib_iconWorks.
  *
- * Wrapper für \TYPO3\CMS\Backend\Utility\IconUtility bzw. t3lib_iconWorks
- *
- * @author          Hannes Bochmann <rene@system25.de>
+ * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Backend_Utility_Icons
+class Icons
 {
     /**
      * @param string $method
@@ -45,11 +49,11 @@ class Tx_Rnbase_Backend_Utility_Icons
     }
 
     /**
-     * @return \TYPO3\CMS\Backend\Utility\IconUtility
+     * @return \TYPO3\CMS\Core\Imaging\IconFactory
      */
     protected static function getIconUtilityClass()
     {
-        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+        if (TYPO3::isTYPO80OrHigher()) {
             $class = 'TYPO3\\CMS\\Core\\Imaging\\IconFactory';
         } else {
             $class = 'TYPO3\\CMS\\Backend\\Utility\\IconUtility';
@@ -65,24 +69,14 @@ class Tx_Rnbase_Backend_Utility_Icons
      * @param array  $row
      * @param string $size  "large" "small" or "default", see the constants of the Icon class
      *
-     * @return Icon
+     * @return \TYPO3\CMS\Core\Imaging\Icon
      */
     public static function getSpriteIconForRecord(
         $table,
         array $row,
         $size = 'default'
     ) {
-        if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
-            return static::getIconFactory()->getIconForRecord($table, $row, $size);
-        }
-
-        return static::__callStatic(
-            'getSpriteIconForRecord',
-            [
-                $table,
-                $row,
-            ]
-        );
+        return static::getIconFactory()->getIconForRecord($table, $row, $size);
     }
 
     /**
@@ -94,7 +88,7 @@ class Tx_Rnbase_Backend_Utility_Icons
     {
         $iconsAvailable = $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'];
 
-        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+        if (TYPO3::isTYPO80OrHigher()) {
             $iconsAvailable = static::getIconRegistry()->getAllRegisteredIconIdentifiers();
         }
 
@@ -123,7 +117,7 @@ class Tx_Rnbase_Backend_Utility_Icons
         array $overlays = []
     ) {
         // @TODO: shoult be used for TYPO3 7 too!
-        if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+        if (!TYPO3::isTYPO80OrHigher()) {
             $class = static::getIconUtilityClass();
 
             return $class::getSpriteIcon($iconName, $options, $overlays);
@@ -151,7 +145,7 @@ class Tx_Rnbase_Backend_Utility_Icons
      */
     public static function mapRecordTypeToSpriteIconName($table, array $row)
     {
-        if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+        if (!TYPO3::isTYPO80OrHigher()) {
             $class = static::getIconUtilityClass();
 
             return $class::mapRecordTypeToSpriteIconName($table, $row);

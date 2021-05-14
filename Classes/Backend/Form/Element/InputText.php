@@ -1,5 +1,9 @@
 <?php
 
+namespace Sys25\RnBase\Backend\Form\Element;
+
+use Sys25\RnBase\Backend\Utility\Icons;
+use Sys25\RnBase\Utility\Strings;
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -7,7 +11,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2016-2017 Rene Nitzsche (rene@system25.de)
+*  (c) 2016-2021 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,7 +34,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /**
  * Rendert ein einfaches Input-Field.
  */
-class Tx_Rnbase_Backend_Form_Element_InputText extends AbstractFormElement
+class InputText extends AbstractFormElement
 {
     /**
      * @param array $data not used right now!
@@ -57,7 +61,7 @@ class Tx_Rnbase_Backend_Form_Element_InputText extends AbstractFormElement
                 $evalList = $config['eval'];
             }
         }
-        $evalList = Tx_Rnbase_Utility_Strings::trimExplode(',', $evalList, true);
+        $evalList = Strings::trimExplode(',', $evalList, true);
 
         $classes = [];
         $attributes = [];
@@ -123,7 +127,7 @@ class Tx_Rnbase_Backend_Form_Element_InputText extends AbstractFormElement
         $html .= '<input type="hidden" name="'.$name.'" value="'.htmlspecialchars($value).'" />';
 
         if ($icon) {
-            $html .= Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon($icon);
+            $html .= Icons::getSpriteIcon($icon);
         }
 
         return $html;

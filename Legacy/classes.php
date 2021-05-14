@@ -77,6 +77,22 @@ class Tx_Rnbase_Backend_Utility extends Sys25\RnBase\Backend\Utility\BackendUtil
 {
 }
 /** @deprecated */
+class Tx_Rnbase_Backend_Form_Element_InputText extends Sys25\RnBase\Backend\Form\Element\InputText
+{
+}
+/** @deprecated */
+class Tx_Rnbase_Backend_Form_FormBuilder extends Sys25\RnBase\Backend\Form\FormBuilder
+{
+}
+/** @deprecated */
+class Tx_Rnbase_Backend_Form_ToolBox extends Sys25\RnBase\Backend\Form\ToolBox
+{
+}
+/** @deprecated */
+class Tx_Rnbase_Backend_Utility_Icons extends Sys25\RnBase\Backend\Utility\Icons
+{
+}
+/** @deprecated */
 class tx_rnbase_util_Logger extends Sys25\RnBase\Utility\Logger
 {
 }
