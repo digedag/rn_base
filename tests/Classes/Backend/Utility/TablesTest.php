@@ -5,8 +5,8 @@ namespace Sys25\RnBase\Backend\Utility;
 use Sys25\RnBase\Backend\Form\ToolBox;
 use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Tests\BaseTestCase;
+use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
-use TYPO3\CMS\Core\Localization\LanguageService;
 
 /***************************************************************
 *  Copyright notice
@@ -31,14 +31,19 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-class Tx_Rnbase_Backend_Utility_TablesTest extends BaseTestCase
+class TablesTest extends BaseTestCase
 {
+    private function getLanguageClass()
+    {
+        return TYPO3::isTYPO95OrHigher() ? 'TYPO3\CMS\Core\Localization\LanguageService' : 'TYPO3\CMS\Lang\LanguageService';
+    }
+
     /**
      * @group unit
      */
     public function testPrepareTable()
     {
-        $lang = $this->prophesize(LanguageService::class)->reveal();
+        $lang = $this->prophesize($this->getLanguageClass())->reveal();
         /* @var $tablesUtil Tables */
         $tablesUtil = tx_rnbase::makeInstance(Tables::class, $lang);
         $entries = [
