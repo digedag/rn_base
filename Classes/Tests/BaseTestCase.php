@@ -1,9 +1,21 @@
 <?php
 
+namespace Sys25\RnBase\Tests;
+
+use Exception;
+use ReflectionClass;
+use ReflectionObject;
+use ReflectionProperty;
+use Sys25\RnBase\Configuration\ConfigurationInterface;
+use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase;
+use tx_rnbase_util_Spyc;
+use tx_rnbase_util_Typo3Classes;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2018 Rene Nitzsche (rene@system25.de)
+ *  (c) 2018-2021 Rene Nitzsche (rene@system25.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,16 +35,12 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_Typo3Classes');
-// make sure to load the constants
-require_once tx_rnbase_util_Extensions::extPath('rn_base').'Classes/Constants.php';
-
 /**
  * Basis Testcase.
  *
  * @author Michael Wagner
  */
-abstract class tx_rnbase_tests_BaseTestCase extends \PHPUnit\Framework\TestCase
+abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
 {
     /**
      * whether global variables should be backuped.
@@ -53,7 +61,7 @@ abstract class tx_rnbase_tests_BaseTestCase extends \PHPUnit\Framework\TestCase
      */
     public static function prepareLegacyTypo3DbGlobal()
     {
-        if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+        if (!TYPO3::isTYPO80OrHigher()) {
             return;
         }
 
@@ -75,7 +83,7 @@ abstract class tx_rnbase_tests_BaseTestCase extends \PHPUnit\Framework\TestCase
      * @param string $extensionKey
      * @param string $qualifier
      *
-     * @return Tx_Rnbase_Configuration_ProcessorInterface
+     * @return ConfigurationInterface
      *
      * @deprecated use tx_rnbase_tests_Utility::createConfigurations() instead
      */
@@ -167,7 +175,7 @@ abstract class tx_rnbase_tests_BaseTestCase extends \PHPUnit\Framework\TestCase
      * @param array  $record
      * @param string $class
      *
-     * @return tx_rnbase_model_base|PHPUnit_Framework_MockObject_MockObject
+     * @return \tx_rnbase_model_base|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getModel(
         $record = null,
@@ -238,13 +246,12 @@ abstract class tx_rnbase_tests_BaseTestCase extends \PHPUnit\Framework\TestCase
      * @param mixed $data              Usually the yaml file
      * @param bool  $tryToLoadYamlFile
      *
-     * @return tx_rnbase_model_base|PHPUnit_Framework_MockObject_MockObject
+     * @return \tx_rnbase_model_base|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function loadYaml($data, $tryToLoadYamlFile = true)
     {
         // there is no array, so convert the yaml content or file
         if ($tryToLoadYamlFile && !is_array($data)) {
-            tx_rnbase::load('tx_rnbase_util_Spyc');
             $data = tx_rnbase_util_Spyc::YAMLLoad($data);
         }
 
@@ -257,7 +264,6 @@ abstract class tx_rnbase_tests_BaseTestCase extends \PHPUnit\Framework\TestCase
                 empty($data['_model']) ? 'tx_rnbase_model_base' : $data['_model']
             );
 
-            tx_rnbase::load($clazz);
             $model = $this->getModel(
                 (array) ($data['_record']),
                 $clazz,
@@ -297,7 +303,7 @@ abstract class tx_rnbase_tests_BaseTestCase extends \PHPUnit\Framework\TestCase
      *
      * @param array $array
      *
-     * @return tx_rnbase_model_base|PHPUnit_Framework_MockObject_MockObject
+     * @return \tx_rnbase_model_base|\PHPUnit_Framework_MockObject_MockObject
      */
     private function yamlFindGetters(
         array $array
@@ -575,9 +581,9 @@ abstract class tx_rnbase_tests_BaseTestCase extends \PHPUnit\Framework\TestCase
      * @param bool   $callAutoload
      * @param bool   $cloneArguments
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws \PHPUnit_Framework_Exception
      *
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit_Framework_MockObject_MockObject
      */
     public function getMockForAbstract(
         $originalClassName,
@@ -603,13 +609,11 @@ abstract class tx_rnbase_tests_BaseTestCase extends \PHPUnit\Framework\TestCase
 
     protected function resetIndependentEnvironmentCache()
     {
-        if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
-            $property = new ReflectionProperty(
-                tx_rnbase_util_Typo3Classes::getGeneralUtilityClass(),
-                'indpEnvCache'
-            );
-            $property->setAccessible(true);
-            $property->setValue(null, []);
-        }
+        $property = new ReflectionProperty(
+            tx_rnbase_util_Typo3Classes::getGeneralUtilityClass(),
+            'indpEnvCache'
+        );
+        $property->setAccessible(true);
+        $property->setValue(null, []);
     }
 }

@@ -414,6 +414,7 @@ class tx_rnbase_util_TCA
             // is stored in $this->record['l18n_parent'] instead of $this->record['uid']!
             $languageParentField = self::getTransOrigPointerFieldForTable($tableName);
             $sysLanguageUidField = self::getLanguageFieldForTable($tableName);
+
             if (!(
                 empty($languageParentField)
                 && empty($sysLanguageUidField)

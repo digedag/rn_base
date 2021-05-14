@@ -1,9 +1,13 @@
 <?php
 
+namespace Sys25\RnBase\Database;
+
+use Sys25\RnBase\Tests\BaseTestCase;
+
 /**
  *  Copyright notice.
  *
- *  (c) 2016 DMK E-Business GmbH <dev@dmk-ebusiness.de>
+ *  (c) 2016-2021 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -24,11 +28,11 @@
  */
 
 /**
- * Class Tx_Rnbase_Database_TreeQueryBuilderTest.
+ * @group unit
  *
  * @author Mario Seidel <mario.seidel@dmk-ebusiness.de>
  */
-class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCase
+class TreeQueryBuilderTest extends BaseTestCase
 {
     /**
      * test tree sturcture like:
@@ -47,7 +51,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
     public function testGetTreeRecursive()
     {
         /**
-         * @var Tx_Rnbase_Database_TreeQueryBuilder
+         * @var TreeQueryBuilder
          */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
@@ -118,7 +122,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
             'depth' => 2,
         ];
         /**
-         * @var Tx_Rnbase_Database_TreeQueryBuilder
+         * @var TreeQueryBuilder
          */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
@@ -154,7 +158,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
         ];
 
         /**
-         * @var Tx_Rnbase_Database_TreeQueryBuilder
+         * @var TreeQueryBuilder
          */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
@@ -190,7 +194,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
         ];
 
         /**
-         * @var Tx_Rnbase_Database_TreeQueryBuilder
+         * @var TreeQueryBuilder
          */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
@@ -238,7 +242,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
         ];
 
         /**
-         * @var Tx_Rnbase_Database_TreeQueryBuilder
+         * @var TreeQueryBuilder
          */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
@@ -284,7 +288,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
         ];
 
         /**
-         * @var Tx_Rnbase_Database_TreeQueryBuilder
+         * @var TreeQueryBuilder
          */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
@@ -328,7 +332,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
         ];
 
         /**
-         * @var Tx_Rnbase_Database_TreeQueryBuilder
+         * @var TreeQueryBuilder
          */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
@@ -368,7 +372,7 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
     public function testGetTreeWithCommaSeparatedPidList()
     {
         /**
-         * @var Tx_Rnbase_Database_TreeQueryBuilder
+         * @var TreeQueryBuilder
          */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
@@ -420,21 +424,19 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
      *
      * @param \Closure $expectFunc
      *
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getTreeQueryBuilderMock($expectFunc)
     {
-        tx_rnbase::load('Tx_Rnbase_Database_Connection');
         $connection = $this->getMock(
-            'Tx_Rnbase_Database_Connection',
-            get_class_methods('Tx_Rnbase_Database_Connection')
+            Connection::class,
+            get_class_methods(Connection::class)
         );
 
         $expectFunc($connection);
 
-        tx_rnbase::load('Tx_Rnbase_Database_TreeQueryBuilder');
         $treeQueryBuildMock = $this->getMock(
-            'Tx_Rnbase_Database_TreeQueryBuilder',
+            TreeQueryBuilder::class,
             ['getConnection']
         );
 

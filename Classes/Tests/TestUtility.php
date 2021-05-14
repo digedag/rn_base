@@ -1,9 +1,14 @@
 <?php
 
+namespace Sys25\RnBase\Tests;
+
+use tx_rnbase;
+use tx_rnbase_util_Typo3Classes;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2018 Rene Nitzsche (rene@system25.de)
+ *  (c) 2018-2021 Rene Nitzsche (rene@system25.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -24,13 +29,11 @@
  ***************************************************************/
 
 /**
- * Class tx_rnbase_tests_Utility.
- *
  * @author  Hannes Bochmann
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-class tx_rnbase_tests_Utility
+class TestUtility
 {
     /**
      * Sample:

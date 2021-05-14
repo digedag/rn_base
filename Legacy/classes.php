@@ -4,13 +4,11 @@
 interface Tx_Rnbase_Configuration_ProcessorInterface extends \Sys25\RnBase\Configuration\ConfigurationInterface
 {
 }
-echo __LINE__.'<br>';
 
 /** @deprecated */
 class tx_rnbase_util_TYPO3 extends Sys25\RnBase\Utility\TYPO3
 {
 }
-echo __LINE__.'<br>';
 
 /** @deprecated */
 class tx_rnbase_configurations extends Sys25\RnBase\Configuration\Processor
@@ -194,5 +192,17 @@ interface Tx_Rnbase_Backend_Decorator_InterfaceDecorator extends Sys25\RnBase\Ba
 }
 /** @deprecated */
 class Tx_Rnbase_Backend_Decorator_BaseDecorator extends Sys25\RnBase\Backend\Decorator\BaseDecorator implements Tx_Rnbase_Backend_Decorator_InterfaceDecorator
+{
+}
+/** @deprecated */
+class Tx_Rnbase_Database_TreeQueryBuilder extends Sys25\RnBase\Database\TreeQueryBuilder
+{
+}
+/** @deprecated */
+abstract class tx_rnbase_tests_BaseTestCase extends Sys25\RnBase\Tests\BaseTestCase
+{
+}
+/** @deprecated */
+class tx_rnbase_tests_Utility extends Sys25\RnBase\Tests\TestUtility
 {
 }
