@@ -1,11 +1,14 @@
 <?php
 
+namespace Sys25\RnBase\Exception;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013  <hannes.bochmann@das-medienkombinat.de>
- *  Contact: rene@system25.de
- *  All rights reserved
+ * (c) 2007-2021 Rene Nitzsche
+ * Contact: rene@system25.de
+ *
+ * All rights reserved
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,18 +26,12 @@
  ***************************************************************/
 
 /**
- * @author Hannes Bochmann
+ * Wird diese Exception innerhalb einer Action geworfen,
+ * wird keine Fehlermeldung gelogtgt und ausgegeben.
+ * Stattdesen wird keine Ausgabe erzeugt und die kommentarlos Action übersprungen.
+ *
+ * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-interface tx_rnbase_exception_IHandler
+class SkipActionException extends BaseException
 {
-    /**
-     * Interne Verarbeitung der Exception.
-     *
-     * @param string                                     $actionName
-     * @param Exception                                  $e
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     *
-     * @return string error message
-     */
-    public function handleException($actionName, Exception $e, Tx_Rnbase_Configuration_ProcessorInterface $configurations);
 }

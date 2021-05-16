@@ -1,12 +1,14 @@
 <?php
 
+namespace Sys25\RnBase\Exception;
+
+use Exception;
+use Sys25\RnBase\Configuration\ConfigurationInterface;
+
 /***************************************************************
  *  Copyright notice
  *
- * (c) 2007-2014 Rene Nitzsche
- * Contact: rene@system25.de
- *
- * All rights reserved
+ * (c) 2016-2021 René Nitzsche <rene@system25.de>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,20 +25,19 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('Tx_Rnbase_Exception_PageNotFound404');
-
 /**
- * Wird diese Exception innerhalb einer Action geworfen,
- * wird ein 404 Header gesetzt
- * und das robots Meta Tag NOINDEX.
- *
- * Der Exception sollte eine Nachricht übergeben werden, da diese dann
- * ausgegeben wird.
- *
- * @author Hannes Bochmann <dev@dmk-ebusiness.de>
- *
- * @deprecated use Tx_Rnbase_Exception_ItemNotFound404
+ * @author Hannes Bochmann
  */
-class tx_rnbase_exception_ItemNotFound404 extends Tx_Rnbase_Exception_PageNotFound404
+interface ExceptionHandlerInterface
 {
+    /**
+     * Interne Verarbeitung der Exception.
+     *
+     * @param string                                     $actionName
+     * @param Exception                                  $e
+     * @param ConfigurationInterface $configurations
+     *
+     * @return string error message
+     */
+    public function handleException($actionName, Exception $e, ConfigurationInterface $configurations);
 }

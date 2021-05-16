@@ -1,11 +1,18 @@
 <?php
 
+namespace Sys25\RnBase\Exception;
+
+use Exception;
+use Sys25\RnBase\Configuration\ConfigurationInterface;
+use Sys25\RnBase\Configuration\Processor;
+use Sys25\RnBase\Utility\Logger;
+use Sys25\RnBase\Utility\Misc;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013  <hannes.bochmann@das-medienkombinat.de>
- *  Contact: rene@system25.de
- *  All rights reserved
+ * (c) 2016-2021 René Nitzsche <rene@system25.de>
+ * All rights reserved
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,25 +29,22 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_Misc');
-tx_rnbase::load('tx_rnbase_exception_IHandler');
-
 /**
  * @author Hannes Bochmann
  * @author Michael Wagner
  */
-class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
+class ExceptionHandler implements ExceptionHandlerInterface
 {
     /**
      * Interne Verarbeitung der Exception.
      *
      * @param string                                     $actionName
      * @param Exception                                  $e
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param ConfigurationInterface $configurations
      *
      * @return string error message
      */
-    public function handleException($actionName, Exception $e, Tx_Rnbase_Configuration_ProcessorInterface $configurations)
+    public function handleException($actionName, Exception $e, ConfigurationInterface $configurations)
     {
         // wir prüfen erst mal, ob die exception gefangen werden soll
         $catch = $this->catchException($actionName, $e, $configurations);
@@ -53,11 +57,10 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
             header('HTTP/1.1 503 Service Unavailable');
         }
         // wir loggen nun den fehler
-        tx_rnbase::load('tx_rnbase_util_Logger');
-        if (tx_rnbase_util_Logger::isFatalEnabled()) {
+        if (Logger::isFatalEnabled()) {
             $extKey = $configurations->getExtensionKey();
             $extKey = $extKey ? $extKey : 'rn_base';
-            tx_rnbase_util_Logger::fatal(
+            Logger::fatal(
                 'Fatal error for action '.$actionName,
                 $extKey,
                 [
@@ -74,9 +77,9 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
             );
         }
         // wir senden eine fehlermail
-        $addr = Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'sendEmailOnException');
+        $addr = Processor::getExtensionCfgValue('rn_base', 'sendEmailOnException');
         if ($addr) {
-            tx_rnbase_util_Misc::sendErrorMail($addr, $actionName, $e);
+            Misc::sendErrorMail($addr, $actionName, $e);
         }
 
         // Now message for FE
@@ -86,17 +89,17 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
     }
 
     /**
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param ConfigurationInterface $configurations
      *
      * @return bool
      */
-    protected function send503HeaderOnException(Tx_Rnbase_Configuration_ProcessorInterface $configurations)
+    protected function send503HeaderOnException(ConfigurationInterface $configurations)
     {
         //sending a 503 header?
         return
             (
                 //shall we basically send a 503 header?
-                intval(Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'send503HeaderOnException')) && (
+                intval(Processor::getExtensionCfgValue('rn_base', 'send503HeaderOnException')) && (
                     //the plugin has the oppurtunity to prevent sending a 503 header
                     //by setting plugin.plugin_name.send503HeaderOnException = 0 in the TS config.
                     //if this option is not set we use the ext config
@@ -116,11 +119,11 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
      *
      * @param string                                     $actionName
      * @param Exception                                  $e
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param ConfigurationInterface $configurations
      */
-    protected function getErrorMessage($actionName, Exception $e, Tx_Rnbase_Configuration_ProcessorInterface $configurations)
+    protected function getErrorMessage($actionName, Exception $e, ConfigurationInterface $configurations)
     {
-        if (Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'verboseMayday')) {
+        if (Processor::getExtensionCfgValue('rn_base', 'verboseMayday')) {
             return '<div>'
                     .'<strong>UNCAUGHT EXCEPTION FOR VIEW: '.$actionName.'</strong>'
                     .'<br />CODE: '.$e->getCode()
@@ -158,14 +161,14 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
      *
      * @param string                                     $actionName
      * @param Exception                                  $e
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param ConfigurationInterface $configurations
      *
      * @return string|null
      */
     protected function catchException(
         $actionName,
         Exception $e,
-        Tx_Rnbase_Configuration_ProcessorInterface $configurations
+        ConfigurationInterface $configurations
     ) {
         // typoscript nach catchanweisungen prüfen
         // das machen wir nur, wenn sich diese exception nicht
@@ -193,16 +196,16 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
      * wodurch der stack auch bei mehrfacher rekursion immer gleich ist,
      * also die methode nur ein mal auftaucht.
      *
-     * @param string                                     $actionName
-     * @param Exception                                  $e
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param string $actionName
+     * @param Exception $e
+     * @param ConfigurationInterface $configurations
      *
      * @return bool
      */
     private function checkExceptionRecursion(
         $action,
         Exception $e,
-        Tx_Rnbase_Configuration_ProcessorInterface $configurations,
+        ConfigurationInterface $configurations,
         $type = 'error'
     ) {
         static $calls = 0, $trace = [];
@@ -216,7 +219,7 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
         // bei mehr als 50 exception calls, müssen wir davon ausgehen,
         // das ein kritischer fehler vorliegt
         if (++$calls > $maxCalls) {
-            tx_rnbase_util_Logger::fatal(
+            Logger::fatal(
                 'Too much recursion in "'.get_class($this).'"'
                     .' That should not have happened.'
                     .' It looks as if there is a problem with a faulty configuration.',

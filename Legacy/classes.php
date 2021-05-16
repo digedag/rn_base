@@ -21,6 +21,10 @@ class Tx_Rnbase_Exception_PageNotFound404 extends Sys25\RnBase\Exception\PageNot
 {
 }
 /** @deprecated */
+class tx_rnbase_exception_ItemNotFound404 extends Tx_Rnbase_Exception_PageNotFound404
+{
+}
+/** @deprecated */
 class tx_rnbase_util_TYPO3 extends Sys25\RnBase\Utility\TYPO3
 {
 }
@@ -294,5 +298,13 @@ class Tx_Rnbase_Utility_TypoScript extends Sys25\RnBase\Utility\TypoScript
 }
 /** @deprecated */
 abstract class Tx_Rnbase_Utility_WizIcon extends Sys25\RnBase\Utility\WizIcon
+{
+}
+/** @deprecated */
+interface tx_rnbase_exception_IHandler extends Sys25\RnBase\Exception\ExceptionHandlerInterface
+{
+}
+/** @deprecated */
+class tx_rnbase_exception_Handler extends Sys25\RnBase\Exception\ExceptionHandler implements tx_rnbase_exception_IHandler
 {
 }

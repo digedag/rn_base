@@ -23,6 +23,8 @@ v1.14.0 (??.05.2021)
  * BC: `SimpleMarker::prepareItem()` changed parameter types
  * `Tx_Rnbase_Scheduler_Task`, `Tx_Rnbase_Scheduler_FieldProviderBase` and `Tx_Rnbase_Scheduler_FieldProvider` are deprecated
  * BC: `CategorySearch` supports QueryBuilder API
+ * BC: `tx_rnbase_exception_IHandler::handleException()` changed parameter types
+ * BC: `tx_rnbase_exception_Skip` replaced by `Sys25\RnBase\Exception\SkipActionException`
 
 v1.13.8 (09.05.2021)
  * CS-Fixer updated

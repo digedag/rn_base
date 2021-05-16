@@ -5,7 +5,7 @@ namespace Sys25\RnBase\Configuration;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2007-2017 Rene Nitzsche
+ *  (c) 2007-2021 Rene Nitzsche
  *  Contact: rene@system25.de
  *
  *  Original version:
@@ -29,7 +29,10 @@ namespace Sys25\RnBase\Configuration;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
+use Sys25\RnBase\Exception\SkipActionException;
+use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\Typo3Classes;
+use tx_rnbase;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /***************************************************************
@@ -190,7 +193,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
         $this->_dataStore = new \ArrayObject();
         $this->_viewData = new \ArrayObject();
         $this->_keepVars = new \ArrayObject();
-        $this->localLangUtil = \tx_rnbase::makeInstance('tx_rnbase_util_Lang');
+        $this->localLangUtil = tx_rnbase::makeInstance('tx_rnbase_util_Lang');
     }
 
     /**
@@ -238,7 +241,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
         $this->_extensionKey = $this->get('extensionKey') ? $this->get('extensionKey') : $extensionKey;
         $this->_qualifier = $this->get('qualifier') ? $this->get('qualifier') : $qualifier;
 
-        $this->_formatter = \tx_rnbase::makeInstance('tx_rnbase_util_FormatUtil', $this);
+        $this->_formatter = tx_rnbase::makeInstance('tx_rnbase_util_FormatUtil', $this);
 
         $this->loadLL();
     }
@@ -269,7 +272,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
      *
      * @return bool|void
      *
-     * @throws \tx_rnbase_exception_Skip
+     * @throws SkipActionException
      */
     public function convertToUserInt($convert = true)
     {
@@ -279,7 +282,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
         }
         $this->getCObj()->doConvertToUserIntObject = $convert;
         if ($convert) {
-            throw \tx_rnbase::makeInstance('tx_rnbase_exception_Skip');
+            throw tx_rnbase::makeInstance(SkipActionException::class);
         }
 
         return true;
@@ -344,7 +347,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
         $cObjClass = null === $cObjClass ? Typo3Classes::getContentObjectRendererClass() : $cObjClass;
         if (0 == strcmp($id, '0')) {
             if (!is_object($this->cObj)) {
-                $this->cObj = \tx_rnbase::makeInstance($cObjClass);
+                $this->cObj = tx_rnbase::makeInstance($cObjClass);
                 $this->cObjs[0] = $this->cObj;
             }
 
@@ -354,7 +357,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
         $cObj = isset($this->cObjs[$id]) ? $this->cObjs[$id] : null;
 
         if (!is_object($cObj)) {
-            $this->cObjs[$id] = \tx_rnbase::makeInstance($cObjClass);
+            $this->cObjs[$id] = tx_rnbase::makeInstance($cObjClass);
         }
 
         return $this->cObjs[$id];
@@ -415,7 +418,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
     public function createLink($addKeepVars = true)
     {
         /* @var $link \tx_rnbase_util_Link */
-        $link = \tx_rnbase::makeInstance('tx_rnbase_util_Link', $this->getCObj());
+        $link = tx_rnbase::makeInstance('tx_rnbase_util_Link', $this->getCObj());
         $link->designatorString = $this->getQualifier();
         // Die KeepVars setzen
         if ($addKeepVars) {
@@ -548,8 +551,6 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
     {
         static $flex;
         if (!is_array($flex)) {
-            \tx_rnbase::load('tx_rnbase_util_Network');
-            \tx_rnbase::load('tx_rnbase_util_Arrays');
             $flex = \tx_rnbase_util_Network::getUrl(\tx_rnbase_util_Extensions::extPath($this->getExtensionKey()).$this->get('flexform'));
             $flex = \tx_rnbase_util_Arrays::xml2array($flex);
         }
@@ -740,7 +741,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
             return [];
         }
 
-        return \tx_rnbase_util_Strings::trimExplode($delim, $value, true);
+        return Strings::trimExplode($delim, $value, true);
     }
 
     /**
@@ -992,7 +993,6 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
         if (is_array($xmlOrArray)) {
             $array = $xmlOrArray;
         } else {
-            \tx_rnbase::load('tx_rnbase_util_Arrays');
             $array = \tx_rnbase_util_Arrays::xml2array($xmlOrArray);
         }
         $data = $array['data'];
@@ -1026,7 +1026,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
         }
         if ($flexTs) {
             // This handles ts setup from flexform
-            $tsParser = \tx_rnbase::makeInstance(Typo3Classes::getTypoScriptParserClass());
+            $tsParser = tx_rnbase::makeInstance(Typo3Classes::getTypoScriptParserClass());
             $tsParser->setup = $this->_dataStore->getArrayCopy();
             $tsParser->parse($flexTs);
             $flexTsData = $tsParser->setup;
@@ -1043,7 +1043,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
         // das < abschneiden, um den pfad zum link zu erhalten
         $key = trim(substr($value, 1));
 
-        $tsParser = \tx_rnbase::makeInstance(Typo3Classes::getTypoScriptParserClass());
+        $tsParser = tx_rnbase::makeInstance(Typo3Classes::getTypoScriptParserClass());
 
         // $name and $conf is loaded with the referenced values.
         list($linkValue, $linkConf) = $tsParser->getVal($key, $GLOBALS['TSFE']->tmpl->setup);
