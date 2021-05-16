@@ -23,12 +23,12 @@
  */
 
 /**
- *
- * Wrapper für TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController seit TYPO3 6.x
+ * Wrapper für TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController seit TYPO3 6.x.
  *
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
+ *
  * @deprecated as it doesn't provide any useful functionality
  */
 class Tx_Rnbase_Frontend_Controller_TypoScriptFrontendController extends TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
