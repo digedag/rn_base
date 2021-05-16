@@ -7,7 +7,7 @@ use Sys25\RnBase\Utility\Typo3Classes;
 /***************************************************************
 * Copyright notice
 *
-* (c) 2007-2019 René Nitzsche <rene@system25.de>
+* (c) 2007-2021 René Nitzsche <rene@system25.de>
 * All rights reserved
 *
 * This script is part of the TYPO3 project. The TYPO3 project is
@@ -94,7 +94,7 @@ class Parameters extends \ArrayObject implements ParametersInterface
      */
     public function getInt($paramName, $qualifier = '')
     {
-        return intval($this->get($paramName, $qualifier));
+        return (int) $this->get($paramName, $qualifier);
     }
 
     private function getParametersPlain($qualifier)

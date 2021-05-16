@@ -264,3 +264,15 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator extends Sys25\RnBase\Backend\Dec
 class Tx_Rnbase_Database_TreeQueryBuilder extends Sys25\RnBase\Database\TreeQueryBuilder
 {
 }
+/** @deprecated */
+class tx_rnbase_util_BaseMarker extends Sys25\RnBase\Frontend\Marker\BaseMarker
+{
+}
+/** @deprecated */
+class tx_rnbase_util_SimpleMarker extends Sys25\RnBase\Frontend\Marker\SimpleMarker
+{
+}
+/** @deprecated */
+class Tx_Rnbase_Frontend_Marker_Utility extends Sys25\RnBase\Frontend\Marker\MarkerUtility
+{
+}

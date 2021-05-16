@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Frontend\View\Marker;
 
+use Sys25\RnBase\Frontend\Marker\SimpleMarker;
 use Sys25\RnBase\Frontend\Request\RequestInterface;
 
 /**
@@ -137,6 +138,6 @@ class ListView extends BaseView
     {
         $marker = $configurations->get($confId.'template.markerclass');
 
-        return $marker ? $marker : 'tx_rnbase_util_SimpleMarker';
+        return $marker ? $marker : SimpleMarker::class;
     }
 }

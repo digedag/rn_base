@@ -1,11 +1,14 @@
 <?php
 
+namespace Sys25\RnBase\Frontend\Marker;
+
 use Sys25\RnBase\Domain\Model\DataInterface;
+use tx_rnbase_util_Debug;
 
 /**
  *  Copyright notice.
  *
- *  (c) 2016 René Nitzsche <rene@system25.de>
+ *  (c) 2016-2021 René Nitzsche <rene@system25.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -28,7 +31,7 @@ use Sys25\RnBase\Domain\Model\DataInterface;
 /**
  * @author          René Nitzsche <rene@system25.de>
  */
-class Tx_Rnbase_Frontend_Marker_Utility
+class MarkerUtility
 {
     /**
      * Returns an array with all attribute names not used in template.
@@ -56,7 +59,6 @@ class Tx_Rnbase_Frontend_Marker_Utility
             }
         }
         if ($minfo) {
-            tx_rnbase::load('tx_rnbase_util_Debug');
             $item->setProperty('__MINFO', tx_rnbase_util_Debug::viewArray($minfoArr));
         }
 

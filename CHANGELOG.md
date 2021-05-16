@@ -17,7 +17,10 @@ v1.14.0 (??.05.2021)
  * BC: `PersistenceRepository::getCleanModelData()` uses `DomainInterface` now
  * BC: `Tx_Rnbase_Backend_Decorator_InterfaceDecorator::format()` uses `DataInterface` now
  * BC: `Tx_Rnbase_Backend_AbstractFunctionModule` removed
+ * BC: `Tx_Rnbase_Frontend_Plugin` removed
  * BC: `Tx_Rnbase_Exception_Base` does not extend `TYPO3\CMS\Core\Exception` anymore
+ * BC: `Tx_Rnbase_Frontend_Marker_BaseMarker` removed
+ * BC: `SimpleMarker::prepareItem()` changed parameter types
 
 v1.13.8 (09.05.2021)
  * CS-Fixer updated

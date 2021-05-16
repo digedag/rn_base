@@ -1,7 +1,7 @@
 <?php
 
-use Sys25\RnBase\Utility\TYPO3;
 use Sys25\RnBase\Backend\ModuleRunner;
+use Sys25\RnBase\Utility\TYPO3;
 
 defined('TYPO3_MODE') or exit('Access denied.');
 

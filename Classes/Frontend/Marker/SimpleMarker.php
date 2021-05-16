@@ -1,8 +1,17 @@
 <?php
+
+namespace Sys25\RnBase\Frontend\Marker;
+
+use Sys25\RnBase\Configuration\ConfigurationInterface;
+use Sys25\RnBase\Domain\Model\DataInterface;
+use Sys25\RnBase\Domain\Model\DomainInterface;
+use Sys25\RnBase\Domain\Model\RecordInterface;
+use tx_rnbase_util_FormatUtil;
+
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009 - 2017 Rene Nitzsche (rene@system25.de)
+*  (c) 2009 - 2021 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,16 +31,13 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_BaseMarker');
-tx_rnbase::load('Tx_Rnbase_Frontend_Marker_Utility');
-
 /**
  * A generic marker class.
  *
  * @author Rene Nitzsche <rene@system25.de>
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker
+class SimpleMarker extends BaseMarker
 {
     public function __construct($options = [])
     {
@@ -41,8 +47,8 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker
     }
 
     /**
-     * @param string                                 $template  das HTML-Template
-     * @param Tx_Rnbase_Domain_Model_DomainInterface $item
+     * @param string $template  das HTML-Template
+     * @param DomainInterface $item
      * @param tx_rnbase_util_FormatUtil              $formatter der zu verwendente Formatter
      * @param string                                 $confId    Pfad der TS-Config
      * @param string                                 $marker    Name des Markers
@@ -67,8 +73,8 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker
         // Es wird das MarkerArray mit den Daten des Records gefüllt.
         // TODO: Der instancof-Check ist nicht schon. Der Typ des Models sollte besser konfiguriert werden, oder?
         // Einfach immer getProperty nutzen? das ist in allen models vorhanden.!
-        $ignore = $item instanceof Tx_Rnbase_Domain_Model_DataInterface ?
-                    Tx_Rnbase_Frontend_Marker_Utility::findUnusedAttributes($item, $template, $marker) :
+        $ignore = $item instanceof DataInterface ?
+                    MarkerUtility::findUnusedAttributes($item, $template, $marker) :
                     self::findUnusedCols($item->getRecord(), $template, $marker);
         $markerArray = $formatter->getItemMarkerArrayWrapped($item->getProperty(), $confId, $ignore, $marker.'_', $item->getColumnNames());
 
@@ -90,11 +96,11 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker
     /**
      * Die Methode kann von Kindklassen verwendet werden.
      *
-     * @param string                                 $template  das HTML-Template
-     * @param Tx_Rnbase_Domain_Model_RecordInterface $item
-     * @param tx_rnbase_util_FormatUtil              $formatter der zu verwendente Formatter
-     * @param string                                 $confId    Pfad der TS-Config
-     * @param string                                 $marker    Name des Markers
+     * @param string $template  das HTML-Template
+     * @param RecordInterface $item
+     * @param tx_rnbase_util_FormatUtil $formatter der zu verwendente Formatter
+     * @param string $confId    Pfad der TS-Config
+     * @param string $marker    Name des Markers
      *
      * @return string das geparste Template
      */
@@ -106,11 +112,11 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker
     /**
      * Die Methode kann von Kindklassen verwendet werden. Sie wird am Ende der Template-Erzeugung aufgerufen.
      *
-     * @param string                                 $template  das HTML-Template
-     * @param Tx_Rnbase_Domain_Model_RecordInterface $item
+     * @param string $template  das HTML-Template
+     * @param RecordInterface $item
      * @param tx_rnbase_util_FormatUtil              $formatter der zu verwendente Formatter
-     * @param string                                 $confId    Pfad der TS-Config
-     * @param string                                 $marker    Name des Markers
+     * @param string $confId    Pfad der TS-Config
+     * @param string $marker    Name des Markers
      *
      * @return string das geparste Template
      */
@@ -122,13 +128,13 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker
     /**
      * Führt vor dem parsen Änderungen am Model durch.
      *
-     * @param Tx_Rnbase_Domain_Model_DataInterface       $item
-     * @param Tx_Rnbase_Configuration_ProcessorInterface &$configurations
-     * @param string                                     &$confId
+     * @param DataInterface $item
+     * @param ConfigurationInterface &$configurations
+     * @param string &$confId
      */
     protected function prepareItem(
-        Tx_Rnbase_Domain_Model_DataInterface $item,
-        Tx_Rnbase_Configuration_ProcessorInterface $configurations,
+        DataInterface $item,
+        ConfigurationInterface $configurations,
         $confId
     ) {
         if ($item->isEmpty()) {
@@ -187,7 +193,7 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker
      * @param array                                $wrappedSubpartArray das HTML-Template
      * @param array                                $subpartArray        das HTML-Template
      * @param string                               $template            das HTML-Template
-     * @param Tx_Rnbase_Domain_Model_DataInterface $item
+     * @param DataInterface $item
      * @param tx_rnbase_util_FormatUtil            $formatter           der zu verwendente Formatter
      * @param string                               $confId              Pfad der TS-Config
      * @param string                               $marker              Name des Markers
@@ -235,12 +241,12 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker
     /**
      * Links vorbereiten.
      *
-     * @param Tx_Rnbase_Domain_Model_DataInterface $item
-     * @param string                               $marker
-     * @param array                                $markerArray
-     * @param array                                $wrappedSubpartArray
-     * @param string                               $confId
-     * @param tx_rnbase_util_FormatUtil            $formatter
+     * @param DataInterface $item
+     * @param string $marker
+     * @param array $markerArray
+     * @param array $wrappedSubpartArray
+     * @param string $confId
+     * @param tx_rnbase_util_FormatUtil $formatter
      */
     protected function prepareLinks($item, $marker, &$markerArray, &$subpartArray, &$wrappedSubpartArray, $confId, $formatter, $template)
     {
@@ -310,7 +316,6 @@ class tx_rnbase_util_SimpleMarker extends tx_rnbase_util_BaseMarker
         if ('this' == $clazz) {
             $ret = $this->$method($paramName, $cfgArr, $item);
         } else {
-            tx_rnbase::load($clazz);
             $ret = call_user_func_array([$clazz, $method], [$paramName, $cfgArr, $item]);
         }
 

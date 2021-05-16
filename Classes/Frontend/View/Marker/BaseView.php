@@ -3,15 +3,21 @@
 namespace Sys25\RnBase\Frontend\View\Marker;
 
 use Sys25\RnBase\Configuration\ConfigurationInterface;
+use Sys25\RnBase\Domain\Model\DataModel;
+use Sys25\RnBase\Frontend\Marker\BaseMarker;
+use Sys25\RnBase\Frontend\Marker\MarkerUtility;
 use Sys25\RnBase\Frontend\Request\RequestInterface;
 use Sys25\RnBase\Frontend\View\AbstractView;
 use Sys25\RnBase\Frontend\View\ContextInterface;
 use Sys25\RnBase\Frontend\View\ViewInterface;
+use tx_rnbase_util_Files;
+use tx_rnbase_util_Misc;
+use tx_rnbase_util_Templates;
 
 /***************************************************************
 * Copyright notice
 *
-* (c) 2007-2019 René Nitzsche <rene@system25.de>
+* (c) 2007-2021 René Nitzsche <rene@system25.de>
 * All rights reserved
 *
 * This script is part of the TYPO3 project. The TYPO3 project is
@@ -44,10 +50,9 @@ class BaseView extends AbstractView implements ViewInterface
     {
         $configurations = $request->getConfigurations();
         $this->_init($configurations);
-        $templateCode = \tx_rnbase_util_Files::getFileResource($this->getTemplate($view, '.html'));
+        $templateCode = tx_rnbase_util_Files::getFileResource($this->getTemplate($view, '.html'));
         if (!strlen($templateCode)) {
-            \tx_rnbase::load('tx_rnbase_util_Misc');
-            \tx_rnbase_util_Misc::mayday('TEMPLATE NOT FOUND: '.$this->getTemplate($view, '.html'));
+            tx_rnbase_util_Misc::mayday('TEMPLATE NOT FOUND: '.$this->getTemplate($view, '.html'));
         }
 
         // Die ViewData bereitstellen
@@ -57,16 +62,15 @@ class BaseView extends AbstractView implements ViewInterface
         $this->subpart = $configurations->get($request->getConfId().'template.subpart');
         $subpart = $this->getMainSubpart($viewData);
         if (!empty($subpart)) {
-            $templateCode = \tx_rnbase_util_Templates::getSubpart($templateCode, $subpart);
+            $templateCode = tx_rnbase_util_Templates::getSubpart($templateCode, $subpart);
             if (!strlen($templateCode)) {
-                \tx_rnbase::load('tx_rnbase_util_Misc');
-                \tx_rnbase_util_Misc::mayday('SUBPART NOT FOUND: '.$subpart);
+                tx_rnbase_util_Misc::mayday('SUBPART NOT FOUND: '.$subpart);
             }
         }
 
         // disable substitution marker cache
         if ($configurations->getBool($request->getConfId().'_caching.disableSubstCache')) {
-            \tx_rnbase_util_Templates::disableSubstCache();
+            tx_rnbase_util_Templates::disableSubstCache();
         }
 
         $out = $this->createOutput($templateCode, $request, $configurations->getFormatter());
@@ -77,7 +81,7 @@ class BaseView extends AbstractView implements ViewInterface
         $params['item'] = $request->getViewContext()->offsetGet('item');
         $params['items'] = $request->getViewContext()->offsetGet('items');
         $markerArray = $subpartArray = $wrappedSubpartArray = [];
-        \tx_rnbase_util_BaseMarker::callModules(
+        BaseMarker::callModules(
             $out,
             $markerArray,
             $subpartArray,
@@ -85,7 +89,7 @@ class BaseView extends AbstractView implements ViewInterface
             $params,
             $configurations->getFormatter()
         );
-        $out = \tx_rnbase_util_BaseMarker::substituteMarkerArrayCached(
+        $out = BaseMarker::substituteMarkerArrayCached(
             $out,
             $markerArray,
             $subpartArray,
@@ -108,7 +112,7 @@ class BaseView extends AbstractView implements ViewInterface
         RequestInterface $request
     ) {
         // check, if there are plugin markers to render
-        if (!\tx_rnbase_util_BaseMarker::containsMarker($templateCode, 'PLUGIN_')) {
+        if (!BaseMarker::containsMarker($templateCode, 'PLUGIN_')) {
             return $templateCode;
         }
 
@@ -116,29 +120,29 @@ class BaseView extends AbstractView implements ViewInterface
         $confId = $request->getConfId();
 
         // build the data to render
-        $pluginData = array_merge(
+        $pluginData = new DataModel(array_merge(
             // use the current data (tt_conten) to render
             (array) $configurations->getCObj()->data,
             // add some aditional columns, for example from the flexform od typoscript directly
             $configurations->getExploded(
                 $confId.'plugin.flexdata.'
             )
-        );
+        ));
         // check for unused columns
-        $ignoreColumns = \tx_rnbase_util_BaseMarker::findUnusedCols(
+        $ignoreColumns = MarkerUtility::findUnusedAttributes(
             $pluginData,
             $templateCode,
             'PLUGIN'
         );
         // create the marker array with the parsed columns
         $markerArray = $configurations->getFormatter()->getItemMarkerArrayWrapped(
-            $pluginData,
+            $pluginData->toArray(),
             $confId.'plugin.',
             $ignoreColumns,
             'PLUGIN_'
         );
 
-        return \tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($templateCode, $markerArray);
+        return BaseMarker::substituteMarkerArrayCached($templateCode, $markerArray);
     }
 
     /**
