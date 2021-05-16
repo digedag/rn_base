@@ -4,7 +4,7 @@ Changelog
 ---------
 
 v1.14.0 (??.05.2021)
- * #165 Moved all domain classes to PSR-4
+ * #165 Moved all classes without folder **Classes/** to PSR-4
  * BC: Test classes removed from non-dev-autoload
  * BC: deprecated interface `tx_rnbase_IModel` removed
  * BC: `Tx_Rnbase_Domain_Model_Base` doesn't extend `Tx_Rnbase_Domain_Model_Data` anymore

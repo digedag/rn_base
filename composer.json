@@ -50,7 +50,6 @@
     "autoload": {
         "classmap": [
             "cache/",
-            "Classes/",
             "Legacy/",
             "exception/",
             "maps/",

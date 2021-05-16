@@ -1,11 +1,15 @@
 <?php
 
+namespace Sys25\RnBase\Utility;
+
+use Exception;
 use Sys25\RnBase\Domain\Model\DataModel;
+use tx_rnbase;
 
 /***************************************************************
  * Copyright notice
  *
- *  (c) 2015 René Nitzsche <rene@system25.de>
+ *  (c) 2015-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,7 +36,7 @@ use Sys25\RnBase\Domain\Model\DataModel;
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Utility_Crypt
+class Crypt
 {
     /**
      * The config for the cryption.
@@ -53,11 +57,11 @@ class Tx_Rnbase_Utility_Crypt
      *
      * @param array $config
      *
-     * @return Tx_Rnbase_Utility_Crypt
+     * @return Crypt
      */
     public static function getInstance($config = null)
     {
-        return tx_rnbase::makeInstance('Tx_Rnbase_Utility_Crypt', $config);
+        return tx_rnbase::makeInstance(Crypt::class, $config);
     }
 
     /**

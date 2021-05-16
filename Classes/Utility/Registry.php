@@ -2,10 +2,12 @@
 
 namespace Sys25\RnBase\Utility;
 
+use tx_rnbase;
+
 /***************************************************************
  * Copyright notice
  *
- *  (c) 2019 René Nitzsche <rene@system25.de>
+ *  (c) 2019-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -55,7 +57,7 @@ class Registry
     {
         $domain = $domain ? $domain : $this->domain;
         /* @var $registry \TYPO3\CMS\Core\Registry */
-        $registry = \tx_rnbase::makeInstance(\TYPO3\CMS\Core\Registry::class);
+        $registry = tx_rnbase::makeInstance(\TYPO3\CMS\Core\Registry::class);
 
         return $registry->get($domain, $key);
     }
@@ -71,7 +73,7 @@ class Registry
     {
         $domain = $domain ? $domain : $this->domain;
         /* @var $registry \TYPO3\CMS\Core\Registry */
-        $registry = \tx_rnbase::makeInstance(\TYPO3\CMS\Core\Registry::class);
+        $registry = tx_rnbase::makeInstance(\TYPO3\CMS\Core\Registry::class);
 
         return $registry->set($domain, $key, $value);
     }

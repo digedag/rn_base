@@ -1,8 +1,13 @@
 <?php
+
+namespace Sys25\RnBase\Utility;
+
+use tx_rnbase;
+
 /***************************************************************
  * Copyright notice
  *
- * (c) 2016 René Nitzsche <rene@system25.de>
+ * (c) 2016-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,14 +28,11 @@
  ***************************************************************/
 
 /**
- * Tx_Rnbase_Utility_Cache.
- * TODO: rename class to a better name as it is used for cHash handling.
- *
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Utility_Cache
+class CHashUtility
 {
     /**
      * @param array $parameters
@@ -84,7 +86,7 @@ class Tx_Rnbase_Utility_Cache
             $typo3ConfVarsEntry .= $startingGlue.implode(',', $configurationValue);
 
             $cacheHashCalculatorInternalConfiguration =
-                Tx_Rnbase_Utility_Strings::trimExplode(',', $typo3ConfVarsEntry, true);
+                Strings::trimExplode(',', $typo3ConfVarsEntry, true);
         } else {
             $cacheHashCalculatorInternalConfiguration = $typo3ConfVarsEntry =
                 array_merge($typo3ConfVarsEntry, $configurationValue);
@@ -103,16 +105,9 @@ class Tx_Rnbase_Utility_Cache
      */
     public static function generateCacheHashForUrlQueryString($urlQueryString)
     {
-        if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
-            /* @var $calculator \TYPO3\CMS\Frontend\Page\CacheHashCalculator */
-            $calculator = tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
-            $hash = $calculator->generateForParameters($urlQueryString);
-        } elseif (class_exists('t3lib_cacheHash')) {
-            $calculator = new t3lib_cacheHash();
-            $hash = $calculator->generateForParameters($urlQueryString);
-        } elseif (is_callable([t3lib_div, 'generateCHash'])) {
-            $hash = t3lib_div::generateCHash($urlQueryString);
-        }
+        /* @var $calculator \TYPO3\CMS\Frontend\Page\CacheHashCalculator */
+        $calculator = tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
+        $hash = $calculator->generateForParameters($urlQueryString);
 
         return $hash;
     }
@@ -134,7 +129,7 @@ class Tx_Rnbase_Utility_Cache
     public function addCacheTagsToPage($content, array $cacheTags)
     {
         if (!empty($cacheTags)) {
-            tx_rnbase_util_TYPO3::getTSFE()->addCacheTags($cacheTags);
+            TYPO3::getTSFE()->addCacheTags($cacheTags);
         }
 
         return $content;

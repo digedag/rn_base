@@ -276,3 +276,23 @@ class tx_rnbase_util_SimpleMarker extends Sys25\RnBase\Frontend\Marker\SimpleMar
 class Tx_Rnbase_Frontend_Marker_Utility extends Sys25\RnBase\Frontend\Marker\MarkerUtility
 {
 }
+/** @deprecated */
+class Tx_Rnbase_Utility_Cache extends Sys25\RnBase\Utility\CHashUtility
+{
+}
+/** @deprecated */
+class Tx_Rnbase_Utility_Crypt extends Sys25\RnBase\Utility\Crypt
+{
+}
+/** @deprecated */
+class Tx_Rnbase_Utility_Mail extends Sys25\RnBase\Utility\Email
+{
+}
+/** @deprecated */
+class Tx_Rnbase_Utility_TypoScript extends Sys25\RnBase\Utility\TypoScript
+{
+}
+/** @deprecated */
+abstract class Tx_Rnbase_Utility_WizIcon extends Sys25\RnBase\Utility\WizIcon
+{
+}

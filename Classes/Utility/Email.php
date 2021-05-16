@@ -1,11 +1,14 @@
 <?php
 
-use Sys25\RnBase\Utility\Typo3Classes;
+namespace Sys25\RnBase\Utility;
+
+use Swift_Attachment;
+use tx_rnbase;
 
 /***************************************************************
  * Copyright notice
  *
- *  (c) 2016 René Nitzsche <rene@system25.de>
+ * (c) 2016-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,7 +35,7 @@ use Sys25\RnBase\Utility\Typo3Classes;
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Utility_Mail
+class Email
 {
     protected $attachments = [];
 
@@ -53,7 +56,7 @@ class Tx_Rnbase_Utility_Mail
     /**
      * @param string $subject
      *
-     * @return Tx_Rnbase_Utility_Mail
+     * @return Email
      */
     public function setSubject($subject)
     {
@@ -69,7 +72,7 @@ class Tx_Rnbase_Utility_Mail
      */
     public function setTo($emailAsString)
     {
-        $addresses = tx_rnbase_util_Strings::trimExplode(',', $emailAsString);
+        $addresses = Strings::trimExplode(',', $emailAsString);
         $this->to = [];
         foreach ($addresses as $mailAddress) {
             $this->to[$mailAddress] = '';
@@ -80,7 +83,7 @@ class Tx_Rnbase_Utility_Mail
      * @param string $email
      * @param string $name
      *
-     * @return Tx_Rnbase_Utility_Mail
+     * @return Email
      */
     public function addTo($email, $name = '')
     {
@@ -93,7 +96,7 @@ class Tx_Rnbase_Utility_Mail
      * @param string $email
      * @param string $name
      *
-     * @return Tx_Rnbase_Utility_Mail
+     * @return Email
      */
     public function setFrom($email, $name = '')
     {
@@ -107,7 +110,7 @@ class Tx_Rnbase_Utility_Mail
      * @param string $email
      * @param string $name
      *
-     * @return Tx_Rnbase_Utility_Mail
+     * @return Email
      */
     public function setReplyTo($email, $name = null)
     {
@@ -120,7 +123,7 @@ class Tx_Rnbase_Utility_Mail
     /**
      * @param string $part
      *
-     * @return Tx_Rnbase_Utility_Mail
+     * @return Email
      */
     public function setTextPart($part)
     {
@@ -132,7 +135,7 @@ class Tx_Rnbase_Utility_Mail
     /**
      * @param string $part
      *
-     * @return Tx_Rnbase_Utility_Mail
+     * @return Email
      */
     public function setHtmlPart($part)
     {
@@ -146,7 +149,7 @@ class Tx_Rnbase_Utility_Mail
      * @param string $filename
      * @param string $contentType
      *
-     * @return Tx_Rnbase_Utility_Mail
+     * @return Email
      */
     public function addAttachment($src, $filename = '', $contentType = '')
     {
@@ -160,7 +163,7 @@ class Tx_Rnbase_Utility_Mail
      */
     public function send()
     {
-        /* @var $mail TYPO3\CMS\Core\Mail\MailMessage */
+        /* @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
         $mail = tx_rnbase::makeInstance(Typo3Classes::getMailMessageClass());
         $mail->setFrom($this->from, $this->fromName);
 
@@ -184,7 +187,7 @@ class Tx_Rnbase_Utility_Mail
         if (!empty($this->attachments)) {
             foreach ($this->attachments as $attachment) {
                 if (!$mail->attach(Swift_Attachment::fromPath($attachment['src']))) {
-                    tx_rnbase_util_Logger::warn(
+                    Logger::warn(
                         'Adding attachment failed!',
                         'rn_base',
                         ['subject' => $mail->subject, 'to' => $this->toAsString, 'attachment' => $attachment]

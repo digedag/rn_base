@@ -10,7 +10,7 @@ ver- und entschlüsselt werden.
 
 Beispiel mit möglichen Optionen (alle optional):
 ```php
-    $crypt = Tx_Rnbase_Utility_Crypt::getInstance(
+    $crypt = Sys25\RnBase\Utility\Crypt::getInstance(
         array(
             'cipher' => MCRYPT_BLOWFISH,
             'mode' => MCRYPT_MODE_ECB,

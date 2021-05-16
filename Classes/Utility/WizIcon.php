@@ -1,12 +1,14 @@
 <?php
 
+namespace Sys25\RnBase\Utility;
+
 use Sys25\RnBase\Backend\Utility\Icons;
-use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase;
 
 /***************************************************************
  * Copyright notice
  *
- *  (c) 2017 René Nitzsche <rene@system25.de>
+ *  (c) 2017-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -33,7 +35,7 @@ use Sys25\RnBase\Utility\TYPO3;
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-abstract class Tx_Rnbase_Utility_WizIcon
+abstract class WizIcon
 {
     /**
      * @param string $clazz
@@ -95,12 +97,12 @@ abstract class Tx_Rnbase_Utility_WizIcon
     abstract protected function getLLFile();
 
     /**
-     * @return tx_rnbase_util_Lang
+     * @return \tx_rnbase_util_Lang
      */
     private function includeLocalLang()
     {
         $llFile = $this->getLLFile();
-        /* @var $lang tx_rnbase_util_Lang */
+        /* @var $lang \tx_rnbase_util_Lang */
         $lang = tx_rnbase::makeInstance('tx_rnbase_util_Lang');
         $lang->loadLLFile($llFile);
 
