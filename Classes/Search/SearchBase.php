@@ -10,7 +10,6 @@ use Tx_Rnbase_Database_Connection;
 use tx_rnbase_util_Logger;
 use tx_rnbase_util_Misc;
 use Tx_Rnbase_Utility_Strings;
-use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
@@ -74,7 +73,7 @@ abstract class SearchBase
      */
     public function getDatabaseConnection()
     {
-        return Tx_Rnbase_Database_Connection::getInstance();
+        return \Sys25\RnBase\Database\Connection::getInstance();
     }
 
     /**
@@ -889,9 +888,9 @@ abstract class SearchBase
         return $specials;
     }
 
-    private function getConnection(): Connection
+    private function getConnection(): \TYPO3\CMS\Core\Database\Connection
     {
-        $pool = \tx_rnbase::makeInstance(ConnectionPool::class);
+        $pool = tx_rnbase::makeInstance(ConnectionPool::class);
 
         return $pool->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
     }

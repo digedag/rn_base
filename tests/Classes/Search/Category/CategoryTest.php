@@ -63,7 +63,7 @@ class CategoryTest extends BaseTestCase
             'getJoins',
             ['SYS_CATEGORY_RECORD_MM' => 1]
         );
-        self::assertIsArray($joins);
+        self::assertTrue(is_array($joins));
         self::assertCount(1, $joins);
         $join = reset($joins);
         self::assertInstanceOf(Join::class, $join);
