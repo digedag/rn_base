@@ -30,6 +30,8 @@
  * @author          Hannes Bochmann <rene@system25.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
+ *
+ * @deprecated as it doesn't provide any useful functionality
  */
 abstract class Tx_Rnbase_Scheduler_FieldProviderBase
 {

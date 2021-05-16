@@ -2,10 +2,14 @@
 
 namespace Sys25\RnBase\Search\Category;
 
+use Sys25\RnBase\Database\Query\Join;
+use Sys25\RnBase\Tests\BaseTestCase;
+use tx_rnbase;
+
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 Rene Nitzsche (rene@system25.de)
+*  (c) 2010-2021 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,7 +36,7 @@ namespace Sys25\RnBase\Search\Category;
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class SearchUtilityTest extends \tx_rnbase_tests_BaseTestCase
+class SearchUtilityTest extends BaseTestCase
 {
     /**
      * @group unit
@@ -41,15 +45,15 @@ class SearchUtilityTest extends \tx_rnbase_tests_BaseTestCase
     {
         self::assertEquals(
             ['SYS_CATEGORY' => 'sys_category'],
-            \tx_rnbase::makeInstance(SearchUtility::class)->addTableMapping([])
+            tx_rnbase::makeInstance(SearchUtility::class)->addTableMapping([])
         );
         self::assertEquals(
             ['ALREADY' => 'present', 'SYS_CATEGORY' => 'sys_category'],
-            \tx_rnbase::makeInstance(SearchUtility::class)->addTableMapping(['ALREADY' => 'present'])
+            tx_rnbase::makeInstance(SearchUtility::class)->addTableMapping(['ALREADY' => 'present'])
         );
         self::assertEquals(
             ['MY_NEW_ALIAS' => 'sys_category'],
-            \tx_rnbase::makeInstance(SearchUtility::class)->addTableMapping([], 'MY_NEW_ALIAS')
+            tx_rnbase::makeInstance(SearchUtility::class)->addTableMapping([], 'MY_NEW_ALIAS')
         );
     }
 
@@ -58,22 +62,68 @@ class SearchUtilityTest extends \tx_rnbase_tests_BaseTestCase
      */
     public function testAddTableJoins()
     {
+        $joins = tx_rnbase::makeInstance(SearchUtility::class)->addJoins(
+            'my_table',
+            'MY_ALIAS',
+            'my_field',
+            ['SYS_CATEGORY' => 1]
+        );
+        self::assertCount(2, $joins);
+        $join = $joins[0];
+
+        self::assertInstanceOf(Join::class, $join);
+        self::assertEquals('MY_ALIAS', $join->getFromAlias());
+        self::assertEquals('SYS_CATEGORY_MM', $join->getAlias());
+        self::assertEquals('sys_category_record_mm', $join->getTable());
         self::assertEquals(
-            ' LEFT JOIN sys_category_record_mm'.
-            ' AS SYS_CATEGORY_MM ON SYS_CATEGORY_MM.uid_foreign'.
-            ' = MY_ALIAS.uid AND SYS_CATEGORY_MM.tablenames = "my_table" AND SYS_CATEGORY_MM.fieldname = "my_field"'.
-            ' LEFT JOIN sys_category AS SYS_CATEGORY ON SYS_CATEGORY.uid = SYS_CATEGORY_MM.uid_local',
-            \tx_rnbase::makeInstance(SearchUtility::class)->addJoins(
-                'my_table',
-                'MY_ALIAS',
-                'my_field',
-                ['SYS_CATEGORY' => 1]
-            )
+            'SYS_CATEGORY_MM.uid_foreign = MY_ALIAS.uid AND SYS_CATEGORY_MM.tablenames = \'my_table\' AND SYS_CATEGORY_MM.fieldname = \'my_field\'',
+            $join->getOnClause()
+        );
+        $join = $joins[1];
+        self::assertInstanceOf(Join::class, $join);
+        self::assertEquals('SYS_CATEGORY_MM', $join->getFromAlias());
+        self::assertEquals('SYS_CATEGORY', $join->getAlias());
+        self::assertEquals('sys_category', $join->getTable());
+        self::assertEquals('SYS_CATEGORY.uid = SYS_CATEGORY_MM.uid_local', $join->getOnClause());
+
+        $joins = tx_rnbase::makeInstance(SearchUtility::class)->addJoins(
+            'my_table',
+            'MY_ALIAS',
+            'my_field',
+            ['SYS_CATEGORY_2' => 1],
+            'SYS_CATEGORY_2'
         );
 
+        self::assertCount(2, $joins);
+        $join = $joins[0];
+        self::assertInstanceOf(Join::class, $join);
+        self::assertEquals('MY_ALIAS', $join->getFromAlias());
+        self::assertEquals('SYS_CATEGORY_2_MM', $join->getAlias());
+        self::assertEquals('sys_category_record_mm', $join->getTable());
         self::assertEquals(
-            '',
-            \tx_rnbase::makeInstance(SearchUtility::class)->addJoins(
+            'SYS_CATEGORY_2_MM.uid_foreign = MY_ALIAS.uid AND SYS_CATEGORY_2_MM.tablenames = \'my_table\' AND SYS_CATEGORY_2_MM.fieldname = \'my_field\'',
+            $join->getOnClause()
+        );
+        $join = $joins[1];
+        self::assertInstanceOf(Join::class, $join);
+        self::assertEquals('SYS_CATEGORY_2_MM', $join->getFromAlias());
+        self::assertEquals('SYS_CATEGORY_2', $join->getAlias());
+        self::assertEquals('sys_category', $join->getTable());
+        self::assertEquals('SYS_CATEGORY_2.uid = SYS_CATEGORY_2_MM.uid_local', $join->getOnClause());
+
+//         self::assertEquals(
+//             ' LEFT JOIN sys_category_record_mm'.
+//             ' AS SYS_CATEGORY_2_MM ON SYS_CATEGORY_2_MM.uid_foreign'.
+//             ' = MY_ALIAS.uid AND SYS_CATEGORY_2_MM.tablenames = "my_table" AND SYS_CATEGORY_2_MM.fieldname = "my_field"'.
+//             ' LEFT JOIN sys_category AS SYS_CATEGORY_2 ON SYS_CATEGORY_2.uid = SYS_CATEGORY_2_MM.uid_local',
+//         );
+    }
+
+    public function testAddTableJoinsWithOtherTable()
+    {
+        self::assertCount(
+            0,
+            tx_rnbase::makeInstance(SearchUtility::class)->addJoins(
                 'my_table',
                 'MY_ALIAS',
                 'my_field',
@@ -82,26 +132,12 @@ class SearchUtilityTest extends \tx_rnbase_tests_BaseTestCase
         );
 
         self::assertEquals(
-            '',
-            \tx_rnbase::makeInstance(SearchUtility::class)->addJoins(
+            0,
+            tx_rnbase::makeInstance(SearchUtility::class)->addJoins(
                 'my_table',
                 'MY_ALIAS',
                 'my_field',
                 ['SYS_CATEGORY' => 1],
-                'SYS_CATEGORY_2'
-            )
-        );
-
-        self::assertEquals(
-            ' LEFT JOIN sys_category_record_mm'.
-            ' AS SYS_CATEGORY_2_MM ON SYS_CATEGORY_2_MM.uid_foreign'.
-            ' = MY_ALIAS.uid AND SYS_CATEGORY_2_MM.tablenames = "my_table" AND SYS_CATEGORY_2_MM.fieldname = "my_field"'.
-            ' LEFT JOIN sys_category AS SYS_CATEGORY_2 ON SYS_CATEGORY_2.uid = SYS_CATEGORY_2_MM.uid_local',
-            \tx_rnbase::makeInstance(SearchUtility::class)->addJoins(
-                'my_table',
-                'MY_ALIAS',
-                'my_field',
-                ['SYS_CATEGORY_2' => 1],
                 'SYS_CATEGORY_2'
             )
         );

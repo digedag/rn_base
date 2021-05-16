@@ -2,10 +2,14 @@
 
 namespace Sys25\RnBase\Search\Category;
 
+use Sys25\RnBase\Database\Query\Join;
+use Sys25\RnBase\Search\SearchBase;
+use tx_rnbase;
+
 /***************************************************************
  * Copyright notice
  *
- * (c) René Nitzsche <rene@system25.de>
+ * (c) 2017-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,7 +36,7 @@ namespace Sys25\RnBase\Search\Category;
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class Category extends \tx_rnbase_util_SearchBase
+class Category extends SearchBase
 {
     /**
      * {@inheritdoc}
@@ -74,7 +78,7 @@ class Category extends \tx_rnbase_util_SearchBase
      */
     protected function getBaseTable()
     {
-        return \tx_rnbase::makeInstance($this->getWrapperClass())->getTableName();
+        return tx_rnbase::makeInstance($this->getWrapperClass())->getTableName();
     }
 
     /**
@@ -94,12 +98,9 @@ class Category extends \tx_rnbase_util_SearchBase
      */
     protected function getJoins($tableAliases)
     {
-        $joins = '';
-        $tableMappings = $this->getTableMappings();
-        $baseAlias = $this->getBaseTableAlias();
+        $joins = [];
         if (isset($tableAliases['SYS_CATEGORY_RECORD_MM'])) {
-            $joins = ' LEFT JOIN '.$tableMappings['SYS_CATEGORY_RECORD_MM'].' AS SYS_CATEGORY_RECORD_MM ON'.
-                        ' SYS_CATEGORY_RECORD_MM.uid_local = '.$baseAlias.'.uid';
+            $joins[] = new Join('SYS_CATEGORY', 'sys_category_record_mm', 'SYS_CATEGORY_RECORD_MM.uid_local = SYS_CATEGORY.uid', 'SYS_CATEGORY_RECORD_MM');
         }
 
         return $joins;

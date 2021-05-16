@@ -2,10 +2,12 @@
 
 namespace Sys25\RnBase\Search\Category;
 
+use Sys25\RnBase\Database\Query\Join;
+
 /***************************************************************
  * Copyright notice
  *
- * (c) 2017 René Nitzsche <rene@system25.de>
+ * (c) 2017-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,9 +28,7 @@ namespace Sys25\RnBase\Search\Category;
  ***************************************************************/
 
 /**
- * Tx_Rnbase_Category_SearchUtility.
- *
- * provides methods to enhance a searcher to support sys_category usage
+ * provides methods to enhance a searcher to support sys_category usage.
  *
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
@@ -56,7 +56,7 @@ class SearchUtility
      * @param array  $givenTableAliases
      * @param string $sysCategoryTableAlias
      *
-     * @return string
+     * @return array
      */
     public function addJoins(
         $baseTableName,
@@ -65,14 +65,23 @@ class SearchUtility
         array $givenTableAliases,
         $sysCategoryTableAlias = 'SYS_CATEGORY'
     ) {
-        $joins = '';
+        $joins = [];
+        if (isset($givenTableAliases[$sysCategoryTableAlias.'_MM']) || isset($givenTableAliases[$sysCategoryTableAlias])) {
+            $joins[] = new Join($baseTableAlias, 'sys_category_record_mm',
+                sprintf('%s_MM.uid_foreign = %s.uid AND %s_MM.tablenames = \'%s\' AND %s_MM.fieldname = \'%s\'',
+                    $sysCategoryTableAlias,
+                    $baseTableAlias,
+                    $sysCategoryTableAlias,
+                    $baseTableName,
+                    $sysCategoryTableAlias,
+                    $fieldName
+                    ),
+                $sysCategoryTableAlias.'_MM'
+            );
+        }
         if (isset($givenTableAliases[$sysCategoryTableAlias])) {
-            $joins =
-                ' LEFT JOIN sys_category_record_mm AS '.$sysCategoryTableAlias.'_MM ON '.$sysCategoryTableAlias.'_MM.uid_foreign'.
-                ' = '.$baseTableAlias.'.uid AND '.$sysCategoryTableAlias.'_MM.tablenames = "'.
-                $baseTableName.'" AND '.$sysCategoryTableAlias.'_MM.fieldname = "'.$fieldName.'"'.
-                ' LEFT JOIN sys_category AS '.$sysCategoryTableAlias.' ON '.$sysCategoryTableAlias.
-                '.uid = '.$sysCategoryTableAlias.'_MM.uid_local';
+            $joins[] = new Join($sysCategoryTableAlias.'_MM', 'sys_category',
+                sprintf('%s.uid = %s_MM.uid_local', $sysCategoryTableAlias, $sysCategoryTableAlias), $sysCategoryTableAlias);
         }
 
         return $joins;

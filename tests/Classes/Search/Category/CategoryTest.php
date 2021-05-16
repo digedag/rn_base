@@ -2,10 +2,14 @@
 
 namespace Sys25\RnBase\Search\Category;
 
+use Sys25\RnBase\Database\Query\Join;
+use Sys25\RnBase\Tests\BaseTestCase;
+use tx_rnbase;
+
 /**
  *  Copyright notice.
  *
- *  (c) René Nitzsche <rene@system25.de>
+ *  (c) 2010-2021 Rene Nitzsche (rene@system25.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,7 +36,7 @@ namespace Sys25\RnBase\Search\Category;
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-class CategoryTest extends \tx_rnbase_tests_BaseTestCase
+class CategoryTest extends BaseTestCase
 {
     /**
      * @group unit
@@ -40,7 +44,7 @@ class CategoryTest extends \tx_rnbase_tests_BaseTestCase
     public function testGetJoinsIfNoTableAlias()
     {
         self::assertEmpty(
-            $this->callInaccessibleMethod(\tx_rnbase::makeInstance(Category::class), 'getJoins', []),
+            $this->callInaccessibleMethod(tx_rnbase::makeInstance(Category::class), 'getJoins', []),
             'doch ein join geliefert'
         );
     }
@@ -50,17 +54,22 @@ class CategoryTest extends \tx_rnbase_tests_BaseTestCase
      */
     public function testGetJoinsForSysCategoryRecordMmTable()
     {
-        $expectedJoin = ' LEFT JOIN sys_category_record_mm AS SYS_CATEGORY_RECORD_MM ON'.
-                        ' SYS_CATEGORY_RECORD_MM.uid_local = SYS_CATEGORY.uid';
+        // ' LEFT JOIN sys_category_record_mm AS SYS_CATEGORY_RECORD_MM ON'.
+        // ' SYS_CATEGORY_RECORD_MM.uid_local = SYS_CATEGORY.uid';
 
-        self::assertEquals(
-            $expectedJoin,
-            $this->callInaccessibleMethod(
-                \tx_rnbase::makeInstance(Category::class),
-                'getJoins',
-                ['SYS_CATEGORY_RECORD_MM' => 1]
-            ),
-            'join falsch'
+        /* @var $join Join */
+        $joins = $this->callInaccessibleMethod(
+            tx_rnbase::makeInstance(Category::class),
+            'getJoins',
+            ['SYS_CATEGORY_RECORD_MM' => 1]
         );
+        self::assertIsArray($joins);
+        self::assertCount(1, $joins);
+        $join = reset($joins);
+        self::assertInstanceOf(Join::class, $join);
+        self::assertEquals('SYS_CATEGORY_RECORD_MM', $join->getAlias());
+        self::assertEquals('SYS_CATEGORY', $join->getFromAlias());
+        self::assertEquals('sys_category_record_mm', $join->getTable());
+        self::assertEquals('SYS_CATEGORY_RECORD_MM.uid_local = SYS_CATEGORY.uid', $join->getOnClause());
     }
 }

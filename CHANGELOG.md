@@ -21,6 +21,8 @@ v1.14.0 (??.05.2021)
  * BC: `Tx_Rnbase_Exception_Base` does not extend `TYPO3\CMS\Core\Exception` anymore
  * BC: `Tx_Rnbase_Frontend_Marker_BaseMarker` removed
  * BC: `SimpleMarker::prepareItem()` changed parameter types
+ * `Tx_Rnbase_Scheduler_Task`, `Tx_Rnbase_Scheduler_FieldProviderBase` and `Tx_Rnbase_Scheduler_FieldProvider` are deprecated
+ * BC: `CategorySearch` supports QueryBuilder API
 
 v1.13.8 (09.05.2021)
  * CS-Fixer updated
