@@ -472,16 +472,10 @@ class tx_rnbase_util_Templates
      */
     public static function substituteSubpart($content, $marker, $subpartContent, $recursive = 1)
     {
-        if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-            $parser = tx_rnbase::makeInstance(
-                'TYPO3\\CMS\\Core\\Service\\MarkerBasedTemplateService'
-            );
+        $parser = tx_rnbase::makeInstance(
+            'TYPO3\\CMS\\Core\\Service\\MarkerBasedTemplateService'
+        );
 
-            return $parser->substituteSubpart($content, $marker, $subpartContent, $recursive);
-        } else {
-            $parser = tx_rnbase_util_Typo3Classes::getHtmlParserClass();
-
-            return $parser::substituteSubpart($content, $marker, $subpartContent, $recursive);
-        }
+        return $parser->substituteSubpart($content, $marker, $subpartContent, $recursive);
     }
 }
