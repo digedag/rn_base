@@ -103,18 +103,10 @@ class Tx_Rnbase_Utility_Cache
      */
     public static function generateCacheHashForUrlQueryString($urlQueryString)
     {
-        if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
-            /* @var $calculator \TYPO3\CMS\Frontend\Page\CacheHashCalculator */
-            $calculator = tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
-            $hash = $calculator->generateForParameters($urlQueryString);
-        } elseif (class_exists('t3lib_cacheHash')) {
-            $calculator = new t3lib_cacheHash();
-            $hash = $calculator->generateForParameters($urlQueryString);
-        } elseif (is_callable([t3lib_div, 'generateCHash'])) {
-            $hash = t3lib_div::generateCHash($urlQueryString);
-        }
+        /* @var $calculator \TYPO3\CMS\Frontend\Page\CacheHashCalculator */
+        $calculator = tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
 
-        return $hash;
+        return $calculator->generateForParameters($urlQueryString);
     }
 
     /**

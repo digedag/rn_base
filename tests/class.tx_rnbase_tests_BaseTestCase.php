@@ -603,13 +603,11 @@ abstract class tx_rnbase_tests_BaseTestCase extends \PHPUnit\Framework\TestCase
 
     protected function resetIndependentEnvironmentCache()
     {
-        if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
-            $property = new ReflectionProperty(
-                tx_rnbase_util_Typo3Classes::getGeneralUtilityClass(),
-                'indpEnvCache'
-            );
-            $property->setAccessible(true);
-            $property->setValue(null, []);
-        }
+        $property = new ReflectionProperty(
+            tx_rnbase_util_Typo3Classes::getGeneralUtilityClass(),
+            'indpEnvCache'
+        );
+        $property->setAccessible(true);
+        $property->setValue(null, []);
     }
 }

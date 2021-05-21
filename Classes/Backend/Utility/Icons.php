@@ -72,17 +72,7 @@ class Tx_Rnbase_Backend_Utility_Icons
         array $row,
         $size = 'default'
     ) {
-        if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
-            return static::getIconFactory()->getIconForRecord($table, $row, $size);
-        }
-
-        return static::__callStatic(
-            'getSpriteIconForRecord',
-            [
-                $table,
-                $row,
-            ]
-        );
+        return static::getIconFactory()->getIconForRecord($table, $row, $size);
     }
 
     /**

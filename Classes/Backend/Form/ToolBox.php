@@ -1,7 +1,5 @@
 <?php
 
-use Sys25\RnBase\Utility\Typo3Classes;
-
 /***************************************************************
 *  Copyright notice
 *
@@ -68,9 +66,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
         $this->module = $module;
 
         // TCEform für das Formular erstellen
-        $this->form = tx_rnbase_util_TYPO3::isTYPO76OrHigher() ?
-            tx_rnbase::makeInstance('Tx_Rnbase_Backend_Form_FormBuilder') :
-            tx_rnbase::makeInstance(Typo3Classes::getBackendFormEngineClass());
+        $this->form = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Form_FormBuilder');
         $this->form->initDefaultBEmode();
         $this->form->backPath = $BACK_PATH;
     }
@@ -370,21 +366,8 @@ class Tx_Rnbase_Backend_Form_ToolBox
     {
         $jsCode = $this->getJavaScriptForLinkToDataHandlerAction('cmd['.$table.']['.$uid.'][move]=-'.$moveId.'&prErr=1&uPT=1', $options);
         $label = isset($options['label']) ? $options['label'] : 'Move up';
-        $title = isset($options['title']) ? $options['title'] : $label;
 
-        if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-            $image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-move-up');
-        } else {
-            $image = sprintf(
-                '<img %s title="%s" alt="">',
-                Tx_Rnbase_Backend_Utility_Icons::skinImg(
-                    $GLOBALS['BACK_PATH'],
-                    'gfx/up.gif',
-                    'width="13" height="12"'
-                ),
-                $title
-            );
-        }
+        $image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-move-up');
 
         return sprintf(
             '<a onclick="%1$s" href="#">%2$s%3$s</a>',
@@ -408,21 +391,8 @@ class Tx_Rnbase_Backend_Form_ToolBox
     {
         $jsCode = $this->getJavaScriptForLinkToDataHandlerAction('cmd['.$table.']['.$uid.'][move]=-'.$moveId, $options);
         $label = isset($options['label']) ? $options['label'] : 'Move up';
-        $title = isset($options['title']) ? $options['title'] : $label;
 
-        if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-            $image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-move-down');
-        } else {
-            $image = sprintf(
-                '<img %s title="%s" alt="">',
-                Tx_Rnbase_Backend_Utility_Icons::skinImg(
-                    $GLOBALS['BACK_PATH'],
-                    'gfx/up.gif',
-                    'width="13" height="12"'
-                ),
-                $title
-            );
-        }
+        $image = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon('actions-move-down');
 
         return sprintf(
             '<a onclick="%1$s" href="#">%2$s%3$s</a>',
@@ -896,20 +866,9 @@ class Tx_Rnbase_Backend_Form_ToolBox
         //noch den Pfeil für die aktuelle Sortierungsrichtung ggf. einblenden
         $sSortArrow = '';
         if ($sCurrentSortField == $sSortField) {
-            if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-                $sSortArrow = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon(
-                    'asc' == $sSortRev ? 'actions-move-up' : 'actions-move-down'
-                );
-            } else {
-                $sSortArrow = sprintf(
-                    '<img %s alt="">',
-                    Tx_Rnbase_Backend_Utility_Icons::skinImg(
-                        $GLOBALS['BACK_PATH'],
-                        'gfx/red'.('asc' == $sSortRev ? 'up' : 'down').'.gif',
-                        'width="7" height="4"'
-                    )
-                );
-            }
+            $sSortArrow = Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon(
+                'asc' == $sSortRev ? 'actions-move-up' : 'actions-move-down'
+            );
         }
 
         return '<a href="'.htmlspecialchars($sSortUrl).'">'.$sLabel.$sSortArrow.'</a>';
@@ -1107,8 +1066,7 @@ class Tx_Rnbase_Backend_Form_ToolBox
         if (is_array($MENU[$name]) && 1 == count($MENU[$name])) {
             $ret['menu'] = self::buildDummyMenu('SET['.$name.']', $MENU[$name]);
         } else {
-            $funcMenu = tx_rnbase_util_TYPO3::isTYPO76OrHigher() ? 'getDropdownMenu' : 'getFuncMenu';
-            $ret['menu'] = Tx_Rnbase_Backend_Utility::$funcMenu(
+            $ret['menu'] = Tx_Rnbase_Backend_Utility::getDropdownMenu(
                 $pid,
                 'SET['.$name.']',
                 $SETTINGS[$name],

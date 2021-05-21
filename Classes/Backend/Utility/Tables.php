@@ -111,25 +111,13 @@ class Tx_Rnbase_Backend_Utility_Tables
             if (!array_key_exists($record['uid'], $dontcheck)) {
                 $row[] = $formTool->createCheckbox($checkName.'[]', $record['uid']);
             } else {
-                if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-                    $row[] = sprintf(
-                        '<span title="Info: %s">%s</span>',
-                        $dontcheck[$record['uid']],
-                        Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon(
-                            'actions-document-info'
-                        )
-                    );
-                } else {
-                    $row[] = sprintf(
-                        '<img %s title="Info: %s" alt="">',
-                        Tx_Rnbase_Backend_Utility_Icons::skinImg(
-                            $GLOBALS['BACK_PATH'],
-                            'gfx/zoom2.gif',
-                            'width="1" height="12"'
-                        ),
-                        $dontcheck[$record['uid']]
-                    );
-                }
+                $row[] = sprintf(
+                    '<span title="Info: %s">%s</span>',
+                    $dontcheck[$record['uid']],
+                    Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon(
+                        'actions-document-info'
+                    )
+                );
             }
         }
 
@@ -326,9 +314,7 @@ class Tx_Rnbase_Backend_Utility_Tables
             } else {
                 $result = $resultHead.$result;
             }
-            $tableTag = tx_rnbase_util_TYPO3::isTYPO76OrHigher() ?
-                '<table class="table table-striped table-hover table-condensed">' :
-                '<table border="0" cellspacing="0" cellpadding="0" class="typo3-dblist" id="typo3-tmpltable">';
+            $tableTag = '<table class="table table-striped table-hover table-condensed">';
             $tableWrap = is_array($tableLayout['table']) ? $tableLayout['table'] : [$tableTag, '</table>'];
             $result = $tableWrap[0].$result.$tableWrap[1];
         }
@@ -343,7 +329,7 @@ class Tx_Rnbase_Backend_Utility_Tables
      */
     public function getTableLayout()
     {
-        return tx_rnbase_util_TYPO3::isTYPO76OrHigher() ?
+        return
             [
                 'headRows' => [0],
                 'table' => ['<table class="table table-striped table-hover table-condensed">', '</table><br/>'],
@@ -361,23 +347,6 @@ class Tx_Rnbase_Backend_Utility_Tables
                         // Format für jede Spalte in jeder Zeile
                         'defCol' => ['<td>', '</td>'],
                         ],
-                ] :
-            [
-                'table' => ['<table class="typo3-dblist" width="100%" cellspacing="0" cellpadding="0" border="0">', '</table><br/>'],
-                '0' => [ // Format für 1. Zeile
-                        'tr' => ['<tr class="t3-row-header c-headLineTable">', '</tr>'],
-                        // Format für jede Spalte in der 1. Zeile
-                        'defCol' => ['<td>', '</td>'],
-                        ],
-                'defRow' => [ // Formate für alle Zeilen
-                        'tr' => ['<tr class="db_list_normal">', '</tr>'],
-                        'defCol' => ['<td>', '</td>'], // Format für jede Spalte in jeder Zeile
-                        ],
-                'defRowEven' => [ // Formate für alle geraden Zeilen
-                        'tr' => ['<tr class="db_list_alt">', '</tr>'],
-                        // Format für jede Spalte in jeder Zeile
-                        'defCol' => ['<td>', '</td>'],
-                        ],
-                ];
+            ];
     }
 }
