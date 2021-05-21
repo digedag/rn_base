@@ -357,17 +357,6 @@ MAYDAYPAGE;
             !($GLOBALS['TSFE'] instanceof $typoScriptFrontendControllerClass) ||
             $force
         ) {
-            if (!TYPO3::isTYPO70OrHigher() && !defined('PATH_tslib')) {
-                // PATH_tslib setzen
-                if (@is_dir(\Sys25\RnBase\Utility\Environment::getPublicPath().'typo3/sysext/cms/tslib/')) {
-                    define('PATH_tslib', \Sys25\RnBase\Utility\Environment::getPublicPath().'typo3/sysext/cms/tslib/');
-                } elseif (@is_dir(\Sys25\RnBase\Utility\Environment::getPublicPath().'tslib/')) {
-                    define('PATH_tslib', \Sys25\RnBase\Utility\Environment::getPublicPath().'tslib/');
-                } else {
-                    define('PATH_tslib', '');
-                }
-            }
-
             if (TYPO3::isTYPO90OrHigher()) {
                 $rootLine = null;
                 if ($pid > 0) {
