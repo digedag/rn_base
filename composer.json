@@ -56,7 +56,6 @@
             "maps/",
             "mod/",
             "model/",
-            "tests/",
             "util/",
             "class.tx_rnbase.php",
             "class.tx_rnbase_controller.php"
@@ -71,7 +70,10 @@
             "Sys25\\RnBase\\Tests\\" : "Tests/Unit/PHP",
             "TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/",
             "TYPO3\\CMS\\Fluid\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/fluid/Tests/"
-        }
+        },
+        "classmap": [
+            "tests/"
+        ]
     },
     "config": {
         "vendor-dir": ".Build/vendor",
