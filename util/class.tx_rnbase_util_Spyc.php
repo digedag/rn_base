@@ -190,6 +190,8 @@ class tx_rnbase_util_Spyc
         } elseif (!is_array($value)) {
             // It doesn't have children.  Yip.
             $string = $this->_dumpNode($key, $value, $indent);
+        } else {
+            $string = '';
         }
 
         return $string;
@@ -317,9 +319,9 @@ class tx_rnbase_util_Spyc
                 continue;
             }
 
+            $literalBlock = '';
             if ($literalBlockStyle = $this->startsLiteralBlock($line)) {
                 $line = rtrim($line, $literalBlockStyle."\n");
-                $literalBlock = '';
                 $line .= $this->LiteralPlaceHolder;
 
                 while ($this->literalBlockContinues($source[++$i], $lineIndent)) {
@@ -576,6 +578,7 @@ class tx_rnbase_util_Spyc
         }
         $value = $array[$key];
         $tempPath = self::flatten($this->path);
+        $_arr = '';
         eval('$_arr = $this->result'.$tempPath.';');
 
         if ($this->_containsGroupAlias) {

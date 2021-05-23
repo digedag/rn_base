@@ -80,6 +80,11 @@ class tx_rnbase_util_ListBuilder
             $mem = memory_get_usage();
             $wrapTime = tx_rnbase_util_FormatUtil::$time;
             $wrapMem = tx_rnbase_util_FormatUtil::$mem;
+        } else {
+            $time = 0.0;
+            $mem = 0;
+            $wrapTime = '';
+            $wrapMem = '';
         }
 
         $outerMarker = $this->getOuterMarker($marker, $template);

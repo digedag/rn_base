@@ -60,6 +60,7 @@ class tx_rnbase_util_Arrays
         if (is_string($mixed)) {
             tx_rnbase::load('tx_rnbase_util_Misc');
             $array = tx_rnbase_util_Misc::explode($mixed, $splitCharacters); // TODO: Enable empty values by defining a better explode functions.
+            $hashArray = [];
             for ($i = 0, $len = count($array); $i < $len; $i = $i + 2) {
                 $hashArray[$array[$i]] = $array[$i + 1];
             }

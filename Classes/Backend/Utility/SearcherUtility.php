@@ -92,6 +92,7 @@ class Tx_Rnbase_Backend_Utility_SearcherUtility
         $firstPrev = $lastNext = false;
         $baseTableName = $this->getOptions()->getBaseTableName();
         tx_rnbase::load('tx_rnbase_util_TCA');
+        $downStep = 1;
         if ((
             $baseTableName
             && tx_rnbase_util_TCA::getSortbyFieldForTable($baseTableName)
@@ -120,6 +121,7 @@ class Tx_Rnbase_Backend_Utility_SearcherUtility
         // perform the search
         $items = $repository->search($fields, $options);
 
+        $secondPrev = null;
         // reduce the itemy by first and last
         if ($firstPrev || $lastNext) {
             $isCollection = is_object($items);

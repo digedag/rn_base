@@ -181,12 +181,13 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
         $pageMarkerArray = $formatter->getItemMarkerArrayWrapped($rec, $pageConfId, 0, $pageMarker);
         $pageSubpartArray = [];
 
+        $pageWrappedSubpartArray = [];
         if ($this->link) {
             $this->link->parameters([$this->pageBrowser->getParamName('pointer') => $currentPage]);
             $pageWrappedSubpartArray['###'.$pageMarker.'LINK###'] = explode($this->token, $this->link->makeTag());
             $pageMarkerArray['###'.$pageMarker.'LINKURL###'] = $this->link->makeUrl();
         } else {
-            $pageWrappedSubpartArray['###'.$pageMarker.'LINK###'] = $noLink;
+            $pageWrappedSubpartArray['###'.$pageMarker.'LINK###'] = '';
             $pageMarkerArray['###'.$pageMarker.'LINKURL###'] = '';
         }
 

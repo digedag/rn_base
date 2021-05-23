@@ -41,6 +41,7 @@ class Category extends \tx_rnbase_util_SearchBase
      */
     protected function getTableMappings()
     {
+        $tableMapping = [];
         $tableMapping[$this->getBaseTableAlias()] = $this->getBaseTable();
         $tableMapping['SYS_CATEGORY_RECORD_MM'] = 'sys_category_record_mm';
 

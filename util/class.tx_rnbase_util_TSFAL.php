@@ -632,6 +632,7 @@ class tx_rnbase_util_TSFAL
      */
     public static function getImageCount($tableName, $fieldName, $itemId)
     {
+        $options = [];
         $options['where'] = 'tablenames = '.tx_rnbase_util_DB::fullQuoteStr($tableName, 'sys_file_reference');
         $options['where'] .= ' AND fieldname = '.tx_rnbase_util_DB::fullQuoteStr($fieldName, 'sys_file_reference');
         $options['where'] .= ' AND uid_foreign = '.(int) $itemId;
@@ -651,6 +652,7 @@ class tx_rnbase_util_TSFAL
      */
     public static function getReferencesCount($mediaUid)
     {
+        $options = [];
         $options['where'] = 'uid_local = '.(int) $mediaUid;
         $options['count'] = 1;
         $options['enablefieldsoff'] = 1;
