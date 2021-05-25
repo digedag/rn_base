@@ -58,8 +58,10 @@
             "model/",
             "util/",
             "class.tx_rnbase.php",
-            "class.tx_rnbase_controller.php"
-        ],
+            "class.tx_rnbase_controller.php",
+			"tests/class.tx_rnbase_tests_BaseTestCase.php",
+			"tests/class.tx_rnbase_tests_Utility.php"
+		],
         "files": [
             "Classes/Constants.php"
         ],
