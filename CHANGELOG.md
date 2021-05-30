@@ -3,6 +3,12 @@
 Changelog
 ---------
 
+v1.13.9 (30.05.2021)
+ * Bugfix for QueryBuilder in SearchBase: operator NOT IN ignored.
+ * #213 Moved test code to dev-autoloading. Thanks to Oliver Klee!
+ * Readded base test classes to non-dev classmap for compatibility reason. But be aware this will be removed in 1.14! If you need base classes add it to your own dev dependencies.
+ * #212 added .editorconfig. Thanks to Oliver Klee!
+
 v1.13.8 (09.05.2021)
  * CS-Fixer updated
  * Wrapper for TimeTracker fixed
