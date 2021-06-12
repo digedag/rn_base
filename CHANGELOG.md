@@ -3,6 +3,9 @@
 Changelog
 ---------
 
+v1.13.10 (12.06.2021)
+ * Fix pidlist option in querybuilder
+
 v1.13.9 (30.05.2021)
  * Bugfix for QueryBuilder in SearchBase: operator NOT IN ignored.
  * #213 Moved test code to dev-autoloading. Thanks to Oliver Klee!
