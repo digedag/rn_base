@@ -97,7 +97,7 @@ class QueryBuilderFacade
         }
 
         if (is_string($where)) {
-            $queryBuilder->where($where);
+            $queryBuilder->andWhere($where);
         } elseif (is_callable($where)) {
             $where($queryBuilder);
         }
