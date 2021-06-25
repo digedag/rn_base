@@ -1,6 +1,7 @@
 <?php
 
 use Sys25\RnBase\Frontend\Request\Parameters;
+use Sys25\RnBase\Utility\Arrays;
 use Sys25\RnBase\Utility\TYPO3;
 
 /***************************************************************
@@ -100,10 +101,6 @@ use Sys25\RnBase\Utility\TYPO3;
  * @package TYPO3
  * @subpackage rn_base
  */
-
-tx_rnbase::load('tx_rnbase_util_Misc');
-tx_rnbase::load('tx_rnbase_util_Arrays');
-tx_rnbase::load('tx_rnbase_util_Strings');
 
 class tx_rnbase_controller
 {
@@ -460,7 +457,7 @@ class tx_rnbase_controller
         if ($configurations->isUniqueParameters() && array_key_exists($configurations->getPluginId(), $parametersArray)) {
             $parametersArray = $parametersArray[$configurations->getPluginId()];
         }
-        tx_rnbase_util_Arrays::overwriteArray($parameters, $parametersArray);
+        Arrays::overwriteArray($parameters, $parametersArray);
 
         return $parameters;
     }

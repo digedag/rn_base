@@ -1,5 +1,7 @@
 <?php
 
+use Sys25\RnBase\Utility\Arrays;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -241,8 +243,7 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
         $params = $this->getIcludeParams();
         if (!empty($params)) {
             // all get and post vars
-            tx_rnbase::load('tx_rnbase_util_Arrays');
-            $gp = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
+            $gp = Arrays::mergeRecursiveWithOverrule(
                 Sys25\RnBase\Frontend\Request\Parameters::getGetParameters(),
                 Sys25\RnBase\Frontend\Request\Parameters::getPostParameters()
             );

@@ -2,8 +2,8 @@
 
 namespace Sys25\RnBase\Database\Repository;
 
-use Sys25\RnBase\Domain\Repository\AbstractRepository;
 use Sys25\RnBase\Domain\Model\BaseModel;
+use Sys25\RnBase\Domain\Repository\AbstractRepository;
 use tx_rnbase;
 
 /***************************************************************

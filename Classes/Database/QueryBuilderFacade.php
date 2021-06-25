@@ -4,6 +4,7 @@ namespace Sys25\RnBase\Database;
 
 use Sys25\RnBase\Database\Query\From;
 use Sys25\RnBase\Database\Query\Join;
+use Sys25\RnBase\Utility\Debug;
 use tx_rnbase;
 use tx_rnbase_util_TYPO3;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -103,8 +104,8 @@ class QueryBuilderFacade
         }
 
         if ($debug) {
-            \tx_rnbase_util_Debug::debug($queryBuilder->getSQL(), 'SQL');
-            \tx_rnbase_util_Debug::debug(['what' => $what, 'from' => $from, 'options' => $arr, 'params' => $queryBuilder->getParameters()], 'Parts');
+            Debug::debug($queryBuilder->getSQL(), 'SQL');
+            Debug::debug(['what' => $what, 'from' => $from, 'options' => $arr, 'params' => $queryBuilder->getParameters()], 'Parts');
         }
 
         return $queryBuilder;

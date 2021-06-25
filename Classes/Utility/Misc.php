@@ -28,7 +28,6 @@ use Exception;
 use Sys25\RnBase\Configuration\Processor as ConfigurationProcessor;
 use tx_rnbase;
 use tx_rnbase_util_Dates;
-use tx_rnbase_util_Debug;
 use tx_rnbase_util_Lock;
 use tx_rnbase_util_Logger;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -186,7 +185,7 @@ class Misc
                                     $aTrace4['type'].$aTrace4['function'].'</b></span><br />With parameters: '.(!empty($aTrace4['args']) ? self::viewMixed($aTrace4['args']) : ' no parameters');
         $aDebug[] = '<hr/>';
 
-        if ($debugTrail = tx_rnbase_util_Debug::getDebugTrail()) {
+        if ($debugTrail = Debug::getDebugTrail()) {
             $aDebug[] = '<span class="notice">'.$debugTrail.'</span>';
             $aDebug[] = '<hr/>';
         }

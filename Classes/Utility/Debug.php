@@ -1,9 +1,11 @@
 <?php
 
+namespace Sys25\RnBase\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011-2015 Rene Nitzsche
+ *  (c) 2011-2021 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -22,14 +24,13 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
+use Sys25\RnBase\Configuration\Processor;
 use TYPO3\CMS\Core\Utility\DebugUtility;
-
-tx_rnbase::load('tx_rnbase_util_TYPO3');
 
 /**
  * Encapsulate debug functionality of TYPO3 for backward compatibility.
  */
-class tx_rnbase_util_Debug
+class Debug
 {
     /**
      * Makes debug output
@@ -82,7 +83,7 @@ class tx_rnbase_util_Debug
         $trail = array_reverse($trail);
         array_pop($trail);
         $path = [];
-        $pathSiteLength = strlen(\Sys25\RnBase\Utility\Environment::getPublicPath());
+        $pathSiteLength = strlen(Environment::getPublicPath());
         foreach ($trail as $dat) {
             $pathFragment = $dat['class'].$dat['type'].$dat['function'];
             // add the path of the included file
@@ -110,8 +111,7 @@ class tx_rnbase_util_Debug
     {
         static $debugKey = null;
         if (null === $debugKey) {
-            tx_rnbase::load('Tx_Rnbase_Configuration_Processor');
-            $debugKey = Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'debugKey');
+            $debugKey = Processor::getExtensionCfgValue('rn_base', 'debugKey');
         }
         if (empty($debugKey)) {
             return false;
@@ -126,12 +126,12 @@ class tx_rnbase_util_Debug
     /**
      * Prüft, ob per Parameter oder Konfiguration der Debug für die Labels aktiv ist.
      *
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param \Sys25\RnBase\Configuration\ConfigurationInterface $configurations
      *
      * @return bool or string with debug type (plain, html)
      */
     public static function isLabelDebugEnabled(
-        Tx_Rnbase_Configuration_ProcessorInterface $configurations = null
+        \Sys25\RnBase\Configuration\ConfigurationInterface $configurations = null
     ) {
         static $status = [];
         // check global debug params
@@ -142,7 +142,7 @@ class tx_rnbase_util_Debug
             return $status['global'];
         }
         // check plugin debug config
-        if ($configurations instanceof Tx_Rnbase_Configuration_Processor) {
+        if ($configurations instanceof Processor) {
             $pluginId = $configurations->getPluginId();
             if (!isset($status[$pluginId])) {
                 $status[$pluginId] = $configurations->get('labeldebug');

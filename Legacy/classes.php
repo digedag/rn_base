@@ -1,7 +1,5 @@
 <?php
 
-use Sys25\RnBase\Domain\Model\MediaModel;
-
 /** @deprecated */
 interface Tx_Rnbase_Configuration_ProcessorInterface extends \Sys25\RnBase\Configuration\ConfigurationInterface
 {
@@ -338,6 +336,20 @@ class tx_rnbase_model_base extends Sys25\RnBase\Domain\Model\BaseModel implement
 /**
  * @deprecated
  */
-class tx_rnbase_model_media extends MediaModel
+class tx_rnbase_model_media extends Sys25\RnBase\Domain\Model\MediaModel
+{
+}
+
+/**
+ * @deprecated
+ */
+class tx_rnbase_util_Arrays extends Sys25\RnBase\Utility\Arrays
+{
+}
+
+/**
+ * @deprecated
+ */
+class tx_rnbase_util_Debug extends Sys25\RnBase\Utility\Debug
 {
 }

@@ -2,8 +2,8 @@
 
 namespace Sys25\RnBase\Database\Model;
 
-use Sys25\RnBase\Tests\BaseTestCase;
 use Sys25\RnBase\Domain\Model\DataModel;
+use Sys25\RnBase\Tests\BaseTestCase;
 
 /***************************************************************
  * Copyright notice

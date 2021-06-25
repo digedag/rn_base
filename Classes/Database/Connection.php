@@ -6,6 +6,7 @@ use Sys25\RnBase\Database\Query\From;
 use Sys25\RnBase\Domain\Collection\BaseCollection;
 use Sys25\RnBase\Domain\Model\DynamicTableInterface;
 use Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface;
+use Sys25\RnBase\Utility\Debug;
 use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
@@ -14,7 +15,6 @@ use tx_rnbase;
 use tx_rnbase_model_base;
 use tx_rnbase_util_db_Builder;
 use tx_rnbase_util_db_IDatabase;
-use tx_rnbase_util_Debug;
 use tx_rnbase_util_TCA;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
@@ -139,7 +139,7 @@ class Connection implements SingletonInterface
         }
 
         if ($debug) {
-            tx_rnbase_util_Debug::debug([
+            Debug::debug([
                 'Rows retrieved ' => count($rows),
                 'Time ' => (microtime(true) - $time),
                 'Memory consumed ' => (memory_get_usage() - $mem),
@@ -234,8 +234,8 @@ class Connection implements SingletonInterface
                 return $sql;
             }
             if ($debug) {
-                tx_rnbase_util_Debug::debug($sql, 'SQL');
-                tx_rnbase_util_Debug::debug([$what, $from, $arr], 'Parts');
+                Debug::debug($sql, 'SQL');
+                Debug::debug([$what, $from, $arr], 'Parts');
             }
         }
 
@@ -540,7 +540,7 @@ class Connection implements SingletonInterface
         $database->store_lastBuiltQuery = $storeLastBuiltQuery;
 
         if ($debug) {
-            tx_rnbase_util_Debug::debug([
+            Debug::debug([
                 'SQL ' => $sqlQuery,
                 'Time ' => (microtime(true) - $time),
                 'Memory consumed ' => (memory_get_usage() - $mem),
@@ -589,7 +589,7 @@ class Connection implements SingletonInterface
         $database->store_lastBuiltQuery = $storeLastBuiltQuery;
 
         if ($debug) {
-            tx_rnbase_util_Debug::debug([
+            Debug::debug([
                 'SQL ' => $sqlQuery,
                 'Time ' => (microtime(true) - $time),
                 'Memory consumed ' => (memory_get_usage() - $mem),
@@ -636,8 +636,8 @@ class Connection implements SingletonInterface
             if (!empty($arr['sqlonly'])) {
                 return $sql;
             }
-            tx_rnbase_util_Debug::debug($sql, 'SQL');
-            tx_rnbase_util_Debug::debug([$tablename, $where, $values]);
+            Debug::debug($sql, 'SQL');
+            Debug::debug([$tablename, $where, $values]);
         }
 
         $storeLastBuiltQuery = $database->store_lastBuiltQuery;
@@ -704,8 +704,8 @@ class Connection implements SingletonInterface
             if (!empty($arr['sqlonly'])) {
                 return $sql;
             }
-            tx_rnbase_util_Debug::debug($sql, 'SQL');
-            tx_rnbase_util_Debug::debug([$tablename, $where]);
+            Debug::debug($sql, 'SQL');
+            Debug::debug([$tablename, $where]);
         }
 
         $storeLastBuiltQuery = $database->store_lastBuiltQuery;

@@ -5,7 +5,6 @@ namespace Sys25\RnBase\Domain\Model;
 use DateTime;
 use DateTimeZone;
 use Sys25\RnBase\Database\Connection;
-use tx_rnbase;
 use tx_rnbase_util_Dates;
 use tx_rnbase_util_TCA;
 

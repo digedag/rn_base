@@ -1,4 +1,7 @@
 <?php
+
+use Sys25\RnBase\Utility\Arrays;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -364,8 +367,7 @@ class tx_rnbase_util_TCA
         $columns = empty($GLOBALS['TCA'][$tableName]['columns']) ? [] : $GLOBALS['TCA'][$tableName]['columns'];
         $tcaOverrides = $options->getTcaOverrides();
         if (!empty($tcaOverrides['columns'])) {
-            tx_rnbase::load('tx_rnbase_util_Arrays');
-            $columns = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
+            $columns = Arrays::mergeRecursiveWithOverrule(
                 $columns,
                 $tcaOverrides['columns']
             );
@@ -393,9 +395,7 @@ class tx_rnbase_util_TCA
             return [];
         }
 
-        tx_rnbase::load('tx_rnbase_util_Arrays');
-
-        return tx_rnbase_util_Arrays::removeNotIn($data, $needle);
+        return Arrays::removeNotIn($data, $needle);
     }
 
     /**

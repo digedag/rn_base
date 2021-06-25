@@ -1,9 +1,11 @@
 <?php
 
+namespace Sys25\RnBase\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006-2014 Rene Nitzsche
+ *  (c) 2006-2021 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -27,7 +29,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 /**
  * Contains utility functions for ArrayObject.
  */
-class tx_rnbase_util_Arrays
+class Arrays
 {
     /**
      * Overwrite some of the array values.
@@ -58,8 +60,7 @@ class tx_rnbase_util_Arrays
     private static function toHashArray($mixed, $splitCharacters = ',;:\s')
     {
         if (is_string($mixed)) {
-            tx_rnbase::load('tx_rnbase_util_Misc');
-            $array = tx_rnbase_util_Misc::explode($mixed, $splitCharacters); // TODO: Enable empty values by defining a better explode functions.
+            $array = Misc::explode($mixed, $splitCharacters); // TODO: Enable empty values by defining a better explode functions.
             for ($i = 0, $len = count($array); $i < $len; $i = $i + 2) {
                 $hashArray[$array[$i]] = $array[$i + 1];
             }
@@ -116,14 +117,13 @@ class tx_rnbase_util_Arrays
      */
     public static function arrayToLogString(array $arr, $valueList = [], $valueLength = 20)
     {
-        $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+        $utility = Typo3Classes::getGeneralUtilityClass();
 
         return $utility::arrayToLogString($arr, $valueList, $valueLength);
     }
 
     /**
      * @see \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array
-     * @see t3lib_div::xml2array
      *
      * @param string $string       XML content to convert into an array
      * @param string $NSprefix     The tag-prefix resolve, eg. a namespace like "T3:"
@@ -135,7 +135,7 @@ class tx_rnbase_util_Arrays
      */
     public static function xml2array($string, $NSprefix = '', $reportDocTag = false)
     {
-        $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+        $utility = Typo3Classes::getGeneralUtilityClass();
 
         return $utility::xml2array($string, $NSprefix, $reportDocTag);
     }
@@ -166,10 +166,10 @@ class tx_rnbase_util_Arrays
      */
     public static function arrayDiffAssocRecursive(array $array1, array $array2)
     {
-        if (tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
+        if (TYPO3::isTYPO87OrHigher()) {
             $differenceArray = ArrayUtility::arrayDiffAssocRecursive($array1, $array2);
         } else {
-            $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+            $utility = Typo3Classes::getGeneralUtilityClass();
             $differenceArray = $utility::arrayDiffAssocRecursive($array1, $array2);
         }
 

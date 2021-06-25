@@ -3,7 +3,7 @@
 namespace Sys25\RnBase\Frontend\Marker;
 
 use Sys25\RnBase\Domain\Model\DataInterface;
-use tx_rnbase_util_Debug;
+use Sys25\RnBase\Utility\Debug;
 
 /**
  *  Copyright notice.
@@ -59,7 +59,7 @@ class MarkerUtility
             }
         }
         if ($minfo) {
-            $item->setProperty('__MINFO', tx_rnbase_util_Debug::viewArray($minfoArr));
+            $item->setProperty('__MINFO', Debug::viewArray($minfoArr));
         }
 
         return $ignore;

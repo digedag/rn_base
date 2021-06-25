@@ -7,12 +7,12 @@ use Sys25\RnBase\Frontend\Request\ParametersInterface;
 use Sys25\RnBase\Frontend\Request\Request;
 use Sys25\RnBase\Frontend\Request\RequestInterface;
 use Sys25\RnBase\Frontend\View\Factory;
+use Sys25\RnBase\Utility\Debug;
+use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
-use tx_rnbase_util_Debug;
 use tx_rnbase_util_Files;
-use tx_rnbase_util_Misc;
 use tx_rnbase_util_Templates;
 
 /***************************************************************
@@ -68,7 +68,7 @@ abstract class AbstractAction
         }
         if ($configurations->getBool($this->getConfId().'toUserInt')) {
             if ($debug) {
-                tx_rnbase_util_Debug::debug(
+                Debug::debug(
                     'Converting to USER_INT!',
                     'View statistics for: '.$this->getConfId().' Key: '.$debugKey
                 );
@@ -78,10 +78,10 @@ abstract class AbstractAction
         // Add JS or CSS files
         $this->addResources($configurations, $this->getConfId());
 
-        tx_rnbase_util_Misc::pushTT(get_class($this), 'handleRequest');
+        Misc::pushTT(get_class($this), 'handleRequest');
         $request = new Request($parameters, $configurations, $this->getConfId());
         $out = $this->handleRequest($request);
-        tx_rnbase_util_Misc::pullTT();
+        Misc::pullTT();
         if (!$out) {
             // View
             $viewFactoryClassName = $configurations->get($this->getConfId().'viewFactoryClassName');
@@ -89,22 +89,22 @@ abstract class AbstractAction
             /* @var $viewFactory Factory */
             $viewFactory = tx_rnbase::makeInstance($viewFactoryClassName);
             $view = $viewFactory->createView($request, $this->getViewClassName(), $this->getTemplateFile($configurations));
-            tx_rnbase_util_Misc::pushTT(get_class($this), 'render');
+            Misc::pushTT(get_class($this), 'render');
             // Das Template wird komplett angegeben
             $tmplName = $this->getTemplateName();
             if (!$tmplName || !strlen($tmplName)) {
-                tx_rnbase_util_Misc::mayday('No template name defined!');
+                Misc::mayday('No template name defined!');
             }
 
             $out = $view->render($tmplName, $request);
-            tx_rnbase_util_Misc::pullTT();
+            Misc::pullTT();
         }
 
         $this->addCacheTags($configurations);
 
         if ($debug) {
             $memEnd = memory_get_usage();
-            tx_rnbase_util_Debug::debug([
+            Debug::debug([
                 'Action' => get_class($this),
                 'Conf Id' => $this->getConfId(),
                 'Execution Time' => (microtime(true) - $time),

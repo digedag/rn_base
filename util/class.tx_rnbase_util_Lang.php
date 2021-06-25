@@ -1,4 +1,8 @@
 <?php
+
+use Sys25\RnBase\Utility\Arrays;
+use Sys25\RnBase\Utility\Debug;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -124,7 +128,7 @@ class tx_rnbase_util_Lang
         }
         //new values from the given array are added to the existing local lang.
         //existing values in the local lang are overruled with those of the given array.
-        $this->LOCAL_LANG = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
+        $this->LOCAL_LANG = Arrays::mergeRecursiveWithOverrule(
             is_array($this->LOCAL_LANG) ? $this->LOCAL_LANG : [],
             $langArr
         );
@@ -179,7 +183,7 @@ class tx_rnbase_util_Lang
             if ('html' !== $labelDebug) {
                 $options['plain'] = true;
             }
-            $label = tx_rnbase_util_Debug::wrapDebugInfo(
+            $label = Debug::wrapDebugInfo(
                 $label,
                 strtolower($key),
                 $options

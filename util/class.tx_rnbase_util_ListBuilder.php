@@ -1,4 +1,7 @@
 <?php
+
+use Sys25\RnBase\Utility\Debug;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,7 +27,6 @@
 tx_rnbase::load('tx_rnbase_util_ListBuilderInfo');
 tx_rnbase::load('tx_rnbase_util_BaseMarker');
 tx_rnbase::load('tx_rnbase_util_IListProvider');
-tx_rnbase::load('tx_rnbase_util_Debug');
 
 /**
  * Generic List-Builder. Creates a list of data with Pagebrowser.
@@ -161,7 +163,7 @@ class tx_rnbase_util_ListBuilder
         if ($debug) {
             $wrapTime = tx_rnbase_util_FormatUtil::$time - $wrapTime;
             $wrapMem = tx_rnbase_util_FormatUtil::$mem - $wrapMem;
-            tx_rnbase_util_Debug::debug([
+            Debug::debug([
                     'Execustion time' => (microtime(true) - $time),
                     'WrapTime' => $wrapTime,
                     'WrapMem' => $wrapMem,
@@ -301,11 +303,9 @@ class tx_rnbase_util_ListBuilder
 
         $out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($template, $markerArray, $subpartArray);
         if ($debug) {
-            tx_rnbase::load('class.tx_rnbase_util_Misc.php');
-
             $wrapTime = tx_rnbase_util_FormatUtil::$time - $wrapTime;
             $wrapMem = tx_rnbase_util_FormatUtil::$mem - $wrapMem;
-            tx_rnbase_util_Debug::debug([
+            Debug::debug([
                     'Rows' => count($dataArr),
                     'Execustion time' => (microtime(true) - $time),
                     'WrapTime' => $wrapTime,

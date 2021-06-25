@@ -30,6 +30,8 @@ namespace Sys25\RnBase\Configuration;
  ***************************************************************/
 
 use Sys25\RnBase\Exception\SkipActionException;
+use Sys25\RnBase\Utility\Arrays;
+use Sys25\RnBase\Utility\Debug;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\Typo3Classes;
 use tx_rnbase;
@@ -552,7 +554,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
         static $flex;
         if (!is_array($flex)) {
             $flex = \tx_rnbase_util_Network::getUrl(\tx_rnbase_util_Extensions::extPath($this->getExtensionKey()).$this->get('flexform'));
-            $flex = \tx_rnbase_util_Arrays::xml2array($flex);
+            $flex = Arrays::xml2array($flex);
         }
 
         return $flex;
@@ -584,7 +586,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
             $key,
             $alt,
             $hsc,
-            \tx_rnbase_util_Debug::isLabelDebugEnabled($this)
+            Debug::isLabelDebugEnabled($this)
         );
     }
 
@@ -993,7 +995,7 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
         if (is_array($xmlOrArray)) {
             $array = $xmlOrArray;
         } else {
-            $array = \tx_rnbase_util_Arrays::xml2array($xmlOrArray);
+            $array = Arrays::xml2array($xmlOrArray);
         }
         $data = $array['data'];
         // Looking for the special sheet s_tssetup

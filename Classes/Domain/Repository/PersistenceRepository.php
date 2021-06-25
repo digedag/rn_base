@@ -8,8 +8,7 @@ use Sys25\RnBase\Domain\Model\BaseModel;
 use Sys25\RnBase\Domain\Model\DataInterface;
 use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Domain\Model\DomainInterface;
-use tx_rnbase;
-use tx_rnbase_util_Arrays;
+use Sys25\RnBase\Utility\Arrays;
 use tx_rnbase_util_TCA;
 
 /***************************************************************
@@ -242,8 +241,7 @@ abstract class PersistenceRepository extends AbstractRepository implements Persi
             return [];
         }
 
-        tx_rnbase::load('tx_rnbase_util_Arrays');
-        $data = tx_rnbase_util_Arrays::removeNotIn(
+        $data = Arrays::removeNotIn(
             $model->getProperty(),
             array_merge(
                 $columns,

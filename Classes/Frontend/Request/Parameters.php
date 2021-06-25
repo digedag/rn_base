@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Frontend\Request;
 
+use Sys25\RnBase\Utility\Arrays;
 use Sys25\RnBase\Utility\Typo3Classes;
 
 /***************************************************************
@@ -41,7 +42,7 @@ class Parameters extends \ArrayObject implements ParametersInterface
         $this->setQualifier($qualifier);
         // get parametersArray for defined qualifier
         $parametersArray = $this->getParametersPlain($qualifier);
-        \tx_rnbase_util_Arrays::overwriteArray($this, $parametersArray);
+        Arrays::overwriteArray($this, $parametersArray);
     }
 
     public function setQualifier($qualifier)

@@ -1,6 +1,8 @@
 <?php
 
-/**
+use Sys25\RnBase\Utility\Arrays;
+
+/*
  * This class is a wrapper around \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink.
  *
  * PHP versions 4 and 5
@@ -546,8 +548,7 @@ class tx_rnbase_util_Link
         $this->parameters = is_array($this->parameters) ? $this->parameters : [];
         $this->overruledParameters = is_array($this->overruledParameters) ? $this->overruledParameters : [];
         unset($this->overruledParameters['DATA']);
-        tx_rnbase::load('tx_rnbase_util_Arrays');
-        $parameters = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
+        $parameters = Arrays::mergeRecursiveWithOverrule(
             $this->overruledParameters,
             $this->parameters
         );

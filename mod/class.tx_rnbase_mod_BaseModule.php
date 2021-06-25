@@ -1,5 +1,7 @@
 <?php
 
+use Sys25\RnBase\Utility\Arrays;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -264,8 +266,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 
             $userTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.'.$this->getExtensionKey().'.');
             if (!empty($userTSconfig['properties'])) {
-                tx_rnbase::load('tx_rnbase_util_Arrays');
-                $pageTSconfig = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule($pageTSconfig, $userTSconfig['properties']);
+                $pageTSconfig = Arrays::mergeRecursiveWithOverrule($pageTSconfig, $userTSconfig['properties']);
             }
 
             $qualifier = $pageTSconfig['qualifier'] ? $pageTSconfig['qualifier'] : $this->getExtensionKey();

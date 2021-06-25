@@ -25,8 +25,8 @@ namespace Sys25\RnBase\Backend\Utility;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Sys25\RnBase\Utility\Arrays;
 use Sys25\RnBase\Utility\TYPO3;
-use tx_rnbase_util_Arrays;
 
 /**
  * TCA Util and wrapper methods.
@@ -294,7 +294,7 @@ class TcaTool
         $wizard = self::addWizardScriptForTypo3Version('edit', $wizard);
         if (is_array($options['edit'])) {
             $wizard =
-                tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
+                Arrays::mergeRecursiveWithOverrule(
                     $wizard,
                     $options['edit']
                 );
@@ -324,11 +324,10 @@ class TcaTool
         ];
         $wizard = self::addWizardScriptForTypo3Version('add', $wizard);
         if (is_array($options['add'])) {
-            $wizard =
-                tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
-                    $wizard,
-                    $options['add']
-                );
+            $wizard = Arrays::mergeRecursiveWithOverrule(
+                $wizard,
+                $options['add']
+            );
         }
 
         return $wizard;
@@ -355,11 +354,10 @@ class TcaTool
         ];
         $wizard = self::addWizardScriptForTypo3Version('list', $wizard);
         if (is_array($options['list'])) {
-            $wizard =
-                tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
-                    $wizard,
-                    $options['list']
-                );
+            $wizard = Arrays::mergeRecursiveWithOverrule(
+                $wizard,
+                $options['list']
+            );
         }
 
         return $wizard;
@@ -382,11 +380,10 @@ class TcaTool
             ],
         ];
         if (is_array($options['suggest'])) {
-            $wizard =
-                tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
-                    $wizard,
-                    $options['suggest']
-                );
+            $wizard = Arrays::mergeRecursiveWithOverrule(
+                $wizard,
+                $options['suggest']
+            );
         }
 
         return $wizard;
@@ -432,11 +429,10 @@ class TcaTool
             'module' => ['urlParameters' => ['mode' => 'wizard']],
         ];
         if (is_array($options['link'])) {
-            $wizard =
-                tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
-                    $wizard,
-                    $options['link']
-                );
+            $wizard = Arrays::mergeRecursiveWithOverrule(
+                $wizard,
+                $options['link']
+            );
         }
 
         $wizard = self::addWizardScriptForTypo3Version(
@@ -462,7 +458,7 @@ class TcaTool
         ];
 
         if (is_array($options['colorpicker'])) {
-            $wizard = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
+            $wizard = Arrays::mergeRecursiveWithOverrule(
                 $wizard,
                 $options['colorpicker']
             );

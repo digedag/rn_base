@@ -4,12 +4,12 @@ namespace Sys25\RnBase\Frontend\Marker;
 
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Domain\Model\DomainInterface;
+use Sys25\RnBase\Utility\Debug;
+use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
 use tx_rnbase;
 use tx_rnbase_model_base;
-use tx_rnbase_util_Debug;
 use tx_rnbase_util_FormatUtil;
-use tx_rnbase_util_Misc;
 use tx_rnbase_util_PageBrowser;
 use tx_rnbase_util_Templates;
 
@@ -150,7 +150,7 @@ class BaseMarker
             }
         }
         if ($minfo) {
-            $record['__MINFO'] = tx_rnbase_util_Debug::viewArray($minfoArr);
+            $record['__MINFO'] = Debug::viewArray($minfoArr);
         }
 
         return $ignore;
@@ -496,7 +496,7 @@ class BaseMarker
      */
     protected function pushTT($message)
     {
-        tx_rnbase_util_Misc::pushTT(get_class($this), $message);
+        Misc::pushTT(get_class($this), $message);
     }
 
     /**
@@ -504,7 +504,7 @@ class BaseMarker
      */
     protected function pullTT()
     {
-        tx_rnbase_util_Misc::pullTT();
+        Misc::pullTT();
     }
 
     public static function substituteMarkerArrayCached($content, $markContentArray = [], $subpartContentArray = [], $wrappedSubpartContentArray = [])
