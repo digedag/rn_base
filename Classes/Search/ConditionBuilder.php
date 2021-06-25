@@ -112,6 +112,7 @@ class ConditionBuilder
                             $col,
                             $value
                         );
+
                         if ('' !== trim($wherePart)) {
                             $qb->andWhere($wherePart);
                         }
@@ -186,13 +187,13 @@ class ConditionBuilder
             case self::OP_NOTIN_INT:
             case self::OP_IN_INT:
                 $value = \Tx_Rnbase_Utility_Strings::intExplode(',', $value);
-                $where = sprintf('%s.%s IN (%s)', $tableAlias, strtolower($col),
+                $where = sprintf('%s.%s %s (%s)', $tableAlias, strtolower($col), $operator,
                     $qb->createNamedParameter($value, \Doctrine\DBAL\Connection::PARAM_INT_ARRAY));
                 break;
             case self::OP_NOTIN:
             case self::OP_IN:
                 $value = \Tx_Rnbase_Utility_Strings::trimExplode(',', $value);
-                $where = sprintf('%s.%s IN (%s)', $tableAlias, strtolower($col),
+                $where = sprintf('%s.%s %s (%s)', $tableAlias, strtolower($col), $operator,
                     $qb->createNamedParameter($value, \Doctrine\DBAL\Connection::PARAM_STR_ARRAY));
                 break;
             case self::OP_NOTIN_SQL:

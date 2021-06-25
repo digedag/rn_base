@@ -55,17 +55,16 @@
             "mod/",
             "util/",
             "class.tx_rnbase.php",
-            "class.tx_rnbase_controller.php"
-        ],
+            "class.tx_rnbase_controller.php",
+			"tests/class.tx_rnbase_tests_BaseTestCase.php",
+			"tests/class.tx_rnbase_tests_Utility.php"
+		],
         "files": [
             "Classes/Constants.php"
         ],
         "psr-4": {"Sys25\\RnBase\\" : "Classes"}
     },
     "autoload-dev": {
-        "classmap": [
-            "tests/"
-        ],
         "files": [
             "tests/Deprecated.php"
         ],
@@ -73,7 +72,10 @@
             "Sys25\\RnBase\\" : "tests/Classes",
             "TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/",
             "TYPO3\\CMS\\Fluid\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/fluid/Tests/"
-        }
+        },
+        "classmap": [
+            "tests/"
+        ]
     },
     "config": {
         "vendor-dir": ".Build/vendor",

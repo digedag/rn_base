@@ -1,7 +1,7 @@
 ### travis builds
 /.Build
+/composer.lock
 /var
-composer.lock
 
 ### eclipse files
 /.buildpath
