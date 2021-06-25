@@ -11,7 +11,7 @@ class tx_rnbase_configurations extends Sys25\RnBase\Configuration\Processor impl
 {
 }
 /** @deprecated */
-class Tx_Rnbase_Configuration_Processor extends tx_rnbase_configurations
+class Tx_Rnbase_Configuration_Processor extends tx_rnbase_configurations implements Tx_Rnbase_Configuration_ProcessorInterface
 {
 }
 /** @deprecated */
