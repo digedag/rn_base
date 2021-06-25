@@ -1,6 +1,6 @@
 <?php
 
-namespace Sys25\RnBase\Database;
+namespace Sys25\RnBase\Database\Model;
 
 use Sys25\RnBase\Domain\Model\BaseModel;
 use Sys25\RnBase\Tests\BaseTestCase;
@@ -32,7 +32,7 @@ use tx_rnbase;
 /**
  * @group unit
  */
-class BaseTest extends BaseTestCase
+class BaseModelTest extends BaseTestCase
 {
     public function testMagiccall()
     {

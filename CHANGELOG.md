@@ -25,6 +25,8 @@ v1.14.0 (??.05.2021)
  * BC: `CategorySearch` supports QueryBuilder API
  * BC: `tx_rnbase_exception_IHandler::handleException()` changed parameter types
  * BC: `tx_rnbase_exception_Skip` replaced by `Sys25\RnBase\Exception\SkipActionException`
+ * BC: `tx_rnbase_model_base` no longer extends `tx_rnbase_model_data`
+ * BC: `tx_rnbase_model_media` is replaced by `MediaModel`
 
 v1.13.8 (09.05.2021)
  * CS-Fixer updated

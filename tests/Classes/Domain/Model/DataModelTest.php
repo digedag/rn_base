@@ -1,8 +1,14 @@
 <?php
+
+namespace Sys25\RnBase\Database\Model;
+
+use Sys25\RnBase\Tests\BaseTestCase;
+use Sys25\RnBase\Domain\Model\DataModel;
+
 /***************************************************************
  * Copyright notice
  *
- * (c) 2007-2016 Rene Nitzsche (rene@system25.de)
+ * (c) 2007-2021 Rene Nitzsche (rene@system25.de)
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,9 +28,6 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
-
 /**
  * Data model unit tests.
  *
@@ -32,7 +35,7 @@ tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
+class DataModelTest extends BaseTestCase
 {
     /**
      * Test the getProperties method.
@@ -44,7 +47,7 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
     {
         $model = $this->getModel(
             null,
-            'Tx_Rnbase_Domain_Model_Base',
+            DataModel::class,
             ['getProperty']
         );
 
@@ -74,20 +77,20 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
 
         $this->assertTrue($model->hasFirstName());
         $this->assertEquals('John', $model->getFirstName());
-        $this->assertInstanceOf('Tx_Rnbase_Domain_Model_Data', $model->setFirstName('Max'));
+        $this->assertInstanceOf(DataModel::class, $model->setFirstName('Max'));
         $this->assertEquals('Max', $model->getFirstName());
 
         $this->assertTrue($model->hasLastName());
         $this->assertEquals('Doe', $model->getLastName());
-        $this->assertInstanceOf('Tx_Rnbase_Domain_Model_Data', $model->unsLastName());
+        $this->assertInstanceOf(DataModel::class, $model->unsLastName());
         $this->assertFalse($model->hasLastName());
         $this->assertNull($model->getLastName());
 
         $this->assertFalse($model->hasGender());
-        $this->assertInstanceOf('Tx_Rnbase_Domain_Model_Data', $model->setGender('male'));
+        $this->assertInstanceOf(DataModel::class, $model->setGender('male'));
         $this->assertTrue($model->hasGender());
         $this->assertEquals('male', $model->getGender());
-        $this->assertInstanceOf('Tx_Rnbase_Domain_Model_Data', $model->unsGender());
+        $this->assertInstanceOf(DataModel::class, $model->unsGender());
         $this->assertFalse($model->hasGender());
         $this->assertNull($model->getGender());
     }
@@ -135,13 +138,13 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
                 'test' => [],
             ],
         ];
-        $model = Tx_Rnbase_Domain_Model_Data::getInstance($data);
+        $model = DataModel::getInstance($data);
 
         $this->assertSame('m', $model->getGender());
-        $this->assertInstanceOf('Tx_Rnbase_Domain_Model_Data', $model->getName());
+        $this->assertInstanceOf(DataModel::class, $model->getName());
         $this->assertSame('John', $model->getName()->getFirst());
         $this->assertSame('Doe', $model->getName()->getLast());
-        $this->assertInstanceOf('Tx_Rnbase_Domain_Model_Data', $model->getName()->getTest());
+        $this->assertInstanceOf(DataModel::class, $model->getName()->getTest());
     }
 
     /**
@@ -166,7 +169,7 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
     public function testIsDirtyOnSet()
     {
         $model = $this->getModelInstance();
-        $model->setFirstName('Jonny');
+        $model->setFirstName('Johnny');
         // after set, the model has to be dirty
         $this->assertTrue($model->isDirty());
         $this->callInaccessibleMethod($model, 'resetCleanState');
@@ -202,7 +205,7 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
     /**
      * Creates a test object.
      *
-     * @return Tx_Rnbase_Domain_Model_Data
+     * @return \Tx_Rnbase_Domain_Model_Data
      */
     private function getModelInstance()
     {
@@ -212,6 +215,6 @@ class Tx_Rnbase_Domain_Model_DataTest extends tx_rnbase_tests_BaseTestCase
             'last_name' => 'Doe',
         ];
 
-        return Tx_Rnbase_Domain_Model_Data::getInstance($data);
+        return DataModel::getInstance($data);
     }
 }

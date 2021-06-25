@@ -1,5 +1,7 @@
 <?php
 
+use Sys25\RnBase\Domain\Model\MediaModel;
+
 /** @deprecated */
 interface Tx_Rnbase_Configuration_ProcessorInterface extends \Sys25\RnBase\Configuration\ConfigurationInterface
 {
@@ -306,5 +308,36 @@ interface tx_rnbase_exception_IHandler extends Sys25\RnBase\Exception\ExceptionH
 }
 /** @deprecated */
 class tx_rnbase_exception_Handler extends Sys25\RnBase\Exception\ExceptionHandler implements tx_rnbase_exception_IHandler
+{
+}
+
+/** @deprecated */
+class tx_rnbase_model_data extends Sys25\RnBase\Domain\Model\DataModel implements Tx_Rnbase_Domain_Model_DataInterface
+{
+    public $record = [];
+}
+
+/**
+ * @deprecated
+ */
+class tx_rnbase_model_base extends Sys25\RnBase\Domain\Model\BaseModel implements Tx_Rnbase_Domain_Model_RecordInterface, Tx_Rnbase_Domain_Model_DataInterface
+{
+    public $uid;
+    public $record;
+
+    /**
+     * @deprecated
+     */
+    public function getColumnWrapped($formatter, $columnName, $baseConfId, $colConfId = '')
+    {
+        $colConfId = (strlen($colConfId)) ? $colConfId : $columnName.'.';
+
+        return $formatter->wrap($this->record[$columnName], $baseConfId.$colConfId);
+    }
+}
+/**
+ * @deprecated
+ */
+class tx_rnbase_model_media extends MediaModel
 {
 }

@@ -1,11 +1,15 @@
 <?php
 
+namespace Sys25\RnBase\Database\Repository;
+
 use Sys25\RnBase\Domain\Repository\AbstractRepository;
+use Sys25\RnBase\Domain\Model\BaseModel;
+use tx_rnbase;
 
 /***************************************************************
  * Copyright notice
  *
- * (c) 2015-2016 René Nitzsche <rene@system25.de>
+ * (c) 2015-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,7 +34,7 @@ use Sys25\RnBase\Domain\Repository\AbstractRepository;
  *
  * @author Michael Wagner
  */
-class AbstractRepositoryTest extends tx_rnbase_tests_BaseTestCase
+class AbstractRepositoryTest extends \tx_rnbase_tests_BaseTestCase
 {
     protected function setUp()
     {
@@ -51,7 +55,7 @@ class AbstractRepositoryTest extends tx_rnbase_tests_BaseTestCase
         $fields = [];
         $repository = $this->getRepositoryMock();
 
-        $method = new ReflectionMethod(
+        $method = new \ReflectionMethod(
             AbstractRepository::class,
             'handleEnableFieldsOptions'
         );
@@ -96,13 +100,13 @@ class AbstractRepositoryTest extends tx_rnbase_tests_BaseTestCase
         $repository = $this->getRepositoryMock();
 
         $expectedModel = tx_rnbase::makeInstance(
-            'tx_rnbase_model_base',
-            ['uid' => 123]
+            BaseModel::class,
+            ['uid' => 123, 'some' => 'other']
         );
 
         self::assertEquals(
             $expectedModel,
-            $repository->findByUid(['uid' => 123])
+            $repository->findByUid(['uid' => 123, 'some' => 'other'])
         );
     }
 
@@ -211,7 +215,7 @@ class AbstractRepositoryTest extends tx_rnbase_tests_BaseTestCase
     {
         $repository = $this->getRepositoryMock();
         $master = $this->getMock(
-            'tx_rnbase_model_base',
+            BaseModel::class,
             ['getTableName'],
             [['uid' => 123]]
         );
@@ -220,7 +224,7 @@ class AbstractRepositoryTest extends tx_rnbase_tests_BaseTestCase
             ->will($this->returnValue('tt_content'));
 
         $overlay = $this->getMock(
-            'tx_rnbase_model_base',
+            BaseModel::class,
             ['getTableName'],
             [['uid' => 456, 'l18n_parent' => 123, 'sys_language_uid' => 789]]
         );
@@ -260,13 +264,13 @@ class AbstractRepositoryTest extends tx_rnbase_tests_BaseTestCase
     /**
      * @param array $mockedMethods
      *
-     * @return Tx_Rnbase_Repository_AbstractRepository
+     * @return \Tx_Rnbase_Repository_AbstractRepository
      */
     private function getRepositoryMock($mockedMethods = [])
     {
         $mockedMethods = array_unique(array_merge($mockedMethods, ['getSearchClass', 'getWrapperClass']));
         $repository = $this->getMockForAbstractClass(
-            'Tx_Rnbase_Repository_AbstractRepository',
+            AbstractRepository::class,
             [],
             '',
             false,
@@ -283,7 +287,7 @@ class AbstractRepositoryTest extends tx_rnbase_tests_BaseTestCase
         $repository
             ->expects($this->any())
             ->method('getWrapperClass')
-            ->will($this->returnValue('tx_rnbase_model_base'));
+            ->will($this->returnValue(BaseModel::class));
 
         return $repository;
     }
