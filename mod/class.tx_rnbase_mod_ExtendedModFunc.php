@@ -120,6 +120,8 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
             $args[] = ['subSels' => $subSels];
             // Der Handler sollte nicht das gesamte Template bekommen, sondern nur seinen Subpart...
             $subOut = call_user_func_array([$handler, 'showScreen'], $args);
+        } else {
+            $subOut = '';
         }
 
         // wrap the content into a tab pane

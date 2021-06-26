@@ -112,6 +112,8 @@ class Tx_Rnbase_Utility_Cache
             $hash = $calculator->generateForParameters($urlQueryString);
         } elseif (is_callable([t3lib_div, 'generateCHash'])) {
             $hash = t3lib_div::generateCHash($urlQueryString);
+        } else {
+            $hash = '';
         }
 
         return $hash;

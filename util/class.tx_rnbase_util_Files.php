@@ -54,6 +54,7 @@ class tx_rnbase_util_Files
         } else {
             $incFile = self::getFileName($fName);
         }
+        $ret = '';
         if ($incFile) {
             // Im BE muss ein absoluter Pfad verwendet werden
             $fullPath = (TYPO3_MODE == 'BE') ? \Sys25\RnBase\Utility\Environment::getPublicPath().$incFile : $incFile;

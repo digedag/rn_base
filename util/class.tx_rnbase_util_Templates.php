@@ -389,8 +389,10 @@ class tx_rnbase_util_Templates
         } else {
             if (self::isSubstCacheEnabled()) {
                 $storeArrDat = TYPO3::getSysPage()->getHash($storeKey);
+            } else {
+                $storeArrDat = null;
             }
-            if (!self::isSubstCacheEnabled() || !isset($storeArrDat)) {
+            if (!self::isSubstCacheEnabled() || null === $storeArrDat) {
                 // Initialize storeArr
                 $storeArr = [];
 

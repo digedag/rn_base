@@ -128,6 +128,7 @@ class tx_rnbase_util_BEPager
     public function render()
     {
         $this->setState();
+        $ret = [];
         $ret['limits'] = $this->getSetting('limitMenu');
         $ret['pages'] = $this->getSetting('offsetMenu');
 

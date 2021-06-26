@@ -146,6 +146,7 @@ class tx_rnbase_util_TSDAM
             $conf->getFormatter()
         );
 
+        $markerArray = [];
         // Now set the identifier
         $markerArray['###MEDIA_PARENTUID###'] = $parentUid;
         $out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($out, $markerArray);
@@ -385,6 +386,7 @@ class tx_rnbase_util_TSDAM
      */
     public static function getImageCount($tableName, $fieldName, $itemId)
     {
+        $options = [];
         $options['where'] = 'tablenames='.tx_rnbase_util_DB::fullQuoteStr($tableName, 'tx_dam_mm_ref');
         $options['where'] .= ' AND ident='.tx_rnbase_util_DB::fullQuoteStr($fieldName, 'tx_dam_mm_ref');
         $options['where'] .= ' AND uid_foreign='.(int) $itemId;
@@ -405,6 +407,7 @@ class tx_rnbase_util_TSDAM
      */
     public static function getReferencesCount($mediaUid)
     {
+        $options = [];
         $options['where'] = 'uid_local = '.(int) $mediaUid;
         $options['count'] = 1;
         $options['enablefieldsoff'] = 1;

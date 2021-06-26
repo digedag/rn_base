@@ -30,7 +30,7 @@ class tx_rnbase_filter_FilterItemMarker extends tx_rnbase_util_BaseMarker
     {
         $markerArray = $formatter->getItemMarkerArrayWrapped($item->record, $confId, 0, $marker.'_');
 
-        $out = $formatter->cObj->substituteMarkerArrayCached($template, $markerArray, $subpartArray, $wrappedSubpartArray);
+        $out = $formatter->cObj->substituteMarkerArrayCached($template, $markerArray, [], []);
 
         return $out;
     }

@@ -37,6 +37,7 @@ abstract class Tx_Rnbase_Utility_WizIcon
      */
     public static function addWizicon($clazz, $clazzFile)
     {
+        $id = 'rn_base';
         tx_rnbase::load('tx_rnbase_util_TYPO3');
         if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
             $GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'][$id] = $clazz;
