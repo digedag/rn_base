@@ -58,7 +58,7 @@ class GetViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
     }
 
     /**
-     * @return \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext|\TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface
+     * @return \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface
      */
     public function getRenderingContext()
     {

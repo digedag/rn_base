@@ -442,7 +442,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
             'myQualifier'
         );
 
-        $renderingContext = new \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext();
+        $renderingContext = new \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext();
         $viewHelperNode = $this->getAccessibleMock(
             'TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ViewHelperNode',
             ['evaluate'],

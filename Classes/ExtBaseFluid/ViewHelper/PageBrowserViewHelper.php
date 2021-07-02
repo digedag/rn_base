@@ -48,12 +48,12 @@ class PageBrowserViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTa
     private $pagePartsDef = ['normal', 'current', 'first', 'last', 'prev', 'next'];
 
     /**
-     * @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext
+     * @var \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
      */
     protected $renderingContext;
 
     /**
-     * An array of \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode.
+     * An array of \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\AbstractNode.
      *
      * @var array
      */
@@ -350,7 +350,7 @@ class PageBrowserViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTa
         $oldPageViewHelperName = str_replace('ExtBaseFluid', 'Fluid', $pageViewHelperName);
         foreach ($this->childNodes as $childNode) {
             if (
-                $childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode &&
+                $childNode instanceof \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode &&
                 (
                     $childNode->getViewHelperClassName() === $pageViewHelperName
                     || $childNode->getViewHelperClassName() === $oldPageViewHelperName
@@ -398,7 +398,7 @@ class PageBrowserViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTa
     }
 
     /**
-     * @return \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext|\TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface
+     * @return \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface
      */
     public function getRenderingContext()
     {

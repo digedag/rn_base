@@ -35,7 +35,7 @@ namespace Sys25\RnBase\ExtBaseFluid\ViewHelper;
 abstract class BaseViewHelperTest extends \tx_rnbase_tests_BaseTestCase
 {
     /**
-     * @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext
+     * @var \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
      */
     protected $renderingContext;
 
@@ -64,7 +64,7 @@ abstract class BaseViewHelperTest extends \tx_rnbase_tests_BaseTestCase
             $viewHelper = \tx_rnbase::makeInstance($viewHelper);
         }
 
-        $this->renderingContext = new \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext();
+        $this->renderingContext = new \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext();
         $templateVariableProvider = new \TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider();
         $this->renderingContext->setVariableProvider($templateVariableProvider);
         $property = new \ReflectionProperty(
