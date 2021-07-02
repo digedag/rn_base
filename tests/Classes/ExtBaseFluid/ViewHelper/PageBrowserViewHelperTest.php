@@ -665,10 +665,10 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
     }
 
     /**
-     * @param string | \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper
+     * @param string | \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper
      * @param tx_rnbase_util_PageBrowser                                   $pageBrowser
      *
-     * @return \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+     * @return \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
      */
     protected function getPreparedVîewHelperWithPageBrowser(
         $viewHelper = PageBrowserViewHelper::class,
