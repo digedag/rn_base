@@ -125,7 +125,7 @@ class PageBrowserViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTa
             $maxPages,
             $totalPages
         );
-        $result = implode($pageBrowserHtmlParts, $implode ? $implode : ' ');
+        $result = implode($implode ? $implode : ' ', $pageBrowserHtmlParts);
 
         $this->templateVariableContainer->remove('count');
         $this->templateVariableContainer->remove('totalPages');
