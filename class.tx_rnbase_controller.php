@@ -271,15 +271,13 @@ class tx_rnbase_controller
                 // Default 404 anhängen
                 $message[1] .= "\n".$GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling_statheader'];
             }
-            $this->getTsfe()->pageNotFoundAndExit(
+            $this->handlePageNotFound(
                 count($message) > 1 ? $message[0] : $e->getMessage(),
                 count($message) > 1 ? $message[1] : ''
             );
         } // Nice to have, aber weder aufwärts noch abwärtskompatibel...
         catch (TYPO3\CMS\Core\Error\Http\PageNotFoundException $e) {
-            $this->getTsfe()->pageNotFoundAndExit(
-                'TYPO3\\CMS\\Core\\Error\\Http\\PageNotFoundException was thrown'
-            );
+            $this->handlePageNotFound('TYPO3\\CMS\\Core\\Error\\Http\\PageNotFoundException was thrown');
         } catch (Exception $e) {
             $ret = $this->handleException($actionName, $e, $configurations);
             $this->errors[] = $e;
@@ -288,12 +286,18 @@ class tx_rnbase_controller
         return $ret;
     }
 
-    /**
-     * @return TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-     */
-    protected function getTsfe()
+    protected function handlePageNotFound(string $reason, string $header = ''): void
     {
-        return tx_rnbase_util_TYPO3::getTSFE();
+        if (!\Sys25\RnBase\Utility\TYPO3::isTYPO104OrHigher()) {
+            \Sys25\RnBase\Utility\TYPO3::getTSFE()->pageNotFoundAndExit($reason, $header);
+        }
+
+        $response = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Controller\ErrorController::class)
+            ->pageNotFoundAction(
+                $GLOBALS['TYPO3_REQUEST'],
+                $reason
+            );
+        throw new \TYPO3\CMS\Core\Http\ImmediateResponseException($response);
     }
 
     /**
