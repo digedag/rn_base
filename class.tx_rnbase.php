@@ -330,10 +330,16 @@ class tx_rnbase
      */
     private static function getValidKey($rawKey)
     {
-        if (!isset($GLOBALS['TYPO3_LOADED_EXT']) || !is_array($GLOBALS['TYPO3_LOADED_EXT'])) {
+        if (TYPO3::isTYPO95OrHigher()) {
+            $loadedExtensions = self::makeInstance(\TYPO3\CMS\Core\Package\PackageManager::class)->getActivePackages();
+        } else {
+            $loadedExtensions = $GLOBALS['TYPO3_LOADED_EXT'];
+        }
+
+        if (!$loadedExtensions || !is_array($loadedExtensions)) {
             return false;
         }
-        $uKeys = array_keys((array) $GLOBALS['TYPO3_LOADED_EXT']);
+        $uKeys = array_keys($loadedExtensions);
         foreach ($uKeys as $uKey) {
             if (str_replace('_', '', $uKey) == str_replace('_', '', $rawKey)) {
                 $result = $uKey;
