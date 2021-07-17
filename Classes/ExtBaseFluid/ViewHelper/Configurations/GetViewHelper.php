@@ -32,7 +32,7 @@ namespace Sys25\RnBase\ExtBaseFluid\ViewHelper\Configurations;
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class GetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class GetViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
 {
     /**
      * Arguments initialization.
@@ -58,7 +58,7 @@ class GetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
     }
 
     /**
-     * @return \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext|\TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface
+     * @return \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface
      */
     public function getRenderingContext()
     {

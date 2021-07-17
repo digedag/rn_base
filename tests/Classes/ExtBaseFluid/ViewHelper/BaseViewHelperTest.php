@@ -35,7 +35,7 @@ namespace Sys25\RnBase\ExtBaseFluid\ViewHelper;
 abstract class BaseViewHelperTest extends \tx_rnbase_tests_BaseTestCase
 {
     /**
-     * @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext
+     * @var \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
      */
     protected $renderingContext;
 
@@ -54,9 +54,9 @@ abstract class BaseViewHelperTest extends \tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @param string | \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper
+     * @param string | \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper
      *
-     * @return \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+     * @return \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
      */
     protected function getPreparedVîewHelper($viewHelper)
     {
@@ -64,7 +64,7 @@ abstract class BaseViewHelperTest extends \tx_rnbase_tests_BaseTestCase
             $viewHelper = \tx_rnbase::makeInstance($viewHelper);
         }
 
-        $this->renderingContext = new \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext();
+        $this->renderingContext = new \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext();
         $templateVariableProvider = new \TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider();
         $this->renderingContext->setVariableProvider($templateVariableProvider);
         $property = new \ReflectionProperty(
@@ -72,7 +72,7 @@ abstract class BaseViewHelperTest extends \tx_rnbase_tests_BaseTestCase
             'viewHelperVariableContainer'
         );
         $property->setAccessible(true);
-        $viewHelperVariableContainer = new \TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer();
+        $viewHelperVariableContainer = new \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer();
         $property->setValue($this->renderingContext, $viewHelperVariableContainer);
 
         $controllerContext = new \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext();

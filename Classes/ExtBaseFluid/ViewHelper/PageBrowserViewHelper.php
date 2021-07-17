@@ -35,7 +35,7 @@ use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+class PageBrowserViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
 {
     /**
      * @var array
@@ -48,12 +48,12 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
     private $pagePartsDef = ['normal', 'current', 'first', 'last', 'prev', 'next'];
 
     /**
-     * @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext
+     * @var \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
      */
     protected $renderingContext;
 
     /**
-     * An array of \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode.
+     * An array of \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\AbstractNode.
      *
      * @var array
      */
@@ -125,7 +125,7 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
             $maxPages,
             $totalPages
         );
-        $result = implode($pageBrowserHtmlParts, $implode ? $implode : ' ');
+        $result = implode($implode ? $implode : ' ', $pageBrowserHtmlParts);
 
         $this->templateVariableContainer->remove('count');
         $this->templateVariableContainer->remove('totalPages');
@@ -350,7 +350,7 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
         $oldPageViewHelperName = str_replace('ExtBaseFluid', 'Fluid', $pageViewHelperName);
         foreach ($this->childNodes as $childNode) {
             if (
-                $childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode &&
+                $childNode instanceof \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode &&
                 (
                     $childNode->getViewHelperClassName() === $pageViewHelperName
                     || $childNode->getViewHelperClassName() === $oldPageViewHelperName
@@ -398,7 +398,7 @@ class PageBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTag
     }
 
     /**
-     * @return \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext|\TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface
+     * @return \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface
      */
     public function getRenderingContext()
     {

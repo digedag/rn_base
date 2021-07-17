@@ -3,6 +3,12 @@
 use Sys25\RnBase\Frontend\Request\Parameters;
 use Sys25\RnBase\Utility\Arrays;
 use Sys25\RnBase\Utility\TYPO3;
+use Sys25\RnBase\Exception\PageNotFound404;
+use Sys25\RnBase\Utility\Strings;
+use Sys25\RnBase\Exception\ExceptionHandler;
+use Sys25\RnBase\Exception\ExceptionHandlerInterface;
+use Sys25\RnBase\Utility\Logger;
+use Sys25\RnBase\Exception\SkipActionException;
 
 /***************************************************************
  *  Copyright notice
@@ -201,7 +207,7 @@ class tx_rnbase_controller
             $configurations->getBool('toUserInt')
             // convert the USER to USER_INT
             && $configurations->convertToUserInt();
-        } catch (tx_rnbase_exception_Skip $e) {
+        } catch (SkipActionException $e) {
             // dont do anything! the controller will be called twice,
             // if we convert the USER to USER_INTERNAL
             return '';
@@ -231,7 +237,7 @@ class tx_rnbase_controller
                 $out .= $this->doAction($actionName, $parameters, $configurations);
                 tx_rnbase_util_Misc::pullTT();
             }
-        } catch (tx_rnbase_exception_Skip $e) {
+        } catch (SkipActionException $e) {
             // Bei USER_INT im ersten Aufruf die Ausgabe unterdrücken
             $out = '';
         }
@@ -259,25 +265,23 @@ class tx_rnbase_controller
             if (is_object($action)) {
                 $ret = $action->execute($parameters, $configurations);
             }
-        } catch (tx_rnbase_exception_Skip $e) {
+        } catch (SkipActionException $e) {
             // Wenn ein View USER_INT verlangt, dann muss das für alle gelten
             // Darum die Exception weiter oben behandeln
             throw $e;
-        } catch (Tx_Rnbase_Exception_PageNotFound404 $e) {
-            $message = Tx_Rnbase_Utility_Strings::trimExplode("\n", $e->getMessage(), true, 2);
+        } catch (PageNotFound404 $e) {
+            $message = Strings::trimExplode("\n", $e->getMessage(), true, 2);
             if (count($message) > 1) {
                 // Default 404 anhängen
                 $message[1] .= "\n".$GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling_statheader'];
             }
-            $this->getTsfe()->pageNotFoundAndExit(
+            $this->handlePageNotFound(
                 count($message) > 1 ? $message[0] : $e->getMessage(),
                 count($message) > 1 ? $message[1] : ''
             );
         } // Nice to have, aber weder aufwärts noch abwärtskompatibel...
         catch (TYPO3\CMS\Core\Error\Http\PageNotFoundException $e) {
-            $this->getTsfe()->pageNotFoundAndExit(
-                'TYPO3\\CMS\\Core\\Error\\Http\\PageNotFoundException was thrown'
-            );
+            $this->handlePageNotFound('TYPO3\\CMS\\Core\\Error\\Http\\PageNotFoundException was thrown');
         } catch (Exception $e) {
             $ret = $this->handleException($actionName, $e, $configurations);
             $this->errors[] = $e;
@@ -286,12 +290,18 @@ class tx_rnbase_controller
         return $ret;
     }
 
-    /**
-     * @return TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-     */
-    protected function getTsfe()
+    protected function handlePageNotFound(string $reason, string $header = ''): void
     {
-        return TYPO3::getTSFE();
+        if (!\Sys25\RnBase\Utility\TYPO3::isTYPO104OrHigher()) {
+            \Sys25\RnBase\Utility\TYPO3::getTSFE()->pageNotFoundAndExit($reason, $header);
+        }
+
+        $response = tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Controller\ErrorController::class)
+            ->pageNotFoundAction(
+                $GLOBALS['TYPO3_REQUEST'],
+                $reason
+            );
+        throw new \TYPO3\CMS\Core\Http\ImmediateResponseException($response);
     }
 
     /**
@@ -312,23 +322,22 @@ class tx_rnbase_controller
      */
     private function handleException($actionName, Exception $e, $configurations)
     {
-        $exceptionHandlerClass = Tx_Rnbase_Configuration_Processor::getExtensionCfgValue(
+        $exceptionHandlerClass = \Sys25\RnBase\Configuration\Processor::getExtensionCfgValue(
             'rn_base',
             'exceptionHandler'
         );
 
-        $defaultExceptionHandlerClass = 'tx_rnbase_exception_Handler';
+        $defaultExceptionHandlerClass = ExceptionHandler::class;
         if (!$exceptionHandlerClass) {
             $exceptionHandlerClass = $defaultExceptionHandlerClass;
         }
 
         $exceptionHandler = tx_rnbase::makeInstance($exceptionHandlerClass);
 
-        if (!$exceptionHandler instanceof tx_rnbase_exception_IHandler) {
+        if (!$exceptionHandler instanceof ExceptionHandlerInterface) {
             $exceptionHandler = tx_rnbase::makeInstance($defaultExceptionHandlerClass);
-            tx_rnbase::load('tx_rnbase_util_Logger');
-            tx_rnbase_util_Logger::fatal(
-                "the configured error handler ($exceptionHandlerClass) does not implement the tx_rnbase_exception_IHandler interface",
+            Logger::fatal(
+                "the configured error handler ($exceptionHandlerClass) does not implement the ExceptionHandlerInterface",
                 'rn_base'
             );
         }
