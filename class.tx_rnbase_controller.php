@@ -1,14 +1,14 @@
 <?php
 
-use Sys25\RnBase\Frontend\Request\Parameters;
-use Sys25\RnBase\Utility\Arrays;
-use Sys25\RnBase\Utility\TYPO3;
-use Sys25\RnBase\Exception\PageNotFound404;
-use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Exception\ExceptionHandler;
 use Sys25\RnBase\Exception\ExceptionHandlerInterface;
-use Sys25\RnBase\Utility\Logger;
+use Sys25\RnBase\Exception\PageNotFound404;
 use Sys25\RnBase\Exception\SkipActionException;
+use Sys25\RnBase\Frontend\Request\Parameters;
+use Sys25\RnBase\Utility\Arrays;
+use Sys25\RnBase\Utility\Logger;
+use Sys25\RnBase\Utility\Strings;
+use Sys25\RnBase\Utility\TYPO3;
 
 /***************************************************************
  *  Copyright notice
