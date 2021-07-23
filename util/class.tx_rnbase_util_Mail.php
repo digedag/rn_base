@@ -28,7 +28,8 @@ tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
  * Encapsulate simple mailing functionality of TYPO3 for backward compatibility.
- * @deprecated use Tx_Rnbase_Utility_Mail instead.
+ *
+ * @deprecated use Tx_Rnbase_Utility_Mail instead
  */
 class tx_rnbase_util_Mail
 {
