@@ -171,15 +171,8 @@ class Tx_Rnbase_Utility_Mail
         if ($this->replyTo) {
             $mail->addReplyTo($this->replyTo, $this->replyToName);
         }
-        // Or set it after like this
-        if ($this->htmlPart) {
-            $mail->setBody($this->htmlPart, 'text/html');
-        }
 
-        // Add alternative parts with addPart()
-        if ($this->textPart) {
-            $mail->addPart($this->textPart, 'text/plain');
-        }
+        $this->addBody($mail);
 
         if (!empty($this->attachments)) {
             foreach ($this->attachments as $attachment) {
@@ -194,6 +187,20 @@ class Tx_Rnbase_Utility_Mail
         }
 
         return $this->sendMessage($mail);
+    }
+
+    private function addBody(TYPO3\CMS\Core\Mail\MailMessage $mail)
+    {
+        if ($this->htmlPart) {
+            \Sys25\RnBase\Utility\TYPO3::isTYPO104OrHigher() ?
+                $mail->html($this->htmlPart) :
+                $mail->setBody($this->htmlPart, 'text/html');
+        }
+        if ($this->textPart) {
+            \Sys25\RnBase\Utility\TYPO3::isTYPO104OrHigher() ?
+                $mail->text($this->textPart) :
+                $mail->addPart($this->textPart, 'text/plain');
+        }
     }
 
     protected function sendMessage($mail)
