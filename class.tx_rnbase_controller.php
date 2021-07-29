@@ -288,16 +288,16 @@ class tx_rnbase_controller
 
     protected function handlePageNotFound(string $reason, string $header = ''): void
     {
-        if (!\Sys25\RnBase\Utility\TYPO3::isTYPO104OrHigher()) {
-            \Sys25\RnBase\Utility\TYPO3::getTSFE()->pageNotFoundAndExit($reason, $header);
+        if (\Sys25\RnBase\Utility\TYPO3::isTYPO104OrHigher()) {
+            $response = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Controller\ErrorController::class)
+                ->pageNotFoundAction(
+                    $GLOBALS['TYPO3_REQUEST'],
+                    $reason
+                );
+            throw new \TYPO3\CMS\Core\Http\ImmediateResponseException($response);
         }
 
-        $response = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Controller\ErrorController::class)
-            ->pageNotFoundAction(
-                $GLOBALS['TYPO3_REQUEST'],
-                $reason
-            );
-        throw new \TYPO3\CMS\Core\Http\ImmediateResponseException($response);
+        \Sys25\RnBase\Utility\TYPO3::getTSFE()->pageNotFoundAndExit($reason, $header);
     }
 
     /**
