@@ -14,5 +14,5 @@ jobs:
               uses: shivammathur/setup-php@master
               with:
                   php-version: 7.3
-            - run: composer require friendsofphp/php-cs-fixer
+            - run: composer install --no-progress
             - run: .Build/bin/php-cs-fixer fix --diff --dry-run
