@@ -1,7 +1,11 @@
-/.editorconfig
+/.editorconfig export-ignore
 /.gitattributes export-ignore
+/.github export-ignore
 /.gitignore export-ignore
+/.php-cs-fixer.php export-ignore
 /.travis.yml export-ignore
 /Documentation export-ignore
+/phpunit.xml export-ignore
+/sonar-project.properties export-ignore
 # @TODO: add tests folder to ignore again, after removing the tests from autoloading
 #/tests export-ignore
