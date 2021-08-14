@@ -55,7 +55,7 @@ class Category
     /**
      * @param array $fields
      *
-     * @return bool | null
+     * @return bool|null
      */
     public function handleSysCategoryFilter(array &$fields, $doSearch)
     {

@@ -665,7 +665,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
     }
 
     /**
-     * @param string | \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper
+     * @param string|\TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper
      * @param tx_rnbase_util_PageBrowser                                   $pageBrowser
      *
      * @return \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper

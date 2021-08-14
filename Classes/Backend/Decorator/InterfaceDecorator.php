@@ -25,7 +25,7 @@
 /**
  * Decorator interface.
  *
- * @method void __construct() __construct(tx_rnbase_mod_IModule $mod)
+ * @method void __construct(tx_rnbase_mod_IModule $mod)
  *
  * @author Michael Wagner
  */

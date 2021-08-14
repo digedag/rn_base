@@ -26,7 +26,7 @@
 /**
  * Base interface for a decorator.
  *
- * @method void __construct() __construct(tx_rnbase_mod_IModule $mod)
+ * @method void __construct(tx_rnbase_mod_IModule $mod)
  *
  * @deprecated use Tx_Rnbase_Backend_Decorator_InterfaceDecorator instead
  */
