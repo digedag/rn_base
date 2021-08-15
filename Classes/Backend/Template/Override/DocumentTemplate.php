@@ -382,7 +382,7 @@ function jumpToUrl(URL) {
             if (TAB === $string[0]) {
                 $string = TAB.ltrim($string, TAB);
             }
-            $string = $cr.'<script type="text/javascript">
+            $string = $cr.'<script>
 /*<![CDATA[*/
 '.$string.'
 /*]]>*/
