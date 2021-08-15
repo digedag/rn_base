@@ -296,7 +296,7 @@ class tx_rnbase_controller
             \Sys25\RnBase\Utility\TYPO3::getTSFE()->pageNotFoundAndExit($reason, $header);
         }
 
-        $response = tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Controller\ErrorController::class)
+        $response = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Controller\ErrorController::class)
             ->pageNotFoundAction(
                 $GLOBALS['TYPO3_REQUEST'],
                 $reason

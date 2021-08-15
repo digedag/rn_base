@@ -34,7 +34,11 @@ use Sys25\RnBase\Utility\Strings;
  * Basic model with geter's and seter's.
  *
  * @method int getUid()
+<<<<<<< HEAD:Classes/Domain/Model/DataModel.php
  * @method DataModel setUid() setUid(int $uid)
+=======
+ * @method Tx_Rnbase_Domain_Model_Data setUid(int $uid)
+>>>>>>> master:Classes/Domain/Model/Data.php
  * @method bool hasUid()
  * @method DataModel unsUid()
  *
@@ -118,7 +122,7 @@ class DataModel implements DataInterface, IteratorAggregate
     /**
      * Create a new data model.
      *
-     * @param array |DataInterface $data
+     * @param array|DataInterface $data
      *
      * @return DataModel
      */
