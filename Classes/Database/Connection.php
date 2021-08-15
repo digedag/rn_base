@@ -91,7 +91,7 @@ class Connection implements SingletonInterface
      * </pre>
      *
      * @param string $what  Requested columns
-     * @param array | string | From $from  Either the name of on table or an array with index 0 an array of Join or a from clause string
+     * @param array|string|From $from  Either the name of on table or an array with index 0 an array of Join or a from clause string
      *                   and index 1 the requested tablename and optional index 2 a table alias to use
      * @param array $arr The options array
      * @param bool $debug Set to true to debug the sql string

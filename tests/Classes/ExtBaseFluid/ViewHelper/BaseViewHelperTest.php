@@ -54,7 +54,7 @@ abstract class BaseViewHelperTest extends \tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @param string | \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper
+     * @param string|\TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper
      *
      * @return \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
      */
