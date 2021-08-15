@@ -510,7 +510,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
         $doc->loadJavascriptLib('contrib/prototype/prototype.js');
         // JavaScript
         $doc->JScode .= '
-            <script language="javascript" type="text/javascript">
+            <script>
                 script_ended = 0;
                 function jumpToUrl(URL)	{
                     document.location = URL;
@@ -520,7 +520,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 
         // TODO: Die Zeile könnte problematisch sein...
         $doc->postCode = '
-            <script language="javascript" type="text/javascript">
+            <script>
                 script_ended = 1;
                 if (top.fsMod) top.fsMod.recentIds["web"] = '.$this->id.';</script>';
     }

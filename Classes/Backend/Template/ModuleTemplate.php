@@ -176,7 +176,7 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
 //            $doc->getPageRenderer()->loadJquery();
         // JavaScript
         $doc->JScode .= '
-            <script language="javascript" type="text/javascript">
+            <script>
                 script_ended = 0;
                 function jumpToUrl(URL)	{
                     document.location = URL;
@@ -186,7 +186,7 @@ class Tx_Rnbase_Backend_Template_ModuleTemplate
 
         // TODO: Die Zeile könnte problematisch sein...
         $doc->postCode = '
-            <script language="javascript" type="text/javascript">
+            <script>
                 script_ended = 1;
                 if (top.fsMod) top.fsMod.recentIds["web"] = '.$this->options['pid'].';</script>';
     }
