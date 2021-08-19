@@ -43,6 +43,7 @@ abstract class WizIcon
      */
     public static function addWizicon($clazz, $clazzFile)
     {
+        $id = 'rn_base';
         if (!TYPO3::isTYPO80OrHigher()) {
             $GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'][$clazz] = $clazzFile;
         } else {

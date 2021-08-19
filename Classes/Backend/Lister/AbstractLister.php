@@ -653,6 +653,8 @@ abstract class AbstractLister
             if ($columns instanceof DataModel) {
                 $columns = $columns->toArray();
             }
+        } else {
+            $columns = null;
         }
 
         if (!is_array($columns)) {

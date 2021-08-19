@@ -88,6 +88,8 @@ class InputText extends AbstractFormElement
             $classes[] = 't3js-datetimepicker';
             $attributes['data-date-type'] = 'timesec';
             $icon = 'actions-edit-pick-date';
+        } else {
+            $icon = '';
         }
 
         // for data-formengine-input-params

@@ -108,6 +108,8 @@ abstract class SearchBase
         if (isset($fields[SEARCH_FIELD_JOINED])) {
             $joinedFields = $fields[SEARCH_FIELD_JOINED];
             unset($fields[SEARCH_FIELD_JOINED]);
+        } else {
+            $joinedFields = null;
         }
         $customFields = null;
         if (isset($fields[SEARCH_FIELD_CUSTOM])) {
@@ -665,6 +667,8 @@ abstract class SearchBase
                 $from[0] .= ' AS '.$alias;
                 $from[2] = $alias;
             }
+        } else {
+            $alias = '';
         }
         // remove support for rownum
         if (isset($options['rownum'])) {
