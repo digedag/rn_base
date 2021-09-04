@@ -41,6 +41,9 @@
 		"mikey179/vfsstream": "^1.6.10",
 		"namelesscoder/typo3-repository-client": "^1.3.1",
 		"nimut/testing-framework": "^5.2.1",
+		"phpstan/phpstan": "^0.12.99",
+		"phpstan/phpstan-phpunit": "^0.12.22",
+		"phpstan/extension-installer": "^1.1",
 		"phpunit/phpunit": "^6.5.14 || ^7.5.20",
 		"typo3/cms-frontend": "^7.6 || ^8.7 || ^9.5 || ^10.4",
 		"typo3/cms-scheduler": "^7.6 || ^8.7 || ^9.5 || ^10.4"
@@ -82,6 +85,7 @@
 		}
 	},
 	"scripts": {
+		"phpstan:baseline": ".Build/bin/phpstan --generate-baseline=phpstan-baseline.neon",
 		"post-autoload-dump": [
 			"mkdir -p .Build/Web/typo3conf/ext/",
 			"[ -L .Build/Web/typo3conf/ext/rn_base ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/rn_base"
@@ -91,6 +95,7 @@
 			"[ -e .Build/bin/php-cs-fixer ] || composer update",
 			".Build/bin/php-cs-fixer fix -v --dry-run --diff"
 		],
+		"test:phpstan": ".Build/bin/phpstan --no-progress",
 		"test:phpunit": [
 			"[ -e .Build/bin/phpunit ] || composer update",
 			"export TYPO3_PATH_WEB=$PWD/.Build/Web && .Build/bin/phpunit"
@@ -98,6 +103,7 @@
 		"test": [
 			"@test:phplint",
 			"@test:phpcs",
+			"@test:phpstan",
 			"@test:phpunit"
 		],
 		"fix:phpcs": [
@@ -109,7 +115,9 @@
 		]
 	},
 	"scripts-descriptions": {
-		"test:phplint": "Checks all PHP files for syntax errors."
+		"phpstan:baseline": "Updates the PHPStan baseline file to match the code.",
+		"test:phplint": "Checks all PHP files for syntax errors.",
+		"test:phpstan": "Checks the types with PHPStan."
 	},
 	"extra": {
 		"typo3/cms": {
