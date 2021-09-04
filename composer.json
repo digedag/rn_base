@@ -113,6 +113,11 @@
             "extension-key": "rn_base",
             "web-dir": ".Build/Web"
         },
+        "typo3/class-alias-loader": {
+            "class-alias-maps": [
+                "Migrations/Code/ClassAliasMap.php"
+            ]
+        },
         "branch-alias": {
             "dev-master": "1.13.x-dev"
         }
