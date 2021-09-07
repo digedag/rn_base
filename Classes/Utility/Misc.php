@@ -32,6 +32,7 @@ use tx_rnbase_util_Debug;
 use tx_rnbase_util_Lock;
 use tx_rnbase_util_Logger;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Contains some helpful methods.
@@ -375,6 +376,18 @@ MAYDAYPAGE;
                 }
                 $siteMatcher = tx_rnbase::makeInstance(\TYPO3\CMS\Core\Routing\SiteMatcher::class);
                 $site = $siteMatcher->matchByPageId($pid, $rootLine);
+
+                // Usually happens when on CLI. But we need that variable there. Otherwise TypoScriptFrontendController
+                // will throw the following exception: The parsedUri \"http:///bin/typo3\" appears to be malformed
+                // #0 $indextypo3/sysext/core/Classes/Http/Uri.php(111): TYPO3\\CMS\\Core\\Http\\Uri-&gt;parseUri('http:///bin/typ...')
+                // #1 $indextypo3/sysext/core/Classes/Http/ServerRequestFactory.php(65): TYPO3\\CMS\\Core\\Http\\Uri-&gt;__construct('http:///bin/typ...')
+                // #2 $indextypo3/sysext/frontend/Classes/Controller/TypoScriptFrontendController.php(717): TYPO3\\CMS\\Core\\Http\\ServerRequestFactory::fromGlobals()
+                // A better solution is prefered.
+                if (!$_SERVER['HTTP_HOST']) {
+                    $_SERVER['HTTP_HOST'] = $site->getBase()->getHost();
+                    GeneralUtility::flushInternalRuntimeCaches();
+                }
+
                 $GLOBALS['TSFE'] = tx_rnbase::makeInstance(
                     $typoScriptFrontendControllerClass,
                     $GLOBALS['TYPO3_CONF_VARS'],
