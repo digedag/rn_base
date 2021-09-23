@@ -196,8 +196,8 @@ class TYPO3
     {
         $path = \tx_rnbase_util_Extensions::extPath($_EXTKEY).'ext_emconf.php';
         @include $path;
-        if (is_array($GLOBALS['EM_CONF'][$_EXTKEY])) {
-            return $GLOBALS['EM_CONF'][$_EXTKEY];
+        if (is_array($EM_CONF[$_EXTKEY])) {
+            return $EM_CONF[$_EXTKEY];
         }
 
         return [];
