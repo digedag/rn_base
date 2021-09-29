@@ -3,7 +3,7 @@
 Changelog
 ---------
 
-v1.14.0 (??.05.2021)
+v1.14.0 (??.09.2021)
  * #165 Moved all classes without folder **Classes/** to PSR-4
  * BC: Test classes removed from non-dev-autoload
  * BC: deprecated interface `tx_rnbase_IModel` removed
@@ -27,6 +27,23 @@ v1.14.0 (??.05.2021)
  * BC: `tx_rnbase_exception_Skip` replaced by `Sys25\RnBase\Exception\SkipActionException`
  * BC: `tx_rnbase_model_base` no longer extends `tx_rnbase_model_data`
  * BC: `tx_rnbase_model_media` is replaced by `MediaModel`
+
+v1.13.14 (23.09.2021)
+ * Fix extension info retrieval
+ 
+v1.13.13 (21.09.2021)
+ * Some cleanup
+ * Fix TSFE preparation on CLI
+
+v1.13.12 (29.07.2021)
+ * Fix page not found handling in TYPO3 8.7
+
+v1.13.11 (28.07.2021)
+ * Fix legacy configuration processor
+ * Fix fluid ViewHelper
+ * Fix page not found handling in TYPO3 10.4
+ * Fix sending mails in TYPO3 10.4
+ * Fix object instatiation in TYPO3 10.4
 
 v1.13.10 (12.06.2021)
  * Fix pidlist option in querybuilder
@@ -56,20 +73,20 @@ v1.13.5 (11.04.2021)
 
 v1.13.4 (31.03.2021)
  * fixed bug in new search base
- 
+
 v1.13.3 (30.03.2021)
  * fixed sending mails before TYPO3 10.4
  * fixed search base when adding joins
- 
+
 v1.13.1 (28.03.2021)
- * #202 [DatabaseConnection](Documentation/database_access.md) and SearchBase support TYPO3 QueryBuilder 
+ * #202 [DatabaseConnection](Documentation/database_access.md) and SearchBase support TYPO3 QueryBuilder
  * Remove unused classes
  * use var/lock folder for locks since TYPO3 9.5
 
 v1.12.6 (28.01.2021)
  * #176 Fix route target correction for backend modules
  * make fluid action view compatible with AbstractAction
- 
+
 v1.12.5 (25.11.2020)
  * fix release stage in TravisCI
  * #201 run TravisCI build with PHP 7.3 and 7.4
@@ -78,14 +95,14 @@ v1.12.4 (04.11.2020)
  * Add wrap option to pagebrowser viewhelper
  * Add pagebrowser ul example to documentation
  * #200 Add GitHub Actions
- * Append test and fix composer scripts  
-   Run tests with `composer test`  
+ * Append test and fix composer scripts
+   Run tests with `composer test`
    Fix phpcs with `composer fix`
-   
+
 v1.12.3 (29.06.2020)
  * remove ending semicolon to fix TCA palette syntax
  * fixed namespaces of old fluid classes
- 
+
 v1.12.2 (14.06.2020)
  * interface fixed in legacy filter item
  * dummy cache fixed in TYPO3 10
@@ -97,25 +114,25 @@ v1.12.0 (06.06.2020)
  * raised required PHP version to 7.1
  * added support for TYPO3 10.4 LTS
  * dropped support for TYPO3 6.2 LTS
- * #165 wip refactoring of classes to PSR-4  
+ * #165 wip refactoring of classes to PSR-4
  * BC: drop old rendering of BE-Modules without ModuleTemplate
- * Clean up: all ExtBase/Fluid classes moved to a new common namespace `Sys25\RnBase\ExtBaseFluid` 
+ * Clean up: all ExtBase/Fluid classes moved to a new common namespace `Sys25\RnBase\ExtBaseFluid`
  * Clean up: common namespace for category search classes
 
 v1.11.4 (13.04.2020)
  * remove 6.2 code from BE-ToolBox
- * fix clipboard link in ToolBox 
+ * fix clipboard link in ToolBox
 
 v1.11.2 (24.03.2020)
  * fix missing isConnected method for MsSQL and MySQL db drivers
- * make sure TCA get's loaded in loadTCA since TYPO3 8.x 
+ * make sure TCA get's loaded in loadTCA since TYPO3 8.x
 
 v1.11.1 (09.02.2020)
  * configuration processor usage for tests fixed
- 
+
 v1.11.0 (09.02.2020)
- * #165 wip refactoring of classes to psr4  
-    **BREAKING CHANGE**: tx_rnbase_IParameters is not used anymore.  
+ * #165 wip refactoring of classes to psr4
+    **BREAKING CHANGE**: tx_rnbase_IParameters is not used anymore.
     Replace usage and typehints to new Sys25\RnBase\Frontend\Request\ParametersInterface
  * #168 Use disabled TimeTracker instead of the removed NullTimeTracker
  * php codestyle rule switched to symfony
@@ -128,11 +145,11 @@ v1.10.9 (23.11.2019)
 v1.10.7 (27.10.2019)
  * configurations: Illegal string offset fixed in `_setFlexForm()`
  * some warnings fixed for TYPO3 9.5
- * fixed warnings in composer.json 
+ * fixed warnings in composer.json
 
 v1.10.6 (02.09.2019)
  * bugfix in environment utility to support php 5.6
- 
+
 v1.10.5 (19.08.2019)
  * add compatibility to add cache hash calc configurations in TYPO3 9
  * add support if simplifiedControllerActionDispatching is active in TYPO3 9
@@ -148,14 +165,14 @@ v1.10.3 (05.07.2019)
 
 v1.10.2 (05.07.2019)
  * support to return complete extension configuration below TYPO3 9
- 
+
 v1.10.1 (02.07.2019)
  * fixed/added some phpDoc
  * added FrontendControllerUtility::getLanguageMode() and FrontendControllerUtility::getLanguageId
- 
+
 v1.10.0 (27.06.2019)
  * added TYPO3 9 support
- 
+
 v1.9.5 (25.06.2019)
  * Some enhancements for backend module rendering for TYPO3 8
  * Moved tx_rnbase_tests_BaseTestCase::createConfigurations() to own utility (tx_rnbase_tests_Utility) for standalone usage
