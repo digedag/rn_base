@@ -84,7 +84,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 /**
  * Configuration processor.
  */
-class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
+class Processor implements ConfigurationInterface
 {
     /**
      * Here, all configuration data is stored.

@@ -192,7 +192,7 @@ class Email
         return $this->sendMessage($mail);
     }
 
-    private function addBody(TYPO3\CMS\Core\Mail\MailMessage $mail)
+    private function addBody(\TYPO3\CMS\Core\Mail\MailMessage $mail)
     {
         if ($this->htmlPart) {
             \Sys25\RnBase\Utility\TYPO3::isTYPO104OrHigher() ?
