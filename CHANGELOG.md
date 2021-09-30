@@ -3,9 +3,12 @@
 Changelog
 ---------
 
+v1.13.15 (30.09.2021)
+ * Accept pidlist in queries if it's an integer
+
 v1.13.14 (23.09.2021)
  * Fix extension info retrieval
- 
+
 v1.13.13 (21.09.2021)
  * Some cleanup
  * Fix TSFE preparation on CLI
