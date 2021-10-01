@@ -1,6 +1,6 @@
 <?php
 
-namespace Sys25\RnBase\Search\Category;
+namespace Sys25\RnBase\Search\System;
 
 use Sys25\RnBase\Database\Query\Join;
 use Sys25\RnBase\Search\SearchBase;
@@ -30,7 +30,6 @@ use tx_rnbase;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\Search$Category.
  *
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
@@ -49,16 +48,6 @@ class Category extends SearchBase
         $tableMapping['SYS_CATEGORY_RECORD_MM'] = 'sys_category_record_mm';
 
         return $tableMapping;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @see \tx_rnbase_util_SearchBase::useAlias()
-     */
-    protected function useAlias()
-    {
-        return true;
     }
 
     /**
@@ -102,7 +91,6 @@ class Category extends SearchBase
         if (isset($tableAliases['SYS_CATEGORY_RECORD_MM'])) {
             $joins[] = new Join('SYS_CATEGORY', 'sys_category_record_mm', 'SYS_CATEGORY_RECORD_MM.uid_local = SYS_CATEGORY.uid', 'SYS_CATEGORY_RECORD_MM');
         }
-
         return $joins;
     }
 }

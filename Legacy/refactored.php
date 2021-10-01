@@ -1,9 +1,16 @@
 <?php
 
+
 namespace Sys25\RnBase\Search {
-    /** @deprecated */
-    class Category extends \Sys25\RnBase\Search\Category\Category
-    {
+    if (false) {
+        /** @deprecated */
+        class Category
+        {
+        }
+        /** @deprecated */
+        class SearchCategory
+        {
+        }
     }
 }
 

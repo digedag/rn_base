@@ -1,6 +1,6 @@
 <?php
 
-namespace Sys25\RnBase\Search\Category;
+namespace Sys25\RnBase\Search\System;
 
 use Sys25\RnBase\Database\Query\Join;
 
@@ -34,7 +34,7 @@ use Sys25\RnBase\Database\Query\Join;
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class SearchUtility
+class CategorySearchUtility
 {
     /**
      * @param array  $tableMappings

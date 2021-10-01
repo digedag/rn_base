@@ -50,7 +50,6 @@ if (class_exists('Sys25\RnBase\Typo3Wrapper\Core\CommandLineController')) {
 \class_alias(\Sys25\RnBase\Backend\ModuleRunner::class, 'Tx_Rnbase_Backend_ModuleRunner');
 \class_alias(\Sys25\RnBase\Utility\Logger::class, 'tx_rnbase_util_Logger');
 \class_alias(\Sys25\RnBase\Search\SearchBase::class, 'tx_rnbase_util_SearchBase');
-\class_alias(\Sys25\RnBase\Search\Category\SearchUtility::class, 'Tx_Rnbase_Category_SearchUtility');
 \class_alias(\Sys25\RnBase\Configuration\ConfigurableTrait::class, 'Tx_Rnbase_Configuration_ConfigurableTrait');
 \class_alias(\Sys25\RnBase\Frontend\Filter\IFilterItem::class, 'tx_rnbase_IFilterItem');
 \class_alias(\Sys25\RnBase\Frontend\Filter\FilterItem::class, 'tx_rnbase_filter_FilterItem');
@@ -86,6 +85,11 @@ if (class_exists('Sys25\RnBase\Typo3Wrapper\Core\CommandLineController')) {
 \class_alias(\Sys25\RnBase\Utility\WizIcon::class, 'Tx_Rnbase_Utility_WizIcon');
 \class_alias(\Sys25\RnBase\Exception\ExceptionHandlerInterface::class, 'tx_rnbase_exception_IHandler');
 \class_alias(\Sys25\RnBase\Exception\ExceptionHandler::class, 'tx_rnbase_exception_Handler');
+
+\class_alias(\Sys25\RnBase\Search\System\CategorySearchUtility::class, 'Tx_Rnbase_Category_SearchUtility');
+\class_alias(\Sys25\RnBase\Search\System\CategorySearchUtility::class, 'Sys25\RnBase\Search\Category\SearchUtility');
+\class_alias(\Sys25\RnBase\Search\System\Category::class, 'Sys25\RnBase\Search\Category');
+\class_alias(\Sys25\RnBase\Search\System\Category::class, 'Sys25\RnBase\Search\Category\Category');
 
 if (false) {
     /** @deprecated this is an alias for NewClass */
