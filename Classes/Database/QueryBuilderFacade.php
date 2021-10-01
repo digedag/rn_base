@@ -52,7 +52,7 @@ class QueryBuilderFacade
         $orderBy = is_string($arr['orderby']) ? $arr['orderby'] : '';
         $offset = (int) intval($arr['offset']) > 0 ? $arr['offset'] : 0;
         $limit = (int) intval($arr['limit']) > 0 ? $arr['limit'] : '';
-        $pidList = is_string($arr['pidlist']) ? $arr['pidlist'] : '';
+        $pidList = (is_string($arr['pidlist']) || is_int($arr['pidlist'])) ? $arr['pidlist'] : '';
         $recursive = intval($arr['recursive']) ? intval($arr['recursive']) : 0;
         // TODO: is i18n still necessary?
         // $i18n = is_string($arr['i18n']) > 0 ? $arr['i18n'] : '';

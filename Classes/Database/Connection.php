@@ -193,7 +193,7 @@ class Connection implements SingletonInterface
         $orderBy = is_string($arr['orderby']) ? $arr['orderby'] : '';
         $offset = intval($arr['offset']) > 0 ? intval($arr['offset']) : 0;
         $limit = intval($arr['limit']) > 0 ? intval($arr['limit']) : '';
-        $pidList = is_string($arr['pidlist']) ? $arr['pidlist'] : '';
+        $pidList = (is_string($arr['pidlist']) || is_int($arr['pidlist'])) ? $arr['pidlist'] : '';
         $recursive = intval($arr['recursive']) ? intval($arr['recursive']) : 0;
         $i18n = is_string($arr['i18n']) > 0 ? $arr['i18n'] : '';
         $sqlOnly = intval($arr['sqlonly']) > 0 ? intval($arr['sqlonly']) : '';
