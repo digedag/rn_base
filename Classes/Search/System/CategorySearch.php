@@ -5,6 +5,7 @@ namespace Sys25\RnBase\Search\System;
 use Sys25\RnBase\Database\Query\Join;
 use Sys25\RnBase\Search\SearchBase;
 use tx_rnbase;
+use Sys25\RnBase\Utility\Misc;
 
 /***************************************************************
  * Copyright notice
@@ -35,7 +36,7 @@ use tx_rnbase;
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class Category extends SearchBase
+class CategorySearch extends SearchBase
 {
     /**
      * {@inheritdoc}
@@ -44,8 +45,14 @@ class Category extends SearchBase
      */
     protected function getTableMappings()
     {
+        $tableMapping = [];
         $tableMapping[$this->getBaseTableAlias()] = $this->getBaseTable();
         $tableMapping['SYS_CATEGORY_RECORD_MM'] = 'sys_category_record_mm';
+
+        // Hook to append other tables
+        Misc::callHook('rn_base', 'search_Category_getTableMapping_hook', [
+            'tableMapping' => &$tableMapping,
+        ], $this);
 
         return $tableMapping;
     }
@@ -91,6 +98,13 @@ class Category extends SearchBase
         if (isset($tableAliases['SYS_CATEGORY_RECORD_MM'])) {
             $joins[] = new Join('SYS_CATEGORY', 'sys_category_record_mm', 'SYS_CATEGORY_RECORD_MM.uid_local = SYS_CATEGORY.uid', 'SYS_CATEGORY_RECORD_MM');
         }
+
+        // Hook to append other tables
+        \tx_rnbase_util_Misc::callHook('rn_base', 'search_Category_getJoins_hook', [
+            'join' => &$joins,
+            'tableAliases' => $tableAliases,
+        ], $this);
+
         return $joins;
     }
 }

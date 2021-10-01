@@ -88,8 +88,8 @@ if (class_exists('Sys25\RnBase\Typo3Wrapper\Core\CommandLineController')) {
 
 \class_alias(\Sys25\RnBase\Search\System\CategorySearchUtility::class, 'Tx_Rnbase_Category_SearchUtility');
 \class_alias(\Sys25\RnBase\Search\System\CategorySearchUtility::class, 'Sys25\RnBase\Search\Category\SearchUtility');
-\class_alias(\Sys25\RnBase\Search\System\Category::class, 'Sys25\RnBase\Search\Category');
-\class_alias(\Sys25\RnBase\Search\System\Category::class, 'Sys25\RnBase\Search\Category\Category');
+\class_alias(\Sys25\RnBase\Search\System\CategorySearch::class, 'Sys25\RnBase\Search\Category');
+\class_alias(\Sys25\RnBase\Search\System\CategorySearch::class, 'Sys25\RnBase\Search\Category\Category');
 
 if (false) {
     /** @deprecated this is an alias for NewClass */
