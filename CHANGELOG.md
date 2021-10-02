@@ -6,7 +6,6 @@ Changelog
 v1.14.0 (??.09.2021)
  * #165 Moved all classes without folder **Classes/** to PSR-4
  * BC: Test classes removed from non-dev-autoload
- * BC: deprecated interface `tx_rnbase_IModel` removed, use Sys25\RnBase\Domain\Model\RecordInterface instead
  * BC: `Tx_Rnbase_Domain_Model_Base` doesn't extend `Tx_Rnbase_Domain_Model_Data` anymore
  * BC: `Sys25\RnBase\Domain\Model\Category` doesn't extend `Tx_Rnbase_Domain_Model_Base` anymore
  * BC: `Tx_Rnbase_Domain_Model_StorageTrait` uses `Sys25\RnBase\Domain\Model\DataModel` instead of `Tx_Rnbase_Domain_Model_Data`

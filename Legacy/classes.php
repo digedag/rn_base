@@ -64,6 +64,7 @@ if (class_exists('Sys25\RnBase\Typo3Wrapper\Core\CommandLineController')) {
 \class_alias(\Sys25\RnBase\Domain\Model\DomainInterface::class, 'Tx_Rnbase_Domain_Model_DomainInterface');
 \class_alias(\Sys25\RnBase\Domain\Model\DynamicTableInterface::class, 'Tx_Rnbase_Domain_Model_DynamicTableInterface');
 \class_alias(\Sys25\RnBase\Domain\Model\RecordInterface::class, 'Tx_Rnbase_Domain_Model_RecordInterface');
+\class_alias(\Sys25\RnBase\Domain\Model\RecordInterface::class, 'tx_rnbase_IModel');
 \class_alias(\Sys25\RnBase\Domain\Model\DataModel::class, 'Tx_Rnbase_Domain_Model_Data');
 \class_alias(\Sys25\RnBase\Domain\Model\BaseModel::class, 'Tx_Rnbase_Domain_Model_Base');
 \class_alias(\Sys25\RnBase\Domain\Model\StorageTrait::class, 'Tx_Rnbase_Domain_Model_StorageTrait');
