@@ -6,7 +6,6 @@ TYPO3 hat mit der Version 4.3 eine eigene Cache-API eingeführt. Der Umgang dami
 rn_base schafft hier Abhilfe und bietet seit der Version 0.6.4 einen passenden Wrapper. Die Anwendung ist zunächst ganz einfach:
 
 ```php
-tx_rnbase::load('tx_rnbase_cache_Manager');
 $marker = tx_rnbase_cache_Manager::getCache('mycache')->get('tx_t3users_util_FEUserMarker');
 if(!$marker) {
   $marker = tx_rnbase::makeInstance('tx_t3users_util_FEUserMarker');
@@ -38,8 +37,7 @@ Weitere Infos gibt es im Web. Aber aufpassen, da sind einige Beispiele veraltet 
 Bei der Verwendung von rn_base kann man seinen Cache systemunabhängig registrieren. Die Cache-Manager-Klasse stellt dafür eine passende Methode bereit:
 
 ```php
-    tx_rnbase::load('tx_rnbase_cache_Manager');
-    tx_rnbase_cache_Manager::registerCache('your_cache_name',
+            tx_rnbase_cache_Manager::registerCache('your_cache_name',
             tx_rnbase_cache_Manager::CACHE_FRONTEND_VARIABLE,
             tx_rnbase_cache_Manager::CACHE_BACKEND_MEMCACHED,
             array(
@@ -52,8 +50,7 @@ Konkretes Beispiel für DB-basierten Cache
 -----------------------------------------
 Für mkforms wird ein Cache verwendet, um Session-Daten zu persistieren. Der Cache hat die ID mkforms. Mit folgender Config in der Datei typo3conf/localconf.php wird der Cache auf Datenbank-Basis eingerichtet:
 ```php
-    tx_rnbase::load('tx_rnbase_cache_Manager');
-    tx_rnbase_cache_Manager::registerCache('mkforms',
+            tx_rnbase_cache_Manager::registerCache('mkforms',
             tx_rnbase_cache_Manager::CACHE_FRONTEND_VARIABLE,
             tx_rnbase_cache_Manager::CACHE_BACKEND_T3DATABASE,
             array(
@@ -94,8 +91,7 @@ Konkretes Beispiel für MemCached
 So sollte es für memcached aussehen. Das ist aber noch ungetestet:
 
 ```php
-    tx_rnbase::load('tx_rnbase_cache_Manager');
-    tx_rnbase_cache_Manager::registerCache('mkforms',
+            tx_rnbase_cache_Manager::registerCache('mkforms',
             tx_rnbase_cache_Manager::CACHE_FRONTEND_VARIABLE,
             tx_rnbase_cache_Manager::CACHE_BACKEND_MEMCACHED,
             array(
@@ -114,7 +110,7 @@ if (TYPO3_MODE == 'BE') {
         t3lib_cache::initializeCachingFramework();
         // State cache
         $GLOBALS['typo3CacheFactory']->create(
-                 'cf_mkmms', 
+                 'cf_mkmms',
                 $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['mkmms']['frontend'],
                 $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['mkmms']['backend'],
                 $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['mkmms']['options']

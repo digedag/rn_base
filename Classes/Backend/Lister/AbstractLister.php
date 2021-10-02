@@ -22,8 +22,6 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('Tx_Rnbase_Backend_Decorator_InterfaceDecorator');
-
 /**
  * Abstract Lister.
  *
@@ -59,7 +57,6 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
      */
     protected function getListerId()
     {
-        tx_rnbase::load('Tx_Rnbase_Utility_Strings');
         $confId = str_replace('\\', '_', get_class($this));
         $confId = Tx_Rnbase_Utility_Strings::underscoredToLowerCamelCase($confId);
 
@@ -76,7 +73,6 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
         tx_rnbase_mod_BaseModule $module,
         $options = []
     ) {
-        tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
         $this->storage = Tx_Rnbase_Domain_Model_Data::getInstance(
             [
                 'module' => $module,
@@ -271,7 +267,6 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     protected function getDecoratorUtility()
     {
         if (!$this->getStorage()->hasDecoratorUtility()) {
-            tx_rnbase::load('Tx_Rnbase_Backend_Utility_DecoratorUtility');
             $this->getStorage()->setDecoratorUtility(
                 Tx_Rnbase_Backend_Utility_DecoratorUtility::getInstance(
                     $this->getDecorator(),
@@ -295,8 +290,6 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     public function renderTemplate(
         $template
     ) {
-        tx_rnbase::load('tx_rnbase_util_Templates');
-
         return tx_rnbase_util_Templates::substituteMarkerArrayCached(
             $template,
             $this->renderListMarkers()
@@ -444,8 +437,6 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
      */
     protected function getSearcherUtility()
     {
-        tx_rnbase::load('Tx_Rnbase_Backend_Utility_SearcherUtility');
-
         return Tx_Rnbase_Backend_Utility_SearcherUtility::getInstance(
             $this->getOptions()
         );

@@ -46,7 +46,6 @@ class BaseView extends AbstractView implements ViewInterface
         $this->_init($configurations);
         $templateCode = \tx_rnbase_util_Files::getFileResource($this->getTemplate($view, '.html'));
         if (!strlen($templateCode)) {
-            \tx_rnbase::load('tx_rnbase_util_Misc');
             \tx_rnbase_util_Misc::mayday('TEMPLATE NOT FOUND: '.$this->getTemplate($view, '.html'));
         }
 
@@ -59,7 +58,6 @@ class BaseView extends AbstractView implements ViewInterface
         if (!empty($subpart)) {
             $templateCode = \tx_rnbase_util_Templates::getSubpart($templateCode, $subpart);
             if (!strlen($templateCode)) {
-                \tx_rnbase::load('tx_rnbase_util_Misc');
                 \tx_rnbase_util_Misc::mayday('SUBPART NOT FOUND: '.$subpart);
             }
         }

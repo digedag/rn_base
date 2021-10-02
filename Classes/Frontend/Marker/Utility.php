@@ -53,7 +53,6 @@ class Tx_Rnbase_Frontend_Marker_Utility
             }
         }
         if ($minfo) {
-            tx_rnbase::load('tx_rnbase_util_Debug');
             $item->setProperty('__MINFO', tx_rnbase_util_Debug::viewArray($minfoArr));
         }
 

@@ -30,10 +30,6 @@ if (tx_rnbase_util_Extensions::isLoaded('dam')) {
 
 define('DEFAULT_LOCAL_FIELD', '_LOCALIZED_UID');
 
-tx_rnbase::load('tx_rnbase_util_BaseMarker');
-tx_rnbase::load('Tx_Rnbase_Backend_Utility');
-tx_rnbase::load('tx_rnbase_util_Strings');
-
 /**
  * Contains utility functions for DAM.
  */
@@ -222,7 +218,6 @@ class tx_rnbase_util_TSDAM
      */
     public static function isVersion10()
     {
-        tx_rnbase::load('tx_rnbase_util_TYPO3');
         $version = tx_rnbase_util_TYPO3::getExtVersion('dam');
         if (preg_match('(\d*\.\d*\.\d)', $version, $versionArr)) {
             $version = $versionArr[0];

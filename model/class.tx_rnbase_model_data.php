@@ -229,8 +229,6 @@ class tx_rnbase_model_data implements Tx_Rnbase_Domain_Model_DataInterface, Iter
      */
     protected function underscore($string)
     {
-        tx_rnbase::load('tx_rnbase_util_Strings');
-
         return tx_rnbase_util_Strings::camelCaseToLowerCaseUnderscored($string);
     }
 

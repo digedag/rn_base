@@ -505,7 +505,6 @@ abstract class tx_rnbase_mod_base_Lister
      */
     protected function showFreeTextSearchForm(&$marker, $key, array $options = [])
     {
-        tx_rnbase::load('tx_rnbase_mod_Util');
         $searchstring = tx_rnbase_mod_Util::getModuleValue($key, $this->getModule(), [
             'changed' => Tx_Rnbase_Utility_T3General::_GP('SET'),
         ]);
@@ -523,7 +522,6 @@ abstract class tx_rnbase_mod_base_Lister
             0 => $GLOBALS['LANG']->getLL('label_select_hide_hidden'),
             1 => $GLOBALS['LANG']->getLL('label_select_show_hidden'),
         ];
-        tx_rnbase::load('tx_rnbase_mod_Util');
         $selectedItem = tx_rnbase_mod_Util::getModuleValue('showhidden', $this->getModule(), [
             'changed' => Tx_Rnbase_Utility_T3General::_GP('SET'),
         ]);

@@ -27,7 +27,6 @@
 /*
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_rnbase_mod_IDecorator');
 
 /**
  * Diese Klasse ist für die Darstellung von Elementen im Backend verantwortlich.

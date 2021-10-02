@@ -23,7 +23,6 @@
 ***************************************************************/
 
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('tx_rnbase_util_SimpleMarker');
 tx_rnbase::load('tx_rnbase_util_TS');
 
 class tx_rnbase_util_SimpleMarkerTests extends tx_rnbase_util_SimpleMarker

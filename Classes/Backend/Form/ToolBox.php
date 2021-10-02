@@ -217,7 +217,6 @@ class Tx_Rnbase_Backend_Form_ToolBox
                 ' title="'.$label.'\" alt="" >';
         }
         if ($options['sprite']) {
-            tx_rnbase::load('tx_rnbase_mod_Util');
             $label = tx_rnbase_mod_Util::getSpriteIcon($options['sprite']);
         }
         $jsCode = Tx_Rnbase_Backend_Utility::viewOnClick($pid, '', '', '', '', $urlParams);

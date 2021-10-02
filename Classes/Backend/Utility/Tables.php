@@ -231,7 +231,6 @@ class Tx_Rnbase_Backend_Utility_Tables
     private function getLangOverlayEntries(
         Tx_Rnbase_Domain_Model_RecordInterface $entry
     ) {
-        tx_rnbase::load('tx_rnbase_util_TCA');
         $parentField = tx_rnbase_util_TCA::getTransOrigPointerFieldForTable($entry->getTableName());
         $overlays = tx_rnbase_util_DB::doSelect(
             '*',

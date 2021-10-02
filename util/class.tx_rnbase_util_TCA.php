@@ -22,8 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_model_data');
-
 /**
  * TODO: extend from Tx_Rnbase_Util_TCA.
  *
@@ -208,8 +206,6 @@ class tx_rnbase_util_TCA
      */
     public static function loadTCA($tablename)
     {
-        tx_rnbase::load('tx_rnbase_util_TYPO3');
-
         if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
             if (TYPO3_MODE === 'FE' && isset($_REQUEST['eID'])) {
                 $eidUtility = tx_rnbase_util_Typo3Classes::getEidUtilityClass();
@@ -324,7 +320,6 @@ class tx_rnbase_util_TCA
         // check eval list
         if (!empty($config['eval'])) {
             // check eval list
-            tx_rnbase::load('tx_rnbase_util_Strings');
             $evalList = tx_rnbase_util_Strings::trimExplode(
                 ',',
                 $config['eval'],
@@ -364,7 +359,6 @@ class tx_rnbase_util_TCA
         $columns = empty($GLOBALS['TCA'][$tableName]['columns']) ? [] : $GLOBALS['TCA'][$tableName]['columns'];
         $tcaOverrides = $options->getTcaOverrides();
         if (!empty($tcaOverrides['columns'])) {
-            tx_rnbase::load('tx_rnbase_util_Arrays');
             $columns = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
                 $columns,
                 $tcaOverrides['columns']
@@ -392,8 +386,6 @@ class tx_rnbase_util_TCA
         if (!is_array($needle)) {
             return [];
         }
-
-        tx_rnbase::load('tx_rnbase_util_Arrays');
 
         return tx_rnbase_util_Arrays::removeNotIn($data, $needle);
     }

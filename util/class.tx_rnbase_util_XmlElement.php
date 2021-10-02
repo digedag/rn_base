@@ -118,7 +118,6 @@ class tx_rnbase_util_XmlElement extends SimpleXMLElement
     public function getDateTimeFromPath($path)
     {
         $date = $this->getValueFromPath($path);
-        tx_rnbase::load('tx_rnbase_util_Dates');
         $date = tx_rnbase_util_Dates::getDateTime($date);
 
         return $date;

@@ -22,7 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('Tx_Rnbase_Utility_Composer');
 Tx_Rnbase_Utility_Composer::autoload();
 
 /**

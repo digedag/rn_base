@@ -22,10 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_maps_BaseMap');
-tx_rnbase::load('tx_rnbase_util_Extensions');
-tx_rnbase::load('tx_rnbase_util_Strings');
-
 if (!tx_rnbase_util_Extensions::isLoaded('wec_map')) {
     throw new Exception('Extension wec_map must be installed to use GoogleMaps!');
 }

@@ -39,7 +39,6 @@ class tx_rnbase_maps_Factory
         $map = self::createMap('tx_rnbase_maps_google_Map', $configurations, $confId);
         $keys = $configurations->getKeyNames($confId.'poi.');
         if (isset($keys)) {
-            tx_rnbase::load('tx_rnbase_maps_Util');
             foreach ($keys as $key) {
                 $poi = $configurations->get($confId.'poi.'.$key.'.');
                 $poi = tx_rnbase::makeInstance('tx_rnbase_maps_POI', $poi);

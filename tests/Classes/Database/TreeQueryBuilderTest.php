@@ -424,7 +424,6 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
      */
     protected function getTreeQueryBuilderMock($expectFunc)
     {
-        tx_rnbase::load('Tx_Rnbase_Database_Connection');
         $connection = $this->getMock(
             'Tx_Rnbase_Database_Connection',
             get_class_methods('Tx_Rnbase_Database_Connection')
@@ -432,7 +431,6 @@ class Tx_Rnbase_Database_TreeQueryBuilderTest extends tx_rnbase_tests_BaseTestCa
 
         $expectFunc($connection);
 
-        tx_rnbase::load('Tx_Rnbase_Database_TreeQueryBuilder');
         $treeQueryBuildMock = $this->getMock(
             'Tx_Rnbase_Database_TreeQueryBuilder',
             ['getConnection']

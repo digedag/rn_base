@@ -99,7 +99,6 @@ class tx_rnbase_maps_Util
         if (!self::hasGeoData($item)) {
             return false;
         }
-        tx_rnbase::load('tx_rnbase_maps_DefaultMarker');
 
         $marker = new tx_rnbase_maps_DefaultMarker();
         if ($item->getLongitude() || $item->getLatitude()) {

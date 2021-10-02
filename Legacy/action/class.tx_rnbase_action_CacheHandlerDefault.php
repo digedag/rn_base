@@ -22,7 +22,6 @@
  ***************************************************************/
 
 tx_rnbase::load('tx_rnbase_action_ICacheHandler');
-tx_rnbase::load('tx_rnbase_cache_Manager');
 
 /**
  * A default CacheHandler.
@@ -188,7 +187,6 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
     protected function getIcludeParams()
     {
         $params = $this->getConfigValue('include.params');
-        tx_rnbase::load('tx_rnbase_util_Strings');
 
         return tx_rnbase_util_Strings::trimExplode(',', $params, true);
     }
@@ -241,7 +239,6 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
         $params = $this->getIcludeParams();
         if (!empty($params)) {
             // all get and post vars
-            tx_rnbase::load('tx_rnbase_util_Arrays');
             $gp = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
                 Sys25\RnBase\Frontend\Request\Parameters::getGetParameters(),
                 Sys25\RnBase\Frontend\Request\Parameters::getPostParameters()

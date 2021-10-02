@@ -22,11 +22,9 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
 tx_rnbase::load('Tx_Rnbase_Domain_Model_DomainInterface');
 tx_rnbase::load('Tx_Rnbase_Domain_Model_DynamicTableInterface');
 tx_rnbase::load('Tx_Rnbase_Domain_Model_RecordInterface');
-tx_rnbase::load('tx_rnbase_util_TCA');
 
 /**
  * Basisklasse für die meisten Model-Klassen.
@@ -92,7 +90,6 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
             return;
         }
 
-        tx_rnbase::load('Tx_Rnbase_Database_Connection');
         $db = Tx_Rnbase_Database_Connection::getInstance();
         $record = $db->getRecord(
             $this->getTableName(),
@@ -206,7 +203,6 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
             $field = tx_rnbase_util_TCA::getCrdateFieldForTable($tableName);
             if (!$this->isPropertyEmpty($field)) {
                 $tstamp = (int) $this->getProperty($field);
-                tx_rnbase::load('tx_rnbase_util_Dates');
                 $datetime = tx_rnbase_util_Dates::getDateTime(
                     '@'.$tstamp,
                     $timezone
@@ -233,7 +229,6 @@ class Tx_Rnbase_Domain_Model_Base extends Tx_Rnbase_Domain_Model_Data implements
             $field = tx_rnbase_util_TCA::getTstampFieldForTable($tableName);
             if (!$this->isPropertyEmpty($field)) {
                 $tstamp = (int) $this->getProperty($field);
-                tx_rnbase::load('tx_rnbase_util_Dates');
                 $datetime = tx_rnbase_util_Dates::getDateTime(
                     '@'.$tstamp,
                     $timezone

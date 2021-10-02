@@ -237,8 +237,6 @@ class Tx_Rnbase_Domain_Model_Data implements Tx_Rnbase_Domain_Model_DataInterfac
      */
     protected function underscore($string)
     {
-        tx_rnbase::load('Tx_Rnbase_Utility_Strings');
-
         return Tx_Rnbase_Utility_Strings::camelCaseToLowerCaseUnderscored($string);
     }
 

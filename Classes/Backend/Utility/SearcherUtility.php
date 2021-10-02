@@ -60,7 +60,6 @@ class Tx_Rnbase_Backend_Utility_SearcherUtility
     public function __construct(
         $options = []
     ) {
-        tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
         $this->options = Tx_Rnbase_Domain_Model_Data::getInstance($options);
     }
 
@@ -91,7 +90,6 @@ class Tx_Rnbase_Backend_Utility_SearcherUtility
         // we has to build a uid map for sortable tables!
         $firstPrev = $lastNext = false;
         $baseTableName = $this->getOptions()->getBaseTableName();
-        tx_rnbase::load('tx_rnbase_util_TCA');
         if ((
             $baseTableName
             && tx_rnbase_util_TCA::getSortbyFieldForTable($baseTableName)

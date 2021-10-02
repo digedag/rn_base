@@ -100,10 +100,6 @@ use Sys25\RnBase\Frontend\Request\Parameters;
  * @subpackage rn_base
  */
 
-tx_rnbase::load('tx_rnbase_util_Misc');
-tx_rnbase::load('tx_rnbase_util_Arrays');
-tx_rnbase::load('tx_rnbase_util_Strings');
-
 class tx_rnbase_controller
 {
     public $configurationsClassName = 'Tx_Rnbase_Configuration_Processor'; // You may overwrite this in your subclass with an own configurations class.
@@ -332,7 +328,6 @@ class tx_rnbase_controller
 
         if (!$exceptionHandler instanceof tx_rnbase_exception_IHandler) {
             $exceptionHandler = tx_rnbase::makeInstance($defaultExceptionHandlerClass);
-            tx_rnbase::load('tx_rnbase_util_Logger');
             tx_rnbase_util_Logger::fatal(
                 "the configured error handler ($exceptionHandlerClass) does not implement the tx_rnbase_exception_IHandler interface",
                 'rn_base'

@@ -22,9 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_mod_Tables');
-tx_rnbase::load('tx_rnbase_util_FormTool');
-
 class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
 {
     /**

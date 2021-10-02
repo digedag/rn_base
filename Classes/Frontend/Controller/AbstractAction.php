@@ -119,7 +119,6 @@ abstract class AbstractAction
      */
     protected function addResources(ConfigurationInterface $configurations, $confId)
     {
-        \tx_rnbase::load('tx_rnbase_util_Files');
         $pageRenderer = \tx_rnbase_util_TYPO3::getPageRenderer();
 
         foreach ($this->getJavaScriptFilesByIncludePartConfId($configurations, 'includeJSFooter') as $file) {

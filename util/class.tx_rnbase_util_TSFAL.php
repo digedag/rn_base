@@ -27,9 +27,6 @@ use TYPO3\CMS\Core\Resource\FileReference;
 
 define('DEFAULT_LOCAL_FIELD', '_LOCALIZED_UID');
 
-tx_rnbase::load('Tx_Rnbase_Backend_Utility');
-tx_rnbase::load('tx_rnbase_util_Strings');
-
 /**
  * Contains utility functions for FAL.
  */
@@ -75,7 +72,6 @@ class tx_rnbase_util_TSFAL
      */
     public function printImages($content, $tsConf)
     {
-        tx_rnbase::load('tx_rnbase_util_Templates');
         $conf = $this->createConf($tsConf);
         $file = $conf->get('template');
         $file = $file ? $file : 'EXT:rn_base/res/simplegallery.html';
@@ -159,7 +155,6 @@ class tx_rnbase_util_TSFAL
         /* @var $fileRepository \TYPO3\CMS\Core\Resource\FileRepository */
         $fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
         $pics = [];
-        tx_rnbase::load('tx_rnbase_util_Strings');
         // Getting the files
         // Try DAM style
         if ($conf->get($confId.'refTable')) {

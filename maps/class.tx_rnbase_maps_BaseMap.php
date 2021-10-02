@@ -23,7 +23,6 @@
 ***************************************************************/
 
 tx_rnbase::load('tx_rnbase_maps_IMap');
-tx_rnbase::load('tx_rnbase_maps_TypeRegistry');
 
 /**
  * Common Interface for Maps.

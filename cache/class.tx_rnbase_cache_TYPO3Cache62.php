@@ -26,8 +26,6 @@ use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_cache_ICache');
-
 class tx_rnbase_cache_TYPO3Cache62 implements tx_rnbase_cache_ICache
 {
     private $cache; // The cache instance

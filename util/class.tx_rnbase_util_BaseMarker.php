@@ -22,10 +22,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_Misc');
-tx_rnbase::load('tx_rnbase_util_Templates');
-tx_rnbase::load('Tx_Rnbase_Frontend_Marker_BaseMarker');
-
 /**
  * Base class for Markers.
  */
@@ -140,7 +136,6 @@ class tx_rnbase_util_BaseMarker extends Tx_Rnbase_Frontend_Marker_BaseMarker
             }
         }
         if ($minfo) {
-            tx_rnbase::load('tx_rnbase_util_Debug');
             $record['__MINFO'] = tx_rnbase_util_Debug::viewArray($minfoArr);
         }
 

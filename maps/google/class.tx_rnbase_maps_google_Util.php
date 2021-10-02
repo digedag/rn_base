@@ -22,11 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_maps_BaseMap');
-tx_rnbase::load('tx_rnbase_util_Extensions');
-tx_rnbase::load('tx_rnbase_util_Strings');
-tx_rnbase::load('tx_rnbase_util_Logger');
-
 /**
  * .
  */

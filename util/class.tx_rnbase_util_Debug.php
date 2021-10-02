@@ -24,8 +24,6 @@
 
 use TYPO3\CMS\Core\Utility\DebugUtility;
 
-tx_rnbase::load('tx_rnbase_util_TYPO3');
-
 /**
  * Encapsulate debug functionality of TYPO3 for backward compatibility.
  */
@@ -110,7 +108,6 @@ class tx_rnbase_util_Debug
     {
         static $debugKey = null;
         if (null === $debugKey) {
-            tx_rnbase::load('Tx_Rnbase_Configuration_Processor');
             $debugKey = Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'debugKey');
         }
         if (empty($debugKey)) {

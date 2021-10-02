@@ -22,8 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_DB');
-
 class tx_rnbase_tests_util_SearchBase_testcase extends tx_rnbase_tests_BaseTestCase
 {
     public function testSearchFieldJoinedWithoutValue()

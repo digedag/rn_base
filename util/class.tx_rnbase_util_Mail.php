@@ -22,10 +22,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_TYPO3');
-tx_rnbase::load('tx_rnbase_util_Logger');
-tx_rnbase::load('tx_rnbase_util_Strings');
-
 /**
  * Encapsulate simple mailing functionality of TYPO3 for backward compatibility.
  *

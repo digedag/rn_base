@@ -23,7 +23,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 // make sure to load the constants
 require_once tx_rnbase_util_Extensions::extPath('rn_base').'Classes/Constants.php';
 
@@ -244,7 +243,6 @@ abstract class tx_rnbase_tests_BaseTestCase extends \PHPUnit\Framework\TestCase
     {
         // there is no array, so convert the yaml content or file
         if ($tryToLoadYamlFile && !is_array($data)) {
-            tx_rnbase::load('tx_rnbase_util_Spyc');
             $data = tx_rnbase_util_Spyc::YAMLLoad($data);
         }
 

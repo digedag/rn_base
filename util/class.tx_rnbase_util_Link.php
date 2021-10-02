@@ -27,7 +27,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-tx_rnbase::load('tx_rnbase_util_Network');
 
 /**
  * This class is a wrapper around \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink.
@@ -525,7 +524,6 @@ class tx_rnbase_util_Link
     public function redirect($httpStatus = null)
     {
         session_write_close();
-        tx_rnbase::load('tx_rnbase_util_Network');
         tx_rnbase_util_Network::redirect($this->makeUrl(false), $httpStatus);
     }
 
@@ -546,7 +544,6 @@ class tx_rnbase_util_Link
         $this->parameters = is_array($this->parameters) ? $this->parameters : [];
         $this->overruledParameters = is_array($this->overruledParameters) ? $this->overruledParameters : [];
         unset($this->overruledParameters['DATA']);
-        tx_rnbase::load('tx_rnbase_util_Arrays');
         $parameters = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
             $this->overruledParameters,
             $this->parameters

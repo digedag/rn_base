@@ -64,7 +64,6 @@ class Tx_Rnbase_Utility_Crypt
      */
     public function __construct($config = null)
     {
-        tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
         $this->config = Tx_Rnbase_Domain_Model_Data::getInstance($config);
         $this->init();
     }

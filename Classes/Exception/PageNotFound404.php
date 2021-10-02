@@ -21,7 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('Tx_Rnbase_Exception_Base');
 
 /**
  * Wird diese Exception innerhalb einer Action geworfen,

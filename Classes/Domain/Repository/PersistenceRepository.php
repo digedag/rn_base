@@ -22,7 +22,6 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('Tx_Rnbase_Domain_Repository_AbstractRepository');
 tx_rnbase::load('Tx_Rnbase_Domain_Repository_InterfacePersistence');
 
 /**
@@ -71,7 +70,6 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
         Tx_Rnbase_Domain_Model_DomainInterface $model,
         $options = null
     ) {
-        tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
         $options = Tx_Rnbase_Domain_Model_Data::getInstance($options);
 
         // check for right instance
@@ -88,7 +86,6 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
             return;
         }
 
-        tx_rnbase::load('tx_rnbase_util_TCA');
         $tableName = $this->getEmptyModel()->getTableName();
 
         // the data to write
@@ -234,7 +231,6 @@ abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository extends Tx_Rnba
             return [];
         }
 
-        tx_rnbase::load('tx_rnbase_util_Arrays');
         $data = tx_rnbase_util_Arrays::removeNotIn(
             $model->getProperty(),
             array_merge(

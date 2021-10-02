@@ -548,8 +548,6 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
     {
         static $flex;
         if (!is_array($flex)) {
-            \tx_rnbase::load('tx_rnbase_util_Network');
-            \tx_rnbase::load('tx_rnbase_util_Arrays');
             $flex = \tx_rnbase_util_Network::getUrl(\tx_rnbase_util_Extensions::extPath($this->getExtensionKey()).$this->get('flexform'));
             $flex = \tx_rnbase_util_Arrays::xml2array($flex);
         }
@@ -992,7 +990,6 @@ class Processor implements \Tx_Rnbase_Configuration_ProcessorInterface
         if (is_array($xmlOrArray)) {
             $array = $xmlOrArray;
         } else {
-            \tx_rnbase::load('tx_rnbase_util_Arrays');
             $array = \tx_rnbase_util_Arrays::xml2array($xmlOrArray);
         }
         $data = $array['data'];

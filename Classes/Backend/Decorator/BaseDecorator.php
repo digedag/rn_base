@@ -22,9 +22,6 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('Tx_Rnbase_Backend_Decorator_InterfaceDecorator');
-tx_rnbase::load('tx_rnbase_util_TCA');
-
 /**
  * Base Decorator.
  *
@@ -58,7 +55,6 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
     ) {
         $this->mod = $mod;
 
-        tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
         $this->options = Tx_Rnbase_Domain_Model_Data::getInstance($options);
     }
 
@@ -110,7 +106,6 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
     ) {
         $return = $columnValue;
 
-        tx_rnbase::load('tx_rnbase_util_Strings');
         $method = tx_rnbase_util_Strings::underscoredToLowerCamelCase($columnName);
         $method = 'format'.ucfirst($method).'Column';
 
@@ -376,7 +371,6 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
                 ]
             );
         } else {
-            tx_rnbase::load('tx_rnbase_mod_Util');
             $action = tx_rnbase_mod_Util::getSpriteIcon('empty-icon');
         }
 
@@ -411,7 +405,6 @@ class Tx_Rnbase_Backend_Decorator_BaseDecorator implements Tx_Rnbase_Backend_Dec
                 ]
             );
         } else {
-            tx_rnbase::load('tx_rnbase_mod_Util');
             $action = tx_rnbase_mod_Util::getSpriteIcon('empty-icon');
         }
 

@@ -23,8 +23,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('Tx_Rnbase_Exception_PageNotFound404');
-
 /**
  * Wird diese Exception innerhalb einer Action geworfen,
  * wird ein 404 Header gesetzt

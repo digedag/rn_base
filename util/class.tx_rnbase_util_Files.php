@@ -68,7 +68,6 @@ class tx_rnbase_util_Files
                 $ret = @file_get_contents($fullPath);
                 $subpart = isset($options['subpart']) ? $options['subpart'] : '';
                 if ($subpart) {
-                    tx_rnbase::load('tx_rnbase_util_Templates');
                     $ret = tx_rnbase_util_Templates::getSubpart($ret, $subpart);
                 }
             }
@@ -194,7 +193,6 @@ class tx_rnbase_util_Files
     {
         $cleaned = $name;
         if (function_exists('iconv')) {
-            tx_rnbase::load('tx_rnbase_util_Strings');
             $charset = tx_rnbase_util_Strings::isUtf8String($cleaned) ? 'UTF-8' : 'ISO-8859-1';
             $oldLocal = setlocale(LC_ALL, 0);
             setlocale(LC_ALL, 'de_DE@euro', 'de_DE', 'deu_deu', 'de', 'ge');
@@ -218,7 +216,6 @@ class tx_rnbase_util_Files
     public static function makeZipFile($files = [], $destination = '', $overwrite = false)
     {
         if (!extension_loaded('zip')) {
-            tx_rnbase::load('tx_rnbase_util_Logger');
             tx_rnbase_util_Logger::warn('PHP zip extension not loaded!', 'rn_base');
 
             return false;

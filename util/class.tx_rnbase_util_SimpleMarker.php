@@ -22,9 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_BaseMarker');
-tx_rnbase::load('Tx_Rnbase_Frontend_Marker_Utility');
-
 /**
  * A generic marker class.
  *

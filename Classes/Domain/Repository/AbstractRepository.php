@@ -48,7 +48,6 @@ abstract class Tx_Rnbase_Domain_Repository_AbstractRepository implements Tx_Rnba
      */
     protected function getSearcher()
     {
-        tx_rnbase::load('tx_rnbase_util_SearchBase');
         $searcher = tx_rnbase_util_SearchBase::getInstance($this->getSearchClass());
         if (!$searcher instanceof tx_rnbase_util_SearchBase) {
             throw new Exception(get_class($this).'->getSearchClass() has to return a classname'.' of class which extends tx_rnbase_util_SearchBase!');

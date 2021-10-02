@@ -73,7 +73,6 @@ class Tx_Rnbase_Backend_Utility_DecoratorUtility
         $options = []
     ) {
         $this->decorator = $decorator;
-        tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
         $this->options = Tx_Rnbase_Domain_Model_Data::getInstance($options);
     }
 
@@ -130,7 +129,6 @@ class Tx_Rnbase_Backend_Utility_DecoratorUtility
         array &$columns
     ) {
         if ($this->getOptions()->hasBaseTableName()) {
-            tx_rnbase::load('tx_rnbase_util_TCA');
             $labelField = tx_rnbase_util_TCA::getLabelFieldForTable(
                 $this->getOptions()->getBaseTableName()
             );
@@ -161,7 +159,6 @@ class Tx_Rnbase_Backend_Utility_DecoratorUtility
         array &$columns
     ) {
         if ($this->getOptions()->hasBaseTableName()) {
-            tx_rnbase::load('tx_rnbase_util_TCA');
             $sysLanguageUidField = tx_rnbase_util_TCA::getLanguageFieldForTable(
                 $this->getOptions()->getBaseTableName()
             );

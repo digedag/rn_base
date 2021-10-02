@@ -22,9 +22,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_Misc');
-tx_rnbase::load('tx_rnbase_exception_IHandler');
-
 /**
  * @author Hannes Bochmann
  * @author Michael Wagner
@@ -53,7 +50,6 @@ class tx_rnbase_exception_Handler implements tx_rnbase_exception_IHandler
             header('HTTP/1.1 503 Service Unavailable');
         }
         // wir loggen nun den fehler
-        tx_rnbase::load('tx_rnbase_util_Logger');
         if (tx_rnbase_util_Logger::isFatalEnabled()) {
             $extKey = $configurations->getExtensionKey();
             $extKey = $extKey ? $extKey : 'rn_base';

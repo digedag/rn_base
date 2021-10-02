@@ -23,7 +23,6 @@
  ***************************************************************/
 
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
 
 /**
  * Data model unit tests.

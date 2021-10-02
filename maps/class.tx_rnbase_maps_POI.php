@@ -23,7 +23,6 @@
 ***************************************************************/
 
 tx_rnbase::load('tx_rnbase_maps_ILocation');
-tx_rnbase::load('tx_rnbase_maps_Coord');
 
 /**
  * Implementation for a POI with description. Useful to mark a point in a map.
