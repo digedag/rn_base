@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Sys25\RnBase\Search {
     if (false) {
         /** @deprecated */

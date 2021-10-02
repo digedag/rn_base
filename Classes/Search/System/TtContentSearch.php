@@ -2,7 +2,6 @@
 
 namespace Sys25\RnBase\Search\System;
 
-use Sys25\RnBase\Database\Query\Join;
 use Sys25\RnBase\Search\SearchBase;
 use Sys25\RnBase\Utility\Misc;
 use tx_rnbase;
@@ -30,12 +29,7 @@ use tx_rnbase;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * @author          Hannes Bochmann
- * @license         http://www.gnu.org/licenses/lgpl.html
- *                  GNU Lesser General Public License, version 3 or later
- */
-class CategorySearch extends SearchBase
+class TtContentSearch extends SearchBase
 {
     /**
      * {@inheritdoc}
@@ -46,10 +40,9 @@ class CategorySearch extends SearchBase
     {
         $tableMapping = [];
         $tableMapping[$this->getBaseTableAlias()] = $this->getBaseTable();
-        $tableMapping['SYS_CATEGORY_RECORD_MM'] = 'sys_category_record_mm';
 
         // Hook to append other tables
-        Misc::callHook('rn_base', 'search_Category_getTableMapping_hook', [
+        Misc::callHook('rn_base', 'search_TtContent_getTableMapping_hook', [
             'tableMapping' => &$tableMapping,
         ], $this);
 
@@ -63,7 +56,7 @@ class CategorySearch extends SearchBase
      */
     protected function getBaseTableAlias()
     {
-        return 'SYS_CATEGORY';
+        return 'TTCONTENT';
     }
 
     /**
@@ -83,7 +76,7 @@ class CategorySearch extends SearchBase
      */
     public function getWrapperClass()
     {
-        return \Sys25\RnBase\Domain\Model\Category::class;
+        return \Sys25\RnBase\Domain\Model\TtContent::class;
     }
 
     /**
@@ -94,12 +87,9 @@ class CategorySearch extends SearchBase
     protected function getJoins($tableAliases)
     {
         $joins = [];
-        if (isset($tableAliases['SYS_CATEGORY_RECORD_MM'])) {
-            $joins[] = new Join('SYS_CATEGORY', 'sys_category_record_mm', 'SYS_CATEGORY_RECORD_MM.uid_local = SYS_CATEGORY.uid', 'SYS_CATEGORY_RECORD_MM');
-        }
 
         // Hook to append other tables
-        \tx_rnbase_util_Misc::callHook('rn_base', 'search_Category_getJoins_hook', [
+        \tx_rnbase_util_Misc::callHook('rn_base', 'search_TtContent_getJoins_hook', [
             'join' => &$joins,
             'tableAliases' => $tableAliases,
         ], $this);

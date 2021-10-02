@@ -2,8 +2,8 @@
 
 namespace Sys25\RnBase\Search\System;
 
-use Sys25\RnBase\Search\System\CategorySearch as Category;
 use Sys25\RnBase\Database\Query\Join;
+use Sys25\RnBase\Search\System\CategorySearch as Category;
 use Sys25\RnBase\Tests\BaseTestCase;
 use tx_rnbase;
 
