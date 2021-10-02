@@ -22,7 +22,6 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  */
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('tx_rnbase_model_data');
 
 /**
  * tests for tx_rnbase_mod_linker_ShowDetails.

@@ -23,7 +23,6 @@
 ***************************************************************/
 
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('tx_rnbase_action_BaseIOC');
 
 /**
  * tx_rnbase_tests_action_BaseIOC_testcase.

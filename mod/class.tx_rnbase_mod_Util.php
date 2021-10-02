@@ -22,8 +22,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-tx_rnbase::load('Tx_Rnbase_Backend_Utility');
-tx_rnbase::load('Tx_Rnbase_Backend_Utility_Icons');
 
 class tx_rnbase_mod_Util
 {

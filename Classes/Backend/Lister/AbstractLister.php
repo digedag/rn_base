@@ -310,8 +310,6 @@ abstract class AbstractLister
     public function renderTemplate(
         $template
     ) {
-        tx_rnbase::load('tx_rnbase_util_Templates');
-
         return tx_rnbase_util_Templates::substituteMarkerArrayCached(
             $template,
             $this->renderListMarkers()

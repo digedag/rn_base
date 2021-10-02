@@ -22,7 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('tx_rnbase_util_PageBrowser');
 
 class tx_rnbase_tests_util_PageBrowser_testcase extends tx_rnbase_tests_BaseTestCase
 {

@@ -763,7 +763,6 @@ abstract class SearchBase
                      */
                     if (isset($options[$optionName]) && !is_array($options[$optionName])) {
                         if (!in_array($optionName, ['override', 'force'])) {
-                            tx_rnbase::load('tx_rnbase_util_Logger');
                             tx_rnbase_util_Logger::warn(
                                 'Invalid configuration for config option "'.$optionName.'".',
                                 'rn_base',

@@ -23,7 +23,6 @@
 ***************************************************************/
 
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('tx_rnbase_model_data');
 
 /**
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>

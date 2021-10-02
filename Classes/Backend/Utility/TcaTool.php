@@ -98,7 +98,6 @@ class TcaTool
      * Add a wizard to column.
      * Usage:.
      *
-     * tx_rnbase::load('Tx_Rnbase_Util_TCA');
      * $tca = new Tx_Rnbase_Util_TCA();
      * $tca->addWizard($tcaTableArray, 'teams', 'add', 'wizard_add', array());
      *
