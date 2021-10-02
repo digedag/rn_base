@@ -410,19 +410,32 @@ if (false) {
     }
 }
 
-/** @deprecated */
+/** @deprecated DON'T USE THIS CLASS ANYMORE! */
 class tx_rnbase_model_data extends Sys25\RnBase\Domain\Model\DataModel implements Tx_Rnbase_Domain_Model_DataInterface
 {
     public $record = [];
+
+    protected function init($rowOrUid = null)
+    {
+        parent::init($rowOrUid);
+        $this->record = parent::getRecord();
+    }
 }
 
 /**
- * @deprecated
+ * @deprecated DON'T USE THIS CLASS ANYMORE!
  */
 class tx_rnbase_model_base extends Sys25\RnBase\Domain\Model\BaseModel implements Tx_Rnbase_Domain_Model_RecordInterface, Tx_Rnbase_Domain_Model_DataInterface
 {
     public $uid;
-    public $record;
+    public $record = [];
+
+    protected function init($rowOrUid = null)
+    {
+        parent::init($rowOrUid);
+        $this->record = parent::getRecord();
+        $this->uid = parent::getUid();
+    }
 
     /**
      * @deprecated
