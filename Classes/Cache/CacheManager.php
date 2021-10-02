@@ -1,9 +1,13 @@
 <?php
 
+namespace Sys25\RnBase\Cache;
+
+use tx_rnbase;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 Rene Nitzsche
+ *  (c) 2010-2021 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -25,7 +29,7 @@
 /**
  * This class provides access to caches.
  */
-class tx_rnbase_cache_Manager
+class CacheManager
 {
     private static $caches = [];
 
@@ -100,7 +104,7 @@ class tx_rnbase_cache_Manager
      *
      * @param string $name
      *
-     * @return tx_rnbase_cache_ICache
+     * @return CacheInterface
      */
     public static function getCache($name)
     {
@@ -117,7 +121,7 @@ class tx_rnbase_cache_Manager
      *
      * @param string $name
      *
-     * @return tx_rnbase_cache_ICache
+     * @return CacheInterface
      */
     private static function getCacheImpl($name)
     {

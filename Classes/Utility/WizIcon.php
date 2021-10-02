@@ -44,7 +44,7 @@ abstract class WizIcon
     public static function addWizicon($clazz, $clazzFile)
     {
         if (!TYPO3::isTYPO80OrHigher()) {
-            $GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'][$id] = $clazz;
+            $GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'][$clazz] = $clazzFile;
         } else {
             $wizard = tx_rnbase::makeInstance($clazz);
             // for TYPO3 8 we need an other way

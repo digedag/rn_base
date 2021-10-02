@@ -1,6 +1,17 @@
 <?php
 
+namespace Sys25\RnBase\Frontend\Marker;
+
+use Exception;
+use Sys25\RnBase\Cache\CacheManager;
+use Sys25\RnBase\Configuration\Processor;
+use Sys25\RnBase\Utility\Files;
+use Sys25\RnBase\Utility\Misc;
+use Sys25\RnBase\Utility\Network;
+use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
+use Sys25\RnBase\Utility\Typo3Classes;
+use tx_rnbase;
 
 /***************************************************************
  *  Copyright notice
@@ -30,7 +41,7 @@ use Sys25\RnBase\Utility\TYPO3;
  * problem with this method. If it is heavely used the call to $GLOBALS['TT']->push() takes a lot
  * of memory.
  */
-class tx_rnbase_util_Templates
+class Templates
 {
     public static $substMarkerCache = [];
 
@@ -68,7 +79,7 @@ class tx_rnbase_util_Templates
                 self::$tmpl = $GLOBALS['TSFE']->tmpl;
             } else {
                 self::$tmpl = tx_rnbase::makeInstance(
-                    tx_rnbase_util_Typo3Classes::getTemplateServiceClass()
+                    Typo3Classes::getTemplateServiceClass()
                 );
                 self::$tmpl->init();
                 self::$tmpl->tt_track = 0;
@@ -90,13 +101,13 @@ class tx_rnbase_util_Templates
      */
     public static function getSubpartFromFile($fileName, $subpart)
     {
-        $file = tx_rnbase_util_Files::getFileName($fileName);
+        $file = Files::getFileName($fileName);
 
         if (TYPO3_MODE == 'BE' && false === strpos($file, \Sys25\RnBase\Utility\Environment::getPublicPath())) {
             $file = \Sys25\RnBase\Utility\Environment::getPublicPath().$file;
         } // Im BE auf absoluten Pfad setzen
 
-        $templateCode = tx_rnbase_util_Network::getUrl($file);
+        $templateCode = Network::getUrl($file);
         if (!$templateCode) {
             throw new Exception('File not found: '.htmlspecialchars($fileName));
         }
@@ -134,7 +145,7 @@ class tx_rnbase_util_Templates
         $cache = $included = false;
 
         if (!TYPO3::getTSFE()->no_cache) {
-            $cache = tx_rnbase_cache_Manager::getCache('rnbase');
+            $cache = CacheManager::getCache('rnbase');
             $cacheKey = 'includeSubTemplateFor_'.md5($template);
             $included = $cache->get($cacheKey);
         }
@@ -164,7 +175,7 @@ class tx_rnbase_util_Templates
      */
     public static function cbIncludeSubTemplates($match)
     {
-        list($filePath, $subPart) = tx_rnbase_util_Strings::trimExplode('@', $match[1]);
+        list($filePath, $subPart) = Strings::trimExplode('@', $match[1]);
 
         try {
             $fileContent = self::getSubpartFromFile(
@@ -199,7 +210,7 @@ class tx_rnbase_util_Templates
      */
     public function substituteMarkerArrayCached_old($content, $markContentArray = [], $subpartContentArray = [], $wrappedSubpartContentArray = [])
     {
-        tx_rnbase_util_Misc::pushTT('substituteMarkerArray');
+        Misc::pushTT('substituteMarkerArray');
 
         // If not arrays then set them
         if (!is_array($markContentArray)) {
@@ -217,7 +228,7 @@ class tx_rnbase_util_Templates
         $wPkeys = array_keys($wrappedSubpartContentArray);
         $aKeys = array_merge(array_keys($markContentArray), $sPkeys, $wPkeys);
         if (!count($aKeys)) {
-            tx_rnbase_util_Misc::pullTT();
+            Misc::pullTT();
 
             return $content;
         }
@@ -287,7 +298,7 @@ class tx_rnbase_util_Templates
         }
         $content .= $storeArr['c'][count($storeArr['k'])];
 
-        tx_rnbase_util_Misc::pullTT();
+        Misc::pullTT();
 
         return $content;
     }
@@ -300,7 +311,7 @@ class tx_rnbase_util_Templates
     public static function isSubstCacheEnabled()
     {
         if (null === self::$substCacheEnabled) {
-            self::$substCacheEnabled = (bool) Tx_Rnbase_Configuration_Processor::getExtensionCfgValue('rn_base', 'activateSubstCache');
+            self::$substCacheEnabled = (bool) Processor::getExtensionCfgValue('rn_base', 'activateSubstCache');
         }
 
         return self::$substCacheEnabled;
@@ -351,7 +362,7 @@ class tx_rnbase_util_Templates
      */
     public static function substituteMarkerArrayCached($content, array $markContentArray = null, array $subpartContentArray = null, array $wrappedSubpartContentArray = null)
     {
-        tx_rnbase_util_Misc::pushTT('substituteMarkerArray');
+        Misc::pushTT('substituteMarkerArray');
 
         // If not arrays then set them
         if (is_null($markContentArray)) {
@@ -369,7 +380,7 @@ class tx_rnbase_util_Templates
         $mPKeys = array_keys($markContentArray);
         $aKeys = array_merge($mPKeys, $sPkeys, $wPkeys);
         if (!count($aKeys)) {
-            tx_rnbase_util_Misc::pullTT();
+            Misc::pullTT();
 
             return $content;
         }
@@ -448,7 +459,7 @@ class tx_rnbase_util_Templates
         }
         $content .= $storeArr['c'][count($storeArr['k'])];
 
-        tx_rnbase_util_Misc::pullTT();
+        Misc::pullTT();
 
         return $content;
     }

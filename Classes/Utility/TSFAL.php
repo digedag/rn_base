@@ -1,12 +1,21 @@
 <?php
 
-use Sys25\RnBase\Utility\TYPO3;
+namespace Sys25\RnBase\Utility;
+
+use Sys25\RnBase\Backend\Utility\BackendUtility;
+use Sys25\RnBase\Configuration\ConfigurationInterface;
+use Sys25\RnBase\Configuration\Processor;
+use Sys25\RnBase\Database\Connection;
+use Sys25\RnBase\Domain\Model\MediaModel;
+use Sys25\RnBase\Frontend\Marker\BaseMarker;
+use Sys25\RnBase\Frontend\Marker\Templates;
+use tx_rnbase;
 use TYPO3\CMS\Core\Resource\FileReference;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013-2016 Rene Nitzsche
+ *  (c) 2013-2021 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -27,13 +36,10 @@ use TYPO3\CMS\Core\Resource\FileReference;
 
 define('DEFAULT_LOCAL_FIELD', '_LOCALIZED_UID');
 
-tx_rnbase::load('Tx_Rnbase_Backend_Utility');
-tx_rnbase::load('tx_rnbase_util_Strings');
-
 /**
  * Contains utility functions for FAL.
  */
-class tx_rnbase_util_TSFAL
+class TSFAL
 {
     /**
      * Typoscript USER function for rendering DAM images.
@@ -75,13 +81,12 @@ class tx_rnbase_util_TSFAL
      */
     public function printImages($content, $tsConf)
     {
-        tx_rnbase::load('tx_rnbase_util_Templates');
         $conf = $this->createConf($tsConf);
         $file = $conf->get('template');
         $file = $file ? $file : 'EXT:rn_base/res/simplegallery.html';
         $subpartName = $conf->get('subpartName');
         $subpartName = $subpartName ? $subpartName : '###DAM_IMAGES###';
-        $templateCode = tx_rnbase_util_Templates::getSubpartFromFile($file, $subpartName);
+        $templateCode = Templates::getSubpartFromFile($file, $subpartName);
 
         if (!$templateCode) {
             return '<!-- NO TEMPLATE OR SUBPART '.$subpartName.' FOUND -->';
@@ -117,7 +122,7 @@ class tx_rnbase_util_TSFAL
 
         // Now set the identifier
         $markerArray = ['###MEDIA_PARENTUID###' => $parentUid];
-        $out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($out, $markerArray);
+        $out = BaseMarker::substituteMarkerArrayCached($out, $markerArray);
 
         return $out;
     }
@@ -148,7 +153,7 @@ class tx_rnbase_util_TSFAL
      * It is a good tradition in TYPO3 that code can not be re-used. TYPO3 6.x makes
      * no difference...
      *
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $conf
+     * @param ConfigurationInterface $conf
      * @param $cObj
      * @param string $confId
      *
@@ -199,7 +204,7 @@ class tx_rnbase_util_TSFAL
                         (isset($cObj->data['_LOCALIZED_UID']) ? $cObj->data['_LOCALIZED_UID'] : $cObj->data['uid']);
                 // Vermutlich kann hier auch nur ein Objekt geliefert werden...
                 $pics = [];
-                $referencesForeignUid = tx_rnbase_util_Strings::intExplode(',', $referencesForeignUid);
+                $referencesForeignUid = Strings::intExplode(',', $referencesForeignUid);
                 foreach ($referencesForeignUid as $refForUid) {
                     if (!$conf->get($refConfId.'treatIdAsReference')) {
                         $pics[] = $fileRepository->findFileReferenceByUid($refForUid);
@@ -209,7 +214,7 @@ class tx_rnbase_util_TSFAL
                 }
             } elseif ($refUids = $conf->getCObj()->stdWrap($conf->get($refConfId.'uid'), $conf->get($refConfId.'uid.'))) {
                 if (!empty($refUids)) {
-                    $refUids = tx_rnbase_util_Strings::intExplode(',', $refUids);
+                    $refUids = Strings::intExplode(',', $refUids);
                     foreach ($refUids as $refUid) {
                         $pics[] = $fileRepository->findFileReferenceByUid($refUid);
                     }
@@ -217,7 +222,7 @@ class tx_rnbase_util_TSFAL
             }
         }
         // TODO: Hook
-        tx_rnbase_util_Misc::callHook(
+        Misc::callHook(
             'rn_base',
             'util_TSFal_fetchFilesByTS_appendMedia_hook',
             ['conf' => $conf, '$confId' => $confId, 'media' => &$pics],
@@ -241,7 +246,7 @@ class tx_rnbase_util_TSFAL
     /**
      * @param $pics
      *
-     * @return array[tx_rnbase_model_media]
+     * @return MediaModel[]
      */
     protected static function convertRef2Media($pics)
     {
@@ -249,10 +254,10 @@ class tx_rnbase_util_TSFAL
         if (is_array($pics)) {
             foreach ($pics as $pic) {
                 // getProperties() liefert derzeit nicht zurück
-                $fileObjects[] = tx_rnbase::makeInstance('tx_rnbase_model_media', $pic);
+                $fileObjects[] = tx_rnbase::makeInstance(MediaModel::class, $pic);
             }
         } elseif (is_object($pics)) {
-            $fileObjects[] = tx_rnbase::makeInstance('tx_rnbase_model_media', $pics);
+            $fileObjects[] = tx_rnbase::makeInstance(MediaModel::class, $pics);
         }
 
         return $fileObjects;
@@ -263,11 +268,11 @@ class tx_rnbase_util_TSFAL
      *
      * @param array $conf
      *
-     * @return Tx_Rnbase_Configuration_ProcessorInterface
+     * @return ConfigurationInterface
      */
     public function createConf($conf)
     {
-        $configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
+        $configurations = tx_rnbase::makeInstance(Processor::class);
         $configurations->init($conf, $this->cObj, $conf['qualifier'], $conf['qualifier']);
 
         return $configurations;
@@ -310,7 +315,7 @@ class tx_rnbase_util_TSFAL
         $refField = trim($contentObject->stdWrap($configuration['refField'], $configuration['refField.']));
 
         if (isset($GLOBALS['BE_USER']->workspace) && 0 !== $GLOBALS['BE_USER']->workspace) {
-            $workspaceRecord = Tx_Rnbase_Backend_Utility::getWorkspaceVersionOfRecord(
+            $workspaceRecord = BackendUtility::getWorkspaceVersionOfRecord(
                 $GLOBALS['BE_USER']->workspace,
                 'tt_content',
                 $uid,
@@ -332,11 +337,11 @@ class tx_rnbase_util_TSFAL
     }
 
     /**
-     * @return TYPO3\CMS\Core\Resource\FileRepository
+     * @return \TYPO3\CMS\Core\Resource\FileRepository
      */
     protected function getFileRepository()
     {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
+        return tx_rnbase::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
     }
 
     /**
@@ -346,7 +351,7 @@ class tx_rnbase_util_TSFAL
      * @param int    $uid
      * @param string $refField
      *
-     * @return array[tx_rnbase_model_media]
+     * @return MediaModel[]
      */
     public static function fetchFiles($tablename, $uid, $refField)
     {
@@ -370,7 +375,7 @@ class tx_rnbase_util_TSFAL
         /**
          * @var \TYPO3\CMS\Core\Resource\FileRepository
          */
-        $fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
+        $fileRepository = tx_rnbase::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
         $refs = $fileRepository->findByRelation($tablename, $refField, $uid);
 
         return $refs;
@@ -549,7 +554,7 @@ class tx_rnbase_util_TSFAL
         $data['sorting_foreign'] = $sorting;
         $data['table_local'] = 'sys_file';
 
-        $id = tx_rnbase_util_DB::doInsert('sys_file_reference', $data);
+        $id = Connection::getInstance()->doInsert('sys_file_reference', $data);
 
         // Now count all items
         self::updateImageCount($tableName, $fieldName, $itemId);
@@ -567,15 +572,15 @@ class tx_rnbase_util_TSFAL
      */
     public static function deleteReferencesByReference($tableName, $fieldName, $itemId, $uids)
     {
-        $where = 'tablenames = '.tx_rnbase_util_DB::fullQuoteStr($tableName, 'sys_file_reference');
-        $where .= ' AND fieldname = '.tx_rnbase_util_DB::fullQuoteStr($fieldName, 'sys_file_reference');
+        $where = 'tablenames = '.Connection::getInstance()->fullQuoteStr($tableName, 'sys_file_reference');
+        $where .= ' AND fieldname = '.Connection::getInstance()->fullQuoteStr($fieldName, 'sys_file_reference');
         $where .= ' AND uid_foreign = '.(int) $itemId;
-        $uids = is_array($uids) ? $uids : tx_rnbase_util_Strings::intExplode(',', $uids);
+        $uids = is_array($uids) ? $uids : Strings::intExplode(',', $uids);
         if (!empty($uids)) {
             $uids = implode(',', $uids);
             $where .= ' AND uid IN ('.$uids.') ';
         }
-        tx_rnbase_util_DB::doDelete('sys_file_reference', $where);
+        Connection::getInstance()->doDelete('sys_file_reference', $where);
         // Jetzt die Bildanzahl aktualisieren
         self::updateImageCount($tableName, $fieldName, $itemId);
     }
@@ -603,14 +608,14 @@ class tx_rnbase_util_TSFAL
      */
     public static function deleteReferences($tableName, $fieldName, $itemId, $uids = '')
     {
-        $where = 'tablenames = '.tx_rnbase_util_DB::fullQuoteStr($tableName, 'sys_file_reference');
-        $where .= ' AND fieldname = '.tx_rnbase_util_DB::fullQuoteStr($fieldName, 'sys_file_reference');
+        $where = 'tablenames = '.Connection::getInstance()->fullQuoteStr($tableName, 'sys_file_reference');
+        $where .= ' AND fieldname = '.Connection::getInstance()->fullQuoteStr($fieldName, 'sys_file_reference');
         $where .= ' AND uid_foreign = '.(int) $itemId;
         if (strlen(trim($uids))) {
-            $uids = implode(',', tx_rnbase_util_Strings::intExplode(',', $uids));
+            $uids = implode(',', Strings::intExplode(',', $uids));
             $where .= ' AND uid_local IN ('.$uids.') ';
         }
-        tx_rnbase_util_DB::doDelete('sys_file_reference', $where);
+        Connection::getInstance()->doDelete('sys_file_reference', $where);
         // Jetzt die Bildanzahl aktualisieren
         self::updateImageCount($tableName, $fieldName, $itemId);
     }
@@ -622,7 +627,7 @@ class tx_rnbase_util_TSFAL
     {
         $values = [];
         $values[$fieldName] = self::getImageCount($tableName, $fieldName, $itemId);
-        tx_rnbase_util_DB::doUpdate($tableName, 'uid='.$itemId, $values);
+        Connection::getInstance()->doUpdate($tableName, 'uid='.$itemId, $values);
     }
 
     /**
@@ -632,12 +637,12 @@ class tx_rnbase_util_TSFAL
      */
     public static function getImageCount($tableName, $fieldName, $itemId)
     {
-        $options['where'] = 'tablenames = '.tx_rnbase_util_DB::fullQuoteStr($tableName, 'sys_file_reference');
-        $options['where'] .= ' AND fieldname = '.tx_rnbase_util_DB::fullQuoteStr($fieldName, 'sys_file_reference');
+        $options['where'] = 'tablenames = '.Connection::getInstance()->fullQuoteStr($tableName, 'sys_file_reference');
+        $options['where'] .= ' AND fieldname = '.Connection::getInstance()->fullQuoteStr($fieldName, 'sys_file_reference');
         $options['where'] .= ' AND uid_foreign = '.(int) $itemId;
         $options['count'] = 1;
         $options['enablefieldsoff'] = 1;
-        $ret = tx_rnbase_util_DB::doSelect('count(*) AS \'cnt\'', 'sys_file_reference', $options);
+        $ret = Connection::getInstance()->doSelect('count(*) AS \'cnt\'', 'sys_file_reference', $options);
 
         return empty($ret) ? 0 : (int) $ret[0]['cnt'];
     }
@@ -654,7 +659,7 @@ class tx_rnbase_util_TSFAL
         $options['where'] = 'uid_local = '.(int) $mediaUid;
         $options['count'] = 1;
         $options['enablefieldsoff'] = 1;
-        $ret = tx_rnbase_util_DB::doSelect('count(*) AS \'cnt\'', 'sys_file_reference', $options, 0);
+        $ret = Connection::getInstance()->doSelect('count(*) AS \'cnt\'', 'sys_file_reference', $options, 0);
         $cnt = count($ret) ? intval($ret[0]['cnt']) : 0;
 
         return $cnt;
@@ -680,7 +685,7 @@ class tx_rnbase_util_TSFAL
         $info = $reference->getProperties();
         // add some fileinfo
         $info['file_path_name'] = $reference->getOriginalFile()->getPublicUrl();
-        $info['file_abs_url'] = tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL').$info['file_path_name'];
+        $info['file_abs_url'] = Misc::getIndpEnv('TYPO3_SITE_URL').$info['file_path_name'];
         $info['file_name'] = $info['name'];
 
         return $info;

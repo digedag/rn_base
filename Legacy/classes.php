@@ -8,6 +8,10 @@ if (class_exists('Sys25\RnBase\Typo3Wrapper\Core\CommandLineController')) {
     \class_alias(\Sys25\RnBase\Typo3Wrapper\Core\CommandLineController::class, 'Tx_Rnbase_CommandLine_Controller');
 }
 
+\class_alias(\Sys25\RnBase\Cache\CacheInterface::class, 'tx_rnbase_cache_ICache');
+\class_alias(\Sys25\RnBase\Cache\CacheManager::class, 'tx_rnbase_cache_Manager');
+\class_alias(\Sys25\RnBase\Cache\TYPO3Cache62::class, 'tx_rnbase_cache_TYPO3Cache62');
+
 \class_alias(\Sys25\RnBase\Typo3Wrapper\Core\Error\ErrorHandler::class, 'Tx_Rnbase_Error_ErrorHandler');
 \class_alias(\Sys25\RnBase\Typo3Wrapper\Core\Error\ProductionExceptionHandler::class, 'Tx_Rnbase_Error_ProductionExceptionHandler');
 \class_alias(\Sys25\RnBase\Configuration\ConfigurationInterface::class, 'Tx_Rnbase_Configuration_ProcessorInterface');
@@ -54,6 +58,7 @@ if (class_exists('Sys25\RnBase\Typo3Wrapper\Core\CommandLineController')) {
 \class_alias(\Sys25\RnBase\Frontend\Filter\IFilterItem::class, 'tx_rnbase_IFilterItem');
 \class_alias(\Sys25\RnBase\Frontend\Filter\FilterItem::class, 'tx_rnbase_filter_FilterItem');
 \class_alias(\Sys25\RnBase\Utility\Composer::class, 'Tx_Rnbase_Utility_Composer');
+\class_alias(\Sys25\RnBase\Utility\Files::class, 'tx_rnbase_util_Files');
 \class_alias(\Sys25\RnBase\Utility\Strings::class, 'Tx_Rnbase_Utility_Strings');
 \class_alias(\Sys25\RnBase\Utility\Strings::class, 'tx_rnbase_util_Strings');
 \class_alias(\Sys25\RnBase\Utility\Math::class, 'tx_rnbase_util_Math');
@@ -79,13 +84,19 @@ if (class_exists('Sys25\RnBase\Typo3Wrapper\Core\CommandLineController')) {
 \class_alias(\Sys25\RnBase\Frontend\Marker\BaseMarker::class, 'tx_rnbase_util_BaseMarker');
 \class_alias(\Sys25\RnBase\Frontend\Marker\SimpleMarker::class, 'tx_rnbase_util_SimpleMarker');
 \class_alias(\Sys25\RnBase\Frontend\Marker\MarkerUtility::class, 'Tx_Rnbase_Frontend_Marker_Utility');
+\class_alias(\Sys25\RnBase\Frontend\Marker\Templates::class, 'tx_rnbase_util_Templates');
 \class_alias(\Sys25\RnBase\Utility\CHashUtility::class, 'Tx_Rnbase_Utility_Cache');
 \class_alias(\Sys25\RnBase\Utility\Crypt::class, 'Tx_Rnbase_Utility_Crypt');
 \class_alias(\Sys25\RnBase\Utility\Email::class, 'Tx_Rnbase_Utility_Mail');
+\class_alias(\Sys25\RnBase\Utility\Email::class, 'tx_rnbase_util_Mail');
 \class_alias(\Sys25\RnBase\Utility\TypoScript::class, 'Tx_Rnbase_Utility_TypoScript');
 \class_alias(\Sys25\RnBase\Utility\WizIcon::class, 'Tx_Rnbase_Utility_WizIcon');
 \class_alias(\Sys25\RnBase\Exception\ExceptionHandlerInterface::class, 'tx_rnbase_exception_IHandler');
 \class_alias(\Sys25\RnBase\Exception\ExceptionHandler::class, 'tx_rnbase_exception_Handler');
+\class_alias(\Sys25\RnBase\Utility\Dates::class, 'tx_rnbase_util_Dates');
+\class_alias(\Sys25\RnBase\Utility\TSFAL::class, 'tx_rnbase_util_TSFAL');
+\class_alias(\Sys25\RnBase\Utility\WizIcon::class, 'tx_rnbase_util_Wizicon');
+\class_alias(\Sys25\RnBase\Utility\XmlElement::class, 'tx_rnbase_util_XmlElement');
 
 \class_alias(\Sys25\RnBase\Search\System\CategorySearchUtility::class, 'Tx_Rnbase_Category_SearchUtility');
 \class_alias(\Sys25\RnBase\Search\System\CategorySearchUtility::class, 'Sys25\RnBase\Search\Category\SearchUtility');
@@ -93,6 +104,15 @@ if (class_exists('Sys25\RnBase\Typo3Wrapper\Core\CommandLineController')) {
 \class_alias(\Sys25\RnBase\Search\System\CategorySearch::class, 'Sys25\RnBase\Search\Category\Category');
 
 if (false) {
+    /** @deprecated */
+    class tx_rnbase_cache_ICache
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_cache_Manager
+    {
+    }
+
     /** @deprecated this is an alias for NewClass */
     class Tx_Rnbase_Error_ErrorHandler
     {
@@ -286,6 +306,10 @@ if (false) {
     {
     }
     /** @deprecated */
+    final class tx_rnbase_util_Files
+    {
+    }
+    /** @deprecated */
     class Tx_Rnbase_Utility_Strings
     {
     }
@@ -382,6 +406,10 @@ if (false) {
     {
     }
     /** @deprecated */
+    class tx_rnbase_util_Templates
+    {
+    }
+    /** @deprecated */
     class Tx_Rnbase_Utility_Cache
     {
     }
@@ -389,8 +417,12 @@ if (false) {
     class Tx_Rnbase_Utility_Crypt
     {
     }
-    /** @deprecated */
+    /** @deprecated use \Sys25\RnBase\Utility\Email */
     class Tx_Rnbase_Utility_Mail
+    {
+    }
+    /** @deprecated use \Sys25\RnBase\Utility\Email */
+    class tx_rnbase_util_Mail
     {
     }
     /** @deprecated */
@@ -407,6 +439,22 @@ if (false) {
     }
     /** @deprecated */
     class tx_rnbase_exception_Handler
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_util_Dates
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_util_TSFAL
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_util_Wizicon
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_util_XmlElement
     {
     }
 }

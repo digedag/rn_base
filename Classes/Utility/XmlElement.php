@@ -1,8 +1,13 @@
 <?php
+
+namespace Sys25\RnBase\Utility;
+
+use SimpleXMLElement;
+
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2014 Michael Wagner (michael.wagner@dmk-ebusiness.de)
+*  (c) 2014-2021 Michael Wagner (michael.wagner@dmk-ebusiness.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,14 +28,14 @@
 ***************************************************************/
 
 /**
- * Ein Model eines XMls.
+ * Ein Model eines XMLs.
  */
-class tx_rnbase_util_XmlElement extends SimpleXMLElement
+class XmlElement extends SimpleXMLElement
 {
     /**
      * @param string $path
      *
-     * @return tx_rnbase_util_XmlElement
+     * @return XmlElement
      */
     public function getNodeFromPath($paths)
     {
@@ -113,13 +118,12 @@ class tx_rnbase_util_XmlElement extends SimpleXMLElement
      *
      * @param string $path
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getDateTimeFromPath($path)
     {
         $date = $this->getValueFromPath($path);
-        tx_rnbase::load('tx_rnbase_util_Dates');
-        $date = tx_rnbase_util_Dates::getDateTime($date);
+        $date = Dates::getDateTime($date);
 
         return $date;
     }
@@ -215,7 +219,7 @@ class tx_rnbase_util_XmlElement extends SimpleXMLElement
      * @param string $value
      * @param string $key
      *
-     * @return tx_rnbase_util_XmlElement
+     * @return XmlElement
      */
     public function addCData($value, $key = null)
     {

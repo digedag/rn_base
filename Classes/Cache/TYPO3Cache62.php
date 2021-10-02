@@ -1,13 +1,17 @@
 <?php
 
+namespace Sys25\RnBase\Cache;
+
+use Exception;
 use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2015 Rene Nitzsche
+ *  (c) 2015-2021 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -26,9 +30,7 @@ use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_cache_ICache');
-
-class tx_rnbase_cache_TYPO3Cache62 implements tx_rnbase_cache_ICache
+class TYPO3Cache62 implements CacheInterface
 {
     private $cache; // The cache instance
 

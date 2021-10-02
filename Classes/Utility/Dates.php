@@ -1,9 +1,14 @@
 <?php
 
+namespace Sys25\RnBase\Utility;
+
+use DateTime;
+use DateTimeZone;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2009 Rene Nitzsche
+ *  (c) 2009-2021 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -21,12 +26,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
-tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
  * Simple Utility methods for date conversion.
  */
-class tx_rnbase_util_Dates
+class Dates
 {
     private static $todayDateStrings = [];
 
@@ -142,7 +146,7 @@ class tx_rnbase_util_Dates
      */
     public static function date_mysql2tstamp($date)
     {
-        list($jahr, $monat, $tag) = tx_rnbase_util_Strings::intExplode('-', $date);
+        list($jahr, $monat, $tag) = Strings::intExplode('-', $date);
         // If mktime() is fed with 6x 0, it returns tstamp for 1999/11//30 00:00:00 which indeed is correct!
         if (!$jahr && !$monat && !$jahr) {
             $tstamp = false;
@@ -177,8 +181,8 @@ class tx_rnbase_util_Dates
     public static function datetime_mysql2tstamp($datetime, $timezone = 'CET')
     {
         list($datum, $zeit) = explode(' ', $datetime);
-        list($jahr, $monat, $tag) = tx_rnbase_util_Strings::intExplode('-', $datum);
-        list($std, $min, $sec) = $zeit ? tx_rnbase_util_Strings::intExplode(':', $zeit) : [0, 0, 0];
+        list($jahr, $monat, $tag) = Strings::intExplode('-', $datum);
+        list($std, $min, $sec) = $zeit ? Strings::intExplode(':', $zeit) : [0, 0, 0];
 
         return self::getTimeStamp($jahr, $monat, $tag, $std, $min, $sec, $timezone);
     }

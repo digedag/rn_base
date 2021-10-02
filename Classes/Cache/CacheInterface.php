@@ -1,9 +1,11 @@
 <?php
 
+namespace Sys25\RnBase\Cache;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 Rene Nitzsche
+ *  (c) 2010-2021 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -25,7 +27,7 @@
 /**
  * This is a generic interface for a Cache.
  */
-interface tx_rnbase_cache_ICache
+interface CacheInterface
 {
     /**
      * Retrieve a value from cache.
