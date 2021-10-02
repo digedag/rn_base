@@ -2,6 +2,8 @@
 
 namespace Sys25\RnBase\ExtBaseFluid\View;
 
+use Sys25\RnBase\Configuration\ConfigurationInterface;
+
 /***************************************************************
  * Copyright notice
  *
@@ -50,9 +52,9 @@ class Standalone extends \TYPO3\CMS\Fluid\View\StandaloneView
     }
 
     /**
-     * @param \Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param ConfigurationInterface $configurations
      */
-    public function setConfigurations(\Tx_Rnbase_Configuration_ProcessorInterface $configurations)
+    public function setConfigurations(ConfigurationInterface $configurations)
     {
         $this->configurations = $configurations;
     }

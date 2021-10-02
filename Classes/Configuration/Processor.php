@@ -32,7 +32,9 @@ namespace Sys25\RnBase\Configuration;
 use Sys25\RnBase\Exception\SkipActionException;
 use Sys25\RnBase\Utility\Arrays;
 use Sys25\RnBase\Utility\Debug;
+use Sys25\RnBase\Utility\Network;
 use Sys25\RnBase\Utility\Strings;
+use Sys25\RnBase\Utility\TYPO3;
 use Sys25\RnBase\Utility\Typo3Classes;
 use tx_rnbase;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -553,7 +555,7 @@ class Processor implements ConfigurationInterface
     {
         static $flex;
         if (!is_array($flex)) {
-            $flex = \tx_rnbase_util_Network::getUrl(\tx_rnbase_util_Extensions::extPath($this->getExtensionKey()).$this->get('flexform'));
+            $flex = Network::getUrl(\tx_rnbase_util_Extensions::extPath($this->getExtensionKey()).$this->get('flexform'));
             $flex = Arrays::xml2array($flex);
         }
 
@@ -601,7 +603,7 @@ class Processor implements ConfigurationInterface
      */
     public static function getExtensionCfgValue($extKey, $cfgKey = '')
     {
-        if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+        if (TYPO3::isTYPO90OrHigher()) {
             $extConfig = \tx_rnbase::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get(
                 $extKey,
                 $cfgKey

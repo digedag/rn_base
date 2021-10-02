@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Backend\Form;
 
+use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
 
 /***************************************************************
@@ -170,7 +171,7 @@ class FormBuilder
      */
     public function printNeededJSFunctions_top()
     {
-        if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+        if (TYPO3::isTYPO90OrHigher()) {
             $result = $this->formResultCompiler->addCssFiles();
         } else {
             $result = $this->formResultCompiler->JStop();

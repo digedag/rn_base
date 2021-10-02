@@ -3,6 +3,7 @@
 namespace Sys25\RnBase\Frontend\View\Marker;
 
 use Sys25\RnBase\Frontend\Marker\SimpleMarker;
+use Sys25\RnBase\Frontend\Marker\Templates;
 use Sys25\RnBase\Frontend\Request\RequestInterface;
 
 /**
@@ -71,7 +72,7 @@ class ListView extends BaseView
                 $configurations->getFormatter()
             );
         }
-        $template = \tx_rnbase_util_Templates::substituteMarkerArrayCached($template, $markerArray, $subpartArray); //, $wrappedSubpartArray);
+        $template = Templates::substituteMarkerArrayCached($template, $markerArray, $subpartArray); //, $wrappedSubpartArray);
 
         $entities = $viewData->offsetGet(self::VIEWDATA_ENTITIES);
         $template = $this->renderEntities($template, $entities, $viewData, $formatter, $confId);

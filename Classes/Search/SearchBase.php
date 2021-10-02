@@ -5,11 +5,12 @@ namespace Sys25\RnBase\Search;
 use Exception;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Database\Query\From;
+use Sys25\RnBase\Utility\Logger;
+use Sys25\RnBase\Utility\Misc;
+use Sys25\RnBase\Utility\Strings;
 use tx_rnbase;
 use Tx_Rnbase_Database_Connection;
-use tx_rnbase_util_Logger;
 use tx_rnbase_util_Misc;
-use Tx_Rnbase_Utility_Strings;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
@@ -397,7 +398,7 @@ abstract class SearchBase
                         // There is more then one value to test against column
                         $joinedValues = $value[SEARCH_FIELD_JOINED];
                         if (!is_array($joinedValues)) {
-                            tx_rnbase_util_Misc::mayday('JOINED field required data array. Check up your search config.', 'rn_base');
+                            Misc::mayday('JOINED field required data array. Check up your search config.', 'rn_base');
                         }
                         $joinedValues = array_values($joinedValues);
                         for ($i = 0, $cnt = count($joinedValues); $i < $cnt; ++$i) {
@@ -492,7 +493,7 @@ abstract class SearchBase
                 foreach ($aliasArr as $alias => $data) {
                     $makeJoin = isset($tableAliases[$alias]);
                     if (!$makeJoin && array_key_exists('joincondition', $data)) {
-                        $jconds = Tx_Rnbase_Utility_Strings::trimExplode(',', $data['joincondition']);
+                        $jconds = Strings::trimExplode(',', $data['joincondition']);
                         foreach ($jconds as $jcond) {
                             $makeJoin = $makeJoin || isset($tableAliases[$jcond]);
                             if ($makeJoin) {
@@ -701,7 +702,7 @@ abstract class SearchBase
         }
 
         // FIXME: keys für Optionen sind grundsätzlich klein geschrieben
-        $tableAliasesToSetEnableFields = Tx_Rnbase_Utility_Strings::trimExplode(
+        $tableAliasesToSetEnableFields = Strings::trimExplode(
             ',',
             $options['enableFieldsForAdditionalTableAliases']
         );
@@ -764,7 +765,7 @@ abstract class SearchBase
                     if (isset($options[$optionName]) && !is_array($options[$optionName])) {
                         if (!in_array($optionName, ['override', 'force'])) {
                             tx_rnbase::load('tx_rnbase_util_Logger');
-                            tx_rnbase_util_Logger::warn(
+                            Logger::warn(
                                 'Invalid configuration for config option "'.$optionName.'".',
                                 'rn_base',
                                 [
@@ -811,7 +812,7 @@ abstract class SearchBase
                     // Hier sieht die Konfig etwas anders aus
                     foreach ($cfg as $jField) {
                         $jField['operator'] = constant($jField['operator']);
-                        $jField['cols'] = Tx_Rnbase_Utility_Strings::trimExplode(',', $jField['cols']);
+                        $jField['cols'] = Strings::trimExplode(',', $jField['cols']);
                         $fields[SEARCH_FIELD_JOINED][] = $jField;
                     }
 

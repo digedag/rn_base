@@ -5,9 +5,9 @@ namespace Sys25\RnBase\Backend;
 use InvalidArgumentException;
 use RuntimeException;
 use Sys25\RnBase\Frontend\Request\Parameters;
+use Sys25\RnBase\Utility\T3General;
 use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
-use Tx_Rnbase_Utility_T3General;
 
 /***************************************************************
  * Copyright notice
@@ -160,7 +160,7 @@ class ModuleRunner
         // Check if the target is a concatenated string of "className::actionMethod"
         if (is_string($target) && false !== strpos($target, '::')) {
             list($className, $methodName) = explode('::', $target, 2);
-            $targetObject = Tx_Rnbase_Utility_T3General::makeInstance($className);
+            $targetObject = T3General::makeInstance($className);
 
             return [$targetObject, $methodName];
         }

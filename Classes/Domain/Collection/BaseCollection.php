@@ -3,6 +3,7 @@
 namespace Sys25\RnBase\Domain\Collection;
 
 use Sys25\RnBase\Domain\Model\RecordInterface;
+use Sys25\RnBase\Utility\Composer;
 
 /***************************************************************
  *  Copyright notice
@@ -27,7 +28,7 @@ use Sys25\RnBase\Domain\Model\RecordInterface;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-\Tx_Rnbase_Utility_Composer::autoload();
+Composer::autoload();
 
 /**
  * Only a wrapper for doctrine array collection.

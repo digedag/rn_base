@@ -27,9 +27,7 @@ namespace Sys25\RnBase\Utility;
 use Exception;
 use Sys25\RnBase\Configuration\Processor as ConfigurationProcessor;
 use tx_rnbase;
-use tx_rnbase_util_Dates;
 use tx_rnbase_util_Lock;
-use tx_rnbase_util_Logger;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -161,7 +159,7 @@ class Misc
      */
     public static function mayday($msg, $extKey = '')
     {
-        tx_rnbase_util_Logger::fatal($msg, $extKey ? $extKey : 'rn_base');
+        Logger::fatal($msg, $extKey ? $extKey : 'rn_base');
         $aTrace = debug_backtrace();
         $aLocation = array_shift($aTrace);
         $aTrace1 = array_shift($aTrace);
@@ -525,7 +523,7 @@ MAYDAYPAGE;
     {
         $str = '';
         if ($daily) {
-            $str .= tx_rnbase_util_Dates::getTodayDateString();
+            $str .= Dates::getTodayDateString();
         }
         sort($params);
         foreach ($params as $value) {

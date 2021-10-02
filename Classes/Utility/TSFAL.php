@@ -450,7 +450,7 @@ class TSFAL
         $allowedFileExtensions = (string) $options['config']['allowedFileExtensions'];
         $disallowedFileExtensions = (string) $options['config']['disallowedFileExtensions'];
         if ('image' == $type) {
-            $ttContentLocallang = \tx_rnbase_util_TYPO3::isTYPO87OrHigher() ? 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf' :
+            $ttContentLocallang = TYPO3::isTYPO87OrHigher() ? 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf' :
                 'LLL:EXT:cms/locallang_ttc.xlf';
             $types = self::buildMediaPalette();
             $customSettingOverride = array_merge(
@@ -507,7 +507,7 @@ class TSFAL
 
     private static function buildMediaPalette()
     {
-        $commonTcaLocallang = \tx_rnbase_util_TYPO3::isTYPO87OrHigher() ? 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf' :
+        $commonTcaLocallang = TYPO3::isTYPO87OrHigher() ? 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf' :
             'LLL:EXT:lang/locallang_tca.xlf';
         $paletteLabel = TYPO3::isTYPO95OrHigher() ? '' : $commonTcaLocallang.':sys_file_reference.imageoverlayPalette';
         $typeDefs = [

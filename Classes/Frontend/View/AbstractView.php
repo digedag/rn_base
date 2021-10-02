@@ -2,6 +2,8 @@
 
 namespace Sys25\RnBase\Frontend\View;
 
+use Sys25\RnBase\Utility\Files;
+
 /***************************************************************
 * Copyright notice
 *
@@ -69,7 +71,7 @@ abstract class AbstractView
     public function getTemplate($templateName, $extension = '.php', $forceAbsPath = 0)
     {
         if (strlen($this->templateFile) > 0) {
-            return ($forceAbsPath) ? \tx_rnbase_util_Files::getFileAbsFileName($this->templateFile) : $this->templateFile;
+            return ($forceAbsPath) ? Files::getFileAbsFileName($this->templateFile) : $this->templateFile;
         }
         $path = $this->pathToTemplates;
         $path .= '/' == substr($path, -1, 1) ? $templateName : '/'.$templateName;

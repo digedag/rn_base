@@ -3,7 +3,8 @@
 namespace Sys25\RnBase\Search;
 
 use Sys25\RnBase\Database\Connection;
-use tx_rnbase_util_Misc;
+use Sys25\RnBase\Utility\Misc;
+use Sys25\RnBase\Utility\Strings;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
 /***************************************************************
@@ -89,7 +90,7 @@ class ConditionBuilder
                         // There is more then one value to test against column
                         $joinedValues = $value[self::SEARCH_FIELD_JOINED];
                         if (!is_array($joinedValues)) {
-                            tx_rnbase_util_Misc::mayday('JOINED field required data array. Check up your search config.', 'rn_base');
+                            Misc::mayday('JOINED field required data array. Check up your search config.', 'rn_base');
                         }
                         $joinedValues = array_values($joinedValues);
                         for ($i = 0, $cnt = count($joinedValues); $i < $cnt; ++$i) {
@@ -186,13 +187,13 @@ class ConditionBuilder
         switch ($operator) {
             case self::OP_NOTIN_INT:
             case self::OP_IN_INT:
-                $value = \Tx_Rnbase_Utility_Strings::intExplode(',', $value);
+                $value = Strings::intExplode(',', $value);
                 $where = sprintf('%s.%s %s (%s)', $tableAlias, strtolower($col), $operator,
                     $qb->createNamedParameter($value, \Doctrine\DBAL\Connection::PARAM_INT_ARRAY));
                 break;
             case self::OP_NOTIN:
             case self::OP_IN:
-                $value = \Tx_Rnbase_Utility_Strings::trimExplode(',', $value);
+                $value = Strings::trimExplode(',', $value);
                 $where = sprintf('%s.%s %s (%s)', $tableAlias, strtolower($col), $operator,
                     $qb->createNamedParameter($value, \Doctrine\DBAL\Connection::PARAM_STR_ARRAY));
                 break;
@@ -260,7 +261,7 @@ class ConditionBuilder
 
                 break;
             default:
-                tx_rnbase_util_Misc::mayday('Unknown Operator for comparation defined: '.$operator);
+                Misc::mayday('Unknown Operator for comparation defined: '.$operator);
         }
 
         return $where;

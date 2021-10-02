@@ -7,13 +7,14 @@ use Sys25\RnBase\Backend\Template\Override\DocumentTemplate;
 use Sys25\RnBase\Backend\Utility\BackendUtility;
 use Sys25\RnBase\Backend\Utility\Icons;
 use Sys25\RnBase\Frontend\Request\Parameters;
+use Sys25\RnBase\Utility\Math;
+use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
+use Sys25\RnBase\Utility\T3General as T3GeneralAlias;
 use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
 use tx_rnbase_mod_Util;
 use tx_rnbase_util_Link;
-use tx_rnbase_util_Math;
-use tx_rnbase_util_Misc;
 use tx_rnbase_util_TCA;
 
 /***************************************************************
@@ -345,7 +346,7 @@ class ToolBox
 
         return '<a class="btn btn-default" href="#" onclick="'
             .htmlspecialchars('return jumpSelf('.
-                \Tx_Rnbase_Utility_Strings::quoteJSvalue(
+                Strings::quoteJSvalue(
                     $this->clipObj->selUrlDB($editTable, $recordUid, 0, ('cut' === $isSel), ['returnUrl' => ''])
                 ).');')
             .'" title="'.htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.cut')).'">'
@@ -359,7 +360,7 @@ class ToolBox
             // Initialize - reads the clipboard content from the user session
             $this->clipObj->initializeClipboard();
 
-            $CB = \Tx_Rnbase_Utility_T3General::_GET('CB');
+            $CB = T3GeneralAlias::_GET('CB');
             $this->clipObj->setCmd($CB);
             // Clean up pad
             $this->clipObj->cleanCurrent();
@@ -709,7 +710,7 @@ class ToolBox
     public function createDateInput($name, $value)
     {
         // Take care of current time zone. Thanks to Thomas Maroschik!
-        if (tx_rnbase_util_Math::isInteger($value)) {
+        if (Math::isInteger($value)) {
             $value += date('Z', $value);
         }
         $this->initializeJavaScriptFormEngine();
@@ -867,7 +868,7 @@ class ToolBox
         //wir verweisen immer auf die aktuelle Seite
         //es kann aber schon ein sort parameter gesetzt sein
         //weshalb wir alte entfernen
-        $sUrl = preg_replace('/&sortField=.*&sortRev=[^&]*/', '', tx_rnbase_util_Misc::getIndpEnv('TYPO3_REQUEST_URL'));
+        $sUrl = preg_replace('/&sortField=.*&sortRev=[^&]*/', '', Misc::getIndpEnv('TYPO3_REQUEST_URL'));
 
         //sort richtung rausfinden
         //beim initialen Aufruf (spalte noch nicht geklickt) wird immer aufsteigend sortiert
@@ -1008,7 +1009,7 @@ class ToolBox
         ];
         $SETTINGS = BackendUtility::getModuleData(
             $MENU,
-            \Tx_Rnbase_Utility_T3General::_GP('SET'),
+            T3GeneralAlias::_GP('SET'),
             $modName
         );
 

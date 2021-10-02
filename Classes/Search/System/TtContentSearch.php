@@ -89,7 +89,7 @@ class TtContentSearch extends SearchBase
         $joins = [];
 
         // Hook to append other tables
-        \tx_rnbase_util_Misc::callHook('rn_base', 'search_TtContent_getJoins_hook', [
+        Misc::callHook('rn_base', 'search_TtContent_getJoins_hook', [
             'join' => &$joins,
             'tableAliases' => $tableAliases,
         ], $this);
