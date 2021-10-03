@@ -29,9 +29,6 @@ use Sys25\RnBase\Utility\Logger;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-/**
- * .
- */
 class Util
 {
     /**

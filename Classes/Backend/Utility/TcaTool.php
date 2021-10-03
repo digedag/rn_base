@@ -98,7 +98,6 @@ class TcaTool
      * Add a wizard to column.
      * Usage:.
      *
-     * tx_rnbase::load('Tx_Rnbase_Util_TCA');
      * $tca = new Tx_Rnbase_Util_TCA();
      * $tca->addWizard($tcaTableArray, 'teams', 'add', 'wizard_add', array());
      *
@@ -150,7 +149,7 @@ class TcaTool
         foreach ($options as $col => $wizardOptions) {
             $table = isset($wizardOptions[self::WIZARD_TARGETTABLE]) ? $wizardOptions[self::WIZARD_TARGETTABLE] : '';
             $wizards = self::getWizards($table, $wizardOptions);
-            if (\tx_rnbase_util_TYPO3::isTYPO86OrHigher()) {
+            if (TYPO3::isTYPO86OrHigher()) {
                 // suggestWizard
                 if (isset($wizards[self::WIZARD_SUGGEST])) {
                     $tcaTable['columns'][$col]['config']['suggestOptions'] = $wizards[self::WIZARD_SUGGEST];
@@ -170,11 +169,11 @@ class TcaTool
             }
             // Add RTE config to columnsOverrides
             if (isset($wizardOptions[self::WIZARD_RTE])) {
-                $tcaTable['types'][0]['columnsOverrides'][$col] = \tx_rnbase_util_TYPO3::isTYPO86OrHigher() ?
+                $tcaTable['types'][0]['columnsOverrides'][$col] = TYPO3::isTYPO86OrHigher() ?
                     ['config' => ['enableRichtext' => 1, 'richtextConfiguration' => 'default']]
                     :
                     ['defaultExtras' => isset($wizardOptions[self::WIZARD_RTE]['defaultExtras']) ? $wizardOptions[self::WIZARD_RTE]['defaultExtras'] : ''];
-                if (\tx_rnbase_util_TYPO3::isTYPO86OrHigher()) {
+                if (TYPO3::isTYPO86OrHigher()) {
                     unset($wizards[self::WIZARD_RTE]);
                 }
             }

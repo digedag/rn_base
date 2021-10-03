@@ -25,14 +25,8 @@ use Sys25\RnBase\Utility\Arrays;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_TYPO3');
 tx_rnbase::load('tx_rnbase_mod_IModule');
 tx_rnbase::load('tx_rnbase_mod_IModFunc');
-tx_rnbase::load('Tx_Rnbase_Backend_Utility');
-tx_rnbase::load('tx_rnbase_util_Typo3Classes');
-tx_rnbase::load('Tx_Rnbase_Backend_Utility_Icons');
-tx_rnbase::load('Tx_Rnbase_Backend_Module_Base');
-tx_rnbase::load('Tx_Rnbase_Utility_T3General');
 
 /**
  * Fertige Implementierung eines BE-Moduls. Das Modul ist dabei nur eine Hülle für die einzelnen Modulfunktionen.
@@ -254,9 +248,6 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
     public function getConfigurations()
     {
         if (!$this->configurations) {
-            tx_rnbase::load('tx_rnbase_util_Misc');
-            tx_rnbase::load('tx_rnbase_util_Typo3Classes');
-
             tx_rnbase_util_Misc::prepareTSFE(); // Ist bei Aufruf aus BE notwendig!
             $cObj = tx_rnbase_util_TYPO3::getContentObject();
 
@@ -320,8 +311,6 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
         $this->content .= $this->getDoc()->endPage();
 
         $params = $markerArray = $subpartArray = $wrappedSubpartArray = [];
-        tx_rnbase::load('tx_rnbase_util_BaseMarker');
-        tx_rnbase::load('tx_rnbase_util_Templates');
         tx_rnbase_util_BaseMarker::callModules($this->content, $markerArray, $subpartArray, $wrappedSubpartArray, $params, $this->getConfigurations()->getFormatter());
         $content = tx_rnbase_util_Templates::substituteMarkerArrayCached($this->content, $markerArray, $subpartArray, $wrappedSubpartArray);
 

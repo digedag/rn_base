@@ -21,7 +21,6 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-tx_rnbase::load('Tx_Rnbase_Backend_Form_ToolBox');
 
 /**
  * Diese Klasse stellt hilfreiche Funktionen zur Erstellung von Formularen

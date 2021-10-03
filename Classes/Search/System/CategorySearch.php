@@ -99,7 +99,7 @@ class CategorySearch extends SearchBase
         }
 
         // Hook to append other tables
-        \tx_rnbase_util_Misc::callHook('rn_base', 'search_Category_getJoins_hook', [
+        Misc::callHook('rn_base', 'search_Category_getJoins_hook', [
             'join' => &$joins,
             'tableAliases' => $tableAliases,
         ], $this);

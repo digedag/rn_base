@@ -22,9 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_Misc');
-tx_rnbase::load('tx_rnbase_util_Typo3Classes');
-
 class tx_rnbase_tests_listbuilder_testcase extends tx_rnbase_tests_BaseTestCase
 {
     public function setup()
@@ -130,7 +127,6 @@ class tx_rnbase_tests_listbuilder_testcase extends tx_rnbase_tests_BaseTestCase
     private function getModels()
     {
         $models = [];
-        tx_rnbase::load('tx_rnbase_model_media');
         $models[] = new tx_rnbase_model_media(['uid' => 22, 'file_name' => 'file22.jpg']);
         $models[] = new tx_rnbase_model_media(['uid' => 33, 'file_name' => 'file33.jpg']);
 

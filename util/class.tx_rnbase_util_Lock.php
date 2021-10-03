@@ -22,8 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_Files');
-
 /**
  * Util to handle locking of processes.
  *
@@ -201,7 +199,6 @@ class tx_rnbase_util_Lock
             tx_rnbase_util_Files::mkdir_deep(dirname($fileName));
         }
         if (!tx_rnbase_util_Files::writeFile($fileName, time(), true)) {
-            tx_rnbase::load('tx_rnbase_util_Logger');
             tx_rnbase_util_Logger::warn(
                 'Lock file could not be created for "'.$this->getName().'" process!',
                 'rn_base',

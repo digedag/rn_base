@@ -62,7 +62,6 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_te
      */
     public function testIsModelWrapperClassWithRightClass()
     {
-        tx_rnbase::load('Tx_Rnbase_Domain_Model_Base');
         self::assertTrue(
             $this->callInaccessibleMethod(
                 $this->getRepository(),
@@ -287,15 +286,12 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_te
     protected function getRepository(
         array $methods = []
     ) {
-        tx_rnbase::load('Tx_Rnbase_Database_Connection');
         $connection = $this->getMock(
             'Tx_Rnbase_Database_Connection',
             get_class_methods('Tx_Rnbase_Database_Connection')
         );
-        tx_rnbase::load('Tx_Rnbase_Domain_Model_Base');
         $model = $this->getModel(null, 'Tx_Rnbase_Domain_Model_Base');
 
-        tx_rnbase::load('Tx_Rnbase_Domain_Repository_PersistenceRepository');
         $repo = $this->getMockForAbstractClass(
             'Tx_Rnbase_Domain_Repository_PersistenceRepository',
             [],

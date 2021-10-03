@@ -3,17 +3,17 @@
 namespace Sys25\RnBase\Frontend\Controller;
 
 use Sys25\RnBase\Configuration\ConfigurationInterface;
+use Sys25\RnBase\Frontend\Marker\Templates;
 use Sys25\RnBase\Frontend\Request\ParametersInterface;
 use Sys25\RnBase\Frontend\Request\Request;
 use Sys25\RnBase\Frontend\Request\RequestInterface;
 use Sys25\RnBase\Frontend\View\Factory;
 use Sys25\RnBase\Utility\Debug;
+use Sys25\RnBase\Utility\Files;
 use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
-use tx_rnbase_util_Files;
-use tx_rnbase_util_Templates;
 
 /***************************************************************
 * Copyright notice
@@ -111,11 +111,11 @@ abstract class AbstractAction
                 'Memory Start' => $memStart,
                 'Memory End' => $memEnd,
                 'Memory Consumed' => ($memEnd - $memStart),
-                'SubstCacheEnabled?' => tx_rnbase_util_Templates::isSubstCacheEnabled() ? 'yes' : 'no',
+                'SubstCacheEnabled?' => Templates::isSubstCacheEnabled() ? 'yes' : 'no',
             ], 'View statistics for: '.$this->getConfId().' Key: '.$debugKey);
         }
         // reset the substCache after each view!
-        tx_rnbase_util_Templates::resetSubstCache();
+        Templates::resetSubstCache();
 
         return $out;
     }
@@ -153,7 +153,7 @@ abstract class AbstractAction
         $files = $configurations->get($confId.'includeCSS.');
         if (is_array($files)) {
             foreach ($files as $file) {
-                if ($file = tx_rnbase_util_Files::getFileName($file)) {
+                if ($file = Files::getFileName($file)) {
                     $pageRenderer->addCssFile($file);
                 }
             }
@@ -175,7 +175,7 @@ abstract class AbstractAction
             foreach ($javaScriptConfIds as $javaScriptConfId) {
                 $file = $configurations->get($confId.$includePartConfId.'.'.$javaScriptConfId);
                 if (!$configurations->get($confId.$includePartConfId.'.'.$javaScriptConfId.'.external')) {
-                    $file = tx_rnbase_util_Files::getFileName($file);
+                    $file = Files::getFileName($file);
                 }
 
                 $files[$javaScriptConfId] = $file;

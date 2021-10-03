@@ -25,6 +25,7 @@ namespace Sys25\RnBase\ExtBaseFluid\ViewHelper;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Sys25\RnBase\Configuration\ConfigurationInterface;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -100,7 +101,7 @@ class TranslateViewHelper extends AbstractViewHelper
         // first try to translate from the rn base controller configuration
         if ((
             $renderingContext instanceof RenderingContext &&
-            $renderingContext->getViewHelperVariableContainer()->getView()->getConfigurations() instanceof \Tx_Rnbase_Configuration_Processor
+            $renderingContext->getViewHelperVariableContainer()->getView()->getConfigurations() instanceof ConfigurationInterface
         )) {
             return $renderingContext->getViewHelperVariableContainer()->getView()->getConfigurations()->getLL($key);
         }

@@ -39,7 +39,7 @@ class CHashUtility
      */
     public static function addExcludedParametersForCacheHash(array $parameters)
     {
-        if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+        if (TYPO3::isTYPO90OrHigher()) {
             $typo3ConfVarsEntry = &$GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'];
         } else {
             $typo3ConfVarsEntry = &$GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'];
@@ -56,7 +56,7 @@ class CHashUtility
      */
     public static function addCacheHashRequiredParameters(array $parameters)
     {
-        if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+        if (TYPO3::isTYPO90OrHigher()) {
             $typo3ConfVarsEntry = &$GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['requireCacheHashPresenceParameters'];
         } else {
             $typo3ConfVarsEntry = &$GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters'];
@@ -78,7 +78,7 @@ class CHashUtility
         $cacheHashCalculatorInternalConfigurationKey,
         array $configurationValue
     ) {
-        if (!\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+        if (!TYPO3::isTYPO90OrHigher()) {
             $startingGlue = '';
             if ($typo3ConfVarsEntry) {
                 $startingGlue = ',';
