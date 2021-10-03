@@ -229,7 +229,6 @@ class ToolBox
                 ' title="'.$label.'\" alt="" >';
         }
         if ($options['sprite']) {
-            tx_rnbase::load('tx_rnbase_mod_Util');
             $label = tx_rnbase_mod_Util::getSpriteIcon($options['sprite']);
         }
         $jsCode = BackendUtility::viewOnClick($pid, '', '', '', '', $urlParams);

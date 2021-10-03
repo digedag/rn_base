@@ -104,7 +104,6 @@ class MapUtility
         if (!self::hasGeoData($item)) {
             return false;
         }
-        tx_rnbase::load('tx_rnbase_maps_DefaultMarker');
 
         $marker = new DefaultMarker();
         if ($item->getLongitude() || $item->getLatitude()) {

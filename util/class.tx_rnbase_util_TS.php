@@ -21,8 +21,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('Tx_Rnbase_Utility_TypoScript');
-
 /**
  * Contains utility functions for TypoScript.
  *

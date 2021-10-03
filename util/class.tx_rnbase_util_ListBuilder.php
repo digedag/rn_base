@@ -24,8 +24,6 @@ use Sys25\RnBase\Utility\Debug;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_ListBuilderInfo');
-tx_rnbase::load('tx_rnbase_util_BaseMarker');
 tx_rnbase::load('tx_rnbase_util_IListProvider');
 
 /**

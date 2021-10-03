@@ -95,8 +95,6 @@ define('SERVICES_JSON_LOOSE_TYPE', 16);
  */
 define('SERVICES_JSON_SUPPRESS_ERRORS', 32);
 
-tx_rnbase::load('tx_rnbase_util_Strings');
-
 /**
  * Converts to and from JSON format.
  *

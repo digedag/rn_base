@@ -24,7 +24,6 @@ use Sys25\RnBase\Utility\Arrays;
  ***************************************************************/
 
 tx_rnbase::load('tx_rnbase_action_ICacheHandler');
-tx_rnbase::load('tx_rnbase_cache_Manager');
 
 /**
  * A default CacheHandler.
@@ -190,7 +189,6 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
     protected function getIcludeParams()
     {
         $params = $this->getConfigValue('include.params');
-        tx_rnbase::load('tx_rnbase_util_Strings');
 
         return tx_rnbase_util_Strings::trimExplode(',', $params, true);
     }

@@ -23,7 +23,6 @@
 ***************************************************************/
 
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('tx_rnbase_util_Lock');
 
 /**
  * Basis Testcase.
