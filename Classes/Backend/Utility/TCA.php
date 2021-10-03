@@ -1,37 +1,43 @@
 <?php
 
+namespace Sys25\RnBase\Backend\Utility;
+
+use LogicException;
+use Sys25\RnBase\Domain\Model\DataModel;
+use Sys25\RnBase\Domain\Model\RecordInterface;
 use Sys25\RnBase\Utility\Arrays;
+use Sys25\RnBase\Utility\Strings;
+use Sys25\RnBase\Utility\TYPO3;
+use Sys25\RnBase\Utility\Typo3Classes;
 
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2010 das Medienkombinat
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2015-2021 René Nitzsche <rene@system25.de>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
- * TODO: extend from Tx_Rnbase_Util_TCA.
- *
  * @author Hannes Bochmann <hannes.bochmann@dmk-business.de>
  * @author Michael Wagner <michael.wagner@dmk-business.de>
  */
-class tx_rnbase_util_TCA
+class TCA
 {
     /**
      * Liefert den Wert für ein Attribut aus dem ctrl-Bereich der TCA.
@@ -209,9 +215,9 @@ class tx_rnbase_util_TCA
      */
     public static function loadTCA($tablename)
     {
-        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+        if (TYPO3::isTYPO80OrHigher()) {
             if (TYPO3_MODE === 'FE' && isset($_REQUEST['eID'])) {
-                $eidUtility = tx_rnbase_util_Typo3Classes::getEidUtilityClass();
+                $eidUtility = Typo3Classes::getEidUtilityClass();
                 $eidUtility::initTCA();
             } else {
                 if (!is_array($GLOBALS['TCA'])) {
@@ -228,14 +234,14 @@ class tx_rnbase_util_TCA
     /**
      * validates the data of a model with the tca definition of a its table.
      *
-     * @param Tx_Rnbase_Domain_Model_RecordInterface $model
-     * @param array                                  $options
+     * @param RecordInterface $model
+     * @param array $options
      *                                                        only_record_fields: validates only fields included in the record
      *
      * @return bool
      */
     public static function validateModel(
-        Tx_Rnbase_Domain_Model_RecordInterface $model,
+        RecordInterface $model,
         $options = null
     ) {
         return self::validateRecord(
@@ -260,7 +266,7 @@ class tx_rnbase_util_TCA
         $tableName,
         $options = null
     ) {
-        $options = tx_rnbase_model_data::getInstance($options);
+        $options = DataModel::getInstance($options);
         $columns = self::getTcaColumns($tableName, $options);
 
         if (empty($columns)) {
@@ -293,8 +299,7 @@ class tx_rnbase_util_TCA
      * @param string $value
      * @param string $field
      * @param string $tableName
-     * @param array  $options
-     *                          only_record_fields: validates only fields included in the record
+     * @param array  $options only_record_fields: validates only fields included in the record
      *
      * @return bool
      */
@@ -304,7 +309,7 @@ class tx_rnbase_util_TCA
         $tableName,
         $options = null
     ) {
-        $options = tx_rnbase_model_data::getInstance($options);
+        $options = DataModel::getInstance($options);
 
         $columns = self::getTcaColumns($tableName, $options);
 
@@ -323,7 +328,7 @@ class tx_rnbase_util_TCA
         // check eval list
         if (!empty($config['eval'])) {
             // check eval list
-            $evalList = tx_rnbase_util_Strings::trimExplode(
+            $evalList = Strings::trimExplode(
                 ',',
                 $config['eval'],
                 true
@@ -358,7 +363,7 @@ class tx_rnbase_util_TCA
     public static function getTcaColumns($tableName, $options = null)
     {
         self::loadTCA($tableName);
-        $options = tx_rnbase_model_data::getInstance($options);
+        $options = DataModel::getInstance($options);
         $columns = empty($GLOBALS['TCA'][$tableName]['columns']) ? [] : $GLOBALS['TCA'][$tableName]['columns'];
         $tcaOverrides = $options->getTcaOverrides();
         if (!empty($tcaOverrides['columns'])) {
@@ -381,7 +386,7 @@ class tx_rnbase_util_TCA
      * @return array Data now containing only TCA-defined columns
      */
     public static function eleminateNonTcaColumns(
-        Tx_Rnbase_Domain_Model_RecordInterface $model,
+        RecordInterface $model,
         array $data
     ) {
         $needle = $model->getColumnNames();

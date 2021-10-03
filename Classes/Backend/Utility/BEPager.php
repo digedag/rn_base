@@ -1,8 +1,13 @@
 <?php
+
+namespace Sys25\RnBase\Backend\Utility;
+
+use Sys25\RnBase\Backend\Form\ToolBox;
+
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008-2014 Rene Nitzsche (rene@system25.de)
+*  (c) 2008-2021 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,7 +30,7 @@
 /**
  * Pager für BE-Module.
  */
-class tx_rnbase_util_BEPager
+class BEPager
 {
     public $id;
 
@@ -95,7 +100,7 @@ class tx_rnbase_util_BEPager
             return;
         }
         $sizes = $this->getLimits();
-        $menu = tx_rnbase_util_FormTool::showMenu($this->pid, $this->getDataName().'_limit', $this->modName, $sizes);
+        $menu = ToolBox::showMenu($this->pid, $this->getDataName().'_limit', $this->modName, $sizes);
         $this->setSetting('limit', $menu['value']);
         $this->setSetting('limitMenu', $menu['menu']);
 
@@ -111,7 +116,7 @@ class tx_rnbase_util_BEPager
             }
             $pages[$i * $results_at_a_time] = 'Seite '.$i;
         }
-        $menu = tx_rnbase_util_FormTool::showMenu($this->pid, $this->getDataName().'_offset', $this->modName, $pages);
+        $menu = ToolBox::showMenu($this->pid, $this->getDataName().'_offset', $this->modName, $pages);
         $this->setSetting('offset', $menu['value']);
         $this->setSetting('offsetMenu', $menu['menu']);
         $this->init = true;

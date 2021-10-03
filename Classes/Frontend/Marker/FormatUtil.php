@@ -1,9 +1,14 @@
 <?php
 
+namespace Sys25\RnBase\Frontend\Marker;
+
+use Sys25\RnBase\Configuration\ConfigurationInterface;
+use Sys25\RnBase\Utility\Debug;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006-2018 Rene Nitzsche
+ *  (c) 2006-2021 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -26,7 +31,7 @@
  * Contains utility functions for formatting
  * TODO: Die Verwendung der Klasse \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer sollte überarbeitet werden.
  */
-class tx_rnbase_util_FormatUtil
+class FormatUtil
 {
     public $configurations;
 
@@ -44,10 +49,14 @@ class tx_rnbase_util_FormatUtil
 
     public $timeFormatKey = 'timeFormat';
 
+    private static $time = 0;
+
+    private static $mem = 0;
+
     /**
      * Konstruktor.
      *
-     * @param Tx_Rnbase_Configuration_Processor $configurations
+     * @param ConfigurationInterface $configurations
      */
     public function __construct($configurations)
     {
@@ -58,7 +67,7 @@ class tx_rnbase_util_FormatUtil
     /**
      * Returns configuration instance.
      *
-     * @return Tx_Rnbase_Configuration_ProcessorInterface
+     * @return ConfigurationInterface
      */
     public function getConfigurations()
     {
@@ -152,22 +161,6 @@ class tx_rnbase_util_FormatUtil
     }
 
     /**
-     * Erzeugt das ein DAM-Bild.
-     *
-     * @param $cObjId id des CObjects das verwendet werden soll
-     */
-    public function getDAMImage($image, $confId, $extensionKey = 0, $cObjId = 0)
-    {
-        $confArr = $this->configurations->get($confId);
-        $confArr['file'] = $image;
-
-        $cObj = &$this->configurations->getCObj($cObjId);
-        $theImgCode = $cObj->IMAGE($confArr);
-
-        return $theImgCode;
-    }
-
-    /**
      * Liefert den Wert als Image. Intern wird \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::IMAGE verwendet.
      */
     public function getImage($image, $confId, $extensionKey = 0)
@@ -192,10 +185,6 @@ class tx_rnbase_util_FormatUtil
 
         return $theImgCode;
     }
-
-    public static $time = 0;
-
-    public static $mem = 0;
 
     /**
      * Puts all columns in $record to a Marker-Array. Each column is wrapped according to it's name.
@@ -242,8 +231,8 @@ class tx_rnbase_util_FormatUtil
 
         if (array_key_exists('__MINFO', $record)) {
             // Die TS-Config in die Ausgabe integrieren
-            $record['__MINFO'] .= tx_rnbase_util_Debug::viewArray(['TS-Path' => $confId]);
-            $record['__MINFO'] .= tx_rnbase_util_Debug::viewArray([$conf]);
+            $record['__MINFO'] .= Debug::viewArray(['TS-Path' => $confId]);
+            $record['__MINFO'] .= Debug::viewArray([$conf]);
         }
 
         $this->cObj->data = $record;
@@ -359,46 +348,6 @@ class tx_rnbase_util_FormatUtil
                 $colname = (string) strtoupper($colname);
                 $markerArray["###${markerPrefix}${colname}###"] = $value;
             }
-        }
-
-        return $markerArray;
-    }
-
-    public function getDAMColumns()
-    {
-        global $TCA;
-        tx_rnbase_util_TCA::loadTCA('tx_dam'); // Wird zur Initialisierung der Marker benötigt
-
-        return isset($TCA['tx_dam']) ? array_keys($TCA['tx_dam']['columns']) : 0;
-    }
-
-    /**
-     * Füllt ein MarkerArray mit den Datens einer DAM-Mediadatei.
-     *
-     * @param tx_dam_media $media       : Die DAM-Datei
-     * @param string       $confId      : Configuration to wrap data
-     * @param string       $mediaMarker : The marker to store the image or media. Additional data will be stored to $mediaMarker.'_'...
-     */
-    public function getItemMarkerArray4DAM(&$media, $confId, $mediaMarker)
-    {
-        $conf = $this->configurations->get($confId);
-        // Alle Metadaten auslesen und wrappen
-        $meta = [];
-        foreach ($media->meta as $colname => $value) {
-            $meta[$colname] = $this->stdWrap($value, $conf[$colname.'.']);
-        }
-
-        $markerArray = self::getItemMarkerArray(
-            $meta,
-            ['l18n_diffsource'],
-            $mediaMarker.'_',
-            self::getDAMColumns()
-        );
-
-        // Jetzt die eigentliche Datei einbinden
-        $filePath = $media->getMeta('file_path').$media->getMeta('file_name');
-        if (TXDAM_mtype_image == $media->meta['media_type']) {
-            $markerArray['###'.$mediaMarker.'_IMGTAG###'] = $this->getDAMImage($filePath, $confId);
         }
 
         return $markerArray;

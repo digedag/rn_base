@@ -1,9 +1,13 @@
 <?php
 
+namespace Sys25\RnBase\Frontend\Marker;
+
+use Exception;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006-2013 Rene Nitzsche
+ *  (c) 2010-2021 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -23,31 +27,34 @@
  ***************************************************************/
 
 /**
- * @deprecated we dont want to use static methods anymore but keep backwards
- * compatibilty. So the only way is to move all code to a new class and keep
- * this class just as proxy
- * use Tx_Rnbase_Database_Connection instead
+ * Provide data for ListBuilder.
  */
-class tx_rnbase_util_DB
+class ListProvider implements IListProvider
 {
-    /**
-     * @var string
-     */
-    protected static $databaseConnectionClass = 'Tx_Rnbase_Database_Connection';
-
-    /**
-     * just a proxy method calling all static methods non statically in
-     * Tx_Rnbase_Database_Connection.
-     *
-     * @param string $name
-     * @param array  $arguments
-     *
-     * @return mixed
-     */
-    public static function __callStatic($name, $arguments)
+    public function initBySearch($searchCallback, $fields, $options)
     {
-        $databaseUtility = tx_rnbase::makeInstance(static::$databaseConnectionClass);
+        $this->mode = 1;
+        $this->searchCallback = $searchCallback;
+        $this->fields = $fields;
+        $this->options = $options;
+    }
 
-        return call_user_func_array([$databaseUtility, $name], $arguments);
+    /**
+     * Starts iteration over all items. The callback method is called for each single item.
+     *
+     * @param array $callback
+     */
+    public function iterateAll($itemCallback)
+    {
+        switch ($this->mode) {
+            case 1:
+                $this->options['callback'] = $itemCallback;
+                call_user_func($this->searchCallback, $this->fields, $this->options);
+
+                break;
+            default:
+                throw new Exception('Undefined list mode.');
+                break;
+        }
     }
 }

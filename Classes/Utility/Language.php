@@ -1,12 +1,14 @@
 <?php
 
-use Sys25\RnBase\Utility\Arrays;
-use Sys25\RnBase\Utility\Debug;
+namespace Sys25\RnBase\Utility;
+
+use Exception;
+use tx_rnbase;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012-2016 Rene Nitzsche (rene@system25.de)
+ *  (c) 2012-2021 Rene Nitzsche (rene@system25.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,7 +33,7 @@ use Sys25\RnBase\Utility\Debug;
  *
  * @author Rene Nitzsche
  */
-class tx_rnbase_util_Lang
+class Language
 {
     protected $LOCAL_LANG = [];
 
@@ -50,7 +52,7 @@ class tx_rnbase_util_Lang
         }
 
         // Find language file
-        $basePath = tx_rnbase_util_Files::getFileAbsFileName($filename);
+        $basePath = Files::getFileAbsFileName($filename);
         // php or xml as source: In any case the charset will be that of the system language.
         // However, this function guarantees only return output for default language plus the specified language (which is different from how 3.7.0 dealt with it)
         self::addLang(self::readLLfile($basePath, self::getLLKey(), $GLOBALS['TSFE']->renderCharset));
@@ -256,8 +258,7 @@ class tx_rnbase_util_Lang
      */
     public static function sL($key)
     {
-        /* @var $lang TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
-        /* @var $lang TYPO3\CMS\Lang\LanguageService */
+        /* @var $lang \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
         $lang = $GLOBALS[TYPO3_MODE == 'BE' ? 'LANG' : 'TSFE'];
 
         if (!$lang) {

@@ -98,7 +98,7 @@ class TcaTool
      * Add a wizard to column.
      * Usage:.
      *
-     * $tca = new Tx_Rnbase_Util_TCA();
+     * $tca = new TcaTool();
      * $tca->addWizard($tcaTableArray, 'teams', 'add', 'wizard_add', array());
      *
      * @param array  $tcaTable
@@ -128,7 +128,7 @@ class TcaTool
      *     ..
      *   ]
      * ];
-     * Tx_Rnbase_Utility_TcaTool::configureWizards($myTableTCA, [
+     * TcaTool::configureWizards($myTableTCA, [
      *   'col1' => [
      *       ### overwriting the default label
      *       ### or anything else
@@ -205,7 +205,7 @@ class TcaTool
      * Creates the wizard config for the tca.
      *
      * usage:
-     * ... 'wizards' => Tx_Rnbase_Utility_TcaTool::getWizards(
+     * ... 'wizards' => TcaTool::getWizards(
      *     'mytable',
      *     array(
      *         ### overwriting the default label

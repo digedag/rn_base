@@ -1,10 +1,13 @@
 <?php
 
+namespace Sys25\RnBase\Frontend\Marker;
+
 /***************************************************************
  *  Copyright notice
  *
-*  (c) 2013 Rene Nitzsche (rene@system25.de)
-*  All rights reserved
+ *  (c) 2010-2021 Rene Nitzsche
+ *  Contact: rene@system25.de
+ *  All rights reserved
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,10 +25,9 @@
  ***************************************************************/
 
 /**
- * Contains utility functions for TypoScript.
- *
- * @author Michael Wagner
+ * Provide data for ListBuilder.
  */
-class tx_rnbase_util_TS extends Tx_Rnbase_Utility_TypoScript
+interface IListProvider
 {
+    public function iterateAll($callback);
 }

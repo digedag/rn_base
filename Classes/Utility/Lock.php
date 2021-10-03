@@ -1,8 +1,13 @@
 <?php
+
+namespace Sys25\RnBase\Utility;
+
+use tx_rnbase;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2007-2015 Rene Nitzsche (rene@system25.de)
+ *  (c) 2007-2021 Rene Nitzsche (rene@system25.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -37,7 +42,7 @@
  *
  * @author Michael Wagner
  */
-class tx_rnbase_util_Lock
+class Lock
 {
     /**
      * The name of the lock.
@@ -66,7 +71,7 @@ class tx_rnbase_util_Lock
      * @param string $name
      * @param int    $lifeTime
      *
-     * @return tx_rnbase_util_Lock
+     * @return Lock
      */
     public static function getInstance($name, $lifeTime = 0)
     {
@@ -196,10 +201,10 @@ class tx_rnbase_util_Lock
         $fileName = $this->getFile();
 
         if (!is_dir(dirname($fileName))) {
-            tx_rnbase_util_Files::mkdir_deep(dirname($fileName));
+            Files::mkdir_deep(dirname($fileName));
         }
-        if (!tx_rnbase_util_Files::writeFile($fileName, time(), true)) {
-            tx_rnbase_util_Logger::warn(
+        if (!Files::writeFile($fileName, time(), true)) {
+            Logger::warn(
                 'Lock file could not be created for "'.$this->getName().'" process!',
                 'rn_base',
                 [

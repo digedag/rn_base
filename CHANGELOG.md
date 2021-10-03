@@ -27,6 +27,8 @@ v1.14.0 (??.09.2021)
  * BC: `tx_rnbase_exception_Skip` replaced by `Sys25\RnBase\Exception\SkipActionException`
  * BC: `tx_rnbase_model_base` no longer extends `tx_rnbase_model_data`
  * BC: `tx_rnbase_model_media` is replaced by `MediaModel`
+ * BC: `tx_rnbase_util_Json` removed
+ * BC: interface `PageBrowserMarker` removed
 
 v1.13.15 (30.09.2021)
  * Accept pidlist in queries if it's an integer

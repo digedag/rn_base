@@ -51,7 +51,6 @@
         "classmap": [
             "Legacy/",
             "mod/",
-            "util/",
             "class.tx_rnbase.php",
             "class.tx_rnbase_controller.php"
 		],

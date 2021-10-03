@@ -1,8 +1,14 @@
 <?php
+
+namespace Sys25\RnBase\Frontend\Marker;
+
+use Sys25\RnBase\Domain\Model\RecordInterface;
+use Sys25\RnBase\Utility\Misc;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2007-2017 Rene Nitzsche (rene@system25.de)
+ *  (c) 2007-2021 Rene Nitzsche (rene@system25.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,25 +28,21 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-if (tx_rnbase_util_Extensions::isLoaded('dam')) {
-    require_once tx_rnbase_util_Extensions::extPath('dam').'lib/class.tx_dam_db.php';
-}
-
 /**
- * Diese Klasse ist für das Rendern von DAM/FAL-Media Dateien verantwortlich.
+ * Diese Klasse ist für das Rendern von FAL-Media Dateien verantwortlich.
  */
-class tx_rnbase_util_MediaMarker extends tx_rnbase_util_SimpleMarker
+class MediaMarker extends SimpleMarker
 {
     private static $damDb = null;
 
     /**
-     * @param array                                  $wrappedSubpartArray das HTML-Template
-     * @param array                                  $subpartArray        das HTML-Template
-     * @param string                                 $template            das HTML-Template
-     * @param Tx_Rnbase_Domain_Model_RecordInterface $item
-     * @param tx_rnbase_util_FormatUtil              $formatter           der zu verwendente Formatter
-     * @param string                                 $confId              Pfad der TS-Config
-     * @param string                                 $marker              Name des Markers
+     * @param array $wrappedSubpartArray das HTML-Template
+     * @param array $subpartArray das HTML-Template
+     * @param string $template das HTML-Template
+     * @param RecordInterface $item
+     * @param FormatUtil $formatter der zu verwendente Formatter
+     * @param string $confId Pfad der TS-Config
+     * @param string $marker Name des Markers
      */
     protected function prepareSubparts(
         array &$wrappedSubpartArray,
@@ -52,7 +54,7 @@ class tx_rnbase_util_MediaMarker extends tx_rnbase_util_SimpleMarker
         $marker
     ) {
         // Hook für direkte Template-Manipulation
-        tx_rnbase_util_Misc::callHook(
+        Misc::callHook(
             'rn_base',
             'mediaMarker_beforeRendering',
             ['template' => &$template, 'item' => &$item, 'formatter' => &$formatter,
@@ -67,17 +69,17 @@ class tx_rnbase_util_MediaMarker extends tx_rnbase_util_SimpleMarker
     /**
      * Die Methode kann von Kindklassen verwendet werden.
      *
-     * @param string                                 $template  das HTML-Template
-     * @param Tx_Rnbase_Domain_Model_RecordInterface $item
-     * @param tx_rnbase_util_FormatUtil              $formatter der zu verwendente Formatter
-     * @param string                                 $confId    Pfad der TS-Config
-     * @param string                                 $marker    Name des Markers
+     * @param string $template  das HTML-Template
+     * @param RecordInterface $item
+     * @param FormatUtil $formatter der zu verwendente Formatter
+     * @param string $confId Pfad der TS-Config
+     * @param string $marker Name des Markers
      *
      * @return string das geparste Template
      */
     protected function prepareTemplate($template, $item, $formatter, $confId, $marker)
     {
-        tx_rnbase_util_Misc::callHook('rn_base', 'mediaMarker_initRecord', ['item' => &$item, 'template' => &$template], $this);
+        Misc::callHook('rn_base', 'mediaMarker_initRecord', ['item' => &$item, 'template' => &$template], $this);
 
         return $template;
     }

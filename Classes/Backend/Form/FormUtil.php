@@ -1,9 +1,13 @@
 <?php
 
+namespace Sys25\RnBase\Backend\Form;
+
+use Sys25\RnBase\Utility\Typo3Classes;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006-2013 Rene Nitzsche
+ *  (c) 2006-2021 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -25,7 +29,7 @@
 /**
  * Contains utility functions for HTML-Forms.
  */
-class tx_rnbase_util_FormUtil
+class FormUtil
 {
     /**
      * Creates a HTML-Select.
@@ -82,7 +86,7 @@ class tx_rnbase_util_FormUtil
 
         if (false !== strpos($url, '?')) {
             $params = substr($url, strpos($url, '?') + 1);
-            $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+            $utility = Typo3Classes::getGeneralUtilityClass();
             $params = $utility::explodeUrl2Array($params);
         }
         foreach ($params as $name => $value) {

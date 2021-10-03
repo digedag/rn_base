@@ -1,9 +1,11 @@
 <?php
 
+namespace Sys25\RnBase\Frontend\Marker;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 Rene Nitzsche
+ *  (c) 2006-2021 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -22,10 +24,9 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-/**
- * Provide data for ListBuilder.
- */
-interface tx_rnbase_util_IListProvider
+interface IListMarkerInfo
 {
-    public function iterateAll($callback);
+    public function init($template, $formatter, $marker);
+
+    public function getTemplate($item);
 }

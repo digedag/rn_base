@@ -41,23 +41,27 @@ if (class_exists('Sys25\RnBase\Typo3Wrapper\Core\CommandLineController')) {
 \class_alias(\Sys25\RnBase\Backend\Module\ModuleBase::class, 'Tx_Rnbase_Backend_Module_Base');
 \class_alias(\Sys25\RnBase\Backend\Utility\TcaTool::class, 'Tx_Rnbase_Utility_TcaTool');
 \class_alias(\Sys25\RnBase\Backend\Utility\TcaTool::class, 'Tx_Rnbase_Util_TCATool');
+\class_alias(\Sys25\RnBase\Backend\Utility\TCA::class, 'tx_rnbase_util_TCA');
+\class_alias(\Sys25\RnBase\Backend\Utility\BackendUtility::class, 'Tx_Rnbase_Backend_Utility');
+\class_alias(\Sys25\RnBase\Backend\Utility\BEPager::class, 'tx_rnbase_util_BEPager');
+\class_alias(\Sys25\RnBase\Backend\Utility\DecoratorUtility::class, 'Tx_Rnbase_Backend_Utility_DecoratorUtility');
+\class_alias(\Sys25\RnBase\Backend\Utility\SearcherUtility::class, 'Tx_Rnbase_Backend_Utility_SearcherUtility');
 \class_alias(\Sys25\RnBase\Backend\Template\Override\DocumentTemplate::class, 'Tx_Rnbase_Backend_Template_Override_DocumentTemplate');
 \class_alias(\Sys25\RnBase\Backend\Template\ModuleParts::class, 'Tx_Rnbase_Backend_Template_ModuleParts');
 \class_alias(\Sys25\RnBase\Backend\Template\ModuleTemplate::class, 'Tx_Rnbase_Backend_Template_ModuleTemplate');
-\class_alias(\Sys25\RnBase\Backend\Utility\BackendUtility::class, 'Tx_Rnbase_Backend_Utility');
-\class_alias(\Sys25\RnBase\Backend\Utility\DecoratorUtility::class, 'Tx_Rnbase_Backend_Utility_DecoratorUtility');
-\class_alias(\Sys25\RnBase\Backend\Utility\SearcherUtility::class, 'Tx_Rnbase_Backend_Utility_SearcherUtility');
 \class_alias(\Sys25\RnBase\Backend\Form\Element\InputText::class, 'Tx_Rnbase_Backend_Form_Element_InputText');
 \class_alias(\Sys25\RnBase\Backend\Form\FormBuilder::class, 'Tx_Rnbase_Backend_Form_FormBuilder');
 \class_alias(\Sys25\RnBase\Backend\Form\ToolBox::class, 'Tx_Rnbase_Backend_Form_ToolBox');
+\class_alias(\Sys25\RnBase\Backend\Form\ToolBox::class, 'tx_rnbase_util_FormTool');
+\class_alias(\Sys25\RnBase\Backend\Form\FormUtil::class, 'tx_rnbase_util_FormUtil');
 \class_alias(\Sys25\RnBase\Backend\Utility\Icons::class, 'Tx_Rnbase_Backend_Utility_Icons');
 \class_alias(\Sys25\RnBase\Backend\Utility\Tables::class, 'Tx_Rnbase_Backend_Utility_Tables');
 \class_alias(\Sys25\RnBase\Backend\ModuleRunner::class, 'Tx_Rnbase_Backend_ModuleRunner');
 \class_alias(\Sys25\RnBase\Utility\Logger::class, 'tx_rnbase_util_Logger');
 \class_alias(\Sys25\RnBase\Search\SearchBase::class, 'tx_rnbase_util_SearchBase');
+\class_alias(\Sys25\RnBase\Search\SearchGeneric::class, 'tx_rnbase_util_SearchGeneric');
 \class_alias(\Sys25\RnBase\Configuration\ConfigurableTrait::class, 'Tx_Rnbase_Configuration_ConfigurableTrait');
-\class_alias(\Sys25\RnBase\Frontend\Filter\IFilterItem::class, 'tx_rnbase_IFilterItem');
-\class_alias(\Sys25\RnBase\Frontend\Filter\FilterItem::class, 'tx_rnbase_filter_FilterItem');
+\class_alias(\Sys25\RnBase\Utility\Calendar::class, 'tx_rnbase_util_Calendar');
 \class_alias(\Sys25\RnBase\Utility\Composer::class, 'Tx_Rnbase_Utility_Composer');
 \class_alias(\Sys25\RnBase\Utility\Files::class, 'tx_rnbase_util_Files');
 \class_alias(\Sys25\RnBase\Utility\Strings::class, 'Tx_Rnbase_Utility_Strings');
@@ -82,23 +86,45 @@ if (class_exists('Sys25\RnBase\Typo3Wrapper\Core\CommandLineController')) {
 \class_alias(\Sys25\RnBase\Backend\Decorator\InterfaceDecorator::class, 'Tx_Rnbase_Backend_Decorator_InterfaceDecorator');
 \class_alias(\Sys25\RnBase\Backend\Decorator\BaseDecorator::class, 'Tx_Rnbase_Backend_Decorator_BaseDecorator');
 \class_alias(\Sys25\RnBase\Database\TreeQueryBuilder::class, 'Tx_Rnbase_Database_TreeQueryBuilder');
+\class_alias(\Sys25\RnBase\Frontend\Filter\IFilterItem::class, 'tx_rnbase_IFilterItem');
+\class_alias(\Sys25\RnBase\Frontend\Filter\FilterItem::class, 'tx_rnbase_filter_FilterItem');
 \class_alias(\Sys25\RnBase\Frontend\Marker\BaseMarker::class, 'tx_rnbase_util_BaseMarker');
+\class_alias(\Sys25\RnBase\Frontend\Marker\FormatUtil::class, 'tx_rnbase_util_FormatUtil');
+\class_alias(\Sys25\RnBase\Frontend\Marker\IListProvider::class, 'tx_rnbase_util_IListProvider');
+\class_alias(\Sys25\RnBase\Frontend\Marker\ListBuilder::class, 'tx_rnbase_util_ListBuilder');
+\class_alias(\Sys25\RnBase\Frontend\Marker\IListBuilderInfo::class, 'ListBuilderInfo');
+\class_alias(\Sys25\RnBase\Frontend\Marker\ListBuilderInfo::class, 'tx_rnbase_util_ListBuilderInfo');
+\class_alias(\Sys25\RnBase\Frontend\Marker\IListMarkerInfo::class, 'ListMarkerInfo');
+\class_alias(\Sys25\RnBase\Frontend\Marker\ListMarkerInfo::class, 'tx_rnbase_util_ListMarkerInfo');
+\class_alias(\Sys25\RnBase\Frontend\Marker\ListMarker::class, 'tx_rnbase_util_ListMarker');
+\class_alias(\Sys25\RnBase\Frontend\Marker\ListProvider::class, 'tx_rnbase_util_ListProvider');
+\class_alias(\Sys25\RnBase\Frontend\Marker\MediaMarker::class, 'tx_rnbase_util_MediaMarker');
+\class_alias(\Sys25\RnBase\Frontend\Marker\PageBrowserMarker::class, 'tx_rnbase_util_PageBrowserMarker');
+
 \class_alias(\Sys25\RnBase\Frontend\Marker\SimpleMarker::class, 'tx_rnbase_util_SimpleMarker');
 \class_alias(\Sys25\RnBase\Frontend\Marker\MarkerUtility::class, 'Tx_Rnbase_Frontend_Marker_Utility');
 \class_alias(\Sys25\RnBase\Frontend\Marker\Templates::class, 'tx_rnbase_util_Templates');
 \class_alias(\Sys25\RnBase\Utility\CHashUtility::class, 'Tx_Rnbase_Utility_Cache');
 \class_alias(\Sys25\RnBase\Utility\Crypt::class, 'Tx_Rnbase_Utility_Crypt');
+\class_alias(\Sys25\RnBase\Utility\Link::class, 'tx_rnbase_util_Link');
 \class_alias(\Sys25\RnBase\Utility\Email::class, 'Tx_Rnbase_Utility_Mail');
 \class_alias(\Sys25\RnBase\Utility\Email::class, 'tx_rnbase_util_Mail');
+\class_alias(\Sys25\RnBase\Utility\Language::class, 'tx_rnbase_util_Lang');
+\class_alias(\Sys25\RnBase\Utility\Lock::class, 'tx_rnbase_util_Lock');
+\class_alias(\Sys25\RnBase\Utility\Queue::class, 'tx_rnbase_util_Queue');
+\class_alias(\Sys25\RnBase\Utility\Spyc::class, 'tx_rnbase_util_Spyc');
 \class_alias(\Sys25\RnBase\Utility\TypoScript::class, 'Tx_Rnbase_Utility_TypoScript');
+\class_alias(\Sys25\RnBase\Utility\TypoScript::class, 'tx_rnbase_util_TS');
 \class_alias(\Sys25\RnBase\Utility\WizIcon::class, 'Tx_Rnbase_Utility_WizIcon');
-\class_alias(\Sys25\RnBase\Exception\AdditionalException::class, 'tx_rnbase_util_Exception');
-\class_alias(\Sys25\RnBase\Exception\ExceptionHandlerInterface::class, 'tx_rnbase_exception_IHandler');
-\class_alias(\Sys25\RnBase\Exception\ExceptionHandler::class, 'tx_rnbase_exception_Handler');
 \class_alias(\Sys25\RnBase\Utility\Dates::class, 'tx_rnbase_util_Dates');
+\class_alias(\Sys25\RnBase\Utility\PageBrowserInterface::class, 'PageBrowser');
+\class_alias(\Sys25\RnBase\Utility\PageBrowser::class, 'tx_rnbase_util_PageBrowser');
 \class_alias(\Sys25\RnBase\Utility\TSFAL::class, 'tx_rnbase_util_TSFAL');
 \class_alias(\Sys25\RnBase\Utility\WizIcon::class, 'tx_rnbase_util_Wizicon');
 \class_alias(\Sys25\RnBase\Utility\XmlElement::class, 'tx_rnbase_util_XmlElement');
+\class_alias(\Sys25\RnBase\Exception\AdditionalException::class, 'tx_rnbase_util_Exception');
+\class_alias(\Sys25\RnBase\Exception\ExceptionHandlerInterface::class, 'tx_rnbase_exception_IHandler');
+\class_alias(\Sys25\RnBase\Exception\ExceptionHandler::class, 'tx_rnbase_exception_Handler');
 
 \class_alias(\Sys25\RnBase\Maps\Google\Control::class, 'tx_rnbase_maps_google_Control');
 \class_alias(\Sys25\RnBase\Maps\Google\Icon::class, 'tx_rnbase_maps_google_Icon');
@@ -262,6 +288,26 @@ if (false) {
     {
     }
     /** @deprecated */
+    class tx_rnbase_util_TCA
+    {
+    }
+    /** @deprecated */
+    class Tx_Rnbase_Backend_Utility
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_util_BEPager
+    {
+    }
+    /** @deprecated */
+    class Tx_Rnbase_Backend_Utility_DecoratorUtility
+    {
+    }
+    /** @deprecated */
+    class Tx_Rnbase_Backend_Utility_SearcherUtility
+    {
+    }
+    /** @deprecated */
     class Tx_Rnbase_Backend_Template_Override_DocumentTemplate
     {
     }
@@ -274,18 +320,6 @@ if (false) {
     {
     }
     /** @deprecated */
-    class Tx_Rnbase_Backend_Utility
-    {
-    }
-    /** @deprecated */
-    class Tx_Rnbase_Backend_Utility_DecoratorUtility
-    {
-    }
-    /** @deprecated */
-    class Tx_Rnbase_Backend_Utility_SearcherUtility
-    {
-    }
-    /** @deprecated */
     class Tx_Rnbase_Backend_Form_Element_InputText
     {
     }
@@ -295,6 +329,14 @@ if (false) {
     }
     /** @deprecated */
     class Tx_Rnbase_Backend_Form_ToolBox
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_util_FormTool
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_util_FormUtil
     {
     }
     /** @deprecated */
@@ -318,6 +360,10 @@ if (false) {
     {
     }
     /** @deprecated */
+    abstract class tx_rnbase_util_SearchGeneric
+    {
+    }
+    /** @deprecated */
     class Tx_Rnbase_Category_SearchUtility
     {
     }
@@ -326,11 +372,7 @@ if (false) {
     {
     }
     /** @deprecated */
-    interface tx_rnbase_IFilterItem
-    {
-    }
-    /** @deprecated */
-    class tx_rnbase_filter_FilterItem
+    class tx_rnbase_util_Calendar
     {
     }
     /** @deprecated */
@@ -426,7 +468,59 @@ if (false) {
     {
     }
     /** @deprecated */
+    interface tx_rnbase_IFilterItem
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_filter_FilterItem
+    {
+    }
+    /** @deprecated */
     class tx_rnbase_util_BaseMarker
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_util_FormatUtil
+    {
+    }
+    /** @deprecated */
+    interface tx_rnbase_util_IListProvider
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_util_ListBuilder
+    {
+    }
+    /** @deprecated */
+    interface ListBuilderInfo
+    {
+    }
+    /** @deprecated */
+    interface tx_rnbase_util_ListBuilderInfo
+    {
+    }
+    /** @deprecated */
+    interface ListMarkerInfo
+    {
+    }
+    /** @deprecated */
+    interface tx_rnbase_util_ListMarkerInfo
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_util_ListMarker
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_util_ListProvider
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_util_MediaMarker
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_util_PageBrowserMarker
     {
     }
     /** @deprecated */
@@ -449,6 +543,10 @@ if (false) {
     class Tx_Rnbase_Utility_Crypt
     {
     }
+    /** @deprecated */
+    class tx_rnbase_util_Link
+    {
+    }
     /** @deprecated use \Sys25\RnBase\Utility\Email */
     class Tx_Rnbase_Utility_Mail
     {
@@ -458,7 +556,27 @@ if (false) {
     {
     }
     /** @deprecated */
+    class tx_rnbase_util_Lang
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_util_Lock
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_util_Queue
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_util_Spyc
+    {
+    }
+    /** @deprecated */
     class Tx_Rnbase_Utility_TypoScript
+    {
+    }
+    /** @deprecated use \Sys25\RnBase\Utility\TypoScript */
+    class tx_rnbase_util_TS
     {
     }
     /** @deprecated */
@@ -466,19 +584,15 @@ if (false) {
     {
     }
     /** @deprecated */
-    class tx_rnbase_util_Exception
-    {
-    }
-    /** @deprecated */
-    interface tx_rnbase_exception_IHandler
-    {
-    }
-    /** @deprecated */
-    class tx_rnbase_exception_Handler
-    {
-    }
-    /** @deprecated */
     class tx_rnbase_util_Dates
+    {
+    }
+    /** @deprecated */
+    class PageBrowser
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_util_PageBrowser
     {
     }
     /** @deprecated */
@@ -491,6 +605,18 @@ if (false) {
     }
     /** @deprecated */
     class tx_rnbase_util_XmlElement
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_util_Exception
+    {
+    }
+    /** @deprecated */
+    interface tx_rnbase_exception_IHandler
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_exception_Handler
     {
     }
 

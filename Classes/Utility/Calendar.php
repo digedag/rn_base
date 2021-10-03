@@ -1,9 +1,11 @@
 <?php
 
+namespace Sys25\RnBase\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006-2019 Rene Nitzsche
+ *  (c) 2006-2021 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -41,7 +43,7 @@ define('CALENDAR_WEEK_OF_YEAR', 8);
 /**
  * Simple Implementation of a calendar.
  */
-class tx_rnbase_util_Calendar
+class Calendar
 {
     public $_time; // Die Zeit des Kalenders
 

@@ -1,4 +1,7 @@
 <?php
+
+namespace Sys25\RnBase\Utility;
+
 /**
  * Spyc -- A Simple PHP YAML Class.
  *
@@ -25,7 +28,7 @@
  *   $array  = $parser->load($file);
  * </code>
  */
-class tx_rnbase_util_Spyc
+class Spyc
 {
     /**#@+
     * @access private
@@ -200,8 +203,8 @@ class tx_rnbase_util_Spyc
      *
      * @return string
      *
-     * @param $array The array you want to convert
-     * @param $indent The indent of the current level
+     * @param array $array The array you want to convert
+     * @param int $indent The indent of the current level
      */
     private function _yamlizeArray($array, $indent)
     {
@@ -222,9 +225,9 @@ class tx_rnbase_util_Spyc
      *
      * @return string
      *
-     * @param $key The name of the key
-     * @param $value The value of the item
-     * @param $indent The indent of the current node
+     * @param string $key The name of the key
+     * @param mixed $value The value of the item
+     * @param int $indent The indent of the current node
      */
     private function _dumpNode($key, $value, $indent)
     {
@@ -278,7 +281,7 @@ class tx_rnbase_util_Spyc
      *
      * @return string
      *
-     * @param $value The string you wish to fold
+     * @param string $value The string you wish to fold
      */
     private function _doFolding($value, $indent)
     {

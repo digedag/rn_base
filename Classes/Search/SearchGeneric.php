@@ -1,8 +1,13 @@
 <?php
+
+namespace Sys25\RnBase\Search;
+
+use Sys25\RnBase\Utility\Misc;
+
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009 Rene Nitzsche (rene@system25.de)
+*  (c) 2009-2021 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,13 +32,13 @@
  *
  * @author Rene Nitzsche
  */
-class tx_rnbase_util_SearchGeneric extends tx_rnbase_util_SearchBase
+class SearchGeneric extends SearchBase
 {
     protected function getTableMappings()
     {
         $tableMapping = [];
         // Hook to append other tables
-        tx_rnbase_util_Misc::callHook(
+        Misc::callHook(
             'rn_base',
             'search_generic_getTableMapping_hook',
             ['tableMapping' => &$tableMapping],
@@ -58,7 +63,7 @@ class tx_rnbase_util_SearchGeneric extends tx_rnbase_util_SearchBase
         $join = '';
 
         // Hook to append other tables
-        tx_rnbase_util_Misc::callHook(
+        Misc::callHook(
             'rn_base',
             'search_generic_getJoins_hook',
             ['join' => &$join, 'tableAliases' => $tableAliases],

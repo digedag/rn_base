@@ -1,11 +1,15 @@
 <?php
 
+namespace Sys25\RnBase\Frontend\Marker;
+
 use Sys25\RnBase\Domain\Model\DataInterface;
+use Sys25\RnBase\Domain\Model\DomainInterface;
+use tx_rnbase;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006 Rene Nitzsche
+ *  (c) 2006-2021 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -27,7 +31,7 @@ use Sys25\RnBase\Domain\Model\DataInterface;
 /**
  * Base class for Markers.
  */
-class tx_rnbase_util_ListMarker
+class ListMarker
 {
     private $info;
     private $template;
@@ -63,18 +67,18 @@ class tx_rnbase_util_ListMarker
     }
 
     /**
-     * @param tx_rnbase_util_IListProvider $provider
-     * @param string                       $template
-     * @param string                       $markerClassname
-     * @param string                       $confId
-     * @param string                       $marker
-     * @param tx_rnbase_util_FormatUtil    $formatter
-     * @param mixed                        $markerParams
-     * @param int                          $offset
+     * @param IListProvider $provider
+     * @param string $template
+     * @param string $markerClassname
+     * @param string $confId
+     * @param string $marker
+     * @param FormatUtil $formatter
+     * @param mixed $markerParams
+     * @param int $offset
      *
      * @return array
      */
-    public function renderEach(tx_rnbase_util_IListProvider $provider, $template, $markerClassname, $confId, $marker, $formatter, $markerParams = false, $offset = 0)
+    public function renderEach(IListProvider $provider, $template, $markerClassname, $confId, $marker, $formatter, $markerParams = false, $offset = 0)
     {
         $this->entryMarker = ($markerParams) ? tx_rnbase::makeInstance($markerClassname, $markerParams) : tx_rnbase::makeInstance($markerClassname);
 
@@ -100,7 +104,7 @@ class tx_rnbase_util_ListMarker
     /**
      * Callback function for next item.
      *
-     * @param Tx_Rnbase_Domain_Model_DomainInterface $data
+     * @param DomainInterface $data
      */
     public function renderNext($data)
     {
@@ -139,14 +143,14 @@ class tx_rnbase_util_ListMarker
     /**
      * Render an array of objects.
      *
-     * @param array|Traversable         $dataArr
-     * @param string                    $template
-     * @param string                    $markerClassname
-     * @param string                    $confId
-     * @param string                    $marker
-     * @param tx_rnbase_util_FormatUtil $formatter
-     * @param mixed                     $markerParams
-     * @param int                       $offset
+     * @param array|\Traversable $dataArr
+     * @param string $template
+     * @param string $markerClassname
+     * @param string $confId
+     * @param string $marker
+     * @param FormatUtil $formatter
+     * @param mixed $markerParams
+     * @param int $offset
      *
      * @return array
      */
@@ -165,7 +169,7 @@ class tx_rnbase_util_ListMarker
         $GLOBALS['TSFE']->register[$registerName ? $registerName : 'RNBASE_LB_SIZE'] = count($dataArr);
         $i = 0;
         foreach ($dataArr as $data) {
-            /* @var $data Tx_Rnbase_Domain_Model_DomainInterface */
+            /* @var $data DomainInterface */
             // Check for object to avoid warning.
             if (!is_object($data)) {
                 continue;

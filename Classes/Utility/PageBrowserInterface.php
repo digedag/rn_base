@@ -1,9 +1,11 @@
 <?php
 
+namespace Sys25\RnBase\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 Rene Nitzsche
+ *  (c) 2007-2021 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -22,37 +24,32 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_IListProvider');
-
-/**
- * Provide data for ListBuilder.
- */
-class tx_rnbase_util_ListProvider implements tx_rnbase_util_IListProvider
+interface PageBrowserInterface
 {
-    public function initBySearch($searchCallback, $fields, $options)
-    {
-        $this->mode = 1;
-        $this->searchCallback = $searchCallback;
-        $this->fields = $fields;
-        $this->options = $options;
-    }
+    public function setState($parameters, $listSize, $pageSize);
+
+    public function getState();
+
+    public function getMarker($markerClassName = 'tx_rnbase_util_PageBrowserMarker');
 
     /**
-     * Starts iteration over all items. The callback method is called for each single item.
+     * Returns the current pointer. This is the current page to show.
      *
-     * @param array $callback
+     * @return int page to show
      */
-    public function iterateAll($itemCallback)
-    {
-        switch ($this->mode) {
-            case 1:
-                $this->options['callback'] = $itemCallback;
-                call_user_func($this->searchCallback, $this->fields, $this->options);
+    public function getPointer();
 
-                break;
-            default:
-                throw new Exception('Undefined list mode.');
-                break;
-        }
-    }
+    /**
+     * Returns the complete number of items in list.
+     *
+     * @return int complete number of items
+     */
+    public function getListSize();
+
+    /**
+     * Returns the complete number of items per page.
+     *
+     * @return int complete number of items per page
+     */
+    public function getPageSize();
 }

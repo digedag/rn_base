@@ -1,13 +1,14 @@
 <?php
 
-use Sys25\RnBase\Utility\Arrays;
+namespace Sys25\RnBase\Utility;
+
+use Sys25\RnBase\Configuration\ConfigurationInterface;
+use tx_rnbase;
 
 /*
  * This class is a wrapper around \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink.
  *
- * PHP versions 4 and 5
- *
- *  (c) 2008 Rene Nitzsche
+ *  (c) 2008-2021 Rene Nitzsche
  *  Contact: rene@system25.de
  *
  *  Original version:
@@ -42,7 +43,7 @@ use Sys25\RnBase\Utility\Arrays;
  *
  * @author     Elmar Hinz <elmar.hinz@team-red.net>
  */
-class tx_rnbase_util_Link
+class Link
 {
     public $tagAttributes = [];       // setting attributes for the tag in general
 
@@ -101,7 +102,7 @@ class tx_rnbase_util_Link
             $this->cObject = $cObject;
         } else {
             $this->cObject = tx_rnbase::makeInstance(
-                null === $cObject ? tx_rnbase_util_Typo3Classes::getContentObjectRendererClass() : $cObject
+                null === $cObject ? Typo3Classes::getContentObjectRendererClass() : $cObject
             );
         }
     }
@@ -194,14 +195,14 @@ class tx_rnbase_util_Link
 
     /**
      * Set the links destination.
+     * See TSref => typolink => parameter.
      *
      * @param   mixed       pageId, page alias, external url, etc
      * @param   bool     if TRUE don't parse through htmlspecialchars()
      *
      * @return object self
      *
-     * @see         TSref => typolink => parameter
-     * @see         \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink()
+     * @see  \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink()
      */
     public function destination($destination)
     {
@@ -473,7 +474,7 @@ class tx_rnbase_util_Link
     public static function parseAbsUrl($url, $schema = false)
     {
         if (!$schema) {
-            $schema = tx_rnbase_util_Misc::getIndpEnv('TYPO3_REQUEST_DIR');
+            $schema = Misc::getIndpEnv('TYPO3_REQUEST_DIR');
         }
 
         // check if we have a A-Tag with href attribute or a IMG-Tag with src attribute
@@ -526,7 +527,7 @@ class tx_rnbase_util_Link
     public function redirect($httpStatus = null)
     {
         session_write_close();
-        tx_rnbase_util_Network::redirect($this->makeUrl(false), $httpStatus);
+        Network::redirect($this->makeUrl(false), $httpStatus);
     }
 
     // -------------------------------------------------------------------------------------
@@ -624,7 +625,7 @@ class tx_rnbase_util_Link
 
         // check for qualifier in the keyname
         if (strstr($key, '::')) {
-            list($qualifier, $key) = tx_rnbase_util_Strings::trimExplode('::', $key);
+            list($qualifier, $key) = Strings::trimExplode('::', $key);
         }
 
         if (!is_array($value)) {
@@ -633,7 +634,7 @@ class tx_rnbase_util_Link
                 .'='.rawurlencode($value);
         }
 
-        $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+        $utility = Typo3Classes::getGeneralUtilityClass();
 
         return $utility::implodeArrayForUrl(
             $qualifier ? $qualifier : $key,
@@ -679,12 +680,12 @@ class tx_rnbase_util_Link
     /**
      * Init this link by typoscript setup.
      *
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param ConfigurationInterface $configurations
      * @param string                                     $confId
      *
-     * @return tx_rnbase_util_Link
+     * @return Link
      */
-    public function initByTS($configurations, $confId, $parameterArr)
+    public function initByTS(ConfigurationInterface $configurations, $confId, $parameterArr)
     {
         $parameterArr = is_array($parameterArr) ? $parameterArr : [];
         $pid = $configurations->getCObj()->stdWrap(
@@ -758,7 +759,7 @@ class tx_rnbase_util_Link
             $allow = $keepVarConf['allow'];
             $deny = $keepVarConf['deny'];
             if ($allow) {
-                $allow = tx_rnbase_util_Strings::trimExplode(',', $allow);
+                $allow = Strings::trimExplode(',', $allow);
                 foreach ($allow as $allowed) {
                     $value = $keepVars->offsetGet($allowed);
                     if ($skipEmpty && empty($value)) {
@@ -767,7 +768,7 @@ class tx_rnbase_util_Link
                     $newKeepVars[$allowed] = $keepVars->offsetGet($allowed);
                 }
             } elseif ($deny) {
-                $deny = array_flip(tx_rnbase_util_Strings::trimExplode(',', $deny));
+                $deny = array_flip(Strings::trimExplode(',', $deny));
                 $keepVarsArr = $keepVars->getArrayCopy();
                 foreach ($keepVarsArr as $key => $value) {
                     if ($skipEmpty && empty($value)) {
@@ -818,7 +819,6 @@ class tx_rnbase_util_Link
     }
 
     /**
-     * @see t3lib_div::linkThisScript
      * @see \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript
      *
      * @param array $getParams Array of GET parameters to include
@@ -827,7 +827,7 @@ class tx_rnbase_util_Link
      */
     public static function linkThisScript(array $getParams = [])
     {
-        $utility = tx_rnbase_util_Typo3Classes::getGeneralUtilityClass();
+        $utility = Typo3Classes::getGeneralUtilityClass();
 
         return $utility::linkThisScript($getParams);
     }

@@ -1,9 +1,15 @@
 <?php
 
+namespace Sys25\RnBase\Utility;
+
+use ArrayObject;
+use Sys25\RnBase\Configuration\ConfigurationInterface;
+use tx_rnbase;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2007-2013 Rene Nitzsche
+ *  (c) 2007-2021 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -25,7 +31,7 @@
 /**
  * Contains utility functions for HTML-Forms.
  */
-class tx_rnbase_util_PageBrowser implements PageBrowser
+class PageBrowser implements PageBrowserInterface
 {
     private $pbid;
 
@@ -199,7 +205,7 @@ class tx_rnbase_util_PageBrowser implements PageBrowser
     }
 
     /**
-     * @return the right parametername for this browser
+     * @return string the right parametername for this browser
      */
     public function getParamName($param)
     {
@@ -214,11 +220,11 @@ class tx_rnbase_util_PageBrowser implements PageBrowser
      * ein 200er Response kommt, da die Seite dann aus dem Cache kommt. (TYPO3 cached nur
      * das HTML, nicht die Header)
      *
-     * @param tx_rnbase_util_PageBrowser                 $pageBrowser
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param string                                     $confid
+     * @param PageBrowser $pageBrowser
+     * @param ConfigurationInterface $configurations
+     * @param string $confid
      */
-    public function markPageNotFoundIfPointerOutOfRange(Tx_Rnbase_Configuration_ProcessorInterface $configurations, $confid)
+    public function markPageNotFoundIfPointerOutOfRange(ConfigurationInterface $configurations, $confid)
     {
         if ($this->isPointerOutOfRange() && !$configurations->getBool($confid.'ignorePageNotFound')) {
             $utilityClass = $this->getHttpUtilityClass();
@@ -236,43 +242,6 @@ class tx_rnbase_util_PageBrowser implements PageBrowser
      */
     protected function getHttpUtilityClass()
     {
-        return tx_rnbase_util_Typo3Classes::getHttpUtilityClass();
+        return Typo3Classes::getHttpUtilityClass();
     }
-}
-
-interface PageBrowser
-{
-    public function setState($parameters, $listSize, $pageSize);
-
-    public function getState();
-
-    public function getMarker($markerClassName = 'tx_rnbase_util_PageBrowserMarker');
-
-    /**
-     * Returns the current pointer. This is the current page to show.
-     *
-     * @return int page to show
-     */
-    public function getPointer();
-
-    /**
-     * Returns the complete number of items in list.
-     *
-     * @return int complete number of items
-     */
-    public function getListSize();
-
-    /**
-     * Returns the complete number of items per page.
-     *
-     * @return int complete number of items per page
-     */
-    public function getPageSize();
-}
-
-interface PageBrowserMarker
-{
-    public function setPageBrowser($pb);
-
-    public function parseTemplate($template, &$formatter, $pbConfId, $pbMarker = 'PAGEBROWSER');
 }

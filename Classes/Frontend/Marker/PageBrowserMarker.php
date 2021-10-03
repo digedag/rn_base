@@ -1,9 +1,14 @@
 <?php
 
+namespace Sys25\RnBase\Frontend\Marker;
+
+use Sys25\RnBase\Configuration\ConfigurationInterface;
+use Sys25\RnBase\Utility\Math;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2007-2013 Rene Nitzsche
+ *  (c) 2007-2021 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -25,7 +30,7 @@
 /**
  * Contains utility functions for HTML-Forms.
  */
-class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
+class PageBrowserMarker
 {
     private $pagePartsDef = ['normal', 'current', 'first', 'last', 'prev', 'next', 'prev_bullets', 'next_bullets'];
 
@@ -78,13 +83,18 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
      *          </ul>
      *      </div>
      *  <!-- ###PAGEBROWSER### END -->
+     *
+     *  @param string $template
+     *  @param FormatUtil $formatter
+     *  @param string $pbConfId
+     *  @param string $pbMarker
      */
-    public function parseTemplate($template, &$formatter, $pbConfId, $pbMarker = 'PAGEBROWSER')
+    public function parseTemplate($template, $formatter, $pbConfId, $pbMarker = 'PAGEBROWSER')
     {
         // Configs: maxPages, pagefloat
         // Obsolete da Template: showResultCount, showPBrowserText, dontLinkActivePage, showFirstLast
 //    showRange
-        $configurations = $formatter->configurations;
+        $configurations = $formatter->getConfigurations();
 
         $this->initLink($configurations, $pbConfId);
 
@@ -101,7 +111,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
             return '';
         }
         $maxPages = intval($configurations->get($pbConfId.'maxPages'));
-        $maxPages = tx_rnbase_util_Math::intInRange($maxPages ? $maxPages : 10, 1, 100);
+        $maxPages = Math::intInRange($maxPages ? $maxPages : 10, 1, 100);
         $templates = $this->getTemplates($template, $pbMarker);
 
         $pageFloat = $this->getPageFloat($configurations->get($pbConfId.'pagefloat'), $maxPages);
@@ -157,7 +167,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
 
         $implode = $configurations->get($pbConfId.'.implode');
         $subpartArray['###'.$pbMarker.'_NORMAL_PAGE###'] = implode($implode ? $implode : ' ', $parts);
-        $ret = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($template, $markerArray, $subpartArray);
+        $ret = BaseMarker::substituteMarkerArrayCached($template, $markerArray, $subpartArray);
 
         return $ret;
     }
@@ -182,11 +192,11 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
             $pageWrappedSubpartArray['###'.$pageMarker.'LINK###'] = explode($this->token, $this->link->makeTag());
             $pageMarkerArray['###'.$pageMarker.'LINKURL###'] = $this->link->makeUrl();
         } else {
-            $pageWrappedSubpartArray['###'.$pageMarker.'LINK###'] = $noLink;
+            $pageWrappedSubpartArray['###'.$pageMarker.'LINK###'] = ['', ''];
             $pageMarkerArray['###'.$pageMarker.'LINKURL###'] = '';
         }
 
-        $out = tx_rnbase_util_BaseMarker::substituteMarkerArrayCached($pageTemplate, $pageMarkerArray, $pageSubpartArray, $pageWrappedSubpartArray);
+        $out = BaseMarker::substituteMarkerArrayCached($pageTemplate, $pageMarkerArray, $pageSubpartArray, $pageWrappedSubpartArray);
 
         return $out;
     }
@@ -204,7 +214,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
             $ret['first'] = max(0, $ret['last'] - $maxPages);
         } else {
             $ret['first'] = 0;
-            $ret['last'] = tx_rnbase_util_Math::intInRange($totalPages, 1, $maxPages);
+            $ret['last'] = Math::intInRange($totalPages, 1, $maxPages);
         }
 
         return $ret;
@@ -220,7 +230,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
             if ('CENTER' == strtoupper($pageFloat)) {
                 $pageFloat = ceil(($maxPages - 1) / 2);
             } else {
-                $pageFloat = tx_rnbase_util_Math::intInRange($pageFloat, -1, $maxPages - 1);
+                $pageFloat = Math::intInRange($pageFloat, -1, $maxPages - 1);
             }
         } else {
             $pageFloat = -1;
@@ -241,7 +251,7 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
     {
         $ret = [];
         foreach ($this->pagePartsDef as $part) {
-            $ret[$part] = tx_rnbase_util_Templates::getSubpart($template, '###'.$pbMarker.'_'.strtoupper($part).'_PAGE###');
+            $ret[$part] = Templates::getSubpart($template, '###'.$pbMarker.'_'.strtoupper($part).'_PAGE###');
         }
 
         return $ret;
@@ -265,9 +275,9 @@ class tx_rnbase_util_PageBrowserMarker implements PageBrowserMarker
      * Initialisiert die interne Link-Instanz
      * TODO: Konfigurierbar machen!!
      *
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configuration
+     * @param ConfigurationInterface $configuration
      */
-    protected function initLink(&$configuration, $pbConfId)
+    protected function initLink(ConfigurationInterface $configuration, $pbConfId)
     {
         $this->link = $configuration->createLink();
         $this->link->initByTS($configuration, $pbConfId.'link.', []);

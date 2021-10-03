@@ -1,4 +1,7 @@
 <?php
+
+namespace Sys25\RnBase\Utility;
+
 /**
  * Queue class - under PHP 4.
  *
@@ -17,34 +20,31 @@
  * @greetings goes to all developers from Poland especially from php.pl :-)
  */
 
-/*
- * Default size of queue.
- */
-define('QUEUE_DEFAULT_SIZE', 15);
-
 /**
  * Implementation of FIFO queue.
  *
  * @version 1.9
  */
-class tx_rnbase_util_Queue
+class Queue
 {
-    public $arrQueue;       // Array of queue items
+    public const QUEUE_DEFAULT_SIZE = 15;
 
-    public $intBegin;       // Begin of queue - head
+    private $arrQueue;       // Array of queue items
 
-    public $intEnd;         // End of queue - tail
+    private $intBegin;       // Begin of queue - head
 
-    public $intArraySize;   // Size of array
+    private $intEnd;         // End of queue - tail
 
-    public $intCurrentSize; // Current size of array
+    private $intArraySize;   // Size of array
+
+    private $intCurrentSize; // Current size of array
 
     /**
      * Queue constructor.
      *
      * @param int $intQueue - size of queue
      */
-    public function __construct($intSize = QUEUE_DEFAULT_SIZE)
+    public function __construct($intSize = self::QUEUE_DEFAULT_SIZE)
     {
         $this->arrQueue = [];
         $this->intArraySize = $intSize;
