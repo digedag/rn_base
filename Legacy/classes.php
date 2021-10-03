@@ -24,6 +24,7 @@ if (class_exists('Sys25\RnBase\Typo3Wrapper\Core\CommandLineController')) {
 \class_alias(\Sys25\RnBase\Frontend\Request\Parameters::class, 'tx_rnbase_parameters');
 \class_alias(\Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface::class, 'Tx_Rnbase_Interface_Singleton');
 \class_alias(\Sys25\RnBase\Utility\Typo3Classes::class, 'tx_rnbase_util_Typo3Classes');
+\class_alias(\Sys25\RnBase\Utility\Extensions::class, 'tx_rnbase_util_Extensions');
 \class_alias(\Sys25\RnBase\Typo3Wrapper\Core\Error\Exception::class, 'Tx_Rnbase_Error_Exception');
 \class_alias(\Sys25\RnBase\Typo3Wrapper\RecordList\DatabaseRecordList::class, 'Tx_Rnbase_RecordList_DatabaseRecordList');
 \class_alias(\Sys25\RnBase\Utility\Network::class, 'tx_rnbase_util_Network');
@@ -98,6 +99,24 @@ if (class_exists('Sys25\RnBase\Typo3Wrapper\Core\CommandLineController')) {
 \class_alias(\Sys25\RnBase\Utility\WizIcon::class, 'tx_rnbase_util_Wizicon');
 \class_alias(\Sys25\RnBase\Utility\XmlElement::class, 'tx_rnbase_util_XmlElement');
 
+\class_alias(\Sys25\RnBase\Maps\Google\Control::class, 'tx_rnbase_maps_google_Control');
+\class_alias(\Sys25\RnBase\Maps\Google\Icon::class, 'tx_rnbase_maps_google_Icon');
+\class_alias(\Sys25\RnBase\Maps\Google\Map::class, 'tx_rnbase_maps_google_Map');
+\class_alias(\Sys25\RnBase\Maps\Google\Util::class, 'tx_rnbase_maps_google_Util');
+\class_alias(\Sys25\RnBase\Maps\BaseMap::class, 'tx_rnbase_maps_BaseMap');
+\class_alias(\Sys25\RnBase\Maps\Coord::class, 'tx_rnbase_maps_Coord');
+\class_alias(\Sys25\RnBase\Maps\DefaultMarker::class, 'tx_rnbase_maps_DefaultMarker');
+\class_alias(\Sys25\RnBase\Maps\Factory::class, 'tx_rnbase_maps_Factory');
+\class_alias(\Sys25\RnBase\Maps\TypeRegistry::class, 'tx_rnbase_maps_TypeRegistry');
+\class_alias(\Sys25\RnBase\Maps\IControl::class, 'tx_rnbase_maps_IControl');
+\class_alias(\Sys25\RnBase\Maps\ICoord::class, 'tx_rnbase_maps_ICoord');
+\class_alias(\Sys25\RnBase\Maps\IIcon::class, 'tx_rnbase_maps_IIcon');
+\class_alias(\Sys25\RnBase\Maps\ILocation::class, 'tx_rnbase_maps_ILocation');
+\class_alias(\Sys25\RnBase\Maps\IMarker::class, 'tx_rnbase_maps_IMarker');
+\class_alias(\Sys25\RnBase\Maps\IMap::class, 'tx_rnbase_maps_IMap');
+\class_alias(\Sys25\RnBase\Maps\MapUtility::class, 'tx_rnbase_maps_Util');
+\class_alias(\Sys25\RnBase\Maps\POI::class, 'tx_rnbase_maps_POI');
+
 \class_alias(\Sys25\RnBase\Search\System\CategorySearchUtility::class, 'Tx_Rnbase_Category_SearchUtility');
 \class_alias(\Sys25\RnBase\Search\System\CategorySearchUtility::class, 'Sys25\RnBase\Search\Category\SearchUtility');
 \class_alias(\Sys25\RnBase\Search\System\CategorySearch::class, 'Sys25\RnBase\Search\Category');
@@ -163,6 +182,10 @@ if (false) {
     }
     /** @deprecated */
     class tx_rnbase_util_Typo3Classes
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_util_Extensions
     {
     }
     /** @deprecated */
@@ -455,6 +478,75 @@ if (false) {
     }
     /** @deprecated */
     class tx_rnbase_util_XmlElement
+    {
+    }
+
+    /** @deprecated */
+    class tx_rnbase_maps_google_Control
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_maps_google_Icon
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_maps_google_Map
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_maps_google_Util
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_maps_BaseMap
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_maps_Coord
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_maps_DefaultMarker
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_maps_TypeRegistry
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_maps_Factory
+    {
+    }
+    /** @deprecated */
+    interface tx_rnbase_maps_IControl
+    {
+    }
+    /** @deprecated */
+    interface tx_rnbase_maps_ICoord
+    {
+    }
+    /** @deprecated */
+    interface tx_rnbase_maps_IIcon
+    {
+    }
+    /** @deprecated */
+    interface tx_rnbase_maps_ILocation
+    {
+    }
+    /** @deprecated */
+    interface tx_rnbase_maps_IMarker
+    {
+    }
+    /** @deprecated */
+    interface tx_rnbase_maps_IMap
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_maps_Util
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_maps_POI
     {
     }
 }

@@ -1,4 +1,7 @@
 <?php
+
+namespace Sys25\RnBase\Maps;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -25,7 +28,7 @@
 /**
  * Common Interface for MapMarkers.
  */
-interface tx_rnbase_maps_IMarker
+interface IMarker
 {
     /**
      * Returns the country.
@@ -65,14 +68,14 @@ interface tx_rnbase_maps_IMarker
     /**
      * Returns a specific coordination.
      *
-     * @return tx_rnbase_maps_ICoord
+     * @return ICoord
      */
     public function getCoords();
 
     /**
      * Returns the Icon for this marker.
      *
-     * @return tx_rnbase_maps_IIcon
+     * @return IIcon
      */
     public function getIcon();
 

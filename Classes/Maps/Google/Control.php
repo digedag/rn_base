@@ -1,4 +1,8 @@
 <?php
+namespace Sys25\RnBase\Maps\Google;
+
+use Sys25\RnBase\Maps\IControl;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -22,13 +26,25 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+
 /**
- * Common Interface for Controls.
+ * Implementation for GoogleControls.
  */
-interface tx_rnbase_maps_IControl
+class Control implements IControl
 {
+    public function __construct($type)
+    {
+        $this->type = $type;
+    }
+
     /**
-     * Render this control.
+     * Returns an ID-String for the map provider.
+     *
+     * @return string
      */
-    public function render();
+    public function render()
+    {
+        // Für die wec_map ist nur die ID notwendig
+        return $this->type;
+    }
 }

@@ -1,8 +1,11 @@
 <?php
+
+namespace Sys25\RnBase\Maps;
+
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2015 Rene Nitzsche (rene@system25.de)
+*  (c) 2015-2021 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,13 +25,11 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_maps_ILocation');
-tx_rnbase::load('tx_rnbase_maps_Coord');
 
 /**
  * Implementation for a POI with description. Useful to mark a point in a map.
  */
-class tx_rnbase_maps_POI extends tx_rnbase_maps_Coord implements tx_rnbase_maps_ILocation
+class POI extends Coord implements ILocation
 {
     private $city;
 

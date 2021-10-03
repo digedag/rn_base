@@ -1,4 +1,13 @@
 <?php
+namespace Sys25\RnBase\Maps;
+
+use Sys25\RnBase\Maps\Google\Map;
+use tx_rnbase;
+use Sys25\RnBase\Configuration\ConfigurationInterface;
+use Sys25\RnBase\Maps\Google\Icon;
+use Sys25\RnBase\Utility\Misc;
+use Sys25\RnBase\Maps\Google\Control;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -22,28 +31,27 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-class tx_rnbase_maps_Factory
+class Factory
 {
     public static $typeInits = [];
 
     /**
      * Erstellt eine GoogleMap.
      *
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param string                                     $confId
+     * @param ConfigurationInterface $configurations
+     * @param string $confId
      *
-     * @return tx_rnbase_maps_google_Map
+     * @return Map
      */
-    public static function createGoogleMap(&$configurations, $confId)
+    public static function createGoogleMap($configurations, $confId)
     {
-        $map = self::createMap('tx_rnbase_maps_google_Map', $configurations, $confId);
+        $map = self::createMap(Map::class, $configurations, $confId);
         $keys = $configurations->getKeyNames($confId.'poi.');
         if (isset($keys)) {
-            tx_rnbase::load('tx_rnbase_maps_Util');
             foreach ($keys as $key) {
                 $poi = $configurations->get($confId.'poi.'.$key.'.');
-                $poi = tx_rnbase::makeInstance('tx_rnbase_maps_POI', $poi);
-                $bubble = tx_rnbase_maps_Util::createMapBubble($poi);
+                $poi = tx_rnbase::makeInstance(POI::class, $poi);
+                $bubble = MapUtility::createMapBubble($poi);
                 if (!$bubble) {
                     continue;
                 }
@@ -51,13 +59,13 @@ class tx_rnbase_maps_Factory
                 // Prüfen, ob ein Icon konfiguriert ist
                 $iconConfId = $confId.'poi.'.$key.'.icon.';
                 if ($configurations->get($iconConfId)) {
-                    $icon = new tx_rnbase_maps_google_Icon($map);
+                    $icon = new Icon($map);
                     $image = $configurations->get($iconConfId.'image', true);
                     $icon->setImage($image, $configurations->getInt($iconConfId.'image.file.maxW'), $configurations->getInt($iconConfId.'image.file.maxH'));
                     $image = $configurations->get($iconConfId.'shadow', true);
                     $icon->setShadow($image, $configurations->getInt($iconConfId.'shadow.file.maxW'), $configurations->getInt($iconConfId.'shadow.file.maxH'));
                     $name = $configurations->get($iconConfId.'name');
-                    $icon->setName($name ? $name : tx_rnbase_util_Misc::createHash(['name' => $image]));
+                    $icon->setName($name ? $name : Misc::createHash(['name' => $image]));
                     $bubble->setIcon($icon);
                 }
                 $map->addMarker($bubble);
@@ -70,61 +78,61 @@ class tx_rnbase_maps_Factory
     /**
      * creates a control.
      *
-     * @return tx_rnbase_maps_IControl
+     * @return IControl
      */
     public static function createGoogleControlLargeMap()
     {
-        return tx_rnbase::makeInstance('tx_rnbase_maps_google_Control', 'largeMap');
+        return tx_rnbase::makeInstance(Control::class, 'largeMap');
     }
 
     /**
      * creates a control.
      *
-     * @return tx_rnbase_maps_IControl
+     * @return IControl
      */
     public static function createGoogleControlSmallMap()
     {
-        return tx_rnbase::makeInstance('tx_rnbase_maps_google_Control', 'smallMap');
+        return tx_rnbase::makeInstance(Control::class, 'smallMap');
     }
 
     /**
      * creates a control.
      *
-     * @return tx_rnbase_maps_IControl
+     * @return IControl
      */
     public static function createGoogleControlScale()
     {
-        return tx_rnbase::makeInstance('tx_rnbase_maps_google_Control', 'scale');
+        return tx_rnbase::makeInstance(Control::class, 'scale');
     }
 
     /**
      * creates a control.
      *
-     * @return tx_rnbase_maps_IControl
+     * @return IControl
      */
     public static function createGoogleControlSmallZoom()
     {
-        return tx_rnbase::makeInstance('tx_rnbase_maps_google_Control', 'smallZoom');
+        return tx_rnbase::makeInstance(Control::class, 'smallZoom');
     }
 
     /**
      * creates a control.
      *
-     * @return tx_rnbase_maps_IControl
+     * @return IControl
      */
     public static function createGoogleControlOverview()
     {
-        return tx_rnbase::makeInstance('tx_rnbase_maps_google_Control', 'overviewMap');
+        return tx_rnbase::makeInstance(Control::class, 'overviewMap');
     }
 
     /**
      * creates a control.
      *
-     * @return tx_rnbase_maps_IControl
+     * @return IControl
      */
     public static function createGoogleControlMapType()
     {
-        return tx_rnbase::makeInstance('tx_rnbase_maps_google_Control', 'mapType');
+        return tx_rnbase::makeInstance(Control::class, 'mapType');
     }
 
     /**
@@ -132,14 +140,14 @@ class tx_rnbase_maps_Factory
      *
      * @param string $clazzName
      *
-     * @return tx_rnbase_maps_IMap
+     * @return IMap
      */
     public static function createMap($clazzName, &$configurations, $confId)
     {
         $map = tx_rnbase::makeInstance($clazzName);
         $provId = $map->getPROVID();
         if (!array_key_exists($provId, self::$typeInits)) {
-            $map->initTypes(tx_rnbase_maps_TypeRegistry::getInstance());
+            $map->initTypes(TypeRegistry::getInstance());
             self::$typeInits[$provId] = 1;
         }
         $map->init($configurations, $confId);

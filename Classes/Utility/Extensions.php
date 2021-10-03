@@ -1,8 +1,10 @@
 <?php
+namespace Sys25\RnBase\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2015 Rene Nitzsche
+ *  (c) 2015-2021 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -71,7 +73,7 @@
  *
  * @see TYPO3\CMS\Core\Utility\ExtensionManagementUtility
  */
-class tx_rnbase_util_Extensions
+class Extensions
 {
     /**
      * @param string $method
@@ -174,14 +176,14 @@ class tx_rnbase_util_Extensions
         $extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
 
         if ('' !== $mainModuleName && !array_key_exists($mainModuleName, $GLOBALS['TBE_MODULES'])) {
-            $mainModuleName = $extensionName.Tx_Rnbase_Utility_Strings::underscoredToUpperCamelCase($mainModuleName);
+            $mainModuleName = $extensionName.Strings::underscoredToUpperCamelCase($mainModuleName);
         } else {
             $mainModuleName = '' !== $mainModuleName ? $mainModuleName : 'web';
         }
 
         $moduleSignature = $mainModuleName;
         if ('' !== $subModuleName) {
-            $subModuleName = $extensionName.Tx_Rnbase_Utility_Strings::underscoredToUpperCamelCase($subModuleName);
+            $subModuleName = $extensionName.Strings::underscoredToUpperCamelCase($subModuleName);
             $moduleSignature .= '_'.$subModuleName;
         }
 

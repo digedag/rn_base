@@ -1,8 +1,16 @@
 <?php
+
+namespace Sys25\RnBase\Maps;
+
+use Exception;
+use Sys25\RnBase\Frontend\Marker\Templates;
+use tx_rnbase;
+use Sys25\RnBase\Configuration\ConfigurationInterface;
+
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009 Rene Nitzsche (rene@system25.de)
+*  (c) 2009-2021 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,23 +30,20 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_maps_ICoord');
-tx_rnbase::load('tx_rnbase_maps_ILocation');
-
 /**
  * Util methods.
  */
-class tx_rnbase_maps_Util
+class MapUtility
 {
     /**
      * Returns the maps template from $confId.'template'.
      *
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param string                                     $confId
+     * @param ConfigurationInterface $configurations
+     * @param string $confId
      *
      * @return string empty string if template was not found
      */
-    public static function getMapTemplate($configurations, $confId)
+    public static function getMapTemplate(ConfigurationInterface $configurations, $confId)
     {
         $file = $configurations->get($confId.'template');
         if (!$file) {
@@ -50,7 +55,7 @@ class tx_rnbase_maps_Util
         }
 
         try {
-            $subpart = tx_rnbase_util_Templates::getSubpartFromFile($file, $subpartName);
+            $subpart = Templates::getSubpartFromFile($file, $subpartName);
             $ret = str_replace(["\r\n", "\n", "\r"], '', $subpart);
         } catch (Exception $e) {
             $ret = '';
@@ -92,18 +97,18 @@ class tx_rnbase_maps_Util
      * Create a bubble for GoogleMaps. This can be done if the item has address data.
      *
      * @param string                   $template
-     * @param tx_rnbase_maps_ILocation $item
+     * @param ILocation $item
      */
-    public static function createMapBubble(tx_rnbase_maps_ILocation $item)
+    public static function createMapBubble(ILocation $item)
     {
         if (!self::hasGeoData($item)) {
             return false;
         }
         tx_rnbase::load('tx_rnbase_maps_DefaultMarker');
 
-        $marker = new tx_rnbase_maps_DefaultMarker();
+        $marker = new DefaultMarker();
         if ($item->getLongitude() || $item->getLatitude()) {
-            $coords = tx_rnbase::makeInstance('tx_rnbase_maps_Coord');
+            $coords = tx_rnbase::makeInstance(Coord::class);
             $coords->setLatitude($item->getLatitude());
             $coords->setLongitude($item->getLongitude());
             $marker->setCoords($coords);

@@ -1,4 +1,7 @@
 <?php
+
+namespace Sys25\RnBase\Maps;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -30,7 +33,7 @@ define('RNMAP_MAPTYPE_PHYSICAL', 4);
 /**
  * Registry.
  */
-class tx_rnbase_maps_TypeRegistry
+class TypeRegistry
 {
     public static $instance = null;
 
@@ -45,7 +48,7 @@ class tx_rnbase_maps_TypeRegistry
     /**
      * Returns the singleton instance.
      *
-     * @return tx_rnbase_maps_TypeRegistry
+     * @return TypeRegistry
      */
     public static function getInstance()
     {
@@ -56,7 +59,7 @@ class tx_rnbase_maps_TypeRegistry
         return self::$instance;
     }
 
-    public function addType(tx_rnbase_maps_IMap $map, $typeId, $mapType)
+    public function addType(IMap $map, $typeId, $mapType)
     {
         $this->types[$map->getPROVID()][$typeId] = $mapType;
     }
@@ -64,12 +67,12 @@ class tx_rnbase_maps_TypeRegistry
     /**
      * Returns a map specific type string.
      *
-     * @param tx_rnbase_maps_IMap $map
-     * @param string              $typeId
+     * @param IMap $map
+     * @param string $typeId
      *
      * @return string
      */
-    public function getType(tx_rnbase_maps_IMap $map, $typeId)
+    public function getType(IMap $map, $typeId)
     {
         $type = $this->types[$map->getPROVID()][$typeId];
 

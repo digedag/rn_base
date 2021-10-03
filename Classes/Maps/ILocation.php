@@ -1,8 +1,10 @@
 <?php
+namespace Sys25\RnBase\Maps;
+
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009 Rene Nitzsche (rene@system25.de)
+*  (c) 2015-2021 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,60 +24,26 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_maps_ICoord');
-
 /**
- * Default implementation for coordinates.
+ * Common Interface for a point on a map. This is either a geocode or a valid address.
  */
-class tx_rnbase_maps_Coord implements tx_rnbase_maps_ICoord
+interface ILocation extends ICoord
 {
-    private $latitude;
-
-    private $longitude;
-
-    public function __construct($latitude = 0.0, $longitude = 0.0)
-    {
-        $this->setLatitude($latitude);
-        $this->setLongitude($longitude);
-    }
+    /**
+     * Returns the city name.
+     *
+     * @return string
+     */
+    public function getCity();
 
     /**
-     * Returns the latitude.
+     * Returns the street.
      *
      * @return float
      */
-    public function getLatitude()
-    {
-        return $this->latitude;
-    }
+    public function getStreet();
 
-    /**
-     * Returns the longitude.
-     *
-     * @return float
-     */
-    public function getLongitude()
-    {
-        return $this->longitude;
-    }
+    public function getZip();
 
-    /**
-     * Returns the latitude.
-     *
-     * @param float $lat
-     */
-    public function setLatitude($lat)
-    {
-        $this->latitude = $lat;
-    }
-
-    /**
-     * Returns the longitude.
-     *
-     * @param float $long
-     */
-    public function setLongitude($long)
-    {
-        $this->longitude = $long;
-    }
+    public function getCountryCode();
 }

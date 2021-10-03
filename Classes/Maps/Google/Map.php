@@ -1,4 +1,17 @@
 <?php
+
+namespace Sys25\RnBase\Maps\Google;
+
+use Exception;
+use Sys25\RnBase\Configuration\ConfigurationInterface;
+use Sys25\RnBase\Utility\Strings;
+use Sys25\RnBase\Utility\Extensions;
+use Sys25\RnBase\Maps\TypeRegistry;
+use Sys25\RnBase\Maps\BaseMap;
+use Sys25\RnBase\Maps\IControl;
+use Sys25\RnBase\Maps\IMarker;
+use tx_rnbase;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -22,18 +35,14 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_maps_BaseMap');
-tx_rnbase::load('tx_rnbase_util_Extensions');
-tx_rnbase::load('tx_rnbase_util_Strings');
-
-if (!tx_rnbase_util_Extensions::isLoaded('wec_map')) {
+if (!Extensions::isLoaded('wec_map')) {
     throw new Exception('Extension wec_map must be installed to use GoogleMaps!');
 }
 
 /**
  * Implementation for GoogleMaps based on extension wec_map.
  */
-class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap
+class Map extends BaseMap
 {
     public static $PROVID = 'GOOGLEMAPS';
 
@@ -46,7 +55,7 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap
 
     private $confId;
 
-    public function init(Tx_Rnbase_Configuration_ProcessorInterface $conf, $confId)
+    public function init(ConfigurationInterface $conf, $confId)
     {
         throw new Exception('Not implemented right now!');
         $this->conf = $conf;
@@ -60,21 +69,21 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap
 
         // Der MapType
         $mapType = $conf->get($confId.'maptype') ? constant($conf->get($confId.'maptype')) : null;
-        $types = array_flip(tx_rnbase_maps_TypeRegistry::getMapTypes());
+        $types = array_flip(TypeRegistry::getMapTypes());
         if ($mapType && array_key_exists($mapType, $types)) {
-            $this->setMapType(tx_rnbase_maps_TypeRegistry::getInstance()->getType($this, $mapType));
+            $this->setMapType(TypeRegistry::getInstance()->getType($this, $mapType));
         }
         // Controls
         $controls = $conf->get($confId.'google.controls');
         if ($controls) {
-            $controls = tx_rnbase_util_Strings::trimExplode(',', $controls);
+            $controls = Strings::trimExplode(',', $controls);
             foreach ($controls as $control) {
                 $this->addControl(tx_rnbase::makeInstance('tx_rnbase_maps_google_Control', $control));
             }
         }
     }
 
-    public function initTypes(tx_rnbase_maps_TypeRegistry $registry)
+    public function initTypes(TypeRegistry $registry)
     {
         $registry->addType($this, RNMAP_MAPTYPE_STREET, 'G_NORMAL_MAP');
         $registry->addType($this, RNMAP_MAPTYPE_SATELLITE, 'G_SATELLITE_MAP');
@@ -95,9 +104,9 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap
     /**
      * Adds a control.
      *
-     * @param tx_rnbase_maps_IControl $control
+     * @param IControl $control
      */
-    public function addControl(tx_rnbase_maps_IControl $control)
+    public function addControl(IControl $control)
     {
         $this->getWecMap()->addControl($control->render());
     }
@@ -105,9 +114,9 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap
     /**
      * Adds a marker to this map.
      *
-     * @param tx_rnbase_maps_IMarker $marker
+     * @param IMarker $marker
      */
-    public function addMarker(tx_rnbase_maps_IMarker $marker)
+    public function addMarker(IMarker $marker)
     {
         $icon = $marker->getIcon();
         $iconName = '';
@@ -155,7 +164,7 @@ class tx_rnbase_maps_google_Map extends tx_rnbase_maps_BaseMap
     /**
      * Returns an instance of wec map.
      *
-     * @return tx_wecmap_map_google
+     * @return \tx_wecmap_map_google
      */
     public function getWecMap()
     {

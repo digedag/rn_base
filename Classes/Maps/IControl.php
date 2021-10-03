@@ -1,4 +1,7 @@
 <?php
+
+namespace Sys25\RnBase\Maps;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -23,19 +26,12 @@
 ***************************************************************/
 
 /**
- * Common Interface for Icons.
+ * Common Interface for Controls.
  */
-interface tx_rnbase_maps_IIcon
+interface IControl
 {
     /**
-     * Returns the icon name.
-     */
-    public function getName();
-
-    /**
-     * Renders this Icon.
-     *
-     * @return string
+     * Render this control.
      */
     public function render();
 }

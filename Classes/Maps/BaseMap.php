@@ -1,4 +1,7 @@
 <?php
+
+namespace Sys25\RnBase\Maps;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -22,20 +25,17 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_maps_IMap');
-tx_rnbase::load('tx_rnbase_maps_TypeRegistry');
-
 /**
  * Common Interface for Maps.
  */
-abstract class tx_rnbase_maps_BaseMap implements tx_rnbase_maps_IMap
+abstract class BaseMap implements IMap
 {
     /**
      * Set a map type.
      */
     public function setMapTypeStreet()
     {
-        $type = tx_rnbase_maps_TypeRegistry::getInstance()->getType($this, RNMAP_MAPTYPE_STREET);
+        $type = TypeRegistry::getInstance()->getType($this, RNMAP_MAPTYPE_STREET);
         $this->setMapType($type);
     }
 
@@ -44,7 +44,7 @@ abstract class tx_rnbase_maps_BaseMap implements tx_rnbase_maps_IMap
      */
     public function setMapTypeHybrid()
     {
-        $type = tx_rnbase_maps_TypeRegistry::getInstance()->getType($this, RNMAP_MAPTYPE_HYBRID);
+        $type = TypeRegistry::getInstance()->getType($this, RNMAP_MAPTYPE_HYBRID);
         $this->setMapType($type);
     }
 
@@ -53,7 +53,7 @@ abstract class tx_rnbase_maps_BaseMap implements tx_rnbase_maps_IMap
      */
     public function setMapTypePhysical()
     {
-        $type = tx_rnbase_maps_TypeRegistry::getInstance()->getType($this, RNMAP_MAPTYPE_PHYSICAL);
+        $type = TypeRegistry::getInstance()->getType($this, RNMAP_MAPTYPE_PHYSICAL);
         $this->setMapType($type);
     }
 
@@ -62,7 +62,7 @@ abstract class tx_rnbase_maps_BaseMap implements tx_rnbase_maps_IMap
      */
     public function setMapTypeSatellite()
     {
-        $type = tx_rnbase_maps_TypeRegistry::getInstance()->getType($this, RNMAP_MAPTYPE_SATELLITE);
+        $type = TypeRegistry::getInstance()->getType($this, RNMAP_MAPTYPE_SATELLITE);
         $this->setMapType($type);
     }
 }

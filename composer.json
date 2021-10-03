@@ -49,9 +49,7 @@
     },
     "autoload": {
         "classmap": [
-            "cache/",
             "Legacy/",
-            "maps/",
             "mod/",
             "util/",
             "class.tx_rnbase.php",

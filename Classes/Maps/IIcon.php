@@ -1,4 +1,7 @@
 <?php
+
+namespace Sys25\RnBase\Maps;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -22,26 +25,20 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_maps_IControl');
-
 /**
- * Implementation for GoogleControls.
+ * Common Interface for Icons.
  */
-class tx_rnbase_maps_google_Control implements tx_rnbase_maps_IControl
+interface IIcon
 {
-    public function __construct($type)
-    {
-        $this->type = $type;
-    }
+    /**
+     * Returns the icon name.
+     */
+    public function getName();
 
     /**
-     * Returns an ID-String for the map provider.
+     * Renders this Icon.
      *
      * @return string
      */
-    public function render()
-    {
-        // Für die wec_map ist nur die ID notwendig
-        return $this->type;
-    }
+    public function render();
 }

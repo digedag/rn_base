@@ -1,8 +1,11 @@
 <?php
+
+namespace Sys25\RnBase\Maps;
+
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2015 Rene Nitzsche (rene@system25.de)
+*  (c) 2009 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,28 +25,22 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_maps_ICoord');
-
 /**
- * Common Interface for a point on a map. This is either a geocode or a valid address.
+ * Common Interface for Maps.
  */
-interface tx_rnbase_maps_ILocation extends tx_rnbase_maps_ICoord
+interface ICoord
 {
     /**
-     * Returns the city name.
-     *
-     * @return string
-     */
-    public function getCity();
-
-    /**
-     * Returns the street.
+     * Returns the latitude.
      *
      * @return float
      */
-    public function getStreet();
+    public function getLatitude();
 
-    public function getZip();
-
-    public function getCountryCode();
+    /**
+     * Returns the longitude.
+     *
+     * @return float
+     */
+    public function getLongitude();
 }

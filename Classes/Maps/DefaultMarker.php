@@ -1,8 +1,11 @@
 <?php
+
+namespace Sys25\RnBase\Maps;
+
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009 Rene Nitzsche (rene@system25.de)
+*  (c) 2009-2021 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,12 +25,10 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_maps_IMarker');
-
 /**
  * Common Interface for Maps.
  */
-class tx_rnbase_maps_DefaultMarker implements tx_rnbase_maps_IMarker
+class DefaultMarker implements IMarker
 {
     private $country;
 
@@ -152,7 +153,7 @@ class tx_rnbase_maps_DefaultMarker implements tx_rnbase_maps_IMarker
     /**
      * Returns the coordinates of this marker. This way is preferred to address data.
      *
-     * @return tx_rnbase_maps_ICoord
+     * @return ICoord
      */
     public function getCoords()
     {
@@ -162,14 +163,14 @@ class tx_rnbase_maps_DefaultMarker implements tx_rnbase_maps_IMarker
     /**
      * Set coordinates for this marker.
      *
-     * @param tx_rnbase_maps_ICoord $coord
+     * @param ICoord $coord
      */
-    public function setCoords(tx_rnbase_maps_ICoord $coord)
+    public function setCoords(ICoord $coord)
     {
         $this->coords = $coord;
     }
 
-    public function setIcon(tx_rnbase_maps_IIcon $icon)
+    public function setIcon(IIcon $icon)
     {
         $this->icon = $icon;
     }

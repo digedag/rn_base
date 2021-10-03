@@ -1,8 +1,11 @@
 <?php
+
+namespace Sys25\RnBase\Maps;
+
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009 Rene Nitzsche (rene@system25.de)
+*  (c) 2009-2021 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,22 +25,59 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+
 /**
- * Common Interface for Maps.
+ * Default implementation for coordinates.
  */
-interface tx_rnbase_maps_ICoord
+class Coord implements ICoord
 {
+    private $latitude;
+
+    private $longitude;
+
+    public function __construct($latitude = 0.0, $longitude = 0.0)
+    {
+        $this->setLatitude($latitude);
+        $this->setLongitude($longitude);
+    }
+
     /**
      * Returns the latitude.
      *
      * @return float
      */
-    public function getLatitude();
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
 
     /**
      * Returns the longitude.
      *
      * @return float
      */
-    public function getLongitude();
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
+
+    /**
+     * Returns the latitude.
+     *
+     * @param float $lat
+     */
+    public function setLatitude($lat)
+    {
+        $this->latitude = $lat;
+    }
+
+    /**
+     * Returns the longitude.
+     *
+     * @param float $long
+     */
+    public function setLongitude($long)
+    {
+        $this->longitude = $long;
+    }
 }

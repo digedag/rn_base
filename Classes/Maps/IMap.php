@@ -1,4 +1,9 @@
 <?php
+
+namespace Sys25\RnBase\Maps;
+
+use Sys25\RnBase\Configuration\ConfigurationInterface;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -25,18 +30,18 @@
 /**
  * Common Interface for Maps.
  */
-interface tx_rnbase_maps_IMap
+interface IMap
 {
-    public function init(Tx_Rnbase_Configuration_ProcessorInterface $conf, $confId);
+    public function init(ConfigurationInterface $conf, $confId);
 
-    public function initTypes(tx_rnbase_maps_TypeRegistry $registry);
+    public function initTypes(TypeRegistry $registry);
 
     /**
      * Adds a marker to this map.
      *
-     * @param tx_rnbase_maps_IMarker $marker
+     * @param IMarker $marker
      */
-    public function addMarker(tx_rnbase_maps_IMarker $marker);
+    public function addMarker(IMarker $marker);
 
     /**
      * Set a map type.
@@ -63,9 +68,9 @@ interface tx_rnbase_maps_IMap
     /**
      * Add control.
      *
-     * @param tx_rnbase_maps_IControl $control map specific control
+     * @param IControl $control map specific control
      */
-    public function addControl(tx_rnbase_maps_IControl $control);
+    public function addControl(IControl $control);
 
     /**
      * Render the map. Returns all the HTML- and JS-Code to display the map.

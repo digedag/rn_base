@@ -1,4 +1,11 @@
 <?php
+
+namespace Sys25\RnBase\Maps\Google;
+
+use Exception;
+use Sys25\RnBase\Utility\Logger;
+use Sys25\RnBase\Utility\Extensions;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -22,15 +29,10 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_maps_BaseMap');
-tx_rnbase::load('tx_rnbase_util_Extensions');
-tx_rnbase::load('tx_rnbase_util_Strings');
-tx_rnbase::load('tx_rnbase_util_Logger');
-
 /**
  * .
  */
-class tx_rnbase_maps_google_Util
+class Util
 {
     /**
      * Possible options
@@ -67,7 +69,7 @@ class tx_rnbase_maps_google_Util
         $requestTime = microtime(true) - $time;
 
         if ($requestTime > 2) {
-            tx_rnbase_util_Logger::notice('Long request time for Google address lookup ', 'rn_base', ['uri' => $request, 'time' => $requestTime]);
+            Logger::notice('Long request time for Google address lookup ', 'rn_base', ['uri' => $request, 'time' => $requestTime]);
         }
 
         if ($response) {
@@ -98,10 +100,10 @@ class tx_rnbase_maps_google_Util
      */
     public function lookupGeoCodeCached($street, $zip, $city, $country, $state = '')
     {
-        if (!tx_rnbase_util_Extensions::isLoaded('wec_map')) {
+        if (!Extensions::isLoaded('wec_map')) {
             throw new Exception('wec_map not loaded');
         }
 
-        return tx_wecmap_cache::lookup($street, $city, $state, $zip, $country);
+        return \tx_wecmap_cache::lookup($street, $city, $state, $zip, $country);
     }
 }

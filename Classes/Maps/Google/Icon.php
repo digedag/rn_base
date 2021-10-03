@@ -1,4 +1,10 @@
 <?php
+
+namespace Sys25\RnBase\Maps\Google;
+
+
+use Sys25\RnBase\Maps\IIcon;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -22,16 +28,14 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_maps_IIcon');
-
 /**
  * Implementation for GoogleControls.
  */
-class tx_rnbase_maps_google_Icon implements tx_rnbase_maps_IIcon
+class Icon implements IIcon
 {
     private $id = null;
 
-    public function __construct(tx_rnbase_maps_google_Map $map)
+    public function __construct(Map $map)
     {
         $this->map = $map;
     }
