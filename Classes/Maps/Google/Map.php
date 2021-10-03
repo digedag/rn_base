@@ -35,10 +35,6 @@ use tx_rnbase;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-if (!Extensions::isLoaded('wec_map')) {
-    throw new Exception('Extension wec_map must be installed to use GoogleMaps!');
-}
-
 /**
  * Implementation for GoogleMaps based on extension wec_map.
  */
@@ -57,6 +53,10 @@ class Map extends BaseMap
 
     public function init(ConfigurationInterface $conf, $confId)
     {
+        if (!Extensions::isLoaded('wec_map')) {
+            throw new Exception('Extension wec_map must be installed to use GoogleMaps!');
+        }
+
         throw new Exception('Not implemented right now!');
         $this->conf = $conf;
         $this->confId = $confId;
