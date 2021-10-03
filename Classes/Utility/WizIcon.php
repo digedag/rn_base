@@ -63,7 +63,7 @@ abstract class WizIcon
                 );
                 $configFile = $data['tsconfig'];
                 // Wizardkonfiguration hinzufügen
-                \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
+                Extensions::addPageTSConfig(
                     '<INCLUDE_TYPOSCRIPT: source="'.$configFile.'">'
                 );
             }

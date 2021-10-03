@@ -3,11 +3,14 @@
 namespace Sys25\RnBase\Utility;
 
 use Sys25\RnBase\Backend\Utility\BackendUtility;
+use Sys25\RnBase\Backend\Utility\TcaTool;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Configuration\Processor;
 use Sys25\RnBase\Database\Connection;
 use Sys25\RnBase\Domain\Model\MediaModel;
 use Sys25\RnBase\Frontend\Marker\BaseMarker;
+use Sys25\RnBase\Frontend\Marker\ListBuilder;
+use Sys25\RnBase\Frontend\Marker\MediaMarker;
 use Sys25\RnBase\Frontend\Marker\Templates;
 use tx_rnbase;
 use TYPO3\CMS\Core\Resource\FileReference;
@@ -34,13 +37,13 @@ use TYPO3\CMS\Core\Resource\FileReference;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-define('DEFAULT_LOCAL_FIELD', '_LOCALIZED_UID');
-
 /**
  * Contains utility functions for FAL.
  */
 class TSFAL
 {
+    public const DEFAULT_LOCAL_FIELD = '_LOCALIZED_UID';
+
     /**
      * Typoscript USER function for rendering DAM images.
      * This is a minimal Setup:
@@ -51,7 +54,7 @@ class TSFAL
      *   includeLibs = EXT:rn_base/util/class.tx_rnbase_util_TSFAL.php
      *   refField=imagecol
      *   refTable=tx_yourextkey_tablename
-     *   template = EXT:rn_base/res/simplegallery.html
+     *   template = EXT:rn_base/Resources/Private/Templates/simplegallery.html
      *   # media is the fal reference record
      *   media {
      *     # field file contains the complete image path
@@ -64,12 +67,12 @@ class TSFAL
      * </pre>
      * There are three additional fields in media record: file, file1 and thumbnail containing the complete
      * image path.
-     * The output is rendered via HTML template with ListBuilder. Have a look at EXT:rn_base/res/simplegallery.html
+     * The output is rendered via HTML template with ListBuilder. Have a look at EXT:rn_base/Resources/Private/Templates/simplegallery.html
      * Possible Typoscript options:
-     * refField: DAM reference field of the media records (defined in TCA and used to locate the record in MM-Table)
-     * refTable: should be the tablename where the DAM record is referenced to
+     * refField: FAL reference field of the media records (defined in TCA and used to locate the record in MM-Table)
+     * refTable: should be the tablename where the FAL record is referenced to
      * template: Full path to HTML template file.
-     * media: Formatting options of the DAM record. Have a look at tx_dam to find all column names
+     * media: Formatting options of the FAL record.
      * limit: Limits the number of medias
      * offset: Start media output with an offset
      * forcedIdField: force another reference column (other than UID or _LOCALIZED_UID).
@@ -83,7 +86,7 @@ class TSFAL
     {
         $conf = $this->createConf($tsConf);
         $file = $conf->get('template');
-        $file = $file ? $file : 'EXT:rn_base/res/simplegallery.html';
+        $file = $file ? $file : 'EXT:rn_base/Resources/Private/Templates/simplegallery.html';
         $subpartName = $conf->get('subpartName');
         $subpartName = $subpartName ? $subpartName : '###DAM_IMAGES###';
         $templateCode = Templates::getSubpartFromFile($file, $subpartName);
@@ -93,28 +96,28 @@ class TSFAL
         }
 
         // Is there a customized language field configured
-        $langField = DEFAULT_LOCAL_FIELD;
+        $langField = self::DEFAULT_LOCAL_FIELD;
         $locUid = $conf->getCObj()->data[$langField]; // Save original uid
         if ($conf->get('forcedIdField')) {
             $langField = $conf->get('forcedIdField');
             // Copy localized UID
-            $conf->getCObj()->data[DEFAULT_LOCAL_FIELD] = $conf->getCObj()->data[$langField];
+            $conf->getCObj()->data[self::DEFAULT_LOCAL_FIELD] = $conf->getCObj()->data[$langField];
         }
         // Check if there is a valid uid given.
-        $parentUid = intval($conf->getCObj()->data[DEFAULT_LOCAL_FIELD] ? $conf->getCObj()->data[DEFAULT_LOCAL_FIELD] : $conf->getCObj()->data['uid']);
+        $parentUid = intval($conf->getCObj()->data[self::DEFAULT_LOCAL_FIELD] ? $conf->getCObj()->data[self::DEFAULT_LOCAL_FIELD] : $conf->getCObj()->data['uid']);
         if (!$parentUid) {
             return '<!-- Invalid data record given -->';
         }
 
         $medias = self::fetchFilesByTS($conf, $conf->getCObj());
-        $conf->getCObj()->data[DEFAULT_LOCAL_FIELD] = $locUid; // Reset UID
+        $conf->getCObj()->data[self::DEFAULT_LOCAL_FIELD] = $locUid; // Reset UID
 
-        $listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
+        $listBuilder = tx_rnbase::makeInstance(ListBuilder::class);
         $out = $listBuilder->render(
             $medias,
             false,
             $templateCode,
-            'tx_rnbase_util_MediaMarker',
+            MediaMarker::class,
             'media.',
             'MEDIA',
             $conf->getFormatter()
@@ -162,7 +165,7 @@ class TSFAL
     public static function fetchFilesByTS($conf, $cObj, $confId = '')
     {
         /* @var $fileRepository \TYPO3\CMS\Core\Resource\FileRepository */
-        $fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
+        $fileRepository = tx_rnbase::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
         $pics = [];
         // Getting the files
         // Try DAM style
@@ -229,8 +232,8 @@ class TSFAL
         );
 
         // gibt es ein Limit/offset
-        $offset = intval($conf->get($confId.'offset'));
-        $limit = intval($conf->get($confId.'limit'));
+        $offset = $conf->getInt($confId.'offset');
+        $limit = $conf->getInt($confId.'limit');
         if (!empty($pics) && $limit) {
             $pics = array_slice($pics, $offset, $limit);
         } elseif (!empty($pics) && $offset) {
@@ -477,8 +480,8 @@ class TSFAL
         }
 
         $tca = [
-            'label' => \Sys25\RnBase\Backend\Utility\TcaTool::buildGeneralLabel('images'),
-            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+            'label' => TcaTool::buildGeneralLabel('images'),
+            'config' => Extensions::getFileFieldTCAConfig(
                 $ref,
                 $customSettingOverride,
                 $allowedFileExtensions,
@@ -777,10 +780,10 @@ class TSFAL
         if ('relative' === $storageConfig['pathType']) {
             $relativeBasePath = $storageConfig['basePath'];
         } else {
-            if (0 !== strpos($storageConfig['basePath'], \Sys25\RnBase\Utility\Environment::getPublicPath())) {
+            if (0 !== strpos($storageConfig['basePath'], Environment::getPublicPath())) {
                 throw new \LogicException('Could not determine relative storage path.');
             }
-            $relativeBasePath = substr($storageConfig['basePath'], strlen(\Sys25\RnBase\Utility\Environment::getPublicPath()));
+            $relativeBasePath = substr($storageConfig['basePath'], strlen(Environment::getPublicPath()));
         }
 
         // build the identifier, trim the storage path from the target
@@ -790,7 +793,7 @@ class TSFAL
         $identifier = ltrim(substr($target, strlen($relativeBasePath)), '/');
 
         /* @var $indexer \TYPO3\CMS\Core\Resource\Index\Indexer */
-        $indexer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        $indexer = tx_rnbase::makeInstance(
             'TYPO3\\CMS\\Core\\Resource\\Index\\Indexer',
             $storage
         );

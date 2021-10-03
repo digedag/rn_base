@@ -35,10 +35,22 @@ if (class_exists('Sys25\RnBase\Typo3Wrapper\Core\CommandLineController')) {
 \class_alias(\Sys25\RnBase\Utility\Debug::class, 'tx_rnbase_util_Debug');
 \class_alias(\Sys25\RnBase\Typo3Wrapper\Service\AuthenticationService::class, 'Tx_Rnbase_Service_Authentication');
 \class_alias(\Sys25\RnBase\Typo3Wrapper\Service\AbstractService::class, 'Tx_Rnbase_Service_Base');
+\class_alias(\Sys25\RnBase\Backend\Decorator\InterfaceDecorator::class, 'Tx_Rnbase_Backend_Decorator_InterfaceDecorator');
+\class_alias(\Sys25\RnBase\Backend\Decorator\InterfaceDecorator::class, 'tx_rnbase_mod_IDecorator');
+\class_alias(\Sys25\RnBase\Backend\Decorator\BaseDecorator::class, 'Tx_Rnbase_Backend_Decorator_BaseDecorator');
 \class_alias(\Sys25\RnBase\Backend\Handler\SearchHandler::class, 'Tx_Rnbase_Backend_Handler_SearchHandler');
 \class_alias(\Sys25\RnBase\Backend\Handler\DetailHandler::class, 'Tx_Rnbase_Backend_Handler_DetailHandler');
 \class_alias(\Sys25\RnBase\Backend\Lister\AbstractLister::class, 'Tx_Rnbase_Backend_Lister_AbstractLister');
+\class_alias(\Sys25\RnBase\Backend\Module\BaseModule::class, 'tx_rnbase_mod_BaseModule');
+\class_alias(\Sys25\RnBase\Backend\Module\IModule::class, 'tx_rnbase_mod_IModule');
+\class_alias(\Sys25\RnBase\Backend\Module\IModFunc::class, 'tx_rnbase_mod_IModFunc');
+\class_alias(\Sys25\RnBase\Backend\Module\IModHandler::class, 'tx_rnbase_mod_IModHandler');
 \class_alias(\Sys25\RnBase\Backend\Module\ModuleBase::class, 'Tx_Rnbase_Backend_Module_Base');
+\class_alias(\Sys25\RnBase\Backend\Module\BaseModFunc::class, 'tx_rnbase_mod_BaseModFunc');
+\class_alias(\Sys25\RnBase\Backend\Module\ExtendedModFunc::class, 'tx_rnbase_mod_ExtendedModFunc');
+
+\class_alias(\Sys25\RnBase\Backend\Module\Linker\LinkerInterface::class, 'tx_rnbase_mod_linker_LinkerInterface');
+\class_alias(\Sys25\RnBase\Backend\Module\Linker\ShowDetails::class, 'tx_rnbase_mod_linker_ShowDetails');
 \class_alias(\Sys25\RnBase\Backend\Utility\TcaTool::class, 'Tx_Rnbase_Utility_TcaTool');
 \class_alias(\Sys25\RnBase\Backend\Utility\TcaTool::class, 'Tx_Rnbase_Util_TCATool');
 \class_alias(\Sys25\RnBase\Backend\Utility\TCA::class, 'tx_rnbase_util_TCA');
@@ -54,7 +66,9 @@ if (class_exists('Sys25\RnBase\Typo3Wrapper\Core\CommandLineController')) {
 \class_alias(\Sys25\RnBase\Backend\Form\ToolBox::class, 'Tx_Rnbase_Backend_Form_ToolBox');
 \class_alias(\Sys25\RnBase\Backend\Form\ToolBox::class, 'tx_rnbase_util_FormTool');
 \class_alias(\Sys25\RnBase\Backend\Form\FormUtil::class, 'tx_rnbase_util_FormUtil');
+\class_alias(\Sys25\RnBase\Backend\Utility\BaseLister::class, 'tx_rnbase_mod_base_Lister');
 \class_alias(\Sys25\RnBase\Backend\Utility\Icons::class, 'Tx_Rnbase_Backend_Utility_Icons');
+\class_alias(\Sys25\RnBase\Backend\Utility\ModuleUtility::class, 'tx_rnbase_mod_Util');
 \class_alias(\Sys25\RnBase\Backend\Utility\Tables::class, 'Tx_Rnbase_Backend_Utility_Tables');
 \class_alias(\Sys25\RnBase\Backend\ModuleRunner::class, 'Tx_Rnbase_Backend_ModuleRunner');
 \class_alias(\Sys25\RnBase\Utility\Logger::class, 'tx_rnbase_util_Logger');
@@ -83,8 +97,6 @@ if (class_exists('Sys25\RnBase\Typo3Wrapper\Core\CommandLineController')) {
 \class_alias(\Sys25\RnBase\Domain\Repository\AbstractRepository::class, 'Tx_Rnbase_Domain_Repository_AbstractRepository');
 \class_alias(\Sys25\RnBase\Domain\Repository\AbstractRepository::class, 'Tx_Rnbase_Repository_AbstractRepository');
 \class_alias(\Sys25\RnBase\Domain\Repository\PersistenceRepository::class, 'Tx_Rnbase_Domain_Repository_PersistenceRepository');
-\class_alias(\Sys25\RnBase\Backend\Decorator\InterfaceDecorator::class, 'Tx_Rnbase_Backend_Decorator_InterfaceDecorator');
-\class_alias(\Sys25\RnBase\Backend\Decorator\BaseDecorator::class, 'Tx_Rnbase_Backend_Decorator_BaseDecorator');
 \class_alias(\Sys25\RnBase\Database\TreeQueryBuilder::class, 'Tx_Rnbase_Database_TreeQueryBuilder');
 \class_alias(\Sys25\RnBase\Frontend\Filter\IFilterItem::class, 'tx_rnbase_IFilterItem');
 \class_alias(\Sys25\RnBase\Frontend\Filter\FilterItem::class, 'tx_rnbase_filter_FilterItem');
@@ -263,6 +275,20 @@ if (false) {
     class Tx_Rnbase_Service_Base
     {
     }
+
+    /** @deprecated */
+    interface Tx_Rnbase_Backend_Decorator_InterfaceDecorator
+    {
+    }
+    /** @deprecated */
+    interface tx_rnbase_mod_IDecorator
+    {
+    }
+    /** @deprecated */
+    class Tx_Rnbase_Backend_Decorator_BaseDecorator
+    {
+    }
+
     /** @deprecated */
     abstract class Tx_Rnbase_Backend_Handler_SearchHandler
     {
@@ -276,7 +302,39 @@ if (false) {
     {
     }
     /** @deprecated */
+    class tx_rnbase_mod_BaseModule
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_mod_BaseModFunc
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_mod_ExtendedModFunc
+    {
+    }
+    /** @deprecated */
+    interface tx_rnbase_mod_IModule
+    {
+    }
+    /** @deprecated */
+    interface tx_rnbase_mod_IModFunc
+    {
+    }
+    /** @deprecated */
+    interface tx_rnbase_mod_IModHandler
+    {
+    }
+    /** @deprecated */
     class Tx_Rnbase_Backend_Module_Base
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_mod_linker_LinkerInterface
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_mod_linker_ShowDetails
     {
     }
     /** @deprecated */
@@ -331,7 +389,7 @@ if (false) {
     class Tx_Rnbase_Backend_Form_ToolBox
     {
     }
-    /** @deprecated */
+    /** @deprecated use Sys25\RnBase\Backend\Form\ToolBox */
     class tx_rnbase_util_FormTool
     {
     }
@@ -340,7 +398,15 @@ if (false) {
     {
     }
     /** @deprecated */
+    class tx_rnbase_mod_base_Lister
+    {
+    }
+    /** @deprecated */
     class Tx_Rnbase_Backend_Utility_Icons
+    {
+    }
+    /** @deprecated use \Sys25\RnBase\Backend\Utility\ModuleUtility */
+    class tx_rnbase_mod_Util
     {
     }
     /** @deprecated */
@@ -453,14 +519,6 @@ if (false) {
     }
     /** @deprecated */
     abstract class Tx_Rnbase_Repository_AbstractRepository
-    {
-    }
-    /** @deprecated */
-    interface Tx_Rnbase_Backend_Decorator_InterfaceDecorator
-    {
-    }
-    /** @deprecated */
-    class Tx_Rnbase_Backend_Decorator_BaseDecorator
     {
     }
     /** @deprecated */

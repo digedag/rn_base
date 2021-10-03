@@ -1,11 +1,27 @@
 <?php
 
+namespace Sys25\RnBase\Backend\Module;
+
+use Sys25\RnBase\Backend\Form\ToolBox;
+use Sys25\RnBase\Backend\ModuleRunner;
+use Sys25\RnBase\Backend\Template\ModuleParts;
+use Sys25\RnBase\Backend\Template\ModuleTemplate;
+use Sys25\RnBase\Backend\Utility\BackendUtility;
+use Sys25\RnBase\Configuration\ConfigurationInterface;
+use Sys25\RnBase\Configuration\Processor;
+use Sys25\RnBase\Frontend\Marker\BaseMarker;
+use Sys25\RnBase\Frontend\Marker\Templates;
 use Sys25\RnBase\Utility\Arrays;
+use Sys25\RnBase\Utility\Files;
+use Sys25\RnBase\Utility\Misc;
+use Sys25\RnBase\Utility\Strings;
+use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase;
 
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009-2018 Rene Nitzsche (rene@system25.de)
+*  (c) 2009-2021 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,9 +41,6 @@ use Sys25\RnBase\Utility\Arrays;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_mod_IModule');
-tx_rnbase::load('tx_rnbase_mod_IModFunc');
-
 /**
  * Fertige Implementierung eines BE-Moduls. Das Modul ist dabei nur eine Hülle für die einzelnen Modulfunktionen.
  * Die Klasse stellt also lediglich eine Auswahlbox mit den verfügbaren Funktionen bereit. Neue Funktionen können
@@ -39,16 +52,17 @@ tx_rnbase::load('tx_rnbase_mod_IModFunc');
  * Die Funktionsklassen sollten das Interface tx_rnbase_mod_IModFunc implementieren. Eine Basisklasse mit nützlichen
  * Methoden steht natürlich auch bereit: tx_rnbase_mod_BaseModFunc.
  */
-abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base implements tx_rnbase_mod_IModule
+abstract class BaseModule extends ModuleBase implements IModule
 {
     public $doc;
 
-    /** @var Tx_Rnbase_Configuration_ProcessorInterface */
+    /** @var ConfigurationInterface */
     private $configurations;
 
+    /** @var ToolBox */
     private $formTool;
 
-    /** @var Tx_Rnbase_Backend_Template_ModuleTemplate */
+    /** @var ModuleTemplate */
     private $moduleTemplate;
 
     /**
@@ -56,7 +70,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
      */
     public function init()
     {
-        $GLOBALS['LANG']->includeLLFile('EXT:rn_base/mod/locallang.xml');
+        $GLOBALS['LANG']->includeLLFile('EXT:rn_base/Resources/Private/Language/locallang.xml');
 
         $this->initModConf();
 
@@ -78,8 +92,8 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
         }
         // check dispatch mode calls without rnbase module runner and fetch the config.
         if (!$this->MCONF['name']) {
-            /* @var $runner Tx_Rnbase_Backend_ModuleRunner */
-            $runner = tx_rnbase::makeInstance('Tx_Rnbase_Backend_ModuleRunner');
+            /* @var $runner ModuleRunner */
+            $runner = tx_rnbase::makeInstance(ModuleRunner::class);
             $runner->initTargetConf($this);
         }
     }
@@ -101,7 +115,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
         $this->init();
         $this->main();
 
-        if (!\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+        if (!TYPO3::isTYPO90OrHigher()) {
             $this->printContent();
             $response = true;
         } else {
@@ -126,7 +140,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
         // Einbindung der Modul-Funktionen
         $this->checkExtObj();
 
-        $this->moduleTemplate = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Template_ModuleTemplate', $this, [
+        $this->moduleTemplate = tx_rnbase::makeInstance(ModuleTemplate::class, $this, [
             'form' => $this->getFormTag(),
             'docstyles' => $this->getDocStyles(),
             'template' => $this->getModuleTemplate(),
@@ -135,8 +149,8 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
         // Die Variable muss gesetzt sein.
         $this->doc = $this->getModTemplate()->getDoc();
 
-        /* @var $parts Tx_Rnbase_Backend_Template_ModuleParts */
-        $parts = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Template_ModuleParts');
+        /* @var $parts ModuleParts */
+        $parts = tx_rnbase::makeInstance(ModuleParts::class);
         $this->prepareModuleParts($parts);
 
         $this->content = $this->getModTemplate()->renderContent($parts);
@@ -146,7 +160,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
     {
         // Access check. The page will show only if there is a valid page
         // and if this page may be viewed by the user
-        $pageinfo = Tx_Rnbase_Backend_Utility::readPageAccess($this->getPid(), $this->perms_clause);
+        $pageinfo = BackendUtility::readPageAccess($this->getPid(), $this->perms_clause);
 
         $parts->setContent($this->moduleContent());
         $parts->setButtons($this->getButtons());
@@ -195,8 +209,6 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
 
     /**
      * (non-PHPdoc).
-     *
-     * @see t3lib_SCbase::checkExtObj()
      */
     public function checkExtObj()
     {
@@ -204,7 +216,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
             $this->extObj = tx_rnbase::makeInstance($this->extClassConf['name']);
             $this->extObj->init($this, $this->extClassConf);
             // Re-write:
-            $this->MOD_SETTINGS = Tx_Rnbase_Backend_Utility::getModuleData(
+            $this->MOD_SETTINGS = BackendUtility::getModuleData(
                 $this->MOD_MENU,
                 \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('SET'),
                 $this->getName(),
@@ -216,16 +228,14 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
     }
 
     /**
-     * @see tx_rnbase_mod_IModule::getFormTool()
+     * @see IModule::getFormTool()
      *
-     * @return tx_rnbase_util_FormTool
+     * @return ToolBox
      */
     public function getFormTool()
     {
         if (!$this->formTool) {
-            $this->formTool = tx_rnbase::makeInstance(
-                Tx_Rnbase_Backend_Utility::isDispatchMode() ? 'Tx_Rnbase_Backend_Form_ToolBox' : 'tx_rnbase_util_FormTool'
-            );
+            $this->formTool = tx_rnbase::makeInstance(ToolBox::class);
             $this->formTool->init($this->getDoc(), $this);
         }
 
@@ -233,7 +243,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
     }
 
     /**
-     * Liefert eine Instanz von Tx_Rnbase_Configuration_ProcessorInterface. Da wir uns im BE bewegen, wird diese mit einem
+     * Liefert eine Instanz von ConfigurationInterface. Da wir uns im BE bewegen, wird diese mit einem
      * Config-Array aus der TSConfig gefüttert. Dabei wird die Konfiguration unterhalb von mod.extkey. genommen.
      * Für "extkey" wird der Wert der Methode getExtensionKey() verwendet.
      * Zusätzlich wird auch die Konfiguration von "lib." bereitgestellt.
@@ -243,15 +253,15 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
      * Ein eigenes TS-Template für das BE wird in der ext_localconf.php mit dieser Anweisung eingebunden:
      * tx_rnbase_util_Extensions::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:myext/mod1/pageTSconfig.txt">');
      *
-     * @return Tx_Rnbase_Configuration_ProcessorInterface
+     * @return ConfigurationInterface
      */
     public function getConfigurations()
     {
         if (!$this->configurations) {
-            tx_rnbase_util_Misc::prepareTSFE(); // Ist bei Aufruf aus BE notwendig!
-            $cObj = tx_rnbase_util_TYPO3::getContentObject();
+            Misc::prepareTSFE(); // Ist bei Aufruf aus BE notwendig!
+            $cObj = TYPO3::getContentObject();
 
-            $pageTSconfigFull = Tx_Rnbase_Backend_Utility::getPagesTSconfig($this->getPid());
+            $pageTSconfigFull = BackendUtility::getPagesTSconfig($this->getPid());
             $pageTSconfig = $pageTSconfigFull['mod.'][$this->getExtensionKey().'.'];
             $pageTSconfig['lib.'] = $pageTSconfigFull['lib.'];
 
@@ -261,7 +271,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
             }
 
             $qualifier = $pageTSconfig['qualifier'] ? $pageTSconfig['qualifier'] : $this->getExtensionKey();
-            $this->configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
+            $this->configurations = tx_rnbase::makeInstance(Processor::class);
             $this->configurations->init($pageTSconfig, $cObj, $this->getExtensionKey(), $qualifier);
 
             // init the parameters object
@@ -311,8 +321,8 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
         $this->content .= $this->getDoc()->endPage();
 
         $params = $markerArray = $subpartArray = $wrappedSubpartArray = [];
-        tx_rnbase_util_BaseMarker::callModules($this->content, $markerArray, $subpartArray, $wrappedSubpartArray, $params, $this->getConfigurations()->getFormatter());
-        $content = tx_rnbase_util_Templates::substituteMarkerArrayCached($this->content, $markerArray, $subpartArray, $wrappedSubpartArray);
+        BaseMarker::callModules($this->content, $markerArray, $subpartArray, $wrappedSubpartArray, $params, $this->getConfigurations()->getFormatter());
+        $content = Templates::substituteMarkerArrayCached($this->content, $markerArray, $subpartArray, $wrappedSubpartArray);
 
         if ($returnContent) {
             return $content;
@@ -338,7 +348,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
     /**
      * Returns the ModuleTemplate of rn_base used to render the module output.
      *
-     * @return Tx_Rnbase_Backend_Template_ModuleTemplate
+     * @return ModuleTemplate
      */
     public function getModTemplate()
     {
@@ -362,7 +372,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
     protected function getFuncMenu()
     {
         if ($this->useModuleTemplate()) {
-            $menuRegistry = Tx_Rnbase_Utility_T3General::makeInstance(TYPO3\CMS\Backend\Template\Components\MenuRegistry::class);
+            $menuRegistry = tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Template\Components\MenuRegistry::class);
             $menu = $menuRegistry->makeMenu();
             $modMenu = $this->MOD_MENU;
             $modSettings = $this->MOD_SETTINGS;
@@ -372,7 +382,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
                 $item = $menu
                     ->makeMenuItem()
                     ->setHref(
-                        Tx_Rnbase_Backend_Utility::getModuleUrl(
+                        BackendUtility::getModuleUrl(
                             $this->getName(),
                             [
                                 'id' => $this->getPid(),
@@ -426,14 +436,14 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
     {
         $visibleItems = $items;
         if ($denyItems = $this->getConfigurations()->get('_cfg.funcmenu.deny')) {
-            $denyItems = tx_rnbase_util_Strings::trimExplode(',', $denyItems);
+            $denyItems = Strings::trimExplode(',', $denyItems);
             foreach ($denyItems as $item) {
                 unset($visibleItems[$item]);
             }
         }
         if ($allowItems = $this->getConfigurations()->get('_cfg.funcmenu.allow')) {
             $visibleItems = [];
-            $allowItems = tx_rnbase_util_Strings::trimExplode(',', $allowItems);
+            $allowItems = Strings::trimExplode(',', $allowItems);
             foreach ($allowItems as $item) {
                 $visibleItems[$item] = $items[$item];
             }
@@ -451,7 +461,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
      */
     protected function getFormTag()
     {
-        $modUrl = Tx_Rnbase_Backend_Utility::getModuleUrl($this->getName());
+        $modUrl = BackendUtility::getModuleUrl($this->getName());
 
         return '<form action="'.$modUrl.'" method="post" name="editform" enctype="multipart/form-data"><input type="hidden" name="id" value="'.htmlspecialchars($this->id).'" />';
     }
@@ -474,15 +484,15 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
     protected function getModuleTemplate()
     {
         $filename = $this->getConfigurations()->get('template');
-        if (file_exists(tx_rnbase_util_Files::getFileAbsFileName($filename, true, true))) {
+        if (file_exists(Files::getFileAbsFileName($filename, true, true))) {
             return $filename;
         }
         $filename = 'EXT:'.$this->getExtensionKey().'/mod1/template.html';
-        if (file_exists(tx_rnbase_util_Files::getFileAbsFileName($filename, true, true))) {
+        if (file_exists(Files::getFileAbsFileName($filename, true, true))) {
             return $filename;
         }
 
-        return 'EXT:rn_base/mod/template.html';
+        return 'EXT:rn_base/Resources/Private/Templates/template2.html';
     }
 
     /**
@@ -584,7 +594,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
             'shortcut' => '',
         ];
         // TODO: CSH
-        $buttons['csh'] = Tx_Rnbase_Backend_Utility::cshItem(
+        $buttons['csh'] = BackendUtility::cshItem(
             '_MOD_'.$this->getName(),
             '',
             $GLOBALS['BACK_PATH'],
@@ -613,7 +623,7 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
      */
     public function addMessage($message, $title = '', $severity = 0, $storeInSession = false)
     {
-        tx_rnbase_util_Misc::addFlashMessage($message, $title, $severity, $storeInSession);
+        Misc::addFlashMessage($message, $title, $severity, $storeInSession);
     }
 
     /**
@@ -621,6 +631,6 @@ abstract class tx_rnbase_mod_BaseModule extends Tx_Rnbase_Backend_Module_Base im
      */
     public function issueCommand($getParameters, $redirectUrl = '')
     {
-        return Tx_Rnbase_Backend_Utility::issueCommand($getParameters, $redirectUrl);
+        return BackendUtility::issueCommand($getParameters, $redirectUrl);
     }
 }

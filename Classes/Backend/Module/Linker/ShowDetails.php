@@ -1,8 +1,15 @@
 <?php
+
+namespace Sys25\RnBase\Backend\Module\Linker;
+
+use Sys25\RnBase\Backend\Form\ToolBox;
+use Sys25\RnBase\Domain\Model\BaseModel;
+use Sys25\RnBase\Domain\Model\DataModel;
+
 /**
  * Copyright notice.
  *
- *  (c) 2007-2015 Rene Nitzsche (rene@system25.de)
+ *  (c) 2007-2021 Rene Nitzsche (rene@system25.de)
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -21,22 +28,21 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_rnbase_mod_linker_LinkerInterface');
 
 /**
  * details linker for mod tables.
  *
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-class tx_rnbase_mod_linker_ShowDetails implements tx_rnbase_mod_linker_LinkerInterface
+class ShowDetails implements LinkerInterface
 {
     /**
      * Link zur Detailseite erzeugen.
      *
-     * @param Tx_Rnbase_Domain_Model_Base          $item
-     * @param tx_rnbase_util_FormTool              $formTool
-     * @param int                                  $currentPid
-     * @param Tx_Rnbase_Domain_Model_DataInterface $options
+     * @param BaseModel $item
+     * @param ToolBox $formTool
+     * @param int $currentPid
+     * @param DataModel $options
      *
      * @return string
      */
@@ -46,7 +52,7 @@ class tx_rnbase_mod_linker_ShowDetails implements tx_rnbase_mod_linker_LinkerInt
         $label = $options->hasShowDetailsLabel() ? $options->getShowDetailsLabel() : '###LABEL_SHOW_DETAILS###';
 
         return $formTool->createSubmit(
-            $uidkey.'['.$item->uid.']',
+            $uidkey.'['.$item->getUid().']',
             $label
         );
     }

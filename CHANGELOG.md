@@ -29,6 +29,10 @@ v1.14.0 (??.09.2021)
  * BC: `tx_rnbase_model_media` is replaced by `MediaModel`
  * BC: `tx_rnbase_util_Json` removed
  * BC: interface `PageBrowserMarker` removed
+ * BC: interface `tx_rnbase_mod_IDecorator::format()` slightly changed
+ * BC: File `mod/template.html` moved to `Resources/Private/Templates/template.html`
+ * BC: File `mod/locallang.xml` moved to `Resources/Private/Language/locallang.xml`
+ * BC: File `res/simplegallery.html` moved to `Resources/Private/Templates/simplegallery.html`
 
 v1.13.15 (30.09.2021)
  * Accept pidlist in queries if it's an integer

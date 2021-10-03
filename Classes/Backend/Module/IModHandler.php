@@ -1,9 +1,11 @@
 <?php
 
+namespace Sys25\RnBase\Backend\Module;
+
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2011 Rene Nitzsche (rene@system25.de)
+*  (c) 2011-2021 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,9 +25,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_mod_IModule');
-
-interface tx_rnbase_mod_IModHandler
+interface IModHandler
 {
     /**
      * Returns a unique ID for this handler. This is used to created the subpart in template.
@@ -44,16 +44,16 @@ interface tx_rnbase_mod_IModHandler
     /**
      * This method is called each time the method func is clicked, to handle request data.
      *
-     * @param tx_rnbase_mod_IModule $mod
+     * @param IModule $mod
      */
-    public function handleRequest(tx_rnbase_mod_IModule $mod);
+    public function handleRequest(IModule $mod);
 
     /**
      * Display the user interface for this handler.
      *
-     * @param string                $template the subpart for handler in func template
-     * @param tx_rnbase_mod_IModule $mod
-     * @param array                 $options
+     * @param string $template the subpart for handler in func template
+     * @param IModule $mod
+     * @param array $options
      */
-    public function showScreen($template, tx_rnbase_mod_IModule $mod, $options);
+    public function showScreen($template, IModule $mod, $options);
 }

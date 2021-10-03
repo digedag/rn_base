@@ -4,12 +4,13 @@ namespace Sys25\RnBase\Backend\Handler;
 
 use Exception;
 use Sys25\RnBase\Backend\Lister\AbstractLister;
+use Sys25\RnBase\Backend\Module\IModHandler;
+use Sys25\RnBase\Backend\Module\IModule;
 use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Frontend\Marker\Templates;
 use Sys25\RnBase\Utility\Strings;
 use tx_rnbase;
 use tx_rnbase_mod_BaseModule;
-use tx_rnbase_mod_IModHandler;
 use tx_rnbase_mod_IModule;
 use tx_rnbase_util_FormTool;
 
@@ -41,7 +42,7 @@ use tx_rnbase_util_FormTool;
  *
  * @author Michael Wagner
  */
-abstract class SearchHandler implements tx_rnbase_mod_IModHandler
+abstract class SearchHandler implements IModHandler
 {
     /**
      * The current mod.
@@ -136,8 +137,7 @@ abstract class SearchHandler implements tx_rnbase_mod_IModHandler
      * @param array                  $options
      */
     protected function init(
-        tx_rnbase_mod_IModule $mod,
-        array &$options = []
+        IModule $mod, array &$options = []
     ) {
         $this->module = $mod;
 
@@ -181,7 +181,7 @@ abstract class SearchHandler implements tx_rnbase_mod_IModHandler
      * Display the user interface for this handler.
      *
      * @param string                $template The subpart for handler in func template
-     * @param tx_rnbase_mod_IModule $mod
+     * @param IModule $mod
      * @param array                 $options
      *
      * @return string
@@ -189,7 +189,7 @@ abstract class SearchHandler implements tx_rnbase_mod_IModHandler
     // @codingStandardsIgnoreStart (interface/abstract mistake)
     public function showScreen(
         $template,
-        tx_rnbase_mod_IModule $mod,
+        IModule $mod,
         $options
     ) {
         // @codingStandardsIgnoreEnd
@@ -276,11 +276,11 @@ abstract class SearchHandler implements tx_rnbase_mod_IModHandler
      * This method is called each time the method func is clicked,
      * to handle request data.
      *
-     * @param tx_rnbase_mod_IModule $mod
+     * @param IModule $mod
      *
      * @return string|null With error message
      */
-    public function handleRequest(tx_rnbase_mod_IModule $mod)
+    public function handleRequest(IModule $mod)
     {
         return null;
     }

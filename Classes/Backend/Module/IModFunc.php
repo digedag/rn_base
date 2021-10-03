@@ -1,9 +1,11 @@
 <?php
 
+namespace Sys25\RnBase\Backend\Module;
+
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009 Rene Nitzsche (rene@system25.de)
+*  (c) 2009-2021 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,9 +25,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_mod_IModule');
-
-interface tx_rnbase_mod_IModFunc
+interface IModFunc
 {
     public const ICON_OK = -1;
 
@@ -35,7 +35,7 @@ interface tx_rnbase_mod_IModFunc
 
     public const ICON_FATAL = 3;
 
-    public function init(tx_rnbase_mod_IModule $module, $conf);
+    public function init(IModule $module, $conf);
 
     /**
      * Liefert den HTML-String des Moduls.

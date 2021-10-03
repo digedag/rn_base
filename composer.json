@@ -50,7 +50,6 @@
     "autoload": {
         "classmap": [
             "Legacy/",
-            "mod/",
             "class.tx_rnbase.php",
             "class.tx_rnbase_controller.php"
 		],

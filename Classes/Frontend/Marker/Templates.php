@@ -125,11 +125,11 @@ class Templates
      * Examples: (the @ seperates the file from the subpart)
      *     <!--
      *         Subtemplate fuer dam einbinden
-     *         ###INCLUDE_TEMPLATE typo3conf/ext/rn_base/res/simplegallery.html@DAM_IMAGES###
+     *         ###INCLUDE_TEMPLATE typo3conf/ext/rn_base/Resources/Private/Templates/simplegallery.html@DAM_IMAGES###
      *         und eingebunden
      *     -->
      *     or
-     *     <!-- ### INCLUDE_TEMPLATE EXT:rn_base/res/simplegallery.html@DAM_IMAGES ### -->
+     *     <!-- ### INCLUDE_TEMPLATE EXT:rn_base/Resources/Private/Templates/simplegallery.html@DAM_IMAGES ### -->
      *
      * @param string $template
      *

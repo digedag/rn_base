@@ -1,9 +1,15 @@
 <?php
 
+namespace Sys25\RnBase\Backend\Module;
+
+use Sys25\RnBase\Backend\Form\ToolBox;
+use Sys25\RnBase\Backend\Template\Override\DocumentTemplate;
+use Sys25\RnBase\Configuration\ConfigurationInterface;
+
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009 Rene Nitzsche (rene@system25.de)
+*  (c) 2009-2021 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,24 +29,24 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-interface tx_rnbase_mod_IModule
+interface IModule
 {
     /**
-     * @return Tx_Rnbase_Backend_Template_Override_DocumentTemplate
+     * @return DocumentTemplate
      */
     public function getDoc();
 
     /**
      * Returns the form tool.
      *
-     * @return tx_rnbase_util_FormTool
+     * @return ToolBox
      */
     public function getFormTool();
 
     /**
      * Returns the configuration.
      *
-     * @return Tx_Rnbase_Configuration_ProcessorInterface
+     * @return ConfigurationInterface
      */
     public function getConfigurations();
 

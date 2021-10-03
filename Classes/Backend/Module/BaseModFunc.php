@@ -1,36 +1,44 @@
 <?php
 
-/***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Rene Nitzsche (rene@system25.de)
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-tx_rnbase::load('tx_rnbase_mod_IModule');
-tx_rnbase::load('tx_rnbase_mod_IModFunc');
+namespace Sys25\RnBase\Backend\Module;
 
-abstract class tx_rnbase_mod_BaseModFunc implements tx_rnbase_mod_IModFunc
+use Sys25\RnBase\Backend\Form\ToolBox;
+use Sys25\RnBase\Configuration\ConfigurationInterface;
+use Sys25\RnBase\Frontend\Marker\BaseMarker;
+use Sys25\RnBase\Frontend\Marker\FormatUtil;
+use Sys25\RnBase\Frontend\Marker\Templates;
+use Sys25\RnBase\Utility\Files;
+use Sys25\RnBase\Utility\Network;
+
+/***************************************************************
+ *  Copyright notice
+ *
+ *  (c) 2009-2021 Rene Nitzsche (rene@system25.de)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
+
+abstract class BaseModFunc implements IModFunc
 {
-    /* @var $mod tx_rnbase_mod_IModule */
+    /* @var $mod IModule */
     protected $mod;
 
-    public function init(tx_rnbase_mod_IModule $module, $conf)
+    public function init(IModule $module, $conf)
     {
         $this->mod = $module;
     }
@@ -38,7 +46,7 @@ abstract class tx_rnbase_mod_BaseModFunc implements tx_rnbase_mod_IModFunc
     /**
      * Returns the base module.
      *
-     * @return tx_rnbase_mod_IModule
+     * @return IModule
      */
     public function getModule()
     {
@@ -50,13 +58,13 @@ abstract class tx_rnbase_mod_BaseModFunc implements tx_rnbase_mod_IModFunc
         $out = '';
         $conf = $this->getModule()->getConfigurations();
 
-        $file = tx_rnbase_util_Files::getFileAbsFileName($conf->get($this->getConfId().'template'));
-        $templateCode = tx_rnbase_util_Network::getUrl($file);
+        $file = Files::getFileAbsFileName($conf->get($this->getConfId().'template'));
+        $templateCode = Network::getUrl($file);
         if (!$templateCode) {
             return $conf->getLL('msg_template_not_found').'<br />File: \''.$file.'\'<br />ConfId: \''.$this->getConfId().'template\'';
         }
         $subpart = '###'.strtoupper($this->getFuncId()).'###';
-        $template = tx_rnbase_util_Templates::getSubpart($templateCode, $subpart);
+        $template = Templates::getSubpart($templateCode, $subpart);
         if (!$template) {
             return $conf->getLL('msg_subpart_not_found').': '.$subpart;
         }
@@ -64,14 +72,14 @@ abstract class tx_rnbase_mod_BaseModFunc implements tx_rnbase_mod_IModFunc
         $start = microtime(true);
         $memStart = memory_get_usage();
         $out .= $this->getContent($template, $conf, $conf->getFormatter(), $this->getModule()->getFormTool());
-        if (tx_rnbase_util_BaseMarker::containsMarker($out, 'MOD_')) {
+        if (BaseMarker::containsMarker($out, 'MOD_')) {
             $markerArr = [];
             $memEnd = memory_get_usage();
             $markerArr['###MOD_PARSETIME###'] = (microtime(true) - $start);
             $markerArr['###MOD_MEMUSED###'] = ($memEnd - $memStart);
             $markerArr['###MOD_MEMSTART###'] = $memStart;
             $markerArr['###MOD_MEMEND###'] = $memEnd;
-            $out = tx_rnbase_util_Templates::substituteMarkerArrayCached($out, $markerArr);
+            $out = Templates::substituteMarkerArrayCached($out, $markerArr);
         }
 
         return $out;
@@ -81,9 +89,9 @@ abstract class tx_rnbase_mod_BaseModFunc implements tx_rnbase_mod_IModFunc
      * Kindklassen implementieren diese Methode um den Modulinhalt zu erzeugen.
      *
      * @param string                                     $template
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
-     * @param tx_rnbase_util_FormatUtil                  $formatter
-     * @param tx_rnbase_util_FormTool                    $formTool
+     * @param ConfigurationInterface $configurations
+     * @param FormatUtil $formatter
+     * @param ToolBox $formTool
      *
      * @return string
      */

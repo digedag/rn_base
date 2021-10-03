@@ -3,9 +3,9 @@
 namespace Sys25\RnBase\Backend\Handler;
 
 use Exception;
+use Sys25\RnBase\Backend\Module\IModule;
 use Sys25\RnBase\Domain\Model\RecordInterface;
 use Sys25\RnBase\Frontend\Marker\Templates;
-use tx_rnbase_mod_IModule;
 
 /***************************************************************
  * Copyright notice
@@ -47,16 +47,16 @@ abstract class DetailHandler extends SearchHandler
     /**
      * Display the user interface for this handler.
      *
-     * @param string                $template The subpart for handler in func template
-     * @param tx_rnbase_mod_IModule $mod
-     * @param array                 $options
+     * @param string $template The subpart for handler in func template
+     * @param IModule $mod
+     * @param array $options
      *
      * @return string
      */
     // @codingStandardsIgnoreStart (interface/abstract mistake)
     public function showScreen(
         $template,
-        tx_rnbase_mod_IModule $mod,
+        IModule $mod,
         $options
     ) {
         // @codingStandardsIgnoreEnd

@@ -1,36 +1,43 @@
 <?php
 
+namespace Sys25\RnBase\Backend\Module;
+
+use Sys25\RnBase\Backend\Form\ToolBox;
+use Sys25\RnBase\Frontend\Marker\BaseMarker;
+use Sys25\RnBase\Frontend\Marker\Templates;
+use Sys25\RnBase\Utility\Files;
+use Sys25\RnBase\Utility\Network;
+use Sys25\RnBase\Utility\Typo3Classes;
+
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009-2011 Rene Nitzsche (rene@system25.de)
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-tx_rnbase::load('tx_rnbase_mod_IModule');
-tx_rnbase::load('tx_rnbase_mod_IModFunc');
+ *  Copyright notice
+ *
+ *  (c) 2009-2021 Rene Nitzsche (rene@system25.de)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
  * ModFunc mit SubSelector und SubMenu.
  */
-abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
+abstract class ExtendedModFunc implements IModFunc
 {
-    public function init(tx_rnbase_mod_IModule $module, $conf)
+    public function init(IModule $module, $conf)
     {
         $this->mod = $module;
         $configurations = $this->getModule()->getConfigurations();
@@ -42,7 +49,7 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
     /**
      * Returns the base module.
      *
-     * @return tx_rnbase_mod_IModule
+     * @return IModule
      */
     public function getModule()
     {
@@ -54,13 +61,13 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
         $out = '';
         $conf = $this->getModule()->getConfigurations();
 
-        $file = tx_rnbase_util_Files::getFileAbsFileName($conf->get($this->getConfId().'template'));
-        $templateCode = tx_rnbase_util_Network::getUrl($file);
+        $file = Files::getFileAbsFileName($conf->get($this->getConfId().'template'));
+        $templateCode = Network::getUrl($file);
         if (!$templateCode) {
             return $conf->getLL('msg_template_not_found').'<br />File: \''.$file.'\'<br />ConfId: \''.$this->getConfId().'template\'';
         }
         $subpart = '###'.strtoupper($this->getFuncId()).'###';
-        $template = tx_rnbase_util_Templates::getSubpart($templateCode, $subpart);
+        $template = Templates::getSubpart($templateCode, $subpart);
         if (!$template) {
             return $conf->getLL('msg_subpart_not_found').': '.$subpart;
         }
@@ -68,14 +75,14 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
         $start = microtime(true);
         $memStart = memory_get_usage();
         $out .= $this->createContent($template, $conf);
-        if (tx_rnbase_util_BaseMarker::containsMarker($out, 'MOD_')) {
+        if (BaseMarker::containsMarker($out, 'MOD_')) {
             $markerArr = [];
             $memEnd = memory_get_usage();
             $markerArr['###MOD_PARSETIME###'] = (microtime(true) - $start);
             $markerArr['###MOD_MEMUSED###'] = ($memEnd - $memStart);
             $markerArr['###MOD_MEMSTART###'] = $memStart;
             $markerArr['###MOD_MEMEND###'] = $memEnd;
-            $out = tx_rnbase_util_Templates::substituteMarkerArrayCached($out, $markerArr);
+            $out = Templates::substituteMarkerArrayCached($out, $markerArr);
         }
 
         return $out;
@@ -110,7 +117,7 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
         $handler = $menuItems[$menu['value']];
         if (is_object($handler)) {
             $subpart = '###'.strtoupper($handler->getSubID()).'###';
-            $templateSub = tx_rnbase_util_Templates::getSubpart($template, $subpart);
+            $templateSub = Templates::getSubpart($template, $subpart);
 
             $args[] = $templateSub;
             $args[] = $this->getModule();
@@ -129,9 +136,9 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
         // Jetzt noch die COMMON-PARTS
         $content = '';
         $content .= $formTool->getTCEForm()->printNeededJSFunctions_top();
-        $content .= tx_rnbase_util_Templates::getSubpart($template, '###COMMON_START###');
+        $content .= Templates::getSubpart($template, '###COMMON_START###');
         $content .= $subOut;
-        $content .= tx_rnbase_util_Templates::getSubpart($template, '###COMMON_END###');
+        $content .= Templates::getSubpart($template, '###COMMON_END###');
         // Den JS-Code für Validierung einbinden
         $content .= $formTool->getTCEForm()->printNeededJSFunctions();
 
@@ -155,8 +162,8 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
     abstract protected function getFuncId();
 
     /**
-     * @param array                   $menuObjs
-     * @param tx_rnbase_util_FormTool $formTool
+     * @param array $menuObjs
+     * @param ToolBox $formTool
      *
      * @return array
      */
@@ -182,9 +189,9 @@ abstract class tx_rnbase_mod_ExtendedModFunc implements tx_rnbase_mod_IModFunc
         return $menu;
     }
 
-    protected function showMessage($message, tx_rnbase_mod_IModHandler $handler)
+    protected function showMessage($message, IModHandler $handler)
     {
-        $flashMessageClass = tx_rnbase_util_Typo3Classes::getFlashMessageClass();
+        $flashMessageClass = Typo3Classes::getFlashMessageClass();
         $severity = $flashMessageClass::OK;
         $store = false;
         if (is_array($message)) {

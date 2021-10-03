@@ -1,8 +1,15 @@
 <?php
+
+namespace Sys25\RnBase\Backend\Module\Linker;
+
+use Sys25\RnBase\Backend\Form\ToolBox;
+use Sys25\RnBase\Domain\Model\BaseModel;
+use Sys25\RnBase\Domain\Model\DataModel;
+
 /**
  * Copyright notice.
  *
- *  (c) 2007-2015 Rene Nitzsche (rene@system25.de)
+ *  (c) 2007-2021 Rene Nitzsche (rene@system25.de)
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,17 +34,17 @@
  *
  * @author Michael Wagner
  */
-interface tx_rnbase_mod_linker_LinkerInterface
+interface LinkerInterface
 {
     /**
      * Link zur Detailseite erzeugen.
      *
-     * @param Tx_Rnbase_Domain_Model_Base $item
-     * @param tx_rnbase_util_FormTool     $formTool
-     * @param int                         $currentPid
-     * @param tx_rnbase_model_data        $options
+     * @param BaseModel $item
+     * @param ToolBox $formTool
+     * @param int $currentPid
+     * @param DataModel $options
      *
      * @return string
      */
-    public function makeLink($item, $formTool, $currentPid, $options);
+    public function makeLink($item, ToolBox $formTool, $currentPid, $options);
 }

@@ -1,9 +1,13 @@
 <?php
 
+namespace Sys25\RnBase\Backend\Utility;
+
+use Sys25\RnBase\Backend\Module\IModule;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011 Rene Nitzsche (rene@system25.de)
+ *  (c) 2011-2021 Rene Nitzsche (rene@system25.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,20 +27,23 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-class tx_rnbase_mod_Util
+/**
+ * @deprecated liefert keinen wirklich sinnvollen Mehrwert
+ */
+class ModuleUtility
 {
     /**
      * Retrieve (and update) a value from module data.
      *
-     * @param string                $key
-     * @param tx_rnbase_mod_IModule $mod
-     * @param array                 $options
+     * @param string $key
+     * @param IModule $mod
+     * @param array $options
      */
-    public static function getModuleValue($key, tx_rnbase_mod_IModule $mod, $options = [])
+    public static function getModuleValue($key, IModule $mod, $options = [])
     {
         $changedSettings = is_array($options['changed']) ? $options['changed'] : [];
         $type = isset($options['type']) ? $options['type'] : '';
-        $modData = Tx_Rnbase_Backend_Utility::getModuleData([$key => ''], $changedSettings, $mod->getName(), $type);
+        $modData = BackendUtility::getModuleData([$key => ''], $changedSettings, $mod->getName(), $type);
 
         return isset($modData[$key]) ? $modData[$key] : null;
     }
@@ -44,10 +51,10 @@ class tx_rnbase_mod_Util
     /**
      * Returns all data for a module for current BE user.
      *
-     * @param tx_rnbase_mod_IModule $mod
-     * @param string                $type If type is 'ses' then the data is stored as session-lasting data. This means that it'll be wiped out the next time the user logs in.
+     * @param IModule $mod
+     * @param string $type If type is 'ses' then the data is stored as session-lasting data. This means that it'll be wiped out the next time the user logs in.
      */
-    public static function getUserData(tx_rnbase_mod_IModule $mod, $type = '')
+    public static function getUserData(IModule $mod, $type = '')
     {
         $settings = $GLOBALS['BE_USER']->getModuleData($mod->getName(), $type);
 
@@ -65,7 +72,7 @@ class tx_rnbase_mod_Util
      */
     public static function getSpriteIcon($iconName, array $options = [], array $overlays = [])
     {
-        return Tx_Rnbase_Backend_Utility_Icons::getSpriteIcon($iconName, $options, $overlays);
+        return Icons::getSpriteIcon($iconName, $options, $overlays);
     }
 
     /**
@@ -75,7 +82,7 @@ class tx_rnbase_mod_Util
      */
     public static function debugSprites()
     {
-        return Tx_Rnbase_Backend_Utility_Icons::debugSprites();
+        return Icons::debugSprites();
     }
 
     /**
@@ -97,7 +104,7 @@ class tx_rnbase_mod_Util
         $pid = isset($aOptions['pid']) && $aOptions['pid'] ? $aOptions['pid'] : 0;
 
         // Build select box items
-        $aData['selector'] = Tx_Rnbase_Backend_Utility::getFuncMenu(
+        $aData['selector'] = BackendUtility::getFuncMenu(
             $pid,
             'SET['.$id.']',
             $selectedItem,

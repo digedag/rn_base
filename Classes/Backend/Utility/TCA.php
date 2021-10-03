@@ -6,6 +6,7 @@ use LogicException;
 use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Domain\Model\RecordInterface;
 use Sys25\RnBase\Utility\Arrays;
+use Sys25\RnBase\Utility\Extensions;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
 use Sys25\RnBase\Utility\Typo3Classes;
@@ -221,7 +222,7 @@ class TCA
                 $eidUtility::initTCA();
             } else {
                 if (!is_array($GLOBALS['TCA'])) {
-                    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadBaseTca(true);
+                    Extensions::loadBaseTca(true);
                 }
             }
         } else {

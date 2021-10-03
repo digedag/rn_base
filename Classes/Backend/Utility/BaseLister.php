@@ -1,8 +1,20 @@
 <?php
+
+namespace Sys25\RnBase\Backend\Utility;
+
+use Exception;
+use Sys25\RnBase\Backend\Decorator\BaseDecorator;
+use Sys25\RnBase\Backend\Decorator\InterfaceDecorator;
+use Sys25\RnBase\Backend\Form\ToolBox;
+use Sys25\RnBase\Backend\Module\IModule;
+use Sys25\RnBase\Utility\T3General;
+use Traversable;
+use tx_rnbase;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011 René Nitzsche <rene@system25.de>
+ *  (c) 2011-2021 René Nitzsche <rene@system25.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -28,14 +40,14 @@
  * @author René Nitzsche <rene@system25.de>
  * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
  */
-abstract class tx_rnbase_mod_base_Lister
+abstract class BaseLister
 {
     public const KEY_SHOWHIDDEN = 'showhidden';
 
     /**
      * Selector Klasse.
      *
-     * @var tx_rnbase_mod_IModule
+     * @var IModule
      */
     private $mod = null;
 
@@ -58,10 +70,10 @@ abstract class tx_rnbase_mod_base_Lister
     /**
      * Constructor.
      *
-     * @param tx_rnbase_mod_IModule $mod
-     * @param array                 $options
+     * @param IModule $mod
+     * @param array $options
      */
-    public function __construct(tx_rnbase_mod_IModule $mod, array $options = [])
+    public function __construct(IModule $mod, array $options = [])
     {
         $this->init($mod, $options);
     }
@@ -96,10 +108,10 @@ abstract class tx_rnbase_mod_base_Lister
     /**
      * Init object.
      *
-     * @param tx_rnbase_mod_IModule $mod
+     * @param IModule $mod
      * @param array                 $options
      */
-    protected function init(tx_rnbase_mod_IModule $mod, $options)
+    protected function init(IModule $mod, $options)
     {
         $this->options = $options;
         $this->mod = $mod;
@@ -117,7 +129,7 @@ abstract class tx_rnbase_mod_base_Lister
     /**
      * Liefert den Service.
      *
-     * @return Sys25\RnBase\Domain\Repository\SearchInterface
+     * @return \Sys25\RnBase\Domain\Repository\SearchInterface
      */
     abstract protected function getService();
 
@@ -190,19 +202,14 @@ abstract class tx_rnbase_mod_base_Lister
     /**
      * Bildet die Resultliste mit Pager.
      *
-     * @param tx_mklib_mod1_searcher_Base $callingClass
-     * @param object                      $srv
-     * @param array                       $fields
-     * @param array                       $options
-     *
-     * @return string
+     * @return array
      */
     public function getResultList()
     {
         $srv = $this->getService();
-        /* @var $pager tx_rnbase_util_BEPager */
+        /* @var $pager BEPager */
         $pager = tx_rnbase::makeInstance(
-            'tx_rnbase_util_BEPager',
+            BEPager::class,
             $this->getSearcherId().'Pager',
             $this->getModule()->getName(),
             $this->options['pid']
@@ -295,7 +302,7 @@ abstract class tx_rnbase_mod_base_Lister
      * Start creation of result list.
      *
      * @param string            $content
-     * @param array|Traversable $items
+     * @param array|\Traversable $items
      *
      * @return string
      */
@@ -318,8 +325,8 @@ abstract class tx_rnbase_mod_base_Lister
             $options['linker'] = $columns['linker'];
             unset($columns['linker']);
         }
-        /* @var Tx_Rnbase_Backend_Utility_Tables $tables */
-        $tables = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Utility_Tables');
+        /* @var Tables $tables */
+        $tables = tx_rnbase::makeInstance(Tables::class);
         list($tableData, $tableLayout) = $tables->prepareTable(
             $items,
             $columns,
@@ -337,12 +344,12 @@ abstract class tx_rnbase_mod_base_Lister
     /**
      * The decorator class for the be listing.
      *
-     * @return Tx_Rnbase_Backend_Decorator_InterfaceDecorator
+     * @return InterfaceDecorator
      */
     protected function createDefaultDecorator()
     {
         return tx_rnbase::makeInstance(
-            'Tx_Rnbase_Backend_Decorator_BaseDecorator',
+            BaseDecorator::class,
             $this->getModule()
         );
     }
@@ -350,7 +357,7 @@ abstract class tx_rnbase_mod_base_Lister
     /**
      * Liefert die Spalten für den Decorator.
      *
-     * @param Tx_Rnbase_Backend_Decorator_InterfaceDecorator $decorator
+     * @param InterfaceDecorator $decorator
      *
      * @deprecated use getDecoratorColumns instead!!!
      *
@@ -365,7 +372,7 @@ abstract class tx_rnbase_mod_base_Lister
     /**
      * Liefert die Spalten für den Decorator.
      *
-     * @param Tx_Rnbase_Backend_Decorator_InterfaceDecorator $decorator
+     * @param InterfaceDecorator $decorator
      *
      * @return array
      */
@@ -400,9 +407,9 @@ abstract class tx_rnbase_mod_base_Lister
     }
 
     /**
-     * Returns an instance of tx_rnbase_mod_IModule.
+     * Returns an instance of IModule.
      *
-     * @return tx_rnbase_mod_IModule
+     * @return IModule
      */
     protected function getModule()
     {
@@ -410,9 +417,9 @@ abstract class tx_rnbase_mod_base_Lister
     }
 
     /**
-     * Returns an instance of tx_rnbase_mod_IModule.
+     * Returns an instance of IModule.
      *
-     * @return tx_rnbase_mod_IModule
+     * @return IModule
      */
     protected function getOptions()
     {
@@ -420,9 +427,9 @@ abstract class tx_rnbase_mod_base_Lister
     }
 
     /**
-     * Returns an instance of tx_rnbase_mod_IModule.
+     * Returns an instance of IModule.
      *
-     * @return tx_rnbase_util_FormTool
+     * @return ToolBox
      */
     protected function getFormTool()
     {
@@ -505,8 +512,8 @@ abstract class tx_rnbase_mod_base_Lister
      */
     protected function showFreeTextSearchForm(&$marker, $key, array $options = [])
     {
-        $searchstring = tx_rnbase_mod_Util::getModuleValue($key, $this->getModule(), [
-            'changed' => Tx_Rnbase_Utility_T3General::_GP('SET'),
+        $searchstring = ModuleUtility::getModuleValue($key, $this->getModule(), [
+            'changed' => T3General::_GP('SET'),
         ]);
 
         // Erst das Suchfeld, danach der Button.
@@ -522,12 +529,12 @@ abstract class tx_rnbase_mod_base_Lister
             0 => $GLOBALS['LANG']->getLL('label_select_hide_hidden'),
             1 => $GLOBALS['LANG']->getLL('label_select_show_hidden'),
         ];
-        $selectedItem = tx_rnbase_mod_Util::getModuleValue('showhidden', $this->getModule(), [
-            'changed' => Tx_Rnbase_Utility_T3General::_GP('SET'),
+        $selectedItem = ModuleUtility::getModuleValue('showhidden', $this->getModule(), [
+            'changed' => T3General::_GP('SET'),
         ]);
 
         $options['label'] = $options['label'] ? $options['label'] : $GLOBALS['LANG']->getLL('label_hidden');
 
-        return tx_rnbase_mod_Util::showSelectorByArray($items, $selectedItem, 'showhidden', $marker, $options);
+        return ModuleUtility::showSelectorByArray($items, $selectedItem, 'showhidden', $marker, $options);
     }
 }
