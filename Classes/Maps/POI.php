@@ -25,7 +25,6 @@ namespace Sys25\RnBase\Maps;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * Implementation for a POI with description. Useful to mark a point in a map.
  */

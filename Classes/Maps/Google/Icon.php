@@ -2,7 +2,6 @@
 
 namespace Sys25\RnBase\Maps\Google;
 
-
 use Sys25\RnBase\Maps\IIcon;
 
 /***************************************************************

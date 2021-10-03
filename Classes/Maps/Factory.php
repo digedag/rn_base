@@ -1,12 +1,13 @@
 <?php
+
 namespace Sys25\RnBase\Maps;
 
-use Sys25\RnBase\Maps\Google\Map;
-use tx_rnbase;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
-use Sys25\RnBase\Maps\Google\Icon;
-use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Maps\Google\Control;
+use Sys25\RnBase\Maps\Google\Icon;
+use Sys25\RnBase\Maps\Google\Map;
+use Sys25\RnBase\Utility\Misc;
+use tx_rnbase;
 
 /***************************************************************
 *  Copyright notice

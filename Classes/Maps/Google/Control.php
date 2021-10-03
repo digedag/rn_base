@@ -1,4 +1,5 @@
 <?php
+
 namespace Sys25\RnBase\Maps\Google;
 
 use Sys25\RnBase\Maps\IControl;
@@ -25,7 +26,6 @@ use Sys25\RnBase\Maps\IControl;
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-
 
 /**
  * Implementation for GoogleControls.

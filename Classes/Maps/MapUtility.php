@@ -3,9 +3,9 @@
 namespace Sys25\RnBase\Maps;
 
 use Exception;
+use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Frontend\Marker\Templates;
 use tx_rnbase;
-use Sys25\RnBase\Configuration\ConfigurationInterface;
 
 /***************************************************************
 *  Copyright notice

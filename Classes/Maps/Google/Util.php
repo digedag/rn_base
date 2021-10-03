@@ -3,8 +3,8 @@
 namespace Sys25\RnBase\Maps\Google;
 
 use Exception;
-use Sys25\RnBase\Utility\Logger;
 use Sys25\RnBase\Utility\Extensions;
+use Sys25\RnBase\Utility\Logger;
 
 /***************************************************************
 *  Copyright notice

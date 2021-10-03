@@ -4,12 +4,12 @@ namespace Sys25\RnBase\Maps\Google;
 
 use Exception;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
-use Sys25\RnBase\Utility\Strings;
-use Sys25\RnBase\Utility\Extensions;
-use Sys25\RnBase\Maps\TypeRegistry;
 use Sys25\RnBase\Maps\BaseMap;
 use Sys25\RnBase\Maps\IControl;
 use Sys25\RnBase\Maps\IMarker;
+use Sys25\RnBase\Maps\TypeRegistry;
+use Sys25\RnBase\Utility\Extensions;
+use Sys25\RnBase\Utility\Strings;
 use tx_rnbase;
 
 /***************************************************************
