@@ -49,9 +49,7 @@
     },
     "autoload": {
         "classmap": [
-            "Legacy/",
-            "class.tx_rnbase.php",
-            "class.tx_rnbase_controller.php"
+            "Legacy/"
 		],
         "files": [
             "Classes/Constants.php"

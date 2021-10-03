@@ -33,6 +33,7 @@ v1.14.0 (??.09.2021)
  * BC: File `mod/template.html` moved to `Resources/Private/Templates/template.html`
  * BC: File `mod/locallang.xml` moved to `Resources/Private/Language/locallang.xml`
  * BC: File `res/simplegallery.html` moved to `Resources/Private/Templates/simplegallery.html`
+ * BC: Moved `tx_rnbase` and `tx_rnbase_controller` to **Legacy**-Folder
 
 v1.13.15 (30.09.2021)
  * Accept pidlist in queries if it's an integer
