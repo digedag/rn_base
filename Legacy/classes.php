@@ -489,6 +489,10 @@ if (false) {
     interface Tx_Rnbase_Domain_Model_RecordInterface
     {
     }
+    /** @deprecated Sys25\RnBase\Domain\Model\RecordInterface */
+    interface tx_rnbase_IModel
+    {
+    }
     /** @deprecated */
     class Tx_Rnbase_Domain_Model_Data
     {
