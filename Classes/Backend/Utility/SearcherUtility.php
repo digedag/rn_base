@@ -96,6 +96,7 @@ class SearcherUtility
         // we has to build a uid map for sortable tables!
         $firstPrev = $lastNext = false;
         $baseTableName = $this->getOptions()->getBaseTableName();
+        $downStep = 1;
         if ((
             $baseTableName
             && tx_rnbase_util_TCA::getSortbyFieldForTable($baseTableName)
@@ -124,6 +125,7 @@ class SearcherUtility
         // perform the search
         $items = $repository->search($fields, $options);
 
+        $secondPrev = null;
         // reduce the itemy by first and last
         if ($firstPrev || $lastNext) {
             $isCollection = is_object($items);

@@ -674,6 +674,8 @@ MAYDAYPAGE;
             } else {
                 $lock->lockProcess();
             }
+        } else {
+            $lock = null;
         }
 
         $textPart = self::getErrorMailText($e, $actionName);
