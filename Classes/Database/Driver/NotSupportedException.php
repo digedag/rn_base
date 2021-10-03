@@ -1,9 +1,11 @@
 <?php
 
+namespace Sys25\RnBase\Database\Driver;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011 Rene Nitzsche
+ *  (c) 2011-2021 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -22,10 +24,9 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_Exception');
 /**
  * Default exception class.
  */
-class tx_rnbase_util_db_Exception extends tx_rnbase_util_Exception
+class NotSupportedException extends DatabaseException
 {
 }

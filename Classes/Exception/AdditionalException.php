@@ -1,5 +1,9 @@
 <?php
 
+namespace Sys25\RnBase\Exception;
+
+use Exception;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -25,7 +29,7 @@
 /**
  * Default exception class.
  */
-class tx_rnbase_util_Exception extends Exception
+class AdditionalException extends Exception
 {
     private $additional = false;
 

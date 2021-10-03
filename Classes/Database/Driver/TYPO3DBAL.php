@@ -1,8 +1,11 @@
 <?php
+
+namespace Sys25\RnBase\Database\Driver;
+
 /***************************************************************
  * Copyright notice
  *
- * (c) 2018 Rene Nitzsche
+ * (c) 2018-2021 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -30,7 +33,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-class tx_rnbase_util_db_TYPO3DBAL implements tx_rnbase_util_db_IDatabase, tx_rnbase_util_db_IDatabaseT3
+class TYPO3DBAL implements IDatabase, IDatabaseT3
 {
     /**
      * Set "true" if you want database errors outputted.
@@ -83,11 +86,11 @@ class tx_rnbase_util_db_TYPO3DBAL implements tx_rnbase_util_db_IDatabase, tx_rnb
     }
 
     /**
-     * @return tx_rnbase_util_db_Builder
+     * @return LegacyQueryBuilder
      */
     protected function getBuilderUtil()
     {
-        return tx_rnbase_util_db_Builder::instance();
+        return LegacyQueryBuilder::instance();
     }
 
     /**
@@ -221,10 +224,10 @@ class tx_rnbase_util_db_TYPO3DBAL implements tx_rnbase_util_db_IDatabase, tx_rnb
      * Taken from TYPO3/CMS-CORE
      *     \TYPO3\CMS\Core\Database\DatabaseConnection::UPDATEquery
      *
-     * @param string            $table         Database tablename
-     * @param sring             $where         WHERE clause, eg. "uid=1".
-     *                                         NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
-     * @param array             $fieldsValues  field values as key=>value pairs
+     * @param string $table Database tablename
+     * @param string $where WHERE clause, eg. "uid=1".
+     *                      NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
+     * @param array $fieldsValues  field values as key=>value pairs
      * @param bool|string|array $noQuoteFields
      *
      * @return string sql query
@@ -313,7 +316,7 @@ class tx_rnbase_util_db_TYPO3DBAL implements tx_rnbase_util_db_IDatabase, tx_rnb
      *
      * @param   string      Query to execute
      *
-     * @return pointer Result pointer / DBAL object
+     * @return object Result pointer / DBAL object
      */
     public function sql_query($query)
     {

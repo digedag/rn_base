@@ -1,11 +1,14 @@
 <?php
 
+namespace Sys25\RnBase\Database\Driver;
+
 use Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface;
+use tx_rnbase;
 
 /***************************************************************
  * Copyright notice
  *
- * (c) 2018 Rene Nitzsche
+ * (c) 2018-2021 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -33,10 +36,10 @@ use Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface;
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-class tx_rnbase_util_db_Builder implements SingletonInterface
+class LegacyQueryBuilder implements SingletonInterface
 {
     /**
-     * @return tx_rnbase_util_db_Builder
+     * @return LegacyQueryBuilder
      */
     public static function instance()
     {
@@ -117,10 +120,10 @@ class tx_rnbase_util_db_Builder implements SingletonInterface
      * Taken from TYPO3/CMS-CORE
      *     \TYPO3\CMS\Core\Database\DatabaseConnection::UPDATEquery
      *
-     * @param string            $table         Database tablename
-     * @param sring             $where         WHERE clause, eg. "uid=1".
-     *                                         NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
-     * @param array             $fieldsValues  field values as key=>value pairs
+     * @param string $table Database tablename
+     * @param string $where WHERE clause, eg. "uid=1".
+     *                      NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
+     * @param array $fieldsValues  field values as key=>value pairs
      * @param bool|string|array $noQuoteFields
      *
      * @return string sql query

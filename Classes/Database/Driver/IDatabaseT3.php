@@ -1,9 +1,11 @@
 <?php
 
+namespace Sys25\RnBase\Database\Driver;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2018 Rene Nitzsche
+ *  (c) 2018-2021 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -29,7 +31,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-interface tx_rnbase_util_db_IDatabaseT3
+interface IDatabaseT3
 {
     /**
      * Substitution for PHP function "addslashes()".

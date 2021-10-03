@@ -92,6 +92,7 @@ if (class_exists('Sys25\RnBase\Typo3Wrapper\Core\CommandLineController')) {
 \class_alias(\Sys25\RnBase\Utility\Email::class, 'tx_rnbase_util_Mail');
 \class_alias(\Sys25\RnBase\Utility\TypoScript::class, 'Tx_Rnbase_Utility_TypoScript');
 \class_alias(\Sys25\RnBase\Utility\WizIcon::class, 'Tx_Rnbase_Utility_WizIcon');
+\class_alias(\Sys25\RnBase\Exception\AdditionalException::class, 'tx_rnbase_util_Exception');
 \class_alias(\Sys25\RnBase\Exception\ExceptionHandlerInterface::class, 'tx_rnbase_exception_IHandler');
 \class_alias(\Sys25\RnBase\Exception\ExceptionHandler::class, 'tx_rnbase_exception_Handler');
 \class_alias(\Sys25\RnBase\Utility\Dates::class, 'tx_rnbase_util_Dates');
@@ -116,6 +117,14 @@ if (class_exists('Sys25\RnBase\Typo3Wrapper\Core\CommandLineController')) {
 \class_alias(\Sys25\RnBase\Maps\IMap::class, 'tx_rnbase_maps_IMap');
 \class_alias(\Sys25\RnBase\Maps\MapUtility::class, 'tx_rnbase_maps_Util');
 \class_alias(\Sys25\RnBase\Maps\POI::class, 'tx_rnbase_maps_POI');
+\class_alias(\Sys25\RnBase\Database\Driver\DatabaseException::class, 'tx_rnbase_util_db_Exception');
+\class_alias(\Sys25\RnBase\Database\Driver\IDatabase::class, 'tx_rnbase_util_db_IDatabase');
+\class_alias(\Sys25\RnBase\Database\Driver\IDatabaseT3::class, 'tx_rnbase_util_db_IDatabaseT3');
+\class_alias(\Sys25\RnBase\Database\Driver\LegacyQueryBuilder::class, 'tx_rnbase_util_db_Builder');
+\class_alias(\Sys25\RnBase\Database\Driver\MsSqlDatabase::class, 'tx_rnbase_util_db_MsSQL');
+\class_alias(\Sys25\RnBase\Database\Driver\MySqlDatabase::class, 'tx_rnbase_util_db_MySQL');
+\class_alias(\Sys25\RnBase\Database\Driver\TYPO3Database::class, 'tx_rnbase_util_db_TYPO3');
+\class_alias(\Sys25\RnBase\Database\Driver\TYPO3DBAL::class, 'tx_rnbase_util_db_TYPO3DBAL');
 
 \class_alias(\Sys25\RnBase\Search\System\CategorySearchUtility::class, 'Tx_Rnbase_Category_SearchUtility');
 \class_alias(\Sys25\RnBase\Search\System\CategorySearchUtility::class, 'Sys25\RnBase\Search\Category\SearchUtility');
@@ -457,6 +466,10 @@ if (false) {
     {
     }
     /** @deprecated */
+    class tx_rnbase_util_Exception
+    {
+    }
+    /** @deprecated */
     interface tx_rnbase_exception_IHandler
     {
     }
@@ -547,6 +560,38 @@ if (false) {
     }
     /** @deprecated */
     class tx_rnbase_maps_POI
+    {
+    }
+    /** @deprecated */
+    interface tx_rnbase_util_db_Exception
+    {
+    }
+    /** @deprecated */
+    interface tx_rnbase_util_db_IDatabase
+    {
+    }
+    /** @deprecated */
+    interface tx_rnbase_util_db_IDatabaseT3
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_util_db_Builder
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_util_db_MsSQL
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_util_db_MySQL
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_util_db_TYPO3
+    {
+    }
+    /** @deprecated */
+    class tx_rnbase_util_db_TYPO3DBAL
     {
     }
 }

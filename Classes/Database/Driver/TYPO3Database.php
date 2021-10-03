@@ -1,9 +1,11 @@
 <?php
 
+namespace Sys25\RnBase\Database\Driver;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011 Rene Nitzsche
+ *  (c) 2011-2021 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -25,7 +27,7 @@
 /**
  * DB wrapper for TYPO3 database.
  */
-class tx_rnbase_util_db_TYPO3 implements tx_rnbase_util_db_IDatabase, tx_rnbase_util_db_IDatabaseT3
+class TYPO3Database implements IDatabase, IDatabaseT3
 {
     /**
      * Internally: Set to last built query (not necessarily executed...).
@@ -75,7 +77,7 @@ class tx_rnbase_util_db_TYPO3 implements tx_rnbase_util_db_IDatabase, tx_rnbase_
      * @param   string      optional ORDER BY field(s), if none, supply blank string
      * @param   string      optional LIMIT value ([begin,]max), if none, supply blank string
      *
-     * @return pointer MySQL result pointer / DBAL object
+     * @return object MySQL result pointer / DBAL object
      */
     public function exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '')
     {
@@ -114,7 +116,7 @@ class tx_rnbase_util_db_TYPO3 implements tx_rnbase_util_db_IDatabase, tx_rnbase_
      * @param   array       Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$insertFields" with 'fieldname'=>'value' and pass it to this function as argument.
      * @param   array
      *
-     * @return pointer MySQL result pointer / DBAL object
+     * @return object MySQL result pointer / DBAL object
      */
     public function exec_INSERTquery($table, $fields_values, $no_quote_fields = false)
     {
@@ -155,7 +157,7 @@ class tx_rnbase_util_db_TYPO3 implements tx_rnbase_util_db_IDatabase, tx_rnbase_
      * @param   array       Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$updateFields" with 'fieldname'=>'value' and pass it to this function as argument.
      * @param   array
      *
-     * @return pointer MySQL result pointer / DBAL object
+     * @return object MySQL result pointer / DBAL object
      */
     public function exec_UPDATEquery($table, $where, $fields_values, $no_quote_fields = false)
     {
@@ -192,7 +194,7 @@ class tx_rnbase_util_db_TYPO3 implements tx_rnbase_util_db_IDatabase, tx_rnbase_
      * @param   string      Database tablename
      * @param string      WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
      *
-     * @return pointer MySQL result pointer / DBAL object
+     * @return object MySQL result pointer / DBAL object
      */
     public function exec_DELETEquery($table, $where)
     {
@@ -209,7 +211,7 @@ class tx_rnbase_util_db_TYPO3 implements tx_rnbase_util_db_IDatabase, tx_rnbase_
      *
      * @param   string      Query to execute
      *
-     * @return pointer Result pointer / DBAL object
+     * @return object Result pointer / DBAL object
      */
     public function sql_query($query)
     {
