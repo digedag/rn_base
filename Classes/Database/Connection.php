@@ -469,7 +469,6 @@ class Connection implements SingletonInterface
         // the connection has to be reconected after cache load,
         // so only the credentials are stored in cache, but this is critical,
         // so the cache was removed for the moment!
-//        tx_rnbase::load('tx_rnbase_cache_Manager');
 //        $cache = tx_rnbase_cache_Manager::getCache('rnbase_databases');
 //        $db = $cache->get('db_' . $key);
 //        if (!$db) {

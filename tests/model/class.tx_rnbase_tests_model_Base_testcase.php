@@ -23,7 +23,6 @@
 ***************************************************************/
 
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('tx_rnbase_model_base');
 
 class tx_rnbase_tests_model_Base_testcase extends tx_rnbase_tests_BaseTestCase
 {

@@ -22,8 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_SimpleMarker');
-
 if (tx_rnbase_util_Extensions::isLoaded('dam')) {
     require_once tx_rnbase_util_Extensions::extPath('dam').'lib/class.tx_dam_db.php';
 }

@@ -27,8 +27,6 @@ use Sys25\RnBase\Frontend\Request\Parameters;
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-\tx_rnbase::load('Tx_Rnbase_Category_SearchUtility');
-\tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
 /**
  * Tx_Rnbase_Category_FilterUtilityTest.

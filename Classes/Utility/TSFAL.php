@@ -164,7 +164,6 @@ class TSFAL
         /* @var $fileRepository \TYPO3\CMS\Core\Resource\FileRepository */
         $fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
         $pics = [];
-        tx_rnbase::load('tx_rnbase_util_Strings');
         // Getting the files
         // Try DAM style
         if ($conf->get($confId.'refTable')) {

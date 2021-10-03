@@ -667,7 +667,6 @@ MAYDAYPAGE;
         $ignoreMailLock = (array_key_exists('ignoremaillock', $options) && $options['ignoremaillock']);
 
         if (!$ignoreMailLock) {
-            tx_rnbase::load('tx_rnbase_util_Lock');
             // Only one mail within one minute!
             $lock = tx_rnbase_util_Lock::getInstance('errormail', 60);
             if ($lock->isLocked()) {
@@ -708,7 +707,6 @@ MAYDAYPAGE;
         $textPart .= "Stacktrace:\n".$e->__toString()."\n";
         $textPart .= 'SITE_URL: '.self::getIndpEnv('TYPO3_SITE_URL')."\n";
 
-        tx_rnbase::load('tx_rnbase_util_TYPO3');
         $textPart .= 'BE_USER: '.TYPO3::getBEUserUID()."\n";
         $textPart .= 'FE_USER: '.TYPO3::getFEUserUID()."\n";
 
@@ -746,7 +744,6 @@ MAYDAYPAGE;
             }
         }
 
-        tx_rnbase::load('tx_rnbase_util_TYPO3');
         $htmlPart .= '<p><strong>BE_USER:</strong> '.TYPO3::getBEUserUID().'</p>';
         $htmlPart .= '<p><strong>FE_USER:</strong> '.TYPO3::getFEUserUID().'</p>';
 

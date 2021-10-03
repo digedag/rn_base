@@ -22,8 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_controller');
-tx_rnbase::load('tx_rnbase_exception_IHandler');
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
 class tx_rnbase_dummyController extends tx_rnbase_controller
