@@ -25,7 +25,9 @@ namespace Sys25\RnBase\Typo3Wrapper\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-if (\tx_rnbase_util_TYPO3::isTYPO95OrHigher()) {
+use Sys25\RnBase\Utility\TYPO3;
+
+if (TYPO3::isTYPO95OrHigher()) {
     class AuthenticationService extends \TYPO3\CMS\Core\Authentication\AuthenticationService
     {
     }

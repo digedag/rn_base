@@ -4,8 +4,8 @@ namespace Sys25\RnBase\Backend\Handler;
 
 use Exception;
 use Sys25\RnBase\Domain\Model\RecordInterface;
+use Sys25\RnBase\Frontend\Marker\Templates;
 use tx_rnbase_mod_IModule;
-use tx_rnbase_util_Templates;
 
 /***************************************************************
  * Copyright notice
@@ -64,7 +64,7 @@ abstract class DetailHandler extends SearchHandler
 
         $current = $this->getObject();
 
-        $templateMod = tx_rnbase_util_Templates::getSubpart(
+        $templateMod = Templates::getSubpart(
             $template,
             $current ? '###DETAILPART###' : '###SEARCHPART###'
         );
@@ -95,7 +95,7 @@ abstract class DetailHandler extends SearchHandler
             );
         }
 
-        return tx_rnbase_util_Templates::substituteMarkerArrayCached(
+        return Templates::substituteMarkerArrayCached(
             $templateMod,
             $markerArray
         );

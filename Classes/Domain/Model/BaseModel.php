@@ -5,7 +5,7 @@ namespace Sys25\RnBase\Domain\Model;
 use DateTime;
 use DateTimeZone;
 use Sys25\RnBase\Database\Connection;
-use tx_rnbase_util_Dates;
+use Sys25\RnBase\Utility\Dates;
 use tx_rnbase_util_TCA;
 
 /***************************************************************
@@ -208,7 +208,7 @@ class BaseModel extends DataModel implements DomainInterface, DynamicTableInterf
             $field = tx_rnbase_util_TCA::getCrdateFieldForTable($tableName);
             if (!$this->isPropertyEmpty($field)) {
                 $tstamp = (int) $this->getProperty($field);
-                $datetime = tx_rnbase_util_Dates::getDateTime(
+                $datetime = Dates::getDateTime(
                     '@'.$tstamp,
                     $timezone
                 );
@@ -234,7 +234,7 @@ class BaseModel extends DataModel implements DomainInterface, DynamicTableInterf
             $field = tx_rnbase_util_TCA::getTstampFieldForTable($tableName);
             if (!$this->isPropertyEmpty($field)) {
                 $tstamp = (int) $this->getProperty($field);
-                $datetime = tx_rnbase_util_Dates::getDateTime(
+                $datetime = Dates::getDateTime(
                     '@'.$tstamp,
                     $timezone
                 );

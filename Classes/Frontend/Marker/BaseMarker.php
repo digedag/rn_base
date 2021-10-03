@@ -11,7 +11,6 @@ use tx_rnbase;
 use tx_rnbase_model_base;
 use tx_rnbase_util_FormatUtil;
 use tx_rnbase_util_PageBrowser;
-use tx_rnbase_util_Templates;
 
 /**
  *  Copyright notice.
@@ -330,7 +329,7 @@ class BaseMarker
             } else {
                 $wrappedSubpartArray['###PB_ITEM_LINK###'] = $emptyArr;
             }
-            $out[] = tx_rnbase_util_Templates::substituteMarkerArrayCached($template, $myMarkerArray, $emptyArr, $wrappedSubpartArray);
+            $out[] = Templates::substituteMarkerArrayCached($template, $myMarkerArray, $emptyArr, $wrappedSubpartArray);
         }
 
         return implode($configurations->get($confId.'implode'), $out);
@@ -440,7 +439,7 @@ class BaseMarker
             if (preg_match('/MARKERMODULE__([A-Z0-9_\-])*/', $marker)) {
                 $module = tx_rnbase::makeInstanceService('markermodule', substr($marker, 14));
                 if (is_object($module)) {
-                    $subTemplate = tx_rnbase_util_Templates::getSubpart($template, '###'.$marker.'###');
+                    $subTemplate = Templates::getSubpart($template, '###'.$marker.'###');
                     $subpart = $module->parseTemplate($subTemplate, $params, $formatter);
                     if (false !== $subpart) {
                         if (is_array($subpart)) {
@@ -509,6 +508,6 @@ class BaseMarker
 
     public static function substituteMarkerArrayCached($content, $markContentArray = [], $subpartContentArray = [], $wrappedSubpartContentArray = [])
     {
-        return tx_rnbase_util_Templates::substituteMarkerArrayCached($content, $markContentArray, $subpartContentArray, $wrappedSubpartContentArray);
+        return Templates::substituteMarkerArrayCached($content, $markContentArray, $subpartContentArray, $wrappedSubpartContentArray);
     }
 }

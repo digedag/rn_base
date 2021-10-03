@@ -5,13 +5,13 @@ namespace Sys25\RnBase\Backend\Handler;
 use Exception;
 use Sys25\RnBase\Backend\Lister\AbstractLister;
 use Sys25\RnBase\Domain\Model\DataModel;
+use Sys25\RnBase\Frontend\Marker\Templates;
 use Sys25\RnBase\Utility\Strings;
 use tx_rnbase;
 use tx_rnbase_mod_BaseModule;
 use tx_rnbase_mod_IModHandler;
 use tx_rnbase_mod_IModule;
 use tx_rnbase_util_FormTool;
-use tx_rnbase_util_Templates;
 
 /***************************************************************
  * Copyright notice
@@ -211,7 +211,7 @@ abstract class SearchHandler implements tx_rnbase_mod_IModHandler
             $wrappedSubpartArray
         );
 
-        return tx_rnbase_util_Templates::substituteMarkerArrayCached(
+        return Templates::substituteMarkerArrayCached(
             $template,
             $markerArray
         );

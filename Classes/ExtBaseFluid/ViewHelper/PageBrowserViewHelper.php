@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\ExtBaseFluid\ViewHelper;
 
+use Sys25\RnBase\Utility\Math;
 use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 
@@ -251,7 +252,7 @@ class PageBrowserViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTa
             if ('CENTER' == strtoupper($pageFloat)) {
                 $pageFloat = ceil(($maxPages - 1) / 2);
             } else {
-                $pageFloat = \tx_rnbase_util_Math::intInRange(
+                $pageFloat = Math::intInRange(
                     $pageFloat,
                     -1,
                     $maxPages - 1
@@ -278,7 +279,7 @@ class PageBrowserViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTa
             $ret['first'] = max(0, $ret['last'] - $maxPages);
         } else {
             $ret['first'] = 0;
-            $ret['last'] = \tx_rnbase_util_Math::intInRange($totalPages, 1, $maxPages);
+            $ret['last'] = Math::intInRange($totalPages, 1, $maxPages);
         }
 
         return $ret;

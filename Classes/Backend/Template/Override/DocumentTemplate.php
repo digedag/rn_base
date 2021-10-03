@@ -2,8 +2,8 @@
 
 namespace Sys25\RnBase\Backend\Template\Override;
 
+use Sys25\RnBase\Utility\T3General;
 use Sys25\RnBase\Utility\TYPO3;
-use Tx_Rnbase_Utility_T3General;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -123,7 +123,7 @@ function jumpToUrl(URL) {
             if (!is_array($mainParams)) {
                 $mainParams = ['id' => $mainParams];
             }
-            $mainParams = Tx_Rnbase_Utility_T3General::implodeArrayForUrl('', $mainParams);
+            $mainParams = T3General::implodeArrayForUrl('', $mainParams);
             if (!$script) {
                 $script = basename(\Sys25\RnBase\Utility\Environment::getCurrentScript());
             }

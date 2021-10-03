@@ -17,7 +17,6 @@ use tx_rnbase;
 use tx_rnbase_mod_BaseModule;
 use tx_rnbase_mod_IModule;
 use tx_rnbase_mod_Util;
-use tx_rnbase_util_Templates;
 use UnexpectedValueException;
 
 /***************************************************************
@@ -310,7 +309,7 @@ abstract class AbstractLister
     public function renderTemplate(
         $template
     ) {
-        return tx_rnbase_util_Templates::substituteMarkerArrayCached(
+        return Templates::substituteMarkerArrayCached(
             $template,
             $this->renderListMarkers()
         );

@@ -6,13 +6,13 @@ use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Frontend\Marker\BaseMarker;
 use Sys25\RnBase\Frontend\Marker\MarkerUtility;
+use Sys25\RnBase\Frontend\Marker\Templates;
 use Sys25\RnBase\Frontend\Request\RequestInterface;
 use Sys25\RnBase\Frontend\View\AbstractView;
 use Sys25\RnBase\Frontend\View\ContextInterface;
 use Sys25\RnBase\Frontend\View\ViewInterface;
-use tx_rnbase_util_Files;
-use tx_rnbase_util_Misc;
-use tx_rnbase_util_Templates;
+use Sys25\RnBase\Utility\Files;
+use Sys25\RnBase\Utility\Misc;
 
 /***************************************************************
 * Copyright notice
@@ -50,9 +50,9 @@ class BaseView extends AbstractView implements ViewInterface
     {
         $configurations = $request->getConfigurations();
         $this->_init($configurations);
-        $templateCode = tx_rnbase_util_Files::getFileResource($this->getTemplate($view, '.html'));
+        $templateCode = Files::getFileResource($this->getTemplate($view, '.html'));
         if (!strlen($templateCode)) {
-            tx_rnbase_util_Misc::mayday('TEMPLATE NOT FOUND: '.$this->getTemplate($view, '.html'));
+            Misc::mayday('TEMPLATE NOT FOUND: '.$this->getTemplate($view, '.html'));
         }
 
         // Die ViewData bereitstellen
@@ -62,15 +62,15 @@ class BaseView extends AbstractView implements ViewInterface
         $this->subpart = $configurations->get($request->getConfId().'template.subpart');
         $subpart = $this->getMainSubpart($viewData);
         if (!empty($subpart)) {
-            $templateCode = tx_rnbase_util_Templates::getSubpart($templateCode, $subpart);
+            $templateCode = Templates::getSubpart($templateCode, $subpart);
             if (!strlen($templateCode)) {
-                tx_rnbase_util_Misc::mayday('SUBPART NOT FOUND: '.$subpart);
+                Misc::mayday('SUBPART NOT FOUND: '.$subpart);
             }
         }
 
         // disable substitution marker cache
         if ($configurations->getBool($request->getConfId().'_caching.disableSubstCache')) {
-            tx_rnbase_util_Templates::disableSubstCache();
+            Templates::disableSubstCache();
         }
 
         $out = $this->createOutput($templateCode, $request, $configurations->getFormatter());
