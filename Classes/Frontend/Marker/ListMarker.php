@@ -3,7 +3,7 @@
 namespace Sys25\RnBase\Frontend\Marker;
 
 use Sys25\RnBase\Domain\Model\DataInterface;
-use Sys25\RnBase\Domain\Model\DomainInterface;
+use Sys25\RnBase\Domain\Model\DomainModelInterface;
 use tx_rnbase;
 
 /***************************************************************
@@ -104,7 +104,7 @@ class ListMarker
     /**
      * Callback function for next item.
      *
-     * @param DomainInterface $data
+     * @param DomainModelInterface $data
      */
     public function renderNext($data)
     {
@@ -169,7 +169,7 @@ class ListMarker
         $GLOBALS['TSFE']->register[$registerName ? $registerName : 'RNBASE_LB_SIZE'] = count($dataArr);
         $i = 0;
         foreach ($dataArr as $data) {
-            /* @var $data DomainInterface */
+            /* @var $data DomainModelInterface */
             // Check for object to avoid warning.
             if (!is_object($data)) {
                 continue;

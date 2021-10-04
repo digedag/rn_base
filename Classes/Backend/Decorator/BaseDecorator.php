@@ -5,7 +5,7 @@ namespace Sys25\RnBase\Backend\Decorator;
 use Sys25\RnBase\Domain\Model\BaseModel;
 use Sys25\RnBase\Domain\Model\DataInterface;
 use Sys25\RnBase\Domain\Model\DataModel;
-use Sys25\RnBase\Domain\Model\DomainInterface;
+use Sys25\RnBase\Domain\Model\DomainModelInterface as DomainInterface;
 use Sys25\RnBase\Domain\Model\RecordInterface;
 use Sys25\RnBase\Utility\Strings;
 use tx_rnbase_mod_BaseModule;

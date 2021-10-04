@@ -3,7 +3,7 @@
 namespace Sys25\RnBase\Frontend\Marker;
 
 use Sys25\RnBase\Configuration\ConfigurationInterface;
-use Sys25\RnBase\Domain\Model\DomainInterface;
+use Sys25\RnBase\Domain\Model\DomainModelInterface;
 use Sys25\RnBase\Utility\Debug;
 use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
@@ -359,9 +359,9 @@ class BaseMarker
     protected static function getEmptyInstance($classname)
     {
         if (!is_object(self::$emptyObjects[$classname])) {
-            /* @var $dummy DomainInterface */
+            /* @var $dummy DomainModelInterface */
             $dummyInstance = tx_rnbase::makeInstance($classname, ['uid' => 0]);
-            if ($dummyInstance instanceof DomainInterface
+            if ($dummyInstance instanceof DomainModelInterface
                 // for deprecated backward compatibility
                 || $dummyInstance instanceof tx_rnbase_model_base
                 ) {

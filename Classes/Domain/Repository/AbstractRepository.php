@@ -4,7 +4,7 @@ namespace Sys25\RnBase\Domain\Repository;
 
 use Exception;
 use Sys25\RnBase\Domain\Collection\BaseCollection;
-use Sys25\RnBase\Domain\Model\DomainInterface;
+use Sys25\RnBase\Domain\Model\DomainModelInterface as DomainInterface;
 use Sys25\RnBase\Domain\Model\RecordInterface;
 use Sys25\RnBase\Search\SearchBase;
 use Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface;

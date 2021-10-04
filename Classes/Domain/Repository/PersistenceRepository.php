@@ -3,13 +3,13 @@
 namespace Sys25\RnBase\Domain\Repository;
 
 use Exception;
+use Sys25\RnBase\Backend\Utility\TCA;
 use Sys25\RnBase\Database\Connection;
 use Sys25\RnBase\Domain\Model\BaseModel;
 use Sys25\RnBase\Domain\Model\DataInterface;
 use Sys25\RnBase\Domain\Model\DataModel;
-use Sys25\RnBase\Domain\Model\DomainInterface;
+use Sys25\RnBase\Domain\Model\DomainModelInterface as DomainInterface;
 use Sys25\RnBase\Utility\Arrays;
-use tx_rnbase_util_TCA;
 
 /***************************************************************
  * Copyright notice
@@ -118,7 +118,7 @@ abstract class PersistenceRepository extends AbstractRepository implements Persi
 
         // update the tstamp field
         if (!$options->getSkipTstampUpdate()) {
-            $tstamp = tx_rnbase_util_TCA::getTstampFieldForTable($tableName);
+            $tstamp = TCA::getTstampFieldForTable($tableName);
             if ($tstamp) {
                 $data[$tstamp] = $GLOBALS['EXEC_TIME'];
             }
@@ -171,7 +171,7 @@ abstract class PersistenceRepository extends AbstractRepository implements Persi
 
         // set the crdate for new entries
         if (!$transport->getOptions()->getSkipCrdateUpdate()) {
-            $crdate = tx_rnbase_util_TCA::getCrdateFieldForTable(
+            $crdate = TCA::getCrdateFieldForTable(
                 $transport->getTableName()
             );
             if ($crdate) {
@@ -247,11 +247,11 @@ abstract class PersistenceRepository extends AbstractRepository implements Persi
                 $columns,
                 [
                     // allow to delete a entity
-                    tx_rnbase_util_TCA::getDeletedFieldForTable(
+                    TCA::getDeletedFieldForTable(
                         $model->getTableName()
                     ),
                     // allow to hide a entity
-                    tx_rnbase_util_TCA::getDisabledFieldForTable(
+                    TCA::getDisabledFieldForTable(
                         $model->getTableName()
                     ),
                 ]

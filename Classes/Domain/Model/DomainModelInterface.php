@@ -26,13 +26,13 @@ namespace Sys25\RnBase\Domain\Model;
  ***************************************************************/
 
 /**
- * This interface defines a base domain model.
+ * This interface defines a base domain model (database model).
  *
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-interface DomainInterface
+interface DomainModelInterface
 {
     /**
      * Liefert den aktuellen Tabellenname.

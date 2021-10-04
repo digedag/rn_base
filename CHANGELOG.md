@@ -10,11 +10,11 @@ v1.14.0 (??.09.2021)
  * BC: `Tx_Rnbase_Domain_Model_Base` doesn't extend `Tx_Rnbase_Domain_Model_Data` anymore
  * BC: `Sys25\RnBase\Domain\Model\Category` doesn't extend `Tx_Rnbase_Domain_Model_Base` anymore
  * BC: `Tx_Rnbase_Domain_Model_StorageTrait` uses `Sys25\RnBase\Domain\Model\DataModel` instead of `Tx_Rnbase_Domain_Model_Data`
- * BC: `Tx_Rnbase_Domain_Repository_InterfacePersistence::persist()` requires now `Sys25\RnBase\Domain\Model\DomainInterface`
+ * BC: `Tx_Rnbase_Domain_Repository_InterfacePersistence::persist()` requires now `Sys25\RnBase\Domain\Model\DomainModelInterface`
  * BC: `AbstractRepository::getCollectionClass()` returns now `Sys25\RnBase\Domain\Repository\BaseCollection`
  * BC: `Tx_Rnbase_Domain_Repository_PersistenceRepository` doesn't extend `Tx_Rnbase_Domain_Repository_InterfacePersistence` anymore
- * BC: `PersistenceRepository::refreshModelData()` uses `DomainInterface` now
- * BC: `PersistenceRepository::getCleanModelData()` uses `DomainInterface` now
+ * BC: `PersistenceRepository::refreshModelData()` uses `DomainModelInterface` now
+ * BC: `PersistenceRepository::getCleanModelData()` uses `DomainModelInterface` now
  * BC: `Tx_Rnbase_Backend_Decorator_InterfaceDecorator::format()` uses `DataInterface` now
  * BC: `Tx_Rnbase_Backend_AbstractFunctionModule` removed
  * BC: `Tx_Rnbase_Frontend_Plugin` removed

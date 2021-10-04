@@ -3,7 +3,7 @@
 namespace Sys25\RnBase\Domain\Repository;
 
 use Sys25\RnBase\Domain\Model\DataModel;
-use Sys25\RnBase\Domain\Model\DomainInterface;
+use Sys25\RnBase\Domain\Model\DomainModelInterface;
 
 /***************************************************************
  * Copyright notice
@@ -38,11 +38,11 @@ interface PersistenceInterface
     /**
      * Persists an model.
      *
-     * @param DomainInterface $model   The model to persist
+     * @param DomainModelInterface $model   The model to persist
      * @param array|DataModel $options Some options for the process
      */
     public function persist(
-        DomainInterface $model,
+        DomainModelInterface $model,
         $options = null
     );
 }

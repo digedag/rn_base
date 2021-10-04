@@ -4,9 +4,8 @@ namespace Sys25\RnBase\Frontend\Marker;
 
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Domain\Model\DataInterface;
-use Sys25\RnBase\Domain\Model\DomainInterface;
+use Sys25\RnBase\Domain\Model\DomainModelInterface;
 use Sys25\RnBase\Domain\Model\RecordInterface;
-use tx_rnbase_util_FormatUtil;
 
 /***************************************************************
 *  Copyright notice
@@ -48,10 +47,10 @@ class SimpleMarker extends BaseMarker
 
     /**
      * @param string $template  das HTML-Template
-     * @param DomainInterface $item
-     * @param tx_rnbase_util_FormatUtil              $formatter der zu verwendente Formatter
-     * @param string                                 $confId    Pfad der TS-Config
-     * @param string                                 $marker    Name des Markers
+     * @param DomainModelInterface $item
+     * @param FormatUtil  $formatter der zu verwendente Formatter
+     * @param string $confId    Pfad der TS-Config
+     * @param string $marker    Name des Markers
      *
      * @return string das geparste Template
      */
@@ -98,7 +97,7 @@ class SimpleMarker extends BaseMarker
      *
      * @param string $template  das HTML-Template
      * @param RecordInterface $item
-     * @param tx_rnbase_util_FormatUtil $formatter der zu verwendente Formatter
+     * @param FormatUtil $formatter der zu verwendente Formatter
      * @param string $confId    Pfad der TS-Config
      * @param string $marker    Name des Markers
      *
@@ -114,7 +113,7 @@ class SimpleMarker extends BaseMarker
      *
      * @param string $template  das HTML-Template
      * @param RecordInterface $item
-     * @param tx_rnbase_util_FormatUtil              $formatter der zu verwendente Formatter
+     * @param FormatUtil $formatter der zu verwendente Formatter
      * @param string $confId    Pfad der TS-Config
      * @param string $marker    Name des Markers
      *
@@ -130,7 +129,7 @@ class SimpleMarker extends BaseMarker
      *
      * @param DataInterface $item
      * @param ConfigurationInterface &$configurations
-     * @param string &$confId
+     * @param string $confId
      */
     protected function prepareItem(
         DataInterface $item,
@@ -190,13 +189,13 @@ class SimpleMarker extends BaseMarker
      * ###ITEM_ISSTARTED_FALSE###
      * Der Prefix ITEM ist natürlich vom Plugin abhängig.
      *
-     * @param array                                $wrappedSubpartArray das HTML-Template
-     * @param array                                $subpartArray        das HTML-Template
-     * @param string                               $template            das HTML-Template
+     * @param array $wrappedSubpartArray das HTML-Template
+     * @param array $subpartArray        das HTML-Template
+     * @param string $template            das HTML-Template
      * @param DataInterface $item
-     * @param tx_rnbase_util_FormatUtil            $formatter           der zu verwendente Formatter
-     * @param string                               $confId              Pfad der TS-Config
-     * @param string                               $marker              Name des Markers
+     * @param FormatUtil $formatter  der zu verwendente Formatter
+     * @param string $confId Pfad der TS-Config
+     * @param string $marker Name des Markers
      */
     protected function prepareSubparts(
         array &$wrappedSubpartArray,
@@ -246,7 +245,7 @@ class SimpleMarker extends BaseMarker
      * @param array $markerArray
      * @param array $wrappedSubpartArray
      * @param string $confId
-     * @param tx_rnbase_util_FormatUtil $formatter
+     * @param FormatUtil $formatter
      */
     protected function prepareLinks($item, $marker, &$markerArray, &$subpartArray, &$wrappedSubpartArray, $confId, $formatter, $template)
     {
@@ -283,7 +282,7 @@ class SimpleMarker extends BaseMarker
                 $params[$cbId] = strtoupper(substr((string) $item->getProperty($cbColname), 0, 1));
             }
 
-            // @TODO: that only works on Tx_Rnbase_Domain_Model_DomainInterface!
+            // @TODO: that only works on DomainModelInterface!
             if ($configurations->getBool($linkConfId.'.skipPersistedCheck') || $item->isPersisted()) {
                 $this->initLink($markerArray, $subpartArray, $wrappedSubpartArray, $formatter, $confId, $linkId, $marker, $params, $template);
             } else {

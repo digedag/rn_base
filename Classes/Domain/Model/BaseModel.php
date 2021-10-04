@@ -41,7 +41,7 @@ use tx_rnbase_util_TCA;
  * @author René Nitzsche
  * @author Michael Wagner
  */
-class BaseModel extends DataModel implements DomainInterface, DynamicTableInterface, RecordInterface
+class BaseModel extends DataModel implements DomainModelInterface, DynamicTableInterface, RecordInterface
 {
     /**
      * The table name of this record.
