@@ -4,7 +4,7 @@ Changelog
 ---------
 
 v1.14.0 (??.09.2021)
- * #165 Moved all classes without folder **Classes/** to PSR-4
+ * #165 Moved all classes to folder **Classes/** to PSR-4
  * BC: Test classes removed from non-dev-autoload
  * BC: `tx_rnbase_util_TSDAM` removed
  * BC: `Tx_Rnbase_Domain_Model_Base` doesn't extend `Tx_Rnbase_Domain_Model_Data` anymore
@@ -34,6 +34,7 @@ v1.14.0 (??.09.2021)
  * BC: File `mod/locallang.xml` moved to `Resources/Private/Language/locallang.xml`
  * BC: File `res/simplegallery.html` moved to `Resources/Private/Templates/simplegallery.html`
  * BC: Moved `tx_rnbase` and `tx_rnbase_controller` to **Legacy**-Folder
+ * BC: changed methods in `Sys25\RnBase\Frontend\Marker\IListMarkerInfo`
 
 v1.13.15 (30.09.2021)
  * Accept pidlist in queries if it's an integer
