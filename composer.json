@@ -50,7 +50,7 @@
     "autoload": {
         "classmap": [
             "Legacy/"
-		],
+        ],
         "files": [
             "Classes/Constants.php"
         ],
@@ -81,6 +81,7 @@
             "mkdir -p .Build/Web/typo3conf/ext/",
             "[ -L .Build/Web/typo3conf/ext/rn_base ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/rn_base"
         ],
+        "tests:phplint": "find *.php cache Classes exception Legacy maps mod model tests util -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l",
         "test:phpcs": [
             "[ -e .Build/bin/php-cs-fixer ] || composer update",
             ".Build/bin/php-cs-fixer fix -v --dry-run --diff"
@@ -90,6 +91,7 @@
             "export TYPO3_PATH_WEB=$PWD/.Build/Web && .Build/bin/phpunit"
         ],
         "test": [
+            "@test:phplint",
             "@test:phpcs",
             "@test:phpunit"
         ],
@@ -100,6 +102,9 @@
         "fix": [
             "@fix:phpcs"
         ]
+    },
+    "scripts-descriptions": {
+        "tests:phplint": "Checks all PHP files for syntax errors."
     },
     "extra": {
         "typo3/cms": {

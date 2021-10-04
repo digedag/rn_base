@@ -3,8 +3,32 @@ name: PHP Checks
 on: [push, pull_request]
 
 jobs:
+    php-lint:
+        name: "PHP linter"
+        runs-on: ubuntu-20.04
+        steps:
+            - name: "Checkout"
+              uses: actions/checkout@v2
+            - name: "Install PHP"
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: "${{ matrix.php-version }}"
+                  coverage: none
+                  tools: composer:v2
+            - name: "Run PHP lint"
+              run: "composer tests:phplint"
+        strategy:
+            fail-fast: false
+            matrix:
+                php-version:
+                    - 7.1
+                    - 7.2
+                    - 7.3
+                    - 8.0
+                    - 8.1
     php-cs-fixer:
         name: PHP-CS-Fixer
+        needs: php-lint
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@master
