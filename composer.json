@@ -81,7 +81,7 @@
             "mkdir -p .Build/Web/typo3conf/ext/",
             "[ -L .Build/Web/typo3conf/ext/rn_base ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/rn_base"
         ],
-        "tests:phplint": "find *.php cache Classes exception Legacy maps mod model tests util -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l",
+        "tests:phplint": "find *.php Classes Legacy tests -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l",
         "test:phpcs": [
             "[ -e .Build/bin/php-cs-fixer ] || composer update",
             ".Build/bin/php-cs-fixer fix -v --dry-run --diff"
