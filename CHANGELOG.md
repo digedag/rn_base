@@ -3,7 +3,7 @@
 Changelog
 ---------
 
-v1.14.0 (??.09.2021)
+v1.14.0 (04.10.2021)
  * #165 Moved all classes to folder **Classes/** to PSR-4
  * BC: Test classes removed from non-dev-autoload
  * BC: `tx_rnbase_util_TSDAM` removed
