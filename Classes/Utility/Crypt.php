@@ -1,8 +1,15 @@
 <?php
+
+namespace Sys25\RnBase\Utility;
+
+use Exception;
+use Sys25\RnBase\Domain\Model\DataModel;
+use tx_rnbase;
+
 /***************************************************************
  * Copyright notice
  *
- *  (c) 2015 René Nitzsche <rene@system25.de>
+ *  (c) 2015-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,19 +36,19 @@
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Utility_Crypt
+class Crypt
 {
     /**
-     * The confiog for the cryption.
+     * The config for the cryption.
      *
-     * @var Tx_Rnbase_Domain_Model_Data
+     * @var DataModel
      */
     private $storage = null;
 
     /**
      * The confiog for the cryption.
      *
-     * @var Tx_Rnbase_Domain_Model_Data
+     * @var DataModel
      */
     private $config = null;
 
@@ -50,11 +57,11 @@ class Tx_Rnbase_Utility_Crypt
      *
      * @param array $config
      *
-     * @return Tx_Rnbase_Utility_Crypt
+     * @return Crypt
      */
     public static function getInstance($config = null)
     {
-        return tx_rnbase::makeInstance('Tx_Rnbase_Utility_Crypt', $config);
+        return tx_rnbase::makeInstance(Crypt::class, $config);
     }
 
     /**
@@ -64,8 +71,7 @@ class Tx_Rnbase_Utility_Crypt
      */
     public function __construct($config = null)
     {
-        tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
-        $this->config = Tx_Rnbase_Domain_Model_Data::getInstance($config);
+        $this->config = DataModel::getInstance($config);
         $this->init();
     }
 
@@ -85,7 +91,7 @@ class Tx_Rnbase_Utility_Crypt
     /**
      * Returns the config.
      *
-     * @return Tx_Rnbase_Domain_Model_Data
+     * @return DataModel
      */
     protected function getConfig()
     {
@@ -95,12 +101,12 @@ class Tx_Rnbase_Utility_Crypt
     /**
      * Returns the internal storage.
      *
-     * @return Tx_Rnbase_Domain_Model_Data
+     * @return DataModel
      */
     protected function getStorage()
     {
         if (null === $this->storage) {
-            $this->storage = Tx_Rnbase_Domain_Model_Data::getInstance();
+            $this->storage = DataModel::getInstance();
         }
 
         return $this->storage;

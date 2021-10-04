@@ -21,7 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('Tx_Rnbase_Utility_TcaTool');
 
 /**
  * Tx_Rnbase_Utility_TcaToolTest.
@@ -65,11 +64,8 @@ class Tx_Rnbase_Utility_TcaToolTest extends tx_rnbase_tests_BaseTestCase
         if (tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
             $expectedLinkWizard['link']['icon'] = 'actions-add';
             $expectedLinkWizard['link']['module']['name'] = 'wizard_link';
-        } elseif (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
-            $expectedLinkWizard['link']['icon'] = 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif';
-            $expectedLinkWizard['link']['module']['name'] = 'wizard_element_browser';
         } else {
-            $expectedLinkWizard['link']['icon'] = 'EXT:t3skin/icons/gfx/link_popup.gif';
+            $expectedLinkWizard['link']['icon'] = 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif';
             $expectedLinkWizard['link']['module']['name'] = 'wizard_element_browser';
         }
         self::assertEquals(ksort($expectedLinkWizard), ksort($linkWizard), 'link wizard nicht korrekt');
@@ -147,7 +143,7 @@ class Tx_Rnbase_Utility_TcaToolTest extends tx_rnbase_tests_BaseTestCase
                 'actions-wizard-link',
                 $wizards['link']['icon']
             );
-        } elseif (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
+        } else {
             self::assertEquals(
                 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
                 $wizards['add']['icon']
@@ -166,27 +162,6 @@ class Tx_Rnbase_Utility_TcaToolTest extends tx_rnbase_tests_BaseTestCase
             );
             self::assertEquals(
                 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
-                $wizards['link']['icon']
-            );
-        } else {
-            self::assertEquals(
-                'EXT:t3skin/icons/gfx/add.gif',
-                $wizards['add']['icon']
-            );
-            self::assertEquals(
-                'EXT:t3skin/icons/gfx/edit2.gif',
-                $wizards['edit']['icon']
-            );
-            self::assertEquals(
-                'EXT:t3skin/icons/gfx/list.gif',
-                $wizards['list']['icon']
-            );
-            self::assertEquals(
-                'EXT:t3skin/icons/gfx/wizard_rte.gif',
-                $wizards['RTE']['icon']
-            );
-            self::assertEquals(
-                'EXT:t3skin/icons/gfx/link_popup.gif',
                 $wizards['link']['icon']
             );
         }

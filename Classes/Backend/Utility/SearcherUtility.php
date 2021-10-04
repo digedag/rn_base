@@ -1,8 +1,18 @@
 <?php
+
+namespace Sys25\RnBase\Backend\Utility;
+
+use Sys25\RnBase\Domain\Model\DataModel;
+use Sys25\RnBase\Domain\Model\RecordInterface;
+use Sys25\RnBase\Domain\Repository\SearchInterface;
+use Traversable;
+use tx_rnbase;
+use tx_rnbase_util_TCA;
+
 /***************************************************************
  * Copyright notice
  *
- * (c) 2016 René Nitzsche <rene@system25.de>
+ * (c) 2016-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,47 +37,42 @@
  *
  * @author Michael Wagner
  */
-class Tx_Rnbase_Backend_Utility_SearcherUtility
+class SearcherUtility
 {
     /**
      * The internal options object.
      *
-     * @var Tx_Rnbase_Domain_Model_Data
+     * @var DataModel
      */
     private $options = null;
 
     /**
      * Constructor.
      *
-     * @param array|Tx_Rnbase_Domain_Model_Data $options
+     * @param array|DataModel $options
      *
-     * @return Tx_Rnbase_Backend_Utility_SearcherUtility
+     * @return SearcherUtility
      */
     public static function getInstance(
         $options = []
     ) {
-        return tx_rnbase::makeInstance(
-            'Tx_Rnbase_Backend_Utility_SearcherUtility',
-            $options
-        );
+        return tx_rnbase::makeInstance(SearcherUtility::class, $options);
     }
 
     /**
      * Constructor.
      *
-     * @param array|Tx_Rnbase_Domain_Model_Data $options
+     * @param array|DataModel $options
      */
-    public function __construct(
-        $options = []
-    ) {
-        tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
-        $this->options = Tx_Rnbase_Domain_Model_Data::getInstance($options);
+    public function __construct($options = [])
+    {
+        $this->options = DataModel::getInstance($options);
     }
 
     /**
      * The internal options object.
      *
-     * @return Tx_Rnbase_Domain_Model_Data
+     * @return DataModel
      */
     protected function getOptions()
     {
@@ -77,21 +82,21 @@ class Tx_Rnbase_Backend_Utility_SearcherUtility
     /**
      * The decorator instace.
      *
-     * @param Tx_Rnbase_Domain_Repository_InterfaceSearch $repository
-     * @param array                                       $fields
-     * @param array                                       $options
+     * @param SearchInterface $repository
+     * @param array $fields
+     * @param array $options
      *
      * @return array|Traversable
      */
     public function performSearch(
-        Tx_Rnbase_Domain_Repository_InterfaceSearch $repository,
+        SearchInterface $repository,
         array $fields,
         array $options
     ) {
         // we has to build a uid map for sortable tables!
         $firstPrev = $lastNext = false;
         $baseTableName = $this->getOptions()->getBaseTableName();
-        tx_rnbase::load('tx_rnbase_util_TCA');
+        $downStep = 1;
         if ((
             $baseTableName
             && tx_rnbase_util_TCA::getSortbyFieldForTable($baseTableName)
@@ -120,6 +125,7 @@ class Tx_Rnbase_Backend_Utility_SearcherUtility
         // perform the search
         $items = $repository->search($fields, $options);
 
+        $secondPrev = null;
         // reduce the itemy by first and last
         if ($firstPrev || $lastNext) {
             $isCollection = is_object($items);
@@ -151,16 +157,16 @@ class Tx_Rnbase_Backend_Utility_SearcherUtility
 
         // now build the uid map
         $map = [];
-        if ($firstPrev instanceof Tx_Rnbase_Domain_Model_RecordInterface) {
+        if ($firstPrev instanceof RecordInterface) {
             $map[$firstPrev->getUid()] = [];
         }
-        if ($secondPrev instanceof Tx_Rnbase_Domain_Model_RecordInterface) {
+        if ($secondPrev instanceof RecordInterface) {
             $map[$secondPrev->getUid()] = [];
         }
         foreach ($items as $item) {
             $map[$item->getUid()] = [];
         }
-        if ($lastNext instanceof Tx_Rnbase_Domain_Model_RecordInterface) {
+        if ($lastNext instanceof RecordInterface) {
             $map[$lastNext->getUid()] = [];
         }
 

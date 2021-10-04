@@ -25,9 +25,7 @@
 use TYPO3\CMS\Core\TimeTracker\NullTimeTracker;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 
-tx_rnbase::load('tx_rnbase_util_Network');
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('tx_rnbase_util_Templates');
 
 /**
  * tests for tx_rnbase_util_Templates.

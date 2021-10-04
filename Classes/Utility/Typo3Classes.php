@@ -43,10 +43,7 @@ class Typo3Classes
      */
     public static function getFlashMessageClass()
     {
-        return self::getClassByCurrentTypo3Version([
-            self::LOWER6 => 't3lib_FlashMessage',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-        ]);
+        return 'TYPO3\\CMS\\Core\\Messaging\\FlashMessage';
     }
 
     /**
@@ -54,10 +51,7 @@ class Typo3Classes
      */
     public static function getBackendFormEngineClass()
     {
-        return self::getClassByCurrentTypo3Version([
-            self::LOWER6 => 't3lib_tceforms',
-            self::HIGHER6 => 'TYPO3\\CMS\\Backend\\Form\\FormEngine',
-        ]);
+        return 'TYPO3\\CMS\\Backend\\Form\\FormEngine';
     }
 
     /**
@@ -65,10 +59,7 @@ class Typo3Classes
      */
     public static function getBasicFileUtilityClass()
     {
-        return self::getClassByCurrentTypo3Version([
-            self::LOWER6 => 't3lib_basicFileFunctions',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility',
-        ]);
+        return 'TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility';
     }
 
     /**
@@ -76,10 +67,7 @@ class Typo3Classes
      */
     public static function getExtendedTypoScriptTemplateServiceClass()
     {
-        return self::getClassByCurrentTypo3Version([
-            self::LOWER6 => 't3lib_tsparser_ext',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService',
-        ]);
+        return 'TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService';
     }
 
     /**
@@ -87,10 +75,7 @@ class Typo3Classes
      */
     public static function getContentObjectRendererClass()
     {
-        return self::getClassByCurrentTypo3Version([
-            self::LOWER6 => 'tslib_cObj',
-            self::HIGHER6 => 'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer',
-        ]);
+        return 'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer';
     }
 
     /**
@@ -98,10 +83,7 @@ class Typo3Classes
      */
     public static function getTypoScriptFrontendControllerClass()
     {
-        return self::getClassByCurrentTypo3Version([
-            self::LOWER6 => 'tslib_fe',
-            self::HIGHER6 => 'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController',
-        ]);
+        return 'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController';
     }
 
     /**
@@ -109,10 +91,7 @@ class Typo3Classes
      */
     public static function getFrontendUserAuthenticationClass()
     {
-        return self::getClassByCurrentTypo3Version([
-            self::LOWER6 => 'tslib_feUserAuth',
-            self::HIGHER6 => 'TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication',
-        ]);
+        return 'TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication';
     }
 
     /**
@@ -120,10 +99,7 @@ class Typo3Classes
      */
     public static function getCharsetConverterClass()
     {
-        return self::getClassByCurrentTypo3Version([
-            self::LOWER6 => 't3lib_cs',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Charset\\CharsetConverter',
-        ]);
+        return 'TYPO3\\CMS\\Core\\Charset\\CharsetConverter';
     }
 
     /**
@@ -131,10 +107,7 @@ class Typo3Classes
      */
     public static function getDataHandlerClass()
     {
-        return self::getClassByCurrentTypo3Version([
-            self::LOWER6 => 't3lib_tcemain',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\DataHandling\\DataHandler',
-        ]);
+        return 'TYPO3\\CMS\\Core\\DataHandling\\DataHandler';
     }
 
     /**
@@ -142,10 +115,7 @@ class Typo3Classes
      */
     public static function getSpriteManagerClass()
     {
-        return self::getClassByCurrentTypo3Version([
-            self::LOWER6 => 't3lib_SpriteManager',
-            self::HIGHER6 => 'TYPO3\\CMS\Backend\\Sprite\\SpriteManager',
-        ]);
+        return 'TYPO3\\CMS\Backend\\Sprite\\SpriteManager';
     }
 
     /**
@@ -178,17 +148,12 @@ class Typo3Classes
     public static function getTimeTrackClass()
     {
         $higher6Class = 'TYPO3\\CMS\\Core\\TimeTracker\\NullTimeTracker';
-        if (TYPO3::isTYPO62OrHigher()) {
-            $beCookie = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']) ?: 'be_typo_user';
-            if ($_COOKIE[$beCookie]) {
-                $higher6Class = 'TYPO3\\CMS\\Core\\TimeTracker\\TimeTracker';
-            }
+        $beCookie = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']) ?: 'be_typo_user';
+        if ($_COOKIE[$beCookie]) {
+            $higher6Class = 'TYPO3\\CMS\\Core\\TimeTracker\\TimeTracker';
         }
 
-        return self::getClassByCurrentTypo3Version([
-            self::LOWER6 => 't3lib_timeTrack',
-            self::HIGHER6 => $higher6Class,
-        ]);
+        return $higher6Class;
     }
 
     /**
@@ -196,10 +161,7 @@ class Typo3Classes
      */
     public static function getCommandUtilityClass()
     {
-        return self::getClassByCurrentTypo3Version([
-            self::LOWER6 => 't3lib_exec',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Utility\\CommandUtility',
-        ]);
+        return 'TYPO3\\CMS\\Core\\Utility\\CommandUtility';
     }
 
     /**
@@ -207,10 +169,7 @@ class Typo3Classes
      */
     public static function getMailMessageClass()
     {
-        return self::getClassByCurrentTypo3Version([
-            self::LOWER6 => 't3lib_mail_Message',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Mail\\MailMessage',
-        ]);
+        return 'TYPO3\\CMS\\Core\\Mail\\MailMessage';
     }
 
     /**
@@ -218,10 +177,7 @@ class Typo3Classes
      */
     public static function getHtmlParserClass()
     {
-        return self::getClassByCurrentTypo3Version([
-            self::LOWER6 => 't3lib_parsehtml',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Html\\HtmlParser',
-        ]);
+        return 'TYPO3\\CMS\\Core\\Html\\HtmlParser';
     }
 
     /**
@@ -231,10 +187,7 @@ class Typo3Classes
      */
     public static function getGeneralUtilityClass()
     {
-        return self::getClassByCurrentTypo3Version([
-            self::LOWER6 => 't3lib_div',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Utility\\GeneralUtility',
-        ]);
+        return 'TYPO3\\CMS\\Core\\Utility\\GeneralUtility';
     }
 
     /**
@@ -242,10 +195,7 @@ class Typo3Classes
      */
     public static function getTypoScriptParserClass()
     {
-        return self::getClassByCurrentTypo3Version([
-            self::LOWER6 => 't3lib_TSparser',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser',
-        ]);
+        return 'TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser';
     }
 
     /**
@@ -253,10 +203,7 @@ class Typo3Classes
      */
     public static function getDocumentTemplateClass()
     {
-        return self::getClassByCurrentTypo3Version([
-            self::LOWER6 => 'template',
-            self::HIGHER6 => 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate',
-        ]);
+        return 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate';
     }
 
     /**
@@ -264,10 +211,7 @@ class Typo3Classes
      */
     public static function getTemplateServiceClass()
     {
-        return self::getClassByCurrentTypo3Version([
-            self::LOWER6 => 't3lib_TStemplate',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\TypoScript\\TemplateService',
-        ]);
+        return 'TYPO3\\CMS\\Core\\TypoScript\\TemplateService';
     }
 
     /**
@@ -275,10 +219,7 @@ class Typo3Classes
      */
     public static function getHttpUtilityClass()
     {
-        return self::getClassByCurrentTypo3Version([
-            self::LOWER6 => 't3lib_utility_Http',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Utility\\HttpUtility',
-        ]);
+        return 'TYPO3\\CMS\\Core\\Utility\\HttpUtility';
     }
 
     /**
@@ -286,10 +227,7 @@ class Typo3Classes
      */
     public static function getMediumDocumentTemplateClass()
     {
-        return self::getClassByCurrentTypo3Version([
-            self::LOWER6 => 'mediumDoc',
-            self::HIGHER6 => 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate',
-        ]);
+        return 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate';
     }
 
     /**
@@ -297,10 +235,7 @@ class Typo3Classes
      */
     public static function getLocalizationParserClass()
     {
-        return self::getClassByCurrentTypo3Version([
-            self::LOWER6 => 't3lib_l10n_parser_Llxml',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Localization\\Parser\\LocallangXmlParser',
-        ]);
+        return 'TYPO3\\CMS\\Core\\Localization\\Parser\\LocallangXmlParser';
     }
 
     /**
@@ -308,10 +243,7 @@ class Typo3Classes
      */
     public static function getAbstractUserAuthenticationClass()
     {
-        return self::getClassByCurrentTypo3Version([
-            self::LOWER6 => 't3lib_userAuth',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication',
-        ]);
+        return 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication';
     }
 
     /**
@@ -319,10 +251,7 @@ class Typo3Classes
      */
     public static function getAbstractRteClass()
     {
-        return self::getClassByCurrentTypo3Version([
-            self::LOWER6 => 't3lib_rteapi',
-            self::HIGHER6 => 'TYPO3\\CMS\\Backend\\Rte\\AbstractRte',
-        ]);
+        return 'TYPO3\\CMS\\Backend\\Rte\\AbstractRte';
     }
 
     /**
@@ -330,10 +259,7 @@ class Typo3Classes
      */
     public static function getSqlParserClass()
     {
-        return self::getClassByCurrentTypo3Version([
-            self::LOWER6 => 't3lib_sqlparser',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Database\\SqlParser',
-        ]);
+        return 'TYPO3\\CMS\\Core\\Database\\SqlParser';
     }
 
     /**
@@ -341,10 +267,7 @@ class Typo3Classes
      */
     public static function getFrontendBackendUserAuthenticationClass()
     {
-        return self::getClassByCurrentTypo3Version([
-            self::LOWER6 => 't3lib_tsfeBeUserAuth',
-            self::HIGHER6 => 'TYPO3\\CMS\\Backend\\FrontendBackendUserAuthentication',
-        ]);
+        return 'TYPO3\\CMS\\Backend\\FrontendBackendUserAuthentication';
     }
 
     /**
@@ -352,10 +275,7 @@ class Typo3Classes
      */
     public static function getBackendUserAuthenticationClass()
     {
-        return self::getClassByCurrentTypo3Version([
-            self::LOWER6 => 't3lib_beUserAuth',
-            self::HIGHER6 => 'TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication',
-        ]);
+        return 'TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication';
     }
 
     /**
@@ -363,10 +283,7 @@ class Typo3Classes
      */
     public static function getEidUtilityClass()
     {
-        return self::getClassByCurrentTypo3Version([
-            self::LOWER6 => 'tslib_eidtools',
-            self::HIGHER6 => 'TYPO3\\CMS\\Frontend\\Utility\\EidUtility',
-        ]);
+        return 'TYPO3\\CMS\\Frontend\\Utility\\EidUtility';
     }
 
     /**

@@ -1,8 +1,14 @@
 <?php
+
+namespace Sys25\RnBase\Backend\Utility;
+
+use Sys25\RnBase\Tests\BaseTestCase;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
+
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007 Rene Nitzsche (rene@system25.de)
+*  (c) 2007-2021 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -21,8 +27,6 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('Tx_Rnbase_Backend_Utility_Icons');
 
 /**
  * Tx_Rnbase_Backend_Utility_IconsTest.
@@ -31,52 +35,14 @@ tx_rnbase::load('Tx_Rnbase_Backend_Utility_Icons');
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Backend_Utility_IconsTest extends tx_rnbase_tests_BaseTestCase
+class IconsTest extends BaseTestCase
 {
     /**
      * @group unit
      */
-    public function testSkinImg()
+    public function testGetIconRegistry()
     {
-        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-            $this->markTestSkipped('deprecated sinde typo3 7 and nonexistence since typo3 8');
-        }
-        Tx_Rnbase_Backend_Utility_IconsForTest::skinImg(1, 2, 3, 4);
-
-        self::assertEquals(
-            ['skinImg' => [1, 2, 3, 4]],
-            Typo3BackendUtilityIconsClass::$lastCalledMethod
-        );
-    }
-}
-
-class Tx_Rnbase_Backend_Utility_IconsForTest extends Tx_Rnbase_Backend_Utility_Icons
-{
-    /**
-     * @return Typo3BackendUtilityClass
-     */
-    protected static function getIconUtilityClass()
-    {
-        return 'Typo3BackendUtilityIconsClass';
-    }
-}
-
-/**
- * mit diser Klasse stellen wir fest welche Methode mit welchen Parametern aufgerufen wurde.
- */
-class Typo3BackendUtilityIconsClass
-{
-    /**
-     * @var array der key ist der methoden name, der value die übergebenen Parameter
-     */
-    public static $lastCalledMethod = [];
-
-    /**
-     * @param string $method
-     * @param array  $arguments
-     */
-    public static function __callStatic($method, $arguments)
-    {
-        self::$lastCalledMethod = [$method => $arguments];
+        $factory = Icons::getIconRegistry();
+        $this->assertInstanceOf(IconRegistry::class, $factory);
     }
 }

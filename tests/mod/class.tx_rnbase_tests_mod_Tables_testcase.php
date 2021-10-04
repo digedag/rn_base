@@ -22,9 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_mod_Tables');
-tx_rnbase::load('tx_rnbase_util_FormTool');
-
 class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
 {
     /**
@@ -283,11 +280,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
         $this->assertContains('&amp;sortField=uid&amp;sortRev=desc">Header Uid', $aRet[0][0][0], 'Die erste Zelle des Headers ist falsch. 1. teil');
 
         //der korrekte pfeil?
-        if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-            $this->assertContains('icon-actions-move-down', $aRet[0][0][0], 'Die erste Zelle des Headers ist falsch. 2. teil');
-        } else {
-            $this->assertContains('gfx/reddown.gif', $aRet[0][0][0], 'Die erste Zelle des Headers ist falsch. 2. teil');
-        }
+        $this->assertContains('icon-actions-move-down', $aRet[0][0][0], 'Die erste Zelle des Headers ist falsch. 2. teil');
         $this->assertEquals('Header Col1', $aRet[0][0][1], 'Die zweite Zelle des Headers ist falsch.');
         //erste Zeile
         $this->assertEquals(2, count($aRet[0][1]), 'Das Array der ersten Zeile hat die falsche Anzahl an Elementen.');
@@ -333,11 +326,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
         $this->assertEquals(2, count($aRet[0][0]), 'Das Array des Headers hat die falsche Anzahl an Elementen.');
         $this->assertContains('&amp;sortField=uid&amp;sortRev=asc">Header Uid', $aRet[0][0][0], 'Die erste Zelle des Headers ist falsch. 1. teil');
         //der korrekte pfeil?
-        if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-            $this->assertContains('icon-actions-move-up', $aRet[0][0][0], 'Die erste Zelle des Headers ist falsch. 2. teil');
-        } else {
-            $this->assertContains('gfx/redup.gif', $aRet[0][0][0], 'Die erste Zelle des Headers ist falsch. 2. teil');
-        }
+        $this->assertContains('icon-actions-move-up', $aRet[0][0][0], 'Die erste Zelle des Headers ist falsch. 2. teil');
         $this->assertEquals('Header Col1', $aRet[0][0][1], 'Die zweite Zelle des Headers ist falsch.');
         //erste Zeile
         $this->assertEquals(2, count($aRet[0][1]), 'Das Array der ersten Zeile hat die falsche Anzahl an Elementen.');
@@ -386,11 +375,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
         $this->assertEquals(2, count($aRet[0][0]), 'Das Array des Headers hat die falsche Anzahl an Elementen.');
         $this->assertContains('&amp;additionalParam=test&amp;sortField=uid&amp;sortRev=asc">Header Uid', $aRet[0][0][0], 'Die erste Zelle des Headers ist falsch. 1. teil');
         //der korrekte pfeil?
-        if (tx_rnbase_util_TYPO3::isTYPO70OrHigher()) {
-            $this->assertContains('icon-actions-move-up', $aRet[0][0][0], 'Die erste Zelle des Headers ist falsch. 2. teil');
-        } else {
-            $this->assertContains('gfx/redup.gif', $aRet[0][0][0], 'Die erste Zelle des Headers ist falsch. 2. teil');
-        }
+        $this->assertContains('icon-actions-move-up', $aRet[0][0][0], 'Die erste Zelle des Headers ist falsch. 2. teil');
         $this->assertEquals('Header Col1', $aRet[0][0][1], 'Die zweite Zelle des Headers ist falsch.');
         //erste Zeile
         $this->assertEquals(2, count($aRet[0][1]), 'Das Array der ersten Zeile hat die falsche Anzahl an Elementen.');

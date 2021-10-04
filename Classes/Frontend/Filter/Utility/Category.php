@@ -3,6 +3,7 @@
 namespace Sys25\RnBase\Frontend\Filter\Utility;
 
 use Sys25\RnBase\Configuration\ConfigurationInterface;
+use Sys25\RnBase\Database\Connection;
 
 /***************************************************************
  * Copyright notice
@@ -171,14 +172,14 @@ class Category
     }
 
     /**
-     * @return \Tx_Rnbase_Database_Connection
+     * @return Connection
      */
     protected function getDatabaseConnection()
     {
-        return $this->dbConnection ?: \Tx_Rnbase_Database_Connection::getInstance();
+        return $this->dbConnection ?: Connection::getInstance();
     }
 
-    public function setDatabaseConnection(\Tx_Rnbase_Database_Connection $connection)
+    public function setDatabaseConnection(Connection $connection)
     {
         $this->dbConnection = $connection;
     }

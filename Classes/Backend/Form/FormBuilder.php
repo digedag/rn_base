@@ -1,8 +1,14 @@
 <?php
+
+namespace Sys25\RnBase\Backend\Form;
+
+use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2016-2017 Rene Nitzsche (rene@system25.de)
+ *  (c) 2016-2021 Rene Nitzsche (rene@system25.de)
  *  All rights reserved
  *
  * This library is free software; you can redistribute it and/or
@@ -26,7 +32,7 @@
  *
  * @author          René Nitzsche <rene@system25.de>
  */
-class Tx_Rnbase_Backend_Form_FormBuilder
+class FormBuilder
 {
     /**
      * @var \TYPO3\CMS\Backend\Form\NodeFactory
@@ -165,7 +171,7 @@ class Tx_Rnbase_Backend_Form_FormBuilder
      */
     public function printNeededJSFunctions_top()
     {
-        if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+        if (TYPO3::isTYPO90OrHigher()) {
             $result = $this->formResultCompiler->addCssFiles();
         } else {
             $result = $this->formResultCompiler->JStop();

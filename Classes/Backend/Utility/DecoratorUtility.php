@@ -1,8 +1,16 @@
 <?php
+
+namespace Sys25\RnBase\Backend\Utility;
+
+use Sys25\RnBase\Backend\Decorator\InterfaceDecorator;
+use Sys25\RnBase\Domain\Model\DataModel;
+use tx_rnbase;
+use tx_rnbase_util_TCA;
+
 /***************************************************************
  * Copyright notice
  *
- * (c) 2016 René Nitzsche <rene@system25.de>
+ * (c) 2016-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,36 +35,36 @@
  *
  * @author Michael Wagner
  */
-class Tx_Rnbase_Backend_Utility_DecoratorUtility
+class DecoratorUtility
 {
     /**
      * Optional decorator instance to use for columns.
      *
-     * @var Tx_Rnbase_Backend_Decorator_InterfaceDecorator
+     * @var InterfaceDecorator
      */
     private $decorator = null;
 
     /**
      * The options object.
      *
-     * @var Tx_Rnbase_Domain_Model_Data
+     * @var DataModel
      */
     private $options = null;
 
     /**
      * Constructor.
      *
-     * @param Tx_Rnbase_Backend_Decorator_InterfaceDecorator $decorator
-     * @param Tx_Rnbase_Domain_Model_Data|array              $options
+     * @param InterfaceDecorator $decorator
+     * @param DataModel|array $options
      *
-     * @return Tx_Rnbase_Backend_Utility_DecoratorUtility
+     * @return DecoratorUtility
      */
     public static function getInstance(
-        Tx_Rnbase_Backend_Decorator_InterfaceDecorator $decorator = null,
+        InterfaceDecorator $decorator = null,
         $options = []
     ) {
         return tx_rnbase::makeInstance(
-            'Tx_Rnbase_Backend_Utility_DecoratorUtility',
+            DecoratorUtility::class,
             $decorator,
             $options
         );
@@ -65,26 +73,25 @@ class Tx_Rnbase_Backend_Utility_DecoratorUtility
     /**
      * Constructor.
      *
-     * @param Tx_Rnbase_Backend_Decorator_InterfaceDecorator $decorator
-     * @param Tx_Rnbase_Domain_Model_Data|array              $options
+     * @param InterfaceDecorator $decorator
+     * @param DataModel|array $options
      */
     public function __construct(
-        Tx_Rnbase_Backend_Decorator_InterfaceDecorator $decorator = null,
+        InterfaceDecorator $decorator = null,
         $options = []
     ) {
         $this->decorator = $decorator;
-        tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
-        $this->options = Tx_Rnbase_Domain_Model_Data::getInstance($options);
+        $this->options = DataModel::getInstance($options);
     }
 
     /**
      * The decorator instace.
      *
-     * @return Tx_Rnbase_Backend_Decorator_InterfaceDecorator
+     * @return InterfaceDecorator
      */
     protected function getDecorator()
     {
-        if ($this->decorator instanceof Tx_Rnbase_Backend_Decorator_InterfaceDecorator) {
+        if ($this->decorator instanceof InterfaceDecorator) {
             return $this->decorator;
         }
 
@@ -94,7 +101,7 @@ class Tx_Rnbase_Backend_Utility_DecoratorUtility
     /**
      * The decorator options object.
      *
-     * @return Tx_Rnbase_Domain_Model_Data
+     * @return DataModel
      */
     protected function getOptions()
     {
@@ -106,11 +113,10 @@ class Tx_Rnbase_Backend_Utility_DecoratorUtility
      *
      * @param array $columns
      *
-     * @return Tx_Rnbase_Backend_Utility_DecoratorUtility
+     * @return DecoratorUtility
      */
-    public function addDecoratorColumnUid(
-        array &$columns
-    ) {
+    public function addDecoratorColumnUid(array &$columns)
+    {
         $columns['uid'] = [
             'title' => 'label_tableheader_uid',
             'decorator' => $this->getDecorator(),
@@ -124,13 +130,11 @@ class Tx_Rnbase_Backend_Utility_DecoratorUtility
      *
      * @param array $columns
      *
-     * @return Tx_Rnbase_Backend_Utility_DecoratorUtility
+     * @return DecoratorUtility
      */
-    public function addDecoratorColumnLabel(
-        array &$columns
-    ) {
+    public function addDecoratorColumnLabel(array &$columns)
+    {
         if ($this->getOptions()->hasBaseTableName()) {
-            tx_rnbase::load('tx_rnbase_util_TCA');
             $labelField = tx_rnbase_util_TCA::getLabelFieldForTable(
                 $this->getOptions()->getBaseTableName()
             );
@@ -155,13 +159,11 @@ class Tx_Rnbase_Backend_Utility_DecoratorUtility
      *
      * @param array $columns
      *
-     * @return Tx_Rnbase_Backend_Utility_DecoratorUtility
+     * @return DecoratorUtility
      */
-    public function addDecoratorColumnLanguage(
-        array &$columns
-    ) {
+    public function addDecoratorColumnLanguage(array &$columns)
+    {
         if ($this->getOptions()->hasBaseTableName()) {
-            tx_rnbase::load('tx_rnbase_util_TCA');
             $sysLanguageUidField = tx_rnbase_util_TCA::getLanguageFieldForTable(
                 $this->getOptions()->getBaseTableName()
             );
@@ -182,11 +184,10 @@ class Tx_Rnbase_Backend_Utility_DecoratorUtility
      *
      * @param array $columns
      *
-     * @return Tx_Rnbase_Backend_Utility_DecoratorUtility
+     * @return DecoratorUtility
      */
-    public function addDecoratorColumnActions(
-        array &$columns
-    ) {
+    public function addDecoratorColumnActions(array &$columns)
+    {
         $columns['actions'] = [
             'title' => 'label_tableheader_actions',
             'decorator' => $this->getDecorator(),

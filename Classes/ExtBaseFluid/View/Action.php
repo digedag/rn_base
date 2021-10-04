@@ -2,7 +2,10 @@
 
 namespace Sys25\RnBase\ExtBaseFluid\View;
 
+use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Frontend\Request\RequestInterface;
+use Sys25\RnBase\Utility\Arrays;
+use Sys25\RnBase\Utility\Files;
 
 /***************************************************************
  * Copyright notice
@@ -98,22 +101,22 @@ class Action extends \tx_rnbase_view_Base
 
     /**
      * @param string                                      $extensionKey
-     * @param \Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param ConfigurationInterface $configurations
      *
      * @return array
      */
     protected function getTypoScriptConfigurationForFluid(
         $extensionKey,
-        \Tx_Rnbase_Configuration_ProcessorInterface $configurations
+        ConfigurationInterface $configurations
     ) {
         $typoScriptConfiguration = $this->getDefaultTypoScriptConfigurationForFluid($extensionKey);
 
-        $typoScriptConfiguration['settings'] = \tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
+        $typoScriptConfiguration['settings'] = Arrays::mergeRecursiveWithOverrule(
             $typoScriptConfiguration['settings'],
             (array) $configurations->get('settings.')
         );
 
-        $typoScriptConfiguration['view'] = \tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
+        $typoScriptConfiguration['view'] = Arrays::mergeRecursiveWithOverrule(
             $typoScriptConfiguration['view'],
             (array) $configurations->get('view.')
         );
@@ -154,14 +157,14 @@ class Action extends \tx_rnbase_view_Base
     /**
      * @param string                                      $templateName
      * @param array                                       $typoScriptConfigurationForFluid
-     * @param \Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param ConfigurationInterface $configurations
      *
      * @return \TYPO3\CMS\Fluid\View\StandaloneView
      */
     protected function initializeView(
         $templateName,
         $typoScriptConfigurationForFluid,
-        \Tx_Rnbase_Configuration_ProcessorInterface $configurations
+        ConfigurationInterface $configurations
     ) {
         $view = Factory::getViewInstance($configurations, $typoScriptConfigurationForFluid);
         $view->setPartialRootPaths($typoScriptConfigurationForFluid['view']['partialRootPaths.']);
@@ -169,7 +172,7 @@ class Action extends \tx_rnbase_view_Base
         $view->setTemplateRootPaths($typoScriptConfigurationForFluid['view']['templateRootPaths.']);
 
         if ($this->templateFile) {
-            $view->setTemplatePathAndFilename(\tx_rnbase_util_Files::getFileAbsFileName($this->templateFile));
+            $view->setTemplatePathAndFilename(Files::getFileAbsFileName($this->templateFile));
         } else {
             $view->setTemplate($templateName);
         }

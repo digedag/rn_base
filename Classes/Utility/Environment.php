@@ -44,7 +44,7 @@ class Environment
      */
     public static function getCurrentScript()
     {
-        if (\tx_rnbase_util_TYPO3::isTYPO95OrHigher()) {
+        if (TYPO3::isTYPO95OrHigher()) {
             return \TYPO3\CMS\Core\Core\Environment::getCurrentScript();
         }
 
@@ -61,7 +61,7 @@ class Environment
      */
     public static function getPublicPath()
     {
-        if (\tx_rnbase_util_TYPO3::isTYPO95OrHigher()) {
+        if (TYPO3::isTYPO95OrHigher()) {
             return \TYPO3\CMS\Core\Core\Environment::getPublicPath().'/';
         }
 
@@ -76,7 +76,7 @@ class Environment
      */
     public static function getPublicTypo3Path()
     {
-        if (\tx_rnbase_util_TYPO3::isTYPO95OrHigher()) {
+        if (TYPO3::isTYPO95OrHigher()) {
             return \TYPO3\CMS\Core\Core\Environment::getPublicPath().'/typo3/';
         }
 
@@ -91,7 +91,7 @@ class Environment
      */
     public static function getPublicTypo3confPath()
     {
-        if (\tx_rnbase_util_TYPO3::isTYPO95OrHigher()) {
+        if (TYPO3::isTYPO95OrHigher()) {
             return \TYPO3\CMS\Core\Core\Environment::getPublicPath().'/typo3conf';
         }
 
@@ -107,7 +107,7 @@ class Environment
         if (TYPO3_MODE === 'BE') {
             return $GLOBALS['LANG']->lang;
         }
-        if (!\tx_rnbase_util_TYPO3::isTYPO95OrHigher()) {
+        if (!TYPO3::isTYPO95OrHigher()) {
             return $GLOBALS['TSFE']->lang;
         }
 

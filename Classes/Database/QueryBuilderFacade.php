@@ -4,8 +4,11 @@ namespace Sys25\RnBase\Database;
 
 use Sys25\RnBase\Database\Query\From;
 use Sys25\RnBase\Database\Query\Join;
+use Sys25\RnBase\Utility\Debug;
+use Sys25\RnBase\Utility\Misc;
+use Sys25\RnBase\Utility\Strings;
+use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
-use tx_rnbase_util_TYPO3;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -80,7 +83,7 @@ class QueryBuilderFacade
             }
         }
         if (strlen($pidList) > 0) {
-            $pidList = \Tx_Rnbase_Utility_Strings::intExplode(',', \tx_rnbase_util_Misc::getPidList($pidList, $recursive));
+            $pidList = Strings::intExplode(',', Misc::getPidList($pidList, $recursive));
             // is there a problem with page aliases here?
             $placeholder = $queryBuilder->createNamedParameter($pidList, \Doctrine\DBAL\Connection::PARAM_INT_ARRAY);
             $queryBuilder->andWhere(sprintf('%s.pid IN (%s)', $tableAlias, $placeholder));
@@ -103,8 +106,8 @@ class QueryBuilderFacade
         }
 
         if ($debug) {
-            \tx_rnbase_util_Debug::debug($queryBuilder->getSQL(), 'SQL');
-            \tx_rnbase_util_Debug::debug(['what' => $what, 'from' => $from, 'options' => $arr, 'params' => $queryBuilder->getParameters()], 'Parts');
+            Debug::debug($queryBuilder->getSQL(), 'SQL');
+            Debug::debug(['what' => $what, 'from' => $from, 'options' => $arr, 'params' => $queryBuilder->getParameters()], 'Parts');
         }
 
         return $queryBuilder;
@@ -127,7 +130,7 @@ class QueryBuilderFacade
                     // kann. Das wollen wir aber nicht. Der Cache muss in jedem Fall deaktiviert werden.
                     // Ansonsten könnten darin Dinge landen, die normale Nutzer nicht
                     // sehen dürfen.
-                    tx_rnbase_util_TYPO3::getTSFE()->no_cache = true;
+                    TYPO3::getTSFE()->no_cache = true;
                 }
             }
 

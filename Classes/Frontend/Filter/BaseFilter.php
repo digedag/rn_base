@@ -6,6 +6,7 @@ use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Frontend\Filter\Utility\Category;
 use Sys25\RnBase\Frontend\Request\ParametersInterface;
 use Sys25\RnBase\Frontend\Request\RequestInterface;
+use Sys25\RnBase\Search\SearchBase;
 
 /***************************************************************
  *  Copyright notice
@@ -111,8 +112,8 @@ class BaseFilter implements FilterInterface
      */
     public function init(&$fields, &$options)
     {
-        \tx_rnbase_util_SearchBase::setConfigFields($fields, $this->getConfigurations(), $this->getConfId().'fields.');
-        \tx_rnbase_util_SearchBase::setConfigOptions($options, $this->getConfigurations(), $this->getConfId().'options.');
+        SearchBase::setConfigFields($fields, $this->getConfigurations(), $this->getConfId().'fields.');
+        SearchBase::setConfigOptions($options, $this->getConfigurations(), $this->getConfId().'options.');
 
         $this->doSearch = $this->getCategoryFilterUtility()->handleSysCategoryFilter($fields, $this->doSearch);
 

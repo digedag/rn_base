@@ -222,7 +222,7 @@ class SubscriberLister
     /**
      * The Subscriber repository
      *
-     * @return Tx_Rnbase_Domain_Repository_InterfaceSearch
+     * @return Sys25\RnBase\Domain\Repository\SearchInterface
      */
     protected function getRepository()
     {

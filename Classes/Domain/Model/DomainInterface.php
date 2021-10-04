@@ -1,4 +1,7 @@
 <?php
+
+namespace Sys25\RnBase\Domain\Model;
+
 /***************************************************************
  * Copyright notice
  *
@@ -29,7 +32,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-interface Tx_Rnbase_Domain_Model_DomainInterface
+interface DomainInterface
 {
     /**
      * Liefert den aktuellen Tabellenname.
@@ -43,7 +46,7 @@ interface Tx_Rnbase_Domain_Model_DomainInterface
      *
      * @param string $tableName
      *
-     * @return Tx_Rnbase_Domain_Model_Base
+     * @return DataModel
      */
     /*public function setTableName($tableName = 0);*/
 
@@ -60,7 +63,7 @@ interface Tx_Rnbase_Domain_Model_DomainInterface
      * @param string|array $property
      * @param mixed        $value
      *
-     * @return Tx_Rnbase_Domain_Model_Data
+     * @return Data
      */
     public function setProperty($property, $value = null);
 
@@ -78,7 +81,7 @@ interface Tx_Rnbase_Domain_Model_DomainInterface
      *
      * @param string $property
      *
-     * @return Tx_Rnbase_Domain_Model_Data
+     * @return Data
      */
     public function unsProperty($property);
 

@@ -2,6 +2,8 @@
 
 namespace Sys25\RnBase\Database\Query;
 
+use Sys25\RnBase\Tests\BaseTestCase;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -25,7 +27,7 @@ namespace Sys25\RnBase\Database\Query;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-class FromTest extends \tx_rnbase_tests_BaseTestCase
+class FromTest extends BaseTestCase
 {
     /**
      * Tests the getFrom method.

@@ -27,10 +27,7 @@ namespace Sys25\RnBase\Utility;
 use Exception;
 use Sys25\RnBase\Configuration\Processor as ConfigurationProcessor;
 use tx_rnbase;
-use tx_rnbase_util_Dates;
-use tx_rnbase_util_Debug;
 use tx_rnbase_util_Lock;
-use tx_rnbase_util_Logger;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -162,7 +159,7 @@ class Misc
      */
     public static function mayday($msg, $extKey = '')
     {
-        tx_rnbase_util_Logger::fatal($msg, $extKey ? $extKey : 'rn_base');
+        Logger::fatal($msg, $extKey ? $extKey : 'rn_base');
         $aTrace = debug_backtrace();
         $aLocation = array_shift($aTrace);
         $aTrace1 = array_shift($aTrace);
@@ -187,7 +184,7 @@ class Misc
                                     $aTrace4['type'].$aTrace4['function'].'</b></span><br />With parameters: '.(!empty($aTrace4['args']) ? self::viewMixed($aTrace4['args']) : ' no parameters');
         $aDebug[] = '<hr/>';
 
-        if ($debugTrail = tx_rnbase_util_Debug::getDebugTrail()) {
+        if ($debugTrail = Debug::getDebugTrail()) {
             $aDebug[] = '<span class="notice">'.$debugTrail.'</span>';
             $aDebug[] = '<hr/>';
         }
@@ -358,17 +355,6 @@ MAYDAYPAGE;
             !($GLOBALS['TSFE'] instanceof $typoScriptFrontendControllerClass) ||
             $force
         ) {
-            if (!TYPO3::isTYPO70OrHigher() && !defined('PATH_tslib')) {
-                // PATH_tslib setzen
-                if (@is_dir(\Sys25\RnBase\Utility\Environment::getPublicPath().'typo3/sysext/cms/tslib/')) {
-                    define('PATH_tslib', \Sys25\RnBase\Utility\Environment::getPublicPath().'typo3/sysext/cms/tslib/');
-                } elseif (@is_dir(\Sys25\RnBase\Utility\Environment::getPublicPath().'tslib/')) {
-                    define('PATH_tslib', \Sys25\RnBase\Utility\Environment::getPublicPath().'tslib/');
-                } else {
-                    define('PATH_tslib', '');
-                }
-            }
-
             if (TYPO3::isTYPO90OrHigher()) {
                 $rootLine = null;
                 if ($pid > 0) {
@@ -537,7 +523,7 @@ MAYDAYPAGE;
     {
         $str = '';
         if ($daily) {
-            $str .= tx_rnbase_util_Dates::getTodayDateString();
+            $str .= Dates::getTodayDateString();
         }
         sort($params);
         foreach ($params as $value) {
@@ -681,7 +667,6 @@ MAYDAYPAGE;
         $ignoreMailLock = (array_key_exists('ignoremaillock', $options) && $options['ignoremaillock']);
 
         if (!$ignoreMailLock) {
-            tx_rnbase::load('tx_rnbase_util_Lock');
             // Only one mail within one minute!
             $lock = tx_rnbase_util_Lock::getInstance('errormail', 60);
             if ($lock->isLocked()) {
@@ -689,6 +674,8 @@ MAYDAYPAGE;
             } else {
                 $lock->lockProcess();
             }
+        } else {
+            $lock = null;
         }
 
         $textPart = self::getErrorMailText($e, $actionName);
@@ -722,7 +709,6 @@ MAYDAYPAGE;
         $textPart .= "Stacktrace:\n".$e->__toString()."\n";
         $textPart .= 'SITE_URL: '.self::getIndpEnv('TYPO3_SITE_URL')."\n";
 
-        tx_rnbase::load('tx_rnbase_util_TYPO3');
         $textPart .= 'BE_USER: '.TYPO3::getBEUserUID()."\n";
         $textPart .= 'FE_USER: '.TYPO3::getFEUserUID()."\n";
 
@@ -760,7 +746,6 @@ MAYDAYPAGE;
             }
         }
 
-        tx_rnbase::load('tx_rnbase_util_TYPO3');
         $htmlPart .= '<p><strong>BE_USER:</strong> '.TYPO3::getBEUserUID().'</p>';
         $htmlPart .= '<p><strong>FE_USER:</strong> '.TYPO3::getFEUserUID().'</p>';
 

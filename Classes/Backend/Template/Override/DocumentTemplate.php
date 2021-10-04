@@ -1,5 +1,8 @@
 <?php
 
+namespace Sys25\RnBase\Backend\Template\Override;
+
+use Sys25\RnBase\Utility\T3General;
 use Sys25\RnBase\Utility\TYPO3;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -8,7 +11,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /* *******************************************************
  *  Copyright notice
  *
- *  (c) 2017-2020 René Nitzsche <rene@system25.de>
+ *  (c) 2017-2021 René Nitzsche <rene@system25.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -28,11 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-// class Tx_Rnbase_Backend_Template_Override_Doc extends TYPO3\CMS\Backend\Template\DocumentTemplate
-// {
-// }
-
-class Tx_Rnbase_Backend_Template_Override_DocumentTemplate // extends Tx_Rnbase_Backend_Template_Override_Doc
+class DocumentTemplate
 {
     public const STATE_OK = -1;
 
@@ -124,7 +123,7 @@ function jumpToUrl(URL) {
             if (!is_array($mainParams)) {
                 $mainParams = ['id' => $mainParams];
             }
-            $mainParams = Tx_Rnbase_Utility_T3General::implodeArrayForUrl('', $mainParams);
+            $mainParams = T3General::implodeArrayForUrl('', $mainParams);
             if (!$script) {
                 $script = basename(\Sys25\RnBase\Utility\Environment::getCurrentScript());
             }
