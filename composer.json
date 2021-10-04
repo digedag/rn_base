@@ -81,7 +81,7 @@
             "mkdir -p .Build/Web/typo3conf/ext/",
             "[ -L .Build/Web/typo3conf/ext/rn_base ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/rn_base"
         ],
-        "tests:phplint": "find *.php Classes Legacy tests -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l",
+        "tests:phplint": "find *.php Classes Legacy Migrations tests -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l",
         "test:phpcs": [
             "[ -e .Build/bin/php-cs-fixer ] || composer update",
             ".Build/bin/php-cs-fixer fix -v --dry-run --diff"
@@ -111,6 +111,11 @@
             "cms-package-dir": "{$vendor-dir}/typo3/cms",
             "extension-key": "rn_base",
             "web-dir": ".Build/Web"
+        },
+        "typo3/class-alias-loader": {
+            "class-alias-maps": [
+                "Migrations/Code/ClassAliasMap.php"
+            ]
         },
         "branch-alias": {
             "dev-master": "1.14.x-dev"
