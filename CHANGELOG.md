@@ -3,6 +3,39 @@
 Changelog
 ---------
 
+v1.14.0 (??.09.2021)
+ * #165 Moved all classes to folder **Classes/** to PSR-4
+ * BC: Test classes removed from non-dev-autoload
+ * BC: `tx_rnbase_util_TSDAM` removed
+ * BC: `Tx_Rnbase_Domain_Model_Base` doesn't extend `Tx_Rnbase_Domain_Model_Data` anymore
+ * BC: `Sys25\RnBase\Domain\Model\Category` doesn't extend `Tx_Rnbase_Domain_Model_Base` anymore
+ * BC: `Tx_Rnbase_Domain_Model_StorageTrait` uses `Sys25\RnBase\Domain\Model\DataModel` instead of `Tx_Rnbase_Domain_Model_Data`
+ * BC: `Tx_Rnbase_Domain_Repository_InterfacePersistence::persist()` requires now `Sys25\RnBase\Domain\Model\DomainInterface`
+ * BC: `AbstractRepository::getCollectionClass()` returns now `Sys25\RnBase\Domain\Repository\BaseCollection`
+ * BC: `Tx_Rnbase_Domain_Repository_PersistenceRepository` doesn't extend `Tx_Rnbase_Domain_Repository_InterfacePersistence` anymore
+ * BC: `PersistenceRepository::refreshModelData()` uses `DomainInterface` now
+ * BC: `PersistenceRepository::getCleanModelData()` uses `DomainInterface` now
+ * BC: `Tx_Rnbase_Backend_Decorator_InterfaceDecorator::format()` uses `DataInterface` now
+ * BC: `Tx_Rnbase_Backend_AbstractFunctionModule` removed
+ * BC: `Tx_Rnbase_Frontend_Plugin` removed
+ * BC: `Tx_Rnbase_Exception_Base` does not extend `TYPO3\CMS\Core\Exception` anymore
+ * BC: `Tx_Rnbase_Frontend_Marker_BaseMarker` removed
+ * BC: `SimpleMarker::prepareItem()` changed parameter types
+ * `Tx_Rnbase_Scheduler_Task`, `Tx_Rnbase_Scheduler_FieldProviderBase` and `Tx_Rnbase_Scheduler_FieldProvider` are deprecated
+ * BC: `CategorySearch` supports QueryBuilder API
+ * BC: `tx_rnbase_exception_IHandler::handleException()` changed parameter types
+ * BC: `tx_rnbase_exception_Skip` replaced by `Sys25\RnBase\Exception\SkipActionException`
+ * BC: `tx_rnbase_model_base` no longer extends `tx_rnbase_model_data`
+ * BC: `tx_rnbase_model_media` is replaced by `MediaModel`
+ * BC: `tx_rnbase_util_Json` removed
+ * BC: interface `PageBrowserMarker` removed
+ * BC: interface `tx_rnbase_mod_IDecorator::format()` slightly changed
+ * BC: File `mod/template.html` moved to `Resources/Private/Templates/template.html`
+ * BC: File `mod/locallang.xml` moved to `Resources/Private/Language/locallang.xml`
+ * BC: File `res/simplegallery.html` moved to `Resources/Private/Templates/simplegallery.html`
+ * BC: Moved `tx_rnbase` and `tx_rnbase_controller` to **Legacy**-Folder
+ * BC: changed methods in `Sys25\RnBase\Frontend\Marker\IListMarkerInfo`
+
 v1.13.15 (30.09.2021)
  * Accept pidlist in queries if it's an integer
 
@@ -41,6 +74,7 @@ v1.13.6 (09.05.2021)
  * #165 Moved some utility classes to PSR-4
  * (BC) removed detection methods for TYPO3 4.x
  * #207 disable querybuilder in T3 7.6
+ 
 
 v1.13.5 (11.04.2021)
  * add support for wrapped query count in QueryBuilder mode

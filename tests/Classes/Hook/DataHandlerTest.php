@@ -1,8 +1,14 @@
 <?php
+
+namespace Sys25\RnBase\Hook;
+
+use Sys25\RnBase\Tests\BaseTestCase;
+use tx_rnbase;
+
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2011 Rene Nitzsche (rene@system25.de)
+*  (c) 2011-2021 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -21,21 +27,16 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
 /**
- * Tx_Rnbase_Hook_DataHandlerTest.
- *
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Hook_DataHandlerTest extends tx_rnbase_tests_BaseTestCase
+class DataHandlerTest extends BaseTestCase
 {
     /**
      * {@inheritdoc}
-     *
-     * @see PHPUnit_Framework_TestCase::tearDown()
      */
     protected function tearDown()
     {
@@ -51,7 +52,7 @@ class Tx_Rnbase_Hook_DataHandlerTest extends tx_rnbase_tests_BaseTestCase
     public function testHookIsRegistered()
     {
         self::assertEquals(
-            'Tx_Rnbase_Hook_DataHandler->clearCacheForConfiguredTagsByTable',
+            DataHandler::class.'->clearCacheForConfiguredTagsByTable',
             $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']['rn_base'],
             'Hook falsch registriert'
         );
@@ -62,7 +63,7 @@ class Tx_Rnbase_Hook_DataHandlerTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetCacheManager()
     {
-        $cacheManager = $this->callInaccessibleMethod(tx_rnbase::makeInstance('Tx_Rnbase_Hook_DataHandler'), 'getCacheManager');
+        $cacheManager = $this->callInaccessibleMethod(tx_rnbase::makeInstance(DataHandler::class), 'getCacheManager');
         self::assertTrue(method_exists($cacheManager, 'flushCachesInGroupByTag'));
     }
 
@@ -73,7 +74,7 @@ class Tx_Rnbase_Hook_DataHandlerTest extends tx_rnbase_tests_BaseTestCase
     {
         $GLOBALS['TCA']['rn_base_test_table']['ctrl']['cacheTags'] = ['first-tag', 'second-tag'];
 
-        $cacheManager = $this->getMock(tx_rnbase_util_Typo3Classes::getCacheManagerClass(), ['flushCachesInGroupByTag']);
+        $cacheManager = $this->getMock(\tx_rnbase_util_Typo3Classes::getCacheManagerClass(), ['flushCachesInGroupByTag']);
         $cacheManager->expects(self::at(0))
             ->method('flushCachesInGroupByTag')
             ->with('pages', 'first-tag');
@@ -81,7 +82,7 @@ class Tx_Rnbase_Hook_DataHandlerTest extends tx_rnbase_tests_BaseTestCase
             ->method('flushCachesInGroupByTag')
             ->with('pages', 'second-tag');
 
-        $dataHandler = $this->getMock('Tx_Rnbase_Hook_DataHandler', ['getCacheManager']);
+        $dataHandler = $this->getMock(DataHandler::class, ['getCacheManager']);
         $dataHandler->expects(self::once())
             ->method('getCacheManager')
             ->will(self::returnValue($cacheManager));
@@ -94,7 +95,7 @@ class Tx_Rnbase_Hook_DataHandlerTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testClearCacheForConfiguredTagsByTableIfNoneConfiguredInTca()
     {
-        $dataHandler = $this->getMock('Tx_Rnbase_Hook_DataHandler', ['getCacheManager']);
+        $dataHandler = $this->getMock(DataHandler::class, ['getCacheManager']);
         $dataHandler->expects(self::never())
             ->method('getCacheManager');
 

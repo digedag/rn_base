@@ -31,7 +31,6 @@
  *
  * @author René Nitzsche <rene@system25.de>
  */
-tx_rnbase::load('tx_rnbase_view_Base');
 
 /**
  * Base class for all views.

@@ -1,8 +1,18 @@
 <?php
+
+namespace Sys25\RnBase\Backend;
+
+use InvalidArgumentException;
+use RuntimeException;
+use Sys25\RnBase\Frontend\Request\Parameters;
+use Sys25\RnBase\Utility\T3General;
+use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase;
+
 /***************************************************************
  * Copyright notice
  *
- * (c) 2016 René Nitzsche <rene@system25.de>
+ * (c) 2016-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +39,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html
  *        GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Backend_ModuleRunner
+class ModuleRunner
 {
     /**
      * This method forwards the call like the TYPO3 CMS 7.x request handler.
@@ -99,17 +109,17 @@ class Tx_Rnbase_Backend_ModuleRunner
     protected function getModuleConfiguration($moduleName = '')
     {
         if ('' === $moduleName) {
-            if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+            if (TYPO3::isTYPO90OrHigher()) {
                 $moduleName = \tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Routing\Router::class)->match(
-                    \Sys25\RnBase\Frontend\Request\Parameters::getGetParameters('route')
+                    Parameters::getGetParameters('route')
                 )->getOption('moduleName');
             } else {
-                $moduleName = Sys25\RnBase\Frontend\Request\Parameters::getGetParameters('M');
+                $moduleName = Parameters::getGetParameters('M');
             }
         }
 
         if (!isset($GLOBALS['TBE_MODULES']['_configuration'][$moduleName])) {
-            throw new \RuntimeException('Module '.$moduleName.' is not configured.', 1289918326);
+            throw new RuntimeException('Module '.$moduleName.' is not configured.', 1289918326);
         }
 
         return $GLOBALS['TBE_MODULES']['_configuration'][$moduleName];
@@ -150,7 +160,7 @@ class Tx_Rnbase_Backend_ModuleRunner
         // Check if the target is a concatenated string of "className::actionMethod"
         if (is_string($target) && false !== strpos($target, '::')) {
             list($className, $methodName) = explode('::', $target, 2);
-            $targetObject = Tx_Rnbase_Utility_T3General::makeInstance($className);
+            $targetObject = T3General::makeInstance($className);
 
             return [$targetObject, $methodName];
         }

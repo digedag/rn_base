@@ -2,12 +2,13 @@
 
 namespace Sys25\RnBase\Frontend\Request;
 
+use Sys25\RnBase\Utility\Arrays;
 use Sys25\RnBase\Utility\Typo3Classes;
 
 /***************************************************************
 * Copyright notice
 *
-* (c) 2007-2019 René Nitzsche <rene@system25.de>
+* (c) 2007-2021 René Nitzsche <rene@system25.de>
 * All rights reserved
 *
 * This script is part of the TYPO3 project. The TYPO3 project is
@@ -41,7 +42,7 @@ class Parameters extends \ArrayObject implements ParametersInterface
         $this->setQualifier($qualifier);
         // get parametersArray for defined qualifier
         $parametersArray = $this->getParametersPlain($qualifier);
-        \tx_rnbase_util_Arrays::overwriteArray($this, $parametersArray);
+        Arrays::overwriteArray($this, $parametersArray);
     }
 
     public function setQualifier($qualifier)
@@ -94,7 +95,7 @@ class Parameters extends \ArrayObject implements ParametersInterface
      */
     public function getInt($paramName, $qualifier = '')
     {
-        return intval($this->get($paramName, $qualifier));
+        return (int) $this->get($paramName, $qualifier);
     }
 
     private function getParametersPlain($qualifier)

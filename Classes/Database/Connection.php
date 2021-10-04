@@ -3,17 +3,18 @@
 namespace Sys25\RnBase\Database;
 
 use Sys25\RnBase\Database\Query\From;
+use Sys25\RnBase\Domain\Collection\BaseCollection;
+use Sys25\RnBase\Domain\Model\DynamicTableInterface;
 use Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface;
+use Sys25\RnBase\Utility\Debug;
 use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
 use Sys25\RnBase\Utility\Typo3Classes;
 use tx_rnbase;
-use Tx_Rnbase_Domain_Model_DynamicTableInterface;
 use tx_rnbase_model_base;
 use tx_rnbase_util_db_Builder;
 use tx_rnbase_util_db_IDatabase;
-use tx_rnbase_util_Debug;
 use tx_rnbase_util_TCA;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
@@ -138,7 +139,7 @@ class Connection implements SingletonInterface
         }
 
         if ($debug) {
-            tx_rnbase_util_Debug::debug([
+            Debug::debug([
                 'Rows retrieved ' => count($rows),
                 'Time ' => (microtime(true) - $time),
                 'Memory consumed ' => (memory_get_usage() - $mem),
@@ -233,8 +234,8 @@ class Connection implements SingletonInterface
                 return $sql;
             }
             if ($debug) {
-                tx_rnbase_util_Debug::debug($sql, 'SQL');
-                tx_rnbase_util_Debug::debug([$what, $from, $arr], 'Parts');
+                Debug::debug($sql, 'SQL');
+                Debug::debug([$what, $from, $arr], 'Parts');
             }
         }
 
@@ -279,7 +280,7 @@ class Connection implements SingletonInterface
             return;
         }
         $item = ($wrapper) ? tx_rnbase::makeInstance($wrapper, $row) : $row;
-        if ($item instanceof Tx_Rnbase_Domain_Model_DynamicTableInterface
+        if ($item instanceof DynamicTableInterface
             // @TODO: backward compatibility for old models will be removed soon
             || $item instanceof tx_rnbase_model_base
             ) {
@@ -302,7 +303,7 @@ class Connection implements SingletonInterface
         $rows = [];
         if ($options['collection']) {
             if (!is_string($options['collection']) || !class_exists($options['collection'])) {
-                $options['collection'] = 'Tx_Rnbase_Domain_Collection_Base';
+                $options['collection'] = BaseCollection::class;
             }
             $rows = tx_rnbase::makeInstance(
                 $options['collection'],
@@ -468,7 +469,6 @@ class Connection implements SingletonInterface
         // the connection has to be reconected after cache load,
         // so only the credentials are stored in cache, but this is critical,
         // so the cache was removed for the moment!
-//        tx_rnbase::load('tx_rnbase_cache_Manager');
 //        $cache = tx_rnbase_cache_Manager::getCache('rnbase_databases');
 //        $db = $cache->get('db_' . $key);
 //        if (!$db) {
@@ -539,7 +539,7 @@ class Connection implements SingletonInterface
         $database->store_lastBuiltQuery = $storeLastBuiltQuery;
 
         if ($debug) {
-            tx_rnbase_util_Debug::debug([
+            Debug::debug([
                 'SQL ' => $sqlQuery,
                 'Time ' => (microtime(true) - $time),
                 'Memory consumed ' => (memory_get_usage() - $mem),
@@ -588,7 +588,7 @@ class Connection implements SingletonInterface
         $database->store_lastBuiltQuery = $storeLastBuiltQuery;
 
         if ($debug) {
-            tx_rnbase_util_Debug::debug([
+            Debug::debug([
                 'SQL ' => $sqlQuery,
                 'Time ' => (microtime(true) - $time),
                 'Memory consumed ' => (memory_get_usage() - $mem),
@@ -635,8 +635,8 @@ class Connection implements SingletonInterface
             if (!empty($arr['sqlonly'])) {
                 return $sql;
             }
-            tx_rnbase_util_Debug::debug($sql, 'SQL');
-            tx_rnbase_util_Debug::debug([$tablename, $where, $values]);
+            Debug::debug($sql, 'SQL');
+            Debug::debug([$tablename, $where, $values]);
         }
 
         $storeLastBuiltQuery = $database->store_lastBuiltQuery;
@@ -703,8 +703,8 @@ class Connection implements SingletonInterface
             if (!empty($arr['sqlonly'])) {
                 return $sql;
             }
-            tx_rnbase_util_Debug::debug($sql, 'SQL');
-            tx_rnbase_util_Debug::debug([$tablename, $where]);
+            Debug::debug($sql, 'SQL');
+            Debug::debug([$tablename, $where]);
         }
 
         $storeLastBuiltQuery = $database->store_lastBuiltQuery;

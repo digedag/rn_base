@@ -1,8 +1,11 @@
 <?php
+
+namespace Sys25\RnBase\Domain\Model;
+
 /***************************************************************
  * Copyright notice
  *
- *  (c) 2007-2015 Rene Nitzsche <rene@system25.de>
+ *  (c) 2007-2021 Rene Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +32,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-interface Tx_Rnbase_Domain_Model_DynamicTableInterface
+interface DynamicTableInterface
 {
     /**
      * Liefert den aktuellen Tabellenname.
@@ -43,7 +46,7 @@ interface Tx_Rnbase_Domain_Model_DynamicTableInterface
      *
      * @param string $tableName
      *
-     * @return Tx_Rnbase_Domain_Model_Base
+     * @return BaseModel
      */
     public function setTableName($tableName = 0);
 }

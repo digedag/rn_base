@@ -3,10 +3,17 @@
 namespace Sys25\RnBase\Frontend\Controller;
 
 use Sys25\RnBase\Configuration\ConfigurationInterface;
+use Sys25\RnBase\Frontend\Marker\Templates;
 use Sys25\RnBase\Frontend\Request\ParametersInterface;
 use Sys25\RnBase\Frontend\Request\Request;
 use Sys25\RnBase\Frontend\Request\RequestInterface;
 use Sys25\RnBase\Frontend\View\Factory;
+use Sys25\RnBase\Utility\Debug;
+use Sys25\RnBase\Utility\Files;
+use Sys25\RnBase\Utility\Misc;
+use Sys25\RnBase\Utility\Strings;
+use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase;
 
 /***************************************************************
 * Copyright notice
@@ -51,8 +58,8 @@ abstract class AbstractAction
         $debug = (
             $debugKey && (
                 '1' === $debugKey ||
-                ($_GET['debug'] && array_key_exists($debugKey, array_flip(\tx_rnbase_util_Strings::trimExplode(',', $_GET['debug'])))) ||
-                ($_POST['debug'] && array_key_exists($debugKey, array_flip(\tx_rnbase_util_Strings::trimExplode(',', $_POST['debug']))))
+                ($_GET['debug'] && array_key_exists($debugKey, array_flip(Strings::trimExplode(',', $_GET['debug'])))) ||
+                ($_POST['debug'] && array_key_exists($debugKey, array_flip(Strings::trimExplode(',', $_POST['debug']))))
             )
         );
         if ($debug) {
@@ -61,7 +68,7 @@ abstract class AbstractAction
         }
         if ($configurations->getBool($this->getConfId().'toUserInt')) {
             if ($debug) {
-                \tx_rnbase_util_Debug::debug(
+                Debug::debug(
                     'Converting to USER_INT!',
                     'View statistics for: '.$this->getConfId().' Key: '.$debugKey
                 );
@@ -71,44 +78,44 @@ abstract class AbstractAction
         // Add JS or CSS files
         $this->addResources($configurations, $this->getConfId());
 
-        \tx_rnbase_util_Misc::pushTT(get_class($this), 'handleRequest');
+        Misc::pushTT(get_class($this), 'handleRequest');
         $request = new Request($parameters, $configurations, $this->getConfId());
         $out = $this->handleRequest($request);
-        \tx_rnbase_util_Misc::pullTT();
+        Misc::pullTT();
         if (!$out) {
             // View
             $viewFactoryClassName = $configurations->get($this->getConfId().'viewFactoryClassName');
             $viewFactoryClassName = strlen($viewFactoryClassName) > 0 ? $viewFactoryClassName : Factory::class;
             /* @var $viewFactory Factory */
-            $viewFactory = \tx_rnbase::makeInstance($viewFactoryClassName);
+            $viewFactory = tx_rnbase::makeInstance($viewFactoryClassName);
             $view = $viewFactory->createView($request, $this->getViewClassName(), $this->getTemplateFile($configurations));
-            \tx_rnbase_util_Misc::pushTT(get_class($this), 'render');
+            Misc::pushTT(get_class($this), 'render');
             // Das Template wird komplett angegeben
             $tmplName = $this->getTemplateName();
             if (!$tmplName || !strlen($tmplName)) {
-                \tx_rnbase_util_Misc::mayday('No template name defined!');
+                Misc::mayday('No template name defined!');
             }
 
             $out = $view->render($tmplName, $request);
-            \tx_rnbase_util_Misc::pullTT();
+            Misc::pullTT();
         }
 
         $this->addCacheTags($configurations);
 
         if ($debug) {
             $memEnd = memory_get_usage();
-            \tx_rnbase_util_Debug::debug([
+            Debug::debug([
                 'Action' => get_class($this),
                 'Conf Id' => $this->getConfId(),
                 'Execution Time' => (microtime(true) - $time),
                 'Memory Start' => $memStart,
                 'Memory End' => $memEnd,
                 'Memory Consumed' => ($memEnd - $memStart),
-                'SubstCacheEnabled?' => \tx_rnbase_util_Templates::isSubstCacheEnabled() ? 'yes' : 'no',
+                'SubstCacheEnabled?' => Templates::isSubstCacheEnabled() ? 'yes' : 'no',
             ], 'View statistics for: '.$this->getConfId().' Key: '.$debugKey);
         }
         // reset the substCache after each view!
-        \tx_rnbase_util_Templates::resetSubstCache();
+        Templates::resetSubstCache();
 
         return $out;
     }
@@ -119,8 +126,7 @@ abstract class AbstractAction
      */
     protected function addResources(ConfigurationInterface $configurations, $confId)
     {
-        \tx_rnbase::load('tx_rnbase_util_Files');
-        $pageRenderer = \tx_rnbase_util_TYPO3::getPageRenderer();
+        $pageRenderer = TYPO3::getPageRenderer();
 
         foreach ($this->getJavaScriptFilesByIncludePartConfId($configurations, 'includeJSFooter') as $file) {
             $pageRenderer->addJsFooterFile($file);
@@ -147,7 +153,7 @@ abstract class AbstractAction
         $files = $configurations->get($confId.'includeCSS.');
         if (is_array($files)) {
             foreach ($files as $file) {
-                if ($file = \tx_rnbase_util_Files::getFileName($file)) {
+                if ($file = Files::getFileName($file)) {
                     $pageRenderer->addCssFile($file);
                 }
             }
@@ -169,7 +175,7 @@ abstract class AbstractAction
             foreach ($javaScriptConfIds as $javaScriptConfId) {
                 $file = $configurations->get($confId.$includePartConfId.'.'.$javaScriptConfId);
                 if (!$configurations->get($confId.$includePartConfId.'.'.$javaScriptConfId.'.external')) {
-                    $file = \tx_rnbase_util_Files::getFileName($file);
+                    $file = Files::getFileName($file);
                 }
 
                 $files[$javaScriptConfId] = $file;
@@ -182,7 +188,7 @@ abstract class AbstractAction
     protected function addCacheTags($configurations)
     {
         if ($cacheTags = (array) $configurations->get($this->getConfId().'cacheTags.')) {
-            \tx_rnbase_util_TYPO3::getTSFE()->addCacheTags($cacheTags);
+            TYPO3::getTSFE()->addCacheTags($cacheTags);
         }
     }
 

@@ -1,8 +1,14 @@
 <?php
+
+namespace Sys25\RnBase\Utility;
+
+use Sys25\RnBase\Backend\Utility\Icons;
+use tx_rnbase;
+
 /***************************************************************
  * Copyright notice
  *
- *  (c) 2017 René Nitzsche <rene@system25.de>
+ *  (c) 2017-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +35,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-abstract class Tx_Rnbase_Utility_WizIcon
+abstract class WizIcon
 {
     /**
      * @param string $clazz
@@ -37,9 +43,9 @@ abstract class Tx_Rnbase_Utility_WizIcon
      */
     public static function addWizicon($clazz, $clazzFile)
     {
-        tx_rnbase::load('tx_rnbase_util_TYPO3');
-        if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-            $GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'][$id] = $clazz;
+        $id = 'rn_base';
+        if (!TYPO3::isTYPO80OrHigher()) {
+            $GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'][$clazz] = $clazzFile;
         } else {
             $wizard = tx_rnbase::makeInstance($clazz);
             // for TYPO3 8 we need an other way
@@ -50,14 +56,14 @@ abstract class Tx_Rnbase_Utility_WizIcon
                     // Noch nicht für 8.x vorbereitet
                     continue;
                 }
-                Tx_Rnbase_Backend_Utility_Icons::getIconRegistry()->registerIcon(
+                Icons::getIconRegistry()->registerIcon(
                     $id.'-icon',
                     'TYPO3\\CMS\Core\\Imaging\\IconProvider\\BitmapIconProvider',
                     ['source' => $data['icon']]
                 );
                 $configFile = $data['tsconfig'];
                 // Wizardkonfiguration hinzufügen
-                \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
+                Extensions::addPageTSConfig(
                     '<INCLUDE_TYPOSCRIPT: source="'.$configFile.'">'
                 );
             }
@@ -92,12 +98,12 @@ abstract class Tx_Rnbase_Utility_WizIcon
     abstract protected function getLLFile();
 
     /**
-     * @return tx_rnbase_util_Lang
+     * @return \tx_rnbase_util_Lang
      */
     private function includeLocalLang()
     {
         $llFile = $this->getLLFile();
-        /* @var $lang tx_rnbase_util_Lang */
+        /* @var $lang \tx_rnbase_util_Lang */
         $lang = tx_rnbase::makeInstance('tx_rnbase_util_Lang');
         $lang->loadLLFile($llFile);
 

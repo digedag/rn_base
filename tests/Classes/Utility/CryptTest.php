@@ -1,8 +1,13 @@
 <?php
+
+use Sys25\RnBase\Domain\Model\DataModel;
+use Sys25\RnBase\Tests\BaseTestCase;
+use Sys25\RnBase\Utility\Crypt;
+
 /***************************************************************
  * Copyright notice
  *
- *  (c) 2015 René Nitzsche <rene@system25.de>
+ *  (c) 2015-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,9 +27,6 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('Tx_Rnbase_Utility_Crypt');
-
 /**
  * Mcrypt.
  *
@@ -32,7 +34,7 @@ tx_rnbase::load('Tx_Rnbase_Utility_Crypt');
  * @license http://www.gnu.org/licenses/lgpl.html
  *        GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Utility_CryptTest extends tx_rnbase_tests_BaseTestCase
+class CryptTest extends BaseTestCase
 {
     private $backup = [];
 
@@ -64,8 +66,7 @@ class Tx_Rnbase_Utility_CryptTest extends tx_rnbase_tests_BaseTestCase
      */
     protected function tearDown()
     {
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']
-            = $this->backup['encryptionKey'];
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = $this->backup['encryptionKey'];
     }
 
     /**
@@ -77,7 +78,7 @@ class Tx_Rnbase_Utility_CryptTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testCryption(array $config = [])
     {
-        $data = Tx_Rnbase_Domain_Model_Data::getInstance(
+        $data = DataModel::getInstance(
             [
                 'uid' => 5,
                 'body' => str_shuffle(
@@ -93,7 +94,7 @@ class Tx_Rnbase_Utility_CryptTest extends tx_rnbase_tests_BaseTestCase
             ]
         );
 
-        $crypt = Tx_Rnbase_Utility_Crypt::getInstance(
+        $crypt = Crypt::getInstance(
             array_merge(
                 [
                     'cipher' => MCRYPT_BLOWFISH,

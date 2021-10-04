@@ -1,8 +1,16 @@
 <?php
+
+namespace Sys25\RnBase\Backend\Handler;
+
+use Exception;
+use Sys25\RnBase\Backend\Module\IModule;
+use Sys25\RnBase\Domain\Model\RecordInterface;
+use Sys25\RnBase\Frontend\Marker\Templates;
+
 /***************************************************************
  * Copyright notice
  *
- * (c) 2016 René Nitzsche <rene@system25.de>
+ * (c) 2016-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,35 +30,33 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('Tx_Rnbase_Backend_Handler_SearchHandler');
-
 /**
  * Abstract detail handler.
  *
  * @author Michael Wagner
  */
-abstract class Tx_Rnbase_Backend_Handler_DetailHandler extends Tx_Rnbase_Backend_Handler_SearchHandler
+abstract class DetailHandler extends SearchHandler
 {
     /**
      * Returns the current object for detail page.
      *
-     * @return Tx_Rnbase_Domain_Model_RecordInterface
+     * @return RecordInterface
      */
     abstract protected function getObject();
 
     /**
      * Display the user interface for this handler.
      *
-     * @param string                $template The subpart for handler in func template
-     * @param tx_rnbase_mod_IModule $mod
-     * @param array                 $options
+     * @param string $template The subpart for handler in func template
+     * @param IModule $mod
+     * @param array $options
      *
      * @return string
      */
     // @codingStandardsIgnoreStart (interface/abstract mistake)
     public function showScreen(
         $template,
-        tx_rnbase_mod_IModule $mod,
+        IModule $mod,
         $options
     ) {
         // @codingStandardsIgnoreEnd
@@ -58,7 +64,7 @@ abstract class Tx_Rnbase_Backend_Handler_DetailHandler extends Tx_Rnbase_Backend
 
         $current = $this->getObject();
 
-        $templateMod = tx_rnbase_util_Templates::getSubpart(
+        $templateMod = Templates::getSubpart(
             $template,
             $current ? '###DETAILPART###' : '###SEARCHPART###'
         );
@@ -89,7 +95,7 @@ abstract class Tx_Rnbase_Backend_Handler_DetailHandler extends Tx_Rnbase_Backend
             );
         }
 
-        return tx_rnbase_util_Templates::substituteMarkerArrayCached(
+        return Templates::substituteMarkerArrayCached(
             $templateMod,
             $markerArray
         );
@@ -98,17 +104,17 @@ abstract class Tx_Rnbase_Backend_Handler_DetailHandler extends Tx_Rnbase_Backend
     /**
      * Base listing.
      *
-     * @param string                                 $template
-     * @param Tx_Rnbase_Domain_Model_RecordInterface $current
-     * @param array                                  $markerArray
-     * @param array                                  $subpartArray
-     * @param array                                  $wrappedSubpartArray
+     * @param string $template
+     * @param RecordInterface $current
+     * @param array $markerArray
+     * @param array $subpartArray
+     * @param array $wrappedSubpartArray
      *
      * @return string
      */
     protected function showDetail(
         $template,
-        Tx_Rnbase_Domain_Model_RecordInterface $current,
+        RecordInterface $current,
         array &$markerArray = null,
         array &$subpartArray = null,
         array &$wrappedSubpartArray = null

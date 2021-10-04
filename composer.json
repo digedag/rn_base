@@ -49,18 +49,7 @@
     },
     "autoload": {
         "classmap": [
-            "cache/",
-            "Classes/",
-            "Legacy/",
-            "exception/",
-            "maps/",
-            "mod/",
-            "model/",
-            "util/",
-            "class.tx_rnbase.php",
-            "class.tx_rnbase_controller.php",
-            "tests/class.tx_rnbase_tests_BaseTestCase.php",
-            "tests/class.tx_rnbase_tests_Utility.php"
+            "Legacy/"
         ],
         "files": [
             "Classes/Constants.php"
@@ -68,8 +57,11 @@
         "psr-4": {"Sys25\\RnBase\\" : "Classes"}
     },
     "autoload-dev": {
+        "files": [
+            "tests/Deprecated.php"
+        ],
         "psr-4": {
-            "Sys25\\RnBase\\Tests\\" : "Tests/Unit/PHP",
+            "Sys25\\RnBase\\" : "tests/Classes",
             "TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/",
             "TYPO3\\CMS\\Fluid\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/fluid/Tests/"
         },

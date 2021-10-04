@@ -1,8 +1,28 @@
 <?php
+
+namespace Sys25\RnBase\Backend\Lister;
+
+use Sys25\RnBase\Backend\Decorator\BaseDecorator;
+use Sys25\RnBase\Backend\Decorator\InterfaceDecorator;
+use Sys25\RnBase\Backend\Utility\BackendUtility;
+use Sys25\RnBase\Backend\Utility\DecoratorUtility;
+use Sys25\RnBase\Backend\Utility\SearcherUtility;
+use Sys25\RnBase\Backend\Utility\Tables;
+use Sys25\RnBase\Configuration\ConfigurationInterface;
+use Sys25\RnBase\Domain\Model\DataModel;
+use Sys25\RnBase\Domain\Repository\AbstractRepository;
+use Sys25\RnBase\Frontend\Request\Parameters;
+use Sys25\RnBase\Utility\Strings;
+use tx_rnbase;
+use tx_rnbase_mod_BaseModule;
+use tx_rnbase_mod_IModule;
+use tx_rnbase_mod_Util;
+use UnexpectedValueException;
+
 /***************************************************************
  * Copyright notice
  *
- * (c) 2016 René Nitzsche <rene@system25.de>
+ * (c) 2016-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,12 +42,10 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('Tx_Rnbase_Backend_Decorator_InterfaceDecorator');
-
 /**
  * Abstract Lister.
  *
- * $lister = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Lister_AbstractLister', $mod);
+ * $lister = tx_rnbase::makeInstance('Sys25\RnBase\Backend\Lister\AbstractLister', $mod);
  * $markerArray = array_merge(
  *  $markerArray,
  *  $lister->renderListMarkers()
@@ -35,19 +53,19 @@ tx_rnbase::load('Tx_Rnbase_Backend_Decorator_InterfaceDecorator');
  *
  * @author Michael Wagner
  */
-abstract class Tx_Rnbase_Backend_Lister_AbstractLister
+abstract class AbstractLister
 {
     /**
      * The storage for this lister.
      *
-     * @var Tx_Rnbase_Domain_Model_Data
+     * @var DataModel
      */
     private $storage = null;
 
     /**
      * Returns the repository.
      *
-     * @return Tx_Rnbase_Domain_Repository_InterfaceSearch
+     * @return \Sys25\RnBase\Domain\Repository\SearchInterface
      */
     abstract protected function getRepository();
 
@@ -59,9 +77,8 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
      */
     protected function getListerId()
     {
-        tx_rnbase::load('Tx_Rnbase_Utility_Strings');
         $confId = str_replace('\\', '_', get_class($this));
-        $confId = Tx_Rnbase_Utility_Strings::underscoredToLowerCamelCase($confId);
+        $confId = Strings::underscoredToLowerCamelCase($confId);
 
         return $confId;
     }
@@ -69,15 +86,14 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     /**
      * Constructor.
      *
-     * @param tx_rnbase_mod_BaseModule          $module
-     * @param array|Tx_Rnbase_Domain_Model_Data $options
+     * @param tx_rnbase_mod_BaseModule $module
+     * @param array|DataModel $options
      */
     public function __construct(
         tx_rnbase_mod_BaseModule $module,
         $options = []
     ) {
-        tx_rnbase::load('Tx_Rnbase_Domain_Model_Data');
-        $this->storage = Tx_Rnbase_Domain_Model_Data::getInstance(
+        $this->storage = DataModel::getInstance(
             [
                 'module' => $module,
                 'options' => $options,
@@ -90,7 +106,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
         // set the baseTable for this lister, if not set.
         // required for some table operations, eq language column!
         if (!$this->getOptions()->hasBaseTableName()) {
-            if ($this->getRepository() instanceof Tx_Rnbase_Domain_Repository_AbstractRepository) {
+            if ($this->getRepository() instanceof AbstractRepository) {
                 $this->getOptions()->setBaseTableName(
                     $this->getRepository()->getEmptyModel()->getTableName()
                 );
@@ -108,7 +124,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     /**
      * Returns the module.
      *
-     * @return Tx_Rnbase_Domain_Model_Data
+     * @return DataModel
      */
     protected function getStorage()
     {
@@ -128,7 +144,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     /**
      * Returns the configurations.
      *
-     * @return Tx_Rnbase_Configuration_ProcessorInterface
+     * @return ConfigurationInterface
      */
     protected function getConfigurations()
     {
@@ -138,7 +154,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     /**
      * Returns an instance of form tool from the module.
      *
-     * @return tx_rnbase_util_FormTool
+     * @return \tx_rnbase_util_FormTool
      */
     protected function getFormTool()
     {
@@ -148,7 +164,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     /**
      * Returns the options or a specific property of the options.
      *
-     * @return Tx_Rnbase_Domain_Model_Data|mixed
+     * @return DataModel|mixed
      */
     protected function getOptions()
     {
@@ -158,7 +174,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     /**
      * The Pager instance for the current listing.
      *
-     * @return tx_rnbase_util_BEPager
+     * @return \tx_rnbase_util_BEPager
      */
     protected function getPager()
     {
@@ -179,7 +195,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     /**
      * The filters the current listing.
      *
-     * @return Tx_Rnbase_Domain_Model_Data
+     * @return DataModel
      */
     protected function getFilter()
     {
@@ -189,7 +205,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     /**
      * The decorator instace.
      *
-     * @return Tx_Rnbase_Backend_Decorator_InterfaceDecorator
+     * @return InterfaceDecorator
      */
     protected function getDecorator()
     {
@@ -199,8 +215,8 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
                 $this->getModule(),
                 $this->getOptions()
             );
-            if (!$decorator instanceof Tx_Rnbase_Backend_Decorator_InterfaceDecorator) {
-                throw new UnexpectedValueException('The Decorator has to be an instance of'.' "Tx_Rnbase_Backend_Decorator_InterfaceDecorator"'.' but "'.get_class($decorator).'" given.');
+            if (!$decorator instanceof InterfaceDecorator) {
+                throw new UnexpectedValueException('The Decorator has to be an instance of'.' "Sys25\RnBase\Backend\Decorator\InterfaceDecorator"'.' but "'.get_class($decorator).'" given.');
             }
             $this->getStorage()->setDecorator($decorator);
         }
@@ -210,7 +226,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
 
     /**
      * The classname of the decorator to use.
-     * Has to implement the interface "Tx_Rnbase_Backend_Decorator_InterfaceDecorator".
+     * Has to implement the interface "Sys25\RnBase\Backend\Decorator\InterfaceDecorator".
      *
      * @return string
      */
@@ -220,7 +236,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
             return $this->getOptions()->getDecoratorClass();
         }
 
-        return 'Tx_Rnbase_Backend_Decorator_BaseDecorator';
+        return BaseDecorator::class;
     }
 
     /**
@@ -248,11 +264,10 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
      *
      * @param array $columns
      *
-     * @return Tx_Rnbase_Backend_Lister_AbstractLister
+     * @return AbstractLister
      */
-    protected function addDecoratorColumns(
-        array &$columns
-    ) {
+    protected function addDecoratorColumns(array &$columns)
+    {
         (
             $this->getDecoratorUtility()
             ->addDecoratorColumnLabel($columns)
@@ -266,14 +281,13 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     /**
      * Returns the decorator utility instance of the listing.
      *
-     * @return Tx_Rnbase_Backend_Utility_DecoratorUtility
+     * @return DecoratorUtility
      */
     protected function getDecoratorUtility()
     {
         if (!$this->getStorage()->hasDecoratorUtility()) {
-            tx_rnbase::load('Tx_Rnbase_Backend_Utility_DecoratorUtility');
             $this->getStorage()->setDecoratorUtility(
-                Tx_Rnbase_Backend_Utility_DecoratorUtility::getInstance(
+                DecoratorUtility::getInstance(
                     $this->getDecorator(),
                     $this->getOptions()
                 )
@@ -295,9 +309,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     public function renderTemplate(
         $template
     ) {
-        tx_rnbase::load('tx_rnbase_util_Templates');
-
-        return tx_rnbase_util_Templates::substituteMarkerArrayCached(
+        return Templates::substituteMarkerArrayCached(
             $template,
             $this->renderListMarkers()
         );
@@ -366,8 +378,8 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
 
         $columns = $this->getDecoratorColumns();
 
-        /* @var $tables Tx_Rnbase_Backend_Utility_Tables */
-        $tables = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Utility_Tables');
+        /* @var $tables Tables */
+        $tables = tx_rnbase::makeInstance(Tables::class);
         list($tableData, $tableLayout) = $tables->prepareTable(
             $items,
             $columns,
@@ -420,7 +432,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     /**
      * Returns the list with the filtered rows.
      *
-     * @return array|Traversable
+     * @return array|\Traversable
      */
     protected function getResultList()
     {
@@ -440,21 +452,17 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     /**
      * Returns the searcher util.
      *
-     * @return Tx_Rnbase_Backend_Utility_SearcherUtility
+     * @return SearcherUtility
      */
     protected function getSearcherUtility()
     {
-        tx_rnbase::load('Tx_Rnbase_Backend_Utility_SearcherUtility');
-
-        return Tx_Rnbase_Backend_Utility_SearcherUtility::getInstance(
-            $this->getOptions()
-        );
+        return SearcherUtility::getInstance($this->getOptions());
     }
 
     /**
      * Creates the fields and options array for the search.
      *
-     * @return array[fields, options]
+     * @return array fields and options
      */
     protected function getFieldsAndOptions()
     {
@@ -502,8 +510,8 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     protected function prepareSorting(
         array &$options
     ) {
-        $sortField = Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('sortField');
-        $sortRev = Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('sortRev');
+        $sortField = Parameters::getPostOrGetParameter('sortField');
+        $sortRev = Parameters::getPostOrGetParameter('sortRev');
 
         if (!empty($sortField)) {
             $cols = $this->getDecoratorColumns();
@@ -547,7 +555,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
             $key,
             $this->getModule(),
             [
-                'changed' => Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('SET'),
+                'changed' => Parameters::getPostOrGetParameter('SET'),
             ]
         );
     }
@@ -555,7 +563,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     /**
      * Initializes the filter array.
      *
-     * @return Tx_Rnbase_Backend_Lister_AbstractLister
+     * @return AbstractLister
      */
     public function initFilter()
     {
@@ -605,7 +613,7 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
         }
 
         $data['disabled'] = [
-            'field' => Tx_Rnbase_Backend_Utility::getFuncMenu(
+            'field' => BackendUtility::getFuncMenu(
                 $this->getOptions()->getPid(),
                 'SET['.$this->getListerId().'Disabled]',
                 $filter->getProperty('disabled'),
@@ -639,9 +647,11 @@ abstract class Tx_Rnbase_Backend_Lister_AbstractLister
     {
         if ($this->getOptions()->hasSearchColumns()) {
             $columns = $this->getOptions()->getSearchColumns();
-            if ($columns instanceof Tx_Rnbase_Domain_Model_Data) {
+            if ($columns instanceof DataModel) {
                 $columns = $columns->toArray();
             }
+        } else {
+            $columns = null;
         }
 
         if (!is_array($columns)) {

@@ -1,9 +1,13 @@
 <?php
 
+namespace Sys25\RnBase\Database;
+
+use Sys25\RnBase\Utility\Strings;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006-2016 Rene Nitzsche
+ *  (c) 2006-2021 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -25,11 +29,9 @@
 /**
  * methods for generating queries on a hierarchical tree structure.
  *
- * Tx_Rnbase_Database_TreeQueryBuilder
- *
  * @author            <mario.seidel> <mario.seidel@dmk-ebusines.de
  */
-class Tx_Rnbase_Database_TreeQueryBuilder
+class TreeQueryBuilder
 {
     /**
      * returns an array of pids from a page tree.
@@ -43,7 +45,7 @@ class Tx_Rnbase_Database_TreeQueryBuilder
      *
      * @return array
      *
-     * @see Tx_Rnbase_Database_TreeQueryBuilder::getTreeUidListRecursive
+     * @see TreeQueryBuilder::getTreeUidListRecursive
      */
     public function getPageTreeUidList($id, $options = [])
     {
@@ -76,7 +78,7 @@ class Tx_Rnbase_Database_TreeQueryBuilder
      *
      * @return array
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function getTreeUidListRecursive($id, $depth, $begin = 0, $options = [])
     {
@@ -86,7 +88,7 @@ class Tx_Rnbase_Database_TreeQueryBuilder
         $idField = !empty($options['idField']) ? $options['idField'] : 'uid';
 
         if (0 == $begin) {
-            $uidList = Tx_Rnbase_Utility_Strings::intExplode(',', $id);
+            $uidList = Strings::intExplode(',', $id);
         } else {
             $uidList = [];
         }
@@ -102,7 +104,7 @@ class Tx_Rnbase_Database_TreeQueryBuilder
             $sqlOptions['where'] .= ' AND '.$parentField.' IN ('.$id.')';
 
             /**
-             * @var Tx_Rnbase_Domain_Collection_Base
+             * @var \Sys25\RnBase\Domain\Collection\BaseCollection
              */
             $rows = $this->getConnection()->doSelect(
                 $idField,
@@ -134,10 +136,10 @@ class Tx_Rnbase_Database_TreeQueryBuilder
     }
 
     /**
-     * @return Tx_Rnbase_Database_Connection
+     * @return Connection
      */
     protected function getConnection()
     {
-        return Tx_Rnbase_Database_Connection::getInstance();
+        return Connection::getInstance();
     }
 }

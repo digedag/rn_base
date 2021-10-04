@@ -1,8 +1,11 @@
 <?php
+
+namespace Sys25\RnBase\Exception;
+
 /**
  *  Copyright notice.
  *
- *  (c) 2017 René Nitzsche <rene@system25.de>
+ *  (c) 2017-2021 René Nitzsche <rene@system25.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -21,7 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('Tx_Rnbase_Exception_Base');
 
 /**
  * Wird diese Exception innerhalb einer Action geworfen,
@@ -31,6 +33,6 @@ tx_rnbase::load('Tx_Rnbase_Exception_Base');
  * Der Exception sollte eine Nachricht übergeben werden, da diese dann
  * ausgegeben wird.
  */
-class Tx_Rnbase_Exception_PageNotFound404 extends Tx_Rnbase_Exception_Base
+class PageNotFound404 extends BaseException
 {
 }

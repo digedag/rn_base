@@ -3,6 +3,7 @@
 namespace Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowser;
 
 use Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowserViewHelper;
+use Sys25\RnBase\Utility\Arrays;
 
 /***************************************************************
  * Copyright notice
@@ -131,7 +132,7 @@ class PageBaseViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBa
                 $pageBrowser->getParamName('pointer') => $currentPage,
             ],
         ];
-        $additionalParams = \tx_rnbase_util_Arrays::mergeRecursiveWithOverrule($additionalParams, $pageBrowserParams);
+        $additionalParams = Arrays::mergeRecursiveWithOverrule($additionalParams, $pageBrowserParams);
 
         $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
         $uriBuilder

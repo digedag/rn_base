@@ -1,11 +1,13 @@
 <?php
 
-use Sys25\RnBase\Utility\Typo3Classes;
+namespace Sys25\RnBase\Utility;
+
+use tx_rnbase;
 
 /***************************************************************
  * Copyright notice
  *
- *  (c) 2013-2017 René Nitzsche <rene@system25.de>
+ *  (c) 2013-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,7 +34,7 @@ use Sys25\RnBase\Utility\Typo3Classes;
  * @license http://www.gnu.org/licenses/lgpl.html
  *        GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Utility_TypoScript
+class TypoScript
 {
     /**
      * Creates an instance of the ts parser.

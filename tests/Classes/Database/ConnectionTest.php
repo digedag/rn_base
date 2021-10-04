@@ -2,16 +2,16 @@
 
 namespace Sys25\RnBase\Database;
 
-use PHPUnit_Framework_TestCase;
+use stdClass;
+use Sys25\RnBase\Tests\BaseTestCase;
+use Sys25\RnBase\Utility\Strings;
+use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
-use tx_rnbase_tests_BaseTestCase;
-use tx_rnbase_util_TYPO3;
-use Tx_Rnbase_Utility_Strings;
 
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 Rene Nitzsche (rene@system25.de)
+*  (c) 2010-2021 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,14 +32,12 @@ use Tx_Rnbase_Utility_Strings;
 ***************************************************************/
 
 /**
- * Tx_Rnbase_Database_ConnectionTest.
- *
  * @author Hannes Bochmann
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-class ConnectionTest extends tx_rnbase_tests_BaseTestCase
+class ConnectionTest extends BaseTestCase
 {
     /**
      * @var int
@@ -54,7 +52,7 @@ class ConnectionTest extends tx_rnbase_tests_BaseTestCase
     /**
      * (non-PHPdoc).
      *
-     * @see PHPUnit_Framework_TestCase::setUp()
+     * @see \PHPUnit\Framework\TestCase::setUp()
      */
     protected function setUp()
     {
@@ -74,7 +72,7 @@ class ConnectionTest extends tx_rnbase_tests_BaseTestCase
             $GLOBALS['BE_USER'] = new stdClass();
         }
 
-        tx_rnbase_util_TYPO3::getTSFE()->no_cache = false;
+        TYPO3::getTSFE()->no_cache = false;
 
         // logging verhindern
         $this->systemLogConfigurationBackup = $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLog'];
@@ -84,7 +82,7 @@ class ConnectionTest extends tx_rnbase_tests_BaseTestCase
     /**
      * (non-PHPdoc).
      *
-     * @see PHPUnit_Framework_TestCase::tearDown()
+     * @see \PHPUnit\Framework\TestCase::tearDown()
      */
     protected function tearDown()
     {
@@ -122,7 +120,7 @@ class ConnectionTest extends tx_rnbase_tests_BaseTestCase
         $this->assertInstanceOf(
             'tx_rnbase_util_db_TYPO3DBAL',
             $this->callInaccessibleMethod(
-                $this->getMock('Tx_Rnbase_Database_Connection'),
+                $this->getMock(Connection::class),
                 'getDatabase',
                 'typo3dbal'
             )
@@ -222,7 +220,7 @@ class ConnectionTest extends tx_rnbase_tests_BaseTestCase
             $this->assertNotRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field.' found');
         }
 
-        self::assertFalse(tx_rnbase_util_TYPO3::getTSFE()->no_cache, 'Cache doch deaktiviert');
+        self::assertFalse(TYPO3::getTSFE()->no_cache, 'Cache doch deaktiviert');
     }
 
     /**
@@ -244,7 +242,7 @@ class ConnectionTest extends tx_rnbase_tests_BaseTestCase
             $this->assertRegExp('/'.$field.'/', $sql, $field.' not found');
         }
 
-        self::assertFalse(tx_rnbase_util_TYPO3::getTSFE()->no_cache, 'Cache nicht aktiviert');
+        self::assertFalse(TYPO3::getTSFE()->no_cache, 'Cache nicht aktiviert');
     }
 
     /**
@@ -374,10 +372,10 @@ class ConnectionTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @deprecated use tx_rnbase_util_Strings::debugString
+     * @deprecated use Strings::debugString
      */
     public static function debugString($str)
     {
-        return Tx_Rnbase_Utility_Strings::debugString($str);
+        return Strings::debugString($str);
     }
 }

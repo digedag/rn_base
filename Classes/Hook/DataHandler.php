@@ -1,11 +1,14 @@
 <?php
 
+namespace Sys25\RnBase\Hook;
+
 use Sys25\RnBase\Utility\Typo3Classes;
+use tx_rnbase;
 
 /**
  * Copyright notice.
  *
- * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
+ * (c) 2007-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,13 +29,11 @@ use Sys25\RnBase\Utility\Typo3Classes;
  */
 
 /**
- * Tx_Rnbase_Hook_DataHandler.
- *
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Hook_DataHandler
+class DataHandler
 {
     /**
      * Flushes the cache if a news record was edited.
@@ -51,7 +52,7 @@ class Tx_Rnbase_Hook_DataHandler
     }
 
     /**
-     * @return TYPO3\CMS\Core\Cache\CacheManager
+     * @return \TYPO3\CMS\Core\Cache\CacheManager
      */
     protected function getCacheManager()
     {

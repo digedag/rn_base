@@ -28,9 +28,7 @@ use Sys25\RnBase\Utility\TYPO3;
  ***************************************************************/
 
 /**
- * Tx_Rnbase_Backend_Utility.
- *
- * Wrapper for \TYPO3\CMS\Backend\Utility\BackendUtility
+ * Wrapper for \TYPO3\CMS\Backend\Utility\BackendUtility.
  *
  * @author Hannes Bochmann
  * @license http://www.gnu.org/licenses/lgpl.html

@@ -2,6 +2,8 @@
 
 namespace Sys25\RnBase\ExtBaseFluid\Controller;
 
+use Sys25\RnBase\Utility\TYPO3;
+
 /***************************************************************
  * Copyright notice
  *
@@ -46,7 +48,7 @@ trait CacheTagsTrait
     protected function handleCacheTags()
     {
         if ($cacheTags = $this->settings['cacheTags'][strtolower($this->request->getControllerName())][$this->request->getControllerActionName()]) {
-            \tx_rnbase_util_TYPO3::getTSFE()->addCacheTags($cacheTags);
+            TYPO3::getTSFE()->addCacheTags($cacheTags);
         }
     }
 }

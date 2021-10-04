@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Configuration;
 
+use Sys25\RnBase\Exception\SkipActionException;
 use Sys25\RnBase\Frontend\View\ContextInterface;
 
 /***************************************************************
@@ -46,7 +47,7 @@ interface ConfigurationInterface
      *
      * @return bool|void
      *
-     * @throws \tx_rnbase_exception_Skip
+     * @throws SkipActionException
      */
     public function convertToUserInt($convert = true);
 
@@ -84,7 +85,7 @@ interface ConfigurationInterface
     /**
      * The plugins original content object.
      *
-     * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|\tslib_cObj
+     * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
      */
     public function getContentObject();
 

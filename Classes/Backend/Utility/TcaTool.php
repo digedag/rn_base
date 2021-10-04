@@ -5,7 +5,7 @@ namespace Sys25\RnBase\Backend\Utility;
 /***************************************************************
  * Copyright notice
  *
- *  (c) 2015-2020 René Nitzsche <rene@system25.de>
+ *  (c) 2015-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,8 +25,8 @@ namespace Sys25\RnBase\Backend\Utility;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Sys25\RnBase\Utility\Arrays;
 use Sys25\RnBase\Utility\TYPO3;
-use tx_rnbase_util_Arrays;
 
 /**
  * TCA Util and wrapper methods.
@@ -75,27 +75,22 @@ class TcaTool
         'edit' => [
             self::ICON_INDEX_TYPO3_87_OR_HIGHER => 'actions-open',
             self::ICON_INDEX_TYPO3_76_OR_HIGHER => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
-            self::ICON_INDEX_TYPO3_62_OR_HIGHER => 'EXT:t3skin/icons/gfx/edit2.gif',
         ],
         'add' => [
             self::ICON_INDEX_TYPO3_87_OR_HIGHER => 'actions-add',
             self::ICON_INDEX_TYPO3_76_OR_HIGHER => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
-            self::ICON_INDEX_TYPO3_62_OR_HIGHER => 'EXT:t3skin/icons/gfx/add.gif',
         ],
         'list' => [
             self::ICON_INDEX_TYPO3_87_OR_HIGHER => 'actions-system-list-open',
             self::ICON_INDEX_TYPO3_76_OR_HIGHER => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_list.gif',
-            self::ICON_INDEX_TYPO3_62_OR_HIGHER => 'EXT:t3skin/icons/gfx/list.gif',
         ],
         'richText' => [
             self::ICON_INDEX_TYPO3_87_OR_HIGHER => 'actions-wizard-rte',
             self::ICON_INDEX_TYPO3_76_OR_HIGHER => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_rte.gif',
-            self::ICON_INDEX_TYPO3_62_OR_HIGHER => 'EXT:t3skin/icons/gfx/wizard_rte.gif',
         ],
         'link' => [
             self::ICON_INDEX_TYPO3_87_OR_HIGHER => 'actions-wizard-link',
             self::ICON_INDEX_TYPO3_76_OR_HIGHER => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
-            self::ICON_INDEX_TYPO3_62_OR_HIGHER => 'EXT:t3skin/icons/gfx/link_popup.gif',
         ],
     ];
 
@@ -103,8 +98,7 @@ class TcaTool
      * Add a wizard to column.
      * Usage:.
      *
-     * tx_rnbase::load('Tx_Rnbase_Util_TCA');
-     * $tca = new Tx_Rnbase_Util_TCA();
+     * $tca = new TcaTool();
      * $tca->addWizard($tcaTableArray, 'teams', 'add', 'wizard_add', array());
      *
      * @param array  $tcaTable
@@ -134,7 +128,7 @@ class TcaTool
      *     ..
      *   ]
      * ];
-     * Tx_Rnbase_Utility_TcaTool::configureWizards($myTableTCA, [
+     * TcaTool::configureWizards($myTableTCA, [
      *   'col1' => [
      *       ### overwriting the default label
      *       ### or anything else
@@ -155,7 +149,7 @@ class TcaTool
         foreach ($options as $col => $wizardOptions) {
             $table = isset($wizardOptions[self::WIZARD_TARGETTABLE]) ? $wizardOptions[self::WIZARD_TARGETTABLE] : '';
             $wizards = self::getWizards($table, $wizardOptions);
-            if (\tx_rnbase_util_TYPO3::isTYPO86OrHigher()) {
+            if (TYPO3::isTYPO86OrHigher()) {
                 // suggestWizard
                 if (isset($wizards[self::WIZARD_SUGGEST])) {
                     $tcaTable['columns'][$col]['config']['suggestOptions'] = $wizards[self::WIZARD_SUGGEST];
@@ -175,11 +169,11 @@ class TcaTool
             }
             // Add RTE config to columnsOverrides
             if (isset($wizardOptions[self::WIZARD_RTE])) {
-                $tcaTable['types'][0]['columnsOverrides'][$col] = \tx_rnbase_util_TYPO3::isTYPO86OrHigher() ?
+                $tcaTable['types'][0]['columnsOverrides'][$col] = TYPO3::isTYPO86OrHigher() ?
                     ['config' => ['enableRichtext' => 1, 'richtextConfiguration' => 'default']]
                     :
                     ['defaultExtras' => isset($wizardOptions[self::WIZARD_RTE]['defaultExtras']) ? $wizardOptions[self::WIZARD_RTE]['defaultExtras'] : ''];
-                if (\tx_rnbase_util_TYPO3::isTYPO86OrHigher()) {
+                if (TYPO3::isTYPO86OrHigher()) {
                     unset($wizards[self::WIZARD_RTE]);
                 }
             }
@@ -211,7 +205,7 @@ class TcaTool
      * Creates the wizard config for the tca.
      *
      * usage:
-     * ... 'wizards' => Tx_Rnbase_Utility_TcaTool::getWizards(
+     * ... 'wizards' => TcaTool::getWizards(
      *     'mytable',
      *     array(
      *         ### overwriting the default label
@@ -299,7 +293,7 @@ class TcaTool
         $wizard = self::addWizardScriptForTypo3Version('edit', $wizard);
         if (is_array($options['edit'])) {
             $wizard =
-                tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
+                Arrays::mergeRecursiveWithOverrule(
                     $wizard,
                     $options['edit']
                 );
@@ -329,11 +323,10 @@ class TcaTool
         ];
         $wizard = self::addWizardScriptForTypo3Version('add', $wizard);
         if (is_array($options['add'])) {
-            $wizard =
-                tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
-                    $wizard,
-                    $options['add']
-                );
+            $wizard = Arrays::mergeRecursiveWithOverrule(
+                $wizard,
+                $options['add']
+            );
         }
 
         return $wizard;
@@ -360,11 +353,10 @@ class TcaTool
         ];
         $wizard = self::addWizardScriptForTypo3Version('list', $wizard);
         if (is_array($options['list'])) {
-            $wizard =
-                tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
-                    $wizard,
-                    $options['list']
-                );
+            $wizard = Arrays::mergeRecursiveWithOverrule(
+                $wizard,
+                $options['list']
+            );
         }
 
         return $wizard;
@@ -387,11 +379,10 @@ class TcaTool
             ],
         ];
         if (is_array($options['suggest'])) {
-            $wizard =
-                tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
-                    $wizard,
-                    $options['suggest']
-                );
+            $wizard = Arrays::mergeRecursiveWithOverrule(
+                $wizard,
+                $options['suggest']
+            );
         }
 
         return $wizard;
@@ -437,11 +428,10 @@ class TcaTool
             'module' => ['urlParameters' => ['mode' => 'wizard']],
         ];
         if (is_array($options['link'])) {
-            $wizard =
-                tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
-                    $wizard,
-                    $options['link']
-                );
+            $wizard = Arrays::mergeRecursiveWithOverrule(
+                $wizard,
+                $options['link']
+            );
         }
 
         $wizard = self::addWizardScriptForTypo3Version(
@@ -467,7 +457,7 @@ class TcaTool
         ];
 
         if (is_array($options['colorpicker'])) {
-            $wizard = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
+            $wizard = Arrays::mergeRecursiveWithOverrule(
                 $wizard,
                 $options['colorpicker']
             );

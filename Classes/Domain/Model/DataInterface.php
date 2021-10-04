@@ -1,8 +1,11 @@
 <?php
+
+namespace Sys25\RnBase\Domain\Model;
+
 /***************************************************************
  * Copyright notice
  *
- *  (c) 2007-2016 Rene Nitzsche <rene@system25.de>
+ *  (c) 2007-2021 Rene Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,7 +33,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-interface Tx_Rnbase_Domain_Model_DataInterface
+interface DataInterface
 {
     /**
      * Returns TRUE if the model was modified after initialisation.
@@ -52,7 +55,7 @@ interface Tx_Rnbase_Domain_Model_DataInterface
      * @param string|array $property
      * @param mixed        $value
      *
-     * @return Tx_Rnbase_Domain_Model_Data
+     * @return DataModel
      */
     public function setProperty($property, $value = null);
 
@@ -70,7 +73,7 @@ interface Tx_Rnbase_Domain_Model_DataInterface
      *
      * @param string $property
      *
-     * @return Tx_Rnbase_Domain_Model_Data
+     * @return DataModel
      */
     public function unsProperty($property);
 

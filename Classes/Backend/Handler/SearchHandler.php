@@ -1,8 +1,23 @@
 <?php
+
+namespace Sys25\RnBase\Backend\Handler;
+
+use Exception;
+use Sys25\RnBase\Backend\Lister\AbstractLister;
+use Sys25\RnBase\Backend\Module\IModHandler;
+use Sys25\RnBase\Backend\Module\IModule;
+use Sys25\RnBase\Domain\Model\DataModel;
+use Sys25\RnBase\Frontend\Marker\Templates;
+use Sys25\RnBase\Utility\Strings;
+use tx_rnbase;
+use tx_rnbase_mod_BaseModule;
+use tx_rnbase_mod_IModule;
+use tx_rnbase_util_FormTool;
+
 /***************************************************************
  * Copyright notice
  *
- * (c) 2016 René Nitzsche <rene@system25.de>
+ * (c) 2016-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,14 +37,12 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_mod_IModHandler');
-
 /**
  * Abstract search handler.
  *
  * @author Michael Wagner
  */
-abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_IModHandler
+abstract class SearchHandler implements IModHandler
 {
     /**
      * The current mod.
@@ -41,7 +54,7 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
     /**
      * The options object for the handler.
      *
-     * @var Tx_Rnbase_Domain_Model_Data
+     * @var DataModel
      */
     private $options = [];
 
@@ -70,11 +83,10 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
      *
      * @param string $key
      *
-     * @return Tx_Rnbase_Domain_Model_Data
+     * @return DataModel
      */
-    protected function getOptions(
-        $key = null
-    ) {
+    protected function getOptions($key = null)
+    {
         if (null === $key) {
             return $this->options;
         }
@@ -99,7 +111,7 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
     public function getSubModuleId()
     {
         $modId = str_replace('\\', '_', get_class($this));
-        $modId = Tx_Rnbase_Utility_Strings::underscoredToLowerCamelCase($modId);
+        $modId = Strings::underscoredToLowerCamelCase($modId);
 
         return $modId;
     }
@@ -125,14 +137,13 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
      * @param array                  $options
      */
     protected function init(
-        tx_rnbase_mod_IModule $mod,
-        array &$options = []
+        IModule $mod, array &$options = []
     ) {
         $this->module = $mod;
 
         $options['pid'] = $mod->getPid();
 
-        $this->options = Tx_Rnbase_Domain_Model_Data::getInstance($options);
+        $this->options = DataModel::getInstance($options);
 
         $this->prepare();
     }
@@ -170,7 +181,7 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
      * Display the user interface for this handler.
      *
      * @param string                $template The subpart for handler in func template
-     * @param tx_rnbase_mod_IModule $mod
+     * @param IModule $mod
      * @param array                 $options
      *
      * @return string
@@ -178,7 +189,7 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
     // @codingStandardsIgnoreStart (interface/abstract mistake)
     public function showScreen(
         $template,
-        tx_rnbase_mod_IModule $mod,
+        IModule $mod,
         $options
     ) {
         // @codingStandardsIgnoreEnd
@@ -200,7 +211,7 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
             $wrappedSubpartArray
         );
 
-        return tx_rnbase_util_Templates::substituteMarkerArrayCached(
+        return Templates::substituteMarkerArrayCached(
             $template,
             $markerArray
         );
@@ -244,7 +255,7 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
     /**
      * Creates the lister instance.
      *
-     * @return Tx_Rnbase_Backend_Lister_AbstractLister
+     * @return AbstractLister
      */
     protected function getLister()
     {
@@ -254,8 +265,8 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
             $this->getOptions()
         );
 
-        if (!$lister instanceof Tx_Rnbase_Backend_Lister_AbstractLister) {
-            throw new Exception('The likster "'.get_class($lister).'" has to extend "Tx_Rnbase_Backend_Lister_AbstractLister"');
+        if (!$lister instanceof AbstractLister) {
+            throw new Exception('The lister "'.get_class($lister).'" has to extend "Sys25\RnBase\Backend\Lister\AbstractLister"');
         }
 
         return $lister;
@@ -265,11 +276,11 @@ abstract class Tx_Rnbase_Backend_Handler_SearchHandler implements tx_rnbase_mod_
      * This method is called each time the method func is clicked,
      * to handle request data.
      *
-     * @param tx_rnbase_mod_IModule $mod
+     * @param IModule $mod
      *
      * @return string|null With error message
      */
-    public function handleRequest(tx_rnbase_mod_IModule $mod)
+    public function handleRequest(IModule $mod)
     {
         return null;
     }
