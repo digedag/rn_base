@@ -311,7 +311,7 @@ class MySqlDatabase implements IDatabase
                 $this->sql_query($query);
                 Logger::warn(
                     'NO_BACKSLASH_ESCAPES could not be removed from SQL mode: '.$this->sql_error(),
-                    'rn_base',
+                    'rn_base'
                 );
             }
         }
