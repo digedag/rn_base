@@ -46,7 +46,7 @@ class ShowDetails implements LinkerInterface
      *
      * @return string
      */
-    public function makeLink($item, $formTool, $currentPid, $options)
+    public function makeLink($item, ToolBox $formTool, $currentPid, $options)
     {
         $uidkey = $options->getShowDetailsKey() ? $options->getShowDetailsKey() : 'showDetails['.$item->getTableName().']';
         $label = $options->hasShowDetailsLabel() ? $options->getShowDetailsLabel() : '###LABEL_SHOW_DETAILS###';
