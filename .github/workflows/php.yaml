@@ -16,7 +16,7 @@ jobs:
                   coverage: none
                   tools: composer:v2
             - name: "Run PHP lint"
-              run: "composer tests:phplint"
+              run: "composer test:phplint"
         strategy:
             fail-fast: false
             matrix:
