@@ -1,124 +1,126 @@
 {
-    "name": "digedag/rn-base",
-    "description": "A base library for extensions. Uses MVC design principles and domain driven development for TYPO3 extension development.",
-    "type": "typo3-cms-extension",
-    "keywords": [
-        "TYPO3 CMS",
-        "mvc"
-    ],
-    "homepage": "http://www.system25.de/",
-    "license": "GPL-2.0-or-later",
-    "authors": [
-        {
-            "name": "René Nitzsche",
-            "email": "nitzsche@dmk-ebusiness.de",
-            "role": "Developer"
-        }
-    ],
-    "support": {
-        "email": "rene@system25.de",
-        "source": "https://github.com/digedag/rn_base",
-        "issues": "https://github.com/digedag/rn_base/issues"
-    },
-    "replace": {
-        "typo3-ter/rn-base": "self.version",
-        "digedag/rn-base": "self.version"
-    },
-    "require": {
-        "typo3/cms-core": "^7.6 || ^8.7 || ^9.5 || ^10.4",
-        "php": ">=7.1.0",
-        "ext-curl": "*",
-        "ext-dom": "*",
-        "ext-iconv": "*",
-        "ext-json": "*",
-        "ext-simplexml": "*",
-        "ext-zip": "*"
-    },
-    "require-dev": {
-        "namelesscoder/typo3-repository-client": "^1.3.1",
-        "nimut/testing-framework": "^5.2.1",
-        "mikey179/vfsstream": "^1.6.10",
-        "phpunit/phpunit": "^7.5.20",
-        "friendsofphp/php-cs-fixer": "^3.1.0"
-    },
-    "suggest": {
-        "ext-mcrypt": "*",
-        "ext-mysql": "*",
-        "ext-mysqli": "*",
-        "ext-mssql": "*"
-    },
-    "autoload": {
-        "classmap": [
-            "Legacy/"
-        ],
-        "files": [
-            "Classes/Constants.php"
-        ],
-        "psr-4": {"Sys25\\RnBase\\" : "Classes"}
-    },
-    "autoload-dev": {
-        "files": [
-            "tests/Deprecated.php"
-        ],
-        "psr-4": {
-            "Sys25\\RnBase\\" : "tests/Classes",
-            "TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/",
-            "TYPO3\\CMS\\Fluid\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/fluid/Tests/"
-        },
-        "classmap": [
-            "tests/"
-        ]
-    },
-    "config": {
-        "vendor-dir": ".Build/vendor",
-        "bin-dir": ".Build/bin",
-        "preferred-install": {
-            "typo3/cms": "source"
-        }
-    },
-    "scripts": {
-        "post-autoload-dump": [
-            "mkdir -p .Build/Web/typo3conf/ext/",
-            "[ -L .Build/Web/typo3conf/ext/rn_base ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/rn_base"
-        ],
-        "test:phplint": "find *.php Classes Legacy Migrations tests -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l",
-        "test:phpcs": [
-            "[ -e .Build/bin/php-cs-fixer ] || composer update",
-            ".Build/bin/php-cs-fixer fix -v --dry-run --diff"
-        ],
-        "test:phpunit": [
-            "[ -e .Build/bin/phpunit ] || composer update",
-            "export TYPO3_PATH_WEB=$PWD/.Build/Web && .Build/bin/phpunit"
-        ],
-        "test": [
-            "@test:phplint",
-            "@test:phpcs",
-            "@test:phpunit"
-        ],
-        "fix:phpcs": [
-            "[ -e .Build/bin/php-cs-fixer ] || composer update",
-            ".Build/bin/php-cs-fixer fix -v"
-        ],
-        "fix": [
-            "@fix:phpcs"
-        ]
-    },
-    "scripts-descriptions": {
-        "test:phplint": "Checks all PHP files for syntax errors."
-    },
-    "extra": {
-        "typo3/cms": {
-            "cms-package-dir": "{$vendor-dir}/typo3/cms",
-            "extension-key": "rn_base",
-            "web-dir": ".Build/Web"
-        },
-        "typo3/class-alias-loader": {
-            "class-alias-maps": [
-                "Migrations/Code/ClassAliasMap.php"
-            ]
-        },
-        "branch-alias": {
-            "dev-master": "1.14.x-dev"
-        }
-    }
+	"name": "digedag/rn-base",
+	"description": "A base library for extensions. Uses MVC design principles and domain driven development for TYPO3 extension development.",
+	"type": "typo3-cms-extension",
+	"keywords": [
+		"TYPO3 CMS",
+		"mvc"
+	],
+	"homepage": "http://www.system25.de/",
+	"license": "GPL-2.0-or-later",
+	"authors": [
+		{
+			"name": "René Nitzsche",
+			"email": "nitzsche@dmk-ebusiness.de",
+			"role": "Developer"
+		}
+	],
+	"support": {
+		"email": "rene@system25.de",
+		"source": "https://github.com/digedag/rn_base",
+		"issues": "https://github.com/digedag/rn_base/issues"
+	},
+	"replace": {
+		"typo3-ter/rn-base": "self.version",
+		"digedag/rn-base": "self.version"
+	},
+	"require": {
+		"typo3/cms-core": "^7.6 || ^8.7 || ^9.5 || ^10.4",
+		"php": ">=7.1.0",
+		"ext-curl": "*",
+		"ext-dom": "*",
+		"ext-iconv": "*",
+		"ext-json": "*",
+		"ext-simplexml": "*",
+		"ext-zip": "*"
+	},
+	"require-dev": {
+		"namelesscoder/typo3-repository-client": "^1.3.1",
+		"nimut/testing-framework": "^5.2.1",
+		"mikey179/vfsstream": "^1.6.10",
+		"phpunit/phpunit": "^7.5.20",
+		"friendsofphp/php-cs-fixer": "^3.1.0"
+	},
+	"suggest": {
+		"ext-mcrypt": "*",
+		"ext-mysql": "*",
+		"ext-mysqli": "*",
+		"ext-mssql": "*"
+	},
+	"autoload": {
+		"classmap": [
+			"Legacy/"
+		],
+		"files": [
+			"Classes/Constants.php"
+		],
+		"psr-4": {
+			"Sys25\\RnBase\\": "Classes"
+		}
+	},
+	"autoload-dev": {
+		"files": [
+			"tests/Deprecated.php"
+		],
+		"psr-4": {
+			"Sys25\\RnBase\\": "tests/Classes",
+			"TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/",
+			"TYPO3\\CMS\\Fluid\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/fluid/Tests/"
+		},
+		"classmap": [
+			"tests/"
+		]
+	},
+	"config": {
+		"vendor-dir": ".Build/vendor",
+		"bin-dir": ".Build/bin",
+		"preferred-install": {
+			"typo3/cms": "source"
+		}
+	},
+	"scripts": {
+		"post-autoload-dump": [
+			"mkdir -p .Build/Web/typo3conf/ext/",
+			"[ -L .Build/Web/typo3conf/ext/rn_base ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/rn_base"
+		],
+		"test:phplint": "find *.php Classes Legacy Migrations tests -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l",
+		"test:phpcs": [
+			"[ -e .Build/bin/php-cs-fixer ] || composer update",
+			".Build/bin/php-cs-fixer fix -v --dry-run --diff"
+		],
+		"test:phpunit": [
+			"[ -e .Build/bin/phpunit ] || composer update",
+			"export TYPO3_PATH_WEB=$PWD/.Build/Web && .Build/bin/phpunit"
+		],
+		"test": [
+			"@test:phplint",
+			"@test:phpcs",
+			"@test:phpunit"
+		],
+		"fix:phpcs": [
+			"[ -e .Build/bin/php-cs-fixer ] || composer update",
+			".Build/bin/php-cs-fixer fix -v"
+		],
+		"fix": [
+			"@fix:phpcs"
+		]
+	},
+	"scripts-descriptions": {
+		"test:phplint": "Checks all PHP files for syntax errors."
+	},
+	"extra": {
+		"typo3/cms": {
+			"cms-package-dir": "{$vendor-dir}/typo3/cms",
+			"extension-key": "rn_base",
+			"web-dir": ".Build/Web"
+		},
+		"typo3/class-alias-loader": {
+			"class-alias-maps": [
+				"Migrations/Code/ClassAliasMap.php"
+			]
+		},
+		"branch-alias": {
+			"dev-master": "1.14.x-dev"
+		}
+	}
 }
