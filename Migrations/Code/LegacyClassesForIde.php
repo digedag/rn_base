@@ -95,3 +95,49 @@ namespace Sys25\RnBase\Fluid\ViewHelper\Parameters {
     {
     }
 }
+
+namespace Sys25\RnBase\Search {
+    if (false) {
+        /** @deprecated */
+        class Category
+        {
+        }
+
+        /** @deprecated */
+        class SearchCategory
+        {
+        }
+    }
+}
+
+namespace Sys25\RnBase\Controller {
+    /**
+     * @deprecated
+     */
+    abstract class AbstractController extends \tx_rnbase_action_BaseIOC
+    {
+        protected function handleRequest(&$parameters, &$configurations, &$viewdata)
+        {
+            return $this->doRequest();
+        }
+
+        abstract protected function doRequest();
+
+        protected function getViewClassName()
+        {
+            return \Sys25\RnBase\Fluid\View\Action::class;
+        }
+
+        protected function assignToView($name, $data)
+        {
+            $this->getViewData()->offsetSet($name, $data);
+
+            return $this;
+        }
+
+        protected function getConfigurationValue($confId)
+        {
+            return $this->getConfigurations()->get($this->getConfId().$confId);
+        }
+    }
+}
