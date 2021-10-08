@@ -39,13 +39,15 @@
 		"nimut/testing-framework": "^5.2.1",
 		"mikey179/vfsstream": "^1.6.10",
 		"phpunit/phpunit": "^7.5.20",
-		"friendsofphp/php-cs-fixer": "^3.1.0"
+		"friendsofphp/php-cs-fixer": "^3.1.0",
+		"typo3/cms-scheduler": "^7.6 || ^8.7 || ^9.5 || ^10.4"
 	},
 	"suggest": {
 		"ext-mcrypt": "*",
 		"ext-mysql": "*",
 		"ext-mysqli": "*",
-		"ext-mssql": "*"
+		"ext-mssql": "*",
+		"typo3/cms-scheduler": "*"
 	},
 	"autoload": {
 		"classmap": [
