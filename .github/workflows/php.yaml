@@ -1,42 +1,59 @@
 name: PHP Checks
 
-on: [push, pull_request]
+on: [ push, pull_request ]
 
 jobs:
-    php-lint:
-        name: "PHP linter"
-        runs-on: ubuntu-20.04
-        steps:
-            - name: "Checkout"
-              uses: actions/checkout@v2
-            - name: "Install PHP"
-              uses: shivammathur/setup-php@v2
-              with:
-                  php-version: "${{ matrix.php-version }}"
-                  coverage: none
-                  tools: composer:v2
-            - name: "Run PHP lint"
-              run: "composer test:phplint"
-        strategy:
-            fail-fast: false
-            matrix:
-                php-version:
-                    - 7.1
-                    - 7.2
-                    - 7.3
-                    - 8.0
-                    - 8.1
-    php-cs-fixer:
-        name: PHP-CS-Fixer
-        needs: php-lint
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@master
-              with:
-                ref: ${{ github.ref }}
-            - name: Setup PHP
-              uses: shivammathur/setup-php@master
-              with:
-                  php-version: 7.4
-            - run: composer require friendsofphp/php-cs-fixer
-            - run: .Build/bin/php-cs-fixer fix --diff --dry-run
+  php-lint:
+    name: "PHP linter"
+    runs-on: ubuntu-20.04
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2
+      - name: "Install PHP"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "${{ matrix.php-version }}"
+          coverage: none
+          tools: composer:v2
+      - name: "Run PHP lint"
+        run: "composer test:phplint"
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - 7.1
+          - 7.2
+          - 7.3
+          - 8.0
+          - 8.1
+
+  php-cs-fixer:
+    name: PHP-CS-Fixer
+    runs-on: ubuntu-20.04
+    needs: php-lint
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2
+      - name: "Install PHP"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "${{ matrix.php-version }}"
+          tools: composer:v2
+          extensions: zip
+          coverage: none
+      - name: "Show Composer version"
+        run: composer --version
+      - name: "Cache dependencies installed with composer"
+        uses: actions/cache@v1
+        with:
+          key: "php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}"
+          path: ~/.composer/cache
+          restore-keys: "php${{ matrix.php-version }}-composer-\n"
+      - name: "Install Composer dependencies"
+        run: "composer install --no-progress"
+      - name: "Run command"
+        run: ".Build/bin/php-cs-fixer fix --diff --dry-run"
+    strategy:
+      matrix:
+        php-version:
+          - 7.4
