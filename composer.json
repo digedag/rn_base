@@ -25,7 +25,6 @@
 		"digedag/rn-base": "self.version"
 	},
 	"require": {
-		"typo3/cms-core": "^7.6 || ^8.7 || ^9.5 || ^10.4",
 		"php": ">=7.1.0",
 		"ext-curl": "*",
 		"ext-dom": "*",
@@ -34,14 +33,15 @@
 		"ext-simplexml": "*",
 		"ext-zip": "*",
 		"doctrine/common": "^2.5.4",
-		"doctrine/dbal": "^2.5.4"
+		"doctrine/dbal": "^2.5.4",
+		"typo3/cms-core": "^7.6 || ^8.7 || ^9.5 || ^10.4"
 	},
 	"require-dev": {
+		"friendsofphp/php-cs-fixer": "^3.1.0",
+		"mikey179/vfsstream": "^1.6.10",
 		"namelesscoder/typo3-repository-client": "^1.3.1",
 		"nimut/testing-framework": "^5.2.1",
-		"mikey179/vfsstream": "^1.6.10",
 		"phpunit/phpunit": "^7.5.20",
-		"friendsofphp/php-cs-fixer": "^3.1.0",
 		"typo3/cms-scheduler": "^7.6 || ^8.7 || ^9.5 || ^10.4"
 	},
 	"suggest": {
@@ -78,6 +78,7 @@
 	"config": {
 		"vendor-dir": ".Build/vendor",
 		"bin-dir": ".Build/bin",
+		"sort-packages": true,
 		"preferred-install": {
 			"typo3/cms": "source"
 		}
