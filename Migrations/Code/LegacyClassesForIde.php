@@ -6,6 +6,157 @@ namespace {
     exit('Access denied');
 }
 
+namespace {
+    /** @deprecated */
+    interface tx_rnbase_cache_ICache extends \Sys25\RnBase\Cache\CacheInterface
+    {
+    }
+
+    /** @deprecated */
+    class Tx_Rnbase_Error_ErrorHandler extends \Sys25\RnBase\Typo3Wrapper\Core\Error\ErrorHandler
+    {
+    }
+
+    /** @deprecated */
+    class Tx_Rnbase_Error_ProductionExceptionHandler extends \Sys25\RnBase\Typo3Wrapper\Core\Error\ProductionExceptionHandler
+    {
+    }
+
+    /** @deprecated */
+    interface Tx_Rnbase_Configuration_ProcessorInterface extends \Sys25\RnBase\Configuration\ConfigurationInterface
+    {
+    }
+
+    /** @deprecated */
+    class Tx_Rnbase_Exception_Base extends \Sys25\RnBase\Exception\BaseException
+    {
+    }
+
+    /** @deprecated */
+    class Tx_Rnbase_Exception_PageNotFound404 extends \Sys25\RnBase\Exception\PageNotFound404
+    {
+    }
+
+    /** @deprecated */
+    class tx_rnbase_util_TYPO3 extends \Sys25\RnBase\Utility\TYPO3
+    {
+    }
+
+    /** @deprecated */
+    class Tx_Rnbase_Database_Connection extends \Sys25\RnBase\Database\Connection
+    {
+    }
+
+    /** @deprecated */
+    interface tx_rnbase_IParameters extends \Sys25\RnBase\Frontend\Request\ParametersInterface
+    {
+    }
+
+    /** @deprecated */
+    class tx_rnbase_parameters extends \Sys25\RnBase\Frontend\Request\Parameters
+    {
+    }
+
+    /** @deprecated */
+    interface Tx_Rnbase_Interface_Singleton extends \Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface
+    {
+    }
+
+    /** @deprecated */
+    class Tx_Rnbase_CommandLine_Controller extends \Sys25\RnBase\Typo3Wrapper\Core\CommandLineController
+    {
+    }
+
+    /** @deprecated */
+    class tx_rnbase_util_Typo3Classes extends \Sys25\RnBase\Utility\Typo3Classes
+    {
+    }
+
+    /** @deprecated */
+    class tx_rnbase_util_Extensions extends \Sys25\RnBase\Utility\Extensions
+    {
+    }
+
+    /** @deprecated */
+    class Tx_Rnbase_Error_Exception extends \Sys25\RnBase\Typo3Wrapper\Core\Error\Exception
+    {
+    }
+
+    /** @deprecated */
+    class Tx_Rnbase_RecordList_DatabaseRecordList extends \Sys25\RnBase\Typo3Wrapper\RecordList\DatabaseRecordList
+    {
+    }
+
+    /** @deprecated */
+    class tx_rnbase_util_Network extends \Sys25\RnBase\Utility\Network
+    {
+    }
+
+    /** @deprecated */
+    class tx_rnbase_configurations extends \Sys25\RnBase\Configuration\Processor
+    {
+    }
+
+    /** @deprecated */
+    class Tx_Rnbase_Configuration_Processor extends \Sys25\RnBase\Configuration\Processor
+    {
+    }
+
+    /** @deprecated */
+    class tx_rnbase_model_media extends \Sys25\RnBase\Domain\Model\MediaModel
+    {
+    }
+
+    /** @deprecated */
+    class tx_rnbase_util_Arrays extends \Sys25\RnBase\Utility\Arrays
+    {
+    }
+
+    /** @deprecated */
+    class tx_rnbase_util_Debug extends \Sys25\RnBase\Utility\Debug
+    {
+    }
+
+    /** @deprecated */
+    class Tx_Rnbase_Service_Authentication extends \Sys25\RnBase\Typo3Wrapper\Service\AuthenticationService
+    {
+    }
+
+    /** @deprecated */
+    class Tx_Rnbase_Service_Base extends \Sys25\RnBase\Typo3Wrapper\Service\AbstractService
+    {
+    }
+
+    /** @deprecated */
+    interface Tx_Rnbase_Backend_Decorator_InterfaceDecorator extends \Sys25\RnBase\Backend\Decorator\InterfaceDecorator
+    {
+    }
+    /** @deprecated */
+    interface tx_rnbase_mod_IDecorator extends \Sys25\RnBase\Backend\Decorator\InterfaceDecorator
+    {
+    }
+
+    /** @deprecated */
+    class Tx_Rnbase_Backend_Decorator_BaseDecorator extends \Sys25\RnBase\Backend\Decorator\BaseDecorator
+    {
+    }
+
+    /** @deprecated */
+    abstract class Tx_Rnbase_Backend_Handler_SearchHandler extends \Sys25\RnBase\Backend\Handler\SearchHandler
+    {
+    }
+
+    /** @deprecated */
+    abstract class Tx_Rnbase_Backend_Handler_DetailHandler extends \Sys25\RnBase\Backend\Handler\DetailHandler
+    {
+    }
+
+    /** @deprecated */
+    abstract class Tx_Rnbase_Backend_Lister_AbstractLister extends \Sys25\RnBase\Backend\Lister\AbstractLister
+    {
+    }
+}
+
 namespace Sys25\RnBase\Controller\Extbase {
     /**
      * @deprecated
@@ -97,16 +248,14 @@ namespace Sys25\RnBase\Fluid\ViewHelper\Parameters {
 }
 
 namespace Sys25\RnBase\Search {
-    if (false) {
-        /** @deprecated */
-        class Category
-        {
-        }
+    /** @deprecated */
+    class Category
+    {
+    }
 
-        /** @deprecated */
-        class SearchCategory
-        {
-        }
+    /** @deprecated */
+    class SearchCategory
+    {
     }
 }
 
