@@ -4,6 +4,7 @@ namespace Sys25\RnBase\ExtBaseFluid\Controller;
 
 use Sys25\RnBase\Configuration\Processor;
 use Sys25\RnBase\Controller\AbstractController;
+use Sys25\RnBase\Tests\BaseTestCase;
 
 /***************************************************************
  * Copyright notice
@@ -33,7 +34,7 @@ use Sys25\RnBase\Controller\AbstractController;
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class AbstractControllerTest extends \tx_rnbase_tests_BaseTestCase
+class AbstractControllerTest extends BaseTestCase
 {
     /**
      * Test the handleRequest method.

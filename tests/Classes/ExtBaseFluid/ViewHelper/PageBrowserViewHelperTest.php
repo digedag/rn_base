@@ -4,6 +4,7 @@ namespace Sys25\RnBase\ExtBaseFluid\ViewHelper;
 
 use Sys25\RnBase\ExtBaseFluid\View\Factory;
 use Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowser\CurrentPageViewHelper;
+use tx_rnbase_util_PageBrowser;
 
 /***************************************************************
  * Copyright notice
@@ -672,7 +673,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
      */
     protected function getPreparedVîewHelperWithPageBrowser(
         $viewHelper = PageBrowserViewHelper::class,
-        \tx_rnbase_util_PageBrowser $pageBrowser = null,
+        tx_rnbase_util_PageBrowser $pageBrowser = null,
         $hideIfSinglePage = false,
         $maxPages = 10,
         $pageFloat = 'CENTER',

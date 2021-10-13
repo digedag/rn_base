@@ -4,6 +4,7 @@ namespace Sys25\RnBase\Database\Repository;
 
 use Sys25\RnBase\Domain\Model\BaseModel;
 use Sys25\RnBase\Domain\Repository\AbstractRepository;
+use Sys25\RnBase\Tests\BaseTestCase;
 use tx_rnbase;
 
 /***************************************************************
@@ -34,7 +35,7 @@ use tx_rnbase;
  *
  * @author Michael Wagner
  */
-class AbstractRepositoryTest extends \tx_rnbase_tests_BaseTestCase
+class AbstractRepositoryTest extends BaseTestCase
 {
     protected function setUp()
     {

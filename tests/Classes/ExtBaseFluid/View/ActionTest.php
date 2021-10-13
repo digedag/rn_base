@@ -2,6 +2,8 @@
 
 namespace Sys25\RnBase\ExtBaseFluid\View;
 
+use Sys25\RnBase\Tests\BaseTestCase;
+
 /***************************************************************
  * Copyright notice
  *
@@ -32,7 +34,7 @@ namespace Sys25\RnBase\ExtBaseFluid\View;
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class ActionTest extends \tx_rnbase_tests_BaseTestCase
+class ActionTest extends BaseTestCase
 {
     /**
      * (non-PHPdoc).

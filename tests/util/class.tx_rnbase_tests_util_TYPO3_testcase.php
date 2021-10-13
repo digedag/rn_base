@@ -22,10 +22,12 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use Sys25\RnBase\Tests\BaseTestCase;
+
 /**
  * @author Hannes Bochmann <hannes.bochmann@dmk-business.de>
  */
-class tx_rnbase_tests_util_TYPO3_testcase extends tx_rnbase_tests_BaseTestCase
+class tx_rnbase_tests_util_TYPO3_testcase extends BaseTestCase
 {
     /**
      * @group unit

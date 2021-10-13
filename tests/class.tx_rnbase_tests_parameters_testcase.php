@@ -22,12 +22,14 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Sys25\RnBase\Tests\BaseTestCase;
+
 /**
  * parameters testcase.
  *
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-class tx_rnbase_tests_parameters_testcase extends tx_rnbase_tests_BaseTestCase
+class tx_rnbase_tests_parameters_testcase extends BaseTestCase
 {
     public function testGet()
     {

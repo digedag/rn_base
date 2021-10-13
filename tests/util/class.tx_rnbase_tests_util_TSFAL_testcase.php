@@ -21,7 +21,9 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
+
+use Sys25\RnBase\Tests\BaseTestCase;
+
 tx_rnbase::load('tx_rnbase_util_TSFAL');
 
 /**
@@ -31,7 +33,7 @@ tx_rnbase::load('tx_rnbase_util_TSFAL');
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class tx_rnbase_tests_util_TSFAL_testcase extends tx_rnbase_tests_BaseTestCase
+class tx_rnbase_tests_util_TSFAL_testcase extends BaseTestCase
 {
     /**
      * @group unit

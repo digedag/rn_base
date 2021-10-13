@@ -21,14 +21,15 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
+
+use Sys25\RnBase\Tests\BaseTestCase;
 
 /**
  * tests for tx_rnbase_mod_linker_ShowDetails.
  *
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-class tx_rnbase_tests_mod_linker_ShowDetails_testcase extends tx_rnbase_tests_BaseTestCase
+class tx_rnbase_tests_mod_linker_ShowDetails_testcase extends BaseTestCase
 {
     /**
      * @group unit

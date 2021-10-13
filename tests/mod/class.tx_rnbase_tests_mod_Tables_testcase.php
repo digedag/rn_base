@@ -1,4 +1,7 @@
 <?php
+
+use Sys25\RnBase\Tests\BaseTestCase;
+
 /***************************************************************
  *  Copyright notice
 *
@@ -22,7 +25,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-class tx_rnbase_tests_mod_Tables_testcase extends tx_rnbase_tests_BaseTestCase
+class tx_rnbase_tests_mod_Tables_testcase extends BaseTestCase
 {
     /**
      * @var tx_rnbase_util_FormTool
