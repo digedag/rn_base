@@ -3,7 +3,10 @@
 namespace Sys25\RnBase\Utility;
 
 use Exception;
+use Psr\Http\Message\ServerRequestInterface;
 use tx_rnbase;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /***************************************************************
  *  Copyright notice
@@ -105,17 +108,44 @@ class Language
     }
 
     /**
-     * Get the configured language.
+     * Gets the configured language for the frontend.
      *
-     * @param bool $alt
+     * For TYPO3 >= 9LTS, this method tries to get the language from the sites first, and uses the language
+     * configured via the `config.language` TypoScript setup as a fallback.
      *
-     * @return string
+     * For TYPO3 < 9LTS, the language configured via the `config.language` TypoScript setup will always be used.
+     *
+     * @param bool $useAlternativeLanguage
+     *
+     * @return string the language key for the frontend, e.g., "de", "fr" or "default", might also be ""
      */
-    protected function getLLKey($alt = false)
+    protected function getLLKey($useAlternativeLanguage = false)
     {
-        $ret = $GLOBALS['TSFE']->config['config'][$alt ? 'language_alt' : 'language'];
+        /** @var TypoScriptFrontendController $frontEndController */
+        $frontEndController = $GLOBALS['TSFE'];
 
-        return $ret ? $ret : ($alt ? '' : 'default');
+        /** @var SiteLanguage|null $siteLanguage */
+        $siteLanguage = null;
+        if (TYPO3::isTYPO104OrHigher()) {
+            $siteLanguage = $frontEndController->getLanguage();
+        } elseif (TYPO3::isTYPO95OrHigher()) {
+            $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+            if ($request instanceof ServerRequestInterface) {
+                $siteLanguage = $request->getAttribute('language');
+            }
+        }
+        if ($siteLanguage instanceof SiteLanguage) {
+            $language = $siteLanguage->getTypo3Language();
+        } else {
+            $languageKey = $useAlternativeLanguage ? 'language_alt' : 'language';
+            $language = (string) ($frontEndController->config['config'][$languageKey] ?? '');
+        }
+
+        if ($language === $useAlternativeLanguage) {
+            $language = $useAlternativeLanguage ? '' : 'default';
+        }
+
+        return $language;
     }
 
     /**
