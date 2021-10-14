@@ -57,3 +57,54 @@ jobs:
       matrix:
         php-version:
           - 7.4
+
+  phpunit:
+    name: PHPUnit
+    runs-on: ubuntu-20.04
+    needs: php-lint
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2
+      - name: "Install PHP"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "${{ matrix.php-version }}"
+          tools: composer:v2
+          extensions: zip
+          coverage: none
+      - name: "Show Composer version"
+        run: composer --version
+      - name: "Cache dependencies installed with composer"
+        uses: actions/cache@v1
+        with:
+          key: "php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}"
+          path: ~/.composer/cache
+          restore-keys: "php${{ matrix.php-version }}-composer-\n"
+      - name: "Install TYPO3 Core"
+        env:
+          TYPO3: "${{ matrix.typo3-version }}"
+        run: |
+          composer require --no-progress typo3/minimal:"$TYPO3"
+          composer show
+      - name: "Install dependencies with composer"
+        run: |
+          composer update --no-ansi --no-interaction --no-progress --with-dependencies
+          composer show
+      - name: "Run unit tests"
+        run: "TYPO3_PATH_WEB=$PWD/.Build/Web && .Build/bin/phpunit"
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - typo3-version: ^9.5
+            php-version: 7.2
+          - typo3-version: ^9.5
+            php-version: 7.3
+          - typo3-version: ^9.5
+            php-version: 7.4
+          - typo3-version: ^10.4
+            php-version: 7.2
+          - typo3-version: ^10.4
+            php-version: 7.3
+          - typo3-version: ^10.4
+            php-version: 7.4
