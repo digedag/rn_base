@@ -52,6 +52,7 @@ return [
     'Tx_Rnbase_Exception_Base' => \Sys25\RnBase\Exception\BaseException::class,
     'Tx_Rnbase_Exception_PageNotFound404' => \Sys25\RnBase\Exception\PageNotFound404::class,
     'Tx_Rnbase_Frontend_Marker_Utility' => \Sys25\RnBase\Frontend\Marker\MarkerUtility::class,
+    'Tx_Rnbase_Frontend_Plugin' => \TYPO3\CMS\Frontend\Plugin\AbstractPlugin::class,
     'Tx_Rnbase_Interface_Singleton' => \Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface::class,
     'Tx_Rnbase_RecordList_DatabaseRecordList' => \Sys25\RnBase\Typo3Wrapper\RecordList\DatabaseRecordList::class,
     'Tx_Rnbase_Repository_AbstractRepository' => \Sys25\RnBase\Domain\Repository\AbstractRepository::class,
