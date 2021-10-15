@@ -136,6 +136,7 @@ namespace {
     interface Tx_Rnbase_Backend_Decorator_InterfaceDecorator extends \Sys25\RnBase\Backend\Decorator\InterfaceDecorator
     {
     }
+
     /** @deprecated */
     interface tx_rnbase_mod_IDecorator extends \Sys25\RnBase\Backend\Decorator\InterfaceDecorator
     {
@@ -158,6 +159,176 @@ namespace {
 
     /** @deprecated */
     abstract class Tx_Rnbase_Backend_Lister_AbstractLister extends \Sys25\RnBase\Backend\Lister\AbstractLister
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\Module\BaseModule*/
+    abstract class tx_rnbase_mod_BaseModule
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\Module\BaseModFunc */
+    abstract class tx_rnbase_mod_BaseModFunc
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\Module\ExtendedModFunc */
+    abstract class tx_rnbase_mod_ExtendedModFunc
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\Module\IModule */
+    interface tx_rnbase_mod_IModule
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\Module\IModFunc */
+    interface tx_rnbase_mod_IModFunc
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\Module\IModHandler */
+    interface tx_rnbase_mod_IModHandler
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\Module\ModuleBase */
+    class Tx_Rnbase_Backend_Module_Base
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\Module\Linker\LinkerInterface */
+    interface tx_rnbase_mod_linker_LinkerInterface
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\Module\Linker\ShowDetails */
+    class tx_rnbase_mod_linker_ShowDetails
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\Utility\TcaTool */
+    class Tx_Rnbase_Utility_TcaTool
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\Utility\TcaTool */
+    class Tx_Rnbase_Util_TCATool
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\Utility\TCA */
+    class tx_rnbase_util_TCA
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\Utility\BackendUtility */
+    class Tx_Rnbase_Backend_Utility
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\Utility\BEPager */
+    class tx_rnbase_util_BEPager
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\Utility\DecoratorUtility */
+    class Tx_Rnbase_Backend_Utility_DecoratorUtility
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\Utility\SearcherUtility */
+    class Tx_Rnbase_Backend_Utility_SearcherUtility
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\Template\Override\DocumentTemplate */
+    class Tx_Rnbase_Backend_Template_Override_DocumentTemplate
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\Template\ModuleParts */
+    class Tx_Rnbase_Backend_Template_ModuleParts
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\Template\ModuleTemplate */
+    class Tx_Rnbase_Backend_Template_ModuleTemplate
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\Form\Element\InputText */
+    class Tx_Rnbase_Backend_Form_Element_InputText
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\Form\FormBuilder */
+    class Tx_Rnbase_Backend_Form_FormBuilder
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\Form\ToolBox */
+    class Tx_Rnbase_Backend_Form_ToolBox
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\Form\ToolBox */
+    class tx_rnbase_util_FormTool
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\Form\FormUtil */
+    class tx_rnbase_util_FormUtil
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\Utility\BaseLister */
+    abstract class tx_rnbase_mod_base_Lister
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\Utility\Icons */
+    class Tx_Rnbase_Backend_Utility_Icons
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\Utility\ModuleUtility */
+    class tx_rnbase_mod_Util
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\Utility\Tables */
+    class Tx_Rnbase_Backend_Utility_Tables
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Backend\ModuleRunner */
+    class Tx_Rnbase_Backend_ModuleRunner
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Utility\Logger */
+    class tx_rnbase_util_Logger
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Search\SearchBase */
+    abstract class tx_rnbase_util_SearchBase
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Search\SearchGeneric */
+    abstract class tx_rnbase_util_SearchGeneric
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Search\System\CategorySearchUtility */
+    class Tx_Rnbase_Category_SearchUtility
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Configuration\ConfigurableTrait */
+    trait Tx_Rnbase_Configuration_ConfigurableTrait
     {
     }
 }
