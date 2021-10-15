@@ -22,17 +22,16 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use Sys25\RnBase\Tests\BaseTestCase;
 use TYPO3\CMS\Core\TimeTracker\NullTimeTracker;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
-
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
 /**
  * tests for tx_rnbase_util_Templates.
  *
  * @author Rene Nitzsche <rene@system25.de>
  */
-class tx_rnbase_tests_util_Templates_testcase extends tx_rnbase_tests_BaseTestCase
+class tx_rnbase_tests_util_Templates_testcase extends BaseTestCase
 {
     /**
      * @var array

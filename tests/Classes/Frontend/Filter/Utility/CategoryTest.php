@@ -4,6 +4,7 @@ namespace Sys25\RnBase\Frontend\Filter\Utility;
 
 use Sys25\RnBase\Configuration\Processor;
 use Sys25\RnBase\Frontend\Request\Parameters;
+use Sys25\RnBase\Tests\BaseTestCase;
 
 /***************************************************************
 *  Copyright notice
@@ -35,7 +36,7 @@ use Sys25\RnBase\Frontend\Request\Parameters;
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class CategoryTest extends \tx_rnbase_tests_BaseTestCase
+class CategoryTest extends BaseTestCase
 {
     protected $configurations;
 

@@ -1,6 +1,8 @@
 <?php
 
 use Sys25\RnBase\Frontend\Filter\Utility\Category;
+use Sys25\RnBase\Tests\BaseTestCase;
+use Sys25\RnBase\Tests\TestUtility;
 
 /*
  * @package TYPO3
@@ -28,7 +30,6 @@ use Sys25\RnBase\Frontend\Filter\Utility\Category;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
 /**
  * tx_rnbase_tests_filter_BaseFilter_testcase.
@@ -37,14 +38,14 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTestCase
+class tx_rnbase_tests_filter_BaseFilter_testcase extends BaseTestCase
 {
     /**
      * @group unit
      */
     public function testGetCategoryFilterUtility()
     {
-        $configurations = \tx_rnbase_tests_Utility::createConfigurations([], 'rnbase');
+        $configurations = TestUtility::createConfigurations([], 'rnbase');
         $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         self::assertInstanceOf(
             Category::class,
@@ -61,7 +62,7 @@ class tx_rnbase_tests_filter_BaseFilter_testcase extends tx_rnbase_tests_BaseTes
      */
     public function testInitReturnsCorrectValue($initFilterReturnValue, $doSearchVariableValue, $expectedReturnValue)
     {
-        $configurations = \tx_rnbase_tests_Utility::createConfigurations([], 'myext');
+        $configurations = TestUtility::createConfigurations([], 'myext');
         $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $filter = $this->getAccessibleMock(
             'tx_rnbase_filter_BaseFilter',

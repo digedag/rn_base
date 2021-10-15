@@ -22,6 +22,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use Sys25\RnBase\Tests\BaseTestCase;
+
 /**
  * tx_rnbase_tests_util_Files_testcase.
  *
@@ -29,7 +31,7 @@
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class tx_rnbase_tests_util_Files_testcase extends tx_rnbase_tests_BaseTestCase
+class tx_rnbase_tests_util_Files_testcase extends BaseTestCase
 {
     /**
      * @var array

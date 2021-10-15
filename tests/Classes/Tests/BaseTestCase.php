@@ -85,7 +85,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
      *
      * @return ConfigurationInterface
      *
-     * @deprecated use tx_rnbase_tests_Utility::createConfigurations() instead
+     * @deprecated use `TestUtility::createConfigurations()` instead
      */
     protected static function createConfigurations(
         array $configurationArray,
@@ -93,7 +93,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
         $qualifier = ''
     ) {
         return call_user_func_array(
-            ['tx_rnbase_tests_Utility', 'createConfigurations'],
+            [TestUtility::class, 'createConfigurations'],
             func_get_args()
         );
     }

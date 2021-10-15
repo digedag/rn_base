@@ -2,6 +2,9 @@
 
 namespace Sys25\RnBase\ExtBaseFluid\View;
 
+use Sys25\RnBase\Tests\BaseTestCase;
+use Sys25\RnBase\Tests\TestUtility;
+
 /***************************************************************
  * Copyright notice
  *
@@ -32,7 +35,7 @@ namespace Sys25\RnBase\ExtBaseFluid\View;
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class StandaloneTest extends \tx_rnbase_tests_BaseTestCase
+class StandaloneTest extends BaseTestCase
 {
     /**
      * (non-PHPdoc).
@@ -54,7 +57,7 @@ class StandaloneTest extends \tx_rnbase_tests_BaseTestCase
     {
         $contentObject = \tx_rnbase::makeInstance(\tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
         $view = \tx_rnbase::makeInstance('Sys25\\RnBase\\ExtBaseFluid\\View\\Standalone', $contentObject);
-        $configurations = \tx_rnbase_tests_Utility::createConfigurations([], 'rn_base');
+        $configurations = TestUtility::createConfigurations([], 'rn_base');
         $view->setConfigurations($configurations);
 
         self::assertSame($configurations, $view->getConfigurations());

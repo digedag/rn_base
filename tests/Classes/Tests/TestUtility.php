@@ -37,7 +37,7 @@ class TestUtility
 {
     /**
      * Sample:
-     * tx_rnbase_tests_Utility::createConfigurations(
+     * TestUtility::createConfigurations(
      *   array(), 'rn_base', 'rn_base',
      *   tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class),
      *   tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass())

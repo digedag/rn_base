@@ -22,6 +22,8 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Sys25\RnBase\Tests\BaseTestCase;
+
 /**
  * Mcrypt.
  *
@@ -29,7 +31,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html
  *        GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Utility_TypoScriptTest extends tx_rnbase_tests_BaseTestCase
+class Tx_Rnbase_Utility_TypoScriptTest extends BaseTestCase
 {
     /**
      * Testdata for ts array convertion.

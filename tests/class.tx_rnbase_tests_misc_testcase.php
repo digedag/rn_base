@@ -1,4 +1,7 @@
 <?php
+
+use Sys25\RnBase\Tests\BaseTestCase;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -30,7 +33,7 @@ class tx_rnbase_dummyMisc extends tx_rnbase_util_Misc
     }
 }
 
-class tx_rnbase_tests_misc_testcase extends tx_rnbase_tests_BaseTestCase
+class tx_rnbase_tests_misc_testcase extends BaseTestCase
 {
     public function testEncodeParams()
     {

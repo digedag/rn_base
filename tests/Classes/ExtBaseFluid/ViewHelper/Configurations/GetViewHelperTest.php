@@ -3,6 +3,7 @@
 namespace Sys25\RnBase\ExtBaseFluid\ViewHelper\Configurations;
 
 use Sys25\RnBase\ExtBaseFluid\View\Factory;
+use Sys25\RnBase\Tests\BaseTestCase;
 
 /***************************************************************
  * Copyright notice
@@ -34,7 +35,7 @@ use Sys25\RnBase\ExtBaseFluid\View\Factory;
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class GetViewHelperTest extends \tx_rnbase_tests_BaseTestCase
+class GetViewHelperTest extends BaseTestCase
 {
     /**
      * (non-PHPdoc).

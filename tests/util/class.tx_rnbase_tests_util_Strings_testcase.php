@@ -21,13 +21,14 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
+
+use Sys25\RnBase\Tests\BaseTestCase;
 
 /**
  * @author Rene Nitzsche <rene@system25.de>
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-class tx_rnbase_tests_util_Strings_testcase extends tx_rnbase_tests_BaseTestCase
+class tx_rnbase_tests_util_Strings_testcase extends BaseTestCase
 {
     public function testIsUtf8String()
     {

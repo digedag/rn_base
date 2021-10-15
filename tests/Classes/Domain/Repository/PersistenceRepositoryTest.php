@@ -22,14 +22,14 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
+use Sys25\RnBase\Tests\BaseTestCase;
 
 /**
  * Test for persistence repository.
  *
  * @author Michael Wagner
  */
-class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends tx_rnbase_tests_BaseTestCase
+class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends BaseTestCase
 {
     private $backup = [];
 

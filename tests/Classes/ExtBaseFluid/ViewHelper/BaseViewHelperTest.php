@@ -2,6 +2,8 @@
 
 namespace Sys25\RnBase\ExtBaseFluid\ViewHelper;
 
+use Sys25\RnBase\Tests\BaseTestCase;
+
 /***************************************************************
  * Copyright notice
  *
@@ -32,7 +34,7 @@ namespace Sys25\RnBase\ExtBaseFluid\ViewHelper;
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-abstract class BaseViewHelperTest extends \tx_rnbase_tests_BaseTestCase
+abstract class BaseViewHelperTest extends BaseTestCase
 {
     /**
      * @var \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext

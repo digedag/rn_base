@@ -22,7 +22,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
+use Sys25\RnBase\Tests\BaseTestCase;
+
 tx_rnbase::load('tx_rnbase_util_TS');
 
 class tx_rnbase_util_SimpleMarkerTests extends tx_rnbase_util_SimpleMarker
@@ -37,7 +38,7 @@ class tx_rnbase_util_SimpleMarkerTests extends tx_rnbase_util_SimpleMarker
 /**
  * @author Michael Wagner <mihcael.wagner@das-medienkombinat.de>
  */
-class tx_rnbase_tests_util_SimpleMarker_testcase extends tx_rnbase_tests_BaseTestCase
+class tx_rnbase_tests_util_SimpleMarker_testcase extends BaseTestCase
 {
     public function testPrepareSubparts()
     {
