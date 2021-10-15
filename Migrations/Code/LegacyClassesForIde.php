@@ -7,6 +7,11 @@ namespace {
 }
 
 namespace {
+    /** @deprecated use \TYPO3\CMS\Frontend\Plugin\AbstractPlugin instead */
+    class Tx_Rnbase_Frontend_Plugin
+    {
+    }
+
     /** @deprecated */
     interface tx_rnbase_cache_ICache extends \Sys25\RnBase\Cache\CacheInterface
     {
