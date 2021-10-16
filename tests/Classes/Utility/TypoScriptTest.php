@@ -1,8 +1,11 @@
 <?php
+
+namespace Sys25\RnBase\Utility;
+
 /***************************************************************
  * Copyright notice
  *
- *  (c) 2017 René Nitzsche <rene@system25.de>
+ *  (c) 2017-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,7 +34,7 @@ use Sys25\RnBase\Testing\BaseTestCase;
  * @license http://www.gnu.org/licenses/lgpl.html
  *        GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Utility_TypoScriptTest extends BaseTestCase
+class TypoScriptTest extends BaseTestCase
 {
     /**
      * Testdata for ts array convertion.
@@ -77,7 +80,7 @@ class Tx_Rnbase_Utility_TypoScriptTest extends BaseTestCase
     {
         $this->assertEquals(
             self::$configArrayWithoutDot,
-            Tx_Rnbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray(
+            TypoScript::convertTypoScriptArrayToPlainArray(
                 self::$configArrayWithDot
             )
         );
@@ -93,14 +96,14 @@ class Tx_Rnbase_Utility_TypoScriptTest extends BaseTestCase
     {
         $this->assertEquals(
             self::$configArrayWithDot,
-            Tx_Rnbase_Utility_TypoScript::convertPlainArrayToTypoScriptArray(
+            TypoScript::convertPlainArrayToTypoScriptArray(
                 self::$configArrayWithoutDot
             )
         );
         // converting of conf array with dot should produce the same, without double dot keys!
         $this->assertEquals(
             self::$configArrayWithDot,
-            Tx_Rnbase_Utility_TypoScript::convertPlainArrayToTypoScriptArray(
+            TypoScript::convertPlainArrayToTypoScriptArray(
                 self::$configArrayWithDot
             )
         );

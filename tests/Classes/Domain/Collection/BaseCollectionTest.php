@@ -1,8 +1,11 @@
 <?php
+
+namespace Sys25\RnBase\Domain\Collection;
+
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2011-2018 Rene Nitzsche (rene@system25.de)
+*  (c) 2011-2021 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,7 +34,7 @@ use Sys25\RnBase\Testing\BaseTestCase;
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Domain_Collection_BaseTest extends BaseTestCase
+class BaseCollectionTest extends BaseTestCase
 {
     /**
      * Test the getUids method.
@@ -41,7 +44,7 @@ class Tx_Rnbase_Domain_Collection_BaseTest extends BaseTestCase
      */
     public function testGetUids()
     {
-        $collection = new Tx_Rnbase_Domain_Collection_Base(
+        $collection = new BaseCollection(
             [
                 6 => $this->getModel(['uid' => 5]),
                 9 => $this->getModel(['uid' => 7]),

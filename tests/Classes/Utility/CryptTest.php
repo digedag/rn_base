@@ -1,8 +1,9 @@
 <?php
 
+namespace Sys25\RnBase\Utility;
+
 use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Testing\BaseTestCase;
-use Sys25\RnBase\Utility\Crypt;
 
 /***************************************************************
  * Copyright notice

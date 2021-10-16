@@ -1,8 +1,7 @@
 <?php
 
-namespace Sys25\RnBase\Database\Model;
+namespace Sys25\RnBase\Domain\Model;
 
-use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Testing\BaseTestCase;
 
 /***************************************************************

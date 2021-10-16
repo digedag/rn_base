@@ -165,7 +165,7 @@ if (false) {
     class tx_rnbase_util_Templates
     {
     }
-    /** @deprecated */
+    /** @deprecated use \Sys25\RnBase\Utility\CHashUtility */
     class Tx_Rnbase_Utility_Cache
     {
     }

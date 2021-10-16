@@ -3,13 +3,14 @@
 namespace Sys25\RnBase\Frontend\Filter\Utility;
 
 use Sys25\RnBase\Configuration\Processor;
+use Sys25\RnBase\Database\Connection;
 use Sys25\RnBase\Frontend\Request\Parameters;
 use Sys25\RnBase\Testing\BaseTestCase;
 
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 Rene Nitzsche (rene@system25.de)
+*  (c) 2010-2021 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -48,7 +49,7 @@ class CategoryTest extends BaseTestCase
 
     public function setUp()
     {
-        $this->dbConnection = $this->prophesize(\Tx_Rnbase_Database_Connection::class);
+        $this->dbConnection = $this->prophesize(Connection::class);
         $this->parametersMock = $this->prophesize(Parameters::class);
         $this->configurations = $this->prophesize(Processor::class);
         $this->configurations->getParameters()->willReturn($this->parametersMock->reveal());
@@ -59,7 +60,7 @@ class CategoryTest extends BaseTestCase
     /**
      * {@inheritdoc}
      *
-     * @see \PHPUnit_Framework_TestCase::tearDown()
+     * @see \PHPUnit\Framework\TestCase::tearDown()
      */
     protected function tearDown()
     {

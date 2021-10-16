@@ -1,8 +1,11 @@
 <?php
+
+namespace Sys25\RnBase\Backend\Utility;
+
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007 Rene Nitzsche (rene@system25.de)
+*  (c) 2007-2021 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,49 +34,18 @@ use Sys25\RnBase\Testing\BaseTestCase;
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Backend_UtilityTest extends BaseTestCase
+class BackendUtilityTest extends BaseTestCase
 {
     /**
      * @group unit
      */
     public function testGetRecordTitle()
     {
-        Tx_Rnbase_Backend_UtilityForTests::getRecordTitle(1, 2, 3, 4);
+        BackendUtilityForTests::getRecordTitle(1, 2, 3, 4);
 
         self::assertEquals(
             ['getRecordTitle' => [1, 2, 3, 4]],
             Typo3BackendUtilityClass::$lastCalledMethod
         );
-    }
-}
-
-class Tx_Rnbase_Backend_UtilityForTests extends Tx_Rnbase_Backend_Utility
-{
-    /**
-     * @return Typo3BackendUtilityClass
-     */
-    protected static function getBackendUtilityClass()
-    {
-        return 'Typo3BackendUtilityClass';
-    }
-}
-
-/**
- * mit diser Klasse stellen wir fest welche Methode mit welchen Parametern aufgerufen wurde.
- */
-class Typo3BackendUtilityClass
-{
-    /**
-     * @var array der key ist der methoden name, der value die übergebenen Parameter
-     */
-    public static $lastCalledMethod = [];
-
-    /**
-     * @param string $method
-     * @param array  $arguments
-     */
-    public static function __callStatic($method, $arguments)
-    {
-        self::$lastCalledMethod = [$method => $arguments];
     }
 }

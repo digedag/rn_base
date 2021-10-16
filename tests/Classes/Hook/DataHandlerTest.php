@@ -3,6 +3,7 @@
 namespace Sys25\RnBase\Hook;
 
 use Sys25\RnBase\Testing\BaseTestCase;
+use Sys25\RnBase\Utility\Typo3Classes;
 use tx_rnbase;
 
 /***************************************************************
@@ -74,7 +75,7 @@ class DataHandlerTest extends BaseTestCase
     {
         $GLOBALS['TCA']['rn_base_test_table']['ctrl']['cacheTags'] = ['first-tag', 'second-tag'];
 
-        $cacheManager = $this->getMock(\tx_rnbase_util_Typo3Classes::getCacheManagerClass(), ['flushCachesInGroupByTag']);
+        $cacheManager = $this->getMock(Typo3Classes::getCacheManagerClass(), ['flushCachesInGroupByTag']);
         $cacheManager->expects(self::at(0))
             ->method('flushCachesInGroupByTag')
             ->with('pages', 'first-tag');

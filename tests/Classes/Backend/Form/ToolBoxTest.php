@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Backend\Form;
 
+use Sys25\RnBase\Backend\Template\Override\DocumentTemplate;
 use Sys25\RnBase\Testing\BaseTestCase;
 use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
@@ -40,8 +41,8 @@ class ToolBoxTest extends BaseTestCase
 {
     protected function setUp()
     {
-        if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
-            $cacheManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
+        if (TYPO3::isTYPO90OrHigher()) {
+            $cacheManager = tx_rnbase::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
             // needed for icon retrieval
             if (!$cacheManager->hasCache('assets')) {
                 $cacheManager->registerCache(
@@ -177,7 +178,7 @@ class ToolBoxTest extends BaseTestCase
         }
 
         $formTool = tx_rnbase::makeInstance($this->buildAccessibleProxy(ToolBox::class));
-        $formTool->init(tx_rnbase::makeInstance('Tx_Rnbase_Backend_Template_Override_DocumentTemplate'), null);
+        $formTool->init(tx_rnbase::makeInstance(DocumentTemplate::class), null);
         $options = ['test'];
         $urlParameters = 'someParameters';
 
@@ -209,7 +210,7 @@ class ToolBoxTest extends BaseTestCase
             ->method('addJsInlineCode')
             ->with('rnBaseMethods', 'javascriptCode');
 
-        $document = $this->getMock('Tx_Rnbase_Backend_Template_Override_DocumentTemplate', ['getPageRenderer']);
+        $document = $this->getMock(DocumentTemplate::class, ['getPageRenderer']);
         $document
             ->expects(self::once())
             ->method('getPageRenderer')
@@ -232,7 +233,7 @@ class ToolBoxTest extends BaseTestCase
         $options = ['test'];
 
         $formTool = $this->getAccessibleMock(ToolBox::class, ['getConfirmCode']);
-        $formTool->init(tx_rnbase::makeInstance('Tx_Rnbase_Backend_Template_Override_DocumentTemplate'), null);
+        $formTool->init(tx_rnbase::makeInstance(DocumentTemplate::class), null);
         $formTool
             ->expects(self::once())
             ->method('getConfirmCode')
@@ -254,7 +255,7 @@ class ToolBoxTest extends BaseTestCase
         $urlParameters = 'someParameters=2&param2=bar';
         $options = ['params' => ['someParameters' => '2', 'param2' => 'bar', 'id' => $pid]];
 
-        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', ['getLinkThisScript']);
+        $formTool = $this->getMock(ToolBox::class, ['getLinkThisScript']);
         $formTool
             ->expects(self::once())
             ->method('getLinkThisScript')
@@ -435,7 +436,7 @@ class ToolBoxTest extends BaseTestCase
         $urlParameters = 'someParameters';
         $options = ['class' => 'myClass'];
 
-        $formTool = $this->getMock('Tx_Rnbase_Backend_Form_ToolBox', ['getJavaScriptForLinkToDataHandlerAction']);
+        $formTool = $this->getMock(ToolBox::class, ['getJavaScriptForLinkToDataHandlerAction']);
         $formTool
             ->expects(self::once())
             ->method('getJavaScriptForLinkToDataHandlerAction')

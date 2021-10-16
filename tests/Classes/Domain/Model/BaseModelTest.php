@@ -1,8 +1,7 @@
 <?php
 
-namespace Sys25\RnBase\Database\Model;
+namespace Sys25\RnBase\Domain\Model;
 
-use Sys25\RnBase\Domain\Model\BaseModel;
 use Sys25\RnBase\Testing\BaseTestCase;
 use tx_rnbase;
 
@@ -46,7 +45,7 @@ class BaseModelTest extends BaseTestCase
             [
                 'first_name' => 'Max',
             ],
-            'Tx_Rnbase_Domain_Model_Base'
+            BaseModel::class
         );
 
         // set a new record
@@ -78,7 +77,7 @@ class BaseModelTest extends BaseTestCase
     public function testGetUidWhenNoLocalisation()
     {
         $model = $this->getMock(
-            'Tx_Rnbase_Domain_Model_Base',
+            BaseModel::class,
             ['getTableName'],
             [['uid' => '123']]
         );
@@ -110,7 +109,7 @@ class BaseModelTest extends BaseTestCase
     public function testGetUidForNonTca()
     {
         $model = $this->getMock(
-            'Tx_Rnbase_Domain_Model_Base',
+            BaseModel::class,
             ['getTableName'],
             [
                 [
@@ -128,7 +127,7 @@ class BaseModelTest extends BaseTestCase
     public function testGetUidForNonTable()
     {
         $model = tx_rnbase::makeInstance(
-            'Tx_Rnbase_Domain_Model_Base',
+            BaseModel::class,
             [
                 'uid' => '57',
                 'field' => 'test',
@@ -140,7 +139,7 @@ class BaseModelTest extends BaseTestCase
     public function testGetUidForTranslatedSingleRecord()
     {
         $model = $this->getMock(
-            'Tx_Rnbase_Domain_Model_Base',
+            BaseModel::class,
             ['getTableName'],
             [['uid' => '123', 'l18n_parent' => '0', 'sys_language_uid' => '789']]
         );

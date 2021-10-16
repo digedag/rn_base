@@ -71,7 +71,7 @@ class MailTest extends BaseTestCase
     public function testSendMail()
     {
         $mail = $this->createMailMock();
-        $this->assertInstanceOf('Tx_Rnbase_Utility_Mail', $mail);
+        $this->assertInstanceOf(Email::class, $mail);
         $mail->setFrom('test@test.com', 'fromname');
         $mail->setSubject('my subject');
 

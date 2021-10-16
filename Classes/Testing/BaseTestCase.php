@@ -7,6 +7,7 @@ use ReflectionClass;
 use ReflectionObject;
 use ReflectionProperty;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
+use Sys25\RnBase\Domain\Model\BaseModel;
 use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
 use tx_rnbase_util_Spyc;
@@ -192,8 +193,9 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
         }
 
         $isNewModel = (
-            is_subclass_of($class, 'Tx_Rnbase_Domain_Model_Base') ||
-            'Tx_Rnbase_Domain_Model_Base' == $class
+            is_subclass_of($class, BaseModel::class) ||
+            'Tx_Rnbase_Domain_Model_Base' == $class ||
+            BaseModel::class == $class
         );
 
         // create the mock

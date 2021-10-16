@@ -1,8 +1,11 @@
 <?php
+
+namespace Sys25\RnBase\Domain\Repository;
+
 /***************************************************************
  * Copyright notice
  *
- * (c) 2016 René Nitzsche <rene@system25.de>
+ * (c) 2016-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,6 +25,10 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use stdClass;
+use Sys25\RnBase\Database\Connection;
+use Sys25\RnBase\Domain\Model\BaseModel;
+use Sys25\RnBase\Search\SearchGeneric;
 use Sys25\RnBase\Testing\BaseTestCase;
 
 /**
@@ -29,7 +36,7 @@ use Sys25\RnBase\Testing\BaseTestCase;
  *
  * @author Michael Wagner
  */
-class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends BaseTestCase
+class PersistenceRepositoryTest extends BaseTestCase
 {
     private $backup = [];
 
@@ -66,7 +73,7 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends BaseTestCase
             $this->callInaccessibleMethod(
                 $this->getRepository(),
                 'isModelWrapperClass',
-                $this->getModel(null, 'Tx_Rnbase_Domain_Model_Base')
+                $this->getModel(null, BaseModel::class)
             )
         );
     }
@@ -113,7 +120,7 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends BaseTestCase
         $repo->getEmptyModel()->setTableName('tt_content');
         $model = $this->getModel(
             ['pid' => 5, 'header' => 'New element', 'unknown_column' => 'temp'],
-            'Tx_Rnbase_Domain_Model_Base'
+            BaseModel::class
         )->setTableName('tt_content');
 
         // no update for new odels
@@ -186,7 +193,7 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends BaseTestCase
         $repo->getEmptyModel()->setTableName('tt_content');
         $model = $this->getModel(
             ['uid' => 7, 'pid' => 5, 'header' => 'New element', 'unknown_column' => 'temp'],
-            'Tx_Rnbase_Domain_Model_Base'
+            BaseModel::class
         )->setTableName('tt_content');
 
         // set a value, so the dirty flag was set
@@ -252,7 +259,7 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends BaseTestCase
         $record = ['uid' => 7, 'pid' => 5, 'header' => 'New element', 'unknown_column' => 'temp'];
         $model = $this->getModel(
             $record,
-            'Tx_Rnbase_Domain_Model_Base'
+            BaseModel::class
         )->setTableName('tt_content');
 
         // no insert on already stored models
@@ -281,19 +288,19 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends BaseTestCase
      *
      * @param array $methods
      *
-     * @return PHPUnit_Framework_MockObject_MockObject|Tx_Rnbase_Domain_Repository_PersistenceRepository
+     * @return \PHPUnit\Framework\MockObject\MockObject|PersistenceRepository
      */
     protected function getRepository(
         array $methods = []
     ) {
         $connection = $this->getMock(
-            'Tx_Rnbase_Database_Connection',
-            get_class_methods('Tx_Rnbase_Database_Connection')
+            Connection::class,
+            get_class_methods(Connection::class)
         );
-        $model = $this->getModel(null, 'Tx_Rnbase_Domain_Model_Base');
+        $model = $this->getModel(null, BaseModel::class);
 
         $repo = $this->getMockForAbstractClass(
-            'Tx_Rnbase_Domain_Repository_PersistenceRepository',
+            PersistenceRepository::class,
             [],
             '',
             true,
@@ -312,7 +319,7 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends BaseTestCase
         $repo
             ->expects(self::any())
             ->method('getSearchClass')
-            ->will(self::returnValue('tx_rnbase_util_SearchGeneric'));
+            ->will(self::returnValue(SearchGeneric::class));
         $repo
             ->expects(self::any())
             ->method('getEmptyModel')
@@ -320,7 +327,7 @@ class Tx_Rnbase_Domain_Repository_PersistenceRepositoryTest extends BaseTestCase
         $repo
             ->expects(self::any())
             ->method('getWrapperClass')
-            ->will(self::returnValue('Tx_Rnbase_Domain_Model_Base'));
+            ->will(self::returnValue(BaseModel::class));
 
         return $repo;
     }

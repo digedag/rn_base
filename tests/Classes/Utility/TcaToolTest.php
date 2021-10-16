@@ -1,8 +1,11 @@
 <?php
-/**
+
+namespace Sys25\RnBase\Utility;
+
+/*
  *  Copyright notice.
  *
- *  (c) 2010 Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
+ *  (c) 2016-2021 René Nitzsche <rene@system25.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,6 +25,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
+use Sys25\RnBase\Backend\Utility\TcaTool;
 use Sys25\RnBase\Testing\BaseTestCase;
 
 /**
@@ -31,14 +35,14 @@ use Sys25\RnBase\Testing\BaseTestCase;
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Utility_TcaToolTest extends BaseTestCase
+class TcaToolTest extends BaseTestCase
 {
     /**
      * @group unit
      */
     public function testGetWizardsReturnsLinkWizardCorrect()
     {
-        $linkWizard = Tx_Rnbase_Utility_TcaTool::getWizards(
+        $linkWizard = TcaTool::getWizards(
             '',
             [
                 'link' => [
@@ -63,7 +67,7 @@ class Tx_Rnbase_Utility_TcaToolTest extends BaseTestCase
                 'module' => ['urlParameters' => ['mode' => 'wizard', 'newKey' => 'wizard']],
             ],
         ];
-        if (tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
+        if (TYPO3::isTYPO87OrHigher()) {
             $expectedLinkWizard['link']['icon'] = 'actions-add';
             $expectedLinkWizard['link']['module']['name'] = 'wizard_link';
         } else {
@@ -78,7 +82,7 @@ class Tx_Rnbase_Utility_TcaToolTest extends BaseTestCase
      */
     public function testGetWizardsReturnsWizardsWithCorrectScriptOrModuleKey()
     {
-        $wizards = Tx_Rnbase_Utility_TcaTool::getWizards(
+        $wizards = TcaTool::getWizards(
             '',
             [
                 'add' => 1,
@@ -101,7 +105,7 @@ class Tx_Rnbase_Utility_TcaToolTest extends BaseTestCase
         self::assertEquals('wizard_rte', $wizards['RTE']['module']['name']);
         self::assertEquals('wizard_colorpicker', $wizards['colorpicker']['module']['name']);
 
-        if (tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
+        if (TYPO3::isTYPO87OrHigher()) {
             self::assertEquals('wizard_link', $wizards['link']['module']['name']);
         } else {
             self::assertEquals('wizard_element_browser', $wizards['link']['module']['name']);
@@ -113,7 +117,7 @@ class Tx_Rnbase_Utility_TcaToolTest extends BaseTestCase
      */
     public function testGetWizardsReturnsWizardsWithCorrectIcons()
     {
-        $wizards = Tx_Rnbase_Utility_TcaTool::getWizards(
+        $wizards = TcaTool::getWizards(
             '',
             [
                 'add' => 1,
@@ -124,7 +128,7 @@ class Tx_Rnbase_Utility_TcaToolTest extends BaseTestCase
             ]
         );
 
-        if (tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
+        if (TYPO3::isTYPO87OrHigher()) {
             self::assertEquals(
                 'actions-add',
                 $wizards['add']['icon']
@@ -174,7 +178,7 @@ class Tx_Rnbase_Utility_TcaToolTest extends BaseTestCase
      */
     public function testGetWizardsForColorpicker()
     {
-        $wizards = Tx_Rnbase_Utility_TcaTool::getWizards('', ['colorpicker' => 1]);
+        $wizards = TcaTool::getWizards('', ['colorpicker' => 1]);
 
         self::assertEquals('colorbox', $wizards['colorpicker']['type']);
     }
@@ -184,7 +188,7 @@ class Tx_Rnbase_Utility_TcaToolTest extends BaseTestCase
      */
     public function testGetWizardsForColorpickerAndOverrides()
     {
-        $wizards = Tx_Rnbase_Utility_TcaTool::getWizards(
+        $wizards = TcaTool::getWizards(
             '',
             ['colorpicker' => ['type' => 'myOwnType']]
         );

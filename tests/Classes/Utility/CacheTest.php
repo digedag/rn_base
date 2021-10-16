@@ -1,12 +1,15 @@
 <?php
 
+namespace Sys25\RnBase\Utility;
+
+use ReflectionProperty;
 use Sys25\RnBase\Testing\BaseTestCase;
-use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase;
 
 /***************************************************************
  * Copyright notice
  *
- *  (c) 2016 René Nitzsche <rene@system25.de>
+ *  (c) 2016-2021 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -33,7 +36,7 @@ use Sys25\RnBase\Utility\TYPO3;
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class Tx_Rnbase_Utility_CacheTest extends BaseTestCase
+class CacheTest extends BaseTestCase
 {
     /**
      * @var string
@@ -43,11 +46,11 @@ class Tx_Rnbase_Utility_CacheTest extends BaseTestCase
     /**
      * {@inheritdoc}
      *
-     * @see PHPUnit_Framework_TestCase::setUp()
+     * @see \PHPUnit\Framework\TestCase::setUp()
      */
     protected function setUp()
     {
-        if (\tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+        if (TYPO3::isTYPO90OrHigher()) {
             $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'] = [];
             $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['requireCacheHashPresenceParameters'] = [];
         } else {
@@ -66,7 +69,7 @@ class Tx_Rnbase_Utility_CacheTest extends BaseTestCase
     /**
      * {@inheritdoc}
      *
-     * @see PHPUnit_Framework_TestCase::tearDown()
+     * @see \PHPUnit\Framework\TestCase::tearDown()
      */
     protected function tearDown()
     {
@@ -92,7 +95,7 @@ class Tx_Rnbase_Utility_CacheTest extends BaseTestCase
         self::assertSame([], $excludedParameters);
         self::assertSame([], $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters']);
 
-        Tx_Rnbase_Utility_Cache::addExcludedParametersForCacheHash(['john', 'doe']);
+        CHashUtility::addExcludedParametersForCacheHash(['john', 'doe']);
 
         $excludedParameters = $property->getValue(
             tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
@@ -120,7 +123,7 @@ class Tx_Rnbase_Utility_CacheTest extends BaseTestCase
         self::assertSame([], $excludedParameters);
         self::assertSame('', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters']);
 
-        Tx_Rnbase_Utility_Cache::addExcludedParametersForCacheHash(['john', 'doe']);
+        CHashUtility::addExcludedParametersForCacheHash(['john', 'doe']);
 
         $excludedParameters = $property->getValue(
             tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
@@ -147,7 +150,7 @@ class Tx_Rnbase_Utility_CacheTest extends BaseTestCase
             ['L', 'gclid']
         );
 
-        Tx_Rnbase_Utility_Cache::addExcludedParametersForCacheHash(['john', 'doe']);
+        CHashUtility::addExcludedParametersForCacheHash(['john', 'doe']);
 
         $excludedParameters = $property->getValue(
             tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
@@ -177,7 +180,7 @@ class Tx_Rnbase_Utility_CacheTest extends BaseTestCase
             ['L', 'gclid']
         );
 
-        Tx_Rnbase_Utility_Cache::addExcludedParametersForCacheHash(['john', 'doe']);
+        CHashUtility::addExcludedParametersForCacheHash(['john', 'doe']);
 
         $excludedParameters = $property->getValue(
             tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
@@ -192,7 +195,7 @@ class Tx_Rnbase_Utility_CacheTest extends BaseTestCase
      */
     public function testGenerateCacheHashForUrlQueryString()
     {
-        $cacheHash = Tx_Rnbase_Utility_Cache::generateCacheHashForUrlQueryString('id=123&rn_base[parameter]=test');
+        $cacheHash = CHashUtility::generateCacheHashForUrlQueryString('id=123&rn_base[parameter]=test');
         self::assertTrue(is_string($cacheHash));
         self::assertEquals(32, strlen($cacheHash));
     }
@@ -212,16 +215,16 @@ class Tx_Rnbase_Utility_CacheTest extends BaseTestCase
         );
         $property->setAccessible(true);
         $requiredParameters = $property->getValue(
-            \tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
+            tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
         );
 
         self::assertSame([], $requiredParameters);
         self::assertSame([], $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['requireCacheHashPresenceParameters']);
 
-        Tx_Rnbase_Utility_Cache::addCacheHashRequiredParameters(['john', 'doe']);
+        CHashUtility::addCacheHashRequiredParameters(['john', 'doe']);
 
         $requiredParameters = $property->getValue(
-            \tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
+            tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
         );
 
         self::assertSame(['john', 'doe'], $requiredParameters);
@@ -246,16 +249,16 @@ class Tx_Rnbase_Utility_CacheTest extends BaseTestCase
         );
         $property->setAccessible(true);
         $requiredParameters = $property->getValue(
-            \tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
+            tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
         );
 
         self::assertSame([], $requiredParameters);
         self::assertSame('', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters']);
 
-        Tx_Rnbase_Utility_Cache::addCacheHashRequiredParameters(['john', 'doe']);
+        CHashUtility::addCacheHashRequiredParameters(['john', 'doe']);
 
         $requiredParameters = $property->getValue(
-            \tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
+            tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
         );
 
         self::assertSame(['john', 'doe'], $requiredParameters);
@@ -278,11 +281,11 @@ class Tx_Rnbase_Utility_CacheTest extends BaseTestCase
         );
         $property->setAccessible(true);
         $requiredParameters = $property->setValue(
-            \tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class),
+            tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class),
             ['L', 'gclid']
         );
 
-        Tx_Rnbase_Utility_Cache::addCacheHashRequiredParameters(['john', 'doe']);
+        CHashUtility::addCacheHashRequiredParameters(['john', 'doe']);
 
         $requiredParameters = $property->getValue(
             \tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
@@ -311,14 +314,14 @@ class Tx_Rnbase_Utility_CacheTest extends BaseTestCase
         );
         $property->setAccessible(true);
         $requiredParameters = $property->setValue(
-            \tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class),
+            tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class),
             ['L', 'gclid']
         );
 
-        Tx_Rnbase_Utility_Cache::addCacheHashRequiredParameters(['john', 'doe']);
+        CHashUtility::addCacheHashRequiredParameters(['john', 'doe']);
 
         $requiredParameters = $property->getValue(
-            \tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
+            tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class)
         );
 
         self::assertSame(['L', 'gclid', 'john', 'doe'], $requiredParameters);
@@ -331,13 +334,13 @@ class Tx_Rnbase_Utility_CacheTest extends BaseTestCase
      */
     public function testAddCacheTagsToPage()
     {
-        $utility = tx_rnbase::makeInstance('Tx_Rnbase_Utility_Cache');
+        $utility = tx_rnbase::makeInstance(CHashUtility::class);
 
         self::assertSame('test', $utility->addCacheTagsToPage('test', [0 => 'firstTag', 1 => 'secondTag']));
 
-        $property = new \ReflectionProperty(get_class(\tx_rnbase_util_TYPO3::getTSFE()), 'pageCacheTags');
+        $property = new \ReflectionProperty(get_class(TYPO3::getTSFE()), 'pageCacheTags');
         $property->setAccessible(true);
-        self::assertSame(['firstTag', 'secondTag'], $property->getValue(\tx_rnbase_util_TYPO3::getTSFE()));
+        self::assertSame(['firstTag', 'secondTag'], $property->getValue(TYPO3::getTSFE()));
     }
 
     /**
@@ -346,12 +349,12 @@ class Tx_Rnbase_Utility_CacheTest extends BaseTestCase
      */
     public function testAddCacheTagsToPageIfNoConfiguration()
     {
-        $utility = tx_rnbase::makeInstance('Tx_Rnbase_Utility_Cache');
+        $utility = tx_rnbase::makeInstance(CHashUtility::class);
 
         self::assertSame('test', $utility->addCacheTagsToPage('test', []));
 
-        $property = new \ReflectionProperty(get_class(\tx_rnbase_util_TYPO3::getTSFE()), 'pageCacheTags');
+        $property = new \ReflectionProperty(get_class(TYPO3::getTSFE()), 'pageCacheTags');
         $property->setAccessible(true);
-        self::assertEmpty($property->getValue(\tx_rnbase_util_TYPO3::getTSFE()));
+        self::assertEmpty($property->getValue(TYPO3::getTSFE()));
     }
 }
