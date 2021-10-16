@@ -434,12 +434,12 @@ namespace Sys25\RnBase\Fluid\ViewHelper\Parameters {
 }
 
 namespace Sys25\RnBase\Search {
-    /** @deprecated */
+    /** @deprecated use \Sys25\RnBase\Search\System\CategorySearch */
     class Category
     {
     }
 
-    /** @deprecated */
+    /** @deprecated without any replacement */
     class SearchCategory
     {
     }
