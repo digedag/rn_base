@@ -1,6 +1,6 @@
 <?php
 
-namespace Sys25\RnBase\Tests;
+namespace Sys25\RnBase\Testing;
 
 use Exception;
 use ReflectionClass;

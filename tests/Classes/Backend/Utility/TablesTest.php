@@ -4,7 +4,7 @@ namespace Sys25\RnBase\Backend\Utility;
 
 use Sys25\RnBase\Backend\Form\ToolBox;
 use Sys25\RnBase\Domain\Model\DataModel;
-use Sys25\RnBase\Tests\BaseTestCase;
+use Sys25\RnBase\Testing\BaseTestCase;
 use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
 

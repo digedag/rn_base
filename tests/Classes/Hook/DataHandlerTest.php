@@ -2,7 +2,7 @@
 
 namespace Sys25\RnBase\Hook;
 
-use Sys25\RnBase\Tests\BaseTestCase;
+use Sys25\RnBase\Testing\BaseTestCase;
 use tx_rnbase;
 
 /***************************************************************

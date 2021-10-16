@@ -7,6 +7,16 @@ namespace {
 }
 
 namespace {
+    /** @deprecated use \Sys25\RnBase\Testing\BaseTestCase */
+    abstract class tx_rnbase_tests_BaseTestCase
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Testing\TestUtility */
+    class tx_rnbase_tests_Utility
+    {
+    }
+
     /** @deprecated use \TYPO3\CMS\Frontend\Plugin\AbstractPlugin instead */
     class Tx_Rnbase_Frontend_Plugin
     {
@@ -162,7 +172,7 @@ namespace {
     {
     }
 
-    /** @deprecated use \Sys25\RnBase\Backend\Module\BaseModule*/
+    /** @deprecated use \Sys25\RnBase\Backend\Module\BaseModule */
     abstract class tx_rnbase_mod_BaseModule
     {
     }
@@ -431,6 +441,18 @@ namespace Sys25\RnBase\Search {
 
     /** @deprecated */
     class SearchCategory
+    {
+    }
+}
+
+namespace Sys25\RnBase\Tests {
+    /** @deprecated use \Sys25\RnBase\Testing\BaseTestCase */
+    abstract class BaseTestCase
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Testing\TestUtility */
+    class TestUtility
     {
     }
 }

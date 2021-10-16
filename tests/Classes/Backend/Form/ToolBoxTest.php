@@ -2,7 +2,7 @@
 
 namespace Sys25\RnBase\Backend\Form;
 
-use Sys25\RnBase\Tests\BaseTestCase;
+use Sys25\RnBase\Testing\BaseTestCase;
 use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
 

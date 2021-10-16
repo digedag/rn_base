@@ -4,7 +4,7 @@ namespace Sys25\RnBase\ExtBaseFluid\Controller;
 
 use Sys25\RnBase\Configuration\Processor;
 use Sys25\RnBase\Controller\AbstractController;
-use Sys25\RnBase\Tests\BaseTestCase;
+use Sys25\RnBase\Testing\BaseTestCase;
 
 /***************************************************************
  * Copyright notice

@@ -2,7 +2,7 @@
 
 namespace Sys25\RnBase\Backend\Utility;
 
-use Sys25\RnBase\Tests\BaseTestCase;
+use Sys25\RnBase\Testing\BaseTestCase;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 
 /***************************************************************
