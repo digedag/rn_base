@@ -1,9 +1,8 @@
 <?php
 
-namespace Sys25\RnBase\Database\Repository;
+namespace Sys25\RnBase\Domain\Repository;
 
 use Sys25\RnBase\Domain\Model\BaseModel;
-use Sys25\RnBase\Domain\Repository\AbstractRepository;
 use Sys25\RnBase\Testing\BaseTestCase;
 use tx_rnbase;
 
@@ -55,7 +54,6 @@ class AbstractRepositoryTest extends BaseTestCase
     ) {
         $fields = [];
         $repository = $this->getRepositoryMock();
-
         $method = new \ReflectionMethod(
             AbstractRepository::class,
             'handleEnableFieldsOptions'
@@ -276,7 +274,7 @@ class AbstractRepositoryTest extends BaseTestCase
             '',
             false,
             false,
-            false,
+            true,
             $mockedMethods
         );
 
