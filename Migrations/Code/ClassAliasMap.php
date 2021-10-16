@@ -6,6 +6,7 @@ return [
     'ListBuilderInfo' => \Sys25\RnBase\Frontend\Marker\IListBuilderInfo::class,
     'ListMarkerInfo' => \Sys25\RnBase\Frontend\Marker\IListMarkerInfo::class,
     'PageBrowser' => \Sys25\RnBase\Utility\PageBrowserInterface::class,
+    'Sys25\\RnBase\\Fluid\\ViewHelper\\Parameters\\PostOrGetViewHelper' => \Sys25\RnBase\ExtBaseFluid\ViewHelper\Parameters\PostOrGetViewHelper::class,
     'Sys25\\RnBase\\Search\\Category' => \Sys25\RnBase\Search\System\CategorySearch::class,
     'Sys25\\RnBase\\Search\\Category\\Category' => \Sys25\RnBase\Search\System\CategorySearch::class,
     'Sys25\\RnBase\\Search\\Category\\SearchUtility' => \Sys25\RnBase\Search\System\CategorySearchUtility::class,
