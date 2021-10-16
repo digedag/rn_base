@@ -22,7 +22,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-use Sys25\RnBase\Tests\BaseTestCase;
+use Sys25\RnBase\Testing\BaseTestCase;
 
 /**
  * collection unit tests.

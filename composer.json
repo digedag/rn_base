@@ -64,9 +64,6 @@
 		}
 	},
 	"autoload-dev": {
-		"files": [
-			"tests/Deprecated.php"
-		],
 		"psr-4": {
 			"Sys25\\RnBase\\": "tests/Classes",
 			"TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/",

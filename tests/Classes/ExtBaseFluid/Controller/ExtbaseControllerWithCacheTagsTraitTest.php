@@ -2,7 +2,7 @@
 
 namespace Sys25\RnBase\ExtBaseFluid\Controller;
 
-use Sys25\RnBase\Tests\BaseTestCase;
+use Sys25\RnBase\Testing\BaseTestCase;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /***************************************************************

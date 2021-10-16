@@ -1,6 +1,6 @@
 <?php
 
-namespace Sys25\RnBase\Tests;
+namespace Sys25\RnBase\Testing;
 
 use tx_rnbase;
 use tx_rnbase_util_Typo3Classes;

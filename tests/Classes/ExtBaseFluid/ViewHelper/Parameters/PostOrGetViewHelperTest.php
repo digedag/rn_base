@@ -3,7 +3,7 @@
 namespace Sys25\RnBase\ExtBaseFluid\ViewHelper\Parameters;
 
 use Sys25\RnBase\ExtBaseFluid\View\Factory;
-use Sys25\RnBase\Tests\BaseTestCase;
+use Sys25\RnBase\Testing\BaseTestCase;
 
 /***************************************************************
  * Copyright notice

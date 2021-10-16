@@ -1,8 +1,8 @@
 <?php
 
 use Sys25\RnBase\Frontend\Filter\Utility\Category;
-use Sys25\RnBase\Tests\BaseTestCase;
-use Sys25\RnBase\Tests\TestUtility;
+use Sys25\RnBase\Testing\BaseTestCase;
+use Sys25\RnBase\Testing\TestUtility;
 
 /*
  * @package TYPO3

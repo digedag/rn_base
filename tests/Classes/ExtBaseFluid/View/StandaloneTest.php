@@ -2,8 +2,8 @@
 
 namespace Sys25\RnBase\ExtBaseFluid\View;
 
-use Sys25\RnBase\Tests\BaseTestCase;
-use Sys25\RnBase\Tests\TestUtility;
+use Sys25\RnBase\Testing\BaseTestCase;
+use Sys25\RnBase\Testing\TestUtility;
 
 /***************************************************************
  * Copyright notice

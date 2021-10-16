@@ -1,6 +1,6 @@
 <?php
 
-use Sys25\RnBase\Tests\BaseTestCase;
+use Sys25\RnBase\Testing\BaseTestCase;
 
 /***************************************************************
  *  Copyright notice

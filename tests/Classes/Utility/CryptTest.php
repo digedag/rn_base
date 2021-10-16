@@ -1,7 +1,7 @@
 <?php
 
 use Sys25\RnBase\Domain\Model\DataModel;
-use Sys25\RnBase\Tests\BaseTestCase;
+use Sys25\RnBase\Testing\BaseTestCase;
 use Sys25\RnBase\Utility\Crypt;
 
 /***************************************************************
