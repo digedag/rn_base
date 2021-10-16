@@ -341,6 +341,116 @@ namespace {
     trait Tx_Rnbase_Configuration_ConfigurableTrait
     {
     }
+
+    /** @deprecated use \Sys25\RnBase\Utility\Calendar */
+    class tx_rnbase_util_Calendar
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Utility\Composer */
+    final class Tx_Rnbase_Utility_Composer
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Utility\Files */
+    final class tx_rnbase_util_Files
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Utility\Strings */
+    class Tx_Rnbase_Utility_Strings
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Utility\Strings */
+    class tx_rnbase_util_Strings
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Utility\Math */
+    class tx_rnbase_util_Math
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Utility\T3General */
+    class Tx_Rnbase_Utility_T3General
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Utility\Misc */
+    class tx_rnbase_util_Misc
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Domain\Collection\BaseCollection */
+    class Tx_Rnbase_Domain_Collection_Base
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Domain\Model\DataInterface */
+    interface Tx_Rnbase_Domain_Model_DataInterface
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Domain\Model\DomainModelInterface */
+    interface Tx_Rnbase_Domain_Model_DomainInterface
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Domain\Model\DynamicTableInterface */
+    interface Tx_Rnbase_Domain_Model_DynamicTableInterface
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Domain\Model\RecordInterface */
+    interface Tx_Rnbase_Domain_Model_RecordInterface
+    {
+    }
+
+    /** @deprecated use Sys25\RnBase\Domain\Model\RecordInterface */
+    interface tx_rnbase_IModel
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Domain\Model\DataModel */
+    class Tx_Rnbase_Domain_Model_Data
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Domain\Model\BaseModel */
+    class Tx_Rnbase_Domain_Model_Base
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Domain\Model\StorageTrait */
+    trait Tx_Rnbase_Domain_Model_StorageTrait
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Domain\Repository\SearchInterface */
+    interface Tx_Rnbase_Domain_Repository_InterfaceSearch
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Domain\Repository\PersistenceInterface */
+    interface Tx_Rnbase_Domain_Repository_InterfacePersistence
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Domain\Repository\AbstractRepository */
+    abstract class Tx_Rnbase_Domain_Repository_AbstractRepository
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Domain\Repository\PersistenceRepository */
+    abstract class Tx_Rnbase_Domain_Repository_PersistenceRepository
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Domain\Repository\AbstractRepository */
+    abstract class Tx_Rnbase_Repository_AbstractRepository
+    {
+    }
 }
 
 namespace Sys25\RnBase\Controller\Extbase {
