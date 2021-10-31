@@ -24,31 +24,34 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
+use Sys25\RnBase\Backend\Module\IModule;
+use Sys25\RnBase\Domain\Model\DataInterface;
+
 /**
  * Diese Klasse ist für die Darstellung von Elementen im Backend verantwortlich.
  */
 class tx_rnbase_tests_fixtures_classes_Decorator implements tx_rnbase_mod_IDecorator
 {
     /**
-     * @param tx_rnbase_mod_IModule $mod
+     * @param IModule $mod
      */
-    public function __construct(tx_rnbase_mod_IModule $mod)
+    public function __construct(IModule $mod)
     {
         $this->mod = $mod;
     }
 
     /**
-     * @param string               $value
-     * @param string               $colName
-     * @param array                $record
-     * @param tx_rnbase_model_base $item
+     * @param string $columnValue
+     * @param string $columnName
+     * @param array $record
+     * @param DataInterface $entry
      */
-    public function format($value, $colName, $record, tx_rnbase_model_base $item)
+    public function format($columnValue, $columnName, array $record, DataInterface $entry)
     {
-        $ret = $value;
+        $ret = $columnValue;
 
         //wir manipulieren ein bisschen die daten um zu sehen ob der decorator ansprint
-        if ('col1' == $colName) {
+        if ('col1' == $columnName) {
             $ret = str_replace('col1', 'spalte1', $ret);
         }
 

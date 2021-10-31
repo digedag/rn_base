@@ -23,4 +23,3 @@ parameters:
 
   excludePaths:
     - Classes/Typo3Wrapper/Service/AuthenticationService.php
-    - tests/fixtures/classes/class.tx_rnbase_tests_fixtures_classes_Decorator.php
