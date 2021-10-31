@@ -3,7 +3,7 @@
 Changelog
 ---------
 
-v1.14.1 (??.1?.2021)
+v1.14.1 (31.10.2021)
  * New classes to filter page and character browsers
 
 Thanks to Oliver Klee for for these contributations:
