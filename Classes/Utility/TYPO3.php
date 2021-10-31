@@ -57,7 +57,7 @@ class TYPO3
      */
     public static function isTYPO70OrHigher()
     {
-        return self::isTYPO3VersionOrHigher(7000000);
+        return true;
     }
 
     /**
@@ -67,7 +67,7 @@ class TYPO3
      */
     public static function isTYPO74OrHigher()
     {
-        return self::isTYPO3VersionOrHigher(7004000);
+        return true;
     }
 
     /**
@@ -77,7 +77,7 @@ class TYPO3
      */
     public static function isTYPO76OrHigher()
     {
-        return self::isTYPO3VersionOrHigher(7006000);
+        return true;
     }
 
     /**
