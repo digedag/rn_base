@@ -301,7 +301,6 @@ class Typo3Classes
      */
     protected static function getClassByCurrentTypo3Version(array $possibleClasses)
     {
-        return TYPO3::isTYPO62OrHigher() ?
-            $possibleClasses[self::HIGHER6] : $possibleClasses[self::LOWER6];
+        return $possibleClasses[self::HIGHER6];
     }
 }
