@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Backend\Decorator;
 
+use Sys25\RnBase\Backend\Module\IModule;
 use Sys25\RnBase\Domain\Model\DataInterface;
 
 /***************************************************************
@@ -30,7 +31,7 @@ use Sys25\RnBase\Domain\Model\DataInterface;
 /**
  * Decorator interface.
  *
- * @method void __construct(tx_rnbase_mod_IModule $mod)
+ * @method void __construct(IModule $mod)
  *
  * @author Michael Wagner
  */
@@ -39,17 +40,12 @@ interface InterfaceDecorator
     /**
      * Formats a value.
      *
-     * @param string                                $columnValue
-     * @param string                                $columnName
-     * @param array                                 $record
+     * @param string $columnValue
+     * @param string $columnName
+     * @param array $record
      * @param DataInterface $entry
      *
      * @return string
      */
-    public function format(
-        $columnValue,
-        $columnName,
-        array $record,
-        DataInterface $entry
-    );
+    public function format($columnValue, $columnName, array $record, DataInterface $entry);
 }
