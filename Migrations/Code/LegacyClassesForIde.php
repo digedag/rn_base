@@ -451,6 +451,166 @@ namespace {
     abstract class Tx_Rnbase_Repository_AbstractRepository
     {
     }
+
+    /** @deprecated use \Sys25\RnBase\Database\TreeQueryBuilder */
+    class Tx_Rnbase_Database_TreeQueryBuilder
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Frontend\Filter\IFilterItem */
+    interface tx_rnbase_IFilterItem
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Frontend\Filter\FilterItem */
+    class tx_rnbase_filter_FilterItem
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Frontend\Marker\BaseMarker */
+    class tx_rnbase_util_BaseMarker
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Frontend\Marker\FormatUtil */
+    class tx_rnbase_util_FormatUtil
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Frontend\Marker\IListProvider */
+    interface tx_rnbase_util_IListProvider
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Frontend\Marker\ListBuilder */
+    class tx_rnbase_util_ListBuilder
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Frontend\Marker\ListBuilderInfo */
+    interface ListBuilderInfo
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Frontend\Marker\ListBuilderInfo */
+    interface tx_rnbase_util_ListBuilderInfo
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Frontend\Marker\ListMarkerInfo */
+    interface ListMarkerInfo
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Frontend\Marker\ListMarkerInfo */
+    interface tx_rnbase_util_ListMarkerInfo
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Frontend\Marker\ListMarker */
+    class tx_rnbase_util_ListMarker
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Frontend\Marker\ListProvider */
+    class tx_rnbase_util_ListProvider
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Frontend\Marker\MediaMarker */
+    class tx_rnbase_util_MediaMarker
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Frontend\Marker\PageBrowserMarker */
+    class tx_rnbase_util_PageBrowserMarker
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Frontend\Marker\SimpleMarker */
+    class tx_rnbase_util_SimpleMarker
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Frontend\Marker\MarkerUtility */
+    class Tx_Rnbase_Frontend_Marker_Utility
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Frontend\Marker\Templates */
+    class tx_rnbase_util_Templates
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Utility\CHashUtility */
+    class Tx_Rnbase_Utility_Cache
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Utility\Crypt */
+    class Tx_Rnbase_Utility_Crypt
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Utility\Link */
+    class tx_rnbase_util_Link
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Utility\Email */
+    class Tx_Rnbase_Utility_Mail
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Utility\Email */
+    class tx_rnbase_util_Mail
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Utility\Language */
+    class tx_rnbase_util_Lang
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Utility\Lock */
+    class tx_rnbase_util_Lock
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Utility\Queue */
+    class tx_rnbase_util_Queue
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Utility\Spyc */
+    class tx_rnbase_util_Spyc
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Utility\TypoScript */
+    class Tx_Rnbase_Utility_TypoScript
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Utility\TypoScript */
+    class tx_rnbase_util_TS
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Utility\WizIcon */
+    abstract class Tx_Rnbase_Utility_WizIcon
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Utility\Dates */
+    class tx_rnbase_util_Dates
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Utility\PageBrowserInterface */
+    interface PageBrowser
+    {
+    }
 }
 
 namespace Sys25\RnBase\Controller\Extbase {
