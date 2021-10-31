@@ -27,8 +27,8 @@ jobs:
           - 8.0
           - 8.1
 
-  php-cs-fixer:
-    name: PHP-CS-Fixer
+  code-quality:
+    name: Code quality checks
     runs-on: ubuntu-20.04
     needs: php-lint
     steps:
@@ -52,11 +52,14 @@ jobs:
       - name: "Install Composer dependencies"
         run: "composer install --no-progress"
       - name: "Run command"
-        run: ".Build/bin/php-cs-fixer fix --diff --dry-run"
+        run: "${{ matrix.command }}"
     strategy:
       matrix:
         php-version:
           - 7.4
+        command:
+          - ".Build/bin/php-cs-fixer fix --diff --dry-run"
+          - "composer test:phpstan"
 
   phpunit:
     name: PHPUnit
@@ -80,11 +83,14 @@ jobs:
           key: "php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}"
           path: ~/.composer/cache
           restore-keys: "php${{ matrix.php-version }}-composer-\n"
+      # The next step is required because the dependencies of PHPStan clash with those of TYPO3 8.7.
+      - name: "Remove PHPStan"
+        run: composer remove --no-update --dev phpstan/phpstan phpstan/phpstan-phpunit phpstan/extension-installer
       - name: "Install TYPO3 Core"
         env:
           TYPO3: "${{ matrix.typo3-version }}"
         run: |
-          composer require --no-progress typo3/minimal:"$TYPO3"
+          composer require --no-install --no-progress typo3/minimal:"$TYPO3"
           composer show
       - name: "Install dependencies with composer"
         run: |
