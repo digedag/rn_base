@@ -611,6 +611,166 @@ namespace {
     interface PageBrowser
     {
     }
+
+    /** @deprecated use \Sys25\RnBase\Utility\PageBrowser */
+    class tx_rnbase_util_PageBrowser
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Utility\TSFAL */
+    class tx_rnbase_util_TSFAL
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Utility\WizIcon */
+    class tx_rnbase_util_Wizicon
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Utility\XmlElement */
+    class tx_rnbase_util_XmlElement
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Exception\AdditionalException */
+    class tx_rnbase_util_Exception
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Exception\ExceptionHandlerInterface */
+    interface tx_rnbase_exception_IHandler
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Exception\ExceptionHandler */
+    class tx_rnbase_exception_Handler
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Maps\Google\Control */
+    class tx_rnbase_maps_google_Control
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Maps\Google\Icon */
+    class tx_rnbase_maps_google_Icon
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Maps\Google\Map */
+    class tx_rnbase_maps_google_Map
+    {
+    }
+
+    /** @deprecated \Sys25\RnBase\Maps\Google\Util */
+    class tx_rnbase_maps_google_Util
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Maps\BaseMap */
+    class tx_rnbase_maps_BaseMap
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Maps\Coord */
+    class tx_rnbase_maps_Coord
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Maps\DefaultMarker */
+    class tx_rnbase_maps_DefaultMarker
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Maps\TypeRegistry */
+    class tx_rnbase_maps_TypeRegistry
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Maps\Factory */
+    class tx_rnbase_maps_Factory
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Maps\IControl */
+    interface tx_rnbase_maps_IControl
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Maps\ICoord */
+    interface tx_rnbase_maps_ICoord
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Maps\IIcon */
+    interface tx_rnbase_maps_IIcon
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Maps\ILocation */
+    interface tx_rnbase_maps_ILocation
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Maps\IMarker */
+    interface tx_rnbase_maps_IMarker
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Maps\IMap */
+    interface tx_rnbase_maps_IMap
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Maps\MapUtility */
+    class tx_rnbase_maps_Util
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Maps\POI */
+    class tx_rnbase_maps_POI
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Database\Driver\DatabaseException */
+    interface tx_rnbase_util_db_Exception
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Database\Driver\IDatabase */
+    interface tx_rnbase_util_db_IDatabase
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Database\Driver\IDatabaseT3 */
+    interface tx_rnbase_util_db_IDatabaseT3
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Database\Driver\LegacyQueryBuilder */
+    class tx_rnbase_util_db_Builder
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Database\Driver\MsSqlDatabase */
+    class tx_rnbase_util_db_MsSQL
+    {
+    }
+
+    /** @deprecated \Sys25\RnBase\Database\Driver\MySqlDatabase */
+    class tx_rnbase_util_db_MySQL
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Database\Driver\TYPO3Database */
+    class tx_rnbase_util_db_TYPO3
+    {
+    }
+
+    /** @deprecated use \Sys25\RnBase\Database\Driver\TYPO3DBAL */
+    class tx_rnbase_util_db_TYPO3DBAL
+    {
+    }
 }
 
 namespace Sys25\RnBase\Controller\Extbase {
