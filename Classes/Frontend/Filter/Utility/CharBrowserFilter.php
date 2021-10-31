@@ -5,10 +5,9 @@ namespace Sys25\RnBase\Frontend\Filter\Utility;
 use ArrayObject;
 use Exception;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
-use tx_rnbase;
-use Sys25\RnBase\Utility\PageBrowser;
 use Sys25\RnBase\Database\Connection;
 use Sys25\RnBase\Search\SearchBase;
+use Sys25\RnBase\Utility\PageBrowser;
 
 /***************************************************************
  * Copyright notice
