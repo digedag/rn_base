@@ -39,15 +39,15 @@ class Typo3Classes
     public const HIGHER6 = 'higher6';
 
     /**
-     * @return string|\TYPO3\CMS\Core\Messaging\FlashMessage
+     * @return class-string<\TYPO3\CMS\Core\Messaging\FlashMessage>
      */
     public static function getFlashMessageClass()
     {
-        return 'TYPO3\\CMS\\Core\\Messaging\\FlashMessage';
+        return \TYPO3\CMS\Core\Messaging\FlashMessage::class;
     }
 
     /**
-     * @return string|\TYPO3\CMS\Backend\Form\FormEngine
+     * @return class-string<\TYPO3\CMS\Backend\Form\FormEngine>
      */
     public static function getBackendFormEngineClass()
     {
@@ -55,67 +55,67 @@ class Typo3Classes
     }
 
     /**
-     * @return string|\TYPO3\CMS\Core\Utility\File\BasicFileUtility
+     * @return class-string<\TYPO3\CMS\Core\Utility\File\BasicFileUtility>
      */
     public static function getBasicFileUtilityClass()
     {
-        return 'TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility';
+        return \TYPO3\CMS\Core\Utility\File\BasicFileUtility::class;
     }
 
     /**
-     * @return string|\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService
+     * @return class-string<\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService>
      */
     public static function getExtendedTypoScriptTemplateServiceClass()
     {
-        return 'TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService';
+        return \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class;
     }
 
     /**
-     * @return string|\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+     * @return class-string<\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer>
      */
     public static function getContentObjectRendererClass()
     {
-        return 'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer';
+        return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class;
     }
 
     /**
-     * @return string|\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     * @return class-string<\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController>
      */
     public static function getTypoScriptFrontendControllerClass()
     {
-        return 'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController';
+        return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class;
     }
 
     /**
-     * @return string|\TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication
+     * @return class-string<\TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication>
      */
     public static function getFrontendUserAuthenticationClass()
     {
-        return 'TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication';
+        return \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::class;
     }
 
     /**
-     * @return string|\TYPO3\CMS\Core\Charset\CharsetConverter
+     * @return class-string<\TYPO3\CMS\Core\Charset\CharsetConverter>
      */
     public static function getCharsetConverterClass()
     {
-        return 'TYPO3\\CMS\\Core\\Charset\\CharsetConverter';
+        return \TYPO3\CMS\Core\Charset\CharsetConverter::class;
     }
 
     /**
-     * @return string|\TYPO3\CMS\Core\DataHandling\DataHandler
+     * @return class-string<\TYPO3\CMS\Core\DataHandling\DataHandler>
      */
     public static function getDataHandlerClass()
     {
-        return 'TYPO3\\CMS\\Core\\DataHandling\\DataHandler';
+        return \TYPO3\CMS\Core\DataHandling\DataHandler::class;
     }
 
     /**
-     * @return string|\TYPO3\CMSBackend\Sprite\SpriteManager
+     * @return class-string<\TYPO3\CMSBackend\Sprite\SpriteManager>
      */
     public static function getSpriteManagerClass()
     {
-        return 'TYPO3\\CMS\Backend\\Sprite\\SpriteManager';
+        return 'TYPO3\\CMS\\Backend\\Sprite\\SpriteManager';
     }
 
     /**
@@ -143,111 +143,111 @@ class Typo3Classes
     /**
      * @deprecated use getTimeTracker
      *
-     * @return string|\TYPO3\CMS\Core\TimeTracker\NullTimeTracker
+     * @return class-string<\TYPO3\CMS\Core\TimeTracker\NullTimeTracker>
      */
     public static function getTimeTrackClass()
     {
         $higher6Class = 'TYPO3\\CMS\\Core\\TimeTracker\\NullTimeTracker';
         $beCookie = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']) ?: 'be_typo_user';
         if ($_COOKIE[$beCookie]) {
-            $higher6Class = 'TYPO3\\CMS\\Core\\TimeTracker\\TimeTracker';
+            $higher6Class = \TYPO3\CMS\Core\TimeTracker\TimeTracker::class;
         }
 
         return $higher6Class;
     }
 
     /**
-     * @return string|\TYPO3\CMS\Core\Utility\CommandUtility
+     * @return class-string<\TYPO3\CMS\Core\Utility\CommandUtility>
      */
     public static function getCommandUtilityClass()
     {
-        return 'TYPO3\\CMS\\Core\\Utility\\CommandUtility';
+        return \TYPO3\CMS\Core\Utility\CommandUtility::class;
     }
 
     /**
-     * @return string|\TYPO3\CMS\Core\Mail\MailMessage
+     * @return class-string<\TYPO3\CMS\Core\Mail\MailMessage>
      */
     public static function getMailMessageClass()
     {
-        return 'TYPO3\\CMS\\Core\\Mail\\MailMessage';
+        return \TYPO3\CMS\Core\Mail\MailMessage::class;
     }
 
     /**
-     * @return string|\TYPO3\CMS\Core\Html\HtmlParser
+     * @return class-string<\TYPO3\CMS\Core\Html\HtmlParser>
      */
     public static function getHtmlParserClass()
     {
-        return 'TYPO3\\CMS\\Core\\Html\\HtmlParser';
+        return \TYPO3\CMS\Core\Html\HtmlParser::class;
     }
 
     /**
-     * @return string|\TYPO3\CMS\Core\Utility\GeneralUtility
+     * @return class-string<\TYPO3\CMS\Core\Utility\GeneralUtility>
      *
      * @see T3General for better usage
      */
     public static function getGeneralUtilityClass()
     {
-        return 'TYPO3\\CMS\\Core\\Utility\\GeneralUtility';
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::class;
     }
 
     /**
-     * @return string|\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
+     * @return class-string<\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser>
      */
     public static function getTypoScriptParserClass()
     {
-        return 'TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser';
+        return \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class;
     }
 
     /**
-     * @return string|\TYPO3\CMS\Backend\Template\DocumentTemplate
+     * @return class-string<\TYPO3\CMS\Backend\Template\DocumentTemplate>
      */
     public static function getDocumentTemplateClass()
     {
-        return 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate';
+        return \TYPO3\CMS\Backend\Template\DocumentTemplate::class;
     }
 
     /**
-     * @return string|\TYPO3\CMS\Core\TypoScript\TemplateService
+     * @return class-string<\TYPO3\CMS\Core\TypoScript\TemplateService>
      */
     public static function getTemplateServiceClass()
     {
-        return 'TYPO3\\CMS\\Core\\TypoScript\\TemplateService';
+        return \TYPO3\CMS\Core\TypoScript\TemplateService::class;
     }
 
     /**
-     * @return string|\TYPO3\CMS\Core\Utility\HttpUtility
+     * @return class-string<\TYPO3\CMS\Core\Utility\HttpUtility>
      */
     public static function getHttpUtilityClass()
     {
-        return 'TYPO3\\CMS\\Core\\Utility\\HttpUtility';
+        return \TYPO3\CMS\Core\Utility\HttpUtility::class;
     }
 
     /**
-     * @return string|\TYPO3\CMS\Backend\Template\DocumentTemplate
+     * @return class-string<\TYPO3\CMS\Backend\Template\DocumentTemplate>
      */
     public static function getMediumDocumentTemplateClass()
     {
-        return 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate';
+        return \TYPO3\CMS\Backend\Template\DocumentTemplate::class;
     }
 
     /**
-     * @return string|\TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser
+     * @return class-string<\TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser>
      */
     public static function getLocalizationParserClass()
     {
-        return 'TYPO3\\CMS\\Core\\Localization\\Parser\\LocallangXmlParser';
+        return \TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser::class;
     }
 
     /**
-     * @return string|\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication
+     * @return class-string<\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication>
      */
     public static function getAbstractUserAuthenticationClass()
     {
-        return 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication';
+        return \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class;
     }
 
     /**
-     * @return string|\TYPO3\CMS\Backend\Rte\AbstractRte
+     * @return class-string<\TYPO3\CMS\Backend\Rte\AbstractRte>
      */
     public static function getAbstractRteClass()
     {
@@ -255,7 +255,7 @@ class Typo3Classes
     }
 
     /**
-     * @return string|\TYPO3\CMS\Core\Database\SqlParser
+     * @return class-string<\TYPO3\CMS\Core\Database\SqlParser>
      */
     public static function getSqlParserClass()
     {
@@ -263,23 +263,23 @@ class Typo3Classes
     }
 
     /**
-     * @return string|\TYPO3\CMS\Backend\FrontendBackendUserAuthentication
+     * @return class-string<\TYPO3\CMS\Backend\FrontendBackendUserAuthentication>
      */
     public static function getFrontendBackendUserAuthenticationClass()
     {
-        return 'TYPO3\\CMS\\Backend\\FrontendBackendUserAuthentication';
+        return \TYPO3\CMS\Backend\FrontendBackendUserAuthentication::class;
     }
 
     /**
-     * @return string|\TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return class-string<\TYPO3\CMS\Core\Authentication\BackendUserAuthentication>
      */
     public static function getBackendUserAuthenticationClass()
     {
-        return 'TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication';
+        return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class;
     }
 
     /**
-     * @return string|\TYPO3\CMS\Frontend\Utility\EidUtility
+     * @return class-string<\TYPO3\CMS\Frontend\Utility\EidUtility>
      */
     public static function getEidUtilityClass()
     {
@@ -287,17 +287,17 @@ class Typo3Classes
     }
 
     /**
-     * @return string|\TYPO3\CMS\Core\Cache\CacheManager
+     * @return class-string<\TYPO3\CMS\Core\Cache\CacheManager>
      */
     public static function getCacheManagerClass()
     {
-        return 'TYPO3\\CMS\\Core\\Cache\\CacheManager';
+        return \TYPO3\CMS\Core\Cache\CacheManager::class;
     }
 
     /**
-     * @param array $possibleClasses
+     * @param array<string, class-string> $possibleClasses
      *
-     * @return string
+     * @return class-string
      */
     protected static function getClassByCurrentTypo3Version(array $possibleClasses)
     {
