@@ -3,6 +3,15 @@
 Changelog
 ---------
 
+v1.14.1 (??.1?.2021)
+ * New classes to filter page and character browsers
+
+Thanks to Oliver Klee for for these contributations:
+ * Improved build pipeline
+ * Clean up code for legacy classes
+ * Retrieve the current language from the site language for T3 9 and higher
+ * Make BaseTestCase and TestUtility available externally
+
 v1.14.0 (04.10.2021)
  * #165 Moved all classes to folder **Classes/** to PSR-4
  * BC: Test classes removed from non-dev-autoload
