@@ -9,5 +9,4 @@
 /phpstan.neon export-ignore
 /phpunit.xml export-ignore
 /sonar-project.properties export-ignore
-# @TODO: add tests folder to ignore again, after removing the tests from autoloading
-#/tests export-ignore
+/tests export-ignore
