@@ -124,17 +124,15 @@ class Connection implements SingletonInterface
         $from = From::buildInstance($from);
 
         $queryBuilder = null;
-        if (TYPO3::isTYPO87OrHigher()) {
-            $qbFacade = new QueryBuilderFacade();
-            $queryBuilder = $qbFacade->doSelect($what, $from, $arr);
-        }
+        $qbFacade = new QueryBuilderFacade();
+        $queryBuilder = $qbFacade->doSelect($what, $from, $arr);
 
         if ($queryBuilder) {
             $rows = $this->doSelectByQueryBuilder($queryBuilder, $from, $arr);
         } else {
             $rows = $this->doSelectLegacy($what, $from, $arr, $debug);
         }
-        if (is_string($rows) || (TYPO3::isTYPO87OrHigher() && $rows instanceof QueryBuilder)) {
+        if (is_string($rows) || $rows instanceof QueryBuilder) {
             // sqlOnly
             return $rows;
         }
@@ -441,7 +439,7 @@ class Connection implements SingletonInterface
         }
 
         // use the doctrine dbal connection instead of $GLOBALS['TYPO3_DB']
-        if ('typo3' == $dbKey && TYPO3::isTYPO87OrHigher()) {
+        if ('typo3' == $dbKey) {
             $dbKey = 'typo3dbal';
         }
 

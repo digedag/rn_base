@@ -71,6 +71,8 @@ class T3General
      * NOTE that the input array is and argument by reference.!!
      * Twin-function to addSlashesOnArray.
      *
+     * @deprecated
+     *
      * @param array $theArray Multidimensional input array, (REFERENCE!)
      *
      * @return array
@@ -78,13 +80,6 @@ class T3General
     public static function stripSlashesOnArray(array &$theArray)
     {
         // there is no need to do this anymore!
-        if (TYPO3::isTYPO80OrHigher()) {
-            return $theArray;
-        }
-
-        $util = Typo3Classes::getGeneralUtilityClass();
-        $util::stripSlashesOnArray($theArray);
-
         return $theArray;
     }
 
@@ -94,6 +89,8 @@ class T3General
      * and adds slashes to the values.
      * NOTE that the input array is and argument by reference.!!
      * Twin-function to stripSlashesOnArray.
+     *
+     * @deprecated
      *
      * @param array $theArray Multidimensional input array, (REFERENCE!)
      *
@@ -102,13 +99,6 @@ class T3General
     public static function addSlashesOnArray(array &$theArray)
     {
         // there is no need to do this anymore!
-        if (TYPO3::isTYPO80OrHigher()) {
-            return $theArray;
-        }
-
-        $util = Typo3Classes::getGeneralUtilityClass();
-        $util::addSlashesOnArray($theArray);
-
         return $theArray;
     }
 
@@ -119,6 +109,8 @@ class T3General
      * NOTE that the input array is and argument by reference.!!
      * Twin-function to stripSlashesOnArray.
      *
+     * @deprecated
+     *
      * @param array $theArray Multidimensional input array, (REFERENCE!)
      *
      * @return array
@@ -126,13 +118,7 @@ class T3General
     public static function slashArray(array $arr, $cmd)
     {
         // there is no need to do this anymore!
-        if (TYPO3::isTYPO80OrHigher()) {
-            return $arr;
-        }
-
-        $util = Typo3Classes::getGeneralUtilityClass();
-
-        return $util::addSlashesOnArray($arr, $cmd);
+        return $arr;
     }
 
     /**

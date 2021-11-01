@@ -59,17 +59,12 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
 
     /**
      * Initialize database connection in $GLOBALS and connect if requested.
+     *
+     * @deprecated
      */
     public static function prepareLegacyTypo3DbGlobal()
     {
-        if (!TYPO3::isTYPO80OrHigher()) {
-            return;
-        }
-
-        $db = $GLOBALS['TYPO3_DB'];
-        if (!$db->isConnected()) {
-            \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeTypo3DbGlobal();
-        }
+        return;
     }
 
     /**

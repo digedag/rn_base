@@ -4,6 +4,7 @@ namespace Sys25\RnBase\Backend\Utility;
 
 use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 
 /**
  *  Copyright notice.
@@ -38,6 +39,8 @@ use tx_rnbase;
 class Icons
 {
     /**
+     * @deprecated will be removed in rn_base 2; directly call the method on `IconFactory` instead
+     *
      * @param string $method
      * @param array  $arguments
      *
@@ -45,21 +48,17 @@ class Icons
      */
     public static function __callStatic($method, array $arguments)
     {
-        return call_user_func_array([static::getIconUtilityClass(), $method], $arguments);
+        return IconFactory::$method($arguments);
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Imaging\IconFactory
+     * @deprecated will be removed in rn_base 2; directly use `IconFactory::class` instead
+     *
+     * @return class-string<IconFactory>
      */
     protected static function getIconUtilityClass()
     {
-        if (TYPO3::isTYPO80OrHigher()) {
-            $class = 'TYPO3\\CMS\\Core\\Imaging\\IconFactory';
-        } else {
-            $class = 'TYPO3\\CMS\\Backend\\Utility\\IconUtility';
-        }
-
-        return $class;
+        return IconFactory::class;
     }
 
     /**
@@ -86,11 +85,7 @@ class Icons
      */
     public static function debugSprites()
     {
-        $iconsAvailable = $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'];
-
-        if (TYPO3::isTYPO80OrHigher()) {
-            $iconsAvailable = static::getIconRegistry()->getAllRegisteredIconIdentifiers();
-        }
+        $iconsAvailable = static::getIconRegistry()->getAllRegisteredIconIdentifiers();
 
         $icons = '<h2>iconsAvailable</h2>';
         foreach ($iconsAvailable as $icon) {
@@ -105,6 +100,8 @@ class Icons
     }
 
     /**
+     * @deprecated will be removed in rn_base 2 without replacement as the called method was removed for TYPO3 8.7
+     *
      * @param string $iconName
      * @param array  $options
      * @param array  $overlays
@@ -116,22 +113,12 @@ class Icons
         array $options = [],
         array $overlays = []
     ) {
-        // @TODO: shoult be used for TYPO3 7 too!
-        if (!TYPO3::isTYPO80OrHigher()) {
-            $class = static::getIconUtilityClass();
-
-            return $class::getSpriteIcon($iconName, $options, $overlays);
-        }
-
-        $size = \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL;
-        if (!empty($options['size'])) {
-            $size = $options['size'];
-        }
-
-        return static::getIconFactory()->getIcon($iconName, $size)->render();
+        return '';
     }
 
     /**
+     * @deprecated will be removed in rn_base 2 without replacement as the called method was removed for TYPO3 8.7
+     *
      * This helper functions looks up the column that is used for the type of
      * the chosen TCA table. And then fetches the corresponding iconname
      * based on the chosen iconsprite class in this TCA.
@@ -145,13 +132,7 @@ class Icons
      */
     public static function mapRecordTypeToSpriteIconName($table, array $row)
     {
-        if (!TYPO3::isTYPO80OrHigher()) {
-            $class = static::getIconUtilityClass();
-
-            return $class::mapRecordTypeToSpriteIconName($table, $row);
-        }
-
-        return static::getIconFactory()->mapRecordTypeToIconIdentifier($table, $row);
+        return '';
     }
 
     /**

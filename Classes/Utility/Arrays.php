@@ -167,13 +167,6 @@ class Arrays
      */
     public static function arrayDiffAssocRecursive(array $array1, array $array2)
     {
-        if (TYPO3::isTYPO87OrHigher()) {
-            $differenceArray = ArrayUtility::arrayDiffAssocRecursive($array1, $array2);
-        } else {
-            $utility = Typo3Classes::getGeneralUtilityClass();
-            $differenceArray = $utility::arrayDiffAssocRecursive($array1, $array2);
-        }
-
-        return $differenceArray;
+        return ArrayUtility::arrayDiffAssocRecursive($array1, $array2);
     }
 }

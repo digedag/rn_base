@@ -43,30 +43,25 @@ abstract class WizIcon
      */
     public static function addWizicon($clazz, $clazzFile)
     {
-        $id = 'rn_base';
-        if (!TYPO3::isTYPO80OrHigher()) {
-            $GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'][$clazz] = $clazzFile;
-        } else {
-            $wizard = tx_rnbase::makeInstance($clazz);
-            // for TYPO3 8 we need an other way
-            // Geht das? Die Methode ist protected...
-            $pluginData = $wizard->getPluginData();
-            foreach ($pluginData as $id => $data) {
-                if (!isset($data['tsconfig'])) {
-                    // Noch nicht für 8.x vorbereitet
-                    continue;
-                }
-                Icons::getIconRegistry()->registerIcon(
-                    $id.'-icon',
-                    'TYPO3\\CMS\Core\\Imaging\\IconProvider\\BitmapIconProvider',
-                    ['source' => $data['icon']]
-                );
-                $configFile = $data['tsconfig'];
-                // Wizardkonfiguration hinzufügen
-                Extensions::addPageTSConfig(
-                    '<INCLUDE_TYPOSCRIPT: source="'.$configFile.'">'
-                );
+        $wizard = tx_rnbase::makeInstance($clazz);
+        // for TYPO3 8 we need an other way
+        // Geht das? Die Methode ist protected...
+        $pluginData = $wizard->getPluginData();
+        foreach ($pluginData as $id => $data) {
+            if (!isset($data['tsconfig'])) {
+                // Noch nicht für 8.x vorbereitet
+                continue;
             }
+            Icons::getIconRegistry()->registerIcon(
+                $id.'-icon',
+                'TYPO3\\CMS\Core\\Imaging\\IconProvider\\BitmapIconProvider',
+                ['source' => $data['icon']]
+            );
+            $configFile = $data['tsconfig'];
+            // Wizardkonfiguration hinzufügen
+            Extensions::addPageTSConfig(
+                '<INCLUDE_TYPOSCRIPT: source="'.$configFile.'">'
+            );
         }
     }
 
