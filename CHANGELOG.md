@@ -3,6 +3,9 @@
 Changelog
 ---------
 
+v1.14.2 (06.11.2021)
+ * add Github action for TER release
+
 v1.14.1 (31.10.2021)
  * New classes to filter page and character browsers
 
