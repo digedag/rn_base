@@ -11,7 +11,7 @@
 	"authors": [
 		{
 			"name": "René Nitzsche",
-			"email": "nitzsche@dmk-ebusiness.de",
+			"email": "rene@system25.de",
 			"role": "Developer"
 		}
 	],
@@ -112,12 +112,18 @@
 		],
 		"fix": [
 			"@fix:phpcs"
+		],
+		"prepare-release": [
+			"rm -rf tests",
+			"rm phpunit.xml",
+			"rm sonar-project.properties"
 		]
 	},
 	"scripts-descriptions": {
 		"phpstan:baseline": "Updates the PHPStan baseline file to match the code.",
 		"test:phplint": "Checks all PHP files for syntax errors.",
-		"test:phpstan": "Checks the types with PHPStan."
+		"test:phpstan": "Checks the types with PHPStan.",
+		"prepare-release": "Clean project before release"
 	},
 	"extra": {
 		"typo3/cms": {
