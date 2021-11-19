@@ -23,7 +23,7 @@ $EM_CONF['rn_base'] = [
     'author_company' => 'System 25',
     'constraints' => [
         'depends' => [
-            'typo3' => '7.6.0-10.4.99',
+            'typo3' => '8.7.0-10.4.99',
             'php' => '7.1.0-8.9.99',
         ],
         'conflicts' => [

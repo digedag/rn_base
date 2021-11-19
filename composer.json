@@ -34,7 +34,7 @@
 		"ext-zip": "*",
 		"doctrine/common": "^2.5.4",
 		"doctrine/dbal": "^2.5.4",
-		"typo3/cms-core": "^7.6 || ^8.7 || ^9.5 || ^10.4"
+		"typo3/cms-core": "^8.7 || ^9.5 || ^10.4"
 	},
 	"require-dev": {
 		"friendsofphp/php-cs-fixer": "^3.1.0",
@@ -45,8 +45,8 @@
 		"phpstan/phpstan-phpunit": "^0.12.22",
 		"phpstan/extension-installer": "^1.1",
 		"phpunit/phpunit": "^6.5.14 || ^7.5.20",
-		"typo3/cms-frontend": "^7.6 || ^8.7 || ^9.5 || ^10.4",
-		"typo3/cms-scheduler": "^7.6 || ^8.7 || ^9.5 || ^10.4"
+		"typo3/cms-frontend": "^8.7 || ^9.5 || ^10.4",
+		"typo3/cms-scheduler": "^8.7 || ^9.5 || ^10.4"
 	},
 	"suggest": {
 		"ext-mcrypt": "*",
