@@ -416,7 +416,7 @@ parameters:
 			path: Classes/Utility/TSFAL.php
 
 		-
-			message: "#^Cannot unset offset 'field' on array\\(\\)\\.$#"
+			message: "#^Cannot unset offset 'field' on array\\{\\}\\.$#"
 			count: 1
 			path: Classes/Utility/TSFAL.php
 
