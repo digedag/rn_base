@@ -203,8 +203,7 @@ abstract class SearchBase
                     list($tableAlias, $col) = explode('.', $field);
                     if (!isset($col)) {
                         $orderby[] = $tableAlias.' '.('DESC' == strtoupper($order) ? 'DESC' : 'ASC');
-                    }
-                    else {
+                    } else {
                         $tableAlias = $this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias];
                         if ($tableAlias) {
                             $orderby[] = $tableAlias.'.'.strtolower($col).' '.('DESC' == strtoupper($order) ? 'DESC' : 'ASC');
