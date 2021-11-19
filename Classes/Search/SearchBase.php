@@ -201,11 +201,16 @@ abstract class SearchBase
                         continue;
                     }
                     list($tableAlias, $col) = explode('.', $field);
-                    $tableAlias = $this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias];
-                    if ($tableAlias) {
-                        $orderby[] = $tableAlias.'.'.strtolower($col).' '.('DESC' == strtoupper($order) ? 'DESC' : 'ASC');
-                    } else {
-                        $orderby[] = $field.' '.('DESC' == strtoupper($order) ? 'DESC' : 'ASC');
+                    if (!isset($col)) {
+                        $orderby[] = $tableAlias.' '.('DESC' == strtoupper($order) ? 'DESC' : 'ASC');
+                    }
+                    else {
+                        $tableAlias = $this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias];
+                        if ($tableAlias) {
+                            $orderby[] = $tableAlias.'.'.strtolower($col).' '.('DESC' == strtoupper($order) ? 'DESC' : 'ASC');
+                        } else {
+                            $orderby[] = $field.' '.('DESC' == strtoupper($order) ? 'DESC' : 'ASC');
+                        }
                     }
                 }
             }

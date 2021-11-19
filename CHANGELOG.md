@@ -3,6 +3,9 @@
 Changelog
 ---------
 
+v1.15.0 (??.11.2021)
+ * Fix custom aliases for orderby
+
 v1.14.2 (06.11.2021)
  * add Github action for TER release
 
