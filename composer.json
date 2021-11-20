@@ -41,10 +41,11 @@
 		"jangregor/phpstan-prophecy": "^1.0.0",
 		"mikey179/vfsstream": "^1.6.10",
 		"nimut/testing-framework": "^5.2.1",
+		"phpstan/extension-installer": "^1.1.0",
 		"phpstan/phpstan": "^1.2.0",
 		"phpstan/phpstan-phpunit": "^1.0.0",
-		"phpstan/extension-installer": "^1.1.0",
 		"phpunit/phpunit": "^6.5.14 || ^7.5.20",
+		"saschaegerer/phpstan-typo3": "^1.0",
 		"typo3/cms-frontend": "^8.7 || ^9.5 || ^10.4",
 		"typo3/cms-scheduler": "^8.7 || ^9.5 || ^10.4"
 	},
