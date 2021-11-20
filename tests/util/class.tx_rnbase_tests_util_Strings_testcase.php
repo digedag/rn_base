@@ -62,22 +62,22 @@ class tx_rnbase_tests_util_Strings_testcase extends BaseTestCase
     /**
      * Liefert die Daten für den testIsLastPartOfStr testcase.
      *
-     * @return array
+     * @return array<int, array<string, string|bool>>
      */
     public function getIsLastPartOfStrData()
     {
         return [
-            __LINE__ => [
+            [
                 'haystack' => 'test',
                 'needle' => 'test',
                 'expected' => true,
             ],
-            __LINE__ => [
+            [
                 'haystack' => 'Hallo Welt',
                 'needle' => 'Welt',
                 'expected' => true,
             ],
-            __LINE__ => [
+            [
                 'haystack' => 'Hallo Welt',
                 'needle' => 'Hallo',
                 'expected' => false,

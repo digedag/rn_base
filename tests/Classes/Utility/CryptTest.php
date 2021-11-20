@@ -117,33 +117,33 @@ class CryptTest extends BaseTestCase
     /**
      * Gets the array for the testCryption testcase.
      *
-     * @return array
+     * @return array<int, array<string, array<string, string|bool>>>
      */
     public function getCryptionData()
     {
         return [
-            __LINE__ => [
+            [
                 'config' => [
                     'key' => 'FoOB4r',
                     'urlencode' => false,
                     'base64' => false,
                 ],
             ],
-            __LINE__ => [
+            [
                 'config' => [
                     'key' => 'Crypt',
                     'urlencode' => false,
                     'base64' => true,
                 ],
             ],
-            __LINE__ => [
+            [
                 'config' => [
                     'key' => 'S3cure',
                     'urlencode' => true,
                     'base64' => false,
                 ],
             ],
-            __LINE__ => [
+            [
                 'config' => [
                     'key' => 'K4y',
                     'urlencode' => true,

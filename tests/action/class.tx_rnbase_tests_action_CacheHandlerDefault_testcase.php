@@ -235,7 +235,7 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends BaseTestCase
     /**
      * Returns the test data for the cleanupCacheKey test.
      *
-     * @return array
+     * @return array<int, array<string, string, array<string, int>>>
      */
     public function getCleanupCacheKeyData()
     {
@@ -243,17 +243,17 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends BaseTestCase
         $s124 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789abcdefghijklmnopqrstuvwxyz--ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789abcdefghijklmnopqrstuvwxyz';
 
         return [
-            __LINE__ => [
+            [
                 'initialKey' => 'myaction._caching.',
                 'cleanedKey' => 'myaction_caching_',
                 'config' => [],
             ],
-            __LINE__ => [
+            [
                 'initialKey' => 'abcABC!"§$%&/()=?+#*\'-.,_:;',
                 'cleanedKey' => 'abcABC_%&_-_',
                 'config' => [],
             ],
-            __LINE__ => [
+            [
                 'initialKey' => $s124,
                 'cleanedKey' => substr($s124, 0, 50 - 33).'-'.md5($s124),
                 'config' => ['keylength' => 50],
