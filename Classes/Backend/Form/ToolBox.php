@@ -225,10 +225,6 @@ class ToolBox
      */
     public function createShowLink($pid, $label, $urlParams = '', $options = [])
     {
-        if ($options['icon'] && !TYPO3::isTYPO80OrHigher()) {
-            $label = '<img '.Icons::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$options['icon']).
-                ' title="'.$label.'\" alt="" >';
-        }
         if ($options['sprite']) {
             $label = tx_rnbase_mod_Util::getSpriteIcon($options['sprite']);
         }
@@ -432,26 +428,11 @@ class ToolBox
      */
     protected function getJavaScriptForLinkToDataHandlerAction($urlParameters, array $options = [])
     {
-        if (TYPO3::isTYPO87OrHigher()) {
-            $jumpToUrl = BackendUtility::getLinkToDataHandlerAction('&'.$urlParameters, -1);
-            // the jumpUrl method is no longer global available since TYPO3 8.7
-            // furthermore we need the JS variable T3_THIS_LOCATION because it is used
-            // as redirect in getLinkToDataHandlerAction when -1 is passed
-            $this->addBaseInlineJSCode();
-        } else {
-            $currentLocation = $this->getLinkThisScript(true, $options);
-
-            $dataHandlerEntryPoint = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('tce_db').
-            '&';
-            $jumpToUrl = $dataHandlerEntryPoint.'redirect='.$currentLocation.'&amp;'.$urlParameters;
-
-            // jetzt noch alles zur Formvalidierung einfügen damit
-            // TYPO3 den Link akzeptiert und als valide einstuft
-            // der Formularname ist immer tceAction
-            $jumpToUrl .= '&amp;vC='.$GLOBALS['BE_USER']->veriCode();
-            $jumpToUrl .= BackendUtility::getUrlToken('tceAction');
-            $jumpToUrl = '\''.$jumpToUrl.'\'';
-        }
+        $jumpToUrl = BackendUtility::getLinkToDataHandlerAction('&'.$urlParameters, -1);
+        // the jumpUrl method is no longer global available since TYPO3 8.7
+        // furthermore we need the JS variable T3_THIS_LOCATION because it is used
+        // as redirect in getLinkToDataHandlerAction when -1 is passed
+        $this->addBaseInlineJSCode();
 
         return $this->getConfirmCode('return jumpToUrl('.$jumpToUrl.');', $options);
     }
@@ -713,10 +694,7 @@ class ToolBox
             $value += date('Z', $value);
         }
         $this->initializeJavaScriptFormEngine();
-        $dateElementClass = TYPO3::isTYPO80OrHigher() ?
-            \TYPO3\CMS\Backend\Form\Element\InputDateTimeElement::class
-            :
-            \TYPO3\CMS\Backend\Form\Element\InputTextElement::class;
+        $dateElementClass = \TYPO3\CMS\Backend\Form\Element\InputDateTimeElement::class;
 
         return tx_rnbase::makeInstance(
             $dateElementClass,
