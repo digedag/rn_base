@@ -206,11 +206,6 @@ parameters:
 			path: Classes/Frontend/Filter/BaseFilter.php
 
 		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Frontend\\\\Marker\\\\ListBuilder\\:\\:\\$info\\.$#"
-			count: 6
-			path: Classes/Frontend/Marker/ListBuilder.php
-
-		-
 			message: "#^Access to private property \\$mem of class Sys25\\\\RnBase\\\\Frontend\\\\Marker\\\\FormatUtil\\.$#"
 			count: 4
 			path: Classes/Frontend/Marker/ListBuilder.php
