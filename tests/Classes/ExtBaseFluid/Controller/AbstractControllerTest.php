@@ -60,7 +60,7 @@ class AbstractControllerTest extends BaseTestCase
         );
         // the handleRequest expects returns the first argument
         // this argument should be null. doRequest has no argument!
-        $this->assertSame(null, $ret);
+        $this->assertNull($ret);
     }
 
     /**
