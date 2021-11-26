@@ -23,7 +23,6 @@
 ***************************************************************/
 
 use Sys25\RnBase\Testing\BaseTestCase;
-use TYPO3\CMS\Core\TimeTracker\NullTimeTracker;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 
 /**
@@ -145,14 +144,12 @@ class tx_rnbase_tests_util_Templates_testcase extends BaseTestCase
     private function setTTOn()
     {
         $GLOBALS['TT'] = new TimeTracker();
-
         $GLOBALS['TT']->start();
     }
 
     private function setTTOff()
     {
-        $GLOBALS['TT'] = new NullTimeTracker();
-        $GLOBALS['TT']->start();
+        $GLOBALS['TT'] = new TimeTracker(false);
     }
 
     public static $template = '
