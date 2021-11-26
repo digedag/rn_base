@@ -3,7 +3,7 @@
 Changelog
 ---------
 
-v1.15.0 (??.11.2021)
+v1.15.0 (26.11.2021)
  * dropped support for TYPO3 7.6
  * Fix custom aliases for orderby
  * Respect workspaces in querybuilder
