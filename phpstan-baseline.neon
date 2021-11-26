@@ -501,16 +501,6 @@ parameters:
 			path: tests/Classes/ExtBaseFluid/ViewHelper/BaseViewHelperTest.php
 
 		-
-			message: "#^Array has 4 duplicate keys with value 125 \\(__LINE__, __LINE__, __LINE__, __LINE__\\)\\.$#"
-			count: 1
-			path: tests/Classes/Utility/CryptTest.php
-
-		-
-			message: "#^Array has 3 duplicate keys with value 246 \\(__LINE__, __LINE__, __LINE__\\)\\.$#"
-			count: 1
-			path: tests/action/class.tx_rnbase_tests_action_CacheHandlerDefault_testcase.php
-
-		-
 			message: "#^Call to an undefined method tx_rnbase_dummyController\\:\\:getErrorMailHtml\\(\\)\\.$#"
 			count: 1
 			path: tests/class.tx_rnbase_tests_controller_testcase.php
@@ -526,24 +516,9 @@ parameters:
 			path: tests/model/class.tx_rnbase_tests_model_Base_testcase.php
 
 		-
-			message: "#^Array has 8 duplicate keys with value 134 \\(__LINE__, __LINE__, __LINE__, __LINE__, __LINE__, __LINE__, __LINE__, __LINE__\\)\\.$#"
-			count: 1
-			path: tests/util/class.tx_rnbase_tests_util_Link_testcase.php
-
-		-
-			message: "#^Array has 8 duplicate keys with value 79 \\(__LINE__, __LINE__, __LINE__, __LINE__, __LINE__, __LINE__, __LINE__, __LINE__\\)\\.$#"
-			count: 1
-			path: tests/util/class.tx_rnbase_tests_util_Link_testcase.php
-
-		-
 			message: "#^Undefined variable\\: \\$cObj$#"
 			count: 1
 			path: tests/util/class.tx_rnbase_tests_util_SimpleMarker_testcase.php
-
-		-
-			message: "#^Array has 3 duplicate keys with value 70 \\(__LINE__, __LINE__, __LINE__\\)\\.$#"
-			count: 1
-			path: tests/util/class.tx_rnbase_tests_util_Strings_testcase.php
 
 		-
 			message: "#^Instantiated class TYPO3\\\\CMS\\\\Core\\\\TimeTracker\\\\NullTimeTracker not found\\.$#"

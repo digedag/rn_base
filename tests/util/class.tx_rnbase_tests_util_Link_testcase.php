@@ -70,132 +70,132 @@ class tx_rnbase_tests_util_Link_testcase extends BaseTestCase
     /**
      * Liefert die Daten für den testMakeUrlOrTag testcase.
      *
-     * @return array
+     * @return array<int, array<string, string|bool>>
      */
     public function getMakeUrlOrTagData()
     {
         return [
             // makeUrl
-            __LINE__ => [
+            [
                 'typolink' => 'service/faq.html',
                 'absUrl' => false,
                 'schema' => 'http://www.system25.de/',
                 'expected' => 'service/faq.html',
             ],
-            __LINE__ => [
+            [
                 'typolink' => 'service/faq.html',
                 'absUrl' => true,
                 'schema' => 'http://www.system25.de/',
                 'expected' => 'http://www.system25.de/service/faq.html',
             ],
-            __LINE__ => [
+            [
                 'typolink' => 'http://www.system25.de/service/faq.html',
                 'absUrl' => true,
                 'schema' => 'http://www.system25.de/',
                 'expected' => 'http://www.system25.de/service/faq.html',
             ],
-            __LINE__ => [
+            [
                 'typolink' => '//www.system25.de/service/faq.html',
                 'absUrl' => true,
                 'schema' => 'http://www.system25.de/',
                 'expected' => 'http://www.system25.de/service/faq.html',
             ],
-            __LINE__ => [
+            [
                 'typolink' => '/service/faq.html',
                 'absUrl' => true,
                 'schema' => 'http://www.system25.de/',
                 'expected' => 'http://www.system25.de/service/faq.html',
             ],
-            __LINE__ => [
+            [
                 'typolink' => 'http://www.digedag.de/service/faq.html',
                 'absUrl' => true,
                 'schema' => 'http://www.system25.de/',
                 'expected' => 'http://www.system25.de/service/faq.html',
             ],
-            __LINE__ => [
+            [
                 'typolink' => '//www.digedag.de/service/faq.html',
                 'absUrl' => true,
                 'schema' => 'http://www.system25.de/',
                 'expected' => 'http://www.system25.de/service/faq.html',
             ],
-            __LINE__ => [
+            [
                 'typolink' => '//www.digedag.de/service/faq.html',
                 'absUrl' => true,
                 'schema' => '',
                 'expected' => tx_rnbase_util_Misc::getIndpEnv('TYPO3_REQUEST_DIR').'service/faq.html',
             ],
-            __LINE__ => [
+            [
                     'typolink' => '//www.digedag.de/service/faq.html',
                     'absUrl' => true,
                     'schema' => false,
                     'expected' => tx_rnbase_util_Misc::getIndpEnv('TYPO3_REQUEST_DIR').'service/faq.html',
             ],
             // makeTag
-            __LINE__ => [
+            [
                 'typolink' => '<img src="service/faq.jpg" />',
                 'absUrl' => false,
                 'schema' => 'http://www.system25.de/',
                 'expected' => '<img src="service/faq.jpg" />',
                 'method' => 'makeTag',
             ],
-            __LINE__ => [
+            [
                 'typolink' => '<a href="service/faq.html">FAQ</a>',
                 'absUrl' => true,
                 'schema' => 'http://www.system25.de/',
                 'expected' => '<a href="http://www.system25.de/service/faq.html">FAQ</a>',
                 'method' => 'makeTag',
             ],
-            __LINE__ => [
+            [
                 'typolink' => '<img src="service/faq.jpg" />',
                 'absUrl' => true,
                 'schema' => 'http://www.system25.de/',
                 'expected' => '<img src="http://www.system25.de/service/faq.jpg" />',
                 'method' => 'makeTag',
             ],
-            __LINE__ => [
+            [
                 'typolink' => '<a href="http://www.system25.de/service/faq.html">FAQ</a>',
                 'absUrl' => true,
                 'schema' => 'http://www.system25.de/',
                 'expected' => '<a href="http://www.system25.de/service/faq.html">FAQ</a>',
                 'method' => 'makeTag',
             ],
-            __LINE__ => [
+            [
                 'typolink' => '<a href="//www.system25.de/service/faq.html">FAQ</a>',
                 'absUrl' => true,
                 'schema' => 'http://www.system25.de/',
                 'expected' => '<a href="http://www.system25.de/service/faq.html">FAQ</a>',
                 'method' => 'makeTag',
             ],
-            __LINE__ => [
+            [
                 'typolink' => '<a href="/service/faq.html">FAQ</a>',
                 'absUrl' => true,
                 'schema' => 'http://www.system25.de/',
                 'expected' => '<a href="http://www.system25.de/service/faq.html">FAQ</a>',
                 'method' => 'makeTag',
             ],
-            __LINE__ => [
+            [
                 'typolink' => '<a href="http://www.digedag.de/service/faq.html">FAQ</a>',
                 'absUrl' => true,
                 'schema' => 'http://www.system25.de/',
                 'expected' => '<a href="http://www.system25.de/service/faq.html">FAQ</a>',
                 'method' => 'makeTag',
             ],
-            __LINE__ => [
+            [
                 'typolink' => '<a href="http://www.digedag.de/service/faq.html">FAQ</a>',
                 'absUrl' => true,
                 'schema' => '',
                 'expected' => '<a href="'.tx_rnbase_util_Misc::getIndpEnv('TYPO3_REQUEST_DIR').'service/faq.html">FAQ</a>',
                 'method' => 'makeTag',
             ],
-            __LINE__ => [
+            [
                 'typolink' => '<a href="http://www.digedag.de/service/faq.html">FAQ</a>',
                 'absUrl' => true,
                 'schema' => false,
                 'expected' => '<a href="'.tx_rnbase_util_Misc::getIndpEnv('TYPO3_REQUEST_DIR').'service/faq.html">FAQ</a>',
                 'method' => 'makeTag',
             ],
-            // invalide tags bleiben unangetatset!
-            __LINE__ => [
+            // invalide tags bleiben unangetastet!
+            [
                 'typolink' => 'a href="service/faq.html">FAQ</a',
                 'absUrl' => true,
                 'schema' => 'http://www.system25.de/',
