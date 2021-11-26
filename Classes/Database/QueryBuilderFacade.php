@@ -11,7 +11,9 @@ use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction;
 
 /***************************************************************
  *  Copyright notice
@@ -139,6 +141,14 @@ class QueryBuilderFacade
                     ->getRestrictions()
                     ->removeAll()
                     ->add(tx_rnbase::makeInstance(DeletedRestriction::class));
+            }
+
+            // Workspaces: Bei Tabellen mit Workspace-Support werden die WS-Records automatisch reduziert.
+            $tableName = $queryBuilder->getQueryPart('from')[0]['table'];
+            $tableName = trim($tableName, '`');
+            if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['versioningWS'])) {
+                $wsClass = $this->isFrontend() ? FrontendWorkspaceRestriction::class : BackendWorkspaceRestriction::class;
+                $queryBuilder->getRestrictions()->add(tx_rnbase::makeInstance($wsClass));
             }
         }
     }
