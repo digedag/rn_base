@@ -1,11 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Method Sys25\\\\RnBase\\\\Backend\\\\Form\\\\Element\\\\InputText\\:\\:render\\(\\) should return array but return statement is missing\\.$#"
-			count: 1
-			path: Classes/Backend/Form/Element/InputText.php
-
-		-
 			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Backend\\\\Form\\\\ToolBox\\:\\:\\$tceStack\\.$#"
 			count: 2
 			path: Classes/Backend/Form/ToolBox.php

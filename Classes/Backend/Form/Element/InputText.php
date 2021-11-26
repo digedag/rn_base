@@ -47,6 +47,7 @@ class InputText extends AbstractFormElement
 
     public function render()
     {
+        return [];
     }
 
     public function renderHtml($name, $value, $config)
