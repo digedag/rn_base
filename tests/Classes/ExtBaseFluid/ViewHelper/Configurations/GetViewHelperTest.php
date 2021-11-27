@@ -38,18 +38,6 @@ use Sys25\RnBase\Testing\BaseTestCase;
 class GetViewHelperTest extends BaseTestCase
 {
     /**
-     * (non-PHPdoc).
-     *
-     * @see PHPUnit_Framework_TestCase::setUp()
-     */
-    protected function setUp()
-    {
-        if (!\tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
-            self::markTestSkipped('Fluid is only supported since TYPO3 8.7');
-        }
-    }
-
-    /**
      * @group integration
      */
     public function testRender()

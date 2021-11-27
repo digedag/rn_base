@@ -67,13 +67,8 @@ class TcaToolTest extends BaseTestCase
                 'module' => ['urlParameters' => ['mode' => 'wizard', 'newKey' => 'wizard']],
             ],
         ];
-        if (TYPO3::isTYPO87OrHigher()) {
-            $expectedLinkWizard['link']['icon'] = 'actions-add';
-            $expectedLinkWizard['link']['module']['name'] = 'wizard_link';
-        } else {
-            $expectedLinkWizard['link']['icon'] = 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif';
-            $expectedLinkWizard['link']['module']['name'] = 'wizard_element_browser';
-        }
+        $expectedLinkWizard['link']['icon'] = 'actions-add';
+        $expectedLinkWizard['link']['module']['name'] = 'wizard_link';
         self::assertEquals(ksort($expectedLinkWizard), ksort($linkWizard), 'link wizard nicht korrekt');
     }
 
@@ -105,11 +100,7 @@ class TcaToolTest extends BaseTestCase
         self::assertEquals('wizard_rte', $wizards['RTE']['module']['name']);
         self::assertEquals('wizard_colorpicker', $wizards['colorpicker']['module']['name']);
 
-        if (TYPO3::isTYPO87OrHigher()) {
-            self::assertEquals('wizard_link', $wizards['link']['module']['name']);
-        } else {
-            self::assertEquals('wizard_element_browser', $wizards['link']['module']['name']);
-        }
+        self::assertEquals('wizard_link', $wizards['link']['module']['name']);
     }
 
     /**
@@ -128,49 +119,26 @@ class TcaToolTest extends BaseTestCase
             ]
         );
 
-        if (TYPO3::isTYPO87OrHigher()) {
-            self::assertEquals(
-                'actions-add',
-                $wizards['add']['icon']
-            );
-            self::assertEquals(
-                'actions-open',
-                $wizards['edit']['icon']
-            );
-            self::assertEquals(
-                'actions-system-list-open',
-                $wizards['list']['icon']
-            );
-            self::assertEquals(
-                'actions-wizard-rte',
-                $wizards['RTE']['icon']
-            );
-            self::assertEquals(
-                'actions-wizard-link',
-                $wizards['link']['icon']
-            );
-        } else {
-            self::assertEquals(
-                'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
-                $wizards['add']['icon']
-            );
-            self::assertEquals(
-                'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
-                $wizards['edit']['icon']
-            );
-            self::assertEquals(
-                'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_list.gif',
-                $wizards['list']['icon']
-            );
-            self::assertEquals(
-                'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_rte.gif',
-                $wizards['RTE']['icon']
-            );
-            self::assertEquals(
-                'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
-                $wizards['link']['icon']
-            );
-        }
+        self::assertEquals(
+            'actions-add',
+            $wizards['add']['icon']
+        );
+        self::assertEquals(
+            'actions-open',
+            $wizards['edit']['icon']
+        );
+        self::assertEquals(
+            'actions-system-list-open',
+            $wizards['list']['icon']
+        );
+        self::assertEquals(
+            'actions-wizard-rte',
+            $wizards['RTE']['icon']
+        );
+        self::assertEquals(
+            'actions-wizard-link',
+            $wizards['link']['icon']
+        );
     }
 
     /**
