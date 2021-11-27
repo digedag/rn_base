@@ -3,7 +3,6 @@
 namespace Sys25\RnBase\Backend\Template\Override;
 
 use Sys25\RnBase\Utility\T3General;
-use Sys25\RnBase\Utility\TYPO3;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -86,13 +85,7 @@ function jumpToUrl(URL) {
      */
     public function getPageRenderer()
     {
-        if (TYPO3::isTYPO80OrHigher()) {
-            return $this->pageRenderer;
-        } else {
-            $this->initPageRenderer();
-
-            return $this->pageRenderer;
-        }
+        return $this->pageRenderer;
     }
 
     /* *** ************************************************ *** *
@@ -249,9 +242,6 @@ function jumpToUrl(URL) {
      */
     public function divider($dist)
     {
-//         if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-//             return parent::divider($dist);
-//         }
         $dist = (int) $dist;
 
         return '<!-- DIVIDER --><hr style="margin-top: '.$dist.'px; margin-bottom: '.$dist.'px;" />';
