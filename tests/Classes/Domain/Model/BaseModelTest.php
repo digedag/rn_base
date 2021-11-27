@@ -202,7 +202,7 @@ class BaseModelTest extends BaseTestCase
     {
         /* @var $model BaseModel */
         $model = tx_rnbase::makeInstance(BaseModel::class);
-        self::assertSame(null, $model->getCreationDateTime());
+        self::assertNull($model->getCreationDateTime());
     }
 
     public function testGetCreationDateTimeWithTca()
@@ -226,7 +226,7 @@ class BaseModelTest extends BaseTestCase
     {
         /* @var $model BaseModel */
         $model = tx_rnbase::makeInstance(BaseModel::class);
-        self::assertSame(null, $model->getLastModifyDateTime());
+        self::assertNull($model->getLastModifyDateTime());
     }
 
     public function testGetLastModifyDateTimeWithTca()

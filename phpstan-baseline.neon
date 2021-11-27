@@ -461,16 +461,6 @@ parameters:
 			path: Legacy/model/class.tx_rnbase_model_data.php
 
 		-
-			message: "#^You should use assertNull\\(\\) instead of assertSame\\(null, \\$actual\\)\\.$#"
-			count: 2
-			path: tests/Classes/Domain/Model/BaseModelTest.php
-
-		-
-			message: "#^You should use assertNull\\(\\) instead of assertSame\\(null, \\$actual\\)\\.$#"
-			count: 1
-			path: tests/Classes/ExtBaseFluid/Controller/AbstractControllerTest.php
-
-		-
 			message: "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManager constructor invoked with 0 parameters, 2 required\\.$#"
 			count: 1
 			path: tests/Classes/ExtBaseFluid/View/StandaloneTest.php
@@ -489,11 +479,6 @@ parameters:
 			message: "#^Access to an undefined property tx_rnbase_tests_fixtures_classes_Decorator\\:\\:\\$mod\\.$#"
 			count: 1
 			path: tests/fixtures/classes/class.tx_rnbase_tests_fixtures_classes_Decorator.php
-
-		-
-			message: "#^You should use assertNull\\(\\) instead of assertSame\\(null, \\$actual\\)\\.$#"
-			count: 2
-			path: tests/model/class.tx_rnbase_tests_model_Base_testcase.php
 
 		-
 			message: "#^Undefined variable\\: \\$cObj$#"

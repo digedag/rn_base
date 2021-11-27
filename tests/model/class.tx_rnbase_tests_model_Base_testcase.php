@@ -155,7 +155,7 @@ class tx_rnbase_tests_model_Base_testcase extends BaseTestCase
         $model = tx_rnbase::makeInstance(
             'tx_rnbase_model_base'
         );
-        $this->assertSame(null, $model->getCreationDateTime());
+        $this->assertNull($model->getCreationDateTime());
     }
 
     public function testGetCreationDateTimeWithTca()
@@ -178,7 +178,7 @@ class tx_rnbase_tests_model_Base_testcase extends BaseTestCase
         $model = tx_rnbase::makeInstance(
             'tx_rnbase_model_base'
         );
-        $this->assertSame(null, $model->getLastModifyDateTime());
+        $this->assertNull($model->getLastModifyDateTime());
     }
 
     public function testGetLastModifyDateTimeWithTca()
