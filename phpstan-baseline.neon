@@ -480,8 +480,3 @@ parameters:
 			count: 1
 			path: tests/fixtures/classes/class.tx_rnbase_tests_fixtures_classes_Decorator.php
 
-		-
-			message: "#^Undefined variable\\: \\$cObj$#"
-			count: 1
-			path: tests/util/class.tx_rnbase_tests_util_SimpleMarker_testcase.php
-
