@@ -2,6 +2,8 @@
 
 namespace Sys25\RnBase\Utility;
 
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -119,7 +121,7 @@ class Typo3Classes
     }
 
     /**
-     * @return \TYPO3\CMS\Core\TimeTracker\TimeTracker
+     * @return TimeTracker
      */
     public static function getTimeTracker($enabled = null)
     {
@@ -128,23 +130,17 @@ class Typo3Classes
             $enabled = (bool) $_COOKIE[$beCookie];
         }
 
-        return new \TYPO3\CMS\Core\TimeTracker\TimeTracker($enabled);
+        return new TimeTracker($enabled);
     }
 
     /**
-     * @deprecated use getTimeTracker
+     * @deprecated use getTimeTracker; will be removed in version 2
      *
-     * @return class-string<\TYPO3\CMS\Core\TimeTracker\NullTimeTracker>
+     * @return class-string<TimeTracker>
      */
     public static function getTimeTrackClass()
     {
-        $higher6Class = 'TYPO3\\CMS\\Core\\TimeTracker\\NullTimeTracker';
-        $beCookie = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']) ?: 'be_typo_user';
-        if ($_COOKIE[$beCookie]) {
-            $higher6Class = \TYPO3\CMS\Core\TimeTracker\TimeTracker::class;
-        }
-
-        return $higher6Class;
+        return TimeTracker::class;
     }
 
     /**
