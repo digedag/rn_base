@@ -39,12 +39,15 @@ use tx_rnbase;
  */
 class ListBuilder
 {
+    /**
+     * @var ListBuilderInfo
+     */
+    private $info;
+
     private $visitors = [];
 
     /**
-     * Constructor.
-     *
-     * @param ListBuilderInfo $info
+     * @param ListBuilderInfo|null $info
      */
     public function __construct(ListBuilderInfo $info = null)
     {
