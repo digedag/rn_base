@@ -173,7 +173,7 @@ class ToolBoxTest extends BaseTestCase
      */
     public function testGetJavaScriptForLinkToDataHandlerActionInTypo387()
     {
-        if (!TYPO3::isTYPO87OrHigher() || TYPO3::isTYPO104OrHigher()) {
+        if (TYPO3::isTYPO104OrHigher()) {
             self::markTestSkipped('wir testen die Version ab TYPO3 8.7');
         }
 
@@ -194,10 +194,6 @@ class ToolBoxTest extends BaseTestCase
      */
     public function testGetJavaScriptForLinkToDataHandlerActionAddsNecessaryJavaScriptsInTypo387()
     {
-        if (!TYPO3::isTYPO87OrHigher()) {
-            self::markTestSkipped('wir testen die Version ab TYPO3 8.7');
-        }
-
         $formTool = $this->getAccessibleMock(ToolBox::class, ['getBaseJavaScriptCode']);
         $formTool
             ->expects(self::once())
@@ -342,7 +338,7 @@ class ToolBoxTest extends BaseTestCase
      */
     public function testCreateLinkWithIconForTypo387()
     {
-        if (!TYPO3::isTYPO87OrHigher() || TYPO3::isTYPO104OrHigher()) {
+        if (TYPO3::isTYPO104OrHigher()) {
             self::markTestSkipped('wir testen die Version ab TYPO3 8.7');
         }
         $urlParameters = 'parameter=test';
@@ -367,7 +363,7 @@ class ToolBoxTest extends BaseTestCase
      */
     public function testCreateLinkWithIconAndSizeForTypo387()
     {
-        if (!TYPO3::isTYPO87OrHigher() || TYPO3::isTYPO104OrHigher()) {
+        if (TYPO3::isTYPO104OrHigher()) {
             self::markTestSkipped('wir testen die Version ab TYPO3 8.7');
         }
         $urlParameters = 'parameter=test';

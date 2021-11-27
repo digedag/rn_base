@@ -38,18 +38,6 @@ use Sys25\RnBase\Testing\TestUtility;
 class StandaloneTest extends BaseTestCase
 {
     /**
-     * (non-PHPdoc).
-     *
-     * @see PHPUnit_Framework_TestCase::setUp()
-     */
-    protected function setUp()
-    {
-        if (!\tx_rnbase_util_TYPO3::isTYPO87OrHigher()) {
-            self::markTestSkipped('Fluid is only supported since TYPO3 8.7');
-        }
-    }
-
-    /**
      * @group integration
      * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
