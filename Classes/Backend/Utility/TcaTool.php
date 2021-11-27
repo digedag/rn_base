@@ -42,16 +42,6 @@ class TcaTool
      */
     public const ICON_INDEX_TYPO3_87_OR_HIGHER = 'typo3-87-or-higher';
 
-    /**
-     * @var string
-     */
-    public const ICON_INDEX_TYPO3_76_OR_HIGHER = 'typo3-76-or-higher';
-
-    /**
-     * @var string
-     */
-    public const ICON_INDEX_TYPO3_62_OR_HIGHER = 'typo3-62-or-higher';
-
     public const WIZARD_EDIT = 'edit';
 
     public const WIZARD_ADD = 'add';
@@ -74,23 +64,18 @@ class TcaTool
     private static $iconsByWizards = [
         'edit' => [
             self::ICON_INDEX_TYPO3_87_OR_HIGHER => 'actions-open',
-            self::ICON_INDEX_TYPO3_76_OR_HIGHER => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
         ],
         'add' => [
             self::ICON_INDEX_TYPO3_87_OR_HIGHER => 'actions-add',
-            self::ICON_INDEX_TYPO3_76_OR_HIGHER => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
         ],
         'list' => [
             self::ICON_INDEX_TYPO3_87_OR_HIGHER => 'actions-system-list-open',
-            self::ICON_INDEX_TYPO3_76_OR_HIGHER => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_list.gif',
         ],
         'richText' => [
             self::ICON_INDEX_TYPO3_87_OR_HIGHER => 'actions-wizard-rte',
-            self::ICON_INDEX_TYPO3_76_OR_HIGHER => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_rte.gif',
         ],
         'link' => [
             self::ICON_INDEX_TYPO3_87_OR_HIGHER => 'actions-wizard-link',
-            self::ICON_INDEX_TYPO3_76_OR_HIGHER => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
         ],
     ];
 
@@ -149,33 +134,27 @@ class TcaTool
         foreach ($options as $col => $wizardOptions) {
             $table = isset($wizardOptions[self::WIZARD_TARGETTABLE]) ? $wizardOptions[self::WIZARD_TARGETTABLE] : '';
             $wizards = self::getWizards($table, $wizardOptions);
-            if (TYPO3::isTYPO86OrHigher()) {
-                // suggestWizard
-                if (isset($wizards[self::WIZARD_SUGGEST])) {
-                    $tcaTable['columns'][$col]['config']['suggestOptions'] = $wizards[self::WIZARD_SUGGEST];
-                    unset($wizards[self::WIZARD_SUGGEST]);
-                }
-                $controls = [self::WIZARD_ADD => 'addRecord', self::WIZARD_EDIT => 'editPopup'];
-                foreach ($controls as $wiz => $control) {
-                    if (isset($wizards[$wiz])) {
-                        $tcaTable['columns'][$col]['config']['fieldControl'][$control] = self::convertWiz2FieldControl(
-                            $wiz,
-                            $wizards[$wiz],
-                            $wizardOptions[$wiz]
-                        );
-                        unset($wizards[$wiz]);
-                    }
+            // suggestWizard
+            if (isset($wizards[self::WIZARD_SUGGEST])) {
+                $tcaTable['columns'][$col]['config']['suggestOptions'] = $wizards[self::WIZARD_SUGGEST];
+                unset($wizards[self::WIZARD_SUGGEST]);
+            }
+            $controls = [self::WIZARD_ADD => 'addRecord', self::WIZARD_EDIT => 'editPopup'];
+            foreach ($controls as $wiz => $control) {
+                if (isset($wizards[$wiz])) {
+                    $tcaTable['columns'][$col]['config']['fieldControl'][$control] = self::convertWiz2FieldControl(
+                        $wiz,
+                        $wizards[$wiz],
+                        $wizardOptions[$wiz]
+                    );
+                    unset($wizards[$wiz]);
                 }
             }
             // Add RTE config to columnsOverrides
             if (isset($wizardOptions[self::WIZARD_RTE])) {
-                $tcaTable['types'][0]['columnsOverrides'][$col] = TYPO3::isTYPO86OrHigher() ?
-                    ['config' => ['enableRichtext' => 1, 'richtextConfiguration' => 'default']]
-                    :
-                    ['defaultExtras' => isset($wizardOptions[self::WIZARD_RTE]['defaultExtras']) ? $wizardOptions[self::WIZARD_RTE]['defaultExtras'] : ''];
-                if (TYPO3::isTYPO86OrHigher()) {
-                    unset($wizards[self::WIZARD_RTE]);
-                }
+                $tcaTable['types'][0]['columnsOverrides'][$col] =
+                    ['config' => ['enableRichtext' => 1, 'richtextConfiguration' => 'default']];
+                unset($wizards[self::WIZARD_RTE]);
             }
 
             $tcaTable['columns'][$col]['config']['wizards'] = $wizards;
@@ -264,8 +243,7 @@ class TcaTool
      */
     public static function buildGeneralLabel($label)
     {
-        $sysLangFile = TYPO3::isTYPO87OrHigher() ?
-            'Resources/Private/Language/locallang_general.xlf' : 'locallang_general.xml';
+        $sysLangFile = 'Resources/Private/Language/locallang_general.xlf';
 
         return sprintf(
             'LLL:EXT:%s/%s:LGL.%s',
@@ -434,12 +412,7 @@ class TcaTool
             );
         }
 
-        $wizard = self::addWizardScriptForTypo3Version(
-            TYPO3::isTYPO87OrHigher() ? 'link' : 'element_browser',
-            $wizard
-        );
-
-        return $wizard;
+        return self::addWizardScriptForTypo3Version('link', $wizard);
     }
 
     /**
@@ -475,13 +448,7 @@ class TcaTool
      */
     protected static function getIconByWizard($wizard)
     {
-        if (TYPO3::isTYPO87OrHigher()) {
-            $iconIndexByTypo3Version = self::ICON_INDEX_TYPO3_87_OR_HIGHER;
-        } else {
-            $iconIndexByTypo3Version = self::ICON_INDEX_TYPO3_76_OR_HIGHER;
-        }
-
-        return self::$iconsByWizards[$wizard][$iconIndexByTypo3Version];
+        return self::$iconsByWizards[$wizard][self::ICON_INDEX_TYPO3_87_OR_HIGHER];
     }
 
     /**
