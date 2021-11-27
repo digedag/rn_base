@@ -216,18 +216,12 @@ class TCA
      */
     public static function loadTCA($tablename)
     {
-        if (TYPO3::isTYPO80OrHigher()) {
-            if (TYPO3_MODE === 'FE' && isset($_REQUEST['eID'])) {
-                $eidUtility = Typo3Classes::getEidUtilityClass();
-                $eidUtility::initTCA();
-            } else {
-                if (!is_array($GLOBALS['TCA'])) {
-                    Extensions::loadBaseTca(true);
-                }
-            }
+        if (TYPO3_MODE === 'FE' && isset($_REQUEST['eID'])) {
+            $eidUtility = Typo3Classes::getEidUtilityClass();
+            $eidUtility::initTCA();
         } else {
             if (!is_array($GLOBALS['TCA'])) {
-                \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca();
+                Extensions::loadBaseTca(true);
             }
         }
     }
