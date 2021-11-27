@@ -41,11 +41,6 @@ parameters:
 			path: Classes/Backend/Module/ExtendedModFunc.php
 
 		-
-			message: "#^Function boolean not found\\.$#"
-			count: 1
-			path: Classes/Backend/Module/ExtendedModFunc.php
-
-		-
 			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Backend\\\\Template\\\\Override\\\\DocumentTemplate\\:\\:\\$JScode\\.$#"
 			count: 1
 			path: Classes/Backend/Template/Override/DocumentTemplate.php

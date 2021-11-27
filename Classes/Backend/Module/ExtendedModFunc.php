@@ -198,7 +198,7 @@ abstract class ExtendedModFunc implements IModFunc
             $msg = $message['message'];
             $title = $message['title'];
             $severity = $message['severity'];
-            $store = boolean($message['storeinsession']);
+            $store = (bool) $message['storeinsession'];
         } else {
             $msg = $message;
             $title = $handler->getSubLabel();
