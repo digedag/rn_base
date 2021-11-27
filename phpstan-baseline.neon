@@ -96,11 +96,6 @@ parameters:
 			path: Classes/Backend/Utility/BaseLister.php
 
 		-
-			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Core\\\\Core\\\\Bootstrap\\:\\:getInstance\\(\\)\\.$#"
-			count: 1
-			path: Classes/Backend/Utility/TCA.php
-
-		-
 			message: "#^Method Sys25\\\\RnBase\\\\Configuration\\\\Processor\\:\\:_queryArrayByPath\\(\\) should return array but return statement is missing\\.$#"
 			count: 1
 			path: Classes/Configuration/Processor.php
