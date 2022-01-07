@@ -136,17 +136,15 @@ class QueryBuilderFacade
                 }
             }
 
-            if (intval($options['enablefieldsbe'])) {
-                $queryBuilder
-                    ->getRestrictions()
-                    ->removeAll()
-                    ->add(\tx_rnbase::makeInstance(DeletedRestriction::class))
-                    ->add(\tx_rnbase::makeInstance(BackendWorkspaceRestriction::class));
-            } else {
-                $queryBuilder
-                    ->getRestrictions()
-                    ->removeAll()
-                    ->add(\tx_rnbase::makeInstance(FrontendRestrictionContainer::class));
+            if ($this->isFrontend()) {
+                $restrictions = $queryBuilder->getRestrictions()
+                    ->removeAll();
+                if (intval($options['enablefieldsbe'])) {
+                    $restrictions->add(tx_rnbase::makeInstance(DeletedRestriction::class))
+                        ->add(tx_rnbase::makeInstance(BackendWorkspaceRestriction::class));
+                } else {
+                    $restrictions->add(tx_rnbase::makeInstance(FrontendRestrictionContainer::class));
+                }
             }
         }
     }
