@@ -227,14 +227,6 @@ class Typo3Classes
     }
 
     /**
-     * @return class-string<\TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser>
-     */
-    public static function getLocalizationParserClass()
-    {
-        return \TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser::class;
-    }
-
-    /**
      * @return class-string<\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication>
      */
     public static function getAbstractUserAuthenticationClass()
