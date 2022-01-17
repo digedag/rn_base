@@ -83,6 +83,11 @@
 		"sort-packages": true,
 		"preferred-install": {
 			"typo3/cms": "source"
+		},
+		"allow-plugins": {
+			"typo3/cms-composer-installers": true,
+			"typo3/class-alias-loader": true,
+			"phpstan/extension-installer": true
 		}
 	},
 	"scripts": {
