@@ -39,7 +39,7 @@ use tx_rnbase;
  */
 class ToolBoxTest extends BaseTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         if (TYPO3::isTYPO90OrHigher()) {
             $cacheManager = tx_rnbase::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);

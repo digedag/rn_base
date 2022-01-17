@@ -54,7 +54,7 @@ class ConnectionTest extends BaseTestCase
      *
      * @see \PHPUnit\Framework\TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->connection = tx_rnbase::makeInstance(Connection::class);
     }
@@ -84,7 +84,7 @@ class ConnectionTest extends BaseTestCase
      *
      * @see \PHPUnit\Framework\TestCase::tearDown()
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] = $this->loadHiddenObjectsBackUp;
         $GLOBALS['BE_USER'] = $this->beUserBackUp;

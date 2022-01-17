@@ -4,6 +4,7 @@ namespace Sys25\RnBase\Backend\Utility;
 
 use Sys25\RnBase\Testing\BaseTestCase;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
 *  Copyright notice
@@ -37,6 +38,21 @@ use TYPO3\CMS\Core\Imaging\IconRegistry;
  */
 class IconsTest extends BaseTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        GeneralUtility::setSingletonInstance(
+            IconRegistry::class,
+            $this->prophesize(IconRegistry::class)->reveal()
+        );
+    }
+
+    protected function tearDown(): void
+    {
+        GeneralUtility::purgeInstances();
+    }
+
     /**
      * @group unit
      */

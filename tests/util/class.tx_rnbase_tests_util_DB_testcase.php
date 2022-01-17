@@ -37,7 +37,7 @@ class tx_rnbase_tests_util_DB_testcase extends BaseTestCase
      *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->databaseConnectionClassBackup = $this->getDatabaseConnectionClassReflectionProperty()->getValue(null);
     }
@@ -58,7 +58,7 @@ class tx_rnbase_tests_util_DB_testcase extends BaseTestCase
      *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->getDatabaseConnectionClassReflectionProperty()->setValue(null, $this->databaseConnectionClassBackup);
     }

@@ -40,7 +40,7 @@ class tx_rnbase_tests_controller_testcase extends BaseTestCase
 {
     private $exceptionHandlerConfig;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rn_base']);
         $this->exceptionHandlerConfig = $extConfig['exceptionHandler'];
@@ -52,7 +52,7 @@ class tx_rnbase_tests_controller_testcase extends BaseTestCase
         }
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rn_base']);
         $extConfig['exceptionHandler'] = $this->exceptionHandlerConfig;

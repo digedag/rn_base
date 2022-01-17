@@ -43,9 +43,12 @@ class TablesTest extends BaseTestCase
      */
     public function testPrepareTable()
     {
-        $lang = $this->prophesize($this->getLanguageClass())->reveal();
+        $lang = $this->prophesize($this->getLanguageClass());
+        $lang->getLL('label_uid')->willReturn('LABEL_UID');
+        $lang->getLL('Name')->willReturn('NAME');
+        $lang->getLL('Other')->willReturn('Other');
         /* @var $tablesUtil Tables */
-        $tablesUtil = tx_rnbase::makeInstance(Tables::class, $lang);
+        $tablesUtil = tx_rnbase::makeInstance(Tables::class, $lang->reveal());
         $entries = [
             tx_rnbase::makeInstance(DataModel::class, ['uid' => 2, 'name' => 'foo']),
             tx_rnbase::makeInstance(DataModel::class, ['uid' => 5, 'name' => 'bar']),
@@ -69,8 +72,8 @@ class TablesTest extends BaseTestCase
         // Header prüfen
         $this->assertEquals(4, count($tableData[0]), 'Number of cols wrong');
         $this->assertEquals('&nbsp;', $tableData[0][0], 'Unexpected title for column 1');
-        $this->assertEquals('label_uid', $tableData[0][1], 'Unexpected title for column 2');
-        $this->assertEquals('Name', $tableData[0][2], 'Unexpected title for column 3');
+        $this->assertEquals('LABEL_UID', $tableData[0][1], 'Unexpected title for column 2');
+        $this->assertEquals('NAME', $tableData[0][2], 'Unexpected title for column 3');
 
         // erste Zeile
         $this->assertEquals(4, count($tableData[1]), 'Number of cols wrong');

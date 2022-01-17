@@ -42,7 +42,7 @@ class PostOrGetViewHelperTest extends BaseTestCase
      *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if (isset($_GET['rn_base'])) {
             unset($_GET['rn_base']);

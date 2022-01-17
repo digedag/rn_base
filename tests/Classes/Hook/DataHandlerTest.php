@@ -39,7 +39,7 @@ class DataHandlerTest extends BaseTestCase
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if (isset($GLOBALS['TCA']['rn_base_test_table'])) {
             unset($GLOBALS['TCA']['rn_base_test_table']);

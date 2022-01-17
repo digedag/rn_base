@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Domain\Model;
 
+use Exception;
 use Sys25\RnBase\Testing\BaseTestCase;
 
 /***************************************************************
@@ -113,11 +114,11 @@ class DataModelTest extends BaseTestCase
      *
      * @group unit
      * @test
-     * @expectedException \Exception
-     * @expectedExceptionCode 1406625817
      */
     public function testMagicCallThrowsException()
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(1406625817);
         $this->getModelInstance()->methodDoesNotExist();
     }
 

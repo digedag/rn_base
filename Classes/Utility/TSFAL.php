@@ -14,6 +14,7 @@ use Sys25\RnBase\Frontend\Marker\MediaMarker;
 use Sys25\RnBase\Frontend\Marker\Templates;
 use tx_rnbase;
 use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  *  Copyright notice
@@ -742,6 +743,14 @@ class TSFAL
     }
 
     /**
+     * @return \TYPO3\CMS\Core\Resource\ResourceFactory
+     */
+    private static function getResourceFactory()
+    {
+        return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
+    }
+
+    /**
      * Returns a single FAL file reference by uid.
      *
      * @param int $uid uid of reference
@@ -750,7 +759,7 @@ class TSFAL
      */
     public static function getFileReferenceById($uid)
     {
-        return \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileReferenceObject($uid);
+        return self::getResourceFactory()->getFileReferenceObject($uid);
     }
 
     /**
@@ -763,7 +772,7 @@ class TSFAL
     {
         // get the storage
         if (is_scalar($storage)) {
-            $storage = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getStorageObject(
+            $storage = self::getResourceFactory()->getStorageObject(
                 $storage,
                 [],
                 $target

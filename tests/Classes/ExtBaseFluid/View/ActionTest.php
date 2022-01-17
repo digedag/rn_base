@@ -41,7 +41,7 @@ class ActionTest extends BaseTestCase
      *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         \tx_rnbase_util_Misc::prepareTSFE(['force' => true]);
     }
@@ -51,7 +51,7 @@ class ActionTest extends BaseTestCase
      *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         @unlink(\tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/Resources/Private/Templates/MyTestAction.html'));
         @unlink(\tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/Resources/Private/Layouts/MyTestAction.html'));

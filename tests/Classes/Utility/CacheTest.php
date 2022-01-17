@@ -48,7 +48,7 @@ class CacheTest extends BaseTestCase
      *
      * @see \PHPUnit\Framework\TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         if (TYPO3::isTYPO90OrHigher()) {
             $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'] = [];
@@ -71,7 +71,7 @@ class CacheTest extends BaseTestCase
      *
      * @see \PHPUnit\Framework\TestCase::tearDown()
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = $this->encryptionKeyBackup;
     }
