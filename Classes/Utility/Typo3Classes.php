@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Utility;
 
+use Sys25\RnBase\Backend\Template\Override\DocumentTemplate;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 
 /***************************************************************
@@ -186,11 +187,15 @@ class Typo3Classes
     }
 
     /**
-     * @return class-string<\TYPO3\CMS\Backend\Template\DocumentTemplate>
+     * @return class-string<\TYPO3\CMS\Backend\Template\DocumentTemplate|\Sys25\RnBase\Backend\Template\Override\DocumentTemplate>
      */
     public static function getDocumentTemplateClass()
     {
-        return \TYPO3\CMS\Backend\Template\DocumentTemplate::class;
+        if (TYPO3::isTYPO115OrHigher()) {
+            return DocumentTemplate::class;
+        }
+
+        return 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate';
     }
 
     /**
@@ -210,11 +215,15 @@ class Typo3Classes
     }
 
     /**
-     * @return class-string<\TYPO3\CMS\Backend\Template\DocumentTemplate>
+     * @return class-string<\TYPO3\CMS\Backend\Template\DocumentTemplate|\Sys25\RnBase\Backend\Template\Override\DocumentTemplate>
      */
     public static function getMediumDocumentTemplateClass()
     {
-        return \TYPO3\CMS\Backend\Template\DocumentTemplate::class;
+        if (TYPO3::isTYPO115OrHigher()) {
+            return DocumentTemplate::class;
+        }
+
+        return 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate';
     }
 
     /**

@@ -140,6 +140,16 @@ class TYPO3
         return self::isTYPO3VersionOrHigher(10004000);
     }
 
+    /**
+     * Prüft, ob mindestens TYPO3 Version 11.5 vorhanden ist.
+     *
+     * @return bool
+     */
+    public static function isTYPO115OrHigher()
+    {
+        return self::isTYPO3VersionOrHigher(11005000);
+    }
+
     private static $TYPO3_VERSION = false;
 
     /**
