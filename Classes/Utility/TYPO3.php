@@ -352,7 +352,7 @@ class TYPO3
                 self::$sysPage = $GLOBALS['TSFE']->sys_page;
             } // Use existing SysPage from TSFE
             else {
-                self::$sysPage = \tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+                self::$sysPage = \tx_rnbase::makeInstance(Typo3Classes::getPageRepositoryClass());
                 if (!self::isTYPO95OrHigher()) {
                     self::$sysPage->init(0);
                 }

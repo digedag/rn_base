@@ -30,6 +30,7 @@ use Sys25\RnBase\Exception\AdditionalException;
 use tx_rnbase;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Contains some helpful methods.
@@ -350,9 +351,8 @@ MAYDAYPAGE;
             $GLOBALS['TT']->start();
         }
 
-        $typoScriptFrontendControllerClass = Typo3Classes::getTypoScriptFrontendControllerClass();
         if (!is_object($GLOBALS['TSFE']) ||
-            !($GLOBALS['TSFE'] instanceof $typoScriptFrontendControllerClass) ||
+            !($GLOBALS['TSFE'] instanceof TypoScriptFrontendController) ||
             $force
         ) {
             if (TYPO3::isTYPO90OrHigher()) {
@@ -374,22 +374,43 @@ MAYDAYPAGE;
                     GeneralUtility::flushInternalRuntimeCaches();
                 }
 
-                $GLOBALS['TSFE'] = tx_rnbase::makeInstance(
-                    $typoScriptFrontendControllerClass,
-                    $GLOBALS['TYPO3_CONF_VARS'],
-                    $site,
-                    $site->getDefaultLanguage()
-                );
+                if (TYPO3::isTYPO115OrHigher()) {
+                    $frontendUser = GeneralUtility::makeInstance(
+                        \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::class
+                    );
+                    $frontendUser->initializeUserSessionManager();
+                    $GLOBALS['TSFE'] = GeneralUtility::makeInstance(
+                        TypoScriptFrontendController::class,
+                        GeneralUtility::makeInstance(
+                            \TYPO3\CMS\Core\Context\Context::class
+                        ),
+                        $site,
+                        $site->getDefaultLanguage(),
+                        new \TYPO3\CMS\Core\Routing\PageArguments(
+                            (int) $pid,
+                            (string) $type,
+                            []
+                        ),
+                        $frontendUser
+                    );
+                } else {
+                    $GLOBALS['TSFE'] = tx_rnbase::makeInstance(
+                        TypoScriptFrontendController::class,
+                        $GLOBALS['TYPO3_CONF_VARS'],
+                        $site,
+                        $site->getDefaultLanguage()
+                    );
+                }
             } else {
                 $GLOBALS['TSFE'] = tx_rnbase::makeInstance(
-                    $typoScriptFrontendControllerClass,
+                    TypoScriptFrontendController::class,
                     $GLOBALS['TYPO3_CONF_VARS'],
                     $pid,
                     $type
                 );
             }
         }
-        /* @var $tsfe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
+        /* @var $tsfe FrontendUserAuthentication */
         $tsfe = $GLOBALS['TSFE'];
 
         // base user groups
