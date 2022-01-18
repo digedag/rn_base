@@ -3,6 +3,7 @@
 namespace Sys25\RnBase\Backend\Utility;
 
 use Sys25\RnBase\Utility\TYPO3;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  * Copyright notice
@@ -34,7 +35,6 @@ use Sys25\RnBase\Utility\TYPO3;
  * @license http://www.gnu.org/licenses/lgpl.html
  *        GNU Lesser General Public License, version 3 or later
  *
- * @method static string getModuleUrl(string $moduleName, array $urlParameters)
  * @method static array|bool readPageAccess(int $id, string $perms_clause)
  * @method static array|null getRecord(string $table, int $uid, string $fields = null, string $where = '', bool $useDeleteClause = false)
  * @method static string getFuncMenu(mixed $mainParams, string $elementName, string $currentValue, array $menuItems, string $script = '', string $addParams = '')
@@ -172,5 +172,24 @@ class BackendUtility
         }
 
         return (string) $uri;
+    }
+
+    /**
+     * Returns a JavaScript string (for an onClick handler) which will load the EditDocumentController script that shows the form for editing of the record(s) you have send as params.
+     * REMEMBER to always htmlspecialchar() content in href-properties to ampersands get converted to entities (XHTML requirement and XSS precaution).
+     *
+     * @param string $params parameters sent along to EditDocumentController
+     *
+     * @return string
+     */
+    public static function editOnClick($params)
+    {
+        $returnUrl = GeneralUtility::quoteJSvalue(
+            rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))
+        );
+        /* @var $uriBuilder \TYPO3\CMS\Backend\Routing\UriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+
+        return 'window.location.href='.GeneralUtility::quoteJSvalue((string) $uriBuilder->buildUriFromRoute('record_edit').$params.'&returnUrl=').'+'.$returnUrl.'; return false;';
     }
 }

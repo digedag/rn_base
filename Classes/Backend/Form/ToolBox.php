@@ -122,7 +122,7 @@ class ToolBox
         }
         $name = isset($options['name']) ? $options['params'] : '';
 
-        $jsCode = BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH']);
+        $jsCode = BackendUtility::editOnClick($params);
         if (isset($options['confirm']) && strlen($options['confirm']) > 0) {
             $jsCode = 'if(confirm('.Strings::quoteJSvalue($options['confirm']).')) {'.$jsCode.'} else {return false;}';
         }
@@ -198,7 +198,7 @@ class ToolBox
         $title = isset($options[self::OPTION_TITLE]) ? $options[self::OPTION_TITLE] : $GLOBALS['LANG']->getLL('new', 1);
         $name = isset($options['name']) ? $options['params'] : '';
 
-        $jsCode = BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH']);
+        $jsCode = BackendUtility::editOnClick($params);
         if (isset($options[self::OPTION_CONFIRM]) && strlen($options[self::OPTION_CONFIRM]) > 0) {
             $jsCode = 'if(confirm('.Strings::quoteJSvalue($options[self::OPTION_CONFIRM]).')) {'.$jsCode.'} else {return false;}';
         }
@@ -265,7 +265,7 @@ class ToolBox
         $params .= $this->buildDefVals($options);
         $title = isset($options[self::OPTION_TITLE]) ? $options[self::OPTION_TITLE] : $GLOBALS['LANG']->getLL('new', 1);
 
-        $jsCode = BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH']);
+        $jsCode = BackendUtility::editOnClick($params);
         if (isset($options[self::OPTION_CONFIRM]) && strlen($options[self::OPTION_CONFIRM]) > 0) {
             $jsCode = 'if(confirm('.Strings::quoteJSvalue($options[self::OPTION_CONFIRM]).')) {'.$jsCode.'} else {return false;}';
         }
