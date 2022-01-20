@@ -156,9 +156,10 @@ class Tables
         }
 
         foreach ($columns as $column => $data) {
+            $columnValue = $record[$column] ?? '';
             // Da wir Daten für eine HTML Tabelle haben, werden
             // diese immer escaped, um XSS zu verhindern.
-            $record[$column] = htmlspecialchars($record[$column]);
+            $record[$column] = htmlspecialchars($columnValue);
 
             // Hier erfolgt die Ausgabe der Daten für die Tabelle. Wenn eine method angegeben
             // wurde, dann muss das Entry als Objekt vorliegen. Es wird dann die entsprechende
@@ -169,9 +170,9 @@ class Tables
                 $row[] = call_user_func([$entry, $data['method']]);
             } elseif (isset($data['decorator'])) {
                 $decor = $data['decorator'];
-                $row[] = $decor->format($record[$column], $column, $record, $entry);
+                $row[] = $decor->format($columnValue, $column, $record, $entry);
             } else {
-                $row[] = $record[$column];
+                $row[] = $columnValue;
             }
         }
         if ($options->getLinker()) {
@@ -190,7 +191,7 @@ class Tables
      *
      * @return array
      */
-    private function getHeadline($columns = [], $options, $formTool)
+    private function getHeadline($columns, $options, $formTool)
     {
         $arr = [];
         if ($options->getCheckbox()) {
@@ -201,10 +202,10 @@ class Tables
         }
 
         foreach ($columns as $column => $data) {
-            if ((int) $data['nocolumn']) {
+            if ((int) ($data['nocolumn'] ?? 0) > 0) {
                 continue;
             }
-            if ((int) $data['notitle']) {
+            if ((int) ($data['notitle'] ?? 0) > 0) {
                 $arr[] = '';
 
                 continue;

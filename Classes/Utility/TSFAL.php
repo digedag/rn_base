@@ -450,8 +450,8 @@ class TSFAL
             empty($options['config']['customSettingOverride'])
                 || !is_array($options['config']['customSettingOverride'])
         ) ? [] : $options['config']['customSettingOverride'];
-        $allowedFileExtensions = (string) $options['config']['allowedFileExtensions'];
-        $disallowedFileExtensions = (string) $options['config']['disallowedFileExtensions'];
+        $allowedFileExtensions = $options['config']['allowedFileExtensions'] ?? '';
+        $disallowedFileExtensions = $options['config']['disallowedFileExtensions'] ?? '';
         if ('image' == $type) {
             $ttContentLocallang = 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf';
             $types = self::buildMediaPalette();

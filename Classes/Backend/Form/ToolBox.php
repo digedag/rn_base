@@ -583,7 +583,7 @@ class ToolBox
         $jsCode = "window.location.href='".$location."'; return false;";
 
         $title = '';
-        if ($options['hover']) {
+        if (!empty($options['hover'])) {
             $title = 'title="'.$options['hover'].'"';
         }
 
@@ -597,7 +597,7 @@ class ToolBox
     {
         $tag = $label;
         // $options['sprite'] für abwärtskompatibilität
-        if ($options['icon'] || $options['sprite']) {
+        if (isset($options['icon']) || isset($options['sprite'])) {
             $icon = isset($options['icon']) ? $options['icon'] : $options['sprite'];
             // FIXME: label get lost here??
             $tag = Icons::getSpriteIcon($icon, $options);
@@ -800,18 +800,18 @@ class ToolBox
     {
         $options = is_array($options) ? $options : [];
 
-        $onChangeStr = $options['reload'] ? ' this.form.submit(); ' : '';
-        if ($options['onchange']) {
+        $onChangeStr = !empty($options['reload']) ? ' this.form.submit(); ' : '';
+        if (!empty($options['onchange'])) {
             $onChangeStr .= $options['onchange'];
         }
         if ($onChangeStr) {
             $onChangeStr = ' onchange="'.$onChangeStr.'" ';
         }
 
-        $multiple = $options['multiple'] ? ' multiple="multiple"' : '';
-        $name .= $options['multiple'] ? '[]' : '';
+        $multiple = !empty($options['multiple']) ? ' multiple="multiple"' : '';
+        $name .= !empty($options['multiple']) ? '[]' : '';
 
-        $size = $options['size'] ? ' size="'.$options['size'].'"' : '';
+        $size = !empty($options['size']) ? ' size="'.$options['size'].'"' : '';
 
         $out = '<select name="'.$name.'" class="select"'.$onChangeStr.$multiple.$size.'>';
 
@@ -1151,14 +1151,14 @@ class ToolBox
     public function createLinkForDataHandlerAction($actionParameters, $label, array $options = [])
     {
         // $options['sprite'] für abwärtskompatibilität
-        if ($options['icon'] || $options['sprite']) {
+        if (isset($options['icon']) || isset($options['sprite'])) {
             $icon = isset($options['icon']) ? $options['icon'] : $options['sprite'];
             $label = Icons::getSpriteIcon($icon, $options);
         }
 
         $jsCode = $this->getJavaScriptForLinkToDataHandlerAction($actionParameters, $options);
         $title = '';
-        if ($options['hover']) {
+        if (!empty($options['hover'])) {
             $title = 'title="'.$options['hover'].'"';
         }
 

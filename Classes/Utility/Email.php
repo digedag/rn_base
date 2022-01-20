@@ -49,6 +49,12 @@ class Email
 
     protected $to = [];
 
+    protected $subject = '';
+
+    protected $htmlPart = '';
+
+    protected $textPart = '';
+
     public function __construct()
     {
     }

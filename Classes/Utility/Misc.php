@@ -118,7 +118,7 @@ class Misc
      */
     public static function callHook($extKey, $hookKey, $params, $parent = null)
     {
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extKey][$hookKey])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extKey][$hookKey] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extKey][$hookKey] as $funcRef) {
                 $utility = Typo3Classes::getGeneralUtilityClass();
                 $utility::callUserFunction(

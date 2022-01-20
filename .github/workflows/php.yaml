@@ -57,6 +57,7 @@ jobs:
       matrix:
         php-version:
           - 7.4
+          - 8.0
         command:
           - ".Build/bin/php-cs-fixer fix --diff --dry-run"
           - "composer test:phpstan"
@@ -120,3 +121,5 @@ jobs:
             php-version: 7.4
           - typo3-version: ^11.5
             php-version: 7.4
+          - typo3-version: ^11.5
+            php-version: 8.0

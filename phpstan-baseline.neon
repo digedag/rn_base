@@ -336,21 +336,6 @@ parameters:
 			path: Classes/Utility/Calendar.php
 
 		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Utility\\\\Email\\:\\:\\$htmlPart\\.$#"
-			count: 2
-			path: Classes/Utility/Email.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Utility\\\\Email\\:\\:\\$subject\\.$#"
-			count: 2
-			path: Classes/Utility/Email.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Utility\\\\Email\\:\\:\\$textPart\\.$#"
-			count: 2
-			path: Classes/Utility/Email.php
-
-		-
 			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Utility\\\\Email\\:\\:\\$toAsString\\.$#"
 			count: 1
 			path: Classes/Utility/Email.php

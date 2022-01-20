@@ -261,6 +261,10 @@ class TYPO3
      */
     public static function getFEUser()
     {
+        if (empty($GLOBALS['TSFE'])) {
+            return null;
+        }
+
         return $GLOBALS['TSFE']->fe_user;
     }
 
