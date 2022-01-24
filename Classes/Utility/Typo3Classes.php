@@ -100,7 +100,7 @@ class Typo3Classes
     /**
      * @see https://github.com/TYPO3/typo3/blob/v10.0.0/typo3/sysext/core/Documentation/Changelog/10.0/Deprecation-88746-PageRepositoryPHPClassMovedFromFrontendToCoreExtension.rst
      *
-     * @return class-string<\TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication>
+     * @return class-string<\TYPO3\CMS\Core\Domain\Repository\PageRepository>
      */
     public static function getPageRepositoryClass()
     {
