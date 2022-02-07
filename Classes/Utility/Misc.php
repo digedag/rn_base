@@ -346,12 +346,12 @@ MAYDAYPAGE;
 
         $force = array_key_exists('force', $options) ? true : false;
 
-        if (!is_object($GLOBALS['TT'])) {
+        if (!is_object($GLOBALS['TT'] ?? null)) {
             $GLOBALS['TT'] = Typo3Classes::getTimeTracker();
             $GLOBALS['TT']->start();
         }
 
-        if (!is_object($GLOBALS['TSFE']) ||
+        if (!is_object($GLOBALS['TSFE'] ?? null) ||
             !($GLOBALS['TSFE'] instanceof TypoScriptFrontendController) ||
             $force
         ) {
@@ -436,7 +436,7 @@ MAYDAYPAGE;
         if (!is_array($tsfe->config)) {
             $tsfe->config = [];
         }
-        if (!is_array($tsfe->config['config'])) {
+        if (!is_array($tsfe->config['config'] ?? null)) {
             $tsfe->config['config'] = [];
         }
 
@@ -445,8 +445,8 @@ MAYDAYPAGE;
             $tsfe->initLLvars();
         }
 
-        if (!$options['dontSetPageToTsfe']
-            && (!is_array($tsfe->page) || $tsfe->page['uid'] != $pid)
+        if (empty($options['dontSetPageToTsfe'])
+            && (!is_array($tsfe->page) || ($tsfe->page['uid'] ?? 0) != $pid)
         ) {
             $tsfe->page = $tsfe->sys_page->getPage($pid);
         }

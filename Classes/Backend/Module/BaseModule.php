@@ -87,11 +87,11 @@ abstract class BaseModule extends ModuleBase implements IModule
     protected function initModConf()
     {
         // Name might be set from outside
-        if (!$this->MCONF['name']) {
-            $this->MCONF = $GLOBALS['MCONF'];
+        if (empty($this->MCONF['name'])) {
+            $this->MCONF = $GLOBALS['MCONF'] ?? null;
         }
         // check dispatch mode calls without rnbase module runner and fetch the config.
-        if (!$this->MCONF['name']) {
+        if (empty($this->MCONF['name'])) {
             /* @var $runner ModuleRunner */
             $runner = tx_rnbase::makeInstance(ModuleRunner::class);
             $runner->initTargetConf($this);
@@ -170,7 +170,7 @@ abstract class BaseModule extends ModuleBase implements IModule
         // selected page or no page is selected
         $parts->setPageInfo(is_array($pageinfo) ? $pageinfo : []);
         $parts->setSubMenu($this->tabs);
-        $parts->setSelector($this->selector ? $this->selector : $this->subselector);
+        $parts->setSelector($this->selector ?? $this->subselector);
     }
 
     /**
@@ -262,15 +262,15 @@ abstract class BaseModule extends ModuleBase implements IModule
             $cObj = TYPO3::getContentObject();
 
             $pageTSconfigFull = BackendUtility::getPagesTSconfig($this->getPid());
-            $pageTSconfig = $pageTSconfigFull['mod.'][$this->getExtensionKey().'.'];
-            $pageTSconfig['lib.'] = $pageTSconfigFull['lib.'];
+            $pageTSconfig = $pageTSconfigFull['mod.'][$this->getExtensionKey().'.'] ?? [];
+            $pageTSconfig['lib.'] = $pageTSconfigFull['lib.'] ?? [];
 
             $userTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.'.$this->getExtensionKey().'.');
             if (!empty($userTSconfig['properties'])) {
                 $pageTSconfig = Arrays::mergeRecursiveWithOverrule($pageTSconfig, $userTSconfig['properties']);
             }
 
-            $qualifier = $pageTSconfig['qualifier'] ? $pageTSconfig['qualifier'] : $this->getExtensionKey();
+            $qualifier = $pageTSconfig['qualifier'] ?? $this->getExtensionKey();
             $this->configurations = tx_rnbase::makeInstance(Processor::class);
             $this->configurations->init($pageTSconfig, $cObj, $this->getExtensionKey(), $qualifier);
 

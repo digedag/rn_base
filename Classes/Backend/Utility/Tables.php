@@ -304,18 +304,18 @@ class Tables
             $rowCount = 0;
             foreach ($data as $tableRow) {
                 if ($rowCount % 2) {
-                    $layout = is_array($tableLayout['defRowOdd']) ? $tableLayout['defRowOdd'] : $tableLayout['defRow'];
+                    $layout = is_array($tableLayout['defRowOdd'] ?? 0) ? $tableLayout['defRowOdd'] : $tableLayout['defRow'];
                 } else {
-                    $layout = is_array($tableLayout['defRowEven']) ? $tableLayout['defRowEven'] : $tableLayout['defRow'];
+                    $layout = is_array($tableLayout['defRowEven'] ?? 0) ? $tableLayout['defRowEven'] : $tableLayout['defRow'];
                 }
-                $rowLayout = is_array($tableLayout[$rowCount]) ? $tableLayout[$rowCount] : $layout;
+                $rowLayout = is_array($tableLayout[$rowCount] ?? 0) ? $tableLayout[$rowCount] : $layout;
                 $rowResult = '';
                 if (is_array($tableRow)) {
                     $cellCount = 0;
                     foreach ($tableRow as $tableCell) {
-                        $cellWrap = is_array($layout[$cellCount]) ? $layout[$cellCount] : $layout['defCol'];
+                        $cellWrap = is_array($layout[$cellCount] ?? 0) ? $layout[$cellCount] : $layout['defCol'];
                         $cellWrap = is_array($rowLayout['defCol']) ? $rowLayout['defCol'] : $cellWrap;
-                        $cellWrap = is_array($rowLayout[$cellCount]) ? $rowLayout[$cellCount] : $cellWrap;
+                        $cellWrap = is_array($rowLayout[$cellCount] ?? 0) ? $rowLayout[$cellCount] : $cellWrap;
                         $rowResult .= $cellWrap[0].$tableCell.$cellWrap[1];
                         ++$cellCount;
                     }

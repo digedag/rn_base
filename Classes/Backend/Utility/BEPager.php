@@ -90,7 +90,7 @@ class BEPager
      */
     public function getLimits()
     {
-        return is_array($this->conf['limits']) ? $this->conf['limits'] :
+        return is_array($this->conf['limits'] ?? null) ? $this->conf['limits'] :
                 ['10' => '10 Einträge', '25' => '25 Einträge', '50' => '50 Einträge', '100' => '100 Einträge'];
     }
 

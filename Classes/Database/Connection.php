@@ -113,7 +113,7 @@ class Connection implements SingletonInterface
             ]
         );
 
-        $debug = $debug ? $debug : intval($arr['debug']) > 0;
+        $debug = $debug ?? intval($arr['debug'] ?? 0) > 0;
         if ($debug) {
             $time = microtime(true);
             $mem = memory_get_usage();
@@ -187,18 +187,19 @@ class Connection implements SingletonInterface
         $fromClause = $fromClause ?: trim(sprintf('%s %s', $tableName, $tableAlias));
 
         $where = is_string($arr['where']) ? $arr['where'] : '1=1';
-        $groupBy = is_string($arr['groupby']) ? $arr['groupby'] : '';
+        $groupBy = $arr['groupby'] ?? '';
         if ($groupBy) {
-            $groupBy .= is_string($arr['having']) > 0 ? ' HAVING '.$arr['having'] : '';
+            $groupBy .= empty($arr['having']) ? '' : ' HAVING '.$arr['having'];
         }
-        $orderBy = is_string($arr['orderby']) ? $arr['orderby'] : '';
-        $offset = intval($arr['offset']) > 0 ? intval($arr['offset']) : 0;
-        $limit = intval($arr['limit']) > 0 ? intval($arr['limit']) : '';
+        $orderBy = $arr['orderby'] ?? '';
+        $offset = intval($arr['offset'] ?? 0) > 0 ? intval($arr['offset']) : 0;
+        $limit = intval($arr['limit'] ?? 0) > 0 ? intval($arr['limit']) : '';
+        $arr['pidlist'] = $arr['pidlist'] ?? '';
         $pidList = (is_string($arr['pidlist']) || is_int($arr['pidlist'])) ? $arr['pidlist'] : '';
-        $recursive = intval($arr['recursive']) ? intval($arr['recursive']) : 0;
-        $i18n = is_string($arr['i18n']) > 0 ? $arr['i18n'] : '';
-        $sqlOnly = intval($arr['sqlonly']) > 0 ? intval($arr['sqlonly']) : '';
-        $union = is_string($arr['union']) > 0 ? $arr['union'] : '';
+        $recursive = (int) ($arr['recursive'] ?? 0);
+        $i18n = empty($arr['i18n']) ? '' : $arr['i18n'];
+        $sqlOnly = (int) ($arr['sqlonly'] ?? 0);
+        $union = empty($arr['union']) ? '' : $arr['union'];
 
         // offset und limit kombinieren
         // bei gesetztem limit ist offset optional
@@ -260,7 +261,7 @@ class Connection implements SingletonInterface
         $rows = $this->initRows($arr);
 
         if ($this->testResource($res)) {
-            $wrapper = is_string($arr['wrapperclass']) ? trim($arr['wrapperclass']) : 0;
+            $wrapper = is_string($arr['wrapperclass'] ?? null) ? trim($arr['wrapperclass']) : 0;
             $callback = isset($arr['callback']) ? $arr['callback'] : false;
 
             while (($row = $database->sql_fetch_assoc($res))) {
@@ -369,7 +370,7 @@ class Connection implements SingletonInterface
                 $options['enablefieldsoff'] ||
                 $options['ignorei18n']
             ) &&
-            !$options['forcei18n']
+            empty($options['forcei18n'])
         )) {
             return;
         }

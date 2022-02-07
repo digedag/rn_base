@@ -76,6 +76,8 @@ class DataModel implements DataInterface, IteratorAggregate
     {
         if (is_array($record)) {
             $this->record = $record;
+        } elseif ($record instanceof self) {
+            $this->record = $record->getProperties();
         } else {
             $record = (int) $record;
             $this->record = $record > 0 ? ['uid' => $record] : [];

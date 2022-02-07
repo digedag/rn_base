@@ -172,7 +172,7 @@ class ModuleTemplate
      */
     protected function initDoc($doc)
     {
-        $doc->backPath = $GLOBALS['BACK_PATH'];
+        $doc->backPath = $GLOBALS['BACK_PATH'] ?? '';
         $doc->form = $this->options['form'];
         $doc->docType = 'xhtml_trans';
         $doc->inDocStyles = $this->options['docstyles'];
