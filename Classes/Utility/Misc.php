@@ -5,7 +5,7 @@ namespace Sys25\RnBase\Utility;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006-2013 Rene Nitzsche
+ *  (c) 2006-2022 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -26,8 +26,8 @@ namespace Sys25\RnBase\Utility;
 
 use Exception;
 use Sys25\RnBase\Configuration\Processor as ConfigurationProcessor;
+use Sys25\RnBase\Exception\AdditionalException;
 use tx_rnbase;
-use tx_rnbase_util_Lock;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -113,9 +113,9 @@ class Misc
      * @param string $extKey
      * @param string $hookKey
      * @param array  $params
-     * @param mixed  $parent  instance of calling class or 0
+     * @param mixed  $parent  instance of calling class or null
      */
-    public static function callHook($extKey, $hookKey, $params, $parent = 0)
+    public static function callHook($extKey, $hookKey, $params, $parent = null)
     {
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extKey][$hookKey])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extKey][$hookKey] as $funcRef) {
@@ -668,7 +668,7 @@ MAYDAYPAGE;
 
         if (!$ignoreMailLock) {
             // Only one mail within one minute!
-            $lock = tx_rnbase_util_Lock::getInstance('errormail', 60);
+            $lock = Lock::getInstance('errormail', 60);
             if ($lock->isLocked()) {
                 return;
             } else {
@@ -682,7 +682,7 @@ MAYDAYPAGE;
         $htmlPart = self::getErrorMailHtml($e, $actionName);
 
         /* @var $mail \tx_rnbase_util_Mail */
-        $mail = tx_rnbase::makeInstance('tx_rnbase_util_Mail');
+        $mail = tx_rnbase::makeInstance(Email::class);
         $mail->setSubject('Exception on site '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
 
         $from = ConfigurationProcessor::getExtensionCfgValue('rn_base', 'fromEmail');
@@ -739,7 +739,7 @@ MAYDAYPAGE;
         }
 
         $htmlPart .= '<p><strong>_SERVER</strong><br />'.var_export(self::removePasswordParams($_SERVER), true).'</p>';
-        if ($e instanceof \tx_rnbase_util_Exception) {
+        if ($e instanceof AdditionalException) {
             $additional = $e->getAdditional();
             if ($additional) {
                 $htmlPart .= '<p><strong>Additional Data:</strong><br />'.strval($additional).'</p>';
@@ -828,7 +828,7 @@ MAYDAYPAGE;
         );
 
         /** @var FlashMessageService $flashMessageService */
-        $flashMessageService = tx_rnbase::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+        $flashMessageService = tx_rnbase::makeInstance(FlashMessageService::class);
         $flashMessageService->getMessageQueueByIdentifier()->enqueue($flashMessage);
     }
 }
