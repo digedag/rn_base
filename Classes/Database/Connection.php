@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Database;
 
+use Sys25\RnBase\Database\Driver\IDatabase;
 use Sys25\RnBase\Database\Query\From;
 use Sys25\RnBase\Domain\Collection\BaseCollection;
 use Sys25\RnBase\Domain\Model\DynamicTableInterface;
@@ -283,7 +284,7 @@ class Connection implements SingletonInterface
         if ($item instanceof DynamicTableInterface
             // @TODO: backward compatibility for old models will be removed soon
             || $item instanceof tx_rnbase_model_base
-            ) {
+        ) {
             $item->setTablename($tableName);
         }
         if ($callback) {
@@ -330,7 +331,7 @@ class Connection implements SingletonInterface
             is_a($res, 'mysqli_result') ||
             // the very old mysql ressources
             is_resource($res)
-        ;
+            ;
     }
 
     /**
@@ -899,10 +900,19 @@ class Connection implements SingletonInterface
             $database = $this->getDatabaseConnection();
         }
 
-        if (!$this->testResource($res) && $database->sql_error()) {
+        $error = $database->sql_error();
+        // When PDO is used as driver sql_error() will always return an not empty array. If actually no error
+        // happened the error code (first array element) will be "00000" (\PDO::ERR_NONE)
+        // @todo this check should only be done when Doctrine\DBAL\Driver\PDO\MySQL\Driver is used as driver
+        // but there is no way to get that information in the moment so we determine this by $error being an array (PDO)
+        // or not (native mysqli).
+        // Sidenote: PDO will be used by default when the database connection is configured through a URL instead
+        // of providing user, host, password and database separately even if the driver is set to mysqli.
+        $hasError = is_array($error) ? ($error[0] !== \PDO::ERR_NONE) : !empty($error);
+        if (!$this->testResource($res) && $hasError) {
             $msg = 'SQL QUERY IS NOT VALID';
             $msg .= '<br/>';
-            $msg .= '<b>'.$database->sql_error().'</b>';
+            $msg .= '<b>'.is_array($error) ? print_r($error, true) : $error.'</b>';
             $msg .= '<br />';
             $msg .= $database->debug_lastBuiltQuery;
             // We need to pass the extKey, otherwise no devlog was written.
