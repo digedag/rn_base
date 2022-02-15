@@ -908,7 +908,7 @@ class Connection implements SingletonInterface
         // or not (native mysqli).
         // Sidenote: PDO will be used by default when the database connection is configured through a URL instead
         // of providing user, host, password and database separately even if the driver is set to mysqli.
-        $hasError = is_array($error) ? ($error[0] !== \PDO::ERR_NONE) : !empty($error);
+        $hasError = is_array($error) ? (\PDO::ERR_NONE !== $error[0]) : !empty($error);
         if (!$this->testResource($res) && $hasError) {
             $msg = 'SQL QUERY IS NOT VALID';
             $msg .= '<br/>';
