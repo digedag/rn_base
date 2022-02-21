@@ -59,6 +59,7 @@ class TestUtility
         $parameters = null;
         $cObj = null;
 
+        // phpcs:disable -- $configurationArray, $extensionKey and $qualifier are never used in $args
         $args = func_get_args();
         $args = count($args) > 3 ? array_slice($args, 3) : [];
 

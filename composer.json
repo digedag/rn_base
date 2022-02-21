@@ -37,6 +37,7 @@
 	},
 	"require-dev": {
 		"friendsofphp/php-cs-fixer": "^3.1.0",
+		"phpcompatibility/php-compatibility": "^9.3.5",
 		"jangregor/phpstan-prophecy": "^1.0.0",
 		"mikey179/vfsstream": "^1.6.10",
 		"nimut/testing-framework": "^5.2.1 || ^6.0",
@@ -100,6 +101,21 @@
 			"[ -e .Build/bin/php-cs-fixer ] || composer update",
 			".Build/bin/php-cs-fixer fix -v --dry-run --diff"
 		],
+		"test:phpcompatibility": [
+			"[ -e .Build/bin/phpcs ] || composer update",
+			"@test:phpcompatibility:7.1",
+			"@test:phpcompatibility:7.2",
+			"@test:phpcompatibility:7.3",
+			"@test:phpcompatibility:7.4",
+			"@test:phpcompatibility:8.0",
+			"@test:phpcompatibility:8.1"
+		],
+		"test:phpcompatibility:7.1": ".Build/bin/phpcs --ignore=.Build/*,Resources/* -p . --standard=.Build/vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion 7.1",
+		"test:phpcompatibility:7.2": ".Build/bin/phpcs --ignore=.Build/*,Resources/* -p . --standard=.Build/vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion 7.2",
+		"test:phpcompatibility:7.3": ".Build/bin/phpcs --ignore=.Build/*,Resources/* -p . --standard=.Build/vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion 7.3",
+		"test:phpcompatibility:7.4": ".Build/bin/phpcs --ignore=.Build/*,Resources/* -p . --standard=.Build/vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion 7.4",
+		"test:phpcompatibility:8.0": ".Build/bin/phpcs --ignore=.Build/*,Resources/* -p . --standard=.Build/vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion 8.0",
+		"test:phpcompatibility:8.1": ".Build/bin/phpcs --ignore=.Build/*,Resources/* -p . --standard=.Build/vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion 8.1",
 		"test:phpstan": ".Build/bin/phpstan --no-progress",
 		"test:phpunit": [
 			"[ -e .Build/bin/phpunit ] || composer update",
@@ -108,6 +124,7 @@
 		"test": [
 			"@test:phplint",
 			"@test:phpcs",
+			"@test:phpcompatibility",
 			"@test:phpstan",
 			"@test:phpunit"
 		],
@@ -134,7 +151,8 @@
 		"typo3/cms": {
 			"cms-package-dir": "{$vendor-dir}/typo3/cms",
 			"extension-key": "rn_base",
-			"web-dir": ".Build/Web"
+			"web-dir": ".Build/Web",
+			"app-dir": ".Build"
 		},
 		"typo3/class-alias-loader": {
 			"class-alias-maps": [

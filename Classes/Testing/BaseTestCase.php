@@ -350,6 +350,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
         } else {
             // the classic way to read the arguments
             // Remove first two arguments ($object and $name)
+            // phpcs:disable -- $object and $name never changes
             $arguments = func_get_args();
             array_splice($arguments, 0, 2);
         }

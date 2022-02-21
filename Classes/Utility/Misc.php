@@ -161,6 +161,8 @@ class Misc
     public static function mayday($msg, $extKey = '')
     {
         Logger::fatal($msg, $extKey ? $extKey : 'rn_base');
+
+        // phpcs:disable -- $msg and $extKey has never changed
         $aTrace = debug_backtrace();
         $aLocation = array_shift($aTrace);
         $aTrace1 = array_shift($aTrace);
