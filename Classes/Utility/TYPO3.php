@@ -2,6 +2,8 @@
 
 namespace Sys25\RnBase\Utility;
 
+use TYPO3\CMS\Core\Page\PageRenderer;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -87,7 +89,7 @@ class TYPO3
      */
     public static function isTYPO80OrHigher()
     {
-        return self::isTYPO3VersionOrHigher(8000000);
+        return true;
     }
 
     /**
@@ -97,7 +99,7 @@ class TYPO3
      */
     public static function isTYPO86OrHigher()
     {
-        return self::isTYPO3VersionOrHigher(8006000);
+        return true;
     }
 
     /**
@@ -107,7 +109,7 @@ class TYPO3
      */
     public static function isTYPO87OrHigher()
     {
-        return self::isTYPO3VersionOrHigher(8007000);
+        return true;
     }
 
     /**
@@ -321,13 +323,7 @@ class TYPO3
      */
     public static function getPageRenderer()
     {
-        if (self::isTYPO80OrHigher()) {
-            return \tx_rnbase::makeInstance(
-                'TYPO3\CMS\Core\\Page\PageRenderer'
-            );
-        }
-
-        return self::getTSFE()->getPageRenderer();
+        return \tx_rnbase::makeInstance(PageRenderer::class);
     }
 
     private static $sysPage = null;
@@ -369,12 +365,6 @@ class TYPO3
      */
     public static function isCliMode()
     {
-        if (self::isTYPO80OrHigher()) {
-            $isCliMode = TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI;
-        } else {
-            $isCliMode = defined('TYPO3_cliMode');
-        }
-
-        return $isCliMode;
+        return TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI;
     }
 }

@@ -321,11 +321,6 @@ parameters:
 			path: Classes/Testing/BaseTestCase.php
 
 		-
-			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Core\\\\Core\\\\Bootstrap\\:\\:getInstance\\(\\)\\.$#"
-			count: 1
-			path: Classes/Testing/BaseTestCase.php
-
-		-
 			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Utility\\\\Calendar\\:\\:\\$_clearHash\\.$#"
 			count: 3
 			path: Classes/Utility/Calendar.php
