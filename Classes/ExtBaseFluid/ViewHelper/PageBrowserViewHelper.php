@@ -210,7 +210,7 @@ class PageBrowserViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTa
      */
     private function notOnLastPage($pointer, $totalPages)
     {
-        //pointer beginnt bei 0, totalPages bei 1 (daher " -1")
+        // pointer beginnt bei 0, totalPages bei 1 (daher " -1")
         return $pointer < ($totalPages - 1);
     }
 

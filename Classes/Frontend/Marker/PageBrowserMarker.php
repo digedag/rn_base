@@ -127,7 +127,7 @@ class PageBrowserMarker
 
         $subpartArray = $this->createSubpartArray($pbMarker);
 
-        //---- Ab jetzt werden die Templates gefüllt
+        // ---- Ab jetzt werden die Templates gefüllt
         $parts = []; // Hier werden alle Teile des Browser gesammelt
         // Der Marker für die erste Seite
         if ($templates['first'] && 0 != $pointer) {

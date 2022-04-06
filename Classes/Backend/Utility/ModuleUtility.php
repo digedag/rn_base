@@ -111,11 +111,11 @@ class ModuleUtility
             $aItems
         );
 
-        //label
+        // label
         $aData['label'] = $aOptions['label'];
 
         // as the deleted fe users have always to be hidden the function returns always FALSE
-        //@todo wozu die alte abfrage? return $defId==$id ? FALSE : $selectedItem;
+        // @todo wozu die alte abfrage? return $defId==$id ? FALSE : $selectedItem;
         return $selectedItem;
     }
 }

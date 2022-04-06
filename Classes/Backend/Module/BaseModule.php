@@ -376,7 +376,7 @@ abstract class BaseModule extends ModuleBase implements IModule
             $menu = $menuRegistry->makeMenu();
             $modMenu = $this->MOD_MENU;
             $modSettings = $this->MOD_SETTINGS;
-            $menu->setIdentifier('WebT3sportsJumpMenu'); //FIXME!!
+            $menu->setIdentifier('WebT3sportsJumpMenu'); // FIXME!!
 
             foreach ($modMenu['function'] as $controller => $title) {
                 $item = $menu

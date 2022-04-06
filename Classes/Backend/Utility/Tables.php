@@ -214,11 +214,11 @@ class Tables
             if (!$label && isset($data['title'])) {
                 $label = $this->getLang()->sL($data['title']);
             }
-            //es gibt die Möglichkeit sortable zu setzen. damit wird
-            //nach dem title eine sortierung eingeblendet.
-            //in $data['sortable'] sollte ein prefix für das feld stehen, sprich
-            //der alias der tabelle um damit direkt weiterabeiten zu können.
-            //einfach leer lassen wenn auf einen prefix verzichtet werden soll
+            // es gibt die Möglichkeit sortable zu setzen. damit wird
+            // nach dem title eine sortierung eingeblendet.
+            // in $data['sortable'] sollte ein prefix für das feld stehen, sprich
+            // der alias der tabelle um damit direkt weiterabeiten zu können.
+            // einfach leer lassen wenn auf einen prefix verzichtet werden soll
             if (isset($data['sortable'])) {
                 $label = $formTool->createSortLink($column, $label);
             }

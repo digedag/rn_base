@@ -50,7 +50,7 @@ class tx_rnbase_tests_fixtures_classes_Decorator implements tx_rnbase_mod_IDecor
     {
         $ret = $columnValue;
 
-        //wir manipulieren ein bisschen die daten um zu sehen ob der decorator ansprint
+        // wir manipulieren ein bisschen die daten um zu sehen ob der decorator ansprint
         if ('col1' == $columnName) {
             $ret = str_replace('col1', 'spalte1', $ret);
         }

@@ -77,7 +77,7 @@ class Link
 
     public $titleString = '';              // tags title attribute
 
-    public $titleHasAlreadyHtmlSpecialChars = false; //is title attribute already HSC?
+    public $titleHasAlreadyHtmlSpecialChars = false; // is title attribute already HSC?
 
     private $typolinkParams = [];    // container for generic typolink parameters
 

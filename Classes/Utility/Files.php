@@ -225,14 +225,14 @@ class Files
 
             return false;
         }
-        //if the zip file already exists and overwrite is FALSE, return FALSE
+        // if the zip file already exists and overwrite is FALSE, return FALSE
         if (file_exists($destination) && !$overwrite) {
             return false;
         }
 
-        //vars
+        // vars
         $valid_files = [];
-        //if files were passed in...
+        // if files were passed in...
         if (!is_array($files)) {
             return false;
         }
@@ -242,26 +242,26 @@ class Files
             }
         }
 
-        //if we have good files...
+        // if we have good files...
         if (!count($valid_files)) {
             return false;
         }
 
-        //create the archive
+        // create the archive
         $zip = new ZipArchive();
         if (true !== $zip->open($destination, $overwrite ? ZipArchive::OVERWRITE : ZipArchive::CREATE)) {
             return false;
         }
-        //add the files
+        // add the files
         foreach ($valid_files as $file) {
             $filename = basename($file);
             $zip->addFile($file, iconv('UTF-8', 'IBM850', $filename));
         }
 
-        //close the zip -- done!
+        // close the zip -- done!
         $zip->close();
 
-        //check to make sure the file exists
+        // check to make sure the file exists
         return file_exists($destination);
     }
 

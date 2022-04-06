@@ -31,8 +31,8 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends BaseTestCase
         $pb = new tx_rnbase_util_PageBrowser('test');
         $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $parameters->offsetSet($pb->getParamName('pointer'), 3);
-        $listSize = 103; //Gesamtgröße der darzustellenden Liste
-        $pageSize = 10; //Größe einer Seite
+        $listSize = 103; // Gesamtgröße der darzustellenden Liste
+        $pageSize = 10; // Größe einer Seite
         $pb->setState($parameters, $listSize, $pageSize);
 
         $state = $pb->getState();
@@ -48,7 +48,7 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends BaseTestCase
 
         // Listenende passt genau auf letzte Seite
         $parameters->offsetSet($pb->getParamName('pointer'), 10);
-        $listSize = 100; //Gesamtgröße der darzustellenden Liste
+        $listSize = 100; // Gesamtgröße der darzustellenden Liste
         $pb->setState($parameters, $listSize, $pageSize);
 
         $state = $pb->getState();
@@ -56,7 +56,7 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends BaseTestCase
         $this->assertEquals(10, $state['limit'], 'Limit ist falsch');
 
         $parameters->offsetSet($pb->getParamName('pointer'), 0);
-        $listSize = 5; //Gesamtgröße der darzustellenden Liste
+        $listSize = 5; // Gesamtgröße der darzustellenden Liste
         $pb->setState($parameters, $listSize, $pageSize);
 
         $state = $pb->getState();
@@ -68,8 +68,8 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends BaseTestCase
     {
         $pb = new tx_rnbase_util_PageBrowser('test');
         $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
-        $listSize = 0; //Gesamtgröße der darzustellenden Liste
-        $pageSize = 10; //Größe einer Seite
+        $listSize = 0; // Gesamtgröße der darzustellenden Liste
+        $pageSize = 10; // Größe einer Seite
         $pb->setState($parameters, $listSize, $pageSize);
         $state = $pb->getState();
         $this->assertEquals(0, $state['offset'], 'Offset ist falsch');
@@ -81,8 +81,8 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends BaseTestCase
         $pb = new tx_rnbase_util_PageBrowser('test');
         $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $parameters->offsetSet($pb->getParamName('pointer'), 11);
-        $listSize = 103; //Gesamtgröße der darzustellenden Liste
-        $pageSize = 10; //Größe einer Seite
+        $listSize = 103; // Gesamtgröße der darzustellenden Liste
+        $pageSize = 10; // Größe einer Seite
         $pb->setState($parameters, $listSize, $pageSize);
 
         $state = $pb->getState();
@@ -95,7 +95,7 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends BaseTestCase
         $this->assertEquals(100, $state['offset']);
         $this->assertEquals(10, $state['limit']);
 
-        $listSize = 98; //Gesamtgröße der darzustellenden Liste
+        $listSize = 98; // Gesamtgröße der darzustellenden Liste
         $pb->setState($parameters, $listSize, $pageSize);
 
         $state = $pb->getState();
@@ -108,8 +108,8 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends BaseTestCase
         $pb = new tx_rnbase_util_PageBrowser('test');
         $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $parameters->offsetSet($pb->getParamName('pointer'), -2);
-        $listSize = 103; //Gesamtgröße der darzustellenden Liste
-        $pageSize = 10; //Größe einer Seite
+        $listSize = 103; // Gesamtgröße der darzustellenden Liste
+        $pageSize = 10; // Größe einer Seite
         $pb->setState($parameters, $listSize, $pageSize);
 
         $state = $pb->getState();
@@ -122,8 +122,8 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends BaseTestCase
         $pb = new tx_rnbase_util_PageBrowser('test');
         $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $parameters->offsetSet($pb->getParamName('pointer'), 2);
-        $listSize = 3; //Gesamtgröße der darzustellenden Liste
-        $pageSize = 10; //Größe einer Seite
+        $listSize = 3; // Gesamtgröße der darzustellenden Liste
+        $pageSize = 10; // Größe einer Seite
         $pb->setState($parameters, $listSize, $pageSize);
 
         $state = $pb->getState();

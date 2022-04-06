@@ -39,7 +39,7 @@ class ListView extends BaseView
     {
         $configurations = $request->getConfigurations();
         $viewData = $request->getViewContext();
-        //View-Daten abholen
+        // View-Daten abholen
         $items = $viewData->offsetGet(self::VIEWDATA_ITEMS);
         $filter = $viewData->offsetGet(self::VIEWDATA_FILTER);
         $markerData = $viewData->offsetGet(self::VIEWDATA_MARKER);
@@ -60,7 +60,7 @@ class ListView extends BaseView
         } else {
             $markerClass = $this->getMarkerClass($configurations, $confId);
 
-            //Liste generieren
+            // Liste generieren
             $listBuilder = \tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
             $template = $listBuilder->render(
                 $items,
@@ -72,7 +72,7 @@ class ListView extends BaseView
                 $configurations->getFormatter()
             );
         }
-        $template = Templates::substituteMarkerArrayCached($template, $markerArray, $subpartArray); //, $wrappedSubpartArray);
+        $template = Templates::substituteMarkerArrayCached($template, $markerArray, $subpartArray); // , $wrappedSubpartArray);
 
         $entities = $viewData->offsetGet(self::VIEWDATA_ENTITIES);
         $template = $this->renderEntities($template, $entities, $viewData, $formatter, $confId);

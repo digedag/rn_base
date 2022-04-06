@@ -289,7 +289,7 @@ class ToolBox
     public function createHideLink($table, $uid, $unhide = false, $options = [])
     {
         $sEnableColumn = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
-        //fallback
+        // fallback
         $sEnableColumn = ($sEnableColumn) ? $sEnableColumn : 'hidden';
         $label = isset($options['label']) ? $options['label'] : '';
 
@@ -839,27 +839,27 @@ class ToolBox
      */
     public function createSortLink($sSortField, $sLabel)
     {
-        //das ist aktuell gesetzt
+        // das ist aktuell gesetzt
         $sCurrentSortField = Parameters::getPostOrGetParameter('sortField');
         $sCurrentSortRev = Parameters::getPostOrGetParameter('sortRev');
-        //wir verweisen immer auf die aktuelle Seite
-        //es kann aber schon ein sort parameter gesetzt sein
-        //weshalb wir alte entfernen
+        // wir verweisen immer auf die aktuelle Seite
+        // es kann aber schon ein sort parameter gesetzt sein
+        // weshalb wir alte entfernen
         $sUrl = preg_replace('/&sortField=.*&sortRev=[^&]*/', '', Misc::getIndpEnv('TYPO3_REQUEST_URL'));
 
-        //sort richtung rausfinden
-        //beim initialen Aufruf (spalte noch nicht geklickt) wird immer aufsteigend sortiert
+        // sort richtung rausfinden
+        // beim initialen Aufruf (spalte noch nicht geklickt) wird immer aufsteigend sortiert
         if ($sCurrentSortField != $sSortField) {
             $sSortRev = 'asc';
-        } else {//sonst das gegenteil vom aktuellen
+        } else {// sonst das gegenteil vom aktuellen
             $sSortRev = ('desc' == $sCurrentSortRev) ? 'asc' : 'desc';
         }
 
-        //prüfen ob Parameter mit ? oder & angehängt werden müssen
+        // prüfen ob Parameter mit ? oder & angehängt werden müssen
         $sAddParamsWith = (strstr($sUrl, '?')) ? '&' : '?';
-        //jetzt setzen wir den aktuellen Sort parameter zusammen
+        // jetzt setzen wir den aktuellen Sort parameter zusammen
         $sSortUrl = $sUrl.$sAddParamsWith.'sortField='.$sSortField.'&sortRev='.$sSortRev;
-        //noch den Pfeil für die aktuelle Sortierungsrichtung ggf. einblenden
+        // noch den Pfeil für die aktuelle Sortierungsrichtung ggf. einblenden
         $sSortArrow = '';
         if ($sCurrentSortField == $sSortField) {
             $sSortArrow = Icons::getSpriteIcon(

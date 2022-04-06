@@ -48,7 +48,7 @@ interface DomainModelInterface
      *
      * @return DataModel
      */
-    /*public function setTableName($tableName = 0);*/
+    /* public function setTableName($tableName = 0); */
 
     /**
      * Returns the uid.

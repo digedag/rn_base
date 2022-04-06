@@ -55,7 +55,7 @@ class InputText extends AbstractFormElement
         $width = $config['width'];
         $evalList = '';
         if (isset($config['eval'])) {
-            //TYPO3 7.6 uses $config['eval'][0]
+            // TYPO3 7.6 uses $config['eval'][0]
             if (is_array($config['eval']) && isset($config['eval'][0])) {
                 $evalList = $config['eval'][0];
             } else {

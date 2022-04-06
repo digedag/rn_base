@@ -49,7 +49,7 @@ class TreeQueryBuilder
      */
     public function getPageTreeUidList($id, $options = [])
     {
-        //@TODO: support page aliases in id parameter
+        // @TODO: support page aliases in id parameter
         $sqlOptions = array_merge(['tableName' => 'pages'], $options);
         $depth = !empty($options['depth']) ? $options['depth'] : 999;
         $begin = !empty($options['begin']) ? $options['begin'] : 0;

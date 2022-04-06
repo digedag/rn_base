@@ -367,7 +367,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
                 }
 
                 $listSize = call_user_func($searchCallback, $fields, $pageBrowserOptions);
-                //$listSize = $service->search($fields, $options);
+                // $listSize = $service->search($fields, $options);
                 unset($options['count']);
             }
             // PageBrowser initialisieren

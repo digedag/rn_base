@@ -230,8 +230,8 @@ abstract class BaseLister
         $this->showItems($content, $items);
         $pagerData = $pager->render();
 
-        //der zusammengeführte Pager für die Ausgabe
-        //nur wenn es auch Ergebnisse gibt. sonst reicht die noItemsFoundMsg
+        // der zusammengeführte Pager für die Ausgabe
+        // nur wenn es auch Ergebnisse gibt. sonst reicht die noItemsFoundMsg
         $sPagerData = '';
         if ($cnt) {
             $sPagerData = $pagerData['limits'].' - '.$pagerData['pages'];
@@ -315,7 +315,7 @@ abstract class BaseLister
         if (0 === count($items)) {
             $content = $this->getNoItemsFoundMsg();
 
-            return; //stop
+            return; // stop
         }
 
         $options = $this->getOptions();
@@ -446,9 +446,9 @@ abstract class BaseLister
         return '<p><strong>###LABEL_NO_'.strtoupper($this->getSearcherId()).'_FOUND###</strong></p><br/>';
     }
 
-    //////
+    // ////
     // Die folgenden Methoden sollten noch in andere Klassen verteilt werden.
-    //////
+    // ////
 
     /**
      * Suche nach einem Freitext. Wird ein leerer String

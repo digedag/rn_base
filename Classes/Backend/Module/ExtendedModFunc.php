@@ -112,7 +112,7 @@ abstract class ExtendedModFunc implements IModFunc
 
         $args = [];
 
-        //$out .= $this->getContent($template, $conf, $conf->getFormatter(), $formTool);
+        // $out .= $this->getContent($template, $conf, $conf->getFormatter(), $formTool);
 
         $handler = $menuItems[$menu['value']];
         if (is_object($handler)) {

@@ -158,8 +158,8 @@ class Language
         if (!is_array($langArr)) {
             return;
         }
-        //new values from the given array are added to the existing local lang.
-        //existing values in the local lang are overruled with those of the given array.
+        // new values from the given array are added to the existing local lang.
+        // existing values in the local lang are overruled with those of the given array.
         $this->LOCAL_LANG = Arrays::mergeRecursiveWithOverrule(
             is_array($this->LOCAL_LANG) ? $this->LOCAL_LANG : [],
             $langArr

@@ -361,7 +361,7 @@ class ConnectionTest extends BaseTestCase
         $reflectionMethod = $reflectionObject->getMethod('lookupLanguage');
         $reflectionMethod->setAccessible(true);
 
-        //TODO: mock page repo and set sys lang
+        // TODO: mock page repo and set sys lang
 
         $reflectionMethod->invokeArgs($connectionMock, [&$row, $tableName, $options]);
 

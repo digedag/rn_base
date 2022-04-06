@@ -84,7 +84,7 @@ class PageBrowserFilter
                 }
 
                 $listSize = call_user_func($searchCallback, $fields, $pageBrowserOptions);
-                //$listSize = $service->search($fields, $options);
+                // $listSize = $service->search($fields, $options);
                 unset($options['count']);
             }
             // PageBrowser initialisieren
