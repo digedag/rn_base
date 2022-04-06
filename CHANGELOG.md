@@ -3,6 +3,9 @@
 Changelog
 ---------
 
+v1.15.2 (06.04.2022)
+* Make some list marker properties protected
+
 v1.15.1 (15.02.2022)
 * Add support for PDO mysql driver
 
