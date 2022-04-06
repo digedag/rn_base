@@ -59,6 +59,14 @@ class ListBuilder
     }
 
     /**
+     * @return ListBuilderInfo
+     */
+    protected function getInfo()
+    {
+        return $this->info;
+    }
+
+    /**
      * Add a visitor callback. It is called for each item before rendering.
      *
      * @param array $callback
@@ -66,6 +74,14 @@ class ListBuilder
     public function addVisitor(array $callback)
     {
         $this->visitors[] = $callback;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getVisitors()
+    {
+        return $this->visitors;
     }
 
     public function renderEach(IListProvider $provider, $viewData, $template, $markerClassname, $confId, $marker, $formatter, $markerParams = null)

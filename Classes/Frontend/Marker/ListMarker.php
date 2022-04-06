@@ -37,15 +37,16 @@ class ListMarker
     private $template;
     private $formatter;
     private $visitors;
-    private $confId;
-    private $rowRoll;
-    private $rowRollCnt;
-    private $i;
-    private $parts;
-    private $totalLineStart;
-    private $offset;
-    private $marker;
-    private $entryMarker;
+
+    protected $confId;
+    protected $rowRoll;
+    protected $rowRollCnt;
+    protected $i;
+    protected $parts;
+    protected $totalLineStart;
+    protected $offset;
+    protected $marker;
+    protected $entryMarker;
 
     public function __construct(ListMarkerInfo $listMarkerInfo = null)
     {
@@ -57,6 +58,22 @@ class ListMarker
     }
 
     /**
+     * @return ListBuilderInfo
+     */
+    protected function getInfo()
+    {
+        return $this->info;
+    }
+
+    /**
+     * @return FormatUtil
+     */
+    protected function getFormatter()
+    {
+        return $this->formatter;
+    }
+
+    /**
      * Add a visitor callback. It is called for each item before rendering.
      *
      * @param array $visitors array of callback arrays
@@ -64,6 +81,14 @@ class ListMarker
     public function addVisitors(array $visitors)
     {
         $this->visitors = $visitors;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getVisitors()
+    {
+        return $this->visitors;
     }
 
     /**
