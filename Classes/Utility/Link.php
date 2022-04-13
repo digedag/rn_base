@@ -570,6 +570,10 @@ class Link
         } else {
             $conf['no_cache'] = 0;
         }
+        // since TYPO3 10.4 useCacheHash has no effect anymore
+        if (TYPO3::isTYPO104OrHigher()) {
+            unset($conf['useCacheHash']);
+        }
         if ('' !== $this->destination) {
             $conf['parameter'] = $this->destination;
         }
