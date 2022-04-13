@@ -3,6 +3,9 @@
 Changelog
 ---------
 
+v1.15.3 (13.04.2022)
+* Remove useCacheHash since TYPO3 10.4
+
 v1.15.2 (06.04.2022)
 * Make some list marker properties protected
 
