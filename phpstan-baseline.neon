@@ -11,13 +11,8 @@ parameters:
 			path: Classes/Backend/Lister/AbstractLister.php
 
 		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Backend\\\\Module\\\\BaseModule\\:\\:\\$pageinfo\\.$#"
-			count: 1
-			path: Classes/Backend/Module/BaseModule.php
-
-		-
 			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Backend\\\\Module\\\\BaseModule\\:\\:\\$selector\\.$#"
-			count: 2
+			count: 1
 			path: Classes/Backend/Module/BaseModule.php
 
 		-
@@ -67,7 +62,7 @@ parameters:
 
 		-
 			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Backend\\\\Utility\\\\BEPager\\:\\:\\$conf\\.$#"
-			count: 3
+			count: 2
 			path: Classes/Backend/Utility/BEPager.php
 
 		-
