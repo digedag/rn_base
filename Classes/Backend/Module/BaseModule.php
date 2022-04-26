@@ -602,17 +602,6 @@ abstract class BaseModule extends ModuleBase implements IModule
             true
         );
 
-        if ($this->id && is_array($this->pageinfo)) {
-            // Shortcut
-            if ($BE_USER->mayMakeShortcut()) {
-                $buttons['shortcut'] = $this->getDoc()->makeShortcutIcon(
-                    'id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit',
-                    implode(',', array_keys($this->MOD_MENU)),
-                    $this->getName()
-                );
-            }
-        }
-
         return $buttons;
     }
 
