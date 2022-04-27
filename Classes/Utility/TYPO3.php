@@ -352,7 +352,7 @@ class TYPO3
     public static function getSysPage()
     {
         if (!is_object(self::$sysPage)) {
-            if (is_object($GLOBALS['TSFE']->sys_page)) {
+            if (is_object($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE']->sys_page)) {
                 self::$sysPage = $GLOBALS['TSFE']->sys_page;
             } // Use existing SysPage from TSFE
             else {
