@@ -321,21 +321,6 @@ parameters:
 			path: Legacy/class.tx_rnbase.php
 
 		-
-			message: "#^Access to an undefined property tx_rnbase_controller\\:\\:\\$cObj\\.$#"
-			count: 1
-			path: Legacy/class.tx_rnbase_controller.php
-
-		-
-			message: "#^Access to an undefined property tx_rnbase_controller\\:\\:\\$extensionKey\\.$#"
-			count: 1
-			path: Legacy/class.tx_rnbase_controller.php
-
-		-
-			message: "#^Access to an undefined property tx_rnbase_controller\\:\\:\\$qualifier\\.$#"
-			count: 1
-			path: Legacy/class.tx_rnbase_controller.php
-
-		-
 			message: "#^Caught class Sys25\\\\RnBase\\\\Utility\\\\TYPO3\\\\CMS\\\\Core\\\\Error\\\\Http\\\\PageNotFoundException not found\\.$#"
 			count: 1
 			path: Legacy/class.tx_rnbase_controller.php
