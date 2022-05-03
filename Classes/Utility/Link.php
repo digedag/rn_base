@@ -79,6 +79,8 @@ class Link
 
     public $titleHasAlreadyHtmlSpecialChars = false; // is title attribute already HSC?
 
+    public $absUrl;
+
     private $typolinkParams = [];    // container for generic typolink parameters
 
     private $uniqueParameterId = null;     // used to build unique parameters for plugin
@@ -556,6 +558,9 @@ class Link
             if (null !== $this->getUniqueParameterId()) {
                 $value = [$key => $value];
                 $key = $this->getUniqueParameterId();
+            }
+            if (!isset($conf['additionalParams'])) {
+                $conf['additionalParams'] = '';
             }
             $conf['additionalParams'] .= $this->makeUrlParam($key, $value);
         }

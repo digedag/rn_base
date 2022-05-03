@@ -655,7 +655,7 @@ class Processor implements ConfigurationInterface
         }
         if (is_array($ret)) {
             $ret = $this->renderTS($ret, $this->getCObj());
-            $ret = $noEndingDot ? $ret['key'] : $ret;
+            $ret = $noEndingDot ? ($ret['key'] ?? null) : $ret;
         }
 
         return $ret;
