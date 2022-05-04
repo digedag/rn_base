@@ -271,16 +271,6 @@ parameters:
 			path: Classes/Utility/Files.php
 
 		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Utility\\\\Link\\:\\:\\$absUrl\\.$#"
-			count: 2
-			path: Classes/Utility/Link.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Utility\\\\Link\\:\\:\\$absUrlSchema\\.$#"
-			count: 2
-			path: Classes/Utility/Link.php
-
-		-
 			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Utility\\\\Queue\\:\\:\\$arrCurrentSize\\.$#"
 			count: 1
 			path: Classes/Utility/Queue.php

@@ -81,6 +81,8 @@ class Link
 
     public $absUrl;
 
+    public $absUrlSchema;
+
     private $typolinkParams = [];    // container for generic typolink parameters
 
     private $uniqueParameterId = null;     // used to build unique parameters for plugin
