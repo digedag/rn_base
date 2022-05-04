@@ -162,7 +162,7 @@ class Connection implements SingletonInterface
 
     private function doSelectByQueryBuilder(QueryBuilder $queryBuilder, From $from, array $arr)
     {
-        $sqlOnly = intval($arr['sqlonly'] ?? null   ) > 0;
+        $sqlOnly = intval($arr['sqlonly'] ?? null) > 0;
 
         if ($sqlOnly) {
             return $queryBuilder;
