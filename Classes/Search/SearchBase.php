@@ -124,7 +124,7 @@ abstract class SearchBase
             $tableAliases[$tableAlias][$col] = $data;
         }
         // Prüfen, ob in orderby noch andere Tabellen liegen
-        $orderbyArr = $options['orderby'];
+        $orderbyArr = $options['orderby'] ?? '';
         if (is_array($orderbyArr)) {
             $aliases = array_keys($orderbyArr);
             foreach ($aliases as $alias) {
@@ -184,7 +184,7 @@ abstract class SearchBase
 
         $sqlOptions['where'] = $where;
 
-        if (!isset($options['count']) && is_array($options['orderby'])) {
+        if (!isset($options['count']) && is_array($options['orderby'] ?? null)) {
             // Aus dem Array einen String bauen
             $orderby = [];
             if (array_key_exists('RAND', $options['orderby']) && $options['orderby']['RAND']) {

@@ -50,14 +50,14 @@ class QueryBuilderFacade
         $tableAlias = $from->getAlias();
 
         $where = isset($arr['where']) ? $arr['where'] : null;
-        $groupBy = is_string($arr['groupby']) ? $arr['groupby'] : '';
-        $having = is_string($arr['having']) ? $arr['having'] : '';
-        $debug = intval($arr['debug']) > 0;
-        $orderBy = is_string($arr['orderby']) ? $arr['orderby'] : '';
-        $offset = (int) intval($arr['offset']) > 0 ? $arr['offset'] : 0;
-        $limit = (int) intval($arr['limit']) > 0 ? $arr['limit'] : '';
-        $pidList = (is_string($arr['pidlist']) || is_int($arr['pidlist'])) ? $arr['pidlist'] : '';
-        $recursive = intval($arr['recursive']) ? intval($arr['recursive']) : 0;
+        $groupBy = is_string($arr['groupby'] ?? null) ? $arr['groupby'] : '';
+        $having = is_string($arr['having'] ?? null) ? $arr['having'] : '';
+        $debug = intval($arr['debug'] ?? null) > 0;
+        $orderBy = is_string($arr['orderby'] ?? null) ? $arr['orderby'] : '';
+        $offset = (int) intval($arr['offset'] ?? null) > 0 ? $arr['offset'] : 0;
+        $limit = (int) intval($arr['limit'] ?? null) > 0 ? $arr['limit'] : '';
+        $pidList = (is_string($arr['pidlist'] ?? null) || is_int($arr['pidlist'] ?? null)) ? $arr['pidlist'] : '';
+        $recursive = intval($arr['recursive'] ?? null) ? intval($arr['recursive']) : 0;
         // TODO: is i18n still necessary?
         // $i18n = is_string($arr['i18n']) > 0 ? $arr['i18n'] : '';
         // TODO: how to handle UNIONs?
@@ -117,7 +117,7 @@ class QueryBuilderFacade
 
     private function handleEnableFieldsOptions(QueryBuilder $queryBuilder, array $options)
     {
-        if ($options['enablefieldsoff']) {
+        if ($options['enablefieldsoff'] ?? false) {
             $queryBuilder->getRestrictions()->removeAll();
         } else {
             // Für Redakteure versteckte Objekte im FE einblenden
@@ -139,7 +139,7 @@ class QueryBuilderFacade
             if ($this->isFrontend()) {
                 $restrictions = $queryBuilder->getRestrictions()
                     ->removeAll();
-                if (intval($options['enablefieldsbe'])) {
+                if (intval($options['enablefieldsbe'] ?? null)) {
                     $restrictions->add(tx_rnbase::makeInstance(DeletedRestriction::class))
                         ->add(tx_rnbase::makeInstance(BackendWorkspaceRestriction::class));
                 } else {

@@ -18,6 +18,7 @@ use tx_rnbase_util_db_Builder;
 use tx_rnbase_util_db_IDatabase;
 use tx_rnbase_util_TCA;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Http\ApplicationType;
 
 /***************************************************************
  *  Copyright notice
@@ -161,7 +162,7 @@ class Connection implements SingletonInterface
 
     private function doSelectByQueryBuilder(QueryBuilder $queryBuilder, From $from, array $arr)
     {
-        $sqlOnly = intval($arr['sqlonly']) > 0;
+        $sqlOnly = intval($arr['sqlonly'] ?? null   ) > 0;
 
         if ($sqlOnly) {
             return $queryBuilder;
@@ -342,7 +343,7 @@ class Connection implements SingletonInterface
      */
     private function lookupWorkspace(&$row, $tableName, $options)
     {
-        if ($options['enablefieldsoff'] || $options['ignoreworkspace']) {
+        if (($options['enablefieldsoff'] ?? false) || ($options['ignoreworkspace'] ?? false)) {
             return;
         }
 
@@ -364,13 +365,16 @@ class Connection implements SingletonInterface
         // Initialisierung der TSFE ändert den backPath im PageRender auf einen falschen
         // Wert. Dadurch werden JS-Dateien nicht mehr geladen.
         // Ist dieser Aufruf im BE überhaupt sinnvoll?
+        $isFrontend = TYPO3::isTYPO104OrHigher()
+            ? ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
+            : (defined('TYPO3_MODE') && TYPO3_MODE === 'FE');
         if ((
             (
-                !(defined('TYPO3_MODE') && TYPO3_MODE === 'FE') ||
-                $options['enablefieldsoff'] ||
-                $options['ignorei18n']
+                !$isFrontend ||
+                ($options['enablefieldsoff'] ?? false) ||
+                ($options['ignorei18n'] ?? false)
             ) &&
-            empty($options['forcei18n'])
+            empty($options['forcei18n'] ?? false)
         )) {
             return;
         }

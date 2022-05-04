@@ -142,7 +142,7 @@ class Typo3Classes
     {
         if (null === $enabled) {
             $beCookie = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']) ?: 'be_typo_user';
-            $enabled = (bool) $_COOKIE[$beCookie];
+            $enabled = (bool) ($_COOKIE[$beCookie] ?? false);
         }
 
         return new TimeTracker($enabled);
