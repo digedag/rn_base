@@ -245,14 +245,14 @@ class FormatUtil
             }
 
             // Für DATETIME gibt es eine Sonderbehandlung, um leere Werte zu behandeln
-            if ('DATETIME' == $conf[$colname] && $conf[$colname.'.']['ifEmpty'] && !$value) {
+            if ('DATETIME' == ($conf[$colname] ?? '') && ($conf[$colname.'.']['ifEmpty'] ?? false) && !$value) {
                 $data[$colname] = $conf[$colname.'.']['ifEmpty'];
-            } elseif ($conf[$colname]) {
+            } elseif ($conf[$colname] ?? '') {
                 // Get value using cObjGetSingle
                 $this->cObj->setCurrentVal($value);
                 $data[$colname] = $this->cObj->cObjGetSingle($conf[$colname], $conf[$colname.'.']);
                 $this->cObj->setCurrentVal(false);
-            } elseif ('CASE' == $conf[$colname]) {
+            } elseif ('CASE' == ($conf[$colname] ?? '')) {
                 $data[$colname] = $this->cObj->CASEFUNC($conf[$colname.'.']);
             } else {
                 // Es wird ein normaler Wrap gestartet
