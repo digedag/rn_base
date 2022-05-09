@@ -1018,7 +1018,9 @@ class Processor implements ConfigurationInterface
                     if (count($pathArray) > 1) {
                         // Die Angabe im Flexform ist in Punktnotation
                         // Wir holen das Array im höchsten Knoten
-                        $dataArr = $this->_dataStore->offsetGet($pathArray[0].'.');
+                        $dataArr = $this->_dataStore->offsetExists($pathArray[0].'.')
+                            ? $this->_dataStore->offsetGet($pathArray[0].'.')
+                            : null;
                         $newValue = $def[$valuePointer];
                         $newArr = $this->insertIntoDataArray($dataArr, array_slice($pathArray, 1), $newValue);
                         $this->_dataStore->offsetSet($pathArray[0].'.', $newArr);
@@ -1078,7 +1080,7 @@ class Processor implements ConfigurationInterface
         if (is_array($old_conf)) {
             foreach ($old_conf as $key => $val) {
                 if (is_array($val)) {
-                    $conf[$key] = self::joinTSarrays($conf[$key], $val);
+                    $conf[$key] = self::joinTSarrays($conf[$key] ?? [], $val);
                 } else {
                     $conf[$key] = $val;
                 }
@@ -1102,7 +1104,7 @@ class Processor implements ConfigurationInterface
                 // Noch nicht beendet. Auf Reference prüfen
                 $array = $this->mergeTSReference(
                     $array[$pathArray[$i]] ?? null,
-                    $array[$pathArray[$i].'.'] ?? []
+                    $array[$pathArray[$i].'.'] ?? null
                 );
             } elseif (empty($pathArray[$i])) {
                 // It ends with a dot. We return the rest of the array

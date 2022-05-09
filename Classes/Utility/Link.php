@@ -763,8 +763,8 @@ class Link
             // skip empty values? default false!
             $skipEmpty = !empty($keepVarConf['skipEmpty']);
             $keepVars = $configurations->getKeepVars();
-            $allow = $keepVarConf['allow'];
-            $deny = $keepVarConf['deny'];
+            $allow = $keepVarConf['allow'] ?? '';
+            $deny = $keepVarConf['deny'] ?? '';
             if ($allow) {
                 $allow = Strings::trimExplode(',', $allow);
                 foreach ($allow as $allowed) {
@@ -786,14 +786,14 @@ class Link
                     }
                 }
             }
-            $add = $keepVarConf['add'];
+            $add = $keepVarConf['add'] ?? '';
             if ($add) {
-                $add = \Tx_Rnbase_Utility_Strings::trimExplode(',', $add);
+                $add = Strings::trimExplode(',', $add);
                 foreach ($add as $linkvar) {
-                    $linkvar = \Tx_Rnbase_Utility_Strings::trimExplode('=', $linkvar);
+                    $linkvar = Strings::trimExplode('=', $linkvar);
                     if (count($linkvar) < 2) {
                         // tt_news::* or ttnews::id
-                        list($qualifier, $name) = \Tx_Rnbase_Utility_Strings::trimExplode('::', $linkvar[0]);
+                        list($qualifier, $name) = Strings::trimExplode('::', $linkvar[0]);
                         if ($value = \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter($qualifier)) {
                             if ('*' == $name && is_array($value)) {
                                 foreach ($value as $paramName => $paramValue) {

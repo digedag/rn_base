@@ -101,7 +101,7 @@ class Templates
      */
     public static function getSubpartFromFile($fileName, $subpart)
     {
-        $file = Files::getFileName($fileName);
+        $file = Files::getFileAbsFileName($fileName);
 
         if (TYPO3_MODE == 'BE' && false === strpos($file, \Sys25\RnBase\Utility\Environment::getPublicPath())) {
             $file = \Sys25\RnBase\Utility\Environment::getPublicPath().$file;
@@ -453,6 +453,10 @@ class Templates
             if (!is_array($valueArr[$keyN])) {
                 $content .= $valueArr[$keyN];
             } else {
+                if (!isset($wSCA_reg[$keyN])) {
+                    $wSCA_reg[$keyN] = 0;
+                }
+
                 $content .= $valueArr[$keyN][(intval($wSCA_reg[$keyN]) % 2)];
                 ++$wSCA_reg[$keyN];
             }

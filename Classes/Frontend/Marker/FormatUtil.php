@@ -250,7 +250,7 @@ class FormatUtil
             } elseif ($conf[$colname] ?? '') {
                 // Get value using cObjGetSingle
                 $this->cObj->setCurrentVal($value);
-                $data[$colname] = $this->cObj->cObjGetSingle($conf[$colname], $conf[$colname.'.']);
+                $data[$colname] = $this->cObj->cObjGetSingle($conf[$colname] ?? '', $conf[$colname.'.'] ?? []);
                 $this->cObj->setCurrentVal(false);
             } elseif ('CASE' == ($conf[$colname] ?? '')) {
                 $data[$colname] = $this->cObj->CASEFUNC($conf[$colname.'.']);

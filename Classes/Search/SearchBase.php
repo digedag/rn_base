@@ -450,7 +450,7 @@ abstract class SearchBase
     {
         if (is_array($options)) {
             $this->generic = array_key_exists('searchdef', $options) && is_array($options['searchdef']);
-            $this->genericData = $options['searchdef'];
+            $this->genericData = $options['searchdef'] ?? '';
         }
     }
 

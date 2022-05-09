@@ -223,7 +223,7 @@ class BaseMarker
         $token = self::getToken();
         $linkObj->label($token);
         $links = $formatter->getConfigurations()->get($confId.'links.');
-        if (($links[$linkId] || $links[$linkId.'.']) && !$formatter->getConfigurations()->getBool($confId.'links.'.$linkId.'.disable', true, false)) {
+        if ((($links[$linkId] ?? '') || ($links[$linkId.'.'] ?? [])) && !$formatter->getConfigurations()->getBool($confId.'links.'.$linkId.'.disable', true, false)) {
             $linkObj->initByTS($formatter->getConfigurations(), $confId.'links.'.$linkId.'.', $parameterArr);
 
             if ($makeLink) {
@@ -303,7 +303,7 @@ class BaseMarker
         if (!$template) {
             return '';
         }
-        $pagerItems = $pagerData['list'];
+        $pagerItems = $pagerData['list'] ?? null;
         if (!is_array($pagerItems) || !count($pagerItems)) {
             return '';
         }

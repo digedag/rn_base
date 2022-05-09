@@ -16,16 +16,6 @@ parameters:
 			path: Classes/Backend/Module/BaseModule.php
 
 		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Backend\\\\Module\\\\BaseModule\\:\\:\\$subselector\\.$#"
-			count: 1
-			path: Classes/Backend/Module/BaseModule.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Backend\\\\Module\\\\BaseModule\\:\\:\\$tabs\\.$#"
-			count: 2
-			path: Classes/Backend/Module/BaseModule.php
-
-		-
 			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Backend\\\\Module\\\\ExtendedModFunc\\:\\:\\$mod\\.$#"
 			count: 2
 			path: Classes/Backend/Module/ExtendedModFunc.php

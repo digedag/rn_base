@@ -169,7 +169,7 @@ class Connection implements SingletonInterface
         }
 
         $rows = $this->initRows($arr);
-        $wrapper = is_string($arr['wrapperclass']) ? trim($arr['wrapperclass']) : 0;
+        $wrapper = is_string($arr['wrapperclass'] ?? null) ? trim($arr['wrapperclass']) : 0;
         $callback = isset($arr['callback']) ? $arr['callback'] : false;
 
         foreach ($queryBuilder->execute()->fetchAll() as $row) {
@@ -187,10 +187,10 @@ class Connection implements SingletonInterface
         $tableAlias = $from->getAlias();
         $fromClause = $fromClause ?: trim(sprintf('%s %s', $tableName, $tableAlias));
 
-        $where = is_string($arr['where']) ? $arr['where'] : '1=1';
+        $where = is_string($arr['where'] ?? false) ? $arr['where'] : '1=1';
         $groupBy = $arr['groupby'] ?? '';
         if ($groupBy) {
-            $groupBy .= empty($arr['having']) ? '' : ' HAVING '.$arr['having'];
+            $groupBy .= empty($arr['having'] ?? '') ? '' : ' HAVING '.$arr['having'];
         }
         $orderBy = $arr['orderby'] ?? '';
         $offset = intval($arr['offset'] ?? 0) > 0 ? intval($arr['offset']) : 0;
@@ -304,7 +304,7 @@ class Connection implements SingletonInterface
     private function initRows(array $options)
     {
         $rows = [];
-        if ($options['collection']) {
+        if ($options['collection'] ?? '') {
             if (!is_string($options['collection']) || !class_exists($options['collection'])) {
                 $options['collection'] = BaseCollection::class;
             }
@@ -386,7 +386,7 @@ class Connection implements SingletonInterface
             return;
         }
 
-        $OLmode = (isset($options['i18nolmode']) ? $options['i18nolmode'] : '');
+        $OLmode = ($options['i18nolmode'] ?? '');
         $sysPage = TYPO3::getSysPage();
 
         if ('pages' === $tableName) {
@@ -436,7 +436,7 @@ class Connection implements SingletonInterface
         $dbKey = is_string($options) ? $options : 'typo3';
         $db = null;
 
-        if (is_array($options) && !empty($options['db'])) {
+        if (is_array($options) && !empty($options['db'] ?? [])) {
             $dbConfig = &$options['db'];
             if (is_string($dbConfig)) {
                 $dbKey = $dbConfig;
@@ -510,7 +510,7 @@ class Connection implements SingletonInterface
         if (!is_array($arr)) {
             $arr = ['debug' => $arr];
         }
-        $debug = intval($arr['debug']) > 0;
+        $debug = intval($arr['debug'] ?? 0) > 0;
 
         $database = $this->getDatabaseConnection($arr);
 
@@ -524,9 +524,9 @@ class Connection implements SingletonInterface
             ]
         );
 
-        if ($debug || !empty($arr['sqlonly'])) {
+        if ($debug || !empty($arr['sqlonly'] ?? false)) {
             $sqlQuery = $database->INSERTquery($tablename, $values);
-            if (!empty($arr['sqlonly'])) {
+            if (!empty($arr['sqlonly'] ?? false)) {
                 return $sqlQuery;
             }
             $time = microtime(true);
@@ -579,7 +579,7 @@ class Connection implements SingletonInterface
      */
     public function doQuery($sqlQuery, array $options = [])
     {
-        $debug = array_key_exists('debug', $options) ? intval($options['debug']) > 0 : false;
+        $debug = $options['debug'] ?? false;
         $database = $this->getDatabaseConnection($options);
         if ($debug) {
             $time = microtime(true);
@@ -621,7 +621,7 @@ class Connection implements SingletonInterface
         if (!is_array($arr)) {
             $arr = ['debug' => $arr];
         }
-        $debug = intval($arr['debug']) > 0;
+        $debug = intval($arr['debug'] ?? 0) > 0;
         $database = $this->getDatabaseConnection($arr);
 
         Misc::callHook(
@@ -691,7 +691,7 @@ class Connection implements SingletonInterface
         if (!is_array($arr)) {
             $arr = ['debug' => $arr];
         }
-        $debug = intval($arr['debug']) > 0;
+        $debug = intval($arr['debug'] ?? 0) > 0;
         $database = $this->getDatabaseConnection($arr);
 
         Misc::callHook(
@@ -704,9 +704,9 @@ class Connection implements SingletonInterface
             ]
         );
 
-        if ($debug || !empty($arr['sqlonly'])) {
+        if ($debug || !empty($arr['sqlonly'] ?? false)) {
             $sql = $database->DELETEquery($tablename, $where);
-            if (!empty($arr['sqlonly'])) {
+            if (!empty($arr['sqlonly'] ?? false)) {
                 return $sql;
             }
             Debug::debug($sql, 'SQL');
@@ -1194,7 +1194,7 @@ class Connection implements SingletonInterface
     {
         $enableFields = '';
 
-        if (!$options['enablefieldsoff']) {
+        if (!($options['enablefieldsoff'] ?? false)) {
             if (is_object($GLOBALS['BE_USER']) &&
                 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] &&
                 !isset($options['enablefieldsfe'])
@@ -1214,11 +1214,11 @@ class Connection implements SingletonInterface
             $sysPage = TYPO3::getSysPage();
             $mode = (TYPO3_MODE == 'BE') ? 1 : 0;
             $ignoreArr = [];
-            if (intval($options['enablefieldsbe'])) {
+            if (intval($options['enablefieldsbe'] ?? 0)) {
                 $mode = 1;
                 // Im BE alle sonstigen Enable-Fields ignorieren
                 $ignoreArr = ['starttime' => 1, 'endtime' => 1, 'fe_group' => 1];
-            } elseif (intval($options['enablefieldsfe'])) {
+            } elseif (intval($options['enablefieldsfe'] ?? 0)) {
                 $mode = 0;
             }
             // Workspaces: Bei Tabellen mit Workspace-Support werden die EnableFields automatisch reduziert. Die Extension

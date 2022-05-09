@@ -66,6 +66,16 @@ abstract class BaseModule extends ModuleBase implements IModule
     private $moduleTemplate;
 
     /**
+     * @var array
+     */
+    protected $tabs;
+
+    /**
+     * @var array
+     */
+    protected $subselector;
+
+    /**
      * Initializes the backend module by setting internal variables, initializing the menu.
      */
     public function init()
@@ -597,7 +607,7 @@ abstract class BaseModule extends ModuleBase implements IModule
         $buttons['csh'] = BackendUtility::cshItem(
             '_MOD_'.$this->getName(),
             '',
-            $GLOBALS['BACK_PATH'],
+            $GLOBALS['BACK_PATH'] ?? '',
             '',
             true
         );
