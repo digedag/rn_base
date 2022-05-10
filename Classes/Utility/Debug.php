@@ -85,7 +85,7 @@ class Debug
         $path = [];
         $pathSiteLength = strlen(Environment::getPublicPath());
         foreach ($trail as $dat) {
-            $pathFragment = $dat['class'].$dat['type'].$dat['function'];
+            $pathFragment = ($dat['class'] ?? '').($dat['type'] ?? '').($dat['function'] ?? '');
             // add the path of the included file
             if (in_array(
                 $dat['function'],

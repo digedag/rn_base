@@ -40,9 +40,9 @@ class ListView extends BaseView
         $configurations = $request->getConfigurations();
         $viewData = $request->getViewContext();
         // View-Daten abholen
-        $items = $viewData->offsetGet(self::VIEWDATA_ITEMS);
-        $filter = $viewData->offsetGet(self::VIEWDATA_FILTER);
-        $markerData = $viewData->offsetGet(self::VIEWDATA_MARKER);
+        $items = $viewData->offsetExists(self::VIEWDATA_ITEMS) ? $viewData->offsetGet(self::VIEWDATA_ITEMS) : null;
+        $filter = $viewData->offsetExists(self::VIEWDATA_FILTER) ? $viewData->offsetGet(self::VIEWDATA_FILTER) : null;
+        $markerData = $viewData->offsetExists(self::VIEWDATA_MARKER) ? $viewData->offsetGet(self::VIEWDATA_MARKER) : null;
         $confId = $request->getConfId();
 
         $markerArray = $configurations->getFormatter()->getItemMarkerArrayWrapped($markerData, $confId.'markers.');
@@ -74,7 +74,7 @@ class ListView extends BaseView
         }
         $template = Templates::substituteMarkerArrayCached($template, $markerArray, $subpartArray); // , $wrappedSubpartArray);
 
-        $entities = $viewData->offsetGet(self::VIEWDATA_ENTITIES);
+        $entities = $viewData->offsetExists(self::VIEWDATA_ENTITIES) ? $viewData->offsetGet(self::VIEWDATA_ENTITIES) : null;
         $template = $this->renderEntities($template, $entities, $viewData, $formatter, $confId);
 
         return $template;

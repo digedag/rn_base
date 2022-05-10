@@ -768,11 +768,11 @@ class Link
             if ($allow) {
                 $allow = Strings::trimExplode(',', $allow);
                 foreach ($allow as $allowed) {
-                    $value = $keepVars->offsetGet($allowed);
+                    $value = $keepVars->offsetExists($allowed) ? $keepVars->offsetGet($allowed) : null;
                     if ($skipEmpty && empty($value)) {
                         continue;
                     }
-                    $newKeepVars[$allowed] = $keepVars->offsetGet($allowed);
+                    $newKeepVars[$allowed] = $keepVars->offsetExists($allowed) ? $keepVars->offsetGet($allowed) : null;
                 }
             } elseif ($deny) {
                 $deny = array_flip(Strings::trimExplode(',', $deny));

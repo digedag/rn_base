@@ -120,7 +120,7 @@ class PageBaseViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBa
         $usePageNumberAsLinkText = $this->arguments['usePageNumberAsLinkText'];
 
         $this->tag->setTagName($this->arguments['data-tagname']);
-        $pageBrowser = $this->templateVariableContainer->offsetGet('pagebrowser');
+        $pageBrowser = $this->templateVariableContainer->offsetExists('pagebrowser') ? $this->templateVariableContainer->offsetGet('pagebrowser') : null;
         $currentPage = $this->templateVariableContainer->get('currentPage');
 
         $pageBrowserQualifier = $this->viewHelperVariableContainer->get(

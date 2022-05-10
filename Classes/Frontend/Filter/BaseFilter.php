@@ -180,7 +180,7 @@ class BaseFilter implements FilterInterface
     public function setField($idstr, &$fields, $parameters, $configurations, $operator = OP_LIKE)
     {
         // Wenn der Wert schon gesetzt ist, wird er nicht überschrieben
-        if (!isset($fields[$idstr][$operator]) && $parameters->offsetGet($idstr)) {
+        if (!isset($fields[$idstr][$operator]) && $parameters->offsetExists($idstr) && $parameters->offsetGet($idstr)) {
             $fields[$idstr][$operator] = $parameters->offsetGet($idstr);
             // Parameter als KeepVar merken TODO: Ist das noch notwendig
             $configurations->addKeepVar($configurations->createParamName($idstr), $fields[$idstr]);

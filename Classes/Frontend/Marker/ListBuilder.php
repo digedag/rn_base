@@ -110,14 +110,14 @@ class ListBuilder
             $markerArray = $subpartArray = [];
             $templateEntry = Templates::getSubpart($templateList, '###'.$marker.'###');
             $offset = 0;
-            $pageBrowser = $viewData->offsetGet('pagebrowser');
+            $pageBrowser = $viewData->offsetExists('pagebrowser') ? $viewData->offsetGet('pagebrowser') : null;
             if ($pageBrowser) {
                 $state = $pageBrowser->getState();
                 $offset = $state['offset'];
             }
             // charbrowser
-            $pagerData = $viewData->offsetGet('pagerData');
-            $charPointer = $viewData->offsetGet('charpointer');
+            $pagerData = $viewData->offsetExists('pagerData') ? $viewData->offsetGet('pagerData') : null;
+            $charPointer = $viewData->offsetExists('charpointer') ? $viewData->offsetGet('charpointer') : null;
             $subpartArray['###CHARBROWSER###'] = BaseMarker::fillCharBrowser(
                 Templates::getSubpart($template, '###CHARBROWSER###'),
                 $markerArray,
@@ -173,7 +173,7 @@ class ListBuilder
 
         // Muss ein Formular mit angezeigt werden
         // Zuerst auf einen Filter prüfen
-        $filter = $viewData->offsetGet('filter');
+        $filter = $viewData->offsetExists('filter') ? $viewData->offsetGet('filter') : null;
         if ($filter && method_exists($filter, 'getMarker')) {
             $template = $filter->getMarker()->parseTemplate($template, $formatter, $confId.'filter.', $marker);
         }
@@ -246,7 +246,7 @@ class ListBuilder
 
                 $templateEntry = Templates::getSubpart($templateList, '###'.$marker.'###');
                 $offset = 0;
-                $pageBrowser = $viewData->offsetGet('pagebrowser');
+                $pageBrowser = $viewData->offsetExists('pagebrowser') ? $viewData->offsetGet('pagebrowser') : null;
                 if ($pageBrowser) {
                     $state = $pageBrowser->getState();
                     $offset = $state['offset'];

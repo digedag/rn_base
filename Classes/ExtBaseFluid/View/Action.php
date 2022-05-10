@@ -84,6 +84,7 @@ class Action extends \tx_rnbase_view_Base
 
         $out = $view->render();
         if (
+            $rnbaseViewData->offsetExists('filter') &&
             ($filter = $rnbaseViewData->offsetGet('filter')) &&
             is_object($filter) &&
             method_exists($filter, 'parseTemplate') &&

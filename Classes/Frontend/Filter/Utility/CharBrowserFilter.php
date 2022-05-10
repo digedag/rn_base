@@ -60,14 +60,14 @@ class CharBrowserFilter
 
             $pagerData = self::findPagerData($fields, $options, $cfg);
 
-            $firstChar = $configurations->getParameters()->offsetGet($pagerData['pointername']);
+            $firstChar = $configurations->getParameters()->offsetExists($pagerData['pointername']) ? $configurations->getParameters()->offsetGet($pagerData['pointername']) : null;
             $firstChar = (strlen(trim($firstChar)) > 0) ? substr($firstChar, 0, ('0' == $firstChar[0] ? 3 : 1)) : $pagerData['default'];
             // Existiert der Point in den aktuellen Daten
             $firstChar = array_key_exists($firstChar, $pagerData['list']) ? $firstChar : $pagerData['default'];
             $viewData->offsetSet('pagerData', $pagerData);
             $viewData->offsetSet('charpointer', $firstChar);
         }
-        $filter = $viewData->offsetGet('filter');
+        $filter = $viewData->offsetExists('filter') ? $viewData->offsetGet('filter') : null;
         // Der CharBrowser beachten wir nur, wenn keine Suche aktiv ist
         // TODO: Der Filter sollte eine Methode haben, die sagt, ob ein Formular aktiv ist
         if ('' != $firstChar && !$filter->isSpecialSearch()) {

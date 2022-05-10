@@ -872,7 +872,7 @@ abstract class SearchBase
      */
     public function setField($idstr, &$fields, $parameters, $configurations, $operator = OP_LIKE)
     {
-        if (!isset($fields[$idstr][$operator]) && $parameters->offsetGet($idstr)) {
+        if (!isset($fields[$idstr][$operator]) && $parameters->offsetExists($idstr) && $parameters->offsetGet($idstr)) {
             $fields[$idstr][$operator] = $parameters->offsetGet($idstr);
             // Parameter als KeepVar merken
             // TODO: Ist das noch notwendig??
