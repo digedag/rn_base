@@ -3,6 +3,7 @@
 namespace Sys25\RnBase\Utility;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
 /***************************************************************
@@ -104,7 +105,7 @@ class Environment
      */
     public static function getCurrentLanguageKey()
     {
-        if (TYPO3_MODE === 'BE') {
+        if (Environment::isBackend()) {
             return $GLOBALS['LANG']->lang;
         }
         if (!TYPO3::isTYPO95OrHigher()) {
@@ -124,5 +125,31 @@ class Environment
         }
 
         return $request->getAttribute('language')->getTypo3Language();
+    }
+
+    public static function isBackend(): bool
+    {
+        if (TYPO3::isTYPO104OrHigher()) {
+            // Having no $GLOBALS['TYPO3_REQUEST'] suggests that we're on the CLI. In former TYPO3 versions
+            // the CLI counted as BE. So we keep that behaviour eventhough it's technically wrong.
+            $isBackend = !(($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface)
+                || ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend();
+        } else {
+            $isBackend = defined('TYPO3_MODE') && TYPO3_MODE == 'BE';
+        }
+
+        return $isBackend;
+    }
+
+    public static function isFrontend(): bool
+    {
+        if (TYPO3::isTYPO104OrHigher()) {
+            $isFrontend = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+                && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend();
+        } else {
+            $isFrontend = defined('TYPO3_MODE') && TYPO3_MODE == 'FE';
+        }
+
+        return $isFrontend;
     }
 }

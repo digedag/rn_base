@@ -5,6 +5,7 @@ namespace Sys25\RnBase\Frontend\Marker;
 use Exception;
 use Sys25\RnBase\Cache\CacheManager;
 use Sys25\RnBase\Configuration\Processor;
+use Sys25\RnBase\Utility\Environment;
 use Sys25\RnBase\Utility\Files;
 use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Network;
@@ -103,7 +104,7 @@ class Templates
     {
         $file = Files::getFileAbsFileName($fileName);
 
-        if (TYPO3_MODE == 'BE' && false === strpos($file, \Sys25\RnBase\Utility\Environment::getPublicPath())) {
+        if (Environment::isBackend() && false === strpos($file, Environment::getPublicPath())) {
             $file = \Sys25\RnBase\Utility\Environment::getPublicPath().$file;
         } // Im BE auf absoluten Pfad setzen
 

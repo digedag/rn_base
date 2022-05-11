@@ -208,7 +208,7 @@ class Debug
 				display: block;
 			}
 		';
-        if (TYPO3_MODE === 'BE') {
+        if (Environment::isBackend()) {
             // @TODO: this is too late, for the most cases!
             $GLOBALS['TBE_STYLES']['inDocStyles_TBEstyle'] .= $code;
         } else {

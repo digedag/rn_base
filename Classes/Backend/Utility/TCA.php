@@ -6,6 +6,7 @@ use LogicException;
 use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Domain\Model\RecordInterface;
 use Sys25\RnBase\Utility\Arrays;
+use Sys25\RnBase\Utility\Environment;
 use Sys25\RnBase\Utility\Extensions;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
@@ -216,7 +217,7 @@ class TCA
      */
     public static function loadTCA($tablename)
     {
-        if (TYPO3_MODE === 'FE' && isset($_REQUEST['eID'])) {
+        if (Environment::isFrontend() && isset($_REQUEST['eID'])) {
             $eidUtility = Typo3Classes::getEidUtilityClass();
             $eidUtility::initTCA();
         } else {

@@ -8,6 +8,7 @@ use Sys25\RnBase\Domain\Collection\BaseCollection;
 use Sys25\RnBase\Domain\Model\DynamicTableInterface;
 use Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface;
 use Sys25\RnBase\Utility\Debug;
+use Sys25\RnBase\Utility\Environment;
 use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
@@ -18,7 +19,6 @@ use tx_rnbase_util_db_Builder;
 use tx_rnbase_util_db_IDatabase;
 use tx_rnbase_util_TCA;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Http\ApplicationType;
 
 /***************************************************************
  *  Copyright notice
@@ -365,12 +365,9 @@ class Connection implements SingletonInterface
         // Initialisierung der TSFE ändert den backPath im PageRender auf einen falschen
         // Wert. Dadurch werden JS-Dateien nicht mehr geladen.
         // Ist dieser Aufruf im BE überhaupt sinnvoll?
-        $isFrontend = TYPO3::isTYPO104OrHigher()
-            ? ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
-            : (defined('TYPO3_MODE') && TYPO3_MODE === 'FE');
         if ((
             (
-                !$isFrontend ||
+                !Environment::isFrontend() ||
                 ($options['enablefieldsoff'] ?? false) ||
                 ($options['ignorei18n'] ?? false)
             ) &&
@@ -1200,7 +1197,7 @@ class Connection implements SingletonInterface
                 !isset($options['enablefieldsfe'])
             ) {
                 $options['enablefieldsbe'] = 1;
-                if ($this->isFrontend()) {
+                if (Environment::isFrontend()) {
                     // wir nehmen nicht tx_rnbase_util_TYPO3::getTSFE()->set_no_cache weil das durch
                     // $GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter'] deaktiviert werden
                     // kann. Das wollen wir aber nicht. Der Cache muss in jedem Fall deaktiviert werden.
@@ -1212,7 +1209,7 @@ class Connection implements SingletonInterface
 
             // Zur Where-Clause noch die gültigen Felder hinzufügen
             $sysPage = TYPO3::getSysPage();
-            $mode = (TYPO3_MODE == 'BE') ? 1 : 0;
+            $mode = Environment::isBackend() ? 1 : 0;
             $ignoreArr = [];
             if (intval($options['enablefieldsbe'] ?? 0)) {
                 $mode = 1;
@@ -1236,13 +1233,5 @@ class Connection implements SingletonInterface
         }
 
         return $enableFields;
-    }
-
-    /**
-     * @return bool
-     */
-    protected function isFrontend()
-    {
-        return TYPO3_MODE == 'FE';
     }
 }

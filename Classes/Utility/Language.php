@@ -288,13 +288,11 @@ class Language
      */
     public static function sL($key)
     {
-        /* @var $lang \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
-        $lang = $GLOBALS[TYPO3_MODE == 'BE' ? 'LANG' : 'TSFE'];
-
-        if (!$lang) {
-            throw new Exception('Languageservice for "'.TYPO3_MODE.'" not initialized yet.');
+        $languageServiceKey = Environment::isBackend() ? 'LANG' : 'TSFE';
+        if (!$GLOBALS[$languageServiceKey]) {
+            throw new Exception('Languageservice in "$GLOBALS['.$languageServiceKey.']" not initialized yet.');
         }
 
-        return $lang->sL($key);
+        return $GLOBALS[$languageServiceKey]->sL($key);
     }
 }

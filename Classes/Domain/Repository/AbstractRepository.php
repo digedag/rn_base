@@ -8,6 +8,7 @@ use Sys25\RnBase\Domain\Model\DomainModelInterface as DomainInterface;
 use Sys25\RnBase\Domain\Model\RecordInterface;
 use Sys25\RnBase\Search\SearchBase;
 use Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface;
+use Sys25\RnBase\Utility\Environment;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
@@ -201,7 +202,7 @@ abstract class AbstractRepository implements SearchInterface, SingletonInterface
         array &$options
     ) {
         if ((
-            TYPO3_MODE == 'BE' &&
+            Environment::isBackend() &&
             !isset($options['enablefieldsoff']) &&
             !isset($options['enablefieldsbe']) &&
             !isset($options['enablefieldsfe'])

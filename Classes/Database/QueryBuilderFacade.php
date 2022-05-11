@@ -5,6 +5,7 @@ namespace Sys25\RnBase\Database;
 use Sys25\RnBase\Database\Query\From;
 use Sys25\RnBase\Database\Query\Join;
 use Sys25\RnBase\Utility\Debug;
+use Sys25\RnBase\Utility\Environment;
 use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
@@ -126,7 +127,7 @@ class QueryBuilderFacade
                 !isset($options['enablefieldsfe'])
             ) {
                 $options['enablefieldsbe'] = 1;
-                if ($this->isFrontend()) {
+                if (Environment::isFrontend()) {
                     // wir nehmen nicht tx_rnbase_util_TYPO3::getTSFE()->set_no_cache weil das durch
                     // $GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter'] deaktiviert werden
                     // kann. Das wollen wir aber nicht. Der Cache muss in jedem Fall deaktiviert werden.
@@ -136,7 +137,7 @@ class QueryBuilderFacade
                 }
             }
 
-            if ($this->isFrontend()) {
+            if (Environment::isFrontend()) {
                 $restrictions = $queryBuilder->getRestrictions()
                     ->removeAll();
                 if (intval($options['enablefieldsbe'] ?? null)) {
@@ -147,14 +148,6 @@ class QueryBuilderFacade
                 }
             }
         }
-    }
-
-    /**
-     * @return bool
-     */
-    private function isFrontend()
-    {
-        return TYPO3_MODE == 'FE';
     }
 
     private function getConnectionPool(): ConnectionPool
