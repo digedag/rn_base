@@ -206,12 +206,13 @@ abstract class BaseModule extends ModuleBase implements IModule
         $content = '<p style="position:absolute; top:-5000px; left:-5000px;">'
             .'<input type="submit" />'
             .'</p>';
-        $this->extObj->pObj = &$this; // Wozu diese Zuweisung? Die Submodule können getModule() verwenden...
-
-        if (is_callable([$this->extObj, 'main'])) {
-            $content .= $this->extObj->main();
-        } else {
-            $content .= 'Module '.get_class($this->extObj).' has no method main.';
+        if ($this->extObj) {
+            $this->extObj->pObj = &$this; // Wozu diese Zuweisung? Die Submodule können getModule() verwenden...
+            if (is_callable([$this->extObj, 'main'])) {
+                $content .= $this->extObj->main();
+            } else {
+                $content .= 'Module '.get_class($this->extObj).' has no method main.';
+            }
         }
 
         return $content;
