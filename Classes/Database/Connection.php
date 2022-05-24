@@ -1192,7 +1192,7 @@ class Connection implements SingletonInterface
         $enableFields = '';
 
         if (!($options['enablefieldsoff'] ?? false)) {
-            if (is_object($GLOBALS['BE_USER']) &&
+            if (is_object($GLOBALS['BE_USER'] ?? null) &&
                 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] &&
                 !isset($options['enablefieldsfe'])
             ) {
