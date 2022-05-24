@@ -258,9 +258,9 @@ class tx_rnbase_exception_HandlerWithoutCorrectInterface
     }
 }
 
-class tx_rnbase_exception_CustomHandler implements tx_rnbase_exception_IHandler
+class tx_rnbase_exception_CustomHandler implements \Sys25\RnBase\Exception\ExceptionHandlerInterface
 {
-    public function handleException($actionName, Exception $e, Tx_Rnbase_Configuration_ProcessorInterface $configurations)
+    public function handleException($actionName, Exception $e, Sys25\RnBase\Configuration\ConfigurationInterface $configurations)
     {
         return 'custom handler';
     }

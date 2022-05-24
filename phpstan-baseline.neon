@@ -1,12 +1,67 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Call to static method getCrdateFieldForTable\\(\\) on an unknown class tx_rnbase_util_TCA\\.$#"
+			count: 1
+			path: Classes/Backend/Decorator/BaseDecorator.php
+
+		-
+			message: "#^Call to static method getLabelFieldForTable\\(\\) on an unknown class tx_rnbase_util_TCA\\.$#"
+			count: 2
+			path: Classes/Backend/Decorator/BaseDecorator.php
+
+		-
+			message: "#^Call to static method getSortbyFieldForTable\\(\\) on an unknown class tx_rnbase_util_TCA\\.$#"
+			count: 1
+			path: Classes/Backend/Decorator/BaseDecorator.php
+
+		-
+			message: "#^Call to static method getSpriteIcon\\(\\) on an unknown class tx_rnbase_mod_Util\\.$#"
+			count: 2
+			path: Classes/Backend/Decorator/BaseDecorator.php
+
+		-
+			message: "#^Call to static method getTstampFieldForTable\\(\\) on an unknown class tx_rnbase_util_TCA\\.$#"
+			count: 1
+			path: Classes/Backend/Decorator/BaseDecorator.php
+
+		-
+			message: "#^Parameter \\$mod of method Sys25\\\\RnBase\\\\Backend\\\\Decorator\\\\BaseDecorator\\:\\:__construct\\(\\) has invalid type tx_rnbase_mod_BaseModule\\.$#"
+			count: 1
+			path: Classes/Backend/Decorator/BaseDecorator.php
+
+		-
 			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Backend\\\\Form\\\\ToolBox\\:\\:\\$tceStack\\.$#"
 			count: 2
 			path: Classes/Backend/Form/ToolBox.php
 
 		-
+			message: "#^Call to static method getSpriteIcon\\(\\) on an unknown class tx_rnbase_mod_Util\\.$#"
+			count: 1
+			path: Classes/Backend/Form/ToolBox.php
+
+		-
+			message: "#^Call to static method linkThisScript\\(\\) on an unknown class tx_rnbase_util_Link\\.$#"
+			count: 1
+			path: Classes/Backend/Form/ToolBox.php
+
+		-
+			message: "#^Call to static method loadTCA\\(\\) on an unknown class tx_rnbase_util_TCA\\.$#"
+			count: 1
+			path: Classes/Backend/Form/ToolBox.php
+
+		-
+			message: "#^Call to static method getModuleValue\\(\\) on an unknown class tx_rnbase_mod_Util\\.$#"
+			count: 1
+			path: Classes/Backend/Lister/AbstractLister.php
+
+		-
 			message: "#^Call to static method substituteMarkerArrayCached\\(\\) on an unknown class Sys25\\\\RnBase\\\\Backend\\\\Lister\\\\Templates\\.$#"
+			count: 1
+			path: Classes/Backend/Lister/AbstractLister.php
+
+		-
+			message: "#^Parameter \\$module of method Sys25\\\\RnBase\\\\Backend\\\\Lister\\\\AbstractLister\\:\\:__construct\\(\\) has invalid type tx_rnbase_mod_BaseModule\\.$#"
 			count: 1
 			path: Classes/Backend/Lister/AbstractLister.php
 
@@ -19,6 +74,11 @@ parameters:
 			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Backend\\\\Module\\\\ExtendedModFunc\\:\\:\\$mod\\.$#"
 			count: 2
 			path: Classes/Backend/Module/ExtendedModFunc.php
+
+		-
+			message: "#^Parameter \\$module of method Sys25\\\\RnBase\\\\Backend\\\\Template\\\\ModuleTemplate\\:\\:__construct\\(\\) has invalid type tx_rnbase_mod_IModule\\.$#"
+			count: 1
+			path: Classes/Backend/Template/ModuleTemplate.php
 
 		-
 			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Backend\\\\Template\\\\Override\\\\DocumentTemplate\\:\\:\\$form\\.$#"
@@ -66,6 +126,41 @@ parameters:
 			path: Classes/Backend/Utility/BaseLister.php
 
 		-
+			message: "#^Call to static method getLabelFieldForTable\\(\\) on an unknown class tx_rnbase_util_TCA\\.$#"
+			count: 1
+			path: Classes/Backend/Utility/DecoratorUtility.php
+
+		-
+			message: "#^Call to static method getLanguageFieldForTable\\(\\) on an unknown class tx_rnbase_util_TCA\\.$#"
+			count: 1
+			path: Classes/Backend/Utility/DecoratorUtility.php
+
+		-
+			message: "#^Call to static method getSortbyFieldForTable\\(\\) on an unknown class tx_rnbase_util_TCA\\.$#"
+			count: 1
+			path: Classes/Backend/Utility/SearcherUtility.php
+
+		-
+			message: "#^Call to static method getSpriteIcon\\(\\) on an unknown class tx_rnbase_mod_Util\\.$#"
+			count: 1
+			path: Classes/Backend/Utility/Tables.php
+
+		-
+			message: "#^Call to static method getTransOrigPointerFieldForTable\\(\\) on an unknown class tx_rnbase_util_TCA\\.$#"
+			count: 1
+			path: Classes/Backend/Utility/Tables.php
+
+		-
+			message: "#^Class tx_rnbase_mod_linker_LinkerInterface not found\\.$#"
+			count: 1
+			path: Classes/Backend/Utility/Tables.php
+
+		-
+			message: "#^Call to static method extPath\\(\\) on an unknown class tx_rnbase_util_Extensions\\.$#"
+			count: 1
+			path: Classes/Configuration/Processor.php
+
+		-
 			message: "#^Method Sys25\\\\RnBase\\\\Configuration\\\\Processor\\:\\:_queryArrayByPath\\(\\) should return array but return statement is missing\\.$#"
 			count: 1
 			path: Classes/Configuration/Processor.php
@@ -81,6 +176,21 @@ parameters:
 			path: Classes/Configuration/Processor.php
 
 		-
+			message: "#^Call to static method instance\\(\\) on an unknown class tx_rnbase_util_db_Builder\\.$#"
+			count: 4
+			path: Classes/Database/Connection.php
+
+		-
+			message: "#^Call to static method loadTCA\\(\\) on an unknown class tx_rnbase_util_TCA\\.$#"
+			count: 1
+			path: Classes/Database/Connection.php
+
+		-
+			message: "#^Class tx_rnbase_util_db_IDatabase not found\\.$#"
+			count: 1
+			path: Classes/Database/Connection.php
+
+		-
 			message: "#^Method Sys25\\\\RnBase\\\\Database\\\\Driver\\\\TYPO3DBAL\\:\\:exec_DELETEquery\\(\\) should return object but return statement is missing\\.$#"
 			count: 1
 			path: Classes/Database/Driver/TYPO3DBAL.php
@@ -94,6 +204,56 @@ parameters:
 			message: "#^Method Sys25\\\\RnBase\\\\Database\\\\Driver\\\\TYPO3DBAL\\:\\:exec_UPDATEquery\\(\\) should return object but return statement is missing\\.$#"
 			count: 1
 			path: Classes/Database/Driver/TYPO3DBAL.php
+
+		-
+			message: "#^Call to static method getCrdateFieldForTable\\(\\) on an unknown class tx_rnbase_util_TCA\\.$#"
+			count: 1
+			path: Classes/Domain/Model/BaseModel.php
+
+		-
+			message: "#^Call to static method getLabelFieldForTable\\(\\) on an unknown class tx_rnbase_util_TCA\\.$#"
+			count: 1
+			path: Classes/Domain/Model/BaseModel.php
+
+		-
+			message: "#^Call to static method getLanguageFieldForTable\\(\\) on an unknown class tx_rnbase_util_TCA\\.$#"
+			count: 1
+			path: Classes/Domain/Model/BaseModel.php
+
+		-
+			message: "#^Call to static method getTcaColumns\\(\\) on an unknown class tx_rnbase_util_TCA\\.$#"
+			count: 1
+			path: Classes/Domain/Model/BaseModel.php
+
+		-
+			message: "#^Call to static method getTstampFieldForTable\\(\\) on an unknown class tx_rnbase_util_TCA\\.$#"
+			count: 1
+			path: Classes/Domain/Model/BaseModel.php
+
+		-
+			message: "#^Call to static method getUid\\(\\) on an unknown class tx_rnbase_util_TCA\\.$#"
+			count: 1
+			path: Classes/Domain/Model/BaseModel.php
+
+		-
+			message: "#^Call to static method validateModel\\(\\) on an unknown class tx_rnbase_util_TCA\\.$#"
+			count: 1
+			path: Classes/Domain/Model/BaseModel.php
+
+		-
+			message: "#^Call to static method getLanguageFieldForTable\\(\\) on an unknown class tx_rnbase_util_TCA\\.$#"
+			count: 1
+			path: Classes/Domain/Repository/AbstractRepository.php
+
+		-
+			message: "#^Class Sys25\\\\RnBase\\\\Search\\\\Category not found\\.$#"
+			count: 1
+			path: Classes/Domain/Repository/CategoryRepository.php
+
+		-
+			message: "#^Call to static method sL\\(\\) on an unknown class tx_rnbase_util_Lang\\.$#"
+			count: 1
+			path: Classes/ExtBaseFluid/ViewHelper/TranslateViewHelper.php
 
 		-
 			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Frontend\\\\Filter\\\\BaseFilter\\:\\:\\$inputData\\.$#"
@@ -226,6 +386,11 @@ parameters:
 			path: Classes/Search/ConditionBuilder.php
 
 		-
+			message: "#^Call to static method callHook\\(\\) on an unknown class tx_rnbase_util_Misc\\.$#"
+			count: 1
+			path: Classes/Search/SearchBase.php
+
+		-
 			message: "#^Call to an undefined static method PHPUnit\\\\Framework\\\\TestCase\\:\\:getMock\\(\\)\\.$#"
 			count: 1
 			path: Classes/Testing/BaseTestCase.php
@@ -234,6 +399,21 @@ parameters:
 			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Core\\\\Core\\\\Bootstrap\\:\\:getInstance\\(\\)\\.$#"
 			count: 1
 			path: Classes/Testing/BaseTestCase.php
+
+		-
+			message: "#^Call to static method YAMLLoad\\(\\) on an unknown class tx_rnbase_util_Spyc\\.$#"
+			count: 1
+			path: Classes/Testing/BaseTestCase.php
+
+		-
+			message: "#^Call to static method getGeneralUtilityClass\\(\\) on an unknown class tx_rnbase_util_Typo3Classes\\.$#"
+			count: 1
+			path: Classes/Testing/BaseTestCase.php
+
+		-
+			message: "#^Call to static method getContentObjectRendererClass\\(\\) on an unknown class tx_rnbase_util_Typo3Classes\\.$#"
+			count: 1
+			path: Classes/Testing/TestUtility.php
 
 		-
 			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Utility\\\\Calendar\\:\\:\\$_clearHash\\.$#"
@@ -261,6 +441,11 @@ parameters:
 			path: Classes/Utility/Files.php
 
 		-
+			message: "#^Call to static method mkdir_deep\\(\\) on an unknown class tx_rnbase_util_Files\\.$#"
+			count: 1
+			path: Classes/Utility/Lock.php
+
+		-
 			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Utility\\\\Queue\\:\\:\\$arrCurrentSize\\.$#"
 			count: 1
 			path: Classes/Utility/Queue.php
@@ -281,6 +466,16 @@ parameters:
 			path: Classes/Utility/TSFAL.php
 
 		-
+			message: "#^Call to static method extPath\\(\\) on an unknown class tx_rnbase_util_Extensions\\.$#"
+			count: 1
+			path: Classes/Utility/TYPO3.php
+
+		-
+			message: "#^Call to static method isLoaded\\(\\) on an unknown class tx_rnbase_util_Extensions\\.$#"
+			count: 1
+			path: Classes/Utility/TYPO3.php
+
+		-
 			message: "#^Undefined variable\\: \\$EM_CONF$#"
 			count: 2
 			path: Classes/Utility/TYPO3.php
@@ -291,14 +486,109 @@ parameters:
 			path: Legacy/Controller/AbstractController.php
 
 		-
-			message: "#^Method tx_rnbase_action_BaseIOC\\:\\:setConfigurations\\(\\) should return Sys25\\\\RnBase\\\\Configuration\\\\ConfigurationInterface but return statement is missing\\.$#"
+			message: "#^Call to static method debug\\(\\) on an unknown class tx_rnbase_util_Debug\\.$#"
+			count: 2
+			path: Legacy/action/class.tx_rnbase_action_BaseIOC.php
+
+		-
+			message: "#^Call to static method getFileName\\(\\) on an unknown class tx_rnbase_util_Files\\.$#"
+			count: 2
+			path: Legacy/action/class.tx_rnbase_action_BaseIOC.php
+
+		-
+			message: "#^Call to static method getPageRenderer\\(\\) on an unknown class tx_rnbase_util_TYPO3\\.$#"
 			count: 1
 			path: Legacy/action/class.tx_rnbase_action_BaseIOC.php
+
+		-
+			message: "#^Call to static method getTSFE\\(\\) on an unknown class tx_rnbase_util_TYPO3\\.$#"
+			count: 2
+			path: Legacy/action/class.tx_rnbase_action_BaseIOC.php
+
+		-
+			message: "#^Call to static method isSubstCacheEnabled\\(\\) on an unknown class tx_rnbase_util_Templates\\.$#"
+			count: 1
+			path: Legacy/action/class.tx_rnbase_action_BaseIOC.php
+
+		-
+			message: "#^Call to static method mayday\\(\\) on an unknown class tx_rnbase_util_Misc\\.$#"
+			count: 1
+			path: Legacy/action/class.tx_rnbase_action_BaseIOC.php
+
+		-
+			message: "#^Call to static method pullTT\\(\\) on an unknown class tx_rnbase_util_Misc\\.$#"
+			count: 2
+			path: Legacy/action/class.tx_rnbase_action_BaseIOC.php
+
+		-
+			message: "#^Call to static method pushTT\\(\\) on an unknown class tx_rnbase_util_Misc\\.$#"
+			count: 2
+			path: Legacy/action/class.tx_rnbase_action_BaseIOC.php
+
+		-
+			message: "#^Call to static method resetSubstCache\\(\\) on an unknown class tx_rnbase_util_Templates\\.$#"
+			count: 1
+			path: Legacy/action/class.tx_rnbase_action_BaseIOC.php
+
+		-
+			message: "#^Call to static method trimExplode\\(\\) on an unknown class tx_rnbase_util_Strings\\.$#"
+			count: 2
+			path: Legacy/action/class.tx_rnbase_action_BaseIOC.php
+
+		-
+			message: "#^Method tx_rnbase_action_BaseIOC\\:\\:setConfigurations\\(\\) should return Tx_Rnbase_Configuration_ProcessorInterface but return statement is missing\\.$#"
+			count: 1
+			path: Legacy/action/class.tx_rnbase_action_BaseIOC.php
+
+		-
+			message: "#^Parameter \\$configurations of method tx_rnbase_action_BaseIOC\\:\\:setConfigurations\\(\\) has invalid type Tx_Rnbase_Configuration_ProcessorInterface\\.$#"
+			count: 1
+			path: Legacy/action/class.tx_rnbase_action_BaseIOC.php
+
+		-
+			message: "#^Call to static method getCache\\(\\) on an unknown class tx_rnbase_cache_Manager\\.$#"
+			count: 1
+			path: Legacy/action/class.tx_rnbase_action_CacheHandlerDefault.php
+
+		-
+			message: "#^Call to static method getTSFE\\(\\) on an unknown class tx_rnbase_util_TYPO3\\.$#"
+			count: 1
+			path: Legacy/action/class.tx_rnbase_action_CacheHandlerDefault.php
+
+		-
+			message: "#^Call to static method trimExplode\\(\\) on an unknown class tx_rnbase_util_Strings\\.$#"
+			count: 1
+			path: Legacy/action/class.tx_rnbase_action_CacheHandlerDefault.php
 
 		-
 			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:requireOnce\\(\\)\\.$#"
 			count: 1
 			path: Legacy/class.tx_rnbase.php
+
+		-
+			message: "#^Call to static method extPath\\(\\) on an unknown class tx_rnbase_util_Extensions\\.$#"
+			count: 1
+			path: Legacy/class.tx_rnbase.php
+
+		-
+			message: "#^Call to static method enableTimeTrack\\(\\) on an unknown class tx_rnbase_util_Misc\\.$#"
+			count: 1
+			path: Legacy/class.tx_rnbase_controller.php
+
+		-
+			message: "#^Call to static method pullTT\\(\\) on an unknown class tx_rnbase_util_Misc\\.$#"
+			count: 4
+			path: Legacy/class.tx_rnbase_controller.php
+
+		-
+			message: "#^Call to static method pushTT\\(\\) on an unknown class tx_rnbase_util_Misc\\.$#"
+			count: 4
+			path: Legacy/class.tx_rnbase_controller.php
+
+		-
+			message: "#^Call to static method trimExplode\\(\\) on an unknown class tx_rnbase_util_Strings\\.$#"
+			count: 2
+			path: Legacy/class.tx_rnbase_controller.php
 
 		-
 			message: "#^Caught class Sys25\\\\RnBase\\\\Utility\\\\TYPO3\\\\CMS\\\\Core\\\\Error\\\\Http\\\\PageNotFoundException not found\\.$#"
@@ -307,6 +597,31 @@ parameters:
 
 		-
 			message: "#^Access to an undefined property tx_rnbase_filter_BaseFilter\\:\\:\\$inputData\\.$#"
+			count: 1
+			path: Legacy/filter/class.tx_rnbase_filter_BaseFilter.php
+
+		-
+			message: "#^Call to static method getInstance\\(\\) on an unknown class Tx_Rnbase_Database_Connection\\.$#"
+			count: 2
+			path: Legacy/filter/class.tx_rnbase_filter_BaseFilter.php
+
+		-
+			message: "#^Call to static method getSpecialChars\\(\\) on an unknown class tx_rnbase_util_SearchBase\\.$#"
+			count: 2
+			path: Legacy/filter/class.tx_rnbase_filter_BaseFilter.php
+
+		-
+			message: "#^Call to static method setConfigFields\\(\\) on an unknown class tx_rnbase_util_SearchBase\\.$#"
+			count: 1
+			path: Legacy/filter/class.tx_rnbase_filter_BaseFilter.php
+
+		-
+			message: "#^Call to static method setConfigOptions\\(\\) on an unknown class tx_rnbase_util_SearchBase\\.$#"
+			count: 1
+			path: Legacy/filter/class.tx_rnbase_filter_BaseFilter.php
+
+		-
+			message: "#^Parameter \\$item of method tx_rnbase_filter_BaseFilter\\:\\:addFilterItem\\(\\) has invalid type tx_rnbase_IFilterItem\\.$#"
 			count: 1
 			path: Legacy/filter/class.tx_rnbase_filter_BaseFilter.php
 
@@ -326,9 +641,99 @@ parameters:
 			path: Legacy/model/class.tx_rnbase_model_data.php
 
 		-
+			message: "#^Call to static method callModules\\(\\) on an unknown class tx_rnbase_util_BaseMarker\\.$#"
+			count: 1
+			path: Legacy/view/class.tx_rnbase_view_Base.php
+
+		-
+			message: "#^Call to static method containsMarker\\(\\) on an unknown class tx_rnbase_util_BaseMarker\\.$#"
+			count: 1
+			path: Legacy/view/class.tx_rnbase_view_Base.php
+
+		-
+			message: "#^Call to static method disableSubstCache\\(\\) on an unknown class tx_rnbase_util_Templates\\.$#"
+			count: 1
+			path: Legacy/view/class.tx_rnbase_view_Base.php
+
+		-
+			message: "#^Call to static method findUnusedCols\\(\\) on an unknown class tx_rnbase_util_BaseMarker\\.$#"
+			count: 1
+			path: Legacy/view/class.tx_rnbase_view_Base.php
+
+		-
+			message: "#^Call to static method getFileAbsFileName\\(\\) on an unknown class tx_rnbase_util_Files\\.$#"
+			count: 1
+			path: Legacy/view/class.tx_rnbase_view_Base.php
+
+		-
+			message: "#^Call to static method getFileResource\\(\\) on an unknown class tx_rnbase_util_Files\\.$#"
+			count: 1
+			path: Legacy/view/class.tx_rnbase_view_Base.php
+
+		-
+			message: "#^Call to static method getSubpart\\(\\) on an unknown class tx_rnbase_util_Templates\\.$#"
+			count: 1
+			path: Legacy/view/class.tx_rnbase_view_Base.php
+
+		-
+			message: "#^Call to static method mayday\\(\\) on an unknown class tx_rnbase_util_Misc\\.$#"
+			count: 2
+			path: Legacy/view/class.tx_rnbase_view_Base.php
+
+		-
+			message: "#^Call to static method substituteMarkerArrayCached\\(\\) on an unknown class tx_rnbase_util_BaseMarker\\.$#"
+			count: 2
+			path: Legacy/view/class.tx_rnbase_view_Base.php
+
+		-
+			message: "#^Parameter \\$configurations of method tx_rnbase_view_Base\\:\\:renderPluginData\\(\\) has invalid type Tx_Rnbase_Configuration_ProcessorInterface\\.$#"
+			count: 1
+			path: Legacy/view/class.tx_rnbase_view_Base.php
+
+		-
+			message: "#^Call to static method substituteMarkerArrayCached\\(\\) on an unknown class tx_rnbase_util_Templates\\.$#"
+			count: 1
+			path: Legacy/view/class.tx_rnbase_view_List.php
+
+		-
+			message: "#^Call to static method getFileAbsFileName\\(\\) on an unknown class tx_rnbase_util_Files\\.$#"
+			count: 1
+			path: Legacy/view/class.tx_rnbase_view_phpTemplateEngine.php
+
+		-
+			message: "#^Call to static method getTSFE\\(\\) on an unknown class tx_rnbase_util_TYPO3\\.$#"
+			count: 8
+			path: tests/Classes/ExtBaseFluid/Controller/ExtbaseControllerWithCacheTagsTraitTest.php
+
+		-
+			message: "#^Call to static method prepareTSFE\\(\\) on an unknown class tx_rnbase_util_Misc\\.$#"
+			count: 1
+			path: tests/Classes/ExtBaseFluid/Controller/ExtbaseControllerWithCacheTagsTraitTest.php
+
+		-
+			message: "#^Call to static method getFileAbsFileName\\(\\) on an unknown class tx_rnbase_util_Files\\.$#"
+			count: 9
+			path: tests/Classes/ExtBaseFluid/View/ActionTest.php
+
+		-
+			message: "#^Call to static method prepareTSFE\\(\\) on an unknown class tx_rnbase_util_Misc\\.$#"
+			count: 1
+			path: tests/Classes/ExtBaseFluid/View/ActionTest.php
+
+		-
+			message: "#^Call to static method getContentObjectRendererClass\\(\\) on an unknown class tx_rnbase_util_Typo3Classes\\.$#"
+			count: 2
+			path: tests/Classes/ExtBaseFluid/View/StandaloneTest.php
+
+		-
 			message: "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManager constructor invoked with 0 parameters, 2 required\\.$#"
 			count: 1
 			path: tests/Classes/ExtBaseFluid/View/StandaloneTest.php
+
+		-
+			message: "#^Call to static method prepareTSFE\\(\\) on an unknown class tx_rnbase_util_Misc\\.$#"
+			count: 1
+			path: tests/Classes/ExtBaseFluid/ViewHelper/BaseViewHelperTest.php
 
 		-
 			message: "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManager constructor invoked with 0 parameters, 2 required\\.$#"
@@ -336,12 +741,342 @@ parameters:
 			path: tests/Classes/ExtBaseFluid/ViewHelper/BaseViewHelperTest.php
 
 		-
+			message: "#^Call to static method getFileAbsFileName\\(\\) on an unknown class tx_rnbase_util_Files\\.$#"
+			count: 1
+			path: tests/Classes/ExtBaseFluid/ViewHelper/Configurations/GetViewHelperTest.php
+
+		-
+			message: "#^Call to static method getFileAbsFileName\\(\\) on an unknown class tx_rnbase_util_Files\\.$#"
+			count: 7
+			path: tests/Classes/ExtBaseFluid/ViewHelper/PageBrowserViewHelperTest.php
+
+		-
+			message: "#^Call to static method prepareTSFE\\(\\) on an unknown class tx_rnbase_util_Misc\\.$#"
+			count: 1
+			path: tests/Classes/ExtBaseFluid/ViewHelper/PageBrowserViewHelperTest.php
+
+		-
+			message: "#^Parameter \\$pageBrowser of method Sys25\\\\RnBase\\\\ExtBaseFluid\\\\ViewHelper\\\\PageBrowserViewHelperTest\\:\\:getPreparedVîewHelperWithPageBrowser\\(\\) has invalid type tx_rnbase_util_PageBrowser\\.$#"
+			count: 1
+			path: tests/Classes/ExtBaseFluid/ViewHelper/PageBrowserViewHelperTest.php
+
+		-
+			message: "#^Call to static method getFileAbsFileName\\(\\) on an unknown class tx_rnbase_util_Files\\.$#"
+			count: 1
+			path: tests/Classes/ExtBaseFluid/ViewHelper/Parameters/PostOrGetViewHelperTest.php
+
+		-
+			message: "#^Call to static method getPageRenderer\\(\\) on an unknown class tx_rnbase_util_TYPO3\\.$#"
+			count: 3
+			path: tests/action/class.tx_rnbase_tests_action_BaseIOC_testcase.php
+
+		-
+			message: "#^Call to static method getTSFE\\(\\) on an unknown class tx_rnbase_util_TYPO3\\.$#"
+			count: 2
+			path: tests/action/class.tx_rnbase_tests_action_BaseIOC_testcase.php
+
+		-
+			message: "#^Call to static method prepareTSFE\\(\\) on an unknown class tx_rnbase_util_Misc\\.$#"
+			count: 1
+			path: tests/action/class.tx_rnbase_tests_action_BaseIOC_testcase.php
+
+		-
+			message: "#^Call to static method getContentObjectRendererClass\\(\\) on an unknown class tx_rnbase_util_Typo3Classes\\.$#"
+			count: 1
+			path: tests/action/class.tx_rnbase_tests_action_CacheHandlerDefault_testcase.php
+
+		-
+			message: "#^Access to constant CACHE_FRONTEND_VARIABLE on an unknown class tx_rnbase_cache_Manager\\.$#"
+			count: 1
+			path: tests/cache/class.tx_rnbase_cache_Manager_testcase.php
+
+		-
+			message: "#^Call to static method getCacheClass\\(\\) on an unknown class tx_rnbase_cache_Manager\\.$#"
+			count: 1
+			path: tests/cache/class.tx_rnbase_cache_Manager_testcase.php
+
+		-
+			message: "#^Call to static method getExtensionCfgValue\\(\\) on an unknown class Tx_Rnbase_Configuration_Processor\\.$#"
+			count: 1
+			path: tests/class.tx_rnbase_tests_Logger_testcase.php
+
+		-
+			message: "#^Call to static method isDebugEnabled\\(\\) on an unknown class tx_rnbase_util_Logger\\.$#"
+			count: 2
+			path: tests/class.tx_rnbase_tests_Logger_testcase.php
+
+		-
+			message: "#^Call to static method isFatalEnabled\\(\\) on an unknown class tx_rnbase_util_Logger\\.$#"
+			count: 2
+			path: tests/class.tx_rnbase_tests_Logger_testcase.php
+
+		-
+			message: "#^Call to static method isInfoEnabled\\(\\) on an unknown class tx_rnbase_util_Logger\\.$#"
+			count: 2
+			path: tests/class.tx_rnbase_tests_Logger_testcase.php
+
+		-
+			message: "#^Call to static method isLoaded\\(\\) on an unknown class tx_rnbase_util_Extensions\\.$#"
+			count: 1
+			path: tests/class.tx_rnbase_tests_Logger_testcase.php
+
+		-
+			message: "#^Call to static method isNoticeEnabled\\(\\) on an unknown class tx_rnbase_util_Logger\\.$#"
+			count: 3
+			path: tests/class.tx_rnbase_tests_Logger_testcase.php
+
+		-
+			message: "#^Call to static method isWarningEnabled\\(\\) on an unknown class tx_rnbase_util_Logger\\.$#"
+			count: 2
+			path: tests/class.tx_rnbase_tests_Logger_testcase.php
+
+		-
+			message: "#^Call to static method containsMarker\\(\\) on an unknown class tx_rnbase_util_BaseMarker\\.$#"
+			count: 3
+			path: tests/class.tx_rnbase_tests_basemarker_testcase.php
+
+		-
+			message: "#^Call to static method getCache\\(\\) on an unknown class tx_rnbase_cache_Manager\\.$#"
+			count: 1
+			path: tests/class.tx_rnbase_tests_cache_testcase.php
+
+		-
+			message: "#^Instantiated class tx_rnbase_util_Calendar not found\\.$#"
+			count: 1
+			path: tests/class.tx_rnbase_tests_calendar_testcase.php
+
+		-
+			message: "#^Call to static method getContentObjectRendererClass\\(\\) on an unknown class tx_rnbase_util_Typo3Classes\\.$#"
+			count: 2
+			path: tests/class.tx_rnbase_tests_configurations_testcase.php
+
+		-
 			message: "#^Call to an undefined method tx_rnbase_dummyController\\:\\:getErrorMailHtml\\(\\)\\.$#"
 			count: 1
 			path: tests/class.tx_rnbase_tests_controller_testcase.php
 
 		-
+			message: "#^Call to static method getTypoScriptFrontendControllerClass\\(\\) on an unknown class tx_rnbase_util_Typo3Classes\\.$#"
+			count: 3
+			path: tests/class.tx_rnbase_tests_controller_testcase.php
+
+		-
+			message: "#^Parameter \\$configurations of method tx_rnbase_exception_HandlerWithoutCorrectInterface\\:\\:handleException\\(\\) has invalid type Tx_Rnbase_Configuration_ProcessorInterface\\.$#"
+			count: 1
+			path: tests/class.tx_rnbase_tests_controller_testcase.php
+
+		-
+			message: "#^Call to static method getContentObjectRendererClass\\(\\) on an unknown class tx_rnbase_util_Typo3Classes\\.$#"
+			count: 1
+			path: tests/class.tx_rnbase_tests_listbuilder_testcase.php
+
+		-
+			message: "#^Call to static method prepareTSFE\\(\\) on an unknown class tx_rnbase_util_Misc\\.$#"
+			count: 1
+			path: tests/class.tx_rnbase_tests_listbuilder_testcase.php
+
+		-
+			message: "#^Instantiated class tx_rnbase_model_media not found\\.$#"
+			count: 2
+			path: tests/class.tx_rnbase_tests_listbuilder_testcase.php
+
+		-
+			message: "#^Call to static method createHash\\(\\) on an unknown class tx_rnbase_util_Misc\\.$#"
+			count: 5
+			path: tests/class.tx_rnbase_tests_misc_testcase.php
+
+		-
+			message: "#^Call to static method isExtLoaded\\(\\) on an unknown class tx_rnbase_util_TYPO3\\.$#"
+			count: 1
+			path: tests/class.tx_rnbase_tests_rnbase_testcase.php
+
+		-
+			message: "#^Call to static method isExtMinVersion\\(\\) on an unknown class tx_rnbase_util_TYPO3\\.$#"
+			count: 1
+			path: tests/class.tx_rnbase_tests_rnbase_testcase.php
+
+		-
 			message: "#^Access to an undefined property tx_rnbase_tests_fixtures_classes_Decorator\\:\\:\\$mod\\.$#"
 			count: 1
 			path: tests/fixtures/classes/class.tx_rnbase_tests_fixtures_classes_Decorator.php
+
+		-
+			message: "#^Call to static method getDocumentTemplateClass\\(\\) on an unknown class tx_rnbase_util_Typo3Classes\\.$#"
+			count: 1
+			path: tests/fixtures/classes/class.tx_rnbase_tests_fixtures_classes_Mod.php
+
+		-
+			message: "#^Call to static method convert4TCA2Date\\(\\) on an unknown class tx_rnbase_util_Dates\\.$#"
+			count: 1
+			path: tests/util/class.tx_rnbase_tests_util_Dates_testcase.php
+
+		-
+			message: "#^Call to static method convert4TCA2DateTime\\(\\) on an unknown class tx_rnbase_util_Dates\\.$#"
+			count: 1
+			path: tests/util/class.tx_rnbase_tests_util_Dates_testcase.php
+
+		-
+			message: "#^Call to static method convert4TCA2Timestamp\\(\\) on an unknown class tx_rnbase_util_Dates\\.$#"
+			count: 1
+			path: tests/util/class.tx_rnbase_tests_util_Dates_testcase.php
+
+		-
+			message: "#^Call to static method date_mysql2tstamp\\(\\) on an unknown class tx_rnbase_util_Dates\\.$#"
+			count: 2
+			path: tests/util/class.tx_rnbase_tests_util_Dates_testcase.php
+
+		-
+			message: "#^Call to static method date_tstamp2mysql\\(\\) on an unknown class tx_rnbase_util_Dates\\.$#"
+			count: 1
+			path: tests/util/class.tx_rnbase_tests_util_Dates_testcase.php
+
+		-
+			message: "#^Call to static method datetime_mysql2tstamp\\(\\) on an unknown class tx_rnbase_util_Dates\\.$#"
+			count: 2
+			path: tests/util/class.tx_rnbase_tests_util_Dates_testcase.php
+
+		-
+			message: "#^Call to static method getTimeStamp\\(\\) on an unknown class tx_rnbase_util_Dates\\.$#"
+			count: 2
+			path: tests/util/class.tx_rnbase_tests_util_Dates_testcase.php
+
+		-
+			message: "#^Call to static method mkdir_deep\\(\\) on an unknown class tx_rnbase_util_Files\\.$#"
+			count: 3
+			path: tests/util/class.tx_rnbase_tests_util_Files_testcase.php
+
+		-
+			message: "#^Call to static method getIndpEnv\\(\\) on an unknown class tx_rnbase_util_Misc\\.$#"
+			count: 4
+			path: tests/util/class.tx_rnbase_tests_util_Link_testcase.php
+
+		-
+			message: "#^Call to static method getInstance\\(\\) on an unknown class tx_rnbase_util_Lock\\.$#"
+			count: 2
+			path: tests/util/class.tx_rnbase_tests_util_Lock_testcase.php
+
+		-
+			message: "#^Call to static method isDevelopmentIp\\(\\) on an unknown class tx_rnbase_util_Network\\.$#"
+			count: 1
+			path: tests/util/class.tx_rnbase_tests_util_Network_testcase.php
+
+		-
+			message: "#^Call to static method locationHeaderUrl\\(\\) on an unknown class tx_rnbase_util_Network\\.$#"
+			count: 1
+			path: tests/util/class.tx_rnbase_tests_util_Network_testcase.php
+
+		-
+			message: "#^Call to static method getHttpUtilityClass\\(\\) on an unknown class tx_rnbase_util_Typo3Classes\\.$#"
+			count: 1
+			path: tests/util/class.tx_rnbase_tests_util_PageBrowser_testcase.php
+
+		-
+			message: "#^Instantiated class tx_rnbase_util_PageBrowser not found\\.$#"
+			count: 5
+			path: tests/util/class.tx_rnbase_tests_util_PageBrowser_testcase.php
+
+		-
+			message: "#^Call to static method parseTsConfig\\(\\) on an unknown class tx_rnbase_util_TS\\.$#"
+			count: 1
+			path: tests/util/class.tx_rnbase_tests_util_SimpleMarker_testcase.php
+
+		-
+			message: "#^Class Tx_Rnbase_Configuration_Processor not found\\.$#"
+			count: 1
+			path: tests/util/class.tx_rnbase_tests_util_SimpleMarker_testcase.php
+
+		-
+			message: "#^Class tx_rnbase_util_FormatUtil not found\\.$#"
+			count: 1
+			path: tests/util/class.tx_rnbase_tests_util_SimpleMarker_testcase.php
+
+		-
+			message: "#^Call to static method yamlLoad\\(\\) on an unknown class tx_rnbase_util_Spyc\\.$#"
+			count: 1
+			path: tests/util/class.tx_rnbase_tests_util_Spyc_testcase.php
+
+		-
+			message: "#^Call to static method hexArr2bin\\(\\) on an unknown class tx_rnbase_util_Strings\\.$#"
+			count: 2
+			path: tests/util/class.tx_rnbase_tests_util_Strings_testcase.php
+
+		-
+			message: "#^Call to static method inList\\(\\) on an unknown class tx_rnbase_util_Strings\\.$#"
+			count: 2
+			path: tests/util/class.tx_rnbase_tests_util_Strings_testcase.php
+
+		-
+			message: "#^Call to static method isLastPartOfStr\\(\\) on an unknown class tx_rnbase_util_Strings\\.$#"
+			count: 1
+			path: tests/util/class.tx_rnbase_tests_util_Strings_testcase.php
+
+		-
+			message: "#^Call to static method isUtf8String\\(\\) on an unknown class tx_rnbase_util_Strings\\.$#"
+			count: 2
+			path: tests/util/class.tx_rnbase_tests_util_Strings_testcase.php
+
+		-
+			message: "#^Call to static method getLanguageFieldForTable\\(\\) on an unknown class tx_rnbase_util_TCA\\.$#"
+			count: 3
+			path: tests/util/class.tx_rnbase_tests_util_TCA_testcase.php
+
+		-
+			message: "#^Call to static method getTransOrigPointerFieldForTable\\(\\) on an unknown class tx_rnbase_util_TCA\\.$#"
+			count: 3
+			path: tests/util/class.tx_rnbase_tests_util_TCA_testcase.php
+
+		-
+			message: "#^Call to static method validateModel\\(\\) on an unknown class tx_rnbase_util_TCA\\.$#"
+			count: 1
+			path: tests/util/class.tx_rnbase_tests_util_TCA_testcase.php
+
+		-
+			message: "#^Call to static method validateRecord\\(\\) on an unknown class tx_rnbase_util_TCA\\.$#"
+			count: 1
+			path: tests/util/class.tx_rnbase_tests_util_TCA_testcase.php
+
+		-
+			message: "#^Call to static method getContentObjectRendererClass\\(\\) on an unknown class tx_rnbase_util_Typo3Classes\\.$#"
+			count: 3
+			path: tests/util/class.tx_rnbase_tests_util_TSFAL_testcase.php
+
+		-
+			message: "#^Call to static method getHttpUtilityClass\\(\\) on an unknown class tx_rnbase_util_TYPO3\\.$#"
+			count: 1
+			path: tests/util/class.tx_rnbase_tests_util_TYPO3_testcase.php
+
+		-
+			message: "#^Call to static method extPath\\(\\) on an unknown class tx_rnbase_util_Extensions\\.$#"
+			count: 1
+			path: tests/util/class.tx_rnbase_tests_util_Templates_testcase.php
+
+		-
+			message: "#^Call to static method getSubpart\\(\\) on an unknown class tx_rnbase_util_Templates\\.$#"
+			count: 2
+			path: tests/util/class.tx_rnbase_tests_util_Templates_testcase.php
+
+		-
+			message: "#^Call to static method getTSTemplate\\(\\) on an unknown class tx_rnbase_util_Templates\\.$#"
+			count: 3
+			path: tests/util/class.tx_rnbase_tests_util_Templates_testcase.php
+
+		-
+			message: "#^Call to static method getUrl\\(\\) on an unknown class tx_rnbase_util_Network\\.$#"
+			count: 1
+			path: tests/util/class.tx_rnbase_tests_util_Templates_testcase.php
+
+		-
+			message: "#^Call to static method includeSubTemplates\\(\\) on an unknown class tx_rnbase_util_Templates\\.$#"
+			count: 1
+			path: tests/util/class.tx_rnbase_tests_util_Templates_testcase.php
+
+		-
+			message: "#^Call to static method substituteMarkerArrayCached\\(\\) on an unknown class tx_rnbase_util_Templates\\.$#"
+			count: 5
+			path: tests/util/class.tx_rnbase_tests_util_Templates_testcase.php
+
+		-
+			message: "#^Class tx_rnbase_util_XmlElement not found\\.$#"
+			count: 1
+			path: tests/util/class.tx_rnbase_tests_util_XmlElement_testcase.php
 
