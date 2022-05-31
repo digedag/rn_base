@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2022-05-31T12:54:10Z" product-name="rn_base">
+		<header/>
+		<body>
+			<trans-unit id="msg_error" resname="msg_error"  approved="yes">
+				<source>Error</source>
+				<target>Fehler</target>
+			</trans-unit>
+			<trans-unit id="msg_template_not_found" resname="msg_template_not_found"  approved="yes">
+				<source>Template not found.</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="msg_subpart_not_found" resname="msg_subpart_not_found"  approved="yes">
+				<source>Subpart not found</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="label_no_subselectoritems_found" resname="label_no_subselectoritems_found"  approved="yes">
+				<source>No items found to handle this module function.</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="label_action" resname="label_action"  approved="yes">
+				<source>Action</source>
+				<target>Aktion</target>
+			</trans-unit>
+			<trans-unit id="label_actions" resname="label_actions"  approved="yes">
+				<source>Actions</source>
+				<target>Aktionen</target>
+			</trans-unit>
+			<trans-unit id="label_search" resname="label_search"  approved="yes">
+				<source>Search term</source>
+				<target>Suchbegriff</target>
+			</trans-unit>
+			<trans-unit id="label_btn_search" resname="label_btn_search"  approved="yes">
+				<source>Search</source>
+				<target>Suchen</target>
+			</trans-unit>
+			<trans-unit id="label_hidden" resname="label_hidden"  approved="yes">
+				<source>Hidden entries:</source>
+				<target>Versteckte Einträge:</target>
+			</trans-unit>
+			<trans-unit id="label_select_hide_hidden" resname="label_select_hide_hidden"  approved="yes">
+				<source>hide</source>
+				<target>verstecken</target>
+			</trans-unit>
+			<trans-unit id="label_select_show_hidden" resname="label_select_show_hidden"  approved="yes">
+				<source>show</source>
+				<target>zeigen</target>
+			</trans-unit>
+			<trans-unit id="label_show_details" resname="label_show_details"  approved="yes">
+				<source>Details</source>
+				<target>Details</target>
+			</trans-unit>
+			<trans-unit id="msg_confirmation_deletion" resname="msg_confirmation_deletion"  approved="yes">
+				<source>Do you really wan't do delete this item?</source>
+				<target>Soll dieser Datensatz wirklich gelöscht werden?</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

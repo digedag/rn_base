@@ -80,7 +80,7 @@ abstract class BaseModule extends ModuleBase implements IModule
      */
     public function init()
     {
-        $GLOBALS['LANG']->includeLLFile('EXT:rn_base/Resources/Private/Language/locallang.xml');
+        $GLOBALS['LANG']->includeLLFile('EXT:rn_base/Resources/Private/Language/locallang.xlf');
 
         $this->initModConf();
 
