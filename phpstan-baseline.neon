@@ -626,21 +626,6 @@ parameters:
 			path: Legacy/filter/class.tx_rnbase_filter_BaseFilter.php
 
 		-
-			message: "#^Undefined variable\\: \\$subpartArray$#"
-			count: 1
-			path: Legacy/filter/class.tx_rnbase_filter_FilterItemMarker.php
-
-		-
-			message: "#^Undefined variable\\: \\$wrappedSubpartArray$#"
-			count: 1
-			path: Legacy/filter/class.tx_rnbase_filter_FilterItemMarker.php
-
-		-
-			message: "#^Call to an undefined static method Sys25\\\\RnBase\\\\Domain\\\\Model\\\\DataModel\\:\\:getRecord\\(\\)\\.$#"
-			count: 1
-			path: Legacy/model/class.tx_rnbase_model_data.php
-
-		-
 			message: "#^Call to static method callModules\\(\\) on an unknown class tx_rnbase_util_BaseMarker\\.$#"
 			count: 1
 			path: Legacy/view/class.tx_rnbase_view_Base.php
