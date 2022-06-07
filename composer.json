@@ -161,7 +161,7 @@
 		},
 		"branch-alias": {
 			"dev-master": "1.14.x-dev",
-			"dev-11.5": "11.5.x-dev"
+			"dev-upgrade/11.5": "11.5.x-dev"
 		}
 	}
 }
