@@ -428,13 +428,15 @@ class ToolBox
      */
     protected function getJavaScriptForLinkToDataHandlerAction($urlParameters, array $options = [])
     {
-        $jumpToUrl = BackendUtility::getLinkToDataHandlerAction('&'.$urlParameters, -1);
+        $redirect = TYPO3::isTYPO115OrHigher() ? null : -1;
+        $jumpToUrl = BackendUtility::getLinkToDataHandlerAction('&'.$urlParameters, $redirect);
+
         // the jumpUrl method is no longer global available since TYPO3 8.7
         // furthermore we need the JS variable T3_THIS_LOCATION because it is used
         // as redirect in getLinkToDataHandlerAction when -1 is passed
         $this->addBaseInlineJSCode();
 
-        return $this->getConfirmCode('return jumpToUrl('.$jumpToUrl.');', $options);
+        return $this->getConfirmCode('return jumpToUrl('.Strings::quoteJSvalue($jumpToUrl).');', $options);
     }
 
     /**

@@ -529,11 +529,13 @@ abstract class BaseModule extends ModuleBase implements IModule
             </script>
             ';
 
-        // TODO: Die Zeile könnte problematisch sein...
-        $doc->postCode = '
+        if (!TYPO3::isTYPO115OrHigher()) {
+            // TODO: Die Zeile könnte problematisch sein...
+            $doc->postCode = '
             <script>
                 script_ended = 1;
                 if (top.fsMod) top.fsMod.recentIds["web"] = '.$this->id.';</script>';
+        }
     }
 
     /**

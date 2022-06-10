@@ -5,6 +5,7 @@ namespace Sys25\RnBase\Backend\Template;
 use Exception;
 use Sys25\RnBase\Backend\Template\Override\DocumentTemplate;
 use Sys25\RnBase\Backend\Utility\BackendUtility;
+use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
 use tx_rnbase_mod_IModule;
 
@@ -190,11 +191,13 @@ class ModuleTemplate
             </script>
             ';
 
-        // TODO: Die Zeile könnte problematisch sein...
-        $doc->postCode = '
-            <script>
-                script_ended = 1;
-                if (top.fsMod) top.fsMod.recentIds["web"] = '.$this->options['pid'].';</script>';
+        if (!TYPO3::isTYPO115OrHigher()) {
+            // TODO: Die Zeile könnte problematisch sein...
+            $doc->postCode = '
+                <script>
+                    script_ended = 1;
+                    if (top.fsMod) top.fsMod.recentIds["web"] = '.$this->options['pid'].';</script>';
+        }
     }
 
     private function prepareOptions($options)

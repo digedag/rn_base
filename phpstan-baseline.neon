@@ -41,11 +41,6 @@ parameters:
 			path: Classes/Backend/Template/Override/DocumentTemplate.php
 
 		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Backend\\\\Template\\\\Override\\\\DocumentTemplate\\:\\:\\$postCode\\.$#"
-			count: 1
-			path: Classes/Backend/Template/Override/DocumentTemplate.php
-
-		-
 			message: "#^Method Sys25\\\\RnBase\\\\Backend\\\\Template\\\\Override\\\\DocumentTemplate\\:\\:spacer\\(\\) should return string but return statement is missing\\.$#"
 			count: 1
 			path: Classes/Backend/Template/Override/DocumentTemplate.php

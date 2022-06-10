@@ -15,6 +15,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 
 /***************************************************************
  *  Copyright notice
@@ -145,6 +146,14 @@ class QueryBuilderFacade
                         ->add(tx_rnbase::makeInstance(BackendWorkspaceRestriction::class));
                 } else {
                     $restrictions->add(tx_rnbase::makeInstance(FrontendRestrictionContainer::class));
+                }
+            } else {
+                $restrictions = $queryBuilder->getRestrictions()
+                    ->removeAll()
+                    ->add(tx_rnbase::makeInstance(DeletedRestriction::class))
+                    ->add(tx_rnbase::makeInstance(BackendWorkspaceRestriction::class));
+                if (!($options['enablefieldsbe'] ?? null)) {
+                    $restrictions->add(tx_rnbase::makeInstance(HiddenRestriction::class));
                 }
             }
         }

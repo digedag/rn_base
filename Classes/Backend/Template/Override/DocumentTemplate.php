@@ -76,6 +76,11 @@ function jumpToUrl(URL) {
     protected $pageRenderer;
 
     /**
+     * @var string
+     */
+    public $postCode;
+
+    /**
      * Constructor.
      */
     public function __construct()
