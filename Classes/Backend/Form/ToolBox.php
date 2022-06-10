@@ -701,6 +701,9 @@ class ToolBox
             $this->getTCEForm()->getNodeFactory(),
             [
                 'fieldName' => $name,
+                'tableName' => '',
+                'databaseRow' => ['uid' => 0],
+                'processedTca' => ['columns' => [$name => ['config' => ['type' => 'text']]]],
                 'parameterArray' => [
                     'itemFormElValue' => $value,
                     'itemFormElName' => $name,
