@@ -847,8 +847,8 @@ class Connection implements SingletonInterface
 
         // set default TCA values specific for the user
         $TCAdefaultOverride = TYPO3::isTYPO95OrHigher() ?
-            TYPO3::getBEUser()->getTSConfig('TCAdefaults')['properties'] :
-            TYPO3::getBEUser()->getTSConfigProp('TCAdefaults')
+            (TYPO3::getBEUser()->getTSConfig('TCAdefaults')['properties'] ?? null) :
+            (TYPO3::getBEUser()->getTSConfigProp('TCAdefaults') ?? null)
         ;
         if (is_array($TCAdefaultOverride)) {
             $tce->setDefaultsFromUserTS($TCAdefaultOverride);
