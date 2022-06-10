@@ -269,7 +269,7 @@ abstract class SearchBase
             return $result;
         }
         // else:
-        return isset($options['count']) ? $result[0]['cnt'] : $result;
+        return isset($options['count']) ? ($result[0]['cnt'] ?? 0) : $result;
     }
 
     private function countQuery(QueryBuilder $qb): int
