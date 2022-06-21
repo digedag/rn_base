@@ -508,7 +508,7 @@ abstract class SearchBase
                     }
 
                     if ($makeJoin) {
-                        if (is_array($data['join'])) {
+                        if (is_array($data['join'] ?? null)) {
                             $genericJoins = $genericJoins ?? [];
                             $genericJoins[] = $data['join'];
                         } else {
