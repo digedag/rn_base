@@ -491,9 +491,8 @@ abstract class SearchBase
      */
     private function getGenericJoins($tableAliases)
     {
-        $join = '';
+        $genericJoins = null;
         if ($this->isGeneric()) {
-            // FIXME: how should this work and is it possible to migrate to Join Array?
             $aliasArr = $this->genericData['alias'];
             if (is_array($aliasArr)) {
                 foreach ($aliasArr as $alias => $data) {
@@ -509,20 +508,31 @@ abstract class SearchBase
                     }
 
                     if ($makeJoin) {
-                        $join .= ' '.($data['join'] ?? '');
+                        if (is_array($data['join'])) {
+                            $genericJoins = $genericJoins ?? [];
+                            $genericJoins[] = $data['join'];
+                        } else {
+                            $genericJoins = $genericJoins ?? '';
+                            $genericJoins .= ' '.($data['join'] ?? '');
+                        }
                     }
                 }
             }
         }
-        $joins = $this->getJoins($tableAliases);
-        if (is_array($joins)) {
-            // FIXME: merge with generics
-            $join = $joins;
+
+        if ($joins = $this->getJoins($tableAliases)) {
+            if (is_array($joins)) {
+                if (is_array($genericJoins)) {
+                    $joins = array_merge($joins, $genericJoins);
+                }
+            } elseif (is_string($genericJoins)) {
+                $joins .= $genericJoins;
+            }
         } else {
-            $join .= $joins;
+            $joins = $genericJoins;
         }
 
-        return $join ?: [];
+        return $joins ?: [];
     }
 
     private function useQueryBuilder($tableAliases): bool
