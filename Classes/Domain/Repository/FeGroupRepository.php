@@ -67,7 +67,7 @@ class FeGroupRepository extends PersistenceRepository
      */
     public function isUserInGroup(FeUser $feuser, $groupUid)
     {
-        foreach ($this->getGroups($feuser) as $group) {
+        foreach ($this->getGroupsByUser($feuser) as $group) {
             if ($group->getUid() === (int) $groupUid) {
                 return true;
             }

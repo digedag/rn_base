@@ -2,8 +2,6 @@
 
 namespace Sys25\RnBase\Domain\Model;
 
-use Sys25\RnBase\Utility\TYPO3;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -65,14 +63,6 @@ class FeUser extends BaseModel
     public function getEmail()
     {
         return $this->getProperty('email');
-    }
-
-    /**
-     * Whether or not user has an active session.
-     */
-    public function isSessionActive()
-    {
-        return tx_t3users_util_ServiceRegistry::getFeUserService()->isUserOnline($this->getUid());
     }
 
     /**
