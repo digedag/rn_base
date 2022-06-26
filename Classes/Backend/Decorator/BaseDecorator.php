@@ -2,17 +2,18 @@
 
 namespace Sys25\RnBase\Backend\Decorator;
 
+use Sys25\RnBase\Backend\Form\ToolBox;
+use Sys25\RnBase\Backend\Module\BaseModule;
+use Sys25\RnBase\Backend\Module\IModule;
+use Sys25\RnBase\Backend\Utility\Icons;
+use Sys25\RnBase\Backend\Utility\TCA;
 use Sys25\RnBase\Domain\Model\BaseModel;
 use Sys25\RnBase\Domain\Model\DataInterface;
 use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Domain\Model\DomainModelInterface as DomainInterface;
 use Sys25\RnBase\Domain\Model\RecordInterface;
 use Sys25\RnBase\Utility\Strings;
-use tx_rnbase_mod_BaseModule;
-use tx_rnbase_mod_IModule;
-use tx_rnbase_mod_Util;
-use tx_rnbase_util_FormTool;
-use tx_rnbase_util_TCA;
+use Sys25\RnBase\Utility\TYPO3;
 
 /***************************************************************
  * Copyright notice
@@ -47,7 +48,7 @@ class BaseDecorator implements InterfaceDecorator
     /**
      * The module.
      *
-     * @var tx_rnbase_mod_BaseModule
+     * @var BaseModule
      */
     private $mod = null;
 
@@ -61,11 +62,11 @@ class BaseDecorator implements InterfaceDecorator
     /**
      * Constructor.
      *
-     * @param tx_rnbase_mod_BaseModule          $mod
+     * @param BaseModule          $mod
      * @param array|DataModel $options
      */
     public function __construct(
-        tx_rnbase_mod_BaseModule $mod,
+        BaseModule $mod,
         $options = []
     ) {
         $this->mod = $mod;
@@ -76,7 +77,7 @@ class BaseDecorator implements InterfaceDecorator
     /**
      * Returns the module.
      *
-     * @return tx_rnbase_mod_IModule
+     * @return IModule
      */
     protected function getModule()
     {
@@ -94,9 +95,7 @@ class BaseDecorator implements InterfaceDecorator
     }
 
     /**
-     * Returns an instance of tx_rnbase_mod_IModule.
-     *
-     * @return tx_rnbase_util_FormTool
+     * @return ToolBox
      */
     protected function getFormTool()
     {
@@ -189,7 +188,7 @@ class BaseDecorator implements InterfaceDecorator
         if ($entry instanceof BaseModel) {
             $label = $entry->getTcaLabel();
         } else {
-            $labelField = tx_rnbase_util_TCA::getLabelFieldForTable(
+            $labelField = TCA::getLabelFieldForTable(
                 $entry->getTableName()
             );
 
@@ -226,14 +225,14 @@ class BaseDecorator implements InterfaceDecorator
 
         // only for domain entries with table name
         if ($entry instanceof DomainInterface) {
-            $labelField = tx_rnbase_util_TCA::getLabelFieldForTable($entry->getTableName());
+            $labelField = TCA::getLabelFieldForTable($entry->getTableName());
             if ('uid' !== $labelField && $entry->getProperty($labelField)) {
                 $infos['label'] = 'Label: '.(string) $entry->getProperty($labelField);
             }
 
             $datefields = [
-                'Creation' => tx_rnbase_util_TCA::getCrdateFieldForTable($entry->getTableName()),
-                'Last Change' => tx_rnbase_util_TCA::getTstampFieldForTable($entry->getTableName()),
+                'Creation' => TCA::getCrdateFieldForTable($entry->getTableName()),
+                'Last Change' => TCA::getTstampFieldForTable($entry->getTableName()),
             ];
             foreach ($datefields as $dateTitle => $datefield) {
                 $date = $entry->getProperty($datefield);
@@ -385,7 +384,7 @@ class BaseDecorator implements InterfaceDecorator
                 ]
             );
         } else {
-            $action = tx_rnbase_mod_Util::getSpriteIcon('empty-icon');
+            $action = Icons::getSpriteIcon('empty-icon');
         }
 
         return $action;
@@ -419,7 +418,7 @@ class BaseDecorator implements InterfaceDecorator
                 ]
             );
         } else {
-            $action = tx_rnbase_mod_Util::getSpriteIcon('empty-icon');
+            $action = Icons::getSpriteIcon('empty-icon');
         }
 
         return $action;
@@ -464,7 +463,7 @@ class BaseDecorator implements InterfaceDecorator
         ];
 
         // add mopve up and move down buttons for sortable entities
-        if (tx_rnbase_util_TCA::getSortbyFieldForTable($item->getTableName())) {
+        if (TCA::getSortbyFieldForTable($item->getTableName())) {
             $actions['moveup'] = $def;
             $actions['movedown'] = $def;
         }
@@ -485,8 +484,8 @@ class BaseDecorator implements InterfaceDecorator
      */
     protected function isAdmin()
     {
-        if (is_object($GLOBALS['BE_USER'])) {
-            return (bool) $GLOBALS['BE_USER']->isAdmin();
+        if (is_object(TYPO3::getBEUser())) {
+            return (bool) TYPO3::getBEUser()->isAdmin();
         }
 
         return false;

@@ -6,21 +6,20 @@ use Sys25\RnBase\Backend\Form\Element\InputText;
 use Sys25\RnBase\Backend\Template\Override\DocumentTemplate;
 use Sys25\RnBase\Backend\Utility\BackendUtility;
 use Sys25\RnBase\Backend\Utility\Icons;
+use Sys25\RnBase\Backend\Utility\TCA;
 use Sys25\RnBase\Frontend\Request\Parameters;
+use Sys25\RnBase\Utility\Link;
 use Sys25\RnBase\Utility\Math;
 use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\T3General as T3GeneralAlias;
 use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
-use tx_rnbase_mod_Util;
-use tx_rnbase_util_Link;
-use tx_rnbase_util_TCA;
 
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007-2017 Rene Nitzsche (rene@system25.de)
+*  (c) 2007-2022 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -226,7 +225,7 @@ class ToolBox
     public function createShowLink($pid, $label, $urlParams = '', $options = [])
     {
         if ($options['sprite']) {
-            $label = tx_rnbase_mod_Util::getSpriteIcon($options['sprite']);
+            $label = Icons::getSpriteIcon($options['sprite']);
         }
         $jsCode = BackendUtility::viewOnClick($pid, '', '', '', '', $urlParams);
         $title = '';
@@ -453,7 +452,7 @@ class ToolBox
         if (isset($options['params']) && is_array($options['params'])) {
             $params = array_merge($params, $options['params']);
         }
-        $location = tx_rnbase_util_Link::linkThisScript($params);
+        $location = Link::linkThisScript($params);
         if ($encode) {
             $location = str_replace('%20', '', rawurlencode($location));
         }
@@ -755,7 +754,7 @@ class ToolBox
         $out .= '>';
 
         // Die TCA laden
-        tx_rnbase_util_TCA::loadTCA($table);
+        TCA::loadTCA($table);
 
         // Die Options ermitteln
         foreach ($TCA[$table]['columns'][$column]['config']['items'] as $item) {

@@ -4,19 +4,21 @@ namespace Sys25\RnBase\Backend\Lister;
 
 use Sys25\RnBase\Backend\Decorator\BaseDecorator;
 use Sys25\RnBase\Backend\Decorator\InterfaceDecorator;
+use Sys25\RnBase\Backend\Module\BaseModule;
+use Sys25\RnBase\Backend\Module\IModule;
 use Sys25\RnBase\Backend\Utility\BackendUtility;
+use Sys25\RnBase\Backend\Utility\BEPager;
 use Sys25\RnBase\Backend\Utility\DecoratorUtility;
+use Sys25\RnBase\Backend\Utility\ModuleUtility;
 use Sys25\RnBase\Backend\Utility\SearcherUtility;
 use Sys25\RnBase\Backend\Utility\Tables;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Domain\Repository\AbstractRepository;
+use Sys25\RnBase\Frontend\Marker\Templates;
 use Sys25\RnBase\Frontend\Request\Parameters;
 use Sys25\RnBase\Utility\Strings;
 use tx_rnbase;
-use tx_rnbase_mod_BaseModule;
-use tx_rnbase_mod_IModule;
-use tx_rnbase_mod_Util;
 use UnexpectedValueException;
 
 /***************************************************************
@@ -86,11 +88,11 @@ abstract class AbstractLister
     /**
      * Constructor.
      *
-     * @param tx_rnbase_mod_BaseModule $module
+     * @param BaseModule $module
      * @param array|DataModel $options
      */
     public function __construct(
-        tx_rnbase_mod_BaseModule $module,
+        BaseModule $module,
         $options = []
     ) {
         $this->storage = DataModel::getInstance(
@@ -134,7 +136,7 @@ abstract class AbstractLister
     /**
      * Returns the module.
      *
-     * @return tx_rnbase_mod_IModule
+     * @return IModule
      */
     protected function getModule()
     {
@@ -181,7 +183,7 @@ abstract class AbstractLister
         if (!$this->getStorage()->hasPager()) {
             $this->getStorage()->setPager(
                 tx_rnbase::makeInstance(
-                    'tx_rnbase_util_BEPager',
+                    BEPager::class,
                     $this->getListerId().'Pager',
                     $this->getModule()->getName(),
                     $this->getOptions()->getPid()
@@ -551,7 +553,7 @@ abstract class AbstractLister
      */
     protected function getModuleValue($key)
     {
-        return tx_rnbase_mod_Util::getModuleValue(
+        return ModuleUtility::getModuleValue(
             $key,
             $this->getModule(),
             [

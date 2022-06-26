@@ -3,16 +3,15 @@
 namespace Sys25\RnBase\Backend\Handler;
 
 use Exception;
+use Sys25\RnBase\Backend\Form\ToolBox;
 use Sys25\RnBase\Backend\Lister\AbstractLister;
+use Sys25\RnBase\Backend\Module\BaseModule;
 use Sys25\RnBase\Backend\Module\IModHandler;
 use Sys25\RnBase\Backend\Module\IModule;
 use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Frontend\Marker\Templates;
 use Sys25\RnBase\Utility\Strings;
 use tx_rnbase;
-use tx_rnbase_mod_BaseModule;
-use tx_rnbase_mod_IModule;
-use tx_rnbase_util_FormTool;
 
 /***************************************************************
  * Copyright notice
@@ -47,7 +46,7 @@ abstract class SearchHandler implements IModHandler
     /**
      * The current mod.
      *
-     * @var tx_rnbase_mod_BaseModule
+     * @var BaseModule
      */
     private $module = null;
 
@@ -61,7 +60,7 @@ abstract class SearchHandler implements IModHandler
     /**
      * Returns the module.
      *
-     * @return tx_rnbase_mod_IModule
+     * @return IModule
      */
     public function getModule()
     {
@@ -71,7 +70,7 @@ abstract class SearchHandler implements IModHandler
     /**
      * Returns an instance of form tool from the module.
      *
-     * @return tx_rnbase_util_FormTool
+     * @return ToolBox
      */
     protected function getFormTool()
     {
