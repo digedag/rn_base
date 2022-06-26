@@ -2,12 +2,13 @@
 
 namespace Sys25\RnBase\Domain\Repository;
 
-use Sys25\RnBase\Search\System\CategorySearch;
+use Sys25\RnBase\Domain\Model\FeUser;
+use Sys25\RnBase\Search\System\FeGroupSearch;
 
 /***************************************************************
  * Copyright notice
  *
- * (c) René Nitzsche <rene@system25.de>
+ * (c) 2022 Rene Nitzsche (rene@system25.de)
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,12 +28,7 @@ use Sys25\RnBase\Search\System\CategorySearch;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * @author          Hannes Bochmann
- * @license         http://www.gnu.org/licenses/lgpl.html
- *                  GNU Lesser General Public License, version 3 or later
- */
-class CategoryRepository extends PersistenceRepository
+class FeGroupRepository extends PersistenceRepository
 {
     /**
      * (non-PHPdoc).
@@ -41,6 +37,42 @@ class CategoryRepository extends PersistenceRepository
      */
     protected function getSearchClass()
     {
-        return CategorySearch::class;
+        return FeGroupSearch::class;
+    }
+
+    /**
+     * Returns all usergroups.
+     *
+     * @return array of tx_t3users_models_fegroup or empty array
+     */
+    public function getGroupsByUser(FeUser $feuser)
+    {
+        if (!$feuser->getProperty('usergroup')) {
+            return [];
+        }
+
+        $fields = $options = [];
+        $fields['FEGROUP.UID'][OP_IN_INT] = $feuser->getProperty('usergroup');
+
+        return $this->search($fields, $options);
+    }
+
+    /**
+     * Prüft ob der User der gegebenen Gruppe angehört.
+     *
+     * @param FeUser $feuser
+     * @param int $groupUid
+     *
+     * @return bool
+     */
+    public function isUserInGroup(FeUser $feuser, $groupUid)
+    {
+        foreach ($this->getGroups($feuser) as $group) {
+            if ($group->getUid() === (int) $groupUid) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
