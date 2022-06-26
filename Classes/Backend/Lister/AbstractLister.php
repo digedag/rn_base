@@ -15,6 +15,7 @@ use Sys25\RnBase\Backend\Utility\Tables;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Domain\Repository\AbstractRepository;
+use Sys25\RnBase\Frontend\Marker\Templates;
 use Sys25\RnBase\Frontend\Request\Parameters;
 use Sys25\RnBase\Utility\Strings;
 use tx_rnbase;
@@ -310,7 +311,7 @@ abstract class AbstractLister
     public function renderTemplate(
         $template
     ) {
-        return \Sys25\RnBase\Frontend\Marker\Templates::substituteMarkerArrayCached(
+        return Templates::substituteMarkerArrayCached(
             $template,
             $this->renderListMarkers()
         );
