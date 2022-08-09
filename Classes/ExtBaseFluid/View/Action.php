@@ -125,7 +125,7 @@ class Action extends \tx_rnbase_view_Base
         // support for old path configuration
         $oldPaths = ['templateRootPath', 'layoutRootPath', 'partialRootPath'];
         foreach ($oldPaths as $oldPath) {
-            if ($typoScriptConfiguration['view'][$oldPath]) {
+            if ($typoScriptConfiguration['view'][$oldPath] ?? false) {
                 $typoScriptConfiguration['view'][$oldPath.'s.'][0] = $typoScriptConfiguration['view'][$oldPath];
             }
         }
