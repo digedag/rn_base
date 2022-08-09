@@ -95,7 +95,7 @@ class Debug
                 $dat['file'] = substr($dat['file'], $pathSiteLength);
                 $pathFragment .= '('.$dat['args'][0].'),'.$dat['file'];
             }
-            $path[] = $pathFragment.'#'.$dat['line'];
+            $path[] = $pathFragment.'#'.($dat['line'] ?? '');
         }
 
         return $path;
