@@ -266,11 +266,6 @@ parameters:
 			path: Classes/Utility/Spyc.php
 
 		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Utility\\\\TSFAL\\:\\:\\$cObj\\.$#"
-			count: 2
-			path: Classes/Utility/TSFAL.php
-
-		-
 			message: "#^Cannot unset offset 'field' on array\\{\\}\\.$#"
 			count: 1
 			path: Classes/Utility/TSFAL.php

@@ -130,7 +130,7 @@ class Map extends BaseMap
             $this->getWecMap()->addMarkerByLatLong(
                 $coord->getLatitude(),
                 $coord->getLongitude(),
-                ($marker->getTitle() ? $marker->getTitle() : ''),
+                $marker->getTitle() ? $marker->getTitle() : '',
                 $marker->getDescription(),
                 $marker->getZoomMin(),
                 $marker->getZoomMax(),
@@ -146,7 +146,7 @@ class Map extends BaseMap
             $marker->getState(),
             $marker->getZip(),
             $marker->getCountry(),
-            ($marker->getTitle() ? $marker->getTitle() : ''),
+            $marker->getTitle() ? $marker->getTitle() : '',
             $marker->getDescription(),
             $marker->getZoomMin(),
             $marker->getZoomMax(),

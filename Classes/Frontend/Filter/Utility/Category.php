@@ -80,7 +80,7 @@ class Category
                     // wenn sich die $fields nicht geändert haben, dann wurden keine Kategorie
                     // gefunden.
                     $fieldsBefore == $fields
-                    ) {
+                ) {
                     $doSearch = false;
                 }
             }

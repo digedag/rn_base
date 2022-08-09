@@ -102,7 +102,7 @@ class PageBrowser implements PageBrowserInterface
         $offset = $this->pointer * $this->pageSize;
         // Wenn der Offset größer ist als die verfügbaren Einträge, dann den Offset neu berechnen.
         if ($offset >= $this->listSize) {
-            $offset = intval(((ceil($this->listSize / $this->pageSize)) - 1) * $this->pageSize);
+            $offset = intval((ceil($this->listSize / $this->pageSize) - 1) * $this->pageSize);
             if ($this->listSize > 0) {
                 $this->pointerOutOfRange = true;
             }

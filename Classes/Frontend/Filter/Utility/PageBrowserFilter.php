@@ -68,7 +68,7 @@ class PageBrowserFilter
                 throw new Exception('No search callback defined!');
             }
             // Die Gesamtzahl der Items ist entweder im Limit gesetzt oder muss ermittelt werden
-            $listSize = (int) $options['limit'];
+            $listSize = (int) ($options['limit'] ?? 0);
             if (!$listSize) {
                 // Mit Pagebrowser benötigen wir zwei Zugriffe, um die Gesamtanzahl der Items zu ermitteln
                 $pageBrowserOptions = $options;
@@ -88,7 +88,7 @@ class PageBrowserFilter
                 unset($options['count']);
             }
             // PageBrowser initialisieren
-            $pbId = $cfg['pbid'] ? $cfg['pbid'] : 'pb';
+            $pbId = $cfg['pbid'] ?? 'pb';
             /**
              * @var $pageBrowser PageBrowser
              */
@@ -97,7 +97,7 @@ class PageBrowserFilter
             $pageBrowser->setState($configurations->getParameters(), $listSize, $pageSize);
 
             // Nach dem Item nur suchen wenn über die Parameter kein Pointer gesetzt wurde.
-            if (is_array($cfg['pointerFromItem'])
+            if (is_array($cfg['pointerFromItem'] ?? null)
                 && !$configurations->getParameters()->offsetExists($pageBrowser->getParamName('pointer'))
                 && ($itemId = $configurations->getParameters()->get($cfg['pointerFromItem']['param']))) {
                 // Wir erzeugen uns das SQl der eigentlichen Abfrage.

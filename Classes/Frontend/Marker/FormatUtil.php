@@ -173,7 +173,7 @@ class FormatUtil
             '_',
             '',
             ($extensionKey) ? $extensionKey : $this->configurations->getExtensionKey()
-        ).'/'.($image);
+        ).'/'.$image;
 
         // Bei einfachen Bildern sollen die Einstellungen aus cObj->data nicht verwendet
         // werden, um zu verhindern, daß z.B. eine Gallery angezeigt wird
@@ -318,7 +318,7 @@ class FormatUtil
     {
         foreach ($markers as $marker) {
             $marker = (string) strtoupper($marker);
-            $markerArray["###${markerPrefix}${marker}###"] = '';
+            $markerArray["###{$markerPrefix}{$marker}###"] = '';
         }
     }
 
@@ -346,7 +346,7 @@ class FormatUtil
                     continue;
                 }
                 $colname = (string) strtoupper($colname);
-                $markerArray["###${markerPrefix}${colname}###"] = $value;
+                $markerArray["###{$markerPrefix}{$colname}###"] = $value;
             }
         }
 

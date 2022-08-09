@@ -3,6 +3,9 @@
 namespace Sys25\RnBase\ExtBaseFluid\View;
 
 use Sys25\RnBase\Configuration\ConfigurationInterface;
+use Sys25\RnBase\Utility\TYPO3;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 
 /***************************************************************
  * Copyright notice
@@ -44,13 +47,23 @@ class Factory
      */
     public static function getViewInstance(ConfigurationInterface $configurations, $frameworkSettings = [])
     {
-        /* @var $view \Sys25\RnBase\ExtBaseFluid\View\Standalone */
-        $view = \tx_rnbase::makeInstance('Sys25\\RnBase\\ExtBaseFluid\\View\\Standalone', $configurations->getCObj());
+        if (!TYPO3::isTYPO115OrHigher()) {
+            /* @var $view \Sys25\RnBase\ExtBaseFluid\View\Standalone */
+            $view = \tx_rnbase::makeInstance('Sys25\\RnBase\\ExtBaseFluid\\View\\Standalone', $configurations->getCObj());
 
-        $objectManager = $view->getObjectManager();
-        $configurationManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+            $objectManager = $view->getObjectManager();
+            $configurationManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+            $configurationManager->setConfiguration($frameworkSettings);
+            $view->injectObjectManager($objectManager);
+            $view->setConfigurations($configurations);
+
+            return $view;
+        }
+
+        $view = \tx_rnbase::makeInstance(Standalone::class);
+        $configurationManager = GeneralUtility::getContainer()->get(ConfigurationManager::class);
+        $configurationManager->setContentObject($configurations->getCObj());
         $configurationManager->setConfiguration($frameworkSettings);
-        $view->injectObjectManager($objectManager);
         $view->setConfigurations($configurations);
 
         return $view;

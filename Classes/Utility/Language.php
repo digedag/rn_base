@@ -267,7 +267,7 @@ class Language
         } else {
             // Im BE die LANG fragen...
             // Das $alternativeLabel wirkt nicht, weil $GLOBALS['LANG'] immer gesetzt ist...
-            $word = is_object($GLOBALS['LANG']) ? $GLOBALS['LANG']->getLL($key) : $alternativeLabel;
+            $word = is_object($GLOBALS['LANG'] ?? null) ? $GLOBALS['LANG']->getLL($key) : $alternativeLabel;
         }
 
         $output = (isset($this->LLtestPrefix)) ? $this->LLtestPrefix.$word : $word;

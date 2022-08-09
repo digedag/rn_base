@@ -15,6 +15,7 @@ use Sys25\RnBase\Frontend\Marker\Templates;
 use tx_rnbase;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /***************************************************************
  *  Copyright notice
@@ -44,6 +45,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class TSFAL
 {
     public const DEFAULT_LOCAL_FIELD = '_LOCALIZED_UID';
+
+    /**
+     * When a method is used as userfunc this variable get's set by TYPO3.
+     *
+     * @var ContentObjectRenderer
+     */
+    public $cObj;
 
     /**
      * Typoscript USER function for rendering DAM images.
@@ -98,14 +106,14 @@ class TSFAL
 
         // Is there a customized language field configured
         $langField = self::DEFAULT_LOCAL_FIELD;
-        $locUid = $conf->getCObj()->data[$langField]; // Save original uid
+        $locUid = $conf->getCObj()->data[$langField] ?? 0; // Save original uid
         if ($conf->get('forcedIdField')) {
             $langField = $conf->get('forcedIdField');
             // Copy localized UID
             $conf->getCObj()->data[self::DEFAULT_LOCAL_FIELD] = $conf->getCObj()->data[$langField];
         }
         // Check if there is a valid uid given.
-        $parentUid = intval($conf->getCObj()->data[self::DEFAULT_LOCAL_FIELD] ? $conf->getCObj()->data[self::DEFAULT_LOCAL_FIELD] : $conf->getCObj()->data['uid']);
+        $parentUid = intval($conf->getCObj()->data[self::DEFAULT_LOCAL_FIELD] ?? $conf->getCObj()->data['uid'] ?? 0);
         if (!$parentUid) {
             return '<!-- Invalid data record given -->';
         }
@@ -276,7 +284,7 @@ class TSFAL
     public function createConf($conf)
     {
         $configurations = tx_rnbase::makeInstance(Processor::class);
-        $configurations->init($conf, $this->cObj, $conf['qualifier'], $conf['qualifier']);
+        $configurations->init($conf, $this->cObj, $conf['qualifier'] ?? '', $conf['qualifier'] ?? '');
 
         return $configurations;
     }
