@@ -40,6 +40,11 @@ use Sys25\RnBase\Utility\Files;
 class Action extends \tx_rnbase_view_Base
 {
     /**
+     * @var RequestInterface
+     */
+    protected $request = null;
+
+    /**
      * @param string                    $templateName
      * @param \tx_rnbase_configurations|RequestInterface $configurations
      *
@@ -50,6 +55,7 @@ class Action extends \tx_rnbase_view_Base
     public function render($templateName, $configurations)
     {
         if ($configurations instanceof RequestInterface) {
+            $this->request = $configurations;
             $rnbaseViewData = $configurations->getViewContext();
             $configurations = $configurations->getConfigurations();
         } else {
@@ -190,8 +196,8 @@ class Action extends \tx_rnbase_view_Base
      */
     protected function getConfigurationId()
     {
-        $configurationId = '';
-        if (is_object($controller = $this->getController())) {
+        $configurationId = $this->request ? $this->request->getConfId() : '';
+        if (!$configurationId && is_object($controller = $this->getController())) {
             if (method_exists($controller, 'getConfId')) {
                 $configurationId = $controller->getConfId();
             }
