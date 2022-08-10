@@ -6,6 +6,7 @@ use ArrayIterator;
 use Exception;
 use IteratorAggregate;
 use Sys25\RnBase\Utility\Strings;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  *  Copyright notice
@@ -40,7 +41,7 @@ use Sys25\RnBase\Utility\Strings;
  *
  * @author Michael Wagner
  */
-class DataModel implements DataInterface, IteratorAggregate
+class DataModel implements DataInterface, IteratorAggregate, \ArrayAccess
 {
     /**
      * A flag indication if the model was modified after initialisation
@@ -376,5 +377,56 @@ class DataModel implements DataInterface, IteratorAggregate
     public function __toString()
     {
         return $this->toString();
+    }
+
+    /**
+     * @param mixed $property
+     *
+     * @return bool
+     */
+    public function offsetExists($property)
+    {
+        return $this->hasProperty($property);
+    }
+
+    /**
+     * @param mixed $property
+     *
+     * @return array|mixed|string|null
+     */
+    public function offsetGet($property)
+    {
+        $getterMethod = 'get'.GeneralUtility::underscoredToUpperCamelCase($property);
+        if (method_exists($this, $getterMethod)) {
+            $result = $this->$getterMethod();
+        } else {
+            $result = $this->getProperty($property);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param mixed $property
+     * @param mixed $value
+     *
+     * @retrun void
+     */
+    public function offsetSet($property, $value)
+    {
+        $setterMethod = 'set'.GeneralUtility::underscoredToUpperCamelCase($property);
+        if (method_exists($this, $setterMethod)) {
+            $this->$setterMethod($value);
+        } else {
+            $this->setProperty($property, $value);
+        }
+    }
+
+    /**
+     * @param mixed $property
+     */
+    public function offsetUnset($property)
+    {
+        $this->unsProperty($property);
     }
 }

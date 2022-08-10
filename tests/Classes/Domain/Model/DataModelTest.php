@@ -217,4 +217,75 @@ class DataModelTest extends BaseTestCase
 
         return DataModel::getInstance($data);
     }
+
+    /**
+     * @group unit
+     * @test
+     */
+    public function testOffsetExists()
+    {
+        $model = $this->getModel(
+            ['test' => 'value'],
+            DataModel::class,
+            ['dummy']
+        );
+
+        self::assertTrue(isset($model['test']));
+        self::assertFalse(isset($model['wrongTest']));
+    }
+
+    /**
+     * @group unit
+     * @test
+     */
+    public function testOffsetGet()
+    {
+        $model = $this->getModel(
+            ['test' => 'value'],
+            DataModel::class,
+            ['getImage']
+        );
+        $model
+            ->expects(self::once())
+            ->method('getImage')
+            ->willReturn(123);
+
+        self::assertSame('value', $model['test']);
+        self::assertSame(123, $model['image']);
+    }
+
+    /**
+     * @group unit
+     * @test
+     */
+    public function testOffsetSet()
+    {
+        $model = $this->getModel(
+            ['test' => 'wrongValue'],
+            DataModel::class,
+            ['setImage']
+        );
+        $model
+            ->expects(self::once())
+            ->method('setImage')
+            ->with(123);
+        $model['test'] = 'value';
+        $model['image'] = 123;
+        self::assertSame('value', $model['test']);
+    }
+
+    /**
+     * @group unit
+     * @test
+     */
+    public function testOffsetUnset()
+    {
+        $model = $this->getModel(
+            ['test' => 'wrongValue'],
+            DataModel::class,
+            ['dummy']
+        );
+        unset($model['test']);
+        self::assertFalse(isset($model['test']));
+    }
 }
