@@ -6,7 +6,6 @@ use ArrayIterator;
 use Exception;
 use IteratorAggregate;
 use Sys25\RnBase\Utility\Strings;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  *  Copyright notice
@@ -386,7 +385,7 @@ class DataModel implements DataInterface, IteratorAggregate, \ArrayAccess
      */
     public function offsetExists($property)
     {
-        return $this->hasProperty($property);
+        return $this->hasProperty($this->underscore($property));
     }
 
     /**
@@ -396,14 +395,23 @@ class DataModel implements DataInterface, IteratorAggregate, \ArrayAccess
      */
     public function offsetGet($property)
     {
-        $getterMethod = 'get'.GeneralUtility::underscoredToUpperCamelCase($property);
+        $getterMethod = 'get'.$this->underscoredToUpperCamelCase($property);
         if (method_exists($this, $getterMethod)) {
             $result = $this->$getterMethod();
         } else {
-            $result = $this->getProperty($property);
+            $result = $this->getProperty($this->underscore($property));
         }
 
         return $result;
+    }
+
+    /**
+     * Almost the same as TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase() but the
+     * string is not lowercased initially so firstName becomes FirstName and not Firstname.
+     */
+    protected function underscoredToUpperCamelCase(string $string): string
+    {
+        return str_replace(' ', '', ucwords(str_replace('_', ' ', $string)));
     }
 
     /**
@@ -414,11 +422,11 @@ class DataModel implements DataInterface, IteratorAggregate, \ArrayAccess
      */
     public function offsetSet($property, $value)
     {
-        $setterMethod = 'set'.GeneralUtility::underscoredToUpperCamelCase($property);
+        $setterMethod = 'set'.$this->underscoredToUpperCamelCase($property);
         if (method_exists($this, $setterMethod)) {
             $this->$setterMethod($value);
         } else {
-            $this->setProperty($property, $value);
+            $this->setProperty($this->underscore($property), $value);
         }
     }
 
@@ -427,6 +435,6 @@ class DataModel implements DataInterface, IteratorAggregate, \ArrayAccess
      */
     public function offsetUnset($property)
     {
-        $this->unsProperty($property);
+        $this->unsProperty($this->underscore($property));
     }
 }
