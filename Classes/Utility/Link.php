@@ -602,6 +602,7 @@ class Link
         }
         if (is_array($this->tagAttributes)
                 && (count($this->tagAttributes) > 0)) {
+            $conf['ATagParams'] = $conf['ATagParams'] ?? '';
             foreach ($this->tagAttributes as $key => $value) {
                 $conf['ATagParams'] .= ' '.$key.'="'.htmlspecialchars($value).'" ';
             }
@@ -748,7 +749,7 @@ class Link
                         continue;
                     }
                 }
-                $attributes[$aParam] = $configurations->getCObj()->stdWrap($atagParams[$aParam], $atagParams[$aParam.'.']);
+                $attributes[$aParam] = $configurations->getCObj()->stdWrap($atagParams[$aParam] ?? '', $atagParams[$aParam.'.'] ?? []);
             }
             $this->attributes($attributes);
         }
