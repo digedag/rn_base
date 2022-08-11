@@ -244,7 +244,7 @@ abstract class SearchBase
                 $what,
                 $from,
                 $sqlOptions,
-                isset($options['debug']) ? 1 : 0
+                $options['debug'] ?? 0
             );
 
             if ($queryOrBuilder instanceof QueryBuilder) {
@@ -262,7 +262,7 @@ abstract class SearchBase
             $what,
             $from,
             $sqlOptions,
-            isset($options['debug']) ? 1 : 0
+            $options['debug'] ?? 0
         );
 
         if (isset($options['sqlonly'])) {
