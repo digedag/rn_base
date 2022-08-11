@@ -7,18 +7,6 @@
 				<source>Error</source>
 				<target>Fehler</target>
 			</trans-unit>
-			<trans-unit id="msg_template_not_found" resname="msg_template_not_found"  approved="yes">
-				<source>Template not found.</source>
-				<target/>
-			</trans-unit>
-			<trans-unit id="msg_subpart_not_found" resname="msg_subpart_not_found"  approved="yes">
-				<source>Subpart not found</source>
-				<target/>
-			</trans-unit>
-			<trans-unit id="label_no_subselectoritems_found" resname="label_no_subselectoritems_found"  approved="yes">
-				<source>No items found to handle this module function.</source>
-				<target/>
-			</trans-unit>
 			<trans-unit id="label_action" resname="label_action"  approved="yes">
 				<source>Action</source>
 				<target>Aktion</target>
