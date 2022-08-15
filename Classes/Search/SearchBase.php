@@ -509,11 +509,13 @@ abstract class SearchBase
 
                     if ($makeJoin) {
                         if (is_array($data['join'] ?? null)) {
-                            $genericJoins = $genericJoins ?? [];
-                            $genericJoins[] = $data['join'];
+                            $genericJoins = (array) ($genericJoins ?: []);
+                            $genericJoins = array_merge($genericJoins, $data['join']);
                         } else {
                             $genericJoins = $genericJoins ?? '';
-                            $genericJoins .= ' '.($data['join'] ?? '');
+                            if ($data['join'] ?? null) {
+                                $genericJoins .= ' '.$data['join'];
+                            }
                         }
                     }
                 }
