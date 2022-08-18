@@ -131,8 +131,8 @@ abstract class SearchBase
                 if (strstr($alias, SEARCH_FIELD_CUSTOM)) {
                     continue;
                 } // CUSTOM ignorieren
-                list($tableAlias, $col) = explode('.', $alias);
-                if (!array_key_exists($tableAlias, $tableAliases)) {
+                $tableAlias = explode('.', $alias)[0] ?? null;
+                if ($tableAlias && !array_key_exists($tableAlias, $tableAliases)) {
                     $tableAliases[$tableAlias] = [];
                 }
             }

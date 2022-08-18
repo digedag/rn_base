@@ -1013,7 +1013,7 @@ class Processor implements ConfigurationInterface
             foreach ($languages[$languagePointer] as $key => $def) {
                 // Wir nehmen Flexformwerte nur, wenn sie sinnvolle Daten enthalten
                 // Sonst werden evt. vorhandenen Daten überschrieben
-                if (!(0 == strlen($def[$valuePointer]))) { // || $def[$valuePointer] == '0')
+                if (!(0 == strlen($def[$valuePointer] ?? ''))) { // || $def[$valuePointer] == '0')
                     $pathArray = explode('.', trim($key));
                     if (count($pathArray) > 1) {
                         // Die Angabe im Flexform ist in Punktnotation
