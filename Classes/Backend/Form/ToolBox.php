@@ -225,12 +225,12 @@ class ToolBox
      */
     public function createShowLink($pid, $label, $urlParams = '', $options = [])
     {
-        if ($options['sprite']) {
+        if ($options['sprite'] ?? false) {
             $label = tx_rnbase_mod_Util::getSpriteIcon($options['sprite']);
         }
-        $jsCode = BackendUtility::viewOnClick($pid, '', '', '', '', $urlParams);
+        $jsCode = BackendUtility::viewOnClick($pid, '', null, '', '', $urlParams);
         $title = '';
-        if ($options['hover']) {
+        if ($options['hover'] ?? false) {
             $title = ' title="'.$options['hover'].'" ';
         }
 
