@@ -311,6 +311,11 @@ parameters:
 			path: tests/Classes/ExtBaseFluid/ViewHelper/BaseViewHelperTest.php
 
 		-
+			message: "#^Call to static method any\\(\\) on an unknown class Prophecy\\\\Argument\\.$#"
+			count: 1
+			path: tests/Classes/Frontend/Filter/Utility/CategoryTest.php
+
+		-
 			message: "#^Call to an undefined method tx_rnbase_dummyController\\:\\:getErrorMailHtml\\(\\)\\.$#"
 			count: 1
 			path: tests/class.tx_rnbase_tests_controller_testcase.php
