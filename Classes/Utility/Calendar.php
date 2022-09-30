@@ -46,6 +46,7 @@ define('CALENDAR_WEEK_OF_YEAR', 8);
 class Calendar
 {
     public $_time; // Die Zeit des Kalenders
+    protected $_seconds;
 
     public function __construct()
     {
