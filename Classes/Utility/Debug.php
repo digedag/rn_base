@@ -117,7 +117,7 @@ class Debug
             return false;
         }
         if (null === $key) {
-            $key = $_GET['debug'];
+            $key = ($_GET['debug'] ?? null);
         }
 
         return $debugKey === $key;
