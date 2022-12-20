@@ -287,7 +287,7 @@ class TYPO3
      */
     public static function getBEUser()
     {
-        return $GLOBALS['BE_USER'];
+        return $GLOBALS['BE_USER'] ?? null;
     }
 
     /**
