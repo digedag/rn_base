@@ -3,8 +3,9 @@
 Changelog
 ---------
 
-v1.15.4 (??.07.2022)
+v1.15.4 (10.01.2023)
 * add classes for feuser and session handling
+* bugfixes and cleanup
 
 v1.15.3 (13.04.2022)
 * Remove useCacheHash since TYPO3 10.4
