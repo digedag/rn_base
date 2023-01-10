@@ -34,7 +34,6 @@ use Sys25\RnBase\Utility\TYPO3;
  * @license http://www.gnu.org/licenses/lgpl.html
  *        GNU Lesser General Public License, version 3 or later
  *
- * @method static string getModuleUrl(string $moduleName, array $urlParameters)
  * @method static array|bool readPageAccess(int $id, string $perms_clause)
  * @method static array|null getRecord(string $table, int $uid, string $fields = null, string $where = '', bool $useDeleteClause = false)
  * @method static string getFuncMenu(mixed $mainParams, string $elementName, string $currentValue, array $menuItems, string $script = '', string $addParams = '')

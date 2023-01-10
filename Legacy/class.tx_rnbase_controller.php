@@ -280,7 +280,7 @@ class tx_rnbase_controller
                 count($message) > 1 ? $message[1] : ''
             );
         } // Nice to have, aber weder aufwärts noch abwärtskompatibel...
-        catch (TYPO3\CMS\Core\Error\Http\PageNotFoundException $e) {
+        catch (\TYPO3\CMS\Core\Error\Http\PageNotFoundException $e) {
             $this->handlePageNotFound('TYPO3\\CMS\\Core\\Error\\Http\\PageNotFoundException was thrown');
         } catch (Exception $e) {
             $ret = $this->handleException($actionName, $e, $configurations);
