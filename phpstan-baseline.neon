@@ -286,11 +286,6 @@ parameters:
 			path: Legacy/class.tx_rnbase.php
 
 		-
-			message: "#^Caught class Sys25\\\\RnBase\\\\Utility\\\\TYPO3\\\\CMS\\\\Core\\\\Error\\\\Http\\\\PageNotFoundException not found\\.$#"
-			count: 1
-			path: Legacy/class.tx_rnbase_controller.php
-
-		-
 			message: "#^Access to an undefined property tx_rnbase_filter_BaseFilter\\:\\:\\$inputData\\.$#"
 			count: 1
 			path: Legacy/filter/class.tx_rnbase_filter_BaseFilter.php
