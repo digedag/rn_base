@@ -270,7 +270,7 @@ abstract class AbstractLister
      */
     protected function addDecoratorColumns(array &$columns)
     {
-            $this->getDecoratorUtility()
+        $this->getDecoratorUtility()
             ->addDecoratorColumnLabel($columns)
             ->addDecoratorColumnLanguage($columns)
             ->addDecoratorColumnActions($columns)
