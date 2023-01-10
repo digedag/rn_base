@@ -265,19 +265,18 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
             );
 
             $model = $this->getModel(
-                (array) ($data['_record']),
+                (array) $data['_record'],
                 $clazz,
                 $getters
             );
 
             // mock the getters and return the value from the nested yaml
             foreach ($getters as $getter) {
-                (
                     $model
                     ->expects(self::any())
                     ->method($getter)
                     ->will($this->returnValue($this->loadYaml($data[$getter], false)))
-                );
+                ;
             }
 
             return $model;

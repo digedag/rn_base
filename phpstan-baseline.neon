@@ -326,11 +326,6 @@ parameters:
 			path: Classes/Utility/Calendar.php
 
 		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Utility\\\\Calendar\\:\\:\\$_seconds\\.$#"
-			count: 3
-			path: Classes/Utility/Calendar.php
-
-		-
 			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Utility\\\\Email\\:\\:\\$htmlPart\\.$#"
 			count: 2
 			path: Classes/Utility/Email.php

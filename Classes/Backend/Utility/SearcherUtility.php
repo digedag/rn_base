@@ -97,11 +97,11 @@ class SearcherUtility
         $firstPrev = $lastNext = false;
         $baseTableName = $this->getOptions()->getBaseTableName();
         $downStep = 1;
-        if ((
+        if (
             $baseTableName
             && tx_rnbase_util_TCA::getSortbyFieldForTable($baseTableName)
             && ($options['limit'] || $options['offset'])
-        )) {
+        ) {
             // normalize limit and offset values to int
             array_key_exists('offset', $options) ? $options['offset'] = (int) $options['offset'] : null;
             array_key_exists('limit', $options) ? $options['limit'] = (int) $options['limit'] : null;

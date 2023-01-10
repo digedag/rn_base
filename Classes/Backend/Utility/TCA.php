@@ -185,10 +185,10 @@ class TCA
      */
     public static function getDeletedFieldForTable($tableName)
     {
-        if ((
+        if (
             empty($GLOBALS['TCA'][$tableName]) ||
             empty($GLOBALS['TCA'][$tableName]['ctrl']['delete'])
-        )) {
+        ) {
             return '';
         }
 

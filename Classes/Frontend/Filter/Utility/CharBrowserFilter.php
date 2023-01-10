@@ -61,7 +61,7 @@ class CharBrowserFilter
             $pagerData = self::findPagerData($fields, $options, $cfg);
 
             $firstChar = $configurations->getParameters()->offsetGet($pagerData['pointername']);
-            $firstChar = (strlen(trim($firstChar)) > 0) ? substr($firstChar, 0, ('0' == $firstChar[0] ? 3 : 1)) : $pagerData['default'];
+            $firstChar = (strlen(trim($firstChar)) > 0) ? substr($firstChar, 0, '0' == $firstChar[0] ? 3 : 1) : $pagerData['default'];
             // Existiert der Point in den aktuellen Daten
             $firstChar = array_key_exists($firstChar, $pagerData['list']) ? $firstChar : $pagerData['default'];
             $viewData->offsetSet('pagerData', $pagerData);
@@ -123,7 +123,7 @@ class CharBrowserFilter
 
         $ret = [];
         foreach ($rows as $row) {
-            if (array_key_exists(($row['first_char']), $wSpecials)) {
+            if (array_key_exists($row['first_char'], $wSpecials)) {
                 $ret[$wSpecials[$row['first_char']]] = intval($ret[$wSpecials[$row['first_char']]]) + $row['size'];
             } else {
                 $ret[$row['first_char']] = $row['size'];

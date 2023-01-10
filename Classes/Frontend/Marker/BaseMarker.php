@@ -232,7 +232,7 @@ class BaseMarker
             if ($makeUrl) {
                 $markerArray['###'.$linkMarker.'URL###'] = $linkObj->makeUrl(
                     $formatter->getConfigurations()->getBool($confId.'links.'.$linkId.'.applyHtmlSpecialChars', false, false)
-                    );
+                );
             }
         } else {
             self::disableLink(
@@ -241,7 +241,7 @@ class BaseMarker
                 $wrappedSubpartArray,
                 $linkMarker,
                 $formatter->getConfigurations()->getBool($confId.'links.'.$linkId.'.removeIfDisabled', true, false)
-                );
+            );
         }
     }
 
@@ -364,7 +364,7 @@ class BaseMarker
             if ($dummyInstance instanceof DomainModelInterface
                 // for deprecated backward compatibility
                 || $dummyInstance instanceof tx_rnbase_model_base
-                ) {
+            ) {
                 if (is_array($dummyInstance->getColumnNames())) {
                     foreach ($dummyInstance->getColumnNames() as $column) {
                         $dummyInstance->setProperty($column, '');

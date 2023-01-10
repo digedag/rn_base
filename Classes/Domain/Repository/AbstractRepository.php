@@ -200,12 +200,12 @@ abstract class AbstractRepository implements SearchInterface, SingletonInterface
         array &$fields,
         array &$options
     ) {
-        if ((
+        if (
             TYPO3_MODE == 'BE' &&
             !isset($options['enablefieldsoff']) &&
             !isset($options['enablefieldsbe']) &&
             !isset($options['enablefieldsfe'])
-        )) {
+        ) {
             $options['enablefieldsbe'] = true;
         }
     }
@@ -221,11 +221,11 @@ abstract class AbstractRepository implements SearchInterface, SingletonInterface
         array &$fields,
         array &$options
     ) {
-        if ((
+        if (
             !isset($options['i18n'])
             && !isset($options['ignorei18n'])
             && !isset($options['enablefieldsoff'])
-        )) {
+        ) {
             $tableName = $this->getEmptyModel()->getTableName();
             $languageField = tx_rnbase_util_TCA::getLanguageFieldForTable($tableName);
             // Die Sprache prüfen wir nur, wenn ein Sprachfeld gesetzt ist.
@@ -287,11 +287,11 @@ abstract class AbstractRepository implements SearchInterface, SingletonInterface
         array $options
     ) {
         // uniqueue, if there are models and the distinct option
-        if ((
+        if (
             $items[0] instanceof RecordInterface
             && isset($options['distinct'])
             && $options['distinct']
-        )) {
+        ) {
             // seperate master and overlays
             $master = $overlay = [];
             /* @var $item RecordInterface */

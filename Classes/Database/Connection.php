@@ -263,7 +263,7 @@ class Connection implements SingletonInterface
             $wrapper = is_string($arr['wrapperclass']) ? trim($arr['wrapperclass']) : 0;
             $callback = isset($arr['callback']) ? $arr['callback'] : false;
 
-            while (($row = $database->sql_fetch_assoc($res))) {
+            while ($row = $database->sql_fetch_assoc($res)) {
                 $this->appendRow($rows, $row, $tableName, $wrapper, $callback, $arr);
             }
             $database->sql_free_result($res);
@@ -331,7 +331,7 @@ class Connection implements SingletonInterface
             is_a($res, 'mysqli_result') ||
             // the very old mysql ressources
             is_resource($res)
-            ;
+        ;
     }
 
     /**
@@ -363,14 +363,14 @@ class Connection implements SingletonInterface
         // Initialisierung der TSFE ändert den backPath im PageRender auf einen falschen
         // Wert. Dadurch werden JS-Dateien nicht mehr geladen.
         // Ist dieser Aufruf im BE überhaupt sinnvoll?
-        if ((
+        if (
             (
                 !(defined('TYPO3_MODE') && TYPO3_MODE === 'FE') ||
                 $options['enablefieldsoff'] ||
                 $options['ignorei18n']
             ) &&
             !$options['forcei18n']
-        )) {
+        ) {
             return;
         }
 

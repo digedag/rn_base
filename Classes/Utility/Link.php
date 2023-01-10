@@ -478,7 +478,7 @@ class Link
         }
 
         // check if we have a A-Tag with href attribute or a IMG-Tag with src attribute
-        if ((@simplexml_load_string($url))) {
+        if (@simplexml_load_string($url)) {
             return preg_replace_callback(
                 '/(href="|src=")(.+)"/',
                 function ($match) use ($schema) {

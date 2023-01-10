@@ -264,23 +264,23 @@ class DataModel implements DataInterface, IteratorAggregate
                 $key = $this->underscore(substr($method, 3));
 
                 return $this->getProperty($key);
-            // setColumnValue > record[column_value] = $value
+                // setColumnValue > record[column_value] = $value
             case 'set':
                 $key = $this->underscore(substr($method, 3));
 
                 return $this->setProperty($key, isset($args[0]) ? $args[0] : null);
-            // unsetColumnValue > unset(record[column_value])
+                // unsetColumnValue > unset(record[column_value])
             case 'uns':
                 $key = $this->underscore(substr($method, 3));
 
                 return $this->unsProperty($key);
-            // hasColumnValue > isset(record[column_value])
+                // hasColumnValue > isset(record[column_value])
             case 'has':
                 $key = $this->underscore(substr($method, 3));
 
                 return $this->hasProperty($key);
             default:
-        }
+            }
 
         throw new Exception('Sorry, Invalid method '.get_class($this).'::'.$method.'('.print_r($args, 1).').', 1406625817);
     }

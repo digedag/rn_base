@@ -144,18 +144,18 @@ class ConditionBuilder
                 if (self::OP_INSET_INT == $joinedField['operator']) {
                     // Values splitten und einzelne Abfragen mit OR verbinden
                     $addWhere = $this->searchWhere(
-                            $qb,
-                            $joinedField['value'],
-                            implode(',', $joinedField['fields']),
-                            'FIND_IN_SET_OR'
-                        );
+                        $qb,
+                        $joinedField['value'],
+                        implode(',', $joinedField['fields']),
+                        'FIND_IN_SET_OR'
+                    );
                 } else {
                     $addWhere = $this->searchWhere(
-                            $qb,
-                            $joinedField['value'],
-                            implode(',', $joinedField['fields']),
-                            $joinedField['operator']
-                        );
+                        $qb,
+                        $joinedField['value'],
+                        implode(',', $joinedField['fields']),
+                        $joinedField['operator']
+                    );
                 }
                 if ($addWhere) {
                     $qb->andWhere($addWhere);

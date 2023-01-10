@@ -395,7 +395,7 @@ class tx_rnbase
                 $key = self::getValidKey($key);
             }
             // Test again for extbase class
-            if (!$key && (preg_match('/^Tx_([^_]*)(.*)$/', $info, $matches))) {
+            if (!$key && preg_match('/^Tx_([^_]*)(.*)$/', $info, $matches)) {
                 $key = strtolower($matches[1]);
                 $key = self::getValidKey($key);
             }

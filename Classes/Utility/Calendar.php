@@ -47,6 +47,8 @@ class Calendar
 {
     public $_time; // Die Zeit des Kalenders
 
+    public $_seconds;
+
     public function __construct()
     {
         $this->_time = time();

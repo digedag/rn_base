@@ -239,7 +239,7 @@ class ListBuilder
         }
 
         $outerMarker = $this->getOuterMarker($marker, $template);
-        while (($templateList = Templates::getSubpart($template, '###'.$outerMarker.'S###'))) {
+        while ($templateList = Templates::getSubpart($template, '###'.$outerMarker.'S###')) {
             if ((is_array($dataArr) || $dataArr instanceof Traversable) && count($dataArr)) {
                 /* @var $listMarker ListMarker */
                 $listMarker = tx_rnbase::makeInstance(ListMarker::class, $this->info->getListMarkerInfo());

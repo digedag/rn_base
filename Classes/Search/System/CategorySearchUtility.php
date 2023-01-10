@@ -75,7 +75,7 @@ class CategorySearchUtility
                     $baseTableName,
                     $sysCategoryTableAlias,
                     $fieldName
-                    ),
+                ),
                 $sysCategoryTableAlias.'_MM'
             );
         }

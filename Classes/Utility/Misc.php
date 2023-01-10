@@ -100,7 +100,7 @@ class Misc
         $limit = ($limit > 0 && $limit < $anzahl) ? $limit : $anzahl;
         $ret = [];
         for ($i = 0; $i < $limit; ++$i) {
-            $ret[] = $items[($idxArr[$i] - 1)];
+            $ret[] = $items[$idxArr[$i] - 1];
         }
         reset($ret);
 
@@ -211,7 +211,7 @@ class Misc
     'http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en'>
     <head>
-        <title>${extKey}::Mayday</title>
+        <title>{$extKey}::Mayday</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="robots" content="noindex, nofollow" />
         <style type="text/css">
@@ -622,7 +622,7 @@ MAYDAYPAGE;
             if ($val) {
                 $cObj = TYPO3::getContentObject();
                 $list = $cObj->getTreeList(
-                    (-1 * $val),
+                    -1 * $val,
                     $options['recursive'],
                     0,
                     !empty($options['dontCheckEnableFields'])

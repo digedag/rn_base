@@ -341,7 +341,7 @@ class ToolBox
         return '<a class="btn btn-default" href="#" onclick="'
             .htmlspecialchars('return jumpSelf('.
                 Strings::quoteJSvalue(
-                    $this->clipObj->selUrlDB($editTable, $recordUid, 0, ('cut' === $isSel), ['returnUrl' => ''])
+                    $this->clipObj->selUrlDB($editTable, $recordUid, 0, 'cut' === $isSel, ['returnUrl' => ''])
                 ).');')
             .'" title="'.htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.cut')).'">'
                 .$image.'</a>';

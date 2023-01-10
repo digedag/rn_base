@@ -76,7 +76,7 @@ abstract class AbstractView
         $path = $this->pathToTemplates;
         $path .= '/' == substr($path, -1, 1) ? $templateName : '/'.$templateName;
         $extLen = strlen($extension);
-        $path .= substr($path, ($extLen * -1), $extLen) == $extension ? '' : $extension;
+        $path .= substr($path, $extLen * -1, $extLen) == $extension ? '' : $extension;
 
         return $path;
     }
