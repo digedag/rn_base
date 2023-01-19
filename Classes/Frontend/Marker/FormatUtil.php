@@ -224,7 +224,7 @@ class FormatUtil
             $keys = $this->getConfigurations()->getUniqueKeysNames($conf);
             foreach ($keys as $key) {
                 if ('d' === $key[0] && 'c' === $key[1] && !isset($record[$key])) {
-                    $record[$key] = $conf[$key];
+                    $record[$key] = $conf[$key] ?? '';
                 }
             }
         }
