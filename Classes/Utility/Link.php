@@ -79,6 +79,10 @@ class Link
 
     public $titleHasAlreadyHtmlSpecialChars = false; // is title attribute already HSC?
 
+    public $absUrl;
+
+    public $absUrlSchema;
+
     private $typolinkParams = [];    // container for generic typolink parameters
 
     private $uniqueParameterId = null;     // used to build unique parameters for plugin
@@ -557,6 +561,9 @@ class Link
                 $value = [$key => $value];
                 $key = $this->getUniqueParameterId();
             }
+            if (!isset($conf['additionalParams'])) {
+                $conf['additionalParams'] = '';
+            }
             $conf['additionalParams'] .= $this->makeUrlParam($key, $value);
         }
         if ($this->noHashBoolean) {
@@ -599,6 +606,7 @@ class Link
         }
         if (is_array($this->tagAttributes)
                 && (count($this->tagAttributes) > 0)) {
+            $conf['ATagParams'] = $conf['ATagParams'] ?? '';
             foreach ($this->tagAttributes as $key => $value) {
                 $conf['ATagParams'] .= ' '.$key.'="'.htmlspecialchars($value).'" ';
             }
@@ -745,7 +753,7 @@ class Link
                         continue;
                     }
                 }
-                $attributes[$aParam] = $configurations->getCObj()->stdWrap($atagParams[$aParam], $atagParams[$aParam.'.']);
+                $attributes[$aParam] = $configurations->getCObj()->stdWrap($atagParams[$aParam] ?? '', $atagParams[$aParam.'.'] ?? []);
             }
             $this->attributes($attributes);
         }
@@ -760,16 +768,16 @@ class Link
             // skip empty values? default false!
             $skipEmpty = !empty($keepVarConf['skipEmpty']);
             $keepVars = $configurations->getKeepVars();
-            $allow = $keepVarConf['allow'];
-            $deny = $keepVarConf['deny'];
+            $allow = $keepVarConf['allow'] ?? '';
+            $deny = $keepVarConf['deny'] ?? '';
             if ($allow) {
                 $allow = Strings::trimExplode(',', $allow);
                 foreach ($allow as $allowed) {
-                    $value = $keepVars->offsetGet($allowed);
+                    $value = $keepVars->offsetExists($allowed) ? $keepVars->offsetGet($allowed) : null;
                     if ($skipEmpty && empty($value)) {
                         continue;
                     }
-                    $newKeepVars[$allowed] = $keepVars->offsetGet($allowed);
+                    $newKeepVars[$allowed] = $keepVars->offsetExists($allowed) ? $keepVars->offsetGet($allowed) : null;
                 }
             } elseif ($deny) {
                 $deny = array_flip(Strings::trimExplode(',', $deny));
@@ -783,14 +791,14 @@ class Link
                     }
                 }
             }
-            $add = $keepVarConf['add'];
+            $add = $keepVarConf['add'] ?? '';
             if ($add) {
-                $add = \Tx_Rnbase_Utility_Strings::trimExplode(',', $add);
+                $add = Strings::trimExplode(',', $add);
                 foreach ($add as $linkvar) {
-                    $linkvar = \Tx_Rnbase_Utility_Strings::trimExplode('=', $linkvar);
+                    $linkvar = Strings::trimExplode('=', $linkvar);
                     if (count($linkvar) < 2) {
                         // tt_news::* or ttnews::id
-                        list($qualifier, $name) = \Tx_Rnbase_Utility_Strings::trimExplode('::', $linkvar[0]);
+                        list($qualifier, $name) = Strings::trimExplode('::', $linkvar[0]);
                         if ($value = \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter($qualifier)) {
                             if ('*' == $name && is_array($value)) {
                                 foreach ($value as $paramName => $paramValue) {

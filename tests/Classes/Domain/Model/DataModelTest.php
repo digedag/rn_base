@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Domain\Model;
 
+use Exception;
 use Sys25\RnBase\Testing\BaseTestCase;
 
 /***************************************************************
@@ -113,11 +114,11 @@ class DataModelTest extends BaseTestCase
      *
      * @group unit
      * @test
-     * @expectedException \Exception
-     * @expectedExceptionCode 1406625817
      */
     public function testMagicCallThrowsException()
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(1406625817);
         $this->getModelInstance()->methodDoesNotExist();
     }
 
@@ -215,5 +216,96 @@ class DataModelTest extends BaseTestCase
         ];
 
         return DataModel::getInstance($data);
+    }
+
+    /**
+     * @group unit
+     * @test
+     */
+    public function testOffsetExists()
+    {
+        $model = $this->getModel(
+            ['test_value' => 'dummy'],
+            DataModel::class,
+            ['dummy']
+        );
+
+        self::assertTrue(isset($model['testValue']));
+        self::assertTrue(isset($model['test_value']));
+        self::assertTrue(isset($model['TestValue']));
+        self::assertFalse(isset($model['wrongTest']));
+    }
+
+    /**
+     * @group unit
+     * @test
+     */
+    public function testOffsetGet()
+    {
+        $model = $this->getModel(
+            ['test_value' => 'dummy'],
+            DataModel::class,
+            ['getImagePath']
+        );
+        $model
+            ->expects(self::exactly(3))
+            ->method('getImagePath')
+            ->willReturn(123);
+
+        self::assertSame('dummy', $model['testValue']);
+        self::assertSame('dummy', $model['test_value']);
+        self::assertSame('dummy', $model['TestValue']);
+        self::assertSame(123, $model['imagePath']);
+        self::assertSame(123, $model['image_path']);
+        self::assertSame(123, $model['ImagePath']);
+    }
+
+    /**
+     * @group unit
+     * @test
+     */
+    public function testOffsetSet()
+    {
+        $model = $this->getModel(
+            ['test_value' => 'wrong'],
+            DataModel::class,
+            ['setImagePath']
+        );
+        $model
+            ->expects(self::exactly(3))
+            ->method('setImagePath')
+            ->with(123);
+        $model['imagePath'] = 123;
+        $model['ImagePath'] = 123;
+        $model['image_path'] = 123;
+
+        $model['testValue'] = 'dummy';
+        self::assertSame('dummy', $model['testValue']);
+        $model['test_value'] = 'dummy2';
+        self::assertSame('dummy2', $model['test_value']);
+        $model['TestValue'] = 'dummy3';
+        self::assertSame('dummy3', $model['TestValue']);
+    }
+
+    /**
+     * @group unit
+     * @test
+     */
+    public function testOffsetUnset()
+    {
+        $model = $this->getModel(['test_value' => 'wrong'], DataModel::class, ['dummy']);
+        self::assertTrue(isset($model['test_value']));
+        unset($model['testValue']);
+        self::assertFalse(isset($model['test_value']));
+
+        $model = $this->getModel(['test_value' => 'wrong'], DataModel::class, ['dummy']);
+        self::assertTrue(isset($model['testValue']));
+        unset($model['test_value']);
+        self::assertFalse(isset($model['testValue']));
+
+        $model = $this->getModel(['test_value' => 'wrong'], DataModel::class, ['dummy']);
+        self::assertTrue(isset($model['test_value']));
+        unset($model['TestValue']);
+        self::assertFalse(isset($model['test_value']));
     }
 }

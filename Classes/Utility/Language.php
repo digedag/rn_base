@@ -58,9 +58,9 @@ class Language
         $basePath = Files::getFileAbsFileName($filename);
         // php or xml as source: In any case the charset will be that of the system language.
         // However, this function guarantees only return output for default language plus the specified language (which is different from how 3.7.0 dealt with it)
-        self::addLang(self::readLLfile($basePath, self::getLLKey(), $GLOBALS['TSFE']->renderCharset));
+        self::addLang(self::readLLfile($basePath, self::getLLKey(), $GLOBALS['TSFE']->renderCharset ?? ''));
         if ($llKey = self::getLLKey(true)) {
-            self::addLang(self::readLLfile($basePath, $llKey, $GLOBALS['TSFE']->renderCharset));
+            self::addLang(self::readLLfile($basePath, $llKey, $GLOBALS['TSFE']->renderCharset ?? ''));
         }
     }
 
@@ -267,7 +267,7 @@ class Language
         } else {
             // Im BE die LANG fragen...
             // Das $alternativeLabel wirkt nicht, weil $GLOBALS['LANG'] immer gesetzt ist...
-            $word = is_object($GLOBALS['LANG']) ? $GLOBALS['LANG']->getLL($key) : $alternativeLabel;
+            $word = is_object($GLOBALS['LANG'] ?? null) ? $GLOBALS['LANG']->getLL($key) : $alternativeLabel;
         }
 
         $output = (isset($this->LLtestPrefix)) ? $this->LLtestPrefix.$word : $word;
@@ -288,13 +288,11 @@ class Language
      */
     public static function sL($key)
     {
-        /* @var $lang \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
-        $lang = $GLOBALS[TYPO3_MODE == 'BE' ? 'LANG' : 'TSFE'];
-
-        if (!$lang) {
-            throw new Exception('Languageservice for "'.TYPO3_MODE.'" not initialized yet.');
+        $languageServiceKey = Environment::isBackend() ? 'LANG' : 'TSFE';
+        if (!$GLOBALS[$languageServiceKey]) {
+            throw new Exception('Languageservice in "$GLOBALS['.$languageServiceKey.']" not initialized yet.');
         }
 
-        return $lang->sL($key);
+        return $GLOBALS[$languageServiceKey]->sL($key);
     }
 }

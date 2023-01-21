@@ -40,6 +40,11 @@ use Sys25\RnBase\Utility\Files;
 class Action extends \tx_rnbase_view_Base
 {
     /**
+     * @var RequestInterface
+     */
+    protected $request = null;
+
+    /**
      * @param string                    $templateName
      * @param \tx_rnbase_configurations|RequestInterface $configurations
      *
@@ -50,6 +55,7 @@ class Action extends \tx_rnbase_view_Base
     public function render($templateName, $configurations)
     {
         if ($configurations instanceof RequestInterface) {
+            $this->request = $configurations;
             $rnbaseViewData = $configurations->getViewContext();
             $configurations = $configurations->getConfigurations();
         } else {
@@ -84,6 +90,7 @@ class Action extends \tx_rnbase_view_Base
 
         $out = $view->render();
         if (
+            $rnbaseViewData->offsetExists('filter') &&
             ($filter = $rnbaseViewData->offsetGet('filter')) &&
             is_object($filter) &&
             method_exists($filter, 'parseTemplate') &&
@@ -124,7 +131,7 @@ class Action extends \tx_rnbase_view_Base
         // support for old path configuration
         $oldPaths = ['templateRootPath', 'layoutRootPath', 'partialRootPath'];
         foreach ($oldPaths as $oldPath) {
-            if ($typoScriptConfiguration['view'][$oldPath]) {
+            if ($typoScriptConfiguration['view'][$oldPath] ?? false) {
                 $typoScriptConfiguration['view'][$oldPath.'s.'][0] = $typoScriptConfiguration['view'][$oldPath];
             }
         }
@@ -189,8 +196,8 @@ class Action extends \tx_rnbase_view_Base
      */
     protected function getConfigurationId()
     {
-        $configurationId = '';
-        if (is_object($controller = $this->getController())) {
+        $configurationId = $this->request ? $this->request->getConfId() : '';
+        if (!$configurationId && is_object($controller = $this->getController())) {
             if (method_exists($controller, 'getConfId')) {
                 $configurationId = $controller->getConfId();
             }

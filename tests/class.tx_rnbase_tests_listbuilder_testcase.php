@@ -27,7 +27,7 @@ use Sys25\RnBase\Testing\BaseTestCase;
 
 class tx_rnbase_tests_listbuilder_testcase extends BaseTestCase
 {
-    public function setup()
+    protected function setup(): void
     {
         unset($GLOBALS['TSFE']);
         tx_rnbase_util_Misc::prepareTSFE();

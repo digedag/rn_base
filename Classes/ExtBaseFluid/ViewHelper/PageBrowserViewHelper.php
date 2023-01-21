@@ -107,7 +107,7 @@ class PageBrowserViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTa
 
         $this->viewHelperVariableContainer->add(self::class, 'pageBrowserQualifier', $qualifier);
 
-        $pageBrowser = $this->templateVariableContainer->offsetGet('pagebrowser');
+        $pageBrowser = $this->templateVariableContainer->offsetExists('pagebrowser') ? $this->templateVariableContainer->offsetGet('pagebrowser') : null;
         $pointer = $pageBrowser->getPointer();
         $count = $pageBrowser->getListSize();
         $results_at_a_time = $pageBrowser->getPageSize();

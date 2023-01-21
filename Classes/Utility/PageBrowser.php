@@ -75,7 +75,11 @@ class PageBrowser implements PageBrowserInterface
      */
     public function setPointerByParameters($parameters)
     {
-        $this->setPointer(is_object($parameters) ? intval($parameters->offsetGet($this->getParamName('pointer'))) : 0);
+        $this->setPointer(
+            (is_object($parameters) && $parameters->offsetExists($this->getParamName('pointer')))
+                ? intval($parameters->offsetGet($this->getParamName('pointer')))
+                : 0
+        );
     }
 
     /**

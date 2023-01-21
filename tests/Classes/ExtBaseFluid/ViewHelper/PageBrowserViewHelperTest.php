@@ -43,7 +43,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
      *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         \tx_rnbase_util_Misc::prepareTSFE();

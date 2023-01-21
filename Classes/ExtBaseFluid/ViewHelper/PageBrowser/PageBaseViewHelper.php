@@ -4,6 +4,7 @@ namespace Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowser;
 
 use Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowserViewHelper;
 use Sys25\RnBase\Utility\Arrays;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
 /***************************************************************
  * Copyright notice
@@ -120,7 +121,7 @@ class PageBaseViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBa
         $usePageNumberAsLinkText = $this->arguments['usePageNumberAsLinkText'];
 
         $this->tag->setTagName($this->arguments['data-tagname']);
-        $pageBrowser = $this->templateVariableContainer->offsetGet('pagebrowser');
+        $pageBrowser = $this->templateVariableContainer->offsetExists('pagebrowser') ? $this->templateVariableContainer->offsetGet('pagebrowser') : null;
         $currentPage = $this->templateVariableContainer->get('currentPage');
 
         $pageBrowserQualifier = $this->viewHelperVariableContainer->get(
@@ -134,18 +135,21 @@ class PageBaseViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBa
         ];
         $additionalParams = Arrays::mergeRecursiveWithOverrule($additionalParams, $pageBrowserParams);
 
+        /* @var UriBuilder $uriBuilder */
         $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
         $uriBuilder
             ->reset()
             ->setTargetPageType($pageType)
             ->setNoCache($noCache)
-            ->setUseCacheHash(!$noCacheHash)
             ->setSection($section)
             ->setLinkAccessRestrictedPages($linkAccessRestrictedPages)
             ->setArguments($additionalParams)
             ->setCreateAbsoluteUri($absolute)
             ->setAddQueryString($addQueryString)
             ->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString);
+        if (method_exists($uriBuilder, 'setUseCacheHash')) {
+            $uriBuilder->setUseCacheHash(!$noCacheHash);
+        }
 
         if ($pageUid) {
             $uriBuilder->setTargetPageUid($pageUid);

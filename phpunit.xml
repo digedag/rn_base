@@ -2,6 +2,7 @@
     backupGlobals="true"
     backupStaticAttributes="false"
     bootstrap=".Build/vendor/nimut/testing-framework/res/Configuration/UnitTestsBootstrap.php"
+    cacheResultFile=".Build/.phpunit.result.cache"
     colors="true"
     convertErrorsToExceptions="true"
     convertWarningsToExceptions="true"

@@ -19,7 +19,7 @@ use tx_rnbase;
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007-2022 Rene Nitzsche (rene@system25.de)
+*  (c) 2007-2023 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -70,10 +70,11 @@ class ToolBox
      * @var \TYPO3\CMS\Backend\Clipboard\Clipboard
      */
     private $clipObj;
+    private $tceStack;
 
     /**
      * @param DocumentTemplate $doc
-     * @param \tx_rnbase_mod_IModule $module
+     * @param \Sys25\RnBase\Backend\Module\IModule $module
      */
     public function init($doc, $module)
     {
@@ -96,7 +97,7 @@ class ToolBox
     }
 
     /**
-     * @return \tx_rnbase_mod_IModule
+     * @return \Sys25\RnBase\Backend\Module\IModule
      */
     public function getModule()
     {
@@ -121,7 +122,7 @@ class ToolBox
         }
         $name = isset($options['name']) ? $options['params'] : '';
 
-        $jsCode = BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH']);
+        $jsCode = BackendUtility::editOnClick($params);
         if (isset($options['confirm']) && strlen($options['confirm']) > 0) {
             $jsCode = 'if(confirm('.Strings::quoteJSvalue($options['confirm']).')) {'.$jsCode.'} else {return false;}';
         }
@@ -197,7 +198,7 @@ class ToolBox
         $title = isset($options[self::OPTION_TITLE]) ? $options[self::OPTION_TITLE] : $GLOBALS['LANG']->getLL('new', 1);
         $name = isset($options['name']) ? $options['params'] : '';
 
-        $jsCode = BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH']);
+        $jsCode = BackendUtility::editOnClick($params);
         if (isset($options[self::OPTION_CONFIRM]) && strlen($options[self::OPTION_CONFIRM]) > 0) {
             $jsCode = 'if(confirm('.Strings::quoteJSvalue($options[self::OPTION_CONFIRM]).')) {'.$jsCode.'} else {return false;}';
         }
@@ -224,12 +225,12 @@ class ToolBox
      */
     public function createShowLink($pid, $label, $urlParams = '', $options = [])
     {
-        if ($options['sprite']) {
+        if ($options['sprite'] ?? false) {
             $label = Icons::getSpriteIcon($options['sprite']);
         }
-        $jsCode = BackendUtility::viewOnClick($pid, '', '', '', '', $urlParams);
+        $jsCode = BackendUtility::viewOnClick($pid, '', null, '', '', $urlParams);
         $title = '';
-        if ($options['hover']) {
+        if ($options['hover'] ?? false) {
             $title = ' title="'.$options['hover'].'" ';
         }
 
@@ -264,7 +265,7 @@ class ToolBox
         $params .= $this->buildDefVals($options);
         $title = isset($options[self::OPTION_TITLE]) ? $options[self::OPTION_TITLE] : $GLOBALS['LANG']->getLL('new', 1);
 
-        $jsCode = BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH']);
+        $jsCode = BackendUtility::editOnClick($params);
         if (isset($options[self::OPTION_CONFIRM]) && strlen($options[self::OPTION_CONFIRM]) > 0) {
             $jsCode = 'if(confirm('.Strings::quoteJSvalue($options[self::OPTION_CONFIRM]).')) {'.$jsCode.'} else {return false;}';
         }
@@ -427,13 +428,15 @@ class ToolBox
      */
     protected function getJavaScriptForLinkToDataHandlerAction($urlParameters, array $options = [])
     {
-        $jumpToUrl = BackendUtility::getLinkToDataHandlerAction('&'.$urlParameters, -1);
+        $redirect = TYPO3::isTYPO115OrHigher() ? null : -1;
+        $jumpToUrl = BackendUtility::getLinkToDataHandlerAction('&'.$urlParameters, $redirect);
+
         // the jumpUrl method is no longer global available since TYPO3 8.7
         // furthermore we need the JS variable T3_THIS_LOCATION because it is used
         // as redirect in getLinkToDataHandlerAction when -1 is passed
         $this->addBaseInlineJSCode();
 
-        return $this->getConfirmCode('return jumpToUrl('.$jumpToUrl.');', $options);
+        return $this->getConfirmCode('return jumpToUrl('.Strings::quoteJSvalue($jumpToUrl).');', $options);
     }
 
     /**
@@ -582,7 +585,7 @@ class ToolBox
         $jsCode = "window.location.href='".$location."'; return false;";
 
         $title = '';
-        if ($options['hover']) {
+        if (!empty($options['hover'])) {
             $title = 'title="'.$options['hover'].'"';
         }
 
@@ -596,7 +599,7 @@ class ToolBox
     {
         $tag = $label;
         // $options['sprite'] für abwärtskompatibilität
-        if ($options['icon'] || $options['sprite']) {
+        if (isset($options['icon']) || isset($options['sprite'])) {
             $icon = isset($options['icon']) ? $options['icon'] : $options['sprite'];
             // FIXME: label get lost here??
             $tag = Icons::getSpriteIcon($icon, $options);
@@ -700,6 +703,9 @@ class ToolBox
             $this->getTCEForm()->getNodeFactory(),
             [
                 'fieldName' => $name,
+                'tableName' => '',
+                'databaseRow' => ['uid' => 0],
+                'processedTca' => ['columns' => [$name => ['config' => ['type' => 'text']]]],
                 'parameterArray' => [
                     'itemFormElValue' => $value,
                     'itemFormElName' => $name,
@@ -799,18 +805,18 @@ class ToolBox
     {
         $options = is_array($options) ? $options : [];
 
-        $onChangeStr = $options['reload'] ? ' this.form.submit(); ' : '';
-        if ($options['onchange']) {
+        $onChangeStr = !empty($options['reload']) ? ' this.form.submit(); ' : '';
+        if (!empty($options['onchange'])) {
             $onChangeStr .= $options['onchange'];
         }
         if ($onChangeStr) {
             $onChangeStr = ' onchange="'.$onChangeStr.'" ';
         }
 
-        $multiple = $options['multiple'] ? ' multiple="multiple"' : '';
-        $name .= $options['multiple'] ? '[]' : '';
+        $multiple = !empty($options['multiple']) ? ' multiple="multiple"' : '';
+        $name .= !empty($options['multiple']) ? '[]' : '';
 
-        $size = $options['size'] ? ' size="'.$options['size'].'"' : '';
+        $size = !empty($options['size']) ? ' size="'.$options['size'].'"' : '';
 
         $out = '<select name="'.$name.'" class="select"'.$onChangeStr.$multiple.$size.'>';
 
@@ -1150,14 +1156,14 @@ class ToolBox
     public function createLinkForDataHandlerAction($actionParameters, $label, array $options = [])
     {
         // $options['sprite'] für abwärtskompatibilität
-        if ($options['icon'] || $options['sprite']) {
+        if (isset($options['icon']) || isset($options['sprite'])) {
             $icon = isset($options['icon']) ? $options['icon'] : $options['sprite'];
             $label = Icons::getSpriteIcon($icon, $options);
         }
 
         $jsCode = $this->getJavaScriptForLinkToDataHandlerAction($actionParameters, $options);
         $title = '';
-        if ($options['hover']) {
+        if (!empty($options['hover'])) {
             $title = 'title="'.$options['hover'].'"';
         }
 

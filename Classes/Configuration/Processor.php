@@ -231,14 +231,14 @@ class Processor implements ConfigurationInterface
 
         // If configurationArray['setupPath'] is provided it will be used by \tx_rnbase_configurations or subclass.
         // if configurationArray['setupPath'] is empty the subclass will use it's internally defined setupPath.
-        $this->_setTypoScript($configurationArray['setupPath']);
+        $this->_setTypoScript($configurationArray['setupPath'] ?? '');
 
         // Add the local configuration, overwriting TS setup
         $this->_setConfiguration($configurationArray);
 
         if (is_object($cObj) && !$this->getBool('ignoreFlexFormConfiguration')) {
             // Flexformvalues have the maximal precedence
-            $this->_setFlexForm($cObj->data['pi_flexform']);
+            $this->_setFlexForm($cObj->data['pi_flexform'] ?? null);
         }
 
         // A qualifier and extkey from TS are preferred
@@ -324,7 +324,7 @@ class Processor implements ConfigurationInterface
     {
         $id = 0;
         if (is_array($this->cObj->data)) {
-            $id = $this->cObj->data['uid'];
+            $id = $this->cObj->data['uid'] ?? 0;
             if (array_key_exists('doktype', $this->cObj->data)) {
                 // Es handelt sich um ein Plugin, daß per TS eingebunden wurde. In data steht der
                 // Record der Seite.
@@ -655,7 +655,7 @@ class Processor implements ConfigurationInterface
         }
         if (is_array($ret)) {
             $ret = $this->renderTS($ret, $this->getCObj());
-            $ret = $noEndingDot ? $ret['key'] : $ret;
+            $ret = $noEndingDot ? ($ret['key'] ?? null) : $ret;
         }
 
         return $ret;
@@ -1013,12 +1013,14 @@ class Processor implements ConfigurationInterface
             foreach ($languages[$languagePointer] as $key => $def) {
                 // Wir nehmen Flexformwerte nur, wenn sie sinnvolle Daten enthalten
                 // Sonst werden evt. vorhandenen Daten überschrieben
-                if (!(0 == strlen($def[$valuePointer]))) { // || $def[$valuePointer] == '0')
+                if (!(0 == strlen($def[$valuePointer] ?? ''))) { // || $def[$valuePointer] == '0')
                     $pathArray = explode('.', trim($key));
                     if (count($pathArray) > 1) {
                         // Die Angabe im Flexform ist in Punktnotation
                         // Wir holen das Array im höchsten Knoten
-                        $dataArr = $this->_dataStore->offsetGet($pathArray[0].'.');
+                        $dataArr = $this->_dataStore->offsetExists($pathArray[0].'.')
+                            ? $this->_dataStore->offsetGet($pathArray[0].'.')
+                            : null;
                         $newValue = $def[$valuePointer];
                         $newArr = $this->insertIntoDataArray($dataArr, array_slice($pathArray, 1), $newValue);
                         $this->_dataStore->offsetSet($pathArray[0].'.', $newArr);
@@ -1078,7 +1080,7 @@ class Processor implements ConfigurationInterface
         if (is_array($old_conf)) {
             foreach ($old_conf as $key => $val) {
                 if (is_array($val)) {
-                    $conf[$key] = self::joinTSarrays($conf[$key], $val);
+                    $conf[$key] = self::joinTSarrays($conf[$key] ?? [], $val);
                 } else {
                     $conf[$key] = $val;
                 }
@@ -1101,15 +1103,15 @@ class Processor implements ConfigurationInterface
             if ($i < ($cnt - 1)) {
                 // Noch nicht beendet. Auf Reference prüfen
                 $array = $this->mergeTSReference(
-                    $array[$pathArray[$i]],
-                    $array[$pathArray[$i].'.']
+                    $array[$pathArray[$i]] ?? null,
+                    $array[$pathArray[$i].'.'] ?? null
                 );
             } elseif (empty($pathArray[$i])) {
                 // It ends with a dot. We return the rest of the array
                 return $array;
             } else {
                 // It endes without a dot. We return the value.
-                return $array[$pathArray[$i]];
+                return $array[$pathArray[$i]] ?? null;
             }
         }
     }

@@ -124,15 +124,15 @@ abstract class SearchBase
             $tableAliases[$tableAlias][$col] = $data;
         }
         // Prüfen, ob in orderby noch andere Tabellen liegen
-        $orderbyArr = $options['orderby'];
+        $orderbyArr = $options['orderby'] ?? '';
         if (is_array($orderbyArr)) {
             $aliases = array_keys($orderbyArr);
             foreach ($aliases as $alias) {
                 if (strstr($alias, SEARCH_FIELD_CUSTOM)) {
                     continue;
                 } // CUSTOM ignorieren
-                list($tableAlias, $col) = explode('.', $alias);
-                if (!array_key_exists($tableAlias, $tableAliases)) {
+                $tableAlias = explode('.', $alias)[0] ?? null;
+                if ($tableAlias && !array_key_exists($tableAlias, $tableAliases)) {
                     $tableAliases[$tableAlias] = [];
                 }
             }
@@ -150,7 +150,7 @@ abstract class SearchBase
             }
         }
         // Deprecated: Diese Option nicht verwenden. Dafür gibt es den Hook!
-        if (is_array($additionalTableAliases = $options['additionalTableAliases'])) {
+        if (is_array($additionalTableAliases = $options['additionalTableAliases'] ?? [])) {
             foreach ($additionalTableAliases as $additionalTableAlias) {
                 if (!isset($tableAliases[$additionalTableAlias])) {
                     $tableAliases[$additionalTableAlias] = [];
@@ -184,7 +184,7 @@ abstract class SearchBase
 
         $sqlOptions['where'] = $where;
 
-        if (!isset($options['count']) && is_array($options['orderby'])) {
+        if (!isset($options['count']) && is_array($options['orderby'] ?? null)) {
             // Aus dem Array einen String bauen
             $orderby = [];
             if (array_key_exists('RAND', $options['orderby']) && $options['orderby']['RAND']) {
@@ -222,21 +222,21 @@ abstract class SearchBase
                 isset($options['sqlonly'])
             ) || isset($options['forcewrapper']))) {
             // der Filter kann ebenfalls eine Klasse setzen. Diese hat Vorrang.
-            $sqlOptions['wrapperclass'] = $options['wrapperclass'] ? $options['wrapperclass'] : $this->getGenericWrapperClass();
+            $sqlOptions['wrapperclass'] = $options['wrapperclass'] ?? $this->getGenericWrapperClass();
         }
 
         // if we have to do a count and there still is a count in the custom what
         // or there is a having or a groupby
         // so we have to wrap the query into a subquery to count the results
-        if (!$options['disableCountWrap'] &&
+        if (empty($options['disableCountWrap']) &&
             isset($options['count'])
             && (
                 (
                     isset($options['what'])
                     && false !== strpos(strtoupper($options['what']), 'COUNT(')
                 )
-                || $options['groupby']
-                || $options['having']
+                || isset($options['groupby'])
+                || isset($options['having'])
             )
         ) {
             $sqlOptions['sqlonly'] = 1;
@@ -244,7 +244,7 @@ abstract class SearchBase
                 $what,
                 $from,
                 $sqlOptions,
-                $options['debug'] ? 1 : 0
+                $options['debug'] ?? 0
             );
 
             if ($queryOrBuilder instanceof QueryBuilder) {
@@ -262,14 +262,14 @@ abstract class SearchBase
             $what,
             $from,
             $sqlOptions,
-            $options['debug'] ? 1 : 0
+            $options['debug'] ?? 0
         );
 
         if (isset($options['sqlonly'])) {
             return $result;
         }
         // else:
-        return isset($options['count']) ? $result[0]['cnt'] : $result;
+        return isset($options['count']) ? ($result[0]['cnt'] ?? 0) : $result;
     }
 
     private function countQuery(QueryBuilder $qb): int
@@ -284,58 +284,58 @@ abstract class SearchBase
     private function initSqlOptions($options)
     {
         $sqlOptions = [];
-        if ($options['pidlist']) {
+        if (isset($options['pidlist'])) {
             $sqlOptions['pidlist'] = $options['pidlist'];
         }
-        if ($options['recursive']) {
+        if (isset($options['recursive'])) {
             $sqlOptions['recursive'] = $options['recursive'];
         }
-        if ($options['limit']) {
+        if (isset($options['limit'])) {
             $sqlOptions['limit'] = $options['limit'];
         }
-        if ($options['offset']) {
+        if (isset($options['offset'])) {
             $sqlOptions['offset'] = $options['offset'];
         }
-        if ($options['enablefieldsoff']) {
+        if (isset($options['enablefieldsoff'])) {
             $sqlOptions['enablefieldsoff'] = $options['enablefieldsoff'];
         }
-        if ($options['enablefieldsbe']) {
+        if (isset($options['enablefieldsbe'])) {
             $sqlOptions['enablefieldsbe'] = $options['enablefieldsbe'];
         }
-        if ($options['enablefieldsfe']) {
+        if (isset($options['enablefieldsfe'])) {
             $sqlOptions['enablefieldsfe'] = $options['enablefieldsfe'];
         }
-        if ($options['groupby']) {
+        if (isset($options['groupby'])) {
             $sqlOptions['groupby'] = $options['groupby'];
         }
-        if ($options['having']) {
+        if (isset($options['having'])) {
             $sqlOptions['having'] = $options['having'];
         }
-        if ($options['callback']) {
+        if (isset($options['callback'])) {
             $sqlOptions['callback'] = $options['callback'];
         }
-        if ($options['ignorei18n']) {
+        if (isset($options['ignorei18n'])) {
             $sqlOptions['ignorei18n'] = $options['ignorei18n'];
         }
-        if ($options['i18nolmode']) {
+        if (isset($options['i18nolmode'])) {
             $sqlOptions['i18nolmode'] = $options['i18nolmode'];
         }
-        if ($options['i18n']) {
+        if (isset($options['i18n'])) {
             $sqlOptions['i18n'] = $options['i18n'];
         }
-        if ($options['ignoreworkspace']) {
+        if (isset($options['ignoreworkspace'])) {
             $sqlOptions['ignoreworkspace'] = $options['ignoreworkspace'];
         }
-        if ($options['sqlonly']) {
+        if (isset($options['sqlonly'])) {
             $sqlOptions['sqlonly'] = $options['sqlonly'];
         }
-        if ($options['union']) {
+        if (isset($options['union'])) {
             $sqlOptions['union'] = $options['union'];
         }
-        if ($options['collection']) {
+        if (isset($options['collection'])) {
             $sqlOptions['collection'] = $options['collection'];
         }
-        if ($options['array_object']) {
+        if (isset($options['array_object'])) {
             $sqlOptions['collection'] = 'ArrayObject';
         }
 
@@ -450,7 +450,7 @@ abstract class SearchBase
     {
         if (is_array($options)) {
             $this->generic = array_key_exists('searchdef', $options) && is_array($options['searchdef']);
-            $this->genericData = $options['searchdef'];
+            $this->genericData = $options['searchdef'] ?? '';
         }
     }
 
@@ -491,9 +491,8 @@ abstract class SearchBase
      */
     private function getGenericJoins($tableAliases)
     {
-        $join = '';
+        $genericJoins = null;
         if ($this->isGeneric()) {
-            // FIXME: how should this work and is it possible to migrate to Join Array?
             $aliasArr = $this->genericData['alias'];
             if (is_array($aliasArr)) {
                 foreach ($aliasArr as $alias => $data) {
@@ -509,20 +508,33 @@ abstract class SearchBase
                     }
 
                     if ($makeJoin) {
-                        $join .= ' '.$data['join'];
+                        if (is_array($data['join'] ?? null)) {
+                            $genericJoins = (array) ($genericJoins ?: []);
+                            $genericJoins = array_merge($genericJoins, $data['join']);
+                        } else {
+                            $genericJoins = $genericJoins ?? '';
+                            if ($data['join'] ?? null) {
+                                $genericJoins .= ' '.$data['join'];
+                            }
+                        }
                     }
                 }
             }
         }
-        $joins = $this->getJoins($tableAliases);
-        if (is_array($joins)) {
-            // FIXME: merge with generics
-            $join = $joins;
+
+        if ($joins = $this->getJoins($tableAliases)) {
+            if (is_array($joins)) {
+                if (is_array($genericJoins)) {
+                    $joins = array_merge($joins, $genericJoins);
+                }
+            } elseif (is_string($genericJoins)) {
+                $joins .= $genericJoins;
+            }
         } else {
-            $join .= $joins;
+            $joins = $genericJoins;
         }
 
-        return $join ?: [];
+        return $joins ?: [];
     }
 
     private function useQueryBuilder($tableAliases): bool
@@ -705,7 +717,7 @@ abstract class SearchBase
     protected function setEnableFieldsForAdditionalTableAliases(array $tableAliases, array $options): string
     {
         $where = '';
-        if (!$options['enableFieldsForAdditionalTableAliases']) {
+        if (empty($options['enableFieldsForAdditionalTableAliases'])) {
             return $where;
         }
 
@@ -872,7 +884,7 @@ abstract class SearchBase
      */
     public function setField($idstr, &$fields, $parameters, $configurations, $operator = OP_LIKE)
     {
-        if (!isset($fields[$idstr][$operator]) && $parameters->offsetGet($idstr)) {
+        if (!isset($fields[$idstr][$operator]) && $parameters->offsetExists($idstr) && $parameters->offsetGet($idstr)) {
             $fields[$idstr][$operator] = $parameters->offsetGet($idstr);
             // Parameter als KeepVar merken
             // TODO: Ist das noch notwendig??

@@ -46,7 +46,7 @@ abstract class BaseViewHelperTest extends BaseTestCase
      *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         \tx_rnbase_util_Misc::prepareTSFE();
         parent::setUp();
@@ -96,7 +96,7 @@ abstract class BaseViewHelperTest extends BaseTestCase
             $viewHelper->injectObjectManager($objectManager);
         }
 
-        $reflectionService = new \TYPO3\CMS\Extbase\Reflection\ReflectionService();
+        $reflectionService = $this->prophesize(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
         $viewHelper->injectReflectionService($reflectionService);
 
         return $viewHelper;

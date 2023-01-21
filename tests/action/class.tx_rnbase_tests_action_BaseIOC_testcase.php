@@ -40,7 +40,7 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends BaseTestCase
      *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->cleanUpPageRenderer();
 
@@ -52,7 +52,7 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends BaseTestCase
      *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpPageRenderer();
 

@@ -47,7 +47,7 @@ class CategoryTest extends BaseTestCase
 
     protected $dbConnection;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->dbConnection = $this->prophesize(Connection::class);
         $this->parametersMock = $this->prophesize(Parameters::class);
@@ -62,7 +62,7 @@ class CategoryTest extends BaseTestCase
      *
      * @see \PHPUnit\Framework\TestCase::tearDown()
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if (isset($_GET['second_ext']['second_parameter'])) {
             unset($_GET['second_ext']['second_parameter']);

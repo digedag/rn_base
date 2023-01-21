@@ -40,7 +40,7 @@ use Sys25\RnBase\Utility\Strings;
  *
  * @author Michael Wagner
  */
-class DataModel implements DataInterface, IteratorAggregate
+class DataModel implements DataInterface, IteratorAggregate, \ArrayAccess
 {
     /**
      * A flag indication if the model was modified after initialisation
@@ -76,6 +76,8 @@ class DataModel implements DataInterface, IteratorAggregate
     {
         if (is_array($record)) {
             $this->record = $record;
+        } elseif ($record instanceof self) {
+            $this->record = $record->getProperties();
         } else {
             $record = (int) $record;
             $this->record = $record > 0 ? ['uid' => $record] : [];
@@ -374,5 +376,65 @@ class DataModel implements DataInterface, IteratorAggregate
     public function __toString()
     {
         return $this->toString();
+    }
+
+    /**
+     * @param mixed $property
+     *
+     * @return bool
+     */
+    public function offsetExists($property)
+    {
+        return $this->hasProperty($this->underscore($property));
+    }
+
+    /**
+     * @param mixed $property
+     *
+     * @return array|mixed|string|null
+     */
+    public function offsetGet($property)
+    {
+        $getterMethod = 'get'.$this->underscoredToUpperCamelCase($property);
+        if (method_exists($this, $getterMethod)) {
+            $result = $this->$getterMethod();
+        } else {
+            $result = $this->getProperty($this->underscore($property));
+        }
+
+        return $result;
+    }
+
+    /**
+     * Almost the same as TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase() but the
+     * string is not lowercased initially so firstName becomes FirstName and not Firstname.
+     */
+    protected function underscoredToUpperCamelCase(string $string): string
+    {
+        return str_replace(' ', '', ucwords(str_replace('_', ' ', $string)));
+    }
+
+    /**
+     * @param mixed $property
+     * @param mixed $value
+     *
+     * @retrun void
+     */
+    public function offsetSet($property, $value)
+    {
+        $setterMethod = 'set'.$this->underscoredToUpperCamelCase($property);
+        if (method_exists($this, $setterMethod)) {
+            $this->$setterMethod($value);
+        } else {
+            $this->setProperty($this->underscore($property), $value);
+        }
+    }
+
+    /**
+     * @param mixed $property
+     */
+    public function offsetUnset($property)
+    {
+        $this->unsProperty($this->underscore($property));
     }
 }

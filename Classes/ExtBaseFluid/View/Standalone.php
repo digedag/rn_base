@@ -39,6 +39,13 @@ use Sys25\RnBase\Configuration\ConfigurationInterface;
 class Standalone extends \TYPO3\CMS\Fluid\View\StandaloneView
 {
     /**
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManager|null
+     *
+     * @deprecated unused since TYPO3 v11, will be removed in v12
+     */
+    protected $objectManager;
+
+    /**
      * @var \Tx_Rnbase_Configuration_ProcessorInterface
      */
     protected $configurations;

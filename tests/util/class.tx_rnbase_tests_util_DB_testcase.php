@@ -37,7 +37,7 @@ class tx_rnbase_tests_util_DB_testcase extends BaseTestCase
      *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->databaseConnectionClassBackup = $this->getDatabaseConnectionClassReflectionProperty()->getValue(null);
     }
@@ -58,7 +58,7 @@ class tx_rnbase_tests_util_DB_testcase extends BaseTestCase
      *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->getDatabaseConnectionClassReflectionProperty()->setValue(null, $this->databaseConnectionClassBackup);
     }
@@ -93,7 +93,7 @@ class tx_rnbase_tests_util_DB_testcase extends BaseTestCase
     }
 }
 
-class Tx_Rnbase_Database_ConnectionMock extends Tx_Rnbase_Database_Connection
+class Tx_Rnbase_Database_ConnectionMock extends \Sys25\RnBase\Database\Connection
 {
     /**
      * Zugriff darauf würde scheitern wenn die Methode doch

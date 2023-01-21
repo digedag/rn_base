@@ -89,6 +89,7 @@ class tx_rnbase
             $utility = Typo3Classes::getGeneralUtilityClass();
             if (func_num_args() > 1) {
                 // Das ist ein Konstruktor Aufruf mit Parametern
+                // phpcs:disable -- $class has never changed
                 $args = func_get_args();
                 $ret = call_user_func_array([$utility, 'makeInstance'], $args);
             } else {

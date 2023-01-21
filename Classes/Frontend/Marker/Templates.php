@@ -5,6 +5,7 @@ namespace Sys25\RnBase\Frontend\Marker;
 use Exception;
 use Sys25\RnBase\Cache\CacheManager;
 use Sys25\RnBase\Configuration\Processor;
+use Sys25\RnBase\Utility\Environment;
 use Sys25\RnBase\Utility\Files;
 use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Network;
@@ -16,7 +17,7 @@ use tx_rnbase;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2009-2020 Rene Nitzsche
+ *  (c) 2009-2023 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -101,10 +102,10 @@ class Templates
      */
     public static function getSubpartFromFile($fileName, $subpart)
     {
-        $file = Files::getFileName($fileName);
+        $file = Files::getFileAbsFileName($fileName);
 
-        if (TYPO3_MODE == 'BE' && false === strpos($file, \Sys25\RnBase\Utility\Environment::getPublicPath())) {
-            $file = \Sys25\RnBase\Utility\Environment::getPublicPath().$file;
+        if (Environment::isBackend() && false === strpos($file, Environment::getPublicPath())) {
+            $file = Environment::getPublicPath().$file;
         } // Im BE auf absoluten Pfad setzen
 
         $templateCode = Network::getUrl($file);
@@ -453,6 +454,10 @@ class Templates
             if (!is_array($valueArr[$keyN])) {
                 $content .= $valueArr[$keyN];
             } else {
+                if (!isset($wSCA_reg[$keyN])) {
+                    $wSCA_reg[$keyN] = 0;
+                }
+
                 $content .= $valueArr[$keyN][intval($wSCA_reg[$keyN]) % 2];
                 ++$wSCA_reg[$keyN];
             }
@@ -483,6 +488,7 @@ class Templates
      */
     public static function substituteSubpart($content, $marker, $subpartContent, $recursive = 1)
     {
+        /** @var \TYPO3\CMS\Core\Service\MarkerBasedTemplateService $parser */
         $parser = tx_rnbase::makeInstance(
             'TYPO3\\CMS\\Core\\Service\\MarkerBasedTemplateService'
         );

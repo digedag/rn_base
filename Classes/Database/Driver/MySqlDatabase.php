@@ -41,7 +41,7 @@ class MySqlDatabase implements IDatabase
     protected $isConnected = false;
 
     /**
-     * @var object
+     * @var mysqli
      */
     private $db = null;
 
@@ -235,7 +235,7 @@ class MySqlDatabase implements IDatabase
         // Select DB
         $ret = $this->db->select_db($schema);
         if (!$ret) {
-            throw new RuntimeException('Could not select MySQL database '.$schema.': '.mysql_error(), 1271953992);
+            throw new RuntimeException('Could not select MySQL database '.$schema.': '.$this->db->error, 1271953992);
         }
         $this->setSqlMode();
     }

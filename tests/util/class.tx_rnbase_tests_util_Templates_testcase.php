@@ -37,13 +37,13 @@ class tx_rnbase_tests_util_Templates_testcase extends BaseTestCase
      */
     private $backup = [];
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->backup['getFileName_backPath'] = tx_rnbase_util_Templates::getTSTemplate()->getFileName_backPath;
         tx_rnbase_util_Templates::getTSTemplate()->getFileName_backPath = \Sys25\RnBase\Utility\Environment::getPublicPath();
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         tx_rnbase_util_Templates::getTSTemplate()->getFileName_backPath = $this->backup['getFileName_backPath'];
     }
