@@ -2,7 +2,7 @@
 
 namespace Sys25\RnBase\Controller;
 
-use Sys25\RnBase\Fluid\View\Action;
+use Sys25\RnBase\ExtBaseFluid\View\Action;
 
 /**
  * @deprecated
