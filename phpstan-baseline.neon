@@ -256,11 +256,6 @@ parameters:
 			path: Classes/Utility/TYPO3.php
 
 		-
-			message: "#^Class Sys25\\\\RnBase\\\\Fluid\\\\View\\\\Action not found\\.$#"
-			count: 1
-			path: Legacy/Controller/AbstractController.php
-
-		-
 			message: "#^Method tx_rnbase_action_BaseIOC\\:\\:setConfigurations\\(\\) should return Sys25\\\\RnBase\\\\Configuration\\\\ConfigurationInterface but return statement is missing\\.$#"
 			count: 1
 			path: Legacy/action/class.tx_rnbase_action_BaseIOC.php

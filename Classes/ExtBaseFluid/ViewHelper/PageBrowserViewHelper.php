@@ -30,8 +30,6 @@ use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
  ***************************************************************/
 
 /**
- * Sys25\RnBase\ExtBaseFluid\ViewHelper$Tx_Mktegutfe_ViewHelpers_PageBrowserViewHelper.
- *
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
