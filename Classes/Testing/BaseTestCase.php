@@ -133,8 +133,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
             $mockBuilder = $this->getMockBuilder($originalClassName)
                 ->setMethods($methods)
                 ->setConstructorArgs($arguments)
-                ->setMockClassName($mockClassName)
-                ->setProxyTarget($proxyTarget);
+                ->setMockClassName($mockClassName);
             if (!$callOriginalConstructor) {
                 $mockBuilder->disableOriginalConstructor();
             }
@@ -149,6 +148,9 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
             }
             if ($callOriginalMethods) {
                 $mockBuilder->enableProxyingToOriginalMethods();
+            }
+            if ($proxyTarget) {
+                $mockBuilder->setProxyTarget($proxyTarget);
             }
 
             return $mockBuilder->getMock();
@@ -347,6 +349,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
         } else {
             // the classic way to read the arguments
             // Remove first two arguments ($object and $name)
+            // phpcs:disable -- $object and $name never changes
             $arguments = func_get_args();
             array_splice($arguments, 0, 2);
         }

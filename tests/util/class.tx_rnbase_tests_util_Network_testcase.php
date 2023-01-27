@@ -48,7 +48,7 @@ class tx_rnbase_tests_util_Network_testcase extends BaseTestCase
      *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->devIpMaskBackup = $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'];
         $this->remoteAddressBackup = $_SERVER['REMOTE_ADDR'];
@@ -59,7 +59,7 @@ class tx_rnbase_tests_util_Network_testcase extends BaseTestCase
      *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = $this->devIpMaskBackup;
         $_SERVER['REMOTE_ADDR'] = $this->remoteAddressBackup;

@@ -3,6 +3,7 @@
 namespace Sys25\RnBase\Backend\Utility;
 
 use Sys25\RnBase\Utility\TYPO3;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  * Copyright notice
@@ -171,5 +172,24 @@ class BackendUtility
         }
 
         return (string) $uri;
+    }
+
+    /**
+     * Returns a JavaScript string (for an onClick handler) which will load the EditDocumentController script that shows the form for editing of the record(s) you have send as params.
+     * REMEMBER to always htmlspecialchar() content in href-properties to ampersands get converted to entities (XHTML requirement and XSS precaution).
+     *
+     * @param string $params parameters sent along to EditDocumentController
+     *
+     * @return string
+     */
+    public static function editOnClick($params)
+    {
+        $returnUrl = GeneralUtility::quoteJSvalue(
+            rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))
+        );
+        /* @var $uriBuilder \TYPO3\CMS\Backend\Routing\UriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+
+        return 'window.location.href='.GeneralUtility::quoteJSvalue((string) $uriBuilder->buildUriFromRoute('record_edit').$params.'&returnUrl=').'+'.$returnUrl.'; return false;';
     }
 }

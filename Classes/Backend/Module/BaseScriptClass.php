@@ -267,7 +267,7 @@ class BaseScriptClass
      */
     public function mergeExternalItems($modName, $menuKey, $menuArr)
     {
-        $mergeArray = $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey];
+        $mergeArray = $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey] ?? null;
         if (is_array($mergeArray)) {
             foreach ($mergeArray as $k => $v) {
                 if (('' === (string) $v['ws'] || 0 === $this->getBackendUser()->workspace && GeneralUtility::inList($v['ws'], 'online')) || -1 === $this->getBackendUser()->workspace && GeneralUtility::inList($v['ws'], 'offline') || $this->getBackendUser()->workspace > 0 && GeneralUtility::inList($v['ws'], 'custom')) {

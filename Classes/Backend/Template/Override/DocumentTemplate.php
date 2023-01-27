@@ -40,6 +40,10 @@ class DocumentTemplate
 
     public const STATE_ERROR = 3;
 
+    public $divClass = false;
+
+    public $JScode = '';
+    public $endOfPageJsBlock = '';
     /**
      * Similar to $JScode but for use as array with associative keys to prevent double inclusion of JS code. a <script> tag is automatically wrapped around.
      *
@@ -70,6 +74,11 @@ function jumpToUrl(URL) {
      * @var PageRenderer
      */
     protected $pageRenderer;
+
+    /**
+     * @var string
+     */
+    public $postCode;
 
     /**
      * Constructor.
@@ -306,7 +315,7 @@ function jumpToUrl(URL) {
     {
         // setting the name of the original HTML template
         $this->moduleTemplateFilename = $filename;
-        if ($GLOBALS['TBE_STYLES']['htmlTemplates'][$filename]) {
+        if (!empty($GLOBALS['TBE_STYLES']['htmlTemplates'][$filename])) {
             $filename = $GLOBALS['TBE_STYLES']['htmlTemplates'][$filename];
         }
         if (GeneralUtility::isFirstPartOfStr($filename, 'EXT:')) {

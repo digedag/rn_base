@@ -43,7 +43,7 @@ class tx_rnbase_tests_util_Files_testcase extends BaseTestCase
      *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         foreach ($this->testFilesToDelete as $absoluteFileName) {
             rmdir($absoluteFileName);

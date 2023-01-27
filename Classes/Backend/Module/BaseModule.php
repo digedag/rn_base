@@ -66,11 +66,21 @@ abstract class BaseModule extends ModuleBase implements IModule
     private $moduleTemplate;
 
     /**
+     * @var array
+     */
+    protected $tabs;
+
+    /**
+     * @var array
+     */
+    protected $subselector;
+
+    /**
      * Initializes the backend module by setting internal variables, initializing the menu.
      */
     public function init()
     {
-        $GLOBALS['LANG']->includeLLFile('EXT:rn_base/Resources/Private/Language/locallang.xml');
+        $GLOBALS['LANG']->includeLLFile('EXT:rn_base/Resources/Private/Language/locallang.xlf');
 
         $this->initModConf();
 
@@ -87,11 +97,11 @@ abstract class BaseModule extends ModuleBase implements IModule
     protected function initModConf()
     {
         // Name might be set from outside
-        if (!$this->MCONF['name']) {
-            $this->MCONF = $GLOBALS['MCONF'];
+        if (empty($this->MCONF['name'])) {
+            $this->MCONF = $GLOBALS['MCONF'] ?? null;
         }
         // check dispatch mode calls without rnbase module runner and fetch the config.
-        if (!$this->MCONF['name']) {
+        if (empty($this->MCONF['name'])) {
             /* @var $runner ModuleRunner */
             $runner = tx_rnbase::makeInstance(ModuleRunner::class);
             $runner->initTargetConf($this);
@@ -170,7 +180,7 @@ abstract class BaseModule extends ModuleBase implements IModule
         // selected page or no page is selected
         $parts->setPageInfo(is_array($pageinfo) ? $pageinfo : []);
         $parts->setSubMenu($this->tabs);
-        $parts->setSelector($this->selector ? $this->selector : $this->subselector);
+        $parts->setSelector($this->selector ?? $this->subselector);
     }
 
     /**
@@ -196,12 +206,13 @@ abstract class BaseModule extends ModuleBase implements IModule
         $content = '<p style="position:absolute; top:-5000px; left:-5000px;">'
             .'<input type="submit" />'
             .'</p>';
-        $this->extObj->pObj = &$this; // Wozu diese Zuweisung? Die Submodule können getModule() verwenden...
-
-        if (is_callable([$this->extObj, 'main'])) {
-            $content .= $this->extObj->main();
-        } else {
-            $content .= 'Module '.get_class($this->extObj).' has no method main.';
+        if ($this->extObj) {
+            $this->extObj->pObj = &$this; // Wozu diese Zuweisung? Die Submodule können getModule() verwenden...
+            if (is_callable([$this->extObj, 'main'])) {
+                $content .= $this->extObj->main();
+            } else {
+                $content .= 'Module '.get_class($this->extObj).' has no method main.';
+            }
         }
 
         return $content;
@@ -262,15 +273,15 @@ abstract class BaseModule extends ModuleBase implements IModule
             $cObj = TYPO3::getContentObject();
 
             $pageTSconfigFull = BackendUtility::getPagesTSconfig($this->getPid());
-            $pageTSconfig = $pageTSconfigFull['mod.'][$this->getExtensionKey().'.'];
-            $pageTSconfig['lib.'] = $pageTSconfigFull['lib.'];
+            $pageTSconfig = $pageTSconfigFull['mod.'][$this->getExtensionKey().'.'] ?? [];
+            $pageTSconfig['lib.'] = $pageTSconfigFull['lib.'] ?? [];
 
             $userTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.'.$this->getExtensionKey().'.');
             if (!empty($userTSconfig['properties'])) {
                 $pageTSconfig = Arrays::mergeRecursiveWithOverrule($pageTSconfig, $userTSconfig['properties']);
             }
 
-            $qualifier = $pageTSconfig['qualifier'] ? $pageTSconfig['qualifier'] : $this->getExtensionKey();
+            $qualifier = $pageTSconfig['qualifier'] ?? $this->getExtensionKey();
             $this->configurations = tx_rnbase::makeInstance(Processor::class);
             $this->configurations->init($pageTSconfig, $cObj, $this->getExtensionKey(), $qualifier);
 
@@ -518,11 +529,13 @@ abstract class BaseModule extends ModuleBase implements IModule
             </script>
             ';
 
-        // TODO: Die Zeile könnte problematisch sein...
-        $doc->postCode = '
+        if (!TYPO3::isTYPO115OrHigher()) {
+            // TODO: Die Zeile könnte problematisch sein...
+            $doc->postCode = '
             <script>
                 script_ended = 1;
                 if (top.fsMod) top.fsMod.recentIds["web"] = '.$this->id.';</script>';
+        }
     }
 
     /**
@@ -597,21 +610,10 @@ abstract class BaseModule extends ModuleBase implements IModule
         $buttons['csh'] = BackendUtility::cshItem(
             '_MOD_'.$this->getName(),
             '',
-            $GLOBALS['BACK_PATH'],
+            $GLOBALS['BACK_PATH'] ?? '',
             '',
             true
         );
-
-        if ($this->id && is_array($this->pageinfo)) {
-            // Shortcut
-            if ($BE_USER->mayMakeShortcut()) {
-                $buttons['shortcut'] = $this->getDoc()->makeShortcutIcon(
-                    'id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit',
-                    implode(',', array_keys($this->MOD_MENU)),
-                    $this->getName()
-                );
-            }
-        }
 
         return $buttons;
     }

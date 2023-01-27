@@ -85,7 +85,7 @@ class Debug
         $path = [];
         $pathSiteLength = strlen(Environment::getPublicPath());
         foreach ($trail as $dat) {
-            $pathFragment = $dat['class'].$dat['type'].$dat['function'];
+            $pathFragment = ($dat['class'] ?? '').($dat['type'] ?? '').($dat['function'] ?? '');
             // add the path of the included file
             if (in_array(
                 $dat['function'],
@@ -95,7 +95,7 @@ class Debug
                 $dat['file'] = substr($dat['file'], $pathSiteLength);
                 $pathFragment .= '('.$dat['args'][0].'),'.$dat['file'];
             }
-            $path[] = $pathFragment.'#'.$dat['line'];
+            $path[] = $pathFragment.'#'.($dat['line'] ?? '');
         }
 
         return $path;
@@ -117,7 +117,7 @@ class Debug
             return false;
         }
         if (null === $key) {
-            $key = $_GET['debug'];
+            $key = ($_GET['debug'] ?? null);
         }
 
         return $debugKey === $key;
@@ -208,7 +208,7 @@ class Debug
 				display: block;
 			}
 		';
-        if (TYPO3_MODE === 'BE') {
+        if (Environment::isBackend()) {
             // @TODO: this is too late, for the most cases!
             $GLOBALS['TBE_STYLES']['inDocStyles_TBEstyle'] .= $code;
         } else {

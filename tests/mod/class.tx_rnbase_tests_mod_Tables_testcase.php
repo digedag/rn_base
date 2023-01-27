@@ -40,7 +40,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends BaseTestCase
     /**
      * Initialisiert allgemeine Testdaten.
      */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->oFormTool = tx_rnbase::makeInstance('tx_rnbase_util_FormTool');
         $GLOBALS['LOCAL_LANG']['default']['Header Uid'][0] = ['source' => 'Header Uid', 'target' => 'Header Uid'];
@@ -51,7 +51,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends BaseTestCase
         $this->resetIndependentEnvironmentCache();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->restoreCurrentRequestUri();
     }

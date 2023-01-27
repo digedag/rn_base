@@ -218,7 +218,7 @@ abstract class PersistenceRepository extends AbstractRepository implements Persi
         // set the uid and force a record reload
         if ($model instanceof BaseModel) {
             $model->setProperty(
-                ['uid' => (int) $data['uid']]
+                ['uid' => (int) ($data['uid'] ?? 0)]
             );
             $model->reset();
         }

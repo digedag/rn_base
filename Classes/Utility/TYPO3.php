@@ -140,6 +140,16 @@ class TYPO3
         return self::isTYPO3VersionOrHigher(10004000);
     }
 
+    /**
+     * Prüft, ob mindestens TYPO3 Version 11.5 vorhanden ist.
+     *
+     * @return bool
+     */
+    public static function isTYPO115OrHigher()
+    {
+        return self::isTYPO3VersionOrHigher(11005000);
+    }
+
     private static $TYPO3_VERSION = false;
 
     /**
@@ -251,6 +261,10 @@ class TYPO3
      */
     public static function getFEUser()
     {
+        if (empty($GLOBALS['TSFE'])) {
+            return null;
+        }
+
         return $GLOBALS['TSFE']->fe_user;
     }
 
@@ -273,7 +287,7 @@ class TYPO3
      */
     public static function getBEUser()
     {
-        return $GLOBALS['BE_USER'];
+        return $GLOBALS['BE_USER'] ?? null;
     }
 
     /**
@@ -307,7 +321,7 @@ class TYPO3
      */
     public static function getTSFE()
     {
-        if (!is_object($GLOBALS['TSFE'])) {
+        if (!is_object($GLOBALS['TSFE'] ?? null)) {
             Misc::prepareTSFE();
         }
 
@@ -338,11 +352,11 @@ class TYPO3
     public static function getSysPage()
     {
         if (!is_object(self::$sysPage)) {
-            if (is_object($GLOBALS['TSFE']->sys_page)) {
+            if (is_object($GLOBALS['TSFE'] ?? null) && is_object($GLOBALS['TSFE']->sys_page)) {
                 self::$sysPage = $GLOBALS['TSFE']->sys_page;
             } // Use existing SysPage from TSFE
             else {
-                self::$sysPage = \tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+                self::$sysPage = \tx_rnbase::makeInstance(Typo3Classes::getPageRepositoryClass());
                 if (!self::isTYPO95OrHigher()) {
                     self::$sysPage->init(0);
                 }

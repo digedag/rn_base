@@ -61,7 +61,7 @@ class Files
         }
         if ($incFile) {
             // Im BE muss ein absoluter Pfad verwendet werden
-            $fullPath = (TYPO3_MODE == 'BE') ? \Sys25\RnBase\Utility\Environment::getPublicPath().$incFile : $incFile;
+            $fullPath = Environment::isBackend() ? Environment::getPublicPath().$incFile : $incFile;
             $utility = Typo3Classes::getGeneralUtilityClass();
             $fileinfo = $utility::split_fileref($incFile);
             if ($utility::inList('jpg,gif,jpeg,png', $fileinfo['fileext'])) {

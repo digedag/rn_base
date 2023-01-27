@@ -13,6 +13,7 @@ use Sys25\RnBase\Frontend\View\ContextInterface;
 use Sys25\RnBase\Frontend\View\ViewInterface;
 use Sys25\RnBase\Utility\Files;
 use Sys25\RnBase\Utility\Misc;
+use Sys25\RnBase\Utility\Network;
 
 /***************************************************************
 * Copyright notice
@@ -50,7 +51,7 @@ class BaseView extends AbstractView implements ViewInterface
     {
         $configurations = $request->getConfigurations();
         $this->_init($configurations);
-        $templateCode = Files::getFileResource($this->getTemplate($view, '.html'));
+        $templateCode = Network::getUrl(Files::getFileAbsFileName($this->getTemplate($view, '.html')));
         if (!strlen($templateCode)) {
             Misc::mayday('TEMPLATE NOT FOUND: '.$this->getTemplate($view, '.html'));
         }
@@ -78,16 +79,17 @@ class BaseView extends AbstractView implements ViewInterface
 
         $params = [];
         $params['confid'] = $request->getConfId();
-        $params['item'] = $request->getViewContext()->offsetGet('item');
-        $params['items'] = $request->getViewContext()->offsetGet('items');
+        $params['item'] = $request->getViewContext()->offsetExists('item') ? $request->getViewContext()->offsetGet('item') : null;
+        $params['items'] = $request->getViewContext()->offsetExists('items') ? $request->getViewContext()->offsetGet('items') : null;
         $markerArray = $subpartArray = $wrappedSubpartArray = [];
+        $formatter = $configurations->getFormatter();
         BaseMarker::callModules(
             $out,
             $markerArray,
             $subpartArray,
             $wrappedSubpartArray,
             $params,
-            $configurations->getFormatter()
+            $formatter
         );
         $out = BaseMarker::substituteMarkerArrayCached(
             $out,

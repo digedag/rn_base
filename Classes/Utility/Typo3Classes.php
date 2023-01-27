@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Utility;
 
+use Sys25\RnBase\Backend\Template\Override\DocumentTemplate;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 
 /***************************************************************
@@ -97,6 +98,20 @@ class Typo3Classes
     }
 
     /**
+     * @see https://github.com/TYPO3/typo3/blob/v10.0.0/typo3/sysext/core/Documentation/Changelog/10.0/Deprecation-88746-PageRepositoryPHPClassMovedFromFrontendToCoreExtension.rst
+     *
+     * @return class-string<\TYPO3\CMS\Core\Domain\Repository\PageRepository>
+     */
+    public static function getPageRepositoryClass()
+    {
+        if (TYPO3::isTYPO104OrHigher()) {
+            return 'TYPO3\\CMS\\Core\\Domain\\Repository\\PageRepository';
+        }
+
+        return 'TYPO3\\CMS\\Frontend\\Page\\PageRepository';
+    }
+
+    /**
      * @return class-string<\TYPO3\CMS\Core\Charset\CharsetConverter>
      */
     public static function getCharsetConverterClass()
@@ -127,7 +142,7 @@ class Typo3Classes
     {
         if (null === $enabled) {
             $beCookie = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']) ?: 'be_typo_user';
-            $enabled = (bool) $_COOKIE[$beCookie];
+            $enabled = (bool) ($_COOKIE[$beCookie] ?? false);
         }
 
         return new TimeTracker($enabled);
@@ -186,11 +201,15 @@ class Typo3Classes
     }
 
     /**
-     * @return class-string<\TYPO3\CMS\Backend\Template\DocumentTemplate>
+     * @return class-string<\TYPO3\CMS\Backend\Template\DocumentTemplate|\Sys25\RnBase\Backend\Template\Override\DocumentTemplate>
      */
     public static function getDocumentTemplateClass()
     {
-        return \TYPO3\CMS\Backend\Template\DocumentTemplate::class;
+        if (TYPO3::isTYPO115OrHigher()) {
+            return DocumentTemplate::class;
+        }
+
+        return 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate';
     }
 
     /**
@@ -210,19 +229,15 @@ class Typo3Classes
     }
 
     /**
-     * @return class-string<\TYPO3\CMS\Backend\Template\DocumentTemplate>
+     * @return class-string<\TYPO3\CMS\Backend\Template\DocumentTemplate|\Sys25\RnBase\Backend\Template\Override\DocumentTemplate>
      */
     public static function getMediumDocumentTemplateClass()
     {
-        return \TYPO3\CMS\Backend\Template\DocumentTemplate::class;
-    }
+        if (TYPO3::isTYPO115OrHigher()) {
+            return DocumentTemplate::class;
+        }
 
-    /**
-     * @return class-string<\TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser>
-     */
-    public static function getLocalizationParserClass()
-    {
-        return \TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser::class;
+        return 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate';
     }
 
     /**

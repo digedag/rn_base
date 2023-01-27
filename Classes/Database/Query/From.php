@@ -96,8 +96,8 @@ class From
             if (isset($fromRaw['table'])) {
                 $tableName = $fromRaw['table'];
                 // check the required fields
-                $tableAlias = $fromRaw['alias'] ?: $tableAlias;
-                if ($fromRaw['clause']) {
+                $tableAlias = $fromRaw['alias'] ?? $tableAlias;
+                if (isset($fromRaw['clause'])) {
                     $joinsOrFromClause = $fromRaw['clause'];
 //                 } elseif ($tableAlias) {
 //                     $joinsOrFromClause = $tableName.' AS '.$tableAlias;

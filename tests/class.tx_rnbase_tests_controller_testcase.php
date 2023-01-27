@@ -40,7 +40,7 @@ class tx_rnbase_tests_controller_testcase extends BaseTestCase
 {
     private $exceptionHandlerConfig;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rn_base']);
         $this->exceptionHandlerConfig = $extConfig['exceptionHandler'];
@@ -52,7 +52,7 @@ class tx_rnbase_tests_controller_testcase extends BaseTestCase
         }
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rn_base']);
         $extConfig['exceptionHandler'] = $this->exceptionHandlerConfig;
@@ -258,9 +258,9 @@ class tx_rnbase_exception_HandlerWithoutCorrectInterface
     }
 }
 
-class tx_rnbase_exception_CustomHandler implements tx_rnbase_exception_IHandler
+class tx_rnbase_exception_CustomHandler implements \Sys25\RnBase\Exception\ExceptionHandlerInterface
 {
-    public function handleException($actionName, Exception $e, Tx_Rnbase_Configuration_ProcessorInterface $configurations)
+    public function handleException($actionName, Exception $e, Sys25\RnBase\Configuration\ConfigurationInterface $configurations)
     {
         return 'custom handler';
     }

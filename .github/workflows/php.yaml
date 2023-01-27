@@ -27,6 +27,28 @@ jobs:
           - 8.0
           - 8.1
 
+  php-compatibility:
+    name: "PHPCompatibility"
+    runs-on: ubuntu-20.04
+    needs: php-lint
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2
+      - name: "Install PHP"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "${{ matrix.php-version }}"
+          coverage: none
+          tools: composer:v2
+      - name: "Run PHP CS with PHPCompatibility rule"
+        run: "composer test:phpcompatibility"
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - 7.4
+          - 8.0
+
   code-quality:
     name: Code quality checks
     runs-on: ubuntu-20.04
@@ -57,6 +79,7 @@ jobs:
       matrix:
         php-version:
           - 7.4
+          - 8.0
         command:
           - ".Build/bin/php-cs-fixer fix --diff --dry-run"
           - "composer test:phpstan"
@@ -118,3 +141,7 @@ jobs:
             php-version: 7.3
           - typo3-version: ^10.4
             php-version: 7.4
+          - typo3-version: ^11.5
+            php-version: 7.4
+          - typo3-version: ^11.5
+            php-version: 8.0

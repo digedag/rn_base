@@ -118,7 +118,11 @@ class tx_rnbase_controller
 
     public $defaultAction = 'defaultAction';
 
-    public $cobj; // Plugins cObj instance from T3
+    public $cObj; // Plugins cObj instance from T3
+
+    public $extensionKey;
+
+    public $qualifier;
 
     private $errors = [];
 
@@ -421,7 +425,7 @@ class tx_rnbase_controller
      */
     public function _getParameterAction($parameters)
     {
-        $action = $parameters->offsetGet('action');
+        $action = $parameters->offsetExists('action') ? $parameters->offsetGet('action') : '';
         if (!is_array($action)) {
             return $action;
         } else {

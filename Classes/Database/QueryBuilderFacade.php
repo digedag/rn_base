@@ -5,6 +5,7 @@ namespace Sys25\RnBase\Database;
 use Sys25\RnBase\Database\Query\From;
 use Sys25\RnBase\Database\Query\Join;
 use Sys25\RnBase\Utility\Debug;
+use Sys25\RnBase\Utility\Environment;
 use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
@@ -14,6 +15,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 
 /***************************************************************
  *  Copyright notice
@@ -50,14 +52,14 @@ class QueryBuilderFacade
         $tableAlias = $from->getAlias();
 
         $where = isset($arr['where']) ? $arr['where'] : null;
-        $groupBy = is_string($arr['groupby']) ? $arr['groupby'] : '';
-        $having = is_string($arr['having']) ? $arr['having'] : '';
-        $debug = intval($arr['debug']) > 0;
-        $orderBy = is_string($arr['orderby']) ? $arr['orderby'] : '';
-        $offset = (int) intval($arr['offset']) > 0 ? $arr['offset'] : 0;
-        $limit = (int) intval($arr['limit']) > 0 ? $arr['limit'] : '';
-        $pidList = (is_string($arr['pidlist']) || is_int($arr['pidlist'])) ? $arr['pidlist'] : '';
-        $recursive = intval($arr['recursive']) ? intval($arr['recursive']) : 0;
+        $groupBy = is_string($arr['groupby'] ?? null) ? $arr['groupby'] : '';
+        $having = is_string($arr['having'] ?? null) ? $arr['having'] : '';
+        $debug = intval($arr['debug'] ?? null) > 0;
+        $orderBy = is_string($arr['orderby'] ?? null) ? $arr['orderby'] : '';
+        $offset = (int) intval($arr['offset'] ?? null) > 0 ? $arr['offset'] : 0;
+        $limit = (int) intval($arr['limit'] ?? null) > 0 ? $arr['limit'] : '';
+        $pidList = (is_string($arr['pidlist'] ?? null) || is_int($arr['pidlist'] ?? null)) ? $arr['pidlist'] : '';
+        $recursive = intval($arr['recursive'] ?? null) ? intval($arr['recursive']) : 0;
         // TODO: is i18n still necessary?
         // $i18n = is_string($arr['i18n']) > 0 ? $arr['i18n'] : '';
         // TODO: how to handle UNIONs?
@@ -117,7 +119,7 @@ class QueryBuilderFacade
 
     private function handleEnableFieldsOptions(QueryBuilder $queryBuilder, array $options)
     {
-        if ($options['enablefieldsoff']) {
+        if ($options['enablefieldsoff'] ?? false) {
             $queryBuilder->getRestrictions()->removeAll();
         } else {
             // Für Redakteure versteckte Objekte im FE einblenden
@@ -126,7 +128,7 @@ class QueryBuilderFacade
                 !isset($options['enablefieldsfe'])
             ) {
                 $options['enablefieldsbe'] = 1;
-                if ($this->isFrontend()) {
+                if (Environment::isFrontend()) {
                     // wir nehmen nicht tx_rnbase_util_TYPO3::getTSFE()->set_no_cache weil das durch
                     // $GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter'] deaktiviert werden
                     // kann. Das wollen wir aber nicht. Der Cache muss in jedem Fall deaktiviert werden.
@@ -136,25 +138,25 @@ class QueryBuilderFacade
                 }
             }
 
-            if ($this->isFrontend()) {
+            if (Environment::isFrontend()) {
                 $restrictions = $queryBuilder->getRestrictions()
                     ->removeAll();
-                if (intval($options['enablefieldsbe'])) {
+                if (intval($options['enablefieldsbe'] ?? null)) {
                     $restrictions->add(tx_rnbase::makeInstance(DeletedRestriction::class))
                         ->add(tx_rnbase::makeInstance(BackendWorkspaceRestriction::class));
                 } else {
                     $restrictions->add(tx_rnbase::makeInstance(FrontendRestrictionContainer::class));
                 }
+            } else {
+                $restrictions = $queryBuilder->getRestrictions()
+                    ->removeAll()
+                    ->add(tx_rnbase::makeInstance(DeletedRestriction::class))
+                    ->add(tx_rnbase::makeInstance(BackendWorkspaceRestriction::class));
+                if (!($options['enablefieldsbe'] ?? null)) {
+                    $restrictions->add(tx_rnbase::makeInstance(HiddenRestriction::class));
+                }
             }
         }
-    }
-
-    /**
-     * @return bool
-     */
-    private function isFrontend()
-    {
-        return TYPO3_MODE == 'FE';
     }
 
     private function getConnectionPool(): ConnectionPool

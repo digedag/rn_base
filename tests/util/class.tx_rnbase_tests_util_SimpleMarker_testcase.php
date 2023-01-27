@@ -26,7 +26,7 @@ use Sys25\RnBase\Testing\BaseTestCase;
 
 tx_rnbase::load('tx_rnbase_util_TS');
 
-class tx_rnbase_util_SimpleMarkerTests extends tx_rnbase_util_SimpleMarker
+class tx_rnbase_util_SimpleMarkerTests extends \Sys25\RnBase\Frontend\Marker\SimpleMarker
 {
     // die methode public machen.
     // mit einer reflaction funktioniert es nicht, da die parameter als referenzen angelnommen werden müssen!

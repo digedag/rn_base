@@ -3,8 +3,7 @@
 if (!defined('TYPO3_MODE')) {
     exit('Access denied.');
 }
-
-if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['rnbase']) &&
+if (empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['rnbase']) &&
     Sys25\RnBase\Configuration\Processor::getExtensionCfgValue('rn_base', 'activateCache')) {
     tx_rnbase_cache_Manager::registerCache(
         'rnbase',

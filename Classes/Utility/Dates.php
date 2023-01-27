@@ -146,8 +146,11 @@ class Dates
      */
     public static function date_mysql2tstamp($date)
     {
-        list($jahr, $monat, $tag) = Strings::intExplode('-', $date);
-        // If mktime() is fed with 6x 0, it returns tstamp for 1999/11//30 00:00:00 which indeed is correct!
+        $dateParts = Strings::intExplode('-', $date);
+        $jahr = $dateParts[0] ?? 0;
+        $monat = $dateParts[1] ?? 0;
+        $tag = $dateParts[2] ?? 0;
+        // If mktime() is fed with 6x 0, it returns tstamp for 1999/11/30 00:00:00 which indeed is correct!
         if (!$jahr && !$monat && !$jahr) {
             $tstamp = false;
         } else {

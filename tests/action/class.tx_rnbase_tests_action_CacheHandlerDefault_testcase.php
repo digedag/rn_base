@@ -36,12 +36,12 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends BaseTestCase
      */
     private $backup = [];
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->backup['_GET'] = $_GET;
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         $_GET = $this->backup['_GET'];
     }

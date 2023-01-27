@@ -30,6 +30,7 @@ use Sys25\RnBase\Exception\AdditionalException;
 use tx_rnbase;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Contains some helpful methods.
@@ -117,7 +118,7 @@ class Misc
      */
     public static function callHook($extKey, $hookKey, $params, $parent = null)
     {
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extKey][$hookKey])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extKey][$hookKey] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extKey][$hookKey] as $funcRef) {
                 $utility = Typo3Classes::getGeneralUtilityClass();
                 $utility::callUserFunction(
@@ -160,6 +161,8 @@ class Misc
     public static function mayday($msg, $extKey = '')
     {
         Logger::fatal($msg, $extKey ? $extKey : 'rn_base');
+
+        // phpcs:disable -- $msg and $extKey has never changed
         $aTrace = debug_backtrace();
         $aLocation = array_shift($aTrace);
         $aTrace1 = array_shift($aTrace);
@@ -345,14 +348,13 @@ MAYDAYPAGE;
 
         $force = array_key_exists('force', $options) ? true : false;
 
-        if (!is_object($GLOBALS['TT'])) {
+        if (!is_object($GLOBALS['TT'] ?? null)) {
             $GLOBALS['TT'] = Typo3Classes::getTimeTracker();
             $GLOBALS['TT']->start();
         }
 
-        $typoScriptFrontendControllerClass = Typo3Classes::getTypoScriptFrontendControllerClass();
-        if (!is_object($GLOBALS['TSFE']) ||
-            !($GLOBALS['TSFE'] instanceof $typoScriptFrontendControllerClass) ||
+        if (!is_object($GLOBALS['TSFE'] ?? null) ||
+            !($GLOBALS['TSFE'] instanceof TypoScriptFrontendController) ||
             $force
         ) {
             if (TYPO3::isTYPO90OrHigher()) {
@@ -374,22 +376,43 @@ MAYDAYPAGE;
                     GeneralUtility::flushInternalRuntimeCaches();
                 }
 
-                $GLOBALS['TSFE'] = tx_rnbase::makeInstance(
-                    $typoScriptFrontendControllerClass,
-                    $GLOBALS['TYPO3_CONF_VARS'],
-                    $site,
-                    $site->getDefaultLanguage()
-                );
+                if (TYPO3::isTYPO115OrHigher()) {
+                    $frontendUser = GeneralUtility::makeInstance(
+                        \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::class
+                    );
+                    $frontendUser->initializeUserSessionManager();
+                    $GLOBALS['TSFE'] = GeneralUtility::makeInstance(
+                        TypoScriptFrontendController::class,
+                        GeneralUtility::makeInstance(
+                            \TYPO3\CMS\Core\Context\Context::class
+                        ),
+                        $site,
+                        $site->getDefaultLanguage(),
+                        new \TYPO3\CMS\Core\Routing\PageArguments(
+                            (int) $pid,
+                            (string) $type,
+                            []
+                        ),
+                        $frontendUser
+                    );
+                } else {
+                    $GLOBALS['TSFE'] = tx_rnbase::makeInstance(
+                        TypoScriptFrontendController::class,
+                        $GLOBALS['TYPO3_CONF_VARS'],
+                        $site,
+                        $site->getDefaultLanguage()
+                    );
+                }
             } else {
                 $GLOBALS['TSFE'] = tx_rnbase::makeInstance(
-                    $typoScriptFrontendControllerClass,
+                    TypoScriptFrontendController::class,
                     $GLOBALS['TYPO3_CONF_VARS'],
                     $pid,
                     $type
                 );
             }
         }
-        /* @var $tsfe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
+        /* @var $tsfe FrontendUserAuthentication */
         $tsfe = $GLOBALS['TSFE'];
 
         // base user groups
@@ -415,7 +438,7 @@ MAYDAYPAGE;
         if (!is_array($tsfe->config)) {
             $tsfe->config = [];
         }
-        if (!is_array($tsfe->config['config'])) {
+        if (!is_array($tsfe->config['config'] ?? null)) {
             $tsfe->config['config'] = [];
         }
 
@@ -424,8 +447,8 @@ MAYDAYPAGE;
             $tsfe->initLLvars();
         }
 
-        if (!$options['dontSetPageToTsfe']
-            && (!is_array($tsfe->page) || $tsfe->page['uid'] != $pid)
+        if (empty($options['dontSetPageToTsfe'])
+            && (!is_array($tsfe->page) || ($tsfe->page['uid'] ?? 0) != $pid)
         ) {
             $tsfe->page = $tsfe->sys_page->getPage($pid);
         }
@@ -496,7 +519,7 @@ MAYDAYPAGE;
     {
         if ('LLL:' === substr($title, 0, 4)) {
             // Prefer TSFE in FE_MODE.
-            if (TYPO3_MODE == 'FE' && array_key_exists('TSFE', $GLOBALS)) {
+            if (Environment::isFrontend() && array_key_exists('TSFE', $GLOBALS)) {
                 return $GLOBALS['TSFE']->sL($title);
             } elseif (array_key_exists('LANG', $GLOBALS)) {
                 return $GLOBALS['LANG']->sL($title);

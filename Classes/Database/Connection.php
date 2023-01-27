@@ -8,6 +8,7 @@ use Sys25\RnBase\Domain\Collection\BaseCollection;
 use Sys25\RnBase\Domain\Model\DynamicTableInterface;
 use Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface;
 use Sys25\RnBase\Utility\Debug;
+use Sys25\RnBase\Utility\Environment;
 use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
@@ -22,7 +23,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006-2021 Rene Nitzsche
+ *  (c) 2006-2023 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -113,7 +114,7 @@ class Connection implements SingletonInterface
             ]
         );
 
-        $debug = $debug ? $debug : intval($arr['debug']) > 0;
+        $debug = $debug ?? intval($arr['debug'] ?? 0) > 0;
         if ($debug) {
             $time = microtime(true);
             $mem = memory_get_usage();
@@ -161,14 +162,14 @@ class Connection implements SingletonInterface
 
     private function doSelectByQueryBuilder(QueryBuilder $queryBuilder, From $from, array $arr)
     {
-        $sqlOnly = intval($arr['sqlonly']) > 0;
+        $sqlOnly = intval($arr['sqlonly'] ?? null) > 0;
 
         if ($sqlOnly) {
             return $queryBuilder;
         }
 
         $rows = $this->initRows($arr);
-        $wrapper = is_string($arr['wrapperclass']) ? trim($arr['wrapperclass']) : 0;
+        $wrapper = is_string($arr['wrapperclass'] ?? null) ? trim($arr['wrapperclass']) : 0;
         $callback = isset($arr['callback']) ? $arr['callback'] : false;
 
         foreach ($queryBuilder->execute()->fetchAll() as $row) {
@@ -186,19 +187,20 @@ class Connection implements SingletonInterface
         $tableAlias = $from->getAlias();
         $fromClause = $fromClause ?: trim(sprintf('%s %s', $tableName, $tableAlias));
 
-        $where = is_string($arr['where']) ? $arr['where'] : '1=1';
-        $groupBy = is_string($arr['groupby']) ? $arr['groupby'] : '';
+        $where = is_string($arr['where'] ?? false) ? $arr['where'] : '1=1';
+        $groupBy = $arr['groupby'] ?? '';
         if ($groupBy) {
-            $groupBy .= is_string($arr['having']) > 0 ? ' HAVING '.$arr['having'] : '';
+            $groupBy .= empty($arr['having'] ?? '') ? '' : ' HAVING '.$arr['having'];
         }
-        $orderBy = is_string($arr['orderby']) ? $arr['orderby'] : '';
-        $offset = intval($arr['offset']) > 0 ? intval($arr['offset']) : 0;
-        $limit = intval($arr['limit']) > 0 ? intval($arr['limit']) : '';
+        $orderBy = $arr['orderby'] ?? '';
+        $offset = intval($arr['offset'] ?? 0) > 0 ? intval($arr['offset']) : 0;
+        $limit = intval($arr['limit'] ?? 0) > 0 ? intval($arr['limit']) : '';
+        $arr['pidlist'] = $arr['pidlist'] ?? '';
         $pidList = (is_string($arr['pidlist']) || is_int($arr['pidlist'])) ? $arr['pidlist'] : '';
-        $recursive = intval($arr['recursive']) ? intval($arr['recursive']) : 0;
-        $i18n = is_string($arr['i18n']) > 0 ? $arr['i18n'] : '';
-        $sqlOnly = intval($arr['sqlonly']) > 0 ? intval($arr['sqlonly']) : '';
-        $union = is_string($arr['union']) > 0 ? $arr['union'] : '';
+        $recursive = (int) ($arr['recursive'] ?? 0);
+        $i18n = empty($arr['i18n']) ? '' : $arr['i18n'];
+        $sqlOnly = (int) ($arr['sqlonly'] ?? 0);
+        $union = empty($arr['union']) ? '' : $arr['union'];
 
         // offset und limit kombinieren
         // bei gesetztem limit ist offset optional
@@ -260,7 +262,7 @@ class Connection implements SingletonInterface
         $rows = $this->initRows($arr);
 
         if ($this->testResource($res)) {
-            $wrapper = is_string($arr['wrapperclass']) ? trim($arr['wrapperclass']) : 0;
+            $wrapper = is_string($arr['wrapperclass'] ?? null) ? trim($arr['wrapperclass']) : 0;
             $callback = isset($arr['callback']) ? $arr['callback'] : false;
 
             while ($row = $database->sql_fetch_assoc($res)) {
@@ -302,7 +304,7 @@ class Connection implements SingletonInterface
     private function initRows(array $options)
     {
         $rows = [];
-        if ($options['collection']) {
+        if ($options['collection'] ?? '') {
             if (!is_string($options['collection']) || !class_exists($options['collection'])) {
                 $options['collection'] = BaseCollection::class;
             }
@@ -341,7 +343,7 @@ class Connection implements SingletonInterface
      */
     private function lookupWorkspace(&$row, $tableName, $options)
     {
-        if ($options['enablefieldsoff'] || $options['ignoreworkspace']) {
+        if (($options['enablefieldsoff'] ?? false) || ($options['ignoreworkspace'] ?? false)) {
             return;
         }
 
@@ -365,11 +367,11 @@ class Connection implements SingletonInterface
         // Ist dieser Aufruf im BE überhaupt sinnvoll?
         if (
             (
-                !(defined('TYPO3_MODE') && TYPO3_MODE === 'FE') ||
-                $options['enablefieldsoff'] ||
-                $options['ignorei18n']
+                !Environment::isFrontend() ||
+                ($options['enablefieldsoff'] ?? false) ||
+                ($options['ignorei18n'] ?? false)
             ) &&
-            !$options['forcei18n']
+            empty($options['forcei18n'] ?? false)
         ) {
             return;
         }
@@ -381,7 +383,7 @@ class Connection implements SingletonInterface
             return;
         }
 
-        $OLmode = (isset($options['i18nolmode']) ? $options['i18nolmode'] : '');
+        $OLmode = ($options['i18nolmode'] ?? '');
         $sysPage = TYPO3::getSysPage();
 
         if ('pages' === $tableName) {
@@ -431,7 +433,7 @@ class Connection implements SingletonInterface
         $dbKey = is_string($options) ? $options : 'typo3';
         $db = null;
 
-        if (is_array($options) && !empty($options['db'])) {
+        if (is_array($options) && !empty($options['db'] ?? [])) {
             $dbConfig = &$options['db'];
             if (is_string($dbConfig)) {
                 $dbKey = $dbConfig;
@@ -505,7 +507,7 @@ class Connection implements SingletonInterface
         if (!is_array($arr)) {
             $arr = ['debug' => $arr];
         }
-        $debug = intval($arr['debug']) > 0;
+        $debug = intval($arr['debug'] ?? 0) > 0;
 
         $database = $this->getDatabaseConnection($arr);
 
@@ -519,9 +521,9 @@ class Connection implements SingletonInterface
             ]
         );
 
-        if ($debug || !empty($arr['sqlonly'])) {
+        if ($debug || !empty($arr['sqlonly'] ?? false)) {
             $sqlQuery = $database->INSERTquery($tablename, $values);
-            if (!empty($arr['sqlonly'])) {
+            if (!empty($arr['sqlonly'] ?? false)) {
                 return $sqlQuery;
             }
             $time = microtime(true);
@@ -574,7 +576,7 @@ class Connection implements SingletonInterface
      */
     public function doQuery($sqlQuery, array $options = [])
     {
-        $debug = array_key_exists('debug', $options) ? intval($options['debug']) > 0 : false;
+        $debug = $options['debug'] ?? false;
         $database = $this->getDatabaseConnection($options);
         if ($debug) {
             $time = microtime(true);
@@ -616,7 +618,7 @@ class Connection implements SingletonInterface
         if (!is_array($arr)) {
             $arr = ['debug' => $arr];
         }
-        $debug = intval($arr['debug']) > 0;
+        $debug = intval($arr['debug'] ?? 0) > 0;
         $database = $this->getDatabaseConnection($arr);
 
         Misc::callHook(
@@ -686,7 +688,7 @@ class Connection implements SingletonInterface
         if (!is_array($arr)) {
             $arr = ['debug' => $arr];
         }
-        $debug = intval($arr['debug']) > 0;
+        $debug = intval($arr['debug'] ?? 0) > 0;
         $database = $this->getDatabaseConnection($arr);
 
         Misc::callHook(
@@ -699,9 +701,9 @@ class Connection implements SingletonInterface
             ]
         );
 
-        if ($debug || !empty($arr['sqlonly'])) {
+        if ($debug || !empty($arr['sqlonly'] ?? false)) {
             $sql = $database->DELETEquery($tablename, $where);
-            if (!empty($arr['sqlonly'])) {
+            if (!empty($arr['sqlonly'] ?? false)) {
                 return $sql;
             }
             Debug::debug($sql, 'SQL');
@@ -845,8 +847,8 @@ class Connection implements SingletonInterface
 
         // set default TCA values specific for the user
         $TCAdefaultOverride = TYPO3::isTYPO95OrHigher() ?
-            TYPO3::getBEUser()->getTSConfig('TCAdefaults')['properties'] :
-            TYPO3::getBEUser()->getTSConfigProp('TCAdefaults')
+            (TYPO3::getBEUser()->getTSConfig('TCAdefaults')['properties'] ?? null) :
+            (TYPO3::getBEUser()->getTSConfigProp('TCAdefaults') ?? null)
         ;
         if (is_array($TCAdefaultOverride)) {
             $tce->setDefaultsFromUserTS($TCAdefaultOverride);
@@ -1189,13 +1191,13 @@ class Connection implements SingletonInterface
     {
         $enableFields = '';
 
-        if (!$options['enablefieldsoff']) {
-            if (is_object($GLOBALS['BE_USER']) &&
+        if (!($options['enablefieldsoff'] ?? false)) {
+            if (is_object($GLOBALS['BE_USER'] ?? null) &&
                 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['loadHiddenObjects'] &&
                 !isset($options['enablefieldsfe'])
             ) {
                 $options['enablefieldsbe'] = 1;
-                if ($this->isFrontend()) {
+                if (Environment::isFrontend()) {
                     // wir nehmen nicht tx_rnbase_util_TYPO3::getTSFE()->set_no_cache weil das durch
                     // $GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter'] deaktiviert werden
                     // kann. Das wollen wir aber nicht. Der Cache muss in jedem Fall deaktiviert werden.
@@ -1207,13 +1209,13 @@ class Connection implements SingletonInterface
 
             // Zur Where-Clause noch die gültigen Felder hinzufügen
             $sysPage = TYPO3::getSysPage();
-            $mode = (TYPO3_MODE == 'BE') ? 1 : 0;
+            $mode = Environment::isBackend() ? 1 : 0;
             $ignoreArr = [];
-            if (intval($options['enablefieldsbe'])) {
+            if (intval($options['enablefieldsbe'] ?? 0)) {
                 $mode = 1;
                 // Im BE alle sonstigen Enable-Fields ignorieren
                 $ignoreArr = ['starttime' => 1, 'endtime' => 1, 'fe_group' => 1];
-            } elseif (intval($options['enablefieldsfe'])) {
+            } elseif (intval($options['enablefieldsfe'] ?? 0)) {
                 $mode = 0;
             }
             // Workspaces: Bei Tabellen mit Workspace-Support werden die EnableFields automatisch reduziert. Die Extension
@@ -1231,13 +1233,5 @@ class Connection implements SingletonInterface
         }
 
         return $enableFields;
-    }
-
-    /**
-     * @return bool
-     */
-    protected function isFrontend()
-    {
-        return TYPO3_MODE == 'FE';
     }
 }

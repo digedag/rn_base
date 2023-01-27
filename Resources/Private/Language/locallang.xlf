@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="messages" date="2022-05-31T12:54:10Z" product-name="rn_base">
+		<header/>
+		<body>
+			<trans-unit id="msg_error" resname="msg_error" >
+				<source>Error</source>
+			</trans-unit>
+			<trans-unit id="msg_template_not_found" resname="msg_template_not_found" >
+				<source>Template not found.</source>
+			</trans-unit>
+			<trans-unit id="msg_subpart_not_found" resname="msg_subpart_not_found" >
+				<source>Subpart not found</source>
+			</trans-unit>
+			<trans-unit id="label_no_subselectoritems_found" resname="label_no_subselectoritems_found" >
+				<source>No items found to handle this module function.</source>
+			</trans-unit>
+			<trans-unit id="label_action" resname="label_action" >
+				<source>Action</source>
+			</trans-unit>
+			<trans-unit id="label_actions" resname="label_actions" >
+				<source>Actions</source>
+			</trans-unit>
+			<trans-unit id="label_search" resname="label_search" >
+				<source>Search term</source>
+			</trans-unit>
+			<trans-unit id="label_btn_search" resname="label_btn_search" >
+				<source>Search</source>
+			</trans-unit>
+			<trans-unit id="label_hidden" resname="label_hidden" >
+				<source>Hidden entries:</source>
+			</trans-unit>
+			<trans-unit id="label_select_hide_hidden" resname="label_select_hide_hidden" >
+				<source>hide</source>
+			</trans-unit>
+			<trans-unit id="label_select_show_hidden" resname="label_select_show_hidden" >
+				<source>show</source>
+			</trans-unit>
+			<trans-unit id="label_show_details" resname="label_show_details" >
+				<source>Details</source>
+			</trans-unit>
+			<trans-unit id="msg_confirmation_deletion" resname="msg_confirmation_deletion" >
+				<source>Do you really wan't do delete this item?</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

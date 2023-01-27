@@ -23,3 +23,6 @@ parameters:
 
   excludePaths:
     - Classes/Typo3Wrapper/Service/AuthenticationService.php
+    - Legacy/model/class.tx_rnbase_model_data.php
+    - Legacy/model/class.tx_rnbase_model_base.php
+    - Legacy/filter/class.tx_rnbase_filter_FilterItemMarker.php

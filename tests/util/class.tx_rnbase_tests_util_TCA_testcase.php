@@ -36,7 +36,7 @@ class tx_rnbase_tests_util_TCA_testcase extends BaseTestCase
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         // for the testValidateModel Test
         $GLOBALS['TCA']['pages']['columns']['storage_pid']['config']['minitems'] = '1';
@@ -46,7 +46,7 @@ class tx_rnbase_tests_util_TCA_testcase extends BaseTestCase
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $GLOBALS['TCA']['pages']['columns']['storage_pid']['config']['minitems'] = '0';
     }

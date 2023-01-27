@@ -42,7 +42,7 @@ class ExtbaseControllerWithCacheTagsTraitTest extends BaseTestCase
      *
      * @see \PHPUnit_Framework_TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         if (!method_exists($this, 'getMockForTrait')) {
             self::markTestSkipped('mocking traits is not supported in this phpunit version.');
@@ -56,7 +56,7 @@ class ExtbaseControllerWithCacheTagsTraitTest extends BaseTestCase
      *
      * @see \PHPUnit_Framework_TestCase::tearDown()
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $property = new \ReflectionProperty(get_class(\tx_rnbase_util_TYPO3::getTSFE()), 'pageCacheTags');
         $property->setAccessible(true);
