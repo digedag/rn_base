@@ -337,8 +337,10 @@ class tx_rnbase
             $loadedExtensions = $GLOBALS['TYPO3_LOADED_EXT'];
         }
 
+        $result = false;
+
         if (!$loadedExtensions || !is_array($loadedExtensions)) {
-            return false;
+            return $result;
         }
         $uKeys = array_keys($loadedExtensions);
         foreach ($uKeys as $uKey) {
