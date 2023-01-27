@@ -4,7 +4,7 @@ Changelog
 ---------
 
 v1.16.0 (27.01.2023)
-* Support for TYPO3 11.t add. Thanks to Hannes Bochmann and Michael Wagner!
+* Support for TYPO3 11.5 and PHP8 added. Thanks to Hannes Bochmann and Michael Wagner!
 
 v1.15.4 (10.01.2023)
 * add classes for feuser and session handling
