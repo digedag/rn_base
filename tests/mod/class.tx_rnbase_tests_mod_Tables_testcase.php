@@ -1,5 +1,8 @@
 <?php
 
+use Sys25\RnBase\Backend\Form\ToolBox;
+use Sys25\RnBase\Backend\Utility\Tables;
+use Sys25\RnBase\Domain\Model\BaseModel;
 use Sys25\RnBase\Testing\BaseTestCase;
 
 /***************************************************************
@@ -36,19 +39,21 @@ class tx_rnbase_tests_mod_Tables_testcase extends BaseTestCase
      * @var string
      */
     private $currentRequestUri;
+    private $tables;
 
     /**
      * Initialisiert allgemeine Testdaten.
      */
     protected function setUp(): void
     {
-        $this->oFormTool = tx_rnbase::makeInstance('tx_rnbase_util_FormTool');
+        $this->oFormTool = tx_rnbase::makeInstance(ToolBox::class);
         $GLOBALS['LOCAL_LANG']['default']['Header Uid'][0] = ['source' => 'Header Uid', 'target' => 'Header Uid'];
         $GLOBALS['LOCAL_LANG']['default']['Header Col1'][0] = ['source' => 'Header Col1', 'target' => 'Header Col1'];
 
         $this->backupAndSetCurrentRequestUri();
 
         $this->resetIndependentEnvironmentCache();
+        $this->tables = new Tables();
     }
 
     protected function tearDown(): void
@@ -81,11 +86,11 @@ class tx_rnbase_tests_mod_Tables_testcase extends BaseTestCase
     public function testPrepareTableWithoutLinkerDecoratorOrCallbackMethodWithEntriesGivenAsModelsReturnsCorrectTable()
     {
         $aEntries = [
-                0 => tx_rnbase::makeInstance('tx_rnbase_model_base', [
+                0 => tx_rnbase::makeInstance(BaseModel::class, [
                         'uid' => 1,
                         'col1' => 'col1 Value 1',
                 ]),
-                1 => tx_rnbase::makeInstance('tx_rnbase_model_base', [
+                1 => tx_rnbase::makeInstance(BaseModel::class, [
                         'uid' => 2,
                         'col1' => 'col1 Value 2',
                 ]),
@@ -98,7 +103,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends BaseTestCase
                         'title' => 'Header Col1',
                 ],
         ];
-        $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, []);
+        $aRet = $this->tables->prepareTable($aEntries, $aColumns, $this->oFormTool, []);
 
         // allgmein
         $this->assertEquals(3, count($aRet[0]), 'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
@@ -141,7 +146,8 @@ class tx_rnbase_tests_mod_Tables_testcase extends BaseTestCase
                         'title' => 'Header Col1',
                 ],
         ];
-        $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, []);
+
+        $aRet = $this->tables->prepareTable($aEntries, $aColumns, $this->oFormTool, []);
 
         // allgmein
         $this->assertEquals(3, count($aRet[0]), 'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
@@ -171,11 +177,11 @@ class tx_rnbase_tests_mod_Tables_testcase extends BaseTestCase
             tx_rnbase::makeInstance('tx_rnbase_tests_fixtures_classes_Mod')
         );
         $aEntries = [
-                0 => tx_rnbase::makeInstance('tx_rnbase_model_base', [
+                0 => tx_rnbase::makeInstance(BaseModel::class, [
                         'uid' => 1,
                         'col1' => 'col1 Value 1',
                 ]),
-                1 => tx_rnbase::makeInstance('tx_rnbase_model_base', [
+                1 => tx_rnbase::makeInstance(BaseModel::class, [
                         'uid' => 2,
                         'col1' => 'col1 Value 2',
                 ]),
@@ -190,7 +196,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends BaseTestCase
                         'decorator' => &$oDecorator,
                 ],
         ];
-        $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, []);
+        $aRet = $this->tables->prepareTable($aEntries, $aColumns, $this->oFormTool, []);
 
         // allgmein
         $this->assertEquals(3, count($aRet[0]), 'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
@@ -232,7 +238,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends BaseTestCase
                         'title' => 'Header Col1',
                 ],
         ];
-        $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, []);
+        $aRet = $this->tables->prepareTable($aEntries, $aColumns, $this->oFormTool, []);
         // allgmein
         $this->assertEquals(3, count($aRet[0]), 'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
         // Header - es sollte nur das sorting angegeben sein ohne pfeil
@@ -274,7 +280,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends BaseTestCase
                         'title' => 'Header Col1',
                 ],
         ];
-        $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, []);
+        $aRet = $this->tables->prepareTable($aEntries, $aColumns, $this->oFormTool, []);
 
         // allgmein
         $this->assertEquals(3, count($aRet[0]), 'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
@@ -321,7 +327,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends BaseTestCase
                         'title' => 'Header Col1',
                 ],
         ];
-        $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, []);
+        $aRet = $this->tables->prepareTable($aEntries, $aColumns, $this->oFormTool, []);
 
         // allgmein
         $this->assertEquals(3, count($aRet[0]), 'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');
@@ -370,7 +376,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends BaseTestCase
                         'title' => 'Header Col1',
                 ],
         ];
-        $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, []);
+        $aRet = $this->tables->prepareTable($aEntries, $aColumns, $this->oFormTool, []);
 
         // allgmein
         $this->assertEquals(3, count($aRet[0]), 'Das Array der gesamten Tabelle hat die falsche Anzahl an Elementen.');

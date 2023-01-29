@@ -58,11 +58,9 @@
 		"typo3/cms-scheduler": "*"
 	},
 	"autoload": {
-		"classmap": [
-			"Legacy/"
-		],
 		"files": [
-			"Classes/Constants.php"
+			"Func/Constants.php",
+			"Func/tx_rnbase.php"
 		],
 		"psr-4": {
 			"Sys25\\RnBase\\": "Classes"
@@ -162,7 +160,7 @@
 		},
 		"branch-alias": {
 			"dev-master": "1.16.x-dev",
-			"dev-upgrade/11.5": "11.5.x-dev"
+			"dev-feature/remove_legacy_classes": "1.16.x-dev"
 		}
 	}
 }

@@ -189,4 +189,6 @@ interface ConfigurationInterface
      * @return int
      */
     public function getPluginId();
+
+    public function getExtensionConfigValue($extKey, $cfgKey = '');
 }

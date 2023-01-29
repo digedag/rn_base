@@ -27,7 +27,7 @@ use Sys25\RnBase\Utility\Files;
 * This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-abstract class AbstractView
+abstract class AbstractView implements ViewInterface
 {
     protected $pathToTemplates;
 

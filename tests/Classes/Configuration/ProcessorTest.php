@@ -1,6 +1,10 @@
 <?php
 
+namespace Sys25\RnBase\Configuration;
+
 use Sys25\RnBase\Testing\BaseTestCase;
+use Sys25\RnBase\Utility\Typo3Classes;
+use tx_rnbase;
 
 /***************************************************************
 *  Copyright notice
@@ -25,17 +29,21 @@ use Sys25\RnBase\Testing\BaseTestCase;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-class tx_rnbase_tests_configurations_testcase extends BaseTestCase
+/**
+ * FIXME: init not possible.
+ */
+class ProcessorTest extends BaseTestCase
 {
     public function testTsSetup()
     {
-        $GLOBALS['TSFE'] = new tx_rnbase_tsfeDummy();
+        $GLOBALS['TSFE'] = new \stdClass();
+        $GLOBALS['TSFE']->tmpl = new \stdClass();
         $GLOBALS['TSFE']->tmpl->setup['lib.']['match.'] = ['limit' => '10', 'count' => '99'];
 
         $configurationArray['matchtable.']['match'] = '< lib.match';
         $configurationArray['matchtable.']['match.']['limit'] = '100';
-        $cObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
-        $configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
+        $cObj = tx_rnbase::makeInstance(Typo3Classes::getContentObjectRendererClass());
+        $configurations = tx_rnbase::makeInstance(Processor::class);
         $configurations->init($configurationArray, $cObj, 'extkey_text', 'rntest');
 
         $this->assertEquals(100, $configurations->get('matchtable.match.limit'), 'Limit should be 100');
@@ -47,7 +55,8 @@ class tx_rnbase_tests_configurations_testcase extends BaseTestCase
      */
     public function testFlexformSetup()
     {
-        $GLOBALS['TSFE'] = new tx_rnbase_tsfeDummy();
+        $GLOBALS['TSFE'] = new \stdClass();
+        $GLOBALS['TSFE']->tmpl = new \stdClass();
         $GLOBALS['TSFE']->tmpl->setup['lib.']['feuser.']['link'] = ['pid' => '10'];
 
         $flexXml = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?> <T3FlexForms>  <data>  <sheet index="sDEF">  <language index="lDEF">  <field index="action">  <value index="vDEF">tx_rnuserregister_actions_Login</value>  </field>  <field index="feuserPages">  <value index="vDEF"></value>  </field>  <field index="feuserPagesRecursive">  <value index="vDEF"></value>  </field>  </language>  </sheet>  <sheet index="s_loginbox">  <language index="lDEF">  <field index="view.loginbox.header">  <value index="vDEF">Welcome</value>  </field>  <field index="view.loginbox.message">  <value index="vDEF"></value>   </field>  <field index="listview.fegroup.link.pid">  <value index="vDEF">25</value>   </field> <field index="detailview.feuser.link.pid">  <value index="vDEF">35</value>   </field>  </language>  </sheet>  </data> </T3FlexForms>';
@@ -59,9 +68,9 @@ class tx_rnbase_tests_configurations_testcase extends BaseTestCase
         $configurationArray['view.']['loginbox.']['message'] = 'Hello';
         $configurationArray['listview.']['feuser'] = '< lib.feuser';
 
-        $cObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
+        $cObj = tx_rnbase::makeInstance(Typo3Classes::getContentObjectRendererClass());
         $cObj->data['pi_flexform'] = $flexXml;
-        $configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
+        $configurations = tx_rnbase::makeInstance(Processor::class);
         $configurations->init($configurationArray, $cObj, 'extkey_text', 'rntest');
 
         $this->assertEquals('Welcome', $configurations->get('view.loginbox.header'), 'Header should be Welcome');
@@ -90,7 +99,8 @@ class tx_rnbase_tests_configurations_testcase extends BaseTestCase
      */
     public function testTsReference()
     {
-        $GLOBALS['TSFE'] = new tx_rnbase_tsfeDummy();
+        $GLOBALS['TSFE'] = new \stdClass();
+        $GLOBALS['TSFE']->tmpl = new \stdClass();
         $GLOBALS['TSFE']->tmpl->setup['lib.']['rnbase.'] = [];
         $lib = &$GLOBALS['TSFE']->tmpl->setup['lib.']['rnbase.'];
         $lib['root.'] = [
@@ -101,8 +111,8 @@ class tx_rnbase_tests_configurations_testcase extends BaseTestCase
         $lib['child.'] = [
             'child' => 'Child',
         ];
-        /* @var $configurations Tx_Rnbase_Configuration_ProcessorInterface */
-        $configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
+        /* @var $configurations Processor */
+        $configurations = tx_rnbase::makeInstance(Processor::class);
         $configurationArray = [
             'recursive' => '< lib.rnbase.child',
             'recursive.' => [
@@ -121,18 +131,4 @@ class tx_rnbase_tests_configurations_testcase extends BaseTestCase
         $this->assertEquals('Child', $withDot['child']);
         $this->assertEquals('This', $withDot['current']);
     }
-}
-
-class tx_rnbase_tsfeDummy
-{
-    public $tmpl;
-
-    public function __construct()
-    {
-        $this->tmpl = new tx_rnbase_templateDummy();
-    }
-}
-class tx_rnbase_templateDummy
-{
-    public $setup;
 }

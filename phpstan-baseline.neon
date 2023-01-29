@@ -256,21 +256,6 @@ parameters:
 			path: Classes/Utility/TYPO3.php
 
 		-
-			message: "#^Method tx_rnbase_action_BaseIOC\\:\\:setConfigurations\\(\\) should return Sys25\\\\RnBase\\\\Configuration\\\\ConfigurationInterface but return statement is missing\\.$#"
-			count: 1
-			path: Legacy/action/class.tx_rnbase_action_BaseIOC.php
-
-		-
-			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:requireOnce\\(\\)\\.$#"
-			count: 1
-			path: Legacy/class.tx_rnbase.php
-
-		-
-			message: "#^Access to an undefined property tx_rnbase_filter_BaseFilter\\:\\:\\$inputData\\.$#"
-			count: 1
-			path: Legacy/filter/class.tx_rnbase_filter_BaseFilter.php
-
-		-
 			message: "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManager constructor invoked with 0 parameters, 2 required\\.$#"
 			count: 1
 			path: tests/Classes/ExtBaseFluid/View/StandaloneTest.php
@@ -279,11 +264,6 @@ parameters:
 			message: "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManager constructor invoked with 0 parameters, 2 required\\.$#"
 			count: 1
 			path: tests/Classes/ExtBaseFluid/ViewHelper/BaseViewHelperTest.php
-
-		-
-			message: "#^Call to an undefined method tx_rnbase_dummyController\\:\\:getErrorMailHtml\\(\\)\\.$#"
-			count: 1
-			path: tests/class.tx_rnbase_tests_controller_testcase.php
 
 		-
 			message: "#^Access to an undefined property tx_rnbase_tests_fixtures_classes_Decorator\\:\\:\\$mod\\.$#"

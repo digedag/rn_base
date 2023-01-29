@@ -22,6 +22,11 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  */
 
+use Sys25\RnBase\Backend\Form\ToolBox;
+use Sys25\RnBase\Backend\Module\Linker\LinkerInterface;
+use Sys25\RnBase\Backend\Module\Linker\ShowDetails;
+use Sys25\RnBase\Domain\Model\BaseModel;
+use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Testing\BaseTestCase;
 
 /**
@@ -71,21 +76,21 @@ class tx_rnbase_tests_mod_linker_ShowDetails_testcase extends BaseTestCase
      */
     protected function makeLink($model = null, $options = null)
     {
-        if (!$model instanceof tx_rnbase_model_base) {
+        if (!$model instanceof BaseModel) {
             $item = $this->getModel(['uid' => 14])->setTableName('pages');
         }
-        if (!$options instanceof tx_rnbase_model_data) {
-            $options = tx_rnbase_model_data::getInstance($options);
+        if (!$options instanceof DataModel) {
+            $options = DataModel::getInstance($options);
         }
 
         /* @var $linker tx_rnbase_mod_linker_ShowDetails */
-        $linker = tx_rnbase::makeInstance('tx_rnbase_mod_linker_ShowDetails');
+        $linker = tx_rnbase::makeInstance(ShowDetails::class);
 
-        self::assertInstanceOf('tx_rnbase_mod_linker_LinkerInterface', $linker);
+        self::assertInstanceOf(LinkerInterface::class, $linker);
 
         return $linker->makeLink(
             $item,
-            tx_rnbase::makeInstance('tx_rnbase_util_FormTool'),
+            tx_rnbase::makeInstance(ToolBox::class),
             0,
             $options
         );

@@ -14,7 +14,6 @@ use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
 use Sys25\RnBase\Utility\Typo3Classes;
 use tx_rnbase;
-use tx_rnbase_model_base;
 use tx_rnbase_util_db_Builder;
 use tx_rnbase_util_db_IDatabase;
 use tx_rnbase_util_TCA;
@@ -283,10 +282,7 @@ class Connection implements SingletonInterface
             return;
         }
         $item = ($wrapper) ? tx_rnbase::makeInstance($wrapper, $row) : $row;
-        if ($item instanceof DynamicTableInterface
-            // @TODO: backward compatibility for old models will be removed soon
-            || $item instanceof tx_rnbase_model_base
-        ) {
+        if ($item instanceof DynamicTableInterface) {
             $item->setTablename($tableName);
         }
         if ($callback) {

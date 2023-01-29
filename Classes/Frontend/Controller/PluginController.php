@@ -1,19 +1,28 @@
 <?php
 
+namespace Sys25\RnBase\Frontend\Controller;
+
+use Exception;
+use Sys25\RnBase\Configuration\ConfigurationBuilder;
+use Sys25\RnBase\Configuration\ConfigurationInterface;
+use Sys25\RnBase\Configuration\Processor;
 use Sys25\RnBase\Exception\ExceptionHandler;
 use Sys25\RnBase\Exception\ExceptionHandlerInterface;
 use Sys25\RnBase\Exception\PageNotFound404;
 use Sys25\RnBase\Exception\SkipActionException;
 use Sys25\RnBase\Frontend\Request\Parameters;
+use Sys25\RnBase\Frontend\Request\ParametersInterface;
 use Sys25\RnBase\Utility\Arrays;
 use Sys25\RnBase\Utility\Logger;
+use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2007-2013 René Nitzsche
+ *  (c) 2007-2023 René Nitzsche
  *  All rights reserved
  *
  *  Based on code by Elmar Hinz Contact: elmar.hinz@team-red.net
@@ -108,9 +117,9 @@ use Sys25\RnBase\Utility\TYPO3;
  * @subpackage rn_base
  */
 
-class tx_rnbase_controller
+class PluginController
 {
-    public $configurationsClassName = 'Tx_Rnbase_Configuration_Processor'; // You may overwrite this in your subclass with an own configurations class.
+    public $configurationsClassName = Processor::class; // You may overwrite this in your subclass with an own configurations class.
 
     public $parameters;
 
@@ -119,12 +128,17 @@ class tx_rnbase_controller
     public $defaultAction = 'defaultAction';
 
     public $cObj; // Plugins cObj instance from T3
-
     public $extensionKey;
-
     public $qualifier;
 
+    private $configurationBuilder;
+
     private $errors = [];
+
+    public function __construct(ConfigurationBuilder $configurationBuilder = null)
+    {
+        $this->configurationBuilder = $configurationBuilder ?? new ConfigurationBuilder();
+    }
 
     /*
      * main(): A factory method for the responsible action
@@ -199,12 +213,14 @@ class tx_rnbase_controller
 
     public function main($out, $configurationArray)
     {
-        tx_rnbase_util_Misc::pushTT('tx_rnbase_controller', 'start');
+        Misc::pushTT('tx_rnbase_controller', 'start');
 
         // Making the configurations object
-        tx_rnbase_util_Misc::pushTT('init configuration', '');
-        $configurations = $this->_makeConfigurationsObject($configurationArray);
-        tx_rnbase_util_Misc::pullTT();
+        Misc::pushTT('init configuration', '');
+        $configurations = $this->configurationBuilder->buildConfigurationsObject(
+            $configurationArray, $this->cObj, $this->extensionKey, $this->qualifier, $this->configurationsClassName
+        );
+        Misc::pullTT();
 
         try {
             // check for doConvertToUserIntObject
@@ -217,13 +233,13 @@ class tx_rnbase_controller
             return '';
         }
 
-        tx_rnbase_util_Misc::enableTimeTrack($configurations->get('_enableTT') ? true : false);
+        Misc::enableTimeTrack($configurations->get('_enableTT') ? true : false);
         // Making the parameters object
-        tx_rnbase_util_Misc::pushTT('init parameters', '');
+        Misc::pushTT('init parameters', '');
         $parameters = $this->_makeParameterObject($configurations);
         // Make sure to keep all parameters
         $configurations->setParameters($parameters);
-        tx_rnbase_util_Misc::pullTT();
+        Misc::pullTT();
 
         // Finding the action:
         $actions = $this->_findAction($parameters, $configurations);
@@ -237,15 +253,15 @@ class tx_rnbase_controller
 
         try {
             foreach ($actions as $actionName) {
-                tx_rnbase_util_Misc::pushTT('call action', $actionName);
+                Misc::pushTT('call action', $actionName);
                 $out .= $this->doAction($actionName, $parameters, $configurations);
-                tx_rnbase_util_Misc::pullTT();
+                Misc::pullTT();
             }
         } catch (SkipActionException $e) {
             // Bei USER_INT im ersten Aufruf die Ausgabe unterdrücken
             $out = '';
         }
-        tx_rnbase_util_Misc::pullTT();
+        Misc::pullTT();
 
         return $out;
     }
@@ -253,9 +269,9 @@ class tx_rnbase_controller
     /**
      * Call a single action.
      *
-     * @param string                                     $actionName     class name
-     * @param tx_rnbase_IParams                          $parameters
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param string $actionName     class name
+     * @param ParametersInterface $parameters
+     * @param ConfigurationInterface $configurations
      *
      * @return string
      */
@@ -296,11 +312,11 @@ class tx_rnbase_controller
 
     protected function handlePageNotFound(string $reason, string $header = ''): void
     {
-        if (!\Sys25\RnBase\Utility\TYPO3::isTYPO104OrHigher()) {
-            \Sys25\RnBase\Utility\TYPO3::getTSFE()->pageNotFoundAndExit($reason, $header);
+        if (!TYPO3::isTYPO104OrHigher()) {
+            TYPO3::getTSFE()->pageNotFoundAndExit($reason, $header);
         }
 
-        $response = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Controller\ErrorController::class)
+        $response = tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Controller\ErrorController::class)
             ->pageNotFoundAction(
                 $GLOBALS['TYPO3_REQUEST'],
                 $reason
@@ -321,12 +337,12 @@ class tx_rnbase_controller
     /**
      * Interne Verarbeitung der Exception.
      *
-     * @param Exception                                  $e
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param Exception $e
+     * @param ConfigurationInterface $configurations
      */
     private function handleException($actionName, Exception $e, $configurations)
     {
-        $exceptionHandlerClass = \Sys25\RnBase\Configuration\Processor::getExtensionCfgValue(
+        $exceptionHandlerClass = $configurations->getExtensionConfigValue(
             'rn_base',
             'exceptionHandler'
         );
@@ -339,6 +355,7 @@ class tx_rnbase_controller
         $exceptionHandler = tx_rnbase::makeInstance($exceptionHandlerClass);
 
         if (!$exceptionHandler instanceof ExceptionHandlerInterface) {
+            // Hier sollte einfach eine Exception geworfen werden und gut.
             $exceptionHandler = tx_rnbase::makeInstance($defaultExceptionHandlerClass);
             Logger::fatal(
                 "the configured error handler ($exceptionHandlerClass) does not implement the ExceptionHandlerInterface",
@@ -397,10 +414,10 @@ class tx_rnbase_controller
 
         // Falls es mehrere Actions sind den String splitten
         if ($action) {
-            $action = tx_rnbase_util_Strings::trimExplode(',', $action);
+            $action = Strings::trimExplode(',', $action);
         }
         if (is_array($action) && 1 == count($action)) {
-            $action = tx_rnbase_util_Strings::trimExplode('|', $action[0]); // Nochmal mit Pipe versuchen
+            $action = Strings::trimExplode('|', $action[0]); // Nochmal mit Pipe versuchen
         }
         // If there is still no action we use defined defaultAction
         $action = !$action ? $configurations->get('defaultAction') : $action;
@@ -425,7 +442,7 @@ class tx_rnbase_controller
      */
     public function _getParameterAction($parameters)
     {
-        $action = $parameters->offsetExists('action') ? $parameters->offsetGet('action') : '';
+        $action = $parameters->offsetGet('action');
         if (!is_array($action)) {
             return $action;
         } else {
@@ -434,31 +451,9 @@ class tx_rnbase_controller
     }
 
     /**
-     * Make the configurations object.
-     *
-     * Used by main()
-     *
-     * @param array $configurationArray the local configuration array
-     *
-     * @return Tx_Rnbase_Configuration_ProcessorInterface the configurations
-     */
-    public function _makeConfigurationsObject($configurationArray)
-    {
-        // TODO, die Configklasse sollte über TS variabel gehalten werden
-        // Make configurations object
-        /* @var $configurations Tx_Rnbase_Configuration_Processor */
-        $configurations = tx_rnbase::makeInstance($this->configurationsClassName);
-
-        // Dieses cObj wird dem Controller von T3 übergeben
-        $configurations->init($configurationArray, $this->cObj, $this->extensionKey, $this->qualifier);
-
-        return $configurations;
-    }
-
-    /**
      * Returns an ArrayObject containing all parameters.
      *
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param ConfigurationInterface $configurations
      */
     protected function _makeParameterObject($configurations)
     {

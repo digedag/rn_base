@@ -22,6 +22,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Testing\BaseTestCase;
 
 /**
@@ -42,7 +43,7 @@ class tx_rnbase_tests_model_Data_testcase extends BaseTestCase
             'last_name' => 'Doe',
         ];
 
-        return tx_rnbase_model_data::getInstance($data);
+        return DataModel::getInstance($data);
     }
 
     /**
@@ -96,7 +97,7 @@ class tx_rnbase_tests_model_Data_testcase extends BaseTestCase
                 'test' => [],
             ],
         ];
-        $model = tx_rnbase_model_data::getInstance($data);
+        $model = DataModel::getInstance($data);
 
         $this->assertSame('m', $model->getGender());
         $this->assertInstanceOf('tx_rnbase_model_data', $model->getName());

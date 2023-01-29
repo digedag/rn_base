@@ -8,14 +8,11 @@ use Sys25\RnBase\Utility\Debug;
 use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
 use tx_rnbase;
-use tx_rnbase_model_base;
-use tx_rnbase_util_FormatUtil;
-use tx_rnbase_util_PageBrowser;
 
 /**
  *  Copyright notice.
  *
- *  (c) 2016-2021 René Nitzsche <rene@system25.de>
+ *  (c) 2016-2023 René Nitzsche <rene@system25.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -54,9 +51,9 @@ class BaseMarker
     /**
      * Initialisiert die Labels für die eine Model-Klasse.
      *
-     * @param string                    $classname        child class of Tx_Rnbase_Domain_Model_RecordInterface or NULL
-     * @param tx_rnbase_util_FormatUtil $formatter
-     * @param array                     $defaultMarkerArr
+     * @param string $classname        child class of RecordInterface or null
+     * @param FormatUtil $formatter
+     * @param array $defaultMarkerArr
      */
     protected function prepareLabelMarkers($classname, &$formatter, $confId, $marker, $defaultMarkerArr = 0)
     {
@@ -69,11 +66,11 @@ class BaseMarker
     /**
      * Initialisiert die Labels für die eine Model-Klasse.
      *
-     * @param string                    $classname        child class of Tx_Rnbase_Domain_Model_RecordInterface or NULL
-     * @param tx_rnbase_util_FormatUtil $formatter
-     * @param string                    $confId
-     * @param array                     $defaultMarkerArr
-     * @param string                    $marker
+     * @param string $classname        child class of Tx_Rnbase_Domain_Model_RecordInterface or NULL
+     * @param FormatUtil $formatter
+     * @param string $confId
+     * @param array $defaultMarkerArr
+     * @param string $marker
      *
      * @return array
      */
@@ -98,10 +95,10 @@ class BaseMarker
     /**
      * Return label markers defined by Typoscript.
      *
-     * @param tx_rnbase_util_FormatUtil $formatter
-     * @param string                    $confId
-     * @param string                    $marker
-     * @param array                     $defaultMarkerArr
+     * @param FormatUtil $formatter
+     * @param string $confId
+     * @param string $marker
+     * @param array $defaultMarkerArr
      *
      * @return array
      */
@@ -201,15 +198,15 @@ class BaseMarker
     /**
      * Link setzen.
      *
-     * @param array                     $markerArray
-     * @param array                     $subpartArray
-     * @param array                     $wrappedSubpartArray
-     * @param tx_rnbase_util_FormatUtil $formatter
-     * @param string                    $confId
-     * @param string                    $linkId
-     * @param string                    $marker
-     * @param array                     $parameterArr
-     * @param string                    $template            the HTML template used. This enabled check if link is necessary.
+     * @param array $markerArray
+     * @param array $subpartArray
+     * @param array $wrappedSubpartArray
+     * @param FormatUtil $formatter
+     * @param string $confId
+     * @param string $linkId
+     * @param string $marker
+     * @param array $parameterArr
+     * @param string $template            the HTML template used. This enabled check if link is necessary.
      */
     public static function initLink(&$markerArray, &$subpartArray, &$wrappedSubpartArray, $formatter, $confId, $linkId, $marker, $parameterArr, $template = '')
     {
@@ -264,10 +261,10 @@ class BaseMarker
     /**
      * Den PageBrowser in ein Template integrieren.
      *
-     * @param string                     $template
-     * @param tx_rnbase_util_PageBrowser $pagebrowser
-     * @param tx_rnbase_util_FormatUtil  $formatter
-     * @param string                     $confId
+     * @param string $template
+     * @param PageBrowserMarker $pagebrowser
+     * @param FormatUtil  $formatter
+     * @param string $confId
      *
      * @return string
      */
@@ -361,10 +358,7 @@ class BaseMarker
         if (!is_object(self::$emptyObjects[$classname])) {
             /* @var $dummy DomainModelInterface */
             $dummyInstance = tx_rnbase::makeInstance($classname, ['uid' => 0]);
-            if ($dummyInstance instanceof DomainModelInterface
-                // for deprecated backward compatibility
-                || $dummyInstance instanceof tx_rnbase_model_base
-            ) {
+            if ($dummyInstance instanceof DomainModelInterface) {
                 if (is_array($dummyInstance->getColumnNames())) {
                     foreach ($dummyInstance->getColumnNames() as $column) {
                         $dummyInstance->setProperty($column, '');
@@ -378,7 +372,7 @@ class BaseMarker
     }
 
     /**
-     * @param tx_rnbase_util_FormatUtil $formatter
+     * @param FormatUtil $formatter
      */
     public static function callModules($template, &$markerArray, &$subpartArray, &$wrappedSubpartArray, &$params, &$formatter)
     {
@@ -389,10 +383,10 @@ class BaseMarker
     /**
      * Call services for single markers.
      *
-     * @param string                    $template
-     * @param array                     $markerArray
-     * @param array                     $params
-     * @param tx_rnbase_util_FormatUtil $formatter
+     * @param string $template
+     * @param array $markerArray
+     * @param array $params
+     * @param FormatUtil $formatter
      */
     protected static function callModuleMarkers($template, &$markerArray, &$params, $formatter)
     {

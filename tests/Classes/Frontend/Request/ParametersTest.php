@@ -1,8 +1,11 @@
 <?php
+
+namespace Sys25\RnBase\Frontend\Request;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2007-2014 Rene Nitzsche (rene@system25.de)
+ *  (c) 2007-2023 Rene Nitzsche (rene@system25.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,13 +26,15 @@
  ***************************************************************/
 
 use Sys25\RnBase\Testing\BaseTestCase;
+use tx_rnbase;
 
 /**
  * parameters testcase.
  *
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
+ * @group unit
  */
-class tx_rnbase_tests_parameters_testcase extends BaseTestCase
+class ParametersTest extends BaseTestCase
 {
     public function testGet()
     {

@@ -22,20 +22,21 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use Sys25\RnBase\Domain\Model\BaseModel;
 use Sys25\RnBase\Testing\BaseTestCase;
 
 class tx_rnbase_tests_model_Base_testcase extends BaseTestCase
 {
     public function testMagiccall()
     {
-        $model = new tx_rnbase_model_base(['uid' => 1, 'test_value' => 45]);
+        $model = new BaseModel(['uid' => 1, 'test_value' => 45]);
         $this->assertEquals(45, $model->getTestValue());
     }
 
     public function testGetUidWhenNoLocalisation()
     {
         $model = $this->getMock(
-            'tx_rnbase_model_base',
+            BaseModel::class,
             ['getTableName'],
             [['uid' => 123]]
         );
@@ -63,7 +64,7 @@ class tx_rnbase_tests_model_Base_testcase extends BaseTestCase
     public function testGetUidForNonTca()
     {
         $model = $this->getMock(
-            'tx_rnbase_model_base',
+            BaseModel::class,
             ['getTableName'],
             [
                 [
@@ -81,7 +82,7 @@ class tx_rnbase_tests_model_Base_testcase extends BaseTestCase
     public function testGetUidForNonTable()
     {
         $model = tx_rnbase::makeInstance(
-            'tx_rnbase_model_base',
+            BaseModel::class,
             [
                 'uid' => '57',
                 'field' => 'test',
@@ -93,7 +94,7 @@ class tx_rnbase_tests_model_Base_testcase extends BaseTestCase
     public function testGetUidForTranslatedSingleRecord()
     {
         $model = $this->getMock(
-            'tx_rnbase_model_base',
+            BaseModel::class,
             ['getTableName'],
             [['uid' => 123, 'l18n_parent' => 0, 'sys_language_uid' => 789]]
         );
@@ -106,18 +107,18 @@ class tx_rnbase_tests_model_Base_testcase extends BaseTestCase
 
     public function testGetSysLanguageUidWithoutTca()
     {
-        /* @var $model tx_rnbase_model_base */
+        /** @var BaseModel $model */
         $model = tx_rnbase::makeInstance(
-            'tx_rnbase_model_base'
+            BaseModel::class
         );
         $this->assertSame(0, $model->getSysLanguageUid());
     }
 
     public function testGetSysLanguageUidWithLanguageFieldInTca()
     {
-        /* @var $model tx_rnbase_model_base */
+        /* @var BaseModel $model */
         $model = tx_rnbase::makeInstance(
-            'tx_rnbase_model_base',
+            BaseModel::class,
             [
                 'uid' => 57,
                 'header' => 'Home',
@@ -129,18 +130,18 @@ class tx_rnbase_tests_model_Base_testcase extends BaseTestCase
 
     public function testGetTcaLabelWithoutTca()
     {
-        /* @var $model tx_rnbase_model_base */
+        /* @var BaseModel $model */
         $model = tx_rnbase::makeInstance(
-            'tx_rnbase_model_base'
+            BaseModel::class
         );
         $this->assertSame('', $model->getTcaLabel());
     }
 
     public function testGetTcaLabelWithTca()
     {
-        /* @var $model tx_rnbase_model_base */
+        /* @var BaseModel::class $model */
         $model = tx_rnbase::makeInstance(
-            'tx_rnbase_model_base',
+            BaseModel::class,
             [
                 'uid' => 57,
                 'header' => 'Home',
@@ -151,18 +152,18 @@ class tx_rnbase_tests_model_Base_testcase extends BaseTestCase
 
     public function testGetCreationDateTimeWithoutTca()
     {
-        /* @var $model tx_rnbase_model_base */
+        /* @var BaseModel $model */
         $model = tx_rnbase::makeInstance(
-            'tx_rnbase_model_base'
+            BaseModel::class
         );
         $this->assertNull($model->getCreationDateTime());
     }
 
     public function testGetCreationDateTimeWithTca()
     {
-        /* @var $model tx_rnbase_model_base */
+        /* @var BaseModel $model */
         $model = tx_rnbase::makeInstance(
-            'tx_rnbase_model_base',
+            BaseModel::class,
             [
                 'uid' => 57,
                 'crdate' => 1433161484,
@@ -174,18 +175,18 @@ class tx_rnbase_tests_model_Base_testcase extends BaseTestCase
 
     public function testGetLastModifyDateTimeWithoutTca()
     {
-        /* @var $model tx_rnbase_model_base */
+        /* @var BaseModel $model */
         $model = tx_rnbase::makeInstance(
-            'tx_rnbase_model_base'
+            BaseModel::class
         );
         $this->assertNull($model->getLastModifyDateTime());
     }
 
     public function testGetLastModifyDateTimeWithTca()
     {
-        /* @var $model tx_rnbase_model_base */
+        /* @var BaseModel $model */
         $model = tx_rnbase::makeInstance(
-            'tx_rnbase_model_base',
+            BaseModel::class,
             [
                 'uid' => 57,
                 'tstamp' => 1433161484,

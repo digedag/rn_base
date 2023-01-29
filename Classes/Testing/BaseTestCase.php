@@ -8,15 +8,15 @@ use ReflectionObject;
 use ReflectionProperty;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Domain\Model\BaseModel;
+use Sys25\RnBase\Utility\Spyc;
 use Sys25\RnBase\Utility\TYPO3;
+use Sys25\RnBase\Utility\Typo3Classes;
 use tx_rnbase;
-use tx_rnbase_util_Spyc;
-use tx_rnbase_util_Typo3Classes;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2018-2021 Rene Nitzsche (rene@system25.de)
+ *  (c) 2018-2023 Rene Nitzsche (rene@system25.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -176,11 +176,11 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
      * @param array  $record
      * @param string $class
      *
-     * @return \tx_rnbase_model_base|\PHPUnit_Framework_MockObject_MockObject
+     * @return BaseModel|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getModel(
         $record = null,
-        $class = 'tx_rnbase_model_base',
+        $class = BaseModel::class,
         array $methods = []
     ) {
         // $record has to be an array,
@@ -196,7 +196,6 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
 
         $isNewModel = (
             is_subclass_of($class, BaseModel::class) ||
-            'Tx_Rnbase_Domain_Model_Base' == $class ||
             BaseModel::class == $class
         );
 
@@ -248,13 +247,13 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
      * @param mixed $data              Usually the yaml file
      * @param bool  $tryToLoadYamlFile
      *
-     * @return \tx_rnbase_model_base|\PHPUnit_Framework_MockObject_MockObject
+     * @return BaseModel|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function loadYaml($data, $tryToLoadYamlFile = true)
     {
         // there is no array, so convert the yaml content or file
         if ($tryToLoadYamlFile && !is_array($data)) {
-            $data = tx_rnbase_util_Spyc::YAMLLoad($data);
+            $data = Spyc::YAMLLoad($data);
         }
 
         // we have an model
@@ -263,7 +262,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
             $getters = $this->yamlFindGetters($data);
 
             $clazz = (
-                empty($data['_model']) ? 'tx_rnbase_model_base' : $data['_model']
+                empty($data['_model']) ? BaseModel::class : $data['_model']
             );
 
             $model = $this->getModel(
@@ -304,7 +303,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
      *
      * @param array $array
      *
-     * @return \tx_rnbase_model_base|\PHPUnit_Framework_MockObject_MockObject
+     * @return BaseModel|\PHPUnit_Framework_MockObject_MockObject
      */
     private function yamlFindGetters(
         array $array
@@ -610,7 +609,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
     protected function resetIndependentEnvironmentCache()
     {
         $property = new ReflectionProperty(
-            tx_rnbase_util_Typo3Classes::getGeneralUtilityClass(),
+            Typo3Classes::getGeneralUtilityClass(),
             'indpEnvCache'
         );
         $property->setAccessible(true);

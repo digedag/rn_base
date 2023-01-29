@@ -592,6 +592,11 @@ class Processor implements ConfigurationInterface
         );
     }
 
+    public function getExtensionConfigValue($extKey, $cfgKey = '')
+    {
+        return self::getExtensionCfgValue($extKey, $cfgKey);
+    }
+
     /**
      * Returns a value from extension configuration.
      * Can be called static.
@@ -600,6 +605,8 @@ class Processor implements ConfigurationInterface
      * @param string $cfgKey
      *
      * @return mixed
+     *
+     * @deprecated use getExtensionConfigValue()
      */
     public static function getExtensionCfgValue($extKey, $cfgKey = '')
     {

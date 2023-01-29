@@ -1,8 +1,14 @@
 <?php
+
+namespace Sys25\RnBase\Frontend\Request;
+
+use Sys25\RnBase\Frontend\Marker\BaseMarker;
+use Sys25\RnBase\Testing\BaseTestCase;
+
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2011 Rene Nitzsche (rene@system25.de)
+*  (c) 2007-2023 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,27 +29,22 @@
 ***************************************************************/
 
 /**
- * Default view class to show a single record.
- *
- * @deprecated use \Sys25\RnBase\Frontend\View\Marker\ListView
+ * @group unit
  */
-class tx_rnbase_view_Single extends tx_rnbase_view_List
+class BaseMarkerTest extends BaseTestCase
 {
-    /**
-     * Erstellen des Frontend-Outputs.
-     */
-    public function createOutput($template, &$viewData, &$configurations, &$formatter)
+    public function testContainsMarker()
     {
-        $confId = $this->getController()->getConfId();
-        // Die ViewData bereitstellen
-        $item = $viewData->offsetGet('item');
-        $itemPath = $this->getItemPath($configurations, $confId);
-        $markerClass = $this->getMarkerClass($configurations, $confId);
+        $template = '
+<html>
+Das Spielergebnis:
+###MATCH_HOME_NAME### - ###MATCH_GUEST_NAME###
+###MATCH_GOALS_HOME_2### : ###MATCH_GOALS_GUEST_2###
+</html>
+';
 
-        $marker = tx_rnbase::makeInstance($markerClass);
-
-        $out = $marker->parseTemplate($template, $item, $formatter, $confId.$itemPath.'.', strtoupper($itemPath));
-
-        return $out;
+        $this->assertTrue(BaseMarker::containsMarker($template, 'MATCH'), 'Marker MATCH nicht gefunden');
+        $this->assertTrue(BaseMarker::containsMarker($template, 'MATCH_HOME'), 'Marker MATCH_HOME nicht gefunden');
+        $this->assertFalse(BaseMarker::containsMarker($template, 'MATCH_ERR'), 'Marker MATCH_ERR wurde gefunden');
     }
 }

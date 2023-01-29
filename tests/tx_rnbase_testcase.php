@@ -1,6 +1,9 @@
 <?php
 
+use Sys25\RnBase\Frontend\Filter\FilterItem;
+use Sys25\RnBase\Frontend\Marker\ListBuilder;
 use Sys25\RnBase\Testing\BaseTestCase;
+use Sys25\RnBase\Utility\TYPO3;
 
 /***************************************************************
 *  Copyright notice
@@ -25,35 +28,23 @@ use Sys25\RnBase\Testing\BaseTestCase;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+/**
+ * @group unit
+ */
 class tx_rnbase_tests_rnbase_testcase extends BaseTestCase
 {
     public function testMakeInstanceSimpleObject()
     {
-        $obj = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
+        $obj = tx_rnbase::makeInstance(ListBuilder::class);
         $this->assertTrue(is_object($obj), 'Object not instantiated');
     }
 
     public function testMakeInstanceObjectWithParameters()
     {
-        $obj = tx_rnbase::makeInstance('tx_rnbase_filter_FilterItem', 'name', 'value');
+        /** @var FilterItem $obj */
+        $obj = tx_rnbase::makeInstance(FilterItem::class, 'name', 'value');
         $this->assertTrue(is_object($obj), 'Object not instantiated');
         $this->assertEquals($obj->record['name'], 'name', 'Attribute not set');
         $this->assertEquals($obj->record['value'], 'value', 'Attribute not set');
-    }
-
-    public function testMakeInstanceOfExtBaseClass()
-    {
-        if (!$this->isExtBasePossible()) {
-            $this->markTestSkipped();
-        }
-        $obj = tx_rnbase::makeInstance('Tx_T3sponsors_Domain_Model_Category');
-        $this->assertTrue(is_object($obj), 'Object not instantiated');
-    }
-
-    private function isExtBasePossible()
-    {
-        // TODO: bessere Testklasse finden
-        return false && tx_rnbase_util_TYPO3::isExtLoaded('extbase') &&
-            tx_rnbase_util_TYPO3::isExtMinVersion('t3sponsors', 2001);
     }
 }

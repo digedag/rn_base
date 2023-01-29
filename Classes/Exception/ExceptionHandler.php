@@ -4,7 +4,6 @@ namespace Sys25\RnBase\Exception;
 
 use Exception;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
-use Sys25\RnBase\Configuration\Processor;
 use Sys25\RnBase\Utility\Logger;
 use Sys25\RnBase\Utility\Misc;
 
@@ -77,7 +76,7 @@ class ExceptionHandler implements ExceptionHandlerInterface
             );
         }
         // wir senden eine fehlermail
-        $addr = Processor::getExtensionCfgValue('rn_base', 'sendEmailOnException');
+        $addr = $configurations->getExtensionConfigValue('rn_base', 'sendEmailOnException');
         if ($addr) {
             Misc::sendErrorMail($addr, $actionName, $e);
         }
@@ -99,7 +98,7 @@ class ExceptionHandler implements ExceptionHandlerInterface
         return
             (
                 // shall we basically send a 503 header?
-                intval(Processor::getExtensionCfgValue('rn_base', 'send503HeaderOnException')) && (
+                intval($configurations->getExtensionConfigValue('rn_base', 'send503HeaderOnException')) && (
                     // the plugin has the oppurtunity to prevent sending a 503 header
                     // by setting plugin.plugin_name.send503HeaderOnException = 0 in the TS config.
                     // if this option is not set we use the ext config
@@ -123,7 +122,7 @@ class ExceptionHandler implements ExceptionHandlerInterface
      */
     protected function getErrorMessage($actionName, Exception $e, ConfigurationInterface $configurations)
     {
-        if (Processor::getExtensionCfgValue('rn_base', 'verboseMayday')) {
+        if ($configurations->getExtensionConfigValue('rn_base', 'verboseMayday')) {
             return '<div>'
                     .'<strong>UNCAUGHT EXCEPTION FOR VIEW: '.$actionName.'</strong>'
                     .'<br />CODE: '.$e->getCode()

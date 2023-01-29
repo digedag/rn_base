@@ -1,11 +1,15 @@
 <?php
 
+namespace Sys25\RnBase\Cache;
+
 use Sys25\RnBase\Testing\BaseTestCase;
+use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase;
 
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 Rene Nitzsche (rene@system25.de)
+*  (c) 2010-2023 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,11 +29,14 @@ use Sys25\RnBase\Testing\BaseTestCase;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-class tx_rnbase_tests_cache_testcase extends BaseTestCase
+/**
+ * @group unit
+ */
+class CacheManagerTest extends BaseTestCase
 {
     public function testCacheManager()
     {
-        $cache = tx_rnbase_cache_Manager::getCache('__rnbaseMgrCache__');
+        $cache = CacheManager::getCache('__rnbaseMgrCache__');
         $this->assertTrue(is_object($cache), 'No Cache instanciated');
     }
 
@@ -38,6 +45,10 @@ class tx_rnbase_tests_cache_testcase extends BaseTestCase
         $cache = self::createTYPO3Cache('__rnbaseTestTYPO3Cache__');
 
         $this->assertTrue(is_object($cache), 'Cache not instanciated');
+        if (TYPO3::isTYPO104OrHigher()) {
+            // Ab T3 10 kann man Caches nicht mehr programmatisch konfigurieren.
+            return;
+        }
         $cache->set('key1', ['id' => '100']);
         $arr = $cache->get('key1');
         $this->assertTrue(1 == count($arr), 'Array has wrong size');
@@ -49,10 +60,10 @@ class tx_rnbase_tests_cache_testcase extends BaseTestCase
      *
      * @param string $name
      *
-     * @return tx_rnbase_cache_ICache
+     * @return TYPO3Cache62
      */
     private static function createTYPO3Cache($name)
     {
-        return tx_rnbase::makeInstance('tx_rnbase_cache_TYPO3Cache62', $name);
+        return tx_rnbase::makeInstance(TYPO3Cache62::class, $name);
     }
 }

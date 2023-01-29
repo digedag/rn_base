@@ -4,6 +4,7 @@ namespace Sys25\RnBase\ExtBaseFluid\View;
 
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Frontend\Request\RequestInterface;
+use Sys25\RnBase\Frontend\View\AbstractView;
 use Sys25\RnBase\Utility\Arrays;
 use Sys25\RnBase\Utility\Files;
 
@@ -37,7 +38,7 @@ use Sys25\RnBase\Utility\Files;
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class Action extends \tx_rnbase_view_Base
+class Action extends AbstractView
 {
     /**
      * @var RequestInterface
@@ -46,13 +47,13 @@ class Action extends \tx_rnbase_view_Base
 
     /**
      * @param string                    $templateName
-     * @param \tx_rnbase_configurations|RequestInterface $configurations
+     * @param RequestInterface $configurations
      *
      * @return string
      *
      * @throws \Exception
      */
-    public function render($templateName, $configurations)
+    public function render($templateName, RequestInterface $configurations)
     {
         if ($configurations instanceof RequestInterface) {
             $this->request = $configurations;
@@ -197,11 +198,6 @@ class Action extends \tx_rnbase_view_Base
     protected function getConfigurationId()
     {
         $configurationId = $this->request ? $this->request->getConfId() : '';
-        if (!$configurationId && is_object($controller = $this->getController())) {
-            if (method_exists($controller, 'getConfId')) {
-                $configurationId = $controller->getConfId();
-            }
-        }
 
         return $configurationId;
     }

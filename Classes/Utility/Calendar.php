@@ -42,6 +42,8 @@ define('CALENDAR_WEEK_OF_YEAR', 8);
 
 /**
  * Simple Implementation of a calendar.
+ *
+ * @deprecated use PHP internal datetime functions
  */
 class Calendar
 {

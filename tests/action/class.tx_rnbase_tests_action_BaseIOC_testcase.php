@@ -1,5 +1,6 @@
 <?php
 
+use Sys25\RnBase\Frontend\Controller\AbstractAction;
 use Sys25\RnBase\Testing\BaseTestCase;
 use Sys25\RnBase\Utility\TYPO3;
 
@@ -279,7 +280,7 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends BaseTestCase
     protected function getAction()
     {
         $action = $this->getMockForAbstractClass(
-            'tx_rnbase_action_BaseIOC',
+            AbstractAction::class,
             [],
             '',
             true,
