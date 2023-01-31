@@ -3,6 +3,10 @@
 Changelog
 ---------
 
+
+v1.16.1 (31.01.2023)
+* bugfixes and cleanup
+
 v1.16.0 (27.01.2023)
 * Support for TYPO3 11.5 and PHP8 added. Thanks to Hannes Bochmann and Michael Wagner!
 
