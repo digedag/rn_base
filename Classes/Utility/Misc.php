@@ -371,7 +371,7 @@ MAYDAYPAGE;
                 // #1 $indextypo3/sysext/core/Classes/Http/ServerRequestFactory.php(65): TYPO3\\CMS\\Core\\Http\\Uri-&gt;__construct('http:///bin/typ...')
                 // #2 $indextypo3/sysext/frontend/Classes/Controller/TypoScriptFrontendController.php(717): TYPO3\\CMS\\Core\\Http\\ServerRequestFactory::fromGlobals()
                 // A better solution is prefered.
-                if (!$_SERVER['HTTP_HOST']) {
+                if (!($_SERVER['HTTP_HOST'] ?? false)) {
                     $_SERVER['HTTP_HOST'] = $site->getBase()->getHost();
                     GeneralUtility::flushInternalRuntimeCaches();
                 }
