@@ -647,7 +647,7 @@ class ToolBox
     public function createTextArea($name, $value, $cols = '30', $rows = '5', $options = 0)
     {
         $options = is_array($options) ? $options : [];
-        $onChangeStr = $options['onchange'] ? ' onchange=" '.$options['onchange'].'" ' : '';
+        $onChangeStr = ($options['onchange'] ?? false) ? ' onchange=" '.$options['onchange'].'" ' : '';
 
         return '<textarea name="'.$name.'" style="width:288px;" class="formField1"'.$onChangeStr.
             ' cols="'.$cols.'" rows="'.$rows.'" wrap="virtual">'.$value.'</textarea>';
