@@ -3,6 +3,8 @@
 Changelog
 ---------
 
+v1.16.2 (08.02.2023)
+* bugfixes
 
 v1.16.1 (31.01.2023)
 * bugfixes and cleanup
