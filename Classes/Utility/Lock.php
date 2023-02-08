@@ -178,7 +178,7 @@ class Lock
         // which will invalidate the NFS cache.
         // @see https://stackoverflow.com/questions/41723458/php-file-exists-or-is-file-does-not-answer-correctly-for-10-20s-on-nfs-files-ec
         closedir(opendir(dirname($this->getFile())));
-        if (is_readable($this->getFile())) {
+        if (is_readable($this->getFile()) && file_exists($this->getFile())) {
             $lastCall = (int) trim(file_get_contents($this->getFile()));
             if (!(
                 $this->getLifeTime() > 0 &&
