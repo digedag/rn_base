@@ -417,7 +417,7 @@ class TCA
                 && empty($rawData[$sysLanguageUidField])
                 && empty($rawData[$languageParentField])
             )) {
-                $uid = $rawData[$languageParentField];
+                $uid = $rawData[$languageParentField] ?? 0;
             }
         }
 
