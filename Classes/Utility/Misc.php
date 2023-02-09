@@ -28,6 +28,8 @@ use Exception;
 use Sys25\RnBase\Configuration\Processor as ConfigurationProcessor;
 use Sys25\RnBase\Exception\AdditionalException;
 use tx_rnbase;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -364,6 +366,13 @@ MAYDAYPAGE;
                 }
                 $siteMatcher = tx_rnbase::makeInstance(\TYPO3\CMS\Core\Routing\SiteMatcher::class);
                 $site = $siteMatcher->matchByPageId($pid, $rootLine);
+
+                if (!($GLOBALS['TYPO3_REQUEST'] ?? null)) {
+                    $request = (new ServerRequest())
+                        ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+                        ->withAttribute('site', $site);
+                    $GLOBALS['TYPO3_REQUEST'] = $request;
+                }
 
                 // Usually happens when on CLI. But we need that variable there. Otherwise TypoScriptFrontendController
                 // will throw the following exception: The parsedUri \"http:///bin/typo3\" appears to be malformed
