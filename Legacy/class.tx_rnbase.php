@@ -75,10 +75,12 @@ class tx_rnbase
      *
      * Returns ux_ extension class if any by make use of t3lib_div::makeInstance
      *
-     * @param   string      classname
-     * @param   mixed optional more parameters for constructor
+     * @template T
      *
-     * @return object|Exception instance of the class or FALSE if it fails
+     * @param string|class-string<T> $className name of the class to instantiate, must not be empty and not start with a backslash
+     * @param array<int, mixed> $constructorArguments Arguments for the constructor
+     *
+     * @return object&T the created instance
      *
      * @see         load()
      */
