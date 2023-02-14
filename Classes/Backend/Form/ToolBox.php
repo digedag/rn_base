@@ -15,6 +15,7 @@ use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\T3General as T3GeneralAlias;
 use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 
 /***************************************************************
 *  Copyright notice
@@ -698,7 +699,7 @@ class ToolBox
         $this->initializeJavaScriptFormEngine();
         $dateElementClass = \TYPO3\CMS\Backend\Form\Element\InputDateTimeElement::class;
 
-        return tx_rnbase::makeInstance(
+        $renderedElement = tx_rnbase::makeInstance(
             $dateElementClass,
             $this->getTCEForm()->getNodeFactory(),
             [
@@ -718,7 +719,26 @@ class ToolBox
                     ],
                 ],
             ]
-        )->render()['html'];
+        )->render();
+
+        if ($renderedElement['requireJsModules'] ?? null) {
+            $pageRenderer = $this->getDoc()->getPageRenderer();
+            foreach ($renderedElement['requireJsModules'] as $moduleName => $callbacks) {
+                if ($callbacks instanceof JavaScriptModuleInstruction) {
+                    $pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction($callbacks);
+                    continue;
+                }
+
+                if (!is_array($callbacks)) {
+                    $callbacks = [$callbacks];
+                }
+                foreach ($callbacks as $callback) {
+                    $pageRenderer->loadRequireJsModule($moduleName, $callback);
+                }
+            }
+        }
+
+        return $renderedElement['html'];
     }
 
     /**
