@@ -3,6 +3,10 @@
 Changelog
 ---------
 
+
+v1.16.4 (16.02.2023)
+* fix date input since TYPO3 10.4
+
 v1.16.3 (09.02.2023)
 * bugfixes
 
