@@ -62,6 +62,7 @@
 			"Legacy/"
 		],
 		"files": [
+			"Classes/class.tx_rnbase.php",
 			"Classes/Constants.php"
 		],
 		"psr-4": {
@@ -98,25 +99,11 @@
 			"[ -L .Build/Web/typo3conf/ext/rn_base ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/rn_base"
 		],
 		"test:phplint": "find *.php Classes Legacy Migrations tests -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l",
+		"test:phpcompat": ".Build/bin/phpcs --ignore=.Build/*,Resources/* -p . --standard=.Build/vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion ",
 		"test:phpcs": [
 			"[ -e .Build/bin/php-cs-fixer ] || composer update",
 			".Build/bin/php-cs-fixer fix -v --dry-run --diff"
 		],
-		"test:phpcompatibility": [
-			"[ -e .Build/bin/phpcs ] || composer update",
-			"@test:phpcompatibility:7.1",
-			"@test:phpcompatibility:7.2",
-			"@test:phpcompatibility:7.3",
-			"@test:phpcompatibility:7.4",
-			"@test:phpcompatibility:8.0",
-			"@test:phpcompatibility:8.1"
-		],
-		"test:phpcompatibility:7.1": ".Build/bin/phpcs --ignore=.Build/*,Resources/* -p . --standard=.Build/vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion 7.1",
-		"test:phpcompatibility:7.2": ".Build/bin/phpcs --ignore=.Build/*,Resources/* -p . --standard=.Build/vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion 7.2",
-		"test:phpcompatibility:7.3": ".Build/bin/phpcs --ignore=.Build/*,Resources/* -p . --standard=.Build/vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion 7.3",
-		"test:phpcompatibility:7.4": ".Build/bin/phpcs --ignore=.Build/*,Resources/* -p . --standard=.Build/vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion 7.4",
-		"test:phpcompatibility:8.0": ".Build/bin/phpcs --ignore=.Build/*,Resources/* -p . --standard=.Build/vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion 8.0",
-		"test:phpcompatibility:8.1": ".Build/bin/phpcs --ignore=.Build/*,Resources/* -p . --standard=.Build/vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion 8.1",
 		"test:phpstan": ".Build/bin/phpstan --no-progress",
 		"test:phpunit": [
 			"[ -e .Build/bin/phpunit ] || composer update",
