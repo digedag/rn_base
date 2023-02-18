@@ -81,7 +81,7 @@ class tx_rnbase
      * @param array<int, mixed> $constructorArguments Arguments for the constructor
      *
      * @return ($class is class-string<T> ? T : mixed)
-     * 
+     *
      * rturn object&T the created instance
      *
      * @see         load()
