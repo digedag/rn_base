@@ -77,10 +77,12 @@ class tx_rnbase
      *
      * @template T
      *
-     * @param string|class-string<T> $className name of the class to instantiate, must not be empty and not start with a backslash
+     * @param string|class-string<T> $class name of the class to instantiate, must not be empty and not start with a backslash
      * @param array<int, mixed> $constructorArguments Arguments for the constructor
      *
-     * @return object&T the created instance
+     * @return ($class is class-string<T> ? T : mixed)
+     * 
+     * rturn object&T the created instance
      *
      * @see         load()
      */
