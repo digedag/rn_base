@@ -1,0 +1,26 @@
+name: "Prepare TYPO3 dev environment"
+description: "Install dev-tools defined in composer.json"
+inputs:
+   php-version:
+     required: true
+     description: "The php-version used"
+
+runs:
+  using: "composite"
+  steps:
+    -
+        name: "Determine composer cache directory"
+        id: "determine-composer-cache-directory"
+        run: echo "directory={$(composer config cache-dir)}" >> $GITHUB_OUTPUT
+        shell: bash
+    -
+        name: "Cache dependencies installed with composer"
+        uses: "actions/cache@v3.0.0"
+        with:
+            path: "${{ steps.determine-composer-cache-directory.outputs.directory }}"
+            key: "php-${{ inputs.php-version }}-composer-${{ hashFiles('composer.lock') }}"
+            restore-keys: "php-${{ inputs.php-version }}-composer-"
+    -
+        name: "Install composer dependencies"
+        run: "composer install --no-interaction --no-progress --no-suggest"
+        shell: bash

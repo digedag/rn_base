@@ -40,6 +40,10 @@ jobs:
           php-version: "8.0"
           coverage: none
           tools: composer:v2
+      - name: Prepare TYPO3
+        uses: ./.github/actions/t3prepare
+        with:
+          php-version: ${{ matrix.php-version }}
       - name: "Run PHP CS with PHPCompatibility rule"
         run: "composer test:phpcompat ${{ matrix.php-version }}"
     strategy:
