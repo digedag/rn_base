@@ -396,7 +396,8 @@ class DataModel implements DataInterface, IteratorAggregate, \ArrayAccess
     public function offsetGet($property)
     {
         $getterMethod = 'get'.$this->underscoredToUpperCamelCase($property);
-        if (method_exists($this, $getterMethod)) {
+        // Support models having a property named "property" so getProperty() is not called but getProperty('property').
+        if (method_exists($this, $getterMethod) && ('property' != $property || !$this->hasProperty('property'))) {
             $result = $this->$getterMethod();
         } else {
             $result = $this->getProperty($this->underscore($property));
@@ -423,7 +424,9 @@ class DataModel implements DataInterface, IteratorAggregate, \ArrayAccess
     public function offsetSet($property, $value)
     {
         $setterMethod = 'set'.$this->underscoredToUpperCamelCase($property);
-        if (method_exists($this, $setterMethod)) {
+        // Support models having a property named "property" so setProperty($value)
+        // is not called but setProperty($property, $value).
+        if (method_exists($this, $setterMethod) && ('property' != $property || !$this->hasProperty('property'))) {
             $this->$setterMethod($value);
         } else {
             $this->setProperty($this->underscore($property), $value);

@@ -106,6 +106,7 @@ class DataModelTest extends BaseTestCase
         $model = $this->getModelInstance();
         $this->assertSame(50, $model->uid);
         $this->assertSame('John', $model->first_name);
+        $this->assertSame('testProperty', $model->property);
         $this->assertNull($model->column_does_not_exist);
     }
 
@@ -213,6 +214,7 @@ class DataModelTest extends BaseTestCase
             'uid' => 50,
             'first_name' => 'John',
             'last_name' => 'Doe',
+            'property' => 'testProperty',
         ];
 
         return DataModel::getInstance($data);
@@ -225,12 +227,13 @@ class DataModelTest extends BaseTestCase
     public function testOffsetExists()
     {
         $model = $this->getModel(
-            ['test_value' => 'dummy'],
+            ['test_value' => 'dummy', 'property' => 'testProperty'],
             DataModel::class,
             ['dummy']
         );
 
         self::assertTrue(isset($model['testValue']));
+        self::assertTrue(isset($model['property']));
         self::assertTrue(isset($model['test_value']));
         self::assertTrue(isset($model['TestValue']));
         self::assertFalse(isset($model['wrongTest']));
@@ -243,7 +246,7 @@ class DataModelTest extends BaseTestCase
     public function testOffsetGet()
     {
         $model = $this->getModel(
-            ['test_value' => 'dummy'],
+            ['test_value' => 'dummy', 'property' => 'testProperty'],
             DataModel::class,
             ['getImagePath']
         );
@@ -258,6 +261,7 @@ class DataModelTest extends BaseTestCase
         self::assertSame(123, $model['imagePath']);
         self::assertSame(123, $model['image_path']);
         self::assertSame(123, $model['ImagePath']);
+        self::assertSame('testProperty', $model['property']);
     }
 
     /**
@@ -267,7 +271,7 @@ class DataModelTest extends BaseTestCase
     public function testOffsetSet()
     {
         $model = $this->getModel(
-            ['test_value' => 'wrong'],
+            ['test_value' => 'wrong', 'property' => 'testProperty'],
             DataModel::class,
             ['setImagePath']
         );
@@ -285,6 +289,8 @@ class DataModelTest extends BaseTestCase
         self::assertSame('dummy2', $model['test_value']);
         $model['TestValue'] = 'dummy3';
         self::assertSame('dummy3', $model['TestValue']);
+        $model['property'] = 'testProperty1';
+        self::assertSame('testProperty1', $model['property']);
     }
 
     /**
