@@ -3,6 +3,8 @@
 Changelog
 ---------
 
+v1.16.5 (02.03.2023)
+* add support for properties named "property" in domain models
 
 v1.16.4 (16.02.2023)
 * fix date input since TYPO3 10.4
