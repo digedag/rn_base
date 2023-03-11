@@ -10,7 +10,7 @@ use tx_rnbase;
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010-2021 Rene Nitzsche (rene@system25.de)
+*  (c) 2010-2023 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -251,6 +251,7 @@ class ToolBoxTest extends BaseTestCase
         $urlParameters = 'someParameters=2&param2=bar';
         $options = ['params' => ['someParameters' => '2', 'param2' => 'bar', 'id' => $pid]];
 
+        /** @var ToolBox $formTool */
         $formTool = $this->getMock(ToolBox::class, ['getLinkThisScript']);
         $formTool
             ->expects(self::once())
@@ -258,10 +259,11 @@ class ToolBoxTest extends BaseTestCase
             ->with(false, $options)
             ->will(self::returnValue('scriptUrl'));
         unset($options['params']['id']);
+
         self::assertEquals(
-            htmlspecialchars('<a href="#" class="'.ToolBox::CSS_CLASS_BTN.
-                '" onclick="'."window.location.href='scriptUrl'; return false;".'" >mylabel</a>'),
-            htmlspecialchars($formTool->createLink($urlParameters, $pid, 'mylabel', $options))
+            sprintf('<a href="#" class="%s" onclick="window.location.href=%s; return false;" >mylabel</a>',
+                ToolBox::CSS_CLASS_BTN, htmlspecialchars("'scriptUrl'")),
+            $formTool->createLink($urlParameters, $pid, 'mylabel', $options)
         );
     }
 
@@ -304,9 +306,9 @@ class ToolBoxTest extends BaseTestCase
             ->will(self::returnValue('scriptUrl'));
 
         self::assertEquals(
-            htmlspecialchars('<a href="#" class="'.ToolBox::CSS_CLASS_BTN.
-                '" onclick="'."window.location.href='scriptUrl'; return false;".'" title="hoverTitle">mylabel</a>'),
-            htmlspecialchars($formTool->createLink($urlParameters, 0, 'mylabel', $options))
+            sprintf('<a href="#" class="%s" onclick="window.location.href=%s; return false;" title="hoverTitle">mylabel</a>',
+                ToolBox::CSS_CLASS_BTN, htmlspecialchars("'scriptUrl'")),
+            $formTool->createLink($urlParameters, 0, 'mylabel', $options)
         );
     }
 
@@ -326,9 +328,9 @@ class ToolBoxTest extends BaseTestCase
             ->will(self::returnValue('scriptUrl'));
 
         self::assertEquals(
-            htmlspecialchars('<a href="#" class="myClass" onclick="'.
-                "window.location.href='scriptUrl'; return false;".'" >mylabel</a>'),
-            htmlspecialchars($formTool->createLink($urlParameters, 22, 'mylabel', $options))
+            sprintf('<a href="#" class="myClass" onclick="window.location.href=%s; return false;" >mylabel</a>',
+                htmlspecialchars("'scriptUrl'")),
+            $formTool->createLink($urlParameters, 22, 'mylabel', $options)
         );
     }
 

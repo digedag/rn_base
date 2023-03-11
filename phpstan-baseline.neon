@@ -51,11 +51,6 @@ parameters:
 			path: Classes/Backend/Utility/BaseLister.php
 
 		-
-			message: "#^Method Sys25\\\\RnBase\\\\Configuration\\\\Processor\\:\\:_queryArrayByPath\\(\\) should return array but return statement is missing\\.$#"
-			count: 1
-			path: Classes/Configuration/Processor.php
-
-		-
 			message: "#^Method Sys25\\\\RnBase\\\\Configuration\\\\Processor\\:\\:queryData\\(\\) should return string but return statement is missing\\.$#"
 			count: 1
 			path: Classes/Configuration/Processor.php
