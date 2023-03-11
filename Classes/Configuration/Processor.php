@@ -5,7 +5,7 @@ namespace Sys25\RnBase\Configuration;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2007-2021 Rene Nitzsche
+ *  (c) 2007-2023 Rene Nitzsche
  *  Contact: rene@system25.de
  *
  *  Original version:
@@ -32,6 +32,9 @@ namespace Sys25\RnBase\Configuration;
 use Sys25\RnBase\Exception\SkipActionException;
 use Sys25\RnBase\Utility\Arrays;
 use Sys25\RnBase\Utility\Debug;
+use Sys25\RnBase\Utility\Extensions;
+use Sys25\RnBase\Utility\Language;
+use Sys25\RnBase\Utility\Link;
 use Sys25\RnBase\Utility\Network;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
@@ -180,7 +183,7 @@ class Processor implements ConfigurationInterface
     /**
      * Util used to load and retrieve local lang labels.
      *
-     * @var \tx_rnbase_util_Lang
+     * @var Language
      */
     private $localLangUtil = null;
 
@@ -197,7 +200,7 @@ class Processor implements ConfigurationInterface
         $this->_dataStore = new \ArrayObject();
         $this->_viewData = new \ArrayObject();
         $this->_keepVars = new \ArrayObject();
-        $this->localLangUtil = tx_rnbase::makeInstance('tx_rnbase_util_Lang');
+        $this->localLangUtil = tx_rnbase::makeInstance(Language::class);
     }
 
     /**
@@ -238,7 +241,7 @@ class Processor implements ConfigurationInterface
 
         if (is_object($cObj) && !$this->getBool('ignoreFlexFormConfiguration')) {
             // Flexformvalues have the maximal precedence
-            $this->_setFlexForm($cObj->data['pi_flexform'] ?? null);
+            $this->setFlexForm($cObj->data['pi_flexform'] ?? null);
         }
 
         // A qualifier and extkey from TS are preferred
@@ -417,12 +420,12 @@ class Processor implements ConfigurationInterface
      *
      * @param bool $addKeepVars whether or not keepVars should be set
      *
-     * @return \tx_rnbase_util_Link
+     * @return Link
      */
     public function createLink($addKeepVars = true)
     {
-        /* @var $link \tx_rnbase_util_Link */
-        $link = tx_rnbase::makeInstance('tx_rnbase_util_Link', $this->getCObj());
+        /** @var Link $link */
+        $link = tx_rnbase::makeInstance(Link::class, $this->getCObj());
         $link->designatorString = $this->getQualifier();
         // Die KeepVars setzen
         if ($addKeepVars) {
@@ -436,7 +439,7 @@ class Processor implements ConfigurationInterface
     }
 
     /**
-     * @param \tx_rnbase_IParameters $parameters
+     * @param \Sys25\RnBase\Frontend\Request\ParametersInterface $parameters
      */
     public function setParameters($parameters)
     {
@@ -448,7 +451,7 @@ class Processor implements ConfigurationInterface
     /**
      * Returns request parameters.
      *
-     * @return \tx_rnbase_IParameters
+     * @return \Sys25\RnBase\Frontend\Request\ParametersInterface
      */
     public function getParameters()
     {
@@ -468,7 +471,7 @@ class Processor implements ConfigurationInterface
     /**
      * Set an ArrayObject with variables to keep between requests.
      *
-     * @param \tx_rnbase_IParameters $keepVars
+     * @param \Sys25\RnBase\Frontend\Request\ParametersInterface $keepVars
      */
     public function setKeepVars($keepVars)
     {
@@ -555,7 +558,7 @@ class Processor implements ConfigurationInterface
     {
         static $flex;
         if (!is_array($flex)) {
-            $flex = Network::getUrl(\tx_rnbase_util_Extensions::extPath($this->getExtensionKey()).$this->get('flexform'));
+            $flex = Network::getUrl(Extensions::extPath($this->getExtensionKey()).$this->get('flexform'));
             $flex = Arrays::xml2array($flex);
         }
 
@@ -565,7 +568,7 @@ class Processor implements ConfigurationInterface
     /**
      * The current language utility.
      *
-     * @return \tx_rnbase_util_Lang
+     * @return Language
      */
     protected function getLocalLangUtil()
     {
@@ -604,7 +607,7 @@ class Processor implements ConfigurationInterface
     public static function getExtensionCfgValue($extKey, $cfgKey = '')
     {
         if (TYPO3::isTYPO90OrHigher()) {
-            $extConfig = \tx_rnbase::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get(
+            $extConfig = tx_rnbase::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get(
                 $extKey,
                 $cfgKey
             );
@@ -640,15 +643,15 @@ class Processor implements ConfigurationInterface
     public function get($pathKey, $deep = false)
     {
         if (!$deep) {
-            return $this->_queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey);
+            return $this->queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey);
         }
 
         // Wenn am Ende kein Punkt steht, ist das Ergebnis ein String
         // deep ist nur dann sinnvoll, wenn ohne Punkt am Ende gefragt wird.
-        $ret = $this->_queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey);
+        $ret = $this->queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey);
         $noEndingDot = '.' != substr($pathKey, strlen($pathKey) - 1, 1);
         if (!is_array($ret) && $noEndingDot) {
-            $arr = $this->_queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey.'.');
+            $arr = $this->queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey.'.');
             if (is_array($arr)) {
                 $ret = ['key' => $ret, 'key.' => $arr];
             }
@@ -717,7 +720,7 @@ class Processor implements ConfigurationInterface
      */
     public function getCfgOrLL($pathKey)
     {
-        $ret = $this->_queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey);
+        $ret = $this->queryArrayByPath($this->_dataStore->getArrayCopy(), $pathKey);
         if (!$ret) {
             $pathKey = strtr($pathKey, '.', '_');
             $ret = $this->getLL($pathKey);
@@ -808,6 +811,8 @@ class Processor implements ConfigurationInterface
      * @param string  value of key
      *
      * @return array wanted dataset
+     *
+     * @deprecated should be removed
      */
     public function queryDataSet($path, $key, $value)
     {
@@ -844,6 +849,8 @@ class Processor implements ConfigurationInterface
      * @param string  key of the wanted result value
      *
      * @return string wanted value
+     *
+     * @deprecated should be removed
      */
     public function queryData($path, $key, $value, $wanted)
     {
@@ -932,14 +939,14 @@ class Processor implements ConfigurationInterface
     {
         $setupPath = $setupPath ? $setupPath : $this->setupPath;
         if ($setupPath) {
-            $array = $this->_queryArrayByPath($GLOBALS['TSFE']->tmpl->setup, $setupPath);
+            $array = $this->queryArrayByPath($GLOBALS['TSFE']->tmpl->setup, $setupPath);
             foreach ((array) $array as $key => $value) {
                 $this->_dataStore->offsetSet($key, $value);
             }
         }
     }
 
-    public function insertIntoDataArray($dataArr, $pathArray, $newValue)
+    private function insertIntoDataArray($dataArr, $pathArray, $newValue)
     {
         // Cancel Recursion on value level
         if (1 == count($pathArray)) {
@@ -985,7 +992,7 @@ class Processor implements ConfigurationInterface
      *
      * @param mixed  xml or rendered flexform array
      */
-    protected function _setFlexForm($xmlOrArray)
+    protected function setFlexForm($xmlOrArray)
     {
         $languagePointer = 'lDEF'; // we don't support languages here for now
         $valuePointer = 'vDEF';
@@ -1096,24 +1103,26 @@ class Processor implements ConfigurationInterface
      *
      * @return array
      */
-    protected function _queryArrayByPath($array, $path)
+    protected function queryArrayByPath($array, $path)
     {
         $pathArray = explode('.', trim($path));
         for ($i = 0, $cnt = count($pathArray); $i < $cnt; ++$i) {
             if ($i < ($cnt - 1)) {
                 // Noch nicht beendet. Auf Reference prüfen
                 $array = $this->mergeTSReference(
-                    $array[$pathArray[$i]] ?? null,
-                    $array[$pathArray[$i].'.'] ?? null
+                    $array[$pathArray[$i]] ?? '',
+                    $array[$pathArray[$i].'.'] ?? []
                 );
             } elseif (empty($pathArray[$i])) {
                 // It ends with a dot. We return the rest of the array
                 return $array;
             } else {
                 // It endes without a dot. We return the value.
-                return $array[$pathArray[$i]] ?? null;
+                return $array[$pathArray[$i]] ?? [];
             }
         }
+
+        return [];
     }
 
     /**
