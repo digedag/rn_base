@@ -940,8 +940,10 @@ class Processor implements ConfigurationInterface
         $setupPath = $setupPath ? $setupPath : $this->setupPath;
         if ($setupPath) {
             $array = $this->queryArrayByPath($GLOBALS['TSFE']->tmpl->setup, $setupPath);
-            foreach ((array) $array as $key => $value) {
-                $this->_dataStore->offsetSet($key, $value);
+            if (is_array($array)) {
+                foreach ((array) $array as $key => $value) {
+                    $this->_dataStore->offsetSet($key, $value);
+                }
             }
         }
     }
@@ -1047,6 +1049,12 @@ class Processor implements ConfigurationInterface
         }
     }
 
+    /**
+     * @param string $value
+     * @param array|null $conf
+     *
+     * @return array|string|null
+     */
     private function mergeTSReference($value, $conf)
     {
         if ('<' != substr($value, 0, 1)) {
@@ -1101,7 +1109,7 @@ class Processor implements ConfigurationInterface
      * @param array  $array
      * @param string $path
      *
-     * @return array
+     * @return array|string|null
      */
     protected function queryArrayByPath($array, $path)
     {
@@ -1111,7 +1119,7 @@ class Processor implements ConfigurationInterface
                 // Noch nicht beendet. Auf Reference prüfen
                 $array = $this->mergeTSReference(
                     $array[$pathArray[$i]] ?? '',
-                    $array[$pathArray[$i].'.'] ?? []
+                    $array[$pathArray[$i].'.'] ?? null
                 );
             } elseif (empty($pathArray[$i])) {
                 // It ends with a dot. We return the rest of the array
@@ -1122,7 +1130,7 @@ class Processor implements ConfigurationInterface
             }
         }
 
-        return [];
+        return null;
     }
 
     /**
