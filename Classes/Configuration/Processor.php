@@ -1126,7 +1126,7 @@ class Processor implements ConfigurationInterface
                 return $array;
             } else {
                 // It endes without a dot. We return the value.
-                return $array[$pathArray[$i]] ?? [];
+                return $array[$pathArray[$i]] ?? null;
             }
         }
 
