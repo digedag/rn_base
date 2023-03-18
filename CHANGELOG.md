@@ -3,6 +3,10 @@
 Changelog
 ---------
 
+v1.16.6 (??.03.2023)
+* Support constant TYPO3
+* #304 fix warning in config processor
+
 v1.16.5 (02.03.2023)
 * add support for properties named "property" in domain models
 
