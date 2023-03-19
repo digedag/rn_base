@@ -116,6 +116,10 @@ class Extensions
         array $controllerActions = [],
         array $moduleConfiguration = []
     ) {
+        if (TYPO3::isTYPO121OrHigher()) {
+            // since T3 12 it is not possible to register be module programmatically anymore
+            return;
+        }
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
             $extensionName,
             $mainModuleName,
