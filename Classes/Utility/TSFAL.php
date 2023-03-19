@@ -106,7 +106,7 @@ class TSFAL
 
         // Is there a customized language field configured
         $langField = self::DEFAULT_LOCAL_FIELD;
-        $locUid = $conf->getCObj()->data[$langField] ?? 0; // Save original uid
+        $locUid = $conf->getCObj()->data[$langField] ?? null; // Save original uid
         if ($conf->get('forcedIdField')) {
             $langField = $conf->get('forcedIdField');
             // Copy localized UID
