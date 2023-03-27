@@ -809,7 +809,7 @@ class Link
                                         $newKeepVars[$qualifier.'::'.$paramName] = $paramValue;
                                     }
                                 }
-                            } elseif(isset($value[$name])) {
+                            } elseif (isset($value[$name])) {
                                 $newKeepVars[$linkvar[0]] = $value[$name];
                             }
                         }
