@@ -3,10 +3,13 @@
 Changelog
 ---------
 
-v1.16.6 (??.03.2023)
+v1.16.7 (??.03.2023)
+
+v1.16.6 (27.03.2023)
 * Support constant TYPO3
 * Fix TSFAL printImages()
 * #304 fix warning in config processor
+* PHP 8 undefined array key warning fixes
 
 v1.16.5 (02.03.2023)
 * add support for properties named "property" in domain models
