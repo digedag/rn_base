@@ -612,4 +612,16 @@ abstract class BaseModule extends BaseScriptClass implements IModule
     {
         return BackendUtility::issueCommand($getParameters, $redirectUrl);
     }
+
+    public function getTitle()
+    {
+        return '';
+    }
+
+    public function getRouteIdentifier()
+    {
+        return '';
+    }
+
+
 }

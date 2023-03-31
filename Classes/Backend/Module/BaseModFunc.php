@@ -60,7 +60,7 @@ abstract class BaseModFunc implements IModFunc
         return $this->mod;
     }
 
-    public function main(?ServerRequestInterface $request)
+    public function main(?ServerRequestInterface $request = null)
     {
         if (TYPO3::isTYPO121OrHigher()) {
             $modFuncFrame = \tx_rnbase::makeInstance(ModFuncFrame::class);

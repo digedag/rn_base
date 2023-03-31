@@ -220,7 +220,7 @@ class Tables
             if (isset($data['sortable'])) {
                 $label = $formTool->createSortLink($column, $label);
             }
-            $arr[] = $label ? $label : $data['title'];
+            $arr[] = $label ? $label : $data['title'] ?? '';
         }
         if ($options->getLinker()) {
             $arr[] = $this->getLang()->getLL('label_action');
