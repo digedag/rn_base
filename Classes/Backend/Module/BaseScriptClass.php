@@ -70,7 +70,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * THEN WE CALL THE main() METHOD AND THIS SHOULD SPARK THE CREATION OF THE MODULE OUTPUT.
  * $GLOBALS['SOBE']->main();
  */
-class BaseScriptClass
+abstract class BaseScriptClass
 {
     /**
      * Loaded with the global array $MCONF which holds some module configuration from the conf.php file of backend modules.
@@ -207,10 +207,6 @@ class BaseScriptClass
      */
     public function __construct()
     {
-        @trigger_error(
-            'Class BaseScriptClass is deprecated and will be removed in TYPO3 v10.0',
-            E_USER_DEPRECATED
-        );
     }
 
     /**
@@ -220,10 +216,13 @@ class BaseScriptClass
      */
     public function init()
     {
+        $GLOBALS['LANG']->includeLLFile('EXT:rn_base/Resources/Private/Language/locallang.xlf');
+
         // Name might be set from outside
-        if (!$this->MCONF['name']) {
-            $this->MCONF = $GLOBALS['MCONF'];
+        if (!isset($this->MCONF['name'])) {
+            $this->MCONF = $GLOBALS['MCONF'] ?? [];
         }
+
         $this->id = (int) GeneralUtility::_GP('id');
         $this->CMD = GeneralUtility::_GP('CMD');
         $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);

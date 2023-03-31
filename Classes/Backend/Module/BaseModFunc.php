@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Backend\Module;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Sys25\RnBase\Backend\Form\ToolBox;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Frontend\Marker\BaseMarker;
@@ -9,6 +10,7 @@ use Sys25\RnBase\Frontend\Marker\FormatUtil;
 use Sys25\RnBase\Frontend\Marker\Templates;
 use Sys25\RnBase\Utility\Files;
 use Sys25\RnBase\Utility\Network;
+use Sys25\RnBase\Utility\TYPO3;
 
 /***************************************************************
  *  Copyright notice
@@ -43,6 +45,11 @@ abstract class BaseModFunc implements IModFunc
         $this->mod = $module;
     }
 
+    public function getModuleIdentifier()
+    {
+        return 'my_module';
+    }
+
     /**
      * Returns the base module.
      *
@@ -53,7 +60,18 @@ abstract class BaseModFunc implements IModFunc
         return $this->mod;
     }
 
-    public function main()
+    public function main(?ServerRequestInterface $request)
+    {
+        if (TYPO3::isTYPO121OrHigher()) {
+            $modFuncFrame = \tx_rnbase::makeInstance(ModFuncFrame::class);
+
+            return $modFuncFrame->render($this, $request);
+        }
+
+        return $this->renderOutput();
+    }
+
+    protected function renderOutput()
     {
         $out = '';
         $conf = $this->getModule()->getConfigurations();

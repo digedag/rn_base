@@ -20,7 +20,6 @@ return [
     'Tx_Rnbase_Backend_Handler_DetailHandler' => \Sys25\RnBase\Backend\Handler\DetailHandler::class,
     'Tx_Rnbase_Backend_Handler_SearchHandler' => \Sys25\RnBase\Backend\Handler\SearchHandler::class,
     'Tx_Rnbase_Backend_Lister_AbstractLister' => \Sys25\RnBase\Backend\Lister\AbstractLister::class,
-    'Tx_Rnbase_Backend_ModuleRunner' => \Sys25\RnBase\Backend\ModuleRunner::class,
     'Tx_Rnbase_Backend_Module_Base' => \Sys25\RnBase\Backend\Module\ModuleBase::class,
     'Tx_Rnbase_Backend_Template_ModuleParts' => \Sys25\RnBase\Backend\Template\ModuleParts::class,
     'Tx_Rnbase_Backend_Template_ModuleTemplate' => \Sys25\RnBase\Backend\Template\ModuleTemplate::class,

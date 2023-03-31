@@ -3,6 +3,9 @@
 Changelog
 ---------
 
+v1.16.7 (??.03.2023)
+* Removes ModuleRunner as not needed anymore
+
 v1.16.6 (??.03.2023)
 * Support constant TYPO3
 * Fix TSFAL printImages()

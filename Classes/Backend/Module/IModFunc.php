@@ -2,6 +2,8 @@
 
 namespace Sys25\RnBase\Backend\Module;
 
+use Psr\Http\Message\ServerRequestInterface;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -38,9 +40,14 @@ interface IModFunc
     public function init(IModule $module, $conf);
 
     /**
+     * Module identifier for ts_config.
+     */
+    public function getModuleIdentifier();
+
+    /**
      * Liefert den HTML-String des Moduls.
      *
      * @return string
      */
-    public function main();
+    public function main(?ServerRequestInterface $request);
 }
