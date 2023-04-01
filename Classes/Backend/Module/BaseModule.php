@@ -622,6 +622,4 @@ abstract class BaseModule extends BaseScriptClass implements IModule
     {
         return '';
     }
-
-
 }

@@ -26,6 +26,8 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
  * ModFuncs bereit. Aus Sicht von TYPO3 sind die ModFuncs
  * Controllerklassen.
  * Ein Hauptmodul aus Sicht von rn_base ist nicht mehr notwendig.
+ *
+ * @php81 Die Datei wird ausschließlich ab PHP8.1 verwendet.
  */
 class ModFuncFrame implements IModule
 {
@@ -47,9 +49,9 @@ class ModFuncFrame implements IModule
     protected $doc;
 
     public function __construct(
-        protected readonly IconFactory $iconFactory,
-        protected readonly UriBuilder $uriBuilder,
-        protected readonly PageRenderer $pageRenderer
+        protected IconFactory $iconFactory,
+        protected UriBuilder $uriBuilder,
+        protected PageRenderer $pageRenderer
     ) {
     }
 
@@ -80,7 +82,7 @@ class ModFuncFrame implements IModule
     {
         // Access check. The page will show only if there is a valid page
         // and if this page may be viewed by the user
-        $pageinfo = BackendUtility::readPageAccess($this->id, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
+        $pageinfo = BackendUtility::readPageAccess($this->getPid(), $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
 
         $parts->setContent(''); // $this->moduleContent()
 //        $parts->setButtons($this->getButtons());
@@ -133,13 +135,7 @@ class ModFuncFrame implements IModule
     protected function getFormTag()
     {
         $modUrl = (string) $this->uriBuilder->buildUriFromRoute($this->currentModule->getIdentifier());
-        // \tx_rnbase_util_Debug::debug([
-        // 'ident' => $this->currentModule->getIdentifier(),
-        // 'path' => $this->currentModule->getPath(),
-        // 'url' => $modUrl,
-        // 'mod' => $this->currentModule,
-        // ]
-//     , __FILE__.':'.__LINE__); // TODO: remove me
+
         return '<form action="'.$modUrl.'" method="post" name="editform" enctype="multipart/form-data"><input type="hidden" name="id" value="'.htmlspecialchars($this->id).'" />';
     }
 
@@ -216,7 +212,7 @@ class ModFuncFrame implements IModule
     }
 
     /**
-     * @return DocumentTemplate
+     * @return \Sys25\RnBase\Backend\Template\Override\DocumentTemplate
      */
     public function getDoc()
     {
