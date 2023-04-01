@@ -99,7 +99,6 @@
 			"[ -L .Build/Web/typo3conf/ext/rn_base ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/rn_base"
 		],
 		"test:phplint": ".github/bin/lint_php.sh Classes Legacy Migrations tests",
-		"test:phplint2": "find *.php Classes Legacy Migrations tests -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l",
 		"test:phpcompat": ".Build/bin/phpcs --ignore=.Build/*,Resources/* -p . --standard=.Build/vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion ",
 		"test:phpcs": [
 			"[ -e .Build/bin/php-cs-fixer ] || composer update",
