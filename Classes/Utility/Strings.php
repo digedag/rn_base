@@ -84,7 +84,7 @@ class Strings
      */
     public static function isFirstPartOfStr($haystack, $needle)
     {
-        return T3General::isFirstPartOfStr($haystack, $needle);
+        return str_starts_with($haystack, $needle);
     }
 
     /**

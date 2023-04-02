@@ -10,7 +10,7 @@ use Sys25\RnBase\Utility\Strings;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2007-2021 Rene Nitzsche <rene@system25.de>
+ *  (c) 2007-2023 Rene Nitzsche <rene@system25.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -322,8 +322,9 @@ class DataModel implements DataInterface, IteratorAggregate, \ArrayAccess
      * user this to manipulate the data:
      * foreach($data as $key => $var) { $data->setProperty($key, 0); };
      *
-     * @return \ArrayIterator
+     * @return \Traversable|array
      */
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return new ArrayIterator($this->getProperties());
@@ -383,6 +384,7 @@ class DataModel implements DataInterface, IteratorAggregate, \ArrayAccess
      *
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($property)
     {
         return $this->hasProperty($this->underscore($property));
@@ -393,6 +395,7 @@ class DataModel implements DataInterface, IteratorAggregate, \ArrayAccess
      *
      * @return array|mixed|string|null
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($property)
     {
         $getterMethod = 'get'.$this->underscoredToUpperCamelCase($property);
@@ -421,6 +424,7 @@ class DataModel implements DataInterface, IteratorAggregate, \ArrayAccess
      *
      * @retrun void
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($property, $value)
     {
         $setterMethod = 'set'.$this->underscoredToUpperCamelCase($property);
@@ -436,6 +440,7 @@ class DataModel implements DataInterface, IteratorAggregate, \ArrayAccess
     /**
      * @param mixed $property
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($property)
     {
         $this->unsProperty($this->underscore($property));

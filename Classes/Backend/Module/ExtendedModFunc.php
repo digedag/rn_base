@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Backend\Module;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Sys25\RnBase\Backend\Form\ToolBox;
 use Sys25\RnBase\Frontend\Marker\BaseMarker;
 use Sys25\RnBase\Frontend\Marker\Templates;
@@ -37,6 +38,9 @@ use Sys25\RnBase\Utility\Typo3Classes;
  */
 abstract class ExtendedModFunc implements IModFunc
 {
+    /* @var $mod IModule */
+    protected $mod;
+
     public function init(IModule $module, $conf)
     {
         $this->mod = $module;
@@ -44,6 +48,11 @@ abstract class ExtendedModFunc implements IModFunc
         if ($file = $configurations->get($this->getConfId().'locallang')) {
             $GLOBALS['LANG']->includeLLFile($file);
         }
+    }
+
+    public function getModuleIdentifier()
+    {
+        return 'my_module';
     }
 
     /**
@@ -56,7 +65,7 @@ abstract class ExtendedModFunc implements IModFunc
         return $this->mod;
     }
 
-    public function main()
+    public function main(?ServerRequestInterface $request = null)
     {
         $out = '';
         $conf = $this->getModule()->getConfigurations();

@@ -312,11 +312,6 @@ namespace {
     {
     }
 
-    /** @deprecated use \Sys25\RnBase\Backend\ModuleRunner */
-    class Tx_Rnbase_Backend_ModuleRunner
-    {
-    }
-
     /** @deprecated use \Sys25\RnBase\Utility\Logger */
     class tx_rnbase_util_Logger
     {

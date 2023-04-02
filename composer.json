@@ -31,9 +31,9 @@
 		"ext-json": "*",
 		"ext-simplexml": "*",
 		"ext-zip": "*",
-		"doctrine/common": "^2.5.4",
-		"doctrine/dbal": "^2.5.4",
-		"typo3/cms-core": "^8.7 || ^9.5 || ^10.4 || ^11.5"
+		"doctrine/common": "*",
+		"doctrine/dbal": "*",
+		"typo3/cms-core": "^8.7 || ^9.5 || ^10.4 || ^11.5 || ^12.1"
 	},
 	"require-dev": {
 		"friendsofphp/php-cs-fixer": "^3.1.0",
@@ -98,8 +98,8 @@
 			"mkdir -p .Build/Web/typo3conf/ext/",
 			"[ -L .Build/Web/typo3conf/ext/rn_base ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/rn_base"
 		],
-		"test:phplint": "find *.php Classes Legacy Migrations tests -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l",
-		"test:phpcompat": ".Build/bin/phpcs --ignore=.Build/*,Resources/* -p . --standard=.Build/vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion ",
+		"test:phplint": ".github/bin/php_lint.sh Classes Legacy Migrations tests",
+		"test:phpcompat": ".github/bin/php_compat.sh ",
 		"test:phpcs": [
 			"[ -e .Build/bin/php-cs-fixer ] || composer update",
 			".Build/bin/php-cs-fixer fix -v --dry-run --diff"
@@ -149,6 +149,7 @@
 		},
 		"branch-alias": {
 			"dev-master": "1.16.x-dev",
+			"dev-feature/t3_12": "1.16.x-dev",
 			"dev-upgrade/11.5": "11.5.x-dev"
 		}
 	}

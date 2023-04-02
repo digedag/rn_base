@@ -58,6 +58,18 @@ interface IModule
     public function getName();
 
     /**
+     * Returns the modules title.
+     */
+    public function getTitle();
+
+    /**
+     * Returns the module route identifier.
+     *
+     * @return string
+     */
+    public function getRouteIdentifier();
+
+    /**
      * Return current PID for Web-Modules.
      *
      * @return int uid
