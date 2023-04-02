@@ -38,11 +38,13 @@ class ModFuncFrame implements IModule
      * Current page id.
      */
     protected int $id;
+
     /**
      * ehemals perms_clause.
      */
     protected string $moduleIdentifier;
 
+    /** @phpstan-ignore-next-line */
     protected ModuleInterface $currentModule;
     protected IModFunc $modFunc;
     protected ?ConfigurationInterface $configurations = null;

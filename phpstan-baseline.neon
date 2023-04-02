@@ -6,11 +6,6 @@ parameters:
 			path: Classes/Backend/Module/BaseModule.php
 
 		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Backend\\\\Module\\\\ExtendedModFunc\\:\\:\\$mod\\.$#"
-			count: 2
-			path: Classes/Backend/Module/ExtendedModFunc.php
-
-		-
 			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Backend\\\\Template\\\\Override\\\\DocumentTemplate\\:\\:\\$form\\.$#"
 			count: 1
 			path: Classes/Backend/Template/Override/DocumentTemplate.php
