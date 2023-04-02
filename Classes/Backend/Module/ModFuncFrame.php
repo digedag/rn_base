@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 class ModFuncFrame implements IModule
 {
     private ModuleTemplate $moduleTemplate;
-    private ToolBox $formTool;
+    private ?ToolBox $toolBox = null;
 
     /**
      * Current page id.
@@ -57,21 +57,31 @@ class ModFuncFrame implements IModule
     ) {
     }
 
-    public function render(IModFunc $modFunc, ServerRequestInterface $request)
+    public function render(IModFunc $modFunc, callable $renderFunc, ServerRequestInterface $request)
     {
         $this->modFunc = $modFunc;
         $this->moduleIdentifier = $modFunc->getModuleIdentifier();
         $this->id = (int) ($request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0);
         $this->currentModule = $request->getAttribute('module');
         $this->getLanguageService()->includeLLFile('EXT:rn_base/Resources/Private/Language/locallang.xlf');
+        $config = $this->getConfigurations();
+        $files = $config->get('languagefiles.');
+        foreach ($files as $filename) {
+            $this->getLanguageService()->includeLLFile($filename);
+        }
 
+        $this->modFunc->init($this, [
+                // 'form' => $this->getFormTag(),
+                // 'docstyles' => $this->getDocStyles(),
+                // 'template' => $this->getModuleTemplateFilename(),
+        ]);
         // Rahmen rendern
         $this->moduleTemplate = $this->createModuleTemplate($request);
         // Die Variable muss gesetzt sein.
         $this->doc = $this->moduleTemplate->getDoc();
         /* @var $parts ModuleParts */
         $parts = tx_rnbase::makeInstance(ModuleParts::class);
-        $this->prepareModuleParts($parts);
+        $this->prepareModuleParts($parts, $renderFunc);
 
         $content = $this->moduleTemplate->renderContent($parts);
 
@@ -80,15 +90,16 @@ class ModFuncFrame implements IModule
         return $response;
     }
 
-    protected function prepareModuleParts($parts)
+    protected function prepareModuleParts($parts, $renderFunc)
     {
         // Access check. The page will show only if there is a valid page
         // and if this page may be viewed by the user
         $pageinfo = BackendUtility::readPageAccess($this->getPid(), $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
 
-        $parts->setContent(''); // $this->moduleContent()
+        $parts->setContent($renderFunc()); // $this->moduleContent()
 //        $parts->setButtons($this->getButtons());
         $parts->setTitle($this->getLanguageService()->getLL('title'));
+        // Um das Hauptmenu kümmert sich jetzt TYPO3
 //        $parts->setFuncMenu($this->getFuncMenu());
         // if we got no array the user got no permissions for the
         // selected page or no page is selected
@@ -200,12 +211,12 @@ class ModFuncFrame implements IModule
      */
     public function getFormTool()
     {
-        if (!$this->formTool) {
-            $this->formTool = tx_rnbase::makeInstance(ToolBox::class);
-            $this->formTool->init($this->getDoc(), $this);
+        if (!$this->toolBox) {
+            $this->toolBox = tx_rnbase::makeInstance(ToolBox::class);
+            $this->toolBox->init($this->getDoc(), $this);
         }
 
-        return $this->formTool;
+        return $this->toolBox;
     }
 
     public function getPid(): int
