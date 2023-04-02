@@ -98,8 +98,8 @@
 			"mkdir -p .Build/Web/typo3conf/ext/",
 			"[ -L .Build/Web/typo3conf/ext/rn_base ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/rn_base"
 		],
-		"test:phplint": ".github/bin/lint_php.sh Classes Legacy Migrations tests",
-		"test:phpcompat": ".Build/bin/phpcs --ignore=.Build/*,Resources/* -p . --standard=.Build/vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion ",
+		"test:phplint": ".github/bin/php_lint.sh Classes Legacy Migrations tests",
+		"test:phpcompat": ".github/bin/php_compat.sh ",
 		"test:phpcs": [
 			"[ -e .Build/bin/php-cs-fixer ] || composer update",
 			".Build/bin/php-cs-fixer fix -v --dry-run --diff"
