@@ -158,8 +158,8 @@ function jumpToUrl(URL) {
         foreach ($menuItems as $def) {
             $class = $def['isActive'] ? 'active' : '';
             $label = $def['label'];
-            $url = htmlspecialchars($def['url']);
-            $params = $def['addParams'];
+            $url = htmlspecialchars($def['url'] ?? '');
+            $params = $def['addParams'] ?? '';
             $options .= '<li class="'.$class.'">'.'<a href="'.$url.'" '.$params.'>'.$label.'</a>'.'</li>';
         }
 

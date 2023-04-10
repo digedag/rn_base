@@ -92,14 +92,12 @@ class BackendUtility
      * Checks if we are in dispatch mode.
      *
      * @return bool
+     *
+     * @deprecated muss entfernt werden. Es gibt nur noch den DISPATCH-Modus
      */
     public static function isDispatchMode()
     {
-        if (!isset($GLOBALS['MCONF']['script'])) {
-            return false;
-        }
-
-        return '_DISPATCH' === $GLOBALS['MCONF']['script'];
+        return true;
     }
 
     /* *** ************************************ *** *

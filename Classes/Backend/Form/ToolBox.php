@@ -1024,12 +1024,6 @@ class ToolBox
             $menuItems[] = [
                 'isActive' => $SETTINGS[$name] == $key,
                 'label' => $value,
-                // jumpUrl ist ab TYPO3 6.2 nicht mehr nötig
-                // @TODO jumpUrl entfernen wenn kein Support mehr für 4.5
-                'url' => '#',
-                'addParams' => 'onclick="jumpToUrl(\''.
-                                $this->buildScriptURI(['id' => $pid, 'SET['.$name.']' => $key]).
-                                '\',this);"',
             ];
         }
 
@@ -1053,13 +1047,10 @@ class ToolBox
 
     protected function buildScriptURI($urlParams)
     {
-        if (!BackendUtility::isDispatchMode()) {
-            return 'index.php?'.http_build_query($urlParams);
-//            'index.php?&amp;id='.$pid.'&amp;SET['.$name.']='. $key;
-        } else {
-            // In dem Fall die URI über den DISPATCH-Modus bauen
-            return BackendUtility::getModuleUrl($this->getModule()->getName(), $urlParams, '');
-        }
+        // In dem Fall die URI über den DISPATCH-Modus bauen
+        $routeIdent = TYPO3::isTYPO121OrHigher() ? $this->getModule()->getRouteIdentifier() : $this->getModule()->getName();
+
+        return BackendUtility::getModuleUrl($routeIdent, $urlParams, '');
     }
 
     /**
