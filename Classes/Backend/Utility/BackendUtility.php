@@ -8,7 +8,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /***************************************************************
  * Copyright notice
  *
- * (c) 2015-2020 René Nitzsche <rene@system25.de>
+ * (c) 2015-2023 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -95,6 +95,10 @@ class BackendUtility
      */
     public static function isDispatchMode()
     {
+        if (!isset($GLOBALS['MCONF']['script'])) {
+            return false;
+        }
+
         return '_DISPATCH' === $GLOBALS['MCONF']['script'];
     }
 

@@ -49,6 +49,12 @@ class ModFuncFrame implements IModule
     protected IModFunc $modFunc;
     protected ?ConfigurationInterface $configurations = null;
     protected $doc;
+    protected $tabs;
+
+    /**
+     * @var array
+     */
+    protected $selector;
 
     public function __construct(
         protected readonly IconFactory $iconFactory,
@@ -104,8 +110,8 @@ class ModFuncFrame implements IModule
         // if we got no array the user got no permissions for the
         // selected page or no page is selected
         $parts->setPageInfo(is_array($pageinfo) ? $pageinfo : []);
-//        $parts->setSubMenu($this->tabs);
-//        $parts->setSelector($this->selector ?? $this->subselector);
+        $parts->setSubMenu($this->tabs);
+        $parts->setSelector($this->selector ?? '');
     }
 
     protected function createModuleTemplate(ServerRequestInterface $request): ModuleTemplate
@@ -244,6 +250,7 @@ class ModFuncFrame implements IModule
      */
     public function setSubMenu($menuString)
     {
+        $this->tabs = $menuString;
     }
 
     /**
@@ -253,6 +260,7 @@ class ModFuncFrame implements IModule
      */
     public function setSelector($selectorString)
     {
+        $this->selector = $selectorString;
     }
 
     /**
