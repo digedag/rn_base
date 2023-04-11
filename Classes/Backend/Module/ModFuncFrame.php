@@ -9,6 +9,8 @@ use Sys25\RnBase\Backend\Template\ModuleTemplate;
 use Sys25\RnBase\Backend\Utility\BackendUtility;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Configuration\Processor;
+use Sys25\RnBase\Frontend\Marker\BaseMarker;
+use Sys25\RnBase\Frontend\Marker\Templates;
 use Sys25\RnBase\Utility\Arrays;
 use Sys25\RnBase\Utility\Files;
 use Sys25\RnBase\Utility\Misc;
@@ -89,11 +91,22 @@ class ModFuncFrame implements IModule
         $parts = tx_rnbase::makeInstance(ModuleParts::class);
         $this->prepareModuleParts($parts, $renderFunc);
 
-        $content = $this->moduleTemplate->renderContent($parts);
+        $content = $this->renderContent($parts);
 
         $response = new \TYPO3\CMS\Core\Http\HtmlResponse($content);
 
         return $response;
+    }
+
+    protected function renderContent(ModuleParts $parts): string
+    {
+        $content = $this->moduleTemplate->renderContent($parts);
+
+        $params = $markerArray = $subpartArray = $wrappedSubpartArray = [];
+        BaseMarker::callModules($content, $markerArray, $subpartArray, $wrappedSubpartArray, $params, $this->getConfigurations()->getFormatter());
+        $content = Templates::substituteMarkerArrayCached($content, $markerArray, $subpartArray, $wrappedSubpartArray);
+
+        return $content;
     }
 
     protected function prepareModuleParts($parts, $renderFunc)

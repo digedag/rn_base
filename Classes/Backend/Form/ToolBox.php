@@ -747,10 +747,11 @@ class ToolBox
      */
     protected function initializeJavaScriptFormEngine()
     {
-        $moduleUrl = Strings::quoteJSvalue(
-            BackendUtility::getModuleUrl($this->getModule()->getName())
-        );
-        $usDateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '1' : '0';
+        $moduleUrl = Strings::quoteJSvalue($this->buildScriptURI([]));
+        $usDateFormat = 0;
+        if (!TYPO3::isTYPO121OrHigher()) {
+            $usDateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '1' : '0';
+        }
         $initializeFormEngineCallback = 'function(FormEngine) {
             FormEngine.initialize(
                 '.$moduleUrl.','.$usDateFormat.'
@@ -1057,7 +1058,7 @@ class ToolBox
         // In dem Fall die URI über den DISPATCH-Modus bauen
         $routeIdent = TYPO3::isTYPO121OrHigher() ? $this->getModule()->getRouteIdentifier() : $this->getModule()->getName();
 
-        return BackendUtility::getModuleUrl($routeIdent, $urlParams, '');
+        return BackendUtility::getModuleUrl($routeIdent, $urlParams);
     }
 
     /**
