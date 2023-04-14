@@ -127,7 +127,7 @@ class Strings
      */
     public static function intExplode($delimiter, $string, $onlyNonEmptyValues = false, $limit = 0)
     {
-        return T3General::intExplode($delimiter, $string, $onlyNonEmptyValues, $limit);
+        return T3General::intExplode($delimiter, ''.$string, $onlyNonEmptyValues, $limit);
     }
 
     /**

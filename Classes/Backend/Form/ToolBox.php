@@ -693,7 +693,7 @@ class ToolBox
     public function createDateInput($name, $value)
     {
         // Take care of current time zone. Thanks to Thomas Maroschik!
-        if (Math::isInteger($value)) {
+        if (Math::isInteger($value) && !TYPO3::isTYPO121OrHigher()) {
             $value += date('Z', $value);
         }
         $this->initializeJavaScriptFormEngine();
