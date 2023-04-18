@@ -51,9 +51,9 @@ class ModFuncFrame implements IModule
     protected $doc;
 
     public function __construct(
-        protected readonly IconFactory $iconFactory,
-        protected readonly UriBuilder $uriBuilder,
-        protected readonly PageRenderer $pageRenderer
+        protected IconFactory $iconFactory,
+        protected UriBuilder $uriBuilder,
+        protected PageRenderer $pageRenderer
     ) {
     }
 
