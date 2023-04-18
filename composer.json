@@ -112,7 +112,7 @@
 		"test": [
 			"@test:phplint",
 			"@test:phpcs",
-			"@test:phpcompatibility",
+			"@test:phpcompat",
 			"@test:phpstan",
 			"@test:phpunit"
 		],
