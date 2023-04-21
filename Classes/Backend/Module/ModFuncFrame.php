@@ -27,10 +27,12 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
  * Controllerklassen.
  * Ein Hauptmodul aus Sicht von rn_base ist nicht mehr notwendig.
  *
- * @php81 Die Datei wird ausschließlich ab PHP8.1 verwendet.
  */
 class ModFuncFrame implements IModule
 {
+    private IconFactory $iconFactory;
+    private UriBuilder $uriBuilder;
+    private PageRenderer $pageRenderer;
     private ModuleTemplate $moduleTemplate;
     private ToolBox $formTool;
 
@@ -51,10 +53,13 @@ class ModFuncFrame implements IModule
     protected $doc;
 
     public function __construct(
-        protected IconFactory $iconFactory,
-        protected UriBuilder $uriBuilder,
-        protected PageRenderer $pageRenderer
+        IconFactory $iconFactory,
+        UriBuilder $uriBuilder,
+        PageRenderer $pageRenderer
     ) {
+        $this->iconFactory = $iconFactory;
+        $this->uriBuilder = $uriBuilder;
+        $this->pageRenderer = $pageRenderer;
     }
 
     public function render(IModFunc $modFunc, ServerRequestInterface $request)
