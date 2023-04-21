@@ -53,7 +53,7 @@ class Files
         }
 
         $incFile = self::getFalFilename($fName);
-        if($incFile === null) {
+        if (null === $incFile) {
             $incFile = self::getFileName($fName);
         }
         if ($incFile) {
@@ -101,7 +101,7 @@ class Files
      */
     public static function isFALReference($fName)
     {
-        return Strings::isFirstPartOfStr($fName, 'file:');
+        return Strings::isFirstPartOfStr($fName, 't3://file') || Strings::isFirstPartOfStr($fName, 'file:');
     }
 
     /**
@@ -159,10 +159,11 @@ class Files
     public static function getFileAbsFileName($fName, $onlyRelative = true, $relToTYPO3_mainDir = false)
     {
         $filepath = self::getFalFilename($fName);
-        if ($filepath === null) {
+        if (null === $filepath) {
             $utility = Typo3Classes::getGeneralUtilityClass();
             $filepath = $utility::getFileAbsFileName($fName, $onlyRelative, $relToTYPO3_mainDir);
         }
+
         return $filepath;
     }
 
@@ -171,9 +172,12 @@ class Files
         if (self::isFALReference($fName)) {
             /* @var \TYPO3\CMS\Core\Resource\FileRepository */
             $fileRepository = tx_rnbase::makeInstance('TYPO3\CMS\Core\Resource\FileRepository');
-            $fileObject = $fileRepository->findByUid(intval(substr($fName, 5)));
+            if (preg_match('/(\d+)$/', $fName, $matches)) {
+                $uid = (int) reset($matches);
+                $fileObject = $fileRepository->findByUid($uid);
 
-            return is_object($fileObject) ? $fileObject->getForLocalProcessing(false) : null;
+                return is_object($fileObject) ? $fileObject->getForLocalProcessing(false) : null;
+            }
         }
 
         return null;
