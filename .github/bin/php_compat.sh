@@ -13,8 +13,8 @@ dirs="Classes Migrations Legacy tests"
 skipfiles=".Build/*,Resources/*"
 
 # wird PHP8.1 oder höher geprüft wird
-if [[ "${PHP_VERSION}" < "8.1" ]]; then
-  hits=$(find $dirs -type f -name '*.php' -exec grep -l "@php81" {} \; | tr '\n' ',')
+if [[ "${PHP_VERSION}" < "7.4" ]]; then
+  hits=$(find $dirs -type f -name '*.php' -exec grep -l "@php74" {} \; | tr '\n' ',')
   skipfiles="$skipfiles,$hits"
   # Letztes Komma entfernen
   skipfiles=${skipfiles%?}

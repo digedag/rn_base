@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
  * Controllerklassen.
  * Ein Hauptmodul aus Sicht von rn_base ist nicht mehr notwendig.
  *
+ * @php74 wird nur mit PHP 7.4 verwendet
  */
 class ModFuncFrame implements IModule
 {
