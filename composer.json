@@ -148,7 +148,8 @@
 			]
 		},
 		"branch-alias": {
-			"dev-master": "1.16.x-dev"
+			"dev-master": "1.16.x-dev",
+			"dev-feature/t3_12": "1.16.x-dev"
 		}
 	}
 }
