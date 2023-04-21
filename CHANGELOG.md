@@ -3,7 +3,8 @@
 Changelog
 ---------
 
-v1.16.7 (??.03.2023)
+v1.16.8 (21.04.2023)
+* Maintenance Release to keep out changes for TYPO3 12
 
 v1.16.6 (27.03.2023)
 * Support constant TYPO3
