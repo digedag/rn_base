@@ -3,15 +3,17 @@
 Changelog
 ---------
 
-v1.16.8 (??.05.2023)
+v1.17.0 (??.05.2023)
 
-v1.16.7 (18.04.2023)
 * Install possible in TYPO3 12.x but still not working
 * Removed class ModuleRunner as not needed anymore
 * Removed class ModuleBase as not needed anymore
 * fixed some PHP warnings
 * improved pipeline checks
 * backwards compatibility for main subpart calucation in ListView
+
+v1.16.7 (18.04.2023)
+* obsolete, do not use
 
 v1.16.6 (27.03.2023)
 * Support constant TYPO3
