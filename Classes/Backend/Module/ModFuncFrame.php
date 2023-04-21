@@ -9,6 +9,8 @@ use Sys25\RnBase\Backend\Template\ModuleTemplate;
 use Sys25\RnBase\Backend\Utility\BackendUtility;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Configuration\Processor;
+use Sys25\RnBase\Frontend\Marker\BaseMarker;
+use Sys25\RnBase\Frontend\Marker\Templates;
 use Sys25\RnBase\Utility\Arrays;
 use Sys25\RnBase\Utility\Files;
 use Sys25\RnBase\Utility\Misc;
@@ -35,7 +37,7 @@ class ModFuncFrame implements IModule
     private UriBuilder $uriBuilder;
     private PageRenderer $pageRenderer;
     private ModuleTemplate $moduleTemplate;
-    private ToolBox $formTool;
+    private ?ToolBox $toolBox = null;
 
     /**
      * Current page id.
@@ -52,6 +54,12 @@ class ModFuncFrame implements IModule
     protected IModFunc $modFunc;
     protected ?ConfigurationInterface $configurations = null;
     protected $doc;
+    protected $tabs;
+
+    /**
+     * @var array
+     */
+    protected $selector;
 
     public function __construct(
         IconFactory $iconFactory,
@@ -63,44 +71,66 @@ class ModFuncFrame implements IModule
         $this->pageRenderer = $pageRenderer;
     }
 
-    public function render(IModFunc $modFunc, ServerRequestInterface $request)
+    public function render(IModFunc $modFunc, callable $renderFunc, ServerRequestInterface $request)
     {
         $this->modFunc = $modFunc;
         $this->moduleIdentifier = $modFunc->getModuleIdentifier();
         $this->id = (int) ($request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0);
         $this->currentModule = $request->getAttribute('module');
         $this->getLanguageService()->includeLLFile('EXT:rn_base/Resources/Private/Language/locallang.xlf');
+        $config = $this->getConfigurations();
+        $files = $config->get('languagefiles.');
+        foreach ($files as $filename) {
+            $this->getLanguageService()->includeLLFile($filename);
+        }
 
+        $this->modFunc->init($this, [
+                // 'form' => $this->getFormTag(),
+                // 'docstyles' => $this->getDocStyles(),
+                // 'template' => $this->getModuleTemplateFilename(),
+        ]);
         // Rahmen rendern
         $this->moduleTemplate = $this->createModuleTemplate($request);
         // Die Variable muss gesetzt sein.
         $this->doc = $this->moduleTemplate->getDoc();
         /* @var $parts ModuleParts */
         $parts = tx_rnbase::makeInstance(ModuleParts::class);
-        $this->prepareModuleParts($parts);
+        $this->prepareModuleParts($parts, $renderFunc);
 
-        $content = $this->moduleTemplate->renderContent($parts);
+        $content = $this->renderContent($parts);
 
         $response = new \TYPO3\CMS\Core\Http\HtmlResponse($content);
 
         return $response;
     }
 
-    protected function prepareModuleParts($parts)
+    protected function renderContent(ModuleParts $parts): string
+    {
+        $content = $this->moduleTemplate->renderContent($parts);
+
+        $params = $markerArray = $subpartArray = $wrappedSubpartArray = [];
+        BaseMarker::callModules($content, $markerArray, $subpartArray, $wrappedSubpartArray, $params, $this->getConfigurations()->getFormatter());
+        $content = Templates::substituteMarkerArrayCached($content, $markerArray, $subpartArray, $wrappedSubpartArray);
+
+        return $content;
+    }
+
+    protected function prepareModuleParts($parts, $renderFunc)
     {
         // Access check. The page will show only if there is a valid page
         // and if this page may be viewed by the user
         $pageinfo = BackendUtility::readPageAccess($this->getPid(), $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
 
-        $parts->setContent(''); // $this->moduleContent()
+        $parts->setContent($renderFunc()); // $this->moduleContent()
 //        $parts->setButtons($this->getButtons());
         $parts->setTitle($this->getLanguageService()->getLL('title'));
+        // Um das Hauptmenu kümmert sich jetzt TYPO3
 //        $parts->setFuncMenu($this->getFuncMenu());
         // if we got no array the user got no permissions for the
         // selected page or no page is selected
         $parts->setPageInfo(is_array($pageinfo) ? $pageinfo : []);
-//        $parts->setSubMenu($this->tabs);
-//        $parts->setSelector($this->selector ?? $this->subselector);
+        $parts->setSubMenu($this->tabs);
+        $parts->setSelector($this->selector ?? '');
     }
 
     protected function createModuleTemplate(ServerRequestInterface $request): ModuleTemplate
@@ -206,12 +236,12 @@ class ModFuncFrame implements IModule
      */
     public function getFormTool()
     {
-        if (!$this->formTool) {
-            $this->formTool = tx_rnbase::makeInstance(ToolBox::class);
-            $this->formTool->init($this->getDoc(), $this);
+        if (!$this->toolBox) {
+            $this->toolBox = tx_rnbase::makeInstance(ToolBox::class);
+            $this->toolBox->init($this->getDoc(), $this);
         }
 
-        return $this->formTool;
+        return $this->toolBox;
     }
 
     public function getPid(): int
@@ -239,6 +269,7 @@ class ModFuncFrame implements IModule
      */
     public function setSubMenu($menuString)
     {
+        $this->tabs = $menuString;
     }
 
     /**
@@ -248,6 +279,7 @@ class ModFuncFrame implements IModule
      */
     public function setSelector($selectorString)
     {
+        $this->selector = $selectorString;
     }
 
     /**

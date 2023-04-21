@@ -11,7 +11,7 @@ PHP_VERSION=$(php -r "echo PHP_VERSION;")
 
 for dir in "$@"; do
   # Prüfen, ob PHP8.1 oder höher installiert ist
-  if [[ "${PHP_VERSION}" > "8.1" ]]; then
+  if [[ "${PHP_VERSION}" > "7.4" ]]; then
     # Wenn PHP8.1 oder höher installiert ist, führe die Suche ohne Filter aus
     while IFS= read -r file; do
       if ! php -l "$file"; then
@@ -21,7 +21,7 @@ for dir in "$@"; do
   else
     # Loop over all PHP files in the directory (and its subdirectories)
     while IFS= read -r -d '' file; do
-      if ! grep -q "@php81" "$file"; then
+      if ! grep -q "@php74" "$file"; then
         php -l "$file"
         php_error=$? # store the return value of the php command in a variable
         if [ $php_error -ne 0 ]; then

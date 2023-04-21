@@ -349,7 +349,9 @@ class Connection implements SingletonInterface
 
         $sysPage = TYPO3::getSysPage();
         $sysPage->versionOL($tableName, $row);
-        $sysPage->fixVersioningPid($tableName, $row);
+        if (!TYPO3::isTYPO115OrHigher()) {
+            $sysPage->fixVersioningPid($tableName, $row);
+        }
     }
 
     /**

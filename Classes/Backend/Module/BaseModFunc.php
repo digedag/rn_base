@@ -65,7 +65,7 @@ abstract class BaseModFunc implements IModFunc
         if (TYPO3::isTYPO121OrHigher()) {
             $modFuncFrame = \tx_rnbase::makeInstance(ModFuncFrame::class);
 
-            return $modFuncFrame->render($this, $request);
+            return $modFuncFrame->render($this, function () { return $this->renderOutput(); }, $request);
         }
 
         return $this->renderOutput();
@@ -75,7 +75,6 @@ abstract class BaseModFunc implements IModFunc
     {
         $out = '';
         $conf = $this->getModule()->getConfigurations();
-
         $file = Files::getFileAbsFileName($conf->get($this->getConfId().'template'));
         $templateCode = Network::getUrl($file);
         if (!$templateCode) {
