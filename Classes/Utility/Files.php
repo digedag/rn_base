@@ -51,12 +51,9 @@ class Files
         if (!(is_object($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE']->tmpl))) {
             Misc::prepareTSFE(['force' => true]);
         }
-        if (self::isFALReference($fName)) {
-            /* @var \TYPO3\CMS\Core\Resource\FileRepository */
-            $fileRepository = \tx_rnbase::makeInstance('TYPO3\CMS\Core\Resource\FileRepository');
-            $fileObject = $fileRepository->findByUid(intval(substr($fName, 5)));
-            $incFile = is_object($fileObject) ? $fileObject->getForLocalProcessing(false) : false;
-        } else {
+
+        $incFile = self::getFalFilename($fName);
+        if($incFile === null) {
             $incFile = self::getFileName($fName);
         }
         if ($incFile) {
@@ -153,7 +150,7 @@ class Files
      * the \Sys25\RnBase\Utility\Environment::getPublicPath() of the TYPO3 installation and implies a check with
      * \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr().
      *
-     * @param string $filename           The input filename/filepath to evaluate
+     * @param string $filename           The input filename/filepath/file:uid to evaluate
      * @param bool   $onlyRelative       if $onlyRelative is set (which it is by default), then only return values relative to the current \Sys25\RnBase\Utility\Environment::getPublicPath() is accepted
      * @param bool   $relToTYPO3_mainDir If $relToTYPO3_mainDir is set, then relative paths are relative to PATH_typo3 constant - otherwise (default) they are relative to \Sys25\RnBase\Utility\Environment::getPublicPath()
      *
@@ -161,9 +158,25 @@ class Files
      */
     public static function getFileAbsFileName($fName, $onlyRelative = true, $relToTYPO3_mainDir = false)
     {
-        $utility = Typo3Classes::getGeneralUtilityClass();
+        $filepath = self::getFalFilename($fName);
+        if ($filepath === null) {
+            $utility = Typo3Classes::getGeneralUtilityClass();
+            $filepath = $utility::getFileAbsFileName($fName, $onlyRelative, $relToTYPO3_mainDir);
+        }
+        return $filepath;
+    }
 
-        return $utility::getFileAbsFileName($fName, $onlyRelative, $relToTYPO3_mainDir);
+    private static function getFalFilename($fName)
+    {
+        if (self::isFALReference($fName)) {
+            /* @var \TYPO3\CMS\Core\Resource\FileRepository */
+            $fileRepository = tx_rnbase::makeInstance('TYPO3\CMS\Core\Resource\FileRepository');
+            $fileObject = $fileRepository->findByUid(intval(substr($fName, 5)));
+
+            return is_object($fileObject) ? $fileObject->getForLocalProcessing(false) : null;
+        }
+
+        return null;
     }
 
     /**
