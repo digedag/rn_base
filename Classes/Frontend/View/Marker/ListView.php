@@ -5,6 +5,7 @@ namespace Sys25\RnBase\Frontend\View\Marker;
 use Sys25\RnBase\Frontend\Marker\SimpleMarker;
 use Sys25\RnBase\Frontend\Marker\Templates;
 use Sys25\RnBase\Frontend\Request\RequestInterface;
+use Sys25\RnBase\Frontend\View\ContextInterface;
 
 /**
  * Generic list view.
@@ -140,5 +141,16 @@ class ListView extends BaseView
         $marker = $configurations->get($confId.'template.markerclass');
 
         return $marker ? $marker : SimpleMarker::class;
+    }
+
+    protected function getMainSubpart(ContextInterface $viewData)
+    {
+        $subpart = parent::getMainSubpart($viewData);
+        if (!$subpart) {
+            $confId = $this->request->getConfId();
+            $subpart = '###'.strtoupper(substr($confId, 0, strlen($confId) - 1)).'###';
+        }
+
+        return $subpart;
     }
 }

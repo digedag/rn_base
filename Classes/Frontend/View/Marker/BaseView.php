@@ -43,12 +43,19 @@ class BaseView extends AbstractView implements ViewInterface
     protected $subpart;
 
     /**
+     * @var RequestInterface
+     */
+    protected $request;
+
+    /**
      * @param RequestInterface $request
      *
      * @return string
      */
     public function render($view, RequestInterface $request)
     {
+        $this->request = $request;
+
         $configurations = $request->getConfigurations();
         $this->_init($configurations);
         $templateCode = Network::getUrl(Files::getFileAbsFileName($this->getTemplate($view, '.html')));
