@@ -3,6 +3,9 @@
 Changelog
 ---------
 
+v1.16.9 (24.04.2023)
+* Readd old main subpart handling for marker based views
+
 v1.16.8 (21.04.2023)
 * Maintenance Release to keep out changes for TYPO3 12
 
