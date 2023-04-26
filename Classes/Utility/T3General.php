@@ -231,4 +231,20 @@ class T3General
 
         return $util::callUserFunction($funcName, $params, $ref, $checkPrefix, $errorMode);
     }
+
+    /**
+     * Gets the unixtime as milliseconds.
+     *
+     * @return int The unixtime as milliseconds
+     */
+    public static function milliseconds()
+    {
+        if (TYPO3::isTYPO104OrHigher()) {
+            return round(microtime(true) * 1000);
+        }
+
+        $util = Typo3Classes::getGeneralUtilityClass();
+
+        return $util::milliseconds();
+    }
 }
