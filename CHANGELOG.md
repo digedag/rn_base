@@ -3,6 +3,9 @@
 Changelog
 ---------
 
+v1.16.10 (26.04.2023)
+* Fix autoloading with non composer mode
+
 v1.16.9 (24.04.2023)
 * Readd old main subpart handling for marker based views
 
