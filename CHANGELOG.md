@@ -3,6 +3,9 @@
 Changelog
 ---------
 
+v1.16.11 (26.04.2023)
+* Provide old milliseconds method
+
 v1.16.10 (26.04.2023)
 * Fix autoloading with non composer mode
 
