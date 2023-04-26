@@ -39,7 +39,7 @@ $EM_CONF['rn_base'] = [
         ],
         'classmap' => [
             'Classes',
-            'Legacy'
+            'Legacy',
         ],
     ],
 ];
