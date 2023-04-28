@@ -622,4 +622,9 @@ abstract class BaseModule extends BaseScriptClass implements IModule
     {
         return '';
     }
+
+    public function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
 }

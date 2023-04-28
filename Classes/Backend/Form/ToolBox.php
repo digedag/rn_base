@@ -785,11 +785,13 @@ class ToolBox
 
         // Die Options ermitteln
         foreach ($TCA[$table]['columns'][$column]['config']['items'] as $item) {
+            $tcaLabel = $item['label'] ?? $item[0];
+            $tcaVal = $item['value'] ?? $item[1];
             $sel = '';
-            if ($value == $item[1]) {
+            if ($value == $tcaVal) {
                 $sel = 'selected="selected"';
             }
-            $out .= '<option value="'.$item[1].'" '.$sel.'>'.$LANG->sL($item[0]).'</option>';
+            $out .= '<option value="'.$tcaVal.'" '.$sel.'>'.$LANG->sL($tcaLabel).'</option>';
         }
         $out .= '
             </select>

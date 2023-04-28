@@ -41,6 +41,8 @@ class DocumentTemplate
 
     public const STATE_ERROR = 3;
 
+    public const STATE_DEFAULT = 0;
+
     public $divClass = false;
 
     public $JScode = '';
@@ -207,14 +209,16 @@ function jumpToUrl(URL) {
             self::STATE_OK => 'success',
             self::STATE_WARNING => 'warning',
             self::STATE_ERROR => 'danger',
+            self::STATE_DEFAULT => 'default',
         ];
         $icons = [
             self::STATE_NOTICE => 'lightbulb-o',
             self::STATE_OK => 'check',
             self::STATE_WARNING => 'exclamation',
             self::STATE_ERROR => 'times',
+            self::STATE_DEFAULT => '',
         ];
-        $stateClass = isset($classes[$type]) ? $classes[$type] : null;
+        $stateClass = isset($classes[$type]) ? $classes[$type] : self::STATE_DEFAULT;
         $icon = isset($icons[$type]) ? $icons[$type] : null;
         $iconTemplate = '';
         if (!$disableIcon) {

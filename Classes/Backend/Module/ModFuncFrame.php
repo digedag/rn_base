@@ -177,7 +177,7 @@ class ModFuncFrame implements IModule
         return '<form action="'.$modUrl.'" method="post" name="editform" enctype="multipart/form-data"><input type="hidden" name="id" value="'.htmlspecialchars($this->id).'" />';
     }
 
-    protected function getLanguageService()
+    public function getLanguageService()
     {
         return $GLOBALS['LANG'];
     }

@@ -135,6 +135,7 @@ class Connection implements SingletonInterface
         } else {
             $rows = $this->doSelectLegacy($what, $from, $arr, $debug);
         }
+
         if (is_string($rows) || (TYPO3::isTYPO87OrHigher() && $rows instanceof QueryBuilder)) {
             // sqlOnly
             return $rows;
@@ -260,7 +261,6 @@ class Connection implements SingletonInterface
         // use classic arrays or the collection
         // should be ever an collection, but for backward compatibility is this an array by default
         $rows = $this->initRows($arr);
-
         if ($this->testResource($res)) {
             $wrapper = is_string($arr['wrapperclass'] ?? null) ? trim($arr['wrapperclass']) : 0;
             $callback = isset($arr['callback']) ? $arr['callback'] : false;
@@ -268,6 +268,7 @@ class Connection implements SingletonInterface
             while ($row = $database->sql_fetch_assoc($res)) {
                 $this->appendRow($rows, $row, $tableName, $wrapper, $callback, $arr);
             }
+
             $database->sql_free_result($res);
         }
 
@@ -327,11 +328,12 @@ class Connection implements SingletonInterface
     private function testResource($res)
     {
         return
+            is_a($res, 'Doctrine\\DBAL\\Result') ||
             // the new doctrine statemant since typo3 8
             is_a($res, 'Doctrine\\DBAL\\Driver\\Statement') ||
             // the old mysqli ressources
             is_a($res, 'mysqli_result') ||
-            // the very old mysql ressources
+            // the very, very old mysql ressources
             is_resource($res)
         ;
     }
@@ -903,7 +905,9 @@ class Connection implements SingletonInterface
         if (!is_object($database)) {
             $database = $this->getDatabaseConnection();
         }
-
+        if (TYPO3::isTYPO121OrHigher()) {
+            return $res;
+        }
         $error = $database->sql_error();
         // When PDO is used as driver sql_error() will always return an not empty array. If actually no error
         // happened the error code (first array element) will be "00000" (\PDO::ERR_NONE)

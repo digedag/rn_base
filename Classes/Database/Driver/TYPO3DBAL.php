@@ -2,10 +2,12 @@
 
 namespace Sys25\RnBase\Database\Driver;
 
+use Sys25\RnBase\Utility\TYPO3;
+
 /***************************************************************
  * Copyright notice
  *
- * (c) 2018-2021 Rene Nitzsche
+ * (c) 2018-2023 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -338,13 +340,13 @@ class TYPO3DBAL implements IDatabase, IDatabaseT3
     /**
      * Free result memory.
      *
-     * @param \Doctrine\DBAL\Driver\Statement $res
+     * @param \Doctrine\DBAL\Driver\Statement|\Doctrine\DBAL\Result $res
      *
      * @return bool returns TRUE on success or FALSE on failure
      */
     public function sql_free_result($res)
     {
-        return $res->closeCursor();
+        return method_exists($res, 'free') ? $res->free() : $res->closeCursor();
     }
 
     /**
@@ -377,6 +379,10 @@ class TYPO3DBAL implements IDatabase, IDatabaseT3
      */
     public function sql_error()
     {
+        if (TYPO3::isTYPO115OrHigher()) {
+            return $this->getConnection()->getWrappedConnection()->errorInfo();
+        }
+
         return $this->getConnection()->errorInfo();
     }
 
