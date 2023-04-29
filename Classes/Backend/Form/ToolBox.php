@@ -356,12 +356,12 @@ class ToolBox
     private function initClipboard()
     {
         if (!$this->clipObj) {
-            $this->clipObj = \tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
+            $this->clipObj = tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
             // Initialize - reads the clipboard content from the user session
             $this->clipObj->initializeClipboard();
 
             $CB = T3GeneralAlias::_GET('CB');
-            $this->clipObj->setCmd($CB);
+            $this->clipObj->setCmd($CB ?? []);
             // Clean up pad
             $this->clipObj->cleanCurrent();
             // Save the clipboard content
