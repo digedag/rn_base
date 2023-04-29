@@ -158,11 +158,11 @@ function jumpToUrl(URL) {
         }
         $options = '';
         foreach ($menuItems as $def) {
-            $class = $def['isActive'] ? 'active' : '';
+            $class = $def['isActive'] ? ' active' : '';
             $label = $def['label'];
             $url = htmlspecialchars($def['url'] ?? '');
             $params = $def['addParams'] ?? '';
-            $options .= '<li class="'.$class.'">'.'<a href="'.$url.'" '.$params.'>'.$label.'</a>'.'</li>';
+            $options .= '<li>'.'<a class="'.$class.'" href="'.$url.'" '.$params.'>'.$label.'</a>'.'</li>';
         }
 
         return '<ul class="nav nav-tabs" role="tablist">'.$options.'</ul>';

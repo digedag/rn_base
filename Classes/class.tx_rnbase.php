@@ -1,12 +1,13 @@
 <?php
 
+use Sys25\RnBase\Utility\Debug;
 use Sys25\RnBase\Utility\TYPO3;
 use Sys25\RnBase\Utility\Typo3Classes;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2009-2015 Rene Nitzsche
+ *  (c) 2009-2023 Rene Nitzsche
  *  Contact: rene@system25.de
  *
  * This library is free software; you can redistribute it and/or
@@ -419,5 +420,21 @@ class tx_rnbase
         }
 
         return $key ? $key : false;
+    }
+
+    /**
+     * Makes debug output
+     * Prints $var in bold between two vertical lines
+     * If not $var the word 'debug' is printed
+     * If $var is an array, the array is printed by t3lib_div::print_array()
+     * Wrapper method for TYPO3 debug methods.
+     *
+     * @param   mixed       Variable to print
+     * @param   string      the header
+     * @param   string      Group for the debug console
+     */
+    public static function debug($var = '', $header = '', $group = 'Debug')
+    {
+        Debug::debug($var, $header, $group);
     }
 }
