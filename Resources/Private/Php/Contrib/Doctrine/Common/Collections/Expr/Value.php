@@ -17,32 +17,36 @@
  * <http://www.doctrine-project.org>.
  */
 
-namespace Doctrine\Common\Collections;
+namespace Contrib\Doctrine\Common\Collections\Expr;
 
-/**
- * Interface for collections that allow efficient filtering with an expression API.
- *
- * Goal of this interface is a backend independent method to fetch elements
- * from a collections. {@link Expression} is crafted in a way that you can
- * implement queries from both in-memory and database-backed collections.
- *
- * For database backed collections this allows very efficient access by
- * utilizing the query APIs, for example SQL in the ORM. Applications using
- * this API can implement efficient database access without having to ask the
- * EntityManager or Repositories.
- *
- * @author Benjamin Eberlei <kontakt@beberlei.de>
- * @since  2.3
- */
-interface Selectable
+class Value implements Expression
 {
     /**
-     * Selects all elements from a selectable that match the expression and
-     * returns a new collection containing these elements.
-     *
-     * @param Criteria $criteria
-     *
-     * @return Collection
+     * @var mixed
      */
-    public function matching(Criteria $criteria);
+    private $value;
+
+    /**
+     * @param mixed $value
+     */
+    public function __construct($value)
+    {
+        $this->value = $value;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function visit(ExpressionVisitor $visitor)
+    {
+        return $visitor->walkValue($this);
+    }
 }
