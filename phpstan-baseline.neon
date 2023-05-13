@@ -71,11 +71,6 @@ parameters:
 			path: Classes/Database/Driver/TYPO3DBAL.php
 
 		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Frontend\\\\Filter\\\\BaseFilter\\:\\:\\$inputData\\.$#"
-			count: 1
-			path: Classes/Frontend/Filter/BaseFilter.php
-
-		-
 			message: "#^Access to private property \\$mem of class Sys25\\\\RnBase\\\\Frontend\\\\Marker\\\\FormatUtil\\.$#"
 			count: 4
 			path: Classes/Frontend/Marker/ListBuilder.php
