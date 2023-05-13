@@ -3,7 +3,6 @@
 namespace Sys25\RnBase\Domain\Collection;
 
 use Sys25\RnBase\Domain\Model\RecordInterface;
-use Sys25\RnBase\Utility\Composer;
 
 /***************************************************************
  *  Copyright notice
