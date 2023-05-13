@@ -143,6 +143,8 @@ class CharBrowserFilter
             $keys = array_keys($ret);
             $current = $keys[0];
         }
+        ksort($ret);
+
         $data = [];
         $data['list'] = $ret;
         $data['default'] = $current;
