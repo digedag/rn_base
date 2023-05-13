@@ -79,8 +79,10 @@ class CharBrowserFilter
                 $firsts = $firstChar;
             }
 
-            if ($fields[SEARCH_FIELD_CUSTOM]) {
+            if (isset($fields[SEARCH_FIELD_CUSTOM])) {
                 $fields[SEARCH_FIELD_CUSTOM] .= ' AND ';
+            } else {
+                $fields[SEARCH_FIELD_CUSTOM] = '';
             }
             $fields[SEARCH_FIELD_CUSTOM] .= 'LEFT(UCASE('.$colName."),1) IN ('$firsts') ";
         }
@@ -124,13 +126,13 @@ class CharBrowserFilter
         $ret = [];
         foreach ($rows as $row) {
             if (array_key_exists($row['first_char'], $wSpecials)) {
-                $ret[$wSpecials[$row['first_char']]] = intval($ret[$wSpecials[$row['first_char']]]) + $row['size'];
+                $ret[$wSpecials[$row['first_char']]] = intval($ret[$wSpecials[$row['first_char']]] ?? 0) + $row['size'];
             } else {
                 $ret[$row['first_char']] = $row['size'];
             }
         }
 
-        if ('last' == $cfg['specials'] && isset($ret['0-9'])) {
+        if ('last' == ($cfg['specials'] ?? '') && isset($ret['0-9'])) {
             $specials = $ret['0-9'];
             unset($ret['0-9']);
             $ret['0-9'] = $specials;

@@ -8,7 +8,7 @@ use Sys25\RnBase\Utility\Debug;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006-2021 Rene Nitzsche
+ *  (c) 2006-2023 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -288,8 +288,8 @@ class FormatUtil
         if (!is_array($conf) || !array_key_exists('number_format.', $conf) || !is_float($content)) {
             return $content;
         }
-        if ($conf['number_format.']['dontCheckFloat'] || number_format(floatval($content), 0, '.', '') != $content) {
-            if ($conf['number_format'] || $conf['number_format.']) {
+        if ($conf['number_format.']['dontCheckFloat'] ?? false || number_format(floatval($content), 0, '.', '') != $content) {
+            if (isset($conf['number_format']) || isset($conf['number_format.'])) {
                 // default
                 $decimal = 2;
                 $dec_point = '.';
