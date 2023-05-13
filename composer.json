@@ -66,7 +66,8 @@
 			"Classes/Constants.php"
 		],
 		"psr-4": {
-			"Sys25\\RnBase\\": "Classes"
+			"Sys25\\RnBase\\": "Classes",
+			"Contrib\\": "Resources/Private/Php/Contrib"
 		}
 	},
 	"autoload-dev": {
@@ -149,6 +150,7 @@
 		},
 		"branch-alias": {
 			"dev-master": "1.16.x-dev",
+			"dev-fix/base_collection": "1.16.x-dev",
 			"dev-feature/t3_12": "1.16.x-dev"
 		}
 	}

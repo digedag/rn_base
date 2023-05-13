@@ -17,7 +17,7 @@
  * <http://www.doctrine-project.org>.
  */
 
-namespace Doctrine\Common\Collections\Expr;
+namespace Contrib\Doctrine\Common\Collections\Expr;
 
 /**
  * Expression of Expressions combined by AND or OR operation.

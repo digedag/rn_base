@@ -3,7 +3,6 @@
 namespace Sys25\RnBase\Domain\Collection;
 
 use Sys25\RnBase\Domain\Model\RecordInterface;
-use Sys25\RnBase\Utility\Composer;
 
 /***************************************************************
  *  Copyright notice
@@ -28,14 +27,12 @@ use Sys25\RnBase\Utility\Composer;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-Composer::autoload();
-
 /**
  * Only a wrapper for doctrine array collection.
  *
  * @author Michael Wagner
  */
-class BaseCollection extends \Doctrine\Common\Collections\ArrayCollection
+class BaseCollection extends \Contrib\Doctrine\Common\Collections\ArrayCollection
 {
     /**
      * Only a wrapper for add.

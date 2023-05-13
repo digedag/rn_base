@@ -17,10 +17,10 @@
  * <http://www.doctrine-project.org>.
  */
 
-namespace Doctrine\Common\Collections;
+namespace Contrib\Doctrine\Common\Collections;
 
-use Doctrine\Common\Collections\Expr\Expression;
-use Doctrine\Common\Collections\Expr\CompositeExpression;
+use Contrib\Doctrine\Common\Collections\Expr\Expression;
+use Contrib\Doctrine\Common\Collections\Expr\CompositeExpression;
 
 /**
  * Criteria for filtering Selectable collections.

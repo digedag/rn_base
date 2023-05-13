@@ -17,11 +17,11 @@
  * <http://www.doctrine-project.org>.
  */
 
-namespace Doctrine\Common\Collections;
+namespace Contrib\Doctrine\Common\Collections;
 
 use ArrayIterator;
 use Closure;
-use Doctrine\Common\Collections\Expr\ClosureExpressionVisitor;
+use Contrib\Doctrine\Common\Collections\Expr\ClosureExpressionVisitor;
 
 /**
  * An ArrayCollection is a Collection implementation that wraps a regular PHP array.

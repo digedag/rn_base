@@ -17,7 +17,7 @@
  * <http://www.doctrine-project.org>.
  */
 
-namespace Doctrine\Common\Collections;
+namespace Contrib\Doctrine\Common\Collections;
 
 use Closure;
 

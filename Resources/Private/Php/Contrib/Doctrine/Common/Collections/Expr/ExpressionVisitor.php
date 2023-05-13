@@ -17,7 +17,7 @@
  * <http://www.doctrine-project.org>.
  */
 
-namespace Doctrine\Common\Collections\Expr;
+namespace Contrib\Doctrine\Common\Collections\Expr;
 
 /**
  * An Expression visitor walks a graph of expressions and turns them into a
