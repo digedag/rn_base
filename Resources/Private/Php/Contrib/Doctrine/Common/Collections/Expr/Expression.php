@@ -17,7 +17,7 @@
  * <http://www.doctrine-project.org>.
  */
 
-namespace Doctrine\Common\Collections\Expr;
+namespace Contrib\Doctrine\Common\Collections\Expr;
 
 /**
  * Expression for the {@link Selectable} interface.

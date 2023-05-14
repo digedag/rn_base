@@ -17,11 +17,11 @@
  * <http://www.doctrine-project.org>.
  */
 
-namespace Doctrine\Common\Collections;
+namespace Contrib\Doctrine\Common\Collections;
 
-use Doctrine\Common\Collections\Expr\Comparison;
-use Doctrine\Common\Collections\Expr\CompositeExpression;
-use Doctrine\Common\Collections\Expr\Value;
+use Contrib\Doctrine\Common\Collections\Expr\Comparison;
+use Contrib\Doctrine\Common\Collections\Expr\CompositeExpression;
+use Contrib\Doctrine\Common\Collections\Expr\Value;
 
 /**
  * Builder for Expressions in the {@link Selectable} interface.

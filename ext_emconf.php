@@ -33,4 +33,13 @@ $EM_CONF['rn_base'] = [
     ],
     'suggests' => [
     ],
+    'autoload' => [
+        'psr-4' => [
+            'Sys25\\RnBase\\' => 'Classes',
+        ],
+        'classmap' => [
+            'Classes',
+            'Legacy',
+        ],
+    ],
 ];

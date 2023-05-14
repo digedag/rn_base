@@ -316,7 +316,7 @@ class BaseMarker
         $emptyArr = [];
         $wrappedSubpartArray = [];
 
-        $pagerName = $pagerData['pointername'] ? $pagerData['pointername'] : 'charpointer';
+        $pagerName = $pagerData['pointername'] ?? 'charpointer';
 
         foreach ($pagerItems as $pointer => $size) {
             $myMarkerArray = $markerArray;

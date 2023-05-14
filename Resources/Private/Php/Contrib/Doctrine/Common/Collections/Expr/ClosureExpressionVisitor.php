@@ -17,7 +17,7 @@
  * <http://www.doctrine-project.org>.
  */
 
-namespace Doctrine\Common\Collections\Expr;
+namespace Contrib\Doctrine\Common\Collections\Expr;
 
 /**
  * Walks an expression graph and turns it into a PHP closure.
