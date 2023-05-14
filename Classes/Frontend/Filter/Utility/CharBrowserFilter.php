@@ -52,6 +52,7 @@ class CharBrowserFilter
      */
     public static function handle(ConfigurationInterface $configurations, $confid, $viewData, &$fields, &$options, $cfg = [])
     {
+        $firstChar = '';
         if ($configurations->get($confid)) {
             $colName = $cfg['colname'];
             if (!$colName) {
