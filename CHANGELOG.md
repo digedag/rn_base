@@ -3,6 +3,9 @@
 Changelog
 ---------
 
+v1.16.12 (02.06.2023)
+* Fix wrong annotation in Sys25\RnBase\Domain\Model\DataModel::offsetSet()
+
 v1.16.11 (26.04.2023)
 * Provide old milliseconds method
 
