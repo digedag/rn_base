@@ -89,6 +89,14 @@ class T3General
     }
 
     /**
+     * @deprecated use Strings::isFirstPartOfStr()
+     */
+    public static function isFirstPartOfStr($haystack, $needle)
+    {
+        return Strings::isFirstPartOfStr($haystack, $needle);
+    }
+
+    /**
      * AddSlash array
      * This function traverses a multidimensional array
      * and adds slashes to the values.

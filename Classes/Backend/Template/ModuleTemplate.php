@@ -3,16 +3,17 @@
 namespace Sys25\RnBase\Backend\Template;
 
 use Exception;
+use Sys25\RnBase\Backend\Module\IModule;
 use Sys25\RnBase\Backend\Template\Override\DocumentTemplate;
 use Sys25\RnBase\Backend\Utility\BackendUtility;
 use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
-use tx_rnbase_mod_IModule;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 
 /* *******************************************************
  *  Copyright notice
  *
- *  (c) 2017-2021 René Nitzsche <rene@system25.de>
+ *  (c) 2017-2023 René Nitzsche <rene@system25.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -48,12 +49,12 @@ class ModuleTemplate
 
     private $doc;
 
-    /** @var tx_rnbase_mod_IModule */
+    /** @var IModule */
     private $module;
 
     private $options;
 
-    public function __construct(tx_rnbase_mod_IModule $module, $options = [])
+    public function __construct(IModule $module, $options = [])
     {
         $this->module = $module;
         $this->options = $this->prepareOptions($options);
@@ -64,7 +65,11 @@ class ModuleTemplate
      */
     public function renderContent(ModuleParts $parts)
     {
-        return $this->renderContent76($parts);
+        if (TYPO3::isTYPO121OrHigher()) {
+            return $this->renderContent12($parts);
+        } else {
+            return $this->renderContent76($parts);
+        }
     }
 
     public function getPageRenderer()
@@ -76,16 +81,67 @@ class ModuleTemplate
      * der Weg ab TYPO3 7.6
      * TODO: fertig implementieren.
      */
+    protected function renderContent12(ModuleParts $parts)
+    {
+        /** @var ModuleTemplateFactory $factory */
+        $factory = tx_rnbase::makeInstance(ModuleTemplateFactory::class);
+        $view = $factory->create($this->options['request']);
+        $content = '';
+//        $moduleTemplate->getPageRenderer()->loadJquery();
+        $view->getDocHeaderComponent()->setMetaInformation($parts->getPageInfo());
+        $this->registerMenu($view, $parts);
+
+        $content .= $this->options['form'] ?? $this->module->buildFormTag();
+
+        $view->makeDocHeaderModuleMenu(['id' => $this->module->getPid()]);
+
+        if (is_string($parts->getFuncMenu())) {
+            // Fallback für Module, die das FuncMenu selbst als String generieren
+            $content .= $parts->getFuncMenu();
+        }
+
+        $content .= $parts->getSelector().'<div style="clear:both;"></div>';
+        $content .= $parts->getSubMenu();
+        $content .= $parts->getContent();
+        $content .= '</form>';
+
+        // Es ist sinnvoll, die Buttons nach der Generierung des Content zu generieren
+        $this->generateButtons($view, $parts);
+
+        // Workaround: jumpUrl wieder einfügen
+        // @TODO Weg finden dass ohne das DocumentTemplate zu machen
+        $content .= '<!--###POSTJSMARKER###-->';
+        $content = $this->getDoc()->insertStylesAndJS($content);
+        // @TODO haupttemplate eines BE moduls enthält evtl. JS/CSS etc.
+        // das wurde bisher über das DocumentTemplate eingefügt, was jetzt
+        // nicht mehr geht. Dafür muss ein Weg gefunden werden.
+        $view->setContent($content);
+
+        return $view->renderContent();
+    }
+
+    /**
+     * der Weg ab TYPO3 7.6
+     * TODO: fertig implementieren.
+     */
     protected function renderContent76(ModuleParts $parts)
     {
         /* @var $moduleTemplate \TYPO3\CMS\Backend\Template\ModuleTemplate */
-        $moduleTemplate = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Template\\ModuleTemplate');
+        $moduleTemplate = null;
+        if (TYPO3::isTYPO121OrHigher()) {
+            /** @var ModuleTemplateFactory $factory */
+            $factory = tx_rnbase::makeInstance(ModuleTemplateFactory::class);
+            $moduleTemplate = $factory->create($this->options['request']);
+        } else {
+            $moduleTemplate = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Template\\ModuleTemplate');
+        }
+
+        $content = '';
 //        $moduleTemplate->getPageRenderer()->loadJquery();
         $moduleTemplate->getDocHeaderComponent()->setMetaInformation($parts->getPageInfo());
         $this->registerMenu($moduleTemplate, $parts);
 
-        $content = $moduleTemplate->header($parts->getTitle());
-        $content .= $this->module->buildFormTag();
+        $content .= $this->options['form'] ?? $this->module->buildFormTag();
         if (is_string($parts->getFuncMenu())) {
             // Fallback für Module, die das FuncMenu selbst als String generieren
             $content .= $parts->getFuncMenu();
@@ -122,17 +178,28 @@ class ModuleTemplate
         // CSH
         $docHeaderButtons = $parts->getButtons();
         if (isset($docHeaderButtons['csh']) && $docHeaderButtons['csh']) {
-            $cshButton = $buttonBar->makeHelpButton()
-                ->setModuleName($this->module->getName())
-                ->setFieldName('');
+            $cshButton = $buttonBar->makeHelpButton();
+            if (TYPO3::isTYPO121OrHigher()) {
+                // TODO
+            } else {
+                $cshButton->setModuleName($this->module->getName())
+                    ->setFieldName('');
+            }
             $buttonBar->addButton($cshButton);
         }
         if ($this->module->getPid()) {
             // Shortcut
-            $shortcutButton = $buttonBar->makeShortcutButton()
-                ->setModuleName($this->module->getName())
-                ->setGetVariables(['id', 'edit_record', 'pointer', 'new_unique_uid', 'search_field', 'search_levels', 'showLimit'])
-                ->setSetVariables(array_keys($this->module->MOD_MENU));
+            $shortcutButton = $buttonBar->makeShortcutButton();
+            if (TYPO3::isTYPO121OrHigher()) {
+                $shortcutButton->setRouteIdentifier($this->module->getRouteIdentifier())
+                ->setDisplayName($this->module->getTitle())
+                ->setArguments(['id' => $this->module->getPid()]);
+            } else {
+                $shortcutButton->setModuleName($this->module->getName());
+                $shortcutButton->setGetVariables(['id', 'edit_record', 'pointer', 'new_unique_uid', 'search_field', 'search_levels', 'showLimit'])
+                    ->setSetVariables(array_keys($this->module->MOD_MENU));
+            }
+
             $buttonBar->addButton($shortcutButton);
         }
     }

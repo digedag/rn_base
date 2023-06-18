@@ -11,7 +11,7 @@ use Sys25\RnBase\Search\SearchBase;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2009-2019 Rene Nitzsche
+ *  (c) 2009-2023 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -41,6 +41,10 @@ class BaseFilter implements FilterInterface
      * @var ParametersInterface
      */
     private $parameters;
+    /**
+     * TODO: ist das noch notwendig?
+     */
+    public $inputData;
 
     /**
      * @var string

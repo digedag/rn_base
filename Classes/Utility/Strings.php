@@ -84,7 +84,7 @@ class Strings
      */
     public static function isFirstPartOfStr($haystack, $needle)
     {
-        return T3General::isFirstPartOfStr($haystack, $needle);
+        return str_starts_with($haystack, $needle);
     }
 
     /**
@@ -127,7 +127,7 @@ class Strings
      */
     public static function intExplode($delimiter, $string, $onlyNonEmptyValues = false, $limit = 0)
     {
-        return T3General::intExplode($delimiter, $string, $onlyNonEmptyValues, $limit);
+        return T3General::intExplode($delimiter, ''.$string, $onlyNonEmptyValues, $limit);
     }
 
     /**

@@ -693,7 +693,7 @@ class ToolBox
     public function createDateInput($name, $value)
     {
         // Take care of current time zone. Thanks to Thomas Maroschik!
-        if (Math::isInteger($value)) {
+        if (Math::isInteger($value) && !TYPO3::isTYPO121OrHigher()) {
             $value += date('Z', $value);
         }
         $this->initializeJavaScriptFormEngine();
@@ -747,10 +747,11 @@ class ToolBox
      */
     protected function initializeJavaScriptFormEngine()
     {
-        $moduleUrl = Strings::quoteJSvalue(
-            BackendUtility::getModuleUrl($this->getModule()->getName())
-        );
-        $usDateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '1' : '0';
+        $moduleUrl = Strings::quoteJSvalue($this->buildScriptURI([]));
+        $usDateFormat = 0;
+        if (!TYPO3::isTYPO121OrHigher()) {
+            $usDateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '1' : '0';
+        }
         $initializeFormEngineCallback = 'function(FormEngine) {
             FormEngine.initialize(
                 '.$moduleUrl.','.$usDateFormat.'
@@ -774,7 +775,7 @@ class ToolBox
         $options = is_array($options) ? $options : [];
 
         $out = '<select  name="'.$name.'" class="select" ';
-        if ($options['onchange']) {
+        if (isset($options['onchange'])) {
             $out .= 'onChange="'.$options['onchange'].'" ';
         }
         $out .= '>';
@@ -1026,6 +1027,7 @@ class ToolBox
                 'label' => $value,
                 // jumpUrl ist ab TYPO3 6.2 nicht mehr nötig
                 // @TODO jumpUrl entfernen wenn kein Support mehr für 4.5
+                // Also jumpUrl wird auch in der 12 noch benötigt...
                 'url' => '#',
                 'addParams' => 'onclick="jumpToUrl(\''.
                                 $this->buildScriptURI(['id' => $pid, 'SET['.$name.']' => $key]).
@@ -1053,13 +1055,10 @@ class ToolBox
 
     protected function buildScriptURI($urlParams)
     {
-        if (!BackendUtility::isDispatchMode()) {
-            return 'index.php?'.http_build_query($urlParams);
-//            'index.php?&amp;id='.$pid.'&amp;SET['.$name.']='. $key;
-        } else {
-            // In dem Fall die URI über den DISPATCH-Modus bauen
-            return BackendUtility::getModuleUrl($this->getModule()->getName(), $urlParams, '');
-        }
+        // In dem Fall die URI über den DISPATCH-Modus bauen
+        $routeIdent = TYPO3::isTYPO121OrHigher() ? $this->getModule()->getRouteIdentifier() : $this->getModule()->getName();
+
+        return BackendUtility::getModuleUrl($routeIdent, $urlParams);
     }
 
     /**

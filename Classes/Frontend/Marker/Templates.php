@@ -458,7 +458,7 @@ class Templates
                     $wSCA_reg[$keyN] = 0;
                 }
 
-                $content .= $valueArr[$keyN][intval($wSCA_reg[$keyN]) % 2];
+                $content .= $valueArr[$keyN][intval($wSCA_reg[$keyN]) % 2] ?? '';
                 ++$wSCA_reg[$keyN];
             }
         }

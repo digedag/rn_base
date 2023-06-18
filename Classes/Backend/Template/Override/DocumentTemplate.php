@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Backend\Template\Override;
 
+use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\T3General;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -157,8 +158,8 @@ function jumpToUrl(URL) {
         foreach ($menuItems as $def) {
             $class = $def['isActive'] ? 'active' : '';
             $label = $def['label'];
-            $url = htmlspecialchars($def['url']);
-            $params = $def['addParams'];
+            $url = htmlspecialchars($def['url'] ?? '');
+            $params = $def['addParams'] ?? '';
             $options .= '<li class="'.$class.'">'.'<a href="'.$url.'" '.$params.'>'.$label.'</a>'.'</li>';
         }
 
@@ -318,7 +319,8 @@ function jumpToUrl(URL) {
         if (!empty($GLOBALS['TBE_STYLES']['htmlTemplates'][$filename])) {
             $filename = $GLOBALS['TBE_STYLES']['htmlTemplates'][$filename];
         }
-        if (GeneralUtility::isFirstPartOfStr($filename, 'EXT:')) {
+
+        if (Strings::isFirstPartOfStr($filename, 'EXT:')) {
             $filename = GeneralUtility::getFileAbsFileName($filename, true, true);
         } elseif (!GeneralUtility::isAbsPath($filename)) {
             $filename = GeneralUtility::resolveBackPath($filename);

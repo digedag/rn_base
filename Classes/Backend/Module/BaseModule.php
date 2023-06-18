@@ -3,7 +3,6 @@
 namespace Sys25\RnBase\Backend\Module;
 
 use Sys25\RnBase\Backend\Form\ToolBox;
-use Sys25\RnBase\Backend\ModuleRunner;
 use Sys25\RnBase\Backend\Template\ModuleParts;
 use Sys25\RnBase\Backend\Template\ModuleTemplate;
 use Sys25\RnBase\Backend\Utility\BackendUtility;
@@ -52,7 +51,7 @@ use tx_rnbase;
  * Die Funktionsklassen sollten das Interface tx_rnbase_mod_IModFunc implementieren. Eine Basisklasse mit nützlichen
  * Methoden steht natürlich auch bereit: tx_rnbase_mod_BaseModFunc.
  */
-abstract class BaseModule extends ModuleBase implements IModule
+abstract class BaseModule extends BaseScriptClass implements IModule
 {
     public $doc;
 
@@ -80,31 +79,10 @@ abstract class BaseModule extends ModuleBase implements IModule
      */
     public function init()
     {
-        $GLOBALS['LANG']->includeLLFile('EXT:rn_base/Resources/Private/Language/locallang.xlf');
-
-        $this->initModConf();
-
         parent::init();
 
         if (0 === $this->id) {
             $this->id = $this->getConfigurations()->getInt('_cfg.fallbackPid');
-        }
-    }
-
-    /**
-     * Initializes the mconf of this module.
-     */
-    protected function initModConf()
-    {
-        // Name might be set from outside
-        if (empty($this->MCONF['name'])) {
-            $this->MCONF = $GLOBALS['MCONF'] ?? null;
-        }
-        // check dispatch mode calls without rnbase module runner and fetch the config.
-        if (empty($this->MCONF['name'])) {
-            /* @var $runner ModuleRunner */
-            $runner = tx_rnbase::makeInstance(ModuleRunner::class);
-            $runner->initTargetConf($this);
         }
     }
 
@@ -121,7 +99,6 @@ abstract class BaseModule extends ModuleBase implements IModule
         $response = null
     ) {
         $GLOBALS['MCONF']['script'] = '_DISPATCH';
-
         $this->init();
         $this->main();
 
@@ -223,7 +200,7 @@ abstract class BaseModule extends ModuleBase implements IModule
      */
     public function checkExtObj()
     {
-        if (is_array($this->extClassConf) && $this->extClassConf['name']) {
+        if (isset($this->extClassConf['name'])) {
             $this->extObj = tx_rnbase::makeInstance($this->extClassConf['name']);
             $this->extObj->init($this, $this->extClassConf);
             // Re-write:
@@ -634,5 +611,15 @@ abstract class BaseModule extends ModuleBase implements IModule
     public function issueCommand($getParameters, $redirectUrl = '')
     {
         return BackendUtility::issueCommand($getParameters, $redirectUrl);
+    }
+
+    public function getTitle()
+    {
+        return '';
+    }
+
+    public function getRouteIdentifier()
+    {
+        return '';
     }
 }

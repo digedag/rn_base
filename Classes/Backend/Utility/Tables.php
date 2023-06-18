@@ -3,6 +3,7 @@
 namespace Sys25\RnBase\Backend\Utility;
 
 use Exception;
+use Sys25\RnBase\Backend\Module\Linker\LinkerInterface;
 use Sys25\RnBase\Database\Connection;
 use Sys25\RnBase\Domain\Model\BaseModel;
 use Sys25\RnBase\Domain\Model\DataInterface;
@@ -10,15 +11,11 @@ use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Domain\Model\RecordInterface;
 use Traversable;
 use tx_rnbase;
-use tx_rnbase_mod_linker_LinkerInterface;
-use tx_rnbase_mod_Util;
-use tx_rnbase_util_FormTool;
-use tx_rnbase_util_TCA;
 
 /**
  *  Copyright notice.
  *
- *  (c) 2016-2021 René Nitzsche <rene@system25.de>
+ *  (c) 2016-2023 René Nitzsche <rene@system25.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -49,7 +46,7 @@ class Tables
     /**
      * @param array                                $entries
      * @param array                                $columns
-     * @param tx_rnbase_util_FormTool              $formTool
+     * @param \Sys25\RnBase\Backend\Form\ToolBox              $formTool
      * @param DataInterface $options
      *
      * @return array 0 are data and 1 layout
@@ -112,7 +109,7 @@ class Tables
     /**
      * @param array $entry
      * @param array $columns
-     * @param tx_rnbase_util_FormTool $formTool
+     * @param \Sys25\RnBase\Backend\Form\ToolBox $formTool
      * @param DataInterface $options
      *
      * @return array
@@ -152,7 +149,7 @@ class Tables
                     $record
                 );
             }
-            $row[] = tx_rnbase_mod_Util::getSpriteIcon($spriteIconName);
+            $row[] = Icons::getSpriteIcon($spriteIconName);
         }
 
         foreach ($columns as $column => $data) {
@@ -185,9 +182,9 @@ class Tables
     /**
      * Liefert die passenden Überschrift für die Tabelle.
      *
-     * @param array                   $columns
-     * @param array                   $options
-     * @param tx_rnbase_util_FormTool $formTool
+     * @param array $columns
+     * @param array $options
+     * @param \Sys25\RnBase\Backend\Form\ToolBox $formTool
      *
      * @return array
      */
@@ -223,7 +220,7 @@ class Tables
             if (isset($data['sortable'])) {
                 $label = $formTool->createSortLink($column, $label);
             }
-            $arr[] = $label ? $label : $data['title'];
+            $arr[] = $label ? $label : $data['title'] ?? '';
         }
         if ($options->getLinker()) {
             $arr[] = $this->getLang()->getLL('label_action');
@@ -241,7 +238,7 @@ class Tables
      */
     private function getLangOverlayEntries(RecordInterface $entry)
     {
-        $parentField = tx_rnbase_util_TCA::getTransOrigPointerFieldForTable($entry->getTableName());
+        $parentField = TCA::getTransOrigPointerFieldForTable($entry->getTableName());
         $overlays = Connection::getInstance()->doSelect(
             '*',
             $entry->getTableName(),
@@ -257,7 +254,7 @@ class Tables
     /**
      * @param DataInterface $options
      * @param BaseModel $obj
-     * @param tx_rnbase_util_FormTool $formTool
+     * @param \Sys25\RnBase\Backend\Form\ToolBox $formTool
      *
      * @return string
      */
@@ -269,7 +266,7 @@ class Tables
             $linkerimplode = $options->getLinkerimplode() ? $options->getLinkerimplode() : '<br />';
             $currentPid = (int) $options->getPid();
             foreach ($linkerArr as $linker) {
-                if (!$linker instanceof tx_rnbase_mod_linker_LinkerInterface) {
+                if (!$linker instanceof LinkerInterface) {
                     // backward compatibility, the interface with the makeLink method is new!
                     if (!is_callable([$linker, 'makeLink'])) {
                         throw new Exception('Linker "'.get_class($linker).'" has to implement interface "tx_rnbase_mod_linker_LinkerInterface".');
@@ -304,39 +301,39 @@ class Tables
             $rowCount = 0;
             foreach ($data as $tableRow) {
                 if ($rowCount % 2) {
-                    $layout = is_array($tableLayout['defRowOdd'] ?? 0) ? $tableLayout['defRowOdd'] : $tableLayout['defRow'];
+                    $layout = isset($tableLayout['defRowOdd']) ? $tableLayout['defRowOdd'] : $tableLayout['defRow'];
                 } else {
-                    $layout = is_array($tableLayout['defRowEven'] ?? 0) ? $tableLayout['defRowEven'] : $tableLayout['defRow'];
+                    $layout = isset($tableLayout['defRowEven']) ? $tableLayout['defRowEven'] : $tableLayout['defRow'];
                 }
-                $rowLayout = is_array($tableLayout[$rowCount] ?? 0) ? $tableLayout[$rowCount] : $layout;
+                $rowLayout = isset($tableLayout[$rowCount]) ? $tableLayout[$rowCount] : $layout;
                 $rowResult = '';
                 if (is_array($tableRow)) {
                     $cellCount = 0;
                     foreach ($tableRow as $tableCell) {
-                        $cellWrap = is_array($layout[$cellCount] ?? 0) ? $layout[$cellCount] : $layout['defCol'];
-                        $cellWrap = is_array($rowLayout['defCol']) ? $rowLayout['defCol'] : $cellWrap;
-                        $cellWrap = is_array($rowLayout[$cellCount] ?? 0) ? $rowLayout[$cellCount] : $cellWrap;
+                        $cellWrap = isset($layout[$cellCount]) ? $layout[$cellCount] : $layout['defCol'];
+                        $cellWrap = isset($rowLayout['defCol']) ? $rowLayout['defCol'] : $cellWrap;
+                        $cellWrap = isset($rowLayout[$cellCount]) ? $rowLayout[$cellCount] : $cellWrap;
                         $rowResult .= $cellWrap[0].$tableCell.$cellWrap[1];
                         ++$cellCount;
                     }
                 }
-                $rowWrap = is_array($layout['tr']) ? $layout['tr'] : ['<tr>', '</tr>'];
-                $rowWrap = is_array($rowLayout['tr']) ? $rowLayout['tr'] : $rowWrap;
+                $rowWrap = isset($layout['tr']) ? $layout['tr'] : ['<tr>', '</tr>'];
+                $rowWrap = isset($rowLayout['tr']) ? $rowLayout['tr'] : $rowWrap;
 
-                if (is_array($tableLayout['headRows']) && in_array($rowCount, $tableLayout['headRows'])) {
+                if (isset($tableLayout['headRows']) && in_array($rowCount, $tableLayout['headRows'])) {
                     $resultHead .= $rowWrap[0].$rowResult.$rowWrap[1];
                 } else {
                     $result .= $rowWrap[0].$rowResult.$rowWrap[1];
                 }
                 ++$rowCount;
             }
-            if (is_array($tableLayout['headRows'])) {
+            if (isset($tableLayout['headRows'])) {
                 $result = '<thead>'.$resultHead.'</thead><tbody>'.$result.'</tbody>';
             } else {
                 $result = $resultHead.$result;
             }
             $tableTag = '<table class="table table-striped table-hover table-condensed">';
-            $tableWrap = is_array($tableLayout['table']) ? $tableLayout['table'] : [$tableTag, '</table>'];
+            $tableWrap = isset($tableLayout['table']) ? $tableLayout['table'] : [$tableTag, '</table>'];
             $result = $tableWrap[0].$result.$tableWrap[1];
         }
 
