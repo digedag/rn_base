@@ -12,6 +12,21 @@ v1.17.0 (??.05.2023)
 * improved pipeline checks
 * backwards compatibility for main subpart calucation in ListView
 
+v1.16.12 (02.06.2023)
+* Fix wrong annotation in Sys25\RnBase\Domain\Model\DataModel::offsetSet()
+
+v1.16.11 (26.04.2023)
+* Provide old milliseconds method
+
+v1.16.10 (26.04.2023)
+* Fix autoloading with non composer mode
+
+v1.16.9 (24.04.2023)
+* Readd old main subpart handling for marker based views
+
+v1.16.8 (21.04.2023)
+* Maintenance Release to keep out changes for TYPO3 12
+
 v1.16.7 (18.04.2023)
 * obsolete, do not use
 
