@@ -5,7 +5,7 @@ if (!(defined('TYPO3') || defined('TYPO3_MODE'))) {
 }
 
 // Necessary for non composer installs
-require(Sys25\RnBase\Utility\Extensions::extPath('rn_base') . 'Classes/Constants.php');
+require Sys25\RnBase\Utility\Extensions::extPath('rn_base').'Classes/Constants.php';
 
 if (empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['rnbase']) &&
     Sys25\RnBase\Configuration\Processor::getExtensionCfgValue('rn_base', 'activateCache')) {
