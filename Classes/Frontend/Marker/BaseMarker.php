@@ -358,7 +358,7 @@ class BaseMarker
      */
     protected static function getEmptyInstance($classname)
     {
-        if (!is_object(self::$emptyObjects[$classname])) {
+        if (!isset(self::$emptyObjects[$classname])) {
             /* @var $dummy DomainModelInterface */
             $dummyInstance = tx_rnbase::makeInstance($classname, ['uid' => 0]);
             if ($dummyInstance instanceof DomainModelInterface
