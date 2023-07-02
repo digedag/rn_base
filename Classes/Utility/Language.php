@@ -175,6 +175,7 @@ class Language
         if (!is_array($confLL)) {
             return;
         }
+
         foreach ($confLL as $languageKey => $languageArray) {
             // Don't process label if the langue is not loaded
             $languageKey = substr($languageKey, 0, -1);
@@ -185,7 +186,7 @@ class Language
                         $this->LOCAL_LANG[$languageKey][$labelKey][0]['target'] = $labelValue;
                         // For labels coming from the TypoScript (database) the charset is assumed to be "forceCharset"
                         // and if that is not set, assumed to be that of the individual system languages
-                        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) {
+                        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ?? false) {
                             $this->LOCAL_LANG_charset[$languageKey][$labelKey] = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
                         } else {
                             $this->LOCAL_LANG_charset[$languageKey][$labelKey] = $GLOBALS['TSFE']->csConvObj->charSetArray[$languageKey];

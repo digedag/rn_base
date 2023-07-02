@@ -316,14 +316,14 @@ class TSFAL
     {
         $contentObject = $this->cObj;
 
-        if ($configuration['refUid'] || $configuration['refUid.']) {
-            $uid = intval($contentObject->stdWrap($configuration['refUid'], $configuration['refUid.']));
+        if (isset($configuration['refUid']) || isset($configuration['refUid.'])) {
+            $uid = (int) $contentObject->stdWrap($configuration['refUid'], $configuration['refUid.']);
         } else {
-            $uid = $contentObject->data['_LOCALIZED_UID'] ? $contentObject->data['_LOCALIZED_UID'] : $contentObject->data['uid'];
+            $uid = $contentObject->data['_LOCALIZED_UID'] ?? $contentObject->data['uid'];
         }
         $refTable = ($configuration['refTable'] && is_array($GLOBALS['TCA'][$configuration['refTable']])) ?
                     $configuration['refTable'] : 'tt_content';
-        $refField = trim($contentObject->stdWrap($configuration['refField'], $configuration['refField.']));
+        $refField = trim($contentObject->stdWrap($configuration['refField'], $configuration['refField.'] ?? []));
 
         if (isset($GLOBALS['BE_USER']->workspace) && 0 !== $GLOBALS['BE_USER']->workspace) {
             $workspaceRecord = BackendUtility::getWorkspaceVersionOfRecord(
