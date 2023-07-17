@@ -774,7 +774,7 @@ class ToolBox
         $options = is_array($options) ? $options : [];
 
         $out = '<select  name="'.$name.'" class="select" ';
-        if ($options['onchange']) {
+        if (isset($options['onchange'])) {
             $out .= 'onChange="'.$options['onchange'].'" ';
         }
         $out .= '>';

@@ -71,7 +71,8 @@ abstract class BaseModFunc implements IModFunc
 
         $start = microtime(true);
         $memStart = memory_get_usage();
-        $out .= $this->getContent($template, $conf, $conf->getFormatter(), $this->getModule()->getFormTool());
+        $formatter = $conf->getFormatter();
+        $out .= $this->getContent($template, $conf, $formatter, $this->getModule()->getFormTool());
         if (BaseMarker::containsMarker($out, 'MOD_')) {
             $markerArr = [];
             $memEnd = memory_get_usage();

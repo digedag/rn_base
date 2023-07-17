@@ -72,7 +72,7 @@ class Misc
         global $T3_SERVICES;
         $priority = []; // Remember highest priority
         $services = [];
-        if (is_array($T3_SERVICES[$serviceType])) {
+        if (isset($T3_SERVICES[$serviceType])) {
             foreach ($T3_SERVICES[$serviceType] as $info) {
                 if ($info['available'] and (!isset($priority[$info['subtype']]) || $info['priority'] >= $priority[$info['subtype']])) {
                     $priority[$info['subtype']] = $info['priority'];
