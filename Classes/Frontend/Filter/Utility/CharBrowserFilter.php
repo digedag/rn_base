@@ -52,6 +52,7 @@ class CharBrowserFilter
      */
     public static function handle(ConfigurationInterface $configurations, $confid, $viewData, &$fields, &$options, $cfg = [])
     {
+        $firstChar = '';
         if ($configurations->get($confid)) {
             $colName = $cfg['colname'];
             if (!$colName) {
@@ -143,6 +144,8 @@ class CharBrowserFilter
             $keys = array_keys($ret);
             $current = $keys[0];
         }
+        ksort($ret);
+
         $data = [];
         $data['list'] = $ret;
         $data['default'] = $current;

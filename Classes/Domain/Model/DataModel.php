@@ -422,7 +422,7 @@ class DataModel implements DataInterface, IteratorAggregate, \ArrayAccess
      * @param mixed $property
      * @param mixed $value
      *
-     * @retrun void
+     * @return void
      */
     #[\ReturnTypeWillChange]
     public function offsetSet($property, $value)
