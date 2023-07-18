@@ -711,6 +711,9 @@ class ToolBox
         $this->initializeJavaScriptFormEngine();
         $dateElementClass = \TYPO3\CMS\Backend\Form\Element\InputDateTimeElement::class;
 
+// [itemFormElName] => data[tx_cfcleague_games][4][status]
+// [itemFormElID] => data_tx_cfcleague_games_4_status
+
         $renderedElement = tx_rnbase::makeInstance(
             $dateElementClass,
             $this->getTCEForm()->getNodeFactory(),
@@ -722,6 +725,7 @@ class ToolBox
                 'parameterArray' => [
                     'itemFormElValue' => $value,
                     'itemFormElName' => $name,
+                    'itemFormElID' => $name,
                     'fieldConf' => [
                         'config' => [
                             'width' => 20,
