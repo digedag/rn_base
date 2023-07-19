@@ -822,6 +822,8 @@ class Processor implements ConfigurationInterface
                 return $set;
             }
         }
+
+        return [];
     }
 
     /**
@@ -860,6 +862,8 @@ class Processor implements ConfigurationInterface
                 return $set[$wanted];
             }
         }
+
+        return '';
     }
 
     /**

@@ -579,6 +579,7 @@ class Spyc
         }
         $value = $array[$key];
         $tempPath = self::flatten($this->path);
+        $_arr = [];
         eval('$_arr = $this->result'.$tempPath.';');
 
         if ($this->_containsGroupAlias) {

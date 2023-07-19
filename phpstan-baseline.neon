@@ -1,59 +1,5 @@
 parameters:
 	ignoreErrors:
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Backend\\\\Module\\\\BaseModule\\:\\:\\$selector\\.$#"
-			count: 1
-			path: Classes/Backend/Module/BaseModule.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Backend\\\\Template\\\\Override\\\\DocumentTemplate\\:\\:\\$form\\.$#"
-			count: 1
-			path: Classes/Backend/Template/Override/DocumentTemplate.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Backend\\\\Template\\\\Override\\\\DocumentTemplate\\:\\:\\$inDocStylesArray\\.$#"
-			count: 1
-			path: Classes/Backend/Template/Override/DocumentTemplate.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Backend\\\\Template\\\\Override\\\\DocumentTemplate\\:\\:\\$moduleTemplate\\.$#"
-			count: 1
-			path: Classes/Backend/Template/Override/DocumentTemplate.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Backend\\\\Template\\\\Override\\\\DocumentTemplate\\:\\:\\$moduleTemplateFilename\\.$#"
-			count: 1
-			path: Classes/Backend/Template/Override/DocumentTemplate.php
-
-		-
-			message: "#^Method Sys25\\\\RnBase\\\\Backend\\\\Template\\\\Override\\\\DocumentTemplate\\:\\:spacer\\(\\) should return string but return statement is missing\\.$#"
-			count: 1
-			path: Classes/Backend/Template/Override/DocumentTemplate.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Backend\\\\Utility\\\\BEPager\\:\\:\\$conf\\.$#"
-			count: 2
-			path: Classes/Backend/Utility/BEPager.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Backend\\\\Utility\\\\BEPager\\:\\:\\$modName\\.$#"
-			count: 3
-			path: Classes/Backend/Utility/BEPager.php
-
-		-
-			message: "#^Method Sys25\\\\RnBase\\\\Backend\\\\Utility\\\\BaseLister\\:\\:getColumns\\(\\) invoked with 0 parameters, 1 required\\.$#"
-			count: 1
-			path: Classes/Backend/Utility/BaseLister.php
-
-		-
-			message: "#^Method Sys25\\\\RnBase\\\\Configuration\\\\Processor\\:\\:queryData\\(\\) should return string but return statement is missing\\.$#"
-			count: 1
-			path: Classes/Configuration/Processor.php
-
-		-
-			message: "#^Method Sys25\\\\RnBase\\\\Configuration\\\\Processor\\:\\:queryDataSet\\(\\) should return array but return statement is missing\\.$#"
-			count: 1
-			path: Classes/Configuration/Processor.php
 
 		-
 			message: "#^Method Sys25\\\\RnBase\\\\Database\\\\Driver\\\\TYPO3DBAL\\:\\:exec_DELETEquery\\(\\) should return object but return statement is missing\\.$#"
@@ -71,111 +17,6 @@ parameters:
 			path: Classes/Database/Driver/TYPO3DBAL.php
 
 		-
-			message: "#^Access to private property \\$mem of class Sys25\\\\RnBase\\\\Frontend\\\\Marker\\\\FormatUtil\\.$#"
-			count: 4
-			path: Classes/Frontend/Marker/ListBuilder.php
-
-		-
-			message: "#^Access to private property \\$time of class Sys25\\\\RnBase\\\\Frontend\\\\Marker\\\\FormatUtil\\.$#"
-			count: 4
-			path: Classes/Frontend/Marker/ListBuilder.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Frontend\\\\Marker\\\\ListMarkerInfo\\:\\:\\$template\\.$#"
-			count: 2
-			path: Classes/Frontend/Marker/ListMarkerInfo.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Frontend\\\\Marker\\\\ListProvider\\:\\:\\$fields\\.$#"
-			count: 2
-			path: Classes/Frontend/Marker/ListProvider.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Frontend\\\\Marker\\\\ListProvider\\:\\:\\$mode\\.$#"
-			count: 2
-			path: Classes/Frontend/Marker/ListProvider.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Frontend\\\\Marker\\\\ListProvider\\:\\:\\$options\\.$#"
-			count: 2
-			path: Classes/Frontend/Marker/ListProvider.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Frontend\\\\Marker\\\\ListProvider\\:\\:\\$searchCallback\\.$#"
-			count: 2
-			path: Classes/Frontend/Marker/ListProvider.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Frontend\\\\Marker\\\\PageBrowserMarker\\:\\:\\$link\\.$#"
-			count: 2
-			path: Classes/Frontend/Marker/PageBrowserMarker.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Frontend\\\\Marker\\\\PageBrowserMarker\\:\\:\\$noLink\\.$#"
-			count: 1
-			path: Classes/Frontend/Marker/PageBrowserMarker.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Frontend\\\\Marker\\\\PageBrowserMarker\\:\\:\\$pageBrowser\\.$#"
-			count: 6
-			path: Classes/Frontend/Marker/PageBrowserMarker.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Frontend\\\\Marker\\\\PageBrowserMarker\\:\\:\\$token\\.$#"
-			count: 2
-			path: Classes/Frontend/Marker/PageBrowserMarker.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Frontend\\\\Marker\\\\SimpleMarker\\:\\:\\$classname\\.$#"
-			count: 2
-			path: Classes/Frontend/Marker/SimpleMarker.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Maps\\\\DefaultMarker\\:\\:\\$icon\\.$#"
-			count: 2
-			path: Classes/Maps/DefaultMarker.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Maps\\\\Google\\\\Control\\:\\:\\$type\\.$#"
-			count: 2
-			path: Classes/Maps/Google/Control.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Maps\\\\Google\\\\Icon\\:\\:\\$anchorPoint\\.$#"
-			count: 2
-			path: Classes/Maps/Google/Icon.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Maps\\\\Google\\\\Icon\\:\\:\\$image\\.$#"
-			count: 2
-			path: Classes/Maps/Google/Icon.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Maps\\\\Google\\\\Icon\\:\\:\\$map\\.$#"
-			count: 2
-			path: Classes/Maps/Google/Icon.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Maps\\\\Google\\\\Icon\\:\\:\\$shadow\\.$#"
-			count: 2
-			path: Classes/Maps/Google/Icon.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Maps\\\\Google\\\\Icon\\:\\:\\$shadowSize\\.$#"
-			count: 2
-			path: Classes/Maps/Google/Icon.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Maps\\\\Google\\\\Icon\\:\\:\\$size\\.$#"
-			count: 2
-			path: Classes/Maps/Google/Icon.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Maps\\\\Google\\\\Icon\\:\\:\\$winAnchorPoint\\.$#"
-			count: 2
-			path: Classes/Maps/Google/Icon.php
-
-		-
 			message: "#^Call to static method lookup\\(\\) on an unknown class tx_wecmap_cache\\.$#"
 			count: 1
 			path: Classes/Maps/Google/Util.php
@@ -183,16 +24,6 @@ parameters:
 		-
 			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Search\\\\ConditionBuilder\\:\\:\\$tableMapping\\.$#"
 			count: 2
-			path: Classes/Search/ConditionBuilder.php
-
-		-
-			message: "#^Call to an undefined method Sys25\\\\RnBase\\\\Search\\\\ConditionBuilder\\:\\:useAlias\\(\\)\\.$#"
-			count: 1
-			path: Classes/Search/ConditionBuilder.php
-
-		-
-			message: "#^Method Sys25\\\\RnBase\\\\Search\\\\ConditionBuilder\\:\\:applyJoinedConditions\\(\\) should return string but return statement is missing\\.$#"
-			count: 1
 			path: Classes/Search/ConditionBuilder.php
 
 		-
@@ -206,54 +37,14 @@ parameters:
 			path: Classes/Testing/BaseTestCase.php
 
 		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Utility\\\\Email\\:\\:\\$toAsString\\.$#"
-			count: 1
-			path: Classes/Utility/Email.php
-
-		-
 			message: "#^Call to static method fromPath\\(\\) on an unknown class Swift_Attachment\\.$#"
 			count: 1
 			path: Classes/Utility/Email.php
 
 		-
-			message: "#^Method Sys25\\\\RnBase\\\\Utility\\\\Files\\:\\:getBorderAttr\\(\\) should return string but return statement is missing\\.$#"
-			count: 1
-			path: Classes/Utility/Files.php
-
-		-
-			message: "#^Access to an undefined property Sys25\\\\RnBase\\\\Utility\\\\Queue\\:\\:\\$arrCurrentSize\\.$#"
-			count: 1
-			path: Classes/Utility/Queue.php
-
-		-
-			message: "#^Undefined variable\\: \\$_arr$#"
-			count: 1
-			path: Classes/Utility/Spyc.php
-
-		-
-			message: "#^Cannot unset offset 'field' on array\\{\\}\\.$#"
-			count: 1
-			path: Classes/Utility/TSFAL.php
-
-		-
-			message: "#^Undefined variable\\: \\$EM_CONF$#"
-			count: 2
-			path: Classes/Utility/TYPO3.php
-
-		-
 			message: "#^Method tx_rnbase_action_BaseIOC\\:\\:setConfigurations\\(\\) should return Sys25\\\\RnBase\\\\Configuration\\\\ConfigurationInterface but return statement is missing\\.$#"
 			count: 1
 			path: Legacy/action/class.tx_rnbase_action_BaseIOC.php
-
-		-
-			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:requireOnce\\(\\)\\.$#"
-			count: 1
-			path: Classes/class.tx_rnbase.php
-
-		-
-			message: "#^Access to an undefined property tx_rnbase_filter_BaseFilter\\:\\:\\$inputData\\.$#"
-			count: 1
-			path: Legacy/filter/class.tx_rnbase_filter_BaseFilter.php
 
 		-
 			message: "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManager constructor invoked with 0 parameters, 2 required\\.$#"
@@ -269,9 +60,3 @@ parameters:
 			message: "#^Call to an undefined method tx_rnbase_dummyController\\:\\:getErrorMailHtml\\(\\)\\.$#"
 			count: 1
 			path: tests/class.tx_rnbase_tests_controller_testcase.php
-
-		-
-			message: "#^Access to an undefined property tx_rnbase_tests_fixtures_classes_Decorator\\:\\:\\$mod\\.$#"
-			count: 1
-			path: tests/fixtures/classes/class.tx_rnbase_tests_fixtures_classes_Decorator.php
-

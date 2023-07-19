@@ -32,6 +32,8 @@ use Sys25\RnBase\Domain\Model\DataInterface;
  */
 class tx_rnbase_tests_fixtures_classes_Decorator implements \Sys25\RnBase\Backend\Decorator\InterfaceDecorator
 {
+    private $mod;
+
     /**
      * @param IModule $mod
      */

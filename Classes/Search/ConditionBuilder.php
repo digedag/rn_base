@@ -10,7 +10,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2008-2021 Rene Nitzsche (rene@system25.de)
+ *  (c) 2008-2023 Rene Nitzsche (rene@system25.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -96,7 +96,7 @@ class ConditionBuilder
                         for ($i = 0, $cnt = count($joinedValues); $i < $cnt; ++$i) {
                             $wherePart = $this->buildSingleWhereField(
                                 $qb,
-                                $this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias],
+                                $this->useAlias ? $tableAlias : $this->tableMapping[$tableAlias],
                                 $operator,
                                 $col,
                                 $joinedValues[$i]
@@ -126,9 +126,8 @@ class ConditionBuilder
     /**
      * Freitextsuche über mehrere Felder.
      *
+     * @param QueryBuilder $qb
      * @param array $joinedFields
-     *
-     * @return string
      */
     private function applyJoinedConditions(QueryBuilder $qb, $joinedFields)
     {

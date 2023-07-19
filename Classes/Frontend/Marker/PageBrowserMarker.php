@@ -8,7 +8,7 @@ use Sys25\RnBase\Utility\Math;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2007-2021 Rene Nitzsche
+ *  (c) 2007-2023 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -33,6 +33,18 @@ use Sys25\RnBase\Utility\Math;
 class PageBrowserMarker
 {
     private $pagePartsDef = ['normal', 'current', 'first', 'last', 'prev', 'next', 'prev_bullets', 'next_bullets'];
+
+    /**
+     * @var \Sys25\RnBase\Utility\PageBrowser
+     */
+    private $pageBrowser;
+    private $token;
+
+    /** @var array */
+    private $noLink;
+
+    /** @var \Sys25\RnBase\Utility\Link */
+    private $link;
 
     /**
      * Erstellung des PageBrowserMarkers.

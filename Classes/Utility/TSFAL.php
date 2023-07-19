@@ -417,7 +417,6 @@ class TSFAL
             $fileObject = $fileRef->getOriginalFile();
             if ($fileObject) {
                 $imageSetup = [];
-                unset($imageSetup['field']);
                 $sizeArr = $sizeArr ? $sizeArr : ['width' => 64, 'height' => 64];
                 $imageSetup = array_merge($sizeArr, $imageSetup);
                 $imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, $imageSetup)->getPublicUrl(true);

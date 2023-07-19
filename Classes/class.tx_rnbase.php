@@ -179,13 +179,9 @@ class tx_rnbase
         $path = self::_findT3($minimalInformation, $alternativeKey, $prefix, $suffix);
 
         if ($path) {
-            if (TYPO3::isTYPO80OrHigher()) {
-                // Needed for require_once, only fallback, should do the autoloading!
-                global $TYPO3_CONF_VARS;
-                require_once $path;
-            } else {
-                \TYPO3\CMS\Core\Utility\GeneralUtility::requireOnce($path);
-            }
+            // Needed for require_once, only fallback, should do the autoloading!
+            global $TYPO3_CONF_VARS;
+            require_once $path;
         }
 
         return class_exists($minimalInformation) || interface_exists($minimalInformation);

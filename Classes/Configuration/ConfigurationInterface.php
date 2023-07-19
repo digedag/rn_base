@@ -64,7 +64,7 @@ interface ConfigurationInterface
      *
      * @param bool $addKeepVars Whether or not keepVars should be set
      *
-     * @return \tx_rnbase_util_Link
+     * @return \Sys25\RnBase\Utility\Link
      */
     public function createLink($addKeepVars = true);
 

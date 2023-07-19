@@ -11,7 +11,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /* *******************************************************
  *  Copyright notice
  *
- *  (c) 2017-2021 René Nitzsche <rene@system25.de>
+ *  (c) 2017-2023 René Nitzsche <rene@system25.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -82,6 +82,13 @@ function jumpToUrl(URL) {
      * @var string
      */
     public $postCode;
+
+    /** @var string */
+    protected $moduleTemplate;
+
+    /** @var string */
+    protected $moduleTemplateFilename;
+    protected $form;
 
     /**
      * Constructor.
@@ -182,6 +189,8 @@ function jumpToUrl(URL) {
         if ($dist > 0) {
             return '<!-- Spacer element --><div style="padding-top: '.(int) $dist.'px;"></div>';
         }
+
+        return '';
     }
 
     /**
@@ -272,9 +281,6 @@ function jumpToUrl(URL) {
      */
     public function insertStylesAndJS($content)
     {
-        $styles = LF.implode(LF, $this->inDocStylesArray);
-        $content = str_replace('/*###POSTCSSMARKER###*/', $styles, $content);
-
         // Insert accumulated JS
         $jscode = $this->JScode.LF.GeneralUtility::wrapJS(implode(LF, $this->JScodeArray));
         $content = str_replace('<!--###POSTJSMARKER###-->', $jscode, $content);

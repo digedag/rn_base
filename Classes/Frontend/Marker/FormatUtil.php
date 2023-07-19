@@ -49,9 +49,9 @@ class FormatUtil
 
     public $timeFormatKey = 'timeFormat';
 
-    private static $time = 0;
+    public static $time = 0;
 
-    private static $mem = 0;
+    public static $mem = 0;
 
     /**
      * Konstruktor.

@@ -7,7 +7,7 @@ use Sys25\RnBase\Backend\Form\ToolBox;
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008-2021 Rene Nitzsche (rene@system25.de)
+*  (c) 2008-2023 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,15 +32,17 @@ use Sys25\RnBase\Backend\Form\ToolBox;
  */
 class BEPager
 {
-    public $id;
+    private $id;
 
-    public $pid;
+    private $pid;
 
-    public $listSize;
+    private $listSize;
 
-    public $settings;
+    private $settings;
 
-    public $init = false;
+    private $init = false;
+    private $modName;
+    private $conf;
 
     public function __construct($id, $modName, $pid, $listSize = 0, $conf = [])
     {

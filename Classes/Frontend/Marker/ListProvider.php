@@ -7,7 +7,7 @@ use Exception;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010-2021 Rene Nitzsche
+ *  (c) 2010-2023 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -31,6 +31,11 @@ use Exception;
  */
 class ListProvider implements IListProvider
 {
+    private $fields;
+    private $options;
+    private $mode;
+    private $searchCallback;
+
     public function initBySearch($searchCallback, $fields, $options)
     {
         $this->mode = 1;
@@ -54,7 +59,6 @@ class ListProvider implements IListProvider
                 break;
             default:
                 throw new Exception('Undefined list mode.');
-                break;
         }
     }
 }

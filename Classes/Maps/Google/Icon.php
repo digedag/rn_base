@@ -34,6 +34,15 @@ class Icon implements IIcon
 {
     private $id = null;
 
+    /** @var Map */
+    private $map = null;
+    private $image = null;
+    private $shadow = null;
+    private $shadowSize = null;
+    private $anchorPoint = null;
+    private $winAnchorPoint = null;
+    private $size = null;
+
     public function __construct(Map $map)
     {
         $this->map = $map;
