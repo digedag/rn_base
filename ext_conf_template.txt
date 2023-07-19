@@ -1,32 +1,32 @@
-  # cat=basic//10; type=boolean; label= Allow verbose mayday messages: Don't use this option in production enviroments. You will get a lot of internal server information. For test purposes only!
+# cat=basic//101; type=boolean; label= Allow verbose mayday messages: Don't use this option in production enviroments. You will get a lot of internal server information. For test purposes only!
 verboseMayday = 0
 
-  # cat=basic//10; type=boolean; label= Stop processing if mayday error occures.
+# cat=basic//102; type=boolean; label= Stop processing if mayday error occures.
 dieOnMayday = 1
 
-  # cat=basic//10; type=boolean; label= Throw exception if mayday is called.
+# cat=basic//103; type=boolean; label= Throw exception if mayday is called.
 forceException4Mayday = 1
 
-  # cat=basic//10; type=string; label= Exception Handler class. default is tx_rnbase_exception_Handler. your own exception handler needs to implement the tx_rnbase_exception_IHandler interface.
+# cat=basic//104; type=string; label= Exception Handler class. default is tx_rnbase_exception_Handler. your own exception handler needs to implement the tx_rnbase_exception_IHandler interface.
 exceptionHandler =
 
-  # cat=basic//10; type=string; label= Send emails for uncaught Exceptions. Commaseparated list of email addresses.
+# cat=basic//105; type=string; label= Send emails for uncaught Exceptions. Commaseparated list of email addresses.
 sendEmailOnException =
 
-  # cat=basic//10; type=string; label= From address for alert mails
+# cat=basic//106; type=string; label= From address for alert mails
 fromEmail =
 
-# cat=basic//10; type=boolean; label= Send a 503 service unavailable header if an exception occures. This prevents search engines to index error pages.
+# cat=basic//107; type=boolean; label= Send a 503 service unavailable header if an exception occures. This prevents search engines to index error pages.
 send503HeaderOnException = 1
 
-  # cat=basic//10; type=boolean; label= Load hidden objects if BE user is logged in. This works mainly for detail pages. (disables caching for BE users)
+# cat=basic//110; type=boolean; label= Load hidden objects if BE user is logged in. This works mainly for detail pages. (disables caching for BE users)
 loadHiddenObjects = 0
 
-  # cat=basic//10; type=boolean; label= Activate file based caching: You can also configure an alternative caching backend in localconf.php for cache 'rnbase'.
+# cat=basic//111; type=boolean; label= Activate file based caching: You can also configure an alternative caching backend in localconf.php for cache 'rnbase'.
 activateCache = 0
 
-  # cat=basic//10; type=boolean; label= Activate substituteMarkerArrayCache: The use of subtituteMarkerArrayCached is bad, so the substituteMarkerArrayCache should be disabled. If active and there was complex data, it will quickly fill the cache and lead to performance and memory problems (keyword - nested calls).
+# cat=basic//112; type=boolean; label= Activate substituteMarkerArrayCache: The use of subtituteMarkerArrayCached is bad, so the substituteMarkerArrayCache should be disabled. If active and there was complex data, it will quickly fill the cache and lead to performance and memory problems (keyword - nested calls).
 activateSubstCache = 0
 
-  # cat=basic//10; type=string; label= Debug-Key: This key has to match with the debug-parameter, to enable some debugs.
+# cat=basic//120; type=string; label= Debug-Key: This key has to match with the debug-parameter, to enable some debugs.
 debugKey =

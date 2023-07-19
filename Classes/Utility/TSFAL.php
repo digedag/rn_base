@@ -20,7 +20,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013-2021 Rene Nitzsche
+ *  (c) 2013-2023 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -52,6 +52,11 @@ class TSFAL
      * @var ContentObjectRenderer
      */
     public $cObj;
+
+    public function setContentObjectRenderer(ContentObjectRenderer $cObj): void
+    {
+        $this->cObj = $cObj;
+    }
 
     /**
      * Typoscript USER function for rendering DAM images.
@@ -438,7 +443,7 @@ class TSFAL
      *              ),
      *      )
      *
-     * @param array $ref
+     * @param string $ref
      * @param array $options These options are merged into the resulting TCA
      *
      * @return array

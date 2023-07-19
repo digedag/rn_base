@@ -11,7 +11,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012-2021 Rene Nitzsche (rene@system25.de)
+ *  (c) 2012-2023 Rene Nitzsche (rene@system25.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -237,6 +237,9 @@ class Language
      */
     private function getLL46($key, $alternativeLabel = '', $hsc = false)
     {
+        if (empty($key)) {
+            return '';
+        }
         // support for LLL: syntax
         if (!strcmp(substr($key, 0, 4), 'LLL:')) {
             return self::sL($key);

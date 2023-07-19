@@ -8,7 +8,7 @@ use tx_rnbase;
 /*
  * This class is a wrapper around \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink.
  *
- *  (c) 2008-2021 Rene Nitzsche
+ *  (c) 2008-2023 Rene Nitzsche
  *  Contact: rene@system25.de
  *
  *  Original version:
@@ -458,7 +458,7 @@ class Link
      */
     public function makeUrl($applyHtmlspecialchars = true)
     {
-        $url = $this->getCObj()->typoLink(null, $this->_makeConfig('url'));
+        $url = $this->getCObj()->typoLink('', $this->_makeConfig('url'));
         if ($this->isAbsUrl()) {
             $url = self::parseAbsUrl($url, $this->getAbsUrlSchema());
         }

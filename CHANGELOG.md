@@ -3,14 +3,17 @@
 Changelog
 ---------
 
-v1.17.0 (??.05.2023)
+v1.17.0 (??.07.2023)
 
-* Install possible in TYPO3 12.x but still not working
+* Update for TYPO3 12.x 
 * Removed class ModuleRunner as not needed anymore
 * Removed class ModuleBase as not needed anymore
 * fixed some PHP warnings
 * improved pipeline checks
-* backwards compatibility for main subpart calucation in ListView
+* backwards compatibility for main subpart calculation in ListView
+* Provide setter methods for cObj integration
+* fixed extension config
+* BC: cObj in FormatUtil is private
 
 v1.16.12 (02.06.2023)
 * Fix wrong annotation in Sys25\RnBase\Domain\Model\DataModel::offsetSet()

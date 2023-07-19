@@ -35,7 +35,7 @@ class FormatUtil
 {
     public $configurations;
 
-    public $cObj;
+    private $cObj;
 
     // Wie kommen diese Werte in die Config??
     // Sind es nicht auch eher Konfigwerte??
