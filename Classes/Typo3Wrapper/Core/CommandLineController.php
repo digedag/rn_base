@@ -29,9 +29,7 @@ if (!class_exists('\TYPO3\CMS\Core\Controller\CommandLineController')) {
     return;
 }
 /**
- * Tx_Rnbase_Utility_Singleton.
- *
- * Wrapper für \TYPO3\CMS\Core\Controller\CommandLineController seit TYPO3 7.x
+ * Wrapper für \TYPO3\CMS\Core\Controller\CommandLineController seit TYPO3 7.x.
  *
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html

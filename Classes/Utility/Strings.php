@@ -94,7 +94,7 @@ class Strings
      *
      * @return bool
      *
-     * @deprecated use tx_rnbase_util_Math::isInteger
+     * @deprecated use Math::isInteger
      */
     public static function isInteger($var)
     {

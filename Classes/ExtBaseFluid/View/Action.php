@@ -4,6 +4,7 @@ namespace Sys25\RnBase\ExtBaseFluid\View;
 
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Frontend\Request\RequestInterface;
+use Sys25\RnBase\Frontend\View\Marker\BaseView;
 use Sys25\RnBase\Utility\Arrays;
 use Sys25\RnBase\Utility\Files;
 
@@ -31,7 +32,9 @@ use Sys25\RnBase\Utility\Files;
  ***************************************************************/
 
 /**
- * View class for actions based on tx_rnbase_action_BaseIOC.
+ * Action class for fluid based templates.
+ *
+ * @deprecated umstellen auf Sys25\RnBase\Frontend\View\Marker\BaseView oder Klasse entfernen
  *
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
@@ -45,8 +48,8 @@ class Action extends \tx_rnbase_view_Base
     protected $request = null;
 
     /**
-     * @param string                    $templateName
-     * @param \tx_rnbase_configurations|RequestInterface $configurations
+     * @param string $templateName
+     * @param ConfigurationInterface|RequestInterface $configurations
      *
      * @return string
      *
@@ -136,7 +139,7 @@ class Action extends \tx_rnbase_view_Base
             }
         }
 
-        // support "templatePath" configuration like tx_rnbase_view_Base::getTemplate()
+        // support "templatePath" configuration like BaseView::getTemplate()
         if (0 !== strlen($configurations->get('templatePath'))) {
             $typoScriptConfiguration['view']['templateRootPaths.'][0] = $configurations->get('templatePath');
         }

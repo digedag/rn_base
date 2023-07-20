@@ -9,8 +9,6 @@ use Sys25\RnBase\Utility\Logger;
 use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
 use tx_rnbase;
-use Tx_Rnbase_Database_Connection;
-use tx_rnbase_util_Misc;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
@@ -70,7 +68,7 @@ abstract class SearchBase
     /**
      * returns the database connection to use.
      *
-     * @return Tx_Rnbase_Database_Connection
+     * @return \Sys25\RnBase\Database\Connection
      */
     public function getDatabaseConnection()
     {
@@ -100,7 +98,7 @@ abstract class SearchBase
      * @param array $fields  Felder nach denen gesucht wird
      * @param array $options
      *
-     * @return array oder int
+     * @return array|int
      */
     public function search(array $fields, array $options = [])
     {
@@ -158,7 +156,7 @@ abstract class SearchBase
             }
         }
 
-        tx_rnbase_util_Misc::callHook('rn_base', 'searchbase_handleTableMapping', [
+        Misc::callHook('rn_base', 'searchbase_handleTableMapping', [
             'tableAliases' => &$tableAliases, 'joinedFields' => &$joinedFields,
             'customFields' => &$customFields, 'options' => &$options,
             'tableMappings' => &$this->tableMapping,
@@ -170,7 +168,7 @@ abstract class SearchBase
 
         $where = null;
         if ($this->useQueryBuilder($tableAliases)) {
-            $conditionBuilder = new \Sys25\RnBase\Search\ConditionBuilder($this->useAlias(), $this->getDatabaseConnection());
+            $conditionBuilder = new \Sys25\RnBase\Search\ConditionBuilder($this->useAlias(), $this->tableMapping, $this->getDatabaseConnection());
             $where = function (QueryBuilder $qb) use ($conditionBuilder, $tableAliases, $joinedFields, $customFields) {
                 $conditionBuilder->apply($qb, $tableAliases, $joinedFields, $customFields);
             };
@@ -910,6 +908,7 @@ abstract class SearchBase
 
     private function getConnection(): \TYPO3\CMS\Core\Database\Connection
     {
+        /** @var ConnectionPool $pool */
         $pool = tx_rnbase::makeInstance(ConnectionPool::class);
 
         return $pool->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);

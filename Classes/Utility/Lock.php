@@ -31,7 +31,7 @@ use tx_rnbase;
  * Util to handle locking of processes.
  *
  * Usage:
- * $lock = tx_rnbase_util_Lock::getInstance('process-name', 1800);
+ * $lock = Lock::getInstance('process-name', 1800);
  * if ($lock->isLocked()) {
  *     return false;
  * }
@@ -75,7 +75,7 @@ class Lock
      */
     public static function getInstance($name, $lifeTime = 0)
     {
-        return tx_rnbase::makeInstance('tx_rnbase_util_Lock', $name, $lifeTime);
+        return tx_rnbase::makeInstance(self::class, $name, $lifeTime);
     }
 
     /**
@@ -124,7 +124,7 @@ class Lock
                 $folder = \Sys25\RnBase\Utility\Environment::getPublicPath().'typo3temp/rn_base/';
             }
             if (!is_dir($folder)) {
-                \tx_rnbase_util_Files::mkdir_deep($folder);
+                Files::mkdir_deep($folder);
             }
             $this->logFile = $folder.$this->getName().'.lock';
         }

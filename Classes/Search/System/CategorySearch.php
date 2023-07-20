@@ -10,7 +10,7 @@ use tx_rnbase;
 /***************************************************************
  * Copyright notice
  *
- * (c) 2017-2021 René Nitzsche <rene@system25.de>
+ * (c) 2017-2023 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -40,7 +40,7 @@ class CategorySearch extends SearchBase
     /**
      * {@inheritdoc}
      *
-     * @see \tx_rnbase_util_SearchBase::getTableMappings()
+     * @see SearchBase::getTableMappings()
      */
     protected function getTableMappings()
     {
@@ -59,7 +59,7 @@ class CategorySearch extends SearchBase
     /**
      * {@inheritdoc}
      *
-     * @see \tx_rnbase_util_SearchBase::getBaseTableAlias()
+     * @see SearchBase::getBaseTableAlias()
      */
     protected function getBaseTableAlias()
     {
@@ -69,7 +69,7 @@ class CategorySearch extends SearchBase
     /**
      * {@inheritdoc}
      *
-     * @see \tx_rnbase_util_SearchBase::getBaseTable()
+     * @see SearchBase::getBaseTable()
      */
     protected function getBaseTable()
     {
@@ -79,7 +79,7 @@ class CategorySearch extends SearchBase
     /**
      * {@inheritdoc}
      *
-     * @see \tx_rnbase_util_SearchBase::getWrapperClass()
+     * @see SearchBase::getWrapperClass()
      */
     public function getWrapperClass()
     {
@@ -89,7 +89,7 @@ class CategorySearch extends SearchBase
     /**
      * {@inheritdoc}
      *
-     * @see \tx_rnbase_util_SearchBase::getJoins()
+     * @see SearchBase::getJoins()
      */
     protected function getJoins($tableAliases)
     {

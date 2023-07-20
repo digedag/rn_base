@@ -14,6 +14,7 @@ v1.17.0 (??.07.2023)
 * Provide setter methods for cObj integration
 * fixed extension config
 * BC: cObj in FormatUtil is private
+* Removed all access to classes without namespace
 
 v1.16.12 (02.06.2023)
 * Fix wrong annotation in Sys25\RnBase\Domain\Model\DataModel::offsetSet()

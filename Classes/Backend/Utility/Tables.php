@@ -269,7 +269,7 @@ class Tables
                 if (!$linker instanceof LinkerInterface) {
                     // backward compatibility, the interface with the makeLink method is new!
                     if (!is_callable([$linker, 'makeLink'])) {
-                        throw new Exception('Linker "'.get_class($linker).'" has to implement interface "tx_rnbase_mod_linker_LinkerInterface".');
+                        throw new Exception(sprintf('Linker "%s" has to implement interface "%s".', get_class($linker), LinkerInterface::class));
                     }
                 }
                 $out .= $linker->makeLink($obj, $formTool, $currentPid, $options);
@@ -285,7 +285,8 @@ class Tables
      * This method is taken from TYPO3 core. It will be removed there for version 8.
      *
      * Typical call until now:
-     * $content .= tx_rnbase_mod_Tables::buildTable($data, $module->getTableLayout());
+     * $tables = new Tables();
+     * $content .= $tables->buildTable($data, $module->getTableLayout());
      * Should we include a better default layout here??
      *
      * @param array $data   Multidim array with first levels = rows, second levels = cells

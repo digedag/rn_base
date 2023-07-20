@@ -5,7 +5,7 @@ namespace Sys25\RnBase\Utility;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012-2021 Rene Nitzsche (rene@system25.de)
+ *  (c) 2012-2023 Rene Nitzsche (rene@system25.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -34,10 +34,9 @@ class Math
 {
     /**
      * Tests if the input can be interpreted as integer.
+     * alias of Math::isInteger.
      *
      * @return bool
-     *
-     * @deprecated use tx_rnbase_util_Math::isInteger
      */
     public static function testInt($var)
     {

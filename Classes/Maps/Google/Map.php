@@ -78,7 +78,7 @@ class Map extends BaseMap
         if ($controls) {
             $controls = Strings::trimExplode(',', $controls);
             foreach ($controls as $control) {
-                $this->addControl(tx_rnbase::makeInstance('tx_rnbase_maps_google_Control', $control));
+                $this->addControl(tx_rnbase::makeInstance(Control::class, $control));
             }
         }
     }

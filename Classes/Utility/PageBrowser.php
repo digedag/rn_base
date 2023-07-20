@@ -4,6 +4,7 @@ namespace Sys25\RnBase\Utility;
 
 use ArrayObject;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
+use Sys25\RnBase\Frontend\Marker\PageBrowserMarker;
 use tx_rnbase;
 
 /***************************************************************
@@ -189,8 +190,9 @@ class PageBrowser implements PageBrowserInterface
     /**
      * Liefert einen Marker zur Erstellung des PageBrowsers im Template.
      */
-    public function getMarker($markerClassName = 'tx_rnbase_util_PageBrowserMarker')
+    public function getMarker($markerClassName = PageBrowserMarker::class)
     {
+        /** @var PageBrowserMarker $pageBrowserMarker */
         $pageBrowserMarker = tx_rnbase::makeInstance($markerClassName);
         $pageBrowserMarker->setPageBrowser($this);
 

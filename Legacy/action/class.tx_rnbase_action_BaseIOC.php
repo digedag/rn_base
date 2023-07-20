@@ -222,9 +222,7 @@ abstract class tx_rnbase_action_BaseIOC
     }
 
     /**
-     * Returns configurations object.
-     *
-     * @return Tx_Rnbase_Configuration_ProcessorInterface
+     * Set configurations object.
      */
     public function setConfigurations(Tx_Rnbase_Configuration_ProcessorInterface $configurations)
     {

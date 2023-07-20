@@ -1,6 +1,7 @@
 <?php
 
 use Sys25\RnBase\Utility\Debug;
+use Sys25\RnBase\Utility\Extensions;
 use Sys25\RnBase\Utility\TYPO3;
 use Sys25\RnBase\Utility\Typo3Classes;
 
@@ -277,7 +278,7 @@ class tx_rnbase
         $ret['class'] = $class;
         $ret['dir'] = $dir;
         $ret['extkey'] = $key;
-        $ret['extpath'] = tx_rnbase_util_Extensions::extPath($key);
+        $ret['extpath'] = Extensions::extPath($key);
         if ($isExtBase) {
             $path = $ret['extpath'].$dir.$last.$suffix;
         } else {

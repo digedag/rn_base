@@ -2,6 +2,8 @@
 
 namespace Sys25\RnBase\Utility;
 
+use Sys25\RnBase\Frontend\Marker\PageBrowserMarker;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,7 +32,7 @@ interface PageBrowserInterface
 
     public function getState();
 
-    public function getMarker($markerClassName = 'tx_rnbase_util_PageBrowserMarker');
+    public function getMarker($markerClassName = PageBrowserMarker::class);
 
     /**
      * Returns the current pointer. This is the current page to show.

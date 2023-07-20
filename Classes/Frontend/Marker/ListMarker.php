@@ -53,7 +53,7 @@ class ListMarker
         if ($listMarkerInfo) {
             $this->info = &$listMarkerInfo;
         } else {
-            $this->info = tx_rnbase::makeInstance('tx_rnbase_util_ListMarkerInfo');
+            $this->info = tx_rnbase::makeInstance(ListMarkerInfo::class);
         }
     }
 

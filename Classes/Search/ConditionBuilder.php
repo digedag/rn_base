@@ -68,9 +68,12 @@ class ConditionBuilder
     private $useAlias;
     private $dbConnection;
 
-    public function __construct($useAlias, Connection $dbConnection)
+    private $tableMapping;
+
+    public function __construct($useAlias, array $tableMapping, Connection $dbConnection)
     {
         $this->useAlias = $useAlias;
+        $this->tableMapping = $tableMapping;
         $this->dbConnection = $dbConnection;
     }
 

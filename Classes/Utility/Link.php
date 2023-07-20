@@ -45,17 +45,23 @@ use tx_rnbase;
  */
 class Link
 {
-    public $tagAttributes = [];       // setting attributes for the tag in general
+    /** setting attributes for the tag in general */
+    public $tagAttributes = [];
 
-    public $classString = '';              // tags class attribute
+    /** tags class attribute */
+    public $classString = '';
 
-    public $idString = '';                 // tags id attribute
+    /** tags id attribute */
+    public $idString = '';
 
-    public $cObject;                       // instance of tx_rnbase_util_Typo3Classes::getContentObjectRendererClass()
+    /** instance of Typo3Classes::getContentObjectRendererClass() */
+    public $cObject;
 
-    public $destination = '';              // page id, alias, external link, etc.
+    /** page id, alias, external link, etc. */
+    public $destination = '';
 
-    public $labelString = '';              // tags label
+    /** tags label */
+    public $labelString = '';
 
     public $labelHasAlreadyHtmlSpecialChars = false; // is the label already HSC?
 
@@ -67,9 +73,11 @@ class Link
 
     public $parameters = [];              // parameters of the link
 
-    public $designatorString = '';         // parameter array name (prefixId) as controller namespace
+    /** parameter array name (prefixId) as controller namespace */
+    public $designatorString = '';
 
-    public $anchorString = '';             // section anchor as url target
+    /** section anchor as url target */
+    public $anchorString = '';
 
     public $targetString = '';             // tags target attribute
 

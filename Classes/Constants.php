@@ -1,6 +1,6 @@
 <?php
 /* ===========================================================================
-    tx_rnbase_util_SearchBase
+    \Sys25\RnBase\Search\SearchBase
 =========================================================================== */
 if (!defined('SEARCH_FIELD_JOINED')) {
     // Sonderfall Freitextsuche in mehreren Feldern

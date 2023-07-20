@@ -46,12 +46,12 @@ class Standalone extends \TYPO3\CMS\Fluid\View\StandaloneView
     protected $objectManager;
 
     /**
-     * @var \Tx_Rnbase_Configuration_ProcessorInterface
+     * @var ConfigurationInterface
      */
     protected $configurations;
 
     /**
-     * @return \Tx_Rnbase_Configuration_ProcessorInterface
+     * @return ConfigurationInterface
      */
     public function getConfigurations()
     {

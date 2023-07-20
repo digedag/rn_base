@@ -1,5 +1,6 @@
 <?php
 
+use Sys25\RnBase\Frontend\Filter\BaseFilter;
 use Sys25\RnBase\Frontend\Filter\Utility\Category;
 use Sys25\RnBase\Testing\BaseTestCase;
 use Sys25\RnBase\Testing\TestUtility;
@@ -65,7 +66,7 @@ class tx_rnbase_tests_filter_BaseFilter_testcase extends BaseTestCase
         $configurations = TestUtility::createConfigurations([], 'myext');
         $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $filter = $this->getAccessibleMock(
-            'tx_rnbase_filter_BaseFilter',
+            BaseFilter::class,
             ['initFilter'],
             [
                 &$parameters,

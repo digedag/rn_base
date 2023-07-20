@@ -64,8 +64,7 @@ class TSFAL
      * <pre>
      * yourObject.imagecol = USER
      * yourObject.imagecol {
-     *   userFunc=tx_rnbase_util_TSFAL->printImages
-     *   includeLibs = EXT:rn_base/util/class.tx_rnbase_util_TSFAL.php
+     *   userFunc=Sys25\RnBase\Utility\TSFAL->printImages
      *   refField=imagecol
      *   refTable=tx_yourextkey_tablename
      *   template = EXT:rn_base/Resources/Private/Templates/simplegallery.html
@@ -280,7 +279,7 @@ class TSFAL
     }
 
     /**
-     * Erstellt eine Instanz von Tx_Rnbase_Configuration_ProcessorInterface.
+     * Erstellt eine Instanz von ConfigurationInterface.
      *
      * @param array $conf
      *
@@ -288,6 +287,7 @@ class TSFAL
      */
     public function createConf($conf)
     {
+        /** @var Processor $configurations */
         $configurations = tx_rnbase::makeInstance(Processor::class);
         $configurations->init($conf, $this->cObj, $conf['qualifier'] ?? '', $conf['qualifier'] ?? '');
 
@@ -304,7 +304,7 @@ class TSFAL
      *   file.treatIdAsReference = 1
      *   file.import.cObject = USER
      *   file.import.cObject {
-     *     userFunc=tx_rnbase_util_TSFAL->fetchFirstReference
+     *     userFunc=Sys25\RnBase\Utility\TSFAL->fetchFirstReference
      *     refField=t3logo
      *     refTable=tx_cfcleague_teams
      *     ### default is the uid of the cObject

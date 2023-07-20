@@ -217,6 +217,8 @@ class TYPO3DBAL implements IDatabase, IDatabaseT3
         $connection = $this->getConnection();
         $this->lastAffectedRows = $connection->insert($table, $fieldsValues);
         $this->lastInsertId = $connection->lastInsertId($table);
+
+        return true;
     }
 
     /**
@@ -273,6 +275,8 @@ class TYPO3DBAL implements IDatabase, IDatabaseT3
     ) {
         $query = $this->UPDATEquery($table, $where, $fieldsValues, $noQuoteFields);
         $this->lastAffectedRows = $this->getConnection()->executeUpdate($query);
+
+        return true;
     }
 
     /**
@@ -310,6 +314,8 @@ class TYPO3DBAL implements IDatabase, IDatabaseT3
     {
         $query = $this->DELETEquery($table, $where);
         $this->lastAffectedRows = $this->getConnection()->executeUpdate($query);
+
+        return true;
     }
 
     /**

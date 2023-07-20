@@ -5,12 +5,11 @@ namespace Sys25\RnBase\Backend\Utility;
 use Sys25\RnBase\Backend\Decorator\InterfaceDecorator;
 use Sys25\RnBase\Domain\Model\DataModel;
 use tx_rnbase;
-use tx_rnbase_util_TCA;
 
 /***************************************************************
  * Copyright notice
  *
- * (c) 2016-2021 René Nitzsche <rene@system25.de>
+ * (c) 2016-2023 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -135,7 +134,7 @@ class DecoratorUtility
     public function addDecoratorColumnLabel(array &$columns)
     {
         if ($this->getOptions()->hasBaseTableName()) {
-            $labelField = tx_rnbase_util_TCA::getLabelFieldForTable(
+            $labelField = TCA::getLabelFieldForTable(
                 $this->getOptions()->getBaseTableName()
             );
             if (!empty($labelField)) {
@@ -164,7 +163,7 @@ class DecoratorUtility
     public function addDecoratorColumnLanguage(array &$columns)
     {
         if ($this->getOptions()->hasBaseTableName()) {
-            $sysLanguageUidField = tx_rnbase_util_TCA::getLanguageFieldForTable(
+            $sysLanguageUidField = TCA::getLanguageFieldForTable(
                 $this->getOptions()->getBaseTableName()
             );
             if (!empty($sysLanguageUidField)) {

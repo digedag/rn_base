@@ -196,7 +196,7 @@ class ModFuncFrame implements IModule
      * Konfiguration mit "page." beginnen muss. Also bspw. "page.lib.test = 42".
      *
      * Ein eigenes TS-Template für das BE wird in der ext_localconf.php mit dieser Anweisung eingebunden:
-     * tx_rnbase_util_Extensions::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:myext/mod1/pageTSconfig.txt">');
+     * \Sys25\RnBase\Utility\Extensions::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:myext/mod1/pageTSconfig.txt">');
      *
      * @return ConfigurationInterface
      */

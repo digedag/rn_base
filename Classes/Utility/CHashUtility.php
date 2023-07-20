@@ -92,7 +92,7 @@ class CHashUtility
                 array_merge($typo3ConfVarsEntry, $configurationValue);
         }
         /* @var \TYPO3\CMS\Frontend\Page\CacheHashCalculator $cacheHashCalculator */
-        $cacheHashCalculator = \tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
+        $cacheHashCalculator = tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
         $cacheHashCalculator->setConfiguration([
             $cacheHashCalculatorInternalConfigurationKey => $cacheHashCalculatorInternalConfiguration,
         ]);
@@ -115,7 +115,7 @@ class CHashUtility
     /**
      * Is mainly used as user function in TypoScript. Example:.
      *
-     * plugin.tt_news.stdWrap.postUserFunc = Tx_Rnbase_Utility_Cache->addCacheTagsToPage
+     * plugin.tt_news.stdWrap.postUserFunc = Sys25\RnBase\Utility\CHashUtility->addCacheTagsToPage
      * plugin.tt_news.stdWrap.postUserFunc {
      *      0 = tt_news
      *      1 = tt_news_category

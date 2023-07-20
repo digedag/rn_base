@@ -137,11 +137,11 @@ class Misc
      * Such a function/method should look like this: "function proc(&$params, &$ref)    {...}"
      * Usage: 17.
      *
-     * @param   string      Function/Method reference, '[file-reference":"]["&"]class/function["->"method-name]'. You can prefix this reference with "[file-reference]:" and tx_rnbase_util_Files::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl->encodeSpURL". Finally; you can prefix the class name with "&" if you want to reuse a former instance of the same object call ("singleton").
-     * @param   mixed       Parameters to be pass along (typically an array) (REFERENCE!)
-     * @param   mixed       Reference to be passed along (typically "$this" - being a reference to the calling object) (REFERENCE!)
-     * @param   string      Required prefix of class or function name
-     * @param   int     Error mode (when class/function could not be found): 0 - call debug(), 1 - do nothing, 2 - raise an exception (allows to call a user function that may return FALSE)
+     * @param string $funcName Function/Method reference, '[file-reference":"]["&"]class/function["->"method-name]'. You can prefix this reference with "[file-reference]:" and Sys25\RnBase\Utility\Files::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl->encodeSpURL". Finally; you can prefix the class name with "&" if you want to reuse a former instance of the same object call ("singleton").
+     * @param mixed $params Parameters to be pass along (typically an array) (REFERENCE!)
+     * @param mixed $ref Reference to be passed along (typically "$this" - being a reference to the calling object) (REFERENCE!)
+     * @param string $checkPrefix Required prefix of class or function name
+     * @param int $errorMode Error mode (when class/function could not be found): 0 - call debug(), 1 - do nothing, 2 - raise an exception (allows to call a user function that may return FALSE)
      *
      * @return mixed Content from method/function call or false if the class/method/function was not found
      *
@@ -197,7 +197,7 @@ class Misc
         $aDebug[] = '</div>';
 
         if (intval(ConfigurationProcessor::getExtensionCfgValue('rn_base', 'forceException4Mayday'))) {
-            throw tx_rnbase::makeInstance('tx_rnbase_util_Exception', $msg, 0, ['Info' => $aDebug]);
+            throw tx_rnbase::makeInstance(AdditionalException::class, $msg, 0, ['Info' => $aDebug]);
         }
 
         $aDebug[] = '<br/>';
@@ -713,7 +713,7 @@ MAYDAYPAGE;
         $textPart = self::getErrorMailText($e, $actionName);
         $htmlPart = self::getErrorMailHtml($e, $actionName);
 
-        /* @var $mail \tx_rnbase_util_Mail */
+        /** @var Email $mail */
         $mail = tx_rnbase::makeInstance(Email::class);
         $mail->setSubject('Exception on site '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
 

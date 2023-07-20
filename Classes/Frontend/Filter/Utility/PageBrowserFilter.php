@@ -45,7 +45,7 @@ class PageBrowserFilter
      * Pagebrowser vorbereiten. Wir im Plugin nach dem init() des Filters aufgerufen:.
      *
      *      // Soll ein PageBrowser verwendet werden
-     *      tx_rnbase_filter_BaseFilter::handlePageBrowser($configurations,
+     *      BaseFilter::handlePageBrowser($configurations,
      *          $this->getConfId().'myitem.pagebrowser', $viewdata, $fields, $options, array(
      *          'searchcallback'=> array($service, 'search'),
      *          'pbid' => 'mt'.$configurations->getPluginId(),
@@ -53,7 +53,7 @@ class PageBrowserFilter
      *      );
      *
      * @param ConfigurationInterface $configurations
-     * @param string $confid         Die Confid des PageBrowsers. z.B. myview.org.pagebrowser ohne Punkt!
+     * @param string $confid die Confid des PageBrowsers. z.B. myview.org.pagebrowser ohne Punkt!
      * @param ArrayObject $viewdata
      * @param array $fields
      * @param array $options

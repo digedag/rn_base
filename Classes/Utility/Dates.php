@@ -337,8 +337,8 @@ class Dates
     }
 
     /**
-     * @param string|DateTimeZone $date
-     * @param string              $timezone
+     * @param string $date
+     * @param string|DateTimeZone $timezone
      *
      * @return DateTime
      */

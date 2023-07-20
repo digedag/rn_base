@@ -26,6 +26,7 @@ namespace Sys25\RnBase\ExtBaseFluid\ViewHelper;
  ***************************************************************/
 
 use Sys25\RnBase\Configuration\ConfigurationInterface;
+use Sys25\RnBase\Utility\Language;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -107,6 +108,6 @@ class TranslateViewHelper extends AbstractViewHelper
         }
 
         // otherwise translate to the typo3 language service
-        return \tx_rnbase_util_Lang::sL($key);
+        return Language::sL($key);
     }
 }

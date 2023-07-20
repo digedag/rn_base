@@ -2,10 +2,12 @@
 
 namespace Sys25\RnBase\Frontend\View\Marker;
 
+use Sys25\RnBase\Frontend\Marker\ListBuilder;
 use Sys25\RnBase\Frontend\Marker\SimpleMarker;
 use Sys25\RnBase\Frontend\Marker\Templates;
 use Sys25\RnBase\Frontend\Request\RequestInterface;
 use Sys25\RnBase\Frontend\View\ContextInterface;
+use tx_rnbase;
 
 /**
  * Generic list view.
@@ -30,9 +32,9 @@ class ListView extends BaseView
      * $viewData in order to read its special configuration,
      * including redirection options etc.
      *
-     * @param string                     $template
-     * @param RequestInterface           $request
-     * @param \tx_rnbase_util_FormatUtil $formatter
+     * @param string $template
+     * @param RequestInterface $request
+     * @param \Sys25\RnBase\Frontend\Marker\FormatUtil $formatter
      *
      * @return mixed Ready rendered output or HTTP redirect
      */
@@ -62,7 +64,7 @@ class ListView extends BaseView
             $markerClass = $this->getMarkerClass($configurations, $confId);
 
             // Liste generieren
-            $listBuilder = \tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
+            $listBuilder = tx_rnbase::makeInstance(ListBuilder::class);
             $template = $listBuilder->render(
                 $items,
                 $viewData,
@@ -84,7 +86,7 @@ class ListView extends BaseView
     /**
      * Render other entities provided by plugin.
      *
-     * $viewdata->offsetSet(\tx_rnbase_view_List::VIEWDATA_ENTITIES, [
+     * $viewdata->offsetSet(ListView::VIEWDATA_ENTITIES, [
      *   'promotion' => [
      *        'entity' => $promotion,
      *        'markerclass' => PromotionMarker::class,
@@ -92,11 +94,11 @@ class ListView extends BaseView
      *    ]
      *  );
      *
-     * @param string                     $template
-     * @param array                      $entities
-     * @param \ArrayObject               $viewData
-     * @param \tx_rnbase_util_FormatUtil $formatter
-     * @param string                     $confId
+     * @param string $template
+     * @param array $entities
+     * @param \ArrayObject $viewData
+     * @param \Sys25\RnBase\Frontend\Marker\FormatUtil $formatter
+     * @param string $confId
      *
      * @return []
      */
@@ -107,10 +109,10 @@ class ListView extends BaseView
         }
         $confId .= 'template.entities.';
         foreach ($entities as $itemPath => $entityData) {
-            $markerClass = isset($entityData['markerclass']) ? $entityData['markerclass'] : 'tx_rnbase_util_SimpleMarker';
+            $markerClass = isset($entityData['markerclass']) ? $entityData['markerclass'] : SimpleMarker::class;
             $entity = $entityData['entity'];
             if (is_array($entity)) {
-                $listBuilder = \tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
+                $listBuilder = tx_rnbase::makeInstance(ListBuilder::class);
                 $template = $listBuilder->render(
                     $entity,
                     $viewData,
@@ -121,7 +123,7 @@ class ListView extends BaseView
                     $formatter
                 );
             } else {
-                $marker = \tx_rnbase::makeInstance($markerClass);
+                $marker = tx_rnbase::makeInstance($markerClass);
                 $template = $marker->parseTemplate($template, $entity, $formatter, $confId.$itemPath.'.', strtoupper($itemPath));
             }
         }

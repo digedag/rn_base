@@ -92,7 +92,7 @@ interface ConfigurationInterface
     /**
      * Returns the formatter connected to this configuration object.
      *
-     * @return \tx_rnbase_util_FormatUtil
+     * @return \Sys25\RnBase\Frontend\Marker\FormatUtil
      */
     public function getFormatter();
 

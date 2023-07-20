@@ -3,6 +3,7 @@
 namespace Sys25\RnBase\Domain\Repository;
 
 use Exception;
+use Sys25\RnBase\Backend\Utility\TCA;
 use Sys25\RnBase\Domain\Collection\BaseCollection;
 use Sys25\RnBase\Domain\Model\DomainModelInterface as DomainInterface;
 use Sys25\RnBase\Domain\Model\RecordInterface;
@@ -12,12 +13,11 @@ use Sys25\RnBase\Utility\Environment;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
-use tx_rnbase_util_TCA;
 
 /***************************************************************
  * Copyright notice
  *
- * (c) 2015-2021 René Nitzsche <rene@system25.de>
+ * (c) 2015-2023 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -60,7 +60,7 @@ abstract class AbstractRepository implements SearchInterface, SingletonInterface
     {
         $searcher = SearchBase::getInstance($this->getSearchClass());
         if (!$searcher instanceof SearchBase) {
-            throw new Exception(get_class($this).'->getSearchClass() has to return a classname'.' of class which extends tx_rnbase_util_SearchBase!');
+            throw new Exception(get_class($this).'->getSearchClass() has to return a classname'.' of class which extends Sys25\RnBase\Search\SearchBase!');
         }
 
         return $searcher;
@@ -228,7 +228,7 @@ abstract class AbstractRepository implements SearchInterface, SingletonInterface
             && !isset($options['enablefieldsoff'])
         ) {
             $tableName = $this->getEmptyModel()->getTableName();
-            $languageField = tx_rnbase_util_TCA::getLanguageFieldForTable($tableName);
+            $languageField = TCA::getLanguageFieldForTable($tableName);
             // Die Sprache prüfen wir nur, wenn ein Sprachfeld gesetzt ist.
             if (!empty($languageField)) {
                 $tsfe = TYPO3::getTSFE();
