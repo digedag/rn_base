@@ -1,7 +1,7 @@
 rn_base
 =======
 
-![TYPO3 compatibility](https://img.shields.io/badge/TYPO3-8.7%20%7C%209.5%20%7C%2010.4%20%7C%2011.5-orange?maxAge=3600&style=flat-square&logo=typo3)
+![TYPO3 compatibility](https://img.shields.io/badge/TYPO3-8.7%20%7C%209.5%20%7C%2010.4%20%7C%2011.5%20%7C%2012.4-orange?maxAge=3600&style=flat-square&logo=typo3)
 [![rn_base](Resources/Public/Icons/Extension.gif)](https://github.com/digedag/rn_base)
 [![Latest Stable Version](https://img.shields.io/packagist/v/digedag/rn-base.svg?maxAge=3600&style=flat-square)](https://packagist.org/packages/digedag/rn-base)
 [![Total Downloads](https://img.shields.io/packagist/dt/digedag/rn-base.svg?maxAge=3600&style=flat-square)](https://packagist.org/packages/digedag/rn-base)

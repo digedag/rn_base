@@ -88,7 +88,7 @@ function jumpToUrl(URL) {
 
     /** @var string */
     protected $moduleTemplateFilename;
-    protected $form;
+    public $form;
 
     /**
      * Constructor.
