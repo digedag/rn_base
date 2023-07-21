@@ -3,9 +3,9 @@
 Changelog
 ---------
 
-v1.17.0 (??.07.2023)
+v1.17.0 (21.07.2023)
 
-* Update for TYPO3 12.x 
+* Update for TYPO3 12.4 LTS 
 * Removed class ModuleRunner as not needed anymore
 * Removed class ModuleBase as not needed anymore
 * fixed some PHP warnings

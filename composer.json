@@ -33,7 +33,7 @@
 		"ext-zip": "*",
 		"doctrine/common": "*",
 		"doctrine/dbal": "*",
-		"typo3/cms-core": "^8.7 || ^9.5 || ^10.4 || ^11.5 || ^12.1"
+		"typo3/cms-core": "^8.7 || ^9.5 || ^10.4 || ^11.5 || ^12.4"
 	},
 	"require-dev": {
 		"friendsofphp/php-cs-fixer": "^3.1.0",
@@ -149,8 +149,7 @@
 			]
 		},
 		"branch-alias": {
-			"dev-master": "1.16.x-dev",
-			"dev-feature/t3_12": "1.16.x-dev"
+			"dev-master": "1.17.x-dev"
 		}
 	}
 }
