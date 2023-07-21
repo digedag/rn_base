@@ -5,7 +5,7 @@ namespace Sys25\RnBase\Utility;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2008-2020 Rene Nitzsche (rene@system25.de)
+ *  (c) 2008-2023 Rene Nitzsche (rene@system25.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -214,9 +214,10 @@ class TYPO3
      */
     public static function loadExtInfo($_EXTKEY)
     {
-        $path = \tx_rnbase_util_Extensions::extPath($_EXTKEY).'ext_emconf.php';
+        $EM_CONF = [];
+        $path = Extensions::extPath($_EXTKEY).'ext_emconf.php';
         @include $path;
-        if (is_array($EM_CONF[$_EXTKEY])) {
+        if (isset($EM_CONF[$_EXTKEY])) {
             return $EM_CONF[$_EXTKEY];
         }
 
@@ -224,13 +225,13 @@ class TYPO3
     }
 
     /**
-     * Wrapper function for tx_rnbase_util_Extensions::isLoaded().
+     * Wrapper function for Extensions::isLoaded().
      *
      * @param string $_EXTKEY
      */
     public static function isExtLoaded($_EXTKEY)
     {
-        return \tx_rnbase_util_Extensions::isLoaded($_EXTKEY);
+        return Extensions::isLoaded($_EXTKEY);
     }
 
     /**

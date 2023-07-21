@@ -5,7 +5,7 @@ namespace Sys25\RnBase\Database\Driver;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011-2021 Rene Nitzsche
+ *  (c) 2011-2023 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -75,7 +75,7 @@ interface IDatabase
      * @param   array       Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$insertFields" with 'fieldname'=>'value' and pass it to this function as argument.
      * @param   array
      *
-     * @return object MySQL result pointer / DBAL object
+     * @return object|bool MySQL result pointer / DBAL object
      */
     public function exec_INSERTquery($table, $fields_values, $no_quote_fields = false);
 
@@ -99,7 +99,7 @@ interface IDatabase
      * @param   array       Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$updateFields" with 'fieldname'=>'value' and pass it to this function as argument.
      * @param   array
      *
-     * @return object MySQL result pointer / DBAL object
+     * @return object|bool MySQL result pointer / DBAL object
      */
     public function exec_UPDATEquery($table, $where, $fields_values, $no_quote_fields = false);
 
@@ -119,7 +119,7 @@ interface IDatabase
      * @param   string      Database tablename
      * @param string      WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
      *
-     * @return object MySQL result pointer / DBAL object
+     * @return object|bool MySQL result pointer / DBAL object
      */
     public function exec_DELETEquery($table, $where);
 
@@ -137,7 +137,7 @@ interface IDatabase
      * Returns an associative array that corresponds to the fetched row, or FALSE if there are no more rows.
      * mysql_fetch_assoc() wrapper function.
      *
-     * @param   pointer     MySQL result pointer (of SELECT query) / DBAL object
+     * @param object $res MySQL result pointer (of SELECT query) / DBAL object
      *
      * @return array associative array of result row
      */
@@ -147,7 +147,7 @@ interface IDatabase
      * Free result memory
      * mysql_free_result() wrapper function.
      *
-     * @param   pointer     MySQL result pointer to free / DBAL object
+     * @param object $res MySQL result pointer to free / DBAL object
      *
      * @return bool returns TRUE on success or FALSE on failure
      */

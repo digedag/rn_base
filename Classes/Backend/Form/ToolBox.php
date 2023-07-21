@@ -3,6 +3,7 @@
 namespace Sys25\RnBase\Backend\Form;
 
 use Sys25\RnBase\Backend\Form\Element\InputText;
+use Sys25\RnBase\Backend\Module\IModule;
 use Sys25\RnBase\Backend\Template\Override\DocumentTemplate;
 use Sys25\RnBase\Backend\Utility\BackendUtility;
 use Sys25\RnBase\Backend\Utility\Icons;
@@ -50,7 +51,10 @@ class ToolBox
 {
     public $form; // TCEform-Instanz
 
-    protected $module;
+    /**
+     * @var IModule
+     */
+    private $module;
 
     protected $doc;
 
@@ -75,9 +79,9 @@ class ToolBox
 
     /**
      * @param DocumentTemplate $doc
-     * @param \Sys25\RnBase\Backend\Module\IModule $module
+     * @param IModule $module
      */
-    public function init($doc, $module)
+    public function init(DocumentTemplate $doc, IModule $module)
     {
         global $BACK_PATH;
         $this->doc = $doc;
@@ -352,12 +356,12 @@ class ToolBox
     private function initClipboard()
     {
         if (!$this->clipObj) {
-            $this->clipObj = \tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
+            $this->clipObj = tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
             // Initialize - reads the clipboard content from the user session
             $this->clipObj->initializeClipboard();
 
             $CB = T3GeneralAlias::_GET('CB');
-            $this->clipObj->setCmd($CB);
+            $this->clipObj->setCmd($CB ?? []);
             // Clean up pad
             $this->clipObj->cleanCurrent();
             // Save the clipboard content
@@ -456,7 +460,15 @@ class ToolBox
         if (isset($options['params']) && is_array($options['params'])) {
             $params = array_merge($params, $options['params']);
         }
-        $location = Link::linkThisScript($params);
+        if (!TYPO3::isTYPO121OrHigher()) {
+            $location = Link::linkThisScript($params);
+        } else {
+            if (!isset($params['id'])) {
+                $params['id'] = $this->module->getPid();
+            }
+            $location = $this->buildScriptURI($params);
+        }
+
         if ($encode) {
             $location = str_replace('%20', '', rawurlencode($location));
         }
@@ -699,6 +711,9 @@ class ToolBox
         $this->initializeJavaScriptFormEngine();
         $dateElementClass = \TYPO3\CMS\Backend\Form\Element\InputDateTimeElement::class;
 
+        // [itemFormElName] => data[tx_cfcleague_games][4][status]
+        // [itemFormElID] => data_tx_cfcleague_games_4_status
+
         $renderedElement = tx_rnbase::makeInstance(
             $dateElementClass,
             $this->getTCEForm()->getNodeFactory(),
@@ -710,6 +725,7 @@ class ToolBox
                 'parameterArray' => [
                     'itemFormElValue' => $value,
                     'itemFormElName' => $name,
+                    'itemFormElID' => $name,
                     'fieldConf' => [
                         'config' => [
                             'width' => 20,
@@ -785,11 +801,13 @@ class ToolBox
 
         // Die Options ermitteln
         foreach ($TCA[$table]['columns'][$column]['config']['items'] as $item) {
+            $tcaLabel = $item['label'] ?? $item[0];
+            $tcaVal = $item['value'] ?? $item[1];
             $sel = '';
-            if ($value == $item[1]) {
+            if ($value == $tcaVal) {
                 $sel = 'selected="selected"';
             }
-            $out .= '<option value="'.$item[1].'" '.$sel.'>'.$LANG->sL($item[0]).'</option>';
+            $out .= '<option value="'.$tcaVal.'" '.$sel.'>'.$LANG->sL($tcaLabel).'</option>';
         }
         $out .= '
             </select>
@@ -1015,7 +1033,6 @@ class ToolBox
             T3GeneralAlias::_GP('SET'),
             $modName
         );
-
         $menuItems = [];
         foreach ($entries as $key => $value) {
             if (0 === strcmp($value, '')) {
@@ -1027,7 +1044,7 @@ class ToolBox
                 'label' => $value,
                 // jumpUrl ist ab TYPO3 6.2 nicht mehr nötig
                 // @TODO jumpUrl entfernen wenn kein Support mehr für 4.5
-                // Also jumpUrl wird auch in der 12 noch benötigt...
+                // Also jumpUrl wird auch in der 12 zumindest noch verwendet...
                 'url' => '#',
                 'addParams' => 'onclick="jumpToUrl(\''.
                                 $this->buildScriptURI(['id' => $pid, 'SET['.$name.']' => $key]).

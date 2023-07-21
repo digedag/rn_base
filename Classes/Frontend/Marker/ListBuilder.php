@@ -11,7 +11,7 @@ use tx_rnbase;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006-2021 Rene Nitzsche
+ *  (c) 2006-2023 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *

@@ -112,6 +112,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
      *                in init() zurück gegeben. Ansonsten der Wert von $doSearch, dieser hat also Vorrang.
      */
     protected $doSearch = null;
+    protected $inputData = [];
 
     /**
      * @param tx_rnbase_IParameters                      $parameters

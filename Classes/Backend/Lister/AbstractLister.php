@@ -156,7 +156,7 @@ abstract class AbstractLister
     /**
      * Returns an instance of form tool from the module.
      *
-     * @return \tx_rnbase_util_FormTool
+     * @return \Sys25\RnBase\Backend\Form\ToolBox
      */
     protected function getFormTool()
     {
@@ -176,7 +176,7 @@ abstract class AbstractLister
     /**
      * The Pager instance for the current listing.
      *
-     * @return \tx_rnbase_util_BEPager
+     * @return BEPager
      */
     protected function getPager()
     {

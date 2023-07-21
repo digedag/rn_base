@@ -26,9 +26,7 @@ namespace Sys25\RnBase\Typo3Wrapper\Core;
  */
 
 /**
- * Tx_Rnbase_Utility_Singleton.
- *
- * Wrapper für \TYPO3\CMS\Core\SingletonInterface seit TYPO3 6.x
+ * Wrapper für \TYPO3\CMS\Core\SingletonInterface seit TYPO3 6.x.
  *
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html

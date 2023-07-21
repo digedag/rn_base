@@ -10,7 +10,7 @@ use ZipArchive;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2009-2021 Rene Nitzsche
+ *  (c) 2009-2023 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -91,9 +91,10 @@ class Files
         if (!TYPO3::isTYPO95OrHigher()) {
             return Templates::getTSTemplate()->getFileName($file);
         }
-        $fs = tx_rnbase::makeInstance('TYPO3\CMS\Frontend\Resource\FilePathSanitizer');
+        /** @var \TYPO3\CMS\Frontend\Resource\FilePathSanitizer $fs */
+        $fs = tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Resource\FilePathSanitizer::class);
 
-        return $fs->sanitize($file);
+        return $fs->sanitize($file, true);
     }
 
     /**
@@ -118,6 +119,8 @@ class Files
         if (!$utility::inList('xhtml_strict,xhtml_11,xhtml_2', $GLOBALS['TSFE']->xhtmlDoctype) && !$GLOBALS['TSFE']->config['config']['disableImgBorderAttr']) {
             return $borderAttr;
         }
+
+        return '';
     }
 
     /**

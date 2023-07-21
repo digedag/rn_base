@@ -32,6 +32,8 @@ use Sys25\RnBase\Maps\IControl;
  */
 class Control implements IControl
 {
+    private $type = null;
+
     public function __construct($type)
     {
         $this->type = $type;

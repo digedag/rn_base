@@ -103,4 +103,9 @@ interface IModule
      * @param bool   $storeInSession Optional, defines whether the message should be stored in the session or only for one request (default)
      */
     public function addMessage($message, $title = '', $severity = 0, $storeInSession = false);
+
+    /**
+     * @return \TYPO3\CMS\Core\Localization\LanguageService
+     */
+    public function getLanguageService();
 }

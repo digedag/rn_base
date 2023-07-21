@@ -4,9 +4,9 @@ namespace Sys25\RnBase\Domain\Model;
 
 use DateTime;
 use DateTimeZone;
+use Sys25\RnBase\Backend\Utility\TCA;
 use Sys25\RnBase\Database\Connection;
 use Sys25\RnBase\Utility\Dates;
-use tx_rnbase_util_TCA;
 
 /***************************************************************
  *  Copyright notice
@@ -138,7 +138,7 @@ class BaseModel extends DataModel implements DomainModelInterface, DynamicTableI
      */
     public function getUid()
     {
-        return (int) tx_rnbase_util_TCA::getUid(
+        return (int) TCA::getUid(
             $this->getTableName(),
             $this->getProperties() + ['uid' => $this->getUidRaw()]
         );
@@ -157,14 +157,14 @@ class BaseModel extends DataModel implements DomainModelInterface, DynamicTableI
     /**
      * Returns the label of the record, defined in the tca.
      *
-     * @return int
+     * @return string
      */
     public function getTcaLabel()
     {
         $label = '';
         $tableName = $this->getTableName();
         if (!empty($tableName)) {
-            $labelField = tx_rnbase_util_TCA::getLabelFieldForTable($tableName);
+            $labelField = TCA::getLabelFieldForTable($tableName);
             if (!$this->isPropertyEmpty($labelField)) {
                 $label = (string) $this->getProperty($labelField);
             }
@@ -183,7 +183,7 @@ class BaseModel extends DataModel implements DomainModelInterface, DynamicTableI
         $uid = 0;
         $tableName = $this->getTableName();
         if (!empty($tableName)) {
-            $sysLanguageUidField = tx_rnbase_util_TCA::getLanguageFieldForTable($tableName);
+            $sysLanguageUidField = TCA::getLanguageFieldForTable($tableName);
             if (!$this->isPropertyEmpty($sysLanguageUidField)) {
                 $uid = (int) $this->getProperty($sysLanguageUidField);
             }
@@ -205,7 +205,7 @@ class BaseModel extends DataModel implements DomainModelInterface, DynamicTableI
         $datetime = null;
         $tableName = $this->getTableName();
         if (!empty($tableName)) {
-            $field = tx_rnbase_util_TCA::getCrdateFieldForTable($tableName);
+            $field = TCA::getCrdateFieldForTable($tableName);
             if (!$this->isPropertyEmpty($field)) {
                 $tstamp = (int) $this->getProperty($field);
                 $datetime = Dates::getDateTime(
@@ -231,7 +231,7 @@ class BaseModel extends DataModel implements DomainModelInterface, DynamicTableI
         $datetime = null;
         $tableName = $this->getTableName();
         if (!empty($tableName)) {
-            $field = tx_rnbase_util_TCA::getTstampFieldForTable($tableName);
+            $field = TCA::getTstampFieldForTable($tableName);
             if (!$this->isPropertyEmpty($field)) {
                 $tstamp = (int) $this->getProperty($field);
                 $datetime = Dates::getDateTime(
@@ -317,7 +317,7 @@ class BaseModel extends DataModel implements DomainModelInterface, DynamicTableI
      */
     public function validateProperties($options = null)
     {
-        return tx_rnbase_util_TCA::validateModel(
+        return TCA::validateModel(
             $this,
             null === $options ? ['only_record_fields' => true] : $options
         );
@@ -383,7 +383,7 @@ class BaseModel extends DataModel implements DomainModelInterface, DynamicTableI
      */
     public function getTcaColumns()
     {
-        $columns = tx_rnbase_util_TCA::getTcaColumns($this->getTableName());
+        $columns = TCA::getTcaColumns($this->getTableName());
 
         return empty($columns) ? 0 : $columns;
     }

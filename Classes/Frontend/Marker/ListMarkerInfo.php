@@ -5,7 +5,7 @@ namespace Sys25\RnBase\Frontend\Marker;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006-2021 Rene Nitzsche
+ *  (c) 2006-2023 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -29,6 +29,8 @@ namespace Sys25\RnBase\Frontend\Marker;
  */
 class ListMarkerInfo implements IListMarkerInfo
 {
+    private $template;
+
     public function __construct()
     {
     }

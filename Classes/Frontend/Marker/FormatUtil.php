@@ -35,7 +35,7 @@ class FormatUtil
 {
     public $configurations;
 
-    public $cObj;
+    private $cObj;
 
     // Wie kommen diese Werte in die Config??
     // Sind es nicht auch eher Konfigwerte??
@@ -49,9 +49,9 @@ class FormatUtil
 
     public $timeFormatKey = 'timeFormat';
 
-    private static $time = 0;
+    public static $time = 0;
 
-    private static $mem = 0;
+    public static $mem = 0;
 
     /**
      * Konstruktor.

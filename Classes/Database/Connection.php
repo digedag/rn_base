@@ -2,9 +2,16 @@
 
 namespace Sys25\RnBase\Database;
 
+use Sys25\RnBase\Backend\Utility\TCA;
+use Sys25\RnBase\Database\Driver\DatabaseException;
 use Sys25\RnBase\Database\Driver\IDatabase;
+use Sys25\RnBase\Database\Driver\LegacyQueryBuilder;
+use Sys25\RnBase\Database\Driver\MySqlDatabase;
+use Sys25\RnBase\Database\Driver\TYPO3Database;
+use Sys25\RnBase\Database\Driver\TYPO3DBAL;
 use Sys25\RnBase\Database\Query\From;
 use Sys25\RnBase\Domain\Collection\BaseCollection;
+use Sys25\RnBase\Domain\Model\BaseModel;
 use Sys25\RnBase\Domain\Model\DynamicTableInterface;
 use Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface;
 use Sys25\RnBase\Utility\Debug;
@@ -14,10 +21,6 @@ use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
 use Sys25\RnBase\Utility\Typo3Classes;
 use tx_rnbase;
-use tx_rnbase_model_base;
-use tx_rnbase_util_db_Builder;
-use tx_rnbase_util_db_IDatabase;
-use tx_rnbase_util_TCA;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
 /***************************************************************
@@ -87,7 +90,7 @@ class Connection implements SingletonInterface
      * - 'enablefieldsoff' - deactivate enableFields check
      * - 'enablefieldsbe' - force enableFields check for BE (this usually ignores hidden records)
      * - 'enablefieldsfe' - force enableFields check for FE
-     * - 'db' - external database: tx_rnbase_util_db_IDatabase
+     * - 'db' - external database: Sys25\RnBase\Database\Driver\IDatabase
      * - 'ignorei18n' - do not translate record to fe language
      * - 'forcei18n' - force the translation of the record
      * - 'i18nolmode' - translation mode, possible value: 'hideNonTranslated'
@@ -135,6 +138,7 @@ class Connection implements SingletonInterface
         } else {
             $rows = $this->doSelectLegacy($what, $from, $arr, $debug);
         }
+
         if (is_string($rows) || (TYPO3::isTYPO87OrHigher() && $rows instanceof QueryBuilder)) {
             // sqlOnly
             return $rows;
@@ -260,7 +264,6 @@ class Connection implements SingletonInterface
         // use classic arrays or the collection
         // should be ever an collection, but for backward compatibility is this an array by default
         $rows = $this->initRows($arr);
-
         if ($this->testResource($res)) {
             $wrapper = is_string($arr['wrapperclass'] ?? null) ? trim($arr['wrapperclass']) : 0;
             $callback = isset($arr['callback']) ? $arr['callback'] : false;
@@ -268,6 +271,7 @@ class Connection implements SingletonInterface
             while ($row = $database->sql_fetch_assoc($res)) {
                 $this->appendRow($rows, $row, $tableName, $wrapper, $callback, $arr);
             }
+
             $database->sql_free_result($res);
         }
 
@@ -285,7 +289,7 @@ class Connection implements SingletonInterface
         $item = ($wrapper) ? tx_rnbase::makeInstance($wrapper, $row) : $row;
         if ($item instanceof DynamicTableInterface
             // @TODO: backward compatibility for old models will be removed soon
-            || $item instanceof tx_rnbase_model_base
+            || $item instanceof BaseModel
         ) {
             $item->setTablename($tableName);
         }
@@ -327,11 +331,12 @@ class Connection implements SingletonInterface
     private function testResource($res)
     {
         return
+            is_a($res, 'Doctrine\\DBAL\\Result') ||
             // the new doctrine statemant since typo3 8
             is_a($res, 'Doctrine\\DBAL\\Driver\\Statement') ||
             // the old mysqli ressources
             is_a($res, 'mysqli_result') ||
-            // the very old mysql ressources
+            // the very, very old mysql ressources
             is_resource($res)
         ;
     }
@@ -426,7 +431,7 @@ class Connection implements SingletonInterface
      *
      * @param array|string $options
      *
-     * @return tx_rnbase_util_db_IDatabase
+     * @return IDatabase
      *
      * @throws \Sys25\RnBase\Typo3Wrapper\Core\Error\Exception
      */
@@ -453,8 +458,8 @@ class Connection implements SingletonInterface
             $db = $this->getDatabase($dbKey);
         }
 
-        if (!$db instanceof tx_rnbase_util_db_IDatabase) {
-            throw \tx_rnbase::makeInstance(\Sys25\RnBase\Typo3Wrapper\Core\Error\Exception::class, 'The db "'.get_class($db).'" has to implement'.' the tx_rnbase_util_db_IDatabase interface');
+        if (!$db instanceof IDatabase) {
+            throw tx_rnbase::makeInstance(\Sys25\RnBase\Typo3Wrapper\Core\Error\Exception::class, sprintf('The db "%s" has to implement the %s interface', get_class($db), IDatabase::class));
         }
 
         return $db;
@@ -465,31 +470,22 @@ class Connection implements SingletonInterface
      *
      * @param string $key Database identifier defined in localconf.php. Always in lowercase!
      *
-     * @return tx_rnbase_util_db_IDatabase
+     * @return IDatabase
      */
     protected function getDatabase($key = 'typo3')
     {
         $key = strtolower($key);
-        // @TODO is it necessary to cache this?
-        // the connection has to be reconected after cache load,
-        // so only the credentials are stored in cache, but this is critical,
-        // so the cache was removed for the moment!
-//        $cache = tx_rnbase_cache_Manager::getCache('rnbase_databases');
-//        $db = $cache->get('db_' . $key);
-//        if (!$db) {
         if ('typo3' == $key) {
-            $db = tx_rnbase::makeInstance('tx_rnbase_util_db_TYPO3');
+            $db = tx_rnbase::makeInstance(TYPO3Database::class);
         } elseif ('typo3dbal' == $key) {
-            $db = tx_rnbase::makeInstance('tx_rnbase_util_db_TYPO3DBAL');
+            $db = tx_rnbase::makeInstance(TYPO3DBAL::class);
         } else {
             $dbCfg = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rn_base']['db'][$key];
             if (!is_array($dbCfg)) {
-                throw tx_rnbase::makeInstance('tx_rnbase_util_db_Exception', 'No config for database '.$key.' found!');
+                throw tx_rnbase::makeInstance(DatabaseException::class, 'No config for database '.$key.' found!');
             }
-            $db = tx_rnbase::makeInstance('tx_rnbase_util_db_MySQL', $dbCfg);
+            $db = tx_rnbase::makeInstance(MySqlDatabase::class, $dbCfg);
         }
-//            $cache->set($key, $db);
-//        }
 
         return $db;
     }
@@ -750,7 +746,7 @@ class Connection implements SingletonInterface
      */
     public function fullQuoteStr($str, $table = '', $allowNull = false)
     {
-        return tx_rnbase_util_db_Builder::instance()->fullQuoteStr($str, $table, $allowNull);
+        return LegacyQueryBuilder::instance()->fullQuoteStr($str, $table, $allowNull);
     }
 
     /**
@@ -765,7 +761,7 @@ class Connection implements SingletonInterface
      */
     public function fullQuoteArray($arr, $table = '', $noQuote = false, $allowNull = false)
     {
-        return tx_rnbase_util_db_Builder::instance()->fullQuoteArray($arr, $table, $noQuote, $allowNull);
+        return LegacyQueryBuilder::instance()->fullQuoteArray($arr, $table, $noQuote, $allowNull);
     }
 
     /**
@@ -780,7 +776,7 @@ class Connection implements SingletonInterface
      */
     public function quoteStr($str, $table = '')
     {
-        return tx_rnbase_util_db_Builder::instance()->quoteStr($str, $table);
+        return LegacyQueryBuilder::instance()->quoteStr($str, $table);
     }
 
     /**
@@ -793,7 +789,7 @@ class Connection implements SingletonInterface
      */
     public function escapeStrForLike($str, $table)
     {
-        return tx_rnbase_util_db_Builder::instance()->escapeStrForLike($str, $table);
+        return LegacyQueryBuilder::instance()->escapeStrForLike($str, $table);
     }
 
     /**
@@ -831,7 +827,7 @@ class Connection implements SingletonInterface
     public function getTCAColumns($tcaTableName)
     {
         global $TCA;
-        tx_rnbase_util_TCA::loadTCA($tcaTableName);
+        TCA::loadTCA($tcaTableName);
 
         return isset($TCA[$tcaTableName]) ? $TCA[$tcaTableName]['columns'] : 0;
     }
@@ -881,9 +877,9 @@ class Connection implements SingletonInterface
 
     /**
      * Same method as Typo3Classes::getTypoScriptFrontendControllerClass()::pi_getPidList()
-     * If you  need this functionality use tx_rnbase_util_Misc::getPidList().
+     * If you  need this functionality use Sys25\RnBase\Utility\Misc::getPidList().
      *
-     * @deprecated use tx_rnbase_util_Misc::getPidList!
+     * @deprecated use Sys25\RnBase\Utility\Misc::getPidList!
      */
     public function _getPidList($pid_list, $recursive = 0)
     {
@@ -903,7 +899,9 @@ class Connection implements SingletonInterface
         if (!is_object($database)) {
             $database = $this->getDatabaseConnection();
         }
-
+        if (TYPO3::isTYPO121OrHigher()) {
+            return $res;
+        }
         $error = $database->sql_error();
         // When PDO is used as driver sql_error() will always return an not empty array. If actually no error
         // happened the error code (first array element) will be "00000" (\PDO::ERR_NONE)
@@ -1200,7 +1198,7 @@ class Connection implements SingletonInterface
             ) {
                 $options['enablefieldsbe'] = 1;
                 if (Environment::isFrontend()) {
-                    // wir nehmen nicht tx_rnbase_util_TYPO3::getTSFE()->set_no_cache weil das durch
+                    // wir nehmen nicht Sys25\RnBase\Utility\TYPO3::getTSFE()->set_no_cache weil das durch
                     // $GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter'] deaktiviert werden
                     // kann. Das wollen wir aber nicht. Der Cache muss in jedem Fall deaktiviert werden.
                     // Ansonsten könnten darin Dinge landen, die normale Nutzer nicht

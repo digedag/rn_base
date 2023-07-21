@@ -14,7 +14,7 @@ use tx_rnbase;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011-2021 René Nitzsche <rene@system25.de>
+ *  (c) 2011-2023 René Nitzsche <rene@system25.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -39,6 +39,8 @@ use tx_rnbase;
  *
  * @author René Nitzsche <rene@system25.de>
  * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
+ *
+ * @deprecated use AbstractLister
  */
 abstract class BaseLister
 {
@@ -277,7 +279,7 @@ abstract class BaseLister
         $sortRev = \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('sortRev');
 
         if (!empty($sortField)) {
-            $cols = $this->getColumns();
+            $cols = $this->getDecoratorColumns(null);
 
             if (!isset($cols[$sortField]) || !is_array($cols[$sortField]) || !isset($cols[$sortField]['sortable'])) {
                 return;
@@ -372,7 +374,7 @@ abstract class BaseLister
     /**
      * Liefert die Spalten für den Decorator.
      *
-     * @param InterfaceDecorator $decorator
+     * @param InterfaceDecorator|null $decorator
      *
      * @return array
      */

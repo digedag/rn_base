@@ -24,7 +24,7 @@ namespace Sys25\RnBase\Utility;
  *
  * Usage:
  * <code>
- *   $parser = new tx_rnbase_util_Spyc;
+ *   $parser = new Spyc;
  *   $array  = $parser->load($file);
  * </code>
  */
@@ -80,7 +80,7 @@ class Spyc
      * simple.
      *  Usage:
      *  <code>
-     *   $array = tx_rnbase_util_Spyc::YAMLLoad('lucky.yaml');
+     *   $array = Spyc::YAMLLoad('lucky.yaml');
      *   print_r($array);
      *  </code>
      *
@@ -579,6 +579,7 @@ class Spyc
         }
         $value = $array[$key];
         $tempPath = self::flatten($this->path);
+        $_arr = [];
         eval('$_arr = $this->result'.$tempPath.';');
 
         if ($this->_containsGroupAlias) {

@@ -8,7 +8,7 @@ use tx_rnbase;
 /***************************************************************
  * Copyright notice
  *
- * (c) 2016-2021 René Nitzsche <rene@system25.de>
+ * (c) 2016-2023 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -169,12 +169,16 @@ class Email
      */
     public function send()
     {
-        /* @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
+        /** @var \TYPO3\CMS\Core\Mail\MailMessage $mail */
         $mail = tx_rnbase::makeInstance(Typo3Classes::getMailMessageClass());
         $mail->setFrom($this->from, $this->fromName);
 
+        $firstToAddr = '';
         foreach ($this->to as $email => $name) {
             $mail->addTo($email, $name);
+            if (empty($firstToAddr)) {
+                $firstToAddr = sprintf('%s (%s)', $email, $name);
+            }
         }
         $mail->setSubject($this->subject);
         if ($this->replyTo) {
@@ -185,11 +189,23 @@ class Email
 
         if (!empty($this->attachments)) {
             foreach ($this->attachments as $attachment) {
-                if (!$mail->attach(Swift_Attachment::fromPath($attachment['src']))) {
+                try {
+                    if (!TYPO3::isTYPO104OrHigher()) {
+                        if (!$mail->attach(Swift_Attachment::fromPath($attachment['src']))) {
+                            Logger::warn(
+                                'Adding attachment failed!',
+                                'rn_base',
+                                ['subject' => $mail->getSubject(), 'to' => $firstToAddr, 'attachment' => $attachment]
+                            );
+                        }
+                    } else {
+                        $mail->attachFromPath($attachment['src']);
+                    }
+                } catch (\Throwable $e) {
                     Logger::warn(
                         'Adding attachment failed!',
                         'rn_base',
-                        ['subject' => $mail->subject, 'to' => $this->toAsString, 'attachment' => $attachment]
+                        ['subject' => $mail->getSubject(), 'to' => $firstToAddr, 'attachment' => $attachment]
                     );
                 }
             }

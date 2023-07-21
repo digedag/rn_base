@@ -157,9 +157,9 @@ class BaseView extends AbstractView implements ViewInterface
     /**
      * Entry point for child classes.
      *
-     * @param string                     $template
-     * @param RequestInterface           $configurations
-     * @param \tx_rnbase_util_FormatUtil $formatter
+     * @param string $template
+     * @param RequestInterface $configurations
+     * @param \Sys25\RnBase\Frontend\Marker\FormatUtil $formatter
      */
     protected function createOutput($template, RequestInterface $request, $formatter)
     {

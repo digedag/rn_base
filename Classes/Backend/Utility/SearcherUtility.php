@@ -7,12 +7,11 @@ use Sys25\RnBase\Domain\Model\RecordInterface;
 use Sys25\RnBase\Domain\Repository\SearchInterface;
 use Traversable;
 use tx_rnbase;
-use tx_rnbase_util_TCA;
 
 /***************************************************************
  * Copyright notice
  *
- * (c) 2016-2021 René Nitzsche <rene@system25.de>
+ * (c) 2016-2023 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -99,7 +98,7 @@ class SearcherUtility
         $downStep = 1;
         if (
             $baseTableName
-            && tx_rnbase_util_TCA::getSortbyFieldForTable($baseTableName)
+            && TCA::getSortbyFieldForTable($baseTableName)
             && ($options['limit'] || $options['offset'])
         ) {
             // normalize limit and offset values to int

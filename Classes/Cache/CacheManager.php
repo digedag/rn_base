@@ -125,6 +125,6 @@ class CacheManager
      */
     private static function getCacheImpl($name)
     {
-        return tx_rnbase::makeInstance('tx_rnbase_cache_TYPO3Cache62', $name);
+        return tx_rnbase::makeInstance(TYPO3Cache62::class, $name);
     }
 }

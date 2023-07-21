@@ -35,7 +35,7 @@ class FeUserSearch extends SearchBase
     /**
      * {@inheritdoc}
      *
-     * @see \tx_rnbase_util_SearchBase::getTableMappings()
+     * @see SearchBase::getTableMappings()
      */
     protected function getTableMappings()
     {
@@ -54,7 +54,7 @@ class FeUserSearch extends SearchBase
     /**
      * {@inheritdoc}
      *
-     * @see \tx_rnbase_util_SearchBase::getBaseTableAlias()
+     * @see SearchBase::getBaseTableAlias()
      */
     protected function getBaseTableAlias()
     {
@@ -64,7 +64,7 @@ class FeUserSearch extends SearchBase
     /**
      * {@inheritdoc}
      *
-     * @see \tx_rnbase_util_SearchBase::getBaseTable()
+     * @see SearchBase::getBaseTable()
      */
     protected function getBaseTable()
     {
@@ -74,7 +74,7 @@ class FeUserSearch extends SearchBase
     /**
      * {@inheritdoc}
      *
-     * @see \tx_rnbase_util_SearchBase::getWrapperClass()
+     * @see SearchBase::getWrapperClass()
      */
     public function getWrapperClass()
     {
@@ -84,7 +84,7 @@ class FeUserSearch extends SearchBase
     /**
      * {@inheritdoc}
      *
-     * @see \tx_rnbase_util_SearchBase::getJoins()
+     * @see SearchBase::getJoins()
      */
     protected function getJoins($tableAliases)
     {

@@ -64,7 +64,7 @@ interface ConfigurationInterface
      *
      * @param bool $addKeepVars Whether or not keepVars should be set
      *
-     * @return \tx_rnbase_util_Link
+     * @return \Sys25\RnBase\Utility\Link
      */
     public function createLink($addKeepVars = true);
 
@@ -92,7 +92,7 @@ interface ConfigurationInterface
     /**
      * Returns the formatter connected to this configuration object.
      *
-     * @return \tx_rnbase_util_FormatUtil
+     * @return \Sys25\RnBase\Frontend\Marker\FormatUtil
      */
     public function getFormatter();
 

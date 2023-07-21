@@ -98,13 +98,13 @@ abstract class WizIcon
     abstract protected function getLLFile();
 
     /**
-     * @return \tx_rnbase_util_Lang
+     * @return Language
      */
     private function includeLocalLang()
     {
         $llFile = $this->getLLFile();
-        /* @var $lang \tx_rnbase_util_Lang */
-        $lang = tx_rnbase::makeInstance('tx_rnbase_util_Lang');
+        /** @var Language $lang */
+        $lang = tx_rnbase::makeInstance(Language::class);
         $lang->loadLLFile($llFile);
 
         return $lang;

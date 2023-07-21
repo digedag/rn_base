@@ -77,7 +77,7 @@ class POI extends Coord implements ILocation
     /**
      * @param int $zoom
      *
-     * @return tx_rnbase_maps_POI
+     * @return POI
      */
     public function setZoomMin($zoom)
     {
@@ -97,7 +97,7 @@ class POI extends Coord implements ILocation
     /**
      * @param int $zoom
      *
-     * @return tx_rnbase_maps_POI
+     * @return POI
      */
     public function setZoomMax($zoom)
     {
@@ -107,7 +107,7 @@ class POI extends Coord implements ILocation
     }
 
     /* (non-PHPdoc)
-     * @see tx_rnbase_maps_ILocation::getCity()
+     * @see ILocation::getCity()
      */
     public function getCity()
     {
@@ -117,7 +117,7 @@ class POI extends Coord implements ILocation
     /**
      * @param string $city
      *
-     * @return tx_rnbase_maps_POI
+     * @return POI
      */
     public function setCity($city)
     {
@@ -127,7 +127,7 @@ class POI extends Coord implements ILocation
     }
 
     /* (non-PHPdoc)
-     * @see tx_rnbase_maps_ILocation::getStreet()
+     * @see ILocation::getStreet()
      */
     public function getStreet()
     {
@@ -137,7 +137,7 @@ class POI extends Coord implements ILocation
     /**
      * @param string $street
      *
-     * @return tx_rnbase_maps_POI
+     * @return POI
      */
     public function setStreet($street)
     {
@@ -147,7 +147,7 @@ class POI extends Coord implements ILocation
     }
 
     /* (non-PHPdoc)
-     * @see tx_rnbase_maps_ILocation::getZip()
+     * @see ILocation::getZip()
      */
     public function getZip()
     {
@@ -157,7 +157,7 @@ class POI extends Coord implements ILocation
     /**
      * @param string $zip
      *
-     * @return tx_rnbase_maps_POI
+     * @return POI
      */
     public function setZip($zip)
     {
@@ -167,7 +167,7 @@ class POI extends Coord implements ILocation
     }
 
     /* (non-PHPdoc)
-     * @see tx_rnbase_maps_ILocation::getCountryCode()
+     * @see ILocation::getCountryCode()
      */
     public function getCountryCode()
     {
@@ -177,7 +177,7 @@ class POI extends Coord implements ILocation
     /**
      * @param string $cc
      *
-     * @return tx_rnbase_maps_POI
+     * @return POI
      */
     public function setCountryCode($cc)
     {
@@ -189,7 +189,7 @@ class POI extends Coord implements ILocation
     /**
      * @param string $desc
      *
-     * @return tx_rnbase_maps_POI
+     * @return POI
      */
     public function setDescription($desc)
     {

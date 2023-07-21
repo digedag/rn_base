@@ -1,12 +1,14 @@
 <?php
 
+use Sys25\RnBase\Utility\Debug;
+use Sys25\RnBase\Utility\Extensions;
 use Sys25\RnBase\Utility\TYPO3;
 use Sys25\RnBase\Utility\Typo3Classes;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2009-2015 Rene Nitzsche
+ *  (c) 2009-2023 Rene Nitzsche
  *  Contact: rene@system25.de
  *
  * This library is free software; you can redistribute it and/or
@@ -178,13 +180,9 @@ class tx_rnbase
         $path = self::_findT3($minimalInformation, $alternativeKey, $prefix, $suffix);
 
         if ($path) {
-            if (TYPO3::isTYPO80OrHigher()) {
-                // Needed for require_once, only fallback, should do the autoloading!
-                global $TYPO3_CONF_VARS;
-                require_once $path;
-            } else {
-                \TYPO3\CMS\Core\Utility\GeneralUtility::requireOnce($path);
-            }
+            // Needed for require_once, only fallback, should do the autoloading!
+            global $TYPO3_CONF_VARS;
+            require_once $path;
         }
 
         return class_exists($minimalInformation) || interface_exists($minimalInformation);
@@ -280,7 +278,7 @@ class tx_rnbase
         $ret['class'] = $class;
         $ret['dir'] = $dir;
         $ret['extkey'] = $key;
-        $ret['extpath'] = tx_rnbase_util_Extensions::extPath($key);
+        $ret['extpath'] = Extensions::extPath($key);
         if ($isExtBase) {
             $path = $ret['extpath'].$dir.$last.$suffix;
         } else {
@@ -419,5 +417,21 @@ class tx_rnbase
         }
 
         return $key ? $key : false;
+    }
+
+    /**
+     * Makes debug output
+     * Prints $var in bold between two vertical lines
+     * If not $var the word 'debug' is printed
+     * If $var is an array, the array is printed by t3lib_div::print_array()
+     * Wrapper method for TYPO3 debug methods.
+     *
+     * @param   mixed       Variable to print
+     * @param   string      the header
+     * @param   string      Group for the debug console
+     */
+    public static function debug($var = '', $header = '', $group = 'Debug')
+    {
+        Debug::debug($var, $header, $group);
     }
 }

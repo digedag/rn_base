@@ -30,6 +30,7 @@ namespace Sys25\RnBase\Configuration;
  ***************************************************************/
 
 use Sys25\RnBase\Exception\SkipActionException;
+use Sys25\RnBase\Frontend\Marker\FormatUtil;
 use Sys25\RnBase\Utility\Arrays;
 use Sys25\RnBase\Utility\Debug;
 use Sys25\RnBase\Utility\Extensions;
@@ -106,7 +107,7 @@ class Processor implements ConfigurationInterface
     private $_viewData = null;
 
     /**
-     * @var \tx_rnbase_IParameters
+     * @var \Sys25\RnBase\Frontend\Request\ParametersInterface
      */
     private $_parameters = null;
 
@@ -188,7 +189,7 @@ class Processor implements ConfigurationInterface
     private $localLangUtil = null;
 
     /**
-     * @var \tx_rnbase_util_FormatUtil
+     * @var \Sys25\RnBase\Frontend\Marker\FormatUtil
      */
     private $_formatter = null;
 
@@ -232,7 +233,7 @@ class Processor implements ConfigurationInterface
             $this->_setCObjectData($cObj->data);
         }
 
-        // If configurationArray['setupPath'] is provided it will be used by \tx_rnbase_configurations or subclass.
+        // If configurationArray['setupPath'] is provided it will be used.
         // if configurationArray['setupPath'] is empty the subclass will use it's internally defined setupPath.
         $this->_setTypoScript($configurationArray['setupPath'] ?? '');
 
@@ -248,7 +249,7 @@ class Processor implements ConfigurationInterface
         $this->_extensionKey = $this->get('extensionKey') ? $this->get('extensionKey') : $extensionKey;
         $this->_qualifier = $this->get('qualifier') ? $this->get('qualifier') : $qualifier;
 
-        $this->_formatter = tx_rnbase::makeInstance('tx_rnbase_util_FormatUtil', $this);
+        $this->_formatter = tx_rnbase::makeInstance(FormatUtil::class, $this);
 
         $this->loadLL();
     }
@@ -383,7 +384,7 @@ class Processor implements ConfigurationInterface
     /**
      * Returns the formatter connected to this configuration object.
      *
-     * @return \tx_rnbase_util_FormatUtil
+     * @return \Sys25\RnBase\Frontend\Marker\FormatUtil
      */
     public function getFormatter()
     {
@@ -822,6 +823,8 @@ class Processor implements ConfigurationInterface
                 return $set;
             }
         }
+
+        return [];
     }
 
     /**
@@ -860,6 +863,8 @@ class Processor implements ConfigurationInterface
                 return $set[$wanted];
             }
         }
+
+        return '';
     }
 
     /**

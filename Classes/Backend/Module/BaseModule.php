@@ -20,7 +20,7 @@ use tx_rnbase;
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009-2021 Rene Nitzsche (rene@system25.de)
+*  (c) 2009-2023 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -44,12 +44,14 @@ use tx_rnbase;
  * Fertige Implementierung eines BE-Moduls. Das Modul ist dabei nur eine Hülle für die einzelnen Modulfunktionen.
  * Die Klasse stellt also lediglich eine Auswahlbox mit den verfügbaren Funktionen bereit. Neue Funktionen können
  * dynamisch über die ext_tables.php angemeldet werden:
- *  tx_rnbase_util_Extensions::insertModuleFunction('user_txmkmailerM1', 'tx_mkmailer_mod1_FuncOverview',
- *    tx_rnbase_util_Extensions::extPath($_EXTKEY).'mod1/class.tx_mkmailer_mod1_FuncOverview.php',
+ *  Extensions::insertModuleFunction(
+ *    'user_txmkmailerM1',
+ *    'tx_mkmailer_mod1_FuncOverview',
+ *    Extensions::extPath($_EXTKEY).'mod1/class.tx_mkmailer_mod1_FuncOverview.php',
  *    'LLL:EXT:mkmailer/mod1/locallang_mod.xml:func_overview'
  *  );
- * Die Funktionsklassen sollten das Interface tx_rnbase_mod_IModFunc implementieren. Eine Basisklasse mit nützlichen
- * Methoden steht natürlich auch bereit: tx_rnbase_mod_BaseModFunc.
+ * Die Funktionsklassen sollten das Interface IModFunc implementieren. Eine Basisklasse mit nützlichen
+ * Methoden steht natürlich auch bereit: BaseModFunc.
  */
 abstract class BaseModule extends BaseScriptClass implements IModule
 {
@@ -73,6 +75,9 @@ abstract class BaseModule extends BaseScriptClass implements IModule
      * @var array
      */
     protected $subselector;
+
+    /** @var string */
+    protected $selector;
 
     /**
      * Initializes the backend module by setting internal variables, initializing the menu.
@@ -239,7 +244,7 @@ abstract class BaseModule extends BaseScriptClass implements IModule
      * Konfiguration mit "page." beginnen muss. Also bspw. "page.lib.test = 42".
      *
      * Ein eigenes TS-Template für das BE wird in der ext_localconf.php mit dieser Anweisung eingebunden:
-     * tx_rnbase_util_Extensions::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:myext/mod1/pageTSconfig.txt">');
+     * Extensions::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:myext/mod1/pageTSconfig.txt">');
      *
      * @return ConfigurationInterface
      */
@@ -598,7 +603,7 @@ abstract class BaseModule extends BaseScriptClass implements IModule
     /**
      * (Non PHP-doc).
      *
-     * @deprecated use tx_rnbase_util_Misc::addFlashMessage instead
+     * @deprecated use \Sys25\RnBase\Utility\Misc::addFlashMessage instead
      */
     public function addMessage($message, $title = '', $severity = 0, $storeInSession = false)
     {
@@ -606,7 +611,7 @@ abstract class BaseModule extends BaseScriptClass implements IModule
     }
 
     /**
-     * @deprecated use Tx_Rnbase_Backend_Utility::issueCommand instead
+     * @deprecated use BackendUtility::issueCommand instead
      */
     public function issueCommand($getParameters, $redirectUrl = '')
     {
@@ -621,5 +626,10 @@ abstract class BaseModule extends BaseScriptClass implements IModule
     public function getRouteIdentifier()
     {
         return '';
+    }
+
+    public function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 }

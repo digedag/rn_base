@@ -20,7 +20,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013-2021 Rene Nitzsche
+ *  (c) 2013-2023 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -53,14 +53,18 @@ class TSFAL
      */
     public $cObj;
 
+    public function setContentObjectRenderer(ContentObjectRenderer $cObj): void
+    {
+        $this->cObj = $cObj;
+    }
+
     /**
      * Typoscript USER function for rendering DAM images.
      * This is a minimal Setup:
      * <pre>
      * yourObject.imagecol = USER
      * yourObject.imagecol {
-     *   userFunc=tx_rnbase_util_TSFAL->printImages
-     *   includeLibs = EXT:rn_base/util/class.tx_rnbase_util_TSFAL.php
+     *   userFunc=Sys25\RnBase\Utility\TSFAL->printImages
      *   refField=imagecol
      *   refTable=tx_yourextkey_tablename
      *   template = EXT:rn_base/Resources/Private/Templates/simplegallery.html
@@ -275,7 +279,7 @@ class TSFAL
     }
 
     /**
-     * Erstellt eine Instanz von Tx_Rnbase_Configuration_ProcessorInterface.
+     * Erstellt eine Instanz von ConfigurationInterface.
      *
      * @param array $conf
      *
@@ -283,6 +287,7 @@ class TSFAL
      */
     public function createConf($conf)
     {
+        /** @var Processor $configurations */
         $configurations = tx_rnbase::makeInstance(Processor::class);
         $configurations->init($conf, $this->cObj, $conf['qualifier'] ?? '', $conf['qualifier'] ?? '');
 
@@ -299,7 +304,7 @@ class TSFAL
      *   file.treatIdAsReference = 1
      *   file.import.cObject = USER
      *   file.import.cObject {
-     *     userFunc=tx_rnbase_util_TSFAL->fetchFirstReference
+     *     userFunc=Sys25\RnBase\Utility\TSFAL->fetchFirstReference
      *     refField=t3logo
      *     refTable=tx_cfcleague_teams
      *     ### default is the uid of the cObject
@@ -412,7 +417,6 @@ class TSFAL
             $fileObject = $fileRef->getOriginalFile();
             if ($fileObject) {
                 $imageSetup = [];
-                unset($imageSetup['field']);
                 $sizeArr = $sizeArr ? $sizeArr : ['width' => 64, 'height' => 64];
                 $imageSetup = array_merge($sizeArr, $imageSetup);
                 $imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, $imageSetup)->getPublicUrl(true);
@@ -438,7 +442,7 @@ class TSFAL
      *              ),
      *      )
      *
-     * @param array $ref
+     * @param string $ref
      * @param array $options These options are merged into the resulting TCA
      *
      * @return array

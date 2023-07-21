@@ -263,7 +263,7 @@ abstract class AbstractAction
      * @param string                 $confId
      * @param array                  $params
      *
-     * @return \tx_rnbase_util_Link link instance
+     * @return \Sys25\RnBase\Utility\Link link instance
      */
     protected function createLink($configurations, $confId, $params = [])
     {

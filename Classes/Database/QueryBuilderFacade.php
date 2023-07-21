@@ -129,7 +129,7 @@ class QueryBuilderFacade
             ) {
                 $options['enablefieldsbe'] = 1;
                 if (Environment::isFrontend()) {
-                    // wir nehmen nicht tx_rnbase_util_TYPO3::getTSFE()->set_no_cache weil das durch
+                    // wir nehmen nicht Sys25\RnBase\Utility\TYPO3::getTSFE()->set_no_cache weil das durch
                     // $GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter'] deaktiviert werden
                     // kann. Das wollen wir aber nicht. Der Cache muss in jedem Fall deaktiviert werden.
                     // Ansonsten könnten darin Dinge landen, die normale Nutzer nicht

@@ -8,15 +8,15 @@ use ReflectionObject;
 use ReflectionProperty;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Domain\Model\BaseModel;
+use Sys25\RnBase\Utility\Spyc;
 use Sys25\RnBase\Utility\TYPO3;
+use Sys25\RnBase\Utility\Typo3Classes;
 use tx_rnbase;
-use tx_rnbase_util_Spyc;
-use tx_rnbase_util_Typo3Classes;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2018-2021 Rene Nitzsche (rene@system25.de)
+ *  (c) 2018-2023 Rene Nitzsche (rene@system25.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -77,7 +77,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
      * self::createConfigurations(
      *   array(), 'rn_base', 'rn_base',
      *   tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class),
-     *   tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass())
+     *   tx_rnbase::makeInstance(Typo3Classes::getContentObjectRendererClass())
      * );.
      *
      * @param array  $configurationArray
@@ -176,11 +176,11 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
      * @param array  $record
      * @param string $class
      *
-     * @return \tx_rnbase_model_base|\PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit\Framework\MockObject\MockObject
      */
     protected function getModel(
         $record = null,
-        $class = 'tx_rnbase_model_base',
+        $class = BaseModel::class,
         array $methods = []
     ) {
         // $record has to be an array,
@@ -196,7 +196,6 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
 
         $isNewModel = (
             is_subclass_of($class, BaseModel::class) ||
-            'Tx_Rnbase_Domain_Model_Base' == $class ||
             BaseModel::class == $class
         );
 
@@ -228,33 +227,33 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
      * Converts a YAML to a model mock.
      *
      * YAML example:
-     * _model: Tx_Rnbase_Domain_Model_Base
+     * _model: Sys25\RnBase\Domain\Model\BaseModel
      * _record:
      *   uid: 3
      * getCategory:
-     *   _model: Tx_Rnbase_Domain_Model_Data
+     *   _model: Sys25\RnBase\Domain\Model\DataModel
      *   _record:
      *   uid: 5
      * getCategories:
      *   -
-     *   _model: Tx_Rnbase_Domain_Model_Data
+     *   _model: Sys25\RnBase\Domain\Model\DataModel
      *   _record:
      *     uid: 12
      *   -
-     *   _model: Tx_Rnbase_Domain_Model_Data
+     *   _model: Sys25\RnBase\Domain\Model\DataModel
      *   _record:
      *     uid: 13
      *
      * @param mixed $data              Usually the yaml file
      * @param bool  $tryToLoadYamlFile
      *
-     * @return \tx_rnbase_model_base|\PHPUnit_Framework_MockObject_MockObject
+     * @return BaseModel|\PHPUnit\Framework\MockObject\MockObject|array
      */
     protected function loadYaml($data, $tryToLoadYamlFile = true)
     {
         // there is no array, so convert the yaml content or file
         if ($tryToLoadYamlFile && !is_array($data)) {
-            $data = tx_rnbase_util_Spyc::YAMLLoad($data);
+            $data = Spyc::YAMLLoad($data);
         }
 
         // we have an model
@@ -263,7 +262,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
             $getters = $this->yamlFindGetters($data);
 
             $clazz = (
-                empty($data['_model']) ? 'tx_rnbase_model_base' : $data['_model']
+                empty($data['_model']) ? BaseModel::class : $data['_model']
             );
 
             $model = $this->getModel(
@@ -304,7 +303,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
      *
      * @param array $array
      *
-     * @return \tx_rnbase_model_base|\PHPUnit_Framework_MockObject_MockObject
+     * @return array
      */
     private function yamlFindGetters(
         array $array
@@ -421,8 +420,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
      * @param bool          $callOriginalClone       whether to call the __clone method
      * @param bool          $callAutoload            whether to call any autoload function
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
-     *                                                                                                  a mock of $originalClassName with access methods added
+     * @return \PHPUnit\Framework\MockObject\MockObject a mock of $originalClassName with access methods added
      *
      * @see \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase::getAccessibleMock
      */
@@ -463,7 +461,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
      */
     protected function buildAccessibleProxy($className)
     {
-        $accessibleClassName = uniqid('Tx_Rnbase_Phpunit_AccessibleProxy');
+        $accessibleClassName = uniqid($className);
         $class = new \ReflectionClass($className);
         $abstractModifier = $class->isAbstract() ? 'abstract ' : '';
 
@@ -583,7 +581,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
      * @param bool   $callAutoload
      * @param bool   $cloneArguments
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit\Framework\MockObject\MockObject
      */
     public function getMockForAbstract(
         $originalClassName,
@@ -610,7 +608,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
     protected function resetIndependentEnvironmentCache()
     {
         $property = new ReflectionProperty(
-            tx_rnbase_util_Typo3Classes::getGeneralUtilityClass(),
+            Typo3Classes::getGeneralUtilityClass(),
             'indpEnvCache'
         );
         $property->setAccessible(true);

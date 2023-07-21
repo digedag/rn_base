@@ -37,7 +37,7 @@ abstract class AbstractView
      * Set the path of the template directory.
      *
      * You can make use the syntax EXT:myextension/somepath.
-     * It will be evaluated to the absolute path by tx_rnbase_util_Files::getFileAbsFileName()
+     * It will be evaluated to the absolute path by Sys25\RnBase\Utility\Files::getFileAbsFileName()
      *
      * @param string path to the directory containing the php templates
      */

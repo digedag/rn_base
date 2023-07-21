@@ -116,7 +116,7 @@ class Queue
      */
     public function clear()
     {
-        $this->arrCurrentSize = 0;
+        $this->intCurrentSize = 0;
         $this->intBegin = 0;
         $this->intEnd = $this->intArraySize - 1;
     }

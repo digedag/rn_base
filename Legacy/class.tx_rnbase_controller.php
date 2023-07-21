@@ -9,6 +9,7 @@ use Sys25\RnBase\Utility\Arrays;
 use Sys25\RnBase\Utility\Logger;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /***************************************************************
  *  Copyright notice
@@ -125,6 +126,11 @@ class tx_rnbase_controller
     public $qualifier;
 
     private $errors = [];
+
+    public function setContentObjectRenderer(ContentObjectRenderer $cObj): void
+    {
+        $this->cObj = $cObj;
+    }
 
     /*
      * main(): A factory method for the responsible action

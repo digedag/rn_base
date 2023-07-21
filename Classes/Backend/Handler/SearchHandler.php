@@ -132,7 +132,7 @@ abstract class SearchHandler implements IModHandler
     /**
      * Returns the handler options.
      *
-     * @param \tx_rnbase_mod_IModule $mod
+     * @param IModule $mod
      * @param array                  $options
      */
     protected function init(

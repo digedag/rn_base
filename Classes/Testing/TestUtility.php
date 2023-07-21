@@ -2,13 +2,13 @@
 
 namespace Sys25\RnBase\Testing;
 
+use Sys25\RnBase\Utility\Typo3Classes;
 use tx_rnbase;
-use tx_rnbase_util_Typo3Classes;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2018-2021 Rene Nitzsche (rene@system25.de)
+ *  (c) 2018-2023 Rene Nitzsche (rene@system25.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -40,7 +40,7 @@ class TestUtility
      * TestUtility::createConfigurations(
      *   array(), 'rn_base', 'rn_base',
      *   tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class),
-     *   tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass())
+     *   tx_rnbase::makeInstance(Typo3Classes::getContentObjectRendererClass())
      * );.
      *
      * @param array  $configurationArray
@@ -67,7 +67,7 @@ class TestUtility
             if ($arg instanceof \Sys25\RnBase\Frontend\Request\Parameters) {
                 $parameters = $arg;
             }
-            $contentObjectRendererClass = tx_rnbase_util_Typo3Classes::getContentObjectRendererClass();
+            $contentObjectRendererClass = Typo3Classes::getContentObjectRendererClass();
             if ($arg instanceof $contentObjectRendererClass) {
                 $cObj = $arg;
             }
