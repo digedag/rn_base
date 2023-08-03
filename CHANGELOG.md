@@ -3,6 +3,10 @@
 Changelog
 ---------
 
+v1.17.2 (03.08.2023)
+
+* fix autoloading in none composer installs (#322)
+
 v1.17.1 (21.07.2023)
 
 * Update for TYPO3 12.4 LTS 
