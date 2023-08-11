@@ -3,7 +3,7 @@
 Changelog
 ---------
 
-v1.16.13 (11.08.2023)
+v1.16.14 (11.08.2023)
 * Fix installation in non composer mode
 * Fix several PHP warnings
 
