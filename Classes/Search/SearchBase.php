@@ -562,7 +562,7 @@ abstract class SearchBase
      */
     protected function addGenericTableMappings(&$tableMapping, $options)
     {
-        $aliasArr = $options['alias'];
+        $aliasArr = $options['alias'] ?? null;
         if (is_array($aliasArr)) {
             foreach ($aliasArr as $alias => $data) {
                 $tableMapping[$alias] = $data['table'];
