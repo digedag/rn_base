@@ -491,7 +491,7 @@ abstract class SearchBase
     {
         $genericJoins = null;
         if ($this->isGeneric()) {
-            $aliasArr = $this->genericData['alias'];
+            $aliasArr = $this->genericData['alias'] ?? null;
             if (is_array($aliasArr)) {
                 foreach ($aliasArr as $alias => $data) {
                     $makeJoin = isset($tableAliases[$alias]);

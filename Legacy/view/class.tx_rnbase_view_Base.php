@@ -79,8 +79,9 @@ class tx_rnbase_view_Base
         if ($controller) {
             $params = [];
             $params['confid'] = $controller->getConfId();
-            $params['item'] = $controller->getViewData()->offsetGet('item');
-            $params['items'] = $controller->getViewData()->offsetGet('items');
+            $viewData = $controller->getViewData();
+            $params['item'] = $viewData->offsetExists('item') ? $viewData->offsetGet('item') : null;
+            $params['items'] = $viewData->offsetExists('items') ? $viewData->offsetGet('items') : null;
             $markerArray = $subpartArray = $wrappedSubpartArray = [];
             tx_rnbase_util_BaseMarker::callModules(
                 $out,
