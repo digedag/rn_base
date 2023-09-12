@@ -3,6 +3,9 @@
 Changelog
 ---------
 
+v1.16.15 (12.09.2023)
+* handle cache tags before extbase actions are called
+
 v1.16.14 (11.08.2023)
 * Fix installation in non composer mode
 * Fix several PHP warnings
