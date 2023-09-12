@@ -3,6 +3,10 @@
 Changelog
 ---------
 
+v1.15.5 (12.09.2023)
+* handle cache tags before extbase actions are called
+
+
 v1.15.4 (10.01.2023)
 * add classes for feuser and session handling
 * bugfixes and cleanup
