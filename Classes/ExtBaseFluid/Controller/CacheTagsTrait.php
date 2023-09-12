@@ -41,8 +41,8 @@ trait CacheTagsTrait
 {
     public function callActionMethod()
     {
-        parent::callActionMethod();
         $this->handleCacheTags();
+        parent::callActionMethod();
     }
 
     protected function handleCacheTags()
