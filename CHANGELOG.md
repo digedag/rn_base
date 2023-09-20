@@ -3,6 +3,11 @@
 Changelog
 ---------
 
+v1.17.3 (20.09.2023)
+
+* fix undefined function Sys25\RnBase\Utility\str_starts_with()
+* some minor fixes for PHP 8.x
+
 v1.17.2 (03.08.2023)
 
 * fix autoloading in none composer installs (#322)
