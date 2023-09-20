@@ -84,6 +84,10 @@ class Strings
      */
     public static function isFirstPartOfStr($haystack, $needle)
     {
+        if (!function_exists('str_starts_with')) {
+            return '' !== (string) $needle && 0 === strncmp($haystack, $needle, strlen($needle));
+        }
+
         return str_starts_with($haystack, $needle);
     }
 
