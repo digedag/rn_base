@@ -3,6 +3,10 @@
 Changelog
 ---------
 
+v1.17.4 (22.09.2023)
+
+* fix autoloading for T3 8.x non-composer-mode
+
 v1.17.3 (20.09.2023)
 
 * fix undefined function Sys25\RnBase\Utility\str_starts_with()
