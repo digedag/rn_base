@@ -143,7 +143,7 @@ class ConnectionTest extends BaseTestCase
 
         // TYPO3 <= 7 deleted=0
         // TYPO3 >= 8 `deleted` = 0
-        $this->assertMatchesRegularExpression('/deleted(` )?=/', $sql, 'deleted is missing');
+        $this->assertRegExp('/deleted(` )?=/', $sql, 'deleted is missing');
 
         $fields = ['hidden', 'starttime', 'endtime', 'fe_group'];
         foreach ($fields as $field) {
@@ -166,7 +166,7 @@ class ConnectionTest extends BaseTestCase
 
         $fields = ['hidden', 'starttime', 'endtime', 'fe_group', 'deleted'];
         foreach ($fields as $field) {
-            $this->assertMatchesRegularExpression('/'.$field.'(` )?(=|<=)/', $sql, $field.' not found');
+            $this->assertRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field.' not found');
         }
     }
 
@@ -202,7 +202,7 @@ class ConnectionTest extends BaseTestCase
 
         $fields = ['hidden', 'starttime', 'endtime', 'fe_group', 'deleted'];
         foreach ($fields as $field) {
-            $this->assertMatchesRegularExpression('/'.$field.'(` )?(=|<=)/', $sql, $field.' not found');
+            $this->assertRegExp('/'.$field.'(` )?(=|<=)/', $sql, $field.' not found');
         }
     }
 
@@ -219,7 +219,7 @@ class ConnectionTest extends BaseTestCase
         $options['sqlonly'] = 1;
         $sql = $this->connection->doSelect('*', 'tt_content', $options);
 
-        $this->assertMatchesRegularExpression('/deleted(` )?=/', $sql, 'deleted is missing');
+        $this->assertRegExp('/deleted(` )?=/', $sql, 'deleted is missing');
 
         $fields = ['hidden', 'starttime', 'endtime', 'fe_group'];
         foreach ($fields as $field) {
@@ -246,7 +246,7 @@ class ConnectionTest extends BaseTestCase
 
         $fields = ['hidden', 'starttime', 'endtime', 'fe_group', 'deleted'];
         foreach ($fields as $field) {
-            $this->assertMatchesRegularExpression('/'.$field.'/', $sql, $field.' not found');
+            $this->assertRegExp('/'.$field.'/', $sql, $field.' not found');
         }
 
         self::assertFalse(TYPO3::getTSFE()->no_cache, 'Cache nicht aktiviert');

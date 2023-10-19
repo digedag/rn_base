@@ -184,7 +184,7 @@ class ToolBoxTest extends BaseTestCase
         $options = ['test'];
         $urlParameters = 'someParameters';
 
-        self::assertMatchesRegularExpression(
+        self::assertRegExp(
             '/return jumpToUrl\(\'.*someParameters.*redirect=\'\+T3_THIS_LOCATION.*/',
             $formTool->_call('getJavaScriptForLinkToDataHandlerAction', $urlParameters, $options)
         );
@@ -359,7 +359,7 @@ class ToolBoxTest extends BaseTestCase
             ->with(false, ['params' => ['parameter' => 'test', 'id' => '0']])
             ->will(self::returnValue('jumpUrl'));
 
-        self::assertMatchesRegularExpression(
+        self::assertRegExp(
             '/<a href="#" class="myClass" onclick="window.location.href=\'jumpUrl\'; return false;" >.*<img.*actions\-add\.svg" width="16" height="16".*<\/a>/s',
             $formTool->createLink($urlParameters, 0, 'mylabel', $options)
         );
@@ -385,7 +385,7 @@ class ToolBoxTest extends BaseTestCase
             ->with(false, ['params' => ['parameter' => 'test', 'id' => '0']])
             ->will(self::returnValue('jumpUrl'));
 
-        self::assertMatchesRegularExpression(
+        self::assertRegExp(
             '/<a href="#" class="myClass" onclick="window.location.href=\'jumpUrl\'; return false;" >.*<img.*actions\-add\.svg" width="32" height="32".*<\/a>/s',
             $formTool->createLink($urlParameters, 0, 'mylabel', $options)
         );

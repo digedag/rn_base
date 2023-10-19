@@ -546,7 +546,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
             \tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/PageBrowserViewHelperWithoutHideIfSinglePage.html')
         );
 
-        self::assertMatchesRegularExpression(
+        self::assertRegExp(
             '/<div class="pagebrowser"><a href=".*&amp;rn_base%5Bpb-1-pointer%5D=0">1<\/a><\/div>/',
             trim($view->render())
         );
@@ -569,7 +569,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
         $view->setTemplatePathAndFilename(
             \tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/PageBrowserViewHelper.html')
         );
-        self::assertMatchesRegularExpression(
+        self::assertRegExp(
             '/<div class="pagebrowser">'.
             '<a class="current" href=".*&amp;rn_base%5Bpb-1-pointer%5D=0">1<\/a> '.
             '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=1">2<\/a> '.
@@ -601,7 +601,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
             \tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/PageBrowserViewHelper.html')
         );
 
-        self::assertMatchesRegularExpression(
+        self::assertRegExp(
             '/<div class="pagebrowser">'.
             '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=0">first<\/a> '.
             '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=2">previous<\/a> '.
@@ -635,7 +635,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
             \tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/PageBrowserViewHelper.html')
         );
 
-        self::assertMatchesRegularExpression(
+        self::assertRegExp(
             '/<div class="pagebrowser">'.
             '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=0">first<\/a> '.
             '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=8">previous<\/a> '.
@@ -667,7 +667,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
             \tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/PageBrowserViewHelper.html')
         );
 
-        self::assertMatchesRegularExpression(
+        self::assertRegExp(
             '/<div class="pagebrowser">'.
             '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=0">first<\/a> '.
             '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=2">previous<\/a> '.

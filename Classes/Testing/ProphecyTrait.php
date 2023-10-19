@@ -46,7 +46,9 @@ if (!trait_exists('Prophecy\\PhpUnit\\ProphecyTrait')) {
         {
             if (\is_string($classOrInterface)) {
                 \assert($this instanceof TestCase);
-                $this->recordDoubledType($classOrInterface);
+                if (method_exists($this, 'recordDoubledType')) {
+                    $this->recordDoubledType($classOrInterface);
+                }
             }
 
             return $this->getProphet()->prophesize($classOrInterface);
