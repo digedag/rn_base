@@ -45,7 +45,7 @@
 		"phpstan/phpstan-phpunit": "^1.0.0",
 		"phpunit/phpunit": "^6.5.14 || ^7.5.20 || ^8.0 || ^9.0 || ^10.0",
 		"saschaegerer/phpstan-typo3": "^1.0",
-		"phpspec/prophecy-phpunit": "^2.0",
+		"phpspec/prophecy-phpunit": "^1.0 || ^2.0",
 		"typo3/cms-backend": "^8.7 || ^9.5 || ^10.4 || ^11.5 || ^12.4",
 		"typo3/cms-frontend": "^8.7 || ^9.5 || ^10.4 || ^11.5 || ^12.4",
 		"typo3/cms-scheduler": "^8.7 || ^9.5 || ^10.4 || ^11.5 || ^12.4"
@@ -62,10 +62,12 @@
 		],
 		"files": [
 			"Classes/class.tx_rnbase.php",
-			"Classes/Constants.php"
+			"Classes/Constants.php",
+			"Classes/Testing/ProphecyTrait.php"
 		],
 		"psr-4": {
 			"Sys25\\RnBase\\": "Classes",
+			"Prophecy\\PhpUnit\\": "Classes",
 			"Contrib\\": "Resources/Private/Php/Contrib"
 		}
 	},
@@ -100,13 +102,7 @@
 		],
 		"test:phplint": ".github/bin/php_lint.sh Classes Legacy Migrations tests",
 		"test:phpcompat": [
-			".github/bin/php_compat.sh 7.1",
-			".github/bin/php_compat.sh 7.2",
-			".github/bin/php_compat.sh 7.3",
-			".github/bin/php_compat.sh 7.4",
-			".github/bin/php_compat.sh 8.0",
-			".github/bin/php_compat.sh 8.1",
-			".github/bin/php_compat.sh 8.2"
+			".github/bin/php_compat.sh "
 		],
 		"test:phpcs": [
 			"[ -e .Build/bin/php-cs-fixer ] || composer update",
@@ -120,7 +116,13 @@
 		"test": [
 			"@test:phplint",
 			"@test:phpcs",
-			"@test:phpcompat",
+			"@test:phpcompat 7.1",
+			"@test:phpcompat 7.2",
+			"@test:phpcompat 7.3",
+			"@test:phpcompat 7.4",
+			"@test:phpcompat 8.0",
+			"@test:phpcompat 8.1",
+			"@test:phpcompat 8.2",
 			"@test:phpstan",
 			"@test:phpunit"
 		],

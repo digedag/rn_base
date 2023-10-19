@@ -29,7 +29,7 @@ use TYPO3\CMS\Extbase\Mvc\RequestInterface;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
+/*
  * When using this trait you can configure your cache tags like this through TypoScript
  * for the actions of a extbase controller:
  * plugin.ty_my_ext.settings.cacheTags.$lowerCamelCaseControllerNameOmittingController.$lowerCaseActionNameOmittingAction.0 = my_cache_tag
@@ -45,6 +45,7 @@ if (TYPO3::isTYPO115OrHigher()) {
         public function callActionMethod(RequestInterface $request): ResponseInterface
         {
             $this->handleCacheTags();
+
             return parent::callActionMethod($request);
         }
 
@@ -72,4 +73,3 @@ if (TYPO3::isTYPO115OrHigher()) {
         }
     }
 }
-
