@@ -6,7 +6,13 @@ services:
 
   Sys25\RnBase\:
     resource: '../Classes/*'
-    exclude: ['../Classes/Domain/Model/*', '../Classes/Constants.php', '../Classes/class.tx_rnbase.php', '../Classes/Typo3Wrapper/*']
+    exclude: [
+      '../Classes/Domain/Model/*',
+      '../Classes/Constants.php',
+      '../Classes/class.tx_rnbase.php',
+      '../Classes/Typo3Wrapper/*',
+      '../Classes/Testing/*'
+    ]
 
   Sys25\RnBase\Backend\Module\ModFuncFrame:
     public: true

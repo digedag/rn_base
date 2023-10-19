@@ -46,7 +46,7 @@ if (!trait_exists('Prophecy\\PhpUnit\\ProphecyTrait')) {
         {
             if (\is_string($classOrInterface)) {
                 \assert($this instanceof TestCase);
-                if (method_exists($this, 'recordDoubledType')) {
+                if (method_exists($this, 'recordDoubledType') && is_callable([$this, 'recordDoubledType'])) {
                     $this->recordDoubledType($classOrInterface);
                 }
             }
