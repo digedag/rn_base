@@ -4,6 +4,7 @@ namespace Sys25\RnBase\Backend\Utility;
 
 use Sys25\RnBase\Backend\Decorator\InterfaceDecorator;
 use Sys25\RnBase\Domain\Model\DataModel;
+use tx_rnbase;
 
 /***************************************************************
  * Copyright notice
@@ -61,7 +62,7 @@ class DecoratorUtility
         InterfaceDecorator $decorator = null,
         $options = []
     ) {
-        return \tx_rnbase::makeInstance(
+        return tx_rnbase::makeInstance(
             DecoratorUtility::class,
             $decorator,
             $options

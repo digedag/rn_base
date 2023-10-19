@@ -3,6 +3,7 @@
 namespace Sys25\RnBase\Frontend\View;
 
 use Sys25\RnBase\Frontend\Request\RequestInterface;
+use tx_rnbase;
 
 /***************************************************************
 * Copyright notice
@@ -35,7 +36,7 @@ class Factory
         // It is possible to set another view via typoscript
         $viewClassName = $configurations->get($context->getConfId().'viewClassName');
         $viewClassName = strlen($viewClassName) > 0 ? $viewClassName : $fallbackViewClassName;
-        $view = \tx_rnbase::makeInstance($viewClassName);
+        $view = tx_rnbase::makeInstance($viewClassName);
         $view->setTemplatePath($configurations->getTemplatePath());
         $view->setTemplateFile($templateFile);
 

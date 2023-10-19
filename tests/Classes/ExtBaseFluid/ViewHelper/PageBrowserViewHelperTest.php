@@ -2,8 +2,13 @@
 
 namespace Sys25\RnBase\ExtBaseFluid\ViewHelper;
 
+use ReflectionProperty;
 use Sys25\RnBase\ExtBaseFluid\View\Factory;
 use Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowser\CurrentPageViewHelper;
+use tx_rnbase;
+use tx_rnbase_util_Files;
+use tx_rnbase_util_Misc;
+use tx_rnbase_util_PageBrowser;
 
 /***************************************************************
  * Copyright notice
@@ -45,7 +50,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
     protected function setUp(): void
     {
         parent::setUp();
-        \tx_rnbase_util_Misc::prepareTSFE();
+        tx_rnbase_util_Misc::prepareTSFE();
     }
 
     /**
@@ -67,7 +72,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
      */
     public function testRenderReturnsEmptyStringIfOnePageAndHideIfSingelPageIsTrue()
     {
-        $pageBrowser = \tx_rnbase::makeInstance(
+        $pageBrowser = tx_rnbase::makeInstance(
             'tx_rnbase_util_PageBrowser',
             1
         );
@@ -93,7 +98,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
      */
     public function testRenderCallsOnlyNoRenderPageMethodIfPointerZeroAndReturnsEmptyString()
     {
-        $pageBrowser = \tx_rnbase::makeInstance(
+        $pageBrowser = tx_rnbase::makeInstance(
             'tx_rnbase_util_PageBrowser',
             1
         );
@@ -144,7 +149,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
      */
     public function testRenderCallsRenderFirstPageAndRenderPrevPageMethodIfPointer2AndTotalPages3AndReturnsCorrectBrowserParts()
     {
-        $pageBrowser = \tx_rnbase::makeInstance(
+        $pageBrowser = tx_rnbase::makeInstance(
             'tx_rnbase_util_PageBrowser',
             1
         );
@@ -194,7 +199,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
      */
     public function testRenderCallsRenderNextPageAndRenderLastPageMethodIfPointer0AndTotalPages2AndReturnsCorrectBrowserParts()
     {
-        $pageBrowser = \tx_rnbase::makeInstance(
+        $pageBrowser = tx_rnbase::makeInstance(
             'tx_rnbase_util_PageBrowser',
             1
         );
@@ -244,7 +249,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
      */
     public function testRenderCallsRenderNormalPageAndRenderCurrentPageCorrect()
     {
-        $pageBrowser = \tx_rnbase::makeInstance(
+        $pageBrowser = tx_rnbase::makeInstance(
             'tx_rnbase_util_PageBrowser',
             1
         );
@@ -299,7 +304,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
      */
     public function testRenderAddsAndRemovesQualifierCorrectInViewHelperVariableContainer()
     {
-        $pageBrowser = \tx_rnbase::makeInstance(
+        $pageBrowser = tx_rnbase::makeInstance(
             'tx_rnbase_util_PageBrowser',
             1
         );
@@ -326,7 +331,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
                 PageBrowserViewHelper::class,
                 'pageBrowserQualifier'
             );
-        $property = new \ReflectionProperty(
+        $property = new ReflectionProperty(
             PageBrowserViewHelper::class,
             'viewHelperVariableContainer'
         );
@@ -343,7 +348,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
      */
     public function testRenderAddsAndRemovesQualifierCorrectInViewHelperVariableContainerIfQualifierFromConfigurations()
     {
-        $pageBrowser = \tx_rnbase::makeInstance(
+        $pageBrowser = tx_rnbase::makeInstance(
             'tx_rnbase_util_PageBrowser',
             1
         );
@@ -374,7 +379,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
                 PageBrowserViewHelper::class,
                 'pageBrowserQualifier'
             );
-        $property = new \ReflectionProperty(
+        $property = new ReflectionProperty(
             PageBrowserViewHelper::class,
             'viewHelperVariableContainer'
         );
@@ -391,7 +396,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
      */
     public function testRenderAddsAndRemovesCountAndTotalPagesCorrectInTemplateVariableContainer()
     {
-        $pageBrowser = \tx_rnbase::makeInstance(
+        $pageBrowser = tx_rnbase::makeInstance(
             'tx_rnbase_util_PageBrowser',
             1
         );
@@ -419,7 +424,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
             ->method('remove')
             ->with('totalPages');
 
-        $property = new \ReflectionProperty(
+        $property = new ReflectionProperty(
             PageBrowserViewHelper::class,
             'templateVariableContainer'
         );
@@ -436,7 +441,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
      */
     public function testRenderEvaluatesPageBrowserViewHelperInChildNodesCorrect()
     {
-        $pageBrowser = \tx_rnbase::makeInstance(
+        $pageBrowser = tx_rnbase::makeInstance(
             'tx_rnbase_util_PageBrowser',
             1
         );
@@ -491,7 +496,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
         $view = Factory::getViewInstance($configurations);
         $view->setTemplatePathAndFilename(
-            \tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/PageBrowserViewHelper.html')
+            tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/PageBrowserViewHelper.html')
         );
 
         self::assertEquals(
@@ -509,7 +514,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
     {
         $configurations = $this->createConfigurations([], 'rn_base');
 
-        $pageBrowser = \tx_rnbase::makeInstance('tx_rnbase_util_PageBrowser', 1);
+        $pageBrowser = tx_rnbase::makeInstance('tx_rnbase_util_PageBrowser', 1);
         $pageBrowser->setState(0, 1, 1);
         $pageBrowser->setPointer(0);
 
@@ -517,7 +522,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
         $view->assignMultiple(['pagebrowser' => $pageBrowser, 'maxPages' => 5]);
 
         $view->setTemplatePathAndFilename(
-            \tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/PageBrowserViewHelper.html')
+            tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/PageBrowserViewHelper.html')
         );
 
         self::assertEquals(
@@ -535,7 +540,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
     {
         $configurations = $this->createConfigurations([], 'rn_base');
 
-        $pageBrowser = \tx_rnbase::makeInstance('tx_rnbase_util_PageBrowser', 1);
+        $pageBrowser = tx_rnbase::makeInstance('tx_rnbase_util_PageBrowser', 1);
         $pageBrowser->setState(0, 1, 1);
         $pageBrowser->setPointer(0);
 
@@ -543,7 +548,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
         $view->assignMultiple(['pagebrowser' => $pageBrowser, 'maxPages' => 5]);
 
         $view->setTemplatePathAndFilename(
-            \tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/PageBrowserViewHelperWithoutHideIfSinglePage.html')
+            tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/PageBrowserViewHelperWithoutHideIfSinglePage.html')
         );
 
         self::assertRegExp(
@@ -560,14 +565,14 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
     public function testRenderIfOnFirstPage()
     {
         $configurations = $this->createConfigurations([], 'rn_base');
-        $pageBrowser = \tx_rnbase::makeInstance('tx_rnbase_util_PageBrowser', 1);
+        $pageBrowser = tx_rnbase::makeInstance('tx_rnbase_util_PageBrowser', 1);
         $pageBrowser->setState(0, 20, 2);
         $pageBrowser->setPointer(0);
 
         $view = Factory::getViewInstance($configurations);
         $view->assignMultiple(['pagebrowser' => $pageBrowser, 'maxPages' => 5]);
         $view->setTemplatePathAndFilename(
-            \tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/PageBrowserViewHelper.html')
+            tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/PageBrowserViewHelper.html')
         );
         self::assertRegExp(
             '/<div class="pagebrowser">'.
@@ -591,14 +596,14 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
     public function testRenderIfOnMiddlePage()
     {
         $configurations = $this->createConfigurations([], 'rn_base');
-        $pageBrowser = \tx_rnbase::makeInstance('tx_rnbase_util_PageBrowser', 1);
+        $pageBrowser = tx_rnbase::makeInstance('tx_rnbase_util_PageBrowser', 1);
         $pageBrowser->setState(0, 20, 2);
         $pageBrowser->setPointer(3);
 
         $view = Factory::getViewInstance($configurations);
         $view->assignMultiple(['pagebrowser' => $pageBrowser, 'maxPages' => 5]);
         $view->setTemplatePathAndFilename(
-            \tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/PageBrowserViewHelper.html')
+            tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/PageBrowserViewHelper.html')
         );
 
         self::assertRegExp(
@@ -625,14 +630,14 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
     public function testRenderIfOnLastPage()
     {
         $configurations = $this->createConfigurations([], 'rn_base');
-        $pageBrowser = \tx_rnbase::makeInstance('tx_rnbase_util_PageBrowser', 1);
+        $pageBrowser = tx_rnbase::makeInstance('tx_rnbase_util_PageBrowser', 1);
         $pageBrowser->setState(0, 20, 2);
         $pageBrowser->setPointer(9);
 
         $view = Factory::getViewInstance($configurations);
         $view->assignMultiple(['pagebrowser' => $pageBrowser, 'maxPages' => 5]);
         $view->setTemplatePathAndFilename(
-            \tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/PageBrowserViewHelper.html')
+            tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/PageBrowserViewHelper.html')
         );
 
         self::assertRegExp(
@@ -657,14 +662,14 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
     public function testRenderRespectsMaxPagesConfiguration()
     {
         $configurations = $this->createConfigurations([], 'rn_base');
-        $pageBrowser = \tx_rnbase::makeInstance('tx_rnbase_util_PageBrowser', 1);
+        $pageBrowser = tx_rnbase::makeInstance('tx_rnbase_util_PageBrowser', 1);
         $pageBrowser->setState(0, 20, 2);
         $pageBrowser->setPointer(3);
 
         $view = Factory::getViewInstance($configurations);
         $view->assignMultiple(['pagebrowser' => $pageBrowser, 'maxPages' => 3]);
         $view->setTemplatePathAndFilename(
-            \tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/PageBrowserViewHelper.html')
+            tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/PageBrowserViewHelper.html')
         );
 
         self::assertRegExp(
@@ -683,13 +688,13 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
     /**
      * @param string|\TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper
-     * @param \tx_rnbase_util_PageBrowser                                   $pageBrowser
+     * @param tx_rnbase_util_PageBrowser                                   $pageBrowser
      *
      * @return \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
      */
     protected function getPreparedVîewHelperWithPageBrowser(
         $viewHelper = PageBrowserViewHelper::class,
-        \tx_rnbase_util_PageBrowser $pageBrowser = null,
+        tx_rnbase_util_PageBrowser $pageBrowser = null,
         $hideIfSinglePage = false,
         $maxPages = 10,
         $pageFloat = 'CENTER',

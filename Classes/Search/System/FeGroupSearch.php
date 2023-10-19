@@ -5,6 +5,7 @@ namespace Sys25\RnBase\Search\System;
 use Sys25\RnBase\Database\Query\Join;
 use Sys25\RnBase\Search\SearchBase;
 use Sys25\RnBase\Utility\Misc;
+use tx_rnbase;
 
 /***************************************************************
  * Copyright notice
@@ -67,7 +68,7 @@ class FeGroupSearch extends SearchBase
      */
     protected function getBaseTable()
     {
-        return \tx_rnbase::makeInstance($this->getWrapperClass())->getTableName();
+        return tx_rnbase::makeInstance($this->getWrapperClass())->getTableName();
     }
 
     /**

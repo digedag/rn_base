@@ -2,6 +2,8 @@
 
 namespace Sys25\RnBase\Domain\Model;
 
+use tx_rnbase;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -57,7 +59,7 @@ trait StorageTrait
     protected function getStorage()
     {
         if (null === $this->storage) {
-            $this->storage = \tx_rnbase::makeInstance(DataModel::class);
+            $this->storage = tx_rnbase::makeInstance(DataModel::class);
         }
 
         return $this->storage;

@@ -7,6 +7,7 @@ use Sys25\RnBase\Maps\Google\Control;
 use Sys25\RnBase\Maps\Google\Icon;
 use Sys25\RnBase\Maps\Google\Map;
 use Sys25\RnBase\Utility\Misc;
+use tx_rnbase;
 
 /***************************************************************
 *  Copyright notice
@@ -50,7 +51,7 @@ class Factory
         if (isset($keys)) {
             foreach ($keys as $key) {
                 $poi = $configurations->get($confId.'poi.'.$key.'.');
-                $poi = \tx_rnbase::makeInstance(POI::class, $poi);
+                $poi = tx_rnbase::makeInstance(POI::class, $poi);
                 $bubble = MapUtility::createMapBubble($poi);
                 if (!$bubble) {
                     continue;
@@ -82,7 +83,7 @@ class Factory
      */
     public static function createGoogleControlLargeMap()
     {
-        return \tx_rnbase::makeInstance(Control::class, 'largeMap');
+        return tx_rnbase::makeInstance(Control::class, 'largeMap');
     }
 
     /**
@@ -92,7 +93,7 @@ class Factory
      */
     public static function createGoogleControlSmallMap()
     {
-        return \tx_rnbase::makeInstance(Control::class, 'smallMap');
+        return tx_rnbase::makeInstance(Control::class, 'smallMap');
     }
 
     /**
@@ -102,7 +103,7 @@ class Factory
      */
     public static function createGoogleControlScale()
     {
-        return \tx_rnbase::makeInstance(Control::class, 'scale');
+        return tx_rnbase::makeInstance(Control::class, 'scale');
     }
 
     /**
@@ -112,7 +113,7 @@ class Factory
      */
     public static function createGoogleControlSmallZoom()
     {
-        return \tx_rnbase::makeInstance(Control::class, 'smallZoom');
+        return tx_rnbase::makeInstance(Control::class, 'smallZoom');
     }
 
     /**
@@ -122,7 +123,7 @@ class Factory
      */
     public static function createGoogleControlOverview()
     {
-        return \tx_rnbase::makeInstance(Control::class, 'overviewMap');
+        return tx_rnbase::makeInstance(Control::class, 'overviewMap');
     }
 
     /**
@@ -132,7 +133,7 @@ class Factory
      */
     public static function createGoogleControlMapType()
     {
-        return \tx_rnbase::makeInstance(Control::class, 'mapType');
+        return tx_rnbase::makeInstance(Control::class, 'mapType');
     }
 
     /**
@@ -144,7 +145,7 @@ class Factory
      */
     public static function createMap($clazzName, &$configurations, $confId)
     {
-        $map = \tx_rnbase::makeInstance($clazzName);
+        $map = tx_rnbase::makeInstance($clazzName);
         $provId = $map->getPROVID();
         if (!array_key_exists($provId, self::$typeInits)) {
             $map->initTypes(TypeRegistry::getInstance());

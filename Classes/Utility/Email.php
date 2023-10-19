@@ -2,6 +2,10 @@
 
 namespace Sys25\RnBase\Utility;
 
+use Swift_Attachment;
+use Throwable;
+use tx_rnbase;
+
 /***************************************************************
  * Copyright notice
  *
@@ -167,7 +171,7 @@ class Email
     public function send()
     {
         /** @var \TYPO3\CMS\Core\Mail\MailMessage $mail */
-        $mail = \tx_rnbase::makeInstance(Typo3Classes::getMailMessageClass());
+        $mail = tx_rnbase::makeInstance(Typo3Classes::getMailMessageClass());
         $mail->setFrom($this->from, $this->fromName);
 
         $firstToAddr = '';
@@ -188,7 +192,7 @@ class Email
             foreach ($this->attachments as $attachment) {
                 try {
                     if (!TYPO3::isTYPO104OrHigher()) {
-                        if (!$mail->attach(\Swift_Attachment::fromPath($attachment['src']))) {
+                        if (!$mail->attach(Swift_Attachment::fromPath($attachment['src']))) {
                             Logger::warn(
                                 'Adding attachment failed!',
                                 'rn_base',
@@ -198,7 +202,7 @@ class Email
                     } else {
                         $mail->attachFromPath($attachment['src']);
                     }
-                } catch (\Throwable $e) {
+                } catch (Throwable $e) {
                     Logger::warn(
                         'Adding attachment failed!',
                         'rn_base',

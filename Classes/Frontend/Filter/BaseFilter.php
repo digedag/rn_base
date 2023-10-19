@@ -7,6 +7,7 @@ use Sys25\RnBase\Frontend\Filter\Utility\Category;
 use Sys25\RnBase\Frontend\Request\ParametersInterface;
 use Sys25\RnBase\Frontend\Request\RequestInterface;
 use Sys25\RnBase\Search\SearchBase;
+use tx_rnbase;
 
 /***************************************************************
  *  Copyright notice
@@ -131,7 +132,7 @@ class BaseFilter implements FilterInterface
      */
     protected function getCategoryFilterUtility()
     {
-        return \tx_rnbase::makeInstance(Category::class, $this->getConfigurations(), $this->getConfId());
+        return tx_rnbase::makeInstance(Category::class, $this->getConfigurations(), $this->getConfId());
     }
 
     /**
@@ -226,7 +227,7 @@ class BaseFilter implements FilterInterface
         $filterClass = ($filterClass) ? $filterClass : $configurations->get($confId.'class');
         $filterClass = ($filterClass) ? $filterClass : $configurations->get($confId.'filter');
         $filterClass = ($filterClass) ? $filterClass : self::class;
-        $filter = \tx_rnbase::makeInstance($filterClass, $request, $confId);
+        $filter = tx_rnbase::makeInstance($filterClass, $request, $confId);
         $request->getViewContext()->offsetSet('filter', $filter);
 
         return $filter;

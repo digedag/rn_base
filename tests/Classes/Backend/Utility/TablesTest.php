@@ -7,6 +7,7 @@ use Sys25\RnBase\Backend\Form\ToolBox;
 use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Testing\BaseTestCase;
 use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase;
 
 /***************************************************************
 *  Copyright notice
@@ -50,10 +51,10 @@ class TablesTest extends BaseTestCase
         $lang->getLL('Name')->willReturn('NAME');
         $lang->getLL('Other')->willReturn('Other');
         /* @var $tablesUtil Tables */
-        $tablesUtil = \tx_rnbase::makeInstance(Tables::class, $lang->reveal());
+        $tablesUtil = tx_rnbase::makeInstance(Tables::class, $lang->reveal());
         $entries = [
-            \tx_rnbase::makeInstance(DataModel::class, ['uid' => 2, 'name' => 'foo']),
-            \tx_rnbase::makeInstance(DataModel::class, ['uid' => 5, 'name' => 'bar']),
+            tx_rnbase::makeInstance(DataModel::class, ['uid' => 2, 'name' => 'foo']),
+            tx_rnbase::makeInstance(DataModel::class, ['uid' => 5, 'name' => 'bar']),
         ];
         $columns = [
             'uid' => ['title' => 'label_uid'],
@@ -65,7 +66,7 @@ class TablesTest extends BaseTestCase
 
         // TODO: refactor, IconFactory not initialized
         // $options['dontcheck'][2] = 'XX';
-        $formTool = \tx_rnbase::makeInstance(ToolBox::class);
+        $formTool = tx_rnbase::makeInstance(ToolBox::class);
 
         $result = $tablesUtil->prepareTable($entries, $columns, $formTool, $options);
         $tableData = $result[0];

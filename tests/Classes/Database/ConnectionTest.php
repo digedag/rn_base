@@ -2,6 +2,8 @@
 
 namespace Sys25\RnBase\Database;
 
+use ReflectionObject;
+use stdClass;
 use Sys25\RnBase\Testing\BaseTestCase;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
@@ -55,7 +57,7 @@ class ConnectionTest extends BaseTestCase
      */
     protected function setUp(): void
     {
-        $this->connection = \tx_rnbase::makeInstance(Connection::class);
+        $this->connection = tx_rnbase::makeInstance(Connection::class);
     }
 
     /**
@@ -68,7 +70,7 @@ class ConnectionTest extends BaseTestCase
 
         $this->beUserBackUp = $GLOBALS['BE_USER'];
         if (!is_object($GLOBALS['BE_USER'])) {
-            $GLOBALS['BE_USER'] = new \stdClass();
+            $GLOBALS['BE_USER'] = new stdClass();
         }
 
         TYPO3::getTSFE()->no_cache = false;
@@ -179,7 +181,7 @@ class ConnectionTest extends BaseTestCase
     {
         $this->prepareTsfeSetUp();
 
-        self::assertFalse($this->callInaccessibleMethod(\tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection'), 'isFrontend'));
+        self::assertFalse($this->callInaccessibleMethod(tx_rnbase::makeInstance('Tx_Rnbase_Database_Connection'), 'isFrontend'));
     }
 
     /**
@@ -368,7 +370,7 @@ class ConnectionTest extends BaseTestCase
         $options = ['forcei18n' => true];
         $connectionMock = $this->getMock('Tx_Rnbase_Database_Connection', ['getDatabase']);
 
-        $reflectionObject = new \ReflectionObject($connectionMock);
+        $reflectionObject = new ReflectionObject($connectionMock);
         $reflectionMethod = $reflectionObject->getMethod('lookupLanguage');
         $reflectionMethod->setAccessible(true);
 

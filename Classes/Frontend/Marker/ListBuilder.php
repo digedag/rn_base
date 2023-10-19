@@ -2,8 +2,11 @@
 
 namespace Sys25\RnBase\Frontend\Marker;
 
+use ArrayObject;
 use Sys25\RnBase\Utility\Debug;
 use Sys25\RnBase\Utility\Strings;
+use Traversable;
+use tx_rnbase;
 
 /***************************************************************
  *  Copyright notice
@@ -51,7 +54,7 @@ class ListBuilder
         if ($info) {
             $this->info = $info;
         } else {
-            $this->info = \tx_rnbase::makeInstance(ListBuilderInfo::class);
+            $this->info = tx_rnbase::makeInstance(ListBuilderInfo::class);
         }
     }
 
@@ -83,7 +86,7 @@ class ListBuilder
 
     public function renderEach(IListProvider $provider, $viewData, $template, $markerClassname, $confId, $marker, $formatter, $markerParams = null)
     {
-        $viewData = is_object($viewData) ? $viewData : new \ArrayObject();
+        $viewData = is_object($viewData) ? $viewData : new ArrayObject();
         $debugKey = $formatter->getConfigurations()->get($confId.'_debuglb');
         $debug = (
             $debugKey
@@ -102,7 +105,7 @@ class ListBuilder
 
         $outerMarker = $this->getOuterMarker($marker, $template);
         /* @var $listMarker ListMarker */
-        $listMarker = \tx_rnbase::makeInstance(ListMarker::class, $this->info->getListMarkerInfo());
+        $listMarker = tx_rnbase::makeInstance(ListMarker::class, $this->info->getListMarkerInfo());
         while ($templateList = Templates::getSubpart($template, '###'.$outerMarker.'S###')) {
             $markerArray = $subpartArray = [];
             $templateEntry = Templates::getSubpart($templateList, '###'.$marker.'###');
@@ -207,7 +210,7 @@ class ListBuilder
      * If you want to render a pagebrowser add it to the $viewData with key 'pagebrowser'.
      * A filter will be detected and rendered too. It should be available in $viewData with key 'filter'.
      *
-     * @param array|\Traversable $dataArr entries
+     * @param array|Traversable $dataArr entries
      * @param string $template
      * @param string $markerClassname item-marker class
      * @param string $confId ts-Config for data entries like team
@@ -219,7 +222,7 @@ class ListBuilder
      */
     public function render(&$dataArr, $viewData, $template, $markerClassname, $confId, $marker, $formatter, $markerParams = null)
     {
-        $viewData = is_object($viewData) ? $viewData : new \ArrayObject();
+        $viewData = is_object($viewData) ? $viewData : new ArrayObject();
         $debugKey = $formatter->getConfigurations()->get($confId.'_debuglb');
         $debug = (
             $debugKey && (
@@ -237,9 +240,9 @@ class ListBuilder
 
         $outerMarker = $this->getOuterMarker($marker, $template);
         while ($templateList = Templates::getSubpart($template, '###'.$outerMarker.'S###')) {
-            if ((is_array($dataArr) || $dataArr instanceof \Traversable) && count($dataArr)) {
+            if ((is_array($dataArr) || $dataArr instanceof Traversable) && count($dataArr)) {
                 /* @var $listMarker ListMarker */
-                $listMarker = \tx_rnbase::makeInstance(ListMarker::class, $this->info->getListMarkerInfo());
+                $listMarker = tx_rnbase::makeInstance(ListMarker::class, $this->info->getListMarkerInfo());
 
                 $templateEntry = Templates::getSubpart($templateList, '###'.$marker.'###');
                 $offset = 0;

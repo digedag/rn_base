@@ -2,11 +2,13 @@
 
 namespace Sys25\RnBase\ExtBaseFluid\View;
 
+use Exception;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Frontend\Request\RequestInterface;
 use Sys25\RnBase\Frontend\View\Marker\BaseView;
 use Sys25\RnBase\Utility\Arrays;
 use Sys25\RnBase\Utility\Files;
+use tx_rnbase_view_Base;
 
 /***************************************************************
  * Copyright notice
@@ -40,7 +42,7 @@ use Sys25\RnBase\Utility\Files;
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class Action extends \tx_rnbase_view_Base
+class Action extends tx_rnbase_view_Base
 {
     /**
      * @var RequestInterface
@@ -53,7 +55,7 @@ class Action extends \tx_rnbase_view_Base
      *
      * @return string
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function render($templateName, $configurations)
     {
@@ -67,7 +69,7 @@ class Action extends \tx_rnbase_view_Base
 
         $extensionKey = $configurations->getExtensionKey();
         if (0 === strlen($extensionKey)) {
-            throw new \Exception('The extension key yould not be resolved. Please check your typoscript configuration.');
+            throw new Exception('The extension key yould not be resolved. Please check your typoscript configuration.');
         }
 
         $view = $this->initializeView(

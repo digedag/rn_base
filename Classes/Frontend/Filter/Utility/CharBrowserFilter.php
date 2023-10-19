@@ -2,6 +2,8 @@
 
 namespace Sys25\RnBase\Frontend\Filter\Utility;
 
+use ArrayObject;
+use Exception;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Database\Connection;
 use Sys25\RnBase\Search\SearchBase;
@@ -43,7 +45,7 @@ class CharBrowserFilter
      *
      * @param ConfigurationInterface $configurations
      * @param string $confid Die Confid des PageBrowsers. z.B. myview.org.pagebrowser ohne Punkt!
-     * @param \ArrayObject $viewdata
+     * @param ArrayObject $viewdata
      * @param array $fields
      * @param array $options
      * @param array $cfg You have to set 'searchcallback' and optional 'pbid'
@@ -54,7 +56,7 @@ class CharBrowserFilter
         if ($configurations->get($confid)) {
             $colName = $cfg['colname'];
             if (!$colName) {
-                throw new \Exception('No column name for charbrowser defined');
+                throw new Exception('No column name for charbrowser defined');
             }
 
             $pagerData = self::findPagerData($fields, $options, $cfg);
@@ -97,7 +99,7 @@ class CharBrowserFilter
      *
      * @return array
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private static function findPagerData($fields, $options, $cfg)
     {
@@ -105,7 +107,7 @@ class CharBrowserFilter
 
         $searchCallback = $cfg['searchcallback'];
         if (!$searchCallback) {
-            throw new \Exception('No search callback defined!');
+            throw new Exception('No search callback defined!');
         }
 
         $options['what'] = 'LEFT(UCASE('.$colName.'),1) As first_char, count(LEFT(UCASE('.$colName.'),1)) As size';

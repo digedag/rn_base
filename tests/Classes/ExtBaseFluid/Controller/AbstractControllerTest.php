@@ -2,9 +2,12 @@
 
 namespace Sys25\RnBase\ExtBaseFluid\Controller;
 
+use ArrayObject;
+use ReflectionObject;
 use Sys25\RnBase\Configuration\Processor;
 use Sys25\RnBase\Controller\AbstractController;
 use Sys25\RnBase\Testing\BaseTestCase;
+use tx_rnbase;
 
 /***************************************************************
  * Copyright notice
@@ -51,8 +54,8 @@ class AbstractControllerTest extends BaseTestCase
             ->method('doRequest')
             ->with()
             ->will(self::returnArgument(0));
-        $dummy = new \ArrayObject();
-        $reflectionObject = new \ReflectionObject($action);
+        $dummy = new ArrayObject();
+        $reflectionObject = new ReflectionObject($action);
         $reflectionMethod = $reflectionObject->getMethod('handleRequest');
         $reflectionMethod->setAccessible(true);
         $ret = $reflectionMethod->invokeArgs(
@@ -74,7 +77,7 @@ class AbstractControllerTest extends BaseTestCase
     public function testAssignToViewShouldStoreDataCorrectly()
     {
         $action = $this->getMockForAbstractClass(AbstractController::class);
-        $configuration = \tx_rnbase::makeInstance(Processor::class);
+        $configuration = tx_rnbase::makeInstance(Processor::class);
         $action->setConfigurations($configuration);
         $this->callInaccessibleMethod($action, 'assignToView', 'test', '57');
         $this->assertSame('57', $configuration->getViewData()->offsetGet('test'));

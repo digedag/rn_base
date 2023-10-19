@@ -5,6 +5,7 @@ namespace Sys25\RnBase\Search\System;
 use Sys25\RnBase\Database\Query\Join;
 use Sys25\RnBase\Search\System\CategorySearch as Category;
 use Sys25\RnBase\Testing\BaseTestCase;
+use tx_rnbase;
 
 /**
  *  Copyright notice.
@@ -44,7 +45,7 @@ class CategoryTest extends BaseTestCase
     public function testGetJoinsIfNoTableAlias()
     {
         self::assertEmpty(
-            $this->callInaccessibleMethod(\tx_rnbase::makeInstance(Category::class), 'getJoins', []),
+            $this->callInaccessibleMethod(tx_rnbase::makeInstance(Category::class), 'getJoins', []),
             'doch ein join geliefert'
         );
     }
@@ -59,7 +60,7 @@ class CategoryTest extends BaseTestCase
 
         /* @var $join Join */
         $joins = $this->callInaccessibleMethod(
-            \tx_rnbase::makeInstance(Category::class),
+            tx_rnbase::makeInstance(Category::class),
             'getJoins',
             ['SYS_CATEGORY_RECORD_MM' => 1]
         );

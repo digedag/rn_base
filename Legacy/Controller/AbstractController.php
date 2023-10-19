@@ -3,11 +3,12 @@
 namespace Sys25\RnBase\Controller;
 
 use Sys25\RnBase\ExtBaseFluid\View\Action;
+use tx_rnbase_action_BaseIOC;
 
 /**
  * @deprecated
  */
-abstract class AbstractController extends \tx_rnbase_action_BaseIOC
+abstract class AbstractController extends tx_rnbase_action_BaseIOC
 {
     protected function handleRequest(&$parameters, &$configurations, &$viewdata)
     {

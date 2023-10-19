@@ -3,6 +3,7 @@
 namespace Sys25\RnBase\Domain\Model;
 
 use DateTime;
+use DateTimeZone;
 use Sys25\RnBase\Backend\Utility\TCA;
 use Sys25\RnBase\Database\Connection;
 use Sys25\RnBase\Utility\Dates;
@@ -194,12 +195,12 @@ class BaseModel extends DataModel implements DomainModelInterface, DynamicTableI
     /**
      * Returns the creation date of the record as DateTime object.
      *
-     * @param \DateTimeZone $timezone
+     * @param DateTimeZone $timezone
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getCreationDateTime(
-        \DateTimeZone $timezone = null
+        DateTimeZone $timezone = null
     ) {
         $datetime = null;
         $tableName = $this->getTableName();
@@ -220,12 +221,12 @@ class BaseModel extends DataModel implements DomainModelInterface, DynamicTableI
     /**
      * Returns the creation date of the record as DateTime object.
      *
-     * @param \DateTimeZone $timezone
+     * @param DateTimeZone $timezone
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getLastModifyDateTime(
-        \DateTimeZone $timezone = null
+        DateTimeZone $timezone = null
     ) {
         $datetime = null;
         $tableName = $this->getTableName();

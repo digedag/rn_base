@@ -2,6 +2,8 @@
 
 namespace Sys25\RnBase\Frontend\View;
 
+use ArrayAccess;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,6 +30,6 @@ namespace Sys25\RnBase\Frontend\View;
 /**
  * Interface for request.
  */
-interface ContextInterface extends \ArrayAccess
+interface ContextInterface extends ArrayAccess
 {
 }

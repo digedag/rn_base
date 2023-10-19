@@ -3,6 +3,9 @@
 namespace Sys25\RnBase\ExtBaseFluid\View;
 
 use Sys25\RnBase\Testing\BaseTestCase;
+use tx_rnbase;
+use tx_rnbase_util_Files;
+use tx_rnbase_util_Misc;
 
 /***************************************************************
  * Copyright notice
@@ -43,7 +46,7 @@ class ActionTest extends BaseTestCase
      */
     protected function setUp(): void
     {
-        \tx_rnbase_util_Misc::prepareTSFE(['force' => true]);
+        tx_rnbase_util_Misc::prepareTSFE(['force' => true]);
     }
 
     /**
@@ -53,9 +56,9 @@ class ActionTest extends BaseTestCase
      */
     protected function tearDown(): void
     {
-        @unlink(\tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/Resources/Private/Templates/MyTestAction.html'));
-        @unlink(\tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/Resources/Private/Layouts/MyTestAction.html'));
-        @unlink(\tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/Resources/Private/Partials/MyTestAction.html'));
+        @unlink(tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/Resources/Private/Templates/MyTestAction.html'));
+        @unlink(tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/Resources/Private/Layouts/MyTestAction.html'));
+        @unlink(tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/Resources/Private/Partials/MyTestAction.html'));
     }
 
     /**
@@ -91,7 +94,7 @@ class ActionTest extends BaseTestCase
             ->willReturn('myConfId');
 
         $view->setTemplateFile('EXT:rn_base/tests/fixtures/html/MyTestAction.html');
-        $parameters = \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
+        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $configurations = $this->createConfigurations([], 'rn_base', 'rn_base', $parameters);
 
         self::assertEquals('<div class="test">myConfId</div>', $view->render('MyTestAction', $configurations));
@@ -110,7 +113,7 @@ class ActionTest extends BaseTestCase
             ->method('getConfigurationId')
             ->willReturn('myConfId');
 
-        $parameters = \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
+        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $configurations = $this->createConfigurations([], 'rn_base', 'rn_base', $parameters);
 
         self::assertEquals('<div class="test">myConfId</div>', $view->render('MyTestAction', $configurations));
@@ -123,17 +126,17 @@ class ActionTest extends BaseTestCase
     {
         if ($includeTemplate) {
             file_put_contents(
-                \tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/Resources/Private/Templates/MyTestAction.html'),
-                file_get_contents(\tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/MyTestAction.html'))
+                tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/Resources/Private/Templates/MyTestAction.html'),
+                file_get_contents(tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/MyTestAction.html'))
             );
         }
         file_put_contents(
-            \tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/Resources/Private/Layouts/MyTestAction.html'),
-            file_get_contents(\tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/Layouts/MyTestAction.html'))
+            tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/Resources/Private/Layouts/MyTestAction.html'),
+            file_get_contents(tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/Layouts/MyTestAction.html'))
         );
         file_put_contents(
-            \tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/Resources/Private/Partials/MyTestAction.html'),
-            file_get_contents(\tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/Partials/MyTestAction.html'))
+            tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/Resources/Private/Partials/MyTestAction.html'),
+            file_get_contents(tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/Partials/MyTestAction.html'))
         );
     }
 
@@ -148,7 +151,7 @@ class ActionTest extends BaseTestCase
             ->method('getConfigurationId')
             ->willReturn('myConfId');
 
-        $parameters = \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
+        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $configurationArray = [
             'view.' => [
                 'templateRootPaths.' => [0 => 'EXT:rn_base/tests/fixtures/html/'],
@@ -173,7 +176,7 @@ class ActionTest extends BaseTestCase
             ->method('getConfigurationId')
             ->willReturn('myConfId');
 
-        $parameters = \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
+        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $configurationArray = [
             'templatePath' => 'EXT:rn_base/tests/fixtures/html/',
         ];
@@ -196,7 +199,7 @@ class ActionTest extends BaseTestCase
             ->method('getConfigurationId')
             ->willReturn('myConfId');
 
-        $parameters = \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
+        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $configurationArray = [];
         $configurations = $this->createConfigurations($configurationArray, 'rn_base', 'rn_base', $parameters);
 
@@ -212,7 +215,7 @@ class ActionTest extends BaseTestCase
         $view = $this->getMock('Sys25\\RnBase\\ExtBaseFluid\\View\\Action', ['getConfigurationId']);
 
         $view->setTemplateFile('EXT:rn_base/tests/fixtures/html/MyTestAction2.html');
-        $parameters = \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
+        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $configurations = $this->createConfigurations([], 'rn_base', 'rn_base', $parameters);
         $configurations->getViewData()->offsetSet('testAssignment', 'JohnDoe');
 
@@ -228,7 +231,7 @@ class ActionTest extends BaseTestCase
         $view = $this->getMock('Sys25\\RnBase\\ExtBaseFluid\\View\\Action', ['getConfigurationId']);
 
         $view->setTemplateFile('EXT:rn_base/tests/fixtures/html/MyTestActionWithTrimmableContent.html');
-        $parameters = \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
+        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $configurations = $this->createConfigurations([], 'rn_base', 'rn_base', $parameters);
 
         self::assertEquals('<span>test</span>', $view->render('MyTestAction', $configurations));
@@ -243,7 +246,7 @@ class ActionTest extends BaseTestCase
         $view = $this->getMock('Sys25\\RnBase\\ExtBaseFluid\\View\\Action', ['getConfigurationId']);
 
         $view->setTemplateFile('EXT:rn_base/tests/fixtures/html/MyTestActionWithTrimmableContent.html');
-        $parameters = \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
+        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $configurations = $this->createConfigurations([], 'rn_base', 'rn_base', $parameters);
         $configurations->getViewData()->offsetSet('filter', 'test');
 
@@ -259,7 +262,7 @@ class ActionTest extends BaseTestCase
         $view = $this->getMock('Sys25\\RnBase\\ExtBaseFluid\\View\\Action', ['getConfigurationId']);
 
         $view->setTemplateFile('EXT:rn_base/tests/fixtures/html/MyTestActionWithTrimmableContent.html');
-        $parameters = \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
+        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $configurations = $this->createConfigurations([], 'rn_base', 'rn_base', $parameters);
         $configurations->getViewData()->offsetSet('filter', 'test');
 
@@ -286,7 +289,7 @@ class ActionTest extends BaseTestCase
             ->will(self::returnValue('testId'));
 
         $view->setTemplateFile('EXT:rn_base/tests/fixtures/html/MyTestAction.html');
-        $parameters = \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
+        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $configurations = $this->createConfigurations([], 'rn_base', 'rn_base', $parameters);
 
         $filter = $this->getMock('tx_rnbase_filter_BaseFilter', ['parseTemplate'], [], '', false);
@@ -314,7 +317,7 @@ class ActionTest extends BaseTestCase
             ->will(self::returnValue('testId'));
 
         $view->setTemplateFile('EXT:rn_base/tests/fixtures/html/MyTestAction.html');
-        $parameters = \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
+        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $configurations = $this->createConfigurations([], 'rn_base', 'rn_base', $parameters);
 
         $filter = $this->getMock('tx_rnbase_filter_BaseFilter', ['parseTemplateNew'], [], '', false);

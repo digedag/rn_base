@@ -2,11 +2,14 @@
 
 namespace Sys25\RnBase\Search;
 
+use ArrayObject;
+use Exception;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Database\Query\From;
 use Sys25\RnBase\Utility\Logger;
 use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
+use tx_rnbase;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
@@ -57,7 +60,7 @@ abstract class SearchBase
     public static function getInstance($classname)
     {
         if (!isset(self::$instances[$classname])) {
-            self::$instances[$classname] = \tx_rnbase::makeInstance($classname);
+            self::$instances[$classname] = tx_rnbase::makeInstance($classname);
         }
 
         return self::$instances[$classname];
@@ -669,7 +672,7 @@ abstract class SearchBase
     {
         $table = $this->getGenericBaseTable();
         if (!$table) {
-            throw new \Exception('SearchBase: No base table found!');
+            throw new Exception('SearchBase: No base table found!');
         }
         $useFromClass = true;
 
@@ -875,7 +878,7 @@ abstract class SearchBase
      *
      * @param string $idstr
      * @param array $fields
-     * @param \ArrayObject $parameters
+     * @param ArrayObject $parameters
      * @param ConfigurationInterface $configurations
      * @param string $operator
      */
@@ -908,7 +911,7 @@ abstract class SearchBase
     private function getConnection(): \TYPO3\CMS\Core\Database\Connection
     {
         /** @var ConnectionPool $pool */
-        $pool = \tx_rnbase::makeInstance(ConnectionPool::class);
+        $pool = tx_rnbase::makeInstance(ConnectionPool::class);
 
         return $pool->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
     }

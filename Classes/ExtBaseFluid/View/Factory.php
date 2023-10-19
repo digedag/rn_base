@@ -4,6 +4,7 @@ namespace Sys25\RnBase\ExtBaseFluid\View;
 
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 
@@ -49,7 +50,7 @@ class Factory
     {
         if (!TYPO3::isTYPO115OrHigher()) {
             /* @var $view \Sys25\RnBase\ExtBaseFluid\View\Standalone */
-            $view = \tx_rnbase::makeInstance('Sys25\\RnBase\\ExtBaseFluid\\View\\Standalone', $configurations->getCObj());
+            $view = tx_rnbase::makeInstance('Sys25\\RnBase\\ExtBaseFluid\\View\\Standalone', $configurations->getCObj());
 
             $objectManager = $view->getObjectManager();
             $configurationManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
@@ -60,7 +61,7 @@ class Factory
             return $view;
         }
 
-        $view = \tx_rnbase::makeInstance(Standalone::class);
+        $view = tx_rnbase::makeInstance(Standalone::class);
         $configurationManager = GeneralUtility::getContainer()->get(ConfigurationManager::class);
         $configurationManager->setContentObject($configurations->getCObj());
         $configurationManager->setConfiguration($frameworkSettings);

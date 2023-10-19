@@ -5,6 +5,8 @@ namespace Sys25\RnBase\ExtBaseFluid\View;
 use Sys25\RnBase\Testing\BaseTestCase;
 use Sys25\RnBase\Testing\TestUtility;
 use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase;
+use tx_rnbase_util_Typo3Classes;
 
 /***************************************************************
  * Copyright notice
@@ -45,8 +47,8 @@ class StandaloneTest extends BaseTestCase
      */
     public function testGetConfigurations()
     {
-        $contentObject = \tx_rnbase::makeInstance(\tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
-        $view = \tx_rnbase::makeInstance('Sys25\\RnBase\\ExtBaseFluid\\View\\Standalone', $contentObject);
+        $contentObject = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
+        $view = tx_rnbase::makeInstance('Sys25\\RnBase\\ExtBaseFluid\\View\\Standalone', $contentObject);
         $configurations = TestUtility::createConfigurations([], 'rn_base');
         $view->setConfigurations($configurations);
 
@@ -64,8 +66,8 @@ class StandaloneTest extends BaseTestCase
             self::markTestSkipped('Only relevant before TYPO3 11.5');
         }
         $objectManager = new \TYPO3\CMS\Extbase\Object\ObjectManager();
-        $contentObject = \tx_rnbase::makeInstance(\tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
-        $view = \tx_rnbase::makeInstance('Sys25\\RnBase\\ExtBaseFluid\\View\\Standalone', $contentObject);
+        $contentObject = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
+        $view = tx_rnbase::makeInstance('Sys25\\RnBase\\ExtBaseFluid\\View\\Standalone', $contentObject);
         $view->injectObjectManager($objectManager);
 
         self::assertSame($objectManager, $view->getObjectManager());

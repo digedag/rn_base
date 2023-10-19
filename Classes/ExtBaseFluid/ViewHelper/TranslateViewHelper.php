@@ -25,6 +25,8 @@ namespace Sys25\RnBase\ExtBaseFluid\ViewHelper;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Closure;
+use Exception;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Utility\Language;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContext;
@@ -64,7 +66,7 @@ class TranslateViewHelper extends AbstractViewHelper
      *
      * @return string
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function render()
     {
@@ -81,16 +83,16 @@ class TranslateViewHelper extends AbstractViewHelper
      * Translates the label.
      *
      * @param array                     $arguments
-     * @param \Closure                  $renderChildrenClosure
+     * @param Closure                  $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      *
      * @return string
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public static function renderStatic(
         array $arguments,
-        \Closure $renderChildrenClosure,
+        Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
         $key = $arguments['key'];

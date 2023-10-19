@@ -3,8 +3,11 @@
 namespace Sys25\RnBase\ExtBaseFluid\ViewHelper;
 
 use Prophecy\PhpUnit\ProphecyTrait;
+use ReflectionProperty;
 use Sys25\RnBase\Testing\BaseTestCase;
 use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase;
+use tx_rnbase_util_Misc;
 
 /***************************************************************
  * Copyright notice
@@ -52,7 +55,7 @@ abstract class BaseViewHelperTest extends BaseTestCase
      */
     protected function setUp(): void
     {
-        \tx_rnbase_util_Misc::prepareTSFE();
+        tx_rnbase_util_Misc::prepareTSFE();
         parent::setUp();
     }
 
@@ -68,13 +71,13 @@ abstract class BaseViewHelperTest extends BaseTestCase
         }
 
         if (!is_object($viewHelper)) {
-            $viewHelper = \tx_rnbase::makeInstance($viewHelper);
+            $viewHelper = tx_rnbase::makeInstance($viewHelper);
         }
 
         $this->renderingContext = new \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext();
         $templateVariableProvider = new \TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider();
         $this->renderingContext->setVariableProvider($templateVariableProvider);
-        $property = new \ReflectionProperty(
+        $property = new ReflectionProperty(
             'TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContext',
             'viewHelperVariableContainer'
         );
@@ -86,7 +89,7 @@ abstract class BaseViewHelperTest extends BaseTestCase
         $controllerContext->setRequest(new \TYPO3\CMS\Extbase\Mvc\Request());
 
         $uriBuilder = new \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder();
-        $property = new \ReflectionProperty(
+        $property = new ReflectionProperty(
             \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class,
             'environmentService'
         );

@@ -4,6 +4,7 @@ namespace Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowser;
 
 use Sys25\RnBase\ExtBaseFluid\ViewHelper\BaseViewHelperTest;
 use Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowserViewHelper;
+use tx_rnbase;
 
 /***************************************************************
  * Copyright notice
@@ -98,7 +99,7 @@ class PageBaseViewHelper_testcase extends BaseViewHelperTest
 
         $this->renderingContext->getVariableProvider()->add(
             'pagebrowser',
-            \tx_rnbase::makeInstance('tx_rnbase_util_PageBrowser', 123)
+            tx_rnbase::makeInstance('tx_rnbase_util_PageBrowser', 123)
         );
         $this->renderingContext->getVariableProvider()->add('currentPage', 123);
         $this->renderingContext->getVariableProvider()->add('pageNumber', 456);

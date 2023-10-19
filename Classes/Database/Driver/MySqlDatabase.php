@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Database\Driver;
 
+use RuntimeException;
 use Sys25\RnBase\Utility\Logger;
 use Sys25\RnBase\Utility\Strings;
 
@@ -228,13 +229,13 @@ class MySqlDatabase implements IDatabase
     {
         $schema = isset($credArr['database']) ? $credArr['database'] : $credArr['schema'];
         if (!$schema) {
-            throw new \RuntimeException('TYPO3 Fatal Error: No database selected!', 1271953882);
+            throw new RuntimeException('TYPO3 Fatal Error: No database selected!', 1271953882);
         }
         $this->connect($credArr);
         // Select DB
         $ret = $this->db->select_db($schema);
         if (!$ret) {
-            throw new \RuntimeException('Could not select MySQL database '.$schema.': '.$this->db->error, 1271953992);
+            throw new RuntimeException('Could not select MySQL database '.$schema.': '.$this->db->error, 1271953992);
         }
         $this->setSqlMode();
     }
@@ -251,7 +252,7 @@ class MySqlDatabase implements IDatabase
     private function connect($credArr)
     {
         if (!extension_loaded('mysqli')) {
-            throw new \RuntimeException('Database Error: PHP mysqli extension not loaded. This is a must have for TYPO3 CMS!', 1271492607);
+            throw new RuntimeException('Database Error: PHP mysqli extension not loaded. This is a must have for TYPO3 CMS!', 1271492607);
         }
 
         $dbHost = $credArr['host'] ? $credArr['host'] : 'localhost';
@@ -280,7 +281,7 @@ class MySqlDatabase implements IDatabase
             $message = 'Database Error: Could not connect to MySQL server '.$dbHost.
                 ' with user '.$dbUsername.': '.$this->sql_error();
 
-            throw new \RuntimeException($message, 1271492616);
+            throw new RuntimeException($message, 1271492616);
         }
 
         $this->isConnected = true;

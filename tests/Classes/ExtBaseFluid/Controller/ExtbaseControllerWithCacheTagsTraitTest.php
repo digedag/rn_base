@@ -2,7 +2,11 @@
 
 namespace Sys25\RnBase\ExtBaseFluid\Controller;
 
+use PHPUnit_Framework_MockObject_MockObject;
+use ReflectionProperty;
 use Sys25\RnBase\Testing\BaseTestCase;
+use tx_rnbase_util_Misc;
+use tx_rnbase_util_TYPO3;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /***************************************************************
@@ -48,7 +52,7 @@ class ExtbaseControllerWithCacheTagsTraitTest extends BaseTestCase
             self::markTestSkipped('mocking traits is not supported in this phpunit version.');
         }
 
-        \tx_rnbase_util_Misc::prepareTSFE(['force' => true]);
+        tx_rnbase_util_Misc::prepareTSFE(['force' => true]);
     }
 
     /**
@@ -58,9 +62,9 @@ class ExtbaseControllerWithCacheTagsTraitTest extends BaseTestCase
      */
     protected function tearDown(): void
     {
-        $property = new \ReflectionProperty(get_class(\tx_rnbase_util_TYPO3::getTSFE()), 'pageCacheTags');
+        $property = new ReflectionProperty(get_class(tx_rnbase_util_TYPO3::getTSFE()), 'pageCacheTags');
         $property->setAccessible(true);
-        $property->setValue(\tx_rnbase_util_TYPO3::getTSFE(), []);
+        $property->setValue(tx_rnbase_util_TYPO3::getTSFE(), []);
     }
 
     /**
@@ -82,15 +86,15 @@ class ExtbaseControllerWithCacheTagsTraitTest extends BaseTestCase
                 ],
             ],
         ];
-        $property = new \ReflectionProperty(ActionController::class, 'settings');
+        $property = new ReflectionProperty(ActionController::class, 'settings');
         $property->setAccessible(true);
         $property->setValue($trait, $settings);
 
         $this->callInaccessibleMethod($trait, 'handleCacheTags');
 
-        $property = new \ReflectionProperty(get_class(\tx_rnbase_util_TYPO3::getTSFE()), 'pageCacheTags');
+        $property = new ReflectionProperty(get_class(tx_rnbase_util_TYPO3::getTSFE()), 'pageCacheTags');
         $property->setAccessible(true);
-        $cacheTags = $property->getValue(\tx_rnbase_util_TYPO3::getTSFE());
+        $cacheTags = $property->getValue(tx_rnbase_util_TYPO3::getTSFE());
 
         self::assertEquals(['firstTag', 'secondTag'], $cacheTags);
     }
@@ -106,9 +110,9 @@ class ExtbaseControllerWithCacheTagsTraitTest extends BaseTestCase
 
         $this->callInaccessibleMethod($trait, 'handleCacheTags');
 
-        $property = new \ReflectionProperty(get_class(\tx_rnbase_util_TYPO3::getTSFE()), 'pageCacheTags');
+        $property = new ReflectionProperty(get_class(tx_rnbase_util_TYPO3::getTSFE()), 'pageCacheTags');
         $property->setAccessible(true);
-        $cacheTags = $property->getValue(\tx_rnbase_util_TYPO3::getTSFE());
+        $cacheTags = $property->getValue(tx_rnbase_util_TYPO3::getTSFE());
 
         self::assertEquals([], $cacheTags);
     }
@@ -132,21 +136,21 @@ class ExtbaseControllerWithCacheTagsTraitTest extends BaseTestCase
                 ],
             ],
         ];
-        $property = new \ReflectionProperty(ActionController::class, 'settings');
+        $property = new ReflectionProperty(ActionController::class, 'settings');
         $property->setAccessible(true);
         $property->setValue($trait, $settings);
 
         $this->callInaccessibleMethod($trait, 'handleCacheTags');
 
-        $property = new \ReflectionProperty(get_class(\tx_rnbase_util_TYPO3::getTSFE()), 'pageCacheTags');
+        $property = new ReflectionProperty(get_class(tx_rnbase_util_TYPO3::getTSFE()), 'pageCacheTags');
         $property->setAccessible(true);
-        $cacheTags = $property->getValue(\tx_rnbase_util_TYPO3::getTSFE());
+        $cacheTags = $property->getValue(tx_rnbase_util_TYPO3::getTSFE());
 
         self::assertEquals([], $cacheTags);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return PHPUnit_Framework_MockObject_MockObject
      */
     protected function getTrait($actionMethod = 'action')
     {
@@ -155,7 +159,7 @@ class ExtbaseControllerWithCacheTagsTraitTest extends BaseTestCase
         $mockRequest = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Request::class);
         $mockRequest->expects($this->once())->method('getControllerActionName')->will($this->returnValue('action'));
         $mockRequest->expects($this->once())->method('getControllerName')->will($this->returnValue('Controller'));
-        $property = new \ReflectionProperty(ActionController::class, 'request');
+        $property = new ReflectionProperty(ActionController::class, 'request');
         $property->setAccessible(true);
         $property->setValue($trait, $mockRequest);
 

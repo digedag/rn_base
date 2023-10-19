@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Database\Driver;
 
+use PDO;
 use Sys25\RnBase\Utility\TYPO3;
 
 /***************************************************************
@@ -340,7 +341,7 @@ class TYPO3DBAL implements IDatabase, IDatabaseT3
      */
     public function sql_fetch_assoc($res)
     {
-        return $res->fetch(\PDO::FETCH_ASSOC);
+        return $res->fetch(PDO::FETCH_ASSOC);
     }
 
     /**

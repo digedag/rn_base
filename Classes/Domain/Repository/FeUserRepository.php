@@ -2,6 +2,8 @@
 
 namespace Sys25\RnBase\Domain\Repository;
 
+use Exception;
+use PDO;
 use Sys25\RnBase\Domain\Model\FeUser;
 use Sys25\RnBase\Search\System\FeUserSearch;
 use Sys25\RnBase\Utility\Strings;
@@ -59,7 +61,7 @@ class FeUserRepository extends PersistenceRepository
         $feuser->setUid($uid);
         $options = [];
         $options['where'] = function (QueryBuilder $qb) use ($uid) {
-            $qb->andWhere(sprintf('uid = %s', $qb->createNamedParameter($uid, \PDO::PARAM_INT)));
+            $qb->andWhere(sprintf('uid = %s', $qb->createNamedParameter($uid, PDO::PARAM_INT)));
         };
         $options['enablefieldsoff'] = true;
         $result = $this->getConnection()->doSelect('*', $feuser->getTableName(), $options);
@@ -80,13 +82,13 @@ class FeUserRepository extends PersistenceRepository
      *
      * @return FeUser|null
      *
-     * @throws \Exception if parameter is not an integer
+     * @throws Exception if parameter is not an integer
      */
     public function getInstance(int $uid)
     {
         $uid = (int) $uid;
         if (!$uid) {
-            throw new \Exception('No uid for fe_user given!');
+            throw new Exception('No uid for fe_user given!');
         }
         if (!is_object(self::$instances[$uid])) {
             self::$instances[$uid] = $this->findByUidForced($uid);

@@ -2,7 +2,9 @@
 
 namespace Sys25\RnBase\Database\Driver;
 
+use InvalidArgumentException;
 use Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface;
+use tx_rnbase;
 
 /***************************************************************
  * Copyright notice
@@ -42,7 +44,7 @@ class LegacyQueryBuilder implements SingletonInterface
      */
     public static function instance()
     {
-        return \tx_rnbase::makeInstance(get_called_class());
+        return tx_rnbase::makeInstance(get_called_class());
     }
 
     /**
@@ -136,7 +138,7 @@ class LegacyQueryBuilder implements SingletonInterface
         // Table and fieldnames should be "SQL-injection-safe" when supplied to this
         // function (contrary to values in the arrays which may be insecure).
         if (!is_string($where)) {
-            throw new \InvalidArgumentException('TYPO3 Fatal Error: "Where" clause argument for UPDATE query must be a string!', 1270853880);
+            throw new InvalidArgumentException('TYPO3 Fatal Error: "Where" clause argument for UPDATE query must be a string!', 1270853880);
         }
 
         $fields = [];
@@ -171,7 +173,7 @@ class LegacyQueryBuilder implements SingletonInterface
     public function DELETEquery($table, $where)
     {
         if (!is_string($where)) {
-            throw new \InvalidArgumentException('TYPO3 Fatal Error: "Where" clause argument for DELETE query must be a string!', 1270853881);
+            throw new InvalidArgumentException('TYPO3 Fatal Error: "Where" clause argument for DELETE query must be a string!', 1270853881);
         }
 
         // Table and fieldnames should be "SQL-injection-safe" when supplied to this function

@@ -2,8 +2,10 @@
 
 namespace Sys25\RnBase\Maps\Google;
 
+use Exception;
 use Sys25\RnBase\Utility\Extensions;
 use Sys25\RnBase\Utility\Logger;
+use tx_wecmap_cache;
 
 /***************************************************************
 *  Copyright notice
@@ -78,7 +80,7 @@ class Util
                     $result = $response;
                 }
             } elseif ('OVER_QUERY_LIMIT' == $response['status']) {
-                throw new \Exception($response['error_message']);
+                throw new Exception($response['error_message']);
             }
         }
 
@@ -92,14 +94,14 @@ class Util
      * @param string $country
      * @param string $state
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function lookupGeoCodeCached($street, $zip, $city, $country, $state = '')
     {
         if (!Extensions::isLoaded('wec_map')) {
-            throw new \Exception('wec_map not loaded');
+            throw new Exception('wec_map not loaded');
         }
 
-        return \tx_wecmap_cache::lookup($street, $city, $state, $zip, $country);
+        return tx_wecmap_cache::lookup($street, $city, $state, $zip, $country);
     }
 }

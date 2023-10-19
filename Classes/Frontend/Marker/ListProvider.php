@@ -2,6 +2,8 @@
 
 namespace Sys25\RnBase\Frontend\Marker;
 
+use Exception;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -56,7 +58,7 @@ class ListProvider implements IListProvider
 
                 break;
             default:
-                throw new \Exception('Undefined list mode.');
+                throw new Exception('Undefined list mode.');
         }
     }
 }

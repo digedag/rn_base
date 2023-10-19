@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Backend\Handler;
 
+use Exception;
 use Sys25\RnBase\Backend\Form\ToolBox;
 use Sys25\RnBase\Backend\Lister\AbstractLister;
 use Sys25\RnBase\Backend\Module\BaseModule;
@@ -10,6 +11,7 @@ use Sys25\RnBase\Backend\Module\IModule;
 use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Frontend\Marker\Templates;
 use Sys25\RnBase\Utility\Strings;
+use tx_rnbase;
 
 /***************************************************************
  * Copyright notice
@@ -256,14 +258,14 @@ abstract class SearchHandler implements IModHandler
      */
     protected function getLister()
     {
-        $lister = \tx_rnbase::makeInstance(
+        $lister = tx_rnbase::makeInstance(
             $this->getListerClass(),
             $this->getModule(),
             $this->getOptions()
         );
 
         if (!$lister instanceof AbstractLister) {
-            throw new \Exception('The lister "'.get_class($lister).'" has to extend "Sys25\RnBase\Backend\Lister\AbstractLister"');
+            throw new Exception('The lister "'.get_class($lister).'" has to extend "Sys25\RnBase\Backend\Lister\AbstractLister"');
         }
 
         return $lister;

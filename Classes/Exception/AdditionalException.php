@@ -29,7 +29,7 @@ use Exception;
 /**
  * Default exception class.
  */
-class AdditionalException extends \Exception
+class AdditionalException extends Exception
 {
     private $additional = false;
 

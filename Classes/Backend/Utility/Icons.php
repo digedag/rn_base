@@ -3,6 +3,7 @@
 namespace Sys25\RnBase\Backend\Utility;
 
 use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase;
 
 /**
  *  Copyright notice.
@@ -159,7 +160,7 @@ class Icons
      */
     public static function getIconFactory()
     {
-        return \tx_rnbase::makeInstance(
+        return tx_rnbase::makeInstance(
             \TYPO3\CMS\Core\Imaging\IconFactory::class
         );
     }
@@ -171,7 +172,7 @@ class Icons
      */
     public static function getIconRegistry()
     {
-        return \tx_rnbase::makeInstance(
+        return tx_rnbase::makeInstance(
             'TYPO3\\CMS\\Core\\Imaging\\IconRegistry'
         );
     }

@@ -11,6 +11,7 @@ use Sys25\RnBase\Frontend\Marker\Templates;
 use Sys25\RnBase\Utility\Files;
 use Sys25\RnBase\Utility\Network;
 use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase;
 
 /***************************************************************
  *  Copyright notice
@@ -63,7 +64,7 @@ abstract class BaseModFunc implements IModFunc
     public function main(ServerRequestInterface $request = null)
     {
         if (TYPO3::isTYPO121OrHigher()) {
-            $modFuncFrame = \tx_rnbase::makeInstance(ModFuncFrame::class);
+            $modFuncFrame = tx_rnbase::makeInstance(ModFuncFrame::class);
 
             return $modFuncFrame->render($this, function () { return $this->renderOutput(); }, $request);
         }
