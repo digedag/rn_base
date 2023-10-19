@@ -2,7 +2,9 @@
 
 namespace Sys25\RnBase\ExtBaseFluid\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use Sys25\RnBase\Utility\TYPO3;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 
 /***************************************************************
  * Copyright notice
@@ -37,18 +39,37 @@ use Sys25\RnBase\Utility\TYPO3;
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-trait CacheTagsTrait
-{
-    public function callActionMethod()
+if (TYPO3::isTYPO115OrHigher()) {
+    trait CacheTagsTrait
     {
-        $this->handleCacheTags();
-        parent::callActionMethod();
-    }
+        public function callActionMethod(RequestInterface $request): ResponseInterface
+        {
+            $this->handleCacheTags();
+            return parent::callActionMethod($request);
+        }
 
-    protected function handleCacheTags()
+        protected function handleCacheTags()
+        {
+            if ($cacheTags = $this->settings['cacheTags'][strtolower($this->request->getControllerName())][$this->request->getControllerActionName()]) {
+                TYPO3::getTSFE()->addCacheTags($cacheTags);
+            }
+        }
+    }
+} else {
+    trait CacheTagsTrait
     {
-        if ($cacheTags = $this->settings['cacheTags'][strtolower($this->request->getControllerName())][$this->request->getControllerActionName()]) {
-            TYPO3::getTSFE()->addCacheTags($cacheTags);
+        public function callActionMethod()
+        {
+            $this->handleCacheTags();
+            parent::callActionMethod();
+        }
+
+        protected function handleCacheTags()
+        {
+            if ($cacheTags = $this->settings['cacheTags'][strtolower($this->request->getControllerName())][$this->request->getControllerActionName()]) {
+                TYPO3::getTSFE()->addCacheTags($cacheTags);
+            }
         }
     }
 }
+
