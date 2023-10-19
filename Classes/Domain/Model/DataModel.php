@@ -6,6 +6,7 @@ use ArrayAccess;
 use ArrayIterator;
 use Exception;
 use IteratorAggregate;
+use ReturnTypeWillChange;
 use Sys25\RnBase\Utility\Strings;
 use Traversable;
 use tx_rnbase;
@@ -327,7 +328,7 @@ class DataModel implements DataInterface, IteratorAggregate, ArrayAccess
      *
      * @return Traversable|array
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function getIterator()
     {
         return new ArrayIterator($this->getProperties());
@@ -387,7 +388,7 @@ class DataModel implements DataInterface, IteratorAggregate, ArrayAccess
      *
      * @return bool
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetExists($property)
     {
         return $this->hasProperty($this->underscore($property));
@@ -398,7 +399,7 @@ class DataModel implements DataInterface, IteratorAggregate, ArrayAccess
      *
      * @return array|mixed|string|null
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetGet($property)
     {
         $getterMethod = 'get'.$this->underscoredToUpperCamelCase($property);
@@ -427,7 +428,7 @@ class DataModel implements DataInterface, IteratorAggregate, ArrayAccess
      *
      * @return void
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetSet($property, $value)
     {
         $setterMethod = 'set'.$this->underscoredToUpperCamelCase($property);
@@ -443,7 +444,7 @@ class DataModel implements DataInterface, IteratorAggregate, ArrayAccess
     /**
      * @param mixed $property
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetUnset($property)
     {
         $this->unsProperty($this->underscore($property));
