@@ -75,7 +75,9 @@ class tx_rnbase_tests_model_Data_testcase extends BaseTestCase
 
     /**
      * @test
+     *
      * @expectedException \Exception
+     *
      * @expectedExceptionCode 1406625817
      */
     public function testMagicCallThrowsException()

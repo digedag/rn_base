@@ -53,6 +53,7 @@ class tx_rnbase_tests_util_TCA_testcase extends BaseTestCase
 
     /**
      * @group unit
+     *
      * @test
      */
     public function testGetTransOrigPointerFieldForTableWithUnknownTable()
@@ -65,6 +66,7 @@ class tx_rnbase_tests_util_TCA_testcase extends BaseTestCase
 
     /**
      * @group unit
+     *
      * @test
      */
     public function testGetTransOrigPointerFieldForTableWithUnconfiguredTable()
@@ -77,6 +79,7 @@ class tx_rnbase_tests_util_TCA_testcase extends BaseTestCase
 
     /**
      * @group unit
+     *
      * @test
      */
     public function testGetTransOrigPointerFieldForTableWithTtContentTable()
@@ -90,6 +93,7 @@ class tx_rnbase_tests_util_TCA_testcase extends BaseTestCase
 
     /**
      * @group unit
+     *
      * @test
      */
     public function testGetLanguageFieldForTableWithUnknownTable()
@@ -102,6 +106,7 @@ class tx_rnbase_tests_util_TCA_testcase extends BaseTestCase
 
     /**
      * @group unit
+     *
      * @test
      */
     public function testGetLanguageFieldForTableWithUnconfiguredTable()
@@ -114,6 +119,7 @@ class tx_rnbase_tests_util_TCA_testcase extends BaseTestCase
 
     /**
      * @group unit
+     *
      * @test
      */
     public function testGetLanguageFieldForTableWithTtContentTable()
@@ -132,7 +138,9 @@ class tx_rnbase_tests_util_TCA_testcase extends BaseTestCase
      *     tx_rnbase_model_base::validateProperties();.
      *
      * @group unit
+     *
      * @test
+     *
      * @dataProvider getValidateModelData
      */
     public function testValidateModel(

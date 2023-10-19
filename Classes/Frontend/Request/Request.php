@@ -31,13 +31,13 @@ use Sys25\RnBase\Frontend\View\ViewContext;
 
 class Request implements RequestInterface
 {
-    private $configurations = null;
+    private $configurations;
 
-    private $confId = null;
+    private $confId;
 
-    private $parameters = null;
+    private $parameters;
 
-    private $viewContext = null;
+    private $viewContext;
 
     public function __construct(
         ParametersInterface $parameters,

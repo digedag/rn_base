@@ -39,12 +39,12 @@ class ExceptionHandler implements ExceptionHandlerInterface
      * Interne Verarbeitung der Exception.
      *
      * @param string                                     $actionName
-     * @param Exception                                  $e
+     * @param \Exception                                  $e
      * @param ConfigurationInterface $configurations
      *
      * @return string error message
      */
-    public function handleException($actionName, Exception $e, ConfigurationInterface $configurations)
+    public function handleException($actionName, \Exception $e, ConfigurationInterface $configurations)
     {
         // wir prüfen erst mal, ob die exception gefangen werden soll
         $catch = $this->catchException($actionName, $e, $configurations);
@@ -103,11 +103,11 @@ class ExceptionHandler implements ExceptionHandlerInterface
                     // the plugin has the oppurtunity to prevent sending a 503 header
                     // by setting plugin.plugin_name.send503HeaderOnException = 0 in the TS config.
                     // if this option is not set we use the ext config
-                    !array_key_exists('send503HeaderOnException', $configurations->getConfigArray()) ||
-                    0 != $configurations->get('send503HeaderOnException')
+                    !array_key_exists('send503HeaderOnException', $configurations->getConfigArray())
+                    || 0 != $configurations->get('send503HeaderOnException')
                 )
-            ) ||
-            (
+            )
+            || (
                 // did the plugin define to send the 503 header
                 1 == $configurations->get('send503HeaderOnException')
             )
@@ -118,10 +118,10 @@ class ExceptionHandler implements ExceptionHandlerInterface
      * Build an error message string for frontend.
      *
      * @param string                                     $actionName
-     * @param Exception                                  $e
+     * @param \Exception                                  $e
      * @param ConfigurationInterface $configurations
      */
-    protected function getErrorMessage($actionName, Exception $e, ConfigurationInterface $configurations)
+    protected function getErrorMessage($actionName, \Exception $e, ConfigurationInterface $configurations)
     {
         if (Processor::getExtensionCfgValue('rn_base', 'verboseMayday')) {
             return '<div>'
@@ -160,14 +160,14 @@ class ExceptionHandler implements ExceptionHandlerInterface
      * um die fehlerbehandlung weiter leufen zu lassen.
      *
      * @param string                                     $actionName
-     * @param Exception                                  $e
+     * @param \Exception                                  $e
      * @param ConfigurationInterface $configurations
      *
      * @return string|null
      */
     protected function catchException(
         $actionName,
-        Exception $e,
+        \Exception $e,
         ConfigurationInterface $configurations
     ) {
         // typoscript nach catchanweisungen prüfen
@@ -197,14 +197,14 @@ class ExceptionHandler implements ExceptionHandlerInterface
      * also die methode nur ein mal auftaucht.
      *
      * @param string $actionName
-     * @param Exception $e
+     * @param \Exception $e
      * @param ConfigurationInterface $configurations
      *
      * @return bool
      */
     private function checkExceptionRecursion(
         $action,
-        Exception $e,
+        \Exception $e,
         ConfigurationInterface $configurations,
         $type = 'error'
     ) {

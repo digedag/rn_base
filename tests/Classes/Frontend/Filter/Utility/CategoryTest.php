@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Frontend\Filter\Utility;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Sys25\RnBase\Configuration\Processor;
 use Sys25\RnBase\Database\Connection;
 use Sys25\RnBase\Frontend\Request\Parameters;
@@ -39,6 +40,8 @@ use Sys25\RnBase\Testing\BaseTestCase;
  */
 class CategoryTest extends BaseTestCase
 {
+    use ProphecyTrait;
+
     protected $configurations;
 
     protected $categoryUtil;
@@ -87,6 +90,7 @@ class CategoryTest extends BaseTestCase
 
     /**
      * @group unit
+     *
      * @dataProvider dataProviderHandleSysCategoryFilter
      */
     public function testHandleSysCategoryFilter(

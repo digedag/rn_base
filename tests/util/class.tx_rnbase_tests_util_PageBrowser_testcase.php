@@ -185,7 +185,9 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends BaseTestCase
      * @param int  $pointer
      * @param bool $pageMarkedAsNotFound
      * @param bool $ignorePageNotFound
+     *
      * @group unit
+     *
      * @dataProvider dataProviderMarkPageNotFoundIfPointerOutOfRange
      */
     public function testMarkPageNotFoundIfPointerOutOfRange($pointer, $pageMarkedAsNotFound, $ignorePageNotFound)

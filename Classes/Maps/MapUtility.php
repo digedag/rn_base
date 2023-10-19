@@ -2,10 +2,8 @@
 
 namespace Sys25\RnBase\Maps;
 
-use Exception;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Frontend\Marker\Templates;
-use tx_rnbase;
 
 /***************************************************************
 *  Copyright notice
@@ -57,7 +55,7 @@ class MapUtility
         try {
             $subpart = Templates::getSubpartFromFile($file, $subpartName);
             $ret = str_replace(["\r\n", "\n", "\r"], '', $subpart);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $ret = '';
         }
 
@@ -107,7 +105,7 @@ class MapUtility
 
         $marker = new DefaultMarker();
         if ($item->getLongitude() || $item->getLatitude()) {
-            $coords = tx_rnbase::makeInstance(Coord::class);
+            $coords = \tx_rnbase::makeInstance(Coord::class);
             $coords->setLatitude($item->getLatitude());
             $coords->setLongitude($item->getLongitude());
             $marker->setCoords($coords);

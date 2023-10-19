@@ -35,7 +35,9 @@ class tx_rnbase_tests_util_Link_testcase extends BaseTestCase
 {
     /**
      * @dataProvider getMakeUrlOrTagData
+     *
      * @group unit
+     *
      * @test
      */
     public function testMakeUrlOrTag($typolink, $absUrl, $schema, $expected, $method = 'makeUrl')
@@ -207,6 +209,7 @@ class tx_rnbase_tests_util_Link_testcase extends BaseTestCase
 
     /**
      * @group unit
+     *
      * @test
      */
     public function testMakeUrlParam()

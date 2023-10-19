@@ -3,7 +3,6 @@
 namespace Sys25\RnBase\Hook;
 
 use Sys25\RnBase\Utility\Typo3Classes;
-use tx_rnbase;
 
 /**
  * Copyright notice.
@@ -56,6 +55,6 @@ class DataHandler
      */
     protected function getCacheManager()
     {
-        return tx_rnbase::makeInstance(Typo3Classes::getCacheManagerClass());
+        return \tx_rnbase::makeInstance(Typo3Classes::getCacheManagerClass());
     }
 }

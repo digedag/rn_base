@@ -2,8 +2,6 @@
 
 namespace Sys25\RnBase\Utility;
 
-use tx_rnbase;
-
 /***************************************************************
  * Copyright notice
  *
@@ -57,7 +55,7 @@ class Registry
     {
         $domain = $domain ? $domain : $this->domain;
         /* @var $registry \TYPO3\CMS\Core\Registry */
-        $registry = tx_rnbase::makeInstance(\TYPO3\CMS\Core\Registry::class);
+        $registry = \tx_rnbase::makeInstance(\TYPO3\CMS\Core\Registry::class);
 
         return $registry->get($domain, $key);
     }
@@ -73,7 +71,7 @@ class Registry
     {
         $domain = $domain ? $domain : $this->domain;
         /* @var $registry \TYPO3\CMS\Core\Registry */
-        $registry = tx_rnbase::makeInstance(\TYPO3\CMS\Core\Registry::class);
+        $registry = \tx_rnbase::makeInstance(\TYPO3\CMS\Core\Registry::class);
 
         return $registry->set($domain, $key, $value);
     }

@@ -2,10 +2,6 @@
 
 namespace Sys25\RnBase\Testing;
 
-use Exception;
-use ReflectionClass;
-use ReflectionObject;
-use ReflectionProperty;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Domain\Model\BaseModel;
 use Sys25\RnBase\Utility\Spyc;
@@ -190,13 +186,13 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
             $record = ['uid' => (int) $record];
         }
 
-        if (!tx_rnbase::load($class)) {
-            throw new Exception('The model "'.$class.'" could not be loaded.');
+        if (!\tx_rnbase::load($class)) {
+            throw new \Exception('The model "'.$class.'" could not be loaded.');
         }
 
         $isNewModel = (
-            is_subclass_of($class, BaseModel::class) ||
-            BaseModel::class == $class
+            is_subclass_of($class, BaseModel::class)
+            || BaseModel::class == $class
         );
 
         // create the mock
@@ -311,10 +307,10 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
         $getters = [];
 
         foreach (array_keys($array) as $field) {
-            if ('g' === $field[0] &&
-                'e' === $field[1] &&
-                't' === $field[2] &&
-                strtoupper($field[3]) === $field[3]
+            if ('g' === $field[0]
+                && 'e' === $field[1]
+                && 't' === $field[2]
+                && strtoupper($field[3]) === $field[3]
             ) {
                 $getters[] = $field;
             }
@@ -369,7 +365,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
      */
     protected function setInaccessibleProperty($object, $property, $value = null)
     {
-        $refObject = new ReflectionObject($object);
+        $refObject = new \ReflectionObject($object);
         $refProperty = $refObject->getProperty($property);
         $refProperty->setAccessible(true);
         $refProperty->setValue($object, $value);
@@ -385,7 +381,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
      */
     protected function getInaccessibleProperty($object, $property)
     {
-        $refObject = new ReflectionObject($object);
+        $refObject = new \ReflectionObject($object);
         $refProperty = $refObject->getProperty($property);
         $refProperty->setAccessible(true);
 
@@ -401,7 +397,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
      */
     protected function setInaccessibleStaticProperty($class, $property, $value = null)
     {
-        $reflectedClass = new ReflectionClass($class);
+        $reflectedClass = new \ReflectionClass($class);
         $reflectedProperty = $reflectedClass->getProperty($property);
         $reflectedProperty->setAccessible(true);
         $reflectedProperty->setValue($value);
@@ -607,7 +603,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
 
     protected function resetIndependentEnvironmentCache()
     {
-        $property = new ReflectionProperty(
+        $property = new \ReflectionProperty(
             Typo3Classes::getGeneralUtilityClass(),
             'indpEnvCache'
         );

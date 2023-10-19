@@ -2,8 +2,6 @@
 
 namespace Sys25\RnBase\Exception;
 
-use Exception;
-
 /**
  *  Copyright notice.
  *
@@ -32,6 +30,6 @@ use Exception;
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class BaseException extends Exception
+class BaseException extends \Exception
 {
 }

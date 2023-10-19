@@ -40,6 +40,7 @@ class AbstractControllerTest extends BaseTestCase
      * Test the handleRequest method.
      *
      * @group unit
+     *
      * @test
      */
     public function testHandleRequestCallsDoRequest()
@@ -67,6 +68,7 @@ class AbstractControllerTest extends BaseTestCase
      * Test the assignToView method.
      *
      * @group unit
+     *
      * @test
      */
     public function testAssignToViewShouldStoreDataCorrectly()
@@ -82,6 +84,7 @@ class AbstractControllerTest extends BaseTestCase
      * Test the getConfigurationValue method.
      *
      * @group unit
+     *
      * @test
      */
     public function testGetConfigurationValueShouldCallConfigurationProcessorCorrectly()

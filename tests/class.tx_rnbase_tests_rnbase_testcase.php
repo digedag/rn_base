@@ -53,7 +53,7 @@ class tx_rnbase_tests_rnbase_testcase extends BaseTestCase
     private function isExtBasePossible()
     {
         // TODO: bessere Testklasse finden
-        return false && tx_rnbase_util_TYPO3::isExtLoaded('extbase') &&
-            tx_rnbase_util_TYPO3::isExtMinVersion('t3sponsors', 2001);
+        return false && tx_rnbase_util_TYPO3::isExtLoaded('extbase')
+            && tx_rnbase_util_TYPO3::isExtMinVersion('t3sponsors', 2001);
     }
 }

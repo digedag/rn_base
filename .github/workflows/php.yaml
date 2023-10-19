@@ -24,8 +24,10 @@ jobs:
           - 7.1
           - 7.2
           - 7.3
+          - 7.4
           - 8.0
           - 8.1
+          - 8.2
 
   php-compatibility:
     name: "PHPCompatibility"
@@ -87,7 +89,7 @@ jobs:
     strategy:
       matrix:
         php-version:
-          - 8.1
+          - 8.2
         command:
           - ".Build/bin/php-cs-fixer fix --diff --dry-run"
 
@@ -120,7 +122,7 @@ jobs:
     strategy:
       matrix:
         php-version:
-          - 8.1
+          - 8.2
         command:
           - "composer test:phpstan"
 

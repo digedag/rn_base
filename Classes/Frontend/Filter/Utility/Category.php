@@ -74,10 +74,10 @@ class Category
                 );
 
                 if (
-                    $this->configurations->get($this->confId.$typoScriptPath.'.dontSearchIfNoCategoriesFound') &&
+                    $this->configurations->get($this->confId.$typoScriptPath.'.dontSearchIfNoCategoriesFound')
                     // wenn sich die $fields nicht geändert haben, dann wurden keine Kategorie
                     // gefunden.
-                    $fieldsBefore == $fields
+                    && $fieldsBefore == $fields
                 ) {
                     $doSearch = false;
                 }

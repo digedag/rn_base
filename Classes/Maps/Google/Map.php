@@ -2,7 +2,6 @@
 
 namespace Sys25\RnBase\Maps\Google;
 
-use Exception;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Maps\BaseMap;
 use Sys25\RnBase\Maps\IControl;
@@ -10,7 +9,6 @@ use Sys25\RnBase\Maps\IMarker;
 use Sys25\RnBase\Maps\TypeRegistry;
 use Sys25\RnBase\Utility\Extensions;
 use Sys25\RnBase\Utility\Strings;
-use tx_rnbase;
 
 /***************************************************************
 *  Copyright notice
@@ -54,10 +52,10 @@ class Map extends BaseMap
     public function init(ConfigurationInterface $conf, $confId)
     {
         if (!Extensions::isLoaded('wec_map')) {
-            throw new Exception('Extension wec_map must be installed to use GoogleMaps!');
+            throw new \Exception('Extension wec_map must be installed to use GoogleMaps!');
         }
 
-        throw new Exception('Not implemented right now!');
+        throw new \Exception('Not implemented right now!');
         $this->conf = $conf;
         $this->confId = $confId;
         $apiKey = $conf->get($confId.'google.apikey');
@@ -65,7 +63,7 @@ class Map extends BaseMap
         $width = $conf->get($confId.'width');
         $height = $conf->get($confId.'height');
 
-        $this->map = tx_rnbase::makeInstance('JBartels\WecMap\MapService\Google\Map', $apiKey, $width, $height);
+        $this->map = \tx_rnbase::makeInstance('JBartels\WecMap\MapService\Google\Map', $apiKey, $width, $height);
 
         // Der MapType
         $mapType = $conf->get($confId.'maptype') ? constant($conf->get($confId.'maptype')) : null;
@@ -78,7 +76,7 @@ class Map extends BaseMap
         if ($controls) {
             $controls = Strings::trimExplode(',', $controls);
             foreach ($controls as $control) {
-                $this->addControl(tx_rnbase::makeInstance(Control::class, $control));
+                $this->addControl(\tx_rnbase::makeInstance(Control::class, $control));
             }
         }
     }

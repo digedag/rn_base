@@ -32,16 +32,16 @@ use Sys25\RnBase\Maps\IIcon;
  */
 class Icon implements IIcon
 {
-    private $id = null;
+    private $id;
 
     /** @var Map */
-    private $map = null;
-    private $image = null;
-    private $shadow = null;
-    private $shadowSize = null;
-    private $anchorPoint = null;
-    private $winAnchorPoint = null;
-    private $size = null;
+    private $map;
+    private $image;
+    private $shadow;
+    private $shadowSize;
+    private $anchorPoint;
+    private $winAnchorPoint;
+    private $size;
 
     public function __construct(Map $map)
     {

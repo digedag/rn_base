@@ -62,7 +62,7 @@ class Arrays
         if (is_string($mixed)) {
             $array = Misc::explode($mixed, $splitCharacters); // TODO: Enable empty values by defining a better explode functions.
             $hashArray = [];
-            for ($i = 0, $len = count($array); $i < $len; $i = $i + 2) {
+            for ($i = 0, $len = count($array); $i < $len; $i += 2) {
                 $hashArray[$array[$i]] = $array[$i + 1];
             }
         } elseif (is_array($mixed)) {

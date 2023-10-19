@@ -355,7 +355,7 @@ class TYPO3
         return self::getTSFE()->getPageRenderer();
     }
 
-    private static $sysPage = null;
+    private static $sysPage;
 
     /**
      * @return \TYPO3\CMS\Frontend\Page\PageRepository or t3lib_pageSelect

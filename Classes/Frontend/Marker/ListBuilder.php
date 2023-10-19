@@ -2,11 +2,8 @@
 
 namespace Sys25\RnBase\Frontend\Marker;
 
-use ArrayObject;
 use Sys25\RnBase\Utility\Debug;
 use Sys25\RnBase\Utility\Strings;
-use Traversable;
-use tx_rnbase;
 
 /***************************************************************
  *  Copyright notice
@@ -54,7 +51,7 @@ class ListBuilder
         if ($info) {
             $this->info = $info;
         } else {
-            $this->info = tx_rnbase::makeInstance(ListBuilderInfo::class);
+            $this->info = \tx_rnbase::makeInstance(ListBuilderInfo::class);
         }
     }
 
@@ -86,14 +83,14 @@ class ListBuilder
 
     public function renderEach(IListProvider $provider, $viewData, $template, $markerClassname, $confId, $marker, $formatter, $markerParams = null)
     {
-        $viewData = is_object($viewData) ? $viewData : new ArrayObject();
+        $viewData = is_object($viewData) ? $viewData : new \ArrayObject();
         $debugKey = $formatter->getConfigurations()->get($confId.'_debuglb');
         $debug = (
-            $debugKey &&
-            (
-                '1' === $debugKey ||
-                ($_GET['debug'] && array_key_exists($debugKey, array_flip(Strings::trimExplode(',', $_GET['debug'])))) ||
-                ($_POST['debug'] && array_key_exists($debugKey, array_flip(Strings::trimExplode(',', $_POST['debug']))))
+            $debugKey
+            && (
+                '1' === $debugKey
+                || ($_GET['debug'] && array_key_exists($debugKey, array_flip(Strings::trimExplode(',', $_GET['debug']))))
+                || ($_POST['debug'] && array_key_exists($debugKey, array_flip(Strings::trimExplode(',', $_POST['debug']))))
             )
         );
         if ($debug) {
@@ -105,7 +102,7 @@ class ListBuilder
 
         $outerMarker = $this->getOuterMarker($marker, $template);
         /* @var $listMarker ListMarker */
-        $listMarker = tx_rnbase::makeInstance(ListMarker::class, $this->info->getListMarkerInfo());
+        $listMarker = \tx_rnbase::makeInstance(ListMarker::class, $this->info->getListMarkerInfo());
         while ($templateList = Templates::getSubpart($template, '###'.$outerMarker.'S###')) {
             $markerArray = $subpartArray = [];
             $templateEntry = Templates::getSubpart($templateList, '###'.$marker.'###');
@@ -222,13 +219,13 @@ class ListBuilder
      */
     public function render(&$dataArr, $viewData, $template, $markerClassname, $confId, $marker, $formatter, $markerParams = null)
     {
-        $viewData = is_object($viewData) ? $viewData : new ArrayObject();
+        $viewData = is_object($viewData) ? $viewData : new \ArrayObject();
         $debugKey = $formatter->getConfigurations()->get($confId.'_debuglb');
         $debug = (
             $debugKey && (
-                '1' === $debugKey ||
-                ($_GET['debug'] && array_key_exists($debugKey, array_flip(Strings::trimExplode(',', $_GET['debug'])))) ||
-                ($_POST['debug'] && array_key_exists($debugKey, array_flip(Strings::trimExplode(',', $_POST['debug']))))
+                '1' === $debugKey
+                || ($_GET['debug'] && array_key_exists($debugKey, array_flip(Strings::trimExplode(',', $_GET['debug']))))
+                || ($_POST['debug'] && array_key_exists($debugKey, array_flip(Strings::trimExplode(',', $_POST['debug']))))
             )
         );
         if ($debug) {
@@ -240,9 +237,9 @@ class ListBuilder
 
         $outerMarker = $this->getOuterMarker($marker, $template);
         while ($templateList = Templates::getSubpart($template, '###'.$outerMarker.'S###')) {
-            if ((is_array($dataArr) || $dataArr instanceof Traversable) && count($dataArr)) {
+            if ((is_array($dataArr) || $dataArr instanceof \Traversable) && count($dataArr)) {
                 /* @var $listMarker ListMarker */
-                $listMarker = tx_rnbase::makeInstance(ListMarker::class, $this->info->getListMarkerInfo());
+                $listMarker = \tx_rnbase::makeInstance(ListMarker::class, $this->info->getListMarkerInfo());
 
                 $templateEntry = Templates::getSubpart($templateList, '###'.$marker.'###');
                 $offset = 0;
@@ -341,8 +338,8 @@ class ListBuilder
     {
         $outerMarker = $marker;
         $len = strlen($marker) - 1;
-        if ('Y' == $marker[$len] &&
-            !BaseMarker::containsMarker($template, $marker.'S###')) {
+        if ('Y' == $marker[$len]
+            && !BaseMarker::containsMarker($template, $marker.'S###')) {
             $outerMarker = substr($marker, 0, $len).'IE';
         }
 

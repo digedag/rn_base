@@ -38,7 +38,7 @@ use Sys25\RnBase\Domain\Model\RecordInterface;
  */
 class SimpleMarker extends BaseMarker
 {
-    protected $classname = null;
+    protected $classname;
 
     public function __construct($options = [])
     {

@@ -61,6 +61,7 @@ class tx_rnbase_tests_util_Lock_testcase extends BaseTestCase
 
     /**
      * @group unit
+     *
      * @test
      */
     public function testTheLock()

@@ -2,12 +2,10 @@
 
 namespace Sys25\RnBase\Backend\Template;
 
-use Exception;
 use Sys25\RnBase\Backend\Module\IModule;
 use Sys25\RnBase\Backend\Template\Override\DocumentTemplate;
 use Sys25\RnBase\Backend\Utility\BackendUtility;
 use Sys25\RnBase\Utility\TYPO3;
-use tx_rnbase;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 
 /* *******************************************************
@@ -84,10 +82,10 @@ class ModuleTemplate
     protected function renderContent12(ModuleParts $parts)
     {
         /** @var ModuleTemplateFactory $factory */
-        $factory = tx_rnbase::makeInstance(ModuleTemplateFactory::class);
+        $factory = \tx_rnbase::makeInstance(ModuleTemplateFactory::class);
         $view = $factory->create($this->options['request']);
         $content = '';
-//        $moduleTemplate->getPageRenderer()->loadJquery();
+        //        $moduleTemplate->getPageRenderer()->loadJquery();
         $view->getDocHeaderComponent()->setMetaInformation($parts->getPageInfo());
         $this->registerMenu($view, $parts);
 
@@ -130,14 +128,14 @@ class ModuleTemplate
         $moduleTemplate = null;
         if (TYPO3::isTYPO121OrHigher()) {
             /** @var ModuleTemplateFactory $factory */
-            $factory = tx_rnbase::makeInstance(ModuleTemplateFactory::class);
+            $factory = \tx_rnbase::makeInstance(ModuleTemplateFactory::class);
             $moduleTemplate = $factory->create($this->options['request']);
         } else {
-            $moduleTemplate = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Template\\ModuleTemplate');
+            $moduleTemplate = \tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Template\\ModuleTemplate');
         }
 
         $content = '';
-//        $moduleTemplate->getPageRenderer()->loadJquery();
+        //        $moduleTemplate->getPageRenderer()->loadJquery();
         $moduleTemplate->getDocHeaderComponent()->setMetaInformation($parts->getPageInfo());
         $this->registerMenu($moduleTemplate, $parts);
 
@@ -228,7 +226,7 @@ class ModuleTemplate
     public function getDoc()
     {
         if (!$this->doc) {
-            $this->doc = tx_rnbase::makeInstance(DocumentTemplate::class);
+            $this->doc = \tx_rnbase::makeInstance(DocumentTemplate::class);
             $this->initDoc($this->doc);
         }
 
@@ -245,9 +243,9 @@ class ModuleTemplate
         $doc->docType = 'xhtml_trans';
         $doc->inDocStyles = $this->options['docstyles'];
         $doc->inDocStylesArray[] = $doc->inDocStyles;
-//        $doc->tableLayout = $this->getTableLayout();
+        //        $doc->tableLayout = $this->getTableLayout();
         $doc->setModuleTemplate($this->options['template']);
-//            $doc->getPageRenderer()->loadJquery();
+        //            $doc->getPageRenderer()->loadJquery();
         // JavaScript
         $doc->JScode .= '
             <script>
@@ -276,7 +274,7 @@ class ModuleTemplate
             $options['pid'] = $this->module->getPid();
         }
         if (!isset($options['template'])) {
-            throw new Exception('No template for module found.');
+            throw new \Exception('No template for module found.');
         }
         if (!isset($options['form'])) {
             $modUrl = BackendUtility::getModuleUrl(

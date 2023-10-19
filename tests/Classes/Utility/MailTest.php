@@ -36,6 +36,7 @@ class MailTest extends BaseTestCase
 {
     /**
      * @group unit
+     *
      * @test
      */
     public function testSendMailWithAddressList()
@@ -66,6 +67,7 @@ class MailTest extends BaseTestCase
 
     /**
      * @group unit
+     *
      * @test
      */
     public function testSendMail()

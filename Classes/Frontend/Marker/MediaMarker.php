@@ -33,7 +33,7 @@ use Sys25\RnBase\Utility\Misc;
  */
 class MediaMarker extends SimpleMarker
 {
-    private static $damDb = null;
+    private static $damDb;
 
     /**
      * @param array $wrappedSubpartArray das HTML-Template

@@ -75,7 +75,7 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
     /**
      * @var string
      */
-    private $cacheKey = null;
+    private $cacheKey;
 
     /**
      * internal config value cache.

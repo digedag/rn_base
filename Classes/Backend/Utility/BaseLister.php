@@ -2,14 +2,11 @@
 
 namespace Sys25\RnBase\Backend\Utility;
 
-use Exception;
 use Sys25\RnBase\Backend\Decorator\BaseDecorator;
 use Sys25\RnBase\Backend\Decorator\InterfaceDecorator;
 use Sys25\RnBase\Backend\Form\ToolBox;
 use Sys25\RnBase\Backend\Module\IModule;
 use Sys25\RnBase\Utility\T3General;
-use Traversable;
-use tx_rnbase;
 
 /***************************************************************
  *  Copyright notice
@@ -51,7 +48,7 @@ abstract class BaseLister
      *
      * @var IModule
      */
-    private $mod = null;
+    private $mod;
 
     /**
      * Otions.
@@ -210,7 +207,7 @@ abstract class BaseLister
     {
         $srv = $this->getService();
         /* @var $pager BEPager */
-        $pager = tx_rnbase::makeInstance(
+        $pager = \tx_rnbase::makeInstance(
             BEPager::class,
             $this->getSearcherId().'Pager',
             $this->getModule()->getName(),
@@ -310,8 +307,8 @@ abstract class BaseLister
      */
     protected function showItems(&$content, $items)
     {
-        if (!(is_array($items) || $items instanceof Traversable)) {
-            throw new Exception('Argument 2 passed to'.__METHOD__.'() must be of the type array or Traversable.');
+        if (!(is_array($items) || $items instanceof \Traversable)) {
+            throw new \Exception('Argument 2 passed to'.__METHOD__.'() must be of the type array or Traversable.');
         }
 
         if (0 === count($items)) {
@@ -328,7 +325,7 @@ abstract class BaseLister
             unset($columns['linker']);
         }
         /* @var Tables $tables */
-        $tables = tx_rnbase::makeInstance(Tables::class);
+        $tables = \tx_rnbase::makeInstance(Tables::class);
         list($tableData, $tableLayout) = $tables->prepareTable(
             $items,
             $columns,
@@ -350,7 +347,7 @@ abstract class BaseLister
      */
     protected function createDefaultDecorator()
     {
-        return tx_rnbase::makeInstance(
+        return \tx_rnbase::makeInstance(
             BaseDecorator::class,
             $this->getModule()
         );

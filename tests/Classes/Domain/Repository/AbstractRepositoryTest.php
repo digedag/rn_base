@@ -4,7 +4,6 @@ namespace Sys25\RnBase\Domain\Repository;
 
 use Sys25\RnBase\Domain\Model\BaseModel;
 use Sys25\RnBase\Testing\BaseTestCase;
-use tx_rnbase;
 
 /***************************************************************
  * Copyright notice
@@ -46,6 +45,7 @@ class AbstractRepositoryTest extends BaseTestCase
 
     /**
      * @group unit
+     *
      * @dataProvider getOptions
      */
     public function testHandleEnableFieldsOptions(
@@ -98,7 +98,7 @@ class AbstractRepositoryTest extends BaseTestCase
     {
         $repository = $this->getRepositoryMock();
 
-        $expectedModel = tx_rnbase::makeInstance(
+        $expectedModel = \tx_rnbase::makeInstance(
             BaseModel::class,
             ['uid' => 123, 'some' => 'other']
         );
@@ -175,6 +175,7 @@ class AbstractRepositoryTest extends BaseTestCase
 
     /**
      * @group integration
+     *
      * @TODO: refactor, requires tca for he lnparent field check!
      */
     public function testUniqueItemsReducesCorrect()

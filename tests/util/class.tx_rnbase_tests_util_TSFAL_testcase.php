@@ -48,6 +48,7 @@ class tx_rnbase_tests_util_TSFAL_testcase extends BaseTestCase
 
     /**
      * @group unit
+     *
      * @dataProvider dataProviderFetchFirstReference
      */
     public function testFetchFirstReference(

@@ -7,7 +7,6 @@ use Sys25\RnBase\Frontend\Marker\SimpleMarker;
 use Sys25\RnBase\Frontend\Marker\Templates;
 use Sys25\RnBase\Frontend\Request\RequestInterface;
 use Sys25\RnBase\Frontend\View\ContextInterface;
-use tx_rnbase;
 
 /**
  * Generic list view.
@@ -64,7 +63,7 @@ class ListView extends BaseView
             $markerClass = $this->getMarkerClass($configurations, $confId);
 
             // Liste generieren
-            $listBuilder = tx_rnbase::makeInstance(ListBuilder::class);
+            $listBuilder = \tx_rnbase::makeInstance(ListBuilder::class);
             $template = $listBuilder->render(
                 $items,
                 $viewData,
@@ -112,7 +111,7 @@ class ListView extends BaseView
             $markerClass = isset($entityData['markerclass']) ? $entityData['markerclass'] : SimpleMarker::class;
             $entity = $entityData['entity'];
             if (is_array($entity)) {
-                $listBuilder = tx_rnbase::makeInstance(ListBuilder::class);
+                $listBuilder = \tx_rnbase::makeInstance(ListBuilder::class);
                 $template = $listBuilder->render(
                     $entity,
                     $viewData,
@@ -123,7 +122,7 @@ class ListView extends BaseView
                     $formatter
                 );
             } else {
-                $marker = tx_rnbase::makeInstance($markerClass);
+                $marker = \tx_rnbase::makeInstance($markerClass);
                 $template = $marker->parseTemplate($template, $entity, $formatter, $confId.$itemPath.'.', strtoupper($itemPath));
             }
         }

@@ -41,7 +41,7 @@ use Sys25\RnBase\Frontend\Controller\AbstractAction;
  */
 abstract class tx_rnbase_action_BaseIOC
 {
-    private $configurations = null;
+    private $configurations;
 
     /**
      * @param Sys25\RnBase\Frontend\Request\Parameters   $parameters
@@ -56,9 +56,9 @@ abstract class tx_rnbase_action_BaseIOC
 
         $debug = (
             $debugKey && (
-                '1' === $debugKey ||
-                ($_GET['debug'] && array_key_exists($debugKey, array_flip(tx_rnbase_util_Strings::trimExplode(',', $_GET['debug'])))) ||
-                ($_POST['debug'] && array_key_exists($debugKey, array_flip(tx_rnbase_util_Strings::trimExplode(',', $_POST['debug']))))
+                '1' === $debugKey
+                || ($_GET['debug'] && array_key_exists($debugKey, array_flip(tx_rnbase_util_Strings::trimExplode(',', $_GET['debug']))))
+                || ($_POST['debug'] && array_key_exists($debugKey, array_flip(tx_rnbase_util_Strings::trimExplode(',', $_POST['debug']))))
             )
         );
         if ($debug) {

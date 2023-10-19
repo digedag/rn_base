@@ -4,7 +4,6 @@ namespace Sys25\RnBase\ExtBaseFluid\ViewHelper;
 
 use Sys25\RnBase\ExtBaseFluid\View\Factory;
 use Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowser\CurrentPageViewHelper;
-use tx_rnbase_util_PageBrowser;
 
 /***************************************************************
  * Copyright notice
@@ -51,6 +50,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
     /**
      * @group integration
+     *
      * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderReturnsEmptyStringIfNoPageBrowserSetToTemplateVariableContainer()
@@ -62,6 +62,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
     /**
      * @group integration
+     *
      * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderReturnsEmptyStringIfOnePageAndHideIfSingelPageIsTrue()
@@ -87,6 +88,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
     /**
      * @group integration
+     *
      * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderCallsOnlyNoRenderPageMethodIfPointerZeroAndReturnsEmptyString()
@@ -137,6 +139,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
     /**
      * @group integration
+     *
      * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderCallsRenderFirstPageAndRenderPrevPageMethodIfPointer2AndTotalPages3AndReturnsCorrectBrowserParts()
@@ -186,6 +189,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
     /**
      * @group integration
+     *
      * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderCallsRenderNextPageAndRenderLastPageMethodIfPointer0AndTotalPages2AndReturnsCorrectBrowserParts()
@@ -235,6 +239,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
     /**
      * @group integration
+     *
      * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderCallsRenderNormalPageAndRenderCurrentPageCorrect()
@@ -289,6 +294,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
     /**
      * @group integration
+     *
      * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderAddsAndRemovesQualifierCorrectInViewHelperVariableContainer()
@@ -332,6 +338,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
     /**
      * @group integration
+     *
      * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderAddsAndRemovesQualifierCorrectInViewHelperVariableContainerIfQualifierFromConfigurations()
@@ -379,6 +386,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
     /**
      * @group integration
+     *
      * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderAddsAndRemovesCountAndTotalPagesCorrectInTemplateVariableContainer()
@@ -423,6 +431,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
     /**
      * @group integration
+     *
      * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderEvaluatesPageBrowserViewHelperInChildNodesCorrect()
@@ -473,6 +482,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
     /**
      * @group integration
+     *
      * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderIfNoPageBrowser()
@@ -492,6 +502,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
     /**
      * @group integration
+     *
      * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderRespectingHideIfSinglePageIfPresent()
@@ -517,6 +528,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
     /**
      * @group integration
+     *
      * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderRespectingHideIfSinglePageIfNotPresent()
@@ -534,7 +546,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
             \tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/PageBrowserViewHelperWithoutHideIfSinglePage.html')
         );
 
-        self::assertRegExp(
+        self::assertMatchesRegularExpression(
             '/<div class="pagebrowser"><a href=".*&amp;rn_base%5Bpb-1-pointer%5D=0">1<\/a><\/div>/',
             trim($view->render())
         );
@@ -542,6 +554,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
     /**
      * @group integration
+     *
      * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderIfOnFirstPage()
@@ -556,7 +569,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
         $view->setTemplatePathAndFilename(
             \tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/PageBrowserViewHelper.html')
         );
-        self::assertRegExp(
+        self::assertMatchesRegularExpression(
             '/<div class="pagebrowser">'.
             '<a class="current" href=".*&amp;rn_base%5Bpb-1-pointer%5D=0">1<\/a> '.
             '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=1">2<\/a> '.
@@ -572,6 +585,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
     /**
      * @group integration
+     *
      * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderIfOnMiddlePage()
@@ -587,7 +601,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
             \tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/PageBrowserViewHelper.html')
         );
 
-        self::assertRegExp(
+        self::assertMatchesRegularExpression(
             '/<div class="pagebrowser">'.
             '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=0">first<\/a> '.
             '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=2">previous<\/a> '.
@@ -605,6 +619,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
     /**
      * @group integration
+     *
      * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderIfOnLastPage()
@@ -620,7 +635,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
             \tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/PageBrowserViewHelper.html')
         );
 
-        self::assertRegExp(
+        self::assertMatchesRegularExpression(
             '/<div class="pagebrowser">'.
             '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=0">first<\/a> '.
             '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=8">previous<\/a> '.
@@ -636,6 +651,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
     /**
      * @group integration
+     *
      * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testRenderRespectsMaxPagesConfiguration()
@@ -651,7 +667,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
             \tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/PageBrowserViewHelper.html')
         );
 
-        self::assertRegExp(
+        self::assertMatchesRegularExpression(
             '/<div class="pagebrowser">'.
             '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=0">first<\/a> '.
             '<a href=".*&amp;rn_base%5Bpb-1-pointer%5D=2">previous<\/a> '.
@@ -667,13 +683,13 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
 
     /**
      * @param string|\TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper
-     * @param tx_rnbase_util_PageBrowser                                   $pageBrowser
+     * @param \tx_rnbase_util_PageBrowser                                   $pageBrowser
      *
      * @return \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
      */
     protected function getPreparedVîewHelperWithPageBrowser(
         $viewHelper = PageBrowserViewHelper::class,
-        tx_rnbase_util_PageBrowser $pageBrowser = null,
+        \tx_rnbase_util_PageBrowser $pageBrowser = null,
         $hideIfSinglePage = false,
         $maxPages = 10,
         $pageFloat = 'CENTER',

@@ -35,7 +35,7 @@ trait ConfigurableTrait
     /**
      * @var ConfigurationInterface
      */
-    protected $configurations = null;
+    protected $configurations;
 
     /**
      * @var string

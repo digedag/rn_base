@@ -32,7 +32,7 @@ use Sys25\RnBase\Maps\IControl;
  */
 class Control implements IControl
 {
-    private $type = null;
+    private $type;
 
     public function __construct($type)
     {

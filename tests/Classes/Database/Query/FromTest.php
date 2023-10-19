@@ -33,7 +33,9 @@ class FromTest extends BaseTestCase
      * Tests the getFrom method.
      *
      * @group unit
+     *
      * @dataProvider getGetFromTestData
+     *
      * @test
      */
     public function testGetFrom($from, array $expects)

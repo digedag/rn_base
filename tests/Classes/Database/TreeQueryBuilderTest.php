@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Database;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Sys25\RnBase\Testing\BaseTestCase;
 
 /**
@@ -54,60 +55,49 @@ class TreeQueryBuilderTest extends BaseTestCase
          * @var TreeQueryBuilder
          */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
-            function ($connection) {
-                $connection->expects(self::at(0))
+            function (MockObject $connection) {
+                $connection->expects(self::exactly(6))
                     ->method('doSelect')
-                    ->with(
-                        'uid',
-                        'pages',
-                        ['where' => '1=1 AND pid IN (1)', 'tableName' => 'pages']
+                    ->withConsecutive(
+                        [
+                            'uid',
+                            'pages',
+                            ['where' => '1=1 AND pid IN (1)', 'tableName' => 'pages'],
+                        ],
+                        [
+                            'uid',
+                            'pages',
+                            ['where' => '1=1 AND pid IN (2)', 'tableName' => 'pages'],
+                        ],
+                        [
+                            'uid',
+                            'pages',
+                            ['where' => '1=1 AND pid IN (3)', 'tableName' => 'pages'],
+                        ],
+                        [
+                            'uid',
+                            'pages',
+                            ['where' => '1=1 AND pid IN (4)', 'tableName' => 'pages'],
+                        ],
+                        [
+                            'uid',
+                            'pages',
+                            ['where' => '1=1 AND pid IN (6)', 'tableName' => 'pages'],
+                        ],
+                        [
+                            'uid',
+                            'pages',
+                            ['where' => '1=1 AND pid IN (7)', 'tableName' => 'pages'],
+                        ]
                     )
-                    ->will(self::returnValue([['uid' => 2]]));
-
-                $connection->expects(self::at(1))
-                    ->method('doSelect')
-                    ->with(
-                        'uid',
-                        'pages',
-                        ['where' => '1=1 AND pid IN (2)', 'tableName' => 'pages']
-                    )
-                    ->will(self::returnValue([['uid' => 3], ['uid' => 6]]));
-
-                $connection->expects(self::at(2))
-                    ->method('doSelect')
-                    ->with(
-                        'uid',
-                        'pages',
-                        ['where' => '1=1 AND pid IN (3)', 'tableName' => 'pages']
-                    )
-                    ->will(self::returnValue([['uid' => 4]]));
-
-                $connection->expects(self::at(3))
-                    ->method('doSelect')
-                    ->with(
-                        'uid',
-                        'pages',
-                        ['where' => '1=1 AND pid IN (4)', 'tableName' => 'pages']
-                    )
-                    ->will(self::returnValue([]));
-
-                $connection->expects(self::at(4))
-                    ->method('doSelect')
-                    ->with(
-                        'uid',
-                        'pages',
-                        ['where' => '1=1 AND pid IN (6)', 'tableName' => 'pages']
-                    )
-                    ->will(self::returnValue([['uid' => 7]]));
-
-                $connection->expects(self::at(5))
-                    ->method('doSelect')
-                    ->with(
-                        'uid',
-                        'pages',
-                        ['where' => '1=1 AND pid IN (7)', 'tableName' => 'pages']
-                    )
-                    ->will(self::returnValue([]));
+                    ->willReturnOnConsecutiveCalls(
+                        [['uid' => 2]],
+                        [['uid' => 3], ['uid' => 6]],
+                        [['uid' => 4]],
+                        [],
+                        [['uid' => 7]],
+                        []
+                    );
             }
         );
 
@@ -126,23 +116,24 @@ class TreeQueryBuilderTest extends BaseTestCase
          */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
-                $connection->expects(self::at(0))
+                $connection->expects(self::exactly(2))
                     ->method('doSelect')
-                    ->with(
-                        'uid',
-                        'pages',
-                        ['where' => '1=1 AND pid IN (1)', 'tableName' => 'pages']
+                    ->withConsecutive(
+                        [
+                            'uid',
+                            'pages',
+                            ['where' => '1=1 AND pid IN (1)', 'tableName' => 'pages'],
+                        ],
+                        [
+                            'uid',
+                            'pages',
+                            ['where' => '1=1 AND pid IN (2)', 'tableName' => 'pages'],
+                        ]
                     )
-                    ->will(self::returnValue([['uid' => 2]]));
-
-                $connection->expects(self::at(1))
-                    ->method('doSelect')
-                    ->with(
-                        'uid',
-                        'pages',
-                        ['where' => '1=1 AND pid IN (2)', 'tableName' => 'pages']
-                    )
-                    ->will(self::returnValue([['uid' => 3], ['uid' => 6]]));
+                    ->willReturnOnConsecutiveCalls(
+                        [['uid' => 2]],
+                        [['uid' => 3], ['uid' => 6]]
+                    );
             }
         );
 
@@ -162,23 +153,24 @@ class TreeQueryBuilderTest extends BaseTestCase
          */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
-                $connection->expects(self::at(0))
+                $connection->expects(self::any())
                     ->method('doSelect')
-                    ->with(
-                        'uid',
-                        'pages',
-                        ['where' => 'hidden=1 AND pid IN (1)', 'tableName' => 'pages']
+                    ->withConsecutive(
+                        [
+                            'uid',
+                            'pages',
+                            ['where' => 'hidden=1 AND pid IN (1)', 'tableName' => 'pages'],
+                        ],
+                        [
+                            'uid',
+                            'pages',
+                            ['where' => 'hidden=1 AND pid IN (2)', 'tableName' => 'pages'],
+                        ]
                     )
-                    ->will(self::returnValue([['uid' => 2]]));
-
-                $connection->expects(self::at(1))
-                    ->method('doSelect')
-                    ->with(
-                        'uid',
-                        'pages',
-                        ['where' => 'hidden=1 AND pid IN (2)', 'tableName' => 'pages']
-                    )
-                    ->will(self::returnValue([['uid' => 3]]));
+                    ->willReturnOnConsecutiveCalls(
+                        [['uid' => 2]],
+                        [['uid' => 3]]
+                    );
             }
         );
 
@@ -198,32 +190,30 @@ class TreeQueryBuilderTest extends BaseTestCase
          */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
-                $connection->expects(self::at(0))
+                $connection->expects(self::exactly(3))
                     ->method('doSelect')
-                    ->with(
-                        'uid',
-                        'tt_content',
-                        ['where' => '1=1 AND pid IN (1)', 'tableName' => 'tt_content']
+                    ->withConsecutive(
+                        [
+                            'uid',
+                            'tt_content',
+                            ['where' => '1=1 AND pid IN (1)', 'tableName' => 'tt_content'],
+                        ],
+                        [
+                            'uid',
+                            'tt_content',
+                            ['where' => '1=1 AND pid IN (33)', 'tableName' => 'tt_content'],
+                        ],
+                        [
+                            'uid',
+                            'tt_content',
+                            ['where' => '1=1 AND pid IN (44)', 'tableName' => 'tt_content'],
+                        ]
                     )
-                    ->will(self::returnValue([['uid' => 33], ['uid' => 44]]));
-
-                $connection->expects(self::at(1))
-                    ->method('doSelect')
-                    ->with(
-                        'uid',
-                        'tt_content',
-                        ['where' => '1=1 AND pid IN (33)', 'tableName' => 'tt_content']
-                    )
-                    ->will(self::returnValue([]));
-
-                $connection->expects(self::at(2))
-                    ->method('doSelect')
-                    ->with(
-                        'uid',
-                        'tt_content',
-                        ['where' => '1=1 AND pid IN (44)', 'tableName' => 'tt_content']
-                    )
-                    ->will(self::returnValue([]));
+                    ->willReturnOnConsecutiveCalls(
+                        [['uid' => 33], ['uid' => 44]],
+                        [],
+                        []
+                    );
             }
         );
 
@@ -246,33 +236,34 @@ class TreeQueryBuilderTest extends BaseTestCase
          */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
-                $connection->expects(self::at(0))
+                $connection->expects(self::exactly(2))
                     ->method('doSelect')
-                    ->with(
-                        'uid',
-                        'tt_content',
+                    ->withConsecutive(
                         [
-                            'where' => '(starttime > 12345 AND endtime < 98765) AND pid IN (1)',
-                            'tableName' => 'tt_content',
-                            'orderby' => 'header',
-                            'limit' => 1,
+                            'uid',
+                            'tt_content',
+                            [
+                                'where' => '(starttime > 12345 AND endtime < 98765) AND pid IN (1)',
+                                'tableName' => 'tt_content',
+                                'orderby' => 'header',
+                                'limit' => 1,
+                            ],
+                        ],
+                        [
+                            'uid',
+                            'tt_content',
+                            [
+                                'where' => '(starttime > 12345 AND endtime < 98765) AND pid IN (2)',
+                                'tableName' => 'tt_content',
+                                'orderby' => 'header',
+                                'limit' => 1,
+                            ],
                         ]
                     )
-                    ->will(self::returnValue([['uid' => 2]]));
-
-                $connection->expects(self::at(1))
-                    ->method('doSelect')
-                    ->with(
-                        'uid',
-                        'tt_content',
-                        [
-                            'where' => '(starttime > 12345 AND endtime < 98765) AND pid IN (2)',
-                            'tableName' => 'tt_content',
-                            'orderby' => 'header',
-                            'limit' => 1,
-                        ]
-                    )
-                    ->will(self::returnValue([]));
+                    ->willReturnOnConsecutiveCalls(
+                        [['uid' => 2]],
+                        []
+                    );
             }
         );
 
@@ -292,31 +283,32 @@ class TreeQueryBuilderTest extends BaseTestCase
          */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
-                $connection->expects(self::at(0))
+                $connection->expects(self::exactly(2))
                     ->method('doSelect')
-                    ->with(
-                        'uid',
-                        'pages',
+                    ->withConsecutive(
                         [
-                            'where' => '1=1 AND parent_id IN (1)',
-                            'tableName' => 'pages',
-                            'parentField' => 'parent_id',
+                            'uid',
+                            'pages',
+                            [
+                                'where' => '1=1 AND parent_id IN (1)',
+                                'tableName' => 'pages',
+                                'parentField' => 'parent_id',
+                            ],
+                        ],
+                        [
+                            'uid',
+                            'pages',
+                            [
+                                'where' => '1=1 AND parent_id IN (5)',
+                                'tableName' => 'pages',
+                                'parentField' => 'parent_id',
+                            ],
                         ]
                     )
-                    ->will(self::returnValue([['uid' => 5]]));
-
-                $connection->expects(self::at(1))
-                    ->method('doSelect')
-                    ->with(
-                        'uid',
-                        'pages',
-                        [
-                            'where' => '1=1 AND parent_id IN (5)',
-                            'tableName' => 'pages',
-                            'parentField' => 'parent_id',
-                        ]
-                    )
-                    ->will(self::returnValue([]));
+                    ->willReturnOnConsecutiveCalls(
+                        [['uid' => 5]],
+                        []
+                    );
             }
         );
 
@@ -336,31 +328,32 @@ class TreeQueryBuilderTest extends BaseTestCase
          */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
-                $connection->expects(self::at(0))
+                $connection->expects(self::exactly(2))
                     ->method('doSelect')
-                    ->with(
-                        'entity_id',
-                        'pages',
+                    ->withConsecutive(
                         [
-                            'where' => '1=1 AND pid IN (1)',
-                            'tableName' => 'pages',
-                            'idField' => 'entity_id',
+                            'entity_id',
+                            'pages',
+                            [
+                                'where' => '1=1 AND pid IN (1)',
+                                'tableName' => 'pages',
+                                'idField' => 'entity_id',
+                            ],
+                        ],
+                        [
+                            'entity_id',
+                            'pages',
+                            [
+                                'where' => '1=1 AND pid IN (5)',
+                                'tableName' => 'pages',
+                                'idField' => 'entity_id',
+                            ],
                         ]
                     )
-                    ->will(self::returnValue([['entity_id' => 5]]));
-
-                $connection->expects(self::at(1))
-                    ->method('doSelect')
-                    ->with(
-                        'entity_id',
-                        'pages',
-                        [
-                            'where' => '1=1 AND pid IN (5)',
-                            'tableName' => 'pages',
-                            'idField' => 'entity_id',
-                        ]
-                    )
-                    ->will(self::returnValue([]));
+                    ->willReturnOnConsecutiveCalls(
+                        [['entity_id' => 5]],
+                        []
+                    );
             }
         );
 
@@ -376,41 +369,36 @@ class TreeQueryBuilderTest extends BaseTestCase
          */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
             function ($connection) {
-                $connection->expects(self::at(0))
+                $connection->expects(self::any())
                     ->method('doSelect')
-                    ->with(
-                        'uid',
-                        'pages',
-                        ['where' => '1=1 AND pid IN (1,2,3)', 'tableName' => 'pages']
+                    ->withConsecutive(
+                        [
+                            'uid',
+                            'pages',
+                            ['where' => '1=1 AND pid IN (1,2,3)', 'tableName' => 'pages'],
+                        ],
+                        [
+                            'uid',
+                            'pages',
+                            ['where' => '1=1 AND pid IN (5)', 'tableName' => 'pages'],
+                        ],
+                        [
+                            'uid',
+                            'pages',
+                            ['where' => '1=1 AND pid IN (6)', 'tableName' => 'pages'],
+                        ],
+                        [
+                            'uid',
+                            'pages',
+                            ['where' => '1=1 AND pid IN (7)', 'tableName' => 'pages'],
+                        ]
                     )
-                    ->will(self::returnValue([['uid' => 5]]));
-
-                $connection->expects(self::at(1))
-                    ->method('doSelect')
-                    ->with(
-                        'uid',
-                        'pages',
-                        ['where' => '1=1 AND pid IN (5)', 'tableName' => 'pages']
-                    )
-                    ->will(self::returnValue([['uid' => 6], ['uid' => 7]]));
-
-                $connection->expects(self::at(2))
-                    ->method('doSelect')
-                    ->with(
-                        'uid',
-                        'pages',
-                        ['where' => '1=1 AND pid IN (6)', 'tableName' => 'pages']
-                    )
-                    ->will(self::returnValue([]));
-
-                $connection->expects(self::at(3))
-                    ->method('doSelect')
-                    ->with(
-                        'uid',
-                        'pages',
-                        ['where' => '1=1 AND pid IN (7)', 'tableName' => 'pages']
-                    )
-                    ->will(self::returnValue([]));
+                    ->willReturnOnConsecutiveCalls(
+                        [['uid' => 5]],
+                        [['uid' => 6], ['uid' => 7]],
+                        [],
+                        []
+                    );
             }
         );
 

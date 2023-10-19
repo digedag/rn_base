@@ -50,7 +50,9 @@ class tx_rnbase_tests_util_Strings_testcase extends BaseTestCase
      * Test for tx_rnbase_util_Strings::isLastPartOfStr.
      *
      * @group unit
+     *
      * @test
+     *
      * @dataProvider getIsLastPartOfStrData
      */
     public function testIsLastPartOfStr($haystack, $needle, $expected)

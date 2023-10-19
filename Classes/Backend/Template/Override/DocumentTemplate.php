@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Backend\Template\Override;
 
+use Sys25\RnBase\Utility\Files;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\T3General;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -332,7 +333,7 @@ function jumpToUrl(URL) {
 
         if (Strings::isFirstPartOfStr($filename, 'EXT:')) {
             $filename = GeneralUtility::getFileAbsFileName($filename, true, true);
-        } elseif (!GeneralUtility::isAbsPath($filename)) {
+        } elseif (!Files::isAbsPath($filename)) {
             $filename = GeneralUtility::resolveBackPath($filename);
         } elseif (!GeneralUtility::isAllowedAbsPath($filename)) {
             $filename = '';

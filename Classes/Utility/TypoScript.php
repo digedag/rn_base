@@ -2,8 +2,6 @@
 
 namespace Sys25\RnBase\Utility;
 
-use tx_rnbase;
-
 /***************************************************************
  * Copyright notice
  *
@@ -43,7 +41,7 @@ class TypoScript
      */
     private static function getTsParser()
     {
-        return tx_rnbase::makeInstance(
+        return \tx_rnbase::makeInstance(
             Typo3Classes::getTypoScriptParserClass()
         );
     }

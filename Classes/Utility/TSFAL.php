@@ -12,7 +12,6 @@ use Sys25\RnBase\Frontend\Marker\BaseMarker;
 use Sys25\RnBase\Frontend\Marker\ListBuilder;
 use Sys25\RnBase\Frontend\Marker\MediaMarker;
 use Sys25\RnBase\Frontend\Marker\Templates;
-use tx_rnbase;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -125,7 +124,7 @@ class TSFAL
         $medias = self::fetchFilesByTS($conf, $conf->getCObj());
         $conf->getCObj()->data[self::DEFAULT_LOCAL_FIELD] = $locUid; // Reset UID
 
-        $listBuilder = tx_rnbase::makeInstance(ListBuilder::class);
+        $listBuilder = \tx_rnbase::makeInstance(ListBuilder::class);
         $out = $listBuilder->render(
             $medias,
             false,
@@ -178,7 +177,7 @@ class TSFAL
     public static function fetchFilesByTS($conf, $cObj, $confId = '')
     {
         /* @var $fileRepository \TYPO3\CMS\Core\Resource\FileRepository */
-        $fileRepository = tx_rnbase::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
+        $fileRepository = \tx_rnbase::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
         $pics = [];
         // Getting the files
         // Try DAM style
@@ -269,10 +268,10 @@ class TSFAL
         if (is_array($pics)) {
             foreach ($pics as $pic) {
                 // getProperties() liefert derzeit nicht zurück
-                $fileObjects[] = tx_rnbase::makeInstance(MediaModel::class, $pic);
+                $fileObjects[] = \tx_rnbase::makeInstance(MediaModel::class, $pic);
             }
         } elseif (is_object($pics)) {
-            $fileObjects[] = tx_rnbase::makeInstance(MediaModel::class, $pics);
+            $fileObjects[] = \tx_rnbase::makeInstance(MediaModel::class, $pics);
         }
 
         return $fileObjects;
@@ -288,7 +287,7 @@ class TSFAL
     public function createConf($conf)
     {
         /** @var Processor $configurations */
-        $configurations = tx_rnbase::makeInstance(Processor::class);
+        $configurations = \tx_rnbase::makeInstance(Processor::class);
         $configurations->init($conf, $this->cObj, $conf['qualifier'] ?? '', $conf['qualifier'] ?? '');
 
         return $configurations;
@@ -357,7 +356,7 @@ class TSFAL
      */
     protected function getFileRepository()
     {
-        return tx_rnbase::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
+        return \tx_rnbase::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
     }
 
     /**
@@ -391,7 +390,7 @@ class TSFAL
         /**
          * @var \TYPO3\CMS\Core\Resource\FileRepository
          */
-        $fileRepository = tx_rnbase::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
+        $fileRepository = \tx_rnbase::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
         $refs = $fileRepository->findByRelation($tablename, $refField, $uid);
 
         return $refs;
@@ -812,7 +811,7 @@ class TSFAL
         $identifier = ltrim(substr($target, strlen($relativeBasePath)), '/');
 
         /* @var $indexer \TYPO3\CMS\Core\Resource\Index\Indexer */
-        $indexer = tx_rnbase::makeInstance(
+        $indexer = \tx_rnbase::makeInstance(
             'TYPO3\\CMS\\Core\\Resource\\Index\\Indexer',
             $storage
         );

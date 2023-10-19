@@ -62,7 +62,7 @@ class BaseFilter implements FilterInterface
      * @var bool|null wenn auf null steht wird der return Wert von initFilter()
      *                in init() zurück gegeben. Ansonsten der Wert von $doSearch, dieser hat also Vorrang.
      */
-    protected $doSearch = null;
+    protected $doSearch;
 
     /**
      * @param RequestInterface $request

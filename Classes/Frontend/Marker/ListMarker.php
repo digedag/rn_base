@@ -4,7 +4,6 @@ namespace Sys25\RnBase\Frontend\Marker;
 
 use Sys25\RnBase\Domain\Model\DataInterface;
 use Sys25\RnBase\Domain\Model\DomainModelInterface;
-use tx_rnbase;
 
 /***************************************************************
  *  Copyright notice
@@ -53,7 +52,7 @@ class ListMarker
         if ($listMarkerInfo) {
             $this->info = &$listMarkerInfo;
         } else {
-            $this->info = tx_rnbase::makeInstance(ListMarkerInfo::class);
+            $this->info = \tx_rnbase::makeInstance(ListMarkerInfo::class);
         }
     }
 
@@ -105,7 +104,7 @@ class ListMarker
      */
     public function renderEach(IListProvider $provider, $template, $markerClassname, $confId, $marker, $formatter, $markerParams = false, $offset = 0)
     {
-        $this->entryMarker = ($markerParams) ? tx_rnbase::makeInstance($markerClassname, $markerParams) : tx_rnbase::makeInstance($markerClassname);
+        $this->entryMarker = ($markerParams) ? \tx_rnbase::makeInstance($markerClassname, $markerParams) : \tx_rnbase::makeInstance($markerClassname);
 
         $this->info->init($template, $formatter, $marker);
         $this->template = $template;
@@ -181,7 +180,7 @@ class ListMarker
      */
     public function render($dataArr, $template, $markerClassname, $confId, $marker, &$formatter, $markerParams = false, $offset = 0)
     {
-        $entryMarker = ($markerParams) ? tx_rnbase::makeInstance($markerClassname, $markerParams) : tx_rnbase::makeInstance($markerClassname);
+        $entryMarker = ($markerParams) ? \tx_rnbase::makeInstance($markerClassname, $markerParams) : \tx_rnbase::makeInstance($markerClassname);
 
         $this->info->init($template, $formatter, $marker);
 

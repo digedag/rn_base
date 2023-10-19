@@ -2,8 +2,6 @@
 
 namespace Sys25\RnBase\Utility;
 
-use tx_rnbase;
-
 /***************************************************************
  * Copyright notice
  *
@@ -92,7 +90,7 @@ class CHashUtility
                 array_merge($typo3ConfVarsEntry, $configurationValue);
         }
         /* @var \TYPO3\CMS\Frontend\Page\CacheHashCalculator $cacheHashCalculator */
-        $cacheHashCalculator = tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
+        $cacheHashCalculator = \tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
         $cacheHashCalculator->setConfiguration([
             $cacheHashCalculatorInternalConfigurationKey => $cacheHashCalculatorInternalConfiguration,
         ]);
@@ -106,7 +104,7 @@ class CHashUtility
     public static function generateCacheHashForUrlQueryString($urlQueryString)
     {
         /* @var $calculator \TYPO3\CMS\Frontend\Page\CacheHashCalculator */
-        $calculator = tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
+        $calculator = \tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
         $hash = $calculator->generateForParameters($urlQueryString);
 
         return $hash;

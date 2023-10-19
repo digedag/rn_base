@@ -2,8 +2,6 @@
 
 namespace Sys25\RnBase\Utility;
 
-use SimpleXMLElement;
-
 /***************************************************************
 *  Copyright notice
 *
@@ -30,7 +28,7 @@ use SimpleXMLElement;
 /**
  * Ein Model eines XMLs.
  */
-class XmlElement extends SimpleXMLElement
+class XmlElement extends \SimpleXMLElement
 {
     /**
      * @param string $path

@@ -101,8 +101,8 @@ class TranslateViewHelper extends AbstractViewHelper
 
         // first try to translate from the rn base controller configuration
         if (
-            $renderingContext instanceof RenderingContext &&
-            $renderingContext->getViewHelperVariableContainer()->getView()->getConfigurations() instanceof ConfigurationInterface
+            $renderingContext instanceof RenderingContext
+            && $renderingContext->getViewHelperVariableContainer()->getView()->getConfigurations() instanceof ConfigurationInterface
         ) {
             return $renderingContext->getViewHelperVariableContainer()->getView()->getConfigurations()->getLL($key);
         }

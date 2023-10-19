@@ -2,7 +2,6 @@
 
 namespace Sys25\RnBase\Backend\Utility;
 
-use LogicException;
 use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Domain\Model\RecordInterface;
 use Sys25\RnBase\Utility\Arrays;
@@ -168,8 +167,8 @@ class TCA
      */
     protected static function getEnableColumnsForTable($tableName)
     {
-        if (empty($GLOBALS['TCA'][$tableName]) ||
-            empty($GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'])
+        if (empty($GLOBALS['TCA'][$tableName])
+            || empty($GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'])
         ) {
             return [];
         }
@@ -187,8 +186,8 @@ class TCA
     public static function getDeletedFieldForTable($tableName)
     {
         if (
-            empty($GLOBALS['TCA'][$tableName]) ||
-            empty($GLOBALS['TCA'][$tableName]['ctrl']['delete'])
+            empty($GLOBALS['TCA'][$tableName])
+            || empty($GLOBALS['TCA'][$tableName]['ctrl']['delete'])
         ) {
             return '';
         }
@@ -266,7 +265,7 @@ class TCA
         $columns = self::getTcaColumns($tableName, $options);
 
         if (empty($columns)) {
-            throw new LogicException('No TCA found for "'.$tableName.'".');
+            throw new \LogicException('No TCA found for "'.$tableName.'".');
         }
 
         foreach (array_keys($columns) as $column) {

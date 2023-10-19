@@ -41,6 +41,7 @@ class DataModelTest extends BaseTestCase
      * Test the getProperties method.
      *
      * @group unit
+     *
      * @test
      */
     public function testGetPropertiesCallsProperty()
@@ -68,6 +69,7 @@ class DataModelTest extends BaseTestCase
      * Test Magic calls.
      *
      * @group unit
+     *
      * @test
      */
     public function testMagicCalls()
@@ -99,6 +101,7 @@ class DataModelTest extends BaseTestCase
      * Test record overloding for getters.
      *
      * @group unit
+     *
      * @test
      */
     public function testRecordOverloadingGet()
@@ -114,11 +117,12 @@ class DataModelTest extends BaseTestCase
      * Test if magic calls throw exception on unknown method.
      *
      * @group unit
+     *
      * @test
      */
     public function testMagicCallThrowsException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
         $this->expectExceptionCode(1406625817);
         $this->getModelInstance()->methodDoesNotExist();
     }
@@ -127,6 +131,7 @@ class DataModelTest extends BaseTestCase
      * Test getInstance with recursive data.
      *
      * @group unit
+     *
      * @test
      */
     public function testRecursiveInstance()
@@ -152,6 +157,7 @@ class DataModelTest extends BaseTestCase
      * Test dirty state.
      *
      * @group unit
+     *
      * @test
      */
     public function testIsDirtyOnGet()
@@ -165,6 +171,7 @@ class DataModelTest extends BaseTestCase
      * Test dirty state.
      *
      * @group unit
+     *
      * @test
      */
     public function testIsDirtyOnSet()
@@ -190,6 +197,7 @@ class DataModelTest extends BaseTestCase
      * Test dirty state.
      *
      * @group unit
+     *
      * @test
      */
     public function testIsDirtyOnUns()
@@ -222,6 +230,7 @@ class DataModelTest extends BaseTestCase
 
     /**
      * @group unit
+     *
      * @test
      */
     public function testOffsetExists()
@@ -241,6 +250,7 @@ class DataModelTest extends BaseTestCase
 
     /**
      * @group unit
+     *
      * @test
      */
     public function testOffsetGet()
@@ -266,6 +276,7 @@ class DataModelTest extends BaseTestCase
 
     /**
      * @group unit
+     *
      * @test
      */
     public function testOffsetSet()
@@ -295,6 +306,7 @@ class DataModelTest extends BaseTestCase
 
     /**
      * @group unit
+     *
      * @test
      */
     public function testOffsetUnset()

@@ -65,6 +65,7 @@ class ExtbaseControllerWithCacheTagsTraitTest extends BaseTestCase
 
     /**
      * @group functional
+     *
      * @TODO: refactor, requires database connection!
      */
     public function testHandleCacheTags()
@@ -96,6 +97,7 @@ class ExtbaseControllerWithCacheTagsTraitTest extends BaseTestCase
 
     /**
      * @group functional
+     *
      * @TODO: refactor, requires database connection!
      */
     public function testHandleCacheTagsIfNotConfigured()
@@ -113,6 +115,7 @@ class ExtbaseControllerWithCacheTagsTraitTest extends BaseTestCase
 
     /**
      * @group functional
+     *
      * @TODO: refactor, requires database connection!
      */
     public function testHandleCacheTagsIfConfiguredForOtherAction()

@@ -2,12 +2,9 @@
 
 namespace Sys25\RnBase\Frontend\Filter\Utility;
 
-use ArrayObject;
-use Exception;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Database\Connection;
 use Sys25\RnBase\Utility\PageBrowser;
-use tx_rnbase;
 
 /***************************************************************
  * Copyright notice
@@ -34,7 +31,7 @@ use tx_rnbase;
 
 class PageBrowserFilter
 {
-    private $dbConnection = null;
+    private $dbConnection;
 
     public function __construct()
     {
@@ -54,7 +51,7 @@ class PageBrowserFilter
      *
      * @param ConfigurationInterface $configurations
      * @param string $confid die Confid des PageBrowsers. z.B. myview.org.pagebrowser ohne Punkt!
-     * @param ArrayObject $viewdata
+     * @param \ArrayObject $viewdata
      * @param array $fields
      * @param array $options
      * @param array $cfg   You have to set 'searchcallback' and optional 'pbid'
@@ -65,7 +62,7 @@ class PageBrowserFilter
         if (is_array($configurations->get($confid))) {
             $searchCallback = $cfg['searchcallback'];
             if (!$searchCallback) {
-                throw new Exception('No search callback defined!');
+                throw new \Exception('No search callback defined!');
             }
             // Die Gesamtzahl der Items ist entweder im Limit gesetzt oder muss ermittelt werden
             $listSize = (int) ($options['limit'] ?? 0);
@@ -92,7 +89,7 @@ class PageBrowserFilter
             /**
              * @var $pageBrowser PageBrowser
              */
-            $pageBrowser = tx_rnbase::makeInstance(PageBrowser::class, $pbId);
+            $pageBrowser = \tx_rnbase::makeInstance(PageBrowser::class, $pbId);
             $pageSize = $configurations->getInt($confid.'limit');
             $pageBrowser->setState($configurations->getParameters(), $listSize, $pageSize);
 

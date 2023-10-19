@@ -349,7 +349,7 @@ class tx_rnbase_tests_mod_Tables_testcase extends BaseTestCase
         $_GET['sortField'] = 'uid';
         $_GET['sortRev'] = 'desc';
         // weiterer Param, der erhalten bleiben sollte
-        $_SERVER['REQUEST_URI'] = $_SERVER['REQUEST_URI'].'&sortField=title&sortRev=desc&additionalParam=test';
+        $_SERVER['REQUEST_URI'] .= '&sortField=title&sortRev=desc&additionalParam=test';
 
         $aEntries = [
                 0 => [

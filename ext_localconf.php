@@ -10,8 +10,8 @@ if (!class_exists('tx_rnbase')) {
     require Sys25\RnBase\Utility\Extensions::extPath('rn_base').'Classes/class.tx_rnbase.php';
 }
 
-if (empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['rnbase']) &&
-    Sys25\RnBase\Configuration\Processor::getExtensionCfgValue('rn_base', 'activateCache')) {
+if (empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['rnbase'])
+    && Sys25\RnBase\Configuration\Processor::getExtensionCfgValue('rn_base', 'activateCache')) {
     Sys25\RnBase\Cache\CacheManager::registerCache(
         'rnbase',
         Sys25\RnBase\Cache\CacheManager::CACHE_FRONTEND_VARIABLE,

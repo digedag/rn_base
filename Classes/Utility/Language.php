@@ -2,9 +2,7 @@
 
 namespace Sys25\RnBase\Utility;
 
-use Exception;
 use Psr\Http\Message\ServerRequestInterface;
-use tx_rnbase;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -83,7 +81,7 @@ class Language
         $isLocalizationOverride = false
     ) {
         /** @var $languageFactory \TYPO3\CMS\Core\Localization\LocalizationFactory */
-        $languageFactory = tx_rnbase::makeInstance(
+        $languageFactory = \tx_rnbase::makeInstance(
             'TYPO3\\CMS\\Core\\Localization\\LocalizationFactory'
         );
 
@@ -293,7 +291,7 @@ class Language
     {
         $languageServiceKey = Environment::isBackend() ? 'LANG' : 'TSFE';
         if (!$GLOBALS[$languageServiceKey]) {
-            throw new Exception('Languageservice in "$GLOBALS['.$languageServiceKey.']" not initialized yet.');
+            throw new \Exception('Languageservice in "$GLOBALS['.$languageServiceKey.']" not initialized yet.');
         }
 
         return $GLOBALS[$languageServiceKey]->sL($key);

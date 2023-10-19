@@ -8,7 +8,6 @@ use Sys25\RnBase\Domain\Model\DomainModelInterface;
 use Sys25\RnBase\Utility\Debug;
 use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
-use tx_rnbase;
 
 /**
  *  Copyright notice.
@@ -80,7 +79,7 @@ class BaseMarker
         $ret = [];
         if ($classname) {
             /** @var \Sys25\RnBase\Domain\Model\RecordInterface $obj */
-            $obj = tx_rnbase::makeInstance($classname, []);
+            $obj = \tx_rnbase::makeInstance($classname, []);
             $cols = $obj->getTCAColumns();
             $labelArr = [];
             foreach ($cols as $col => $colArr) {
@@ -359,7 +358,7 @@ class BaseMarker
     {
         if (!is_object(self::$emptyObjects[$classname])) {
             /* @var $dummy DomainModelInterface */
-            $dummyInstance = tx_rnbase::makeInstance($classname, ['uid' => 0]);
+            $dummyInstance = \tx_rnbase::makeInstance($classname, ['uid' => 0]);
             if ($dummyInstance instanceof DomainModelInterface
                 // for deprecated backward compatibility
                 || $dummyInstance instanceof BaseModel
@@ -406,7 +405,7 @@ class BaseMarker
         $suffixesToTry = self::getSuffixesToTry($formatter->getConfigurations());
         foreach ($allSingleMarkers as $marker) {
             if (preg_match('/MARKERMODULE__([A-Z0-9_\-])*/', $marker)) {
-                $module = tx_rnbase::makeInstanceService('markermodule', substr($marker, 14));
+                $module = \tx_rnbase::makeInstanceService('markermodule', substr($marker, 14));
                 if (is_object($module)) {
                     $value = $module->getMarkerValue($params, $formatter);
                     if (false !== $value) {
@@ -436,7 +435,7 @@ class BaseMarker
         $allMarkers = array_unique($match[1]);
         foreach ($allMarkers as $marker) {
             if (preg_match('/MARKERMODULE__([A-Z0-9_\-])*/', $marker)) {
-                $module = tx_rnbase::makeInstanceService('markermodule', substr($marker, 14));
+                $module = \tx_rnbase::makeInstanceService('markermodule', substr($marker, 14));
                 if (is_object($module)) {
                     $subTemplate = Templates::getSubpart($template, '###'.$marker.'###');
                     $subpart = $module->parseTemplate($subTemplate, $params, $formatter);

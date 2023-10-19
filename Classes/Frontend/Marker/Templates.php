@@ -2,7 +2,6 @@
 
 namespace Sys25\RnBase\Frontend\Marker;
 
-use Exception;
 use Sys25\RnBase\Cache\CacheManager;
 use Sys25\RnBase\Configuration\Processor;
 use Sys25\RnBase\Utility\Environment;
@@ -12,7 +11,6 @@ use Sys25\RnBase\Utility\Network;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
 use Sys25\RnBase\Utility\Typo3Classes;
-use tx_rnbase;
 
 /***************************************************************
  *  Copyright notice
@@ -48,7 +46,7 @@ class Templates
 
     private static $tmpl;
 
-    private static $substCacheEnabled = null;
+    private static $substCacheEnabled;
 
     /**
      * Shortcut to \TYPO3\CMS\Core\Service\MarkerBasedTemplateService::getSubpart.
@@ -61,7 +59,7 @@ class Templates
     public static function getSubpart($template, $subpart)
     {
         \TYPO3\CMS\Core\Service\MarkerBasedTemplateService::class;
-        $parser = tx_rnbase::makeInstance(
+        $parser = \tx_rnbase::makeInstance(
             'TYPO3\CMS\Core\Service\MarkerBasedTemplateService'
         );
         $content = $parser->getSubpart($template, $subpart);
@@ -79,7 +77,7 @@ class Templates
             if ($GLOBALS['TSFE']->tmpl) {
                 self::$tmpl = $GLOBALS['TSFE']->tmpl;
             } else {
-                self::$tmpl = tx_rnbase::makeInstance(
+                self::$tmpl = \tx_rnbase::makeInstance(
                     Typo3Classes::getTemplateServiceClass()
                 );
                 self::$tmpl->init();
@@ -98,7 +96,7 @@ class Templates
      *
      * @return string
      *
-     * @throws Exception if file or subpart not found
+     * @throws \Exception if file or subpart not found
      */
     public static function getSubpartFromFile($fileName, $subpart)
     {
@@ -110,11 +108,11 @@ class Templates
 
         $templateCode = Network::getUrl($file);
         if (!$templateCode) {
-            throw new Exception('File not found: '.htmlspecialchars($fileName));
+            throw new \Exception('File not found: '.htmlspecialchars($fileName));
         }
         $template = self::getSubpart($templateCode, $subpart);
         if (!$template) {
-            throw new Exception('Subpart not found! File: '.htmlspecialchars($file).' Subpart: '.htmlspecialchars($subpart));
+            throw new \Exception('Subpart not found! File: '.htmlspecialchars($file).' Subpart: '.htmlspecialchars($subpart));
         }
 
         return $template;
@@ -183,7 +181,7 @@ class Templates
                 $filePath,
                 '###'.strtoupper($subPart).'###'
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $fileContent = '<!-- '.$e->getMessage().' -->';
         }
 
@@ -489,7 +487,7 @@ class Templates
     public static function substituteSubpart($content, $marker, $subpartContent, $recursive = 1)
     {
         /** @var \TYPO3\CMS\Core\Service\MarkerBasedTemplateService $parser */
-        $parser = tx_rnbase::makeInstance(
+        $parser = \tx_rnbase::makeInstance(
             'TYPO3\\CMS\\Core\\Service\\MarkerBasedTemplateService'
         );
 

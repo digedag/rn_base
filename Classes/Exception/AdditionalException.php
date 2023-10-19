@@ -29,7 +29,7 @@ use Exception;
 /**
  * Default exception class.
  */
-class AdditionalException extends Exception
+class AdditionalException extends \Exception
 {
     private $additional = false;
 
@@ -56,6 +56,7 @@ class AdditionalException extends Exception
     public function __toString()
     {
         $stack = parent::__toString();
+
         // html  konvertieren, damit die exception mail nicht zerstört wird!
         return htmlspecialchars($stack);
     }

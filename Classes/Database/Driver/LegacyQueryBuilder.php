@@ -3,7 +3,6 @@
 namespace Sys25\RnBase\Database\Driver;
 
 use Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface;
-use tx_rnbase;
 
 /***************************************************************
  * Copyright notice
@@ -43,7 +42,7 @@ class LegacyQueryBuilder implements SingletonInterface
      */
     public static function instance()
     {
-        return tx_rnbase::makeInstance(get_called_class());
+        return \tx_rnbase::makeInstance(get_called_class());
     }
 
     /**

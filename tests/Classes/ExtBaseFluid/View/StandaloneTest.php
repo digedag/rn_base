@@ -4,6 +4,7 @@ namespace Sys25\RnBase\ExtBaseFluid\View;
 
 use Sys25\RnBase\Testing\BaseTestCase;
 use Sys25\RnBase\Testing\TestUtility;
+use Sys25\RnBase\Utility\TYPO3;
 
 /***************************************************************
  * Copyright notice
@@ -39,6 +40,7 @@ class StandaloneTest extends BaseTestCase
 {
     /**
      * @group integration
+     *
      * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testGetConfigurations()
@@ -53,10 +55,14 @@ class StandaloneTest extends BaseTestCase
 
     /**
      * @group integration
+     *
      * @TODO: refactor, requires tx_rnbase_util_TYPO3::getTSFE() which requires initialized database connection class
      */
     public function testInjectAndGetObjectManager()
     {
+        if (TYPO3::isTYPO115OrHigher()) {
+            self::markTestSkipped('Only relevant before TYPO3 11.5');
+        }
         $objectManager = new \TYPO3\CMS\Extbase\Object\ObjectManager();
         $contentObject = \tx_rnbase::makeInstance(\tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
         $view = \tx_rnbase::makeInstance('Sys25\\RnBase\\ExtBaseFluid\\View\\Standalone', $contentObject);

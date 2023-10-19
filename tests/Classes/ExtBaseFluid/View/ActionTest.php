@@ -184,6 +184,7 @@ class ActionTest extends BaseTestCase
 
     /**
      * @group integration
+     *
      * @expectedException \TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException
      */
     public function testRenderThrowsExceptionIfTemplateCanNotBeResolved()

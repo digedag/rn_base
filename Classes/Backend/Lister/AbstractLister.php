@@ -19,7 +19,6 @@ use Sys25\RnBase\Frontend\Marker\Templates;
 use Sys25\RnBase\Frontend\Request\Parameters;
 use Sys25\RnBase\Utility\Strings;
 use tx_rnbase;
-use UnexpectedValueException;
 
 /***************************************************************
  * Copyright notice
@@ -62,7 +61,7 @@ abstract class AbstractLister
      *
      * @var DataModel
      */
-    private $storage = null;
+    private $storage;
 
     /**
      * Returns the repository.
@@ -182,7 +181,7 @@ abstract class AbstractLister
     {
         if (!$this->getStorage()->hasPager()) {
             $this->getStorage()->setPager(
-                tx_rnbase::makeInstance(
+                \tx_rnbase::makeInstance(
                     BEPager::class,
                     $this->getListerId().'Pager',
                     $this->getModule()->getName(),
@@ -212,13 +211,13 @@ abstract class AbstractLister
     protected function getDecorator()
     {
         if (!$this->getStorage()->hasDecorator()) {
-            $decorator = tx_rnbase::makeInstance(
+            $decorator = \tx_rnbase::makeInstance(
                 $this->getDecoratorClass(),
                 $this->getModule(),
                 $this->getOptions()
             );
             if (!$decorator instanceof InterfaceDecorator) {
-                throw new UnexpectedValueException('The Decorator has to be an instance of'.' "Sys25\RnBase\Backend\Decorator\InterfaceDecorator"'.' but "'.get_class($decorator).'" given.');
+                throw new \UnexpectedValueException('The Decorator has to be an instance of "Sys25\RnBase\Backend\Decorator\InterfaceDecorator" but "'.get_class($decorator).'" given.');
             }
             $this->getStorage()->setDecorator($decorator);
         }
@@ -380,7 +379,7 @@ abstract class AbstractLister
         $columns = $this->getDecoratorColumns();
 
         /* @var $tables Tables */
-        $tables = tx_rnbase::makeInstance(Tables::class);
+        $tables = \tx_rnbase::makeInstance(Tables::class);
         list($tableData, $tableLayout) = $tables->prepareTable(
             $items,
             $columns,

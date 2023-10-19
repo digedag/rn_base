@@ -77,9 +77,9 @@ class BackendUtility
      * @param string $formName
      * @param string $tokenName
      *
-     * @throws \InvalidArgumentException
-     *
      * @return string A URL GET variable including ampersand
+     *
+     * @throws \InvalidArgumentException
      */
     public static function getUrlToken($formName = 'securityToken', $tokenName = 'formToken')
     {

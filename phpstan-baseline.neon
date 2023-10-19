@@ -1,5 +1,9 @@
 parameters:
 	ignoreErrors:
+		-
+			message: "#^Parameter \\$objectManager of method Sys25\\\\RnBase\\\\ExtBaseFluid\\\\View\\\\Standalone\\:\\:injectObjectManager\\(\\) has invalid type TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManager\\.$#"
+			count: 1
+			path: Classes/ExtBaseFluid/View/Standalone.php
 
 		-
 			message: "#^Call to static method lookup\\(\\) on an unknown class tx_wecmap_cache\\.$#"
@@ -22,12 +26,32 @@ parameters:
 			path: Classes/Utility/Email.php
 
 		-
-			message: "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManager constructor invoked with 0 parameters, 2 required\\.$#"
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\ExtendedTemplateService not found\\.$#"
+			count: 1
+			path: Classes/Utility/Typo3Classes.php
+
+		-
+			message: "#^Instantiated class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManager not found\\.$#"
 			count: 1
 			path: tests/Classes/ExtBaseFluid/View/StandaloneTest.php
 
 		-
-			message: "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManager constructor invoked with 0 parameters, 2 required\\.$#"
+			message: "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Request constructor invoked with 0 parameters, 1 required\\.$#"
+			count: 1
+			path: tests/Classes/ExtBaseFluid/ViewHelper/BaseViewHelperTest.php
+
+		-
+			message: "#^Instantiated class TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Controller\\\\ControllerContext not found\\.$#"
+			count: 1
+			path: tests/Classes/ExtBaseFluid/ViewHelper/BaseViewHelperTest.php
+
+		-
+			message: "#^Instantiated class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManager not found\\.$#"
+			count: 1
+			path: tests/Classes/ExtBaseFluid/ViewHelper/BaseViewHelperTest.php
+
+		-
+			message: "#^Instantiated class TYPO3\\\\CMS\\\\Extbase\\\\Service\\\\EnvironmentService not found\\.$#"
 			count: 1
 			path: tests/Classes/ExtBaseFluid/ViewHelper/BaseViewHelperTest.php
 

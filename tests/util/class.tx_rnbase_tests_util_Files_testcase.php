@@ -94,6 +94,7 @@ class tx_rnbase_tests_util_Files_testcase extends BaseTestCase
 
     /**
      * @unit
+     *
      * @expectedException \RuntimeException
      */
     public function testMkdirDeepThrowsExceptionIfDirectoryCreationFails()

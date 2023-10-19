@@ -35,7 +35,7 @@ define('RNMAP_MAPTYPE_PHYSICAL', 4);
  */
 class TypeRegistry
 {
-    public static $instance = null;
+    public static $instance;
 
     private static $mapTypes = [RNMAP_MAPTYPE_STREET, RNMAP_MAPTYPE_SATELLITE, RNMAP_MAPTYPE_HYBRID, RNMAP_MAPTYPE_PHYSICAL];
 

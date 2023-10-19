@@ -34,10 +34,10 @@ interface ExceptionHandlerInterface
      * Interne Verarbeitung der Exception.
      *
      * @param string                                     $actionName
-     * @param Exception                                  $e
+     * @param \Exception                                  $e
      * @param ConfigurationInterface $configurations
      *
      * @return string error message
      */
-    public function handleException($actionName, Exception $e, ConfigurationInterface $configurations);
+    public function handleException($actionName, \Exception $e, ConfigurationInterface $configurations);
 }

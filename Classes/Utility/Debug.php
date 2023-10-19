@@ -150,6 +150,7 @@ class Debug
 
             return empty($status[$pluginId]) ? false : $status[$pluginId];
         }
+
         // no debug!
         return false;
     }

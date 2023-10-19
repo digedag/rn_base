@@ -3,7 +3,6 @@
 namespace Sys25\RnBase\Backend\Form;
 
 use Sys25\RnBase\Utility\TYPO3;
-use tx_rnbase;
 
 /***************************************************************
  *  Copyright notice
@@ -37,12 +36,12 @@ class FormBuilder
     /**
      * @var \TYPO3\CMS\Backend\Form\NodeFactory
      */
-    private $nodeFactory = null;
+    private $nodeFactory;
 
     /**
      * @var \TYPO3\CMS\Backend\Form\FormDataCompiler
      */
-    private $formDataCompiler = null;
+    private $formDataCompiler;
 
     /**
      * @var \TYPO3\CMS\Backend\Form\FormResultCompiler
@@ -59,10 +58,10 @@ class FormBuilder
         /**
          * @var \TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord
          */
-        $formDataGroup = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormDataGroup\\TcaDatabaseRecord');
-        $this->formDataCompiler = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormDataCompiler', $formDataGroup);
-        $this->nodeFactory = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\NodeFactory');
-        $this->formResultCompiler = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormResultCompiler');
+        $formDataGroup = \tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormDataGroup\\TcaDatabaseRecord');
+        $this->formDataCompiler = \tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormDataCompiler', $formDataGroup);
+        $this->nodeFactory = \tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\NodeFactory');
+        $this->formResultCompiler = \tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormResultCompiler');
     }
 
     public function initDefaultBEmode()
@@ -152,7 +151,7 @@ class FormBuilder
     {
         // Wir benötigen pro DB-Tabelle ein data-Array mit den vorbereiteten Formular-Daten
         $formData = $this->compileFormData($table, $row['uid'], $row);
-//         $options = $this->data;
+        //         $options = $this->data;
         $options = $formData;
         // in den folgenden Key müssen die Daten aus der TCA rein. Wie geht das?
         $options['tableName'] = $table;

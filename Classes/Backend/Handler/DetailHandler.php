@@ -2,7 +2,6 @@
 
 namespace Sys25\RnBase\Backend\Handler;
 
-use Exception;
 use Sys25\RnBase\Backend\Module\IModule;
 use Sys25\RnBase\Domain\Model\RecordInterface;
 use Sys25\RnBase\Frontend\Marker\Templates;
@@ -120,6 +119,6 @@ abstract class DetailHandler extends SearchHandler
         array &$wrappedSubpartArray = null
     ) {
         // @TODO: implement protected function showDetail(
-        throw new Exception('detail not implemented yet');
+        throw new \Exception('detail not implemented yet');
     }
 }

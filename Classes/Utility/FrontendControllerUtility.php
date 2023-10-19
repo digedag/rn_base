@@ -2,7 +2,6 @@
 
 namespace Sys25\RnBase\Utility;
 
-use tx_rnbase;
 use TYPO3\CMS\Core\Context\Context;
 
 /***************************************************************
@@ -48,7 +47,7 @@ class FrontendControllerUtility
     public static function getLanguageContentId($typoScriptFrontendController)
     {
         if (TYPO3::isTYPO90OrHigher()) {
-            $languageContentId = tx_rnbase::makeInstance(Context::class)->getAspect('language')->getContentId();
+            $languageContentId = \tx_rnbase::makeInstance(Context::class)->getAspect('language')->getContentId();
         } else {
             $languageContentId = $typoScriptFrontendController->sys_language_content;
         }
@@ -67,7 +66,7 @@ class FrontendControllerUtility
     public static function getLanguageMode($typoScriptFrontendController)
     {
         if (TYPO3::isTYPO90OrHigher()) {
-            $languageMode = tx_rnbase::makeInstance(Context::class)->getAspect('language')->getLegacyLanguageMode();
+            $languageMode = \tx_rnbase::makeInstance(Context::class)->getAspect('language')->getLegacyLanguageMode();
         } else {
             $languageMode = $typoScriptFrontendController->sys_language_mode;
         }
@@ -86,7 +85,7 @@ class FrontendControllerUtility
     public static function getLanguageId($typoScriptFrontendController)
     {
         if (TYPO3::isTYPO90OrHigher()) {
-            $languageId = tx_rnbase::makeInstance(Context::class)->getAspect('language')->getId();
+            $languageId = \tx_rnbase::makeInstance(Context::class)->getAspect('language')->getId();
         } else {
             $languageId = $typoScriptFrontendController->sys_language_uid;
         }

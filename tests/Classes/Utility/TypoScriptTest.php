@@ -74,6 +74,7 @@ class TypoScriptTest extends BaseTestCase
      * Test the convertTypoScriptArrayToPlainArray method.
      *
      * @group unit
+     *
      * @test
      */
     public function testConvertTypoScriptArrayToPlainArray()
@@ -90,6 +91,7 @@ class TypoScriptTest extends BaseTestCase
      * Test the convertPlainArrayToTypoScriptArray method.
      *
      * @group unit
+     *
      * @test
      */
     public function testConvertPlainArrayToTypoScriptArray()

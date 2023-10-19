@@ -42,7 +42,7 @@ class ToolBoxTest extends BaseTestCase
     protected function setUp(): void
     {
         if (TYPO3::isTYPO90OrHigher()) {
-            $cacheManager = tx_rnbase::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
+            $cacheManager = \tx_rnbase::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
             // needed for icon retrieval
             if (!$cacheManager->hasCache('assets')) {
                 $cacheManager->registerCache(
@@ -74,7 +74,7 @@ class ToolBoxTest extends BaseTestCase
      */
     public function testCreateSelectByArray()
     {
-        $formTool = tx_rnbase::makeInstance(ToolBox::class);
+        $formTool = \tx_rnbase::makeInstance(ToolBox::class);
         $select = $formTool->createSelectByArray('testSelect', 2, [1 => 'John', 2 => 'Doe']);
         $expectedSelect = '<select name="testSelect" class="select"><option value="1" >John</option><option value="2" selected="selected">Doe</option></select>';
 
@@ -86,7 +86,7 @@ class ToolBoxTest extends BaseTestCase
      */
     public function testCreateSelectByArrayIfReloadOption()
     {
-        $formTool = tx_rnbase::makeInstance(ToolBox::class);
+        $formTool = \tx_rnbase::makeInstance(ToolBox::class);
         $select = $formTool->createSelectByArray(
             'testSelect',
             1,
@@ -103,7 +103,7 @@ class ToolBoxTest extends BaseTestCase
      */
     public function testCreateSelectByArrayIfOnchangeOption()
     {
-        $formTool = tx_rnbase::makeInstance(ToolBox::class);
+        $formTool = \tx_rnbase::makeInstance(ToolBox::class);
         $select = $formTool->createSelectByArray(
             'testSelect',
             1,
@@ -120,7 +120,7 @@ class ToolBoxTest extends BaseTestCase
      */
     public function testCreateSelectByArrayIfReloadAndOnchangeOption()
     {
-        $formTool = tx_rnbase::makeInstance(ToolBox::class);
+        $formTool = \tx_rnbase::makeInstance(ToolBox::class);
         $select = $formTool->createSelectByArray(
             'testSelect',
             1,
@@ -137,7 +137,7 @@ class ToolBoxTest extends BaseTestCase
      */
     public function testCreateSelectByArrayIfMultipleOption()
     {
-        $formTool = tx_rnbase::makeInstance(ToolBox::class);
+        $formTool = \tx_rnbase::makeInstance(ToolBox::class);
         $select = $formTool->createSelectByArray(
             'testSelect',
             '1,2',
@@ -154,7 +154,7 @@ class ToolBoxTest extends BaseTestCase
      */
     public function testCreateSelectByArrayIfSizeOption()
     {
-        $formTool = tx_rnbase::makeInstance(ToolBox::class);
+        $formTool = \tx_rnbase::makeInstance(ToolBox::class);
         $select = $formTool->createSelectByArray(
             'testSelect',
             '1,2',
@@ -168,7 +168,9 @@ class ToolBoxTest extends BaseTestCase
 
     /**
      * @group integration
+     *
      * @TODO: refactor, requires $GLOBALS['BE_USER']!
+     *
      * @TODO: this test should test rn_base code, not TYPO3 internals
      */
     public function testGetJavaScriptForLinkToDataHandlerActionInTypo387()
@@ -177,12 +179,12 @@ class ToolBoxTest extends BaseTestCase
             self::markTestSkipped('wir testen die Version ab TYPO3 8.7');
         }
 
-        $formTool = tx_rnbase::makeInstance($this->buildAccessibleProxy(ToolBox::class));
-        $formTool->init(tx_rnbase::makeInstance(DocumentTemplate::class), null);
+        $formTool = \tx_rnbase::makeInstance($this->buildAccessibleProxy(ToolBox::class));
+        $formTool->init(\tx_rnbase::makeInstance(DocumentTemplate::class), null);
         $options = ['test'];
         $urlParameters = 'someParameters';
 
-        self::assertRegExp(
+        self::assertMatchesRegularExpression(
             '/return jumpToUrl\(\'.*someParameters.*redirect=\'\+T3_THIS_LOCATION.*/',
             $formTool->_call('getJavaScriptForLinkToDataHandlerAction', $urlParameters, $options)
         );
@@ -190,6 +192,7 @@ class ToolBoxTest extends BaseTestCase
 
     /**
      * @group integration
+     *
      * @TODO: refactor, requires $GLOBALS['BE_USER']!
      */
     public function testGetJavaScriptForLinkToDataHandlerActionAddsNecessaryJavaScriptsInTypo387()
@@ -221,6 +224,7 @@ class ToolBoxTest extends BaseTestCase
 
     /**
      * @group integration
+     *
      * @TODO: refactor, requires $GLOBALS['BE_USER']!
      */
     public function testGetJavaScriptForLinkToDataHandlerActionHandlesConfirmCode()
@@ -229,7 +233,7 @@ class ToolBoxTest extends BaseTestCase
         $options = ['test'];
 
         $formTool = $this->getAccessibleMock(ToolBox::class, ['getConfirmCode']);
-        $formTool->init(tx_rnbase::makeInstance(DocumentTemplate::class), null);
+        $formTool->init(\tx_rnbase::makeInstance(DocumentTemplate::class), null);
         $formTool
             ->expects(self::once())
             ->method('getConfirmCode')
@@ -269,6 +273,7 @@ class ToolBoxTest extends BaseTestCase
 
     /**
      * @group integration
+     *
      * @TODO: refactor, requires $GLOBALS['LANG']!
      */
     public function testCreateNewLink()
@@ -278,7 +283,7 @@ class ToolBoxTest extends BaseTestCase
             ToolBox::OPTION_DEFVALS => ['tx_cfcleague_games' => ['competition' => 2, 'round' => 4]],
         ];
 
-        $formTool = tx_rnbase::makeInstance(ToolBox::class);
+        $formTool = \tx_rnbase::makeInstance(ToolBox::class);
         $result = $formTool->createNewLink('tx_cfcleague_games', 2, 'mylabel', $options);
 
         self::assertContains('class="'.ToolBox::CSS_CLASS_BTN.'"', $result);
@@ -336,6 +341,7 @@ class ToolBoxTest extends BaseTestCase
 
     /**
      * @TODO: mock T3 dependencies
+     *
      * @group unit
      */
     public function testCreateLinkWithIconForTypo387()
@@ -353,7 +359,7 @@ class ToolBoxTest extends BaseTestCase
             ->with(false, ['params' => ['parameter' => 'test', 'id' => '0']])
             ->will(self::returnValue('jumpUrl'));
 
-        self::assertRegExp(
+        self::assertMatchesRegularExpression(
             '/<a href="#" class="myClass" onclick="window.location.href=\'jumpUrl\'; return false;" >.*<img.*actions\-add\.svg" width="16" height="16".*<\/a>/s',
             $formTool->createLink($urlParameters, 0, 'mylabel', $options)
         );
@@ -361,6 +367,7 @@ class ToolBoxTest extends BaseTestCase
 
     /**
      * @TODO: mock T3 dependencies
+     *
      * @group unit
      */
     public function testCreateLinkWithIconAndSizeForTypo387()
@@ -378,7 +385,7 @@ class ToolBoxTest extends BaseTestCase
             ->with(false, ['params' => ['parameter' => 'test', 'id' => '0']])
             ->will(self::returnValue('jumpUrl'));
 
-        self::assertRegExp(
+        self::assertMatchesRegularExpression(
             '/<a href="#" class="myClass" onclick="window.location.href=\'jumpUrl\'; return false;" >.*<img.*actions\-add\.svg" width="32" height="32".*<\/a>/s',
             $formTool->createLink($urlParameters, 0, 'mylabel', $options)
         );

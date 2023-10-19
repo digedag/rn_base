@@ -84,9 +84,9 @@ class Spyc
      *   print_r($array);
      *  </code>
      *
-     * @return array
-     *
      * @param string $input Path of YAML file or string containing YAML
+     *
+     * @return array
      */
     public static function yamlLoad($input)
     {
@@ -109,11 +109,11 @@ class Spyc
      * Indent's default is 2 spaces, wordwrap's default is 40 characters.  And
      * you can turn off wordwrap by passing in 0.
      *
-     * @return string
-     *
      * @param array $array    PHP array
      * @param int   $indent   Pass in FALSE to use the default, which is 2
      * @param int   $wordwrap Pass in 0 for no wordwrap, FALSE for default (40)
+     *
+     * @return string
      */
     public static function yamlDump($array, $indent = false, $wordwrap = false)
     {
@@ -136,11 +136,11 @@ class Spyc
      * Indent's default is 2 spaces, wordwrap's default is 40 characters.  And
      * you can turn off wordwrap by passing in 0.
      *
-     * @return string
-     *
      * @param array $array    PHP array
      * @param int   $indent   Pass in FALSE to use the default, which is 2
      * @param int   $wordwrap Pass in 0 for no wordwrap, FALSE for default (40)
+     *
+     * @return string
      */
     public function dump($array, $indent = false, $wordwrap = false)
     {
@@ -174,11 +174,11 @@ class Spyc
     /**
      * Attempts to convert a key / value array item to YAML.
      *
-     * @return string
-     *
      * @param string $key    The name of the key
      * @param string $value  The value of the item
      * @param int    $indent The indent of the current node
+     *
+     * @return string
      */
     private function _yamlize($key, $value, $indent)
     {
@@ -201,10 +201,10 @@ class Spyc
     /**
      * Attempts to convert an array to YAML.
      *
-     * @return string
-     *
      * @param array $array The array you want to convert
      * @param int $indent The indent of the current level
+     *
+     * @return string
      */
     private function _yamlizeArray($array, $indent)
     {
@@ -223,11 +223,11 @@ class Spyc
     /**
      * Returns YAML from a key and a value.
      *
-     * @return string
-     *
      * @param string $key The name of the key
      * @param mixed $value The value of the item
      * @param int $indent The indent of the current node
+     *
+     * @return string
      */
     private function _dumpNode($key, $value, $indent)
     {
@@ -258,10 +258,10 @@ class Spyc
     /**
      * Creates a literal block for dumping.
      *
-     * @return string
-     *
      * @param $value
      * @param $indent int The value of the indent
+     *
+     * @return string
      */
     private function _doLiteralBlock($value, $indent)
     {
@@ -279,9 +279,9 @@ class Spyc
     /**
      * Folds a string of text, if necessary.
      *
-     * @return string
-     *
      * @param string $value The string you wish to fold
+     *
+     * @return string
      */
     private function _doFolding($value, $indent)
     {
@@ -358,9 +358,9 @@ class Spyc
     /**
      * Finds and returns the indentation of a YAML line.
      *
-     * @return int
-     *
      * @param string $line A line from the YAML file
+     *
+     * @return int
      */
     private function _getIndent($line)
     {
@@ -377,9 +377,9 @@ class Spyc
     /**
      * Parses YAML code and returns an array for a node.
      *
-     * @return array
-     *
      * @param string $line A line from the YAML file
+     *
+     * @return array
      */
     private function _parseLine($line)
     {
@@ -455,7 +455,7 @@ class Spyc
             // Propogate value array
             $array = [];
             foreach ($explode as $v) {
-                $array = $array + $this->_toType($v);
+                $array += $this->_toType($v);
             }
             $value = $array;
         } elseif ('null' == strtolower($value) or '' == $value or '~' == $value) {

@@ -49,5 +49,5 @@ interface IModFunc
      *
      * @return string
      */
-    public function main(?ServerRequestInterface $request = null);
+    public function main(ServerRequestInterface $request = null);
 }

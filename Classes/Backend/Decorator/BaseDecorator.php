@@ -50,14 +50,14 @@ class BaseDecorator implements InterfaceDecorator
      *
      * @var BaseModule
      */
-    private $mod = null;
+    private $mod;
 
     /**
      * The internal options object.
      *
      * @var DataModel
      */
-    private $options = null;
+    private $options;
 
     /**
      * Constructor.

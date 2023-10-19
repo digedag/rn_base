@@ -45,7 +45,7 @@ class Action extends \tx_rnbase_view_Base
     /**
      * @var RequestInterface
      */
-    protected $request = null;
+    protected $request;
 
     /**
      * @param string $templateName
@@ -93,11 +93,11 @@ class Action extends \tx_rnbase_view_Base
 
         $out = $view->render();
         if (
-            $rnbaseViewData->offsetExists('filter') &&
-            ($filter = $rnbaseViewData->offsetGet('filter')) &&
-            is_object($filter) &&
-            method_exists($filter, 'parseTemplate') &&
-            ($configurationId = $this->getConfigurationId())
+            $rnbaseViewData->offsetExists('filter')
+            && ($filter = $rnbaseViewData->offsetGet('filter'))
+            && is_object($filter)
+            && method_exists($filter, 'parseTemplate')
+            && ($configurationId = $this->getConfigurationId())
         ) {
             $out = $rnbaseViewData->offsetGet('filter')->parseTemplate(
                 $out,

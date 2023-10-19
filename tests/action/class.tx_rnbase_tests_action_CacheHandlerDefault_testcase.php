@@ -50,6 +50,7 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends BaseTestCase
      * getCacheName method test.
      *
      * @group unit
+     *
      * @test
      */
     public function testGetCacheNameFromTs()
@@ -67,6 +68,7 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends BaseTestCase
      * getCacheName method test.
      *
      * @group unit
+     *
      * @test
      */
     public function testGetCacheNameFromDef()
@@ -84,6 +86,7 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends BaseTestCase
      * getTimeout method test.
      *
      * @group unit
+     *
      * @test
      */
     public function testGetTimeoutFromTs()
@@ -101,6 +104,7 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends BaseTestCase
      * getTimeout method test.
      *
      * @group unit
+     *
      * @test
      */
     public function testGetTimeoutFromDef()
@@ -118,6 +122,7 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends BaseTestCase
      * getSalt method test.
      *
      * @group unit
+     *
      * @test
      */
     public function testGetSaltFromTs()
@@ -135,6 +140,7 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends BaseTestCase
      * getSalt method test.
      *
      * @group unit
+     *
      * @test
      */
     public function testGetSaltFromDef()
@@ -152,6 +158,7 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends BaseTestCase
      * getIcludeParams method test.
      *
      * @group unit
+     *
      * @test
      */
     public function testGetIcludeParamsFromTs()
@@ -177,6 +184,7 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends BaseTestCase
      * getIcludeParams method test.
      *
      * @group unit
+     *
      * @test
      */
     public function testGetIcludeParamsFromDef()
@@ -194,6 +202,7 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends BaseTestCase
      * getCache method test.
      *
      * @group unit
+     *
      * @test
      */
     public function testGetCacheShouldReturnCachingInterfaceInstance()
@@ -214,7 +223,9 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends BaseTestCase
      * @param string $cleanedKey
      *
      * @dataProvider getCleanupCacheKeyData
+     *
      * @group unit
+     *
      * @test
      */
     public function testCleanupCacheKey(
@@ -265,6 +276,7 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends BaseTestCase
      * getCacheKey method test.
      *
      * @group unit
+     *
      * @test
      */
     public function testGetCacheKey()
@@ -301,6 +313,7 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends BaseTestCase
      * getCacheKeyParts method test.
      *
      * @group unit
+     *
      * @test
      */
     public function testGetCacheKeyParts()
@@ -339,6 +352,7 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends BaseTestCase
      * setOutput method test.
      *
      * @group unit
+     *
      * @test
      */
     public function testSetOutput()
@@ -350,6 +364,7 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends BaseTestCase
      * getOutput method test.
      *
      * @group unit
+     *
      * @test
      */
     public function testGetOutput()

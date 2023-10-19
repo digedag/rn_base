@@ -111,7 +111,7 @@ class tx_rnbase_filter_BaseFilter implements tx_rnbase_IFilter, tx_rnbase_IFilte
      * @var bool|null wenn auf null steht wird der return Wert von initFilter()
      *                in init() zurück gegeben. Ansonsten der Wert von $doSearch, dieser hat also Vorrang.
      */
-    protected $doSearch = null;
+    protected $doSearch;
     protected $inputData = [];
 
     /**

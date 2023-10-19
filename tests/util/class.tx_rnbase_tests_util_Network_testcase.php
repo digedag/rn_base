@@ -81,7 +81,9 @@ class tx_rnbase_tests_util_Network_testcase extends BaseTestCase
      * @param string $devIpMask
      * @param string $remoteIp
      * @param bool   $expectedReturn
+     *
      * @group unit
+     *
      * @dataProvider dataProviderIsDevelopmentIp
      */
     public function testIsDevelopmentIp($globalDevIpMask, $devIpMask, $remoteIp, $expectedReturn)

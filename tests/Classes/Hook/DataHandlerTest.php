@@ -4,7 +4,6 @@ namespace Sys25\RnBase\Hook;
 
 use Sys25\RnBase\Testing\BaseTestCase;
 use Sys25\RnBase\Utility\Typo3Classes;
-use tx_rnbase;
 
 /***************************************************************
 *  Copyright notice
@@ -48,6 +47,7 @@ class DataHandlerTest extends BaseTestCase
 
     /**
      * @group integration
+     *
      * @TODO: refactor, requires initialiced typo3 config
      */
     public function testHookIsRegistered()
@@ -64,7 +64,7 @@ class DataHandlerTest extends BaseTestCase
      */
     public function testGetCacheManager()
     {
-        $cacheManager = $this->callInaccessibleMethod(tx_rnbase::makeInstance(DataHandler::class), 'getCacheManager');
+        $cacheManager = $this->callInaccessibleMethod(\tx_rnbase::makeInstance(DataHandler::class), 'getCacheManager');
         self::assertTrue(method_exists($cacheManager, 'flushCachesInGroupByTag'));
     }
 
@@ -76,12 +76,9 @@ class DataHandlerTest extends BaseTestCase
         $GLOBALS['TCA']['rn_base_test_table']['ctrl']['cacheTags'] = ['first-tag', 'second-tag'];
 
         $cacheManager = $this->getMock(Typo3Classes::getCacheManagerClass(), ['flushCachesInGroupByTag']);
-        $cacheManager->expects(self::at(0))
+        $cacheManager->expects(self::exactly(2))
             ->method('flushCachesInGroupByTag')
-            ->with('pages', 'first-tag');
-        $cacheManager->expects(self::at(1))
-            ->method('flushCachesInGroupByTag')
-            ->with('pages', 'second-tag');
+            ->withConsecutive(['pages', 'first-tag'], ['pages', 'second-tag']);
 
         $dataHandler = $this->getMock(DataHandler::class, ['getCacheManager']);
         $dataHandler->expects(self::once())

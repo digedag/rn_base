@@ -349,8 +349,8 @@ class PageBrowserViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTa
         $oldPageViewHelperName = str_replace('ExtBaseFluid', 'Fluid', $pageViewHelperName);
         foreach ($this->childNodes as $childNode) {
             if (
-                $childNode instanceof \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode &&
-                (
+                $childNode instanceof \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode
+                && (
                     $childNode->getViewHelperClassName() === $pageViewHelperName
                     || $childNode->getViewHelperClassName() === $oldPageViewHelperName
                 )

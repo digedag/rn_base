@@ -87,7 +87,7 @@ class Calendar
         $key = $this->_clearHash[$field];
         if ($key) {
             $date = getdate($this->_time);
-            $date[$key] = $date[$key] + $amount;
+            $date[$key] += $amount;
             $this->_time = $this->_mktime($date);
         }
     }

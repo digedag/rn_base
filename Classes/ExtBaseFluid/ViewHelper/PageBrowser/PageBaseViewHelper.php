@@ -146,6 +146,8 @@ class PageBaseViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBa
             ->setArguments($additionalParams)
             ->setCreateAbsoluteUri($absolute)
             ->setAddQueryString($addQueryString)
+            // @see https://forge.typo3.org/issues/88209
+            ->setAddQueryStringMethod('GET')
             ->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString);
         if (method_exists($uriBuilder, 'setUseCacheHash')) {
             $uriBuilder->setUseCacheHash(!$noCacheHash);

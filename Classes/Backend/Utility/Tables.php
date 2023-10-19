@@ -2,15 +2,12 @@
 
 namespace Sys25\RnBase\Backend\Utility;
 
-use Exception;
 use Sys25\RnBase\Backend\Module\Linker\LinkerInterface;
 use Sys25\RnBase\Database\Connection;
 use Sys25\RnBase\Domain\Model\BaseModel;
 use Sys25\RnBase\Domain\Model\DataInterface;
 use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Domain\Model\RecordInterface;
-use Traversable;
-use tx_rnbase;
 
 /**
  *  Copyright notice.
@@ -53,7 +50,7 @@ class Tables
      */
     public function prepareTable($entries, $columns, $formTool, $options)
     {
-        $options = tx_rnbase::makeInstance(DataModel::class, $options);
+        $options = \tx_rnbase::makeInstance(DataModel::class, $options);
         // das initiale TableLayout nicht mehr aus dem Doc holen. Damit wird in 7.6 das
         // Bootstrap-Layout verwendet.
         $tableLayout = $this->getTableLayout();
@@ -262,14 +259,14 @@ class Tables
     {
         $out = '';
         $linkerArr = $options->getLinker();
-        if ((is_array($linkerArr) || $linkerArr instanceof Traversable) && !empty($linkerArr)) {
+        if ((is_array($linkerArr) || $linkerArr instanceof \Traversable) && !empty($linkerArr)) {
             $linkerimplode = $options->getLinkerimplode() ? $options->getLinkerimplode() : '<br />';
             $currentPid = (int) $options->getPid();
             foreach ($linkerArr as $linker) {
                 if (!$linker instanceof LinkerInterface) {
                     // backward compatibility, the interface with the makeLink method is new!
                     if (!is_callable([$linker, 'makeLink'])) {
-                        throw new Exception(sprintf('Linker "%s" has to implement interface "%s".', get_class($linker), LinkerInterface::class));
+                        throw new \Exception(sprintf('Linker "%s" has to implement interface "%s".', get_class($linker), LinkerInterface::class));
                     }
                 }
                 $out .= $linker->makeLink($obj, $formTool, $currentPid, $options);

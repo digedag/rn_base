@@ -88,7 +88,7 @@ class ToolBox
         $this->module = $module;
 
         // TCEform für das Formular erstellen
-        $this->form = tx_rnbase::makeInstance(FormBuilder::class);
+        $this->form = \tx_rnbase::makeInstance(FormBuilder::class);
         $this->form->initDefaultBEmode();
         $this->form->backPath = $BACK_PATH;
     }
@@ -302,7 +302,7 @@ class ToolBox
             $unhide ? 'actions-edit-unhide' : 'actions-edit-hide'
         );
 
-        $options['hover'] = $unhide ? 'Show' : 'Hide'.' UID: '.$uid;
+        $options['hover'] = $unhide ? 'Show' : 'Hide UID: '.$uid;
 
         return $this->createLinkForDataHandlerAction(
             'data['.$table.']['.$uid.']['.$sEnableColumn.']='.($unhide ? 0 : 1),
@@ -356,7 +356,7 @@ class ToolBox
     private function initClipboard()
     {
         if (!$this->clipObj) {
-            $this->clipObj = tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
+            $this->clipObj = \tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
             // Initialize - reads the clipboard content from the user session
             $this->clipObj->initializeClipboard();
 
@@ -687,7 +687,7 @@ class ToolBox
     public function createIntInput($name, $value, $width, $maxlength = 10)
     {
         /* @var $inputField InputText */
-        $inputField = tx_rnbase::makeInstance(InputText::class, $this->getTCEForm()->getNodeFactory(), []);
+        $inputField = \tx_rnbase::makeInstance(InputText::class, $this->getTCEForm()->getNodeFactory(), []);
         $out = $inputField->renderHtml($name, $value, [
             'width' => $width,
             'maxlength' => $maxlength,
@@ -714,7 +714,7 @@ class ToolBox
         // [itemFormElName] => data[tx_cfcleague_games][4][status]
         // [itemFormElID] => data_tx_cfcleague_games_4_status
 
-        $renderedElement = tx_rnbase::makeInstance(
+        $renderedElement = \tx_rnbase::makeInstance(
             $dateElementClass,
             $this->getTCEForm()->getNodeFactory(),
             [
@@ -1174,7 +1174,7 @@ class ToolBox
     public function getTCEFormArray($table, $theUid, $isNew = false)
     {
         /** @var TYPO3\CMS\Backend\Form\DataPreprocessor $trData */
-        $trData = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\DataPreprocessor');
+        $trData = \tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\DataPreprocessor');
         $trData->addRawData = true;
         $trData->fetchRecord($table, $theUid, $isNew ? 'new' : '');    // 'new'
         reset($trData->regTableItems_data);

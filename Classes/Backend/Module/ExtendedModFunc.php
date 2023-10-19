@@ -65,7 +65,7 @@ abstract class ExtendedModFunc implements IModFunc
         return $this->mod;
     }
 
-    public function main(?ServerRequestInterface $request = null)
+    public function main(ServerRequestInterface $request = null)
     {
         $out = '';
         $conf = $this->getModule()->getConfigurations();

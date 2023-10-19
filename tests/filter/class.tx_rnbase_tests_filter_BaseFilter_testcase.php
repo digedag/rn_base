@@ -59,6 +59,7 @@ class tx_rnbase_tests_filter_BaseFilter_testcase extends BaseTestCase
 
     /**
      * @group unit
+     *
      * @dataProvider dataProviderInitReturnsCorrectValue
      */
     public function testInitReturnsCorrectValue($initFilterReturnValue, $doSearchVariableValue, $expectedReturnValue)

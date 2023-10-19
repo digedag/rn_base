@@ -2,10 +2,8 @@
 
 namespace Sys25\RnBase\Utility;
 
-use Exception;
 use Sys25\RnBase\Frontend\Marker\Templates;
-use tx_rnbase;
-use ZipArchive;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /***************************************************************
  *  Copyright notice
@@ -92,7 +90,7 @@ class Files
             return Templates::getTSTemplate()->getFileName($file);
         }
         /** @var \TYPO3\CMS\Frontend\Resource\FilePathSanitizer $fs */
-        $fs = tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Resource\FilePathSanitizer::class);
+        $fs = \tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Resource\FilePathSanitizer::class);
 
         return $fs->sanitize($file, true);
     }
@@ -130,16 +128,16 @@ class Files
      *
      * @return string file name with absolute path or FALSE
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public static function checkFile($fName)
     {
         $absFile = self::getFileAbsFileName($fName);
         if (!(self::isAllowedAbsPath($absFile) && @is_file($absFile))) {
-            throw new Exception('File not found: '.$fName);
+            throw new \Exception('File not found: '.$fName);
         }
         if (!@is_readable($absFile)) {
-            throw new Exception('File is not readable: '.$absFile);
+            throw new \Exception('File is not readable: '.$absFile);
         }
 
         return $absFile;
@@ -174,7 +172,7 @@ class Files
     {
         if (self::isFALReference($fName)) {
             /* @var \TYPO3\CMS\Core\Resource\FileRepository */
-            $fileRepository = tx_rnbase::makeInstance('TYPO3\CMS\Core\Resource\FileRepository');
+            $fileRepository = \tx_rnbase::makeInstance('TYPO3\CMS\Core\Resource\FileRepository');
             if (preg_match('/(\d+)$/', $fName, $matches)) {
                 $uid = (int) reset($matches);
                 $fileObject = $fileRepository->findByUid($uid);
@@ -268,8 +266,8 @@ class Files
         }
 
         // create the archive
-        $zip = new ZipArchive();
-        if (true !== $zip->open($destination, $overwrite ? ZipArchive::OVERWRITE : ZipArchive::CREATE)) {
+        $zip = new \ZipArchive();
+        if (true !== $zip->open($destination, $overwrite ? \ZipArchive::OVERWRITE : \ZipArchive::CREATE)) {
             return false;
         }
         // add the files
@@ -337,7 +335,7 @@ class Files
     /**
      * (non-PHPdoc).
      *
-     * @see \TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath()
+     * @see PathUtility::isAbsolutePath()
      *
      * @param string $path File path to evaluate
      *
@@ -345,6 +343,10 @@ class Files
      */
     public static function isAbsPath($path)
     {
+        if (TYPO3::isTYPO115OrHigher()) {
+            return PathUtility::isAbsolutePath($path);
+        }
+
         $utility = Typo3Classes::getGeneralUtilityClass();
 
         return $utility::isAbsPath($path);

@@ -2,7 +2,9 @@
 
 namespace Sys25\RnBase\ExtBaseFluid\ViewHelper;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Sys25\RnBase\Testing\BaseTestCase;
+use Sys25\RnBase\Utility\TYPO3;
 
 /***************************************************************
  * Copyright notice
@@ -36,6 +38,8 @@ use Sys25\RnBase\Testing\BaseTestCase;
  */
 abstract class BaseViewHelperTest extends BaseTestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
      */
@@ -59,6 +63,10 @@ abstract class BaseViewHelperTest extends BaseTestCase
      */
     protected function getPreparedVîewHelper($viewHelper)
     {
+        if (TYPO3::isTYPO115OrHigher()) {
+            self::markTestSkipped('This method needs refactoring to work since TYPO3 11.5');
+        }
+
         if (!is_object($viewHelper)) {
             $viewHelper = \tx_rnbase::makeInstance($viewHelper);
         }

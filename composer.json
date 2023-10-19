@@ -36,20 +36,19 @@
 		"typo3/cms-core": "^8.7 || ^9.5 || ^10.4 || ^11.5 || ^12.4"
 	},
 	"require-dev": {
-		"friendsofphp/php-cs-fixer": "^3.1.0",
+		"friendsofphp/php-cs-fixer": "^3.0",
 		"phpcompatibility/php-compatibility": "^9.3.5",
 		"jangregor/phpstan-prophecy": "^1.0.0",
 		"mikey179/vfsstream": "^1.6.10",
-		"nimut/testing-framework": "^5.2.1 || ^6.0",
-		"phpstan/extension-installer": "^1.1.0",
+		"typo3/testing-framework": "^4.0 || ^5.0 || ^6.0 || ^7.0 || ^8.0",
 		"phpstan/phpstan": "^1.2.0",
 		"phpstan/phpstan-phpunit": "^1.0.0",
-		"phpunit/phpunit": "^6.5.14 || ^7.5.20 || ^8.0",
+		"phpunit/phpunit": "^6.5.14 || ^7.5.20 || ^8.0 || ^9.0 || ^10.0",
 		"saschaegerer/phpstan-typo3": "^1.0",
-		"phpspec/prophecy": "^1.10 || ^1.15",
-		"typo3/cms-backend": "^8.7 || ^9.5 || ^10.4 || ^11.5",
-		"typo3/cms-frontend": "^8.7 || ^9.5 || ^10.4 || ^11.5",
-		"typo3/cms-scheduler": "^8.7 || ^9.5 || ^10.4 || ^11.5"
+		"phpspec/prophecy-phpunit": "^2.0",
+		"typo3/cms-backend": "^8.7 || ^9.5 || ^10.4 || ^11.5 || ^12.4",
+		"typo3/cms-frontend": "^8.7 || ^9.5 || ^10.4 || ^11.5 || ^12.4",
+		"typo3/cms-scheduler": "^8.7 || ^9.5 || ^10.4 || ^11.5 || ^12.4"
 	},
 	"suggest": {
 		"ext-mysql": "*",
@@ -100,7 +99,15 @@
 			"[ -L .Build/Web/typo3conf/ext/rn_base ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/rn_base"
 		],
 		"test:phplint": ".github/bin/php_lint.sh Classes Legacy Migrations tests",
-		"test:phpcompat": ".github/bin/php_compat.sh ",
+		"test:phpcompat": [
+			".github/bin/php_compat.sh 7.1",
+			".github/bin/php_compat.sh 7.2",
+			".github/bin/php_compat.sh 7.3",
+			".github/bin/php_compat.sh 7.4",
+			".github/bin/php_compat.sh 8.0",
+			".github/bin/php_compat.sh 8.1",
+			".github/bin/php_compat.sh 8.2"
+		],
 		"test:phpcs": [
 			"[ -e .Build/bin/php-cs-fixer ] || composer update",
 			".Build/bin/php-cs-fixer fix -v --dry-run --diff"

@@ -2,8 +2,6 @@
 
 namespace Sys25\RnBase\Utility;
 
-use tx_rnbase;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -63,7 +61,7 @@ class Lock
      *
      * @var string
      */
-    private $logFile = null;
+    private $logFile;
 
     /**
      * Creates a instance of the lock util.
@@ -75,7 +73,7 @@ class Lock
      */
     public static function getInstance($name, $lifeTime = 0)
     {
-        return tx_rnbase::makeInstance(self::class, $name, $lifeTime);
+        return \tx_rnbase::makeInstance(self::class, $name, $lifeTime);
     }
 
     /**
@@ -181,8 +179,8 @@ class Lock
         if (is_readable($this->getFile()) && file_exists($this->getFile())) {
             $lastCall = (int) trim(file_get_contents($this->getFile()));
             if (!(
-                $this->getLifeTime() > 0 &&
-                $lastCall < (time() - $this->getLifeTime())
+                $this->getLifeTime() > 0
+                && $lastCall < (time() - $this->getLifeTime())
             )) {
                 return true;
             }

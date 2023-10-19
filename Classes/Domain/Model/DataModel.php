@@ -2,8 +2,6 @@
 
 namespace Sys25\RnBase\Domain\Model;
 
-use ArrayIterator;
-use Exception;
 use IteratorAggregate;
 use Sys25\RnBase\Utility\Strings;
 
@@ -40,7 +38,7 @@ use Sys25\RnBase\Utility\Strings;
  *
  * @author Michael Wagner
  */
-class DataModel implements DataInterface, IteratorAggregate, \ArrayAccess
+class DataModel implements DataInterface, \IteratorAggregate, \ArrayAccess
 {
     /**
      * A flag indication if the model was modified after initialisation
@@ -254,9 +252,9 @@ class DataModel implements DataInterface, IteratorAggregate, \ArrayAccess
      * @param string $method
      * @param array  $args
      *
-     * @throws Exception
-     *
      * @return mixed
+     *
+     * @throws \Exception
      */
     public function __call($method, array $args)
     {
@@ -282,9 +280,9 @@ class DataModel implements DataInterface, IteratorAggregate, \ArrayAccess
 
                 return $this->hasProperty($key);
             default:
-            }
+        }
 
-        throw new Exception('Sorry, Invalid method '.get_class($this).'::'.$method.'('.print_r($args, 1).').', 1406625817);
+        throw new \Exception('Sorry, Invalid method '.get_class($this).'::'.$method.'('.print_r($args, 1).').', 1406625817);
     }
 
     /**
@@ -327,7 +325,7 @@ class DataModel implements DataInterface, IteratorAggregate, \ArrayAccess
     #[\ReturnTypeWillChange]
     public function getIterator()
     {
-        return new ArrayIterator($this->getProperties());
+        return new \ArrayIterator($this->getProperties());
     }
 
     /**

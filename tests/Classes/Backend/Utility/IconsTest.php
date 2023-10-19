@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Backend\Utility;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Sys25\RnBase\Testing\BaseTestCase;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -38,6 +39,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class IconsTest extends BaseTestCase
 {
+    use ProphecyTrait;
+
     protected function setUp(): void
     {
         parent::setUp();

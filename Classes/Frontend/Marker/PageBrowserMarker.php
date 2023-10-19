@@ -105,7 +105,7 @@ class PageBrowserMarker
     {
         // Configs: maxPages, pagefloat
         // Obsolete da Template: showResultCount, showPBrowserText, dontLinkActivePage, showFirstLast
-//    showRange
+        //    showRange
         $configurations = $formatter->getConfigurations();
 
         $this->initLink($configurations, $pbConfId);

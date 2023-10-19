@@ -33,6 +33,7 @@ class tx_rnbase_tests_mod_linker_ShowDetails_testcase extends BaseTestCase
 {
     /**
      * @group unit
+     *
      * @test
      */
     public function testMakeLinkWithoutConfig()
@@ -46,6 +47,7 @@ class tx_rnbase_tests_mod_linker_ShowDetails_testcase extends BaseTestCase
 
     /**
      * @group unit
+     *
      * @test
      */
     public function testMakeLinkWithKeyAndLabelConfig()

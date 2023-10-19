@@ -138,8 +138,8 @@ class ConditionBuilder
         if (is_array($joinedFields)) {
             foreach ($joinedFields as $joinedField) {
                 // Ignore invalid queries
-                if (!isset($joinedField['value']) || !isset($joinedField['operator']) ||
-                    !isset($joinedField['fields']) || !$joinedField['fields']) {
+                if (!isset($joinedField['value']) || !isset($joinedField['operator'])
+                    || !isset($joinedField['fields']) || !$joinedField['fields']) {
                     continue;
                 }
 

@@ -40,6 +40,7 @@ class BaseCollectionTest extends BaseTestCase
      * Test the getUids method.
      *
      * @group unit
+     *
      * @test
      */
     public function testGetUids()
