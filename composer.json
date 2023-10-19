@@ -33,7 +33,7 @@
 		"ext-zip": "*",
 		"doctrine/common": "*",
 		"doctrine/dbal": "*",
-		"typo3/cms-core": "^8.7 || ^9.5"
+		"typo3/cms-core": "^8.7 || ^9.5 || ^10.4 || ^11.5 || ^12.4"
 	},
 	"require-dev": {
 		"friendsofphp/php-cs-fixer": "^3.0",
@@ -46,9 +46,9 @@
 		"phpunit/phpunit": "^6.5.14 || ^7.5.20 || ^8.0 || ^9.0",
 		"saschaegerer/phpstan-typo3": "^1.0",
 		"phpspec/prophecy-phpunit": "^1.0 || ^2.0",
-		"typo3/cms-backend": "^8.7 || ^9.5",
-		"typo3/cms-frontend": "^8.7 || ^9.5",
-		"typo3/cms-scheduler": "^8.7 || ^9.5"
+		"typo3/cms-backend": "^8.7 || ^9.5 || ^10.4 || ^11.5 || ^12.4",
+		"typo3/cms-frontend": "^8.7 || ^9.5 || ^10.4 || ^11.5 || ^12.4",
+		"typo3/cms-scheduler": "^8.7 || ^9.5 || ^10.4 || ^11.5 || ^12.4"
 	},
 	"suggest": {
 		"ext-mysql": "*",
