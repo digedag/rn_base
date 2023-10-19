@@ -4,6 +4,7 @@ namespace Sys25\RnBase\ExtBaseFluid\ViewHelper\Configurations;
 
 use Sys25\RnBase\ExtBaseFluid\View\Factory;
 use Sys25\RnBase\Testing\BaseTestCase;
+use tx_rnbase_util_Files;
 
 /***************************************************************
  * Copyright notice
@@ -45,7 +46,7 @@ class GetViewHelperTest extends BaseTestCase
         $configurations = $this->createConfigurations(['myConfId.' => ['mySubPath' => 'testValue']], 'rn_base');
         $view = Factory::getViewInstance($configurations);
         $view->setTemplatePathAndFilename(
-            \tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/GetViewHelper.html')
+            tx_rnbase_util_Files::getFileAbsFileName('EXT:rn_base/tests/fixtures/html/GetViewHelper.html')
         );
 
         self::assertEquals('testValue', trim($view->render()));

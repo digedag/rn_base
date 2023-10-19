@@ -3,6 +3,7 @@
 namespace Sys25\RnBase\Frontend\View\Marker;
 
 use Sys25\RnBase\Frontend\Request\RequestInterface;
+use tx_rnbase;
 
 /**
  * Default view class to show a single record.
@@ -19,7 +20,7 @@ class SingleView extends ListView
         $itemPath = $this->getItemPath($request->getConfigurations(), $confId);
         $markerClass = $this->getMarkerClass($request->getConfigurations(), $confId);
 
-        $marker = \tx_rnbase::makeInstance($markerClass);
+        $marker = tx_rnbase::makeInstance($markerClass);
 
         $out = $marker->parseTemplate($template, $item, $formatter, $confId.$itemPath.'.', strtoupper($itemPath));
 

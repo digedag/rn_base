@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Database;
 
+use Exception;
 use Sys25\RnBase\Utility\Strings;
 
 /***************************************************************
@@ -78,7 +79,7 @@ class TreeQueryBuilder
      *
      * @return array
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function getTreeUidListRecursive($id, $depth, $begin = 0, $options = [])
     {
@@ -94,7 +95,7 @@ class TreeQueryBuilder
         }
         if ($id && $depth > 0) {
             if (empty($options['tableName'])) {
-                throw new \Exception('tableName must be set in $options');
+                throw new Exception('tableName must be set in $options');
             }
 
             if (empty($options['where'])) {

@@ -218,7 +218,7 @@ class Dates
             $tz = timezone_open('UTC');
         } // Fallback to UTC
         if (!is_object(self::$dateTime)) {
-            self::$dateTime = new \DateTime();
+            self::$dateTime = new DateTime();
         }
         self::$dateTime->setTimezone($tz);
         self::$dateTime->setDate($jahr, $monat, $tag);
@@ -323,30 +323,30 @@ class Dates
      *  likely missp elled the timezone identifier. We selected
      *  'Europe/Paris' for '2.0/DST' instead.
      *
-     * @param string|\DateTimeZone $timezone
+     * @param string|DateTimeZone $timezone
      *
-     * @return \DateTimeZone
+     * @return DateTimeZone
      */
     public static function getDateTimeZone($timezone = null)
     {
         static $europeBerlin = null;
         if (is_null($timezone) && is_null($europeBerlin)) {
-            $europeBerlin = new \DateTimeZone('Europe/Berlin');
+            $europeBerlin = new DateTimeZone('Europe/Berlin');
         }
 
-        return is_null($timezone) ? $europeBerlin : new \DateTimeZone($timezone);
+        return is_null($timezone) ? $europeBerlin : new DateTimeZone($timezone);
     }
 
     /**
      * @param string $date
-     * @param string|\DateTimeZone $timezone
+     * @param string|DateTimeZone $timezone
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public static function getDateTime($date = null, $timezone = null)
     {
         $timezone = is_object($timezone) ? $timezone : self::getDateTimeZone($timezone);
 
-        return new \DateTime($date, $timezone);
+        return new DateTime($date, $timezone);
     }
 }

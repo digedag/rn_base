@@ -15,6 +15,7 @@ use Sys25\RnBase\Utility\Arrays;
 use Sys25\RnBase\Utility\Files;
 use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -92,7 +93,7 @@ class ModFuncFrame implements IModule
         // Die Variable muss gesetzt sein.
         $this->doc = $this->moduleTemplate->getDoc();
         /* @var $parts ModuleParts */
-        $parts = \tx_rnbase::makeInstance(ModuleParts::class);
+        $parts = tx_rnbase::makeInstance(ModuleParts::class);
         $this->prepareModuleParts($parts, $renderFunc);
 
         $content = $this->renderContent($parts);
@@ -133,7 +134,7 @@ class ModFuncFrame implements IModule
 
     protected function createModuleTemplate(ServerRequestInterface $request): ModuleTemplate
     {
-        $moduleTemplate = \tx_rnbase::makeInstance(ModuleTemplate::class, $this, [
+        $moduleTemplate = tx_rnbase::makeInstance(ModuleTemplate::class, $this, [
             'form' => $this->getFormTag(),
             'docstyles' => '',
             'request' => $request,
@@ -214,12 +215,12 @@ class ModFuncFrame implements IModule
             }
 
             $qualifier = $pageTSconfig['qualifier'] ?? $this->moduleIdentifier;
-            $this->configurations = \tx_rnbase::makeInstance(Processor::class);
+            $this->configurations = tx_rnbase::makeInstance(Processor::class);
             $this->configurations->init($pageTSconfig, $cObj, $this->moduleIdentifier, $qualifier);
 
             // init the parameters object
             $this->configurations->setParameters(
-                \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class)
+                tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class)
             );
             $this->configurations->getParameters()->init('SET');
         }
@@ -235,7 +236,7 @@ class ModFuncFrame implements IModule
     public function getFormTool()
     {
         if (!$this->toolBox) {
-            $this->toolBox = \tx_rnbase::makeInstance(ToolBox::class);
+            $this->toolBox = tx_rnbase::makeInstance(ToolBox::class);
             $this->toolBox->init($this->getDoc(), $this);
         }
 

@@ -5,6 +5,8 @@ namespace Sys25\RnBase\Backend\Utility;
 use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Domain\Model\RecordInterface;
 use Sys25\RnBase\Domain\Repository\SearchInterface;
+use Traversable;
+use tx_rnbase;
 
 /***************************************************************
  * Copyright notice
@@ -53,7 +55,7 @@ class SearcherUtility
     public static function getInstance(
         $options = []
     ) {
-        return \tx_rnbase::makeInstance(SearcherUtility::class, $options);
+        return tx_rnbase::makeInstance(SearcherUtility::class, $options);
     }
 
     /**
@@ -83,7 +85,7 @@ class SearcherUtility
      * @param array $fields
      * @param array $options
      *
-     * @return array|\Traversable
+     * @return array|Traversable
      */
     public function performSearch(
         SearchInterface $repository,

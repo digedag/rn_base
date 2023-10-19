@@ -2,8 +2,10 @@
 
 namespace Sys25\RnBase\Utility;
 
+use ArrayObject;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Frontend\Marker\PageBrowserMarker;
+use tx_rnbase;
 
 /***************************************************************
  *  Copyright notice
@@ -56,7 +58,7 @@ class PageBrowser implements PageBrowserInterface
      * Wenn keine Parameter übergeben werden, dann wird der Pager neu initialisiert
      * und startet wieder bei Seite 1.
      *
-     * @param \ArrayObject $parameters die vorhandenen Parameter aus dem Request oder NULL
+     * @param ArrayObject $parameters die vorhandenen Parameter aus dem Request oder NULL
      * @param int         $listSize   Gesamtgröße der darzustellenden Liste
      * @param int         $pageSize   Größe einer Seite
      */
@@ -70,7 +72,7 @@ class PageBrowser implements PageBrowserInterface
     /**
      * Set current page pointer from request parameters.
      *
-     * @param \ArrayObject $parameters
+     * @param ArrayObject $parameters
      */
     public function setPointerByParameters($parameters)
     {
@@ -191,7 +193,7 @@ class PageBrowser implements PageBrowserInterface
     public function getMarker($markerClassName = PageBrowserMarker::class)
     {
         /** @var PageBrowserMarker $pageBrowserMarker */
-        $pageBrowserMarker = \tx_rnbase::makeInstance($markerClassName);
+        $pageBrowserMarker = tx_rnbase::makeInstance($markerClassName);
         $pageBrowserMarker->setPageBrowser($this);
 
         return $pageBrowserMarker;

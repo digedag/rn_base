@@ -4,6 +4,7 @@ namespace Sys25\RnBase\Domain\Model;
 
 use Exception;
 use Sys25\RnBase\Testing\BaseTestCase;
+use Tx_Rnbase_Domain_Model_Data;
 
 /***************************************************************
  * Copyright notice
@@ -122,7 +123,7 @@ class DataModelTest extends BaseTestCase
      */
     public function testMagicCallThrowsException()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionCode(1406625817);
         $this->getModelInstance()->methodDoesNotExist();
     }
@@ -214,7 +215,7 @@ class DataModelTest extends BaseTestCase
     /**
      * Creates a test object.
      *
-     * @return \Tx_Rnbase_Domain_Model_Data
+     * @return Tx_Rnbase_Domain_Model_Data
      */
     private function getModelInstance()
     {

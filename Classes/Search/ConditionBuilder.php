@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Search;
 
+use PDO;
 use Sys25\RnBase\Database\Connection;
 use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
@@ -206,32 +207,32 @@ class ConditionBuilder
                 break;
             case self::OP_EQ:
                 $where = sprintf('%s.%s = %s', $tableAlias, strtolower($col),
-                    $qb->createNamedParameter($value, \PDO::PARAM_STR));
+                    $qb->createNamedParameter($value, PDO::PARAM_STR));
 
                 break;
             case self::OP_NOTEQ:
                 $where = sprintf('%s.%s != %s', $tableAlias, strtolower($col),
-                    $qb->createNamedParameter($value, \PDO::PARAM_STR));
+                    $qb->createNamedParameter($value, PDO::PARAM_STR));
 
                 break;
             case self::OP_LT:
                 $where = sprintf('%s.%s < %s', $tableAlias, strtolower($col),
-                    $qb->createNamedParameter($value, \PDO::PARAM_STR));
+                    $qb->createNamedParameter($value, PDO::PARAM_STR));
 
                 break;
             case self::OP_LTEQ:
                 $where = sprintf('%s.%s <= %s', $tableAlias, strtolower($col),
-                    $qb->createNamedParameter($value, \PDO::PARAM_STR));
+                    $qb->createNamedParameter($value, PDO::PARAM_STR));
 
                 break;
             case self::OP_GT:
                 $where = sprintf('%s.%s > %s', $tableAlias, strtolower($col),
-                    $qb->createNamedParameter($value, \PDO::PARAM_STR));
+                    $qb->createNamedParameter($value, PDO::PARAM_STR));
 
                 break;
             case self::OP_GTEQ:
                 $where = sprintf('%s.%s >= %s', $tableAlias, strtolower($col),
-                    $qb->createNamedParameter($value, \PDO::PARAM_STR));
+                    $qb->createNamedParameter($value, PDO::PARAM_STR));
 
                 break;
             case self::OP_EQ_INT:
@@ -241,12 +242,12 @@ class ConditionBuilder
             case self::OP_GTEQ_INT:
             case self::OP_LTEQ_INT:
                 $where = sprintf('%s.%s %s %s', $tableAlias, strtolower($col), $operator,
-                    $qb->createNamedParameter($value, \PDO::PARAM_STR));
+                    $qb->createNamedParameter($value, PDO::PARAM_STR));
 
                 break;
             case self::OP_EQ_NOCASE:
                 $where = sprintf('lower(%s.%s) = lower(%s)', $tableAlias, strtolower($col),
-                    $qb->createNamedParameter($value, \PDO::PARAM_STR));
+                    $qb->createNamedParameter($value, PDO::PARAM_STR));
 
                 break;
             case self::OP_INSET_INT:

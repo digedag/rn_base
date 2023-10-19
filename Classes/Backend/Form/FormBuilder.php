@@ -3,6 +3,7 @@
 namespace Sys25\RnBase\Backend\Form;
 
 use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase;
 
 /***************************************************************
  *  Copyright notice
@@ -58,10 +59,10 @@ class FormBuilder
         /**
          * @var \TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord
          */
-        $formDataGroup = \tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormDataGroup\\TcaDatabaseRecord');
-        $this->formDataCompiler = \tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormDataCompiler', $formDataGroup);
-        $this->nodeFactory = \tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\NodeFactory');
-        $this->formResultCompiler = \tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormResultCompiler');
+        $formDataGroup = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormDataGroup\\TcaDatabaseRecord');
+        $this->formDataCompiler = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormDataCompiler', $formDataGroup);
+        $this->nodeFactory = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\NodeFactory');
+        $this->formResultCompiler = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormResultCompiler');
     }
 
     public function initDefaultBEmode()

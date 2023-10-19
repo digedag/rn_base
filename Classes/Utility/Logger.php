@@ -3,6 +3,7 @@
 namespace Sys25\RnBase\Utility;
 
 use Psr\Log\LogLevel;
+use tx_rnbase;
 
 /***************************************************************
  *  Copyright notice
@@ -200,7 +201,7 @@ class Logger
     public static function getLogger($extKey)
     {
         /* @var $logManager \TYPO3\CMS\Core\Log\LogManager */
-        $logManager = \tx_rnbase::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class);
+        $logManager = tx_rnbase::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class);
 
         return $logManager->getLogger($extKey);
     }

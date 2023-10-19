@@ -15,6 +15,7 @@ use Sys25\RnBase\Utility\Files;
 use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase;
 
 /***************************************************************
 *  Copyright notice
@@ -131,7 +132,7 @@ abstract class BaseModule extends BaseScriptClass implements IModule
         // Einbindung der Modul-Funktionen
         $this->checkExtObj();
 
-        $this->moduleTemplate = \tx_rnbase::makeInstance(ModuleTemplate::class, $this, [
+        $this->moduleTemplate = tx_rnbase::makeInstance(ModuleTemplate::class, $this, [
             'form' => $this->getFormTag(),
             'docstyles' => $this->getDocStyles(),
             'template' => $this->getModuleTemplate(),
@@ -141,7 +142,7 @@ abstract class BaseModule extends BaseScriptClass implements IModule
         $this->doc = $this->getModTemplate()->getDoc();
 
         /* @var $parts ModuleParts */
-        $parts = \tx_rnbase::makeInstance(ModuleParts::class);
+        $parts = tx_rnbase::makeInstance(ModuleParts::class);
         $this->prepareModuleParts($parts);
 
         $this->content = $this->getModTemplate()->renderContent($parts);
@@ -205,7 +206,7 @@ abstract class BaseModule extends BaseScriptClass implements IModule
     public function checkExtObj()
     {
         if (isset($this->extClassConf['name'])) {
-            $this->extObj = \tx_rnbase::makeInstance($this->extClassConf['name']);
+            $this->extObj = tx_rnbase::makeInstance($this->extClassConf['name']);
             $this->extObj->init($this, $this->extClassConf);
             // Re-write:
             $this->MOD_SETTINGS = BackendUtility::getModuleData(
@@ -227,7 +228,7 @@ abstract class BaseModule extends BaseScriptClass implements IModule
     public function getFormTool()
     {
         if (!$this->formTool) {
-            $this->formTool = \tx_rnbase::makeInstance(ToolBox::class);
+            $this->formTool = tx_rnbase::makeInstance(ToolBox::class);
             $this->formTool->init($this->getDoc(), $this);
         }
 
@@ -263,12 +264,12 @@ abstract class BaseModule extends BaseScriptClass implements IModule
             }
 
             $qualifier = $pageTSconfig['qualifier'] ?? $this->getExtensionKey();
-            $this->configurations = \tx_rnbase::makeInstance(Processor::class);
+            $this->configurations = tx_rnbase::makeInstance(Processor::class);
             $this->configurations->init($pageTSconfig, $cObj, $this->getExtensionKey(), $qualifier);
 
             // init the parameters object
             $this->configurations->setParameters(
-                \tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class)
+                tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class)
             );
             $this->configurations->getParameters()->init('SET');
         }
@@ -364,7 +365,7 @@ abstract class BaseModule extends BaseScriptClass implements IModule
     protected function getFuncMenu()
     {
         if ($this->useModuleTemplate()) {
-            $menuRegistry = \tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Template\Components\MenuRegistry::class);
+            $menuRegistry = tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Template\Components\MenuRegistry::class);
             $menu = $menuRegistry->makeMenu();
             $modMenu = $this->MOD_MENU;
             $modSettings = $this->MOD_SETTINGS;

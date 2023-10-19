@@ -74,7 +74,7 @@ class TestUtility
         }
 
         /* @var $configurations \Sys25\RnBase\Configuration\ConfigurationInterface */
-        $configurations = \tx_rnbase::makeInstance(\Sys25\RnBase\Configuration\Processor::class);
+        $configurations = tx_rnbase::makeInstance(\Sys25\RnBase\Configuration\Processor::class);
         $configurations->init(
             $configurationArray,
             $cObj,

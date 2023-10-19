@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Domain\Repository;
 
+use Exception;
 use Sys25\RnBase\Backend\Utility\TCA;
 use Sys25\RnBase\Domain\Collection\BaseCollection;
 use Sys25\RnBase\Domain\Model\DomainModelInterface as DomainInterface;
@@ -11,6 +12,8 @@ use Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface;
 use Sys25\RnBase\Utility\Environment;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
+use Traversable;
+use tx_rnbase;
 
 /***************************************************************
  * Copyright notice
@@ -58,7 +61,7 @@ abstract class AbstractRepository implements SearchInterface, SingletonInterface
     {
         $searcher = SearchBase::getInstance($this->getSearchClass());
         if (!$searcher instanceof SearchBase) {
-            throw new \Exception(get_class($this).'->getSearchClass() has to return a classname of class which extends Sys25\RnBase\Search\SearchBase!');
+            throw new Exception(get_class($this).'->getSearchClass() has to return a classname of class which extends Sys25\RnBase\Search\SearchBase!');
         }
 
         return $searcher;
@@ -95,7 +98,7 @@ abstract class AbstractRepository implements SearchInterface, SingletonInterface
      */
     public function getEmptyModel()
     {
-        return \tx_rnbase::makeInstance($this->getWrapperClass());
+        return tx_rnbase::makeInstance($this->getWrapperClass());
     }
 
     /**
@@ -108,7 +111,7 @@ abstract class AbstractRepository implements SearchInterface, SingletonInterface
     public function findByUid($rowOrUid)
     {
         /* @var $model DomainInterface */
-        $model = \tx_rnbase::makeInstance(
+        $model = tx_rnbase::makeInstance(
             $this->getWrapperClass(),
             $rowOrUid
         );
@@ -256,7 +259,7 @@ abstract class AbstractRepository implements SearchInterface, SingletonInterface
     /**
      * Modifiziert die Ergebisliste.
      *
-     * @param \Traversable|array $items
+     * @param Traversable|array $items
      * @param array             $options
      *
      * @return array[DomainInterface]
@@ -276,7 +279,7 @@ abstract class AbstractRepository implements SearchInterface, SingletonInterface
      * Entfernt alle doppelten Datensatze, wenn die Option distinct gesetzt ist.
      * Dabei werden die Sprachoverlays bevorzugt.
      *
-     * @param \Traversable|array $items
+     * @param Traversable|array $items
      * @param array             $options
      *
      * @return array[RecordInterface]

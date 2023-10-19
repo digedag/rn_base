@@ -2,6 +2,8 @@
 
 namespace Sys25\RnBase\Utility;
 
+use tx_rnbase;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -182,7 +184,7 @@ class TYPO3
     {
         if (class_exists('TYPO3\CMS\Core\Information\Typo3Version')) {
             /* @var $t3version \TYPO3\CMS\Core\Information\Typo3Version */
-            $t3version = \tx_rnbase::makeInstance('TYPO3\CMS\Core\Information\Typo3Version');
+            $t3version = tx_rnbase::makeInstance('TYPO3\CMS\Core\Information\Typo3Version');
 
             return $t3version->getVersion();
         } else {
@@ -320,7 +322,7 @@ class TYPO3
      */
     public static function getContentObject()
     {
-        return \tx_rnbase::makeInstance(
+        return tx_rnbase::makeInstance(
             Typo3Classes::getContentObjectRendererClass()
         );
     }
@@ -347,7 +349,7 @@ class TYPO3
     public static function getPageRenderer()
     {
         if (self::isTYPO80OrHigher()) {
-            return \tx_rnbase::makeInstance(
+            return tx_rnbase::makeInstance(
                 'TYPO3\CMS\Core\\Page\PageRenderer'
             );
         }
@@ -367,7 +369,7 @@ class TYPO3
                 self::$sysPage = $GLOBALS['TSFE']->sys_page;
             } // Use existing SysPage from TSFE
             else {
-                self::$sysPage = \tx_rnbase::makeInstance(Typo3Classes::getPageRepositoryClass());
+                self::$sysPage = tx_rnbase::makeInstance(Typo3Classes::getPageRepositoryClass());
                 if (!self::isTYPO95OrHigher()) {
                     self::$sysPage->init(0);
                 }

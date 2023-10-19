@@ -2,7 +2,9 @@
 
 namespace Sys25\RnBase\Cache;
 
+use Exception;
 use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 
@@ -38,7 +40,7 @@ class TYPO3Cache62 implements CacheInterface
     {
         $cache = $this->checkCacheConfiguration($cacheName);
         if (!is_object($cache)) {
-            throw new \Exception('Error creating cache with name: '.$cacheName);
+            throw new Exception('Error creating cache with name: '.$cacheName);
         }
         $this->setCache($cache);
     }
@@ -50,7 +52,7 @@ class TYPO3Cache62 implements CacheInterface
     {
         // Usage of $GLOBALS[\'typo3CacheManager\'] and $GLOBALS[\'typo3CacheFactory\'] are deprecated since 6.2
         // will be removed in two versions. Use \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance
-        return \tx_rnbase::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+        return tx_rnbase::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace Sys25\RnBase\Database;
 
+use mysqli_result;
+use PDO;
 use Sys25\RnBase\Backend\Utility\TCA;
 use Sys25\RnBase\Database\Driver\DatabaseException;
 use Sys25\RnBase\Database\Driver\IDatabase;
@@ -20,6 +22,7 @@ use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
 use Sys25\RnBase\Utility\Typo3Classes;
+use tx_rnbase;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
 /***************************************************************
@@ -62,7 +65,7 @@ class Connection implements SingletonInterface
      */
     public static function getInstance()
     {
-        return \tx_rnbase::makeInstance(get_called_class());
+        return tx_rnbase::makeInstance(get_called_class());
     }
 
     /**
@@ -285,7 +288,7 @@ class Connection implements SingletonInterface
         if (!is_array($row)) {
             return;
         }
-        $item = ($wrapper) ? \tx_rnbase::makeInstance($wrapper, $row) : $row;
+        $item = ($wrapper) ? tx_rnbase::makeInstance($wrapper, $row) : $row;
         if ($item instanceof DynamicTableInterface
             // @TODO: backward compatibility for old models will be removed soon
             || $item instanceof BaseModel
@@ -311,7 +314,7 @@ class Connection implements SingletonInterface
             if (!is_string($options['collection']) || !class_exists($options['collection'])) {
                 $options['collection'] = BaseCollection::class;
             }
-            $rows = \tx_rnbase::makeInstance(
+            $rows = tx_rnbase::makeInstance(
                 $options['collection'],
                 $rows
             );
@@ -458,7 +461,7 @@ class Connection implements SingletonInterface
         }
 
         if (!$db instanceof IDatabase) {
-            throw \tx_rnbase::makeInstance(\Sys25\RnBase\Typo3Wrapper\Core\Error\Exception::class, sprintf('The db "%s" has to implement the %s interface', get_class($db), IDatabase::class));
+            throw tx_rnbase::makeInstance(\Sys25\RnBase\Typo3Wrapper\Core\Error\Exception::class, sprintf('The db "%s" has to implement the %s interface', get_class($db), IDatabase::class));
         }
 
         return $db;
@@ -475,15 +478,15 @@ class Connection implements SingletonInterface
     {
         $key = strtolower($key);
         if ('typo3' == $key) {
-            $db = \tx_rnbase::makeInstance(TYPO3Database::class);
+            $db = tx_rnbase::makeInstance(TYPO3Database::class);
         } elseif ('typo3dbal' == $key) {
-            $db = \tx_rnbase::makeInstance(TYPO3DBAL::class);
+            $db = tx_rnbase::makeInstance(TYPO3DBAL::class);
         } else {
             $dbCfg = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rn_base']['db'][$key];
             if (!is_array($dbCfg)) {
-                throw \tx_rnbase::makeInstance(DatabaseException::class, 'No config for database '.$key.' found!');
+                throw tx_rnbase::makeInstance(DatabaseException::class, 'No config for database '.$key.' found!');
             }
-            $db = \tx_rnbase::makeInstance(MySqlDatabase::class, $dbCfg);
+            $db = tx_rnbase::makeInstance(MySqlDatabase::class, $dbCfg);
         }
 
         return $db;
@@ -837,7 +840,7 @@ class Connection implements SingletonInterface
     public function &getTCEmain($data = 0, $cmd = 0)
     {
         // Die TCEmain laden
-        $tce = \tx_rnbase::makeInstance(Typo3Classes::getDataHandlerClass());
+        $tce = tx_rnbase::makeInstance(Typo3Classes::getDataHandlerClass());
         $tce->stripslashes_values = 0;
         // Wenn wir ein data-Array bekommen verwenden wir das
         $tce->start($data ? $data : [], $cmd ? $cmd : []);
@@ -891,7 +894,7 @@ class Connection implements SingletonInterface
      *
      * @param mixed $res
      *
-     * @return bool|\mysqli_result|object MySQLi result object / DBAL object
+     * @return bool|mysqli_result|object MySQLi result object / DBAL object
      */
     public function watchOutDB($res, $database = null)
     {
@@ -909,7 +912,7 @@ class Connection implements SingletonInterface
         // or not (native mysqli).
         // Sidenote: PDO will be used by default when the database connection is configured through a URL instead
         // of providing user, host, password and database separately even if the driver is set to mysqli.
-        $hasError = is_array($error) ? (\PDO::ERR_NONE !== $error[0]) : !empty($error);
+        $hasError = is_array($error) ? (PDO::ERR_NONE !== $error[0]) : !empty($error);
         if (!$this->testResource($res) && $hasError) {
             $msg = 'SQL QUERY IS NOT VALID';
             $msg .= '<br/>';

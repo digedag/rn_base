@@ -2,6 +2,9 @@
 
 namespace Sys25\RnBase\Utility;
 
+use DateTime;
+use SimpleXMLElement;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -28,7 +31,7 @@ namespace Sys25\RnBase\Utility;
 /**
  * Ein Model eines XMLs.
  */
-class XmlElement extends \SimpleXMLElement
+class XmlElement extends SimpleXMLElement
 {
     /**
      * @param string $path
@@ -116,7 +119,7 @@ class XmlElement extends \SimpleXMLElement
      *
      * @param string $path
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDateTimeFromPath($path)
     {

@@ -25,6 +25,7 @@ namespace Sys25\RnBase\Domain\Repository;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use stdClass;
 use Sys25\RnBase\Database\Connection;
 use Sys25\RnBase\Domain\Model\BaseModel;
 use Sys25\RnBase\Search\SearchGeneric;
@@ -91,7 +92,7 @@ class PersistenceRepositoryTest extends BaseTestCase
             $this->callInaccessibleMethod(
                 $this->getRepository(),
                 'isModelWrapperClass',
-                new \stdClass()
+                new stdClass()
             )
         );
     }

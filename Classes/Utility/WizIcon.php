@@ -3,6 +3,7 @@
 namespace Sys25\RnBase\Utility;
 
 use Sys25\RnBase\Backend\Utility\Icons;
+use tx_rnbase;
 
 /***************************************************************
  * Copyright notice
@@ -46,7 +47,7 @@ abstract class WizIcon
         if (!TYPO3::isTYPO80OrHigher()) {
             $GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'][$clazz] = $clazzFile;
         } else {
-            $wizard = \tx_rnbase::makeInstance($clazz);
+            $wizard = tx_rnbase::makeInstance($clazz);
             // for TYPO3 8 we need an other way
             // Geht das? Die Methode ist protected...
             $pluginData = $wizard->getPluginData();
@@ -103,7 +104,7 @@ abstract class WizIcon
     {
         $llFile = $this->getLLFile();
         /** @var Language $lang */
-        $lang = \tx_rnbase::makeInstance(Language::class);
+        $lang = tx_rnbase::makeInstance(Language::class);
         $lang->loadLLFile($llFile);
 
         return $lang;

@@ -2,8 +2,11 @@
 
 namespace Sys25\RnBase\Domain\Repository;
 
+use ReflectionMethod;
 use Sys25\RnBase\Domain\Model\BaseModel;
 use Sys25\RnBase\Testing\BaseTestCase;
+use tx_rnbase;
+use Tx_Rnbase_Repository_AbstractRepository;
 
 /***************************************************************
  * Copyright notice
@@ -54,7 +57,7 @@ class AbstractRepositoryTest extends BaseTestCase
     ) {
         $fields = [];
         $repository = $this->getRepositoryMock();
-        $method = new \ReflectionMethod(
+        $method = new ReflectionMethod(
             AbstractRepository::class,
             'handleEnableFieldsOptions'
         );
@@ -98,7 +101,7 @@ class AbstractRepositoryTest extends BaseTestCase
     {
         $repository = $this->getRepositoryMock();
 
-        $expectedModel = \tx_rnbase::makeInstance(
+        $expectedModel = tx_rnbase::makeInstance(
             BaseModel::class,
             ['uid' => 123, 'some' => 'other']
         );
@@ -264,7 +267,7 @@ class AbstractRepositoryTest extends BaseTestCase
     /**
      * @param array $mockedMethods
      *
-     * @return \Tx_Rnbase_Repository_AbstractRepository
+     * @return Tx_Rnbase_Repository_AbstractRepository
      */
     private function getRepositoryMock($mockedMethods = [])
     {

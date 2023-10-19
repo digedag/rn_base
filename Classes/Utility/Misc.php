@@ -27,6 +27,7 @@ namespace Sys25\RnBase\Utility;
 use Exception;
 use Sys25\RnBase\Configuration\Processor as ConfigurationProcessor;
 use Sys25\RnBase\Exception\AdditionalException;
+use tx_rnbase;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -52,7 +53,7 @@ class Misc
     public static function getService($type, $subType = '')
     {
         /** @var \TYPO3\CMS\Core\Service\AbstractService $service */
-        $service = \tx_rnbase::makeInstanceService($type, $subType);
+        $service = tx_rnbase::makeInstanceService($type, $subType);
 
         if (!is_object($service)) {
             self::mayday('Service '.$type.' - '.$subType.' not found!');
@@ -196,7 +197,7 @@ class Misc
         $aDebug[] = '</div>';
 
         if (intval(ConfigurationProcessor::getExtensionCfgValue('rn_base', 'forceException4Mayday'))) {
-            throw \tx_rnbase::makeInstance(AdditionalException::class, $msg, 0, ['Info' => $aDebug]);
+            throw tx_rnbase::makeInstance(AdditionalException::class, $msg, 0, ['Info' => $aDebug]);
         }
 
         $aDebug[] = '<br/>';
@@ -363,7 +364,7 @@ MAYDAYPAGE;
                 if ($pid > 0) {
                     $rootLine = \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($pid);
                 }
-                $siteMatcher = \tx_rnbase::makeInstance(\TYPO3\CMS\Core\Routing\SiteMatcher::class);
+                $siteMatcher = tx_rnbase::makeInstance(\TYPO3\CMS\Core\Routing\SiteMatcher::class);
                 $site = $siteMatcher->matchByPageId($pid, $rootLine);
 
                 if (!($GLOBALS['TYPO3_REQUEST'] ?? null)) {
@@ -404,7 +405,7 @@ MAYDAYPAGE;
                         $frontendUser
                     );
                 } else {
-                    $GLOBALS['TSFE'] = \tx_rnbase::makeInstance(
+                    $GLOBALS['TSFE'] = tx_rnbase::makeInstance(
                         TypoScriptFrontendController::class,
                         $GLOBALS['TYPO3_CONF_VARS'],
                         $site,
@@ -412,7 +413,7 @@ MAYDAYPAGE;
                     );
                 }
             } else {
-                $GLOBALS['TSFE'] = \tx_rnbase::makeInstance(
+                $GLOBALS['TSFE'] = tx_rnbase::makeInstance(
                     TypoScriptFrontendController::class,
                     $GLOBALS['TYPO3_CONF_VARS'],
                     $pid,
@@ -690,10 +691,10 @@ MAYDAYPAGE;
      *
      * @param string    $mailAddr   commaseperated recipients
      * @param string    $actionName
-     * @param \Exception $e
+     * @param Exception $e
      * @param array     $options
      */
-    public static function sendErrorMail($mailAddr, $actionName, \Exception $e, array $options = [])
+    public static function sendErrorMail($mailAddr, $actionName, Exception $e, array $options = [])
     {
         $ignoreMailLock = (array_key_exists('ignoremaillock', $options) && $options['ignoremaillock']);
 
@@ -713,7 +714,7 @@ MAYDAYPAGE;
         $htmlPart = self::getErrorMailHtml($e, $actionName);
 
         /** @var Email $mail */
-        $mail = \tx_rnbase::makeInstance(Email::class);
+        $mail = tx_rnbase::makeInstance(Email::class);
         $mail->setSubject('Exception on site '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
 
         $from = ConfigurationProcessor::getExtensionCfgValue('rn_base', 'fromEmail');
@@ -850,7 +851,7 @@ MAYDAYPAGE;
      */
     public static function addFlashMessage($message, $title = '', $severity = 0, $storeInSession = false)
     {
-        $flashMessage = \tx_rnbase::makeInstance(
+        $flashMessage = tx_rnbase::makeInstance(
             Typo3Classes::getFlashMessageClass(),
             $message,
             $title,
@@ -859,7 +860,7 @@ MAYDAYPAGE;
         );
 
         /** @var FlashMessageService $flashMessageService */
-        $flashMessageService = \tx_rnbase::makeInstance(FlashMessageService::class);
+        $flashMessageService = tx_rnbase::makeInstance(FlashMessageService::class);
         $flashMessageService->getMessageQueueByIdentifier()->enqueue($flashMessage);
     }
 }

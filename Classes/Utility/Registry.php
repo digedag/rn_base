@@ -2,6 +2,9 @@
 
 namespace Sys25\RnBase\Utility;
 
+use InvalidArgumentException;
+use tx_rnbase;
+
 /***************************************************************
  * Copyright notice
  *
@@ -49,13 +52,13 @@ class Registry
      *
      * @return mixed the value of the entry
      *
-     * @throws \InvalidArgumentException Throws an exception if the given namespace is not valid
+     * @throws InvalidArgumentException Throws an exception if the given namespace is not valid
      */
     public function get($key, $domain = '')
     {
         $domain = $domain ? $domain : $this->domain;
         /* @var $registry \TYPO3\CMS\Core\Registry */
-        $registry = \tx_rnbase::makeInstance(\TYPO3\CMS\Core\Registry::class);
+        $registry = tx_rnbase::makeInstance(\TYPO3\CMS\Core\Registry::class);
 
         return $registry->get($domain, $key);
     }
@@ -65,13 +68,13 @@ class Registry
      * @param mixed  $value  The value to set. This can be any PHP data type; this class takes care of serialization if necessary.
      * @param string $domain extension key for extensions starting with 'tx_' / 'Tx_' / 'user_' or 'core' for core registry entries
      *
-     * @throws \InvalidArgumentException Throws an exception if the given namespace is not valid
+     * @throws InvalidArgumentException Throws an exception if the given namespace is not valid
      */
     public function set($key, $value, $domain = '')
     {
         $domain = $domain ? $domain : $this->domain;
         /* @var $registry \TYPO3\CMS\Core\Registry */
-        $registry = \tx_rnbase::makeInstance(\TYPO3\CMS\Core\Registry::class);
+        $registry = tx_rnbase::makeInstance(\TYPO3\CMS\Core\Registry::class);
 
         return $registry->set($domain, $key, $value);
     }

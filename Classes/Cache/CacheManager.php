@@ -2,6 +2,8 @@
 
 namespace Sys25\RnBase\Cache;
 
+use tx_rnbase;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -123,6 +125,6 @@ class CacheManager
      */
     private static function getCacheImpl($name)
     {
-        return \tx_rnbase::makeInstance(TYPO3Cache62::class, $name);
+        return tx_rnbase::makeInstance(TYPO3Cache62::class, $name);
     }
 }

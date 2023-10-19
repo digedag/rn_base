@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Frontend\Marker;
 
+use ArrayObject;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 
 /***************************************************************
@@ -34,7 +35,7 @@ interface IListBuilderInfo
     /**
      * Get a message string for empty list.
      *
-     * @param \ArrayObject $viewData
+     * @param ArrayObject $viewData
      * @param ConfigurationInterface $configurations
      *
      * @return string

@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Frontend\Marker;
 
+use ArrayObject;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 
 /***************************************************************
@@ -35,7 +36,7 @@ class ListBuilderInfo implements IListBuilderInfo
      * Get a message string for empty list. This is an language string. The key is
      * taken from ts-config: [item].listinfo.llkeyEmpty.
      *
-     * @param \ArrayObject $viewData
+     * @param ArrayObject $viewData
      * @param ConfigurationInterface $configurations
      *
      * @return string

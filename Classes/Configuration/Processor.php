@@ -29,6 +29,7 @@ namespace Sys25\RnBase\Configuration;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
+use ArrayObject;
 use Sys25\RnBase\Exception\SkipActionException;
 use Sys25\RnBase\Frontend\Marker\FormatUtil;
 use Sys25\RnBase\Utility\Arrays;
@@ -40,6 +41,7 @@ use Sys25\RnBase\Utility\Network;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
 use Sys25\RnBase\Utility\Typo3Classes;
+use tx_rnbase;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /***************************************************************
@@ -94,14 +96,14 @@ class Processor implements ConfigurationInterface
     /**
      * Here, all configuration data is stored.
      *
-     * @var \ArrayObject
+     * @var ArrayObject
      */
     private $_dataStore;
 
     /**
      * This is a container to transfer data to the view.
      *
-     * @var \ArrayObject
+     * @var ArrayObject
      */
     private $_viewData;
 
@@ -113,7 +115,7 @@ class Processor implements ConfigurationInterface
     /**
      * This is a container for variables necessary in links.
      *
-     * @var \ArrayObject
+     * @var ArrayObject
      */
     private $_keepVars;
 
@@ -197,10 +199,10 @@ class Processor implements ConfigurationInterface
      */
     public function __construct()
     {
-        $this->_dataStore = new \ArrayObject();
-        $this->_viewData = new \ArrayObject();
-        $this->_keepVars = new \ArrayObject();
-        $this->localLangUtil = \tx_rnbase::makeInstance(Language::class);
+        $this->_dataStore = new ArrayObject();
+        $this->_viewData = new ArrayObject();
+        $this->_keepVars = new ArrayObject();
+        $this->localLangUtil = tx_rnbase::makeInstance(Language::class);
     }
 
     /**
@@ -248,7 +250,7 @@ class Processor implements ConfigurationInterface
         $this->_extensionKey = $this->get('extensionKey') ? $this->get('extensionKey') : $extensionKey;
         $this->_qualifier = $this->get('qualifier') ? $this->get('qualifier') : $qualifier;
 
-        $this->_formatter = \tx_rnbase::makeInstance(FormatUtil::class, $this);
+        $this->_formatter = tx_rnbase::makeInstance(FormatUtil::class, $this);
 
         $this->loadLL();
     }
@@ -289,7 +291,7 @@ class Processor implements ConfigurationInterface
         }
         $this->getCObj()->doConvertToUserIntObject = $convert;
         if ($convert) {
-            throw \tx_rnbase::makeInstance(SkipActionException::class);
+            throw tx_rnbase::makeInstance(SkipActionException::class);
         }
 
         return true;
@@ -354,7 +356,7 @@ class Processor implements ConfigurationInterface
         $cObjClass = null === $cObjClass ? Typo3Classes::getContentObjectRendererClass() : $cObjClass;
         if (0 == strcmp($id, '0')) {
             if (!is_object($this->cObj)) {
-                $this->cObj = \tx_rnbase::makeInstance($cObjClass);
+                $this->cObj = tx_rnbase::makeInstance($cObjClass);
                 $this->cObjs[0] = $this->cObj;
             }
 
@@ -364,7 +366,7 @@ class Processor implements ConfigurationInterface
         $cObj = isset($this->cObjs[$id]) ? $this->cObjs[$id] : null;
 
         if (!is_object($cObj)) {
-            $this->cObjs[$id] = \tx_rnbase::makeInstance($cObjClass);
+            $this->cObjs[$id] = tx_rnbase::makeInstance($cObjClass);
         }
 
         return $this->cObjs[$id];
@@ -394,7 +396,7 @@ class Processor implements ConfigurationInterface
      * Return the data container for view by reference. This container should be filled
      * by Controller-Action.
      *
-     * @return \ArrayObject
+     * @return ArrayObject
      */
     public function getViewData()
     {
@@ -425,7 +427,7 @@ class Processor implements ConfigurationInterface
     public function createLink($addKeepVars = true)
     {
         /** @var Link $link */
-        $link = \tx_rnbase::makeInstance(Link::class, $this->getCObj());
+        $link = tx_rnbase::makeInstance(Link::class, $this->getCObj());
         $link->designatorString = $this->getQualifier();
         // Die KeepVars setzen
         if ($addKeepVars) {
@@ -461,7 +463,7 @@ class Processor implements ConfigurationInterface
     /**
      * Returns the KeepVars-Array.
      *
-     * @return \ArrayObject
+     * @return ArrayObject
      */
     public function getKeepVars()
     {
@@ -607,7 +609,7 @@ class Processor implements ConfigurationInterface
     public static function getExtensionCfgValue($extKey, $cfgKey = '')
     {
         if (TYPO3::isTYPO90OrHigher()) {
-            $extConfig = \tx_rnbase::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get(
+            $extConfig = tx_rnbase::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get(
                 $extKey,
                 $cfgKey
             );
@@ -1045,7 +1047,7 @@ class Processor implements ConfigurationInterface
         }
         if ($flexTs) {
             // This handles ts setup from flexform
-            $tsParser = \tx_rnbase::makeInstance(Typo3Classes::getTypoScriptParserClass());
+            $tsParser = tx_rnbase::makeInstance(Typo3Classes::getTypoScriptParserClass());
             $tsParser->setup = $this->_dataStore->getArrayCopy();
             $tsParser->parse($flexTs);
             $flexTsData = $tsParser->setup;
@@ -1068,7 +1070,7 @@ class Processor implements ConfigurationInterface
         // das < abschneiden, um den pfad zum link zu erhalten
         $key = trim(substr($value, 1));
 
-        $tsParser = \tx_rnbase::makeInstance(Typo3Classes::getTypoScriptParserClass());
+        $tsParser = tx_rnbase::makeInstance(Typo3Classes::getTypoScriptParserClass());
 
         // $name and $conf is loaded with the referenced values.
         list($linkValue, $linkConf) = $tsParser->getVal($key, $GLOBALS['TSFE']->tmpl->setup);

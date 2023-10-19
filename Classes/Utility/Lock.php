@@ -2,6 +2,8 @@
 
 namespace Sys25\RnBase\Utility;
 
+use tx_rnbase;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -73,7 +75,7 @@ class Lock
      */
     public static function getInstance($name, $lifeTime = 0)
     {
-        return \tx_rnbase::makeInstance(self::class, $name, $lifeTime);
+        return tx_rnbase::makeInstance(self::class, $name, $lifeTime);
     }
 
     /**

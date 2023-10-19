@@ -4,6 +4,7 @@ namespace Sys25\RnBase\Hook;
 
 use Sys25\RnBase\Testing\BaseTestCase;
 use Sys25\RnBase\Utility\Typo3Classes;
+use tx_rnbase;
 
 /***************************************************************
 *  Copyright notice
@@ -64,7 +65,7 @@ class DataHandlerTest extends BaseTestCase
      */
     public function testGetCacheManager()
     {
-        $cacheManager = $this->callInaccessibleMethod(\tx_rnbase::makeInstance(DataHandler::class), 'getCacheManager');
+        $cacheManager = $this->callInaccessibleMethod(tx_rnbase::makeInstance(DataHandler::class), 'getCacheManager');
         self::assertTrue(method_exists($cacheManager, 'flushCachesInGroupByTag'));
     }
 

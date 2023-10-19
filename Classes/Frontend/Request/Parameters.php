@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Frontend\Request;
 
+use ArrayObject;
 use Sys25\RnBase\Utility\Arrays;
 use Sys25\RnBase\Utility\Typo3Classes;
 
@@ -28,7 +29,7 @@ use Sys25\RnBase\Utility\Typo3Classes;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-class Parameters extends \ArrayObject implements ParametersInterface
+class Parameters extends ArrayObject implements ParametersInterface
 {
     private $qualifier = '';
 

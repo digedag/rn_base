@@ -2,8 +2,13 @@
 
 namespace Sys25\RnBase\Domain\Model;
 
+use ArrayAccess;
+use ArrayIterator;
+use Exception;
 use IteratorAggregate;
 use Sys25\RnBase\Utility\Strings;
+use Traversable;
+use tx_rnbase;
 
 /***************************************************************
  *  Copyright notice
@@ -38,7 +43,7 @@ use Sys25\RnBase\Utility\Strings;
  *
  * @author Michael Wagner
  */
-class DataModel implements DataInterface, \IteratorAggregate, \ArrayAccess
+class DataModel implements DataInterface, IteratorAggregate, ArrayAccess
 {
     /**
      * A flag indication if the model was modified after initialisation
@@ -139,7 +144,7 @@ class DataModel implements DataInterface, \IteratorAggregate, \ArrayAccess
         }
 
         // use get_called_class for backwards compatibility!
-        return \tx_rnbase::makeInstance(get_called_class(), $data);
+        return tx_rnbase::makeInstance(get_called_class(), $data);
     }
 
     /**
@@ -254,7 +259,7 @@ class DataModel implements DataInterface, \IteratorAggregate, \ArrayAccess
      *
      * @return mixed
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function __call($method, array $args)
     {
@@ -282,7 +287,7 @@ class DataModel implements DataInterface, \IteratorAggregate, \ArrayAccess
             default:
         }
 
-        throw new \Exception('Sorry, Invalid method '.get_class($this).'::'.$method.'('.print_r($args, 1).').', 1406625817);
+        throw new Exception('Sorry, Invalid method '.get_class($this).'::'.$method.'('.print_r($args, 1).').', 1406625817);
     }
 
     /**
@@ -320,12 +325,12 @@ class DataModel implements DataInterface, \IteratorAggregate, \ArrayAccess
      * user this to manipulate the data:
      * foreach($data as $key => $var) { $data->setProperty($key, 0); };
      *
-     * @return \Traversable|array
+     * @return Traversable|array
      */
     #[\ReturnTypeWillChange]
     public function getIterator()
     {
-        return new \ArrayIterator($this->getProperties());
+        return new ArrayIterator($this->getProperties());
     }
 
     /**

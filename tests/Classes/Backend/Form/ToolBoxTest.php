@@ -42,7 +42,7 @@ class ToolBoxTest extends BaseTestCase
     protected function setUp(): void
     {
         if (TYPO3::isTYPO90OrHigher()) {
-            $cacheManager = \tx_rnbase::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
+            $cacheManager = tx_rnbase::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
             // needed for icon retrieval
             if (!$cacheManager->hasCache('assets')) {
                 $cacheManager->registerCache(
@@ -74,7 +74,7 @@ class ToolBoxTest extends BaseTestCase
      */
     public function testCreateSelectByArray()
     {
-        $formTool = \tx_rnbase::makeInstance(ToolBox::class);
+        $formTool = tx_rnbase::makeInstance(ToolBox::class);
         $select = $formTool->createSelectByArray('testSelect', 2, [1 => 'John', 2 => 'Doe']);
         $expectedSelect = '<select name="testSelect" class="select"><option value="1" >John</option><option value="2" selected="selected">Doe</option></select>';
 
@@ -86,7 +86,7 @@ class ToolBoxTest extends BaseTestCase
      */
     public function testCreateSelectByArrayIfReloadOption()
     {
-        $formTool = \tx_rnbase::makeInstance(ToolBox::class);
+        $formTool = tx_rnbase::makeInstance(ToolBox::class);
         $select = $formTool->createSelectByArray(
             'testSelect',
             1,
@@ -103,7 +103,7 @@ class ToolBoxTest extends BaseTestCase
      */
     public function testCreateSelectByArrayIfOnchangeOption()
     {
-        $formTool = \tx_rnbase::makeInstance(ToolBox::class);
+        $formTool = tx_rnbase::makeInstance(ToolBox::class);
         $select = $formTool->createSelectByArray(
             'testSelect',
             1,
@@ -120,7 +120,7 @@ class ToolBoxTest extends BaseTestCase
      */
     public function testCreateSelectByArrayIfReloadAndOnchangeOption()
     {
-        $formTool = \tx_rnbase::makeInstance(ToolBox::class);
+        $formTool = tx_rnbase::makeInstance(ToolBox::class);
         $select = $formTool->createSelectByArray(
             'testSelect',
             1,
@@ -137,7 +137,7 @@ class ToolBoxTest extends BaseTestCase
      */
     public function testCreateSelectByArrayIfMultipleOption()
     {
-        $formTool = \tx_rnbase::makeInstance(ToolBox::class);
+        $formTool = tx_rnbase::makeInstance(ToolBox::class);
         $select = $formTool->createSelectByArray(
             'testSelect',
             '1,2',
@@ -154,7 +154,7 @@ class ToolBoxTest extends BaseTestCase
      */
     public function testCreateSelectByArrayIfSizeOption()
     {
-        $formTool = \tx_rnbase::makeInstance(ToolBox::class);
+        $formTool = tx_rnbase::makeInstance(ToolBox::class);
         $select = $formTool->createSelectByArray(
             'testSelect',
             '1,2',
@@ -179,8 +179,8 @@ class ToolBoxTest extends BaseTestCase
             self::markTestSkipped('wir testen die Version ab TYPO3 8.7');
         }
 
-        $formTool = \tx_rnbase::makeInstance($this->buildAccessibleProxy(ToolBox::class));
-        $formTool->init(\tx_rnbase::makeInstance(DocumentTemplate::class), null);
+        $formTool = tx_rnbase::makeInstance($this->buildAccessibleProxy(ToolBox::class));
+        $formTool->init(tx_rnbase::makeInstance(DocumentTemplate::class), null);
         $options = ['test'];
         $urlParameters = 'someParameters';
 
@@ -233,7 +233,7 @@ class ToolBoxTest extends BaseTestCase
         $options = ['test'];
 
         $formTool = $this->getAccessibleMock(ToolBox::class, ['getConfirmCode']);
-        $formTool->init(\tx_rnbase::makeInstance(DocumentTemplate::class), null);
+        $formTool->init(tx_rnbase::makeInstance(DocumentTemplate::class), null);
         $formTool
             ->expects(self::once())
             ->method('getConfirmCode')
@@ -283,7 +283,7 @@ class ToolBoxTest extends BaseTestCase
             ToolBox::OPTION_DEFVALS => ['tx_cfcleague_games' => ['competition' => 2, 'round' => 4]],
         ];
 
-        $formTool = \tx_rnbase::makeInstance(ToolBox::class);
+        $formTool = tx_rnbase::makeInstance(ToolBox::class);
         $result = $formTool->createNewLink('tx_cfcleague_games', 2, 'mylabel', $options);
 
         self::assertContains('class="'.ToolBox::CSS_CLASS_BTN.'"', $result);

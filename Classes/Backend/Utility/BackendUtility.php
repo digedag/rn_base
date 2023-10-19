@@ -2,7 +2,9 @@
 
 namespace Sys25\RnBase\Backend\Utility;
 
+use InvalidArgumentException;
 use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
@@ -79,7 +81,7 @@ class BackendUtility
      *
      * @return string A URL GET variable including ampersand
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public static function getUrlToken($formName = 'securityToken', $tokenName = 'formToken')
     {
@@ -160,7 +162,7 @@ class BackendUtility
     public static function getModuleUrl($moduleName, $urlParameters = [])
     {
         /* @var $uriBuilder \TYPO3\CMS\Backend\Routing\UriBuilder */
-        $uriBuilder = \tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
 
         try {
             $uri = $uriBuilder->buildUriFromRoute($moduleName, $urlParameters);

@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Backend\Utility;
 
+use LogicException;
 use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Domain\Model\RecordInterface;
 use Sys25\RnBase\Utility\Arrays;
@@ -265,7 +266,7 @@ class TCA
         $columns = self::getTcaColumns($tableName, $options);
 
         if (empty($columns)) {
-            throw new \LogicException('No TCA found for "'.$tableName.'".');
+            throw new LogicException('No TCA found for "'.$tableName.'".');
         }
 
         foreach (array_keys($columns) as $column) {

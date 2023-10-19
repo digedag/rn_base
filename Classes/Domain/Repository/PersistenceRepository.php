@@ -74,7 +74,7 @@ abstract class PersistenceRepository extends AbstractRepository implements Persi
      * @param DomainInterface $model
      * @param array|DataModel      $options
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function persist(
         DomainInterface $model,
@@ -84,7 +84,7 @@ abstract class PersistenceRepository extends AbstractRepository implements Persi
 
         // check for right instance
         if (!$this->isModelWrapperClass($model)) {
-            throw new \Exception(get_class($this).'->persist only allows handling instances of "'.$this->getWrapperClass().'", but "'.get_class($model).'" given!');
+            throw new Exception(get_class($this).'->persist only allows handling instances of "'.$this->getWrapperClass().'", but "'.get_class($model).'" given!');
         }
 
         // nothing todo, if the model has no changes
@@ -110,7 +110,7 @@ abstract class PersistenceRepository extends AbstractRepository implements Persi
         if (empty($data)) {
             // throw an exception for new models
             if (!$model->isPersisted()) {
-                throw new \Exception('There is no data in "'.get_class($model).'" to persist.');
+                throw new Exception('There is no data in "'.get_class($model).'" to persist.');
             }
 
             return;

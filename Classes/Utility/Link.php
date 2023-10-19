@@ -3,6 +3,7 @@
 namespace Sys25\RnBase\Utility;
 
 use Sys25\RnBase\Configuration\ConfigurationInterface;
+use tx_rnbase;
 
 /*
  * This class is a wrapper around \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink.
@@ -112,7 +113,7 @@ class Link
         if (is_object($cObject)) {
             $this->cObject = $cObject;
         } else {
-            $this->cObject = \tx_rnbase::makeInstance(
+            $this->cObject = tx_rnbase::makeInstance(
                 null === $cObject ? Typo3Classes::getContentObjectRendererClass() : $cObject
             );
         }

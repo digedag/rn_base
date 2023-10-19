@@ -9,6 +9,7 @@ use Sys25\RnBase\Utility\Environment;
 use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
@@ -141,18 +142,18 @@ class QueryBuilderFacade
                 $restrictions = $queryBuilder->getRestrictions()
                     ->removeAll();
                 if (intval($options['enablefieldsbe'] ?? null)) {
-                    $restrictions->add(\tx_rnbase::makeInstance(DeletedRestriction::class))
-                        ->add(\tx_rnbase::makeInstance(BackendWorkspaceRestriction::class));
+                    $restrictions->add(tx_rnbase::makeInstance(DeletedRestriction::class))
+                        ->add(tx_rnbase::makeInstance(BackendWorkspaceRestriction::class));
                 } else {
-                    $restrictions->add(\tx_rnbase::makeInstance(FrontendRestrictionContainer::class));
+                    $restrictions->add(tx_rnbase::makeInstance(FrontendRestrictionContainer::class));
                 }
             } else {
                 $restrictions = $queryBuilder->getRestrictions()
                     ->removeAll()
-                    ->add(\tx_rnbase::makeInstance(DeletedRestriction::class))
-                    ->add(\tx_rnbase::makeInstance(BackendWorkspaceRestriction::class));
+                    ->add(tx_rnbase::makeInstance(DeletedRestriction::class))
+                    ->add(tx_rnbase::makeInstance(BackendWorkspaceRestriction::class));
                 if (!($options['enablefieldsbe'] ?? null)) {
-                    $restrictions->add(\tx_rnbase::makeInstance(HiddenRestriction::class));
+                    $restrictions->add(tx_rnbase::makeInstance(HiddenRestriction::class));
                 }
             }
         }
@@ -160,6 +161,6 @@ class QueryBuilderFacade
 
     private function getConnectionPool(): ConnectionPool
     {
-        return \tx_rnbase::makeInstance(ConnectionPool::class);
+        return tx_rnbase::makeInstance(ConnectionPool::class);
     }
 }

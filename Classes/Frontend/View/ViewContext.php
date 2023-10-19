@@ -2,6 +2,8 @@
 
 namespace Sys25\RnBase\Frontend\View;
 
+use ArrayObject;
+
 /***************************************************************
 * Copyright notice
 *
@@ -25,6 +27,6 @@ namespace Sys25\RnBase\Frontend\View;
 * This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-class ViewContext extends \ArrayObject implements ContextInterface
+class ViewContext extends ArrayObject implements ContextInterface
 {
 }

@@ -87,7 +87,7 @@ abstract class AbstractAction
             $viewFactoryClassName = $configurations->get($this->getConfId().'viewFactoryClassName');
             $viewFactoryClassName = strlen($viewFactoryClassName) > 0 ? $viewFactoryClassName : Factory::class;
             /* @var $viewFactory Factory */
-            $viewFactory = \tx_rnbase::makeInstance($viewFactoryClassName);
+            $viewFactory = tx_rnbase::makeInstance($viewFactoryClassName);
             $view = $viewFactory->createView($request, $this->getViewClassName(), $this->getTemplateFile($configurations));
             Misc::pushTT(get_class($this), 'render');
             // Das Template wird komplett angegeben

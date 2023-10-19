@@ -2,7 +2,9 @@
 
 namespace Sys25\RnBase\Database;
 
+use Closure;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit_Framework_MockObject_MockObject;
 use Sys25\RnBase\Testing\BaseTestCase;
 
 /**
@@ -410,9 +412,9 @@ class TreeQueryBuilderTest extends BaseTestCase
     /**
      * get a mock with tree structure defined in the expectFunc.
      *
-     * @param \Closure $expectFunc
+     * @param Closure $expectFunc
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return PHPUnit_Framework_MockObject_MockObject
      */
     protected function getTreeQueryBuilderMock($expectFunc)
     {

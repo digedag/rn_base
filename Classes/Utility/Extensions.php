@@ -2,6 +2,9 @@
 
 namespace Sys25\RnBase\Utility;
 
+use InvalidArgumentException;
+use tx_rnbase;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -106,7 +109,7 @@ class Extensions
      * @param array  $controllerActions
      * @param array  $moduleConfiguration
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public static function registerModule(
         $extensionName,
@@ -150,7 +153,7 @@ class Extensions
     ) {
         if (\Sys25\RnBase\Utility\TYPO3::isTYPO90OrHigher() && $moduleConfiguration['routeTarget']) {
             $moduleName = static::buildModuleSignature($extensionName, $mainModuleName, $subModuleName);
-            \tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Routing\Router::class)->getRoutes()[$moduleName]->setOption(
+            tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Routing\Router::class)->getRoutes()[$moduleName]->setOption(
                 'target',
                 $moduleConfiguration['routeTarget']
             );
