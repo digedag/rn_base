@@ -261,7 +261,7 @@ abstract class BaseScriptClass
             }
         }
         if (empty($this->MOD_MENU)) {
-            die('Backend module is not initialized. No module functions found in MOD_MENU.');
+            exit('Backend module is not initialized. No module functions found in MOD_MENU.');
         }
 
         $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
