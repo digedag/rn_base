@@ -202,6 +202,8 @@ abstract class BaseScriptClass
      */
     protected $pageRenderer;
 
+    protected $moduleName;
+
     /**
      * Constructor deprecates the class.
      */
@@ -225,6 +227,16 @@ abstract class BaseScriptClass
 
         $this->id = (int) GeneralUtility::_GP('id');
         $this->CMD = GeneralUtility::_GP('CMD');
+        $this->moduleName = GeneralUtility::_GP('M');
+        // Das sollte zur Initialisierung des Modules ausreichend sein.
+        // Das access Level sollte nicht vorgegeben werden.
+        if (!isset($this->MCONF['name']) && $this->moduleName) {
+            $this->MCONF = array_merge((array) $GLOBALS['MCONF'], [
+                'name' => $this->moduleName,
+                // 'access' => 'user,group',
+        ]);
+        }
+
         $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
         $this->menuConfig();
         $this->handleExternalFunctionValue();
@@ -248,6 +260,10 @@ abstract class BaseScriptClass
                 unset($this->MOD_MENU['function'][$key]);
             }
         }
+        if (empty($this->MOD_MENU)) {
+            exit('Backend module is not initialized. No module functions found in MOD_MENU.');
+        }
+
         $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
     }
 
