@@ -3,6 +3,11 @@
 Changelog
 ---------
 
+v1.18.0 (??.10.2023)
+
+* Auto-detect module identifier to avoid boilerblade-code
+* BC: Parameter type of exceptions changed in ExceptionHandlerInterface to \Throwable
+
 v1.17.4 (22.09.2023)
 
 * fix autoloading for T3 8.x non-composer-mode

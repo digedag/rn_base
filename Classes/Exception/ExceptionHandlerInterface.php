@@ -2,8 +2,8 @@
 
 namespace Sys25\RnBase\Exception;
 
-use Exception;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
+use Throwable;
 
 /***************************************************************
  *  Copyright notice
@@ -34,10 +34,10 @@ interface ExceptionHandlerInterface
      * Interne Verarbeitung der Exception.
      *
      * @param string                                     $actionName
-     * @param Exception                                  $e
+     * @param Throwable                                  $e
      * @param ConfigurationInterface $configurations
      *
      * @return string error message
      */
-    public function handleException($actionName, Exception $e, ConfigurationInterface $configurations);
+    public function handleException($actionName, Throwable $e, ConfigurationInterface $configurations);
 }

@@ -1,5 +1,7 @@
 <?php
 
+use Sys25\RnBase\Configuration\ConfigurationInterface;
+use Sys25\RnBase\Configuration\Processor;
 use Sys25\RnBase\Exception\ExceptionHandler;
 use Sys25\RnBase\Exception\ExceptionHandlerInterface;
 use Sys25\RnBase\Exception\PageNotFound404;
@@ -7,6 +9,7 @@ use Sys25\RnBase\Exception\SkipActionException;
 use Sys25\RnBase\Frontend\Request\Parameters;
 use Sys25\RnBase\Utility\Arrays;
 use Sys25\RnBase\Utility\Logger;
+use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -105,13 +108,13 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  * Used by: none
  *
  * @author René Nitzsche (rene@system25.de)
- * @package TYPO3
- * @subpackage rn_base
+ *
+ * FIXME: move to PSR-4
  */
 
 class tx_rnbase_controller
 {
-    public $configurationsClassName = 'Tx_Rnbase_Configuration_Processor'; // You may overwrite this in your subclass with an own configurations class.
+    public $configurationsClassName = Processor::class; // You may overwrite this in your subclass with an own configurations class.
 
     public $parameters;
 
@@ -205,12 +208,13 @@ class tx_rnbase_controller
 
     public function main($out, $configurationArray)
     {
-        tx_rnbase_util_Misc::pushTT('tx_rnbase_controller', 'start');
+        Misc::pushTT('tx_rnbase_controller', 'start');
 
         // Making the configurations object
-        tx_rnbase_util_Misc::pushTT('init configuration', '');
+        Misc::pushTT('init configuration', '');
+        /** @var $configurations Processor */
         $configurations = $this->_makeConfigurationsObject($configurationArray);
-        tx_rnbase_util_Misc::pullTT();
+        Misc::pullTT();
 
         try {
             // check for doConvertToUserIntObject
@@ -223,13 +227,13 @@ class tx_rnbase_controller
             return '';
         }
 
-        tx_rnbase_util_Misc::enableTimeTrack($configurations->get('_enableTT') ? true : false);
+        Misc::enableTimeTrack($configurations->get('_enableTT') ? true : false);
         // Making the parameters object
-        tx_rnbase_util_Misc::pushTT('init parameters', '');
+        Misc::pushTT('init parameters', '');
         $parameters = $this->_makeParameterObject($configurations);
         // Make sure to keep all parameters
         $configurations->setParameters($parameters);
-        tx_rnbase_util_Misc::pullTT();
+        Misc::pullTT();
 
         // Finding the action:
         $actions = $this->_findAction($parameters, $configurations);
@@ -243,15 +247,15 @@ class tx_rnbase_controller
 
         try {
             foreach ($actions as $actionName) {
-                tx_rnbase_util_Misc::pushTT('call action', $actionName);
+                Misc::pushTT('call action', $actionName);
                 $out .= $this->doAction($actionName, $parameters, $configurations);
-                tx_rnbase_util_Misc::pullTT();
+                Misc::pullTT();
             }
         } catch (SkipActionException $e) {
             // Bei USER_INT im ersten Aufruf die Ausgabe unterdrücken
             $out = '';
         }
-        tx_rnbase_util_Misc::pullTT();
+        Misc::pullTT();
 
         return $out;
     }
@@ -289,10 +293,10 @@ class tx_rnbase_controller
                 count($message) > 1 ? $message[0] : $e->getMessage(),
                 count($message) > 1 ? $message[1] : ''
             );
-        } // Nice to have, aber weder aufwärts noch abwärtskompatibel...
-        catch (\TYPO3\CMS\Core\Error\Http\PageNotFoundException $e) {
+        } catch (\TYPO3\CMS\Core\Error\Http\PageNotFoundException $e) {
+            // Nice to have, aber weder aufwärts noch abwärtskompatibel...
             $this->handlePageNotFound('TYPO3\\CMS\\Core\\Error\\Http\\PageNotFoundException was thrown');
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $ret = $this->handleException($actionName, $e, $configurations);
             $this->errors[] = $e;
         }
@@ -302,11 +306,11 @@ class tx_rnbase_controller
 
     protected function handlePageNotFound(string $reason, string $header = ''): void
     {
-        if (!\Sys25\RnBase\Utility\TYPO3::isTYPO104OrHigher()) {
-            \Sys25\RnBase\Utility\TYPO3::getTSFE()->pageNotFoundAndExit($reason, $header);
+        if (!TYPO3::isTYPO104OrHigher()) {
+            TYPO3::getTSFE()->pageNotFoundAndExit($reason, $header);
         }
 
-        $response = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Controller\ErrorController::class)
+        $response = tx_rnbase::makeInstance(\TYPO3\CMS\Frontend\Controller\ErrorController::class)
             ->pageNotFoundAction(
                 $GLOBALS['TYPO3_REQUEST'],
                 $reason
@@ -327,12 +331,12 @@ class tx_rnbase_controller
     /**
      * Interne Verarbeitung der Exception.
      *
-     * @param Exception                                  $e
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param Exception $e
+     * @param ConfigurationInterface $configurations
      */
-    private function handleException($actionName, Exception $e, $configurations)
+    private function handleException($actionName, Throwable $e, ConfigurationInterface $configurations)
     {
-        $exceptionHandlerClass = \Sys25\RnBase\Configuration\Processor::getExtensionCfgValue(
+        $exceptionHandlerClass = Processor::getExtensionCfgValue(
             'rn_base',
             'exceptionHandler'
         );
@@ -403,10 +407,10 @@ class tx_rnbase_controller
 
         // Falls es mehrere Actions sind den String splitten
         if ($action) {
-            $action = tx_rnbase_util_Strings::trimExplode(',', $action);
+            $action = Strings::trimExplode(',', $action);
         }
         if (is_array($action) && 1 == count($action)) {
-            $action = tx_rnbase_util_Strings::trimExplode('|', $action[0]); // Nochmal mit Pipe versuchen
+            $action = Strings::trimExplode('|', $action[0]); // Nochmal mit Pipe versuchen
         }
         // If there is still no action we use defined defaultAction
         $action = !$action ? $configurations->get('defaultAction') : $action;

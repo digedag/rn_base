@@ -7,6 +7,7 @@ use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Configuration\Processor;
 use Sys25\RnBase\Utility\Logger;
 use Sys25\RnBase\Utility\Misc;
+use Throwable;
 
 /***************************************************************
  *  Copyright notice
@@ -38,13 +39,13 @@ class ExceptionHandler implements ExceptionHandlerInterface
     /**
      * Interne Verarbeitung der Exception.
      *
-     * @param string                                     $actionName
-     * @param Exception                                  $e
+     * @param string $actionName
+     * @param Throwable $e
      * @param ConfigurationInterface $configurations
      *
      * @return string error message
      */
-    public function handleException($actionName, Exception $e, ConfigurationInterface $configurations)
+    public function handleException($actionName, Throwable $e, ConfigurationInterface $configurations)
     {
         // wir prüfen erst mal, ob die exception gefangen werden soll
         $catch = $this->catchException($actionName, $e, $configurations);
