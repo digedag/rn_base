@@ -51,7 +51,8 @@ if (TYPO3::isTYPO115OrHigher()) {
 
         protected function handleCacheTags()
         {
-            if ($cacheTags = $this->settings['cacheTags'][strtolower($this->request->getControllerName())][$this->request->getControllerActionName()]) {
+            $cacheTags = $this->settings['cacheTags'][strtolower($this->request->getControllerName())][$this->request->getControllerActionName()] ?? null;
+            if ($cacheTags) {
                 TYPO3::getTSFE()->addCacheTags($cacheTags);
             }
         }
