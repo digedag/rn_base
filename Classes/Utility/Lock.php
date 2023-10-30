@@ -203,7 +203,7 @@ class Lock
         if (!is_dir(dirname($fileName))) {
             Files::mkdir_deep(dirname($fileName));
         }
-        if (!Files::writeFile($fileName, time(), true)) {
+        if (!Files::writeFile($fileName, (string) time(), true)) {
             Logger::warn(
                 'Lock file could not be created for "'.$this->getName().'" process!',
                 'rn_base',
