@@ -2,7 +2,6 @@
 
 namespace Sys25\RnBase\Exception;
 
-use Exception;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Configuration\Processor;
 use Sys25\RnBase\Utility\Logger;
@@ -119,10 +118,10 @@ class ExceptionHandler implements ExceptionHandlerInterface
      * Build an error message string for frontend.
      *
      * @param string                                     $actionName
-     * @param Exception                                  $e
+     * @param Throwable                                  $e
      * @param ConfigurationInterface $configurations
      */
-    protected function getErrorMessage($actionName, Exception $e, ConfigurationInterface $configurations)
+    protected function getErrorMessage($actionName, Throwable $e, ConfigurationInterface $configurations)
     {
         if (Processor::getExtensionCfgValue('rn_base', 'verboseMayday')) {
             return '<div>'
@@ -161,14 +160,14 @@ class ExceptionHandler implements ExceptionHandlerInterface
      * um die fehlerbehandlung weiter leufen zu lassen.
      *
      * @param string                                     $actionName
-     * @param Exception                                  $e
+     * @param Throwable                                  $e
      * @param ConfigurationInterface $configurations
      *
      * @return string|null
      */
     protected function catchException(
         $actionName,
-        Exception $e,
+        Throwable $e,
         ConfigurationInterface $configurations
     ) {
         // typoscript nach catchanweisungen prüfen
@@ -198,14 +197,14 @@ class ExceptionHandler implements ExceptionHandlerInterface
      * also die methode nur ein mal auftaucht.
      *
      * @param string $actionName
-     * @param Exception $e
+     * @param Throwable $e
      * @param ConfigurationInterface $configurations
      *
      * @return bool
      */
     private function checkExceptionRecursion(
         $action,
-        Exception $e,
+        Throwable $e,
         ConfigurationInterface $configurations,
         $type = 'error'
     ) {
