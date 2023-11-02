@@ -86,7 +86,7 @@
 		"bin-dir": ".Build/bin",
 		"sort-packages": true,
 		"preferred-install": {
-			"typo3/cms": "source"
+			"*": "dist"
 		},
 		"allow-plugins": {
 			"typo3/cms-composer-installers": true,
