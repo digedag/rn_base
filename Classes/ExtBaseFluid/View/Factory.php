@@ -66,6 +66,9 @@ class Factory
         $configurationManager->setContentObject($configurations->getCObj());
         $configurationManager->setConfiguration($frameworkSettings);
         $view->setConfigurations($configurations);
+        if (TYPO3::isTYPO121OrHigher()) {
+            $view->setRequest($GLOBALS['TYPO3_REQUEST']);
+        }
 
         return $view;
     }
