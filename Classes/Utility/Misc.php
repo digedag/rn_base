@@ -27,6 +27,7 @@ namespace Sys25\RnBase\Utility;
 use Exception;
 use Sys25\RnBase\Configuration\Processor as ConfigurationProcessor;
 use Sys25\RnBase\Exception\AdditionalException;
+use Throwable;
 use tx_rnbase;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -689,12 +690,12 @@ MAYDAYPAGE;
     /**
      * Sendout an error mail.
      *
-     * @param string    $mailAddr   commaseperated recipients
-     * @param string    $actionName
-     * @param Exception $e
-     * @param array     $options
+     * @param string $mailAddr   commaseperated recipients
+     * @param string $actionName
+     * @param Throwable $e
+     * @param array $options
      */
-    public static function sendErrorMail($mailAddr, $actionName, Exception $e, array $options = [])
+    public static function sendErrorMail($mailAddr, $actionName, Throwable $e, array $options = [])
     {
         $ignoreMailLock = (array_key_exists('ignoremaillock', $options) && $options['ignoremaillock']);
 
