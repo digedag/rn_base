@@ -105,7 +105,7 @@ abstract class BaseModule extends BaseScriptClass implements IModule
     ) {
         $GLOBALS['MCONF']['script'] = '_DISPATCH';
         $this->init();
-        $this->main();
+        $this->main($request);
 
         if (!TYPO3::isTYPO90OrHigher()) {
             $this->printContent();
@@ -126,8 +126,10 @@ abstract class BaseModule extends BaseScriptClass implements IModule
     /**
      * Main function of the module. Write the content to $this->content
      * If you chose "web" as main module, you will need to consider the $this->id parameter which will contain the uid-number of the page clicked in the page tree.
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface|null $request
      */
-    public function main()
+    public function main($request = null)
     {
         // Einbindung der Modul-Funktionen
         $this->checkExtObj();
@@ -136,6 +138,7 @@ abstract class BaseModule extends BaseScriptClass implements IModule
             'form' => $this->getFormTag(),
             'docstyles' => $this->getDocStyles(),
             'template' => $this->getModuleTemplate(),
+            'request' => $request,
         ]);
 
         // Die Variable muss gesetzt sein.

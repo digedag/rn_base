@@ -8,6 +8,7 @@ use Sys25\RnBase\Frontend\Marker\BaseMarker;
 use Sys25\RnBase\Frontend\Marker\Templates;
 use Sys25\RnBase\Utility\Files;
 use Sys25\RnBase\Utility\Network;
+use Sys25\RnBase\Utility\TYPO3;
 use Sys25\RnBase\Utility\Typo3Classes;
 
 /***************************************************************
@@ -66,6 +67,17 @@ abstract class ExtendedModFunc implements IModFunc
     }
 
     public function main(ServerRequestInterface $request = null)
+    {
+        if (TYPO3::isTYPO121OrHigher()) {
+            $modFuncFrame = \tx_rnbase::makeInstance(ModFuncFrame::class);
+
+            return $modFuncFrame->render($this, function () { return $this->renderOutput(); }, $request);
+        }
+
+        return $this->renderOutput();
+    }
+
+    protected function renderOutput()
     {
         $out = '';
         $conf = $this->getModule()->getConfigurations();
@@ -136,7 +148,8 @@ abstract class ExtendedModFunc implements IModFunc
         }
 
         // wrap the content into a tab pane
-        if ($this->getModule()->useModuleTemplate()) {
+        $useModuleTemplate = is_callable([$this->getModule(), 'useModuleTemplate']) ? $this->getModule()->useModuleTemplate() : true;
+        if ($useModuleTemplate) {
             $subOut = '<div class="tab-content"><div role="tabpanel" class="tab-pane active"><div class="form-section">'.
                 $subOut.
             '</div></div></div>';
