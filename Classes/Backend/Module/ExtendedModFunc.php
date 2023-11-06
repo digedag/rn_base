@@ -10,6 +10,7 @@ use Sys25\RnBase\Utility\Files;
 use Sys25\RnBase\Utility\Network;
 use Sys25\RnBase\Utility\TYPO3;
 use Sys25\RnBase\Utility\Typo3Classes;
+use tx_rnbase;
 
 /***************************************************************
  *  Copyright notice
@@ -69,7 +70,7 @@ abstract class ExtendedModFunc implements IModFunc
     public function main(ServerRequestInterface $request = null)
     {
         if (TYPO3::isTYPO121OrHigher()) {
-            $modFuncFrame = \tx_rnbase::makeInstance(ModFuncFrame::class);
+            $modFuncFrame = tx_rnbase::makeInstance(ModFuncFrame::class);
 
             return $modFuncFrame->render($this, function () { return $this->renderOutput(); }, $request);
         }
