@@ -4,6 +4,7 @@ namespace Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowser;
 
 use Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowserViewHelper;
 use Sys25\RnBase\Utility\Arrays;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
 /***************************************************************
@@ -136,7 +137,7 @@ class PageBaseViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBa
         $additionalParams = Arrays::mergeRecursiveWithOverrule($additionalParams, $pageBrowserParams);
 
         /* @var UriBuilder $uriBuilder */
-        $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $uriBuilder
             ->reset()
             ->setTargetPageType($pageType)
@@ -146,9 +147,11 @@ class PageBaseViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBa
             ->setArguments($additionalParams)
             ->setCreateAbsoluteUri($absolute)
             ->setAddQueryString($addQueryString)
-            // @see https://forge.typo3.org/issues/88209
-            ->setAddQueryStringMethod('GET')
             ->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString);
+        if (is_callable([$uriBuilder, 'setAddQueryStringMethod'])) {
+            // @see https://forge.typo3.org/issues/88209
+            $uriBuilder->setAddQueryStringMethod('GET');
+        }
         if (method_exists($uriBuilder, 'setUseCacheHash')) {
             $uriBuilder->setUseCacheHash(!$noCacheHash);
         }
