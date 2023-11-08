@@ -3,6 +3,9 @@
 namespace Sys25\RnBase\Utility;
 
 use tx_rnbase;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Http\ServerRequestFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  *  Copyright notice
@@ -274,6 +277,9 @@ class TYPO3
      */
     public static function getFEUser()
     {
+        if (self::isTYPO121OrHigher()) {
+            return ($GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals())->getAttribute('frontend.user');
+        }
         if (empty($GLOBALS['TSFE'])) {
             return null;
         }
@@ -288,6 +294,10 @@ class TYPO3
      */
     public static function getFEUserUID()
     {
+        if (self::isTYPO121OrHigher()) {
+            return GeneralUtility::makeInstance(Context::class)->getAspect('frontend.user')->get('id');
+        }
+
         $feuser = self::getFEUser();
 
         return is_object($feuser) && isset($feuser->user['uid']) ? $feuser->user['uid'] : false;
