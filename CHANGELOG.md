@@ -3,6 +3,9 @@
 Changelog
 ---------
 
+v1.16.16 (09.11.2023)
+* handle cache tags trait fixed in TYPO3 11.5
+
 v1.16.15 (12.09.2023)
 * handle cache tags before extbase actions are called
 
