@@ -37,6 +37,9 @@ use tx_rnbase;
 
 /**
  * ModFunc mit SubSelector und SubMenu.
+ *
+ * @deprecated Since TYPO3 12 use BaseModFunc instead. If you need tabbed sub-submodules this can be done
+ * with the new ModFuncFrame which is used by BaseModFunc automatically.
  */
 abstract class ExtendedModFunc implements IModFunc
 {
