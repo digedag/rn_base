@@ -1161,7 +1161,7 @@ class ToolBox
         }
         $ret = BackendUtility::getModuleData([$key => ''], $changed, $modName);
 
-        return $ret[$key];
+        return $ret[$key] ?? null;
     }
 
     /**
