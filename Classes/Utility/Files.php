@@ -57,6 +57,7 @@ class Files
         if (null === $incFile) {
             $incFile = self::getFileName($fName);
         }
+        $ret = '';
         if ($incFile) {
             // Im BE muss ein absoluter Pfad verwendet werden
             $fullPath = Environment::isBackend() ? Environment::getPublicPath().$incFile : $incFile;
