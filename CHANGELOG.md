@@ -3,10 +3,12 @@
 Changelog
 ---------
 
-v1.18.0 (??.10.2023)
+v1.18.0 (??.11.2023)
 
 * Auto-detect module identifier to avoid boilerblade-code
 * BC: Parameter type of exceptions changed in ExceptionHandlerInterface to \Throwable
+* Share ViewContext instance of current configuration with current request
+* Fixed some PHP 8 issues
 
 v1.17.4 (22.09.2023)
 

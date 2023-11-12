@@ -78,7 +78,7 @@ class ModFuncFrame implements IModule
         $this->currentModule = $request->getAttribute('module');
         $this->getLanguageService()->includeLLFile('EXT:rn_base/Resources/Private/Language/locallang.xlf');
         $config = $this->getConfigurations();
-        $files = $config->get('languagefiles.');
+        $files = $config->get('languagefiles.') ?? [];
         foreach ($files as $filename) {
             $this->getLanguageService()->includeLLFile($filename);
         }

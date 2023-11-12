@@ -218,7 +218,7 @@ class BaseMarker
             return; // Nothing to do
         }
 
-        $linkObj = &$formatter->getConfigurations()->createLink();
+        $linkObj = $formatter->getConfigurations()->createLink();
         $token = self::getToken();
         $linkObj->label($token);
         $links = $formatter->getConfigurations()->get($confId.'links.');
@@ -357,7 +357,7 @@ class BaseMarker
      */
     protected static function getEmptyInstance($classname)
     {
-        if (!is_object(self::$emptyObjects[$classname])) {
+        if (!isset(self::$emptyObjects[$classname])) {
             /* @var $dummy DomainModelInterface */
             $dummyInstance = tx_rnbase::makeInstance($classname, ['uid' => 0]);
             if ($dummyInstance instanceof DomainModelInterface

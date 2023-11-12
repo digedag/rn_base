@@ -32,6 +32,7 @@ namespace Sys25\RnBase\Configuration;
 use ArrayObject;
 use Sys25\RnBase\Exception\SkipActionException;
 use Sys25\RnBase\Frontend\Marker\FormatUtil;
+use Sys25\RnBase\Frontend\View\ViewContext;
 use Sys25\RnBase\Utility\Arrays;
 use Sys25\RnBase\Utility\Debug;
 use Sys25\RnBase\Utility\Extensions;
@@ -200,7 +201,7 @@ class Processor implements ConfigurationInterface
     public function __construct()
     {
         $this->_dataStore = new ArrayObject();
-        $this->_viewData = new ArrayObject();
+        $this->_viewData = new ViewContext();
         $this->_keepVars = new ArrayObject();
         $this->localLangUtil = tx_rnbase::makeInstance(Language::class);
     }
