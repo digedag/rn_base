@@ -199,7 +199,7 @@ abstract class SearchBase
 
                         continue;
                     }
-                    list($tableAlias, $col) = explode('.', $field);
+                    list($tableAlias, $col) = array_pad(explode('.', $field), 2, null);
                     if (!isset($col)) {
                         $orderby[] = $tableAlias.' '.('DESC' == strtoupper($order) ? 'DESC' : 'ASC');
                     } else {

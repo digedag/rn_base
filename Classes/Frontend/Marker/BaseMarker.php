@@ -218,7 +218,7 @@ class BaseMarker
             return; // Nothing to do
         }
 
-        $linkObj = &$formatter->getConfigurations()->createLink();
+        $linkObj = $formatter->getConfigurations()->createLink();
         $token = self::getToken();
         $linkObj->label($token);
         $links = $formatter->getConfigurations()->get($confId.'links.');

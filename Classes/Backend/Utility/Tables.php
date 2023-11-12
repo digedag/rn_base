@@ -183,7 +183,7 @@ class Tables
      * Liefert die passenden Überschrift für die Tabelle.
      *
      * @param array $columns
-     * @param array $options
+     * @param DataModel $options
      * @param \Sys25\RnBase\Backend\Form\ToolBox $formTool
      *
      * @return array

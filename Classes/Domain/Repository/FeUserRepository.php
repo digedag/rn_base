@@ -90,7 +90,7 @@ class FeUserRepository extends PersistenceRepository
         if (!$uid) {
             throw new Exception('No uid for fe_user given!');
         }
-        if (!is_object(self::$instances[$uid])) {
+        if (!isset(self::$instances[$uid])) {
             self::$instances[$uid] = $this->findByUidForced($uid);
         }
 

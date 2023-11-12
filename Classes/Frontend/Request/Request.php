@@ -4,7 +4,6 @@ namespace Sys25\RnBase\Frontend\Request;
 
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Frontend\View\ContextInterface;
-use Sys25\RnBase\Frontend\View\ViewContext;
 
 /***************************************************************
 * Copyright notice
@@ -47,7 +46,7 @@ class Request implements RequestInterface
         $this->configurations = $configurations;
         $this->confId = $confId;
         $this->parameters = $parameters;
-        $this->viewContext = new ViewContext();
+        $this->viewContext = $configurations->getViewData();
     }
 
     public function getConfigurations(): ConfigurationInterface
