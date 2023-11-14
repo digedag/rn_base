@@ -7,6 +7,8 @@ use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
+use TYPO3\CMS\Extbase\Mvc\Request;
 
 /***************************************************************
  * Copyright notice
@@ -67,7 +69,9 @@ class Factory
         $configurationManager->setConfiguration($frameworkSettings);
         $view->setConfigurations($configurations);
         if (TYPO3::isTYPO121OrHigher()) {
-            $view->setRequest($GLOBALS['TYPO3_REQUEST']);
+            $request = new Request($GLOBALS['TYPO3_REQUEST']->withAttribute('extbase', new ExtbaseRequestParameters()));
+            $view->getRenderingContext()->setRequest($request);
+            $view->setRequest($request);
         }
 
         return $view;
