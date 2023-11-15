@@ -602,6 +602,7 @@ class Link
             $conf['target'] = $this->targetString;
         }
         $conf['extTarget'] = ('-1' != $this->externalTargetString) ? $this->externalTargetString : '_blank';
+        $conf['ATagParams'] = '';
         if ($this->classString) {
             $conf['ATagParams'] .= 'class="'.$this->classString.'" ';
         }
