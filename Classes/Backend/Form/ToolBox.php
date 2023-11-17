@@ -157,51 +157,6 @@ class ToolBox
     }
 
     /**
-     * Erstellt einen Link zur Bearbeitung eines Datensatzes.
-     *
-     * @param string $editTable DB-Tabelle des Datensatzes
-     * @param int    $editUid   UID des Datensatzes
-     * @param string $label     Bezeichnung des Links
-     * @param array  $options
-     *
-     * @return string
-     */
-    public function createEditLink($editTable, $editUid, $label = 'Edit', $options = [])
-    {
-        $params = '&edit['.$editTable.']['.$editUid.']=edit';
-        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
-        $class = ' class="'.$class.'"';
-        $label = isset($options['label']) ? $options['label'] : $label;
-        $onClick = htmlspecialchars(BackendUtility::editOnClick($params));
-
-        return '<a href="#" '.$class.' onclick="'.$onClick.'" title="Edit UID: '.$editUid.'">'
-                .Icons::getSpriteIcon('actions-page-open')
-                .$label
-                .'</a>';
-    }
-
-    /**
-     * Erstellt einen History-Link
-     * Achtung: Benötigt die JS-Funktion jumpExt() in der Seite.
-     *
-     * @param string $table
-     * @param int    $recordUid
-     *
-     * @return string
-     */
-    public function createHistoryLink($table, $recordUid, $label = '')
-    {
-        $this->addBaseInlineJSCode();
-        $image = Icons::getSpriteIcon('actions-document-history-open');
-        $moduleUrl = BackendUtility::getModuleUrl('record_history', ['element' => $table.':'.$recordUid]);
-        $onClick = 'return jumpExt('.Strings::quoteJSvalue($moduleUrl).',\'#latest\');';
-
-        return '<a class="btn btn-default" href="#" onclick="'.htmlspecialchars($onClick).'" title="'
-            .htmlspecialchars($GLOBALS['LANG']->getLL('history')).'">'
-            .$image.'</a>';
-    }
-
-    /**
      * Creates a new-record-button.
      *
      * @param string $table
@@ -280,22 +235,11 @@ class ToolBox
      */
     public function createNewLink($table, $pid, $label = 'New', $options = [])
     {
-        $returnUrl = T3General::getIndpEnv('REQUEST_URI');
-        $uri = (string) $this->uriBuilder->buildUriFromRoute(
-            'record_edit',
-            [
-                'id' => $pid,
-                'returnUrl' => $returnUrl,
-                sprintf('edit[%s][%s]', $table, $pid) => 'new',
-            ]
-        );
-        if (isset($options[self::OPTION_PARAMS])) {
-            $uri .= $options[self::OPTION_PARAMS];
-        }
+        $uri = $this->buildEditUri($table, $pid, 'new', $options);
         $uri .= $this->buildDefVals($options);
 
         $image = Icons::getSpriteIcon('actions-document-new', ['asIcon' => true]);
-        $newRecordButton = $this->buttonBar->makeLinkButton()
+        $recordButton = $this->buttonBar->makeLinkButton()
             ->setHref($uri)
             ->setTitle($label)
             ->setShowLabelText(true)
@@ -305,11 +249,79 @@ class ToolBox
 
         if (isset($options[self::OPTION_CONFIRM]) && strlen($options[self::OPTION_CONFIRM]) > 0) {
             $class .= ' t3js-modal-trigger';
-            $newRecordButton->setDataAttributes(['content' => $options[self::OPTION_CONFIRM]]);
+            $recordButton->setDataAttributes(['content' => $options[self::OPTION_CONFIRM]]);
         }
-        $newRecordButton->setClasses($class);
+        $recordButton->setClasses($class);
 
-        return $newRecordButton->render();
+        return $recordButton->render();
+    }
+
+    /**
+     * Erstellt einen Link zur Bearbeitung eines Datensatzes.
+     *
+     * @param string $editTable DB-Tabelle des Datensatzes
+     * @param int    $editUid   UID des Datensatzes
+     * @param string $label     Bezeichnung des Links
+     * @param array  $options
+     *
+     * @return string
+     */
+    public function createEditLink($editTable, $editUid, $label = 'Edit', $options = [])
+    {
+        $uri = $this->buildEditUri($editTable, $editUid, 'edit', $options);
+
+        $image = Icons::getSpriteIcon('actions-document-open', ['asIcon' => true]);
+        $recordButton = $this->buttonBar->makeLinkButton()
+            ->setHref($uri)
+            ->setTitle($label)
+            ->setShowLabelText(true)
+            ->setIcon($image);
+
+        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : '';
+        $recordButton->setClasses($class);
+
+        return $recordButton->render();
+    }
+
+    /**
+     * @param string $operation new or edit
+     */
+    private function buildEditUri($table, $pid, $operation, array $options)
+    {
+        $returnUrl = T3General::getIndpEnv('REQUEST_URI');
+        $uri = (string) $this->uriBuilder->buildUriFromRoute(
+            'record_edit',
+            [
+                'id' => $pid,
+                'returnUrl' => $returnUrl,
+                sprintf('edit[%s][%s]', $table, $pid) => $operation,
+            ]
+        );
+        if (isset($options[self::OPTION_PARAMS])) {
+            $uri .= $options[self::OPTION_PARAMS];
+        }
+        return $uri;
+    }
+
+    /**
+     * Erstellt einen History-Link
+     * Achtung: Benötigt die JS-Funktion jumpExt() in der Seite.
+     *
+     * @param string $table
+     * @param int    $recordUid
+     *
+     * @return string
+     */
+    public function createHistoryLink($table, $recordUid, $label = '')
+    {
+        $this->addBaseInlineJSCode();
+        $image = Icons::getSpriteIcon('actions-document-history-open');
+        $moduleUrl = BackendUtility::getModuleUrl('record_history', ['element' => $table.':'.$recordUid]);
+        $onClick = 'return jumpExt('.Strings::quoteJSvalue($moduleUrl).',\'#latest\');';
+
+        return '<a class="btn btn-default" href="#" onclick="'.htmlspecialchars($onClick).'" title="'
+            .htmlspecialchars($GLOBALS['LANG']->getLL('history')).'">'
+            .$image.'</a>';
     }
 
     /**
