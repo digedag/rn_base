@@ -300,6 +300,7 @@ class ToolBox
         if (isset($options[self::OPTION_PARAMS])) {
             $uri .= $options[self::OPTION_PARAMS];
         }
+
         return $uri;
     }
 
@@ -1083,13 +1084,7 @@ class ToolBox
             $menuItems[] = [
                 'isActive' => $SETTINGS[$name] == $key,
                 'label' => $value,
-                // jumpUrl ist ab TYPO3 6.2 nicht mehr nötig
-                // @TODO jumpUrl entfernen wenn kein Support mehr für 4.5
-                // Also jumpUrl wird auch in der 12 zumindest noch verwendet...
-                'url' => '#',
-                'addParams' => 'onclick="jumpToUrl(\''.
-                                $this->buildScriptURI(['id' => $pid, 'SET['.$name.']' => $key]).
-                                '\',this);"',
+                'url' => $this->buildScriptURI(['id' => $pid, 'SET['.$name.']' => $key]),
             ];
         }
 
