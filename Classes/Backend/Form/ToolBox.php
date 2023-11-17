@@ -13,9 +13,11 @@ use Sys25\RnBase\Utility\Link;
 use Sys25\RnBase\Utility\Math;
 use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
-use Sys25\RnBase\Utility\T3General as T3GeneralAlias;
+use Sys25\RnBase\Utility\T3General;
 use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 
 /***************************************************************
@@ -76,6 +78,18 @@ class ToolBox
      */
     private $clipObj;
     private $tceStack;
+    /** @var LanguageService */
+    private $lang;
+
+    /**
+     * not used as button bar, but as simple factory.
+     *
+     * @var ButtonBar
+     */
+    private $buttonBar;
+
+    /** @var \TYPO3\CMS\Backend\Routing\UriBuilder */
+    private $uriBuilder;
 
     /**
      * @param DocumentTemplate $doc
@@ -83,14 +97,17 @@ class ToolBox
      */
     public function init(DocumentTemplate $doc, IModule $module)
     {
-        global $BACK_PATH;
         $this->doc = $doc;
         $this->module = $module;
+        $this->lang = $GLOBALS['LANG'];
+
+        $this->uriBuilder = tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+
+        $this->buttonBar = tx_rnbase::makeInstance(ButtonBar::class);
 
         // TCEform für das Formular erstellen
         $this->form = tx_rnbase::makeInstance(FormBuilder::class);
         $this->form->initDefaultBEmode();
-        $this->form->backPath = $BACK_PATH;
     }
 
     /**
@@ -263,24 +280,36 @@ class ToolBox
      */
     public function createNewLink($table, $pid, $label = 'New', $options = [])
     {
-        $params = '&edit['.$table.']['.$pid.']=new';
+        $returnUrl = T3General::getIndpEnv('REQUEST_URI');
+        $uri = (string) $this->uriBuilder->buildUriFromRoute(
+            'record_edit',
+            [
+                'id' => $pid,
+                'returnUrl' => $returnUrl,
+                sprintf('edit[%s][%s]', $table, $pid) => 'new',
+            ]
+        );
         if (isset($options[self::OPTION_PARAMS])) {
-            $params .= $options[self::OPTION_PARAMS];
+            $uri .= $options[self::OPTION_PARAMS];
         }
-        $params .= $this->buildDefVals($options);
-        $title = isset($options[self::OPTION_TITLE]) ? $options[self::OPTION_TITLE] : $GLOBALS['LANG']->getLL('new', 1);
+        $uri .= $this->buildDefVals($options);
 
-        $jsCode = BackendUtility::editOnClick($params);
+        $image = Icons::getSpriteIcon('actions-document-new', ['asIcon' => true]);
+        $newRecordButton = $this->buttonBar->makeLinkButton()
+            ->setHref($uri)
+            ->setTitle($label)
+            ->setShowLabelText(true)
+            ->setIcon($image);
+
+        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : '';
+
         if (isset($options[self::OPTION_CONFIRM]) && strlen($options[self::OPTION_CONFIRM]) > 0) {
-            $jsCode = 'if(confirm('.Strings::quoteJSvalue($options[self::OPTION_CONFIRM]).')) {'.$jsCode.'} else {return false;}';
+            $class .= ' t3js-modal-trigger';
+            $newRecordButton->setDataAttributes(['content' => $options[self::OPTION_CONFIRM]]);
         }
-        $image = Icons::getSpriteIcon('actions-document-new');
+        $newRecordButton->setClasses($class);
 
-        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
-        $class = ' class="'.$class.'"';
-
-        return '<a href="#" title="'.$title.'" '.$class.' onclick="'.htmlspecialchars($jsCode, -1).'">'.
-                $image.$label.'</a>';
+        return $newRecordButton->render();
     }
 
     /**
@@ -360,7 +389,7 @@ class ToolBox
             // Initialize - reads the clipboard content from the user session
             $this->clipObj->initializeClipboard();
 
-            $CB = T3GeneralAlias::_GET('CB');
+            $CB = T3General::_GET('CB');
             $this->clipObj->setCmd($CB ?? []);
             // Clean up pad
             $this->clipObj->cleanCurrent();
@@ -1030,7 +1059,7 @@ class ToolBox
         ];
         $SETTINGS = BackendUtility::getModuleData(
             $MENU,
-            T3GeneralAlias::_GP('SET'),
+            T3General::_GP('SET'),
             $modName
         );
         $menuItems = [];
@@ -1208,5 +1237,10 @@ class ToolBox
 
         return '<a href="#" '.$class.' onclick="'.htmlspecialchars($jsCode).'" '.
                 $title.'>'.$label.'</a>';
+    }
+
+    public function getLanguageService(): LanguageService
+    {
+        return $this->lang;
     }
 }

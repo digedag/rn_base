@@ -185,6 +185,8 @@ class BackendUtility
      * @param string $params parameters sent along to EditDocumentController
      *
      * @return string
+     *
+     * @deprecated
      */
     public static function editOnClick($params)
     {
@@ -193,7 +195,8 @@ class BackendUtility
         );
         /* @var $uriBuilder \TYPO3\CMS\Backend\Routing\UriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uri = $uriBuilder->buildUriFromRoute('record_edit').$params;
 
-        return 'window.location.href='.GeneralUtility::quoteJSvalue((string) $uriBuilder->buildUriFromRoute('record_edit').$params.'&returnUrl=').'+'.$returnUrl.'; return false;';
+        return 'window.location.href='.GeneralUtility::quoteJSvalue((string) $uri.'&returnUrl=').'+'.$returnUrl.'; return false;';
     }
 }

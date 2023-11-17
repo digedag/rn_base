@@ -108,7 +108,7 @@ class Icons
      * @param array  $options
      * @param array  $overlays
      *
-     * @return string
+     * @return string|\TYPO3\CMS\Core\Imaging\Icon
      */
     public static function getSpriteIcon(
         $iconName,
@@ -126,8 +126,10 @@ class Icons
         if (!empty($options['size'])) {
             $size = $options['size'];
         }
+        $asIcon = $options['asIcon'] ?? false;
+        $icon = static::getIconFactory()->getIcon($iconName, $size);
 
-        return static::getIconFactory()->getIcon($iconName, $size)->render();
+        return $asIcon ? $icon : $icon->render();
     }
 
     /**
