@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Backend\Form;
 
+use Sys25\RnBase\Backend\Form\Element\EnhancedLinkButton;
 use Sys25\RnBase\Backend\Form\Element\InputText;
 use Sys25\RnBase\Backend\Module\IModule;
 use Sys25\RnBase\Backend\Template\Override\DocumentTemplate;
@@ -16,7 +17,6 @@ use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\T3General;
 use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
-use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 
@@ -68,6 +68,8 @@ class ToolBox
     public const OPTION_TITLE = 'title';
 
     public const OPTION_CONFIRM = 'confirm';
+    public const OPTION_ICON_NAME = 'icon-name';
+    public const OPTION_HOVER_TEXT = 'hover';
 
     public const OPTION_PARAMS = 'params';
 
@@ -80,13 +82,6 @@ class ToolBox
     private $tceStack;
     /** @var LanguageService */
     private $lang;
-
-    /**
-     * not used as button bar, but as simple factory.
-     *
-     * @var ButtonBar
-     */
-    private $buttonBar;
 
     /** @var \TYPO3\CMS\Backend\Routing\UriBuilder */
     private $uriBuilder;
@@ -102,8 +97,6 @@ class ToolBox
         $this->lang = $GLOBALS['LANG'];
 
         $this->uriBuilder = tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-
-        $this->buttonBar = tx_rnbase::makeInstance(ButtonBar::class);
 
         // TCEform für das Formular erstellen
         $this->form = tx_rnbase::makeInstance(FormBuilder::class);
@@ -218,6 +211,21 @@ class ToolBox
     }
 
     /**
+     * @return EnhancedLinkButton
+     */
+    private function makeLinkButton($uri, $label = '')
+    {
+        $btn = new EnhancedLinkButton();
+        $btn->setHref($uri);
+        if ($label) {
+            $btn->setTitle($label)
+                ->setShowLabelText(true);
+        }
+
+        return $btn;
+    }
+
+    /**
      * Erstellt einen Link zur Erstellung eines neuen Datensatzes
      * Possible options:
      * - params: some plain url params like "&myparam=4"
@@ -239,10 +247,7 @@ class ToolBox
         $uri .= $this->buildDefVals($options);
 
         $image = Icons::getSpriteIcon('actions-document-new', ['asIcon' => true]);
-        $recordButton = $this->buttonBar->makeLinkButton()
-            ->setHref($uri)
-            ->setTitle($label)
-            ->setShowLabelText(true)
+        $recordButton = $this->makeLinkButton($uri, $label)
             ->setIcon($image);
 
         $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : '';
@@ -271,10 +276,7 @@ class ToolBox
         $uri = $this->buildEditUri($editTable, $editUid, 'edit', $options);
 
         $image = Icons::getSpriteIcon('actions-document-open', ['asIcon' => true]);
-        $recordButton = $this->buttonBar->makeLinkButton()
-            ->setHref($uri)
-            ->setTitle($label)
-            ->setShowLabelText(true)
+        $recordButton = $this->makeLinkButton($uri, $label)
             ->setIcon($image);
 
         $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : '';
@@ -635,7 +637,28 @@ class ToolBox
             // ensure pid is set even on POST requests.
             $params['id'] = $pid;
         }
-        $location = $this->getLinkThisScript(false, ['params' => $params]);
+        $uri = $this->getLinkThisScript(false, ['params' => $params]);
+
+        $recordButton = $this->makeLinkButton($uri, $label);
+
+        if (isset($options[self::OPTION_HOVER_TEXT])) {
+            $recordButton->setHoverText($options[self::OPTION_HOVER_TEXT]);
+        }
+
+        if (isset($options[self::OPTION_ICON_NAME])) {
+            $icon = Icons::getSpriteIcon($options[self::OPTION_ICON_NAME], ['asIcon' => true]);
+            $recordButton->setIcon($icon);
+        }
+
+        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : '';
+
+        if (isset($options[self::OPTION_CONFIRM]) && strlen($options[self::OPTION_CONFIRM]) > 0) {
+            $class .= ' t3js-modal-trigger';
+            $recordButton->setDataAttributes(['content' => $options[self::OPTION_CONFIRM]]);
+        }
+        $recordButton->setClasses($class);
+
+        return $recordButton->render();
 
         $jsCode = "window.location.href='".$location."'; return false;";
 
