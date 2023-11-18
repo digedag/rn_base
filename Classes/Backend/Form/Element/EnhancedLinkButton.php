@@ -107,7 +107,7 @@ class EnhancedLinkButton extends LinkButton
         foreach ($this->dataAttributes as $attributeName => $attributeValue) {
             $attributes['data-'.$attributeName] = $attributeValue;
         }
-        if ($this->isDisabled()) {
+        if (method_exists($this, 'isDisabled') && $this->isDisabled()) {
             $attributes['disabled'] = 'disabled';
             $attributes['class'] .= ' disabled';
         }
