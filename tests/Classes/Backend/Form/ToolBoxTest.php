@@ -265,8 +265,8 @@ class ToolBoxTest extends BaseTestCase
         unset($options['params']['id']);
 
         self::assertEquals(
-            sprintf('<a href="#" class="%s" onclick="window.location.href=%s; return false;" >mylabel</a>',
-                ToolBox::CSS_CLASS_BTN, htmlspecialchars("'scriptUrl'")),
+            sprintf('<a href="%s" class="%s" title="mylabel">mylabel</a>',
+                htmlspecialchars('scriptUrl'), ToolBox::CSS_CLASS_BTN),
             $formTool->createLink($urlParameters, $pid, 'mylabel', $options)
         );
     }
@@ -311,8 +311,8 @@ class ToolBoxTest extends BaseTestCase
             ->will(self::returnValue('scriptUrl'));
 
         self::assertEquals(
-            sprintf('<a href="#" class="%s" onclick="window.location.href=%s; return false;" title="hoverTitle">mylabel</a>',
-                ToolBox::CSS_CLASS_BTN, htmlspecialchars("'scriptUrl'")),
+            sprintf('<a href="%s" class="%s" title="hoverTitle">mylabel</a>',
+                'scriptUrl', ToolBox::CSS_CLASS_BTN),
             $formTool->createLink($urlParameters, 0, 'mylabel', $options)
         );
     }
@@ -333,8 +333,8 @@ class ToolBoxTest extends BaseTestCase
             ->will(self::returnValue('scriptUrl'));
 
         self::assertEquals(
-            sprintf('<a href="#" class="myClass" onclick="window.location.href=%s; return false;" >mylabel</a>',
-                htmlspecialchars("'scriptUrl'")),
+            sprintf('<a href="%s" class="myClass" title="mylabel">mylabel</a>',
+                'scriptUrl'),
             $formTool->createLink($urlParameters, 22, 'mylabel', $options)
         );
     }

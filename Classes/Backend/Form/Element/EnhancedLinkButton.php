@@ -31,12 +31,29 @@ use TYPO3\CMS\Backend\Template\Components\Buttons\LinkButton;
 /**
  * Erweitert den LinkButton von TYPO3 um zusätzliche Funktionen.
  * - man kann links ohne Icon setzen
- * - der Hover-Tooltip kann abweichend vom Label sein.
+ * - der Hover-Tooltip kann abweichend vom Label sein
+ * - die default btn-CSS-Klassen können komplett ersetzt werden.
  */
 class EnhancedLinkButton extends LinkButton
 {
+    private $overrideCss = true;
+
     /**
-     * HREF attribute of the link.
+     * If set given css classes will override default button classes.
+     *
+     * @param bool $value
+     *
+     * @return LinkButton
+     */
+    public function setOverrideCss($value)
+    {
+        $this->overrideCss = (bool) $value;
+
+        return $this;
+    }
+
+    /**
+     * hover tooltip attribute of the link.
      *
      * @var string
      */
@@ -53,9 +70,9 @@ class EnhancedLinkButton extends LinkButton
     }
 
     /**
-     * Set href.
+     * Set tooltip text.
      *
-     * @param string $href HREF attribute
+     * @param string $value hover text
      *
      * @return LinkButton
      */
@@ -73,9 +90,14 @@ class EnhancedLinkButton extends LinkButton
      */
     public function render()
     {
+        $cssClasses = 'btn btn-default btn-sm ';
+        if ($this->overrideCss && !empty($this->getClasses())) {
+            $cssClasses = '';
+        }
+
         $attributes = [
             'href' => $this->getHref(),
-            'class' => 'btn btn-sm btn-default '.$this->getClasses(),
+            'class' => trim($cssClasses.$this->getClasses()),
             'title' => $this->getHoverText() ?: $this->getTitle(),
         ];
         $labelText = '';
@@ -94,7 +116,7 @@ class EnhancedLinkButton extends LinkButton
         $icon = $this->getIcon() ? $this->getIcon()->render() : '';
 
         return '<a '.$attributesString.'>'
-            .$icon.htmlspecialchars($labelText)
+            .trim($icon.htmlspecialchars($labelText))
             .'</a>';
     }
 }

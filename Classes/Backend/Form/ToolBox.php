@@ -157,6 +157,8 @@ class ToolBox
      * @param array  $options
      *
      * @return string
+     *
+     * @deprecated use createNewLink()
      */
     public function createNewButton($table, $pid, $options = [])
     {
@@ -255,6 +257,7 @@ class ToolBox
         if (isset($options[self::OPTION_CONFIRM]) && strlen($options[self::OPTION_CONFIRM]) > 0) {
             $class .= ' t3js-modal-trigger';
             $recordButton->setDataAttributes(['content' => $options[self::OPTION_CONFIRM]]);
+            $recordButton->setOverrideCss(false);
         }
         $recordButton->setClasses($class);
 
@@ -655,22 +658,11 @@ class ToolBox
         if (isset($options[self::OPTION_CONFIRM]) && strlen($options[self::OPTION_CONFIRM]) > 0) {
             $class .= ' t3js-modal-trigger';
             $recordButton->setDataAttributes(['content' => $options[self::OPTION_CONFIRM]]);
+            $recordButton->setOverrideCss(false);
         }
         $recordButton->setClasses($class);
 
         return $recordButton->render();
-
-        $jsCode = "window.location.href='".$location."'; return false;";
-
-        $title = '';
-        if (!empty($options['hover'])) {
-            $title = 'title="'.$options['hover'].'"';
-        }
-
-        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
-        $class = 'class="'.$class.'"';
-
-        return '<a href="#" '.$class.' onclick="'.htmlspecialchars($jsCode).'" '.$title.'>'.$label.'</a>';
     }
 
     protected function buildIconTag(array $options, $label = '')
