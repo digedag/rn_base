@@ -360,7 +360,7 @@ class ToolBoxTest extends BaseTestCase
             ->will(self::returnValue('jumpUrl'));
 
         self::assertRegExp(
-            '/<a href="#" class="myClass" onclick="window.location.href=\'jumpUrl\'; return false;" >.*<img.*actions\-add\.svg" width="16" height="16".*<\/a>/s',
+            '/<a href="jumpUrl" class="myClass" title="mylabel">.*<img.*actions-add\.svg" width="16" height="16".*<\/a>/s',
             $formTool->createLink($urlParameters, 0, 'mylabel', $options)
         );
     }
@@ -386,7 +386,7 @@ class ToolBoxTest extends BaseTestCase
             ->will(self::returnValue('jumpUrl'));
 
         self::assertRegExp(
-            '/<a href="#" class="myClass" onclick="window.location.href=\'jumpUrl\'; return false;" >.*<img.*actions\-add\.svg" width="32" height="32".*<\/a>/s',
+            '/<a href="jumpUrl" class="myClass" title="mylabel">.*<img.*actions\-add\.svg" width="32" height="32".*<\/a>/s',
             $formTool->createLink($urlParameters, 0, 'mylabel', $options)
         );
     }

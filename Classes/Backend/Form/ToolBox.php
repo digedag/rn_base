@@ -68,7 +68,7 @@ class ToolBox
     public const OPTION_TITLE = 'title';
 
     public const OPTION_CONFIRM = 'confirm';
-    public const OPTION_ICON_NAME = 'icon-name';
+    public const OPTION_ICON_NAME = 'icon';
     public const OPTION_HOVER_TEXT = 'hover';
 
     public const OPTION_PARAMS = 'params';
@@ -635,7 +635,6 @@ class ToolBox
      */
     public function createModuleLink(array $params, $pid, $label, array $options = [])
     {
-        $label = $this->buildIconTag($options, $label);
         if (!isset($_GET['id']) && !isset($params['id'])) {
             // ensure pid is set even on POST requests.
             $params['id'] = $pid;
@@ -648,8 +647,7 @@ class ToolBox
             $recordButton->setHoverText($options[self::OPTION_HOVER_TEXT]);
         }
 
-        if (isset($options[self::OPTION_ICON_NAME])) {
-            $icon = Icons::getSpriteIcon($options[self::OPTION_ICON_NAME], ['asIcon' => true]);
+        if ($icon = $this->buildIcon($options)) {
             $recordButton->setIcon($icon);
         }
 
@@ -665,14 +663,17 @@ class ToolBox
         return $recordButton->render();
     }
 
-    protected function buildIconTag(array $options, $label = '')
+    /**
+     * @return \TYPO3\CMS\Core\Imaging\Icon|null
+     */
+    protected function buildIcon(array $options)
     {
-        $tag = $label;
+        $tag = null;
         // $options['sprite'] für abwärtskompatibilität
         if (isset($options['icon']) || isset($options['sprite'])) {
             $icon = isset($options['icon']) ? $options['icon'] : $options['sprite'];
             // FIXME: label get lost here??
-            $tag = Icons::getSpriteIcon($icon, $options);
+            $tag = Icons::getSpriteIcon($icon, array_merge(['asIcon' => true], $options));
         }
 
         return $tag;
@@ -690,7 +691,9 @@ class ToolBox
      */
     public function createSubmit($name, $value, $confirmMsg = '', $options = [])
     {
-        $icon = $this->buildIconTag($options, '');
+        // FIXME: das muss überarbeitet werden.
+        $icon = $this->buildIcon($options);
+        $icon = $icon ? $icon->render() : '';
         $onClick = '';
         if (strlen($confirmMsg)) {
             $onClick = 'onclick="return confirm('.Strings::quoteJSvalue($confirmMsg).')"';
