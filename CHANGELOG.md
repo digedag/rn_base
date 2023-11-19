@@ -9,9 +9,10 @@ v1.18.0 (??.11.2023)
 * BC: Parameter type of exceptions changed in ExceptionHandlerInterface to \Throwable
 * Share ViewContext instance of current configuration with current request
 * Fixed some PHP 8 issues
-* Support for activated content security protection header in backend modules
+* Support for activated content security policy header in backend modules
 * Improved icon support in backend modules
 * BC: impossible to use HTML-Code in title parameter of ToolBox::createModuleLink(). Most likely this was done for icon code. As fix provide icon as option ToolBox::OPTION_ICON_NAME.
+* BC: removed public attributes `JScode` and `JScodeArray` in `Sys25\RnBase\Backend\Template\Override\DocumentTemplate`
 
 v1.17.4 (22.09.2023)
 

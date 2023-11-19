@@ -11,7 +11,6 @@ use Sys25\RnBase\Domain\Model\BaseModel;
 use Sys25\RnBase\Domain\Model\DataInterface;
 use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Domain\Model\DomainModelInterface as DomainInterface;
-use Sys25\RnBase\Domain\Model\RecordInterface;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
 
@@ -427,11 +426,11 @@ class BaseDecorator implements InterfaceDecorator
     /**
      * Returns the uid map and sets the pointer to the current element.
      *
-     * @param RecordInterface $item
+     * @param DomainInterface $item
      *
      * @return array
      */
-    protected function getUidMap(RecordInterface $item)
+    protected function getUidMap(DomainInterface $item)
     {
         if (!$this->getOptions()->hasUidMap()) {
             return [];

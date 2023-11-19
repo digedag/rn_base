@@ -5,6 +5,7 @@ namespace Sys25\RnBase\Backend\Utility;
 use InvalidArgumentException;
 use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
@@ -146,6 +147,13 @@ class BackendUtility
      */
     public static function issueCommand($getParameters, $redirectUrl = '')
     {
+        if (TYPO3::isTYPO121OrHigher()) {
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+            $url = (string) $uriBuilder->buildUriFromRoute('tce_db').$getParameters.'&redirect=';
+            $url .= rawurlencode($redirectUrl ?: $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri());
+
+            return $url;
+        }
         $link = \TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction($getParameters, $redirectUrl);
 
         return $link;

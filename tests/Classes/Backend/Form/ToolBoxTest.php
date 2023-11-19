@@ -195,38 +195,6 @@ class ToolBoxTest extends BaseTestCase
      *
      * @TODO: refactor, requires $GLOBALS['BE_USER']!
      */
-    public function testGetJavaScriptForLinkToDataHandlerActionAddsNecessaryJavaScriptsInTypo387()
-    {
-        $formTool = $this->getAccessibleMock(ToolBox::class, ['getBaseJavaScriptCode']);
-        $formTool
-            ->expects(self::once())
-            ->method('getBaseJavaScriptCode')
-            ->will(self::returnValue('javascriptCode'));
-
-        $pageRenderer = $this->getMock('stdClass', ['addJsInlineCode']);
-        $pageRenderer
-            ->expects(self::once())
-            ->method('addJsInlineCode')
-            ->with('rnBaseMethods', 'javascriptCode');
-
-        $document = $this->getMock(DocumentTemplate::class, ['getPageRenderer']);
-        $document
-            ->expects(self::once())
-            ->method('getPageRenderer')
-            ->will(self::returnValue($pageRenderer));
-
-        $formTool->init($document, null);
-        $options = ['test'];
-        $urlParameters = 'someParameters';
-
-        $formTool->_call('getJavaScriptForLinkToDataHandlerAction', $urlParameters, $options);
-    }
-
-    /**
-     * @group integration
-     *
-     * @TODO: refactor, requires $GLOBALS['BE_USER']!
-     */
     public function testGetJavaScriptForLinkToDataHandlerActionHandlesConfirmCode()
     {
         $urlParameters = 'someParameters';
@@ -399,15 +367,16 @@ class ToolBoxTest extends BaseTestCase
         $urlParameters = 'someParameters';
         $options = ['test' => 'value'];
 
-        $formTool = $this->getMock(ToolBox::class, ['getJavaScriptForLinkToDataHandlerAction']);
+        /** @var ToolBox $formTool */
+        $formTool = $this->getMock(ToolBox::class, ['buildDataHandlerUri']);
         $formTool
             ->expects(self::once())
-            ->method('getJavaScriptForLinkToDataHandlerAction')
-            ->with($urlParameters, $options)
+            ->method('buildDataHandlerUri')
+            ->with($urlParameters, TYPO3::isTYPO115OrHigher() ? null : -1)
             ->will(self::returnValue('jumpUrl'));
 
         self::assertEquals(
-            '<a href="#" class="'.ToolBox::CSS_CLASS_BTN.'" onclick="jumpUrl" >mylabel</a>',
+            '<a href="jumpUrl" class="btn btn-default btn-sm" title="mylabel">mylabel</a>',
             $formTool->createLinkForDataHandlerAction($urlParameters, 'mylabel', $options)
         );
     }
@@ -418,17 +387,17 @@ class ToolBoxTest extends BaseTestCase
     public function testCreateLinkForDataHandlerActionWithHover()
     {
         $urlParameters = 'someParameters';
-        $options = ['hover' => 'hoverTitle'];
+        $options = [ToolBox::OPTION_HOVER_TEXT => 'hoverTitle'];
 
-        $formTool = $this->getMock(ToolBox::class, ['getJavaScriptForLinkToDataHandlerAction']);
+        $formTool = $this->getMock(ToolBox::class, ['buildDataHandlerUri']);
         $formTool
             ->expects(self::once())
-            ->method('getJavaScriptForLinkToDataHandlerAction')
-            ->with($urlParameters, $options)
+            ->method('buildDataHandlerUri')
+            ->with($urlParameters, TYPO3::isTYPO115OrHigher() ? null : -1)
             ->will(self::returnValue('jumpUrl'));
 
         self::assertEquals(
-            '<a href="#" class="'.ToolBox::CSS_CLASS_BTN.'" onclick="jumpUrl" title="hoverTitle">mylabel</a>',
+            '<a href="jumpUrl" class="btn btn-default btn-sm" title="hoverTitle">mylabel</a>',
             $formTool->createLinkForDataHandlerAction($urlParameters, 'mylabel', $options)
         );
     }
@@ -441,15 +410,15 @@ class ToolBoxTest extends BaseTestCase
         $urlParameters = 'someParameters';
         $options = ['class' => 'myClass'];
 
-        $formTool = $this->getMock(ToolBox::class, ['getJavaScriptForLinkToDataHandlerAction']);
+        $formTool = $this->getMock(ToolBox::class, ['buildDataHandlerUri']);
         $formTool
             ->expects(self::once())
-            ->method('getJavaScriptForLinkToDataHandlerAction')
-            ->with($urlParameters, $options)
+            ->method('buildDataHandlerUri')
+            ->with($urlParameters, TYPO3::isTYPO115OrHigher() ? null : -1)
             ->will(self::returnValue('jumpUrl'));
 
         self::assertEquals(
-            '<a href="#" class="myClass" onclick="jumpUrl" >mylabel</a>',
+            '<a href="jumpUrl" class="myClass" title="mylabel">mylabel</a>',
             $formTool->createLinkForDataHandlerAction($urlParameters, 'mylabel', $options)
         );
     }

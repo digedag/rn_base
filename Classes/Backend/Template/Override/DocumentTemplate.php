@@ -46,19 +46,7 @@ class DocumentTemplate
 
     public $divClass = false;
 
-    public $JScode = '';
     public $endOfPageJsBlock = '';
-    /**
-     * Similar to $JScode but for use as array with associative keys to prevent double inclusion of JS code. a <script> tag is automatically wrapped around.
-     *
-     * @var array
-     */
-    public $JScodeArray = ['jumpToUrl' => '
-function jumpToUrl(URL) {
-	window.location.href = URL;
-	return false;
-}
-	'];
 
     /**
      * JavaScript files loaded for every page in the Backend.
@@ -283,7 +271,7 @@ function jumpToUrl(URL) {
     public function insertStylesAndJS($content)
     {
         // Insert accumulated JS
-        $jscode = $this->JScode.LF.GeneralUtility::wrapJS(implode(LF, $this->JScodeArray));
+        $jscode = '';
         $content = str_replace('<!--###POSTJSMARKER###-->', $jscode, $content);
 
         return $content;

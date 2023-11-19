@@ -38,6 +38,11 @@ class EnhancedLinkButton extends LinkButton
 {
     private $overrideCss = true;
 
+    public function addDataAttributes(array $dataAttributes)
+    {
+        $this->dataAttributes = array_merge($this->dataAttributes, $dataAttributes);
+    }
+
     /**
      * If set given css classes will override default button classes.
      *
