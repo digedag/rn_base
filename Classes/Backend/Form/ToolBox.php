@@ -692,24 +692,31 @@ class ToolBox
      */
     public function createSubmit($name, $value, $confirmMsg = '', $options = [])
     {
-        // FIXME: das muss überarbeitet werden.
+        $value = htmlspecialchars($value);
         $icon = $this->buildIcon($options);
         $icon = $icon ? $icon->render() : '';
-        $onClick = '';
-        if (strlen($confirmMsg)) {
-            $onClick = 'onclick="return confirm('.Strings::quoteJSvalue($confirmMsg).')"';
-        }
 
         $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
-        $class = ' class="'.$class.'"';
+
+        $attributes = [
+            'name' => $name,
+            'value' => $value,
+        ];
+
+        if (strlen($confirmMsg)) {
+            $class .= ' t3js-modal-trigger';
+            $attributes['data-content'] = $confirmMsg;
+        }
+
+        $attributes['class'] = $class;
+
+        $attributesString = T3General::implodeAttributes($attributes, true);
 
         if ($icon) {
-            $btn = '<button type="submit" '.$class.' name="'.$name.'" value="'.htmlspecialchars($value).'">'.
-                $icon.'</button>';
+            $btn = '<button type="submit" '.$attributesString.'>'.
+                $icon.$value.'</button>';
         } else {
-            $btn = '<input type="submit" '.$class.' name="'.$name.'" value="'.htmlspecialchars($value).'" ';
-            $btn .= $onClick;
-            $btn .= '/>';
+            $btn = '<input type="submit" '.$attributesString.'/>';
         }
 
         return $btn;
