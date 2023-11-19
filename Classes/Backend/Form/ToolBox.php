@@ -395,19 +395,22 @@ class ToolBox
      */
     public function createMoveLink($editTable, $recordUid, $currentPid, $label = '')
     {
-        $this->initClipboard();
+        $clipObj = $this->initClipboard();
+        $isSel = (string) $clipObj->isSelected($editTable, $recordUid);
         $options = [];
-        $isSel = (string) $this->clipObj->isSelected($editTable, $recordUid);
         $options[self::OPTION_ICON_NAME] = 'actions-edit-cut'.($isSel ? '-release' : '');
         $tooltip = $isSel ? 'paste' : 'cut';
         $options[self::OPTION_HOVER_TEXT] = $this->getLanguageService()->sl('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.'.$tooltip);
 
-        $uri = $this->clipObj->selUrlDB($editTable, $recordUid, 0, 'cut' === $isSel, ['returnUrl' => '']);
+        $uri = $clipObj->selUrlDB($editTable, $recordUid, 0, 'cut' === $isSel, ['returnUrl' => '']);
         $btn = $this->createModuleButton($uri, $label, $options);
 
         return $btn->render();
     }
 
+    /**
+     * @return \TYPO3\CMS\Backend\Clipboard\Clipboard
+     */
     private function initClipboard()
     {
         if (!$this->clipObj) {
@@ -422,6 +425,8 @@ class ToolBox
             // Save the clipboard content
             $this->clipObj->endClipboard();
         }
+
+        return $this->clipObj;
     }
 
     /**
@@ -1263,7 +1268,10 @@ class ToolBox
         return BackendUtility::getLinkToDataHandlerAction('&'.$params, $redirect);
     }
 
-    public function getLanguageService(): LanguageService
+    /**
+     * @return TYPO3\CMS\Core\Localization\LanguageService|TYPO3\CMS\Lang\LanguageService
+     */
+    public function getLanguageService()
     {
         return $this->lang;
     }
