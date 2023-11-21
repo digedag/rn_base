@@ -58,6 +58,9 @@ class ToolBox
      */
     private $module;
 
+    /**
+     * @var DocumentTemplate
+     */
     protected $doc;
 
     public const CSS_CLASS_BTN = 'btn btn-default btn-sm';
@@ -72,6 +75,7 @@ class ToolBox
     public const OPTION_HOVER_TEXT = 'hover';
 
     public const OPTION_PARAMS = 'params';
+    public const OPTION_CSS_CLASSES = 'class';
     public const OPTION_DATA_ATTR = 'data-attr';
 
     /**
@@ -703,17 +707,19 @@ class ToolBox
             'value' => $value,
         ];
 
+        $hidden = '';
         if (strlen($confirmMsg)) {
             $class .= ' t3js-modal-trigger';
             $attributes['data-content'] = $confirmMsg;
+            // Der Name des Submit-Buttons liegt nicht mehr im POST. Deshalb ein extra hidden field.
+            // Das funktioniert aber erst mal nur, wenn es nur einen Button mit Confirm im Formular gibt.
+            $hidden = sprintf('<input type="hidden" name="%s" value="1" />', $name);
         }
 
         $attributes['class'] = $class;
 
         $attributesString = T3General::implodeAttributes($attributes, true);
 
-        // Der Name des Submit-Buttons liegt nicht mehr im POST. Deshalb ein extra hidden field.
-        $hidden = sprintf('<input type="hidden" name="%s" value="1" />', $name);
         if ($icon) {
             $btn = '<button type="submit" '.$attributesString.'>'.
                 $icon.$value.'</button>';
@@ -926,8 +932,13 @@ class ToolBox
         $name .= !empty($options['multiple']) ? '[]' : '';
 
         $size = !empty($options['size']) ? ' size="'.$options['size'].'"' : '';
+        $classes = $options[self::OPTION_CSS_CLASSES] ?? '';
 
-        $out = '<select name="'.$name.'" class="select"'.$onChangeStr.$multiple.$size.'>';
+        $out = sprintf('<select name="%s" class="%s" %s>',
+            $name,
+            trim('select '.$classes),
+            $onChangeStr.$multiple.$size
+        );
 
         $currentValues = Strings::trimExplode(',', $currentValues);
 
@@ -1270,6 +1281,35 @@ class ToolBox
         $btn = $this->createModuleButton($uri, $label, $options);
 
         return $btn->render();
+    }
+
+    /**
+     * Bietet eine Möglichkeit JS-Module sowohl per AMD als auch ES6 (ab TYPO3 12) zu laden.
+     *
+     * ES6-Modul:  @vendor/ext_key/some-es6-module.js
+     * wird konvertiert in
+     * AMD-Module: 'TYPO3/CMS/ExtKey/SomeEs6Module'
+     *
+     * Es die entsprechenden Dateien müssen natürlich in der jeweiligen Extension bereitgestellt werden.
+     *
+     * @param string $es6Module Name des ES6-Moduls
+     * @param string $callBackFunction optionaler Startup-Code for AMD-Variante. Ab T3 12 nicht mehr verwendet.
+     */
+    public function insertJsModule(string $es6Module, $callBackFunction = null)
+    {
+        $pageRenderer = $this->doc->getPageRenderer();
+        if (TYPO3::isTYPO121OrHigher()) {
+            $pageRenderer->loadJavaScriptModule($es6Module);
+        } else {
+            list($vendor, $extKey, $jsModule) = explode('/', $es6Module, 3);
+            $extKey = Strings::underscoredToUpperCamelCase($extKey);
+            $jsModule = Strings::underscoredToUpperCamelCase($jsModule);
+
+            $pageRenderer->loadRequireJsModule(
+                sprintf('TYPO3/CMS/%s/%s', $extKey, $jsModule),
+                $callBackFunction
+            );
+        }
     }
 
     protected function buildDataHandlerUri(string $params, $redirect)

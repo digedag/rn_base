@@ -189,8 +189,8 @@ class Strings
     }
 
     /**
-     * Returns a given string with underscores as lowerCamelCase.
-     * Example: Converts minimal_value to minimalValue.
+     * Returns a given string with underscores as UpperCamelCase.
+     * Example: Converts minimal_value to MinimalValue.
      *
      * @param string $string: String to be converted to lowercase underscore
      *
