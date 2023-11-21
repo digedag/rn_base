@@ -712,6 +712,8 @@ class ToolBox
 
         $attributesString = T3General::implodeAttributes($attributes, true);
 
+        // Der Name des Submit-Buttons liegt nicht mehr im POST. Deshalb ein extra hidden field.
+        $hidden = sprintf('<input type="hidden" name="%s" value="1" />', $name);
         if ($icon) {
             $btn = '<button type="submit" '.$attributesString.'>'.
                 $icon.$value.'</button>';
@@ -719,7 +721,7 @@ class ToolBox
             $btn = '<input type="submit" '.$attributesString.'/>';
         }
 
-        return $btn;
+        return $btn.$hidden;
     }
 
     /**
