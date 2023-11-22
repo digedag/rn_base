@@ -920,24 +920,34 @@ class ToolBox
     {
         $options = is_array($options) ? $options : [];
 
+        $attrArr = [];
         $onChangeStr = !empty($options['reload']) ? ' this.form.submit(); ' : '';
-        if (!empty($options['onchange'])) {
+        if (isset($options['onchange'])) {
             $onChangeStr .= $options['onchange'];
         }
         if ($onChangeStr) {
-            $onChangeStr = ' onchange="'.$onChangeStr.'" ';
+            $onChangeStr = 'onchange="'.$onChangeStr.'"';
+            $attrArr[] = $onChangeStr;
         }
 
-        $multiple = !empty($options['multiple']) ? ' multiple="multiple"' : '';
+        $multiple = !empty($options['multiple']) ? 'multiple="multiple"' : '';
+        if ($multiple) {
+            $attrArr[] = $multiple;
+        }
         $name .= !empty($options['multiple']) ? '[]' : '';
 
-        $size = !empty($options['size']) ? ' size="'.$options['size'].'"' : '';
+        $size = !empty($options['size']) ? 'size="'.$options['size'].'"' : '';
+        if ($size) {
+            $attrArr[] = $size;
+        }
         $classes = $options[self::OPTION_CSS_CLASSES] ?? '';
 
-        $out = sprintf('<select name="%s" class="%s" %s>',
+        $attr = implode(' ', $attrArr);
+
+        $out = sprintf('<select name="%s" class="%s"%s>',
             $name,
             trim('select '.$classes),
-            $onChangeStr.$multiple.$size
+            $attr ? ' '.$attr : ''
         );
 
         $currentValues = Strings::trimExplode(',', $currentValues);
@@ -1303,10 +1313,10 @@ class ToolBox
         } else {
             list($vendor, $extKey, $jsModule) = explode('/', $es6Module, 3);
             $extKey = Strings::underscoredToUpperCamelCase($extKey);
-            $jsModule = Strings::underscoredToUpperCamelCase($jsModule);
+            $jsModule = Strings::dashedToUpperCamelCase($jsModule);
 
             $pageRenderer->loadRequireJsModule(
-                sprintf('TYPO3/CMS/%s/%s', $extKey, $jsModule),
+                sprintf('TYPO3/CMS/%s/%s', $extKey, substr($jsModule, 0, -3)),
                 $callBackFunction
             );
         }

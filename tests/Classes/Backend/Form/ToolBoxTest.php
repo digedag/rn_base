@@ -93,7 +93,7 @@ class ToolBoxTest extends BaseTestCase
             [1 => 'John', 2 => 'Doe'],
             ['reload' => true]
         );
-        $expectedSelect = '<select name="testSelect" class="select" onchange=" this.form.submit(); " ><option value="1" selected="selected">John</option><option value="2" >Doe</option></select>';
+        $expectedSelect = '<select name="testSelect" class="select" onchange=" this.form.submit(); "><option value="1" selected="selected">John</option><option value="2" >Doe</option></select>';
 
         self::assertEquals($expectedSelect, $select);
     }
@@ -110,7 +110,7 @@ class ToolBoxTest extends BaseTestCase
             [1 => 'John', 2 => 'Doe'],
             ['onchange' => 'myJsFunction']
         );
-        $expectedSelect = '<select name="testSelect" class="select" onchange="myJsFunction" ><option value="1" selected="selected">John</option><option value="2" >Doe</option></select>';
+        $expectedSelect = '<select name="testSelect" class="select" onchange="myJsFunction"><option value="1" selected="selected">John</option><option value="2" >Doe</option></select>';
 
         self::assertEquals($expectedSelect, $select);
     }
@@ -127,7 +127,7 @@ class ToolBoxTest extends BaseTestCase
             [1 => 'John', 2 => 'Doe'],
             ['onchange' => 'myJsFunction', 'reload' => true]
         );
-        $expectedSelect = '<select name="testSelect" class="select" onchange=" this.form.submit(); myJsFunction" ><option value="1" selected="selected">John</option><option value="2" >Doe</option></select>';
+        $expectedSelect = '<select name="testSelect" class="select" onchange=" this.form.submit(); myJsFunction"><option value="1" selected="selected">John</option><option value="2" >Doe</option></select>';
 
         self::assertEquals($expectedSelect, $select);
     }
