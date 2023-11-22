@@ -202,6 +202,18 @@ class Strings
     }
 
     /**
+     * Returns a given string with dashes as UpperCamelCase.
+     * Example: Converts blog-example to BlogExample.
+     *
+     * @param string $string String to be converted to camel case
+     * @return string UpperCamelCasedWord
+     */
+    public static function dashedToUpperCamelCase($string)
+    {
+        return str_replace(' ', '', ucwords(str_replace('-', ' ', strtolower($string))));
+    }
+
+    /**
      * Convert an array with hexadecimal byte values to binary string.
      *
      * @param array $arr
