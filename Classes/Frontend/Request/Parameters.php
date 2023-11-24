@@ -141,13 +141,25 @@ class Parameters extends ArrayObject implements ParametersInterface
     }
 
     /**
-     * @see \TYPO3\CMS\Core\Utility\GeneralUtility::_GP
+     * alias for _GP.
      *
      * @param string $parameter Key (variable name) from GET or POST vars
      *
      * @return array|string returns the GET vars merged recursively onto the POST vars
      */
     public static function getPostOrGetParameter($parameterName)
+    {
+        return self::_GP($parameterName);
+    }
+
+    /**
+     * @see \TYPO3\CMS\Core\Utility\GeneralUtility::_GP
+     *
+     * @param string $parameter Key (variable name) from GET or POST vars
+     *
+     * @return array|string returns the GET vars merged recursively onto the POST vars
+     */
+    public static function _GP($parameterName)
     {
         $utility = Typo3Classes::getGeneralUtilityClass();
 
