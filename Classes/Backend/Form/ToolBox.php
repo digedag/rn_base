@@ -73,6 +73,7 @@ class ToolBox
     public const OPTION_CONFIRM = 'confirm';
     public const OPTION_ICON_NAME = 'icon';
     public const OPTION_HOVER_TEXT = 'hover';
+    public const OPTION_HIDE_LABEL = 'hide-label';
 
     public const OPTION_PARAMS = 'params';
     public const OPTION_CSS_CLASSES = 'class';
@@ -576,14 +577,20 @@ class ToolBox
         return '<input type="hidden" name="'.$name.'" value="'.htmlspecialchars($value).'" />';
     }
 
+    /**
+     * @param string $onclick deprecated wird zukünftig wegen CSP nicht mehr unterstützt
+     */
     public function createRadio($name, $value, $checked = false, $onclick = '')
     {
-        return '<input type="radio" name="'.$name.'" value="'.htmlspecialchars($value).'" '.($checked ? 'checked="checked"' : '').(strlen($onclick) ? ' onclick="'.$onclick.'"' : '').' />';
+        return '<input type="radio" class="rnbase-checkbox" name="'.$name.'" value="'.htmlspecialchars($value).'" '.($checked ? 'checked="checked"' : '').(strlen($onclick) ? ' onclick="'.$onclick.'"' : '').' />';
     }
 
+    /**
+     * @param string $onclick deprecated wird zukünftig wegen CSP nicht mehr unterstützt
+     */
     public function createCheckbox($name, $value, $checked = false, $onclick = '')
     {
-        return '<input type="checkbox" name="'.$name.'" value="'.htmlspecialchars($value).'" '.($checked ? 'checked="checked"' : '').(strlen($onclick) ? ' onclick="'.$onclick.'"' : '').' />';
+        return '<input type="checkbox" class="rnbase-checkbox" name="'.$name.'" value="'.htmlspecialchars($value).'" '.($checked ? 'checked="checked"' : '').(strlen($onclick) ? ' onclick="'.$onclick.'"' : '').' />';
     }
 
     /**
@@ -701,33 +708,27 @@ class ToolBox
         $icon = $icon ? $icon->render() : '';
 
         $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
+        $class .= ' rnbase-btn';
 
         $attributes = [
             'name' => $name,
             'value' => $value,
         ];
 
-        $hidden = '';
         if (strlen($confirmMsg)) {
             $class .= ' t3js-modal-trigger';
             $attributes['data-content'] = $confirmMsg;
-            // Der Name des Submit-Buttons liegt nicht mehr im POST. Deshalb ein extra hidden field.
-            // Das funktioniert aber erst mal nur, wenn es nur einen Button mit Confirm im Formular gibt.
-            $hidden = sprintf('<input type="hidden" name="%s" value="1" />', $name);
+            // Der Name des Submit-Buttons liegt nicht mehr im POST. Deshalb ist zusätzliches JS notwendig.
+            $this->insertJsToolbox();
         }
 
         $attributes['class'] = $class;
 
         $attributesString = T3General::implodeAttributes($attributes, true);
 
-        if ($icon) {
-            $btn = '<button type="submit" '.$attributesString.'>'.
-                $icon.$value.'</button>';
-        } else {
-            $btn = '<input type="submit" '.$attributesString.'/>';
-        }
+        $btn = '<button type="submit" '.$attributesString.'>'.$icon.$value.'</button>';
 
-        return $btn.$hidden;
+        return $btn;
     }
 
     /**
@@ -775,17 +776,17 @@ class ToolBox
 
     /**
      * Erstellt ein Eingabefeld für DateTime.
-     *
-     * @todo fix prefilling of field in TYPO3 8.7
      */
-    public function createDateInput($name, $value)
+    public function createDateInput($name, $value, array $options = [])
     {
         // Take care of current time zone. Thanks to Thomas Maroschik!
         if (Math::isInteger($value) && !TYPO3::isTYPO121OrHigher()) {
             $value += date('Z', $value);
         }
         $this->initializeJavaScriptFormEngine();
-        $dateElementClass = \TYPO3\CMS\Backend\Form\Element\InputDateTimeElement::class;
+        $dateElementClass = TYPO3::isTYPO121OrHigher() ?
+            \TYPO3\CMS\Backend\Form\Element\DatetimeElement::class :
+            \TYPO3\CMS\Backend\Form\Element\InputDateTimeElement::class;
 
         // [itemFormElName] => data[tx_cfcleague_games][4][status]
         // [itemFormElID] => data_tx_cfcleague_games_4_status
@@ -828,6 +829,16 @@ class ToolBox
                     $pageRenderer->loadRequireJsModule($moduleName, $callback);
                 }
             }
+        } elseif ($renderedElement['javaScriptModules'] ?? null) {
+            $pageRenderer = $this->getDoc()->getPageRenderer();
+            foreach ($renderedElement['javaScriptModules'] as $moduleName) {
+                /* @var \TYPO3\CMS\Core\Page\JavaScriptModuleInstruction $moduleName */
+                $this->insertJsModule($moduleName->getName());
+            }
+        }
+
+        if (isset($options[self::OPTION_HIDE_LABEL])) {
+            $renderedElement['html'] = preg_replace('/<code.*<\/code>/', '', $renderedElement['html']);
         }
 
         return $renderedElement['html'];
@@ -843,17 +854,17 @@ class ToolBox
         $usDateFormat = 0;
         if (!TYPO3::isTYPO121OrHigher()) {
             $usDateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '1' : '0';
-        }
-        $initializeFormEngineCallback = 'function(FormEngine) {
-            FormEngine.initialize(
-                '.$moduleUrl.','.$usDateFormat.'
-            );
-        }';
+            $initializeFormEngineCallback = 'function(FormEngine) {
+                FormEngine.initialize(
+                    '.$moduleUrl.','.$usDateFormat.'
+                );
+            }';
 
-        $this->getDoc()->getPageRenderer()->loadRequireJsModule(
-            'TYPO3/CMS/Backend/FormEngine',
-            $initializeFormEngineCallback
-        );
+            $this->getDoc()->getPageRenderer()->loadRequireJsModule(
+                'TYPO3/CMS/Backend/FormEngine',
+                $initializeFormEngineCallback
+            );
+        }
         $this->getDoc()->getPageRenderer()->addInlineSetting('FormEngine', 'formName', 'editform');
     }
 
@@ -900,6 +911,11 @@ class ToolBox
         return $this->createSelectByArray($name, $value, $arr, $options);
     }
 
+    private function insertJsToolbox()
+    {
+        $this->insertJsModule('@sys25/rn_base/toolbox.js');
+    }
+
     /**
      * Erstellt eine Select-Box aus dem übergebenen Array.
      * in den Options kann mit dem key reload angegeben werden,
@@ -921,7 +937,17 @@ class ToolBox
         $options = is_array($options) ? $options : [];
 
         $attrArr = [];
-        $onChangeStr = !empty($options['reload']) ? ' this.form.submit(); ' : '';
+        $onChangeStr = '';
+        if (!empty($options['reload'])) {
+            if (TYPO3::isTYPO121OrHigher()) {
+                $attrArr[] = 'data-global-event="change" data-action-submit="$form"';
+            } else {
+                // TODO: fix for older versions
+                $onChangeStr = ' this.form.submit(); ';
+            }
+            $this->insertJsToolbox();
+        }
+
         if (isset($options['onchange'])) {
             $onChangeStr .= $options['onchange'];
         }

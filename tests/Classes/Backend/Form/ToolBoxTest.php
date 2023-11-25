@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Backend\Form;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Sys25\RnBase\Backend\Template\Override\DocumentTemplate;
 use Sys25\RnBase\Testing\BaseTestCase;
 use Sys25\RnBase\Utility\TYPO3;
@@ -39,6 +40,8 @@ use tx_rnbase;
  */
 class ToolBoxTest extends BaseTestCase
 {
+    use ProphecyTrait;
+
     protected function setUp(): void
     {
         if (TYPO3::isTYPO90OrHigher()) {
@@ -86,14 +89,20 @@ class ToolBoxTest extends BaseTestCase
      */
     public function testCreateSelectByArrayIfReloadOption()
     {
-        $formTool = tx_rnbase::makeInstance(ToolBox::class);
+        /** @var ToolBox $formTool */
+        $formTool = $this->getMock(ToolBox::class, ['insertJsModule']);
+        $formTool
+            ->expects(self::once())
+            ->method('insertJsModule')
+            ->with('@sys25/rn_base/toolbox.js');
+
         $select = $formTool->createSelectByArray(
             'testSelect',
             1,
             [1 => 'John', 2 => 'Doe'],
             ['reload' => true]
         );
-        $expectedSelect = '<select name="testSelect" class="select" onchange=" this.form.submit(); "><option value="1" selected="selected">John</option><option value="2" >Doe</option></select>';
+        $expectedSelect = '<select name="testSelect" class="select" data-global-event="change" data-action-submit="$form"><option value="1" selected="selected">John</option><option value="2" >Doe</option></select>';
 
         self::assertEquals($expectedSelect, $select);
     }
@@ -120,14 +129,20 @@ class ToolBoxTest extends BaseTestCase
      */
     public function testCreateSelectByArrayIfReloadAndOnchangeOption()
     {
-        $formTool = tx_rnbase::makeInstance(ToolBox::class);
+        /** @var ToolBox $formTool */
+        $formTool = $this->getMock(ToolBox::class, ['insertJsModule']);
+        $formTool
+            ->expects(self::once())
+            ->method('insertJsModule')
+            ->with('@sys25/rn_base/toolbox.js');
+
         $select = $formTool->createSelectByArray(
             'testSelect',
             1,
             [1 => 'John', 2 => 'Doe'],
             ['onchange' => 'myJsFunction', 'reload' => true]
         );
-        $expectedSelect = '<select name="testSelect" class="select" onchange=" this.form.submit(); myJsFunction"><option value="1" selected="selected">John</option><option value="2" >Doe</option></select>';
+        $expectedSelect = '<select name="testSelect" class="select" data-global-event="change" data-action-submit="$form" onchange="myJsFunction"><option value="1" selected="selected">John</option><option value="2" >Doe</option></select>';
 
         self::assertEquals($expectedSelect, $select);
     }
