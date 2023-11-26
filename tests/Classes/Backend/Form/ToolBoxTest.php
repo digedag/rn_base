@@ -103,6 +103,9 @@ class ToolBoxTest extends BaseTestCase
             ['reload' => true]
         );
         $expectedSelect = '<select name="testSelect" class="select" data-global-event="change" data-action-submit="$form"><option value="1" selected="selected">John</option><option value="2" >Doe</option></select>';
+        if (!TYPO3::isTYPO121OrHigher) {
+            $expectedSelect = '<select name="testSelect" class="select" onchange=" this.form.submit(); "><option value="1" selected="selected">John</option><option value="2" >Doe</option></select>';
+        }
 
         self::assertEquals($expectedSelect, $select);
     }
@@ -144,6 +147,9 @@ class ToolBoxTest extends BaseTestCase
         );
         $expectedSelect = '<select name="testSelect" class="select" data-global-event="change" data-action-submit="$form" onchange="myJsFunction"><option value="1" selected="selected">John</option><option value="2" >Doe</option></select>';
 
+        if (!TYPO3::isTYPO121OrHigher) {
+            $expectedSelect = '<select name="testSelect" class="select" onchange=" this.form.submit(); myJsFunction"><option value="1" selected="selected">John</option><option value="2" >Doe</option></select>';
+        }
         self::assertEquals($expectedSelect, $select);
     }
 
