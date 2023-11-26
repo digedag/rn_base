@@ -714,6 +714,9 @@ class ToolBox
             'name' => $name,
             'value' => $value,
         ];
+        if (!TYPO3::isTYPO121OrHigher()) {
+            $attributes['data-href'] = sprintf('javascript:%s', htmlspecialchars('document.forms[\'editform\'].submit()'));
+        }
 
         if (strlen($confirmMsg)) {
             $class .= ' t3js-modal-trigger';
@@ -1220,8 +1223,7 @@ class ToolBox
         if (is_array($MENU[$name]) && 1 == count($MENU[$name])) {
             $ret['menu'] = self::buildDummyMenu('SET['.$name.']', $MENU[$name]);
         } else {
-            $funcMenu = 'getDropdownMenu';
-            $ret['menu'] = BackendUtility::$funcMenu(
+            $ret['menu'] = BackendUtility::getDropdownMenu(
                 $pid,
                 'SET['.$name.']',
                 $SETTINGS[$name],

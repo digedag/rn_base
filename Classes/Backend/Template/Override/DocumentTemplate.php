@@ -5,6 +5,7 @@ namespace Sys25\RnBase\Backend\Template\Override;
 use Sys25\RnBase\Utility\Files;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\T3General;
+use Sys25\RnBase\Utility\TYPO3;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -46,7 +47,20 @@ class DocumentTemplate
 
     public $divClass = false;
 
+    /** @deprecated use external js files */
+    public $JScode = '';
     public $endOfPageJsBlock = '';
+   /**
+     * Similar to $JScode but for use as array with associative keys to prevent double inclusion of JS code. a <script> tag is automatically wrapped around.
+     *
+     * @var array
+     */
+    public $JScodeArray = ['jumpToUrl' => '
+        function jumpToUrl(URL) {
+            window.location.href = URL;
+            return false;
+        }
+	'];
 
     /**
      * JavaScript files loaded for every page in the Backend.
@@ -272,7 +286,12 @@ class DocumentTemplate
     {
         // Insert accumulated JS
         $jscode = '';
-        $content = str_replace('<!--###POSTJSMARKER###-->', $jscode, $content);
+        // TODO: check lowest version
+        if (!TYPO3::isTYPO121OrHigher()) {
+            $jscode = $this->JScode.LF.GeneralUtility::wrapJS(implode(LF, $this->JScodeArray));
+            $content = str_replace('<!--###POSTJSMARKER###-->', $jscode, $content);
+
+        }
 
         return $content;
     }
