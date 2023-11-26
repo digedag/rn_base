@@ -50,7 +50,7 @@ class DocumentTemplate
     /** @deprecated use external js files */
     public $JScode = '';
     public $endOfPageJsBlock = '';
-   /**
+    /**
      * Similar to $JScode but for use as array with associative keys to prevent double inclusion of JS code. a <script> tag is automatically wrapped around.
      *
      * @var array
@@ -290,7 +290,6 @@ class DocumentTemplate
         if (!TYPO3::isTYPO121OrHigher()) {
             $jscode = $this->JScode.LF.GeneralUtility::wrapJS(implode(LF, $this->JScodeArray));
             $content = str_replace('<!--###POSTJSMARKER###-->', $jscode, $content);
-
         }
 
         return $content;
