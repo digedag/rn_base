@@ -715,7 +715,7 @@ class ToolBox
             'value' => $value,
         ];
         if (!TYPO3::isTYPO121OrHigher()) {
-            $attributes['data-href'] = sprintf('javascript:%s', htmlspecialchars('document.forms[\'editform\'].submit()'));
+            $attributes['data-href'] = sprintf('javascript:%s', 'document.forms[\'editform\'].submit()');
         }
 
         if (strlen($confirmMsg)) {
@@ -942,10 +942,9 @@ class ToolBox
         $attrArr = [];
         $onChangeStr = '';
         if (!empty($options['reload'])) {
-            if (TYPO3::isTYPO121OrHigher()) {
+            if (TYPO3::isTYPO104OrHigher()) {
                 $attrArr[] = 'data-global-event="change" data-action-submit="$form"';
             } else {
-                // TODO: fix for older versions
                 $onChangeStr = ' this.form.submit(); ';
             }
             $this->insertJsToolbox();
