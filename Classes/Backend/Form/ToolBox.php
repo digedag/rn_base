@@ -100,7 +100,7 @@ class ToolBox
     {
         $this->doc = $doc;
         $this->module = $module;
-        $this->lang = $GLOBALS['LANG'];
+        $this->lang = $module->getLanguageService();
 
         $this->uriBuilder = tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
 
@@ -150,42 +150,6 @@ class ToolBox
 
         $btn = '<input type="button" name="'.$name.'" value="'.$title.'" ';
         $btn .= 'onclick="'.htmlspecialchars($jsCode).'"';
-        $btn .= '/>';
-
-        return $btn;
-    }
-
-    /**
-     * Creates a new-record-button.
-     *
-     * @param string $table
-     * @param int    $pid
-     * @param array  $options
-     *
-     * @return string
-     *
-     * @deprecated use createNewLink()
-     */
-    public function createNewButton($table, $pid, $options = [])
-    {
-        $params = '&edit['.$table.']['.$pid.']=new';
-        if (isset($options[self::OPTION_PARAMS])) {
-            $params .= $options[self::OPTION_PARAMS];
-        }
-        $params .= $this->buildDefVals($options);
-        $title = isset($options[self::OPTION_TITLE]) ? $options[self::OPTION_TITLE] : $GLOBALS['LANG']->getLL('new', 1);
-        $name = isset($options['name']) ? $options['params'] : '';
-
-        $jsCode = BackendUtility::editOnClick($params);
-        if (isset($options[self::OPTION_CONFIRM]) && strlen($options[self::OPTION_CONFIRM]) > 0) {
-            $jsCode = 'if(confirm('.Strings::quoteJSvalue($options[self::OPTION_CONFIRM]).')) {'.$jsCode.'} else {return false;}';
-        }
-
-        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
-        $class = ' class="'.$class.'"';
-
-        $btn = '<input type="button" name="'.$name.'" value="'.$title.'" '.$class;
-        $btn .= ' onclick="'.htmlspecialchars($jsCode, -1).'"';
         $btn .= '/>';
 
         return $btn;
@@ -268,6 +232,22 @@ class ToolBox
         $recordButton->setClasses($class);
 
         return $recordButton->render();
+    }
+
+    /**
+     * Creates a new-record-button.
+     *
+     * @param string $table
+     * @param int    $pid
+     * @param array  $options
+     *
+     * @return string
+     *
+     * @deprecated use createNewLink()
+     */
+    public function createNewButton($table, $pid, $options = [])
+    {
+        return $this->createNewLink($table, $pid, $options[self::OPTION_TITLE] ?? 'New', $options);
     }
 
     /**
@@ -1356,7 +1336,7 @@ class ToolBox
     }
 
     /**
-     * @return TYPO3\CMS\Core\Localization\LanguageService|TYPO3\CMS\Lang\LanguageService
+     * @return \TYPO3\CMS\Core\Localization\LanguageService|\TYPO3\CMS\Lang\LanguageService
      */
     public function getLanguageService()
     {

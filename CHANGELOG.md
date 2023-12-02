@@ -15,6 +15,7 @@ v1.18.0 (??.11.2023)
 * BC: removed public attributes `JScode` and `JScodeArray` in `Sys25\RnBase\Backend\Template\Override\DocumentTemplate`
 * Support for FlashMessage via `DocumentTemplate::showFlashMessage()`
 * Method `rmFromList` added to `T3General`
+* Possible BC: `ToolBox::createNewButton()` is now alias of `ToolBox::createNewLink()`
 
 v1.17.4 (22.09.2023)
 
