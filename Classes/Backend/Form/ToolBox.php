@@ -222,6 +222,7 @@ class ToolBox
         $recordButton = $this->makeLinkButton($uri, $label)
             ->setIcon($image);
 
+        $recordButton->setHoverText($this->getHoverText($options) ?: $label);
         $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : '';
 
         if (isset($options[self::OPTION_CONFIRM]) && strlen($options[self::OPTION_CONFIRM]) > 0) {
@@ -232,6 +233,13 @@ class ToolBox
         $recordButton->setClasses($class);
 
         return $recordButton->render();
+    }
+
+    private function getHoverText(array &$options, $label = '')
+    {
+        return $this->getLanguageService()->getLL(
+            $options[self::OPTION_HOVER_TEXT] ?? $label
+        ) ?: ($options[self::OPTION_HOVER_TEXT] ?? $label);
     }
 
     /**
@@ -270,6 +278,7 @@ class ToolBox
 
         $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : '';
         $recordButton->setClasses($class);
+        $recordButton->setHoverText($this->getHoverText($options) ?: $label);
 
         return $recordButton->render();
     }

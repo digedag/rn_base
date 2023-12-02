@@ -40,6 +40,7 @@ class DocumentTemplate
     public const STATE_INFO = -1;
     public const STATE_OK = -1;
     public const STATE_DEFAULT = 0;
+    public const STATE_SUCCESS = 0;
     public const STATE_WARNING = 1;
     public const STATE_ERROR = 2;
 
@@ -453,8 +454,8 @@ class DocumentTemplate
     public function showFlashMessage($message, $severity = self::STATE_NOTICE, $header = 'Notice')
     {
         $lang = $this->getLangSrv();
-        $message = $lang->getLL($message);
-        $header = $lang->getLL($header ?? '');
+        $message = $lang->getLL($message) ?: $message;
+        $header = $lang->getLL($header) ?: $header;
         $severityMap = [];
         if (TYPO3::isTYPO121OrHigher()) {
             $severityMap = [
