@@ -30,7 +30,7 @@ const FormTool = {
                 if (btn.classList.contains('t3js-modal-trigger')) {
                     // Hole den Namen des Submit-Buttons
                     hiddenField.name = btn.getAttribute('name');
-                    hiddenField.value = '1';
+                    hiddenField.value = btn.getAttribute('value');
                 } else {
                     hiddenField.name = '_none';
                 }

@@ -13,6 +13,8 @@ v1.18.0 (??.11.2023)
 * Improved icon support in backend modules
 * BC: impossible to use HTML-Code in title parameter of ToolBox::createModuleLink(). Most likely this was done for icon code. As fix provide icon as option ToolBox::OPTION_ICON_NAME.
 * BC: removed public attributes `JScode` and `JScodeArray` in `Sys25\RnBase\Backend\Template\Override\DocumentTemplate`
+* Support for FlashMessage via `DocumentTemplate::showFlashMessage()`
+* Method `rmFromList` added to `T3General`
 
 v1.17.4 (22.09.2023)
 

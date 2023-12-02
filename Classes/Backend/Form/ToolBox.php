@@ -713,6 +713,7 @@ class ToolBox
         $attributes = [
             'name' => $name,
             'value' => $value,
+            'title' => $options[self::OPTION_HOVER_TEXT] ?? $name,
         ];
         if (!TYPO3::isTYPO121OrHigher()) {
             $attributes['data-href'] = sprintf('javascript:%s', 'document.forms[\'editform\'].submit()');

@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Backend\Template\Override;
 
+use Sys25\RnBase\Backend\Utility\Icons;
 use Sys25\RnBase\Utility\Files;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\T3General;
@@ -35,15 +36,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class DocumentTemplate
 {
+    public const STATE_NOTICE = -2;
+    public const STATE_INFO = -1;
     public const STATE_OK = -1;
-
-    public const STATE_NOTICE = 1;
-
-    public const STATE_WARNING = 2;
-
-    public const STATE_ERROR = 3;
-
     public const STATE_DEFAULT = 0;
+    public const STATE_WARNING = 1;
+    public const STATE_ERROR = 2;
 
     public $divClass = false;
 
@@ -93,6 +91,12 @@ class DocumentTemplate
     protected $moduleTemplateFilename;
     public $form;
 
+    /** @var \TYPO3\CMS\Core\Messaging\FlashMessageService */
+    protected $flashMessageService;
+
+    /** @var LanguageService */
+    private $lang;
+
     /**
      * Constructor.
      */
@@ -100,6 +104,9 @@ class DocumentTemplate
     {
         // Initializes the page rendering object:
         $this->initPageRenderer();
+
+        $this->flashMessageService = T3General::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
+        $this->lang = $GLOBALS['LANG'];
     }
 
     /**
@@ -238,7 +245,7 @@ class DocumentTemplate
                 '<div class="media-left">'.
                   '<span class="fa-stack fa-lg callout-icon">'.
                     '<i class="fa fa-circle fa-stack-2x"></i>'.
-                    '<i class="fa fa-'.htmlspecialchars($icon).' fa-stack-1x"></i>'.
+                    '<i class="fa fa-'.$icon.' fa-stack-1x"></i>'.
                   '</span>'.
                 '</div>';
         }
@@ -396,8 +403,8 @@ class DocumentTemplate
             // Remove nl from the beginning
             $string = ltrim($string, LF);
             // Re-ident to one tab using the first line as reference
-            if (TAB === $string[0]) {
-                $string = TAB.ltrim($string, TAB);
+            if ("\t" === $string[0]) {
+                $string = "\t".ltrim($string, "\t");
             }
             $string = $cr.'<script>
 /*<![CDATA[*/
@@ -417,7 +424,7 @@ class DocumentTemplate
         if (null !== $this->pageRenderer) {
             return;
         }
-        $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $this->pageRenderer = T3General::makeInstance(PageRenderer::class);
         $this->pageRenderer->setLanguage($GLOBALS['LANG']->lang);
         $this->pageRenderer->enableConcatenateCss();
         $this->pageRenderer->enableConcatenateJavascript();
@@ -438,8 +445,51 @@ class DocumentTemplate
         foreach ($this->jsFiles as $file) {
             $this->pageRenderer->addJsFile($file);
         }
-        if (1 === (int) $GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
+        if (!TYPO3::isTYPO130OrHigher() && 1 === (int) $GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
             $this->pageRenderer->enableDebugMode();
         }
+    }
+
+    public function showFlashMessage($message, $severity = self::STATE_NOTICE, $header = 'Notice')
+    {
+        $lang = $this->getLangSrv();
+        $message = $lang->getLL($message);
+        $header = $lang->getLL($header ?? '');
+        $severityMap = [];
+        if (TYPO3::isTYPO121OrHigher()) {
+            $severityMap = [
+                self::STATE_NOTICE => \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::NOTICE,
+                self::STATE_INFO => \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO,
+                self::STATE_DEFAULT => \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK,
+                self::STATE_WARNING => \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING,
+                self::STATE_ERROR => \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR,
+            ];
+        } else {
+            $severityMap = [
+                self::STATE_NOTICE => \TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE,
+                self::STATE_INFO => \TYPO3\CMS\Core\Messaging\FlashMessage::INFO,
+                self::STATE_DEFAULT => \TYPO3\CMS\Core\Messaging\FlashMessage::OK,
+                self::STATE_WARNING => \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING,
+                self::STATE_ERROR => \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR,
+            ];
+        }
+
+        $message = T3General::makeInstance(
+            \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+            $message,
+            $header,
+            $severityMap[$severity] ?? null,
+            false
+        );
+        $messageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
+        $messageQueue->addMessage($message);
+    }
+
+    /**
+     * @return \TYPO3\CMS\Core\Localization\LanguageService|\TYPO3\CMS\Lang\LanguageService
+     */
+    public function getLangSrv()
+    {
+        return $this->lang;
     }
 }
