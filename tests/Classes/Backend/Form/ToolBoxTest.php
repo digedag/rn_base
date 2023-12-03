@@ -394,10 +394,10 @@ class ToolBoxTest extends BaseTestCase
             ->expects(self::once())
             ->method('buildDataHandlerUri')
             ->with($urlParameters, '')
-            ->will(self::returnValue('jumpUrl'));
+            ->will(self::returnValue('someTceUrl'));
 
         self::assertEquals(
-            '<a href="jumpUrl" class="btn btn-default btn-sm" title="mylabel">mylabel</a>',
+            '<a href="someTceUrl" class="btn btn-default btn-sm" title="mylabel">mylabel</a>',
             $formTool->createLinkForDataHandlerAction($urlParameters, 'mylabel', $options)
         );
     }
@@ -415,10 +415,10 @@ class ToolBoxTest extends BaseTestCase
             ->expects(self::once())
             ->method('buildDataHandlerUri')
             ->with($urlParameters, '')
-            ->will(self::returnValue('jumpUrl'));
+            ->will(self::returnValue('someTceUrl'));
 
         self::assertEquals(
-            '<a href="jumpUrl" class="btn btn-default btn-sm" title="hoverTitle">mylabel</a>',
+            '<a href="someTceUrl" class="btn btn-default btn-sm" title="hoverTitle">mylabel</a>',
             $formTool->createLinkForDataHandlerAction($urlParameters, 'mylabel', $options)
         );
     }
@@ -436,10 +436,10 @@ class ToolBoxTest extends BaseTestCase
             ->expects(self::once())
             ->method('buildDataHandlerUri')
             ->with($urlParameters, '')
-            ->will(self::returnValue('jumpUrl'));
+            ->will(self::returnValue('someTceUrl'));
 
         self::assertEquals(
-            '<a href="jumpUrl" class="myClass" title="mylabel">mylabel</a>',
+            '<a href="someTceUrl" class="myClass" title="mylabel">mylabel</a>',
             $formTool->createLinkForDataHandlerAction($urlParameters, 'mylabel', $options)
         );
     }
