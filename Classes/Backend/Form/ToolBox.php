@@ -1302,8 +1302,7 @@ class ToolBox
         if (isset($options['sprite'])) {
             $options[self::OPTION_ICON_NAME] = $options['sprite'];
         }
-        $redirect = TYPO3::isTYPO115OrHigher() ? null : -1;
-        $uri = $this->buildDataHandlerUri($actionParameters, $redirect);
+        $uri = $this->buildDataHandlerUri($actionParameters, null);
 
         $btn = $this->createModuleButton($uri, $label, $options);
 
