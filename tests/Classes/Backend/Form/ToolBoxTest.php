@@ -393,7 +393,7 @@ class ToolBoxTest extends BaseTestCase
         $formTool
             ->expects(self::once())
             ->method('buildDataHandlerUri')
-            ->with($urlParameters, TYPO3::isTYPO115OrHigher() ? null : -1)
+            ->with($urlParameters, '')
             ->will(self::returnValue('jumpUrl'));
 
         self::assertEquals(
@@ -414,7 +414,7 @@ class ToolBoxTest extends BaseTestCase
         $formTool
             ->expects(self::once())
             ->method('buildDataHandlerUri')
-            ->with($urlParameters, TYPO3::isTYPO115OrHigher() ? null : -1)
+            ->with($urlParameters, '')
             ->will(self::returnValue('jumpUrl'));
 
         self::assertEquals(
@@ -435,7 +435,7 @@ class ToolBoxTest extends BaseTestCase
         $formTool
             ->expects(self::once())
             ->method('buildDataHandlerUri')
-            ->with($urlParameters, TYPO3::isTYPO115OrHigher() ? null : -1)
+            ->with($urlParameters, '')
             ->will(self::returnValue('jumpUrl'));
 
         self::assertEquals(

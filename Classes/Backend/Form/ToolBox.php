@@ -1302,7 +1302,7 @@ class ToolBox
         if (isset($options['sprite'])) {
             $options[self::OPTION_ICON_NAME] = $options['sprite'];
         }
-        $uri = $this->buildDataHandlerUri($actionParameters, null);
+        $uri = $this->buildDataHandlerUri($actionParameters, '');
 
         $btn = $this->createModuleButton($uri, $label, $options);
 
