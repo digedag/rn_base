@@ -3,7 +3,7 @@
 Changelog
 ---------
 
-v1.18.0 (??.11.2023)
+v1.18.0 (09.12.2023)
 
 * Auto-detect module identifier to avoid boilerblade-code
 * BC: Parameter type of exceptions changed in ExceptionHandlerInterface to \Throwable
