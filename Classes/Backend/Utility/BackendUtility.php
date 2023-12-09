@@ -3,9 +3,10 @@
 namespace Sys25\RnBase\Backend\Utility;
 
 use InvalidArgumentException;
+use Sys25\RnBase\Utility\T3General;
 use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 
 /***************************************************************
  * Copyright notice
@@ -146,7 +147,28 @@ class BackendUtility
      */
     public static function issueCommand($getParameters, $redirectUrl = '')
     {
-        $link = \TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction($getParameters, $redirectUrl);
+        $link = self::getLinkToDataHandlerAction($getParameters, $redirectUrl);
+
+        return $link;
+    }
+
+    /**
+     * Returns a URL with a command to TYPO3 Datahandler.
+     *
+     * @param string $parameters Set of GET params to send. Example: "&cmd[tt_content][123][move]=456" or "&data[tt_content][123][hidden]=1&data[tt_content][123][title]=Hello%20World
+     * @param string $redirectUrl Redirect URL, default is to use $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
+     * @return string
+     */
+    public static function getLinkToDataHandlerAction($parameters, $redirectUrl = '')
+    {
+        if (TYPO3::isTYPO121OrHigher()) {
+            $uriBuilder = T3General::makeInstance(UriBuilder::class);
+            $url = (string) $uriBuilder->buildUriFromRoute('tce_db').$parameters.'&redirect=';
+            $url .= rawurlencode($redirectUrl ?: $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri());
+
+            return $url;
+        }
+        $link = \TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction($parameters, $redirectUrl);
 
         return $link;
     }
@@ -185,15 +207,18 @@ class BackendUtility
      * @param string $params parameters sent along to EditDocumentController
      *
      * @return string
+     *
+     * @deprecated
      */
     public static function editOnClick($params)
     {
-        $returnUrl = GeneralUtility::quoteJSvalue(
-            rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))
+        $returnUrl = T3General::quoteJSvalue(
+            rawurlencode(T3General::getIndpEnv('REQUEST_URI'))
         );
         /* @var $uriBuilder \TYPO3\CMS\Backend\Routing\UriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = T3General::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uri = $uriBuilder->buildUriFromRoute('record_edit').$params;
 
-        return 'window.location.href='.GeneralUtility::quoteJSvalue((string) $uriBuilder->buildUriFromRoute('record_edit').$params.'&returnUrl=').'+'.$returnUrl.'; return false;';
+        return 'window.location.href='.T3General::quoteJSvalue((string) $uri.'&returnUrl=').'+'.$returnUrl.'; return false;';
     }
 }

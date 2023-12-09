@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Backend\Form;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Sys25\RnBase\Backend\Template\Override\DocumentTemplate;
 use Sys25\RnBase\Testing\BaseTestCase;
 use Sys25\RnBase\Utility\TYPO3;
@@ -39,6 +40,8 @@ use tx_rnbase;
  */
 class ToolBoxTest extends BaseTestCase
 {
+    use ProphecyTrait;
+
     protected function setUp(): void
     {
         if (TYPO3::isTYPO90OrHigher()) {
@@ -86,14 +89,23 @@ class ToolBoxTest extends BaseTestCase
      */
     public function testCreateSelectByArrayIfReloadOption()
     {
-        $formTool = tx_rnbase::makeInstance(ToolBox::class);
+        /** @var ToolBox $formTool */
+        $formTool = $this->getMock(ToolBox::class, ['insertJsModule']);
+        $formTool
+            ->expects(self::once())
+            ->method('insertJsModule')
+            ->with('@sys25/rn_base/toolbox.js');
+
         $select = $formTool->createSelectByArray(
             'testSelect',
             1,
             [1 => 'John', 2 => 'Doe'],
             ['reload' => true]
         );
-        $expectedSelect = '<select name="testSelect" class="select" onchange=" this.form.submit(); " ><option value="1" selected="selected">John</option><option value="2" >Doe</option></select>';
+        $expectedSelect = '<select name="testSelect" class="select" data-global-event="change" data-action-submit="$form"><option value="1" selected="selected">John</option><option value="2" >Doe</option></select>';
+        if (!TYPO3::isTYPO104OrHigher()) {
+            $expectedSelect = '<select name="testSelect" class="select" onchange=" this.form.submit(); "><option value="1" selected="selected">John</option><option value="2" >Doe</option></select>';
+        }
 
         self::assertEquals($expectedSelect, $select);
     }
@@ -110,7 +122,7 @@ class ToolBoxTest extends BaseTestCase
             [1 => 'John', 2 => 'Doe'],
             ['onchange' => 'myJsFunction']
         );
-        $expectedSelect = '<select name="testSelect" class="select" onchange="myJsFunction" ><option value="1" selected="selected">John</option><option value="2" >Doe</option></select>';
+        $expectedSelect = '<select name="testSelect" class="select" onchange="myJsFunction"><option value="1" selected="selected">John</option><option value="2" >Doe</option></select>';
 
         self::assertEquals($expectedSelect, $select);
     }
@@ -120,15 +132,24 @@ class ToolBoxTest extends BaseTestCase
      */
     public function testCreateSelectByArrayIfReloadAndOnchangeOption()
     {
-        $formTool = tx_rnbase::makeInstance(ToolBox::class);
+        /** @var ToolBox $formTool */
+        $formTool = $this->getMock(ToolBox::class, ['insertJsModule']);
+        $formTool
+            ->expects(self::once())
+            ->method('insertJsModule')
+            ->with('@sys25/rn_base/toolbox.js');
+
         $select = $formTool->createSelectByArray(
             'testSelect',
             1,
             [1 => 'John', 2 => 'Doe'],
             ['onchange' => 'myJsFunction', 'reload' => true]
         );
-        $expectedSelect = '<select name="testSelect" class="select" onchange=" this.form.submit(); myJsFunction" ><option value="1" selected="selected">John</option><option value="2" >Doe</option></select>';
+        $expectedSelect = '<select name="testSelect" class="select" data-global-event="change" data-action-submit="$form" onchange="myJsFunction"><option value="1" selected="selected">John</option><option value="2" >Doe</option></select>';
 
+        if (!TYPO3::isTYPO104OrHigher()) {
+            $expectedSelect = '<select name="testSelect" class="select" onchange=" this.form.submit(); myJsFunction"><option value="1" selected="selected">John</option><option value="2" >Doe</option></select>';
+        }
         self::assertEquals($expectedSelect, $select);
     }
 
@@ -195,38 +216,6 @@ class ToolBoxTest extends BaseTestCase
      *
      * @TODO: refactor, requires $GLOBALS['BE_USER']!
      */
-    public function testGetJavaScriptForLinkToDataHandlerActionAddsNecessaryJavaScriptsInTypo387()
-    {
-        $formTool = $this->getAccessibleMock(ToolBox::class, ['getBaseJavaScriptCode']);
-        $formTool
-            ->expects(self::once())
-            ->method('getBaseJavaScriptCode')
-            ->will(self::returnValue('javascriptCode'));
-
-        $pageRenderer = $this->getMock('stdClass', ['addJsInlineCode']);
-        $pageRenderer
-            ->expects(self::once())
-            ->method('addJsInlineCode')
-            ->with('rnBaseMethods', 'javascriptCode');
-
-        $document = $this->getMock(DocumentTemplate::class, ['getPageRenderer']);
-        $document
-            ->expects(self::once())
-            ->method('getPageRenderer')
-            ->will(self::returnValue($pageRenderer));
-
-        $formTool->init($document, null);
-        $options = ['test'];
-        $urlParameters = 'someParameters';
-
-        $formTool->_call('getJavaScriptForLinkToDataHandlerAction', $urlParameters, $options);
-    }
-
-    /**
-     * @group integration
-     *
-     * @TODO: refactor, requires $GLOBALS['BE_USER']!
-     */
     public function testGetJavaScriptForLinkToDataHandlerActionHandlesConfirmCode()
     {
         $urlParameters = 'someParameters';
@@ -265,8 +254,8 @@ class ToolBoxTest extends BaseTestCase
         unset($options['params']['id']);
 
         self::assertEquals(
-            sprintf('<a href="#" class="%s" onclick="window.location.href=%s; return false;" >mylabel</a>',
-                ToolBox::CSS_CLASS_BTN, htmlspecialchars("'scriptUrl'")),
+            sprintf('<a href="%s" class="%s" title="mylabel">mylabel</a>',
+                htmlspecialchars('scriptUrl'), ToolBox::CSS_CLASS_BTN),
             $formTool->createLink($urlParameters, $pid, 'mylabel', $options)
         );
     }
@@ -311,8 +300,8 @@ class ToolBoxTest extends BaseTestCase
             ->will(self::returnValue('scriptUrl'));
 
         self::assertEquals(
-            sprintf('<a href="#" class="%s" onclick="window.location.href=%s; return false;" title="hoverTitle">mylabel</a>',
-                ToolBox::CSS_CLASS_BTN, htmlspecialchars("'scriptUrl'")),
+            sprintf('<a href="%s" class="%s" title="hoverTitle">mylabel</a>',
+                'scriptUrl', ToolBox::CSS_CLASS_BTN),
             $formTool->createLink($urlParameters, 0, 'mylabel', $options)
         );
     }
@@ -333,8 +322,8 @@ class ToolBoxTest extends BaseTestCase
             ->will(self::returnValue('scriptUrl'));
 
         self::assertEquals(
-            sprintf('<a href="#" class="myClass" onclick="window.location.href=%s; return false;" >mylabel</a>',
-                htmlspecialchars("'scriptUrl'")),
+            sprintf('<a href="%s" class="myClass" title="mylabel">mylabel</a>',
+                'scriptUrl'),
             $formTool->createLink($urlParameters, 22, 'mylabel', $options)
         );
     }
@@ -360,7 +349,7 @@ class ToolBoxTest extends BaseTestCase
             ->will(self::returnValue('jumpUrl'));
 
         self::assertRegExp(
-            '/<a href="#" class="myClass" onclick="window.location.href=\'jumpUrl\'; return false;" >.*<img.*actions\-add\.svg" width="16" height="16".*<\/a>/s',
+            '/<a href="jumpUrl" class="myClass" title="mylabel">.*<img.*actions-add\.svg" width="16" height="16".*<\/a>/s',
             $formTool->createLink($urlParameters, 0, 'mylabel', $options)
         );
     }
@@ -386,7 +375,7 @@ class ToolBoxTest extends BaseTestCase
             ->will(self::returnValue('jumpUrl'));
 
         self::assertRegExp(
-            '/<a href="#" class="myClass" onclick="window.location.href=\'jumpUrl\'; return false;" >.*<img.*actions\-add\.svg" width="32" height="32".*<\/a>/s',
+            '/<a href="jumpUrl" class="myClass" title="mylabel">.*<img.*actions\-add\.svg" width="32" height="32".*<\/a>/s',
             $formTool->createLink($urlParameters, 0, 'mylabel', $options)
         );
     }
@@ -399,15 +388,16 @@ class ToolBoxTest extends BaseTestCase
         $urlParameters = 'someParameters';
         $options = ['test' => 'value'];
 
-        $formTool = $this->getMock(ToolBox::class, ['getJavaScriptForLinkToDataHandlerAction']);
+        /** @var ToolBox $formTool */
+        $formTool = $this->getMock(ToolBox::class, ['buildDataHandlerUri']);
         $formTool
             ->expects(self::once())
-            ->method('getJavaScriptForLinkToDataHandlerAction')
-            ->with($urlParameters, $options)
-            ->will(self::returnValue('jumpUrl'));
+            ->method('buildDataHandlerUri')
+            ->with($urlParameters, '')
+            ->will(self::returnValue('someTceUrl'));
 
         self::assertEquals(
-            '<a href="#" class="'.ToolBox::CSS_CLASS_BTN.'" onclick="jumpUrl" >mylabel</a>',
+            '<a href="someTceUrl" class="btn btn-default btn-sm" title="mylabel">mylabel</a>',
             $formTool->createLinkForDataHandlerAction($urlParameters, 'mylabel', $options)
         );
     }
@@ -418,17 +408,17 @@ class ToolBoxTest extends BaseTestCase
     public function testCreateLinkForDataHandlerActionWithHover()
     {
         $urlParameters = 'someParameters';
-        $options = ['hover' => 'hoverTitle'];
+        $options = [ToolBox::OPTION_HOVER_TEXT => 'hoverTitle'];
 
-        $formTool = $this->getMock(ToolBox::class, ['getJavaScriptForLinkToDataHandlerAction']);
+        $formTool = $this->getMock(ToolBox::class, ['buildDataHandlerUri']);
         $formTool
             ->expects(self::once())
-            ->method('getJavaScriptForLinkToDataHandlerAction')
-            ->with($urlParameters, $options)
-            ->will(self::returnValue('jumpUrl'));
+            ->method('buildDataHandlerUri')
+            ->with($urlParameters, '')
+            ->will(self::returnValue('someTceUrl'));
 
         self::assertEquals(
-            '<a href="#" class="'.ToolBox::CSS_CLASS_BTN.'" onclick="jumpUrl" title="hoverTitle">mylabel</a>',
+            '<a href="someTceUrl" class="btn btn-default btn-sm" title="hoverTitle">mylabel</a>',
             $formTool->createLinkForDataHandlerAction($urlParameters, 'mylabel', $options)
         );
     }
@@ -441,15 +431,15 @@ class ToolBoxTest extends BaseTestCase
         $urlParameters = 'someParameters';
         $options = ['class' => 'myClass'];
 
-        $formTool = $this->getMock(ToolBox::class, ['getJavaScriptForLinkToDataHandlerAction']);
+        $formTool = $this->getMock(ToolBox::class, ['buildDataHandlerUri']);
         $formTool
             ->expects(self::once())
-            ->method('getJavaScriptForLinkToDataHandlerAction')
-            ->with($urlParameters, $options)
-            ->will(self::returnValue('jumpUrl'));
+            ->method('buildDataHandlerUri')
+            ->with($urlParameters, '')
+            ->will(self::returnValue('someTceUrl'));
 
         self::assertEquals(
-            '<a href="#" class="myClass" onclick="jumpUrl" >mylabel</a>',
+            '<a href="someTceUrl" class="myClass" title="mylabel">mylabel</a>',
             $formTool->createLinkForDataHandlerAction($urlParameters, 'mylabel', $options)
         );
     }

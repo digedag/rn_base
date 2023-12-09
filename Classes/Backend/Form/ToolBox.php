@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Backend\Form;
 
+use Sys25\RnBase\Backend\Form\Element\EnhancedLinkButton;
 use Sys25\RnBase\Backend\Form\Element\InputText;
 use Sys25\RnBase\Backend\Module\IModule;
 use Sys25\RnBase\Backend\Template\Override\DocumentTemplate;
@@ -13,9 +14,10 @@ use Sys25\RnBase\Utility\Link;
 use Sys25\RnBase\Utility\Math;
 use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
-use Sys25\RnBase\Utility\T3General as T3GeneralAlias;
+use Sys25\RnBase\Utility\T3General;
 use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 
 /***************************************************************
@@ -56,6 +58,9 @@ class ToolBox
      */
     private $module;
 
+    /**
+     * @var DocumentTemplate
+     */
     protected $doc;
 
     public const CSS_CLASS_BTN = 'btn btn-default btn-sm';
@@ -66,8 +71,13 @@ class ToolBox
     public const OPTION_TITLE = 'title';
 
     public const OPTION_CONFIRM = 'confirm';
+    public const OPTION_ICON_NAME = 'icon';
+    public const OPTION_HOVER_TEXT = 'hover';
+    public const OPTION_HIDE_LABEL = 'hide-label';
 
     public const OPTION_PARAMS = 'params';
+    public const OPTION_CSS_CLASSES = 'class';
+    public const OPTION_DATA_ATTR = 'data-attr';
 
     /**
      * Clipboard object.
@@ -76,6 +86,11 @@ class ToolBox
      */
     private $clipObj;
     private $tceStack;
+    /** @var LanguageService */
+    private $lang;
+
+    /** @var \TYPO3\CMS\Backend\Routing\UriBuilder */
+    private $uriBuilder;
 
     /**
      * @param DocumentTemplate $doc
@@ -83,14 +98,15 @@ class ToolBox
      */
     public function init(DocumentTemplate $doc, IModule $module)
     {
-        global $BACK_PATH;
         $this->doc = $doc;
         $this->module = $module;
+        $this->lang = $module->getLanguageService();
+
+        $this->uriBuilder = tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
 
         // TCEform für das Formular erstellen
         $this->form = tx_rnbase::makeInstance(FormBuilder::class);
         $this->form->initDefaultBEmode();
-        $this->form->backPath = $BACK_PATH;
     }
 
     /**
@@ -140,85 +156,6 @@ class ToolBox
     }
 
     /**
-     * Erstellt einen Link zur Bearbeitung eines Datensatzes.
-     *
-     * @param string $editTable DB-Tabelle des Datensatzes
-     * @param int    $editUid   UID des Datensatzes
-     * @param string $label     Bezeichnung des Links
-     * @param array  $options
-     *
-     * @return string
-     */
-    public function createEditLink($editTable, $editUid, $label = 'Edit', $options = [])
-    {
-        $params = '&edit['.$editTable.']['.$editUid.']=edit';
-        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
-        $class = ' class="'.$class.'"';
-        $label = isset($options['label']) ? $options['label'] : $label;
-        $onClick = htmlspecialchars(BackendUtility::editOnClick($params));
-
-        return '<a href="#" '.$class.' onclick="'.$onClick.'" title="Edit UID: '.$editUid.'">'
-                .Icons::getSpriteIcon('actions-page-open')
-                .$label
-                .'</a>';
-    }
-
-    /**
-     * Erstellt einen History-Link
-     * Achtung: Benötigt die JS-Funktion jumpExt() in der Seite.
-     *
-     * @param string $table
-     * @param int    $recordUid
-     *
-     * @return string
-     */
-    public function createHistoryLink($table, $recordUid, $label = '')
-    {
-        $this->addBaseInlineJSCode();
-        $image = Icons::getSpriteIcon('actions-document-history-open');
-        $moduleUrl = BackendUtility::getModuleUrl('record_history', ['element' => $table.':'.$recordUid]);
-        $onClick = 'return jumpExt('.Strings::quoteJSvalue($moduleUrl).',\'#latest\');';
-
-        return '<a class="btn btn-default" href="#" onclick="'.htmlspecialchars($onClick).'" title="'
-            .htmlspecialchars($GLOBALS['LANG']->getLL('history')).'">'
-            .$image.'</a>';
-    }
-
-    /**
-     * Creates a new-record-button.
-     *
-     * @param string $table
-     * @param int    $pid
-     * @param array  $options
-     *
-     * @return string
-     */
-    public function createNewButton($table, $pid, $options = [])
-    {
-        $params = '&edit['.$table.']['.$pid.']=new';
-        if (isset($options[self::OPTION_PARAMS])) {
-            $params .= $options[self::OPTION_PARAMS];
-        }
-        $params .= $this->buildDefVals($options);
-        $title = isset($options[self::OPTION_TITLE]) ? $options[self::OPTION_TITLE] : $GLOBALS['LANG']->getLL('new', 1);
-        $name = isset($options['name']) ? $options['params'] : '';
-
-        $jsCode = BackendUtility::editOnClick($params);
-        if (isset($options[self::OPTION_CONFIRM]) && strlen($options[self::OPTION_CONFIRM]) > 0) {
-            $jsCode = 'if(confirm('.Strings::quoteJSvalue($options[self::OPTION_CONFIRM]).')) {'.$jsCode.'} else {return false;}';
-        }
-
-        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
-        $class = ' class="'.$class.'"';
-
-        $btn = '<input type="button" name="'.$name.'" value="'.$title.'" '.$class;
-        $btn .= ' onclick="'.htmlspecialchars($jsCode, -1).'"';
-        $btn .= '/>';
-
-        return $btn;
-    }
-
-    /**
      * Creates a Link to show an item in frontend.
      *
      * @param $pid
@@ -246,6 +183,21 @@ class ToolBox
     }
 
     /**
+     * @return EnhancedLinkButton
+     */
+    private function makeLinkButton($uri, $label = '')
+    {
+        $btn = new EnhancedLinkButton();
+        $btn->setHref($uri);
+        if ($label) {
+            $btn->setTitle($label)
+                ->setShowLabelText(true);
+        }
+
+        return $btn;
+    }
+
+    /**
      * Erstellt einen Link zur Erstellung eines neuen Datensatzes
      * Possible options:
      * - params: some plain url params like "&myparam=4"
@@ -263,24 +215,114 @@ class ToolBox
      */
     public function createNewLink($table, $pid, $label = 'New', $options = [])
     {
-        $params = '&edit['.$table.']['.$pid.']=new';
-        if (isset($options[self::OPTION_PARAMS])) {
-            $params .= $options[self::OPTION_PARAMS];
-        }
-        $params .= $this->buildDefVals($options);
-        $title = isset($options[self::OPTION_TITLE]) ? $options[self::OPTION_TITLE] : $GLOBALS['LANG']->getLL('new', 1);
+        $uri = $this->buildEditUri($table, $pid, 'new', $options);
+        $uri .= $this->buildDefVals($options);
 
-        $jsCode = BackendUtility::editOnClick($params);
+        $image = Icons::getSpriteIcon('actions-document-new', ['asIcon' => true]);
+        $recordButton = $this->makeLinkButton($uri, $label)
+            ->setIcon($image);
+
+        $recordButton->setHoverText($this->getHoverText($options) ?: $label);
+        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : '';
+
         if (isset($options[self::OPTION_CONFIRM]) && strlen($options[self::OPTION_CONFIRM]) > 0) {
-            $jsCode = 'if(confirm('.Strings::quoteJSvalue($options[self::OPTION_CONFIRM]).')) {'.$jsCode.'} else {return false;}';
+            $class .= ' t3js-modal-trigger';
+            $recordButton->setDataAttributes(['content' => $options[self::OPTION_CONFIRM]]);
+            $recordButton->setOverrideCss(false);
         }
-        $image = Icons::getSpriteIcon('actions-document-new');
+        $recordButton->setClasses($class);
 
-        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
-        $class = ' class="'.$class.'"';
+        return $recordButton->render();
+    }
 
-        return '<a href="#" title="'.$title.'" '.$class.' onclick="'.htmlspecialchars($jsCode, -1).'">'.
-                $image.$label.'</a>';
+    private function getHoverText(array &$options, $label = '')
+    {
+        return $this->getLanguageService()->getLL(
+            $options[self::OPTION_HOVER_TEXT] ?? $label
+        ) ?: ($options[self::OPTION_HOVER_TEXT] ?? $label);
+    }
+
+    /**
+     * Creates a new-record-button.
+     *
+     * @param string $table
+     * @param int    $pid
+     * @param array  $options
+     *
+     * @return string
+     *
+     * @deprecated use createNewLink()
+     */
+    public function createNewButton($table, $pid, $options = [])
+    {
+        return $this->createNewLink($table, $pid, $options[self::OPTION_TITLE] ?? 'New', $options);
+    }
+
+    /**
+     * Erstellt einen Link zur Bearbeitung eines Datensatzes.
+     *
+     * @param string $editTable DB-Tabelle des Datensatzes
+     * @param int    $editUid   UID des Datensatzes
+     * @param string $label     Bezeichnung des Links
+     * @param array  $options
+     *
+     * @return string
+     */
+    public function createEditLink($editTable, $editUid, $label = 'Edit', $options = [])
+    {
+        $uri = $this->buildEditUri($editTable, $editUid, 'edit', $options);
+
+        $image = Icons::getSpriteIcon('actions-document-open', ['asIcon' => true]);
+        $recordButton = $this->makeLinkButton($uri, $label)
+            ->setIcon($image);
+
+        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : '';
+        $recordButton->setClasses($class);
+        $recordButton->setHoverText($this->getHoverText($options) ?: $label);
+
+        return $recordButton->render();
+    }
+
+    /**
+     * @param string $operation new or edit
+     */
+    private function buildEditUri($table, $pid, $operation, array $options)
+    {
+        $returnUrl = T3General::getIndpEnv('REQUEST_URI');
+        $uri = (string) $this->uriBuilder->buildUriFromRoute(
+            'record_edit',
+            [
+                'id' => $pid,
+                'returnUrl' => $returnUrl,
+                sprintf('edit[%s][%s]', $table, $pid) => $operation,
+            ]
+        );
+        if (isset($options[self::OPTION_PARAMS])) {
+            $uri .= $options[self::OPTION_PARAMS];
+        }
+
+        return $uri;
+    }
+
+    /**
+     * Erstellt einen History-Link
+     * Achtung: Benötigt die JS-Funktion jumpExt() in der Seite.
+     *
+     * @param string $table
+     * @param int    $recordUid
+     *
+     * @return string
+     */
+    public function createHistoryLink($table, $recordUid, $label = '')
+    {
+        $moduleUrl = BackendUtility::getModuleUrl('record_history', ['element' => $table.':'.$recordUid]);
+        $options = [
+            self::OPTION_ICON_NAME => 'actions-document-history-open',
+        ];
+
+        $btn = $this->createModuleButton($moduleUrl, $label, $options);
+
+        return $btn->render();
     }
 
     /**
@@ -298,15 +340,13 @@ class ToolBox
         $sEnableColumn = ($sEnableColumn) ? $sEnableColumn : 'hidden';
         $label = isset($options['label']) ? $options['label'] : '';
 
-        $image = Icons::getSpriteIcon(
-            $unhide ? 'actions-edit-unhide' : 'actions-edit-hide'
-        );
+        $options[self::OPTION_ICON_NAME] = $unhide ? 'actions-edit-unhide' : 'actions-edit-hide';
 
         $options['hover'] = $unhide ? 'Show' : 'Hide UID: '.$uid;
 
         return $this->createLinkForDataHandlerAction(
             'data['.$table.']['.$uid.']['.$sEnableColumn.']='.($unhide ? 0 : 1),
-            $image.$label,
+            $label,
             $options
         );
     }
@@ -320,13 +360,23 @@ class ToolBox
      */
     public function createInfoLink($editTable, $editUid, $label = 'Info', $options = [])
     {
-        $image = Icons::getSpriteIcon('actions-document-info');
-        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
-        $class = ' class="'.$class.'"';
-        $label = isset($options['label']) ? $options['label'] : $label;
+        if (!TYPO3::isTYPO104OrHigher()) {
+            $image = Icons::getSpriteIcon('actions-document-info');
+            $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
+            $class = ' class="'.$class.'"';
+            $label = isset($options['label']) ? $options['label'] : $label;
 
-        return '<a '.$class.' href="#" onclick="top.launchView('."'".$editTable."', ' ".$editUid."'); return false;".'">'.
-            $image.$label.'</a>';
+            return '<a '.$class.' href="#" onclick="top.launchView('."'".$editTable."', ' ".$editUid."'); return false;".'">'.
+                $image.$label.'</a>';
+        }
+        $options[self::OPTION_ICON_NAME] = $options[self::OPTION_ICON_NAME] ?? 'actions-document-info';
+        $options[self::OPTION_DATA_ATTR] = [
+            'dispatch-action' => 'TYPO3.InfoWindow.showItem',
+            'dispatch-args-list' => sprintf('%s,%d', $editTable, $editUid),
+        ];
+        $btn = $this->createModuleButton('#', $label, $options);
+
+        return $btn->render();
     }
 
     /**
@@ -335,24 +385,26 @@ class ToolBox
      * @param string $editTable  DB-Tabelle des Datensatzes
      * @param int    $recordUid  UID des Datensatzes
      * @param int    $currentPid PID der aktuellen Seite des Datensatzes
-     * @param string $label      Bezeichnung des Links
+     * @param string $label Bezeichnung des Links
      */
-    public function createMoveLink($editTable, $recordUid, $currentPid, $label = 'Move')
+    public function createMoveLink($editTable, $recordUid, $currentPid, $label = '')
     {
-        $this->initClipboard();
-        $this->addBaseInlineJSCode();
-        $isSel = (string) $this->clipObj->isSelected($editTable, $recordUid);
-        $image = Icons::getSpriteIcon('actions-edit-cut'.($isSel ? '-release' : ''));
+        $clipObj = $this->initClipboard();
+        $isSel = (string) $clipObj->isSelected($editTable, $recordUid);
+        $options = [];
+        $options[self::OPTION_ICON_NAME] = 'actions-edit-cut'.($isSel ? '-release' : '');
+        $tooltip = $isSel ? 'paste' : 'cut';
+        $options[self::OPTION_HOVER_TEXT] = $this->getLanguageService()->sl('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.'.$tooltip);
 
-        return '<a class="btn btn-default" href="#" onclick="'
-            .htmlspecialchars('return jumpSelf('.
-                Strings::quoteJSvalue(
-                    $this->clipObj->selUrlDB($editTable, $recordUid, 0, 'cut' === $isSel, ['returnUrl' => ''])
-                ).');')
-            .'" title="'.htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.cut')).'">'
-                .$image.'</a>';
+        $uri = $clipObj->selUrlDB($editTable, $recordUid, 0, 'cut' === $isSel, ['returnUrl' => '']);
+        $btn = $this->createModuleButton($uri, $label, $options);
+
+        return $btn->render();
     }
 
+    /**
+     * @return \TYPO3\CMS\Backend\Clipboard\Clipboard
+     */
     private function initClipboard()
     {
         if (!$this->clipObj) {
@@ -360,13 +412,15 @@ class ToolBox
             // Initialize - reads the clipboard content from the user session
             $this->clipObj->initializeClipboard();
 
-            $CB = T3GeneralAlias::_GET('CB');
+            $CB = T3General::_GET('CB');
             $this->clipObj->setCmd($CB ?? []);
             // Clean up pad
             $this->clipObj->cleanCurrent();
             // Save the clipboard content
             $this->clipObj->endClipboard();
         }
+
+        return $this->clipObj;
     }
 
     /**
@@ -376,22 +430,14 @@ class ToolBox
      * @param int    $uid
      * @param int    $moveId  die uid des elements vor welches das element aus $uid gesetzt werden soll
      * @param array  $options
-     *
-     * @TODO use $this->createLinkForDataHandlerAction
      */
     public function createMoveUpLink($table, $uid, $moveId, $options = [])
     {
-        $jsCode = $this->getJavaScriptForLinkToDataHandlerAction('cmd['.$table.']['.$uid.'][move]=-'.$moveId.'&prErr=1&uPT=1', $options);
-        $label = isset($options['label']) ? $options['label'] : 'Move up';
-        $title = isset($options['title']) ? $options['title'] : $label;
-
-        $image = Icons::getSpriteIcon('actions-move-up');
-
-        return sprintf(
-            '<a onclick="%1$s" href="#">%2$s%3$s</a>',
-            $jsCode,
-            $image,
-            $label
+        return $this->createMoveUpDownLink(
+            'cmd['.$table.']['.$uid.'][move]=-'.$moveId.'&prErr=1&uPT=1',
+            'actions-move-up',
+            'Move up',
+            $options
         );
     }
 
@@ -402,46 +448,27 @@ class ToolBox
      * @param int    $uid
      * @param int    $moveId  die uid des elements nach welchem das element aus $uid gesetzt werden soll
      * @param array  $options
-     *
-     * @TODO use $this->createLinkForDataHandlerAction
      */
     public function createMoveDownLink($table, $uid, $moveId, $options = [])
     {
-        $jsCode = $this->getJavaScriptForLinkToDataHandlerAction('cmd['.$table.']['.$uid.'][move]=-'.$moveId, $options);
-        $label = isset($options['label']) ? $options['label'] : 'Move up';
-        $title = isset($options['title']) ? $options['title'] : $label;
-
-        $image = Icons::getSpriteIcon('actions-move-down');
-
-        return sprintf(
-            '<a onclick="%1$s" href="#">%2$s%3$s</a>',
-            $jsCode,
-            $image,
-            $label
+        return $this->createMoveUpDownLink(
+            'cmd['.$table.']['.$uid.'][move]=-'.$moveId,
+            'actions-move-down',
+            'Move down',
+            $options
         );
     }
 
-    /**
-     * Creates js code with command for TCE datahandler and redirect to current script.
-     * Simple example to delete a page record:
-     * $this->getJavaScriptForLinkToDataHandlerAction('cmd[pages][123][delete]=1').
-     *
-     * @param string $urlParameters command for datahandler
-     * @param array  $options
-     *
-     * @return string
-     */
-    protected function getJavaScriptForLinkToDataHandlerAction($urlParameters, array $options = [])
+    private function createMoveUpDownLink($cmd, $iconName, $defaultLabel, array $options)
     {
-        $redirect = TYPO3::isTYPO115OrHigher() ? null : -1;
-        $jumpToUrl = BackendUtility::getLinkToDataHandlerAction('&'.$urlParameters, $redirect);
+        $label = isset($options['label']) ? $options['label'] : $defaultLabel;
+        if (isset($options['title']) && !isset($options[self::OPTION_HOVER_TEXT])) {
+            $options[self::OPTION_HOVER_TEXT] = $options['title'];
+        }
 
-        // the jumpUrl method is no longer global available since TYPO3 8.7
-        // furthermore we need the JS variable T3_THIS_LOCATION because it is used
-        // as redirect in getLinkToDataHandlerAction when -1 is passed
-        $this->addBaseInlineJSCode();
+        $options[self::OPTION_ICON_NAME] = $iconName;
 
-        return $this->getConfirmCode('return jumpToUrl('.Strings::quoteJSvalue($jumpToUrl).');', $options);
+        return $this->createLinkForDataHandlerAction($cmd, $label, $options);
     }
 
     /**
@@ -486,12 +513,12 @@ class ToolBox
      */
     public function createDeleteLink($table, $uid, $label = 'Remove', $options = [])
     {
-        $image = Icons::getSpriteIcon('actions-delete');
-        $options['hover'] = 'Delete UID: '.$uid;
+        $options[self::OPTION_HOVER_TEXT] = 'Delete UID: '.$uid;
+        $options[self::OPTION_ICON_NAME] = 'actions-delete';
 
         return $this->createLinkForDataHandlerAction(
             'cmd['.$table.']['.$uid.'][delete]=1',
-            $image.$label,
+            $label,
             $options
         );
     }
@@ -539,14 +566,20 @@ class ToolBox
         return '<input type="hidden" name="'.$name.'" value="'.htmlspecialchars($value).'" />';
     }
 
+    /**
+     * @param string $onclick deprecated wird zukünftig wegen CSP nicht mehr unterstützt
+     */
     public function createRadio($name, $value, $checked = false, $onclick = '')
     {
-        return '<input type="radio" name="'.$name.'" value="'.htmlspecialchars($value).'" '.($checked ? 'checked="checked"' : '').(strlen($onclick) ? ' onclick="'.$onclick.'"' : '').' />';
+        return '<input type="radio" class="rnbase-checkbox" name="'.$name.'" value="'.htmlspecialchars($value).'" '.($checked ? 'checked="checked"' : '').(strlen($onclick) ? ' onclick="'.$onclick.'"' : '').' />';
     }
 
+    /**
+     * @param string $onclick deprecated wird zukünftig wegen CSP nicht mehr unterstützt
+     */
     public function createCheckbox($name, $value, $checked = false, $onclick = '')
     {
-        return '<input type="checkbox" name="'.$name.'" value="'.htmlspecialchars($value).'" '.($checked ? 'checked="checked"' : '').(strlen($onclick) ? ' onclick="'.$onclick.'"' : '').' />';
+        return '<input type="checkbox" class="rnbase-checkbox" name="'.$name.'" value="'.htmlspecialchars($value).'" '.($checked ? 'checked="checked"' : '').(strlen($onclick) ? ' onclick="'.$onclick.'"' : '').' />';
     }
 
     /**
@@ -588,34 +621,60 @@ class ToolBox
      */
     public function createModuleLink(array $params, $pid, $label, array $options = [])
     {
-        $label = $this->buildIconTag($options, $label);
         if (!isset($_GET['id']) && !isset($params['id'])) {
             // ensure pid is set even on POST requests.
             $params['id'] = $pid;
         }
-        $location = $this->getLinkThisScript(false, ['params' => $params]);
+        $uri = $this->getLinkThisScript(false, ['params' => $params]);
+        $recordButton = $this->createModuleButton($uri, $label, $options);
 
-        $jsCode = "window.location.href='".$location."'; return false;";
-
-        $title = '';
-        if (!empty($options['hover'])) {
-            $title = 'title="'.$options['hover'].'"';
-        }
-
-        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
-        $class = 'class="'.$class.'"';
-
-        return '<a href="#" '.$class.' onclick="'.htmlspecialchars($jsCode).'" '.$title.'>'.$label.'</a>';
+        return $recordButton->render();
     }
 
-    protected function buildIconTag(array $options, $label = '')
+    /**
+     * @param string $uri
+     * @param mixed $label
+     * @param array $options
+     * @return EnhancedLinkButton
+     */
+    private function createModuleButton(string $uri, $label, array $options = [])
     {
-        $tag = $label;
+        $recordButton = $this->makeLinkButton($uri, $label);
+
+        if (isset($options[self::OPTION_HOVER_TEXT])) {
+            $recordButton->setHoverText($options[self::OPTION_HOVER_TEXT]);
+        }
+
+        if ($icon = $this->buildIcon($options)) {
+            $recordButton->setIcon($icon);
+        }
+
+        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : '';
+        if (isset($options[self::OPTION_CONFIRM]) && strlen($options[self::OPTION_CONFIRM]) > 0) {
+            $class .= ' t3js-modal-trigger';
+            $recordButton->setDataAttributes(['content' => $options[self::OPTION_CONFIRM]]);
+            $recordButton->setOverrideCss(false);
+        }
+        $recordButton->setClasses($class);
+
+        if (isset($options[self::OPTION_DATA_ATTR])) {
+            $recordButton->addDataAttributes((array) $options[self::OPTION_DATA_ATTR]);
+        }
+
+        return $recordButton;
+    }
+
+    /**
+     * @return \TYPO3\CMS\Core\Imaging\Icon|null
+     */
+    protected function buildIcon(array $options)
+    {
+        $tag = null;
         // $options['sprite'] für abwärtskompatibilität
         if (isset($options['icon']) || isset($options['sprite'])) {
             $icon = isset($options['icon']) ? $options['icon'] : $options['sprite'];
             // FIXME: label get lost here??
-            $tag = Icons::getSpriteIcon($icon, $options);
+            $tag = Icons::getSpriteIcon($icon, array_merge(['asIcon' => true], $options));
         }
 
         return $tag;
@@ -633,23 +692,34 @@ class ToolBox
      */
     public function createSubmit($name, $value, $confirmMsg = '', $options = [])
     {
-        $icon = $this->buildIconTag($options, '');
-        $onClick = '';
-        if (strlen($confirmMsg)) {
-            $onClick = 'onclick="return confirm('.Strings::quoteJSvalue($confirmMsg).')"';
-        }
+        $value = htmlspecialchars($value);
+        $icon = $this->buildIcon($options);
+        $icon = $icon ? $icon->render() : '';
 
         $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
-        $class = ' class="'.$class.'"';
+        $class .= ' rnbase-btn';
 
-        if ($icon) {
-            $btn = '<button type="submit" '.$class.' name="'.$name.'" value="'.htmlspecialchars($value).'">'.
-                $icon.'</button>';
-        } else {
-            $btn = '<input type="submit" '.$class.' name="'.$name.'" value="'.htmlspecialchars($value).'" ';
-            $btn .= $onClick;
-            $btn .= '/>';
+        $attributes = [
+            'name' => $name,
+            'value' => $value,
+            'title' => $options[self::OPTION_HOVER_TEXT] ?? $name,
+        ];
+        if (!TYPO3::isTYPO121OrHigher()) {
+            $attributes['data-href'] = sprintf('javascript:%s', 'document.forms[\'editform\'].submit()');
         }
+
+        if (strlen($confirmMsg)) {
+            $class .= ' t3js-modal-trigger';
+            $attributes['data-content'] = $confirmMsg;
+            // Der Name des Submit-Buttons liegt nicht mehr im POST. Deshalb ist zusätzliches JS notwendig.
+            $this->insertJsToolbox();
+        }
+
+        $attributes['class'] = $class;
+
+        $attributesString = T3General::implodeAttributes($attributes, true);
+
+        $btn = '<button type="submit" '.$attributesString.'>'.$icon.$value.'</button>';
 
         return $btn;
     }
@@ -699,17 +769,17 @@ class ToolBox
 
     /**
      * Erstellt ein Eingabefeld für DateTime.
-     *
-     * @todo fix prefilling of field in TYPO3 8.7
      */
-    public function createDateInput($name, $value)
+    public function createDateInput($name, $value, array $options = [])
     {
         // Take care of current time zone. Thanks to Thomas Maroschik!
         if (Math::isInteger($value) && !TYPO3::isTYPO121OrHigher()) {
             $value += date('Z', $value);
         }
         $this->initializeJavaScriptFormEngine();
-        $dateElementClass = \TYPO3\CMS\Backend\Form\Element\InputDateTimeElement::class;
+        $dateElementClass = TYPO3::isTYPO121OrHigher() ?
+            \TYPO3\CMS\Backend\Form\Element\DatetimeElement::class :
+            \TYPO3\CMS\Backend\Form\Element\InputDateTimeElement::class;
 
         // [itemFormElName] => data[tx_cfcleague_games][4][status]
         // [itemFormElID] => data_tx_cfcleague_games_4_status
@@ -752,6 +822,16 @@ class ToolBox
                     $pageRenderer->loadRequireJsModule($moduleName, $callback);
                 }
             }
+        } elseif ($renderedElement['javaScriptModules'] ?? null) {
+            $pageRenderer = $this->getDoc()->getPageRenderer();
+            foreach ($renderedElement['javaScriptModules'] as $moduleName) {
+                /* @var \TYPO3\CMS\Core\Page\JavaScriptModuleInstruction $moduleName */
+                $this->insertJsModule($moduleName->getName());
+            }
+        }
+
+        if (isset($options[self::OPTION_HIDE_LABEL])) {
+            $renderedElement['html'] = preg_replace('/<code.*<\/code>/', '', $renderedElement['html']);
         }
 
         return $renderedElement['html'];
@@ -767,17 +847,17 @@ class ToolBox
         $usDateFormat = 0;
         if (!TYPO3::isTYPO121OrHigher()) {
             $usDateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '1' : '0';
-        }
-        $initializeFormEngineCallback = 'function(FormEngine) {
-            FormEngine.initialize(
-                '.$moduleUrl.','.$usDateFormat.'
-            );
-        }';
+            $initializeFormEngineCallback = 'function(FormEngine) {
+                FormEngine.initialize(
+                    '.$moduleUrl.','.$usDateFormat.'
+                );
+            }';
 
-        $this->getDoc()->getPageRenderer()->loadRequireJsModule(
-            'TYPO3/CMS/Backend/FormEngine',
-            $initializeFormEngineCallback
-        );
+            $this->getDoc()->getPageRenderer()->loadRequireJsModule(
+                'TYPO3/CMS/Backend/FormEngine',
+                $initializeFormEngineCallback
+            );
+        }
         $this->getDoc()->getPageRenderer()->addInlineSetting('FormEngine', 'formName', 'editform');
     }
 
@@ -824,6 +904,11 @@ class ToolBox
         return $this->createSelectByArray($name, $value, $arr, $options);
     }
 
+    private function insertJsToolbox()
+    {
+        $this->insertJsModule('@sys25/rn_base/toolbox.js');
+    }
+
     /**
      * Erstellt eine Select-Box aus dem übergebenen Array.
      * in den Options kann mit dem key reload angegeben werden,
@@ -844,20 +929,44 @@ class ToolBox
     {
         $options = is_array($options) ? $options : [];
 
-        $onChangeStr = !empty($options['reload']) ? ' this.form.submit(); ' : '';
-        if (!empty($options['onchange'])) {
+        $attrArr = [];
+        $onChangeStr = '';
+        if (!empty($options['reload'])) {
+            if (TYPO3::isTYPO104OrHigher()) {
+                $attrArr[] = 'data-global-event="change" data-action-submit="$form"';
+            } else {
+                $onChangeStr = ' this.form.submit(); ';
+            }
+            $this->insertJsToolbox();
+        }
+
+        if (isset($options['onchange'])) {
             $onChangeStr .= $options['onchange'];
         }
         if ($onChangeStr) {
-            $onChangeStr = ' onchange="'.$onChangeStr.'" ';
+            $onChangeStr = 'onchange="'.$onChangeStr.'"';
+            $attrArr[] = $onChangeStr;
         }
 
-        $multiple = !empty($options['multiple']) ? ' multiple="multiple"' : '';
+        $multiple = !empty($options['multiple']) ? 'multiple="multiple"' : '';
+        if ($multiple) {
+            $attrArr[] = $multiple;
+        }
         $name .= !empty($options['multiple']) ? '[]' : '';
 
-        $size = !empty($options['size']) ? ' size="'.$options['size'].'"' : '';
+        $size = !empty($options['size']) ? 'size="'.$options['size'].'"' : '';
+        if ($size) {
+            $attrArr[] = $size;
+        }
+        $classes = $options[self::OPTION_CSS_CLASSES] ?? '';
 
-        $out = '<select name="'.$name.'" class="select"'.$onChangeStr.$multiple.$size.'>';
+        $attr = implode(' ', $attrArr);
+
+        $out = sprintf('<select name="%s" class="%s"%s>',
+            $name,
+            trim('select '.$classes),
+            $attr ? ' '.$attr : ''
+        );
 
         $currentValues = Strings::trimExplode(',', $currentValues);
 
@@ -952,6 +1061,8 @@ class ToolBox
      * and global Vars T3_RETURN_URL and T3_THIS_LOCATION to PageRenderer.
      *
      * @param string $location
+     *
+     * @deprecated should not be used anymore
      */
     public function addBaseInlineJSCode($location = '')
     {
@@ -971,8 +1082,10 @@ class ToolBox
      * @param string $location module url or empty
      *
      * @return string
+     *
+     * @deprecated should not be used anymore
      */
-    protected function getBaseJavaScriptCode($location = '')
+    private function getBaseJavaScriptCode($location = '')
     {
         $location = $location ? $location : $this->getLinkThisScript(false);
 
@@ -1030,7 +1143,7 @@ class ToolBox
         ];
         $SETTINGS = BackendUtility::getModuleData(
             $MENU,
-            T3GeneralAlias::_GP('SET'),
+            T3General::_GP('SET'),
             $modName
         );
         $menuItems = [];
@@ -1042,13 +1155,7 @@ class ToolBox
             $menuItems[] = [
                 'isActive' => $SETTINGS[$name] == $key,
                 'label' => $value,
-                // jumpUrl ist ab TYPO3 6.2 nicht mehr nötig
-                // @TODO jumpUrl entfernen wenn kein Support mehr für 4.5
-                // Also jumpUrl wird auch in der 12 zumindest noch verwendet...
-                'url' => '#',
-                'addParams' => 'onclick="jumpToUrl(\''.
-                                $this->buildScriptURI(['id' => $pid, 'SET['.$name.']' => $key]).
-                                '\',this);"',
+                'url' => $this->buildScriptURI(['id' => $pid, 'SET['.$name.']' => $key]),
             ];
         }
 
@@ -1105,8 +1212,7 @@ class ToolBox
         if (is_array($MENU[$name]) && 1 == count($MENU[$name])) {
             $ret['menu'] = self::buildDummyMenu('SET['.$name.']', $MENU[$name]);
         } else {
-            $funcMenu = 'getDropdownMenu';
-            $ret['menu'] = BackendUtility::$funcMenu(
+            $ret['menu'] = BackendUtility::getDropdownMenu(
                 $pid,
                 'SET['.$name.']',
                 $SETTINGS[$name],
@@ -1183,6 +1289,8 @@ class ToolBox
     }
 
     /**
+     * $this->createLinkForDataHandlerAction('cmd[pages][123][delete]=1').
+     *
      * @param string $actionParameters
      * @param string $label
      * @param array  $options
@@ -1191,22 +1299,55 @@ class ToolBox
      */
     public function createLinkForDataHandlerAction($actionParameters, $label, array $options = [])
     {
-        // $options['sprite'] für abwärtskompatibilität
-        if (isset($options['icon']) || isset($options['sprite'])) {
-            $icon = isset($options['icon']) ? $options['icon'] : $options['sprite'];
-            $label = Icons::getSpriteIcon($icon, $options);
+        if (isset($options['sprite'])) {
+            $options[self::OPTION_ICON_NAME] = $options['sprite'];
         }
+        $uri = $this->buildDataHandlerUri($actionParameters, '');
 
-        $jsCode = $this->getJavaScriptForLinkToDataHandlerAction($actionParameters, $options);
-        $title = '';
-        if (!empty($options['hover'])) {
-            $title = 'title="'.$options['hover'].'"';
+        $btn = $this->createModuleButton($uri, $label, $options);
+
+        return $btn->render();
+    }
+
+    /**
+     * Bietet eine Möglichkeit JS-Module sowohl per AMD als auch ES6 (ab TYPO3 12) zu laden.
+     *
+     * ES6-Modul:  @vendor/ext_key/some-es6-module.js
+     * wird konvertiert in
+     * AMD-Module: 'TYPO3/CMS/ExtKey/SomeEs6Module'
+     *
+     * Es die entsprechenden Dateien müssen natürlich in der jeweiligen Extension bereitgestellt werden.
+     *
+     * @param string $es6Module Name des ES6-Moduls
+     * @param string $callBackFunction optionaler Startup-Code for AMD-Variante. Ab T3 12 nicht mehr verwendet.
+     */
+    public function insertJsModule(string $es6Module, $callBackFunction = null)
+    {
+        $pageRenderer = $this->doc->getPageRenderer();
+        if (TYPO3::isTYPO121OrHigher()) {
+            $pageRenderer->loadJavaScriptModule($es6Module);
+        } else {
+            list($vendor, $extKey, $jsModule) = explode('/', $es6Module, 3);
+            $extKey = Strings::underscoredToUpperCamelCase($extKey);
+            $jsModule = Strings::dashedToUpperCamelCase($jsModule);
+
+            $pageRenderer->loadRequireJsModule(
+                sprintf('TYPO3/CMS/%s/%s', $extKey, substr($jsModule, 0, -3)),
+                $callBackFunction
+            );
         }
+    }
 
-        $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
-        $class = 'class="'.$class.'"';
+    protected function buildDataHandlerUri(string $params, $redirect)
+    {
+        return BackendUtility::getLinkToDataHandlerAction('&'.$params, $redirect);
+    }
 
-        return '<a href="#" '.$class.' onclick="'.htmlspecialchars($jsCode).'" '.
-                $title.'>'.$label.'</a>';
+    /**
+     * @return \TYPO3\CMS\Core\Localization\LanguageService|\TYPO3\CMS\Lang\LanguageService
+     */
+    public function getLanguageService()
+    {
+        return $this->lang;
     }
 }

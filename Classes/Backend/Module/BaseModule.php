@@ -503,16 +503,8 @@ abstract class BaseModule extends BaseScriptClass implements IModule
         $doc->inDocStylesArray[] = $doc->inDocStyles;
         $doc->tableLayout = $this->getTableLayout();
         $doc->setModuleTemplate($this->getModuleTemplate());
+        // Ernsthaft??
         $doc->loadJavascriptLib('contrib/prototype/prototype.js');
-        // JavaScript
-        $doc->JScode .= '
-            <script>
-                script_ended = 0;
-                function jumpToUrl(URL)	{
-                    document.location = URL;
-                }
-            </script>
-            ';
 
         if (!TYPO3::isTYPO115OrHigher()) {
             // TODO: Die Zeile könnte problematisch sein...

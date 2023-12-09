@@ -97,7 +97,7 @@ class FormBuilder
      * @param string $uid
      * @param array  $record should contain pid and other default values for record
      *
-     * @return multitype:
+     * @return array
      */
     protected function compileFormData($table, $uid, $record)
     {

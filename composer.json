@@ -158,7 +158,8 @@
 			]
 		},
 		"branch-alias": {
-			"dev-master": "1.17.x-dev"
+			"dev-master": "1.17.x-dev",
+			"dev-feature/support-for-sph": "1.17.x-dev"
 		}
 	}
 }

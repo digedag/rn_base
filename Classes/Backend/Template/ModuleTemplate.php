@@ -247,24 +247,6 @@ class ModuleTemplate
         $doc->inDocStylesArray[] = $doc->inDocStyles;
         //        $doc->tableLayout = $this->getTableLayout();
         $doc->setModuleTemplate($this->options['template']);
-        //            $doc->getPageRenderer()->loadJquery();
-        // JavaScript
-        $doc->JScode .= '
-            <script>
-                script_ended = 0;
-                function jumpToUrl(URL)	{
-                    document.location = URL;
-                }
-            </script>
-            ';
-
-        if (!TYPO3::isTYPO115OrHigher()) {
-            // TODO: Die Zeile könnte problematisch sein...
-            $doc->postCode = '
-                <script>
-                    script_ended = 1;
-                    if (top.fsMod) top.fsMod.recentIds["web"] = '.$this->options['pid'].';</script>';
-        }
     }
 
     private function prepareOptions($options)

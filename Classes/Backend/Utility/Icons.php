@@ -106,28 +106,25 @@ class Icons
     /**
      * @param string $iconName
      * @param array  $options
-     * @param array  $overlays
      *
-     * @return string
+     * @see https://typo3.github.io/TYPO3.Icons/index.html
+     *
+     * @return string|\TYPO3\CMS\Core\Imaging\Icon
      */
     public static function getSpriteIcon(
         $iconName,
-        array $options = [],
-        array $overlays = []
+        array $options = []
     ) {
-        // @TODO: shoult be used for TYPO3 7 too!
-        if (!TYPO3::isTYPO80OrHigher()) {
-            $class = static::getIconUtilityClass();
-
-            return $class::getSpriteIcon($iconName, $options, $overlays);
-        }
+        $iconName = IconMap::alias($iconName);
 
         $size = \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL;
         if (!empty($options['size'])) {
             $size = $options['size'];
         }
+        $asIcon = $options['asIcon'] ?? false;
+        $icon = static::getIconFactory()->getIcon($iconName, $size);
 
-        return static::getIconFactory()->getIcon($iconName, $size)->render();
+        return $asIcon ? $icon : $icon->render();
     }
 
     /**

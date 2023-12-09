@@ -189,8 +189,8 @@ class Strings
     }
 
     /**
-     * Returns a given string with underscores as lowerCamelCase.
-     * Example: Converts minimal_value to minimalValue.
+     * Returns a given string with underscores as UpperCamelCase.
+     * Example: Converts minimal_value to MinimalValue.
      *
      * @param string $string: String to be converted to lowercase underscore
      *
@@ -199,6 +199,18 @@ class Strings
     public static function underscoredToUpperCamelCase($string)
     {
         return T3General::underscoredToUpperCamelCase($string);
+    }
+
+    /**
+     * Returns a given string with dashes as UpperCamelCase.
+     * Example: Converts blog-example to BlogExample.
+     *
+     * @param string $string String to be converted to camel case
+     * @return string UpperCamelCasedWord
+     */
+    public static function dashedToUpperCamelCase($string)
+    {
+        return str_replace(' ', '', ucwords(str_replace('-', ' ', strtolower($string))));
     }
 
     /**
