@@ -46,7 +46,7 @@ class Factory
      * @param ConfigurationInterface $configurations
      * @param array                  $frameworkSettings
      *
-     * @return \Sys25\RnBase\ExtBaseFluid\View\Standalone
+     * @return Standalone
      */
     public static function getViewInstance(ConfigurationInterface $configurations, $frameworkSettings = [])
     {

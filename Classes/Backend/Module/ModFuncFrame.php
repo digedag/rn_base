@@ -231,7 +231,7 @@ class ModFuncFrame implements IModule
     /**
      * @see IModule::getFormTool()
      *
-     * @return \Sys25\RnBase\Backend\Form\ToolBox
+     * @return ToolBox
      */
     public function getFormTool()
     {

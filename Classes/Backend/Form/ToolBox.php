@@ -118,7 +118,7 @@ class ToolBox
     }
 
     /**
-     * @return \Sys25\RnBase\Backend\Module\IModule
+     * @return IModule
      */
     public function getModule()
     {

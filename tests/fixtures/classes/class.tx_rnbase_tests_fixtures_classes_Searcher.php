@@ -27,7 +27,7 @@
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class tx_rnbase_tests_fixtures_classes_Searcher extends \Sys25\RnBase\Search\SearchBase
+class tx_rnbase_tests_fixtures_classes_Searcher extends Sys25\RnBase\Search\SearchBase
 {
     /**
      * @var bool

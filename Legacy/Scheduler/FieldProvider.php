@@ -36,14 +36,14 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
  *
  * @deprecated as it doesn't provide any useful functionality
  */
-abstract class Tx_Rnbase_Scheduler_FieldProvider extends Tx_Rnbase_Scheduler_FieldProviderBase implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface
+abstract class Tx_Rnbase_Scheduler_FieldProvider extends Tx_Rnbase_Scheduler_FieldProviderBase implements TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface
 {
     /**
      * Gets additional fields to render in the form to add/edit a task.
      *
      * @param array                                                     &$taskInfo       Values of the fields from the add/edit task form
      * @param Tx_Rnbase_Scheduler_Task                                  $task            The task object being edited. Null when adding a task!
-     * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule Reference to the scheduler backend module
+     * @param SchedulerModuleController $schedulerModule Reference to the scheduler backend module
      *
      * @return array
      */
@@ -56,7 +56,7 @@ abstract class Tx_Rnbase_Scheduler_FieldProvider extends Tx_Rnbase_Scheduler_Fie
      * Validates the additional fields' values.
      *
      * @param array                                                     $submittedData   An array containing the data submitted by the add/edit task form
-     * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule Reference to the scheduler backend module
+     * @param SchedulerModuleController $schedulerModule Reference to the scheduler backend module
      *
      * @return bool TRUE if validation was ok (or selected class is not relevant), FALSE otherwise
      */
@@ -69,7 +69,7 @@ abstract class Tx_Rnbase_Scheduler_FieldProvider extends Tx_Rnbase_Scheduler_Fie
      * Takes care of saving the additional fields' values in the task's object.
      *
      * @param array                                  $submittedData An array containing the data submitted by the add/edit task form
-     * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task          Reference to the scheduler backend module
+     * @param AbstractTask $task          Reference to the scheduler backend module
      */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task)
     {

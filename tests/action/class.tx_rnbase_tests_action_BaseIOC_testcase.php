@@ -58,7 +58,7 @@ class tx_rnbase_tests_action_BaseIOC_testcase extends BaseTestCase
 
         $property = new ReflectionProperty(get_class(tx_rnbase_util_TYPO3::getTSFE()), 'pageCacheTags');
         $property->setAccessible(true);
-        $property->setValue(\tx_rnbase_util_TYPO3::getTSFE(), []);
+        $property->setValue(tx_rnbase_util_TYPO3::getTSFE(), []);
     }
 
     protected function cleanUpPageRenderer()

@@ -25,7 +25,7 @@ use Sys25\RnBase\Testing\BaseTestCase;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-class tx_rnbase_dummyMisc extends \Sys25\RnBase\Utility\Misc
+class tx_rnbase_dummyMisc extends Sys25\RnBase\Utility\Misc
 {
     public static function callGetErrorMailHtml($e, $actionName)
     {

@@ -40,7 +40,7 @@ abstract class Tx_Rnbase_Scheduler_FieldProviderBase
      *
      * @param array                                                     &$taskInfo       Values of the fields from the add/edit task form
      * @param Tx_Rnbase_Scheduler_Task                                  $task            The task object being edited. Null when adding a task!
-     * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule $schedulerModule Reference to the scheduler backend module
+     * @param TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule $schedulerModule Reference to the scheduler backend module
      *
      * @return array
      */
@@ -54,7 +54,7 @@ abstract class Tx_Rnbase_Scheduler_FieldProviderBase
      * Validates the additional fields' values.
      *
      * @param array                                                     $submittedData   An array containing the data submitted by the add/edit task form
-     * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule Reference to the scheduler backend module
+     * @param TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule Reference to the scheduler backend module
      *
      * @return bool TRUE if validation was ok (or selected class is not relevant), FALSE otherwise
      */

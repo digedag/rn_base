@@ -218,12 +218,12 @@ class Email
     private function addBody(\TYPO3\CMS\Core\Mail\MailMessage $mail)
     {
         if ($this->htmlPart) {
-            \Sys25\RnBase\Utility\TYPO3::isTYPO104OrHigher() ?
+            TYPO3::isTYPO104OrHigher() ?
                 $mail->html($this->htmlPart) :
                 $mail->setBody($this->htmlPart, 'text/html');
         }
         if ($this->textPart) {
-            \Sys25\RnBase\Utility\TYPO3::isTYPO104OrHigher() ?
+            TYPO3::isTYPO104OrHigher() ?
                 $mail->text($this->textPart) :
                 $mail->addPart($this->textPart, 'text/plain');
         }

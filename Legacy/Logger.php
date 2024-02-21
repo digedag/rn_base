@@ -36,7 +36,7 @@ final class Tx_Rnbase_Utility_Logger
     /**
      * The TYPO3 log manager.
      *
-     * @return \TYPO3\CMS\Core\Log\LogManager
+     * @return TYPO3\CMS\Core\Log\LogManager
      */
     private static function getLogManager()
     {
@@ -50,7 +50,7 @@ final class Tx_Rnbase_Utility_Logger
      *
      * @param string $extKey
      *
-     * @return \TYPO3\CMS\Core\Log\Logger
+     * @return TYPO3\CMS\Core\Log\Logger
      */
     public static function getLogger($extKey)
     {
@@ -64,7 +64,7 @@ final class Tx_Rnbase_Utility_Logger
      * @param string $message log message
      * @param array  $data    Additional data to log
      *
-     * @return \TYPO3\CMS\Core\Log\Logger $this
+     * @return TYPO3\CMS\Core\Log\Logger $this
      */
     public static function emergency($extkey, $message, array $data = [])
     {
@@ -78,7 +78,7 @@ final class Tx_Rnbase_Utility_Logger
      * @param string $message log message
      * @param array  $data    Additional data to log
      *
-     * @return \TYPO3\CMS\Core\Log\Logger $this
+     * @return TYPO3\CMS\Core\Log\Logger $this
      */
     public static function alert($extkey, $message, array $data = [])
     {
@@ -92,7 +92,7 @@ final class Tx_Rnbase_Utility_Logger
      * @param string $message log message
      * @param array  $data    Additional data to log
      *
-     * @return \TYPO3\CMS\Core\Log\Logger $this
+     * @return TYPO3\CMS\Core\Log\Logger $this
      */
     public static function critical($extkey, $message, array $data = [])
     {
@@ -106,7 +106,7 @@ final class Tx_Rnbase_Utility_Logger
      * @param string $message log message
      * @param array  $data    Additional data to log
      *
-     * @return \TYPO3\CMS\Core\Log\Logger $this
+     * @return TYPO3\CMS\Core\Log\Logger $this
      */
     public static function error($extkey, $message, array $data = [])
     {
@@ -120,7 +120,7 @@ final class Tx_Rnbase_Utility_Logger
      * @param string $message log message
      * @param array  $data    Additional data to log
      *
-     * @return \TYPO3\CMS\Core\Log\Logger $this
+     * @return TYPO3\CMS\Core\Log\Logger $this
      */
     public static function warning($extkey, $message, array $data = [])
     {
@@ -134,7 +134,7 @@ final class Tx_Rnbase_Utility_Logger
      * @param string $message log message
      * @param array  $data    Additional data to log
      *
-     * @return \TYPO3\CMS\Core\Log\Logger $this
+     * @return TYPO3\CMS\Core\Log\Logger $this
      */
     public static function notice($extkey, $message, array $data = [])
     {
@@ -148,7 +148,7 @@ final class Tx_Rnbase_Utility_Logger
      * @param string $message log message
      * @param array  $data    Additional data to log
      *
-     * @return \TYPO3\CMS\Core\Log\Logger $this
+     * @return TYPO3\CMS\Core\Log\Logger $this
      */
     public static function info($extkey, $message, array $data = [])
     {
@@ -162,7 +162,7 @@ final class Tx_Rnbase_Utility_Logger
      * @param string $message log message
      * @param array  $data    Additional data to log
      *
-     * @return \TYPO3\CMS\Core\Log\Logger $this
+     * @return TYPO3\CMS\Core\Log\Logger $this
      */
     public static function debug($extkey, $message, array $data = [])
     {

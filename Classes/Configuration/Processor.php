@@ -135,7 +135,7 @@ class Processor implements ConfigurationInterface
     /**
      * das originale cObj des Plugins.
      *
-     * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+     * @var ContentObjectRenderer
      *
      * @internal DO NOT USE THIS DIRECTLY! Use method getCObj() instead
      */
@@ -191,7 +191,7 @@ class Processor implements ConfigurationInterface
     private $localLangUtil;
 
     /**
-     * @var \Sys25\RnBase\Frontend\Marker\FormatUtil
+     * @var FormatUtil
      */
     private $_formatter;
 
@@ -350,7 +350,7 @@ class Processor implements ConfigurationInterface
      * @param string      $id        any
      * @param string|null $cObjClass String Optional cObj-classname
      *
-     * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+     * @return ContentObjectRenderer
      */
     public function getCObj($id = 0, $cObjClass = null)
     {
@@ -376,7 +376,7 @@ class Processor implements ConfigurationInterface
     /**
      * The plugins original content object.
      *
-     * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+     * @return ContentObjectRenderer
      */
     public function getContentObject()
     {
@@ -386,7 +386,7 @@ class Processor implements ConfigurationInterface
     /**
      * Returns the formatter connected to this configuration object.
      *
-     * @return \Sys25\RnBase\Frontend\Marker\FormatUtil
+     * @return FormatUtil
      */
     public function getFormatter()
     {
@@ -1181,7 +1181,7 @@ class Processor implements ConfigurationInterface
      * which looks like being renderable.
      *
      * @param array                                                                 $data Deep data array parsed from Typoscript text
-     * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer or tslib_cObj $cObj
+     * @param ContentObjectRenderer or tslib_cObj $cObj
      *
      * @return array Data array with Typoscript rendered
      *

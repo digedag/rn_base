@@ -29,7 +29,7 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends BaseTestCase
     public function testGetStateSimple()
     {
         $pb = new tx_rnbase_util_PageBrowser('test');
-        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
+        $parameters = tx_rnbase::makeInstance(Sys25\RnBase\Frontend\Request\Parameters::class);
         $parameters->offsetSet($pb->getParamName('pointer'), 3);
         $listSize = 103; // Gesamtgröße der darzustellenden Liste
         $pageSize = 10; // Größe einer Seite
@@ -67,7 +67,7 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends BaseTestCase
     public function testGetStateWithEmptyListAndNoPointer()
     {
         $pb = new tx_rnbase_util_PageBrowser('test');
-        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
+        $parameters = tx_rnbase::makeInstance(Sys25\RnBase\Frontend\Request\Parameters::class);
         $listSize = 0; // Gesamtgröße der darzustellenden Liste
         $pageSize = 10; // Größe einer Seite
         $pb->setState($parameters, $listSize, $pageSize);
@@ -79,7 +79,7 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends BaseTestCase
     public function testGetStateWithPointerOutOfRange()
     {
         $pb = new tx_rnbase_util_PageBrowser('test');
-        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
+        $parameters = tx_rnbase::makeInstance(Sys25\RnBase\Frontend\Request\Parameters::class);
         $parameters->offsetSet($pb->getParamName('pointer'), 11);
         $listSize = 103; // Gesamtgröße der darzustellenden Liste
         $pageSize = 10; // Größe einer Seite
@@ -106,7 +106,7 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends BaseTestCase
     public function testGetStateWithIllegalPointer()
     {
         $pb = new tx_rnbase_util_PageBrowser('test');
-        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
+        $parameters = tx_rnbase::makeInstance(Sys25\RnBase\Frontend\Request\Parameters::class);
         $parameters->offsetSet($pb->getParamName('pointer'), -2);
         $listSize = 103; // Gesamtgröße der darzustellenden Liste
         $pageSize = 10; // Größe einer Seite
@@ -120,7 +120,7 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends BaseTestCase
     public function testGetStateWithSmallList()
     {
         $pb = new tx_rnbase_util_PageBrowser('test');
-        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
+        $parameters = tx_rnbase::makeInstance(Sys25\RnBase\Frontend\Request\Parameters::class);
         $parameters->offsetSet($pb->getParamName('pointer'), 2);
         $listSize = 3; // Gesamtgröße der darzustellenden Liste
         $pageSize = 10; // Größe einer Seite
@@ -142,7 +142,7 @@ class tx_rnbase_tests_util_PageBrowser_testcase extends BaseTestCase
     {
         /* @var $pageBrowser tx_rnbase_util_PageBrowser */
         $pageBrowser = tx_rnbase::makeInstance('tx_rnbase_util_PageBrowser', 'test');
-        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
+        $parameters = tx_rnbase::makeInstance(Sys25\RnBase\Frontend\Request\Parameters::class);
         $parameters->offsetSet($pageBrowser->getParamName('pointer'), $pointer);
         $listSize = 100;
         $pageSize = 10;

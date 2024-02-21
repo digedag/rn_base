@@ -93,7 +93,7 @@ class tx_rnbase_tests_util_DB_testcase extends BaseTestCase
     }
 }
 
-class Tx_Rnbase_Database_ConnectionMock extends \Sys25\RnBase\Database\Connection
+class Tx_Rnbase_Database_ConnectionMock extends Sys25\RnBase\Database\Connection
 {
     /**
      * Zugriff darauf würde scheitern wenn die Methode doch

@@ -42,7 +42,7 @@ if (!trait_exists('Prophecy\\PhpUnit\\ProphecyTrait')) {
          *
          * @not-deprecated
          */
-        protected function prophesize(string $classOrInterface = null): ObjectProphecy
+        protected function prophesize(?string $classOrInterface = null): ObjectProphecy
         {
             if (\is_string($classOrInterface)) {
                 \assert($this instanceof TestCase);

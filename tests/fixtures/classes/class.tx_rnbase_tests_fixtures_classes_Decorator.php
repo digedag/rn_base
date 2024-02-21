@@ -30,7 +30,7 @@ use Sys25\RnBase\Domain\Model\DataInterface;
 /**
  * Diese Klasse ist für die Darstellung von Elementen im Backend verantwortlich.
  */
-class tx_rnbase_tests_fixtures_classes_Decorator implements \Sys25\RnBase\Backend\Decorator\InterfaceDecorator
+class tx_rnbase_tests_fixtures_classes_Decorator implements Sys25\RnBase\Backend\Decorator\InterfaceDecorator
 {
     private $mod;
 
