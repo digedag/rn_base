@@ -89,8 +89,8 @@ class PageBaseViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBa
         $this->registerArgument('absolute', 'bool', 'If set, the URI of the rendered link is absolute', false, false);
         $this->registerArgument(
             'addQueryString',
-            'bool',
-            'If set, the current query parameters will be kept in the URI',
+            'string',
+            'If set, the current query parameters will be kept in the URL. If set to "untrusted", then ALL query parameters will be added. Be aware, that this might lead to problems when the generated link is cached.',
             false,
             false
         );
@@ -118,6 +118,11 @@ class PageBaseViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBa
         $linkAccessRestrictedPages = $this->arguments['linkAccessRestrictedPages'];
         $absolute = $this->arguments['absolute'];
         $addQueryString = $this->arguments['addQueryString'];
+        if ('true' == strtolower($addQueryString)) {
+            $addQueryString = true;
+        } elseif ('false' == strtolower($addQueryString)) {
+            $addQueryString = false;
+        }
         $argumentsToBeExcludedFromQueryString = $this->arguments['argumentsToBeExcludedFromQueryString'];
         $usePageNumberAsLinkText = $this->arguments['usePageNumberAsLinkText'];
 
