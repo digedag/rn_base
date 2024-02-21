@@ -382,7 +382,7 @@ abstract class BaseScriptClass
                 $this->getLanguageService()->getLL('title'),
                 FlashMessage::ERROR
             );
-            /** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
+            /** @var FlashMessageService $flashMessageService */
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
             /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue $defaultFlashMessageQueue */
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();

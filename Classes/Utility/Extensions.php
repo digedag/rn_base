@@ -151,7 +151,7 @@ class Extensions
         $subModuleName = '',
         array $moduleConfiguration = []
     ) {
-        if (\Sys25\RnBase\Utility\TYPO3::isTYPO90OrHigher() && $moduleConfiguration['routeTarget']) {
+        if (TYPO3::isTYPO90OrHigher() && $moduleConfiguration['routeTarget']) {
             $moduleName = static::buildModuleSignature($extensionName, $mainModuleName, $subModuleName);
             tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Routing\Router::class)->getRoutes()[$moduleName]->setOption(
                 'target',

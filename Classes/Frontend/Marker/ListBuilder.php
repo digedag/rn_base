@@ -49,7 +49,7 @@ class ListBuilder
     /**
      * @param ListBuilderInfo|null $info
      */
-    public function __construct(ListBuilderInfo $info = null)
+    public function __construct(?ListBuilderInfo $info = null)
     {
         if ($info) {
             $this->info = $info;

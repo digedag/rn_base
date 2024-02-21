@@ -131,7 +131,7 @@ class Debug
      * @return bool or string with debug type (plain, html)
      */
     public static function isLabelDebugEnabled(
-        \Sys25\RnBase\Configuration\ConfigurationInterface $configurations = null
+        ?\Sys25\RnBase\Configuration\ConfigurationInterface $configurations = null
     ) {
         static $status = [];
         // check global debug params

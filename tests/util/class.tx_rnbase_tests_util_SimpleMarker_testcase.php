@@ -26,7 +26,7 @@ use Sys25\RnBase\Testing\BaseTestCase;
 
 tx_rnbase::load('tx_rnbase_util_TS');
 
-class tx_rnbase_util_SimpleMarkerTests extends \Sys25\RnBase\Frontend\Marker\SimpleMarker
+class tx_rnbase_util_SimpleMarkerTests extends Sys25\RnBase\Frontend\Marker\SimpleMarker
 {
     // die methode public machen.
     // mit einer reflaction funktioniert es nicht, da die parameter als referenzen angelnommen werden müssen!
@@ -157,7 +157,7 @@ HTML;
     /**
      * liefert einen formatter inklusive typoscript.
      *
-     * @return \tx_rnbase_util_FormatUtil
+     * @return tx_rnbase_util_FormatUtil
      */
     protected function buildFormatter()
     {
@@ -193,9 +193,9 @@ action.item.subparts {
 TS;
         $configurationArray = tx_rnbase_util_TS::parseTsConfig($typoScript);
 
-        $configurations = tx_rnbase::makeInstance(\Tx_Rnbase_Configuration_Processor::class);
+        $configurations = tx_rnbase::makeInstance(Tx_Rnbase_Configuration_Processor::class);
         $configurations->init($configurationArray, null, 'extkey_text', 'rntest');
-        $formatter = tx_rnbase::makeInstance(\tx_rnbase_util_FormatUtil::class, $configurations);
+        $formatter = tx_rnbase::makeInstance(tx_rnbase_util_FormatUtil::class, $configurations);
 
         return $formatter;
     }

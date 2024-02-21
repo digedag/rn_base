@@ -169,7 +169,7 @@ abstract class SearchBase
 
         $where = null;
         if ($this->useQueryBuilder($tableAliases)) {
-            $conditionBuilder = new \Sys25\RnBase\Search\ConditionBuilder($this->useAlias(), $this->tableMapping, $this->getDatabaseConnection());
+            $conditionBuilder = new ConditionBuilder($this->useAlias(), $this->tableMapping, $this->getDatabaseConnection());
             $where = function (QueryBuilder $qb) use ($conditionBuilder, $tableAliases, $joinedFields, $customFields) {
                 $conditionBuilder->apply($qb, $tableAliases, $joinedFields, $customFields);
             };

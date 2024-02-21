@@ -58,7 +58,7 @@ class TYPO3Cache62 implements CacheInterface
     /**
      * @param string $cacheName
      *
-     * @return \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+     * @return FrontendInterface
      */
     private function checkCacheConfiguration($cacheName)
     {
@@ -111,7 +111,7 @@ class TYPO3Cache62 implements CacheInterface
     /**
      * Set the TYPO3 cache instance.
      *
-     * @param \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache
+     * @param FrontendInterface $cache
      */
     private function setCache(FrontendInterface $cache)
     {
@@ -121,7 +121,7 @@ class TYPO3Cache62 implements CacheInterface
     /**
      * Set the TYPO3 cache instance.
      *
-     * @return \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+     * @return FrontendInterface
      */
     private function getCache()
     {

@@ -769,7 +769,7 @@ class TSFAL
      *
      * @param int $uid uid of reference
      *
-     * @return \TYPO3\CMS\Core\Resource\FileReference
+     * @return FileReference
      */
     public static function getFileReferenceById($uid)
     {

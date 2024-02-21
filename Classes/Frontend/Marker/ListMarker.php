@@ -49,7 +49,7 @@ class ListMarker
     protected $marker;
     protected $entryMarker;
 
-    public function __construct(ListMarkerInfo $listMarkerInfo = null)
+    public function __construct(?ListMarkerInfo $listMarkerInfo = null)
     {
         if ($listMarkerInfo) {
             $this->info = &$listMarkerInfo;

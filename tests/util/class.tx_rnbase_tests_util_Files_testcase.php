@@ -74,9 +74,9 @@ class tx_rnbase_tests_util_Files_testcase extends BaseTestCase
     public function testMkdirDeepCreatesDirectory()
     {
         $directory = 'typo3temp/'.$this->getUniqueId('test_');
-        tx_rnbase_util_Files::mkdir_deep(\Sys25\RnBase\Utility\Environment::getPublicPath(), $directory);
-        $this->testFilesToDelete[] = \Sys25\RnBase\Utility\Environment::getPublicPath().$directory;
-        $this->assertTrue(is_dir(\Sys25\RnBase\Utility\Environment::getPublicPath().$directory));
+        tx_rnbase_util_Files::mkdir_deep(Sys25\RnBase\Utility\Environment::getPublicPath(), $directory);
+        $this->testFilesToDelete[] = Sys25\RnBase\Utility\Environment::getPublicPath().$directory;
+        $this->assertTrue(is_dir(Sys25\RnBase\Utility\Environment::getPublicPath().$directory));
     }
 
     /**
@@ -86,10 +86,10 @@ class tx_rnbase_tests_util_Files_testcase extends BaseTestCase
     {
         $directory = 'typo3temp/'.$this->getUniqueId('test_');
         $subDirectory = $directory.'/foo';
-        tx_rnbase_util_Files::mkdir_deep(\Sys25\RnBase\Utility\Environment::getPublicPath(), $subDirectory);
-        $this->testFilesToDelete[] = \Sys25\RnBase\Utility\Environment::getPublicPath().$subDirectory;
-        $this->testFilesToDelete[] = \Sys25\RnBase\Utility\Environment::getPublicPath().$directory;
-        $this->assertTrue(is_dir(\Sys25\RnBase\Utility\Environment::getPublicPath().$subDirectory));
+        tx_rnbase_util_Files::mkdir_deep(Sys25\RnBase\Utility\Environment::getPublicPath(), $subDirectory);
+        $this->testFilesToDelete[] = Sys25\RnBase\Utility\Environment::getPublicPath().$subDirectory;
+        $this->testFilesToDelete[] = Sys25\RnBase\Utility\Environment::getPublicPath().$directory;
+        $this->assertTrue(is_dir(Sys25\RnBase\Utility\Environment::getPublicPath().$subDirectory));
     }
 
     /**

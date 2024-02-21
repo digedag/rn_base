@@ -179,7 +179,7 @@ class BaseFilter implements FilterInterface
      * @param string                                             $idstr
      * @param array                                              $fields
      * @param \Sys25\RnBase\Frontend\Request\Parameters          $parameters
-     * @param \Sys25\RnBase\Configuration\ConfigurationInterface $configurations
+     * @param ConfigurationInterface $configurations
      * @param string                                             $operator       Operator-Konstante
      */
     public function setField($idstr, &$fields, $parameters, $configurations, $operator = OP_LIKE)

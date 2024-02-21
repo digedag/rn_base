@@ -28,7 +28,7 @@ tx_rnbase::load('tx_rnbase_mod_BaseModule');
 /**
  * Backend Modul für rnbase.
  */
-class tx_rnbase_tests_fixtures_classes_Mod extends \Sys25\RnBase\Backend\Module\BaseModule
+class tx_rnbase_tests_fixtures_classes_Mod extends Sys25\RnBase\Backend\Module\BaseModule
 {
     public $pageinfo;
 

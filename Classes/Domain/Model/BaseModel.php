@@ -200,7 +200,7 @@ class BaseModel extends DataModel implements DomainModelInterface, DynamicTableI
      * @return DateTime
      */
     public function getCreationDateTime(
-        DateTimeZone $timezone = null
+        ?DateTimeZone $timezone = null
     ) {
         $datetime = null;
         $tableName = $this->getTableName();
@@ -226,7 +226,7 @@ class BaseModel extends DataModel implements DomainModelInterface, DynamicTableI
      * @return DateTime
      */
     public function getLastModifyDateTime(
-        DateTimeZone $timezone = null
+        ?DateTimeZone $timezone = null
     ) {
         $datetime = null;
         $tableName = $this->getTableName();

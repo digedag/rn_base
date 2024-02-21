@@ -177,16 +177,16 @@ class Misc
 
         $aDebug[] = '<h2 id="backtracetitle">Call stack</h2>';
         $aDebug[] = '<div class="backtrace">';
-        $aDebug[] = '<span class="notice"><b>Call 0: </b>'.str_replace(\Sys25\RnBase\Utility\Environment::getPublicPath(), '/', $aLocation['file']).':'.$aLocation['line'].' | <b>'.$aTrace1['class'].$aTrace1['type'].
+        $aDebug[] = '<span class="notice"><b>Call 0: </b>'.str_replace(Environment::getPublicPath(), '/', $aLocation['file']).':'.$aLocation['line'].' | <b>'.$aTrace1['class'].$aTrace1['type'].
                                     $aTrace1['function'].'</b></span><br/>With parameters: '.(!empty($aTrace1['args']) ? self::viewMixed($aTrace1['args']) : ' no parameters');
         $aDebug[] = '<hr/>';
-        $aDebug[] = '<span class="notice"><b>Call -1: </b>'.str_replace(\Sys25\RnBase\Utility\Environment::getPublicPath(), '/', $aTrace1['file']).':'.$aTrace1['line'].' | <b>'.$aTrace2['class'].$aTrace2['type'].
+        $aDebug[] = '<span class="notice"><b>Call -1: </b>'.str_replace(Environment::getPublicPath(), '/', $aTrace1['file']).':'.$aTrace1['line'].' | <b>'.$aTrace2['class'].$aTrace2['type'].
                                     $aTrace2['function'].'</b></span><br />With parameters: '.(!empty($aTrace2['args']) ? self::viewMixed($aTrace2['args']) : ' no parameters');
         $aDebug[] = '<hr/>';
-        $aDebug[] = '<span class="notice"><b>Call -2: </b>'.str_replace(\Sys25\RnBase\Utility\Environment::getPublicPath(), '/', $aTrace2['file']).':'.$aTrace2['line'].' | <b>'.$aTrace3['class'].$aTrace3['type'].
+        $aDebug[] = '<span class="notice"><b>Call -2: </b>'.str_replace(Environment::getPublicPath(), '/', $aTrace2['file']).':'.$aTrace2['line'].' | <b>'.$aTrace3['class'].$aTrace3['type'].
                                     $aTrace3['function'].'</b></span><br />With parameters: '.(!empty($aTrace3['args']) ? self::viewMixed($aTrace3['args']) : ' no parameters');
         $aDebug[] = '<hr/>';
-        $aDebug[] = '<span class="notice"><b>Call -3: </b>'.str_replace(\Sys25\RnBase\Utility\Environment::getPublicPath(), '/', $aTrace3['file']).':'.$aTrace3['line'].' | <b>'.$aTrace4['class'].
+        $aDebug[] = '<span class="notice"><b>Call -3: </b>'.str_replace(Environment::getPublicPath(), '/', $aTrace3['file']).':'.$aTrace3['line'].' | <b>'.$aTrace4['class'].
                                     $aTrace4['type'].$aTrace4['function'].'</b></span><br />With parameters: '.(!empty($aTrace4['args']) ? self::viewMixed($aTrace4['args']) : ' no parameters');
         $aDebug[] = '<hr/>';
 
@@ -342,7 +342,7 @@ MAYDAYPAGE;
     /**
      * Prepare classes for FE-rendering if it is needed in TYPO3 backend.
      *
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     * @return TypoScriptFrontendController
      */
     public static function prepareTSFE($options = [])
     {
