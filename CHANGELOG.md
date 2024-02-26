@@ -3,6 +3,9 @@
 Changelog
 ---------
 
+v1.16.17 (26.02.2023)
+* Fix undefined array key warnings
+
 v1.16.16 (09.11.2023)
 * handle cache tags trait fixed in TYPO3 11.5
 
