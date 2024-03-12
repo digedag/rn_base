@@ -202,7 +202,7 @@ class ModFuncFrame implements IModule
     public function getConfigurations()
     {
         if (null === $this->configurations) {
-            Misc::prepareTSFE(); // Ist bei Aufruf aus BE notwendig!
+            Misc::prepareTSFE(['pid' => $this->id]); // Ist bei Aufruf aus BE notwendig!
             $cObj = TYPO3::getContentObject();
 
             $pageTSconfigFull = BackendUtility::getPagesTSconfig($this->getPid());

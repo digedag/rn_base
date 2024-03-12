@@ -32,6 +32,8 @@ use tx_rnbase;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Site\Entity\NullSite;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -339,6 +341,32 @@ MAYDAYPAGE;
         return $result;
     }
 
+    private static function lookupSite4Backend(int $pid, ?array $rootLine = null): Site
+    {
+        $rootLine = [];
+        if ($pid > 0) {
+            $rootLine = \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($pid);
+        }
+        $siteMatcher = tx_rnbase::makeInstance(\TYPO3\CMS\Core\Routing\SiteMatcher::class);
+        $site = $siteMatcher->matchByPageId($pid, $rootLine);
+        if ($site instanceof NullSite && $pid > 1) {
+            // Wir probieren es noch mal mit der ID 1. Da gab es bisher keine Beschwerden.
+            $pid = 1;
+            $rootLine = \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($pid);
+            $site = $siteMatcher->matchByPageId($pid, $rootLine);
+        }
+        if ($site instanceof NullSite) {
+            // Jetzt holen wir irgendeine Rootpage
+            $siteMatcher = tx_rnbase::makeInstance(\TYPO3\CMS\Core\Site\SiteFinder::class);
+            $sites = $siteMatcher->getAllSites();
+            if (!empty($sites)) {
+                $site = reset($sites);
+            }
+        }
+
+        return $site;
+    }
+
     /**
      * Prepare classes for FE-rendering if it is needed in TYPO3 backend.
      *
@@ -361,12 +389,7 @@ MAYDAYPAGE;
             || $force
         ) {
             if (TYPO3::isTYPO90OrHigher()) {
-                $rootLine = null;
-                if ($pid > 0) {
-                    $rootLine = \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($pid);
-                }
-                $siteMatcher = tx_rnbase::makeInstance(\TYPO3\CMS\Core\Routing\SiteMatcher::class);
-                $site = $siteMatcher->matchByPageId($pid, $rootLine);
+                $site = self::lookupSite4Backend($pid);
 
                 if (!($GLOBALS['TYPO3_REQUEST'] ?? null)) {
                     $request = (new ServerRequest())

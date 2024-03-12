@@ -90,6 +90,17 @@ class Extensions
         return call_user_func_array([static::getExtensionManagementUtilityClass(), $method], $arguments);
     }
 
+    public static function addLLrefForTCAdescr($key, $file)
+    {
+        if (TYPO3::isTYPO121OrHigher()) {
+            // CSH is removed in T3 12
+            return;
+        }
+
+        $class = self::getExtensionManagementUtilityClass();
+        $class::addLLrefForTCAdescr($key, $file);
+    }
+
     /**
      * @return string
      */
