@@ -731,7 +731,7 @@ class TSFAL
      * @param int    $refUid
      * @param string $refField
      *
-     * @return false|\TYPO3\CMS\Core\Resource\FileReference
+     * @return false|FileReference
      */
     public static function getFirstReference($refTable, $refUid, $refField)
     {

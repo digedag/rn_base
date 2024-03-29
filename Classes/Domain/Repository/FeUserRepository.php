@@ -52,7 +52,7 @@ class FeUserRepository extends PersistenceRepository
      *
      * @param int $uid
      *
-     * @return \Sys25\RnBase\Domain\Model\FeUser|null
+     * @return FeUser|null
      */
     public function findByUidForced(int $uid)
     {

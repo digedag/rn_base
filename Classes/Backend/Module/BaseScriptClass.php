@@ -234,7 +234,7 @@ abstract class BaseScriptClass
             $this->MCONF = array_merge((array) $GLOBALS['MCONF'], [
                 'name' => $this->moduleName,
                 // 'access' => 'user,group',
-        ]);
+            ]);
         }
 
         $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
