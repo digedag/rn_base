@@ -122,10 +122,10 @@ class FormBuilder
                 }
             } else {
                 $formDataCompilerInput = [
-                        'tableName' => $table,
-                        'vanillaUid' => (int) $uid,
-                        'command' => 'edit',
-                        'returnUrl' => '',
+                    'tableName' => $table,
+                    'vanillaUid' => (int) $uid,
+                    'command' => 'edit',
+                    'returnUrl' => '',
                 ];
             }
             $this->formDataCache[$cacheKey] = $this->formDataCompiler->compile($formDataCompilerInput);

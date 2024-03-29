@@ -62,7 +62,7 @@ class TcaToolTest extends BaseTestCase
                 'title' => 'LLL:EXT:cms/locallang_ttc.xml:header_link_formlabel',
                 'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
                 'params' => [
-                        'blindLinkOptions' => 'file,page,mail,spec,folder',
+                    'blindLinkOptions' => 'file,page,mail,spec,folder',
                 ],
                 'module' => ['urlParameters' => ['mode' => 'wizard', 'newKey' => 'wizard']],
             ],

@@ -81,22 +81,22 @@ class tx_rnbase_tests_mod_Tables_testcase extends BaseTestCase
     public function testPrepareTableWithoutLinkerDecoratorOrCallbackMethodWithEntriesGivenAsModelsReturnsCorrectTable()
     {
         $aEntries = [
-                0 => tx_rnbase::makeInstance('tx_rnbase_model_base', [
-                        'uid' => 1,
-                        'col1' => 'col1 Value 1',
-                ]),
-                1 => tx_rnbase::makeInstance('tx_rnbase_model_base', [
-                        'uid' => 2,
-                        'col1' => 'col1 Value 2',
-                ]),
+            0 => tx_rnbase::makeInstance('tx_rnbase_model_base', [
+                'uid' => 1,
+                'col1' => 'col1 Value 1',
+            ]),
+            1 => tx_rnbase::makeInstance('tx_rnbase_model_base', [
+                'uid' => 2,
+                'col1' => 'col1 Value 2',
+            ]),
         ];
         $aColumns = [
-                'uid' => [
-                        'title' => 'Header Uid',
-                ],
-                'col1' => [
-                        'title' => 'Header Col1',
-                ],
+            'uid' => [
+                'title' => 'Header Uid',
+            ],
+            'col1' => [
+                'title' => 'Header Col1',
+            ],
         ];
         $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, []);
 
@@ -124,22 +124,22 @@ class tx_rnbase_tests_mod_Tables_testcase extends BaseTestCase
     public function testPrepareTableWithoutLinkerDecoratorOrCallbackMethodWithEntriesGivenAsArraysReturnsCorrectTable()
     {
         $aEntries = [
-                0 => [
-                        'uid' => 1,
-                        'col1' => 'col1 Value 1',
-                ],
-                1 => [
-                        'uid' => 2,
-                        'col1' => 'col1 Value 2',
-                ],
+            0 => [
+                'uid' => 1,
+                'col1' => 'col1 Value 1',
+            ],
+            1 => [
+                'uid' => 2,
+                'col1' => 'col1 Value 2',
+            ],
         ];
         $aColumns = [
-                'uid' => [
-                        'title' => 'Header Uid',
-                ],
-                'col1' => [
-                        'title' => 'Header Col1',
-                ],
+            'uid' => [
+                'title' => 'Header Uid',
+            ],
+            'col1' => [
+                'title' => 'Header Col1',
+            ],
         ];
         $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, []);
 
@@ -171,24 +171,24 @@ class tx_rnbase_tests_mod_Tables_testcase extends BaseTestCase
             tx_rnbase::makeInstance('tx_rnbase_tests_fixtures_classes_Mod')
         );
         $aEntries = [
-                0 => tx_rnbase::makeInstance('tx_rnbase_model_base', [
-                        'uid' => 1,
-                        'col1' => 'col1 Value 1',
-                ]),
-                1 => tx_rnbase::makeInstance('tx_rnbase_model_base', [
-                        'uid' => 2,
-                        'col1' => 'col1 Value 2',
-                ]),
+            0 => tx_rnbase::makeInstance('tx_rnbase_model_base', [
+                'uid' => 1,
+                'col1' => 'col1 Value 1',
+            ]),
+            1 => tx_rnbase::makeInstance('tx_rnbase_model_base', [
+                'uid' => 2,
+                'col1' => 'col1 Value 2',
+            ]),
         ];
         $aColumns = [
-                'uid' => [
-                        'title' => 'Header Uid',
-                        'decorator' => &$oDecorator,
-                ],
-                'col1' => [
-                        'title' => 'Header Col1',
-                        'decorator' => &$oDecorator,
-                ],
+            'uid' => [
+                'title' => 'Header Uid',
+                'decorator' => &$oDecorator,
+            ],
+            'col1' => [
+                'title' => 'Header Col1',
+                'decorator' => &$oDecorator,
+            ],
         ];
         $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, []);
 
@@ -214,23 +214,23 @@ class tx_rnbase_tests_mod_Tables_testcase extends BaseTestCase
     public function testPrepareTableWithSortableButNothingSelectedReturnsCorrectTable()
     {
         $aEntries = [
-                0 => [
-                        'uid' => 1,
-                        'col1' => 'col1 Value 1',
-                ],
-                1 => [
-                        'uid' => 2,
-                        'col1' => 'col1 Value 2',
-                ],
+            0 => [
+                'uid' => 1,
+                'col1' => 'col1 Value 1',
+            ],
+            1 => [
+                'uid' => 2,
+                'col1' => 'col1 Value 2',
+            ],
         ];
         $aColumns = [
             'uid' => [
-                        'title' => 'Header Uid',
-                        'sortable' => 'TestPrefix.',
-                ],
-                'col1' => [
-                        'title' => 'Header Col1',
-                ],
+                'title' => 'Header Uid',
+                'sortable' => 'TestPrefix.',
+            ],
+            'col1' => [
+                'title' => 'Header Col1',
+            ],
         ];
         $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, []);
         // allgmein
@@ -256,23 +256,23 @@ class tx_rnbase_tests_mod_Tables_testcase extends BaseTestCase
     {
         $_GET['sortField'] = 'uid';
         $aEntries = [
-                0 => [
-                        'uid' => 1,
-                        'col1' => 'col1 Value 1',
-                ],
-                1 => [
-                        'uid' => 2,
-                        'col1' => 'col1 Value 2',
-                ],
+            0 => [
+                'uid' => 1,
+                'col1' => 'col1 Value 1',
+            ],
+            1 => [
+                'uid' => 2,
+                'col1' => 'col1 Value 2',
+            ],
         ];
         $aColumns = [
-                'uid' => [
-                        'title' => 'Header Uid',
-                        'sortable' => 'TestPrefix.',
-                ],
-                'col1' => [
-                        'title' => 'Header Col1',
-                ],
+            'uid' => [
+                'title' => 'Header Uid',
+                'sortable' => 'TestPrefix.',
+            ],
+            'col1' => [
+                'title' => 'Header Col1',
+            ],
         ];
         $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, []);
 
@@ -303,23 +303,23 @@ class tx_rnbase_tests_mod_Tables_testcase extends BaseTestCase
         $_GET['sortField'] = 'uid';
         $_GET['sortRev'] = 'desc';
         $aEntries = [
-                0 => [
-                        'uid' => 1,
-                        'col1' => 'col1 Value 1',
-                ],
-                1 => [
-                        'uid' => 2,
-                        'col1' => 'col1 Value 2',
-                ],
+            0 => [
+                'uid' => 1,
+                'col1' => 'col1 Value 1',
+            ],
+            1 => [
+                'uid' => 2,
+                'col1' => 'col1 Value 2',
+            ],
         ];
         $aColumns = [
-                'uid' => [
-                        'title' => 'Header Uid',
-                        'sortable' => 'TestPrefix.',
-                ],
-                'col1' => [
-                        'title' => 'Header Col1',
-                ],
+            'uid' => [
+                'title' => 'Header Uid',
+                'sortable' => 'TestPrefix.',
+            ],
+            'col1' => [
+                'title' => 'Header Col1',
+            ],
         ];
         $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, []);
 
@@ -352,23 +352,23 @@ class tx_rnbase_tests_mod_Tables_testcase extends BaseTestCase
         $_SERVER['REQUEST_URI'] .= '&sortField=title&sortRev=desc&additionalParam=test';
 
         $aEntries = [
-                0 => [
-                        'uid' => 1,
-                        'col1' => 'col1 Value 1',
-                ],
-                1 => [
-                        'uid' => 2,
-                        'col1' => 'col1 Value 2',
-                ],
+            0 => [
+                'uid' => 1,
+                'col1' => 'col1 Value 1',
+            ],
+            1 => [
+                'uid' => 2,
+                'col1' => 'col1 Value 2',
+            ],
         ];
         $aColumns = [
-                'uid' => [
-                        'title' => 'Header Uid',
-                        'sortable' => 'TestPrefix.',
-                ],
-                'col1' => [
-                        'title' => 'Header Col1',
-                ],
+            'uid' => [
+                'title' => 'Header Uid',
+                'sortable' => 'TestPrefix.',
+            ],
+            'col1' => [
+                'title' => 'Header Col1',
+            ],
         ];
         $aRet = tx_rnbase_mod_Tables::prepareTable($aEntries, $aColumns, $this->oFormTool, []);
 

@@ -550,22 +550,22 @@ abstract class BaseModule extends BaseScriptClass implements IModule
     public function getTableLayout()
     {
         return [
-                    'table' => ['<table class="typo3-dblist" width="100%" cellspacing="0" cellpadding="0" border="0">', '</table><br/>'],
-                    '0' => [ // Format für 1. Zeile
-                        'tr' => ['<tr class="t3-row-header c-headLineTable">', '</tr>'],
-                        // Format für jede Spalte in der 1. Zeile
-                        'defCol' => ['<td>', '</td>'],
-                    ],
-                    'defRow' => [ // Formate für alle Zeilen
-                        'tr' => ['<tr class="db_list_normal">', '</tr>'],
-                        'defCol' => ['<td>', '</td>'], // Format für jede Spalte in jeder Zeile
-                    ],
-                    'defRowEven' => [ // Formate für alle geraden Zeilen
-                        'tr' => ['<tr class="db_list_alt">', '</tr>'],
-                        // Format für jede Spalte in jeder Zeile
-                        'defCol' => ['<td>', '</td>'],
-                    ],
-                ];
+            'table' => ['<table class="typo3-dblist" width="100%" cellspacing="0" cellpadding="0" border="0">', '</table><br/>'],
+            '0' => [ // Format für 1. Zeile
+                'tr' => ['<tr class="t3-row-header c-headLineTable">', '</tr>'],
+                // Format für jede Spalte in der 1. Zeile
+                'defCol' => ['<td>', '</td>'],
+            ],
+            'defRow' => [ // Formate für alle Zeilen
+                'tr' => ['<tr class="db_list_normal">', '</tr>'],
+                'defCol' => ['<td>', '</td>'], // Format für jede Spalte in jeder Zeile
+            ],
+            'defRowEven' => [ // Formate für alle geraden Zeilen
+                'tr' => ['<tr class="db_list_alt">', '</tr>'],
+                // Format für jede Spalte in jeder Zeile
+                'defCol' => ['<td>', '</td>'],
+            ],
+        ];
     }
 
     /**

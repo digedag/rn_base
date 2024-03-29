@@ -159,9 +159,9 @@ abstract class BaseLister
         $this->addMoreFields($data, $options);
         if ($updateButton = $this->getSearchButton()) {
             $data['updatebutton'] = [
-                    'label' => '',
-                    'button' => $updateButton,
-                ];
+                'label' => '',
+                'button' => $updateButton,
+            ];
         }
 
         $out = $this->buildFilterTable($data);
@@ -240,10 +240,10 @@ abstract class BaseLister
         }
 
         return [
-                'table' => $content,
-                'totalsize' => $cnt,
-                'pager' => '<div class="pager">'.$sPagerData.'</div>',
-            ];
+            'table' => $content,
+            'totalsize' => $cnt,
+            'pager' => '<div class="pager">'.$sPagerData.'</div>',
+        ];
     }
 
     /**

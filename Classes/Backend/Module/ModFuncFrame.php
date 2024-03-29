@@ -84,9 +84,9 @@ class ModFuncFrame implements IModule
         }
 
         $this->modFunc->init($this, [
-                // 'form' => $this->getFormTag(),
-                // 'docstyles' => $this->getDocStyles(),
-                // 'template' => $this->getModuleTemplateFilename(),
+            // 'form' => $this->getFormTag(),
+            // 'docstyles' => $this->getDocStyles(),
+            // 'template' => $this->getModuleTemplateFilename(),
         ]);
         // Rahmen rendern
         $this->moduleTemplate = $this->createModuleTemplate($request);

@@ -58,17 +58,17 @@ class Strings
         $hexArr = [];
         for ($i = 0, $cnt = mb_strlen($str, '8bit'); $i < $cnt; ++$i) {
             $bytes[$i] = [
-                    'ascii' => $str[$i],
-                    'dec' => ord($str[$i]),
-                    'hex' => dechex(ord($str[$i])),
+                'ascii' => $str[$i],
+                'dec' => ord($str[$i]),
+                'hex' => dechex(ord($str[$i])),
             ];
             $hexArr[$i] = dechex(ord($str[$i]));
         }
         $ret = [
-                'bytelength' => mb_strlen($str, '8bit'),
-                'bin2hex' => bin2hex($str),
-                'bytes' => $bytes,
-                'hexArr' => serialize($hexArr),
+            'bytelength' => mb_strlen($str, '8bit'),
+            'bin2hex' => bin2hex($str),
+            'bytes' => $bytes,
+            'hexArr' => serialize($hexArr),
         ];
 
         return $ret;
