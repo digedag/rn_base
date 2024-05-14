@@ -59,7 +59,7 @@ class DecoratorUtility
      * @return DecoratorUtility
      */
     public static function getInstance(
-        InterfaceDecorator $decorator = null,
+        ?InterfaceDecorator $decorator = null,
         $options = []
     ) {
         return tx_rnbase::makeInstance(
@@ -76,7 +76,7 @@ class DecoratorUtility
      * @param DataModel|array $options
      */
     public function __construct(
-        InterfaceDecorator $decorator = null,
+        ?InterfaceDecorator $decorator = null,
         $options = []
     ) {
         $this->decorator = $decorator;

@@ -32,6 +32,8 @@ use tx_rnbase;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Site\Entity\NullSite;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -177,16 +179,16 @@ class Misc
 
         $aDebug[] = '<h2 id="backtracetitle">Call stack</h2>';
         $aDebug[] = '<div class="backtrace">';
-        $aDebug[] = '<span class="notice"><b>Call 0: </b>'.str_replace(\Sys25\RnBase\Utility\Environment::getPublicPath(), '/', $aLocation['file']).':'.$aLocation['line'].' | <b>'.$aTrace1['class'].$aTrace1['type'].
+        $aDebug[] = '<span class="notice"><b>Call 0: </b>'.str_replace(Environment::getPublicPath(), '/', $aLocation['file']).':'.$aLocation['line'].' | <b>'.$aTrace1['class'].$aTrace1['type'].
                                     $aTrace1['function'].'</b></span><br/>With parameters: '.(!empty($aTrace1['args']) ? self::viewMixed($aTrace1['args']) : ' no parameters');
         $aDebug[] = '<hr/>';
-        $aDebug[] = '<span class="notice"><b>Call -1: </b>'.str_replace(\Sys25\RnBase\Utility\Environment::getPublicPath(), '/', $aTrace1['file']).':'.$aTrace1['line'].' | <b>'.$aTrace2['class'].$aTrace2['type'].
+        $aDebug[] = '<span class="notice"><b>Call -1: </b>'.str_replace(Environment::getPublicPath(), '/', $aTrace1['file']).':'.$aTrace1['line'].' | <b>'.$aTrace2['class'].$aTrace2['type'].
                                     $aTrace2['function'].'</b></span><br />With parameters: '.(!empty($aTrace2['args']) ? self::viewMixed($aTrace2['args']) : ' no parameters');
         $aDebug[] = '<hr/>';
-        $aDebug[] = '<span class="notice"><b>Call -2: </b>'.str_replace(\Sys25\RnBase\Utility\Environment::getPublicPath(), '/', $aTrace2['file']).':'.$aTrace2['line'].' | <b>'.$aTrace3['class'].$aTrace3['type'].
+        $aDebug[] = '<span class="notice"><b>Call -2: </b>'.str_replace(Environment::getPublicPath(), '/', $aTrace2['file']).':'.$aTrace2['line'].' | <b>'.$aTrace3['class'].$aTrace3['type'].
                                     $aTrace3['function'].'</b></span><br />With parameters: '.(!empty($aTrace3['args']) ? self::viewMixed($aTrace3['args']) : ' no parameters');
         $aDebug[] = '<hr/>';
-        $aDebug[] = '<span class="notice"><b>Call -3: </b>'.str_replace(\Sys25\RnBase\Utility\Environment::getPublicPath(), '/', $aTrace3['file']).':'.$aTrace3['line'].' | <b>'.$aTrace4['class'].
+        $aDebug[] = '<span class="notice"><b>Call -3: </b>'.str_replace(Environment::getPublicPath(), '/', $aTrace3['file']).':'.$aTrace3['line'].' | <b>'.$aTrace4['class'].
                                     $aTrace4['type'].$aTrace4['function'].'</b></span><br />With parameters: '.(!empty($aTrace4['args']) ? self::viewMixed($aTrace4['args']) : ' no parameters');
         $aDebug[] = '<hr/>';
 
@@ -339,10 +341,36 @@ MAYDAYPAGE;
         return $result;
     }
 
+    private static function lookupSite4Backend(int $pid, ?array $rootLine = null): Site
+    {
+        $rootLine = [];
+        if ($pid > 0) {
+            $rootLine = \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($pid);
+        }
+        $siteMatcher = tx_rnbase::makeInstance(\TYPO3\CMS\Core\Routing\SiteMatcher::class);
+        $site = $siteMatcher->matchByPageId($pid, $rootLine);
+        if ($site instanceof NullSite && $pid > 1) {
+            // Wir probieren es noch mal mit der ID 1. Da gab es bisher keine Beschwerden.
+            $pid = 1;
+            $rootLine = \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($pid);
+            $site = $siteMatcher->matchByPageId($pid, $rootLine);
+        }
+        if ($site instanceof NullSite) {
+            // Jetzt holen wir irgendeine Rootpage
+            $siteMatcher = tx_rnbase::makeInstance(\TYPO3\CMS\Core\Site\SiteFinder::class);
+            $sites = $siteMatcher->getAllSites();
+            if (!empty($sites)) {
+                $site = reset($sites);
+            }
+        }
+
+        return $site;
+    }
+
     /**
      * Prepare classes for FE-rendering if it is needed in TYPO3 backend.
      *
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     * @return TypoScriptFrontendController
      */
     public static function prepareTSFE($options = [])
     {
@@ -361,12 +389,7 @@ MAYDAYPAGE;
             || $force
         ) {
             if (TYPO3::isTYPO90OrHigher()) {
-                $rootLine = null;
-                if ($pid > 0) {
-                    $rootLine = \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($pid);
-                }
-                $siteMatcher = tx_rnbase::makeInstance(\TYPO3\CMS\Core\Routing\SiteMatcher::class);
-                $site = $siteMatcher->matchByPageId($pid, $rootLine);
+                $site = self::lookupSite4Backend($pid);
 
                 if (!($GLOBALS['TYPO3_REQUEST'] ?? null)) {
                     $request = (new ServerRequest())

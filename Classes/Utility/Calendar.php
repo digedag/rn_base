@@ -126,20 +126,20 @@ class Calendar
     private function _init()
     {
         $this->_seconds = [CALENDAR_SECOND => 1,
-                             CALENDAR_MINUTE => 60,
-                             CALENDAR_HOUR => 60 * 60,
-                             CALENDAR_DAY_OF_MONTH => 86400,
-                             CALENDAR_DAY_OF_YEAR => 86400,
-                             CALENDAR_WEEK_OF_MONTH => 86400 * 7,
-                             CALENDAR_WEEK_OF_YEAR => 86400 * 7, ];
+            CALENDAR_MINUTE => 60,
+            CALENDAR_HOUR => 60 * 60,
+            CALENDAR_DAY_OF_MONTH => 86400,
+            CALENDAR_DAY_OF_YEAR => 86400,
+            CALENDAR_WEEK_OF_MONTH => 86400 * 7,
+            CALENDAR_WEEK_OF_YEAR => 86400 * 7, ];
 
         $this->_clearHash = [CALENDAR_SECOND => 'seconds',
-                             CALENDAR_MINUTE => 'minutes',
-                             CALENDAR_HOUR => 'hours',
-                             CALENDAR_DAY_OF_MONTH => 'mday',
-                             CALENDAR_DAY_OF_YEAR => 'mday',
-                             CALENDAR_MONTH => 'mon',
-                             CALENDAR_YEAR => 'year', ];
+            CALENDAR_MINUTE => 'minutes',
+            CALENDAR_HOUR => 'hours',
+            CALENDAR_DAY_OF_MONTH => 'mday',
+            CALENDAR_DAY_OF_YEAR => 'mday',
+            CALENDAR_MONTH => 'mon',
+            CALENDAR_YEAR => 'year', ];
     }
 
     private function _getSeconds($field)

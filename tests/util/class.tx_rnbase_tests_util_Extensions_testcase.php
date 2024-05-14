@@ -47,7 +47,7 @@ class tx_rnbase_tests_util_Extensions_testcase extends BaseTestCase
     }
 }
 
-class tx_rnbase_util_ExtensionsForTests extends \Sys25\RnBase\Utility\Extensions
+class tx_rnbase_util_ExtensionsForTests extends Sys25\RnBase\Utility\Extensions
 {
     /**
      * @return Typo3BackendUtilityClass

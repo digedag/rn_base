@@ -118,10 +118,10 @@ class Lock
     protected function getFile()
     {
         if (null === $this->logFile) {
-            if (\Sys25\RnBase\Utility\TYPO3::isTYPO95OrHigher()) {
+            if (TYPO3::isTYPO95OrHigher()) {
                 $folder = \TYPO3\CMS\Core\Core\Environment::getVarPath().'/lock/rn_base/';
             } else {
-                $folder = \Sys25\RnBase\Utility\Environment::getPublicPath().'typo3temp/rn_base/';
+                $folder = Environment::getPublicPath().'typo3temp/rn_base/';
             }
             if (!is_dir($folder)) {
                 Files::mkdir_deep($folder);

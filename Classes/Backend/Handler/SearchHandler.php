@@ -228,9 +228,9 @@ abstract class SearchHandler implements IModHandler
      */
     protected function showSearch(
         $template,
-        array &$markerArray = null,
-        array &$subpartArray = null,
-        array &$wrappedSubpartArray = null
+        ?array &$markerArray = null,
+        ?array &$subpartArray = null,
+        ?array &$wrappedSubpartArray = null
     ) {
         /* @var $searcher Tx_Hpsplaner_Backend_Searcher_* */
         $searcher = $this->getLister();

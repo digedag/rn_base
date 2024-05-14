@@ -103,7 +103,7 @@ class MailTest extends BaseTestCase
      */
     protected function createMailMock()
     {
-        $mailMock = $this->getMock(\Sys25\RnBase\Utility\Email::class, ['sendMessage']);
+        $mailMock = $this->getMock(Email::class, ['sendMessage']);
         $mailMock->expects($this->any())->method('sendMessage')->will($this->returnArgument(0));
 
         return $mailMock;

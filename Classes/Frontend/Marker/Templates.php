@@ -361,7 +361,7 @@ class Templates
      *
      * @see substituteSubpart(), substituteMarker(), substituteMarkerInObject(), TEMPLATE()
      */
-    public static function substituteMarkerArrayCached($content, array $markContentArray = null, array $subpartContentArray = null, array $wrappedSubpartContentArray = null)
+    public static function substituteMarkerArrayCached($content, ?array $markContentArray = null, ?array $subpartContentArray = null, ?array $wrappedSubpartContentArray = null)
     {
         Misc::pushTT('substituteMarkerArray');
 

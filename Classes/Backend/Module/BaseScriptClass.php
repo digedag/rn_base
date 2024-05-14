@@ -234,7 +234,7 @@ abstract class BaseScriptClass
             $this->MCONF = array_merge((array) $GLOBALS['MCONF'], [
                 'name' => $this->moduleName,
                 // 'access' => 'user,group',
-        ]);
+            ]);
         }
 
         $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
@@ -382,7 +382,7 @@ abstract class BaseScriptClass
                 $this->getLanguageService()->getLL('title'),
                 FlashMessage::ERROR
             );
-            /** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
+            /** @var FlashMessageService $flashMessageService */
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
             /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue $defaultFlashMessageQueue */
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();

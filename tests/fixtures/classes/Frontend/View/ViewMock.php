@@ -48,7 +48,7 @@ class ViewMock extends AbstractView implements ViewInterface
     }
 
     /**
-     * @return \Sys25\RnBase\Frontend\Request\RequestInterface
+     * @return RequestInterface
      */
     public function getRequest()
     {

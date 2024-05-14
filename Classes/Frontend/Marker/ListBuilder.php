@@ -49,7 +49,7 @@ class ListBuilder
     /**
      * @param ListBuilderInfo|null $info
      */
-    public function __construct(ListBuilderInfo $info = null)
+    public function __construct(?ListBuilderInfo $info = null)
     {
         if ($info) {
             $this->info = $info;
@@ -183,12 +183,12 @@ class ListBuilder
             $wrapTime = FormatUtil::$time - $wrapTime;
             $wrapMem = FormatUtil::$mem - $wrapMem;
             Debug::debug([
-                    'Execustion time' => (microtime(true) - $time),
-                    'WrapTime' => $wrapTime,
-                    'WrapMem' => $wrapMem,
-                    'Memory start' => $mem,
-                    'Memory consumed' => (memory_get_usage() - $mem),
-                ], 'ListBuilder Statistics for: '.$confId.' Key: '.$debugKey);
+                'Execustion time' => (microtime(true) - $time),
+                'WrapTime' => $wrapTime,
+                'WrapMem' => $wrapMem,
+                'Memory start' => $mem,
+                'Memory consumed' => (memory_get_usage() - $mem),
+            ], 'ListBuilder Statistics for: '.$confId.' Key: '.$debugKey);
         }
 
         return $out;
@@ -325,13 +325,13 @@ class ListBuilder
             $wrapTime = FormatUtil::$time - $wrapTime;
             $wrapMem = FormatUtil::$mem - $wrapMem;
             Debug::debug([
-                    'Rows' => count($dataArr),
-                    'Execustion time' => (microtime(true) - $time),
-                    'WrapTime' => $wrapTime,
-                    'WrapMem' => $wrapMem,
-                    'Memory start' => $mem,
-                    'Memory consumed' => (memory_get_usage() - $mem),
-                ], 'ListBuilder Statistics for: '.$confId.' Key: '.$debugKey);
+                'Rows' => count($dataArr),
+                'Execustion time' => (microtime(true) - $time),
+                'WrapTime' => $wrapTime,
+                'WrapMem' => $wrapMem,
+                'Memory start' => $mem,
+                'Memory consumed' => (memory_get_usage() - $mem),
+            ], 'ListBuilder Statistics for: '.$confId.' Key: '.$debugKey);
         }
 
         return $out;

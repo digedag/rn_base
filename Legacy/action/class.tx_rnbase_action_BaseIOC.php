@@ -358,7 +358,7 @@ abstract class tx_rnbase_action_BaseIOC
      * @param string                                     $confId
      * @param array                                      $params
      *
-     * @return \tx_rnbase_util_Link link instance
+     * @return tx_rnbase_util_Link link instance
      */
     protected function createLink($configurations, $confId, $params = [])
     {

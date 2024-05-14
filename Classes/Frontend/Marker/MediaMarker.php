@@ -58,8 +58,8 @@ class MediaMarker extends SimpleMarker
             'rn_base',
             'mediaMarker_beforeRendering',
             ['template' => &$template, 'item' => &$item, 'formatter' => &$formatter,
-            'confId' => $confId,
-            'marker' => $marker, ],
+                'confId' => $confId,
+                'marker' => $marker, ],
             $this
         );
 

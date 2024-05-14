@@ -694,7 +694,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
      */
     protected function getPreparedVîewHelperWithPageBrowser(
         $viewHelper = PageBrowserViewHelper::class,
-        tx_rnbase_util_PageBrowser $pageBrowser = null,
+        ?tx_rnbase_util_PageBrowser $pageBrowser = null,
         $hideIfSinglePage = false,
         $maxPages = 10,
         $pageFloat = 'CENTER',
@@ -720,7 +720,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
     /**
      * @param array $methods
      *
-     * @return \Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowserViewHelper
+     * @return PageBrowserViewHelper
      */
     protected function getViewHelperMock(
         array $methods = [

@@ -3,6 +3,12 @@
 Changelog
 ---------
 
+v1.18.1 (14.05.2024)
+ * Improve page config setup in backend
+ * fix pagebrowser out of range handling
+ * add support for addQueryString=untrusted in pagebrowser view helpers
+ * minor bugfixes
+
 v1.18.0 (09.12.2023)
 
 * Auto-detect module identifier to avoid boilerblade-code
@@ -32,7 +38,7 @@ v1.17.2 (03.08.2023)
 
 v1.17.1 (21.07.2023)
 
-* Update for TYPO3 12.4 LTS 
+* Update for TYPO3 12.4 LTS
 * Removed class ModuleRunner as not needed anymore
 * Removed class ModuleBase as not needed anymore
 * fixed some PHP warnings

@@ -184,7 +184,7 @@ class BackendUtility
     public static function getModuleUrl($moduleName, $urlParameters = [])
     {
         /* @var $uriBuilder \TYPO3\CMS\Backend\Routing\UriBuilder */
-        $uriBuilder = tx_rnbase::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = tx_rnbase::makeInstance(UriBuilder::class);
 
         try {
             $uri = $uriBuilder->buildUriFromRoute($moduleName, $urlParameters);
@@ -216,7 +216,7 @@ class BackendUtility
             rawurlencode(T3General::getIndpEnv('REQUEST_URI'))
         );
         /* @var $uriBuilder \TYPO3\CMS\Backend\Routing\UriBuilder */
-        $uriBuilder = T3General::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = T3General::makeInstance(UriBuilder::class);
         $uri = $uriBuilder->buildUriFromRoute('record_edit').$params;
 
         return 'window.location.href='.T3General::quoteJSvalue((string) $uri.'&returnUrl=').'+'.$returnUrl.'; return false;';

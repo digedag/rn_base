@@ -115,9 +115,9 @@ abstract class DetailHandler extends SearchHandler
     protected function showDetail(
         $template,
         RecordInterface $current,
-        array &$markerArray = null,
-        array &$subpartArray = null,
-        array &$wrappedSubpartArray = null
+        ?array &$markerArray = null,
+        ?array &$subpartArray = null,
+        ?array &$wrappedSubpartArray = null
     ) {
         // @TODO: implement protected function showDetail(
         throw new Exception('detail not implemented yet');

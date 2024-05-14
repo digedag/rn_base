@@ -62,7 +62,7 @@ class CacheTest extends BaseTestCase
             'requireCacheHashPresenceParameters' => [],
         ]);
 
-        $this->encryptionKeyBackup = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
+        $this->encryptionKeyBackup = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] ?? null;
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'Tx_Rnbase_Utility_CacheTest';
     }
 

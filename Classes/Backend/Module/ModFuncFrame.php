@@ -84,9 +84,9 @@ class ModFuncFrame implements IModule
         }
 
         $this->modFunc->init($this, [
-                // 'form' => $this->getFormTag(),
-                // 'docstyles' => $this->getDocStyles(),
-                // 'template' => $this->getModuleTemplateFilename(),
+            // 'form' => $this->getFormTag(),
+            // 'docstyles' => $this->getDocStyles(),
+            // 'template' => $this->getModuleTemplateFilename(),
         ]);
         // Rahmen rendern
         $this->moduleTemplate = $this->createModuleTemplate($request);
@@ -202,7 +202,7 @@ class ModFuncFrame implements IModule
     public function getConfigurations()
     {
         if (null === $this->configurations) {
-            Misc::prepareTSFE(); // Ist bei Aufruf aus BE notwendig!
+            Misc::prepareTSFE(['pid' => $this->id]); // Ist bei Aufruf aus BE notwendig!
             $cObj = TYPO3::getContentObject();
 
             $pageTSconfigFull = BackendUtility::getPagesTSconfig($this->getPid());
@@ -231,7 +231,7 @@ class ModFuncFrame implements IModule
     /**
      * @see IModule::getFormTool()
      *
-     * @return \Sys25\RnBase\Backend\Form\ToolBox
+     * @return ToolBox
      */
     public function getFormTool()
     {

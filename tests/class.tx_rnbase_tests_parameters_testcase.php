@@ -42,7 +42,7 @@ class tx_rnbase_tests_parameters_testcase extends BaseTestCase
         ];
 
         /* @var $parameters \Sys25\RnBase\Frontend\Request\Parameters */
-        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class, $params);
+        $parameters = tx_rnbase::makeInstance(Sys25\RnBase\Frontend\Request\Parameters::class, $params);
 
         $this->assertEquals('', $parameters->get('empty'));
         $this->assertEquals('0', $parameters->get('zero'));
@@ -63,7 +63,7 @@ class tx_rnbase_tests_parameters_testcase extends BaseTestCase
         ];
 
         /* @var $parameters \Sys25\RnBase\Frontend\Request\Parameters */
-        $parameters = tx_rnbase::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class, $params);
+        $parameters = tx_rnbase::makeInstance(Sys25\RnBase\Frontend\Request\Parameters::class, $params);
 
         $this->assertEquals(0, $parameters->getInt('empty'));
         $this->assertEquals(0, $parameters->getInt('zero'));

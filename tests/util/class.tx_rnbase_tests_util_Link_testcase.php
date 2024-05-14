@@ -127,10 +127,10 @@ class tx_rnbase_tests_util_Link_testcase extends BaseTestCase
                 'expected' => tx_rnbase_util_Misc::getIndpEnv('TYPO3_REQUEST_DIR').'service/faq.html',
             ],
             [
-                    'typolink' => '//www.digedag.de/service/faq.html',
-                    'absUrl' => true,
-                    'schema' => false,
-                    'expected' => tx_rnbase_util_Misc::getIndpEnv('TYPO3_REQUEST_DIR').'service/faq.html',
+                'typolink' => '//www.digedag.de/service/faq.html',
+                'absUrl' => true,
+                'schema' => false,
+                'expected' => tx_rnbase_util_Misc::getIndpEnv('TYPO3_REQUEST_DIR').'service/faq.html',
             ],
             // makeTag
             [

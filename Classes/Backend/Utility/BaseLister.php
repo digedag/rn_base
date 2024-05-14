@@ -98,7 +98,7 @@ abstract class BaseLister
      */
     public function getFilterValue($key)
     {
-        return $this->filterValues[$key];
+        return $this->filterValues[$key] ?? '';
     }
 
     public function clearFilterValues()
@@ -159,9 +159,9 @@ abstract class BaseLister
         $this->addMoreFields($data, $options);
         if ($updateButton = $this->getSearchButton()) {
             $data['updatebutton'] = [
-                    'label' => '',
-                    'button' => $updateButton,
-                ];
+                'label' => '',
+                'button' => $updateButton,
+            ];
         }
 
         $out = $this->buildFilterTable($data);
@@ -240,10 +240,10 @@ abstract class BaseLister
         }
 
         return [
-                'table' => $content,
-                'totalsize' => $cnt,
-                'pager' => '<div class="pager">'.$sPagerData.'</div>',
-            ];
+            'table' => $content,
+            'totalsize' => $cnt,
+            'pager' => '<div class="pager">'.$sPagerData.'</div>',
+        ];
     }
 
     /**
@@ -520,7 +520,7 @@ abstract class BaseLister
 
         // Erst das Suchfeld, danach der Button.
         $marker['field'] = $this->getFormTool()->createTxtInput('SET['.$key.']', $searchstring, 10);
-        $marker['label'] = $options['label'] ? $options['label'] : '###LABEL_SEARCH###';
+        $marker['label'] = $options['label'] ?? '###LABEL_SEARCH###';
 
         return $searchstring;
     }

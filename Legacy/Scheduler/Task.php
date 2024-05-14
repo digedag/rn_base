@@ -33,6 +33,6 @@
  *
  * @deprecated as it doesn't provide any useful functionality
  */
-abstract class Tx_Rnbase_Scheduler_Task extends \TYPO3\CMS\Scheduler\Task\AbstractTask
+abstract class Tx_Rnbase_Scheduler_Task extends TYPO3\CMS\Scheduler\Task\AbstractTask
 {
 }

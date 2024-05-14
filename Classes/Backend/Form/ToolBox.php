@@ -74,6 +74,7 @@ class ToolBox
     public const OPTION_ICON_NAME = 'icon';
     public const OPTION_HOVER_TEXT = 'hover';
     public const OPTION_HIDE_LABEL = 'hide-label';
+    public const OPTION_LABEL = 'label';
 
     public const OPTION_PARAMS = 'params';
     public const OPTION_CSS_CLASSES = 'class';
@@ -118,7 +119,7 @@ class ToolBox
     }
 
     /**
-     * @return \Sys25\RnBase\Backend\Module\IModule
+     * @return IModule
      */
     public function getModule()
     {
@@ -797,6 +798,7 @@ class ToolBox
                     'itemFormElName' => $name,
                     'itemFormElID' => $name,
                     'fieldConf' => [
+                        'label' => $options[self::OPTION_LABEL] ?? '',
                         'config' => [
                             'width' => 20,
                             'maxlength' => 20,
@@ -1344,7 +1346,7 @@ class ToolBox
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Localization\LanguageService|\TYPO3\CMS\Lang\LanguageService
+     * @return LanguageService|\TYPO3\CMS\Lang\LanguageService
      */
     public function getLanguageService()
     {
