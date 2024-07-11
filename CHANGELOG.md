@@ -5,6 +5,7 @@ Changelog
 
 v1.18.1 (??.??.2024)
  * Improve page config setup in backend
+ * Fix PHP warnings
 
 v1.18.0 (09.12.2023)
 
