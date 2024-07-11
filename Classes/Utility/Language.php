@@ -11,7 +11,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012-2023 Rene Nitzsche (rene@system25.de)
+ *  (c) 2012-2024 Rene Nitzsche (rene@system25.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -33,6 +33,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Wrapper for language usage.
+ * Muss komplett überarbeitet werden. Da sind viele fragwürdige Dinge enthalten.
  *
  * @author Rene Nitzsche
  */
@@ -185,10 +186,14 @@ class Language
                         $this->LOCAL_LANG[$languageKey][$labelKey][0]['target'] = $labelValue;
                         // For labels coming from the TypoScript (database) the charset is assumed to be "forceCharset"
                         // and if that is not set, assumed to be that of the individual system languages
-                        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) {
+                        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ?? false) {
                             $this->LOCAL_LANG_charset[$languageKey][$labelKey] = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
                         } else {
-                            $this->LOCAL_LANG_charset[$languageKey][$labelKey] = $GLOBALS['TSFE']->csConvObj->charSetArray[$languageKey];
+                            // FIXME: verhindert zunächst nur Warnungen. Muss aber eh komplett überarbeitet werden
+                            $csConvObj = $GLOBALS['TSFE']->csConvObj;
+                            if ($csConvObj && isset($csConvObj->charSetArray[$languageKey])) {
+                                $this->LOCAL_LANG_charset[$languageKey][$labelKey] = $csConvObj->charSetArray[$languageKey];
+                            }
                         }
                     }
                 }

@@ -3,12 +3,14 @@
 Changelog
 ---------
 
-v1.18.1 (14.05.2024)
- * Improve page config setup in backend
- * fix pagebrowser out of range handling
- * add support for addQueryString=untrusted in pagebrowser view helpers
- * minor bugfixes
+v1.18.2 (11.07.2024)
+* Fix PHP warnings
 
+v1.18.1 (14.05.2024)
+* Improve page config setup in backend
+* fix pagebrowser out of range handling
+* add support for addQueryString=untrusted in pagebrowser view helpers
+* minor bugfixes
 v1.18.0 (09.12.2023)
 
 * Auto-detect module identifier to avoid boilerblade-code

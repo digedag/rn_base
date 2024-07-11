@@ -22,7 +22,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013-2023 Rene Nitzsche
+ *  (c) 2013-2024 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -323,10 +323,10 @@ class TSFAL
     {
         $contentObject = $this->cObj;
 
-        if ($configuration['refUid'] || $configuration['refUid.']) {
-            $uid = intval($contentObject->stdWrap($configuration['refUid'], $configuration['refUid.']));
+        if (isset($configuration['refUid']) || isset($configuration['refUid.'])) {
+            $uid = intval($contentObject->stdWrap($configuration['refUid'] ?? '', $configuration['refUid.'] ?? []));
         } else {
-            $uid = $contentObject->data['_LOCALIZED_UID'] ? $contentObject->data['_LOCALIZED_UID'] : $contentObject->data['uid'];
+            $uid = $contentObject->data['_LOCALIZED_UID'] ?? $contentObject->data['uid'];
         }
         $refTable = ($configuration['refTable'] && is_array($GLOBALS['TCA'][$configuration['refTable']])) ?
                     $configuration['refTable'] : 'tt_content';
