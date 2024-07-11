@@ -234,11 +234,7 @@ class PageBrowser implements PageBrowserInterface
     {
         if ($this->isPointerOutOfRange() && !$configurations->getBool($confid.'ignorePageNotFound')) {
             $utilityClass = $this->getHttpUtilityClass();
-            // wegen den Tests von statischen Aufrufen
-            call_user_func_array(
-                [$utilityClass, 'setResponseCode'],
-                [$utilityClass::HTTP_STATUS_404]
-            );
+            header($utilityClass::HTTP_STATUS_404);
             $configurations->convertToUserInt();
         }
     }
