@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Database;
 
+use Countable;
 use mysqli_result;
 use PDO;
 use Sys25\RnBase\Backend\Utility\TCA;
@@ -148,7 +149,7 @@ class Connection implements SingletonInterface
 
         if ($debug) {
             Debug::debug([
-                'Rows retrieved ' => count($rows),
+                'Rows retrieved ' => $rows instanceof Countable ? $rows->count() : count($rows),
                 'Time ' => (microtime(true) - $time),
                 'Memory consumed ' => (memory_get_usage() - $mem),
                 'QB used' => is_object($queryBuilder),
