@@ -1,12 +1,15 @@
 <?php
 
+use Psr\Http\Message\ServerRequestInterface;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Configuration\Processor;
 use Sys25\RnBase\Exception\ExceptionHandler;
 use Sys25\RnBase\Exception\ExceptionHandlerInterface;
 use Sys25\RnBase\Exception\PageNotFound404;
 use Sys25\RnBase\Exception\SkipActionException;
+use Sys25\RnBase\Frontend\Provider\FrontendServiceProvider;
 use Sys25\RnBase\Frontend\Request\Parameters;
+use Sys25\RnBase\Frontend\Request\ParametersInterface;
 use Sys25\RnBase\Utility\Arrays;
 use Sys25\RnBase\Utility\Logger;
 use Sys25\RnBase\Utility\Misc;
@@ -130,6 +133,13 @@ class tx_rnbase_controller
 
     private $errors = [];
 
+    private $serviceProvider;
+
+    public function __construct()
+    {
+        $this->serviceProvider = tx_rnbase::makeInstance(FrontendServiceProvider::class);
+    }
+
     public function setContentObjectRenderer(ContentObjectRenderer $cObj): void
     {
         $this->cObj = $cObj;
@@ -203,10 +213,11 @@ class tx_rnbase_controller
      *
      * @param  string   incomming content, not used by plugins
      * @param  array    TS configuration subtree down from the treenode of the plugin
+     * @param ServerRequestInterface $serverRequest wird ab T3 11 übergeben
      * @return string   the complete result of the plugin, typically it's (x)html
      */
 
-    public function main($out, $configurationArray)
+    public function main($out, $configurationArray, ?ServerRequestInterface $serverRequest = null)
     {
         Misc::pushTT('tx_rnbase_controller', 'start');
 
@@ -263,9 +274,9 @@ class tx_rnbase_controller
     /**
      * Call a single action.
      *
-     * @param string                                     $actionName     class name
-     * @param tx_rnbase_IParams                          $parameters
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param string $actionName class name
+     * @param ParametersInterface $parameters
+     * @param ConfigurationInterface $configurations
      *
      * @return string
      */
@@ -275,7 +286,11 @@ class tx_rnbase_controller
 
         try {
             // Creating the responsible Action
-            $action = tx_rnbase::makeInstance($actionName);
+            // First try at DI-Container
+            $action = $this->serviceProvider->getAction($actionName);
+            if (null === $action) {
+                $action = tx_rnbase::makeInstance($actionName);
+            }
             if (is_object($action)) {
                 $ret = $action->execute($parameters, $configurations);
             }
@@ -450,13 +465,13 @@ class tx_rnbase_controller
      *
      * @param array $configurationArray the local configuration array
      *
-     * @return Tx_Rnbase_Configuration_ProcessorInterface the configurations
+     * @return ConfigurationInterface the configurations
      */
-    public function _makeConfigurationsObject($configurationArray)
+    protected function _makeConfigurationsObject($configurationArray)
     {
         // TODO, die Configklasse sollte über TS variabel gehalten werden
         // Make configurations object
-        /* @var $configurations Tx_Rnbase_Configuration_Processor */
+        /* @var $configurations ConfigurationInterface */
         $configurations = tx_rnbase::makeInstance($this->configurationsClassName);
 
         // Dieses cObj wird dem Controller von T3 übergeben
@@ -468,7 +483,7 @@ class tx_rnbase_controller
     /**
      * Returns an ArrayObject containing all parameters.
      *
-     * @param Tx_Rnbase_Configuration_ProcessorInterface $configurations
+     * @param ConfigurationInterface $configurations
      */
     protected function _makeParameterObject($configurations)
     {

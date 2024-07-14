@@ -275,4 +275,14 @@ abstract class AbstractAction
 
         return $link;
     }
+
+    /**
+     * Kindklassen können optional einen Alias angeben, der ggf. für die Action genutzt wird.
+     *
+     * @return string
+     */
+    public function getAlias()
+    {
+        return '';
+    }
 }

@@ -16,3 +16,7 @@ services:
 
   Sys25\RnBase\Backend\Module\ModFuncFrame:
     public: true
+
+  # Geht vorerst nicht anders. Nur intern zu verwenden!
+  Sys25\RnBase\Frontend\Provider\FrontendServiceProvider:
+    public: true

@@ -189,4 +189,12 @@ interface ConfigurationInterface
      * @return int
      */
     public function getPluginId();
+
+    /**
+     * Whether or not the plugins uses its own parameters. This will add the plugin id to all
+     * parameters of the given plugin.
+     *
+     * @return bool
+     */
+    public function isUniqueParameters();
 }
