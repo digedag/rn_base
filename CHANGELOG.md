@@ -3,6 +3,9 @@
 Changelog
 ---------
 
+v1.18.3 (??.0?.2024)
+ * Fix fatal error caused by site type in backend
+
 v1.18.2 (11.07.2024)
  * Fix PHP warnings
 

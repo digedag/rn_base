@@ -24,7 +24,6 @@ namespace Sys25\RnBase\Utility;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-use Exception;
 use Sys25\RnBase\Configuration\Processor as ConfigurationProcessor;
 use Sys25\RnBase\Exception\AdditionalException;
 use Throwable;
@@ -33,7 +32,7 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
-use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -341,7 +340,7 @@ MAYDAYPAGE;
         return $result;
     }
 
-    private static function lookupSite4Backend(int $pid, ?array $rootLine = null): Site
+    private static function lookupSite4Backend(int $pid, ?array $rootLine = null): SiteInterface
     {
         $rootLine = [];
         if ($pid > 0) {
