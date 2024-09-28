@@ -3,6 +3,10 @@
 Changelog
 ---------
 
+v1.19.0 (??.10.2024)
+ * Use Doctrine and QueryBuilder for insert, update and delete statements
+ * new delete()-method for PersistanceRepository
+
 v1.18.2 (11.07.2024)
  * Fix PHP warnings
 

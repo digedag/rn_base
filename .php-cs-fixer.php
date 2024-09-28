@@ -19,6 +19,9 @@ return $config->setFinder($finder)
         'phpdoc_separation' => [
             'skip_unlisted_annotations' => true,
         ],
+        'trailing_comma_in_multiline' => [
+            'elements' => ['arrays'],
+        ]
     ])
     ->setLineEnding("\n")
 ;

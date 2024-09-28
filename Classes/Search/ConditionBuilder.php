@@ -78,11 +78,11 @@ class ConditionBuilder
         $this->dbConnection = $dbConnection;
     }
 
-    public function apply(QueryBuilder $qb, array $tableAliases, $joinedFields, $customFields)
+    public function apply(QueryBuilder $qb, SearchCriteria $searchCriteria)
     {
-        $this->applyConditions($qb, $tableAliases);
-        $this->applyJoinedConditions($qb, $joinedFields);
-        $this->applyCustomConditions($qb, $customFields);
+        $this->applyConditions($qb, $searchCriteria->getTableAliases());
+        $this->applyJoinedConditions($qb, $searchCriteria->getJoinedFields());
+        $this->applyCustomConditions($qb, $searchCriteria->getCustomFields());
     }
 
     private function applyConditions(QueryBuilder $qb, array $tableAliases)
