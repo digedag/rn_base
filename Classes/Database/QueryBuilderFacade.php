@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006-2021 Rene Nitzsche
+ *  (c) 2006-2024 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -41,6 +41,106 @@ use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 
 class QueryBuilderFacade
 {
+    public function doInsert(From $from, $arr): ?QueryBuilder
+    {
+        if (!empty($from->getClause()) || $from->isComplexTable()) {
+            return null;
+        }
+        $tableName = $from->getTableName();
+        $debug = intval($arr['debug'] ?? null) > 0;
+        $values = $arr['values'] ?? null;
+
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable($tableName);
+        $queryBuilder->insert($tableName, $tableName)
+            ->values($values);
+
+        if ($debug) {
+            Debug::debug($queryBuilder->getSQL(), 'SQL');
+            Debug::debug(['from' => $from, 'options' => $arr, 'params' => $queryBuilder->getParameters()], 'Parts');
+        }
+
+        return $queryBuilder;
+    }
+
+    public function doUpdate(From $from, $arr): ?QueryBuilder
+    {
+        if (!empty($from->getClause()) || $from->isComplexTable()) {
+            return null;
+        }
+        $joins = $from->getJoins();
+        $tableName = $from->getTableName();
+        $tableAlias = $from->getAlias();
+        $where = isset($arr['where']) ? $arr['where'] : null;
+        $debug = intval($arr['debug'] ?? null) > 0;
+        $values = $arr['values'] ?? null;
+
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable($tableName);
+        $queryBuilder->update($tableName, $tableAlias != $tableName ? $tableAlias : null);
+        foreach ($values as $col => $value) {
+            $queryBuilder->set($col, $value);
+        }
+
+        foreach ($joins as $join) {
+            if (Join::TYPE_INNER == $join->getType()) {
+                $queryBuilder->innerJoin($tableAlias, $join->getTable(), $join->getAlias(), $join->getOnClause());
+            } elseif (Join::TYPE_LEFT == $join->getType()) {
+                $queryBuilder->leftJoin($tableAlias, $join->getTable(), $join->getAlias(), $join->getOnClause());
+            } elseif (Join::TYPE_RIGHT == $join->getType()) {
+                $queryBuilder->rightJoin($tableAlias, $join->getTable(), $join->getAlias(), $join->getOnClause());
+            }
+        }
+
+        if (is_string($where)) {
+            $queryBuilder->andWhere($where);
+        } elseif (is_callable($where)) {
+            $where($queryBuilder);
+        }
+
+        if ($debug) {
+            Debug::debug($queryBuilder->getSQL(), 'SQL');
+            Debug::debug(['from' => $from, 'options' => $arr, 'params' => $queryBuilder->getParameters()], 'Parts');
+        }
+
+        return $queryBuilder;
+    }
+
+    public function doDelete(From $from, $arr): ?QueryBuilder
+    {
+        if (!empty($from->getClause()) || $from->isComplexTable()) {
+            return null;
+        }
+        $joins = $from->getJoins();
+        $tableName = $from->getTableName();
+        $tableAlias = $from->getAlias();
+        $where = isset($arr['where']) ? $arr['where'] : null;
+        $debug = intval($arr['debug'] ?? null) > 0;
+
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable($tableName);
+        $queryBuilder->delete($tableName, $tableAlias != $tableName ? $tableAlias : null);
+        foreach ($joins as $join) {
+            if (Join::TYPE_INNER == $join->getType()) {
+                $queryBuilder->innerJoin($tableAlias, $join->getTable(), $join->getAlias(), $join->getOnClause());
+            } elseif (Join::TYPE_LEFT == $join->getType()) {
+                $queryBuilder->leftJoin($tableAlias, $join->getTable(), $join->getAlias(), $join->getOnClause());
+            } elseif (Join::TYPE_RIGHT == $join->getType()) {
+                $queryBuilder->rightJoin($tableAlias, $join->getTable(), $join->getAlias(), $join->getOnClause());
+            }
+        }
+
+        if (is_string($where)) {
+            $queryBuilder->andWhere($where);
+        } elseif (is_callable($where)) {
+            $where($queryBuilder);
+        }
+
+        if ($debug) {
+            Debug::debug($queryBuilder->getSQL(), 'SQL');
+            Debug::debug(['from' => $from, 'options' => $arr, 'params' => $queryBuilder->getParameters()], 'Parts');
+        }
+
+        return $queryBuilder;
+    }
+
     public function doSelect($what, From $from, $arr): ?QueryBuilder
     {
         // if (isset($from['clause']) && !is_array($from['clause'])) {

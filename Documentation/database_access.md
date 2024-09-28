@@ -7,17 +7,20 @@ Der direkte Zugriff auf die Datenbank  erfolgt über die Klasse `Sys25\RnBase\Da
 Eine typische Abfrage hat folgenden Aufbau:
 
 ```php
-$rows = Connection::getInstance()->doSelect('g.*', ['table' => 'tx_cfcleague_games', 'alias'=>'g'], [
-    'limit' => 10,
-    'enablefieldsbe' => 1,
-    'debug' => 1,
-    'wrapperclass' => \tx_cfcleague_models_Match::class,
-    'where' => function(QueryBuilder $qb) {
-        $qb->innerJoin('g', 'tx_cfcleague_teams', 't', 't.uid = g.home');
-        $qb->andWhere( sprintf('t.uid = %s', $qb->createNamedParameter(7, \PDO::PARAM_INT)));
-    }
-]);
-``` 
+$rows = Connection::getInstance()->doSelect('g.*', [
+        'table' => 'tx_cfcleague_games',
+        'alias'=>'g'
+    ], [
+        'limit' => 10,
+        'enablefieldsbe' => 1,
+        'debug' => 1,
+        'wrapperclass' => \tx_cfcleague_models_Match::class,
+        'where' => function(QueryBuilder $qb) {
+            $qb->innerJoin('g', 'tx_cfcleague_teams', 't', 't.uid = g.home');
+            $qb->andWhere( sprintf('t.uid = %s', $qb->createNamedParameter(7, \PDO::PARAM_INT)));
+        }
+    ]);
+```
 
 Folgende Optionen werden unterstützt:
 
@@ -39,3 +42,15 @@ Folgende Optionen werden unterstützt:
 
 Da man über die Option `where` Zugriff auf den QueryBuilder erhält sind einige Optionen natürlich redundant. Man kann also bspw. den `orderby` auch direkt im QueryBuilder setzen. Wichtig: Der `where`-Callback wurde aufgerufen nachdem alle anderen Optionen gesetzt wurden.
 
+## DELETE Statements
+
+```php
+$affectedRows = Connection::getInstance()->doDelete([
+        'table' => 'tx_cfcleague_games',
+        'alias'=>'g'
+    ], [
+        'where' => function(QueryBuilder $qb) {
+            $qb->where( sprintf('t.uid = %s', $qb->createNamedParameter(7, \PDO::PARAM_INT)));
+        }
+    ]);
+```

@@ -72,7 +72,7 @@ interface DomainModelInterface
      *
      * @param string $property
      *
-     * @return string
+     * @return string|array
      */
     public function getProperty($property = null);
 

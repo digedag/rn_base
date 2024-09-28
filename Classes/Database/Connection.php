@@ -179,7 +179,9 @@ class Connection implements SingletonInterface
         $wrapper = is_string($arr['wrapperclass'] ?? null) ? trim($arr['wrapperclass']) : 0;
         $callback = isset($arr['callback']) ? $arr['callback'] : false;
 
-        foreach ($queryBuilder->execute()->fetchAll() as $row) {
+        $executeMethod = method_exists($queryBuilder, 'executeQuery') ? 'executeQuery' : 'execute';
+
+        foreach ($queryBuilder->$executeMethod()->fetchAll() as $row) {
             $this->appendRow($rows, $row, $from->getTableName(), $wrapper, $callback, $arr);
         }
 
@@ -508,9 +510,6 @@ class Connection implements SingletonInterface
         if (!is_array($arr)) {
             $arr = ['debug' => $arr];
         }
-        $debug = intval($arr['debug'] ?? 0) > 0;
-
-        $database = $this->getDatabaseConnection($arr);
 
         Misc::callHook(
             'rn_base',
@@ -522,35 +521,19 @@ class Connection implements SingletonInterface
             ]
         );
 
-        if ($debug || !empty($arr['sqlonly'] ?? false)) {
-            $sqlQuery = $database->INSERTquery($tablename, $values);
-            if (!empty($arr['sqlonly'] ?? false)) {
-                return $sqlQuery;
-            }
-            $time = microtime(true);
-            $mem = memory_get_usage();
+        $from = From::buildInstance($tablename);
+        $qbFacade = new QueryBuilderFacade();
+        $arr['values'] = $values;
+        $queryBuilder = $qbFacade->doInsert($from, $arr);
+
+        $affectedRows = $this->doStatementByQueryBuilder($queryBuilder, $from, $arr);
+
+        if (is_string($affectedRows) || (TYPO3::isTYPO87OrHigher() && $affectedRows instanceof QueryBuilder)) {
+            // sqlOnly
+            return $affectedRows;
         }
 
-        $storeLastBuiltQuery = $database->store_lastBuiltQuery;
-        $database->store_lastBuiltQuery = true;
-        $this->watchOutDB(
-            $database->exec_INSERTquery(
-                $tablename,
-                $values
-            ),
-            $database
-        );
-        $database->store_lastBuiltQuery = $storeLastBuiltQuery;
-
-        if ($debug) {
-            Debug::debug([
-                'SQL ' => $sqlQuery,
-                'Time ' => (microtime(true) - $time),
-                'Memory consumed ' => (memory_get_usage() - $mem),
-            ], 'SQL statistics');
-        }
-
-        $insertId = $database->sql_insert_id();
+        $insertId = $queryBuilder->getConnection()->lastInsertId();
 
         Misc::callHook(
             'rn_base',
@@ -619,8 +602,8 @@ class Connection implements SingletonInterface
         if (!is_array($arr)) {
             $arr = ['debug' => $arr];
         }
-        $debug = intval($arr['debug'] ?? 0) > 0;
-        $database = $this->getDatabaseConnection($arr);
+        // $debug = intval($arr['debug'] ?? 0) > 0;
+        // $database = $this->getDatabaseConnection($arr);
 
         Misc::callHook(
             'rn_base',
@@ -634,29 +617,42 @@ class Connection implements SingletonInterface
             ]
         );
 
-        if ($debug || !empty($arr['sqlonly'])) {
-            $sql = $database->UPDATEquery($tablename, $where, $values, $noQuoteFields);
-            if (!empty($arr['sqlonly'])) {
-                return $sql;
-            }
-            Debug::debug($sql, 'SQL');
-            Debug::debug([$tablename, $where, $values]);
+        $from = From::buildInstance($tablename);
+        $qbFacade = new QueryBuilderFacade();
+        $arr['where'] = $where;
+        $arr['values'] = $values;
+        $queryBuilder = $qbFacade->doUpdate($from, $arr);
+
+        $affectedRows = $this->doStatementByQueryBuilder($queryBuilder, $from, $arr);
+
+        if (is_string($affectedRows) || (TYPO3::isTYPO87OrHigher() && $affectedRows instanceof QueryBuilder)) {
+            // sqlOnly
+            return $affectedRows;
         }
 
-        $storeLastBuiltQuery = $database->store_lastBuiltQuery;
-        $database->store_lastBuiltQuery = true;
-        $this->watchOutDB(
-            $database->exec_UPDATEquery(
-                $tablename,
-                $where,
-                $values,
-                $noQuoteFields
-            ),
-            $database
-        );
-        $database->store_lastBuiltQuery = $storeLastBuiltQuery;
+        // if ($debug || !empty($arr['sqlonly'])) {
+        //     $sql = $database->UPDATEquery($tablename, $where, $values, $noQuoteFields);
+        //     if (!empty($arr['sqlonly'])) {
+        //         return $sql;
+        //     }
+        //     Debug::debug($sql, 'SQL');
+        //     Debug::debug([$tablename, $where, $values]);
+        // }
 
-        $affectedRows = $database->sql_affected_rows();
+        // $storeLastBuiltQuery = $database->store_lastBuiltQuery;
+        // $database->store_lastBuiltQuery = true;
+        // $this->watchOutDB(
+        //     $database->exec_UPDATEquery(
+        //         $tablename,
+        //         $where,
+        //         $values,
+        //         $noQuoteFields
+        //     ),
+        //     $database
+        // );
+        // $database->store_lastBuiltQuery = $storeLastBuiltQuery;
+
+        // $affectedRows = $database->sql_affected_rows();
 
         Misc::callHook(
             'rn_base',
@@ -681,7 +677,7 @@ class Connection implements SingletonInterface
      * @param string $where
      * @param array  $arr
      *
-     * @return int number of rows affected
+     * @return int|QueryBuilder number of rows affected
      */
     public function doDelete($tablename, $where, $arr = [])
     {
@@ -689,8 +685,7 @@ class Connection implements SingletonInterface
         if (!is_array($arr)) {
             $arr = ['debug' => $arr];
         }
-        $debug = intval($arr['debug'] ?? 0) > 0;
-        $database = $this->getDatabaseConnection($arr);
+        $debug = $debug ?? intval($arr['debug'] ?? 0) > 0;
 
         Misc::callHook(
             'rn_base',
@@ -702,27 +697,17 @@ class Connection implements SingletonInterface
             ]
         );
 
-        if ($debug || !empty($arr['sqlonly'] ?? false)) {
-            $sql = $database->DELETEquery($tablename, $where);
-            if (!empty($arr['sqlonly'] ?? false)) {
-                return $sql;
-            }
-            Debug::debug($sql, 'SQL');
-            Debug::debug([$tablename, $where]);
+        $from = From::buildInstance($tablename);
+        $qbFacade = new QueryBuilderFacade();
+        $arr['where'] = $where;
+        $queryBuilder = $qbFacade->doDelete($from, $arr);
+
+        $affectedRows = $this->doStatementByQueryBuilder($queryBuilder, $from, $arr);
+
+        if (is_string($affectedRows) || (TYPO3::isTYPO87OrHigher() && $affectedRows instanceof QueryBuilder)) {
+            // sqlOnly
+            return $affectedRows;
         }
-
-        $storeLastBuiltQuery = $database->store_lastBuiltQuery;
-        $database->store_lastBuiltQuery = true;
-        $this->watchOutDB(
-            $database->exec_DELETEquery(
-                $tablename,
-                $where
-            ),
-            $database
-        );
-        $database->store_lastBuiltQuery = $storeLastBuiltQuery;
-
-        $affectedRows = $database->sql_affected_rows();
 
         Misc::callHook(
             'rn_base',
@@ -736,6 +721,20 @@ class Connection implements SingletonInterface
         );
 
         return $affectedRows;
+    }
+
+    private function doStatementByQueryBuilder(QueryBuilder $queryBuilder, From $from, array $arr)
+    {
+        $sqlOnly = intval($arr['sqlonly'] ?? null) > 0;
+
+        if ($sqlOnly) {
+            return $queryBuilder;
+        }
+
+        $executeMethod = method_exists($queryBuilder, 'executeStatement') ? 'executeStatement' : 'execute';
+        $rows = $queryBuilder->$executeMethod();
+
+        return $rows;
     }
 
     /**

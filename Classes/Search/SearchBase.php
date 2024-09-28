@@ -77,6 +77,34 @@ abstract class SearchBase
     }
 
     /**
+     * @param string $operation either delete, update or insert
+     */
+    public function doStatement(string $operation, array $fields, array $options = [])
+    {
+        $opMap = [
+            'delete' => 'doDelete',
+            'insert' => 'doInsert',
+            'update' => 'doUpdate',
+        ];
+
+        $opMethod = $opMap[strtolower($operation)] ?? null;
+        if (!$opMethod) {
+            throw new Exception('Unknown operation given.');
+        }
+        $searchCriteria = $this->buildSearchCriteria($fields, []);
+
+        $tableAliases = $searchCriteria->getTableAliases();
+        $from = $this->getFrom($options, $tableAliases);
+
+        $where = function (QueryBuilder $qb) use ($searchCriteria) {
+            $conditionBuilder = new ConditionBuilder($this->useAlias(), $this->tableMapping, $this->getDatabaseConnection());
+            $conditionBuilder->apply($qb, $searchCriteria);
+        };
+
+        return $this->getDatabaseConnection()->$opMethod($from, $where, $options);
+    }
+
+    /**
      * Suchanfrage an die Datenbank
      * Bei den Felder findet ein Mapping auf die eigentlichen DB-Felder statt. Dadurch werden
      * SQL-Injections erschwert und es sind JOINs möglich.
@@ -103,65 +131,9 @@ abstract class SearchBase
      */
     public function search(array $fields, array $options = [])
     {
-        $this->_initSearch($options);
-        $tableAliases = [];
-        if (isset($fields[SEARCH_FIELD_JOINED])) {
-            $joinedFields = $fields[SEARCH_FIELD_JOINED];
-            unset($fields[SEARCH_FIELD_JOINED]);
-        } else {
-            $joinedFields = null;
-        }
-        $customFields = null;
-        if (isset($fields[SEARCH_FIELD_CUSTOM])) {
-            $customFields = $fields[SEARCH_FIELD_CUSTOM];
-            unset($fields[SEARCH_FIELD_CUSTOM]);
-        }
-        // Die normalen Suchfelder abarbeiten
-        foreach ($fields as $field => $data) {
-            // Tabelle und Spalte ermitteln
-            list($tableAlias, $col) = explode('.', $field);
-            $tableAliases[$tableAlias][$col] = $data;
-        }
-        // Prüfen, ob in orderby noch andere Tabellen liegen
-        $orderbyArr = $options['orderby'] ?? '';
-        if (is_array($orderbyArr)) {
-            $aliases = array_keys($orderbyArr);
-            foreach ($aliases as $alias) {
-                if (strstr($alias, SEARCH_FIELD_CUSTOM)) {
-                    continue;
-                } // CUSTOM ignorieren
-                $tableAlias = explode('.', $alias)[0] ?? null;
-                if ($tableAlias && !array_key_exists($tableAlias, $tableAliases)) {
-                    $tableAliases[$tableAlias] = [];
-                }
-            }
-        }
-        if (is_array($joinedFields)) {
-            foreach ($joinedFields as $key => $joinedField) {
-                // Für die JOINED-Fields müssen die Tabellen gesetzt werden, damit der SQL-JOIN passt
-                foreach ($joinedField['cols'] as $field) {
-                    list($tableAlias, $col) = explode('.', $field);
-                    if (!isset($tableAliases[$tableAlias])) {
-                        $tableAliases[$tableAlias] = [];
-                    }
-                    $joinedFields[$key]['fields'][] = ($this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias]).'.'.strtolower($col);
-                }
-            }
-        }
-        // Deprecated: Diese Option nicht verwenden. Dafür gibt es den Hook!
-        if (is_array($additionalTableAliases = $options['additionalTableAliases'] ?? [])) {
-            foreach ($additionalTableAliases as $additionalTableAlias) {
-                if (!isset($tableAliases[$additionalTableAlias])) {
-                    $tableAliases[$additionalTableAlias] = [];
-                }
-            }
-        }
+        $searchCriteria = $this->buildSearchCriteria($fields, $options);
 
-        Misc::callHook('rn_base', 'searchbase_handleTableMapping', [
-            'tableAliases' => &$tableAliases, 'joinedFields' => &$joinedFields,
-            'customFields' => &$customFields, 'options' => &$options,
-            'tableMappings' => &$this->tableMapping,
-        ], $this);
+        $tableAliases = $searchCriteria->getTableAliases();
         $what = $this->getWhat($options, $tableAliases);
         $from = $this->getFrom($options, $tableAliases);
 
@@ -170,14 +142,14 @@ abstract class SearchBase
         $where = null;
         if ($this->useQueryBuilder($tableAliases)) {
             $conditionBuilder = new ConditionBuilder($this->useAlias(), $this->tableMapping, $this->getDatabaseConnection());
-            $where = function (QueryBuilder $qb) use ($conditionBuilder, $tableAliases, $joinedFields, $customFields) {
-                $conditionBuilder->apply($qb, $tableAliases, $joinedFields, $customFields);
+            $where = function (QueryBuilder $qb) use ($conditionBuilder, $searchCriteria) {
+                $conditionBuilder->apply($qb, $searchCriteria);
             };
         } else {
             $where = '1=1';
-            $where .= $this->buildConditions($tableAliases);
-            $where .= $this->buildJoinedConditions($joinedFields);
-            $where .= $this->buildCustomConditions($customFields);
+            $where .= $this->buildConditions($searchCriteria->getTableAliases());
+            $where .= $this->buildJoinedConditions($searchCriteria->getJoinedFields());
+            $where .= $this->buildCustomConditions($searchCriteria->getCustomFields());
             $where .= $this->setEnableFieldsForAdditionalTableAliases($tableAliases, $options);
         }
 
@@ -270,6 +242,76 @@ abstract class SearchBase
 
         // else:
         return isset($options['count']) ? ($result[0]['cnt'] ?? 0) : $result;
+    }
+
+    private function buildSearchCriteria($fields, $options): SearchCriteria
+    {
+        $this->_initSearch($options);
+        $tableAliases = [];
+        if (isset($fields[SEARCH_FIELD_JOINED])) {
+            $joinedFields = $fields[SEARCH_FIELD_JOINED];
+            unset($fields[SEARCH_FIELD_JOINED]);
+        } else {
+            $joinedFields = null;
+        }
+        $customFields = null;
+        if (isset($fields[SEARCH_FIELD_CUSTOM])) {
+            $customFields = $fields[SEARCH_FIELD_CUSTOM];
+            unset($fields[SEARCH_FIELD_CUSTOM]);
+        }
+        // Die normalen Suchfelder abarbeiten
+        foreach ($fields as $field => $data) {
+            // Tabelle und Spalte ermitteln
+            list($tableAlias, $col) = explode('.', $field);
+            $tableAliases[$tableAlias][$col] = $data;
+        }
+        // Prüfen, ob in orderby noch andere Tabellen liegen
+        $orderbyArr = $options['orderby'] ?? '';
+        if (is_array($orderbyArr)) {
+            $aliases = array_keys($orderbyArr);
+            foreach ($aliases as $alias) {
+                if (strstr($alias, SEARCH_FIELD_CUSTOM)) {
+                    continue;
+                } // CUSTOM ignorieren
+                $tableAlias = explode('.', $alias)[0] ?? null;
+                if ($tableAlias && !array_key_exists($tableAlias, $tableAliases)) {
+                    $tableAliases[$tableAlias] = [];
+                }
+            }
+        }
+        if (is_array($joinedFields)) {
+            foreach ($joinedFields as $key => $joinedField) {
+                // Für die JOINED-Fields müssen die Tabellen gesetzt werden, damit der SQL-JOIN passt
+                foreach ($joinedField['cols'] as $field) {
+                    list($tableAlias, $col) = explode('.', $field);
+                    if (!isset($tableAliases[$tableAlias])) {
+                        $tableAliases[$tableAlias] = [];
+                    }
+                    $joinedFields[$key]['fields'][] = ($this->useAlias() ? $tableAlias : $this->tableMapping[$tableAlias]).'.'.strtolower($col);
+                }
+            }
+        }
+        // Deprecated: Diese Option nicht verwenden. Dafür gibt es den Hook!
+        if (is_array($additionalTableAliases = $options['additionalTableAliases'] ?? [])) {
+            foreach ($additionalTableAliases as $additionalTableAlias) {
+                if (!isset($tableAliases[$additionalTableAlias])) {
+                    $tableAliases[$additionalTableAlias] = [];
+                }
+            }
+        }
+
+        Misc::callHook('rn_base', 'searchbase_handleTableMapping', [
+            'tableAliases' => &$tableAliases, 'joinedFields' => &$joinedFields,
+            'customFields' => &$customFields, 'options' => &$options,
+            'tableMappings' => &$this->tableMapping,
+        ], $this);
+
+        $searchCriteria = new SearchCriteria();
+        $searchCriteria->setTableAliases($tableAliases);
+        $searchCriteria->setJoinedFields($joinedFields);
+        $searchCriteria->setCustomFields($customFields);
+
+        return $searchCriteria;
     }
 
     private function countQuery(QueryBuilder $qb): int

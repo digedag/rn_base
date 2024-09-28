@@ -5,7 +5,7 @@ namespace Sys25\RnBase\Domain\Repository;
 /***************************************************************
  * Copyright notice
  *
- * (c) 2016-2021 René Nitzsche <rene@system25.de>
+ * (c) 2016-2024 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,6 +25,7 @@ namespace Sys25\RnBase\Domain\Repository;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Closure;
 use stdClass;
 use Sys25\RnBase\Database\Connection;
 use Sys25\RnBase\Domain\Model\BaseModel;
@@ -213,7 +214,13 @@ class PersistenceRepositoryTest extends BaseTestCase
             ->method('doUpdate')
             ->with(
                 $this->equalTo('tt_content'),
-                $this->equalTo('uid=7'),
+                $this->callback(
+                    function ($where) {
+                        self::assertInstanceOf(Closure::class, $where);
+
+                        return true;
+                    }
+                ),
                 $this->callback(
                     function ($data) {
                         self::assertTrue(is_array($data));

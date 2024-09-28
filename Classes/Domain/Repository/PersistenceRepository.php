@@ -10,11 +10,12 @@ use Sys25\RnBase\Domain\Model\DataInterface;
 use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Domain\Model\DomainModelInterface as DomainInterface;
 use Sys25\RnBase\Utility\Arrays;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
 /***************************************************************
  * Copyright notice
  *
- * (c) 2016-2021 René Nitzsche <rene@system25.de>
+ * (c) 2016-2024 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -66,6 +67,11 @@ abstract class PersistenceRepository extends AbstractRepository implements Persi
         $wrapperClass = $this->getWrapperClass();
 
         return $model instanceof $wrapperClass;
+    }
+
+    public function delete(array $fields, array $options = [])
+    {
+        return $this->getSearcher()->doStatement('DELETE', $fields, $options);
     }
 
     /**
@@ -148,10 +154,14 @@ abstract class PersistenceRepository extends AbstractRepository implements Persi
     ) {
         $model = $transport->getModel();
 
-        // update the entity with the raw uid
+        $where = function (QueryBuilder $qb) use ($model) {
+            $qb->where('uid = :uid')
+                ->setParameter('uid', $model->getProperty('uid'));
+        };
+
         $this->getConnection()->doUpdate(
             $transport->getTableName(),
-            'uid='.(int) $model->getProperty('uid'),
+            $where,
             $transport->getData()
         );
 
@@ -194,7 +204,7 @@ abstract class PersistenceRepository extends AbstractRepository implements Persi
     }
 
     /**
-     * Refres the model with data after db operation and reset dirty flag.
+     * Refresh the model with data after db operation and reset dirty flag.
      *
      * @param DomainInterface $model
      * @param array $data
