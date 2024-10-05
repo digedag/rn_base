@@ -45,6 +45,8 @@ use tx_rnbase;
  */
 abstract class AbstractRepository implements SearchInterface, SingletonInterface
 {
+    public const SERVICE_TAG = 'sys25.domain.repository';
+
     /**
      * Liefert den Namen der Suchklasse.
      *

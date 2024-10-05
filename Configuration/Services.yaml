@@ -14,5 +14,18 @@ services:
       '../Classes/Testing/*'
     ]
 
+  Sys25\RnBase\Frontend\Controller\MainController:
+    public: true
+
+  tx_rnbase_controller:
+    alias: Sys25\RnBase\Frontend\Controller\MainController
+    public: true
+
+  Sys25\RnBase\Frontend\View\Factory:
+    public: true
+
   Sys25\RnBase\Backend\Module\ModFuncFrame:
+    public: true
+
+  Sys25\RnBase\Domain\Repository\RepositoryRegistry:
     public: true

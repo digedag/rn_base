@@ -43,6 +43,8 @@ use tx_rnbase;
  */
 abstract class AbstractAction
 {
+    public const SERVICE_TAG = 'sys25.frontend.action';
+
     /**
      * This method is called by base controller.
      *

@@ -7,7 +7,7 @@ use Sys25\RnBase\Utility\Files;
 /***************************************************************
 * Copyright notice
 *
-* (c) 2007-2019 René Nitzsche <rene@system25.de>
+* (c) 2007-2024 René Nitzsche <rene@system25.de>
 * All rights reserved
 *
 * This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,6 +29,8 @@ use Sys25\RnBase\Utility\Files;
 
 abstract class AbstractView
 {
+    public const SERVICE_TAG = 'sys25.frontend.view';
+
     protected $pathToTemplates;
 
     protected $templateFile;

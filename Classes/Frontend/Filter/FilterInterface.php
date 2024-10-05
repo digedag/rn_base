@@ -5,7 +5,7 @@ namespace Sys25\RnBase\Frontend\Filter;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2009 Rene Nitzsche
+ *  (c) 2009-2024 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
