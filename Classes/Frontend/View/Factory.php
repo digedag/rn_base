@@ -3,6 +3,7 @@
 namespace Sys25\RnBase\Frontend\View;
 
 use Sys25\RnBase\Frontend\Request\RequestInterface;
+use Sys25\RnBase\Frontend\Service\FrontendServiceProvider;
 use tx_rnbase;
 
 /***************************************************************
@@ -30,13 +31,26 @@ use tx_rnbase;
 
 class Factory
 {
+    private $frontendServiceProvider;
+
+    public function __construct(?FrontendServiceProvider $frontendServiceProvider = null)
+    {
+        $this->frontendServiceProvider = $frontendServiceProvider ?: null;
+    }
+
     public function createView(RequestInterface $context, $fallbackViewClassName, $templateFile)
     {
         $configurations = $context->getConfigurations();
         // It is possible to set another view via typoscript
         $viewClassName = $configurations->get($context->getConfId().'viewClassName');
         $viewClassName = strlen($viewClassName) > 0 ? $viewClassName : $fallbackViewClassName;
-        $view = tx_rnbase::makeInstance($viewClassName);
+
+        $view = null;
+        if ($this->frontendServiceProvider) {
+            $view = $this->frontendServiceProvider->getViewForClass($viewClassName);
+        }
+
+        $view = $view ?? tx_rnbase::makeInstance($viewClassName);
         $view->setTemplatePath($configurations->getTemplatePath());
         $view->setTemplateFile($templateFile);
 

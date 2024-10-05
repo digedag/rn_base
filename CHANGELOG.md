@@ -6,6 +6,8 @@ Changelog
 v1.19.0 (??.10.2024)
  * Use Doctrine and QueryBuilder for insert, update and delete statements
  * new delete()-method for PersistanceRepository
+ * Possible BC: moved tx_rnbase_controller to PSR-4 and declared some underscore-methods private
+ * Action and View-classes based on AbstractAction and AbstractView can use autowiring from TYPO3 10 and higher
 
 v1.18.2 (11.07.2024)
  * Fix PHP warnings

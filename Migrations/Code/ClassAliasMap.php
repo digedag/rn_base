@@ -77,6 +77,7 @@ return [
     'tx_rnbase_cache_Manager' => Sys25\RnBase\Cache\CacheManager::class,
     'tx_rnbase_cache_TYPO3Cache62' => Sys25\RnBase\Cache\TYPO3Cache62::class,
     'tx_rnbase_configurations' => Sys25\RnBase\Configuration\Processor::class,
+    'tx_rnbase_controller' => Sys25\RnBase\Frontend\Controller\MainController::class,
     'tx_rnbase_exception_Handler' => Sys25\RnBase\Exception\ExceptionHandler::class,
     'tx_rnbase_exception_IHandler' => Sys25\RnBase\Exception\ExceptionHandlerInterface::class,
     'tx_rnbase_exception_ItemNotFound404' => Sys25\RnBase\Exception\PageNotFound404::class,
