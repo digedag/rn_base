@@ -3,7 +3,7 @@
 Changelog
 ---------
 
-v1.19.0 (??.10.2024)
+v1.19.0 (06.10.2024)
  * Use Doctrine and QueryBuilder for insert, update and delete statements
  * new delete()-method for PersistanceRepository
  * Possible BC: moved tx_rnbase_controller to PSR-4 and declared some underscore-methods private
