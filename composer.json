@@ -157,8 +157,7 @@
 			]
 		},
 		"branch-alias": {
-			"dev-feature/use-querybuilder-statements": "1.18.x-dev",
-			"dev-master": "1.18.x-dev"
+			"dev-master": "1.19.x-dev"
 		}
 	}
 }
