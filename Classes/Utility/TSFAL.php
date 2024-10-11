@@ -16,7 +16,6 @@ use Sys25\RnBase\Frontend\Marker\MediaMarker;
 use Sys25\RnBase\Frontend\Marker\Templates;
 use tx_rnbase;
 use TYPO3\CMS\Core\Resource\FileReference;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /***************************************************************
@@ -287,7 +286,7 @@ class TSFAL
      *
      * @return ConfigurationInterface
      */
-    public function createConf($conf)
+    private function createConf($conf)
     {
         /** @var Processor $configurations */
         $configurations = tx_rnbase::makeInstance(Processor::class);
@@ -324,13 +323,13 @@ class TSFAL
         $contentObject = $this->cObj;
 
         if (isset($configuration['refUid']) || isset($configuration['refUid.'])) {
-            $uid = intval($contentObject->stdWrap($configuration['refUid'] ?? '', $configuration['refUid.'] ?? []));
+            $uid = (int) $contentObject->stdWrap($configuration['refUid'] ?? '', $configuration['refUid.'] ?? []);
         } else {
             $uid = $contentObject->data['_LOCALIZED_UID'] ?? $contentObject->data['uid'];
         }
         $refTable = ($configuration['refTable'] && is_array($GLOBALS['TCA'][$configuration['refTable']])) ?
                     $configuration['refTable'] : 'tt_content';
-        $refField = trim($contentObject->stdWrap($configuration['refField'], $configuration['refField.']));
+        $refField = trim($contentObject->stdWrap($configuration['refField'], $configuration['refField.'] ?? []));
 
         if (isset($GLOBALS['BE_USER']->workspace) && 0 !== $GLOBALS['BE_USER']->workspace) {
             $workspaceRecord = BackendUtility::getWorkspaceVersionOfRecord(
@@ -761,7 +760,7 @@ class TSFAL
      */
     private static function getResourceFactory()
     {
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
+        return tx_rnbase::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
     }
 
     /**
