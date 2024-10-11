@@ -3,6 +3,10 @@
 Changelog
 ---------
 
+v1.19.1 (??.10.2024)
+ * Fix warning in TSFAL
+ * Possible BC: createConf() in TSFAL is now private
+
 v1.19.0 (06.10.2024)
  * Use Doctrine and QueryBuilder for insert, update and delete statements
  * new delete()-method for PersistanceRepository
