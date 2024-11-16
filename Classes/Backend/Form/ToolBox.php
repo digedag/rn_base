@@ -285,17 +285,19 @@ class ToolBox
     }
 
     /**
+     * @param string $table name of records table
+     * @param int $uid uid for record
      * @param string $operation new or edit
      */
-    private function buildEditUri($table, $pid, $operation, array $options)
+    private function buildEditUri($table, $uid, $operation, array $options)
     {
         $returnUrl = T3General::getIndpEnv('REQUEST_URI');
         $uri = (string) $this->uriBuilder->buildUriFromRoute(
             'record_edit',
             [
-                'id' => $pid,
+                'id' => $this->getModule()->getPid(),
                 'returnUrl' => $returnUrl,
-                sprintf('edit[%s][%s]', $table, $pid) => $operation,
+                sprintf('edit[%s][%s]', $table, $uid) => $operation,
             ]
         );
         if (isset($options[self::OPTION_PARAMS])) {
