@@ -78,7 +78,7 @@ class ModuleTemplate
     }
 
     /**
-     * der Weg ab TYPO3 7.6
+     * der Weg ab TYPO3 12.4
      * TODO: fertig implementieren.
      */
     protected function renderContent12(ModuleParts $parts)
@@ -126,15 +126,8 @@ class ModuleTemplate
      */
     protected function renderContent76(ModuleParts $parts)
     {
-        /* @var $moduleTemplate \TYPO3\CMS\Backend\Template\ModuleTemplate */
-        $moduleTemplate = null;
-        if (TYPO3::isTYPO121OrHigher()) {
-            /** @var ModuleTemplateFactory $factory */
-            $factory = tx_rnbase::makeInstance(ModuleTemplateFactory::class);
-            $moduleTemplate = $factory->create($this->options['request']);
-        } else {
-            $moduleTemplate = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Template\\ModuleTemplate');
-        }
+        /** @var \TYPO3\CMS\Backend\Template\ModuleTemplate $moduleTemplate */
+        $moduleTemplate = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Template\\ModuleTemplate');
 
         $content = '';
         //        $moduleTemplate->getPageRenderer()->loadJquery();
@@ -200,7 +193,9 @@ class ModuleTemplate
                     ->setSetVariables(array_keys($this->module->MOD_MENU));
             }
 
-            $buttonBar->addButton($shortcutButton);
+            if ($shortcutButton->isValid()) {
+                $buttonBar->addButton($shortcutButton);
+            }
         }
     }
 
