@@ -19,6 +19,15 @@ return $config->setFinder($finder)
         'phpdoc_separation' => [
             'skip_unlisted_annotations' => true,
         ],
+        'trailing_comma_in_multiline' => [
+            'after_heredoc' => true,
+            // no support for "arguments" and "parameters" as we need support for PHP 7.4
+            'elements' => [
+                'array_destructuring',
+                'arrays',
+                'match',
+            ],
+        ],
     ])
     ->setLineEnding("\n")
 ;
