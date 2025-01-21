@@ -296,6 +296,8 @@ class tx_rnbase_controller
         } catch (\TYPO3\CMS\Core\Error\Http\PageNotFoundException $e) {
             // Nice to have, aber weder aufwärts noch abwärtskompatibel...
             $this->handlePageNotFound('TYPO3\\CMS\\Core\\Error\\Http\\PageNotFoundException was thrown');
+        } catch (\TYPO3\CMS\Core\Http\ImmediateResponseException $e) {
+            throw $e;
         } catch (Throwable $e) {
             $ret = $this->handleException($actionName, $e, $configurations);
             $this->errors[] = $e;
