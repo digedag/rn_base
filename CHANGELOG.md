@@ -3,6 +3,9 @@
 Changelog
 ---------
 
+v1.18.3 (21.01.2025)
+* Fix redirects
+
 v1.18.2 (11.07.2024)
 * Fix PHP warnings
 
