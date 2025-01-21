@@ -54,7 +54,7 @@ class BaseCollection extends \Contrib\Doctrine\Common\Collections\ArrayCollectio
      * @return array
      */
     public function exchange(
-        array $elements = []
+        array $elements = [],
     ) {
         $old = $this->toArray();
 
@@ -75,7 +75,7 @@ class BaseCollection extends \Contrib\Doctrine\Common\Collections\ArrayCollectio
      * @return array
      */
     public function exchangeArray(
-        array $elements = []
+        array $elements = [],
     ) {
         return $this->exchange($elements);
     }

@@ -37,7 +37,7 @@ interface tx_rnbase_action_ICacheHandler
      */
     public function init(
         tx_rnbase_action_BaseIOC $controller,
-        $confId
+        $confId,
     );
 
     /**

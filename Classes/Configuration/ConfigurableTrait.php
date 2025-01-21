@@ -50,7 +50,7 @@ trait ConfigurableTrait
      * @return ConfigurableTrait
      */
     public function setConfigurations(
-        ConfigurationInterface $configurations
+        ConfigurationInterface $configurations,
     ) {
         $this->configurations = $configurations;
 
@@ -75,7 +75,7 @@ trait ConfigurableTrait
      * @return ConfigurableTrait
      */
     public function setConfId(
-        $confId
+        $confId,
     ) {
         $this->confId = $confId;
 

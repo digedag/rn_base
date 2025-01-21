@@ -699,7 +699,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
         $maxPages = 10,
         $pageFloat = 'CENTER',
         $implode = '',
-        $qualifier = null
+        $qualifier = null,
     ) {
         $viewHelper = parent::getPreparedVîewHelper($viewHelper);
 
@@ -727,7 +727,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
             'getPageFloat', 'getFirstAndLastPage', 'renderFirstPage', 'renderPrevPage',
             'renderNormalPage', 'renderCurrentPage', 'renderNextPage', 'renderLastPage',
             'getQualifierFromConfigurations',
-        ]
+        ],
     ) {
         return $this->getMock(
             'Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowserViewHelper',

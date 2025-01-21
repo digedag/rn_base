@@ -49,7 +49,7 @@ abstract class PersistenceRepository extends AbstractRepository implements Persi
      * @return DomainInterface
      */
     public function createNewModel(
-        array $record = []
+        array $record = [],
     ) {
         return $this->getEmptyModel()->setProperty($record);
     }
@@ -78,7 +78,7 @@ abstract class PersistenceRepository extends AbstractRepository implements Persi
      */
     public function persist(
         DomainInterface $model,
-        $options = null
+        $options = null,
     ) {
         $options = DataModel::getInstance($options);
 
@@ -144,7 +144,7 @@ abstract class PersistenceRepository extends AbstractRepository implements Persi
      * @param DataModel $transport
      */
     private function persistUpdate(
-        DataModel $transport
+        DataModel $transport,
     ) {
         $model = $transport->getModel();
 
@@ -164,7 +164,7 @@ abstract class PersistenceRepository extends AbstractRepository implements Persi
      * @param DataModel $transport
      */
     private function persistNew(
-        DataModel $transport
+        DataModel $transport,
     ) {
         $model = $transport->getModel();
         $data = $transport->getData();
@@ -203,7 +203,7 @@ abstract class PersistenceRepository extends AbstractRepository implements Persi
      */
     protected function refreshModelData(
         DomainInterface $model,
-        array $data
+        array $data,
     ) {
         // merge the model data with the stored one, so nontca columns kept
         if ($model instanceof DataModel) {
@@ -232,7 +232,7 @@ abstract class PersistenceRepository extends AbstractRepository implements Persi
      * @return array
      */
     protected function getCleanModelData(
-        DomainInterface $model
+        DomainInterface $model,
     ) {
         $columns = $model->getColumnNames();
 

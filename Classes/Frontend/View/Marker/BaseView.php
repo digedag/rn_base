@@ -118,7 +118,7 @@ class BaseView extends AbstractView implements ViewInterface
      */
     protected function renderPluginData(
         $templateCode,
-        RequestInterface $request
+        RequestInterface $request,
     ) {
         // check, if there are plugin markers to render
         if (!BaseMarker::containsMarker($templateCode, 'PLUGIN_')) {

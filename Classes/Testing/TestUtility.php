@@ -52,7 +52,7 @@ class TestUtility
     public static function createConfigurations(
         array $configurationArray,
         $extensionKey,
-        $qualifier = ''
+        $qualifier = '',
     ) {
         $qualifier = empty($qualifier) ? $extensionKey : $qualifier;
 

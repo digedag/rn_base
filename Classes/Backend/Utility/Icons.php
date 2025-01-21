@@ -73,7 +73,7 @@ class Icons
     public static function getSpriteIconForRecord(
         $table,
         array $row,
-        $size = 'default'
+        $size = 'default',
     ) {
         return static::getIconFactory()->getIconForRecord($table, $row, $size);
     }
@@ -113,7 +113,7 @@ class Icons
      */
     public static function getSpriteIcon(
         $iconName,
-        array $options = []
+        array $options = [],
     ) {
         $iconName = IconMap::alias($iconName);
 

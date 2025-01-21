@@ -1,4 +1,5 @@
 <?php
+
 /***************************************************************
 *  Copyright notice
 *
@@ -231,7 +232,7 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends BaseTestCase
     public function testCleanupCacheKey(
         $initialKey,
         $cleanedKey,
-        array $config = []
+        array $config = [],
     ) {
         self::assertSame(
             $cleanedKey,
@@ -379,7 +380,7 @@ class tx_rnbase_tests_action_CacheHandlerDefault_testcase extends BaseTestCase
      */
     protected function getHandlerMock(
         array $config = [],
-        array $methods = []
+        array $methods = [],
     ) {
         $handler = $this->getMock(
             'tx_rnbase_action_CacheHandlerDefault',

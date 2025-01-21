@@ -53,7 +53,7 @@ class AbstractRepositoryTest extends BaseTestCase
      */
     public function testHandleEnableFieldsOptions(
         $options,
-        $expectedOptions
+        $expectedOptions,
     ) {
         $fields = [];
         $repository = $this->getRepositoryMock();

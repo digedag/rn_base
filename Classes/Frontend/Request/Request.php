@@ -41,7 +41,7 @@ class Request implements RequestInterface
     public function __construct(
         ParametersInterface $parameters,
         ConfigurationInterface $configurations,
-        $confId
+        $confId,
     ) {
         $this->configurations = $configurations;
         $this->confId = $confId;

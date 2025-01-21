@@ -1,4 +1,5 @@
 <?php
+
 /***************************************************************
 *  Copyright notice
 *
@@ -56,7 +57,7 @@ class tx_rnbase_tests_util_TSFAL_testcase extends BaseTestCase
         array $contentObjectData,
         $expectedRefTable,
         $expectedRefField,
-        $expectedUid
+        $expectedUid,
     ) {
         $fileRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileRepository', ['findByRelation']);
         $fileRepository->expects(self::once())

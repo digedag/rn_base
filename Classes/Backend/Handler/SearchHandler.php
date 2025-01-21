@@ -136,7 +136,7 @@ abstract class SearchHandler implements IModHandler
      * @param array                  $options
      */
     protected function init(
-        IModule $mod, array &$options = []
+        IModule $mod, array &$options = [],
     ) {
         $this->module = $mod;
 
@@ -169,7 +169,7 @@ abstract class SearchHandler implements IModHandler
         $template,
         array &$markerArray,
         array &$subpartArray,
-        array &$wrappedSubpartArray
+        array &$wrappedSubpartArray,
     ) {
         $markerArray['###ADDITIONAL###'] = '';
 
@@ -189,7 +189,7 @@ abstract class SearchHandler implements IModHandler
     public function showScreen(
         $template,
         IModule $mod,
-        $options
+        $options,
     ) {
         // @codingStandardsIgnoreEnd
         $this->init($mod, $options);
@@ -230,7 +230,7 @@ abstract class SearchHandler implements IModHandler
         $template,
         ?array &$markerArray = null,
         ?array &$subpartArray = null,
-        ?array &$wrappedSubpartArray = null
+        ?array &$wrappedSubpartArray = null,
     ) {
         /* @var $searcher Tx_Hpsplaner_Backend_Searcher_* */
         $searcher = $this->getLister();

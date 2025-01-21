@@ -1,4 +1,5 @@
 <?php
+
 /***************************************************************
 *  Copyright notice
 *
@@ -146,7 +147,7 @@ class tx_rnbase_tests_util_TCA_testcase extends BaseTestCase
     public function testValidateModel(
         tx_rnbase_model_base $model,
         array $options,
-        $valid
+        $valid,
     ) {
         /* @var $options tx_rnbase_model_data */
         $options = tx_rnbase::makeInstance(

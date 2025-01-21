@@ -97,7 +97,7 @@ class Category
     protected function setFieldsBySysCategoriesOfItemFromParameters(
         array $fields,
         $configurations,
-        $confId
+        $confId,
     ) {
         if ($categories = $this->lookupCategoryUidsFromParameters($configurations, $confId)) {
             $fields = $this->getFieldsByCategories($categories, $fields, $configurations, $confId);
@@ -194,7 +194,7 @@ class Category
         array $categories,
         array $fields,
         $configurations,
-        $confId
+        $confId,
     ) {
         $sysCategoryTableAlias =
             $configurations->get($confId.'sysCategoryTableAlias') ?
@@ -236,7 +236,7 @@ class Category
     protected function setFieldsBySysCategoriesFromParameters(
         array $fields,
         $configurations,
-        $confId
+        $confId,
     ) {
         $categoryUid = $configurations->getParameters()->getInt(
             $configurations->get($confId.'parameterName'),

@@ -68,7 +68,7 @@ class LegacyQueryBuilder implements SingletonInterface
         $whereClause,
         $groupBy = '',
         $orderBy = '',
-        $limit = ''
+        $limit = '',
     ) {
         // Table and fieldnames should be "SQL-injection-safe" when supplied to this function
         // Build basic query
@@ -133,7 +133,7 @@ class LegacyQueryBuilder implements SingletonInterface
         $table,
         $where,
         $fieldsValues,
-        $noQuoteFields = false
+        $noQuoteFields = false,
     ) {
         // Table and fieldnames should be "SQL-injection-safe" when supplied to this
         // function (contrary to values in the arrays which may be insecure).

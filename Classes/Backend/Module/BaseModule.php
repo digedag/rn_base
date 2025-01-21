@@ -101,7 +101,7 @@ abstract class BaseModule extends BaseScriptClass implements IModule
      */
     public function __invoke(
         $request = null,
-        $response = null
+        $response = null,
     ) {
         $GLOBALS['MCONF']['script'] = '_DISPATCH';
         $this->init();
