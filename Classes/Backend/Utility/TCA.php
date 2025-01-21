@@ -238,7 +238,7 @@ class TCA
      */
     public static function validateModel(
         RecordInterface $model,
-        $options = null,
+        $options = null
     ) {
         return self::validateRecord(
             $model->getProperty(),
@@ -260,7 +260,7 @@ class TCA
     public static function validateRecord(
         array $record,
         $tableName,
-        $options = null,
+        $options = null
     ) {
         $options = DataModel::getInstance($options);
         $columns = self::getTcaColumns($tableName, $options);
@@ -303,7 +303,7 @@ class TCA
         $value,
         $field,
         $tableName,
-        $options = null,
+        $options = null
     ) {
         $options = DataModel::getInstance($options);
 
@@ -383,7 +383,7 @@ class TCA
      */
     public static function eleminateNonTcaColumns(
         RecordInterface $model,
-        array $data,
+        array $data
     ) {
         $needle = $model->getColumnNames();
         // if there is no array means, there is no tca or no columns

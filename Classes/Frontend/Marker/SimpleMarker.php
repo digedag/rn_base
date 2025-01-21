@@ -136,7 +136,7 @@ class SimpleMarker extends BaseMarker
     protected function prepareItem(
         DataInterface $item,
         ConfigurationInterface $configurations,
-        $confId,
+        $confId
     ) {
         if ($item->isEmpty()) {
             return;
@@ -206,7 +206,7 @@ class SimpleMarker extends BaseMarker
         $item,
         $formatter,
         $confId,
-        $marker,
+        $marker
     ) {
         $configurations = $formatter->getConfigurations();
         $pluginData = $configurations->getCObj()->data;

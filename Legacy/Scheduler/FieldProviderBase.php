@@ -1,5 +1,4 @@
 <?php
-
 /**
  *  Copyright notice.
  *
@@ -48,7 +47,7 @@ abstract class Tx_Rnbase_Scheduler_FieldProviderBase
     abstract protected function _getAdditionalFields(
         array &$taskInfo,
         $task,
-        $schedulerModule,
+        $schedulerModule
     );
 
     /**
@@ -61,7 +60,7 @@ abstract class Tx_Rnbase_Scheduler_FieldProviderBase
      */
     abstract protected function _validateAdditionalFields(
         array &$submittedData,
-        $parentObject,
+        $parentObject
     );
 
     /**

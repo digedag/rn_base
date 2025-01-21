@@ -63,7 +63,7 @@ class ModFuncFrame implements IModule
     public function __construct(
         IconFactory $iconFactory,
         UriBuilder $uriBuilder,
-        PageRenderer $pageRenderer,
+        PageRenderer $pageRenderer
     ) {
         $this->iconFactory = $iconFactory;
         $this->uriBuilder = $uriBuilder;

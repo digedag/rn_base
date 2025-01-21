@@ -53,7 +53,7 @@ class SearcherUtility
      * @return SearcherUtility
      */
     public static function getInstance(
-        $options = [],
+        $options = []
     ) {
         return tx_rnbase::makeInstance(SearcherUtility::class, $options);
     }
@@ -90,7 +90,7 @@ class SearcherUtility
     public function performSearch(
         SearchInterface $repository,
         array $fields,
-        array $options,
+        array $options
     ) {
         // we has to build a uid map for sortable tables!
         $firstPrev = $lastNext = false;

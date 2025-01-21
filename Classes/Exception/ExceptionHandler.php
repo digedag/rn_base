@@ -168,7 +168,7 @@ class ExceptionHandler implements ExceptionHandlerInterface
     protected function catchException(
         $actionName,
         Throwable $e,
-        ConfigurationInterface $configurations,
+        ConfigurationInterface $configurations
     ) {
         // typoscript nach catchanweisungen prüfen
         // das machen wir nur, wenn sich diese exception nicht
@@ -206,7 +206,7 @@ class ExceptionHandler implements ExceptionHandlerInterface
         $action,
         Throwable $e,
         ConfigurationInterface $configurations,
-        $type = 'error',
+        $type = 'error'
     ) {
         static $calls = 0, $trace = [];
 

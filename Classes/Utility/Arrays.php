@@ -94,7 +94,7 @@ class Arrays
         array $overrule,
         $addKeys = true,
         $includeEmptyValues = true,
-        $enableUnsetFeature = true,
+        $enableUnsetFeature = true
     ) {
         ArrayUtility::mergeRecursiveWithOverrule(
             $original,

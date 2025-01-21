@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************
  * Copyright notice
  *
@@ -113,7 +112,7 @@ class tx_rnbase_view_Base
      */
     protected function renderPluginData(
         $templateCode,
-        Tx_Rnbase_Configuration_ProcessorInterface $configurations,
+        Tx_Rnbase_Configuration_ProcessorInterface $configurations
     ) {
         // render only, if there is an controller
         if (!$this->getController()) {

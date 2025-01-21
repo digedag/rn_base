@@ -694,7 +694,7 @@ class TSFAL
     }
 
     protected static function getReferenceFileInfo(
-        FileReference $reference,
+        FileReference $reference
     ) {
         // getProperties gets merged values from reference and the orig file
         $info = $reference->getProperties();

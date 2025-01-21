@@ -76,7 +76,7 @@ class CHashUtility
     protected static function addConfigurationToCacheHashCalculator(
         &$typo3ConfVarsEntry,
         $cacheHashCalculatorInternalConfigurationKey,
-        array $configurationValue,
+        array $configurationValue
     ) {
         if (!TYPO3::isTYPO90OrHigher()) {
             $startingGlue = '';

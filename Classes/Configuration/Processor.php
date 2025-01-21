@@ -144,7 +144,7 @@ class Processor implements ConfigurationInterface
     /**
      * Container für alternative cObjs innerhalb des Plugins.
      *
-     * @var ContentObjectRenderer[]
+     * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer[]
      */
     private $cObjs = [];
 

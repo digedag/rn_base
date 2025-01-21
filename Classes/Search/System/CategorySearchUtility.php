@@ -63,7 +63,7 @@ class CategorySearchUtility
         $baseTableAlias,
         $fieldName,
         array $givenTableAliases,
-        $sysCategoryTableAlias = 'SYS_CATEGORY',
+        $sysCategoryTableAlias = 'SYS_CATEGORY'
     ) {
         $joins = [];
         if (isset($givenTableAliases[$sysCategoryTableAlias.'_MM']) || isset($givenTableAliases[$sysCategoryTableAlias])) {
@@ -101,7 +101,7 @@ class CategorySearchUtility
         $baseTableAlias,
         $fieldName,
         array $givenTableAliases,
-        $sysCategoryTableAlias = 'SYS_CATEGORY',
+        $sysCategoryTableAlias = 'SYS_CATEGORY'
     ) {
         $joins = '';
         if (isset($givenTableAliases[$sysCategoryTableAlias])) {

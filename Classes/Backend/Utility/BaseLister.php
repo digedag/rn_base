@@ -366,7 +366,7 @@ abstract class BaseLister
      * @return array
      */
     protected function getColumns(
-        $decorator,
+        $decorator
     ) {
         return $this->getDecoratorColumns($decorator);
     }

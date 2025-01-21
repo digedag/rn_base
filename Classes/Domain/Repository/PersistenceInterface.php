@@ -43,6 +43,6 @@ interface PersistenceInterface
      */
     public function persist(
         DomainModelInterface $model,
-        $options = null,
+        $options = null
     );
 }

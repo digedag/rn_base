@@ -97,7 +97,7 @@ class CategoryTest extends BaseTestCase
         $configs,
         $fields,
         $expectedFields,
-        $expectedDoSearchValue,
+        $expectedDoSearchValue
     ) {
         if (!defined('OP_IN_INT')) {
             define('OP_IN_INT', 'IN');

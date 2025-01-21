@@ -205,7 +205,7 @@ class T3General
         $url,
         $includeHeader = 0,
         $requestHeaders = false,
-        &$report = null,
+        &$report = null
     ) {
         return Network::getUrl(
             $url,
@@ -233,7 +233,7 @@ class T3General
         &$params,
         &$ref,
         $checkPrefix = '',
-        $errorMode = 0,
+        $errorMode = 0
     ) {
         $util = Typo3Classes::getGeneralUtilityClass();
 

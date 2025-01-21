@@ -201,7 +201,7 @@ class Typo3Classes
     }
 
     /**
-     * @return class-string<\TYPO3\CMS\Backend\Template\DocumentTemplate|DocumentTemplate>
+     * @return class-string<\TYPO3\CMS\Backend\Template\DocumentTemplate|\Sys25\RnBase\Backend\Template\Override\DocumentTemplate>
      */
     public static function getDocumentTemplateClass()
     {
@@ -229,7 +229,7 @@ class Typo3Classes
     }
 
     /**
-     * @return class-string<\TYPO3\CMS\Backend\Template\DocumentTemplate|DocumentTemplate>
+     * @return class-string<\TYPO3\CMS\Backend\Template\DocumentTemplate|\Sys25\RnBase\Backend\Template\Override\DocumentTemplate>
      */
     public static function getMediumDocumentTemplateClass()
     {

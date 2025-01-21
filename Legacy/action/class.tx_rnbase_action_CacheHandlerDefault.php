@@ -92,7 +92,7 @@ class tx_rnbase_action_CacheHandlerDefault implements tx_rnbase_action_ICacheHan
      */
     public function init(
         tx_rnbase_action_BaseIOC $controller,
-        $confId,
+        $confId
     ) {
         $this->controller = $controller;
         $this->confId = $confId;

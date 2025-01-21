@@ -51,7 +51,7 @@ class MediaMarker extends SimpleMarker
         $item,
         $formatter,
         $confId,
-        $marker,
+        $marker
     ) {
         // Hook für direkte Template-Manipulation
         Misc::callHook(

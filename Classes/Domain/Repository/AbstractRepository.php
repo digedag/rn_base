@@ -160,7 +160,7 @@ abstract class AbstractRepository implements SearchInterface, SingletonInterface
      */
     public function searchSingle(
         array $fields = [],
-        array $options = [],
+        array $options = []
     ) {
         $options['limit'] = 1;
 
@@ -181,7 +181,7 @@ abstract class AbstractRepository implements SearchInterface, SingletonInterface
      */
     protected function prepareFieldsAndOptions(
         array &$fields,
-        array &$options,
+        array &$options
     ) {
         // force collection usage by default!
         if (!isset($options['collection']) && $this->getCollectionClass()) {
@@ -200,7 +200,7 @@ abstract class AbstractRepository implements SearchInterface, SingletonInterface
      */
     protected function handleEnableFieldsOptions(
         array &$fields,
-        array &$options,
+        array &$options
     ) {
         if (
             Environment::isBackend()
@@ -221,7 +221,7 @@ abstract class AbstractRepository implements SearchInterface, SingletonInterface
      */
     protected function handleLanguageOptions(
         array &$fields,
-        array &$options,
+        array &$options
     ) {
         if (
             !isset($options['i18n'])
@@ -266,7 +266,7 @@ abstract class AbstractRepository implements SearchInterface, SingletonInterface
      */
     protected function prepareItems(
         $items,
-        array $options,
+        array $options
     ) {
         if (empty($items[0])) {
             return $items;
@@ -286,7 +286,7 @@ abstract class AbstractRepository implements SearchInterface, SingletonInterface
      */
     protected function uniqueItems(
         $items,
-        array $options,
+        array $options
     ) {
         // uniqueue, if there are models and the distinct option
         if (

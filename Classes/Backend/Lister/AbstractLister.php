@@ -94,7 +94,7 @@ abstract class AbstractLister
      */
     public function __construct(
         BaseModule $module,
-        $options = [],
+        $options = []
     ) {
         $this->storage = DataModel::getInstance(
             [
@@ -309,7 +309,7 @@ abstract class AbstractLister
      * @return string
      */
     public function renderTemplate(
-        $template,
+        $template
     ) {
         return Templates::substituteMarkerArrayCached(
             $template,
@@ -510,7 +510,7 @@ abstract class AbstractLister
      * @param array $options
      */
     protected function prepareSorting(
-        array &$options,
+        array &$options
     ) {
         $sortField = Parameters::getPostOrGetParameter('sortField');
         $sortRev = Parameters::getPostOrGetParameter('sortRev');
@@ -539,7 +539,7 @@ abstract class AbstractLister
      */
     protected function prepareFieldsAndOptions(
         array &$fields,
-        array &$options,
+        array &$options
     ) {
     }
 

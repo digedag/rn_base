@@ -119,7 +119,7 @@ class Action extends tx_rnbase_view_Base
      */
     protected function getTypoScriptConfigurationForFluid(
         $extensionKey,
-        ConfigurationInterface $configurations,
+        ConfigurationInterface $configurations
     ) {
         $typoScriptConfiguration = $this->getDefaultTypoScriptConfigurationForFluid($extensionKey);
 
@@ -176,7 +176,7 @@ class Action extends tx_rnbase_view_Base
     protected function initializeView(
         $templateName,
         $typoScriptConfigurationForFluid,
-        ConfigurationInterface $configurations,
+        ConfigurationInterface $configurations
     ) {
         $view = Factory::getViewInstance($configurations, $typoScriptConfigurationForFluid);
         $view->setPartialRootPaths($typoScriptConfigurationForFluid['view']['partialRootPaths.']);

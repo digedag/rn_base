@@ -57,7 +57,7 @@ abstract class DetailHandler extends SearchHandler
     public function showScreen(
         $template,
         IModule $mod,
-        $options,
+        $options
     ) {
         // @codingStandardsIgnoreEnd
         $this->init($mod, $options);
@@ -117,7 +117,7 @@ abstract class DetailHandler extends SearchHandler
         RecordInterface $current,
         ?array &$markerArray = null,
         ?array &$subpartArray = null,
-        ?array &$wrappedSubpartArray = null,
+        ?array &$wrappedSubpartArray = null
     ) {
         // @TODO: implement protected function showDetail(
         throw new Exception('detail not implemented yet');

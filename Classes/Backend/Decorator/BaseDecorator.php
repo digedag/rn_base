@@ -66,7 +66,7 @@ class BaseDecorator implements InterfaceDecorator
      */
     public function __construct(
         BaseModule $mod,
-        $options = [],
+        $options = []
     ) {
         $this->mod = $mod;
 
@@ -115,7 +115,7 @@ class BaseDecorator implements InterfaceDecorator
         $columnValue,
         $columnName,
         array $record,
-        DataInterface $entry,
+        DataInterface $entry
     ) {
         $return = $columnValue;
 
@@ -143,7 +143,7 @@ class BaseDecorator implements InterfaceDecorator
     protected function wrapValue(
         $formatedValue,
         DataInterface $entry,
-        $columnName,
+        $columnName
     ) {
         return $formatedValue;
     }
@@ -156,7 +156,7 @@ class BaseDecorator implements InterfaceDecorator
      * @return string
      */
     protected function formatUidColumn(
-        DataInterface $entry,
+        DataInterface $entry
     ) {
         $value = $entry->getProperty('uid');
 
@@ -175,7 +175,7 @@ class BaseDecorator implements InterfaceDecorator
      * @return string
      */
     protected function formatLabelColumn(
-        DataInterface $entry,
+        DataInterface $entry
     ) {
         $label = '';
 
@@ -216,7 +216,7 @@ class BaseDecorator implements InterfaceDecorator
      * @return array
      */
     protected function buildSimpleEntryInfo(
-        DataInterface $entry,
+        DataInterface $entry
     ) {
         $infos = [];
 
@@ -285,7 +285,7 @@ class BaseDecorator implements InterfaceDecorator
      */
     protected function formatActionEdit(
         DomainInterface $item,
-        array $actionConfig = [],
+        array $actionConfig = []
     ) {
         return $this->getFormTool()->createEditLink(
             $item->getTableName(),
@@ -305,7 +305,7 @@ class BaseDecorator implements InterfaceDecorator
      */
     protected function formatActionHide(
         DomainInterface $item,
-        array $actionConfig = [],
+        array $actionConfig = []
     ) {
         return $this->getFormTool()->createHideLink(
             $item->getTableName(),
@@ -328,7 +328,7 @@ class BaseDecorator implements InterfaceDecorator
      */
     protected function formatActionRemove(
         DomainInterface $item,
-        array $actionConfig = [],
+        array $actionConfig = []
     ) {
         return $this->getFormTool()->createDeleteLink(
             $item->getTableName(),
@@ -351,7 +351,7 @@ class BaseDecorator implements InterfaceDecorator
      */
     protected function formatActionMoveup(
         DomainInterface $item,
-        array $actionConfig = [],
+        array $actionConfig = []
     ) {
         $uid = $item->getProperty('uid');
         $fromUid = $uid;
@@ -399,7 +399,7 @@ class BaseDecorator implements InterfaceDecorator
      */
     protected function formatActionMovedown(
         DomainInterface $item,
-        array $actionConfig = [],
+        array $actionConfig = []
     ) {
         $uid = $item->getProperty('uid');
         $uidMap = $this->getUidMap($item);

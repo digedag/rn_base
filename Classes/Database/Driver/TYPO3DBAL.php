@@ -117,7 +117,7 @@ class TYPO3DBAL implements IDatabase, IDatabaseT3
         $whereClause,
         $groupBy = '',
         $orderBy = '',
-        $limit = '',
+        $limit = ''
     ) {
         // Table and fieldnames should be "SQL-injection-safe" when supplied to this function
         $query = $this->getBuilderUtil()->SELECTquery(
@@ -159,7 +159,7 @@ class TYPO3DBAL implements IDatabase, IDatabaseT3
         $whereClause,
         $groupBy = '',
         $orderBy = '',
-        $limit = '',
+        $limit = ''
     ) {
         return $this->getConnection()->executeQuery(
             $this->SELECTquery(
@@ -213,7 +213,7 @@ class TYPO3DBAL implements IDatabase, IDatabaseT3
     public function exec_INSERTquery(
         $table,
         $fieldsValues,
-        $noQuoteFields = false,
+        $noQuoteFields = false
     ) {
         $connection = $this->getConnection();
         $this->lastAffectedRows = $connection->insert($table, $fieldsValues);
@@ -241,7 +241,7 @@ class TYPO3DBAL implements IDatabase, IDatabaseT3
         $table,
         $where,
         $fieldsValues,
-        $noQuoteFields = false,
+        $noQuoteFields = false
     ) {
         // Table and fieldnames should be "SQL-injection-safe" when supplied to this
         $query = $this->getBuilderUtil()->UPDATEquery(
@@ -272,7 +272,7 @@ class TYPO3DBAL implements IDatabase, IDatabaseT3
         $table,
         $where,
         $fieldsValues,
-        $noQuoteFields = false,
+        $noQuoteFields = false
     ) {
         $query = $this->UPDATEquery($table, $where, $fieldsValues, $noQuoteFields);
         $this->lastAffectedRows = $this->getConnection()->executeUpdate($query);

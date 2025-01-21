@@ -663,7 +663,7 @@ MAYDAYPAGE;
      */
     public static function getPidList(
         $pidList,
-        $options = 0,
+        $options = 0
     ) {
         if (!strcmp($pidList, '')) {
             $pidList = TYPO3::getTSFE()->id;

@@ -128,7 +128,7 @@ class Extensions
         $subModuleName = '',
         $position = '',
         array $controllerActions = [],
-        array $moduleConfiguration = [],
+        array $moduleConfiguration = []
     ) {
         if (TYPO3::isTYPO121OrHigher()) {
             // since T3 12 it is not possible to register be module programmatically anymore
@@ -160,7 +160,7 @@ class Extensions
         $extensionName,
         $mainModuleName = '',
         $subModuleName = '',
-        array $moduleConfiguration = [],
+        array $moduleConfiguration = []
     ) {
         if (TYPO3::isTYPO90OrHigher() && $moduleConfiguration['routeTarget']) {
             $moduleName = static::buildModuleSignature($extensionName, $mainModuleName, $subModuleName);
@@ -187,7 +187,7 @@ class Extensions
     private static function buildModuleSignature(
         $extensionName,
         $mainModuleName = '',
-        $subModuleName = '',
+        $subModuleName = ''
     ) {
         if (false !== $delimiterPosition = strrpos($extensionName, '.')) {
             $extensionName = substr($extensionName, $delimiterPosition + 1);

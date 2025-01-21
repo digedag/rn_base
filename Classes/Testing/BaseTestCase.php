@@ -92,7 +92,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
     protected static function createConfigurations(
         array $configurationArray,
         $extensionKey,
-        $qualifier = '',
+        $qualifier = ''
     ) {
         return call_user_func_array(
             [TestUtility::class, 'createConfigurations'],
@@ -128,7 +128,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
         $callAutoload = true,
         $cloneArguments = false,
         $callOriginalMethods = false,
-        $proxyTarget = null,
+        $proxyTarget = null
     ) {
         if (method_exists($this, 'createMock')) {
             $mockBuilder = $this->getMockBuilder($originalClassName)
@@ -182,7 +182,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
     protected function getModel(
         $record = null,
         $class = BaseModel::class,
-        array $methods = [],
+        array $methods = []
     ) {
         // $record has to be an array,
         // if there is an scalar value,
@@ -307,7 +307,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
      * @return array
      */
     private function yamlFindGetters(
-        array $array,
+        array $array
     ) {
         $getters = [];
 
@@ -432,7 +432,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
         $mockClassName = '',
         $callOriginalConstructor = true,
         $callOriginalClone = true,
-        $callAutoload = true,
+        $callAutoload = true
     ) {
         if ('' === $originalClassName) {
             throw new InvalidArgumentException('$originalClassName must not be empty.', 1334701880);
@@ -592,7 +592,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
         $callOriginalConstructor = true,
         $callOriginalClone = true,
         $callAutoload = true,
-        $cloneArguments = false,
+        $cloneArguments = false
     ) {
         return $this->getMockForAbstractClass(
             $originalClassName,

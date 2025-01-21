@@ -296,7 +296,7 @@ class PersistenceRepositoryTest extends BaseTestCase
      * @return \PHPUnit\Framework\MockObject\MockObject|PersistenceRepository
      */
     protected function getRepository(
-        array $methods = [],
+        array $methods = []
     ) {
         $connection = $this->getMock(
             Connection::class,

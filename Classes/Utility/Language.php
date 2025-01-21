@@ -81,7 +81,7 @@ class Language
         $languageKey,
         $charset = '',
         $errorMode = 0,
-        $isLocalizationOverride = false,
+        $isLocalizationOverride = false
     ) {
         /** @var $languageFactory \TYPO3\CMS\Core\Localization\LocalizationFactory */
         $languageFactory = tx_rnbase::makeInstance(

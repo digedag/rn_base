@@ -158,7 +158,7 @@ class PageBrowserViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTa
         $pointer,
         $pageFloat,
         $maxPages,
-        $totalPages,
+        $totalPages
     ) {
         $pageBrowserHtmlParts = [];
 
@@ -222,7 +222,7 @@ class PageBrowserViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTa
     private function getPageBrowserHtmlPartsFromFirstToLastPage(
         $pointer,
         $firstPage,
-        $lastPage,
+        $lastPage
     ) {
         $pageBrowserHtmlParts = [];
         for ($i = $firstPage; $i < $lastPage; ++$i) {
@@ -382,7 +382,7 @@ class PageBrowserViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTa
         $closureName,
         &$initializationPhpCode,
         ViewHelperNode $node,
-        TemplateCompiler $compiler,
+        TemplateCompiler $compiler
     ) {
         $this->setViewHelperNode($node);
         $this->setChildNodes($node->getChildNodes());
