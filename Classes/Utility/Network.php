@@ -105,9 +105,7 @@ class Network
     public static function redirect($url, $httpStatus = null)
     {
         if (TYPO3::isTYPO115OrHigher()) {
-            throw new ImmediateResponseException(
-                new RedirectResponse($url, $httpStatus ?? 303)
-            );
+            throw new ImmediateResponseException(new RedirectResponse($url, $httpStatus ?? 303));
         }
 
         $utility = Typo3Classes::getHttpUtilityClass();
