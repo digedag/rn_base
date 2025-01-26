@@ -60,8 +60,8 @@ abstract class AbstractAction
         $debug = (
             $debugKey && (
                 '1' === $debugKey
-                || ($_GET['debug'] && array_key_exists($debugKey, array_flip(Strings::trimExplode(',', $_GET['debug']))))
-                || ($_POST['debug'] && array_key_exists($debugKey, array_flip(Strings::trimExplode(',', $_POST['debug']))))
+                || (($_GET['debug'] ?? false) && array_key_exists($debugKey, array_flip(Strings::trimExplode(',', $_GET['debug']))))
+                || (($_POST['debug'] ?? false) && array_key_exists($debugKey, array_flip(Strings::trimExplode(',', $_POST['debug']))))
             )
         );
         if ($debug) {
