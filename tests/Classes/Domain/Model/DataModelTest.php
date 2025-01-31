@@ -239,7 +239,7 @@ class DataModelTest extends BaseTestCase
         $model = $this->getModel(
             ['test_value' => 'dummy', 'property' => 'testProperty'],
             DataModel::class,
-            ['dummy']
+            []
         );
 
         self::assertTrue(isset($model['testValue']));
@@ -256,22 +256,11 @@ class DataModelTest extends BaseTestCase
      */
     public function testOffsetGet()
     {
-        $model = $this->getModel(
-            ['test_value' => 'dummy', 'property' => 'testProperty'],
-            DataModel::class,
-            ['getImagePath']
-        );
-        $model
-            ->expects(self::exactly(3))
-            ->method('getImagePath')
-            ->willReturn(123);
+        $model = new DataModel(['test_value' => 'dummy', 'property' => 'testProperty']);
 
         self::assertSame('dummy', $model['testValue']);
         self::assertSame('dummy', $model['test_value']);
         self::assertSame('dummy', $model['TestValue']);
-        self::assertSame(123, $model['imagePath']);
-        self::assertSame(123, $model['image_path']);
-        self::assertSame(123, $model['ImagePath']);
         self::assertSame('testProperty', $model['property']);
     }
 
@@ -285,15 +274,8 @@ class DataModelTest extends BaseTestCase
         $model = $this->getModel(
             ['test_value' => 'wrong', 'property' => 'testProperty'],
             DataModel::class,
-            ['setImagePath']
+            []
         );
-        $model
-            ->expects(self::exactly(3))
-            ->method('setImagePath')
-            ->with(123);
-        $model['imagePath'] = 123;
-        $model['ImagePath'] = 123;
-        $model['image_path'] = 123;
 
         $model['testValue'] = 'dummy';
         self::assertSame('dummy', $model['testValue']);
@@ -312,17 +294,17 @@ class DataModelTest extends BaseTestCase
      */
     public function testOffsetUnset()
     {
-        $model = $this->getModel(['test_value' => 'wrong'], DataModel::class, ['dummy']);
+        $model = $this->getModel(['test_value' => 'wrong'], DataModel::class);
         self::assertTrue(isset($model['test_value']));
         unset($model['testValue']);
         self::assertFalse(isset($model['test_value']));
 
-        $model = $this->getModel(['test_value' => 'wrong'], DataModel::class, ['dummy']);
+        $model = $this->getModel(['test_value' => 'wrong'], DataModel::class);
         self::assertTrue(isset($model['testValue']));
         unset($model['test_value']);
         self::assertFalse(isset($model['testValue']));
 
-        $model = $this->getModel(['test_value' => 'wrong'], DataModel::class, ['dummy']);
+        $model = $this->getModel(['test_value' => 'wrong'], DataModel::class);
         self::assertTrue(isset($model['test_value']));
         unset($model['TestValue']);
         self::assertFalse(isset($model['test_value']));
