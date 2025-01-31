@@ -159,17 +159,17 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
         $viewHelper = $this->getViewHelperMock();
         $viewHelper = $this->getPreparedVîewHelperWithPageBrowser($viewHelper, $pageBrowser, false, 10, 'CENTER', ' ', 'myQualifier');
 
-        $viewHelper->expects($this->at(0))
+        $viewHelper->expects($this->exactlyCompat(1))
             ->method('renderFirstPage')
             ->with(0)
             ->will($this->returnValue('renderFirstPageCalled'));
 
-        $viewHelper->expects($this->at(1))
+        $viewHelper->expects($this->exactlyCompat(2))
             ->method('renderPrevPage')
             ->with(1)
             ->will($this->returnValue('renderPrevPageCalled'));
 
-        $viewHelper->expects($this->at(2))
+        $viewHelper->expects($this->exactlyCompat(3))
             ->method('getFirstAndLastPage');
 
         $viewHelper->expects($this->never())
@@ -215,7 +215,7 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
         $viewHelper->expects($this->never())
             ->method('renderFirstPage');
 
-        $viewHelper->expects($this->at(0))
+        $viewHelper->expects($this->exactlyCompat(1))
             ->method('getFirstAndLastPage');
 
         $viewHelper->expects($this->never())
@@ -224,12 +224,12 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
         $viewHelper->expects($this->never())
             ->method('renderCurrentPage');
 
-        $viewHelper->expects($this->at(1))
+        $viewHelper->expects($this->exactlyCompat(2))
             ->method('renderNextPage')
             ->with(1)
             ->will($this->returnValue('renderNextPageCalled'));
 
-        $viewHelper->expects($this->at(2))
+        $viewHelper->expects($this->exactlyCompat(3))
             ->method('renderLastPage')
             ->with(2)
             ->will($this->returnValue('renderLastPageCalled'));
@@ -269,22 +269,22 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
         $viewHelper->expects($this->never())
             ->method('renderFirstPage');
 
-        $viewHelper->expects($this->at(0))
+        $viewHelper->expects($this->exactlyCompat(1))
             ->method('renderCurrentPage')
             ->with(0)
             ->will($this->returnValue('renderCurrentPageCalled'));
 
-        $viewHelper->expects($this->at(1))
+        $viewHelper->expects($this->exactlyCompat(2))
             ->method('renderNormalPage')
             ->with(1)
             ->will($this->returnValue('renderNormalPageCalled'));
 
-        $viewHelper->expects($this->at(2))
+        $viewHelper->expects($this->exactlyCompat(3))
             ->method('renderNextPage')
             ->with(1)
             ->will($this->returnValue('renderNextPageCalled'));
 
-        $viewHelper->expects($this->at(3))
+        $viewHelper->expects($this->exactlyCompat(4))
             ->method('renderLastPage')
             ->with(1)
             ->will($this->returnValue('renderLastPageCalled'));
@@ -318,14 +318,14 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
             'TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\ViewHelperVariableContainer',
             ['add', 'remove']
         );
-        $viewHelperVariableContainer->expects($this->at(0))
+        $viewHelperVariableContainer->expects($this->exactlyCompat(1))
             ->method('add')
             ->with(
                 PageBrowserViewHelper::class,
                 'pageBrowserQualifier',
                 $qualifier
             );
-        $viewHelperVariableContainer->expects($this->at(1))
+        $viewHelperVariableContainer->expects($this->exactlyCompat(2))
             ->method('remove')
             ->with(
                 PageBrowserViewHelper::class,
@@ -366,14 +366,14 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
             ['add', 'remove']
         );
 
-        $viewHelperVariableContainer->expects($this->at(0))
+        $viewHelperVariableContainer->expects($this->exactlyCompat(1))
             ->method('add')
             ->with(
                 PageBrowserViewHelper::class,
                 'pageBrowserQualifier',
                 $qualifier
             );
-        $viewHelperVariableContainer->expects($this->at(1))
+        $viewHelperVariableContainer->expects($this->exactlyCompat(2))
             ->method('remove')
             ->with(
                 PageBrowserViewHelper::class,
@@ -411,16 +411,16 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
             [['pagebrowser' => $pageBrowser]]
         );
         $qualifier = 'myQualifier';
-        $templateVariableContainer->expects($this->at(0))
+        $templateVariableContainer->expects($this->exactlyCompat(1))
             ->method('add')
             ->with('count', 6);
-        $templateVariableContainer->expects($this->at(1))
+        $templateVariableContainer->expects($this->exactlyCompat(2))
             ->method('add')
             ->with('totalPages', 2);
-        $templateVariableContainer->expects($this->at(2))
+        $templateVariableContainer->expects($this->exactlyCompat(3))
             ->method('remove')
             ->with('count');
-        $templateVariableContainer->expects($this->at(3))
+        $templateVariableContainer->expects($this->exactlyCompat(4))
             ->method('remove')
             ->with('totalPages');
 
@@ -733,5 +733,14 @@ class PageBrowserViewHelperTest extends BaseViewHelperTest
             'Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowserViewHelper',
             $methods
         );
+    }
+
+    public function exactlyCompat(int $expectedCalls)
+    {
+        if (!method_exists($this, 'exactly')) {
+            return parent::at($expectedCalls - 1);
+        }
+
+        return parent::exactly($expectedCalls);
     }
 }

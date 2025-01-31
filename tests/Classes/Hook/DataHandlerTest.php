@@ -74,6 +74,9 @@ class DataHandlerTest extends BaseTestCase
      */
     public function testClearCacheForConfiguredTagsByTable()
     {
+        if (PHP_VERSION_ID >= 80200) {
+            $this->markTestSkipped('Fix withConsecutive');
+        }
         $GLOBALS['TCA']['rn_base_test_table']['ctrl']['cacheTags'] = ['first-tag', 'second-tag'];
 
         $cacheManager = $this->getMock(Typo3Classes::getCacheManagerClass(), ['flushCachesInGroupByTag']);

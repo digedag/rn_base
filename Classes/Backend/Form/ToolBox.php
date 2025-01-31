@@ -760,7 +760,10 @@ class ToolBox
     public function createIntInput($name, $value, $width, $maxlength = 10)
     {
         /* @var $inputField InputText */
-        $inputField = tx_rnbase::makeInstance(InputText::class, $this->getTCEForm()->getNodeFactory(), []);
+        $inputField = TYPO3::isTYPO121OrHigher() ?
+             tx_rnbase::makeInstance(InputText::class)
+             :
+             tx_rnbase::makeInstance(InputText::class, $this->getTCEForm()->getNodeFactory(), []);
         $out = $inputField->renderHtml($name, $value, [
             'width' => $width,
             'maxlength' => $maxlength,

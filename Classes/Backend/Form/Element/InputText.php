@@ -3,9 +3,8 @@
 namespace Sys25\RnBase\Backend\Form\Element;
 
 use Sys25\RnBase\Backend\Utility\Icons;
+use Sys25\RnBase\Typo3Wrapper\Backend\Form\CompatFormElement;
 use Sys25\RnBase\Utility\Strings;
-use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
-use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /***************************************************************
@@ -34,22 +33,8 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /**
  * Rendert ein einfaches Input-Field.
  */
-class InputText extends AbstractFormElement
+class InputText extends CompatFormElement
 {
-    /**
-     * @param array $data not used right now!
-     */
-    public function __construct(NodeFactory $nodeFactory, array $data)
-    {
-        // nodeFactory is not used and will be removed in later version
-        parent::__construct($nodeFactory, $data);
-    }
-
-    public function render()
-    {
-        return [];
-    }
-
     public function renderHtml($name, $value, $config)
     {
         $width = $config['width'];
