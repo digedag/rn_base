@@ -3,6 +3,11 @@
 Changelog
 ---------
 
+v1.19.2 (31.01.2025)
+* Fix cache hash utility. Extensions that added cache hash excluded parameters
+ after cache hash utility did that will not have the there configuration
+ inserted correct.
+
 v1.19.1 (16.11.2024)
  * Fix warning in TSFAL
  * Fix wrong page id in edit links. Thanks to plan-b.media for bug report!
