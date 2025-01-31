@@ -3,6 +3,11 @@
 Changelog
 ---------
 
+v1.18.4 (31.01.2025)
+* Fix cache hash utility. Extensions that added cache hash excluded parameters
+  after cache hash utility did that will not have the there configuration
+  inserted correct.
+
 v1.18.3 (21.01.2025)
 * Fix redirects
 
