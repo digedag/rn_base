@@ -3,6 +3,7 @@
 namespace Sys25\RnBase\Utility;
 
 use tx_rnbase;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  * Copyright notice
@@ -91,11 +92,17 @@ class CHashUtility
             $cacheHashCalculatorInternalConfiguration = $typo3ConfVarsEntry =
                 array_merge($typo3ConfVarsEntry, $configurationValue);
         }
-        /* @var \TYPO3\CMS\Frontend\Page\CacheHashCalculator $cacheHashCalculator */
-        $cacheHashCalculator = tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
-        $cacheHashCalculator->setConfiguration([
-            $cacheHashCalculatorInternalConfigurationKey => $cacheHashCalculatorInternalConfiguration,
-        ]);
+
+        // CacheHashCalculator is a singleton. If it has already been instantiated we need to insert our new
+        // configuration. If it has not already been instantiated TYPO3 will take care of that with the correct
+        // configuration.
+        if (GeneralUtility::getSingletonInstances()['TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator'] ?? false) {
+            /* @var \TYPO3\CMS\Frontend\Page\CacheHashCalculator $cacheHashCalculator */
+            $cacheHashCalculator = tx_rnbase::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
+            $cacheHashCalculator->setConfiguration([
+                $cacheHashCalculatorInternalConfigurationKey => $cacheHashCalculatorInternalConfiguration,
+            ]);
+        }
     }
 
     /**
