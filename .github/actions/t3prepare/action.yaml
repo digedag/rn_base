@@ -15,7 +15,7 @@ runs:
         shell: bash
     -
         name: "Cache dependencies installed with composer"
-        uses: "actions/cache@v3.0.0"
+        uses: "actions/cache@v4"
         with:
             path: "${{ steps.determine-composer-cache-directory.outputs.directory }}"
             key: "php-${{ inputs.php-version }}-composer-${{ hashFiles('composer.lock') }}"
