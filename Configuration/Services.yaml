@@ -29,3 +29,6 @@ services:
 
   Sys25\RnBase\Domain\Repository\RepositoryRegistry:
     public: true
+
+  Sys25\RnBase\Utility\LanguageTool:
+    public: true

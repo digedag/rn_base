@@ -56,7 +56,7 @@ class Language
         }
 
         // Find language file
-        $basePath = Files::getFileAbsFileName($filename);
+        $basePath = TYPO3::isTYPO121OrHigher() ? $filename : Files::getFileAbsFileName($filename);
         // php or xml as source: In any case the charset will be that of the system language.
         // However, this function guarantees only return output for default language plus the specified language (which is different from how 3.7.0 dealt with it)
         self::addLang(self::readLLfile($basePath, self::getLLKey(), $GLOBALS['TSFE']->renderCharset ?? ''));
@@ -83,7 +83,7 @@ class Language
         $errorMode = 0,
         $isLocalizationOverride = false
     ) {
-        /** @var $languageFactory \TYPO3\CMS\Core\Localization\LocalizationFactory */
+        /** @var \TYPO3\CMS\Core\Localization\LocalizationFactory $languageFactory */
         $languageFactory = tx_rnbase::makeInstance(
             'TYPO3\\CMS\\Core\\Localization\\LocalizationFactory'
         );
