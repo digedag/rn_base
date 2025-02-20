@@ -13,6 +13,7 @@ use Sys25\RnBase\Frontend\Marker\BaseMarker;
 use Sys25\RnBase\Frontend\Marker\Templates;
 use Sys25\RnBase\Utility\Arrays;
 use Sys25\RnBase\Utility\Files;
+use Sys25\RnBase\Utility\LanguageTool;
 use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
@@ -59,12 +60,15 @@ class ModFuncFrame implements IModule
      * @var array
      */
     protected $selector;
+    private $languageTool;
 
     public function __construct(
+        LanguageTool $languageTool,
         IconFactory $iconFactory,
         UriBuilder $uriBuilder,
         PageRenderer $pageRenderer
     ) {
+        $this->languageTool = $languageTool;
         $this->iconFactory = $iconFactory;
         $this->uriBuilder = $uriBuilder;
         $this->pageRenderer = $pageRenderer;
@@ -76,12 +80,13 @@ class ModFuncFrame implements IModule
         $this->moduleIdentifier = $modFunc->getModuleIdentifier();
         $this->id = (int) ($request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0);
         $this->currentModule = $request->getAttribute('module');
-        $this->getLanguageService()->includeLLFile('EXT:rn_base/Resources/Private/Language/locallang.xlf');
         $config = $this->getConfigurations();
         $files = $config->get('languagefiles.') ?? [];
+
         foreach ($files as $filename) {
-            $this->getLanguageService()->includeLLFile($filename);
+            $this->getLanguageService()->registerLangFile($filename);
         }
+        $this->getLanguageService()->registerLangFile('EXT:rn_base/Resources/Private/Language/locallang.xlf');
 
         $this->modFunc->init($this, [
             // 'form' => $this->getFormTag(),
@@ -176,9 +181,13 @@ class ModFuncFrame implements IModule
         return '<form action="'.$modUrl.'" method="post" name="editform" enctype="multipart/form-data"><input type="hidden" name="id" value="'.htmlspecialchars($this->id).'" />';
     }
 
+    /**
+     * @return LanguageTool
+     */
     public function getLanguageService()
     {
-        return $GLOBALS['LANG'];
+        //        return $GLOBALS['LANG'];
+        return $this->languageTool;
     }
 
     protected function getBackendUser()

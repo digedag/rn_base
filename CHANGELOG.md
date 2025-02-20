@@ -3,6 +3,9 @@
 Changelog
 ---------
 
+v1.19.3 (??.0?.2025)
+ * Migrate label translation
+
 v1.19.2 (31.01.2025)
 * Fix cache hash utility. Extensions that added cache hash excluded parameters
  after cache hash utility did that will not have the there configuration

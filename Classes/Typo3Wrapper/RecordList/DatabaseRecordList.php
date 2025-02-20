@@ -25,6 +25,14 @@ namespace Sys25\RnBase\Typo3Wrapper\RecordList;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
-{
+use Sys25\RnBase\Utility\TYPO3;
+
+if (TYPO3::isTYPO121OrHigher()) {
+    class DatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\DatabaseRecordList
+    {
+    }
+} else {
+    class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
+    {
+    }
 }

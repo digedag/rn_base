@@ -35,14 +35,17 @@ use Sys25\RnBase\Frontend\Marker\FormatUtil;
 use Sys25\RnBase\Frontend\View\ViewContext;
 use Sys25\RnBase\Utility\Arrays;
 use Sys25\RnBase\Utility\Debug;
+use Sys25\RnBase\Utility\Environment;
 use Sys25\RnBase\Utility\Extensions;
 use Sys25\RnBase\Utility\Language;
+use Sys25\RnBase\Utility\LanguageTool;
 use Sys25\RnBase\Utility\Link;
 use Sys25\RnBase\Utility\Network;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
 use Sys25\RnBase\Utility\Typo3Classes;
 use tx_rnbase;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /***************************************************************
@@ -184,11 +187,11 @@ class Processor implements ConfigurationInterface
     protected $setupPath = '';
 
     /**
-     * Util used to load and retrieve local lang labels.
-     *
-     * @var Language
+     * @var LanguageTool
      */
-    private $localLangUtil;
+    private $languageTool;
+
+    private $languageService;
 
     /**
      * @var FormatUtil
@@ -203,7 +206,7 @@ class Processor implements ConfigurationInterface
         $this->_dataStore = new ArrayObject();
         $this->_viewData = new ViewContext();
         $this->_keepVars = new ArrayObject();
-        $this->localLangUtil = tx_rnbase::makeInstance(Language::class);
+        $this->languageTool = tx_rnbase::makeInstance(LanguageTool::class);
     }
 
     /**
@@ -569,16 +572,6 @@ class Processor implements ConfigurationInterface
     }
 
     /**
-     * The current language utility.
-     *
-     * @return Language
-     */
-    protected function getLocalLangUtil()
-    {
-        return $this->localLangUtil;
-    }
-
-    /**
      * Returns the localized label of the LOCAL_LANG key.
      * This is a reimplementation from tslib_pibase::pi_getLL().
      *
@@ -590,7 +583,7 @@ class Processor implements ConfigurationInterface
      */
     public function getLL($key, $alt = '', $hsc = false)
     {
-        return $this->getLocalLangUtil()->getLL(
+        return $this->languageTool->getLL(
             $key,
             $alt,
             $hsc,
@@ -1147,7 +1140,20 @@ class Processor implements ConfigurationInterface
      */
     private function loadLL()
     {
-        $this->getLocalLangUtil()->loadLLFile($this->get('locallangFilename'));
+        if (Environment::isBackend()) {
+            return;
+        }
+
+        if (null === $this->languageService) {
+            $this->languageService = tx_rnbase::makeInstance(LanguageServiceFactory::class)
+                ->createFromSiteLanguage(
+                    $this->cObj->getTypoScriptFrontendController()->getLanguage()
+                );
+        }
+
+        $this->languageTool->setLanguageService($this->languageService);
+
+        $this->languageTool->registerLangFile($this->get('locallangFilename'));
 
         // Overlaying labels from additional locallangs are minor prior
         // we support comma separated lists and arrays
@@ -1161,11 +1167,11 @@ class Processor implements ConfigurationInterface
 
         if (!empty($locallangOverlays)) {
             foreach ($locallangOverlays as $locallangOverlayFilename) {
-                $this->getLocalLangUtil()->loadLLFile($locallangOverlayFilename);
+                $this->languageTool->registerLangFile($locallangOverlayFilename);
             }
         }
         // Overlaying labels from TypoScript are higher prior (including fictitious language keys for non-system languages!):
-        $this->getLocalLangUtil()->loadLLTs($this->get('_LOCAL_LANG.'));
+        $this->languageTool->registerTsLabels($this->get('_LOCAL_LANG.'));
     }
 
     /**
