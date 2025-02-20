@@ -3,6 +3,9 @@
 Changelog
 ---------
 
+v1.20.0 ()
+* Update for TYPO3 13.4 LTS
+
 v1.19.3 (??.0?.2025)
  * Migrate label translation
 

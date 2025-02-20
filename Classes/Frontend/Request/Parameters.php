@@ -4,12 +4,11 @@ namespace Sys25\RnBase\Frontend\Request;
 
 use ArrayObject;
 use Sys25\RnBase\Utility\Arrays;
-use Sys25\RnBase\Utility\Typo3Classes;
 
 /***************************************************************
  * Copyright notice
  *
- * (c) 2007-2021 René Nitzsche <rene@system25.de>
+ * (c) 2007-2025 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -132,12 +131,17 @@ class Parameters extends ArrayObject implements ParametersInterface
      * @param string $parameter Key (variable name) from GET or POST vars
      *
      * @return array|string returns the GET vars merged recursively onto the POST vars
+     *
+     * @deprecated use PSR-7 ServerRequestInterface
      */
-    public static function getPostAndGetParametersMerged($parameterName)
+    public static function getPostAndGetParametersMerged($parameter)
     {
-        $utility = Typo3Classes::getGeneralUtilityClass();
+        $postParameter = isset($_POST[$parameter]) && is_array($_POST[$parameter]) ? $_POST[$parameter] : [];
+        $getParameter = isset($_GET[$parameter]) && is_array($_GET[$parameter]) ? $_GET[$parameter] : [];
+        $mergedParameters = $getParameter;
+        Arrays::mergeRecursiveWithOverrule($mergedParameters, $postParameter);
 
-        return $utility::_GPmerged($parameterName);
+        return $mergedParameters;
     }
 
     /**
@@ -146,6 +150,8 @@ class Parameters extends ArrayObject implements ParametersInterface
      * @param string $parameter Key (variable name) from GET or POST vars
      *
      * @return array|string returns the GET vars merged recursively onto the POST vars
+     *
+     * @deprecated use PSR-7 ServerRequestInterface
      */
     public static function getPostOrGetParameter($parameterName)
     {
@@ -153,29 +159,26 @@ class Parameters extends ArrayObject implements ParametersInterface
     }
 
     /**
-     * @see \TYPO3\CMS\Core\Utility\GeneralUtility::_GP
-     *
      * @param string $parameter Key (variable name) from GET or POST vars
      *
      * @return array|string returns the GET vars merged recursively onto the POST vars
+     *
+     * @deprecated use PSR-7 ServerRequestInterface
      */
     public static function _GP($parameterName)
     {
-        $utility = Typo3Classes::getGeneralUtilityClass();
+        if (empty($var)) {
+            return;
+        }
 
-        return $utility::_GP($parameterName);
-    }
+        $value = $_POST[$var] ?? $_GET[$var] ?? null;
 
-    /**
-     * @see \TYPO3\CMS\Core\Utility\GeneralUtility::_GETset
-     *
-     * @param mixed  $inputGet
-     * @param string $key
-     */
-    public static function setGetParameter($inputGet, $key = '')
-    {
-        $utility = Typo3Classes::getGeneralUtilityClass();
-        $utility::_GETset($inputGet, $key);
+        // This is there for backwards-compatibility, in order to avoid NULL
+        if (isset($value) && !is_array($value)) {
+            $value = (string) $value;
+        }
+
+        return $value;
     }
 
     /**
@@ -186,12 +189,20 @@ class Parameters extends ArrayObject implements ParametersInterface
      * @see \TYPO3\CMS\Core\Utility\GeneralUtility::_GET
      *
      * @return mixed
+     *
+     * @deprecated use PSR-7 ServerRequestInterface
      */
     public static function getGetParameters($var = null)
     {
-        $utility = Typo3Classes::getGeneralUtilityClass();
+        $value = null === $var
+            ? $_GET
+            : (empty($var) ? null : ($_GET[$var] ?? null));
+        // This is there for backwards-compatibility, in order to avoid NULL
+        if (isset($value) && !is_array($value)) {
+            $value = (string) $value;
+        }
 
-        return $utility::_GET($var);
+        return $value;
     }
 
     /**
@@ -202,11 +213,17 @@ class Parameters extends ArrayObject implements ParametersInterface
      * @see \TYPO3\CMS\Core\Utility\GeneralUtility::_POST
      *
      * @return mixed
+     *
+     * @deprecated use PSR-7 ServerRequestInterface
      */
     public static function getPostParameters($var = null)
     {
-        $utility = Typo3Classes::getGeneralUtilityClass();
+        $value = null === $var ? $_POST : (empty($var) || !isset($_POST[$var]) ? null : $_POST[$var]);
+        // This is there for backwards-compatibility, in order to avoid NULL
+        if (isset($value) && !is_array($value)) {
+            $value = (string) $value;
+        }
 
-        return $utility::_POST($var);
+        return $value;
     }
 }

@@ -86,7 +86,10 @@ class BackendUtility
      */
     public static function getUrlToken($formName = 'securityToken', $tokenName = 'formToken')
     {
-        $formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
+        $formProtection = TYPO3::isTYPO121OrHigher() ?
+            tx_rnbase::makeInstance(\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::class)->createForType('default')
+            :
+            \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
 
         return '&'.$tokenName.'='.$formProtection->generateToken($formName);
     }

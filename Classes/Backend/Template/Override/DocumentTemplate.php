@@ -369,6 +369,10 @@ class DocumentTemplate
      */
     public function endPage()
     {
+        if (TYPO3::isTYPO121OrHigher()) {
+            return;
+        }
+
         $str = $this->postCode.$this->wrapScriptTags(BackendUtility::getUpdateSignalCode()).($this->form ? '
 </form>' : '');
         // If something is in buffer like debug, put it to end of page

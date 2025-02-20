@@ -12,10 +12,10 @@ use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 
 /***************************************************************
  *  Copyright notice
@@ -189,7 +189,7 @@ class QueryBuilderFacade
         if (strlen($pidList) > 0) {
             $pidList = Strings::intExplode(',', Misc::getPidList($pidList, $recursive));
             // is there a problem with page aliases here?
-            $placeholder = $queryBuilder->createNamedParameter($pidList, \Doctrine\DBAL\Connection::PARAM_INT_ARRAY);
+            $placeholder = $queryBuilder->createNamedParameter($pidList, self::getParamTypeIntArray());
             $queryBuilder->andWhere(sprintf('%s.pid IN (%s)', $tableAlias, $placeholder));
         }
 
@@ -243,7 +243,7 @@ class QueryBuilderFacade
                     ->removeAll();
                 if (intval($options['enablefieldsbe'] ?? null)) {
                     $restrictions->add(tx_rnbase::makeInstance(DeletedRestriction::class))
-                        ->add(tx_rnbase::makeInstance(BackendWorkspaceRestriction::class));
+                        ->add(tx_rnbase::makeInstance($this->getWorkspaceRestrictionClass()));
                 } else {
                     $restrictions->add(tx_rnbase::makeInstance(FrontendRestrictionContainer::class));
                 }
@@ -251,12 +251,29 @@ class QueryBuilderFacade
                 $restrictions = $queryBuilder->getRestrictions()
                     ->removeAll()
                     ->add(tx_rnbase::makeInstance(DeletedRestriction::class))
-                    ->add(tx_rnbase::makeInstance(BackendWorkspaceRestriction::class));
+                    ->add(tx_rnbase::makeInstance($this->getWorkspaceRestrictionClass()));
                 if (!($options['enablefieldsbe'] ?? null)) {
                     $restrictions->add(tx_rnbase::makeInstance(HiddenRestriction::class));
                 }
             }
         }
+    }
+
+    public static function getParamTypeIntArray()
+    {
+        return TYPO3::isTYPO121OrHigher() ? \TYPO3\CMS\Core\Database\Connection::PARAM_INT_ARRAY : \Doctrine\DBAL\Connection::PARAM_INT_ARRAY;
+    }
+
+    public static function getParamTypeStringArray()
+    {
+        return TYPO3::isTYPO121OrHigher() ? \TYPO3\CMS\Core\Database\Connection::PARAM_STR_ARRAY : \Doctrine\DBAL\Connection::PARAM_STR_ARRAY;
+    }
+
+    private function getWorkspaceRestrictionClass(): string
+    {
+        return TYPO3::isTYPO121OrHigher() ?
+            WorkspaceRestriction::class :
+            \TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction::class;
     }
 
     private function getConnectionPool(): ConnectionPool

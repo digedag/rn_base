@@ -15,11 +15,12 @@ namespace Sys25\RnBase\Backend\Module;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Sys25\RnBase\Backend\Template\Override\DocumentTemplate;
+use Sys25\RnBase\Frontend\Request\Parameters;
+use tx_rnbase;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -69,6 +70,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * THEN WE CALL THE main() METHOD AND THIS SHOULD SPARK THE CREATION OF THE MODULE OUTPUT.
  * $GLOBALS['SOBE']->main();
+ *
+ * TODO: check TYPO3 versions used.
  */
 abstract class BaseScriptClass
 {
@@ -225,9 +228,9 @@ abstract class BaseScriptClass
             $this->MCONF = $GLOBALS['MCONF'] ?? [];
         }
 
-        $this->id = (int) GeneralUtility::_GP('id');
-        $this->CMD = GeneralUtility::_GP('CMD');
-        $this->moduleName = GeneralUtility::_GP('M');
+        $this->id = (int) Parameters::_GP('id');
+        $this->CMD = Parameters::_GP('CMD');
+        $this->moduleName = Parameters::_GP('M');
         // Das sollte zur Initialisierung des Modules ausreichend sein.
         // Das access Level sollte nicht vorgegeben werden.
         if (!isset($this->MCONF['name']) && $this->moduleName) {
@@ -264,7 +267,7 @@ abstract class BaseScriptClass
             exit('Backend module is not initialized. No module functions found in MOD_MENU.');
         }
 
-        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
+        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, Parameters::_GP('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
     }
 
     /**
@@ -342,10 +345,10 @@ abstract class BaseScriptClass
     public function checkExtObj()
     {
         if (is_array($this->extClassConf) && $this->extClassConf['name']) {
-            $this->extObj = GeneralUtility::makeInstance($this->extClassConf['name']);
+            $this->extObj = tx_rnbase::makeInstance($this->extClassConf['name']);
             $this->extObj->init($this, $this->extClassConf);
             // Re-write:
-            $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
+            $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, Parameters::_GP('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
         }
     }
 
@@ -376,17 +379,11 @@ abstract class BaseScriptClass
     public function extObjContent()
     {
         if (null === $this->extObj) {
-            $flashMessage = GeneralUtility::makeInstance(
-                FlashMessage::class,
+            $this->getDoc()->showFlashMessage(
                 $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:no_modules_registered'),
-                $this->getLanguageService()->getLL('title'),
-                FlashMessage::ERROR
+                DocumentTemplate::STATE_ERROR,
+                $this->getLanguageService()->getLL('title')
             );
-            /** @var FlashMessageService $flashMessageService */
-            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-            /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue $defaultFlashMessageQueue */
-            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-            $defaultFlashMessageQueue->enqueue($flashMessage);
         } else {
             $this->extObj->pObj = $this;
             if (is_callable([$this->extObj, 'main'])) {
@@ -442,4 +439,9 @@ abstract class BaseScriptClass
 
         return $this->pageRenderer;
     }
+
+    /**
+     * @return DocumentTemplate
+     */
+    abstract public function getDoc();
 }

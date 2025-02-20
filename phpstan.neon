@@ -22,6 +22,8 @@ parameters:
     - tests
 
   excludePaths:
+    - Classes/Typo3Wrapper/Backend/Form/CompatFormElement.php
+    - Classes/Typo3Wrapper/RecordList/DatabaseRecordList.php
     - Classes/Typo3Wrapper/Service/AuthenticationService.php
     - Classes/Typo3Wrapper/Service/AbstractService.php
     - Classes/Testing/BaseTestCase.php

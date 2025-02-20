@@ -32,3 +32,6 @@ services:
 
   Sys25\RnBase\Utility\LanguageTool:
     public: true
+
+  Sys25\RnBase\Backend\Utility\Tables:
+    public: true

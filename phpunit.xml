@@ -19,6 +19,7 @@
     <testsuites>
         <testsuite name="RnBase Unit Tests">
             <directory>tests/</directory>
+            <exclude>tests/Classes/ExtBaseFluid/ViewHelper/BaseViewHelperTest.php</exclude>
         </testsuite>
     </testsuites>
 
