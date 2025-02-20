@@ -4,13 +4,14 @@ namespace Sys25\RnBase\Database;
 
 use Closure;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Runner\Version;
 use PHPUnit_Framework_MockObject_MockObject;
 use Sys25\RnBase\Testing\BaseTestCase;
 
 /**
  *  Copyright notice.
  *
- *  (c) 2016-2021 DMK E-Business GmbH <dev@dmk-ebusiness.de>
+ *  (c) 2016-2025 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -53,96 +54,114 @@ class TreeQueryBuilderTest extends BaseTestCase
      */
     public function testGetTreeRecursive()
     {
-        if (PHP_VERSION_ID >= 80200) {
-            $this->markTestSkipped('Fix withConsecutive');
-        }
+        $expectedCalls = [
+            [
+                'uid',
+                'pages',
+                ['where' => '1=1 AND pid IN (1)', 'tableName' => 'pages'],
+            ],
+            [
+                'uid',
+                'pages',
+                ['where' => '1=1 AND pid IN (2)', 'tableName' => 'pages'],
+            ],
+            [
+                'uid',
+                'pages',
+                ['where' => '1=1 AND pid IN (3)', 'tableName' => 'pages'],
+            ],
+            [
+                'uid',
+                'pages',
+                ['where' => '1=1 AND pid IN (4)', 'tableName' => 'pages'],
+            ],
+            [
+                'uid',
+                'pages',
+                ['where' => '1=1 AND pid IN (6)', 'tableName' => 'pages'],
+            ],
+            [
+                'uid',
+                'pages',
+                ['where' => '1=1 AND pid IN (7)', 'tableName' => 'pages'],
+            ],
+        ];
+
+        $returnValues = [
+            [['uid' => 2]],
+            [['uid' => 3], ['uid' => 6]],
+            [['uid' => 4]],
+            [],
+            [['uid' => 7]],
+            [],
+        ];
+
         /**
          * @var TreeQueryBuilder
          */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
-            function (MockObject $connection) {
+            function (MockObject $connection) use (&$expectedCalls, &$returnValues) {
                 $connection->expects(self::exactly(6))
                     ->method('doSelect')
-                    ->withConsecutive(
-                        [
-                            'uid',
-                            'pages',
-                            ['where' => '1=1 AND pid IN (1)', 'tableName' => 'pages'],
-                        ],
-                        [
-                            'uid',
-                            'pages',
-                            ['where' => '1=1 AND pid IN (2)', 'tableName' => 'pages'],
-                        ],
-                        [
-                            'uid',
-                            'pages',
-                            ['where' => '1=1 AND pid IN (3)', 'tableName' => 'pages'],
-                        ],
-                        [
-                            'uid',
-                            'pages',
-                            ['where' => '1=1 AND pid IN (4)', 'tableName' => 'pages'],
-                        ],
-                        [
-                            'uid',
-                            'pages',
-                            ['where' => '1=1 AND pid IN (6)', 'tableName' => 'pages'],
-                        ],
-                        [
-                            'uid',
-                            'pages',
-                            ['where' => '1=1 AND pid IN (7)', 'tableName' => 'pages'],
-                        ]
-                    )
-                    ->willReturnOnConsecutiveCalls(
-                        [['uid' => 2]],
-                        [['uid' => 3], ['uid' => 6]],
-                        [['uid' => 4]],
-                        [],
-                        [['uid' => 7]],
-                        []
-                    );
+                    ->willReturnCallback(function ($fields, $table, $criteria) use (&$expectedCalls, &$returnValues) {
+                        // Überprüfe, dass die aufgerufenen Argumente mit den erwarteten Werten übereinstimmen
+                        $expectedCall = array_shift($expectedCalls);
+                        self::assertSame($expectedCall[0], $fields);
+                        self::assertSame($expectedCall[1], $table);
+                        self::assertEqualsCanonicalizing($expectedCall[2], $criteria);
+
+                        // Gib den entsprechenden Rückgabewert zurück
+                        return array_shift($returnValues);
+                    });
             }
         );
 
         $uidList = $treeQueryBuildMock->getPageTreeUidList(1);
 
-        $this->assertEquals([1, 2, 3, 4, 6, 7], $uidList);
+        self::assertEquals([1, 2, 3, 4, 6, 7], $uidList);
     }
 
     public function testLimitedTreeByDepth()
     {
-        if (PHP_VERSION_ID >= 80200) {
-            $this->markTestSkipped('Fix withConsecutive');
-        }
-
         $options = [
             'depth' => 2,
         ];
+
+        $expectedCalls = [
+            [
+                'uid',
+                'pages',
+                ['where' => '1=1 AND pid IN (1)', 'tableName' => 'pages'],
+            ],
+            [
+                'uid',
+                'pages',
+                ['where' => '1=1 AND pid IN (2)', 'tableName' => 'pages'],
+            ],
+        ];
+
+        $returnValues = [
+            [['uid' => 2]],
+            [['uid' => 3], ['uid' => 6]],
+        ];
+
         /**
          * @var TreeQueryBuilder
          */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
-            function ($connection) {
+            function ($connection) use (&$expectedCalls, &$returnValues) {
                 $connection->expects(self::exactly(2))
                     ->method('doSelect')
-                    ->withConsecutive(
-                        [
-                            'uid',
-                            'pages',
-                            ['where' => '1=1 AND pid IN (1)', 'tableName' => 'pages'],
-                        ],
-                        [
-                            'uid',
-                            'pages',
-                            ['where' => '1=1 AND pid IN (2)', 'tableName' => 'pages'],
-                        ]
-                    )
-                    ->willReturnOnConsecutiveCalls(
-                        [['uid' => 2]],
-                        [['uid' => 3], ['uid' => 6]]
-                    );
+                    ->willReturnCallback(function ($fields, $table, $criteria) use (&$expectedCalls, &$returnValues) {
+                        // Überprüfe, dass die aufgerufenen Argumente mit den erwarteten übereinstimmen
+                        $expectedCall = array_shift($expectedCalls);
+                        self::assertSame($expectedCall[0], $fields);
+                        self::assertSame($expectedCall[1], $table);
+                        self::assertEqualsCanonicalizing($expectedCall[2], $criteria);
+
+                        // Gib den entsprechenden Rückgabewert zurück
+                        return array_shift($returnValues);
+                    });
             }
         );
 
@@ -153,36 +172,48 @@ class TreeQueryBuilderTest extends BaseTestCase
 
     public function testAddPidToCustomQueryCorrectly()
     {
-        if (PHP_VERSION_ID >= 80200) {
-            $this->markTestSkipped('Fix withConsecutive');
-        }
         $options = [
             'where' => 'hidden=1',
+        ];
+
+        $expectedCalls = [
+            [
+                'uid',
+                'pages',
+                ['where' => 'hidden=1 AND pid IN (1)', 'tableName' => 'pages'],
+            ],
+            [
+                'uid',
+                'pages',
+                ['where' => 'hidden=1 AND pid IN (2)', 'tableName' => 'pages'],
+            ],
+        ];
+
+        $returnValues = [
+            [['uid' => 2]],
+            [['uid' => 3]],
         ];
 
         /**
          * @var TreeQueryBuilder
          */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
-            function ($connection) {
+            function ($connection) use (&$expectedCalls, &$returnValues) {
                 $connection->expects(self::any())
                     ->method('doSelect')
-                    ->withConsecutive(
-                        [
-                            'uid',
-                            'pages',
-                            ['where' => 'hidden=1 AND pid IN (1)', 'tableName' => 'pages'],
-                        ],
-                        [
-                            'uid',
-                            'pages',
-                            ['where' => 'hidden=1 AND pid IN (2)', 'tableName' => 'pages'],
-                        ]
-                    )
-                    ->willReturnOnConsecutiveCalls(
-                        [['uid' => 2]],
-                        [['uid' => 3]]
-                    );
+                    ->willReturnCallback(function ($fields, $table, $criteria) use (&$expectedCalls, &$returnValues) {
+                        // Überprüfe, dass die aufgerufenen Argumente mit den erwarteten übereinstimmen
+                        $expectedCall = array_shift($expectedCalls);
+                        if (null === $expectedCall) {
+                            return [];
+                        }
+                        self::assertSame($expectedCall[0], $fields);
+                        self::assertSame($expectedCall[1], $table);
+                        self::assertEqualsCanonicalizing($expectedCall[2], $criteria);
+
+                        // Gib den entsprechenden Rückgabewert zurück
+                        return array_shift($returnValues);
+                    });
             }
         );
 
@@ -193,55 +224,61 @@ class TreeQueryBuilderTest extends BaseTestCase
 
     public function testSetCustomTableNameCorrectly()
     {
-        if (PHP_VERSION_ID >= 80200) {
-            $this->markTestSkipped('Fix withConsecutive');
-        }
         $options = [
             'tableName' => 'tt_content',
+        ];
+
+        $expectedCalls = [
+            [
+                'uid',
+                'tt_content',
+                ['where' => '1=1 AND pid IN (1)', 'tableName' => 'tt_content'],
+            ],
+            [
+                'uid',
+                'tt_content',
+                ['where' => '1=1 AND pid IN (33)', 'tableName' => 'tt_content'],
+            ],
+            [
+                'uid',
+                'tt_content',
+                ['where' => '1=1 AND pid IN (44)', 'tableName' => 'tt_content'],
+            ],
+        ];
+
+        $returnValues = [
+            [['uid' => 33], ['uid' => 44]],
+            [],
+            [],
         ];
 
         /**
          * @var TreeQueryBuilder
          */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
-            function ($connection) {
+            function ($connection) use (&$expectedCalls, &$returnValues) {
                 $connection->expects(self::exactly(3))
                     ->method('doSelect')
-                    ->withConsecutive(
-                        [
-                            'uid',
-                            'tt_content',
-                            ['where' => '1=1 AND pid IN (1)', 'tableName' => 'tt_content'],
-                        ],
-                        [
-                            'uid',
-                            'tt_content',
-                            ['where' => '1=1 AND pid IN (33)', 'tableName' => 'tt_content'],
-                        ],
-                        [
-                            'uid',
-                            'tt_content',
-                            ['where' => '1=1 AND pid IN (44)', 'tableName' => 'tt_content'],
-                        ]
-                    )
-                    ->willReturnOnConsecutiveCalls(
-                        [['uid' => 33], ['uid' => 44]],
-                        [],
-                        []
-                    );
+                    ->willReturnCallback(function ($fields, $table, $criteria) use (&$expectedCalls, &$returnValues) {
+                        // Überprüfe die Argumente mit den erwarteten Werten
+                        $expectedCall = array_shift($expectedCalls);
+                        self::assertSame($expectedCall[0], $fields);
+                        self::assertSame($expectedCall[1], $table);
+                        self::assertEqualsCanonicalizing($expectedCall[2], $criteria);
+
+                        // Gib den passenden Rückgabewert zurück
+                        return array_shift($returnValues);
+                    });
             }
         );
 
         $uidList = $treeQueryBuildMock->getTreeUidListRecursive(1, 2, 0, $options);
 
-        $this->assertEquals([1, 33, 44], $uidList);
+        self::assertEquals([1, 33, 44], $uidList);
     }
 
     public function testSetQueryOptions()
     {
-        if (PHP_VERSION_ID >= 80200) {
-            $this->markTestSkipped('Fix withConsecutive');
-        }
         $options = [
             'where' => '(starttime > 12345 AND endtime < 98765)',
             'tableName' => 'tt_content',
@@ -249,39 +286,51 @@ class TreeQueryBuilderTest extends BaseTestCase
             'limit' => 1,
         ];
 
+        $expectedCalls = [
+            [
+                'uid',
+                'tt_content',
+                [
+                    'where' => '(starttime > 12345 AND endtime < 98765) AND pid IN (1)',
+                    'tableName' => 'tt_content',
+                    'orderby' => 'header',
+                    'limit' => 1,
+                ],
+            ],
+            [
+                'uid',
+                'tt_content',
+                [
+                    'where' => '(starttime > 12345 AND endtime < 98765) AND pid IN (2)',
+                    'tableName' => 'tt_content',
+                    'orderby' => 'header',
+                    'limit' => 1,
+                ],
+            ],
+        ];
+
+        $returnValues = [
+            [['uid' => 2]],
+            [],
+        ];
+
         /**
          * @var TreeQueryBuilder
          */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
-            function ($connection) {
+            function ($connection) use (&$expectedCalls, &$returnValues) {
                 $connection->expects(self::exactly(2))
                     ->method('doSelect')
-                    ->withConsecutive(
-                        [
-                            'uid',
-                            'tt_content',
-                            [
-                                'where' => '(starttime > 12345 AND endtime < 98765) AND pid IN (1)',
-                                'tableName' => 'tt_content',
-                                'orderby' => 'header',
-                                'limit' => 1,
-                            ],
-                        ],
-                        [
-                            'uid',
-                            'tt_content',
-                            [
-                                'where' => '(starttime > 12345 AND endtime < 98765) AND pid IN (2)',
-                                'tableName' => 'tt_content',
-                                'orderby' => 'header',
-                                'limit' => 1,
-                            ],
-                        ]
-                    )
-                    ->willReturnOnConsecutiveCalls(
-                        [['uid' => 2]],
-                        []
-                    );
+                    ->willReturnCallback(function ($fields, $table, $criteria) use (&$expectedCalls, &$returnValues) {
+                        // Überprüfe, dass die Argumente mit den erwarteten Werten übereinstimmen
+                        $expectedCall = array_shift($expectedCalls);
+                        self::assertSame($expectedCall[0], $fields);
+                        self::assertSame($expectedCall[1], $table);
+                        self::assertEqualsCanonicalizing($expectedCall[2], $criteria);
+
+                        // Gib den passenden Rückgabewert zurück
+                        return array_shift($returnValues);
+                    });
             }
         );
 
@@ -292,92 +341,53 @@ class TreeQueryBuilderTest extends BaseTestCase
 
     public function testSetCustomParentField()
     {
-        if (PHP_VERSION_ID >= 80200) {
-            $this->markTestSkipped('Fix withConsecutive');
-        }
         $options = [
             'parentField' => 'parent_id',
         ];
 
-        /**
-         * @var TreeQueryBuilder
-         */
-        $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
-            function ($connection) {
-                $connection->expects(self::exactly(2))
-                    ->method('doSelect')
-                    ->withConsecutive(
-                        [
-                            'uid',
-                            'pages',
-                            [
-                                'where' => '1=1 AND parent_id IN (1)',
-                                'tableName' => 'pages',
-                                'parentField' => 'parent_id',
-                            ],
-                        ],
-                        [
-                            'uid',
-                            'pages',
-                            [
-                                'where' => '1=1 AND parent_id IN (5)',
-                                'tableName' => 'pages',
-                                'parentField' => 'parent_id',
-                            ],
-                        ]
-                    )
-                    ->willReturnOnConsecutiveCalls(
-                        [['uid' => 5]],
-                        []
-                    );
-            }
-        );
+        $expectedCalls = [
+            [
+                'uid',
+                'pages',
+                [
+                    'where' => '1=1 AND parent_id IN (1)',
+                    'tableName' => 'pages',
+                    'parentField' => 'parent_id',
+                ],
+            ],
+            [
+                'uid',
+                'pages',
+                [
+                    'where' => '1=1 AND parent_id IN (5)',
+                    'tableName' => 'pages',
+                    'parentField' => 'parent_id',
+                ],
+            ],
+        ];
 
-        $uidList = $treeQueryBuildMock->getPageTreeUidList(1, $options);
-
-        $this->assertEquals([1, 5], $uidList);
-    }
-
-    public function testSetCustomKeyField()
-    {
-        if (PHP_VERSION_ID >= 80200) {
-            $this->markTestSkipped('Fix withConsecutive');
-        }
-        $options = [
-            'idField' => 'entity_id',
+        $returnValues = [
+            [['uid' => 5]],
+            [],
         ];
 
         /**
          * @var TreeQueryBuilder
          */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
-            function ($connection) {
+            function ($connection) use (&$expectedCalls, &$returnValues) {
                 $connection->expects(self::exactly(2))
                     ->method('doSelect')
-                    ->withConsecutive(
-                        [
-                            'entity_id',
-                            'pages',
-                            [
-                                'where' => '1=1 AND pid IN (1)',
-                                'tableName' => 'pages',
-                                'idField' => 'entity_id',
-                            ],
-                        ],
-                        [
-                            'entity_id',
-                            'pages',
-                            [
-                                'where' => '1=1 AND pid IN (5)',
-                                'tableName' => 'pages',
-                                'idField' => 'entity_id',
-                            ],
-                        ]
-                    )
-                    ->willReturnOnConsecutiveCalls(
-                        [['entity_id' => 5]],
-                        []
-                    );
+                    ->willReturnCallback(function ($fields, $table, $criteria) use (&$expectedCalls, &$returnValues) {
+                        // Überprüfe, dass die Argumente mit den erwarteten Werten übereinstimmen
+                        $expectedCall = array_shift($expectedCalls);
+                        self::assertSame($expectedCall[0], $fields);
+                        self::assertSame($expectedCall[1], $table);
+                        self::assertEqualsCanonicalizing($expectedCall[2], $criteria);
+
+                        // Gib den passenden Rückgabewert zurück
+                        return array_shift($returnValues);
+                    });
             }
         );
 
@@ -388,44 +398,53 @@ class TreeQueryBuilderTest extends BaseTestCase
 
     public function testGetTreeWithCommaSeparatedPidList()
     {
-        if (PHP_VERSION_ID >= 80200) {
-            $this->markTestSkipped('Fix withConsecutive');
-        }
+        $expectedCalls = [
+            [
+                'uid',
+                'pages',
+                ['where' => '1=1 AND pid IN (1,2,3)', 'tableName' => 'pages'],
+            ],
+            [
+                'uid',
+                'pages',
+                ['where' => '1=1 AND pid IN (5)', 'tableName' => 'pages'],
+            ],
+            [
+                'uid',
+                'pages',
+                ['where' => '1=1 AND pid IN (6)', 'tableName' => 'pages'],
+            ],
+            [
+                'uid',
+                'pages',
+                ['where' => '1=1 AND pid IN (7)', 'tableName' => 'pages'],
+            ],
+        ];
+
+        $returnValues = [
+            [['uid' => 5]],
+            [['uid' => 6], ['uid' => 7]],
+            [],
+            [],
+        ];
+
         /**
          * @var TreeQueryBuilder
          */
         $treeQueryBuildMock = $this->getTreeQueryBuilderMock(
-            function ($connection) {
+            function ($connection) use (&$expectedCalls, &$returnValues) {
                 $connection->expects(self::any())
                     ->method('doSelect')
-                    ->withConsecutive(
-                        [
-                            'uid',
-                            'pages',
-                            ['where' => '1=1 AND pid IN (1,2,3)', 'tableName' => 'pages'],
-                        ],
-                        [
-                            'uid',
-                            'pages',
-                            ['where' => '1=1 AND pid IN (5)', 'tableName' => 'pages'],
-                        ],
-                        [
-                            'uid',
-                            'pages',
-                            ['where' => '1=1 AND pid IN (6)', 'tableName' => 'pages'],
-                        ],
-                        [
-                            'uid',
-                            'pages',
-                            ['where' => '1=1 AND pid IN (7)', 'tableName' => 'pages'],
-                        ]
-                    )
-                    ->willReturnOnConsecutiveCalls(
-                        [['uid' => 5]],
-                        [['uid' => 6], ['uid' => 7]],
-                        [],
-                        []
-                    );
+                    ->willReturnCallback(function ($fields, $table, $criteria) use (&$expectedCalls, &$returnValues) {
+                        // Überprüfe die Argumente mit den erwarteten Werten
+                        $expectedCall = array_shift($expectedCalls);
+                        self::assertSame($expectedCall[0], $fields);
+                        self::assertSame($expectedCall[1], $table);
+                        self::assertEqualsCanonicalizing($expectedCall[2], $criteria);
+
+                        // Gib den passenden Rückgabewert zurück
+                        return array_shift($returnValues);
+                    });
             }
         );
 

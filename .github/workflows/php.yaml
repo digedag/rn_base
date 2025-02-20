@@ -21,9 +21,6 @@ jobs:
       fail-fast: false
       matrix:
         php-version:
-          - 7.1
-          - 7.2
-          - 7.3
           - 7.4
           - 8.0
           - 8.1
@@ -52,13 +49,10 @@ jobs:
       fail-fast: false
       matrix:
         php-version:
-          - "7.1"
-          - "7.2"
-          - "7.3"
-          - "7.4"
-          - "8.0"
-          - "8.1"
-          - "8.2"
+          - 7.4
+          - 8.0
+          - 8.1
+          - 8.2
 
   code-style:
     name: Check code style
@@ -167,20 +161,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - typo3-version: ^8.7
-            php-version: 7.1
-          - typo3-version: ^8.7
-            php-version: 7.2
-          - typo3-version: ^9.5
-            php-version: 7.2
-          - typo3-version: ^9.5
-            php-version: 7.3
-          - typo3-version: ^9.5
-            php-version: 7.4
-          - typo3-version: ^10.4
-            php-version: 7.2
-          - typo3-version: ^10.4
-            php-version: 7.3
           - typo3-version: ^10.4
             php-version: 7.4
           - typo3-version: ^11.5

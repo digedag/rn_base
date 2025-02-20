@@ -9,7 +9,7 @@ use tx_rnbase;
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2011-2021 Rene Nitzsche (rene@system25.de)
+*  (c) 2011-2025 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -74,21 +74,33 @@ class DataHandlerTest extends BaseTestCase
      */
     public function testClearCacheForConfiguredTagsByTable()
     {
-        if (PHP_VERSION_ID >= 80200) {
-            $this->markTestSkipped('Fix withConsecutive');
-        }
         $GLOBALS['TCA']['rn_base_test_table']['ctrl']['cacheTags'] = ['first-tag', 'second-tag'];
 
+        // Erstelle ein Mock für den CacheManager
         $cacheManager = $this->getMock(Typo3Classes::getCacheManagerClass(), ['flushCachesInGroupByTag']);
+
+        // Definiere die erwarteten Aufrufe
+        $expectedCalls = [
+            ['pages', 'first-tag'],
+            ['pages', 'second-tag'],
+        ];
+
         $cacheManager->expects(self::exactly(2))
             ->method('flushCachesInGroupByTag')
-            ->withConsecutive(['pages', 'first-tag'], ['pages', 'second-tag']);
+            ->willReturnCallback(function ($group, $tag) use (&$expectedCalls) {
+                // Überprüfe, dass die aufgerufenen Argumente mit den erwarteten übereinstimmen
+                $expectedCall = array_shift($expectedCalls);
+                self::assertSame($expectedCall[0], $group);
+                self::assertSame($expectedCall[1], $tag);
+            });
 
+        // Erstelle ein Mock für den DataHandler
         $dataHandler = $this->getMock(DataHandler::class, ['getCacheManager']);
         $dataHandler->expects(self::once())
             ->method('getCacheManager')
             ->will(self::returnValue($cacheManager));
 
+        // Führe den Test durch
         $dataHandler->clearCacheForConfiguredTagsByTable(['table' => 'rn_base_test_table']);
     }
 
