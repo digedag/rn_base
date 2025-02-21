@@ -157,7 +157,8 @@
 			]
 		},
 		"branch-alias": {
-			"dev-master": "1.19.x-dev"
+			"dev-master": "1.19.x-dev",
+			"dev-upgrade/typo3_13": "1.19.x-dev"
 		}
 	}
 }
