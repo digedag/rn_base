@@ -178,7 +178,11 @@ class QueryBuilderFacade
             $queryBuilder->setFirstResult($offset);
         }
         if ($orderBy) {
-            $queryBuilder->add('orderBy', $orderBy);
+            if (!method_exists($queryBuilder, 'add')) {
+                $queryBuilder->getConcreteQueryBuilder()->orderBy($orderBy);
+            } else {
+                $queryBuilder->add('orderBy', $orderBy);
+            }
         }
         if ($groupBy) {
             $queryBuilder->getConcreteQueryBuilder()->groupBy($groupBy);
@@ -228,7 +232,7 @@ class QueryBuilderFacade
                 && !isset($options['enablefieldsfe'])
             ) {
                 $options['enablefieldsbe'] = 1;
-                if (Environment::isFrontend()) {
+                if (Environment::isFrontend() && !TYPO3::isTYPO130OrHigher()) {
                     // wir nehmen nicht Sys25\RnBase\Utility\TYPO3::getTSFE()->set_no_cache weil das durch
                     // $GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter'] deaktiviert werden
                     // kann. Das wollen wir aber nicht. Der Cache muss in jedem Fall deaktiviert werden.

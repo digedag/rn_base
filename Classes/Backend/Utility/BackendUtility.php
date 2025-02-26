@@ -3,10 +3,15 @@
 namespace Sys25\RnBase\Backend\Utility;
 
 use InvalidArgumentException;
+use Psr\Http\Message\ServerRequestInterface;
 use Sys25\RnBase\Utility\T3General;
 use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
+use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /***************************************************************
  * Copyright notice
@@ -223,5 +228,93 @@ class BackendUtility
         $uri = $uriBuilder->buildUriFromRoute('record_edit').$params;
 
         return 'window.location.href='.T3General::quoteJSvalue((string) $uri.'&returnUrl=').'+'.$returnUrl.'; return false;';
+    }
+
+    /**
+     * Returns a selector box to switch the view
+     * Based on BackendUtility::getFuncMenu() but done as new function because it has another purpose.
+     * Mingling with getFuncMenu would harm the docHeader Menu.
+     *
+     * @param mixed $mainParams The "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
+     * @param string $elementName The form elements name, probably something like "SET[...]
+     * @param string|int $currentValue the value to be selected currently
+     * @param array $menuItems An array with the menu items for the selector box
+     * @param string $script The script to send the &id to, if empty it's automatically found
+     * @param string $addParams additional parameters to pass to the script
+     * @param array $additionalAttributes Additional attributes for the select element
+     * @return string HTML code for selector box
+     *
+     * @deprecated since TYPO3 v12.2. will be removed in TYPO3 v13.0.
+     */
+    public static function getDropdownMenu(
+        $mainParams,
+        $elementName,
+        $currentValue,
+        $menuItems,
+        $script = '',
+        $addParams = '',
+        array $additionalAttributes = []
+    ) {
+        if (!is_array($menuItems) || count($menuItems) <= 1) {
+            return '';
+        }
+        $scriptUrl = self::buildScriptUrl($mainParams, $addParams, $script);
+        $options = [];
+        foreach ($menuItems as $value => $label) {
+            $options[] = '<option value="'
+                .htmlspecialchars($value).'"'
+                .((string) $currentValue === (string) $value ? ' selected="selected"' : '').'>'
+                .htmlspecialchars($label, ENT_COMPAT, 'UTF-8', false).'</option>';
+        }
+        $dataMenuIdentifier = str_replace(['SET[', ']'], '', $elementName);
+        $dataMenuIdentifier = T3General::camelCaseToLowerCaseUnderscored($dataMenuIdentifier);
+        $dataMenuIdentifier = str_replace('_', '-', $dataMenuIdentifier);
+        // relies on module 'TYPO3/CMS/Backend/ActionDispatcher'
+        $attributes = T3General::implodeAttributes(array_merge([
+            'name' => $elementName,
+            'data-menu-identifier' => $dataMenuIdentifier,
+            'data-global-event' => 'change',
+            'data-action-navigate' => '$data=~s/$value/',
+            'data-navigate-value' => $scriptUrl.'&'.$elementName.'=${value}',
+        ], $additionalAttributes), true);
+
+        return '
+        <div class="input-group">
+            <!-- Function Menu of module -->
+            <select class="form-select" '.$attributes.'>
+                '.implode(LF, $options).'
+            </select>
+        </div>';
+    }
+
+    /**
+     * Builds the URL to the current script with given arguments.
+     *
+     * @param mixed $mainParams $id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
+     * @param string $addParams additional parameters to pass to the script
+     * @param string $script The script to send the &id to, if empty it's automatically found
+     * @return string The complete script URL
+     * @todo Check if this can be removed or replaced by routing
+     */
+    private static function buildScriptUrl($mainParams, $addParams, $script = '')
+    {
+        if (!is_array($mainParams)) {
+            $mainParams = ['id' => $mainParams];
+        }
+
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ($route = $GLOBALS['TYPO3_REQUEST']->getAttribute('route')) instanceof Route
+        ) {
+            $uriBuilder = T3General::makeInstance(UriBuilder::class);
+            $scriptUrl = (string) $uriBuilder->buildUriFromRoute($route->getOption('_identifier'), $mainParams);
+            $scriptUrl .= $addParams;
+        } else {
+            if (!$script) {
+                $script = PathUtility::basename(Environment::getCurrentScript());
+            }
+            $scriptUrl = $script.HttpUtility::buildQueryString($mainParams, '?').$addParams;
+        }
+
+        return $scriptUrl;
     }
 }

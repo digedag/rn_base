@@ -180,8 +180,10 @@ class Connection implements SingletonInterface
         $callback = isset($arr['callback']) ? $arr['callback'] : false;
 
         $executeMethod = method_exists($queryBuilder, 'executeQuery') ? 'executeQuery' : 'execute';
+        $result = $queryBuilder->$executeMethod();
+        $fetchMethod = TYPO3::isTYPO130OrHigher() ? 'fetchAllAssociative' : 'fetchAll';
 
-        foreach ($queryBuilder->$executeMethod()->fetchAll() as $row) {
+        foreach ($result->$fetchMethod() as $row) {
             $this->appendRow($rows, $row, $from->getTableName(), $wrapper, $callback, $arr);
         }
 
@@ -1199,7 +1201,7 @@ class Connection implements SingletonInterface
                 && !isset($options['enablefieldsfe'])
             ) {
                 $options['enablefieldsbe'] = 1;
-                if (Environment::isFrontend()) {
+                if (Environment::isFrontend() && !TYPO3::isTYPO130OrHigher()) {
                     // wir nehmen nicht Sys25\RnBase\Utility\TYPO3::getTSFE()->set_no_cache weil das durch
                     // $GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter'] deaktiviert werden
                     // kann. Das wollen wir aber nicht. Der Cache muss in jedem Fall deaktiviert werden.

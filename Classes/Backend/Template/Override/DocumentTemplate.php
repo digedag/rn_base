@@ -4,10 +4,13 @@ namespace Sys25\RnBase\Backend\Template\Override;
 
 use Sys25\RnBase\Backend\Utility\Icons;
 use Sys25\RnBase\Utility\Files;
+use Sys25\RnBase\Utility\LanguageTool;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\T3General;
 use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -97,17 +100,22 @@ class DocumentTemplate
 
     /** @var LanguageService */
     private $lang;
+    /** @var LanguageTool */
+    private $languageTool;
 
     /**
      * Constructor.
      */
-    public function __construct()
-    {
+    public function __construct(
+        ?LanguageTool $languageTool = null,
+        ?\TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService = null
+    ) {
+        $this->languageTool = $languageTool ?? tx_rnbase::makeInstance(LanguageTool::class);
+        $this->lang = $this->languageTool->getLanguageService();
         // Initializes the page rendering object:
         $this->initPageRenderer();
 
-        $this->flashMessageService = T3General::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
-        $this->lang = $GLOBALS['LANG'];
+        $this->flashMessageService = $flashMessageService ?? tx_rnbase::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
     }
 
     /**
@@ -429,8 +437,13 @@ class DocumentTemplate
         if (null !== $this->pageRenderer) {
             return;
         }
+        $lang = $this->getLangSrv()->lang;
+        if (TYPO3::isTYPO121OrHigher()) {
+            $lang = new Locale($lang);
+        }
+
         $this->pageRenderer = T3General::makeInstance(PageRenderer::class);
-        $this->pageRenderer->setLanguage($GLOBALS['LANG']->lang);
+        $this->pageRenderer->setLanguage($lang);
         $this->pageRenderer->enableConcatenateCss();
         $this->pageRenderer->enableConcatenateJavascript();
         $this->pageRenderer->enableCompressCss();

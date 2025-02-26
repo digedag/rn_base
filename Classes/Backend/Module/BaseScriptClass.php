@@ -72,6 +72,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * $GLOBALS['SOBE']->main();
  *
  * TODO: check TYPO3 versions used.
+ *
+ * @deprecated
  */
 abstract class BaseScriptClass
 {

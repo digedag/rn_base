@@ -107,7 +107,7 @@ class LanguageTool
                 }
             }
             if (empty($result)) {
-                $result = $this->getLanguageService()->getLL($key, $alt, false, $labelDebug);
+                $result = $this->getLanguageService()->sL($key);
             }
         } else {
             $result = $this->localLangUtil->getLL($key, $alt, false, $labelDebug);
@@ -116,7 +116,7 @@ class LanguageTool
         return $hsc ? htmlspecialchars($result) : $result;
     }
 
-    private function getLanguageService(): LanguageService
+    public function getLanguageService(): LanguageService
     {
         if (null === $this->languageService && Environment::isBackend()) {
             $this->languageService = $GLOBALS['LANG'];

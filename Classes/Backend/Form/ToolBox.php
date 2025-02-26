@@ -10,6 +10,7 @@ use Sys25\RnBase\Backend\Utility\BackendUtility;
 use Sys25\RnBase\Backend\Utility\Icons;
 use Sys25\RnBase\Backend\Utility\TCA;
 use Sys25\RnBase\Frontend\Request\Parameters;
+use Sys25\RnBase\Utility\LanguageTool;
 use Sys25\RnBase\Utility\Link;
 use Sys25\RnBase\Utility\Math;
 use Sys25\RnBase\Utility\Misc;
@@ -107,7 +108,7 @@ class ToolBox
 
         // TCEform für das Formular erstellen
         $this->form = tx_rnbase::makeInstance(FormBuilder::class);
-        $this->form->initDefaultBEmode();
+        $this->form->setModule($module);
     }
 
     /**
@@ -1150,7 +1151,7 @@ class ToolBox
         ];
         $SETTINGS = BackendUtility::getModuleData(
             $MENU,
-            T3General::_GP('SET'),
+            Parameters::_GP('SET'),
             $modName
         );
         $menuItems = [];
@@ -1351,7 +1352,7 @@ class ToolBox
     }
 
     /**
-     * @return LanguageService|\TYPO3\CMS\Lang\LanguageService
+     * @return LanguageTool
      */
     public function getLanguageService()
     {

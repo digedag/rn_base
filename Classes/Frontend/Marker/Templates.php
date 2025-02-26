@@ -145,7 +145,7 @@ class Templates
 
         $cache = $included = false;
 
-        if (!TYPO3::getTSFE()->no_cache) {
+        if (!TYPO3::isTYPO130OrHigher() && !TYPO3::getTSFE()->no_cache) {
             $cache = CacheManager::getCache('rnbase');
             $cacheKey = 'includeSubTemplateFor_'.md5($template);
             $included = $cache->get($cacheKey);

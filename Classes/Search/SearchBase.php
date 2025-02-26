@@ -43,7 +43,7 @@ abstract class SearchBase
 {
     private static $instances = [];
 
-    private $tableMapping;
+    private $tableMapping = [];
 
     private $generic = false;
 
