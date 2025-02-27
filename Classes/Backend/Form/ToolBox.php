@@ -1205,14 +1205,16 @@ class ToolBox
      *
      * @return array with keys 'menu' and 'value'
      */
-    public static function showMenu($pid, $name, $modName, $entries, $script = '', $addparams = '')
+    public function showMenu($pid, $name, $modName, $entries, $script = '', $addparams = '')
     {
         $MENU = [
             $name => $entries,
         ];
+        $reqData = Parameters::getPostOrGetParameter('SET');
+        $req2 = $this->getModule()->getRequest()->getQueryParams()['SET'] ?? [];
         $SETTINGS = BackendUtility::getModuleData(
             $MENU,
-            Parameters::getPostOrGetParameter('SET'),
+            $reqData,
             $modName
         );
 

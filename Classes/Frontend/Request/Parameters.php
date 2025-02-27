@@ -159,13 +159,13 @@ class Parameters extends ArrayObject implements ParametersInterface
     }
 
     /**
-     * @param string $parameter Key (variable name) from GET or POST vars
+     * @param string $var Key (variable name) from GET or POST vars
      *
      * @return array|string returns the GET vars merged recursively onto the POST vars
      *
      * @deprecated use PSR-7 ServerRequestInterface
      */
-    public static function _GP($parameterName)
+    public static function _GP($var)
     {
         if (empty($var)) {
             return;

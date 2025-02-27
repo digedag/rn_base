@@ -185,10 +185,11 @@ class DocumentTemplate
         $options = '';
         foreach ($menuItems as $def) {
             $class = $def['isActive'] ? ' active' : '';
+            $class .= ' nav-link';
             $label = $def['label'];
             $url = htmlspecialchars($def['url'] ?? '');
             $params = $def['addParams'] ?? '';
-            $options .= '<li><a class="'.$class.'" href="'.$url.'" '.$params.'>'.$label.'</a></li>';
+            $options .= '<li class="nav-item"><a class="'.$class.'" href="'.$url.'" '.$params.'>'.$label.'</a></li>';
         }
 
         return '<ul class="nav nav-tabs" role="tablist">'.$options.'</ul>';

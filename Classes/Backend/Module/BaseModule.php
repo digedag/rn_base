@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Backend\Module;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Sys25\RnBase\Backend\Form\ToolBox;
 use Sys25\RnBase\Backend\Template\ModuleParts;
 use Sys25\RnBase\Backend\Template\ModuleTemplate;
@@ -52,6 +53,8 @@ use tx_rnbase;
  *  );
  * Die Funktionsklassen sollten das Interface IModFunc implementieren. Eine Basisklasse mit nützlichen
  * Methoden steht natürlich auch bereit: BaseModFunc.
+ *
+ * @deprecated wird nur bis TYPO3 11 verwendet
  */
 abstract class BaseModule extends BaseScriptClass implements IModule
 {
@@ -92,9 +95,31 @@ abstract class BaseModule extends BaseScriptClass implements IModule
     }
 
     /**
+     * Sollte bis TYPO3 11 nicht verwendet werden.
+     *
+     * @return ServerRequestInterface|null
+     */
+    public function getRequest(): ?ServerRequestInterface
+    {
+        return null;
+    }
+
+    /**
+     * Sollte bis TYPO3 11 nicht verwendet werden.
+     *
+     * @param IModFunc $modFunc
+     * @param callable $renderFunc
+     * @param ServerRequestInterface $request
+     * @return void
+     */
+    public function render(IModFunc $modFunc, callable $renderFunc, ServerRequestInterface $request)
+    {
+    }
+
+    /**
      * For the new TYPO3 request handlers.
      *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response = null
      *
      * @return bool|\Psr\Http\Message\ResponseInterface TRUE, if the request request could be dispatched
@@ -127,7 +152,7 @@ abstract class BaseModule extends BaseScriptClass implements IModule
      * Main function of the module. Write the content to $this->content
      * If you chose "web" as main module, you will need to consider the $this->id parameter which will contain the uid-number of the page clicked in the page tree.
      *
-     * @param \Psr\Http\Message\ServerRequestInterface|null $request
+     * @param ServerRequestInterface|null $request
      */
     public function main($request = null)
     {
@@ -625,6 +650,6 @@ abstract class BaseModule extends BaseScriptClass implements IModule
 
     public function getLanguageService()
     {
-        return $this->getFormTool()->getLanguageService()
+        return $this->getFormTool()->getLanguageService();
     }
 }
