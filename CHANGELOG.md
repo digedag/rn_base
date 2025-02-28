@@ -6,6 +6,7 @@ Changelog
 v1.20.0 ()
 * Update for TYPO3 13.4 LTS
 * BC: showMenu() in ToolBox is not static anymore
+* BC: BEPager requires IModule in constructor
 
 v1.19.3 (??.0?.2025)
  * Migrate label translation

@@ -107,7 +107,7 @@ class LanguageTool
                 }
             }
             if (empty($result)) {
-                $result = $this->getLanguageService()->sL($key);
+                $result = $alt;
             }
         } else {
             $result = $this->localLangUtil->getLL($key, $alt, false, $labelDebug);

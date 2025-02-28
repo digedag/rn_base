@@ -784,36 +784,43 @@ class ToolBox
             $value += date('Z', $value);
         }
         $this->initializeJavaScriptFormEngine();
-        $dateElementClass = TYPO3::isTYPO121OrHigher() ?
-            \TYPO3\CMS\Backend\Form\Element\DatetimeElement::class :
-            \TYPO3\CMS\Backend\Form\Element\InputDateTimeElement::class;
 
         // [itemFormElName] => data[tx_cfcleague_games][4][status]
         // [itemFormElID] => data_tx_cfcleague_games_4_status
-
-        $renderedElement = tx_rnbase::makeInstance(
-            $dateElementClass,
-            $this->getTCEForm()->getNodeFactory(),
-            [
-                'fieldName' => $name,
-                'tableName' => '',
-                'databaseRow' => ['uid' => 0],
-                'processedTca' => ['columns' => [$name => ['config' => ['type' => 'text']]]],
-                'parameterArray' => [
-                    'itemFormElValue' => $value,
-                    'itemFormElName' => $name,
-                    'itemFormElID' => $name,
-                    'fieldConf' => [
-                        'label' => $options[self::OPTION_LABEL] ?? '',
-                        'config' => [
-                            'width' => 20,
-                            'maxlength' => 20,
-                            'eval' => 'datetime',
-                        ],
+        $options = [
+            'fieldName' => $name,
+            'tableName' => '',
+            'databaseRow' => ['uid' => 0],
+            'processedTca' => ['columns' => [$name => ['config' => ['type' => 'text']]]],
+            'parameterArray' => [
+                'itemFormElValue' => $value,
+                'itemFormElName' => $name,
+                'itemFormElID' => $name,
+                'fieldConf' => [
+                    'label' => $options[self::OPTION_LABEL] ?? '',
+                    'config' => [
+                        'width' => 20,
+                        'maxlength' => 20,
+                        'eval' => 'datetime',
                     ],
                 ],
-            ]
-        )->render();
+            ],
+        ];
+
+        if (!TYPO3::isTYPO130OrHigher()) {
+            $dateElementClass = TYPO3::isTYPO121OrHigher() ?
+            \TYPO3\CMS\Backend\Form\Element\DatetimeElement::class :
+            \TYPO3\CMS\Backend\Form\Element\InputDateTimeElement::class;
+
+            $renderedElement = tx_rnbase::makeInstance(
+                $dateElementClass,
+                $this->getTCEForm()->getNodeFactory(),
+                $options
+            )->render();
+        } else {
+            $options['renderType'] = 'datetime';
+            $renderedElement = $this->getTCEForm()->getNodeFactory()->create($options)->render();
+        }
 
         if ($renderedElement['requireJsModules'] ?? null) {
             $pageRenderer = $this->getDoc()->getPageRenderer();

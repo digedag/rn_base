@@ -2,12 +2,12 @@
 
 namespace Sys25\RnBase\Backend\Utility;
 
-use Sys25\RnBase\Backend\Form\ToolBox;
+use Sys25\RnBase\Backend\Module\IModule;
 
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008-2023 Rene Nitzsche (rene@system25.de)
+*  (c) 2008-2025 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -41,14 +41,16 @@ class BEPager
     private $settings;
 
     private $init = false;
+    private $module;
     private $modName;
     private $conf;
 
-    public function __construct($id, $modName, $pid, $listSize = 0, $conf = [])
+    public function __construct($id, IModule $module, $pid, $listSize = 0, $conf = [])
     {
         $this->id = strlen(trim($id)) ? trim($id) : 'pager';
         $this->pid = $pid;
-        $this->modName = $modName;
+        $this->module = $module;
+        $this->modName = $module->getName();
         $this->conf = $conf;
         $this->setListSize($listSize);
     }
@@ -102,7 +104,8 @@ class BEPager
             return;
         }
         $sizes = $this->getLimits();
-        $menu = ToolBox::showMenu($this->pid, $this->getDataName().'_limit', $this->modName, $sizes);
+        $toolbox = $this->module->getFormTool();
+        $menu = $toolbox->showMenu($this->pid, $this->getDataName().'_limit', $this->modName, $sizes);
         $this->setSetting('limit', $menu['value']);
         $this->setSetting('limitMenu', $menu['menu']);
 
@@ -118,7 +121,7 @@ class BEPager
             }
             $pages[$i * $results_at_a_time] = 'Seite '.$i;
         }
-        $menu = ToolBox::showMenu($this->pid, $this->getDataName().'_offset', $this->modName, $pages);
+        $menu = $toolbox->showMenu($this->pid, $this->getDataName().'_offset', $this->modName, $pages);
         $this->setSetting('offset', $menu['value']);
         $this->setSetting('offsetMenu', $menu['menu']);
         $this->init = true;
