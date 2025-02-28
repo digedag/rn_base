@@ -341,7 +341,7 @@ class TYPO3DBAL implements IDatabase, IDatabaseT3
      */
     public function sql_fetch_assoc($res)
     {
-        $fetchMethod = TYPO3::isTYPO130OrHigher() ? 'fetchOne' : 'fetch';
+        $fetchMethod = TYPO3::isTYPO130OrHigher() ? 'fetchAssociative' : 'fetch';
 
         return $res->$fetchMethod(PDO::FETCH_ASSOC);
     }
