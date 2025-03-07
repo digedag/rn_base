@@ -13,6 +13,7 @@ use Sys25\RnBase\Frontend\Marker\BaseMarker;
 use Sys25\RnBase\Frontend\Marker\Templates;
 use Sys25\RnBase\Utility\Arrays;
 use Sys25\RnBase\Utility\Files;
+use Sys25\RnBase\Utility\LanguageTool;
 use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
@@ -21,7 +22,7 @@ use tx_rnbase;
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009-2023 Rene Nitzsche (rene@system25.de)
+*  (c) 2009-2025 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -648,6 +649,9 @@ abstract class BaseModule extends BaseScriptClass implements IModule
         return '';
     }
 
+    /**
+     * @return LanguageTool
+     */
     public function getLanguageService()
     {
         return $this->getFormTool()->getLanguageService();

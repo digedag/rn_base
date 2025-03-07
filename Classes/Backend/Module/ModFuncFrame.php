@@ -194,7 +194,6 @@ class ModFuncFrame implements IModule
      */
     public function getLanguageService()
     {
-        //        return $GLOBALS['LANG'];
         return $this->languageTool;
     }
 

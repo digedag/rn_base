@@ -79,6 +79,7 @@ class ToolBox
 
     public const OPTION_PARAMS = 'params';
     public const OPTION_CSS_CLASSES = 'class';
+    public const OPTION_CSS_STYLES = 'styles';
     public const OPTION_DATA_ATTR = 'data-attr';
 
     /**
@@ -735,9 +736,11 @@ class ToolBox
     {
         $options = is_array($options) ? $options : [];
         $onChangeStr = ($options['onchange'] ?? false) ? ' onchange=" '.$options['onchange'].'" ' : '';
+        $classes = $options[self::OPTION_CSS_CLASSES] ?? 'formField1';
+        $styles = $options[self::OPTION_CSS_STYLES] ?? 'width:288px;';
 
-        return '<textarea name="'.$name.'" style="width:288px;" class="formField1"'.$onChangeStr.
-            ' cols="'.$cols.'" rows="'.$rows.'" wrap="virtual">'.$value.'</textarea>';
+        return sprintf('<textarea name="%s" style="%s" class="%s"'.$onChangeStr.
+            ' cols="%d" rows="%d" wrap="virtual">%s</textarea>', $name, $styles, $classes, $cols, $rows, $value);
     }
 
     /**
@@ -882,7 +885,8 @@ class ToolBox
      */
     public function createSelectSingle($name, $value, $table, $column, $options = 0)
     {
-        global $TCA, $LANG;
+        global $TCA;
+        $lang = $this->getLanguageService();
         $options = is_array($options) ? $options : [];
 
         $out = '<select  name="'.$name.'" class="select" ';
@@ -902,7 +906,7 @@ class ToolBox
             if ($value == $tcaVal) {
                 $sel = 'selected="selected"';
             }
-            $out .= '<option value="'.$tcaVal.'" '.$sel.'>'.$LANG->sL($tcaLabel).'</option>';
+            $out .= '<option value="'.$tcaVal.'" '.$sel.'>'.$lang->sL($tcaLabel).'</option>';
         }
         $out .= '
             </select>
