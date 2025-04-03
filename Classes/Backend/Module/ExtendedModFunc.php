@@ -74,7 +74,7 @@ abstract class ExtendedModFunc implements IModFunc
     {
         if (TYPO3::isTYPO121OrHigher()) {
             $modFuncFrame = tx_rnbase::makeInstance(ModFuncFrame::class);
-
+            $this->mod = $modFuncFrame;
             return $modFuncFrame->render($this, function () { return $this->renderOutput(); }, $request);
         }
 
