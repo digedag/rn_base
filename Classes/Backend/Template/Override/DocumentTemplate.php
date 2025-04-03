@@ -103,6 +103,11 @@ class DocumentTemplate
     /** @var LanguageTool */
     private $languageTool;
 
+    public $backPath;
+    public $docType;
+    public $inDocStyles;
+    public $inDocStylesArray;
+
     /**
      * Constructor.
      */
