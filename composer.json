@@ -31,6 +31,7 @@
 		"ext-json": "*",
 		"ext-simplexml": "*",
 		"ext-zip": "*",
+		"doctrine/collections": "*",
 		"doctrine/common": "*",
 		"doctrine/dbal": "*",
 		"typo3/cms-core": "^10.4 || ^11.5 || ^12.4 || ^13.4"
@@ -66,8 +67,7 @@
 			"Classes/Testing/ProphecyTrait.php"
 		],
 		"psr-4": {
-			"Sys25\\RnBase\\": "Classes",
-			"Contrib\\": "Resources/Private/Php/Contrib"
+			"Sys25\\RnBase\\": "Classes"
 		}
 	},
 	"autoload-dev": {
@@ -105,7 +105,7 @@
 		],
 		"test:phpcs": [
 			"[ -e .Build/bin/php-cs-fixer ] || composer update",
-			".Build/bin/php-cs-fixer fix -v --dry-run --diff"
+			"export PHP_CS_FIXER_IGNORE_ENV=1 && .Build/bin/php-cs-fixer fix -v --dry-run --diff"
 		],
 		"test:phpstan": ".Build/bin/phpstan --no-progress",
 		"test:phpunit": [
@@ -122,6 +122,8 @@
 			"@test:phpcompat 8.0",
 			"@test:phpcompat 8.1",
 			"@test:phpcompat 8.2",
+			"@test:phpcompat 8.3",
+			"@test:phpcompat 8.4",
 			"@test:phpstan",
 			"@test:phpunit"
 		],

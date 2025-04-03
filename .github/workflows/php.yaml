@@ -25,6 +25,8 @@ jobs:
           - 8.0
           - 8.1
           - 8.2
+          - 8.3
+          - 8.4
 
   php-compatibility:
     name: "PHPCompatibility"
@@ -53,6 +55,8 @@ jobs:
           - 8.0
           - 8.1
           - 8.2
+          - 8.3
+          - 8.4
 
   code-style:
     name: Check code style
@@ -173,3 +177,7 @@ jobs:
             php-version: 8.1
           - typo3-version: ^12.4
             php-version: 8.2
+          - typo3-version: ^12.4
+            php-version: 8.3
+          - typo3-version: ^12.4
+            php-version: 8.4
