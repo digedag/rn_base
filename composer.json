@@ -129,7 +129,7 @@
 		],
 		"fix:phpcs": [
 			"[ -e .Build/bin/php-cs-fixer ] || composer update",
-			".Build/bin/php-cs-fixer fix -v"
+			"export PHP_CS_FIXER_IGNORE_ENV=1 && .Build/bin/php-cs-fixer fix -v"
 		],
 		"fix": [
 			"@fix:phpcs"
