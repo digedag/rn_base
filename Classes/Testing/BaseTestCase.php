@@ -224,7 +224,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
             $model
                 ->expects(self::any())
                 ->method($isNewModel ? 'loadRecord' : 'reset')
-                ->will(self::returnSelf());
+                ->willReturnSelf();
         }
 
         return $model;
