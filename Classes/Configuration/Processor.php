@@ -1145,10 +1145,13 @@ class Processor implements ConfigurationInterface
         }
 
         if (null === $this->languageService) {
+            if (TYPO3::isTYPO121OrHigher()) {
+                $language = $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
+            } else {
+                $language = $this->cObj->getTypoScriptFrontendController()->getLanguage();
+            }
             $this->languageService = tx_rnbase::makeInstance(LanguageServiceFactory::class)
-                ->createFromSiteLanguage(
-                    $this->cObj->getTypoScriptFrontendController()->getLanguage()
-                );
+                ->createFromSiteLanguage($language);
         }
 
         $this->languageTool->setLanguageService($this->languageService);
