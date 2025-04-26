@@ -5,7 +5,7 @@ namespace Sys25\RnBase\Configuration;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2007-2023 Rene Nitzsche
+ *  (c) 2007-2025 Rene Nitzsche
  *  Contact: rene@system25.de
  *
  *  Original version:
@@ -46,6 +46,7 @@ use Sys25\RnBase\Utility\TYPO3;
 use Sys25\RnBase\Utility\Typo3Classes;
 use tx_rnbase;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\TypoScript\TypoScriptStringFactory;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /***************************************************************
@@ -1040,11 +1041,22 @@ class Processor implements ConfigurationInterface
             }
         }
         if ($flexTs) {
-            // This handles ts setup from flexform
-            $tsParser = tx_rnbase::makeInstance(Typo3Classes::getTypoScriptParserClass());
-            $tsParser->setup = $this->_dataStore->getArrayCopy();
-            $tsParser->parse($flexTs);
-            $flexTsData = $tsParser->setup;
+            if (!TYPO3::isTYPO130OrHigher()) {
+                // This handles ts setup from flexform
+                /** @var \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser $tsParser */
+                $tsParser = tx_rnbase::makeInstance(Typo3Classes::getTypoScriptParserClass());
+                $tsParser->setup = $this->_dataStore->getArrayCopy();
+                $tsParser->parse($flexTs);
+                $flexTsData = $tsParser->setup;
+            } else {
+                /** @var TypoScriptStringFactory $tsFactory */
+                $tsFactory = tx_rnbase::makeInstance(TypoScriptStringFactory::class);
+                $parsedSetup = $tsFactory->parseFromStringWithIncludes('plugin_flex_'.$this->getPluginId(), $flexTs);
+                $flexTsData = $parsedSetup->toArray();
+
+                $currentSetup = $this->_dataStore->getArrayCopy();
+                $flexTsData = array_merge_recursive($currentSetup, $flexTsData);
+            }
             $this->_dataStore->exchangeArray($flexTsData);
         }
     }
@@ -1064,10 +1076,21 @@ class Processor implements ConfigurationInterface
         // das < abschneiden, um den pfad zum link zu erhalten
         $key = trim(substr($value, 1));
 
-        $tsParser = tx_rnbase::makeInstance(Typo3Classes::getTypoScriptParserClass());
+        $tsArray = [];
+        if (TYPO3::isTYPO121OrHigher()) {
+            /** @var TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $tsc */
+            $tsc = $this->getCObj()->getRequest()->getAttribute('frontend.typoscript');
+            $tsArray = $tsc->getSetupArray();
+        } else {
+            $tsArray = $GLOBALS['TSFE']->tmpl->setup;
+        }
+        // /** @var \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser $tsParser */
+        // $tsParser = tx_rnbase::makeInstance(Typo3Classes::getTypoScriptParserClass());
 
-        // $name and $conf is loaded with the referenced values.
-        list($linkValue, $linkConf) = $tsParser->getVal($key, $GLOBALS['TSFE']->tmpl->setup);
+        // // $name and $conf is loaded with the referenced values.
+        // list($linkValue, $linkConf) = $tsParser->getVal($key, $tsArray);
+
+        list($linkValue, $linkConf) = $this->getVal($key, $tsArray);
 
         // Konfigurationen mergen
         if (is_array($conf) && count($conf)) {
@@ -1078,6 +1101,37 @@ class Processor implements ConfigurationInterface
         $linkConf = $this->mergeTSReference($linkValue, $linkConf);
 
         return $linkConf;
+    }
+
+    private function getVal(string $key, array $tsArray): array
+    {
+        $segments = explode('.', $key);
+        $currentArray = $tsArray;
+
+        foreach ($segments as $i => $segment) {
+            $segmentWithDot = $segment.'.';
+            $isLast = ($i === count($segments) - 1);
+
+            if ($isLast) {
+                // Ergebnis setzen
+                if (isset($currentArray[$segmentWithDot])) {
+                    return ['', $currentArray[$segmentWithDot]];
+                } elseif (isset($currentArray[$segment])) {
+                    return [$currentArray[$segment], []];
+                } else {
+                    return ['', []];
+                }
+            }
+
+            // tiefer steigen, wenn weiterer Pfad existiert
+            if (isset($currentArray[$segmentWithDot])) {
+                $currentArray = $currentArray[$segmentWithDot];
+            } else {
+                return [null, []];
+            }
+        }
+
+        return ['', []];
     }
 
     /**

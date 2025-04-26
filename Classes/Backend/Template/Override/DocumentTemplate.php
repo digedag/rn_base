@@ -37,6 +37,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
+/**
+ * Die Klasse sollte zurückgebaut werden. Sie ist nicht wirklich ein Template.
+ * Sie ist eine Sammlung von Hilfsfunktionen, die in den Modulen
+ * verwendet werden. Da ist aber die ToolBox die zentrale Anlaufstelle.
+ */
 class DocumentTemplate
 {
     public const STATE_NOTICE = -2;
@@ -102,11 +107,6 @@ class DocumentTemplate
     private $lang;
     /** @var LanguageTool */
     private $languageTool;
-
-    public $backPath;
-    public $docType;
-    public $inDocStyles;
-    public $inDocStylesArray;
 
     /**
      * Constructor.

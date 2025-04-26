@@ -149,7 +149,7 @@ class Connection implements SingletonInterface
 
         if ($debug) {
             Debug::debug([
-                'Rows retrieved ' => $rows instanceof Countable ? $rows->count() : count($rows),
+                'Rows retrieved ' => $rows instanceof Countable ? $rows->count() : (is_array($rows) ? count($rows) : $rows),
                 'Time ' => (microtime(true) - $time),
                 'Memory consumed ' => (memory_get_usage() - $mem),
                 'QB used' => is_object($queryBuilder),
@@ -167,24 +167,38 @@ class Connection implements SingletonInterface
         return $rows;
     }
 
-    private function doSelectByQueryBuilder(QueryBuilder $queryBuilder, From $from, array $arr)
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param From $from
+     * @param array $options
+     * @return mixed
+     *
+     * @returns array|Countable|int
+     */
+    private function doSelectByQueryBuilder(QueryBuilder $queryBuilder, From $from, array $options)
     {
-        $sqlOnly = intval($arr['sqlonly'] ?? null) > 0;
+        $sqlOnly = intval($options['sqlonly'] ?? null) > 0;
 
         if ($sqlOnly) {
             return $queryBuilder;
         }
 
-        $rows = $this->initRows($arr);
-        $wrapper = is_string($arr['wrapperclass'] ?? null) ? trim($arr['wrapperclass']) : 0;
-        $callback = isset($arr['callback']) ? $arr['callback'] : false;
+        $rows = $this->initRows($options);
+        $wrapper = is_string($options['wrapperclass'] ?? null) ? trim($options['wrapperclass']) : 0;
+        $callback = isset($options['callback']) ? $options['callback'] : false;
 
         $executeMethod = method_exists($queryBuilder, 'executeQuery') ? 'executeQuery' : 'execute';
         $result = $queryBuilder->$executeMethod();
         $fetchMethod = TYPO3::isTYPO130OrHigher() ? 'fetchAllAssociative' : 'fetchAll';
 
+        if ($callback) {
+            $rows = 0;
+        }
         foreach ($result->$fetchMethod() as $row) {
-            $this->appendRow($rows, $row, $from->getTableName(), $wrapper, $callback, $arr);
+            $this->appendRow($rows, $row, $from->getTableName(), $wrapper, $callback, $options);
+            if ($callback) {
+                ++$rows;
+            }
         }
 
         return $rows;
