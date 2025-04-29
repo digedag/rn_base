@@ -588,7 +588,7 @@ abstract class SearchBase
     private function _initSearch(array $options)
     {
         $this->setGeneric($options);
-        if ($this->tableMapping === []) {
+        if ([] === $this->tableMapping) {
             $tableMapping = $this->getTableMappings();
             $tableMapping = is_array($tableMapping) ? $tableMapping : [];
             if ($this->isGeneric()) {
