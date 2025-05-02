@@ -10,7 +10,7 @@ use Sys25\RnBase\Domain\Model\RecordInterface;
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009 - 2023 Rene Nitzsche (rene@system25.de)
+*  (c) 2009 - 2025 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -56,7 +56,7 @@ class SimpleMarker extends BaseMarker
      *
      * @return string das geparste Template
      */
-    public function parseTemplate($template, &$item, &$formatter, $confId, $marker)
+    public function parseTemplate($template, $item, $formatter, $confId, $marker)
     {
         if (!is_object($item)) {
             if (!$this->classname) {
@@ -162,7 +162,7 @@ class SimpleMarker extends BaseMarker
                 $item->setProperty($newField, $value);
             }
             if (in_array($field, $dotValueFields)) {
-                $item->setProperty($newField, str_replace('.', '_', $value));
+                $item->setProperty($newField, str_replace('.', '_', $value ?? ''));
             }
         }
     }

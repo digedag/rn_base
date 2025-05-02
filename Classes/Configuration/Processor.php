@@ -44,9 +44,9 @@ use Sys25\RnBase\Utility\Network;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
 use Sys25\RnBase\Utility\Typo3Classes;
+use Sys25\RnBase\Utility\TypoScript;
 use tx_rnbase;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\TypoScript\TypoScriptStringFactory;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /***************************************************************
@@ -191,6 +191,11 @@ class Processor implements ConfigurationInterface
      * @var LanguageTool
      */
     private $languageTool;
+
+    /**
+     * @var TypoScript
+     */
+    private $typoscriptTool;
 
     private $languageService;
 
@@ -1041,22 +1046,7 @@ class Processor implements ConfigurationInterface
             }
         }
         if ($flexTs) {
-            if (!TYPO3::isTYPO130OrHigher()) {
-                // This handles ts setup from flexform
-                /** @var \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser $tsParser */
-                $tsParser = tx_rnbase::makeInstance(Typo3Classes::getTypoScriptParserClass());
-                $tsParser->setup = $this->_dataStore->getArrayCopy();
-                $tsParser->parse($flexTs);
-                $flexTsData = $tsParser->setup;
-            } else {
-                /** @var TypoScriptStringFactory $tsFactory */
-                $tsFactory = tx_rnbase::makeInstance(TypoScriptStringFactory::class);
-                $parsedSetup = $tsFactory->parseFromStringWithIncludes('plugin_flex_'.$this->getPluginId(), $flexTs);
-                $flexTsData = $parsedSetup->toArray();
-
-                $currentSetup = $this->_dataStore->getArrayCopy();
-                $flexTsData = array_merge_recursive($currentSetup, $flexTsData);
-            }
+            $flexTsData = $this->getTSTool()->parseTsConfig($flexTs, 'plugin_flex_'.$this->getPluginId(), $this->_dataStore->getArrayCopy());
             $this->_dataStore->exchangeArray($flexTsData);
         }
     }
@@ -1269,5 +1259,28 @@ class Processor implements ConfigurationInterface
         }
 
         return $data;
+    }
+
+    /**
+     * @return TypoScript
+     */
+    private function getTSTool()
+    {
+        if (null === $this->typoscriptTool) {
+            $this->typoscriptTool = tx_rnbase::makeInstance(TypoScript::class);
+        }
+
+        return $this->typoscriptTool;
+    }
+
+    /**
+     * Useful for testing.
+     *
+     * @param TypoScript $typoscriptTool
+     * @return void
+     */
+    public function setTSTool(TypoScript $typoscriptTool)
+    {
+        $this->typoscriptTool = $typoscriptTool;
     }
 }

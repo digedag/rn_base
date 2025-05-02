@@ -14,7 +14,6 @@
     stopOnSkipped="false"
     verbose="false"
 >
-
     <!-- all tests in the test dir -->
     <testsuites>
         <testsuite name="RnBase Unit Tests">

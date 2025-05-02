@@ -2,8 +2,8 @@
 
 namespace Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowser;
 
-use Sys25\RnBase\ExtBaseFluid\ViewHelper\BaseViewHelperTest;
 use Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowserViewHelper;
+use Sys25\RnBase\Testing\BaseViewHelperTest;
 use tx_rnbase;
 
 /***************************************************************

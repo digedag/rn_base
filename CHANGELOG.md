@@ -7,6 +7,8 @@ v1.20.0 ()
 * Update for TYPO3 13.4 LTS
 * BC: showMenu() in ToolBox is not static anymore
 * BC: BEPager requires IModule in constructor
+* BC: Utility\TypoScript::parseTsConfig() is not static anymore.
+* BC: Utility\SimpleMarker::parseTemplate() removed call-by-reference parameters.
 
 v1.19.3 (??.0?.2025)
  * Migrate label translation

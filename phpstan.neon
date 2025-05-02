@@ -27,9 +27,10 @@ parameters:
     - Classes/Typo3Wrapper/Service/AuthenticationService.php
     - Classes/Typo3Wrapper/Service/AbstractService.php
     - Classes/Testing/BaseTestCase.php
+    - Classes/Testing/BaseViewHelperTest.php
     - Legacy/model/class.tx_rnbase_model_data.php
     - Legacy/model/class.tx_rnbase_model_base.php
     - Legacy/filter/class.tx_rnbase_filter_FilterItemMarker.php
 
   ignoreErrors:
-    - '#Call to an undefined static method Sys25\\RnBase\\ExtBaseFluid\\ViewHelper\\BaseViewHelperTest::at\(\)#'
+    - '#Call to an undefined static method Sys25\\RnBase\\Testing\\BaseViewHelperTest::at\(\)#'

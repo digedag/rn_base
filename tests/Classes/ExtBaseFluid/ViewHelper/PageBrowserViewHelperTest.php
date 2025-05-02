@@ -5,6 +5,7 @@ namespace Sys25\RnBase\ExtBaseFluid\ViewHelper;
 use ReflectionProperty;
 use Sys25\RnBase\ExtBaseFluid\View\Factory;
 use Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowser\CurrentPageViewHelper;
+use Sys25\RnBase\Testing\BaseViewHelperTest;
 use tx_rnbase;
 use tx_rnbase_util_Files;
 use tx_rnbase_util_Misc;

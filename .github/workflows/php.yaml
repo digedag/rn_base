@@ -181,3 +181,55 @@ jobs:
             php-version: 8.3
           - typo3-version: ^12.4
             php-version: 8.4
+
+  phpunit-functional:
+    name: TYPO3 Functional Tests
+    runs-on: ubuntu-latest
+    needs: phpunit
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2
+      - name: "Install PHP"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "${{ matrix.php-version }}"
+          tools: composer:2.2.11
+          extensions: zip, sqlite
+          coverage: none
+      - name: "Show Composer version"
+        run: composer --version
+      - name: "Cache dependencies installed with composer"
+        uses: actions/cache@v4
+        with:
+          key: "php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}"
+          path: ~/.composer/cache
+          restore-keys: "php${{ matrix.php-version }}-composer-\n"
+      # The next step is required because the dependencies of PHPStan clash with those of TYPO3 8.7.
+      - name: "Remove PHPStan"
+        run: composer remove --no-update --dev phpstan/phpstan phpstan/phpstan-phpunit phpstan/extension-installer
+      - name: "Install TYPO3 Core"
+        env:
+          TYPO3: "${{ matrix.typo3-version }}"
+        run: |
+          composer require --no-install --no-progress typo3/minimal:"$TYPO3"
+          composer show
+      - name: "Install dependencies with composer"
+        run: |
+          composer update --no-ansi --no-interaction --no-progress --with-dependencies
+          composer show
+      - name: "Run unit tests"
+        run: "TYPO3_PATH_WEB=$PWD/.Build/Web && .Build/bin/phpunit -c ./tests/phpunit.functional.xml"
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - typo3-version: ^12.4
+            php-version: 8.1
+          - typo3-version: ^12.4
+            php-version: 8.2
+          - typo3-version: ^12.4
+            php-version: 8.3
+          - typo3-version: ^12.4
+            php-version: 8.4
+          - typo3-version: ^13.4
+            php-version: 8.2
