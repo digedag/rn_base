@@ -233,3 +233,7 @@ jobs:
             php-version: 8.4
           - typo3-version: ^13.4
             php-version: 8.2
+          - typo3-version: ^13.4
+            php-version: 8.3
+          - typo3-version: ^13.4
+            php-version: 8.4
