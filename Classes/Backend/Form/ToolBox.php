@@ -18,6 +18,7 @@ use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\T3General;
 use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
+use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 
@@ -173,7 +174,7 @@ class ToolBox
         if ($options['sprite'] ?? false) {
             $label = Icons::getSpriteIcon($options['sprite']);
         }
-        $jsCode = BackendUtility::viewOnClick($pid, '', null, '', '', $urlParams);
+
         $title = '';
         if ($options['hover'] ?? false) {
             $title = ' title="'.$options['hover'].'" ';
@@ -181,6 +182,16 @@ class ToolBox
 
         $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
         $class = ' class="'.$class.'"';
+
+        if (TYPO3::isTYPO121OrHigher()) {
+            $uri = (string) PreviewUriBuilder::create($pid)
+                ->withAdditionalQueryParameters($urlParams)
+                ->buildUri();
+
+            return '<a href="'.$uri.'" '.$class.' target="_blank" '.$title.'>'.$label.'</a>';
+        }
+
+        $jsCode = BackendUtility::viewOnClick($pid, '', null, '', '', $urlParams);
 
         return '<a href="#" '.$class.' onclick="'.htmlspecialchars($jsCode).'" '.$title.'>'.$label.'</a>';
     }
