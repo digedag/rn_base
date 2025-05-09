@@ -139,9 +139,7 @@ class Parameters extends ArrayObject implements ParametersInterface
         $postParameter = isset($_POST[$parameter]) && is_array($_POST[$parameter]) ? $_POST[$parameter] : [];
         $getParameter = isset($_GET[$parameter]) && is_array($_GET[$parameter]) ? $_GET[$parameter] : [];
         $mergedParameters = $getParameter;
-        Arrays::mergeRecursiveWithOverrule($mergedParameters, $postParameter);
-
-        return $mergedParameters;
+        return Arrays::mergeRecursiveWithOverrule($mergedParameters, $postParameter);
     }
 
     /**
