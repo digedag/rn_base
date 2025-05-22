@@ -283,7 +283,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
                 $model
                     ->expects(self::any())
                     ->method($getter)
-                    ->will($this->returnValue($this->loadYaml($data[$getter], false)))
+                    ->willReturn($this->loadYaml($data[$getter], false))
                 ;
             }
 
