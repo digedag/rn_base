@@ -12,7 +12,7 @@ use tx_rnbase;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2009-2024 Rene Nitzsche
+ *  (c) 2009-2025 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -65,11 +65,7 @@ class BaseFilter implements FilterInterface
      */
     protected $doSearch;
 
-    /**
-     * @param RequestInterface $request
-     * @param string           $confId
-     */
-    public function __construct($request, $confId)
+    public function setRequest(RequestInterface $request, $confId)
     {
         $this->configurations = $request->getConfigurations();
         $this->parameters = $request->getParameters();
@@ -227,7 +223,10 @@ class BaseFilter implements FilterInterface
         $filterClass = ($filterClass) ? $filterClass : $configurations->get($confId.'class');
         $filterClass = ($filterClass) ? $filterClass : $configurations->get($confId.'filter');
         $filterClass = ($filterClass) ? $filterClass : self::class;
-        $filter = tx_rnbase::makeInstance($filterClass, $request, $confId);
+        /** @var FilterInterface $filter */
+        $filter = tx_rnbase::makeInstance($filterClass);
+        $filter->setRequest($request, $confId);
+
         $request->getViewContext()->offsetSet('filter', $filter);
 
         return $filter;

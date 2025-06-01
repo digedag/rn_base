@@ -9,6 +9,7 @@ v1.20.0 ()
 * BC: BEPager requires IModule in constructor
 * BC: Utility\TypoScript::parseTsConfig() is not static anymore.
 * BC: Utility\SimpleMarker::parseTemplate() removed call-by-reference parameters.
+* BC: new Method FilterInterace::setRequest for filter classes. This makes it possible to use filter classes as services.
 
 v1.19.3 (??.0?.2025)
  * Migrate label translation
