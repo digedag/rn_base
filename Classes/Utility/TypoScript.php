@@ -73,7 +73,7 @@ class TypoScript
             $parsedTsArray = $parsedSetup->toArray();
 
             $currentSetup = $existingTsConfig;
-            $parsedTsArray = array_merge_recursive($currentSetup, $parsedTsArray);
+            $parsedTsArray = Arrays::mergeRecursiveWithOverrule($currentSetup, $parsedTsArray);
         } else {
             $tsParser->setup = $existingTsConfig;
             $tsParser->parse($tsParser->checkIncludeLines($typoScript));
