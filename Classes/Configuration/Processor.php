@@ -1194,8 +1194,13 @@ class Processor implements ConfigurationInterface
             } else {
                 $language = $this->cObj->getTypoScriptFrontendController()->getLanguage();
             }
-            $this->languageService = tx_rnbase::makeInstance(LanguageServiceFactory::class)
-                ->createFromSiteLanguage($language);
+            $factory = tx_rnbase::makeInstance(LanguageServiceFactory::class);
+
+            if (null === $language) {
+                $this->languageService = $factory->create('en');
+            } else {
+                $this->languageService = $factory->createFromSiteLanguage($language);
+            }
         }
 
         $this->languageTool->setLanguageService($this->languageService);
