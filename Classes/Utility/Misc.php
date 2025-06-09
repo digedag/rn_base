@@ -676,13 +676,24 @@ MAYDAYPAGE;
         foreach ($pidListArr as $val) {
             $val = Math::intInRange($val, 0);
             if ($val) {
-                $cObj = TYPO3::getContentObject();
-                $list = $cObj->getTreeList(
-                    -1 * $val,
-                    $options['recursive'],
-                    0,
-                    !empty($options['dontCheckEnableFields'])
-                );
+                if (TYPO3::isTYPO130OrHigher()) {
+                    $list = TYPO3::getSysPage()->getDescendantPageIdsRecursive(
+                        $val,
+                        $options['recursive'],
+                        0,
+                        [],
+                        !empty($options['dontCheckEnableFields'])
+                    );
+                    $pidList[] = $val;
+                } else {
+                    $cObj = TYPO3::getContentObject();
+                    $list = $cObj->getTreeList(
+                        -1 * $val,
+                        $options['recursive'],
+                        0,
+                        !empty($options['dontCheckEnableFields'])
+                    );
+                }
                 if ($list) {
                     $pidList[] = $list;
                 }

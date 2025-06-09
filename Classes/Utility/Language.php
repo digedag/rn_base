@@ -127,13 +127,9 @@ class Language
 
         /** @var SiteLanguage|null $siteLanguage */
         $siteLanguage = null;
-        if (TYPO3::isTYPO104OrHigher()) {
-            $siteLanguage = $frontEndController->getLanguage();
-        } elseif (TYPO3::isTYPO95OrHigher()) {
-            $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
-            if ($request instanceof ServerRequestInterface) {
-                $siteLanguage = $request->getAttribute('language');
-            }
+        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+        if ($request instanceof ServerRequestInterface) {
+            $siteLanguage = $request->getAttribute('language');
         }
         if ($siteLanguage instanceof SiteLanguage) {
             $language = $siteLanguage->getTypo3Language();

@@ -48,6 +48,7 @@ class ExtbaseControllerWithCacheTagsTraitTest extends BaseTestCase
      */
     protected function setUp(): void
     {
+        $this->markTestSkipped('setup env with testing framework');
         if (!method_exists($this, 'getMockForTrait')) {
             self::markTestSkipped('mocking traits is not supported in this phpunit version.');
         }
@@ -68,12 +69,13 @@ class ExtbaseControllerWithCacheTagsTraitTest extends BaseTestCase
     }
 
     /**
-     * @group functional
+     * @group functional-old
      *
      * @TODO: refactor, requires database connection!
      */
     public function testHandleCacheTags()
     {
+        $this->markTestSkipped('setup env with testing framework');
         $trait = $this->getTrait();
 
         $settings = [
@@ -100,12 +102,13 @@ class ExtbaseControllerWithCacheTagsTraitTest extends BaseTestCase
     }
 
     /**
-     * @group functional
+     * @group functional-old
      *
      * @TODO: refactor, requires database connection!
      */
     public function testHandleCacheTagsIfNotConfigured()
     {
+        $this->markTestSkipped('setup env with testing framework');
         $trait = $this->getTrait();
 
         $this->callInaccessibleMethod($trait, 'handleCacheTags');
@@ -118,12 +121,13 @@ class ExtbaseControllerWithCacheTagsTraitTest extends BaseTestCase
     }
 
     /**
-     * @group functional
+     * @group functional-old
      *
      * @TODO: refactor, requires database connection!
      */
     public function testHandleCacheTagsIfConfiguredForOtherAction()
     {
+        $this->markTestSkipped('setup env with testing framework');
         $trait = $this->getTrait();
 
         $settings = [

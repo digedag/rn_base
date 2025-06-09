@@ -335,13 +335,15 @@ class TYPO3DBAL implements IDatabase, IDatabaseT3
     /**
      * Returns an associative array that corresponds to the fetched row, or FALSE if there are no more rows.
      *
-     * @param \Doctrine\DBAL\Driver\Statement $res
+     * @param \Doctrine\DBAL\Driver\Statement|\Doctrine\DBAL\Result $res
      *
      * @return array associative array of result row
      */
     public function sql_fetch_assoc($res)
     {
-        return $res->fetch(PDO::FETCH_ASSOC);
+        $fetchMethod = TYPO3::isTYPO130OrHigher() ? 'fetchAssociative' : 'fetch';
+
+        return $res->$fetchMethod(PDO::FETCH_ASSOC);
     }
 
     /**

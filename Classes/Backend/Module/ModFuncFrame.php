@@ -56,6 +56,8 @@ class ModFuncFrame implements IModule
     protected $doc;
     protected $tabs;
 
+    private ?ServerRequestInterface $request = null;
+
     /**
      * @var array
      */
@@ -74,8 +76,14 @@ class ModFuncFrame implements IModule
         $this->pageRenderer = $pageRenderer;
     }
 
+    public function getRequest(): ?ServerRequestInterface
+    {
+        return $this->request;
+    }
+
     public function render(IModFunc $modFunc, callable $renderFunc, ServerRequestInterface $request)
     {
+        $this->request = $request;
         $this->modFunc = $modFunc;
         $this->moduleIdentifier = $modFunc->getModuleIdentifier();
         $this->id = (int) ($request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0);
@@ -88,11 +96,11 @@ class ModFuncFrame implements IModule
         }
         $this->getLanguageService()->registerLangFile('EXT:rn_base/Resources/Private/Language/locallang.xlf');
 
-        $this->modFunc->init($this, [
-            // 'form' => $this->getFormTag(),
-            // 'docstyles' => $this->getDocStyles(),
-            // 'template' => $this->getModuleTemplateFilename(),
-        ]);
+        // $this->modFunc->init($this, [
+        //     // 'form' => $this->getFormTag(),
+        //     // 'docstyles' => $this->getDocStyles(),
+        //     // 'template' => $this->getModuleTemplateFilename(),
+        // ]);
         // Rahmen rendern
         $this->moduleTemplate = $this->createModuleTemplate($request);
         // Die Variable muss gesetzt sein.
@@ -186,7 +194,6 @@ class ModFuncFrame implements IModule
      */
     public function getLanguageService()
     {
-        //        return $GLOBALS['LANG'];
         return $this->languageTool;
     }
 
@@ -211,7 +218,7 @@ class ModFuncFrame implements IModule
     public function getConfigurations()
     {
         if (null === $this->configurations) {
-            Misc::prepareTSFE(['pid' => $this->id]); // Ist bei Aufruf aus BE notwendig!
+            Misc::prepareTSFE(['pid' => $this->getPid()]); // Ist bei Aufruf aus BE notwendig!
             $cObj = TYPO3::getContentObject();
 
             $pageTSconfigFull = BackendUtility::getPagesTSconfig($this->getPid());

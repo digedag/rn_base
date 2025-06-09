@@ -6,13 +6,14 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Sys25\RnBase\Backend\Form\ToolBox;
 use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Testing\BaseTestCase;
+use Sys25\RnBase\Utility\LanguageTool;
 use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
 
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2016-2021 Rene Nitzsche (rene@system25.de)
+*  (c) 2016-2025 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -36,17 +37,12 @@ class TablesTest extends BaseTestCase
 {
     use ProphecyTrait;
 
-    private function getLanguageClass()
-    {
-        return TYPO3::isTYPO95OrHigher() ? 'TYPO3\CMS\Core\Localization\LanguageService' : 'TYPO3\CMS\Lang\LanguageService';
-    }
-
     /**
      * @group unit
      */
     public function testPrepareTable()
     {
-        $lang = $this->prophesize($this->getLanguageClass());
+        $lang = $this->prophesize(LanguageTool::class);
         $lang->getLL('label_uid')->willReturn('LABEL_UID');
         $lang->getLL('Name')->willReturn('NAME');
         $lang->getLL('Other')->willReturn('Other');

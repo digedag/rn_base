@@ -9,6 +9,7 @@ use ReflectionObject;
 use ReflectionProperty;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Domain\Model\BaseModel;
+use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Utility\Spyc;
 use Sys25\RnBase\Utility\TYPO3;
 use Sys25\RnBase\Utility\Typo3Classes;
@@ -131,8 +132,11 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
         $proxyTarget = null
     ) {
         if (method_exists($this, 'createMock')) {
-            $mockBuilder = $this->getMockBuilder($originalClassName)
-                ->setMethods($methods)
+            $mockBuilder = $this->getMockBuilder($originalClassName);
+
+            $defineMethods = method_exists($mockBuilder, 'onlyMethods') ? 'onlyMethods' : 'setMethods';
+
+            $mockBuilder = $mockBuilder->$defineMethods($methods)
                 ->setConstructorArgs($arguments)
                 ->setMockClassName($mockClassName);
             if (!$callOriginalConstructor) {
@@ -195,31 +199,33 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
             throw new Exception('The model "'.$class.'" could not be loaded.');
         }
 
+        // Der Name der Variablen ergibt keinen Sinn.
         $isNewModel = (
             is_subclass_of($class, BaseModel::class)
             || BaseModel::class == $class
         );
+        if (DataModel::class !== $class) {
+            $methods = array_merge(
+                [
+                    $isNewModel ? 'loadRecord' : 'reset',
+                ],
+                $methods
+            );
+        }
 
         // create the mock
         $model = $this->getMock(
             $class,
-            array_merge(
-                [
-                    $isNewModel ? 'loadRecord' : 'reset',
-                    'getColumnWrapped',
-                ],
-                $methods
-            ),
+            $methods,
             [$record]
         );
 
-        $model
-            ->expects(self::any())
-            ->method($isNewModel ? 'loadRecord' : 'reset')
-            ->will(self::returnSelf());
-        $model
-            ->expects(self::never())
-            ->method('getColumnWrapped');
+        if (DataModel::class !== $class) {
+            $model
+                ->expects(self::any())
+                ->method($isNewModel ? 'loadRecord' : 'reset')
+                ->willReturnSelf();
+        }
 
         return $model;
     }
@@ -277,7 +283,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
                 $model
                     ->expects(self::any())
                     ->method($getter)
-                    ->will($this->returnValue($this->loadYaml($data[$getter], false)))
+                    ->willReturn($this->loadYaml($data[$getter], false))
                 ;
             }
 
@@ -614,5 +620,30 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
         );
         $property->setAccessible(true);
         $property->setValue(null, []);
+    }
+
+    /**
+     * Compat-Methode für PHPUnit < 9.3.
+     */
+    public static function assertRegExp($pattern, $subject, string $message = ''): void
+    {
+        if (!method_exists(\PHPUnit\Framework\Assert::class, 'assertMatchesRegularExpression')) {
+            // Verwende die veraltete Methode für PHPUnit < 9.3
+            \PHPUnit\Framework\Assert::assertRegExp($pattern, $subject, $message);
+        } else {
+            // Neue Methode für PHPUnit >= 9.3
+            \PHPUnit\Framework\Assert::assertMatchesRegularExpression($pattern, $subject, $message);
+        }
+    }
+
+    public static function assertNotRegExp($pattern, $subject, string $message = ''): void
+    {
+        if (!method_exists(\PHPUnit\Framework\Assert::class, 'assertDoesNotMatchRegularExpression')) {
+            // Verwende die veraltete Methode für PHPUnit < 9.3
+            \PHPUnit\Framework\Assert::assertNotRegExp($pattern, $subject, $message);
+        } else {
+            // Neue Methode für PHPUnit >= 9.3
+            \PHPUnit\Framework\Assert::assertDoesNotMatchRegularExpression($pattern, $subject, $message);
+        }
     }
 }

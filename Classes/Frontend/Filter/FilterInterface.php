@@ -2,6 +2,8 @@
 
 namespace Sys25\RnBase\Frontend\Filter;
 
+use Sys25\RnBase\Frontend\Request\RequestInterface;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -33,6 +35,8 @@ interface FilterInterface
      * @param array $options
      */
     public function init(&$fields, &$options);
+
+    public function setRequest(RequestInterface $request, $confId);
 
     /**
      * Whether or not the result list should be displayed.

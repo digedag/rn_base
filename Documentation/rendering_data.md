@@ -22,7 +22,7 @@ Für die Erstellung der Template-Marker sind sogenannte Markerklassen verantwort
      * @param string $marker Name des Markers
      * @return String das geparste Template
      */
-    public function parseTemplate($template, &$item, &$formatter, $confId, $marker) {
+    public function parseTemplate($template, $item, $formatter, $confId, $marker) {
         // Es wird das MarkerArray mit den Daten des Records gefüllt.
         $ignore = self::findUnusedCols($item->getRecord(), $template, $marker);
         $markerArray = $formatter->getItemMarkerArrayWrapped($item->getRecord(), $confId , $ignore, $marker.'_', $item->getColumnNames());

@@ -2,16 +2,19 @@
 
 namespace Sys25\RnBase\Search;
 
+use Doctrine\DBAL\ParameterType;
 use PDO;
 use Sys25\RnBase\Database\Connection;
+use Sys25\RnBase\Database\QueryBuilderFacade;
 use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
+use Sys25\RnBase\Utility\TYPO3;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2008-2023 Rene Nitzsche (rene@system25.de)
+ *  (c) 2008-2025 Rene Nitzsche (rene@system25.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -192,13 +195,13 @@ class ConditionBuilder
             case self::OP_IN_INT:
                 $value = Strings::intExplode(',', $value);
                 $where = sprintf('%s.%s %s (%s)', $tableAlias, strtolower($col), $operator,
-                    $qb->createNamedParameter($value, \Doctrine\DBAL\Connection::PARAM_INT_ARRAY));
+                    $qb->createNamedParameter($value, QueryBuilderFacade::getParamTypeIntArray()));
                 break;
             case self::OP_NOTIN:
             case self::OP_IN:
                 $value = Strings::trimExplode(',', $value);
                 $where = sprintf('%s.%s %s (%s)', $tableAlias, strtolower($col), $operator,
-                    $qb->createNamedParameter($value, \Doctrine\DBAL\Connection::PARAM_STR_ARRAY));
+                    $qb->createNamedParameter($value, QueryBuilderFacade::getParamTypeStringArray()));
                 break;
             case self::OP_NOTIN_SQL:
             case self::OP_IN_SQL:
@@ -207,32 +210,32 @@ class ConditionBuilder
                 break;
             case self::OP_EQ:
                 $where = sprintf('%s.%s = %s', $tableAlias, strtolower($col),
-                    $qb->createNamedParameter($value, PDO::PARAM_STR));
+                    $qb->createNamedParameter($value, TYPO3::isTYPO121OrHigher() ? ParameterType::STRING : PDO::PARAM_STR));
 
                 break;
             case self::OP_NOTEQ:
                 $where = sprintf('%s.%s != %s', $tableAlias, strtolower($col),
-                    $qb->createNamedParameter($value, PDO::PARAM_STR));
+                    $qb->createNamedParameter($value, TYPO3::isTYPO121OrHigher() ? ParameterType::STRING : PDO::PARAM_STR));
 
                 break;
             case self::OP_LT:
                 $where = sprintf('%s.%s < %s', $tableAlias, strtolower($col),
-                    $qb->createNamedParameter($value, PDO::PARAM_STR));
+                    $qb->createNamedParameter($value, TYPO3::isTYPO121OrHigher() ? ParameterType::STRING : PDO::PARAM_STR));
 
                 break;
             case self::OP_LTEQ:
                 $where = sprintf('%s.%s <= %s', $tableAlias, strtolower($col),
-                    $qb->createNamedParameter($value, PDO::PARAM_STR));
+                    $qb->createNamedParameter($value, TYPO3::isTYPO121OrHigher() ? ParameterType::STRING : PDO::PARAM_STR));
 
                 break;
             case self::OP_GT:
                 $where = sprintf('%s.%s > %s', $tableAlias, strtolower($col),
-                    $qb->createNamedParameter($value, PDO::PARAM_STR));
+                    $qb->createNamedParameter($value, TYPO3::isTYPO121OrHigher() ? ParameterType::STRING : PDO::PARAM_STR));
 
                 break;
             case self::OP_GTEQ:
                 $where = sprintf('%s.%s >= %s', $tableAlias, strtolower($col),
-                    $qb->createNamedParameter($value, PDO::PARAM_STR));
+                    $qb->createNamedParameter($value, TYPO3::isTYPO121OrHigher() ? ParameterType::STRING : PDO::PARAM_STR));
 
                 break;
             case self::OP_EQ_INT:
@@ -242,12 +245,12 @@ class ConditionBuilder
             case self::OP_GTEQ_INT:
             case self::OP_LTEQ_INT:
                 $where = sprintf('%s.%s %s %s', $tableAlias, strtolower($col), $operator,
-                    $qb->createNamedParameter($value, PDO::PARAM_STR));
+                    $qb->createNamedParameter($value, TYPO3::isTYPO121OrHigher() ? ParameterType::INTEGER : PDO::PARAM_STR));
 
                 break;
             case self::OP_EQ_NOCASE:
                 $where = sprintf('lower(%s.%s) = lower(%s)', $tableAlias, strtolower($col),
-                    $qb->createNamedParameter($value, PDO::PARAM_STR));
+                    $qb->createNamedParameter($value, TYPO3::isTYPO121OrHigher() ? ParameterType::STRING : PDO::PARAM_STR));
 
                 break;
             case self::OP_INSET_INT:

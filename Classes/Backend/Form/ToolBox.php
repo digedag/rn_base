@@ -10,6 +10,7 @@ use Sys25\RnBase\Backend\Utility\BackendUtility;
 use Sys25\RnBase\Backend\Utility\Icons;
 use Sys25\RnBase\Backend\Utility\TCA;
 use Sys25\RnBase\Frontend\Request\Parameters;
+use Sys25\RnBase\Utility\LanguageTool;
 use Sys25\RnBase\Utility\Link;
 use Sys25\RnBase\Utility\Math;
 use Sys25\RnBase\Utility\Misc;
@@ -17,6 +18,7 @@ use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\T3General;
 use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
+use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 
@@ -78,6 +80,7 @@ class ToolBox
 
     public const OPTION_PARAMS = 'params';
     public const OPTION_CSS_CLASSES = 'class';
+    public const OPTION_CSS_STYLES = 'styles';
     public const OPTION_DATA_ATTR = 'data-attr';
 
     /**
@@ -107,7 +110,7 @@ class ToolBox
 
         // TCEform für das Formular erstellen
         $this->form = tx_rnbase::makeInstance(FormBuilder::class);
-        $this->form->initDefaultBEmode();
+        $this->form->setModule($module);
     }
 
     /**
@@ -171,7 +174,7 @@ class ToolBox
         if ($options['sprite'] ?? false) {
             $label = Icons::getSpriteIcon($options['sprite']);
         }
-        $jsCode = BackendUtility::viewOnClick($pid, '', null, '', '', $urlParams);
+
         $title = '';
         if ($options['hover'] ?? false) {
             $title = ' title="'.$options['hover'].'" ';
@@ -179,6 +182,16 @@ class ToolBox
 
         $class = array_key_exists('class', $options) ? htmlspecialchars($options['class']) : self::CSS_CLASS_BTN;
         $class = ' class="'.$class.'"';
+
+        if (TYPO3::isTYPO121OrHigher()) {
+            $uri = (string) PreviewUriBuilder::create($pid)
+                ->withAdditionalQueryParameters($urlParams)
+                ->buildUri();
+
+            return '<a href="'.$uri.'" '.$class.' target="_blank" '.$title.'>'.$label.'</a>';
+        }
+
+        $jsCode = BackendUtility::viewOnClick($pid, '', null, '', '', $urlParams);
 
         return '<a href="#" '.$class.' onclick="'.htmlspecialchars($jsCode).'" '.$title.'>'.$label.'</a>';
     }
@@ -734,9 +747,11 @@ class ToolBox
     {
         $options = is_array($options) ? $options : [];
         $onChangeStr = ($options['onchange'] ?? false) ? ' onchange=" '.$options['onchange'].'" ' : '';
+        $classes = $options[self::OPTION_CSS_CLASSES] ?? 'formField1';
+        $styles = $options[self::OPTION_CSS_STYLES] ?? 'width:288px;';
 
-        return '<textarea name="'.$name.'" style="width:288px;" class="formField1"'.$onChangeStr.
-            ' cols="'.$cols.'" rows="'.$rows.'" wrap="virtual">'.$value.'</textarea>';
+        return sprintf('<textarea name="%s" style="%s" class="%s"'.$onChangeStr.
+            ' cols="%d" rows="%d" wrap="virtual">%s</textarea>', $name, $styles, $classes, $cols, $rows, $value);
     }
 
     /**
@@ -760,7 +775,10 @@ class ToolBox
     public function createIntInput($name, $value, $width, $maxlength = 10)
     {
         /* @var $inputField InputText */
-        $inputField = tx_rnbase::makeInstance(InputText::class, $this->getTCEForm()->getNodeFactory(), []);
+        $inputField = TYPO3::isTYPO121OrHigher() ?
+             tx_rnbase::makeInstance(InputText::class)
+             :
+             tx_rnbase::makeInstance(InputText::class, $this->getTCEForm()->getNodeFactory(), []);
         $out = $inputField->renderHtml($name, $value, [
             'width' => $width,
             'maxlength' => $maxlength,
@@ -780,36 +798,43 @@ class ToolBox
             $value += date('Z', $value);
         }
         $this->initializeJavaScriptFormEngine();
-        $dateElementClass = TYPO3::isTYPO121OrHigher() ?
-            \TYPO3\CMS\Backend\Form\Element\DatetimeElement::class :
-            \TYPO3\CMS\Backend\Form\Element\InputDateTimeElement::class;
 
         // [itemFormElName] => data[tx_cfcleague_games][4][status]
         // [itemFormElID] => data_tx_cfcleague_games_4_status
-
-        $renderedElement = tx_rnbase::makeInstance(
-            $dateElementClass,
-            $this->getTCEForm()->getNodeFactory(),
-            [
-                'fieldName' => $name,
-                'tableName' => '',
-                'databaseRow' => ['uid' => 0],
-                'processedTca' => ['columns' => [$name => ['config' => ['type' => 'text']]]],
-                'parameterArray' => [
-                    'itemFormElValue' => $value,
-                    'itemFormElName' => $name,
-                    'itemFormElID' => $name,
-                    'fieldConf' => [
-                        'label' => $options[self::OPTION_LABEL] ?? '',
-                        'config' => [
-                            'width' => 20,
-                            'maxlength' => 20,
-                            'eval' => 'datetime',
-                        ],
+        $options = [
+            'fieldName' => $name,
+            'tableName' => '',
+            'databaseRow' => ['uid' => 0],
+            'processedTca' => ['columns' => [$name => ['config' => ['type' => 'text']]]],
+            'parameterArray' => [
+                'itemFormElValue' => $value,
+                'itemFormElName' => $name,
+                'itemFormElID' => $name,
+                'fieldConf' => [
+                    'label' => $options[self::OPTION_LABEL] ?? '',
+                    'config' => [
+                        'width' => 20,
+                        'maxlength' => 20,
+                        'eval' => 'datetime',
                     ],
                 ],
-            ]
-        )->render();
+            ],
+        ];
+
+        if (!TYPO3::isTYPO130OrHigher()) {
+            $dateElementClass = TYPO3::isTYPO121OrHigher() ?
+            \TYPO3\CMS\Backend\Form\Element\DatetimeElement::class :
+            \TYPO3\CMS\Backend\Form\Element\InputDateTimeElement::class;
+
+            $renderedElement = tx_rnbase::makeInstance(
+                $dateElementClass,
+                $this->getTCEForm()->getNodeFactory(),
+                $options
+            )->render();
+        } else {
+            $options['renderType'] = 'datetime';
+            $renderedElement = $this->getTCEForm()->getNodeFactory()->create($options)->render();
+        }
 
         if ($renderedElement['requireJsModules'] ?? null) {
             $pageRenderer = $this->getDoc()->getPageRenderer();
@@ -871,7 +896,8 @@ class ToolBox
      */
     public function createSelectSingle($name, $value, $table, $column, $options = 0)
     {
-        global $TCA, $LANG;
+        global $TCA;
+        $lang = $this->getLanguageService();
         $options = is_array($options) ? $options : [];
 
         $out = '<select  name="'.$name.'" class="select" ';
@@ -891,7 +917,7 @@ class ToolBox
             if ($value == $tcaVal) {
                 $sel = 'selected="selected"';
             }
-            $out .= '<option value="'.$tcaVal.'" '.$sel.'>'.$LANG->sL($tcaLabel).'</option>';
+            $out .= '<option value="'.$tcaVal.'" '.$sel.'>'.$lang->sL($tcaLabel).'</option>';
         }
         $out .= '
             </select>
@@ -1147,7 +1173,7 @@ class ToolBox
         ];
         $SETTINGS = BackendUtility::getModuleData(
             $MENU,
-            T3General::_GP('SET'),
+            Parameters::_GP('SET'),
             $modName
         );
         $menuItems = [];
@@ -1201,14 +1227,16 @@ class ToolBox
      *
      * @return array with keys 'menu' and 'value'
      */
-    public static function showMenu($pid, $name, $modName, $entries, $script = '', $addparams = '')
+    public function showMenu($pid, $name, $modName, $entries, $script = '', $addparams = '')
     {
         $MENU = [
             $name => $entries,
         ];
+        $reqData = Parameters::getPostOrGetParameter('SET');
+        $req2 = $this->getModule()->getRequest()->getQueryParams()['SET'] ?? [];
         $SETTINGS = BackendUtility::getModuleData(
             $MENU,
-            Parameters::getPostOrGetParameter('SET'),
+            $reqData,
             $modName
         );
 
@@ -1348,7 +1376,7 @@ class ToolBox
     }
 
     /**
-     * @return LanguageService|\TYPO3\CMS\Lang\LanguageService
+     * @return LanguageTool
      */
     public function getLanguageService()
     {

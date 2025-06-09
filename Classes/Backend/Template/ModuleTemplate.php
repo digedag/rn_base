@@ -85,15 +85,15 @@ class ModuleTemplate
     {
         /** @var ModuleTemplateFactory $factory */
         $factory = tx_rnbase::makeInstance(ModuleTemplateFactory::class);
-        $view = $factory->create($this->options['request']);
+        $moduleTemplate = $factory->create($this->options['request']);
         $content = '';
         //        $moduleTemplate->getPageRenderer()->loadJquery();
-        $view->getDocHeaderComponent()->setMetaInformation($parts->getPageInfo());
-        $this->registerMenu($view, $parts);
+        $moduleTemplate->getDocHeaderComponent()->setMetaInformation($parts->getPageInfo());
+        $this->registerMenu($moduleTemplate, $parts);
 
         $content .= $this->options['form'] ?? $this->module->buildFormTag();
 
-        $view->makeDocHeaderModuleMenu(['id' => $this->module->getPid()]);
+        $moduleTemplate->makeDocHeaderModuleMenu(['id' => $this->module->getPid()]);
 
         if (is_string($parts->getFuncMenu())) {
             // Fallback für Module, die das FuncMenu selbst als String generieren
@@ -106,7 +106,7 @@ class ModuleTemplate
         $content .= '</form>';
 
         // Es ist sinnvoll, die Buttons nach der Generierung des Content zu generieren
-        $this->generateButtons($view, $parts);
+        $this->generateButtons($moduleTemplate, $parts);
 
         // Workaround: jumpUrl wieder einfügen
         // @TODO Weg finden dass ohne das DocumentTemplate zu machen
@@ -115,9 +115,12 @@ class ModuleTemplate
         // @TODO haupttemplate eines BE moduls enthält evtl. JS/CSS etc.
         // das wurde bisher über das DocumentTemplate eingefügt, was jetzt
         // nicht mehr geht. Dafür muss ein Weg gefunden werden.
-        $view->setContent($content);
+        //        $moduleTemplate->setContent($content);
+        $moduleTemplate->assign('content', $content);
 
-        return $view->renderContent();
+        return $moduleTemplate->render('ModuleTemplate/Module.html');
+
+        return $moduleTemplate->renderContent();
     }
 
     /**

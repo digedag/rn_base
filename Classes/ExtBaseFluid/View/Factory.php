@@ -65,7 +65,14 @@ class Factory
 
         $view = tx_rnbase::makeInstance(Standalone::class);
         $configurationManager = GeneralUtility::getContainer()->get(ConfigurationManager::class);
-        $configurationManager->setContentObject($configurations->getCObj());
+        if (TYPO3::isTYPO130OrHigher()) {
+            $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute(
+                'currentContentObject',
+                $configurations->getCObj()
+            );
+        } else {
+            $configurationManager->setContentObject($configurations->getCObj());
+        }
         $configurationManager->setConfiguration($frameworkSettings);
         $view->setConfigurations($configurations);
         if (TYPO3::isTYPO121OrHigher()) {

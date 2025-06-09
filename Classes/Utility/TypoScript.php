@@ -3,11 +3,12 @@
 namespace Sys25\RnBase\Utility;
 
 use tx_rnbase;
+use TYPO3\CMS\Core\TypoScript\TypoScriptStringFactory;
 
 /***************************************************************
  * Copyright notice
  *
- *  (c) 2013-2021 René Nitzsche <rene@system25.de>
+ *  (c) 2013-2025 René Nitzsche <rene@system25.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -36,34 +37,50 @@ use tx_rnbase;
  */
 class TypoScript
 {
-    /**
-     * Creates an instance of the ts parser.
-     *
-     * @return \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
-     */
-    private static function getTsParser()
+    /** @var TypoScriptStringFactory|\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
+    private $tsParser;
+
+    public function __construct()
     {
-        return tx_rnbase::makeInstance(
-            Typo3Classes::getTypoScriptParserClass()
+    }
+
+    private function getParser()
+    {
+        if (isset($this->tsParser)) {
+            return $this->tsParser;
+        }
+        $this->tsParser = tx_rnbase::makeInstance(
+            TYPO3::isTYPO121OrHigher() ? TypoScriptStringFactory::class : Typo3Classes::getTypoScriptParserClass()
         );
+
+        return $this->tsParser;
     }
 
     /**
-     * Parse the configuration of the given models.
+     * Parse typoscript string.
      *
      * @param string $typoScript
+     * @param string $cacheKey used to cache parsed result
+     * @param array $existingTsConfig optional existing TypoScript configuration to merge with
      *
      * @return array
      */
-    public static function parseTsConfig($typoScript)
+    public function parseTsConfig($typoScript, string $cacheKey, array $existingTsConfig = [])
     {
-        $parser = self::getTsParser();
+        $tsParser = $this->getParser();
+        if (TYPO3::isTYPO121OrHigher()) {
+            $parsedSetup = $tsParser->parseFromStringWithIncludes($cacheKey, $typoScript);
+            $parsedTsArray = $parsedSetup->toArray();
 
-        $parser->parse(
-            $parser->checkIncludeLines($typoScript)
-        );
+            $currentSetup = $existingTsConfig;
+            $parsedTsArray = Arrays::mergeRecursiveWithOverrule($currentSetup, $parsedTsArray);
+        } else {
+            $tsParser->setup = $existingTsConfig;
+            $tsParser->parse($tsParser->checkIncludeLines($typoScript));
+            $parsedTsArray = $tsParser->setup;
+        }
 
-        return $parser->setup;
+        return $parsedTsArray;
     }
 
     /**

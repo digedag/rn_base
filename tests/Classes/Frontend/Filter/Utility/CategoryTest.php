@@ -124,7 +124,7 @@ class CategoryTest extends BaseTestCase
     /**
      * @return string[][]|number[][]|string[][][]
      */
-    public function dataProviderHandleSysCategoryFilter()
+    public static function dataProviderHandleSysCategoryFilter()
     {
         return [
             [

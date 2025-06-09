@@ -41,7 +41,7 @@ abstract class BaseModFunc implements IModFunc
     /* @var $mod IModule */
     protected $mod;
 
-    public function init(IModule $module, $conf)
+    private function init(IModule $module, $conf)
     {
         $this->mod = $module;
     }
@@ -64,7 +64,9 @@ abstract class BaseModFunc implements IModFunc
     public function main(?ServerRequestInterface $request = null)
     {
         if (TYPO3::isTYPO121OrHigher()) {
+            /** @var IModule $modFuncFrame */
             $modFuncFrame = tx_rnbase::makeInstance(ModFuncFrame::class);
+            $this->init($modFuncFrame, []);
 
             return $modFuncFrame->render($this, function () { return $this->renderOutput(); }, $request);
         }

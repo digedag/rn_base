@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowser;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Sys25\RnBase\ExtBaseFluid\ViewHelper\PageBrowserViewHelper;
 use Sys25\RnBase\Utility\Arrays;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -163,6 +164,10 @@ class PageBaseViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBa
 
         if ($pageUid) {
             $uriBuilder->setTargetPageUid($pageUid);
+        }
+
+        if (is_callable([$uriBuilder, 'setRequest']) && $this->renderingContext->hasAttribute(ServerRequestInterface::class)) {
+            $uriBuilder->setRequest($this->renderingContext->getAttribute(ServerRequestInterface::class));
         }
 
         $uri = $uriBuilder->build();

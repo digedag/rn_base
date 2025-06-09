@@ -8,7 +8,7 @@ use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006-2021 Rene Nitzsche
+ *  (c) 2006-2025 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -194,6 +194,8 @@ class Typo3Classes
 
     /**
      * @return class-string<\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser>
+     *
+     * @deprecated TODO: implement Wrapper-Service for Parser
      */
     public static function getTypoScriptParserClass()
     {

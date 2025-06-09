@@ -9,6 +9,7 @@ use Sys25\RnBase\Domain\Model\BaseModel;
 use Sys25\RnBase\Domain\Model\DataInterface;
 use Sys25\RnBase\Domain\Model\DataModel;
 use Sys25\RnBase\Domain\Model\RecordInterface;
+use Sys25\RnBase\Utility\LanguageTool;
 use Traversable;
 use tx_rnbase;
 
@@ -36,11 +37,16 @@ use tx_rnbase;
  */
 class Tables
 {
+    /**
+     * LanguageTool.
+     *
+     * @var mixed
+     */
     private $lang;
 
-    public function __construct($lang = null)
+    public function __construct(?LanguageTool $lang = null)
     {
-        $this->lang = $lang ?: $GLOBALS['LANG'];
+        $this->lang = $lang ?: tx_rnbase::makeInstance(LanguageTool::class);
     }
 
     /**

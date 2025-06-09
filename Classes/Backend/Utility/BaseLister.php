@@ -7,7 +7,7 @@ use Sys25\RnBase\Backend\Decorator\BaseDecorator;
 use Sys25\RnBase\Backend\Decorator\InterfaceDecorator;
 use Sys25\RnBase\Backend\Form\ToolBox;
 use Sys25\RnBase\Backend\Module\IModule;
-use Sys25\RnBase\Utility\T3General;
+use Sys25\RnBase\Frontend\Request\Parameters;
 use Traversable;
 use tx_rnbase;
 
@@ -275,8 +275,8 @@ abstract class BaseLister
      */
     protected function prepareSorting(&$options)
     {
-        $sortField = \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('sortField');
-        $sortRev = \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('sortRev');
+        $sortField = Parameters::getPostOrGetParameter('sortField');
+        $sortRev = Parameters::getPostOrGetParameter('sortRev');
 
         if (!empty($sortField)) {
             $cols = $this->getDecoratorColumns(null);
@@ -515,7 +515,7 @@ abstract class BaseLister
     protected function showFreeTextSearchForm(&$marker, $key, array $options = [])
     {
         $searchstring = ModuleUtility::getModuleValue($key, $this->getModule(), [
-            'changed' => T3General::_GP('SET'),
+            'changed' => Parameters::_GP('SET'),
         ]);
 
         // Erst das Suchfeld, danach der Button.
@@ -532,7 +532,7 @@ abstract class BaseLister
             1 => $GLOBALS['LANG']->getLL('label_select_show_hidden'),
         ];
         $selectedItem = ModuleUtility::getModuleValue('showhidden', $this->getModule(), [
-            'changed' => T3General::_GP('SET'),
+            'changed' => Parameters::_GP('SET'),
         ]);
 
         $options['label'] = $options['label'] ? $options['label'] : $GLOBALS['LANG']->getLL('label_hidden');

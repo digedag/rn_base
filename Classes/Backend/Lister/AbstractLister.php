@@ -186,7 +186,7 @@ abstract class AbstractLister
                 tx_rnbase::makeInstance(
                     BEPager::class,
                     $this->getListerId().'Pager',
-                    $this->getModule()->getName(),
+                    $this->getModule(),
                     $this->getOptions()->getPid()
                 )
             );

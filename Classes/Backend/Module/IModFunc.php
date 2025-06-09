@@ -37,7 +37,7 @@ interface IModFunc
 
     public const ICON_FATAL = 3;
 
-    public function init(IModule $module, $conf);
+    //    public function init(IModule $module, $conf);
 
     /**
      * Module identifier for ts_config.

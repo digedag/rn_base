@@ -56,7 +56,7 @@ class FromTest extends BaseTestCase
      *
      * @return array
      */
-    public function getGetFromTestData()
+    public static function getGetFromTestData()
     {
         return [
             [

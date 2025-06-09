@@ -88,6 +88,10 @@ class Strings
             return '' !== (string) $needle && 0 === strncmp($haystack, $needle, strlen($needle));
         }
 
+        if (is_null($haystack)) {
+            $haystack = '';
+        }
+
         return str_starts_with($haystack, $needle);
     }
 

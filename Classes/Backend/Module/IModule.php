@@ -2,9 +2,11 @@
 
 namespace Sys25\RnBase\Backend\Module;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Sys25\RnBase\Backend\Form\ToolBox;
 use Sys25\RnBase\Backend\Template\Override\DocumentTemplate;
 use Sys25\RnBase\Configuration\ConfigurationInterface;
+use Sys25\RnBase\Utility\LanguageTool;
 
 /***************************************************************
 *  Copyright notice
@@ -35,6 +37,8 @@ interface IModule
      * @return DocumentTemplate
      */
     public function getDoc();
+
+    public function getRequest(): ?ServerRequestInterface;
 
     /**
      * Returns the form tool.
@@ -76,6 +80,8 @@ interface IModule
      */
     public function getPid();
 
+    public function render(IModFunc $modFunc, callable $renderFunc, ServerRequestInterface $request);
+
     /**
      * Submenu String for the marker ###TABS###.
      *
@@ -105,7 +111,7 @@ interface IModule
     public function addMessage($message, $title = '', $severity = 0, $storeInSession = false);
 
     /**
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
+     * @return LanguageTool
      */
     public function getLanguageService();
 }
