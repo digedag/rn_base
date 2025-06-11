@@ -3,6 +3,9 @@
 Changelog
 ---------
 
+v1.19.4 (11.06.2025)
+* Fix github actions and TER release
+
 v1.19.3 (11.06.2025)
  * Migrate label translation
  * bugfixing
