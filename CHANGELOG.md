@@ -5,6 +5,7 @@ Changelog
 
 v1.19.3 (??.0?.2025)
  * Migrate label translation
+ * bugfixing
 
 v1.19.2 (31.01.2025)
 * Fix cache hash utility. Extensions that added cache hash excluded parameters
