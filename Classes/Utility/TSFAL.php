@@ -567,7 +567,9 @@ class TSFAL
         $data['tablenames'] = $tableName;
         $data['fieldname'] = $fieldName;
         $data['sorting_foreign'] = $sorting;
-        $data['table_local'] = 'sys_file';
+        if (!TYPO3::isTYPO121OrHigher()) {
+            $data['table_local'] = 'sys_file';
+        }
 
         $id = Connection::getInstance()->doInsert('sys_file_reference', $data);
 
