@@ -90,7 +90,7 @@ class PageBrowserFilter
             // PageBrowser initialisieren
             $pbId = $cfg['pbid'] ?? 'pb';
             /**
-             * @var $pageBrowser PageBrowser
+             * @var PageBrowser $pageBrowser
              */
             $pageBrowser = tx_rnbase::makeInstance(PageBrowser::class, $pbId);
             $pageSize = $configurations->getInt($confid.'limit');
