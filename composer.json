@@ -105,7 +105,7 @@
 		],
 		"test:phpcs": [
 			"[ -e .Build/bin/php-cs-fixer ] || composer update",
-			"export PHP_CS_FIXER_IGNORE_ENV=1 && .Build/bin/php-cs-fixer fix -v --dry-run --diff"
+			".Build/bin/php-cs-fixer fix -v --dry-run --diff"
 		],
 		"test:phpstan": ".Build/bin/phpstan --no-progress",
 		"test:phpunit": [
@@ -129,7 +129,7 @@
 		],
 		"fix:phpcs": [
 			"[ -e .Build/bin/php-cs-fixer ] || composer update",
-			"export PHP_CS_FIXER_IGNORE_ENV=1 && .Build/bin/php-cs-fixer fix -v"
+			".Build/bin/php-cs-fixer fix -v"
 		],
 		"fix": [
 			"@fix:phpcs"
