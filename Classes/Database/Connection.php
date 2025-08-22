@@ -89,7 +89,7 @@ class Connection implements SingletonInterface
      * - 'limit' - limits the number of result rows
      * - 'wrapperclass' - A wrapper for each result rows
      * - 'callback' - A callback function that is called for each row (deprecated)
-     * - 'collection' - A collection class to use for the result set. Default is \Sys25\RnBase\Domain\Collection\BaseCollection.
+     * - 'collection' - A collection class to use for the result set. Default is \Sys25\RnBase\Domain\Collection\BaseCollection. Preferred is 'iterator' for memory-saving queries.
      * - 'pidlist' - A list of page-IDs to search for records
      * - 'recursive' - the recursive level to search for records in pages
      * - 'enablefieldsoff' - deactivate enableFields check
