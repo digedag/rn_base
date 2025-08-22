@@ -28,6 +28,8 @@ use Exception;
 
 /**
  * Provide data for ListBuilder.
+ *
+ * @deprecated use query option 'collection' => 'iterator' instead
  */
 class ListProvider implements IListProvider
 {
