@@ -26,6 +26,8 @@ namespace Sys25\RnBase\Frontend\Marker;
 
 /**
  * Provide data for ListBuilder.
+ *
+ * @deprecated use query option 'collection' => 'iterator' instead
  */
 interface IListProvider
 {

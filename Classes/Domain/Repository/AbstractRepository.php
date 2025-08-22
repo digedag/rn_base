@@ -3,6 +3,7 @@
 namespace Sys25\RnBase\Domain\Repository;
 
 use Exception;
+use Iterator;
 use Sys25\RnBase\Backend\Utility\TCA;
 use Sys25\RnBase\Domain\Collection\BaseCollection;
 use Sys25\RnBase\Domain\Model\DomainModelInterface as DomainInterface;
@@ -148,6 +149,10 @@ abstract class AbstractRepository implements SearchInterface, SingletonInterface
         $this->prepareFieldsAndOptions($fields, $options);
 
         $items = $this->getSearcher()->search($fields, $options);
+
+        if ($items instanceof Iterator) {
+            return $items;
+        }
 
         return $this->prepareItems($items, $options);
     }

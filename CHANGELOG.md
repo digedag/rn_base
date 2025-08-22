@@ -5,6 +5,7 @@ Changelog
 
 v1.20.0 ()
 * Update for TYPO3 13.4 LTS
+* New query option 'collection' of type 'iterator' for memory-saving database queries
 * BC: showMenu() in ToolBox is not static anymore
 * BC: BEPager requires IModule in constructor
 * BC: Utility\TypoScript::parseTsConfig() is not static anymore.

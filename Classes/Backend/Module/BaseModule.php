@@ -185,7 +185,7 @@ abstract class BaseModule extends BaseScriptClass implements IModule
 
         $parts->setContent($this->moduleContent());
         $parts->setButtons($this->getButtons());
-        $parts->setTitle($this->getFormTool()->getLL('title'));
+        $parts->setTitle($this->getFormTool()->getLanguageService()->getLL('title'));
         $parts->setFuncMenu($this->getFuncMenu());
         // if we got no array the user got no permissions for the
         // selected page or no page is selected

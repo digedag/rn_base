@@ -3,6 +3,7 @@
 namespace Sys25\RnBase\Frontend\Marker;
 
 use ArrayObject;
+use Iterator;
 use Sys25\RnBase\Utility\Debug;
 use Sys25\RnBase\Utility\Strings;
 use Traversable;
@@ -84,6 +85,9 @@ class ListBuilder
         return $this->visitors;
     }
 
+    /**
+     * @deprecated use query option 'collection' => 'iterator' instead
+     */
     public function renderEach(IListProvider $provider, $viewData, $template, $markerClassname, $confId, $marker, $formatter, $markerParams = null)
     {
         $viewData = is_object($viewData) ? $viewData : new ArrayObject();
@@ -240,7 +244,7 @@ class ListBuilder
 
         $outerMarker = $this->getOuterMarker($marker, $template);
         while ($templateList = Templates::getSubpart($template, '###'.$outerMarker.'S###')) {
-            if ((is_array($dataArr) || $dataArr instanceof Traversable) && count($dataArr)) {
+            if (is_countable($dataArr) && count($dataArr) || $dataArr instanceof Iterator && $dataArr->valid()) {
                 /* @var $listMarker ListMarker */
                 $listMarker = tx_rnbase::makeInstance(ListMarker::class, $this->info->getListMarkerInfo());
 
