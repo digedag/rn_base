@@ -6,6 +6,7 @@ use Countable;
 use Iterator;
 use ReturnTypeWillChange;
 use Sys25\RnBase\Utility\TYPO3;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
 class ResultIterator implements Iterator, Countable
 {
@@ -81,10 +82,11 @@ class ResultIterator implements Iterator, Countable
         // Die Implementierung funktioniert vermutlich nicht sicher. Der Aufruf ist im
         // Normalfall auch nicht nötig. Der Iterator soll nur das ResultSet durchlaufen.
         $arr = $this->arr;
-        $arr['what'] = 'COUNT(*)';
+        $arr['what'] = 'COUNT(*) as cnt';
         // Limit und Offset entfernen, damit alle Zeilen gezählt werden
         unset($arr['limit'], $arr['offset'], $arr['orderby'], $arr['groupby'], $arr['having']);
 
+        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = call_user_func($this->queryBuilderFactory, $this->from, $arr);
         $executeMethod = method_exists($queryBuilder, 'executeQuery') ? 'executeQuery' : 'execute';
         $result = $queryBuilder->$executeMethod();
@@ -96,7 +98,7 @@ class ResultIterator implements Iterator, Countable
         } else {
             $row = $result->fetch();
 
-            return (int) $row[0];
+            return (int) $row['cnt'];
         }
     }
 }

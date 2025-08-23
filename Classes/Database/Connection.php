@@ -136,7 +136,9 @@ class Connection implements SingletonInterface
         $qbFacade = new QueryBuilderFacade();
         if ('iterator' === $resultType) {
             // der neue bevorzugte Weg mit Iterator
-            $queryBuilderFactory = function ($from, $arr) use ($qbFacade, $what) {
+            $queryBuilderFactory = function ($from, $arr) use ($qbFacade) {
+                $what = $arr['what'];
+
                 return $qbFacade->doSelect($what, $from, $arr);
             };
             $connection = $this;
@@ -153,9 +155,13 @@ class Connection implements SingletonInterface
         }
         $queryBuilder = $qbFacade->doSelect($what, $from, $arr);
 
-        $rows = $this->doSelectByQueryBuilder($queryBuilder, $from, $arr);
+        if ($queryBuilder) {
+            $rows = $this->doSelectByQueryBuilder($queryBuilder, $from, $arr);
+        } else {
+            $rows = $this->doSelectLegacy($what, $from, $arr, $debug);
+        }
 
-        if (is_string($rows) || (TYPO3::isTYPO87OrHigher() && $rows instanceof QueryBuilder)) {
+        if (is_string($rows) || $rows instanceof QueryBuilder) {
             // sqlOnly
             return $rows;
         }
@@ -211,6 +217,101 @@ class Connection implements SingletonInterface
             if ($callback) {
                 ++$rows;
             }
+        }
+
+        return $rows;
+    }
+
+    private function doSelectLegacy($what, From $from, $arr, $debug)
+    {
+        $tableName = $from->getTableName();
+        $fromClause = $from->getClause();
+        $fromClause = $fromClause ?: ($from->isComplexTable() ? $tableName : '');
+        $tableAlias = $from->getAlias();
+        $fromClause = $fromClause ?: trim(sprintf('%s %s', $tableName, $tableAlias));
+
+        $where = is_string($arr['where'] ?? false) ? $arr['where'] : '1=1';
+        $groupBy = $arr['groupby'] ?? '';
+        if ($groupBy) {
+            $groupBy .= empty($arr['having'] ?? '') ? '' : ' HAVING '.$arr['having'];
+        }
+        $orderBy = $arr['orderby'] ?? '';
+        $offset = intval($arr['offset'] ?? 0) > 0 ? intval($arr['offset']) : 0;
+        $limit = intval($arr['limit'] ?? 0) > 0 ? intval($arr['limit']) : '';
+        $arr['pidlist'] = $arr['pidlist'] ?? '';
+        $pidList = (is_string($arr['pidlist']) || is_int($arr['pidlist'])) ? $arr['pidlist'] : '';
+        $recursive = (int) ($arr['recursive'] ?? 0);
+        $i18n = empty($arr['i18n']) ? '' : $arr['i18n'];
+        $sqlOnly = (int) ($arr['sqlonly'] ?? 0);
+        $union = empty($arr['union']) ? '' : $arr['union'];
+
+        // offset und limit kombinieren
+        // bei gesetztem limit ist offset optional
+        if ($limit) {
+            $limit = ($offset > 0) ? $offset.','.$limit : $limit;
+        } elseif ($offset) {
+            // Bei gesetztem Offset ist limit Pflicht (default 1000)
+            $limit = ($limit > 0) ? $offset.','.$limit : $offset.',1000';
+        } else {
+            $limit = '';
+        }
+
+        $where .= $this->handleEnableFieldsOptions($arr, $tableName, $tableAlias);
+
+        // Das sollte wegfallen. Die OL werden weiter unten geladen
+        if (strlen($i18n) > 0) {
+            $i18n = implode(',', Strings::intExplode(',', $i18n));
+            $where .= ' AND '.($tableAlias ? $tableAlias : $tableName).'.sys_language_uid IN ('.$i18n.')';
+        }
+
+        if (strlen($pidList) > 0) {
+            $where .= ' AND '.($tableAlias ? $tableAlias : $tableName).'.pid'.
+                ' IN ('.Misc::getPidList($pidList, $recursive).')';
+        }
+
+        if (strlen($union) > 0) {
+            $where .= ' UNION '.$union;
+        }
+
+        $database = $this->getDatabaseConnection($arr);
+        if ($debug || $sqlOnly) {
+            $sql = $database->SELECTquery($what, $fromClause, $where, $groupBy, $orderBy, $limit);
+            if ($sqlOnly) {
+                return $sql;
+            }
+            if ($debug) {
+                Debug::debug($sql, 'SQL');
+                Debug::debug([$what, $from, $arr], 'Parts');
+            }
+        }
+
+        $storeLastBuiltQuery = $database->store_lastBuiltQuery;
+        $database->store_lastBuiltQuery = true;
+        $res = $this->watchOutDB(
+            $database->exec_SELECTquery(
+                $what,
+                $fromClause,
+                $where,
+                $groupBy,
+                $orderBy,
+                $limit
+            ),
+            $database
+        );
+        $database->store_lastBuiltQuery = $storeLastBuiltQuery;
+
+        // use classic arrays or the collection
+        // should be ever an collection, but for backward compatibility is this an array by default
+        $rows = $this->initRows($arr);
+        if ($this->testResource($res)) {
+            $wrapper = is_string($arr['wrapperclass'] ?? null) ? trim($arr['wrapperclass']) : 0;
+            $callback = isset($arr['callback']) ? $arr['callback'] : false;
+
+            while ($row = $database->sql_fetch_assoc($res)) {
+                $this->appendRow($rows, $row, $tableName, $wrapper, $callback, $arr);
+            }
+
+            $database->sql_free_result($res);
         }
 
         return $rows;
