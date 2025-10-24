@@ -12,8 +12,12 @@ v1.20.0 (24.10.2025)
 * BC: Utility\SimpleMarker::parseTemplate() removed call-by-reference parameters.
 * BC: new Method FilterInterace::setRequest for filter classes. This makes it possible to use filter classes as services.
 
-v1.19.3 (??.0?.2025)
+v1.19.4 (11.06.2025)
+* Fix github actions and TER release
+
+v1.19.3 (11.06.2025)
  * Migrate label translation
+ * bugfixing
 
 v1.19.2 (31.01.2025)
 * Fix cache hash utility. Extensions that added cache hash excluded parameters
