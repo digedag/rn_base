@@ -13,7 +13,7 @@ $EM_CONF['rn_base'] = [
     'title' => 'A base library for extensions.',
     'description' => 'TYPO3 plugins based on rn_base can use MVC design principles and domain driven development. This extension also provides an abstraction layer for TYPO3 API to support LTS version since 6.2.',
     'category' => 'misc',
-    'version' => '1.19.2',
+    'version' => '1.20.0',
     'state' => 'stable',
     'uploadfolder' => 0,
     'createDirs' => 'typo3temp/rn_base/',
@@ -23,8 +23,8 @@ $EM_CONF['rn_base'] = [
     'author_company' => 'System 25',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.4.0-12.4.99',
-            'php' => '7.1.0-8.9.99',
+            'typo3' => '10.4.0-13.4.99',
+            'php' => '7.4.0-8.9.99',
         ],
         'conflicts' => [
         ],

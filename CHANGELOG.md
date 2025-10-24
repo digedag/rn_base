@@ -3,7 +3,7 @@
 Changelog
 ---------
 
-v1.20.0 ()
+v1.20.0 (24.10.2025)
 * Update for TYPO3 13.4 LTS
 * New query option 'collection' of type 'iterator' for memory-saving database queries
 * BC: showMenu() in ToolBox is not static anymore
