@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Backend\Module;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Sys25\RnBase\Backend\Form\ToolBox;
 use Sys25\RnBase\Backend\Template\ModuleParts;
 use Sys25\RnBase\Backend\Template\ModuleTemplate;
@@ -12,6 +13,7 @@ use Sys25\RnBase\Frontend\Marker\BaseMarker;
 use Sys25\RnBase\Frontend\Marker\Templates;
 use Sys25\RnBase\Utility\Arrays;
 use Sys25\RnBase\Utility\Files;
+use Sys25\RnBase\Utility\LanguageTool;
 use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
@@ -20,7 +22,7 @@ use tx_rnbase;
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009-2023 Rene Nitzsche (rene@system25.de)
+*  (c) 2009-2025 Rene Nitzsche (rene@system25.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -52,6 +54,8 @@ use tx_rnbase;
  *  );
  * Die Funktionsklassen sollten das Interface IModFunc implementieren. Eine Basisklasse mit nützlichen
  * Methoden steht natürlich auch bereit: BaseModFunc.
+ *
+ * @deprecated wird nur bis TYPO3 11 verwendet
  */
 abstract class BaseModule extends BaseScriptClass implements IModule
 {
@@ -92,9 +96,31 @@ abstract class BaseModule extends BaseScriptClass implements IModule
     }
 
     /**
+     * Sollte bis TYPO3 11 nicht verwendet werden.
+     *
+     * @return ServerRequestInterface|null
+     */
+    public function getRequest(): ?ServerRequestInterface
+    {
+        return null;
+    }
+
+    /**
+     * Sollte bis TYPO3 11 nicht verwendet werden.
+     *
+     * @param IModFunc $modFunc
+     * @param callable $renderFunc
+     * @param ServerRequestInterface $request
+     * @return void
+     */
+    public function render(IModFunc $modFunc, callable $renderFunc, ServerRequestInterface $request)
+    {
+    }
+
+    /**
      * For the new TYPO3 request handlers.
      *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response = null
      *
      * @return bool|\Psr\Http\Message\ResponseInterface TRUE, if the request request could be dispatched
@@ -127,7 +153,7 @@ abstract class BaseModule extends BaseScriptClass implements IModule
      * Main function of the module. Write the content to $this->content
      * If you chose "web" as main module, you will need to consider the $this->id parameter which will contain the uid-number of the page clicked in the page tree.
      *
-     * @param \Psr\Http\Message\ServerRequestInterface|null $request
+     * @param ServerRequestInterface|null $request
      */
     public function main($request = null)
     {
@@ -159,7 +185,7 @@ abstract class BaseModule extends BaseScriptClass implements IModule
 
         $parts->setContent($this->moduleContent());
         $parts->setButtons($this->getButtons());
-        $parts->setTitle($GLOBALS['LANG']->getLL('title'));
+        $parts->setTitle($this->getFormTool()->getLanguageService()->getLL('title'));
         $parts->setFuncMenu($this->getFuncMenu());
         // if we got no array the user got no permissions for the
         // selected page or no page is selected
@@ -623,8 +649,11 @@ abstract class BaseModule extends BaseScriptClass implements IModule
         return '';
     }
 
+    /**
+     * @return LanguageTool
+     */
     public function getLanguageService()
     {
-        return $GLOBALS['LANG'];
+        return $this->getFormTool()->getLanguageService();
     }
 }

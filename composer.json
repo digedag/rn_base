@@ -24,31 +24,32 @@
 		"typo3-ter/rn-base": "self.version"
 	},
 	"require": {
-		"php": ">=7.1.0",
+		"php": ">=7.4.0",
 		"ext-curl": "*",
 		"ext-dom": "*",
 		"ext-iconv": "*",
 		"ext-json": "*",
 		"ext-simplexml": "*",
 		"ext-zip": "*",
+		"doctrine/collections": "*",
 		"doctrine/common": "*",
 		"doctrine/dbal": "*",
-		"typo3/cms-core": "^8.7 || ^9.5 || ^10.4 || ^11.5 || ^12.4"
+		"typo3/cms-core": "^10.4 || ^11.5 || ^12.4 || ^13.4"
 	},
 	"require-dev": {
 		"friendsofphp/php-cs-fixer": "^3.0",
 		"phpcompatibility/php-compatibility": "^9.3.5",
 		"jangregor/phpstan-prophecy": "^1.0.0",
 		"mikey179/vfsstream": "^1.6.10",
-		"typo3/testing-framework": "^2.0 || ^3.0 || ^4.0 || ^5.0 || ^6.0 || ^7.0 || ^8.0",
 		"phpstan/phpstan": "^1.2.0",
 		"phpstan/phpstan-phpunit": "^1.0.0",
-		"phpunit/phpunit": "^6.5.14 || ^7.5.20 || ^8.0 || ^9.0",
-		"saschaegerer/phpstan-typo3": "^1.0",
+		"phpunit/phpunit": "^9.0 || ^10.5",
 		"phpspec/prophecy-phpunit": "^1.0 || ^2.0",
-		"typo3/cms-backend": "^8.7 || ^9.5 || ^10.4 || ^11.5 || ^12.4",
-		"typo3/cms-frontend": "^8.7 || ^9.5 || ^10.4 || ^11.5 || ^12.4",
-		"typo3/cms-scheduler": "^8.7 || ^9.5 || ^10.4 || ^11.5 || ^12.4"
+		"saschaegerer/phpstan-typo3": "^1.0",
+		"typo3/cms-backend": "^10.4 || ^11.5 || ^12.4 || ^13.4",
+		"typo3/cms-frontend": "^10.4 || ^11.5 || ^12.4 || ^13.4",
+		"typo3/cms-scheduler": "^10.4 || ^11.5 || ^12.4 || ^13.4",
+		"typo3/testing-framework": "^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.0"
 	},
 	"suggest": {
 		"ext-mysql": "*",
@@ -66,8 +67,7 @@
 			"Classes/Testing/ProphecyTrait.php"
 		],
 		"psr-4": {
-			"Sys25\\RnBase\\": "Classes",
-			"Contrib\\": "Resources/Private/Php/Contrib"
+			"Sys25\\RnBase\\": "Classes"
 		}
 	},
 	"autoload-dev": {
@@ -122,6 +122,8 @@
 			"@test:phpcompat 8.0",
 			"@test:phpcompat 8.1",
 			"@test:phpcompat 8.2",
+			"@test:phpcompat 8.3",
+			"@test:phpcompat 8.4",
 			"@test:phpstan",
 			"@test:phpunit"
 		],
@@ -157,7 +159,8 @@
 			]
 		},
 		"branch-alias": {
-			"dev-master": "1.19.x-dev"
+			"dev-master": "1.19.x-dev",
+			"dev-upgrade/typo3_13": "1.19.x-dev"
 		}
 	}
 }

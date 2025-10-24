@@ -492,14 +492,27 @@ class TSFAL
             }
         }
 
-        $tca = [
-            'label' => TcaTool::buildGeneralLabel('images'),
-            'config' => Extensions::getFileFieldTCAConfig(
+        $config = [];
+        if (TYPO3::isTYPO115OrHigher()) {
+            $config = [
+                'type' => 'file',
+                'appearance' => $customSettingOverride['appearance'] ?? [],
+                'behaviour' => $customSettingOverride['behaviour'] ?? [],
+                'overrideChildTca' => $customSettingOverride['overrideChildTca'] ?? [],
+                'allowed' => 'common-media-types',
+            ];
+        } else {
+            $config = Extensions::getFileFieldTCAConfig(
                 $ref,
                 $customSettingOverride,
                 $allowedFileExtensions,
                 $disallowedFileExtensions
-            ),
+            );
+        }
+
+        $tca = [
+            'label' => TcaTool::buildGeneralLabel('images'),
+            'config' => $config,
         ];
 
         if (!empty($tca) && is_array($options)) {
@@ -566,7 +579,9 @@ class TSFAL
         $data['tablenames'] = $tableName;
         $data['fieldname'] = $fieldName;
         $data['sorting_foreign'] = $sorting;
-        $data['table_local'] = 'sys_file';
+        if (!TYPO3::isTYPO121OrHigher()) {
+            $data['table_local'] = 'sys_file';
+        }
 
         $id = Connection::getInstance()->doInsert('sys_file_reference', $data);
 

@@ -4,10 +4,13 @@ namespace Sys25\RnBase\Backend\Template\Override;
 
 use Sys25\RnBase\Backend\Utility\Icons;
 use Sys25\RnBase\Utility\Files;
+use Sys25\RnBase\Utility\LanguageTool;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\T3General;
 use Sys25\RnBase\Utility\TYPO3;
+use tx_rnbase;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -34,6 +37,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
+/**
+ * Die Klasse sollte zurückgebaut werden. Sie ist nicht wirklich ein Template.
+ * Sie ist eine Sammlung von Hilfsfunktionen, die in den Modulen
+ * verwendet werden. Da ist aber die ToolBox die zentrale Anlaufstelle.
+ */
 class DocumentTemplate
 {
     public const STATE_NOTICE = -2;
@@ -97,17 +105,22 @@ class DocumentTemplate
 
     /** @var LanguageService */
     private $lang;
+    /** @var LanguageTool */
+    private $languageTool;
 
     /**
      * Constructor.
      */
-    public function __construct()
-    {
+    public function __construct(
+        ?LanguageTool $languageTool = null,
+        ?\TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService = null
+    ) {
+        $this->languageTool = $languageTool ?? tx_rnbase::makeInstance(LanguageTool::class);
+        $this->lang = $this->languageTool->getLanguageService();
         // Initializes the page rendering object:
         $this->initPageRenderer();
 
-        $this->flashMessageService = T3General::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
-        $this->lang = $GLOBALS['LANG'];
+        $this->flashMessageService = $flashMessageService ?? tx_rnbase::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
     }
 
     /**
@@ -177,10 +190,11 @@ class DocumentTemplate
         $options = '';
         foreach ($menuItems as $def) {
             $class = $def['isActive'] ? ' active' : '';
+            $class .= ' nav-link';
             $label = $def['label'];
             $url = htmlspecialchars($def['url'] ?? '');
             $params = $def['addParams'] ?? '';
-            $options .= '<li><a class="'.$class.'" href="'.$url.'" '.$params.'>'.$label.'</a></li>';
+            $options .= '<li class="nav-item"><a class="'.$class.'" href="'.$url.'" '.$params.'>'.$label.'</a></li>';
         }
 
         return '<ul class="nav nav-tabs" role="tablist">'.$options.'</ul>';
@@ -369,6 +383,10 @@ class DocumentTemplate
      */
     public function endPage()
     {
+        if (TYPO3::isTYPO121OrHigher()) {
+            return;
+        }
+
         $str = $this->postCode.$this->wrapScriptTags(BackendUtility::getUpdateSignalCode()).($this->form ? '
 </form>' : '');
         // If something is in buffer like debug, put it to end of page
@@ -425,8 +443,13 @@ class DocumentTemplate
         if (null !== $this->pageRenderer) {
             return;
         }
+        $lang = $this->getLangSrv()->lang;
+        if (TYPO3::isTYPO121OrHigher()) {
+            $lang = new Locale($lang);
+        }
+
         $this->pageRenderer = T3General::makeInstance(PageRenderer::class);
-        $this->pageRenderer->setLanguage($GLOBALS['LANG']->lang);
+        $this->pageRenderer->setLanguage($lang);
         $this->pageRenderer->enableConcatenateCss();
         $this->pageRenderer->enableConcatenateJavascript();
         $this->pageRenderer->enableCompressCss();

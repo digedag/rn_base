@@ -2,13 +2,15 @@
 
 namespace Sys25\RnBase\Backend\Form;
 
+use Sys25\RnBase\Backend\Module\IModule;
 use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
+use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2016-2021 Rene Nitzsche (rene@system25.de)
+ *  (c) 2016-2025 Rene Nitzsche (rene@system25.de)
  *  All rights reserved
  *
  * This library is free software; you can redistribute it and/or
@@ -50,6 +52,11 @@ class FormBuilder
     private $formResultCompiler;
 
     /**
+     * @var IModule
+     */
+    private $module;
+
+    /**
      * @var array
      */
     protected $formDataCache = [];
@@ -57,7 +64,7 @@ class FormBuilder
     public function __construct()
     {
         /**
-         * @var \TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord
+         * @var TcaDatabaseRecord
          */
         $formDataGroup = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormDataGroup\\TcaDatabaseRecord');
         $this->formDataCompiler = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormDataCompiler', $formDataGroup);
@@ -65,8 +72,9 @@ class FormBuilder
         $this->formResultCompiler = tx_rnbase::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormResultCompiler');
     }
 
-    public function initDefaultBEmode()
+    public function setModule(IModule $module)
     {
+        $this->module = $module;
     }
 
     /**
@@ -128,7 +136,13 @@ class FormBuilder
                     'returnUrl' => '',
                 ];
             }
-            $this->formDataCache[$cacheKey] = $this->formDataCompiler->compile($formDataCompilerInput);
+            $formDataCompilerInput['request'] = $this->module->getRequest();
+
+            if (TYPO3::isTYPO130OrHigher()) {
+                $this->formDataCache[$cacheKey] = $this->formDataCompiler->compile($formDataCompilerInput, tx_rnbase::makeInstance(TcaDatabaseRecord::class));
+            } else {
+                $this->formDataCache[$cacheKey] = $this->formDataCompiler->compile($formDataCompilerInput);
+            }
             if ($this->isNEWRecord($uid)) {
                 // Override generated with given uid
                 $this->formDataCache[$cacheKey]['databaseRow']['uid'] = $uid;
@@ -171,11 +185,7 @@ class FormBuilder
      */
     public function printNeededJSFunctions_top()
     {
-        if (TYPO3::isTYPO90OrHigher()) {
-            $result = $this->formResultCompiler->addCssFiles();
-        } else {
-            $result = $this->formResultCompiler->JStop();
-        }
+        $result = $this->formResultCompiler->addCssFiles();
 
         return $result;
     }

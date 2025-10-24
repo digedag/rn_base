@@ -5,7 +5,7 @@ namespace Sys25\RnBase\Configuration;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2007-2023 Rene Nitzsche
+ *  (c) 2007-2025 Rene Nitzsche
  *  Contact: rene@system25.de
  *
  *  Original version:
@@ -44,6 +44,7 @@ use Sys25\RnBase\Utility\Network;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
 use Sys25\RnBase\Utility\Typo3Classes;
+use Sys25\RnBase\Utility\TypoScript;
 use tx_rnbase;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -190,6 +191,11 @@ class Processor implements ConfigurationInterface
      * @var LanguageTool
      */
     private $languageTool;
+
+    /**
+     * @var TypoScript
+     */
+    private $typoscriptTool;
 
     private $languageService;
 
@@ -1040,11 +1046,7 @@ class Processor implements ConfigurationInterface
             }
         }
         if ($flexTs) {
-            // This handles ts setup from flexform
-            $tsParser = tx_rnbase::makeInstance(Typo3Classes::getTypoScriptParserClass());
-            $tsParser->setup = $this->_dataStore->getArrayCopy();
-            $tsParser->parse($flexTs);
-            $flexTsData = $tsParser->setup;
+            $flexTsData = $this->getTSTool()->parseTsConfig($flexTs, 'plugin_flex_'.$this->getPluginId(), $this->_dataStore->getArrayCopy());
             $this->_dataStore->exchangeArray($flexTsData);
         }
     }
@@ -1064,10 +1066,21 @@ class Processor implements ConfigurationInterface
         // das < abschneiden, um den pfad zum link zu erhalten
         $key = trim(substr($value, 1));
 
-        $tsParser = tx_rnbase::makeInstance(Typo3Classes::getTypoScriptParserClass());
+        $tsArray = [];
+        if (TYPO3::isTYPO121OrHigher()) {
+            /** @var TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $tsc */
+            $tsc = $this->getCObj()->getRequest()->getAttribute('frontend.typoscript');
+            $tsArray = $tsc->getSetupArray();
+        } else {
+            $tsArray = $GLOBALS['TSFE']->tmpl->setup;
+        }
+        // /** @var \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser $tsParser */
+        // $tsParser = tx_rnbase::makeInstance(Typo3Classes::getTypoScriptParserClass());
 
-        // $name and $conf is loaded with the referenced values.
-        list($linkValue, $linkConf) = $tsParser->getVal($key, $GLOBALS['TSFE']->tmpl->setup);
+        // // $name and $conf is loaded with the referenced values.
+        // list($linkValue, $linkConf) = $tsParser->getVal($key, $tsArray);
+
+        list($linkValue, $linkConf) = $this->getVal($key, $tsArray);
 
         // Konfigurationen mergen
         if (is_array($conf) && count($conf)) {
@@ -1078,6 +1091,37 @@ class Processor implements ConfigurationInterface
         $linkConf = $this->mergeTSReference($linkValue, $linkConf);
 
         return $linkConf;
+    }
+
+    private function getVal(string $key, array $tsArray): array
+    {
+        $segments = explode('.', $key);
+        $currentArray = $tsArray;
+
+        foreach ($segments as $i => $segment) {
+            $segmentWithDot = $segment.'.';
+            $isLast = ($i === count($segments) - 1);
+
+            if ($isLast) {
+                // Ergebnis setzen
+                if (isset($currentArray[$segmentWithDot])) {
+                    return ['', $currentArray[$segmentWithDot]];
+                } elseif (isset($currentArray[$segment])) {
+                    return [$currentArray[$segment], []];
+                } else {
+                    return ['', []];
+                }
+            }
+
+            // tiefer steigen, wenn weiterer Pfad existiert
+            if (isset($currentArray[$segmentWithDot])) {
+                $currentArray = $currentArray[$segmentWithDot];
+            } else {
+                return [null, []];
+            }
+        }
+
+        return ['', []];
     }
 
     /**
@@ -1145,10 +1189,18 @@ class Processor implements ConfigurationInterface
         }
 
         if (null === $this->languageService) {
-            $this->languageService = tx_rnbase::makeInstance(LanguageServiceFactory::class)
-                ->createFromSiteLanguage(
-                    $this->cObj->getTypoScriptFrontendController()->getLanguage()
-                );
+            if (TYPO3::isTYPO121OrHigher()) {
+                $language = $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
+            } else {
+                $language = $this->cObj->getTypoScriptFrontendController()->getLanguage();
+            }
+            $factory = tx_rnbase::makeInstance(LanguageServiceFactory::class);
+
+            if (null === $language) {
+                $this->languageService = $factory->create('en');
+            } else {
+                $this->languageService = $factory->createFromSiteLanguage($language);
+            }
         }
 
         $this->languageTool->setLanguageService($this->languageService);
@@ -1212,5 +1264,28 @@ class Processor implements ConfigurationInterface
         }
 
         return $data;
+    }
+
+    /**
+     * @return TypoScript
+     */
+    private function getTSTool()
+    {
+        if (null === $this->typoscriptTool) {
+            $this->typoscriptTool = tx_rnbase::makeInstance(TypoScript::class);
+        }
+
+        return $this->typoscriptTool;
+    }
+
+    /**
+     * Useful for testing.
+     *
+     * @param TypoScript $typoscriptTool
+     * @return void
+     */
+    public function setTSTool(TypoScript $typoscriptTool)
+    {
+        $this->typoscriptTool = $typoscriptTool;
     }
 }

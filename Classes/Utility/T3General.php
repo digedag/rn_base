@@ -2,6 +2,8 @@
 
 namespace Sys25\RnBase\Utility;
 
+use Sys25\RnBase\Frontend\Request\Parameters;
+
 /***************************************************************
  * Copyright notice
  *
@@ -33,7 +35,6 @@ namespace Sys25\RnBase\Utility;
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  *
- * @method static mixed _GP(string $var)
  * @method static string getIndpEnv(string $getEnvName)
  * @method static string fixWindowsFilePath(string $theFile)
  * @method static int md5int(string $str)
@@ -276,5 +277,10 @@ class T3General
         }
 
         return implode(',', $items);
+    }
+
+    public static function _GP($parameterName)
+    {
+        return Parameters::_GP($parameterName);
     }
 }

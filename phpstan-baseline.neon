@@ -1,6 +1,66 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Class TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Element\\\\InputDateTimeElement not found\\.$#"
+			count: 1
+			path: Classes/Backend/Form/ToolBox.php
+
+		-
+			message: "#^Access to undefined constant TYPO3\\\\CMS\\\\Core\\\\Messaging\\\\FlashMessage\\:\\:ERROR\\.$#"
+			count: 1
+			path: Classes/Backend/Template/Override/DocumentTemplate.php
+
+		-
+			message: "#^Access to undefined constant TYPO3\\\\CMS\\\\Core\\\\Messaging\\\\FlashMessage\\:\\:INFO\\.$#"
+			count: 1
+			path: Classes/Backend/Template/Override/DocumentTemplate.php
+
+		-
+			message: "#^Access to undefined constant TYPO3\\\\CMS\\\\Core\\\\Messaging\\\\FlashMessage\\:\\:NOTICE\\.$#"
+			count: 1
+			path: Classes/Backend/Template/Override/DocumentTemplate.php
+
+		-
+			message: "#^Access to undefined constant TYPO3\\\\CMS\\\\Core\\\\Messaging\\\\FlashMessage\\:\\:OK\\.$#"
+			count: 1
+			path: Classes/Backend/Template/Override/DocumentTemplate.php
+
+		-
+			message: "#^Access to undefined constant TYPO3\\\\CMS\\\\Core\\\\Messaging\\\\FlashMessage\\:\\:WARNING\\.$#"
+			count: 1
+			path: Classes/Backend/Template/Override/DocumentTemplate.php
+
+		-
+			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Backend\\\\Utility\\\\BackendUtility\\:\\:getUpdateSignalCode\\(\\)\\.$#"
+			count: 1
+			path: Classes/Backend/Template/Override/DocumentTemplate.php
+
+		-
+			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Backend\\\\Utility\\\\BackendUtility\\:\\:getLinkToDataHandlerAction\\(\\)\\.$#"
+			count: 1
+			path: Classes/Backend/Utility/BackendUtility.php
+
+		-
+			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Core\\\\FormProtection\\\\FormProtectionFactory\\:\\:get\\(\\)\\.$#"
+			count: 1
+			path: Classes/Backend/Utility/BackendUtility.php
+
+		-
+			message: "#^Access to undefined constant Doctrine\\\\DBAL\\\\Connection\\:\\:PARAM_INT_ARRAY\\.$#"
+			count: 1
+			path: Classes/Database/QueryBuilderFacade.php
+
+		-
+			message: "#^Access to undefined constant Doctrine\\\\DBAL\\\\Connection\\:\\:PARAM_STR_ARRAY\\.$#"
+			count: 1
+			path: Classes/Database/QueryBuilderFacade.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Restriction\\\\BackendWorkspaceRestriction not found\\.$#"
+			count: 1
+			path: Classes/Database/QueryBuilderFacade.php
+
+		-
 			message: "#^Parameter \\$objectManager of method Sys25\\\\RnBase\\\\ExtBaseFluid\\\\View\\\\Standalone\\:\\:injectObjectManager\\(\\) has invalid type TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManager\\.$#"
 			count: 1
 			path: Classes/ExtBaseFluid/View/Standalone.php
@@ -11,22 +71,27 @@ parameters:
 			path: Classes/Maps/Google/Util.php
 
 		-
-			message: "#^Call to an undefined static method PHPUnit\\\\Framework\\\\TestCase\\:\\:getMock\\(\\)\\.$#"
-			count: 1
-			path: Classes/Testing/BaseTestCase.php
-
-		-
-			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Core\\\\Core\\\\Bootstrap\\:\\:getInstance\\(\\)\\.$#"
-			count: 1
-			path: Classes/Testing/BaseTestCase.php
-
-		-
 			message: "#^Call to static method fromPath\\(\\) on an unknown class Swift_Attachment\\.$#"
 			count: 1
 			path: Classes/Utility/Email.php
 
 		-
+			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Extbase\\\\Utility\\\\ExtensionUtility\\:\\:registerModule\\(\\)\\.$#"
+			count: 1
+			path: Classes/Utility/Extensions.php
+
+		-
 			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\ExtendedTemplateService not found\\.$#"
+			count: 1
+			path: Classes/Utility/Typo3Classes.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\Parser\\\\TypoScriptParser not found\\.$#"
+			count: 1
+			path: Classes/Utility/Typo3Classes.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TemplateService not found\\.$#"
 			count: 1
 			path: Classes/Utility/Typo3Classes.php
 
@@ -38,22 +103,27 @@ parameters:
 		-
 			message: "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Request constructor invoked with 0 parameters, 1 required\\.$#"
 			count: 1
-			path: tests/Classes/ExtBaseFluid/ViewHelper/BaseViewHelperTest.php
+			path: Classes/Testing/BaseViewHelperTest.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Web\\\\Routing\\\\UriBuilder constructor invoked with 0 parameters, 1 required\\.$#"
+			count: 1
+			path: Classes/Testing/BaseViewHelperTest.php
 
 		-
 			message: "#^Instantiated class TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Controller\\\\ControllerContext not found\\.$#"
 			count: 1
-			path: tests/Classes/ExtBaseFluid/ViewHelper/BaseViewHelperTest.php
+			path: Classes/Testing/BaseViewHelperTest.php
 
 		-
 			message: "#^Instantiated class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManager not found\\.$#"
 			count: 1
-			path: tests/Classes/ExtBaseFluid/ViewHelper/BaseViewHelperTest.php
+			path: Classes/Testing/BaseViewHelperTest.php
 
 		-
 			message: "#^Instantiated class TYPO3\\\\CMS\\\\Extbase\\\\Service\\\\EnvironmentService not found\\.$#"
 			count: 1
-			path: tests/Classes/ExtBaseFluid/ViewHelper/BaseViewHelperTest.php
+			path: Classes/Testing/BaseViewHelperTest.php
 
 		-
 			message: "#^Call to an undefined method tx_rnbase_dummyController\\:\\:getErrorMailHtml\\(\\)\\.$#"

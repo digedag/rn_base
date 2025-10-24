@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Domain\Collection;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Sys25\RnBase\Domain\Model\RecordInterface;
 
 /***************************************************************
@@ -32,7 +33,7 @@ use Sys25\RnBase\Domain\Model\RecordInterface;
  *
  * @author Michael Wagner
  */
-class BaseCollection extends \Contrib\Doctrine\Common\Collections\ArrayCollection
+class BaseCollection extends ArrayCollection
 {
     /**
      * Only a wrapper for add.
@@ -43,7 +44,9 @@ class BaseCollection extends \Contrib\Doctrine\Common\Collections\ArrayCollectio
      */
     public function append($value)
     {
-        return $this->add($value);
+        $this->add($value);
+
+        return true;
     }
 
     /**

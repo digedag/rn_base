@@ -35,10 +35,9 @@ if (!trait_exists('Prophecy\\PhpUnit\\ProphecyTrait')) {
         private $prophecyAssertionsCounted = false;
 
         /**
+         * @psalm-param class-string|null $classOrInterface
          * @throws DoubleException
          * @throws InterfaceNotFoundException
-         *
-         * @psalm-param class-string|null $classOrInterface
          *
          * @not-deprecated
          */

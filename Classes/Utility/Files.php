@@ -166,7 +166,7 @@ class Files
         $filepath = self::getFalFilename($fName);
         if (null === $filepath) {
             $utility = Typo3Classes::getGeneralUtilityClass();
-            $filepath = $utility::getFileAbsFileName($fName, $onlyRelative, $relToTYPO3_mainDir);
+            $filepath = $utility::getFileAbsFileName((string) $fName, $onlyRelative, $relToTYPO3_mainDir);
         }
 
         return $filepath;

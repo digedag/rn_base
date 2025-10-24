@@ -3,6 +3,15 @@
 Changelog
 ---------
 
+v1.20.0 (24.10.2025)
+* Update for TYPO3 13.4 LTS
+* New query option 'collection' of type 'iterator' for memory-saving database queries
+* BC: showMenu() in ToolBox is not static anymore
+* BC: BEPager requires IModule in constructor
+* BC: Utility\TypoScript::parseTsConfig() is not static anymore.
+* BC: Utility\SimpleMarker::parseTemplate() removed call-by-reference parameters.
+* BC: new Method FilterInterace::setRequest for filter classes. This makes it possible to use filter classes as services.
+
 v1.19.4 (11.06.2025)
 * Fix github actions and TER release
 

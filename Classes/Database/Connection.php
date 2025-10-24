@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2006-2023 Rene Nitzsche
+ *  (c) 2006-2025 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -88,6 +88,8 @@ class Connection implements SingletonInterface
      * - 'sqlonly' - returns the generated SQL statement or prepared QueryBuilder instance. No database access.
      * - 'limit' - limits the number of result rows
      * - 'wrapperclass' - A wrapper for each result rows
+     * - 'callback' - A callback function that is called for each row (deprecated)
+     * - 'collection' - A collection class to use for the result set. Default is \Sys25\RnBase\Domain\Collection\BaseCollection. Preferred is 'iterator' for memory-saving queries.
      * - 'pidlist' - A list of page-IDs to search for records
      * - 'recursive' - the recursive level to search for records in pages
      * - 'enablefieldsoff' - deactivate enableFields check
@@ -105,7 +107,7 @@ class Connection implements SingletonInterface
      * @param array $arr The options array
      * @param bool $debug Set to true to debug the sql string
      *
-     * @return array
+     * @return array|Countable|int|ResultIterator
      */
     public function doSelect($what, $from, $arr, $debug = false)
     {
@@ -129,12 +131,29 @@ class Connection implements SingletonInterface
         $arr['debug'] = $debug;
         $arr['what'] = $what;
         $from = From::buildInstance($from);
+        $resultType = $arr['collection'] ?? null;
 
-        $queryBuilder = null;
-        if (TYPO3::isTYPO87OrHigher()) {
-            $qbFacade = new QueryBuilderFacade();
-            $queryBuilder = $qbFacade->doSelect($what, $from, $arr);
+        $qbFacade = new QueryBuilderFacade();
+        if ('iterator' === $resultType) {
+            // der neue bevorzugte Weg mit Iterator
+            $queryBuilderFactory = function ($from, $arr) use ($qbFacade) {
+                $what = $arr['what'];
+
+                return $qbFacade->doSelect($what, $from, $arr);
+            };
+            $connection = $this;
+            $appendRow = function ($row) use ($from, $arr, $connection) {
+                // Dummy-Array für $rows, da appendRow per Referenz arbeitet
+                $rows = [];
+                $connection->appendRow($rows, $row, $from->getTableName(), $arr['wrapperclass'] ?? null, false, $arr);
+
+                // appendRow hängt das Item ans Ende von $rows
+                return array_pop($rows);
+            };
+
+            return new ResultIterator($queryBuilderFactory, $from, $arr, $appendRow);
         }
+        $queryBuilder = $qbFacade->doSelect($what, $from, $arr);
 
         if ($queryBuilder) {
             $rows = $this->doSelectByQueryBuilder($queryBuilder, $from, $arr);
@@ -142,17 +161,16 @@ class Connection implements SingletonInterface
             $rows = $this->doSelectLegacy($what, $from, $arr, $debug);
         }
 
-        if (is_string($rows) || (TYPO3::isTYPO87OrHigher() && $rows instanceof QueryBuilder)) {
+        if (is_string($rows) || $rows instanceof QueryBuilder) {
             // sqlOnly
             return $rows;
         }
 
         if ($debug) {
             Debug::debug([
-                'Rows retrieved ' => $rows instanceof Countable ? $rows->count() : count($rows),
+                'Rows retrieved ' => $rows instanceof Countable ? $rows->count() : (is_array($rows) ? count($rows) : $rows),
                 'Time ' => (microtime(true) - $time),
                 'Memory consumed ' => (memory_get_usage() - $mem),
-                'QB used' => is_object($queryBuilder),
             ], 'SQL statistics');
         }
 
@@ -167,22 +185,38 @@ class Connection implements SingletonInterface
         return $rows;
     }
 
-    private function doSelectByQueryBuilder(QueryBuilder $queryBuilder, From $from, array $arr)
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param From $from
+     * @param array $options
+     * @return mixed
+     *
+     * @returns array|Countable|int
+     */
+    private function doSelectByQueryBuilder(QueryBuilder $queryBuilder, From $from, array $options)
     {
-        $sqlOnly = intval($arr['sqlonly'] ?? null) > 0;
+        $sqlOnly = intval($options['sqlonly'] ?? null) > 0;
 
         if ($sqlOnly) {
             return $queryBuilder;
         }
 
-        $rows = $this->initRows($arr);
-        $wrapper = is_string($arr['wrapperclass'] ?? null) ? trim($arr['wrapperclass']) : 0;
-        $callback = isset($arr['callback']) ? $arr['callback'] : false;
+        $rows = $this->initRows($options);
+        $wrapper = is_string($options['wrapperclass'] ?? null) ? trim($options['wrapperclass']) : 0;
+        $callback = isset($options['callback']) ? $options['callback'] : false;
 
         $executeMethod = method_exists($queryBuilder, 'executeQuery') ? 'executeQuery' : 'execute';
+        $result = $queryBuilder->$executeMethod();
+        $fetchMethod = TYPO3::isTYPO130OrHigher() ? 'fetchAllAssociative' : 'fetchAll';
 
-        foreach ($queryBuilder->$executeMethod()->fetchAll() as $row) {
-            $this->appendRow($rows, $row, $from->getTableName(), $wrapper, $callback, $arr);
+        if ($callback) {
+            $rows = 0;
+        }
+        foreach ($result->$fetchMethod() as $row) {
+            $this->appendRow($rows, $row, $from->getTableName(), $wrapper, $callback, $options);
+            if ($callback) {
+                ++$rows;
+            }
         }
 
         return $rows;
@@ -1199,7 +1233,7 @@ class Connection implements SingletonInterface
                 && !isset($options['enablefieldsfe'])
             ) {
                 $options['enablefieldsbe'] = 1;
-                if (Environment::isFrontend()) {
+                if (Environment::isFrontend() && !TYPO3::isTYPO130OrHigher()) {
                     // wir nehmen nicht Sys25\RnBase\Utility\TYPO3::getTSFE()->set_no_cache weil das durch
                     // $GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter'] deaktiviert werden
                     // kann. Das wollen wir aber nicht. Der Cache muss in jedem Fall deaktiviert werden.

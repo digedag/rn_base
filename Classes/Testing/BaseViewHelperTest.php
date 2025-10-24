@@ -1,10 +1,9 @@
 <?php
 
-namespace Sys25\RnBase\ExtBaseFluid\ViewHelper;
+namespace Sys25\RnBase\Testing;
 
 use Prophecy\PhpUnit\ProphecyTrait;
 use ReflectionProperty;
-use Sys25\RnBase\Testing\BaseTestCase;
 use Sys25\RnBase\Utility\TYPO3;
 use tx_rnbase;
 use tx_rnbase_util_Misc;

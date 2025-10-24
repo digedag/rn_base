@@ -4,6 +4,7 @@ namespace Sys25\RnBase\Domain\Repository;
 
 use ReflectionMethod;
 use Sys25\RnBase\Domain\Model\BaseModel;
+use Sys25\RnBase\Search\SearchGeneric;
 use Sys25\RnBase\Testing\BaseTestCase;
 use tx_rnbase;
 use Tx_Rnbase_Repository_AbstractRepository;
@@ -71,7 +72,7 @@ class AbstractRepositoryTest extends BaseTestCase
     /**
      * @return array
      */
-    public function getOptions()
+    public static function getOptions()
     {
         return [
             [['enablefieldsoff' => true], ['enablefieldsoff' => true]],
@@ -89,7 +90,7 @@ class AbstractRepositoryTest extends BaseTestCase
         $repository = $this->getRepositoryMock();
 
         self::assertInstanceOf(
-            'tx_rnbase_util_SearchGeneric',
+            SearchGeneric::class,
             $this->callInaccessibleMethod($repository, 'getSearcher')
         );
     }
@@ -272,7 +273,8 @@ class AbstractRepositoryTest extends BaseTestCase
     private function getRepositoryMock($mockedMethods = [])
     {
         $mockedMethods = array_unique(array_merge($mockedMethods, ['getSearchClass', 'getWrapperClass']));
-        $repository = $this->getMockForAbstractClass(
+
+        $repository = self::getMockForAbstractClass(
             AbstractRepository::class,
             [],
             '',
@@ -283,14 +285,14 @@ class AbstractRepositoryTest extends BaseTestCase
         );
 
         $repository
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getSearchClass')
-            ->will($this->returnValue('tx_rnbase_util_SearchGeneric'));
+            ->will(self::returnValue('tx_rnbase_util_SearchGeneric'));
 
         $repository
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getWrapperClass')
-            ->will($this->returnValue(BaseModel::class));
+            ->will(self::returnValue(BaseModel::class));
 
         return $repository;
     }
