@@ -3,6 +3,9 @@
 Changelog
 ---------
 
+v1.18.5 (01.12.2025)
+* Fix adding file reference since TYPO3 12.4
+
 v1.18.4 (31.01.2025)
 * Fix cache hash utility. Extensions that added cache hash excluded parameters
   after cache hash utility did that will not have the there configuration
