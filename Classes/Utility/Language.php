@@ -83,7 +83,7 @@ class Language
         $errorMode = 0,
         $isLocalizationOverride = false
     ) {
-        /** @var $languageFactory \TYPO3\CMS\Core\Localization\LocalizationFactory */
+        /** @var \TYPO3\CMS\Core\Localization\LocalizationFactory $languageFactory */
         $languageFactory = tx_rnbase::makeInstance(
             'TYPO3\\CMS\\Core\\Localization\\LocalizationFactory'
         );

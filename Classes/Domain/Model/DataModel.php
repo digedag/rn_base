@@ -7,6 +7,7 @@ use ArrayIterator;
 use Exception;
 use IteratorAggregate;
 use ReturnTypeWillChange;
+use Stringable;
 use Sys25\RnBase\Utility\Strings;
 use Traversable;
 use tx_rnbase;
@@ -44,7 +45,7 @@ use tx_rnbase;
  *
  * @author Michael Wagner
  */
-class DataModel implements DataInterface, IteratorAggregate, ArrayAccess
+class DataModel implements Stringable, DataInterface, IteratorAggregate, ArrayAccess
 {
     /**
      * A flag indication if the model was modified after initialisation

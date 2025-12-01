@@ -212,7 +212,7 @@ class tx_rnbase_controller
 
         // Making the configurations object
         Misc::pushTT('init configuration', '');
-        /** @var $configurations Processor */
+        /** @var Processor $configurations */
         $configurations = $this->_makeConfigurationsObject($configurationArray);
         Misc::pullTT();
 

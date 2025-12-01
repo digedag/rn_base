@@ -3,6 +3,7 @@
 namespace Sys25\RnBase\Exception;
 
 use Exception;
+use Stringable;
 
 /***************************************************************
  *  Copyright notice
@@ -29,7 +30,7 @@ use Exception;
 /**
  * Default exception class.
  */
-class AdditionalException extends Exception
+class AdditionalException extends Exception implements Stringable
 {
     private $additional = false;
 
