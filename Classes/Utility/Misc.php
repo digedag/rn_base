@@ -266,9 +266,8 @@ MAYDAYPAGE;
         $dieOnMayday = (int) ConfigurationProcessor::getExtensionCfgValue('rn_base', 'dieOnMayday');
         if ($dieOnMayday) {
             exit($sPage);
-        } else {
-            echo $sPage;
         }
+        echo $sPage;
     }
 
     /**
@@ -738,9 +737,8 @@ MAYDAYPAGE;
             $lock = Lock::getInstance('errormail', 60);
             if ($lock->isLocked()) {
                 return;
-            } else {
-                $lock->lockProcess();
             }
+            $lock->lockProcess();
         } else {
             $lock = null;
         }

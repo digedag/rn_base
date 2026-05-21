@@ -228,13 +228,12 @@ class XmlElement extends SimpleXMLElement
             $node = $this->addChild($key);
 
             return $node->addCData($value);
-        } else {
-            $node = dom_import_simplexml($this);
-            $no = $node->ownerDocument;
-            $node->appendChild($no->createCDATASection($value));
-
-            return $this;
         }
+        $node = dom_import_simplexml($this);
+        $no = $node->ownerDocument;
+        $node->appendChild($no->createCDATASection($value));
+
+        return $this;
     }
 
     /**

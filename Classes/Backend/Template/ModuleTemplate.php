@@ -67,9 +67,9 @@ class ModuleTemplate
     {
         if (TYPO3::isTYPO121OrHigher()) {
             return $this->renderContent12($parts);
-        } else {
-            return $this->renderContent76($parts);
         }
+
+        return $this->renderContent76($parts);
     }
 
     public function getPageRenderer()

@@ -200,9 +200,9 @@ class TYPO3
             $t3version = tx_rnbase::makeInstance('TYPO3\CMS\Core\Information\Typo3Version');
 
             return $t3version->getVersion();
-        } else {
-            return TYPO3_version;
         }
+
+        return TYPO3_version;
     }
 
     /**

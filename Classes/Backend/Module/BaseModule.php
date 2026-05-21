@@ -83,8 +83,8 @@ abstract class BaseModule extends BaseScriptClass implements IModule
     /** @var string */
     protected $selector;
     /** @var ServerRequestInterface */
-    protected $request = null;
-    protected $languageTool = null;
+    protected $request;
+    protected $languageTool;
 
     /**
      * Initializes the backend module by setting internal variables, initializing the menu.
@@ -353,11 +353,10 @@ abstract class BaseModule extends BaseScriptClass implements IModule
 
         if ($returnContent) {
             return $content;
-        } else {
-            echo $content;
-
-            return null;
         }
+        echo $content;
+
+        return null;
     }
 
     /**
@@ -427,17 +426,16 @@ abstract class BaseModule extends BaseScriptClass implements IModule
             }
 
             return $menu;
-        } else {
-            $items = $this->getFuncMenuItems($this->MOD_MENU['function']);
-            $useTabs = intval($this->getConfigurations()->get('_cfg.funcmenu.useTabs')) > 0;
-            if ($useTabs) {
-                $menu = $this->getFormTool()->showTabMenu($this->getPid(), 'function', $this->getName(), $items);
-            } else {
-                $menu = $this->getFormTool()->showMenu($this->getPid(), 'function', $this->getName(), $items, $this->getModuleScript());
-            }
-
-            return $menu['menu'];
         }
+        $items = $this->getFuncMenuItems($this->MOD_MENU['function']);
+        $useTabs = intval($this->getConfigurations()->get('_cfg.funcmenu.useTabs')) > 0;
+        if ($useTabs) {
+            $menu = $this->getFormTool()->showTabMenu($this->getPid(), 'function', $this->getName(), $items);
+        } else {
+            $menu = $this->getFormTool()->showMenu($this->getPid(), 'function', $this->getName(), $items, $this->getModuleScript());
+        }
+
+        return $menu['menu'];
     }
 
     /**
