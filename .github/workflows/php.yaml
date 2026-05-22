@@ -29,34 +29,41 @@ jobs:
           - 8.4
 
   php-compatibility:
-    name: "PHPCompatibility"
-    runs-on: ubuntu-latest
-    needs: php-lint
-    steps:
-      - name: "Checkout"
-        uses: actions/checkout@v4
-      - name: "Install PHP"
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.0"
-          coverage: none
-          tools: composer:v2
-      - name: Prepare TYPO3
-        uses: ./.github/actions/t3prepare
-        with:
-          php-version: ${{ matrix.php-version }}
-      - name: "Run PHP CS with PHPCompatibility rule"
-        run: "composer test:phpcompat ${{ matrix.php-version }}"
-    strategy:
-      fail-fast: false
-      matrix:
-        php-version:
-          - 7.4
-          - 8.0
-          - 8.1
-          - 8.2
-          - 8.3
-          - 8.4
+      name: "PHPCompatibility"
+      runs-on: ubuntu-latest
+      needs: php-lint
+      steps:
+        - name: "Checkout"
+          uses: actions/checkout@v4
+
+        - name: "Install PHP"
+          uses: shivammathur/setup-php@v2
+          with:
+            php-version: "8.4"
+            coverage: none
+
+        - name: "Install PHPCompatibility"
+          run: |
+            composer global config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+            composer global require --dev \
+              squizlabs/php_codesniffer \
+              phpcompatibility/php-compatibility \
+              dealerdirect/phpcodesniffer-composer-installer \
+              --no-interaction
+
+        - name: "Run PHPCompatibility"
+          run: |
+            phpcs \
+              --ignore='.Build/*,Resources/*' \
+              --standard=PHPCompatibility \
+              --runtime-set testVersion ${{ matrix.php-version }} \
+              -p \
+              Classes Migrations Legacy tests
+
+      strategy:
+        fail-fast: false
+        matrix:
+          php-version: ["7.4", "8.0", "8.1", "8.2", "8.3", "8.4"]
 
   code-style:
     name: Check code style
