@@ -1108,9 +1108,9 @@ class Processor implements ConfigurationInterface
                     return ['', $currentArray[$segmentWithDot]];
                 } elseif (isset($currentArray[$segment])) {
                     return [$currentArray[$segment], []];
-                } else {
-                    return ['', []];
                 }
+
+                return ['', []];
             }
 
             // tiefer steigen, wenn weiterer Pfad existiert

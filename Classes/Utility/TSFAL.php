@@ -21,7 +21,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013-2024 Rene Nitzsche
+ *  (c) 2013-2026 Rene Nitzsche
  *  Contact: rene@system25.de
  *  All rights reserved
  *
@@ -493,7 +493,7 @@ class TSFAL
         }
 
         $config = [];
-        if (TYPO3::isTYPO115OrHigher()) {
+        if (TYPO3::isTYPO121OrHigher()) {
             $config = [
                 'type' => 'file',
                 'appearance' => $customSettingOverride['appearance'] ?? [],

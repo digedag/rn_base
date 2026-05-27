@@ -41,7 +41,10 @@ abstract class BaseModFunc implements IModFunc
     /* @var $mod IModule */
     protected $mod;
 
-    private function init(IModule $module, $conf)
+    /**
+     * make private when t3 11 support is dropped.
+     */
+    public function init(IModule $module, $conf)
     {
         $this->mod = $module;
     }

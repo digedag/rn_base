@@ -136,7 +136,9 @@ class FormBuilder
                     'returnUrl' => '',
                 ];
             }
-            $formDataCompilerInput['request'] = $this->module->getRequest();
+            if (TYPO3::isTYPO121OrHigher()) {
+                $formDataCompilerInput['request'] = $this->module->getRequest();
+            }
 
             if (TYPO3::isTYPO130OrHigher()) {
                 $this->formDataCache[$cacheKey] = $this->formDataCompiler->compile($formDataCompilerInput, tx_rnbase::makeInstance(TcaDatabaseRecord::class));

@@ -82,12 +82,16 @@ abstract class BaseModule extends BaseScriptClass implements IModule
 
     /** @var string */
     protected $selector;
+    /** @var ServerRequestInterface */
+    protected $request;
+    protected $languageTool;
 
     /**
      * Initializes the backend module by setting internal variables, initializing the menu.
      */
     public function init()
     {
+        $this->languageTool = tx_rnbase::makeInstance(LanguageTool::class);
         parent::init();
 
         if (0 === $this->id) {
@@ -102,7 +106,7 @@ abstract class BaseModule extends BaseScriptClass implements IModule
      */
     public function getRequest(): ?ServerRequestInterface
     {
-        return null;
+        return $this->request;
     }
 
     /**
@@ -130,6 +134,7 @@ abstract class BaseModule extends BaseScriptClass implements IModule
         $response = null
     ) {
         $GLOBALS['MCONF']['script'] = '_DISPATCH';
+        $this->request = $request;
         $this->init();
         $this->main($request);
 
@@ -185,7 +190,7 @@ abstract class BaseModule extends BaseScriptClass implements IModule
 
         $parts->setContent($this->moduleContent());
         $parts->setButtons($this->getButtons());
-        $parts->setTitle($this->getFormTool()->getLanguageService()->getLL('title'));
+        $parts->setTitle($this->getLanguageService()->getLL('title'));
         $parts->setFuncMenu($this->getFuncMenu());
         // if we got no array the user got no permissions for the
         // selected page or no page is selected
@@ -258,7 +263,7 @@ abstract class BaseModule extends BaseScriptClass implements IModule
     {
         if (!$this->formTool) {
             $this->formTool = tx_rnbase::makeInstance(ToolBox::class);
-            $this->formTool->init($this->getDoc(), $this);
+            $this->formTool->init($this->getModTemplate()->getDoc(), $this);
         }
 
         return $this->formTool;
@@ -348,11 +353,10 @@ abstract class BaseModule extends BaseScriptClass implements IModule
 
         if ($returnContent) {
             return $content;
-        } else {
-            echo $content;
-
-            return null;
         }
+        echo $content;
+
+        return null;
     }
 
     /**
@@ -422,17 +426,16 @@ abstract class BaseModule extends BaseScriptClass implements IModule
             }
 
             return $menu;
-        } else {
-            $items = $this->getFuncMenuItems($this->MOD_MENU['function']);
-            $useTabs = intval($this->getConfigurations()->get('_cfg.funcmenu.useTabs')) > 0;
-            if ($useTabs) {
-                $menu = $this->getFormTool()->showTabMenu($this->getPid(), 'function', $this->getName(), $items);
-            } else {
-                $menu = $this->getFormTool()->showMenu($this->getPid(), 'function', $this->getName(), $items, $this->getModuleScript());
-            }
-
-            return $menu['menu'];
         }
+        $items = $this->getFuncMenuItems($this->MOD_MENU['function']);
+        $useTabs = intval($this->getConfigurations()->get('_cfg.funcmenu.useTabs')) > 0;
+        if ($useTabs) {
+            $menu = $this->getFormTool()->showTabMenu($this->getPid(), 'function', $this->getName(), $items);
+        } else {
+            $menu = $this->getFormTool()->showMenu($this->getPid(), 'function', $this->getName(), $items, $this->getModuleScript());
+        }
+
+        return $menu['menu'];
     }
 
     /**
@@ -654,6 +657,6 @@ abstract class BaseModule extends BaseScriptClass implements IModule
      */
     public function getLanguageService()
     {
-        return $this->getFormTool()->getLanguageService();
+        return $this->languageTool;
     }
 }

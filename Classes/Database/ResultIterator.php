@@ -95,10 +95,9 @@ class ResultIterator implements Iterator, Countable
             $row = $result->fetchAssociative();
 
             return (int) array_shift($row);
-        } else {
-            $row = $result->fetch();
-
-            return (int) $row['cnt'];
         }
+        $row = $result->fetch();
+
+        return (int) $row['cnt'];
     }
 }

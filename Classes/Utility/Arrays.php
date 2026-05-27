@@ -163,7 +163,7 @@ class Arrays
     }
 
     /**
-     * @see \TYPO3\CMS\Core\Utility\ArrayUtility::arrayDiffAssocRecursive()
+     * @see ArrayUtility::arrayDiffAssocRecursive()
      */
     public static function arrayDiffAssocRecursive(array $array1, array $array2)
     {

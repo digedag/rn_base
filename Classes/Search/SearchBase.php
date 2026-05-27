@@ -220,14 +220,13 @@ abstract class SearchBase
 
             if ($queryOrBuilder instanceof QueryBuilder) {
                 return $this->countQuery($queryOrBuilder);
-            } else {
-                $what = 'COUNT(*) AS cnt';
-                $from = '('.$queryOrBuilder.') AS COUNTWRAP';
-                $sqlOptions = [
-                    'enablefieldsoff' => true,
-                    'sqlonly' => empty($options['sqlonly']) ? 0 : $options['sqlonly'],
-                ];
             }
+            $what = 'COUNT(*) AS cnt';
+            $from = '('.$queryOrBuilder.') AS COUNTWRAP';
+            $sqlOptions = [
+                'enablefieldsoff' => true,
+                'sqlonly' => empty($options['sqlonly']) ? 0 : $options['sqlonly'],
+            ];
         }
         $result = $this->getDatabaseConnection()->doSelect(
             $what,

@@ -473,9 +473,9 @@ class MainController
         $action = $parameters->offsetExists('action') ? $parameters->offsetGet('action') : '';
         if (!is_array($action)) {
             return $action;
-        } else {
-            return key($action);
         }
+
+        return key($action);
     }
 
     /**

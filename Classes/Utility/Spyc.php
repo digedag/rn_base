@@ -215,9 +215,9 @@ class Spyc
             }
 
             return $string;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
