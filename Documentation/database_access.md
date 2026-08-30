@@ -17,7 +17,7 @@ $rows = Connection::getInstance()->doSelect('g.*', [
         'wrapperclass' => \tx_cfcleague_models_Match::class,
         'where' => function(QueryBuilder $qb) {
             $qb->innerJoin('g', 'tx_cfcleague_teams', 't', 't.uid = g.home');
-            $qb->andWhere( sprintf('t.uid = %s', $qb->createNamedParameter(7, \PDO::PARAM_INT)));
+            $qb->andWhere( sprintf('t.uid = %s', $qb->createNamedParameter(7, \TYPO3\CMS\Core\Database\Connection::PARAM_INT)));
         }
     ]);
 ```
