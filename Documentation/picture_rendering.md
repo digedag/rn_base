@@ -67,7 +67,7 @@ lib.page.headerimage {
     references {
         uid.data = levelmedia:-1, slide
     }
-    template = EXT:rn_base/res/simplegallery.html
+    template = EXT:rn_base/Resources/Private/Templates/simplegallery.html
     # die vorbereiteten IMAGE-Objekte zuweisen
     media =< lib.mediaBase
     media {
