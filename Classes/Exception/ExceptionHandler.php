@@ -4,6 +4,7 @@ namespace Sys25\RnBase\Exception;
 
 use Sys25\RnBase\Configuration\ConfigurationInterface;
 use Sys25\RnBase\Configuration\Processor;
+use Sys25\RnBase\Utility\FrontendControllerUtility;
 use Sys25\RnBase\Utility\Logger;
 use Sys25\RnBase\Utility\Misc;
 use Throwable;
@@ -56,6 +57,9 @@ class ExceptionHandler implements ExceptionHandlerInterface
         if ($this->send503HeaderOnException($configurations)) {
             header('HTTP/1.1 503 Service Unavailable');
         }
+
+        FrontendControllerUtility::disableCaching('Disable caching when loading hidden objects.');
+
         // wir loggen nun den fehler
         if (Logger::isFatalEnabled()) {
             $extKey = $configurations->getExtensionKey();

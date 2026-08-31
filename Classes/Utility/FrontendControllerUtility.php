@@ -2,6 +2,7 @@
 
 namespace Sys25\RnBase\Utility;
 
+use Psr\Http\Message\ServerRequestInterface;
 use tx_rnbase;
 use TYPO3\CMS\Core\Context\Context;
 
@@ -92,5 +93,26 @@ class FrontendControllerUtility
         }
 
         return $languageId;
+    }
+
+    /**
+     * wir nehmen nicht Sys25\RnBase\Utility\TYPO3::getTSFE()->set_no_cache weil das durch
+     * $GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter'] deaktiviert werden
+     * kann. Das wollen wir aber nicht. Der Cache muss in jedem Fall deaktiviert werden.
+     * Ansonsten könnten darin Dinge landen, die normale Nutzer nicht
+     * sehen dürfen.
+     */
+    public static function disableCaching(string $message): void
+    {
+        if (!TYPO3::isTYPO130OrHigher()) {
+            TYPO3::getTSFE()->no_cache = true;
+
+            return;
+        }
+
+        /** @var ServerRequestInterface $request */
+        $request = $GLOBALS['TYPO3_REQUEST'];
+        $cacheInstruction = $request->getAttribute('frontend.cache.instruction');
+        $cacheInstruction->disableCache('EXT:rn_base: '.$message);
     }
 }

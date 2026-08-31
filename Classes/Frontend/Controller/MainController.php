@@ -305,7 +305,6 @@ class MainController
     public function doAction(string $actionName, ParametersInterface $parameters, ConfigurationInterface $configurations)
     {
         $ret = '';
-
         try {
             // Creating the responsible Action
             $action = $this->lookupActionService($actionName);
