@@ -6,6 +6,7 @@ use Sys25\RnBase\Database\Query\From;
 use Sys25\RnBase\Database\Query\Join;
 use Sys25\RnBase\Utility\Debug;
 use Sys25\RnBase\Utility\Environment;
+use Sys25\RnBase\Utility\FrontendControllerUtility;
 use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
@@ -233,12 +234,7 @@ class QueryBuilderFacade
             ) {
                 $options['enablefieldsbe'] = 1;
                 if (Environment::isFrontend() && !TYPO3::isTYPO130OrHigher()) {
-                    // wir nehmen nicht Sys25\RnBase\Utility\TYPO3::getTSFE()->set_no_cache weil das durch
-                    // $GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter'] deaktiviert werden
-                    // kann. Das wollen wir aber nicht. Der Cache muss in jedem Fall deaktiviert werden.
-                    // Ansonsten könnten darin Dinge landen, die normale Nutzer nicht
-                    // sehen dürfen.
-                    TYPO3::getTSFE()->no_cache = true;
+                    FrontendControllerUtility::disableCaching('Disable caching when loading hidden objects.');
                 }
             }
 

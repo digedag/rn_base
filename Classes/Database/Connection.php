@@ -19,6 +19,7 @@ use Sys25\RnBase\Domain\Model\DynamicTableInterface;
 use Sys25\RnBase\Typo3Wrapper\Core\SingletonInterface;
 use Sys25\RnBase\Utility\Debug;
 use Sys25\RnBase\Utility\Environment;
+use Sys25\RnBase\Utility\FrontendControllerUtility;
 use Sys25\RnBase\Utility\Misc;
 use Sys25\RnBase\Utility\Strings;
 use Sys25\RnBase\Utility\TYPO3;
@@ -425,7 +426,7 @@ class Connection implements SingletonInterface
         // Then get localization of record:
         // (if the content language is not the default language)
         $tsfe = TYPO3::getTSFE();
-        if (!is_object($tsfe) || !\Sys25\RnBase\Utility\FrontendControllerUtility::getLanguageContentId($tsfe)) {
+        if (!is_object($tsfe) || !FrontendControllerUtility::getLanguageContentId($tsfe)) {
             return;
         }
 
@@ -438,7 +439,7 @@ class Connection implements SingletonInterface
             $row = $sysPage->getRecordOverlay(
                 $tableName,
                 $row,
-                \Sys25\RnBase\Utility\FrontendControllerUtility::getLanguageContentId($tsfe),
+                FrontendControllerUtility::getLanguageContentId($tsfe),
                 $OLmode
             );
         }
@@ -1234,12 +1235,7 @@ class Connection implements SingletonInterface
             ) {
                 $options['enablefieldsbe'] = 1;
                 if (Environment::isFrontend() && !TYPO3::isTYPO130OrHigher()) {
-                    // wir nehmen nicht Sys25\RnBase\Utility\TYPO3::getTSFE()->set_no_cache weil das durch
-                    // $GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter'] deaktiviert werden
-                    // kann. Das wollen wir aber nicht. Der Cache muss in jedem Fall deaktiviert werden.
-                    // Ansonsten könnten darin Dinge landen, die normale Nutzer nicht
-                    // sehen dürfen.
-                    TYPO3::getTSFE()->no_cache = true;
+                    FrontendControllerUtility::disableCaching('Disable caching when loading hidden objects.');
                 }
             }
 
